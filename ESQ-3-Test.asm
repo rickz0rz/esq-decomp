@@ -3,56 +3,56 @@
 ; ==========================================
 
 ; system
-AbsExecBase		= 4
+AbsExecBase         = 4
 
 ; diskfont.library
-OpenDiskFont	= -30
+_LVOOpenDiskFont    = -30
 
 ; dos.library
-CurrentDir      = -126
+_LVOCurrentDir      = -126
 
 ; exec.library
-Supervisor      = -30
-execPrivate1    = -36
-Disable         = -120
-Enable          = -126
-Forbid			= -132
-RemIntServer    = -174
-AllocMem        = -198
-FreeMem         = -210
-AvailMem        = -216
-FindTask		= -294
-SetSignal		= -306
-GetMsg          = -372
-ReplyMsg		= -378
-WaitPort        = -384
-CloseLibrary    = -414
-OpenResource	= -498
-OpenLibrary		= -552
+_LVOSupervisor      = -30
+_LVOexecPrivate1    = -36
+_LVODisable         = -120
+_LVOEnable          = -126
+_LVOForbid          = -132
+_LVORemIntServer    = -174
+_LVOAllocMem        = -198
+_LVOFreeMem         = -210
+_LVOAvailMem        = -216
+_LVOFindTask        = -294
+_LVOSetSignal       = -306
+_LVOGetMsg          = -372
+_LVOReplyMsg        = -378
+_LVOWaitPort        = -384
+_LVOCloseLibrary    = -414
+_LVOOpenResource    = -498
+_LVOOpenLibrary     = -552
 
 ; graphics.library
-TextLength      = -54
-Text            = -60
-SetFont         = -66
-OpenFont		= -72
-CloseFont       = -78
-Move            = -240
-Draw            = -246
-RectFill        = -306
-SetAPen         = -342
-SetBPen         = -348
-SetDrMd         = -354
+_LVOTextLength      = -54
+_LVOText            = -60
+_LVOSetFont         = -66
+_LVOOpenFont        = -72
+_LVOCloseFont       = -78
+_LVOMove            = -240
+_LVODraw            = -246
+_LVORectFill        = -306
+_LVOSetAPen         = -342
+_LVOSetBPen         = -348
+_LVOSetDrMd         = -354
 
 ; intuition.library
-SizeWindow      = -288
-RemakeDisplay   = -384
+_LVOSizeWindow      = -288
+_LVORemakeDisplay   = -384
 
 ; Test Macro 1
-DRAW_TEXT macro
+_LVODraw_TEXT macro
     MOVEA.L \1,A1
     LEA     \2,A0
     MOVEQ   \3,D0
-    JSR     Text(A6)
+    JSR     _LVOText(A6)
   endm
 
 ; I should be able to do this too?:
@@ -64,8 +64,8 @@ DRAW_TEXT macro
 ;    jsr lcd_print_string
 ;.endmacro
 
-TextAlignCenter = 24
-TextAlignLeft	= 25
+TextAlignCenter     = 24
+TextAlignLeft       = 25
 LocalDosLibraryDisplacement = 22832
 
 	SECTION S_0,CODE
@@ -89,10 +89,10 @@ DO_5929_BUFFER_COUNTER_COMPARE:
     CLR.L   -604(A4)
     MOVEQ   #0,D0                               ; "Old" signals, 0x00000000
     MOVE.L  #$00003000,D1						; Signal mask: 0x00003000
-    JSR     SetSignal(A6)
+    JSR     _LVOSetSignal(A6)
     LEA     LOCAL_STR_DOS_LIBRARY(PC),A1
     MOVEQ   #0,D0
-    JSR     OpenLibrary(A6)						; Open dos.library version 0 (any) locally
+    JSR     _LVOOpenLibrary(A6)						; Open dos.library version 0 (any) locally
     MOVE.L  D0,LocalDosLibraryDisplacement(A4)	; and store it in a known location in memory (displacement + A4)
     BNE.S   SUCCESSFULLY_MADE_LOCAL_DOS_LIB
     MOVEQ   #100,D0
@@ -131,7 +131,7 @@ LAB_0003:
 	MOVE.B	0(A2,D0.W),0(A7,D2.W)	;000aa: 1fb200002000
 	SUBQ.L	#1,D2			;000b0: 5382
 	DBF     D0,LAB_0003		;000b2: 51c8fff6
-	MOVE.B	#$20,0(A7,D2.W)		;000b6: 1fbc00202000
+	MOVE.B	#$20,0(A7,D2.W) ;000b6: 1fbc00202000
 	SUBQ.L	#1,D2			;000bc: 5382
 LAB_0004:
 	MOVE.B	0(A1,D2.W),0(A7,D2.W)	;000be: 1fb120002000
@@ -140,14 +140,14 @@ LAB_0004:
 	MOVE.L	A1,-(A7)		;000ca: 2f09
 	BRA.S	LAB_0008		;000cc: 6072
 LAB_0005:
-	MOVE.L	58(A3),-660(A4)		;000ce: 296b003afd6c
+	MOVE.L	58(A3),-660(A4) ;000ce: 296b003afd6c
 	MOVEQ	#127,D0			;000d4: 707f
 	ADDQ.L	#1,D0			;000d6: 5280
 	ADD.L	D0,-660(A4)		;000d8: d1acfd6c
 	LEA     92(A3),A0		;000dc: 41eb005c
-	JSR     WaitPort(A6)	; A6 should still have AbsExecBase in it at this point
+	JSR     _LVOWaitPort(A6)	; A6 should still have AbsExecBase in it at this point
 	LEA     92(A3),A0		;000e4: 41eb005c
-	JSR     GetMsg(A6)		;000e8: 4eaefe8c
+	JSR     _LVOGetMsg(A6)	;000e8: 4eaefe8c
 	MOVE.L	D0,-604(A4)		;000ec: 2940fda4
 	MOVE.L	D0,-(A7)		;000f0: 2f00
 	MOVEA.L	D0,A2			;000f2: 2440
@@ -157,12 +157,12 @@ LAB_0005:
 	MOVEA.L	D0,A0			;000fe: 2040
 	MOVE.L	0(A0),D1		;00100: 22280000
 	MOVE.L	D1,-612(A4)		;00104: 2941fd9c
-	JSR	    CurrentDir(A6)
+	JSR	    _LVOCurrentDir(A6)
 LAB_0006:
 	MOVE.L	32(A2),D1		;0010c: 222a0020
 	BEQ.S	LAB_0007		;00110: 671a
 	MOVE.L	#$000003ed,D2   ;00112: 243c000003ed
-	JSR	    Supervisor(A6)
+	JSR	    _LVOSupervisor(A6)
 	MOVE.L	D0,-596(A4)		;0011c: 2940fdac
 	BEQ.S	LAB_0007		;00120: 670a
 	LSL.L	#2,D0			;00122: e588
@@ -171,7 +171,7 @@ LAB_0006:
 LAB_0007:
 	MOVEA.L	-604(A4),A0		;0012c: 206cfda4
 	MOVE.L	A0,-(A7)		;00130: 2f08
-	PEA	-664(A4)		    ;00132: 486cfd68
+	PEA     -664(A4)		;00132: 486cfd68
 	MOVEA.L	36(A0),A0		;00136: 20680024
 	MOVE.L	4(A0),-592(A4)	;0013a: 29680004fdb0
 LAB_0008:
@@ -191,23 +191,27 @@ LAB_000B:
 	JSR     LAB_0011(PC)	;0015c: 4eba0056
 	MOVEA.L	AbsExecBase,A6
 	MOVEA.L	LocalDosLibraryDisplacement(A4),A1
-	JSR     CloseLibrary(A6)
+	JSR     _LVOCloseLibrary(A6)
 	JSR     LAB_000F(PC)	;0016c: 4eba003a
 	TST.L	-604(A4)        ;00170: 4aacfda4
-	BEQ.S	LAB_000D        ;00174: 671a
-	MOVE.L	-596(A4),D1     ;00176: 222cfdac
-	BEQ.S	LAB_000C        ;0017a: 6704
-	JSR     execPrivate1(A6)
+	BEQ.S	MAIN_RESTORE_REGISTERS_AND_TERMINATE
+	MOVE.L	-596(A4),D1
+	BEQ.S	LAB_000C
+	JSR     _LVOexecPrivate1(A6)
 LAB_000C:
     MOVEA.L	AbsExecBase,A6
-    JSR		Forbid(A6)
-    MOVEA.L	-604(A4),A1     ;00188: 226cfda4
-    JSR		ReplyMsg(A6)    ;0018c: 4eaefe86
-LAB_000D:
-	MOVE.L	(A7)+,D0		;00190: 201f
-	MOVEA.L	-600(A4),A7		;00192: 2e6cfda8
-	MOVEM.L	(A7)+,D1-D6/A0-A6	;00196: 4cdf7f7e
-	RTS				;0019a: 4e75
+    JSR		_LVOForbid(A6)
+    MOVEA.L	-604(A4),A1
+    JSR		_LVOReplyMsg(A6)
+
+MAIN_RESTORE_REGISTERS_AND_TERMINATE:
+	MOVE.L  (A7)+,D0
+	MOVEA.L -600(A4),A7
+	MOVEM.L (A7)+,D1-D6/A0-A6
+	RTS
+
+;======
+
 LOCAL_STR_DOS_LIBRARY:
 	DC.B    "dos.library",0
 LAB_000F:
@@ -221,12 +225,15 @@ LAB_0012:
 CHECK_AVAILABLE_CHIP_MEMORY:
     MOVEQ   #2,D1
     MOVEA.L AbsExecBase,A6
-    JSR     AvailMem(A6)
+    JSR     _LVOAvailMem(A6)
     CMPI.L  #600000,D0       ; See if we have more than 600,000 bytes of available chip memory
     BGE.S   LAB_0014
     MOVE.W  #$0001,LAB_1DF7
 LAB_0014:
     RTS
+
+;======
+
 LAB_0015:
 	MOVEM.L	D6-D7,-(A7)		;001dc: 48e70300
 	MOVE.W	$DFF004,D7		;001e0: 3e3900dff004
@@ -239,9 +246,13 @@ LAB_0015:
 	CMPI.W	#$3300,D6		;001f8: 0c463300
 	BEQ.S	LAB_0016		;001fc: 6708
 	MOVE.W	#$0001,LAB_1DF8		;001fe: 33fc00010003648e
+
 LAB_0016:
-	MOVEM.L	(A7)+,D6-D7		;00206: 4cdf00c0
-	RTS				;0020a: 4e75
+	MOVEM.L	(A7)+,D6-D7
+	RTS
+
+;======
+
 LAB_0017:
 	LINK.W	A5,#-32			;0020c: 4e55ffe0
 	MOVEM.L	D2-D7,-(A7)		;00210: 48e73f00
@@ -270,19 +281,19 @@ LAB_0018:
 	MOVEA.L	A0,A1
 	MOVEQ	#2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     SetAPen(A6)
+    JSR     _LVOSetAPen(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
 
-    ; Draw a filled rect from 0,0 to 639,56
+    ; _LVODraw a filled rect from 0,0 to 639,56
 	MOVEA.L	A0,A1
 	MOVEQ	#0,D0
 	MOVE.L	D0,D1
 	MOVE.L	#639,D2
 	MOVEQ	#56,D3
 	NOT.B	D3
-	JSR     RectFill(A6)
+	JSR     _LVORectFill(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
@@ -290,7 +301,7 @@ LAB_0018:
     ; Set the primary pen to 1
 	MOVEA.L	A0,A1
 	MOVEQ	#1,D0
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
@@ -299,17 +310,17 @@ LAB_0018:
 	MOVEA.L	A0,A1
 	MOVEQ	#20,D0
 	MOVEQ	#100,D1
-	JSR     Move(A6)
+	JSR     _LVOMove(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
 
-    ; Draw "Please Standby..." text
-    ; DRAW_TEXT A0,GLB_STR_PLEASE_STANDBY,#17
+    ; _LVODraw "Please Standby..." text
+    ; _LVODraw_TEXT A0,GLB_STR_PLEASE_STANDBY,#17
 	MOVEA.L	A0,A1
 	LEA     GLB_STR_PLEASE_STANDBY,A0
 	MOVEQ	#17,D0
-	JSR     Text(A6)
+	JSR     _LVOText(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
@@ -318,16 +329,16 @@ LAB_0018:
     MOVEA.L	A0,A1
 	MOVEQ	#20,D0
 	MOVEQ	#113,D1
-	JSR     Move(A6)
+	JSR     _LVOMove(A6)
 	
     MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
 
-    ; Draw "ATTENTION! SYSTEM ENGINEER" text
+    ; _LVODraw "ATTENTION! SYSTEM ENGINEER" text
 	MOVEA.L	A0,A1
     LEA     GLOB_STR_ATTENTION_SYSTEM_ENGINEER,A0
 	MOVEQ	#26,D0
-	JSR     Text(A6)
+	JSR     _LVOText(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
@@ -336,19 +347,21 @@ LAB_0018:
 	MOVEA.L	A0,A1
 	MOVEQ	#20,D0
 	MOVEQ	#126,D1
-	JSR     Move(A6)
+	JSR     _LVOMove(A6)
 
 	MOVEA.L	-4(A5),A0
 	ADDA.W	#$0054,A0
 
-    ; Draw "Report Code ER003 to TV Guide Technical Services." text
+    ; _LVODraw "Report Code ER003 to TV Guide Technical Services." text
 	MOVEA.L	A0,A1
 	LEA     GLOB_STR_REPORT_CODE_ER003,A0
 	MOVEQ	#47,D0
-	JSR     Text(A6)
+	JSR     _LVOText(A6)
 
 SOFTLOCK_ATTENTION_SYSTEM_ENGINEER:
 	BRA.S	SOFTLOCK_ATTENTION_SYSTEM_ENGINEER
+
+;======
 
 LAB_001B:
 	MOVEA.L	-4(A5),A0		;00314: 206dfffc
@@ -361,7 +374,7 @@ LAB_001B:
 	SUB.L	D0,D1			;0032a: 9280
 	MOVEQ	#0,D0			;0032c: 7000
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A6
-	JSR     SizeWindow(A6)
+	JSR     _LVOSizeWindow(A6)
 	PEA	100.W			;00338: 48780064
 	JSR	LAB_0021(PC)		;0033c: 4eba00dc
 	ADDQ.W	#4,A7			;00340: 584f
@@ -384,13 +397,13 @@ LAB_001B:
 	ADD.L	D0,D1			;0037e: d280
 	MOVE.L	D1,-32(A5)		;00380: 2b41ffe0
 	MOVEA.L	GLOB_REF_INTUITION_LIBRARY,A6
-	JSR     RemakeDisplay(A6)
+	JSR     _LVORemakeDisplay(A6)
 	MOVEA.L	D4,A0			;0038e: 2044
 	MOVE.L	-32(A5),D0		;00390: 202dffe0
 	SUB.L	D4,D0			;00394: 9084
 	MOVEA.L	A0,A1			;00396: 2248
 	MOVEA.L	AbsExecBase,A6
-	JSR     FreeMem(A6)
+	JSR     _LVOFreeMem(A6)
 	BRA.S	LAB_001D		;003a0: 6012
 LAB_001C:
 	PEA	LAB_1AF3		;003a2: 487900033b84
@@ -1824,10 +1837,10 @@ LAB_00E8:
 	MOVEA.L	A3,A1			;013c0: 224b
 	MOVEQ	#0,D0			;013c2: 7000
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     SetDrMd(A6)
+    JSR     _LVOSetDrMd(A6)
 	MOVEA.L	A3,A1			;013ce: 224b
 	MOVEQ	#1,D0			;013d0: 7001
-    JSR     SetAPen(A6)
+    JSR     _LVOSetAPen(A6)
 	MOVE.W	#$ffff,34(A3)		;013d6: 377cffff0022
 	BSET	#0,33(A3)		;013dc: 08eb00000021
 	MOVE.B	#$0f,30(A3)		;013e2: 177c000f001e
@@ -1835,12 +1848,12 @@ LAB_00E8:
 	MOVE.L	D7,D0			;013ea: 2007
 	MOVE.L	D6,D1			;013ec: 2206
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     Move(A6)
+    JSR     _LVOMove(A6)
 	MOVE.L	D5,D0			;013f8: 2005
 	SUBQ.L	#1,D0			;013fa: 5380
 	MOVEA.L	A3,A1			;013fc: 224b
 	MOVE.L	D6,D1			;013fe: 2206
-    JSR     Draw(A6)
+    JSR     _LVODraw(A6)
 	MOVE.W	#$ffff,34(A3)		;01404: 377cffff0022
 	BSET	#0,33(A3)		;0140a: 08eb00000021
 	MOVE.B	#$0f,30(A3)		;01410: 177c000f001e
@@ -1851,13 +1864,13 @@ LAB_00E8:
 	MOVE.L	D7,D0			;01420: 2007
 	MOVE.L	16(A7),D1		;01422: 222f0010
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     Move(A6)
+    JSR     _LVOMove(A6)
 	MOVE.L	D5,D0			;01430: 2005
 	SUBQ.L	#2,D0			;01432: 5580
 	MOVE.L	D6,D1			;01434: 2206
 	ADDQ.L	#1,D1			;01436: 5281
 	MOVEA.L	A3,A1			;01438: 224b
-    JSR     Draw(A6)
+    JSR     _LVODraw(A6)
 	MOVE.W	#$ffff,34(A3)		;0143e: 377cffff0022
 	BSET	#0,33(A3)		;01444: 08eb00000021
 	MOVE.B	#$0f,30(A3)		;0144a: 177c000f001e
@@ -1868,13 +1881,13 @@ LAB_00E8:
 	MOVE.L	D7,D0			;0145a: 2007
 	MOVE.L	16(A7),D1		;0145c: 222f0010
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     Move(A6)
+    JSR     _LVOMove(A6)
 	MOVE.L	D5,D0			;0146a: 2005
 	SUBQ.L	#3,D0			;0146c: 5780
 	MOVE.L	D6,D1			;0146e: 2206
 	ADDQ.L	#2,D1			;01470: 5481
 	MOVEA.L	A3,A1			;01472: 224b
-    JSR     Draw(A6)
+    JSR     _LVODraw(A6)
 	MOVE.W	#$ffff,34(A3)		;01478: 377cffff0022
 	BSET	#0,33(A3)		;0147e: 08eb00000021
 	MOVE.B	#$0f,30(A3)		;01484: 177c000f001e
@@ -1885,13 +1898,13 @@ LAB_00E8:
 	MOVE.L	D7,D0			;01494: 2007
 	MOVE.L	16(A7),D1		;01496: 222f0010
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     Move(A6)
+    JSR     _LVOMove(A6)
 	MOVE.L	D5,D0			;014a4: 2005
 	SUBQ.L	#4,D0			;014a6: 5980
 	MOVE.L	D6,D1			;014a8: 2206
 	ADDQ.L	#3,D1			;014aa: 5681
 	MOVEA.L	A3,A1			;014ac: 224b
-    JSR     Draw(A6)
+    JSR     _LVODraw(A6)
 	MOVEM.L	(A7)+,D5-D7/A3		;014b2: 4cdf08e0
 	UNLK	A5			;014b6: 4e5d
 	RTS				;014b8: 4e75
@@ -3816,7 +3829,7 @@ LAB_01A9:
 	MOVEQ	#5,D0			;02a6c: 7005
 	MOVEA.L	LAB_220F,A1		;02a6e: 22790003c206
 	MOVEA.L	AbsExecBase,A6
-	JSR     RemIntServer(A6)
+	JSR     _LVORemIntServer(A6)
 	PEA	22.W			;02a7c: 48780016
 	MOVE.L	LAB_220F,-(A7)		;02a80: 2f390003c206
 	PEA	57.W			;02a86: 48780039
@@ -3990,41 +4003,41 @@ LAB_01B5:
 	BEQ.S	LAB_01B6		;02cf4: 6710
 	MOVEA.L	LAB_1DC2,A1		;02cf6: 2279000363dc
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     CloseFont(A6)
+	JSR     _LVOCloseFont(A6)
 LAB_01B6:
 	TST.L	GLOB_HANDLE_TOPAZ_FONT		;02d06: 4ab90003645c
 	BEQ.S	LAB_01B7		;02d0c: 6710
 	MOVEA.L	GLOB_HANDLE_TOPAZ_FONT,A1		;02d0e: 22790003645c
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     CloseFont(A6)
+	JSR     _LVOCloseFont(A6)
 LAB_01B7:
 	TST.L	LAB_1DE7		;02d1e: 4ab900036458
 	BEQ.S	LAB_01B8		;02d24: 6710
 	MOVEA.L	LAB_1DE7,A1		;02d26: 227900036458
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     CloseFont(A6)
+	JSR     _LVOCloseFont(A6)
 LAB_01B8:
 	TST.L	LAB_1DE6		;02d36: 4ab900036454
 	BEQ.S	LAB_01B9		;02d3c: 6710
 	MOVEA.L	LAB_1DE6,A1		;02d3e: 227900036454
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     CloseFont(A6)
+	JSR     _LVOCloseFont(A6)
 LAB_01B9:
 	TST.L	GLOB_REF_UTILITY_LIBRARY
 	BEQ.S	LAB_01BA
 	MOVEA.L	GLOB_REF_UTILITY_LIBRARY,A1
 	MOVEA.L	AbsExecBase,A6
-	JSR     CloseLibrary(A6)
+	JSR     _LVOCloseLibrary(A6)
 LAB_01BA:
 	MOVEA.L	GLOB_REF_DISKFONT_LIBRARY,A1
 	MOVEA.L	AbsExecBase,A6
-	JSR     CloseLibrary(A6)
+	JSR     _LVOCloseLibrary(A6)
 	MOVEA.L GLOB_REF_DOS_LIBRARY,A1
-	JSR     CloseLibrary(A6)
+	JSR     _LVOCloseLibrary(A6)
 	MOVEA.L GLOB_REF_INTUITION_LIBRARY,A1
-	JSR     CloseLibrary(A6)
+	JSR     _LVOCloseLibrary(A6)
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A1
-	JSR     CloseLibrary(A6)
+	JSR     _LVOCloseLibrary(A6)
 	MOVE.L	(A7)+,D7
 	RTS
 LAB_01BB:
@@ -15886,6 +15899,7 @@ LAB_05DF:
 LAB_05E0:
 	MOVEM.L	(A7)+,D4-D7/A3		;0bb5c: 4cdf08f0
 	RTS				;0bb60: 4e75
+;======
 LAB_05E1:
 	LINK.W	A5,#-12			;0bb62: 4e55fff4
 	MOVEM.L	D4-D7/A2-A3,-(A7)	;0bb66: 48e70f30
@@ -22718,7 +22732,7 @@ LAB_0851:
 	MOVEA.L	LAB_2217,A1
 	MOVEQ	#7,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
 	MOVEQ	#8,D0
 	SUB.L	LAB_21FB,D0
@@ -22731,7 +22745,7 @@ LAB_0851:
 	MOVEQ	#40,D0
 	MOVE.L	#640,D2
 	MOVE.L	#308,D3
-	JSR     RectFill(A6)
+	JSR     _LVORectFill(A6)
 
 	MOVEQ	#0,D0
 	MOVE.B	LAB_21F7,D0
@@ -22742,12 +22756,12 @@ LAB_0851:
 	MOVEA.L	LAB_2217,A1
 	MOVEQ	#1,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
     ; Set B pen to 7
 	MOVEA.L	LAB_2217,A1
 	MOVEQ	#7,D0
-	JSR     SetBPen(A6)
+	JSR     _LVOSetBPen(A6)
 
 	MOVE.L  LAB_21FC,(A7)
 	PEA     LAB_1DAB
@@ -22759,16 +22773,16 @@ LAB_0851:
 	MOVE.L  LAB_2217,-(A7)
 	JSR     LAB_055C(PC)
 
-    ; Set drawing mode to 1
+    ; Set _LVODrawing mode to 1
 	MOVEA.L	LAB_2217,A1
 	MOVEQ	#1,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetDrMd(A6)
+	JSR     _LVOSetDrMd(A6)
 
     ; Set B pen to 2
 	MOVEA.L	LAB_2217,A1
 	MOVEQ	#2,D0
-	JSR     SetBPen(A6)
+	JSR     _LVOSetBPen(A6)
 
 	BSR.W	LAB_07F3		;114c6: 6100f2f4
 	MOVEM.L	-60(A5),D2-D3/D7	;114ca: 4ced008cffc4
@@ -22937,7 +22951,7 @@ LAB_0864:
 	JSR		-222(A6)
 	SUBA.L	A1,A1
 	MOVEA.L	AbsExecBase,A6
-	JSR		FindTask(A6)
+	JSR		_LVOFindTask(A6)
 	MOVE.L	D0,LAB_222C		;11744: 23c00003c2d6
 	MOVEA.L	D0,A0			;1174a: 2040
 	MOVE.L	184(A0),LAB_1DC7	;1174c: 23e800b8000363f0
@@ -22945,7 +22959,7 @@ LAB_0864:
 	MOVE.L	D0,184(A0)		;11756: 214000b8
 	MOVE.L	D2,D0
 	LEA		GLOB_STR_GRAPHICS_LIBRARY,A1
-	JSR		OpenLibrary(A6)
+	JSR		_LVOOpenLibrary(A6)
 	MOVE.L	D0,GLOB_REF_GRAPHICS_LIBRARY
 	TST.L	D0
 	BNE.S	LOAD_DISKFONT_LIBRARY
@@ -22956,7 +22970,7 @@ LOAD_DISKFONT_LIBRARY:
 	LEA		GLOB_STR_DISKFONT_LIBRARY,A1
 	MOVEQ	#0,D0
 	MOVEA.L	AbsExecBase,A6
-	JSR		OpenLibrary(A6)
+	JSR		_LVOOpenLibrary(A6)
 	MOVE.L	D0,GLOB_REF_DISKFONT_LIBRARY
 	BNE.S	LOAD_DOS_LIBRARY
 	CLR.L	-(A7)
@@ -22966,7 +22980,7 @@ LOAD_DOS_LIBRARY:
 	LEA		GLOB_STR_DOS_LIBRARY,A1
 	MOVEQ	#0,D0
 	MOVEA.L	AbsExecBase,A6
-	JSR		OpenLibrary(A6)
+	JSR		_LVOOpenLibrary(A6)
 	MOVE.L	D0,GLOB_REF_DOS_LIBRARY
 	BNE.S	LOAD_INTUITION_LIBRARY
 	CLR.L	-(A7)
@@ -22976,7 +22990,7 @@ LOAD_INTUITION_LIBRARY:
 	LEA		GLOB_STR_INTUITION_LIBRARY,A1
 	MOVEQ	#0,D0
 	MOVEA.L	AbsExecBase,A6
-	JSR		OpenLibrary(A6)
+	JSR		_LVOOpenLibrary(A6)
 	MOVE.L	D0,GLOB_REF_INTUITION_LIBRARY
 	BNE.S	LOAD_UTILITY_LIBRARY_AND_BATTCLOCK_RESOURCE
 	CLR.L	-(A7)
@@ -22993,14 +23007,14 @@ LOAD_UTILITY_LIBRARY_AND_BATTCLOCK_RESOURCE:
     ; Open the "utility.library" library, version 37
 	MOVEQ	#37,D0
 	MOVEA.L	AbsExecBase,A6
-	JSR		OpenLibrary(A6)
+	JSR		_LVOOpenLibrary(A6)
 	MOVE.L	D0,GLOB_REF_UTILITY_LIBRARY
 
 	BEQ.S	LAB_0869
 	
     ; Open the "battclock.resource" resource
     LEA		GLOB_STR_BATTCLOCK_RESOURCE,A1
-	JSR		OpenResource(A6)
+	JSR		_LVOOpenResource(A6)
 	MOVE.L	D0,GLOB_REF_BATTCLOCK_RESOURCE
 LAB_0869:
 	MOVEQ	#2,D0
@@ -23011,7 +23025,7 @@ LAB_086A:
     ; Open the "topaz.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_TOPAZ_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
-    JSR     OpenFont(A6)
+    JSR     _LVOOpenFont(A6)
     MOVE.L  D0,GLOB_HANDLE_TOPAZ_FONT
 
     ; If we couldn't open the font, jump
@@ -23021,7 +23035,7 @@ LAB_086A:
     ; Open the "PrevueC.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT,A0
     MOVEA.L GLOB_REF_DISKFONT_LIBRARY,A6
-    JSR     OpenDiskFont(A6)
+    JSR     _LVOOpenDiskFont(A6)
     MOVE.L  D0,LAB_1DE6
 
     ; If we couldn't open the font, jump
@@ -23032,7 +23046,7 @@ LAB_086A:
 LAB_086B:
     ; Open the "h26f.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_H26F_FONT,A0
-    JSR     OpenDiskFont(A6)
+    JSR     _LVOOpenDiskFont(A6)
     MOVE.L	D0,LAB_1DE7
 
     ; If we couldn't open the font, jump
@@ -23043,7 +23057,7 @@ LAB_086B:
 LAB_086C:
     ; Open the "Prevue.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT,A0
-    JSR     OpenDiskFont(A6)
+    JSR     _LVOOpenDiskFont(A6)
     MOVE.L	D0,LAB_1DC2
 
     ; If we couldn't open the font, jump
@@ -42904,15 +42918,15 @@ LAB_0FA8:
 LAB_0FA9:
 	MOVEM.L	D2-D3,-(A7)
 
-    ; Disable system interrupts
+    ; _LVODisable system interrupts
 	MOVEA.L	AbsExecBase,A6
-	JSR     Disable(A6)
+	JSR     _LVODisable(A6)
 
 	JSR     LAB_0DD5(PC)
 
-    ; Enable system interrupts
+    ; _LVOEnable system interrupts
 	MOVEA.L	AbsExecBase,A6
-	JSR     Enable(A6)
+	JSR     _LVOEnable(A6)
 
 	TST.L	LAB_225F
 	BNE.S	LAB_0FAA
@@ -42921,15 +42935,15 @@ LAB_0FA9:
 	MOVEA.L	LAB_1FFC,A1
     MOVEQ	#7,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
-    ; Draw a filled rect from 0,68 to 695,267
+    ; _LVODraw a filled rect from 0,68 to 695,267
 	MOVEA.L	LAB_1FFC,A1
 	MOVEQ	#0,D0
 	MOVEQ	#68,D1
 	MOVE.L	#695,D2
 	MOVE.L	#267,D3
-	JSR     RectFill(A6)
+	JSR     _LVORectFill(A6)
 
 LAB_0FAA:
 	MOVEM.L	(A7)+,D2-D3
@@ -43422,7 +43436,7 @@ LAB_0FDC:
 
 	MOVEQ	#0,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetDrMd(A6)
+	JSR     _LVOSetDrMd(A6)
 	
     PEA     7.W
 	CLR.L	-(A7)			;20986: 42a7
@@ -43431,14 +43445,14 @@ LAB_0FDC:
 
 	MOVEA.L	-108(A5),A1
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
 	MOVEA.L	-108(A5),A1		;2099c: 226dff94
 	MOVEQ	#0,D0			;209a0: 7000
 	MOVE.L	D0,D1			;209a2: 2200
 	MOVE.L	#$000002b7,D2		;209a4: 243c000002b7
 	MOVEQ	#33,D3			;209aa: 7621
-	JSR     RectFill(A6)		;209ac: 4eaefece
+	JSR     _LVORectFill(A6)		;209ac: 4eaefece
 
 	MOVEQ	#0,D0			;209b0: 7000
 	MOVE.W	LAB_232A,D0		;209b2: 30390003ef30
@@ -43465,7 +43479,7 @@ LAB_0FDC:
     
 	MOVEQ	#3,D0			;209f2: 7003
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;209f4: 2c790003637c
-	JSR     SetAPen(A6)		;209fa: 4eaefeaa
+	JSR     _LVOSetAPen(A6)		;209fa: 4eaefeaa
 
 	MOVEQ	#0,D0			;209fe: 7000
 	MOVE.W	LAB_232A,D0		;20a00: 30390003ef30
@@ -43483,7 +43497,7 @@ LAB_0FDD:
 	MOVE.L	A1,D0			;20a26: 2009
 
 	MOVEA.L	-108(A5),A1
-	JSR     TextLength(A6)
+	JSR     _LVOTextLength(A6)
 	MOVE.L	72(A7),D1
 	SUB.L	D0,D1
 
@@ -43513,7 +43527,7 @@ LAB_0FDF:
 	ADD.L	D0,D1			;20a6a: d280
 	SUBQ.L	#1,D1			;20a6c: 5381
 	MOVE.L	D7,D0			;20a6e: 2007
-	JSR     Move(A6)		;20a70: 4eaeff10
+	JSR     _LVOMove(A6)		;20a70: 4eaeff10
 	LEA     -100(A5),A0		;20a74: 41edff9c
 	MOVEA.L	A0,A1			;20a78: 2248
 LAB_0FE0:
@@ -43523,7 +43537,7 @@ LAB_0FE0:
 	SUBA.L	A0,A1			;20a80: 93c8
 	MOVE.L	A1,D0			;20a82: 2009
 	MOVEA.L	-108(A5),A1		;20a84: 226dff94
-	JSR     Text(A6)			;20a88: 4eaeffc4
+	JSR     _LVOText(A6)			;20a88: 4eaeffc4
 	MOVEQ	#17,D0			;20a8c: 7011
 	MOVE.W	D0,52(A3)		;20a8e: 37400034
 	MOVEQ	#0,D1			;20a92: 7200
@@ -43553,7 +43567,7 @@ LAB_0FE1:
 	MOVEA.L	A0,A1			;20ad0: 2248
 	MOVEQ	#1,D0			;20ad2: 7001
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 	LEA	60(A3),A0		;20ade: 41eb003c
 	LEA	60(A3),A1		;20ae2: 43eb003c
 	MOVEA.L	GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
@@ -43567,7 +43581,7 @@ LAB_0FE2:
     
     ; Get the length of the Awaiting Listings Data text and subtract it from 624
 	MOVEA.L	GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A0
-	JSR	    TextLength(A6)
+	JSR	    _LVOTextLength(A6)
 	MOVE.L	#624,D1
 	SUB.L	D0,D1
 	TST.L	D1
@@ -43757,7 +43771,7 @@ LAB_0FF0:
 	MOVEM.L	-36(A5),D7/A3		;20cfc: 4ced0880ffdc
 	UNLK	A5			;20d02: 4e5d
 	RTS				;20d04: 4e75
-; This is clearly a re-usable subroutine to draw a rectangle given
+; This is clearly a re-usable subroutine to _LVODraw a rectangle given
 ; it's preserving some registers.
 LAB_0FF1:
 	MOVEM.L	D2-D3,-(A7)
@@ -43765,19 +43779,19 @@ LAB_0FF1:
 	MOVEA.L	LAB_1FFD,A1
 	MOVEQ	#7,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
-    ; Draw a filled rect from 0,0 to 695,1
+    ; _LVODraw a filled rect from 0,0 to 695,1
 	MOVEA.L	LAB_1FFD,A1
 	MOVEQ	#0,D0
 	MOVE.L	D0,D1
 	MOVE.L	#695,D2
 	MOVEQ	#1,D3
-	JSR     RectFill(A6)
+	JSR     _LVORectFill(A6)
 
 	MOVEM.L	(A7)+,D2-D3
 	RTS
-; This is clearly a re-usable subroutine to draw a few rectangles given
+; This is clearly a re-usable subroutine to _LVODraw a few rectangles given
 ; it's preserving some registers.
 LAB_0FF2:
 	MOVEM.L	D2-D3/D5-D7/A3,-(A7)
@@ -43789,7 +43803,7 @@ LAB_0FF2:
 
 	MOVE.L	D7,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
 	MOVEQ	#0,D0
 	MOVE.W	LAB_232A,D0
@@ -43800,11 +43814,11 @@ LAB_0FF2:
 	MOVE.L	D5,D3
 	MOVEQ	#0,D0
 	MOVE.L	D0,D1
-	JSR     RectFill(A6)
+	JSR     _LVORectFill(A6)
 
 	MOVEA.L	A3,A1
 	MOVE.L	D6,D0
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 
 	MOVEQ	#0,D0
 	MOVE.W	LAB_232A,D0
@@ -43813,7 +43827,7 @@ LAB_0FF2:
 	MOVEA.L	A3,A1
 	MOVEQ	#0,D1
 	MOVE.L	#$000002b7,D2
-	JSR     RectFill(A6)
+	JSR     _LVORectFill(A6)
 
 	MOVEM.L	(A7)+,D2-D3/D5-D7/A3	;20d96: 4cdf08ec
 	RTS				;20d9a: 4e75
@@ -43922,12 +43936,12 @@ LAB_0FFD:
 	LEA     GLOB_STR_SINGLE_SPACE,A0
 	MOVEQ	#1,D0
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     TextLength(A6)
+	JSR     _LVOTextLength(A6)
 	MOVE.L	D0,-8(A5)
 	MOVEA.L	A3,A1
 	MOVE.L	D7,D0
 	MOVE.L	D6,D1
-	JSR     Move(A6)
+	JSR     _LVOMove(A6)
 LAB_0FFE:
 	TST.L	-20(A5)			;20ed8: 4aadffec
 	BEQ.W	LAB_100C		;20edc: 6700014e
@@ -43958,7 +43972,7 @@ LAB_1000:
 	MOVEA.L	A3,A1			;20f28: 224b
 	MOVE.L	20(A7),D0		;20f2a: 202f0014
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR	    TextLength(A6)
+	JSR	    _LVOTextLength(A6)
 	MOVE.L	D5,D1			;20f38: 2205
 	SUB.L	-12(A5),D1		;20f3a: 92adfff4
 	MOVE.L	D0,-4(A5)		;20f3e: 2b40fffc
@@ -63062,7 +63076,7 @@ LAB_179C:
 	MOVEA.L	A3,A1			;2e47a: 224b
 	MOVE.L	D1,D0			;2e47c: 2001
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetAPen(A6)
+	JSR     _LVOSetAPen(A6)
 LAB_179D:
 	MOVE.W	-12(A5),D0		;2e488: 302dfff4
 	MULS	#$000a,D0		;2e48c: c1fc000a
@@ -63072,13 +63086,13 @@ LAB_179D:
 	MOVEA.L	A3,A1			;2e49a: 224b
 	MOVEA.L	LAB_1DC2,A0		;2e49c: 2079000363dc
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetFont(A6)
+	JSR     _LVOSetFont(A6)
 	BRA.S	LAB_179F		;2e4ac: 6010
 LAB_179E:
 	MOVEA.L	A3,A1			;2e4ae: 224b
 	MOVEA.L	-26(A5),A0		;2e4b0: 206dffe6
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
-	JSR     SetFont(A6)
+	JSR     _LVOSetFont(A6)
 LAB_179F:
 	MOVE.W	-12(A5),D0		;2e4be: 302dfff4
 	MULS	#$000a,D0		;2e4c2: c1fc000a
@@ -67680,7 +67694,7 @@ LAB_1909:
 	MOVE.L	D7,D0           ; Number of bytes
 	MOVE.L	D6,D1           ; Attributes
 	MOVEA.L	AbsExecBase,A6
-	JSR     AllocMem(A6)    ; D0 gets set to a pointer to the mem block or zero if it fails
+	JSR     _LVOAllocMem(A6)    ; D0 gets set to a pointer to the mem block or zero if it fails
 
 	ADD.L	D7,LAB_21A1
 	ADDQ.L	#1,LAB_21A2
@@ -67704,7 +67718,7 @@ LAB_190A:
 	MOVEA.L	A3,A1			;3183c: 224b
 	MOVE.L	D7,D0			;3183e: 2007
 	MOVEA.L	AbsExecBase,A6
-	JSR     FreeMem(A6)
+	JSR     _LVOFreeMem(A6)
 	SUB.L	D7,LAB_21A1		;31848: 9fb90003b688
 	ADDQ.L	#1,LAB_21A3		;3184e: 52b90003b690
 LAB_190B:
@@ -76832,6 +76846,8 @@ LAB_2380:
 	DS.L	1			;410f8
 LAB_2381:
 	DS.L	214			;410fc
+; Some value is stored in LAB_2382 that i can't figure out...
+; Where is it coming from?
 LAB_2382:
 	DS.L	55
 LAB_CTRLHTCMAX:
