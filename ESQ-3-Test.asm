@@ -14,8 +14,11 @@ CurrentDir      = -126
 ; exec.library
 Supervisor      = -30
 execPrivate1    = -36
+Disable         = -120
+Enable          = -126
 Forbid			= -132
 RemIntServer    = -174
+AllocMem        = -198
 FreeMem         = -210
 AvailMem        = -216
 FindTask		= -294
@@ -28,6 +31,7 @@ OpenResource	= -498
 OpenLibrary		= -552
 
 ; graphics.library
+TextLength      = -54
 Text            = -60
 SetFont         = -66
 OpenFont		= -72
@@ -36,11 +40,29 @@ Move            = -240
 Draw            = -246
 RectFill        = -306
 SetAPen         = -342
+SetBPen         = -348
 SetDrMd         = -354
 
 ; intuition.library
 SizeWindow      = -288
 RemakeDisplay   = -384
+
+; Test Macro 1
+DRAW_TEXT macro
+    MOVEA.L \1,A1
+    LEA     \2,A0
+    MOVEQ   \3,D0
+    JSR     Text(A6)
+  endm
+
+; I should be able to do this too?:
+;test_pr: .macro str_ptr
+;    lda #<\str_ptr
+;    sta ADDR_PTR
+;    lda #>\str_ptr
+;    sta ADDR_PTR+1
+;    jsr lcd_print_string
+;.endmacro
 
 TextAlignCenter = 24
 TextAlignLeft	= 25
@@ -49,28 +71,28 @@ LocalDosLibraryDisplacement = 22832
 	SECTION S_0,CODE
 
 SECSTRT_0:
-    MOVEM.L D1-D6/A0-A6,-(A7)	; Backup registers to the stack
-    MOVEA.L A0,A2
-    MOVE.L  D0,D2
-    LEA     LAB_21BB,A4
+    MOVEM.L D1-D6/A0-A6,-(A7)                   ; Backup registers to the stack
+    MOVEA.L A0,A2                               ; A0 is a pointer to the command string at startup, copy to A2
+    MOVE.L  D0,D2                               ; D0 is the length of the command string at startup, copy to D2
+    LEA     LAB_21BB,A4                         ; Copy address of LAB_21BB into A4
     MOVEA.L AbsExecBase.W,A6
     LEA     BUFFER_5929_LONGWORDS,A3
     MOVEQ   #0,D1
     MOVE.L  #5929,D0
     BRA.S   DO_5929_BUFFER_COUNTER_COMPARE
 COPY_BYTE_FROM_D1_TO_5929_BUFFER:
-    MOVE.L  D1,(A3)+			; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
+    MOVE.L  D1,(A3)+                            ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
 DO_5929_BUFFER_COUNTER_COMPARE:
-    DBF     D0,COPY_BYTE_FROM_D1_TO_5929_BUFFER		; If our counter (D1) is not zero then jump to COPY_BYTE_FROM_D1_TO_5929_BUFFER else continue
-    MOVE.L  A7,-600(A4)			; Copy the current stack pointer to -600(A4)
-    MOVE.L  A6,-608(A4)
+    DBF     D0,COPY_BYTE_FROM_D1_TO_5929_BUFFER	; If our counter (D1) is not zero then jump to COPY_BYTE_FROM_D1_TO_5929_BUFFER else continue
+    MOVE.L  A7,-600(A4)                         ; Copy the current stack pointer to -600(A4)
+    MOVE.L  A6,-608(A4)                         ; Copy A6 which should be AbsExecBase into -608(A4)
     CLR.L   -604(A4)
-    MOVEQ   #0,D0                               ; Old signals
+    MOVEQ   #0,D0                               ; "Old" signals, 0x00000000
     MOVE.L  #$00003000,D1						; Signal mask: 0x00003000
     JSR     SetSignal(A6)
     LEA     LOCAL_STR_DOS_LIBRARY(PC),A1
     MOVEQ   #0,D0
-    JSR     OpenLibrary(A6)						; Create a reference to the DosLibrary
+    JSR     OpenLibrary(A6)						; Open dos.library version 0 (any) locally
     MOVE.L  D0,LocalDosLibraryDisplacement(A4)	; and store it in a known location in memory (displacement + A4)
     BNE.S   SUCCESSFULLY_MADE_LOCAL_DOS_LIB
     MOVEQ   #100,D0
@@ -283,6 +305,7 @@ LAB_0018:
 	ADDA.W	#$0054,A0
 
     ; Draw "Please Standby..." text
+    ; DRAW_TEXT A0,GLB_STR_PLEASE_STANDBY,#17
 	MOVEA.L	A0,A1
 	LEA     GLB_STR_PLEASE_STANDBY,A0
 	MOVEQ	#17,D0
@@ -22691,48 +22714,62 @@ LAB_0851:
 	MOVE.L	D0,LAB_1D7B		;11406: 23c000035e4c
 	MOVE.L	D0,(A7)			;1140c: 2e80
 	BSR.W	LAB_07F9		;1140e: 6100f5a4
-	MOVEA.L	LAB_2217,A1		;11412: 22790003c226
-	MOVEQ	#7,D0			;11418: 7007
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;1141a: 2c790003637c
-	JSR	-342(A6)		;11420: 4eaefeaa
-	MOVEQ	#8,D0			;11424: 7008
-	SUB.L	LAB_21FB,D0		;11426: 90b90003c0ee
-	MOVEQ	#30,D1			;1142c: 721e
-	JSR	LAB_0AB6(PC)		;1142e: 4eba4cd8
-	MOVE.L	#$0000012e,D1		;11432: 223c0000012e
-	SUB.L	D0,D1			;11438: 9280
-	MOVEA.L	LAB_2217,A1		;1143a: 22790003c226
-	MOVEQ	#40,D0			;11440: 7028
-	MOVE.L	#$00000280,D2		;11442: 243c00000280
-	MOVE.L	#$00000134,D3		;11448: 263c00000134
-	JSR	-306(A6)		;1144e: 4eaefece
-	MOVEQ	#0,D0			;11452: 7000
-	MOVE.B	LAB_21F7,D0		;11454: 10390003bf84
-	MOVE.L	D0,(A7)			;1145a: 2e80
-	BSR.W	LAB_07F8		;1145c: 6100f48c
-	MOVEA.L	LAB_2217,A1		;11460: 22790003c226
-	MOVEQ	#1,D0			;11466: 7001
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;11468: 2c790003637c
-	JSR	-342(A6)		;1146e: 4eaefeaa
-	MOVEA.L	LAB_2217,A1		;11472: 22790003c226
-	MOVEQ	#7,D0			;11478: 7007
-	JSR	-348(A6)		;1147a: 4eaefea4
-	MOVE.L	LAB_21FC,(A7)		;1147e: 2eb90003c12e
-	PEA	LAB_1DAB		;11484: 4879000361f6
-	PEA	-44(A5)			;1148a: 486dffd4
-	JSR	j_SUB_printf_0(PC)		;1148e: 4eba10b6
-	PEA	-44(A5)			;11492: 486dffd4
-	PEA	300.W			;11496: 4878012c
-	PEA	190.W			;1149a: 487800be
-	MOVE.L	LAB_2217,-(A7)		;1149e: 2f390003c226
-	JSR	LAB_055C(PC)		;114a4: 4eba979c
-	MOVEA.L	LAB_2217,A1		;114a8: 22790003c226
-	MOVEQ	#1,D0			;114ae: 7001
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;114b0: 2c790003637c
-	JSR	-354(A6)		;114b6: 4eaefe9e
-	MOVEA.L	LAB_2217,A1		;114ba: 22790003c226
-	MOVEQ	#2,D0			;114c0: 7002
-	JSR	-348(A6)		;114c2: 4eaefea4
+
+	MOVEA.L	LAB_2217,A1
+	MOVEQ	#7,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
+
+	MOVEQ	#8,D0
+	SUB.L	LAB_21FB,D0
+	MOVEQ	#30,D1
+	JSR	LAB_0AB6(PC)
+
+	MOVE.L	#302,D1
+    SUB.L	D0,D1
+	MOVEA.L	LAB_2217,A1
+	MOVEQ	#40,D0
+	MOVE.L	#640,D2
+	MOVE.L	#308,D3
+	JSR     RectFill(A6)
+
+	MOVEQ	#0,D0
+	MOVE.B	LAB_21F7,D0
+	MOVE.L	D0,(A7)
+	BSR.W	LAB_07F8
+
+    ; Set A pen to 1
+	MOVEA.L	LAB_2217,A1
+	MOVEQ	#1,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
+
+    ; Set B pen to 7
+	MOVEA.L	LAB_2217,A1
+	MOVEQ	#7,D0
+	JSR     SetBPen(A6)
+
+	MOVE.L  LAB_21FC,(A7)
+	PEA     LAB_1DAB
+	PEA     -44(A5)
+	JSR     j_SUB_printf_0(PC)
+	PEA     -44(A5)
+	PEA     300.W
+	PEA     190.W
+	MOVE.L  LAB_2217,-(A7)
+	JSR     LAB_055C(PC)
+
+    ; Set drawing mode to 1
+	MOVEA.L	LAB_2217,A1
+	MOVEQ	#1,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetDrMd(A6)
+
+    ; Set B pen to 2
+	MOVEA.L	LAB_2217,A1
+	MOVEQ	#2,D0
+	JSR     SetBPen(A6)
+
 	BSR.W	LAB_07F3		;114c6: 6100f2f4
 	MOVEM.L	-60(A5),D2-D3/D7	;114ca: 4ced008cffc4
 	UNLK	A5			;114d0: 4e5d
@@ -22972,7 +23009,7 @@ LAB_086A:
 	JSR		LAB_08B4(PC)
 
     ; Open the "topaz.font" file.
-    LEA     GLOB_STRUCT_TOPAZ_FONT,A0
+    LEA     GLOB_STRUCT_TEXTATTR_TOPAZ_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     OpenFont(A6)
     MOVE.L  D0,GLOB_HANDLE_TOPAZ_FONT
@@ -22982,7 +23019,7 @@ LAB_086A:
     BEQ.W   LAB_089B
 
     ; Open the "PrevueC.font" file.
-    LEA     GLOB_STRUCT_PREVUEC_FONT,A0
+    LEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT,A0
     MOVEA.L GLOB_REF_DISKFONT_LIBRARY,A6
     JSR     OpenDiskFont(A6)
     MOVE.L  D0,LAB_1DE6
@@ -22993,19 +23030,27 @@ LAB_086A:
 
 	MOVE.L	GLOB_HANDLE_TOPAZ_FONT,LAB_1DE6
 LAB_086B:
-	LEA	LAB_1DBD,A0		;1185c: 41f9000363ac
-	JSR	-30(A6)			;11862: 4eaeffe2
-	MOVE.L	D0,LAB_1DE7		;11866: 23c000036458
-	TST.L	D0			;1186c: 4a80
-	BNE.S	LAB_086C		;1186e: 660a
-	MOVE.L	GLOB_HANDLE_TOPAZ_FONT,LAB_1DE7	;11870: 23f90003645c00036458
+    ; Open the "h26f.font" file.
+    LEA     GLOB_STRUCT_TEXTATTR_H26F_FONT,A0
+    JSR     OpenDiskFont(A6)
+    MOVE.L	D0,LAB_1DE7
+
+    ; If we couldn't open the font, jump
+    TST.L	D0
+    BNE.S	LAB_086C
+
+    MOVE.L	GLOB_HANDLE_TOPAZ_FONT,LAB_1DE7
 LAB_086C:
-	LEA	LAB_1DC1,A0		;1187a: 41f9000363d4
-	JSR	-30(A6)			;11880: 4eaeffe2
-	MOVE.L	D0,LAB_1DC2		;11884: 23c0000363dc
-	TST.L	D0			;1188a: 4a80
-	BNE.S	LAB_086D		;1188c: 660a
-	MOVE.L	GLOB_HANDLE_TOPAZ_FONT,LAB_1DC2	;1188e: 23f90003645c000363dc
+    ; Open the "Prevue.font" file.
+    LEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT,A0
+    JSR     OpenDiskFont(A6)
+    MOVE.L	D0,LAB_1DC2
+
+    ; If we couldn't open the font, jump
+    TST.L	D0
+    BNE.S	LAB_086D
+
+    MOVE.L	GLOB_HANDLE_TOPAZ_FONT,LAB_1DC2
 LAB_086D:
 	MOVE.L	#$00010001,-(A7)	;11898: 2f3c00010001
 	PEA	100.W			;1189e: 48780064
@@ -41734,6 +41779,9 @@ LAB_0F3C:
 	MOVE.L	D6,D0			;1f798: 2006
 	MOVEM.L	(A7)+,D6-D7/A3		;1f79a: 4cdf08c0
 	RTS				;1f79e: 4e75
+
+;======
+
 LAB_0F3D:
 	LINK.W	A5,#-28			;1f7a0: 4e55ffe4
 	MOVEM.L	D4-D7/A2-A3,-(A7)	;1f7a4: 48e70f30
@@ -41888,6 +41936,9 @@ LAB_0F4C:
 	MOVEM.L	(A7)+,D4-D7/A2-A3	;1f924: 4cdf0cf0
 	UNLK	A5			;1f928: 4e5d
 	RTS				;1f92a: 4e75
+
+;======
+
 LAB_0F4D:
 	LINK.W	A5,#-160		;1f92c: 4e55ff60
 	MOVEM.L	D4-D7/A2-A3/A6,-(A7)	;1f930: 48e70f32
@@ -42072,6 +42123,9 @@ LAB_0F5C:
 	MOVEM.L	(A7)+,D4-D7/A2-A3/A6	;1fb02: 4cdf4cf0
 	UNLK	A5			;1fb06: 4e5d
 	RTS				;1fb08: 4e75
+
+;======
+
 LAB_0F5D:
 	LINK.W	A5,#-52			;1fb0a: 4e55ffcc
 	MOVEM.L	D4-D7/A2-A3,-(A7)	;1fb0e: 48e70f30
@@ -42334,6 +42388,9 @@ LAB_0F77:
 	MOVEM.L	(A7)+,D4-D7/A2-A3	;1fdf8: 4cdf0cf0
 	UNLK	A5			;1fdfc: 4e5d
 	RTS				;1fdfe: 4e75
+
+;======
+
 LAB_0F78:
 	MOVE.L	D7,-(A7)		;1fe00: 2f07
 	MOVEQ	#1,D0			;1fe02: 7001
@@ -42356,6 +42413,9 @@ LAB_0F7C:
 	MOVE.L	D7,D0			;1fe24: 2007
 	MOVE.L	(A7)+,D7		;1fe26: 2e1f
 	RTS				;1fe28: 4e75
+
+;======
+
 LAB_0F7D:
 	LINK.W	A5,#-4			;1fe2a: 4e55fffc
 	MOVEM.L	D2-D5/A2-A3,-(A7)	;1fe2e: 48e73c30
@@ -42596,6 +42656,9 @@ LAB_0F90:
 	MOVEM.L	(A7)+,D2-D5/A2-A3	;2011e: 4cdf0c3c
 	UNLK	A5			;20122: 4e5d
 	RTS				;20124: 4e75
+
+;======
+
 LAB_0F91:
 	MOVE.B	LAB_2324,D0		;20126: 10390003ef08
 	MOVE.B	LAB_222D,D1		;2012c: 12390003c2da
@@ -42614,6 +42677,9 @@ LAB_0F91:
 	MOVE.B	LAB_222D,LAB_2324	;20164: 13f90003c2da0003ef08
 LAB_0F92:
 	RTS				;2016e: 4e75
+
+;======
+
 LAB_0F93:
 	PEA	LAB_2321		;20170: 48790003eef0
 	BSR.W	LAB_0F08		;20176: 6100f128
@@ -42630,6 +42696,9 @@ LAB_0F93:
 	BSR.W	LAB_0F12		;201ac: 6100f242
 	ADDQ.W	#4,A7			;201b0: 584f
 	RTS				;201b2: 4e75
+
+;======
+
 LAB_0F94:
 	JMP	LAB_03B2		;201b4: 4ef900007380
 LAB_0F95:
@@ -42651,7 +42720,14 @@ LAB_0F9C:
 LAB_0F9D:
 	JMP	LAB_0396		;201ea: 4ef900007038
 	RTS				;201f0: 4e75
-	DC.W	$0000			;201f2
+
+;======
+
+    ; Extra data for alignment
+	DC.W	$0000
+
+;======
+
 LAB_0F9E:
 	MOVE.L	A2,-(A7)		;201f4: 2f0a
 	MOVEA.L	GLOB_REF_INTUITION_LIBRARY,A1		;201f6: 227900036380
@@ -42669,12 +42745,18 @@ LAB_0F9E:
 	MOVE.L	D0,LAB_2327		;20228: 23c00003ef28
 	MOVEA.L	(A7)+,A2		;2022e: 245f
 	RTS				;20230: 4e75
+
+;======
+
 LAB_0F9F:
 	MOVE.L	A4,-(A7)		;20232: 2f0c
 	LEA	LAB_21BB,A4		;20234: 49f90003bb24
 	MOVEQ	#0,D0			;2023a: 7000
 	MOVEA.L	(A7)+,A4		;2023c: 285f
 	RTS				;2023e: 4e75
+
+;======
+
 LAB_0FA0:
 	LINK.W	A5,#-4			;20240: 4e55fffc
 	MOVEM.L	D7/A4,-(A7)		;20244: 48e70108
@@ -42691,12 +42773,26 @@ LAB_0FA2:
 	MOVEM.L	(A7)+,D7/A4		;20262: 4cdf1080
 	UNLK	A5			;20266: 4e5d
 	RTS				;20268: 4e75
+
+;======
+
+    ; Extra data for alignment
 	DC.W	$0000			;2026a
+
+;======
+
 LAB_0FA3:
 	JMP	LAB_00E3		;2026c: 4ef90000133a
 	MOVEQ	#97,D0			;20272: 7061
 	RTS				;20274: 4e75
+
+;======
+
+    ; Extra data for alignment
 	DC.W	$0000			;20276
+
+;======
+
 LAB_0FA4:
 	TST.W	LAB_1FFE		;20278: 4a790003a6d0
 	BNE.W	LAB_0FA6		;2027e: 66000160
@@ -42784,6 +42880,9 @@ LAB_0FA5:
 	BSR.W	LAB_0FF1		;203dc: 61000928
 LAB_0FA6:
 	RTS				;203e0: 4e75
+
+;======
+
 LAB_0FA7:
 	TST.L	LAB_1FFC		;203e2: 4ab90003a6c8
 	BEQ.S	LAB_0FA8		;203e8: 671c
@@ -42799,28 +42898,45 @@ LAB_0FA8:
 	CLR.W	LAB_1FFE		;2040e: 42790003a6d0
 	JSR	LAB_1243(PC)		;20414: 4eba4f18
 	RTS				;20418: 4e75
+
+;======
+
 LAB_0FA9:
-	MOVEM.L	D2-D3,-(A7)		;2041a: 48e73000
-	MOVEA.L	AbsExecBase,A6	;2041e: 2c780004
-	JSR	-120(A6)		;20422: 4eaeff88
-	JSR	LAB_0DD5(PC)		;20426: 4ebac52a
-	MOVEA.L	AbsExecBase,A6	;2042a: 2c780004
-	JSR	-126(A6)		;2042e: 4eaeff82
-	TST.L	LAB_225F		;20432: 4ab90003ddf0
-	BNE.S	LAB_0FAA		;20438: 662c
-	MOVEA.L	LAB_1FFC,A1		;2043a: 22790003a6c8
-	MOVEQ	#7,D0			;20440: 7007
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20442: 2c790003637c
-	JSR	-342(A6)		;20448: 4eaefeaa
-	MOVEA.L	LAB_1FFC,A1		;2044c: 22790003a6c8
-	MOVEQ	#0,D0			;20452: 7000
-	MOVEQ	#68,D1			;20454: 7244
-	MOVE.L	#$000002b7,D2		;20456: 243c000002b7
-	MOVE.L	#$0000010b,D3		;2045c: 263c0000010b
-	JSR	-306(A6)		;20462: 4eaefece
+	MOVEM.L	D2-D3,-(A7)
+
+    ; Disable system interrupts
+	MOVEA.L	AbsExecBase,A6
+	JSR     Disable(A6)
+
+	JSR     LAB_0DD5(PC)
+
+    ; Enable system interrupts
+	MOVEA.L	AbsExecBase,A6
+	JSR     Enable(A6)
+
+	TST.L	LAB_225F
+	BNE.S	LAB_0FAA
+
+    ; Set A pen to 7
+	MOVEA.L	LAB_1FFC,A1
+    MOVEQ	#7,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
+
+    ; Draw a filled rect from 0,68 to 695,267
+	MOVEA.L	LAB_1FFC,A1
+	MOVEQ	#0,D0
+	MOVEQ	#68,D1
+	MOVE.L	#695,D2
+	MOVE.L	#267,D3
+	JSR     RectFill(A6)
+
 LAB_0FAA:
-	MOVEM.L	(A7)+,D2-D3		;20466: 4cdf000c
-	RTS				;2046a: 4e75
+	MOVEM.L	(A7)+,D2-D3
+	RTS
+
+;======
+
 LAB_0FAB:
 	MOVEM.L	D6-D7,-(A7)		;2046c: 48e70300
 	MOVE.L	12(A7),D7		;20470: 2e2f000c
@@ -42849,6 +42965,9 @@ LAB_0FAE:
 	MOVE.L	D6,D0			;204aa: 2006
 	MOVEM.L	(A7)+,D6-D7		;204ac: 4cdf00c0
 	RTS				;204b0: 4e75
+
+;======
+
 LAB_0FAF:
 	LINK.W	A5,#-40			;204b2: 4e55ffd8
 	MOVEM.L	D5-D7,-(A7)		;204b6: 48e70700
@@ -43132,6 +43251,9 @@ LAB_0FD0:
 	MOVE.L	D7,D0			;207aa: 2007
 	MOVEM.L	(A7)+,D6-D7		;207ac: 4cdf00c0
 	RTS				;207b0: 4e75
+
+;======
+
 LAB_0FD1:
 	LINK.W	A5,#-108		;207b2: 4e55ff94
 	MOVEM.L	D2-D7/A3,-(A7)		;207b6: 48e73f10
@@ -43285,31 +43407,39 @@ LAB_0FDB:
 	MOVEM.L	-136(A5),D2-D7/A3	;2094c: 4ced08fcff78
 	UNLK	A5			;20952: 4e5d
 	RTS				;20954: 4e75
+
+;======
+
 LAB_0FDC:
 	LINK.W	A5,#-116		;20956: 4e55ff8c
 	MOVEM.L	D2-D3/D7/A3,-(A7)	;2095a: 48e73110
 	MOVEA.L	8(A5),A3		;2095e: 266d0008
-	LEA	60(A3),A0		;20962: 41eb003c
-	PEA	-100(A5)		;20966: 486dff9c
+	LEA     60(A3),A0		;20962: 41eb003c
+	PEA     -100(A5)		;20966: 486dff9c
 	MOVE.L	A0,-108(A5)		;2096a: 2b48ff94
-	JSR	LAB_1020(PC)		;2096e: 4eba0b84
+	JSR     LAB_1020(PC)		;2096e: 4eba0b84
 	MOVEA.L	-108(A5),A1		;20972: 226dff94
-	MOVEQ	#0,D0			;20976: 7000
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20978: 2c790003637c
-	JSR	-354(A6)		;2097e: 4eaefe9e
-	PEA	7.W			;20982: 48780007
+
+	MOVEQ	#0,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetDrMd(A6)
+	
+    PEA     7.W
 	CLR.L	-(A7)			;20986: 42a7
 	MOVE.L	A3,-(A7)		;20988: 2f0b
-	JSR	LAB_102F(PC)		;2098a: 4eba0bda
-	MOVEA.L	-108(A5),A1		;2098e: 226dff94
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20992: 2c790003637c
-	JSR	-342(A6)		;20998: 4eaefeaa
+	JSR     LAB_102F(PC)		;2098a: 4eba0bda
+
+	MOVEA.L	-108(A5),A1
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
+
 	MOVEA.L	-108(A5),A1		;2099c: 226dff94
 	MOVEQ	#0,D0			;209a0: 7000
 	MOVE.L	D0,D1			;209a2: 2200
 	MOVE.L	#$000002b7,D2		;209a4: 243c000002b7
 	MOVEQ	#33,D3			;209aa: 7621
-	JSR	-306(A6)		;209ac: 4eaefece
+	JSR     RectFill(A6)		;209ac: 4eaefece
+
 	MOVEQ	#0,D0			;209b0: 7000
 	MOVE.W	LAB_232A,D0		;209b2: 30390003ef30
 	MOVEQ	#35,D1			;209b8: 7223
@@ -43320,26 +43450,28 @@ LAB_0FDC:
 	MOVE.L	D1,-(A7)		;209c2: 2f01
 	MOVE.L	D1,-(A7)		;209c4: 2f01
 	MOVE.L	-108(A5),-(A7)		;209c6: 2f2dff94
-	JSR	LAB_133D(PC)		;209ca: 4eba66c4
+	JSR     LAB_133D(PC)		;209ca: 4eba66c4
 	MOVEQ	#0,D0			;209ce: 7000
 	MOVE.W	LAB_232A,D0		;209d0: 30390003ef30
 	MOVEQ	#36,D1			;209d6: 7224
 	ADD.L	D1,D0			;209d8: d081
-	PEA	33.W			;209da: 48780021
-	PEA	695.W			;209de: 487802b7
+	PEA     33.W			;209da: 48780021
+	PEA     695.W			;209de: 487802b7
 	CLR.L	-(A7)			;209e2: 42a7
 	MOVE.L	D0,-(A7)		;209e4: 2f00
 	MOVE.L	-108(A5),-(A7)		;209e6: 2f2dff94
-	JSR	LAB_133D(PC)		;209ea: 4eba66a4
+	JSR     LAB_133D(PC)		;209ea: 4eba66a4
 	MOVEA.L	-108(A5),A1		;209ee: 226dff94
+    
 	MOVEQ	#3,D0			;209f2: 7003
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;209f4: 2c790003637c
-	JSR	-342(A6)		;209fa: 4eaefeaa
+	JSR     SetAPen(A6)		;209fa: 4eaefeaa
+
 	MOVEQ	#0,D0			;209fe: 7000
 	MOVE.W	LAB_232A,D0		;20a00: 30390003ef30
 	MOVE.W	LAB_232B,D1		;20a06: 32390003ef32
 	MULU	#$0003,D1		;20a0c: c2fc0003
-	LEA	-100(A5),A0		;20a10: 41edff9c
+	LEA     -100(A5),A0		;20a10: 41edff9c
 	MOVEA.L	A0,A1			;20a14: 2248
 LAB_0FDD:
 	TST.B	(A1)+			;20a16: 4a19
@@ -43349,10 +43481,12 @@ LAB_0FDD:
 	MOVE.L	D0,68(A7)		;20a1e: 2f400044
 	MOVE.L	D1,72(A7)		;20a22: 2f410048
 	MOVE.L	A1,D0			;20a26: 2009
-	MOVEA.L	-108(A5),A1		;20a28: 226dff94
-	JSR	-54(A6)			;20a2c: 4eaeffca
-	MOVE.L	72(A7),D1		;20a30: 222f0048
-	SUB.L	D0,D1			;20a34: 9280
+
+	MOVEA.L	-108(A5),A1
+	JSR     TextLength(A6)
+	MOVE.L	72(A7),D1
+	SUB.L	D0,D1
+
 	TST.L	D1			;20a36: 4a81
 	BPL.S	LAB_0FDE		;20a38: 6a02
 	ADDQ.L	#1,D1			;20a3a: 5281
@@ -43379,8 +43513,8 @@ LAB_0FDF:
 	ADD.L	D0,D1			;20a6a: d280
 	SUBQ.L	#1,D1			;20a6c: 5381
 	MOVE.L	D7,D0			;20a6e: 2007
-	JSR	-240(A6)		;20a70: 4eaeff10
-	LEA	-100(A5),A0		;20a74: 41edff9c
+	JSR     Move(A6)		;20a70: 4eaeff10
+	LEA     -100(A5),A0		;20a74: 41edff9c
 	MOVEA.L	A0,A1			;20a78: 2248
 LAB_0FE0:
 	TST.B	(A1)+			;20a7a: 4a19
@@ -43389,7 +43523,7 @@ LAB_0FE0:
 	SUBA.L	A0,A1			;20a80: 93c8
 	MOVE.L	A1,D0			;20a82: 2009
 	MOVEA.L	-108(A5),A1		;20a84: 226dff94
-	JSR	-60(A6)			;20a88: 4eaeffc4
+	JSR     Text(A6)			;20a88: 4eaeffc4
 	MOVEQ	#17,D0			;20a8c: 7011
 	MOVE.W	D0,52(A3)		;20a8e: 37400034
 	MOVEQ	#0,D1			;20a92: 7200
@@ -43398,6 +43532,9 @@ LAB_0FE0:
 	MOVEM.L	-132(A5),D2-D3/D7/A3	;20a9a: 4ced088cff7c
 	UNLK	A5			;20aa0: 4e5d
 	RTS				;20aa2: 4e75
+
+;======
+
 LAB_0FE1:
 	LINK.W	A5,#-4			;20aa4: 4e55fffc
 	MOVEM.L	D2/A2-A3,-(A7)		;20aa8: 48e72030
@@ -43409,29 +43546,31 @@ LAB_0FE1:
 	MOVEQ	#4,D1			;20abc: 7204
 	MOVE.L	D1,-(A7)		;20abe: 2f01
 	MOVE.L	D1,-(A7)		;20ac0: 2f01
-	PEA	7.W			;20ac2: 48780007
+	PEA     7.W             ;20ac2: 48780007
 	MOVE.L	A3,-(A7)		;20ac6: 2f0b
 	BSR.W	LAB_0FF4		;20ac8: 610002ea
-	LEA	60(A3),A0		;20acc: 41eb003c
+	LEA     60(A3),A0		;20acc: 41eb003c
 	MOVEA.L	A0,A1			;20ad0: 2248
 	MOVEQ	#1,D0			;20ad2: 7001
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20ad4: 2c790003637c
-	JSR	-342(A6)		;20ada: 4eaefeaa
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
 	LEA	60(A3),A0		;20ade: 41eb003c
 	LEA	60(A3),A1		;20ae2: 43eb003c
-	MOVEA.L	LAB_2113,A2		;20ae6: 24790003b0ce
+	MOVEA.L	GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
 LAB_0FE2:
 	TST.B	(A2)+			;20aec: 4a1a
 	BNE.S	LAB_0FE2		;20aee: 66fc
 	SUBQ.L	#1,A2			;20af0: 538a
-	SUBA.L	LAB_2113,A2		;20af2: 95f90003b0ce
+	SUBA.L	GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
 	MOVE.L	A0,32(A7)		;20af8: 2f480020
 	MOVE.L	A2,D0			;20afc: 200a
-	MOVEA.L	LAB_2113,A0		;20afe: 20790003b0ce
-	JSR	-54(A6)			;20b04: 4eaeffca
-	MOVE.L	#$00000270,D1		;20b08: 223c00000270
-	SUB.L	D0,D1			;20b0e: 9280
-	TST.L	D1			;20b10: 4a81
+    
+    ; Get the length of the Awaiting Listings Data text and subtract it from 624
+	MOVEA.L	GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A0
+	JSR	    TextLength(A6)
+	MOVE.L	#624,D1
+	SUB.L	D0,D1
+	TST.L	D1
 	BPL.S	LAB_0FE3		;20b12: 6a02
 	ADDQ.L	#1,D1			;20b14: 5281
 LAB_0FE3:
@@ -43453,9 +43592,9 @@ LAB_0FE4:
 	MOVE.W	26(A0),D2		;20b3a: 3428001a
 	ADD.L	D2,D0			;20b3e: d082
 	SUBQ.L	#1,D0			;20b40: 5380
-	PEA	1.W			;20b42: 48780001
-	MOVE.L	LAB_2113,-(A7)		;20b46: 2f390003b0ce
-	PEA	612.W			;20b4c: 48780264
+	PEA     1.W			;20b42: 48780001
+	MOVE.L	GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,-(A7)		;20b46: 2f390003b0ce
+	PEA     612.W			;20b4c: 48780264
 	MOVE.L	D0,-(A7)		;20b50: 2f00
 	MOVE.L	D1,-(A7)		;20b52: 2f01
 	MOVE.L	52(A7),-(A7)		;20b54: 2f2f0034
@@ -43618,51 +43757,64 @@ LAB_0FF0:
 	MOVEM.L	-36(A5),D7/A3		;20cfc: 4ced0880ffdc
 	UNLK	A5			;20d02: 4e5d
 	RTS				;20d04: 4e75
+; This is clearly a re-usable subroutine to draw a rectangle given
+; it's preserving some registers.
 LAB_0FF1:
-	MOVEM.L	D2-D3,-(A7)		;20d06: 48e73000
-	MOVEA.L	LAB_1FFD,A1		;20d0a: 22790003a6cc
-	MOVEQ	#7,D0			;20d10: 7007
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20d12: 2c790003637c
-	JSR	-342(A6)		;20d18: 4eaefeaa
-	MOVEA.L	LAB_1FFD,A1		;20d1c: 22790003a6cc
-	MOVEQ	#0,D0			;20d22: 7000
-	MOVE.L	D0,D1			;20d24: 2200
-	MOVE.L	#$000002b7,D2		;20d26: 243c000002b7
-	MOVEQ	#1,D3			;20d2c: 7601
-	JSR	-306(A6)		;20d2e: 4eaefece
-	MOVEM.L	(A7)+,D2-D3		;20d32: 4cdf000c
-	RTS				;20d36: 4e75
+	MOVEM.L	D2-D3,-(A7)
+
+	MOVEA.L	LAB_1FFD,A1
+	MOVEQ	#7,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
+
+    ; Draw a filled rect from 0,0 to 695,1
+	MOVEA.L	LAB_1FFD,A1
+	MOVEQ	#0,D0
+	MOVE.L	D0,D1
+	MOVE.L	#695,D2
+	MOVEQ	#1,D3
+	JSR     RectFill(A6)
+
+	MOVEM.L	(A7)+,D2-D3
+	RTS
+; This is clearly a re-usable subroutine to draw a few rectangles given
+; it's preserving some registers.
 LAB_0FF2:
-	MOVEM.L	D2-D3/D5-D7/A3,-(A7)	;20d38: 48e73710
-	MOVEA.L	28(A7),A3		;20d3c: 266f001c
-	MOVE.L	32(A7),D7		;20d40: 2e2f0020
-	MOVE.L	36(A7),D6		;20d44: 2c2f0024
-	MOVE.L	40(A7),D5		;20d48: 2a2f0028
-	MOVEA.L	A3,A1			;20d4c: 224b
-	MOVE.L	D7,D0			;20d4e: 2007
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20d50: 2c790003637c
-	JSR	-342(A6)		;20d56: 4eaefeaa
-	MOVEQ	#0,D0			;20d5a: 7000
-	MOVE.W	LAB_232A,D0		;20d5c: 30390003ef30
-	MOVEQ	#35,D1			;20d62: 7223
-	ADD.L	D1,D0			;20d64: d081
-	MOVEA.L	A3,A1			;20d66: 224b
-	MOVE.L	D0,D2			;20d68: 2400
-	MOVE.L	D5,D3			;20d6a: 2605
-	MOVEQ	#0,D0			;20d6c: 7000
-	MOVE.L	D0,D1			;20d6e: 2200
-	JSR	-306(A6)		;20d70: 4eaefece
-	MOVEA.L	A3,A1			;20d74: 224b
-	MOVE.L	D6,D0			;20d76: 2006
-	JSR	-342(A6)		;20d78: 4eaefeaa
-	MOVEQ	#0,D0			;20d7c: 7000
-	MOVE.W	LAB_232A,D0		;20d7e: 30390003ef30
-	MOVEQ	#36,D1			;20d84: 7224
-	ADD.L	D1,D0			;20d86: d081
-	MOVEA.L	A3,A1			;20d88: 224b
-	MOVEQ	#0,D1			;20d8a: 7200
-	MOVE.L	#$000002b7,D2		;20d8c: 243c000002b7
-	JSR	-306(A6)		;20d92: 4eaefece
+	MOVEM.L	D2-D3/D5-D7/A3,-(A7)
+	MOVEA.L	28(A7),A3
+	MOVE.L	32(A7),D7
+	MOVE.L	36(A7),D6
+	MOVE.L	40(A7),D5
+	MOVEA.L	A3,A1
+
+	MOVE.L	D7,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     SetAPen(A6)
+
+	MOVEQ	#0,D0
+	MOVE.W	LAB_232A,D0
+	MOVEQ	#35,D1
+	ADD.L	D1,D0
+	MOVEA.L	A3,A1
+	MOVE.L	D0,D2
+	MOVE.L	D5,D3
+	MOVEQ	#0,D0
+	MOVE.L	D0,D1
+	JSR     RectFill(A6)
+
+	MOVEA.L	A3,A1
+	MOVE.L	D6,D0
+	JSR     SetAPen(A6)
+
+	MOVEQ	#0,D0
+	MOVE.W	LAB_232A,D0
+	MOVEQ	#36,D1
+	ADD.L	D1,D0
+	MOVEA.L	A3,A1
+	MOVEQ	#0,D1
+	MOVE.L	#$000002b7,D2
+	JSR     RectFill(A6)
+
 	MOVEM.L	(A7)+,D2-D3/D5-D7/A3	;20d96: 4cdf08ec
 	RTS				;20d9a: 4e75
 LAB_0FF3:
@@ -43757,7 +43909,7 @@ LAB_0FFB:
 	MOVE.L	A2,D0			;20e98: 200a
 	BEQ.S	LAB_0FFC		;20e9a: 670e
 	MOVE.L	A2,-(A7)		;20e9c: 2f0a
-	JSR	LAB_134B(PC)		;20e9e: 4eba6244
+	JSR     LAB_134B(PC)	;20e9e: 4eba6244
 	ADDQ.W	#4,A7			;20ea2: 584f
 	MOVE.L	D0,-20(A5)		;20ea4: 2b40ffec
 	BRA.S	LAB_0FFD		;20ea8: 6006
@@ -43765,37 +43917,37 @@ LAB_0FFC:
 	SUBA.L	A0,A0			;20eaa: 91c8
 	MOVE.L	A0,-20(A5)		;20eac: 2b48ffec
 LAB_0FFD:
-	MOVE.L	-20(A5),-24(A5)		;20eb0: 2b6dffecffe8
-	MOVEA.L	A3,A1			;20eb6: 224b
-	LEA	LAB_200C,A0		;20eb8: 41f90003a72e
-	MOVEQ	#1,D0			;20ebe: 7001
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20ec0: 2c790003637c
-	JSR	-54(A6)			;20ec6: 4eaeffca
-	MOVE.L	D0,-8(A5)		;20eca: 2b40fff8
-	MOVEA.L	A3,A1			;20ece: 224b
-	MOVE.L	D7,D0			;20ed0: 2007
-	MOVE.L	D6,D1			;20ed2: 2206
-	JSR	-240(A6)		;20ed4: 4eaeff10
+	MOVE.L	-20(A5),-24(A5)
+	MOVEA.L	A3,A1
+	LEA     GLOB_STR_SINGLE_SPACE,A0
+	MOVEQ	#1,D0
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR     TextLength(A6)
+	MOVE.L	D0,-8(A5)
+	MOVEA.L	A3,A1
+	MOVE.L	D7,D0
+	MOVE.L	D6,D1
+	JSR     Move(A6)
 LAB_0FFE:
 	TST.L	-20(A5)			;20ed8: 4aadffec
 	BEQ.W	LAB_100C		;20edc: 6700014e
-	PEA	LAB_200D		;20ee0: 48790003a730
-	PEA	50.W			;20ee6: 48780032
-	PEA	-74(A5)			;20eea: 486dffb6
-	MOVE.L	-20(A5),-(A7)		;20eee: 2f2dffec
-	JSR	LAB_1029(PC)		;20ef2: 4eba0636
+	PEA     LAB_200D		;20ee0: 48790003a730
+	PEA     50.W			;20ee6: 48780032
+	PEA     -74(A5)			;20eea: 486dffb6
+	MOVE.L	-20(A5),-(A7)	;20eee: 2f2dffec
+	JSR     LAB_1029(PC)	;20ef2: 4eba0636
 	MOVE.L	D0,(A7)			;20ef6: 2e80
 	MOVE.L	D0,-20(A5)		;20ef8: 2b40ffec
-	JSR	LAB_134B(PC)		;20efc: 4eba61e6
-	LEA	16(A7),A7		;20f00: 4fef0010
+	JSR     LAB_134B(PC)	;20efc: 4eba61e6
+	LEA     16(A7),A7		;20f00: 4fef0010
 	MOVE.B	-74(A5),D1		;20f04: 122dffb6
 	MOVE.L	D0,-20(A5)		;20f08: 2b40ffec
-	TST.B	D1			;20f0c: 4a01
+	TST.B	D1			    ;20f0c: 4a01
 	BNE.S	LAB_0FFF		;20f0e: 6606
 	MOVEQ	#0,D0			;20f10: 7000
 	BRA.W	LAB_100C		;20f12: 60000118
 LAB_0FFF:
-	LEA	-74(A5),A0		;20f16: 41edffb6
+	LEA	-74(A5),A0		    ;20f16: 41edffb6
 	MOVEA.L	A0,A1			;20f1a: 2248
 LAB_1000:
 	TST.B	(A1)+			;20f1c: 4a19
@@ -43805,8 +43957,8 @@ LAB_1000:
 	MOVE.L	A1,20(A7)		;20f24: 2f490014
 	MOVEA.L	A3,A1			;20f28: 224b
 	MOVE.L	20(A7),D0		;20f2a: 202f0014
-	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20f2e: 2c790003637c
-	JSR	-54(A6)			;20f34: 4eaeffca
+	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+	JSR	    TextLength(A6)
 	MOVE.L	D5,D1			;20f38: 2205
 	SUB.L	-12(A5),D1		;20f3a: 92adfff4
 	MOVE.L	D0,-4(A5)		;20f3e: 2b40fffc
@@ -43814,7 +43966,7 @@ LAB_1000:
 	BGT.S	LAB_1003		;20f44: 6e32
 	TST.L	28(A5)			;20f46: 4aad001c
 	BEQ.S	LAB_1002		;20f4a: 671c
-	LEA	-74(A5),A0		;20f4c: 41edffb6
+	LEA     -74(A5),A0		;20f4c: 41edffb6
 	MOVEA.L	A0,A1			;20f50: 2248
 LAB_1001:
 	TST.B	(A1)+			;20f52: 4a19
@@ -54700,7 +54852,7 @@ LAB_141C:
 	JSR	LAB_145A(PC)		;287b8: 4eba053a
 	BRA.W	LAB_142D		;287bc: 600001ce
 LAB_141D:
-	PEA	LAB_1DBD		;287c0: 4879000363ac
+	PEA	GLOB_STRUCT_TEXTATTR_H26F_FONT		;287c0: 4879000363ac
 	PEA	LAB_1DE7		;287c6: 487900036458
 	BSR.W	LAB_1411		;287cc: 6100fe9c
 	ADDQ.W	#8,A7			;287d0: 504f
@@ -54714,7 +54866,7 @@ LAB_141D:
 	JSR	-66(A6)			;287f4: 4eaeffbe
 	BRA.W	LAB_142D		;287f8: 60000192
 LAB_141E:
-	PEA	GLOB_STRUCT_PREVUEC_FONT		;287fc: 48790003639a
+	PEA	GLOB_STRUCT_TEXTATTR_PREVUEC_FONT		;287fc: 48790003639a
 	PEA	LAB_1DE6		;28802: 487900036454
 	BSR.W	LAB_1411		;28808: 6100fe60
 	ADDQ.W	#8,A7			;2880c: 504f
@@ -54761,7 +54913,7 @@ LAB_1420:
 	ADDQ.W	#4,A7			;288ae: 584f
 	BRA.W	LAB_142D		;288b0: 600000da
 LAB_1421:
-	PEA	LAB_1DC1		;288b4: 4879000363d4
+	PEA	GLOB_STRUCT_TEXTATTR_PREVUE_FONT		;288b4: 4879000363d4
 	PEA	LAB_1DC2		;288ba: 4879000363dc
 	BSR.W	LAB_1411		;288c0: 6100fda8
 	ADDQ.W	#8,A7			;288c4: 504f
@@ -67510,22 +67662,36 @@ LAB_1906:
 LAB_1907:
 	UNLK	A5			;317ee: 4e5d
 	RTS				;317f0: 4e75
+
+;======
+
 LAB_1908:
 	RTS				;317f2: 4e75
+
+;======
+
 LAB_1909:
-	LINK.W	A5,#-4			;317f4: 4e55fffc
-	MOVEM.L	D6-D7,-(A7)		;317f8: 48e70300
-	MOVE.L	16(A5),D7		;317fc: 2e2d0010
-	MOVE.L	20(A5),D6		;31800: 2c2d0014
-	MOVE.L	D7,D0			;31804: 2007
-	MOVE.L	D6,D1			;31806: 2206
-	MOVEA.L	AbsExecBase,A6	;31808: 2c780004
-	JSR	-198(A6)		;3180c: 4eaeff3a
-	ADD.L	D7,LAB_21A1		;31810: dfb90003b688
-	ADDQ.L	#1,LAB_21A2		;31816: 52b90003b68c
-	MOVEM.L	(A7)+,D6-D7		;3181c: 4cdf00c0
-	UNLK	A5			;31820: 4e5d
-	RTS				;31822: 4e75
+	LINK.W	A5,#-4
+	MOVEM.L	D6-D7,-(A7)
+
+	MOVE.L	16(A5),D7
+	MOVE.L	20(A5),D6
+
+	MOVE.L	D7,D0           ; Number of bytes
+	MOVE.L	D6,D1           ; Attributes
+	MOVEA.L	AbsExecBase,A6
+	JSR     AllocMem(A6)    ; D0 gets set to a pointer to the mem block or zero if it fails
+
+	ADD.L	D7,LAB_21A1
+	ADDQ.L	#1,LAB_21A2
+
+	MOVEM.L	(A7)+,D6-D7
+	UNLK	A5
+
+	RTS
+
+;======
+
 LAB_190A:
 	LINK.W	A5,#0			;31824: 4e550000
 	MOVEM.L	D7/A3,-(A7)		;31828: 48e70110
@@ -67537,15 +67703,21 @@ LAB_190A:
 	BEQ.S	LAB_190B		;3183a: 6718
 	MOVEA.L	A3,A1			;3183c: 224b
 	MOVE.L	D7,D0			;3183e: 2007
-	MOVEA.L	AbsExecBase,A6	;31840: 2c780004
-	JSR	-210(A6)		;31844: 4eaeff2e
+	MOVEA.L	AbsExecBase,A6
+	JSR     FreeMem(A6)
 	SUB.L	D7,LAB_21A1		;31848: 9fb90003b688
 	ADDQ.L	#1,LAB_21A3		;3184e: 52b90003b690
 LAB_190B:
 	MOVEM.L	(A7)+,D7/A3		;31854: 4cdf0880
 	UNLK	A5			;31858: 4e5d
-	RTS				;3185a: 4e75
-	RTS				;3185c: 4e75
+	RTS
+
+;======
+
+	RTS
+
+;======
+
 LAB_190C:
 	LINK.W	A5,#-4			;3185e: 4e55fffc
 	MOVEM.L	D6-D7,-(A7)		;31862: 48e70300
@@ -72750,24 +72922,28 @@ GLOB_REF_BATTCLOCK_RESOURCE:
 	DS.L	1
 GLOB_STR_PREVUEC_FONT:
 	DC.B	"PrevueC.font",0,0
-GLOB_STRUCT_PREVUEC_FONT:
+GLOB_STRUCT_TEXTATTR_PREVUEC_FONT:
 	DC.L	GLOB_STR_PREVUEC_FONT
 	DC.L	$00194020
-LAB_1DBC:
+GLOB_STR_H26F_FONT:
 	DC.B	"h26f.font",0
-LAB_1DBD:
-	DC.L	LAB_1DBC
+GLOB_STRUCT_TEXTATTR_H26F_FONT:
+	DC.L	GLOB_STR_H26F_FONT
 	DC.L	$001a0000
 GLOB_STR_TOPAZ_FONT:
 	DC.B	"topaz.font",0,0
-GLOB_STRUCT_TOPAZ_FONT:
+GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
 	DC.L	GLOB_STR_TOPAZ_FONT
-	DC.L	$00080001
-LAB_1DC0:
+    DC.W    $0008   ; Size 8 font
+    DC.B    0       ; Style: 0 (Normal)
+    DC.B    1       ; Flags: 1 (FPB_DISKFONT from font.library)
+GLOB_STR_PREVUE_FONT:
 	DC.B	"Prevue.font",0
-LAB_1DC1:
-	DC.L	LAB_1DC0
-	DC.L	$000d4020
+GLOB_STRUCT_TEXTATTR_PREVUE_FONT:
+	DC.L	GLOB_STR_PREVUE_FONT
+    DC.W    $000d   ; Size 13 font
+	DC.B	$40     ;
+    DC.B    $20     ; 
 LAB_1DC2:
 	DS.L	1
 GLOB_REF_DISKFONT_LIBRARY:
@@ -72849,7 +73025,8 @@ LAB_1DE6:
 LAB_1DE7:
 	DS.L	1
 GLOB_HANDLE_TOPAZ_FONT:
-	DS.L	3
+	DS.L	1
+    DS.L    2    
 	DS.W	1
 LAB_1DE9:
 	DS.L	1
@@ -73771,7 +73948,7 @@ LAB_1E7D:
 	DC.L	$fffeffff
 	DC.W	$fffe
 LAB_1E7E:
-	DC.L	$0000004c		;38ec8
+	DC.L	$0000004c
 LAB_1E7F:
 	DC.B	"ESQDISP.c",0
 LAB_1E80:
@@ -73931,12 +74108,11 @@ LAB_1ECA:
 LAB_1ECB:
 	DC.B	"FALSE",0
 LAB_1ECC:
-	DC.L	$0000030c,$0c0c0000,$000c0c00,$05010201 ;39574
+	DC.L	$0000030c,$0c0c0000,$000c0c00,$05010201
 	DC.L	$060a0505,$05000003
 LAB_1ECD:
 	DC.W	$0001
 LAB_1ECE:
-	;3958e
 	DC.B	"dh2:logo.lst",0,0
 LAB_1ECF:
 	DC.L	LAB_1ECE
@@ -73969,13 +74145,13 @@ LAB_1EDC:
 LAB_1EDD:
 	DC.B	"i5",0,0
 LAB_1EDE:
-	DC.L	LAB_1ED7		;395e8: 000395c2
+	DC.L	LAB_1ED7
 LAB_1EDF:
-	DC.L	LAB_1ED8		;395ec: 000395ca
-	DC.L	LAB_1ED9		;395f0: 000395d0
-	DC.L	LAB_1EDA		;395f4: 000395d6
-	DC.L	LAB_1EDB		;395f8: 000395dc
-	DC.L	LAB_1EDC		;395fc: 000395e2
+	DC.L	LAB_1ED8
+	DC.L	LAB_1ED9
+	DC.L	LAB_1EDA
+	DC.L	LAB_1EDB
+	DC.L	LAB_1EDC
 LAB_1EE0:
 	DS.L	1
 LAB_1EE1:
@@ -74151,75 +74327,75 @@ LAB_1F2D:
 LAB_1F2E:
 	DC.L	$00000000		;Patch version string
 LAB_1F2F:
-	DS.W	1			;39958
+	DS.W	1
 LAB_1F30:
-	DS.W	1			;3995a
+	DS.W	1
 LAB_1F31:
-	DS.W	1			;3995c
+	DS.W	1
 LAB_1F32:
-	DS.W	1			;3995e
+	DS.W	1
 LAB_1F33:
-	DS.W	1			;39960
+	DS.W	1
 LAB_1F34:
-	DS.W	1			;39962
+	DS.W	1
 LAB_1F35:
-	DS.L	1			;39964
+	DS.L	1
 LAB_1F36:
-	DS.L	1			;39968
+	DS.L	1
 LAB_1F37:
-	DS.L	1			;3996c
+	DS.L	1
 LAB_1F38:
-	DS.L	1			;39970
+	DS.L	1
 LAB_1F39:
-	DS.L	1			;39974
+	DS.L	1
 LAB_1F3A:
-	DS.L	9			;39978
+	DS.L	9
 LAB_1F3B:
-	DS.W	1			;3999c
+	DS.W	1
 LAB_1F3C:
-	DS.W	1			;3999e
+	DS.W	1
 LAB_1F3D:
-	DS.W	1			;399a0
+	DS.W	1
 LAB_1F3E:
-	DS.L	1			;399a2
+	DS.L	1
 LAB_1F3F:
-	DS.W	1			;399a6
+	DS.W	1
 LAB_1F40:
-	DS.W	1			;399a8
+	DS.W	1
 LAB_1F41:
-	DS.W	1			;399aa
+	DS.W	1
 LAB_1F42:
-	DS.W	1			;399ac
+	DS.W	1
 LAB_1F43:
-	DS.W	1			;399ae
+	DS.W	1
 LAB_1F44:
-	DS.W	1			;399b0
+	DS.W	1
 LAB_1F45:
-	DS.W	1			;399b2
+	DS.W	1
 LAB_1F46:
-	DS.L	1			;399b4
+	DS.L	1
 LAB_1F47:
-	DS.W	1			;399b8
+	DS.W	1
 LAB_1F48:
-	DS.L	25			;399ba
+	DS.L	25
 LAB_1F49:
-	DS.L	1			;39a1e
+	DS.L	1
 LAB_1F4A:
-	DS.W	1			;39a22
+	DS.W	1
 LAB_1F4B:
-	DS.W	1			;39a24
+	DS.W	1
 LAB_1F4C:
-	DS.L	1			;39a26
+	DS.L	1
 LAB_1F4D:
-	DS.L	1			;39a2a
+	DS.L	1
 LAB_1F4E:
-	DS.L	1			;39a2e
+	DS.L	1
 LAB_1F4F:
-	DS.L	1			;39a32
+	DS.L	1
 LAB_1F50:
-	DS.L	1			;39a36
+	DS.L	1
 LAB_1F51:
-	DS.L	1			;39a3a
+	DS.L	1
 LAB_1F52:
 	DC.L	$00000022
 LAB_1F53:
@@ -74324,116 +74500,54 @@ LAB_1F7E:
 LAB_1F7F:
 	DC.B	"UNMATCHED_QUOTES",0,0
 LAB_1F80:
-	;39d10
-	;DC.B	$4c,$49,$4e,$45,$5f,$54,$4f,$4f,$5f,$4c,$4f,$4e,$47,$00
 	DC.B	"LINE_TOO_LONG",0
 LAB_1F81:
-	;39d1e
-	;DC.B	$46,$49,$4c,$45,$5f,$4e,$4f,$54,$5f,$4f,$42,$4a,$45,$43,$54,$00
 	DC.B	"FILE_NOT_OBJECT",0
 LAB_1F82:
-	;39d2e
-	;DC.B	$49,$4e,$56,$41,$4c,$49,$44,$5f,$52,$45,$53,$49,$44,$45,$4e,$54
-	;DC.B	$5f,$4c,$49,$42,$52,$41,$52,$59,$00,$00
 	DC.B	"INVALID_RESIDENT_LIBRARY",0,0
 LAB_1F83:
-	;39d48
-	;DC.B	$4e,$4f,$5f,$44,$45,$46,$41,$55,$4c,$54,$5f,$44,$49,$52,$00,$00
 	DC.B	"NO_DEFAULT_DIR",0,0
 LAB_1F84:
-	;39d58
-	;DC.B	$4f,$42,$4a,$45,$43,$54,$5f,$49,$4e,$5f,$55,$53,$45,$00
 	DC.B	"OBJECT_IN_USE",0
 LAB_1F85:
-	;39d66
-	;DC.B	$4f,$42,$4a,$45,$43,$54,$5f,$45,$58,$49,$53,$54,$53,$00
 	DC.B	"OBJECT_EXISTS",0
 LAB_1F86:
-	;39d74
-	;DC.B	$44,$49,$52,$5f,$4e,$4f,$54,$5f,$46,$4f,$55,$4e,$44,$00
 	DC.B	"DIR_NOT_FOUND",0
 LAB_1F87:
-	;39d82
-	;DC.B	$4f,$42,$4a,$45,$43,$54,$5f,$4e,$4f,$54,$5f,$46,$4f,$55,$4e,$44
-	;DC.B	$00,$00
 	DC.B	"OBJECT_NOT_FOUND",0,0
 LAB_1F88:
-	;39d94
-	;DC.B	$42,$41,$44,$5f,$53,$54,$52,$45,$41,$4d,$5f,$4e,$41,$4d,$45,$00
 	DC.B	"BAD_STREAM_NAME",0
 LAB_1F89:
-	;39da4
-	;DC.B	$4f,$42,$4a,$45,$43,$54,$5f,$54,$4f,$4f,$5f,$4c,$41,$52,$47,$45
-	;DC.B	$00,$00
 	DC.B	"OBJECT_TOO_LARGE",0,0
 LAB_1F8A:
-	;39db6
-	;DC.B	$41,$43,$54,$49,$4f,$4e,$5f,$4e,$4f,$54,$5f,$4b,$4e,$4f,$57,$4e
-	;DC.B	$00,$00
 	DC.B	"ACTION_NOT_KNOWN",0,0
 LAB_1F8B:
-	;39dc8
-	;DC.B	$49,$4e,$56,$41,$4c,$49,$44,$5f,$43,$4f,$4d,$50,$4f,$4e,$45,$4e
-	;DC.B	$54,$5f,$4e,$41,$4d,$45,$00,$00
 	DC.B	"INVALID_COMPONENT_NAME",0,0
 LAB_1F8C:
-	;39de0
-	;DC.B	$49,$4e,$56,$41,$4c,$49,$44,$5f,$4c,$4f,$43,$4b,$00,$00
 	DC.B	"INVALID_LOCK",0,0
 LAB_1F8D:
-	;39dee
-	;DC.B	$4f,$42,$4a,$45,$43,$54,$5f,$57,$52,$4f,$4e,$47,$5f,$54,$59,$50
-	;DC.B	$45,$00
 	DC.B	"OBJECT_WRONG_TYPE",0
 LAB_1F8E:
-	;39e00
-	;DC.B	$44,$49,$53,$4b,$5f,$4e,$4f,$54,$5f,$56,$41,$4c,$49,$44,$41,$54
-	;DC.B	$45,$44,$00,$00
 	DC.B	"DISK_NOT_VALIDATED",0,0
 LAB_1F8F:
-	;39e14
-	;DC.B	$44,$49,$53,$4b,$5f,$57,$52,$49,$54,$45,$5f,$50,$52,$4f,$54,$45
-	;DC.B	$43,$54,$45,$44,$00,$00
 	DC.B	"DISK_WRITE_PROTECTED",0,0
 LAB_1F90:
-	;39e2a
-	;DC.B	$52,$45,$4e,$41,$4d,$45,$5f,$41,$43,$52,$4f,$53,$53,$5f,$44,$45
-	;DC.B	$56,$49,$43,$45,$53,$00
 	DC.B	"RENAME_ACROSS_DEVICES",0
 LAB_1F91:
-	;39e40
-	;DC.B	$44,$49,$52,$45,$43,$54,$4f,$52,$59,$5f,$4e,$4f,$54,$5f,$45,$4d
-	;DC.B	$50,$54,$59,$00
 	DC.B	"DIRECTORY_NOT_EMPTY",0
 LAB_1F92:
-	;39e54
-	;DC.B	$54,$4f,$4f,$5f,$4d,$41,$4e,$59,$5f,$4c,$45,$56,$45,$4c,$53,$00
 	DC.B	"TOO_MANY_LEVELS",0
 LAB_1F93:
-	;39e64
-	;DC.B	$44,$45,$56,$49,$43,$45,$5f,$4e,$4f,$54,$5f,$4d,$4f,$55,$4e,$54
-	;DC.B	$45,$44,$00,$00
 	DC.B	"DEVICE_NOT_MOUNTED",0,0
 LAB_1F94:
-	;39e78
-	;DC.B	$53,$45,$45,$4b,$5f,$45,$52,$52,$4f,$52,$00,$00
 	DC.B	"SEEK_ERROR",0,0
 LAB_1F95:
-	;39e84
-	;DC.B	$43,$4f,$4d,$4d,$45,$4e,$54,$5f,$54,$4f,$4f,$5f,$42,$49,$47,$00
 	DC.B	"COMMENT_TOO_BIG",0
 LAB_1F96:
-	;39e94
-	;DC.B	$44,$49,$53,$4b,$5f,$46,$55,$4c,$4c,$00
 	DC.B	"DISK_FULL",0
 LAB_1F97:
-	;39e9e
-	;DC.B	$44,$45,$4c,$45,$54,$45,$5f,$50,$52,$4f,$54,$45,$43,$54,$45,$44
-	;DC.B	$00,$00
 	DC.B	"DELETE_PROTECTED",0,0
 LAB_1F98:
-	;39eb0
-	;DC.B	$57,$52,$49,$54,$45,$5f,$50,$52,$4f,$54,$45,$43,$54,$45,$44,$00
 	DC.B	"WRITE_PROTECTED",0
 LAB_1F99:
 	DC.B	"READ_PROTECTED",0,0
@@ -74445,44 +74559,44 @@ LAB_1F9C:
 	DC.B	"NO_MORE_ENTRIES",0
 LAB_1F9D:
 	DC.B	"UNKNOWN!",0,0
-	DC.L	LAB_1F78		;39f02: 00039c94
-	DC.L	LAB_1F79		;39f06: 00039ca2
-	DC.L	LAB_1F7A		;39f0a: 00039cb2
-	DC.L	LAB_1F7B		;39f0e: 00039cc0
-	DC.L	LAB_1F7C		;39f12: 00039ccc
-	DC.L	LAB_1F7D		;39f16: 00039ce2
-	DC.L	LAB_1F7E		;39f1a: 00039cf0
-	DC.L	LAB_1F7F		;39f1e: 00039cfe
-	DC.L	LAB_1F80		;39f22: 00039d10
-	DC.L	LAB_1F81		;39f26: 00039d1e
-	DC.L	LAB_1F82		;39f2a: 00039d2e
-	DC.L	LAB_1F83		;39f2e: 00039d48
-	DC.L	LAB_1F84		;39f32: 00039d58
-	DC.L	LAB_1F85		;39f36: 00039d66
-	DC.L	LAB_1F86		;39f3a: 00039d74
-	DC.L	LAB_1F87		;39f3e: 00039d82
-	DC.L	LAB_1F88		;39f42: 00039d94
-	DC.L	LAB_1F89		;39f46: 00039da4
-	DC.L	LAB_1F8A		;39f4a: 00039db6
-	DC.L	LAB_1F8B		;39f4e: 00039dc8
-	DC.L	LAB_1F8C		;39f52: 00039de0
-	DC.L	LAB_1F8D		;39f56: 00039dee
-	DC.L	LAB_1F8E		;39f5a: 00039e00
-	DC.L	LAB_1F8F		;39f5e: 00039e14
-	DC.L	LAB_1F90		;39f62: 00039e2a
-	DC.L	LAB_1F91		;39f66: 00039e40
-	DC.L	LAB_1F92		;39f6a: 00039e54
-	DC.L	LAB_1F93		;39f6e: 00039e64
-	DC.L	LAB_1F94		;39f72: 00039e78
-	DC.L	LAB_1F95		;39f76: 00039e84
-	DC.L	LAB_1F96		;39f7a: 00039e94
-	DC.L	LAB_1F97		;39f7e: 00039e9e
-	DC.L	LAB_1F98		;39f82: 00039eb0
-	DC.L	LAB_1F99		;39f86: 00039ec0
-	DC.L	LAB_1F9A		;39f8a: 00039ed0
-	DC.L	LAB_1F9B		;39f8e: 00039ee0
-	DC.L	LAB_1F9C		;39f92: 00039ee8
-	DC.L	LAB_1F9D		;39f96: 00039ef8
+	DC.L	LAB_1F78
+	DC.L	LAB_1F79
+	DC.L	LAB_1F7A
+	DC.L	LAB_1F7B
+	DC.L	LAB_1F7C
+	DC.L	LAB_1F7D
+	DC.L	LAB_1F7E
+	DC.L	LAB_1F7F
+	DC.L	LAB_1F80
+	DC.L	LAB_1F81
+	DC.L	LAB_1F82
+	DC.L	LAB_1F83
+	DC.L	LAB_1F84
+	DC.L	LAB_1F85
+	DC.L	LAB_1F86
+	DC.L	LAB_1F87
+	DC.L	LAB_1F88
+	DC.L	LAB_1F89
+	DC.L	LAB_1F8A
+	DC.L	LAB_1F8B
+	DC.L	LAB_1F8C
+	DC.L	LAB_1F8D
+	DC.L	LAB_1F8E
+	DC.L	LAB_1F8F
+	DC.L	LAB_1F90
+	DC.L	LAB_1F91
+	DC.L	LAB_1F92
+	DC.L	LAB_1F93
+	DC.L	LAB_1F94
+	DC.L	LAB_1F95
+	DC.L	LAB_1F96
+	DC.L	LAB_1F97
+	DC.L	LAB_1F98
+	DC.L	LAB_1F99
+	DC.L	LAB_1F9A
+	DC.L	LAB_1F9B
+	DC.L	LAB_1F9C
+	DC.L	LAB_1F9D
 LAB_1F9E:
 	DC.B	"GFX:",0,0
 LAB_1F9F:
@@ -74492,7 +74606,7 @@ LAB_1FA0:
 LAB_1FA1:
 	DC.B	"COPY >NIL: GFX:#? WORK: CLONE ALL",0
 LAB_1FA2:
-	DC.L	$00030000		;39fec
+	DC.L	$00030000
 	DS.L	14
 	DC.L	$00000aaa
 	DS.L	15
@@ -74553,19 +74667,19 @@ LAB_1FA2:
 	DC.L	$0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
 	DC.L	$0fbf0fcf,$0fdf0fff
 LAB_1FA3:
-	DS.W	1			;3a3cc
+	DS.W	1
 LAB_1FA4:
-	DS.W	1			;3a3ce
+	DS.W	1
 LAB_1FA5:
-	DS.W	1			;3a3d0
+	DS.W	1
 LAB_1FA6:
-	DS.L	1			;3a3d2
+	DS.L	1
 LAB_1FA7:
-	DC.L	$00001760		;3a3d6
+	DC.L	$00001760
 LAB_1FA8:
-	DS.L	1			;3a3da
+	DS.L	1
 LAB_1FA9:
-	DS.W	1			;3a3de
+	DS.W	1
 LAB_1FAA:
 	DC.B	"%s:",10,0,0
 LAB_1FAB:
@@ -74577,9 +74691,9 @@ LAB_1FAD:
 LAB_1FAE:
 	DC.B	10,"TABLE = DONE",10,10,0
 LAB_1FAF:
-	DC.L	$00010000		;3a420
+	DC.L	$00010000
 LAB_1FB0:
-	DC.W	$0001			;3a424
+	DC.W	$0001
 LAB_1FB1:
 	DC.B	"inputdevice",0
 LAB_1FB2:
@@ -74593,132 +74707,78 @@ LAB_1FB5:
 LAB_1FB6:
 	DC.B	"dh2:local.ads"
 LAB_1FB7:
-	DS.B	1			;3a475
+	DS.B	1
 LAB_1FB8:
-	DS.B	1			;3a476
+	DS.B	1
 LAB_1FB9:
-	DS.B	1			;3a477
+	DS.B	1
 LAB_1FBA:
-	DC.L	$030c0c0c,$0000000c,$0c000501,$0201060a ;3a478
+	DC.L	$030c0c0c,$0000000c,$0c000501,$0201060a
 	DC.L	$05050500
 	DC.W	$0003
 LAB_1FBB:
-	;3a48e
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FBC:
-	;3a498
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FBD:
-	;3a4a2
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FBE:
-	;3a4ac
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FBF:
 	DC.B	"RS",0,0
 LAB_1FC0:
 	DC.B	"RS",0,0
 LAB_1FC1:
-	;3a4be
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FC2:
-	;3a4c8
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FC3:
-	;3a4d2
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FC4:
-	;3a4dc
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FC5:
-	;3a4e6
-	;DC.B	$25,$63,$25,$30,$32,$58,$00,$00
 	DC.B	"%c%02X",0,0
 LAB_1FC6:
-	DS.W	1			;3a4ee
+	DS.W	1
 LAB_1FC7:
-	;3a4f0
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FC8:
-	;3a4fa
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FC9:
-	;3a504
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FCA:
-	;3a50e
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FCB:
-	;3a518
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FCC:
 	DC.B	" ",0
 LAB_1FCD:
-	;3a524
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FCE:
-	;3a52e
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FCF:
 	DC.B	" ",0
 LAB_1FD0:
-	;3a53a
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD1:
-	;3a544
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD2:
-	;3a54e
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD3:
-	;3a558
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD4:
-	;3a562
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD5:
-	;3a56c
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD6:
-	;3a576
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD7:
-	;3a580
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD8:
-	;3a58a
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FD9:
-	;3a594
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FDA:
-	;3a59e
-	;DC.B	$4c,$41,$44,$46,$55,$4e,$43,$2e,$63,$00
 	DC.B	"LADFUNC.c",0
 LAB_1FDB:
 	DC.B	"LADFUNC.c",0
@@ -74729,9 +74789,9 @@ LAB_1FDD:
 LAB_1FDE:
 	DC.B	"LADFUNC.c",0
 LAB_1FDF:
-	DC.B	"""",10,0,0	; this is disgusting, it's an escaped quote
+	DC.B	"""",10,0,0
 LAB_1FE0:
-	DC.B	"""",0	; this is disgusting, it's an escaped quote
+	DC.B	"""",0
 LAB_1FE1:
 	DC.B	"^%lc",0,0
 LAB_1FE2:
@@ -74820,7 +74880,7 @@ LAB_200A:
 LAB_200B:
 	DC.L	$00000005,$00000006,$00000007,$00000008
 	DC.L	$00000009,$0000000a,$0000000c
-LAB_200C:
+GLOB_STR_SINGLE_SPACE:
 	DC.B	" ",0
 LAB_200D:
 	DC.B	" ",0
@@ -75150,18 +75210,18 @@ LAB_20AC:
 LAB_20AD:
 	DC.B	"No Current Weather Data Available",0
 LAB_20AE:
-	DC.L	LAB_20AD		;3ac06: 0003abe4
+	DC.L	LAB_20AD
 LAB_20AF:
 	DC.B	"No Forecast Weather Data Available",0,0
 LAB_20B0:
-	DC.L	LAB_20AF		;3ac2e: 0003ac0a
+	DC.L	LAB_20AF
 LAB_20B1:
 	DC.B	"May not be available in all areas.",0,0
 LAB_20B2:
-	DC.L	LAB_20B1		;3ac56: 0003ac32
+	DC.L	LAB_20B1
 LAB_20B3:
 	DC.B	"Continued",0
-	DC.L	LAB_20B3		;3ac64: 0003ac5a
+	DC.L	LAB_20B3
 LAB_20B4:
 	DC.B	"January",0
 LAB_20B5:
@@ -75187,18 +75247,18 @@ LAB_20BE:
 LAB_20BF:
 	DC.B	"December",0,0
 LAB_20C0:
-	DC.L	LAB_20B4		;3acc4: 0003ac68
-	DC.L	LAB_20B5		;3acc8: 0003ac70
-	DC.L	LAB_20B6		;3accc: 0003ac7a
-	DC.L	LAB_20B7		;3acd0: 0003ac80
-	DC.L	LAB_20B8		;3acd4: 0003ac86
-	DC.L	LAB_20B9		;3acd8: 0003ac8a
-	DC.L	LAB_20BA		;3acdc: 0003ac90
-	DC.L	LAB_20BB		;3ace0: 0003ac96
-	DC.L	LAB_20BC		;3ace4: 0003ac9e
-	DC.L	LAB_20BD		;3ace8: 0003aca8
-	DC.L	LAB_20BE		;3acec: 0003acb0
-	DC.L	LAB_20BF		;3acf0: 0003acba
+	DC.L	LAB_20B4
+	DC.L	LAB_20B5
+	DC.L	LAB_20B6
+	DC.L	LAB_20B7
+	DC.L	LAB_20B8
+	DC.L	LAB_20B9
+	DC.L	LAB_20BA
+	DC.L	LAB_20BB
+	DC.L	LAB_20BC
+	DC.L	LAB_20BD
+	DC.L	LAB_20BE
+	DC.L	LAB_20BF
 LAB_20C1:
 	DC.B	"Jan ",0,0
 LAB_20C2:
@@ -75224,45 +75284,31 @@ LAB_20CB:
 LAB_20CC:
 	DC.B	"Dec ",0,0
 LAB_20CD:
-	DC.L	LAB_20C1		;3ad3c: 0003acf4
-	DC.L	LAB_20C2		;3ad40: 0003acfa
-	DC.L	LAB_20C3		;3ad44: 0003ad00
-	DC.L	LAB_20C4		;3ad48: 0003ad06
-	DC.L	LAB_20C5		;3ad4c: 0003ad0c
-	DC.L	LAB_20C6		;3ad50: 0003ad12
-	DC.L	LAB_20C7		;3ad54: 0003ad18
-	DC.L	LAB_20C8		;3ad58: 0003ad1e
-	DC.L	LAB_20C9		;3ad5c: 0003ad24
-	DC.L	LAB_20CA		;3ad60: 0003ad2a
-	DC.L	LAB_20CB		;3ad64: 0003ad30
-	DC.L	LAB_20CC		;3ad68: 0003ad36
+	DC.L	LAB_20C1
+	DC.L	LAB_20C2
+	DC.L	LAB_20C3
+	DC.L	LAB_20C4
+	DC.L	LAB_20C5
+	DC.L	LAB_20C6
+	DC.L	LAB_20C7
+	DC.L	LAB_20C8
+	DC.L	LAB_20C9
+	DC.L	LAB_20CA
+	DC.L	LAB_20CB
+	DC.L	LAB_20CC
 LAB_20CE:
-	;3ad6c
-	;DC.B	$53,$75,$6e,$64,$61,$79,$00,$00
 	DC.B	"Sunday",0,0
 LAB_20CF:
-	;3ad74
-	;DC.B	$4d,$6f,$6e,$64,$61,$79,$00,$00
 	DC.B	"Monday",0,0
 LAB_20D0:
-	;3ad7c
-	;DC.B	$54,$75,$65,$73,$64,$61,$79,$00
 	DC.B	"Tuesday",0
 LAB_20D1:
-	;3ad84
-	;DC.B	$57,$65,$64,$6e,$65,$73,$64,$61,$79,$00
 	DC.B	"Wednesday",0
 LAB_20D2:
-	;3ad8e
-	;DC.B	$54,$68,$75,$72,$73,$64,$61,$79,$00,$00
 	DC.B	"Thursday",0,0
 LAB_20D3:
-	;3ad98
-	;DC.B	$46,$72,$69,$64,$61,$79,$00,$00
 	DC.B	"Friday",0,0
 LAB_20D4:
-	;3ada0
-	;DC.B	$53,$61,$74,$75,$72,$64,$61,$79,$00,$00
 	DC.B	"Saturday",0,0
 LAB_20D5:
 	DC.L	LAB_20CE
@@ -75410,27 +75456,27 @@ LAB_2107:
 LAB_2108:
 	DC.B	"Sports on ",0,0
 LAB_2109:
-	DC.L	LAB_2108		;3b056: 0003b04a
+	DC.L	LAB_2108
 LAB_210A:
 	DC.B	"Movie Summary for ",0,0
 LAB_210B:
-	DC.L	LAB_210A		;3b06e: 0003b05a
+	DC.L	LAB_210A
 LAB_210C:
 	DC.B	"Summary of ",0
 LAB_210D:
-	DC.L	LAB_210C		;3b07e: 0003b072
+	DC.L	LAB_210C
 LAB_210E:
 	DC.B	" channel ",0
 LAB_210F:
-	DC.L	LAB_210E		;3b08c: 0003b082
+	DC.L	LAB_210E
 LAB_2110:
 	DC.B	"No Data.",0,0
 LAB_2111:
-	DC.L	LAB_2110		;3b09a: 0003b090
-LAB_2112:
-	DC.B	" ER007: Awaiting listings data transmission... ",0
-LAB_2113:
-	DC.L	LAB_2112		;3b0ce: 0003b09e
+	DC.L	LAB_2110
+GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
+    DC.B    " ER007: Awaiting listings data transmission... ",0
+GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
+	DC.L	GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 LAB_2114:
 	DC.B	"Off Air.",0,0
 LAB_2115:
@@ -75568,9 +75614,9 @@ LAB_2155:
 	DC.L	$18191919
 	DS.W	1
 LAB_2156:
-	DC.L	LAB_2154		;3b21a: 0003b20e
-	DC.L	LAB_2155		;3b21e: 0003b214
-	DC.L	$7f020408,$10204001,$3e3e0000,$00000024 ;3b222
+	DC.L	LAB_2154
+	DC.L	LAB_2155
+	DC.L	$7f020408,$10204001,$3e3e0000,$00000024
 	DC.L	$42617f7f
 	DS.L	1
 	DC.L	$7e1e3e3e,$14001819
@@ -75749,19 +75795,19 @@ LAB_21A5:
 	DC.L	$00280000
 	DS.L	5
 	DC.W	$8000
-	DC.L	LAB_21A6		;3b6c4: 0003b6e6
-	DS.L	7			;3b6c8
+	DC.L	LAB_21A6
+	DS.L	7
 	DS.W	1
 LAB_21A6:
-	DC.L	LAB_21A7		;3b6e6: 0003b708
-	DS.L	7			;3b6ea
+	DC.L	LAB_21A7
+	DS.L	7
 	DS.W	1
 LAB_21A7:
-	DS.L	9			;3b708
+	DS.L	9
 	DC.L	$00008000,$00000400
 	DS.B	1
 LAB_21A8:
-	DC.B	$20			;3b735
+	DC.B	$20
 	DC.L	$20202020,$20202020,$28282828,$28202020
 	DC.L	$20202020,$20202020,$20202020,$20202048
 	DC.L	$10101010,$10101010,$10101010,$10101084
@@ -76787,7 +76833,7 @@ LAB_2380:
 LAB_2381:
 	DS.L	214			;410fc
 LAB_2382:
-	DS.L	55			;41454
+	DS.L	55
 LAB_CTRLHTCMAX:
 	DC.B	"CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x",0,0
 	END
