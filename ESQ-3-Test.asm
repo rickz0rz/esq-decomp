@@ -30879,7 +30879,7 @@ cmdTableDATA:
 	SUBQ.W	#4,D0			; Subtract 4 more so x25/37
 	BEQ.W	LAB_0BB9		; Does D0 equal zero now? This is mode '%'
 	SUBI.W	#$0018,D0		; Subtract x18/24 so x3D/61
-	BEQ.W	cmdDATAInjectCTRL ; Does D0 equal zero now? This is mode '='
+	BEQ.W	cmdDATABinaryDL		; Does D0 equal zero now? This is mode '='
 	SUBQ.W	#6,D0           ; Subtract x6/6 so 67
 	BEQ.W	LAB_0B99        ; Same as above... this time mode 'C'.
 	SUBQ.W	#1,D0           ; Subtract 1 so 68
@@ -30888,9 +30888,7 @@ cmdTableDATA:
 	BEQ.W	LAB_0BA2		; 'E'
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BA6		; 'F'
-	SUBQ.W	#1,D0
-	BEQ.W   LAB_0BA7D       ; 'G'
-	SUBQ.W	#1,D0
+	SUBQ.W	#2,D0
 	BEQ.W	cmdDATABinaryDL ; 'H'
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BB1		; 'I'
@@ -31781,43 +31779,44 @@ LAB_0BA4:
 LAB_0BA5:
 	CLR.W	LAB_22A1		;17eb2: 42790003deee
 	BRA.W	LAB_0BE4		;17eb8: 60000a6e
-LAB_0BA7D:
-    MOVE.W	LAB_2285,D0		;17d9e: 30390003de5a
-	ADDQ.W	#1,D0			;17da4: 5240
-	MOVE.W	D0,LAB_2285		;17da6: 33c00003de5a
-	JSR     callCTRL
-
-	MOVEQ   #0,D0
-    LEA	76(A7),A7		;1402c: 4fef004c
-	MOVE.W	CTRLRead3,D4			;14034: 2800
-	MOVEQ	#0,D0			;14036: 7000
-	MOVE.W	CTRL_H,D0		;14038: 30390003de50
-	MOVEQ	#0,D3			;1403e: 7200
-	MOVE.W	CTRLRead2,D3		;14040: 32390003de52
-	MOVEQ	#0,D1			;1403e: 7200
-	MOVE.W	CTRLRead1,D1		;14040: 32390003de52
-	MOVEQ	#0,D2			;14046: 7400
-	LEA     CTRL_BUFFER,A3
-	ADDA    D0,A3
-	SUBA    #1,A3
-    MOVEQ	#0,D2
-	MOVE.B (A3),D2
-	MOVE.L	D2,-(A7)		;1404e: 2f02
-	MOVE.L	D4,-(A7)		;14050: 2f04
-    MOVE.L	D3,-(A7)		;14050: 2f04
-	MOVE.L	D1,-(A7)		;14052: 2f01
-	MOVE.L	D0,-(A7)		;14054: 2f00
-	PEA	LAB_CTRLHTCMAX		;14056: 487900039168
-	PEA	-72(A5)			;1405c: 486dffb8
-	JSR	j_SUB_printf_0(PC)		;14060: 4ebae4e4
-	PEA	-72(A5)			;14064: 486dffb8
-	PEA	262.W			;14068: 48780106
-	PEA	40.W			;1406c: 48780028
-	MOVE.L	LAB_2217,-(A7)		;14070: 2f390003c226
-	JSR	j_displayText1(PC)		;14076: 4eba4992
-	
-	CLR.W	LAB_22A1		;17dac: 42790003deee
-	BRA.W	LAB_0BE4		;17db2: 60000b74
+; custom func from Ari?
+;LAB_0BA7D:
+;    MOVE.W	LAB_2285,D0		;17d9e: 30390003de5a
+;	ADDQ.W	#1,D0			;17da4: 5240
+;	MOVE.W	D0,LAB_2285		;17da6: 33c00003de5a
+;	JSR     callCTRL
+;
+;	MOVEQ   #0,D0
+;    LEA	76(A7),A7		;1402c: 4fef004c
+;	MOVE.W	CTRLRead3,D4			;14034: 2800
+;	MOVEQ	#0,D0			;14036: 7000
+;	MOVE.W	CTRL_H,D0		;14038: 30390003de50
+;	MOVEQ	#0,D3			;1403e: 7200
+;	MOVE.W	CTRLRead2,D3		;14040: 32390003de52
+;	MOVEQ	#0,D1			;1403e: 7200
+;	MOVE.W	CTRLRead1,D1		;14040: 32390003de52
+;	MOVEQ	#0,D2			;14046: 7400
+;	LEA     CTRL_BUFFER,A3
+;	ADDA    D0,A3
+;	SUBA    #1,A3
+;    MOVEQ	#0,D2
+;	MOVE.B (A3),D2
+;	MOVE.L	D2,-(A7)		;1404e: 2f02
+;	MOVE.L	D4,-(A7)		;14050: 2f04
+;    MOVE.L	D3,-(A7)		;14050: 2f04
+;	MOVE.L	D1,-(A7)		;14052: 2f01
+;	MOVE.L	D0,-(A7)		;14054: 2f00
+;	PEA	LAB_CTRLHTCMAX		;14056: 487900039168
+;	PEA	-72(A5)			;1405c: 486dffb8
+;	JSR	j_SUB_printf_0(PC)		;14060: 4ebae4e4
+;	PEA	-72(A5)			;14064: 486dffb8
+;	PEA	262.W			;14068: 48780106
+;	PEA	40.W			;1406c: 48780028
+;	MOVE.L	LAB_2217,-(A7)		;14070: 2f390003c226
+;	JSR	j_displayText1(PC)		;14076: 4eba4992
+;	
+;	CLR.W	LAB_22A1		;17dac: 42790003deee
+;	BRA.W	LAB_0BE4		;17db2: 60000b74
 LAB_0BA6:
 	MOVE.W	LAB_2285,D0		;17ebc: 30390003de58
 	ADDQ.W	#1,D0			;17ec2: 5240
@@ -32151,13 +32150,6 @@ LAB_0BC3:
 LAB_0BC4:
 	CLR.W	LAB_22A1		;18304: 42790003deee
 	BRA.W	LAB_0BE4		;1830a: 6000061c
-
-cmdDATAInjectCTRL:          ; Replaces alt '=' download mode
-    MOVE.L  D0,D7           ; Backup d0 to d7
-    JSR     j2_getCTRLBuffer; Move CTRL buffer addy into A0, reads one byte to D0
-    MOVE.L  D7,D0           ; Restore d0 from d7 bak
-    BRA.W   LAB_0BE4        ; Return handler
-
 cmdDATABinaryDL:
 	MOVE.W	LAB_2285,D0		;1830e: 30390003de58
 	ADDQ.W	#1,D0			;18314: 5240
