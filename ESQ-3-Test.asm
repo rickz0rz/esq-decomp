@@ -258,7 +258,7 @@ CHECK_AVAILABLE_CHIP_MEMORY_RTS:
 
 LAB_0015:
 	MOVEM.L	D6-D7,-(A7)		;001dc: 48e70300
-	MOVE.W	$DFF004,D7		;001e0: 3e3900dff004
+	MOVE.W	$DFF004,D7		; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
 	MOVE.L	D7,D6			;001e6: 2c07
 	ANDI.W	#$7f00,D6		;001e8: 02467f00
 	CMPI.W	#$3000,D6		;001ec: 0c463000
@@ -2002,7 +2002,13 @@ LAB_00E7:
 	JSR	LAB_0DFB		;0139c: 4eb90001d44c
 	ADDQ.L	#8,A7			;013a2: 508f
 	RTS				;013a4: 4e75
+
+;======
+
 	DC.W	$0000			;013a6
+
+;======
+
 LAB_00E8:
 	LINK.W	A5,#-4			;013a8: 4e55fffc
 	MOVEM.L	D5-D7/A3,-(A7)		;013ac: 48e70710
@@ -5471,7 +5477,13 @@ LAB_020C:
 	MOVEM.L	(A7)+,D2-D3		;03d2a: 4cdf000c
 	UNLK	A5			;03d2e: 4e5d
 	RTS				;03d30: 4e75
+
+;======
+
 	DC.W	$0000			;03d32
+
+;======
+
 LAB_020D:
 	JMP	LAB_1470		;03d34: 4ef900028e0a
 LAB_020E:
@@ -9553,6 +9565,9 @@ LAB_0379:
 	MOVEM.L	(A7)+,D5-D7/A2-A3	;06d0c: 4cdf0ce0
 	UNLK	A5			;06d10: 4e5d
 	RTS				;06d12: 4e75
+
+;======
+
 	LINK.W	A5,#-4			;06d14: 4e55fffc
 	MOVEM.L	D7/A2-A3,-(A7)		;06d18: 48e70130
 	MOVEA.L	8(A5),A3		;06d1c: 266d0008
@@ -9587,6 +9602,9 @@ LAB_037B:
 	MOVEM.L	(A7)+,D7/A2-A3		;06d68: 4cdf0c80
 	UNLK	A5			;06d6c: 4e5d
 	RTS				;06d6e: 4e75
+
+;======
+
 LAB_037C:
 	JMP	LAB_17E6		;06d70: 4ef90002ebf6
 LAB_037D:
@@ -9607,6 +9625,9 @@ LAB_0384:
 	JMP	LAB_16FF		;06da0: 4ef90002d286
 LAB_0385:
 	JMP	LAB_0B44		;06da6: 4ef9000170d4
+
+;======
+
 LAB_0386:
 	LINK.W	A5,#-4			;06dac: 4e55fffc
 	MOVE.L	A4,-(A7)		;06db0: 2f0c
@@ -9669,6 +9690,9 @@ LAB_038D:
 	MOVEA.L	-8(A5),A4		;06e76: 286dfff8
 	UNLK	A5			;06e7a: 4e5d
 	RTS				;06e7c: 4e75
+
+;======
+
 LAB_038E:
 	LINK.W	A5,#-4			;06e7e: 4e55fffc
 	MOVEM.L	D2-D4,-(A7)		;06e82: 48e73800
@@ -9722,6 +9746,9 @@ LAB_0391:
 	MOVEM.L	-16(A5),D2-D4		;06f3e: 4ced001cfff0
 	UNLK	A5			;06f44: 4e5d
 	RTS				;06f46: 4e75
+
+;======
+
 LAB_0392:
 	MOVE.L	A4,-(A7)		;06f48: 2f0c
 	LEA	LAB_21BB,A4		;06f4a: 49f90003bb24
@@ -9744,6 +9771,9 @@ LAB_0393:
 	MOVE.W	#$0001,LAB_1B8A		;06f94: 33fc000100033fca
 	MOVEA.L	(A7)+,A4		;06f9c: 285f
 	RTS				;06f9e: 4e75
+
+;======
+
 LAB_0394:
 	MOVEM.L	D2-D4/D7,-(A7)		;06fa0: 48e73900
 	MOVE.L	20(A7),D7		;06fa4: 2e2f0014
@@ -9833,6 +9863,9 @@ LAB_0399:
 	MOVE.L	D6,D0			;070be: 2006
 	MOVEM.L	(A7)+,D6-D7/A3		;070c0: 4cdf08c0
 	RTS				;070c4: 4e75
+
+;======
+
 LAB_039A:
 	MOVEM.L	D2-D3/D6-D7,-(A7)	;070c6: 48e73300
 	MOVE.L	20(A7),D7		;070ca: 2e2f0014
@@ -9885,6 +9918,9 @@ LAB_039E:
 LAB_039F:
 	MOVEM.L	(A7)+,D2-D3/D6-D7	;07178: 4cdf00cc
 	RTS				;0717c: 4e75
+
+;======
+
 LAB_03A0:
 	MOVEM.L	D2-D7/A3,-(A7)		;0717e: 48e73f10
 	MOVE.L	32(A7),D7		;07182: 2e2f0020
@@ -9945,6 +9981,9 @@ LAB_03A7:
 LAB_03A8:
 	MOVEM.L	(A7)+,D2-D7/A3		;07224: 4cdf08fc
 	RTS				;07228: 4e75
+
+;======
+
 LAB_03A9:
 	LINK.W	A5,#-12			;0722a: 4e55fff4
 	MOVEM.L	D6-D7,-(A7)		;0722e: 48e70300
@@ -9970,6 +10009,9 @@ LAB_03AA:
 	MOVEM.L	-20(A5),D6-D7		;07266: 4ced00c0ffec
 	UNLK	A5			;0726c: 4e5d
 	RTS				;0726e: 4e75
+
+;======
+
 LAB_03AB:
 	MOVEM.L	D2-D3/D6-D7,-(A7)	;07270: 48e73300
 	MOVE.L	20(A7),D7		;07274: 2e2f0014
@@ -9988,6 +10030,9 @@ LAB_03AB:
 	MOVE.L	D6,D0			;0729a: 2006
 	MOVEM.L	(A7)+,D2-D3/D6-D7	;0729c: 4cdf00cc
 	RTS				;072a0: 4e75
+
+;======
+
 LAB_03AC:
 	MOVEM.L	D2-D3/D7/A3,-(A7)	;072a2: 48e73110
 	MOVEA.L	20(A7),A3		;072a6: 266f0014
@@ -25171,6 +25216,9 @@ LAB_0928:
 	MOVEM.L	(A7)+,D6-D7		;12fa8: 4cdf00c0
 	UNLK	A5			;12fac: 4e5d
 	RTS				;12fae: 4e75
+
+;======
+
 	MOVE.L	D7,-(A7)		;12fb0: 2f07
 	MOVE.W	10(A7),D7		;12fb2: 3e2f000a
 	MOVEQ	#23,D1			;12fb6: 7217
@@ -25204,6 +25252,9 @@ LAB_092B:
 	MOVE.L	D5,D0			;12ff2: 2005
 	MOVEM.L	(A7)+,D5-D7		;12ff4: 4cdf00e0
 	RTS				;12ff8: 4e75
+
+;======
+
 	MOVE.L	D7,-(A7)		;12ffa: 2f07
 	MOVE.W	10(A7),D7		;12ffc: 3e2f000a
 	TST.W	D7			;13000: 4a47
@@ -25213,6 +25264,9 @@ LAB_092B:
 	EXT.L	D0			;13008: 48c0
 	MOVE.L	(A7)+,D7		;1300a: 2e1f
 	RTS				;1300c: 4e75
+
+;======
+
 	MOVE.L	D7,-(A7)		;1300e: 2f07
 	MOVE.W	10(A7),D7		;13010: 3e2f000a
 	MOVEQ	#1,D1			;13014: 7201
@@ -25223,6 +25277,9 @@ LAB_092B:
 	EXT.L	D0			;1301e: 48c0
 	MOVE.L	(A7)+,D7		;13020: 2e1f
 	RTS				;13022: 4e75
+
+;======
+
 LAB_092C:
 	LINK.W	A5,#-8			;13024: 4e55fff8
 	MOVE.L	D7,-(A7)		;13028: 2f07
@@ -71704,6 +71761,9 @@ LAB_1AED:
 	MOVE.B	#$ff,$BFE301		;33af6: 13fc00ff00bfe301
 	MOVE.B	D0,$BFE101		;33afe: 13c000bfe101
 	RTS				;33b04: 4e75
+
+;======
+
 LAB_1AEE:
 	MOVEM.L	A2/A6,-(A7)		;33b06: 48e70022
 	LEA	LAB_1AEB(PC),A2		;33b0a: 45faffd0
@@ -71711,10 +71771,19 @@ LAB_1AEE:
 	JSR	-522(A6)		;33b14: 4eaefdf6
 	MOVEM.L	(A7)+,A2/A6		;33b18: 4cdf4400
 	RTS				;33b1c: 4e75
+
+;======
+
 LAB_1AEF:
 	MOVEQ	#-1,D0			;33b1e: 70ff
 	RTS				;33b20: 4e75
+
+;======
+
+    ; Alignment
 	DC.W	$0000			;33b22
+
+;======
 
 	SECTION S_1,DATA,CHIP
 
