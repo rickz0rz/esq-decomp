@@ -73138,7 +73138,7 @@ LAB_1D29:
 LAB_1D2A:
 	DC.B	"Ver %s.%ld",0,0
 LAB_1D2B:
-	DC.B	"10",0,0	; Major/minor version string
+	DC.B	"9.0",0	; Major/minor version string
 LAB_1D2C:
 	DC.B	"%ld baud",0,0
 LAB_1D2D:
@@ -73529,8 +73529,7 @@ LAB_1DE6:
 LAB_1DE7:
 	DS.L	1
 GLOB_HANDLE_TOPAZ_FONT:
-	DS.L	1
-    DS.L    2    
+	DS.L	3
 	DS.W	1
 LAB_1DE9:
 	DS.L	1
@@ -73614,15 +73613,15 @@ LAB_1E0F:
 LAB_1E10:
 	DC.B	"Ver %s.%ld Build %ld %s",0
 LAB_1E11:
-	DC.B	"10",0,0	; Major/minor version string
+	DC.B	"9.0",0	; Major/minor version string
 LAB_1E12:
 	DC.B	"                                       ",0
 LAB_1E13:
 	DC.B	"dh2:Gradient.ini",0,0
 LAB_1E14:
-	DC.B	"   Starting up...  ",0
+	DC.B	"System Initializing",0
 LAB_1E15:
-	DC.B	"                  ",0,0
+	DC.B	"Please Stand By...",0,0
 LAB_1E16:
 	DC.B	"ATTENTION SYSTEM ENGINEER!",0,0
 LAB_1E17:
@@ -73642,9 +73641,9 @@ LAB_1E1D:
 LAB_1E1E:
 	DC.B	"GRANADA",0
 LAB_1E1F:
-	DC.L	$00000045
+	DC.L	$00000015
 LAB_1E20:
-	DC.B	"LOL",0	; build id string (was JGT but is LOL)
+	DC.B	"JGT",0	; build id string
 LAB_1E21:
 	DC.L	LAB_1E20
 LAB_1E22:
@@ -74539,7 +74538,7 @@ LAB_1EA7:
 LAB_1EA8:
 	DC.B	"DATA: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld",0,0
 LAB_1EA9:
-	DC.B	"CTRL: H:%05ld  T:%05ld  C:%05ld  MAX: %02x",0,0
+	DC.B	"CTRL: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld",0,0
 LAB_1EAA:
 	DC.B	"julian day = %3ld    next = %3ld",0,0
 LAB_1EAB:
@@ -74714,13 +74713,13 @@ LAB_1EF9:
 LAB_1EFA:
 	DC.B	"%s.%ld",0,0
 LAB_1EFB:
-	DC.B	"10",0,0
+	DC.B	"9.0",0 ; major/minor version
 LAB_1EFC:
 	DC.B	"Incorrect Version! Please correct ASAP!",0
 LAB_1EFD:
 	DC.B	"Your version is    '%s.%ld'",0
 LAB_1EFE:
-	DC.B	"10",0,0
+	DC.B	"9.0",0 ; major/minor version
 LAB_1EFF:
 	DC.B	"Correct version is '",0,0
 LAB_1F00:
@@ -74829,7 +74828,7 @@ LAB_1F2D:
 	DC.B	"ESQPARS2.c",0,0
 	DS.W	1
 LAB_1F2E:
-	DC.L	$00000000		;Patch version string
+	DC.L	$00000004		;Patch version string
 LAB_1F2F:
 	DS.W	1
 LAB_1F30:
@@ -75978,7 +75977,7 @@ LAB_2110:
 LAB_2111:
 	DC.L	LAB_2110
 GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
-    DC.B    " ER007: Awaiting listings data transmission... ",0
+	DC.B    "Please Stand By for your Local Listings.  ER007",0
 GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
 	DC.L	GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 LAB_2114:
