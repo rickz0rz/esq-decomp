@@ -87,6 +87,33 @@ TextAlignLeft       = 25
 ; Some displacements
 LocalDosLibraryDisplacement = 22832
 
+; 8520 CIA
+; https://amigadev.elowar.com/read/ADCD_2.1/Hardware_Manual_guide/node012E.html
+;; CIA (b) serial/parallel port (used for CTS/DSR bit-banging for CTRL)
+;; bit 4 = CTS
+;; bit 3 = DSR
+CIAB_PRA           = $BFD000
+;; CIA (a) parallel port (possibly used for genlock comms?)
+CIAA_PRB           = $BFE101
+;; port direction for PRB_CIAA
+;; 0 = input
+;; 1 = output
+CIAA_DDRB          = $BFE301
+
+; AGA Agnus (controller port I/O)
+; http://amigadev.elowar.com/read/ADCD_2.1/Hardware_Manual_guide/node017E.html
+; http://amiga-dev.wikidot.com/information:hardware#:~:text=Hardware%20Access-,OCS%20/%20ECS%20/%20AGA,-As%20described%20in
+;; Blitter destination data register
+BLTDDAT            = $DFF000
+;; Read light pen position
+VPOSR              = $DFF004
+;; Serial port data and stop bits write
+SERDAT             = $DFF030
+;; Coprocessor first location register (high 5 bits) (old-3 bits)
+COP1LCH            = $DFF080
+;; Interrupt enable bits (clear or set bits)
+INTENA             = $DFF09A
+
 	SECTION S_0,CODE
 
 SECSTRT_0:
@@ -258,7 +285,7 @@ CHECK_AVAILABLE_CHIP_MEMORY_RTS:
 
 LAB_0015:
 	MOVEM.L	D6-D7,-(A7)		;001dc: 48e70300
-	MOVE.W	$DFF004,D7		; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
+	MOVE.W	VPOSR,D7		; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
 	MOVE.L	D7,D6			;001e6: 2c07
 	ANDI.W	#$7f00,D6		;001e8: 02467f00
 	CMPI.W	#$3000,D6		;001ec: 0c463000
@@ -686,7 +713,7 @@ LAB_003C:
 
 LAB_003D:
 	MOVEQ	#0,D1			;00676: 7200
-	MOVEA.L	#$00bfd000,A5		;00678: 2a7c00bfd000
+	MOVEA.L	#CIAB_PRA,A5		;00678: 2a7c00bfd000
 	MOVE.B	(A5),D1			;0067e: 1215
 	BTST	#3,D1			;00680: 08010003
 	SEQ	D1			;00684: 57c1
@@ -696,7 +723,7 @@ LAB_003D:
 
 LAB_003E:
 	MOVEQ	#0,D1			;00688: 7200
-	MOVEA.L	#$00bfd000,A5		;0068a: 2a7c00bfd000
+	MOVEA.L	#CIAB_PRA,A5		;0068a: 2a7c00bfd000
 	MOVE.B	(A5),D1			;00690: 1215
 	BTST	#4,D1			;00692: 08010004
 	SEQ	D1			;00696: 57c1
@@ -884,7 +911,7 @@ LAB_0053:
 ;======
 
 LAB_0054:
-	MOVEA.L	#$00bfd000,A1		;00870: 227c00bfd000
+	MOVEA.L	#CIAB_PRA,A1		;00870: 227c00bfd000
 	MOVE.B	(A1),D1			;00876: 1211
 	BSET	#6,D1			;00878: 08c10006
 	BSET	#7,D1			;0087c: 08c10007
@@ -897,7 +924,7 @@ LAB_0054:
 ;======
 
 LAB_0055:
-	MOVEA.L	#$00bfd000,A1		;00894: 227c00bfd000
+	MOVEA.L	#CIAB_PRA,A1		;00894: 227c00bfd000
 	MOVE.B	(A1),D1			;0089a: 1211
 	BCLR	#6,D1			;0089c: 08810006
 	BCLR	#7,D1			;008a0: 08810007
@@ -910,7 +937,7 @@ LAB_0055:
 ;======
 
 LAB_0056:
-	MOVEA.L	#$00bfd000,A1		;008b6: 227c00bfd000
+	MOVEA.L	#CIAB_PRA,A1		;008b6: 227c00bfd000
 	MOVE.B	(A1),D1			;008bc: 1211
 	BCLR	#6,D1			;008be: 08810006
 	BSET	#7,D1			;008c2: 08c10007
@@ -924,7 +951,7 @@ LAB_0056:
 ;======
 
 LAB_0057:
-	MOVEA.L	#$00bfd000,A1		;008de: 227c00bfd000
+	MOVEA.L	#CIAB_PRA,A1		;008de: 227c00bfd000
 	MOVE.B	(A1),D1			;008e4: 1211
 	BSET	#6,D1			;008e6: 08c10006
 	BSET	#7,D1			;008ea: 08c10007
@@ -4029,7 +4056,7 @@ LAB_01A9:
 ;======
 
 LAB_01AA:
-	MOVE.W	#$0100,$DFF09A		;02a9a: 33fc010000dff09a
+	MOVE.W	#$0100,INTENA		;02a9a: 33fc010000dff09a
 	MOVEQ	#8,D0			;02aa2: 7008
 	MOVEA.L	LAB_1E82,A1		;02aa4: 227900038ee4
 	MOVEA.L	AbsExecBase,A6
@@ -4045,7 +4072,7 @@ LAB_01AA:
 ;======
 
 LAB_01AB:
-	MOVE.W	#$0800,$DFF09A		;02ad0: 33fc080000dff09a
+	MOVE.W	#$0800,INTENA		;02ad0: 33fc080000dff09a
 	MOVEA.L	LAB_2211,A1		;02ad8: 22790003c20e
 	MOVEA.L	AbsExecBase,A6
 	JSR     _LVOCloseDevice(A6)
@@ -4283,7 +4310,7 @@ LAB_01BB:
 	JSR	LAB_01C1(PC)		;02e38: 4eba012e
 	JSR	LAB_01C2(PC)		;02e3c: 4eba0130
 	MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A0		;02e40: 20790003637c
-	MOVE.L	38(A0),$DFF080		;02e46: 23e8002600dff080
+	MOVE.L	38(A0),COP1LCH		;02e46: 23e8002600dff080
 	JSR	LAB_01C6(PC)		;02e4e: 4eba0136
 	PEA	34.W			;02e52: 48780022
 	MOVE.L	LAB_1DC5,-(A7)		;02e56: 2f39000363e8
@@ -24064,7 +24091,7 @@ LAB_0891:
 	CLR.L	(A7)			;12362: 4297
 	PEA	4095.W			;12364: 48780fff
 	JSR	LAB_08DA(PC)		;12368: 4eba0592
-	MOVE.W	#$8100,$DFF09A		;1236c: 33fc810000dff09a
+	MOVE.W	#$8100,INTENA		;1236c: 33fc810000dff09a
 	JSR	LAB_08A2(PC)		;12374: 4eba0146
 	PEA	LAB_2321		;12378: 48790003eef0
 	JSR	LAB_08AE(PC)		;1237e: 4eba0184
@@ -25284,7 +25311,7 @@ LAB_092C:
 	LINK.W	A5,#-8			;13024: 4e55fff8
 	MOVE.L	D7,-(A7)		;13028: 2f07
 	MOVE.W	#$ffff,LAB_234A		;1302a: 33fcffff0003fa3c
-	MOVE.L	#$00bfd0ee,-6(A5)	;13032: 2b7c00bfd0eefffa
+	MOVE.L	#$00bfd0ee,-6(A5)	; ??, between PRA_CIAB and PRB_CIAB
 	MOVEQ	#4,D7			;1303a: 7e04
 	MOVEA.L	-6(A5),A0		;1303c: 206dfffa
 	AND.B	(A0),D7			;13040: ce10
@@ -30863,7 +30890,7 @@ cmdTableDATA:
 	BEQ.W	LAB_0BA6		; 'F'
 	SUBQ.W	#1,D0
 	BEQ.W   LAB_0BA7D       ; 'G'
-    SUBQ.W	#1,D0
+	SUBQ.W	#1,D0
 	BEQ.W	cmdDATABinaryDL ; 'H'
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BB1		; 'I'
@@ -33884,11 +33911,11 @@ LAB_0C7A:
 	JSR	LAB_0C92		;19784: 4eb900019c62
 	JSR	LAB_0C79(PC)		;1978a: 4ebaff8c
 	JSR	LAB_0C7B		;1978e: 4eb9000197d0
-	MOVEA.L	#$00bfd000,A1		;19794: 227c00bfd000
+	MOVEA.L	#CIAB_PRA,A1		;19794: 227c00bfd000
 	MOVE.B	(A1),D1			;1979a: 1211
 	BSET	#7,D1			;1979c: 08c10007
 	MOVE.B	D1,(A1)			;197a0: 1281
-	MOVEA.L	#$00bfd000,A1		;197a2: 227c00bfd000
+	MOVEA.L	#CIAB_PRA,A1		;197a2: 227c00bfd000
 	MOVE.B	(A1),D1			;197a8: 1211
 	BSET	#6,D1			;197aa: 08c10006
 	MOVE.B	D1,(A1)			;197ae: 1281
@@ -34046,7 +34073,7 @@ LAB_0C7F:
 	DBF	D1,LAB_0C7F		;19a22: 51c9fff8
 	RTS				;19a26: 4e75
 LAB_0C80:
-	LEA	$DFF000,A0		;19a28: 41f900dff000
+	LEA	BLTDDAT,A0		;19a28: 41f900dff000
 	MOVE.W	#$1761,142(A0)		;19a2e: 317c1761008e
 	MOVE.W	#$ffc5,144(A0)		;19a34: 317cffc50090
 	MOVE.W	#$0030,146(A0)		;19a3a: 317c00300092
@@ -34086,7 +34113,7 @@ LAB_0C81:
 	RTS				;19ad6: 4e75
 LAB_0C82:
 	MOVEM.L	D0-D3/A0-A6,-(A7)	;19ad8: 48e7f0fe
-	LEA	$DFF000,A0		;19adc: 41f900dff000
+	LEA	BLTDDAT,A0		;19adc: 41f900dff000
 	LEA	LAB_1E22,A2		;19ae2: 45f9000366e4
 	MOVEQ	#1,D1			;19ae8: 7201
 	MOVE.W	4(A0),D0		;19aea: 30280004
@@ -56486,7 +56513,7 @@ LAB_14BB:
 LAB_14BC:
 	MOVEM.L	D6-D7,-(A7)		;294b6: 48e70300
 	MOVEQ	#0,D7			;294ba: 7e00
-	MOVE.B	$BFD000,D7		;294bc: 1e3900bfd000
+	MOVE.B	CIAB_PRA,D7		;294bc: 1e3900bfd000
 	BTST	#3,D7			;294c2: 08070003
 	BEQ.S	LAB_14BD		;294c6: 6704
 	MOVEQ	#1,D6			;294c8: 7c01
@@ -56500,7 +56527,7 @@ LAB_14BE:
 LAB_14BF:
 	MOVEM.L	D6-D7,-(A7)		;294d6: 48e70300
 	MOVEQ	#0,D7			;294da: 7e00
-	MOVE.B	$BFD000,D7		;294dc: 1e3900bfd000
+	MOVE.B	CIAB_PRA,D7		;294dc: 1e3900bfd000
 	MOVEQ	#0,D0			;294e2: 7000
 	MOVE.W	D7,D0			;294e4: 3007
 	MOVEQ	#32,D1			;294e6: 7220
@@ -56520,7 +56547,7 @@ LAB_14C1:
 	MOVE.W	10(A7),D7		;29504: 3e2f000a
 	ANDI.W	#$00ff,D7		;29508: 024700ff
 	BSET	#8,D7			;2950c: 08c70008
-	MOVE.W	D7,$DFF030		;29510: 33c700dff030
+	MOVE.W	D7,SERDAT		;29510: 33c700dff030
 	MOVE.W	D7,LAB_2341		;29516: 33c70003fa28
 	MOVE.L	(A7)+,D7		;2951c: 2e1f
 	RTS				;2951e: 4e75
@@ -71495,7 +71522,7 @@ LAB_1AC3:
 	MOVEA.L	AbsExecBase,A6	;33848: 2c780004
 	LEA	LAB_1ACB(PC),A1		;3384c: 43fa008c
 	MOVEQ	#0,D0			;33850: 7000
-	JSR	-552(A6)		;33852: 4eaefdd8
+	JSR	_LVOOpenLibrary(A6)		;33852: 4eaefdd8
 	MOVE.L	D0,-102(A5)		;33856: 2b40ff9a
 	BNE.S	LAB_1AC4		;3385a: 6604
 	MOVEQ	#-1,D0			;3385c: 70ff
@@ -71755,11 +71782,11 @@ LAB_1AEB:
 LAB_1AEC:
 	MOVE.B	(A7)+,D0		;33ae8: 101f
 LAB_1AED:
-	MOVE.B	$BFD000,D1		;33aea: 123900bfd000
+	MOVE.B	CIAB_PRA,D1		;33aea: 123900bfd000
 	BTST	#0,D1			;33af0: 08010000
 	BNE.S	LAB_1AED		;33af4: 66f4
-	MOVE.B	#$ff,$BFE301		;33af6: 13fc00ff00bfe301
-	MOVE.B	D0,$BFE101		;33afe: 13c000bfe101
+	MOVE.B	#$ff,CIAA_DDRB		;33af6: 13fc00ff00bfe301
+	MOVE.B	D0,CIAA_PRB		;33afe: 13c000bfe101
 	RTS				;33b04: 4e75
 
 ;======
@@ -71767,7 +71794,7 @@ LAB_1AED:
 LAB_1AEE:
 	MOVEM.L	A2/A6,-(A7)		;33b06: 48e70022
 	LEA	LAB_1AEB(PC),A2		;33b0a: 45faffd0
-	MOVEA.L	$4,A6		;33b0e: 2c7900000004
+	MOVEA.L	AbsExecBase,A6		;33b0e: 2c7900000004
 	JSR	-522(A6)		;33b14: 4eaefdf6
 	MOVEM.L	(A7)+,A2/A6		;33b18: 4cdf4400
 	RTS				;33b1c: 4e75
