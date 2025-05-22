@@ -30866,6 +30866,7 @@ LAB_0B57:
 	MOVE.W	D0,LAB_229F		;17366: 33c00003deea
 	BRA.W	LAB_0BE5		;1736c: 600015c8
 cmdTableDATA:
+    ; https://prevueguide.com/Documentation/D2400.pdf
 	MOVE.W	LAB_229F,D0
 	SUBQ.W	#1,D0
 	BNE.W	LAB_0BE5
@@ -30874,60 +30875,109 @@ cmdTableDATA:
 	BNE.W	LAB_0BE5
 	MOVEQ	#0,D0			; Move 0 into D0
 	MOVE.B	-5(A5),D0		; Copy the byte at -5(A5) which is the byte from serial to D0
+    ;; ??
 	SUBI.W	#$0021,D0		; Subtract x21/33 from D0
 	BEQ.W	LAB_0B59		; Does D0 equal zero (exactly)? Means D0 was 33 or '!'
+    ;; Save command
+    ;; Saves current data used by the guide to disk
 	SUBQ.W	#4,D0			; Subtract 4 more so x25/37
 	BEQ.W	LAB_0BB9		; Does D0 equal zero now? This is mode '%'
+    ;; Alternate binary download command
 	SUBI.W	#$0018,D0		; Subtract x18/24 so x3D/61
 	BEQ.W	cmdDATABinaryDL		; Does D0 equal zero now? This is mode '='
+    ;; Channel lineup info
+    ;; Provides a list of channel (and attributes) to the EPG
 	SUBQ.W	#6,D0           ; Subtract x6/6 so 67
-	BEQ.W	LAB_0B99        ; Same as above... this time mode 'C'.
+	BEQ.W	LAB_0B99        ; Same as above... this time mode 'C'
+    ;; Diagnostic mode
+    ;; Bit error rate test, likely used to debug faulty link
 	SUBQ.W	#1,D0           ; Subtract 1 so 68
-	BEQ.W	LAB_0BC6        ; Mode 'D'
+	BEQ.W	LAB_0BC6        ; Mode 'D' (diagnostic command)
+    ;; Extension mode (unused)
+    ;; Gives the EPG "new addressing modes for region and group addressing"
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BA2		; 'E'
+    ;; Configuration command (legacy)
+    ;; Sets local configuration data (e.g. `config.dat`)
+    ;; https://prevueguide.com/Documentation/f_Command.pdf
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BA6		; 'F'
+    ;; Binary download
+    ;; Send binary files (e.g. graphic ads or software upgrades) to be saved to disk
 	SUBQ.W	#2,D0
 	BEQ.W	cmdDATABinaryDL ; 'H'
+    ;; Weather ID
+    ;; Sets the local weather ID for the EPG system
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BB1		; 'I'
+    ;; Clock command
+    ;; Sets the system time
+    ;; https://prevueguide.com/Documentation/K_Command.pdf
 	SUBQ.W	#2,D0
 	BEQ.W	LAB_0BAA		; 'K'
+    ;; Local ad command
+    ;; Can either set a local ad's text or reset all local ads (by sending \x92)
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0B91		; 'L'
+    ;; Mode command (documentation states not used)
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BC1		; 'M'
+    ;; Blackout reset command ("never used ?")
+    ;; "Reset the blackout mask for all programming"
 	SUBQ.W	#2,D0
 	BEQ.W	LAB_0BC2		; 'O'
+    ;; Program info
+    ;; Provides program information to the EPG for display
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0B6B		; 'P'
+    ;; Reset command
+    ;; Resets the Amiga system
 	SUBQ.W	#2,D0
 	BEQ.W	LAB_0BBC		; 'R'
+    ;; Version command
+    ;; Sends an alert notifying that system software is out of date
 	SUBQ.W	#4,D0
 	BEQ.W	LAB_0BCA		; 'V'
+    ;; Weather data command
+    ;; Gives broadcast weather data for "Prevue Weather" segment
 	SUBQ.W	#1,D0 
 	BEQ.W	LAB_0BC8        ; 'W'
+    ;; ??
 	SUBI.W	#$000c,D0
 	BEQ.W	LAB_0B9C        ; 'c'
+    ;; New look configuration command
+    ;; Sets local configuration data (e.g. `config.dat`)
 	SUBQ.W	#3,D0
 	BEQ.W	LAB_0BD1        ; 'f'
+    ;; ??
+    ;; maybe https://prevueguide.com/Documentation/G2_Command.pdf?
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BD5        ; 'g'
+    ;; Alternate binary download command
+    ;; lowercase?
 	SUBQ.W	#1,D0
 	BEQ.W	cmdDATABinaryDL ; 'h'
+    ;; ??
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BB5        ; 'i'
+    ;; Order information command
+    ;; Gives telecom PPV ordering information for display
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BAD        ; 'j'
+    ;; ??
 	SUBQ.W	#6,D0
 	BEQ.W	LAB_0B6F        ; 'p'
+    ;; ??
 	SUBQ.W	#4,D0
 	BEQ.W	LAB_0B91        ; 't'
+    ;; ??
 	SUBQ.W	#2,D0
 	BEQ.W	LAB_0B9F        ; 'v'
+    ;; ??
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BC9        ; 'w'
+    ;; x utility command
+    ;; Sends a EPG-specific command to be performed (including AmigaDOS cmdline execution)
 	SUBQ.W	#1,D0
 	BEQ.W	LAB_0BCE        ; 'x'
 	SUBI.W	#$0043,D0
