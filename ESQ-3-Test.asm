@@ -95,6 +95,11 @@ _LVODraw_TEXT macro
     JSR     _LVOText(A6)
   endm
 
+NStr macro
+	DC.B	\1,0
+	align 2
+endm
+
 ; I should be able to do this too?:
 ;test_pr: .macro str_ptr
 ;    lda #<\str_ptr
@@ -76579,7 +76584,7 @@ LAB_2175:
 LAB_2176:
 	DC.B	"%03ld",0
 LAB_2177:
-	DC.B	"ViewMode = %ld",0,0
+	NStr "ViewMode = %ld"
 LAB_2178:
 	DS.L	1
 LAB_2179:
