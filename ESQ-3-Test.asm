@@ -367,7 +367,7 @@ LAB_0018:
     MOVEA.L	-4(A5),A0
     ADDA.W	#$0054,A0
 
-     ; _LVODraw a filled rect from 0,0 to 639,56
+     ; Draw a filled rect from 0,0 to 639,56
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
     MOVE.L	D0,D1
@@ -396,8 +396,8 @@ LAB_0018:
     MOVEA.L	-4(A5),A0
     ADDA.W	#$0054,A0
 
-     ; _LVODraw "Please Standby..." text
-     ; _LVODraw_TEXT A0,GLB_STR_PLEASE_STANDBY,#17
+     ; Draw "Please Standby..." text
+     ; Draw_TEXT A0,GLB_STR_PLEASE_STANDBY,#17
     MOVEA.L	A0,A1
     LEA     GLB_STR_PLEASE_STANDBY,A0
     MOVEQ	#17,D0
@@ -415,7 +415,7 @@ LAB_0018:
     MOVEA.L	-4(A5),A0
     ADDA.W	#$0054,A0
 
-     ; _LVODraw "ATTENTION! SYSTEM ENGINEER" text
+     ; Draw "ATTENTION! SYSTEM ENGINEER" text
     MOVEA.L	A0,A1
     LEA     GLOB_STR_ATTENTION_SYSTEM_ENGINEER,A0
     MOVEQ	#26,D0
@@ -433,7 +433,7 @@ LAB_0018:
     MOVEA.L	-4(A5),A0
     ADDA.W	#$0054,A0
 
-     ; _LVODraw "Report Code ER003 to TV Guide Technical Services." text
+     ; Draw "Report Code ER003 to TV Guide Technical Services." text
     MOVEA.L	A0,A1
     LEA     GLOB_STR_REPORT_CODE_ER003,A0
     MOVEQ	#47,D0
@@ -23814,7 +23814,7 @@ LAB_0851:
     MOVE.L  LAB_2217,-(A7)
     JSR     LAB_055C(PC)
 
-     ; Set _LVODrawing mode to 1
+     ; Set drawing mode to 1
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -44723,7 +44723,7 @@ LAB_0FA8:
 LAB_0FA9:
     MOVEM.L	D2-D3,-(A7)
 
-     ; _LVODisable system interrupts
+     ; Disable system interrupts
     MOVEA.L	AbsExecBase,A6
     JSR     _LVODisable(A6)
 
@@ -44742,7 +44742,7 @@ LAB_0FA9:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-     ; _LVODraw a filled rect from 0,68 to 695,267
+     ; Draw a filled rect from 0,68 to 695,267
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#0,D0
     MOVEQ	#68,D1
@@ -45594,7 +45594,7 @@ LAB_0FF0:
 
 ;!======
 
-; This is clearly a re-usable subroutine to _LVODraw a rectangle given
+; This is clearly a re-usable subroutine to draw a rectangle given
 ; it's preserving some registers.
 LAB_0FF1:
     MOVEM.L	D2-D3,-(A7)
@@ -45604,7 +45604,7 @@ LAB_0FF1:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-     ; _LVODraw a filled rect from 0,0 to 695,1
+     ; Draw a filled rect from 0,0 to 695,1
     MOVEA.L	LAB_1FFD,A1
     MOVEQ	#0,D0
     MOVE.L	D0,D1
@@ -45617,7 +45617,7 @@ LAB_0FF1:
 
 ;!======
 
-; This is clearly a re-usable subroutine to _LVODraw a few rectangles given
+; This is clearly a re-usable subroutine to draw a few rectangles given
 ; it's preserving some registers.
 LAB_0FF2:
     MOVEM.L	D2-D3/D5-D7/A3,-(A7)
