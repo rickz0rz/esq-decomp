@@ -39,6 +39,7 @@ _LVOFindTask        = -294
 _LVOSetSignal       = -306
 _LVOAllocSignal     = -330
 _LVOFreeSignal      = -336
+_LVOAddPort         = -354
 _LVORemPort         = -360
 _LVOPutMsg          = -366
 _LVOGetMsg          = -372

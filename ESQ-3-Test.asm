@@ -2111,7 +2111,7 @@ LAB_00E9:
     JSR     _LVOSetDrMd(A6)
     MOVEA.L	A3,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVE.W	#$ffff,34(A3)
     BSET	#0,33(A3)
     MOVE.B	#$0f,30(A3)
@@ -5090,7 +5090,7 @@ LAB_01F4:
     JSR	    _LVOMove(A6)
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#3,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     LEA	    -89(A5),A0
     MOVEA.L	A0,A1
 LAB_01F5:
@@ -19928,10 +19928,10 @@ LAB_070E:
     JSR	    _LVOInitBitMap(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
-    JSR	    -234(A6)
+    JSR	    _LVOSetRast(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     JSR     LAB_0A49(PC)
     MOVEQ	#0,D7
 LAB_070F:
@@ -20027,7 +20027,7 @@ LAB_0712:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     JSR     LAB_0A48(PC)
     PEA	    LAB_2321
     JSR     LAB_071D(PC)
@@ -21421,7 +21421,7 @@ LAB_0799:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEM.L	(A7)+,D2-D7
     UNLK	A5
     RTS
@@ -21953,16 +21953,16 @@ LAB_07E2:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	-4(A5),A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEQ	#14,D0
     CMP.L	LAB_226E,D0
     BNE.S	LAB_07E3
     MOVEA.L	-4(A5),A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	-4(A5),A1
     MOVEQ	#2,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
 LAB_07E3:
     UNLK	A5
     RTS
@@ -22006,7 +22006,7 @@ LAB_07E5:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     PEA	    LAB_1D7C
     PEA	    90.W
     PEA	    40.W
@@ -22056,7 +22056,7 @@ LAB_07E6:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1D82
     PEA	    330.W
     PEA	    40.W
@@ -22090,7 +22090,7 @@ LAB_07E7:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     PEA	    LAB_1D85
     PEA	    300.W
     PEA	    40.W
@@ -22199,7 +22199,7 @@ LAB_07E7:
     JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     RTS
 
 ;!======
@@ -22398,7 +22398,7 @@ LAB_07ED:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     PEA	    LAB_1D92
     PEA	    90.W
     PEA	    40.W
@@ -22774,7 +22774,7 @@ LAB_07F8:
     MOVEQ	#0,D0
     MOVE.B	D6,D0
     MOVEA.L	LAB_2217,A1
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEQ	#0,D0
     MOVE.B	D7,D0
     MOVE.L	D0,(A7)
@@ -22792,7 +22792,7 @@ LAB_07F8:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEM.L	-60(A5),D2-D3/D6-D7
     UNLK	A5
     RTS
@@ -22808,10 +22808,10 @@ LAB_07F9:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEQ	#1,D0
     CMP.L	D0,D7
     BNE.S	LAB_07FA
@@ -22832,7 +22832,7 @@ LAB_07FB:
     JSR	    _LVOSetBPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVE.L	(A7)+,D7
     RTS
 
@@ -22846,10 +22846,10 @@ LAB_07FC:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     TST.L	LAB_21EC
     BNE.S	LAB_07FD
     LEA     LAB_1DA3,A0
@@ -22868,7 +22868,7 @@ LAB_07FE:
     JSR	    _LVOSetBPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     UNLK	A5
     RTS
 
@@ -23035,7 +23035,7 @@ LAB_080D:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVE.L	D6,LAB_21E8
     MOVEM.L	(A7)+,D6-D7
     RTS
@@ -23103,7 +23103,7 @@ LAB_0811:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEM.L	(A7)+,D2-D7
     RTS
 
@@ -23120,7 +23120,7 @@ LAB_0812:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1DA7
     PEA	    330.W
     PEA	    40.W
@@ -23177,7 +23177,7 @@ LAB_0812:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEM.L	(A7)+,D2-D3
     UNLK	A5
     RTS
@@ -24367,7 +24367,7 @@ LAB_087E:
     MOVE.L	#$000002b8,D1
     MOVEQ	#14,D2
     NOT.B	D2
-    JSR	    -390(A6)
+    JSR	    _LVOInitBitMap(A6)
     MOVEQ	#0,D5
 LAB_087F:
     MOVEQ	#3,D0
@@ -24811,7 +24811,7 @@ LAB_0895:
     MOVE.W	D0,LAB_228B
     MOVE.W	D0,LAB_2289
     MOVE.W	D0,LAB_2288
-    JSR	    -126(A6)
+    JSR	    _LVOEnable(A6)
     CLR.W	LAB_22A9
     CLR.L	-(A7)
     JSR     LAB_09A7(PC)
@@ -25038,7 +25038,7 @@ LAB_08C1:
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVE.L	112(A3),-4(A5)
     MOVEA.L	-4(A5),A0
     MOVE.B	#$01,55(A0)
@@ -25158,10 +25158,10 @@ LAB_08CB:
     MOVE.L	D2,D3
     MOVEA.L	LAB_2217,A1
     MOVE.L	24(A7),D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVE.L	D5,D0
     MOVEA.L	LAB_2217,A1
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A0
     MOVE.L	-4(A5),4(A0)
 LAB_08CC:
@@ -27135,7 +27135,7 @@ LAB_098E:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVE.L	LAB_1E21,-(A7)
     MOVE.L	LAB_1E1F,-(A7)
     PEA	    LAB_1E9B
@@ -27196,7 +27196,7 @@ LAB_0991:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVE.W	LAB_226A,D0
     BNE.W	LAB_0997
     MOVEQ	#0,D0
@@ -27243,11 +27243,11 @@ LAB_0991:
     JSR	    _LVOAvailMem(A6)
     MOVE.L	D0,D7
     MOVEQ	#4,D1
-    JSR	    -216(A6)
+    JSR	    _LVOAvailMem(A6)
     MOVE.L	D0,D6
     MOVEQ	#2,D1
     SWAP	D1
-    JSR	    -216(A6)
+    JSR	    _LVOAvailMem(A6)
     MOVE.L	D0,D5
     MOVE.L	D5,-(A7)
     MOVE.L	D6,-(A7)
@@ -27660,11 +27660,11 @@ LAB_09A4:
     JSR	    _LVOAvailMem(A6)
     MOVE.L	D0,76(A7)
     MOVEQ	#4,D1
-    JSR	    -216(A6)
+    JSR	    _LVOAvailMem(A6)
     MOVE.L	D0,80(A7)
     MOVEQ	#2,D1
     SWAP	D1
-    JSR	    -216(A6)
+    JSR	    _LVOAvailMem(A6)
     MOVE.L	D0,(A7)
     MOVE.L	80(A7),-(A7)
     MOVE.L	80(A7),-(A7)
@@ -27964,7 +27964,7 @@ LAB_09D1:
     ADDA.W	#$000a,A0
     MOVEA.L	A0,A1
     MOVEQ	#31,D0
-    JSR	    -234(A6)
+    JSR	    _LVOSetRast(A6)
     TST.L	-4(A5)
     BEQ.S	LAB_09D3
     TST.L	LAB_1B26
@@ -28458,7 +28458,7 @@ LAB_09F8:
     EXT.W	D0
     EXT.L	D0
     MOVEA.L	A0,A1
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEM.L	-88(A5),D2/D5-D7/A3
     UNLK	A5
     RTS
@@ -28853,7 +28853,7 @@ LAB_0A14:
     JSR	    _LVOForbid(A6)
     TST.W	LAB_1B83
     BNE.S	LAB_0A15
-    JSR	    -138(A6)
+    JSR	    _LVOPermit(A6)
     MOVEQ	#0,D0
     BRA.W	LAB_0A34
 LAB_0A15:
@@ -28861,7 +28861,7 @@ LAB_0A15:
     BEQ.S	LAB_0A16
     CMPI.L	#$00000001,LAB_1B28
     BLT.S	LAB_0A16
-    JSR	    -138(A6)
+    JSR	    _LVOPermit(A6)
     MOVEQ	#0,D0
     BRA.W	LAB_0A34
 LAB_0A16:
@@ -28869,11 +28869,11 @@ LAB_0A16:
     BNE.S	LAB_0A17
     CMPI.L	#$00000002,LAB_1B27
     BLT.S	LAB_0A17
-    JSR	    -138(A6)
+    JSR	    _LVOPermit(A6)
     MOVEQ	#0,D0
     BRA.W	LAB_0A34
 LAB_0A17:
-    JSR	    -138(A6)
+    JSR	    _LVOPermit(A6)
     MOVEQ	#0,D0
     MOVE.B	D0,-40(A5)
     MOVE.W	LAB_22AC,D6
@@ -29526,7 +29526,7 @@ LAB_0A63:
     ADDA.W	#$000a,A0
     MOVEA.L	A0,A1
     MOVEQ	#7,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEQ	#0,D0
     MOVEA.L	LAB_2216,A0
     MOVE.W	2(A0),D0
@@ -38243,7 +38243,7 @@ LAB_0D82:
     MOVEA.L	A3,A0
     LEA     LAB_22F4,A1
     MOVE.L	#$00000820,D0
-    JSR	    -624(A6)
+    JSR	    _LVOCopyMem(A6)
     MOVE.W	#$0001,LAB_1FA3
     MOVEQ	#0,D0
     MOVE.L	D0,-(A7)
@@ -38602,7 +38602,7 @@ LAB_0DA4:
     MOVEA.L	AbsExecBase,A6
     JSR	    _LVODisable(A6)
     MOVE.W	#$0001,LAB_1FA4
-    JSR	    -126(A6)
+    JSR	    _LVOEnable(A6)
     MOVEM.L	-20(A5),D4-D7
     UNLK	A5
     RTS
@@ -46568,7 +46568,7 @@ LAB_1054:
 LAB_1055:
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	A2,A0
 LAB_1056:
     TST.B	(A0)+
@@ -49808,7 +49808,7 @@ LAB_117C:
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     LEA	    60(A3),A0
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
@@ -50675,7 +50675,7 @@ LAB_11BE:
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     LEA	    -132(A5),A0
     MOVEA.L	A0,A1
 LAB_11BF:
@@ -51800,7 +51800,7 @@ LAB_122B:
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_22F2,A0
 LAB_122C:
     TST.B	(A0)+
@@ -54059,7 +54059,7 @@ LAB_12F7:
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     LEA	    60(A3),A0
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
@@ -60422,7 +60422,7 @@ LAB_15AA:
     BEQ.S	LAB_15AB
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
 LAB_15AB:
     MOVEQ	#0,D0
     MOVE.B	D6,D0
@@ -66919,10 +66919,10 @@ LAB_181E:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	A3,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#7,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEA.L	4(A3),A0
     MOVEQ	#0,D5
     MOVE.W	(A0),D5
@@ -66998,12 +66998,12 @@ LAB_1826:
     EXT.W	D0
     EXT.L	D0
     MOVEA.L	A3,A1
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVE.B	-15(A5),D0
     EXT.W	D0
     EXT.L	D0
     MOVEA.L	A3,A1
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVE.B	-14(A5),24(A3)
     MOVEA.L	4(A3),A0
     MOVE.B	-13(A5),5(A0)
@@ -67034,7 +67034,7 @@ LAB_1827:
     MOVEA.L	A3,A1
     MOVE.L	D7,D0
     MOVE.L	16(A7),D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEQ	#0,D6
 LAB_1828:
     MOVEA.L	4(A3),A0
@@ -67099,7 +67099,7 @@ LAB_182A:
     ADD.L	D1,D0
     MOVEA.L	A3,A1
     MOVE.L	D6,D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
 LAB_182B:
     ADDQ.L	#1,D6
     BRA.W	LAB_1828
@@ -67130,7 +67130,7 @@ LAB_182D:
     SUBQ.L	#1,D0
     MOVEA.L	A3,A1
     MOVE.L	D7,D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEQ	#0,D6
 LAB_182E:
     MOVEA.L	4(A3),A0
@@ -67159,7 +67159,7 @@ LAB_182E:
     MOVEA.L	A3,A1
     MOVE.L	D6,D0
     MOVE.L	16(A7),D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVE.L	D6,-(A7)
     PEA	    LAB_2176
     PEA	    -84(A5)
@@ -67225,7 +67225,7 @@ LAB_1832:
     MOVEA.L	A3,A1
     MOVE.L	D6,D0
     MOVE.L	16(A7),D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
 LAB_1833:
     ADDQ.L	#1,D6
     BRA.W	LAB_182E
@@ -67251,7 +67251,7 @@ LAB_1835:
     SUBQ.L	#1,D0
     MOVEA.L	A3,A1
     MOVEQ	#0,D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	4(A3),A0
     MOVEQ	#0,D0
     MOVE.W	(A0),D0
@@ -67261,7 +67261,7 @@ LAB_1835:
     MOVE.W	2(A0),D1
     SUBQ.L	#1,D1
     MOVEA.L	A3,A1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	4(A3),A0
     MOVEQ	#0,D0
     MOVE.W	2(A0),D0
@@ -67269,11 +67269,11 @@ LAB_1835:
     MOVEA.L	A3,A1
     MOVE.L	D0,D1
     MOVEQ	#0,D0
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
     MOVE.L	D0,D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	(A7)+,A3
     RTS
 
@@ -67327,10 +67327,10 @@ LAB_1837:
     JSR	    _LVOSetFont(A6)
     MOVEA.L	A3,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	4(A3),A0
     MOVEQ	#0,D0
     MOVE.W	(A0),D0
@@ -67398,7 +67398,7 @@ LAB_183A:
     ADDA.L	D0,A0
     LEA	    10(A0),A1
     MOVEQ	#0,D0
-    JSR	    -234(A6)
+    JSR	    _LVOSetRast(A6)
     MOVE.L	D7,D0
     MOVEQ	#77,D1
     ADD.L	D1,D1
@@ -67407,7 +67407,7 @@ LAB_183A:
     ADDA.L	D0,A0
     LEA	    10(A0),A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVE.L	D7,D0
     MOVEQ	#77,D1
     ADD.L	D1,D1
@@ -67416,7 +67416,7 @@ LAB_183A:
     ADDA.L	D0,A0
     LEA	    10(A0),A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVE.L	D7,D0
     MOVEQ	#77,D1
     ADD.L	D1,D1
@@ -67425,7 +67425,7 @@ LAB_183A:
     ADDA.L	D0,A0
     LEA	    10(A0),A1
     MOVEQ	#0,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVE.L	D7,D0
     MOVEQ	#77,D1
     ADD.L	D1,D1
@@ -68425,10 +68425,10 @@ LAB_1866:
     JSR	    _LVOSetRast(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	A3,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEA.L	LAB_1DE6,A0
     JSR	    _LVOSetFont(A6)
@@ -68563,10 +68563,10 @@ LAB_1870:
     MOVE.L	D1,-148(A5)
     MOVEA.L	A3,A1
     MOVEQ	#3,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
     MOVE.L	-148(A5),D1
@@ -68616,7 +68616,7 @@ LAB_1873:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
 LAB_1874:
     MOVE.L	-156(A5),D0
     CMP.L	-152(A5),D0
@@ -69032,7 +69032,7 @@ LAB_1892:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     LEA	    -46(A5),A0
     MOVEA.L	A0,A1
 LAB_1893:
@@ -69076,7 +69076,7 @@ LAB_1895:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
 LAB_1896:
     TST.L	-54(A5)
     BEQ.W	LAB_189E
@@ -69236,10 +69236,10 @@ LAB_18A2:
     MOVE.L	D1,-96(A5)
     MOVEA.L	A3,A1
     MOVEQ	#3,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	A3,A1
     MOVE.L	-92(A5),D0
     MOVE.L	-96(A5),D1
@@ -72429,13 +72429,13 @@ LAB_1A17:
 LAB_1A18:
     MOVEQ	#34,D0
     MOVE.L	#$00010001,D1
-    JSR	    -198(A6)
+    JSR	    _LVOAllocMem(A6)
     MOVEA.L	D0,A2
     MOVE.L	A2,D0
     BNE.S	LAB_1A19
     MOVEQ	#0,D0
     MOVE.B	D6,D0
-    JSR	    -336(A6)
+    JSR	    _LVOFreeSignal(A6)
     BRA.S	LAB_1A1B
 LAB_1A19:
     MOVE.L	A3,10(A2)
@@ -72445,12 +72445,12 @@ LAB_1A19:
     CLR.B	14(A2)
     MOVE.B	D6,15(A2)
     SUBA.L	A1,A1
-    JSR	    -294(A6)
+    JSR	    _LVOFindTask(A6)
     MOVE.L	D0,16(A2)
     MOVE.L	A3,D0
     BEQ.S	LAB_1A1A
     MOVEA.L	A2,A1
-    JSR	    -354(A6)
+    JSR	    _LVOAddPort(A6)
     BRA.S	LAB_1A1B
 LAB_1A1A:
     LEA	    24(A2),A0
@@ -73387,6 +73387,9 @@ LAB_1A8A:
     MOVE.L	D0,D5
 LAB_1A8B:
     JMP     LAB_085E
+
+;!======
+
     ORI.B	#$00,D0
     ORI.B	#$00,D0
     ORI.B	#$00,D0
@@ -73394,6 +73397,9 @@ LAB_1A8B:
     ORI.B	#$00,D0
     ORI.B	#$00,D0
     MOVEQ	#97,D0
+
+;!======
+
 LAB_1A8C:
     MOVEM.L	D2-D3/A2-A3/A6,-(A7)
     MOVEA.L	56(A7),A6
@@ -73828,7 +73834,7 @@ LAB_1AC1:
     CLR.B	-81(A5,D7.L)
     MOVEA.L	AbsExecBase,A6
     SUBA.L	A1,A1
-    JSR	    -294(A6)
+    JSR	    _LVOFindTask(A6)
     MOVE.L	D0,-90(A5)
     MOVEA.L	D0,A0
     TST.L	172(A0)
@@ -74016,6 +74022,9 @@ LAB_1AD9:
 ;!======
 
     DC.W	$0000
+
+;!======
+
 LAB_1ADA:
     MOVEM.L	D2-D6/A6,-(A7)
     MOVEA.L	-22440(A4),A6
