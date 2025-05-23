@@ -87,17 +87,21 @@ _LVOResetBattClock  = -6
 _LVOReadBattClock   = -12
 _LVOWriteBattClock  = -18
 
-; Test Macro 1
-_LVODraw_TEXT macro
-    MOVEA.L \1,A1
-    LEA     \2,A0
-    MOVEQ   \3,D0
-    JSR     _LVOText(A6)
-  endm
+; Create a string, null padded to the next word.
+Str macro
+	DC.B	\1
+	CNOP 0,2
+endm
 
+; Create a null-terminated string, null padded to the next word.
 NStr macro
 	DC.B	\1,0
-	align 2
+	CNOP 0,2
+endm
+
+NStr2 macro
+	DC.B	\1,\2,0
+	CNOP 0,2
 endm
 
 ; I should be able to do this too?:
@@ -72200,21 +72204,21 @@ LAB_1AEF:
 	SECTION S_1,DATA,CHIP
 
 GLB_STR_PLEASE_STANDBY:
-	DC.B	"Please Standby...",0
+	NStr	"Please Standby..."
 GLOB_STR_ATTENTION_SYSTEM_ENGINEER:
-	DC.B	"ATTENTION! SYSTEM ENGINEER",0,0
+	NStr	"ATTENTION! SYSTEM ENGINEER"
 GLOB_STR_REPORT_CODE_ER003:
-	DC.B	"Report Code ER003 to TV Guide Technical Services.",0
+	NStr	"Report Code ER003 to TV Guide Technical Services."
 LAB_1AF3:
-	DC.B	"YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",10,0
+	NStr2	"YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",10
 LAB_1AF4:
 	DS.W	1
 LAB_1AF5:
-	DC.B	"Disk Errors: %ld",10,0
+	NStr2	"Disk Errors: %ld",10
 LAB_1AF6:
 	DS.W	1
 LAB_1AF7:
-	DC.B	"Disk is %ld%% full",0,0
+	NStr	"Disk is %ld%% full"
 LAB_1AF8:
 	DS.W	1
 LAB_1AF9:
@@ -72244,7 +72248,7 @@ LAB_1B04:
 	DS.L	1
 	DS.W	1
 LAB_1B05:
-	DC.B	"?",0
+	NStr	"?"
 LAB_1B06:
 	DS.L	1
 LAB_1B07:
@@ -72325,45 +72329,45 @@ LAB_1B29:
 LAB_1B2A:
 	DS.L	1
 LAB_1B2B:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B2C:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B2D:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B2E:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B2F:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B30:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B31:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B32:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B33:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B34:
-	DC.B	"FORM",0,0
+	NStr	"FORM"
 LAB_1B35:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B36:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B37:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B38:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B39:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B3A:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B3B:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B3C:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B3D:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B3E:
-	DC.B	"BRUSH.c",0
+    NStr    "BRUSH.c"
 LAB_1B3F:
 	DC.B	"00",0,0
 LAB_1B40:
@@ -72374,37 +72378,37 @@ LAB_1B42:
 	DC.B	"DITHER",0,0
 	DS.W	1
 LAB_1B43:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B44:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B45:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B46:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B47:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B48:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B49:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B4A:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B4B:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B4C:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B4D:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B4E:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B4F:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B50:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B51:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B52:
-	DC.B	"CLEANUP.c",0
+	NStr	"CLEANUP.c"
 LAB_1B53:
 	DS.L	1
 LAB_1B54:
@@ -72492,9 +72496,9 @@ LAB_1B7B:
 LAB_1B7C:
 	DC.B	"%s",0,0
 LAB_1B7D:
-	DC.B	"COI.c",0
+	NStr	"COI.c"
 LAB_1B7E:
-	DC.B	"COI.c",0
+	NStr	"COI.c"
 LAB_1B7F:
 	DC.B	"NNNNNNXX00",0,0
 LAB_1B80:
@@ -72511,23 +72515,23 @@ LAB_1B84:
 LAB_1B85:
 	DS.W	1
 LAB_1B86:
-	DC.B	"CTASKS.c",0,0
+    NStr    "CTASKS.c"
 LAB_1B87:
-	DC.B	"iff_task",0,0
+    NStr    "iff_task"
 LAB_1B88:
-	DC.B	"CTASKS.c",0,0
+    NStr    "CTASKS.c"
 LAB_1B89:
-	DC.B	"iff_task",0,0
+    NStr    "iff_task"
 LAB_1B8A:
 	DC.W	$0001
 LAB_1B8B:
 	DS.L	1
 LAB_1B8C:
-	DC.B	"CTASKS.c",0,0
+    NStr    "CTASKS.c"
 LAB_1B8D:
-	DC.B	"CTASKS.c",0,0
+    NStr    "CTASKS.c"
 LAB_1B8E:
-	DC.B	"close_task",0,0
+	NStr	"close_task"
 LAB_1B8F:
 	DS.B	1
 LAB_1B90:
@@ -72900,13 +72904,13 @@ LAB_1C40:
 LAB_1C41:
 	DS.W	1
 LAB_1C42:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C43:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C44:
 	DC.B	"DREV 5",0,0
 LAB_1C45:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C46:
 	DC.B	"                                      ",0,0
 LAB_1C47:
@@ -72928,7 +72932,7 @@ LAB_1C4E:
 LAB_1C4F:
 	DC.B	"Saving Data View config            ",0
 LAB_1C50:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C51:
 	DC.B	"DREV 1",0,0
 LAB_1C52:
@@ -72940,41 +72944,41 @@ LAB_1C54:
 LAB_1C55:
 	DC.B	"DREV 5",0,0
 LAB_1C56:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C57:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C58:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C59:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C5A:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C5B:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C5C:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C5D:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C5E:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C5F:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C60:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C61:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C62:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C63:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C64:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C65:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C66:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C67:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C68:
 	DC.B	"[Qtable]",0,0
 LAB_1C69:
@@ -72988,7 +72992,7 @@ LAB_1C6C:
 LAB_1C6D:
 	DC.L	$0d0a0000
 LAB_1C6E:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C6F:
 	DC.B	"Special NGAD",0,0
 LAB_1C70:
@@ -72996,13 +73000,13 @@ LAB_1C70:
 LAB_1C71:
 	DC.B	"Filename:                            ",0
 LAB_1C72:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C73:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C74:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C75:
-	DC.B	"DISKIO2.c",0
+    NStr    "DISKIO2.c"
 LAB_1C76:
 	DC.B	"                                      ",0,0
 LAB_1C77:
@@ -73641,25 +73645,25 @@ LAB_1D60:
 LAB_1D61:
 	DC.B	"w_min = %ld minutes",10,0,0
 LAB_1D62:
-	DC.B	"wdcnt = every %ld times     (%ld)",10,0,0
+	NStr2	"wdcnt = every %ld times     (%ld)",10
 LAB_1D63:
-	DC.B	"cwcnt = %ld times from now  (%ld)",10,0,0
+	NStr2	"cwcnt = %ld times from now  (%ld)",10
 LAB_1D64:
-	DC.B	"WData = $%08lx",10,0
+	NStr2	"WData = $%08lx",10
 LAB_1D65:
-	DC.B	"WCity = '%s'",10,0
+	NStr2	"WCity = '%s'",10
 LAB_1D66:
-	DC.B	"Weather_ID = '%s'",10,0,0
+	NStr2	"Weather_ID = '%s'",10
 LAB_1D67:
-	DC.B	"cwcolor = %ld",10,0,0
+	NStr2	"cwcolor = %ld",10
 LAB_1D68:
 	DC.B	10,"banner_for_weather = %d",10,0
 LAB_1D69:
-	DC.B	"BitPlane1 =%8lx  ",0
+	NStr	"BitPlane1 =%8lx  "
 LAB_1D6A:
-	DC.B	"dh2:Gradient.ini",0,0
+	NStr	"dh2:Gradient.ini"
 LAB_1D6B:
-	DC.B	"NRLS",0,0
+	NStr	"NRLS"
 LAB_1D6C:
 	DC.B	"NYyLlZ",0,0
 LAB_1D6D:
@@ -73818,17 +73822,17 @@ GLOB_REF_UTILITY_LIBRARY:
 GLOB_REF_BATTCLOCK_RESOURCE:
 	DS.L	1
 GLOB_STR_PREVUEC_FONT:
-	DC.B	"PrevueC.font",0,0
+	NStr	"PrevueC.font"
 GLOB_STRUCT_TEXTATTR_PREVUEC_FONT:
 	DC.L	GLOB_STR_PREVUEC_FONT
 	DC.L	$00194020
 GLOB_STR_H26F_FONT:
-	DC.B	"h26f.font",0
+	NStr	"h26f.font"
 GLOB_STRUCT_TEXTATTR_H26F_FONT:
 	DC.L	GLOB_STR_H26F_FONT
 	DC.L	$001a0000
 GLOB_STR_TOPAZ_FONT:
-	DC.B	"topaz.font",0,0
+	NStr	"topaz.font"
 GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
 	DC.L	GLOB_STR_TOPAZ_FONT
     DC.W    $0008   ; Size 8 font
@@ -74963,54 +74967,54 @@ LAB_1EB6:
 	DC.L	LAB_1EB4
 	DC.L	LAB_1EB5
 LAB_1EB7:
-	DC.B	"  CartSW: %s CartREL: %s VidSW: %s on_air: %s ",0,0
+	NStr	"  CartSW: %s CartREL: %s VidSW: %s on_air: %s "
 LAB_1EB8:
-	DC.B	"CLOSED (ENABLED)",0,0
+	NStr	"CLOSED (ENABLED)"
 LAB_1EB9:
-	DC.B	"OPEN (DISABLED)",0
+	NStr	"OPEN (DISABLED)"
 LAB_1EBA:
-	DC.B	"CLOSED",0,0
+	NStr	"CLOSED"
 LAB_1EBB:
-	DC.B	"OPEN",0,0
+	NStr	"OPEN"
 LAB_1EBC:
-	DC.B	"CLOSED (ON AIR)",0
+	NStr	"CLOSED (ON AIR)"
 LAB_1EBD:
-	DC.B	"OPEN (OFF AIR)",0,0
+	NStr	"OPEN (OFF AIR)"
 LAB_1EBE:
-	DC.B	"ON_AIR",0,0
+	NStr	"ON_AIR"
 LAB_1EBF:
-	DC.B	"OFF_AIR",0
+	NStr	"OFF_AIR"
 LAB_1EC0:
-	DC.B	"NO_DETECT",0
+	NStr	"NO_DETECT"
 LAB_1EC1:
-	DC.B	" insertime = %s,  WINIT = 0x%04X ",0
+	NStr	" insertime = %s,  WINIT = 0x%04X "
 LAB_1EC2:
-	DC.B	" local_mode=%ld local_update=%ld LA_(mode=%d state=%d curEv=%d) laCur(curType=%d curEvent=%d) ",0,0
+	NStr	" local_mode=%ld local_update=%ld LA_(mode=%d state=%d curEv=%d) laCur(curType=%d curEvent=%d) "
 LAB_1EC3:
-	DC.B	" CTime = %02d/%02d/%04d %2d:%02d:%02d%s, LATime = %04d ",0
+	NStr	" CTime = %02d/%02d/%04d %2d:%02d:%02d%s, LATime = %04d "
 LAB_1EC4:
-	DC.B	"pm",0,0
+	NStr	"pm"
 LAB_1EC5:
-	DC.B	"am",0,0
+	NStr	"am"
 LAB_1EC6:
-	DC.B	" L_CHIP:%07ld  FAST:%08ld  MAX:%08ld ",0
+	NStr	" L_CHIP:%07ld  FAST:%08ld  MAX:%08ld "
 LAB_1EC7:
-	DC.B	" DATA: CMD CNT:%08ld CRC ERRS:%03ld LEN ERRS:%03ld BUF MAX:%05ld BUF CNT:%05ld",0,0
+	NStr	" DATA: CMD CNT:%08ld CRC ERRS:%03ld LEN ERRS:%03ld BUF MAX:%05ld BUF CNT:%05ld"
 LAB_1EC8:
-	DC.B	" CTRL: CMD CNT:%08ld CRC ERRS:%03ld LEN ERRS:%03ld BUF MAX:%05ld BUF CNT:%05ld ",0
+	NStr	" CTRL: CMD CNT:%08ld CRC ERRS:%03ld LEN ERRS:%03ld BUF MAX:%05ld BUF CNT:%05ld "
 LAB_1EC9:
-	DC.B	"  %05ld: PEP:%ld REUSED CLU:%s DISPATCH ERRS:%03ld EDSTATE:%ld  ",0,0
+	NStr	"  %05ld: PEP:%ld REUSED CLU:%s DISPATCH ERRS:%03ld EDSTATE:%ld  "
 LAB_1ECA:
-	DC.B	"TRUE",0,0
+	NStr	"TRUE"
 LAB_1ECB:
-	DC.B	"FALSE",0
+	NStr	"FALSE"
 LAB_1ECC:
 	DC.L	$0000030c,$0c0c0000,$000c0c00,$05010201
 	DC.L	$060a0505,$05000003
 LAB_1ECD:
 	DC.W	$0001
 LAB_1ECE:
-	DC.B	"dh2:logo.lst",0,0
+	NStr	"dh2:logo.lst"
 LAB_1ECF:
 	DC.L	LAB_1ECE
 LAB_1ED0:
@@ -75024,23 +75028,23 @@ LAB_1ED3:
 LAB_1ED4:
 	DS.L	1
 LAB_1ED5:
-	DC.B	"gfx:g.ads",0
+	NStr	"gfx:g.ads"
 LAB_1ED6:
 	DC.L	LAB_1ED5
 LAB_1ED7:
-	DC.B	"pwbrush",0
+	NStr	"pwbrush"
 LAB_1ED8:
-	DC.B	"pwi1",0,0
+	NStr	"pwi1"
 LAB_1ED9:
-	DC.B	"pwi2",0,0
+	NStr	"pwi2"
 LAB_1EDA:
-	DC.B	"pwi3",0,0
+	NStr	"pwi3"
 LAB_1EDB:
-	DC.B	"pwi4",0,0
+	NStr	"pwi4"
 LAB_1EDC:
-	DC.B	"pw"
+	Str		"pw"
 LAB_1EDD:
-	DC.B	"i5",0,0
+	NStr	"i5"
 LAB_1EDE:
 	DC.L	LAB_1ED7
 LAB_1EDF:
@@ -76335,7 +76339,7 @@ LAB_20FE:
 LAB_20FF:
 	DC.B	TextAlignCenter,"Tomorrow at ",0
 LAB_2100:
-	DC.B	"Showtimes ",0
+	NStr	"Showtimes "
 LAB_2101:
 	DC.B	"Showing at ",0
 LAB_2102:
@@ -76345,43 +76349,43 @@ LAB_2103:
 LAB_2104:
 	DC.B	"min)",0
 LAB_2105:
-	DC.B	24,"Tonight at ",0
+	DC.B	TextAlignCenter,"Tonight at ",0
 LAB_2106:
-	DC.B	24,"on",0
+	DC.B	TextAlignCenter,"on",0
 LAB_2107:
-	DC.B	24,"Channel ",0,0
+	DC.B	TextAlignCenter,"Channel ",0,0
 LAB_2108:
-	DC.B	"Sports on ",0,0
+	NStr	"Sports on "
 LAB_2109:
 	DC.L	LAB_2108
 LAB_210A:
-	DC.B	"Movie Summary for ",0,0
+	NStr	"Movie Summary for "
 LAB_210B:
 	DC.L	LAB_210A
 LAB_210C:
-	DC.B	"Summary of ",0
+	NStr	"Summary of "
 LAB_210D:
 	DC.L	LAB_210C
 LAB_210E:
-	DC.B	" channel ",0
+	NStr	" channel "
 LAB_210F:
 	DC.L	LAB_210E
 LAB_2110:
-	DC.B	"No Data.",0,0
+	NStr	"No Data."
 LAB_2111:
 	DC.L	LAB_2110
 GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
-	DC.B    "Please Stand By for your Local Listings.  ER007",0
+	NStr	"Please Stand By for your Local Listings.  ER007"
 GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
 	DC.L	GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 LAB_2114:
-	DC.B	"Off Air.",0,0
+	NStr	"Off Air."
 LAB_2115:
 	DC.L	LAB_2114
 LAB_2116:
-	DC.B	"%s %s %ld %04ld",0
+	NStr	"%s %s %ld %04ld"
 LAB_2117:
-	DC.B	"Weather Update for ",0
+	NStr	"Weather Update for "
 LAB_2118:
 	DS.W	1
 LAB_2119:
@@ -76423,15 +76427,15 @@ LAB_212A:
 LAB_212B:
 	DS.W	1
 LAB_212C:
-	DC.B	"00",0,0
+	NStr	"00"
 LAB_212D:
-	DC.B	"00",0,0
+	NStr	"00"
 LAB_212E:
-	DC.B	"11",0,0
+	NStr	"11"
 LAB_212F:
-	DC.B	"11",0,0
+	NStr	"11"
 LAB_2130:
-	DC.B	"yl",0,0
+	NStr	"yl"
 	DS.W	1
 LAB_2131:
 	DS.W	1
@@ -76448,7 +76452,7 @@ LAB_2136:
 LAB_2137:
 	DC.B	TextAlignCenter,"Ch. ",0
 LAB_2138:
-	DC.B	"   ",0
+	NStr	"   "
 LAB_2139:
 	DC.B	TextAlignCenter,"%c",0
 LAB_213A:
@@ -76456,7 +76460,7 @@ LAB_213A:
 LAB_213B:
 	DC.W	$1800
 LAB_213C:
-	DC.B	"   ",0
+	NStr	"   "
 LAB_213D:
 	DC.W	$1800
 LAB_213E:
@@ -76464,11 +76468,11 @@ LAB_213E:
 LAB_213F:
 	DC.B	TextAlignCenter,"%s",0
 LAB_2140:
-	DC.B	" at ",0,0
+	NStr	" at "
 LAB_2141:
-	DC.B	" vs. ",0
+	NStr	" vs. "
 LAB_2142:
-	DC.B	" vs ",0,0
+	NStr	" vs "
 LAB_2143:
 	DC.W	$1800
 LAB_2144:
@@ -76476,11 +76480,11 @@ LAB_2144:
 LAB_2145:
 	DC.W	$0300
 LAB_2146:
-	DC.B	"PPV",0
+	NStr	"PPV"
 LAB_2147:
-	DC.B	"SBE",0
+	NStr	"SBE"
 LAB_2148:
-	DC.B	"SPORTS",0,0
+	NStr	"SPORTS"
 LAB_2149:
 	DC.W	$ffff
 LAB_214A:
@@ -76490,17 +76494,17 @@ LAB_214B:
 LAB_214C:
 	DC.B	"xx%s",18,"TEMPO",0,0
 LAB_214D:
-	DC.B	"TEXTDISP.c",0,0
+	NStr	"TEXTDISP.c"
 LAB_214E:
-	DC.B	" ",0
+	NStr	" "
 LAB_214F:
-	DC.B	"TEXTDISP.c",0,0
+	NStr	"TEXTDISP.c"
 LAB_2150:
-	DC.B	"dh2:SourceCfg.ini",0
+	NStr	"dh2:SourceCfg.ini"
 LAB_2151:
-	DC.B	"TEXTDISP.c",0,0
+	NStr	"TEXTDISP.c"
 LAB_2152:
-	DC.B	"TEXTDISP.c",0,0
+	NStr	"TEXTDISP.c"
 	DC.B	0,0
 LAB_2153:
 	DC.W	$0001
@@ -76584,7 +76588,7 @@ LAB_2175:
 LAB_2176:
 	DC.B	"%03ld",0
 LAB_2177:
-	NStr "ViewMode = %ld"
+	NStr	"ViewMode = %ld"
 LAB_2178:
 	DS.L	1
 LAB_2179:
@@ -76669,15 +76673,15 @@ LAB_219A:
 LAB_219B:
 	DC.L	$00000001
 LAB_219C:
-	DC.B	"WDISP.c",0
+	NStr	"WDISP.c"
 LAB_219D:
-	DC.B	"???/",0,0
+	NStr	"???/"
 LAB_219E:
-	DC.B    "%d/",0
+	NStr	"%d/"
 LAB_219F:
-	DC.B	"???",0
+	NStr	"???"
 LAB_21A0:
-	DC.B	"%d",0,0
+	NStr	"%d"
 LAB_21A1:
 	DS.L	1
 LAB_21A2:
@@ -76685,9 +76689,9 @@ LAB_21A2:
 LAB_21A3:
 	DS.L	1
 LAB_21A4:
-	DC.B	"df1:debug.log",0
+	NStr	"df1:debug.log"
 LAB_21A5:
-	DC.B	"a+",0,0
+	NStr	"a+"
 	DS.L	1
 	DC.L	$00280000
 	DS.L	5
