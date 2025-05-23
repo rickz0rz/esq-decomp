@@ -1968,6 +1968,9 @@ LAB_00E3:
 LAB_00E4:
     LEA     LAB_00E5(PC),A5
     JSR     _LVOSupervisor(A6)
+
+;!======
+
     DC.W	$0000
 LAB_00E5:
     LEA	$1000000,A0
@@ -4820,10 +4823,10 @@ LAB_01E5:
     MOVE.L	D0,D1
     MOVEQ	#35,D2
     MOVEQ	#33,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#7,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
     ADD.L	D2,D0
@@ -4831,7 +4834,7 @@ LAB_01E5:
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#36,D0
     MOVEQ	#0,D1
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
     MOVEQ	#35,D1
@@ -4873,7 +4876,7 @@ LAB_01E7:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	LAB_1FFC,A1
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
     MOVEQ	#36,D1
@@ -5084,7 +5087,7 @@ LAB_01F4:
     ADD.L	D1,D2
     SUBQ.L	#1,D2
     MOVE.L	D2,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#3,D0
     JSR	    -342(A6)
@@ -5097,7 +5100,7 @@ LAB_01F5:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	LAB_1FFC,A1
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     ADDQ.L	#1,D6
     BRA.W	LAB_01EF
 LAB_01F6:
@@ -5186,10 +5189,10 @@ LAB_01FB:
     ADD.L	D1,D2
     SUBQ.L	#1,D2
     MOVE.L	D2,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#3,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     LEA	    -89(A5),A0
     MOVEA.L	A0,A1
 LAB_01FC:
@@ -5199,7 +5202,7 @@ LAB_01FC:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	LAB_1FFC,A1
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEM.L	-120(A5),D2-D3/D5-D7
     UNLK	A5
     RTS
@@ -5269,10 +5272,10 @@ LAB_01FE:
     MOVE.L	D0,D1
     MOVEQ	#40,D2
     NOT.B	D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#3,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVE.B	-23(A5),D4
     CLR.B	-23(A5)
     MOVE.B	LAB_1BC0,D0
@@ -5333,7 +5336,7 @@ LAB_0202:
     MOVEA.L	A0,A1
     MOVE.L	D7,D0
     MOVE.L	24(A7),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    -32(A5),A0
     MOVEA.L	A0,A1
 LAB_0203:
@@ -5343,7 +5346,7 @@ LAB_0203:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	LAB_2217,A1
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVE.B	LAB_1BC0,D0
     MOVEQ	#78,D1
     CMP.B	D1,D0
@@ -5355,7 +5358,7 @@ LAB_0203:
     MOVEA.L	LAB_2217,A0
     MOVE.W	62(A0),D1
     MOVEA.L	A0,A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    -23(A5),A0
     MOVEA.L	A0,A1
 LAB_0204:
@@ -5365,7 +5368,7 @@ LAB_0204:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	LAB_2217,A1
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_0205:
     MOVE.L	D7,D0
     ADDI.L	#$000001c0,D0
@@ -5468,11 +5471,11 @@ LAB_0208:
     MOVEA.L	A0,A1
     MOVE.L	D7,D0
     MOVE.L	20(A7),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVE.L	D6,D0
     MOVEA.L	LAB_2217,A1
     LEA	    -32(A5),A0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEQ	#0,D0
     MOVEA.L	LAB_2217,A0
     MOVE.W	58(A0),D0
@@ -9861,7 +9864,7 @@ LAB_0380:
 LAB_0381:
     JMP     LAB_149B
 LAB_0382:
-    JMP     LAB_19A0
+    JMP     JMP_TBL_PRINTF
 LAB_0383:
     JMP     LAB_1498
 LAB_0384:
@@ -10811,7 +10814,7 @@ LAB_03DE:
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA     16(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -12915,12 +12918,12 @@ LAB_0483:
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVE.L	A3,(A7)
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    28(A7),A7
     MOVEA.L	(A7)+,A3
     RTS
@@ -14276,7 +14279,7 @@ LAB_0503:
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
 LAB_0504:
     LEA     LAB_21C2,A0
@@ -14295,12 +14298,12 @@ LAB_0505:
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_21C2
     PEA	    180.W
     PEA	    205.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
 LAB_0506:
     PEA	    4.W
@@ -14535,12 +14538,12 @@ LAB_0514:
     PEA	    210.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1C77
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
 LAB_0515:
     MOVEQ	#-1,D0
@@ -14582,7 +14585,7 @@ LAB_0515:
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     BRA.S	LAB_0517
 LAB_0516:
@@ -14613,12 +14616,12 @@ LAB_0518:
     MOVE.L	28(A7),-(A7)
     PEA	    LAB_1C7B
     PEA	    -58(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -58(A5)
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    36(A7),A7
 LAB_0519:
     MOVEM.L	-180(A5),D2-D3/D5-D7
@@ -15144,7 +15147,7 @@ LAB_055B:
 
 ;!======
 
-LAB_055C:
+JMP_TBL_DISPLAYTEXT_1:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3,-(A7)
 
@@ -16966,7 +16969,7 @@ LAB_0605:
     PEA	    4.W
     PEA	    LAB_1CF8
     PEA	    -138(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -138(A5)
     PEA	    -87(A5)
     JSR     LAB_05C5(PC)
@@ -16979,7 +16982,7 @@ LAB_0605:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1CF9
     PEA	    -138(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -138(A5)
     PEA	    -87(A5)
     JSR     LAB_05C5(PC)
@@ -17006,7 +17009,7 @@ LAB_0607:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1CFA
     PEA	    -138(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -138(A5)
     PEA	    -87(A5)
     JSR     LAB_05C5(PC)
@@ -17025,7 +17028,7 @@ LAB_0609:
     PEA	    19.W
     PEA	    LAB_1CFC
     PEA	    -138(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -138(A5)
     PEA	    -87(A5)
     JSR     LAB_05C5(PC)
@@ -17038,7 +17041,7 @@ LAB_0609:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1CFD
     PEA	    -138(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -138(A5)
     PEA	    -87(A5)
     JSR     LAB_05C5(PC)
@@ -17065,7 +17068,7 @@ LAB_060B:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1CFE
     PEA	    -138(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -138(A5)
     PEA	    -87(A5)
     JSR     LAB_05C5(PC)
@@ -18534,7 +18537,7 @@ LAB_0695:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
@@ -19301,7 +19304,7 @@ LAB_06DD:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVE.B	#$0b,LAB_1D13
     BRA.W	LAB_06E1
@@ -19310,7 +19313,7 @@ LAB_06DD:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVE.B	#$0c,LAB_1D13
     BRA.W	LAB_06E1
@@ -19319,7 +19322,7 @@ LAB_06DD:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVE.B	#$0d,LAB_1D13
     BRA.W	LAB_06E1
@@ -19328,12 +19331,12 @@ LAB_06DD:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D1F
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVE.B	#$0e,LAB_1D13
     BRA.W	LAB_06E1
@@ -19448,7 +19451,7 @@ LAB_06E2:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    1.W
     JSR     LAB_0484(PC)
     LEA	    20(A7),A7
@@ -19469,7 +19472,7 @@ LAB_06E4:
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_0471(PC)
     LEA	    16(A7),A7
 LAB_06E5:
@@ -19489,7 +19492,7 @@ LAB_06E6:
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_08A3(PC)
     LEA	    16(A7),A7
 LAB_06E7:
@@ -19509,7 +19512,7 @@ LAB_06E8:
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVEQ	#0,D6
 LAB_06E9:
@@ -19625,7 +19628,7 @@ LAB_06F5:
     PEA	    150.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -19643,7 +19646,7 @@ LAB_06F6:
     PEA	    150.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -19676,17 +19679,17 @@ LAB_06F8:
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D27
     PEA	    360.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D28
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    52(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -19873,7 +19876,7 @@ LAB_0709:
     PEA	    270.W
     PEA	    145.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
 LAB_070A:
     MOVEA.L	LAB_2217,A1
@@ -19988,7 +19991,7 @@ LAB_0711:
     PEA	    LAB_1D2B
     PEA	    LAB_1D2A
     PEA	    -41(A5)
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     JSR     LAB_0726(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#3,D0
@@ -20017,7 +20020,7 @@ LAB_0712:
     MOVE.L	D1,-(A7)
     PEA	    280.W
     MOVE.L	A1,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -20045,7 +20048,7 @@ LAB_0713:
     JSR	    _LVOInitBitMap(A6)
     MOVEA.L	LAB_2217,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     JSR     LAB_071E(PC)
     MOVEQ	#0,D0
     MOVE.W	D0,LAB_2252
@@ -20123,21 +20126,21 @@ LAB_0718:
     PEA	    360.W
     PEA	    90.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_2245
     PEA	    360.W
     PEA	    210.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVE.L	LAB_226C,(A7)
     PEA	    LAB_1D2C
     PEA	    -41(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -41(A5)
     PEA	    360.W
     PEA	    410.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D2E
     JSR     LAB_03C0(PC)
     PEA	    LAB_1D2F
@@ -20147,13 +20150,13 @@ LAB_0718:
     MOVE.L	64(A7),-(A7)
     PEA	    LAB_1D2D
     PEA	    -41(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    76(A7),A7
     PEA	    -41(A5)
     PEA	    88.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_07E7(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
@@ -20163,7 +20166,7 @@ LAB_0718:
     PEA	    390.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -20244,7 +20247,7 @@ LAB_0728:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D34
     PEA	    -41(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    210.W
@@ -20279,7 +20282,7 @@ LAB_0729:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D35
     PEA	    -51(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    120.W
@@ -20294,7 +20297,7 @@ LAB_0729:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D36
     PEA	    -51(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    150.W
@@ -20307,7 +20310,7 @@ LAB_0729:
     MOVE.L	D0,(A7)
     PEA	    LAB_1D37
     PEA	    -51(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    68(A7),A7
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
@@ -20386,7 +20389,7 @@ LAB_072F:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D39
     PEA	    -120(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    90.W
@@ -20424,7 +20427,7 @@ LAB_0735:
     MOVE.L	A1,-(A7)
     PEA	    LAB_1D3A
     PEA	    -120(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    120.W
@@ -20466,7 +20469,7 @@ LAB_0739:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D3E
     PEA	    -120(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    150.W
@@ -20611,7 +20614,7 @@ LAB_0747:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D49
     PEA	    -120(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    120.W
@@ -20628,7 +20631,7 @@ LAB_0747:
     MOVE.L	A1,-(A7)
     PEA	    LAB_1D4A
     PEA	    -120(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    150.W
@@ -21247,7 +21250,7 @@ LAB_0781:
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
     MOVEQ	#20,D1
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     JSR     LAB_08B1(PC)
     LEA	    12(A7),A7
     MOVE.W	#$0001,LAB_1DF3
@@ -21315,7 +21318,7 @@ LAB_0788:
     MOVEQ	#120,D1
     MOVEQ	#100,D3
     ADD.L	D3,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     ADDQ.B	#1,D7
     BRA.S	LAB_0788
 LAB_0789:
@@ -21382,12 +21385,12 @@ LAB_0795:
     MOVE.L	LAB_2267,-(A7)
     PEA	    LAB_1D69
     PEA	    -50(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -50(A5)
     PEA	    232.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    28(A7),A7
     BRA.S	LAB_0799
 LAB_0796:
@@ -21596,7 +21599,7 @@ LAB_07AA:
     PEA	    360.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     CLR.L	(A7)
     JSR     LAB_07C4(PC)
     LEA	    16(A7),A7
@@ -21606,7 +21609,7 @@ LAB_07AB:
     PEA	    360.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    1.W
     JSR     LAB_07C4(PC)
     LEA	    20(A7),A7
@@ -21616,7 +21619,7 @@ LAB_07AC:
     PEA	    360.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    2.W
     JSR     LAB_07C4(PC)
     LEA	    20(A7),A7
@@ -21626,7 +21629,7 @@ LAB_07AD:
     PEA	    360.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    3.W
     JSR     LAB_07C4(PC)
     LEA	    20(A7),A7
@@ -21636,7 +21639,7 @@ LAB_07AE:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_07D0(PC)
     LEA	    16(A7),A7
     BRA.W	LAB_07B7
@@ -21645,7 +21648,7 @@ LAB_07AF:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_08B8(PC)
     LEA	    16(A7),A7
     BRA.W	LAB_07B7
@@ -21654,7 +21657,7 @@ LAB_07B0:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_08B1(PC)
     LEA	    16(A7),A7
     BRA.W	LAB_07B7
@@ -21663,7 +21666,7 @@ LAB_07B1:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_07CD(PC)
     LEA	    16(A7),A7
     BRA.W	LAB_07B7
@@ -21672,7 +21675,7 @@ LAB_07B2:
     PEA	    270.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_09B9(PC)
     LEA	    16(A7),A7
     TST.B	D0
@@ -21681,7 +21684,7 @@ LAB_07B2:
     PEA	    270.W
     PEA	    235.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     BRA.S	LAB_07B7
 LAB_07B3:
@@ -21689,7 +21692,7 @@ LAB_07B3:
     PEA	    270.W
     PEA	    235.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     BRA.S	LAB_07B7
 LAB_07B4:
@@ -21697,7 +21700,7 @@ LAB_07B4:
     PEA	    270.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_07D1(PC)
     LEA	    16(A7),A7
     BRA.S	LAB_07B7
@@ -21706,7 +21709,7 @@ LAB_07B5:
     PEA	    270.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     JSR     LAB_07CC(PC)
     LEA	    16(A7),A7
     BRA.S	LAB_07B7
@@ -21968,22 +21971,27 @@ LAB_07E3:
 
 LAB_07E4:
     MOVEM.L	D2-D3,-(A7)
+
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR	    _LVOSetAPen(A6)
+
     MOVEA.L	LAB_2217,A1
     MOVEQ	#40,D0
     MOVEQ	#68,D1
     MOVE.L	#$000002a8,D2
     MOVE.L	#$000001ad,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
+
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
+
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
+
     MOVEM.L	(A7)+,D2-D3
     RTS
 
@@ -22003,33 +22011,33 @@ LAB_07E5:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D7D
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D7E
     PEA	    150.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D7F
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    68(A7),A7
     PEA	    LAB_1D80
     PEA	    210.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D81
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -22053,17 +22061,17 @@ LAB_07E6:
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D83
     PEA	    360.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D84
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22087,12 +22095,12 @@ LAB_07E7:
     PEA	    300.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D86
     PEA	    330.W
     PEA	    90.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#3,D0
@@ -22101,94 +22109,94 @@ LAB_07E7:
     MOVEA.L	LAB_2217,A1
     MOVEQ	#100,D0
     MOVE.L	#$0000012c,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DD7,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#95,D0
     ADD.L	D0,D0
     MOVE.L	#$0000012c,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DC8,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$00000118,D0
     MOVE.L	#$0000012c,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DC9,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$00000181,D0
     MOVE.L	#$0000012c,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DCA,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$000001db,D0
     MOVE.L	#$0000012c,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DCB,A0
     MOVEQ	#2,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$00000253,D0
     MOVE.L	#$0000012c,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DCD,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#75,D0
     ADD.L	D0,D0
     MOVE.L	#$0000014a,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DD1,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#120,D0
     ADD.L	D0,D0
     MOVE.L	#$0000014a,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DD2,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$00000159,D0
     MOVE.L	#$0000014a,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DD3,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$000001c2,D0
     MOVE.L	#$0000014a,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1BC4,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVE.L	#$0000022b,D0
     MOVE.L	#$0000014a,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	LAB_2217,A1
     LEA     LAB_1DD6,A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     JSR	    -342(A6)
@@ -22208,21 +22216,21 @@ LAB_07E8:
     MOVEQ	#68,D1
     MOVE.L	#$00000280,D2
     MOVE.L	#$00000129,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVE.L	D7,D0
     MOVEA.L	LAB_2217,A1
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#40,D0
     MOVE.L	#$0000012a,D1
     MOVE.L	#$000001ad,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEM.L	(A7)+,D2-D3/D7
     RTS
 
@@ -22245,12 +22253,12 @@ LAB_07E9:
     MOVEQ	#40,D0
     MOVEQ	#68,D1
     MOVE.L	#$00000280,D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     CMPI.L	#$ffffffff,LAB_21E8
     BLE.S	LAB_07EA
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVE.L	LAB_21E8,D0
     MOVEQ	#30,D1
     JSR     LAB_0AB6(PC)
@@ -22263,7 +22271,7 @@ LAB_07E9:
     MOVEA.L	LAB_2217,A1
     MOVEQ	#40,D0
     MOVE.L	#$00000280,D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
 LAB_07EA:
     MOVEM.L	(A7)+,D2-D3/D7
     RTS
@@ -22281,31 +22289,31 @@ LAB_07EB:
     MOVEQ	#68,D1
     MOVE.L	#$00000280,D2
     MOVE.L	#$00000147,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#40,D0
     MOVE.L	#$00000148,D1
     MOVE.L	#$000001ad,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1D87
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D88
     PEA	    420.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVEM.L	(A7)+,D2-D3
     RTS
@@ -22320,59 +22328,59 @@ LAB_07EC:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEQ	#0,D0
     MOVE.B	LAB_1DCA,D0
     MOVE.L	D0,-(A7)
     PEA	    LAB_1D89
     PEA	    -80(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -80(A5)
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D8A
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D8B
     PEA	    150.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D8C
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    76(A7),A7
     PEA	    LAB_1D8D
     PEA	    210.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D8E
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D8F
     PEA	    270.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D90
     PEA	    300.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D91
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    80(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -22395,22 +22403,22 @@ LAB_07ED:
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D93
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D94
     PEA	    150.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D95
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    64(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -22427,12 +22435,12 @@ LAB_07EE:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1D96
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    2.W
     MOVE.L	LAB_21EE,-(A7)
     PEA	    LAB_21F0
@@ -22441,12 +22449,12 @@ LAB_07EE:
     PEA	    240.W
     PEA	    190.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D97
     PEA	    270.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVE.L	LAB_21EE,D0
     LSL.L	#2,D0
     SUB.L	LAB_21EE,D0
@@ -22463,12 +22471,12 @@ LAB_07EE:
     PEA	    270.W
     PEA	    85.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D98
     PEA	    270.W
     PEA	    135.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVE.L	LAB_21EE,D0
     LSL.L	#2,D0
     SUB.L	LAB_21EE,D0
@@ -22484,12 +22492,12 @@ LAB_07EE:
     PEA	    270.W
     PEA	    180.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D99
     PEA	    270.W
     PEA	    230.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    76(A7),A7
     MOVE.L	LAB_21EE,D0
     LSL.L	#2,D0
@@ -22506,7 +22514,7 @@ LAB_07EE:
     PEA	    270.W
     PEA	    275.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    28(A7),A7
     RTS
 
@@ -22521,12 +22529,12 @@ LAB_07EF:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1D9A
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    20(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -22547,12 +22555,12 @@ LAB_07F0:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1D9B
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    2.W
     MOVE.L	LAB_21FD,-(A7)
     PEA	    LAB_21F0
@@ -22561,47 +22569,47 @@ LAB_07F0:
     PEA	    330.W
     PEA	    340.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D9C
     PEA	    330.W
     PEA	    370.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1D9D
     PEA	    360.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    80(A7),A7
     PEA	    LAB_1D9E
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#40,D0
     MOVEQ	#68,D1
     MOVE.L	#$00000280,D2
     MOVEQ	#98,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     PEA	    LAB_1D9F
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -22700,7 +22708,7 @@ LAB_07F4:
     ADDA.L	LAB_21E8,A0
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     UNLK	A5
     RTS
 
@@ -22752,7 +22760,7 @@ LAB_07F8:
     ADD.L	D1,D1
     MOVE.L	#$000001da,D2
     MOVE.L	#$00000113,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEQ	#0,D0
     MOVE.B	D7,D0
     MOVE.L	D0,(A7)
@@ -22772,12 +22780,12 @@ LAB_07F8:
     MOVE.L	D0,(A7)
     PEA	    LAB_1DA0
     PEA	    -41(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -41(A5)
     PEA	    272.W
     PEA	    205.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22816,7 +22824,7 @@ LAB_07FB:
     PEA	    390.W
     PEA	    296.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
@@ -22853,7 +22861,7 @@ LAB_07FE:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22894,12 +22902,12 @@ LAB_0803:
     MOVE.L	LAB_21FC,-(A7)
     PEA	    LAB_1DA5
     PEA	    -40(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -40(A5)
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    28(A7),A7
     MOVEQ	#0,D0
     MOVE.L	D0,LAB_21EA
@@ -22985,7 +22993,7 @@ LAB_0808:
     MOVEA.L	LAB_2217,A1
     MOVEQ	#40,D0
     MOVE.L	#$00000280,D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     CLR.L	LAB_21E8
 LAB_0809:
     MOVE.L	LAB_21E8,D0
@@ -23066,26 +23074,26 @@ LAB_0810:
     MOVEA.L	LAB_2217,A1
     MOVEQ	#68,D1
     MOVEQ	#98,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#6,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVE.L	D5,D0
     MOVE.L	D4,D2
     MOVEA.L	LAB_2217,A1
     MOVEQ	#68,D1
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1DA6
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    16(A7),A7
     MOVE.L	LAB_21EA,LAB_2201
 LAB_0811:
@@ -23117,17 +23125,17 @@ LAB_0812:
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DA8
     PEA	    360.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DA9
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     MOVE.L	LAB_21EC,(A7)
     BSR.W	LAB_07FC
     MOVE.L	LAB_1D7B,(A7)
@@ -23146,22 +23154,22 @@ LAB_0812:
     MOVEQ	#40,D0
     MOVE.L	#$00000280,D2
     MOVE.L	#$00000134,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#7,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVE.L	LAB_21FC,(A7)
     PEA	    LAB_1DAA
     PEA	    -41(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -41(A5)
     PEA	    300.W
     PEA	    190.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    76(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -23734,12 +23742,12 @@ LAB_0851:
     MOVE.L  LAB_21FC,(A7)
     PEA     LAB_1DAB
     PEA     -44(A5)
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     PEA     -44(A5)
     PEA     300.W
     PEA     190.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
 
      ; Set drawing mode to 1
     MOVEA.L	LAB_2217,A1
@@ -23825,53 +23833,53 @@ LAB_0857:
     PEA	    390.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DAD
     PEA	    90.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DAE
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DAF
     PEA	    150.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DB0
     PEA	    180.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    80(A7),A7
     PEA	    LAB_1DB1
     PEA	    210.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DB2
     PEA	    240.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DB3
     PEA	    270.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DB4
     PEA	    300.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     PEA	    LAB_1DB5
     PEA	    330.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     LAB_055C(PC)
+    JSR     JMP_TBL_DISPLAYTEXT_1(PC)
     LEA	    80(A7),A7
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
@@ -24583,7 +24591,7 @@ LAB_0887:
     MOVE.L	D0,D1
     MOVE.L	#$000002b7,D2
     MOVE.L	#$0000018f,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A0
     MOVE.L	#LAB_2223,4(A0)
     MOVEA.L	LAB_2217,A1
@@ -24595,7 +24603,7 @@ LAB_0887:
     MOVE.L	D0,D1
     MOVEQ	#120,D3
     ADD.L	D3,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A0
     MOVE.L	#LAB_221B,4(A0)
     MOVEA.L	LAB_2217,A1
@@ -24604,10 +24612,10 @@ LAB_0887:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#2,D0
-    JSR	    -348(A6)
+    JSR	    _LVOSetBPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    150.W
@@ -24634,7 +24642,7 @@ LAB_0888:
     PEA	    LAB_1E11
     PEA	    LAB_1E10
     PEA	    LAB_2204
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     LEA     LAB_1E12,A0
     LEA     LAB_2249,A1
     MOVEQ	#9,D0
@@ -24904,19 +24912,31 @@ LAB_08B4:
     JMP     LAB_0F9E
 LIBRARIES_LOAD_FAILED:
     JMP     LAB_19E3
+
+;!======
+
     ORI.B	#$00,D0
     DC.W	$0000
+
+;!======
+
 LAB_08B6:
     JMP     LAB_0CC8
-j_SUB_printf_0:
-    JMP     LAB_19A0
+PRINTF_0:
+    JMP     JMP_TBL_PRINTF
 LAB_08B8:
     JMP     LAB_0056
 LAB_08B9:
     JMP     LAB_01BB
 LAB_08BA:
     JMP     LAB_0E09
+
+;!======
+
     MOVEQ	#97,D0
+
+;!======
+
 LAB_08BB:
     LINK.W	A5,#-4
     MOVEM.L	D2/D7/A3,-(A7)
@@ -27120,12 +27140,12 @@ LAB_098E:
     MOVE.L	LAB_1E1F,-(A7)
     PEA	    LAB_1E9B
     PEA	    -81(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -81(A5)
     PEA	    330.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVEQ	#1,D0
     CMP.L	LAB_1DED,D0
@@ -27138,12 +27158,12 @@ LAB_0990:
     MOVE.L	A0,-(A7)
     PEA	    LAB_1E9C
     PEA	    -81(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -81(A5)
     PEA	    360.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#3,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -27152,7 +27172,7 @@ LAB_0990:
     PEA	    390.W
     PEA	    175.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -27190,12 +27210,12 @@ LAB_0991:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EA0
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    112.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVEQ	#0,D0
     MOVE.W	LAB_2347,D0
     MOVE.W	LAB_2348,D1
@@ -27207,12 +27227,12 @@ LAB_0991:
     MOVE.L	D0,-(A7)
     PEA     LAB_1EA1
     PEA     -72(A5)
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     PEA     -72(A5)
     PEA	    142.W
     PEA	    40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    68(A7),A7
     MOVEQ	#7,D0
     AND.L	LAB_1DF0,D0
@@ -27234,7 +27254,7 @@ LAB_0991:
     MOVE.L	D7,-(A7)
     PEA	    LAB_1EA2
     PEA     -72(A5)
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     LEA	    20(A7),A7
     BRA.W	LAB_0996
 LAB_0992:
@@ -27249,7 +27269,7 @@ LAB_0992:
     MOVE.L	D7,-(A7)
     PEA	    LAB_1EA3
     PEA     -72(A5)
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     LEA	    12(A7),A7
     BRA.S	LAB_0996
 LAB_0993:
@@ -27264,7 +27284,7 @@ LAB_0993:
     MOVE.L	D6,-(A7)
     PEA	    LAB_1EA4
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    12(A7),A7
     BRA.S	LAB_0996
 LAB_0994:
@@ -27280,31 +27300,31 @@ LAB_0994:
     MOVE.L	D5,-(A7)
     PEA	    LAB_1EA5
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    12(A7),A7
     BRA.S	LAB_0996
 LAB_0995:
     PEA	    LAB_1EA6
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     ADDQ.W	#8,A7
 LAB_0996:
     PEA	    -72(A5)
     PEA	    172.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVEQ	#0,D0
     MOVE.W	LAB_228A,D0
     MOVE.L	D0,(A7)
     PEA	    LAB_1EA7
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    202.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     JSR	j_DATACalc_C(PC)
     MOVE.L	D0,D4
     MOVEQ	#0,D0
@@ -27319,12 +27339,12 @@ LAB_0996:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EA8
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    232.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    76(A7),A7
     JSR     LAB_09AA(PC)
     MOVE.L	D0,D4
@@ -27340,12 +27360,12 @@ LAB_0996:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EA9
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    262.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    40(A7),A7
 LAB_0997:
     MOVE.W	LAB_226A,D0
@@ -27359,12 +27379,12 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EAA
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    112.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVEQ	#0,D0
     MOVE.B	LAB_2238,D0
     MOVEQ	#0,D1
@@ -27373,12 +27393,12 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EAB
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    142.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVEQ	#0,D0
     MOVE.B	LAB_224A,D0
     MOVEQ	#0,D1
@@ -27387,13 +27407,13 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EAC
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    72(A7),A7
     PEA	    -72(A5)
     PEA	    172.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVE.W	LAB_223C,D0
     EXT.L	D0
     MOVE.W	LAB_223B,D1
@@ -27408,12 +27428,12 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EAD
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    202.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVE.W	LAB_2276,D0
     EXT.L	D0
     MOVE.W	LAB_2275,D1
@@ -27428,13 +27448,13 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EAE
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    72(A7),A7
     PEA	    -72(A5)
     PEA	    232.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVE.W	LAB_2241,D0
     EXT.L	D0
     MOVE.W	LAB_227B,D1
@@ -27446,12 +27466,12 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EAF
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    262.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVE.W	LAB_223E,D0
     EXT.L	D0
     MOVE.W	LAB_2278,D1
@@ -27463,12 +27483,12 @@ LAB_0997:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EB0
     PEA	    -72(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -72(A5)
     PEA	    292.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    80(A7),A7
 LAB_0998:
     MOVEA.L	LAB_2217,A0
@@ -27550,7 +27570,7 @@ LAB_09A2:
     MOVE.L	36(A7),-(A7)
     PEA	    LAB_1EB7
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    92.W
@@ -27568,7 +27588,7 @@ LAB_09A2:
     MOVE.L	(A0),-(A7)
     PEA	    LAB_1EC1
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    110.W
@@ -27588,7 +27608,7 @@ LAB_09A2:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EC2
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    92(A7),A7
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
@@ -27628,7 +27648,7 @@ LAB_09A4:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EC3
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    146.W
@@ -27650,7 +27670,7 @@ LAB_09A4:
     MOVE.L	80(A7),-(A7)
     PEA	    LAB_1EC6
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    68(A7),A7
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
@@ -27675,7 +27695,7 @@ LAB_09A4:
     MOVE.L	D0,-(A7)
     PEA	    LAB_1EC7
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    182.W
@@ -27702,7 +27722,7 @@ LAB_09A4:
     MOVE.L	84(A7),-(A7)
     PEA	    LAB_1EC8
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    72(A7),A7
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
@@ -27733,7 +27753,7 @@ LAB_09A6:
     MOVE.L	LAB_1EB1,-(A7)
     PEA	    LAB_1EC9
     PEA	    -132(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
     PEA	    218.W
@@ -28233,15 +28253,15 @@ LAB_09EE:
     LEA	    36(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     LEA	    36(A3),A0
     MOVEA.L	A0,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     LEA	    36(A3),A0
     MOVEA.L	A0,A1
     MOVEQ	#7,D0
-    JSR	    -234(A6)
+    JSR	    _LVOSetRast(A6)
     MOVEQ	#1,D0
     MOVEA.L	-52(A5),A0
     MOVE.L	D0,356(A0)
@@ -28354,12 +28374,12 @@ LAB_09F3:
     MOVEA.L	A0,A1
     MOVE.L	D7,D0
     MOVE.L	D6,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    36(A3),A0
     MOVEA.L	A0,A1
     MOVEA.L	-8(A5),A0
     MOVE.L	-60(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     ADDQ.L	#1,-24(A5)
     MOVE.L	-24(A5),D0
     CMP.L	D5,D0
@@ -28402,12 +28422,12 @@ LAB_09F5:
     MOVEA.L	A0,A1
     MOVE.L	D7,D0
     MOVE.L	D6,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    36(A3),A0
     MOVEA.L	A0,A1
     MOVEA.L	-8(A5),A0
     MOVE.L	-60(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     ADDQ.L	#1,-24(A5)
 LAB_09F6:
     MOVEA.L	-8(A5),A0
@@ -31045,7 +31065,7 @@ LAB_0B22:
     PEA	    LAB_1EFB
     PEA	    LAB_1EFA
     PEA	    -40(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     MOVEA.L	LAB_229A,A0
     ADDQ.L	#1,A0
     MOVE.L	A0,(A7)
@@ -31086,17 +31106,17 @@ LAB_0B23:
     PEA     90.W
     PEA     30.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVE.L	LAB_1F2E,(A7)
     PEA     LAB_1EFE
     PEA     LAB_1EFD
     PEA     -40(A5)
-    JSR     j_SUB_printf_0(PC)
+    JSR     PRINTF_0(PC)
     PEA     -40(A5)
     PEA     120.W
     PEA     30.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA     LAB_1EFF,A0
     LEA     -40(A5),A1
     MOVEQ	#4,D0
@@ -31116,7 +31136,7 @@ LAB_0B24:
     PEA     150.W
     PEA     30.W
     MOVE.L	LAB_2217,-(A7)
-    JSR     j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA     72(A7),A7
 LAB_0B25:
     MOVEM.L	(A7)+,D2-D3
@@ -31182,34 +31202,34 @@ LAB_0B2A:
     MOVE.L	#$000002ac,D2
     MOVEQ	#40,D3
     NOT.B	D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#3,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A0
     MOVE.B	28(A0),D6
     MOVEA.L	A0,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     PEA	    LAB_1F01
     PEA	    90.W
     PEA	    35.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     PEA	    LAB_1F02
     PEA	    120.W
     PEA	    35.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     MOVE.L	D5,(A7)
     PEA	    LAB_1F03
     PEA	    -128(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     PEA	    -128(A5)
     PEA	    150.W
     PEA	    35.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    56(A7),A7
     MOVEQ	#9,D0
     CMP.L	D0,D5
@@ -31225,7 +31245,7 @@ LAB_0B2B:
     PEA	    LAB_21AD
     PEA	    LAB_1F04
     PEA	    -128(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    20(A7),A7
     MOVE.W	#$0001,LAB_1B85
     BRA.S	LAB_0B2D
@@ -31233,19 +31253,19 @@ LAB_0B2C:
     PEA	    LAB_21AD
     PEA	    LAB_1F05
     PEA	    -128(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR	    PRINTF_0(PC)
     LEA	    12(A7),A7
 LAB_0B2D:
     PEA	    -128(A5)
     PEA	    180.W
     PEA	    35.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     PEA	    LAB_1F06
     PEA	    210.W
     PEA	    35.W
     MOVE.L	LAB_2217,-(A7)
-    JSR	j_displayText1(PC)
+    JSR     DISPLAYTEXT_1(PC)
     LEA	    32(A7),A7
     MOVE.L	D6,D0
     EXT.W	D0
@@ -32707,12 +32727,12 @@ LAB_0BA5:
 ;	MOVE.L	D0,-(A7)		;14054: 2f00
 ;	PEA	    LAB_CTRLHTCMAX		;14056: 487900039168
 ;	PEA	    -72(A5)			;1405c: 486dffb8
-;	JSR	j_SUB_printf_0(PC)		;14060: 4ebae4e4
+;	JSR	    PRINTF_0(PC)		;14060: 4ebae4e4
 ;	PEA	    -72(A5)			;14064: 486dffb8
 ;	PEA	    262.W			;14068: 48780106
 ;	PEA	    40.W			;1406c: 48780028
 ;	MOVE.L	LAB_2217,-(A7)		;14070: 2f390003c226
-;	JSR	j_displayText1(PC)		;14076: 4eba4992
+;	JSR     DISPLAYTEXT_1(PC)		;14076: 4eba4992
 ;
 ;	CLR.W	LAB_22A1		;17dac: 42790003deee
 ;	BRA.W	LAB_0BE4		;17db2: 60000b74
@@ -33601,8 +33621,8 @@ LAB_0BF6:
     JMP     LAB_146E
 LAB_0BF7:
     JMP     LAB_0F4D
-j_displayText1:
-    JMP     LAB_055C
+DISPLAYTEXT_1:
+    JMP     JMP_TBL_DISPLAYTEXT_1
 LAB_0BF9:
     JMP     LAB_0E48
 LAB_0BFA:
@@ -41699,7 +41719,7 @@ LAB_0E83:
     MOVEA.L	A0,A1
     LEA     LAB_1FCF,A0
     MOVEQ	#1,D0
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     MOVE.L	D0,44(A7)
     MOVE.L	#$00000270,D0
     MOVE.L	44(A7),D1
@@ -42771,6 +42791,7 @@ LAB_0EE9:
 
     ORI.B	#$00,D0
     DC.W	$0000
+
 LAB_0EEA:
     JMP     LAB_183E
 LAB_0EEB:
@@ -42780,17 +42801,20 @@ LAB_0EEC:
 LAB_0EED:
     JMP     LAB_0A49
 LAB_0EEE:
-    JMP     LAB_055C
+    JMP     JMP_TBL_DISPLAYTEXT_1
 LAB_0EEF:
     JMP     LAB_1AAE
 LAB_0EF0:
-    JMP     LAB_19A0
+    JMP     JMP_TBL_PRINTF
 LAB_0EF1:
     JMP     LAB_0056
+
     ORI.B	#$00,D0
     DC.W	$0000
+
 LAB_0EF2:
     JMP     LAB_1955
+
     MOVEQ	#97,D0
     RTS
 
@@ -44566,7 +44590,7 @@ LAB_0FA4:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_1FFC,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVE.L	#$00010001,-(A7)
     PEA	    100.W
     PEA	    112.W
@@ -44589,7 +44613,7 @@ LAB_0FA4:
 
     MOVEA.L	LAB_1FFD,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     BSR.W	LAB_0FF1
 
     MOVEQ	#8,D0       ; only use 8 chars ... is this for call signs?
@@ -45031,7 +45055,7 @@ LAB_0FD1:
     MOVE.L	D0,D1
     MOVE.L	#$000002b7,D2
     MOVEQ	#33,D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
     MOVEQ	#35,D1
@@ -45109,7 +45133,7 @@ LAB_0FD7:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	-102(A5),A1
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     MOVEQ	#0,D1
     MOVE.W	LAB_232B,D1
     SUB.L	D0,D1
@@ -45136,7 +45160,7 @@ LAB_0FD9:
     ADD.L	D0,D1
     SUBQ.L	#1,D1
     MOVE.L	D4,D0
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    -97(A5),A0
     MOVEA.L	A0,A1
 LAB_0FDA:
@@ -45146,7 +45170,7 @@ LAB_0FDA:
     SUBA.L	A0,A1
     MOVE.L	A1,D0
     MOVEA.L	-102(A5),A1
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     ADDQ.L	#1,D6
     BRA.W	LAB_0FD2
 LAB_0FDB:
@@ -45759,7 +45783,7 @@ LAB_1001:
     MOVE.L	A1,20(A7)
     MOVEA.L	A3,A1
     MOVE.L	20(A7),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_1002:
     MOVE.L	-4(A5),D0
     ADD.L	D0,-12(A5)
@@ -46595,11 +46619,11 @@ LAB_105C:
     MOVEA.L	A3,A1
     MOVE.L	D1,D0
     MOVE.L	36(A7),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     MOVEA.L	A2,A0
     MOVE.L	D6,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_105D:
     MOVEA.L	16(A5),A0
 LAB_105E:
@@ -46652,11 +46676,11 @@ LAB_1064:
     MOVEA.L	A3,A1
     MOVE.L	D1,D0
     MOVE.L	36(A7),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     MOVE.L	D6,D0
     MOVEA.L	16(A5),A0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_1065:
     MOVEM.L	(A7)+,D2-D7/A2-A3
     UNLK	A5
@@ -47449,7 +47473,7 @@ LAB_10A2:
     MOVEQ	#0,D0
     MOVE.L	D0,D1
     MOVE.L	#$000002b7,D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEQ	#42,D5
     CLR.L	-16(A5)
     JSR     LAB_133A(PC)
@@ -48066,7 +48090,7 @@ LAB_10DF:
     MOVE.L	-8(A5),D1
     MOVE.L	-12(A5),D2
     MOVE.L	-16(A5),D3
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
 LAB_10E0:
     MOVEQ	#3,D0
     CMP.W	D0,D6
@@ -48448,15 +48472,15 @@ LAB_10FF:
     MOVEA.L	-4(A5),A1
     LEA	    -33(A5),A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	-4(A5),A1
     MOVE.L	-8(A5),D0
     MOVE.L	-16(A5),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	-4(A5),A1
     LEA	    -34(A5),A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_1100:
     TST.B	-35(A5)
     BEQ.S	LAB_1101
@@ -48476,15 +48500,15 @@ LAB_1100:
     MOVEA.L	-4(A5),A1
     LEA	    -35(A5),A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEA.L	-4(A5),A1
     MOVE.L	-8(A5),D0
     MOVE.L	-16(A5),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	-4(A5),A1
     LEA	    -36(A5),A0
     MOVEQ	#1,D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_1101:
     JSR     LAB_1350(PC)
     MOVE.L	D0,-32(A5)
@@ -49832,7 +49856,7 @@ LAB_117F:
     SUBQ.L	#1,D2
     MOVE.L	D2,D1
     MOVEA.L	20(A7),A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    60(A3),A0
     MOVEA.L	A2,A1
 LAB_1180:
@@ -49844,7 +49868,7 @@ LAB_1180:
     MOVEA.L	A0,A1
     MOVEA.L	A2,A0
     MOVE.L	24(A7),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEQ	#17,D0
     MOVE.W	D0,52(A3)
     MOVEQ	#0,D1
@@ -50716,12 +50740,12 @@ LAB_11C3:
     SUBQ.L	#1,D2
     MOVE.L	D2,D1
     MOVEA.L	16(A7),A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVE.L	D6,D0
     LEA	    -132(A5),A0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEQ	#17,D0
     MOVE.W	D0,52(A3)
     MOVEQ	#0,D1
@@ -51840,12 +51864,12 @@ LAB_1230:
     SUBQ.L	#1,D2
     MOVE.L	D2,D1
     MOVEA.L	12(A7),A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    60(A3),A0
     MOVEA.L	A0,A1
     MOVE.L	D7,D0
     MOVEA.L	LAB_22F2,A0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     MOVEQ	#17,D0
     MOVE.W	D0,52(A3)
     MOVEQ	#0,D1
@@ -51882,7 +51906,7 @@ LAB_1231:
     MOVEQ	#0,D0
     MOVE.L	D0,D1
     MOVE.L	#$000002b7,D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEQ	#42,D6
     MOVEQ	#0,D7
     MOVE.L	D7,D4
@@ -52329,7 +52353,7 @@ LAB_1256:
     MOVEA.L	A0,A1
     LEA     LAB_2033,A0
     MOVEQ	#1,D0
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     MOVE.L	24(A7),D1
     ADD.L	D0,D1
     SUB.L	D1,-16(A5)
@@ -52647,7 +52671,7 @@ LAB_126F:
     MOVEA.L	A0,A1
     MOVEA.L	-28(A5),A0
     MOVE.L	28(A7),D0
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     SUB.L	D0,-16(A5)
 LAB_1270:
     MOVE.L	D7,D0
@@ -54084,7 +54108,7 @@ LAB_12FA:
     SUBQ.L	#1,D2
     MOVE.L	D2,D1
     MOVEA.L	80(A7),A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    60(A3),A0
     LEA	    -136(A5),A1
     MOVEA.L	A1,A6
@@ -54136,7 +54160,7 @@ LAB_12FD:
     MOVEQ	#0,D0
     MOVE.L	D0,D1
     MOVE.L	#$000002b7,D2
-    JSR	    -306(A6)
+    JSR	    _LVORectFill(A6)
     MOVEQ	#42,D6
     MOVEQ	#0,D7
     MOVE.L	D7,D4
@@ -56794,17 +56818,17 @@ LAB_1412:
     JSR	    _LVOForbid(A6)
     MOVE.L	#$00800000,D0
     MOVEQ	#1,D1
-    JSR	    -198(A6)
+    JSR	    _LVOAllocMem(A6)
     MOVE.L	D0,-4(A5)
     BEQ.S	LAB_1413
     MOVEA.L	D0,A1
     MOVE.L	#$00800000,D0
-    JSR	    -210(A6)
+    JSR	    _LVOFreeMem(A6)
 LAB_1413:
-    JSR	    -138(A6)
+    JSR	    _LVOPermit(A6)
     MOVEA.L	A2,A0
     MOVEA.L	GLOB_REF_DISKFONT_LIBRARY,A6
-    JSR	    -30(A6)
+    JSR	    _LVOOpenDiskFont(A6)
     MOVE.L	D0,(A3)
     BNE.S	LAB_1414
     MOVE.L	GLOB_HANDLE_TOPAZ_FONT,(A3)
@@ -56924,16 +56948,16 @@ LAB_141E:
     JSR	    _LVOSetFont(A6)
     MOVEA.L	LAB_2217,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVEA.L	LAB_2218,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVEA.L	LAB_1FFC,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVEA.L	LAB_1FFD,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVEQ	#0,D6
 LAB_141F:
     MOVEQ	#4,D0
@@ -57404,7 +57428,7 @@ LAB_1465:
 LAB_1466:
     JMP     LAB_071A
 LAB_1467:
-    JMP     LAB_19A0
+    JMP     JMP_TBL_PRINTF
 LAB_1468:
     JMP     LAB_19DC
 LAB_1469:
@@ -58225,7 +58249,7 @@ LAB_14C4:
     MOVE.W	LAB_2274,D0
     EXT.L	D0
     ASL.L	#2,D0
-    LEA     LAB_20D5,A0
+    LEA     GLOB_JMP_TBL_DAYS_OF_WEEK,A0
     ADDA.L	D0,A0
     MOVE.W	LAB_2275,D0
     EXT.L	D0
@@ -60539,14 +60563,14 @@ LAB_15B6:
     MOVE.L	D0,-24(A5)
     MOVEA.L	-4(A5),A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	-4(A5),A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVE.L	D7,D0
     MOVE.L	D6,D1
     MOVEA.L	-4(A5),A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A0
     MOVEQ	#0,D0
     MOVE.L	D0,-32(A5)
@@ -60913,7 +60937,7 @@ LAB_15DE:
     MOVE.L	D0,-(A7)
     PEA	    LAB_2139
     PEA	    -188(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     PEA	    -188(A5)
     PEA	    -137(A5)
     JSR     LAB_196D(PC)
@@ -61428,7 +61452,7 @@ LAB_161B:
     MOVE.L	-12(A5),-(A7)
     PEA	    LAB_213F
     PEA	    -524(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     PEA	    LAB_2140
     PEA	    -524(A5)
     JSR     LAB_17D0(PC)
@@ -62078,7 +62102,7 @@ LAB_1657:
     MOVE.L	A3,-(A7)
     PEA	    LAB_214C
     PEA	    -200(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     MOVE.W	LAB_234D,D0
     EXT.L	D0
     MOVE.L	D0,(A7)
@@ -65473,7 +65497,7 @@ LAB_17A0:
     MOVE.L	A1,36(A7)
     MOVEA.L	A3,A1
     MOVE.L	36(A7),D0
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     TST.B	LAB_1B5D
     BEQ.S	LAB_17A1
     MOVEQ	#0,D1
@@ -65545,7 +65569,7 @@ LAB_17A6:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEA.L	-26(A5),A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     TST.L	-4(A5)
     BEQ.S	LAB_17A7
     MOVE.W	-18(A5),D0
@@ -65838,7 +65862,7 @@ LAB_17C6:
     MOVE.L	D0,-(A7)
     PEA	    LAB_216A
     PEA	    -532(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     PEA	    -532(A5)
     MOVE.L	A3,-(A7)
     JSR     LAB_196D(PC)
@@ -67036,15 +67060,15 @@ LAB_1828:
     ADD.L	D1,D0
     MOVEA.L	A3,A1
     MOVE.L	D6,D1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
     MOVE.L	D6,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVE.L	D6,-(A7)
     PEA	    LAB_2175
     PEA	    -84(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     LEA	    12(A7),A7
     LEA	    -84(A5),A0
     MOVEA.L	A0,A1
@@ -67139,7 +67163,7 @@ LAB_182E:
     MOVE.L	D6,-(A7)
     PEA	    LAB_2176
     PEA	    -84(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     LEA	    12(A7),A7
     LEA	    -84(A5),A0
     MOVEA.L	A0,A1
@@ -67170,7 +67194,7 @@ LAB_1830:
     ADD.L	D0,D1
     MOVEA.L	A3,A1
     MOVE.L	16(A7),D0
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     LEA	    -84(A5),A0
     MOVEA.L	A0,A1
 LAB_1831:
@@ -67181,7 +67205,7 @@ LAB_1831:
     MOVE.L	A1,16(A7)
     MOVEA.L	A3,A1
     MOVE.L	16(A7),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     BRA.S	LAB_1833
 LAB_1832:
     MOVE.L	D6,D0
@@ -67272,7 +67296,7 @@ LAB_1836:
     MOVE.W	2(A0),D1
     SUBQ.L	#1,D1
     MOVEA.L	A3,A1
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	4(A3),A0
     MOVEQ	#0,D0
     MOVE.W	(A0),D0
@@ -67280,7 +67304,7 @@ LAB_1836:
     SUBQ.L	#1,D0
     MOVEA.L	A3,A1
     MOVEQ	#0,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	4(A3),A0
     MOVEQ	#0,D0
     MOVE.W	2(A0),D0
@@ -67288,7 +67312,7 @@ LAB_1836:
     MOVEA.L	A3,A1
     MOVE.L	D0,D1
     MOVEQ	#0,D0
-    JSR	    -246(A6)
+    JSR	    _LVODraw(A6)
     MOVEA.L	(A7)+,A3
     RTS
 
@@ -67414,7 +67438,7 @@ LAB_183A:
     MOVE.L	D7,(A7)
     PEA	    LAB_2177
     PEA	    -88(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     MOVE.L	D7,D0
     MOVEQ	#77,D1
     ADD.L	D1,D1
@@ -68003,7 +68027,7 @@ LAB_1850:
     MOVE.L	LAB_2178,-(A7)
     PEA	    LAB_2191
     PEA	    -80(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     MOVE.L	LAB_2178,D0
     MOVEQ	#76,D1
     JSR     LAB_1A06(PC)
@@ -68027,7 +68051,7 @@ LAB_1851:
     MOVE.L	D7,-(A7)
     PEA	    LAB_2192
     PEA	    -84(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     MOVE.L	D7,D0
     MOVEQ	#76,D1
     JSR     LAB_1A06(PC)
@@ -68407,7 +68431,7 @@ LAB_1866:
     JSR	    -342(A6)
     MOVEA.L	A3,A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVEQ	#0,D0
     MOVEA.L	LAB_1DE6,A0
     MOVE.W	26(A0),D0
@@ -68546,11 +68570,11 @@ LAB_1870:
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
     MOVE.L	-148(A5),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     LEA	    -140(A5),A0
     MOVE.L	-204(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_1871:
     MOVEQ	#0,D0
     MOVEA.L	LAB_1DE6,A0
@@ -68646,11 +68670,11 @@ LAB_1876:
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
     MOVE.L	-148(A5),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     MOVEA.L	-12(A5),A0
     MOVE.L	-204(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     ADDQ.L	#1,-156(A5)
     MOVE.L	-156(A5),D0
     CMP.L	-152(A5),D0
@@ -68689,11 +68713,11 @@ LAB_1878:
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
     MOVE.L	-148(A5),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     MOVEA.L	-12(A5),A0
     MOVE.L	-204(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     ADDQ.L	#1,-156(A5)
 LAB_1879:
     MOVEA.L	-12(A5),A0
@@ -68736,11 +68760,11 @@ LAB_187F:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	A3,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	A3,A1
     MOVEA.L	-12(A5),A0
     MOVE.L	-204(A5),D0
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     MOVE.L	D7,D1
     SUB.L	D0,D1
     TST.L	D1
@@ -68764,11 +68788,11 @@ LAB_1881:
     MOVEA.L	A3,A1
     MOVE.L	D1,D0
     MOVE.L	D2,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     MOVEA.L	-12(A5),A0
     MOVE.L	-204(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_1882:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A3
     UNLK	A5
@@ -68972,7 +68996,7 @@ LAB_188F:
     MOVE.L	8(A0),-(A7)
     PEA	    LAB_219E
     PEA	    -46(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     LEA	    12(A7),A7
 LAB_1890:
     MOVE.L	D7,D0
@@ -68995,7 +69019,7 @@ LAB_1891:
     MOVE.L	12(A0),-(A7)
     PEA	    LAB_21A0
     PEA	    -26(A5)
-    JSR     LAB_19A0(PC)
+    JSR     JMP_TBL_PRINTF(PC)
     LEA	    12(A7),A7
 LAB_1892:
     PEA	    -26(A5)
@@ -69019,7 +69043,7 @@ LAB_1893:
     MOVE.L	A1,-50(A5)
     MOVEA.L	A3,A1
     MOVE.L	-50(A5),D0
-    JSR	    -54(A6)
+    JSR	    _LVOTextLength(A6)
     MOVE.L	-4(A5),D1
     SUB.L	D0,D1
     TST.L	D1
@@ -69034,11 +69058,11 @@ LAB_1894:
     MOVE.L	D0,-92(A5)
     MOVE.L	D1,-96(A5)
     MOVEA.L	A3,A1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     LEA	    -46(A5),A0
     MOVE.L	-50(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
     BRA.W	LAB_189F
 LAB_1895:
     MOVE.L	LAB_205B,-54(A5)
@@ -69173,7 +69197,7 @@ LAB_189F:
     MOVEQ	#7,D1
     JSR     LAB_1A07(PC)
     ASL.L	#2,D1
-    LEA     LAB_20D5,A0
+    LEA     GLOB_JMP_TBL_DAYS_OF_WEEK,A0
     ADDA.L	D1,A0
     MOVEA.L	(A0),A1
     LEA	    -46(A5),A2
@@ -69219,11 +69243,11 @@ LAB_18A2:
     MOVEA.L	A3,A1
     MOVE.L	-92(A5),D0
     MOVE.L	-96(A5),D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     LEA	    -46(A5),A0
     MOVE.L	-50(A5),D0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_18A3:
     MOVEM.L	(A7)+,D2-D7/A2-A3
     UNLK	A5
@@ -69306,11 +69330,11 @@ LAB_18AB:
     MOVEA.L	A3,A1
     MOVE.L	D1,D0
     MOVE.L	D2,D1
-    JSR	    -240(A6)
+    JSR	    _LVOMove(A6)
     MOVEA.L	A3,A1
     MOVE.L	D5,D0
     MOVEA.L	-4(A5),A0
-    JSR	    -60(A6)
+    JSR	    _LVOText(A6)
 LAB_18AC:
     MOVEM.L	(A7)+,D2/D4-D7/A3
     UNLK	A5
@@ -69362,10 +69386,10 @@ LAB_18AE:
     JSR	    _LVOSetDrMd(A6)
     MOVEA.L	-12(A5),A1
     MOVEQ	#1,D0
-    JSR	    -342(A6)
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	-12(A5),A1
     MOVEA.L	LAB_1DE6,A0
-    JSR	    -66(A6)
+    JSR	    _LVOSetFont(A6)
     MOVEQ	#48,D0
     CMP.L	D0,D7
     BNE.S	LAB_18AF
@@ -70123,7 +70147,7 @@ LAB_18FF:
 LAB_1900:
     JMP     LAB_0B0E
 LAB_1901:
-    JMP     LAB_055C
+    JMP     JMP_TBL_DISPLAYTEXT_1
 LAB_1902:
     JMP     LAB_00BE
 LAB_1903:
@@ -71351,7 +71375,7 @@ LAB_199F:
 
 ;!======
 
-LAB_19A0:
+JMP_TBL_PRINTF:
     LINK.W	A5,#0
     MOVEM.L	A2-A3,-(A7)
     MOVEA.L	16(A7),A3
@@ -73075,7 +73099,7 @@ LAB_1A6A:
     MOVE.L	D0,-(A7)
     MOVE.L	A0,-52(A5)
     MOVEA.L	16(A5),A0
-    JSR	(A0)
+    JSR	    (A0)
     ADDQ.W	#4,A7
     BRA.S	LAB_1A6A
 LAB_1A6B:
@@ -73085,7 +73109,7 @@ LAB_1A6B:
     MOVE.B	-5(A5),D0
     MOVE.L	D0,-(A7)
     MOVEA.L	16(A5),A0
-    JSR	(A0)
+    JSR	    (A0)
     ADDQ.W	#4,A7
     BRA.S	LAB_1A6B
 LAB_1A6C:
@@ -73095,7 +73119,7 @@ LAB_1A6C:
     MOVE.B	-5(A5),D0
     MOVE.L	D0,-(A7)
     MOVEA.L	16(A5),A0
-    JSR	(A0)
+    JSR	    (A0)
     ADDQ.W	#4,A7
     BRA.S	LAB_1A6C
 LAB_1A6D:
@@ -73107,7 +73131,7 @@ LAB_1A6D:
     MOVE.L	D0,-(A7)
     MOVE.L	A0,-52(A5)
     MOVEA.L	16(A5),A0
-    JSR	(A0)
+    JSR	    (A0)
     ADDQ.W	#4,A7
     BRA.S	LAB_1A6D
 LAB_1A6E:
@@ -73127,9 +73151,11 @@ LAB_1A70:
 LAB_1A71:
     LINK.W	A5,#-12
     MOVEM.L	D7/A2-A3,-(A7)
+
     MOVEA.L	32(A7),A3
     MOVEA.L	36(A7),A2
     MOVE.L	16(A5),-10(A5)
+
 LAB_1A72:
     MOVE.B	(A2)+,D7
     TST.B	D7
@@ -73155,9 +73181,10 @@ LAB_1A74:
     MOVEQ	#0,D0
     MOVE.B	D7,D0
     MOVE.L	D0,-(A7)
-    JSR	(A3)
+    JSR	    (A3)
     ADDQ.W	#4,A7
     BRA.S	LAB_1A72
+
 LAB_1A75:
     MOVEM.L	(A7)+,D7/A2-A3
     UNLK	A5
@@ -73968,7 +73995,7 @@ LAB_1AD6:
     TST.L	-616(A4)
     BEQ.S	LAB_1AD9
     MOVEA.L	-616(A4),A0
-    JSR	(A0)
+    JSR	    (A0)
     TST.L	D0
     BNE.S	LAB_1AD8
     BRA.S	LAB_1AD9
@@ -77984,7 +78011,7 @@ LAB_2064:
 LAB_2065:
     DC.B	" ",9,0,0
 LAB_2066:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_2067:
     DC.B	" ",9,0,0
 LAB_2068:
@@ -77996,7 +78023,7 @@ LAB_206A:
 LAB_206B:
     DC.B	" ",9,0,0
 LAB_206C:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_206D:
     DC.L	$ffffffff
 LAB_206E:
@@ -78042,7 +78069,7 @@ LAB_2081:
 LAB_2082:
     DC.B	"PPV",0
 LAB_2083:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_2084:
     DC.B	"HORIZONTAL",0,0
 LAB_2085:
@@ -78054,58 +78081,58 @@ LAB_2087:
 LAB_2088:
     DC.B	"BOTTOM",0,0
 LAB_2089:
-    DC.B	"CENTER",0,0
+    NStr    "CENTER"
 LAB_208A:
-    DC.B	"ID",0,0
+    NStr    "ID"
 LAB_208B:
-    DC.B	"FILENAME",0,0
+    NStr    "FILENAME"
 LAB_208C:
-    DC.B	"WEATHER",0
+    NStr    "WEATHER"
 LAB_208D:
-    DC.B	"WeatherCurrent",0,0
+    NStr    "WeatherCurrent"
 LAB_208E:
-    DC.B	"WeatherForecast",0
+    NStr    "WeatherForecast"
 LAB_208F:
-    DC.B	"BottomLineTag",0
+    NStr    "BottomLineTag"
 LAB_2090:
-    DC.B	"COLOR%d",0
+    NStr    "COLOR%d"
 LAB_2091:
-    DC.B	"%s",0,0
+    NStr    "%s"
 LAB_2092:
-    DC.B	"dh2:Gradient.ini",0,0
+    NStr    "dh2:Gradient.ini"
 LAB_2093:
-    DC.B	"dh2:banner.ini",0,0
+    NStr    "dh2:banner.ini"
 LAB_2094:
-    DC.B	"dh2:banner.ini",0,0
+    NStr    "dh2:banner.ini"
 LAB_2095:
-    DC.B	"dh2:default.ini",0
+    NStr    "dh2:default.ini"
 LAB_2096:
-    DC.B	"dh2:SourceCfg.ini",0
+    NStr    "dh2:SourceCfg.ini"
 LAB_2097:
-    DC.B	"list >RAM:logodir.txt DH2:LOGOS nohead quick",0,0
+    NStr    "list >RAM:logodir.txt DH2:LOGOS nohead quick"
 LAB_2098:
-    DC.B	"dh2:logo.lst",0,0
+    NStr    "dh2:logo.lst"
 LAB_2099:
-    DC.B	"rb",0,0
+    NStr    "rb"
 LAB_209A:
-    DC.B	"RAM:logodir.txt",0
+    NStr    "RAM:logodir.txt"
 LAB_209B:
-    DC.B	"rb",0,0
+    NStr    "rb"
 LAB_209C:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_209D:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_209E:
-    DC.B	"DELETE > NIL: DH2:LOGOS/",0,0
+    NStr    "DELETE > NIL: DH2:LOGOS/"
 LAB_209F:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_20A0:
-    DC.B	"PARSEINI.c",0,0
+    NStr    "PARSEINI.c"
 LAB_20A1:
     DC.L	$00040000,$000007c2
     DS.L	5
 LAB_20A2:
-    DC.B	"dh2:err.log",0
+    NStr    "dh2:err.log"
 LAB_20A3:
     DS.W	1
 LAB_20A4:
@@ -78119,9 +78146,9 @@ LAB_20A7:
 LAB_20A8:
     DS.W	1
 LAB_20A9:
-    DC.B	"SCRIPT.c",0,0
+    NStr    "SCRIPT.c"
 LAB_20AA:
-    DC.B	"SCRIPT.c",0,0
+    NStr    "SCRIPT.c"
 LAB_20AB:
     DS.L	1
 LAB_20AC:
@@ -78131,40 +78158,40 @@ GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
 GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     DC.L	GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
 LAB_20AF:
-    DC.B	"No Forecast Weather Data Available",0,0
+    NStr    "No Forecast Weather Data Available"
 LAB_20B0:
     DC.L	LAB_20AF
 LAB_20B1:
-    DC.B	"May not be available in all areas.",0,0
+    NStr    "May not be available in all areas."
 LAB_20B2:
     DC.L	LAB_20B1
 LAB_20B3:
-    DC.B	"Continued",0
+    NStr    "Continued"
     DC.L	LAB_20B3
 LAB_20B4:
-    DC.B	"January",0
+    NStr    "January"
 LAB_20B5:
-    DC.B	"February",0,0
+    NStr    "February"
 LAB_20B6:
-    DC.B	"March",0
+    NStr    "March"
 LAB_20B7:
-    DC.B	"April",0
+    NStr    "April"
 LAB_20B8:
-    DC.B	"May",0
+    NStr    "May"
 LAB_20B9:
-    DC.B	"June",0,0
+    NStr    "June"
 LAB_20BA:
-    DC.B	"July",0,0
+    NStr    "July"
 LAB_20BB:
-    DC.B	"August",0,0
+    NStr    "August"
 LAB_20BC:
-    DC.B	"September",0
+    NStr    "September"
 LAB_20BD:
-    DC.B	"October",0
+    NStr    "October"
 LAB_20BE:
-    DC.B	"November",0,0
+    NStr    "November"
 LAB_20BF:
-    DC.B	"December",0,0
+    NStr    "December"
 LAB_20C0:
     DC.L	LAB_20B4
     DC.L	LAB_20B5
@@ -78216,41 +78243,41 @@ LAB_20CD:
     DC.L	LAB_20CB
     DC.L	LAB_20CC
 LAB_20CE:
-    DC.B	"Sunday",0,0
+    NStr    "Sunday"
 LAB_20CF:
-    DC.B	"Monday",0,0
+    NStr    "Monday"
 LAB_20D0:
-    DC.B	"Tuesday",0
+    NStr    "Tuesday"
 LAB_20D1:
-    DC.B	"Wednesday",0
+    NStr    "Wednesday"
 LAB_20D2:
-    DC.B	"Thursday",0,0
-LAB_20D3:
-    DC.B	"Friday",0,0
+    NStr    "Thursday"
+GLOB_STR_FRIDAY_1:
+    NStr    "Friday"
 LAB_20D4:
-    DC.B	"Saturday",0,0
-LAB_20D5:
+    NStr    "Saturday"
+GLOB_JMP_TBL_DAYS_OF_WEEK:
     DC.L	LAB_20CE
     DC.L	LAB_20CF
     DC.L	LAB_20D0
     DC.L	LAB_20D1
     DC.L	LAB_20D2
-    DC.L	LAB_20D3
+    DC.L	GLOB_STR_FRIDAY_1
     DC.L	LAB_20D4
 LAB_20D6:
-    DC.B	"Sun ",0,0
+    NStr    "Sun "
 LAB_20D7:
-    DC.B	"Mon ",0,0
+    NStr    "Mon "
 LAB_20D8:
-    DC.B	"Tue ",0,0
+    NStr    "Tue "
 LAB_20D9:
-    DC.B	"Wed ",0,0
+    NStr    "Wed "
 LAB_20DA:
-    DC.B	"Thu ",0,0
+    NStr    "Thu "
 LAB_20DB:
-    DC.B	"Fri ",0,0
+    NStr    "Fri "
 LAB_20DC:
-    DC.B	"Sat ",0,0
+    NStr    "Sat "
 LAB_20DD:
     DC.L	LAB_20D6
     DC.L	LAB_20D7
@@ -78260,45 +78287,45 @@ LAB_20DD:
     DC.L	LAB_20DB
     DC.L	LAB_20DC
 LAB_20DE:
-    DC.B	"Monday",0,0
+    NStr    "Monday"
 LAB_20DF:
-    DC.B	"Tuesday",0
+    NStr    "Tuesday"
 LAB_20E0:
-    DC.B	"Wednesday",0
+    NStr    "Wednesday"
 LAB_20E1:
-    DC.B	"Thursday",0,0
+    NStr    "Thursday"
 LAB_20E2:
-    DC.B	"Friday",0,0
+    NStr    "Friday"
 LAB_20E3:
-    DC.B	"Saturday",0,0
+    NStr    "Saturday"
 LAB_20E4:
-    DC.B	"Sunday",0,0
+    NStr    "Sunday"
 LAB_20E5:
-    DC.B	"Weekdays",0,0
+    NStr    "Weekdays"
 LAB_20E6:
-    DC.B	"Weeknights",0,0
+    NStr    "Weeknights"
 LAB_20E7:
-    DC.B	"Coming Soon",0
+    NStr    "Coming Soon"
 LAB_20E8:
-    DC.B	"This Month",0,0
+    NStr    "This Month"
 LAB_20E9:
-    DC.B	"Next Month",0,0
+    NStr    "Next Month"
 LAB_20EA:
-    DC.B	"This Fall",0
+    NStr    "This Fall"
 LAB_20EB:
-    DC.B	"This Summer",0
+    NStr    "This Summer"
 LAB_20EC:
     DC.W	"Tu"
 LAB_20ED:
-    DC.B	"esdays & Fridays",0,0
+    NStr    "esdays & Fridays"
 LAB_20EE:
-    DC.B	"Mondays & Saturdays",0
+    NStr    "Mondays & Saturdays"
 LAB_20EF:
-    DC.B	"Weekends",0,0
+    NStr    "Weekends"
 LAB_20F0:
-    DC.B	"Every Night",0
+    NStr    "Every Night"
 LAB_20F1:
-    DC.B	"Every Day",0
+    NStr    "Every Day"
 LAB_20F2:
     DS.W	1
 LAB_20F3:
@@ -78561,11 +78588,11 @@ LAB_215F:
 LAB_2160:
     DC.B    "SPT",0
 LAB_2161:
-    DC.B	"TLIBA1.c",0,0
+    NStr    "TLIBA1.c"
 LAB_2162:
-    DC.B	"TLIBA1.c",0,0
+    NStr    "TLIBA1.c"
 LAB_2163:
-    DC.B	"TLIBA1.c",0,0
+    NStr    "TLIBA1.c"
 LAB_2164:
     DC.B	"TLIBA1.c",0
 LAB_2165:
@@ -78580,7 +78607,7 @@ LAB_2168:
 LAB_2169:
     DS.W	1
 LAB_216A:
-    DC.B	"%c%s",0,0
+    NStr    "%c%s"
 LAB_216B:
     DC.B	"struct TLFormat @ 0x%x =",10,0
 LAB_216C:
@@ -78602,9 +78629,9 @@ LAB_2173:
 LAB_2174:
     DC.B	1,"("
 LAB_2175:
-    DC.B	"%03ld",0
+    NStr    "%03ld"
 LAB_2176:
-    DC.B	"%03ld",0
+    NStr    "%03ld"
 LAB_2177:
     NStr	"ViewMode = %ld"
 LAB_2178:
@@ -78658,9 +78685,9 @@ LAB_218F:
 LAB_2190:
     DC.W	$0a00
 LAB_2191:
-    DC.B	"VM[ARRAY[%ld]",0
+    NStr    "VM[ARRAY[%ld]"
 LAB_2192:
-    DC.B	"VM[ARRAY[%ld]",0
+    NStr    "VM[ARRAY[%ld]"
 LAB_2193:
     DC.L	$0a000000
 LAB_2194:
