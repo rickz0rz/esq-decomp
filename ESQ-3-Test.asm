@@ -498,7 +498,7 @@ LAB_001C:
 LAB_001D:
     MOVEM.L	(A7)+,D2-D7     ;003b4: 4cdf00fc
     UNLK	A5              ;003b8: 4e5d
-    RTS	                    ;003ba: 4e75
+    RTS
 
 ;!======
 
@@ -528,7 +528,7 @@ LAB_001F:
 LAB_0020:
     MOVEQ	#0,D0			;0040c: 7000
     MOVEM.L	(A7)+,D6-D7		;0040e: 4cdf00c0
-    RTS				;00412: 4e75
+    RTS
 
 ;!======
 
@@ -591,7 +591,7 @@ LAB_0029:
     ADDI.L	#$00000001,LAB_20AB	;004ae: 06b9000000010003abdc
 LAB_002A:
     MOVE.W	#$0800,156(A0)		;004b8: 317c0800009c
-    RTS				;004be: 4e75
+    RTS
 
 ;!======
 
@@ -621,7 +621,7 @@ LAB_002D:
     MOVE.W	#$0000,LAB_1F45		;0050a: 33fc0000000399b2
 LAB_002E:
     MOVE.L	(A7)+,D0		;00512: 201f
-    RTS				;00514: 4e75
+    RTS
 
 ;!======
 
@@ -637,7 +637,7 @@ LAB_002F:
     MOVE.W	D0,LAB_1AF8		;00540: 33c000033bf0
     MOVE.W	D0,LAB_1AFA		;00546: 33c000033bf4
     MOVE.W	D0,LAB_1B03		;0054c: 33c000033c12
-    RTS				;00552: 4e75
+    RTS
 
 ;!======
 
@@ -650,7 +650,7 @@ LAB_0030:
     ADDQ.W	#1,LAB_1AFC		;00568: 527900033bf8
     MOVE.W	#$0004,LAB_1AF9		;0056e: 33fc000400033bf2
     MOVE.W	#$0000,LAB_1AFD		;00576: 33fc000000033bfa
-    RTS				;0057e: 4e75
+    RTS
 
 ;!======
 
@@ -674,7 +674,7 @@ LAB_0031:
 LAB_0032:
     MOVE.B	D1,(A5)+		;005be: 1ac1
     DBF     D0,LAB_0032		;005c0: 51c8fffc
-    RTS				;005c4: 4e75
+    RTS
 
 ;!======
 
@@ -683,7 +683,7 @@ LAB_0033:
     MOVE.W	D0,LAB_1AF9		;005c8: 33c000033bf2
     MOVE.W	D0,LAB_1AFD		;005ce: 33c000033bfa
     MOVE.W	D0,LAB_1AFC		;005d4: 33c000033bf8
-    RTS				;005da: 4e75
+    RTS
 
 ;!======
 
@@ -697,7 +697,7 @@ LAB_0034:
     MOVE.B	D1,(A5)			;005f4: 1a81
     ADDQ.W	#1,LAB_1AFD		;005f6: 527900033bfa
     ADDI.W	#$000a,LAB_1AF9		;005fc: 0679000a00033bf2
-    RTS				;00604: 4e75
+    RTS
 
 ;!======
 
@@ -739,7 +739,7 @@ LAB_003B:
     MOVE.W	D0,LAB_1AFD		;00668: 33c000033bfa
     MOVE.W	D0,LAB_1AFC		;0066e: 33c000033bf8
 LAB_003C:
-    RTS				;00674: 4e75
+    RTS
 
 ;!======
 
@@ -749,7 +749,7 @@ LAB_003D:
     MOVE.B	(A5),D1			;0067e: 1215
     BTST	#3,D1			;00680: 08010003
     SEQ     D1			;00684: 57c1
-    RTS				;00686: 4e75
+    RTS
 
 ;!======
 
@@ -759,7 +759,7 @@ LAB_003E:
     MOVE.B	(A5),D1			;00690: 1215
     BTST	#4,D1			;00692: 08010004
     SEQ     D1			;00696: 57c1
-    RTS				;00698: 4e75
+    RTS
 
 ;!======
 
@@ -777,7 +777,7 @@ LAB_0040:
     MOVE.W	#$0100,156(A0)		;006be: 317c0100009c
     MOVEA.L	(A7)+,A4		;006c4: 285f
     MOVEA.L	(A7)+,A5		;006c6: 2a5f
-    RTS				;006c8: 4e75
+    RTS
 
 ;!======
 
@@ -814,7 +814,7 @@ LAB_0042:
 LAB_0043:
     MOVE.B	D1,(A5)+		;00730: 1ac1
     DBF     D0,LAB_0043		;00732: 51c8fffc
-    RTS				;00736: 4e75
+    RTS
 
 ;!======
 
@@ -823,7 +823,7 @@ LAB_0044:
     MOVE.W	D0,LAB_1AF8		;0073a: 33c000033bf0
     MOVE.W	D0,LAB_1AFB		;00740: 33c000033bf6
     MOVE.W	D0,LAB_1AFA		;00746: 33c000033bf4
-    RTS				;0074c: 4e75
+    RTS
 
 ;!======
 
@@ -837,7 +837,7 @@ LAB_0045:
     MOVE.B	D1,(A5)			;00764: 1a81
     ADDQ.W	#1,LAB_1AFB		;00766: 527900033bf6
     ADDI.W	#$000a,LAB_1AF8		;0076c: 0679000a00033bf0
-    RTS				;00774: 4e75
+    RTS
 
 ;!======
 
@@ -885,7 +885,7 @@ LAB_004C:
     MOVE.W	D0,LAB_1AFB		;007f2: 33c000033bf6
     MOVE.W	D0,LAB_1AFA		;007f8: 33c000033bf4
 LAB_004D:
-    RTS				;007fe: 4e75
+    RTS
 
 ;!======
 
@@ -902,7 +902,7 @@ getCTRLBuffer:
     MOVEQ	#0,D1			;0081c: 7200
 LAB_004F:
     MOVE.W	D1,LAB_2282		;0081e: 33c10003de52
-    RTS				;00824: 4e75
+    RTS
 
 ;!======
 
@@ -930,7 +930,7 @@ LAB_0051:
 LAB_0052:
     MOVE.L	D0,LAB_231B		;00854: 23c00003ee74
     MOVEM.L	(A7)+,D0-D1/A0-A1	;0085a: 4cdf0303
-    RTS				;0085e: 4e75
+    RTS
 
 ;!======
 
@@ -938,7 +938,7 @@ LAB_0053:
     MOVE.B	#$00,D0			;00860: 103c0000
     MOVE.B	#$3f,D1			;00864: 123c003f
     JSR     LAB_0058		;00868: 4eb900000906
-    RTS				;0086e: 4e75
+    RTS
 
 ;!======
 
@@ -951,7 +951,7 @@ LAB_0054:
     MOVE.B	#$3f,D0			;00882: 103c003f
     MOVE.B	LAB_1B05,D1		;00886: 123900033c1a
     JSR     LAB_0058		;0088c: 4eb900000906
-    RTS				;00892: 4e75
+    RTS
 
 ;!======
 
@@ -964,7 +964,7 @@ LAB_0055:
     MOVE.B	#$3f,D0			;008a6: 103c003f
     MOVE.B	#$3f,D1			;008aa: 123c003f
     JSR     LAB_0058		;008ae: 4eb900000906
-    RTS				;008b4: 4e75
+    RTS
 
 ;!======
 
@@ -978,7 +978,7 @@ LAB_0056:
     MOVE.B	#$00,D1			;008cc: 123c0000
     JSR     LAB_0058		;008d0: 4eb900000906
     JSR     LAB_0D6E		;008d6: 4eb90001bb40
-    RTS				;008dc: 4e75
+    RTS
 
 ;!======
 
@@ -992,7 +992,7 @@ LAB_0057:
     MOVE.B	#$00,D1			;008f4: 123c0000
     JSR     LAB_0058		;008f8: 4eb900000906
     JSR     LAB_0D6D		;008fe: 4eb90001bb32
-    RTS				;00904: 4e75
+    RTS
 
 ;!======
 
@@ -1001,7 +1001,7 @@ LAB_0058:
     MOVE.B	D1,LAB_1B02		;0090c: 13c100033c0f
     MOVE.W	#$0005,LAB_1B00		;00912: 33fc000500033c0c
     JSR     LAB_0059		;0091a: 4eb900000922
-    RTS				;00920: 4e75
+    RTS
 
 ;!======
 
@@ -1051,12 +1051,12 @@ LAB_005B:
     MOVE.W	D1,136(A1)		;00998: 33410088
     MOVEM.L	(A7)+,D2-D4/A6		;0099c: 4cdf401c
     MOVEQ	#0,D0			;009a0: 7000
-    RTS				;009a2: 4e75
+    RTS
 
 ;!======
 
 LAB_005C:
-    RTS                     ; this must just be a mis-parsed instruction?
+    RTS
 
 ;!======
 
@@ -1103,7 +1103,7 @@ LAB_0060:
     MOVE.W	D0,0(A0,D1.W)		;00a24: 31801000
 LAB_0061:
     MOVEM.L	(A7)+,D2-D4		;00a28: 4cdf001c
-    RTS				;00a2c: 4e75
+    RTS
 
 ;!======
 
@@ -1142,7 +1142,7 @@ LAB_0065:
     MOVE.W	D0,0(A0,D1.W)		;00a94: 31801000
 LAB_0066:
     MOVEM.L	(A7)+,D2-D4		;00a98: 4cdf001c
-    RTS				;00a9c: 4e75
+    RTS
 
 ;!======
 
@@ -1167,12 +1167,12 @@ LAB_0069:
     ADDQ.W	#4,D5			;00adc: 5845
     DBF     D4,LAB_0069		;00ade: 51ccffee
     MOVEM.L	(A7)+,D2-D5/A2-A3	;00ae2: 4cdf0c3c
-    RTS				;00ae6: 4e75
+    RTS
 
 ;!======
 
 LAB_006A:
-    RTS                 ; huh?
+    RTS
 
 ;!======
 
@@ -1192,7 +1192,7 @@ LAB_006C:
     ADDQ.W	#4,D5			;00b1a: 5845
     DBF     D4,LAB_006B		;00b1c: 51ccffe2
     MOVEM.L	(A7)+,D2-D5/A2-A3	;00b20: 4cdf0c3c
-    RTS				;00b24: 4e75
+    RTS
 
 ;!======
 
@@ -1216,7 +1216,7 @@ LAB_006F:
 LAB_0070:
     ADD.W	D1,D0			;00b4e: d041
     ADD.W	D2,D0			;00b50: d042
-    RTS				;00b52: 4e75
+    RTS
 
 ;!======
 
@@ -1242,12 +1242,12 @@ LAB_0073:
     ADDQ.W	#4,D5			;00b98: 5845
     DBF     D4,LAB_0073		;00b9a: 51ccffee
     MOVEM.L	(A7)+,D2-D6/A2-A3	;00b9e: 4cdf0c7c
-    RTS				;00ba2: 4e75
+    RTS
 
 ;!======
 
 LAB_0074:
-    RTS                         ; ???
+    RTS
 
 ;!======
 
@@ -1267,7 +1267,7 @@ LAB_0076:
     ADDQ.W	#4,D5			;00bd6: 5845
     DBF     D4,LAB_0075		;00bd8: 51ccffe2
     MOVEM.L	(A7)+,D2-D5/A2-A3	;00bdc: 4cdf0c3c
-    RTS				;00be0: 4e75
+    RTS
 
 ;!======
 
@@ -1299,7 +1299,7 @@ LAB_0079:
 LAB_007A:
     ADD.W	D1,D0			;00c1a: d041
     ADD.W	D2,D0			;00c1c: d042
-    RTS				;00c1e: 4e75
+    RTS
 
 ;!======
 
@@ -1397,7 +1397,7 @@ LAB_0087:
 LAB_0088:
     MOVE.W	D4,D0			;00d28: 3004
     MOVEM.L	(A7)+,D2-D4		;00d2a: 4cdf001c
-    RTS				;00d2e: 4e75
+    RTS
 
 ;!======
 
@@ -1421,7 +1421,7 @@ LAB_008B:
     MOVE.W	D2,2(A0)		;00d5a: 31420002
     MOVE.W	D0,4(A0)		;00d5e: 31400004
     MOVE.L	(A7)+,D2		;00d62: 241f
-    RTS				;00d64: 4e75
+    RTS
 
 ;!======
 
@@ -1442,7 +1442,7 @@ LAB_008E:
 LAB_008F:
     ADD.W	4(A0),D0		;00d8e: d0680004
     MOVE.W	D0,16(A0)		;00d92: 31400010
-    RTS				;00d96: 4e75
+    RTS
 
 ;!======
 
@@ -1497,7 +1497,7 @@ LAB_0093:
 LAB_0094:
     MOVE.B	D0,-(A0)		;00e22: 1100
     MOVE.L	(A7)+,D2		;00e24: 241f
-    RTS				;00e26: 4e75
+    RTS
 
 ;!======
 
@@ -1530,7 +1530,7 @@ LAB_0099:
     LEA     LAB_1B1E,A1		;00e5a: 43f900033c88
     MOVE.B	0(A1,D0.W),D0		;00e60: 10310000
     MOVE.L	(A7)+,D2		;00e64: 241f
-    RTS				;00e66: 4e75
+    RTS
 
 ;!======
 
@@ -1579,7 +1579,7 @@ LAB_00A0:
     MOVE.W	D0,LAB_226F		;00eb8: 33c00003de2a
     MOVE.W	D3,LAB_2280		;00ebe: 33c30003de4e
     MOVEM.L	(A7)+,D2-D4		;00ec4: 4cdf001c
-    RTS				;00ec8: 4e75
+    RTS
 
 ;!======
 
@@ -1620,7 +1620,7 @@ LAB_00A5:
 LAB_00A6:
     MOVE.W	D0,LAB_2273		;00f28: 33c00003de34
     MOVEM.L	(A7)+,D2-D3		;00f2e: 4cdf000c
-    RTS				;00f32: 4e75
+    RTS
 
 ;!======
 
@@ -1688,7 +1688,7 @@ LAB_00AF:
     BRA.S	LAB_00A8		;00fac: 6094
 LAB_00B0:
     MOVEM.L	(A7)+,D2-D4		;00fae: 4cdf001c
-    RTS				;00fb2: 4e75
+    RTS
 
 ;!======
 
@@ -1704,7 +1704,7 @@ LAB_00B1:
     SNE	D0			;00fce: 56c0
     EXT.W	D0			;00fd0: 4880
     EXT.L	D0			;00fd2: 48c0
-    RTS				;00fd4: 4e75
+    RTS
 
 ;!======
 
@@ -1717,7 +1717,7 @@ LAB_00B2:
     ANDI.L	#$00000007,D1		;00fe4: 028100000007
     LSR.W	#3,D0			;00fea: e648
     BSET	D1,0(A0,D0.W)		;00fec: 03f00000
-    RTS				;00ff0: 4e75
+    RTS
 
 ;!======
 
@@ -1747,7 +1747,7 @@ LAB_00B7:
     MOVE.B	D4,(A0)+		;01020: 10c4
     DBF     D0,LAB_00B4		;01022: 51c8ffdc
     MOVEM.L	(A7)+,D2-D4		;01026: 4cdf001c
-    RTS				;0102a: 4e75
+    RTS
 
 ;!======
 
@@ -1771,7 +1771,7 @@ LAB_00B9:
     ANDI.L	#$000000ff,D0		;0105c: 0280000000ff
     MOVE.L	(A7)+,D2		;01062: 241f
 LAB_00BA:
-    RTS				;01064: 4e75
+    RTS
 
 ;!======
 
@@ -1793,7 +1793,7 @@ LAB_00BC:
     MOVE.B	D0,(A0)			;01082: 1080
 LAB_00BD:
     MOVE.L	(A7)+,D2		;01084: 241f
-    RTS				;01086: 4e75
+    RTS
 
 ;!======
 
@@ -1818,7 +1818,7 @@ LAB_00BF:
     BEQ.S	LAB_00BF		;010b8: 67e8
 LAB_00C0:
     MOVE.B	#$01,D0			;010ba: 103c0001
-    RTS				;010be: 4e75
+    RTS
 
 ;!======
 
@@ -1827,7 +1827,7 @@ LAB_00C1:
     BNE.S	LAB_00C0		;010c2: 66f6
 LAB_00C2:
     MOVE.B	#$00,D0			;010c4: 103c0000
-    RTS				;010c8: 4e75
+    RTS
 
 ;!======
 
@@ -1849,7 +1849,7 @@ LAB_00C5:
     MOVE.L	A3,D0			;010e8: 200b
 LAB_00C6:
     MOVEM.L	(A7)+,A2-A3		;010ea: 4cdf0c00
-    RTS				;010ee: 4e75
+    RTS
 
 ;!======
 
@@ -1893,7 +1893,7 @@ LAB_00CC:
     ADDI.B	#$30,(A0)		;0113e: 06100030
     SWAP	D0			;01142: 4840
     DBF     D1,LAB_00CC		;01144: 51c9ffee
-    RTS				;01148: 4e75
+    RTS
 
 ;!======
 
@@ -1941,7 +1941,7 @@ LAB_00D2:
     MOVE.L	A0,D0			;011a2: 2008
     MOVE.L	(A7)+,D6		;011a4: 2c1f
     MOVE.L	(A7)+,D7		;011a6: 2e1f
-    RTS				;011a8: 4e75
+    RTS
 
 ;!======
 
@@ -2042,7 +2042,7 @@ LAB_00E0:
     JSR     LAB_0A4A		;012fe: 4eb9000156c4
 LAB_00E1:
     MOVEQ	#0,D0			;01304: 7000
-    RTS				;01306: 4e75
+    RTS
 
 ;!======
 
@@ -2061,7 +2061,7 @@ LAB_00E2:
     MOVEQ	#30,D2			;0132e: 741e
     ADD.W	D1,D2			;01330: d441
     MOVE.W	D2,LAB_1B0B		;01332: 33c200033c2c
-    RTS				;01338: 4e75
+    RTS
 
 ;!======
 
@@ -2097,13 +2097,13 @@ LAB_00E5:
     BNE.W	LAB_00E6		;0138a: 66000008
     MOVE.W	D1,(A0)			;0138e: 3081
     MOVEQ	#0,D0			;01390: 7000
-    RTS				;01392: 4e75
+    RTS
 
 ;!======
 
 LAB_00E6:
     MOVEQ	#1,D0			;01394: 7001
-    RTS				;01396: 4e75
+    RTS
 
 ;!======
 
@@ -2111,7 +2111,7 @@ LAB_00E7:
     MOVEM.L	A0-A1,-(A7)		;01398: 48e700c0
     JSR     LAB_0DFB		;0139c: 4eb90001d44c
     ADDQ.L	#8,A7			;013a2: 508f
-    RTS				;013a4: 4e75
+    RTS
 
 ;!======
 
@@ -2199,7 +2199,7 @@ LAB_00E8:
     JSR     _LVODraw(A6)
     MOVEM.L	(A7)+,D5-D7/A3		;014b2: 4cdf08e0
     UNLK	A5			;014b6: 4e5d
-    RTS				;014b8: 4e75
+    RTS
 
 ;!======
 
@@ -2323,7 +2323,7 @@ LAB_00E9:
     JSR     _LVODraw(A6)
 
     MOVEM.L	(A7)+,D4-D7/A3		;015d8: 4cdf08f0
-    RTS				;015dc: 4e75
+    RTS
 
 ;!======
 
@@ -2421,7 +2421,7 @@ LAB_00EA:
 
     MOVEM.L	(A7)+,D5-D7/A3		;016be: 4cdf08e0
     UNLK	A5			;016c2: 4e5d
-    RTS				;016c4: 4e75
+    RTS
 
 ;!======
 
@@ -2464,7 +2464,7 @@ LAB_00EB:
     JSR     _LVODraw(A6)
 
     MOVEM.L	(A7)+,D4-D7/A3		;01724: 4cdf08f0
-    RTS				;01728: 4e75
+    RTS
 
 ;!======
 
@@ -2489,7 +2489,7 @@ LAB_00EC:
     BSR.W	LAB_00EA		;0175a: 6100fe82
     LEA     36(A7),A7		;0175e: 4fef0024
     MOVEM.L	(A7)+,D4-D7/A3		;01762: 4cdf08f0
-    RTS				;01766: 4e75
+    RTS
 
 ;!======
 
@@ -2514,7 +2514,7 @@ LAB_00ED:
     BSR.W	LAB_00EA		;01798: 6100fe44
     LEA     36(A7),A7		;0179c: 4fef0024
     MOVEM.L	(A7)+,D4-D7/A3		;017a0: 4cdf08f0
-    RTS				;017a4: 4e75
+    RTS
 
 ;!======
 
@@ -2796,7 +2796,7 @@ LAB_010A:
     MOVE.L	-14(A5),D0		;01ab6: 202dfff2
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;01aba: 4cdf0cec
     UNLK	A5			;01abe: 4e5d
-    RTS				;01ac0: 4e75
+    RTS
 
 ;!======
 
@@ -2879,7 +2879,7 @@ LAB_0112:
 LAB_0113:
     MOVEM.L	-44(A5),D2-D7/A3	;01ba2: 4ced08fcffd4
     UNLK	A5			;01ba8: 4e5d
-    RTS				;01baa: 4e75
+    RTS
 
 ;!======
 
@@ -2926,7 +2926,7 @@ LAB_0119:
     MOVEQ	#1,D0			;01c1c: 7001
 LAB_011A:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;01c1e: 4cdf0cec
-    RTS				;01c22: 4e75
+    RTS
 
 ;!======
 
@@ -3002,7 +3002,7 @@ LAB_0121:
 LAB_0122:
     MOVEM.L	(A7)+,D2-D3/D6-D7/A3	;01d06: 4cdf08cc
     UNLK	A5			;01d0a: 4e5d
-    RTS				;01d0c: 4e75
+    RTS
 
 ;!======
 
@@ -3232,7 +3232,7 @@ LAB_013C:
 LAB_013D:
     MOVEM.L	-56(A5),D2-D7/A2-A3	;01f0a: 4ced0cfcffc8
     UNLK	A5			;01f10: 4e5d
-    RTS				;01f12: 4e75
+    RTS
 
 ;!======
 
@@ -3262,7 +3262,7 @@ LAB_0141:
 LAB_0142:
     MOVEM.L	(A7)+,A2-A3		;01f52: 4cdf0c00
     UNLK	A5			;01f56: 4e5d
-    RTS				;01f58: 4e75
+    RTS
 
 ;!======
 
@@ -3298,7 +3298,7 @@ LAB_0148:
     MOVE.L	A0,D0			;01f9c: 2008
     MOVEM.L	(A7)+,D7/A3		;01f9e: 4cdf0880
     UNLK	A5			;01fa2: 4e5d
-    RTS				;01fa4: 4e75
+    RTS
 
 ;!======
 
@@ -3355,7 +3355,7 @@ LAB_014D:
     JSR     _LVOPermit(A6)
     MOVEM.L	-20(A5),A2-A3		;0204a: 4ced0c00ffec
     UNLK	A5			;02050: 4e5d
-    RTS				;02052: 4e75
+    RTS
 
 ;!======
 
@@ -3382,7 +3382,7 @@ LAB_0150:
     CLR.L	(A3)			;02096: 4293
     MOVEA.L	(A7)+,A3		;02098: 265f
     UNLK	A5			;0209a: 4e5d
-    RTS				;0209c: 4e75
+    RTS
 
 ;!======
 
@@ -3415,7 +3415,7 @@ LAB_0154:
 LAB_0155:
     MOVEM.L	(A7)+,A2-A3		;020e6: 4cdf0c00
     UNLK	A5			;020ea: 4e5d
-    RTS				;020ec: 4e75
+    RTS
 
 ;!======
 
@@ -3858,7 +3858,7 @@ LAB_017C:
     MOVE.L	-16(A5),D0		;0263c: 202dfff0
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;02640: 4cdf0cec
     UNLK	A5			;02644: 4e5d
-    RTS				;02646: 4e75
+    RTS
 
 ;!======
 
@@ -4035,7 +4035,7 @@ LAB_018D:
     MOVE.L	-8(A5),D0		;0285a: 202dfff8
     MOVEM.L	(A7)+,D2/D7/A2-A3	;0285e: 4cdf0c84
     UNLK	A5			;02862: 4e5d
-    RTS				;02864: 4e75
+    RTS
 
 ;!======
 
@@ -4072,7 +4072,7 @@ LAB_0190:
 LAB_0191:
     MOVE.L	LAB_21AB,D0		;028c6: 20390003b8d8
     MOVEM.L	(A7)+,A2-A3		;028cc: 4cdf0c00
-    RTS				;028d0: 4e75
+    RTS
 
 ;!======
 
@@ -4091,7 +4091,7 @@ LAB_0193:
     MOVEQ	#0,D0			;028e8: 7000
 LAB_0194:
     MOVE.L	(A7)+,D7		;028ea: 2e1f
-    RTS				;028ec: 4e75
+    RTS
 
 ;!======
 
@@ -4165,7 +4165,7 @@ LAB_019C:
     MOVE.L	A0,LAB_2124		;029d4: 23c80003b11e
     MOVEA.L	(A7)+,A3		;029da: 265f
     UNLK	A5			;029dc: 4e5d
-    RTS				;029de: 4e75
+    RTS
 
 ;!======
 
@@ -4194,7 +4194,7 @@ LAB_01A1:
     MOVE.L	A3,D0			;02a1a: 200b
     MOVEM.L	(A7)+,A2-A3		;02a1c: 4cdf0c00
     UNLK	A5			;02a20: 4e5d
-    RTS				;02a22: 4e75
+    RTS
 
 ;!======
 
@@ -4214,7 +4214,7 @@ LAB_01A3:
 LAB_01A4:
     MOVE.L	-4(A5),D0		;02a4c: 202dfffc
     UNLK	A5			;02a50: 4e5d
-    RTS				;02a52: 4e75
+    RTS
 
 ;!======
 
@@ -4240,7 +4240,7 @@ LAB_01A9:
     PEA     LAB_1B43		;02a8a: 487900033d9c
     JSR     LAB_0462(PC)		;02a90: 4eba62ce
     LEA     16(A7),A7		;02a94: 4fef0010
-    RTS				;02a98: 4e75
+    RTS
 
 ;!======
 
@@ -4256,7 +4256,7 @@ LAB_01AA:
     PEA     LAB_1B44		;02ac0: 487900033da6
     JSR     LAB_0462(PC)		;02ac6: 4eba6298
     LEA     16(A7),A7		;02aca: 4fef0010
-    RTS				;02ace: 4e75
+    RTS
 
 ;!======
 
@@ -4284,7 +4284,7 @@ LAB_01AB:
     PEA	    LAB_1B46		;02b32: 487900033dba
     JSR     LAB_0462(PC)		;02b38: 4eba6226
     LEA	    32(A7),A7		;02b3c: 4fef0020
-    RTS				;02b40: 4e75
+    RTS
 
 ;!======
 
@@ -4315,7 +4315,7 @@ LAB_01AC:
     MOVE.L	LAB_2315,(A7)		;02bb8: 2eb90003ee48
     JSR     LAB_01C9(PC)		;02bbe: 4eba03d8
     LEA     16(A7),A7		;02bc2: 4fef0010
-    RTS				;02bc6: 4e75
+    RTS
 
 ;!======
 
@@ -4587,7 +4587,7 @@ LAB_01C0:
     JSR     _LVOPermit(A6)
 
     MOVEM.L	(A7)+,D6-D7		;02f60: 4cdf00c0
-    RTS				;02f64: 4e75
+    RTS
 
 ;!======
 
@@ -4871,7 +4871,7 @@ LAB_01E1:
     CLR.L	LAB_1B54		;032ae: 42b900033e40
 LAB_01E2:
     MOVEM.L	(A7)+,D2/D7		;032b4: 4cdf0084
-    RTS				;032b8: 4e75
+    RTS
 
 ;!======
 
@@ -5001,7 +5001,7 @@ LAB_01E7:
 LAB_01E8:
     MOVEM.L	-20(A5),D2-D3		;03440: 4ced000cffec
     UNLK	A5			;03446: 4e5d
-    RTS				;03448: 4e75
+    RTS
 
 ;!======
 
@@ -5054,7 +5054,7 @@ LAB_01EC:
     MOVE.B	D1,4(A3)		;034b8: 17410004
 LAB_01ED:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;034bc: 4cdf0cc0
-    RTS				;034c0: 4e75
+    RTS
 
 ;!======
 
@@ -5306,7 +5306,7 @@ LAB_01FC:
     JSR	    -60(A6)			;03780: 4eaeffc4
     MOVEM.L	-120(A5),D2-D3/D5-D7	;03784: 4ced00ecff88
     UNLK	A5			;0378a: 4e5d
-    RTS				;0378c: 4e75
+    RTS
 
 ;!======
 
@@ -5338,7 +5338,7 @@ LAB_01FD:
     JSR     LAB_026C(PC)		;037d4: 4eba0e88
     LEA	    36(A7),A7		;037d8: 4fef0024
     MOVEM.L	(A7)+,D2-D3		;037dc: 4cdf000c
-    RTS				;037e0: 4e75
+    RTS
 
 ;!======
 
@@ -5489,7 +5489,7 @@ LAB_0205:
     JSR     LAB_026C(PC)		;039a4: 4eba0cb8
     MOVEM.L	-64(A5),D2-D7		;039a8: 4ced00fcffc0
     UNLK	A5			;039ae: 4e5d
-    RTS				;039b0: 4e75
+    RTS
 
 ;!======
 
@@ -5594,7 +5594,7 @@ LAB_0208:
     JSR     LAB_026C(PC)		;03af4: 4eba0b68
     MOVEM.L	-56(A5),D2-D3/D5-D7	;03af8: 4ced00ecffc8
     UNLK	A5			;03afe: 4e5d
-    RTS				;03b00: 4e75
+    RTS
 
 ;!======
 
@@ -5632,7 +5632,7 @@ LAB_0209:
     MOVE.L	-4(A5),4(A0)		;03b80: 216dfffc0004
     MOVEM.L	-12(A5),D2-D3		;03b86: 4ced000cfff4
     UNLK	A5			;03b8c: 4e5d
-    RTS				;03b8e: 4e75
+    RTS
 
 ;!======
 
@@ -5668,7 +5668,7 @@ LAB_020A:
     MOVE.L	-4(A5),4(A0)		;03c0e: 216dfffc0004
     MOVEM.L	-12(A5),D2-D3		;03c14: 4ced000cfff4
     UNLK	A5			;03c1a: 4e5d
-    RTS				;03c1c: 4e75
+    RTS
 
 ;!======
 
@@ -5705,7 +5705,7 @@ LAB_020B:
     MOVE.L	-4(A5),4(A0)		;03ca4: 216dfffc0004
     MOVEM.L	-12(A5),D2-D3		;03caa: 4ced000cfff4
     UNLK	A5			;03cb0: 4e5d
-    RTS				;03cb2: 4e75
+    RTS
 
 ;!======
 
@@ -5738,7 +5738,7 @@ LAB_020C:
     MOVE.L	-4(A5),4(A0)		;03d24: 216dfffc0004
     MOVEM.L	(A7)+,D2-D3		;03d2a: 4cdf000c
     UNLK	A5			;03d2e: 4e5d
-    RTS				;03d30: 4e75
+    RTS
 
 ;!======
 
@@ -6495,7 +6495,7 @@ LAB_0263:
 LAB_0264:
     MOVEM.L	-868(A5),D2-D7/A2	;04628: 4ced04fcfc9c
     UNLK	A5			;0462e: 4e5d
-    RTS				;04630: 4e75
+    RTS
 
 ;!======
 
@@ -6571,7 +6571,7 @@ LAB_0279:
     MOVE.L	D5,D0			;046f4: 2005
     MOVEM.L	(A7)+,D5-D7/A3		;046f6: 4cdf08e0
     UNLK	A5			;046fa: 4e5d
-    RTS				;046fc: 4e75
+    RTS
 
 ;!======
 
@@ -6644,7 +6644,7 @@ LAB_0280:
     MOVE.B	D1,LAB_21B2		;047ae: 13c10003bb09
     MOVEM.L	(A7)+,D7/A3		;047b4: 4cdf0880
     UNLK	A5			;047b8: 4e5d
-    RTS				;047ba: 4e75
+    RTS
 
 ;!======
 
@@ -6781,7 +6781,7 @@ LAB_028D:
 LAB_028E:
     MOVEM.L	(A7)+,D5-D7/A3		;04930: 4cdf08e0
     UNLK	A5			;04934: 4e5d
-    RTS				;04936: 4e75
+    RTS
 
 ;!======
 
@@ -6978,7 +6978,7 @@ LAB_028F:
     JSR     _LVOSetAPen(A6)		;04b34: 4eaefeaa
     MOVEM.L	(A7)+,D2-D7/A3		;04b38: 4cdf08fc
     UNLK	A5			;04b3c: 4e5d
-    RTS				;04b3e: 4e75
+    RTS
 
 ;!======
 
@@ -7193,7 +7193,7 @@ LAB_02A3:
 LAB_02A4:
     MOVEM.L	(A7)+,D7/A2-A3/A6	;04d80: 4cdf4c80
     UNLK	A5			;04d84: 4e5d
-    RTS				;04d86: 4e75
+    RTS
 
 ;!======
 
@@ -7830,7 +7830,7 @@ LAB_02CC:
 LAB_02CD:
     MOVEM.L	(A7)+,D2-D7/A2-A3/A6	;05574: 4cdf4cfc
     UNLK	A5			;05578: 4e5d
-    RTS				;0557a: 4e75
+    RTS
 
 ;!======
 
@@ -7857,7 +7857,7 @@ LAB_02CF:
     CLR.L	48(A3)			;055b6: 42ab0030
 LAB_02D0:
     MOVEM.L	(A7)+,A2-A3		;055ba: 4cdf0c00
-    RTS				;055be: 4e75
+    RTS
 
 ;!======
 
@@ -7911,7 +7911,7 @@ LAB_02D3:
     CLR.L	32(A2)			;05650: 42aa0020
 LAB_02D4:
     MOVEM.L	(A7)+,A2-A3		;05654: 4cdf0c00
-    RTS				;05658: 4e75
+    RTS
 
 ;!======
 
@@ -7992,7 +7992,7 @@ LAB_02DA:
 LAB_02DB:
     MOVEM.L	(A7)+,D7/A2-A3		;05736: 4cdf0c80
     UNLK	A5			;0573a: 4e5d
-    RTS				;0573c: 4e75
+    RTS
 
 ;!======
 
@@ -8029,7 +8029,7 @@ LAB_02E0:
 LAB_02E1:
     MOVE.L	D4,D0			;0577a: 2004
     MOVEM.L	(A7)+,D4-D7/A3		;0577c: 4cdf08f0
-    RTS				;05780: 4e75
+    RTS
 
 ;!======
 
@@ -8608,7 +8608,7 @@ LAB_0314:
 LAB_0315:
     MOVEM.L	-176(A5),D5-D7/A2-A3/A6	;05e1a: 4ced4ce0ff50
     UNLK	A5			;05e20: 4e5d
-    RTS				;05e22: 4e75
+    RTS
 
 ;!======
 
@@ -8648,7 +8648,7 @@ LAB_0318:
 LAB_0319:
     MOVEA.L	(A7)+,A3		;05e82: 265f
     UNLK	A5			;05e84: 4e5d
-    RTS				;05e86: 4e75
+    RTS
 
 ;!======
 
@@ -9367,7 +9367,7 @@ LAB_0343:
 LAB_0344:
     MOVEM.L	-676(A5),D2-D3/D5-D7/A2-A3 ;067b2: 4ced0cecfd5c
     UNLK	A5			;067b8: 4e5d
-    RTS				;067ba: 4e75
+    RTS
 
 ;!======
 
@@ -9400,7 +9400,7 @@ LAB_0345:
 LAB_0346:
     MOVEA.L	(A7)+,A3		;0681a: 265f
     UNLK	A5			;0681c: 4e5d
-    RTS				;0681e: 4e75
+    RTS
 
 ;!======
 
@@ -9521,7 +9521,7 @@ LAB_0356:
 LAB_0357:
     MOVEM.L	(A7)+,D4-D7/A3		;06978: 4cdf08f0
     UNLK	A5			;0697c: 4e5d
-    RTS				;0697e: 4e75
+    RTS
 
 ;!======
 
@@ -9663,7 +9663,7 @@ LAB_0363:
     MOVE.L	20(A5),D0		;06af2: 202d0014
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;06af6: 4cdf0ce4
     UNLK	A5			;06afa: 4e5d
-    RTS				;06afc: 4e75
+    RTS
 
 ;!======
 
@@ -9750,7 +9750,7 @@ LAB_036A:
 LAB_036B:
     MOVE.L	D5,D0			;06bbc: 2005
     MOVEM.L	(A7)+,D5-D7/A3		;06bbe: 4cdf08e0
-    RTS				;06bc2: 4e75
+    RTS
 
 ;!======
 
@@ -9880,7 +9880,7 @@ LAB_0379:
     MOVE.L	-4(A5),D0		;06d08: 202dfffc
     MOVEM.L	(A7)+,D5-D7/A2-A3	;06d0c: 4cdf0ce0
     UNLK	A5			;06d10: 4e5d
-    RTS				;06d12: 4e75
+    RTS
 
 ;!======
 
@@ -9917,7 +9917,7 @@ LAB_037B:
     MOVE.L	A2,D0			;06d66: 200a
     MOVEM.L	(A7)+,D7/A2-A3		;06d68: 4cdf0c80
     UNLK	A5			;06d6c: 4e5d
-    RTS				;06d6e: 4e75
+    RTS
 
 ;!======
 
@@ -10005,7 +10005,7 @@ LAB_038D:
     JSR     LAB_0462(PC)		;06e72: 4eba1eec
     MOVEA.L	-8(A5),A4		;06e76: 286dfff8
     UNLK	A5			;06e7a: 4e5d
-    RTS				;06e7c: 4e75
+    RTS
 
 ;!======
 
@@ -10061,7 +10061,7 @@ LAB_0391:
     MOVE.L	D0,LAB_21B7		;06f38: 23c00003bb14
     MOVEM.L	-16(A5),D2-D4		;06f3e: 4ced001cfff0
     UNLK	A5			;06f44: 4e5d
-    RTS				;06f46: 4e75
+    RTS
 
 ;!======
 
@@ -10086,7 +10086,7 @@ LAB_0393:
     LEA	    16(A7),A7		;06f90: 4fef0010
     MOVE.W	#$0001,LAB_1B8A		;06f94: 33fc000100033fca
     MOVEA.L	(A7)+,A4		;06f9c: 285f
-    RTS				;06f9e: 4e75
+    RTS
 
 ;!======
 
@@ -10123,7 +10123,7 @@ LAB_0394:
     JSR     _LVOPermit(A6)
     MOVE.L	D0,LAB_21BA		;0701e: 23c00003bb20
     MOVEM.L	(A7)+,D2-D4/D7		;07024: 4cdf009c
-    RTS				;07028: 4e75
+    RTS
 
 ;!======
 
@@ -10134,7 +10134,7 @@ LAB_0394:
 LAB_0395:
     JMP     LAB_0DF5		;0702c: 4ef90001d374
     MOVEQ	#97,D0			;07032: 7061
-    RTS				;07034: 4e75
+    RTS
 
 ;!======
 
@@ -10178,7 +10178,7 @@ LAB_0398:
 LAB_0399:
     MOVE.L	D6,D0			;070be: 2006
     MOVEM.L	(A7)+,D6-D7/A3		;070c0: 4cdf08c0
-    RTS				;070c4: 4e75
+    RTS
 
 ;!======
 
@@ -10233,7 +10233,7 @@ LAB_039E:
     MOVE.W	LAB_21D2,LAB_1F45	;0716e: 33f90003bb98000399b2
 LAB_039F:
     MOVEM.L	(A7)+,D2-D3/D6-D7	;07178: 4cdf00cc
-    RTS				;0717c: 4e75
+    RTS
 
 ;!======
 
@@ -10296,7 +10296,7 @@ LAB_03A7:
     MOVE.L	D5,D0			;07222: 2005
 LAB_03A8:
     MOVEM.L	(A7)+,D2-D7/A3		;07224: 4cdf08fc
-    RTS				;07228: 4e75
+    RTS
 
 ;!======
 
@@ -10324,7 +10324,7 @@ LAB_03AA:
     BSR.W	LAB_03A0		;07262: 6100ff1a
     MOVEM.L	-20(A5),D6-D7		;07266: 4ced00c0ffec
     UNLK	A5			;0726c: 4e5d
-    RTS				;0726e: 4e75
+    RTS
 
 ;!======
 
@@ -10345,7 +10345,7 @@ LAB_03AB:
     JSR	    -66(A6)			;07296: 4eaeffbe
     MOVE.L	D6,D0			;0729a: 2006
     MOVEM.L	(A7)+,D2-D3/D6-D7	;0729c: 4cdf00cc
-    RTS				;072a0: 4e75
+    RTS
 
 ;!======
 
@@ -10417,7 +10417,7 @@ LAB_03B0:
     MOVE.L	LAB_21BB,D0		;07374: 20390003bb24
 LAB_03B1:
     MOVEM.L	(A7)+,D2-D3/D7/A3	;0737a: 4cdf088c
-    RTS				;0737e: 4e75
+    RTS
 
 ;!======
 
@@ -10443,7 +10443,7 @@ LAB_03B4:
 LAB_03B5:
     MOVE.L	-4(A5),D0		;073c0: 202dfffc
     UNLK	A5			;073c4: 4e5d
-    RTS				;073c6: 4e75
+    RTS
 
 ;!======
 
@@ -10461,7 +10461,7 @@ LAB_03B7:
     JSR     LAB_0468(PC)		;073e0: 4eba19a2
 LAB_03B8:
     UNLK	A5			;073e4: 4e5d
-    RTS				;073e6: 4e75
+    RTS
 
 ;!======
 
@@ -10510,7 +10510,7 @@ LAB_03BE:
     MOVE.L	-4(A5),D0		;07462: 202dfffc
 LAB_03BF:
     UNLK	A5			;07466: 4e5d
-    RTS				;07468: 4e75
+    RTS
 
 ;!======
 
@@ -10566,7 +10566,7 @@ LAB_03C3:
     MOVE.L	D7,D0			;07508: 2007
     MOVEM.L	(A7)+,D2/D6-D7/A3	;0750a: 4cdf08c4
     UNLK	A5			;0750e: 4e5d
-    RTS				;07510: 4e75
+    RTS
 
 ;!======
 
@@ -10614,7 +10614,7 @@ LAB_03C7:
     MOVE.L	D7,D0			;07592: 2007
     MOVEM.L	(A7)+,D2/D6-D7/A3	;07594: 4cdf08c4
     UNLK	A5			;07598: 4e5d
-    RTS				;0759a: 4e75
+    RTS
 
 ;!======
 
@@ -10642,7 +10642,7 @@ LAB_03C9:
     MOVEQ	#0,D0			;075e8: 7000
 LAB_03CA:
     MOVEM.L	(A7)+,D2-D3/D6-D7/A3	;075ea: 4cdf08cc
-    RTS				;075ee: 4e75
+    RTS
 
 ;!======
 
@@ -10653,7 +10653,7 @@ LAB_03CB:
     MOVE.W	#$ffff,LAB_234A		;07600: 33fcffff0003fa3c
     JSR     LAB_0464(PC)		;07608: 4eba1762
 LAB_03CC:
-    RTS				;0760c: 4e75
+    RTS
 
 ;!======
 
@@ -10671,7 +10671,7 @@ LAB_03CD:
     MOVE.W	D0,LAB_234A		;07638: 33c00003fa3c
     MOVE.W	D0,LAB_1F45		;0763e: 33c0000399b2
 LAB_03CE:
-    RTS				;07644: 4e75
+    RTS
 
 ;!======
 
@@ -10863,7 +10863,7 @@ LAB_03DC:
     MOVE.L	D2,LAB_1BD6		;078bc: 23c2000341a6
 LAB_03DD:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2	;078c2: 4cdf04ec
-    RTS				;078c6: 4e75
+    RTS
 
 ;!======
 
@@ -10892,7 +10892,7 @@ LAB_03DE:
     JSR     _LVOSetAPen(A6)
 LAB_03DF:
     MOVE.L	(A7)+,D7		;0791e: 2e1f
-    RTS				;07920: 4e75
+    RTS
 
 ;!======
 
@@ -11664,7 +11664,7 @@ LAB_0417:
     MOVE.L	D0,LAB_1BCA		;080f8: 23c000034146
     MOVEM.L	-28(A5),D2/D5-D7/A3	;080fe: 4ced08e4ffe4
     UNLK	A5			;08104: 4e5d
-    RTS				;08106: 4e75
+    RTS
 
 ;!======
 
@@ -11685,7 +11685,7 @@ LAB_0418:
     JSR	    -222(A6)		;0813c: 4eaeff22
 LAB_0419:
     MOVEM.L	(A7)+,D2-D3		;08140: 4cdf000c
-    RTS				;08144: 4e75
+    RTS
 
 ;!======
 
@@ -11915,7 +11915,7 @@ LAB_041B:
 LAB_041C:
     MOVEM.L	-236(A5),D2-D7		;0844c: 4ced00fcff14
     UNLK	A5			;08452: 4e5d
-    RTS				;08454: 4e75
+    RTS
 
 ;!======
 
@@ -11951,7 +11951,7 @@ LAB_041F:
     MOVE.L	D6,D0			;084b0: 2006
     MOVEM.L	(A7)+,D6-D7		;084b2: 4cdf00c0
     UNLK	A5			;084b6: 4e5d
-    RTS				;084b8: 4e75
+    RTS
 
 ;!======
 
@@ -12282,7 +12282,7 @@ LAB_0437:
 LAB_0438:
     MOVEM.L	(A7)+,D2-D7/A3		;088a4: 4cdf08fc
     UNLK	A5			;088a8: 4e5d
-    RTS				;088aa: 4e75
+    RTS
 
 ;!======
 
@@ -12416,7 +12416,7 @@ LAB_0441:
     JSR     LAB_066D(PC)		;08a3e: 4eba3fea
     LEA	    72(A7),A7		;08a42: 4fef0048
     MOVEM.L	(A7)+,D2-D5/D7/A2-A3	;08a46: 4cdf0cbc
-    RTS				;08a4a: 4e75
+    RTS
 
 ;!======
 
@@ -12528,7 +12528,7 @@ LAB_044E:
     ADDQ.W	#4,A7			;08b9c: 584f
 LAB_044F:
     MOVEM.L	(A7)+,D6-D7/A3		;08b9e: 4cdf08c0
-    RTS				;08ba2: 4e75
+    RTS
 
 ;!======
 
@@ -12668,7 +12668,7 @@ LAB_045E:
 LAB_045F:
     MOVEM.L	-68(A5),D2-D3/D6-D7/A3	;08d48: 4ced08ccffbc
     UNLK	A5			;08d4e: 4e5d
-    RTS				;08d50: 4e75
+    RTS
 
 ;!======
 
@@ -12970,7 +12970,7 @@ LAB_0481:
 LAB_0482:
     MOVEM.L	-32(A5),D6-D7		;09112: 4ced00c0ffe0
     UNLK	A5			;09118: 4e5d
-    RTS				;0911a: 4e75
+    RTS
 
 ;!======
 
@@ -12996,7 +12996,7 @@ LAB_0483:
     JSR     LAB_055C(PC)		;09168: 4eba1ad8
     LEA	    28(A7),A7		;0916c: 4fef001c
     MOVEA.L	(A7)+,A3		;09170: 265f
-    RTS				;09172: 4e75
+    RTS
 
 ;!======
 
@@ -13137,7 +13137,7 @@ LAB_0496:
     JSR     LAB_053D(PC)		;092f4: 4eba1770
     MOVE.L	-104(A5),D7		;092f8: 2e2dff98
     UNLK	A5			;092fc: 4e5d
-    RTS				;092fe: 4e75
+    RTS
 
 ;!======
 
@@ -13573,7 +13573,7 @@ LAB_04BF:
 LAB_04C0:
     MOVEM.L	-96(A5),D5-D7/A2-A3	;09862: 4ced0ce0ffa0
     UNLK	A5			;09868: 4e5d
-    RTS				;0986a: 4e75
+    RTS
 
 ;!======
 
@@ -13793,7 +13793,7 @@ LAB_04CE:
 LAB_04CF:
     MOVEM.L	-32(A5),D6-D7		;09b26: 4ced00c0ffe0
     UNLK	A5			;09b2c: 4e5d
-    RTS				;09b2e: 4e75
+    RTS
 
 ;!======
 
@@ -14044,7 +14044,7 @@ LAB_04E4:
 LAB_04E5:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;09e3e: 4cdf0ce0
     UNLK	A5			;09e42: 4e5d
-    RTS				;09e44: 4e75
+    RTS
 
 ;!======
 
@@ -14145,7 +14145,7 @@ LAB_04EE:
 LAB_04EF:
     MOVE.L	-16(A5),D7		;09f86: 2e2dfff0
     UNLK	A5			;09f8a: 4e5d
-    RTS				;09f8c: 4e75
+    RTS
 
 ;!======
 
@@ -14154,7 +14154,7 @@ LAB_04F0:
     PEA	    LAB_1B9C		;09f92: 4879000340dc
     JSR     LAB_07C6(PC)		;09f98: 4eba5c1a
     ADDQ.W	#4,A7			;09f9c: 584f
-    RTS				;09f9e: 4e75
+    RTS
 
 ;!======
 
@@ -14223,7 +14223,7 @@ LAB_04F8:
     MOVEQ	#0,D0			;0a054: 7000
 LAB_04F9:
     UNLK	A5			;0a056: 4e5d
-    RTS				;0a058: 4e75
+    RTS
 
 ;!======
 
@@ -14286,7 +14286,7 @@ LAB_04FD:
 LAB_04FE:
     MOVEM.L	-32(A5),D6-D7/A2	;0a112: 4ced04c0ffe0
     UNLK	A5			;0a118: 4e5d
-    RTS				;0a11a: 4e75
+    RTS
 
 ;!======
 
@@ -14696,7 +14696,7 @@ LAB_0518:
 LAB_0519:
     MOVEM.L	-180(A5),D2-D3/D5-D7	;0a6a6: 4ced00ecff4c
     UNLK	A5			;0a6ac: 4e5d
-    RTS				;0a6ae: 4e75
+    RTS
 
 ;!======
 
@@ -14899,7 +14899,7 @@ LAB_052B:
 LAB_052C:
     MOVEM.L	-1064(A5),D2-D7		;0a8fc: 4ced00fcfbd8
     UNLK	A5			;0a902: 4e5d
-    RTS				;0a904: 4e75
+    RTS
 
 ;!======
 
@@ -14980,7 +14980,7 @@ LAB_0534:
     MOVE.L	-12(A5),D0		;0a9d6: 202dfff4
     MOVEM.L	(A7)+,D7/A2-A3		;0a9da: 4cdf0c80
     UNLK	A5			;0a9de: 4e5d
-    RTS				;0a9e0: 4e75
+    RTS
 
 ;!======
 
@@ -15012,7 +15012,7 @@ LAB_0536:
 LAB_0537:
     CLR.W	LAB_1C7F		;0aa3a: 4279000351ca
 LAB_0538:
-    RTS				;0aa40: 4e75
+    RTS
 
 ;!======
 
@@ -15104,7 +15104,7 @@ LAB_0550:
 LAB_0551:
     MOVE.L	D7,D0			;0ab16: 2007
     MOVEM.L	(A7)+,D5-D7/A2-A3	;0ab18: 4cdf0ce0
-    RTS				;0ab1c: 4e75
+    RTS
 
 ;!======
 
@@ -15213,7 +15213,7 @@ LAB_055A:
 LAB_055B:
     MOVEM.L	(A7)+,D4-D7/A3		;0ac3a: 4cdf08f0
     UNLK	A5			;0ac3e: 4e5d
-    RTS				;0ac40: 4e75
+    RTS
 
 ;!======
 
@@ -15274,7 +15274,7 @@ LAB_0561:
 LAB_0562:
     MOVE.L	D7,D0			;0acb0: 2007
     MOVEM.L	(A7)+,D5-D7		;0acb2: 4cdf00e0
-    RTS				;0acb6: 4e75
+    RTS
 
 ;!======
 
@@ -15311,7 +15311,7 @@ LAB_0564:
     BRA.S	LAB_0564		;0ad14: 60ce
 LAB_0565:
     MOVE.L	(A7)+,D7		;0ad16: 2e1f
-    RTS				;0ad18: 4e75
+    RTS
 
 ;!======
 
@@ -15322,7 +15322,7 @@ LAB_0566:
     MOVE.L	D0,LAB_21D3		;0ad26: 23c00003bb9c
     BSR.S	LAB_0563		;0ad2c: 618a
     ADDQ.W	#8,A7			;0ad2e: 504f
-    RTS				;0ad30: 4e75
+    RTS
 
 ;!======
 
@@ -15353,7 +15353,7 @@ LAB_0568:
     MOVE.L	D7,(A0)			;0ad7c: 2087
 LAB_0569:
     MOVE.L	(A7)+,D7		;0ad7e: 2e1f
-    RTS				;0ad80: 4e75
+    RTS
 
 ;!======
 
@@ -15425,7 +15425,7 @@ LAB_0570:
     EXT.L	D0			;0ae4a: 48c0
     MOVEM.L	(A7)+,D7/A3		;0ae4c: 4cdf0880
     UNLK	A5			;0ae50: 4e5d
-    RTS				;0ae52: 4e75
+    RTS
 
 ;!======
 
@@ -15566,7 +15566,7 @@ LAB_057E:
     MOVE.L	A2,D0			;0afc0: 200a
     MOVEM.L	(A7)+,D2-D7/A2-A3	;0afc2: 4cdf0cfc
     UNLK	A5			;0afc6: 4e5d
-    RTS				;0afc8: 4e75
+    RTS
 
 ;!======
 
@@ -15619,7 +15619,7 @@ LAB_0583:
     MOVE.L	D7,LAB_21DB		;0b044: 23c70003bc74
 LAB_0584:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;0b04a: 4cdf0ce0
-    RTS				;0b04e: 4e75
+    RTS
 
 ;!======
 
@@ -15643,7 +15643,7 @@ LAB_0586:
     ADDQ.W	#4,A7			;0b086: 584f
     CLR.W	LAB_21D6		;0b088: 42790003bbf2
 LAB_0587:
-    RTS				;0b08e: 4e75
+    RTS
 
 ;!======
 
@@ -15667,7 +15667,7 @@ LAB_0588:
     LEA	    28(A7),A7		;0b0de: 4fef001c
     MOVE.L	D0,LAB_21DE		;0b0e2: 23c00003bc7e
 LAB_0589:
-    RTS				;0b0e8: 4e75
+    RTS
 
 ;!======
 
@@ -15693,7 +15693,7 @@ LAB_058B:
     LEA	    16(A7),A7		;0b138: 4fef0010
     CLR.L	LAB_21DE		;0b13c: 42b90003bc7e
 LAB_058C:
-    RTS				;0b142: 4e75
+    RTS
 
 ;!======
 
@@ -15733,7 +15733,7 @@ LAB_0590:
     MOVEQ	#0,D0			;0b19e: 7000
 LAB_0591:
     MOVEM.L	(A7)+,D5-D7		;0b1a0: 4cdf00e0
-    RTS				;0b1a4: 4e75
+    RTS
 
 ;!======
 
@@ -15780,7 +15780,7 @@ LAB_0596:
     MOVE.L	D0,LAB_21DA		;0b216: 23c00003bc70
     MOVEM.L	(A7)+,D4-D7/A3		;0b21c: 4cdf08f0
     UNLK	A5			;0b220: 4e5d
-    RTS				;0b222: 4e75
+    RTS
 
 ;!======
 
@@ -15897,7 +15897,7 @@ LAB_059E:
     EXT.L	D0			;0b35e: 48c0
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;0b360: 4cdf0ce4
     UNLK	A5			;0b364: 4e5d
-    RTS				;0b366: 4e75
+    RTS
 
 ;!======
 
@@ -16064,7 +16064,7 @@ LAB_05A9:
     EXT.L	D0			;0b54a: 48c0
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;0b54c: 4cdf0ce4
     UNLK	A5			;0b550: 4e5d
-    RTS				;0b552: 4e75
+    RTS
 
 ;!======
 
@@ -16090,7 +16090,7 @@ LAB_05AB:
     MOVE.L	D7,D0			;0b594: 2007
     MOVEM.L	(A7)+,D7/A3		;0b596: 4cdf0880
     UNLK	A5			;0b59a: 4e5d
-    RTS				;0b59c: 4e75
+    RTS
 
 ;!======
 
@@ -16110,7 +16110,7 @@ LAB_05AC:
     ADDQ.W	#4,A7			;0b5be: 584f
 LAB_05AD:
     MOVE.L	(A7)+,D7		;0b5c0: 2e1f
-    RTS				;0b5c2: 4e75
+    RTS
 
 ;!======
 
@@ -16177,7 +16177,7 @@ LAB_05B4:
     MOVE.L	D5,D0			;0b658: 2005
     MOVEM.L	(A7)+,D5-D7		;0b65a: 4cdf00e0
     UNLK	A5			;0b65e: 4e5d
-    RTS				;0b660: 4e75
+    RTS
 
 ;!======
 
@@ -16185,7 +16185,7 @@ LAB_05B5:
     BSR.W	LAB_0585		;0b662: 6100f9ec
     MOVEQ	#0,D0			;0b666: 7000
     MOVE.W	LAB_21D5,D0		;0b668: 30390003bbf0
-    RTS				;0b66e: 4e75
+    RTS
 
 ;!======
 
@@ -16202,7 +16202,7 @@ LAB_05B6:
 LAB_05B7:
     MOVEQ	#0,D0			;0b68c: 7000
 LAB_05B8:
-    RTS				;0b68e: 4e75
+    RTS
 
 ;!======
 
@@ -16221,7 +16221,7 @@ LAB_05B9:
     EXT.L	D2			;0b6b0: 48c2
     MOVE.L	D2,D0			;0b6b2: 2002
     MOVE.L	(A7)+,D2		;0b6b4: 241f
-    RTS				;0b6b6: 4e75
+    RTS
 
 ;!======
 
@@ -16237,7 +16237,7 @@ LAB_05BA:
     EXT.L	D2			;0b6d2: 48c2
     MOVE.L	D2,D0			;0b6d4: 2002
     MOVE.L	(A7)+,D2		;0b6d6: 241f
-    RTS				;0b6d8: 4e75
+    RTS
 
 ;!======
 
@@ -16262,7 +16262,7 @@ LAB_05BB:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
     MOVEA.L	(A7)+,A3		;0b71a: 265f
-    RTS				;0b71c: 4e75
+    RTS
 
 ;!======
 
@@ -16364,7 +16364,7 @@ LAB_05BE:
 LAB_05BF:
     MOVEM.L	(A7)+,D2-D7/A3		;0b84c: 4cdf08fc
     UNLK	A5			;0b850: 4e5d
-    RTS				;0b852: 4e75
+    RTS
 
 ;!======
 
@@ -16521,7 +16521,7 @@ LAB_05D1:
     MOVE.L	A3,D0			;0b9d6: 200b
 LAB_05D2:
     MOVEM.L	(A7)+,D4-D7/A3		;0b9d8: 4cdf08f0
-    RTS				;0b9dc: 4e75
+    RTS
 
 ;!======
 
@@ -16669,7 +16669,7 @@ LAB_05DF:
     MOVEQ	#-1,D0			;0bb5a: 70ff
 LAB_05E0:
     MOVEM.L	(A7)+,D4-D7/A3		;0bb5c: 4cdf08f0
-    RTS				;0bb60: 4e75
+    RTS
 
 ;!======
 
@@ -16711,7 +16711,7 @@ LAB_05E3:
     MOVE.L	D4,D0			;0bbc0: 2004
     MOVEM.L	-36(A5),D4-D7/A2-A3	;0bbc2: 4ced0cf0ffdc
     UNLK	A5			;0bbc8: 4e5d
-    RTS				;0bbca: 4e75
+    RTS
 
 ;!======
 
@@ -16729,7 +16729,7 @@ LAB_05E4:
     MOVE.L	D0,D7			;0bbf2: 2e00
     MOVE.L	D7,D0			;0bbf4: 2007
     MOVEM.L	(A7)+,D7/A3		;0bbf6: 4cdf0880
-    RTS				;0bbfa: 4e75
+    RTS
 
 ;!======
 
@@ -16818,7 +16818,7 @@ LAB_05F4:
 LAB_05F5:
     MOVEM.L	(A7)+,D2/D4-D7/A3	;0bca8: 4cdf08f4
     UNLK	A5			;0bcac: 4e5d
-    RTS				;0bcae: 4e75
+    RTS
 
 ;!======
 
@@ -16846,7 +16846,7 @@ LAB_05F7:
     MOVE.L	D6,D0			;0bce6: 2006
     MOVEM.L	(A7)+,D5-D7/A3		;0bce8: 4cdf08e0
     UNLK	A5			;0bcec: 4e5d
-    RTS				;0bcee: 4e75
+    RTS
 
 ;!======
 
@@ -16883,7 +16883,7 @@ LAB_05FA:
 LAB_05FB:
     MOVEM.L	(A7)+,A2-A3		;0bd42: 4cdf0c00
     UNLK	A5			;0bd46: 4e5d
-    RTS				;0bd48: 4e75
+    RTS
 
 ;!======
 
@@ -17020,7 +17020,7 @@ LAB_0604:
     MOVE.L	D5,D0			;0beaa: 2005
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;0beac: 4cdf0ce4
     UNLK	A5			;0beb0: 4e5d
-    RTS				;0beb2: 4e75
+    RTS
 
 ;!======
 
@@ -17169,7 +17169,7 @@ LAB_060F:
     JSR     LAB_03A0(PC)		;0c06a: 4ebab112
     MOVEM.L	-152(A5),D6-D7/A3	;0c06e: 4ced08c0ff68
     UNLK	A5			;0c074: 4e5d
-    RTS				;0c076: 4e75
+    RTS
 
 ;!======
 
@@ -17212,7 +17212,7 @@ LAB_0611:
     MOVEQ	#0,D0			;0c0e4: 7000
 LAB_0612:
     MOVEM.L	(A7)+,D7/A3		;0c0e6: 4cdf0880
-    RTS				;0c0ea: 4e75
+    RTS
 
 ;!======
 
@@ -17247,7 +17247,7 @@ LAB_0615:
     LEA	    16(A7),A7		;0c146: 4fef0010
 LAB_0616:
     MOVEA.L	(A7)+,A3		;0c14a: 265f
-    RTS				;0c14c: 4e75
+    RTS
 
 ;!======
 
@@ -17262,7 +17262,7 @@ LAB_0617:
     ADDQ.W	#4,A7			;0c160: 584f
     CLR.L	4(A3)			;0c162: 42ab0004
     MOVEA.L	(A7)+,A3		;0c166: 265f
-    RTS				;0c168: 4e75
+    RTS
 
 ;!======
 
@@ -17310,7 +17310,7 @@ LAB_0619:
 LAB_061A:
     MOVE.L	A3,D0			;0c1f4: 200b
     MOVEM.L	(A7)+,D7/A3		;0c1f6: 4cdf0880
-    RTS				;0c1fa: 4e75
+    RTS
 
 ;!======
 
@@ -17342,7 +17342,7 @@ LAB_061C:
 LAB_061D:
     MOVE.L	D7,D0			;0c23a: 2007
     MOVEM.L	(A7)+,D7/A3		;0c23c: 4cdf0880
-    RTS				;0c240: 4e75
+    RTS
 
 ;!======
 
@@ -17416,7 +17416,7 @@ LAB_0621:
 LAB_0622:
     MOVEM.L	-64(A5),D7/A3		;0c324: 4ced0880ffc0
     UNLK	A5			;0c32a: 4e5d
-    RTS				;0c32c: 4e75
+    RTS
 
 ;!======
 
@@ -17466,13 +17466,13 @@ LAB_0626:
     BSR.W	LAB_0628		;0c3ba: 61000012
     MOVEM.L	-52(A5),D7/A3		;0c3be: 4ced0880ffcc
     UNLK	A5			;0c3c4: 4e5d
-    RTS				;0c3c6: 4e75
+    RTS
 
 ;!======
 
 LAB_0627:
     JSR     LAB_066F(PC)		;0c3c8: 4eba066c
-    RTS				;0c3cc: 4e75
+    RTS
 
 ;!======
 
@@ -17567,7 +17567,7 @@ LAB_062F:
 LAB_0630:
     MOVE.L	D6,D0			;0c4d0: 2006
     MOVEM.L	(A7)+,D6-D7/A3		;0c4d2: 4cdf08c0
-    RTS				;0c4d6: 4e75
+    RTS
 
 ;!======
 
@@ -17610,7 +17610,7 @@ LAB_0636:
 LAB_0637:
     MOVE.L	D7,D0			;0c52e: 2007
     MOVEM.L	(A7)+,D5-D7		;0c530: 4cdf00e0
-    RTS				;0c534: 4e75
+    RTS
 
 ;!======
 
@@ -17807,7 +17807,7 @@ LAB_064B:
 LAB_064C:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;0c726: 4cdf0cec
     UNLK	A5			;0c72a: 4e5d
-    RTS				;0c72c: 4e75
+    RTS
 
 ;!======
 
@@ -17828,7 +17828,7 @@ LAB_064D:
     MOVE.W	-2(A5),D0		;0c754: 302dfffe
     MOVEM.L	-12(A5),D6-D7		;0c758: 4ced00c0fff4
     UNLK	A5			;0c75e: 4e5d
-    RTS				;0c760: 4e75
+    RTS
 
 ;!======
 
@@ -17884,7 +17884,7 @@ LAB_0652:
     MOVE.L	D7,D0			;0c7d8: 2007
     MOVEM.L	(A7)+,D6-D7/A3		;0c7da: 4cdf08c0
     UNLK	A5			;0c7de: 4e5d
-    RTS				;0c7e0: 4e75
+    RTS
 
 ;!======
 
@@ -17907,7 +17907,7 @@ LAB_0654:
     ADDQ.W	#1,D0			;0c818: 5240
     MOVE.W	D0,LAB_225C		;0c81a: 33c00003dde8
 LAB_0655:
-    RTS				;0c820: 4e75
+    RTS
 
 ;!======
 
@@ -17931,7 +17931,7 @@ LAB_0656:
     BSR.W	LAB_05C7		;0c850: 6100f02e
     ADDQ.W	#8,A7			;0c854: 504f
     MOVEM.L	(A7)+,D5-D7/A3		;0c856: 4cdf08e0
-    RTS				;0c85a: 4e75
+    RTS
 
 ;!======
 
@@ -18002,7 +18002,7 @@ LAB_065D:
     JSR     LAB_066D(PC)		;0c916: 4eba0112
     MOVEM.L	-72(A5),D2-D6/A2-A3/A6	;0c91a: 4ced4c7cffb8
     UNLK	A5			;0c920: 4e5d
-    RTS				;0c922: 4e75
+    RTS
 
 ;!======
 
@@ -18029,7 +18029,7 @@ LAB_065F:
     BSR.W	LAB_0656		;0c968: 6100feb8
     LEA	    12(A7),A7		;0c96c: 4fef000c
     MOVE.L	(A7)+,D7		;0c970: 2e1f
-    RTS				;0c972: 4e75
+    RTS
 
 ;!======
 
@@ -18064,7 +18064,7 @@ LAB_0664:
     MOVE.L	D0,D6			;0c9b8: 2c00
     MOVE.L	D6,D0			;0c9ba: 2006
     MOVEM.L	(A7)+,D6-D7		;0c9bc: 4cdf00c0
-    RTS				;0c9c0: 4e75
+    RTS
 
 ;!======
 
@@ -18086,7 +18086,7 @@ LAB_0667:
     MOVE.W	D1,8(A3)		;0c9e2: 37410008
     MOVE.L	D1,D0			;0c9e6: 2001
     MOVEA.L	(A7)+,A3		;0c9e8: 265f
-    RTS				;0c9ea: 4e75
+    RTS
 
 ;!======
 
@@ -18114,7 +18114,7 @@ LAB_066A:
     MOVE.W	D1,8(A3)		;0ca1a: 37410008
 LAB_066B:
     MOVEA.L	(A7)+,A3		;0ca1e: 265f
-    RTS				;0ca20: 4e75
+    RTS
 
 ;!======
 
@@ -18220,7 +18220,7 @@ LAB_0676:
     MOVEQ	#1,D0			;0cb70: 7001
     MOVE.L	D0,LAB_1D14		;0cb72: 23c0000357fe
 LAB_0677:
-    RTS				;0cb78: 4e75
+    RTS
 
 ;!======
 
@@ -19060,7 +19060,7 @@ LAB_06BE:
 LAB_06BF:
     MOVEM.L	(A7)+,D2/D7/A2		;0d694: 4cdf0484
     UNLK	A5			;0d698: 4e5d
-    RTS				;0d69a: 4e75
+    RTS
 
 ;!======
 
@@ -19076,7 +19076,7 @@ LAB_06C0:
     MOVE.L	D0,-(A7)		;0d6c0: 2f00
     JSR     LAB_07F8(PC)		;0d6c2: 4eba3226
     ADDQ.W	#4,A7			;0d6c6: 584f
-    RTS				;0d6c8: 4e75
+    RTS
 
 ;!======
 
@@ -19165,7 +19165,7 @@ LAB_06C8:
 LAB_06C9:
     MOVE.L	(A7)+,D7		;0d7c4: 2e1f
     UNLK	A5			;0d7c6: 4e5d
-    RTS				;0d7c8: 4e75
+    RTS
 
 ;!======
 
@@ -19197,7 +19197,7 @@ LAB_06CD:
     MOVE.B	(A0),D0			;0d80a: 1010
     MOVEM.L	(A7)+,D7/A3		;0d80c: 4cdf0880
     UNLK	A5			;0d810: 4e5d
-    RTS				;0d812: 4e75
+    RTS
 
 ;!======
 
@@ -19345,7 +19345,7 @@ LAB_06D9:
     JSR     LAB_07EE(PC)		;0d9c8: 4eba2a94
 LAB_06DA:
     MOVE.L	(A7)+,D2		;0d9cc: 241f
-    RTS				;0d9ce: 4e75
+    RTS
 
 ;!======
 
@@ -19507,7 +19507,7 @@ LAB_06E0:
     ADDQ.W	#4,A7			;0dc58: 584f
 LAB_06E1:
     MOVEM.L	(A7)+,D2-D3/D7		;0dc5a: 4cdf008c
-    RTS				;0dc5e: 4e75
+    RTS
 
 ;!======
 
@@ -19528,7 +19528,7 @@ LAB_06E2:
 LAB_06E3:
     JSR     LAB_07E1(PC)		;0dc90: 4eba203a
     MOVE.L	(A7)+,D7		;0dc94: 2e1f
-    RTS				;0dc96: 4e75
+    RTS
 
 ;!======
 
@@ -19548,7 +19548,7 @@ LAB_06E4:
 LAB_06E5:
     JSR     LAB_07E1(PC)		;0dcc4: 4eba2006
     MOVE.L	(A7)+,D7		;0dcc8: 2e1f
-    RTS				;0dcca: 4e75
+    RTS
 
 ;!======
 
@@ -19568,7 +19568,7 @@ LAB_06E6:
 LAB_06E7:
     JSR     LAB_07E1(PC)		;0dcf8: 4eba1fd2
     MOVE.L	(A7)+,D7		;0dcfc: 2e1f
-    RTS				;0dcfe: 4e75
+    RTS
 
 ;!======
 
@@ -19596,7 +19596,7 @@ LAB_06EA:
 LAB_06EB:
     JSR     LAB_07E1(PC)		;0dd3e: 4eba1f8c
     MOVEM.L	(A7)+,D6-D7		;0dd42: 4cdf00c0
-    RTS				;0dd46: 4e75
+    RTS
 
 ;!======
 
@@ -19790,7 +19790,7 @@ LAB_06FA:
     JSR     LAB_07F3(PC)		;0dfe6: 4eba27d4
 LAB_06FB:
     MOVEM.L	(A7)+,D2-D4		;0dfea: 4cdf001c
-    RTS				;0dfee: 4e75
+    RTS
 
 ;!======
 
@@ -19847,7 +19847,7 @@ LAB_06FF:
     MOVE.L	D0,LAB_21FE		;0e08a: 23c00003c136
 LAB_0700:
     JSR     LAB_080E(PC)		;0e090: 4eba2c18
-    RTS				;0e094: 4e75
+    RTS
 
 ;!======
 
@@ -19955,7 +19955,7 @@ LAB_070A:
     JSR	    -342(A6)		;0e1f0: 4eaefeaa
 LAB_070B:
     MOVEM.L	(A7)+,D6-D7		;0e1f4: 4cdf00c0
-    RTS				;0e1f8: 4e75
+    RTS
 
 ;!======
 
@@ -19974,7 +19974,7 @@ LAB_070C:
     JSR     LAB_07E1(PC)		;0e222: 4eba1aa8
     CLR.W	LAB_2252		;0e226: 42790003dba0
 LAB_070D:
-    RTS				;0e22c: 4e75
+    RTS
 
 ;!======
 
@@ -20103,7 +20103,7 @@ LAB_0712:
     JSR     LAB_071D(PC)		;0e3fc: 4eba0290
     MOVEM.L	-56(A5),D2/D7		;0e400: 4ced0084ffc8
     UNLK	A5			;0e406: 4e5d
-    RTS				;0e408: 4e75
+    RTS
 
 ;!======
 
@@ -20183,7 +20183,7 @@ LAB_0717:
     ADDQ.W	#4,A7			;0e522: 584f
     CLR.W	LAB_1F45		;0e524: 4279000399b2
     MOVE.L	(A7)+,D2		;0e52a: 241f
-    RTS				;0e52c: 4e75
+    RTS
 
 ;!======
 
@@ -20242,13 +20242,13 @@ LAB_0718:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;0e61c: 2c790003637c
     JSR	    -342(A6)		;0e622: 4eaefeaa
     UNLK	A5			;0e626: 4e5d
-    RTS				;0e628: 4e75
+    RTS
 
 ;!======
 
 LAB_0719:
     CLR.B	LAB_1D13		;0e62a: 4239000357fc
-    RTS				;0e630: 4e75
+    RTS
 
 ;!======
 
@@ -20262,7 +20262,7 @@ LAB_071A:
     CLR.L	-(A7)			;0e652: 42a7
     JSR     LAB_0A0B(PC)		;0e654: 4eba6a60
     ADDQ.W	#4,A7			;0e658: 584f
-    RTS				;0e65a: 4e75
+    RTS
 
 ;!======
 
@@ -20276,7 +20276,7 @@ LAB_071B:
     PEA	    1.W			;0e67c: 48780001
     JSR     LAB_0A0B(PC)		;0e680: 4eba6a34
     ADDQ.W	#4,A7			;0e684: 584f
-    RTS				;0e686: 4e75
+    RTS
 
 ;!======
 
@@ -20325,7 +20325,7 @@ LAB_0728:
     MOVE.L	A0,-(A7)		;0e716: 2f08
     JSR     LAB_09AD(PC)		;0e718: 4eba5f62
     UNLK	A5			;0e71c: 4e5d
-    RTS				;0e71e: 4e75
+    RTS
 
 ;!======
 
@@ -20390,7 +20390,7 @@ LAB_0729:
     JSR     LAB_09AD(PC)		;0e7f8: 4eba5e82
     MOVE.L	-56(A5),D2		;0e7fc: 242dffc8
     UNLK	A5			;0e800: 4e5d
-    RTS				;0e802: 4e75
+    RTS
 
 ;!======
 
@@ -20635,7 +20635,7 @@ LAB_0741:
 LAB_0742:
     MOVEM.L	(A7)+,A2-A3		;0eb62: 4cdf0c00
     UNLK	A5			;0eb66: 4e5d
-    RTS				;0eb68: 4e75
+    RTS
 
 ;!======
 
@@ -20845,7 +20845,7 @@ LAB_0754:
 LAB_0755:
     MOVEM.L	(A7)+,D2/A2-A3		;0ee40: 4cdf0c04
     UNLK	A5			;0ee44: 4e5d
-    RTS				;0ee46: 4e75
+    RTS
 
 ;!======
 
@@ -21494,7 +21494,7 @@ LAB_0799:
     JSR	    -348(A6)		;0f668: 4eaefea4
     MOVEM.L	(A7)+,D2-D7		;0f66c: 4cdf00fc
     UNLK	A5			;0f670: 4e5d
-    RTS				;0f672: 4e75
+    RTS
 
 ;!======
 
@@ -21787,7 +21787,7 @@ LAB_07B6:
     JSR     LAB_07E1(PC)		;0fa84: 4eba0246
     CLR.W	LAB_2252		;0fa88: 42790003dba0
 LAB_07B7:
-    RTS				;0fa8e: 4e75
+    RTS
 
 ;!======
 
@@ -21877,7 +21877,7 @@ LAB_07C2:
     JSR     LAB_07EC(PC)		;0fba0: 4eba06f8
     ADDQ.W	#4,A7			;0fba4: 584f
 LAB_07C3:
-    RTS				;0fba6: 4e75
+    RTS
 
 ;!======
 
@@ -21916,7 +21916,7 @@ LAB_07D2:
 LAB_07D3:
     JMP     LAB_0D61		;0fc08: 4ef90001b96c
     MOVEQ	#97,D0			;0fc0e: 7061
-    RTS				;0fc10: 4e75
+    RTS
 
 ;!======
 
@@ -21980,7 +21980,7 @@ LAB_07DA:
 LAB_07DB:
     MOVEQ	#10,D0			;0fca6: 700a
 LAB_07DC:
-    RTS				;0fca8: 4e75
+    RTS
 
 ;!======
 
@@ -22000,7 +22000,7 @@ LAB_07DF:
 LAB_07E0:
     MOVE.L	D7,D0			;0fcc6: 2007
     MOVE.L	(A7)+,D7		;0fcc8: 2e1f
-    RTS				;0fcca: 4e75
+    RTS
 
 ;!======
 
@@ -22008,7 +22008,7 @@ LAB_07E1:
     MOVE.B	#$01,LAB_1D13		;0fccc: 13fc0001000357fc
     BSR.W	LAB_07E4		;0fcd4: 61000054
     BSR.W	LAB_07E6		;0fcd8: 61000170
-    RTS				;0fcdc: 4e75
+    RTS
 
 ;!======
 
@@ -22035,7 +22035,7 @@ LAB_07E2:
     JSR	    -348(A6)		;0fd22: 4eaefea4
 LAB_07E3:
     UNLK	A5			;0fd26: 4e5d
-    RTS				;0fd28: 4e75
+    RTS
 
 ;!======
 
@@ -22058,7 +22058,7 @@ LAB_07E4:
     MOVEQ	#1,D0			;0fd6c: 7001
     JSR	    -354(A6)		;0fd6e: 4eaefe9e
     MOVEM.L	(A7)+,D2-D3		;0fd72: 4cdf000c
-    RTS				;0fd76: 4e75
+    RTS
 
 ;!======
 
@@ -22108,7 +22108,7 @@ LAB_07E5:
     MOVEQ	#1,D0			;0fe3c: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;0fe3e: 2c790003637c
     JSR	    -354(A6)		;0fe44: 4eaefe9e
-    RTS				;0fe48: 4e75
+    RTS
 
 ;!======
 
@@ -22144,7 +22144,7 @@ LAB_07E6:
     CLR.L	LAB_21E8		;0feca: 42b90003bca4
     BSR.W	LAB_07E5		;0fed0: 6100fea6
     LEA	    52(A7),A7		;0fed4: 4fef0034
-    RTS				;0fed8: 4e75
+    RTS
 
 ;!======
 
@@ -22265,7 +22265,7 @@ LAB_07E7:
     MOVEA.L	LAB_2217,A1		;100ec: 22790003c226
     MOVEQ	#1,D0			;100f2: 7001
     JSR	    -342(A6)		;100f4: 4eaefeaa
-    RTS				;100f8: 4e75
+    RTS
 
 ;!======
 
@@ -22297,7 +22297,7 @@ LAB_07E8:
     MOVEQ	#1,D0			;10164: 7001
     JSR	    -342(A6)		;10166: 4eaefeaa
     MOVEM.L	(A7)+,D2-D3/D7		;1016a: 4cdf008c
-    RTS				;1016e: 4e75
+    RTS
 
 ;!======
 
@@ -22339,7 +22339,7 @@ LAB_07E9:
     JSR	    -306(A6)		;101ea: 4eaefece
 LAB_07EA:
     MOVEM.L	(A7)+,D2-D3/D7		;101ee: 4cdf008c
-    RTS				;101f2: 4e75
+    RTS
 
 ;!======
 
@@ -22381,7 +22381,7 @@ LAB_07EB:
     JSR     LAB_055C(PC)		;1028c: 4ebaa9b4
     LEA	    32(A7),A7		;10290: 4fef0020
     MOVEM.L	(A7)+,D2-D3		;10294: 4cdf000c
-    RTS				;10298: 4e75
+    RTS
 
 ;!======
 
@@ -22452,7 +22452,7 @@ LAB_07EC:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;103ba: 2c790003637c
     JSR	    -354(A6)		;103c0: 4eaefe9e
     UNLK	A5			;103c4: 4e5d
-    RTS				;103c6: 4e75
+    RTS
 
 ;!======
 
@@ -22489,7 +22489,7 @@ LAB_07ED:
     MOVEQ	#1,D0			;10450: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;10452: 2c790003637c
     JSR	    -354(A6)		;10458: 4eaefe9e
-    RTS				;1045c: 4e75
+    RTS
 
 ;!======
 
@@ -22581,7 +22581,7 @@ LAB_07EE:
     MOVE.L	LAB_2217,-(A7)		;105cc: 2f390003c226
     JSR     LAB_055C(PC)		;105d2: 4ebaa66e
     LEA	    28(A7),A7		;105d6: 4fef001c
-    RTS				;105da: 4e75
+    RTS
 
 ;!======
 
@@ -22605,7 +22605,7 @@ LAB_07EF:
     MOVEQ	#1,D0			;10624: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;10626: 2c790003637c
     JSR	    -354(A6)		;1062c: 4eaefe9e
-    RTS				;10630: 4e75
+    RTS
 
 ;!======
 
@@ -22706,7 +22706,7 @@ LAB_07F2:
     BSR.W	LAB_07F3		;107b0: 6100000a
     MOVEM.L	(A7)+,D2-D3/D7		;107b4: 4cdf008c
     UNLK	A5			;107b8: 4e5d
-    RTS				;107ba: 4e75
+    RTS
 
 ;!======
 
@@ -22720,7 +22720,7 @@ LAB_07F3:
     MOVEQ	#1,D0			;107d8: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;107da: 2c790003637c
     JSR	    -354(A6)		;107e0: 4eaefe9e
-    RTS				;107e4: 4e75
+    RTS
 
 ;!======
 
@@ -22775,7 +22775,7 @@ LAB_07F4:
     MOVEQ	#1,D0			;1089c: 7001
     JSR	    -60(A6)			;1089e: 4eaeffc4
     UNLK	A5			;108a2: 4e5d
-    RTS				;108a4: 4e75
+    RTS
 
 ;!======
 
@@ -22800,7 +22800,7 @@ LAB_07F6:
     BRA.S	LAB_07F6		;108e4: 60e2
 LAB_07F7:
     MOVE.L	(A7)+,D7		;108e6: 2e1f
-    RTS				;108e8: 4e75
+    RTS
 
 ;!======
 
@@ -22860,7 +22860,7 @@ LAB_07F8:
     JSR	    -348(A6)		;109a6: 4eaefea4
     MOVEM.L	-60(A5),D2-D3/D6-D7	;109aa: 4ced00ccffc4
     UNLK	A5			;109b0: 4e5d
-    RTS				;109b2: 4e75
+    RTS
 
 ;!======
 
@@ -22899,7 +22899,7 @@ LAB_07FB:
     MOVEQ	#0,D0			;10a28: 7000
     JSR	    -354(A6)		;10a2a: 4eaefe9e
     MOVE.L	(A7)+,D7		;10a2e: 2e1f
-    RTS				;10a30: 4e75
+    RTS
 
 ;!======
 
@@ -22935,7 +22935,7 @@ LAB_07FE:
     MOVEQ	#0,D0			;10aa2: 7000
     JSR	    -354(A6)		;10aa4: 4eaefe9e
     UNLK	A5			;10aa8: 4e5d
-    RTS				;10aaa: 4e75
+    RTS
 
 ;!======
 
@@ -22947,7 +22947,7 @@ LAB_07FF:
     ADDQ.L	#1,LAB_21FC		;10abe: 52b90003c12e
     BSR.W	LAB_0803		;10ac4: 61000020
 LAB_0800:
-    RTS				;10ac8: 4e75
+    RTS
 
 ;!======
 
@@ -22958,7 +22958,7 @@ LAB_0801:
     SUBQ.L	#1,LAB_21FC		;10ada: 53b90003c12e
     BSR.W	LAB_0803		;10ae0: 61000004
 LAB_0802:
-    RTS				;10ae4: 4e75
+    RTS
 
 ;!======
 
@@ -22996,7 +22996,7 @@ LAB_0804:
     MOVE.L	D0,LAB_21FF		;10b5c: 23c00003c176
     BSR.W	LAB_080E		;10b62: 61000146
     UNLK	A5			;10b66: 4e5d
-    RTS				;10b68: 4e75
+    RTS
 
 ;!======
 
@@ -23031,7 +23031,7 @@ LAB_0806:
     MOVE.W	#$0030,2(A1)		;10bb8: 337c00300002
 LAB_0807:
     MOVEM.L	(A7)+,D2/A2		;10bbe: 4cdf0404
-    RTS				;10bc2: 4e75
+    RTS
 
 ;!======
 
@@ -23070,7 +23070,7 @@ LAB_0809:
 LAB_080A:
     MOVE.L	D7,LAB_21E8		;10c38: 23c70003bca4
     MOVEM.L	(A7)+,D2-D3/D7		;10c3e: 4cdf008c
-    RTS				;10c42: 4e75
+    RTS
 
 ;!======
 
@@ -23103,7 +23103,7 @@ LAB_080D:
     JSR	    -348(A6)		;10c9a: 4eaefea4
     MOVE.L	D6,LAB_21E8		;10c9e: 23c60003bca4
     MOVEM.L	(A7)+,D6-D7		;10ca4: 4cdf00c0
-    RTS				;10ca8: 4e75
+    RTS
 
 ;!======
 
@@ -23170,7 +23170,7 @@ LAB_0811:
     MOVEQ	#1,D0			;10d7c: 7001
     JSR	    -354(A6)		;10d7e: 4eaefe9e
     MOVEM.L	(A7)+,D2-D7		;10d82: 4cdf00fc
-    RTS				;10d86: 4e75
+    RTS
 
 ;!======
 
@@ -23245,7 +23245,7 @@ LAB_0812:
     JSR	    -348(A6)		;10eb2: 4eaefea4
     MOVEM.L	(A7)+,D2-D3		;10eb6: 4cdf000c
     UNLK	A5			;10eba: 4e5d
-    RTS				;10ebc: 4e75
+    RTS
 
 ;!======
 
@@ -23367,7 +23367,7 @@ LAB_0820:
 LAB_0821:
     MOVEM.L	(A7)+,D2/D6-D7		;10ff6: 4cdf00c4
     UNLK	A5			;10ffa: 4e5d
-    RTS				;10ffc: 4e75
+    RTS
 
 ;!======
 
@@ -23493,7 +23493,7 @@ LAB_082F:
 LAB_0830:
     MOVEM.L	(A7)+,D2/D6-D7		;1113e: 4cdf00c4
     UNLK	A5			;11142: 4e5d
-    RTS				;11144: 4e75
+    RTS
 
 ;!======
 
@@ -23700,7 +23700,7 @@ LAB_0849:
 LAB_084A:
     MOVEM.L	(A7)+,D2/D6-D7		;11346: 4cdf00c4
     UNLK	A5			;1134a: 4e5d
-    RTS				;1134c: 4e75
+    RTS
 
 ;!======
 
@@ -23828,7 +23828,7 @@ LAB_0851:
     BSR.W	LAB_07F3		;114c6: 6100f2f4
     MOVEM.L	-60(A5),D2-D3/D7	;114ca: 4ced008cffc4
     UNLK	A5			;114d0: 4e5d
-    RTS				;114d2: 4e75
+    RTS
 
 ;!======
 
@@ -23840,7 +23840,7 @@ LAB_0852:
     MOVE.L	D0,-(A7)		;114e8: 2f00
     JSR     LAB_085A(PC)		;114ea: 4eba01cc
     LEA	    12(A7),A7		;114ee: 4fef000c
-    RTS				;114f2: 4e75
+    RTS
 
 ;!======
 
@@ -23852,7 +23852,7 @@ LAB_0853:
     ADDQ.L	#1,LAB_21FC		;11504: 52b90003c12e
     BSR.W	LAB_084B		;1150a: 6100fe42
 LAB_0854:
-    RTS				;1150e: 4e75
+    RTS
 
 ;!======
 
@@ -23863,7 +23863,7 @@ LAB_0855:
     SUBQ.L	#1,LAB_21FC		;1151e: 53b90003c12e
     BSR.W	LAB_084B		;11524: 6100fe28
 LAB_0856:
-    RTS				;11528: 4e75
+    RTS
 
 ;!======
 
@@ -23951,7 +23951,7 @@ LAB_0857:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;1169a: 2c790003637c
     JSR	    -354(A6)		;116a0: 4eaefe9e
     MOVEM.L	(A7)+,D2-D3		;116a4: 4cdf000c
-    RTS				;116a8: 4e75
+    RTS
 
 ;!======
 
@@ -24914,7 +24914,7 @@ LAB_089B:
     JSR     LAB_08B9(PC)		;1248a: 4eba00c6
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;1248e: 4cdf0cec
     UNLK	A5			;12492: 4e5d
-    RTS				;12494: 4e75
+    RTS
 
 ;!======
 
@@ -25032,7 +25032,7 @@ LAB_08BC:
 LAB_08BD:
     MOVEM.L	(A7)+,D2/D7/A3		;125ee: 4cdf0884
     UNLK	A5			;125f2: 4e5d
-    RTS				;125f4: 4e75
+    RTS
 
 ;!======
 
@@ -25051,7 +25051,7 @@ LAB_08BF:
     BRA.S	LAB_08BF		;12610: 60ee
 LAB_08C0:
     MOVEM.L	(A7)+,D7/A3		;12612: 4cdf0880
-    RTS				;12616: 4e75
+    RTS
 
 ;!======
 
@@ -25098,7 +25098,7 @@ LAB_08C1:
     JSR	    -366(A6)		;126bc: 4eaefe92
     MOVEM.L	(A7)+,A2-A3		;126c0: 4cdf0c00
     UNLK	A5			;126c4: 4e5d
-    RTS				;126c6: 4e75
+    RTS
 
 ;!======
 
@@ -25111,7 +25111,7 @@ LAB_08C2:
     BNE.S	LAB_08C3		;126de: 6604
     JSR     LAB_08E0(PC)		;126e0: 4eba02be
 LAB_08C3:
-    RTS				;126e4: 4e75
+    RTS
 
 ;!======
 
@@ -25216,7 +25216,7 @@ LAB_08CB:
 LAB_08CC:
     MOVEM.L	(A7)+,D2-D7		;12804: 4cdf00fc
     UNLK	A5			;12808: 4e5d
-    RTS				;1280a: 4e75
+    RTS
 
 ;!======
 
@@ -25316,7 +25316,7 @@ LAB_08D8:
     ADDQ.W	#8,A7			;128f6: 504f
 LAB_08D9:
     MOVE.L	(A7)+,D7		;128f8: 2e1f
-    RTS				;128fa: 4e75
+    RTS
 
 ;!======
 
@@ -25344,7 +25344,7 @@ LAB_08DC:
     ADDQ.W	#4,A7			;12940: 584f
 LAB_08DD:
     MOVEM.L	(A7)+,D5-D7		;12942: 4cdf00e0
-    RTS				;12946: 4e75
+    RTS
 
 ;!======
 
@@ -25352,7 +25352,7 @@ LAB_08DE:
     PEA	-1.W			;12948: 4878ffff
     BSR.W	LAB_08CD		;1294c: 6100febe
     ADDQ.W	#4,A7			;12950: 584f
-    RTS				;12952: 4e75
+    RTS
 
 ;!======
 
@@ -25384,7 +25384,7 @@ LAB_08DF:
     MOVE.L	D0,D5			;12994: 2a00
     MOVE.L	D5,D0			;12996: 2005
     MOVEM.L	(A7)+,D5-D7		;12998: 4cdf00e0
-    RTS				;1299c: 4e75
+    RTS
 
 ;!======
 
@@ -25416,7 +25416,7 @@ LAB_08E2:
     CLR.B	45(A3)			;129f0: 422b002d
 LAB_08E3:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;129f4: 4cdf0cf0
-    RTS				;129f8: 4e75
+    RTS
 
 ;!======
 
@@ -25870,7 +25870,7 @@ LAB_0918:
 LAB_0919:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;12e4a: 4cdf0cec
     UNLK	A5			;12e4e: 4e5d
-    RTS				;12e50: 4e75
+    RTS
 
 ;!======
 
@@ -25906,7 +25906,7 @@ LAB_091D:
 LAB_091E:
     MOVE.L	D6,D0			;12e9a: 2006
     MOVEM.L	(A7)+,D6-D7/A3		;12e9c: 4cdf08c0
-    RTS				;12ea0: 4e75
+    RTS
 
 ;!======
 
@@ -25929,7 +25929,7 @@ LAB_0921:
 LAB_0922:
     MOVE.L	D7,D0			;12ec8: 2007
     MOVEM.L	(A7)+,D7/A3		;12eca: 4cdf0880
-    RTS				;12ece: 4e75
+    RTS
 
 ;!======
 
@@ -25974,7 +25974,7 @@ LAB_0925:
     MOVE.L	-4(A5),D0		;12f34: 202dfffc
     MOVEM.L	(A7)+,D6-D7		;12f38: 4cdf00c0
     UNLK	A5			;12f3c: 4e5d
-    RTS				;12f3e: 4e75
+    RTS
 
 ;!======
 
@@ -26019,7 +26019,7 @@ LAB_0928:
     MOVE.L	-4(A5),D0		;12fa4: 202dfffc
     MOVEM.L	(A7)+,D6-D7		;12fa8: 4cdf00c0
     UNLK	A5			;12fac: 4e5d
-    RTS				;12fae: 4e75
+    RTS
 
 ;!======
 
@@ -26032,7 +26032,7 @@ LAB_0928:
     EXT.W	D0			;12fbe: 4880
     EXT.L	D0			;12fc0: 48c0
     MOVE.L	(A7)+,D7		;12fc2: 2e1f
-    RTS				;12fc4: 4e75
+    RTS
 
 ;!======
 
@@ -26058,7 +26058,7 @@ LAB_092A:
 LAB_092B:
     MOVE.L	D5,D0			;12ff2: 2005
     MOVEM.L	(A7)+,D5-D7		;12ff4: 4cdf00e0
-    RTS				;12ff8: 4e75
+    RTS
 
 ;!======
 
@@ -26070,7 +26070,7 @@ LAB_092B:
     EXT.W	D0			;13006: 4880
     EXT.L	D0			;13008: 48c0
     MOVE.L	(A7)+,D7		;1300a: 2e1f
-    RTS				;1300c: 4e75
+    RTS
 
 ;!======
 
@@ -26083,7 +26083,7 @@ LAB_092B:
     EXT.W	D0			;1301c: 4880
     EXT.L	D0			;1301e: 48c0
     MOVE.L	(A7)+,D7		;13020: 2e1f
-    RTS				;13022: 4e75
+    RTS
 
 ;!======
 
@@ -26121,7 +26121,7 @@ LAB_092F:
 LAB_0930:
     MOVE.L	(A7)+,D7		;1308a: 2e1f
     UNLK	A5			;1308c: 4e5d
-    RTS				;1308e: 4e75
+    RTS
 
 ;!======
 
@@ -26149,7 +26149,7 @@ LAB_0932:
     BSR.W	LAB_0933		;130e4: 6100000a
     MOVEA.L	-8(A5),A3		;130e8: 266dfff8
     UNLK	A5			;130ec: 4e5d
-    RTS				;130ee: 4e75
+    RTS
 
 ;!======
 
@@ -26367,7 +26367,7 @@ LAB_0948:
 LAB_0949:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2	;13362: 4cdf04ec
     UNLK	A5			;13366: 4e5d
-    RTS				;13368: 4e75
+    RTS
 
 ;!======
 
@@ -26442,7 +26442,7 @@ LAB_094D:
 LAB_094E:
     MOVEM.L	(A7)+,D2-D3/D7/A2-A3/A6	;1343a: 4cdf4c8c
     UNLK	A5			;1343e: 4e5d
-    RTS				;13440: 4e75
+    RTS
 
 ;!======
 
@@ -26624,7 +26624,7 @@ LAB_0957:
 LAB_0958:
     MOVEM.L	(A7)+,D2-D7/A2-A3/A6	;13628: 4cdf4cfc
     UNLK	A5			;1362c: 4e5d
-    RTS				;1362e: 4e75
+    RTS
 
 ;!======
 
@@ -26689,7 +26689,7 @@ LAB_095C:
     CLR.B	LAB_1B90		;1371e: 423900033ff1
     JSR     LAB_0BEB(PC)		;13724: 4eba5290
     MOVEM.L	(A7)+,D7/A2-A3		;13728: 4cdf0c80
-    RTS				;1372c: 4e75
+    RTS
 
 ;!======
 
@@ -26706,7 +26706,7 @@ LAB_095D:
     MOVE.L	A0,LAB_1DEA		;1375c: 23c80003646e
 LAB_095E:
     CLR.W	LAB_228F		;13762: 42790003de6c
-    RTS				;13768: 4e75
+    RTS
 
 ;!======
 
@@ -26721,7 +26721,7 @@ LAB_095F:
     MOVE.L	D0,D7			;1377a: 2e00
     MOVE.L	D7,D0			;1377c: 2007
     MOVE.L	(A7)+,D7		;1377e: 2e1f
-    RTS				;13780: 4e75
+    RTS
 
 ;!======
 
@@ -26747,7 +26747,7 @@ LAB_0960:
     MOVEQ	#5,D0			;137de: 7005
     MOVEA.L	AbsExecBase,A6	;137e0: 2c780004
     JSR	    -168(A6)		;137e4: 4eaeff58
-    RTS				;137e8: 4e75
+    RTS
 
 ;!======
 
@@ -26774,7 +26774,7 @@ LAB_0961:
     MOVEA.L	AbsExecBase,A6	;13848: 2c780004
     JSR	    -162(A6)		;1384c: 4eaeff5e
     MOVE.L	D0,LAB_1E82		;13850: 23c000038ee4
-    RTS				;13856: 4e75
+    RTS
 
 ;!======
 
@@ -26807,7 +26807,7 @@ LAB_0962:
     MOVEA.L	AbsExecBase,A6	;138da: 2c780004
     JSR	    -162(A6)		;138de: 4eaeff5e
     MOVE.L	D0,LAB_1E83		;138e2: 23c000038ee8
-    RTS				;138e8: 4e75
+    RTS
 
 ;!======
 
@@ -26841,7 +26841,7 @@ LAB_0965:
     MOVE.W	D0,LAB_225D		;13938: 33c00003ddea
     MOVE.L	(A7)+,D7		;1393e: 2e1f
     UNLK	A5			;13940: 4e5d
-    RTS				;13942: 4e75
+    RTS
 
 ;!======
 
@@ -26873,7 +26873,7 @@ LAB_0967:
     BRA.S	LAB_0967		;13986: 60c0
 LAB_0968:
     MOVE.L	(A7)+,D7		;13988: 2e1f
-    RTS				;1398a: 4e75
+    RTS
 
 ;!======
 
@@ -26908,7 +26908,7 @@ LAB_096B:
     JSR     LAB_09AD(PC)		;139f8: 4eba0c82
     LEA	    12(A7),A7		;139fc: 4fef000c
 LAB_096C:
-    RTS				;13a00: 4e75
+    RTS
 
 ;!======
 
@@ -26919,7 +26919,7 @@ LAB_096D:
     BSR.W	LAB_097E		;13a0a: 610001d8
     BRA.S	LAB_096D		;13a0e: 60f2
 LAB_096E:
-    RTS				;13a10: 4e75
+    RTS
 
 ;!======
 
@@ -26946,7 +26946,7 @@ LAB_096F:
     LEA	    12(A7),A7		;13a6c: 4fef000c
     MOVE.W	D7,LAB_1F45		;13a70: 33c7000399b2
     MOVE.L	(A7)+,D7		;13a76: 2e1f
-    RTS				;13a78: 4e75
+    RTS
 
 ;!======
 
@@ -27052,7 +27052,7 @@ LAB_097C:
     CLR.B	LAB_1E89		;13bd8: 423900038efa
     JSR     LAB_08DE(PC)		;13bde: 4ebaed68
 LAB_097D:
-    RTS				;13be2: 4e75
+    RTS
 
 ;!======
 
@@ -27061,7 +27061,7 @@ LAB_097E:
     BEQ.S	LAB_097F		;13bea: 6704
     BSR.W	LAB_0970		;13bec: 6100fe8c
 LAB_097F:
-    RTS				;13bf0: 4e75
+    RTS
 
 ;!======
 
@@ -27071,7 +27071,7 @@ LAB_097F:
     JSR     LAB_09B3(PC)		;13bfe: 4eba0aa0
 LAB_0980:
     JSR     LAB_09BE(PC)		;13c02: 4eba0ade
-    RTS				;13c06: 4e75
+    RTS
 
 ;!======
 
@@ -27138,7 +27138,7 @@ LAB_0988:
 LAB_0989:
     MOVEM.L	(A7)+,D4-D7		;13c92: 4cdf00f0
     UNLK	A5			;13c96: 4e5d
-    RTS				;13c98: 4e75
+    RTS
 
 ;!======
 
@@ -27171,7 +27171,7 @@ LAB_098D:
     MOVE.L	D7,LAB_2262		;13cfc: 23c70003ddfc
     MOVE.L	(A7)+,D7		;13d02: 2e1f
     UNLK	A5			;13d04: 4e5d
-    RTS				;13d06: 4e75
+    RTS
 
 ;!======
 
@@ -27227,7 +27227,7 @@ LAB_0990:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;13dd4: 2c790003637c
     JSR	    -342(A6)		;13dda: 4eaefeaa
     UNLK	A5			;13dde: 4e5d
-    RTS				;13de0: 4e75
+    RTS
 
 ;!======
 
@@ -27544,7 +27544,7 @@ LAB_0998:
     MOVE.L	-76(A5),4(A0)		;14260: 216dffb40004
     MOVEM.L	(A7)+,D2-D7		;14266: 4cdf00fc
     UNLK	A5			;1426a: 4e5d
-    RTS				;1426c: 4e75
+    RTS
 
 ;!======
 
@@ -27817,7 +27817,7 @@ LAB_09A6:
     JSR	    -66(A6)			;1464a: 4eaeffbe
     MOVEM.L	-188(A5),D2-D7		;1464e: 4ced00fcff44
     UNLK	A5			;14654: 4e5d
-    RTS				;14656: 4e75
+    RTS
 
 ;!======
 
@@ -28110,7 +28110,7 @@ LAB_09DA:
     MOVEQ	#1,D0			;1499e: 7001
     MOVEM.L	(A7)+,D2/D4-D7		;149a0: 4cdf00f4
     UNLK	A5			;149a4: 4e5d
-    RTS				;149a6: 4e75
+    RTS
 
 ;!======
 
@@ -28178,7 +28178,7 @@ LAB_09E1:
     CLR.L	LAB_1B22		;14a72: 42b900033cc4
     MOVE.L	-12(A5),D7		;14a78: 2e2dfff4
     UNLK	A5			;14a7c: 4e5d
-    RTS				;14a7e: 4e75
+    RTS
 
 ;!======
 
@@ -28230,7 +28230,7 @@ LAB_09E6:
 LAB_09E7:
     MOVE.L	D6,D0			;14aee: 2006
     MOVEM.L	(A7)+,D6-D7/A2-A3	;14af0: 4cdf0cc0
-    RTS				;14af4: 4e75
+    RTS
 
 ;!======
 
@@ -28510,7 +28510,7 @@ LAB_09F8:
     JSR	    -342(A6)		;14e0e: 4eaefeaa
     MOVEM.L	-88(A5),D2/D5-D7/A3	;14e12: 4ced08e4ffa8
     UNLK	A5			;14e18: 4e5d
-    RTS				;14e1a: 4e75
+    RTS
 
 ;!======
 
@@ -28592,13 +28592,13 @@ LAB_09FE:
     MOVE.L	234(A0),LAB_1EE9	;14f32: 23e800ea00039626
 LAB_09FF:
     MOVE.L	(A7)+,D7		;14f3a: 2e1f
-    RTS				;14f3c: 4e75
+    RTS
 
 ;!======
 
     LINK.W	A5,#0			;14f3e: 4e550000
     UNLK	A5			;14f42: 4e5d
-    RTS				;14f44: 4e75
+    RTS
 
 ;!======
 
@@ -28735,7 +28735,7 @@ LAB_0A09:
     MOVE.W	LAB_1EEC,D0		;150aa: 30390003963c
 LAB_0A0A:
     MOVEM.L	(A7)+,D2/D6-D7/A2-A3	;150b0: 4cdf0cc4
-    RTS				;150b4: 4e75
+    RTS
 
 ;!======
 
@@ -28889,7 +28889,7 @@ LAB_0A12:
     JSR	    -36(A6)			;152e0: 4eaeffdc
 LAB_0A13:
     MOVEM.L	(A7)+,D2-D3/D6-D7	;152e4: 4cdf00cc
-    RTS				;152e8: 4e75
+    RTS
 
 ;!======
 
@@ -29111,7 +29111,7 @@ LAB_0A33:
 LAB_0A34:
     MOVEM.L	(A7)+,D2/D5-D7		;15576: 4cdf00e4
     UNLK	A5			;1557a: 4e5d
-    RTS				;1557c: 4e75
+    RTS
 
 ;!======
 
@@ -29210,7 +29210,7 @@ LAB_0A43:
 LAB_0A44:
     MOVEM.L	(A7)+,D4-D7/A3		;1567c: 4cdf08f0
     UNLK	A5			;15680: 4e5d
-    RTS				;15682: 4e75
+    RTS
 
 ;!======
 
@@ -29230,21 +29230,21 @@ LAB_0A46:
     BRA.S	LAB_0A46		;156a2: 60e4
 LAB_0A47:
     MOVE.L	(A7)+,D7		;156a4: 2e1f
-    RTS				;156a6: 4e75
+    RTS
 
 ;!======
 
 LAB_0A48:
     MOVE.W	#$000f,LAB_1B1C		;156a8: 33fc000f00033c56
     BSR.W	LAB_0A8E		;156b0: 61000894
-    RTS				;156b4: 4e75
+    RTS
 
 ;!======
 
 LAB_0A49:
     MOVE.W	#$000f,LAB_1B1B		;156b6: 33fc000f00033c54
     BSR.W	LAB_0A8E		;156be: 61000886
-    RTS				;156c2: 4e75
+    RTS
 
 ;!======
 
@@ -29364,7 +29364,7 @@ LAB_0A51:
     ADDQ.W	#8,A7			;15832: 504f
 LAB_0A52:
     MOVEA.L	(A7)+,A4		;15834: 285f
-    RTS				;15836: 4e75
+    RTS
 
 ;!======
 
@@ -29432,7 +29432,7 @@ LAB_0A56:
     JSR	    -342(A6)		;158da: 4eaefeaa
     MOVEM.L	(A7)+,D2/D4-D7		;158de: 4cdf00f4
     UNLK	A5			;158e2: 4e5d
-    RTS				;158e4: 4e75
+    RTS
 
 ;!======
 
@@ -29731,7 +29731,7 @@ LAB_0A74:
 LAB_0A75:
     MOVEM.L	(A7)+,D2/D4-D7		;15c62: 4cdf00f4
     UNLK	A5			;15c66: 4e5d
-    RTS				;15c68: 4e75
+    RTS
 
 ;!======
 
@@ -29778,7 +29778,7 @@ LAB_0A7A:
     BSR.W	LAB_0A14		;15cea: 6100f5fe
 LAB_0A7B:
     MOVE.L	(A7)+,D7		;15cee: 2e1f
-    RTS				;15cf0: 4e75
+    RTS
 
 ;!======
 
@@ -29925,7 +29925,7 @@ LAB_0A89:
 LAB_0A8A:
     MOVEM.L	(A7)+,D6-D7		;15ec0: 4cdf00c0
     UNLK	A5			;15ec4: 4e5d
-    RTS				;15ec6: 4e75
+    RTS
 
 ;!======
 
@@ -29960,7 +29960,7 @@ LAB_0A8C:
     CLR.L	LAB_1EE3		;15f38: 42b90003960c
     CLR.L	LAB_1EE2		;15f3e: 42b900039608
 LAB_0A8D:
-    RTS				;15f44: 4e75
+    RTS
 
 ;!======
 
@@ -30005,7 +30005,7 @@ LAB_0A91:
     MOVE.W	D0,LAB_1B1C		;15fbe: 33c000033c56
     BRA.S	LAB_0A91		;15fc4: 60e0
 LAB_0A92:
-    RTS				;15fc6: 4e75
+    RTS
 
 ;!======
 
@@ -30042,7 +30042,7 @@ LAB_0A94:
     ADDQ.W	#4,A7			;16040: 584f
 LAB_0A95:
     MOVE.L	(A7)+,D7		;16042: 2e1f
-    RTS				;16044: 4e75
+    RTS
 
 ;!======
 
@@ -30220,7 +30220,7 @@ LAB_0AC4:
 LAB_0AC5:
     MOVE.W	#$0001,LAB_2299		;1621e: 33fc00010003dede
     MOVEM.L	(A7)+,D2/D6-D7/A3	;16226: 4cdf08c4
-    RTS				;1622a: 4e75
+    RTS
 
 ;!======
 
@@ -30236,7 +30236,7 @@ LAB_0AC6:
     MOVE.L	D7,D0			;1623e: 2007
 LAB_0AC7:
     MOVE.L	(A7)+,D7		;16240: 2e1f
-    RTS				;16242: 4e75
+    RTS
 
 ;!======
 
@@ -30268,7 +30268,7 @@ LAB_0AC9:
     MOVE.L	D0,LAB_1DDC		;1629c: 23c000036414
 LAB_0ACA:
     MOVE.L	(A7)+,D7		;162a2: 2e1f
-    RTS				;162a4: 4e75
+    RTS
 
 ;!======
 
@@ -30423,7 +30423,7 @@ LAB_0AD6:
     MOVE.L	D0,LAB_1DEA		;1647e: 23c00003646e
 LAB_0AD7:
     MOVEM.L	(A7)+,D6-D7/A3		;16484: 4cdf08c0
-    RTS				;16488: 4e75
+    RTS
 
 ;!======
 
@@ -30754,7 +30754,7 @@ LAB_0AF4:
 LAB_0AF5:
     MOVEM.L	-44(A5),D2/D4-D7/A3	;16822: 4ced08f4ffd4
     UNLK	A5			;16828: 4e5d
-    RTS				;1682a: 4e75
+    RTS
 
 ;!======
 
@@ -30786,7 +30786,7 @@ LAB_0AF9:
     MOVEQ	#1,D0			;1685c: 7001
 LAB_0AFA:
     MOVEM.L	(A7)+,D6-D7		;1685e: 4cdf00c0
-    RTS				;16862: 4e75
+    RTS
 
 ;!======
 
@@ -30876,7 +30876,7 @@ LAB_0B06:
 LAB_0B07:
     MOVEM.L	(A7)+,D4-D7		;1693a: 4cdf00f0
     UNLK	A5			;1693e: 4e5d
-    RTS				;16940: 4e75
+    RTS
 
 ;!======
 
@@ -30902,7 +30902,7 @@ LAB_0B0A:
     MOVE.L	A3,D0			;16972: 200b
     MOVEM.L	(A7)+,D6-D7/A3		;16974: 4cdf08c0
     UNLK	A5			;16978: 4e5d
-    RTS				;1697a: 4e75
+    RTS
 
 ;!======
 
@@ -30925,7 +30925,7 @@ LAB_0B0C:
 LAB_0B0D:
     MOVE.L	A3,D0			;169a4: 200b
     MOVEM.L	(A7)+,D6-D7/A2-A3	;169a6: 4cdf0cc0
-    RTS				;169aa: 4e75
+    RTS
 
 ;!======
 
@@ -31016,7 +31016,7 @@ LAB_0B15:
 LAB_0B16:
     MOVEM.L	(A7)+,D4-D7/A3		;16a8c: 4cdf08f0
     UNLK	A5			;16a90: 4e5d
-    RTS				;16a92: 4e75
+    RTS
 
 ;!======
 
@@ -31101,7 +31101,7 @@ LAB_0B20:
 LAB_0B21:
     MOVEM.L	(A7)+,D4-D7/A3		;16b58: 4cdf08f0
     UNLK	A5			;16b5c: 4e5d
-    RTS				;16b5e: 4e75
+    RTS
 
 ;!======
 
@@ -31190,7 +31190,7 @@ LAB_0B24:
 LAB_0B25:
     MOVEM.L	(A7)+,D2-D3		;16cb6: 4cdf000c
     UNLK	A5			;16cba: 4e5d
-    RTS				;16cbc: 4e75
+    RTS
 
 ;!======
 
@@ -31327,7 +31327,7 @@ LAB_0B2D:
 LAB_0B2E:
     MOVEM.L	(A7)+,D2-D3/D5-D7	;16e9c: 4cdf00ec
     UNLK	A5			;16ea0: 4e5d
-    RTS				;16ea2: 4e75
+    RTS
 
 ;!======
 
@@ -31360,7 +31360,7 @@ LAB_0B32:
 LAB_0B33:
     MOVEM.L	(A7)+,D6-D7		;16ee2: 4cdf00c0
     UNLK	A5			;16ee6: 4e5d
-    RTS				;16ee8: 4e75
+    RTS
 
 ;!======
 
@@ -31409,7 +31409,7 @@ LAB_0B36:
 LAB_0B37:
     MOVE.L	(A7)+,D7		;16f60: 2e1f
     UNLK	A5			;16f62: 4e5d
-    RTS				;16f64: 4e75
+    RTS
 
 ;!======
 
@@ -31544,7 +31544,7 @@ LAB_0B42:
 LAB_0B43:
     MOVEM.L	(A7)+,D5-D7/A2		;170cc: 4cdf04e0
     UNLK	A5			;170d0: 4e5d
-    RTS				;170d2: 4e75
+    RTS
 
 ;!======
 
@@ -31615,7 +31615,7 @@ LAB_0B4C:
     MOVE.L	A2,D0			;17166: 200a
 LAB_0B4D:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;17168: 4cdf0cc0
-    RTS				;1716c: 4e75
+    RTS
 
 ;!======
 
@@ -31657,7 +31657,7 @@ LAB_0B4E:
     MOVE.W	D7,LAB_1F45		;171ea: 33c7000399b2
     MOVEM.L	-32(A5),D7/A3		;171f0: 4ced0880ffe0
     UNLK	A5			;171f6: 4e5d
-    RTS				;171f8: 4e75
+    RTS
 
 ;!======
 
@@ -33592,7 +33592,7 @@ LAB_0BE4:
 LAB_0BE5:
     MOVEM.L	(A7)+,D2/D5-D7/A2	;18936: 4cdf04e4
     UNLK	A5			;1893a: 4e5d
-    RTS				;1893c: 4e75
+    RTS
 
 ;!======
 
@@ -33622,7 +33622,7 @@ LAB_0BE7:
 LAB_0BE8:
     MOVE.L	D7,D0			;1897c: 2007
     MOVEM.L	(A7)+,D5-D7		;1897e: 4cdf00e0
-    RTS				;18982: 4e75
+    RTS
 
 ;!======
 
@@ -33636,7 +33636,7 @@ LAB_0BE9:
     JSR     LAB_0F4D(PC)		;189a2: 4eba6f88
     JSR     LAB_0BFC(PC)		;189a6: 4eba0080
     LEA	    12(A7),A7		;189aa: 4fef000c
-    RTS				;189ae: 4e75
+    RTS
 
 ;!======
 
@@ -33739,7 +33739,7 @@ LAB_0C09:
     BSR.W	LAB_0C48		;18ab6: 6100066a
     MOVEM.L	-40(A5),D2/D4-D7/A3	;18aba: 4ced08f4ffd8
     UNLK	A5			;18ac0: 4e5d
-    RTS				;18ac2: 4e75
+    RTS
 
 ;!======
 
@@ -33849,7 +33849,7 @@ LAB_0C1A:
 LAB_0C1B:
     MOVEM.L	(A7)+,D4-D7/A3		;18bba: 4cdf08f0
     UNLK	A5			;18bbe: 4e5d
-    RTS				;18bc0: 4e75
+    RTS
 
 ;!======
 
@@ -33867,7 +33867,7 @@ LAB_0C1D:
     BNE.S	LAB_0C1D		;18be4: 66fc
     MOVE.W	#$0003,46(A3)		;18be6: 377c0003002e
     MOVEA.L	(A7)+,A3		;18bec: 265f
-    RTS				;18bee: 4e75
+    RTS
 
 ;!======
 
@@ -34092,7 +34092,7 @@ LAB_0C2F:
 LAB_0C30:
     MOVEM.L	(A7)+,D5-D7/A2-A3/A6	;18eb0: 4cdf4ce0
     UNLK	A5			;18eb4: 4e5d
-    RTS				;18eb6: 4e75
+    RTS
 
 ;!======
 
@@ -34111,7 +34111,7 @@ LAB_0C31:
     BSR.W	LAB_0C42		;18eda: 610001b2
     ADDQ.W	#8,A7			;18ede: 504f
     MOVEM.L	(A7)+,D7/A3		;18ee0: 4cdf0880
-    RTS				;18ee4: 4e75
+    RTS
 
 ;!======
 
@@ -34145,7 +34145,7 @@ LAB_0C33:
 LAB_0C34:
     MOVEM.L	(A7)+,A2-A3		;18f32: 4cdf0c00
     UNLK	A5			;18f36: 4e5d
-    RTS				;18f38: 4e75
+    RTS
 
 ;!======
 
@@ -34218,7 +34218,7 @@ LAB_0C3A:
 LAB_0C3B:
     MOVEM.L	(A7)+,D7/A3		;18ff2: 4cdf0880
     UNLK	A5			;18ff6: 4e5d
-    RTS				;18ff8: 4e75
+    RTS
 
 ;!======
 
@@ -34284,7 +34284,7 @@ LAB_0C40:
 LAB_0C41:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;19086: 4cdf0ce0
     UNLK	A5			;1908a: 4e5d
-    RTS				;1908c: 4e75
+    RTS
 
 ;!======
 
@@ -34350,7 +34350,7 @@ LAB_0C46:
 LAB_0C47:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;1911a: 4cdf0ce0
     UNLK	A5			;1911e: 4e5d
-    RTS				;19120: 4e75
+    RTS
 
 ;!======
 
@@ -34843,7 +34843,7 @@ LAB_0C6F:
 LAB_0C70:
     MOVEM.L	(A7)+,D2-D7/A2-A3/A6	;19672: 4cdf4cfc
     UNLK	A5			;19676: 4e5d
-    RTS				;19678: 4e75
+    RTS
 
 ;!======
 
@@ -34874,7 +34874,7 @@ LAB_0C78:
     MOVE.W	LAB_1BC2,D0		;196da: 30390003413c
     JSR     LAB_0CAD		;196e0: 4eb90001a48e
     MOVEM.L	(A7)+,D0-D1/A0-A4	;196e6: 4cdf1f03
-    RTS				;196ea: 4e75
+    RTS
 
 ;!======
 
@@ -34885,7 +34885,7 @@ LAB_0C78:
     MOVE.W	#$0001,LAB_1F3D		;19704: 33fc0001000399a0
     JSR     LAB_0CAC		;1970c: 4eb90001a47c
     MOVEM.L	(A7)+,D0-D1/A0-A4	;19712: 4cdf1f03
-    RTS				;19716: 4e75
+    RTS
 
 ;!======
 
@@ -34900,7 +34900,7 @@ LAB_0C79:
     MOVE.W	#$0062,LAB_1F46		;1973e: 33fc0062000399b4
     MOVE.W	#$0001,LAB_1F3D		;19746: 33fc0001000399a0
     JSR     LAB_0CAC		;1974e: 4eb90001a47c
-    RTS				;19754: 4e75
+    RTS
 
 ;!======
 
@@ -34929,7 +34929,7 @@ LAB_0C7A:
     MOVE.B	D0,LAB_1E58		;197bc: 13c000037c8c
     MOVE.W	#$0001,LAB_1F3B		;197c2: 33fc00010003999c
     MOVEM.L	(A7)+,D0-D1/A0-A4	;197ca: 4cdf1f03
-    RTS				;197ce: 4e75
+    RTS
 
 ;!======
 
@@ -35034,7 +35034,7 @@ LAB_0C7B:
     MOVE.W	LAB_1F49,D0		;1995c: 303900039a1e
     BSR.W	LAB_0C7C		;19962: 6100001e
     MOVEM.L	(A7)+,D0-D1/A0-A4	;19966: 4cdf1f03
-    RTS				;1996a: 4e75
+    RTS
 
 ;!======
 
@@ -35043,7 +35043,7 @@ LAB_0C7B:
     MOVE.W	LAB_1F4A,D0		;19972: 303900039a22
     BSR.W	LAB_0C7C		;19978: 61000008
     MOVEM.L	(A7)+,D2-D7/A2-A6	;1997c: 4cdf7cfc
-    RTS				;19980: 4e75
+    RTS
 
 ;!======
 
@@ -35054,7 +35054,7 @@ LAB_0C7C:
     MOVE.B	D0,LAB_1E72		;19992: 13c000037e88
     MOVE.B	D1,LAB_1E46		;19998: 13c100036ac5
     MOVE.B	D1,LAB_1E73		;1999e: 13c100037e89
-    RTS				;199a4: 4e75
+    RTS
 
 ;!======
 
@@ -35079,7 +35079,7 @@ LAB_0C7D:
     MOVE.W	D0,LAB_1E7C		;199fa: 33c000037ebe
     JSR     LAB_0C7E		;19a00: 4eb900019a0c
     MOVEM.L	(A7)+,D0/A0-A1		;19a06: 4cdf0301
-    RTS				;19a0a: 4e75
+    RTS
 
 ;!======
 
@@ -35091,7 +35091,7 @@ LAB_0C7E:
 LAB_0C7F:
     MOVE.L	#$ffffffff,(A0)+	;19a1c: 20fcffffffff
     DBF     D1,LAB_0C7F		;19a22: 51c9fff8
-    RTS				;19a26: 4e75
+    RTS
 
 ;!======
 
@@ -35133,7 +35133,7 @@ LAB_0C81:
     MOVE.W	136(A0),D0		;19ac6: 30280088
     MOVE.W	#$0020,150(A0)		;19aca: 317c00200096
     MOVE.W	#$8180,150(A0)		;19ad0: 317c81800096
-    RTS				;19ad6: 4e75
+    RTS
 
 ;!======
 
@@ -35195,7 +35195,7 @@ LAB_0C8A:
     JSR     LAB_0C9E		;19bba: 4eb90001a2cc
 LAB_0C8B:
     MOVEM.L	(A7)+,D0-D3/A0-A6	;19bc0: 4cdf7f0f
-    RTS				;19bc4: 4e75
+    RTS
 
 ;!======
 
@@ -35205,7 +35205,7 @@ LAB_0C8B:
     MOVE.W	LAB_1E3D,LAB_1F31	;19be4: 33f900036aa20003995c
     MOVE.W	LAB_1E40,LAB_1F34	;19bee: 33f900036aae00039962
     MOVE.W	LAB_1E3F,LAB_1F33	;19bf8: 33f900036aaa00039960
-    RTS				;19c02: 4e75
+    RTS
 
 ;!======
 
@@ -35235,7 +35235,7 @@ LAB_0C90:
     BCC.S	LAB_0C91		;19c58: 6406
     ADD.W	D0,LAB_1E6C		;19c5a: d17900037e6e
 LAB_0C91:
-    RTS				;19c60: 4e75
+    RTS
 
 ;!======
 
@@ -35248,7 +35248,7 @@ LAB_0C92:
     LEA     LAB_2209,A1		;19c7c: 43f90003c1ea
     MOVE.L	(A1),LAB_1F37		;19c82: 23d10003996c
     MOVEA.L	(A7)+,A1		;19c88: 225f
-    RTS				;19c8a: 4e75
+    RTS
 
 ;!======
 
@@ -35278,7 +35278,7 @@ LAB_0C96:
     DBF     D1,LAB_0C96		;19cca: 51c9fffc
     MOVE.L	A3,(A1)+		;19cce: 22cb
     MOVEM.L	(A7)+,D1/A1-A4		;19cd0: 4cdf1e02
-    RTS				;19cd4: 4e75
+    RTS
 
 ;!======
 
@@ -35307,7 +35307,7 @@ LAB_0C9A:
     MOVE.L	(A3)+,(A4)+		;19d1c: 28db
     DBF     D1,LAB_0C9A		;19d1e: 51c9fffc
     MOVEM.L	(A7)+,D0-D1/A0-A4	;19d22: 4cdf1f03
-    RTS				;19d26: 4e75
+    RTS
 
 ;!======
 
@@ -35329,7 +35329,7 @@ LAB_0C9B:
     LSR.W	#1,D0			;19d68: e248
     SUBQ.W	#1,D0			;19d6a: 5340
     MOVE.W	D0,LAB_1F55		;19d6c: 33c000039a46
-    RTS				;19d72: 4e75
+    RTS
 
 ;!======
 
@@ -35424,7 +35424,7 @@ LAB_0C9C:
     MOVE.W	10(A2),10(A1)		;19f70: 336a000a000a
     MOVE.W	14(A2),14(A1)		;19f76: 336a000e000e
     MOVEM.L	(A7)+,D0/A0-A2		;19f7c: 4cdf0701
-    RTS				;19f80: 4e75
+    RTS
 
 ;!======
 
@@ -35777,7 +35777,7 @@ LAB_0C9D:
     MOVE.L	(A2)+,(A1)+		;1a2c2: 22da
     MOVE.L	(A2)+,(A1)+		;1a2c4: 22da
     MOVEM.L	(A7)+,D0-D1/A0-A2	;1a2c6: 4cdf0703
-    RTS				;1a2ca: 4e75
+    RTS
 
 ;!======
 
@@ -35807,7 +35807,7 @@ LAB_0CA0:
     MOVEA.L	(A1),A0			;1a328: 2051
     JSR     LAB_0C9D(PC)		;1a32a: 4ebafc56
     MOVEM.L	(A7)+,D0/A0-A1		;1a32e: 4cdf0301
-    RTS				;1a332: 4e75
+    RTS
 
 ;!======
 
@@ -35840,7 +35840,7 @@ LAB_0CA4:
 LAB_0CA5:
     ADDQ.W	#4,D3			;1a38c: 5843
     DBF     D4,LAB_0CA2		;1a38e: 51ccffa6
-    RTS				;1a392: 4e75
+    RTS
 
 ;!======
 
@@ -35855,12 +35855,12 @@ LAB_0CA6:
     LSL.W	#4,D1			;1a3a8: e949
     ADD.W	D1,D0			;1a3aa: d041
     ADD.W	D2,D0			;1a3ac: d042
-    RTS				;1a3ae: 4e75
+    RTS
 
 ;!======
 
 LAB_0CA7:
-    RTS				;1a3b0: 4e75
+    RTS
 
 ;!======
 
@@ -35871,7 +35871,7 @@ LAB_0CA7:
     LEA     LAB_1DE0,A1		;1a3c6: 43f900036420
     JSR     LAB_0CA1(PC)		;1a3cc: 4ebaff66
     MOVEM.L	(A7)+,D0-D4/A0-A4	;1a3d0: 4cdf1f1f
-    RTS				;1a3d4: 4e75
+    RTS
 
 ;!======
 
@@ -35896,7 +35896,7 @@ LAB_0CA8:
     MOVE.B	D0,(A4)			;1a418: 1880
     ANDI.W	#$00ff,D0		;1a41a: 024000ff
     MOVE.W	D0,LAB_1F49		;1a41e: 33c000039a1e
-    RTS				;1a424: 4e75
+    RTS
 
 ;!======
 
@@ -35906,7 +35906,7 @@ LAB_0CA8:
     SUBQ.W	#2,D0			;1a430: 5540
     CMP.W	LAB_1F49,D0		;1a432: b07900039a1e
     BPL.W	LAB_0CA9		;1a438: 6a000004
-    RTS				;1a43c: 4e75
+    RTS
 
 ;!======
 
@@ -35934,7 +35934,7 @@ LAB_0CAD:
     BSR.W	LAB_0CA8		;1a48e: 6100ff46
     MOVE.W	#$0058,D1		;1a492: 323c0058
     JSR     LAB_0C7D(PC)		;1a496: 4ebaf50e
-    RTS				;1a49a: 4e75
+    RTS
 
 ;!======
 
@@ -35944,7 +35944,7 @@ LAB_0CAD:
     MOVE.B	(A4),D0			;1a4a8: 1014
     BSR.W	LAB_0CA8		;1a4aa: 6100ff2a
     MOVEM.L	(A7)+,D2-D7/A2-A6	;1a4ae: 4cdf7cfc
-    RTS				;1a4b2: 4e75
+    RTS
 
 ;!======
 
@@ -35954,7 +35954,7 @@ LAB_0CAD:
     SUBQ.W	#2,D0			;1a4be: 5540
     CMP.W	LAB_1F49,D0		;1a4c0: b07900039a1e
     BPL.W	LAB_0CAE		;1a4c6: 6a000004
-    RTS				;1a4ca: 4e75
+    RTS
 
 ;!======
 
@@ -35977,7 +35977,7 @@ LAB_0CB0:
     MOVE.W	#$0062,LAB_1F46		;1a50a: 33fc0062000399b4
     MOVE.W	#$0019,D0		;1a512: 303c0019
     BRA.W	LAB_0CAD		;1a516: 6000ff76
-    RTS				;1a51a: 4e75
+    RTS
 
 ;!======
 
@@ -36005,7 +36005,7 @@ LAB_0CB3:
     MOVE.W	#$008a,LAB_1F47		;1a570: 33fc008a000399b8
 LAB_0CB4:
     MOVEM.L	(A7)+,D0-D1/A2		;1a578: 4cdf0403
-    RTS				;1a57c: 4e75
+    RTS
 
 ;!======
 
@@ -36124,7 +36124,7 @@ LAB_0CBE:
 LAB_0CBF:
     MOVEM.L	-140(A5),D7/A3		;1a6f0: 4ced0880ff74
     UNLK	A5			;1a6f6: 4e5d
-    RTS				;1a6f8: 4e75
+    RTS
 
 ;!======
 
@@ -36160,7 +36160,7 @@ LAB_0CC2:
     JSR     LAB_0CC3(PC)		;1a756: 4eba0054
     ADDQ.W	#4,A7			;1a75a: 584f
     MOVEM.L	(A7)+,D6-D7		;1a75c: 4cdf00c0
-    RTS				;1a760: 4e75
+    RTS
 
 ;!======
 
@@ -36188,11 +36188,11 @@ LAB_0CC2:
     JSR     LAB_0EF0(PC)		;1a79c: 4eba4918
     LEA	    24(A7),A7		;1a7a0: 4fef0018
     MOVEM.L	(A7)+,D2-D3/A2-A3	;1a7a4: 4cdf0c0c
-    RTS				;1a7a8: 4e75
+    RTS
 
 ;!======
 
-    RTS				;1a7aa: 4e75
+    RTS
 
 ;!======
 
@@ -36220,7 +36220,7 @@ LAB_0CC5:
     JSR     LAB_0B44(PC)		;1a7fe: 4ebac8d4
     ADDQ.W	#8,A7			;1a802: 504f
     MOVE.L	D0,LAB_22D4		;1a804: 23c00003e500
-    RTS				;1a80a: 4e75
+    RTS
 
 ;!======
 
@@ -36256,7 +36256,7 @@ LAB_0CC6:
     LEA	    12(A7),A7		;1a894: 4fef000c
     MOVE.L	D0,LAB_22E3		;1a898: 23c00003e534
     MOVEM.L	(A7)+,D2-D3		;1a89e: 4cdf000c
-    RTS				;1a8a2: 4e75
+    RTS
 
 ;!======
 
@@ -36293,7 +36293,7 @@ LAB_0CC7:
     LEA	    12(A7),A7		;1a934: 4fef000c
     MOVE.L	D0,LAB_22F2		;1a938: 23c00003e568
     MOVE.L	(A7)+,D2		;1a93e: 241f
-    RTS				;1a940: 4e75
+    RTS
 
 ;!======
 
@@ -36310,7 +36310,7 @@ LAB_0CC8:
     BSR.W	LAB_0CC9		;1a96e: 6100000c
     BSR.W	LAB_0CE8		;1a972: 6100031e
     BSR.W	LAB_0D1E		;1a976: 61000938
-    RTS				;1a97a: 4e75
+    RTS
 
 ;!======
 
@@ -36349,7 +36349,7 @@ LAB_0CCA:
     MOVEQ	#1,D0			;1a9f0: 7001
     MOVE.L	(A7)+,D7		;1a9f2: 2e1f
     UNLK	A5			;1a9f4: 4e5d
-    RTS				;1a9f6: 4e75
+    RTS
 
 ;!======
 
@@ -36394,7 +36394,7 @@ LAB_0CCD:
 LAB_0CCE:
     MOVE.L	(A7)+,D7		;1aa6a: 2e1f
     UNLK	A5			;1aa6c: 4e5d
-    RTS				;1aa6e: 4e75
+    RTS
 
 ;!======
 
@@ -36627,7 +36627,7 @@ LAB_0CE7:
     BSR.W	LAB_0CCB		;1ac86: 6100fd70
     MOVEM.L	(A7)+,D4-D7/A3		;1ac8a: 4cdf08f0
     UNLK	A5			;1ac8e: 4e5d
-    RTS				;1ac90: 4e75
+    RTS
 
 ;!======
 
@@ -36702,7 +36702,7 @@ LAB_0CEB:
     MOVEQ	#1,D0			;1ad86: 7001
     MOVE.L	(A7)+,D7		;1ad88: 2e1f
     UNLK	A5			;1ad8a: 4e5d
-    RTS				;1ad8c: 4e75
+    RTS
 
 ;!======
 
@@ -36766,7 +36766,7 @@ LAB_0CEF:
 LAB_0CF0:
     MOVE.L	(A7)+,D7		;1ae3e: 2e1f
     UNLK	A5			;1ae40: 4e5d
-    RTS				;1ae42: 4e75
+    RTS
 
 ;!======
 
@@ -37229,7 +37229,7 @@ LAB_0D1D:
     BSR.W	LAB_0CEC		;1b2a4: 6100fae8
     MOVEM.L	(A7)+,D2/D4-D7/A2-A3	;1b2a8: 4cdf0cf4
     UNLK	A5			;1b2ac: 4e5d
-    RTS				;1b2ae: 4e75
+    RTS
 
 ;!======
 
@@ -37307,7 +37307,7 @@ LAB_0D22:
     MOVEQ	#1,D0			;1b3a2: 7001
     MOVEM.L	(A7)+,D5-D7		;1b3a4: 4cdf00e0
     UNLK	A5			;1b3a8: 4e5d
-    RTS				;1b3aa: 4e75
+    RTS
 
 ;!======
 
@@ -37371,7 +37371,7 @@ LAB_0D26:
 LAB_0D27:
     MOVE.L	(A7)+,D7		;1b45c: 2e1f
     UNLK	A5			;1b45e: 4e5d
-    RTS				;1b460: 4e75
+    RTS
 
 ;!======
 
@@ -37854,7 +37854,7 @@ LAB_0D56:
     BSR.W	LAB_0D23		;1b8f2: 6100fab8
     MOVEM.L	(A7)+,D2/D4-D7/A2-A3	;1b8f6: 4cdf0cf4
     UNLK	A5			;1b8fa: 4e5d
-    RTS				;1b8fc: 4e75
+    RTS
 
 ;!======
 
@@ -37915,7 +37915,7 @@ LAB_0D60:
     MOVE.L	-4(A5),D0		;1b960: 202dfffc
     MOVEM.L	(A7)+,D7/A3		;1b964: 4cdf0880
     UNLK	A5			;1b968: 4e5d
-    RTS				;1b96a: 4e75
+    RTS
 
 ;!======
 
@@ -37956,7 +37956,7 @@ LAB_0D61:
     LEA	    12(A7),A7		;1b9d4: 4fef000c
 LAB_0D62:
     MOVEM.L	(A7)+,D2/D6-D7		;1b9d8: 4cdf00c4
-    RTS				;1b9dc: 4e75
+    RTS
 
 ;!======
 
@@ -38003,7 +38003,7 @@ LAB_0D69:
     ADDA.W	LAB_2309,A0		;1ba48: d0f90003ee1a
     MOVE.B	D6,(A0)			;1ba4e: 1086
     MOVEM.L	(A7)+,D6-D7		;1ba50: 4cdf00c0
-    RTS				;1ba54: 4e75
+    RTS
 
 ;!======
 
@@ -38076,21 +38076,21 @@ LAB_0D6C:
     MOVE.W	D0,3922(A0)		;1bb28: 31400f52
     MOVE.L	(A7)+,D7		;1bb2c: 2e1f
     UNLK	A5			;1bb2e: 4e5d
-    RTS				;1bb30: 4e75
+    RTS
 
 ;!======
 
 LAB_0D6D:
     MOVE.W	#$0001,LAB_22FE		;1bb32: 33fc00010003edf0
     BSR.W	LAB_0D6A		;1bb3a: 6100ff1a
-    RTS				;1bb3e: 4e75
+    RTS
 
 ;!======
 
 LAB_0D6E:
     CLR.W	LAB_22FE		;1bb40: 42790003edf0
     BSR.W	LAB_0D6A		;1bb46: 6100ff0e
-    RTS				;1bb4a: 4e75
+    RTS
 
 ;!======
 
@@ -38149,7 +38149,7 @@ LAB_0D72:
     JSR     LAB_0F02(PC)		;1bbda: 4eba363c
     ADDQ.W	#4,A7			;1bbde: 584f
     MOVEM.L	(A7)+,D6-D7/A2-A3	;1bbe0: 4cdf0cc0
-    RTS				;1bbe4: 4e75
+    RTS
 
 ;!======
 
@@ -38174,7 +38174,7 @@ LAB_0D73:
     MOVE.W	D0,(A0)			;1bc16: 3080
 LAB_0D74:
     MOVEM.L	(A7)+,D6-D7		;1bc18: 4cdf00c0
-    RTS				;1bc1c: 4e75
+    RTS
 
 ;!======
 
@@ -38222,7 +38222,7 @@ LAB_0D78:
     BRA.S	LAB_0D76		;1bc70: 60b6
 LAB_0D79:
     MOVEM.L	(A7)+,D2/D5-D7/A3	;1bc72: 4cdf08e4
-    RTS				;1bc76: 4e75
+    RTS
 
 ;!======
 
@@ -38305,7 +38305,7 @@ LAB_0D82:
     JSR	    -126(A6)		;1bd32: 4eaeff82
 LAB_0D83:
     MOVEM.L	(A7)+,D5-D7/A3		;1bd36: 4cdf08e0
-    RTS				;1bd3a: 4e75
+    RTS
 
 ;!======
 
@@ -38353,7 +38353,7 @@ LAB_0D87:
 LAB_0D88:
     MOVEM.L	(A7)+,D6-D7/A3		;1bd9e: 4cdf08c0
     UNLK	A5			;1bda2: 4e5d
-    RTS				;1bda4: 4e75
+    RTS
 
 ;!======
 
@@ -38361,7 +38361,7 @@ LAB_0D89:
     PEA	    LAB_22F4		;1bda6: 48790003e570
     BSR.S	LAB_0D84		;1bdac: 618e
     ADDQ.W	#4,A7			;1bdae: 584f
-    RTS				;1bdb0: 4e75
+    RTS
 
 ;!======
 
@@ -38404,7 +38404,7 @@ LAB_0D8C:
 LAB_0D8D:
     MOVEM.L	(A7)+,D4-D7		;1be0c: 4cdf00f0
     UNLK	A5			;1be10: 4e5d
-    RTS				;1be12: 4e75
+    RTS
 
 ;!======
 
@@ -38440,7 +38440,7 @@ LAB_0D8F:
 LAB_0D90:
     MOVEM.L	(A7)+,D6-D7/A3		;1be64: 4cdf08c0
     UNLK	A5			;1be68: 4e5d
-    RTS				;1be6a: 4e75
+    RTS
 
 ;!======
 
@@ -38470,7 +38470,7 @@ LAB_0D93:
     CLR.W	LAB_1FA3		;1bea8: 42790003a3cc
     MOVE.L	(A7)+,D7		;1beae: 2e1f
     UNLK	A5			;1beb0: 4e5d
-    RTS				;1beb2: 4e75
+    RTS
 
 ;!======
 
@@ -38528,7 +38528,7 @@ LAB_0D96:
     ADDQ.W	#8,A7			;1bf42: 504f
 LAB_0D97:
     MOVEM.L	(A7)+,D5-D7/A3		;1bf44: 4cdf08e0
-    RTS				;1bf48: 4e75
+    RTS
 
 ;!======
 
@@ -38559,7 +38559,7 @@ LAB_0D99:
     BRA.S	LAB_0D99		;1bf8a: 60c8
 LAB_0D9A:
     MOVEM.L	(A7)+,D7/A3		;1bf8c: 4cdf0880
-    RTS				;1bf90: 4e75
+    RTS
 
 ;!======
 
@@ -38609,7 +38609,7 @@ LAB_0DA0:
 LAB_0DA1:
     MOVE.L	(A7)+,D7		;1c010: 2e1f
     UNLK	A5			;1c012: 4e5d
-    RTS				;1c014: 4e75
+    RTS
 
 ;!======
 
@@ -38654,7 +38654,7 @@ LAB_0DA4:
     JSR	    -126(A6)		;1c0a6: 4eaeff82
     MOVEM.L	-20(A5),D4-D7		;1c0aa: 4ced00f0ffec
     UNLK	A5			;1c0b0: 4e5d
-    RTS				;1c0b2: 4e75
+    RTS
 
 ;!======
 
@@ -38800,7 +38800,7 @@ LAB_0DB1:
     CLR.W	LAB_1FA4		;1c266: 42790003a3ce
     MOVEM.L	(A7)+,D2/D6-D7/A2-A3	;1c26c: 4cdf0cc4
     UNLK	A5			;1c270: 4e5d
-    RTS				;1c272: 4e75
+    RTS
 
 ;!======
 
@@ -38811,7 +38811,7 @@ LAB_0DB2:
     MOVEA.L	-4(A5),A0		;1c282: 206dfffc
     MOVE.B	(A0),D0			;1c286: 1010
     UNLK	A5			;1c288: 4e5d
-    RTS				;1c28a: 4e75
+    RTS
 
 ;!======
 
@@ -38880,7 +38880,7 @@ LAB_0DB4:
     MOVE.W	D6,0(A3,D1.L)		;1c34c: 37861800
 LAB_0DB5:
     MOVEM.L	(A7)+,D2-D3/D6-D7/A3	;1c350: 4cdf08cc
-    RTS				;1c354: 4e75
+    RTS
 
 ;!======
 
@@ -39022,7 +39022,7 @@ LAB_0DBB:
     BSR.W	LAB_0DB3		;1c4d4: 6100fdb6
     MOVEM.L	-44(A5),D2/D4-D7/A2-A3/A6 ;1c4d8: 4ced4cf4ffd4
     UNLK	A5			;1c4de: 4e5d
-    RTS				;1c4e0: 4e75
+    RTS
 
 ;!======
 
@@ -39041,7 +39041,7 @@ LAB_0DBD:
     BRA.S	LAB_0DBD		;1c500: 60ec
 LAB_0DBE:
     MOVE.L	(A7)+,D7		;1c502: 2e1f
-    RTS				;1c504: 4e75
+    RTS
 
 ;!======
 
@@ -39134,7 +39134,7 @@ LAB_0DC0:
     MOVE.W	0(A0,D2.L),0(A0,D3.L)	;1c65a: 31b028003800
     MOVEM.L	(A7)+,D2-D3/D6-D7	;1c660: 4cdf00cc
     UNLK	A5			;1c664: 4e5d
-    RTS				;1c666: 4e75
+    RTS
 
 ;!======
 
@@ -39193,7 +39193,7 @@ LAB_0DC4:
     MOVE.B	#$01,LAB_1E89		;1c6f8: 13fc000100038efa
 LAB_0DC5:
     MOVE.L	(A7)+,D2		;1c700: 241f
-    RTS				;1c702: 4e75
+    RTS
 
 ;!======
 
@@ -39223,7 +39223,7 @@ LAB_0DC6:
     MOVEA.L	LAB_221E,A0		;1c76e: 20790003c266
     ADDA.L	D0,A0			;1c774: d1c0
     MOVE.L	A0,LAB_1F33		;1c776: 23c800039960
-    RTS				;1c77c: 4e75
+    RTS
 
 ;!======
 
@@ -39306,7 +39306,7 @@ LAB_0DCC:
 LAB_0DCD:
     JSR     LAB_0C97(PC)		;1c89e: 4ebad436
 LAB_0DCE:
-    RTS				;1c8a2: 4e75
+    RTS
 
 ;!======
 
@@ -39353,7 +39353,7 @@ LAB_0DD3:
 LAB_0DD4:
     BSR.W	LAB_0DC7		;1c948: 6100fe34
     MOVEM.L	(A7)+,D2/A4		;1c94c: 4cdf1004
-    RTS				;1c950: 4e75
+    RTS
 
 ;!======
 
@@ -39392,7 +39392,7 @@ LAB_0DD9:
     DBF     D0,LAB_0DD9		;1c9be: 51c8fffc
     MOVE.L	(A7)+,D7		;1c9c2: 2e1f
     UNLK	A5			;1c9c4: 4e5d
-    RTS				;1c9c6: 4e75
+    RTS
 
 ;!======
 
@@ -39558,7 +39558,7 @@ LAB_0DE6:
     MOVE.L	-4(A5),D0		;1cbc4: 202dfffc
     MOVEM.L	(A7)+,D4-D7/A2-A3/A6	;1cbc8: 4cdf4cf0
     UNLK	A5			;1cbcc: 4e5d
-    RTS				;1cbce: 4e75
+    RTS
 
 ;!======
 
@@ -39887,7 +39887,7 @@ LAB_0DE7:
     CLR.W	3914(A0)		;1d09c: 42680f4a
     MOVEM.L	(A7)+,D2-D7/A2-A3/A6	;1d0a0: 4cdf4cfc
     UNLK	A5			;1d0a4: 4e5d
-    RTS				;1d0a6: 4e75
+    RTS
 
 ;!======
 
@@ -39949,7 +39949,7 @@ LAB_0DE8:
     JSR	    -126(A6)		;1d184: 4eaeff82
     MOVEM.L	-20(A5),D2/D5-D7	;1d188: 4ced00e4ffec
     UNLK	A5			;1d18e: 4e5d
-    RTS				;1d190: 4e75
+    RTS
 
 ;!======
 
@@ -39968,7 +39968,7 @@ LAB_0DE9:
     ADDI.L	#$00000264,D0		;1d1be: 068000000264
     MOVE.L	D0,LAB_2312		;1d1c4: 23c00003ee3a
 LAB_0DEA:
-    RTS				;1d1ca: 4e75
+    RTS
 
 ;!======
 
@@ -39978,7 +39978,7 @@ LAB_0DEB:
     MOVE.B	19(A7),D7		;1d1d4: 1e2f0013
     ADD.B	D7,(A3)			;1d1d8: df13
     MOVEM.L	(A7)+,D7/A3		;1d1da: 4cdf0880
-    RTS				;1d1de: 4e75
+    RTS
 
 ;!======
 
@@ -40016,7 +40016,7 @@ LAB_0DEF:
     ADDQ.W	#8,A7			;1d240: 504f
 LAB_0DF0:
     MOVE.L	(A7)+,D7		;1d242: 2e1f
-    RTS				;1d244: 4e75
+    RTS
 
 ;!======
 
@@ -40059,7 +40059,7 @@ LAB_0DF1:
 LAB_0DF2:
     MOVE.L	(A7)+,D7		;1d2a2: 2e1f
     UNLK	A5			;1d2a4: 4e5d
-    RTS				;1d2a6: 4e75
+    RTS
 
 ;!======
 
@@ -40092,7 +40092,7 @@ LAB_0DF3:
     MOVE.W	D2,3918(A0)		;1d30a: 31420f4e
     MOVEM.L	-12(A5),D2-D3		;1d30e: 4ced000cfff4
     UNLK	A5			;1d314: 4e5d
-    RTS				;1d316: 4e75
+    RTS
 
 ;!======
 
@@ -40119,7 +40119,7 @@ LAB_0DF4:
     MOVE.W	D1,2(A0)		;1d366: 31410002
     MOVE.L	-8(A5),D2		;1d36a: 242dfff8
     UNLK	A5			;1d36e: 4e5d
-    RTS				;1d370: 4e75
+    RTS
 
 ;!======
 
@@ -40182,7 +40182,7 @@ LAB_0DF7:
 LAB_0DF8:
     MOVEA.L	(A7)+,A3		;1d43a: 265f
     UNLK	A5			;1d43c: 4e5d
-    RTS				;1d43e: 4e75
+    RTS
 
 ;!======
 
@@ -40237,7 +40237,7 @@ LAB_0DFE:
     MOVEQ	#0,D0			;1d4d6: 7000
     MOVEM.L	(A7)+,D7/A3-A4		;1d4d8: 4cdf1880
     UNLK	A5			;1d4dc: 4e5d
-    RTS				;1d4de: 4e75
+    RTS
 
 ;!======
 
@@ -40298,7 +40298,7 @@ LAB_0DFF:
     MOVEQ	#0,D0			;1d5c0: 7000
     MOVE.L	D0,LAB_231B		;1d5c2: 23c00003ee74
     MOVE.L	D0,LAB_231C		;1d5c8: 23c00003ee78
-    RTS				;1d5ce: 4e75
+    RTS
 
 ;!======
 
@@ -40350,7 +40350,7 @@ LAB_0E07:
     BRA.S	LAB_0E06		;1d650: 60be
 LAB_0E08:
     MOVEM.L	(A7)+,D7/A3		;1d652: 4cdf0880
-    RTS				;1d656: 4e75
+    RTS
 
 ;!======
 
@@ -40380,7 +40380,7 @@ LAB_0E0A:
 LAB_0E0B:
     MOVE.L	(A7)+,D7		;1d69c: 2e1f
     UNLK	A5			;1d69e: 4e5d
-    RTS				;1d6a0: 4e75
+    RTS
 
 ;!======
 
@@ -40466,7 +40466,7 @@ LAB_0E12:
     BRA.W	LAB_0E0D		;1d770: 6000ff36
 LAB_0E13:
     MOVEM.L	(A7)+,D6-D7/A2		;1d774: 4cdf04c0
-    RTS				;1d778: 4e75
+    RTS
 
 ;!======
 
@@ -40505,7 +40505,7 @@ LAB_0E16:
     SUB.L	D1,D0			;1d7da: 9081
     MOVE.L	D0,LAB_21FB		;1d7dc: 23c00003c0ee
     MOVEM.L	(A7)+,D7/A3		;1d7e2: 4cdf0880
-    RTS				;1d7e6: 4e75
+    RTS
 
 ;!======
 
@@ -40585,7 +40585,7 @@ LAB_0E1C:
     BSR.W	LAB_0E14		;1d8a4: 6100fed4
     MOVEM.L	(A7)+,D6-D7/A2		;1d8a8: 4cdf04c0
     UNLK	A5			;1d8ac: 4e5d
-    RTS				;1d8ae: 4e75
+    RTS
 
 ;!======
 
@@ -40633,7 +40633,7 @@ LAB_0E1E:
     BGE.S	LAB_0E1F		;1d936: 6c0a
     MOVE.W	LAB_2292,LAB_2291	;1d938: 33f90003de740003de72
 LAB_0E1F:
-    RTS				;1d942: 4e75
+    RTS
 
 ;!======
 
@@ -40800,7 +40800,7 @@ LAB_0E2B:
 LAB_0E2C:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;1db02: 4cdf0cec
     UNLK	A5			;1db06: 4e5d
-    RTS				;1db08: 4e75
+    RTS
 
 ;!======
 
@@ -40853,7 +40853,7 @@ LAB_0E31:
     MOVEQ	#0,D0			;1db68: 7000
 LAB_0E32:
     MOVE.L	(A7)+,D7		;1db6a: 2e1f
-    RTS				;1db6c: 4e75
+    RTS
 
 ;!======
 
@@ -41102,7 +41102,7 @@ LAB_0E46:
 LAB_0E47:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;1dde6: 4cdf0cf0
     UNLK	A5			;1ddea: 4e5d
-    RTS				;1ddec: 4e75
+    RTS
 
 ;!======
 
@@ -41245,7 +41245,7 @@ LAB_0E55:
 LAB_0E56:
     MOVEM.L	-52(A5),D4-D7		;1df80: 4ced00f0ffcc
     UNLK	A5			;1df86: 4e5d
-    RTS				;1df88: 4e75
+    RTS
 
 ;!======
 
@@ -41450,7 +41450,7 @@ LAB_0E67:
 LAB_0E68:
     MOVEM.L	-60(A5),D2/D4-D7	;1e1d0: 4ced00f4ffc4
     UNLK	A5			;1e1d6: 4e5d
-    RTS				;1e1d8: 4e75
+    RTS
 
 ;!======
 
@@ -41488,7 +41488,7 @@ LAB_0E69:
     JSR     LAB_0EEE(PC)		;1e232: 4eba0e76
     LEA	    16(A7),A7		;1e236: 4fef0010
     MOVEM.L	(A7)+,D5-D7/A2-A3	;1e23a: 4cdf0ce0
-    RTS				;1e23e: 4e75
+    RTS
 
 ;!======
 
@@ -41744,7 +41744,7 @@ LAB_0E81:
 LAB_0E82:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;1e502: 4cdf0cfc
     UNLK	A5			;1e506: 4e5d
-    RTS				;1e508: 4e75
+    RTS
 
 ;!======
 
@@ -41972,7 +41972,7 @@ LAB_0E90:
 LAB_0E91:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;1e7d8: 4cdf0cfc
     UNLK	A5			;1e7dc: 4e5d
-    RTS				;1e7de: 4e75
+    RTS
 
 ;!======
 
@@ -42207,7 +42207,7 @@ LAB_0EAD:
 LAB_0EAE:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;1ea66: 4cdf0cfc
     UNLK	A5			;1ea6a: 4e5d
-    RTS				;1ea6c: 4e75
+    RTS
 
 ;!======
 
@@ -42297,7 +42297,7 @@ LAB_0EB8:
 LAB_0EB9:
     MOVEM.L	(A7)+,D6-D7/A2-A3/A6	;1eb3c: 4cdf4cc0
     UNLK	A5			;1eb40: 4e5d
-    RTS				;1eb42: 4e75
+    RTS
 
 ;!======
 
@@ -42600,7 +42600,7 @@ LAB_0ED9:
 LAB_0EDA:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;1ee58: 4cdf0cec
     UNLK	A5			;1ee5c: 4e5d
-    RTS				;1ee5e: 4e75
+    RTS
 
 ;!======
 
@@ -42756,7 +42756,7 @@ LAB_0EE3:
 LAB_0EE4:
     MOVEM.L	(A7)+,D6-D7/A2-A3/A6	;1eff2: 4cdf4cc0
     UNLK	A5			;1eff6: 4e5d
-    RTS				;1eff8: 4e75
+    RTS
 
 ;!======
 
@@ -42774,7 +42774,7 @@ LAB_0EE5:
     AND.L	D1,D2			;1f014: c481
     OR.L	D2,D0			;1f016: 8082
     MOVEM.L	(A7)+,D2/D6-D7		;1f018: 4cdf00c4
-    RTS				;1f01c: 4e75
+    RTS
 
 ;!======
 
@@ -42792,7 +42792,7 @@ LAB_0EE6:
     AND.L	D1,D2			;1f038: c481
     OR.L	D2,D0			;1f03a: 8082
     MOVEM.L	(A7)+,D2/D6-D7		;1f03c: 4cdf00c4
-    RTS				;1f040: 4e75
+    RTS
 
 ;!======
 
@@ -42811,7 +42811,7 @@ LAB_0EE7:
     AND.L	D2,D1			;1f05e: c282
     OR.L	D1,D0			;1f060: 8081
     MOVEM.L	(A7)+,D2/D6-D7		;1f062: 4cdf00c4
-    RTS				;1f066: 4e75
+    RTS
 
 ;!======
 
@@ -42824,7 +42824,7 @@ LAB_0EE8:
     MOVEQ	#15,D1			;1f074: 720f
     AND.L	D1,D0			;1f076: c081
     MOVE.L	(A7)+,D7		;1f078: 2e1f
-    RTS				;1f07a: 4e75
+    RTS
 
 ;!======
 
@@ -42834,7 +42834,7 @@ LAB_0EE9:
     MOVE.L	D7,D0			;1f082: 2007
     ANDI.B	#$0f,D0			;1f084: 0200000f
     MOVE.L	(A7)+,D7		;1f088: 2e1f
-    RTS				;1f08a: 4e75
+    RTS
 
 ;!======
 
@@ -42861,7 +42861,7 @@ LAB_0EF1:
 LAB_0EF2:
     JMP     LAB_1955		;1f0c8: 4ef900031e20
     MOVEQ	#97,D0			;1f0ce: 7061
-    RTS				;1f0d0: 4e75
+    RTS
 
 ;!======
 
@@ -42887,7 +42887,7 @@ LAB_0EF3:
     BRA.S	LAB_0EF3		;1f0fe: 60e4
 LAB_0EF4:
     MOVEM.L	(A7)+,D6-D7/A3		;1f100: 4cdf08c0
-    RTS				;1f104: 4e75
+    RTS
 
 ;!======
 
@@ -42925,7 +42925,7 @@ LAB_0EF7:
     BRA.S	LAB_0EF5		;1f154: 60c2
 LAB_0EF8:
     MOVEM.L	(A7)+,D6-D7/A3		;1f156: 4cdf08c0
-    RTS				;1f15a: 4e75
+    RTS
 
 ;!======
 
@@ -42946,7 +42946,7 @@ LAB_0EFA:
     BRA.S	LAB_0EFA		;1f178: 60ec
 LAB_0EFB:
     MOVEA.L	(A7)+,A3		;1f17a: 265f
-    RTS				;1f17c: 4e75
+    RTS
 
 ;!======
 
@@ -43015,7 +43015,7 @@ LAB_0F00:
     ADDQ.W	#8,A7			;1f210: 504f
 LAB_0F01:
     MOVE.L	(A7)+,D7		;1f212: 2e1f
-    RTS				;1f214: 4e75
+    RTS
 
 ;!======
 
@@ -43032,7 +43032,7 @@ LAB_0F03:
     MOVE.W	D0,4(A3)		;1f22e: 37400004
     CLR.L	6(A3)			;1f232: 42ab0006
     MOVEA.L	(A7)+,A3		;1f236: 265f
-    RTS				;1f238: 4e75
+    RTS
 
 ;!======
 
@@ -43059,7 +43059,7 @@ LAB_0F05:
     ADDQ.W	#4,A7			;1f270: 584f
 LAB_0F06:
     MOVEA.L	(A7)+,A3		;1f272: 265f
-    RTS				;1f274: 4e75
+    RTS
 
 ;!======
 
@@ -43076,7 +43076,7 @@ LAB_0F07:
     MOVE.L	D0,8(A3)		;1f294: 27400008
     MOVE.L	D0,12(A3)		;1f298: 2740000c
     MOVEA.L	(A7)+,A3		;1f29c: 265f
-    RTS				;1f29e: 4e75
+    RTS
 
 ;!======
 
@@ -43137,7 +43137,7 @@ LAB_0F0C:
     ADDQ.W	#4,A7			;1f33a: 584f
 LAB_0F0D:
     MOVEM.L	(A7)+,D7/A3		;1f33c: 4cdf0880
-    RTS				;1f340: 4e75
+    RTS
 
 ;!======
 
@@ -43157,7 +43157,7 @@ LAB_0F0E:
     ADDQ.L	#1,(A0)			;1f374: 5290
 LAB_0F0F:
     MOVEM.L	(A7)+,A2-A3		;1f376: 4cdf0c00
-    RTS				;1f37a: 4e75
+    RTS
 
 ;!======
 
@@ -43197,7 +43197,7 @@ LAB_0F10:
 LAB_0F11:
     MOVE.L	D7,D0			;1f3e8: 2007
     MOVEM.L	(A7)+,D7/A3		;1f3ea: 4cdf0880
-    RTS				;1f3ee: 4e75
+    RTS
 
 ;!======
 
@@ -43210,7 +43210,7 @@ LAB_0F12:
     MOVE.L	D0,LAB_1FE8		;1f400: 23c00003a5f8
     CLR.L	LAB_1FE7		;1f406: 42b90003a5f4
     MOVEA.L	(A7)+,A3		;1f40c: 265f
-    RTS				;1f40e: 4e75
+    RTS
 
 ;!======
 
@@ -43232,7 +43232,7 @@ LAB_0F14:
     ADDQ.W	#4,A7			;1f438: 584f
 LAB_0F15:
     MOVE.L	(A7)+,D7		;1f43a: 2e1f
-    RTS				;1f43c: 4e75
+    RTS
 
 ;!======
 
@@ -43512,7 +43512,7 @@ LAB_0F35:
     MOVE.L	D5,D0			;1f6f0: 2005
     MOVEM.L	(A7)+,D5-D7/A2-A3	;1f6f2: 4cdf0ce0
     UNLK	A5			;1f6f6: 4e5d
-    RTS				;1f6f8: 4e75
+    RTS
 
 ;!======
 
@@ -43570,7 +43570,7 @@ LAB_0F3A:
 LAB_0F3B:
     MOVE.L	D6,D0			;1f762: 2006
     MOVEM.L	(A7)+,D6-D7		;1f764: 4cdf00c0
-    RTS				;1f768: 4e75
+    RTS
 
 ;!======
 
@@ -43593,7 +43593,7 @@ LAB_0F3B:
 LAB_0F3C:
     MOVE.L	D6,D0			;1f798: 2006
     MOVEM.L	(A7)+,D6-D7/A3		;1f79a: 4cdf08c0
-    RTS				;1f79e: 4e75
+    RTS
 
 ;!======
 
@@ -43750,7 +43750,7 @@ LAB_0F4B:
 LAB_0F4C:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;1f924: 4cdf0cf0
     UNLK	A5			;1f928: 4e5d
-    RTS				;1f92a: 4e75
+    RTS
 
 ;!======
 
@@ -43937,7 +43937,7 @@ LAB_0F5C:
     MOVE.L	D5,D0			;1fb00: 2005
     MOVEM.L	(A7)+,D4-D7/A2-A3/A6	;1fb02: 4cdf4cf0
     UNLK	A5			;1fb06: 4e5d
-    RTS				;1fb08: 4e75
+    RTS
 
 ;!======
 
@@ -44202,7 +44202,7 @@ LAB_0F77:
     MOVE.L	D5,D0			;1fdf6: 2005
     MOVEM.L	(A7)+,D4-D7/A2-A3	;1fdf8: 4cdf0cf0
     UNLK	A5			;1fdfc: 4e5d
-    RTS				;1fdfe: 4e75
+    RTS
 
 ;!======
 
@@ -44227,7 +44227,7 @@ LAB_0F7C:
     ADDQ.W	#1,D7			;1fe22: 5247
     MOVE.L	D7,D0			;1fe24: 2007
     MOVE.L	(A7)+,D7		;1fe26: 2e1f
-    RTS				;1fe28: 4e75
+    RTS
 
 ;!======
 
@@ -44470,7 +44470,7 @@ LAB_0F8F:
 LAB_0F90:
     MOVEM.L	(A7)+,D2-D5/A2-A3	;2011e: 4cdf0c3c
     UNLK	A5			;20122: 4e5d
-    RTS				;20124: 4e75
+    RTS
 
 ;!======
 
@@ -44491,7 +44491,7 @@ LAB_0F91:
     LEA	    12(A7),A7		;20160: 4fef000c
     MOVE.B	LAB_222D,LAB_2324	;20164: 13f90003c2da0003ef08
 LAB_0F92:
-    RTS				;2016e: 4e75
+    RTS
 
 ;!======
 
@@ -44510,7 +44510,7 @@ LAB_0F93:
     PEA	    LAB_2321		;201a6: 48790003eef0
     BSR.W	LAB_0F12		;201ac: 6100f242
     ADDQ.W	#4,A7			;201b0: 584f
-    RTS				;201b2: 4e75
+    RTS
 
 ;!======
 
@@ -44534,7 +44534,7 @@ LAB_0F9C:
     JMP     LAB_14BF		;201e4: 4ef9000294d6
 LAB_0F9D:
     JMP     LAB_0396		;201ea: 4ef900007038
-    RTS				;201f0: 4e75
+    RTS
 
 ;!======
 
@@ -44559,7 +44559,7 @@ LAB_0F9E:
     JSR	    -420(A6)		;20224: 4eaefe5c
     MOVE.L	D0,LAB_2327		;20228: 23c00003ef28
     MOVEA.L	(A7)+,A2		;2022e: 245f
-    RTS				;20230: 4e75
+    RTS
 
 ;!======
 
@@ -44568,7 +44568,7 @@ LAB_0F9F:
     LEA     LAB_21BB,A4		;20234: 49f90003bb24
     MOVEQ	#0,D0			;2023a: 7000
     MOVEA.L	(A7)+,A4		;2023c: 285f
-    RTS				;2023e: 4e75
+    RTS
 
 ;!======
 
@@ -44587,7 +44587,7 @@ LAB_0FA2:
     MOVEQ	#0,D0			;20260: 7000
     MOVEM.L	(A7)+,D7/A4		;20262: 4cdf1080
     UNLK	A5			;20266: 4e5d
-    RTS				;20268: 4e75
+    RTS
 
 ;!======
 
@@ -44599,7 +44599,7 @@ LAB_0FA2:
 LAB_0FA3:
     JMP     LAB_00E3		;2026c: 4ef90000133a
     MOVEQ	#97,D0			;20272: 7061
-    RTS				;20274: 4e75
+    RTS
 
 ;!======
 
@@ -44694,7 +44694,7 @@ LAB_0FA4:
 LAB_0FA5:
     BSR.W	LAB_0FF1		;203dc: 61000928
 LAB_0FA6:
-    RTS				;203e0: 4e75
+    RTS
 
 ;!======
 
@@ -44712,7 +44712,7 @@ LAB_0FA8:
     JSR     LAB_1023(PC)		;2040a: 4eba10fa
     CLR.W	LAB_1FFE		;2040e: 42790003a6d0
     JSR     LAB_1243(PC)		;20414: 4eba4f18
-    RTS				;20418: 4e75
+    RTS
 
 ;!======
 
@@ -44779,7 +44779,7 @@ LAB_0FAE:
     MOVE.L	D0,D6			;204a8: 2c00
     MOVE.L	D6,D0			;204aa: 2006
     MOVEM.L	(A7)+,D6-D7		;204ac: 4cdf00c0
-    RTS				;204b0: 4e75
+    RTS
 
 ;!======
 
@@ -45010,7 +45010,7 @@ LAB_0FC8:
     MOVE.L	D6,D0			;20720: 2006
     MOVEM.L	(A7)+,D5-D7		;20722: 4cdf00e0
     UNLK	A5			;20726: 4e5d
-    RTS				;20728: 4e75
+    RTS
 
 ;!======
 
@@ -45068,7 +45068,7 @@ LAB_0FCF:
 LAB_0FD0:
     MOVE.L	D7,D0			;207aa: 2007
     MOVEM.L	(A7)+,D6-D7		;207ac: 4cdf00c0
-    RTS				;207b0: 4e75
+    RTS
 
 ;!======
 
@@ -45224,7 +45224,7 @@ LAB_0FDB:
     MOVE.L	D0,32(A3)		;20948: 27400020
     MOVEM.L	-136(A5),D2-D7/A3	;2094c: 4ced08fcff78
     UNLK	A5			;20952: 4e5d
-    RTS				;20954: 4e75
+    RTS
 
 ;!======
 
@@ -45349,7 +45349,7 @@ LAB_0FE0:
     MOVE.L	D1,32(A3)		;20a96: 27410020
     MOVEM.L	-132(A5),D2-D3/D7/A3	;20a9a: 4ced088cff7c
     UNLK	A5			;20aa0: 4e5d
-    RTS				;20aa2: 4e75
+    RTS
 
 ;!======
 
@@ -45437,7 +45437,7 @@ LAB_0FE4:
     MOVE.L	D1,32(A3)		;20b90: 27410020
     MOVEM.L	(A7)+,D2/A2-A3		;20b94: 4cdf0c04
     UNLK	A5			;20b98: 4e5d
-    RTS				;20b9a: 4e75
+    RTS
 
 ;!======
 
@@ -45477,7 +45477,7 @@ LAB_0FE8:
     MOVE.L	D7,D0			;20be6: 2007
     MOVEM.L	(A7)+,D7/A3		;20be8: 4cdf0880
     UNLK	A5			;20bec: 4e5d
-    RTS				;20bee: 4e75
+    RTS
 
 ;!======
 
@@ -45524,7 +45524,7 @@ LAB_0FEC:
     MOVE.L	D7,D0			;20c50: 2007
     MOVEM.L	(A7)+,D2/D7/A3		;20c52: 4cdf0884
     UNLK	A5			;20c56: 4e5d
-    RTS				;20c58: 4e75
+    RTS
 
 ;!======
 
@@ -45555,7 +45555,7 @@ LAB_0FEE:
     BSR.W	LAB_0FE5		;20ca2: 6100fef8
     MOVEM.L	-36(A5),D7/A3		;20ca6: 4ced0880ffdc
     UNLK	A5			;20cac: 4e5d
-    RTS				;20cae: 4e75
+    RTS
 
 ;!======
 
@@ -45586,7 +45586,7 @@ LAB_0FF0:
     BSR.W	LAB_0FE9		;20cf8: 6100fef6
     MOVEM.L	-36(A5),D7/A3		;20cfc: 4ced0880ffdc
     UNLK	A5			;20d02: 4e5d
-    RTS				;20d04: 4e75
+    RTS
 
 ;!======
 
@@ -45652,7 +45652,7 @@ LAB_0FF2:
     JSR     _LVORectFill(A6)
 
     MOVEM.L	(A7)+,D2-D3/D5-D7/A3	;20d96: 4cdf08ec
-    RTS				;20d9a: 4e75
+    RTS
 
 ;!======
 
@@ -45664,7 +45664,7 @@ LAB_0FF3:
     MOVE.L	LAB_1FFD,-(A7)		;20da6: 2f390003a6cc
     BSR.S	LAB_0FF2		;20dac: 618a
     LEA	    16(A7),A7		;20dae: 4fef0010
-    RTS				;20db2: 4e75
+    RTS
 
 ;!======
 
@@ -45693,7 +45693,7 @@ LAB_0FF4:
     BSR.W	LAB_0FF2		;20dfa: 6100ff3c
     MOVEM.L	-24(A5),D5-D7/A3	;20dfe: 4ced08e0ffe8
     UNLK	A5			;20e04: 4e5d
-    RTS				;20e06: 4e75
+    RTS
 
 ;!======
 
@@ -45739,7 +45739,7 @@ LAB_0FFA:
     MOVE.L	D7,D0			;20e68: 2007
     MOVEM.L	(A7)+,D7/A3		;20e6a: 4cdf0880
     UNLK	A5			;20e6e: 4e5d
-    RTS				;20e70: 4e75
+    RTS
 
 ;!======
 
@@ -45900,7 +45900,7 @@ LAB_100B:
 LAB_100C:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;2102c: 4cdf0ce0
     UNLK	A5			;21030: 4e5d
-    RTS				;21032: 4e75
+    RTS
 
 ;!======
 
@@ -46231,7 +46231,7 @@ LAB_101C:
     BSR.W	LAB_0FF1		;214de: 6100f826
 LAB_101D:
     UNLK	A5			;214e2: 4e5d
-    RTS				;214e4: 4e75
+    RTS
 
 ;!======
 
@@ -46282,7 +46282,7 @@ LAB_102D:
     BRA.S	LAB_102D		;2155e: 60e6
 LAB_102E:
     MOVEM.L	(A7)+,D7/A3		;21560: 4cdf0880
-    RTS				;21564: 4e75
+    RTS
 
 ;!======
 
@@ -46332,7 +46332,7 @@ LAB_1036:
 LAB_1037:
     MOVE.L	D5,D0			;215ba: 2005
     MOVEM.L	(A7)+,D5-D7/A3		;215bc: 4cdf08e0
-    RTS				;215c0: 4e75
+    RTS
 
 ;!======
 
@@ -46479,7 +46479,7 @@ LAB_1045:
     MOVE.B	D0,54(A3)		;2173e: 17400036
 LAB_1046:
     MOVEM.L	(A7)+,D7/A3		;21742: 4cdf0880
-    RTS				;21746: 4e75
+    RTS
 
 ;!======
 
@@ -46725,7 +46725,7 @@ LAB_1064:
 LAB_1065:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;21976: 4cdf0cfc
     UNLK	A5			;2197a: 4e5d
-    RTS				;2197c: 4e75
+    RTS
 
 ;!======
 
@@ -46788,7 +46788,7 @@ LAB_1068:
     BSR.W	LAB_1047		;21a20: 6100fd26
     MOVEM.L	-24(A5),D2/D7/A2-A3	;21a24: 4ced0c84ffe8
     UNLK	A5			;21a2a: 4e5d
-    RTS				;21a2c: 4e75
+    RTS
 
 ;!======
 
@@ -46852,7 +46852,7 @@ LAB_1069:
 LAB_106A:
     MOVEM.L	(A7)+,D6-D7/A3		;21ace: 4cdf08c0
     UNLK	A5			;21ad2: 4e5d
-    RTS				;21ad4: 4e75
+    RTS
 
 ;!======
 
@@ -46881,7 +46881,7 @@ LAB_106D:
     MOVE.L	D7,D0			;21b12: 2007
     MOVEM.L	(A7)+,D7/A3		;21b14: 4cdf0880
     UNLK	A5			;21b18: 4e5d
-    RTS				;21b1a: 4e75
+    RTS
 
 ;!======
 
@@ -46895,7 +46895,7 @@ LAB_106F:
     MOVE.L	D0,D7			;21b2a: 2e00
     MOVE.L	D7,D0			;21b2c: 2007
     MOVE.L	(A7)+,D7		;21b2e: 2e1f
-    RTS				;21b30: 4e75
+    RTS
 
 ;!======
 
@@ -46956,7 +46956,7 @@ LAB_1075:
 LAB_1076:
     MOVEM.L	(A7)+,D5-D7		;21bcc: 4cdf00e0
     UNLK	A5			;21bd0: 4e5d
-    RTS				;21bd2: 4e75
+    RTS
 
 ;!======
 
@@ -47060,7 +47060,7 @@ LAB_107E:
     MOVE.L	D7,D0			;21cf2: 2007
     MOVEM.L	(A7)+,D4-D7/A2-A3/A6	;21cf4: 4cdf4cf0
     UNLK	A5			;21cf8: 4e5d
-    RTS				;21cfa: 4e75
+    RTS
 
 ;!======
 
@@ -47423,7 +47423,7 @@ LAB_109D:
 LAB_109E:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;220dc: 4cdf0ce0
     UNLK	A5			;220e0: 4e5d
-    RTS				;220e2: 4e75
+    RTS
 
 ;!======
 
@@ -47484,7 +47484,7 @@ LAB_10A0:
 LAB_10A1:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;22188: 4cdf0cc0
     UNLK	A5			;2218c: 4e5d
-    RTS				;2218e: 4e75
+    RTS
 
 ;!======
 
@@ -47687,7 +47687,7 @@ LAB_10B4:
     MOVE.L	-20(A5),D0		;2238c: 202dffec
     MOVEM.L	(A7)+,D2-D7/A3		;22390: 4cdf08fc
     UNLK	A5			;22394: 4e5d
-    RTS				;22396: 4e75
+    RTS
 
 ;!======
 
@@ -47792,7 +47792,7 @@ LAB_10BC:
 LAB_10BD:
     MOVEM.L	(A7)+,D6-D7/A3		;224b6: 4cdf08c0
     UNLK	A5			;224ba: 4e5d
-    RTS				;224bc: 4e75
+    RTS
 
 ;!======
 
@@ -47853,7 +47853,7 @@ LAB_10C5:
 LAB_10C6:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;22542: 4cdf0cc0
     UNLK	A5			;22546: 4e5d
-    RTS				;22548: 4e75
+    RTS
 
 ;!======
 
@@ -47901,7 +47901,7 @@ LAB_10CB:
 LAB_10CC:
     MOVE.L	D6,D0			;225a4: 2006
     MOVEM.L	(A7)+,D6-D7/A2-A3	;225a6: 4cdf0cc0
-    RTS				;225aa: 4e75
+    RTS
 
 ;!======
 
@@ -47998,7 +47998,7 @@ LAB_10D7:
     MOVE.L	-12(A5),D0		;2268c: 202dfff4
     MOVEM.L	(A7)+,D4-D7		;22690: 4cdf00f0
     UNLK	A5			;22694: 4e5d
-    RTS				;22696: 4e75
+    RTS
 
 ;!======
 
@@ -48067,7 +48067,7 @@ LAB_10DB:
 LAB_10DC:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;22742: 4cdf0cfc
     UNLK	A5			;22746: 4e5d
-    RTS				;22748: 4e75
+    RTS
 
 ;!======
 
@@ -48159,7 +48159,7 @@ LAB_10E1:
 LAB_10E2:
     MOVEM.L	(A7)+,D2-D7/A3		;22846: 4cdf08fc
     UNLK	A5			;2284a: 4e5d
-    RTS				;2284c: 4e75
+    RTS
 
 ;!======
 
@@ -48334,7 +48334,7 @@ LAB_10EF:
     MOVE.L	-20(A5),D0		;22a02: 202dffec
     MOVEM.L	(A7)+,D2/D4-D7/A3	;22a06: 4cdf08f4
     UNLK	A5			;22a0a: 4e5d
-    RTS				;22a0c: 4e75
+    RTS
 
 ;!======
 
@@ -48580,7 +48580,7 @@ LAB_1102:
     MOVE.L	-32(A5),D0		;22cae: 202dffe0
     MOVEM.L	(A7)+,D2-D7/A3		;22cb2: 4cdf08fc
     UNLK	A5			;22cb6: 4e5d
-    RTS				;22cb8: 4e75
+    RTS
 
 ;!======
 
@@ -48701,7 +48701,7 @@ LAB_1113:
 LAB_1114:
     MOVE.L	D7,D0			;22df6: 2007
     MOVEM.L	(A7)+,D2/D7/A3		;22df8: 4cdf0884
-    RTS				;22dfc: 4e75
+    RTS
 
 ;!======
 
@@ -49241,7 +49241,7 @@ LAB_113F:
     MOVE.L	LAB_201C,D0		;23422: 20390003a76e
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3	;23428: 4cdf0cec
     UNLK	A5			;2342c: 4e5d
-    RTS				;2342e: 4e75
+    RTS
 
 ;!======
 
@@ -49302,7 +49302,7 @@ LAB_1148:
     MOVE.L	D6,D0			;234a8: 2006
     MOVEM.L	(A7)+,D5-D7		;234aa: 4cdf00e0
     UNLK	A5			;234ae: 4e5d
-    RTS				;234b0: 4e75
+    RTS
 
 ;!======
 
@@ -49442,7 +49442,7 @@ LAB_1153:
 LAB_1154:
     MOVE.L	LAB_201F,D0		;23646: 20390003a77a
     MOVEM.L	(A7)+,D6-D7/A3		;2364c: 4cdf08c0
-    RTS				;23650: 4e75
+    RTS
 
 ;!======
 
@@ -49511,7 +49511,7 @@ LAB_115D:
 LAB_115E:
     MOVE.L	LAB_2020,D0		;236f0: 20390003a77e
     MOVEM.L	(A7)+,D6-D7/A2-A3	;236f6: 4cdf0cc0
-    RTS				;236fa: 4e75
+    RTS
 
 ;!======
 
@@ -49572,7 +49572,7 @@ LAB_1167:
     MOVE.L	D6,D0			;23774: 2006
     MOVEM.L	(A7)+,D5-D7		;23776: 4cdf00e0
     UNLK	A5			;2377a: 4e5d
-    RTS				;2377c: 4e75
+    RTS
 
 ;!======
 
@@ -49788,7 +49788,7 @@ LAB_1179:
 LAB_117A:
     MOVE.L	LAB_2022,D0		;23a08: 20390003a786
     MOVEM.L	(A7)+,D6-D7/A3		;23a0e: 4cdf08c0
-    RTS				;23a12: 4e75
+    RTS
 
 ;!======
 
@@ -49920,7 +49920,7 @@ LAB_1180:
     BSR.W	LAB_1038		;23b7c: 6100da44
     MOVEM.L	-192(A5),D2/D7/A2-A3/A6	;23b80: 4ced4c84ff40
     UNLK	A5			;23b86: 4e5d
-    RTS				;23b88: 4e75
+    RTS
 
 ;!======
 
@@ -50191,7 +50191,7 @@ LAB_1192:
     MOVE.L	-24(A5),D0		;23e28: 202dffe8
     MOVEM.L	(A7)+,D2/D4-D7/A3	;23e2c: 4cdf08f4
     UNLK	A5			;23e30: 4e5d
-    RTS				;23e32: 4e75
+    RTS
 
 ;!======
 
@@ -50351,7 +50351,7 @@ LAB_11A2:
     MOVE.L	LAB_2024,D0		;23fe8: 20390003a78e
     MOVEM.L	(A7)+,D6-D7/A3		;23fee: 4cdf08c0
     UNLK	A5			;23ff2: 4e5d
-    RTS				;23ff4: 4e75
+    RTS
 
 ;!======
 
@@ -50454,7 +50454,7 @@ LAB_11AC:
     MOVE.L	D6,D0			;240f2: 2006
     MOVEM.L	(A7)+,D4-D7		;240f4: 4cdf00f0
     UNLK	A5			;240f8: 4e5d
-    RTS				;240fa: 4e75
+    RTS
 
 ;!======
 
@@ -50565,7 +50565,7 @@ LAB_11B3:
 LAB_11B4:
     MOVE.L	LAB_2027,D0		;24248: 20390003a79a
     MOVEM.L	(A7)+,D5-D7/A3		;2424e: 4cdf08e0
-    RTS				;24252: 4e75
+    RTS
 
 ;!======
 
@@ -50656,7 +50656,7 @@ LAB_11BD:
     MOVE.L	D6,D0			;24330: 2006
     MOVEM.L	(A7)+,D4-D7		;24332: 4cdf00f0
     UNLK	A5			;24336: 4e5d
-    RTS				;24338: 4e75
+    RTS
 
 ;!======
 
@@ -50797,7 +50797,7 @@ LAB_11C3:
     BSR.W	LAB_1038		;244ce: 6100d0f2
     MOVEM.L	-196(A5),D2/D6-D7/A3	;244d2: 4ced08c4ff3c
     UNLK	A5			;244d8: 4e5d
-    RTS				;244da: 4e75
+    RTS
 
 ;!======
 
@@ -50964,7 +50964,7 @@ LAB_11D2:
     JSR     LAB_1350(PC)		;24674: 4eba2a8c
     MOVEM.L	(A7)+,D2-D7/A3		;24678: 4cdf08fc
     UNLK	A5			;2467c: 4e5d
-    RTS				;2467e: 4e75
+    RTS
 
 ;!======
 
@@ -51092,7 +51092,7 @@ LAB_11DE:
     MOVE.L	LAB_2028,D0		;247ea: 20390003a79e
     MOVEM.L	(A7)+,D6-D7/A2-A3	;247f0: 4cdf0cc0
     UNLK	A5			;247f4: 4e5d
-    RTS				;247f6: 4e75
+    RTS
 
 ;!======
 
@@ -51397,7 +51397,7 @@ LAB_11FD:
 LAB_11FE:
     MOVE.L	LAB_202F,D0		;24b92: 20390003a7be
     MOVEM.L	(A7)+,D2/D5-D7/A3	;24b98: 4cdf08e4
-    RTS				;24b9c: 4e75
+    RTS
 
 ;!======
 
@@ -51478,7 +51478,7 @@ LAB_1206:
 LAB_1207:
     MOVEM.L	(A7)+,D5-D7		;24c64: 4cdf00e0
     UNLK	A5			;24c68: 4e5d
-    RTS				;24c6a: 4e75
+    RTS
 
 ;!======
 
@@ -51576,7 +51576,7 @@ LAB_1212:
 LAB_1213:
     MOVEM.L	(A7)+,D6-D7/A3		;24d64: 4cdf08c0
     UNLK	A5			;24d68: 4e5d
-    RTS				;24d6a: 4e75
+    RTS
 
 ;!======
 
@@ -51794,7 +51794,7 @@ LAB_122A:
     MOVE.L	D6,D0			;24fca: 2006
     MOVEM.L	(A7)+,D5-D7/A3		;24fcc: 4cdf08e0
     UNLK	A5			;24fd0: 4e5d
-    RTS				;24fd2: 4e75
+    RTS
 
 ;!======
 
@@ -51921,7 +51921,7 @@ LAB_1230:
     BSR.W	LAB_1038		;25144: 6100c47c
     MOVEM.L	-24(A5),D2/D7/A3	;25148: 4ced0884ffe8
     UNLK	A5			;2514e: 4e5d
-    RTS				;25150: 4e75
+    RTS
 
 ;!======
 
@@ -52088,7 +52088,7 @@ LAB_123F:
     JSR     LAB_1350(PC)		;252ea: 4eba1e16
     MOVEM.L	(A7)+,D2-D7/A3		;252ee: 4cdf08fc
     UNLK	A5			;252f2: 4e5d
-    RTS				;252f4: 4e75
+    RTS
 
 ;!======
 
@@ -52115,7 +52115,7 @@ LAB_1241:
     BRA.S	LAB_1241		;25326: 60d4
 LAB_1242:
     MOVEM.L	(A7)+,D7/A2		;25328: 4cdf0480
-    RTS				;2532c: 4e75
+    RTS
 
 ;!======
 
@@ -52150,7 +52150,7 @@ LAB_1244:
 LAB_1245:
     MOVE.L	(A7)+,D7		;2537a: 2e1f
     UNLK	A5			;2537c: 4e5d
-    RTS				;2537e: 4e75
+    RTS
 
 ;!======
 
@@ -52249,7 +52249,7 @@ LAB_124C:
     MOVE.L	-20(A5),D0		;2547c: 202dffec
     MOVEM.L	(A7)+,D4-D7/A3		;25480: 4cdf08f0
     UNLK	A5			;25484: 4e5d
-    RTS				;25486: 4e75
+    RTS
 
 ;!======
 
@@ -52281,7 +52281,7 @@ LAB_124E:
     BRA.S	LAB_124E		;254d6: 60cc
 LAB_124F:
     MOVEM.L	(A7)+,D7/A3		;254d8: 4cdf0880
-    RTS				;254dc: 4e75
+    RTS
 
 ;!======
 
@@ -52822,7 +52822,7 @@ LAB_127B:
 LAB_127C:
     MOVEM.L	(A7)+,D5-D7/A2-A3/A6	;25ad0: 4cdf4ce0
     UNLK	A5			;25ad4: 4e5d
-    RTS				;25ad6: 4e75
+    RTS
 
 ;!======
 
@@ -52938,7 +52938,7 @@ LAB_1289:
     MOVE.L	LAB_2036,D0		;25c0e: 20390003a7d4
     MOVEM.L	(A7)+,D7/A2-A3		;25c14: 4cdf0c80
     UNLK	A5			;25c18: 4e5d
-    RTS				;25c1a: 4e75
+    RTS
 
 ;!======
 
@@ -53150,7 +53150,7 @@ LAB_129E:
     MOVE.L	LAB_2037,D0		;25e9e: 20390003a7d8
     MOVEM.L	(A7)+,D6-D7/A3		;25ea4: 4cdf08c0
     UNLK	A5			;25ea8: 4e5d
-    RTS				;25eaa: 4e75
+    RTS
 
 ;!======
 
@@ -53178,7 +53178,7 @@ LAB_12A2:
     MOVEQ	#1,D0			;25ed8: 7001
 LAB_12A3:
     MOVE.L	(A7)+,D7		;25eda: 2e1f
-    RTS				;25edc: 4e75
+    RTS
 
 ;!======
 
@@ -53223,7 +53223,7 @@ LAB_12A9:
 LAB_12AA:
     MOVE.L	D6,D0			;25f30: 2006
     MOVEM.L	(A7)+,D6-D7/A2-A3	;25f32: 4cdf0cc0
-    RTS				;25f36: 4e75
+    RTS
 
 ;!======
 
@@ -53309,7 +53309,7 @@ LAB_12B2:
 LAB_12B3:
     MOVEM.L	(A7)+,D4-D7		;2600e: 4cdf00f0
     UNLK	A5			;26012: 4e5d
-    RTS				;26014: 4e75
+    RTS
 
 ;!======
 
@@ -53366,7 +53366,7 @@ LAB_12B9:
     ADDQ.W	#1,24(A3)		;26096: 526b0018
 LAB_12BA:
     MOVEM.L	(A7)+,D5-D7/A3		;2609a: 4cdf08e0
-    RTS				;2609e: 4e75
+    RTS
 
 ;!======
 
@@ -53588,7 +53588,7 @@ LAB_12CF:
     MOVE.L	D5,D0			;2630e: 2005
     MOVEM.L	(A7)+,D4-D7/A3		;26310: 4cdf08f0
     UNLK	A5			;26314: 4e5d
-    RTS				;26316: 4e75
+    RTS
 
 ;!======
 
@@ -53969,7 +53969,7 @@ LAB_12ED:
 LAB_12EE:
     MOVEM.L	(A7)+,D5-D7/A2-A3/A6	;266fc: 4cdf4ce0
     UNLK	A5			;26700: 4e5d
-    RTS				;26702: 4e75
+    RTS
 
 ;!======
 
@@ -54175,7 +54175,7 @@ LAB_12FB:
 LAB_12FC:
     MOVEM.L	(A7)+,D2/D7/A2-A3/A6	;26954: 4cdf4c84
     UNLK	A5			;26958: 4e5d
-    RTS				;2695a: 4e75
+    RTS
 
 ;!======
 
@@ -54342,7 +54342,7 @@ LAB_130B:
     JSR     LAB_1350(PC)		;26af2: 4eba060e
     MOVEM.L	(A7)+,D2-D7/A3		;26af6: 4cdf08fc
     UNLK	A5			;26afa: 4e5d
-    RTS				;26afc: 4e75
+    RTS
 
 ;!======
 
@@ -54390,7 +54390,7 @@ LAB_1310:
     MOVE.L	D5,D0			;26b58: 2005
     MOVEM.L	(A7)+,D5-D7/A3		;26b5a: 4cdf08e0
     UNLK	A5			;26b5e: 4e5d
-    RTS				;26b60: 4e75
+    RTS
 
 ;!======
 
@@ -54533,7 +54533,7 @@ LAB_131E:
     MOVE.L	LAB_203D,D0		;26ce4: 20390003a7ec
     MOVEM.L	(A7)+,D6-D7/A2-A3	;26cea: 4cdf0cc0
     UNLK	A5			;26cee: 4e5d
-    RTS				;26cf0: 4e75
+    RTS
 
 ;!======
 
@@ -54650,7 +54650,7 @@ LAB_1328:
 LAB_1329:
     MOVE.L	LAB_2041,D0		;26e5a: 20390003a80c
     MOVEM.L	(A7)+,D5-D7/A3		;26e60: 4cdf08e0
-    RTS				;26e64: 4e75
+    RTS
 
 ;!======
 
@@ -54764,7 +54764,7 @@ LAB_1331:
     EXT.W	D0			;26fa4: 4880
     EXT.L	D0			;26fa6: 48c0
     MOVEM.L	(A7)+,D5-D7/A3		;26fa8: 4cdf08e0
-    RTS				;26fac: 4e75
+    RTS
 
 ;!======
 
@@ -54776,7 +54776,7 @@ LAB_1332:
     MOVE.L	D0,-(A7)		;26fb6: 2f00
     BSR.W	LAB_132A		;26fb8: 6100feac
     LEA	    16(A7),A7		;26fbc: 4fef0010
-    RTS				;26fc0: 4e75
+    RTS
 
 ;!======
 
@@ -54799,7 +54799,7 @@ LAB_1333:
     CLR.L	LAB_2044		;27008: 42b90003a818
     MOVE.L	D0,LAB_2335		;2700e: 23c00003ef7c
 LAB_1334:
-    RTS				;27014: 4e75
+    RTS
 
 ;!======
 
@@ -54820,7 +54820,7 @@ LAB_1335:
     LEA	    32(A7),A7		;27054: 4fef0020
     CLR.L	LAB_2013		;27058: 42b90003a740
 LAB_1336:
-    RTS				;2705e: 4e75
+    RTS
 
 ;!======
 
@@ -54900,7 +54900,7 @@ LAB_1359:
     JMP     LAB_05B6		;27138: 4ef90000b670
 LAB_135A:
     JMP     LAB_00EA		;2713e: 4ef9000015de
-    RTS				;27144: 4e75
+    RTS
 
 ;!======
 
@@ -54976,7 +54976,7 @@ LAB_1361:
     MOVE.L	-4(A5),D0		;27214: 202dfffc
     MOVEM.L	(A7)+,D5-D7/A3		;27218: 4cdf08e0
     UNLK	A5			;2721c: 4e5d
-    RTS				;2721e: 4e75
+    RTS
 
 ;!======
 
@@ -55003,7 +55003,7 @@ LAB_1363:
     LEA	    16(A7),A7		;27260: 4fef0010
 LAB_1364:
     MOVEA.L	(A7)+,A3		;27264: 265f
-    RTS				;27266: 4e75
+    RTS
 
 ;!======
 
@@ -55012,7 +55012,7 @@ LAB_1365:
     MOVE.L	A0,LAB_233C		;2726a: 23c80003f008
     MOVE.L	A0,LAB_233B		;27270: 23c80003f004
     BSR.W	LAB_1387		;27276: 61000330
-    RTS				;2727a: 4e75
+    RTS
 
 ;!======
 
@@ -55051,7 +55051,7 @@ LAB_1369:
     MOVE.L	A3,D0			;272cc: 200b
     MOVEM.L	(A7)+,D7/A2-A3		;272ce: 4cdf0c80
     UNLK	A5			;272d2: 4e5d
-    RTS				;272d4: 4e75
+    RTS
 
 ;!======
 
@@ -55068,7 +55068,7 @@ LAB_136A:
     MOVEA.L	D0,A0			;272fc: 2040
     MOVE.B	LAB_222D,(A0)		;272fe: 10b90003c2da
 LAB_136B:
-    RTS				;27304: 4e75
+    RTS
 
 ;!======
 
@@ -55078,7 +55078,7 @@ LAB_136C:
     ADDQ.W	#4,A7			;27310: 584f
     MOVE.L	LAB_233C,LAB_233B	;27312: 23f90003f0080003f004
     CLR.L	LAB_233C		;2731c: 42b90003f008
-    RTS				;27322: 4e75
+    RTS
 
 ;!======
 
@@ -55097,7 +55097,7 @@ LAB_136D:
 LAB_136E:
     MOVE.L	D7,D0			;27342: 2007
     MOVEM.L	(A7)+,D7/A3		;27344: 4cdf0880
-    RTS				;27348: 4e75
+    RTS
 
 ;!======
 
@@ -55132,7 +55132,7 @@ LAB_1372:
     CLR.B	(A3)			;27394: 4213
     MOVE.L	D7,D0			;27396: 2007
     MOVEM.L	(A7)+,D6-D7/A3		;27398: 4cdf08c0
-    RTS				;2739c: 4e75
+    RTS
 
 ;!======
 
@@ -55209,7 +55209,7 @@ LAB_1377:
     MOVE.L	D4,D0			;2745a: 2004
     MOVEM.L	(A7)+,D4-D7/A3		;2745c: 4cdf08f0
     UNLK	A5			;27460: 4e5d
-    RTS				;27462: 4e75
+    RTS
 
 ;!======
 
@@ -55337,7 +55337,7 @@ LAB_1385:
 LAB_1386:
     MOVEM.L	(A7)+,D5-D7		;275a0: 4cdf00e0
     UNLK	A5			;275a4: 4e5d
-    RTS				;275a6: 4e75
+    RTS
 
 ;!======
 
@@ -55508,7 +55508,7 @@ LAB_1399:
     MOVEQ	#1,D0			;27776: 7001
     MOVEM.L	(A7)+,D4-D7		;27778: 4cdf00f0
     UNLK	A5			;2777c: 4e5d
-    RTS				;2777e: 4e75
+    RTS
 
 ;!======
 
@@ -56137,7 +56137,7 @@ LAB_13D2:
 LAB_13D3:
     MOVEM.L	-64(A5),D5-D7/A2-A3	;27e7e: 4ced0ce0ffc0
     UNLK	A5			;27e84: 4e5d
-    RTS				;27e86: 4e75
+    RTS
 
 ;!======
 
@@ -56168,7 +56168,7 @@ LAB_13D5:
 LAB_13D6:
     MOVE.L	D7,D0			;27ec0: 2007
     MOVEM.L	(A7)+,D7/A3		;27ec2: 4cdf0880
-    RTS				;27ec6: 4e75
+    RTS
 
 ;!======
 
@@ -56351,7 +56351,7 @@ LAB_13E4:
 LAB_13E5:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;280ac: 4cdf0cc0
     UNLK	A5			;280b0: 4e5d
-    RTS				;280b2: 4e75
+    RTS
 
 ;!======
 
@@ -56665,7 +56665,7 @@ LAB_13FE:
 LAB_13FF:
     MOVEM.L	(A7)+,D7/A2-A3		;2848a: 4cdf0c80
     UNLK	A5			;2848e: 4e5d
-    RTS				;28490: 4e75
+    RTS
 
 ;!======
 
@@ -56718,7 +56718,7 @@ LAB_1402:
     MOVE.L	D0,LAB_1B23		;2852e: 23c000033cc8
 LAB_1403:
     MOVEM.L	(A7)+,A2-A3		;28534: 4cdf0c00
-    RTS				;28538: 4e75
+    RTS
 
 ;!======
 
@@ -56765,7 +56765,7 @@ LAB_1406:
     MOVE.L	D0,LAB_205C		;285b6: 23c00003a908
 LAB_1407:
     MOVEM.L	(A7)+,A2-A3		;285bc: 4cdf0c00
-    RTS				;285c0: 4e75
+    RTS
 
 ;!======
 
@@ -56835,7 +56835,7 @@ LAB_140F:
 LAB_1410:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;28662: 4cdf0cf0
     UNLK	A5			;28666: 4e5d
-    RTS				;28668: 4e75
+    RTS
 
 ;!======
 
@@ -56880,7 +56880,7 @@ LAB_1415:
     MOVE.L	D7,D0			;286dc: 2007
     MOVEM.L	(A7)+,D7/A2-A3		;286de: 4cdf0c80
     UNLK	A5			;286e2: 4e5d
-    RTS				;286e4: 4e75
+    RTS
 
 ;!======
 
@@ -57097,7 +57097,7 @@ LAB_142C:
 LAB_142D:
     MOVEM.L	(A7)+,D2-D3/D6-D7/A3	;2898c: 4cdf08cc
     UNLK	A5			;28990: 4e5d
-    RTS				;28992: 4e75
+    RTS
 
 ;!======
 
@@ -57422,7 +57422,7 @@ LAB_1450:
 LAB_1451:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2	;28cbc: 4cdf04ec
     UNLK	A5			;28cc0: 4e5d
-    RTS				;28cc2: 4e75
+    RTS
 
 ;!======
 
@@ -57482,7 +57482,7 @@ LAB_146C:
     JMP     LAB_070E		;28d60: 4ef90000e22e
 LAB_146D:
     JMP     LAB_098E		;28d66: 4ef900013d08
-    RTS				;28d6c: 4e75
+    RTS
 
 ;!======
 
@@ -57532,7 +57532,7 @@ LAB_146E:
 LAB_146F:
     MOVE.L	(A7)+,D7		;28e04: 2e1f
     UNLK	A5			;28e06: 4e5d
-    RTS				;28e08: 4e75
+    RTS
 
 ;!======
 
@@ -57621,7 +57621,7 @@ LAB_1472:
 LAB_1473:
     MOVEM.L	(A7)+,D2-D7		;28f00: 4cdf00fc
     UNLK	A5			;28f04: 4e5d
-    RTS				;28f06: 4e75
+    RTS
 
 ;!======
 
@@ -57647,7 +57647,7 @@ LAB_1476:
     MOVE.L	D7,D0			;28f30: 2007
     EXT.L	D0			;28f32: 48c0
     MOVEM.L	(A7)+,D6-D7		;28f34: 4cdf00c0
-    RTS				;28f38: 4e75
+    RTS
 
 ;!======
 
@@ -57704,7 +57704,7 @@ LAB_147F:
     JSR     LAB_1481(PC)		;28fb8: 4eba0010
     ADDQ.W	#4,A7			;28fbc: 584f
     MOVEM.L	(A7)+,D2/A2-A3		;28fbe: 4cdf0c04
-    RTS				;28fc2: 4e75
+    RTS
 
 ;!======
 
@@ -57757,7 +57757,7 @@ LAB_1489:
     LEA	    24(A7),A7		;29044: 4fef0018
 LAB_148A:
     MOVE.L	(A7)+,D7		;29048: 2e1f
-    RTS				;2904a: 4e75
+    RTS
 
 ;!======
 
@@ -57782,7 +57782,7 @@ LAB_148C:
 LAB_148D:
     MOVE.L	D7,D0			;29080: 2007
     MOVE.L	(A7)+,D7		;29082: 2e1f
-    RTS				;29084: 4e75
+    RTS
 
 ;!======
 
@@ -57829,7 +57829,7 @@ LAB_148F:
 LAB_1490:
     MOVE.L	D7,D0			;29110: 2007
     MOVEM.L	(A7)+,D2/D7		;29112: 4cdf0084
-    RTS				;29116: 4e75
+    RTS
 
 ;!======
 
@@ -57854,7 +57854,7 @@ LAB_1492:
 LAB_1493:
     MOVE.L	D7,D0			;2914c: 2007
     MOVE.L	(A7)+,D7		;2914e: 2e1f
-    RTS				;29150: 4e75
+    RTS
 
 ;!======
 
@@ -57906,7 +57906,7 @@ LAB_1496:
 LAB_1497:
     MOVE.L	D7,D0			;291f4: 2007
     MOVEM.L	(A7)+,D2/D7		;291f6: 4cdf0084
-    RTS				;291fa: 4e75
+    RTS
 
 ;!======
 
@@ -57939,7 +57939,7 @@ LAB_1499:
 LAB_149A:
     MOVEM.L	(A7)+,D5-D7/A3		;2924a: 4cdf08e0
     UNLK	A5			;2924e: 4e5d
-    RTS				;29250: 4e75
+    RTS
 
 ;!======
 
@@ -57971,7 +57971,7 @@ LAB_149C:
     BRA.S	LAB_149C		;29296: 60cc
 LAB_149D:
     MOVEM.L	(A7)+,D5-D7/A3		;29298: 4cdf08e0
-    RTS				;2929c: 4e75
+    RTS
 
 ;!======
 
@@ -58066,11 +58066,11 @@ LAB_14A9:
     MOVE.W	-4(A5),D0		;2938c: 302dfffc
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;29390: 4cdf0ce4
     UNLK	A5			;29394: 4e5d
-    RTS				;29396: 4e75
+    RTS
 
 ;!======
 
-    RTS				;29398: 4e75
+    RTS
 
 ;!======
 
@@ -58086,20 +58086,20 @@ LAB_14AD:
 LAB_14AE:
     JMP     LAB_0396		;293b4: 4ef900007038
     MOVEQ	#97,D0			;293ba: 7061
-    RTS				;293bc: 4e75
+    RTS
 
 ;!======
 
     DC.W	$0000			;293be
 LAB_14AF:
     JSR     LAB_14C3(PC)		;293c0: 4eba0164
-    RTS				;293c4: 4e75
+    RTS
 
 ;!======
 
 j2_getCTRLBuffer:
     JSR	j_getCTRLBuffer(PC)		;293c6: 4eba0158
-    RTS				;293ca: 4e75
+    RTS
 
 ;!======
 
@@ -58125,7 +58125,7 @@ LAB_14B1:
     BSR.W	LAB_14C1		;29400: 61000100
     ADDQ.W	#4,A7			;29404: 584f
     MOVE.L	(A7)+,D7		;29406: 2e1f
-    RTS				;29408: 4e75
+    RTS
 
 ;!======
 
@@ -58140,7 +58140,7 @@ LAB_14B2:
     MOVE.L	D0,-(A7)		;29428: 2f00
     BSR.W	LAB_14C1		;2942a: 610000d6
     ADDQ.W	#4,A7			;2942e: 584f
-    RTS				;29430: 4e75
+    RTS
 
 ;!======
 
@@ -58149,7 +58149,7 @@ LAB_14B3:
     BEQ.S	LAB_14B4		;29438: 6702
     BSR.S	LAB_14B2		;2943a: 61ce
 LAB_14B4:
-    RTS				;2943c: 4e75
+    RTS
 
 ;!======
 
@@ -58164,7 +58164,7 @@ LAB_14B5:
     MOVE.L	D0,-(A7)		;2945a: 2f00
     BSR.W	LAB_14C1		;2945c: 610000a4
     ADDQ.W	#4,A7			;29460: 584f
-    RTS				;29462: 4e75
+    RTS
 
 ;!======
 
@@ -58173,19 +58173,19 @@ LAB_14B6:
     BEQ.S	LAB_14B7		;2946a: 6702
     BSR.S	LAB_14B5		;2946c: 61d0
 LAB_14B7:
-    RTS				;2946e: 4e75
+    RTS
 
 ;!======
 
 LAB_14B8:
     BSR.S	LAB_14B2		;29470: 6198
-    RTS				;29472: 4e75
+    RTS
 
 ;!======
 
 LAB_14B9:
     BSR.S	LAB_14B5		;29474: 61c8
-    RTS				;29476: 4e75
+    RTS
 
 ;!======
 
@@ -58207,7 +58207,7 @@ LAB_14BA:
     MOVE.W	#$0024,LAB_2265		;294a6: 33fc00240003de04
     MOVE.W	D0,LAB_2343		;294ae: 33c00003fa2c
 LAB_14BB:
-    RTS				;294b4: 4e75
+    RTS
 
 ;!======
 
@@ -58224,7 +58224,7 @@ LAB_14BD:
 LAB_14BE:
     MOVE.L	D6,D0			;294ce: 2006
     MOVEM.L	(A7)+,D6-D7		;294d0: 4cdf00c0
-    RTS				;294d4: 4e75
+    RTS
 
 ;!======
 
@@ -58239,7 +58239,7 @@ LAB_14BF:
     MOVE.L	D0,D6			;294ea: 2c00
     MOVE.L	D6,D0			;294ec: 2006
     MOVEM.L	(A7)+,D6-D7		;294ee: 4cdf00c0
-    RTS				;294f2: 4e75
+    RTS
 
 ;!======
 
@@ -58248,7 +58248,7 @@ LAB_14C0:
     MOVE.W	LAB_20AC,D7		;294f6: 3e390003abe0
     MOVE.L	D7,D0			;294fc: 2007
     MOVE.L	(A7)+,D7		;294fe: 2e1f
-    RTS				;29500: 4e75
+    RTS
 
 ;!======
 
@@ -58260,7 +58260,7 @@ LAB_14C1:
     MOVE.W	D7,SERDAT		;29510: 33c700dff030
     MOVE.W	D7,LAB_2341		;29516: 33c70003fa28
     MOVE.L	(A7)+,D7		;2951c: 2e1f
-    RTS				;2951e: 4e75
+    RTS
 
 ;!======
 
@@ -58294,7 +58294,7 @@ LAB_14C4:
     JSR     LAB_1467(PC)		;29576: 4ebaf7ca
     LEA	    24(A7),A7		;2957a: 4fef0018
     MOVEA.L	(A7)+,A3		;2957e: 265f
-    RTS				;29580: 4e75
+    RTS
 
 ;!======
 
@@ -58306,7 +58306,7 @@ LAB_14C5:
     MOVE.B	(A0)+,(A1)+		;29590: 12d8
     BNE.S	LAB_14C5		;29592: 66fc
     MOVEA.L	(A7)+,A3		;29594: 265f
-    RTS				;29596: 4e75
+    RTS
 
 ;!======
 
@@ -58328,7 +58328,7 @@ LAB_14C6:
 LAB_14C7:
     MOVE.L	D6,D0			;295c0: 2006
     MOVEM.L	(A7)+,D2/D6-D7/A3	;295c2: 4cdf08c4
-    RTS				;295c6: 4e75
+    RTS
 
 ;!======
 
@@ -58404,7 +58404,7 @@ LAB_14CE:
     ADDQ.W	#4,A7			;29686: 584f
 LAB_14CF:
     MOVEM.L	(A7)+,D2-D7/A4		;29688: 4cdf10fc
-    RTS				;2968c: 4e75
+    RTS
 
 ;!======
 
@@ -58522,7 +58522,7 @@ LAB_14E1:
     MOVE.L	D5,D0			;297bc: 2005
     MOVEM.L	(A7)+,D2/D4-D7		;297be: 4cdf00f4
     UNLK	A5			;297c2: 4e5d
-    RTS				;297c4: 4e75
+    RTS
 
 ;!======
 
@@ -58556,7 +58556,7 @@ LAB_14E5:
     MOVE.W	D0,LAB_2121		;29816: 33c00003b116
 LAB_14E6:
     MOVEM.L	(A7)+,D2-D3/D7		;2981c: 4cdf008c
-    RTS				;29820: 4e75
+    RTS
 
 ;!======
 
@@ -58565,7 +58565,7 @@ LAB_14E7:
     PEA	    LAB_2355		;29826: 48790003fbe2
     BSR.W	LAB_1580		;2982c: 6100123c
     ADDQ.W	#8,A7			;29830: 504f
-    RTS				;29832: 4e75
+    RTS
 
 ;!======
 
@@ -58777,7 +58777,7 @@ finish_29ABA:
     JSR     LAB_167D(PC)		;29af2: 4eba2a38
 LAB_14FD:
     MOVEM.L	(A7)+,D6-D7		;29af6: 4cdf00c0
-    RTS				;29afa: 4e75
+    RTS
 
 ;!======
 
@@ -59518,7 +59518,7 @@ LAB_1544:
     MOVE.L	D6,D0			;2a398: 2006
     MOVEM.L	(A7)+,D2-D7/A2-A3	;2a39a: 4cdf0cfc
     UNLK	A5			;2a39e: 4e5d
-    RTS				;2a3a0: 4e75
+    RTS
 
 ;!======
 
@@ -59604,7 +59604,7 @@ LAB_154B:
     MOVE.L	D6,D0			;2a48e: 2006
     MOVEM.L	(A7)+,D5-D7/A3		;2a490: 4cdf08e0
     UNLK	A5			;2a494: 4e5d
-    RTS				;2a496: 4e75
+    RTS
 
 ;!======
 
@@ -59673,7 +59673,7 @@ LAB_1552:
     BSR.W	LAB_158C		;2a554: 610006d2
     ADDQ.W	#4,A7			;2a558: 584f
     MOVEM.L	(A7)+,D2/A3		;2a55a: 4cdf0804
-    RTS				;2a55e: 4e75
+    RTS
 
 ;!======
 
@@ -59684,7 +59684,7 @@ LAB_1553:
     MOVEQ	#0,D0			;2a56e: 7000
     MOVE.W	D0,LAB_234E		;2a570: 33c00003fbd0
     MOVE.W	D0,LAB_234D		;2a576: 33c00003fbce
-    RTS				;2a57c: 4e75
+    RTS
 
 ;!======
 
@@ -59762,7 +59762,7 @@ LAB_155E:
     ADDQ.W	#8,A7			;2a640: 504f
 LAB_155F:
     MOVEM.L	(A7)+,D6-D7/A3		;2a642: 4cdf08c0
-    RTS				;2a646: 4e75
+    RTS
 
 ;!======
 
@@ -59812,7 +59812,7 @@ LAB_1563:
     MOVE.W	D0,LAB_2122		;2a6ca: 33c00003b118
 LAB_1564:
     MOVEM.L	(A7)+,D2/D7		;2a6d0: 4cdf0084
-    RTS				;2a6d4: 4e75
+    RTS
 
 ;!======
 
@@ -59895,7 +59895,7 @@ LAB_156F:
     MOVE.W	D0,LAB_2346		;2a7a0: 33c00003fa34
 LAB_1570:
     MOVE.L	(A7)+,D7		;2a7a6: 2e1f
-    RTS				;2a7a8: 4e75
+    RTS
 
 ;!======
 
@@ -59934,7 +59934,7 @@ LAB_1573:
 LAB_1574:
     CLR.W	LAB_2119		;2a814: 42790003b106
 LAB_1575:
-    RTS				;2a81a: 4e75
+    RTS
 
 ;!======
 
@@ -59958,7 +59958,7 @@ LAB_1577:
 LAB_1578:
     CLR.W	LAB_2118		;2a852: 42790003b104
 LAB_1579:
-    RTS				;2a858: 4e75
+    RTS
 
 ;!======
 
@@ -60099,7 +60099,7 @@ LAB_157F:
     BSR.W	LAB_1553		;2aa60: 6100fafe
     CLR.L	(A3)			;2aa64: 4293
     MOVEA.L	(A7)+,A3		;2aa66: 265f
-    RTS				;2aa68: 4e75
+    RTS
 
 ;!======
 
@@ -60113,7 +60113,7 @@ LAB_1580:
     BSR.W	LAB_1581		;2aa80: 6100000a
     ADDQ.W	#4,A7			;2aa84: 584f
     MOVEM.L	(A7)+,D7/A3		;2aa86: 4cdf0880
-    RTS				;2aa8a: 4e75
+    RTS
 
 ;!======
 
@@ -60160,7 +60160,7 @@ LAB_1582:
     BRA.S	LAB_1582		;2ab10: 60dc
 LAB_1583:
     MOVEM.L	(A7)+,D7/A3		;2ab12: 4cdf0880
-    RTS				;2ab16: 4e75
+    RTS
 
 ;!======
 
@@ -60232,7 +60232,7 @@ LAB_158A:
     BRA.S	LAB_158A		;2ac20: 60ce
 LAB_158B:
     MOVEM.L	(A7)+,D7/A3		;2ac22: 4cdf0880
-    RTS				;2ac26: 4e75
+    RTS
 
 ;!======
 
@@ -60288,7 +60288,7 @@ LAB_158F:
     BRA.S	LAB_158F		;2ad0a: 60ce
 LAB_1590:
     MOVEM.L	(A7)+,D7/A3		;2ad0c: 4cdf0880
-    RTS				;2ad10: 4e75
+    RTS
 
 ;!======
 
@@ -60302,7 +60302,7 @@ LAB_1591:
     PEA	    LAB_2355		;2ad20: 48790003fbe2
     BSR.W	LAB_1581		;2ad26: 6100fd64
     LEA	    16(A7),A7		;2ad2a: 4fef0010
-    RTS				;2ad2e: 4e75
+    RTS
 
 ;!======
 
@@ -60342,7 +60342,7 @@ LAB_15A2:
     MOVE.B	#$64,LAB_2377		;2ad90: 13fc0064000408bf
     MOVE.B	#$31,LAB_2373		;2ad98: 13fc0031000408bb
     MOVE.W	#$ffff,LAB_2364		;2ada0: 33fcffff0004027c
-    RTS				;2ada8: 4e75
+    RTS
 
 ;!======
 
@@ -60363,7 +60363,7 @@ LAB_15A5:
     MOVE.L	D1,D7			;2adc8: 2e01
     MOVE.L	D7,D0			;2adca: 2007
     MOVE.L	(A7)+,D7		;2adcc: 2e1f
-    RTS				;2adce: 4e75
+    RTS
 
 ;!======
 
@@ -60459,7 +60459,7 @@ LAB_15AB:
 LAB_15AC:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;2aeb4: 4cdf0ce0
     UNLK	A5			;2aeb8: 4e5d
-    RTS				;2aeba: 4e75
+    RTS
 
 ;!======
 
@@ -60714,7 +60714,7 @@ LAB_15C4:
     JSR     LAB_167A(PC)		;2b19c: 4eba137a
     MOVEM.L	(A7)+,D2/D5-D7/A3	;2b1a0: 4cdf08e4
     UNLK	A5			;2b1a4: 4e5d
-    RTS				;2b1a6: 4e75
+    RTS
 
 ;!======
 
@@ -61006,7 +61006,7 @@ LAB_15E3:
     BSR.W	LAB_15AD		;2b4c6: 6100f9f4
     MOVEM.L	-236(A5),D2-D3/D5-D7	;2b4ca: 4ced00ecff14
     UNLK	A5			;2b4d0: 4e5d
-    RTS				;2b4d2: 4e75
+    RTS
 
 ;!======
 
@@ -61140,7 +61140,7 @@ LAB_15EF:
 LAB_15F0:
     MOVEM.L	(A7)+,D2-D3/D5-D7	;2b62c: 4cdf00ec
     UNLK	A5			;2b630: 4e5d
-    RTS				;2b632: 4e75
+    RTS
 
 ;!======
 
@@ -61170,7 +61170,7 @@ LAB_15F3:
 LAB_15F4:
     MOVE.L	D7,D0			;2b66e: 2007
     MOVEM.L	(A7)+,D7/A3		;2b670: 4cdf0880
-    RTS				;2b674: 4e75
+    RTS
 
 ;!======
 
@@ -61194,7 +61194,7 @@ LAB_15F8:
 LAB_15F9:
     MOVE.L	D6,D0			;2b69c: 2006
     MOVEM.L	(A7)+,D6-D7		;2b69e: 4cdf00c0
-    RTS				;2b6a2: 4e75
+    RTS
 
 ;!======
 
@@ -61211,7 +61211,7 @@ LAB_15FA:
     CLR.B	220(A3)			;2b6c0: 422b00dc
 LAB_15FB:
     MOVEA.L	(A7)+,A3		;2b6c4: 265f
-    RTS				;2b6c6: 4e75
+    RTS
 
 ;!======
 
@@ -61269,7 +61269,7 @@ LAB_1601:
 LAB_1602:
     MOVEM.L	(A7)+,A2-A3		;2b75a: 4cdf0c00
     UNLK	A5			;2b75e: 4e5d
-    RTS				;2b760: 4e75
+    RTS
 
 ;!======
 
@@ -61334,7 +61334,7 @@ LAB_160B:
     ADDQ.W	#4,A7			;2b7e0: 584f
 LAB_160C:
     MOVEM.L	(A7)+,D5-D7/A3		;2b7e2: 4cdf08e0
-    RTS				;2b7e6: 4e75
+    RTS
 
 ;!======
 
@@ -61359,7 +61359,7 @@ LAB_160E:
 LAB_160F:
     MOVE.L	A3,D0			;2b810: 200b
     MOVEA.L	(A7)+,A3		;2b812: 265f
-    RTS				;2b814: 4e75
+    RTS
 
 ;!======
 
@@ -61611,7 +61611,7 @@ LAB_162A:
 LAB_162B:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;2bad8: 4cdf0cc0
     UNLK	A5			;2badc: 4e5d
-    RTS				;2bade: 4e75
+    RTS
 
 ;!======
 
@@ -61964,7 +61964,7 @@ LAB_164C:
     MOVE.L	-20(A5),D0		;2bf02: 202dffec
     MOVEM.L	(A7)+,D2/D5-D7/A3	;2bf06: 4cdf08e4
     UNLK	A5			;2bf0a: 4e5d
-    RTS				;2bf0c: 4e75
+    RTS
 
 ;!======
 
@@ -62099,7 +62099,7 @@ LAB_1654:
 LAB_1655:
     MOVEM.L	(A7)+,D2-D7/A3		;2c0a2: 4cdf08fc
     UNLK	A5			;2c0a6: 4e5d
-    RTS				;2c0a8: 4e75
+    RTS
 
 ;!======
 
@@ -62259,7 +62259,7 @@ LAB_1662:
 LAB_1663:
     MOVEM.L	(A7)+,D2/D4-D7/A3	;2c2ce: 4cdf08f4
     UNLK	A5			;2c2d2: 4e5d
-    RTS				;2c2d4: 4e75
+    RTS
 
 ;!======
 
@@ -62283,7 +62283,7 @@ LAB_1666:
     JSR     LAB_139B(PC)		;2c306: 4ebab480
     ADDQ.W	#4,A7			;2c30a: 584f
     MOVE.L	(A7)+,D7		;2c30c: 2e1f
-    RTS				;2c30e: 4e75
+    RTS
 
 ;!======
 
@@ -62335,7 +62335,7 @@ LAB_166A:
     CLR.B	LAB_2131		;2c38c: 42390003b148
     MOVEM.L	(A7)+,D7/A2		;2c392: 4cdf0480
     UNLK	A5			;2c396: 4e5d
-    RTS				;2c398: 4e75
+    RTS
 
 ;!======
 
@@ -62385,7 +62385,7 @@ LAB_166E:
     BRA.S	LAB_166C		;2c408: 60aa
 LAB_166F:
     MOVEM.L	(A7)+,D7/A2-A3/A6	;2c40a: 4cdf4c80
-    RTS				;2c40e: 4e75
+    RTS
 
 ;!======
 
@@ -62426,7 +62426,7 @@ LAB_1673:
 LAB_1674:
     MOVE.L	(A7)+,D7		;2c466: 2e1f
     UNLK	A5			;2c468: 4e5d
-    RTS				;2c46a: 4e75
+    RTS
 
 ;!======
 
@@ -62475,7 +62475,7 @@ LAB_1676:
 LAB_1677:
     MOVEM.L	(A7)+,A2-A3		;2c502: 4cdf0c00
     UNLK	A5			;2c506: 4e5d
-    RTS				;2c508: 4e75
+    RTS
 
 ;!======
 
@@ -62502,7 +62502,7 @@ LAB_167D:
     CLR.L	(A7)			;2c53c: 4297
     JSR     LAB_1696(PC)		;2c53e: 4eba0276
     ADDQ.W	#4,A7			;2c542: 584f
-    RTS				;2c544: 4e75
+    RTS
 
 ;!======
 
@@ -62553,7 +62553,7 @@ LAB_167F:
     JSR     _LVOSetRast(A6)
 LAB_1680:
     MOVEM.L	(A7)+,D2/D7		;2c5e0: 4cdf0084
-    RTS				;2c5e4: 4e75
+    RTS
 
 ;!======
 
@@ -62583,7 +62583,7 @@ LAB_1682:
     MOVE.W	LAB_2265,D0		;2c62a: 30390003de04
     ADDQ.W	#1,D0			;2c630: 5240
     MOVE.W	D0,LAB_2265		;2c632: 33c00003de04
-    RTS				;2c638: 4e75
+    RTS
 
 ;!======
 
@@ -62641,7 +62641,7 @@ LAB_1689:
     BSR.W	LAB_167D		;2c6ba: 6100fe70
 LAB_168A:
     MOVEM.L	(A7)+,D2/D7		;2c6be: 4cdf0084
-    RTS				;2c6c2: 4e75
+    RTS
 
 ;!======
 
@@ -62653,7 +62653,7 @@ LAB_168A:
     JSR     LAB_18CA(PC)		;2c6d8: 4eba4b42
     LEA	    12(A7),A7		;2c6dc: 4fef000c
     CLR.W	LAB_22AB		;2c6e0: 42790003e34c
-    RTS				;2c6e6: 4e75
+    RTS
 
 ;!======
 
@@ -62713,7 +62713,7 @@ LAB_1691:
     JSR     LAB_1695(PC)		;2c79a: 4eba0014
 LAB_1692:
     MOVE.L	(A7)+,D2		;2c79e: 241f
-    RTS				;2c7a0: 4e75
+    RTS
 
 ;!======
 
@@ -62770,7 +62770,7 @@ LAB_169A:
 LAB_169B:
     MOVEM.L	(A7)+,D7/A2-A3		;2c81c: 4cdf0c80
     UNLK	A5			;2c820: 4e5d
-    RTS				;2c822: 4e75
+    RTS
 
 ;!======
 
@@ -62817,7 +62817,7 @@ LAB_16A1:
 LAB_16A2:
     MOVEM.L	(A7)+,D7/A2-A3		;2c880: 4cdf0c80
     UNLK	A5			;2c884: 4e5d
-    RTS				;2c886: 4e75
+    RTS
 
 ;!======
 
@@ -62867,7 +62867,7 @@ LAB_16A7:
     MOVEQ	#0,D0			;2c8da: 7000
 LAB_16A8:
     MOVEA.L	(A7)+,A3		;2c8dc: 265f
-    RTS				;2c8de: 4e75
+    RTS
 
 ;!======
 
@@ -63234,7 +63234,7 @@ LAB_16CC:
 LAB_16CD:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;2cc90: 4cdf0ce0
     UNLK	A5			;2cc94: 4e5d
-    RTS				;2cc96: 4e75
+    RTS
 
 ;!======
 
@@ -63304,7 +63304,7 @@ LAB_16D1:
 LAB_16D2:
     MOVEM.L	(A7)+,D2-D7/A3		;2cd32: 4cdf08fc
     UNLK	A5			;2cd36: 4e5d
-    RTS				;2cd38: 4e75
+    RTS
 
 ;!======
 
@@ -63363,7 +63363,7 @@ LAB_16D7:
 LAB_16D8:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;2cdb6: 4cdf0cc0
     UNLK	A5			;2cdba: 4e5d
-    RTS				;2cdbc: 4e75
+    RTS
 
 ;!======
 
@@ -63444,7 +63444,7 @@ LAB_16E1:
 LAB_16E2:
     MOVEM.L	(A7)+,D6-D7/A3		;2ce88: 4cdf08c0
     UNLK	A5			;2ce8c: 4e5d
-    RTS				;2ce8e: 4e75
+    RTS
 
 ;!======
 
@@ -63534,7 +63534,7 @@ LAB_16EB:
 LAB_16EC:
     MOVEM.L	(A7)+,D5-D7		;2cf96: 4cdf00e0
     UNLK	A5			;2cf9a: 4e5d
-    RTS				;2cf9c: 4e75
+    RTS
 
 ;!======
 
@@ -63699,7 +63699,7 @@ LAB_16F5:
 LAB_16F6:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;2d132: 4cdf0cf0
     UNLK	A5			;2d136: 4e5d
-    RTS				;2d138: 4e75
+    RTS
 
 ;!======
 
@@ -63834,7 +63834,7 @@ LAB_16FD:
 LAB_16FE:
     MOVEM.L	(A7)+,D5-D7/A2-A3/A6	;2d27e: 4cdf4ce0
     UNLK	A5			;2d282: 4e5d
-    RTS				;2d284: 4e75
+    RTS
 
 ;!======
 
@@ -63917,7 +63917,7 @@ LAB_1703:
     MOVE.L	D5,D0			;2d360: 2005
     MOVEM.L	(A7)+,D2-D7/A3		;2d362: 4cdf08fc
     UNLK	A5			;2d366: 4e5d
-    RTS				;2d368: 4e75
+    RTS
 
 ;!======
 
@@ -64023,7 +64023,7 @@ LAB_170D:
     MOVEQ	#1,D0			;2d476: 7001
 LAB_170E:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;2d478: 4cdf0ce0
-    RTS				;2d47c: 4e75
+    RTS
 
 ;!======
 
@@ -64174,7 +64174,7 @@ LAB_1721:
     MOVE.L	D5,D0			;2d606: 2005
     MOVEM.L	(A7)+,D4-D7/A2-A3	;2d608: 4cdf0cf0
     UNLK	A5			;2d60c: 4e5d
-    RTS				;2d60e: 4e75
+    RTS
 
 ;!======
 
@@ -64604,7 +64604,7 @@ LAB_174B:
 LAB_174C:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;2dafe: 4cdf0cfc
     UNLK	A5			;2db02: 4e5d
-    RTS				;2db04: 4e75
+    RTS
 
 ;!======
 
@@ -64667,7 +64667,7 @@ LAB_1753:
 LAB_1754:
     MOVEM.L	(A7)+,D2/D7		;2dba2: 4cdf0084
     UNLK	A5			;2dba6: 4e5d
-    RTS				;2dba8: 4e75
+    RTS
 
 ;!======
 
@@ -64773,7 +64773,7 @@ LAB_175D:
 LAB_175E:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;2dcc6: 4cdf0cf0
     UNLK	A5			;2dcca: 4e5d
-    RTS				;2dccc: 4e75
+    RTS
 
 ;!======
 
@@ -64908,7 +64908,7 @@ LAB_176A:
 LAB_176B:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;2de3e: 4cdf0ce0
     UNLK	A5			;2de42: 4e5d
-    RTS				;2de44: 4e75
+    RTS
 
 ;!======
 
@@ -64935,7 +64935,7 @@ LAB_176F:
 LAB_1770:
     MOVE.L	D7,D0			;2de6a: 2007
     MOVE.L	(A7)+,D7		;2de6c: 2e1f
-    RTS				;2de6e: 4e75
+    RTS
 
 ;!======
 
@@ -65226,7 +65226,7 @@ LAB_1787:
 LAB_1788:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3/A6 ;2e168: 4cdf4cec
     UNLK	A5			;2e16c: 4e5d
-    RTS				;2e16e: 4e75
+    RTS
 
 ;!======
 
@@ -65609,7 +65609,7 @@ LAB_17A6:
 LAB_17A7:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;2e5ce: 4cdf0cfc
     UNLK	A5			;2e5d2: 4e5d
-    RTS				;2e5d4: 4e75
+    RTS
 
 ;!======
 
@@ -65742,7 +65742,7 @@ LAB_17B0:
     MOVE.W	-30(A5),D0		;2e744: 302dffe2
     MOVEM.L	(A7)+,D5-D7/A3		;2e748: 4cdf08e0
     UNLK	A5			;2e74c: 4e5d
-    RTS				;2e74e: 4e75
+    RTS
 
 ;!======
 
@@ -65897,7 +65897,7 @@ LAB_17C7:
 LAB_17C8:
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;2e8cc: 4cdf0ce4
     UNLK	A5			;2e8d0: 4e5d
-    RTS				;2e8d2: 4e75
+    RTS
 
 ;!======
 
@@ -65937,7 +65937,7 @@ LAB_17C8:
     JSR     LAB_1906(PC)		;2e94e: 4eba2e26
     LEA	    36(A7),A7		;2e952: 4fef0024
     MOVEA.L	(A7)+,A3		;2e956: 265f
-    RTS				;2e958: 4e75
+    RTS
 
 ;!======
 
@@ -65962,7 +65962,7 @@ LAB_17D1:
     JMP     LAB_054C		;2e98c: 4ef90000aac0
 LAB_17D2:
     JMP     LAB_0EE8		;2e992: 4ef90001f068
-    RTS				;2e998: 4e75
+    RTS
 
 ;!======
 
@@ -66000,7 +66000,7 @@ LAB_17D7:
     MOVE.L	-8(A5),D0		;2e9e2: 202dfff8
     MOVEM.L	(A7)+,D7/A3		;2e9e6: 4cdf0880
     UNLK	A5			;2e9ea: 4e5d
-    RTS				;2e9ec: 4e75
+    RTS
 
 ;!======
 
@@ -66176,7 +66176,7 @@ LAB_17E4:
 LAB_17E5:
     MOVEM.L	-60(A5),D5-D7/A2-A3	;2ebc4: 4ced0ce0ffc4
     UNLK	A5			;2ebca: 4e5d
-    RTS				;2ebcc: 4e75
+    RTS
 
 ;!======
 
@@ -66192,7 +66192,7 @@ LAB_17E5:
     BSR.W	LAB_17D8		;2ebe8: 6100fe04
     LEA	    20(A7),A7		;2ebec: 4fef0014
     MOVEM.L	(A7)+,D7/A2-A3		;2ebf0: 4cdf0c80
-    RTS				;2ebf4: 4e75
+    RTS
 
 ;!======
 
@@ -66225,7 +66225,7 @@ LAB_17E8:
 LAB_17E9:
     MOVE.L	D6,D0			;2ec32: 2006
     MOVEM.L	(A7)+,D6-D7/A3		;2ec34: 4cdf08c0
-    RTS				;2ec38: 4e75
+    RTS
 
 ;!======
 
@@ -66314,7 +66314,7 @@ LAB_17F0:
     MOVE.L	D6,D0			;2ed1e: 2006
     MOVEM.L	(A7)+,D6-D7/A2-A3	;2ed20: 4cdf0cc0
     UNLK	A5			;2ed24: 4e5d
-    RTS				;2ed26: 4e75
+    RTS
 
 ;!======
 
@@ -66509,7 +66509,7 @@ LAB_1807:
 LAB_1808:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2-A3/A6 ;2eeee: 4cdf4cec
     UNLK	A5			;2eef2: 4e5d
-    RTS				;2eef4: 4e75
+    RTS
 
 ;!======
 
@@ -66518,7 +66518,7 @@ LAB_1809:
     JMP     LAB_0656		;2eef8: 4ef90000c822
 LAB_180A:
     JMP     LAB_00B1		;2eefe: 4ef900000fb4
-    RTS				;2ef04: 4e75
+    RTS
 
 ;!======
 
@@ -66920,7 +66920,7 @@ LAB_181C:
 LAB_181D:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;2f332: 4cdf0cfc
     UNLK	A5			;2f336: 4e5d
-    RTS				;2f338: 4e75
+    RTS
 
 ;!======
 
@@ -67033,7 +67033,7 @@ LAB_1826:
     MOVE.B	-13(A5),5(A0)		;2f466: 116dfff30005
     MOVEM.L	(A7)+,D5-D7/A2-A3	;2f46c: 4cdf0ce0
     UNLK	A5			;2f470: 4e5d
-    RTS				;2f472: 4e75
+    RTS
 
 ;!======
 
@@ -67130,7 +67130,7 @@ LAB_182B:
 LAB_182C:
     MOVEM.L	(A7)+,D5-D7/A3		;2f56a: 4cdf08e0
     UNLK	A5			;2f56e: 4e5d
-    RTS				;2f570: 4e75
+    RTS
 
 ;!======
 
@@ -67256,7 +67256,7 @@ LAB_1833:
 LAB_1834:
     MOVEM.L	(A7)+,D5-D7/A3		;2f6b2: 4cdf08e0
     UNLK	A5			;2f6b6: 4e5d
-    RTS				;2f6b8: 4e75
+    RTS
 
 ;!======
 
@@ -67299,7 +67299,7 @@ LAB_1835:
     MOVE.L	D0,D1			;2f718: 2200
     JSR	    -246(A6)		;2f71a: 4eaeff0a
     MOVEA.L	(A7)+,A3		;2f71e: 265f
-    RTS				;2f720: 4e75
+    RTS
 
 ;!======
 
@@ -67338,7 +67338,7 @@ LAB_1836:
     MOVEQ	#0,D0			;2f776: 7000
     JSR	    -246(A6)		;2f778: 4eaeff0a
     MOVEA.L	(A7)+,A3		;2f77c: 265f
-    RTS				;2f77e: 4e75
+    RTS
 
 ;!======
 
@@ -67388,7 +67388,7 @@ LAB_1839:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;2f7f4: 2c790003637c
     JSR	    -66(A6)			;2f7fa: 4eaeffbe
     MOVEA.L	(A7)+,A3		;2f7fe: 265f
-    RTS				;2f800: 4e75
+    RTS
 
 ;!======
 
@@ -67476,7 +67476,7 @@ LAB_183A:
     BSR.W	LAB_181E		;2f904: 6100fa34
     MOVEM.L	-100(A5),D5-D7		;2f908: 4ced00e0ff9c
     UNLK	A5			;2f90e: 4e5d
-    RTS				;2f910: 4e75
+    RTS
 
 ;!======
 
@@ -67491,7 +67491,7 @@ LAB_183B:
     ADDA.L	D0,A0			;2f928: d1c0
     MOVE.W	4(A0),D0		;2f92a: 30280004
     MOVE.L	(A7)+,D7		;2f92e: 2e1f
-    RTS				;2f930: 4e75
+    RTS
 
 ;!======
 
@@ -67505,7 +67505,7 @@ LAB_183B:
     ADDA.L	D0,A0			;2f948: d1c0
     MOVE.W	2(A0),D0		;2f94a: 30280002
     MOVE.L	(A7)+,D7		;2f94e: 2e1f
-    RTS				;2f950: 4e75
+    RTS
 
 ;!======
 
@@ -67524,7 +67524,7 @@ LAB_183C:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;2f976: 2c790003637c
     JSR	    -234(A6)		;2f97c: 4eaeff16
     MOVEM.L	(A7)+,D6-D7		;2f980: 4cdf00c0
-    RTS				;2f984: 4e75
+    RTS
 
 ;!======
 
@@ -67540,7 +67540,7 @@ LAB_183D:
     LEA	    10(A0),A1		;2f99e: 43e8000a
     MOVE.L	A1,D0			;2f9a2: 2009
     MOVE.L	(A7)+,D7		;2f9a4: 2e1f
-    RTS				;2f9a6: 4e75
+    RTS
 
 ;!======
 
@@ -67763,7 +67763,7 @@ LAB_184E:
     MOVE.L	A0,D0			;2fc00: 2008
     MOVEM.L	(A7)+,D2-D3/D5-D7/A2	;2fc02: 4cdf04ec
     UNLK	A5			;2fc06: 4e5d
-    RTS				;2fc08: 4e75
+    RTS
 
 ;!======
 
@@ -67778,7 +67778,7 @@ LAB_184E:
     LEA	    12(A7),A7		;2fc24: 4fef000c
     MOVE.L	D0,LAB_2216		;2fc28: 23c00003c222
     MOVE.L	(A7)+,D7		;2fc2e: 2e1f
-    RTS				;2fc30: 4e75
+    RTS
 
 ;!======
 
@@ -67796,7 +67796,7 @@ LAB_184F:
     MOVE.L	LAB_2178,(A7)		;2fc58: 2eb90003b348
     BSR.W	LAB_183A		;2fc5e: 6100fba2
     LEA	    12(A7),A7		;2fc62: 4fef000c
-    RTS				;2fc66: 4e75
+    RTS
 
 ;!======
 
@@ -68043,7 +68043,7 @@ LAB_1850:
     JSR     LAB_1906(PC)		;2ff32: 4eba1842
     LEA	    28(A7),A7		;2ff36: 4fef001c
     MOVEM.L	(A7)+,D2-D3/A2-A3	;2ff3a: 4cdf0c0c
-    RTS				;2ff3e: 4e75
+    RTS
 
 ;!======
 
@@ -68061,7 +68061,7 @@ LAB_1850:
     PEA	-80(A5)			;2ff6e: 486dffb0
     BSR.W	LAB_1850		;2ff72: 6100fcf4
     UNLK	A5			;2ff76: 4e5d
-    RTS				;2ff78: 4e75
+    RTS
 
 ;!======
 
@@ -68092,7 +68092,7 @@ LAB_1851:
 LAB_1852:
     MOVE.L	(A7)+,D7		;2ffc4: 2e1f
     UNLK	A5			;2ffc6: 4e5d
-    RTS				;2ffc8: 4e75
+    RTS
 
 ;!======
 
@@ -68182,7 +68182,7 @@ LAB_1856:
     MOVE.W	D1,152(A0)		;300b8: 31410098
     MOVEM.L	(A7)+,D2/D4-D7/A2-A3	;300bc: 4cdf0cf4
     UNLK	A5			;300c0: 4e5d
-    RTS				;300c2: 4e75
+    RTS
 
 ;!======
 
@@ -68316,7 +68316,7 @@ LAB_1857:
     BSR.W	LAB_1853		;3024c: 6100fd7c
     LEA	    56(A7),A7		;30250: 4fef0038
     MOVE.L	(A7)+,D7		;30254: 2e1f
-    RTS				;30256: 4e75
+    RTS
 
 ;!======
 
@@ -68342,7 +68342,7 @@ LAB_1859:
     BRA.S	LAB_1859		;3028c: 60d4
 LAB_185A:
     MOVEM.L	(A7)+,D7/A3		;3028e: 4cdf0880
-    RTS				;30292: 4e75
+    RTS
 
 ;!======
 
@@ -68820,7 +68820,7 @@ LAB_1881:
 LAB_1882:
     MOVEM.L	(A7)+,D2-D3/D5-D7/A3	;307f6: 4cdf08ec
     UNLK	A5			;307fa: 4e5d
-    RTS				;307fc: 4e75
+    RTS
 
 ;!======
 
@@ -69275,7 +69275,7 @@ LAB_18A2:
 LAB_18A3:
     MOVEM.L	(A7)+,D2-D7/A2-A3	;30d3a: 4cdf0cfc
     UNLK	A5			;30d3e: 4e5d
-    RTS				;30d40: 4e75
+    RTS
 
 ;!======
 
@@ -69362,7 +69362,7 @@ LAB_18AB:
 LAB_18AC:
     MOVEM.L	(A7)+,D2/D4-D7/A3	;30e1a: 4cdf08f4
     UNLK	A5			;30e1e: 4e5d
-    RTS				;30e20: 4e75
+    RTS
 
 ;!======
 
@@ -69532,7 +69532,7 @@ LAB_18BC:
 LAB_18BD:
     MOVEM.L	(A7)+,D2/D5-D7		;31034: 4cdf00e4
     UNLK	A5			;31038: 4e5d
-    RTS				;3103a: 4e75
+    RTS
 
 ;!======
 
@@ -69553,7 +69553,7 @@ LAB_18BD:
     MOVE.W	D0,LAB_2380		;3106c: 33c0000410f8
 LAB_18BE:
     MOVEM.L	(A7)+,D2-D3		;31072: 4cdf000c
-    RTS				;31076: 4e75
+    RTS
 
 ;!======
 
@@ -69588,7 +69588,7 @@ LAB_18C0:
 LAB_18C1:
     MOVEM.L	-16(A5),D7/A3		;310cc: 4ced0880fff0
     UNLK	A5			;310d2: 4e5d
-    RTS				;310d4: 4e75
+    RTS
 
 ;!======
 
@@ -69690,7 +69690,7 @@ LAB_18C9:
     EXT.L	D0			;31210: 48c0
     MOVEM.L	(A7)+,D2/A2-A3		;31212: 4cdf0c04
     UNLK	A5			;31216: 4e5d
-    RTS				;31218: 4e75
+    RTS
 
 ;!======
 
@@ -69782,7 +69782,7 @@ LAB_18DB:
 LAB_18DC:
     MOVEM.L	(A7)+,D4-D7/A3		;31310: 4cdf08f0
     UNLK	A5			;31314: 4e5d
-    RTS				;31316: 4e75
+    RTS
 
 ;!======
 
@@ -70002,7 +70002,7 @@ LAB_18ED:
 LAB_18EE:
     MOVEM.L	(A7)+,D4-D7/A3		;3156a: 4cdf08f0
     UNLK	A5			;3156e: 4e5d
-    RTS				;31570: 4e75
+    RTS
 
 ;!======
 
@@ -70041,7 +70041,7 @@ LAB_18F0:
     MOVE.W	D0,DATACErrs		;315dc: 33c00003de5a
 LAB_18F1:
     MOVE.L	(A7)+,D7		;315e2: 2e1f
-    RTS				;315e4: 4e75
+    RTS
 
 ;!======
 
@@ -70080,7 +70080,7 @@ LAB_18F3:
     MOVE.W	D0,DATACErrs		;31650: 33c00003de5a
 LAB_18F4:
     MOVE.L	(A7)+,D7		;31656: 2e1f
-    RTS				;31658: 4e75
+    RTS
 
 ;!======
 
@@ -70135,7 +70135,7 @@ LAB_18FA:
 LAB_18FB:
     MOVEM.L	(A7)+,D2/D7/A3		;316de: 4cdf0884
     UNLK	A5			;316e2: 4e5d
-    RTS				;316e4: 4e75
+    RTS
 
 ;!======
 
@@ -70164,7 +70164,7 @@ LAB_18FF:
     BNE.S	LAB_18FF		;3171a: 66fc
     MOVEM.L	(A7)+,D7/A3		;3171c: 4cdf0880
     UNLK	A5			;31720: 4e5d
-    RTS				;31722: 4e75
+    RTS
 
 ;!======
 
@@ -70180,7 +70180,7 @@ LAB_1904:
     JMP     LAB_00B8		;3173c: 4ef90000102c
 LAB_1905:
     JMP     LAB_0B44		;31742: 4ef9000170d4
-    RTS				;31748: 4e75
+    RTS
 
 ;!======
 
@@ -70195,7 +70195,7 @@ LAB_1905:
     PEA	    LAB_2381		;31768: 4879000410fc
     JSR     LAB_1AE8(PC)		;3176e: 4eba2334
     UNLK	A5			;31772: 4e5d
-    RTS				;31774: 4e75
+    RTS
 
 ;!======
 
@@ -70210,7 +70210,7 @@ LAB_1906:
     PEA	    LAB_2381		;31792: 4879000410fc
     JSR     LAB_1AE8(PC)		;31798: 4eba230a
     UNLK	A5			;3179c: 4e5d
-    RTS				;3179e: 4e75
+    RTS
 
 ;!======
 
@@ -70235,12 +70235,12 @@ LAB_1906:
     LEA	    20(A7),A7		;317ea: 4fef0014
 LAB_1907:
     UNLK	A5			;317ee: 4e5d
-    RTS				;317f0: 4e75
+    RTS
 
 ;!======
 
 LAB_1908:
-    RTS				;317f2: 4e75
+    RTS
 
 ;!======
 
@@ -70303,7 +70303,7 @@ LAB_190C:
     JSR	    -492(A6)		;31878: 4eaefe14
     MOVEM.L	(A7)+,D6-D7		;3187c: 4cdf00c0
     UNLK	A5			;31880: 4e5d
-    RTS				;31882: 4e75
+    RTS
 
 ;!======
 
@@ -70320,7 +70320,7 @@ LAB_190D:
     JSR	    -498(A6)		;318a4: 4eaefe0e
     MOVEM.L	(A7)+,D6-D7/A3		;318a8: 4cdf08c0
     UNLK	A5			;318ac: 4e5d
-    RTS				;318ae: 4e75
+    RTS
 
 ;!======
 
@@ -70335,17 +70335,17 @@ LAB_190E:
     MOVE.L	D0,D6			;318ca: 2c00
     MOVE.L	D6,D0			;318cc: 2006
     MOVEM.L	(A7)+,D2/D6-D7/A3	;318ce: 4cdf08c4
-    RTS				;318d2: 4e75
+    RTS
 
 ;!======
 
 LAB_190F:
-    RTS				;318d4: 4e75
+    RTS
 
 ;!======
 
 LAB_1910:
-    RTS				;318d6: 4e75
+    RTS
 
 ;!======
 
@@ -70391,7 +70391,7 @@ LAB_1915:
     ADDQ.W	#8,A7			;31932: 504f
     MOVE.L	D6,D0			;31934: 2006
     MOVEM.L	(A7)+,D6-D7/A3		;31936: 4cdf08c0
-    RTS				;3193a: 4e75
+    RTS
 
 ;!======
 
@@ -70647,7 +70647,7 @@ LAB_1931:
 LAB_1932:
     MOVEM.L	(A7)+,D2/D4-D7/A3	;31bca: 4cdf08f4
     UNLK	A5			;31bce: 4e5d
-    RTS				;31bd0: 4e75
+    RTS
 
 ;!======
 
@@ -70796,7 +70796,7 @@ LAB_1945:
     ADDQ.W	#4,A7			;31d56: 584f
 LAB_1946:
     MOVEM.L	(A7)+,D5-D7/A3		;31d58: 4cdf08e0
-    RTS				;31d5c: 4e75
+    RTS
 
 ;!======
 
@@ -70809,7 +70809,7 @@ LAB_1947:
     BGT.S	LAB_1948		;31d6e: 6e04
     SUBI.B	#$20,D0			;31d70: 04000020
 LAB_1948:
-    RTS				;31d74: 4e75
+    RTS
 
 ;!======
 
@@ -70841,7 +70841,7 @@ LAB_194C:
 LAB_194D:
     MOVE.L	A3,D0			;31daa: 200b
     MOVEM.L	(A7)+,D2/A2-A3		;31dac: 4cdf0c04
-    RTS				;31db0: 4e75
+    RTS
 
 ;!======
 
@@ -70896,7 +70896,7 @@ LAB_1953:
 LAB_1954:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;31e18: 4cdf0cc0
     UNLK	A5			;31e1c: 4e5d
-    RTS				;31e1e: 4e75
+    RTS
 
 ;!======
 
@@ -70920,7 +70920,7 @@ LAB_1959:
     BCC.S	LAB_1958		;31e3e: 64fa
 LAB_195A:
     MOVE.L	D1,D0			;31e40: 2001
-    RTS				;31e42: 4e75
+    RTS
 
 ;!======
 
@@ -70965,7 +70965,7 @@ LAB_1960:
     MOVEQ	#0,D0			;31e8c: 7000
 LAB_1961:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;31e8e: 4cdf0cc0
-    RTS				;31e92: 4e75
+    RTS
 
 ;!======
 
@@ -71009,7 +71009,7 @@ LAB_1967:
     MOVE.L	A3,D0			;31ee2: 200b
     MOVEM.L	(A7)+,D6-D7/A2-A3	;31ee4: 4cdf0cc0
     UNLK	A5			;31ee8: 4e5d
-    RTS				;31eea: 4e75
+    RTS
 
 ;!======
 
@@ -71038,7 +71038,7 @@ LAB_196B:
     TST.B	D1			;31f20: 4a01
     BNE.S	LAB_1969		;31f22: 66d4
 LAB_196C:
-    RTS				;31f24: 4e75
+    RTS
 
 ;!======
 
@@ -71054,7 +71054,7 @@ LAB_196E:
 LAB_196F:
     MOVE.B	(A1)+,(A0)+		;31f38: 10d9
     BNE.S	LAB_196F		;31f3a: 66fc
-    RTS				;31f3c: 4e75
+    RTS
 
 ;!======
 
@@ -71097,7 +71097,7 @@ LAB_1974:
     MOVE.L	A0,D0			;31f9a: 2008
     MOVEM.L	(A7)+,D5-D7/A2-A3	;31f9c: 4cdf0ce0
     UNLK	A5			;31fa0: 4e5d
-    RTS				;31fa2: 4e75
+    RTS
 
 ;!======
 
@@ -71119,7 +71119,7 @@ LAB_1977:
     MOVEQ	#0,D0			;31fc2: 7000
 LAB_1978:
     MOVEM.L	(A7)+,D7/A3		;31fc4: 4cdf0880
-    RTS				;31fc8: 4e75
+    RTS
 
 ;!======
 
@@ -71132,7 +71132,7 @@ LAB_1979:
     BSR.S	LAB_1975		;31fda: 61c8
     ADDQ.W	#8,A7			;31fdc: 504f
     MOVEM.L	(A7)+,D7/A3		;31fde: 4cdf0880
-    RTS				;31fe2: 4e75
+    RTS
 
 ;!======
 
@@ -71154,7 +71154,7 @@ LAB_197B:
 LAB_197C:
     MOVE.L	A2,D0			;32004: 200a
     MOVEM.L	(A7)+,D7/A2-A3		;32006: 4cdf0c80
-    RTS				;3200a: 4e75
+    RTS
 
 ;!======
 
@@ -71187,7 +71187,7 @@ LAB_1982:
 LAB_1983:
     MOVEM.L	(A7)+,A2-A3		;32042: 4cdf0c00
     UNLK	A5			;32046: 4e5d
-    RTS				;32048: 4e75
+    RTS
 
 ;!======
 
@@ -71200,7 +71200,7 @@ LAB_1984:
     BSR.S	LAB_197D		;3205a: 61b0
     ADDQ.W	#8,A7			;3205c: 504f
     MOVEM.L	(A7)+,A2-A3		;3205e: 4cdf0c00
-    RTS				;32062: 4e75
+    RTS
 
 ;!======
 
@@ -71218,7 +71218,7 @@ LAB_1986:
 LAB_1987:
     MOVE.L	A3,D0			;3207e: 200b
     MOVEA.L	(A7)+,A3		;32080: 265f
-    RTS				;32082: 4e75
+    RTS
 
 ;!======
 
@@ -71245,7 +71245,7 @@ LAB_198A:
     CLR.B	(A0)			;320b2: 4210
     SUB.L	A7,D0			;320b4: 908f
     UNLK	A5			;320b6: 4e5d
-    RTS				;320b8: 4e75
+    RTS
 
 ;!======
 
@@ -71270,7 +71270,7 @@ LAB_198D:
     CLR.B	(A0)			;320e2: 4210
     SUB.L	A7,D0			;320e4: 908f
     UNLK	A5			;320e6: 4e5d
-    RTS				;320e8: 4e75
+    RTS
 
 ;!======
 
@@ -71302,7 +71302,7 @@ LAB_1991:
     BNE.S	LAB_1991		;32120: 66fa
     CLR.B	(A0)			;32122: 4210
     SUB.L	D1,D0			;32124: 9081
-    RTS				;32126: 4e75
+    RTS
 
 ;!======
 
@@ -71343,7 +71343,7 @@ LAB_1999:
     MOVEA.L	8(A7),A0		;3216a: 206f0008
     MOVE.L	D1,(A0)			;3216e: 2081
     SUB.L	A1,D0			;32170: 9089
-    RTS				;32172: 4e75
+    RTS
 
 ;!======
 
@@ -71382,7 +71382,7 @@ LAB_199E:
     MOVEA.L	8(A7),A0		;321b6: 206f0008
     MOVE.L	D1,(A0)			;321ba: 2081
     SUB.L	A1,D0			;321bc: 9089
-    RTS				;321be: 4e75
+    RTS
 
 ;!======
 
@@ -71395,7 +71395,7 @@ LAB_199F:
     MOVE.B	D0,(A0)+		;321d0: 10c0
     MOVE.L	A0,22812(A4)		;321d2: 2948591c
     MOVE.L	(A7)+,D7		;321d6: 2e1f
-    RTS				;321d8: 4e75
+    RTS
 
 ;!======
 
@@ -71417,7 +71417,7 @@ LAB_19A0:
 
     MOVEM.L	-8(A5),A2-A3		;3220a: 4ced0c00fff8
     UNLK	A5			;32210: 4e5d
-    RTS				;32212: 4e75
+    RTS
 
 ;!======
 
@@ -71563,7 +71563,7 @@ LAB_19B1:
 LAB_19B2:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;32388: 4cdf0cf0
     UNLK	A5			;3238c: 4e5d
-    RTS				;3238e: 4e75
+    RTS
 
 ;!======
 
@@ -71598,7 +71598,7 @@ LAB_19B5:
     MOVE.L	D4,D0			;323d6: 2004
 LAB_19B6:
     MOVEM.L	(A7)+,D4-D7/A3		;323d8: 4cdf08f0
-    RTS				;323dc: 4e75
+    RTS
 
 ;!======
 
@@ -71685,7 +71685,7 @@ LAB_19BE:
     MOVEQ	#0,D0			;32492: 7000
 LAB_19BF:
     MOVEM.L	(A7)+,D6-D7/A2-A3	;32494: 4cdf0cc0
-    RTS				;32498: 4e75
+    RTS
 
 ;!======
 
@@ -71718,7 +71718,7 @@ LAB_19C1:
     MOVE.L	D0,D1			;324e0: 2200
 LAB_19C2:
     MOVEM.L	(A7)+,D7/A2		;324e2: 4cdf0480
-    RTS				;324e6: 4e75
+    RTS
 
 ;!======
 
@@ -71739,7 +71739,7 @@ LAB_19C3:
     MOVE.L	22824(A4),D0		;32518: 202c5928
     MOVEM.L	-8(A5),A2-A3		;3251c: 4ced0c00fff8
     UNLK	A5			;32522: 4e5d
-    RTS				;32524: 4e75
+    RTS
 
 ;!======
 
@@ -71895,7 +71895,7 @@ LAB_19DA:
 LAB_19DB:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;32686: 4cdf0cf0
     UNLK	A5			;3268a: 4e5d
-    RTS				;3268c: 4e75
+    RTS
 
 ;!======
 
@@ -71945,7 +71945,7 @@ LAB_19E1:
     MOVE.L	A0,D0			;326ea: 2008
 LAB_19E2:
     MOVEM.L	(A7)+,D4-D7/A2-A3	;326ec: 4cdf0cf0
-    RTS				;326f0: 4e75
+    RTS
 
 ;!======
 
@@ -71979,7 +71979,7 @@ LAB_19E6:
     JSR     LAB_1A92(PC)		;3273a: 4eba0da4
     ADDQ.W	#4,A7			;3273e: 584f
     MOVEM.L	(A7)+,D6-D7/A3		;32740: 4cdf08c0
-    RTS				;32744: 4e75
+    RTS
 
 ;!======
 
@@ -72010,7 +72010,7 @@ LAB_19E8:
 LAB_19E9:
     MOVE.L	D5,D0			;3278a: 2005
     MOVEM.L	(A7)+,D2-D3/D5-D7/A3	;3278c: 4cdf08ec
-    RTS				;32790: 4e75
+    RTS
 
 ;!======
 
@@ -72062,7 +72062,7 @@ LAB_19EE:
     JSR     _LVOSeek(A6)
 LAB_19EF:
     MOVEM.L	(A7)+,D2-D7		;32808: 4cdf00fc
-    RTS				;3280c: 4e75
+    RTS
 
 ;!======
 
@@ -72093,7 +72093,7 @@ LAB_19F1:
 LAB_19F2:
     MOVE.L	D5,D0			;32852: 2005
     MOVEM.L	(A7)+,D2-D3/D5-D7/A3	;32854: 4cdf08ec
-    RTS				;32858: 4e75
+    RTS
 
 ;!======
 
@@ -72130,7 +72130,7 @@ LAB_19F5:
     MOVE.L	D6,D0			;328b2: 2006
 LAB_19F6:
     MOVEM.L	(A7)+,D2/D6-D7/A3	;328b4: 4cdf08c4
-    RTS				;328b8: 4e75
+    RTS
 
 ;!======
 
@@ -72150,7 +72150,7 @@ LAB_19F7:
     MOVEA.L	AbsExecBase,A6
     JSR	    _LVOFreeMem(A6)
     MOVEM.L	(A7)+,A3/A6		;328e2: 4cdf4800
-    RTS				;328e6: 4e75
+    RTS
 
 ;!======
 
@@ -72174,7 +72174,7 @@ LAB_19F9:
     MOVEQ	#34,D0			;3291c: 7022
     JSR	    _LVOFreeMem(A6)
     MOVEM.L	(A7)+,A3/A6		;32922: 4cdf4800
-    RTS				;32926: 4e75
+    RTS
 
 ;!======
 
@@ -72216,7 +72216,7 @@ LAB_19FD:
 LAB_19FE:
     MOVEM.L	(A7)+,D2/D7/A3		;32984: 4cdf0884
     UNLK	A5			;32988: 4e5d
-    RTS				;3298a: 4e75
+    RTS
 
 ;!======
 
@@ -72258,7 +72258,7 @@ LAB_1A02:
 LAB_1A03:
     MOVEM.L	(A7)+,D2/D7/A3		;329ea: 4cdf0884
     UNLK	A5			;329ee: 4e5d
-    RTS				;329f0: 4e75
+    RTS
 
 ;!======
 
@@ -72278,7 +72278,7 @@ LAB_1A05:
     JSR     _LVOClose(A6)
     MOVEQ	#0,D0			;32a0e: 7000
     MOVE.L	(A7)+,D7		;32a10: 2e1f
-    RTS				;32a12: 4e75
+    RTS
 
 ;!======
 
@@ -72296,7 +72296,7 @@ LAB_1A06:
     CLR.W	D2			;32a2a: 4242
     ADD.L	D2,D0			;32a2c: d082
     MOVEM.L	(A7)+,D2-D3		;32a2e: 4cdf000c
-    RTS				;32a32: 4e75
+    RTS
 
 ;!======
 
@@ -72309,7 +72309,7 @@ LAB_1A07:
     NEG.L	D1			;32a42: 4481
     BSR.W	LAB_1A0A		;32a44: 61000020
     NEG.L	D1			;32a48: 4481
-    RTS				;32a4a: 4e75
+    RTS
 
 ;!======
 
@@ -72317,7 +72317,7 @@ LAB_1A08:
     BSR.W	LAB_1A0A		;32a4c: 61000018
     NEG.L	D0			;32a50: 4480
     NEG.L	D1			;32a52: 4481
-    RTS				;32a54: 4e75
+    RTS
 
 ;!======
 
@@ -72327,7 +72327,7 @@ LAB_1A09:
     NEG.L	D1			;32a5c: 4481
     BSR.W	LAB_1A0A		;32a5e: 61000006
     NEG.L	D0			;32a62: 4480
-    RTS				;32a64: 4e75
+    RTS
 
 ;!======
 
@@ -72354,7 +72354,7 @@ LAB_1A0B:
     SWAP	D2			;32a88: 4842
     MOVE.W	D2,D1			;32a8a: 3202
     MOVE.L	(A7)+,D2		;32a8c: 241f
-    RTS				;32a8e: 4e75
+    RTS
 
 ;!======
 
@@ -72408,7 +72408,7 @@ LAB_1A12:
     EXG	D0,D1			;32af0: c141
     MOVE.L	(A7)+,D3		;32af2: 261f
     MOVE.L	(A7)+,D2		;32af4: 241f
-    RTS				;32af6: 4e75
+    RTS
 
 ;!======
 
@@ -72434,7 +72434,7 @@ LAB_1A15:
     MOVE.L	A2,D0			;32b2c: 200a
 LAB_1A16:
     MOVEM.L	(A7)+,A2-A3/A6		;32b2e: 4cdf4c00
-    RTS				;32b32: 4e75
+    RTS
 
 ;!======
 
@@ -72487,7 +72487,7 @@ LAB_1A1B:
     MOVE.L	A2,D0			;32bba: 200a
 LAB_1A1C:
     MOVEM.L	(A7)+,D6-D7/A2-A3/A6	;32bbc: 4cdf4cc0
-    RTS				;32bc0: 4e75
+    RTS
 
 ;!======
 
@@ -72521,7 +72521,7 @@ LAB_1A1E:
     MOVEQ	#0,D0			;32bfc: 7000
 LAB_1A1F:
     MOVE.L	(A7)+,D7		;32bfe: 2e1f
-    RTS				;32c00: 4e75
+    RTS
 
 ;!======
 
@@ -72548,7 +72548,7 @@ LAB_1A21:
 LAB_1A22:
     MOVEA.L	-8(A5),A3		;32c2c: 266dfff8
     UNLK	A5			;32c30: 4e5d
-    RTS				;32c32: 4e75
+    RTS
 
 ;!======
 
@@ -72571,7 +72571,7 @@ LAB_1A24:
 LAB_1A25:
     MOVEA.L	-8(A5),A3		;32c5c: 266dfff8
     UNLK	A5			;32c60: 4e5d
-    RTS				;32c62: 4e75
+    RTS
 
 ;!======
 
@@ -72593,7 +72593,7 @@ LAB_1A28:
     MOVE.L	A0,22840(A4)		;32c86: 29485938
     MOVE.L	A0,22836(A4)		;32c8a: 29485934
     MOVEM.L	(A7)+,A2-A3/A6		;32c8e: 4cdf4c00
-    RTS				;32c92: 4e75
+    RTS
 
 ;!======
 
@@ -72636,7 +72636,7 @@ LAB_1A2D:
     MOVE.L	A0,D0			;32cee: 2008
 LAB_1A2E:
     MOVEM.L	(A7)+,D7/A2-A3/A6	;32cf0: 4cdf4c80
-    RTS				;32cf4: 4e75
+    RTS
 
 ;!======
 
@@ -72660,7 +72660,7 @@ LAB_1A2F:
     MOVEA.L	AbsExecBase,A6	;32d26: 2c780004
     JSR	    -210(A6)		;32d2a: 4eaeff2e
     MOVEM.L	(A7)+,A3/A6		;32d2e: 4cdf4800
-    RTS				;32d32: 4e75
+    RTS
 
 ;!======
 
@@ -72689,7 +72689,7 @@ LAB_1A32:
     MOVE.L	A2,D0			;32d72: 200a
 LAB_1A33:
     MOVEM.L	(A7)+,D7/A2-A3/A6	;32d74: 4cdf4c80
-    RTS				;32d78: 4e75
+    RTS
 
 ;!======
 
@@ -72733,7 +72733,7 @@ LAB_1A37:
     MOVE.L	D5,D0			;32dd2: 2005
 LAB_1A38:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;32dd4: 4cdf0ce0
-    RTS				;32dd8: 4e75
+    RTS
 
 ;!======
 
@@ -72750,7 +72750,7 @@ LAB_1A39:
     MOVE.B	D0,(A0)+		;32dec: 10c0
     MOVE.L	A0,22848(A4)		;32dee: 29485940
     MOVE.L	(A7)+,D7		;32df2: 2e1f
-    RTS				;32df4: 4e75
+    RTS
 
 ;!======
 
@@ -72770,7 +72770,7 @@ LAB_1A3A:
     MOVE.L	22852(A4),D0		;32e22: 202c5944
     MOVEM.L	-8(A5),A2-A3		;32e26: 4ced0c00fff8
     UNLK	A5			;32e2c: 4e5d
-    RTS				;32e2e: 4e75
+    RTS
 
 ;!======
 
@@ -73163,7 +73163,7 @@ LAB_1A6E:
 LAB_1A6F:
     MOVEM.L	(A7)+,D2/D5-D7/A2-A3	;331dc: 4cdf0ce4
     UNLK	A5			;331e0: 4e5d
-    RTS				;331e2: 4e75
+    RTS
 
 ;!======
 
@@ -73209,7 +73209,7 @@ LAB_1A74:
 LAB_1A75:
     MOVEM.L	(A7)+,D7/A2-A3		;33236: 4cdf0c80
     UNLK	A5			;3323a: 4e5d
-    RTS				;3323c: 4e75
+    RTS
 
 ;!======
 
@@ -73392,7 +73392,7 @@ LAB_1A88:
     JSR     LAB_19E3(PC)		;3340e: 4ebaf2e4
     MOVEM.L	-36(A5),D2/D7/A2-A3/A6	;33412: 4ced4c84ffdc
     UNLK	A5			;33418: 4e5d
-    RTS				;3341a: 4e75
+    RTS
 
 ;!======
 
@@ -73429,7 +73429,7 @@ LAB_1A8D:
     MOVE.L	52(A7),D3		;33474: 262f0034
     JSR	    -348(A6)		;33478: 4eaefea4
     MOVEM.L	(A7)+,D2-D3/A2-A3/A6	;3347c: 4cdf4c0c
-    RTS				;33480: 4e75
+    RTS
 
 ;!======
 
@@ -73467,7 +73467,7 @@ LAB_1A90:
     MOVE.L	D0,8(A3)		;334ce: 27400008
 LAB_1A91:
     MOVEA.L	(A7)+,A3		;334d2: 265f
-    RTS				;334d4: 4e75
+    RTS
 
 ;!======
 
@@ -73510,7 +73510,7 @@ LAB_1A95:
     JSR     LAB_1A96(PC)		;33526: 4eba000c
     ADDQ.W	#4,A7			;3352a: 584f
     MOVEM.L	(A7)+,D5-D7		;3352c: 4cdf00e0
-    RTS				;33530: 4e75
+    RTS
 
 ;!======
 
@@ -73545,14 +73545,14 @@ LAB_1A9A:
 LAB_1A9B:
     MOVEQ	#0,D0			;3356c: 7000
     MOVEM.L	(A7)+,A2-A3		;3356e: 4cdf0c00
-    RTS				;33572: 4e75
+    RTS
 
 ;!======
 
 LAB_1A9C:
     MOVE.L	A0,D0			;33574: 2008
     MOVEM.L	(A7)+,A2-A3		;33576: 4cdf0c00
-    RTS				;3357a: 4e75
+    RTS
 
 ;!======
 
@@ -73654,7 +73654,7 @@ LAB_1AA7:
 LAB_1AA8:
     MOVEM.L	(A7)+,D7/A2-A3/A6	;33662: 4cdf4c80
     UNLK	A5			;33666: 4e5d
-    RTS				;33668: 4e75
+    RTS
 
 ;!======
 
@@ -73692,7 +73692,7 @@ LAB_1AAB:
     MOVE.L	D5,D0			;336b2: 2005
 LAB_1AAC:
     MOVEM.L	(A7)+,D5-D7/A2-A3	;336b4: 4cdf0ce0
-    RTS				;336b8: 4e75
+    RTS
 
 ;!======
 
@@ -73703,7 +73703,7 @@ LAB_1AAD:
     ADDQ.L	#4,(A0)			;336c2: 5890
     CLR.L	4(A0)			;336c4: 42a80004
     MOVE.L	A0,8(A0)		;336c8: 21480008
-    RTS				;336cc: 4e75
+    RTS
 
 ;!======
 
@@ -73721,7 +73721,7 @@ LAB_1AAF:
     MOVE.B	-(A0),-(A1)		;336e6: 1320
     SUBQ.L	#1,D0			;336e8: 5380
     BNE.S	LAB_1AAF		;336ea: 66fa
-    RTS				;336ec: 4e75
+    RTS
 
 ;!======
 
@@ -73730,7 +73730,7 @@ LAB_1AB0:
     SUBQ.L	#1,D0			;336f0: 5380
     BNE.S	LAB_1AB0		;336f2: 66fa
 LAB_1AB1:
-    RTS				;336f4: 4e75
+    RTS
 
 ;!======
 
@@ -73777,7 +73777,7 @@ LAB_1AB7:
 LAB_1AB8:
     MOVEM.L	-16(A5),A2-A3		;33748: 4ced0c00fff0
     UNLK	A5			;3374e: 4e5d
-    RTS				;33750: 4e75
+    RTS
 
 ;!======
 
@@ -73823,7 +73823,7 @@ LAB_1ABC:
     MOVEQ	#0,D0			;337ac: 7000
 LAB_1ABD:
     MOVEM.L	(A7)+,D6-D7/A3		;337ae: 4cdf08c0
-    RTS				;337b2: 4e75
+    RTS
 
 ;!======
 
@@ -73916,7 +73916,7 @@ LAB_1AC5:
 LAB_1AC6:
     MOVEM.L	(A7)+,D2-D3/D6-D7/A6	;3389a: 4cdf40cc
     UNLK	A5			;3389e: 4e5d
-    RTS				;338a0: 4e75
+    RTS
 
 ;!======
 
@@ -73993,7 +73993,7 @@ LAB_1AD1:
     MOVEQ	#0,D0			;33934: 7000
 LAB_1AD2:
     MOVEM.L	(A7)+,D7/A3		;33936: 4cdf0880
-    RTS				;3393a: 4e75
+    RTS
 
 ;!======
 
@@ -74027,12 +74027,12 @@ LAB_1AD8:
     ADDQ.W	#4,A7			;33980: 584f
 LAB_1AD9:
     MOVE.L	(A7)+,D7		;33982: 2e1f
-    RTS				;33984: 4e75
+    RTS
 
 ;!======
 
     BSR.S	LAB_1AD3		;33986: 61bc
-    RTS				;33988: 4e75
+    RTS
 
 ;!======
 
@@ -74046,7 +74046,7 @@ LAB_1ADA:
     MOVEM.L	44(A7),D2-D6		;339a2: 4cef007c002c
     JSR	    -606(A6)		;339a8: 4eaefda2
     MOVEM.L	(A7)+,D2-D6/A6		;339ac: 4cdf407c
-    RTS				;339b0: 4e75
+    RTS
 
 ;!======
 
@@ -74058,7 +74058,7 @@ LAB_1ADB:
     MOVEA.L	GLOB_REF_BATTCLOCK_RESOURCE,A6
     JSR	    _LVOReadBattClock(A6)
     MOVEA.L	(A7)+,A6		;339c8: 2c5f
-    RTS				;339ca: 4e75
+    RTS
 
 ;!======
 
@@ -74068,7 +74068,7 @@ LAB_1ADC:
     MOVE.L	8(A7),D0		;339d4: 202f0008
     JSR     _LVOWriteBattClock(A6)
     MOVEA.L	(A7)+,A6		;339dc: 2c5f
-    RTS				;339de: 4e75
+    RTS
 
 
 
@@ -74079,7 +74079,7 @@ LAB_1ADD:
     MOVEM.L	20(A7),D1/A2		;339f0: 4cef04020014
     JSR     -48(A6)
     MOVEM.L	(A7)+,A2/A6		;339fa: 4cdf4400
-    RTS				;339fe: 4e75
+    RTS
 
 ;!======
 
@@ -74089,7 +74089,7 @@ LAB_1ADE:
     MOVE.L	8(A7),D1		;33a08: 222f0008
     JSR	    -198(A6)		;33a0c: 4eaeff3a
     MOVEA.L	(A7)+,A6		;33a10: 2c5f
-    RTS				;33a12: 4e75
+    RTS
 
 ;!======
 
@@ -74099,7 +74099,7 @@ LAB_1ADF:
     MOVEM.L	12(A7),D1-D2		;33a1e: 4cef0006000c
     JSR	    -606(A6)		;33a24: 4eaefda2
     MOVEM.L	(A7)+,D2/A6		;33a28: 4cdf4004
-    RTS				;33a2c: 4e75
+    RTS
 
 ;!======
 
@@ -74113,7 +74113,7 @@ LAB_1AE0:
     MOVEM.L	8(A7),D0/A0		;33a38: 4cef01010008
     JSR     _LVOAmiga2Date(A6)
     MOVEA.L	(A7)+,A6		;33a42: 2c5f
-    RTS				;33a44: 4e75
+    RTS
 
 ;!======
 
@@ -74127,7 +74127,7 @@ LAB_1AE1:
     MOVEA.L	8(A7),A0		;33a50: 206f0008
     JSR     _LVOCheckDate(A6)
     MOVEA.L	(A7)+,A6		;33a58: 2c5f
-    RTS				;33a5a: 4e75
+    RTS
 
 ;!======
 
@@ -74137,14 +74137,14 @@ LAB_1AE2:
     MOVEA.L	8(A7),A0		;33a64: 206f0008
     JSR     _LVODate2Amiga(A6)
     MOVEA.L	(A7)+,A6		;33a6c: 2c5f
-    RTS				;33a6e: 4e75
+    RTS
 
 ;!======
 
     MOVE.L	4(A7),D0		;33a70: 202f0004
 LAB_1AE3:
     JSR     LAB_1AEB		;33a74: 4eb900033adc
-    RTS				;33a7a: 4e75
+    RTS
 
 ;!======
 
@@ -74155,7 +74155,7 @@ LAB_1AE4:
     BSR.S	LAB_1AE3		;33a84: 61ee
     BRA.S	LAB_1AE4		;33a86: 60f8
 LAB_1AE5:
-    RTS				;33a88: 4e75
+    RTS
 
 ;!======
 
@@ -74163,13 +74163,13 @@ LAB_1AE6:
     BSR.S	LAB_1AE7		;33a8a: 6106
     TST.L	D0			;33a8c: 4a80
     BMI.S	LAB_1AE6		;33a8e: 6bfa
-    RTS				;33a90: 4e75
+    RTS
 
 ;!======
 
 LAB_1AE7:
     JSR     LAB_1AEF		;33a92: 4eb900033b1e
-    RTS				;33a98: 4e75
+    RTS
 
 ;!======
 
@@ -74184,7 +74184,7 @@ LAB_1AE9:
     LEA     LAB_1AE3(PC),A2		;33ab0: 45faffc2
     BSR.S	LAB_1AEA		;33ab4: 6106
     MOVEM.L	(A7)+,A2		;33ab6: 4cdf0400
-    RTS				;33aba: 4e75
+    RTS
 
 ;!======
 
@@ -74198,7 +74198,7 @@ LAB_1AEA:
     MOVEM.L	12(A7),A0-A3		;33ac8: 4cef0f00000c
     BSR.S	LAB_1AEA		;33ace: 61ec
     MOVEM.L	(A7)+,A2-A3		;33ad0: 4cdf0c00
-    RTS				;33ad4: 4e75
+    RTS
 
 ;!======
 
@@ -74218,7 +74218,7 @@ LAB_1AED:
     BNE.S	LAB_1AED		;33af4: 66f4
     MOVE.B	#$ff,CIAA_DDRB		;33af6: 13fc00ff00bfe301
     MOVE.B	D0,CIAA_PRB		;33afe: 13c000bfe101
-    RTS				;33b04: 4e75
+    RTS
 
 ;!======
 
