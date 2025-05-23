@@ -2,116 +2,8 @@
 ; ESQ-3.asm disassembly + annotation
 ; ==========================================
 
-; system
-AbsExecBase         = 4
-
-; diskfont.library
-_LVOOpenDiskFont    = -30
-
-; dos.library
-_LVOOpen            = -30
-_LVOClose           = -36
-_LVORead            = -42
-_LVOWrite           = -48
-_LVOInput           = -54
-_LVOOutput          = -60
-_LVOSeek            = -66
-_LVODeleteFile      = -72
-_LVOLock            = -84
-_LVOUnlock          = -90
-_LVOCurrentDir      = -126
-_LVOIoErr           = -132
-
-; exec.library
-_LVOSupervisor      = -30
-_LVOexecPrivate1    = -36
-_LVOexecPrivate2    = -42
-_LVOexecPrivate3    = -48
-_LVOexecPrivate4    = -54
-_LVODisable         = -120
-_LVOEnable          = -126
-_LVOForbid          = -132
-_LVOPermit          = -138
-_LVOSetIntVector    = -162
-_LVOAddIntVector    = -168
-_LVORemIntServer    = -174
-_LVOAllocMem        = -198
-_LVOFreeMem         = -210
-_LVOAvailMem        = -216
-_LVOAllocEntry      = -222
-_LVOFindTask        = -294
-_LVOSetSignal       = -306
-_LVOAllocSignal     = -330
-_LVOFreeSignal      = -336
-_LVORemPort         = -360
-_LVOPutMsg          = -366
-_LVOGetMsg          = -372
-_LVOReplyMsg        = -378
-_LVOWaitPort        = -384
-_LVOCloseLibrary    = -414
-_LVOSetFunction     = -420
-_LVOOpenDevice      = -444
-_LVOCloseDevice     = -450
-_LVODoIO            = -456
-_LVOOpenResource    = -498
-_LVORawDoFmt        = -522
-_LVOOpenLibrary     = -552
-_LVOCopyMem         = -624
-_LVOColdReboot      = -726
-
-; graphics.library
-_LVOTextLength      = -54
-_LVOText            = -60
-_LVOSetFont         = -66
-_LVOOpenFont        = -72
-_LVOCloseFont       = -78
-_LVOInitRastPort    = -198
-_LVOSetRast         = -234
-_LVOMove            = -240
-_LVODraw            = -246
-_LVOBltClear		= -300
-_LVORectFill        = -306
-_LVOReadPixel       = -318
-_LVOSetAPen         = -342
-_LVOSetBPen         = -348
-_LVOSetDrMd         = -354
-_LVOVBeamPos        = -384
-_LVOInitBitMap      = -390
-_LVOAllocRaster     = -492
-_LVOFreeRaster      = -498
-
-; intuition.library
-_LVOSizeWindow      = -288
-_LVORemakeDisplay   = -384
-
-; utility.library
-_LVOAmiga2Date      = -120
-_LVODate2Amiga      = -126
-_LVOCheckDate       = -132
-
-; battclock.resource
-; http://amiga-dev.wikidot.com/resource:battclock
-_LVOResetBattClock  = -6
-_LVOReadBattClock   = -12
-_LVOWriteBattClock  = -18
-
-; Create a string, null padded to the next word.
-Str macro
-    DC.B	\1
-    CNOP 0,2
-endm
-
-; Create a null-terminated string, null padded to the next word.
-NStr macro
-    DC.B	\1,0
-    CNOP 0,2
-endm
-
-; Create a null-terminated 2-parametr string, null padded to the next word.
-NStr2 macro
-    DC.B	\1,\2,0
-    CNOP 0,2
-endm
+    include "lvo-offsets.s"
+    include "string-macros.s"
 
 TextAlignCenter     = 24
 TextAlignLeft       = 25
@@ -4454,6 +4346,7 @@ LAB_01BA:
     JSR     _LVOCloseLibrary(A6)
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A1
     JSR     _LVOCloseLibrary(A6)
+
     MOVE.L	(A7)+,D7
     RTS
 
@@ -5069,10 +4962,12 @@ LAB_01EE:
     MOVE.L	D0,-(A7)
     JSR     LAB_0211(PC)
     LEA	    16(A7),A7
+
     MOVEA.L	LAB_1FFC,A1
     MOVEQ	#7,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEQ	#0,D0
     MOVE.W	LAB_232A,D0
     MOVEQ	#36,D1
@@ -5081,6 +4976,7 @@ LAB_01EE:
     MOVEQ	#0,D1
     MOVE.L	#$000002b7,D2
     MOVEQ	#33,D3
+
     JSR     _LVORectFill(A6)
     MOVEQ	#0,D6
 LAB_01EF:
@@ -6437,17 +6333,21 @@ LAB_0262:
     PEA	    3.W
     PEA	    LAB_2259
     JSR     LAB_0270(PC)
+
     MOVEA.L	LAB_2218,A1
     MOVEQ	#1,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     PEA	    2.W
     JSR     LAB_0272(PC)
     MOVE.L	D0,-4(A5)
+
     MOVEA.L	D0,A1
     MOVEQ	#0,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     PEA	    2.W
     JSR     LAB_0276(PC)
     MOVEQ	#0,D1
@@ -6463,6 +6363,7 @@ LAB_0263:
     MOVEQ	#0,D1
     MOVE.W	D0,D1
     SUBQ.L	#1,D1
+
     MOVE.L	D1,D3
     MOVEA.L	-4(A5),A1
     MOVEQ	#0,D0
@@ -6470,6 +6371,7 @@ LAB_0263:
     MOVE.L	#$000002bf,D2
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
+
     JSR     LAB_0057(PC)
     MOVEA.L	LAB_2216,A0
     ADDA.W	#$000a,A0
@@ -6500,6 +6402,9 @@ LAB_0264:
 ;!======
 
     DC.W	$0000
+
+;!======
+
 LAB_0265:
     JMP     LAB_183E
 LAB_0266:
@@ -6536,6 +6441,9 @@ LAB_0275:
     JMP     LAB_064E
 LAB_0276:
     JMP     LAB_183B
+
+;!======
+
 LAB_0277:
     LINK.W	A5,#-8
     MOVEM.L	D5-D7/A3,-(A7)
@@ -6809,10 +6717,12 @@ LAB_028F:
     EXT.L	D2
     MOVE.W	D0,-10(A5)
     MOVE.W	D1,-12(A5)
+
     MOVEA.L	A3,A1
     MOVE.L	D2,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.W	-12(A5),D1
@@ -6831,9 +6741,11 @@ LAB_028F:
     MOVEA.L	A3,A1
     MOVE.L	36(A7),D2
     JSR     _LVORectFill(A6)
+
     MOVEA.L	A3,A1
     MOVEQ	#1,D0
     JSR     _LVOSetAPen(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     SUBQ.L	#2,D0
@@ -6845,6 +6757,7 @@ LAB_028F:
     ADDQ.L	#2,D1
     MOVEA.L	A3,A1
     JSR     _LVOMove(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     SUBQ.L	#2,D0
@@ -6853,6 +6766,7 @@ LAB_028F:
     SUBQ.L	#2,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.L	D6,D1
@@ -6864,6 +6778,7 @@ LAB_028F:
     SUBQ.L	#2,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     SUBQ.L	#1,D0
@@ -6875,6 +6790,7 @@ LAB_028F:
     ADDQ.L	#1,D1
     MOVEA.L	A3,A1
     JSR     _LVOMove(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     SUBQ.L	#1,D0
@@ -6883,6 +6799,7 @@ LAB_028F:
     SUBQ.L	#1,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.L	D6,D1
@@ -6894,9 +6811,11 @@ LAB_028F:
     SUBQ.L	#1,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVEA.L	A3,A1
     MOVEQ	#2,D0
     JSR     _LVOSetAPen(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.L	D6,D1
@@ -6908,6 +6827,7 @@ LAB_028F:
     SUBQ.L	#1,D1
     MOVEA.L	A3,A1
     JSR     _LVOMove(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.L	D6,D1
@@ -6922,6 +6842,7 @@ LAB_028F:
     ADDQ.L	#2,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     SUBQ.L	#1,D0
@@ -6933,6 +6854,7 @@ LAB_028F:
     ADDQ.L	#2,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.L	D6,D1
@@ -6943,6 +6865,7 @@ LAB_028F:
     EXT.L	D1
     MOVEA.L	A3,A1
     JSR     _LVOMove(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.L	D6,D1
@@ -6957,6 +6880,7 @@ LAB_028F:
     ADDQ.L	#1,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-10(A5),D0
     EXT.L	D0
     MOVE.W	-12(A5),D1
@@ -6967,15 +6891,18 @@ LAB_028F:
     ADDQ.L	#1,D1
     MOVEA.L	A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W	-6(A5),D0
     EXT.L	D0
     MOVE.W	-8(A5),D1
     EXT.L	D1
     MOVEA.L	A3,A1
     JSR     _LVOMove(A6)
+
     MOVEA.L	A3,A1
     MOVE.L	D4,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEM.L	(A7)+,D2-D7/A3
     UNLK	A5
     RTS
@@ -19578,7 +19505,7 @@ LAB_06E8:
     MOVE.L	D0,D7
     TST.B	D7
     BNE.S	LAB_06EB
-    PEA	    LAB_1D23
+    PEA	    GLOB_STR_REBOOTING_COMPUTER
     PEA	    120.W
     PEA	    40.W
     MOVE.L	LAB_2217,-(A7)
@@ -20061,7 +19988,7 @@ LAB_0711:
     PEA	    LAB_1D2B
     PEA	    LAB_1D2A
     PEA	    -41(A5)
-    JSR	j_SUB_printf_0(PC)
+    JSR     j_SUB_printf_0(PC)
     JSR     LAB_0726(PC)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#3,D0
@@ -20069,7 +19996,7 @@ LAB_0711:
     JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1
     MOVEQ	#0,D0
-    JSR	    -354(A6)
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1
     MOVEA.L	52(A1),A0
     MOVEQ	#0,D0
@@ -24396,9 +24323,9 @@ LAB_087E:
     MOVEA.L	AbsExecBase,A6
     JSR     _LVOOpenDevice(A6)
     
-	MOVE.L	D0,D6
-    TST.L	D6
-    BNE.W	LAB_089B ; Unable to open serial device?
+	MOVE.L	D0,D6       ; Copy D0 into D6
+    TST.L	D6          ; Test D6 to see if it's 0 (failed)
+    BNE.W	LAB_089B    ; Branch if unable to open serial device
 
     MOVEA.L	LAB_2211,A0
     MOVE.B	#$10,79(A0)
@@ -44654,19 +44581,23 @@ LAB_0FA4:
     JSR	    _LVOInitRastPort(A6)
     MOVEA.L	LAB_1FFD,A0
     MOVE.L	#LAB_221F,4(A0)
+
     MOVEA.L	LAB_1FFD,A1
     MOVEQ	#0,D0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR	    _LVOSetDrMd(A6)
+
     MOVEA.L	LAB_1FFD,A1
     MOVEA.L	LAB_1DE6,A0
     JSR	    -66(A6)
     BSR.W	LAB_0FF1
-    MOVEQ	#8,D0
+
+    MOVEQ	#8,D0       ; only use 8 chars ... is this for call signs?
     MOVEA.L	LAB_1FFC,A1
     LEA     LAB_2001,A0
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR	    _LVOTextLength(A6)
+
     MOVE.W	D0,LAB_2329
     ADDI.W	#$000c,D0
     MOVE.W	D0,LAB_232A
@@ -54476,7 +54407,7 @@ LAB_1316:
     MOVE.L	#$00010001,-(A7)
     PEA	    2000.W
     PEA	    3947.W
-    PEA	    LAB_203E
+    PEA	    GLOB_STR_NEWGRID2_C_1
     JSR     LAB_14AD(PC)
     LEA	    16(A7),A7
     MOVE.L	D0,-6(A5)
@@ -55646,7 +55577,7 @@ LAB_13A5:
     BNE.S	LAB_13A6
     MOVEQ	#7,D7
     MOVE.L	LAB_205A,-(A7)
-    MOVE.L	LAB_20AE,-(A7)
+    MOVE.L	GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,-(A7)
     JSR     LAB_146B(PC)
     MOVE.L	D0,LAB_205A
     MOVE.L	LAB_205B,(A7)
@@ -57531,7 +57462,7 @@ LAB_146E:
     JSR     JMP_TBL_GET_SECONDS_FROM_EPOCH(PC)
     MOVE.L	D0,D7
     MOVE.L	D7,(A7)
-    JSR     LAB_1485(PC)
+    JSR     JMP_TBL_SET_CLOCK_CHIP_TIME(PC)
     ADDQ.W	#4,A7
 LAB_146F:
     MOVE.L	(A7)+,D7
@@ -57540,18 +57471,23 @@ LAB_146F:
 
 ;!======
 
+; This is used to fetch the current time and load it
+; into variables..?
 LAB_1470:
     LINK.W	A5,#-40
     MOVEM.L	D2-D7,-(A7)
+
     TST.L	GLOB_REF_UTILITY_LIBRARY
     BEQ.W	LAB_1473
+
     TST.L	GLOB_REF_BATTCLOCK_RESOURCE
     BEQ.W	LAB_1473
-    JSR     LAB_1483(PC)
+
+    JSR     JMP_TBL_GET_CLOCK_CHIP_TIME(PC)
     MOVE.L	D0,D7
     PEA	    -18(A5)
     MOVE.L	D7,-(A7)
-    JSR     LAB_1480(PC)
+    JSR     JMP_TBL_POPULATE_CLOCKDATE_FROM_SECS(PC)
     PEA	    -18(A5)
     JSR     JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH(PC)
     LEA	    12(A7),A7
@@ -57622,6 +57558,7 @@ LAB_1472:
     PEA	    LAB_223A
     BSR.W	LAB_1477
     ADDQ.W	#8,A7
+
 LAB_1473:
     MOVEM.L	(A7)+,D2-D7
     UNLK	A5
@@ -57712,18 +57649,18 @@ LAB_147F:
 
 ;!======
 
-LAB_1480:
-    JMP     LAB_1AE0
+JMP_TBL_POPULATE_CLOCKDATE_FROM_SECS:
+    JMP     POPULATE_CLOCKDATE_FROM_SECS
 LAB_1481:
     JMP     LAB_008C
 JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH:
     JMP     GET_LEGAL_OR_SECONDS_FROM_EPOCH
-LAB_1483:
-    JMP     LAB_1ADB
+JMP_TBL_GET_CLOCK_CHIP_TIME:
+    JMP     GET_CLOCK_CHIP_TIME
 LAB_1484:
     JMP     LAB_0660
-LAB_1485:
-    JMP     LAB_1ADC
+JMP_TBL_SET_CLOCK_CHIP_TIME:
+    JMP     SET_CLOCK_CHIP_TIME
 JMP_TBL_GET_SECONDS_FROM_EPOCH:
     JMP     GET_SECONDS_FROM_EPOCH
 
@@ -57940,6 +57877,7 @@ LAB_1499:
     MOVE.L	D0,0(A3,D1.L)
     ADDQ.W	#1,D5
     BRA.S	LAB_1499
+
 LAB_149A:
     MOVEM.L	(A7)+,D5-D7/A3
     UNLK	A5
@@ -58079,6 +58017,9 @@ LAB_14A9:
 ;!======
 
     DC.W	$0000
+
+;!======
+
 LAB_14AA:
     JMP     LAB_190A
 LAB_14AB:
@@ -58089,12 +58030,18 @@ LAB_14AD:
     JMP     LAB_1909
 LAB_14AE:
     JMP     LAB_0396
+
+;======
+
     MOVEQ	#97,D0
     RTS
 
 ;!======
 
     DC.W	$0000
+
+;!======
+
 LAB_14AF:
     JSR     LAB_14C3(PC)
     RTS
@@ -58269,7 +58216,7 @@ LAB_14C1:
 ;!======
 
 j_getCTRLBuffer:
-    JMP	getCTRLBuffer
+    JMP     getCTRLBuffer
 LAB_14C3:
     JMP     LAB_002B
 LAB_14C4:
@@ -68773,7 +68720,7 @@ LAB_187C:
     MOVE.L	LAB_205A,-12(A5)
     BRA.S	LAB_187E
 LAB_187D:
-    MOVEA.L	LAB_20AE,A0
+    MOVEA.L	GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,A0
     MOVE.L	A0,-12(A5)
 LAB_187E:
     MOVEA.L	-12(A5),A0
@@ -74058,7 +74005,10 @@ LAB_1ADA:
     ORI.B	#$00,D0
     ORI.B	#$00,D0
     MOVEQ	#97,D0
-LAB_1ADB:
+
+;!======
+
+GET_CLOCK_CHIP_TIME:
     MOVE.L	A6,-(A7)
     MOVEA.L	GLOB_REF_BATTCLOCK_RESOURCE,A6
     JSR	    _LVOReadBattClock(A6)
@@ -74067,7 +74017,7 @@ LAB_1ADB:
 
 ;!======
 
-LAB_1ADC:
+SET_CLOCK_CHIP_TIME:
     MOVE.L	A6,-(A7)
     MOVEA.L	GLOB_REF_BATTCLOCK_RESOURCE,A6
     MOVE.L	8(A7),D0
@@ -74075,7 +74025,7 @@ LAB_1ADC:
     MOVEA.L	(A7)+,A6
     RTS
 
-
+;!======
 
 LAB_1ADD:
     MOVEM.L	A2/A6,-(A7)
@@ -74112,7 +74062,9 @@ LAB_1ADF:
 
 ;!======
 
-LAB_1AE0:
+; Fill in a ClockData struct with the date and time calculated from
+; a provided ULONG of the number of seconds from Amiga epoch
+POPULATE_CLOCKDATE_FROM_SECS:
     MOVE.L	A6,-(A7)
     MOVEA.L	GLOB_REF_UTILITY_LIBRARY,A6
     MOVEM.L	8(A7),D0/A0
@@ -74130,9 +74082,11 @@ LAB_1AE0:
 ; seconds from Amiga epoch, or 0 if illegal and store in D0.
 GET_LEGAL_OR_SECONDS_FROM_EPOCH:
     MOVE.L	A6,-(A7)
+
     MOVEA.L	GLOB_REF_UTILITY_LIBRARY,A6
     MOVEA.L	8(A7),A0
     JSR     _LVOCheckDate(A6)
+
     MOVEA.L	(A7)+,A6
     RTS
 
@@ -74479,7 +74433,8 @@ LAB_1B59:
 LAB_1B5A:
     DC.B	"12:44:44 PM",0
 LAB_1B5B:
-    DC.B	"%s%s%ld  ",0,0,0,0,0
+    DC.B	"%s%s%ld  ",0
+    DS.L    1
 LAB_1B5C:
     DC.B	"FGN",0
 LAB_1B5D:
@@ -75537,7 +75492,8 @@ LAB_1D10:
 LAB_1D11:
     DC.B	"Leap Year",0
 LAB_1D12:
-    DC.B	"Norm Year",0,0,0
+    DC.B	"Norm Year",0
+    DS.W    1
 LAB_1D13:
     DS.W	1
 LAB_1D14:
@@ -75571,7 +75527,7 @@ LAB_1D21:
     DC.B	"Saving Prevue data to disk",0,0
 LAB_1D22:
     DC.B	"Loading Text Ads from DH2:",0,0
-LAB_1D23:
+GLOB_STR_REBOOTING_COMPUTER:
     DC.B	"Rebooting Computer........",0,0
 LAB_1D24:
     DC.B	" Number too big        ",0
@@ -75676,7 +75632,8 @@ LAB_1D55:
 LAB_1D56:
     DC.B	"DMPLEX ",0
 LAB_1D57:
-    DC.B	"CF2_DPPV ",0,0,0
+    DC.B	"CF2_DPPV ",0
+    DS.W    1
 LAB_1D58:
     DC.B	"CTime",0
 LAB_1D59:
@@ -75866,6 +75823,7 @@ LAB_1DB4:
     DC.B	"Shift <-: prev Ad   CTRLC: Color Mode",0
 LAB_1DB5:
     DC.B	"CTRLF: Foreground   CTRLB: Background",0
+
 GLOB_REF_GRAPHICS_LIBRARY:
     DS.L	1
 GLOB_REF_INTUITION_LIBRARY:
@@ -75874,16 +75832,19 @@ GLOB_REF_UTILITY_LIBRARY:
     DS.L	1
 GLOB_REF_BATTCLOCK_RESOURCE:
     DS.L	1
+
 GLOB_STR_PREVUEC_FONT:
     NStr	"PrevueC.font"
 GLOB_STRUCT_TEXTATTR_PREVUEC_FONT:
     DC.L	GLOB_STR_PREVUEC_FONT
     DC.L	$00194020
+
 GLOB_STR_H26F_FONT:
     NStr	"h26f.font"
 GLOB_STRUCT_TEXTATTR_H26F_FONT:
     DC.L	GLOB_STR_H26F_FONT
     DC.L	$001a0000
+
 GLOB_STR_TOPAZ_FONT:
     NStr	"topaz.font"
 GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
@@ -75891,6 +75852,7 @@ GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
     DC.W    $0008 ; Size 8 font
     DC.B    0       ; Style: 0 (Normal)
     DC.B    1       ; Flags: 1 (FPB_DISKFONT from font.library)
+
 GLOB_STR_PREVUE_FONT:
     DC.B	"Prevue.font",0
 GLOB_STRUCT_TEXTATTR_PREVUE_FONT:
@@ -75898,6 +75860,7 @@ GLOB_STRUCT_TEXTATTR_PREVUE_FONT:
     DC.W    $000d ; Size 13 font
     DC.B	$40     ;
     DC.B    $20     ;
+
 LAB_1DC2:
     DS.L	1
 GLOB_REF_DISKFONT_LIBRARY:
@@ -77657,7 +77620,8 @@ GLOB_STR_INPUT_DEVICE:
 GLOB_STR_CONSOLE_DEVICE:
     DC.B	"console.device",0,0
 LAB_1FB5:
-    DC.B	"KYBD.c",0,0,0,0
+    DC.B	"KYBD.c",0,0
+    DS.W    1
 LAB_1FB6:
     DC.B	"dh2:local.ads"
 LAB_1FB7:
@@ -77671,91 +77635,91 @@ LAB_1FBA:
     DC.L	$05050500
     DC.W	$0003
 LAB_1FBB:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FBC:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FBD:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FBE:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FBF:
-    DC.B	"RS",0,0
+    NStr    "RS"
 LAB_1FC0:
-    DC.B	"RS",0,0
+    NStr    "RS"
 LAB_1FC1:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FC2:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FC3:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FC4:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FC5:
-    DC.B	"%c%02X",0,0
+    NStr    "%c%02X"
 LAB_1FC6:
     DS.W	1
 LAB_1FC7:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FC8:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FC9:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FCA:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FCB:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FCC:
-    DC.B	" ",0
+    NStr    " "
 LAB_1FCD:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FCE:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FCF:
-    DC.B	" ",0
+    NStr    " "
 LAB_1FD0:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD1:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD2:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD3:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD4:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD5:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD6:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD7:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD8:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FD9:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FDA:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FDB:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FDC:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FDD:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FDE:
-    DC.B	"LADFUNC.c",0
+    NStr    "LADFUNC.c"
 LAB_1FDF:
     DC.B	"""",10,0,0
 LAB_1FE0:
     DC.B	"""",0
 LAB_1FE1:
-    DC.B	"^%lc",0,0
+    NStr    "^%lc"
 LAB_1FE2:
-    DC.B	"%lc",0
+    NStr    "%lc"
 LAB_1FE3:
-    DC.B	"%lc",0
+    NStr    "%lc"
 LAB_1FE4:
-    DC.B	"$%02lx",0,0
+    NStr    "$%02lx"
 LAB_1FE5:
-    DC.B	"%lc",0
+    NStr    "%lc"
 LAB_1FE6:
     DS.L	1
 LAB_1FE7:
@@ -77767,39 +77731,39 @@ LAB_1FE9:
 LAB_1FEA:
     DC.W	$ffff
 LAB_1FEB:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FEC:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FED:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FEE:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FEF:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FF0:
     DC.B	"FV",0,0
 LAB_1FF1:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FF2:
     DC.B	"YyLlZ",0
 LAB_1FF3:
     DC.B	"UVGTI",0
 LAB_1FF4:
-    DC.B	"DH2:LocAvail.dat",0,0
+    NStr    "DH2:LocAvail.dat"
 LAB_1FF5:
     DC.B	"LA_VER_1:  curday",0
 LAB_1FF6:
     DC.B	"LA_VER_1:  nxtday",0
 LAB_1FF7:
-    DC.B	"DH2:LocAvail.dat",0,0
+    NStr    "DH2:LocAvail.dat"
 LAB_1FF8:
     DC.B	"LA_VER",0,0
 LAB_1FF9:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FFA:
-    DC.B	"LOCAVAIL.c",0,0
+    NStr    "LOCAVAIL.c"
 LAB_1FFB:
-    DC.B	"YyLlZ",0
+    NStr    "YyLlZ"
 LAB_1FFC:
     DS.L	1
 LAB_1FFD:
@@ -77807,14 +77771,14 @@ LAB_1FFD:
 LAB_1FFE:
     DS.W	1
 LAB_1FFF:
-    DC.B	"NEWGRID.c",0
+    NStr    "NEWGRID.c"
 LAB_2000:
-    DC.B	"NEWGRID.c",0
+    NStr    "NEWGRID.c"
 LAB_2001:
-    DC.B	"44:44:44",0,0
-    DC.B	"44:44:44",0,0
+    NStr    "44:44:44"
+    NStr    "44:44:44"
 LAB_2002:
-    DC.B	"NEWGRID.c",0
+    NStr    "NEWGRID.c"
 LAB_2003:
     DS.L	1
 LAB_2004:
@@ -77835,11 +77799,11 @@ LAB_200B:
     DC.L	$00000005,$00000006,$00000007,$00000008
     DC.L	$00000009,$0000000a,$0000000c
 GLOB_STR_SINGLE_SPACE:
-    DC.B	" ",0
+    NStr    " "
 LAB_200D:
-    DC.B	" ",0
+    NStr    " "
 LAB_200E:
-    DC.B	" ",0
+    NStr    " "
 LAB_200F:
     DS.L	1
 LAB_2010:
@@ -77865,7 +77829,7 @@ LAB_2018:
 LAB_2019:
     DC.B	145,"|",0
 LAB_201A:
-    DC.B	"%c%s%c %s",0
+    NStr    "%c%s%c %s"
 LAB_201B:
     DC.L	$00000004
 LAB_201C:
@@ -77895,7 +77859,7 @@ LAB_2027:
 LAB_2028:
     DC.L	$00000004
 LAB_2029:
-    DC.B	"%s Ch. %s",0
+    NStr    "%s Ch. %s"
 LAB_202A:
     DS.L	1
 LAB_202B:
@@ -77913,13 +77877,13 @@ LAB_2030:
 LAB_2031:
     DS.W	1
 LAB_2032:
-    DC.B	", ",0,0
+    NStr    ", "
 LAB_2033:
-    DC.B	" ",0
+    NStr    " "
 LAB_2034:
-    DC.B	", ",0,0
+    NStr    ", "
 LAB_2035:
-    DC.B	" ",0
+    NStr    " "
 LAB_2036:
     DC.L	$00000004
 LAB_2037:
@@ -77931,15 +77895,15 @@ LAB_2039:
 LAB_203A:
     DS.W	1
 LAB_203B:
-    DC.B	", ",0,0
+    NStr    ", "
 LAB_203C:
-    DC.B	"-",0
+    NStr    "-"
 LAB_203D:
     DC.L	$00000004
-LAB_203E:
-    DC.B	"NEWGRID2.c",0,0
+GLOB_STR_NEWGRID2_C_1:
+    NStr    "NEWGRID2.c"
 LAB_203F:
-    DC.B	"NEWGRID2.c",0,0
+    NStr    "NEWGRID2.c"
 LAB_2040:
     DS.L	1
 LAB_2041:
@@ -77951,25 +77915,25 @@ LAB_2043:
 LAB_2044:
     DC.L	$00000001
 LAB_2045:
-    DC.B	"NEWGRID2.c",0,0
+    NStr    "NEWGRID2.c"
 LAB_2046:
-    DC.B	"NEWGRID2.c",0,0
+    NStr    "NEWGRID2.c"
 LAB_2047:
-    DC.B	"NEWGRID2.c",0,0
+    NStr    "NEWGRID2.c"
 LAB_2048:
-    DC.B	"NEWGRID2.c",0,0
+    NStr    "NEWGRID2.c"
 LAB_2049:
     DS.L	1
 LAB_204A:
-    DC.B	"P_TYPE.c",0,0
+    NStr    "P_TYPE.c"
 LAB_204B:
-    DC.B	"P_TYPE.c",0,0
+    NStr    "P_TYPE.c"
 LAB_204C:
-    DC.B	"P_TYPE.c",0,0
+    NStr    "P_TYPE.c"
 LAB_204D:
-    DC.B	"P_TYPE.c",0,0
+    NStr    "P_TYPE.c"
 LAB_204E:
-    DC.B	"P_TYPE.c",0,0
+    NStr    "P_TYPE.c"
 LAB_204F:
     DC.B	"dh2:PromoId.Dat",0
 LAB_2050:
@@ -77991,7 +77955,8 @@ LAB_2056:
 LAB_2057:
     DC.B	"NXTDAY:",0
 LAB_2058:
-    DC.B	"P_TYPE.c",0,0,0,0
+    NStr    "P_TYPE.c"
+    DS.W    1
 LAB_2059:
     DS.L	1
 LAB_205A:
@@ -78161,10 +78126,10 @@ LAB_20AB:
     DS.L	1
 LAB_20AC:
     DS.L	1
-LAB_20AD:
-    DC.B	"No Current Weather Data Available",0
-LAB_20AE:
-    DC.L	LAB_20AD
+GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
+    NStr    "No Current Weather Data Available"
+GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
+    DC.L	GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
 LAB_20AF:
     DC.B	"No Forecast Weather Data Available",0,0
 LAB_20B0:
