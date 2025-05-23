@@ -65,6 +65,7 @@ _LVOInitRastPort    = -198
 _LVOSetRast         = -234
 _LVOMove            = -240
 _LVODraw            = -246
+_LVOBltClear		= -300
 _LVORectFill        = -306
 _LVOSetAPen         = -342
 _LVOSetBPen         = -348
@@ -99,19 +100,11 @@ NStr macro
     CNOP 0,2
 endm
 
+; Create a null-terminated 2-parametr string, null padded to the next word.
 NStr2 macro
     DC.B	\1,\2,0
     CNOP 0,2
 endm
-
-; I should be able to do this too?:
-;test_pr: .macro str_ptr
-;    lda #<\str_ptr
-;    sta ADDR_PTR
-;    lda #>\str_ptr
-;    sta ADDR_PTR+1
-;    jsr lcd_print_string
-;.endmacro
 
 TextAlignCenter     = 24
 TextAlignLeft       = 25
@@ -2563,7 +2556,7 @@ LAB_00F1:
     CMPI.L	#$494c424d,-4(A5)	; #$494c424d = "ILBM"
     BEQ.W	LAB_0109		;0181c: 67000292
     MOVE.L	D7,D1			;01820: 2207
-    LEA	-8(A5),A0		;01822: 41edfff8
+    LEA	    -8(A5),A0		;01822: 41edfff8
     MOVE.L	A0,D2			;01826: 2408
     JSR	    -42(A6)			;01828: 4eaeffd6
     SUBQ.L	#4,D0			;0182c: 5980
@@ -3397,11 +3390,11 @@ LAB_0152:
     MOVEA.L	-4(A5),A0		;020b4: 206dfffc
     MOVE.L	A0,-8(A5)		;020b8: 2b48fff8
     MOVEA.L	A0,A1			;020bc: 2248
-    LEA	-40(A5),A2		;020be: 45edffd8
+    LEA	    -40(A5),A2		;020be: 45edffd8
 LAB_0153:
     MOVE.B	(A1)+,(A2)+		;020c2: 14d9
     BNE.S	LAB_0153		;020c4: 66fc
-    PEA	-40(A5)			;020c6: 486dffd8
+    PEA	    -40(A5)			;020c6: 486dffd8
     JSR     LAB_01A7(PC)		;020ca: 4eba0994
     ADDQ.W	#4,A7			;020ce: 584f
     MOVEA.L	D0,A0			;020d0: 2040
@@ -3440,7 +3433,7 @@ LAB_0156:
     TST.L	D7			;02128: 4a87
     BEQ.W	LAB_0159		;0212a: 670000ae
     MOVE.L	D7,D1			;0212e: 2207
-    LEA	-64(A5),A0		;02130: 41edffc0
+    LEA	    -64(A5),A0		;02130: 41edffc0
     MOVE.L	A0,D2			;02134: 2408
     MOVEQ	#6,D3			;02136: 7606
     MOVEA.L	LAB_2382,A6		;02138: 2c7900041454
@@ -4122,14 +4115,14 @@ LAB_0196:
     BEQ.S	LAB_0197		;02940: 6714
     PEA	    2.W			;02942: 48780002
     MOVE.L	A3,-(A7)		;02946: 2f0b
-    PEA	-7(A5)			;02948: 486dfff9
+    PEA	    -7(A5)			;02948: 486dfff9
     JSR     LAB_0470(PC)		;0294c: 4eba6466
     LEA	    12(A7),A7		;02950: 4fef000c
     BRA.S	LAB_0198		;02954: 6016
 LAB_0197:
     PEA	    2.W			;02956: 48780002
     PEA	    LAB_1B41		;0295a: 487900033d8e
-    PEA	-7(A5)			;02960: 486dfff9
+    PEA	    -7(A5)			;02960: 486dfff9
     JSR     LAB_0470(PC)		;02964: 4eba644e
     LEA	    12(A7),A7		;02968: 4fef000c
 LAB_0198:
@@ -4140,7 +4133,7 @@ LAB_0199:
     MOVEA.L	-4(A5),A0		;02976: 206dfffc
     ADDA.W	#$0021,A0		;0297a: d0fc0021
     PEA	    2.W			;0297e: 48780002
-    PEA	-7(A5)			;02982: 486dfff9
+    PEA	    -7(A5)			;02982: 486dfff9
     MOVE.L	A0,-(A7)		;02986: 2f08
     JSR     LAB_01A6(PC)		;02988: 4eba00d0
     LEA	    12(A7),A7		;0298c: 4fef000c
@@ -4899,7 +4892,7 @@ LAB_01E3:
     MOVE.L	D1,-(A7)		;03302: 2f01
     MOVE.L	D0,-(A7)		;03304: 2f00
     PEA	    LAB_1B56		;03306: 487900033e48
-    PEA	-10(A5)			;0330c: 486dfff6
+    PEA	    -10(A5)			;0330c: 486dfff6
     JSR     LAB_0382(PC)		;03310: 4eba3a82
     LEA	    24(A7),A7		;03314: 4fef0018
     BRA.S	LAB_01E5		;03318: 6030
@@ -4914,7 +4907,7 @@ LAB_01E4:
     MOVE.L	D1,-(A7)		;03334: 2f01
     MOVE.L	D0,-(A7)		;03336: 2f00
     PEA	    LAB_1B57		;03338: 487900033e56
-    PEA	-10(A5)			;0333e: 486dfff6
+    PEA	    -10(A5)			;0333e: 486dfff6
     JSR     LAB_0382(PC)		;03342: 4eba3a50
     LEA	    20(A7),A7		;03346: 4fef0014
 LAB_01E5:
@@ -4971,7 +4964,7 @@ LAB_01E6:
     MOVEA.L	LAB_1FFC,A1		;033e6: 22790003a6c8
     MOVEQ	#1,D0			;033ec: 7001
     JSR     _LVOSetAPen(A6)
-    LEA	-10(A5),A0		;033f2: 41edfff6
+    LEA	    -10(A5),A0		;033f2: 41edfff6
     MOVEA.L	A0,A1			;033f6: 2248
 LAB_01E7:
     TST.B	(A1)+			;033f8: 4a19
@@ -5132,7 +5125,7 @@ LAB_01F1:
     MOVE.L	32(A7),-(A7)		;03590: 2f2f0020
     MOVE.L	LAB_1FFC,-(A7)		;03594: 2f390003a6c8
     JSR     LAB_00ED(PC)		;0359a: 4ebae1cc
-    PEA	-89(A5)			;0359e: 486dffa7
+    PEA	    -89(A5)			;0359e: 486dffa7
     MOVE.L	D5,-(A7)		;035a2: 2f05
     BSR.W	LAB_01E9		;035a4: 6100fea4
     LEA	    28(A7),A7		;035a8: 4fef001c
@@ -5147,7 +5140,7 @@ LAB_01F1:
     ADD.L	D0,D1			;035ca: d280
     MOVEQ	#0,D0			;035cc: 7000
     MOVE.W	LAB_232B,D0		;035ce: 30390003ef32
-    LEA	-89(A5),A0		;035d4: 41edffa7
+    LEA	    -89(A5),A0		;035d4: 41edffa7
     MOVEA.L	A0,A1			;035d8: 2248
 LAB_01F2:
     TST.B	(A1)+			;035da: 4a19
@@ -5192,7 +5185,7 @@ LAB_01F4:
     MOVEA.L	LAB_1FFC,A1		;03642: 22790003a6c8
     MOVEQ	#3,D0			;03648: 7003
     JSR	    -342(A6)		;0364a: 4eaefeaa
-    LEA	-89(A5),A0		;0364e: 41edffa7
+    LEA	    -89(A5),A0		;0364e: 41edffa7
     MOVEA.L	A0,A1			;03652: 2248
 LAB_01F5:
     TST.B	(A1)+			;03654: 4a19
@@ -5235,7 +5228,7 @@ LAB_01F8:
     MOVE.L	D1,-(A7)		;036b2: 2f01
     MOVE.L	LAB_1FFC,-(A7)		;036b4: 2f390003a6c8
     JSR     LAB_00ED(PC)		;036ba: 4ebae0ac
-    PEA	-89(A5)			;036be: 486dffa7
+    PEA	    -89(A5)			;036be: 486dffa7
     MOVE.L	D5,-(A7)		;036c2: 2f05
     BSR.W	LAB_01E9		;036c4: 6100fd84
     MOVEQ	#0,D0			;036c8: 7000
@@ -5249,7 +5242,7 @@ LAB_01F8:
     ADD.L	D0,D1			;036e6: d280
     MOVEQ	#0,D0			;036e8: 7000
     MOVE.W	LAB_232B,D0		;036ea: 30390003ef32
-    LEA	-89(A5),A0		;036f0: 41edffa7
+    LEA	    -89(A5),A0		;036f0: 41edffa7
     MOVEA.L	A0,A1			;036f4: 2248
 LAB_01F9:
     TST.B	(A1)+			;036f6: 4a19
@@ -5294,7 +5287,7 @@ LAB_01FB:
     MOVEA.L	LAB_1FFC,A1		;0375e: 22790003a6c8
     MOVEQ	#3,D0			;03764: 7003
     JSR	    -342(A6)		;03766: 4eaefeaa
-    LEA	-89(A5),A0		;0376a: 41edffa7
+    LEA	    -89(A5),A0		;0376a: 41edffa7
     MOVEA.L	A0,A1			;0376e: 2248
 LAB_01FC:
     TST.B	(A1)+			;03770: 4a19
@@ -5347,7 +5340,7 @@ LAB_01FE:
     MOVEM.L	D2-D7,-(A7)		;037e6: 48e73f00
     MOVEQ	#0,D5			;037ea: 7a00
     PEA	    LAB_2274		;037ec: 48790003de36
-    PEA	-32(A5)			;037f2: 486dffe0
+    PEA	    -32(A5)			;037f2: 486dffe0
     JSR     LAB_0090(PC)		;037f6: 4ebad5a0
     ADDQ.W	#8,A7			;037fa: 504f
     MOVEA.L	LAB_2217,A1		;037fc: 22790003c226
@@ -5398,7 +5391,7 @@ LAB_01FE:
     MOVE.L	D1,-(A7)		;0389c: 2f01
     MOVE.L	D0,-(A7)		;0389e: 2f00
     PEA	    LAB_1B58		;038a0: 487900033e64
-    PEA	-32(A5)			;038a6: 486dffe0
+    PEA	    -32(A5)			;038a6: 486dffe0
     JSR     LAB_0382(PC)		;038aa: 4eba34e8
     LEA	    24(A7),A7		;038ae: 4fef0018
 LAB_01FF:
@@ -5438,7 +5431,7 @@ LAB_0202:
     MOVE.L	D7,D0			;03912: 2007
     MOVE.L	24(A7),D1		;03914: 222f0018
     JSR	    -240(A6)		;03918: 4eaeff10
-    LEA	-32(A5),A0		;0391c: 41edffe0
+    LEA	    -32(A5),A0		;0391c: 41edffe0
     MOVEA.L	A0,A1			;03920: 2248
 LAB_0203:
     TST.B	(A1)+			;03922: 4a19
@@ -5460,7 +5453,7 @@ LAB_0203:
     MOVE.W	62(A0),D1		;03952: 3228003e
     MOVEA.L	A0,A1			;03956: 2248
     JSR	    -240(A6)		;03958: 4eaeff10
-    LEA	-23(A5),A0		;0395c: 41edffe9
+    LEA	    -23(A5),A0		;0395c: 41edffe9
     MOVEA.L	A0,A1			;03960: 2248
 LAB_0204:
     TST.B	(A1)+			;03962: 4a19
@@ -5514,7 +5507,7 @@ LAB_0206:
     MOVE.L	(A1),-(A7)		;039f6: 2f11
     MOVE.L	(A0),-(A7)		;039f8: 2f10
     PEA	    LAB_1B5B		;039fa: 487900033e8a
-    PEA	-32(A5)			;03a00: 486dffe0
+    PEA	    -32(A5)			;03a00: 486dffe0
     JSR     LAB_0382(PC)		;03a04: 4eba338e
     LEA	    20(A7),A7		;03a08: 4fef0014
     MOVEA.L	LAB_2217,A1		;03a0c: 22790003c226
@@ -5575,7 +5568,7 @@ LAB_0208:
     JSR	    -240(A6)		;03ab4: 4eaeff10
     MOVE.L	D6,D0			;03ab8: 2006
     MOVEA.L	LAB_2217,A1		;03aba: 22790003c226
-    LEA	-32(A5),A0		;03ac0: 41edffe0
+    LEA	    -32(A5),A0		;03ac0: 41edffe0
     JSR	    -60(A6)			;03ac4: 4eaeffc4
     MOVEQ	#0,D0			;03ac8: 7000
     MOVEA.L	LAB_2217,A0		;03aca: 20790003c226
@@ -5788,7 +5781,7 @@ LAB_021A:
     CMP.W	D0,D7			;03db0: be40
     BNE.S	LAB_021C		;03db2: 6618
     LEA     LAB_234B,A0		;03db4: 41f90003fa3e
-    LEA	-554(A5),A1		;03dba: 43edfdd6
+    LEA	    -554(A5),A1		;03dba: 43edfdd6
 LAB_021B:
     MOVE.B	(A0)+,(A1)+		;03dbe: 12d8
     BNE.S	LAB_021B		;03dc0: 66fc
@@ -5796,14 +5789,14 @@ LAB_021B:
     BRA.S	LAB_021E		;03dca: 6016
 LAB_021C:
     LEA     LAB_234C,A0		;03dcc: 41f90003fb06
-    LEA	-554(A5),A1		;03dd2: 43edfdd6
+    LEA	    -554(A5),A1		;03dd2: 43edfdd6
 LAB_021D:
     MOVE.B	(A0)+,(A1)+		;03dd6: 12d8
     BNE.S	LAB_021D		;03dd8: 66fc
     MOVE.W	LAB_234E,-38(A5)	;03dda: 3b790003fbd0ffda
 LAB_021E:
-    LEA	-554(A5),A0		;03de2: 41edfdd6
-    LEA	-754(A5),A1		;03de6: 43edfd0e
+    LEA	    -554(A5),A0		;03de2: 41edfdd6
+    LEA	    -754(A5),A1		;03de6: 43edfd0e
 LAB_021F:
     MOVE.B	(A0)+,(A1)+		;03dea: 12d8
     BNE.S	LAB_021F		;03dec: 66fc
@@ -5921,7 +5914,7 @@ LAB_0225:
     ASL.L	#2,D0			;03f48: e580
     MOVEA.L	-8(A5),A0		;03f4a: 206dfff8
     MOVEA.L	56(A0,D0.L),A0		;03f4e: 20700838
-    LEA	-554(A5),A1		;03f52: 43edfdd6
+    LEA	    -554(A5),A1		;03f52: 43edfdd6
 LAB_0226:
     MOVE.B	(A0)+,(A1)+		;03f56: 12d8
     BNE.S	LAB_0226		;03f58: 66fc
@@ -5938,7 +5931,7 @@ LAB_0227:
     TST.B	D0			;03f7c: 4a00
     BEQ.S	LAB_0229		;03f7e: 6710
     LEA     LAB_2367,A0		;03f80: 41f9000402d1
-    LEA	-554(A5),A1		;03f86: 43edfdd6
+    LEA	    -554(A5),A1		;03f86: 43edfdd6
 LAB_0228:
     MOVE.B	(A0)+,(A1)+		;03f8a: 12d8
     BNE.S	LAB_0228		;03f8c: 66fc
@@ -5947,7 +5940,7 @@ LAB_0229:
     TST.L	LAB_1DDB		;03f90: 4ab900036410
     BEQ.W	LAB_0264		;03f96: 67000690
     MOVEA.L	LAB_1DDB,A0		;03f9a: 207900036410
-    LEA	-554(A5),A1		;03fa0: 43edfdd6
+    LEA	    -554(A5),A1		;03fa0: 43edfdd6
 LAB_022A:
     MOVE.B	(A0)+,(A1)+		;03fa4: 12d8
     BNE.S	LAB_022A		;03fa6: 66fc
@@ -5965,7 +5958,7 @@ LAB_022C:
     TST.B	D0			;03fca: 4a00
     BEQ.S	LAB_022E		;03fcc: 6710
     LEA     LAB_2367,A0		;03fce: 41f9000402d1
-    LEA	-554(A5),A1		;03fd4: 43edfdd6
+    LEA	    -554(A5),A1		;03fd4: 43edfdd6
 LAB_022D:
     MOVE.B	(A0)+,(A1)+		;03fd8: 12d8
     BNE.S	LAB_022D		;03fda: 66fc
@@ -5974,7 +5967,7 @@ LAB_022E:
     TST.L	LAB_1DDC		;03fde: 4ab900036414
     BEQ.W	LAB_0264		;03fe4: 67000642
     MOVEA.L	LAB_1DDC,A0		;03fe8: 207900036414
-    LEA	-554(A5),A1		;03fee: 43edfdd6
+    LEA	    -554(A5),A1		;03fee: 43edfdd6
 LAB_022F:
     MOVE.B	(A0)+,(A1)+		;03ff2: 12d8
     BNE.S	LAB_022F		;03ff4: 66fc
@@ -5992,7 +5985,7 @@ LAB_0231:
     TST.B	D0			;04018: 4a00
     BEQ.W	LAB_0264		;0401a: 6700060c
     LEA     LAB_2367,A0		;0401e: 41f9000402d1
-    LEA	-554(A5),A1		;04024: 43edfdd6
+    LEA	    -554(A5),A1		;04024: 43edfdd6
 LAB_0232:
     MOVE.B	(A0)+,(A1)+		;04028: 12d8
     BNE.S	LAB_0232		;0402a: 66fc
@@ -6009,7 +6002,7 @@ LAB_0233:
     TST.B	D0			;0404e: 4a00
     BEQ.W	LAB_0264		;04050: 670005d6
     LEA     LAB_21B0,A0		;04054: 41f90003b908
-    LEA	-554(A5),A1		;0405a: 43edfdd6
+    LEA	    -554(A5),A1		;0405a: 43edfdd6
 LAB_0234:
     MOVE.B	(A0)+,(A1)+		;0405e: 12d8
     BNE.S	LAB_0234		;04060: 66fc
@@ -6248,9 +6241,9 @@ LAB_024E:
     MOVE.W	-36(A5),D0		;0432e: 302dffdc
     EXT.L	D0			;04332: 48c0
     MOVE.L	D0,(A7)			;04334: 2e80
-    PEA	-834(A5)		;04336: 486dfcbe
+    PEA	    -834(A5)		;04336: 486dfcbe
     JSR     LAB_0269(PC)		;0433a: 4eba0310
-    PEA	-834(A5)		;0433e: 486dfcbe
+    PEA	    -834(A5)		;0433e: 486dfcbe
     PEA	    LAB_2366		;04342: 487900040280
     JSR     LAB_05C5(PC)		;04348: 4eba7528
     LEA	    20(A7),A7		;0434c: 4fef0014
@@ -6271,9 +6264,9 @@ LAB_0251:
     MOVE.B	D1,D2			;04376: 1401
     MOVE.L	D2,-(A7)		;04378: 2f02
     MOVE.L	D0,-(A7)		;0437a: 2f00
-    PEA	-34(A5)			;0437c: 486dffde
+    PEA	    -34(A5)			;0437c: 486dffde
     JSR     LAB_0275(PC)		;04380: 4eba0312
-    PEA	-34(A5)			;04384: 486dffde
+    PEA	    -34(A5)			;04384: 486dffde
     JSR     LAB_0274(PC)		;04388: 4eba0304
     LEA	    16(A7),A7		;0438c: 4fef0010
     MOVE.W	-18(A5),D0		;04390: 302dffee
@@ -6311,14 +6304,14 @@ LAB_0257:
     MOVE.B	(A0)+,(A1)+		;043e6: 12d8
     BNE.S	LAB_0257		;043e8: 66fc
 LAB_0258:
-    PEA	-34(A5)			;043ea: 486dffde
+    PEA	    -34(A5)			;043ea: 486dffde
     JSR     LAB_0267(PC)		;043ee: 4eba0250
     MOVE.W	-36(A5),D0		;043f2: 302dffdc
     EXT.L	D0			;043f6: 48c0
     MOVE.L	D0,(A7)			;043f8: 2e80
-    PEA	-834(A5)		;043fa: 486dfcbe
+    PEA	    -834(A5)		;043fa: 486dfcbe
     JSR     LAB_0269(PC)		;043fe: 4eba024c
-    PEA	-834(A5)		;04402: 486dfcbe
+    PEA	    -834(A5)		;04402: 486dfcbe
     PEA	    LAB_2366		;04406: 487900040280
     JSR     LAB_05C5(PC)		;0440c: 4eba7464
     LEA	    16(A7),A7		;04410: 4fef0010
@@ -6591,11 +6584,11 @@ LAB_027A:
     TST.L	D0			;04726: 4a80
     BNE.S	LAB_027C		;04728: 6616
     LEA     LAB_1B61,A0		;0472a: 41f900033ea4
-    LEA	-15(A5),A1		;04730: 43edfff1
+    LEA	    -15(A5),A1		;04730: 43edfff1
 LAB_027B:
     MOVE.B	(A0)+,(A1)+		;04734: 12d8
     BNE.S	LAB_027B		;04736: 66fc
-    LEA	-15(A5),A0		;04738: 41edfff1
+    LEA	    -15(A5),A0		;04738: 41edfff1
     MOVE.L	A0,-4(A5)		;0473c: 2b48fffc
 LAB_027C:
     MOVEA.L	-4(A5),A0		;04740: 206dfffc
@@ -6693,7 +6686,7 @@ LAB_0284:
     MOVE.L	-28(A5),-(A7)		;04830: 2f2dffe4
     PEA	    19.W			;04834: 48780013
     PEA	    LAB_1B62		;04838: 487900033eb0
-    PEA	-12(A5)			;0483e: 486dfff4
+    PEA	    -12(A5)			;0483e: 486dfff4
     JSR     LAB_0382(PC)		;04842: 4eba2550
     LEA	    20(A7),A7		;04846: 4fef0014
     TST.L	28(A5)			;0484a: 4aad001c
@@ -6709,7 +6702,7 @@ LAB_0285:
     JSR     LAB_05C5(PC)		;04868: 4eba7008
     ADDQ.W	#8,A7			;0486c: 504f
 LAB_0286:
-    PEA	-12(A5)			;0486e: 486dfff4
+    PEA	    -12(A5)			;0486e: 486dfff4
     MOVE.L	A3,-(A7)		;04872: 2f0b
     JSR     LAB_05C5(PC)		;04874: 4eba6ffc
     MOVE.L	D5,D0			;04878: 2005
@@ -6723,11 +6716,11 @@ LAB_0286:
     TST.L	D0			;04892: 4a80
     BNE.S	LAB_0288		;04894: 6616
     LEA     LAB_1B64,A0		;04896: 41f900033ebc
-    LEA	-23(A5),A1		;0489c: 43edffe9
+    LEA	    -23(A5),A1		;0489c: 43edffe9
 LAB_0287:
     MOVE.B	(A0)+,(A1)+		;048a0: 12d8
     BNE.S	LAB_0287		;048a2: 66fc
-    LEA	-23(A5),A0		;048a4: 41edffe9
+    LEA	    -23(A5),A0		;048a4: 41edffe9
     MOVE.L	A0,-32(A5)		;048a8: 2b48ffe0
 LAB_0288:
     MOVEA.L	-32(A5),A0		;048ac: 206dffe0
@@ -7000,13 +6993,13 @@ LAB_0290:
     TST.L	D0			;04b72: 4a80
     BEQ.W	LAB_02A3		;04b74: 670001ee
     LEA     LAB_1B65,A0		;04b78: 41f900033ec8
-    LEA	-22(A5),A1		;04b7e: 43edffea
+    LEA	    -22(A5),A1		;04b7e: 43edffea
     MOVE.L	(A0)+,(A1)+		;04b82: 22d8
     MOVE.L	(A0)+,(A1)+		;04b84: 22d8
     MOVE.W	(A0),(A1)+		;04b86: 32d0
     CLR.B	(A1)			;04b88: 4211
     LEA     LAB_1B66,A0		;04b8a: 41f900033ed4
-    LEA	-11(A5),A1		;04b90: 43edfff5
+    LEA	    -11(A5),A1		;04b90: 43edfff5
 LAB_0291:
     MOVE.B	(A0)+,(A1)+		;04b94: 12d8
     BNE.S	LAB_0291		;04b96: 66fc
@@ -7025,12 +7018,12 @@ LAB_0292:
 LAB_0293:
     CLR.B	-11(A5,D7.L)		;04bb6: 423578f5
     MOVE.L	(A3),-(A7)		;04bba: 2f13
-    PEA	-11(A5)			;04bbc: 486dfff5
+    PEA	    -11(A5)			;04bbc: 486dfff5
     JSR     LAB_0385(PC)		;04bc0: 4eba21e4
     ADDQ.W	#8,A7			;04bc4: 504f
     MOVE.L	D0,(A3)			;04bc6: 2680
     LEA     LAB_1B67,A0		;04bc8: 41f900033ed6
-    LEA	-11(A5),A1		;04bce: 43edfff5
+    LEA	    -11(A5),A1		;04bce: 43edfff5
 LAB_0294:
     MOVE.B	(A0)+,(A1)+		;04bd2: 12d8
     BNE.S	LAB_0294		;04bd4: 66fc
@@ -7162,7 +7155,7 @@ LAB_029F:
     MOVE.B	D0,-11(A5,D7.L)		;04d30: 1b8078f5
     BRA.S	LAB_02A1		;04d34: 6018
 LAB_02A0:
-    LEA	-11(A5),A0		;04d36: 41edfff5
+    LEA	    -11(A5),A0		;04d36: 41edfff5
     MOVEA.L	A0,A1			;04d3a: 2248
     ADDA.L	D7,A1			;04d3c: d3c7
     MOVEA.L	D7,A6			;04d3e: 2c47
@@ -7175,7 +7168,7 @@ LAB_02A1:
     BRA.W	LAB_0295		;04d50: 6000fe8a
 LAB_02A2:
     MOVE.L	(A2),-(A7)		;04d54: 2f12
-    PEA	-11(A5)			;04d56: 486dfff5
+    PEA	    -11(A5)			;04d56: 486dfff5
     JSR     LAB_0385(PC)		;04d5a: 4eba204a
     ADDQ.W	#8,A7			;04d5e: 504f
     MOVE.L	D0,(A2)			;04d60: 2480
@@ -7298,9 +7291,9 @@ LAB_02AB:
     PEA	    1.W			;04ebe: 48780001
     CLR.L	-(A7)			;04ec2: 42a7
     MOVE.L	D2,-(A7)		;04ec4: 2f02
-    PEA	-97(A5)			;04ec6: 486dff9f
+    PEA	    -97(A5)			;04ec6: 486dff9f
     PEA	    9.W			;04eca: 48780009
-    PEA	-88(A5)			;04ece: 486dffa8
+    PEA	    -88(A5)			;04ece: 486dffa8
     MOVE.L	A0,-(A7)		;04ed2: 2f08
     MOVE.L	D0,-62(A5)		;04ed4: 2b40ffc2
     JSR     LAB_037D(PC)		;04ed8: 4eba1e9c
@@ -7529,9 +7522,9 @@ LAB_02BA:
     MOVE.L	D0,-(A7)		;05184: 2f00
     MOVE.L	D0,-(A7)		;05186: 2f00
     MOVE.L	D1,-(A7)		;05188: 2f01
-    PEA	-125(A5)		;0518a: 486dff83
+    PEA	    -125(A5)		;0518a: 486dff83
     PEA	    7.W			;0518e: 48780007
-    PEA	-116(A5)		;05192: 486dff8c
+    PEA	    -116(A5)		;05192: 486dff8c
     MOVE.L	A1,-(A7)		;05196: 2f09
     JSR     LAB_037D(PC)		;05198: 4eba1bdc
     LEA	    28(A7),A7		;0519c: 4fef001c
@@ -8076,10 +8069,10 @@ LAB_02E6:
     EXT.L	D1			;05806: 48c1
     MOVE.L	D1,-(A7)		;05808: 2f01
     PEA	    LAB_1B6D		;0580a: 487900033f0c
-    PEA	-112(A5)		;05810: 486dff90
+    PEA	    -112(A5)		;05810: 486dff90
     JSR     LAB_0382(PC)		;05814: 4eba157e
     PEA	    1006.W			;05818: 487803ee
-    PEA	-112(A5)		;0581c: 486dff90
+    PEA	    -112(A5)		;0581c: 486dff90
     JSR     LAB_0396(PC)		;05820: 4eba1816
     LEA	    20(A7),A7		;05824: 4fef0014
     MOVE.L	D0,D5			;05828: 2a00
@@ -8092,9 +8085,9 @@ LAB_02E7:
     MOVE.B	D7,D0			;05836: 1007
     MOVE.L	D0,-(A7)		;05838: 2f00
     PEA	    LAB_1B6E		;0583a: 487900033f1e
-    PEA	-152(A5)		;05840: 486dff68
+    PEA	    -152(A5)		;05840: 486dff68
     JSR     LAB_0382(PC)		;05844: 4eba154e
-    LEA	-152(A5),A0		;05848: 41edff68
+    LEA	    -152(A5),A0		;05848: 41edff68
     MOVEA.L	A0,A1			;0584c: 2248
 LAB_02E8:
     TST.B	(A1)+			;0584e: 4a19
@@ -8111,9 +8104,9 @@ LAB_02E8:
     JSR     LAB_03A0(PC)		;0586c: 4eba1910
     PEA	    2.W			;05870: 48780002
     PEA	    LAB_1B6F		;05874: 487900033f22
-    PEA	-152(A5)		;0587a: 486dff68
+    PEA	    -152(A5)		;0587a: 486dff68
     JSR     LAB_0382(PC)		;0587e: 4eba1514
-    LEA	-152(A5),A0		;05882: 41edff68
+    LEA	    -152(A5),A0		;05882: 41edff68
     MOVEA.L	A0,A1			;05886: 2248
 LAB_02E9:
     TST.B	(A1)+			;05888: 4a19
@@ -8265,9 +8258,9 @@ LAB_02F6:
     JSR     LAB_03A0(PC)		;05a18: 4eba1764
     MOVE.L	32(A2),(A7)		;05a1c: 2eaa0020
     PEA	    LAB_1B71		;05a20: 487900033f28
-    PEA	-152(A5)		;05a26: 486dff68
+    PEA	    -152(A5)		;05a26: 486dff68
     JSR     LAB_0382(PC)		;05a2a: 4eba1368
-    LEA	-152(A5),A0		;05a2e: 41edff68
+    LEA	    -152(A5),A0		;05a2e: 41edff68
     MOVEA.L	A0,A1			;05a32: 2248
 LAB_02F7:
     TST.B	(A1)+			;05a34: 4a19
@@ -8395,9 +8388,9 @@ LAB_0302:
     EXT.L	D0			;05b96: 48c0
     MOVE.L	D0,(A7)			;05b98: 2e80
     PEA	    LAB_1B72		;05b9a: 487900033f2c
-    PEA	-152(A5)		;05ba0: 486dff68
+    PEA	    -152(A5)		;05ba0: 486dff68
     JSR     LAB_0382(PC)		;05ba4: 4eba11ee
-    LEA	-152(A5),A0		;05ba8: 41edff68
+    LEA	    -152(A5),A0		;05ba8: 41edff68
     MOVEA.L	A0,A1			;05bac: 2248
 LAB_0303:
     TST.B	(A1)+			;05bae: 4a19
@@ -8429,9 +8422,9 @@ LAB_0304:
     EXT.L	D0			;05bfa: 48c0
     MOVE.L	D0,-(A7)		;05bfc: 2f00
     PEA	    LAB_1B73		;05bfe: 487900033f30
-    PEA	-152(A5)		;05c04: 486dff68
+    PEA	    -152(A5)		;05c04: 486dff68
     JSR     LAB_0382(PC)		;05c08: 4eba118a
-    LEA	-152(A5),A0		;05c0c: 41edff68
+    LEA	    -152(A5),A0		;05c0c: 41edff68
     MOVEA.L	A0,A1			;05c10: 2248
 LAB_0305:
     TST.B	(A1)+			;05c12: 4a19
@@ -8490,9 +8483,9 @@ LAB_0309:
     MOVEA.L	-12(A5),A0		;05cb0: 206dfff4
     MOVE.L	26(A0),(A7)		;05cb4: 2ea8001a
     PEA	    LAB_1B75		;05cb8: 487900033f38
-    PEA	-152(A5)		;05cbe: 486dff68
+    PEA	    -152(A5)		;05cbe: 486dff68
     JSR     LAB_0382(PC)		;05cc2: 4eba10d0
-    LEA	-152(A5),A0		;05cc6: 41edff68
+    LEA	    -152(A5),A0		;05cc6: 41edff68
     MOVEA.L	A0,A1			;05cca: 2248
 LAB_030A:
     TST.B	(A1)+			;05ccc: 4a19
@@ -8690,9 +8683,9 @@ LAB_031A:
     EXT.L	D1			;05f00: 48c1
     MOVE.L	D1,-(A7)		;05f02: 2f01
     PEA	    LAB_1B77		;05f04: 487900033f42
-    PEA	-566(A5)		;05f0a: 486dfdca
+    PEA	    -566(A5)		;05f0a: 486dfdca
     JSR     LAB_0382(PC)		;05f0e: 4eba0e84
-    PEA	-566(A5)		;05f12: 486dfdca
+    PEA	    -566(A5)		;05f12: 486dfdca
     JSR     LAB_03AC(PC)		;05f16: 4eba138a
     LEA	    16(A7),A7		;05f1a: 4fef0010
     ADDQ.L	#1,D0			;05f1e: 5280
@@ -8746,7 +8739,7 @@ LAB_031F:
     ADDQ.W	#8,A7			;05fb8: 504f
     TST.L	D0			;05fba: 4a80
     BNE.S	LAB_0320		;05fbc: 661e
-    LEA	-486(A5),A0		;05fbe: 41edfe1a
+    LEA	    -486(A5),A0		;05fbe: 41edfe1a
     MOVE.L	-582(A5),D0		;05fc2: 202dfdba
     ADDA.L	D0,A0			;05fc6: d1c0
     MOVEA.L	LAB_21BC,A1		;05fc8: 22790003bb28
@@ -8756,7 +8749,7 @@ LAB_031F:
     ADDQ.L	#1,-582(A5)		;05fd6: 52adfdba
     BRA.S	LAB_031F		;05fda: 60be
 LAB_0320:
-    LEA	-486(A5),A0		;05fdc: 41edfe1a
+    LEA	    -486(A5),A0		;05fdc: 41edfe1a
     MOVEA.L	A0,A1			;05fe0: 2248
     ADDA.L	-582(A5),A1		;05fe2: d3edfdba
     CLR.B	(A1)			;05fe6: 4211
@@ -8778,7 +8771,7 @@ LAB_0320:
 LAB_0321:
     CLR.L	-644(A5)		;06012: 42adfd7c
 LAB_0322:
-    PEA	-486(A5)		;06016: 486dfe1a
+    PEA	    -486(A5)		;06016: 486dfe1a
     JSR     LAB_0468(PC)		;0601a: 4eba2d68
     ADDQ.W	#4,A7			;0601e: 584f
     MOVEQ	#0,D1			;06020: 7200
@@ -8809,7 +8802,7 @@ LAB_0323:
 LAB_0324:
     MOVE.W	#$012d,D0		;0606a: 303c012d
     MOVEQ	#0,D1			;0606e: 7200
-    LEA	-326(A5),A0		;06070: 41edfeba
+    LEA	    -326(A5),A0		;06070: 41edfeba
 LAB_0325:
     MOVE.B	D1,(A0)+		;06074: 10c1
     DBF     D0,LAB_0325		;06076: 51c8fffc
@@ -8829,9 +8822,9 @@ LAB_0326:
     PEA	    1.W			;060a4: 48780001
     PEA	    26.W			;060a8: 4878001a
     MOVE.L	D0,-(A7)		;060ac: 2f00
-    PEA	-615(A5)		;060ae: 486dfd99
+    PEA	    -615(A5)		;060ae: 486dfd99
     PEA	    11.W			;060b2: 4878000b
-    PEA	-604(A5)		;060b6: 486dfda4
+    PEA	    -604(A5)		;060b6: 486dfda4
     MOVE.L	A0,-(A7)		;060ba: 2f08
     JSR     LAB_037D(PC)		;060bc: 4eba0cb8
     LEA	    28(A7),A7		;060c0: 4fef001c
@@ -8839,7 +8832,7 @@ LAB_0326:
 LAB_0327:
     MOVEQ	#21,D0			;060c6: 7015
     MOVEQ	#0,D1			;060c8: 7200
-    LEA	-604(A5),A0		;060ca: 41edfda4
+    LEA	    -604(A5),A0		;060ca: 41edfda4
 LAB_0328:
     MOVE.B	D1,(A0)+		;060ce: 10c1
     DBF     D0,LAB_0328		;060d0: 51c8fffc
@@ -8850,9 +8843,9 @@ LAB_0328:
     PEA	    1.W			;060e4: 48780001
     PEA	    26.W			;060e8: 4878001a
     MOVE.L	D0,-(A7)		;060ec: 2f00
-    PEA	-613(A5)		;060ee: 486dfd9b
+    PEA	    -613(A5)		;060ee: 486dfd9b
     PEA	    11.W			;060f2: 4878000b
-    PEA	-600(A5)		;060f6: 486dfda8
+    PEA	    -600(A5)		;060f6: 486dfda8
     MOVE.L	A0,-(A7)		;060fa: 2f08
     JSR     LAB_037D(PC)		;060fc: 4eba0c78
     LEA	    28(A7),A7		;06100: 4fef001c
@@ -8895,7 +8888,7 @@ LAB_032C:
     ADDQ.W	#8,A7			;06168: 504f
     TST.B	D0			;0616a: 4a00
     BNE.W	LAB_033B		;0616c: 660003ce
-    LEA	-326(A5),A0		;06170: 41edfeba
+    LEA	    -326(A5),A0		;06170: 41edfeba
     ADDA.W	D5,A0			;06174: d0c5
     TST.B	(A0)			;06176: 4a10
     BNE.W	LAB_0331		;06178: 6600019c
@@ -9008,9 +9001,9 @@ LAB_0330:
     ADDA.W	-588(A5),A0		;062ee: d0edfdb4
     MOVE.L	A0,-(A7)		;062f2: 2f08
     PEA	    LAB_1B7C		;062f4: 487900033f6e
-    PEA	-486(A5)		;062fa: 486dfe1a
+    PEA	    -486(A5)		;062fa: 486dfe1a
     JSR     LAB_0382(PC)		;062fe: 4eba0a94
-    PEA	-486(A5)		;06302: 486dfe1a
+    PEA	    -486(A5)		;06302: 486dfe1a
     JSR     LAB_0468(PC)		;06306: 4eba2a7c
     LEA	    16(A7),A7		;0630a: 4fef0010
     MOVEA.L	-8(A5),A0		;0630e: 206dfff8
@@ -9044,9 +9037,9 @@ LAB_0332:
     PEA	    1.W			;06368: 48780001
     PEA	    26.W			;0636c: 4878001a
     MOVE.L	D0,-(A7)		;06370: 2f00
-    PEA	-640(A5)		;06372: 486dfd80
+    PEA	    -640(A5)		;06372: 486dfd80
     PEA	    8.W			;06376: 48780008
-    PEA	-632(A5)		;0637a: 486dfd88
+    PEA	    -632(A5)		;0637a: 486dfd88
     MOVE.L	A0,-(A7)		;0637e: 2f08
     JSR     LAB_037D(PC)		;06380: 4eba09f4
     LEA	    28(A7),A7		;06384: 4fef001c
@@ -9054,7 +9047,7 @@ LAB_0332:
 LAB_0333:
     MOVEQ	#15,D0			;0638a: 700f
     MOVEQ	#0,D1			;0638c: 7200
-    LEA	-632(A5),A0		;0638e: 41edfd88
+    LEA	    -632(A5),A0		;0638e: 41edfd88
 LAB_0334:
     MOVE.B	D1,(A0)+		;06392: 10c1
     DBF     D0,LAB_0334		;06394: 51c8fffc
@@ -9065,14 +9058,14 @@ LAB_0334:
     PEA	    1.W			;063a8: 48780001
     PEA	    26.W			;063ac: 4878001a
     MOVE.L	D0,-(A7)		;063b0: 2f00
-    PEA	-638(A5)		;063b2: 486dfd82
+    PEA	    -638(A5)		;063b2: 486dfd82
     PEA	    6.W			;063b6: 48780006
-    PEA	-628(A5)		;063ba: 486dfd8c
+    PEA	    -628(A5)		;063ba: 486dfd8c
     MOVE.L	A0,-(A7)		;063be: 2f08
     JSR     LAB_037D(PC)		;063c0: 4eba09b4
     LEA	    28(A7),A7		;063c4: 4fef001c
 LAB_0335:
-    LEA	-326(A5),A0		;063c8: 41edfeba
+    LEA	    -326(A5),A0		;063c8: 41edfeba
     ADDA.W	D5,A0			;063cc: d0c5
     TST.B	(A0)			;063ce: 4a10
     BNE.W	LAB_0339		;063d0: 66000144
@@ -9177,7 +9170,7 @@ LAB_0339:
     ADDQ.W	#1,-332(A5)		;06520: 526dfeb4
     BRA.W	LAB_0332		;06524: 6000fdfe
 LAB_033A:
-    LEA	-326(A5),A0		;06528: 41edfeba
+    LEA	    -326(A5),A0		;06528: 41edfeba
     MOVEA.L	A0,A1			;0652c: 2248
     ADDA.W	D5,A1			;0652e: d2c5
     TST.B	(A1)			;06530: 4a11
@@ -9224,7 +9217,7 @@ LAB_033F:
     ADDQ.W	#8,A7			;0659a: 504f
     TST.B	D0			;0659c: 4a00
     BNE.W	LAB_0341		;0659e: 660001ea
-    LEA	-326(A5),A0		;065a2: 41edfeba
+    LEA	    -326(A5),A0		;065a2: 41edfeba
     MOVEA.L	A0,A1			;065a6: 2248
     ADDA.W	D5,A1			;065a8: d2c5
     TST.B	(A1)			;065aa: 4a11
@@ -9620,10 +9613,10 @@ LAB_035E:
     MOVE.L	D0,-(A7)		;06a7c: 2f00
     PEA	    19.W			;06a7e: 48780013
     PEA	    LAB_1B80		;06a82: 487900033f8a
-    PEA	-44(A5)			;06a88: 486dffd4
+    PEA	    -44(A5)			;06a88: 486dffd4
     MOVE.L	D0,-36(A5)		;06a8c: 2b40ffdc
     JSR     LAB_0382(PC)		;06a90: 4eba0302
-    LEA	-44(A5),A0		;06a94: 41edffd4
+    LEA	    -44(A5),A0		;06a94: 41edffd4
     MOVE.L	A0,-4(A5)		;06a98: 2b48fffc
     MOVE.L	D7,D0			;06a9c: 2007
     EXT.L	D0			;06a9e: 48c0
@@ -10307,9 +10300,9 @@ LAB_03A9:
     MOVE.L	12(A5),D6		;07236: 2c2d000c
     MOVE.L	D6,-(A7)		;0723a: 2f06
     PEA	    LAB_1BCE		;0723c: 487900034162
-    PEA	-10(A5)			;07242: 486dfff6
+    PEA	    -10(A5)			;07242: 486dfff6
     JSR     LAB_0382(PC)		;07246: 4ebafb4c
-    LEA	-10(A5),A0		;0724a: 41edfff6
+    LEA	    -10(A5),A0		;0724a: 41edfff6
     MOVEA.L	A0,A1			;0724e: 2248
 LAB_03AA:
     TST.B	(A1)+			;07250: 4a19
@@ -10928,7 +10921,7 @@ LAB_03E0:
     ADDQ.W	#1,D6			;0797e: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07980: 1b730000fffa
     CLR.B	-5(A5)			;07986: 422dfffb
-    PEA	-7(A5)			;0798a: 486dfff9
+    PEA	    -7(A5)			;0798a: 486dfff9
     JSR     LAB_0468(PC)		;0798e: 4eba13f4
     ADDQ.W	#4,A7			;07992: 584f
     MOVE.B	D0,LAB_1BA6		;07994: 13c000034118
@@ -10939,7 +10932,7 @@ LAB_03E0:
     ADDQ.W	#1,D6			;079a6: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;079a8: 1b730000fffa
     CLR.B	-5(A5)			;079ae: 422dfffb
-    PEA	-7(A5)			;079b2: 486dfff9
+    PEA	    -7(A5)			;079b2: 486dfff9
     JSR     LAB_0468(PC)		;079b6: 4eba13cc
     ADDQ.W	#4,A7			;079ba: 584f
     MOVE.B	D0,LAB_1BA7		;079bc: 13c000034119
@@ -11162,7 +11155,7 @@ LAB_03EF:
     ADDQ.W	#1,D6			;07bd4: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07bd6: 1b730000fffa
     CLR.B	-5(A5)			;07bdc: 422dfffb
-    PEA	-7(A5)			;07be0: 486dfff9
+    PEA	    -7(A5)			;07be0: 486dfff9
     JSR     LAB_0468(PC)		;07be4: 4eba119e
     ADDQ.W	#4,A7			;07be8: 584f
     MOVE.B	D0,LAB_1BB5		;07bea: 13c000034127
@@ -11180,7 +11173,7 @@ LAB_03F0:
     ADDQ.W	#1,D6			;07c08: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07c0a: 1b730000fffa
     CLR.B	-5(A5)			;07c10: 422dfffb
-    PEA	-7(A5)			;07c14: 486dfff9
+    PEA	    -7(A5)			;07c14: 486dfff9
     JSR     LAB_0468(PC)		;07c18: 4eba116a
     ADDQ.W	#4,A7			;07c1c: 584f
     MOVE.B	D0,LAB_1BB6		;07c1e: 13c000034128
@@ -11252,7 +11245,7 @@ LAB_03F4:
     ADDQ.W	#1,D6			;07cc0: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07cc2: 1b730000fffa
     CLR.B	-5(A5)			;07cc8: 422dfffb
-    PEA	-7(A5)			;07ccc: 486dfff9
+    PEA	    -7(A5)			;07ccc: 486dfff9
     JSR     LAB_0468(PC)		;07cd0: 4eba10b2
     ADDQ.W	#4,A7			;07cd4: 584f
     MOVE.B	D0,LAB_1BBA		;07cd6: 13c00003412c
@@ -11270,7 +11263,7 @@ LAB_03F5:
     ADDQ.W	#1,D6			;07cf4: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07cf6: 1b730000fffa
     CLR.B	-5(A5)			;07cfc: 422dfffb
-    PEA	-7(A5)			;07d00: 486dfff9
+    PEA	    -7(A5)			;07d00: 486dfff9
     JSR     LAB_0468(PC)		;07d04: 4eba107e
     ADDQ.W	#4,A7			;07d08: 584f
     MOVE.B	D0,LAB_1BBB		;07d0a: 13c00003412d
@@ -11288,7 +11281,7 @@ LAB_03F6:
     ADDQ.W	#1,D6			;07d28: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07d2a: 1b730000fffa
     CLR.B	-5(A5)			;07d30: 422dfffb
-    PEA	-7(A5)			;07d34: 486dfff9
+    PEA	    -7(A5)			;07d34: 486dfff9
     JSR     LAB_0468(PC)		;07d38: 4eba104a
     ADDQ.W	#4,A7			;07d3c: 584f
     MOVE.B	D0,LAB_1BBC		;07d3e: 13c00003412e
@@ -11309,7 +11302,7 @@ LAB_03F7:
     ADDQ.W	#1,D6			;07d66: 5246
     MOVE.B	0(A3,D0.W),-5(A5)	;07d68: 1b730000fffb
     CLR.B	-4(A5)			;07d6e: 422dfffc
-    PEA	-7(A5)			;07d72: 486dfff9
+    PEA	    -7(A5)			;07d72: 486dfff9
     JSR     LAB_0468(PC)		;07d76: 4eba100c
     ADDQ.W	#4,A7			;07d7a: 584f
     MOVE.L	D0,LAB_1BBD		;07d7c: 23c000034130
@@ -11349,7 +11342,7 @@ LAB_03FA:
     ADDQ.W	#1,D6			;07dcc: 5246
     MOVE.B	0(A3,D0.W),-6(A5)	;07dce: 1b730000fffa
     CLR.B	-5(A5)			;07dd4: 422dfffb
-    PEA	-7(A5)			;07dd8: 486dfff9
+    PEA	    -7(A5)			;07dd8: 486dfff9
     JSR     LAB_0195(PC)		;07ddc: 4ebaab10
     ADDQ.W	#4,A7			;07de0: 584f
 LAB_03FB:
@@ -11903,11 +11896,11 @@ LAB_041B:
     MOVE.L	D1,-(A7)		;08422: 2f01
     MOVE.L	D0,-(A7)		;08424: 2f00
     PEA	    LAB_1BEA		;08426: 487900034326
-    PEA	-58(A5)			;0842c: 486dffc6
+    PEA	    -58(A5)			;0842c: 486dffc6
     JSR     LAB_0382(PC)		;08430: 4ebae962
     LEA	    176(A7),A7		;08434: 4fef00b0
     PEA	    52.W			;08438: 48780034
-    PEA	-58(A5)			;0843c: 486dffc6
+    PEA	    -58(A5)			;0843c: 486dffc6
     MOVE.L	D7,-(A7)		;08440: 2f07
     BSR.W	LAB_03A0		;08442: 6100ed3a
     MOVE.L	D7,(A7)			;08446: 2e87
@@ -12631,18 +12624,18 @@ LAB_045A:
     BEQ.S	LAB_045B		;08cd6: 6716
     PEA	    40.W			;08cd8: 48780028
     MOVE.L	56(A3,D0.L),-(A7)	;08cdc: 2f330838
-    PEA	-45(A5)			;08ce0: 486dffd3
+    PEA	    -45(A5)			;08ce0: 486dffd3
     JSR     LAB_0470(PC)		;08ce4: 4eba00ce
     LEA	    12(A7),A7		;08ce8: 4fef000c
     BRA.S	LAB_045D		;08cec: 600e
 LAB_045B:
     LEA     LAB_1C3F,A0		;08cee: 41f9000349fe
-    LEA	-45(A5),A1		;08cf4: 43edffd3
+    LEA	    -45(A5),A1		;08cf4: 43edffd3
 LAB_045C:
     MOVE.B	(A0)+,(A1)+		;08cf8: 12d8
     BNE.S	LAB_045C		;08cfa: 66fc
 LAB_045D:
-    PEA	-45(A5)			;08cfc: 486dffd3
+    PEA	    -45(A5)			;08cfc: 486dffd3
     JSR     LAB_046A(PC)		;08d00: 4eba008e
     MOVEQ	#0,D0			;08d04: 7000
     MOVE.L	D6,D1			;08d06: 2206
@@ -12783,7 +12776,7 @@ LAB_0476:
     LEA	    36(A7),A7		;08eba: 4fef0024
     TST.L	LAB_1DD9		;08ebe: 4ab90003640a
     BNE.S	LAB_0477		;08ec4: 660a
-    LEA	-17(A5),A0		;08ec6: 41edffef
+    LEA	    -17(A5),A0		;08ec6: 41edffef
     MOVE.L	A0,-12(A5)		;08eca: 2b48fff4
     BRA.S	LAB_0478		;08ece: 600a
 LAB_0477:
@@ -13009,53 +13002,53 @@ LAB_0484:
     JSR     LAB_053D(PC)		;09186: 4eba18de
     ADDQ.W	#8,A7			;0918a: 504f
     LEA     LAB_1C47,A0		;0918c: 41f900034a88
-    LEA	-100(A5),A1		;09192: 43edff9c
+    LEA	    -100(A5),A1		;09192: 43edff9c
     MOVEQ	#8,D0			;09196: 7008
 LAB_0485:
     MOVE.L	(A0)+,(A1)+		;09198: 22d8
     DBF     D0,LAB_0485		;0919a: 51c8fffc
     TST.L	D7			;0919e: 4a87
     BEQ.S	LAB_0486		;091a0: 670a
-    PEA	-100(A5)		;091a2: 486dff9c
+    PEA	    -100(A5)		;091a2: 486dff9c
     BSR.W	LAB_0483		;091a6: 6100ff74
     ADDQ.W	#4,A7			;091aa: 584f
 LAB_0486:
     BSR.W	LAB_0535		;091ac: 61001834
     LEA     LAB_1C48,A0		;091b0: 41f900034aac
-    LEA	-100(A5),A1		;091b6: 43edff9c
+    LEA	    -100(A5),A1		;091b6: 43edff9c
     MOVEQ	#8,D0			;091ba: 7008
 LAB_0487:
     MOVE.L	(A0)+,(A1)+		;091bc: 22d8
     DBF     D0,LAB_0487		;091be: 51c8fffc
     TST.L	D7			;091c2: 4a87
     BEQ.S	LAB_0488		;091c4: 670a
-    PEA	-100(A5)		;091c6: 486dff9c
+    PEA	    -100(A5)		;091c6: 486dff9c
     BSR.W	LAB_0483		;091ca: 6100ff50
     ADDQ.W	#4,A7			;091ce: 584f
 LAB_0488:
     JSR     LAB_0720(PC)		;091d0: 4eba54e6
     LEA     LAB_1C49,A0		;091d4: 41f900034ad0
-    LEA	-100(A5),A1		;091da: 43edff9c
+    LEA	    -100(A5),A1		;091da: 43edff9c
     MOVEQ	#8,D0			;091de: 7008
 LAB_0489:
     MOVE.L	(A0)+,(A1)+		;091e0: 22d8
     DBF     D0,LAB_0489		;091e2: 51c8fffc
     TST.L	D7			;091e6: 4a87
     BEQ.S	LAB_048A		;091e8: 670a
-    PEA	-100(A5)		;091ea: 486dff9c
+    PEA	    -100(A5)		;091ea: 486dff9c
     BSR.W	LAB_0483		;091ee: 6100ff2c
     ADDQ.W	#4,A7			;091f2: 584f
 LAB_048A:
     JSR     LAB_041A(PC)		;091f4: 4ebaef50
     LEA     LAB_1C4A,A0		;091f8: 41f900034af4
-    LEA	-100(A5),A1		;091fe: 43edff9c
+    LEA	    -100(A5),A1		;091fe: 43edff9c
     MOVEQ	#8,D0			;09202: 7008
 LAB_048B:
     MOVE.L	(A0)+,(A1)+		;09204: 22d8
     DBF     D0,LAB_048B		;09206: 51c8fffc
     TST.L	D7			;0920a: 4a87
     BEQ.S	LAB_048C		;0920c: 670a
-    PEA	-100(A5)		;0920e: 486dff9c
+    PEA	    -100(A5)		;0920e: 486dff9c
     BSR.W	LAB_0483		;09212: 6100ff08
     ADDQ.W	#4,A7			;09216: 584f
 LAB_048C:
@@ -13064,40 +13057,40 @@ LAB_048C:
     JSR     LAB_0540(PC)		;09224: 4eba1852
     ADDQ.W	#8,A7			;09228: 504f
     LEA     LAB_1C4B,A0		;0922a: 41f900034b18
-    LEA	-100(A5),A1		;09230: 43edff9c
+    LEA	    -100(A5),A1		;09230: 43edff9c
     MOVEQ	#8,D0			;09234: 7008
 LAB_048D:
     MOVE.L	(A0)+,(A1)+		;09236: 22d8
     DBF     D0,LAB_048D		;09238: 51c8fffc
     TST.L	D7			;0923c: 4a87
     BEQ.S	LAB_048E		;0923e: 670a
-    PEA	-100(A5)		;09240: 486dff9c
+    PEA	    -100(A5)		;09240: 486dff9c
     BSR.W	LAB_0483		;09244: 6100fed6
     ADDQ.W	#4,A7			;09248: 584f
 LAB_048E:
     BSR.W	LAB_04E6		;0924a: 61000bfa
     LEA     LAB_1C4C,A0		;0924e: 41f900034b3c
-    LEA	-100(A5),A1		;09254: 43edff9c
+    LEA	    -100(A5),A1		;09254: 43edff9c
     MOVEQ	#8,D0			;09258: 7008
 LAB_048F:
     MOVE.L	(A0)+,(A1)+		;0925a: 22d8
     DBF     D0,LAB_048F		;0925c: 51c8fffc
     TST.L	D7			;09260: 4a87
     BEQ.S	LAB_0490		;09262: 670a
-    PEA	-100(A5)		;09264: 486dff9c
+    PEA	    -100(A5)		;09264: 486dff9c
     BSR.W	LAB_0483		;09268: 6100feb2
     ADDQ.W	#4,A7			;0926c: 584f
 LAB_0490:
     JSR     LAB_07CA(PC)		;0926e: 4eba695c
     LEA     LAB_1C4D,A0		;09272: 41f900034b60
-    LEA	-100(A5),A1		;09278: 43edff9c
+    LEA	    -100(A5),A1		;09278: 43edff9c
     MOVEQ	#8,D0			;0927c: 7008
 LAB_0491:
     MOVE.L	(A0)+,(A1)+		;0927e: 22d8
     DBF     D0,LAB_0491		;09280: 51c8fffc
     TST.L	D7			;09284: 4a87
     BEQ.S	LAB_0492		;09286: 670a
-    PEA	-100(A5)		;09288: 486dff9c
+    PEA	    -100(A5)		;09288: 486dff9c
     BSR.W	LAB_0483		;0928c: 6100fe8e
     ADDQ.W	#4,A7			;09290: 584f
 LAB_0492:
@@ -13105,27 +13098,27 @@ LAB_0492:
     JSR     LAB_0610(PC)		;09298: 4eba2dde
     ADDQ.W	#4,A7			;0929c: 584f
     LEA     LAB_1C4E,A0		;0929e: 41f900034b84
-    LEA	-100(A5),A1		;092a4: 43edff9c
+    LEA	    -100(A5),A1		;092a4: 43edff9c
     MOVEQ	#8,D0			;092a8: 7008
 LAB_0493:
     MOVE.L	(A0)+,(A1)+		;092aa: 22d8
     DBF     D0,LAB_0493		;092ac: 51c8fffc
     TST.L	D7			;092b0: 4a87
     BEQ.S	LAB_0494		;092b2: 670a
-    PEA	-100(A5)		;092b4: 486dff9c
+    PEA	    -100(A5)		;092b4: 486dff9c
     BSR.W	LAB_0483		;092b8: 6100fe62
     ADDQ.W	#4,A7			;092bc: 584f
 LAB_0494:
     JSR     LAB_0543(PC)		;092be: 4eba17ca
     LEA     LAB_1C4F,A0		;092c2: 41f900034ba8
-    LEA	-100(A5),A1		;092c8: 43edff9c
+    LEA	    -100(A5),A1		;092c8: 43edff9c
     MOVEQ	#8,D0			;092cc: 7008
 LAB_0495:
     MOVE.L	(A0)+,(A1)+		;092ce: 22d8
     DBF     D0,LAB_0495		;092d0: 51c8fffc
     TST.L	D7			;092d4: 4a87
     BEQ.S	LAB_0496		;092d6: 670a
-    PEA	-100(A5)		;092d8: 486dff9c
+    PEA	    -100(A5)		;092d8: 486dff9c
     BSR.W	LAB_0483		;092dc: 6100fe3e
     ADDQ.W	#4,A7			;092e0: 584f
 LAB_0496:
@@ -13162,7 +13155,7 @@ LAB_0499:
     ADDQ.L	#1,D0			;09332: 5280
     BNE.S	LAB_049A		;09334: 6614
     CLR.W	LAB_2241		;09336: 42790003d5d4
-    PEA	-65(A5)			;0933c: 486dffbf
+    PEA	    -65(A5)			;0933c: 486dffbf
     JSR     LAB_053A(PC)		;09340: 4eba1712
     MOVEQ	#-1,D0			;09344: 70ff
     BRA.W	LAB_04C0		;09346: 6000051a
@@ -13186,7 +13179,7 @@ LAB_049B:
 LAB_049C:
     JSR     LAB_03B6(PC)		;09386: 4ebae040
     MOVE.W	D0,LAB_2241		;0938a: 33c00003d5d4
-    PEA	-65(A5)			;09390: 486dffbf
+    PEA	    -65(A5)			;09390: 486dffbf
     JSR     LAB_053A(PC)		;09394: 4eba16be
     JSR     LAB_03B2(PC)		;09398: 4ebadfe6
     ADDQ.W	#4,A7			;0939c: 584f
@@ -14179,7 +14172,7 @@ LAB_04F2:
     ADDQ.W	#8,A7			;09fdc: 504f
     TST.L	LAB_1DDB		;09fde: 4ab900036410
     BNE.S	LAB_04F3		;09fe4: 6606
-    LEA	-5(A5),A0		;09fe6: 41edfffb
+    LEA	    -5(A5),A0		;09fe6: 41edfffb
     BRA.S	LAB_04F4		;09fea: 6006
 LAB_04F3:
     MOVEA.L	LAB_1DDB,A0		;09fec: 207900036410
@@ -14200,7 +14193,7 @@ LAB_04F5:
     LEA	    12(A7),A7		;0a012: 4fef000c
     TST.L	LAB_1DDC		;0a016: 4ab900036414
     BNE.S	LAB_04F6		;0a01c: 6606
-    LEA	-5(A5),A0		;0a01e: 41edfffb
+    LEA	    -5(A5),A0		;0a01e: 41edfffb
     BRA.S	LAB_04F7		;0a022: 6006
 LAB_04F6:
     MOVEA.L	LAB_1DDC,A0		;0a024: 207900036414
@@ -14353,13 +14346,13 @@ LAB_0503:
     LEA	    16(A7),A7		;0a1e2: 4fef0010
 LAB_0504:
     LEA     LAB_21C2,A0		;0a1e6: 41f90003bb40
-    LEA	-58(A5),A1		;0a1ec: 43edffc6
+    LEA	    -58(A5),A1		;0a1ec: 43edffc6
 LAB_0505:
     MOVE.B	(A0)+,(A1)+		;0a1f0: 12d8
     BNE.S	LAB_0505		;0a1f2: 66fc
     PEA	    4.W			;0a1f4: 48780004
     PEA	    LAB_1C70		;0a1f8: 487900034ce2
-    PEA	-58(A5)			;0a1fe: 486dffc6
+    PEA	    -58(A5)			;0a1fe: 486dffc6
     JSR     LAB_0470(PC)		;0a202: 4ebaebb0
     LEA	    12(A7),A7		;0a206: 4fef000c
     TST.W	LAB_2252		;0a20a: 4a790003dba0
@@ -14378,7 +14371,7 @@ LAB_0505:
 LAB_0506:
     PEA	    4.W			;0a246: 48780004
     PEA	    LAB_21C2		;0a24a: 48790003bb40
-    PEA	-68(A5)			;0a250: 486dffbc
+    PEA	    -68(A5)			;0a250: 486dffbc
     JSR     LAB_0470(PC)		;0a254: 4ebaeb5e
     LEA	    12(A7),A7		;0a258: 4fef000c
     MOVEQ	#0,D0			;0a25c: 7000
@@ -14412,7 +14405,7 @@ LAB_0508:
     LEA     LAB_21C4,A0		;0a2b4: 41f90003bb60
     ADDA.W	D0,A0			;0a2ba: d0c0
     CLR.B	(A0)			;0a2bc: 4210
-    LEA	-68(A5),A0		;0a2be: 41edffbc
+    LEA	    -68(A5),A0		;0a2be: 41edffbc
     MOVE.L	A0,D1			;0a2c2: 2208
     MOVEQ	#-2,D2			;0a2c4: 74fe
     MOVEA.L	LAB_2382,A6		;0a2c6: 2c7900041454
@@ -14485,7 +14478,7 @@ LAB_050D:
     CMP.L	D0,D5			;0a3b2: ba80
     BNE.W	LAB_0518		;0a3b4: 6600028e
     PEA	    1006.W			;0a3b8: 487803ee
-    PEA	-58(A5)			;0a3bc: 486dffc6
+    PEA	    -58(A5)			;0a3bc: 486dffc6
     JSR     LAB_046C(PC)		;0a3c0: 4ebae9da
     ADDQ.W	#8,A7			;0a3c4: 504f
     MOVE.L	D0,LAB_21C5		;0a3c6: 23c00003bb70
@@ -14625,26 +14618,26 @@ LAB_0515:
     JSR	    -72(A6)			;0a596: 4eaeffb8
     JSR     LAB_03CB(PC)		;0a59a: 4ebad054
     LEA     LAB_1C78,A0		;0a59e: 41f900034d86
-    LEA	-156(A5),A1		;0a5a4: 43edff64
+    LEA	    -156(A5),A1		;0a5a4: 43edff64
     MOVE.L	(A0)+,(A1)+		;0a5a8: 22d8
     MOVE.L	(A0)+,(A1)+		;0a5aa: 22d8
     MOVE.L	(A0)+,(A1)+		;0a5ac: 22d8
-    PEA	-58(A5)			;0a5ae: 486dffc6
-    PEA	-156(A5)		;0a5b2: 486dff64
+    PEA	    -58(A5)			;0a5ae: 486dffc6
+    PEA	    -156(A5)		;0a5b2: 486dff64
     JSR     LAB_05C5(PC)		;0a5b6: 4eba12ba
     PEA	    LAB_1C79		;0a5ba: 487900034d92
-    PEA	-156(A5)		;0a5c0: 486dff64
+    PEA	    -156(A5)		;0a5c0: 486dff64
     JSR     LAB_05C5(PC)		;0a5c4: 4eba12ac
     PEA	    LAB_21C2		;0a5c8: 48790003bb40
-    PEA	-156(A5)		;0a5ce: 486dff64
+    PEA	    -156(A5)		;0a5ce: 486dff64
     JSR     LAB_05C5(PC)		;0a5d2: 4eba129e
-    LEA	-156(A5),A0		;0a5d6: 41edff64
+    LEA	    -156(A5),A0		;0a5d6: 41edff64
     MOVE.L	A0,D1			;0a5da: 2208
     MOVEQ	#0,D2			;0a5dc: 7400
     MOVE.L	D2,D3			;0a5de: 2602
     MOVEA.L	LAB_2382,A6		;0a5e0: 2c7900041454
     JSR	    -222(A6)		;0a5e6: 4eaeff22
-    LEA	-58(A5),A0		;0a5ea: 41edffc6
+    LEA	    -58(A5),A0		;0a5ea: 41edffc6
     MOVE.L	A0,D1			;0a5ee: 2208
     JSR	    -72(A6)			;0a5f0: 4eaeffb8
     JSR     LAB_03CD(PC)		;0a5f4: 4ebad018
@@ -14662,7 +14655,7 @@ LAB_0516:
     MOVE.L	D6,-(A7)		;0a622: 2f06
     JSR     LAB_03DE(PC)		;0a624: 4ebad2a2
     ADDQ.W	#4,A7			;0a628: 584f
-    LEA	-58(A5),A0		;0a62a: 41edffc6
+    LEA	    -58(A5),A0		;0a62a: 41edffc6
     MOVE.L	A0,D1			;0a62e: 2208
     MOVEA.L	LAB_2382,A6		;0a630: 2c7900041454
     JSR	    -72(A6)			;0a636: 4eaeffb8
@@ -14685,9 +14678,9 @@ LAB_0518:
     MOVE.L	D0,(A7)			;0a678: 2e80
     MOVE.L	28(A7),-(A7)		;0a67a: 2f2f001c
     PEA	    LAB_1C7B		;0a67e: 487900034da0
-    PEA	-58(A5)			;0a684: 486dffc6
+    PEA	    -58(A5)			;0a684: 486dffc6
     JSR	j_SUB_printf_0(PC)		;0a688: 4eba7ebc
-    PEA	-58(A5)			;0a68c: 486dffc6
+    PEA	    -58(A5)			;0a68c: 486dffc6
     PEA	    90.W			;0a690: 4878005a
     PEA	    40.W			;0a694: 48780028
     MOVE.L	LAB_2217,-(A7)		;0a698: 2f390003c226
@@ -14709,7 +14702,7 @@ LAB_051A:
     CLR.L	-14(A5)			;0a6c2: 42adfff2
     CLR.B	-16(A5)			;0a6c6: 422dfff0
     LEA     LAB_1C7E,A0		;0a6ca: 41f900034dca
-    LEA	-1040(A5),A1		;0a6d0: 43edfbf0
+    LEA	    -1040(A5),A1		;0a6d0: 43edfbf0
     MOVE.W	#$00ff,D0		;0a6d4: 303c00ff
 LAB_051B:
     MOVE.L	(A0)+,(A1)+		;0a6d8: 22d8
@@ -14757,7 +14750,7 @@ LAB_051C:
     NOT.B	D2			;0a76e: 4602
     AND.L	D2,D0			;0a770: c082
     ASL.L	#2,D0			;0a772: e580
-    LEA	-1040(A5),A0		;0a774: 41edfbf0
+    LEA	    -1040(A5),A0		;0a774: 41edfbf0
     ADDA.L	D0,A0			;0a778: d1c0
     LSR.L	#8,D1			;0a77a: e089
     MOVE.L	(A0),D0			;0a77c: 2010
@@ -15465,12 +15458,12 @@ LAB_0573:
     MOVE.L	A2,-20(A5)		;0aebc: 2b4affec
     PEA	    LAB_1CEC		;0aec0: 487900035684
     PEA	    50.W			;0aec6: 48780032
-    PEA	-73(A5)			;0aeca: 486dffb7
+    PEA	    -73(A5)			;0aeca: 486dffb7
     MOVE.L	A2,-(A7)		;0aece: 2f0a
     JSR     LAB_05C6(PC)		;0aed0: 4eba09a6
     LEA	    20(A7),A7		;0aed4: 4fef0014
     MOVEA.L	D0,A2			;0aed8: 2440
-    LEA	-73(A5),A0		;0aeda: 41edffb7
+    LEA	    -73(A5),A0		;0aeda: 41edffb7
     MOVEA.L	A0,A1			;0aede: 2248
 LAB_0574:
     TST.B	(A1)+			;0aee0: 4a19
@@ -15516,7 +15509,7 @@ LAB_0578:
     SUBQ.L	#1,D6			;0af3e: 5386
     MOVEA.L	A3,A1			;0af40: 224b
     MOVE.L	D6,D0			;0af42: 2006
-    LEA	-73(A5),A0		;0af44: 41edffb7
+    LEA	    -73(A5),A0		;0af44: 41edffb7
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
     MOVE.L	D0,D5			;0af52: 2a00
@@ -15525,7 +15518,7 @@ LAB_0579:
     TST.L	D6			;0af56: 4a86
     BLE.S	LAB_057A		;0af58: 6f12
     CLR.B	-73(A5,D6.L)		;0af5a: 423568b7
-    PEA	-73(A5)			;0af5e: 486dffb7
+    PEA	    -73(A5)			;0af5e: 486dffb7
     MOVE.L	16(A5),-(A7)		;0af62: 2f2d0010
     JSR     LAB_05C5(PC)		;0af66: 4eba090a
     ADDQ.W	#8,A7			;0af6a: 504f
@@ -15541,7 +15534,7 @@ LAB_057B:
     MOVEQ	#0,D7			;0af80: 7e00
     BRA.W	LAB_0572		;0af82: 6000ff02
 LAB_057C:
-    PEA	-73(A5)			;0af86: 486dffb7
+    PEA	    -73(A5)			;0af86: 486dffb7
     MOVE.L	16(A5),-(A7)		;0af8a: 2f2d0010
     JSR     LAB_05C5(PC)		;0af8e: 4eba08e2
     ADDQ.W	#8,A7			;0af92: 504f
@@ -15743,10 +15736,10 @@ LAB_0592:
     MOVEA.L	8(A5),A3		;0b1ae: 266d0008
     MOVE.L	12(A5),D7		;0b1b2: 2e2d000c
     MOVE.L	16(A5),D6		;0b1b6: 2c2d0010
-    PEA	-4(A5)			;0b1ba: 486dfffc
-    PEA	-3(A5)			;0b1be: 486dfffd
-    PEA	-2(A5)			;0b1c2: 486dfffe
-    PEA	-1(A5)			;0b1c6: 486dffff
+    PEA	    -4(A5)			;0b1ba: 486dfffc
+    PEA	    -3(A5)			;0b1be: 486dfffd
+    PEA	    -2(A5)			;0b1c2: 486dfffe
+    PEA	    -1(A5)			;0b1c6: 486dffff
     MOVE.L	D6,-(A7)		;0b1ca: 2f06
     MOVE.L	D7,-(A7)		;0b1cc: 2f07
     JSR     LAB_05C0(PC)		;0b1ce: 4eba0684
@@ -15754,7 +15747,7 @@ LAB_0592:
     TST.B	-1(A5)			;0b1d6: 4a2dffff
     BEQ.S	LAB_0593		;0b1da: 6714
     MOVEA.L	A3,A1			;0b1dc: 224b
-    LEA	-1(A5),A0		;0b1de: 41edffff
+    LEA	    -1(A5),A0		;0b1de: 41edffff
     MOVEQ	#1,D0			;0b1e2: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
@@ -15766,7 +15759,7 @@ LAB_0594:
     TST.B	-3(A5)			;0b1f4: 4a2dfffd
     BEQ.S	LAB_0595		;0b1f8: 6714
     MOVEA.L	A3,A1			;0b1fa: 224b
-    LEA	-3(A5),A0		;0b1fc: 41edfffd
+    LEA	    -3(A5),A0		;0b1fc: 41edfffd
     MOVEQ	#1,D0			;0b200: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
@@ -15872,7 +15865,7 @@ LAB_059C:
     CMP.L	D1,D0			;0b31e: b081
     BGE.S	LAB_059E		;0b320: 6c34
     MOVE.L	D6,-(A7)		;0b322: 2f06
-    PEA	-268(A5)		;0b324: 486dfef4
+    PEA	    -268(A5)		;0b324: 486dfef4
     MOVE.L	A2,-(A7)		;0b328: 2f0a
     MOVE.L	A3,-(A7)		;0b32a: 2f0b
     BSR.W	LAB_0571		;0b32c: 6100fb26
@@ -16002,12 +15995,12 @@ LAB_05A5:
     CMP.W	D1,D0			;0b4a0: b041
     BCC.W	LAB_05A8		;0b4a2: 64000086
     MOVE.L	D7,-(A7)		;0b4a6: 2f07
-    PEA	-268(A5)		;0b4a8: 486dfef4
+    PEA	    -268(A5)		;0b4a8: 486dfef4
     MOVE.L	A2,-(A7)		;0b4ac: 2f0a
     MOVE.L	A3,-(A7)		;0b4ae: 2f0b
     BSR.W	LAB_0571		;0b4b0: 6100f9a2
     MOVEA.L	D0,A2			;0b4b4: 2440
-    LEA	-268(A5),A0		;0b4b6: 41edfef4
+    LEA	    -268(A5),A0		;0b4b6: 41edfef4
     MOVEA.L	A0,A1			;0b4ba: 2248
 LAB_05A6:
     TST.B	(A1)+			;0b4bc: 4a19
@@ -16829,7 +16822,7 @@ LAB_05F6:
     MOVEQ	#0,D6			;0bcbc: 7c00
     MOVE.L	A3,D0			;0bcbe: 200b
     BEQ.S	LAB_05F7		;0bcc0: 6724
-    PEA	-26(A5)			;0bcc2: 486dffe6
+    PEA	    -26(A5)			;0bcc2: 486dffe6
     BSR.W	LAB_05E4		;0bcc6: 6100ff04
     MOVE.L	D0,D7			;0bcca: 2e00
     MOVE.L	D7,(A7)			;0bccc: 2e87
@@ -16915,10 +16908,10 @@ LAB_05FD:
     ADDQ.L	#1,A0			;0bd8e: 5288
     PEA	    7.W			;0bd90: 48780007
     MOVE.L	A0,-(A7)		;0bd94: 2f08
-    PEA	-8(A5)			;0bd96: 486dfff8
+    PEA	    -8(A5)			;0bd96: 486dfff8
     JSR     LAB_0470(PC)		;0bd9a: 4ebad018
     CLR.B	-1(A5)			;0bd9e: 422dffff
-    PEA	-8(A5)			;0bda2: 486dfff8
+    PEA	    -8(A5)			;0bda2: 486dfff8
     JSR     LAB_0468(PC)		;0bda6: 4ebacfdc
     LEA	    16(A7),A7		;0bdaa: 4fef0010
     MOVE.L	D0,D6			;0bdae: 2c00
@@ -17038,10 +17031,10 @@ LAB_0605:
     BEQ.W	LAB_0608		;0bed6: 670000a0
     PEA	    4.W			;0beda: 48780004
     PEA	    LAB_1CF8		;0bede: 48790003570c
-    PEA	-138(A5)		;0bee4: 486dff76
+    PEA	    -138(A5)		;0bee4: 486dff76
     JSR	j_SUB_printf_0(PC)		;0bee8: 4eba665c
-    PEA	-138(A5)		;0beec: 486dff76
-    PEA	-87(A5)			;0bef0: 486dffa9
+    PEA	    -138(A5)		;0beec: 486dff76
+    PEA	    -87(A5)			;0bef0: 486dffa9
     JSR     LAB_05C5(PC)		;0bef4: 4ebaf97c
     MOVEA.L	-4(A5),A0		;0bef8: 206dfffc
     MOVE.W	6(A0),D0		;0befc: 30280006
@@ -17051,10 +17044,10 @@ LAB_0605:
     MOVE.L	D1,(A7)			;0bf08: 2e81
     MOVE.L	D0,-(A7)		;0bf0a: 2f00
     PEA	    LAB_1CF9		;0bf0c: 487900035710
-    PEA	-138(A5)		;0bf12: 486dff76
+    PEA	    -138(A5)		;0bf12: 486dff76
     JSR	j_SUB_printf_0(PC)		;0bf16: 4eba662e
-    PEA	-138(A5)		;0bf1a: 486dff76
-    PEA	-87(A5)			;0bf1e: 486dffa9
+    PEA	    -138(A5)		;0bf1a: 486dff76
+    PEA	    -87(A5)			;0bf1e: 486dffa9
     JSR     LAB_05C5(PC)		;0bf22: 4ebaf94e
     LEA	    40(A7),A7		;0bf26: 4fef0028
     MOVEA.L	-4(A5),A0		;0bf2a: 206dfffc
@@ -17078,16 +17071,16 @@ LAB_0607:
     MOVE.L	D1,-(A7)		;0bf54: 2f01
     MOVE.L	D0,-(A7)		;0bf56: 2f00
     PEA	    LAB_1CFA		;0bf58: 48790003571a
-    PEA	-138(A5)		;0bf5e: 486dff76
+    PEA	    -138(A5)		;0bf5e: 486dff76
     JSR	j_SUB_printf_0(PC)		;0bf62: 4eba65e2
-    PEA	-138(A5)		;0bf66: 486dff76
-    PEA	-87(A5)			;0bf6a: 486dffa9
+    PEA	    -138(A5)		;0bf66: 486dff76
+    PEA	    -87(A5)			;0bf6a: 486dffa9
     JSR     LAB_05C5(PC)		;0bf6e: 4ebaf902
     LEA	    24(A7),A7		;0bf72: 4fef0018
     BRA.S	LAB_0609		;0bf76: 6010
 LAB_0608:
     PEA	    LAB_1CFB		;0bf78: 487900035724
-    PEA	-87(A5)			;0bf7e: 486dffa9
+    PEA	    -87(A5)			;0bf7e: 486dffa9
     JSR     LAB_05C5(PC)		;0bf82: 4ebaf8ee
     ADDQ.W	#8,A7			;0bf86: 504f
 LAB_0609:
@@ -17097,10 +17090,10 @@ LAB_0609:
     BEQ.W	LAB_060C		;0bf92: 670000a0
     PEA	    19.W			;0bf96: 48780013
     PEA	    LAB_1CFC		;0bf9a: 487900035732
-    PEA	-138(A5)		;0bfa0: 486dff76
+    PEA	    -138(A5)		;0bfa0: 486dff76
     JSR	j_SUB_printf_0(PC)		;0bfa4: 4eba65a0
-    PEA	-138(A5)		;0bfa8: 486dff76
-    PEA	-87(A5)			;0bfac: 486dffa9
+    PEA	    -138(A5)		;0bfa8: 486dff76
+    PEA	    -87(A5)			;0bfac: 486dffa9
     JSR     LAB_05C5(PC)		;0bfb0: 4ebaf8c0
     MOVEA.L	-4(A5),A0		;0bfb4: 206dfffc
     MOVE.W	6(A0),D0		;0bfb8: 30280006
@@ -17110,10 +17103,10 @@ LAB_0609:
     MOVE.L	D1,(A7)			;0bfc4: 2e81
     MOVE.L	D0,-(A7)		;0bfc6: 2f00
     PEA	    LAB_1CFD		;0bfc8: 487900035736
-    PEA	-138(A5)		;0bfce: 486dff76
+    PEA	    -138(A5)		;0bfce: 486dff76
     JSR	j_SUB_printf_0(PC)		;0bfd2: 4eba6572
-    PEA	-138(A5)		;0bfd6: 486dff76
-    PEA	-87(A5)			;0bfda: 486dffa9
+    PEA	    -138(A5)		;0bfd6: 486dff76
+    PEA	    -87(A5)			;0bfda: 486dffa9
     JSR     LAB_05C5(PC)		;0bfde: 4ebaf892
     LEA	    40(A7),A7		;0bfe2: 4fef0028
     MOVEA.L	-4(A5),A0		;0bfe6: 206dfffc
@@ -17137,26 +17130,26 @@ LAB_060B:
     MOVE.L	D1,-(A7)		;0c010: 2f01
     MOVE.L	D0,-(A7)		;0c012: 2f00
     PEA	    LAB_1CFE		;0c014: 487900035740
-    PEA	-138(A5)		;0c01a: 486dff76
+    PEA	    -138(A5)		;0c01a: 486dff76
     JSR	j_SUB_printf_0(PC)		;0c01e: 4eba6526
-    PEA	-138(A5)		;0c022: 486dff76
-    PEA	-87(A5)			;0c026: 486dffa9
+    PEA	    -138(A5)		;0c022: 486dff76
+    PEA	    -87(A5)			;0c026: 486dffa9
     JSR     LAB_05C5(PC)		;0c02a: 4ebaf846
     LEA	    24(A7),A7		;0c02e: 4fef0018
     BRA.S	LAB_060E		;0c032: 6022
 LAB_060C:
     PEA	    LAB_1CFF		;0c034: 48790003574a
-    PEA	-87(A5)			;0c03a: 486dffa9
+    PEA	    -87(A5)			;0c03a: 486dffa9
     JSR     LAB_05C5(PC)		;0c03e: 4ebaf832
     ADDQ.W	#8,A7			;0c042: 504f
     BRA.S	LAB_060E		;0c044: 6010
 LAB_060D:
     PEA	    LAB_1D00		;0c046: 487900035758
-    PEA	-87(A5)			;0c04c: 486dffa9
+    PEA	    -87(A5)			;0c04c: 486dffa9
     JSR     LAB_05C5(PC)		;0c050: 4ebaf820
     ADDQ.W	#8,A7			;0c054: 504f
 LAB_060E:
-    LEA	-87(A5),A0		;0c056: 41edffa9
+    LEA	    -87(A5),A0		;0c056: 41edffa9
     MOVEA.L	A0,A1			;0c05a: 2248
 LAB_060F:
     TST.B	(A1)+			;0c05c: 4a19
@@ -17371,14 +17364,14 @@ LAB_061F:
     BEQ.S	LAB_0620		;0c28a: 6732
     PEA	    4.W			;0c28c: 48780004
     MOVE.L	D0,-(A7)		;0c290: 2f00
-    PEA	-22(A5)			;0c292: 486dffea
+    PEA	    -22(A5)			;0c292: 486dffea
     BSR.W	LAB_05FC		;0c296: 6100fab2
     PEA	    19.W			;0c29a: 48780013
     MOVE.L	-52(A5),-(A7)		;0c29e: 2f2dffcc
-    PEA	-44(A5)			;0c2a2: 486dffd4
+    PEA	    -44(A5)			;0c2a2: 486dffd4
     BSR.W	LAB_05FC		;0c2a6: 6100faa2
-    PEA	-44(A5)			;0c2aa: 486dffd4
-    PEA	-22(A5)			;0c2ae: 486dffea
+    PEA	    -44(A5)			;0c2aa: 486dffd4
+    PEA	    -22(A5)			;0c2ae: 486dffea
     MOVE.L	4(A3),-(A7)		;0c2b2: 2f2b0004
     BSR.W	LAB_05F8		;0c2b6: 6100fa38
     LEA	    36(A7),A7		;0c2ba: 4fef0024
@@ -17391,14 +17384,14 @@ LAB_0620:
     BEQ.S	LAB_0621		;0c2d2: 6730
     PEA	    4.W			;0c2d4: 48780004
     MOVE.L	D0,-(A7)		;0c2d8: 2f00
-    PEA	-22(A5)			;0c2da: 486dffea
+    PEA	    -22(A5)			;0c2da: 486dffea
     BSR.W	LAB_05FC		;0c2de: 6100fa6a
     PEA	    19.W			;0c2e2: 48780013
     MOVE.L	-52(A5),-(A7)		;0c2e6: 2f2dffcc
-    PEA	-44(A5)			;0c2ea: 486dffd4
+    PEA	    -44(A5)			;0c2ea: 486dffd4
     BSR.W	LAB_05FC		;0c2ee: 6100fa5a
-    PEA	-44(A5)			;0c2f2: 486dffd4
-    PEA	-22(A5)			;0c2f6: 486dffea
+    PEA	    -44(A5)			;0c2f2: 486dffd4
+    PEA	    -22(A5)			;0c2f6: 486dffea
     MOVE.L	(A3),-(A7)		;0c2fa: 2f13
     BSR.W	LAB_05F8		;0c2fc: 6100f9f2
     LEA	    36(A7),A7		;0c300: 4fef0024
@@ -17435,14 +17428,14 @@ LAB_0623:
 LAB_0624:
     PEA	    4.W			;0c34e: 48780004
     MOVE.L	A3,-(A7)		;0c352: 2f0b
-    PEA	-22(A5)			;0c354: 486dffea
+    PEA	    -22(A5)			;0c354: 486dffea
     BSR.W	LAB_05FC		;0c358: 6100f9f0
     PEA	    19.W			;0c35c: 48780013
     MOVE.L	A3,-(A7)		;0c360: 2f0b
-    PEA	-44(A5)			;0c362: 486dffd4
+    PEA	    -44(A5)			;0c362: 486dffd4
     BSR.W	LAB_05FC		;0c366: 6100f9e2
-    PEA	-44(A5)			;0c36a: 486dffd4
-    PEA	-22(A5)			;0c36e: 486dffea
+    PEA	    -44(A5)			;0c36a: 486dffd4
+    PEA	    -22(A5)			;0c36e: 486dffea
     MOVE.L	LAB_21E0,-(A7)		;0c372: 2f390003bc88
     BSR.W	LAB_05F8		;0c378: 6100f976
     LEA	    36(A7),A7		;0c37c: 4fef0024
@@ -17450,14 +17443,14 @@ LAB_0624:
 LAB_0625:
     PEA	    4.W			;0c382: 48780004
     MOVE.L	A3,-(A7)		;0c386: 2f0b
-    PEA	-22(A5)			;0c388: 486dffea
+    PEA	    -22(A5)			;0c388: 486dffea
     BSR.W	LAB_05FC		;0c38c: 6100f9bc
     PEA	    19.W			;0c390: 48780013
     MOVE.L	A3,-(A7)		;0c394: 2f0b
-    PEA	-44(A5)			;0c396: 486dffd4
+    PEA	    -44(A5)			;0c396: 486dffd4
     BSR.W	LAB_05FC		;0c39a: 6100f9ae
-    PEA	-44(A5)			;0c39e: 486dffd4
-    PEA	-22(A5)			;0c3a2: 486dffea
+    PEA	    -44(A5)			;0c39e: 486dffd4
+    PEA	    -22(A5)			;0c3a2: 486dffea
     MOVE.L	LAB_21DF,-(A7)		;0c3a6: 2f390003bc84
     BSR.W	LAB_05F8		;0c3ac: 6100f942
     LEA	    36(A7),A7		;0c3b0: 4fef0024
@@ -17517,7 +17510,7 @@ LAB_062B:
     SUBQ.W	#1,D0			;0c434: 5340
     BNE.S	LAB_062C		;0c436: 661c
     CLR.L	-(A7)			;0c438: 42a7
-    PEA	-1.W			;0c43a: 4878ffff
+    PEA	    -1.W			;0c43a: 4878ffff
     PEA	    LAB_223A		;0c43e: 48790003d5c6
     BSR.W	LAB_0656		;0c444: 610003dc
     LEA	    12(A7),A7		;0c448: 4fef000c
@@ -17622,7 +17615,7 @@ LAB_0638:
     MOVEA.L	16(A5),A3		;0c546: 266d0010
     MOVEA.L	20(A5),A2		;0c54a: 246d0014
     LEA     LAB_223A,A0		;0c54e: 41f90003d5c6
-    LEA	-22(A5),A1		;0c554: 43edffea
+    LEA	    -22(A5),A1		;0c554: 43edffea
     MOVEQ	#4,D0			;0c558: 7004
 LAB_0639:
     MOVE.L	(A0)+,(A1)+		;0c55a: 22d8
@@ -17739,7 +17732,7 @@ LAB_0645:
     EXT.L	D0			;0c66e: 48c0
     MOVE.L	D0,-(A7)		;0c670: 2f00
     PEA	    54.W			;0c672: 48780036
-    LEA	-22(A5),A0		;0c676: 41edffea
+    LEA	    -22(A5),A0		;0c676: 41edffea
     MOVE.L	A0,-(A7)		;0c67a: 2f08
     MOVE.L	A0,-(A7)		;0c67c: 2f08
     BSR.W	LAB_05E1		;0c67e: 6100f4e2
@@ -17821,7 +17814,7 @@ LAB_064D:
     MOVEQ	#0,D1			;0c742: 7200
     MOVE.B	D6,D1			;0c744: 1206
     CLR.L	-(A7)			;0c746: 42a7
-    PEA	-2(A5)			;0c748: 486dfffe
+    PEA	    -2(A5)			;0c748: 486dfffe
     MOVE.L	D1,-(A7)		;0c74c: 2f01
     MOVE.L	D0,-(A7)		;0c74e: 2f00
     BSR.W	LAB_0638		;0c750: 6100fde4
@@ -17843,7 +17836,7 @@ LAB_064E:
     MOVEQ	#0,D1			;0c77a: 7200
     MOVE.B	D6,D1			;0c77c: 1206
     MOVE.L	A3,-(A7)		;0c77e: 2f0b
-    PEA	-2(A5)			;0c780: 486dfffe
+    PEA	    -2(A5)			;0c780: 486dfffe
     MOVE.L	D1,-(A7)		;0c784: 2f01
     MOVE.L	D0,-(A7)		;0c786: 2f00
     BSR.W	LAB_0638		;0c788: 6100fdac
@@ -19084,7 +19077,7 @@ LAB_06C1:
     LINK.W	A5,#-28			;0d6ca: 4e55ffe4
     MOVE.L	D7,-(A7)		;0d6ce: 2f07
     LEA     LAB_1D1A,A0		;0d6d0: 41f90003581a
-    LEA	-25(A5),A1		;0d6d6: 43edffe7
+    LEA	    -25(A5),A1		;0d6d6: 43edffe7
     MOVEQ	#23,D0			;0d6da: 7017
 LAB_06C2:
     MOVE.B	(A0)+,(A1)+		;0d6dc: 12d8
@@ -20060,7 +20053,7 @@ LAB_0711:
     MOVE.L	LAB_1F2E,-(A7)		;0e360: 2f3900039954
     PEA	    LAB_1D2B		;0e366: 4879000359dc
     PEA	    LAB_1D2A		;0e36c: 4879000359d0
-    PEA	-41(A5)			;0e372: 486dffd7
+    PEA	    -41(A5)			;0e372: 486dffd7
     JSR	j_SUB_printf_0(PC)		;0e376: 4eba41ce
     JSR     LAB_0726(PC)		;0e37a: 4eba0360
     MOVEA.L	LAB_2217,A1		;0e37e: 22790003c226
@@ -20086,7 +20079,7 @@ LAB_0712:
     ADD.L	D0,D1			;0e3be: d280
     MOVEQ	#33,D0			;0e3c0: 7021
     ADD.L	D0,D1			;0e3c2: d280
-    PEA	-41(A5)			;0e3c4: 486dffd7
+    PEA	    -41(A5)			;0e3c4: 486dffd7
     MOVE.L	D1,-(A7)		;0e3c8: 2f01
     PEA	    280.W			;0e3ca: 48780118
     MOVE.L	A1,-(A7)		;0e3ce: 2f09
@@ -20204,9 +20197,9 @@ LAB_0718:
     JSR     LAB_055C(PC)		;0e572: 4ebac6ce
     MOVE.L	LAB_226C,(A7)		;0e576: 2eb90003de20
     PEA	    LAB_1D2C		;0e57c: 4879000359e0
-    PEA	-41(A5)			;0e582: 486dffd7
+    PEA	    -41(A5)			;0e582: 486dffd7
     JSR	j_SUB_printf_0(PC)		;0e586: 4eba3fbe
-    PEA	-41(A5)			;0e58a: 486dffd7
+    PEA	    -41(A5)			;0e58a: 486dffd7
     PEA	    360.W			;0e58e: 48780168
     PEA	    410.W			;0e592: 4878019a
     MOVE.L	LAB_2217,-(A7)		;0e596: 2f390003c226
@@ -20219,10 +20212,10 @@ LAB_0718:
     MOVE.L	D0,(A7)			;0e5b8: 2e80
     MOVE.L	64(A7),-(A7)		;0e5ba: 2f2f0040
     PEA	    LAB_1D2D		;0e5be: 4879000359ea
-    PEA	-41(A5)			;0e5c4: 486dffd7
+    PEA	    -41(A5)			;0e5c4: 486dffd7
     JSR	j_SUB_printf_0(PC)		;0e5c8: 4eba3f7c
     LEA	    76(A7),A7		;0e5cc: 4fef004c
-    PEA	-41(A5)			;0e5d0: 486dffd7
+    PEA	    -41(A5)			;0e5d0: 486dffd7
     PEA	    88.W			;0e5d4: 48780058
     PEA	    40.W			;0e5d8: 48780028
     MOVE.L	LAB_2217,-(A7)		;0e5dc: 2f390003c226
@@ -20316,12 +20309,12 @@ LAB_0728:
     EXT.L	D0			;0e6f2: 48c0
     MOVE.L	D0,-(A7)		;0e6f4: 2f00
     PEA	    LAB_1D34		;0e6f6: 487900035a3a
-    PEA	-41(A5)			;0e6fc: 486dffd7
+    PEA	    -41(A5)			;0e6fc: 486dffd7
     JSR	j_SUB_printf_0(PC)		;0e700: 4eba3e44
     MOVEA.L	LAB_2216,A0		;0e704: 20790003c222
     ADDA.W	#$000a,A0		;0e70a: d0fc000a
     PEA	    210.W			;0e70e: 487800d2
-    PEA	-41(A5)			;0e712: 486dffd7
+    PEA	    -41(A5)			;0e712: 486dffd7
     MOVE.L	A0,-(A7)		;0e716: 2f08
     JSR     LAB_09AD(PC)		;0e718: 4eba5f62
     UNLK	A5			;0e71c: 4e5d
@@ -20351,12 +20344,12 @@ LAB_0729:
     MOVE.L	D1,-(A7)		;0e75e: 2f01
     MOVE.L	D0,-(A7)		;0e760: 2f00
     PEA	    LAB_1D35		;0e762: 487900035a44
-    PEA	-51(A5)			;0e768: 486dffcd
+    PEA	    -51(A5)			;0e768: 486dffcd
     JSR	j_SUB_printf_0(PC)		;0e76c: 4eba3dd8
     MOVEA.L	LAB_2216,A0		;0e770: 20790003c222
     ADDA.W	#$000a,A0		;0e776: d0fc000a
     PEA	    120.W			;0e77a: 48780078
-    PEA	-51(A5)			;0e77e: 486dffcd
+    PEA	    -51(A5)			;0e77e: 486dffcd
     MOVE.L	A0,-(A7)		;0e782: 2f08
     JSR     LAB_09AD(PC)		;0e784: 4eba5ef6
     MOVE.B	LAB_1BB7,D0		;0e788: 103900034129
@@ -20366,12 +20359,12 @@ LAB_0729:
     MOVE.L	LAB_1BBE,-(A7)		;0e798: 2f3900034134
     MOVE.L	D0,-(A7)		;0e79e: 2f00
     PEA	    LAB_1D36		;0e7a0: 487900035a5a
-    PEA	-51(A5)			;0e7a6: 486dffcd
+    PEA	    -51(A5)			;0e7a6: 486dffcd
     JSR	j_SUB_printf_0(PC)		;0e7aa: 4eba3d9a
     MOVEA.L	LAB_2216,A0		;0e7ae: 20790003c222
     ADDA.W	#$000a,A0		;0e7b4: d0fc000a
     PEA	    150.W			;0e7b8: 48780096
-    PEA	-51(A5)			;0e7bc: 486dffcd
+    PEA	    -51(A5)			;0e7bc: 486dffcd
     MOVE.L	A0,-(A7)		;0e7c0: 2f08
     JSR     LAB_09AD(PC)		;0e7c2: 4eba5eb8
     MOVE.B	LAB_1BC9,D0		;0e7c6: 103900034144
@@ -20379,13 +20372,13 @@ LAB_0729:
     EXT.L	D0			;0e7ce: 48c0
     MOVE.L	D0,(A7)			;0e7d0: 2e80
     PEA	    LAB_1D37		;0e7d2: 487900035a7c
-    PEA	-51(A5)			;0e7d8: 486dffcd
+    PEA	    -51(A5)			;0e7d8: 486dffcd
     JSR	j_SUB_printf_0(PC)		;0e7dc: 4eba3d68
     LEA	    68(A7),A7		;0e7e0: 4fef0044
     MOVEA.L	LAB_2216,A0		;0e7e4: 20790003c222
     ADDA.W	#$000a,A0		;0e7ea: d0fc000a
     PEA	    180.W			;0e7ee: 487800b4
-    PEA	-51(A5)			;0e7f2: 486dffcd
+    PEA	    -51(A5)			;0e7f2: 486dffcd
     MOVE.L	A0,-(A7)		;0e7f6: 2f08
     JSR     LAB_09AD(PC)		;0e7f8: 4eba5e82
     MOVE.L	-56(A5),D2		;0e7fc: 242dffc8
@@ -20458,12 +20451,12 @@ LAB_072F:
     MOVE.L	D1,-(A7)		;0e8d6: 2f01
     MOVE.L	D0,-(A7)		;0e8d8: 2f00
     PEA	    LAB_1D39		;0e8da: 487900035a8e
-    PEA	-120(A5)		;0e8e0: 486dff88
+    PEA	    -120(A5)		;0e8e0: 486dff88
     JSR	j_SUB_printf_0(PC)		;0e8e4: 4eba3c60
     MOVEA.L	LAB_2216,A0		;0e8e8: 20790003c222
     ADDA.W	#$000a,A0		;0e8ee: d0fc000a
     PEA	    90.W			;0e8f2: 4878005a
-    PEA	-120(A5)		;0e8f6: 486dff88
+    PEA	    -120(A5)		;0e8f6: 486dff88
     MOVE.L	A0,-(A7)		;0e8fa: 2f08
     JSR     LAB_09AD(PC)		;0e8fc: 4eba5d7e
     LEA	    28(A7),A7		;0e900: 4fef001c
@@ -20496,12 +20489,12 @@ LAB_0735:
     MOVE.L	A2,-(A7)		;0e94a: 2f0a
     MOVE.L	A1,-(A7)		;0e94c: 2f09
     PEA	    LAB_1D3A		;0e94e: 487900035aa2
-    PEA	-120(A5)		;0e954: 486dff88
+    PEA	    -120(A5)		;0e954: 486dff88
     JSR	j_SUB_printf_0(PC)		;0e958: 4eba3bec
     MOVEA.L	LAB_2216,A0		;0e95c: 20790003c222
     ADDA.W	#$000a,A0		;0e962: d0fc000a
     PEA	    120.W			;0e966: 48780078
-    PEA	-120(A5)		;0e96a: 486dff88
+    PEA	    -120(A5)		;0e96a: 486dff88
     MOVE.L	A0,-(A7)		;0e96e: 2f08
     JSR     LAB_09AD(PC)		;0e970: 4eba5d0a
     MOVE.W	LAB_21E6,D0		;0e974: 30390003bc9e
@@ -20518,7 +20511,7 @@ LAB_0735:
     EXT.L	D0			;0e9a4: 48c0
     MOVE.L	LAB_1D33,-(A7)		;0e9a6: 2f3900035a36
     MOVE.L	D0,-(A7)		;0e9ac: 2f00
-    PEA	-140(A5)		;0e9ae: 486dff74
+    PEA	    -140(A5)		;0e9ae: 486dff74
     JSR     LAB_07C7(PC)		;0e9b2: 4eba1206
     LEA	    12(A7),A7		;0e9b6: 4fef000c
     BRA.S	LAB_0737		;0e9ba: 6004
@@ -20534,16 +20527,16 @@ LAB_0737:
 LAB_0738:
     LEA     LAB_1D3F,A0		;0e9d4: 41f900035aec
 LAB_0739:
-    PEA	-140(A5)		;0e9da: 486dff74
+    PEA	    -140(A5)		;0e9da: 486dff74
     MOVE.L	A0,-(A7)		;0e9de: 2f08
     MOVE.L	D0,-(A7)		;0e9e0: 2f00
     PEA	    LAB_1D3E		;0e9e2: 487900035ad2
-    PEA	-120(A5)		;0e9e8: 486dff88
+    PEA	    -120(A5)		;0e9e8: 486dff88
     JSR	j_SUB_printf_0(PC)		;0e9ec: 4eba3b58
     MOVEA.L	LAB_2216,A0		;0e9f0: 20790003c222
     ADDA.W	#$000a,A0		;0e9f6: d0fc000a
     PEA	    150.W			;0e9fa: 48780096
-    PEA	-120(A5)		;0e9fe: 486dff88
+    PEA	    -120(A5)		;0e9fe: 486dff88
     MOVE.L	A0,-(A7)		;0ea02: 2f08
     JSR     LAB_09AD(PC)		;0ea04: 4eba5c76
     LEA	    32(A7),A7		;0ea08: 4fef0020
@@ -20553,7 +20546,7 @@ LAB_0739:
     BTST	#0,7(A0)		;0ea1c: 082800000007
     BEQ.S	LAB_073A		;0ea22: 6710
     PEA	    LAB_1D40		;0ea24: 487900035af2
-    PEA	-120(A5)		;0ea2a: 486dff88
+    PEA	    -120(A5)		;0ea2a: 486dff88
     JSR     LAB_05C5(PC)		;0ea2e: 4ebace42
     ADDQ.W	#8,A7			;0ea32: 504f
 LAB_073A:
@@ -20562,7 +20555,7 @@ LAB_073A:
     BTST	#1,7(A0)		;0ea40: 082800010007
     BEQ.S	LAB_073B		;0ea46: 6710
     PEA	    LAB_1D41		;0ea48: 487900035af8
-    PEA	-120(A5)		;0ea4e: 486dff88
+    PEA	    -120(A5)		;0ea4e: 486dff88
     JSR     LAB_05C5(PC)		;0ea52: 4ebace1e
     ADDQ.W	#8,A7			;0ea56: 504f
 LAB_073B:
@@ -20571,7 +20564,7 @@ LAB_073B:
     BTST	#2,7(A0)		;0ea64: 082800020007
     BEQ.S	LAB_073C		;0ea6a: 6710
     PEA	    LAB_1D42		;0ea6c: 487900035b00
-    PEA	-120(A5)		;0ea72: 486dff88
+    PEA	    -120(A5)		;0ea72: 486dff88
     JSR     LAB_05C5(PC)		;0ea76: 4ebacdfa
     ADDQ.W	#8,A7			;0ea7a: 504f
 LAB_073C:
@@ -20580,7 +20573,7 @@ LAB_073C:
     BTST	#3,7(A0)		;0ea88: 082800030007
     BEQ.S	LAB_073D		;0ea8e: 6710
     PEA	    LAB_1D43		;0ea90: 487900035b10
-    PEA	-120(A5)		;0ea96: 486dff88
+    PEA	    -120(A5)		;0ea96: 486dff88
     JSR     LAB_05C5(PC)		;0ea9a: 4ebacdd6
     ADDQ.W	#8,A7			;0ea9e: 504f
 LAB_073D:
@@ -20589,7 +20582,7 @@ LAB_073D:
     BTST	#4,7(A0)		;0eaac: 082800040007
     BEQ.S	LAB_073E		;0eab2: 6710
     PEA	    LAB_1D44		;0eab4: 487900035b1a
-    PEA	-120(A5)		;0eaba: 486dff88
+    PEA	    -120(A5)		;0eaba: 486dff88
     JSR     LAB_05C5(PC)		;0eabe: 4ebacdb2
     ADDQ.W	#8,A7			;0eac2: 504f
 LAB_073E:
@@ -20598,7 +20591,7 @@ LAB_073E:
     BTST	#5,7(A0)		;0ead0: 082800050007
     BEQ.S	LAB_073F		;0ead6: 6710
     PEA	    LAB_1D45		;0ead8: 487900035b26
-    PEA	-120(A5)		;0eade: 486dff88
+    PEA	    -120(A5)		;0eade: 486dff88
     JSR     LAB_05C5(PC)		;0eae2: 4ebacd8e
     ADDQ.W	#8,A7			;0eae6: 504f
 LAB_073F:
@@ -20607,7 +20600,7 @@ LAB_073F:
     BTST	#6,7(A0)		;0eaf4: 082800060007
     BEQ.S	LAB_0740		;0eafa: 6710
     PEA	    LAB_1D46		;0eafc: 487900035b32
-    PEA	-120(A5)		;0eb02: 486dff88
+    PEA	    -120(A5)		;0eb02: 486dff88
     JSR     LAB_05C5(PC)		;0eb06: 4ebacd6a
     ADDQ.W	#8,A7			;0eb0a: 504f
 LAB_0740:
@@ -20616,14 +20609,14 @@ LAB_0740:
     BTST	#7,7(A0)		;0eb18: 082800070007
     BEQ.S	LAB_0741		;0eb1e: 6710
     PEA	    LAB_1D47		;0eb20: 487900035b3e
-    PEA	-120(A5)		;0eb26: 486dff88
+    PEA	    -120(A5)		;0eb26: 486dff88
     JSR     LAB_05C5(PC)		;0eb2a: 4ebacd46
     ADDQ.W	#8,A7			;0eb2e: 504f
 LAB_0741:
     MOVEA.L	LAB_2216,A0		;0eb30: 20790003c222
     ADDA.W	#$000a,A0		;0eb36: d0fc000a
     PEA	    210.W			;0eb3a: 487800d2
-    PEA	-120(A5)		;0eb3e: 486dff88
+    PEA	    -120(A5)		;0eb3e: 486dff88
     MOVE.L	A0,-(A7)		;0eb42: 2f08
     JSR     LAB_09AD(PC)		;0eb44: 4eba5b36
     PEA	    1000.W			;0eb48: 487803e8
@@ -20683,12 +20676,12 @@ LAB_0747:
     MOVE.L	D1,-(A7)		;0ebf4: 2f01
     MOVE.L	D0,-(A7)		;0ebf6: 2f00
     PEA	    LAB_1D49		;0ebf8: 487900035b52
-    PEA	-120(A5)		;0ebfe: 486dff88
+    PEA	    -120(A5)		;0ebfe: 486dff88
     JSR	j_SUB_printf_0(PC)		;0ec02: 4eba3942
     MOVEA.L	LAB_2216,A0		;0ec06: 20790003c222
     ADDA.W	#$000a,A0		;0ec0c: d0fc000a
     PEA	    120.W			;0ec10: 48780078
-    PEA	-120(A5)		;0ec14: 486dff88
+    PEA	    -120(A5)		;0ec14: 486dff88
     MOVE.L	A0,-(A7)		;0ec18: 2f08
     JSR     LAB_09AD(PC)		;0ec1a: 4eba5a60
     MOVEA.L	LAB_1D32,A0		;0ec1e: 207900035a32
@@ -20700,12 +20693,12 @@ LAB_0747:
     MOVE.L	A2,-(A7)		;0ec32: 2f0a
     MOVE.L	A1,-(A7)		;0ec34: 2f09
     PEA	    LAB_1D4A		;0ec36: 487900035b66
-    PEA	-120(A5)		;0ec3c: 486dff88
+    PEA	    -120(A5)		;0ec3c: 486dff88
     JSR	j_SUB_printf_0(PC)		;0ec40: 4eba3904
     MOVEA.L	LAB_2216,A0		;0ec44: 20790003c222
     ADDA.W	#$000a,A0		;0ec4a: d0fc000a
     PEA	    150.W			;0ec4e: 48780096
-    PEA	-120(A5)		;0ec52: 486dff88
+    PEA	    -120(A5)		;0ec52: 486dff88
     MOVE.L	A0,-(A7)		;0ec56: 2f08
     JSR     LAB_09AD(PC)		;0ec58: 4eba5a22
     LEA	    56(A7),A7		;0ec5c: 4fef0038
@@ -20715,7 +20708,7 @@ LAB_0747:
     BTST	#0,D0			;0ec6e: 08000000
     BEQ.S	LAB_0748		;0ec72: 6710
     PEA	    LAB_1D4B		;0ec74: 487900035b84
-    PEA	-120(A5)		;0ec7a: 486dff88
+    PEA	    -120(A5)		;0ec7a: 486dff88
     JSR     LAB_05C5(PC)		;0ec7e: 4ebacbf2
     ADDQ.W	#8,A7			;0ec82: 504f
 LAB_0748:
@@ -20724,7 +20717,7 @@ LAB_0748:
     BTST	#1,D0			;0ec8e: 08000001
     BEQ.S	LAB_0749		;0ec92: 6710
     PEA	    LAB_1D4C		;0ec94: 487900035b8a
-    PEA	-120(A5)		;0ec9a: 486dff88
+    PEA	    -120(A5)		;0ec9a: 486dff88
     JSR     LAB_05C5(PC)		;0ec9e: 4ebacbd2
     ADDQ.W	#8,A7			;0eca2: 504f
 LAB_0749:
@@ -20733,7 +20726,7 @@ LAB_0749:
     BTST	#2,D0			;0ecae: 08000002
     BEQ.S	LAB_074A		;0ecb2: 6710
     PEA	    LAB_1D4D		;0ecb4: 487900035b96
-    PEA	-120(A5)		;0ecba: 486dff88
+    PEA	    -120(A5)		;0ecba: 486dff88
     JSR     LAB_05C5(PC)		;0ecbe: 4ebacbb2
     ADDQ.W	#8,A7			;0ecc2: 504f
 LAB_074A:
@@ -20742,7 +20735,7 @@ LAB_074A:
     BTST	#3,D0			;0ecce: 08000003
     BEQ.S	LAB_074B		;0ecd2: 6710
     PEA	    LAB_1D4E		;0ecd4: 487900035ba0
-    PEA	-120(A5)		;0ecda: 486dff88
+    PEA	    -120(A5)		;0ecda: 486dff88
     JSR     LAB_05C5(PC)		;0ecde: 4ebacb92
     ADDQ.W	#8,A7			;0ece2: 504f
 LAB_074B:
@@ -20751,7 +20744,7 @@ LAB_074B:
     BTST	#4,D0			;0ecee: 08000004
     BEQ.S	LAB_074C		;0ecf2: 6710
     PEA	    LAB_1D4F		;0ecf4: 487900035bb4
-    PEA	-120(A5)		;0ecfa: 486dff88
+    PEA	    -120(A5)		;0ecfa: 486dff88
     JSR     LAB_05C5(PC)		;0ecfe: 4ebacb72
     ADDQ.W	#8,A7			;0ed02: 504f
 LAB_074C:
@@ -20760,7 +20753,7 @@ LAB_074C:
     BTST	#5,D0			;0ed0e: 08000005
     BEQ.S	LAB_074D		;0ed12: 6710
     PEA	    LAB_1D50		;0ed14: 487900035bc0
-    PEA	-120(A5)		;0ed1a: 486dff88
+    PEA	    -120(A5)		;0ed1a: 486dff88
     JSR     LAB_05C5(PC)		;0ed1e: 4ebacb52
     ADDQ.W	#8,A7			;0ed22: 504f
 LAB_074D:
@@ -20769,7 +20762,7 @@ LAB_074D:
     BTST	#6,D0			;0ed2e: 08000006
     BEQ.S	LAB_074E		;0ed32: 6710
     PEA	    LAB_1D51		;0ed34: 487900035bc8
-    PEA	-120(A5)		;0ed3a: 486dff88
+    PEA	    -120(A5)		;0ed3a: 486dff88
     JSR     LAB_05C5(PC)		;0ed3e: 4ebacb32
     ADDQ.W	#8,A7			;0ed42: 504f
 LAB_074E:
@@ -20778,14 +20771,14 @@ LAB_074E:
     BTST	#7,D0			;0ed4e: 08000007
     BEQ.S	LAB_074F		;0ed52: 6710
     PEA	    LAB_1D52		;0ed54: 487900035bd6
-    PEA	-120(A5)		;0ed5a: 486dff88
+    PEA	    -120(A5)		;0ed5a: 486dff88
     JSR     LAB_05C5(PC)		;0ed5e: 4ebacb12
     ADDQ.W	#8,A7			;0ed62: 504f
 LAB_074F:
     MOVEA.L	LAB_2216,A0		;0ed64: 20790003c222
     ADDA.W	#$000a,A0		;0ed6a: d0fc000a
     PEA	    180.W			;0ed6e: 487800b4
-    PEA	-120(A5)		;0ed72: 486dff88
+    PEA	    -120(A5)		;0ed72: 486dff88
     MOVE.L	A0,-(A7)		;0ed76: 2f08
     JSR     LAB_09AD(PC)		;0ed78: 4eba5902
     LEA	    12(A7),A7		;0ed7c: 4fef000c
@@ -20795,7 +20788,7 @@ LAB_074F:
     BTST	#0,D0			;0ed8e: 08000000
     BEQ.S	LAB_0750		;0ed92: 6710
     PEA	    LAB_1D53		;0ed94: 487900035bde
-    PEA	-120(A5)		;0ed9a: 486dff88
+    PEA	    -120(A5)		;0ed9a: 486dff88
     JSR     LAB_05C5(PC)		;0ed9e: 4ebacad2
     ADDQ.W	#8,A7			;0eda2: 504f
 LAB_0750:
@@ -20804,7 +20797,7 @@ LAB_0750:
     BTST	#1,D0			;0edae: 08000001
     BEQ.S	LAB_0751		;0edb2: 6710
     PEA	    LAB_1D54		;0edb4: 487900035be4
-    PEA	-120(A5)		;0edba: 486dff88
+    PEA	    -120(A5)		;0edba: 486dff88
     JSR     LAB_05C5(PC)		;0edbe: 4ebacab2
     ADDQ.W	#8,A7			;0edc2: 504f
 LAB_0751:
@@ -20813,7 +20806,7 @@ LAB_0751:
     BTST	#2,D0			;0edce: 08000002
     BEQ.S	LAB_0752		;0edd2: 6710
     PEA	    LAB_1D55		;0edd4: 487900035be8
-    PEA	-120(A5)		;0edda: 486dff88
+    PEA	    -120(A5)		;0edda: 486dff88
     JSR     LAB_05C5(PC)		;0edde: 4ebaca92
     ADDQ.W	#8,A7			;0ede2: 504f
 LAB_0752:
@@ -20822,7 +20815,7 @@ LAB_0752:
     BTST	#3,D0			;0edee: 08000003
     BEQ.S	LAB_0753		;0edf2: 6710
     PEA	    LAB_1D56		;0edf4: 487900035bf0
-    PEA	-120(A5)		;0edfa: 486dff88
+    PEA	    -120(A5)		;0edfa: 486dff88
     JSR     LAB_05C5(PC)		;0edfe: 4ebaca72
     ADDQ.W	#8,A7			;0ee02: 504f
 LAB_0753:
@@ -20831,14 +20824,14 @@ LAB_0753:
     BTST	#4,D0			;0ee0e: 08000004
     BEQ.S	LAB_0754		;0ee12: 6710
     PEA	    LAB_1D57		;0ee14: 487900035bf8
-    PEA	-120(A5)		;0ee1a: 486dff88
+    PEA	    -120(A5)		;0ee1a: 486dff88
     JSR     LAB_05C5(PC)		;0ee1e: 4ebaca52
     ADDQ.W	#8,A7			;0ee22: 504f
 LAB_0754:
     MOVEA.L	LAB_2216,A0		;0ee24: 20790003c222
     ADDA.W	#$000a,A0		;0ee2a: d0fc000a
     PEA	    210.W			;0ee2e: 487800d2
-    PEA	-120(A5)		;0ee32: 486dff88
+    PEA	    -120(A5)		;0ee32: 486dff88
     MOVE.L	A0,-(A7)		;0ee36: 2f08
     JSR     LAB_09AD(PC)		;0ee38: 4eba5842
     LEA	    12(A7),A7		;0ee3c: 4fef000c
@@ -21019,7 +21012,7 @@ LAB_075E:
     TST.L	D6			;0f066: 4a86
     BEQ.W	LAB_0799		;0f068: 670005c4
     MOVE.L	D6,D1			;0f06c: 2206
-    LEA	-105(A5),A0		;0f06e: 41edff97
+    LEA	    -105(A5),A0		;0f06e: 41edff97
     MOVE.L	A0,D2			;0f072: 2408
     MOVEQ	#50,D3			;0f074: 7632
     MOVEA.L	LAB_2382,A6		;0f076: 2c7900041454
@@ -21066,7 +21059,7 @@ LAB_0764:
     CLR.L	-118(A5)		;0f0d4: 42adff8a
     BRA.S	LAB_0766		;0f0d8: 6010
 LAB_0765:
-    LEA	-105(A5),A0		;0f0da: 41edff97
+    LEA	    -105(A5),A0		;0f0da: 41edff97
     ADDA.L	D5,A0			;0f0de: d1c5
     MOVE.L	A0,-(A7)		;0f0e0: 2f08
     JSR     LAB_07C9(PC)		;0f0e2: 4eba0ae2
@@ -21454,9 +21447,9 @@ LAB_0795:
     MOVE.L	#LAB_221B,4(A0)		;0f5ce: 217c0003c2560004
     MOVE.L	LAB_2267,-(A7)		;0f5d6: 2f390003de08
     PEA	    LAB_1D69		;0f5dc: 487900035d5c
-    PEA	-50(A5)			;0f5e2: 486dffce
+    PEA	    -50(A5)			;0f5e2: 486dffce
     JSR	j_SUB_printf_0(PC)		;0f5e6: 4eba2f5e
-    PEA	-50(A5)			;0f5ea: 486dffce
+    PEA	    -50(A5)			;0f5ea: 486dffce
     PEA	    232.W			;0f5ee: 487800e8
     PEA	    40.W			;0f5f2: 48780028
     MOVE.L	LAB_2217,-(A7)		;0f5f6: 2f390003c226
@@ -22398,9 +22391,9 @@ LAB_07EC:
     MOVE.B	LAB_1DCA,D0		;102be: 1039000363f6
     MOVE.L	D0,-(A7)		;102c4: 2f00
     PEA	    LAB_1D89		;102c6: 487900035f7a
-    PEA	-80(A5)			;102cc: 486dffb0
+    PEA	    -80(A5)			;102cc: 486dffb0
     JSR	j_SUB_printf_0(PC)		;102d0: 4eba2274
-    PEA	-80(A5)			;102d4: 486dffb0
+    PEA	    -80(A5)			;102d4: 486dffb0
     PEA	    90.W			;102d8: 4878005a
     PEA	    40.W			;102dc: 48780028
     MOVE.L	LAB_2217,-(A7)		;102e0: 2f390003c226
@@ -22844,9 +22837,9 @@ LAB_07F8:
     MOVE.B	D7,D0			;10964: 1007
     MOVE.L	D0,(A7)			;10966: 2e80
     PEA	    LAB_1DA0		;10968: 48790003611a
-    PEA	-41(A5)			;1096e: 486dffd7
+    PEA	    -41(A5)			;1096e: 486dffd7
     JSR	j_SUB_printf_0(PC)		;10972: 4eba1bd2
-    PEA	-41(A5)			;10976: 486dffd7
+    PEA	    -41(A5)			;10976: 486dffd7
     PEA	    272.W			;1097a: 48780110
     PEA	    205.W			;1097e: 487800cd
     MOVE.L	LAB_2217,-(A7)		;10982: 2f390003c226
@@ -22966,9 +22959,9 @@ LAB_0803:
     LINK.W	A5,#-40			;10ae6: 4e55ffd8
     MOVE.L	LAB_21FC,-(A7)		;10aea: 2f390003c12e
     PEA	    LAB_1DA5		;10af0: 48790003614c
-    PEA	-40(A5)			;10af6: 486dffd8
+    PEA	    -40(A5)			;10af6: 486dffd8
     JSR	j_SUB_printf_0(PC)		;10afa: 4eba1a4a
-    PEA	-40(A5)			;10afe: 486dffd8
+    PEA	    -40(A5)			;10afe: 486dffd8
     PEA	    180.W			;10b02: 487800b4
     PEA	    40.W			;10b06: 48780028
     MOVE.L	LAB_2217,-(A7)		;10b0a: 2f390003c226
@@ -23228,9 +23221,9 @@ LAB_0812:
     JSR	    -348(A6)		;10e66: 4eaefea4
     MOVE.L	LAB_21FC,(A7)		;10e6a: 2eb90003c12e
     PEA	    LAB_1DAA		;10e70: 4879000361de
-    PEA	-41(A5)			;10e76: 486dffd7
+    PEA	    -41(A5)			;10e76: 486dffd7
     JSR	j_SUB_printf_0(PC)		;10e7a: 4eba16ca
-    PEA	-41(A5)			;10e7e: 486dffd7
+    PEA	    -41(A5)			;10e7e: 486dffd7
     PEA	    300.W			;10e82: 4878012c
     PEA	    190.W			;10e86: 487800be
     MOVE.L	LAB_2217,-(A7)		;10e8a: 2f390003c226
@@ -23259,7 +23252,7 @@ LAB_0813:
     ADDA.L	D0,A0			;10ed8: d1c0
     PEA	    40.W			;10eda: 48780028
     MOVE.L	A0,-(A7)		;10ede: 2f08
-    PEA	-49(A5)			;10ee0: 486dffcf
+    PEA	    -49(A5)			;10ee0: 486dffcf
     JSR     LAB_09C1(PC)		;10ee4: 4eba380e
     LEA	    12(A7),A7		;10ee8: 4fef000c
     MOVE.L	LAB_21E9,D0		;10eec: 20390003bca8
@@ -23268,7 +23261,7 @@ LAB_0813:
     LEA     LAB_21F7,A0		;10ef8: 41f90003bf84
     ADDA.L	D0,A0			;10efe: d1c0
     MOVEQ	#39,D0			;10f00: 7027
-    LEA	-90(A5),A1		;10f02: 43edffa6
+    LEA	    -90(A5),A1		;10f02: 43edffa6
 LAB_0814:
     MOVE.B	(A0)+,(A1)+		;10f06: 12d8
     DBF     D0,LAB_0814		;10f08: 51c8fffc
@@ -23311,7 +23304,7 @@ LAB_0818:
     JSR     LAB_0AB6(PC)		;10f6a: 4eba519c
     LEA     LAB_21F0,A0		;10f6e: 41f90003be1c
     ADDA.L	D0,A0			;10f74: d1c0
-    LEA	-49(A5),A1		;10f76: 43edffcf
+    LEA	    -49(A5),A1		;10f76: 43edffcf
     ADDA.L	D7,A1			;10f7a: d3c7
     MOVEQ	#40,D0			;10f7c: 7028
     SUB.L	D7,D0			;10f7e: 9087
@@ -23326,7 +23319,7 @@ LAB_081A:
     JSR     LAB_0AB6(PC)		;10f90: 4eba5176
     LEA     LAB_21F7,A0		;10f94: 41f90003bf84
     ADDA.L	D0,A0			;10f9a: d1c0
-    LEA	-90(A5),A1		;10f9c: 43edffa6
+    LEA	    -90(A5),A1		;10f9c: 43edffa6
     ADDA.L	D7,A1			;10fa0: d3c7
     MOVEQ	#40,D0			;10fa2: 7028
     SUB.L	D7,D0			;10fa4: 9087
@@ -23343,7 +23336,7 @@ LAB_081C:
     LEA     LAB_21F5,A0		;10fbc: 41f90003be44
     ADDA.L	D0,A0			;10fc2: d1c0
     MOVE.L	D7,D0			;10fc4: 2007
-    LEA	-49(A5),A1		;10fc6: 43edffcf
+    LEA	    -49(A5),A1		;10fc6: 43edffcf
     BRA.S	LAB_081E		;10fca: 6002
 LAB_081D:
     MOVE.B	(A1)+,(A0)+		;10fcc: 10d9
@@ -23357,7 +23350,7 @@ LAB_081E:
     LEA     LAB_21F9,A0		;10fe0: 41f90003bfac
     ADDA.L	D0,A0			;10fe6: d1c0
     MOVE.L	D7,D0			;10fe8: 2007
-    LEA	-90(A5),A1		;10fea: 43edffa6
+    LEA	    -90(A5),A1		;10fea: 43edffa6
     BRA.S	LAB_0820		;10fee: 6002
 LAB_081F:
     MOVE.B	(A1)+,(A0)+		;10ff0: 10d9
@@ -23381,7 +23374,7 @@ LAB_0822:
     ADDA.L	D0,A0			;11018: d1c0
     PEA	    40.W			;1101a: 48780028
     MOVE.L	A0,-(A7)		;1101e: 2f08
-    PEA	-49(A5)			;11020: 486dffcf
+    PEA	    -49(A5)			;11020: 486dffcf
     JSR     LAB_09C1(PC)		;11024: 4eba36ce
     LEA	    12(A7),A7		;11028: 4fef000c
     MOVE.L	LAB_21E9,D0		;1102c: 20390003bca8
@@ -23390,7 +23383,7 @@ LAB_0822:
     LEA     LAB_21F7,A0		;11038: 41f90003bf84
     ADDA.L	D0,A0			;1103e: d1c0
     MOVEQ	#39,D0			;11040: 7027
-    LEA	-90(A5),A1		;11042: 43edffa6
+    LEA	    -90(A5),A1		;11042: 43edffa6
 LAB_0823:
     MOVE.B	(A0)+,(A1)+		;11046: 12d8
     DBF     D0,LAB_0823		;11048: 51c8fffc
@@ -23436,7 +23429,7 @@ LAB_0827:
     ADDA.L	D0,A0			;110b6: d1c0
     MOVEQ	#40,D0			;110b8: 7028
     SUB.L	D7,D0			;110ba: 9087
-    LEA	-49(A5),A1		;110bc: 43edffcf
+    LEA	    -49(A5),A1		;110bc: 43edffcf
     BRA.S	LAB_0829		;110c0: 6002
 LAB_0828:
     MOVE.B	(A1)+,(A0)+		;110c2: 10d9
@@ -23451,7 +23444,7 @@ LAB_0829:
     ADDA.L	D0,A0			;110dc: d1c0
     MOVEQ	#40,D0			;110de: 7028
     SUB.L	D7,D0			;110e0: 9087
-    LEA	-90(A5),A1		;110e2: 43edffa6
+    LEA	    -90(A5),A1		;110e2: 43edffa6
     BRA.S	LAB_082B		;110e6: 6002
 LAB_082A:
     MOVE.B	(A1)+,(A0)+		;110e8: 10d9
@@ -23465,7 +23458,7 @@ LAB_082B:
     ADDA.L	D0,A0			;11100: d1c0
     MOVEQ	#40,D0			;11102: 7028
     SUB.L	D7,D0			;11104: 9087
-    LEA	-49(A5),A1		;11106: 43edffcf
+    LEA	    -49(A5),A1		;11106: 43edffcf
     ADDA.L	D0,A1			;1110a: d3c0
     MOVE.L	D7,D0			;1110c: 2007
     BRA.S	LAB_082D		;1110e: 6002
@@ -23481,7 +23474,7 @@ LAB_082D:
     ADDA.L	D0,A0			;11128: d1c0
     MOVEQ	#40,D0			;1112a: 7028
     SUB.L	D7,D0			;1112c: 9087
-    LEA	-90(A5),A1		;1112e: 43edffa6
+    LEA	    -90(A5),A1		;1112e: 43edffa6
     ADDA.L	D0,A1			;11132: d3c0
     MOVE.L	D7,D0			;11134: 2007
     BRA.S	LAB_082F		;11136: 6002
@@ -23507,7 +23500,7 @@ LAB_0831:
     ADDA.L	D0,A0			;11160: d1c0
     PEA	    40.W			;11162: 48780028
     MOVE.L	A0,-(A7)		;11166: 2f08
-    PEA	-49(A5)			;11168: 486dffcf
+    PEA	    -49(A5)			;11168: 486dffcf
     JSR     LAB_09C1(PC)		;1116c: 4eba3586
     LEA	    12(A7),A7		;11170: 4fef000c
     MOVE.L	LAB_21E9,D0		;11174: 20390003bca8
@@ -23516,7 +23509,7 @@ LAB_0831:
     LEA     LAB_21F7,A0		;11180: 41f90003bf84
     ADDA.L	D0,A0			;11186: d1c0
     MOVEQ	#39,D0			;11188: 7027
-    LEA	-90(A5),A1		;1118a: 43edffa6
+    LEA	    -90(A5),A1		;1118a: 43edffa6
 LAB_0832:
     MOVE.B	(A0)+,(A1)+		;1118e: 12d8
     DBF     D0,LAB_0832		;11190: 51c8fffc
@@ -23572,7 +23565,7 @@ LAB_0837:
     ADDA.L	D0,A0			;11210: d1c0
     MOVEQ	#40,D0			;11212: 7028
     SUB.L	D7,D0			;11214: 9087
-    LEA	-49(A5),A1		;11216: 43edffcf
+    LEA	    -49(A5),A1		;11216: 43edffcf
     BRA.S	LAB_0839		;1121a: 6002
 LAB_0838:
     MOVE.B	(A1)+,(A0)+		;1121c: 10d9
@@ -23587,7 +23580,7 @@ LAB_0839:
     ADDA.L	D0,A0			;11236: d1c0
     MOVEQ	#40,D0			;11238: 7028
     SUB.L	D7,D0			;1123a: 9087
-    LEA	-90(A5),A1		;1123c: 43edffa6
+    LEA	    -90(A5),A1		;1123c: 43edffa6
     BRA.S	LAB_083B		;11240: 6002
 LAB_083A:
     MOVE.B	(A1)+,(A0)+		;11242: 10d9
@@ -23601,7 +23594,7 @@ LAB_083B:
     ADDA.L	D0,A0			;1125a: d1c0
     MOVEQ	#40,D0			;1125c: 7028
     SUB.L	D7,D0			;1125e: 9087
-    LEA	-49(A5),A1		;11260: 43edffcf
+    LEA	    -49(A5),A1		;11260: 43edffcf
     ADDA.L	D0,A1			;11264: d3c0
     MOVE.L	D7,D0			;11266: 2007
     BRA.S	LAB_083D		;11268: 6002
@@ -23617,7 +23610,7 @@ LAB_083D:
     ADDA.L	D0,A0			;11282: d1c0
     MOVEQ	#40,D0			;11284: 7028
     SUB.L	D7,D0			;11286: 9087
-    LEA	-90(A5),A1		;11288: 43edffa6
+    LEA	    -90(A5),A1		;11288: 43edffa6
     ADDA.L	D0,A1			;1128c: d3c0
     MOVE.L	D7,D0			;1128e: 2007
     BRA.S	LAB_083F		;11290: 6002
@@ -23644,7 +23637,7 @@ LAB_0841:
     JSR     LAB_0AB6(PC)		;112ba: 4eba4e4c
     LEA     LAB_21F0,A0		;112be: 41f90003be1c
     ADDA.L	D0,A0			;112c4: d1c0
-    LEA	-49(A5),A1		;112c6: 43edffcf
+    LEA		-49(A5),A1		;112c6: 43edffcf
     ADDA.L	D7,A1			;112ca: d3c7
     MOVEQ	#40,D0			;112cc: 7028
     SUB.L	D7,D0			;112ce: 9087
@@ -23659,7 +23652,7 @@ LAB_0843:
     JSR     LAB_0AB6(PC)		;112e0: 4eba4e26
     LEA     LAB_21F7,A0		;112e4: 41f90003bf84
     ADDA.L	D0,A0			;112ea: d1c0
-    LEA	-90(A5),A1		;112ec: 43edffa6
+    LEA	    -90(A5),A1		;112ec: 43edffa6
     ADDA.L	D7,A1			;112f0: d3c7
     MOVEQ	#40,D0			;112f2: 7028
     SUB.L	D7,D0			;112f4: 9087
@@ -23676,7 +23669,7 @@ LAB_0845:
     LEA     LAB_21F5,A0		;1130c: 41f90003be44
     ADDA.L	D0,A0			;11312: d1c0
     MOVE.L	D7,D0			;11314: 2007
-    LEA	-49(A5),A1		;11316: 43edffcf
+    LEA	    -49(A5),A1		;11316: 43edffcf
     BRA.S	LAB_0847		;1131a: 6002
 LAB_0846:
     MOVE.B	(A1)+,(A0)+		;1131c: 10d9
@@ -23690,7 +23683,7 @@ LAB_0847:
     LEA     LAB_21F9,A0		;11330: 41f90003bfac
     ADDA.L	D0,A0			;11336: d1c0
     MOVE.L	D7,D0			;11338: 2007
-    LEA	-90(A5),A1		;1133a: 43edffa6
+    LEA	    -90(A5),A1		;1133a: 43edffa6
     BRA.S	LAB_0849		;1133e: 6002
 LAB_0848:
     MOVE.B	(A1)+,(A0)+		;11340: 10d9
@@ -23872,28 +23865,28 @@ LAB_0857:
     BSR.W	LAB_07E4		;1152e: 6100e7fa
     MOVEA.L	LAB_2217,A1		;11532: 22790003c226
     MOVEQ	#2,D0			;11538: 7002
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;1153a: 2c790003637c
-    JSR	    -342(A6)		;11540: 4eaefeaa
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1		;11544: 22790003c226
     MOVEQ	#40,D0			;1154a: 7028
     MOVEQ	#68,D1			;1154c: 7244
     MOVE.L	#$00000280,D2		;1154e: 243c00000280
     MOVE.L	#$00000165,D3		;11554: 263c00000165
-    JSR	    -306(A6)		;1155a: 4eaefece
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1		;1155e: 22790003c226
     MOVEQ	#6,D0			;11564: 7006
-    JSR	    -342(A6)		;11566: 4eaefeaa
+    JSR	    _LVOSetAPen(A6)
     MOVEA.L	LAB_2217,A1		;1156a: 22790003c226
     MOVEQ	#40,D0			;11570: 7028
     MOVE.L	#$00000166,D1		;11572: 223c00000166
     MOVE.L	#$000001ad,D3		;11578: 263c000001ad
-    JSR	    -306(A6)		;1157e: 4eaefece
+    JSR	    _LVORectFill(A6)
     MOVEA.L	LAB_2217,A1		;11582: 22790003c226
     MOVEQ	#0,D0			;11588: 7000
-    JSR	    -354(A6)		;1158a: 4eaefe9e
+    JSR	    _LVOSetDrMd(A6)
     MOVEA.L	LAB_2217,A1		;1158e: 22790003c226
     MOVEQ	#1,D0			;11594: 7001
-    JSR	    -342(A6)		;11596: 4eaefeaa
+    JSR	    _LVOSetAPen(A6)
     PEA	    LAB_1DAC		;1159a: 48790003620e
     PEA	    390.W			;115a0: 48780186
     PEA	    40.W			;115a4: 48780028
@@ -23948,8 +23941,8 @@ LAB_0857:
     LEA	    80(A7),A7		;1168e: 4fef0050
     MOVEA.L	LAB_2217,A1		;11692: 22790003c226
     MOVEQ	#1,D0			;11698: 7001
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;1169a: 2c790003637c
-    JSR	    -354(A6)		;116a0: 4eaefe9e
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOSetDrMd(A6)
     MOVEM.L	(A7)+,D2-D3		;116a4: 4cdf000c
     RTS
 
@@ -23968,6 +23961,9 @@ LAB_085C:
     JMP     LAB_0EAF		;116c4: 4ef90001ea6e
 LAB_085D:
     JMP     LAB_0EE8		;116ca: 4ef90001f068
+
+;!======
+
 LAB_085E:
     LINK.W	A5,#-16			;116d0: 4e55fff0
     MOVEM.L	D2-D3/D5-D7/A2-A3,-(A7)	;116d4: 48e73730
@@ -24130,14 +24126,14 @@ LAB_086D:
     LEA	    16(A7),A7		;118b0: 4fef0010
     MOVE.L	D0,LAB_2217		;118b4: 23c00003c226
     MOVEA.L	D0,A1			;118ba: 2240
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;118bc: 2c790003637c
-    JSR	    -198(A6)		;118c2: 4eaeff3a
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOInitRastPort(A6)
     MOVEA.L	LAB_2217,A0		;118c6: 20790003c226
     MOVE.L	#LAB_221B,4(A0)		;118cc: 217c0003c2560004
     MOVEA.L	LAB_2217,A1		;118d4: 22790003c226
     MOVEA.L	LAB_1DE6,A0		;118da: 207900036454
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;118e0: 2c790003637c
-    JSR	    -66(A6)			;118e6: 4eaeffbe
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOSetFont(A6)
     MOVEQ	#68,D0			;118ea: 7044
     MOVE.W	D0,LAB_222B		;118ec: 33c00003c2d4
     MOVEQ	#0,D1			;118f2: 7200
@@ -24159,14 +24155,14 @@ LAB_086E:
     LEA	    16(A7),A7		;11928: 4fef0010
     MOVE.L	D0,LAB_2218		;1192c: 23c00003c22a
     MOVEA.L	D0,A1			;11932: 2240
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;11934: 2c790003637c
-    JSR	    -198(A6)		;1193a: 4eaeff3a
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOInitRastPort(A6)
     MOVEA.L	LAB_2218,A0		;1193e: 20790003c22a
     MOVE.L	#LAB_2219,4(A0)		;11944: 217c0003c22e0004
     MOVEA.L	LAB_2218,A1		;1194c: 22790003c22a
     MOVEA.L	LAB_1DE6,A0		;11952: 207900036454
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;11958: 2c790003637c
-    JSR	    -66(A6)			;1195e: 4eaeffbe
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOSetFont(A6)
     MOVEQ	#0,D5			;11962: 7a00
 LAB_086F:
     MOVEQ	#4,D0			;11964: 7004
@@ -24187,8 +24183,8 @@ LAB_0870:
     MOVE.L	#$00000160,D1		;1198c: 223c00000160
     MOVEQ	#120,D2			;11992: 7478
     ADD.L	D2,D2			;11994: d482
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;11996: 2c790003637c
-    JSR	    -390(A6)		;1199c: 4eaefe7a
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOInitBitMap(A6)
     MOVEQ	#0,D5			;119a0: 7a00
 LAB_0871:
     MOVEQ	#4,D0			;119a2: 7004
@@ -24216,8 +24212,8 @@ LAB_0871:
     MOVEA.L	(A0),A1			;119e8: 2250
     MOVE.L	#$00002940,D0		;119ea: 203c00002940
     MOVEQ	#0,D1			;119f0: 7200
-    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;119f2: 2c790003637c
-    JSR	    -300(A6)		;119f8: 4eaefed4
+    MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR	    _LVOBltClear(A6)
     ADDQ.W	#1,D5			;119fc: 5245
     BRA.S	LAB_0871		;119fe: 60a2
 LAB_0872:
@@ -24304,8 +24300,8 @@ LAB_0876:
     MOVE.W	#$0001,LAB_222A		;11b2e: 33fc00010003c2d2
 LAB_0877:
     MOVEQ	#4,D1			;11b36: 7204
-    MOVEA.L	AbsExecBase,A6	;11b38: 2c780004
-    JSR	    -216(A6)		;11b3c: 4eaeff28
+    MOVEA.L	AbsExecBase,A6
+    JSR	    _LVOAvailMem(A6)
     CMPI.L	#$001ab3f0,D0		;11b40: 0c80001ab3f0
     BLE.S	LAB_0878		;11b46: 6f08
     MOVE.W	#$0002,LAB_222A		;11b48: 33fc00020003c2d2
@@ -24354,13 +24350,13 @@ LAB_087C:
     JSR     LAB_0BFA(PC)		;11bd2: 4eba6e42
     ADDQ.W	#4,A7			;11bd6: 584f
     MOVE.L	D0,LAB_226C		;11bd8: 23c00003de20
-    CMPI.L	#$00000960,D0		;11bde: 0c8000000960
+    CMPI.L	#2400,D0
     BEQ.S	LAB_087E		;11be4: 6728
-    CMPI.L	#$000012c0,D0		;11be6: 0c80000012c0
+    CMPI.L	#4800,D0
     BEQ.S	LAB_087E		;11bec: 6720
-    CMPI.L	#$00002580,D0		;11bee: 0c8000002580
+    CMPI.L	#9600,D0
     BEQ.S	LAB_087E		;11bf4: 6718
-    MOVE.L	#$00000960,D0		;11bf6: 203c00000960
+    MOVE.L	#2400,D0
     MOVE.L	D0,LAB_226C		;11bfc: 23c00003de20
     BRA.S	LAB_087E		;11c02: 600a
 LAB_087D:
@@ -24385,14 +24381,15 @@ LAB_087E:
     MOVE.L	D0,LAB_2211		;11c52: 23c00003c20e
     TST.L	D0			;11c58: 4a80
     BEQ.W	LAB_089B		;11c5a: 6700082e
-    MOVEA.L	D0,A1			;11c5e: 2240
 
+    MOVEA.L	D0,A1
     LEA     GLOB_STR_SERIAL_DEVICE,A0
     MOVEQ	#0,D0
     MOVE.L	D0,D1
     MOVEA.L	AbsExecBase,A6
     JSR     _LVOOpenDevice(A6)
-    MOVE.L	D0,D6
+    
+	MOVE.L	D0,D6
     TST.L	D6
     BNE.W	LAB_089B        ; Unable to open serial device?
 
@@ -25349,7 +25346,7 @@ LAB_08DD:
 ;!======
 
 LAB_08DE:
-    PEA	-1.W			;12948: 4878ffff
+    PEA	    -1.W			;12948: 4878ffff
     BSR.W	LAB_08CD		;1294c: 6100febe
     ADDQ.W	#4,A7			;12950: 584f
     RTS
@@ -25683,13 +25680,13 @@ LAB_0900:
     ADDQ.L	#4,A0			;12c76: 5888
     PEA	    2.W			;12c78: 48780002
     MOVE.L	A0,-(A7)		;12c7c: 2f08
-    PEA	-27(A5)			;12c7e: 486dffe5
+    PEA	    -27(A5)			;12c7e: 486dffe5
     JSR     LAB_09C1(PC)		;12c82: 4eba1a70
     LEA	    12(A7),A7		;12c86: 4fef000c
     BRA.S	LAB_0903		;12c8a: 600e
 LAB_0901:
     LEA     LAB_1E8A,A0		;12c8c: 41f900038efc
-    LEA	-27(A5),A1		;12c92: 43edffe5
+    LEA	    -27(A5),A1		;12c92: 43edffe5
 LAB_0902:
     MOVE.B	(A0)+,(A1)+		;12c96: 12d8
     BNE.S	LAB_0902		;12c98: 66fc
@@ -25856,7 +25853,7 @@ LAB_0917:
     MOVE.B	-29(A5),D2		;12e22: 142dffe3
     MOVEQ	#0,D3			;12e26: 7600
     MOVE.B	-30(A5),D3		;12e28: 162dffe2
-    PEA	-27(A5)			;12e2c: 486dffe5
+    PEA	    -27(A5)			;12e2c: 486dffe5
     MOVE.L	D3,-(A7)		;12e30: 2f03
     MOVE.L	D2,-(A7)		;12e32: 2f02
     MOVE.L	D1,-(A7)		;12e34: 2f01
@@ -27188,9 +27185,9 @@ LAB_098E:
     MOVE.L	LAB_1E21,-(A7)		;13d30: 2f39000366e0
     MOVE.L	LAB_1E1F,-(A7)		;13d36: 2f39000366d8
     PEA	    LAB_1E9B		;13d3c: 487900038fc6
-    PEA	-81(A5)			;13d42: 486dffaf
+    PEA	    -81(A5)			;13d42: 486dffaf
     JSR	j_SUB_printf_0(PC)		;13d46: 4ebae7fe
-    PEA	-81(A5)			;13d4a: 486dffaf
+    PEA	    -81(A5)			;13d4a: 486dffaf
     PEA	    330.W			;13d4e: 4878014a
     PEA	    175.W			;13d52: 487800af
     MOVE.L	LAB_2217,-(A7)		;13d56: 2f390003c226
@@ -27206,9 +27203,9 @@ LAB_098F:
 LAB_0990:
     MOVE.L	A0,-(A7)		;13d7c: 2f08
     PEA	    LAB_1E9C		;13d7e: 487900038fdc
-    PEA	-81(A5)			;13d84: 486dffaf
+    PEA	    -81(A5)			;13d84: 486dffaf
     JSR	j_SUB_printf_0(PC)		;13d88: 4ebae7bc
-    PEA	-81(A5)			;13d8c: 486dffaf
+    PEA	    -81(A5)			;13d8c: 486dffaf
     PEA	    360.W			;13d90: 48780168
     PEA	    175.W			;13d94: 487800af
     MOVE.L	LAB_2217,-(A7)		;13d98: 2f390003c226
@@ -27258,9 +27255,9 @@ LAB_0991:
     MOVE.L	D1,-(A7)		;13e4a: 2f01
     MOVE.L	D0,-(A7)		;13e4c: 2f00
     PEA	    LAB_1EA0		;13e4e: 487900039014
-    PEA	-72(A5)			;13e54: 486dffb8
+    PEA	    -72(A5)			;13e54: 486dffb8
     JSR	j_SUB_printf_0(PC)		;13e58: 4ebae6ec
-    PEA	-72(A5)			;13e5c: 486dffb8
+    PEA	    -72(A5)			;13e5c: 486dffb8
     PEA	    112.W			;13e60: 48780070
     PEA	    40.W			;13e64: 48780028
     MOVE.L	LAB_2217,-(A7)		;13e68: 2f390003c226
@@ -27332,7 +27329,7 @@ LAB_0993:
     MOVE.L	D0,D6			;13f46: 2c00
     MOVE.L	D6,-(A7)		;13f48: 2f06
     PEA	    LAB_1EA4		;13f4a: 4879000390b2
-    PEA	-72(A5)			;13f50: 486dffb8
+    PEA	    -72(A5)			;13f50: 486dffb8
     JSR	j_SUB_printf_0(PC)		;13f54: 4ebae5f0
     LEA	    12(A7),A7		;13f58: 4fef000c
     BRA.S	LAB_0996		;13f5c: 6040
@@ -27348,17 +27345,17 @@ LAB_0994:
     MOVE.L	D0,D5			;13f76: 2a00
     MOVE.L	D5,-(A7)		;13f78: 2f05
     PEA	    LAB_1EA5		;13f7a: 4879000390d8
-    PEA	-72(A5)			;13f80: 486dffb8
+    PEA	    -72(A5)			;13f80: 486dffb8
     JSR	j_SUB_printf_0(PC)		;13f84: 4ebae5c0
     LEA	    12(A7),A7		;13f88: 4fef000c
     BRA.S	LAB_0996		;13f8c: 6010
 LAB_0995:
     PEA	    LAB_1EA6		;13f8e: 4879000390fe
-    PEA	-72(A5)			;13f94: 486dffb8
+    PEA	    -72(A5)			;13f94: 486dffb8
     JSR	j_SUB_printf_0(PC)		;13f98: 4ebae5ac
     ADDQ.W	#8,A7			;13f9c: 504f
 LAB_0996:
-    PEA	-72(A5)			;13f9e: 486dffb8
+    PEA	    -72(A5)			;13f9e: 486dffb8
     PEA	    172.W			;13fa2: 487800ac
     PEA	    40.W			;13fa6: 48780028
     MOVE.L	LAB_2217,-(A7)		;13faa: 2f390003c226
@@ -27367,9 +27364,9 @@ LAB_0996:
     MOVE.W	LAB_228A,D0		;13fb6: 30390003de62
     MOVE.L	D0,(A7)			;13fbc: 2e80
     PEA	    LAB_1EA7		;13fbe: 487900039128
-    PEA	-72(A5)			;13fc4: 486dffb8
+    PEA	    -72(A5)			;13fc4: 486dffb8
     JSR	j_SUB_printf_0(PC)		;13fc8: 4ebae57c
-    PEA	-72(A5)			;13fcc: 486dffb8
+    PEA	    -72(A5)			;13fcc: 486dffb8
     PEA	    202.W			;13fd0: 487800ca
     PEA	    40.W			;13fd4: 48780028
     MOVE.L	LAB_2217,-(A7)		;13fd8: 2f390003c226
@@ -27387,9 +27384,9 @@ LAB_0996:
     MOVE.L	D1,-(A7)		;14004: 2f01
     MOVE.L	D0,-(A7)		;14006: 2f00
     PEA	    LAB_1EA8		;14008: 48790003913c
-    PEA	-72(A5)			;1400e: 486dffb8
+    PEA	    -72(A5)			;1400e: 486dffb8
     JSR	j_SUB_printf_0(PC)		;14012: 4ebae532
-    PEA	-72(A5)			;14016: 486dffb8
+    PEA	    -72(A5)			;14016: 486dffb8
     PEA	    232.W			;1401a: 487800e8
     PEA	    40.W			;1401e: 48780028
     MOVE.L	LAB_2217,-(A7)		;14022: 2f390003c226
@@ -27408,9 +27405,9 @@ LAB_0996:
     MOVE.L	D1,-(A7)		;14052: 2f01
     MOVE.L	D0,-(A7)		;14054: 2f00
     PEA	    LAB_1EA9		;14056: 487900039168
-    PEA	-72(A5)			;1405c: 486dffb8
+    PEA	    -72(A5)			;1405c: 486dffb8
     JSR	j_SUB_printf_0(PC)		;14060: 4ebae4e4
-    PEA	-72(A5)			;14064: 486dffb8
+    PEA	    -72(A5)			;14064: 486dffb8
     PEA	    262.W			;14068: 48780106
     PEA	    40.W			;1406c: 48780028
     MOVE.L	LAB_2217,-(A7)		;14070: 2f390003c226
@@ -27427,9 +27424,9 @@ LAB_0997:
     MOVE.L	D1,-(A7)		;1409a: 2f01
     MOVE.L	D0,-(A7)		;1409c: 2f00
     PEA	    LAB_1EAA		;1409e: 487900039194
-    PEA	-72(A5)			;140a4: 486dffb8
+    PEA	    -72(A5)			;140a4: 486dffb8
     JSR	j_SUB_printf_0(PC)		;140a8: 4ebae49c
-    PEA	-72(A5)			;140ac: 486dffb8
+    PEA	    -72(A5)			;140ac: 486dffb8
     PEA	    112.W			;140b0: 48780070
     PEA	    40.W			;140b4: 48780028
     MOVE.L	LAB_2217,-(A7)		;140b8: 2f390003c226
@@ -27441,9 +27438,9 @@ LAB_0997:
     MOVE.L	D1,(A7)			;140d2: 2e81
     MOVE.L	D0,-(A7)		;140d4: 2f00
     PEA	    LAB_1EAB		;140d6: 4879000391b6
-    PEA	-72(A5)			;140dc: 486dffb8
+    PEA	    -72(A5)			;140dc: 486dffb8
     JSR	j_SUB_printf_0(PC)		;140e0: 4ebae464
-    PEA	-72(A5)			;140e4: 486dffb8
+    PEA	    -72(A5)			;140e4: 486dffb8
     PEA	    142.W			;140e8: 4878008e
     PEA	    40.W			;140ec: 48780028
     MOVE.L	LAB_2217,-(A7)		;140f0: 2f390003c226
@@ -27455,10 +27452,10 @@ LAB_0997:
     MOVE.L	D1,(A7)			;1410a: 2e81
     MOVE.L	D0,-(A7)		;1410c: 2f00
     PEA	    LAB_1EAC		;1410e: 4879000391d6
-    PEA	-72(A5)			;14114: 486dffb8
+    PEA	    -72(A5)			;14114: 486dffb8
     JSR	j_SUB_printf_0(PC)		;14118: 4ebae42c
     LEA	    72(A7),A7		;1411c: 4fef0048
-    PEA	-72(A5)			;14120: 486dffb8
+    PEA	    -72(A5)			;14120: 486dffb8
     PEA	    172.W			;14124: 487800ac
     PEA	    40.W			;14128: 48780028
     MOVE.L	LAB_2217,-(A7)		;1412c: 2f390003c226
@@ -27476,9 +27473,9 @@ LAB_0997:
     MOVE.L	D1,-(A7)		;1415a: 2f01
     MOVE.L	D0,-(A7)		;1415c: 2f00
     PEA	    LAB_1EAD		;1415e: 4879000391f2
-    PEA	-72(A5)			;14164: 486dffb8
+    PEA	    -72(A5)			;14164: 486dffb8
     JSR	j_SUB_printf_0(PC)		;14168: 4ebae3dc
-    PEA	-72(A5)			;1416c: 486dffb8
+    PEA	    -72(A5)			;1416c: 486dffb8
     PEA	    202.W			;14170: 487800ca
     PEA	    40.W			;14174: 48780028
     MOVE.L	LAB_2217,-(A7)		;14178: 2f390003c226
@@ -27496,10 +27493,10 @@ LAB_0997:
     MOVE.L	D1,-(A7)		;141a6: 2f01
     MOVE.L	D0,-(A7)		;141a8: 2f00
     PEA	    LAB_1EAE		;141aa: 48790003921c
-    PEA	-72(A5)			;141b0: 486dffb8
+    PEA	    -72(A5)			;141b0: 486dffb8
     JSR	j_SUB_printf_0(PC)		;141b4: 4ebae390
     LEA	    72(A7),A7		;141b8: 4fef0048
-    PEA	-72(A5)			;141bc: 486dffb8
+    PEA	    -72(A5)			;141bc: 486dffb8
     PEA	    232.W			;141c0: 487800e8
     PEA	    40.W			;141c4: 48780028
     MOVE.L	LAB_2217,-(A7)		;141c8: 2f390003c226
@@ -27514,9 +27511,9 @@ LAB_0997:
     MOVE.L	D1,-(A7)		;141ec: 2f01
     MOVE.L	D0,-(A7)		;141ee: 2f00
     PEA	    LAB_1EAF		;141f0: 487900039246
-    PEA	-72(A5)			;141f6: 486dffb8
+    PEA	    -72(A5)			;141f6: 486dffb8
     JSR	j_SUB_printf_0(PC)		;141fa: 4ebae34a
-    PEA	-72(A5)			;141fe: 486dffb8
+    PEA	    -72(A5)			;141fe: 486dffb8
     PEA	    262.W			;14202: 48780106
     PEA	    40.W			;14206: 48780028
     MOVE.L	LAB_2217,-(A7)		;1420a: 2f390003c226
@@ -27531,9 +27528,9 @@ LAB_0997:
     MOVE.L	D1,-(A7)		;1422e: 2f01
     MOVE.L	D0,-(A7)		;14230: 2f00
     PEA	    LAB_1EB0		;14232: 48790003926c
-    PEA	-72(A5)			;14238: 486dffb8
+    PEA	    -72(A5)			;14238: 486dffb8
     JSR	j_SUB_printf_0(PC)		;1423c: 4ebae308
-    PEA	-72(A5)			;14240: 486dffb8
+    PEA	    -72(A5)			;14240: 486dffb8
     PEA	    292.W			;14244: 48780124
     PEA	    40.W			;14248: 48780028
     MOVE.L	LAB_2217,-(A7)		;1424c: 2f390003c226
@@ -27552,7 +27549,7 @@ LAB_0999:
     LINK.W	A5,#-164		;1426e: 4e55ff5c
     MOVEM.L	D2-D7,-(A7)		;14272: 48e73f00
     LEA     LAB_1EB6,A0		;14276: 41f9000392f4
-    LEA	-148(A5),A1		;1427c: 43edff6c
+    LEA	    -148(A5),A1		;1427c: 43edff6c
     MOVE.L	(A0)+,(A1)+		;14280: 22d8
     MOVE.L	(A0)+,(A1)+		;14282: 22d8
     MOVE.L	(A0)+,(A1)+		;14284: 22d8
@@ -27618,30 +27615,30 @@ LAB_09A2:
     MOVE.L	36(A7),-(A7)		;14352: 2f2f0024
     MOVE.L	36(A7),-(A7)		;14356: 2f2f0024
     PEA	    LAB_1EB7		;1435a: 487900039304
-    PEA	-132(A5)		;14360: 486dff7c
+    PEA	    -132(A5)		;14360: 486dff7c
     JSR	j_SUB_printf_0(PC)		;14364: 4ebae1e0
     MOVEA.L	LAB_2216,A0		;14368: 20790003c222
     ADDA.W	#$000a,A0		;1436e: d0fc000a
     PEA	    92.W			;14372: 4878005c
-    PEA	-132(A5)		;14376: 486dff7c
+    PEA	    -132(A5)		;14376: 486dff7c
     MOVE.L	A0,-(A7)		;1437a: 2f08
     JSR     LAB_09AD(PC)		;1437c: 4eba02fe
     MOVE.W	LAB_2346,D0		;14380: 30390003fa34
     EXT.L	D0			;14386: 48c0
     ASL.L	#2,D0			;14388: e580
-    LEA	-148(A5),A0		;1438a: 41edff6c
+    LEA	    -148(A5),A0		;1438a: 41edff6c
     ADDA.L	D0,A0			;1438e: d1c0
     MOVE.W	LAB_1F45,D0		;14390: 3039000399b2
     EXT.L	D0			;14396: 48c0
     MOVE.L	D0,(A7)			;14398: 2e80
     MOVE.L	(A0),-(A7)		;1439a: 2f10
     PEA	    LAB_1EC1		;1439c: 48790003939e
-    PEA	-132(A5)		;143a2: 486dff7c
+    PEA	    -132(A5)		;143a2: 486dff7c
     JSR	j_SUB_printf_0(PC)		;143a6: 4ebae19e
     MOVEA.L	LAB_2216,A0		;143aa: 20790003c222
     ADDA.W	#$000a,A0		;143b0: d0fc000a
     PEA	    110.W			;143b4: 4878006e
-    PEA	-132(A5)		;143b8: 486dff7c
+    PEA	    -132(A5)		;143b8: 486dff7c
     MOVE.L	A0,-(A7)		;143bc: 2f08
     JSR     LAB_09AD(PC)		;143be: 4eba02bc
     MOVEQ	#0,D0			;143c2: 7000
@@ -27656,13 +27653,13 @@ LAB_09A2:
     MOVE.L	D1,-(A7)		;143f0: 2f01
     MOVE.L	D0,-(A7)		;143f2: 2f00
     PEA	    LAB_1EC2		;143f4: 4879000393c0
-    PEA	-132(A5)		;143fa: 486dff7c
+    PEA	    -132(A5)		;143fa: 486dff7c
     JSR	j_SUB_printf_0(PC)		;143fe: 4ebae146
     LEA	    92(A7),A7		;14402: 4fef005c
     MOVEA.L	LAB_2216,A0		;14406: 20790003c222
     ADDA.W	#$000a,A0		;1440c: d0fc000a
     PEA	    128.W			;14410: 48780080
-    PEA	-132(A5)		;14414: 486dff7c
+    PEA	    -132(A5)		;14414: 486dff7c
     MOVE.L	A0,-(A7)		;14418: 2f08
     JSR     LAB_09AD(PC)		;1441a: 4eba0260
     LEA	    12(A7),A7		;1441e: 4fef000c
@@ -27696,12 +27693,12 @@ LAB_09A4:
     MOVE.L	D1,-(A7)		;1447c: 2f01
     MOVE.L	D0,-(A7)		;1447e: 2f00
     PEA	    LAB_1EC3		;14480: 487900039420
-    PEA	-132(A5)		;14486: 486dff7c
+    PEA	    -132(A5)		;14486: 486dff7c
     JSR	j_SUB_printf_0(PC)		;1448a: 4ebae0ba
     MOVEA.L	LAB_2216,A0		;1448e: 20790003c222
     ADDA.W	#$000a,A0		;14494: d0fc000a
     PEA	    146.W			;14498: 48780092
-    PEA	-132(A5)		;1449c: 486dff7c
+    PEA	    -132(A5)		;1449c: 486dff7c
     MOVE.L	A0,-(A7)		;144a0: 2f08
     JSR     LAB_09AD(PC)		;144a2: 4eba01d8
     MOVE.L	#$00020002,D1		;144a6: 223c00020002
@@ -27718,13 +27715,13 @@ LAB_09A4:
     MOVE.L	80(A7),-(A7)		;144cc: 2f2f0050
     MOVE.L	80(A7),-(A7)		;144d0: 2f2f0050
     PEA	    LAB_1EC6		;144d4: 487900039460
-    PEA	-132(A5)		;144da: 486dff7c
+    PEA	    -132(A5)		;144da: 486dff7c
     JSR	j_SUB_printf_0(PC)		;144de: 4ebae066
     LEA	    68(A7),A7		;144e2: 4fef0044
     MOVEA.L	LAB_2216,A0		;144e6: 20790003c222
     ADDA.W	#$000a,A0		;144ec: d0fc000a
     PEA	    164.W			;144f0: 487800a4
-    PEA	-132(A5)		;144f4: 486dff7c
+    PEA	    -132(A5)		;144f4: 486dff7c
     MOVE.L	A0,-(A7)		;144f8: 2f08
     JSR     LAB_09AD(PC)		;144fa: 4eba0180
     JSR	j_DATACalc_C(PC)		;144fe: 4eba01b2
@@ -27743,12 +27740,12 @@ LAB_09A4:
     MOVE.L	D1,-(A7)		;1452a: 2f01
     MOVE.L	D0,-(A7)		;1452c: 2f00
     PEA	    LAB_1EC7		;1452e: 487900039486
-    PEA	-132(A5)		;14534: 486dff7c
+    PEA	    -132(A5)		;14534: 486dff7c
     JSR	j_SUB_printf_0(PC)		;14538: 4ebae00c
     MOVEA.L	LAB_2216,A0		;1453c: 20790003c222
     ADDA.W	#$000a,A0		;14542: d0fc000a
     PEA	    182.W			;14546: 487800b6
-    PEA	-132(A5)		;1454a: 486dff7c
+    PEA	    -132(A5)		;1454a: 486dff7c
     MOVE.L	A0,-(A7)		;1454e: 2f08
     JSR     LAB_09AD(PC)		;14550: 4eba012a
     MOVEQ	#0,D0			;14554: 7000
@@ -27770,13 +27767,13 @@ LAB_09A4:
     MOVE.L	84(A7),-(A7)		;14592: 2f2f0054
     MOVE.L	84(A7),-(A7)		;14596: 2f2f0054
     PEA	    LAB_1EC8		;1459a: 4879000394d6
-    PEA	-132(A5)		;145a0: 486dff7c
+    PEA	    -132(A5)		;145a0: 486dff7c
     JSR	j_SUB_printf_0(PC)		;145a4: 4ebadfa0
     LEA	    72(A7),A7		;145a8: 4fef0048
     MOVEA.L	LAB_2216,A0		;145ac: 20790003c222
     ADDA.W	#$000a,A0		;145b2: d0fc000a
     PEA	    200.W			;145b6: 487800c8
-    PEA	-132(A5)		;145ba: 486dff7c
+    PEA	    -132(A5)		;145ba: 486dff7c
     MOVE.L	A0,-(A7)		;145be: 2f08
     JSR     LAB_09AD(PC)		;145c0: 4eba00ba
     LEA	    12(A7),A7		;145c4: 4fef000c
@@ -27801,12 +27798,12 @@ LAB_09A6:
     MOVE.L	D0,-(A7)		;14604: 2f00
     MOVE.L	LAB_1EB1,-(A7)		;14606: 2f390003928e
     PEA	    LAB_1EC9		;1460c: 487900039526
-    PEA	-132(A5)		;14612: 486dff7c
+    PEA	    -132(A5)		;14612: 486dff7c
     JSR	j_SUB_printf_0(PC)		;14616: 4ebadf2e
     MOVEA.L	LAB_2216,A0		;1461a: 20790003c222
     ADDA.W	#$000a,A0		;14620: d0fc000a
     PEA	    218.W			;14624: 487800da
-    PEA	-132(A5)		;14628: 486dff7c
+    PEA	    -132(A5)		;14628: 486dff7c
     MOVE.L	A0,-(A7)		;1462c: 2f08
     JSR     LAB_09AD(PC)		;1462e: 4eba004c
     MOVEA.L	LAB_2216,A0		;14632: 20790003c222
@@ -28941,10 +28938,10 @@ LAB_0A19:
     MOVE.B	D0,-41(A5)		;15388: 1b40ffd7
     MOVE.W	LAB_2364,D5		;1538c: 3a390004027c
 LAB_0A1A:
-    PEA	-40(A5)			;15392: 486dffd8
+    PEA	    -40(A5)			;15392: 486dffd8
     BSR.W	LAB_0A35		;15396: 610001e6
     ADDQ.W	#4,A7			;1539a: 584f
-    LEA	-40(A5),A0		;1539c: 41edffd8
+    LEA	    -40(A5),A0		;1539c: 41edffd8
     MOVEA.L	A0,A1			;153a0: 2248
 LAB_0A1B:
     TST.B	(A1)+			;153a2: 4a19
@@ -28980,7 +28977,7 @@ LAB_0A1E:
     ADDQ.W	#1,D7			;153f6: 5247
     BRA.S	LAB_0A1D		;153f8: 60d2
 LAB_0A1F:
-    PEA	-80(A5)			;153fa: 486dffb0
+    PEA	    -80(A5)			;153fa: 486dffb0
     JSR     LAB_0D59(PC)		;153fe: 4eba650c
     MOVE.L	D0,(A7)			;15402: 2e80
     JSR     LAB_0A9A(PC)		;15404: 4eba0c5a
@@ -28993,7 +28990,7 @@ LAB_0A1F:
 LAB_0A20:
     MOVEQ	#4,D0			;15420: 7004
     MOVE.L	D0,-(A7)		;15422: 2f00
-    PEA	-40(A5)			;15424: 486dffd8
+    PEA	    -40(A5)			;15424: 486dffd8
     PEA	    LAB_1EF3		;15428: 48790003966a
     JSR     LAB_0AAC(PC)		;1542e: 4eba0c9c
     LEA	    12(A7),A7		;15432: 4fef000c
@@ -29001,7 +28998,7 @@ LAB_0A20:
     BEQ.S	LAB_0A23		;15438: 6732
     MOVEQ	#11,D0			;1543a: 700b
     MOVE.L	D0,-(A7)		;1543c: 2f00
-    PEA	-40(A5)			;1543e: 486dffd8
+    PEA	    -40(A5)			;1543e: 486dffd8
     PEA	    LAB_1EF4		;15442: 487900039676
     JSR     LAB_0AAC(PC)		;15448: 4eba0c82
     LEA	    12(A7),A7		;1544c: 4fef000c
@@ -29026,8 +29023,8 @@ LAB_0A23:
 LAB_0A24:
     MOVE.L	#$00013880,-134(A5)	;1548c: 2b7c00013880ff7a
 LAB_0A25:
-    LEA	-40(A5),A0		;15494: 41edffd8
-    LEA	-120(A5),A1		;15498: 43edff88
+    LEA	    -40(A5),A0		;15494: 41edffd8
+    LEA	    -120(A5),A1		;15498: 43edff88
 LAB_0A26:
     MOVE.B	(A0)+,(A1)+		;1549c: 12d8
     BNE.S	LAB_0A26		;1549e: 66fc
@@ -29047,7 +29044,7 @@ LAB_0A29:
     BEQ.S	LAB_0A2B		;154ca: 6722
     CMPA.L	LAB_1ED3,A0		;154cc: b1f9000395ac
     BNE.S	LAB_0A2B		;154d2: 661a
-    LEA	-40(A5),A0		;154d4: 41edffd8
+    LEA	    -40(A5),A0		;154d4: 41edffd8
     MOVEA.L	-142(A5),A1		;154d8: 226dff72
 LAB_0A2A:
     MOVE.B	(A0)+,D0		;154dc: 1018
@@ -29062,7 +29059,7 @@ LAB_0A2B:
     TST.L	-138(A5)		;154ee: 4aadff76
     BNE.S	LAB_0A2E		;154f2: 663e
     CLR.L	-(A7)			;154f4: 42a7
-    PEA	-40(A5)			;154f6: 486dffd8
+    PEA	    -40(A5)			;154f6: 486dffd8
     JSR     LAB_0AA7(PC)		;154fa: 4eba0bb2
     ADDQ.W	#8,A7			;154fe: 504f
     MOVE.W	LAB_22C0,D1		;15500: 32390003e3dc
@@ -29084,12 +29081,12 @@ LAB_0A2E:
     MOVEQ	#-1,D0			;15536: 70ff
     CMP.W	-130(A5),D0		;15538: b06dff7e
     BNE.S	LAB_0A2F		;1553c: 660a
-    PEA	-40(A5)			;1553e: 486dffd8
+    PEA	    -40(A5)			;1553e: 486dffd8
     BSR.W	LAB_0A35		;15542: 6100003a
     ADDQ.W	#4,A7			;15546: 584f
 LAB_0A2F:
-    LEA	-120(A5),A0		;15548: 41edff88
-    LEA	-40(A5),A1		;1554c: 43edffd8
+    LEA	    -120(A5),A0		;15548: 41edff88
+    LEA	    -40(A5),A1		;1554c: 43edffd8
 LAB_0A30:
     MOVE.B	(A0)+,D0		;15550: 1018
     CMP.B	(A1)+,D0		;15552: b019
@@ -30861,12 +30858,12 @@ LAB_0B04:
     MOVEA.L	-4(A5),A0		;16914: 206dfffc
     ADDQ.L	#1,A0			;16918: 5288
     MOVE.L	A0,-(A7)		;1691a: 2f08
-    PEA	-24(A5)			;1691c: 486dffe8
+    PEA	    -24(A5)			;1691c: 486dffe8
     JSR     LAB_0CC4(PC)		;16920: 4eba3e90
     ADDQ.W	#8,A7			;16924: 504f
     MOVEA.L	-4(A5),A0		;16926: 206dfffc
     ADDQ.L	#1,A0			;1692a: 5288
-    LEA	-24(A5),A1		;1692c: 43edffe8
+    LEA	    -24(A5),A1		;1692c: 43edffe8
 LAB_0B05:
     MOVE.B	(A1)+,(A0)+		;16930: 10d9
     BNE.S	LAB_0B05		;16932: 66fc
@@ -31113,12 +31110,12 @@ LAB_0B22:
     MOVE.L	LAB_1F2E,-(A7)		;16b72: 2f3900039954
     PEA	    LAB_1EFB		;16b78: 4879000396c4
     PEA	    LAB_1EFA		;16b7e: 4879000396bc
-    PEA	-40(A5)			;16b84: 486dffd8
+    PEA	    -40(A5)			;16b84: 486dffd8
     JSR	j_SUB_printf_0(PC)		;16b88: 4ebab9bc
     MOVEA.L	LAB_229A,A0		;16b8c: 20790003dee0
     ADDQ.L	#1,A0			;16b92: 5288
     MOVE.L	A0,(A7)			;16b94: 2e88
-    PEA	-40(A5)			;16b96: 486dffd8
+    PEA	    -40(A5)			;16b96: 486dffd8
     JSR     LAB_0C76(PC)		;16b9a: 4eba2afe
     LEA	    20(A7),A7		;16b9e: 4fef0014
     TST.B	D0			;16ba2: 4a00
@@ -31176,10 +31173,10 @@ LAB_0B24:
     MOVEA.L	LAB_229A,A0		;16c7c: 20790003dee0
     ADDQ.L	#1,A0			;16c82: 5288
     MOVE.L	A0,(A7)			;16c84: 2e88
-    PEA	-40(A5)			;16c86: 486dffd8
+    PEA	    -40(A5)			;16c86: 486dffd8
     JSR     LAB_0CC4(PC)		;16c8a: 4eba3b26
     PEA	    LAB_1F00		;16c8e: 487900039726
-    PEA	-40(A5)			;16c94: 486dffd8
+    PEA	    -40(A5)			;16c94: 486dffd8
     JSR     LAB_0CC4(PC)		;16c98: 4eba3b18
     PEA     -40(A5)			;16c9c: 486dffd8
     PEA     150.W			;16ca0: 48780096
@@ -31272,9 +31269,9 @@ LAB_0B2A:
     JSR	j_displayText1(PC)		;16dc2: 4eba1c46
     MOVE.L	D5,(A7)			;16dc6: 2e85
     PEA	    LAB_1F03		;16dc8: 487900039756
-    PEA	-128(A5)		;16dce: 486dff80
+    PEA	    -128(A5)		;16dce: 486dff80
     JSR	j_SUB_printf_0(PC)		;16dd2: 4ebab772
-    PEA	-128(A5)		;16dd6: 486dff80
+    PEA	    -128(A5)		;16dd6: 486dff80
     PEA	    150.W			;16dda: 48780096
     PEA	    35.W			;16dde: 48780023
     MOVE.L	LAB_2217,-(A7)		;16de2: 2f390003c226
@@ -31293,7 +31290,7 @@ LAB_0B2B:
     MOVE.L	LAB_21AE,-(A7)		;16e08: 2f390003b900
     PEA	    LAB_21AD		;16e0e: 48790003b8df
     PEA	    LAB_1F04		;16e14: 487900039790
-    PEA	-128(A5)		;16e1a: 486dff80
+    PEA	    -128(A5)		;16e1a: 486dff80
     JSR	j_SUB_printf_0(PC)		;16e1e: 4ebab726
     LEA	    20(A7),A7		;16e22: 4fef0014
     MOVE.W	#$0001,LAB_1B85		;16e26: 33fc000100033fa0
@@ -31301,11 +31298,11 @@ LAB_0B2B:
 LAB_0B2C:
     PEA	    LAB_21AD		;16e30: 48790003b8df
     PEA	    LAB_1F05		;16e36: 4879000397b0
-    PEA	-128(A5)		;16e3c: 486dff80
+    PEA	    -128(A5)		;16e3c: 486dff80
     JSR	j_SUB_printf_0(PC)		;16e40: 4ebab704
     LEA	    12(A7),A7		;16e44: 4fef000c
 LAB_0B2D:
-    PEA	-128(A5)		;16e48: 486dff80
+    PEA	    -128(A5)		;16e48: 486dff80
     PEA	    180.W			;16e4c: 487800b4
     PEA	    35.W			;16e50: 48780023
     MOVE.L	LAB_2217,-(A7)		;16e54: 2f390003c226
@@ -31649,7 +31646,7 @@ LAB_0B4E:
     MOVE.B	7(A3),D0		;171c6: 102b0007
     EXT.W	D0			;171ca: 4880
     MOVE.W	D0,-10(A5)		;171cc: 3b40fff6
-    PEA	-24(A5)			;171d0: 486dffe8
+    PEA	    -24(A5)			;171d0: 486dffe8
     JSR     LAB_0931(PC)		;171d4: 4ebabeba
     MOVE.W	LAB_1F45,D7		;171d8: 3e39000399b2
     MOVE.W	#$0100,LAB_1F45		;171de: 33fc0100000399b2
@@ -31907,21 +31904,21 @@ LAB_0B59:
     MOVE.W	LAB_2285,D0		;17452: 30390003de58
     ADDQ.W	#1,D0			;17458: 5240
     MOVE.W	D0,LAB_2285		;1745a: 33c00003de58
-    PEA	-71(A5)			;17460: 486dffb9
+    PEA	    -71(A5)			;17460: 486dffb9
     PEA	    1.W			;17464: 48780001
-    PEA	-61(A5)			;17468: 486dffc3
+    PEA	    -61(A5)			;17468: 486dffc3
     BSR.W	LAB_0B0B		;1746c: 6100f50e
     MOVEQ	#0,D0			;17470: 7000
     MOVE.B	-61(A5),D0		;17472: 102dffc3
-    PEA	-71(A5)			;17476: 486dffb9
+    PEA	    -71(A5)			;17476: 486dffb9
     PEA	    1.W			;1747a: 48780001
-    PEA	-61(A5)			;1747e: 486dffc3
+    PEA	    -61(A5)			;1747e: 486dffc3
     MOVE.L	D0,-14(A5)		;17482: 2b40fff2
     BSR.W	LAB_0B0B		;17486: 6100f4f4
     MOVE.B	-61(A5),-7(A5)		;1748a: 1b6dffc3fff9
-    PEA	-71(A5)			;17490: 486dffb9
+    PEA	    -71(A5)			;17490: 486dffb9
     PEA	    1.W			;17494: 48780001
-    PEA	-61(A5)			;17498: 486dffc3
+    PEA	    -61(A5)			;17498: 486dffc3
     BSR.W	LAB_0B0B		;1749c: 6100f4de
     LEA	    36(A7),A7		;174a0: 4fef0024
     MOVE.B	-61(A5),D0		;174a4: 102dffc3
@@ -31950,9 +31947,9 @@ LAB_0B5A:
     BRA.W	LAB_0BE4		;174e4: 60001442
 LAB_0B5B:
     CLR.L	-22(A5)			;174e8: 42adffea
-    PEA	-71(A5)			;174ec: 486dffb9
+    PEA	    -71(A5)			;174ec: 486dffb9
     PEA	    1.W			;174f0: 48780001
-    PEA	-61(A5)			;174f4: 486dffc3
+    PEA	    -61(A5)			;174f4: 486dffc3
     BSR.W	LAB_0B0B		;174f8: 6100f482
     LEA	    12(A7),A7		;174fc: 4fef000c
 LAB_0B5C:
@@ -31971,9 +31968,9 @@ LAB_0B5C:
     BGE.S	LAB_0B5D		;1751e: 6c1e
     ADDQ.L	#1,-22(A5)		;17520: 52adffea
     MOVE.B	D0,-41(A5,D1.L)		;17524: 1b8018d7
-    PEA	-71(A5)			;17528: 486dffb9
+    PEA	    -71(A5)			;17528: 486dffb9
     PEA	    1.W			;1752c: 48780001
-    PEA	-61(A5)			;17530: 486dffc3
+    PEA	    -61(A5)			;17530: 486dffc3
     BSR.W	LAB_0B0B		;17534: 6100f446
     LEA	    12(A7),A7		;17538: 4fef000c
     BRA.S	LAB_0B5C		;1753c: 60c2
@@ -31983,15 +31980,15 @@ LAB_0B5D:
 LAB_0B5E:
     TST.B	-61(A5)			;17546: 4a2dffc3
     BEQ.S	LAB_0B5F		;1754a: 6716
-    PEA	-71(A5)			;1754c: 486dffb9
+    PEA	    -71(A5)			;1754c: 486dffb9
     PEA	    1.W			;17550: 48780001
-    PEA	-61(A5)			;17554: 486dffc3
+    PEA	    -61(A5)			;17554: 486dffc3
     BSR.W	LAB_0B0B		;17558: 6100f422
     LEA	    12(A7),A7		;1755c: 4fef000c
     BRA.S	LAB_0B5E		;17560: 60e4
 LAB_0B5F:
     PEA	    1.W			;17562: 48780001
-    PEA	-31(A5)			;17566: 486dffe1
+    PEA	    -31(A5)			;17566: 486dffe1
     BSR.W	LAB_0B08		;1756a: 6100f3d6
     ADDQ.W	#8,A7			;1756e: 504f
     MOVE.B	-71(A5),D0		;17570: 102dffb9
@@ -32053,7 +32050,7 @@ LAB_0B65:
     MOVE.L	D0,-66(A5)		;17616: 2b40ffbe
     JSR     LAB_0926(PC)		;1761a: 4ebab924
     LEA	    12(A7),A7		;1761e: 4fef000c
-    LEA	-41(A5),A0		;17622: 41edffd7
+    LEA	    -41(A5),A0		;17622: 41edffd7
     MOVEA.L	D0,A1			;17626: 2240
     MOVE.L	D0,-70(A5)		;17628: 2b40ffba
 LAB_0B66:
@@ -32162,15 +32159,15 @@ LAB_0B6F:
     MOVE.W	LAB_2285,D0		;1776c: 30390003de58
     ADDQ.W	#1,D0			;17772: 5240
     MOVE.W	D0,LAB_2285		;17774: 33c00003de58
-    PEA	-227(A5)		;1777a: 486dff1d
+    PEA	    -227(A5)		;1777a: 486dff1d
     PEA	    1.W			;1777e: 48780001
-    PEA	-62(A5)			;17782: 486dffc2
+    PEA	    -62(A5)			;17782: 486dffc2
     BSR.W	LAB_0B0B		;17786: 6100f1f4
     MOVEQ	#0,D0			;1778a: 7000
     MOVE.B	-62(A5),D0		;1778c: 102dffc2
-    PEA	-227(A5)		;17790: 486dff1d
+    PEA	    -227(A5)		;17790: 486dff1d
     PEA	    1.W			;17794: 48780001
-    PEA	-62(A5)			;17798: 486dffc2
+    PEA	    -62(A5)			;17798: 486dffc2
     MOVE.L	D0,-10(A5)		;1779c: 2b40fff6
     BSR.W	LAB_0B0B		;177a0: 6100f1da
     LEA	    24(A7),A7		;177a4: 4fef0018
@@ -32185,9 +32182,9 @@ LAB_0B70:
     MOVEQ	#8,D0			;177be: 7008
     CMP.L	D0,D1			;177c0: b280
     BGE.S	LAB_0B71		;177c2: 6c1a
-    PEA	-227(A5)		;177c4: 486dff1d
+    PEA	    -227(A5)		;177c4: 486dff1d
     PEA	    1.W			;177c8: 48780001
-    PEA	-62(A5)			;177cc: 486dffc2
+    PEA	    -62(A5)			;177cc: 486dffc2
     BSR.W	LAB_0B0B		;177d0: 6100f1aa
     LEA	    12(A7),A7		;177d4: 4fef000c
     ADDQ.L	#1,-18(A5)		;177d8: 52adffee
@@ -32216,9 +32213,9 @@ LAB_0B72:
     MOVE.W	LAB_2231,D0		;1781e: 30390003c2e0
     MOVE.L	D0,-14(A5)		;17824: 2b40fff2
 LAB_0B73:
-    PEA	-227(A5)		;17828: 486dff1d
+    PEA	    -227(A5)		;17828: 486dff1d
     PEA	    6.W			;1782c: 48780006
-    PEA	-62(A5)			;17830: 486dffc2
+    PEA	    -62(A5)			;17830: 486dffc2
     BSR.W	LAB_0B0B		;17834: 6100f146
     LEA	    12(A7),A7		;17838: 4fef000c
     CLR.L	-18(A5)			;1783c: 42adffee
@@ -32234,8 +32231,8 @@ LAB_0B75:
     ADDQ.L	#1,-18(A5)		;17854: 52adffee
     BRA.S	LAB_0B74		;17858: 60e6
 LAB_0B76:
-    PEA	-62(A5)			;1785a: 486dffc2
-    PEA	-42(A5)			;1785e: 486dffd6
+    PEA	    -62(A5)			;1785a: 486dffc2
+    PEA	    -42(A5)			;1785e: 486dffd6
     JSR     LAB_0C72(PC)		;17862: 4eba1e1e
     ADDQ.W	#8,A7			;17866: 504f
     CLR.L	-26(A5)			;17868: 42adffe6
@@ -32268,7 +32265,7 @@ LAB_0B78:
     ADDA.L	D0,A0			;178c0: d1c0
     MOVE.L	(A0),-222(A5)		;178c2: 2b50ff22
 LAB_0B79:
-    LEA	-36(A5),A0		;178c6: 41edffdc
+    LEA	    -36(A5),A0		;178c6: 41edffdc
     MOVEA.L	-222(A5),A1		;178ca: 226dff22
 LAB_0B7A:
     MOVE.B	(A0)+,D0		;178ce: 1018
@@ -32283,9 +32280,9 @@ LAB_0B7B:
     ADDQ.L	#1,-26(A5)		;178e2: 52adffe6
     BRA.S	LAB_0B77		;178e6: 6084
 LAB_0B7C:
-    PEA	-227(A5)		;178e8: 486dff1d
+    PEA	    -227(A5)		;178e8: 486dff1d
     PEA	    1.W			;178ec: 48780001
-    PEA	-223(A5)		;178f0: 486dff21
+    PEA	    -223(A5)		;178f0: 486dff21
     BSR.W	LAB_0B0B		;178f4: 6100f086
     LEA	    12(A7),A7		;178f8: 4fef000c
     MOVE.B	-223(A5),D0		;178fc: 102dff21
@@ -32306,13 +32303,13 @@ LAB_0B7E:
     MOVEQ	#0,D1			;17922: 7200
     MOVE.B	D0,D1			;17924: 1200
     EXT.L	D1			;17926: 48c1
-    PEA	-227(A5)		;17928: 486dff1d
+    PEA	    -227(A5)		;17928: 486dff1d
     MOVE.L	D1,-(A7)		;1792c: 2f01
-    PEA	-212(A5)		;1792e: 486dff2c
+    PEA	    -212(A5)		;1792e: 486dff2c
     BSR.W	LAB_0B0B		;17932: 6100f048
-    PEA	-227(A5)		;17936: 486dff1d
+    PEA	    -227(A5)		;17936: 486dff1d
     PEA	    1.W			;1793a: 48780001
-    PEA	-226(A5)		;1793e: 486dff1e
+    PEA	    -226(A5)		;1793e: 486dff1e
     BSR.W	LAB_0B0B		;17942: 6100f038
     LEA	    24(A7),A7		;17946: 4fef0018
     MOVE.B	-226(A5),D0		;1794a: 102dff1e
@@ -32321,7 +32318,7 @@ LAB_0B7E:
     CLR.B	-213(A5)		;17952: 422dff2b
 LAB_0B7F:
     PEA	    1.W			;17956: 48780001
-    PEA	-225(A5)		;1795a: 486dff1f
+    PEA	    -225(A5)		;1795a: 486dff1f
     BSR.W	LAB_0B08		;1795e: 6100efe2
     ADDQ.W	#8,A7			;17962: 504f
     MOVE.B	-227(A5),D0		;17964: 102dff1d
@@ -32394,7 +32391,7 @@ LAB_0B87:
     CMP.L	D1,D0			;17a24: b081
     BGE.S	LAB_0B89		;17a26: 6c1e
     MOVE.L	D0,-(A7)		;17a28: 2f00
-    PEA	-42(A5)			;17a2a: 486dffd6
+    PEA	    -42(A5)			;17a2a: 486dffd6
     JSR     LAB_0C78(PC)		;17a2e: 4eba1c76
     ADDQ.W	#8,A7			;17a32: 504f
     MOVE.L	D0,-22(A5)		;17a34: 2b40ffea
@@ -32410,13 +32407,13 @@ LAB_0B89:
     MOVE.L	-26(A5),D1		;17a4c: 222dffe6
     JSR     LAB_0AB6(PC)		;17a50: 4ebae6b6
     EXT.L	D0			;17a54: 48c0
-    PEA	-227(A5)		;17a56: 486dff1d
+    PEA	    -227(A5)		;17a56: 486dff1d
     MOVE.L	D0,-(A7)		;17a5a: 2f00
-    PEA	-212(A5)		;17a5c: 486dff2c
+    PEA	    -212(A5)		;17a5c: 486dff2c
     BSR.W	LAB_0B0B		;17a60: 6100ef1a
-    PEA	-227(A5)		;17a64: 486dff1d
+    PEA	    -227(A5)		;17a64: 486dff1d
     PEA	    1.W			;17a68: 48780001
-    PEA	-226(A5)		;17a6c: 486dff1e
+    PEA	    -226(A5)		;17a6c: 486dff1e
     BSR.W	LAB_0B0B		;17a70: 6100ef0a
     LEA	    24(A7),A7		;17a74: 4fef0018
     MOVE.B	-226(A5),D0		;17a78: 102dff1e
@@ -32425,7 +32422,7 @@ LAB_0B89:
     CLR.B	-213(A5)		;17a80: 422dff2b
 LAB_0B8A:
     PEA	    1.W			;17a84: 48780001
-    PEA	-225(A5)		;17a88: 486dff1f
+    PEA	    -225(A5)		;17a88: 486dff1f
     BSR.W	LAB_0B08		;17a8c: 6100eeb4
     ADDQ.W	#8,A7			;17a90: 504f
     MOVE.B	-227(A5),D0		;17a92: 102dff1d
@@ -32446,7 +32443,7 @@ LAB_0B8C:
     CMP.L	D1,D0			;17abc: b081
     BGE.W	LAB_0B90		;17abe: 6c0000bc
     MOVE.L	D0,-(A7)		;17ac2: 2f00
-    PEA	-42(A5)			;17ac4: 486dffd6
+    PEA	    -42(A5)			;17ac4: 486dffd6
     JSR     LAB_0C78(PC)		;17ac8: 4eba1bdc
     ADDQ.W	#8,A7			;17acc: 504f
     MOVE.L	D0,-22(A5)		;17ace: 2b40ffea
@@ -32456,7 +32453,7 @@ LAB_0B8C:
     MOVEQ	#0,D1			;17adc: 7200
     CMP.B	D1,D0			;17ade: b001
     BLS.S	LAB_0B8D		;17ae0: 633c
-    LEA	-212(A5),A0		;17ae2: 41edff2c
+    LEA	    -212(A5),A0		;17ae2: 41edff2c
     MOVE.L	-26(A5),D1		;17ae6: 222dffe6
     MOVEA.L	A0,A1			;17aea: 2248
     ADDA.L	D1,A1			;17aec: d3c1
@@ -32480,7 +32477,7 @@ LAB_0B8D:
     MOVEQ	#1,D1			;17b26: 7201
     CMP.B	D1,D0			;17b28: b001
     BLS.S	LAB_0B8E		;17b2a: 6320
-    LEA	-212(A5),A0		;17b2c: 41edff2c
+    LEA	    -212(A5),A0		;17b2c: 41edff2c
     MOVEA.L	A0,A1			;17b30: 2248
     ADDA.L	-26(A5),A1		;17b32: d3edffe6
     ADDQ.L	#1,-26(A5)		;17b36: 52adffe6
@@ -32493,7 +32490,7 @@ LAB_0B8E:
     MOVEQ	#2,D1			;17b50: 7202
     CMP.B	D1,D0			;17b52: b001
     BLS.S	LAB_0B8F		;17b54: 631e
-    LEA	-212(A5),A0		;17b56: 41edff2c
+    LEA	    -212(A5),A0		;17b56: 41edff2c
     ADDA.L	-26(A5),A0		;17b5a: d1edffe6
     ADDQ.L	#1,-26(A5)		;17b5e: 52adffe6
     MOVEA.L	-222(A5),A1		;17b62: 226dff22
@@ -32775,9 +32772,9 @@ LAB_0BA5:
 ;	MOVE.L	D1,-(A7)		;14052: 2f01
 ;	MOVE.L	D0,-(A7)		;14054: 2f00
 ;	PEA	    LAB_CTRLHTCMAX		;14056: 487900039168
-;	PEA	-72(A5)			;1405c: 486dffb8
+;	PEA	    -72(A5)			;1405c: 486dffb8
 ;	JSR	j_SUB_printf_0(PC)		;14060: 4ebae4e4
-;	PEA	-72(A5)			;14064: 486dffb8
+;	PEA	    -72(A5)			;14064: 486dffb8
 ;	PEA	    262.W			;14068: 48780106
 ;	PEA	    40.W			;1406c: 48780028
 ;	MOVE.L	LAB_2217,-(A7)		;14070: 2f390003c226
@@ -33735,7 +33732,7 @@ LAB_0C09:
     MOVE.L	D2,-(A7)		;18aac: 2f02
     MOVE.L	D1,-(A7)		;18aae: 2f01
     MOVE.L	D0,-(A7)		;18ab0: 2f00
-    PEA	-15(A5)			;18ab2: 486dfff1
+    PEA	    -15(A5)			;18ab2: 486dfff1
     BSR.W	LAB_0C48		;18ab6: 6100066a
     MOVEM.L	-40(A5),D2/D4-D7/A3	;18aba: 4ced08f4ffd8
     UNLK	A5			;18ac0: 4e5d
@@ -33804,7 +33801,7 @@ LAB_0C13:
 LAB_0C14:
     CLR.B	-26(A5,D6.W)		;18b54: 423560e6
 LAB_0C15:
-    LEA	-26(A5),A0		;18b58: 41edffe6
+    LEA	    -26(A5),A0		;18b58: 41edffe6
     MOVEA.L	A0,A1			;18b5c: 2248
 LAB_0C16:
     TST.B	(A1)+			;18b5e: 4a19
@@ -33827,7 +33824,7 @@ LAB_0C18:
     MOVEQ	#1,D0			;18b82: 7001
     CMP.B	-10(A5),D0		;18b84: b02dfff6
     BNE.S	LAB_0C19		;18b88: 6614
-    PEA	-30(A5)			;18b8a: 486dffe2
+    PEA	    -30(A5)			;18b8a: 486dffe2
     PEA	    LAB_2298		;18b8e: 48790003deda
     JSR     LAB_0C76(PC)		;18b94: 4eba0b04
     ADDQ.W	#8,A7			;18b98: 504f
@@ -34559,13 +34556,13 @@ LAB_0C57:
     BLE.S	LAB_0C59		;19362: 6f5e
     MOVE.L	D0,-(A7)		;19364: 2f00
     PEA	    LAB_1F29		;19366: 487900039934
-    PEA	-52(A5)			;1936c: 486dffcc
+    PEA	    -52(A5)			;1936c: 486dffcc
     JSR     LAB_0EF0(PC)		;19370: 4eba5d44
     MOVE.L	-38(A5),(A7)		;19374: 2eadffda
     PEA	    LAB_1F2A		;19378: 487900039938
-    PEA	-62(A5)			;1937e: 486dffc2
+    PEA	    -62(A5)			;1937e: 486dffc2
     JSR     LAB_0EF0(PC)		;19382: 4eba5d32
-    PEA	-62(A5)			;19386: 486dffc2
+    PEA	    -62(A5)			;19386: 486dffc2
     MOVE.L	-66(A5),-(A7)		;1938a: 2f2dffbe
     JSR     LAB_0CC4(PC)		;1938e: 4eba1422
     LEA	    28(A7),A7		;19392: 4fef001c
@@ -34586,14 +34583,14 @@ LAB_0C58:
 LAB_0C59:
     MOVE.L	D0,-(A7)		;193c2: 2f00
     PEA	    LAB_1F2B		;193c4: 48790003993e
-    PEA	-52(A5)			;193ca: 486dffcc
+    PEA	    -52(A5)			;193ca: 486dffcc
     JSR     LAB_0EF0(PC)		;193ce: 4eba5ce6
     LEA	    12(A7),A7		;193d2: 4fef000c
 LAB_0C5A:
     MOVE.L	-42(A5),D0		;193d6: 202dffd6
     TST.L	D0			;193da: 4a80
     BLE.S	LAB_0C5B		;193dc: 6f20
-    PEA	-52(A5)			;193de: 486dffcc
+    PEA	    -52(A5)			;193de: 486dffcc
     MOVE.L	-66(A5),-(A7)		;193e2: 2f2dffbe
     JSR     LAB_0CC4(PC)		;193e6: 4eba13ca
     PEA	    LAB_2104		;193ea: 48790003b029
@@ -36065,18 +36062,18 @@ LAB_0CBB:
     MOVE.L	20(A7),-(A7)		;1a618: 2f2f0014
     MOVE.L	20(A7),-(A7)		;1a61c: 2f2f0014
     PEA	    LAB_1F58		;1a620: 487900039a54
-    PEA	-119(A5)		;1a626: 486dff89
+    PEA	    -119(A5)		;1a626: 486dff89
     JSR     LAB_0EF0(PC)		;1a62a: 4eba4a8a
     LEA	    24(A7),A7		;1a62e: 4fef0018
     ADDI.W	#$000e,D7		;1a632: 0647000e
     PEA	    LAB_1F5B		;1a636: 487900039a74
-    PEA	-119(A5)		;1a63c: 486dff89
+    PEA	    -119(A5)		;1a63c: 486dff89
     JSR     LAB_0CC4(PC)		;1a640: 4eba0170
     MOVE.L	A3,(A7)			;1a644: 2e8b
-    PEA	-119(A5)		;1a646: 486dff89
+    PEA	    -119(A5)		;1a646: 486dff89
     JSR     LAB_0CC4(PC)		;1a64a: 4eba0166
     PEA	    LAB_1F5C		;1a64e: 487900039a76
-    PEA	-119(A5)		;1a654: 486dff89
+    PEA	    -119(A5)		;1a654: 486dff89
     JSR     LAB_0CC4(PC)		;1a658: 4eba0158
     LEA	    20(A7),A7		;1a65c: 4fef0014
     MOVE.W	LAB_233A,D0		;1a660: 30390003effc
@@ -36105,7 +36102,7 @@ LAB_0CBD:
     MOVEA.L	D0,A0			;1a6a8: 2040
     CLR.B	(A0)			;1a6aa: 4210
 LAB_0CBE:
-    PEA	-119(A5)		;1a6ac: 486dff89
+    PEA	    -119(A5)		;1a6ac: 486dff89
     MOVE.L	-4(A5),-(A7)		;1a6b0: 2f2dfffc
     JSR     LAB_0CC4(PC)		;1a6b4: 4eba00fc
     MOVE.L	LAB_2049,(A7)		;1a6b8: 2eb90003a84c
@@ -36364,7 +36361,7 @@ LAB_0CCB:
     TST.L	D7			;1aa10: 4a87
     BEQ.S	LAB_0CCE		;1aa12: 6756
     LEA     LAB_22CC,A0		;1aa14: 41f90003e4e4
-    LEA	-40(A5),A1		;1aa1a: 43edffd8
+    LEA	    -40(A5),A1		;1aa1a: 43edffd8
     MOVEQ	#7,D0			;1aa1e: 7007
 LAB_0CCC:
     MOVE.L	(A0)+,(A1)+		;1aa20: 22d8
@@ -36372,7 +36369,7 @@ LAB_0CCC:
     MOVE.L	-12(A5),-8(A5)		;1aa26: 2b6dfff4fff8
     CLR.L	-12(A5)			;1aa2c: 42adfff4
     PEA	    32.W			;1aa30: 48780020
-    PEA	-40(A5)			;1aa34: 486dffd8
+    PEA	    -40(A5)			;1aa34: 486dffd8
     MOVE.L	D7,-(A7)		;1aa38: 2f07
     JSR     LAB_0F97(PC)		;1aa3a: 4eba578a
     MOVEA.L	-8(A5),A0		;1aa3e: 206dfff8
@@ -36404,7 +36401,7 @@ LAB_0CCF:
     MOVEA.L	8(A5),A3		;1aa78: 266d0008
     MOVEQ	#0,D6			;1aa7c: 7c00
     LEA     LAB_1F69,A0		;1aa7e: 41f900039b4c
-    LEA	-12(A5),A1		;1aa84: 43edfff4
+    LEA	    -12(A5),A1		;1aa84: 43edfff4
     MOVE.B	(A0)+,(A1)+		;1aa88: 12d8
     MOVE.B	(A0)+,(A1)+		;1aa8a: 12d8
     MOVE.B	(A0)+,(A1)+		;1aa8c: 12d8
@@ -36418,10 +36415,10 @@ LAB_0CCF:
     BEQ.W	LAB_0CE7		;1aaa0: 670001e4
     PEA	    2.W			;1aaa4: 48780002
     MOVE.L	A3,-(A7)		;1aaa8: 2f0b
-    PEA	-12(A5)			;1aaaa: 486dfff4
+    PEA	    -12(A5)			;1aaaa: 486dfff4
     JSR     LAB_0EF2(PC)		;1aaae: 4eba4618
     CLR.B	-10(A5)			;1aab2: 422dfff6
-    PEA	-12(A5)			;1aab6: 486dfff4
+    PEA	    -12(A5)			;1aab6: 486dfff4
     JSR     LAB_0BFA(PC)		;1aaba: 4ebadf5a
     LEA	    16(A7),A7		;1aabe: 4fef0010
     MOVE.L	D0,D7			;1aac2: 2e00
@@ -36717,7 +36714,7 @@ LAB_0CEC:
     TST.L	D7			;1ada6: 4a87
     BEQ.W	LAB_0CF0		;1ada8: 67000094
     LEA     LAB_22D5,A0		;1adac: 41f90003e504
-    LEA	-64(A5),A1		;1adb2: 43edffc0
+    LEA	    -64(A5),A1		;1adb2: 43edffc0
     MOVEQ	#12,D0			;1adb6: 700c
 LAB_0CED:
     MOVE.L	(A0)+,(A1)+		;1adb8: 22d8
@@ -36728,7 +36725,7 @@ LAB_0CED:
     MOVE.L	A0,-16(A5)		;1adcc: 2b48fff0
     MOVE.L	A0,-20(A5)		;1add0: 2b48ffec
     PEA	    52.W			;1add4: 48780034
-    PEA	-64(A5)			;1add8: 486dffc0
+    PEA	    -64(A5)			;1add8: 486dffc0
     MOVE.L	D7,-(A7)		;1addc: 2f07
     JSR     LAB_0F97(PC)		;1adde: 4eba53e6
     MOVEA.L	-8(A5),A0		;1ade2: 206dfff8
@@ -36776,7 +36773,7 @@ LAB_0CF1:
     MOVEA.L	8(A5),A3		;1ae4c: 266d0008
     MOVEQ	#0,D6			;1ae50: 7c00
     LEA     LAB_1F6F,A0		;1ae52: 41f900039b8e
-    LEA	-12(A5),A1		;1ae58: 43edfff4
+    LEA	    -12(A5),A1		;1ae58: 43edfff4
     MOVE.B	(A0)+,(A1)+		;1ae5c: 12d8
     MOVE.B	(A0)+,(A1)+		;1ae5e: 12d8
     MOVE.B	(A0)+,(A1)+		;1ae60: 12d8
@@ -36794,10 +36791,10 @@ LAB_0CF1:
     BEQ.W	LAB_0D1D		;1ae84: 6700041e
     PEA	    2.W			;1ae88: 48780002
     MOVE.L	A3,-(A7)		;1ae8c: 2f0b
-    PEA	-12(A5)			;1ae8e: 486dfff4
+    PEA	    -12(A5)			;1ae8e: 486dfff4
     JSR     LAB_0EF2(PC)		;1ae92: 4eba4234
     CLR.B	-10(A5)			;1ae96: 422dfff6
-    PEA	-12(A5)			;1ae9a: 486dfff4
+    PEA	    -12(A5)			;1ae9a: 486dfff4
     JSR     LAB_0BFA(PC)		;1ae9e: 4ebadb76
     LEA	    16(A7),A7		;1aea2: 4fef0010
     MOVE.L	D0,D7			;1aea6: 2e00
@@ -36857,7 +36854,7 @@ LAB_0CF8:
     MOVE.B	0(A3,D6.L),-12(A5)	;1af1a: 1b736800fff4
     MOVE.B	1(A3,D6.L),-11(A5)	;1af20: 1b736801fff5
     CLR.B	-10(A5)			;1af26: 422dfff6
-    PEA	-12(A5)			;1af2a: 486dfff4
+    PEA	    -12(A5)			;1af2a: 486dfff4
     JSR     LAB_0BFA(PC)		;1af2e: 4ebadae6
     ADDQ.W	#4,A7			;1af32: 584f
     MOVE.L	D0,D4			;1af34: 2800
@@ -36889,7 +36886,7 @@ LAB_0CFA:
     MOVE.B	0(A3,D6.L),-12(A5)	;1af74: 1b736800fff4
     MOVE.B	1(A3,D6.L),-11(A5)	;1af7a: 1b736801fff5
     CLR.B	-10(A5)			;1af80: 422dfff6
-    PEA	-12(A5)			;1af84: 486dfff4
+    PEA	    -12(A5)			;1af84: 486dfff4
     JSR     LAB_0BFA(PC)		;1af88: 4ebada8c
     ADDQ.W	#4,A7			;1af8c: 584f
     MOVE.L	D0,D4			;1af8e: 2800
@@ -37322,7 +37319,7 @@ LAB_0D23:
     TST.L	D7			;1b3c4: 4a87
     BEQ.W	LAB_0D27		;1b3c6: 67000094
     LEA     LAB_22E4,A0		;1b3ca: 41f90003e538
-    LEA	-68(A5),A1		;1b3d0: 43edffbc
+    LEA	    -68(A5),A1		;1b3d0: 43edffbc
     MOVEQ	#13,D0			;1b3d4: 700d
 LAB_0D24:
     MOVE.L	(A0)+,(A1)+		;1b3d6: 22d8
@@ -37333,7 +37330,7 @@ LAB_0D24:
     MOVE.L	A0,-20(A5)		;1b3ea: 2b48ffec
     MOVE.L	A0,-24(A5)		;1b3ee: 2b48ffe8
     PEA	    56.W			;1b3f2: 48780038
-    PEA	-68(A5)			;1b3f6: 486dffbc
+    PEA	    -68(A5)			;1b3f6: 486dffbc
     MOVE.L	D7,-(A7)		;1b3fa: 2f07
     JSR     LAB_0F97(PC)		;1b3fc: 4eba4dc8
     MOVEA.L	-8(A5),A0		;1b400: 206dfff8
@@ -37381,7 +37378,7 @@ LAB_0D28:
     MOVEA.L	8(A5),A3		;1b46a: 266d0008
     MOVEQ	#0,D6			;1b46e: 7c00
     LEA     LAB_1F77,A0		;1b470: 41f900039bf8
-    LEA	-12(A5),A1		;1b476: 43edfff4
+    LEA	    -12(A5),A1		;1b476: 43edfff4
     MOVE.B	(A0)+,(A1)+		;1b47a: 12d8
     MOVE.B	(A0)+,(A1)+		;1b47c: 12d8
     MOVE.B	(A0)+,(A1)+		;1b47e: 12d8
@@ -37397,10 +37394,10 @@ LAB_0D28:
     BEQ.W	LAB_0D56		;1b49c: 67000454
     PEA	    2.W			;1b4a0: 48780002
     MOVE.L	A3,-(A7)		;1b4a4: 2f0b
-    PEA	-12(A5)			;1b4a6: 486dfff4
+    PEA	    -12(A5)			;1b4a6: 486dfff4
     JSR     LAB_0EF2(PC)		;1b4aa: 4eba3c1c
     CLR.B	-10(A5)			;1b4ae: 422dfff6
-    PEA	-12(A5)			;1b4b2: 486dfff4
+    PEA	    -12(A5)			;1b4b2: 486dfff4
     JSR     LAB_0BFA(PC)		;1b4b6: 4ebad55e
     LEA	    16(A7),A7		;1b4ba: 4fef0010
     MOVE.L	D0,D7			;1b4be: 2e00
@@ -37461,7 +37458,7 @@ LAB_0D2F:
     MOVE.B	1(A3,D6.L),-11(A5)	;1b538: 1b736801fff5
     MOVE.B	2(A3,D6.L),-10(A5)	;1b53e: 1b736802fff6
     CLR.B	-9(A5)			;1b544: 422dfff7
-    PEA	-12(A5)			;1b548: 486dfff4
+    PEA	    -12(A5)			;1b548: 486dfff4
     JSR     LAB_0BFA(PC)		;1b54c: 4ebad4c8
     ADDQ.W	#4,A7			;1b550: 584f
     MOVE.L	D0,D4			;1b552: 2800
@@ -37500,7 +37497,7 @@ LAB_0D31:
     MOVE.B	1(A3,D6.L),-11(A5)	;1b5ac: 1b736801fff5
     MOVE.B	2(A3,D6.L),-10(A5)	;1b5b2: 1b736802fff6
     CLR.B	-9(A5)			;1b5b8: 422dfff7
-    PEA	-12(A5)			;1b5bc: 486dfff4
+    PEA	    -12(A5)			;1b5bc: 486dfff4
     JSR     LAB_0BFA(PC)		;1b5c0: 4ebad454
     ADDQ.W	#4,A7			;1b5c4: 584f
     MOVE.L	D0,D4			;1b5c6: 2800
@@ -37751,10 +37748,10 @@ LAB_0D4B:
     ADDA.L	D6,A0			;1b7f6: d1c6
     PEA	    2.W			;1b7f8: 48780002
     MOVE.L	A0,-(A7)		;1b7fc: 2f08
-    PEA	-12(A5)			;1b7fe: 486dfff4
+    PEA	    -12(A5)			;1b7fe: 486dfff4
     JSR     LAB_0EF2(PC)		;1b802: 4eba38c4
     CLR.B	-10(A5)			;1b806: 422dfff6
-    PEA	-12(A5)			;1b80a: 486dfff4
+    PEA	    -12(A5)			;1b80a: 486dfff4
     JSR     LAB_0BFA(PC)		;1b80e: 4ebad206
     LEA	    16(A7),A7		;1b812: 4fef0010
     MOVE.L	D0,D4			;1b816: 2800
@@ -39921,7 +39918,7 @@ LAB_0DE8:
     MOVE.B	D5,D1			;1d116: 1205
     MOVE.L	D1,-(A7)		;1d118: 2f01
     MOVE.L	D0,-(A7)		;1d11a: 2f00
-    PEA	-1(A5)			;1d11c: 486dffff
+    PEA	    -1(A5)			;1d11c: 486dffff
     MOVE.L	LAB_2307,-(A7)		;1d120: 2f390003ee12
     PEA	    2992.W			;1d126: 48780bb0
     PEA	    LAB_1E2B		;1d12a: 4879000368cc
@@ -39936,7 +39933,7 @@ LAB_0DE8:
     MOVE.B	D5,D2			;1d14c: 1405
     MOVE.L	D2,(A7)			;1d14e: 2e82
     MOVE.L	D1,-(A7)		;1d150: 2f01
-    PEA	-1(A5)			;1d152: 486dffff
+    PEA	    -1(A5)			;1d152: 486dffff
     MOVE.L	D0,-(A7)		;1d156: 2f00
     PEA	    3080.W			;1d158: 48780c08
     PEA	    LAB_1E58		;1d15c: 487900037c8c
@@ -40132,7 +40129,7 @@ LAB_0DF5:
     MOVEQ	#0,D0			;1d382: 7000
     MOVE.B	190(A3),D0		;1d384: 102b00be
     MOVE.W	D0,LAB_1B84		;1d388: 33c000033f9e
-    PEA	-4(A5)			;1d38e: 486dfffc
+    PEA	    -4(A5)			;1d38e: 486dfffc
     MOVE.L	A3,-(A7)		;1d392: 2f0b
     JSR     LAB_0DFA(PC)		;1d394: 4eba00b0
     ADDQ.W	#8,A7			;1d398: 504f
@@ -40702,7 +40699,7 @@ LAB_0E25:
     MOVEQ	#0,D0			;1d9da: 7000
     MOVE.B	D5,D0			;1d9dc: 1005
     MOVE.L	D0,-(A7)		;1d9de: 2f00
-    PEA	-89(A5)			;1d9e0: 486dffa7
+    PEA	    -89(A5)			;1d9e0: 486dffa7
     JSR     LAB_0EEB(PC)		;1d9e4: 4eba16b2
     ADDQ.W	#8,A7			;1d9e8: 504f
     MOVEQ	#0,D0			;1d9ea: 7000
@@ -40710,7 +40707,7 @@ LAB_0E25:
     ASL.L	#2,D0			;1d9f2: e580
     LEA     LAB_225A,A0		;1d9f4: 41f90003dd70
     ADDA.L	D0,A0			;1d9fa: d1c0
-    LEA	-89(A5),A1		;1d9fc: 43edffa7
+    LEA	    -89(A5),A1		;1d9fc: 43edffa7
     MOVEA.L	(A0),A2			;1da00: 2450
 LAB_0E26:
     MOVE.B	(A1)+,(A2)+		;1da02: 14d9
@@ -40742,7 +40739,7 @@ LAB_0E28:
     MOVE.W	D1,D2			;1da4e: 3401
     MOVE.B	D0,-89(A5,D2.L)		;1da50: 1b8028a7
     MOVEA.L	LAB_2217,A1		;1da54: 22790003c226
-    LEA	-7(A5),A0		;1da5a: 41edfff9
+    LEA	    -7(A5),A0		;1da5a: 41edfff9
     MOVEQ	#1,D0			;1da5e: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;1da60: 2c790003637c
     JSR	    -54(A6)			;1da66: 4eaeffca
@@ -40755,7 +40752,7 @@ LAB_0E29:
     MOVEQ	#0,D0			;1da78: 7000
     MOVE.B	D5,D0			;1da7a: 1005
     MOVE.L	D0,-(A7)		;1da7c: 2f00
-    PEA	-89(A5)			;1da7e: 486dffa7
+    PEA	    -89(A5)			;1da7e: 486dffa7
     JSR     LAB_0EEB(PC)		;1da82: 4eba1614
     ADDQ.W	#8,A7			;1da86: 504f
     MOVEQ	#0,D0			;1da88: 7000
@@ -40763,7 +40760,7 @@ LAB_0E29:
     ASL.L	#2,D0			;1da90: e580
     LEA     LAB_225A,A0		;1da92: 41f90003dd70
     ADDA.L	D0,A0			;1da98: d1c0
-    LEA	-89(A5),A1		;1da9a: 43edffa7
+    LEA	    -89(A5),A1		;1da9a: 43edffa7
     MOVEA.L	(A0),A2			;1da9e: 2450
 LAB_0E2A:
     MOVE.B	(A1)+,(A2)+		;1daa0: 14d9
@@ -41041,12 +41038,12 @@ LAB_0E3F:
     MOVE.B	-413(A5),0(A0,D6.W)	;1dd38: 11adfe636000
     MOVE.L	D6,D0			;1dd3e: 2006
     ADDQ.W	#1,D6			;1dd40: 5246
-    LEA	-407(A5),A0		;1dd42: 41edfe69
+    LEA	    -407(A5),A0		;1dd42: 41edfe69
     ADDA.W	D0,A0			;1dd46: d0c0
     MOVE.B	D4,(A0)			;1dd48: 1084
     BRA.W	LAB_0E3C		;1dd4a: 6000ff26
 LAB_0E40:
-    LEA	-407(A5),A0		;1dd4e: 41edfe69
+    LEA	    -407(A5),A0		;1dd4e: 41edfe69
     MOVEA.L	A0,A1			;1dd52: 2248
     ADDA.W	D6,A1			;1dd54: d2c6
     CLR.B	(A1)			;1dd56: 4211
@@ -41160,7 +41157,7 @@ LAB_0E4B:
     MOVEA.L	-4(A5),A0		;1de92: 206dfffc
     TST.L	6(A0)			;1de96: 4aa80006
     BNE.S	LAB_0E4C		;1de9a: 660a
-    LEA	-15(A5),A1		;1de9c: 43edfff1
+    LEA	    -15(A5),A1		;1de9c: 43edfff1
     MOVE.L	A1,-8(A5)		;1dea0: 2b49fff8
     BRA.S	LAB_0E4D		;1dea4: 6008
 LAB_0E4C:
@@ -41196,9 +41193,9 @@ LAB_0E50:
     MOVE.L	D0,-(A7)		;1deea: 2f00
     PEA	    3.W			;1deec: 48780003
     PEA	    LAB_1FC5		;1def0: 48790003a4e6
-    PEA	-35(A5)			;1def6: 486dffdd
+    PEA	    -35(A5)			;1def6: 486dffdd
     JSR     LAB_0EF0(PC)		;1defa: 4eba11ba
-    LEA	-35(A5),A0		;1defe: 41edffdd
+    LEA	    -35(A5),A0		;1defe: 41edffdd
     MOVEA.L	A0,A1			;1df02: 2248
 LAB_0E51:
     TST.B	(A1)+			;1df04: 4a19
@@ -42097,7 +42094,7 @@ LAB_0E9E:
 LAB_0E9F:
     MOVE.L	-104(A5),D0		;1e928: 202dff98
     CLR.B	-51(A5,D0.L)		;1e92c: 423508cd
-    LEA	-51(A5),A0		;1e930: 41edffcd
+    LEA	    -51(A5),A0		;1e930: 41edffcd
     MOVEA.L	A0,A1			;1e934: 2248
 LAB_0EA0:
     TST.B	(A1)+			;1e936: 4a19
@@ -42359,11 +42356,11 @@ LAB_0EBF:
     ADDA.L	D0,A0			;1ebe8: d1c0
     PEA	    40.W			;1ebea: 48780028
     MOVE.L	A0,-(A7)		;1ebee: 2f08
-    PEA	-51(A5)			;1ebf0: 486dffcd
+    PEA	    -51(A5)			;1ebf0: 486dffcd
     JSR     LAB_0EF2(PC)		;1ebf4: 4eba04d2
     LEA	    12(A7),A7		;1ebf8: 4fef000c
     CLR.B	-11(A5)			;1ebfc: 422dfff5
-    LEA	-51(A5),A0		;1ec00: 41edffcd
+    LEA	    -51(A5),A0		;1ec00: 41edffcd
     MOVEA.L	A0,A1			;1ec04: 2248
 LAB_0EC0:
     TST.B	(A1)+			;1ec06: 4a19
@@ -42377,7 +42374,7 @@ LAB_0EC0:
     ADDA.L	D0,A0			;1ec1a: d1c0
     MOVE.L	A1,-100(A5)		;1ec1c: 2b49ff9c
     MOVE.L	A1,D0			;1ec20: 2009
-    LEA	-91(A5),A1		;1ec22: 43edffa5
+    LEA	    -91(A5),A1		;1ec22: 43edffa5
     BRA.S	LAB_0EC2		;1ec26: 6002
 LAB_0EC1:
     MOVE.B	(A0)+,(A1)+		;1ec28: 12d8
@@ -42388,7 +42385,7 @@ LAB_0EC2:
     MOVEQ	#40,D1			;1ec32: 7228
     CMP.L	D1,D0			;1ec34: b081
     BGE.S	LAB_0EC7		;1ec36: 6c2e
-    LEA	-51(A5),A0		;1ec38: 41edffcd
+    LEA	    -51(A5),A0		;1ec38: 41edffcd
     ADDA.L	D0,A0			;1ec3c: d1c0
     SUB.L	D0,D1			;1ec3e: 9280
     MOVEQ	#32,D0			;1ec40: 7020
@@ -42398,7 +42395,7 @@ LAB_0EC3:
 LAB_0EC4:
     SUBQ.L	#1,D1			;1ec46: 5381
     BCC.S	LAB_0EC3		;1ec48: 64fa
-    LEA	-91(A5),A0		;1ec4a: 41edffa5
+    LEA	    -91(A5),A0		;1ec4a: 41edffa5
     MOVE.L	-100(A5),D0		;1ec4e: 202dff9c
     ADDA.L	D0,A0			;1ec52: d1c0
     MOVEQ	#0,D1			;1ec54: 7200
@@ -42469,23 +42466,23 @@ LAB_0ECD:
     MOVE.L	D1,D2			;1ece6: 2401
     SUB.L	D0,D2			;1ece8: 9480
     CLR.B	-51(A5,D2.L)		;1ecea: 423528cd
-    LEA	-51(A5),A0		;1ecee: 41edffcd
+    LEA	    -51(A5),A0		;1ecee: 41edffcd
     ADDA.L	D0,A0			;1ecf2: d1c0
     ADD.L	D0,D0			;1ecf4: d080
     SUB.L	D0,D1			;1ecf6: 9280
     ADDQ.L	#1,D1			;1ecf8: 5281
     MOVE.L	D1,-(A7)		;1ecfa: 2f01
-    PEA	-51(A5)			;1ecfc: 486dffcd
+    PEA	    -51(A5)			;1ecfc: 486dffcd
     MOVE.L	A0,-(A7)		;1ed00: 2f08
     JSR     LAB_0EEF(PC)		;1ed02: 4eba03ac
-    LEA	-91(A5),A0		;1ed06: 41edffa5
+    LEA	    -91(A5),A0		;1ed06: 41edffa5
     MOVE.L	-100(A5),D0		;1ed0a: 202dff9c
     ADDA.L	D0,A0			;1ed0e: d1c0
     ADD.L	D0,D0			;1ed10: d080
     MOVEQ	#40,D1			;1ed12: 7228
     SUB.L	D0,D1			;1ed14: 9280
     MOVE.L	D1,(A7)			;1ed16: 2e81
-    PEA	-91(A5)			;1ed18: 486dffa5
+    PEA	    -91(A5)			;1ed18: 486dffa5
     MOVE.L	A0,-(A7)		;1ed1c: 2f08
     JSR     LAB_0EEF(PC)		;1ed1e: 4eba0390
     LEA	    20(A7),A7		;1ed22: 4fef0014
@@ -42536,22 +42533,22 @@ LAB_0ED3:
     MOVE.L	-100(A5),D0		;1ed90: 202dff9c
     TST.L	D0			;1ed94: 4a80
     BLE.S	LAB_0ED4		;1ed96: 6f36
-    LEA	-51(A5),A0		;1ed98: 41edffcd
+    LEA	    -51(A5),A0		;1ed98: 41edffcd
     ADDA.L	D0,A0			;1ed9c: d1c0
     MOVEQ	#40,D1			;1ed9e: 7228
     SUB.L	D0,D1			;1eda0: 9280
     ADDQ.L	#1,D1			;1eda2: 5281
     MOVE.L	D1,-(A7)		;1eda4: 2f01
-    PEA	-51(A5)			;1eda6: 486dffcd
+    PEA	    -51(A5)			;1eda6: 486dffcd
     MOVE.L	A0,-(A7)		;1edaa: 2f08
     JSR     LAB_0EEF(PC)		;1edac: 4eba0302
-    LEA	-91(A5),A0		;1edb0: 41edffa5
+    LEA	    -91(A5),A0		;1edb0: 41edffa5
     MOVE.L	-100(A5),D0		;1edb4: 202dff9c
     ADDA.L	D0,A0			;1edb8: d1c0
     MOVEQ	#40,D1			;1edba: 7228
     SUB.L	D0,D1			;1edbc: 9280
     MOVE.L	D1,(A7)			;1edbe: 2e81
-    PEA	-91(A5)			;1edc0: 486dffa5
+    PEA	    -91(A5)			;1edc0: 486dffa5
     MOVE.L	A0,-(A7)		;1edc4: 2f08
     JSR     LAB_0EEF(PC)		;1edc6: 4eba02e8
     LEA	    20(A7),A7		;1edca: 4fef0014
@@ -43242,7 +43239,7 @@ LAB_0F16:
     MOVEA.L	8(A5),A3		;1f446: 266d0008
     MOVEA.L	12(A5),A2		;1f44a: 246d000c
     MOVEQ	#1,D5			;1f44e: 7a01
-    PEA	-24(A5)			;1f450: 486dffe8
+    PEA	    -24(A5)			;1f450: 486dffe8
     BSR.W	LAB_0F07		;1f454: 6100fe20
     ADDQ.W	#4,A7			;1f458: 584f
     MOVE.B	(A3)+,D0		;1f45a: 101b
@@ -43289,10 +43286,10 @@ LAB_0F19:
     BRA.S	LAB_0F19		;1f4c4: 60ee
 LAB_0F1A:
     CLR.B	-51(A5,D7.L)		;1f4c6: 423578cd
-    PEA	-51(A5)			;1f4ca: 486dffcd
+    PEA	    -51(A5)			;1f4ca: 486dffcd
     JSR     LAB_134E(PC)		;1f4ce: 4eba7c26
     MOVE.L	D0,-22(A5)		;1f4d2: 2b40ffea
-    PEA	-24(A5)			;1f4d6: 486dffe8
+    PEA	    -24(A5)			;1f4d6: 486dffe8
     BSR.W	LAB_0F10		;1f4da: 6100fea0
     ADDQ.W	#8,A7			;1f4de: 504f
     TST.L	D0			;1f4e0: 4a80
@@ -43325,7 +43322,7 @@ LAB_0F1C:
     BRA.S	LAB_0F1C		;1f524: 60ee
 LAB_0F1D:
     CLR.B	-51(A5,D6.L)		;1f526: 423568cd
-    PEA	-51(A5)			;1f52a: 486dffcd
+    PEA	    -51(A5)			;1f52a: 486dffcd
     JSR     LAB_134E(PC)		;1f52e: 4eba7bc6
     ADDQ.W	#4,A7			;1f532: 584f
     MOVEA.L	-28(A5),A0		;1f534: 206dffe4
@@ -43348,7 +43345,7 @@ LAB_0F1E:
     BRA.S	LAB_0F1E		;1f55c: 60ee
 LAB_0F1F:
     CLR.B	-51(A5,D6.L)		;1f55e: 423568cd
-    PEA	-51(A5)			;1f562: 486dffcd
+    PEA	    -51(A5)			;1f562: 486dffcd
     JSR     LAB_134E(PC)		;1f566: 4eba7b8e
     ADDQ.W	#4,A7			;1f56a: 584f
     MOVEA.L	-28(A5),A0		;1f56c: 206dffe4
@@ -43368,7 +43365,7 @@ LAB_0F20:
     BRA.S	LAB_0F20		;1f592: 60ee
 LAB_0F21:
     CLR.B	-51(A5,D6.L)		;1f594: 423568cd
-    PEA	-51(A5)			;1f598: 486dffcd
+    PEA	    -51(A5)			;1f598: 486dffcd
     JSR     LAB_134E(PC)		;1f59c: 4eba7b58
     ADDQ.W	#4,A7			;1f5a0: 584f
     MOVEA.L	-28(A5),A0		;1f5a2: 206dffe4
@@ -43499,13 +43496,13 @@ LAB_0F33:
     BEQ.S	LAB_0F34		;1f6ce: 6716
     MOVE.L	A2,-(A7)		;1f6d0: 2f0a
     BSR.W	LAB_0F08		;1f6d2: 6100fbcc
-    PEA	-24(A5)			;1f6d6: 486dffe8
+    PEA	    -24(A5)			;1f6d6: 486dffe8
     MOVE.L	A2,-(A7)		;1f6da: 2f0a
     BSR.W	LAB_0F0E		;1f6dc: 6100fc64
     LEA	    12(A7),A7		;1f6e0: 4fef000c
     BRA.S	LAB_0F35		;1f6e4: 600a
 LAB_0F34:
-    PEA	-24(A5)			;1f6e6: 486dffe8
+    PEA	    -24(A5)			;1f6e6: 486dffe8
     BSR.W	LAB_0F08		;1f6ea: 6100fbb4
     ADDQ.W	#4,A7			;1f6ee: 584f
 LAB_0F35:
@@ -43761,7 +43758,7 @@ LAB_0F4D:
     MOVEA.L	12(A5),A2		;1f938: 246d000c
     MOVEQ	#1,D5			;1f93c: 7a01
     LEA     LAB_1FF3,A0		;1f93e: 41f90003a654
-    LEA	-154(A5),A1		;1f944: 43edff66
+    LEA	    -154(A5),A1		;1f944: 43edff66
     MOVEQ	#5,D0			;1f948: 7005
 LAB_0F4E:
     MOVE.B	(A0)+,(A1)+		;1f94a: 12d8
@@ -43775,14 +43772,14 @@ LAB_0F4E:
     BEQ.W	LAB_0F5B		;1f964: 67000198
     MOVE.L	A3,-4(A5)		;1f968: 2b4bfffc
     LEA     LAB_1FF5,A0		;1f96c: 41f90003a66c
-    LEA	-148(A5),A1		;1f972: 43edff6c
+    LEA	    -148(A5),A1		;1f972: 43edff6c
     MOVE.L	(A0)+,(A1)+		;1f976: 22d8
     MOVE.L	(A0)+,(A1)+		;1f978: 22d8
     MOVE.L	(A0)+,(A1)+		;1f97a: 22d8
     MOVE.L	(A0)+,(A1)+		;1f97c: 22d8
     MOVE.W	(A0),(A1)		;1f97e: 3290
 LAB_0F4F:
-    LEA	-148(A5),A0		;1f980: 41edff6c
+    LEA	    -148(A5),A0		;1f980: 41edff6c
     MOVEA.L	A0,A1			;1f984: 2248
 LAB_0F50:
     TST.B	(A1)+			;1f986: 4a19
@@ -43809,7 +43806,7 @@ LAB_0F50:
     MOVE.B	6(A0),D0		;1f9be: 10280006
     MOVE.B	D0,-148(A5)		;1f9c2: 1b40ff6c
     CLR.B	-147(A5)		;1f9c6: 422dff6d
-    LEA	-148(A5),A0		;1f9ca: 41edff6c
+    LEA	    -148(A5),A0		;1f9ca: 41edff6c
     MOVEA.L	A0,A1			;1f9ce: 2248
 LAB_0F51:
     TST.B	(A1)+			;1f9d0: 4a19
@@ -43877,26 +43874,26 @@ LAB_0F55:
     DC.W	$0008			;1fa74
     DC.W	$0008			;1fa76
     DC.W	$0008			;1fa78
-    LEA	-148(A5),A0		;1fa7a: 41edff6c
+    LEA	    -148(A5),A0		;1fa7a: 41edff6c
     ADDA.L	D6,A0			;1fa7e: d1c6
     MOVEA.L	-8(A5),A6		;1fa80: 2c6dfff8
     MOVEA.L	6(A6),A1		;1fa84: 226e0006
     ADDA.L	D6,A1			;1fa88: d3c6
     MOVEQ	#0,D0			;1fa8a: 7000
     MOVE.B	(A1),D0			;1fa8c: 1011
-    LEA	-154(A5),A1		;1fa8e: 43edff66
+    LEA	    -154(A5),A1		;1fa8e: 43edff66
     ADDA.W	D0,A1			;1fa92: d2c0
     MOVE.B	(A1),(A0)		;1fa94: 1091
     BRA.S	LAB_0F57		;1fa96: 600a
 LAB_0F56:
-    LEA	-148(A5),A0		;1fa98: 41edff6c
+    LEA	    -148(A5),A0		;1fa98: 41edff6c
     ADDA.L	D6,A0			;1fa9c: d1c6
     MOVE.B	-154(A5),(A0)		;1fa9e: 10adff66
 LAB_0F57:
     ADDQ.L	#1,D6			;1faa2: 5286
     BRA.S	LAB_0F53		;1faa4: 609e
 LAB_0F58:
-    LEA	-148(A5),A0		;1faa6: 41edff6c
+    LEA	    -148(A5),A0		;1faa6: 41edff6c
     MOVEA.L	A0,A1			;1faaa: 2248
     ADDA.L	D6,A1			;1faac: d3c6
     CLR.B	(A1)			;1faae: 4211
@@ -43919,7 +43916,7 @@ LAB_0F5A:
     MOVE.L	A2,-4(A5)		;1fad2: 2b4afffc
     SUBA.L	A2,A2			;1fad6: 95ca
     LEA     LAB_1FF6,A0		;1fad8: 41f90003a67e
-    LEA	-148(A5),A1		;1fade: 43edff6c
+    LEA	    -148(A5),A1		;1fade: 43edff6c
     MOVE.L	(A0)+,(A1)+		;1fae2: 22d8
     MOVE.L	(A0)+,(A1)+		;1fae4: 22d8
     MOVE.L	(A0)+,(A1)+		;1fae6: 22d8
@@ -43981,7 +43978,7 @@ LAB_0F5E:
     LEA	    12(A7),A7		;1fb90: 4fef000c
     TST.L	D0			;1fb94: 4a80
     BNE.W	LAB_0F73		;1fb96: 6600020a
-    PEA	-24(A5)			;1fb9a: 486dffe8
+    PEA	    -24(A5)			;1fb9a: 486dffe8
     BSR.W	LAB_0F07		;1fb9e: 6100f6d6
     JSR     LAB_0F95(PC)		;1fba2: 4eba0616
     MOVE.B	D0,-24(A5)		;1fba6: 1b40ffe8
@@ -43991,7 +43988,7 @@ LAB_0F5E:
     MOVEA.L	D0,A0			;1fbb6: 2040
     MOVE.B	(A0),D1			;1fbb8: 1210
     MOVE.B	D1,-18(A5)		;1fbba: 1b41ffee
-    PEA	-24(A5)			;1fbbe: 486dffe8
+    PEA	    -24(A5)			;1fbbe: 486dffe8
     MOVE.L	D0,-44(A5)		;1fbc2: 2b40ffd4
     BSR.W	LAB_0F10		;1fbc6: 6100f7b4
     ADDQ.W	#8,A7			;1fbca: 504f
@@ -44137,7 +44134,7 @@ LAB_0F6E:
     MOVE.B	LAB_2230,D1		;1fd42: 12390003c2de
     CMP.B	D1,D0			;1fd48: b001
     BNE.S	LAB_0F6F		;1fd4a: 660e
-    PEA	-24(A5)			;1fd4c: 486dffe8
+    PEA	    -24(A5)			;1fd4c: 486dffe8
     MOVE.L	A3,-(A7)		;1fd50: 2f0b
     BSR.W	LAB_0F0E		;1fd52: 6100f5ee
     ADDQ.W	#8,A7			;1fd56: 504f
@@ -44146,18 +44143,18 @@ LAB_0F6F:
     MOVE.B	LAB_222D,D1		;1fd5a: 12390003c2da
     CMP.B	D1,D0			;1fd60: b001
     BNE.S	LAB_0F70		;1fd62: 660e
-    PEA	-24(A5)			;1fd64: 486dffe8
+    PEA	    -24(A5)			;1fd64: 486dffe8
     MOVE.L	A2,-(A7)		;1fd68: 2f0a
     BSR.W	LAB_0F0E		;1fd6a: 6100f5d6
     ADDQ.W	#8,A7			;1fd6e: 504f
     BRA.S	LAB_0F72		;1fd70: 6016
 LAB_0F70:
-    PEA	-24(A5)			;1fd72: 486dffe8
+    PEA	    -24(A5)			;1fd72: 486dffe8
     BSR.W	LAB_0F08		;1fd76: 6100f528
     ADDQ.W	#4,A7			;1fd7a: 584f
     BRA.S	LAB_0F72		;1fd7c: 600a
 LAB_0F71:
-    PEA	-24(A5)			;1fd7e: 486dffe8
+    PEA	    -24(A5)			;1fd7e: 486dffe8
     BSR.W	LAB_0F08		;1fd82: 6100f51c
     ADDQ.W	#4,A7			;1fd86: 584f
 LAB_0F72:
@@ -44788,7 +44785,7 @@ LAB_0FAF:
     MOVEM.L	D5-D7,-(A7)		;204b6: 48e70700
     MOVEQ	#0,D5			;204ba: 7a00
     LEA     LAB_200B,A0		;204bc: 41f90003a712
-    LEA	-38(A5),A1		;204c2: 43edffda
+    LEA	    -38(A5),A1		;204c2: 43edffda
     MOVEQ	#6,D0			;204c6: 7006
 LAB_0FB0:
     MOVE.L	(A0)+,(A1)+		;204c8: 22d8
@@ -45126,7 +45123,7 @@ LAB_0FD3:
     ADD.L	D6,D0			;20842: d086
 LAB_0FD4:
     MOVE.L	D0,D5			;20844: 2a00
-    PEA	-97(A5)			;20846: 486dff9f
+    PEA	    -97(A5)			;20846: 486dff9f
     MOVE.L	D5,-(A7)		;2084a: 2f05
     JSR     LAB_1348(PC)		;2084c: 4eba6884
     ADDQ.W	#8,A7			;20850: 504f
@@ -45165,7 +45162,7 @@ LAB_0FD6:
     MOVEQ	#3,D0			;208b0: 7003
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;208b2: 2c790003637c
     JSR	    -342(A6)		;208b8: 4eaefeaa
-    LEA	-97(A5),A0		;208bc: 41edff9f
+    LEA	    -97(A5),A0		;208bc: 41edff9f
     MOVEA.L	A0,A1			;208c0: 2248
 LAB_0FD7:
     TST.B	(A1)+			;208c2: 4a19
@@ -45202,7 +45199,7 @@ LAB_0FD9:
     SUBQ.L	#1,D1			;2090c: 5381
     MOVE.L	D4,D0			;2090e: 2004
     JSR	    -240(A6)		;20910: 4eaeff10
-    LEA	-97(A5),A0		;20914: 41edff9f
+    LEA	    -97(A5),A0		;20914: 41edff9f
     MOVEA.L	A0,A1			;20918: 2248
 LAB_0FDA:
     TST.B	(A1)+			;2091a: 4a19
@@ -45446,13 +45443,13 @@ LAB_0FE5:
     MOVEM.L	D7/A3,-(A7)		;20ba0: 48e70110
     MOVEA.L	8(A5),A3		;20ba4: 266d0008
     MOVEA.L	A3,A0			;20ba8: 204b
-    LEA	-26(A5),A1		;20baa: 43edffe6
+    LEA	    -26(A5),A1		;20baa: 43edffe6
     MOVEQ	#4,D0			;20bae: 7004
 LAB_0FE6:
     MOVE.L	(A0)+,(A1)+		;20bb0: 22d8
     DBF     D0,LAB_0FE6		;20bb2: 51c8fffc
     MOVE.W	(A0),(A1)		;20bb6: 3290
-    PEA	-26(A5)			;20bb8: 486dffe6
+    PEA	    -26(A5)			;20bb8: 486dffe6
     JSR     LAB_134A(PC)		;20bbc: 4eba6520
     ADDQ.W	#4,A7			;20bc0: 584f
     MOVEQ	#0,D7			;20bc2: 7e00
@@ -45486,13 +45483,13 @@ LAB_0FE9:
     MOVEM.L	D2/D7/A3,-(A7)		;20bf4: 48e72110
     MOVEA.L	8(A5),A3		;20bf8: 266d0008
     MOVEA.L	A3,A0			;20bfc: 204b
-    LEA	-26(A5),A1		;20bfe: 43edffe6
+    LEA	    -26(A5),A1		;20bfe: 43edffe6
     MOVEQ	#4,D0			;20c02: 7004
 LAB_0FEA:
     MOVE.L	(A0)+,(A1)+		;20c04: 22d8
     DBF     D0,LAB_0FEA		;20c06: 51c8fffc
     MOVE.W	(A0),(A1)		;20c0a: 3290
-    PEA	-26(A5)			;20c0c: 486dffe6
+    PEA	    -26(A5)			;20c0c: 486dffe6
     JSR     LAB_134A(PC)		;20c10: 4eba64cc
     ADDQ.W	#4,A7			;20c14: 584f
     MOVEQ	#0,D7			;20c16: 7e00
@@ -45534,11 +45531,11 @@ LAB_0FED:
     MOVEA.L	8(A5),A3		;20c62: 266d0008
     MOVEQ	#21,D0			;20c66: 7015
     MOVEA.L	A3,A0			;20c68: 204b
-    LEA	-22(A5),A1		;20c6a: 43edffea
+    LEA	    -22(A5),A1		;20c6a: 43edffea
 LAB_0FEE:
     MOVE.B	(A0)+,(A1)+		;20c6e: 12d8
     DBF     D0,LAB_0FEE		;20c70: 51c8fffc
-    PEA	-22(A5)			;20c74: 486dffea
+    PEA	    -22(A5)			;20c74: 486dffea
     JSR     LAB_1028(PC)		;20c78: 4eba08aa
     MOVE.L	D0,D7			;20c7c: 2e00
     MOVEQ	#0,D0			;20c7e: 7000
@@ -45548,10 +45545,10 @@ LAB_0FEE:
     MOVEQ	#60,D0			;20c8c: 703c
     JSR     LAB_102B(PC)		;20c8e: 4eba08a6
     SUB.L	D0,D7			;20c92: 9e80
-    PEA	-22(A5)			;20c94: 486dffea
+    PEA	    -22(A5)			;20c94: 486dffea
     MOVE.L	D7,-(A7)		;20c98: 2f07
     JSR     LAB_101F(PC)		;20c9a: 4eba0852
-    PEA	-22(A5)			;20c9e: 486dffea
+    PEA	    -22(A5)			;20c9e: 486dffea
     BSR.W	LAB_0FE5		;20ca2: 6100fef8
     MOVEM.L	-36(A5),D7/A3		;20ca6: 4ced0880ffdc
     UNLK	A5			;20cac: 4e5d
@@ -45565,11 +45562,11 @@ LAB_0FEF:
     MOVEA.L	8(A5),A3		;20cb8: 266d0008
     MOVEQ	#21,D0			;20cbc: 7015
     MOVEA.L	A3,A0			;20cbe: 204b
-    LEA	-22(A5),A1		;20cc0: 43edffea
+    LEA	    -22(A5),A1		;20cc0: 43edffea
 LAB_0FF0:
     MOVE.B	(A0)+,(A1)+		;20cc4: 12d8
     DBF     D0,LAB_0FF0		;20cc6: 51c8fffc
-    PEA	-22(A5)			;20cca: 486dffea
+    PEA	    -22(A5)			;20cca: 486dffea
     JSR     LAB_1028(PC)		;20cce: 4eba0854
     MOVE.L	D0,D7			;20cd2: 2e00
     MOVEQ	#0,D0			;20cd4: 7000
@@ -45579,10 +45576,10 @@ LAB_0FF0:
     MOVEQ	#60,D0			;20ce2: 703c
     JSR     LAB_102B(PC)		;20ce4: 4eba0850
     SUB.L	D0,D7			;20ce8: 9e80
-    PEA	-22(A5)			;20cea: 486dffea
+    PEA	    -22(A5)			;20cea: 486dffea
     MOVE.L	D7,-(A7)		;20cee: 2f07
     JSR     LAB_101F(PC)		;20cf0: 4eba07fc
-    PEA	-22(A5)			;20cf4: 486dffea
+    PEA	    -22(A5)			;20cf4: 486dffea
     BSR.W	LAB_0FE9		;20cf8: 6100fef6
     MOVEM.L	-36(A5),D7/A3		;20cfc: 4ced0880ffdc
     UNLK	A5			;20d02: 4e5d
@@ -45677,7 +45674,7 @@ LAB_0FF4:
     MOVE.L	24(A5),D5		;20dc8: 2a2d0018
     LEA	    60(A3),A0		;20dcc: 41eb003c
     MOVE.L	D7,-(A7)		;20dd0: 2f07
-    PEA	-1.W			;20dd2: 4878ffff
+    PEA	    -1.W			;20dd2: 4878ffff
     MOVE.L	A3,-(A7)		;20dd6: 2f0b
     MOVE.L	A0,28(A7)		;20dd8: 2f48001c
     JSR     LAB_102F(PC)		;20ddc: 4eba0788
@@ -45795,7 +45792,7 @@ LAB_0FFE:
     MOVEQ	#0,D0			;20f10: 7000
     BRA.W	LAB_100C		;20f12: 60000118
 LAB_0FFF:
-    LEA	-74(A5),A0		    ;20f16: 41edffb6
+    LEA	    -74(A5),A0		    ;20f16: 41edffb6
     MOVEA.L	A0,A1			;20f1a: 2248
 LAB_1000:
     TST.B	(A1)+			;20f1c: 4a19
@@ -45833,7 +45830,7 @@ LAB_1002:
 LAB_1003:
     CMP.L	D5,D0			;20f78: b085
     BLE.S	LAB_1008		;20f7a: 6f6a
-    LEA	-74(A5),A0		;20f7c: 41edffb6
+    LEA	    -74(A5),A0		;20f7c: 41edffb6
     MOVEA.L	A0,A1			;20f80: 2248
 LAB_1004:
     TST.B	(A1)+			;20f82: 4a19
@@ -45848,7 +45845,7 @@ LAB_1005:
     TST.L	D0			;20f96: 4a80
     BLE.S	LAB_1006		;20f98: 6f20
     MOVEA.L	A3,A1			;20f9a: 224b
-    LEA	-74(A5),A0		;20f9c: 41edffb6
+    LEA	    -74(A5),A0		;20f9c: 41edffb6
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20fa0: 2c790003637c
     JSR	    -54(A6)			;20fa6: 4eaeffca
     MOVE.L	D5,D1			;20faa: 2205
@@ -45864,7 +45861,7 @@ LAB_1006:
     TST.L	28(A5)			;20fc2: 4aad001c
     BEQ.S	LAB_1007		;20fc6: 6710
     MOVEA.L	A3,A1			;20fc8: 224b
-    LEA	-74(A5),A0		;20fca: 41edffb6
+    LEA	    -74(A5),A0		;20fca: 41edffb6
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;20fce: 2c790003637c
     JSR	    -60(A6)			;20fd4: 4eaeffc4
 LAB_1007:
@@ -46492,7 +46489,7 @@ LAB_1047:
     TST.W	LAB_1DF5		;2175c: 4a7900036488
     BEQ.S	LAB_1049		;21762: 6730
     MOVEA.L	16(A5),A0		;21764: 206d0010
-    LEA	-26(A5),A1		;21768: 43edffe6
+    LEA	    -26(A5),A1		;21768: 43edffe6
 LAB_1048:
     MOVE.B	(A0)+,(A1)+		;2176c: 12d8
     BNE.S	LAB_1048		;2176e: 66fc
@@ -46501,10 +46498,10 @@ LAB_1048:
     MOVEA.L	16(A5),A0		;2177a: 206d0010
     ADDQ.L	#2,A0			;2177e: 5488
     MOVE.L	A0,-(A7)		;21780: 2f08
-    PEA	-26(A5)			;21782: 486dffe6
+    PEA	    -26(A5)			;21782: 486dffe6
     JSR     LAB_1464(PC)		;21786: 4eba75a8
     ADDQ.W	#8,A7			;2178a: 504f
-    LEA	-26(A5),A0		;2178c: 41edffe6
+    LEA	    -26(A5),A0		;2178c: 41edffe6
     MOVE.L	A0,16(A5)		;21790: 2b480010
 LAB_1049:
     MOVEQ	#0,D0			;21794: 7000
@@ -47073,7 +47070,7 @@ LAB_107F:
     MOVE.W	26(A5),D6		;21d10: 3c2d001a
     MOVE.L	28(A5),D5		;21d14: 2a2d001c
     LEA     LAB_2019,A0		;21d18: 41f90003a75d
-    LEA	-19(A5),A1		;21d1e: 43edffed
+    LEA	    -19(A5),A1		;21d1e: 43edffed
     MOVE.B	(A0)+,(A1)+		;21d22: 12d8
     MOVE.B	(A0)+,(A1)+		;21d24: 12d8
     MOVE.B	(A0)+,(A1)+		;21d26: 12d8
@@ -47351,7 +47348,7 @@ LAB_1097:
 LAB_1098:
     TST.L	-4(A5)			;22014: 4aadfffc
     BEQ.S	LAB_109B		;22018: 6762
-    PEA	-19(A5)			;2201a: 486dffed
+    PEA	    -19(A5)			;2201a: 486dffed
     MOVE.L	-4(A5),-(A7)		;2201e: 2f2dfffc
     JSR     LAB_1469(PC)		;22022: 4eba6d2a
     ADDQ.W	#8,A7			;22026: 504f
@@ -47359,7 +47356,7 @@ LAB_1098:
     BEQ.S	LAB_109B		;2202c: 674e
     MOVEA.L	D0,A0			;2202e: 2040
     ADDQ.L	#1,A0			;22030: 5288
-    PEA	-19(A5)			;22032: 486dffed
+    PEA	    -19(A5)			;22032: 486dffed
     MOVE.L	A0,-(A7)		;22036: 2f08
     MOVE.L	A0,-4(A5)		;22038: 2b48fffc
     JSR     LAB_1469(PC)		;2203c: 4eba6d10
@@ -47371,7 +47368,7 @@ LAB_1099:
     MOVEA.L	-12(A5),A0		;2204c: 206dfff4
     ADDQ.L	#1,A0			;22050: 5288
     MOVE.L	A0,-4(A5)		;22052: 2b48fffc
-    PEA	-19(A5)			;22056: 486dffed
+    PEA	    -19(A5)			;22056: 486dffed
     MOVE.L	-4(A5),-(A7)		;2205a: 2f2dfffc
     JSR     LAB_1469(PC)		;2205e: 4eba6cee
     ADDQ.W	#8,A7			;22062: 504f
@@ -47717,8 +47714,8 @@ LAB_10B7:
     EXT.L	D0			;223da: 48c0
     MOVE.L	D7,-(A7)		;223dc: 2f07
     MOVE.L	D0,-(A7)		;223de: 2f00
-    PEA	-8(A5)			;223e0: 486dfff8
-    PEA	-4(A5)			;223e4: 486dfffc
+    PEA	    -8(A5)			;223e0: 486dfff8
+    PEA	    -4(A5)			;223e4: 486dfffc
     BSR.W	LAB_1077		;223e8: 6100f7ea
     LEA	    16(A7),A7		;223ec: 4fef0010
     MOVE.L	D0,D6			;223f0: 2c00
@@ -48356,10 +48353,10 @@ LAB_10F0:
     MOVE.L	A3,-(A7)		;22a38: 2f0b
     MOVE.L	A0,-4(A5)		;22a3a: 2b48fffc
     BSR.W	LAB_10DD		;22a3e: 6100fd0a
-    PEA	-36(A5)			;22a42: 486dffdc
-    PEA	-35(A5)			;22a46: 486dffdd
-    PEA	-34(A5)			;22a4a: 486dffde
-    PEA	-33(A5)			;22a4e: 486dffdf
+    PEA	    -36(A5)			;22a42: 486dffdc
+    PEA	    -35(A5)			;22a46: 486dffdd
+    PEA	    -34(A5)			;22a4a: 486dffde
+    PEA	    -33(A5)			;22a4e: 486dffdf
     MOVE.L	28(A5),-(A7)		;22a52: 2f2d001c
     MOVE.L	24(A5),-(A7)		;22a56: 2f2d0018
     BSR.W	LAB_10BE		;22a5a: 6100fa62
@@ -48367,7 +48364,7 @@ LAB_10F0:
     TST.B	-33(A5)			;22a62: 4a2dffdf
     BEQ.S	LAB_10F1		;22a66: 6716
     MOVEA.L	-4(A5),A1		;22a68: 226dfffc
-    LEA	-33(A5),A0		;22a6c: 41edffdf
+    LEA	    -33(A5),A0		;22a6c: 41edffdf
     MOVEQ	#1,D0			;22a70: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;22a72: 2c790003637c
     JSR	    -54(A6)			;22a78: 4eaeffca
@@ -48379,7 +48376,7 @@ LAB_10F2:
     TST.B	-35(A5)			;22a84: 4a2dffdd
     BEQ.S	LAB_10F3		;22a88: 6716
     MOVEA.L	-4(A5),A1		;22a8a: 226dfffc
-    LEA	-35(A5),A0		;22a8e: 41edffdd
+    LEA	    -35(A5),A0		;22a8e: 41edffdd
     MOVEQ	#1,D0			;22a92: 7001
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;22a94: 2c790003637c
     JSR	    -54(A6)			;22a9a: 4eaeffca
@@ -48511,7 +48508,7 @@ LAB_10FF:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;22bc6: 2c790003637c
     JSR	    -240(A6)		;22bcc: 4eaeff10
     MOVEA.L	-4(A5),A1		;22bd0: 226dfffc
-    LEA	-33(A5),A0		;22bd4: 41edffdf
+    LEA	    -33(A5),A0		;22bd4: 41edffdf
     MOVEQ	#1,D0			;22bd8: 7001
     JSR	    -60(A6)			;22bda: 4eaeffc4
     MOVEA.L	-4(A5),A1		;22bde: 226dfffc
@@ -48519,7 +48516,7 @@ LAB_10FF:
     MOVE.L	-16(A5),D1		;22be6: 222dfff0
     JSR	    -240(A6)		;22bea: 4eaeff10
     MOVEA.L	-4(A5),A1		;22bee: 226dfffc
-    LEA	-34(A5),A0		;22bf2: 41edffde
+    LEA	    -34(A5),A0		;22bf2: 41edffde
     MOVEQ	#1,D0			;22bf6: 7001
     JSR	    -60(A6)			;22bf8: 4eaeffc4
 LAB_1100:
@@ -48539,7 +48536,7 @@ LAB_1100:
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;22c2a: 2c790003637c
     JSR	    -240(A6)		;22c30: 4eaeff10
     MOVEA.L	-4(A5),A1		;22c34: 226dfffc
-    LEA	-35(A5),A0		;22c38: 41edffdd
+    LEA	    -35(A5),A0		;22c38: 41edffdd
     MOVEQ	#1,D0			;22c3c: 7001
     JSR	    -60(A6)			;22c3e: 4eaeffc4
     MOVEA.L	-4(A5),A1		;22c42: 226dfffc
@@ -48547,7 +48544,7 @@ LAB_1100:
     MOVE.L	-16(A5),D1		;22c4a: 222dfff0
     JSR	    -240(A6)		;22c4e: 4eaeff10
     MOVEA.L	-4(A5),A1		;22c52: 226dfffc
-    LEA	-36(A5),A0		;22c56: 41edffdc
+    LEA	    -36(A5),A0		;22c56: 41edffdc
     MOVEQ	#1,D0			;22c5a: 7001
     JSR	    -60(A6)			;22c5c: 4eaeffc4
 LAB_1101:
@@ -49805,17 +49802,17 @@ LAB_117B:
     MOVE.L	A3,-(A7)		;23a32: 2f0b
     JSR     LAB_0FF4(PC)		;23a34: 4ebad37e
     MOVEA.L	LAB_210B,A0		;23a38: 20790003b06e
-    LEA	-128(A5),A1		;23a3e: 43edff80
+    LEA	    -128(A5),A1		;23a3e: 43edff80
 LAB_117C:
     MOVE.B	(A0)+,(A1)+		;23a42: 12d8
     BNE.S	LAB_117C		;23a44: 66fc
     MOVE.L	D7,D0			;23a46: 2007
     EXT.L	D0			;23a48: 48c0
-    PEA	-159(A5)		;23a4a: 486dff61
+    PEA	    -159(A5)		;23a4a: 486dff61
     MOVE.L	D0,-(A7)		;23a4e: 2f00
     JSR     LAB_1348(PC)		;23a50: 4eba3680
-    PEA	-159(A5)		;23a54: 486dff61
-    PEA	-128(A5)		;23a58: 486dff80
+    PEA	    -159(A5)		;23a54: 486dff61
+    PEA	    -128(A5)		;23a58: 486dff80
     JSR     LAB_1464(PC)		;23a5c: 4eba52d2
     LEA	    60(A3),A0		;23a60: 41eb003c
     MOVEQ	#0,D0			;23a64: 7000
@@ -49856,7 +49853,7 @@ LAB_117C:
     MOVE.W	LAB_232B,D1		;23ad2: 32390003ef32
     MULU	#$0003,D1		;23ad8: c2fc0003
     LEA	    60(A3),A1		;23adc: 43eb003c
-    LEA	-128(A5),A2		;23ae0: 45edff80
+    LEA	    -128(A5),A2		;23ae0: 45edff80
     MOVEA.L	A2,A6			;23ae4: 2c4a
 LAB_117D:
     TST.B	(A6)+			;23ae6: 4a1e
@@ -50392,8 +50389,8 @@ LAB_11A8:
     EXT.L	D0			;24048: 48c0
     MOVE.L	D6,-(A7)		;2404a: 2f06
     MOVE.L	D0,-(A7)		;2404c: 2f00
-    PEA	-8(A5)			;2404e: 486dfff8
-    PEA	-4(A5)			;24052: 486dfffc
+    PEA	    -8(A5)			;2404e: 486dfff8
+    PEA	    -4(A5)			;24052: 486dfffc
     BSR.W	LAB_1077		;24056: 6100db7c
     LEA	    16(A7),A7		;2405a: 4fef0010
     TST.L	-4(A5)			;2405e: 4aadfffc
@@ -50607,8 +50604,8 @@ LAB_11BA:
     EXT.L	D0			;242a8: 48c0
     MOVE.L	D6,-(A7)		;242aa: 2f06
     MOVE.L	D0,-(A7)		;242ac: 2f00
-    PEA	-14(A5)			;242ae: 486dfff2
-    PEA	-10(A5)			;242b2: 486dfff6
+    PEA	    -14(A5)			;242ae: 486dfff2
+    PEA	    -10(A5)			;242b2: 486dfff6
     BSR.W	LAB_1077		;242b6: 6100d91c
     LEA	    16(A7),A7		;242ba: 4fef0010
     MOVE.W	D0,-6(A5)		;242be: 3b40fffa
@@ -50674,14 +50671,14 @@ LAB_11BE:
     JSR     LAB_0FF4(PC)		;2435e: 4ebaca54
     MOVE.L	D7,D0			;24362: 2007
     EXT.L	D0			;24364: 48c0
-    PEA	-163(A5)		;24366: 486dff5d
+    PEA	    -163(A5)		;24366: 486dff5d
     MOVE.L	D0,-(A7)		;2436a: 2f00
     JSR     LAB_1348(PC)		;2436c: 4eba2d64
-    PEA	-163(A5)		;24370: 486dff5d
+    PEA	    -163(A5)		;24370: 486dff5d
     JSR     LAB_134B(PC)		;24374: 4eba2d6e
     MOVE.L	D0,(A7)			;24378: 2e80
     MOVE.L	LAB_22E3,-(A7)		;2437a: 2f390003e534
-    PEA	-132(A5)		;24380: 486dff7c
+    PEA	    -132(A5)		;24380: 486dff7c
     MOVE.L	D0,-168(A5)		;24384: 2b40ff58
     JSR     LAB_1467(PC)		;24388: 4eba49b8
     LEA	    60(A3),A0		;2438c: 41eb003c
@@ -50717,7 +50714,7 @@ LAB_11BE:
     MOVEA.L	A0,A1			;243ee: 2248
     MOVEQ	#0,D0			;243f0: 7000
     JSR	    -354(A6)		;243f2: 4eaefe9e
-    LEA	-132(A5),A0		;243f6: 41edff7c
+    LEA	    -132(A5),A0		;243f6: 41edff7c
     MOVEA.L	A0,A1			;243fa: 2248
 LAB_11BF:
     TST.B	(A1)+			;243fc: 4a19
@@ -50729,7 +50726,7 @@ LAB_11C0:
     LEA	    60(A3),A0		;24406: 41eb003c
     MOVEA.L	A0,A1			;2440a: 2248
     MOVE.L	D6,D0			;2440c: 2006
-    LEA	-132(A5),A0		;2440e: 41edff7c
+    LEA	    -132(A5),A0		;2440e: 41edff7c
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
     MOVE.W	LAB_232B,D1		;2441c: 32390003ef32
@@ -50751,7 +50748,7 @@ LAB_11C1:
     MOVE.L	D1,24(A7)		;24450: 2f410018
     MOVE.L	A0,16(A7)		;24454: 2f480010
     MOVE.L	D6,D0			;24458: 2006
-    LEA	-132(A5),A0		;2445a: 41edff7c
+    LEA	    -132(A5),A0		;2445a: 41edff7c
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
     MOVE.L	24(A7),D1		;24468: 222f0018
@@ -50785,7 +50782,7 @@ LAB_11C3:
     LEA	    60(A3),A0		;244aa: 41eb003c
     MOVEA.L	A0,A1			;244ae: 2248
     MOVE.L	D6,D0			;244b0: 2006
-    LEA	-132(A5),A0		;244b2: 41edff7c
+    LEA	    -132(A5),A0		;244b2: 41edff7c
     JSR	    -60(A6)			;244b6: 4eaeffc4
     MOVEQ	#17,D0			;244ba: 7011
     MOVE.W	D0,52(A3)		;244bc: 37400034
@@ -50994,8 +50991,8 @@ LAB_11D5:
     EXT.L	D0			;246c4: 48c0
     MOVE.L	D7,-(A7)		;246c6: 2f07
     MOVE.L	D0,-(A7)		;246c8: 2f00
-    PEA	-8(A5)			;246ca: 486dfff8
-    PEA	-4(A5)			;246ce: 486dfffc
+    PEA	    -8(A5)			;246ca: 486dfff8
+    PEA	    -4(A5)			;246ce: 486dfffc
     BSR.W	LAB_1077		;246d2: 6100d500
     LEA	    16(A7),A7		;246d6: 4fef0010
     MOVE.L	D0,D6			;246da: 2c00
@@ -51048,10 +51045,10 @@ LAB_11D7:
     MOVE.L	A2,(A7)			;24778: 2e8a
     MOVE.L	A1,-(A7)		;2477a: 2f09
     PEA	    LAB_2029		;2477c: 48790003a7a2
-    PEA	-58(A5)			;24782: 486dffc6
+    PEA	    -58(A5)			;24782: 486dffc6
     JSR     LAB_1467(PC)		;24786: 4eba45ba
     LEA	    60(A3),A0		;2478a: 41eb003c
-    PEA	-58(A5)			;2478e: 486dffc6
+    PEA	    -58(A5)			;2478e: 486dffc6
     MOVE.L	A0,-(A7)		;24792: 2f08
     JSR     LAB_1339(PC)		;24794: 4eba28d6
     MOVE.L	A3,(A7)			;24798: 2e8b
@@ -51652,8 +51649,8 @@ LAB_121D:
     EXT.L	D1			;24e2e: 48c1
     MOVE.L	D0,-(A7)		;24e30: 2f00
     MOVE.L	D1,-(A7)		;24e32: 2f01
-    PEA	-8(A5)			;24e34: 486dfff8
-    PEA	-4(A5)			;24e38: 486dfffc
+    PEA	    -8(A5)			;24e34: 486dfff8
+    PEA	    -4(A5)			;24e38: 486dfffc
     BSR.W	LAB_1077		;24e3c: 6100cd96
     LEA	    16(A7),A7		;24e40: 4fef0010
     MOVE.L	D0,D5			;24e44: 2a00
@@ -52369,7 +52366,7 @@ LAB_1255:
     EXT.L	D1			;255ba: 48c1
     MOVE.L	4(A2),(A7)		;255bc: 2eaa0004
     MOVE.L	D1,-(A7)		;255c0: 2f01
-    PEA	-49(A5)			;255c2: 486dffcf
+    PEA	    -49(A5)			;255c2: 486dffcf
     MOVE.L	D0,-70(A5)		;255c6: 2b40ffba
     JSR     LAB_16F7(PC)		;255ca: 4eba7b6e
     LEA	    56(A7),A7		;255ce: 4fef0038
@@ -52468,8 +52465,8 @@ LAB_1260:
     EXT.L	D0			;256e2: 48c0
     MOVE.L	-12(A5),-(A7)		;256e4: 2f2dfff4
     MOVE.L	D0,-(A7)		;256e8: 2f00
-    PEA	-98(A5)			;256ea: 486dff9e
-    PEA	-94(A5)			;256ee: 486dffa2
+    PEA	    -98(A5)			;256ea: 486dff9e
+    PEA	    -94(A5)			;256ee: 486dffa2
     BSR.W	LAB_1077		;256f2: 6100c4e0
     LEA	    16(A7),A7		;256f6: 4fef0010
     MOVE.L	D0,D7			;256fa: 2e00
@@ -52678,7 +52675,7 @@ LAB_126C:
 LAB_126D:
     MOVE.B	(A0)+,(A1)+		;2593a: 12d8
     BNE.S	LAB_126D		;2593c: 66fc
-    PEA	-49(A5)			;2593e: 486dffcf
+    PEA	    -49(A5)			;2593e: 486dffcf
     JSR     LAB_134B(PC)		;25942: 4eba17a0
     MOVE.L	D5,D1			;25946: 2205
     EXT.L	D1			;25948: 48c1
@@ -52719,9 +52716,9 @@ LAB_1270:
     EXT.L	D0			;259ae: 48c0
     MOVE.L	-98(A5),-(A7)		;259b0: 2f2dff9e
     MOVE.L	D0,-(A7)		;259b4: 2f00
-    PEA	-49(A5)			;259b6: 486dffcf
+    PEA	    -49(A5)			;259b6: 486dffcf
     JSR     LAB_16F7(PC)		;259ba: 4eba777e
-    PEA	-49(A5)			;259be: 486dffcf
+    PEA	    -49(A5)			;259be: 486dffcf
     JSR     LAB_134B(PC)		;259c2: 4eba1720
     LEA	    16(A7),A7		;259c6: 4fef0010
     LEA	    60(A3),A0		;259ca: 41eb003c
@@ -52794,7 +52791,7 @@ LAB_1278:
 LAB_1279:
     MOVE.B	(A0)+,(A1)+		;25a7e: 12d8
     BNE.S	LAB_1279		;25a80: 66fc
-    PEA	-49(A5)			;25a82: 486dffcf
+    PEA	    -49(A5)			;25a82: 486dffcf
     JSR     LAB_134B(PC)		;25a86: 4eba165c
     MOVE.L	D0,(A7)			;25a8a: 2e80
     MOVE.L	16(A5),-(A7)		;25a8c: 2f2d0010
@@ -52866,7 +52863,7 @@ LAB_1280:
     LEA	    60(A3),A0		;25b4a: 41eb003c
     MOVE.L	D7,D0			;25b4e: 2007
     EXT.L	D0			;25b50: 48c0
-    PEA	-1.W			;25b52: 4878ffff
+    PEA	    -1.W			;25b52: 4878ffff
     PEA	    1.W			;25b56: 48780001
     PEA	    2.W			;25b5a: 48780002
     MOVE.L	D0,-(A7)		;25b5e: 2f00
@@ -52880,7 +52877,7 @@ LAB_1281:
     LEA	    60(A3),A0		;25b72: 41eb003c
     MOVE.L	D7,D0			;25b76: 2007
     EXT.L	D0			;25b78: 48c0
-    PEA	-1.W			;25b7a: 4878ffff
+    PEA	    -1.W			;25b7a: 4878ffff
     PEA	    1.W			;25b7e: 48780001
     PEA	    3.W			;25b82: 48780003
     MOVE.L	D0,-(A7)		;25b86: 2f00
@@ -52892,12 +52889,12 @@ LAB_1281:
 LAB_1282:
     MOVE.L	LAB_22ED,-(A7)		;25b98: 2f390003e55a
     JSR     LAB_1338(PC)		;25b9e: 4eba14c6
-    PEA	-130(A5)		;25ba2: 486dff7e
+    PEA	    -130(A5)		;25ba2: 486dff7e
     MOVE.L	A2,-(A7)		;25ba6: 2f0a
     MOVE.L	A3,-(A7)		;25ba8: 2f0b
     BSR.W	LAB_1250		;25baa: 6100f932
     LEA	    60(A3),A0		;25bae: 41eb003c
-    PEA	-130(A5)		;25bb2: 486dff7e
+    PEA	    -130(A5)		;25bb2: 486dff7e
     MOVE.L	A0,-(A7)		;25bb6: 2f08
     JSR     LAB_1339(PC)		;25bb8: 4eba14b2
     MOVE.L	A3,(A7)			;25bbc: 2e8b
@@ -53426,8 +53423,8 @@ LAB_12C0:
     EXT.L	D0			;2614a: 48c0
     MOVE.L	D1,-(A7)		;2614c: 2f01
     MOVE.L	D0,-(A7)		;2614e: 2f00
-    PEA	-8(A5)			;26150: 486dfff8
-    PEA	-4(A5)			;26154: 486dfffc
+    PEA	    -8(A5)			;26150: 486dfff8
+    PEA	    -4(A5)			;26154: 486dfffc
     BSR.W	LAB_1077		;26158: 6100ba7a
     MOVE.L	D6,(A7)			;2615c: 2e86
     MOVE.L	-8(A5),-(A7)		;2615e: 2f2dfff8
@@ -53450,8 +53447,8 @@ LAB_12C1:
     EXT.L	D0			;26194: 48c0
     MOVE.L	LAB_2039,-(A7)		;26196: 2f390003a7e0
     MOVE.L	D0,-(A7)		;2619c: 2f00
-    PEA	-8(A5)			;2619e: 486dfff8
-    PEA	-4(A5)			;261a2: 486dfffc
+    PEA	    -8(A5)			;2619e: 486dfff8
+    PEA	    -4(A5)			;261a2: 486dfffc
     BSR.W	LAB_1077		;261a6: 6100ba2c
     LEA	    16(A7),A7		;261aa: 4fef0010
     MOVE.L	D0,D4			;261ae: 2800
@@ -53689,7 +53686,7 @@ LAB_12D5:
     EXT.L	D0			;2640e: 48c0
     MOVE.L	4(A3),-(A7)		;26410: 2f2b0004
     MOVE.L	D0,-(A7)		;26414: 2f00
-    PEA	-31(A5)			;26416: 486dffe1
+    PEA	    -31(A5)			;26416: 486dffe1
     MOVE.B	D1,-53(A5)		;2641a: 1b41ffcb
     JSR     LAB_16F7(PC)		;2641e: 4eba6d1a
     LEA	    12(A7),A7		;26422: 4fef000c
@@ -53716,8 +53713,8 @@ LAB_12D7:
     EXT.L	D0			;26460: 48c0
     MOVE.L	8(A3),-(A7)		;26462: 2f2b0008
     MOVE.L	D0,-(A7)		;26466: 2f00
-    PEA	-84(A5)			;26468: 486dffac
-    PEA	-80(A5)			;2646c: 486dffb0
+    PEA	    -84(A5)			;26468: 486dffac
+    PEA	    -80(A5)			;2646c: 486dffb0
     BSR.W	LAB_1077		;26470: 6100b762
     LEA	    16(A7),A7		;26474: 4fef0010
 LAB_12D8:
@@ -53921,7 +53918,7 @@ LAB_12E8:
 LAB_12E9:
     MOVE.B	(A0)+,(A1)+		;26672: 12d8
     BNE.S	LAB_12E9		;26674: 66fc
-    PEA	-31(A5)			;26676: 486dffe1
+    PEA	    -31(A5)			;26676: 486dffe1
     JSR     LAB_134B(PC)		;2667a: 4eba0a68
     MOVE.L	D0,(A7)			;2667e: 2e80
     MOVE.L	A2,-(A7)		;26680: 2f0a
@@ -53933,9 +53930,9 @@ LAB_12EA:
     EXT.L	D0			;2668e: 48c0
     MOVE.L	-84(A5),-(A7)		;26690: 2f2dffac
     MOVE.L	D0,-(A7)		;26694: 2f00
-    PEA	-31(A5)			;26696: 486dffe1
+    PEA	    -31(A5)			;26696: 486dffe1
     JSR     LAB_16F7(PC)		;2669a: 4eba6a9e
-    PEA	-31(A5)			;2669e: 486dffe1
+    PEA	    -31(A5)			;2669e: 486dffe1
     JSR     LAB_134B(PC)		;266a2: 4eba0a40
     PEA	    LAB_203B		;266a6: 48790003a7e6
     MOVE.L	A2,-(A7)		;266ac: 2f0a
@@ -53959,7 +53956,7 @@ LAB_12EC:
 LAB_12ED:
     MOVE.B	(A0)+,(A1)+		;266e2: 12d8
     BNE.S	LAB_12ED		;266e4: 66fc
-    PEA	-31(A5)			;266e6: 486dffe1
+    PEA	    -31(A5)			;266e6: 486dffe1
     JSR     LAB_134B(PC)		;266ea: 4eba09f8
     MOVE.L	D0,(A7)			;266ee: 2e80
     MOVE.L	A2,-(A7)		;266f0: 2f0a
@@ -53995,14 +53992,14 @@ LAB_12EF:
     TST.L	D7			;26744: 4a87
     BNE.S	LAB_12F1		;26746: 6610
     MOVEA.L	LAB_210D,A0		;26748: 20790003b07e
-    LEA	-136(A5),A1		;2674e: 43edff78
+    LEA	    -136(A5),A1		;2674e: 43edff78
 LAB_12F0:
     MOVE.B	(A0)+,(A1)+		;26752: 12d8
     BNE.S	LAB_12F0		;26754: 66fc
     BRA.S	LAB_12F3		;26756: 600e
 LAB_12F1:
     MOVEA.L	LAB_2109,A0		;26758: 20790003b056
-    LEA	-136(A5),A1		;2675e: 43edff78
+    LEA	    -136(A5),A1		;2675e: 43edff78
 LAB_12F2:
     MOVE.B	(A0)+,(A1)+		;26762: 12d8
     BNE.S	LAB_12F2		;26764: 66fc
@@ -54015,7 +54012,7 @@ LAB_12F4:
     SUBA.L	-4(A5),A0		;26770: 91edfffc
     MOVE.L	A0,-(A7)		;26774: 2f08
     MOVE.L	-4(A5),-(A7)		;26776: 2f2dfffc
-    PEA	-136(A5)		;2677a: 486dff78
+    PEA	    -136(A5)		;2677a: 486dff78
     JSR     LAB_134C(PC)		;2677e: 4eba096a
     LEA	    12(A7),A7		;26782: 4fef000c
     TST.L	-8(A5)			;26786: 4aadfff8
@@ -54024,33 +54021,33 @@ LAB_12F4:
     TST.B	(A0)			;26790: 4a10
     BEQ.S	LAB_12F7		;26792: 6766
     MOVE.L	LAB_210F,-(A7)		;26794: 2f390003b08c
-    PEA	-136(A5)		;2679a: 486dff78
+    PEA	    -136(A5)		;2679a: 486dff78
     JSR     LAB_1464(PC)		;2679e: 4eba2590
     ADDQ.W	#8,A7			;267a2: 504f
     TST.W	LAB_1DF5		;267a4: 4a7900036488
     BEQ.S	LAB_12F6		;267aa: 6740
     MOVEA.L	-8(A5),A0		;267ac: 206dfff8
-    LEA	-146(A5),A1		;267b0: 43edff6e
+    LEA	    -146(A5),A1		;267b0: 43edff6e
 LAB_12F5:
     MOVE.B	(A0)+,(A1)+		;267b4: 12d8
     BNE.S	LAB_12F5		;267b6: 66fc
     CLR.B	-144(A5)		;267b8: 422dff70
-    PEA	-146(A5)		;267bc: 486dff6e
-    PEA	-136(A5)		;267c0: 486dff78
+    PEA	    -146(A5)		;267bc: 486dff6e
+    PEA	    -136(A5)		;267c0: 486dff78
     JSR     LAB_1464(PC)		;267c4: 4eba256a
     PEA	    LAB_203C		;267c8: 48790003a7ea
-    PEA	-136(A5)		;267ce: 486dff78
+    PEA	    -136(A5)		;267ce: 486dff78
     JSR     LAB_1464(PC)		;267d2: 4eba255c
     MOVEA.L	-8(A5),A0		;267d6: 206dfff8
     ADDQ.L	#2,A0			;267da: 5488
     MOVE.L	A0,(A7)			;267dc: 2e88
-    PEA	-136(A5)		;267de: 486dff78
+    PEA	    -136(A5)		;267de: 486dff78
     JSR     LAB_1464(PC)		;267e2: 4eba254c
     LEA	    20(A7),A7		;267e6: 4fef0014
     BRA.S	LAB_12F7		;267ea: 600e
 LAB_12F6:
     MOVE.L	-8(A5),-(A7)		;267ec: 2f2dfff8
-    PEA	-136(A5)		;267f0: 486dff78
+    PEA	    -136(A5)		;267f0: 486dff78
     JSR     LAB_1464(PC)		;267f4: 4eba253a
     ADDQ.W	#8,A7			;267f8: 504f
 LAB_12F7:
@@ -54107,7 +54104,7 @@ LAB_12F7:
     MOVE.W	LAB_232B,D1		;26896: 32390003ef32
     MULU	#$0003,D1		;2689c: c2fc0003
     LEA	    60(A3),A1		;268a0: 43eb003c
-    LEA	-136(A5),A6		;268a4: 4dedff78
+    LEA	    -136(A5),A6		;268a4: 4dedff78
     MOVE.L	A0,80(A7)		;268a8: 2f480050
     MOVEA.L	A6,A0			;268ac: 204e
 LAB_12F8:
@@ -54151,7 +54148,7 @@ LAB_12FA:
     MOVEA.L	80(A7),A1		;2690c: 226f0050
     JSR	    -240(A6)		;26910: 4eaeff10
     LEA	    60(A3),A0		;26914: 41eb003c
-    LEA	-136(A5),A1		;26918: 43edff78
+    LEA	    -136(A5),A1		;26918: 43edff78
     MOVEA.L	A1,A6			;2691c: 2c49
 LAB_12FB:
     TST.B	(A6)+			;2691e: 4a1e
@@ -54160,7 +54157,7 @@ LAB_12FB:
     SUBA.L	A1,A6			;26924: 9dc9
     MOVEA.L	A0,A1			;26926: 2248
     MOVE.L	A6,D0			;26928: 200e
-    LEA	-136(A5),A0		;2692a: 41edff78
+    LEA	    -136(A5),A0		;2692a: 41edff78
     MOVEA.L	GLOB_REF_GRAPHICS_LIBRARY,A6		;2692e: 2c790003637c
     JSR	    -60(A6)			;26934: 4eaeffc4
     MOVEQ	#17,D0			;26938: 7011
@@ -55041,7 +55038,7 @@ LAB_1368:
     CLR.B	-100(A5,D7.L)		;272b0: 4235789c
     MOVEQ	#0,D0			;272b4: 7000
     MOVE.B	(A2),D0			;272b6: 1012
-    PEA	-100(A5)		;272b8: 486dff9c
+    PEA	    -100(A5)		;272b8: 486dff9c
     MOVE.L	2(A2),-(A7)		;272bc: 2f2a0002
     MOVE.L	D0,-(A7)		;272c0: 2f00
     BSR.W	LAB_135B		;272c2: 6100fe84
@@ -55143,10 +55140,10 @@ LAB_1373:
     MOVEQ	#0,D4			;273aa: 7800
     PEA	    3.W			;273ac: 48780003
     MOVE.L	A3,-(A7)		;273b0: 2f0b
-    PEA	-16(A5)			;273b2: 486dfff0
+    PEA	    -16(A5)			;273b2: 486dfff0
     JSR     LAB_15A1(PC)		;273b6: 4eba39d2
     CLR.B	-13(A5)			;273ba: 422dfff3
-    PEA	-16(A5)			;273be: 486dfff0
+    PEA	    -16(A5)			;273be: 486dfff0
     JSR     LAB_159A(PC)		;273c2: 4eba399c
     MOVEQ	#0,D1			;273c6: 7200
     NOT.B	D1			;273c8: 4601
@@ -55155,10 +55152,10 @@ LAB_1373:
     ADDQ.L	#3,A3			;273ce: 568b
     PEA	    2.W			;273d0: 48780002
     MOVE.L	A3,-(A7)		;273d4: 2f0b
-    PEA	-16(A5)			;273d6: 486dfff0
+    PEA	    -16(A5)			;273d6: 486dfff0
     JSR     LAB_15A1(PC)		;273da: 4eba39ae
     CLR.B	-14(A5)			;273de: 422dfff2
-    PEA	-16(A5)			;273e2: 486dfff0
+    PEA	    -16(A5)			;273e2: 486dfff0
     JSR     LAB_159A(PC)		;273e6: 4eba3978
     LEA	    32(A7),A7		;273ea: 4fef0020
     MOVE.L	D0,D6			;273ee: 2c00
@@ -55224,7 +55221,7 @@ LAB_1378:
     TST.L	D7			;2747e: 4a87
     BEQ.W	LAB_1386		;27480: 6700011e
     LEA     LAB_2050,A0		;27484: 41f90003a892
-    LEA	-109(A5),A1		;2748a: 43edff93
+    LEA	    -109(A5),A1		;2748a: 43edff93
 LAB_1379:
     MOVE.B	(A0)+,(A1)+		;2748e: 12d8
     BNE.S	LAB_1379		;27490: 66fc
@@ -55238,7 +55235,7 @@ LAB_137A:
     LEA     LAB_233B,A0		;274a0: 41f90003f004
     ADDA.L	D0,A0			;274a6: d1c0
     MOVE.L	(A0),-8(A5)		;274a8: 2b50fff8
-    LEA	-109(A5),A0		;274ac: 41edff93
+    LEA	    -109(A5),A0		;274ac: 41edff93
     MOVEA.L	A0,A1			;274b0: 2248
 LAB_137B:
     TST.B	(A1)+			;274b2: 4a19
@@ -55261,9 +55258,9 @@ LAB_137B:
     MOVE.L	D0,-(A7)		;274e2: 2f00
     MOVE.L	D1,-(A7)		;274e4: 2f01
     PEA	    LAB_2051		;274e6: 48790003a89a
-    PEA	-109(A5)		;274ec: 486dff93
+    PEA	    -109(A5)		;274ec: 486dff93
     JSR     LAB_1467(PC)		;274f0: 4eba1850
-    LEA	-109(A5),A0		;274f4: 41edff93
+    LEA	    -109(A5),A0		;274f4: 41edff93
     MOVEA.L	A0,A1			;274f8: 2248
 LAB_137C:
     TST.B	(A1)+			;274fa: 4a19
@@ -55293,7 +55290,7 @@ LAB_137E:
     MOVE.L	A0,D0			;27534: 2008
     MOVE.B	#$0a,-109(A5,D0.L)	;27536: 1bbc000a0893
     CLR.B	-109(A5,D6.L)		;2753c: 42356893
-    LEA	-109(A5),A0		;27540: 41edff93
+    LEA	    -109(A5),A0		;27540: 41edff93
     MOVEA.L	A0,A1			;27544: 2248
 LAB_137F:
     TST.B	(A1)+			;27546: 4a19
@@ -55322,7 +55319,7 @@ LAB_1381:
 LAB_1382:
     MOVEQ	#1,D5			;2757e: 7a01
     LEA     LAB_2053,A0		;27580: 41f90003a8b8
-    LEA	-109(A5),A1		;27586: 43edff93
+    LEA	    -109(A5),A1		;27586: 43edff93
 LAB_1383:
     MOVE.B	(A0)+,(A1)+		;2758a: 12d8
     BNE.S	LAB_1383		;2758c: 66fc
@@ -55353,7 +55350,7 @@ LAB_1387:
     MOVE.L	LAB_21BB,D7		;275ca: 2e390003bb24
     CLR.L	-48(A5)			;275d0: 42adffd0
     LEA     LAB_2055,A0		;275d4: 41f90003a8d0
-    LEA	-39(A5),A1		;275da: 43edffd9
+    LEA	    -39(A5),A1		;275da: 43edffd9
 LAB_1388:
     MOVE.B	(A0)+,(A1)+		;275de: 12d8
     BNE.S	LAB_1388		;275e0: 66fc
@@ -55361,14 +55358,14 @@ LAB_1389:
     MOVEQ	#2,D0			;275e2: 7002
     CMP.L	-48(A5),D0		;275e4: b0adffd0
     BEQ.W	LAB_1398		;275e8: 67000170
-    PEA	-39(A5)			;275ec: 486dffd9
+    PEA	    -39(A5)			;275ec: 486dffd9
     MOVE.L	-4(A5),-(A7)		;275f0: 2f2dfffc
     JSR     LAB_139A(PC)		;275f4: 4eba018a
     ADDQ.W	#8,A7			;275f8: 504f
     MOVE.L	D0,-8(A5)		;275fa: 2b40fff8
     TST.L	D0			;275fe: 4a80
     BEQ.W	LAB_1394		;27600: 67000128
-    LEA	-39(A5),A0		;27604: 41edffd9
+    LEA	    -39(A5),A0		;27604: 41edffd9
     MOVEA.L	A0,A1			;27608: 2248
 LAB_138A:
     TST.B	(A1)+			;2760a: 4a19
@@ -55486,7 +55483,7 @@ LAB_1395:
     MOVEQ	#1,D0			;27738: 7001
     MOVE.L	D0,-48(A5)		;2773a: 2b40ffd0
     LEA     LAB_2057,A0		;2773e: 41f90003a8e8
-    LEA	-39(A5),A1		;27744: 43edffd9
+    LEA	    -39(A5),A1		;27744: 43edffd9
 LAB_1396:
     MOVE.B	(A0)+,(A1)+		;27748: 12d8
     BNE.S	LAB_1396		;2774a: 66fc
@@ -56795,9 +56792,9 @@ LAB_140C:
     BGE.S	LAB_140F		;285fc: 6c5a
     MOVE.L	D6,-(A7)		;285fe: 2f06
     PEA	    LAB_2090		;28600: 48790003aa96
-    PEA	-112(A5)		;28606: 486dff90
+    PEA	    -112(A5)		;28606: 486dff90
     JSR     LAB_1467(PC)		;2860a: 4eba0736
-    PEA	-112(A5)		;2860e: 486dff90
+    PEA	    -112(A5)		;2860e: 486dff90
     MOVE.L	A3,-(A7)		;28612: 2f0b
     JSR     LAB_1452(PC)		;28614: 4eba06ae
     LEA	    20(A7),A7		;28618: 4fef0014
@@ -56906,10 +56903,10 @@ LAB_1416:
 LAB_1417:
     MOVE.L	A3,-(A7)		;2871a: 2f0b
     PEA	    LAB_2091		;2871c: 48790003aa9e
-    PEA	-80(A5)			;28722: 486dffb0
+    PEA	    -80(A5)			;28722: 486dffb0
     JSR     LAB_1467(PC)		;28726: 4eba061a
     LEA	    12(A7),A7		;2872a: 4fef000c
-    LEA	-80(A5),A0		;2872e: 41edffb0
+    LEA	    -80(A5),A0		;2872e: 41edffb0
     MOVE.L	A0,D1			;28732: 2208
     MOVEQ	#0,D2			;28734: 7400
     MOVE.L	D2,D3			;28736: 2602
@@ -57104,7 +57101,7 @@ LAB_142D:
 LAB_142E:
     LINK.W	A5,#-960		;28994: 4e55fc40
     MOVEM.L	D2-D3/D5-D7/A2,-(A7)	;28998: 48e73720
-    LEA	-88(A5),A0		;2899c: 41edffa8
+    LEA	    -88(A5),A0		;2899c: 41edffa8
     MOVEQ	#0,D6			;289a0: 7c00
     MOVE.L	A0,-100(A5)		;289a2: 2b48ff9c
     MOVE.L	A0,-96(A5)		;289a6: 2b48ffa0
@@ -57114,11 +57111,11 @@ LAB_142F:
     BGE.S	LAB_1430		;289ae: 6c1a
     MOVE.L	D6,D0			;289b0: 2006
     ASL.L	#2,D0			;289b2: e580
-    LEA	-500(A5),A0		;289b4: 41edfe0c
+    LEA	    -500(A5),A0		;289b4: 41edfe0c
     ADDA.L	D0,A0			;289b8: d1c0
     SUBA.L	A1,A1			;289ba: 93c9
     MOVE.L	A1,(A0)			;289bc: 2089
-    LEA	-900(A5),A0		;289be: 41edfc7c
+    LEA	    -900(A5),A0		;289be: 41edfc7c
     ADDA.L	D0,A0			;289c2: d1c0
     MOVE.L	A1,(A0)			;289c4: 2089
     ADDQ.L	#1,D6			;289c6: 5286
@@ -57155,10 +57152,10 @@ LAB_1433:
     BGE.W	LAB_143B		;28a26: 6c0000b2
     MOVE.L	-4(A5),-(A7)		;28a2a: 2f2dfffc
     PEA	    99.W			;28a2e: 48780063
-    PEA	-88(A5)			;28a32: 486dffa8
+    PEA	    -88(A5)			;28a32: 486dffa8
     JSR     LAB_1468(PC)		;28a36: 4eba0310
     LEA	    12(A7),A7		;28a3a: 4fef000c
-    LEA	-88(A5),A0		;28a3e: 41edffa8
+    LEA	    -88(A5),A0		;28a3e: 41edffa8
     MOVEA.L	A0,A1			;28a42: 2248
 LAB_1434:
     TST.B	(A1)+			;28a44: 4a19
@@ -57186,11 +57183,11 @@ LAB_1437:
     ADDQ.L	#1,D6			;28a74: 5286
     BRA.S	LAB_1435		;28a76: 60dc
 LAB_1438:
-    PEA	-88(A5)			;28a78: 486dffa8
+    PEA	    -88(A5)			;28a78: 486dffa8
     JSR     LAB_145B(PC)		;28a7c: 4eba027c
     MOVE.L	D5,D1			;28a80: 2205
     ASL.L	#2,D1			;28a82: e581
-    LEA	-500(A5),A0		;28a84: 41edfe0c
+    LEA	    -500(A5),A0		;28a84: 41edfe0c
     ADDA.L	D1,A0			;28a88: d1c1
     MOVEA.L	D0,A1			;28a8a: 2240
 LAB_1439:
@@ -57212,7 +57209,7 @@ LAB_1439:
     MOVE.L	D0,(A0)			;28abe: 2080
     MOVE.L	D5,D0			;28ac0: 2005
     ASL.L	#2,D0			;28ac2: e580
-    LEA	-500(A5),A0		;28ac4: 41edfe0c
+    LEA	    -500(A5),A0		;28ac4: 41edfe0c
     ADDA.L	D0,A0			;28ac8: d1c0
     MOVEA.L	-92(A5),A1		;28aca: 226dffa4
     MOVEA.L	(A0),A2			;28ace: 2450
@@ -57231,10 +57228,10 @@ LAB_143C:
     BGE.W	LAB_1444		;28ae8: 6c0000a2
     MOVE.L	-8(A5),-(A7)		;28aec: 2f2dfff8
     PEA	    99.W			;28af0: 48780063
-    PEA	-88(A5)			;28af4: 486dffa8
+    PEA	    -88(A5)			;28af4: 486dffa8
     JSR     LAB_1468(PC)		;28af8: 4eba024e
     LEA	    12(A7),A7		;28afc: 4fef000c
-    LEA	-88(A5),A0		;28b00: 41edffa8
+    LEA	    -88(A5),A0		;28b00: 41edffa8
     MOVEA.L	A0,A1			;28b04: 2248
 LAB_143D:
     TST.B	(A1)+			;28b06: 4a19
@@ -57261,9 +57258,9 @@ LAB_1440:
 LAB_1441:
     MOVE.L	D5,D0			;28b32: 2005
     ASL.L	#2,D0			;28b34: e580
-    LEA	-900(A5),A0		;28b36: 41edfc7c
+    LEA	    -900(A5),A0		;28b36: 41edfc7c
     ADDA.L	D0,A0			;28b3a: d1c0
-    LEA	-88(A5),A1		;28b3c: 43edffa8
+    LEA	    -88(A5),A1		;28b3c: 43edffa8
     MOVEA.L	A1,A2			;28b40: 2449
 LAB_1442:
     TST.B	(A2)+			;28b42: 4a1a
@@ -57283,9 +57280,9 @@ LAB_1442:
     MOVE.L	D0,(A0)			;28b70: 2080
     MOVE.L	D5,D0			;28b72: 2005
     ASL.L	#2,D0			;28b74: e580
-    LEA	-900(A5),A0		;28b76: 41edfc7c
+    LEA	    -900(A5),A0		;28b76: 41edfc7c
     ADDA.L	D0,A0			;28b7a: d1c0
-    LEA	-88(A5),A1		;28b7c: 43edffa8
+    LEA	    -88(A5),A1		;28b7c: 43edffa8
     MOVEA.L	(A0),A2			;28b80: 2450
 LAB_1443:
     MOVE.B	(A1)+,(A2)+		;28b82: 14d9
@@ -57297,7 +57294,7 @@ LAB_1444:
 LAB_1445:
     MOVE.L	D6,D0			;28b8e: 2006
     ASL.L	#2,D0			;28b90: e580
-    LEA	-900(A5),A0		;28b92: 41edfc7c
+    LEA	    -900(A5),A0		;28b92: 41edfc7c
     ADDA.L	D0,A0			;28b96: d1c0
     TST.L	(A0)			;28b98: 4a90
     BEQ.W	LAB_144C		;28b9a: 670000bc
@@ -57306,14 +57303,14 @@ LAB_1445:
 LAB_1446:
     MOVE.L	D5,D0			;28ba4: 2005
     ASL.L	#2,D0			;28ba6: e580
-    LEA	-500(A5),A0		;28ba8: 41edfe0c
+    LEA	    -500(A5),A0		;28ba8: 41edfe0c
     MOVEA.L	A0,A1			;28bac: 2248
     ADDA.L	D0,A1			;28bae: d3c0
     TST.L	(A1)			;28bb0: 4a91
     BEQ.S	LAB_1448		;28bb2: 6728
     MOVE.L	D6,D0			;28bb4: 2006
     ASL.L	#2,D0			;28bb6: e580
-    LEA	-900(A5),A1		;28bb8: 43edfc7c
+    LEA	    -900(A5),A1		;28bb8: 43edfc7c
     ADDA.L	D0,A1			;28bbc: d3c0
     MOVE.L	D5,D0			;28bbe: 2005
     ASL.L	#2,D0			;28bc0: e580
@@ -57333,7 +57330,7 @@ LAB_1448:
     TST.L	-916(A5)		;28bdc: 4aadfc6c
     BNE.S	LAB_144A		;28be0: 663e
     LEA     LAB_209E,A0		;28be2: 41f90003ab62
-    LEA	-956(A5),A1		;28be8: 43edfc44
+    LEA	    -956(A5),A1		;28be8: 43edfc44
     MOVEQ	#5,D0			;28bec: 7005
 LAB_1449:
     MOVE.L	(A0)+,(A1)+		;28bee: 22d8
@@ -57341,13 +57338,13 @@ LAB_1449:
     CLR.B	(A1)			;28bf4: 4211
     MOVE.L	D6,D0			;28bf6: 2006
     ASL.L	#2,D0			;28bf8: e580
-    LEA	-900(A5),A0		;28bfa: 41edfc7c
+    LEA	    -900(A5),A0		;28bfa: 41edfc7c
     ADDA.L	D0,A0			;28bfe: d1c0
     MOVE.L	(A0),-(A7)		;28c00: 2f10
-    PEA	-956(A5)		;28c02: 486dfc44
+    PEA	    -956(A5)		;28c02: 486dfc44
     JSR     LAB_1464(PC)		;28c06: 4eba0128
     ADDQ.W	#8,A7			;28c0a: 504f
-    LEA	-956(A5),A0		;28c0c: 41edfc44
+    LEA	    -956(A5),A0		;28c0c: 41edfc44
     MOVE.L	A0,D1			;28c10: 2208
     MOVEQ	#0,D2			;28c12: 7400
     MOVE.L	D2,D3			;28c14: 2602
@@ -57356,7 +57353,7 @@ LAB_1449:
 LAB_144A:
     MOVE.L	D6,D0			;28c20: 2006
     ASL.L	#2,D0			;28c22: e580
-    LEA	-900(A5),A0		;28c24: 41edfc7c
+    LEA	    -900(A5),A0		;28c24: 41edfc7c
     MOVEA.L	A0,A1			;28c28: 2248
     ADDA.L	D0,A1			;28c2a: d3c0
     ADDA.L	D0,A0			;28c2c: d1c0
@@ -57381,7 +57378,7 @@ LAB_144C:
 LAB_144D:
     MOVE.L	D5,D0			;28c5a: 2005
     ASL.L	#2,D0			;28c5c: e580
-    LEA	-500(A5),A0		;28c5e: 41edfe0c
+    LEA	    -500(A5),A0		;28c5e: 41edfe0c
     MOVEA.L	A0,A1			;28c62: 2248
     ADDA.L	D0,A1			;28c64: d3c0
     TST.L	(A1)			;28c66: 4a91
@@ -57493,9 +57490,9 @@ LAB_146D:
 LAB_146E:
     LINK.W	A5,#-20			;28d70: 4e55ffec
     MOVE.L	D7,-(A7)		;28d74: 2f07
-    TST.L	GLOB_REF_UTILITY_LIBRARY		;28d76: 4ab900036384
+    TST.L	GLOB_REF_UTILITY_LIBRARY
     BEQ.W	LAB_146F		;28d7c: 67000086
-    TST.L	GLOB_REF_BATTCLOCK_RESOURCE		;28d80: 4ab900036388
+    TST.L	GLOB_REF_BATTCLOCK_RESOURCE
     BEQ.S	LAB_146F		;28d86: 677c
     MOVE.W	LAB_223A,D0		;28d88: 30390003d5c6
     MOVE.W	D0,-6(A5)		;28d8e: 3b40fffa
@@ -57518,13 +57515,13 @@ LAB_146E:
     MOVE.W	D0,-16(A5)		;28dd4: 3b40fff0
     MOVE.W	LAB_2240,D0		;28dd8: 30390003d5d2
     MOVE.W	D0,-18(A5)		;28dde: 3b40ffee
-    PEA	-18(A5)			;28de2: 486dffee
-    JSR     LAB_1482(PC)		;28de6: 4eba01e8
+    PEA		-18(A5)			;28de2: 486dffee
+    JSR     JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH(PC)
     LEA	    12(A7),A7		;28dea: 4fef000c
     TST.L	D0			;28dee: 4a80
     BEQ.S	LAB_146F		;28df0: 6712
-    PEA	-18(A5)			;28df2: 486dffee
-    JSR     LAB_1486(PC)		;28df6: 4eba01f0
+    PEA	    -18(A5)			;28df2: 486dffee
+    JSR     JMP_TBL_GET_SECONDS_FROM_EPOCH(PC)
     MOVE.L	D0,D7			;28dfa: 2e00
     MOVE.L	D7,(A7)			;28dfc: 2e87
     JSR     LAB_1485(PC)		;28dfe: 4eba01e2
@@ -57545,11 +57542,11 @@ LAB_1470:
     BEQ.W	LAB_1473		;28e22: 670000dc
     JSR     LAB_1483(PC)		;28e26: 4eba01ae
     MOVE.L	D0,D7			;28e2a: 2e00
-    PEA	-18(A5)			;28e2c: 486dffee
+    PEA	    -18(A5)			;28e2c: 486dffee
     MOVE.L	D7,-(A7)		;28e30: 2f07
     JSR     LAB_1480(PC)		;28e32: 4eba0190
-    PEA	-18(A5)			;28e36: 486dffee
-    JSR     LAB_1482(PC)		;28e3a: 4eba0194
+    PEA	    -18(A5)			;28e36: 486dffee
+    JSR     JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH(PC)		;28e3a: 4eba0194
     LEA	    12(A7),A7		;28e3e: 4fef000c
     TST.L	D0			;28e42: 4a80
     BEQ.W	LAB_1472		;28e44: 670000a8
@@ -57608,7 +57605,7 @@ LAB_1470:
     BCS.S	LAB_1471		;28ed8: 6502
     CMP.W	D1,D0			;28eda: b041
 LAB_1471:
-    PEA	-40(A5)			;28edc: 486dffd8
+    PEA	    -40(A5)			;28edc: 486dffd8
     PEA	    LAB_223A		;28ee0: 48790003d5c6
     BSR.W	LAB_1477		;28ee6: 61000052
     ADDQ.W	#8,A7			;28eea: 504f
@@ -57712,16 +57709,16 @@ LAB_1480:
     JMP     LAB_1AE0		;28fc4: 4ef900033a30
 LAB_1481:
     JMP     LAB_008C		;28fca: 4ef900000d66
-LAB_1482:
-    JMP     LAB_1AE1		;28fd0: 4ef900033a48
+JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH:
+    JMP     GET_LEGAL_OR_SECONDS_FROM_EPOCH		;28fd0: 4ef900033a48
 LAB_1483:
     JMP     LAB_1ADB		;28fd6: 4ef9000339bc
 LAB_1484:
     JMP     LAB_0660		;28fdc: 4ef90000c974
 LAB_1485:
     JMP     LAB_1ADC		;28fe2: 4ef9000339cc
-LAB_1486:
-    JMP     LAB_1AE2		;28fe8: 4ef900033a5c
+JMP_TBL_GET_SECONDS_FROM_EPOCH:
+    JMP     GET_SECONDS_FROM_EPOCH		;28fe8: 4ef900033a5c
 
 ;!======
     MOVEQ	#97,D0			;28fee: 7061
@@ -58570,7 +58567,8 @@ LAB_14E7:
 ;!======
 
 serialCtrlCmd:
-    MOVEM.L	D6-D7,-(A7)		;29834: 48e70300
+    MOVEM.L	D6-D7,-(A7)
+
     TST.W	LAB_1DF5		;29838: 4a7900036488
     BNE.S	LAB_14E9		;2983e: 660c
     MOVE.B	LAB_1BC8,D0		;29840: 103900034143
@@ -58991,9 +58989,9 @@ LAB_150F:
     LEA	    4(A2),A0		;29d92: 41ea0004
     PEA	    4.W			;29d96: 48780004
     MOVE.L	A0,-(A7)		;29d9a: 2f08
-    PEA	-28(A5)			;29d9c: 486dffe4
+    PEA	    -28(A5)			;29d9c: 486dffe4
     JSR     LAB_15A1(PC)		;29da0: 4eba0fe8
-    PEA	-28(A5)			;29da4: 486dffe4
+    PEA	    -28(A5)			;29da4: 486dffe4
     JSR     LAB_159A(PC)		;29da8: 4eba0fb6
     LEA	    16(A7),A7		;29dac: 4fef0010
     MOVEQ	#-48,D1			;29db0: 72d0
@@ -59030,7 +59028,7 @@ LAB_150F:
     MOVEQ	#60,D1			;29e18: 723c
     CMP.B	D1,D0			;29e1a: b001
     BGE.W	LAB_1543		;29e1c: 6c00054c
-    PEA	-18(A5)			;29e20: 486dffee
+    PEA	    -18(A5)			;29e20: 486dffee
     JSR     LAB_1599(PC)		;29e24: 4eba0f34
     ADDQ.W	#4,A7			;29e28: 584f
     BRA.W	LAB_1543		;29e2a: 6000053e
@@ -60537,7 +60535,7 @@ LAB_15B0:
     MOVEQ	#32,D2			;2afa6: 7420
     CMP.B	D2,D1			;2afa8: b202
     BCS.S	LAB_15B1		;2afaa: 650c
-    LEA	-161(A5),A0		;2afac: 41edff5f
+    LEA	    -161(A5),A0		;2afac: 41edff5f
     ADDA.L	D0,A0			;2afb0: d1c0
     ADDQ.L	#1,-28(A5)		;2afb2: 52adffe4
     MOVE.B	D1,(A0)			;2afb6: 1081
@@ -60551,7 +60549,7 @@ LAB_15B2:
     MOVEQ	#0,D0			;2afc6: 7000
     MOVE.B	D0,(A0)			;2afc8: 1080
 LAB_15B3:
-    LEA	-161(A5),A0		;2afca: 41edff5f
+    LEA	    -161(A5),A0		;2afca: 41edff5f
     MOVE.L	-28(A5),D0		;2afce: 202dffe4
     MOVEA.L	A0,A1			;2afd2: 2248
     ADDA.L	D0,A1			;2afd4: d3c0
@@ -60673,9 +60671,9 @@ LAB_15BF:
 LAB_15C0:
     MOVE.L	-28(A5),-(A7)		;2b11a: 2f2dffe4
     MOVE.L	-170(A5),-(A7)		;2b11e: 2f2dff56
-    PEA	-161(A5)		;2b122: 486dff5f
+    PEA	    -161(A5)		;2b122: 486dff5f
     JSR     LAB_1955(PC)		;2b126: 4eba6cf8
-    LEA	-161(A5),A0		;2b12a: 41edff5f
+    LEA	    -161(A5),A0		;2b12a: 41edff5f
     MOVEA.L	A0,A1			;2b12e: 2248
     ADDA.L	-28(A5),A1		;2b130: d3edffe4
     CLR.B	(A1)			;2b134: 4211
@@ -60827,11 +60825,11 @@ LAB_15CF:
     SUBQ.L	#1,D0			;2b2c0: 5380
     BNE.S	LAB_15D1		;2b2c2: 6618
     LEA     LAB_20FC,A0		;2b2c4: 41f90003afd4
-    LEA	-188(A5),A1		;2b2ca: 43edff44
+    LEA	    -188(A5),A1		;2b2ca: 43edff44
 LAB_15D0:
     MOVE.B	(A0)+,(A1)+		;2b2ce: 12d8
     BNE.S	LAB_15D0		;2b2d0: 66fc
-    LEA	-188(A5),A0		;2b2d2: 41edff44
+    LEA	    -188(A5),A0		;2b2d2: 41edff44
     MOVE.L	A0,-192(A5)		;2b2d6: 2b48ff40
     BRA.S	LAB_15D2		;2b2da: 6022
 LAB_15D1:
@@ -60839,20 +60837,20 @@ LAB_15D1:
     EXT.L	D0			;2b2de: 48c0
     MOVE.L	-4(A5),-(A7)		;2b2e0: 2f2dfffc
     MOVE.L	D0,-(A7)		;2b2e4: 2f00
-    PEA	-188(A5)		;2b2e6: 486dff44
+    PEA	    -188(A5)		;2b2e6: 486dff44
     JSR     LAB_16F7(PC)		;2b2ea: 4eba1e4e
-    PEA	-188(A5)		;2b2ee: 486dff44
+    PEA	    -188(A5)		;2b2ee: 486dff44
     JSR     LAB_1985(PC)		;2b2f2: 4eba6d70
     LEA	    16(A7),A7		;2b2f6: 4fef0010
     MOVE.L	D0,-192(A5)		;2b2fa: 2b40ff40
 LAB_15D2:
     LEA     LAB_2134,A0		;2b2fe: 41f90003b15c
-    LEA	-137(A5),A1		;2b304: 43edff77
+    LEA	    -137(A5),A1		;2b304: 43edff77
 LAB_15D3:
     MOVE.B	(A0)+,(A1)+		;2b308: 12d8
     BNE.S	LAB_15D3		;2b30a: 66fc
     MOVE.L	-192(A5),-(A7)		;2b30c: 2f2dff40
-    PEA	-137(A5)		;2b310: 486dff77
+    PEA	    -137(A5)		;2b310: 486dff77
     JSR     LAB_196D(PC)		;2b314: 4eba6c12
     MOVE.L	D5,D0			;2b318: 2005
     EXT.L	D0			;2b31a: 48c0
@@ -60881,7 +60879,7 @@ LAB_15D5:
     BGT.S	LAB_15D8		;2b352: 6e44
 LAB_15D6:
     LEA     LAB_2135,A0		;2b354: 41f90003b15e
-    LEA	-137(A5),A1		;2b35a: 43edff77
+    LEA	    -137(A5),A1		;2b35a: 43edff77
 LAB_15D7:
     MOVE.B	(A0)+,(A1)+		;2b35e: 12d8
     BNE.S	LAB_15D7		;2b360: 66fc
@@ -60892,7 +60890,7 @@ LAB_15D7:
     LEA     LAB_20ED,A0		;2b36e: 41f90003ae9c
     ADDA.L	D1,A0			;2b374: d1c1
     MOVE.L	(A0),-(A7)		;2b376: 2f10
-    PEA	-137(A5)		;2b378: 486dff77
+    PEA	    -137(A5)		;2b378: 486dff77
     JSR     LAB_196D(PC)		;2b37c: 4eba6baa
     PEA	    LAB_234B		;2b380: 48790003fa3e
     JSR     LAB_16A3(PC)		;2b386: 4eba1500
@@ -60914,7 +60912,7 @@ LAB_15D9:
     MOVEQ	#32,D1			;2b3b8: 7220
     CMP.B	1(A0,D0.L),D1		;2b3ba: b2300801
     BEQ.S	LAB_15DA		;2b3be: 6710
-    LEA	-188(A5),A1		;2b3c0: 43edff44
+    LEA	    -188(A5),A1		;2b3c0: 43edff44
     ADDA.L	-208(A5),A1		;2b3c4: d3edff30
     ADDQ.L	#1,-208(A5)		;2b3c8: 52adff30
     MOVE.B	1(A0,D0.L),(A1)		;2b3cc: 12b00801
@@ -60922,7 +60920,7 @@ LAB_15DA:
     ADDQ.L	#1,-204(A5)		;2b3d0: 52adff34
     BRA.S	LAB_15D9		;2b3d4: 60d4
 LAB_15DB:
-    LEA	-188(A5),A0		;2b3d6: 41edff44
+    LEA	    -188(A5),A0		;2b3d6: 41edff44
     ADDA.L	-208(A5),A0		;2b3da: d1edff30
     MOVEQ	#0,D0			;2b3de: 7000
     MOVE.B	D0,(A0)			;2b3e0: 1080
@@ -60933,15 +60931,15 @@ LAB_15DB:
     TST.B	D1			;2b3ee: 4a01
     BEQ.S	LAB_15DC		;2b3f0: 6710
     PEA	    LAB_2136		;2b3f2: 48790003b160
-    PEA	-137(A5)		;2b3f8: 486dff77
+    PEA	    -137(A5)		;2b3f8: 486dff77
     JSR     LAB_196D(PC)		;2b3fc: 4eba6b2a
     ADDQ.W	#8,A7			;2b400: 504f
 LAB_15DC:
     PEA	    LAB_2137		;2b402: 48790003b164
-    PEA	-137(A5)		;2b408: 486dff77
+    PEA	    -137(A5)		;2b408: 486dff77
     JSR     LAB_196D(PC)		;2b40c: 4eba6b1a
-    PEA	-188(A5)		;2b410: 486dff44
-    PEA	-137(A5)		;2b414: 486dff77
+    PEA	    -188(A5)		;2b410: 486dff44
+    PEA	    -137(A5)		;2b414: 486dff77
     JSR     LAB_196D(PC)		;2b418: 4eba6b0e
     LEA	    16(A7),A7		;2b41c: 4fef0010
 LAB_15DD:
@@ -60951,7 +60949,7 @@ LAB_15DD:
     TST.B	D0			;2b42a: 4a00
     BEQ.S	LAB_15DE		;2b42c: 6710
     PEA	    LAB_2138		;2b42e: 48790003b16a
-    PEA	-137(A5)		;2b434: 486dff77
+    PEA	    -137(A5)		;2b434: 486dff77
     JSR     LAB_196D(PC)		;2b438: 4eba6aee
     ADDQ.W	#8,A7			;2b43c: 504f
 LAB_15DE:
@@ -60960,10 +60958,10 @@ LAB_15DE:
     MOVE.B	(A0),D0			;2b444: 1010
     MOVE.L	D0,-(A7)		;2b446: 2f00
     PEA	    LAB_2139		;2b448: 48790003b16e
-    PEA	-188(A5)		;2b44e: 486dff44
+    PEA	    -188(A5)		;2b44e: 486dff44
     JSR     LAB_19A0(PC)		;2b452: 4eba6d86
-    PEA	-188(A5)		;2b456: 486dff44
-    PEA	-137(A5)		;2b45a: 486dff77
+    PEA	    -188(A5)		;2b456: 486dff44
+    PEA	    -137(A5)		;2b45a: 486dff77
     JSR     LAB_196D(PC)		;2b45e: 4eba6ac8
     LEA	    20(A7),A7		;2b462: 4fef0014
 LAB_15DF:
@@ -60979,7 +60977,7 @@ LAB_15DF:
     MOVE.L	D2,-(A7)		;2b478: 2f02
     MOVE.L	D1,-(A7)		;2b47a: 2f01
     MOVE.L	D0,-(A7)		;2b47c: 2f00
-    PEA	-137(A5)		;2b47e: 486dff77
+    PEA	    -137(A5)		;2b47e: 486dff77
     JSR     LAB_167B(PC)		;2b482: 4eba109a
     LEA	    24(A7),A7		;2b486: 4fef0018
     BRA.S	LAB_15E3		;2b48a: 6036
@@ -60990,19 +60988,19 @@ LAB_15E0:
     TST.B	(A0)			;2b49a: 4a10
     BEQ.S	LAB_15E2		;2b49c: 6720
     LEA     LAB_213A,A0		;2b49e: 41f90003b172
-    LEA	-137(A5),A1		;2b4a4: 43edff77
+    LEA	    -137(A5),A1		;2b4a4: 43edff77
 LAB_15E1:
     MOVE.B	(A0)+,(A1)+		;2b4a8: 12d8
     BNE.S	LAB_15E1		;2b4aa: 66fc
     MOVE.L	LAB_205C,-(A7)		;2b4ac: 2f390003a908
-    PEA	-137(A5)		;2b4b2: 486dff77
+    PEA	    -137(A5)		;2b4b2: 486dff77
     JSR     LAB_196D(PC)		;2b4b6: 4eba6a70
     ADDQ.W	#8,A7			;2b4ba: 504f
     BRA.S	LAB_15E3		;2b4bc: 6004
 LAB_15E2:
     CLR.B	-137(A5)		;2b4be: 422dff77
 LAB_15E3:
-    PEA	-137(A5)		;2b4c2: 486dff77
+    PEA	    -137(A5)		;2b4c2: 486dff77
     BSR.W	LAB_15AD		;2b4c6: 6100f9f4
     MOVEM.L	-236(A5),D2-D3/D5-D7	;2b4ca: 4ced00ecff14
     UNLK	A5			;2b4d0: 4e5d
@@ -61086,12 +61084,12 @@ LAB_15EA:
     TST.L	-142(A5)		;2b592: 4aadff72
     BEQ.S	LAB_15EC		;2b596: 671e
     LEA     LAB_213B,A0		;2b598: 41f90003b174
-    LEA	-137(A5),A1		;2b59e: 43edff77
+    LEA	    -137(A5),A1		;2b59e: 43edff77
 LAB_15EB:
     MOVE.B	(A0)+,(A1)+		;2b5a2: 12d8
     BNE.S	LAB_15EB		;2b5a4: 66fc
     MOVE.L	-142(A5),-(A7)		;2b5a6: 2f2dff72
-    PEA	-137(A5)		;2b5aa: 486dff77
+    PEA	    -137(A5)		;2b5aa: 486dff77
     JSR     LAB_196D(PC)		;2b5ae: 4eba6978
     ADDQ.W	#8,A7			;2b5b2: 504f
     BRA.S	LAB_15ED		;2b5b4: 6006
@@ -61105,15 +61103,15 @@ LAB_15ED:
     TST.B	D0			;2b5c6: 4a00
     BEQ.S	LAB_15EE		;2b5c8: 6710
     PEA	    LAB_213C		;2b5ca: 48790003b176
-    PEA	-137(A5)		;2b5d0: 486dff77
+    PEA	    -137(A5)		;2b5d0: 486dff77
     JSR     LAB_196D(PC)		;2b5d4: 4eba6952
     ADDQ.W	#8,A7			;2b5d8: 504f
 LAB_15EE:
     PEA	    LAB_213D		;2b5da: 48790003b17a
-    PEA	-137(A5)		;2b5e0: 486dff77
+    PEA	    -137(A5)		;2b5e0: 486dff77
     JSR     LAB_196D(PC)		;2b5e4: 4eba6942
     MOVE.L	-146(A5),(A7)		;2b5e8: 2eadff6e
-    PEA	-137(A5)		;2b5ec: 486dff77
+    PEA	    -137(A5)		;2b5ec: 486dff77
     JSR     LAB_196D(PC)		;2b5f0: 4eba6936
     LEA	    12(A7),A7		;2b5f4: 4fef000c
 LAB_15EF:
@@ -61129,12 +61127,12 @@ LAB_15EF:
     MOVE.L	D2,-(A7)		;2b60a: 2f02
     MOVE.L	D1,-(A7)		;2b60c: 2f01
     MOVE.L	D0,-(A7)		;2b60e: 2f00
-    PEA	-137(A5)		;2b610: 486dff77
+    PEA	    -137(A5)		;2b610: 486dff77
     JSR     LAB_167B(PC)		;2b614: 4eba0f08
     LEA	    24(A7),A7		;2b618: 4fef0018
     TST.B	-137(A5)		;2b61c: 4a2dff77
     BEQ.S	LAB_15F0		;2b620: 670a
-    PEA	-137(A5)		;2b622: 486dff77
+    PEA	    -137(A5)		;2b622: 486dff77
     BSR.W	LAB_15AD		;2b626: 6100f894
     ADDQ.W	#4,A7			;2b62a: 584f
 LAB_15F0:
@@ -61395,13 +61393,13 @@ LAB_1612:
     JSR     LAB_17CC(PC)		;2b86c: 4eba3100
     LEA	    220(A3),A0		;2b870: 41eb00dc
     CLR.B	(A0)			;2b874: 4210
-    PEA	-524(A5)		;2b876: 486dfdf4
+    PEA	    -524(A5)		;2b876: 486dfdf4
     MOVE.L	D0,-(A7)		;2b87a: 2f00
     MOVE.L	D0,-528(A5)		;2b87c: 2b40fdf0
     MOVE.L	A0,-8(A5)		;2b880: 2b48fff8
     JSR     LAB_16D3(PC)		;2b884: 4eba14b4
     LEA	    20(A7),A7		;2b888: 4fef0014
-    LEA	-524(A5),A0		;2b88c: 41edfdf4
+    LEA	    -524(A5),A0		;2b88c: 41edfdf4
     MOVE.L	A0,-12(A5)		;2b890: 2b48fff4
 LAB_1613:
     MOVEQ	#0,D0			;2b894: 7000
@@ -61475,17 +61473,17 @@ LAB_161A:
 LAB_161B:
     MOVE.L	-12(A5),-(A7)		;2b944: 2f2dfff4
     PEA	    LAB_213F		;2b948: 48790003b17e
-    PEA	-524(A5)		;2b94e: 486dfdf4
+    PEA	    -524(A5)		;2b94e: 486dfdf4
     JSR     LAB_19A0(PC)		;2b952: 4eba6886
     PEA	    LAB_2140		;2b956: 48790003b182
-    PEA	-524(A5)		;2b95c: 486dfdf4
+    PEA	    -524(A5)		;2b95c: 486dfdf4
     JSR     LAB_17D0(PC)		;2b960: 4eba3024
     LEA	    20(A7),A7		;2b964: 4fef0014
     MOVE.L	D0,-12(A5)		;2b968: 2b40fff4
     TST.L	D0			;2b96c: 4a80
     BNE.S	LAB_161C		;2b96e: 6614
     PEA	    LAB_2141		;2b970: 48790003b188
-    PEA	-524(A5)		;2b976: 486dfdf4
+    PEA	    -524(A5)		;2b976: 486dfdf4
     JSR     LAB_17D0(PC)		;2b97a: 4eba300a
     ADDQ.W	#8,A7			;2b97e: 504f
     MOVE.L	D0,-12(A5)		;2b980: 2b40fff4
@@ -61493,7 +61491,7 @@ LAB_161C:
     TST.L	D0			;2b984: 4a80
     BNE.S	LAB_161D		;2b986: 6614
     PEA	    LAB_2142		;2b988: 48790003b18e
-    PEA	-524(A5)		;2b98e: 486dfdf4
+    PEA	    -524(A5)		;2b98e: 486dfdf4
     JSR     LAB_17D0(PC)		;2b992: 4eba2ff2
     ADDQ.W	#8,A7			;2b996: 504f
     MOVE.L	D0,-12(A5)		;2b998: 2b40fff4
@@ -61515,7 +61513,7 @@ LAB_161E:
     MOVE.B	#$18,(A0)		;2b9c4: 10bc0018
     BRA.S	LAB_1620		;2b9c8: 6008
 LAB_161F:
-    LEA	-524(A5),A0		;2b9ca: 41edfdf4
+    LEA	    -524(A5),A0		;2b9ca: 41edfdf4
     MOVE.L	A0,-12(A5)		;2b9ce: 2b48fff4
 LAB_1620:
     PEA	    40.W			;2b9d2: 48780028
@@ -61536,7 +61534,7 @@ LAB_1621:
     BTST	#3,(A0)			;2b9fe: 08100003
     BNE.S	LAB_1621		;2ba02: 66e0
 LAB_1622:
-    PEA	-524(A5)		;2ba04: 486dfdf4
+    PEA	    -524(A5)		;2ba04: 486dfdf4
     MOVE.L	-8(A5),-(A7)		;2ba08: 2f2dfff8
     JSR     LAB_196D(PC)		;2ba0c: 4eba651a
     ADDQ.W	#8,A7			;2ba10: 504f
@@ -61545,10 +61543,10 @@ LAB_1623:
     EXT.L	D0			;2ba16: 48c0
     MOVE.L	-532(A5),-(A7)		;2ba18: 2f2dfdec
     MOVE.L	D0,-(A7)		;2ba1c: 2f00
-    PEA	-524(A5)		;2ba1e: 486dfdf4
+    PEA	    -524(A5)		;2ba1e: 486dfdf4
     JSR     LAB_16F7(PC)		;2ba22: 4eba1716
     LEA	    12(A7),A7		;2ba26: 4fef000c
-    LEA	-524(A5),A0		;2ba2a: 41edfdf4
+    LEA	    -524(A5),A0		;2ba2a: 41edfdf4
     MOVE.L	A0,-12(A5)		;2ba2e: 2b48fff4
 LAB_1624:
     MOVEQ	#0,D0			;2ba32: 7000
@@ -61581,7 +61579,7 @@ LAB_1627:
     MOVEQ	#32,D0			;2ba82: 7020
     CMP.B	1(A0,D7.L),D0		;2ba84: b0307801
     BEQ.S	LAB_1628		;2ba88: 670c
-    LEA	-524(A5),A1		;2ba8a: 43edfdf4
+    LEA	    -524(A5),A1		;2ba8a: 43edfdf4
     ADDA.L	D6,A1			;2ba8e: d3c6
     ADDQ.L	#1,D6			;2ba90: 5286
     MOVE.B	1(A0,D7.L),(A1)		;2ba92: 12b07801
@@ -61589,7 +61587,7 @@ LAB_1628:
     ADDQ.L	#1,D7			;2ba96: 5287
     BRA.S	LAB_1627		;2ba98: 60de
 LAB_1629:
-    LEA	-524(A5),A0		;2ba9a: 41edfdf4
+    LEA	    -524(A5),A0		;2ba9a: 41edfdf4
     ADDA.L	D6,A0			;2ba9e: d1c6
     MOVEQ	#0,D0			;2baa0: 7000
     MOVE.B	D0,(A0)			;2baa2: 1080
@@ -61599,7 +61597,7 @@ LAB_1629:
     PEA	    LAB_2144		;2baac: 48790003b196
     MOVE.L	-8(A5),-(A7)		;2bab2: 2f2dfff8
     JSR     LAB_196D(PC)		;2bab6: 4eba6470
-    PEA	-524(A5)		;2baba: 486dfdf4
+    PEA	    -524(A5)		;2baba: 486dfdf4
     MOVE.L	-8(A5),-(A7)		;2babe: 2f2dfff8
     JSR     LAB_196D(PC)		;2bac2: 4eba6464
     LEA	    16(A7),A7		;2bac6: 4fef0010
@@ -62125,7 +62123,7 @@ LAB_1656:
 LAB_1657:
     MOVE.L	A3,-(A7)		;2c0e4: 2f0b
     PEA	    LAB_214C		;2c0e6: 48790003b1ba
-    PEA	-200(A5)		;2c0ec: 486dff38
+    PEA	    -200(A5)		;2c0ec: 486dff38
     JSR     LAB_19A0(PC)		;2c0f0: 4eba60e8
     MOVE.W	LAB_234D,D0		;2c0f4: 30390003fbce
     EXT.L	D0			;2c0fa: 48c0
@@ -62779,7 +62777,7 @@ LAB_169C:
     MOVEM.L	D7/A2-A3,-(A7)		;2c828: 48e70130
     MOVEA.L	8(A5),A3		;2c82c: 266d0008
     LEA	    12(A3),A0		;2c830: 41eb000c
-    LEA	-21(A5),A1		;2c834: 43edffeb
+    LEA	    -21(A5),A1		;2c834: 43edffeb
 LAB_169D:
     MOVE.B	(A0)+,(A1)+		;2c838: 12d8
     BNE.S	LAB_169D		;2c83a: 66fc
@@ -62802,7 +62800,7 @@ LAB_169F:
     SUBA.L	(A2),A0			;2c860: 91d2
     MOVE.L	A0,-(A7)		;2c862: 2f08
     MOVE.L	(A2),-(A7)		;2c864: 2f12
-    PEA	-21(A5)			;2c866: 486dffeb
+    PEA	    -21(A5)			;2c866: 486dffeb
     JSR     LAB_194E(PC)		;2c86a: 4eba5548
     LEA	    12(A7),A7		;2c86e: 4fef000c
     TST.L	D0			;2c872: 4a80
@@ -63101,9 +63099,9 @@ LAB_16C3:
 LAB_16C4:
     MOVE.L	8(A5),-(A7)		;2cb20: 2f2d0008
     BSR.W	LAB_16A3		;2cb24: 6100fd62
-    PEA	-26(A5)			;2cb28: 486dffe6
+    PEA	    -26(A5)			;2cb28: 486dffe6
     MOVE.L	D0,-(A7)		;2cb2c: 2f00
-    PEA	-34(A5)			;2cb2e: 486dffde
+    PEA	    -34(A5)			;2cb2e: 486dffde
     MOVE.L	8(A5),-(A7)		;2cb32: 2f2d0008
     MOVE.L	D0,-52(A5)		;2cb36: 2b40ffcc
     BSR.W	LAB_16A9		;2cb3a: 6100fda4
@@ -63167,9 +63165,9 @@ LAB_16C7:
     MOVEQ	#1,D1			;2cbd6: 7201
     CMP.L	-22(A5),D1		;2cbd8: b2adffea
     BNE.W	LAB_16CA		;2cbdc: 66000090
-    PEA	-30(A5)			;2cbe0: 486dffe2
+    PEA	    -30(A5)			;2cbe0: 486dffe2
     MOVE.L	D0,-(A7)		;2cbe4: 2f00
-    PEA	-38(A5)			;2cbe6: 486dffda
+    PEA	    -38(A5)			;2cbe6: 486dffda
     MOVE.L	-14(A5),-(A7)		;2cbea: 2f2dfff2
     BSR.W	LAB_16A9		;2cbee: 6100fcf0
     LEA	    16(A7),A7		;2cbf2: 4fef0010
@@ -63388,7 +63386,7 @@ LAB_16DB:
     MOVE.L	A3,D0			;2cdec: 200b
     BEQ.S	LAB_16DD		;2cdee: 670e
     LEA	    1(A3),A0		;2cdf0: 41eb0001
-    LEA	-17(A5),A1		;2cdf4: 43edffef
+    LEA	    -17(A5),A1		;2cdf4: 43edffef
 LAB_16DC:
     MOVE.B	(A0)+,(A1)+		;2cdf8: 12d8
     BNE.S	LAB_16DC		;2cdfa: 66fc
@@ -63396,7 +63394,7 @@ LAB_16DC:
 LAB_16DD:
     CLR.B	-17(A5)			;2cdfe: 422dffef
 LAB_16DE:
-    LEA	-17(A5),A0		;2ce02: 41edffef
+    LEA	    -17(A5),A0		;2ce02: 41edffef
     MOVEA.L	A0,A1			;2ce06: 2248
 LAB_16DF:
     TST.B	(A1)+			;2ce08: 4a19
@@ -63858,8 +63856,8 @@ LAB_16FF:
     MOVE.L	D1,40(A7)		;2d2b4: 2f410028
     JSR     LAB_17CF(PC)		;2d2b8: 4eba16c6
     EXT.L	D0			;2d2bc: 48c0
-    PEA	-8(A5)			;2d2be: 486dfff8
-    PEA	-20(A5)			;2d2c2: 486dffec
+    PEA	    -8(A5)			;2d2be: 486dfff8
+    PEA	    -20(A5)			;2d2c2: 486dffec
     MOVE.L	D0,-(A7)		;2d2c6: 2f00
     MOVE.L	52(A7),-(A7)		;2d2c8: 2f2f0034
     MOVE.L	A3,-(A7)		;2d2cc: 2f0b
@@ -65753,7 +65751,7 @@ LAB_17B1:
     MOVEA.L	12(A5),A2		;2e75c: 246d000c
     MOVE.W	34(A5),D7		;2e760: 3e2d0022
     LEA     LAB_2165,A0		;2e764: 41f90003b291
-    LEA	-532(A5),A1		;2e76a: 43edfdec
+    LEA	    -532(A5),A1		;2e76a: 43edfdec
     MOVE.W	#$01ff,D0		;2e76e: 303c01ff
 LAB_17B2:
     MOVE.B	(A0)+,(A1)+		;2e772: 12d8
@@ -65885,9 +65883,9 @@ LAB_17C6:
     MOVE.L	-20(A5,D1.L),-(A7)	;2e8a4: 2f3518ec
     MOVE.L	D0,-(A7)		;2e8a8: 2f00
     PEA	    LAB_216A		;2e8aa: 48790003b29c
-    PEA	-532(A5)		;2e8b0: 486dfdec
+    PEA	    -532(A5)		;2e8b0: 486dfdec
     JSR     LAB_19A0(PC)		;2e8b4: 4eba3924
-    PEA	-532(A5)		;2e8b8: 486dfdec
+    PEA	    -532(A5)		;2e8b8: 486dfdec
     MOVE.L	A3,-(A7)		;2e8bc: 2f0b
     JSR     LAB_196D(PC)		;2e8be: 4eba3668
     LEA	    24(A7),A7		;2e8c2: 4fef0018
@@ -66433,7 +66431,7 @@ LAB_1801:
     MOVEQ	#24,D0			;2ee24: 7018
     ADD.W	D0,-32(A5)		;2ee26: d16dffe0
 LAB_1802:
-    LEA	-30(A5),A0		;2ee2a: 41edffe2
+    LEA	    -30(A5),A0		;2ee2a: 41edffe2
     MOVEQ	#4,D0			;2ee2e: 7004
 LAB_1803:
     MOVE.L	(A1)+,(A0)+		;2ee30: 20d9
@@ -66449,7 +66447,7 @@ LAB_1803:
     EXT.L	D1			;2ee50: 48c1
     MOVE.L	D1,-(A7)		;2ee52: 2f01
     MOVE.L	D0,-(A7)		;2ee54: 2f00
-    PEA	-30(A5)			;2ee56: 486dffe2
+    PEA	    -30(A5)			;2ee56: 486dffe2
     JSR     LAB_1809(PC)		;2ee5a: 4eba009c
     LEA	    12(A7),A7		;2ee5e: 4fef000c
     MOVE.W	-24(A5),D0		;2ee62: 302dffe8
@@ -66488,7 +66486,7 @@ LAB_1804:
 LAB_1805:
     MOVE.L	A3,D0			;2eeb8: 200b
     BEQ.S	LAB_1806		;2eeba: 6716
-    PEA	-8(A5)			;2eebc: 486dfff8
+    PEA	    -8(A5)			;2eebc: 486dfff8
     MOVE.L	D6,-(A7)		;2eec0: 2f06
     MOVE.L	A3,-(A7)		;2eec2: 2f0b
     BSR.W	LAB_17EA		;2eec4: 6100fd74
@@ -67091,10 +67089,10 @@ LAB_1828:
     JSR	    -240(A6)		;2f4fe: 4eaeff10
     MOVE.L	D6,-(A7)		;2f502: 2f06
     PEA	    LAB_2175		;2f504: 48790003b32c
-    PEA	-84(A5)			;2f50a: 486dffac
+    PEA	    -84(A5)			;2f50a: 486dffac
     JSR     LAB_19A0(PC)		;2f50e: 4eba2cca
     LEA	    12(A7),A7		;2f512: 4fef000c
-    LEA	-84(A5),A0		;2f516: 41edffac
+    LEA	    -84(A5),A0		;2f516: 41edffac
     MOVEA.L	A0,A1			;2f51a: 2248
 LAB_1829:
     TST.B	(A1)+			;2f51c: 4a19
@@ -67186,10 +67184,10 @@ LAB_182E:
     JSR	    -246(A6)		;2f5f6: 4eaeff0a
     MOVE.L	D6,-(A7)		;2f5fa: 2f06
     PEA	    LAB_2176		;2f5fc: 48790003b332
-    PEA	-84(A5)			;2f602: 486dffac
+    PEA	    -84(A5)			;2f602: 486dffac
     JSR     LAB_19A0(PC)		;2f606: 4eba2bd2
     LEA	    12(A7),A7		;2f60a: 4fef000c
-    LEA	-84(A5),A0		;2f60e: 41edffac
+    LEA	    -84(A5),A0		;2f60e: 41edffac
     MOVEA.L	A0,A1			;2f612: 2248
 LAB_182F:
     TST.B	(A1)+			;2f614: 4a19
@@ -67219,7 +67217,7 @@ LAB_1830:
     MOVEA.L	A3,A1			;2f652: 224b
     MOVE.L	16(A7),D0		;2f654: 202f0010
     JSR	    -240(A6)		;2f658: 4eaeff10
-    LEA	-84(A5),A0		;2f65c: 41edffac
+    LEA	    -84(A5),A0		;2f65c: 41edffac
     MOVEA.L	A0,A1			;2f660: 2248
 LAB_1831:
     TST.B	(A1)+			;2f662: 4a19
@@ -67461,7 +67459,7 @@ LAB_183A:
     BSR.W	LAB_1837		;2f8d0: 6100feae
     MOVE.L	D7,(A7)			;2f8d4: 2e87
     PEA	    LAB_2177		;2f8d6: 48790003b338
-    PEA	-88(A5)			;2f8dc: 486dffa8
+    PEA	    -88(A5)			;2f8dc: 486dffa8
     JSR     LAB_19A0(PC)		;2f8e0: 4eba28f8
     MOVE.L	D7,D0			;2f8e4: 2007
     MOVEQ	#77,D1			;2f8e6: 724d
@@ -67471,7 +67469,7 @@ LAB_183A:
     ADDA.L	D0,A0			;2f8f4: d1c0
     LEA	    10(A0),A1		;2f8f6: 43e8000a
     PEA	    90.W			;2f8fa: 4878005a
-    PEA	-88(A5)			;2f8fe: 486dffa8
+    PEA	    -88(A5)			;2f8fe: 486dffa8
     MOVE.L	A1,-(A7)		;2f902: 2f09
     BSR.W	LAB_181E		;2f904: 6100fa34
     MOVEM.L	-100(A5),D5-D7		;2f908: 4ced00e0ff9c
@@ -67561,7 +67559,7 @@ LAB_183F:
     JSR     LAB_1A06(PC)		;2f9de: 4eba3034
     LEA     LAB_237F,A0		;2f9e2: 41f900040e4a
     ADDA.L	D0,A0			;2f9e8: d1c0
-    LEA	-84(A5),A1		;2f9ea: 43edffac
+    LEA	    -84(A5),A1		;2f9ea: 43edffac
     MOVEA.L	A1,A2			;2f9ee: 2449
     MOVEQ	#18,D0			;2f9f0: 7012
 LAB_1840:
@@ -67677,17 +67675,17 @@ LAB_1845:
     MOVE.W	D0,-58(A5)		;2fb10: 3b40ffc6
 LAB_1846:
     MOVEA.L	A1,A0			;2fb14: 2049
-    LEA	-160(A5),A2		;2fb16: 45edff60
+    LEA	    -160(A5),A2		;2fb16: 45edff60
     MOVEQ	#18,D0			;2fb1a: 7012
 LAB_1847:
     MOVE.L	(A0)+,(A2)+		;2fb1c: 24d8
     DBF     D0,LAB_1847		;2fb1e: 51c8fffc
-    LEA	-236(A5),A0		;2fb22: 41edff14
+    LEA	    -236(A5),A0		;2fb22: 41edff14
     MOVEQ	#18,D0			;2fb26: 7012
 LAB_1848:
     MOVE.L	(A1)+,(A0)+		;2fb28: 20d9
     DBF     D0,LAB_1848		;2fb2a: 51c8fffc
-    LEA	-122(A5),A0		;2fb2e: 41edff86
+    LEA	    -122(A5),A0		;2fb2e: 41edff86
     CLR.L	-256(A5)		;2fb32: 42adff00
     MOVE.L	A0,-252(A5)		;2fb36: 2b48ff04
 LAB_1849:
@@ -67714,7 +67712,7 @@ LAB_1849:
     ADDQ.L	#1,-256(A5)		;2fb76: 52adff00
     BRA.S	LAB_1849		;2fb7a: 60be
 LAB_184A:
-    LEA	-198(A5),A0		;2fb7c: 41edff3a
+    LEA	    -198(A5),A0		;2fb7c: 41edff3a
     CLR.L	-256(A5)		;2fb80: 42adff00
     MOVE.L	A0,-252(A5)		;2fb84: 2b48ff04
 LAB_184B:
@@ -67741,13 +67739,13 @@ LAB_184B:
     ADDQ.L	#1,-256(A5)		;2fbc4: 52adff00
     BRA.S	LAB_184B		;2fbc8: 60be
 LAB_184C:
-    LEA	-160(A5),A0		;2fbca: 41edff60
+    LEA	    -160(A5),A0		;2fbca: 41edff60
     MOVEA.L	-4(A5),A1		;2fbce: 226dfffc
     MOVEQ	#18,D0			;2fbd2: 7012
 LAB_184D:
     MOVE.L	(A0)+,(A1)+		;2fbd4: 22d8
     DBF     D0,LAB_184D		;2fbd6: 51c8fffc
-    LEA	-236(A5),A0		;2fbda: 41edff14
+    LEA	    -236(A5),A0		;2fbda: 41edff14
     MOVEA.L	-8(A5),A1		;2fbde: 226dfff8
     MOVEQ	#18,D0			;2fbe2: 7012
 LAB_184E:
@@ -67771,7 +67769,7 @@ LAB_184E:
     MOVE.W	10(A7),D7		;2fc0c: 3e2f000a
     MOVE.L	D7,D0			;2fc10: 2007
     EXT.L	D0			;2fc12: 48c0
-    PEA	-1.W			;2fc14: 4878ffff
+    PEA	    -1.W			;2fc14: 4878ffff
     MOVE.L	D0,-(A7)		;2fc18: 2f00
     MOVE.L	LAB_2178,-(A7)		;2fc1a: 2f390003b348
     BSR.W	LAB_183E		;2fc20: 6100fd86
@@ -67788,7 +67786,7 @@ LAB_184F:
     MOVEQ	#9,D1			;2fc3a: 7209
     JSR     LAB_1A07(PC)		;2fc3c: 4eba2df6
     MOVE.L	D1,LAB_2178		;2fc40: 23c10003b348
-    PEA	-1.W			;2fc46: 4878ffff
+    PEA	    -1.W			;2fc46: 4878ffff
     CLR.L	-(A7)			;2fc4a: 42a7
     MOVE.L	D1,-(A7)		;2fc4c: 2f01
     BSR.W	LAB_183E		;2fc4e: 6100fd58
@@ -68050,7 +68048,7 @@ LAB_1850:
     LINK.W	A5,#-80			;2ff40: 4e55ffb0
     MOVE.L	LAB_2178,-(A7)		;2ff44: 2f390003b348
     PEA	    LAB_2191		;2ff4a: 48790003b5f4
-    PEA	-80(A5)			;2ff50: 486dffb0
+    PEA	    -80(A5)			;2ff50: 486dffb0
     JSR     LAB_19A0(PC)		;2ff54: 4eba2284
     MOVE.L	LAB_2178,D0		;2ff58: 20390003b348
     MOVEQ	#76,D1			;2ff5e: 724c
@@ -68058,7 +68056,7 @@ LAB_1850:
     LEA     LAB_237F,A0		;2ff64: 41f900040e4a
     ADDA.L	D0,A0			;2ff6a: d1c0
     MOVE.L	A0,(A7)			;2ff6c: 2e88
-    PEA	-80(A5)			;2ff6e: 486dffb0
+    PEA	    -80(A5)			;2ff6e: 486dffb0
     BSR.W	LAB_1850		;2ff72: 6100fcf4
     UNLK	A5			;2ff76: 4e5d
     RTS
@@ -68074,7 +68072,7 @@ LAB_1851:
     BGE.S	LAB_1852		;2ff86: 6c3c
     MOVE.L	D7,-(A7)		;2ff88: 2f07
     PEA	    LAB_2192		;2ff8a: 48790003b602
-    PEA	-84(A5)			;2ff90: 486dffac
+    PEA	    -84(A5)			;2ff90: 486dffac
     JSR     LAB_19A0(PC)		;2ff94: 4eba2244
     MOVE.L	D7,D0			;2ff98: 2007
     MOVEQ	#76,D1			;2ff9a: 724c
@@ -68082,7 +68080,7 @@ LAB_1851:
     LEA     LAB_237F,A0		;2ffa0: 41f900040e4a
     ADDA.L	D0,A0			;2ffa6: d1c0
     MOVE.L	A0,(A7)			;2ffa8: 2e88
-    PEA	-84(A5)			;2ffaa: 486dffac
+    PEA	    -84(A5)			;2ffaa: 486dffac
     BSR.W	LAB_1850		;2ffae: 6100fcb8
     PEA	    LAB_2193		;2ffb2: 48790003b610
     JSR     LAB_1906(PC)		;2ffb8: 4eba17bc
@@ -68548,7 +68546,7 @@ LAB_186B:
     MOVEA.L	LAB_1DD9,A0		;304fa: 20790003640a
     TST.B	(A0)			;30500: 4a10
     BEQ.S	LAB_186D		;30502: 670a
-    LEA	-140(A5),A1		;30504: 43edff74
+    LEA	    -140(A5),A1		;30504: 43edff74
 LAB_186C:
     MOVE.B	(A0)+,(A1)+		;30508: 12d8
     BNE.S	LAB_186C		;3050a: 66fc
@@ -68556,7 +68554,7 @@ LAB_186C:
 LAB_186D:
     CLR.B	-140(A5)		;3050e: 422dff74
 LAB_186E:
-    LEA	-140(A5),A0		;30512: 41edff74
+    LEA	    -140(A5),A0		;30512: 41edff74
     MOVEA.L	A0,A1			;30516: 2248
 LAB_186F:
     TST.B	(A1)+			;30518: 4a19
@@ -68596,7 +68594,7 @@ LAB_1870:
     MOVE.L	-148(A5),D1		;30572: 222dff6c
     JSR	    -240(A6)		;30576: 4eaeff10
     MOVEA.L	A3,A1			;3057a: 224b
-    LEA	-140(A5),A0		;3057c: 41edff74
+    LEA	    -140(A5),A0		;3057c: 41edff74
     MOVE.L	-204(A5),D0		;30580: 202dff34
     JSR	    -60(A6)			;30584: 4eaeffc4
 LAB_1871:
@@ -69007,7 +69005,7 @@ LAB_188E:
     CMPI.L	#$fffffc19,8(A0)	;30a18: 0ca8fffffc190008
     BNE.S	LAB_188F		;30a20: 6610
     LEA     LAB_219D,A0		;30a22: 41f90003b676
-    LEA	-46(A5),A1		;30a28: 43edffd2
+    LEA	    -46(A5),A1		;30a28: 43edffd2
     MOVE.L	(A0)+,(A1)+		;30a2c: 22d8
     CLR.B	(A1)			;30a2e: 4211
     BRA.S	LAB_1890		;30a30: 6026
@@ -69019,7 +69017,7 @@ LAB_188F:
     ADDA.L	D0,A0			;30a40: d1c0
     MOVE.L	8(A0),-(A7)		;30a42: 2f280008
     PEA	    LAB_219E		;30a46: 48790003b67c
-    PEA	-46(A5)			;30a4c: 486dffd2
+    PEA	    -46(A5)			;30a4c: 486dffd2
     JSR     LAB_19A0(PC)		;30a50: 4eba1788
     LEA	    12(A7),A7		;30a54: 4fef000c
 LAB_1890:
@@ -69031,7 +69029,7 @@ LAB_1890:
     CMPI.L	#$fffffc19,12(A0)	;30a68: 0ca8fffffc19000c
     BNE.S	LAB_1891		;30a70: 660e
     LEA     LAB_219F,A0		;30a72: 41f90003b680
-    LEA	-26(A5),A1		;30a78: 43edffe6
+    LEA	    -26(A5),A1		;30a78: 43edffe6
     MOVE.L	(A0)+,(A1)+		;30a7c: 22d8
     BRA.S	LAB_1892		;30a7e: 6026
 LAB_1891:
@@ -69042,12 +69040,12 @@ LAB_1891:
     ADDA.L	D0,A0			;30a8e: d1c0
     MOVE.L	12(A0),-(A7)		;30a90: 2f28000c
     PEA	    LAB_21A0		;30a94: 48790003b684
-    PEA	-26(A5)			;30a9a: 486dffe6
+    PEA	    -26(A5)			;30a9a: 486dffe6
     JSR     LAB_19A0(PC)		;30a9e: 4eba173a
     LEA	    12(A7),A7		;30aa2: 4fef000c
 LAB_1892:
-    PEA	-26(A5)			;30aa6: 486dffe6
-    PEA	-46(A5)			;30aaa: 486dffd2
+    PEA	    -26(A5)			;30aa6: 486dffe6
+    PEA	    -46(A5)			;30aaa: 486dffd2
     JSR     LAB_196D(PC)		;30aae: 4eba1478
     ADDQ.W	#8,A7			;30ab2: 504f
     MOVEA.L	A3,A1			;30ab4: 224b
@@ -69057,7 +69055,7 @@ LAB_1892:
     MOVEA.L	A3,A1			;30ac2: 224b
     MOVEQ	#0,D0			;30ac4: 7000
     JSR	    -354(A6)		;30ac6: 4eaefe9e
-    LEA	-46(A5),A0		;30aca: 41edffd2
+    LEA	    -46(A5),A0		;30aca: 41edffd2
     MOVEA.L	A0,A1			;30ace: 2248
 LAB_1893:
     TST.B	(A1)+			;30ad0: 4a19
@@ -69084,7 +69082,7 @@ LAB_1894:
     MOVEA.L	A3,A1			;30b06: 224b
     JSR	    -240(A6)		;30b08: 4eaeff10
     MOVEA.L	A3,A1			;30b0c: 224b
-    LEA	-46(A5),A0		;30b0e: 41edffd2
+    LEA	    -46(A5),A0		;30b0e: 41edffd2
     MOVE.L	-50(A5),D0		;30b12: 202dffce
     JSR	    -60(A6)			;30b16: 4eaeffc4
     BRA.W	LAB_189F		;30b1a: 60000178
@@ -69224,11 +69222,11 @@ LAB_189F:
     LEA     LAB_20D5,A0		;30ca8: 41f90003adaa
     ADDA.L	D1,A0			;30cae: d1c1
     MOVEA.L	(A0),A1			;30cb0: 2250
-    LEA	-46(A5),A2		;30cb2: 45edffd2
+    LEA	    -46(A5),A2		;30cb2: 45edffd2
 LAB_18A0:
     MOVE.B	(A1)+,(A2)+		;30cb6: 14d9
     BNE.S	LAB_18A0		;30cb8: 66fc
-    LEA	-46(A5),A0		;30cba: 41edffd2
+    LEA	    -46(A5),A0		;30cba: 41edffd2
     MOVEA.L	A0,A1			;30cbe: 2248
 LAB_18A1:
     TST.B	(A1)+			;30cc0: 4a19
@@ -69269,7 +69267,7 @@ LAB_18A2:
     MOVE.L	-96(A5),D1		;30d24: 222dffa0
     JSR	    -240(A6)		;30d28: 4eaeff10
     MOVEA.L	A3,A1			;30d2c: 224b
-    LEA	-46(A5),A0		;30d2e: 41edffd2
+    LEA	    -46(A5),A0		;30d2e: 41edffd2
     MOVE.L	-50(A5),D0		;30d32: 202dffce
     JSR	    -60(A6)			;30d36: 4eaeffc4
 LAB_18A3:
@@ -69757,7 +69755,7 @@ LAB_18DB:
     MOVE.B	-16(A5),D1		;312ac: 122dfff0
     TST.B	D1			;312b0: 4a01
     BEQ.S	LAB_18DC		;312b2: 675c
-    PEA	-16(A5)			;312b4: 486dfff0
+    PEA	    -16(A5)			;312b4: 486dfff0
     PEA	    LAB_2245		;312b8: 48790003d5dc
     JSR     LAB_1902(PC)		;312be: 4eba0470
     ADDQ.W	#8,A7			;312c2: 504f
@@ -69808,7 +69806,7 @@ LAB_18DF:
     MOVE.B	-15(A5),D1		;31342: 122dfff1
     TST.B	D1			;31346: 4a01
     BEQ.W	LAB_18EE		;31348: 67000220
-    PEA	-15(A5)			;3134c: 486dfff1
+    PEA	    -15(A5)			;3134c: 486dfff1
     PEA	    LAB_2246		;31350: 48790003d5e7
     JSR     LAB_1902(PC)		;31356: 4eba03d8
     ADDQ.W	#8,A7			;3135a: 504f
@@ -69854,10 +69852,10 @@ LAB_18E2:
     BNE.W	LAB_18EE		;313c0: 660001a8
     PEA	    3.W			;313c4: 48780003
     MOVE.L	A3,-(A7)		;313c8: 2f0b
-    PEA	-25(A5)			;313ca: 486dffe7
+    PEA	    -25(A5)			;313ca: 486dffe7
     JSR     LAB_1955(PC)		;313ce: 4eba0a50
     CLR.B	-22(A5)			;313d2: 422dffea
-    PEA	-25(A5)			;313d6: 486dffe7
+    PEA	    -25(A5)			;313d6: 486dffe7
     JSR     LAB_1A23(PC)		;313da: 4eba1858
     LEA	    16(A7),A7		;313de: 4fef0010
     MOVE.L	D0,D6			;313e2: 2c00
@@ -69898,7 +69896,7 @@ LAB_18E6:
     CLR.L	16(A0)			;3142e: 42a80010
     PEA	    1.W			;31432: 48780001
     MOVE.L	A3,-(A7)		;31436: 2f0b
-    PEA	-25(A5)			;31438: 486dffe7
+    PEA	    -25(A5)			;31438: 486dffe7
     JSR     LAB_1955(PC)		;3143c: 4eba09e2
     LEA	    12(A7),A7		;31440: 4fef000c
     CLR.B	-24(A5)			;31444: 422dffe8
@@ -69921,7 +69919,7 @@ LAB_18E7:
     JSR     LAB_1A06(PC)		;31470: 4eba15a2
     LEA     LAB_2197,A0		;31474: 41f90003b61e
     ADDA.L	D0,A0			;3147a: d1c0
-    PEA	-25(A5)			;3147c: 486dffe7
+    PEA	    -25(A5)			;3147c: 486dffe7
     MOVE.L	A0,24(A7)		;31480: 2f480018
     JSR     LAB_1A23(PC)		;31484: 4eba17ae
     ADDQ.W	#4,A7			;31488: 584f
@@ -69931,7 +69929,7 @@ LAB_18E8:
     ADDQ.L	#1,A3			;31492: 528b
     PEA	    3.W			;31494: 48780003
     MOVE.L	A3,-(A7)		;31498: 2f0b
-    PEA	-25(A5)			;3149a: 486dffe7
+    PEA	    -25(A5)			;3149a: 486dffe7
     JSR     LAB_1955(PC)		;3149e: 4eba0980
     LEA	    12(A7),A7		;314a2: 4fef000c
     CLR.B	-22(A5)			;314a6: 422dffea
@@ -69953,7 +69951,7 @@ LAB_18E9:
     JSR     LAB_1A06(PC)		;314d4: 4eba153e
     LEA     LAB_2197,A0		;314d8: 41f90003b61e
     ADDA.L	D0,A0			;314de: d1c0
-    PEA	-25(A5)			;314e0: 486dffe7
+    PEA	    -25(A5)			;314e0: 486dffe7
     MOVE.L	A0,24(A7)		;314e4: 2f480018
     JSR     LAB_1A23(PC)		;314e8: 4eba174a
     ADDQ.W	#4,A7			;314ec: 584f
@@ -69963,7 +69961,7 @@ LAB_18EA:
     ADDQ.L	#3,A3			;314f6: 568b
     PEA	    3.W			;314f8: 48780003
     MOVE.L	A3,-(A7)		;314fc: 2f0b
-    PEA	-25(A5)			;314fe: 486dffe7
+    PEA	    -25(A5)			;314fe: 486dffe7
     JSR     LAB_1955(PC)		;31502: 4eba091c
     LEA	    12(A7),A7		;31506: 4fef000c
     CLR.B	-22(A5)			;3150a: 422dffea
@@ -69985,7 +69983,7 @@ LAB_18EB:
     JSR     LAB_1A06(PC)		;31538: 4eba14da
     LEA     LAB_2197,A0		;3153c: 41f90003b61e
     ADDA.L	D0,A0			;31542: d1c0
-    PEA	-25(A5)			;31544: 486dffe7
+    PEA	    -25(A5)			;31544: 486dffe7
     MOVE.L	A0,24(A7)		;31548: 2f480018
     JSR     LAB_1A23(PC)		;3154c: 4eba16e6
     ADDQ.W	#4,A7			;31550: 584f
@@ -70114,7 +70112,7 @@ LAB_18F8:
     BRA.S	LAB_18F8		;31698: 60ea
 LAB_18F9:
     CLR.B	-13(A5,D7.W)		;3169a: 423570f3
-    LEA	-13(A5),A0		;3169e: 41edfff3
+    LEA	    -13(A5),A0		;3169e: 41edfff3
     LEA     LAB_2245,A1		;316a2: 43f90003d5dc
 LAB_18FA:
     MOVE.B	(A0)+,(A1)+		;316a8: 12d8
@@ -70157,7 +70155,7 @@ LAB_18FD:
     BRA.S	LAB_18FD		;31708: 60ea
 LAB_18FE:
     CLR.B	-13(A5,D7.W)		;3170a: 423570f3
-    LEA	-13(A5),A0		;3170e: 41edfff3
+    LEA	    -13(A5),A0		;3170e: 41edfff3
     LEA     LAB_2246,A1		;31712: 43f90003d5e7
 LAB_18FF:
     MOVE.B	(A0)+,(A1)+		;31718: 12d8
@@ -70378,15 +70376,15 @@ LAB_1914:
     MOVE.L	D7,D0			;31910: 2007
     MOVEQ	#0,D1			;31912: 7200
     MOVE.B	D0,D1			;31914: 1200
-    PEA	-1086(A4)		;31916: 486cfbc2
+    PEA	    -1086(A4)		;31916: 486cfbc2
     MOVE.L	D1,-(A7)		;3191a: 2f01
     JSR     LAB_1916(PC)		;3191c: 4eba001e
     ADDQ.W	#8,A7			;31920: 504f
     MOVE.L	D0,D1			;31922: 2200
     BRA.S	LAB_1913		;31924: 60c6
 LAB_1915:
-    PEA	-1086(A4)		;31926: 486cfbc2
-    PEA	-1.W			;3192a: 4878ffff
+    PEA	    -1086(A4)		;31926: 486cfbc2
+    PEA	    -1.W			;3192a: 4878ffff
     JSR     LAB_1916(PC)		;3192e: 4eba000c
     ADDQ.W	#8,A7			;31932: 504f
     MOVE.L	D6,D0			;31934: 2006
@@ -70493,7 +70491,7 @@ LAB_191E:
 LAB_191F:
     MOVEQ	#1,D1			;31a36: 7201
     MOVE.L	D1,-(A7)		;31a38: 2f01
-    PEA	-1(A5)			;31a3a: 486dffff
+    PEA	    -1(A5)			;31a3a: 486dffff
     MOVE.L	28(A3),-(A7)		;31a3e: 2f2b001c
     MOVE.L	D1,-16(A5)		;31a42: 2b41fff0
     JSR     LAB_1A34(PC)		;31a46: 4eba1334
@@ -70559,7 +70557,7 @@ LAB_1925:
     MOVE.L	28(A3),-(A7)		;31aee: 2f2b001c
     JSR     LAB_19B3(PC)		;31af2: 4eba08a4
     PEA	    1.W			;31af6: 48780001
-    PEA	-3(A5)			;31afa: 486dfffd
+    PEA	    -3(A5)			;31afa: 486dfffd
     MOVE.L	28(A3),-(A7)		;31afe: 2f2b001c
     JSR     LAB_1AA9(PC)		;31b02: 4eba1b70
     LEA	    24(A7),A7		;31b06: 4fef0018
@@ -70675,7 +70673,7 @@ LAB_1935:
     BTST	#6,27(A3)		;31c0a: 082b0006001b
     BEQ.S	LAB_1936		;31c10: 670c
     MOVE.L	A3,-(A7)		;31c12: 2f0b
-    PEA	-1.W			;31c14: 4878ffff
+    PEA	    -1.W			;31c14: 4878ffff
     JSR     LAB_1916(PC)		;31c18: 4ebafd22
     ADDQ.W	#8,A7			;31c1c: 504f
 LAB_1936:
@@ -70823,7 +70821,7 @@ LAB_194A:
     BEQ.S	LAB_194D		;31d84: 6724
     MOVEQ	#0,D0			;31d86: 7000
     MOVE.B	(A2),D0			;31d88: 1012
-    LEA	-1007(A4),A0		;31d8a: 41ecfc11
+    LEA	    -1007(A4),A0		;31d8a: 41ecfc11
     BTST	#1,0(A0,D0.L)		;31d8e: 083000010800
     BEQ.S	LAB_194B		;31d94: 670a
     MOVEQ	#0,D1			;31d96: 7200
@@ -71210,7 +71208,7 @@ LAB_1985:
 LAB_1986:
     MOVEQ	#0,D0			;3206a: 7000
     MOVE.B	(A3),D0			;3206c: 1013
-    LEA	-1007(A4),A0		;3206e: 41ecfc11
+    LEA	    -1007(A4),A0		;3206e: 41ecfc11
     BTST	#3,0(A0,D0.L)		;32072: 083000030800
     BEQ.S	LAB_1987		;32078: 6704
     ADDQ.L	#1,A3			;3207a: 528b
@@ -71620,7 +71618,7 @@ LAB_19B9:
     ADDQ.L	#3,D0			;323fc: 5680
     MOVE.L	D0,D7			;323fe: 2e00
     ANDI.W	#$fffc,D7		;32400: 0247fffc
-    LEA	-1132(A4),A2		;32404: 45ecfb94
+    LEA	    -1132(A4),A2		;32404: 45ecfb94
     MOVEA.L	(A2),A3			;32408: 2652
 LAB_19BA:
     MOVE.L	A3,D0			;3240a: 200b
@@ -71734,7 +71732,7 @@ LAB_19C3:
     PEA	    LAB_19C0(PC)		;32506: 487aff9c
     JSR     LAB_1A71(PC)		;3250a: 4eba0cda
     MOVE.L	A3,(A7)			;3250e: 2e8b
-    PEA	-1.W			;32510: 4878ffff
+    PEA	    -1.W			;32510: 4878ffff
     JSR     LAB_1916(PC)		;32514: 4ebaf426
     MOVE.L	22824(A4),D0		;32518: 202c5928
     MOVEM.L	-8(A5),A2-A3		;3251c: 4ced0c00fff8
@@ -71953,7 +71951,7 @@ LAB_19E2:
 LAB_19E3:
     MOVEM.L	D6-D7/A3,-(A7)		;326f4: 48e70310
     MOVE.L	16(A7),D7		;326f8: 2e2f0010
-    LEA	-1120(A4),A3		;326fc: 47ecfba0
+    LEA	    -1120(A4),A3		;326fc: 47ecfba0
 LAB_19E4:
     MOVE.L	A3,D0			;32700: 200b
     BEQ.S	LAB_19E6		;32702: 6734
@@ -72541,7 +72539,7 @@ LAB_1A21:
     MOVE.L	A3,-(A7)		;32c16: 2f0b
     JSR     LAB_1985(PC)		;32c18: 4ebaf44a
     MOVEA.L	D0,A3			;32c1c: 2640
-    PEA	-4(A5)			;32c1e: 486dfffc
+    PEA	    -4(A5)			;32c1e: 486dfffc
     MOVE.L	A3,-(A7)		;32c22: 2f0b
     JSR     LAB_1992(PC)		;32c24: 4ebaf502
     MOVE.L	-4(A5),D0		;32c28: 202dfffc
@@ -72564,7 +72562,7 @@ LAB_1A24:
     MOVE.L	A3,-(A7)		;32c46: 2f0b
     JSR     LAB_1985(PC)		;32c48: 4ebaf41a
     MOVEA.L	D0,A3			;32c4c: 2640
-    PEA	-4(A5)			;32c4e: 486dfffc
+    PEA	    -4(A5)			;32c4e: 486dfffc
     MOVE.L	A3,-(A7)		;32c52: 2f0b
     JSR     LAB_199A(PC)		;32c54: 4ebaf51e
     MOVE.L	-4(A5),D0		;32c58: 202dfffc
@@ -72788,7 +72786,7 @@ LAB_1A3B:
     MOVE.L	D1,-10(A5)		;32e50: 2b41fff6
     MOVEQ	#-1,D2			;32e54: 74ff
     MOVE.L	D2,-14(A5)		;32e56: 2b42fff2
-    LEA	-48(A5),A0		;32e5a: 41edffd0
+    LEA	    -48(A5),A0		;32e5a: 41edffd0
     MOVE.B	D0,-15(A5)		;32e5e: 1b40fff1
     MOVE.B	D0,-4(A5)		;32e62: 1b40fffc
     MOVE.L	D1,-28(A5)		;32e66: 2b41ffe4
@@ -72837,7 +72835,7 @@ LAB_1A42:
     ADDQ.L	#1,A3			;32ebe: 528b
     BRA.S	LAB_1A44		;32ec0: 600e
 LAB_1A43:
-    PEA	-10(A5)			;32ec2: 486dfff6
+    PEA	    -10(A5)			;32ec2: 486dfff6
     MOVE.L	A3,-(A7)		;32ec6: 2f0b
     JSR     LAB_199A(PC)		;32ec8: 4ebaf2aa
     ADDQ.W	#8,A7			;32ecc: 504f
@@ -72857,7 +72855,7 @@ LAB_1A44:
     ADDQ.L	#1,A3			;32ee8: 528b
     BRA.S	LAB_1A46		;32eea: 600e
 LAB_1A45:
-    PEA	-14(A5)			;32eec: 486dfff2
+    PEA	    -14(A5)			;32eec: 486dfff2
     MOVE.L	A3,-(A7)		;32ef0: 2f0b
     JSR     LAB_199A(PC)		;32ef2: 4ebaf280
     ADDQ.W	#8,A7			;32ef6: 504f
@@ -72978,7 +72976,7 @@ LAB_1A54:
     MOVE.L	D0,-56(A5)		;3300e: 2b40ffc8
 LAB_1A55:
     ADD.L	D0,-28(A5)		;33012: d1adffe4
-    LEA	-48(A5),A0		;33016: 41edffd0
+    LEA	    -48(A5),A0		;33016: 41edffd0
     MOVE.L	A0,-52(A5)		;3301a: 2b48ffcc
     TST.B	D7			;3301e: 4a07
     BEQ.W	LAB_1A67		;33020: 67000130
@@ -73062,7 +73060,7 @@ LAB_1A61:
     MOVEQ	#88,D0			;330e6: 7058
     CMP.B	-16(A5),D0		;330e8: b02dfff0
     BNE.W	LAB_1A51		;330ec: 6600fed0
-    PEA	-48(A5)			;330f0: 486dffd0
+    PEA	    -48(A5)			;330f0: 486dffd0
     JSR     LAB_1949(PC)		;330f4: 4ebaec82
     ADDQ.W	#4,A7			;330f8: 584f
     BRA.W	LAB_1A51		;330fa: 6000fec2
@@ -73191,7 +73189,7 @@ LAB_1A72:
     BRA.S	LAB_1A74		;3320e: 601a
 LAB_1A73:
     MOVE.L	A3,-(A7)		;33210: 2f0b
-    PEA	-10(A5)			;33212: 486dfff6
+    PEA	    -10(A5)			;33212: 486dfff6
     MOVE.L	A2,-(A7)		;33216: 2f0a
     BSR.W	LAB_1A3B		;33218: 6100fc16
     LEA	    12(A7),A7		;3321c: 4fef000c
@@ -73578,7 +73576,7 @@ LAB_1A9F:
     MOVE.L	8(A5),D0		;335a8: 202d0008
     ADD.L	D7,D0			;335ac: d087
     ADD.L	D7,-1128(A4)		;335ae: dfacfb98
-    LEA	-1132(A4),A0		;335b2: 41ecfb94
+    LEA	    -1132(A4),A0		;335b2: 41ecfb94
     MOVEA.L	(A0),A3			;335b6: 2650
     MOVE.L	D0,-16(A5)		;335b8: 2b40fff0
     MOVE.L	A0,-12(A5)		;335bc: 2b48fff4
@@ -73741,7 +73739,7 @@ LAB_1AB1:
 LAB_1AB2:
     LINK.W	A5,#-8			;336f8: 4e55fff8
     MOVEM.L	A2-A3,-(A7)		;336fc: 48e70030
-    LEA	-1120(A4),A3		;33700: 47ecfba0
+    LEA	    -1120(A4),A3		;33700: 47ecfba0
 LAB_1AB3:
     MOVE.L	A3,D0			;33704: 200b
     BEQ.S	LAB_1AB4		;33706: 670c
@@ -73792,7 +73790,7 @@ LAB_1AB9:
     BTST	#1,27(A3)		;3375c: 082b0001001b
     BEQ.S	LAB_1ABA		;33762: 6710
     MOVE.L	A3,-(A7)		;33764: 2f0b
-    PEA	-1.W			;33766: 4878ffff
+    PEA	    -1.W			;33766: 4878ffff
     JSR     LAB_1916(PC)		;3376a: 4ebae1d0
     ADDQ.W	#8,A7			;3376e: 504f
     MOVE.L	D0,D7			;33770: 2e00
@@ -73839,7 +73837,7 @@ LAB_1ABE:
     MOVE.L	D0,D7			;337cc: 2e00
 LAB_1ABF:
     MOVE.L	D7,D0			;337ce: 2007
-    LEA	-81(A5),A1		;337d0: 43edffaf
+    LEA	    -81(A5),A1		;337d0: 43edffaf
     BRA.S	LAB_1AC1		;337d4: 6002
 LAB_1AC0:
     MOVE.B	(A0)+,(A1)+		;337d6: 12d8
@@ -74121,22 +74119,28 @@ LAB_1AE0:
 
 ;!======
 
-LAB_1AE1:
-    MOVE.L	A6,-(A7)		;33a48: 2f0e
+; Given a valid ClockData struct in 8(A7) return the number of
+; seconds from Amiga epoch, or 0 if illegal and store in D0.
+GET_LEGAL_OR_SECONDS_FROM_EPOCH:
+    MOVE.L	A6,-(A7)
     MOVEA.L	GLOB_REF_UTILITY_LIBRARY,A6
-    MOVEA.L	8(A7),A0		;33a50: 206f0008
+    MOVEA.L	8(A7),A0
     JSR     _LVOCheckDate(A6)
-    MOVEA.L	(A7)+,A6		;33a58: 2c5f
+    MOVEA.L	(A7)+,A6
     RTS
 
 ;!======
 
-LAB_1AE2:
+; Given a valid ClockData struct in 8(A7) return the number of
+; seconds from Amiga epoch.
+GET_SECONDS_FROM_EPOCH:
     MOVE.L	A6,-(A7)		;33a5c: 2f0e
+
     MOVEA.L	GLOB_REF_UTILITY_LIBRARY,A6
     MOVEA.L	8(A7),A0		;33a64: 206f0008
     JSR     _LVODate2Amiga(A6)
-    MOVEA.L	(A7)+,A6		;33a6c: 2c5f
+    
+	MOVEA.L	(A7)+,A6		;33a6c: 2c5f
     RTS
 
 ;!======
