@@ -208,7 +208,7 @@ LAB_0016:
 LAB_0017:
     LINK.W  A5,#-32
     MOVEM.L D2-D7,-(A7)
-LAB_0018:
+;LAB_0018:
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A0
     MOVE.L  56(A0),-4(A5)
     MOVEA.L -4(A5),A0
@@ -216,13 +216,13 @@ LAB_0018:
     MOVE.L  A0,-8(A5)
     MOVEQ   #2,D0
     CMP.B   5(A0),D0
-    BNE.W   LAB_001C
+    BNE.W   .LAB_001C
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A0
     MOVE.L  52(A0),-12(A5)
     MOVE.W  20(A0),D0
     MOVEQ   #33,D1
     CMP.W   D1,D0
-    BHI.W   LAB_001B
+    BHI.W   .LAB_001B
     PEA     250.W
     JSR     LAB_0021(PC)
     ADDQ.W  #4,A7
@@ -310,10 +310,10 @@ LAB_0018:
     MOVEQ   #47,D0
     JSR     _LVOText(A6)
 
-SOFTLOCK_ATTENTION_SYSTEM_ENGINEER:
-    BRA.S   SOFTLOCK_ATTENTION_SYSTEM_ENGINEER
+.softLockAtAttentionSystemEngineer:
+    BRA.S   .softLockAtAttentionSystemEngineer
 
-LAB_001B:
+.LAB_001B:
     MOVEA.L -4(A5),A0
     MOVE.W  14(A0),D7
     EXT.L   D7
@@ -358,15 +358,15 @@ LAB_001B:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFreeMem(A6)
 
-    BRA.S   LAB_001D
-LAB_001C:
+    BRA.S   .LAB_001D
+.LAB_001C:
     PEA     LAB_1AF3
     JSR     LAB_0022(PC)
     CLR.L   (A7)
     JSR     LAB_0024(PC)
     ADDQ.W  #4,A7
 
-LAB_001D:
+.LAB_001D:
     MOVEM.L (A7)+,D2-D7
     UNLK    A5
     RTS
@@ -475,22 +475,22 @@ LAB_002B:
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
     CMPI.W  #$fa00,D1
-    BNE.S   LAB_002C
+    BNE.S   .LAB_002C
     MOVEQ   #0,D1
-LAB_002C:
+.LAB_002C:
     MOVE.W  D1,LAB_2289
     MOVE.L  D0,-(A7)
     MOVE.W  LAB_2288,D0
     SUB.W   D1,D0
-    BCC.W   LAB_002D
+    BCC.W   .LAB_002D
     ADDI.W  #$fa00,D0
-LAB_002D:
+.LAB_002D:
     CMPI.W  #$0102,LAB_1F45
-    BNE.W   LAB_002E
+    BNE.W   .LAB_002E
     CMPI.W  #$bb80,D0
-    BCC.W   LAB_002E
+    BCC.W   .LAB_002E
     MOVE.W  #$0000,LAB_1F45
-LAB_002E:
+.LAB_002E:
     MOVE.L  (A7)+,D0
     RTS
 
@@ -542,9 +542,9 @@ LAB_0031:
     MOVEQ   #7,D0
     LEA     LAB_1AFF,A5
     MOVEQ   #0,D1
-LAB_0032:
+.LAB_0032:
     MOVE.B  D1,(A5)+
-    DBF     D0,LAB_0032
+    DBF     D0,.LAB_0032
     RTS
 
 ;!======
@@ -637,15 +637,17 @@ LAB_003E:
 callCTRL:
     MOVE.L  A5,-(A7)
     MOVE.L  A4,-(A7)
+
     JSR     readCTRL
     LEA     LAB_1DC8,A4
     MOVE.B  18(A4),D1
-    CMPI.B  #$4e,D1
-    BNE.S   LAB_0040
+    CMPI.B  #$4e,D1         ; Compare D1 with 4e ('N')
+    BNE.S   .LAB_0040
     JSR     LAB_0030(PC)
-LAB_0040:
+.LAB_0040:
     MOVEA.L #$00dff000,A0
     MOVE.W  #$0100,156(A0)
+
     MOVEA.L (A7)+,A4
     MOVEA.L (A7)+,A5
     RTS
@@ -690,16 +692,16 @@ LAB_0043:
 ;!======
 
 LAB_0044:
-    MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1AF8
-    MOVE.W  D0,LAB_1AFB
-    MOVE.W  D0,LAB_1AFA
+    MOVEQ   #0,D0           ; Set D0 to 0
+    MOVE.W  D0,LAB_1AF8     ; Set LAB_1AF8 to D0 (0)
+    MOVE.W  D0,LAB_1AFB     ; Set LAB_1AFB to D0 (0)
+    MOVE.W  D0,LAB_1AFA     ; Set LAB_1AFA to D0 (0)
     RTS
 
 ;!======
 
 LAB_0045:
-    MOVEQ   #94,D1
+    MOVEQ   #94,D1              ; Move 94 ('^') into D1
     CMP.W   D1,D0
     BGE.S   LAB_0046
     JSR     LAB_003E(PC)
@@ -715,42 +717,42 @@ LAB_0045:
 LAB_0046:
     JSR     LAB_003E(PC)
     TST.B   D1
-    BMI.S   LAB_004C
+    BMI.S   .LAB_004C
     LEA     LAB_1AFE,A5
     ADDA.W  LAB_1AFB,A5
     MOVE.W  LAB_1AFB,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
-LAB_0047:
+.LAB_0047:
     TST.B   -(A5)
-    BMI.S   LAB_0048
+    BMI.S   .LAB_0048
     BSET    D1,D0
-    BRA.S   LAB_0049
-LAB_0048:
+    BRA.S   .LAB_0049
+.LAB_0048:
     BCLR    D1,D0
-LAB_0049:
-    DBF     D1,LAB_0047
+.LAB_0049:
+    DBF     D1,.LAB_0047
     LEA     CTRL_BUFFER,A1
     MOVE.W  CTRL_H,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)+
     ADDQ.W  #1,D1
     CMPI.W  #$01f4,D1
-    BNE.S   LAB_004A
+    BNE.S   .LAB_004A
     MOVEQ   #0,D1
-LAB_004A:
+.LAB_004A:
     MOVE.W  D1,CTRL_H
     MOVE.W  D1,D0
     MOVE.W  LAB_2282,D1
     SUB.W   D1,D0
-    BCC.W   LAB_004B
+    BCC.W   .LAB_004B
     ADDI.W  #$01f4,D0
-LAB_004B:
+.LAB_004B:
     MOVE.W  D0,LAB_2284
     CMP.W   LAB_2283,D0
-    BCS.W   LAB_004C
+    BCS.W   .LAB_004C
     MOVE.W  D0,LAB_2283
-LAB_004C:
+.LAB_004C:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1AF8
     MOVE.W  D0,LAB_1AFB
@@ -769,9 +771,9 @@ getCTRLBuffer:
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
     CMPI.W  #$01f4,D1
-    BNE.S   LAB_004F
+    BNE.S   .LAB_004F
     MOVEQ   #0,D1
-LAB_004F:
+.LAB_004F:
     MOVE.W  D1,LAB_2282
     RTS
 
@@ -790,15 +792,15 @@ LAB_0050:
     MULS    #$0005,D1
     ADDA.W  D1,A0
     LEA     LAB_1B04,A1
-LAB_0051:
+.LAB_0051:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   LAB_0051
+    BNE.S   .LAB_0051
     ADDQ.L  #1,D0
     MOVEQ   #20,D1
     CMP.L   D1,D0
-    BLT.S   LAB_0052
+    BLT.S   .LAB_0052
     MOVEQ   #0,D0
-LAB_0052:
+.LAB_0052:
     MOVE.L  D0,LAB_231B
     MOVEM.L (A7)+,D0-D1/A0-A1
     RTS
@@ -890,9 +892,9 @@ LAB_0059:
     ADD.W   D0,D0
     SWAP    D0
     TST.B   D0
-    BNE.S   LAB_005A
+    BNE.S   .LAB_005A
     MOVEQ   #0,D0
-LAB_005A:
+.LAB_005A:
     ROL.L   #5,D0
 
     MOVEM.L D2-D4/A6,-(A7)
@@ -900,7 +902,7 @@ LAB_005A:
     MOVE.W  D1,D3
     BCLR    #8,D3
     MOVEQ   #15,D4
-LAB_005B:
+.LAB_005B:
     MOVE.W  A6,D2
     AND.W   D0,D2
     OR.W    D3,D2
@@ -915,7 +917,7 @@ LAB_005B:
     ADDQ.L  #8,A0
     ADDQ.L  #8,A1
     ROL.L   #1,D0
-    DBF     D4,LAB_005B
+    DBF     D4,.LAB_005B
     MOVE.W  D1,(A0)
     MOVE.W  D1,(A1)
     MOVE.W  D1,136(A0)
@@ -955,24 +957,24 @@ LAB_005D:
     MOVE.W  D2,D3
     SUBI.W  #$0004,D3
     MOVE.W  0(A1,D2.W),D0
-LAB_005E:
+.LAB_005E:
     CMP.W   D1,D2
-    BMI.W   LAB_0060
+    BMI.W   .LAB_0060
     MOVE.W  0(A1,D3.W),0(A1,D2.W)
     CMP.W   D2,D4
-    BMI.W   LAB_005F
+    BMI.W   .LAB_005F
     MOVE.W  0(A1,D3.W),0(A0,D2.W)
-LAB_005F:
+.LAB_005F:
     SUBI.W  #$0004,D2
     SUBI.W  #$0004,D3
-    BRA.S   LAB_005E
-LAB_0060:
+    BRA.S   .LAB_005E
+.LAB_0060:
     MOVE.W  D0,0(A1,D1.W)
     CMP.W   D2,D4
-    BMI.W   LAB_0061
-    BEQ.W   LAB_0061
+    BMI.W   .LAB_0061
+    BEQ.W   .LAB_0061
     MOVE.W  D0,0(A0,D1.W)
-LAB_0061:
+.LAB_0061:
     MOVEM.L (A7)+,D2-D4
     RTS
 
@@ -995,23 +997,23 @@ LAB_0062:
     MOVEQ   #4,D3
     ADD.W   D1,D3
     MOVE.W  0(A1,D1.W),D0
-LAB_0063:
+.LAB_0063:
     CMP.W   D2,D1
-    BPL.W   LAB_0065
+    BPL.W   .LAB_0065
     MOVE.W  0(A1,D3.W),0(A1,D1.W)
     CMP.W   D4,D1
-    BPL.W   LAB_0064
+    BPL.W   .LAB_0064
     MOVE.W  0(A1,D3.W),0(A0,D1.W)
-LAB_0064:
+.LAB_0064:
     ADDI.W  #$0004,D1
     ADDI.W  #$0004,D3
-    BRA.S   LAB_0063
-LAB_0065:
+    BRA.S   .LAB_0063
+.LAB_0065:
     MOVE.W  D0,0(A1,D1.W)
     CMP.W   D4,D1
-    BPL.W   LAB_0066
+    BPL.W   .LAB_0066
     MOVE.W  D0,0(A0,D1.W)
-LAB_0066:
+.LAB_0066:
     MOVEM.L (A7)+,D2-D4
     RTS
 
@@ -1023,20 +1025,20 @@ LAB_0067:
     LEA     LAB_1E55,A3
     MOVE.W  #$0000,D5
     MOVEQ   #7,D4
-LAB_0068:
+.LAB_0068:
     MOVE.W  0(A2,D5.W),D0
     JSR     LAB_006D
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,LAB_0068
+    DBF     D4,.LAB_0068
     MOVEQ   #23,D4
-LAB_0069:
+.LAB_0069:
     MOVE.W  0(A2,D5.W),D0
     JSR     LAB_006D
     MOVE.W  D0,0(A2,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,LAB_0069
+    DBF     D4,.LAB_0069
     MOVEM.L (A7)+,D2-D5/A2-A3
     RTS
 
@@ -1052,16 +1054,16 @@ LAB_006A:
     LEA     LAB_1E5B,A3
     MOVE.W  #$0000,D5
     MOVEQ   #7,D4
-LAB_006B:
+.LAB_006B:
     CMPI.W  #$0004,D5
-    BEQ.W   LAB_006C
+    BEQ.W   .LAB_006C
     MOVE.W  0(A2,D5.W),D0
     JSR     LAB_006D
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
-LAB_006C:
+.LAB_006C:
     ADDQ.W  #4,D5
-    DBF     D4,LAB_006B
+    DBF     D4,.LAB_006B
     MOVEM.L (A7)+,D2-D5/A2-A3
     RTS
 
@@ -1074,17 +1076,17 @@ LAB_006D:
     ANDI.W  #$00f0,D2
     ANDI.W  #$000f,D0
     TST.W   D1
-    BEQ.S   LAB_006E
+    BEQ.S   .LAB_006E
     SUBI.W  #$0100,D1
-LAB_006E:
+.LAB_006E:
     TST.W   D2
-    BEQ.S   LAB_006F
+    BEQ.S   .LAB_006F
     SUBI.W  #$0010,D2
-LAB_006F:
+.LAB_006F:
     TST.W   D0
-    BEQ.S   LAB_0070
+    BEQ.S   .LAB_0070
     SUBI.W  #$0001,D0
-LAB_0070:
+.LAB_0070:
     ADD.W   D1,D0
     ADD.W   D2,D0
     RTS
@@ -1098,20 +1100,20 @@ LAB_0071:
     LEA     LAB_1E55,A3
     MOVE.W  #$0000,D5
     MOVEQ   #7,D4
-LAB_0072:
+.LAB_0072:
     MOVE.W  0(A2,D5.W),D0
     JSR     LAB_0077
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,LAB_0072
+    DBF     D4,.LAB_0072
     MOVEQ   #23,D4
-LAB_0073:
+.LAB_0073:
     MOVE.W  0(A2,D5.W),D0
     JSR     LAB_0077
     MOVE.W  D0,0(A2,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,LAB_0073
+    DBF     D4,.LAB_0073
     MOVEM.L (A7)+,D2-D6/A2-A3
     RTS
 
@@ -1127,16 +1129,16 @@ LAB_0074:
     LEA     LAB_1E5B,A3
     MOVE.W  #$0000,D5
     MOVEQ   #7,D4
-LAB_0075:
+.LAB_0075:
     CMPI.W  #$0004,D5
-    BEQ.W   LAB_0076
+    BEQ.W   .LAB_0076
     MOVE.W  0(A2,D5.W),D0
     JSR     LAB_0077
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
-LAB_0076:
+.LAB_0076:
     ADDQ.W  #4,D5
-    DBF     D4,LAB_0075
+    DBF     D4,.LAB_0075
     MOVEM.L (A7)+,D2-D5/A2-A3
     RTS
 
@@ -1623,10 +1625,10 @@ LAB_00B7:
 ;!======
 
 LAB_00B8:
-    MOVEQ   #0,D0
-    MOVE.B  LAB_2253,D0
-    TST.B   LAB_2206
-    BNE.S   LAB_00BA
+    MOVEQ   #0,D0           ; Move 0 into D0
+    MOVE.B  LAB_2253,D0     ; Move the byte in LAB_2253 to D0
+    TST.B   LAB_2206        ; Test LAB_2206 against 0
+    BNE.S   .LAB_00BA        ; If it's not equal, jump to .LAB_00BA
     MOVE.L  4(A7),D0
     MOVEA.L 8(A7),A0
     MOVE.L  12(A7),D1
@@ -1635,13 +1637,13 @@ LAB_00B8:
     SUBQ.W  #1,D2
     EORI.B   #$ff,D0
     MOVEQ   #0,D1
-LAB_00B9:
+.LAB_00B9:
     MOVE.B  (A0)+,D1
     EOR.B   D1,D0
-    DBF     D2,LAB_00B9
+    DBF     D2,.LAB_00B9
     ANDI.L  #$000000ff,D0
     MOVE.L  (A7)+,D2
-LAB_00BA:
+.LAB_00BA:
     RTS
 
 ;!======
@@ -4323,9 +4325,9 @@ LAB_01B7:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 LAB_01B8:
-    TST.L   LAB_1DE6
+    TST.L   GLOB_REF_CURRENT_FONT
     BEQ.S   LAB_01B9
-    MOVEA.L LAB_1DE6,A1
+    MOVEA.L GLOB_REF_CURRENT_FONT,A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 LAB_01B9:
@@ -20098,11 +20100,14 @@ LAB_0713:
     MOVEQ   #3,D0
     MOVE.L  #$000002b8,D1
     MOVE.L  #$00000190,D2
+
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
-    MOVEA.L LAB_2217,A1
-    MOVEA.L LAB_1DE6,A0
+
+    MOVEA.L LAB_2217,A1         ; rastport
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0         ; font
     JSR     _LVOSetFont(A6)
+
     JSR     LAB_071E(PC)
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2252
@@ -20117,7 +20122,7 @@ LAB_0713:
     MOVE.L  LAB_2262,-(A7)
     MOVE.L  LAB_2260,-(A7)
     JSR     LAB_098A(PC)
-    JSR     LAB_071C(PC)
+    JSR     JMP_TBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7(PC)
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
     CMP.L   LAB_21E4,D0
@@ -20264,8 +20269,8 @@ LAB_071B:
 
 ;!======
 
-LAB_071C:
-    JMP     LAB_0FF1
+JMP_TBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
+    JMP     DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
 LAB_071D:
     JMP     LAB_0F12
 
@@ -24106,13 +24111,13 @@ LAB_086A:
     LEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT,A0
     MOVEA.L GLOB_REF_DISKFONT_LIBRARY,A6
     JSR     _LVOOpenDiskFont(A6)
-    MOVE.L  D0,LAB_1DE6
+    MOVE.L  D0,GLOB_REF_CURRENT_FONT
 
     ; If we couldn't open the font, jump
     TST.L   D0
     BNE.S   LAB_086B
 
-    MOVE.L  GLOB_HANDLE_TOPAZ_FONT,LAB_1DE6
+    MOVE.L  GLOB_HANDLE_TOPAZ_FONT,GLOB_REF_CURRENT_FONT
 LAB_086B:
     ; Open the "h26f.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_H26F_FONT,A0
@@ -24149,7 +24154,7 @@ LAB_086D:
     MOVEA.L LAB_2217,A0
     MOVE.L  #LAB_221B,4(A0)
     MOVEA.L LAB_2217,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     MOVEQ   #68,D0
@@ -24178,7 +24183,7 @@ LAB_086E:
     MOVEA.L LAB_2218,A0
     MOVE.L  #LAB_2219,4(A0)
     MOVEA.L LAB_2218,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     MOVEQ   #0,D5
@@ -24400,16 +24405,16 @@ LAB_087E:
     TST.L   D0
     BEQ.W   LAB_089B
 
-    MOVEA.L D0,A1
-    LEA     GLOB_STR_SERIAL_DEVICE,A0
-    MOVEQ   #0,D0
-    MOVE.L  D0,D1
+    MOVEA.L D0,A1                       ; ioRequest
+    LEA     GLOB_STR_SERIAL_DEVICE,A0   ; devName
+    MOVEQ   #0,D0                       ; unit number
+    MOVE.L  D0,D1                       ; flags
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenDevice(A6)
     
     MOVE.L  D0,D6      ; Copy D0 into D6
     TST.L   D6         ; Test D6 to see if it's 0 (failed)
-    BNE.W   LAB_089B    ; Branch if unable to open serial device
+    BNE.W   LAB_089B   ; Branch if unable to open serial device
 
     MOVEA.L LAB_2211,A0
     MOVE.B  #$10,79(A0)
@@ -25124,7 +25129,7 @@ LAB_08C1:
     MOVE.L  A2,64(A3)
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     LEA     60(A3),A0
@@ -27881,7 +27886,7 @@ LAB_09A6:
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     MOVEA.L A0,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     MOVEM.L -188(A5),D2-D7
@@ -28374,7 +28379,7 @@ LAB_09EE:
     JSR     _LVOSetAPen(A6)
     LEA     36(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
     LEA     36(A3),A0
     MOVEA.L A0,A1
@@ -28400,7 +28405,7 @@ LAB_09EE:
     JSR     LAB_0AB4(PC)
     LEA     28(A7),A7
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D5,D1
     ADDQ.L  #1,D1
@@ -28451,7 +28456,7 @@ LAB_09F2:
     JSR     LAB_0AB6(PC)
     ADD.L   -44(A5),D0
     MOVEQ   #0,D1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     MOVE.L  D0,D6
@@ -31739,43 +31744,43 @@ LAB_0B4F:
     MOVE.W  LAB_229F,D1
     MOVE.B  D0,-5(A5)
     TST.W   D1
-    BNE.S   LAB_0B52
-    MOVEQ   #85,D1
+    BNE.S   .LAB_0B52
+    MOVEQ   #85,D1          ; Copy 85 ('U') into D1
     CMP.B   D1,D0
-    BNE.S   LAB_0B50
-    MOVEQ   #1,D1
+    BNE.S   .LAB_0B50
+    MOVEQ   #1,D1           ; Copy 1 into D1
     MOVE.W  D1,LAB_229E
-    MOVEQ   #0,D2
+    MOVEQ   #0,D2           ; Copy 0 into D2
     MOVE.W  D2,LAB_229F
     BRA.W   LAB_0BE5
-LAB_0B50:
+.LAB_0B50:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #85,D2
     ADD.L   D2,D2
     CMP.L   D2,D1
-    BNE.S   LAB_0B51
+    BNE.S   .LAB_0B51
     MOVE.W  LAB_229E,D1
     SUBQ.W  #1,D1
-    BNE.S   LAB_0B51
+    BNE.S   .LAB_0B51
     MOVEQ   #0,D1
     MOVE.W  D1,LAB_229E
     MOVEQ   #1,D2
     MOVE.W  D2,LAB_229F
     BRA.W   LAB_0BE5
-LAB_0B51:
+.LAB_0B51:
     MOVEQ   #0,D1
     MOVE.W  D1,LAB_229E
     MOVE.W  D1,LAB_229F
     BRA.W   LAB_0BE5
-LAB_0B52:
+.LAB_0B52:
     SUBQ.W  #1,D1
     BNE.W   cmdTableDATA
     MOVE.W  LAB_22A0,D1
     BNE.W   cmdTableDATA
     MOVEQ   #65,D1
     CMP.B   D1,D0
-    BNE.W   LAB_0B55
+    BNE.W   .LAB_0B55
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -31794,11 +31799,11 @@ LAB_0B52:
     MOVEQ   #0,D1
     MOVE.B  LAB_2253,D1
     CMP.L   D1,D0
-    BNE.S   LAB_0B54
+    BNE.S   .LAB_0B54
     MOVE.W  LAB_2232,D0
     MOVEQ   #16,D1
     CMP.W   D1,D0
-    BHI.S   LAB_0B53
+    BHI.S   .LAB_0B53
     MOVE.L  LAB_229A,-(A7)
     JSR     LAB_0C0A(PC)
     ADDQ.W  #4,A7
@@ -31806,7 +31811,7 @@ LAB_0B52:
     MOVE.B  D0,D1
     MOVE.W  D1,LAB_22A0
     SUBQ.W  #1,D1
-    BNE.S   LAB_0B57
+    BNE.S   .clearValues
     MOVE.W  #$0001,LAB_22A1
     PEA     1.W
     PEA     2.W
@@ -31817,41 +31822,54 @@ LAB_0B52:
     MOVE.W  LAB_2285,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_2285
-    BRA.S   LAB_0B57
-LAB_0B53:
+    BRA.S   .clearValues
+.LAB_0B53:
     MOVE.W  LAB_2287,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_2287
-    BRA.S   LAB_0B57
-LAB_0B54:
-    MOVE.W  DATACErrs,D0
-    ADDQ.W  #1,D0
-    MOVE.W  D0,DATACErrs
-    BRA.S   LAB_0B57
-LAB_0B55:
+    BRA.S   .clearValues
+
+;!======
+
+; Increment the number of DATACErrs encountered
+.LAB_0B54:
+    MOVE.W  DATACErrs,D0    ; Move DATACErrs to D0
+    ADDQ.W  #1,D0           ; Add 1 to D0
+    MOVE.W  D0,DATACErrs    ; Move D0 back to DATACErrs
+    BRA.S   .clearValues    ; Clear the values
+
+;!======
+
+.LAB_0B55:
     MOVEQ   #87,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0B56
+    BNE.S   .LAB_0B56
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
     JSR     LAB_0BFF(PC)
     ADDQ.W  #4,A7
-    BRA.S   LAB_0B57
-LAB_0B56:
-    MOVEQ   #119,D1
-    CMP.B   D1,D0
-    BNE.S   LAB_0B57
-    MOVEQ   #0,D1
-    MOVE.B  D0,D1
-    MOVE.L  D1,-(A7)
-    JSR     LAB_0BED(PC)
-    ADDQ.W  #4,A7
-LAB_0B57:
-    MOVEQ   #0,D0
-    MOVE.W  D0,LAB_229E
-    MOVE.W  D0,LAB_229F
+    BRA.S   .clearValues
+
+;!======
+
+.LAB_0B56:
+    MOVEQ   #119,D1         ; Copy 119 ('w') into D1
+    CMP.B   D1,D0           ; Compare 'w' in D1 to D0
+    BNE.S   .clearValues    ; If they're not equal, jump to clear values
+    MOVEQ   #0,D1           ; Move 0 into D1 to clear out all the bits
+    MOVE.B  D0,D1           ; Then move a byte from D0 into D1
+    MOVE.L  D1,-(A7)        ; Push D1 to the stack
+    JSR     LAB_0BED(PC)    ; Jump to LAB_0BED(PC)
+    ADDQ.W  #4,A7           ; Add 4 to the stack (nuking the last value in it)
+.clearValues:               ; Clear out LAB_229E and LAB_229F
+    MOVEQ   #0,D0           ; Copy 0 into D0
+    MOVE.W  D0,LAB_229E     ; Copy D0 (0) into LAB_229E
+    MOVE.W  D0,LAB_229F     ; Copy D0 (0) into LAB_229F
     BRA.W   LAB_0BE5
+
+;!======
+
 cmdTableDATA:
     ; https://prevueguide.com/Documentation/D2400.pdf
     MOVE.W  LAB_229F,D0
@@ -31860,6 +31878,7 @@ cmdTableDATA:
     MOVE.W  LAB_22A0,D0
     SUBQ.W  #1,D0
     BNE.W   LAB_0BE5
+
     MOVEQ   #0,D0 ; Move 0 into D0 to clear it out
     MOVE.B  -5(A5),D0 ; Copy the byte at -5(A5) which is the byte from serial to D0
 
@@ -42062,7 +42081,7 @@ LAB_0E8F:
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     MOVEA.L A0,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     TST.L   -4(A5)
@@ -44779,7 +44798,7 @@ LAB_0FA4:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
     MOVEA.L LAB_1FFC,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
     MOVE.L  #$00010001,-(A7)
     PEA     100.W
@@ -44802,9 +44821,9 @@ LAB_0FA4:
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L LAB_1FFD,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
-    BSR.W   LAB_0FF1
+    BSR.W   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
 
     MOVEQ   #8,D0      ; only use 8 chars ... is this for call signs?
     MOVEA.L LAB_1FFC,A1
@@ -44841,7 +44860,7 @@ LAB_0FA4:
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_2328
 LAB_0FA5:
-    BSR.W   LAB_0FF1
+    BSR.W   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
 LAB_0FA6:
     RTS
 
@@ -45684,9 +45703,9 @@ LAB_0FED:
     MOVEQ   #21,D0
     MOVEA.L A3,A0
     LEA     -22(A5),A1
-LAB_0FEE:
+.LAB_0FEE:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_0FEE
+    DBF     D0,.LAB_0FEE
     PEA     -22(A5)
     JSR     LAB_1028(PC)
     MOVE.L  D0,D7
@@ -45715,9 +45734,9 @@ LAB_0FEF:
     MOVEQ   #21,D0
     MOVEA.L A3,A0
     LEA     -22(A5),A1
-LAB_0FF0:
+.LAB_0FF0:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_0FF0
+    DBF     D0,.LAB_0FF0
     PEA     -22(A5)
     JSR     LAB_1028(PC)
     MOVE.L  D0,D7
@@ -45739,22 +45758,21 @@ LAB_0FF0:
 
 ;!======
 
-; This is clearly a re-usable subroutine to draw a rectangle given
-; it's preserving some registers.
-LAB_0FF1:
+; This is clearly a re-usable subroutine to draw a rectangle
+DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L LAB_1FFD,A1
-    MOVEQ   #7,D0
+    MOVEA.L LAB_1FFD,A1         ; rastport
+    MOVEQ   #7,D0               ; pen #7
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,0 to 695,1
-    MOVEA.L LAB_1FFD,A1
-    MOVEQ   #0,D0
-    MOVE.L  D0,D1
-    MOVE.L  #695,D2
-    MOVEQ   #1,D3
+    MOVEA.L LAB_1FFD,A1         ; rastport
+    MOVEQ   #0,D0               ; x.min = 0
+    MOVE.L  D0,D1               ; y.min = 0
+    MOVE.L  #695,D2             ; x.max = 695
+    MOVEQ   #1,D3               ; y.max = 1
     JSR     _LVORectFill(A6)
 
     MOVEM.L (A7)+,D2-D3
@@ -46387,7 +46405,7 @@ LAB_101B:
     BSR.W   LAB_0FF3
     BRA.S   LAB_101D
 LAB_101C:
-    BSR.W   LAB_0FF1
+    BSR.W   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
 LAB_101D:
     UNLK    A5
     RTS
@@ -57026,8 +57044,10 @@ LAB_1410:
 LAB_1411:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
+
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
+
     MOVEQ   #0,D7
     TST.L   (A3)
     BEQ.S   LAB_1415
@@ -57035,6 +57055,7 @@ LAB_1411:
     MOVEA.L GLOB_HANDLE_TOPAZ_FONT,A1
     CMPA.L  A0,A1
     BEQ.S   LAB_1412
+
     MOVEA.L A0,A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
@@ -57051,9 +57072,11 @@ LAB_1412:
     JSR     _LVOFreeMem(A6)
 LAB_1413:
     JSR     _LVOPermit(A6)
+
     MOVEA.L A2,A0
     MOVEA.L GLOB_REF_DISKFONT_LIBRARY,A6
     JSR     _LVOOpenDiskFont(A6)
+
     MOVE.L  D0,(A3)
     BNE.S   LAB_1414
     MOVE.L  GLOB_HANDLE_TOPAZ_FONT,(A3)
@@ -57068,6 +57091,7 @@ LAB_1415:
 
 ;!======
 
+; we're doing a bunch of font stuff in here!
 LAB_1416:
     LINK.W  A5,#-88
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
@@ -57145,7 +57169,7 @@ LAB_141C:
     JSR     LAB_145A(PC)
     BRA.W   LAB_142D
 LAB_141D:
-    PEA GLOB_STRUCT_TEXTATTR_H26F_FONT
+    PEA     GLOB_STRUCT_TEXTATTR_H26F_FONT
     PEA     LAB_1DE7
     BSR.W   LAB_1411
     ADDQ.W  #8,A7
@@ -57153,35 +57177,43 @@ LAB_141D:
     BEQ.W   LAB_142D
     TST.W   LAB_2263
     BEQ.W   LAB_142D
+
     MOVEA.L LAB_2217,A1
     MOVEA.L LAB_1DE7,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
+
     BRA.W   LAB_142D
 LAB_141E:
-    PEA GLOB_STRUCT_TEXTATTR_PREVUEC_FONT
-    PEA     LAB_1DE6
+    PEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT
+    PEA     GLOB_REF_CURRENT_FONT
     BSR.W   LAB_1411
+
     ADDQ.W  #8,A7
     TST.W   D0
     BEQ.W   LAB_142D
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
+
     MOVEA.L A0,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
+
     MOVEA.L LAB_2217,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
+
     MOVEA.L LAB_2218,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
+
     MOVEA.L LAB_1FFC,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
+
     MOVEA.L LAB_1FFD,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
     MOVEQ   #0,D6
 LAB_141F:
@@ -57195,13 +57227,13 @@ LAB_141F:
     LEA     LAB_22A6,A0
     ADDA.L  D0,A0
     LEA     60(A0),A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     ADDQ.L  #1,D6
     BRA.S   LAB_141F
 LAB_1420:
-    MOVE.L  LAB_1DE6,-(A7)
+    MOVE.L  GLOB_REF_CURRENT_FONT,-(A7)
     JSR     LAB_1858
     ADDQ.W  #4,A7
     BRA.W   LAB_142D
@@ -58465,6 +58497,9 @@ j_getCTRLBuffer:
     JMP     getCTRLBuffer
 LAB_14C3:
     JMP     LAB_002B
+
+;!======
+
 LAB_14C4:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
@@ -67601,7 +67636,7 @@ LAB_1839:
     BSR.W   LAB_1836
     LEA     12(A7),A7
     MOVEA.L A3,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     MOVEA.L (A7)+,A3
@@ -67628,7 +67663,7 @@ LAB_183A:
     MOVE.W  4(A1),D5
     ADDA.L  D0,A0
     LEA     10(A0),A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
     MOVE.L  D7,D0
@@ -68671,10 +68706,10 @@ LAB_1866:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
     MOVEA.L A3,A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  26(A0),D0
     MOVE.L  D6,D1
     SUB.L   D0,D1
@@ -68795,7 +68830,7 @@ LAB_1870:
     ASR.L   #1,D1
     MOVE.L  D1,D5
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D6,D1
     SUB.L   D0,D1
@@ -68818,7 +68853,7 @@ LAB_1870:
     JSR     _LVOText(A6)
 LAB_1871:
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  -152(A5),D1
     ADDQ.L  #1,D1
@@ -68876,7 +68911,7 @@ LAB_1875:
     ADD.L   D0,D1
     ADD.L   -176(A5),D1
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  26(A0),D0
     ADD.L   D0,D1
     MOVEQ   #0,D2
@@ -69014,7 +69049,7 @@ LAB_187F:
 LAB_1880:
     ASR.L   #1,D1
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D6,D2
     SUB.L   D0,D2
@@ -69195,7 +69230,7 @@ LAB_188C:
     MOVE.L  -12(A5),D3
     SUB.L   D3,D1
     MOVEQ   #0,D4
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  26(A0),D4
     SUB.L   D4,D1
     SUBQ.L  #5,D1
@@ -69385,7 +69420,7 @@ LAB_189A:
     JSR     LAB_18D5(PC)
     LEA     24(A7),A7
     MOVEQ   #0,D1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D1
     ADDQ.L  #4,D1
     ADD.L   D1,-64(A5)
@@ -69469,7 +69504,7 @@ LAB_18A2:
     MOVE.L  D5,D1
     SUB.L   -12(A5),D1
     MOVEQ   #0,D2
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D2
     SUB.L   D2,D1
     SUBQ.L  #5,D1
@@ -69556,7 +69591,7 @@ LAB_18A9:
 LAB_18AA:
     ASR.L   #1,D1
     MOVEQ   #0,D0
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D6,D2
     SUB.L   D0,D2
@@ -69629,7 +69664,7 @@ LAB_18AE:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
     MOVEA.L -12(A5),A1
-    MOVEA.L LAB_1DE6,A0
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
     MOVEQ   #48,D0
     CMP.L   D0,D7
@@ -76386,7 +76421,7 @@ LAB_1DE4:
     DS.W    1
 LAB_1DE5:
     DS.W    1
-LAB_1DE6:
+GLOB_REF_CURRENT_FONT:
     DS.L    1
 LAB_1DE7:
     DS.L    1
