@@ -4,80 +4,48 @@
 
     include "lvo-offsets.s"
     include "string-macros.s"
+    include "text-formatting.s"
+    include "hardware-addresses.s"
 
-; Text formatting stuff
-; https://wiki.amigaos.net/wiki/AmigaOS_Manual:_Control_Sequences
-TextHorizontalTab   = 9
-TextLineFeed        = 10
-TextCarriageReturn  = 13
-; https://prevueguide.com/wiki/UVSG_Satellite_Data#Text_Alignment_Bytes
-TextAlignCenter     = 24
-TextAlignLeft       = 25
-
-; Some displacements
+; Some displacements/values of importance
 LocalDosLibraryDisplacement = 22832
-
-; 8520 CIA
-; https://amigadev.elowar.com/read/ADCD_2.1/Hardware_Manual_guide/node012E.html
-;; CIA (b) serial/parallel port (used for CTS/DSR bit-banging for CTRL)
-;; bit 4 = CTS
-;; bit 3 = DSR
-CIAB_PRA           = $BFD000
-;; CIA (a) parallel port (possibly used for genlock comms?)
-CIAA_PRB           = $BFE101
-;; port direction for PRB_CIAA
-;; 0 = input
-;; 1 = output
-CIAA_DDRB          = $BFE301
-
-; AGA Agnus (controller port I/O)
-; http://amigadev.elowar.com/read/ADCD_2.1/Hardware_Manual_guide/node017E.html
-; http://amiga-dev.wikidot.com/information:hardware#:~:text=Hardware%20Access-,OCS%20/%20ECS%20/%20AGA,-As%20described%20in
-;; Blitter destination data register
-BLTDDAT            = $DFF000
-;; Read light pen position
-VPOSR              = $DFF004
-;; Serial port data and stop bits write
-SERDAT             = $DFF030
-;; Coprocessor first location register (high 5 bits) (old-3 bits)
-COP1LCH            = $DFF080
-;; Interrupt enable bits (clear or set bits)
-INTENA             = $DFF09A
 
     SECTION S_0,CODE
 
 SECSTRT_0:
-    MOVEM.L D1-D6/A0-A6,-(A7) ; Backup registers to the stack
-    MOVEA.L A0,A2 ; A0 is a pointer to the command string at startup, copy to A2
-    MOVE.L  D0,D2 ; D0 is the length of the command string at startup, copy to D2
-    LEA     LAB_21BB,A4 ; Copy address of LAB_21BB into A4
+    MOVEM.L D1-D6/A0-A6,-(A7)   ; Backup registers to the stack
+    MOVEA.L A0,A2               ; A0 is a pointer to the command string at startup, copy to A2
+    MOVE.L  D0,D2               ; D0 is the length of the command string at startup, copy to D2
+    LEA     LAB_21BB,A4         ; Copy address of LAB_21BB into A4
     MOVEA.L AbsExecBase.W,A6
     LEA     BUFFER_5929_LONGWORDS,A3
     MOVEQ   #0,D1
     MOVE.L  #5929,D0
     BRA.S   .5929BufferCounterCompare
 .copyByteFromD1To5929Buffer:
-    MOVE.L  D1,(A3)+ ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
+    MOVE.L  D1,(A3)+            ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
 .5929BufferCounterCompare:
     DBF     D0,.copyByteFromD1To5929Buffer ; If our counter (D1) is not zero then jump to .copyByteFromD1To5929Buffer else continue
-    MOVE.L  A7,-600(A4) ; Copy the current stack pointer to -600(A4)
-    MOVE.L  A6,-608(A4) ; Copy A6 which should be AbsExecBase into -608(A4)
-    CLR.L   -604(A4)
-    MOVEQ   #0,D0 ; "Old" signals, 0x00000000
-    MOVE.L  #$00003000,D1 ; Signal mask: 0x00003000
+    MOVE.L  A7,-600(A4)         ; Copy the current stack pointer to -600(A4)
+    MOVE.L  A6,-608(A4)         ; Copy A6 which should be AbsExecBase into -608(A4)
+    CLR.L   -604(A4)            ; Clear the long at -604(A4)
+    MOVEQ   #0,D0               ; Old signal, 0x00000000 into D0
+    MOVE.L  #$00003000,D1       ; New signal mask: 0x00003000 into D1
     JSR     _LVOSetSignal(A6)
     LEA     LOCAL_STR_DOS_LIBRARY(PC),A1
+
     MOVEQ   #0,D0
-    JSR     _LVOOpenLibrary(A6) ; Open dos.library version 0 (any) locally
+    JSR     _LVOOpenLibrary(A6) ; Open dos.library version 0 (any) locally...
     MOVE.L  D0,LocalDosLibraryDisplacement(A4) ; and store it in a known location in memory (displacement + A4)
     BNE.S   .successfullyMadeLocalDOSLib
-    MOVEQ   #100,D0
-    BRA.W   LAB_000A
+
+    MOVEQ   #100,D0             ; If it wasn't opened, set D0 to 100
+    BRA.W   LAB_000A            ; and jump to LAB_000A
 .successfullyMadeLocalDOSLib:
-    MOVEA.L 276(A6),A3 ; A6 is AbsExecBase so is this 280?
+    MOVEA.L 276(A6),A3          ; A6 is AbsExecBase so is this 280?
     MOVE.L  152(A3),-612(A4)
     TST.L   172(A3)
-    BEQ.S   LAB_0005
+    BEQ.S   .LAB_0005
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
     ADDI.L  #128,D0
@@ -103,19 +71,19 @@ SECSTRT_0:
     MOVE.L  D2,D0
     SUBQ.L  #1,D0
     ADD.L   D1,D2
-LAB_0003:
+.LAB_0003:
     MOVE.B  0(A2,D0.W),0(A7,D2.W)
     SUBQ.L  #1,D2
-    DBF     D0,LAB_0003
+    DBF     D0,.LAB_0003
     MOVE.B  #$20,0(A7,D2.W)
     SUBQ.L  #1,D2
-LAB_0004:
+.LAB_0004:
     MOVE.B  0(A1,D2.W),0(A7,D2.W)
-    DBF     D2,LAB_0004
+    DBF     D2,.LAB_0004
     MOVEA.L A7,A1
     MOVE.L  A1,-(A7)
-    BRA.S   LAB_0008
-LAB_0005:
+    BRA.S   .LAB_0008
+.LAB_0005:
     MOVE.L  58(A3),-660(A4)
     MOVEQ   #127,D0 ; ...
     ADDQ.L  #1,D0 ; 128 into D0
@@ -128,59 +96,62 @@ LAB_0005:
     MOVE.L  D0,-(A7)
     MOVEA.L D0,A2
     MOVE.L  36(A2),D0
-    BEQ.S   LAB_0006
+    BEQ.S   .LAB_0006
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     MOVEA.L D0,A0
     MOVE.L  0(A0),D1
     MOVE.L  D1,-612(A4)
     JSR     _LVOCurrentDir(A6)
-LAB_0006:
+.LAB_0006:
     MOVE.L  32(A2),D1
-    BEQ.S   LAB_0007
+    BEQ.S   .LAB_0007
     MOVE.L  #$000003ed,D2
     JSR     _LVOSupervisor(A6)
     MOVE.L  D0,-596(A4)
-    BEQ.S   LAB_0007
+    BEQ.S   .LAB_0007
     LSL.L   #2,D0
     MOVEA.L D0,A0
     MOVE.L  8(A0),164(A3)
-LAB_0007:
+.LAB_0007:
     MOVEA.L -604(A4),A0
     MOVE.L  A0,-(A7)
     PEA     -664(A4)
     MOVEA.L 36(A0),A0
     MOVE.L  4(A0),-592(A4)
-LAB_0008:
+.LAB_0008:
     JSR     LAB_0010(PC)
     JSR     LAB_0012(PC)
     MOVEQ   #0,D0
     BRA.S   LAB_000A
+
+;!======
+
 LAB_0009:
     MOVE.L  4(A7),D0
 LAB_000A:
     MOVE.L  D0,-(A7)
     MOVE.L  -620(A4),D0
-    BEQ.S   LAB_000B
+    BEQ.S   .LAB_000B
     MOVEA.L D0,A0
     JSR     (A0)
-LAB_000B:
+.LAB_000B:
     JSR     LAB_0011(PC)
     MOVEA.L AbsExecBase,A6
     MOVEA.L LocalDosLibraryDisplacement(A4),A1
     JSR     _LVOCloseLibrary(A6)
     JSR     LAB_000F(PC)
     TST.L   -604(A4)
-    BEQ.S   MAIN_RESTORE_REGISTERS_AND_TERMINATE
+    BEQ.S   .restoreRegistersAndTerminate
     MOVE.L  -596(A4),D1
-    BEQ.S   LAB_000C
+    BEQ.S   .LAB_000C
     JSR     _LVOexecPrivate1(A6) ; this might be inaccurate?
-LAB_000C:
+.LAB_000C:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
     MOVEA.L -604(A4),A1
     JSR     _LVOReplyMsg(A6)
 
-MAIN_RESTORE_REGISTERS_AND_TERMINATE:
+.restoreRegistersAndTerminate:
     MOVE.L  (A7)+,D0
     MOVEA.L -600(A4),A7
     MOVEM.L (A7)+,D1-D6/A0-A6
@@ -201,14 +172,16 @@ LAB_0012:
 
 ;!======
 
-CHECK_AVAILABLE_CHIP_MEMORY:
-    MOVEQ   #2,D1
-    MOVEA.L AbsExecBase,A6
-    JSR     _LVOAvailMem(A6)
-    CMPI.L  #$000927C0,D0 ; See if we have more than 600,000 bytes of available chip memory
-    BGE.S   CHECK_AVAILABLE_CHIP_MEMORY_RTS
-    MOVE.W  #$0001,HAS_REQUESTED_CHIP_MEMORY
-CHECK_AVAILABLE_CHIP_MEMORY_RTS:
+; If the system has at least 600,000 bytes of fast memory, keep HAS_REQUESTED_FAST_MEMORY set to 0.
+; Otherwise, set it to 1.
+CHECK_AVAILABLE_FAST_MEMORY:
+    MOVEQ   #2,D1               ; Set 2 to D1...
+    MOVEA.L AbsExecBase,A6      ; Check the available memory for type 2 (fast memory) in D1, and
+    JSR     _LVOAvailMem(A6)    ; store the result in D0.
+    CMPI.L  #$000927C0,D0       ; See if we have more than 600,000 bytes of available memory
+    BGE.S   CHECK_AVAILABLE_FAST_MEMORY_RTS ; If we have equal to or more than our target, jump to CHECK_AVAILABLE_FAST_MEMORY_RTS
+    MOVE.W  #$0001,HAS_REQUESTED_FAST_MEMORY; Set HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
+CHECK_AVAILABLE_FAST_MEMORY_RTS:
     RTS
 
 ;!======
@@ -2109,38 +2082,49 @@ LAB_00E8:
 
 ;!======
 
+; The moves and draws seem like this is making some kind of
+; outlined box... maybe with a shadow or bevel?
 LAB_00E9:
     MOVEM.L D4-D7/A3,-(A7)
+
+    ; why start at 24? because ...? does the stack contain the return address
+    ; to go to for RTS? what other stuff is there? or some other stuff from the
+    ; calling code?
     MOVEA.L 24(A7),A3
     MOVE.L  28(A7),D7
     MOVE.L  32(A7),D6
     MOVE.L  36(A7),D5
     MOVE.L  40(A7),D4
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     MOVE.W  #$ffff,34(A3)
     BSET    #0,33(A3)
     MOVE.B  #$0f,30(A3)
+
     MOVEA.L A3,A1
-    MOVE.L  D7,D0
-    MOVE.L  D6,D1
+    MOVE.L  D7,D0               ; x
+    MOVE.L  D6,D1               ; y
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L A3,A1
     MOVE.L  D7,D0
-    MOVE.L  D4,D1
+    MOVE.L  D4,D1               ; y
     JSR     _LVODraw(A6)
 
     MOVE.L  D7,D0
-    ADDQ.L  #1,D0
-    MOVEA.L A3,A1
-    MOVE.L  D6,D1
+
+    ADDQ.L  #1,D0               ; x
+    MOVEA.L A3,A1               ; rastport
+    MOVE.L  D6,D1               ; y
     JSR     _LVOMove(A6)
 
     MOVE.L  D7,D0
@@ -2150,9 +2134,9 @@ LAB_00E9:
     JSR     _LVODraw(A6)
 
     MOVE.L  D7,D0
-    ADDQ.L  #2,D0
-    MOVEA.L A3,A1
-    MOVE.L  D6,D1
+    ADDQ.L  #2,D0               ; x
+    MOVEA.L A3,A1               ; rastport
+    MOVE.L  D6,D1               ; y
     JSR     _LVOMove(A6)
 
     MOVE.L  D7,D0
@@ -2161,10 +2145,10 @@ LAB_00E9:
     MOVE.L  D4,D1
     JSR     _LVODraw(A6)
 
-    MOVE.L  D7,D0
-    ADDQ.L  #3,D0
-    MOVEA.L A3,A1
-    MOVE.L  D6,D1
+    MOVE.L  D7,D0               ; x = D7
+    ADDQ.L  #3,D0               ; x = x + 3
+    MOVEA.L A3,A1               ; rastport
+    MOVE.L  D6,D1               ; y = D1
     JSR     _LVOMove(A6)
 
     MOVE.L  D7,D0
@@ -2173,17 +2157,17 @@ LAB_00E9:
     MOVE.L  D4,D1
     JSR     _LVODraw(A6)
 
-    MOVEA.L A3,A1
-    MOVEQ   #2,D0
+    MOVEA.L A3,A1               ; rastport
+    MOVEQ   #2,D0               ; pen number
     JSR     _LVOSetAPen(A6)
 
     MOVE.W  #$ffff,34(A3)
     BSET    #0,33(A3)
     MOVE.B  #$0f,30(A3)
 
-    MOVEA.L A3,A1
-    MOVE.L  D5,D0
-    MOVE.L  D4,D1
+    MOVEA.L A3,A1               ; rastport
+    MOVE.L  D5,D0               ; x
+    MOVE.L  D4,D1               ; y
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
@@ -2216,16 +2200,16 @@ LAB_00E9:
     MOVE.L  D6,D1
     JSR     _LVODraw(A6)
 
-    MOVE.L  D5,D0
-    SUBQ.L  #3,D0
-    MOVEA.L A3,A1
-    MOVE.L  D4,D1
+    MOVE.L  D5,D0               ; x = D5
+    SUBQ.L  #3,D0               ; x = x - 3
+    MOVEA.L A3,A1               ; rastport
+    MOVE.L  D4,D1               ; y
     JSR     _LVOMove(A6)
 
-    MOVE.L  D5,D0
-    SUBQ.L  #3,D0
-    MOVEA.L A3,A1
-    MOVE.L  D6,D1
+    MOVE.L  D5,D0               ; x = D5
+    SUBQ.L  #3,D0               ; x = x - 3
+    MOVEA.L A3,A1               ; rastport
+    MOVE.L  D6,D1               ; y = D6
     JSR     _LVODraw(A6)
 
     MOVEM.L (A7)+,D4-D7/A3
@@ -4837,15 +4821,18 @@ LAB_01E5:
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_1FFC,A1
     MOVEQ   #0,D0
     MOVE.L  D0,D1
     MOVEQ   #35,D2
     MOVEQ   #33,D3
     JSR     _LVORectFill(A6)
+
     MOVEA.L LAB_1FFC,A1
     MOVEQ   #7,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
     ADD.L   D2,D0
@@ -4854,6 +4841,7 @@ LAB_01E5:
     MOVEQ   #36,D0
     MOVEQ   #0,D1
     JSR     _LVORectFill(A6)
+
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
     MOVEQ   #35,D1
@@ -4865,6 +4853,7 @@ LAB_01E5:
     MOVE.L  D1,-(A7)
     MOVE.L  LAB_1FFC,-(A7)
     JSR     LAB_00ED(PC)
+
     MOVEA.L LAB_1FFC,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
@@ -4883,10 +4872,12 @@ LAB_01E6:
     MOVEQ   #44,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
+
     MOVEA.L LAB_1FFC,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
     LEA     -10(A5),A0
+
     MOVEA.L A0,A1
 LAB_01E7:
     TST.B   (A1)+
@@ -4896,6 +4887,7 @@ LAB_01E7:
     MOVE.L  A1,D0
     MOVEA.L LAB_1FFC,A1
     JSR     _LVOText(A6)
+
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
     MOVEQ   #36,D1
@@ -4913,6 +4905,7 @@ LAB_01E7:
     MOVEA.L LAB_1FFC,A0
     MOVE.L  4(A0),-(A7)
     JSR     LAB_026C(PC)
+
 LAB_01E8:
     MOVEM.L -20(A5),D2-D3
     UNLK    A5
@@ -5688,7 +5681,7 @@ LAB_0216:
 LAB_0217:
     JMP     LAB_065E
 LAB_0218:
-    JMP     LAB_098E
+    JMP     DRAW_ESC_MENU_VERSION_SCREEN
 LAB_0219:
     JMP     LAB_1474
     MOVEQ   #97,D0
@@ -9885,7 +9878,7 @@ LAB_0380:
 LAB_0381:
     JMP     LAB_149B
 LAB_0382:
-    JMP     JMP_TBL_PRINTF
+    JMP     PRINTF_0
 LAB_0383:
     JMP     LAB_1498
 LAB_0384:
@@ -12664,7 +12657,14 @@ LAB_046F:
     JMP     LAB_098A
 LAB_0470:
     JMP     LAB_1955
+
+;!======
+
+    ; Alignment
     MOVEQ   #97,D0
+
+;!======
+
 LAB_0471:
     LINK.W  A5,#-24
     MOVEM.L D6-D7,-(A7)
@@ -14643,7 +14643,7 @@ LAB_0518:
     MOVE.L  28(A7),-(A7)
     PEA     LAB_1C7B
     PEA     -58(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -58(A5)
     PEA     90.W
     PEA     40.W
@@ -17003,7 +17003,7 @@ LAB_0605:
     PEA     4.W
     PEA     LAB_1CF8
     PEA     -138(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -138(A5)
     PEA     -87(A5)
     JSR     LAB_05C5(PC)
@@ -17016,7 +17016,7 @@ LAB_0605:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CF9
     PEA     -138(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -138(A5)
     PEA     -87(A5)
     JSR     LAB_05C5(PC)
@@ -17043,7 +17043,7 @@ LAB_0607:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFA
     PEA     -138(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -138(A5)
     PEA     -87(A5)
     JSR     LAB_05C5(PC)
@@ -17062,7 +17062,7 @@ LAB_0609:
     PEA     19.W
     PEA     LAB_1CFC
     PEA     -138(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -138(A5)
     PEA     -87(A5)
     JSR     LAB_05C5(PC)
@@ -17075,7 +17075,7 @@ LAB_0609:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFD
     PEA     -138(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -138(A5)
     PEA     -87(A5)
     JSR     LAB_05C5(PC)
@@ -17102,7 +17102,7 @@ LAB_060B:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFE
     PEA     -138(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -138(A5)
     PEA     -87(A5)
     JSR     LAB_05C5(PC)
@@ -20045,7 +20045,7 @@ LAB_0711:
     PEA     LAB_1D2B
     PEA     LAB_1D2A
     PEA     -41(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     JSR     LAB_0726(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #3,D0
@@ -20189,7 +20189,7 @@ LAB_0718:
     MOVE.L  LAB_226C,(A7)
     PEA     LAB_1D2C
     PEA     -41(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -41(A5)
     PEA     360.W
     PEA     410.W
@@ -20204,7 +20204,7 @@ LAB_0718:
     MOVE.L  64(A7),-(A7)
     PEA     LAB_1D2D
     PEA     -41(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     76(A7),A7
     PEA     -41(A5)
     PEA     88.W
@@ -20308,7 +20308,7 @@ LAB_0728:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D34
     PEA     -41(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     210.W
@@ -20343,7 +20343,7 @@ LAB_0729:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D35
     PEA     -51(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     120.W
@@ -20358,7 +20358,7 @@ LAB_0729:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D36
     PEA     -51(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     150.W
@@ -20371,7 +20371,7 @@ LAB_0729:
     MOVE.L  D0,(A7)
     PEA     LAB_1D37
     PEA     -51(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     68(A7),A7
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
@@ -20450,7 +20450,7 @@ LAB_072F:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D39
     PEA     -120(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     90.W
@@ -20488,7 +20488,7 @@ LAB_0735:
     MOVE.L  A1,-(A7)
     PEA     LAB_1D3A
     PEA     -120(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     120.W
@@ -20530,7 +20530,7 @@ LAB_0739:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D3E
     PEA     -120(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     150.W
@@ -20675,7 +20675,7 @@ LAB_0747:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D49
     PEA     -120(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     120.W
@@ -20692,7 +20692,7 @@ LAB_0747:
     MOVE.L  A1,-(A7)
     PEA     LAB_1D4A
     PEA     -120(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     150.W
@@ -21446,7 +21446,7 @@ LAB_0795:
     MOVE.L  LAB_2267,-(A7)
     PEA     LAB_1D69
     PEA     -50(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -50(A5)
     PEA     232.W
     PEA     40.W
@@ -22406,7 +22406,7 @@ LAB_07EC:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D89
     PEA     -80(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -80(A5)
     PEA     90.W
     PEA     40.W
@@ -22852,7 +22852,7 @@ LAB_07F8:
     MOVE.L  D0,(A7)
     PEA     LAB_1DA0
     PEA     -41(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -41(A5)
     PEA     272.W
     PEA     205.W
@@ -22974,7 +22974,7 @@ LAB_0803:
     MOVE.L  LAB_21FC,-(A7)
     PEA     LAB_1DA5
     PEA     -40(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -40(A5)
     PEA     180.W
     PEA     40.W
@@ -23236,7 +23236,7 @@ LAB_0812:
     MOVE.L  LAB_21FC,(A7)
     PEA     LAB_1DAA
     PEA     -41(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -41(A5)
     PEA     300.W
     PEA     190.W
@@ -23814,7 +23814,7 @@ LAB_0851:
     MOVE.L  LAB_21FC,(A7)
     PEA     LAB_1DAB
     PEA     -44(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -44(A5)
     PEA     300.W
     PEA     190.W
@@ -24721,7 +24721,7 @@ LAB_0888:
     PEA     GLOB_STR_MAJOR_MINOR_VERSION
     PEA     GLOB_STR_GUIDE_START_VERSION_AND_BUILD
     PEA     LAB_2204
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     LAB_1E12,A0
     LEA     LAB_2249,A1
     MOVEQ   #9,D0
@@ -24760,7 +24760,7 @@ LAB_0889:
     LEA     76(A7),A7
     TST.W   LAB_1DF8
     BNE.S   LAB_088A
-    TST.W   HAS_REQUESTED_CHIP_MEMORY
+    TST.W   HAS_REQUESTED_FAST_MEMORY
     BEQ.W   LAB_0890
 LAB_088A:
     MOVEA.L LAB_2216,A0
@@ -24770,7 +24770,7 @@ LAB_088A:
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
     LEA     12(A7),A7
-    TST.W   HAS_REQUESTED_CHIP_MEMORY
+    TST.W   HAS_REQUESTED_FAST_MEMORY
     BEQ.S   LAB_088B
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
@@ -24784,7 +24784,7 @@ LAB_088B:
     BEQ.S   LAB_088E
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
-    TST.W   HAS_REQUESTED_CHIP_MEMORY
+    TST.W   HAS_REQUESTED_FAST_MEMORY
     BEQ.S   LAB_088C
     MOVEQ   #120,D0
     ADD.L   D0,D0
@@ -24966,7 +24966,7 @@ LAB_08A6:
 LAB_08A7:
     JMP     LAB_0015
 LAB_08A8:
-    JMP     CHECK_AVAILABLE_CHIP_MEMORY
+    JMP     CHECK_AVAILABLE_FAST_MEMORY
 LAB_08A9:
     JMP     LAB_1A30
 LAB_08AA:
@@ -25013,8 +25013,8 @@ LIBRARIES_LOAD_FAILED:
 
 LAB_08B6:
     JMP     LAB_0CC8
-PRINTF_0:
-    JMP     JMP_TBL_PRINTF
+JMP_TBL_PRINTF_0:
+    JMP     PRINTF_0
 LAB_08B8:
     JMP     LAB_0056
 LAB_08B9:
@@ -27225,7 +27225,8 @@ LAB_098D:
 
 ;!======
 
-LAB_098E:
+; Draw the contents of the ESC -> Version screen
+DRAW_ESC_MENU_VERSION_SCREEN:
     LINK.W  A5,#-84
 
     CLR.W   LAB_2252
@@ -27246,7 +27247,7 @@ LAB_098E:
     MOVE.L  GLOB_LONG_BUILD_NUMBER,-(A7)    ; parameter 1
     PEA     GLOB_STR_BUILD_NUMBER_FORMATTED ; format string
     PEA     -81(A5)                         ; result string pointer
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)            ; call printf
 
     ; Display string at position
     PEA     -81(A5)                         ; string
@@ -27268,7 +27269,7 @@ LAB_0990:
     MOVE.L  A0,-(A7)                        ; parameter 1
     PEA     GLOB_STR_ROM_VERSION_FORMATTED  ; format string
     PEA     -81(A5)                         ; result string pointer
-    JSR     PRINTF_0(PC)                    ; call printf
+    JSR     JMP_TBL_PRINTF_0(PC)            ; call printf
 
     PEA     -81(A5)                         ; string
     PEA     360.W                           ; y
@@ -27326,7 +27327,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EA0
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     112.W
     PEA     40.W
@@ -27343,7 +27344,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EA1
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     142.W
     PEA     40.W
@@ -27370,7 +27371,7 @@ LAB_0991:
     MOVE.L  D7,-(A7)
     PEA     LAB_1EA2
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     20(A7),A7
     BRA.W   LAB_0996
 LAB_0992:
@@ -27385,7 +27386,7 @@ LAB_0992:
     MOVE.L  D7,-(A7)
     PEA     LAB_1EA3
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     12(A7),A7
     BRA.S   LAB_0996
 LAB_0993:
@@ -27400,7 +27401,7 @@ LAB_0993:
     MOVE.L  D6,-(A7)
     PEA     LAB_1EA4
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     12(A7),A7
     BRA.S   LAB_0996
 LAB_0994:
@@ -27416,13 +27417,13 @@ LAB_0994:
     MOVE.L  D5,-(A7)
     PEA     LAB_1EA5
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     12(A7),A7
     BRA.S   LAB_0996
 LAB_0995:
     PEA     LAB_1EA6
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     ADDQ.W  #8,A7
 LAB_0996:
     PEA     -72(A5)
@@ -27435,7 +27436,7 @@ LAB_0996:
     MOVE.L  D0,(A7)
     PEA     LAB_1EA7
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     202.W
     PEA     40.W
@@ -27455,7 +27456,7 @@ LAB_0996:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EA8
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     232.W
     PEA     40.W
@@ -27476,7 +27477,7 @@ LAB_0996:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EA9
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W
@@ -27495,7 +27496,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EAA
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     112.W
     PEA     40.W
@@ -27509,7 +27510,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EAB
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     142.W
     PEA     40.W
@@ -27523,7 +27524,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EAC
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     72(A7),A7
     PEA     -72(A5)
     PEA     172.W
@@ -27544,7 +27545,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EAD
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     202.W
     PEA     40.W
@@ -27564,7 +27565,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EAE
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     72(A7),A7
     PEA     -72(A5)
     PEA     232.W
@@ -27582,7 +27583,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EAF
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W
@@ -27599,7 +27600,7 @@ LAB_0997:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EB0
     PEA     -72(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -72(A5)
     PEA     292.W
     PEA     40.W
@@ -27687,7 +27688,7 @@ LAB_09A2:
     MOVE.L  36(A7),-(A7)
     PEA     LAB_1EB7
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     92.W
@@ -27705,7 +27706,7 @@ LAB_09A2:
     MOVE.L  (A0),-(A7)
     PEA     LAB_1EC1
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     110.W
@@ -27725,7 +27726,7 @@ LAB_09A2:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EC2
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     92(A7),A7
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
@@ -27765,7 +27766,7 @@ LAB_09A4:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EC3
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     146.W
@@ -27787,7 +27788,7 @@ LAB_09A4:
     MOVE.L  80(A7),-(A7)
     PEA     LAB_1EC6
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     68(A7),A7
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
@@ -27812,7 +27813,7 @@ LAB_09A4:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EC7
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     182.W
@@ -27839,7 +27840,7 @@ LAB_09A4:
     MOVE.L  84(A7),-(A7)
     PEA     LAB_1EC8
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     72(A7),A7
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
@@ -27870,7 +27871,7 @@ LAB_09A6:
     MOVE.L  LAB_1EB1,-(A7)
     PEA     LAB_1EC9
     PEA     -132(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
     PEA     218.W
@@ -31182,7 +31183,7 @@ LAB_0B22:
     PEA     LAB_1EFB
     PEA     LAB_1EFA
     PEA     -40(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     MOVEA.L LAB_229A,A0
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
@@ -31228,7 +31229,7 @@ LAB_0B23:
     PEA     LAB_1EFE
     PEA     LAB_1EFD
     PEA     -40(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -40(A5)
     PEA     120.W
     PEA     30.W
@@ -31341,7 +31342,7 @@ LAB_0B2A:
     MOVE.L  D5,(A7)
     PEA     LAB_1F03
     PEA     -128(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     PEA     -128(A5)
     PEA     150.W
     PEA     35.W
@@ -31362,7 +31363,7 @@ LAB_0B2B:
     PEA     LAB_21AD
     PEA     LAB_1F04
     PEA     -128(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     20(A7),A7
     MOVE.W  #$0001,LAB_1B85
     BRA.S   LAB_0B2D
@@ -31370,7 +31371,7 @@ LAB_0B2C:
     PEA     LAB_21AD
     PEA     LAB_1F05
     PEA     -128(A5)
-    JSR     PRINTF_0(PC)
+    JSR     JMP_TBL_PRINTF_0(PC)
     LEA     12(A7),A7
 LAB_0B2D:
     PEA     -128(A5)
@@ -32826,7 +32827,7 @@ LAB_0BA5:
 ;   MOVE.L  D0,-(A7)        ;14054: 2f00
 ;   PEA     LAB_CTRLHTCMAX      ;14056: 487900039168
 ;   PEA     -72(A5)         ;1405c: 486dffb8
-;   JSR     PRINTF_0(PC)        ;14060: 4ebae4e4
+;   JSR     JMP_TBL_PRINTF_0(PC)        ;14060: 4ebae4e4
 ;   PEA     -72(A5)         ;14064: 486dffb8
 ;   PEA     262.W           ;14068: 48780106
 ;   PEA     40.W            ;1406c: 48780028
@@ -42971,7 +42972,7 @@ LAB_0EEE:
 LAB_0EEF:
     JMP     LAB_1AAE
 LAB_0EF0:
-    JMP     JMP_TBL_PRINTF
+    JMP     PRINTF_0
 LAB_0EF1:
     JMP     LAB_0056
 
@@ -45537,12 +45538,12 @@ LAB_0FE2:
     MOVE.L  #624,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_0FE3
-    ADDQ.L  #1,D1
-LAB_0FE3:
-    ASR.L   #1,D1
-    MOVEQ   #36,D0
-    ADD.L   D0,D1
+    BPL.S   .awaitingListingsDataStringLengthIsPositive     ; If it's plus, jump to awaitingListingsDataStringLengthIsPositive
+    ADDQ.L  #1,D1                                           ; Add 1, effectively rolling the value over? 
+.awaitingListingsDataStringLengthIsPositive:
+    ASR.L   #1,D1                                           ; Shift D1 right 1
+    MOVEQ   #36,D0                                          ; 36 into D0
+    ADD.L   D0,D1                                           ; Add D0 (36) into D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
@@ -45899,7 +45900,9 @@ LAB_0FFB:
     MOVE.L  16(A5),D6
     MOVE.L  20(A5),D5
     MOVEA.L 24(A5),A2
-    MOVEQ   #0,D0
+
+    ; A5 is a struct?
+    MOVEQ   #0,D0       ; Set D0 to 0
     MOVE.L  D0,-16(A5)
     MOVE.L  D0,-12(A5)
     MOVE.L  A2,D0
@@ -45915,10 +45918,13 @@ LAB_0FFC:
 LAB_0FFD:
     MOVE.L  -20(A5),-24(A5)
     MOVEA.L A3,A1
+
+    ; Get the width of a single space
     LEA     GLOB_STR_SINGLE_SPACE,A0
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  D0,-8(A5)
     MOVEA.L A3,A1
     MOVE.L  D7,D0
@@ -46011,10 +46017,12 @@ LAB_1006:
     BLE.S   LAB_1007
     TST.L   28(A5)
     BEQ.S   LAB_1007
+
     MOVEA.L A3,A1
     LEA     -74(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
+
 LAB_1007:
     MOVEA.L -24(A5),A0
     MOVEA.L A0,A1
@@ -46035,10 +46043,13 @@ LAB_1009:
     TST.L   28(A5)
     BEQ.S   LAB_100A
     MOVEA.L A3,A1
+
+    ; Draw a single space
     LEA     LAB_200E,A0
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
+
 LAB_100A:
     MOVE.L  -8(A5),D0
     ADD.L   D0,-12(A5)
@@ -57642,7 +57653,7 @@ LAB_1465:
 LAB_1466:
     JMP     LAB_071A
 LAB_1467:
-    JMP     JMP_TBL_PRINTF
+    JMP     PRINTF_0
 LAB_1468:
     JMP     LAB_19DC
 LAB_1469:
@@ -57654,7 +57665,7 @@ LAB_146B:
 LAB_146C:
     JMP     LAB_070E
 LAB_146D:
-    JMP     LAB_098E
+    JMP     DRAW_ESC_MENU_VERSION_SCREEN
     RTS
 
 ;!======
@@ -61148,7 +61159,7 @@ LAB_15DE:
     MOVE.L  D0,-(A7)
     PEA     LAB_2139
     PEA     -188(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     PEA     -188(A5)
     PEA     -137(A5)
     JSR     LAB_196D(PC)
@@ -61663,7 +61674,7 @@ LAB_161B:
     MOVE.L  -12(A5),-(A7)
     PEA     LAB_213F
     PEA     -524(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     PEA     LAB_2140
     PEA     -524(A5)
     JSR     LAB_17D0(PC)
@@ -62313,7 +62324,7 @@ LAB_1657:
     MOVE.L  A3,-(A7)
     PEA     LAB_214C
     PEA     -200(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     MOVE.W  LAB_234D,D0
     EXT.L   D0
     MOVE.L  D0,(A7)
@@ -66076,7 +66087,7 @@ LAB_17C6:
     MOVE.L  D0,-(A7)
     PEA     LAB_216A
     PEA     -532(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     PEA     -532(A5)
     MOVE.L  A3,-(A7)
     JSR     LAB_196D(PC)
@@ -67298,7 +67309,7 @@ LAB_1828:
     MOVE.L  D6,-(A7)
     PEA     LAB_2175
     PEA     -84(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     LEA     12(A7),A7
     LEA     -84(A5),A0
     MOVEA.L A0,A1
@@ -67393,7 +67404,7 @@ LAB_182E:
     MOVE.L  D6,-(A7)
     PEA     LAB_2176
     PEA     -84(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     LEA     12(A7),A7
     LEA     -84(A5),A0
     MOVEA.L A0,A1
@@ -67668,7 +67679,7 @@ LAB_183A:
     MOVE.L  D7,(A7)
     PEA     LAB_2177
     PEA     -88(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -68257,7 +68268,7 @@ LAB_1850:
     MOVE.L  LAB_2178,-(A7)
     PEA     LAB_2191
     PEA     -80(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     MOVE.L  LAB_2178,D0
     MOVEQ   #76,D1
     JSR     LAB_1A06(PC)
@@ -68281,7 +68292,7 @@ LAB_1851:
     MOVE.L  D7,-(A7)
     PEA     LAB_2192
     PEA     -84(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     MOVE.L  D7,D0
     MOVEQ   #76,D1
     JSR     LAB_1A06(PC)
@@ -69226,7 +69237,7 @@ LAB_188F:
     MOVE.L  8(A0),-(A7)
     PEA     LAB_219E
     PEA     -46(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     LEA     12(A7),A7
 LAB_1890:
     MOVE.L  D7,D0
@@ -69249,7 +69260,7 @@ LAB_1891:
     MOVE.L  12(A0),-(A7)
     PEA     LAB_21A0
     PEA     -26(A5)
-    JSR     JMP_TBL_PRINTF(PC)
+    JSR     PRINTF_0(PC)
     LEA     12(A7),A7
 LAB_1892:
     PEA     -26(A5)
@@ -71646,13 +71657,13 @@ LAB_199F:
 
 ;!======
 
-JMP_TBL_PRINTF:
+PRINTF_0:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEA.L 20(A7),A2
 
-    CLR.L   22816(A4)
+    CLR.L   22816(A4)       ; Clear
     MOVE.L  A3,22812(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
@@ -71660,7 +71671,7 @@ JMP_TBL_PRINTF:
     JSR     LAB_1A71(PC)
     MOVEA.L 22812(A4),A0
     CLR.B   (A0)
-    MOVE.L  22816(A4),D0
+    MOVE.L  22816(A4),D0    ; Store result in D0
 
     MOVEM.L -8(A5),A2-A3
     UNLK    A5
@@ -75915,24 +75926,39 @@ LAB_1D19:
 LAB_1D1A:
     DC.L    $0000030c,$0c0c0000,$000c0c00,$05010201
     DC.L    $060a0505,$05000003
+
+; Strings for ESC -> Special Functions -> Save ALL to disk
 LAB_1D1B:
     NStr    "All data is to be saved."
+
+; Strings for ESC -> Special Functions -> Save data to disk
 LAB_1D1C:
     NStr    "TV Guide data is to be saved."
+
+; Strings for ESC -> Special Functions -> Load text ads from disk
 LAB_1D1D:
     NStr    "Text Ads will be loaded from DH2:"
+
+; Strings for ESC -> Special Functions -> Reboot computer
 LAB_1D1E:
     NStr    "Computer will reset!"
 LAB_1D1F:
     NStr    "(go off-air for 1-2 mins)"
+
+
+
 LAB_1D20:
     NStr    "Saving ""EVERYTHING"" to disk"
 LAB_1D21:
     NStr    "Saving Prevue data to disk"
 GLOB_STR_LOADING_TEXT_ADS_FROM_DH2:
     NStr    "Loading Text Ads from DH2:"
+
+; Strings for ESC -> Special Functions -> Reboot computer
 GLOB_STR_REBOOTING_COMPUTER:
     NStr    "Rebooting Computer........"
+
+; Strings for ESC - Edit Attributes?
 LAB_1D24:
     NStr    " Number too big        "
 LAB_1D25:
@@ -75945,10 +75971,14 @@ LAB_1D28:
     NStr    " Push any key to select"
 LAB_1D29:
     NStr    "Local Edit not available"
+
+; Version strings shown at the top of the ESC menu
 LAB_1D2A:
     NStr    "Ver %s.%ld"
 LAB_1D2B:
     NStr    "9.0"   ; Major/minor version string
+
+; Strings for ESC -> Diagnostic Mode
 LAB_1D2C:
     NStr    "%ld baud"
 LAB_1D2D:
@@ -76111,6 +76141,8 @@ LAB_1D7A:
     DS.W    1
 LAB_1D7B:
     DC.L    $00000001
+
+; Strings for the ESC menu
 LAB_1D7C:
     NStr    "Edit Ads"
 LAB_1D7D:
@@ -76129,6 +76161,8 @@ LAB_1D83:
     NStr    " Push RETURN to enter selection"
 LAB_1D84:
     NStr    " Push any key to select"
+
+; Some strings for ESC -> Diagnostic Mode
 LAB_1D85:
     NStr    "VIN:  BCK:  FWD:  SSPD:  #AD:   LINE:"
 LAB_1D86:
@@ -76137,6 +76171,8 @@ LAB_1D87:
     NStr    " Push RETURN to enter selection"
 LAB_1D88:
     NStr    " Push any key to select"
+
+; Strings for ESC -> Change Scroll Speed
 LAB_1D89:
     NStr    "Satellite Delivered scroll speed (%c)"
 LAB_1D8A:
@@ -76155,6 +76191,8 @@ LAB_1D90:
     NStr    "Scroll speed = 6"
 LAB_1D91:
     NStr    "Scroll speed = 7 (slowest)"
+
+; Strings for ESC -> Special Functions
 LAB_1D92:
     NStr    "Save ALL to disk"
 LAB_1D93:
@@ -76163,6 +76201,8 @@ LAB_1D94:
     NStr    "Load text ads from disk"
 LAB_1D95:
     NStr    "Reboot computer"
+
+; Strings for ESC - Edit Ads?
 LAB_1D96:
     NStr    "register "
 LAB_1D97:
@@ -76383,7 +76423,7 @@ LAB_1DF5:
     DS.W    1
 LAB_1DF6:
     DS.W    1
-HAS_REQUESTED_CHIP_MEMORY:
+HAS_REQUESTED_FAST_MEMORY:
     DS.W    1
 LAB_1DF8:
     DC.L    $00000001
@@ -77332,6 +77372,8 @@ LAB_1E99:
     NStr    "Disk 0 is write protected"
 LAB_1E9A:
     NStr    "You MUST re-insert SYSTEM disk into drive 0!"
+
+; Strings for: ESC -> Version Screen
 GLOB_STR_BUILD_NUMBER_FORMATTED:
     NStr    "Build Number: '%ld%s'"
 GLOB_STR_ROM_VERSION_FORMATTED:
@@ -77342,6 +77384,8 @@ GLOB_STR_ROM_VERSION_2_04:
     NStr    "2.04"
 GLOB_STR_PUSH_ANY_KEY_TO_CONTINUE:
     NStr    "Push any key to continue."
+
+; Strings for: ESC -> Diagnostic Mode
 LAB_1EA0:
     NStr    "DATA: Cmds:%08ld CErrs:%03ld LErrs:%03ld"
 LAB_1EA1:
@@ -77362,6 +77406,7 @@ LAB_1EA8:
     NStr    "DATA: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld"
 LAB_1EA9:
     NStr    "CTRL: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld"
+
 LAB_1EAA:
     NStr    "julian day = %3ld    next = %3ld"
 LAB_1EAB:
@@ -78625,28 +78670,31 @@ LAB_20CD:
     DC.L    LAB_20CA
     DC.L    LAB_20CB
     DC.L    LAB_20CC
-LAB_20CE:
+
+GLOB_STR_SUNDAY_1:
     NStr    "Sunday"
-LAB_20CF:
+GLOB_STR_MONDAY_1:
     NStr    "Monday"
-LAB_20D0:
+GLOB_STR_TUESDAY_1:
     NStr    "Tuesday"
-LAB_20D1:
+GLOB_STR_WEDNESDAY_1:
     NStr    "Wednesday"
-LAB_20D2:
+GLOB_STR_THURSDAY_1:
     NStr    "Thursday"
 GLOB_STR_FRIDAY_1:
     NStr    "Friday"
-LAB_20D4:
+GLOB_STR_SATURDAY_1:
     NStr    "Saturday"
+
 GLOB_JMP_TBL_DAYS_OF_WEEK:
-    DC.L    LAB_20CE
-    DC.L    LAB_20CF
-    DC.L    LAB_20D0
-    DC.L    LAB_20D1
-    DC.L    LAB_20D2
+    DC.L    GLOB_STR_SUNDAY_1
+    DC.L    GLOB_STR_MONDAY_1
+    DC.L    GLOB_STR_TUESDAY_1
+    DC.L    GLOB_STR_WEDNESDAY_1
+    DC.L    GLOB_STR_THURSDAY_1
     DC.L    GLOB_STR_FRIDAY_1
-    DC.L    LAB_20D4
+    DC.L    GLOB_STR_SATURDAY_1
+
 LAB_20D6:
     NStr    "Sun "
 LAB_20D7:
