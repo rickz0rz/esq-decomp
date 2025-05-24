@@ -65731,6 +65731,9 @@ LAB_17B1:
     LEA     LAB_2165,A0
     LEA	    -532(A5),A1
     MOVE.W	#$01ff,D0
+; This is weird, it's purposefully one byte back
+; so that it can start the loop as if it's doing a
+; do/while loop.
 LAB_17B2:
     MOVE.B	(A0)+,(A1)+
     DBF     D0,LAB_17B2
@@ -78504,11 +78507,11 @@ LAB_2135:
 LAB_2136:
     NStr    "   "
 LAB_2137:
-    DC.B	TextAlignCenter,"Ch. ",0
+    NStr2   TextAlignCenter,"Ch. "
 LAB_2138:
     NStr	"   "
 LAB_2139:
-    DC.B	TextAlignCenter,"%c",0
+    NStr2   TextAlignCenter,"%c"
 LAB_213A:
     DC.W	$1800
 LAB_213B:
@@ -78520,7 +78523,7 @@ LAB_213D:
 LAB_213E:
     DC.W	$1800
 LAB_213F:
-    DC.B	TextAlignCenter,"%s",0
+    NStr2   TextAlignCenter,"%s"
 LAB_2140:
     NStr	" at "
 LAB_2141:
@@ -78530,7 +78533,7 @@ LAB_2142:
 LAB_2143:
     DC.W	$1800
 LAB_2144:
-    DC.B	TextAlignCenter,"Channel ",0
+    NStr2   TextAlignCenter,"Channel "
 LAB_2145:
     DC.W	$0300
 LAB_2146:
@@ -78618,21 +78621,21 @@ LAB_2169:
 LAB_216A:
     NStr    "%c%s"
 LAB_216B:
-    DC.B	"struct TLFormat @ 0x%x =",10,0
+    NStr2   "struct TLFormat @ 0x%x =",10
 LAB_216C:
-    DC.B    "{",10,0,0
+    NStr2   "{",10
 LAB_216D:
-    DC.B	9,"tlf_Color =   %d",10,0,0
+    NStr3   9,"tlf_Color =   %d",10
 LAB_216E:
-    DC.B	9,"tlf_Offset =  %d",10,0,0
+    NStr3   9,"tlf_Offset =  %d",10
 LAB_216F:
-    DC.B	9,"tlf_FontSel = %d",10,0,0
+    NStr3   9,"tlf_FontSel = %d",10
 LAB_2170:
-    DC.B	9,"tlf_Align =   %d",10,0,0
+    NStr3   9,"tlf_Align =   %d",10
 LAB_2171:
-    DC.B	9,"tlf_Pregap =  %d",10,0,0
+    NStr3   9,"tlf_Pregap =  %d",10
 LAB_2172:
-    DC.B    "}",10,0,0
+    NStr2   "}",10
 LAB_2173:
     DS.W	1
 LAB_2174:
