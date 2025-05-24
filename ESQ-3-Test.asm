@@ -1983,12 +1983,12 @@ LAB_00E4:
 ;!======
 
 LAB_00E5:
-    LEA $1000000,A0
+    LEA     $1000000,A0
     SUBA.L  -20(A0),A0
     MOVEA.L 4(A0),A0
     SUBQ.L  #2,A0
     RESET
-    JMP (A0)
+    JMP     (A0)
     MOVE.L  #$00fbfffc,D0
     MOVEA.L D0,A0
     MOVE.W  (A0),D1
@@ -4465,19 +4465,25 @@ LAB_01BF:
     JSR     LAB_0385(PC)
     LEA     12(A7),A7
     MOVE.L  D0,LAB_1DEC
-    MOVEA.L LAB_2326,A0
 
+    ; this must be restoring functions that were hijacked?
+    ; ...the other use of this stores D0 and this doesn't.
+
+    ; overriding the AutoRequest function in intuition.library
+    ; to point to LAB_2326
+    MOVEA.L LAB_2326,A0
     MOVE.L  A0,D0
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A1
-    MOVEA.W #$fea4,A0
+    MOVEA.W #$fea4,A0               ; -348/15c
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetFunction(A6)
 
+    ; overriding the ItemAddress function in intuition.library
+    ; to point to LAB_2327
     MOVEA.L LAB_2327,A0
-
     MOVE.L  A0,D0
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A1
-    MOVEA.W #$ffa6,A0
+    MOVEA.W #$ffa6,A0               ; -90/5a
     JSR     _LVOSetFunction(A6)
 
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A6
@@ -19523,35 +19529,43 @@ LAB_06E5:
 
 LAB_06E6:
     MOVE.L  D7,-(A7)
+
     JSR     LAB_07DD(PC)
     MOVE.L  D0,D7
     TST.B   D7
     BNE.S   LAB_06E7
-    PEA     LAB_1D22
+
+    PEA     GLOB_STR_LOADING_TEXT_ADS_FROM_DH2
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+
     JSR     LAB_08A3(PC)
     LEA     16(A7),A7
 LAB_06E7:
     JSR     LAB_07E1(PC)
+
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
+; display 'rebooting computer' while requesting a reboot through supervisor?
 LAB_06E8:
     MOVEM.L D6-D7,-(A7)
+
     JSR     LAB_07DD(PC)
     MOVE.L  D0,D7
     TST.B   D7
     BNE.S   LAB_06EB
-    PEA     GLOB_STR_REBOOTING_COMPUTER
-    PEA     120.W
-    PEA     40.W
-    MOVE.L  LAB_2217,-(A7)
+
+    PEA     GLOB_STR_REBOOTING_COMPUTER     ; string
+    PEA     120.W                           ; y
+    PEA     40.W                            ; x
+    MOVE.L  LAB_2217,-(A7)                  ; rastport
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     16(A7),A7
     MOVEQ   #0,D6
 LAB_06E9:
@@ -19564,6 +19578,7 @@ LAB_06EA:
     JSR     LAB_0721(PC)
 LAB_06EB:
     JSR     LAB_07E1(PC)
+
     MOVEM.L (A7)+,D6-D7
     RTS
 
@@ -27214,6 +27229,8 @@ LAB_098E:
     LINK.W  A5,#-84
 
     CLR.W   LAB_2252
+
+    ; LAB_2217 seems to be a rastport that's used a lot in here.
     MOVEA.L LAB_2217,A1
 
     MOVEQ   #1,D0
@@ -27238,10 +27255,11 @@ LAB_098E:
     MOVE.L  LAB_2217,-(A7)                  ; rastport
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
     
-    LEA     32(A7),A7                       ; this must used to switch the displayed rom version?
+    LEA     32(A7),A7
+
     MOVEQ   #1,D0                           ; Set D0 to 1
     CMP.L   LAB_1DED,D0                     ; And compare LAB_1DED with it.
-    BNE.S   LAB_098F                        ; if it's not equal...
+    BNE.S   LAB_098F                        ; If it's not equal, jump to LAB_098F
     LEA     GLOB_STR_ROM_VERSION_1_3,A0     ; Load the effective address of the 1.3 string to A0
     BRA.S   LAB_0990                        ; and jump to LAB_0990
 LAB_098F:
@@ -27282,6 +27300,7 @@ LAB_0990:
 LAB_0991:
     LINK.W  A5,#-80
     MOVEM.L D2-D7,-(A7)
+
     MOVEA.L LAB_2217,A0
     MOVE.L  4(A0),-76(A5)
     MOVE.L  #LAB_221B,4(A0)
@@ -27590,6 +27609,7 @@ LAB_0997:
 LAB_0998:
     MOVEA.L LAB_2217,A0
     MOVE.L  -76(A5),4(A0)
+
     MOVEM.L (A7)+,D2-D7
     UNLK    A5
     RTS
@@ -41350,9 +41370,11 @@ LAB_0E56:
 
 ;!======
 
+; load text ads?
 LAB_0E57:
     LINK.W  A5,#-40
     MOVEM.L D2/D4-D7,-(A7)
+
     PEA     1.W
     PEA     2.W
     BSR.W   LAB_0EE5
@@ -41550,6 +41572,7 @@ LAB_0E67:
     MOVEQ   #0,D0
 LAB_0E68:
     MOVEM.L -60(A5),D2/D4-D7
+
     UNLK    A5
     RTS
 
@@ -44669,19 +44692,26 @@ LAB_0F9D:
 
 LAB_0F9E:
     MOVE.L  A2,-(A7)
+
+    ; overriding the AutoRequest function in intuition.library
+    ; to point to LAB_0F9F(PC) storing the old version in LAB_2326
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A1
-    MOVEA.W #$fea4,A0
+    MOVEA.W #$fea4,A0               ; -348/15c
     LEA     LAB_0F9F(PC),A2
     MOVE.L  A2,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOSetFunction(A6)
     MOVE.L  D0,LAB_2326
+
+    ; overriding the ItemAddress function in intuition.library
+    ; to point to LAB_0FA0(PC) storing the old version in LAB_2327
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A1
-    MOVEA.W #$ffa6,A0
+    MOVEA.W #$ffa6,A0               ; -90/5a
     LEA     LAB_0FA0(PC),A2
     MOVE.L  A2,D0
     JSR     _LVOSetFunction(A6)
     MOVE.L  D0,LAB_2327
+
     MOVEA.L (A7)+,A2
     RTS
 
@@ -44722,12 +44752,12 @@ LAB_0FA2:
 
 LAB_0FA3:
     JMP     LAB_00E3
-    MOVEQ   #97,D0
-    RTS
 
 ;!======
 
     ; Alignment
+    MOVEQ   #97,D0
+    RTS
     DC.W    $0000
 
 ;!======
@@ -75894,7 +75924,7 @@ LAB_1D20:
     NStr    "Saving ""EVERYTHING"" to disk"
 LAB_1D21:
     NStr    "Saving Prevue data to disk"
-LAB_1D22:
+GLOB_STR_LOADING_TEXT_ADS_FROM_DH2:
     NStr    "Loading Text Ads from DH2:"
 GLOB_STR_REBOOTING_COMPUTER:
     NStr    "Rebooting Computer........"
@@ -80132,6 +80162,7 @@ LAB_2381:
 ; Where is it coming from?
 LAB_2382:
     DS.L    55
-LAB_CTRLHTCMAX:
-    NStr    "CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x"
-    END
+; More Ari code
+; LAB_CTRLHTCMAX:
+;    NStr    "CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x"
+;    END
