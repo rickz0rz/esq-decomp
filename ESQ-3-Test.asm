@@ -78395,7 +78395,7 @@ LAB_20FF:
 LAB_2100:
     NStr	"Showtimes "
 LAB_2101:
-    DC.B	"Showing at ",0
+    NStr    "Showing at "
 LAB_2102:
     DC.B	"hrs ",0
 LAB_2103:
@@ -78494,7 +78494,7 @@ LAB_2130:
 LAB_2131:
     DS.W	1
 LAB_2132:
-    DC.B	"PrevueSports",0,0
+    NStr    "PrevueSports"
 LAB_2133:
     DC.L	LAB_2132
 LAB_2134:
@@ -78502,7 +78502,7 @@ LAB_2134:
 LAB_2135:
     DC.W	$1800
 LAB_2136:
-    DC.B	"   ",0
+    NStr    "   "
 LAB_2137:
     DC.B	TextAlignCenter,"Ch. ",0
 LAB_2138:
@@ -78581,21 +78581,21 @@ LAB_2157:
 LAB_2158:
     DC.B	TextAlignLeft,0,0
 LAB_2159:
-    DC.B	"PPV",0
+    NStr    "PPV"
 LAB_215A:
-    DC.B	"SBE",0
+    NStr    "SBE"
 LAB_215B:
-    DC.B	"SPORTS",0,0
+    NStr    "SPORTS"
 LAB_215C:
-    DC.B	"SPT",0
+    NStr    "SPT"
 LAB_215D:
-    DC.B	"*",0
+    NStr    "*"
 LAB_215E:
-    DC.B	"FIND1",0
+    NStr    "FIND1"
 LAB_215F:
-    DC.B	"*",0
+    NStr    "*"
 LAB_2160:
-    DC.B    "SPT",0
+    NStr    "SPT"
 LAB_2161:
     NStr    "TLIBA1.c"
 LAB_2162:
@@ -79792,5 +79792,5 @@ LAB_2381:
 LAB_2382:
     DS.L	55
 LAB_CTRLHTCMAX:
-    DC.B	"CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x",0,0
+    NStr    "CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x"
     END
