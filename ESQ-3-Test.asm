@@ -55,11 +55,11 @@ SECSTRT_0:
     LEA     BUFFER_5929_LONGWORDS,A3
     MOVEQ   #0,D1
     MOVE.L  #5929,D0
-    BRA.S   DO_5929_BUFFER_COUNTER_COMPARE
-COPY_BYTE_FROM_D1_TO_5929_BUFFER:
+    BRA.S   .5929BufferCounterCompare
+.copyByteFromD1To5929Buffer:
     MOVE.L  D1,(A3)+ ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
-DO_5929_BUFFER_COUNTER_COMPARE:
-    DBF     D0,COPY_BYTE_FROM_D1_TO_5929_BUFFER ; If our counter (D1) is not zero then jump to COPY_BYTE_FROM_D1_TO_5929_BUFFER else continue
+.5929BufferCounterCompare:
+    DBF     D0,.copyByteFromD1To5929Buffer ; If our counter (D1) is not zero then jump to .copyByteFromD1To5929Buffer else continue
     MOVE.L  A7,-600(A4) ; Copy the current stack pointer to -600(A4)
     MOVE.L  A6,-608(A4) ; Copy A6 which should be AbsExecBase into -608(A4)
     CLR.L   -604(A4)
@@ -70,10 +70,10 @@ DO_5929_BUFFER_COUNTER_COMPARE:
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6) ; Open dos.library version 0 (any) locally
     MOVE.L  D0,LocalDosLibraryDisplacement(A4) ; and store it in a known location in memory (displacement + A4)
-    BNE.S   SUCCESSFULLY_MADE_LOCAL_DOS_LIB
+    BNE.S   .successfullyMadeLocalDOSLib
     MOVEQ   #100,D0
     BRA.W   LAB_000A
-SUCCESSFULLY_MADE_LOCAL_DOS_LIB:
+.successfullyMadeLocalDOSLib:
     MOVEA.L 276(A6),A3 ; A6 is AbsExecBase so is this 280?
     MOVE.L  152(A3),-612(A4)
     TST.L   172(A3)
@@ -10837,7 +10837,7 @@ LAB_03DE:
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -12945,12 +12945,12 @@ LAB_0483:
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  A3,(A7)
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     28(A7),A7
     MOVEA.L (A7)+,A3
     RTS
@@ -14306,7 +14306,7 @@ LAB_0503:
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
 LAB_0504:
     LEA     LAB_21C2,A0
@@ -14325,12 +14325,12 @@ LAB_0505:
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_21C2
     PEA     180.W
     PEA     205.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
 LAB_0506:
     PEA     4.W
@@ -14565,12 +14565,12 @@ LAB_0514:
     PEA     210.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1C77
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
 LAB_0515:
     MOVEQ   #-1,D0
@@ -14612,7 +14612,7 @@ LAB_0515:
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     BRA.S   LAB_0517
 LAB_0516:
@@ -14648,7 +14648,7 @@ LAB_0518:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     36(A7),A7
 LAB_0519:
     MOVEM.L -180(A5),D2-D3/D5-D7
@@ -15174,7 +15174,7 @@ LAB_055B:
 
 ;!======
 
-JMP_TBL_DISPLAY_TEXT_AT_POSITION:
+DISPLAY_TEXT_AT_POSITION:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3,-(A7)
 
@@ -18582,7 +18582,7 @@ LAB_0695:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #2,D0
@@ -19349,7 +19349,7 @@ LAB_06DD:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVE.B  #$0b,LAB_1D13
     BRA.W   LAB_06E1
@@ -19358,7 +19358,7 @@ LAB_06DD:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVE.B  #$0c,LAB_1D13
     BRA.W   LAB_06E1
@@ -19367,7 +19367,7 @@ LAB_06DD:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVE.B  #$0d,LAB_1D13
     BRA.W   LAB_06E1
@@ -19376,12 +19376,12 @@ LAB_06DD:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D1F
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
     MOVE.B  #$0e,LAB_1D13
     BRA.W   LAB_06E1
@@ -19496,7 +19496,7 @@ LAB_06E2:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     1.W
     JSR     LAB_0484(PC)
     LEA     20(A7),A7
@@ -19517,7 +19517,7 @@ LAB_06E4:
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_0471(PC)
     LEA     16(A7),A7
 LAB_06E5:
@@ -19539,7 +19539,7 @@ LAB_06E6:
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
     JSR     LAB_08A3(PC)
     LEA     16(A7),A7
@@ -19564,7 +19564,7 @@ LAB_06E8:
     PEA     120.W                           ; y
     PEA     40.W                            ; x
     MOVE.L  LAB_2217,-(A7)                  ; rastport
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
     LEA     16(A7),A7
     MOVEQ   #0,D6
@@ -19682,7 +19682,7 @@ LAB_06F5:
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -19700,7 +19700,7 @@ LAB_06F6:
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -19733,17 +19733,17 @@ LAB_06F8:
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D27
     PEA     360.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D28
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     52(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -19930,7 +19930,7 @@ LAB_0709:
     PEA     270.W
     PEA     145.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
 LAB_070A:
     MOVEA.L LAB_2217,A1
@@ -20074,7 +20074,7 @@ LAB_0712:
     MOVE.L  D1,-(A7)
     PEA     280.W
     MOVE.L  A1,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -20180,12 +20180,12 @@ LAB_0718:
     PEA     360.W
     PEA     90.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_2245
     PEA     360.W
     PEA     210.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  LAB_226C,(A7)
     PEA     LAB_1D2C
     PEA     -41(A5)
@@ -20194,7 +20194,7 @@ LAB_0718:
     PEA     360.W
     PEA     410.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D2E
     JSR     LAB_03C0(PC)
     PEA     LAB_1D2F
@@ -20210,7 +20210,7 @@ LAB_0718:
     PEA     88.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_07E7(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #6,D0
@@ -20220,7 +20220,7 @@ LAB_0718:
     PEA     390.W
     PEA     175.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -21451,7 +21451,7 @@ LAB_0795:
     PEA     232.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     28(A7),A7
     BRA.S   LAB_0799
 LAB_0796:
@@ -21660,7 +21660,7 @@ LAB_07AA:
     PEA     360.W
     PEA     175.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     CLR.L   (A7)
     JSR     LAB_07C4(PC)
     LEA     16(A7),A7
@@ -21670,7 +21670,7 @@ LAB_07AB:
     PEA     360.W
     PEA     175.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     1.W
     JSR     LAB_07C4(PC)
     LEA     20(A7),A7
@@ -21680,7 +21680,7 @@ LAB_07AC:
     PEA     360.W
     PEA     175.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     2.W
     JSR     LAB_07C4(PC)
     LEA     20(A7),A7
@@ -21690,7 +21690,7 @@ LAB_07AD:
     PEA     360.W
     PEA     175.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     3.W
     JSR     LAB_07C4(PC)
     LEA     20(A7),A7
@@ -21700,7 +21700,7 @@ LAB_07AE:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_07D0(PC)
     LEA     16(A7),A7
     BRA.W   LAB_07B7
@@ -21709,7 +21709,7 @@ LAB_07AF:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_08B8(PC)
     LEA     16(A7),A7
     BRA.W   LAB_07B7
@@ -21718,7 +21718,7 @@ LAB_07B0:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_08B1(PC)
     LEA     16(A7),A7
     BRA.W   LAB_07B7
@@ -21727,7 +21727,7 @@ LAB_07B1:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_07CD(PC)
     LEA     16(A7),A7
     BRA.W   LAB_07B7
@@ -21736,7 +21736,7 @@ LAB_07B2:
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_09B9(PC)
     LEA     16(A7),A7
     TST.B   D0
@@ -21745,7 +21745,7 @@ LAB_07B2:
     PEA     270.W
     PEA     235.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     BRA.S   LAB_07B7
 LAB_07B3:
@@ -21753,7 +21753,7 @@ LAB_07B3:
     PEA     270.W
     PEA     235.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     BRA.S   LAB_07B7
 LAB_07B4:
@@ -21761,7 +21761,7 @@ LAB_07B4:
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_07D1(PC)
     LEA     16(A7),A7
     BRA.S   LAB_07B7
@@ -21770,7 +21770,7 @@ LAB_07B5:
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     JSR     LAB_07CC(PC)
     LEA     16(A7),A7
     BRA.S   LAB_07B7
@@ -22083,33 +22083,33 @@ LAB_07E5:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D7D
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D7E
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D7F
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     68(A7),A7
     PEA     LAB_1D80
     PEA     210.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D81
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -22133,17 +22133,17 @@ LAB_07E6:
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D83
     PEA     360.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D84
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22167,12 +22167,12 @@ LAB_07E7:
     PEA     300.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D86
     PEA     330.W
     PEA     90.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #3,D0
@@ -22380,12 +22380,12 @@ LAB_07EB:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D88
     PEA     420.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
     MOVEM.L (A7)+,D2-D3
     RTS
@@ -22411,48 +22411,48 @@ LAB_07EC:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D8A
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D8B
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D8C
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     76(A7),A7
     PEA     LAB_1D8D
     PEA     210.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D8E
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D8F
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D90
     PEA     300.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D91
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     80(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -22475,22 +22475,22 @@ LAB_07ED:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D93
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D94
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D95
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     64(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -22512,7 +22512,7 @@ LAB_07EE:
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     2.W
     MOVE.L  LAB_21EE,-(A7)
     PEA     LAB_21F0
@@ -22521,12 +22521,12 @@ LAB_07EE:
     PEA     240.W
     PEA     190.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D97
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  LAB_21EE,D0
     LSL.L   #2,D0
     SUB.L   LAB_21EE,D0
@@ -22543,12 +22543,12 @@ LAB_07EE:
     PEA     270.W
     PEA     85.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D98
     PEA     270.W
     PEA     135.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  LAB_21EE,D0
     LSL.L   #2,D0
     SUB.L   LAB_21EE,D0
@@ -22564,12 +22564,12 @@ LAB_07EE:
     PEA     270.W
     PEA     180.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D99
     PEA     270.W
     PEA     230.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     76(A7),A7
     MOVE.L  LAB_21EE,D0
     LSL.L   #2,D0
@@ -22586,7 +22586,7 @@ LAB_07EE:
     PEA     270.W
     PEA     275.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     28(A7),A7
     RTS
 
@@ -22606,7 +22606,7 @@ LAB_07EF:
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     20(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -22632,7 +22632,7 @@ LAB_07F0:
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     2.W
     MOVE.L  LAB_21FD,-(A7)
     PEA     LAB_21F0
@@ -22641,23 +22641,23 @@ LAB_07F0:
     PEA     330.W
     PEA     340.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D9C
     PEA     330.W
     PEA     370.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1D9D
     PEA     360.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     80(A7),A7
     PEA     LAB_1D9E
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22681,7 +22681,7 @@ LAB_07F0:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -22857,7 +22857,7 @@ LAB_07F8:
     PEA     272.W
     PEA     205.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22896,7 +22896,7 @@ LAB_07FB:
     PEA     390.W
     PEA     296.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #2,D0
@@ -22933,7 +22933,7 @@ LAB_07FE:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -22979,7 +22979,7 @@ LAB_0803:
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     28(A7),A7
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_21EA
@@ -23165,7 +23165,7 @@ LAB_0810:
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
     MOVE.L  LAB_21EA,LAB_2201
 LAB_0811:
@@ -23197,17 +23197,17 @@ LAB_0812:
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DA8
     PEA     360.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DA9
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  LAB_21EC,(A7)
     BSR.W   LAB_07FC
     MOVE.L  LAB_1D7B,(A7)
@@ -23241,7 +23241,7 @@ LAB_0812:
     PEA     300.W
     PEA     190.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     76(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -23819,7 +23819,7 @@ LAB_0851:
     PEA     300.W
     PEA     190.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
     ; Set drawing mode to 1
     MOVEA.L LAB_2217,A1
@@ -23905,53 +23905,53 @@ LAB_0857:
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DAD
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DAE
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DAF
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DB0
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     80(A7),A7
     PEA     LAB_1DB1
     PEA     210.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DB2
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DB3
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DB4
     PEA     300.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1DB5
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     80(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -27253,7 +27253,7 @@ LAB_098E:
     PEA     330.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  LAB_2217,-(A7)                  ; rastport
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     
     LEA     32(A7),A7
 
@@ -27274,7 +27274,7 @@ LAB_0990:
     PEA     360.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  LAB_2217,-(A7)                  ; rastport
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
 
     MOVEA.L LAB_2217,A1
     MOVEQ   #3,D0
@@ -27285,7 +27285,7 @@ LAB_0990:
     PEA     390.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  LAB_2217,-(A7)                  ; rastport
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
 
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
@@ -27331,7 +27331,7 @@ LAB_0991:
     PEA     112.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVEQ   #0,D0
     MOVE.W  LAB_2347,D0
     MOVE.W  LAB_2348,D1
@@ -27348,7 +27348,7 @@ LAB_0991:
     PEA     142.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     68(A7),A7
     MOVEQ   #7,D0
     AND.L   LAB_1DF0,D0
@@ -27429,7 +27429,7 @@ LAB_0996:
     PEA     172.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVEQ   #0,D0
     MOVE.W  LAB_228A,D0
     MOVE.L  D0,(A7)
@@ -27440,7 +27440,7 @@ LAB_0996:
     PEA     202.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     JSR j_DATACalc_C(PC)
     MOVE.L  D0,D4
     MOVEQ   #0,D0
@@ -27460,7 +27460,7 @@ LAB_0996:
     PEA     232.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     76(A7),A7
     JSR     LAB_09AA(PC)
     MOVE.L  D0,D4
@@ -27481,7 +27481,7 @@ LAB_0996:
     PEA     262.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     40(A7),A7
 LAB_0997:
     MOVE.W  LAB_226A,D0
@@ -27500,7 +27500,7 @@ LAB_0997:
     PEA     112.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVEQ   #0,D0
     MOVE.B  LAB_2238,D0
     MOVEQ   #0,D1
@@ -27514,7 +27514,7 @@ LAB_0997:
     PEA     142.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVEQ   #0,D0
     MOVE.B  LAB_224A,D0
     MOVEQ   #0,D1
@@ -27529,7 +27529,7 @@ LAB_0997:
     PEA     172.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.W  LAB_223C,D0
     EXT.L   D0
     MOVE.W  LAB_223B,D1
@@ -27549,7 +27549,7 @@ LAB_0997:
     PEA     202.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.W  LAB_2276,D0
     EXT.L   D0
     MOVE.W  LAB_2275,D1
@@ -27570,7 +27570,7 @@ LAB_0997:
     PEA     232.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.W  LAB_2241,D0
     EXT.L   D0
     MOVE.W  LAB_227B,D1
@@ -27587,7 +27587,7 @@ LAB_0997:
     PEA     262.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.W  LAB_223E,D0
     EXT.L   D0
     MOVE.W  LAB_2278,D1
@@ -27604,7 +27604,7 @@ LAB_0997:
     PEA     292.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     80(A7),A7
 LAB_0998:
     MOVEA.L LAB_2217,A0
@@ -31223,7 +31223,7 @@ LAB_0B23:
     PEA     90.W
     PEA     30.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  GLOB_LONG_PATCH_VERSION_NUMBER,(A7)
     PEA     LAB_1EFE
     PEA     LAB_1EFD
@@ -31233,7 +31233,7 @@ LAB_0B23:
     PEA     120.W
     PEA     30.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     LAB_1EFF,A0
     LEA     -40(A5),A1
     MOVEQ   #4,D0
@@ -31253,7 +31253,7 @@ LAB_0B24:
     PEA     150.W
     PEA     30.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     72(A7),A7
 LAB_0B25:
     MOVEM.L (A7)+,D2-D3
@@ -31332,12 +31332,12 @@ LAB_0B2A:
     PEA     90.W
     PEA     35.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1F02
     PEA     120.W
     PEA     35.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     MOVE.L  D5,(A7)
     PEA     LAB_1F03
     PEA     -128(A5)
@@ -31346,7 +31346,7 @@ LAB_0B2A:
     PEA     150.W
     PEA     35.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     56(A7),A7
     MOVEQ   #9,D0
     CMP.L   D0,D5
@@ -31377,12 +31377,12 @@ LAB_0B2D:
     PEA     180.W
     PEA     35.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     PEA     LAB_1F06
     PEA     210.W
     PEA     35.W
     MOVE.L  LAB_2217,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
     LEA     32(A7),A7
     MOVE.L  D6,D0
     EXT.W   D0
@@ -31859,115 +31859,96 @@ cmdTableDATA:
     MOVE.W  LAB_22A0,D0
     SUBQ.W  #1,D0
     BNE.W   LAB_0BE5
-    MOVEQ   #0,D0 ; Move 0 into D0
+    MOVEQ   #0,D0 ; Move 0 into D0 to clear it out
     MOVE.B  -5(A5),D0 ; Copy the byte at -5(A5) which is the byte from serial to D0
-    
+
     SUBI.W  #$0021,D0 ; Subtract x21/33 from D0
     BEQ.W   LAB_0B59 ; Does D0 equal zero (exactly)? Means D0 was 33 or '!'
-    
-    
+
     SUBQ.W  #4,D0 ; Subtract 4 more so x25/37
     BEQ.W   LAB_0BB9 ; Does D0 equal zero now? This is mode '%'
-    
+
     SUBI.W  #$0018,D0 ; Subtract x18/24 so x3D/61
     BEQ.W   cmdDATABinaryDL ; Does D0 equal zero now? This is mode '='
-    
-    
+
     SUBQ.W  #6,D0 ; Subtract x6/6 so 67
     BEQ.W   LAB_0B99 ; Same as above... this time mode 'C'
-    
-    
+
     SUBQ.W  #1,D0 ; Subtract 1 so 68
     BEQ.W   LAB_0BC6 ; Mode 'D' (diagnostic command)
     
-    
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BA2 ; 'E'
-    
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BA6 ; 'F'
-    
-    
+
     SUBQ.W  #2,D0
     BEQ.W   cmdDATABinaryDL ; 'H'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BB1 ; 'I'
-    
-    
-    
+
     SUBQ.W  #2,D0
     BEQ.W   LAB_0BAA ; 'K'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0B91 ; 'L'
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BC1 ; 'M'
-    
-    
+
     SUBQ.W  #2,D0
     BEQ.W   LAB_0BC2 ; 'O'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0B6B ; 'P'
-    
-    
+
     SUBQ.W  #2,D0
     BEQ.W   LAB_0BBC ; 'R'
-    
-    
+
     SUBQ.W  #4,D0
     BEQ.W   LAB_0BCA ; 'V'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BC8 ; 'W'
-    
+
     SUBI.W  #$000c,D0
     BEQ.W   LAB_0B9C ; 'c'
-    
-    
+
     SUBQ.W  #3,D0
     BEQ.W   LAB_0BD1 ; 'f'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BD5 ; 'g'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   cmdDATABinaryDL ; 'h'
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BB5 ; 'i'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BAD ; 'j'
-    
+
     SUBQ.W  #6,D0
     BEQ.W   LAB_0B6F ; 'p'
-    
+
     SUBQ.W  #4,D0
     BEQ.W   LAB_0B91 ; 't'
-    
+
     SUBQ.W  #2,D0
     BEQ.W   LAB_0B9F ; 'v'
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BC9 ; 'w'
-    
-    
+
     SUBQ.W  #1,D0
     BEQ.W   LAB_0BCE ; 'x'
+
     SUBI.W  #$0043,D0
-    BEQ.W   LAB_0B95 ; xBB/187
+    BEQ.W   LAB_0B95 ; xBB (Box off)
+
     BRA.W   LAB_0BE4
 LAB_0B59:
     CLR.B   -62(A5)
@@ -32850,7 +32831,7 @@ LAB_0BA5:
 ;   PEA     262.W           ;14068: 48780106
 ;   PEA     40.W            ;1406c: 48780028
 ;   MOVE.L  LAB_2217,-(A7)      ;14070: 2f390003c226
-;   JSR     DISPLAY_TEXT_AT_POSITION(PC)       ;14076: 4eba4992
+;   JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)       ;14076: 4eba4992
 ;
 ;   CLR.W   LAB_22A1        ;17dac: 42790003deee
 ;   BRA.W   LAB_0BE4        ;17db2: 60000b74
@@ -33188,6 +33169,9 @@ LAB_0BC3:
 LAB_0BC4:
     CLR.W   LAB_22A1
     BRA.W   LAB_0BE4
+
+;!======
+
 cmdDATABinaryDL:
     MOVE.W  LAB_2285,D0
     ADDQ.W  #1,D0
@@ -33210,6 +33194,9 @@ cmdDATABinaryDL:
     JSR     LAB_0BFB(PC)
     ADDQ.W  #4,A7
     BRA.W   LAB_0BE4
+
+;!======
+
 LAB_0BC6:
     MOVE.W  LAB_2285,D0
     ADDQ.W  #1,D0
@@ -33244,6 +33231,7 @@ LAB_0BC8:
     JSR     LAB_0BFF(PC)
     ADDQ.W  #4,A7
     BRA.W   LAB_0BE4
+
 LAB_0BC9:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -33251,6 +33239,7 @@ LAB_0BC9:
     JSR     LAB_0BED(PC)
     ADDQ.W  #4,A7
     BRA.W   LAB_0BE4
+
 LAB_0BCA:
     MOVE.W  LAB_2285,D0
     ADDQ.W  #1,D0
@@ -33279,6 +33268,7 @@ LAB_0BCA:
     BHI.S   LAB_0BCB
     BSR.W   LAB_0B22
     BRA.S   LAB_0BCD
+
 LAB_0BCB:
     MOVE.W  LAB_2287,D0
     ADDQ.W  #1,D0
@@ -33747,8 +33737,8 @@ LAB_0BF6:
     JMP     LAB_146E
 LAB_0BF7:
     JMP     LAB_0F4D
-DISPLAY_TEXT_AT_POSITION:
-    JMP     JMP_TBL_DISPLAY_TEXT_AT_POSITION
+JMP_TBL_DISPLAY_TEXT_AT_POSITION:
+    JMP     DISPLAY_TEXT_AT_POSITION
 LAB_0BF9:
     JMP     LAB_0E48
 LAB_0BFA:
@@ -42977,7 +42967,7 @@ LAB_0EEC:
 LAB_0EED:
     JMP     LAB_0A49
 LAB_0EEE:
-    JMP     JMP_TBL_DISPLAY_TEXT_AT_POSITION
+    JMP     DISPLAY_TEXT_AT_POSITION
 LAB_0EEF:
     JMP     LAB_1AAE
 LAB_0EF0:
@@ -70391,7 +70381,7 @@ LAB_18FF:
 LAB_1900:
     JMP     LAB_0B0E
 LAB_1901:
-    JMP     JMP_TBL_DISPLAY_TEXT_AT_POSITION
+    JMP     DISPLAY_TEXT_AT_POSITION
 LAB_1902:
     JMP     LAB_00BE
 LAB_1903:
@@ -72719,8 +72709,8 @@ LAB_1A13:
     MOVEQ   #0,D0
     BRA.S   LAB_1A16
 LAB_1A14:
-    MOVEQ   #48,D0
-    MOVE.L  #$00010001,D1
+    MOVEQ   #48,D0              ; 48 bytes
+    MOVE.L  #$00010001,D1       ; flags
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocMem(A6)
     MOVEA.L D0,A2
@@ -72741,19 +72731,22 @@ LAB_1A17:
     MOVEM.L D6-D7/A2-A3/A6,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.L  28(A7),D7
+
     MOVEQ   #-1,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocSignal(A6)
     MOVE.L  D0,D6
+
     CMPI.B  #$ff,D6
     BNE.S   LAB_1A18
     MOVEQ   #0,D0
     BRA.S   LAB_1A1C
 LAB_1A18:
-    MOVEQ   #34,D0
-    MOVE.L  #$00010001,D1
+    MOVEQ   #34,D0          ; 34 bytes
+    MOVE.L  #$00010001,D1   ; flags
     JSR     _LVOAllocMem(A6)
     MOVEA.L D0,A2
+
     MOVE.L  A2,D0
     BNE.S   LAB_1A19
     MOVEQ   #0,D0
@@ -72952,15 +72945,19 @@ LAB_1A2E:
 LAB_1A2F:
     MOVEM.L A3/A6,-(A7)
     MOVEA.L 12(A7),A3
+
     MOVE.B  #$ff,8(A3)
     MOVEA.W #$ffff,A0
     MOVE.L  A0,20(A3)
     MOVE.L  A0,24(A3)
     MOVEQ   #0,D0
+
+    ; This must be pointing to a property in a struct?
     MOVE.W  18(A3),D0
     MOVEA.L A3,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFreeMem(A6)
+
     MOVEM.L (A7)+,A3/A6
     RTS
 
@@ -74024,6 +74021,9 @@ LAB_1AAC:
 ;!======
 
     DC.W    $0000
+
+;!======
+
 LAB_1AAD:
     MOVEA.L 4(A7),A0
     MOVE.L  A0,(A0)
@@ -74035,6 +74035,9 @@ LAB_1AAD:
 ;!======
 
     DC.W    $0000
+
+;!======
+
 LAB_1AAE:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
@@ -74290,9 +74293,11 @@ LAB_1ACB:
 ;!======
 
     ; Alignment
-    ORI.B   #$00,D0
-    DC.W    $0000
-    MOVEQ   #97,D0
+    ;ORI.B   #$00,D0     ; 4A 00 -- this isn't right...? should just be 00 00
+    ;DC.W    $0000       ; 00 00    is TST 4A? I wonder if this is actually something
+    ;MOVEQ   #97,D0      ; 70 61    related to there being DC.W calls randomly.
+    
+    DC.W    $4A00,$0000,$7061
 
 ;!=====
 
