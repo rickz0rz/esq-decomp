@@ -430,7 +430,7 @@ LAB_0020:
 
 ;!======
 
-     ; Alignment
+    ; Alignment
     ORI.B   #$00,D0
     DC.W    $0000
 
@@ -804,7 +804,7 @@ LAB_004F:
 
 ;!======
 
-     ; Alignment
+    ; Alignment
     DC.W    $0000
 
 ;!======
@@ -2424,7 +2424,7 @@ LAB_00ED:
 
 ;!======
 
-     ; Alignment
+    ; Alignment
     DC.W    $0000
 
 ;!======
@@ -37924,7 +37924,7 @@ LAB_0D56:
 
 ;!======
 
-     ; Alignment
+    ; Alignment
     DC.W    $0000
 
 ;!======
@@ -78818,9 +78818,9 @@ LAB_2132:
 LAB_2133:
     DC.L    LAB_2132
 LAB_2134:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_2135:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_2136:
     NStr    "   "
 LAB_2137:
@@ -78830,15 +78830,15 @@ LAB_2138:
 LAB_2139:
     NStr2   TextAlignCenter,"%c"
 LAB_213A:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_213B:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_213C:
     NStr    "   "
 LAB_213D:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_213E:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_213F:
     NStr2   TextAlignCenter,"%s"
 LAB_2140:
@@ -78848,7 +78848,7 @@ LAB_2141:
 LAB_2142:
     NStr    " vs "
 LAB_2143:
-    DC.W    $1800
+    NStr    TextAlignCenter
 LAB_2144:
     NStr2   TextAlignCenter,"Channel "
 LAB_2145:
