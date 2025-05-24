@@ -5,6 +5,12 @@
     include "lvo-offsets.s"
     include "string-macros.s"
 
+; Text formatting stuff
+; https://wiki.amigaos.net/wiki/AmigaOS_Manual:_Control_Sequences
+TextHorizontalTab   = 9
+TextLineFeed        = 10
+TextCarriageReturn  = 13
+; https://prevueguide.com/wiki/UVSG_Satellite_Data#Text_Alignment_Bytes
 TextAlignCenter     = 24
 TextAlignLeft       = 25
 
@@ -183,7 +189,7 @@ MAIN_RESTORE_REGISTERS_AND_TERMINATE:
 ;!======
 
 LOCAL_STR_DOS_LIBRARY:
-    DC.B    "dos.library",0
+    NStr    "dos.library"
 LAB_000F:
     JMP     LAB_1910
 LAB_0010:
@@ -44873,7 +44879,7 @@ LAB_0FBB:
     DC.W	$00e0
     DC.W	$fefc
     MOVEP.W	4153(A2),D0
-    DC.L	LAB_1BA4
+    DC.L    LAB_1BA4
     TST.B	D0
     BLE.S	LAB_0FBC
     SUBQ.B	#1,LAB_2005
@@ -53347,7 +53353,7 @@ LAB_12BC:
 LAB_12BD:
     ORI.B	#$44,64(A0)
     ORI.B	#$40,$42B9.W
-    DC.L	LAB_2039
+    DC.L    LAB_2039
     MOVE.W	22(A3),D0
     MOVE.W	D0,LAB_203A
     EXT.L	D0
@@ -74256,11 +74262,11 @@ GLOB_STR_ATTENTION_SYSTEM_ENGINEER:
 GLOB_STR_REPORT_CODE_ER003:
     NStr	"Report Code ER003 to TV Guide Technical Services."
 LAB_1AF3:
-    NStr2	"YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",10
+    NStr2	"YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",TextLineFeed
 LAB_1AF4:
     DS.W	1
 LAB_1AF5:
-    NStr2	"Disk Errors: %ld",10
+    NStr2	"Disk Errors: %ld",TextLineFeed
 LAB_1AF6:
     DS.W	1
 LAB_1AF7:
@@ -74343,13 +74349,13 @@ LAB_1B1B:
 LAB_1B1C:
     DS.W	1
 LAB_1B1D:
-    DC.L	$001f001c,$001f001e,$001f001e,$001f001f
-    DC.L	$001e001f,$001e001f,$001f001d,$001f001e
-    DC.L	$001f001e,$001f001f,$001e001f,$001e001f
+    DC.L    $001f001c,$001f001e,$001f001e,$001f001f
+    DC.L    $001e001f,$001e001f,$001f001d,$001f001e
+    DC.L    $001f001e,$001f001f,$001e001f,$001e001f
 LAB_1B1E:
-    DC.L	$2728292a,$2b2c2d2e,$2f300102,$03040506
-    DC.L	$0708090a,$0b0c0d0e,$0f101112,$13141516
-    DC.L	$1718191a,$1b1c1d1e,$1f202122,$23242526
+    DC.L    $2728292a,$2b2c2d2e,$2f300102,$03040506
+    DC.L    $0708090a,$0b0c0d0e,$0f101112,$13141516
+    DC.L    $1718191a,$1b1c1d1e,$1f202122,$23242526
 LAB_1B1F:
     DS.L	1
 LAB_1B20:
@@ -74460,7 +74466,7 @@ LAB_1B53:
 LAB_1B54:
     DS.L	1
 LAB_1B55:
-    DC.L	$0000003c
+    DC.L    $0000003c
 LAB_1B56:
     NStr    "%2d:%02d:%02d"
 LAB_1B57:
@@ -74507,53 +74513,55 @@ LAB_1B69:
 LAB_1B6A:
     NStr    "NNNNNNXX00"
 LAB_1B6B:
-    DC.B	"COI.c",0
+    NStr    "COI.c"
 LAB_1B6C:
-    DC.B	"COI.c",0
+    NStr    "COI.c"
 LAB_1B6D:
-    DC.B	"dh2:OI_%02lx.dat",0,0
+    NStr    "dh2:OI_%02lx.dat"
 LAB_1B6E:
-    DC.B	"%ld",0
+    NStr    "%ld"
 LAB_1B6F:
-    DC.B	"%d",0,0
+    NStr    "%d"
 LAB_1B70:
-    DC.B	":",0
+    NStr    ":"
 LAB_1B71:
-    DC.B	"%ld",0
+    NStr    "%ld"
 LAB_1B72:
-    DC.B	"%ld",0
+    NStr    "%ld"
 LAB_1B73:
-    DC.B	"%02ld",0
+    NStr    "%02ld"
 LAB_1B74:
-    DC.B	":",0
+    NStr    ":"
 LAB_1B75:
-    DC.B	"%d",0,0
+    NStr    "%d"
 LAB_1B76:
-    DC.B	"COI.c",0
+    NStr    "COI.c"
 LAB_1B77:
-    DC.B	"dh2:OI_%02lx.dat",0,0
+    NStr    "dh2:OI_%02lx.dat"
 LAB_1B78:
-    DC.B	"COI.c",0
+    NStr    "COI.c"
 LAB_1B79:
-    DC.L	$0a0d0000
+    ; New line, carriage return
+    NStr2   TextLineFeed,TextCarriageReturn
 LAB_1B7A:
-    DC.L	$0a0d0000
+    ; New line, carriage return
+    NStr2   TextLineFeed,TextCarriageReturn
 LAB_1B7B:
-    DC.B	"NNNNNNXX00",0,0
+    NStr    "NNNNNNXX00"
 LAB_1B7C:
-    DC.B	"%s",0,0
+    NStr    "%s"
 LAB_1B7D:
     NStr	"COI.c"
 LAB_1B7E:
     NStr	"COI.c"
 LAB_1B7F:
-    DC.B	"NNNNNNXX00",0,0
+    NStr    "NNNNNNXX00"
 LAB_1B80:
-    DC.B	"%c%s%c",0,0
+    NStr    "%c%s%c"
 LAB_1B81:
-    DC.B	" ",0
+    NStr    " "
 LAB_1B82:
-    DC.B	"%ls ",0,0
+    NStr    "%ls "
     DS.W	1
 LAB_1B83:
     DC.W	$0001
@@ -74600,13 +74608,16 @@ LAB_1B97:
 LAB_1B98:
     DC.B	"Terminated: DL File Too La"
 LAB_1B99:
-    DC.B	"rge",0
-    DC.L	LAB_1B93
-    DC.L	LAB_1B94
-    DC.L	LAB_1B95
-    DC.L	LAB_1B96
-    DC.L	LAB_1B97
-    DC.L	LAB_1B98
+    NStr    "rge"   ; Clearly continuing from the line above
+    DC.L    LAB_1B93
+    DC.L    LAB_1B94
+    DC.L    LAB_1B95
+    DC.L    LAB_1B96
+    DC.L    LAB_1B97
+    DC.L    LAB_1B98
+; For some reason these strings are off alignment and screw up when forcing
+; them on a boundary of a word/2 bytes. It almost feels like this is
+; some kind of struct instead...
 LAB_1B9A:
     DC.B	".GRF",0
 LAB_1B9B:
@@ -74618,7 +74629,7 @@ LAB_1B9D:
 LAB_1B9E:
     DC.B	"dh2:nxtday.dat",0
 LAB_1B9F:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1BA0:
     DS.L	1
 LAB_1BA1:
@@ -74678,15 +74689,15 @@ LAB_1BBB:
 LAB_1BBC:
     DC.W	$0c00
 LAB_1BBD:
-    DC.L	$0000000f
+    DC.L    $0000000f
 LAB_1BBE:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1BBF:
     DC.B	"Y"
 LAB_1BC0:
     DC.B	"N"
 LAB_1BC1:
-    DC.B	"Y",0
+    NStr    "Y"
 LAB_1BC2:
     DC.W	$008e
 LAB_1BC3:
@@ -74702,9 +74713,9 @@ LAB_1BC7:
 LAB_1BC8:
     DC.B	"N"
 LAB_1BC9:
-    DC.B	"1",0
+    NStr    "1"
 LAB_1BCA:
-    DC.L	$00000078
+    DC.L    $00000078
 LAB_1BCB:
     DS.L	1
 LAB_1BCC:
@@ -74712,7 +74723,7 @@ LAB_1BCC:
 LAB_1BCD:
     NStr    "DISKIO.c"
 LAB_1BCE:
-    DC.B	"%ld",0
+    NStr    "%ld"
 LAB_1BCF:
     NStr    "DISKIO.c"
 LAB_1BD0:
@@ -74726,9 +74737,9 @@ LAB_1BD3:
 LAB_1BD4:
     NStr    "DISKIO.c"
 LAB_1BD5:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1BD6:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1BD7:
     NStr    "trackdisk.device"
 LAB_1BD8:
@@ -74771,21 +74782,21 @@ LAB_1BEA:
     DC.B	"%01ld%01lc%01ld%01ld%02ld%02ld%01lc%01lc%01lc%01lc%01ld%01ld%"
     DC.B	"01lc%01lc%01lc%01lc%01lc%01lc%01lc%02ld%02ld%01lc%01lc%01lc%0"
     DC.B	"2ld%02ld%02ld%03ld%01ld%2.2s%01lc%01lc%01lc%01c%01c%01d%01c%0"
-    DC.B	"1c%01c%01c%01c%01c",10,0,0
+    NStr2   "1c%01c%01c%01c%01c",TextLineFeed
 LAB_1BEB:
     NStr    "dh2:config.dat"
 LAB_1BEC:
     NStr    "DISKIO.c"
 LAB_1BED:
-    DC.B	"Channel Line Up # %ld",10,0,0
+    NStr2   "Channel Line Up # %ld",TextLineFeed
 LAB_1BEE:
-    DC.B	"ETID = %ld ($%02lx)",10,0,0
+    NStr2   "ETID = %ld ($%02lx)",TextLineFeed
 LAB_1BEF:
-    DC.B	"chan_num = '%s'",10,0,0
+    NStr2   "chan_num = '%s'",TextLineFeed
 LAB_1BF0:
-    DC.B	"source = '%s'",10,0,0
+    NStr2   "source = '%s'",TextLineFeed
 LAB_1BF1:
-    DC.B	"call_let = '%s'",10,0,0
+    NStr2   "call_let = '%s'",TextLineFeed
 LAB_1BF2:
     NStr    "attr = $%02lx ("
 LAB_1BF3:
@@ -74805,57 +74816,59 @@ LAB_1BF9:
 LAB_1BFA:
     NStr    " 0x80"
 LAB_1BFB:
-    DC.B	" )",10,0
+    NStr2   " )",TextLineFeed
 LAB_1BFC:
     NStr    "tslt_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
 LAB_1BFD:
-    DC.B	"(NONE)",10,0
+    NStr2   "(NONE)",TextLineFeed
 LAB_1BFE:
-    DC.B	"(OFF AIR)",10,0,0
+    NStr2   "(OFF AIR)",TextLineFeed
 LAB_1BFF:
     NStr    "("
 LAB_1C00:
     NStr    "%s "
 LAB_1C01:
-    DC.B	")",10,0,0
+    NStr2   ")",TextLineFeed
 LAB_1C02:
     NStr    "blkout_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
 LAB_1C03:
-    DC.B	"(NONE)",10,0
+    NStr2   "(NONE)",TextLineFeed
 LAB_1C04:
-    DC.B	"(BLACKED OUT)",10,0,0
+    NStr2   "(BLACKED OUT)",TextLineFeed
 LAB_1C05:
     NStr    "("
 LAB_1C06:
     NStr    "%s "
 LAB_1C07:
-    DC.B	")",10,0,0
+    NStr2   ")",TextLineFeed
 LAB_1C08:
-    DC.B	"flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",10,0
+    NStr2   "flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",TextLineFeed
 LAB_1C09:
-    DC.B	"COI->Ptr = $%08lx",10,0,0
+    NStr2   "COI->Ptr = $%08lx",TextLineFeed
 LAB_1C0A:
-    DC.B	9,"def_COI information follows:",10,0,0
+    ; 9 probably = tab
+    ; 10 probably = line feed
+    NStr3   TextHorizontalTab,"def_COI information follows:",TextLineFeed
 LAB_1C0B:
-    DC.B	9,"def_default = ""%s""",10,0,0
+    NStr3   TextHorizontalTab,"def_default = ""%s""",TextLineFeed
 LAB_1C0C:
-    DC.B	9,"def_city = $%08lx ; *def_city = ""%s""",10,0,0
+    NStr3   TextHorizontalTab,"def_city = $%08lx ; *def_city = ""%s""",TextLineFeed
 LAB_1C0D:
-    DC.B	9,"def_order = $%08lx ; *def_order = ""%s""",10,0,0
+    NStr3   TextHorizontalTab,"def_order = $%08lx ; *def_order = ""%s""",TextLineFeed
 LAB_1C0E:
-    DC.B	9,"def_price = $%08lx ; *def_price = ""%s""",10,0,0
+    NStr3   TextHorizontalTab,"def_price = $%08lx ; *def_price = ""%s""",TextLineFeed
 LAB_1C0F:
-    DC.B	9,"def_tele = $%08lx ; *def_tele = ""%s""",10,0,0
+    NStr3   TextHorizontalTab,"def_tele = $%08lx ; *def_tele = ""%s""",TextLineFeed
 LAB_1C10:
-    DC.B	9,"def_event = $%08lx ; *def_event = ""%s""",10,0,0
+    NStr3   TextHorizontalTab,"def_event = $%08lx ; *def_event = ""%s""",TextLineFeed
 LAB_1C11:
-    DC.B	9,"Exception_count is %ld",10,0,0
+    NStr3   TextHorizontalTab,"Exception_count is %ld",TextLineFeed
 LAB_1C12:
-    DC.B	9,"Exception_Block = $%08lx",10,0,0
+    NStr3   TextHorizontalTab,"Exception_Block = $%08lx",TextLineFeed
 LAB_1C13:
-    DC.B	10,"Channel Line Up # %d, ",0
+    NStr2   TextLineFeed,"Channel Line Up # %d, "
 LAB_1C14:
-    DC.B	"ETID=%d, chan_num='%s', source='%s', call_let='%s'",10,0
+    NStr2   "ETID=%d, chan_num='%s', source='%s', call_let='%s'",TextLineFeed
 LAB_1C15:
     NStr    "  attr=("
 LAB_1C16:
@@ -74875,19 +74888,19 @@ LAB_1C1C:
 LAB_1C1D:
     NStr    " STEREO"
 LAB_1C1E:
-    DC.B	" )",10,0
+    NStr2   " )",TextLineFeed
 LAB_1C1F:
     NStr    "  tslt_mask=($%02x $%02x $%02x $%02x $%02x $%02x) "
 LAB_1C20:
-    DC.B	"blkout_mask=($%02x $%02x $%02x $%02x $%02x $%02x)",10,0,0
+    NStr2   "blkout_mask=($%02x $%02x $%02x $%02x $%02x $%02x)",TextLineFeed
 LAB_1C21:
-    DC.B	"  flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",10,0
+    NStr2   "  flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",TextLineFeed
 LAB_1C22:
-    DC.B	"Program Info # %ld",10,0
+    NStr2   "Program Info # %ld",TextLineFeed
 LAB_1C23:
-    DC.B	"prog_srce = '%s'",10,0
+    NStr2   "prog_srce = '%s'",TextLineFeed
 LAB_1C24:
-    DC.W	$0a00
+    NStr    10
 LAB_1C25:
     NStr    "    (%02ld) [%s]: attr = $%02lx ("
 LAB_1C26:
@@ -74907,20 +74920,20 @@ LAB_1C2C:
 LAB_1C2D:
     NStr    " PREV_DAYS_DATA"
 LAB_1C2E:
-    DC.B	" )",10
+    DC.B	" )",TextLineFeed
     NStr    "         prog_str = "
 LAB_1C2F:
-    DC.B	"'%s'",10,0
+    NStr2   "'%s'",TextLineFeed
 LAB_1C30:
-    DC.B	"NULL",10,0
+    NStr2   "NULL",TextLineFeed
 LAB_1C31:
-    DC.W	$0a00
+    NStr    10
 LAB_1C32:
-    DC.B	"Program Info # %d",10,0,0
+    NStr2   "Program Info # %d",TextLineFeed
 LAB_1C33:
-    DC.W	$0a00
+    NStr    10
 LAB_1C34:
-    DC.B	"prog_srce = '%s'",10,0
+    NStr2   "prog_srce = '%s'",TextLineFeed
 LAB_1C35:
     NStr    "  %02d) [%s]: attr = ("
 LAB_1C36:
@@ -74941,12 +74954,12 @@ LAB_1C3D:
     NStr    " PREV_DAYS_DATA"
 LAB_1C3E:
     DC.B	" )"
-    DC.B	10,"    prog_str='",0
+    NStr2   TextLineFeed,"    prog_str='"
 LAB_1C3F:
-    DC.B	"NONE",0,0
+    NStr    "NONE"
 LAB_1C40:
-    DC.B	"'",10
-    DC.B	"    p_type=%03d, movie_cat=%03d, color=0x%02x",10,0,0
+    DC.B	"'",TextLineFeed
+    NStr2   "    p_type=%03d, movie_cat=%03d, color=0x%02x",TextLineFeed
     DS.W	1
 LAB_1C41:
     DS.W	1
@@ -75029,15 +75042,15 @@ LAB_1C67:
 LAB_1C68:
     NStr    "[Qtable]"
 LAB_1C69:
-    DC.L	$0d0a0000
+    NStr2   TextCarriageReturn,TextLineFeed
 LAB_1C6A:
-    DC.B	"=",0
+    NStr    "="
 LAB_1C6B:
     NStr    """" ; escaped quote
 LAB_1C6C:
     NStr    """" ; escaped quote
 LAB_1C6D:
-    DC.L	$0d0a0000
+    NStr2   TextCarriageReturn,TextLineFeed
 LAB_1C6E:
     NStr    "DISKIO2.c"
 LAB_1C6F:
@@ -75072,70 +75085,70 @@ LAB_1C7D:
     DS.W	1
 LAB_1C7E:
     DS.L	1
-    DC.L	$77073096,$ee0e612c,$990951ba,$076dc419
-    DC.L	$706af48f,$e963a535,$9e6495a3,$0edb8832
-    DC.L	$79dcb8a4,$e0d5e91e,$97d2d988,$09b64c2b
-    DC.L	$7eb17cbd,$e7b82d07,$90bf1d91,$1db71064
-    DC.L	$6ab020f2,$f3b97148,$84be41de,$1adad47d
-    DC.L	$6ddde4eb,$f4d4b551,$83d385c7,$136c9856
-    DC.L	$646ba8c0,$fd62f97a,$8a65c9ec,$14015c4f
-    DC.L	$63066cd9,$fa0f3d63,$8d080df5,$3b6e20c8
-    DC.L	$4c69105e,$d56041e4,$a2677172,$3c03e4d1
-    DC.L	$4b04d447,$d20d85fd,$a50ab56b,$35b5a8fa
-    DC.L	$42b2986c,$dbbbc9d6,$acbcf940,$32d86ce3
-    DC.L	$45df5c75,$dcd60dcf,$abd13d59,$26d930ac
-    DC.L	$51de003a,$c8d75180,$bfd06116,$21b4f4b5
-    DC.L	$56b3c423,$cfba9599,$b8bda50f,$2802b89e
-    DC.L	$5f058808,$c60cd9b2,$b10be924,$2f6f7c87
-    DC.L	$58684c11,$c1611dab,$b6662d3d,$76dc4190
-    DC.L	$01db7106,$98d220bc,$efd5102a,$71b18589
-    DC.L	$06b6b51f,$9fbfe4a5,$e8b8d433,$7807c9a2
-    DC.L	$0f00f934,$9609a88e,$e10e9818,$7f6a0dbb
-    DC.L	$086d3d2d,$91646c97,$e6635c01,$6b6b51f4
-    DC.L	$1c6c6162,$856530d8,$f262004e,$6c0695ed
-    DC.L	$1b01a57b,$8208f4c1,$f50fc457,$65b0d9c6
-    DC.L	$12b7e950,$8bbeb8ea,$fcb9887c,$62dd1ddf
-    DC.L	$15da2d49,$8cd37cf3,$fbd44c65,$4db26158
-    DC.L	$3ab551ce,$a3bc0074,$d4bb30e2,$4adfa541
-    DC.L	$3dd895d7,$a4d1c46d,$d3d6f4fb,$4369e96a
-    DC.L	$346ed9fc,$ad678846,$da60b8d0,$44042d73
-    DC.L	$33031de5,$aa0a4c5f,$dd0d7cc9,$5005713c
-    DC.L	$270241aa,$be0b1010,$c90c2086,$5768b525
-    DC.L	$206f85b3,$b966d409,$ce61e49f,$5edef90e
-    DC.L	$29d9c998,$b0d09822,$c7d7a8b4,$59b33d17
-    DC.L	$2eb40d81,$b7bd5c3b,$c0ba6cad,$edb88320
-    DC.L	$9abfb3b6,$03b6e20c,$74b1d29a,$ead54739
-    DC.L	$9dd277af,$04db2615,$73dc1683,$e3630b12
-    DC.L	$94643b84,$0d6d6a3e,$7a6a5aa8,$e40ecf0b
-    DC.L	$9309ff9d,$0a00ae27,$7d079eb1,$f00f9344
-    DC.L	$8708a3d2,$1e01f268,$6906c2fe,$f762575d
-    DC.L	$806567cb,$196c3671,$6e6b06e7,$fed41b76
-    DC.L	$89d32be0,$10da7a5a,$67dd4acc,$f9b9df6f
-    DC.L	$8ebeeff9,$17b7be43,$60b08ed5,$d6d6a3e8
-    DC.L	$a1d1937e,$38d8c2c4,$4fdff252,$d1bb67f1
-    DC.L	$a6bc5767,$3fb506dd,$48b2364b,$d80d2bda
-    DC.L	$af0a1b4c,$36034af6,$41047a60,$df60efc3
-    DC.L	$a867df55,$316e8eef,$4669be79,$cb61b38c
-    DC.L	$bc66831a,$256fd2a0,$5268e236,$cc0c7795
-    DC.L	$bb0b4703,$220216b9,$5505262f,$c5ba3bbe
-    DC.L	$b2bd0b28,$2bb45a92,$5cb36a04,$c2d7ffa7
-    DC.L	$b5d0cf31,$2cd99e8b,$5bdeae1d,$9b64c2b0
-    DC.L	$ec63f226,$756aa39c,$026d930a,$9c0906a9
-    DC.L	$eb0e363f,$72076785,$05005713,$95bf4a82
-    DC.L	$e2b87a14,$7bb12bae,$0cb61b38,$92d28e9b
-    DC.L	$e5d5be0d,$7cdcefb7,$0bdbdf21,$86d3d2d4
-    DC.L	$f1d4e242,$68ddb3f8,$1fda836e,$81be16cd
-    DC.L	$f6b9265b,$6fb077e1,$18b74777,$88085ae6
-    DC.L	$ff0f6a70,$66063bca,$11010b5c,$8f659eff
-    DC.L	$f862ae69,$616bffd3,$166ccf45,$a00ae278
-    DC.L	$d70dd2ee,$4e048354,$3903b3c2,$a7672661
-    DC.L	$d06016f7,$4969474d,$3e6e77db,$aed16a4a
-    DC.L	$d9d65adc,$40df0b66,$37d83bf0,$a9bcae53
-    DC.L	$debb9ec5,$47b2cf7f,$30b5ffe9,$bdbdf21c
-    DC.L	$cabac28a,$53b39330,$24b4a3a6,$bad03605
-    DC.L	$cdd70693,$54de5729,$23d967bf,$b3667a2e
-    DC.L	$c4614ab8,$5d681b02,$2a6f2b94,$b40bbe37
-    DC.L	$c30c8ea1,$5a05df1b,$2d02ef8d
+    DC.L    $77073096,$ee0e612c,$990951ba,$076dc419
+    DC.L    $706af48f,$e963a535,$9e6495a3,$0edb8832
+    DC.L    $79dcb8a4,$e0d5e91e,$97d2d988,$09b64c2b
+    DC.L    $7eb17cbd,$e7b82d07,$90bf1d91,$1db71064
+    DC.L    $6ab020f2,$f3b97148,$84be41de,$1adad47d
+    DC.L    $6ddde4eb,$f4d4b551,$83d385c7,$136c9856
+    DC.L    $646ba8c0,$fd62f97a,$8a65c9ec,$14015c4f
+    DC.L    $63066cd9,$fa0f3d63,$8d080df5,$3b6e20c8
+    DC.L    $4c69105e,$d56041e4,$a2677172,$3c03e4d1
+    DC.L    $4b04d447,$d20d85fd,$a50ab56b,$35b5a8fa
+    DC.L    $42b2986c,$dbbbc9d6,$acbcf940,$32d86ce3
+    DC.L    $45df5c75,$dcd60dcf,$abd13d59,$26d930ac
+    DC.L    $51de003a,$c8d75180,$bfd06116,$21b4f4b5
+    DC.L    $56b3c423,$cfba9599,$b8bda50f,$2802b89e
+    DC.L    $5f058808,$c60cd9b2,$b10be924,$2f6f7c87
+    DC.L    $58684c11,$c1611dab,$b6662d3d,$76dc4190
+    DC.L    $01db7106,$98d220bc,$efd5102a,$71b18589
+    DC.L    $06b6b51f,$9fbfe4a5,$e8b8d433,$7807c9a2
+    DC.L    $0f00f934,$9609a88e,$e10e9818,$7f6a0dbb
+    DC.L    $086d3d2d,$91646c97,$e6635c01,$6b6b51f4
+    DC.L    $1c6c6162,$856530d8,$f262004e,$6c0695ed
+    DC.L    $1b01a57b,$8208f4c1,$f50fc457,$65b0d9c6
+    DC.L    $12b7e950,$8bbeb8ea,$fcb9887c,$62dd1ddf
+    DC.L    $15da2d49,$8cd37cf3,$fbd44c65,$4db26158
+    DC.L    $3ab551ce,$a3bc0074,$d4bb30e2,$4adfa541
+    DC.L    $3dd895d7,$a4d1c46d,$d3d6f4fb,$4369e96a
+    DC.L    $346ed9fc,$ad678846,$da60b8d0,$44042d73
+    DC.L    $33031de5,$aa0a4c5f,$dd0d7cc9,$5005713c
+    DC.L    $270241aa,$be0b1010,$c90c2086,$5768b525
+    DC.L    $206f85b3,$b966d409,$ce61e49f,$5edef90e
+    DC.L    $29d9c998,$b0d09822,$c7d7a8b4,$59b33d17
+    DC.L    $2eb40d81,$b7bd5c3b,$c0ba6cad,$edb88320
+    DC.L    $9abfb3b6,$03b6e20c,$74b1d29a,$ead54739
+    DC.L    $9dd277af,$04db2615,$73dc1683,$e3630b12
+    DC.L    $94643b84,$0d6d6a3e,$7a6a5aa8,$e40ecf0b
+    DC.L    $9309ff9d,$0a00ae27,$7d079eb1,$f00f9344
+    DC.L    $8708a3d2,$1e01f268,$6906c2fe,$f762575d
+    DC.L    $806567cb,$196c3671,$6e6b06e7,$fed41b76
+    DC.L    $89d32be0,$10da7a5a,$67dd4acc,$f9b9df6f
+    DC.L    $8ebeeff9,$17b7be43,$60b08ed5,$d6d6a3e8
+    DC.L    $a1d1937e,$38d8c2c4,$4fdff252,$d1bb67f1
+    DC.L    $a6bc5767,$3fb506dd,$48b2364b,$d80d2bda
+    DC.L    $af0a1b4c,$36034af6,$41047a60,$df60efc3
+    DC.L    $a867df55,$316e8eef,$4669be79,$cb61b38c
+    DC.L    $bc66831a,$256fd2a0,$5268e236,$cc0c7795
+    DC.L    $bb0b4703,$220216b9,$5505262f,$c5ba3bbe
+    DC.L    $b2bd0b28,$2bb45a92,$5cb36a04,$c2d7ffa7
+    DC.L    $b5d0cf31,$2cd99e8b,$5bdeae1d,$9b64c2b0
+    DC.L    $ec63f226,$756aa39c,$026d930a,$9c0906a9
+    DC.L    $eb0e363f,$72076785,$05005713,$95bf4a82
+    DC.L    $e2b87a14,$7bb12bae,$0cb61b38,$92d28e9b
+    DC.L    $e5d5be0d,$7cdcefb7,$0bdbdf21,$86d3d2d4
+    DC.L    $f1d4e242,$68ddb3f8,$1fda836e,$81be16cd
+    DC.L    $f6b9265b,$6fb077e1,$18b74777,$88085ae6
+    DC.L    $ff0f6a70,$66063bca,$11010b5c,$8f659eff
+    DC.L    $f862ae69,$616bffd3,$166ccf45,$a00ae278
+    DC.L    $d70dd2ee,$4e048354,$3903b3c2,$a7672661
+    DC.L    $d06016f7,$4969474d,$3e6e77db,$aed16a4a
+    DC.L    $d9d65adc,$40df0b66,$37d83bf0,$a9bcae53
+    DC.L    $debb9ec5,$47b2cf7f,$30b5ffe9,$bdbdf21c
+    DC.L    $cabac28a,$53b39330,$24b4a3a6,$bad03605
+    DC.L    $cdd70693,$54de5729,$23d967bf,$b3667a2e
+    DC.L    $c4614ab8,$5d681b02,$2a6f2b94,$b40bbe37
+    DC.L    $c30c8ea1,$5a05df1b,$2d02ef8d
 LAB_1C7F:
     DS.W	1
 LAB_1C80:
@@ -75237,55 +75250,55 @@ LAB_1CAF:
 LAB_1CB0:
     NStr    " 4:30 AM"
 LAB_1CB1:
-    DC.L	LAB_1C80
-    DC.L	LAB_1C81
-    DC.L	LAB_1C82
-    DC.L	LAB_1C83
-    DC.L	LAB_1C84
-    DC.L	LAB_1C85
-    DC.L	LAB_1C86
-    DC.L	LAB_1C87
-    DC.L	LAB_1C88
-    DC.L	LAB_1C89
-    DC.L	LAB_1C8A
-    DC.L	LAB_1C8B
-    DC.L	LAB_1C8C
-    DC.L	LAB_1C8D
-    DC.L	LAB_1C8E
-    DC.L	LAB_1C8F
-    DC.L	LAB_1C90
-    DC.L	LAB_1C91
-    DC.L	LAB_1C92
-    DC.L	LAB_1C93
-    DC.L	LAB_1C94
-    DC.L	LAB_1C95
-    DC.L	LAB_1C96
-    DC.L	LAB_1C97
-    DC.L	LAB_1C98
-    DC.L	LAB_1C99
-    DC.L	LAB_1C9A
-    DC.L	LAB_1C9B
-    DC.L	LAB_1C9C
-    DC.L	LAB_1C9D
-    DC.L	LAB_1C9E
-    DC.L	LAB_1C9F
-    DC.L	LAB_1CA0
-    DC.L	LAB_1CA1
-    DC.L	LAB_1CA2
-    DC.L	LAB_1CA3
-    DC.L	LAB_1CA4
-    DC.L	LAB_1CA5
-    DC.L	LAB_1CA6
-    DC.L	LAB_1CA7
-    DC.L	LAB_1CA8
-    DC.L	LAB_1CA9
-    DC.L	LAB_1CAA
-    DC.L	LAB_1CAB
-    DC.L	LAB_1CAC
-    DC.L	LAB_1CAD
-    DC.L	LAB_1CAE
-    DC.L	LAB_1CAF
-    DC.L	LAB_1CB0
+    DC.L    LAB_1C80
+    DC.L    LAB_1C81
+    DC.L    LAB_1C82
+    DC.L    LAB_1C83
+    DC.L    LAB_1C84
+    DC.L    LAB_1C85
+    DC.L    LAB_1C86
+    DC.L    LAB_1C87
+    DC.L    LAB_1C88
+    DC.L    LAB_1C89
+    DC.L    LAB_1C8A
+    DC.L    LAB_1C8B
+    DC.L    LAB_1C8C
+    DC.L    LAB_1C8D
+    DC.L    LAB_1C8E
+    DC.L    LAB_1C8F
+    DC.L    LAB_1C90
+    DC.L    LAB_1C91
+    DC.L    LAB_1C92
+    DC.L    LAB_1C93
+    DC.L    LAB_1C94
+    DC.L    LAB_1C95
+    DC.L    LAB_1C96
+    DC.L    LAB_1C97
+    DC.L    LAB_1C98
+    DC.L    LAB_1C99
+    DC.L    LAB_1C9A
+    DC.L    LAB_1C9B
+    DC.L    LAB_1C9C
+    DC.L    LAB_1C9D
+    DC.L    LAB_1C9E
+    DC.L    LAB_1C9F
+    DC.L    LAB_1CA0
+    DC.L    LAB_1CA1
+    DC.L    LAB_1CA2
+    DC.L    LAB_1CA3
+    DC.L    LAB_1CA4
+    DC.L    LAB_1CA5
+    DC.L    LAB_1CA6
+    DC.L    LAB_1CA7
+    DC.L    LAB_1CA8
+    DC.L    LAB_1CA9
+    DC.L    LAB_1CAA
+    DC.L    LAB_1CAB
+    DC.L    LAB_1CAC
+    DC.L    LAB_1CAD
+    DC.L    LAB_1CAE
+    DC.L    LAB_1CAF
+    DC.L    LAB_1CB0
 LAB_1CB2:
     DS.W	1
 LAB_1CB3:
@@ -75385,55 +75398,55 @@ LAB_1CE1:
 LAB_1CE2:
     NStr    " 4:30"
 LAB_1CE3:
-    DC.L	LAB_1CB2
-    DC.L	LAB_1CB3
-    DC.L	LAB_1CB4
-    DC.L	LAB_1CB5
-    DC.L	LAB_1CB6
-    DC.L	LAB_1CB7
-    DC.L	LAB_1CB8
-    DC.L	LAB_1CB9
-    DC.L	LAB_1CBA
-    DC.L	LAB_1CBB
-    DC.L	LAB_1CBC
-    DC.L	LAB_1CBD
-    DC.L	LAB_1CBE
-    DC.L	LAB_1CBF
-    DC.L	LAB_1CC0
-    DC.L	LAB_1CC1
-    DC.L	LAB_1CC2
-    DC.L	LAB_1CC3
-    DC.L	LAB_1CC4
-    DC.L	LAB_1CC5
-    DC.L	LAB_1CC6
-    DC.L	LAB_1CC7
-    DC.L	LAB_1CC8
-    DC.L	LAB_1CC9
-    DC.L	LAB_1CCA
-    DC.L	LAB_1CCB
-    DC.L	LAB_1CCC
-    DC.L	LAB_1CCD
-    DC.L	LAB_1CCE
-    DC.L	LAB_1CCF
-    DC.L	LAB_1CD0
-    DC.L	LAB_1CD1
-    DC.L	LAB_1CD2
-    DC.L	LAB_1CD3
-    DC.L	LAB_1CD4
-    DC.L	LAB_1CD5
-    DC.L	LAB_1CD6
-    DC.L	LAB_1CD7
-    DC.L	LAB_1CD8
-    DC.L	LAB_1CD9
-    DC.L	LAB_1CDA
-    DC.L	LAB_1CDB
-    DC.L	LAB_1CDC
-    DC.L	LAB_1CDD
-    DC.L	LAB_1CDE
-    DC.L	LAB_1CDF
-    DC.L	LAB_1CE0
-    DC.L	LAB_1CE1
-    DC.L	LAB_1CE2
+    DC.L    LAB_1CB2
+    DC.L    LAB_1CB3
+    DC.L    LAB_1CB4
+    DC.L    LAB_1CB5
+    DC.L    LAB_1CB6
+    DC.L    LAB_1CB7
+    DC.L    LAB_1CB8
+    DC.L    LAB_1CB9
+    DC.L    LAB_1CBA
+    DC.L    LAB_1CBB
+    DC.L    LAB_1CBC
+    DC.L    LAB_1CBD
+    DC.L    LAB_1CBE
+    DC.L    LAB_1CBF
+    DC.L    LAB_1CC0
+    DC.L    LAB_1CC1
+    DC.L    LAB_1CC2
+    DC.L    LAB_1CC3
+    DC.L    LAB_1CC4
+    DC.L    LAB_1CC5
+    DC.L    LAB_1CC6
+    DC.L    LAB_1CC7
+    DC.L    LAB_1CC8
+    DC.L    LAB_1CC9
+    DC.L    LAB_1CCA
+    DC.L    LAB_1CCB
+    DC.L    LAB_1CCC
+    DC.L    LAB_1CCD
+    DC.L    LAB_1CCE
+    DC.L    LAB_1CCF
+    DC.L    LAB_1CD0
+    DC.L    LAB_1CD1
+    DC.L    LAB_1CD2
+    DC.L    LAB_1CD3
+    DC.L    LAB_1CD4
+    DC.L    LAB_1CD5
+    DC.L    LAB_1CD6
+    DC.L    LAB_1CD7
+    DC.L    LAB_1CD8
+    DC.L    LAB_1CD9
+    DC.L    LAB_1CDA
+    DC.L    LAB_1CDB
+    DC.L    LAB_1CDC
+    DC.L    LAB_1CDD
+    DC.L    LAB_1CDE
+    DC.L    LAB_1CDF
+    DC.L    LAB_1CE0
+    DC.L    LAB_1CE1
+    DC.L    LAB_1CE2
 LAB_1CE4:
     NStr    " "
 LAB_1CE5:
@@ -75453,7 +75466,7 @@ LAB_1CEB:
 LAB_1CEC:
     NStr    " "
 LAB_1CED:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1CEE:
     NStr    "DISPTEXT.c"
 LAB_1CEF:
@@ -75463,21 +75476,21 @@ LAB_1CF0:
 LAB_1CF1:
     NStr    "DISPTEXT.c"
 LAB_1CF2:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CF3:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CF4:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CF5:
-    DC.L	$1f1c1f1e,$1f1e1f1f,$1e1f1e1f
+    DC.L    $1f1c1f1e,$1f1e1f1f,$1e1f1e1f
     DS.L	1
-    DC.L	$0000001f,$0000003b,$0000005a,$00000078
-    DC.L	$00000097,$000000b5,$000000d4,$000000f3
-    DC.L	$00000111,$00000130,$0000014e
+    DC.L    $0000001f,$0000003b,$0000005a,$00000078
+    DC.L    $00000097,$000000b5,$000000d4,$000000f3
+    DC.L    $00000111,$00000130,$0000014e
 LAB_1CF6:
-    DC.B	"dh2:dst.dat",0
+    NStr    "dh2:dst.dat"
 LAB_1CF7:
-    DC.L	LAB_1CF6
+    DC.L    LAB_1CF6
 LAB_1CF8:
     NStr    "%c"
 LAB_1CF9:
@@ -75519,7 +75532,7 @@ LAB_1D0A:
 LAB_1D0B:
     NStr    "DST.c"
 LAB_1D0C:
-    DC.B	"%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",10,0
+    NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed
 LAB_1D0D:
     NStr    "PM"
 LAB_1D0E:
@@ -75536,9 +75549,9 @@ LAB_1D12:
 LAB_1D13:
     DS.W	1
 LAB_1D14:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1D15:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1D16:
     NStr    " Page"
 LAB_1D17:
@@ -75548,8 +75561,8 @@ LAB_1D18:
 LAB_1D19:
     DS.L	1
 LAB_1D1A:
-    DC.L	$0000030c,$0c0c0000,$000c0c00,$05010201
-    DC.L	$060a0505,$05000003
+    DC.L    $0000030c,$0c0c0000,$000c0c00,$05010201
+    DC.L    $060a0505,$05000003
 LAB_1D1B:
     NStr    "All data is to be saved."
 LAB_1D1C:
@@ -75680,33 +75693,33 @@ LAB_1D59:
 LAB_1D5A:
     NStr    "dh2:clock.cmd"
 LAB_1D5B:
-    DC.B	10,"ED.C: Short DUMP OF CLU",10,0
+    NStr3   TextLineFeed,"ED.C: Short DUMP OF CLU",TextLineFeed
 LAB_1D5C:
-    DC.B	"    clu_pos1=%ld, curclu=%s, jdclu1=%ld, curjd=%ld",10,0
+    NStr2   "    clu_pos1=%ld, curclu=%s, jdclu1=%ld, curjd=%ld",TextLineFeed
 LAB_1D5D:
     NStr    "TRUE"
 LAB_1D5E:
     NStr    "FALSE"
 LAB_1D5F:
-    DC.B	"ED.C: END OF DUMP OF CLU",10,10,0,0
+    NStr3   "ED.C: END OF DUMP OF CLU",TextLineFeed,TextLineFeed
 LAB_1D60:
-    DC.B	"wicon = %ld",10,0,0
+    NStr2   "wicon = %ld",TextLineFeed
 LAB_1D61:
-    DC.B	"w_min = %ld minutes",10,0,0
+    NStr2   "w_min = %ld minutes",TextLineFeed
 LAB_1D62:
-    NStr2	"wdcnt = every %ld times     (%ld)",10
+    NStr2	"wdcnt = every %ld times     (%ld)",TextLineFeed
 LAB_1D63:
-    NStr2	"cwcnt = %ld times from now  (%ld)",10
+    NStr2	"cwcnt = %ld times from now  (%ld)",TextLineFeed
 LAB_1D64:
-    NStr2	"WData = $%08lx",10
+    NStr2	"WData = $%08lx",TextLineFeed
 LAB_1D65:
-    NStr2	"WCity = '%s'",10
+    NStr2	"WCity = '%s'",TextLineFeed
 LAB_1D66:
-    NStr2	"Weather_ID = '%s'",10
+    NStr2	"Weather_ID = '%s'",TextLineFeed
 LAB_1D67:
-    NStr2	"cwcolor = %ld",10
+    NStr2	"cwcolor = %ld",TextLineFeed
 LAB_1D68:
-    DC.B	10,"banner_for_weather = %d",10,0
+    NStr3   TextLineFeed,"banner_for_weather = %d",TextLineFeed
 LAB_1D69:
     NStr	"BitPlane1 =%8lx  "
 LAB_1D6A:
@@ -75745,7 +75758,7 @@ LAB_1D7A:
     NStr    "Stop  "
     DS.W	1
 LAB_1D7B:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1D7C:
     NStr    "Edit Ads"
 LAB_1D7D:
@@ -75875,28 +75888,32 @@ GLOB_REF_BATTCLOCK_RESOURCE:
 GLOB_STR_PREVUEC_FONT:
     NStr	"PrevueC.font"
 GLOB_STRUCT_TEXTATTR_PREVUEC_FONT:
-    DC.L	GLOB_STR_PREVUEC_FONT
-    DC.L	$00194020
+    DC.L    GLOB_STR_PREVUEC_FONT
+    DC.W    $0019   ; Size 25 font
+    DC.B    $40
+    DC.B    $20
 
 GLOB_STR_H26F_FONT:
     NStr	"h26f.font"
 GLOB_STRUCT_TEXTATTR_H26F_FONT:
-    DC.L	GLOB_STR_H26F_FONT
-    DC.L	$001a0000
+    DC.L    GLOB_STR_H26F_FONT
+    DC.W    $001a   ; Size 26 font
+    DC.B    0       ; Style: 0 (Normal)
+    DC.B    0       ; Flags: 0 (Normal)
 
 GLOB_STR_TOPAZ_FONT:
     NStr	"topaz.font"
 GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
-    DC.L	GLOB_STR_TOPAZ_FONT
-    DC.W    $0008 ; Size 8 font
+    DC.L    GLOB_STR_TOPAZ_FONT
+    DC.W    $0008   ; Size 8 font
     DC.B    0       ; Style: 0 (Normal)
     DC.B    1       ; Flags: 1 (FPB_DISKFONT from font.library)
 
 GLOB_STR_PREVUE_FONT:
-    DC.B	"Prevue.font",0
+    NStr    "Prevue.font"
 GLOB_STRUCT_TEXTATTR_PREVUE_FONT:
-    DC.L	GLOB_STR_PREVUE_FONT
-    DC.W    $000d ; Size 13 font
+    DC.L    GLOB_STR_PREVUE_FONT
+    DC.W    $000d   ; Size 13 font
     DC.B	$40     ;
     DC.B    $20     ;
 
@@ -75968,10 +75985,11 @@ LAB_1DE1:
 LAB_1DE2:
     DC.B	$03
 LAB_1DE3:
+    ; Could be a bunch of carriage returns in a row...
     DC.B	$0c
-    DC.L	$0c0c0000,$000c0c00,$05010201,$060a0505
-    DC.L	$05000003,$00080007,$00070007,$07000c00
-    DC.L	$0c000c00,$0c0c0c00,$0000000c
+    DC.L    $0c0c0000,$000c0c00,$05010201,$060a0505
+    DC.L    $05000003,$00080007,$00070007,$07000c00
+    DC.L    $0c000c00,$0c0c0c00,$0000000c
 LAB_1DE4:
     DS.W	1
 LAB_1DE5:
@@ -75989,11 +76007,11 @@ LAB_1DE9:
 LAB_1DEA:
     DS.L	1
 LAB_1DEB:
-    DC.B	"A",0
+    NStr    "A"
 LAB_1DEC:
     DS.L	1
 LAB_1DED:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1DEE:
     DS.B	1
 LAB_1DEF:
@@ -76016,7 +76034,7 @@ LAB_1DF6:
 HAS_REQUESTED_CHIP_MEMORY:
     DS.W	1
 LAB_1DF8:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_1DF9:
     NStr    "RAVESC"
 LAB_1DFA:
@@ -76094,821 +76112,821 @@ LAB_1E1D:
 LAB_1E1E:
     NStr    "GRANADA"
 LAB_1E1F:
-    DC.L	$00000015
+    DC.L    $00000015
 LAB_1E20:
     NStr    "JGT"   ; build id string
 LAB_1E21:
-    DC.L	LAB_1E20
+    DC.L    LAB_1E20
 LAB_1E22:
-    DC.L	$055bfffe,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$065bfffe,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$03d9fffe
+    DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$065bfffe,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $03d9fffe
     DC.W	$0080
 LAB_1E23:
-    DC.L	$00000082
+    DC.L    $00000082
 LAB_1E24:
     DS.W	1
 LAB_1E25:
     DS.L	19
     DC.W	$0180
 LAB_1E26:
-    DC.L	$00030182
+    DC.L    $00030182
 LAB_1E27:
-    DC.L	$0aaa0184,$03330186,$05550188,$0512018a
-    DC.L	$016a018c,$0cc0018e
+    DC.L    $0aaa0184,$03330186,$05550188,$0512018a
+    DC.L    $016a018c,$0cc0018e
 LAB_1E28:
-    DC.L	$00030190,$00030192,$00030194,$00030196
-    DC.L	$00030198,$0003019a,$0003019c,$0003019e
+    DC.L    $00030190,$00030192,$00030194,$00030196
+    DC.L    $00030198,$0003019a,$0003019c,$0003019e
 LAB_1E29:
-    DC.L	$000301a0,$000301a2,$000301a4,$000301a6
-    DC.L	$000301a8,$000301aa,$000301ac,$000301ae
-    DC.L	$000301b0,$000301b2,$000301b4,$000301b6
-    DC.L	$000301b8,$000301ba,$000301bc,$000301be
+    DC.L    $000301a0,$000301a2,$000301a4,$000301a6
+    DC.L    $000301a8,$000301aa,$000301ac,$000301ae
+    DC.L    $000301b0,$000301b2,$000301b4,$000301b6
+    DC.L    $000301b8,$000301ba,$000301bc,$000301be
 LAB_1E2A:
     DC.W	$0003
 LAB_1E2B:
-    DC.L	$00d9fffe,$00920030,$009400d8,$008e1769
-    DC.L	$0090ffc5,$01080058,$010a0058,$01009306
-    DC.L	$01020000,$01820003
+    DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
+    DC.L    $0090ffc5,$01080058,$010a0058,$01009306
+    DC.L    $01020000,$01820003
     DC.W	$00e0
 LAB_1E2C:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E2D:
-    DC.L	$00000180
+    DC.L    $00000180
 LAB_1E2E:
-    DC.L	$00030182,$00030184,$03330186,$0cc00188
-    DC.L	$0512018a,$016a018c,$0555018e
+    DC.L    $00030182,$00030184,$03330186,$0cc00188
+    DC.L    $0512018a,$016a018c,$0555018e
     DC.W	$0003
 LAB_1E2F:
-    DC.L	$00dffffe
+    DC.L    $00dffffe
     DC.W	$00e0
 LAB_1E30:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E31:
-    DC.L	$000000e4
+    DC.L    $000000e4
 LAB_1E32:
-    DC.L	$000000e6
+    DC.L    $000000e6
 LAB_1E33:
-    DC.L	$000000e8
+    DC.L    $000000e8
 LAB_1E34:
-    DC.L	$000000ea
+    DC.L    $000000ea
 LAB_1E35:
-    DC.L	$00000182
+    DC.L    $00000182
 LAB_1E36:
-    DC.L	$0aaa0100,$b30680d5,$80fe0188,$0100018a
-    DC.L	$0000018c,$0000018e,$000180d5,$80fe0188
-    DC.L	$0200018a,$0011018c,$0111018e,$000280d5
-    DC.L	$80fe0188,$0300018a,$0022018c,$0222018e
-    DC.L	$000380d5,$80fe0188,$0400018a,$0033018c
-    DC.L	$0333018e,$000480d5,$80fe0188,$0500018a
-    DC.L	$0044018c,$0444018e,$000580d5,$80fe0188
-    DC.L	$0600018a,$0055018c,$0555018e,$000680d5
-    DC.L	$80fe0188,$0700018a,$0066018c,$0666018e
-    DC.L	$000780d5,$80fe0188,$0800018a,$0077018c
-    DC.L	$0777018e,$000880d5,$80fe0188,$0900018a
-    DC.L	$0088018c,$0888018e,$000980d5,$80fe0188
-    DC.L	$0a00018a,$0099018c,$0999018e,$000a00d5
-    DC.L	$80fe0188,$0b00018a,$00aa018c,$0aaa018e
-    DC.L	$000b80d5,$80fe0188,$0c00018a,$00bb018c
-    DC.L	$0bbb018e,$000c80d5,$80fe0188,$0d00018a
-    DC.L	$00cc018c,$0ccc018e,$000d80d5,$80fe0188
-    DC.L	$0e00018a,$00dd018c,$0ddd018e,$000e80d5
-    DC.L	$80fe0188,$0f00018a,$00ee018c,$0eee018e
-    DC.L	$000f80d5,$80fe0188,$0512018a,$016a018c
-    DC.L	$0555018e
+    DC.L    $0aaa0100,$b30680d5,$80fe0188,$0100018a
+    DC.L    $0000018c,$0000018e,$000180d5,$80fe0188
+    DC.L    $0200018a,$0011018c,$0111018e,$000280d5
+    DC.L    $80fe0188,$0300018a,$0022018c,$0222018e
+    DC.L    $000380d5,$80fe0188,$0400018a,$0033018c
+    DC.L    $0333018e,$000480d5,$80fe0188,$0500018a
+    DC.L    $0044018c,$0444018e,$000580d5,$80fe0188
+    DC.L    $0600018a,$0055018c,$0555018e,$000680d5
+    DC.L    $80fe0188,$0700018a,$0066018c,$0666018e
+    DC.L    $000780d5,$80fe0188,$0800018a,$0077018c
+    DC.L    $0777018e,$000880d5,$80fe0188,$0900018a
+    DC.L    $0088018c,$0888018e,$000980d5,$80fe0188
+    DC.L    $0a00018a,$0099018c,$0999018e,$000a00d5
+    DC.L    $80fe0188,$0b00018a,$00aa018c,$0aaa018e
+    DC.L    $000b80d5,$80fe0188,$0c00018a,$00bb018c
+    DC.L    $0bbb018e,$000c80d5,$80fe0188,$0d00018a
+    DC.L    $00cc018c,$0ccc018e,$000d80d5,$80fe0188
+    DC.L    $0e00018a,$00dd018c,$0ddd018e,$000e80d5
+    DC.L    $80fe0188,$0f00018a,$00ee018c,$0eee018e
+    DC.L    $000f80d5,$80fe0188,$0512018a,$016a018c
+    DC.L    $0555018e
     DC.W	$0003
 LAB_1E37:
-    DC.L	$00d9fffe,$01009306,$01820003
+    DC.L    $00d9fffe,$01009306,$01820003
     DC.W	$00e0
 LAB_1E38:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E39:
     DS.W	1
 LAB_1E3A:
-    DC.L	$00dffffe
+    DC.L    $00dffffe
     DC.W	$00e0
 LAB_1E3B:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E3C:
-    DC.L	$000000e4
+    DC.L    $000000e4
 LAB_1E3D:
-    DC.L	$000000e6
+    DC.L    $000000e6
 LAB_1E3E:
-    DC.L	$000000e8
+    DC.L    $000000e8
 LAB_1E3F:
-    DC.L	$000000ea
+    DC.L    $000000ea
 LAB_1E40:
-    DC.L	$00000100,$b3060084
+    DC.L    $00000100,$b3060084
 LAB_1E41:
-    DC.L	$00000086
+    DC.L    $00000086
 LAB_1E42:
-    DC.L	$00000182
+    DC.L    $00000182
 LAB_1E43:
-    DC.L	$0aaa018e
+    DC.L    $0aaa018e
 LAB_1E44:
     DC.W	$0003
 LAB_1E45:
     DS.B	1
 LAB_1E46:
     DC.B	$d9
-    DC.L	$fffe0180,$00f000e0
+    DC.L    $fffe0180,$00f000e0
 LAB_1E47:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E48:
-    DC.L	$000000e4
+    DC.L    $000000e4
 LAB_1E49:
-    DC.L	$000000e6
+    DC.L    $000000e6
 LAB_1E4A:
-    DC.L	$000000e8
+    DC.L    $000000e8
 LAB_1E4B:
-    DC.L	$000000ea
+    DC.L    $000000ea
 LAB_1E4C:
     DS.W	1
 LAB_1E4D:
-    DC.L	$009c8010
+    DC.L    $009c8010
 LAB_1E4E:
-    DC.L	$00d9fffe,$0180016a,$01009306,$01820003
+    DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W	$00e0
 LAB_1E4F:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E50:
-    DC.L	$0000ffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff
+    DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff
     DC.W	$fffe
 LAB_1E51:
-    DC.L	$055bfffe,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$065bfffe,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$0100c306,$0100c306,$0100c306,$0100c306
-    DC.L	$03d9fffe
+    DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$065bfffe,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
+    DC.L    $03d9fffe
     DC.W	$0080
 LAB_1E52:
-    DC.L	$00000082
+    DC.L    $00000082
 LAB_1E53:
     DS.W	1
 LAB_1E54:
     DS.L	19
     DC.W	$0180
 LAB_1E55:
-    DC.L	$00030182
+    DC.L    $00030182
 LAB_1E56:
-    DC.L	$0aaa0184,$03330186,$05550188,$0512018a
-    DC.L	$016a018c,$0cc0018e
+    DC.L    $0aaa0184,$03330186,$05550188,$0512018a
+    DC.L    $016a018c,$0cc0018e
 LAB_1E57:
     DC.W	$0003
 LAB_1E58:
-    DC.L	$00d9fffe,$00920030,$009400d8,$008e1769
-    DC.L	$0090ffc5,$01080058,$010a0058,$01009306
-    DC.L	$01020000,$01820003
+    DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
+    DC.L    $0090ffc5,$01080058,$010a0058,$01009306
+    DC.L    $01020000,$01820003
     DC.W	$00e0
 LAB_1E59:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E5A:
-    DC.L	$00000180
+    DC.L    $00000180
 LAB_1E5B:
-    DC.L	$00030182,$00030184,$03330186,$0cc00188
-    DC.L	$0512018a,$016a018c,$0555018e
+    DC.L    $00030182,$00030184,$03330186,$0cc00188
+    DC.L    $0512018a,$016a018c,$0555018e
     DC.W	$0003
 LAB_1E5C:
-    DC.L	$00dffffe
+    DC.L    $00dffffe
     DC.W	$00e0
 LAB_1E5D:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E5E:
-    DC.L	$000000e4
+    DC.L    $000000e4
 LAB_1E5F:
-    DC.L	$000000e6
+    DC.L    $000000e6
 LAB_1E60:
-    DC.L	$000000e8
+    DC.L    $000000e8
 LAB_1E61:
-    DC.L	$000000ea
+    DC.L    $000000ea
 LAB_1E62:
-    DC.L	$00000182
+    DC.L    $00000182
 LAB_1E63:
-    DC.L	$0aaa018e,$03330100,$b30680d5,$80fe0188
-    DC.L	$0100018a,$0000018c,$0000018e,$000180d5
-    DC.L	$80fe0188,$0200018a,$0011018c,$0111018e
-    DC.L	$000280d5,$80fe0188,$0300018a,$0022018c
-    DC.L	$0222018e,$000380d5,$80fe0188,$0400018a
-    DC.L	$0033018c,$0333018e,$000480d5,$80fe0188
-    DC.L	$0500018a,$0044018c,$0444018e,$000580d5
-    DC.L	$80fe0188,$0600018a,$0055018c,$0555018e
-    DC.L	$000680d5,$80fe0188,$0700018a,$0066018c
-    DC.L	$0666018e,$000780d5,$80fe0188,$0800018a
-    DC.L	$0077018c,$0777018e,$000880d5,$80fe0188
-    DC.L	$0900018a,$0088018c,$0888018e,$000980d5
-    DC.L	$80fe0188,$0a00018a,$0099018c,$0999018e
-    DC.L	$000a00d5,$80fe0188,$0b00018a,$00aa018c
-    DC.L	$0aaa018e,$000b80d5,$80fe0188,$0c00018a
-    DC.L	$00bb018c,$0bbb018e,$000c80d5,$80fe0188
-    DC.L	$0d00018a,$00cc018c,$0ccc018e,$000d80d5
-    DC.L	$80fe0188,$0e00018a,$00dd018c,$0ddd018e
-    DC.L	$000e80d5,$80fe0188,$0f00018a,$00ee018c
-    DC.L	$0eee018e,$000f80d5,$80fe0188,$0512018a
-    DC.L	$016a018c,$0555018e
+    DC.L    $0aaa018e,$03330100,$b30680d5,$80fe0188
+    DC.L    $0100018a,$0000018c,$0000018e,$000180d5
+    DC.L    $80fe0188,$0200018a,$0011018c,$0111018e
+    DC.L    $000280d5,$80fe0188,$0300018a,$0022018c
+    DC.L    $0222018e,$000380d5,$80fe0188,$0400018a
+    DC.L    $0033018c,$0333018e,$000480d5,$80fe0188
+    DC.L    $0500018a,$0044018c,$0444018e,$000580d5
+    DC.L    $80fe0188,$0600018a,$0055018c,$0555018e
+    DC.L    $000680d5,$80fe0188,$0700018a,$0066018c
+    DC.L    $0666018e,$000780d5,$80fe0188,$0800018a
+    DC.L    $0077018c,$0777018e,$000880d5,$80fe0188
+    DC.L    $0900018a,$0088018c,$0888018e,$000980d5
+    DC.L    $80fe0188,$0a00018a,$0099018c,$0999018e
+    DC.L    $000a00d5,$80fe0188,$0b00018a,$00aa018c
+    DC.L    $0aaa018e,$000b80d5,$80fe0188,$0c00018a
+    DC.L    $00bb018c,$0bbb018e,$000c80d5,$80fe0188
+    DC.L    $0d00018a,$00cc018c,$0ccc018e,$000d80d5
+    DC.L    $80fe0188,$0e00018a,$00dd018c,$0ddd018e
+    DC.L    $000e80d5,$80fe0188,$0f00018a,$00ee018c
+    DC.L    $0eee018e,$000f80d5,$80fe0188,$0512018a
+    DC.L    $016a018c,$0555018e
     DC.W	$0003
 LAB_1E64:
-    DC.L	$00d9fffe,$01009306,$01820003
+    DC.L    $00d9fffe,$01009306,$01820003
     DC.W	$00e0
 LAB_1E65:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E66:
     DS.W	1
 LAB_1E67:
-    DC.L	$00dffffe
+    DC.L    $00dffffe
     DC.W	$00e0
 LAB_1E68:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E69:
-    DC.L	$000000e4
+    DC.L    $000000e4
 LAB_1E6A:
-    DC.L	$000000e6
+    DC.L    $000000e6
 LAB_1E6B:
-    DC.L	$000000e8
+    DC.L    $000000e8
 LAB_1E6C:
-    DC.L	$000000ea
+    DC.L    $000000ea
 LAB_1E6D:
-    DC.L	$00000100,$b3060084
+    DC.L    $00000100,$b3060084
 LAB_1E6E:
-    DC.L	$00000086
+    DC.L    $00000086
 LAB_1E6F:
-    DC.L	$00000182
+    DC.L    $00000182
 LAB_1E70:
-    DC.L	$0aaa018e
+    DC.L    $0aaa018e
 LAB_1E71:
     DC.W	$0003
 LAB_1E72:
     DS.B	1
 LAB_1E73:
     DC.B	$d9
-    DC.L	$fffe0180,$00f000e0
+    DC.L    $fffe0180,$00f000e0
 LAB_1E74:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E75:
-    DC.L	$000000e4
+    DC.L    $000000e4
 LAB_1E76:
-    DC.L	$000000e6
+    DC.L    $000000e6
 LAB_1E77:
-    DC.L	$000000e8
+    DC.L    $000000e8
 LAB_1E78:
-    DC.L	$000000ea
+    DC.L    $000000ea
 LAB_1E79:
     DS.W	1
 LAB_1E7A:
-    DC.L	$009c8010
+    DC.L    $009c8010
 LAB_1E7B:
-    DC.L	$00d9fffe,$0180016a,$01009306,$01820003
+    DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W	$00e0
 LAB_1E7C:
-    DC.L	$000000e2
+    DC.L    $000000e2
 LAB_1E7D:
-    DC.L	$0000ffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L	$fffeffff
+    DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
+    DC.L    $fffeffff
     DC.W	$fffe
 LAB_1E7E:
-    DC.L	$0000004c
+    DC.L    $0000004c
 LAB_1E7F:
-    DC.B	"ESQDISP.c",0
+    NStr    "ESQDISP.c"
 LAB_1E80:
-    DC.L	$ffffffff,$ffffffff
+    DC.L    $ffffffff,$ffffffff
 LAB_1E81:
     DS.L	1
     DS.W	1
@@ -77017,10 +77035,10 @@ LAB_1EB4:
 LAB_1EB5:
     NStr    "VIDEO_INSERTION_STOP"
 LAB_1EB6:
-    DC.L	LAB_1EB2
-    DC.L	LAB_1EB3
-    DC.L	LAB_1EB4
-    DC.L	LAB_1EB5
+    DC.L    LAB_1EB2
+    DC.L    LAB_1EB3
+    DC.L    LAB_1EB4
+    DC.L    LAB_1EB5
 LAB_1EB7:
     NStr	"  CartSW: %s CartREL: %s VidSW: %s on_air: %s "
 LAB_1EB8:
@@ -77064,14 +77082,14 @@ LAB_1ECA:
 LAB_1ECB:
     NStr	"FALSE"
 LAB_1ECC:
-    DC.L	$0000030c,$0c0c0000,$000c0c00,$05010201
-    DC.L	$060a0505,$05000003
+    DC.L    $0000030c,$0c0c0000,$000c0c00,$05010201
+    DC.L    $060a0505,$05000003
 LAB_1ECD:
     DC.W	$0001
 LAB_1ECE:
     NStr	"dh2:logo.lst"
 LAB_1ECF:
-    DC.L	LAB_1ECE
+    DC.L    LAB_1ECE
 LAB_1ED0:
     DS.L	1
 LAB_1ED1:
@@ -77085,7 +77103,7 @@ LAB_1ED4:
 LAB_1ED5:
     NStr	"gfx:g.ads"
 LAB_1ED6:
-    DC.L	LAB_1ED5
+    DC.L    LAB_1ED5
 LAB_1ED7:
     NStr	"pwbrush"
 LAB_1ED8:
@@ -77101,13 +77119,13 @@ LAB_1EDC:
 LAB_1EDD:
     NStr	"i5"
 LAB_1EDE:
-    DC.L	LAB_1ED7
+    DC.L    LAB_1ED7
 LAB_1EDF:
-    DC.L	LAB_1ED8
-    DC.L	LAB_1ED9
-    DC.L	LAB_1EDA
-    DC.L	LAB_1EDB
-    DC.L	LAB_1EDC
+    DC.L    LAB_1ED8
+    DC.L    LAB_1ED9
+    DC.L    LAB_1EDA
+    DC.L    LAB_1EDB
+    DC.L    LAB_1EDC
 LAB_1EE0:
     DS.L	1
 LAB_1EE1:
@@ -77234,15 +77252,15 @@ LAB_1F1B:
 LAB_1F1C:
     NStr    "(NC-17)"
 LAB_1F1D:
-    DC.L	LAB_1F16
-    DC.L	LAB_1F17
-    DC.L	LAB_1F18
-    DC.L	LAB_1F19
-    DC.L	LAB_1F1A
-    DC.L	LAB_1F1B
-    DC.L	LAB_1F1C
+    DC.L    LAB_1F16
+    DC.L    LAB_1F17
+    DC.L    LAB_1F18
+    DC.L    LAB_1F19
+    DC.L    LAB_1F1A
+    DC.L    LAB_1F1B
+    DC.L    LAB_1F1C
 LAB_1F1E:
-    DC.L	$8486858c,$878d8f00
+    DC.L    $8486858c,$878d8f00
 LAB_1F1F:
     NStr    "(TV-Y)"
 LAB_1F20:
@@ -77258,15 +77276,15 @@ LAB_1F24:
 LAB_1F25:
     NStr    "(TV-14)"
 LAB_1F26:
-    DC.L	LAB_1F1F
-    DC.L	LAB_1F20
-    DC.L	LAB_1F21
-    DC.L	LAB_1F22
-    DC.L	LAB_1F23
-    DC.L	LAB_1F24
-    DC.L	LAB_1F25
+    DC.L    LAB_1F1F
+    DC.L    LAB_1F20
+    DC.L    LAB_1F21
+    DC.L    LAB_1F22
+    DC.L    LAB_1F23
+    DC.L    LAB_1F24
+    DC.L    LAB_1F25
 LAB_1F27:
-    DC.L	$90939b99,$a3a39a00
+    DC.L    $90939b99,$a3a39a00
 LAB_1F28:
     NStr    "ESQPARS2.c"
 LAB_1F29:
@@ -77281,7 +77299,7 @@ LAB_1F2D:
     NStr    "ESQPARS2.c"
     DS.W	1
 LAB_1F2E:
-    DC.L	$00000004 ; Patch version string
+    DC.L    $00000004 ; Patch version string
 LAB_1F2F:
     DS.W	1
 LAB_1F30:
@@ -77353,7 +77371,7 @@ LAB_1F50:
 LAB_1F51:
     DS.L	1
 LAB_1F52:
-    DC.L	$00000022
+    DC.L    $00000022
 LAB_1F53:
     DC.W	$0100
 LAB_1F54:
@@ -77361,7 +77379,7 @@ LAB_1F54:
 LAB_1F55:
     DC.W	$0010
 LAB_1F56:
-    DC.L	$00110000
+    DC.L    $00110000
     DS.L	1
 LAB_1F57:
     DS.L	1
@@ -77374,7 +77392,7 @@ LAB_1F5A:
 LAB_1F5B:
     DC.W	$0900
 LAB_1F5C:
-    DC.L	$0d0a0000
+    DC.L    $0d0a0000
 LAB_1F5D:
     NStr    "FLIB.c"
 LAB_1F5E:
@@ -77410,7 +77428,7 @@ LAB_1F6C:
 LAB_1F6D:
     NStr    "DH2:Digital_Mplex.dat"
 LAB_1F6E:
-    DC.L	$12001200
+    DC.L    $12001200
 LAB_1F6F:
     DS.W	1
 LAB_1F70:
@@ -77426,19 +77444,19 @@ LAB_1F74:
 LAB_1F75:
     NStr    "DH2:Digital_PPV3.dat"
 LAB_1F76:
-    DC.L	$12001200
+    DC.L    $12001200
 LAB_1F77:
     DS.L	1
-    DC.L	$00000067,$00000069,$00000072,$00000073
-    DC.L	$00000074,$00000075,$00000076,$00000077
-    DC.L	$00000078,$00000079,$0000007a,$000000c9
-    DC.L	$000000ca,$000000cb,$000000cc,$000000cd
-    DC.L	$000000ce,$000000cf,$000000d1,$000000d2
-    DC.L	$000000d3,$000000d4,$000000d5,$000000d6
-    DC.L	$000000d7,$000000d8,$000000d9,$000000da
-    DC.L	$000000db,$000000dc,$000000dd,$000000de
-    DC.L	$000000df,$000000e0,$000000e1,$000000e2
-    DC.L	$000000e8,$ffffffff
+    DC.L    $00000067,$00000069,$00000072,$00000073
+    DC.L    $00000074,$00000075,$00000076,$00000077
+    DC.L    $00000078,$00000079,$0000007a,$000000c9
+    DC.L    $000000ca,$000000cb,$000000cc,$000000cd
+    DC.L    $000000ce,$000000cf,$000000d1,$000000d2
+    DC.L    $000000d3,$000000d4,$000000d5,$000000d6
+    DC.L    $000000d7,$000000d8,$000000d9,$000000da
+    DC.L    $000000db,$000000dc,$000000dd,$000000de
+    DC.L    $000000df,$000000e0,$000000e1,$000000e2
+    DC.L    $000000e8,$ffffffff
 LAB_1F78:
     NStr    "NO_FREE_STORE"
 LAB_1F79:
@@ -77515,44 +77533,44 @@ LAB_1F9C:
     NStr    "NO_MORE_ENTRIES"
 LAB_1F9D:
     NStr    "UNKNOWN!"
-    DC.L	LAB_1F78
-    DC.L	LAB_1F79
-    DC.L	LAB_1F7A
-    DC.L	LAB_1F7B
-    DC.L	LAB_1F7C
-    DC.L	LAB_1F7D
-    DC.L	LAB_1F7E
-    DC.L	LAB_1F7F
-    DC.L	LAB_1F80
-    DC.L	LAB_1F81
-    DC.L	LAB_1F82
-    DC.L	LAB_1F83
-    DC.L	LAB_1F84
-    DC.L	LAB_1F85
-    DC.L	LAB_1F86
-    DC.L	LAB_1F87
-    DC.L	LAB_1F88
-    DC.L	LAB_1F89
-    DC.L	LAB_1F8A
-    DC.L	LAB_1F8B
-    DC.L	LAB_1F8C
-    DC.L	LAB_1F8D
-    DC.L	LAB_1F8E
-    DC.L	LAB_1F8F
-    DC.L	LAB_1F90
-    DC.L	LAB_1F91
-    DC.L	LAB_1F92
-    DC.L	LAB_1F93
-    DC.L	LAB_1F94
-    DC.L	LAB_1F95
-    DC.L	LAB_1F96
-    DC.L	LAB_1F97
-    DC.L	LAB_1F98
-    DC.L	LAB_1F99
-    DC.L	LAB_1F9A
-    DC.L	LAB_1F9B
-    DC.L	LAB_1F9C
-    DC.L	LAB_1F9D
+    DC.L    LAB_1F78
+    DC.L    LAB_1F79
+    DC.L    LAB_1F7A
+    DC.L    LAB_1F7B
+    DC.L    LAB_1F7C
+    DC.L    LAB_1F7D
+    DC.L    LAB_1F7E
+    DC.L    LAB_1F7F
+    DC.L    LAB_1F80
+    DC.L    LAB_1F81
+    DC.L    LAB_1F82
+    DC.L    LAB_1F83
+    DC.L    LAB_1F84
+    DC.L    LAB_1F85
+    DC.L    LAB_1F86
+    DC.L    LAB_1F87
+    DC.L    LAB_1F88
+    DC.L    LAB_1F89
+    DC.L    LAB_1F8A
+    DC.L    LAB_1F8B
+    DC.L    LAB_1F8C
+    DC.L    LAB_1F8D
+    DC.L    LAB_1F8E
+    DC.L    LAB_1F8F
+    DC.L    LAB_1F90
+    DC.L    LAB_1F91
+    DC.L    LAB_1F92
+    DC.L    LAB_1F93
+    DC.L    LAB_1F94
+    DC.L    LAB_1F95
+    DC.L    LAB_1F96
+    DC.L    LAB_1F97
+    DC.L    LAB_1F98
+    DC.L    LAB_1F99
+    DC.L    LAB_1F9A
+    DC.L    LAB_1F9B
+    DC.L    LAB_1F9C
+    DC.L    LAB_1F9D
 LAB_1F9E:
     NStr    "GFX:"
 LAB_1F9F:
@@ -77562,66 +77580,66 @@ LAB_1FA0:
 LAB_1FA1:
     NStr    "COPY >NIL: GFX:#? WORK: CLONE ALL"
 LAB_1FA2:
-    DC.L	$00030000
+    DC.L    $00030000
     DS.L	14
-    DC.L	$00000aaa
+    DC.L    $00000aaa
     DS.L	15
-    DC.L	$01110000
+    DC.L    $01110000
     DS.L	14
-    DC.L	$00000cc0
+    DC.L    $00000cc0
     DS.L	15
-    DC.L	$05120512,$04000500,$06000700,$08000900
-    DC.L	$0a000b00,$0b110b22,$0b330b44,$0b550b66
-    DC.L	$0b770f44,$0f550f66,$0f770f88,$0f990faa
-    DC.L	$0fbb0fcc,$0fdd0fff,$01000200,$0300016a
-    DC.L	$016a0075,$00860187,$01970298,$03a903ba
-    DC.L	$04bb05cc,$06cc07dd,$08de09de,$0aef0f0f
-    DC.L	$0f1f0f2f,$0f3f0f4f,$0f5f0f6f,$0f7f0f8f
-    DC.L	$0f9f0faf,$0fbf0fcf,$0fdf0fff,$05550555
-    DC.L	$01010202,$03030404,$05050606,$07070808
-    DC.L	$09090a0a,$0b0b0c0c,$0d0d0e0e,$0f0f0f1f
-    DC.L	$0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
-    DC.L	$0faf0fbf,$0fcf0fdf,$0fff0003,$00030116
-    DC.L	$01170118,$0119011a,$011b011c,$011d011e
-    DC.L	$011f022f,$033f044f,$055f066f,$066f077f
-    DC.L	$088f099f,$0aaf0bbf,$0ccf0ddf,$0fff0001
-    DC.L	$00020003,$00040005
+    DC.L    $05120512,$04000500,$06000700,$08000900
+    DC.L    $0a000b00,$0b110b22,$0b330b44,$0b550b66
+    DC.L    $0b770f44,$0f550f66,$0f770f88,$0f990faa
+    DC.L    $0fbb0fcc,$0fdd0fff,$01000200,$0300016a
+    DC.L    $016a0075,$00860187,$01970298,$03a903ba
+    DC.L    $04bb05cc,$06cc07dd,$08de09de,$0aef0f0f
+    DC.L    $0f1f0f2f,$0f3f0f4f,$0f5f0f6f,$0f7f0f8f
+    DC.L    $0f9f0faf,$0fbf0fcf,$0fdf0fff,$05550555
+    DC.L    $01010202,$03030404,$05050606,$07070808
+    DC.L    $09090a0a,$0b0b0c0c,$0d0d0e0e,$0f0f0f1f
+    DC.L    $0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
+    DC.L    $0faf0fbf,$0fcf0fdf,$0fff0003,$00030116
+    DC.L    $01170118,$0119011a,$011b011c,$011d011e
+    DC.L    $011f022f,$033f044f,$055f066f,$066f077f
+    DC.L    $088f099f,$0aaf0bbf,$0ccf0ddf,$0fff0001
+    DC.L    $00020003,$00040005
     DS.L	1
-    DC.L	$04140515,$06260727,$08280929,$09390a3a
-    DC.L	$0b3b0b3c,$0b4c0b4d,$0b5d0b5e,$0f0f0f1f
-    DC.L	$0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
-    DC.L	$0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
-    DC.L	$01310141,$02520262,$03730484,$05940595
-    DC.L	$069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
-    DC.L	$0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
-    DC.L	$0fbf0fcf,$0fdf0fff
+    DC.L    $04140515,$06260727,$08280929,$09390a3a
+    DC.L    $0b3b0b3c,$0b4c0b4d,$0b5d0b5e,$0f0f0f1f
+    DC.L    $0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
+    DC.L    $0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
+    DC.L    $01310141,$02520262,$03730484,$05940595
+    DC.L    $069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
+    DC.L    $0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
+    DC.L    $0fbf0fcf,$0fdf0fff
     DS.L	1
-    DC.L	$01200131,$01410252,$02620373,$04840594
-    DC.L	$05950696,$07a708b8,$09b90aca,$0f0f0f1f
-    DC.L	$0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
-    DC.L	$0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
-    DC.L	$01310141,$02520262,$03730484,$05940595
-    DC.L	$069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
-    DC.L	$0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
-    DC.L	$0fbf0fcf,$0fdf0fff
+    DC.L    $01200131,$01410252,$02620373,$04840594
+    DC.L    $05950696,$07a708b8,$09b90aca,$0f0f0f1f
+    DC.L    $0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
+    DC.L    $0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
+    DC.L    $01310141,$02520262,$03730484,$05940595
+    DC.L    $069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
+    DC.L    $0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
+    DC.L    $0fbf0fcf,$0fdf0fff
     DS.L	1
-    DC.L	$01200131,$01410252,$02620373,$04840594
-    DC.L	$05950696,$07a708b8,$09b90aca,$0f0f0f1f
-    DC.L	$0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
-    DC.L	$0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
-    DC.L	$01310141,$02520262,$03730484,$05940595
-    DC.L	$069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
-    DC.L	$0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
-    DC.L	$0fbf0fcf,$0fdf0fff
+    DC.L    $01200131,$01410252,$02620373,$04840594
+    DC.L    $05950696,$07a708b8,$09b90aca,$0f0f0f1f
+    DC.L    $0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
+    DC.L    $0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
+    DC.L    $01310141,$02520262,$03730484,$05940595
+    DC.L    $069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
+    DC.L    $0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
+    DC.L    $0fbf0fcf,$0fdf0fff
     DS.L	1
-    DC.L	$01200131,$01410252,$02620373,$04840594
-    DC.L	$05950696,$07a708b8,$09b90aca,$0f0f0f1f
-    DC.L	$0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
-    DC.L	$0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
-    DC.L	$01310141,$02520262,$03730484,$05940595
-    DC.L	$069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
-    DC.L	$0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
-    DC.L	$0fbf0fcf,$0fdf0fff
+    DC.L    $01200131,$01410252,$02620373,$04840594
+    DC.L    $05950696,$07a708b8,$09b90aca,$0f0f0f1f
+    DC.L    $0f2f0f3f,$0f4f0f5f,$0f6f0f7f,$0f8f0f9f
+    DC.L    $0faf0fbf,$0fcf0fdf,$0fff0000,$00000120
+    DC.L    $01310141,$02520262,$03730484,$05940595
+    DC.L    $069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
+    DC.L    $0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
+    DC.L    $0fbf0fcf,$0fdf0fff
 LAB_1FA3:
     DS.W	1
 LAB_1FA4:
@@ -77631,23 +77649,24 @@ LAB_1FA5:
 LAB_1FA6:
     DS.L	1
 LAB_1FA7:
-    DC.L	$00001760
+    DC.L    $00001760
 LAB_1FA8:
     DS.L	1
 LAB_1FA9:
     DS.W	1
 LAB_1FAA:
-    DC.B	"%s:",10,0,0
+    NStr2   "%s:",TextLineFeed
 LAB_1FAB:
-    DC.B	"[GRADIENT]",10,0
+    NStr2   "[GRADIENT]",TextLineFeed
 LAB_1FAC:
-    DC.B	10,"COLOR%d = %d",10,0,0
+    NStr3   TextLineFeed,"COLOR%d = %d",TextLineFeed
 LAB_1FAD:
-    DC.B	"   %d = %03X",10,0
+    NStr2   "   %d = %03X",TextLineFeed
 LAB_1FAE:
-    DC.B	10,"TABLE = DONE",10,10,0
+    DC.B    10
+    NStr3   "TABLE = DONE",TextLineFeed,TextLineFeed
 LAB_1FAF:
-    DC.L	$00010000
+    DC.L    $00010000
 LAB_1FB0:
     DC.W	$0001
 LAB_1FB1:
@@ -77670,8 +77689,8 @@ LAB_1FB8:
 LAB_1FB9:
     DS.B	1
 LAB_1FBA:
-    DC.L	$030c0c0c,$0000000c,$0c000501,$0201060a
-    DC.L	$05050500
+    DC.L    $030c0c0c,$0000000c,$0c000501,$0201060a
+    DC.L    $05050500
     DC.W	$0003
 LAB_1FBB:
     NStr    "LADFUNC.c"
@@ -77746,7 +77765,7 @@ LAB_1FDD:
 LAB_1FDE:
     NStr    "LADFUNC.c"
 LAB_1FDF:
-    DC.B	"""",10,0,0
+    NStr2   """",TextLineFeed
 LAB_1FE0:
     NStr    """"
 LAB_1FE1:
@@ -77764,9 +77783,9 @@ LAB_1FE6:
 LAB_1FE7:
     DS.L	1
 LAB_1FE8:
-    DC.L	$ffffffff
+    DC.L    $ffffffff
 LAB_1FE9:
-    DC.L	$ffffffff
+    DC.L    $ffffffff
 LAB_1FEA:
     DC.W	$ffff
 LAB_1FEB:
@@ -77835,8 +77854,8 @@ LAB_2009:
 LAB_200A:
     DS.L	1
 LAB_200B:
-    DC.L	$00000005,$00000006,$00000007,$00000008
-    DC.L	$00000009,$0000000a,$0000000c
+    DC.L    $00000005,$00000006,$00000007,$00000008
+    DC.L    $00000009,$0000000a,$0000000c
 GLOB_STR_SINGLE_SPACE:
     NStr    " "
 LAB_200D:
@@ -77862,7 +77881,7 @@ LAB_2016:
 LAB_2017:
     DS.W	1
 LAB_2018:
-    DC.L	$90939b99,$a3a39a84,$86858c87
+    DC.L    $90939b99,$a3a39a84,$86858c87
     DC.W	$8d8f
     DS.B	1
 LAB_2019:
@@ -77870,9 +77889,9 @@ LAB_2019:
 LAB_201A:
     NStr    "%c%s%c %s"
 LAB_201B:
-    DC.L	$00000004
+    DC.L    $00000004
 LAB_201C:
-    DC.L	$00000004
+    DC.L    $00000004
 LAB_201D:
     DS.L	1
 LAB_201E:
@@ -77880,7 +77899,7 @@ LAB_201E:
 LAB_201F:
     DS.L	1
 LAB_2020:
-    DC.L	$00000004
+    DC.L    $00000004
 LAB_2021:
     DS.L	1
 LAB_2022:
@@ -77888,7 +77907,7 @@ LAB_2022:
 LAB_2023:
     DS.L	1
 LAB_2024:
-    DC.L	$00000004
+    DC.L    $00000004
 LAB_2025:
     DS.L	1
 LAB_2026:
@@ -77896,7 +77915,7 @@ LAB_2026:
 LAB_2027:
     DS.L	1
 LAB_2028:
-    DC.L	$00000004
+    DC.L    $00000004
 LAB_2029:
     NStr    "%s Ch. %s"
 LAB_202A:
@@ -77924,7 +77943,7 @@ LAB_2034:
 LAB_2035:
     NStr    " "
 LAB_2036:
-    DC.L	$00000004
+    DC.L    $00000004
 LAB_2037:
     DS.L	1
 LAB_2038:
@@ -77938,7 +77957,7 @@ LAB_203B:
 LAB_203C:
     NStr    "-"
 LAB_203D:
-    DC.L	$00000004
+    DC.L    $00000004
 GLOB_STR_NEWGRID2_C_1:
     NStr    "NEWGRID2.c"
 LAB_203F:
@@ -77952,7 +77971,7 @@ LAB_2042:
 LAB_2043:
     DS.L	1
 LAB_2044:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_2045:
     NStr    "NEWGRID2.c"
 LAB_2046:
@@ -77978,10 +77997,10 @@ LAB_204F:
 LAB_2050:
     NStr    "CURDAY:"
 LAB_2051:
-    DC.B	" %03d %02d",10
+    DC.B	" %03d %02d",TextLineFeed
     NStr    "TYPES: "
 LAB_2052:
-    DC.B	"No Data",10,10,0
+    NStr3   "No Data",TextLineFeed,TextLineFeed
 LAB_2053:
     NStr    "NXTDAY:"
 LAB_2054:
@@ -78021,27 +78040,27 @@ LAB_2063:
 LAB_2064:
     NStr    "SOURCE CONFIG"
 LAB_2065:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_2066:
     NStr    "PARSEINI.c"
 LAB_2067:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_2068:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_2069:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_206A:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_206B:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_206C:
     NStr    "PARSEINI.c"
 LAB_206D:
-    DC.L	$ffffffff
+    DC.L    $ffffffff
 LAB_206E:
-    DC.B	" ",9,0,0
+    NStr2   " ",9
 LAB_206F:
-    DC.B	" ;",9,0
+    NStr2   " ;",9
 LAB_2070:
     NStr    "TABLE"
 LAB_2071:
@@ -78141,7 +78160,7 @@ LAB_209F:
 LAB_20A0:
     NStr    "PARSEINI.c"
 LAB_20A1:
-    DC.L	$00040000,$000007c2
+    DC.L    $00040000,$000007c2
     DS.L	5
 LAB_20A2:
     NStr    "dh2:err.log"
@@ -78168,18 +78187,18 @@ LAB_20AC:
 GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     NStr    "No Current Weather Data Available"
 GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
-    DC.L	GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
+    DC.L    GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
 LAB_20AF:
     NStr    "No Forecast Weather Data Available"
 LAB_20B0:
-    DC.L	LAB_20AF
+    DC.L    LAB_20AF
 LAB_20B1:
     NStr    "May not be available in all areas."
 LAB_20B2:
-    DC.L	LAB_20B1
+    DC.L    LAB_20B1
 LAB_20B3:
     NStr    "Continued"
-    DC.L	LAB_20B3
+    DC.L    LAB_20B3
 LAB_20B4:
     NStr    "January"
 LAB_20B5:
@@ -78205,18 +78224,18 @@ LAB_20BE:
 LAB_20BF:
     NStr    "December"
 LAB_20C0:
-    DC.L	LAB_20B4
-    DC.L	LAB_20B5
-    DC.L	LAB_20B6
-    DC.L	LAB_20B7
-    DC.L	LAB_20B8
-    DC.L	LAB_20B9
-    DC.L	LAB_20BA
-    DC.L	LAB_20BB
-    DC.L	LAB_20BC
-    DC.L	LAB_20BD
-    DC.L	LAB_20BE
-    DC.L	LAB_20BF
+    DC.L    LAB_20B4
+    DC.L    LAB_20B5
+    DC.L    LAB_20B6
+    DC.L    LAB_20B7
+    DC.L    LAB_20B8
+    DC.L    LAB_20B9
+    DC.L    LAB_20BA
+    DC.L    LAB_20BB
+    DC.L    LAB_20BC
+    DC.L    LAB_20BD
+    DC.L    LAB_20BE
+    DC.L    LAB_20BF
 LAB_20C1:
     NStr    "Jan "
 LAB_20C2:
@@ -78242,18 +78261,18 @@ LAB_20CB:
 LAB_20CC:
     NStr    "Dec "
 LAB_20CD:
-    DC.L	LAB_20C1
-    DC.L	LAB_20C2
-    DC.L	LAB_20C3
-    DC.L	LAB_20C4
-    DC.L	LAB_20C5
-    DC.L	LAB_20C6
-    DC.L	LAB_20C7
-    DC.L	LAB_20C8
-    DC.L	LAB_20C9
-    DC.L	LAB_20CA
-    DC.L	LAB_20CB
-    DC.L	LAB_20CC
+    DC.L    LAB_20C1
+    DC.L    LAB_20C2
+    DC.L    LAB_20C3
+    DC.L    LAB_20C4
+    DC.L    LAB_20C5
+    DC.L    LAB_20C6
+    DC.L    LAB_20C7
+    DC.L    LAB_20C8
+    DC.L    LAB_20C9
+    DC.L    LAB_20CA
+    DC.L    LAB_20CB
+    DC.L    LAB_20CC
 LAB_20CE:
     NStr    "Sunday"
 LAB_20CF:
@@ -78269,13 +78288,13 @@ GLOB_STR_FRIDAY_1:
 LAB_20D4:
     NStr    "Saturday"
 GLOB_JMP_TBL_DAYS_OF_WEEK:
-    DC.L	LAB_20CE
-    DC.L	LAB_20CF
-    DC.L	LAB_20D0
-    DC.L	LAB_20D1
-    DC.L	LAB_20D2
-    DC.L	GLOB_STR_FRIDAY_1
-    DC.L	LAB_20D4
+    DC.L    LAB_20CE
+    DC.L    LAB_20CF
+    DC.L    LAB_20D0
+    DC.L    LAB_20D1
+    DC.L    LAB_20D2
+    DC.L    GLOB_STR_FRIDAY_1
+    DC.L    LAB_20D4
 LAB_20D6:
     NStr    "Sun "
 LAB_20D7:
@@ -78291,13 +78310,13 @@ LAB_20DB:
 LAB_20DC:
     NStr    "Sat "
 LAB_20DD:
-    DC.L	LAB_20D6
-    DC.L	LAB_20D7
-    DC.L	LAB_20D8
-    DC.L	LAB_20D9
-    DC.L	LAB_20DA
-    DC.L	LAB_20DB
-    DC.L	LAB_20DC
+    DC.L    LAB_20D6
+    DC.L    LAB_20D7
+    DC.L    LAB_20D8
+    DC.L    LAB_20D9
+    DC.L    LAB_20DA
+    DC.L    LAB_20DB
+    DC.L    LAB_20DC
 LAB_20DE:
     NStr    "Monday"
 LAB_20DF:
@@ -78358,35 +78377,36 @@ LAB_20FA:
     NStr    "Tuesdays & Thursdays"
 LAB_20FB:
     NStr    "This Week"
-    DC.L	LAB_20DE
-    DC.L	LAB_20DF
-    DC.L	LAB_20E0
-    DC.L	LAB_20E1
-    DC.L	LAB_20E2
-    DC.L	LAB_20E3
-    DC.L	LAB_20E4
-    DC.L	LAB_20E5
-    DC.L	LAB_20E6
-    DC.L	LAB_20E7
-    DC.L	LAB_20E8
-    DC.L	LAB_20E9
-    DC.L	LAB_20EA
-    DC.L	LAB_20EB
-    DC.L	LAB_20EC
-    DC.L	LAB_20EE
-    DC.L	LAB_20EF
-    DC.L	LAB_20F0
-    DC.L	LAB_20F1
-    DC.L	LAB_20F2
-    DC.L	LAB_20F3
-    DC.L	LAB_20F4
-    DC.L	LAB_20F5
-    DC.L	LAB_20F6
-    DC.L	LAB_20F7
-    DC.L	LAB_20F8
-    DC.L	LAB_20F9
-    DC.L	LAB_20FA
-    DC.L	LAB_20FB
+    DC.L    LAB_20DE
+    DC.L    LAB_20DF
+    DC.L    LAB_20E0
+    DC.L    LAB_20E1
+    DC.L    LAB_20E2
+    DC.L    LAB_20E3
+    DC.L    LAB_20E4
+    DC.L    LAB_20E5
+    DC.L    LAB_20E6
+    DC.L    LAB_20E7
+    DC.L    LAB_20E8
+    DC.L    LAB_20E9
+    DC.L    LAB_20EA
+    DC.L    LAB_20EB
+    DC.L    LAB_20EC
+    DC.L    LAB_20EE
+    DC.L    LAB_20EF
+    DC.L    LAB_20F0
+    DC.L    LAB_20F1
+    DC.L    LAB_20F2
+    DC.L    LAB_20F3
+    DC.L    LAB_20F4
+    DC.L    LAB_20F5
+    DC.L    LAB_20F6
+    DC.L    LAB_20F7
+    DC.L    LAB_20F8
+    DC.L    LAB_20F9
+    DC.L    LAB_20FA
+    DC.L    LAB_20FB
+; Another struct?
 LAB_20FC:
     DC.B	TextAlignCenter,"Now showing",0
 LAB_20FD:
@@ -78410,35 +78430,35 @@ LAB_2105:
 LAB_2106:
     DC.B	TextAlignCenter,"on",0
 LAB_2107:
-    DC.B	TextAlignCenter,"Channel ",0,0
+    NStr2   TextAlignCenter,"Channel "
 LAB_2108:
     NStr	"Sports on "
 LAB_2109:
-    DC.L	LAB_2108
+    DC.L    LAB_2108
 LAB_210A:
     NStr	"Movie Summary for "
 LAB_210B:
-    DC.L	LAB_210A
+    DC.L    LAB_210A
 LAB_210C:
     NStr	"Summary of "
 LAB_210D:
-    DC.L	LAB_210C
+    DC.L    LAB_210C
 LAB_210E:
     NStr	" channel "
 LAB_210F:
-    DC.L	LAB_210E
+    DC.L    LAB_210E
 LAB_2110:
     NStr	"No Data."
 LAB_2111:
-    DC.L	LAB_2110
+    DC.L    LAB_2110
 GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr	"Please Stand By for your Local Listings.  ER007"
 GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
-    DC.L	GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
+    DC.L    GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 LAB_2114:
     NStr	"Off Air."
 LAB_2115:
-    DC.L	LAB_2114
+    DC.L    LAB_2114
 LAB_2116:
     NStr	"%s %s %ld %04ld"
 LAB_2117:
@@ -78499,7 +78519,7 @@ LAB_2131:
 LAB_2132:
     NStr    "PrevueSports"
 LAB_2133:
-    DC.L	LAB_2132
+    DC.L    LAB_2132
 LAB_2134:
     DC.W	$1800
 LAB_2135:
@@ -78549,7 +78569,7 @@ LAB_214A:
 LAB_214B:
     DS.L	1
 LAB_214C:
-    DC.B	"xx%s",18,"TEMPO",0,0
+    NStr3   "xx%s",18,"TEMPO"
 LAB_214D:
     NStr	"TEXTDISP.c"
 LAB_214E:
@@ -78562,22 +78582,22 @@ LAB_2151:
     NStr	"TEXTDISP.c"
 LAB_2152:
     NStr	"TEXTDISP.c"
-    DC.B	0,0
+    DS.W    1
 LAB_2153:
     DC.W	$0001
 LAB_2154:
-    DC.L	$19202020
+    DC.L    $19202020
     DS.W	1
 LAB_2155:
-    DC.L	$18191919
+    DC.L    $18191919
     DS.W	1
 LAB_2156:
-    DC.L	LAB_2154
-    DC.L	LAB_2155
-    DC.L	$7f020408,$10204001,$3e3e0000,$00000024
-    DC.L	$42617f7f
+    DC.L    LAB_2154
+    DC.L    LAB_2155
+    DC.L    $7f020408,$10204001,$3e3e0000,$00000024
+    DC.L    $42617f7f
     DS.L	1
-    DC.L	$7e1e3e3e,$14001819
+    DC.L    $7e1e3e3e,$14001819
     DS.B	1
 LAB_2157:
     DC.B	TextAlignCenter,0
@@ -78621,21 +78641,21 @@ LAB_2169:
 LAB_216A:
     NStr    "%c%s"
 LAB_216B:
-    NStr2   "struct TLFormat @ 0x%x =",10
+    NStr2   "struct TLFormat @ 0x%x =",TextLineFeed
 LAB_216C:
-    NStr2   "{",10
+    NStr2   "{",TextLineFeed
 LAB_216D:
-    NStr3   9,"tlf_Color =   %d",10
+    NStr3   TextHorizontalTab,"tlf_Color =   %d",TextLineFeed
 LAB_216E:
-    NStr3   9,"tlf_Offset =  %d",10
+    NStr3   TextHorizontalTab,"tlf_Offset =  %d",TextLineFeed
 LAB_216F:
-    NStr3   9,"tlf_FontSel = %d",10
+    NStr3   TextHorizontalTab,"tlf_FontSel = %d",TextLineFeed
 LAB_2170:
-    NStr3   9,"tlf_Align =   %d",10
+    NStr3   TextHorizontalTab,"tlf_Align =   %d",TextLineFeed
 LAB_2171:
-    NStr3   9,"tlf_Pregap =  %d",10
+    NStr3   TextHorizontalTab,"tlf_Pregap =  %d",TextLineFeed
 LAB_2172:
-    NStr2   "}",10
+    NStr2   "}",TextLineFeed
 LAB_2173:
     DS.W	1
 LAB_2174:
@@ -78655,53 +78675,54 @@ LAB_217A:
 LAB_217B:
     DS.W	1
 LAB_217C:
-    DC.B	"%s: diwoffset=$%04lx, ddfoffset=$%04lx, bplcon1=$%04lx",10,0
+    NStr2   "%s: diwoffset=$%04lx, ddfoffset=$%04lx, bplcon1=$%04lx",TextLineFeed
 LAB_217D:
-    DC.B	"DIWSTRT: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "DIWSTRT: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_217E:
-    DC.B	"DIWSTOP: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "DIWSTOP: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_217F:
-    DC.B	"DDFSTRT: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "DDFSTRT: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2180:
-    DC.B	"DDFSTOP: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "DDFSTOP: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2181:
-    DC.B	"BPL1MOD: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "BPL1MOD: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2182:
-    DC.B	"BPL2MOD: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "BPL2MOD: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2183:
-    DC.B	"BPLCON0: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "BPLCON0: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2184:
-    DC.B	"BPLCON1: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "BPLCON1: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2185:
-    DC.B	"BPLCON2: 0x%04lx 0x%04lx, (%ld)",10,0,0
+    NStr2   "BPLCON2: 0x%04lx 0x%04lx, (%ld)",TextLineFeed
 LAB_2186:
-    DC.B	"BPL1PTH: 0x%04lx 0x%04lx",10,0
+    NStr2   "BPL1PTH: 0x%04lx 0x%04lx",TextLineFeed
 LAB_2187:
-    DC.B	"BPL1PTL: 0x%04lx 0x%04lx, ($%08lx)",10,0
+    NStr2   "BPL1PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 LAB_2188:
-    DC.B	"BPL2PTH: 0x%04lx 0x%04lx",10,0
+    NStr2   "BPL2PTH: 0x%04lx 0x%04lx",TextLineFeed
 LAB_2189:
-    DC.B	"BPL2PTL: 0x%04lx 0x%04lx, ($%08lx)",10,0
+    NStr2   "BPL2PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 LAB_218A:
-    DC.B	"BPL3PTH: 0x%04lx 0x%04lx",10,0
+    NStr2   "BPL3PTH: 0x%04lx 0x%04lx",TextLineFeed
 LAB_218B:
-    DC.B	"BPL3PTL: 0x%04lx 0x%04lx, ($%08lx)",10,0
+    NStr2   "BPL3PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 LAB_218C:
-    DC.B	"BPL4PTH: 0x%04lx 0x%04lx",10,0
+    NStr2   "BPL4PTH: 0x%04lx 0x%04lx",TextLineFeed
 LAB_218D:
-    DC.B	"BPL4PTL: 0x%04lx 0x%04lx, ($%08lx)",10,0
+    NStr2   "BPL4PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 LAB_218E:
-    DC.B	"BPL5PTH: 0x%04lx 0x%04lx",10,0
+    NStr2   "BPL5PTH: 0x%04lx 0x%04lx",TextLineFeed
 LAB_218F:
-    DC.B	"BPL5PTL: 0x%04lx 0x%04lx, ($%08lx)",10,0
+    NStr2   "BPL5PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 LAB_2190:
-    DC.W	$0a00
+    NStr    10
 LAB_2191:
     NStr    "VM[ARRAY[%ld]"
 LAB_2192:
     NStr    "VM[ARRAY[%ld]"
 LAB_2193:
-    DC.L	$0a000000
+    NStr    10
+    DS.W    1
 LAB_2194:
     DS.L	1
 LAB_2195:
@@ -78710,25 +78731,25 @@ LAB_2196:
     DS.W	1
 LAB_2197:
     DS.L	1
-    DC.L	$00000001
+    DC.L    $00000001
     DS.L	2
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_2198:
     DS.L	1
-    DC.L	$00000001
+    DC.L    $00000001
     DS.L	2
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_2199:
     DS.L	1
-    DC.L	$00000001
+    DC.L    $00000001
     DS.L	2
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_219A:
     DS.L	1
-    DC.L	$00000001
+    DC.L    $00000001
     DS.L	2
 LAB_219B:
-    DC.L	$00000001
+    DC.L    $00000001
 LAB_219C:
     NStr	"WDISP.c"
 LAB_219D:
@@ -78750,55 +78771,55 @@ LAB_21A4:
 LAB_21A5:
     NStr	"a+"
     DS.L	1
-    DC.L	$00280000
+    DC.L    $00280000
     DS.L	5
     DC.W	$8000
-    DC.L	LAB_21A6
+    DC.L    LAB_21A6
     DS.L	7
     DS.W	1
 LAB_21A6:
-    DC.L	LAB_21A7
+    DC.L    LAB_21A7
     DS.L	7
     DS.W	1
 LAB_21A7:
     DS.L	9
-    DC.L	$00008000,$00000400
+    DC.L    $00008000,$00000400
     DS.B	1
 LAB_21A8:
     DC.B	$20
-    DC.L	$20202020,$20202020,$28282828,$28202020
-    DC.L	$20202020,$20202020,$20202020,$20202048
-    DC.L	$10101010,$10101010,$10101010,$10101084
-    DC.L	$84848484,$84848484,$84101010,$10101010
-    DC.L	$81818181,$81810101,$01010101,$01010101
-    DC.L	$01010101,$01010101,$01011010,$10101010
-    DC.L	$82828282,$82820202,$02020202,$02020202
-    DC.L	$02020202,$02020202,$02021010,$10102020
-    DC.L	$20202020,$20202020,$28282828,$28202020
-    DC.L	$20202020,$20202020,$20202020,$20202048
-    DC.L	$10101010,$10101010,$10101010,$10101084
-    DC.L	$84848484,$84848484,$84101010,$10101010
-    DC.L	$81818181,$81810101,$01010101,$01010101
-    DC.L	$01010101,$01010101,$01011010,$10101010
-    DC.L	$82828282,$82820202,$02020202,$02020202
-    DC.L	$02020202,$02020202,$02021010,$10102000
+    DC.L    $20202020,$20202020,$28282828,$28202020
+    DC.L    $20202020,$20202020,$20202020,$20202048
+    DC.L    $10101010,$10101010,$10101010,$10101084
+    DC.L    $84848484,$84848484,$84101010,$10101010
+    DC.L    $81818181,$81810101,$01010101,$01010101
+    DC.L    $01010101,$01010101,$01011010,$10101010
+    DC.L    $82828282,$82820202,$02020202,$02020202
+    DC.L    $02020202,$02020202,$02021010,$10102020
+    DC.L    $20202020,$20202020,$28282828,$28202020
+    DC.L    $20202020,$20202020,$20202020,$20202048
+    DC.L    $10101010,$10101010,$10101010,$10101084
+    DC.L    $84848484,$84848484,$84101010,$10101010
+    DC.L    $81818181,$81810101,$01010101,$01010101
+    DC.L    $01010101,$01010101,$01011010,$10101010
+    DC.L    $82828282,$82820202,$02020202,$02020202
+    DC.L    $02020202,$02020202,$02021010,$10102000
     DS.L	1
     DC.W	$0200
 LAB_21A9:
-    DC.L	$ffff0000,$000e000e
+    DC.L    $ffff0000,$000e000e
     DS.L	1
-    DC.L	LAB_1AC7
+    DC.L    LAB_1AC7
     DS.L	1
-    DC.L	$ffff0000,$00040004
+    DC.L    $ffff0000,$00040004
     DS.L	2
-    DC.L	LAB_21A9
-    DC.L	$ffff0000,$00040004
+    DC.L    LAB_21A9
+    DC.L    $ffff0000,$00040004
     DS.L	1
-    DC.L	LAB_1AC8
+    DC.L    LAB_1AC8
     DS.L	1
-    DC.L	$ffff0000,$00040004
+    DC.L    $ffff0000,$00040004
     DS.L	1
-    DC.L	LAB_1AC9
+    DC.L    LAB_1AC9
     DS.L	1
 BUFFER_5929_LONGWORDS:
     DS.L	19
