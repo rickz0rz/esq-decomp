@@ -74412,13 +74412,13 @@ LAB_1B3D:
 LAB_1B3E:
     NStr    "BRUSH.c"
 LAB_1B3F:
-    DC.B	"00",0,0
+    NStr    "00"
 LAB_1B40:
-    DC.B	"11",0,0
+    NStr    "11"
 LAB_1B41:
-    DC.B	"DT",0,0
+    NStr    "DT"
 LAB_1B42:
-    DC.B	"DITHER",0,0
+    NStr    "DITHER"
     DS.W	1
 LAB_1B43:
     NStr	"CLEANUP.c"
@@ -74459,20 +74459,20 @@ LAB_1B54:
 LAB_1B55:
     DC.L	$0000003c
 LAB_1B56:
-    DC.B	"%2d:%02d:%02d",0
+    NStr    "%2d:%02d:%02d"
 LAB_1B57:
-    DC.B	"%2d:%02d:%02d",0
+    NStr    "%2d:%02d:%02d"
 LAB_1B58:
-    DC.B	"%2d:%02d:%02d ",0,0
+    NStr    "%2d:%02d:%02d "
 LAB_1B59:
-    DC.B	"12:44:44 ",0
+    NStr    "12:44:44 "
 LAB_1B5A:
-    DC.B	"12:44:44 PM",0
+    NStr    "12:44:44 PM"
 LAB_1B5B:
-    DC.B	"%s%s%ld  ",0
+    NStr    "%s%s%ld  "
     DS.L    1
 LAB_1B5C:
-    DC.B	"FGN",0
+    NStr    "FGN"
 LAB_1B5D:
     DC.W	$0004
     DC.B	$0c
@@ -74484,25 +74484,25 @@ LAB_1B60:
     DC.B	$0d
     DC.W	$0a00
 LAB_1B61:
-    DC.B	"NYYYYYXX00",0,0
+    NStr    "NYYYYYXX00"
 LAB_1B62:
-    DC.B	"%c%s%c",0,0
+    NStr    "%c%s%c"
 LAB_1B63:
-    DC.B	"  ",0,0
+    NStr    "  "
 LAB_1B64:
-    DC.B	"NYYYYYXX00",0,0
+    NStr    "NYYYYYXX00"
 LAB_1B65:
-    DC.B	"NYYYYYXX00",0,0
+    NStr    "NYYYYYXX00"
 LAB_1B66:
     DS.W	1
 LAB_1B67:
-    DC.B	"NYYYYYXX00",0,0
+    NStr    "NYYYYYXX00"
 LAB_1B68:
-    DC.B	"YyNn",0,0
+    NStr    "YyNn"
 LAB_1B69:
-    DC.B	"NNNNNNXX00",0,0
+    NStr    "NNNNNNXX00"
 LAB_1B6A:
-    DC.B	"NNNNNNXX00",0,0
+    NStr    "NNNNNNXX00"
 LAB_1B6B:
     DC.B	"COI.c",0
 LAB_1B6C:
@@ -74585,15 +74585,15 @@ LAB_1B91:
 LAB_1B92:
     DS.B	1
 LAB_1B93:
-    DC.B	"Terminated: Missed Record",0
+    NStr    "Terminated: Missed Record"
 LAB_1B94:
-    DC.B	"Terminated: Error Writing to Disk 1",0
+    NStr    "Terminated: Error Writing to Disk 1"
 LAB_1B95:
-    DC.B	"Terminated: Error Writing to Disk 2",0
+    NStr    "Terminated: Error Writing to Disk 2"
 LAB_1B96:
-    DC.B	"Terminated: Batch OFF Found",0
+    NStr    "Terminated: Batch OFF Found"
 LAB_1B97:
-    DC.B	"Terminated: Error Opening file",0,0
+    NStr    "Terminated: Error Opening file"
 LAB_1B98:
     DC.B	"Terminated: DL File Too La"
 LAB_1B99:
@@ -74705,74 +74705,74 @@ LAB_1BCA:
 LAB_1BCB:
     DS.L	1
 LAB_1BCC:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BCD:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BCE:
     DC.B	"%ld",0
 LAB_1BCF:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BD0:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BD1:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BD2:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BD3:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BD4:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BD5:
     DC.L	$00000001
 LAB_1BD6:
     DC.L	$00000001
 LAB_1BD7:
-    DC.B	"trackdisk.device",0,0
+    NStr    "trackdisk.device"
 LAB_1BD8:
-    DC.B	"ram:assign >nil: FONTS: DH2:FONTS",0
+    NStr    "ram:assign >nil: FONTS: DH2:FONTS"
 LAB_1BD9:
-    DC.B	"ram:assign >nil: ENV: DH2:",0,0
+    NStr    "ram:assign >nil: ENV: DH2:"
 LAB_1BDA:
-    DC.B	"ram:assign >nil: SYS: DH2:",0,0
+    NStr    "ram:assign >nil: SYS: DH2:"
 LAB_1BDB:
-    DC.B	"ram:assign >nil: S: DH2:S",0
+    NStr    "ram:assign >nil: S: DH2:S"
 LAB_1BDC:
-    DC.B	"ram:assign >nil: C: DH2:C",0
+    NStr    "ram:assign >nil: C: DH2:C"
 LAB_1BDD:
-    DC.B	"ram:assign >nil: L: DH2:L",0
+    NStr    "ram:assign >nil: L: DH2:L"
 LAB_1BDE:
-    DC.B	"ram:assign >nil: LIBS: DH2:LIBS",0
+    NStr    "ram:assign >nil: LIBS: DH2:LIBS"
 LAB_1BDF:
-    DC.B	"ram:assign >nil: DEVS: DH2:DEVS",0
+    NStr    "ram:assign >nil: DEVS: DH2:DEVS"
 LAB_1BE0:
-    DC.B	"df1:g.ads",0
+    NStr    "df1:g.ads"
 LAB_1BE1:
-    DC.B	"ram:assign >nil: gfx: DF1:",0,0
+    NStr    "ram:assign >nil: gfx: DF1:"
 LAB_1BE2:
-    DC.B	"ram:assign >nil: gfx: PC1:",0,0
+    NStr    "ram:assign >nil: gfx: PC1:"
 LAB_1BE3:
-    DC.B	"NRLS",0,0
+    NStr    "NRLS"
 LAB_1BE4:
-    DC.B	"LRBN",0,0
+    NStr    "LRBN"
 LAB_1BE5:
-    DC.B	"MSN",0
+    NStr    "MSN"
 LAB_1BE6:
     DS.W	1
 LAB_1BE7:
-    DC.B	"Mount PC1:",0,0
+    NStr    "Mount PC1:"
 LAB_1BE8:
-    DC.B	"Assign GFX: PC1:",0,0
+    NStr    "Assign GFX: PC1:"
 LAB_1BE9:
-    DC.B	"dh2:config.dat",0,0
+    NStr    "dh2:config.dat"
 LAB_1BEA:
     DC.B	"%01ld%01lc%01ld%01ld%02ld%02ld%01lc%01lc%01lc%01lc%01ld%01ld%"
     DC.B	"01lc%01lc%01lc%01lc%01lc%01lc%01lc%02ld%02ld%01lc%01lc%01lc%0"
     DC.B	"2ld%02ld%02ld%03ld%01ld%2.2s%01lc%01lc%01lc%01c%01c%01d%01c%0"
     DC.B	"1c%01c%01c%01c%01c",10,0,0
 LAB_1BEB:
-    DC.B	"dh2:config.dat",0,0
+    NStr    "dh2:config.dat"
 LAB_1BEC:
-    DC.B	"DISKIO.c",0,0
+    NStr    "DISKIO.c"
 LAB_1BED:
     DC.B	"Channel Line Up # %ld",10,0,0
 LAB_1BEE:
@@ -74784,47 +74784,47 @@ LAB_1BF0:
 LAB_1BF1:
     DC.B	"call_let = '%s'",10,0,0
 LAB_1BF2:
-    DC.B	"attr = $%02lx (",0
+    NStr    "attr = $%02lx ("
 LAB_1BF3:
-    DC.B	" NONE",0
+    NStr    " NONE"
 LAB_1BF4:
-    DC.B	" HILITE_SRC",0
+    NStr    " HILITE_SRC"
 LAB_1BF5:
-    DC.B	" SUM_SRC",0,0
+    NStr    " SUM_SRC"
 LAB_1BF6:
-    DC.B	" VIDEO_TAG_DISABLE",0,0
+    NStr    " VIDEO_TAG_DISABLE"
 LAB_1BF7:
-    DC.B	" PPV_SRC",0,0
+    NStr    " PPV_SRC"
 LAB_1BF8:
-    DC.B	" DITTO",0,0
+    NStr    " DITTO"
 LAB_1BF9:
-    DC.B	" ALTHILITESRC",0
+    NStr    " ALTHILITESRC"
 LAB_1BFA:
-    DC.B	" 0x80",0
+    NStr    " 0x80"
 LAB_1BFB:
     DC.B	" )",10,0
 LAB_1BFC:
-    DC.B	"tslt_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) ",0,0
+    NStr    "tslt_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
 LAB_1BFD:
     DC.B	"(NONE)",10,0
 LAB_1BFE:
     DC.B	"(OFF AIR)",10,0,0
 LAB_1BFF:
-    DC.B	"(",0
+    NStr    "("
 LAB_1C00:
-    DC.B	"%s ",0
+    NStr    "%s "
 LAB_1C01:
     DC.B	")",10,0,0
 LAB_1C02:
-    DC.B	"blkout_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) ",0,0
+    NStr    "blkout_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
 LAB_1C03:
     DC.B	"(NONE)",10,0
 LAB_1C04:
     DC.B	"(BLACKED OUT)",10,0,0
 LAB_1C05:
-    DC.B	"(",0
+    NStr    "("
 LAB_1C06:
-    DC.B	"%s ",0
+    NStr    "%s "
 LAB_1C07:
     DC.B	")",10,0,0
 LAB_1C08:
@@ -74854,27 +74854,27 @@ LAB_1C13:
 LAB_1C14:
     DC.B	"ETID=%d, chan_num='%s', source='%s', call_let='%s'",10,0
 LAB_1C15:
-    DC.B	"  attr=(",0,0
+    NStr    "  attr=("
 LAB_1C16:
-    DC.B	" NONE",0
+    NStr    " NONE"
 LAB_1C17:
-    DC.B	" HILITE_SRC",0
+    NStr    " HILITE_SRC"
 LAB_1C18:
-    DC.B	" SUM_SRC",0,0
+    NStr    " SUM_SRC"
 LAB_1C19:
-    DC.B	" VIDEO_TAG_DISABLE",0,0
+    NStr    " VIDEO_TAG_DISABLE"
 LAB_1C1A:
-    DC.B	" PPV_SRC",0,0
+    NStr    " PPV_SRC"
 LAB_1C1B:
-    DC.B	" DITTO",0,0
+    NStr    " DITTO"
 LAB_1C1C:
-    DC.B	" ALTHILITESRC",0
+    NStr    " ALTHILITESRC"
 LAB_1C1D:
-    DC.B	" STEREO",0
+    NStr    " STEREO"
 LAB_1C1E:
     DC.B	" )",10,0
 LAB_1C1F:
-    DC.B	"  tslt_mask=($%02x $%02x $%02x $%02x $%02x $%02x) ",0,0
+    NStr    "  tslt_mask=($%02x $%02x $%02x $%02x $%02x $%02x) "
 LAB_1C20:
     DC.B	"blkout_mask=($%02x $%02x $%02x $%02x $%02x $%02x)",10,0,0
 LAB_1C21:
@@ -74886,26 +74886,26 @@ LAB_1C23:
 LAB_1C24:
     DC.W	$0a00
 LAB_1C25:
-    DC.B	"    (%02ld) [%s]: attr = $%02lx (",0
+    NStr    "    (%02ld) [%s]: attr = $%02lx ("
 LAB_1C26:
-    DC.B	" NONE",0
+    NStr    " NONE"
 LAB_1C27:
-    DC.B	" MOVIE",0,0
+    NStr    " MOVIE"
 LAB_1C28:
-    DC.B	" ALTHILITE_PROG",0
+    NStr    " ALTHILITE_PROG"
 LAB_1C29:
-    DC.B	" TAG_PROG",0
+    NStr    " TAG_PROG"
 LAB_1C2A:
-    DC.B	" 0x10",0
+    NStr    " 0x10"
 LAB_1C2B:
-    DC.B	" 0x20",0
+    NStr    " 0x20"
 LAB_1C2C:
-    DC.B	" 0x40",0
+    NStr    " 0x40"
 LAB_1C2D:
-    DC.B	" PREV_DAYS_DATA",0
+    NStr    " PREV_DAYS_DATA"
 LAB_1C2E:
     DC.B	" )",10
-    DC.B	"         prog_str = ",0
+    NStr    "         prog_str = "
 LAB_1C2F:
     DC.B	"'%s'",10,0
 LAB_1C30:
@@ -74919,23 +74919,23 @@ LAB_1C33:
 LAB_1C34:
     DC.B	"prog_srce = '%s'",10,0
 LAB_1C35:
-    DC.B	"  %02d) [%s]: attr = (",0,0
+    NStr    "  %02d) [%s]: attr = ("
 LAB_1C36:
-    DC.B	" NONE",0
+    NStr    " NONE"
 LAB_1C37:
-    DC.B	" MOVIE",0,0
+    NStr    " MOVIE"
 LAB_1C38:
-    DC.B	" ALTHILITE_PROG",0
+    NStr    " ALTHILITE_PROG"
 LAB_1C39:
-    DC.B	" TAG_PROG",0
+    NStr    " TAG_PROG"
 LAB_1C3A:
-    DC.B	" SPORTSPROG",0
+    NStr    " SPORTSPROG"
 LAB_1C3B:
-    DC.B	" 0x20",0
+    NStr    " 0x20"
 LAB_1C3C:
-    DC.B	" REPEATPROG",0
+    NStr    " REPEATPROG"
 LAB_1C3D:
-    DC.B	" PREV_DAYS_DATA",0
+    NStr    " PREV_DAYS_DATA"
 LAB_1C3E:
     DC.B	" )"
     DC.B	10,"    prog_str='",0
@@ -74952,41 +74952,41 @@ LAB_1C42:
 LAB_1C43:
     NStr    "DISKIO2.c"
 LAB_1C44:
-    DC.B	"DREV 5",0,0
+    NStr    "DREV 5"
 LAB_1C45:
     NStr    "DISKIO2.c"
 LAB_1C46:
-    DC.B	"                                      ",0,0
+    NStr    "                                      "
 LAB_1C47:
-    DC.B	"Saving programming data.           ",0
+    NStr    "Saving programming data.           "
 LAB_1C48:
-    DC.B	"Saving Text Ads.                   ",0
+    NStr    "Saving Text Ads.                   "
 LAB_1C49:
-    DC.B	"Saving configuration file.         ",0
+    NStr    "Saving configuration file.         "
 LAB_1C4A:
-    DC.B	"Saving Local Avail Cfg.            ",0
+    NStr    "Saving Local Avail Cfg.            "
 LAB_1C4B:
-    DC.B	"Saving QTABLE.                     ",0
+    NStr    "Saving QTABLE.                     "
 LAB_1C4C:
-    DC.B	"Saving Error Log.                  ",0
+    NStr    "Saving Error Log.                  "
 LAB_1C4D:
-    DC.B	"Saving DST data.                   ",0
+    NStr    "Saving DST data.                   "
 LAB_1C4E:
-    DC.B	"Saving Promo Types                 ",0
+    NStr    "Saving Promo Types                 "
 LAB_1C4F:
-    DC.B	"Saving Data View config            ",0
+    NStr    "Saving Data View config            "
 LAB_1C50:
     NStr    "DISKIO2.c"
 LAB_1C51:
-    DC.B	"DREV 1",0,0
+    NStr    "DREV 1"
 LAB_1C52:
-    DC.B	"DREV 2",0,0
+    NStr    "DREV 2"
 LAB_1C53:
-    DC.B	"DREV 3",0,0
+    NStr    "DREV 3"
 LAB_1C54:
-    DC.B	"DREV 4",0,0
+    NStr    "DREV 4"
 LAB_1C55:
-    DC.B	"DREV 5",0,0
+    NStr    "DREV 5"
 LAB_1C56:
     NStr    "DISKIO2.c"
 LAB_1C57:
@@ -75024,25 +75024,25 @@ LAB_1C66:
 LAB_1C67:
     NStr    "DISKIO2.c"
 LAB_1C68:
-    DC.B	"[Qtable]",0,0
+    NStr    "[Qtable]"
 LAB_1C69:
     DC.L	$0d0a0000
 LAB_1C6A:
     DC.B	"=",0
 LAB_1C6B:
-    DC.B	"""",0 ; escaped quote
+    NStr    """" ; escaped quote
 LAB_1C6C:
-    DC.B	"""",0 ; escaped quote
+    NStr    """" ; escaped quote
 LAB_1C6D:
     DC.L	$0d0a0000
 LAB_1C6E:
     NStr    "DISKIO2.c"
 LAB_1C6F:
-    DC.B	"Special NGAD",0,0
+    NStr    "Special NGAD"
 LAB_1C70:
-    DC.B	"RAM:",0,0
+    NStr    "RAM:"
 LAB_1C71:
-    DC.B	"Filename:                            ",0
+    NStr    "Filename:                            "
 LAB_1C72:
     NStr    "DISKIO2.c"
 LAB_1C73:
@@ -75052,17 +75052,17 @@ LAB_1C74:
 LAB_1C75:
     NStr    "DISKIO2.c"
 LAB_1C76:
-    DC.B	"                                      ",0,0
+    NStr    "                                      "
 LAB_1C77:
-    DC.B	"                                      ",0,0
+    NStr    "                                      "
 LAB_1C78:
-    DC.B	"Copy >nil: ",0
+    NStr    "Copy >nil: "
 LAB_1C79:
-    DC.B	" ",0
+    NStr    " "
 LAB_1C7A:
-    DC.B	"Stored:   ",0,0
+    NStr    "Stored:   "
 LAB_1C7B:
-    DC.B	"Disk 0 is %ld%% full with %ld Errors",0,0
+    NStr    "Disk 0 is %ld%% full with %ld Errors"
 LAB_1C7C:
     DS.W	1
 LAB_1C7D:
@@ -75138,101 +75138,101 @@ LAB_1C7F:
 LAB_1C80:
     DS.W	1
 LAB_1C81:
-    DC.B	" 5:00 AM",0,0
+    NStr    " 5:00 AM"
 LAB_1C82:
-    DC.B	" 5:30 AM",0,0
+    NStr    " 5:30 AM"
 LAB_1C83:
-    DC.B	" 6:00 AM",0,0
+    NStr    " 6:00 AM"
 LAB_1C84:
-    DC.B	" 6:30 AM",0,0
+    NStr    " 6:30 AM"
 LAB_1C85:
-    DC.B	" 7:00 AM",0,0
+    NStr    " 7:00 AM"
 LAB_1C86:
-    DC.B	" 7:30 AM",0,0
+    NStr    " 7:30 AM"
 LAB_1C87:
-    DC.B	" 8:00 AM",0,0
+    NStr    " 8:00 AM"
 LAB_1C88:
-    DC.B	" 8:30 AM",0,0
+    NStr    " 8:30 AM"
 LAB_1C89:
-    DC.B	" 9:00 AM",0,0
+    NStr    " 9:00 AM"
 LAB_1C8A:
-    DC.B	" 9:30 AM",0,0
+    NStr    " 9:30 AM"
 LAB_1C8B:
-    DC.B	"10:00 AM",0,0
+    NStr    "10:00 AM"
 LAB_1C8C:
-    DC.B	"10:30 AM",0,0
+    NStr    "10:30 AM"
 LAB_1C8D:
-    DC.B	"11:00 AM",0,0
+    NStr    "11:00 AM"
 LAB_1C8E:
-    DC.B	"11:30 AM",0,0
+    NStr    "11:30 AM"
 LAB_1C8F:
-    DC.B	"12:00 PM",0,0
+    NStr    "12:00 PM"
 LAB_1C90:
-    DC.B	"12:30 PM",0,0
+    NStr    "12:30 PM"
 LAB_1C91:
-    DC.B	" 1:00 PM",0,0
+    NStr    " 1:00 PM"
 LAB_1C92:
-    DC.B	" 1:30 PM",0,0
+    NStr    " 1:30 PM"
 LAB_1C93:
-    DC.B	" 2:00 PM",0,0
+    NStr    " 2:00 PM"
 LAB_1C94:
-    DC.B	" 2:30 PM",0,0
+    NStr    " 2:30 PM"
 LAB_1C95:
-    DC.B	" 3:00 PM",0,0
+    NStr    " 3:00 PM"
 LAB_1C96:
-    DC.B	" 3:30 PM",0,0
+    NStr    " 3:30 PM"
 LAB_1C97:
-    DC.B	" 4:00 PM",0,0
+    NStr    " 4:00 PM"
 LAB_1C98:
-    DC.B	" 4:30 PM",0,0
+    NStr    " 4:30 PM"
 LAB_1C99:
-    DC.B	" 5:00 PM",0,0
+    NStr    " 5:00 PM"
 LAB_1C9A:
-    DC.B	" 5:30 PM",0,0
+    NStr    " 5:30 PM"
 LAB_1C9B:
-    DC.B	" 6:00 PM",0,0
+    NStr    " 6:00 PM"
 LAB_1C9C:
-    DC.B	" 6:30 PM",0,0
+    NStr    " 6:30 PM"
 LAB_1C9D:
-    DC.B	" 7:00 PM",0,0
+    NStr    " 7:00 PM"
 LAB_1C9E:
-    DC.B	" 7:30 PM",0,0
+    NStr    " 7:30 PM"
 LAB_1C9F:
-    DC.B	" 8:00 PM",0,0
+    NStr    " 8:00 PM"
 LAB_1CA0:
-    DC.B	" 8:30 PM",0,0
+    NStr    " 8:30 PM"
 LAB_1CA1:
-    DC.B	" 9:00 PM",0,0
+    NStr    " 9:00 PM"
 LAB_1CA2:
-    DC.B	" 9:30 PM",0,0
+    NStr    " 9:30 PM"
 LAB_1CA3:
-    DC.B	"10:00 PM",0,0
+    NStr    "10:00 PM"
 LAB_1CA4:
-    DC.B	"10:30 PM",0,0
+    NStr    "10:30 PM"
 LAB_1CA5:
-    DC.B	"11:00 PM",0,0
+    NStr    "11:00 PM"
 LAB_1CA6:
-    DC.B	"11:30 PM",0,0
+    NStr    "11:30 PM"
 LAB_1CA7:
-    DC.B	"12:00 AM",0,0
+    NStr    "12:00 AM"
 LAB_1CA8:
-    DC.B	"12:30 AM",0,0
+    NStr    "12:30 AM"
 LAB_1CA9:
-    DC.B	" 1:00 AM",0,0
+    NStr    " 1:00 AM"
 LAB_1CAA:
-    DC.B	" 1:30 AM",0,0
+    NStr    " 1:30 AM"
 LAB_1CAB:
-    DC.B	" 2:00 AM",0,0
+    NStr    " 2:00 AM"
 LAB_1CAC:
-    DC.B	" 2:30 AM",0,0
+    NStr    " 2:30 AM"
 LAB_1CAD:
-    DC.B	" 3:00 AM",0,0
+    NStr    " 3:00 AM"
 LAB_1CAE:
-    DC.B	" 3:30 AM",0,0
+    NStr    " 3:30 AM"
 LAB_1CAF:
-    DC.B	" 4:00 AM",0,0
+    NStr    " 4:00 AM"
 LAB_1CB0:
-    DC.B	" 4:30 AM",0,0
+    NStr    " 4:30 AM"
 LAB_1CB1:
     DC.L	LAB_1C80
     DC.L	LAB_1C81
@@ -75286,101 +75286,101 @@ LAB_1CB1:
 LAB_1CB2:
     DS.W	1
 LAB_1CB3:
-    DC.B	" 5:00",0
+    NStr    " 5:00"
 LAB_1CB4:
-    DC.B	" 5:30",0
+    NStr    " 5:30"
 LAB_1CB5:
-    DC.B	" 6:00",0
+    NStr    " 6:00"
 LAB_1CB6:
-    DC.B	" 6:30",0
+    NStr    " 6:30"
 LAB_1CB7:
-    DC.B	" 7:00",0
+    NStr    " 7:00"
 LAB_1CB8:
-    DC.B	" 7:30",0
+    NStr    " 7:30"
 LAB_1CB9:
-    DC.B	" 8:00",0
+    NStr    " 8:00"
 LAB_1CBA:
-    DC.B	" 8:30",0
+    NStr    " 8:30"
 LAB_1CBB:
-    DC.B	" 9:00",0
+    NStr    " 9:00"
 LAB_1CBC:
-    DC.B	" 9:30",0
+    NStr    " 9:30"
 LAB_1CBD:
-    DC.B	"10:00",0
+    NStr    "10:00"
 LAB_1CBE:
-    DC.B	"10:30",0
+    NStr    "10:30"
 LAB_1CBF:
-    DC.B	"11:00",0
+    NStr    "11:00"
 LAB_1CC0:
-    DC.B	"11:30",0
+    NStr    "11:30"
 LAB_1CC1:
-    DC.B	"12:00",0
+    NStr    "12:00"
 LAB_1CC2:
-    DC.B	"12:30",0
+    NStr    "12:30"
 LAB_1CC3:
-    DC.B	"13:00",0
+    NStr    "13:00"
 LAB_1CC4:
-    DC.B	"13:30",0
+    NStr    "13:30"
 LAB_1CC5:
-    DC.B	"14:00",0
+    NStr    "14:00"
 LAB_1CC6:
-    DC.B	"14:30",0
+    NStr    "14:30"
 LAB_1CC7:
-    DC.B	"15:00",0
+    NStr    "15:00"
 LAB_1CC8:
-    DC.B	"15:30",0
+    NStr    "15:30"
 LAB_1CC9:
-    DC.B	"16:00",0
+    NStr    "16:00"
 LAB_1CCA:
-    DC.B	"16:30",0
+    NStr    "16:30"
 LAB_1CCB:
-    DC.B	"17:00",0
+    NStr    "17:00"
 LAB_1CCC:
-    DC.B	"17:30",0
+    NStr    "17:30"
 LAB_1CCD:
-    DC.B	"18:00",0
+    NStr    "18:00"
 LAB_1CCE:
-    DC.B	"18:30",0
+    NStr    "18:30"
 LAB_1CCF:
-    DC.B	"19:00",0
+    NStr    "19:00"
 LAB_1CD0:
-    DC.B	"19:30",0
+    NStr    "19:30"
 LAB_1CD1:
-    DC.B	"20:00",0
+    NStr    "20:00"
 LAB_1CD2:
-    DC.B	"20:30",0
+    NStr    "20:30"
 LAB_1CD3:
-    DC.B	"21:00",0
+    NStr    "21:00"
 LAB_1CD4:
-    DC.B	"21:30",0
+    NStr    "21:30"
 LAB_1CD5:
-    DC.B	"22:00",0
+    NStr    "22:00"
 LAB_1CD6:
-    DC.B	"22:30",0
+    NStr    "22:30"
 LAB_1CD7:
-    DC.B	"23:00",0
+    NStr    "23:00"
 LAB_1CD8:
-    DC.B	"23:30",0
+    NStr    "23:30"
 LAB_1CD9:
-    DC.B	" 0:00",0
+    NStr    " 0:00"
 LAB_1CDA:
-    DC.B	" 0:30",0
+    NStr    " 0:30"
 LAB_1CDB:
-    DC.B	" 1:00",0
+    NStr    " 1:00"
 LAB_1CDC:
-    DC.B	" 1:30",0
+    NStr    " 1:30"
 LAB_1CDD:
-    DC.B	" 2:00",0
+    NStr    " 2:00"
 LAB_1CDE:
-    DC.B	" 2:30",0
+    NStr    " 2:30"
 LAB_1CDF:
-    DC.B	" 3:00",0
+    NStr    " 3:00"
 LAB_1CE0:
-    DC.B	" 3:30",0
+    NStr    " 3:30"
 LAB_1CE1:
-    DC.B	" 4:00",0
+    NStr    " 4:00"
 LAB_1CE2:
-    DC.B	" 4:30",0
+    NStr    " 4:30"
 LAB_1CE3:
     DC.L	LAB_1CB2
     DC.L	LAB_1CB3
@@ -75432,33 +75432,33 @@ LAB_1CE3:
     DC.L	LAB_1CE1
     DC.L	LAB_1CE2
 LAB_1CE4:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CE5:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CE6:
-    DC.B	"DISPLIB.c",0
+    NStr    "DISPLIB.c"
 LAB_1CE7:
-    DC.B	"DISPLIB.c",0
+    NStr    "DISPLIB.c"
 LAB_1CE8:
     DS.L	1
 LAB_1CE9:
-    DC.B	"DISPTEXT.c",0,0
+    NStr    "DISPTEXT.c"
 LAB_1CEA:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CEB:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CEC:
-    DC.B	" ",0
+    NStr    " "
 LAB_1CED:
     DC.L	$00000001
 LAB_1CEE:
-    DC.B	"DISPTEXT.c",0,0
+    NStr    "DISPTEXT.c"
 LAB_1CEF:
-    DC.B	"DISPTEXT.c",0,0
+    NStr    "DISPTEXT.c"
 LAB_1CF0:
-    DC.B	"DISPTEXT.c",0,0
+    NStr    "DISPTEXT.c"
 LAB_1CF1:
-    DC.B	"DISPTEXT.c",0,0
+    NStr    "DISPTEXT.c"
 LAB_1CF2:
     DC.B	" ",0
 LAB_1CF3:
@@ -75476,59 +75476,59 @@ LAB_1CF6:
 LAB_1CF7:
     DC.L	LAB_1CF6
 LAB_1CF8:
-    DC.B	"%c",0,0
+    NStr    "%c"
 LAB_1CF9:
-    DC.B	"%04d%03d",0,0
+    NStr    "%04d%03d"
 LAB_1CFA:
-    DC.B	"%02d:%02d",0
+    NStr    "%02d:%02d"
 LAB_1CFB:
-    DC.B	" NO IN TIME ",0,0
+    NStr    " NO IN TIME "
 LAB_1CFC:
-    DC.B	"%c",0,0
+    NStr    "%c"
 LAB_1CFD:
-    DC.B	"%04d%03d",0,0
+    NStr    "%04d%03d"
 LAB_1CFE:
-    DC.B	"%02d:%02d",0
+    NStr    "%02d:%02d"
 LAB_1CFF:
-    DC.B	" NO OUT TIME ",0
+    NStr    " NO OUT TIME "
 LAB_1D00:
-    DC.B	" NO DST DATA ",0
+    NStr    " NO DST DATA "
 LAB_1D01:
-    DC.B	" g2:",0,0
+    NStr    " g2:"
 LAB_1D02:
-    DC.B	" g3:",0,0
+    NStr    " g3:"
 LAB_1D03:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D04:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D05:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D06:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D07:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D08:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D09:
-    DC.B	"g2",0,0
+    NStr    "g2"
 LAB_1D0A:
-    DC.B	"g3",0,0
+    NStr    "g3"
 LAB_1D0B:
-    DC.B	"DST.c",0
+    NStr    "DST.c"
 LAB_1D0C:
     DC.B	"%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",10,0
 LAB_1D0D:
-    DC.B	"PM",0,0
+    NStr    "PM"
 LAB_1D0E:
-    DC.B	"AM",0,0
+    NStr    "AM"
 LAB_1D0F:
-    DC.B	"DST",0
+    NStr    "DST"
 LAB_1D10:
-    DC.B	"STD",0
+    NStr    "STD"
 LAB_1D11:
-    DC.B	"Leap Year",0
+    NStr    "Leap Year"
 LAB_1D12:
-    DC.B	"Norm Year",0
+    NStr    "Norm Year"
     DS.W    1
 LAB_1D13:
     DS.W	1
@@ -75537,9 +75537,9 @@ LAB_1D14:
 LAB_1D15:
     DC.L	$00000001
 LAB_1D16:
-    DC.B	" Page",0
+    NStr    " Page"
 LAB_1D17:
-    DC.B	" Line",0
+    NStr    " Line"
 LAB_1D18:
     DS.L	1
 LAB_1D19:
@@ -75548,49 +75548,49 @@ LAB_1D1A:
     DC.L	$0000030c,$0c0c0000,$000c0c00,$05010201
     DC.L	$060a0505,$05000003
 LAB_1D1B:
-    DC.B	"All data is to be saved.",0,0
+    NStr    "All data is to be saved."
 LAB_1D1C:
-    DC.B	"TV Guide data is to be saved.",0
+    NStr    "TV Guide data is to be saved."
 LAB_1D1D:
-    DC.B	"Text Ads will be loaded from DH2:",0
+    NStr    "Text Ads will be loaded from DH2:"
 LAB_1D1E:
-    DC.B	"Computer will reset!",0,0
+    NStr    "Computer will reset!"
 LAB_1D1F:
-    DC.B	"(go off-air for 1-2 mins)",0
+    NStr    "(go off-air for 1-2 mins)"
 LAB_1D20:
-    DC.B	"Saving ""EVERYTHING"" to disk",0
+    NStr    "Saving ""EVERYTHING"" to disk"
 LAB_1D21:
-    DC.B	"Saving Prevue data to disk",0,0
+    NStr    "Saving Prevue data to disk"
 LAB_1D22:
-    DC.B	"Loading Text Ads from DH2:",0,0
+    NStr    "Loading Text Ads from DH2:"
 GLOB_STR_REBOOTING_COMPUTER:
-    DC.B	"Rebooting Computer........",0,0
+    NStr    "Rebooting Computer........"
 LAB_1D24:
-    DC.B	" Number too big        ",0
+    NStr    " Number too big        "
 LAB_1D25:
-    DC.B	" Number too small      ",0
+    NStr    " Number too small      "
 LAB_1D26:
-    DC.B	" Push ESC to exit Attribute Edit.",0
+    NStr    " Push ESC to exit Attribute Edit."
 LAB_1D27:
-    DC.B	" Push RETURN to enter selection",0
+    NStr    " Push RETURN to enter selection"
 LAB_1D28:
-    DC.B	" Push any key to select",0
+    NStr    " Push any key to select"
 LAB_1D29:
-    DC.B	"Local Edit not available",0,0
+    NStr    "Local Edit not available"
 LAB_1D2A:
-    DC.B	"Ver %s.%ld",0,0
+    NStr    "Ver %s.%ld"
 LAB_1D2B:
-    DC.B	"9.0",0	; Major/minor version string
+    NStr    "9.0"	; Major/minor version string
 LAB_1D2C:
-    DC.B	"%ld baud",0,0
+    NStr    "%ld baud"
 LAB_1D2D:
-    DC.B	"Disk 0 is %2ld%% full with %2ld Errors",0,0
+    NStr    "Disk 0 is %2ld%% full with %2ld Errors"
 LAB_1D2E:
     DS.W	1
 LAB_1D2F:
     DS.W	1
 LAB_1D30:
-    DC.B	"Push any key to continue.",0
+    NStr    "Push any key to continue."
 LAB_1D31:
     DS.W	1
 LAB_1D32:
@@ -75598,92 +75598,92 @@ LAB_1D32:
 LAB_1D33:
     DS.L	1
 LAB_1D34:
-    DC.B	"SCRSPD=%d",0
+    NStr    "SCRSPD=%d"
 LAB_1D35:
-    DC.B	"MR=%d SBS=%d Sport=%d",0
+    NStr    "MR=%d SBS=%d Sport=%d"
 LAB_1D36:
-    DC.B	"Cycle=%c CycleFreq=%d AftrOrdr=%d",0
+    NStr    "Cycle=%c CycleFreq=%d AftrOrdr=%d"
 LAB_1D37:
-    DC.B	"ClockCmd=%c",0
+    NStr    "ClockCmd=%c"
 LAB_1D38:
-    DC.B	"ED2.c",0
+    NStr    "ED2.c"
 LAB_1D39:
-    DC.B	"PI[%d] Clu_pos1=%d",0,0
+    NStr    "PI[%d] Clu_pos1=%d"
 LAB_1D3A:
-    DC.B	"Chan=%s Source=%s CallLtrs=%s",0
+    NStr    "Chan=%s Source=%s CallLtrs=%s"
 LAB_1D3B:
-    DC.B	"NULL",0,0
+    NStr    "NULL"
 LAB_1D3C:
-    DC.B	"NULL",0,0
+    NStr    "NULL"
 LAB_1D3D:
-    DC.B	"NULL",0,0
+    NStr    "NULL"
 LAB_1D3E:
-    DC.B	"TS=%d Title='%s' Time=%s",0,0
+    NStr    "TS=%d Title='%s' Time=%s"
 LAB_1D3F:
-    DC.B	"NULL",0,0
+    NStr    "NULL"
 LAB_1D40:
-    DC.B	"None ",0
+    NStr    "None "
 LAB_1D41:
-    DC.B	"Movie ",0,0
+    NStr    "Movie "
 LAB_1D42:
-    DC.B	"ALTHILITEPROG ",0,0
+    NStr    "ALTHILITEPROG "
 LAB_1D43:
-    DC.B	"TAGPROG ",0,0
+    NStr    "TAGPROG "
 LAB_1D44:
-    DC.B	"SPORTSPROG ",0
+    NStr    "SPORTSPROG "
 LAB_1D45:
-    DC.B	"DVIEW_USED ",0
+    NStr    "DVIEW_USED "
 LAB_1D46:
-    DC.B	"REPEATPROG ",0
+    NStr    "REPEATPROG "
 LAB_1D47:
-    DC.B	"PREVDAYSDATA ",0
+    NStr    "PREVDAYSDATA "
 LAB_1D48:
-    DC.B	"ED2.c",0
+    NStr    "ED2.c"
 LAB_1D49:
-    DC.B	"CLU[%d] Clu_pos1=%d",0
+    NStr    "CLU[%d] Clu_pos1=%d"
 LAB_1D4A:
-    DC.B	"Chan=%s Source=%s CallLtrs=%s",0
+    NStr    "Chan=%s Source=%s CallLtrs=%s"
 LAB_1D4B:
-    DC.B	"None ",0
+    NStr    "None "
 LAB_1D4C:
-    DC.B	"HILITESRC ",0,0
+    NStr    "HILITESRC "
 LAB_1D4D:
-    DC.B	"SUMBYSRC ",0
+    NStr    "SUMBYSRC "
 LAB_1D4E:
-    DC.B	"VIDEO_TAG_DISABLE ",0,0
+    NStr    "VIDEO_TAG_DISABLE "
 LAB_1D4F:
-    DC.B	"CAF_PPVSRC ",0
+    NStr    "CAF_PPVSRC "
 LAB_1D50:
-    DC.B	"DITTO ",0,0
+    NStr    "DITTO "
 LAB_1D51:
-    DC.B	"ALTHILITESRC ",0
+    NStr    "ALTHILITESRC "
 LAB_1D52:
-    DC.B	"STEREO ",0
+    NStr    "STEREO "
 LAB_1D53:
-    DC.B	"Grid ",0
+    NStr    "Grid "
 LAB_1D54:
-    DC.B	"MR ",0
+    NStr    "MR "
 LAB_1D55:
-    DC.B	"DNICHE ",0
+    NStr    "DNICHE "
 LAB_1D56:
-    DC.B	"DMPLEX ",0
+    NStr    "DMPLEX "
 LAB_1D57:
-    DC.B	"CF2_DPPV ",0
+    NStr    "CF2_DPPV "
     DS.W    1
 LAB_1D58:
-    DC.B	"CTime",0
+    NStr    "CTime"
 LAB_1D59:
-    DC.B	"BTime",0
+    NStr    "BTime"
 LAB_1D5A:
-    DC.B	"dh2:clock.cmd",0
+    NStr    "dh2:clock.cmd"
 LAB_1D5B:
     DC.B	10,"ED.C: Short DUMP OF CLU",10,0
 LAB_1D5C:
     DC.B	"    clu_pos1=%ld, curclu=%s, jdclu1=%ld, curjd=%ld",10,0
 LAB_1D5D:
-    DC.B	"TRUE",0,0
+    NStr    "TRUE"
 LAB_1D5E:
-    DC.B	"FALSE",0
+    NStr    "FALSE"
 LAB_1D5F:
     DC.B	"ED.C: END OF DUMP OF CLU",10,10,0,0
 LAB_1D60:
@@ -75711,154 +75711,154 @@ LAB_1D6A:
 LAB_1D6B:
     NStr	"NRLS"
 LAB_1D6C:
-    DC.B	"NYyLlZ",0,0
+    NStr    "NYyLlZ"
 LAB_1D6D:
-    DC.B	"NYLRS",0
+    NStr    "NYLRS"
 LAB_1D6E:
-    DC.B	"  Silence ",0,0
+    NStr    "  Silence "
 LAB_1D6F:
-    DC.B	"Left      ",0,0
+    NStr    "Left      "
 LAB_1D70:
-    DC.B	"     Right",0,0
+    NStr    "     Right"
 LAB_1D71:
-    DC.B	"Background",0,0
+    NStr    "Background"
 LAB_1D72:
-    DC.B	"  Ext. Video Only ",0,0
+    NStr    "  Ext. Video Only "
 LAB_1D73:
-    DC.B	"  Computer Only   ",0,0
+    NStr    "  Computer Only   "
 LAB_1D74:
-    DC.B	"Overlay Ext. Video",0,0
+    NStr    "Overlay Ext. Video"
 LAB_1D75:
-    DC.B	"Negative Video",0,0
+    NStr    "Negative Video"
 LAB_1D76:
-    DC.B	"Video Switch ",0
+    NStr    "Video Switch "
 LAB_1D77:
-    DC.B	"Open  ",0,0
+    NStr    "Open  "
 LAB_1D78:
-    DC.B	"Closed",0,0
+    NStr    "Closed"
 LAB_1D79:
-    DC.B	"Start TAPE Video   ",0
+    NStr    "Start TAPE Video   "
 LAB_1D7A:
-    DC.B	"Stop  ",0,0
+    NStr    "Stop  "
     DS.W	1
 LAB_1D7B:
     DC.L	$00000001
 LAB_1D7C:
-    DC.B	"Edit Ads",0,0
+    NStr    "Edit Ads"
 LAB_1D7D:
-    DC.B	"Edit Attributes",0
+    NStr    "Edit Attributes"
 LAB_1D7E:
-    DC.B	"Change Scroll Speed",0
+    NStr    "Change Scroll Speed"
 LAB_1D7F:
-    DC.B	"Diagnostic Mode",0
+    NStr    "Diagnostic Mode"
 LAB_1D80:
-    DC.B	"Special Functions",0
+    NStr    "Special Functions"
 LAB_1D81:
-    DC.B	"Versions Screen",0
+    NStr    "Versions Screen"
 LAB_1D82:
-    DC.B	" Push ESC to resume",0
+    NStr    " Push ESC to resume"
 LAB_1D83:
-    DC.B	" Push RETURN to enter selection",0
+    NStr    " Push RETURN to enter selection"
 LAB_1D84:
-    DC.B	" Push any key to select",0
+    NStr    " Push any key to select"
 LAB_1D85:
-    DC.B	"VIN:  BCK:  FWD:  SSPD:  #AD:   LINE:",0
+    NStr    "VIN:  BCK:  FWD:  SSPD:  #AD:   LINE:"
 LAB_1D86:
-    DC.B	"TZ :  DST:  CONT:  TEXT:  GRPH:",0
+    NStr    "TZ :  DST:  CONT:  TEXT:  GRPH:"
 LAB_1D87:
-    DC.B	" Push RETURN to enter selection",0
+    NStr    " Push RETURN to enter selection"
 LAB_1D88:
-    DC.B	" Push any key to select",0
+    NStr    " Push any key to select"
 LAB_1D89:
-    DC.B	"Satellite Delivered scroll speed (%c)",0
+    NStr    "Satellite Delivered scroll speed (%c)"
 LAB_1D8A:
-    DC.B	"Speed 0 not available",0
+    NStr    "Speed 0 not available"
 LAB_1D8B:
-    DC.B	"Speed 1 not available",0
+    NStr    "Speed 1 not available"
 LAB_1D8C:
-    DC.B	"Scroll speed = 2 (fastest)",0,0
+    NStr    "Scroll speed = 2 (fastest)"
 LAB_1D8D:
-    DC.B	"Scroll speed = 3 (default)",0,0
+    NStr    "Scroll speed = 3 (default)"
 LAB_1D8E:
-    DC.B	"Scroll speed = 4",0,0
+    NStr    "Scroll speed = 4"
 LAB_1D8F:
-    DC.B	"Scroll speed = 5",0,0
+    NStr    "Scroll speed = 5"
 LAB_1D90:
-    DC.B	"Scroll speed = 6",0,0
+    NStr    "Scroll speed = 6"
 LAB_1D91:
-    DC.B	"Scroll speed = 7 (slowest)",0,0
+    NStr    "Scroll speed = 7 (slowest)"
 LAB_1D92:
-    DC.B	"Save ALL to disk",0,0
+    NStr    "Save ALL to disk"
 LAB_1D93:
-    DC.B	"Save data to disk",0
+    NStr    "Save data to disk"
 LAB_1D94:
-    DC.B	"Load text ads from disk",0
+    NStr    "Load text ads from disk"
 LAB_1D95:
-    DC.B	"Reboot computer",0
+    NStr    "Reboot computer"
 LAB_1D96:
-    DC.B	"register ",0
+    NStr    "register "
 LAB_1D97:
-    DC.B	"R= ",0
+    NStr    "R= "
 LAB_1D98:
-    DC.B	"G= ",0
+    NStr    "G= "
 LAB_1D99:
-    DC.B	"B= ",0
+    NStr    "B= "
 LAB_1D9A:
-    DC.B	" Are you sure? (Y/N)",0,0
+    NStr    " Are you sure? (Y/N)"
 LAB_1D9B:
-    DC.B	" Enter ad number (1-",0,0
+    NStr    " Enter ad number (1-"
 LAB_1D9C:
-    DC.B	") then",0,0
+    NStr    ") then"
 LAB_1D9D:
-    DC.B	" push RETURN to enter selection",0
+    NStr    " push RETURN to enter selection"
 LAB_1D9E:
-    DC.B	" ",0
+    NStr    " "
 LAB_1D9F:
-    DC.B	"Ad Number? ",0
+    NStr    "Ad Number? "
 LAB_1DA0:
-    DC.B	" Current Color %02X ",0,0
+    NStr    " Current Color %02X "
 LAB_1DA1:
-    DC.B	"   Text",0
+    NStr    "   Text"
 LAB_1DA2:
-    DC.B	" Cursor",0
+    NStr    " Cursor"
 LAB_1DA3:
-    DC.B	" Line",0
+    NStr    " Line"
 LAB_1DA4:
-    DC.B	" Page",0
+    NStr    " Page"
 LAB_1DA5:
-    DC.B	"Ad Number %2ld",0,0
+    NStr    "Ad Number %2ld"
 LAB_1DA6:
-    DC.B	"Active Inactive",0
+    NStr    "Active Inactive"
 LAB_1DA7:
-    DC.B	" Push ESC to make another selection.",0,0
+    NStr    " Push ESC to make another selection."
 LAB_1DA8:
-    DC.B	" Push HELP for other edit functions.",0,0
+    NStr    " Push HELP for other edit functions."
 LAB_1DA9:
-    DC.B	" Line mode on       Text color mode ",0,0
+    NStr    " Line mode on       Text color mode "
 LAB_1DAA:
-    DC.B	"Editing Ad Number %2ld",0,0
+    NStr    "Editing Ad Number %2ld"
 LAB_1DAB:
-    DC.B	"Editing Ad Number %2ld",0,0
+    NStr    "Editing Ad Number %2ld"
 LAB_1DAC:
-    DC.B	"Push any key to continue.",0
+    NStr    "Push any key to continue."
 LAB_1DAD:
-    DC.B	"     ** Line/Page Commands **",0
+    NStr    "     ** Line/Page Commands **"
 LAB_1DAE:
-    DC.B	"F1: Home               F6: Clear",0,0
+    NStr    "F1: Home               F6: Clear"
 LAB_1DAF:
-    DC.B	"F2: Line/Page mode     F7: Insert Line",0,0
+    NStr    "F2: Line/Page mode     F7: Insert Line"
 LAB_1DB0:
-    DC.B	"F3: Center             F8: Delete Line",0,0
+    NStr    "F3: Center             F8: Delete Line"
 LAB_1DB1:
-    DC.B	"F4: Left Justify       F9: Apply Color",0,0
+    NStr    "F4: Left Justify       F9: Apply Color"
 LAB_1DB2:
-    DC.B	"F5: Right Justify     F10: Insert char",0,0
+    NStr    "F5: Right Justify     F10: Insert char"
 LAB_1DB3:
-    DC.B	"Shift ->: next Ad     DEL: Delete char",0,0
+    NStr    "Shift ->: next Ad     DEL: Delete char"
 LAB_1DB4:
-    DC.B	"Shift <-: prev Ad   CTRLC: Color Mode",0
+    NStr    "Shift <-: prev Ad   CTRLC: Color Mode"
 LAB_1DB5:
-    DC.B	"CTRLF: Foreground   CTRLB: Background",0
+    NStr    "CTRLF: Foreground   CTRLB: Background"
 
 GLOB_REF_GRAPHICS_LIBRARY:
     DS.L	1
@@ -76015,85 +76015,85 @@ HAS_REQUESTED_CHIP_MEMORY:
 LAB_1DF8:
     DC.L	$00000001
 LAB_1DF9:
-    DC.B	"RAVESC",0,0
+    NStr    "RAVESC"
 LAB_1DFA:
-    DC.B	"copy >NIL: C:assign ram:",0,0
+    NStr    "copy >NIL: C:assign ram:"
 GLOB_STR_GRAPHICS_LIBRARY:
-    DC.B	"graphics.library",0,0
+    NStr    "graphics.library"
 GLOB_STR_DISKFONT_LIBRARY:
-    DC.B	"diskfont.library",0,0
+    NStr    "diskfont.library"
 GLOB_STR_DOS_LIBRARY:
-    DC.B	"dos.library",0
+    NStr    "dos.library"
 GLOB_STR_INTUITION_LIBRARY:
-    DC.B	"intuition.library",0
+    NStr    "intuition.library"
 GLOB_STR_UTILITY_LIBRARY:
-    DC.B	"utility.library",0
+    NStr    "utility.library"
 GLOB_STR_BATTCLOCK_RESOURCE:
-    DC.B	"battclock.resource",0,0
+    NStr    "battclock.resource"
 LAB_1E01:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E02:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E03:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E04:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E05:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E06:
-    DC.B	"CART",0,0
+    NStr    "CART"
 LAB_1E07:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 GLOB_STR_SERIAL_READ:
-    DC.B	"Serial.Read",0
+    NStr    "Serial.Read"
 GLOB_STR_SERIAL_DEVICE:
-    DC.B	"serial.device",0
+    NStr    "serial.device"
 LAB_1E0A:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E0B:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E0C:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E0D:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E0E:
-    DC.B	"ESQ.c",0
+    NStr    "ESQ.c"
 LAB_1E0F:
-    DC.B	"no df1 present",0,0
+    NStr    "no df1 present"
 LAB_1E10:
-    DC.B	"Ver %s.%ld Build %ld %s",0
+    NStr    "Ver %s.%ld Build %ld %s"
 LAB_1E11:
-    DC.B	"9.0",0	; Major/minor version string
+    NStr    "9.0"   ; Major/minor version string
 LAB_1E12:
-    DC.B	"                                       ",0
+    NStr    "                                       "
 LAB_1E13:
-    DC.B	"dh2:Gradient.ini",0,0
+    NStr    "dh2:Gradient.ini"
 LAB_1E14:
-    DC.B	"System Initializing",0
+    NStr    "System Initializing"
 LAB_1E15:
-    DC.B	"Please Stand By...",0,0
+    NStr    "Please Stand By..."
 LAB_1E16:
-    DC.B	"ATTENTION SYSTEM ENGINEER!",0,0
+    NStr    "ATTENTION SYSTEM ENGINEER!"
 LAB_1E17:
-    DC.B	"Report Error Code ER011 to TV Guide Technical Services.",0
+    NStr    "Report Error Code ER011 to TV Guide Technical Services."
 LAB_1E18:
-    DC.B	"Report Error Code ER012 to TV Guide Technical Services.",0
+    NStr    "Report Error Code ER012 to TV Guide Technical Services."
 LAB_1E19:
-    DC.B	"dh2:default.ini",0
+    NStr    "dh2:default.ini"
 LAB_1E1A:
-    DC.B	"dh2:brush.ini",0
+    NStr    "dh2:brush.ini"
 LAB_1E1B:
-    DC.B	"DT",0,0
+    NStr    "DT"
 LAB_1E1C:
-    DC.B	"DITHER",0,0
+    NStr    "DITHER"
 LAB_1E1D:
-    DC.B	"dh2:banner.ini",0,0
+    NStr    "dh2:banner.ini"
 LAB_1E1E:
-    DC.B	"GRANADA",0
+    NStr    "GRANADA"
 LAB_1E1F:
     DC.L	$00000015
 LAB_1E20:
-    DC.B	"JGT",0	; build id string
+    NStr    "JGT"   ; build id string
 LAB_1E21:
     DC.L	LAB_1E20
 LAB_1E22:
@@ -76938,81 +76938,81 @@ LAB_1E8E:
 LAB_1E8F:
     DC.W	$0001
 LAB_1E90:
-    DC.B	"ESQFUNC.c",0
+    NStr    "ESQFUNC.c"
 LAB_1E91:
-    DC.B	"Vertical Blank Int",0,0
+    NStr    "Vertical Blank Int"
 LAB_1E92:
-    DC.B	"ESQFUNC.c",0
+    NStr    "ESQFUNC.c"
 LAB_1E93:
-    DC.B	"JoyStick Int",0,0
+    NStr    "JoyStick Int"
 LAB_1E94:
-    DC.B	"ESQFUNC.c",0
+    NStr    "ESQFUNC.c"
 LAB_1E95:
-    DC.B	"ESQFUNC.c",0
+    NStr    "ESQFUNC.c"
 LAB_1E96:
-    DC.B	"RS232 Receive Handler",0
+    NStr    "RS232 Receive Handler"
 LAB_1E97:
-    DC.B	"ESQFUNC.c",0
+    NStr    "ESQFUNC.c"
 LAB_1E98:
-    DC.B	"ESQFUNC.c",0
+    NStr    "ESQFUNC.c"
 LAB_1E99:
-    DC.B	"Disk 0 is write protected",0
+    NStr    "Disk 0 is write protected"
 LAB_1E9A:
-    DC.B	"You MUST re-insert SYSTEM disk into drive 0!",0,0
+    NStr    "You MUST re-insert SYSTEM disk into drive 0!"
 LAB_1E9B:
-    DC.B	"Build Number: '%ld%s'",0
+    NStr    "Build Number: '%ld%s'"
 LAB_1E9C:
-    DC.B	" ROM Version: '%s'",0,0
+    NStr    " ROM Version: '%s'"
 LAB_1E9D:
-    DC.B	"1.3",0
+    NStr    "1.3"
 LAB_1E9E:
-    DC.B	"2.04",0,0
+    NStr    "2.04"
 LAB_1E9F:
-    DC.B	"Push any key to continue.",0
+    NStr    "Push any key to continue."
 LAB_1EA0:
-    DC.B	"DATA: Cmds:%08ld CErrs:%03ld LErrs:%03ld",0,0
+    NStr    "DATA: Cmds:%08ld CErrs:%03ld LErrs:%03ld"
 LAB_1EA1:
-    DC.B	"CTRL: Cmds:%08ld CErrs:%03ld LErrs:%03ld",0,0
+    NStr    "CTRL: Cmds:%08ld CErrs:%03ld LErrs:%03ld"
 LAB_1EA2:
-    DC.B	"L_CHIP:%7ld  FAST:%8ld  MAX:%8ld",0,0
+    NStr    "L_CHIP:%7ld  FAST:%8ld  MAX:%8ld"
 LAB_1EA3:
-    DC.B	"CHIP:%7ld                             ",0,0
+    NStr    "CHIP:%7ld                             "
 LAB_1EA4:
-    DC.B	"              FAST:%8ld              ",0
+    NStr    "              FAST:%8ld              "
 LAB_1EA5:
-    DC.B	"                             MAX:%8ld",0
+    NStr    "                             MAX:%8ld"
 LAB_1EA6:
-    DC.B	"Memory types disabled (use CTRL C/F/M/A).",0
+    NStr    "Memory types disabled (use CTRL C/F/M/A)."
 LAB_1EA7:
-    DC.B	"DATA Overruns: %ld",0,0
+    NStr    "DATA Overruns: %ld"
 LAB_1EA8:
-    DC.B	"DATA: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld",0,0
+    NStr    "DATA: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld"
 LAB_1EA9:
-    DC.B	"CTRL: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld",0,0
+    NStr    "CTRL: H:%05ld  T:%05ld  C:%05ld  MAX:%05ld"
 LAB_1EAA:
-    DC.B	"julian day = %3ld    next = %3ld",0,0
+    NStr    "julian day = %3ld    next = %3ld"
 LAB_1EAB:
-    DC.B	"jday1 = %3ld     jday2 =  %3ld",0,0
+    NStr    "jday1 = %3ld     jday2 =  %3ld"
 LAB_1EAC:
-    DC.B	" curclu =%2ld nxtclu =%2ld ",0
+    NStr    " curclu =%2ld nxtclu =%2ld "
 LAB_1EAD:
-    DC.B	"C.date=%2ld C.month=%2ld lp=%4ld yr=%4ld",0,0
+    NStr    "C.date=%2ld C.month=%2ld lp=%4ld yr=%4ld"
 LAB_1EAE:
-    DC.B	"B.date=%2ld B.month=%2ld lp=%4ld yr=%4ld",0,0
+    NStr    "B.date=%2ld B.month=%2ld lp=%4ld yr=%4ld"
 LAB_1EAF:
-    DC.B	"C.dst =%2ld B.dst =%2ld pshift =%2ld",0,0
+    NStr    "C.dst =%2ld B.dst =%2ld pshift =%2ld"
 LAB_1EB0:
-    DC.B	"C.hour =%3ld B.hour =%3ld cs=%2ld",0
+    NStr    "C.hour =%3ld B.hour =%3ld cs=%2ld"
 LAB_1EB1:
     DS.L	1
 LAB_1EB2:
-    DC.B	"VIDEO_INSERTION_INACTIVE",0,0
+    NStr    "VIDEO_INSERTION_INACTIVE"
 LAB_1EB3:
-    DC.B	"VIDEO_INSERTION_START",0
+    NStr    "VIDEO_INSERTION_START"
 LAB_1EB4:
-    DC.B	"VIDEO_INSERTION_INPROGRESS",0,0
+    NStr    "VIDEO_INSERTION_INPROGRESS"
 LAB_1EB5:
-    DC.B	"VIDEO_INSERTION_STOP",0,0
+    NStr    "VIDEO_INSERTION_STOP"
 LAB_1EB6:
     DC.L	LAB_1EB2
     DC.L	LAB_1EB3
@@ -77119,17 +77119,17 @@ LAB_1EE4:
 LAB_1EE5:
     DS.B	1
 LAB_1EE6:
-    DC.B	"00",0,0
+    NStr    "00"
 LAB_1EE7:
-    DC.B	"11",0,0
+    NStr    "11"
 LAB_1EE8:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EE9:
     DS.L	1
 LAB_1EEA:
-    DC.B	"weather",0
+    NStr    "weather"
 LAB_1EEB:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EEC:
     DS.W	1
 LAB_1EED:
@@ -77137,99 +77137,99 @@ LAB_1EED:
 LAB_1EEE:
     DC.W	$0100
 LAB_1EEF:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EF0:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EF1:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EF2:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EF3:
-    DC.B	"dh2:",0,0
-    DC.B	"dh2:",0,0
+    NStr    "dh2:"
+    NStr    "dh2:"
 LAB_1EF4:
-    DC.B	"ram:logos/ ",0
-    DC.B	"ram:logos/ ",0
+    NStr    "ram:logos/ "
+    NStr    "ram:logos/ "
 LAB_1EF5:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EF6:
-    DC.B	"ESQIFF.c",0,0
+    NStr    "ESQIFF.c"
 LAB_1EF7:
-    DC.B	"dh2:brush.ini",0
+    NStr    "dh2:brush.ini"
 LAB_1EF8:
-    DC.B	"DT",0,0
+    NStr    "DT"
 LAB_1EF9:
-    DC.B	"DITHER",0,0
+    NStr    "DITHER"
 LAB_1EFA:
-    DC.B	"%s.%ld",0,0
+    NStr    "%s.%ld"
 LAB_1EFB:
-    DC.B	"9.0",0 ; major/minor version
+    NStr    "9.0"   ; major/minor version
 LAB_1EFC:
-    DC.B	"Incorrect Version! Please correct ASAP!",0
+    NStr    "Incorrect Version! Please correct ASAP!"
 LAB_1EFD:
-    DC.B	"Your version is    '%s.%ld'",0
+    NStr    "Your version is    '%s.%ld'"
 LAB_1EFE:
-    DC.B	"9.0",0 ; major/minor version
+    NStr    "9.0"   ; major/minor version
 LAB_1EFF:
-    DC.B	"Correct version is '",0,0
+    NStr    "Correct version is '"
 LAB_1F00:
-    DC.B	"'",0
+    NStr    "'"
 LAB_1F01:
-    DC.B	"Please Standby...",0
+    NStr    "Please Standby..."
 LAB_1F02:
-    DC.B	"ATTENTION SYSTEM ENGINEER!",0,0
+    NStr    "ATTENTION SYSTEM ENGINEER!"
 LAB_1F03:
-    DC.B	"Report Error Code ER%03d to TV Guide Technical Services.",0,0
+    NStr    "Report Error Code ER%03d to TV Guide Technical Services."
 LAB_1F04:
-    DC.B	"File='%s'  Width=%d  Colors=%d",0,0
+    NStr    "File='%s'  Width=%d  Colors=%d"
 LAB_1F05:
-    DC.B	"File '%s'",0
+    NStr    "File '%s'"
 LAB_1F06:
-    DC.B	"Press ESC key twice to resume scroll",0,0
+    NStr    "Press ESC key twice to resume scroll"
 LAB_1F07:
-    DC.B	"ESQPARS.c",0
+    NStr    "ESQPARS.c"
 LAB_1F08:
-    DC.B	"ESQPARS.c",0
+    NStr    "ESQPARS.c"
 LAB_1F09:
-    DC.B	"ESQPARS.c",0
+    NStr    "ESQPARS.c"
 LAB_1F0A:
-    DC.B	"ESQPARS.c",0
+    NStr    "ESQPARS.c"
 LAB_1F0B:
-    DC.B	"ESQPARS.c",0
+    NStr    "ESQPARS.c"
 LAB_1F0C:
-    DC.B	"ESQPARS.c",0
+    NStr    "ESQPARS.c"
 LAB_1F0D:
-    DC.B	"Reset command received",0,0
+    NStr    "Reset command received"
 LAB_1F0E:
-    DC.B	"23",0,0
+    NStr    "23"
 LAB_1F0F:
-    DC.B	"00",0,0
+    NStr    "00"
 LAB_1F10:
-    DC.B	"ESQPARS2.c",0,0
+    NStr    "ESQPARS2.c"
 LAB_1F11:
-    DC.B	"ESQPARS2.c",0,0
+    NStr    "ESQPARS2.c"
 LAB_1F12:
-    DC.B	"ESQPARS2.c",0,0
+    NStr    "ESQPARS2.c"
 LAB_1F13:
-    DC.B	"ESQPARS2.c",0,0
+    NStr    "ESQPARS2.c"
 LAB_1F14:
-    DC.B	"(CC)",0,0
+    NStr    "(CC)"
 LAB_1F15:
-    DC.B	"In Stereo",0
+    NStr    "In Stereo"
 LAB_1F16:
-    DC.B	"(R)",0
+    NStr    "(R)"
 LAB_1F17:
-    DC.B	"(Adult)",0
+    NStr    "(Adult)"
 LAB_1F18:
-    DC.B	"(PG)",0,0
+    NStr    "(PG)"
 LAB_1F19:
-    DC.B	"(NR)",0,0
+    NStr    "(NR)"
 LAB_1F1A:
-    DC.B	"(PG-13)",0
+    NStr    "(PG-13)"
 LAB_1F1B:
-    DC.B	"(G)",0
+    NStr    "(G)"
 LAB_1F1C:
-    DC.B	"(NC-17)",0
+    NStr    "(NC-17)"
 LAB_1F1D:
     DC.L	LAB_1F16
     DC.L	LAB_1F17
@@ -77241,19 +77241,19 @@ LAB_1F1D:
 LAB_1F1E:
     DC.L	$8486858c,$878d8f00
 LAB_1F1F:
-    DC.B	"(TV-Y)",0,0
+    NStr    "(TV-Y)"
 LAB_1F20:
-    DC.B	"(TV-Y7)",0
+    NStr    "(TV-Y7)"
 LAB_1F21:
-    DC.B	"(TV-PG)",0
+    NStr    "(TV-PG)"
 LAB_1F22:
-    DC.B	"(TV-G)",0,0
+    NStr    "(TV-G)"
 LAB_1F23:
-    DC.B	"(TV-M)",0,0
+    NStr    "(TV-M)"
 LAB_1F24:
-    DC.B	"(TV-MA)",0
+    NStr    "(TV-MA)"
 LAB_1F25:
-    DC.B	"(TV-14)",0
+    NStr    "(TV-14)"
 LAB_1F26:
     DC.L	LAB_1F1F
     DC.L	LAB_1F20
@@ -77265,17 +77265,17 @@ LAB_1F26:
 LAB_1F27:
     DC.L	$90939b99,$a3a39a00
 LAB_1F28:
-    DC.B	"ESQPARS2.c",0,0
+    NStr    "ESQPARS2.c"
 LAB_1F29:
-    DC.B	"%d ",0
+    NStr    "%d "
 LAB_1F2A:
-    DC.B	"(%d ",0,0
+    NStr    "(%d "
 LAB_1F2B:
-    DC.B	"(%d ",0,0
+    NStr    "(%d "
 LAB_1F2C:
-    DC.B	")",0
+    NStr    ")"
 LAB_1F2D:
-    DC.B	"ESQPARS2.c",0,0
+    NStr    "ESQPARS2.c"
     DS.W	1
 LAB_1F2E:
     DC.L	$00000004 ; Patch version string
@@ -77363,65 +77363,65 @@ LAB_1F56:
 LAB_1F57:
     DS.L	1
 LAB_1F58:
-    DC.B	"%02ld:%02ld:%02ld %2.2s",0
+    NStr    "%02ld:%02ld:%02ld %2.2s"
 LAB_1F59:
-    DC.B	"PM",0,0
+    NStr    "PM"
 LAB_1F5A:
-    DC.B	"AM",0,0
+    NStr    "AM"
 LAB_1F5B:
     DC.W	$0900
 LAB_1F5C:
     DC.L	$0d0a0000
 LAB_1F5D:
-    DC.B	"FLIB.c",0,0
+    NStr    "FLIB.c"
 LAB_1F5E:
-    DC.B	"FLIB.c",0,0
+    NStr    "FLIB.c"
 LAB_1F5F:
     DS.W	1
 LAB_1F60:
-    DC.B	"%02ld:%02ld:%02ld:%02ld",0
+    NStr    "%02ld:%02ld:%02ld:%02ld"
 LAB_1F61:
-    DC.B	"Digital Niche Listings",0,0
+    NStr    "Digital Niche Listings"
 LAB_1F62:
-    DC.B	"Digital Multiplex Listings",0,0
+    NStr    "Digital Multiplex Listings"
 LAB_1F63:
-    DC.B	"Digital Multiplex at %s",0
+    NStr    "Digital Multiplex at %s"
 LAB_1F64:
-    DC.B	"Digital PPV Listings",0,0
+    NStr    "Digital PPV Listings"
 LAB_1F65:
-    DC.B	"Digital PPV.",0,0
+    NStr    "Digital PPV."
 LAB_1F66:
-    DC.B	"DH2:Digital_Niche.dat",0
+    NStr    "DH2:Digital_Niche.dat"
 LAB_1F67:
-    DC.B	"GCOMMAND.c",0,0
+    NStr    "GCOMMAND.c"
 LAB_1F68:
-    DC.B	"DH2:Digital_Niche.dat",0
+    NStr    "DH2:Digital_Niche.dat"
 LAB_1F69:
     DS.W	1
 LAB_1F6A:
-    DC.B	"DH2:Digital_Mplex.dat",0
+    NStr    "DH2:Digital_Mplex.dat"
 LAB_1F6B:
-    DC.B	"GCOMMAND.c",0,0
+    NStr    "GCOMMAND.c"
 LAB_1F6C:
-    DC.B	"%T",0,0
+    NStr    "%T"
 LAB_1F6D:
-    DC.B	"DH2:Digital_Mplex.dat",0
+    NStr    "DH2:Digital_Mplex.dat"
 LAB_1F6E:
     DC.L	$12001200
 LAB_1F6F:
     DS.W	1
 LAB_1F70:
-    DC.B	"%T",0,0
+    NStr    "%T"
 LAB_1F71:
-    DC.B	"DH2:Digital_PPV3.dat",0,0
+    NStr    "DH2:Digital_PPV3.dat"
 LAB_1F72:
-    DC.B	"DH2:Digital_PPV.dat",0
+    NStr    "DH2:Digital_PPV.dat"
 LAB_1F73:
-    DC.B	"DH2:Digital_PPV.dat",0
+    NStr    "DH2:Digital_PPV.dat"
 LAB_1F74:
-    DC.B	"GCOMMAND.c",0,0
+    NStr    "GCOMMAND.c"
 LAB_1F75:
-    DC.B	"DH2:Digital_PPV3.dat",0,0
+    NStr    "DH2:Digital_PPV3.dat"
 LAB_1F76:
     DC.L	$12001200
 LAB_1F77:
@@ -77437,81 +77437,81 @@ LAB_1F77:
     DC.L	$000000df,$000000e0,$000000e1,$000000e2
     DC.L	$000000e8,$ffffffff
 LAB_1F78:
-    DC.B	"NO_FREE_STORE",0
+    NStr    "NO_FREE_STORE"
 LAB_1F79:
-    DC.B	"TASK_TABLE_FULL",0
+    NStr    "TASK_TABLE_FULL"
 LAB_1F7A:
-    DC.B	"BAD_TEMPLATE",0,0
+    NStr    "BAD_TEMPLATE"
 LAB_1F7B:
-    DC.B	"BAD_NUMBER",0,0
+    NStr    "BAD_NUMBER"
 LAB_1F7C:
-    DC.B	"REQUIRED_ARG_MISSING",0,0
+    NStr    "REQUIRED_ARG_MISSING"
 LAB_1F7D:
-    DC.B	"KEY_NEEDS_ARG",0
+    NStr    "KEY_NEEDS_ARG"
 LAB_1F7E:
-    DC.B	"TOO_MANY_ARGS",0
+    NStr    "TOO_MANY_ARGS"
 LAB_1F7F:
-    DC.B	"UNMATCHED_QUOTES",0,0
+    NStr    "UNMATCHED_QUOTES"
 LAB_1F80:
-    DC.B	"LINE_TOO_LONG",0
+    NStr    "LINE_TOO_LONG"
 LAB_1F81:
-    DC.B	"FILE_NOT_OBJECT",0
+    NStr    "FILE_NOT_OBJECT"
 LAB_1F82:
-    DC.B	"INVALID_RESIDENT_LIBRARY",0,0
+    NStr    "INVALID_RESIDENT_LIBRARY"
 LAB_1F83:
-    DC.B	"NO_DEFAULT_DIR",0,0
+    NStr    "NO_DEFAULT_DIR"
 LAB_1F84:
-    DC.B	"OBJECT_IN_USE",0
+    NStr    "OBJECT_IN_USE"
 LAB_1F85:
-    DC.B	"OBJECT_EXISTS",0
+    NStr    "OBJECT_EXISTS"
 LAB_1F86:
-    DC.B	"DIR_NOT_FOUND",0
+    NStr    "DIR_NOT_FOUND"
 LAB_1F87:
-    DC.B	"OBJECT_NOT_FOUND",0,0
+    NStr    "OBJECT_NOT_FOUND"
 LAB_1F88:
-    DC.B	"BAD_STREAM_NAME",0
+    NStr    "BAD_STREAM_NAME"
 LAB_1F89:
-    DC.B	"OBJECT_TOO_LARGE",0,0
+    NStr    "OBJECT_TOO_LARGE"
 LAB_1F8A:
-    DC.B	"ACTION_NOT_KNOWN",0,0
+    NStr    "ACTION_NOT_KNOWN"
 LAB_1F8B:
-    DC.B	"INVALID_COMPONENT_NAME",0,0
+    NStr    "INVALID_COMPONENT_NAME"
 LAB_1F8C:
-    DC.B	"INVALID_LOCK",0,0
+    NStr    "INVALID_LOCK"
 LAB_1F8D:
-    DC.B	"OBJECT_WRONG_TYPE",0
+    NStr    "OBJECT_WRONG_TYPE"
 LAB_1F8E:
-    DC.B	"DISK_NOT_VALIDATED",0,0
+    NStr    "DISK_NOT_VALIDATED"
 LAB_1F8F:
-    DC.B	"DISK_WRITE_PROTECTED",0,0
+    NStr    "DISK_WRITE_PROTECTED"
 LAB_1F90:
-    DC.B	"RENAME_ACROSS_DEVICES",0
+    NStr    "RENAME_ACROSS_DEVICES"
 LAB_1F91:
-    DC.B	"DIRECTORY_NOT_EMPTY",0
+    NStr    "DIRECTORY_NOT_EMPTY"
 LAB_1F92:
-    DC.B	"TOO_MANY_LEVELS",0
+    NStr    "TOO_MANY_LEVELS"
 LAB_1F93:
-    DC.B	"DEVICE_NOT_MOUNTED",0,0
+    NStr    "DEVICE_NOT_MOUNTED"
 LAB_1F94:
-    DC.B	"SEEK_ERROR",0,0
+    NStr    "SEEK_ERROR"
 LAB_1F95:
-    DC.B	"COMMENT_TOO_BIG",0
+    NStr    "COMMENT_TOO_BIG"
 LAB_1F96:
-    DC.B	"DISK_FULL",0
+    NStr    "DISK_FULL"
 LAB_1F97:
-    DC.B	"DELETE_PROTECTED",0,0
+    NStr    "DELETE_PROTECTED"
 LAB_1F98:
-    DC.B	"WRITE_PROTECTED",0
+    NStr    "WRITE_PROTECTED"
 LAB_1F99:
-    DC.B	"READ_PROTECTED",0,0
+    NStr    "READ_PROTECTED"
 LAB_1F9A:
-    DC.B	"NOT_A_DOS_DISK",0,0
+    NStr    "NOT_A_DOS_DISK"
 LAB_1F9B:
-    DC.B	"NO_DISK",0
+    NStr    "NO_DISK"
 LAB_1F9C:
-    DC.B	"NO_MORE_ENTRIES",0
+    NStr    "NO_MORE_ENTRIES"
 LAB_1F9D:
-    DC.B	"UNKNOWN!",0,0
+    NStr    "UNKNOWN!"
     DC.L	LAB_1F78
     DC.L	LAB_1F79
     DC.L	LAB_1F7A
@@ -77551,13 +77551,13 @@ LAB_1F9D:
     DC.L	LAB_1F9C
     DC.L	LAB_1F9D
 LAB_1F9E:
-    DC.B	"GFX:",0,0
+    NStr    "GFX:"
 LAB_1F9F:
-    DC.B	"WORK:",0
+    NStr    "WORK:"
 LAB_1FA0:
-    DC.B	"COPY >NIL: GFX:LOGO.LST DH2: CLONE",0,0
+    NStr    "COPY >NIL: GFX:LOGO.LST DH2: CLONE"
 LAB_1FA1:
-    DC.B	"COPY >NIL: GFX:#? WORK: CLONE ALL",0
+    NStr    "COPY >NIL: GFX:#? WORK: CLONE ALL"
 LAB_1FA2:
     DC.L	$00030000
     DS.L	14
@@ -77648,15 +77648,15 @@ LAB_1FAF:
 LAB_1FB0:
     DC.W	$0001
 LAB_1FB1:
-    DC.B	"inputdevice",0
+    NStr    "inputdevice"
 LAB_1FB2:
-    DC.B	"consoledevice",0
+    NStr    "consoledevice"
 GLOB_STR_INPUT_DEVICE:
-    DC.B	"input.device",0,0
+    NStr    "input.device"
 GLOB_STR_CONSOLE_DEVICE:
-    DC.B	"console.device",0,0
+    NStr    "console.device"
 LAB_1FB5:
-    DC.B	"KYBD.c",0,0
+    NStr    "KYBD.c"
     DS.W    1
 LAB_1FB6:
     DC.B	"dh2:local.ads"
@@ -77745,7 +77745,7 @@ LAB_1FDE:
 LAB_1FDF:
     DC.B	"""",10,0,0
 LAB_1FE0:
-    DC.B	"""",0
+    NStr    """"
 LAB_1FE1:
     NStr    "^%lc"
 LAB_1FE2:
@@ -77777,23 +77777,23 @@ LAB_1FEE:
 LAB_1FEF:
     NStr    "LOCAVAIL.c"
 LAB_1FF0:
-    DC.B	"FV",0,0
+    NStr    "FV"
 LAB_1FF1:
     NStr    "LOCAVAIL.c"
 LAB_1FF2:
-    DC.B	"YyLlZ",0
+    NStr    "YyLlZ"
 LAB_1FF3:
-    DC.B	"UVGTI",0
+    NStr    "UVGTI"
 LAB_1FF4:
     NStr    "DH2:LocAvail.dat"
 LAB_1FF5:
-    DC.B	"LA_VER_1:  curday",0
+    NStr    "LA_VER_1:  curday"
 LAB_1FF6:
-    DC.B	"LA_VER_1:  nxtday",0
+    NStr    "LA_VER_1:  nxtday"
 LAB_1FF7:
     NStr    "DH2:LocAvail.dat"
 LAB_1FF8:
-    DC.B	"LA_VER",0,0
+    NStr    "LA_VER"
 LAB_1FF9:
     NStr    "LOCAVAIL.c"
 LAB_1FFA:
@@ -77863,7 +77863,7 @@ LAB_2018:
     DC.W	$8d8f
     DS.B	1
 LAB_2019:
-    DC.B	145,"|",0
+    NStr2   145,"|"
 LAB_201A:
     NStr    "%c%s%c %s"
 LAB_201B:
@@ -77971,25 +77971,25 @@ LAB_204D:
 LAB_204E:
     NStr    "P_TYPE.c"
 LAB_204F:
-    DC.B	"dh2:PromoId.Dat",0
+    NStr    "dh2:PromoId.Dat"
 LAB_2050:
-    DC.B	"CURDAY:",0
+    NStr    "CURDAY:"
 LAB_2051:
     DC.B	" %03d %02d",10
-    DC.B	"TYPES: ",0,0
+    NStr    "TYPES: "
 LAB_2052:
     DC.B	"No Data",10,10,0
 LAB_2053:
-    DC.B	"NXTDAY:",0
+    NStr    "NXTDAY:"
 LAB_2054:
-    DC.B	"dh2:PromoId.Dat",0
+    NStr    "dh2:PromoId.Dat"
 LAB_2055:
-    DC.B	"CURDAY:",0
+    NStr    "CURDAY:"
 LAB_2056:
-    DC.B	"TYPES: ",0
-    DC.B	"TYPES: ",0
+    NStr    "TYPES: "
+    NStr    "TYPES: "
 LAB_2057:
-    DC.B	"NXTDAY:",0
+    NStr    "NXTDAY:"
 LAB_2058:
     NStr    "P_TYPE.c"
     DS.W    1
@@ -78002,21 +78002,21 @@ LAB_205B:
 LAB_205C:
     DS.L	1
 LAB_205D:
-    DC.B	"Qtable",0,0
+    NStr    "Qtable"
 LAB_205E:
-    DC.B	"BACKDROP",0,0
+    NStr    "BACKDROP"
 LAB_205F:
-    DC.B	"GRADIENT",0,0
+    NStr    "GRADIENT"
 LAB_2060:
-    DC.B	"TEXTADS",0
+    NStr    "TEXTADS"
 LAB_2061:
-    DC.B	"BRUSH",0
+    NStr    "BRUSH"
 LAB_2062:
-    DC.B	"BANNER",0,0
+    NStr    "BANNER"
 LAB_2063:
-    DC.B	"DEFAULT TEXT",0,0
+    NStr    "DEFAULT TEXT"
 LAB_2064:
-    DC.B	"SOURCE CONFIG",0
+    NStr    "SOURCE CONFIG"
 LAB_2065:
     DC.B	" ",9,0,0
 LAB_2066:
@@ -78040,55 +78040,55 @@ LAB_206E:
 LAB_206F:
     DC.B	" ;",9,0
 LAB_2070:
-    DC.B	"TABLE",0
+    NStr    "TABLE"
 LAB_2071:
-    DC.B	"DONE",0,0
+    NStr    "DONE"
 LAB_2072:
-    DC.B	"COLOR",0
+    NStr    "COLOR"
 LAB_2073:
     DS.L	1
 LAB_2074:
-    DC.B	"FILENAME",0,0
+    NStr    "FILENAME"
 LAB_2075:
-    DC.B	"LOADCOLOR",0
+    NStr    "LOADCOLOR"
 LAB_2076:
-    DC.B	"ALL",0
+    NStr    "ALL"
 LAB_2077:
-    DC.B	"NONE",0,0
+    NStr    "NONE"
 LAB_2078:
-    DC.B	"TEXT",0,0
+    NStr    "TEXT"
 LAB_2079:
-    DC.B	"XPOS",0,0
+    NStr    "XPOS"
 LAB_207A:
-    DC.B	"TYPE",0,0
+    NStr    "TYPE"
 LAB_207B:
-    DC.B	"DITHER",0,0
+    NStr    "DITHER"
 LAB_207C:
-    DC.B	"YPOS",0,0
+    NStr    "YPOS"
 LAB_207D:
-    DC.B	"XSOURCE",0
+    NStr    "XSOURCE"
 LAB_207E:
-    DC.B	"YSOURCE",0
+    NStr    "YSOURCE"
 LAB_207F:
-    DC.B	"SIZEX",0
+    NStr    "SIZEX"
 LAB_2080:
-    DC.B	"SIZEY",0
+    NStr    "SIZEY"
 LAB_2081:
-    DC.B	"SOURCE",0,0
+    NStr    "SOURCE"
 LAB_2082:
-    DC.B	"PPV",0
+    NStr    "PPV"
 LAB_2083:
     NStr    "PARSEINI.c"
 LAB_2084:
-    DC.B	"HORIZONTAL",0,0
+    NStr    "HORIZONTAL"
 LAB_2085:
-    DC.B	"RIGHT",0
+    NStr    "RIGHT"
 LAB_2086:
-    DC.B	"CENTER",0,0
+    NStr    "CENTER"
 LAB_2087:
-    DC.B	"VERTICAL",0,0
+    NStr    "VERTICAL"
 LAB_2088:
-    DC.B	"BOTTOM",0,0
+    NStr    "BOTTOM"
 LAB_2089:
     NStr    "CENTER"
 LAB_208A:
@@ -78215,29 +78215,29 @@ LAB_20C0:
     DC.L	LAB_20BE
     DC.L	LAB_20BF
 LAB_20C1:
-    DC.B	"Jan ",0,0
+    NStr    "Jan "
 LAB_20C2:
-    DC.B	"Feb ",0,0
+    NStr    "Feb "
 LAB_20C3:
-    DC.B	"Mar ",0,0
+    NStr    "Mar "
 LAB_20C4:
-    DC.B	"Apr ",0,0
+    NStr    "Apr "
 LAB_20C5:
-    DC.B	"May ",0,0
+    NStr    "May "
 LAB_20C6:
-    DC.B	"Jun ",0,0
+    NStr    "Jun "
 LAB_20C7:
-    DC.B	"Jul ",0,0
+    NStr    "Jul "
 LAB_20C8:
-    DC.B	"Aug ",0,0
+    NStr    "Aug "
 LAB_20C9:
-    DC.B	"Sep ",0,0
+    NStr    "Sep "
 LAB_20CA:
-    DC.B	"Oct ",0,0
+    NStr    "Oct "
 LAB_20CB:
-    DC.B	"Nov ",0,0
+    NStr    "Nov "
 LAB_20CC:
-    DC.B	"Dec ",0,0
+    NStr    "Dec "
 LAB_20CD:
     DC.L	LAB_20C1
     DC.L	LAB_20C2
@@ -78344,17 +78344,17 @@ LAB_20F4:
 LAB_20F5:
     DS.W	1
 LAB_20F6:
-    DC.B	"Mondays thru Saturdays",0,0
+    NStr    "Mondays thru Saturdays"
 LAB_20F7:
-    DC.B	"Mondays thru Thursdays",0,0
+    NStr    "Mondays thru Thursdays"
 LAB_20F8:
-    DC.B	"Weekday Mornings",0,0
+    NStr    "Weekday Mornings"
 LAB_20F9:
-    DC.B	"Weekday Afternoons",0,0
+    NStr    "Weekday Afternoons"
 LAB_20FA:
-    DC.B	"Tuesdays & Thursdays",0,0
+    NStr    "Tuesdays & Thursdays"
 LAB_20FB:
-    DC.B	"This Week",0
+    NStr    "This Week"
     DC.L	LAB_20DE
     DC.L	LAB_20DF
     DC.L	LAB_20E0
