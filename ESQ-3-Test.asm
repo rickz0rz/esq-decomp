@@ -67803,9 +67803,9 @@ LAB_183E:
     MOVE.W  18(A5),D6
     MOVE.L  D7,LAB_2178
     TST.W   LAB_2173
-    BNE.S   LAB_183F
+    BNE.S   .LAB_183F
     BSR.W   LAB_180B
-LAB_183F:
+.LAB_183F:
     MOVE.L  #LAB_1E25,-4(A5)
     MOVE.L  #LAB_1E54,-8(A5)
     MOVE.L  D7,D0
@@ -67816,9 +67816,9 @@ LAB_183F:
     LEA     -84(A5),A1
     MOVEA.L A1,A2
     MOVEQ   #18,D0
-LAB_1840:
+.LAB_1840:
     MOVE.L  (A0)+,(A2)+
-    DBF     D0,LAB_1840
+    DBF     D0,.LAB_1840
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -67831,7 +67831,7 @@ LAB_1840:
     MOVE.L  #$00008004,D2
     AND.L   D2,D1
     CMPI.L  #$00008004,D1
-    BNE.S   LAB_1841
+    BNE.S   .LAB_1841
     MOVEQ   #-2,D1
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -67845,8 +67845,8 @@ LAB_1840:
     SUBQ.L  #2,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D1,-244(A5)
-    BRA.S   LAB_1844
-LAB_1841:
+    BRA.S   .LAB_1844
+.LAB_1841:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -67854,12 +67854,12 @@ LAB_1841:
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     BTST    #7,(A2)
-    BEQ.S   LAB_1842
+    BEQ.S   .LAB_1842
     MOVEQ   #-2,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D0,-244(A5)
-    BRA.S   LAB_1844
-LAB_1842:
+    BRA.S   .LAB_1844
+.LAB_1842:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -67867,7 +67867,7 @@ LAB_1842:
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     BTST    #2,1(A2)
-    BEQ.S   LAB_1843
+    BEQ.S   .LAB_1843
     MOVEQ   #0,D1
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -67880,14 +67880,14 @@ LAB_1842:
     AND.L   D3,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D1,-244(A5)
-    BRA.S   LAB_1844
-LAB_1843:
+    BRA.S   .LAB_1844
+.LAB_1843:
     MOVEQ   #0,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D0,-244(A5)
-LAB_1844:
+.LAB_1844:
     TST.L   D7
-    BNE.S   LAB_1845
+    BNE.S   .LAB_1845
     MOVEQ   #0,D0
     MOVE.L  D0,-244(A5)
     MOVE.L  D7,D0
@@ -67909,10 +67909,10 @@ LAB_1844:
     SUBQ.W  #4,D1
     MOVE.W  D1,-70(A5)
     MOVE.L  D0,-248(A5)
-LAB_1845:
+.LAB_1845:
     MOVEQ   #-1,D0
     CMP.W   D0,D6
-    BEQ.S   LAB_1846
+    BEQ.S   .LAB_1846
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -67927,24 +67927,24 @@ LAB_1845:
     ASL.L   #4,D1
     OR.L    D1,D0
     MOVE.W  D0,-58(A5)
-LAB_1846:
+.LAB_1846:
     MOVEA.L A1,A0
     LEA     -160(A5),A2
     MOVEQ   #18,D0
-LAB_1847:
+.LAB_1847:
     MOVE.L  (A0)+,(A2)+
-    DBF     D0,LAB_1847
+    DBF     D0,.LAB_1847
     LEA     -236(A5),A0
     MOVEQ   #18,D0
-LAB_1848:
+.LAB_1848:
     MOVE.L  (A1)+,(A0)+
-    DBF     D0,LAB_1848
+    DBF     D0,.LAB_1848
     LEA     -122(A5),A0
     CLR.L   -256(A5)
     MOVE.L  A0,-252(A5)
-LAB_1849:
+.LAB_1849:
     CMPI.L  #$00000005,-256(A5)
-    BGE.S   LAB_184A
+    BGE.S   .LAB_184A
     MOVEQ   #0,D0
     MOVEA.L -252(A5),A0
     MOVE.W  (A0),D0
@@ -67964,14 +67964,14 @@ LAB_1849:
     MOVE.W  D0,4(A0)
     ADDQ.L  #8,-252(A5)
     ADDQ.L  #1,-256(A5)
-    BRA.S   LAB_1849
-LAB_184A:
+    BRA.S   .LAB_1849
+.LAB_184A:
     LEA     -198(A5),A0
     CLR.L   -256(A5)
     MOVE.L  A0,-252(A5)
-LAB_184B:
+.LAB_184B:
     CMPI.L  #$00000005,-256(A5)
-    BGE.S   LAB_184C
+    BGE.S   .LAB_184C
     MOVEQ   #0,D0
     MOVEA.L -252(A5),A0
     MOVE.W  (A0),D0
@@ -67991,20 +67991,20 @@ LAB_184B:
     MOVE.W  D0,4(A0)
     ADDQ.L  #8,-252(A5)
     ADDQ.L  #1,-256(A5)
-    BRA.S   LAB_184B
-LAB_184C:
+    BRA.S   .LAB_184B
+.LAB_184C:
     LEA     -160(A5),A0
     MOVEA.L -4(A5),A1
     MOVEQ   #18,D0
-LAB_184D:
+.LAB_184D:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,LAB_184D
+    DBF     D0,.LAB_184D
     LEA     -236(A5),A0
     MOVEA.L -8(A5),A1
     MOVEQ   #18,D0
-LAB_184E:
+.LAB_184E:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,LAB_184E
+    DBF     D0,.LAB_184E
     JSR     LAB_185B(PC)
     MOVE.L  D7,D0
     MOVEQ   #77,D1
@@ -68320,10 +68320,10 @@ LAB_1850:
     LINK.W  A5,#-84
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
-LAB_1851:
-    MOVEQ   #9,D0
+.LAB_1851:              ; maybe this is the entry point and it's getting removed by a few bytes?
+    MOVEQ   #9,D0       ; or is this just being calculated weirdly?
     CMP.L   D0,D7
-    BGE.S   LAB_1852
+    BGE.S   .LAB_1852
     MOVE.L  D7,-(A7)
     PEA     LAB_2192
     PEA     -84(A5)
@@ -68340,8 +68340,8 @@ LAB_1851:
     JSR     LAB_1906(PC)
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   LAB_1851
-LAB_1852:
+    BRA.S   .LAB_1851
+.LAB_1852:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
@@ -68380,9 +68380,9 @@ LAB_1853:
     LEA     10(A1),A2
     MOVEA.L LAB_2217,A1
     MOVEQ   #24,D1
-LAB_1854:
+.LAB_1854:
     MOVE.L  (A1)+,(A2)+
-    DBF     D1,LAB_1854
+    DBF     D1,.LAB_1854
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L A0,A2
@@ -68401,11 +68401,11 @@ LAB_1854:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
     CLR.L   -4(A5)
-LAB_1855:
+.LAB_1855:
     MOVE.L  -4(A5),D0
     MOVEQ   #5,D1
     CMP.L   D1,D0
-    BGE.S   LAB_1856
+    BGE.S   .LAB_1856
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -68419,8 +68419,8 @@ LAB_1855:
     ADDA.L  D0,A1
     MOVE.L  (A1),118(A0)
     ADDQ.L  #1,-4(A5)
-    BRA.S   LAB_1855
-LAB_1856:
+    BRA.S   .LAB_1855
+.LAB_1856:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
