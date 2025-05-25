@@ -68576,10 +68576,10 @@ LAB_1858:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
-LAB_1859:
+.LAB_1859:
     MOVEQ   #9,D0
     CMP.L   D0,D7
-    BGE.S   LAB_185A
+    BGE.S   .LAB_185A
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -68590,9 +68590,10 @@ LAB_1859:
     MOVEA.L A3,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
+
     ADDQ.L  #1,D7
-    BRA.S   LAB_1859
-LAB_185A:
+    BRA.S   .LAB_1859
+.LAB_185A:
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -68699,12 +68700,15 @@ LAB_1866:
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEA.L GLOB_REF_CURRENT_FONT,A0
     JSR     _LVOSetFont(A6)
@@ -68777,6 +68781,7 @@ LAB_1869:
     MOVEQ   #8,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCopyMem(A6)
+
     ADDQ.L  #1,-192(A5)
     BRA.S   LAB_1869
 LAB_186A:
@@ -68821,6 +68826,7 @@ LAB_186F:
     MOVE.L  -204(A5),D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  D7,D1
     SUB.L   D0,D1
     TST.L   D1
@@ -68840,17 +68846,21 @@ LAB_1870:
     MOVEA.L A3,A1
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVE.L  D5,D0
     MOVE.L  -148(A5),D1
     JSR     _LVOMove(A6)
+
     MOVEA.L A3,A1
     LEA     -140(A5),A0
     MOVE.L  -204(A5),D0
     JSR     _LVOText(A6)
+
 LAB_1871:
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_CURRENT_FONT,A0
@@ -68890,9 +68900,11 @@ LAB_1873:
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
 LAB_1874:
     MOVE.L  -156(A5),D0
     CMP.L   -152(A5),D0
@@ -68933,6 +68945,7 @@ LAB_1875:
     MOVEA.L -12(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  -200(A5),D1
     SUB.L   D0,D1
     SUBQ.L  #1,D1
@@ -68947,10 +68960,12 @@ LAB_1876:
     MOVE.L  D5,D0
     MOVE.L  -148(A5),D1
     JSR     _LVOMove(A6)
+
     MOVEA.L A3,A1
     MOVEA.L -12(A5),A0
     MOVE.L  -204(A5),D0
     JSR     _LVOText(A6)
+
     ADDQ.L  #1,-156(A5)
     MOVE.L  -156(A5),D0
     CMP.L   -152(A5),D0
@@ -68974,6 +68989,7 @@ LAB_1877:
     MOVEA.L -12(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  -200(A5),D1
     ADD.L   D0,D1
     TST.L   D1
@@ -68990,10 +69006,12 @@ LAB_1878:
     MOVE.L  D5,D0
     MOVE.L  -148(A5),D1
     JSR     _LVOMove(A6)
+
     MOVEA.L A3,A1
     MOVEA.L -12(A5),A0
     MOVE.L  -204(A5),D0
     JSR     _LVOText(A6)
+
     ADDQ.L  #1,-156(A5)
 LAB_1879:
     MOVEA.L -12(A5),A0
@@ -69034,13 +69052,16 @@ LAB_187F:
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVEA.L -12(A5),A0
     MOVE.L  -204(A5),D0
     JSR     _LVOTextLength(A6)
+
     MOVE.L  D7,D1
     SUB.L   D0,D1
     TST.L   D1
@@ -69065,10 +69086,12 @@ LAB_1881:
     MOVE.L  D1,D0
     MOVE.L  D2,D1
     JSR     _LVOMove(A6)
+
     MOVEA.L A3,A1
     MOVEA.L -12(A5),A0
     MOVE.L  -204(A5),D0
     JSR     _LVOText(A6)
+
 LAB_1882:
     MOVEM.L (A7)+,D2-D3/D5-D7/A3
     UNLK    A5
@@ -69280,7 +69303,7 @@ LAB_1890:
     JSR     LAB_1A06(PC)
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
-    CMPI.L  #$fffffc19,12(A0)
+    CMPI.L  #$fffffc19,12(A0)   ; -999
     BNE.S   LAB_1891
     LEA     LAB_219F,A0
     LEA     -26(A5),A1
@@ -69306,9 +69329,11 @@ LAB_1892:
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     LEA     -46(A5),A0
     MOVEA.L A0,A1
 LAB_1893:
@@ -69320,6 +69345,7 @@ LAB_1893:
     MOVEA.L A3,A1
     MOVE.L  -50(A5),D0
     JSR     _LVOTextLength(A6)
+
     MOVE.L  -4(A5),D1
     SUB.L   D0,D1
     TST.L   D1
@@ -69335,10 +69361,12 @@ LAB_1894:
     MOVE.L  D1,-96(A5)
     MOVEA.L A3,A1
     JSR     _LVOMove(A6)
+
     MOVEA.L A3,A1
     LEA     -46(A5),A0
     MOVE.L  -50(A5),D0
     JSR     _LVOText(A6)
+
     BRA.W   LAB_189F
 LAB_1895:
     MOVE.L  LAB_205B,-54(A5)
@@ -69350,9 +69378,11 @@ LAB_1895:
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
 LAB_1896:
     TST.L   -54(A5)
     BEQ.W   LAB_189E
@@ -69398,6 +69428,7 @@ LAB_1899:
     MOVEA.L -54(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  -4(A5),D1
     MOVE.L  D1,D2
     SUB.L   D0,D2
@@ -69439,6 +69470,7 @@ LAB_189C:
     MOVEA.L -54(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  -4(A5),D1
     MOVE.L  D1,D2
     SUB.L   D0,D2
@@ -69492,6 +69524,7 @@ LAB_18A1:
     MOVE.L  -50(A5),D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  -4(A5),D1
     SUB.L   D0,D1
     TST.L   D1
@@ -69513,13 +69546,16 @@ LAB_18A2:
     MOVEA.L A3,A1
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVE.L  -92(A5),D0
     MOVE.L  -96(A5),D1
     JSR     _LVOMove(A6)
+
     MOVEA.L A3,A1
     LEA     -46(A5),A0
     MOVE.L  -50(A5),D0
@@ -70201,7 +70237,7 @@ LAB_18E8:
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
-    MOVE.L  #$fffffc19,8(A1)
+    MOVE.L  #$fffffc19,8(A1)    ; -999?
     BRA.S   LAB_18EA
 LAB_18E9:
     MOVE.L  D4,D0
