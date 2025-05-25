@@ -20178,28 +20178,39 @@ LAB_0717:
 
 LAB_0718:
     LINK.W  A5,#-48
+
     MOVE.B  #$07,LAB_1D13
     MOVE.W  #$0001,LAB_2252
+
     JSR     LAB_07E4(PC)
+
+    ; GA24005 -- is this the "site id"?
     PEA     LAB_226B
     PEA     360.W
     PEA     90.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    ; I have no idea what this text is...
     PEA     LAB_2245
     PEA     360.W
     PEA     210.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    MOVE.L  LAB_226C,(A7)
-    PEA     LAB_1D2C
-    PEA     -41(A5)
+
+    ; Format the baud rate into the "%ld baud" string
+    MOVE.L  GLOB_REF_BAUD_RATE,(A7)
+    PEA     GLOB_STR_BAUD_RATE_DIAGNOSTIC_MODE
+    PEA     -41(A5)                             ; Memory to hold address of formatted result string
     JSR     JMP_TBL_PRINTF_0(PC)
+
+    ; Print the baud rate string at 410,360
     PEA     -41(A5)
     PEA     360.W
     PEA     410.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D2E
     JSR     LAB_03C0(PC)
     PEA     LAB_1D2F
@@ -24372,7 +24383,7 @@ LAB_087C:
     MOVE.L  8(A3),-(A7)
     JSR     LAB_0BFA(PC)
     ADDQ.W  #4,A7
-    MOVE.L  D0,LAB_226C
+    MOVE.L  D0,GLOB_REF_BAUD_RATE
     CMPI.L  #2400,D0
     BEQ.S   LAB_087E
     CMPI.L  #4800,D0
@@ -24380,12 +24391,12 @@ LAB_087C:
     CMPI.L  #9600,D0
     BEQ.S   LAB_087E
     MOVE.L  #2400,D0
-    MOVE.L  D0,LAB_226C
+    MOVE.L  D0,GLOB_REF_BAUD_RATE
     BRA.S   LAB_087E
 LAB_087D:
-    MOVE.L  #$00000960,LAB_226C
+    MOVE.L  #$00000960,GLOB_REF_BAUD_RATE         ; 2400 -- GLOB_REF_BAUD_RATE is the baud rate?
 LAB_087E:
-    MOVE.L  #$00010001,-(A7)
+    MOVE.L  #$00010001,-(A7)            ; 65537
     PEA     9000.W
     PEA     854.W
     PEA     LAB_1E07
@@ -24412,14 +24423,14 @@ LAB_087E:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenDevice(A6)
     
-    MOVE.L  D0,D6      ; Copy D0 into D6
-    TST.L   D6         ; Test D6 to see if it's 0 (failed)
-    BNE.W   LAB_089B   ; Branch if unable to open serial device
+    MOVE.L  D0,D6                       ; Copy D0 into D6
+    TST.L   D6                          ; Test D6 to see if it's 0 (failed)
+    BNE.W   LAB_089B                    ; Branch if unable to open serial device
 
     MOVEA.L LAB_2211,A0
     MOVE.B  #$10,79(A0)
     MOVEA.L LAB_2211,A0
-    MOVE.L  LAB_226C,60(A0)
+    MOVE.L  GLOB_REF_BAUD_RATE,60(A0)
     MOVEA.L LAB_2211,A0
     MOVE.W  #$000b,28(A0)
     MOVEA.L LAB_2211,A1
@@ -67775,6 +67786,7 @@ LAB_183C:
     MOVE.L  D6,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
+
     MOVEM.L (A7)+,D6-D7
     RTS
 
@@ -71734,7 +71746,7 @@ PRINTF_0:
     MOVEA.L 16(A7),A3
     MOVEA.L 20(A7),A2
 
-    CLR.L   22816(A4)       ; Clear
+    CLR.L   22816(A4)       ; Clear 22816(A4)
     MOVE.L  A3,22812(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
@@ -71742,7 +71754,7 @@ PRINTF_0:
     JSR     LAB_1A71(PC)
     MOVEA.L 22812(A4),A0
     CLR.B   (A0)
-    MOVE.L  22816(A4),D0    ; Store result in D0
+    MOVE.L  22816(A4),D0    ; Store 22816(A4) in D0
 
     MOVEM.L -8(A5),A2-A3
     UNLK    A5
@@ -72039,7 +72051,7 @@ LAB_19C0:
     ADDQ.L  #1,22824(A4)
     MOVEA.L 22820(A4),A0
     SUBQ.L  #1,12(A0)
-    BLT.S   LAB_19C1
+    BLT.S   .LAB_19C1
     MOVEA.L 4(A0),A1
     LEA     1(A1),A2
     MOVE.L  A2,4(A0)
@@ -72047,8 +72059,8 @@ LAB_19C0:
     MOVE.B  D0,(A1)
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    BRA.S   LAB_19C2
-LAB_19C1:
+    BRA.S   .LAB_19C2
+.LAB_19C1:
     MOVE.L  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -72057,7 +72069,7 @@ LAB_19C1:
     JSR     LAB_1916(PC)
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
-LAB_19C2:
+.LAB_19C2:
     MOVEM.L (A7)+,D7/A2
     RTS
 
@@ -72307,27 +72319,27 @@ LAB_19E3:
     MOVEM.L D6-D7/A3,-(A7)
     MOVE.L  16(A7),D7
     LEA     -1120(A4),A3
-LAB_19E4:
+.LAB_19E4:
     MOVE.L  A3,D0
-    BEQ.S   LAB_19E6
+    BEQ.S   .LAB_19E6
     BTST    #2,27(A3)
-    BNE.S   LAB_19E5
+    BNE.S   .LAB_19E5
     BTST    #1,27(A3)
-    BEQ.S   LAB_19E5
+    BEQ.S   .LAB_19E5
     MOVE.L  4(A3),D0
     SUB.L   16(A3),D0
     MOVE.L  D0,D6
     TST.L   D6
-    BEQ.S   LAB_19E5
+    BEQ.S   .LAB_19E5
     MOVE.L  D6,-(A7)
     MOVE.L  16(A3),-(A7)
     MOVE.L  28(A3),-(A7)
     JSR     LAB_1A34(PC)
     LEA     12(A7),A7
-LAB_19E5:
+.LAB_19E5:
     MOVEA.L (A3),A3
-    BRA.S   LAB_19E4
-LAB_19E6:
+    BRA.S   .LAB_19E4
+.LAB_19E6:
     MOVE.L  D7,-(A7)
     JSR     LAB_1A92(PC)
     ADDQ.W  #4,A7
@@ -72347,9 +72359,9 @@ LAB_19E7:
     MOVEA.L 32(A7),A3
     MOVE.L  36(A7),D6
     TST.L   -616(A4)
-    BEQ.S   LAB_19E8
+    BEQ.S   .LAB_19E8
     JSR     LAB_1AD3(PC)
-LAB_19E8:
+.LAB_19E8:
     CLR.L   -640(A4)
     MOVE.L  D7,D1
     MOVE.L  A3,D2
@@ -72359,12 +72371,12 @@ LAB_19E8:
     MOVE.L  D0,D5
     MOVEQ   #-1,D0
     CMP.L   D0,D5
-    BNE.S   LAB_19E9
+    BNE.S   .LAB_19E9
     JSR     _LVOIoErr(A6)
     MOVE.L  D0,-640(A4)
     MOVEQ   #5,D0
     MOVE.L  D0,22828(A4)
-LAB_19E9:
+.LAB_19E9:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A3
     RTS
@@ -72438,9 +72450,9 @@ LAB_19F0:
     MOVEA.L 32(A7),A3
     MOVE.L  36(A7),D6
     TST.L   -616(A4)
-    BEQ.S   LAB_19F1
+    BEQ.S   .LAB_19F1
     JSR     LAB_1AD3(PC)
-LAB_19F1:
+.LAB_19F1:
     CLR.L   -640(A4)
     MOVE.L  D7,D1
     MOVE.L  A3,D2
@@ -72450,12 +72462,12 @@ LAB_19F1:
     MOVE.L  D0,D5
     MOVEQ   #-1,D0
     CMP.L   D0,D5
-    BNE.S   LAB_19F2
+    BNE.S   .LAB_19F2
     JSR     _LVOIoErr(A6)
     MOVE.L  D0,-640(A4)
     MOVEQ   #5,D0
     MOVE.L  D0,22828(A4)
-LAB_19F2:
+.LAB_19F2:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A3
     RTS
@@ -72478,9 +72490,9 @@ LAB_19F3:
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7
     TST.L   -616(A4)
-    BEQ.S   LAB_19F4
+    BEQ.S   .LAB_19F4
     JSR     LAB_1AD3(PC)
-LAB_19F4:
+.LAB_19F4:
     CLR.L   -640(A4)
     MOVE.L  A3,D1
     MOVE.L  D7,D2
@@ -72488,16 +72500,16 @@ LAB_19F4:
     JSR     _LVOOpen(A6)
     MOVE.L  D0,D6
     TST.L   D6
-    BNE.S   LAB_19F5
+    BNE.S   .LAB_19F5
     JSR     _LVOIoErr(A6)
     MOVE.L  D0,-640(A4)
     MOVEQ   #2,D0
     MOVE.L  D0,22828(A4)
     MOVEQ   #-1,D0
-    BRA.S   LAB_19F6
-LAB_19F5:
+    BRA.S   .LAB_19F6
+.LAB_19F5:
     MOVE.L  D6,D0
-LAB_19F6:
+.LAB_19F6:
     MOVEM.L (A7)+,D2/D6-D7/A3
     RTS
 
@@ -72528,11 +72540,11 @@ LAB_19F8:
     MOVEM.L A3/A6,-(A7)
     MOVEA.L 12(A7),A3
     TST.L   10(A3)
-    BEQ.S   LAB_19F9
+    BEQ.S   .LAB_19F9
     MOVEA.L A3,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVORemPort(A6)
-LAB_19F9:
+.LAB_19F9:
     MOVE.B  #$ff,8(A3)
     MOVEQ   #-1,D0
     MOVE.L  D0,20(A3)
@@ -72565,7 +72577,7 @@ LAB_19FB:
     TST.L   D7
     BEQ.S   LAB_19FC
     MOVE.L  D7,D1
-    JSR     _LVOUnlock(A6)
+    JSR     _LVOUnLock(A6)
     MOVEQ   #-1,D0
     BRA.S   LAB_19FE
 LAB_19FC:
@@ -72595,37 +72607,37 @@ LAB_19FF:
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     TST.L   -616(A4)
-    BEQ.S   LAB_1A00
+    BEQ.S   .deleteFileIfExists
     JSR     LAB_1AD3(PC)
-LAB_1A00:
-    CLR.L   -640(A4)
-    MOVE.L  A3,D1
-    MOVEQ   #-2,D2
+.deleteFileIfExists:
+    CLR.L   -640(A4)                            ; Clear the long at -640(A4)
+    MOVE.L  A3,D1                               ; Filename -> D1
+    MOVEQ   #-2,D2                              ; Filemode = -2 = ACCESS_READ
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     JSR     _LVOLock(A6)
-    MOVE.L  D0,D7
-    TST.L   D7
-    BEQ.S   LAB_1A01
-    MOVE.L  D7,D1
-    JSR     _LVOUnlock(A6)
-    MOVE.L  A3,D1
-    JSR     _LVODeleteFile(A6)
-LAB_1A01:
-    MOVE.L  A3,D1
-    MOVE.L  #$000003ee,D2
-    JSR     _LVOOpen(A6)
-    MOVE.L  D0,D7
-    TST.L   D7
-    BNE.S   LAB_1A02
-    JSR     _LVOIoErr(A6)
+    MOVE.L  D0,D7                               ; D0 = result as BCPL pointer, copied to D7
+    TST.L   D7                                  ; Test D7 against 0
+    BEQ.S   .lockFailed                         ; If equal (it's a 0), lock failed so branch to .lockFailed
+    MOVE.L  D7,D1                               ; Move the BCPL pointer back 
+    JSR     _LVOUnLock(A6)                      ; Remove the same lock we just created
+    MOVE.L  A3,D1                               ; Filename -> D1
+    JSR     _LVODeleteFile(A6)                  ; Delete the file.
+.lockFailed:
+    MOVE.L  A3,D1                               ; Filename -> D1
+    MOVE.L  #$000003ee,D2                       ; Access mode = 3EE
+    JSR     _LVOOpen(A6)                        ; Open zee file!
+    MOVE.L  D0,D7                               ; D0 = result as BCPL pointer, copied to D7
+    TST.L   D7                                  ; Test D7 against 0
+    BNE.S   .fileSuccessfullyOpened             ; If it's not zero (we have a valid pointer) jump to .fileSuccessfullyOpened
+    JSR     _LVOIoErr(A6)                       ; Jump to IOErr
     MOVE.L  D0,-640(A4)
     MOVEQ   #2,D0
     MOVE.L  D0,22828(A4)
     MOVEQ   #-1,D0
-    BRA.S   LAB_1A03
-LAB_1A02:
-    MOVE.L  D7,D0
-LAB_1A03:
+    BRA.S   .endSubRoutine
+.fileSuccessfullyOpened:
+    MOVE.L  D7,D0                               ; Put the BCPL pointer back into D0
+.endSubRoutine:
     MOVEM.L (A7)+,D2/D7/A3
     UNLK    A5
     RTS
@@ -72711,13 +72723,10 @@ LAB_1A0A:
     SWAP    D1
     SWAP    D2
     MOVE.W  D0,D2
-    BEQ.W   LAB_1A0B
+    BEQ.W   .LAB_1A0B
     DIVU    D1,D2
     MOVE.W  D2,D0
-
-;!======
-
-LAB_1A0B:
+.LAB_1A0B:
     SWAP    D0
     MOVE.W  D0,D2
     DIVU    D1,D2
@@ -72787,55 +72796,57 @@ LAB_1A13:
     MOVEM.L A2-A3/A6,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  A3,D0
-    BNE.S   LAB_1A14
+    BNE.S   .LAB_1A14
     MOVEQ   #0,D0
-    BRA.S   LAB_1A16
-LAB_1A14:
+    BRA.S   .LAB_1A16
+.LAB_1A14:
     MOVEQ   #48,D0              ; 48 bytes
     MOVE.L  #$00010001,D1       ; flags
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocMem(A6)
     MOVEA.L D0,A2
     MOVE.L  A2,D0
-    BEQ.S   LAB_1A15
+    BEQ.S   .LAB_1A15
     MOVE.B  #$05,8(A2)
     CLR.B   9(A2)
     MOVE.L  A3,14(A2)
-LAB_1A15:
+.LAB_1A15:
     MOVE.L  A2,D0
-LAB_1A16:
+.LAB_1A16:
     MOVEM.L (A7)+,A2-A3/A6
     RTS
 
 ;!======
 
+; This is probably where serial reading happens and/or starts?
 LAB_1A17:
     MOVEM.L D6-D7/A2-A3/A6,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.L  28(A7),D7
 
-    MOVEQ   #-1,D0
+    MOVEQ   #-1,D0              ; no preference on the signal number
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocSignal(A6)
-    MOVE.L  D0,D6
+    MOVE.L  D0,D6               ; returned signal #
 
-    CMPI.B  #$ff,D6
-    BNE.S   LAB_1A18
-    MOVEQ   #0,D0
-    BRA.S   LAB_1A1C
-LAB_1A18:
-    MOVEQ   #34,D0          ; 34 bytes
-    MOVE.L  #$00010001,D1   ; flags
+    CMPI.B  #$ff,D6             ; compare the signal with ff or -1
+    BNE.S   .LAB_1A18           ; if it's not equal, jump
+    MOVEQ   #0,D0               ; put 0 in D0
+    BRA.S   .LAB_1A1C           ; jump to the end of this
+.LAB_1A18:
+    MOVEQ   #34,D0              ; 34 bytes
+    MOVE.L  #$00010001,D1       ; flags ... break this down.
     JSR     _LVOAllocMem(A6)
-    MOVEA.L D0,A2
+    MOVEA.L D0,A2               ; store the response from the alloc in D0 to A2
 
-    MOVE.L  A2,D0
-    BNE.S   LAB_1A19
-    MOVEQ   #0,D0
-    MOVE.B  D6,D0
-    JSR     _LVOFreeSignal(A6)
-    BRA.S   LAB_1A1B
-LAB_1A19:
+    MOVE.L  A2,D0               ; store the value in A2 to D0
+    BNE.S   .LAB_1A19           ; if it's not 0 jump to .LAB_1A19
+
+    MOVEQ   #0,D0               ; clear out D0
+    MOVE.B  D6,D0               ; move the signal byte we got earlier back into D0 from D6
+    JSR     _LVOFreeSignal(A6)  ; free that signal
+    BRA.S   .LAB_1A1B           ; jump to .LAB_1A1B
+.LAB_1A19:
     MOVE.L  A3,10(A2)
     MOVE.L  D7,D0
     MOVE.B  D0,9(A2)
@@ -72846,20 +72857,20 @@ LAB_1A19:
     JSR     _LVOFindTask(A6)
     MOVE.L  D0,16(A2)
     MOVE.L  A3,D0
-    BEQ.S   LAB_1A1A
+    BEQ.S   .LAB_1A1A
     MOVEA.L A2,A1
     JSR     _LVOAddPort(A6)
-    BRA.S   LAB_1A1B
-LAB_1A1A:
+    BRA.S   .LAB_1A1B
+.LAB_1A1A:
     LEA     24(A2),A0
     MOVE.L  A0,20(A2)
     LEA     20(A2),A0
     MOVE.L  A0,28(A2)
     CLR.L   24(A2)
     MOVE.B  #$02,32(A2)
-LAB_1A1B:
+.LAB_1A1B:
     MOVE.L  A2,D0
-LAB_1A1C:
+.LAB_1A1C:
     MOVEM.L (A7)+,D6-D7/A2-A3/A6
     RTS
 
@@ -72876,25 +72887,25 @@ LAB_1A1D:
     MOVEQ   #0,D0
     MOVE.L  D0,-640(A4)
     TST.L   D7
-    BMI.S   LAB_1A1E
+    BMI.S   .LAB_1A1E
     CMP.L   -1148(A4),D7
-    BGE.S   LAB_1A1E
+    BGE.S   .LAB_1A1E
     MOVE.L  D7,D0
     ASL.L   #3,D0
     LEA     22492(A4),A0
     TST.L   0(A0,D0.L)
-    BEQ.S   LAB_1A1E
+    BEQ.S   .LAB_1A1E
     MOVE.L  D7,D0
     ASL.L   #3,D0
     LEA     22492(A4),A0
     ADDA.L  D0,A0
     MOVE.L  A0,D0
-    BRA.S   LAB_1A1F
-LAB_1A1E:
+    BRA.S   .LAB_1A1F
+.LAB_1A1E:
     MOVEQ   #9,D0
     MOVE.L  D0,22828(A4)
     MOVEQ   #0,D0
-LAB_1A1F:
+.LAB_1A1F:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -72910,10 +72921,10 @@ LAB_1A20:
     MOVE.L  A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  A3,D0
-    BNE.S   LAB_1A21
+    BNE.S   .LAB_1A21
     MOVEQ   #0,D0
-    BRA.S   LAB_1A22
-LAB_1A21:
+    BRA.S   .LAB_1A22
+.LAB_1A21:
     MOVE.L  A3,-(A7)
     JSR     LAB_1985(PC)
     MOVEA.L D0,A3
@@ -72921,7 +72932,7 @@ LAB_1A21:
     MOVE.L  A3,-(A7)
     JSR     LAB_1992(PC)
     MOVE.L  -4(A5),D0
-LAB_1A22:
+.LAB_1A22:
     MOVEA.L -8(A5),A3
     UNLK    A5
     RTS
@@ -74951,7 +74962,7 @@ LAB_1B6B:
 LAB_1B6C:
     NStr    "COI.c"
 LAB_1B6D:
-    NStr    "dh2:OI_%02lx.dat"
+    NStr    "df0:OI_%02lx.dat"
 LAB_1B6E:
     NStr    "%ld"
 LAB_1B6F:
@@ -74971,7 +74982,7 @@ LAB_1B75:
 LAB_1B76:
     NStr    "COI.c"
 LAB_1B77:
-    NStr    "dh2:OI_%02lx.dat"
+    NStr    "df0:OI_%02lx.dat"
 LAB_1B78:
     NStr    "COI.c"
 LAB_1B79:
@@ -75055,13 +75066,13 @@ LAB_1B99:
 LAB_1B9A:
     DC.B    ".GRF",0
 LAB_1B9B:
-    DC.B    "dh2:curday.dat",0
+    DC.B    "df0:curday.dat",0
 LAB_1B9C:
-    DC.B    "dh2:qtable.ini",0
+    DC.B    "df0:qtable.ini",0
 LAB_1B9D:
-    DC.B    "dh2:oinfo.dat",0
+    DC.B    "df0:oinfo.dat",0
 LAB_1B9E:
-    DC.B    "dh2:nxtday.dat",0
+    DC.B    "df0:nxtday.dat",0
 LAB_1B9F:
     DC.L    $00000001
 LAB_1BA0:
@@ -75211,14 +75222,14 @@ LAB_1BE7:
 LAB_1BE8:
     NStr    "Assign GFX: PC1:"
 LAB_1BE9:
-    NStr    "dh2:config.dat"
+    NStr    "df0:config.dat"
 LAB_1BEA:
     DC.B    "%01ld%01lc%01ld%01ld%02ld%02ld%01lc%01lc%01lc%01lc%01ld%01ld%"
     DC.B    "01lc%01lc%01lc%01lc%01lc%01lc%01lc%02ld%02ld%01lc%01lc%01lc%0"
     DC.B    "2ld%02ld%02ld%03ld%01ld%2.2s%01lc%01lc%01lc%01c%01c%01d%01c%0"
     NStr2   "1c%01c%01c%01c%01c",TextLineFeed
 LAB_1BEB:
-    NStr    "dh2:config.dat"
+    NStr    "df0:config.dat"
 LAB_1BEC:
     NStr    "DISKIO.c"
 LAB_1BED:
@@ -75922,7 +75933,7 @@ LAB_1CF5:
     DC.L    $00000097,$000000b5,$000000d4,$000000f3
     DC.L    $00000111,$00000130,$0000014e
 LAB_1CF6:
-    NStr    "dh2:dst.dat"
+    NStr    "df0:dst.dat"
 LAB_1CF7:
     DC.L    LAB_1CF6
 LAB_1CF8:
@@ -76050,7 +76061,7 @@ LAB_1D2B:
     NStr    "9.0"   ; Major/minor version string
 
 ; Strings for ESC -> Diagnostic Mode
-LAB_1D2C:
+GLOB_STR_BAUD_RATE_DIAGNOSTIC_MODE:
     NStr    "%ld baud"
 LAB_1D2D:
     NStr    "Disk 0 is %2ld%% full with %2ld Errors"
@@ -76144,7 +76155,7 @@ LAB_1D58:
 LAB_1D59:
     NStr    "BTime"
 LAB_1D5A:
-    NStr    "dh2:clock.cmd"
+    NStr    "df0:clock.cmd"
 LAB_1D5B:
     NStr3   TextLineFeed,"ED.C: Short DUMP OF CLU",TextLineFeed
 LAB_1D5C:
@@ -76176,7 +76187,7 @@ LAB_1D68:
 LAB_1D69:
     NStr    "BitPlane1 =%8lx  "
 LAB_1D6A:
-    NStr    "dh2:Gradient.ini"
+    NStr    "df0:Gradient.ini"
 LAB_1D6B:
     NStr    "NRLS"
 LAB_1D6C:
@@ -76551,7 +76562,7 @@ GLOB_STR_MAJOR_MINOR_VERSION:
 LAB_1E12:
     NStr    "                                       "
 LAB_1E13:
-    NStr    "dh2:Gradient.ini"
+    NStr    "df0:Gradient.ini"
 LAB_1E14:
     NStr    "System Initializing"
 LAB_1E15:
@@ -76563,15 +76574,15 @@ LAB_1E17:
 LAB_1E18:
     NStr    "Report Error Code ER012 to TV Guide Technical Services."
 LAB_1E19:
-    NStr    "dh2:default.ini"
+    NStr    "df0:default.ini"
 LAB_1E1A:
-    NStr    "dh2:brush.ini"
+    NStr    "df0:brush.ini"
 LAB_1E1B:
     NStr    "DT"
 LAB_1E1C:
     NStr    "DITHER"
 LAB_1E1D:
-    NStr    "dh2:banner.ini"
+    NStr    "df0:banner.ini"
 LAB_1E1E:
     NStr    "GRANADA"
 GLOB_LONG_BUILD_NUMBER:
@@ -77555,7 +77566,7 @@ LAB_1ECC:
 LAB_1ECD:
     DC.W    $0001
 LAB_1ECE:
-    NStr    "dh2:logo.lst"
+    NStr    "df0:logo.lst"
 LAB_1ECF:
     DC.L    LAB_1ECE
 LAB_1ED0:
@@ -77634,8 +77645,8 @@ LAB_1EF1:
 LAB_1EF2:
     NStr    "ESQIFF.c"
 LAB_1EF3:
-    NStr    "dh2:"
-    NStr    "dh2:"
+    NStr    "df0:"
+    NStr    "df0:"
 LAB_1EF4:
     NStr    "ram:logos/ "
     NStr    "ram:logos/ "
@@ -77644,7 +77655,7 @@ LAB_1EF5:
 LAB_1EF6:
     NStr    "ESQIFF.c"
 LAB_1EF7:
-    NStr    "dh2:brush.ini"
+    NStr    "df0:brush.ini"
 LAB_1EF8:
     NStr    "DT"
 LAB_1EF9:
@@ -77880,21 +77891,21 @@ LAB_1F64:
 LAB_1F65:
     NStr    "Digital PPV."
 LAB_1F66:
-    NStr    "DH2:Digital_Niche.dat"
+    NStr    "DF0:Digital_Niche.dat"
 LAB_1F67:
     NStr    "GCOMMAND.c"
 LAB_1F68:
-    NStr    "DH2:Digital_Niche.dat"
+    NStr    "DF0:Digital_Niche.dat"
 LAB_1F69:
     DS.W    1
 LAB_1F6A:
-    NStr    "DH2:Digital_Mplex.dat"
+    NStr    "DF0:Digital_Mplex.dat"
 LAB_1F6B:
     NStr    "GCOMMAND.c"
 LAB_1F6C:
     NStr    "%T"
 LAB_1F6D:
-    NStr    "DH2:Digital_Mplex.dat"
+    NStr    "DF0:Digital_Mplex.dat"
 LAB_1F6E:
     DC.L    $12001200
 LAB_1F6F:
@@ -77902,15 +77913,15 @@ LAB_1F6F:
 LAB_1F70:
     NStr    "%T"
 LAB_1F71:
-    NStr    "DH2:Digital_PPV3.dat"
+    NStr    "DF0:Digital_PPV3.dat"
 LAB_1F72:
-    NStr    "DH2:Digital_PPV.dat"
+    NStr    "DF0:Digital_PPV.dat"
 LAB_1F73:
-    NStr    "DH2:Digital_PPV.dat"
+    NStr    "DF0:Digital_PPV.dat"
 LAB_1F74:
     NStr    "GCOMMAND.c"
 LAB_1F75:
-    NStr    "DH2:Digital_PPV3.dat"
+    NStr    "DF0:Digital_PPV3.dat"
 LAB_1F76:
     DC.L    $12001200
 LAB_1F77:
@@ -78149,7 +78160,7 @@ LAB_1FB5:
     NStr    "KYBD.c"
     DS.W    1
 LAB_1FB6:
-    DC.B    "dh2:local.ads"
+    DC.B    "df0:local.ads"
 LAB_1FB7:
     DS.B    1
 LAB_1FB8:
@@ -78275,13 +78286,13 @@ LAB_1FF2:
 LAB_1FF3:
     NStr    "UVGTI"
 LAB_1FF4:
-    NStr    "DH2:LocAvail.dat"
+    NStr    "DF0:LocAvail.dat"
 LAB_1FF5:
     NStr    "LA_VER_1:  curday"
 LAB_1FF6:
     NStr    "LA_VER_1:  nxtday"
 LAB_1FF7:
-    NStr    "DH2:LocAvail.dat"
+    NStr    "DF0:LocAvail.dat"
 LAB_1FF8:
     NStr    "LA_VER"
 LAB_1FF9:
@@ -78461,7 +78472,7 @@ LAB_204D:
 LAB_204E:
     NStr    "P_TYPE.c"
 LAB_204F:
-    NStr    "dh2:PromoId.Dat"
+    NStr    "df0:PromoId.Dat"
 LAB_2050:
     NStr    "CURDAY:"
 LAB_2051:
@@ -78472,7 +78483,7 @@ LAB_2052:
 LAB_2053:
     NStr    "NXTDAY:"
 LAB_2054:
-    NStr    "dh2:PromoId.Dat"
+    NStr    "df0:PromoId.Dat"
 LAB_2055:
     NStr    "CURDAY:"
 LAB_2056:
@@ -78598,19 +78609,19 @@ LAB_2090:
 LAB_2091:
     NStr    "%s"
 LAB_2092:
-    NStr    "dh2:Gradient.ini"
+    NStr    "df0:Gradient.ini"
 LAB_2093:
-    NStr    "dh2:banner.ini"
+    NStr    "df0:banner.ini"
 LAB_2094:
-    NStr    "dh2:banner.ini"
+    NStr    "df0:banner.ini"
 LAB_2095:
-    NStr    "dh2:default.ini"
+    NStr    "df0:default.ini"
 LAB_2096:
-    NStr    "dh2:SourceCfg.ini"
+    NStr    "df0:SourceCfg.ini"
 LAB_2097:
     NStr    "list >RAM:logodir.txt DH2:LOGOS nohead quick"
 LAB_2098:
-    NStr    "dh2:logo.lst"
+    NStr    "df0:logo.lst"
 LAB_2099:
     NStr    "rb"
 LAB_209A:
@@ -78631,7 +78642,7 @@ LAB_20A1:
     DC.L    $00040000,$000007c2
     DS.L    5
 LAB_20A2:
-    NStr    "dh2:err.log"
+    NStr    "df0:err.log"
 LAB_20A3:
     DS.W    1
 LAB_20A4:
@@ -79048,7 +79059,7 @@ LAB_214E:
 LAB_214F:
     NStr    "TEXTDISP.c"
 LAB_2150:
-    NStr    "dh2:SourceCfg.ini"
+    NStr    "df0:SourceCfg.ini"
 LAB_2151:
     NStr    "TEXTDISP.c"
 LAB_2152:
@@ -79703,7 +79714,7 @@ LAB_226A:
 LAB_226B:
     DS.L    2
     DS.W    1
-LAB_226C:
+GLOB_REF_BAUD_RATE:
     DS.L    1
 LAB_226D:
     DS.W    1

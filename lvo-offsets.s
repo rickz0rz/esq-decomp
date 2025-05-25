@@ -14,7 +14,7 @@ _LVOOutput          = -60
 _LVOSeek            = -66
 _LVODeleteFile      = -72
 _LVOLock            = -84
-_LVOUnlock          = -90
+_LVOUnLock          = -90
 _LVOCurrentDir      = -126
 _LVOIoErr           = -132
 
