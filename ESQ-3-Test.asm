@@ -179,9 +179,9 @@ CHECK_AVAILABLE_FAST_MEMORY:
     MOVEA.L AbsExecBase,A6      ; Check the available memory for type 2 (fast memory) in D1, and
     JSR     _LVOAvailMem(A6)    ; store the result in D0.
     CMPI.L  #$000927C0,D0       ; See if we have more than 600,000 bytes of available memory
-    BGE.S   CHECK_AVAILABLE_FAST_MEMORY_RTS ; If we have equal to or more than our target, jump to CHECK_AVAILABLE_FAST_MEMORY_RTS
+    BGE.S   .skipFastMemorySet  ; If we have equal to or more than our target, jump to .skipFastMemorySet
     MOVE.W  #$0001,HAS_REQUESTED_FAST_MEMORY; Set HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
-CHECK_AVAILABLE_FAST_MEMORY_RTS:
+.skipFastMemorySet:
     RTS
 
 ;!======
@@ -192,14 +192,14 @@ LAB_0015:
     MOVE.L  D7,D6
     ANDI.W  #$7f00,D6
     CMPI.W  #$3000,D6
-    BEQ.S   LAB_0016
+    BEQ.S   .LAB_0016
     CMPI.W  #$2000,D6
-    BEQ.S   LAB_0016
+    BEQ.S   .LAB_0016
     CMPI.W  #$3300,D6
-    BEQ.S   LAB_0016
+    BEQ.S   .LAB_0016
     MOVE.W  #$0001,LAB_1DF8
 
-LAB_0016:
+.LAB_0016:
     MOVEM.L (A7)+,D6-D7
     RTS
 
@@ -70512,10 +70512,10 @@ LAB_1909:
     MOVE.L  16(A5),D7
     MOVE.L  20(A5),D6
 
-    MOVE.L  D7,D0 ; Number of bytes
-    MOVE.L  D6,D1 ; Attributes
+    MOVE.L  D7,D0               ; Number of bytes
+    MOVE.L  D6,D1               ; Attributes
     MOVEA.L AbsExecBase,A6
-    JSR     _LVOAllocMem(A6) ; D0 gets set to a pointer to the mem block or zero if it fails
+    JSR     _LVOAllocMem(A6)    ; D0 gets set to a pointer to the mem block or zero if it fails
 
     ADD.L   D7,LAB_21A1
     ADDQ.L  #1,LAB_21A2
