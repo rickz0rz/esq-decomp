@@ -20185,7 +20185,7 @@ LAB_0718:
 
     JSR     LAB_07E4(PC)
 
-    ; GA24005 -- is this the "site id"?
+    ; GA24005 -- select code
     PEA     LAB_226B
     PEA     360.W
     PEA     90.W
@@ -20206,7 +20206,7 @@ LAB_0718:
     JSR     JMP_TBL_PRINTF_0(PC)
 
     ; Print the baud rate string at 410,360
-    PEA     -41(A5)
+    PEA     -41(A5)                             ; Same memory to holding address of formatted result string
     PEA     360.W
     PEA     410.W
     MOVE.L  LAB_2217,-(A7)
@@ -57370,7 +57370,7 @@ LAB_142B:
     BRA.S   LAB_142D
 LAB_142C:
     JSR     LAB_146C(PC)
-    JSR     LAB_146D(PC)
+    JSR     JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN(PC)
 LAB_142D:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
     UNLK    A5
@@ -57757,7 +57757,7 @@ LAB_146B:
     JMP     LAB_0B44
 LAB_146C:
     JMP     LAB_070E
-LAB_146D:
+JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
     JMP     DRAW_ESC_MENU_VERSION_SCREEN
     RTS
 
@@ -72662,7 +72662,7 @@ LAB_19FF:
 .deleteFileIfExists:
     CLR.L   -640(A4)                            ; Clear the long at -640(A4)
     MOVE.L  A3,D1                               ; Filename -> D1
-    MOVEQ   #-2,D2                              ; Filemode = -2 = ACCESS_READ
+    MOVEQ   #ACCESS_READ,D2                     ; Filemode = -2 = ACCESS_READ
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     JSR     _LVOLock(A6)
     MOVE.L  D0,D7                               ; D0 = result as BCPL pointer, copied to D7
@@ -73773,6 +73773,7 @@ LAB_1A84:
     MOVE.L  A0,D1
     MOVE.L  #$000003ee,D2
     JSR     _LVOOpen(A6)
+
     MOVE.L  D0,22496(A4)
     MOVE.L  D0,22504(A4)
     MOVEQ   #16,D1
@@ -73784,6 +73785,7 @@ LAB_1A84:
     MOVEA.L AbsExecBase,A6
     SUBA.L  A1,A1
     JSR     _LVOFindTask(A6)
+
     MOVEA.L -16(A5),A0
     MOVEA.L D0,A1
     MOVE.L  8(A0),164(A1)
@@ -73793,13 +73795,16 @@ LAB_1A84:
 LAB_1A85:
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     JSR     _LVOInput(A6)
+
     MOVE.L  D0,22496(A4)
     JSR     _LVOOutput(A6)
+
     MOVE.L  D0,22504(A4)
     LEA     LAB_1A8A(PC),A0
     MOVE.L  A0,D1
     MOVE.L  #$000003ed,D2
     JSR     _LVOOpen(A6)
+
     MOVE.L  D0,22512(A4)
     MOVEQ   #16,D7
 LAB_1A86:
@@ -73898,31 +73903,31 @@ LAB_1A8E:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     TST.L   20(A3)
-    BEQ.S   LAB_1A8F
+    BEQ.S   .LAB_1A8F
     BTST    #3,27(A3)
-    BNE.S   LAB_1A8F
+    BNE.S   .LAB_1A8F
     MOVEQ   #0,D0
-    BRA.S   LAB_1A91
-LAB_1A8F:
+    BRA.S   .LAB_1A91
+.LAB_1A8F:
     MOVE.L  -748(A4),-(A7)
     JSR     LAB_19B7(PC)
     ADDQ.W  #4,A7
     MOVE.L  D0,4(A3)
     MOVE.L  D0,16(A3)
     TST.L   D0
-    BNE.S   LAB_1A90
+    BNE.S   .LAB_1A90
     MOVEQ   #12,D0
     MOVE.L  D0,22828(A4)
     MOVEQ   #-1,D0
-    BRA.S   LAB_1A91
-LAB_1A90:
+    BRA.S   .LAB_1A91
+.LAB_1A90:
     MOVE.L  -748(A4),20(A3)
     MOVEQ   #-13,D0
     AND.L   D0,24(A3)
     MOVEQ   #0,D0
     MOVE.L  D0,12(A3)
     MOVE.L  D0,8(A3)
-LAB_1A91:
+.LAB_1A91:
     MOVEA.L (A7)+,A3
     RTS
 
@@ -74355,13 +74360,15 @@ LAB_1AC2:
     LEA     -81(A5),A0
     MOVE.L  A0,D2
     JSR     _LVOWrite(A6)
+
     MOVEQ   #-1,D0
     BRA.S   LAB_1AC6
 LAB_1AC3:
     MOVEA.L AbsExecBase,A6
-    LEA     LAB_1ACB(PC),A1
+    LEA     LOCAL_STR_INTUITION_LIBRARY(PC),A1
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)
+
     MOVE.L  D0,-102(A5)
     BNE.S   LAB_1AC4
     MOVEQ   #-1,D0
@@ -74394,6 +74401,8 @@ LAB_1AC6:
 
 ;!======
 
+; Actually: "2A2A2055 73657220 41626F72 74205265 71756573 74656420 2A2A0000"
+; or:       "** User Abort Requested **",0,0
 LAB_1AC7:
     MOVE.L  8277(A2),D5
     DC.W    $7365
@@ -74405,24 +74414,33 @@ LAB_1AC7:
     DC.W    $7175
     DC.W    $6573
     MOVEQ   #101,D2
-    BCC.S   LAB_1ACB
+    BCC.S   LOCAL_STR_INTUITION_LIBRARY
     MOVE.L  0(A2),D5
 LAB_1AC8:
     DC.W    $434f
     LINK.W  A4,#18766
     SUBQ.W  #2,D5
     DC.W    $0000
+
+; Actually: "41424F52 5400
+; or:       "ABORT",0
 LAB_1AC9:
     DC.W    $4142
     DC.W    $4f52
     ADDQ.B  #2,D0
+
+; Actually: "2A2A 2A204272 65616B3A 2000"
+; or:       "*** Break: ",0
 LAB_1ACA:
     MOVE.L  10784(A2),D5
     DC.W    $4272
     DC.W    $6561
     BMI.S   LAB_1ACD+4
     MOVE.L  D0,D0
-LAB_1ACB:
+
+; this is actually "intuition.library" but is being decoded wrong.
+; check the annotation.asm file
+LOCAL_STR_INTUITION_LIBRARY:
     BVS.S   LAB_1AD4+2
     MOVEQ   #117,D2
     BVS.S   LAB_1AD5+2
