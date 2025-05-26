@@ -17,6 +17,7 @@ _LVOLock            = -84
 _LVOUnLock          = -90
 _LVOCurrentDir      = -126
 _LVOIoErr           = -132
+ACCESS_READ         = -2
 
 ; exec.library
 _LVOSupervisor      = -30
@@ -78,8 +79,10 @@ _LVOAllocRaster     = -492
 _LVOFreeRaster      = -498
 
 ; intuition.library
+_LVODisplayAlert    = -90
 _LVOSizeWindow      = -288
 _LVORemakeDisplay   = -384
+_LVOAutoRequest     = -348
 
 ; utility.library
 _LVOAmiga2Date      = -120
