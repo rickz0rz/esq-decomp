@@ -192,20 +192,23 @@ CHECK_AVAILABLE_FAST_MEMORY:
 
 ;!======
 
-LAB_0015:
+; Chip table here:
+; (1) 30 = 8372 (Fat-hr) (agnushr),thru rev4, NTSC
+; (2) 20 = 8372 (Fat-hr) (agnushr),thru rev4, PAL
+; (3) 33 = 8374 (Alice) rev 3 thru rev 4, NTSC
+CHECK_IF_COMPATIBLE_VIDEO_CHIP:
     MOVEM.L D6-D7,-(A7)
-    MOVE.W  VPOSR,D7 ; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
-    MOVE.L  D7,D6
-    ANDI.W  #$7f00,D6
-    CMPI.W  #$3000,D6
-    BEQ.S   .LAB_0016
-    CMPI.W  #$2000,D6
-    BEQ.S   .LAB_0016
-    CMPI.W  #$3300,D6
-    BEQ.S   .LAB_0016
-    MOVE.W  #$0001,LAB_1DF8
-
-.LAB_0016:
+    MOVE.W  VPOSR,D7        ; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
+    MOVE.L  D7,D6           ; Copy VPOSR value into D6
+    ANDI.W  #$7f00,D6       ; Logical AND D6 with $7F00 (01111111 00000000) and store back into D6
+    CMPI.W  #$3000,D6       ; Compare it with high byte of $3000 (00110000 00000000) aka $30 to see if we're chip 1
+    BEQ.S   .foundChipType  ; If equal, jump to bottom.
+    CMPI.W  #$2000,D6       ; Compare it with high byte of $2000 (00110000 00000000) aka $20 to see if we're chip 2
+    BEQ.S   .foundChipType  ; If equal, jump to bottom.
+    CMPI.W  #$3300,D6       ; Compare it with high byte of $3300 (00110011 00000000) aka $33 to see if we're chip 3
+    BEQ.S   .foundChipType  ; If equal, jump to bottom.
+    MOVE.W  #$0001,IS_COMPATIBLE_VIDEO_CHIP ; Set $0001 into IS_COMPATIBLE_VIDEO_CHIP
+.foundChipType:
     MOVEM.L (A7)+,D6-D7
     RTS
 
@@ -504,8 +507,8 @@ LAB_002B:
 ;!======
 
 LAB_002F:
-    MOVEA.L #$00dff000,A0
-    LEA     LAB_1E7E,A1
+    MOVEA.L #BLTDDAT,A0
+    LEA     LAB_1E7E,A1     ; LAB_1E7E = $0000004c
     MOVE.L  A1,176(A0)
     MOVE.W  #$0001,180(A0)
     MOVE.W  #$0000,184(A0)
@@ -522,7 +525,7 @@ LAB_002F:
 LAB_0030:
     TST.W   LAB_1AFC
     BNE.S   LAB_0031
-    JSR     LAB_003D
+    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
     TST.B   D1
     BPL.W   LAB_003C
     ADDQ.W  #1,LAB_1AFC
@@ -542,7 +545,7 @@ LAB_0031:
     MOVEQ   #4,D1
     CMP.W   D1,D0
     BGT.W   LAB_0034
-    JSR     LAB_003D
+    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
     TST.B   D1
     BPL.S   LAB_0033
     MOVE.W  #$000e,LAB_1AF9
@@ -569,7 +572,7 @@ LAB_0034:
     MOVEQ   #94,D1
     CMP.W   D1,D0
     BGE.S   LAB_0035
-    JSR     LAB_003D
+    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
     LEA     LAB_1AFF,A5
     ADDA.W  LAB_1AFD,A5
     MOVE.B  D1,(A5)
@@ -580,7 +583,7 @@ LAB_0034:
 ;!======
 
 LAB_0035:
-    JSR     LAB_003D
+    JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
     TST.B   D1
     BMI.S   LAB_003B
     LEA     LAB_1AFF,A5
@@ -621,22 +624,22 @@ LAB_003C:
 
 ;!======
 
-LAB_003D:
-    MOVEQ   #0,D1
-    MOVEA.L #CIAB_PRA,A5
-    MOVE.B  (A5),D1
-    BTST    #3,D1
-    SEQ     D1
+GET_BIT_3_OF_CIAB_PRA_INTO_D1:
+    MOVEQ   #0,D1           ; Copy 0 into D1
+    MOVEA.L #CIAB_PRA,A5    ; Copy the address of CIAB_PRA into A5
+    MOVE.B  (A5),D1         ; Get contents of the memory at A5 and copy into D1
+    BTST    #3,D1           ; Test bit 3, set Z to true if it's 0
+    SEQ     D1              ; SEQ (set equal) sets D1 to 0 if Z is 0, otherwise 1 if it's 1
     RTS
 
 ;!======
 
-LAB_003E:
-    MOVEQ   #0,D1
-    MOVEA.L #CIAB_PRA,A5
-    MOVE.B  (A5),D1
-    BTST    #4,D1
-    SEQ     D1
+GET_BIT_4_OF_CIAB_PRA_INTO_D1:
+    MOVEQ   #0,D1           ; Copy 0 into D1
+    MOVEA.L #CIAB_PRA,A5    ; Copy the address of CIAB_PRA into A5
+    MOVE.B  (A5),D1         ; Get contents of the memory at A5 and copy into D1
+    BTST    #4,D1           ; Test bit 4, set Z to true if it's 0
+    SEQ     D1              ; SEQ (set equal) sets D1 to 0 if Z is 0, otherwise 1 if it's 1
     RTS
 
 ;!======
@@ -648,12 +651,16 @@ callCTRL:
     JSR     readCTRL
     LEA     LAB_1DC8,A4
     MOVE.B  18(A4),D1
-    CMPI.B  #$4e,D1         ; Compare D1 with 4e ('N')
+    CMPI.B  #"N",D1
     BNE.S   .LAB_0040
     JSR     LAB_0030(PC)
 .LAB_0040:
-    MOVEA.L #$00dff000,A0
+    MOVEA.L #BLTDDAT,A0
     MOVE.W  #$0100,156(A0)
+    ; Write $0100 to BLTDDAT + 156 = DFF09C (INTREQ - clear or set)
+    ; http://amiga-dev.wikidot.com/hardware:intreqr
+    ; Looking at that, 0100 means bit 8 starting from the right as 0 is set
+    ; so we're setting "Audio channel 1 block finished"
 
     MOVEA.L (A7)+,A4
     MOVEA.L (A7)+,A5
@@ -662,11 +669,11 @@ callCTRL:
 ;!======
 
 readCTRL:
-    TST.W   LAB_1AFA
-    BNE.S   LAB_0042
-    JSR     LAB_003E(PC)
-    TST.B   D1
-    BPL.W   LAB_004D
+    TST.W   LAB_1AFA            ; Test LAB_1AFA...
+    BNE.S   LAB_0042            ; and if it's not equal to zero, jump to LAB_0042
+    JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)        ; Read the bit from CIAB_PRA and store bit 4's value in D1
+    TST.B   D1                  ; Test the value (this cheaply is seeing if it's 1 or 0)
+    BPL.W   LAB_004D            ; If it's 1, jump to LAB_004D (which is just RTS) so exit this subroutine.
     ADDQ.W  #1,LAB_1AFA
     MOVE.W  #$0004,LAB_1AF8
     MOVE.W  #$0000,LAB_1AFB
@@ -684,7 +691,7 @@ LAB_0042:
     MOVEQ   #4,D1
     CMP.W   D1,D0
     BGT.W   LAB_0045
-    JSR     LAB_003E(PC)
+    JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
     TST.B   D1
     BPL.S   LAB_0044
     MOVE.W  #$000e,LAB_1AF8
@@ -711,7 +718,7 @@ LAB_0045:
     MOVEQ   #94,D1              ; Move 94 ('^') into D1
     CMP.W   D1,D0
     BGE.S   LAB_0046
-    JSR     LAB_003E(PC)
+    JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
     LEA     LAB_1AFE,A5
     ADDA.W  LAB_1AFB,A5
     MOVE.B  D1,(A5)
@@ -722,7 +729,7 @@ LAB_0045:
 ;!======
 
 LAB_0046:
-    JSR     LAB_003E(PC)
+    JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
     TST.B   D1
     BMI.S   .LAB_004C
     LEA     LAB_1AFE,A5
@@ -1635,7 +1642,7 @@ LAB_00B8:
     MOVEQ   #0,D0           ; Move 0 into D0
     MOVE.B  LAB_2253,D0     ; Move the byte in LAB_2253 to D0
     TST.B   LAB_2206        ; Test LAB_2206 against 0
-    BNE.S   .LAB_00BA        ; If it's not equal, jump to .LAB_00BA
+    BNE.S   .LAB_00BA       ; If it's not equal, jump to .LAB_00BA
     MOVE.L  4(A7),D0
     MOVEA.L 8(A7),A0
     MOVE.L  12(A7),D1
@@ -11348,13 +11355,14 @@ LAB_03FC:
     BEQ.S   LAB_03FD
     MOVE.B  D2,LAB_1BC0
 LAB_03FD:
+    ; LAB_1BC0 = use 12/24 hr format
     MOVE.B  LAB_1BC0,D1
     CMP.B   D0,D1
     BNE.S   LAB_03FE
-    LEA     LAB_1CE3,A0
+    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
     BRA.S   LAB_03FF
 LAB_03FE:
-    LEA     LAB_1CB1,A0
+    LEA     GLOB_JMP_TBL_HALF_HOURS_12_HR_FMT,A0
 LAB_03FF:
     MOVE.L  A0,LAB_1DDD
 LAB_0400:
@@ -11648,6 +11656,7 @@ LAB_0419:
 
 ;!======
 
+; perhaps dealing with loading or saving configuration?
 LAB_041A:
     LINK.W  A5,#-212
     MOVEM.L D2-D7,-(A7)
@@ -24201,10 +24210,10 @@ LAB_085E:
 
     ; If we couldn't open the font, jump
     TST.L   D0
-    BNE.S   .LAB_086B
+    BNE.S   .openH264fFont
 
     MOVE.L  GLOB_HANDLE_TOPAZ_FONT,GLOB_REF_CURRENT_FONT
-.LAB_086B:
+.openH264fFont:
     ; Open the "h26f.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_H26F_FONT,A0
     JSR     _LVOOpenDiskFont(A6)
@@ -24212,10 +24221,10 @@ LAB_085E:
 
     ; If we couldn't open the font, jump
     TST.L   D0
-    BNE.S   .LAB_086C
+    BNE.S   .openPrevueFont
 
     MOVE.L  GLOB_HANDLE_TOPAZ_FONT,LAB_1DE7
-.LAB_086C:
+.openPrevueFont:
     ; Open the "Prevue.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT,A0
     JSR     _LVOOpenDiskFont(A6)
@@ -24298,12 +24307,13 @@ LAB_085E:
     ADDQ.W  #4,A7
     ADDQ.W  #1,D5
     BRA.S   .LAB_086F
+
 .LAB_0870:
-    LEA     LAB_2219,A0
-    MOVEQ   #4,D0
-    MOVE.L  #$00000160,D1
-    MOVEQ   #120,D2
-    ADD.L   D2,D2
+    LEA     LAB_2219,A0     ; bm struct
+    MOVEQ   #4,D0           ; depth: 4 (bitplanes) into D0
+    MOVE.L  #352,D1         ; width: 352 into D1
+    MOVEQ   #120,D2         ; height: 120 into D2
+    ADD.L   D2,D2           ; ...becomes 240 into D2
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
@@ -24331,9 +24341,10 @@ LAB_085E:
     ASL.L   #2,D0
     LEA     LAB_221A,A0
     ADDA.L  D0,A0
-    MOVEA.L (A0),A1
-    MOVE.L  #$00002940,D0
-    MOVEQ   #0,D1
+
+    MOVEA.L (A0),A1         ; memBlock
+    MOVE.L  #$00002940,D0   ; bytecount, 2940 = 10560 bytes
+    MOVEQ   #0,D1           ; flags
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
@@ -24344,10 +24355,10 @@ LAB_085E:
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .LAB_0873
-    LEA     LAB_1CE3,A0
+    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
     BRA.S   .LAB_0874
 .LAB_0873:
-    LEA     LAB_1CB1,A0
+    LEA     GLOB_JMP_TBL_HALF_HOURS_12_HR_FMT,A0
 .LAB_0874:
     MOVE.L  A0,LAB_1DDD
     MOVE.L  #$00010001,-(A7)
@@ -24355,6 +24366,7 @@ LAB_085E:
     PEA     683.W
     PEA     LAB_1E04
     JSR     LAB_0AAF(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1DC5
     TST.L   D0
@@ -24371,11 +24383,13 @@ LAB_085E:
     ADDA.W  #$0014,A0
     MOVE.L  A0,-(A7)
     JSR     LAB_08B0(PC)
+
     MOVE.L  #$00010001,(A7)
     PEA     34.W
     PEA     698.W
     PEA     LAB_1E05
     JSR     LAB_0AAF(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1DC6
     TST.L   D0
@@ -24392,6 +24406,7 @@ LAB_085E:
     ADDA.W  #$0014,A0
     MOVE.L  A0,-(A7)
     JSR     LAB_08B0(PC)
+
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
 .LAB_0875:
@@ -24409,11 +24424,13 @@ LAB_085E:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     JSR     LAB_08C1(PC)
+
     ADDQ.W  #8,A7
     ADDQ.W  #1,D5
     BRA.S   .LAB_0875
 .LAB_0876:
     JSR     LAB_08B8(PC)
+
     CLR.W   LAB_222A
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  20(A0),D0
@@ -24425,6 +24442,7 @@ LAB_085E:
     MOVEQ   #4,D1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAvailMem(A6)
+
     CMPI.L  #$001ab3f0,D0
     BLE.S   .LAB_0878
     MOVE.W  #$0002,LAB_222A
@@ -24432,7 +24450,7 @@ LAB_085E:
     JSR     LAB_08AC(PC)
     TST.L   D0
     BNE.W   .LAB_089B
-    JSR     LAB_08A8(PC)
+    JSR     JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY(PC)
     JSR     LAB_08A7(PC)
     JSR     LAB_08A1(PC)
     MOVE.L  #LAB_223A,LAB_1B06
@@ -24889,7 +24907,7 @@ LAB_085E:
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
     LEA     76(A7),A7
-    TST.W   LAB_1DF8
+    TST.W   IS_COMPATIBLE_VIDEO_CHIP
     BNE.S   .LAB_088A
     TST.W   HAS_REQUESTED_FAST_MEMORY
     BEQ.W   .LAB_0890
@@ -24911,7 +24929,7 @@ LAB_085E:
     JSR     LAB_09AD(PC)
     LEA     12(A7),A7
 .LAB_088B:
-    TST.W   LAB_1DF8
+    TST.W   IS_COMPATIBLE_VIDEO_CHIP
     BEQ.S   .LAB_088E
     MOVEA.L LAB_2216,A0
     ADDA.W  #$000a,A0
@@ -25097,8 +25115,8 @@ LAB_08A5:
 LAB_08A6:
     JMP     LAB_0DFF
 LAB_08A7:
-    JMP     LAB_0015
-LAB_08A8:
+    JMP     CHECK_IF_COMPATIBLE_VIDEO_CHIP
+JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY:
     JMP     CHECK_AVAILABLE_FAST_MEMORY
 LAB_08A9:
     JMP     LAB_1A30
@@ -35357,13 +35375,13 @@ LAB_0C7F:
 ;!======
 
 LAB_0C80:
-    LEA BLTDDAT,A0
-    MOVE.W  #$1761,142(A0)
-    MOVE.W  #$ffc5,144(A0)
-    MOVE.W  #$0030,146(A0)
-    MOVE.W  #$00d8,148(A0)
-    MOVE.W  #$0058,264(A0)
-    MOVE.W  #$0058,266(A0)
+    LEA     BLTDDAT,A0      ; BLTDDAT or 0xDFF000 into A0
+    MOVE.W  #$1761,142(A0)  ; 0x1761 into 0xDFF000 + 142 = 0xDFF08E or DIWSTRT http://amiga-dev.wikidot.com/hardware:diwstrt
+    MOVE.W  #$ffc5,144(A0)  ; 0xFFC5 into 0xDFF000 + 144 = 0xDFF090 or DIWSTOP http://amiga-dev.wikidot.com/hardware:diwstrt
+    MOVE.W  #$0030,146(A0)  ; 0x0030 into 0xDFF000 + 146 = 0xDFF092 or DDFSTRT http://amiga-dev.wikidot.com/hardware:ddfstrt
+    MOVE.W  #$00d8,148(A0)  ; 0x00D8 into 0xDFF000 + 148 = 0xDFF094 or DDFSTOP http://amiga-dev.wikidot.com/hardware:ddfstrt
+    MOVE.W  #$0058,264(A0)  ; 0x0058 into 0xDFF000 + 264 = 0xDFF108 or BPL1MOD http://amiga-dev.wikidot.com/hardware:bplxmod
+    MOVE.W  #$0058,266(A0)  ; 0x0058 into 0xDFF000 + 266 = 0xDFF10A or BPL2MOD http://amiga-dev.wikidot.com/hardware:bplxmod
     JSR     LAB_0CA7
     LEA     LAB_1E51,A2
     MOVE.L  A2,D0
@@ -35390,71 +35408,73 @@ LAB_0C80:
     BPL.S   LAB_0C81
     LEA     LAB_1E22,A2
 LAB_0C81:
-    MOVE.L  A2,128(A0)
-    MOVE.W  136(A0),D0
-    MOVE.W  #$0020,150(A0)
-    MOVE.W  #$8180,150(A0)
+    MOVE.L  A2,128(A0)          ; A2 contents into 0xDFF000 + 128 = 0xDFF080 or COP1LCH http://amiga-dev.wikidot.com/hardware:cop1lch
+    MOVE.W  136(A0),D0          ; 0xDFF000 + 136 = 0xDFF088 or COPJMP1 http://amiga-dev.wikidot.com/hardware:copjmp contents into D0
+    MOVE.W  #$0020,150(A0)      ; 0x0020 into 0xDFF000 + 150 = 0xDFF096 or DMACON http://amiga-dev.wikidot.com/hardware:dmaconr
+    MOVE.W  #$8180,150(A0)      ; 0x8180 into 0xDFF000 + 150 = 0xDFF096 or DMACON http://amiga-dev.wikidot.com/hardware:dmaconr
     RTS
 
 ;!======
 
 LAB_0C82:
     MOVEM.L D0-D3/A0-A6,-(A7)
-    LEA BLTDDAT,A0
+
+    LEA     BLTDDAT,A0          ; BLTDDAT or 0xDFF000 into A0
     LEA     LAB_1E22,A2
     MOVEQ   #1,D1
-    MOVE.W  4(A0),D0
-    BPL.S   LAB_0C83
+    MOVE.W  4(A0),D0            ; 0xDFF000 + 4 = 0xDFF004 or VPOSR http://amiga-dev.wikidot.com/hardware:vposr contents into D0
+    BPL.S   .LAB_0C83            ; BPL = checks to see if bit 15 is set (LOF), if it is jump to LAB_0C83
     LEA     LAB_1E51,A2
     MOVEQ   #0,D1
-LAB_0C83:
-    MOVE.L  A2,128(A0)
+.LAB_0C83:
+    MOVE.L  A2,128(A0)          ; A2 contents into 0xDFF000 + 128 = 0xDFF080 or COP1LCH http://amiga-dev.wikidot.com/hardware:cop1lch
     MOVE.L  D1,LAB_1F51
     TST.W   LAB_1F3B
-    BEQ.S   LAB_0C84
+    BEQ.S   .LAB_0C84
     JSR     LAB_0C80(PC)
     MOVE.W  #$0000,LAB_1F3B
-    BRA.W   LAB_0C8B
-LAB_0C84:
+    BRA.W   .LAB_0C8B
+.LAB_0C84:
     JSR     LAB_14C8
     TST.W   LAB_2121
-    BNE.W   LAB_0C8B
+    BNE.W   .LAB_0C8B
     TST.B   LAB_1FA9
-    BNE.W   LAB_0C8A
+    BNE.W   .LAB_0C8A
     CMPI.W  #$0200,LAB_1F45
-    BNE.W   LAB_0C85
+    BNE.W   .LAB_0C85
     MOVE.W  #$0100,LAB_1F45
-    BRA.W   LAB_0C89
-LAB_0C85:
+    BRA.W   .LAB_0C89
+.LAB_0C85:
     CMPI.W  #$0102,LAB_1F45
-    BNE.W   LAB_0C86
-    BRA.W   LAB_0C8B
-LAB_0C86:
+    BNE.W   .LAB_0C86
+    BRA.W   .LAB_0C8B
+.LAB_0C86:
     CMPI.W  #$0101,LAB_1F45
-    BNE.W   LAB_0C87
-    BRA.W   LAB_0C8B
-LAB_0C87:
+    BNE.W   .LAB_0C87
+    BRA.W   .LAB_0C8B
+.LAB_0C87:
     CMPI.W  #$0100,LAB_1F45
-    BEQ.W   LAB_0C8B
+    BEQ.W   .LAB_0C8B
     TST.W   LAB_1F45
-    BMI.S   LAB_0C88
+    BMI.S   .LAB_0C88
     MOVEQ   #1,D0
     SUB.W   D0,LAB_1F45
-    BRA.W   LAB_0C8B
-LAB_0C88:
+    BRA.W   .LAB_0C8B
+.LAB_0C88:
     SUBQ.W  #1,LAB_1F3F
-    BPL.S   LAB_0C8B
-LAB_0C89:
+    BPL.S   .LAB_0C8B
+.LAB_0C89:
     MOVE.W  LAB_1F40,LAB_1F3F
     TST.W   LAB_1D31
-    BEQ.S   LAB_0C8B
+    BEQ.S   .LAB_0C8B
     JSR     LAB_0DCF
-    BRA.S   LAB_0C8B
-LAB_0C8A:
+    BRA.S   .LAB_0C8B
+.LAB_0C8A:
     SUBQ.B  #1,LAB_1FA9
     SUBQ.W  #1,LAB_1F3F
     JSR     LAB_0C9E
-LAB_0C8B:
+.LAB_0C8B:
+
     MOVEM.L (A7)+,D0-D3/A0-A6
     RTS
 
@@ -47165,7 +47185,7 @@ LAB_1069:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     LAB_1CE3,A0
+    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.B  (A1),D0
@@ -47182,7 +47202,7 @@ LAB_1069:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     LAB_1CE3,A0
+    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     ADDQ.L  #1,A1
@@ -75815,7 +75835,7 @@ LAB_1CAF:
     NStr    " 4:00 AM"
 LAB_1CB0:
     NStr    " 4:30 AM"
-LAB_1CB1:
+GLOB_JMP_TBL_HALF_HOURS_12_HR_FMT:
     DC.L    LAB_1C80
     DC.L    LAB_1C81
     DC.L    LAB_1C82
@@ -75963,7 +75983,7 @@ LAB_1CE1:
     NStr    " 4:00"
 LAB_1CE2:
     NStr    " 4:30"
-LAB_1CE3:
+GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT:
     DC.L    LAB_1CB2
     DC.L    LAB_1CB3
     DC.L    LAB_1CB4
@@ -76147,8 +76167,6 @@ LAB_1D1E:
     NStr    "Computer will reset!"
 LAB_1D1F:
     NStr    "(go off-air for 1-2 mins)"
-
-
 
 LAB_1D20:
     NStr    "Saving ""EVERYTHING"" to disk"
@@ -76628,7 +76646,7 @@ LAB_1DF6:
     DS.W    1
 HAS_REQUESTED_FAST_MEMORY:
     DS.W    1
-LAB_1DF8:
+IS_COMPATIBLE_VIDEO_CHIP:
     DC.L    $00000001
 GLOB_STR_RAVESC:
     NStr    "RAVESC"
