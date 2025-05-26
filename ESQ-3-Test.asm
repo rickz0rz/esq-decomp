@@ -34493,6 +34493,8 @@ LAB_0C3B:
 
 ;!======
 
+; Possibly the code that replaces the strings of TV ratings like (TV-G) into
+; a corresponding character in the font
 LAB_0C3C:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
@@ -34559,6 +34561,8 @@ LAB_0C41:
 
 ;!======
 
+; Possibly the code that replaces the strings of movie ratings like (R) into
+; a corresponding character in the font
 LAB_0C42:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
@@ -35339,6 +35343,7 @@ LAB_0C7C:
 
 LAB_0C7D:
     MOVEM.L D0/A0-A1,-(A7)
+
     LEA     LAB_2229,A0
     MOVEA.L (A0),A1
     LEA (A1),A1
@@ -35357,6 +35362,7 @@ LAB_0C7D:
     MOVE.W  D0,LAB_1E65
     MOVE.W  D0,LAB_1E7C
     JSR     LAB_0C7E
+
     MOVEM.L (A7)+,D0/A0-A1
     RTS
 
@@ -35367,9 +35373,9 @@ LAB_0C7E:
     MOVEA.L (A1),A0
     LEA (A0),A0
     MOVE.L  #$00000149,D1
-LAB_0C7F:
+.LAB_0C7F:
     MOVE.L  #$ffffffff,(A0)+
-    DBF     D1,LAB_0C7F
+    DBF     D1,.LAB_0C7F
     RTS
 
 ;!======
