@@ -370,7 +370,7 @@ LAB_0017:
 
     BRA.S   .LAB_001D
 .LAB_001C:
-    PEA     LAB_1AF3
+    PEA     GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
     JSR     LAB_0022(PC)
     CLR.L   (A7)
     JSR     LAB_0024(PC)
@@ -4777,7 +4777,7 @@ LAB_01DF:
     MOVE.B  LAB_1D13,D0
     SUBQ.B  #8,D0
     BNE.S   LAB_01E0
-    JSR     JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN(PC)
+    JSR     LAB_0218(PC)
     BRA.S   LAB_01E1
 LAB_01E0:
     MOVE.B  LAB_1D13,D0
@@ -5719,17 +5719,11 @@ LAB_0216:
     JMP     LAB_0628
 LAB_0217:
     JMP     LAB_065E
-JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
+LAB_0218:
     JMP     DRAW_ESC_MENU_VERSION_SCREEN
 LAB_0219:
     JMP     LAB_1474
-
-;!======
-
     MOVEQ   #97,D0
-
-;!======
-
 LAB_021A:
     LINK.W  A5,#-840
     MOVEM.L D2-D7/A2,-(A7)
@@ -6177,7 +6171,7 @@ LAB_0249:
 LAB_024A:
     TST.L   D0
     BEQ.S   LAB_024F
-    LEA     LAB_20FC,A0
+    LEA     GLOB_STR_ALIGNED_NOW_SHOWING,A0
     LEA     LAB_2366,A1
 LAB_024B:
     MOVE.B  (A0)+,(A1)+
@@ -6197,7 +6191,7 @@ LAB_024D:
     PEA     LAB_2366
     PEA     LAB_2259
     JSR     LAB_05C5(PC)
-    LEA     LAB_20FD,A0
+    LEA     GLOB_STR_ALIGNED_NEXT_SHOWING,A0
     LEA     LAB_2366,A1
 LAB_024E:
     MOVE.B  (A0)+,(A1)+
@@ -6237,7 +6231,7 @@ LAB_0251:
     MOVE.W  LAB_227C,D1
     CMP.W   D1,D0
     BEQ.S   LAB_0253
-    LEA     LAB_20FF,A0
+    LEA     GLOB_STR_ALIGNED_TOMORROW_AT,A0
     LEA     LAB_2366,A1
 LAB_0252:
     MOVE.B  (A0)+,(A1)+
@@ -6255,14 +6249,14 @@ LAB_0253:
     CMP.W   D1,D0
     BGE.S   LAB_0256
 LAB_0254:
-    LEA     LAB_20FE,A0
+    LEA     GLOB_STR_ALIGNED_TODAY_AT,A0
     LEA     LAB_2366,A1
 LAB_0255:
     MOVE.B  (A0)+,(A1)+
     BNE.S   LAB_0255
     BRA.S   LAB_0258
 LAB_0256:
-    LEA     LAB_2105,A0
+    LEA     GLOB_STR_ALIGNED_TONIGHT_AT,A0
     LEA     LAB_2366,A1
 LAB_0257:
     MOVE.B  (A0)+,(A1)+
@@ -10046,7 +10040,7 @@ LAB_0391:
     MOVEQ   #0,D2
     MOVE.L  #$00002000,D4
     MOVEA.L LAB_2382,A6
-    JSR     _LVOPermit(A6)
+    JSR     -138(A6)
     MOVE.L  D0,LAB_21B7
     MOVEM.L -16(A5),D2-D4
     UNLK    A5
@@ -10109,7 +10103,7 @@ LAB_0394:
     MOVEQ   #0,D2
     MOVE.L  #$00002000,D4
     MOVEA.L LAB_2382,A6
-    JSR     _LVOPermit(A6)
+    JSR     -138(A6)
     MOVE.L  D0,LAB_21BA
     MOVEM.L (A7)+,D2-D4/D7
     RTS
@@ -10795,35 +10789,35 @@ LAB_03D9:
     MOVEQ   #0,D2
     MOVE.L  D2,D3
     MOVEA.L LAB_2382,A6
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BD9,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BDA,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BDB,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BDC,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BDD,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BDE,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.L  D2,D3
     LEA     LAB_1BDF,A0
     MOVE.L  A0,D1
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     MOVE.W  D5,LAB_1F45
     MOVE.L  D2,LAB_1BD5
 LAB_03DA:
@@ -10841,7 +10835,7 @@ LAB_03DA:
     MOVEQ   #0,D2
     MOVE.L  D2,D3
     MOVEA.L LAB_2382,A6
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
     BRA.S   LAB_03DC
 LAB_03DB:
     LEA     LAB_1BE2,A0
@@ -10849,7 +10843,7 @@ LAB_03DB:
     MOVEQ   #0,D2
     MOVE.L  D2,D3
     MOVEA.L LAB_2382,A6
-    JSR     _LVOAllocEntry(A6)
+    JSR     -222(A6)
 LAB_03DC:
     MOVE.L  D2,LAB_1BD6
 LAB_03DD:
@@ -19389,10 +19383,11 @@ LAB_06DB:
     CMPI.W  #$0008,D0
     BCC.W   LAB_06DF
     ADD.W   D0,D0
+
+    ; Custom offsets on this again...?
+    ; these instructions must be getting mangled or something.
     MOVE.W  LAB_06DC(PC,D0.W),D0
     JMP     LAB_06DD(PC,D0.W)
-; Custom offsets on this again...?
-; these instructions must be getting mangled or something.
 LAB_06DC:
     DC.W    $000e
 LAB_06DD:
@@ -19400,6 +19395,9 @@ LAB_06DD:
     ORI.W   #$009a,582(A6)
     BTST    D0,D0
     DC.W    $00de
+
+    ; ---------
+
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     BRA.W   LAB_06E1
@@ -19445,13 +19443,13 @@ LAB_06DD:
     BRA.W   LAB_06E1
     JSR     LAB_07EF(PC)
 
-    PEA     LAB_1D1E
+    PEA     GLOB_STR_COMPUTER_WILL_RESET
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
-    PEA     LAB_1D1F
+    PEA     GLOB_STR_GO_OFF_AIR_FOR_1_2_MINS
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
@@ -19579,13 +19577,14 @@ LAB_06E1:
 
 ;!======
 
+; Print 'Saving "EVERYTHING" to disk'
 LAB_06E2:
     MOVE.L  D7,-(A7)
     JSR     LAB_07DD(PC)
     MOVE.L  D0,D7
     TST.B   D7
     BNE.S   LAB_06E3
-    PEA     LAB_1D20
+    PEA     GLOB_STR_SAVING_EVERYTHING_TO_DISK
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
@@ -19606,7 +19605,7 @@ LAB_06E4:
     MOVE.L  D0,D7
     TST.B   D7
     BNE.S   LAB_06E5
-    PEA     LAB_1D21
+    PEA     GLOB_STR_SAVING_PREVUE_DATA_TO_DISK
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
@@ -19677,6 +19676,7 @@ LAB_06EB:
 
 ;!======
 
+; Draw 'Edit Attributes' menu
 LAB_06EC:
     MOVEM.L D2-D4,-(A7)
     JSR     LAB_07F4(PC)
@@ -19936,38 +19936,38 @@ LAB_0701:
     MOVE.B  D7,D0
     EXT.W   D0
     CMPI.W  #$0009,D0
-    BCC.W   LAB_0706
+    BCC.W   .LAB_0706
     ADD.W   D0,D0
-    MOVE.W  LAB_0702(PC,D0.W),D0
-    JMP     LAB_0702+2(PC,D0.W)
-LAB_0702:
+    MOVE.W  .LAB_0702(PC,D0.W),D0
+    JMP     .LAB_0702+2(PC,D0.W)
+.LAB_0702:
     ORI.B   #$18,(A0)
     DC.W    $003a
     ORI.W   #$0084,(A4)+
     DC.W    $008a
     ORI.L   #$00c600bc,24832(A6)
     DC.W    $033e
-    BRA.W   LAB_0709
+    BRA.W   .LAB_0709
     MOVE.B  LAB_1BC4,D0
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0704
+    BNE.S   .LAB_0704
     JSR     LAB_07F0(PC)
     MOVE.B  #$02,LAB_1D13
-    BRA.W   LAB_0709
-LAB_0704:
+    BRA.W   .LAB_0709
+.LAB_0704:
     MOVEQ   #1,D6
-    BRA.W   LAB_0709
+    BRA.W   .LAB_0709
     MOVE.B  LAB_1BC4,D0
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0705
+    BNE.S   .LAB_0705
     JSR     LAB_07F0(PC)
     MOVE.B  #$03,LAB_1D13
-    BRA.W   LAB_0709
-LAB_0705:
+    BRA.W   .LAB_0709
+.LAB_0705:
     MOVEQ   #1,D6
-    BRA.W   LAB_0709
+    BRA.W   .LAB_0709
     MOVE.B  #$06,LAB_1D13
     JSR     LAB_07EB(PC)
     MOVE.L  LAB_21E2,LAB_21E8
@@ -19976,9 +19976,9 @@ LAB_0705:
     JSR     LAB_07EC(PC)
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
-    BRA.S   LAB_0709
+    BRA.S   .LAB_0709
     BSR.W   LAB_0718
-    BRA.S   LAB_0709
+    BRA.S   .LAB_0709
     MOVE.B  #$0a,LAB_1D13
     JSR     LAB_07EB(PC)
     CLR.L   LAB_21E8
@@ -19987,30 +19987,30 @@ LAB_0705:
     JSR     LAB_07ED(PC)
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
-    BRA.S   LAB_0709
+    BRA.S   .LAB_0709
     MOVE.B  #$08,LAB_1D13
     JSR     LAB_07E4(PC)
-    BRA.S   LAB_0709
+    BRA.S   .LAB_0709
     MOVE.W  #$0001,LAB_1DE4
-    BRA.S   LAB_0709
-LAB_0706:
+    BRA.S   .LAB_0709
+.LAB_0706:
     MOVEQ   #9,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0707
+    BNE.S   .LAB_0707
     MOVEQ   #5,D0
-    BRA.S   LAB_0708
-LAB_0707:
+    BRA.S   .LAB_0708
+.LAB_0707:
     MOVEQ   #1,D0
-LAB_0708:
+.LAB_0708:
     ADD.L   D0,LAB_21E8
     MOVE.L  LAB_21E8,D0
     MOVEQ   #6,D1
     JSR     LAB_0A99(PC)
     MOVE.L  D1,LAB_21E8
     JSR     LAB_07E5(PC)
-LAB_0709:
+.LAB_0709:
     TST.B   D6
-    BEQ.S   LAB_070B
+    BEQ.S   .LAB_070B
     MOVEA.L LAB_2217,A1
     MOVEQ   #4,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -20018,19 +20018,19 @@ LAB_0709:
     MOVE.B  D6,D0
     EXT.W   D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_070A
+    BNE.S   .LAB_070A
     PEA     LAB_1D29
     PEA     270.W
     PEA     145.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
     LEA     16(A7),A7
-LAB_070A:
+.LAB_070A:
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
-LAB_070B:
+.LAB_070B:
     MOVEM.L (A7)+,D6-D7
     RTS
 
@@ -20195,8 +20195,8 @@ LAB_0713:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
-    MOVEA.L LAB_2217,A1                     ; rastport
-    MOVEA.L GLOB_REF_CURRENT_FONT,A0        ; font
+    MOVEA.L LAB_2217,A1         ; rastport
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0         ; font
     JSR     _LVOSetFont(A6)
 
     JSR     LAB_071E(PC)
@@ -20214,7 +20214,6 @@ LAB_0713:
     MOVE.L  LAB_2260,-(A7)
     JSR     LAB_098A(PC)
     JSR     JMP_TBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7(PC)
-
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
     CMP.L   LAB_21E4,D0
@@ -36648,7 +36647,7 @@ LAB_0CC7:
     JSR     LAB_0B44(PC)
     MOVE.L  D0,LAB_22F1
     MOVE.L  LAB_22F2,(A7)
-    PEA     LAB_1F65
+    PEA     GLOB_STR_DIGITAL_NICHE_PERIOD
     JSR     LAB_0B44(PC)
     LEA     12(A7),A7
     MOVE.L  D0,LAB_22F2
@@ -53247,7 +53246,7 @@ LAB_1278:
     MOVEA.L 16(A5),A0
     TST.B   (A0)
     BNE.S   LAB_127A
-    LEA     LAB_2101,A0
+    LEA     GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 LAB_1279:
     MOVE.B  (A0)+,(A1)+
@@ -54412,7 +54411,7 @@ LAB_12EB:
 LAB_12EC:
     TST.B   (A2)
     BNE.S   LAB_12EE
-    LEA     LAB_2101,A0
+    LEA     GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 LAB_12ED:
     MOVE.B  (A0)+,(A1)+
@@ -57512,7 +57511,7 @@ LAB_1420:
     ADDQ.W  #4,A7
     BRA.W   LAB_142D
 LAB_1421:
-    PEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT
+    PEA GLOB_STRUCT_TEXTATTR_PREVUE_FONT
     PEA     LAB_1DC2
     BSR.W   LAB_1411
     ADDQ.W  #8,A7
@@ -58806,7 +58805,7 @@ LAB_14C4:
 
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
-    LEA     LAB_2117,A0
+    LEA     GLOB_STR_WEATHER_UPDATE_FOR,A0
     MOVEA.L A3,A1
 LAB_14C5:
     MOVE.B  (A0)+,(A1)+
@@ -61333,7 +61332,7 @@ LAB_15CF:
     MOVE.L  D0,-200(A5)
     SUBQ.L  #1,D0
     BNE.S   LAB_15D1
-    LEA     LAB_20FC,A0
+    LEA     GLOB_STR_ALIGNED_NOW_SHOWING,A0
     LEA     -188(A5),A1
 LAB_15D0:
     MOVE.B  (A0)+,(A1)+
@@ -62103,7 +62102,7 @@ LAB_1629:
     MOVE.B  -524(A5),D1
     TST.B   D1
     BEQ.S   LAB_162A
-    PEA     LAB_2144
+    PEA     GLOB_STR_ALIGNED_CHANNEL_2
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_196D(PC)
     PEA     -524(A5)
@@ -63929,12 +63928,12 @@ LAB_16DF:
     BEQ.S   LAB_16E2
     TST.W   D7
     BEQ.S   LAB_16E0
-    PEA     LAB_2106
+    PEA     GLOB_STR_ALIGNED_ON
     PEA     LAB_2259
     JSR     LAB_196D(PC)
     ADDQ.W  #8,A7
 LAB_16E0:
-    PEA     LAB_2107
+    PEA     GLOB_STR_ALIGNED_CHANNEL_1
     PEA     LAB_2259
     JSR     LAB_196D(PC)
     LEA     1(A3),A0
@@ -70795,8 +70794,8 @@ LAB_1906:
 ;!======
 
     LINK.W  A5,#-8
-    PEA     LAB_21A5
-    PEA     LAB_21A4
+    PEA     GLOB_STR_A_PLUS
+    PEA     GLOB_STR_DF1_DEBUG_LOG
     JSR     LAB_1AB2(PC)
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -74852,12 +74851,13 @@ LAB_1AE3:
 ;!======
 
     MOVEA.L 4(A7),A0
+
 LAB_1AE4:
     MOVE.B  (A0)+,D0
-    BEQ.S   LAB_1AE5
+    BEQ.S   .return
     BSR.S   LAB_1AE3
     BRA.S   LAB_1AE4
-LAB_1AE5:
+.return:
     RTS
 
 ;!======
@@ -74955,7 +74955,7 @@ GLOB_STR_ATTENTION_SYSTEM_ENGINEER:
     NStr    "ATTENTION! SYSTEM ENGINEER"
 GLOB_STR_REPORT_CODE_ER003:
     NStr    "Report Code ER003 to TV Guide Technical Services."
-LAB_1AF3:
+GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE:
     NStr2   "YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",TextLineFeed
 LAB_1AF4:
     DS.W    1
@@ -76271,14 +76271,14 @@ LAB_1D1D:
     NStr    "Text Ads will be loaded from DH2:"
 
 ; Strings for ESC -> Special Functions -> Reboot computer
-LAB_1D1E:
+GLOB_STR_COMPUTER_WILL_RESET:
     NStr    "Computer will reset!"
-LAB_1D1F:
+GLOB_STR_GO_OFF_AIR_FOR_1_2_MINS:
     NStr    "(go off-air for 1-2 mins)"
 
-LAB_1D20:
+GLOB_STR_SAVING_EVERYTHING_TO_DISK:
     NStr    "Saving ""EVERYTHING"" to disk"
-LAB_1D21:
+GLOB_STR_SAVING_PREVUE_DATA_TO_DISK:
     NStr    "Saving Prevue data to disk"
 GLOB_STR_LOADING_TEXT_ADS_FROM_DH2:
     NStr    "Loading Text Ads from DH2:"
@@ -78146,7 +78146,7 @@ LAB_1F63:
     NStr    "Digital Multiplex at %s"
 LAB_1F64:
     NStr    "Digital PPV Listings"
-LAB_1F65:
+GLOB_STR_DIGITAL_NICHE_PERIOD:
     NStr    "Digital PPV."
 LAB_1F66:
     NStr    "DF0:Digital_Niche.dat"
@@ -79150,18 +79150,19 @@ LAB_20FB:
     DC.L    LAB_20F9
     DC.L    LAB_20FA
     DC.L    LAB_20FB
+
 ; Another struct?
-LAB_20FC:
+GLOB_STR_ALIGNED_NOW_SHOWING:
     DC.B    TextAlignCenter,"Now showing",0
-LAB_20FD:
+GLOB_STR_ALIGNED_NEXT_SHOWING:
     DC.B    TextAlignCenter,"Next showing ",0
-LAB_20FE:
+GLOB_STR_ALIGNED_TODAY_AT:
     DC.B    TextAlignCenter,"Today at ",0
-LAB_20FF:
+GLOB_STR_ALIGNED_TOMORROW_AT:
     DC.B    TextAlignCenter,"Tomorrow at ",0
 GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE:
     NStr    "Showtimes "
-LAB_2101:
+GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE:
     NStr    "Showing at "
 LAB_2102:
     DC.B    "hrs ",0
@@ -79169,11 +79170,11 @@ LAB_2103:
     DC.B    "hr ",0
 LAB_2104:
     DC.B    "min)",0
-LAB_2105:
+GLOB_STR_ALIGNED_TONIGHT_AT:
     DC.B    TextAlignCenter,"Tonight at ",0
-LAB_2106:
+GLOB_STR_ALIGNED_ON:
     DC.B    TextAlignCenter,"on",0
-LAB_2107:
+GLOB_STR_ALIGNED_CHANNEL_1:
     NStr2   TextAlignCenter,"Channel "
 LAB_2108:
     NStr    "Sports on "
@@ -79199,13 +79200,13 @@ GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr    "Please Stand By for your Local Listings.  ER007"
 GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     DC.L    GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
-LAB_2114:
+GLOB_STR_OFF_AIR:
     NStr    "Off Air."
 LAB_2115:
-    DC.L    LAB_2114
+    DC.L    GLOB_STR_OFF_AIR
 LAB_2116:
     NStr    "%s %s %ld %04ld"
-LAB_2117:
+GLOB_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
 LAB_2118:
     DS.W    1
@@ -79260,10 +79261,10 @@ LAB_2130:
     DS.W    1
 LAB_2131:
     DS.W    1
-LAB_2132:
+GLOB_STR_PREVUESPORTS:
     NStr    "PrevueSports"
 LAB_2133:
-    DC.L    LAB_2132
+    DC.L    GLOB_STR_PREVUESPORTS
 LAB_2134:
     NStr    TextAlignCenter
 LAB_2135:
@@ -79296,7 +79297,7 @@ LAB_2142:
     NStr    " vs "
 LAB_2143:
     NStr    TextAlignCenter
-LAB_2144:
+GLOB_STR_ALIGNED_CHANNEL_2:
     NStr2   TextAlignCenter,"Channel "
 LAB_2145:
     DC.W    $0300
@@ -79510,9 +79511,9 @@ LAB_21A2:
     DS.L    1
 LAB_21A3:
     DS.L    1
-LAB_21A4:
+GLOB_STR_DF1_DEBUG_LOG:
     NStr    "df1:debug.log"
-LAB_21A5:
+GLOB_STR_A_PLUS:
     NStr    "a+"
     DS.L    1
     DC.L    $00280000
