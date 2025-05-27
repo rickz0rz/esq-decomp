@@ -19465,7 +19465,7 @@ LAB_06DD:
 LAB_06DE:
     PEA     4.W
     JSR     LAB_07E9(PC)
-    JSR     LAB_07ED(PC)
+    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
     ADDQ.W  #4,A7
     BRA.W   LAB_06E1
     MOVEQ   #2,D0
@@ -19569,7 +19569,7 @@ LAB_06DF:
 LAB_06E0:
     MOVE.L  D0,-(A7)
     JSR     LAB_07E9(PC)
-    JSR     LAB_07ED(PC)
+    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
     ADDQ.W  #4,A7
 LAB_06E1:
     MOVEM.L (A7)+,D2-D3/D7
@@ -19984,7 +19984,7 @@ LAB_0701:
     CLR.L   LAB_21E8
     PEA     4.W
     JSR     LAB_07E9(PC)
-    JSR     LAB_07ED(PC)
+    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
     BRA.S   .LAB_0709
@@ -20024,6 +20024,7 @@ LAB_0701:
     PEA     145.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     16(A7),A7
 .LAB_070A:
     MOVEA.L LAB_2217,A1
@@ -20130,15 +20131,18 @@ LAB_0711:
     MOVE.L  LAB_21FB,D0
     MOVEQ   #40,D1
     JSR     LAB_0AB6(PC)
+
     MOVE.L  D0,LAB_21EB
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21FC
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+
     MOVE.L  GLOB_LONG_PATCH_VERSION_NUMBER,-(A7)
-    PEA     LAB_1D2B
-    PEA     LAB_1D2A
+    PEA     GLOB_STR_NINE_POINT_ZERO
+    PEA     GLOB_STR_VER_PERCENT_S_PERCENT_L_D
     PEA     -41(A5)
     JSR     JMP_TBL_PRINTF_0(PC)
+
     JSR     LAB_0726(PC)
     MOVEA.L LAB_2217,A1
     MOVEQ   #3,D0
@@ -20168,13 +20172,16 @@ LAB_0712:
     PEA     280.W
     MOVE.L  A1,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
+
     JSR     LAB_0A48(PC)
     PEA     LAB_2321
     JSR     LAB_071D(PC)
@@ -20186,17 +20193,18 @@ LAB_0712:
 
 LAB_0713:
     MOVE.L  D2,-(A7)
+
     CLR.W   LAB_1B85
+
     LEA     LAB_221B,A0
     MOVEQ   #3,D0
-    MOVE.L  #$000002b8,D1
-    MOVE.L  #$00000190,D2
-
+    MOVE.L  #696,D1
+    MOVE.L  #400,D2
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
-    MOVEA.L LAB_2217,A1         ; rastport
-    MOVEA.L GLOB_REF_CURRENT_FONT,A0         ; font
+    MOVEA.L LAB_2217,A1                 ; rastport
+    MOVEA.L GLOB_REF_CURRENT_FONT,A0    ; font
     JSR     _LVOSetFont(A6)
 
     JSR     LAB_071E(PC)
@@ -21926,7 +21934,7 @@ LAB_07B9:
     TST.L   LAB_21E8
     BNE.S   LAB_07BA
     MOVEQ   #0,D0
-    MOVE.B  LAB_1DCA,D0
+    MOVE.B  GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.W  D0,LAB_1F40
@@ -22348,7 +22356,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
     JSR     _LVOMove(A6)
 
     MOVEA.L LAB_2217,A1
-    LEA     LAB_1DCA,A0
+    LEA     GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,A0
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
@@ -22435,30 +22443,37 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 LAB_07E8:
     MOVEM.L D2-D3/D7,-(A7)
     MOVE.L  16(A7),D7
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #$00000280,D2
     MOVE.L  #$00000129,D3
     JSR     _LVORectFill(A6)
+
     MOVE.L  D7,D0
     MOVEA.L LAB_2217,A1
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVE.L  #$0000012a,D1
     MOVE.L  #$000001ad,D3
     JSR     _LVORectFill(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEM.L (A7)+,D2-D3/D7
     RTS
 
@@ -22471,25 +22486,30 @@ LAB_07E9:
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVE.L  D7,D0
     MOVEQ   #30,D1
     JSR     LAB_0AB6(PC)
+
     MOVEQ   #67,D1
     ADD.L   D1,D0
     MOVE.L  D0,D3
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
-    MOVE.L  #$00000280,D2
+    MOVE.L  #640,D2
     JSR     _LVORectFill(A6)
+
     CMPI.L  #$ffffffff,LAB_21E8
     BLE.S   LAB_07EA
     MOVEA.L LAB_2217,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
+
     MOVE.L  LAB_21E8,D0
     MOVEQ   #30,D1
     JSR     LAB_0AB6(PC)
+
     MOVE.L  D0,D1
     MOVEQ   #68,D2
     ADD.L   D2,D1
@@ -22500,158 +22520,193 @@ LAB_07E9:
     MOVEQ   #40,D0
     MOVE.L  #$00000280,D2
     JSR     _LVORectFill(A6)
+
 LAB_07EA:
     MOVEM.L (A7)+,D2-D3/D7
     RTS
 
 ;!======
 
+; Draw the ESC -> Diagnostic Mode text
 LAB_07EB:
     MOVEM.L D2-D3,-(A7)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #$00000280,D2
     MOVE.L  #$00000147,D3
     JSR     _LVORectFill(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVE.L  #$00000148,D1
     MOVE.L  #$000001ad,D3
     JSR     _LVORectFill(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     PEA     LAB_1D87
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D88
     PEA     420.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     32(A7),A7
     MOVEM.L (A7)+,D2-D3
     RTS
 
 ;!======
 
+; draw esc - change scroll speed menu text
 LAB_07EC:
     LINK.W  A5,#-80
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEQ   #0,D0
-    MOVE.B  LAB_1DCA,D0
+    MOVE.B  GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
     MOVE.L  D0,-(A7)
-    PEA     LAB_1D89
+    PEA     GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
     PEA     -80(A5)
     JSR     JMP_TBL_PRINTF_0(PC)
+
     PEA     -80(A5)
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1D8A
+
+    PEA     GLOB_STR_SPEED_ZERO_NOT_AVAILABLE
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1D8B
+
+    PEA     GLOB_STR_SPEED_ONE_NOT_AVAILABLE
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D8C
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     76(A7),A7
+
     PEA     LAB_1D8D
     PEA     210.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D8E
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D8F
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D90
     PEA     300.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1D91
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     80(A7),A7
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     UNLK    A5
     RTS
 
 ;!======
 
-LAB_07ED:
+DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT:
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
-    PEA     LAB_1D92
+
+    PEA     GLOB_STR_SAVE_ALL_TO_DISK
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1D93
+
+    PEA     GLOB_STR_SAVE_DATA_TO_DISK
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1D94
+
+    PEA     GLOB_STR_LOAD_TEXT_ADS_FROM_DISK
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1D95
+
+    PEA     GLOB_STR_REBOOT_COMPUTER
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     64(A7),A7
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     RTS
 
 ;!======
@@ -24032,87 +24087,107 @@ LAB_0856:
 
 LAB_0857:
     MOVEM.L D2-D3,-(A7)
+
     BSR.W   LAB_07E4
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #$00000280,D2
     MOVE.L  #$00000165,D3
     JSR     _LVORectFill(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #40,D0
     MOVE.L  #$00000166,D1
     MOVE.L  #$000001ad,D3
     JSR     _LVORectFill(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     PEA     LAB_1DAC
     PEA     390.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1DAD
     PEA     90.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1DAE
     PEA     120.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1DAF
     PEA     150.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1DB0
     PEA     180.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     80(A7),A7
     PEA     LAB_1DB1
     PEA     210.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     PEA     LAB_1DB2
     PEA     240.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1DB3
+
+    PEA     GLOB_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR
     PEA     270.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1DB4
+
+    PEA     GLOB_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE
     PEA     300.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
-    PEA     LAB_1DB5
+
+    PEA     GLOB_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
     PEA     330.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     80(A7),A7
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     MOVEM.L (A7)+,D2-D3
     RTS
 
@@ -24180,12 +24255,14 @@ LAB_085E:
     SUBA.L  A1,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFindTask(A6)
+
     MOVE.L  D0,LAB_222C
     MOVEA.L D0,A0
     MOVE.L  184(A0),LAB_1DC7
     MOVEQ   #-1,D0
     MOVE.L  D0,184(A0)
     MOVE.L  D2,D0
+
     LEA     GLOB_STR_GRAPHICS_LIBRARY,A1
     JSR     _LVOOpenLibrary(A6)
     MOVE.L  D0,GLOB_REF_GRAPHICS_LIBRARY
@@ -24543,6 +24620,8 @@ LAB_085E:
     BNE.S   .LAB_087A
     BNE.S   .LAB_087B
     MOVE.W  #$0001,LAB_2294
+; it looks like this tests a value to determine if we can spin up
+; to a specific baud rate or if we should just jump down to 2400.
 .LAB_087B:
     ADDQ.W  #1,D5
     BRA.S   .LAB_0879
@@ -24564,23 +24643,27 @@ LAB_085E:
     MOVE.L  D0,GLOB_REF_BAUD_RATE
     BRA.S   .LAB_087E
 .LAB_087D:
-    MOVE.L  #$00000960,GLOB_REF_BAUD_RATE       ; 2400
+    MOVE.L  #2400,GLOB_REF_BAUD_RATE
 .LAB_087E:
     MOVE.L  #$00010001,-(A7)                    ; 65537
     PEA     9000.W
     PEA     854.W
     PEA     LAB_1E07
     JSR     LAB_0AAF(PC)
+
     MOVE.L  D0,LAB_229A
     CLR.L   (A7)
     PEA     GLOB_STR_SERIAL_READ
     JSR     LAB_089C(PC)
+
     LEA     20(A7),A7
     MOVE.L  D0,LAB_2212
     BEQ.W   .LAB_089B
+
     PEA     82.W
     MOVE.L  D0,-(A7)
     JSR     LAB_08A9(PC)
+
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2211
     TST.L   D0
@@ -30511,7 +30594,7 @@ LAB_0AC3:
     TST.L   LAB_21E2
     BNE.S   LAB_0AC5
     MOVEQ   #0,D0
-    MOVE.B  LAB_1DCA,D0
+    MOVE.B  GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.L  D0,D7
@@ -72923,9 +73006,9 @@ LAB_1A04:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     TST.L   -616(A4)
-    BEQ.S   LAB_1A05
+    BEQ.S   .LAB_1A05
     JSR     LAB_1AD3(PC)
-LAB_1A05:
+.LAB_1A05:
     MOVE.L  D7,D1
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     JSR     _LVOClose(A6)
@@ -72935,19 +73018,22 @@ LAB_1A05:
 
 ;!======
 
+; what fancy banana pants math is going on here?
 LAB_1A06:
     MOVEM.L D2-D3,-(A7)
+
     MOVE.L  D0,D2
     MOVE.L  D1,D3
-    SWAP    D2
-    SWAP    D3
-    MULU    D1,D2
-    MULU    D0,D3
-    MULU    D1,D0
-    ADD.W   D3,D2
-    SWAP    D2
-    CLR.W   D2
-    ADD.L   D2,D0
+    SWAP    D2          ; D2 swaps upper and lower words
+    SWAP    D3          ; Same for D3
+    MULU    D1,D2       ; Multiply D1 and D2 unsigned (just the lower word?), store in D2
+    MULU    D0,D3       ; Multiple D0 and D3 unsigned, store in D3
+    MULU    D1,D0       ; 
+    ADD.W   D3,D2       ; Add lower D3 and D2 words into D2
+    SWAP    D2          ; Make the lower D2 word upper
+    CLR.W   D2          ; Clear the lower D2 word
+    ADD.L   D2,D0       ; Add D2 into D0
+
     MOVEM.L (A7)+,D2-D3
     RTS
 
@@ -76302,9 +76388,9 @@ LAB_1D29:
     NStr    "Local Edit not available"
 
 ; Version strings shown at the top of the ESC menu
-LAB_1D2A:
+GLOB_STR_VER_PERCENT_S_PERCENT_L_D:
     NStr    "Ver %s.%ld"
-LAB_1D2B:
+GLOB_STR_NINE_POINT_ZERO:
     NStr    "9.0"   ; Major/minor version string
 
 ; Strings for ESC -> Diagnostic Mode
@@ -76502,11 +76588,11 @@ LAB_1D88:
     NStr    " Push any key to select"
 
 ; Strings for ESC -> Change Scroll Speed
-LAB_1D89:
+GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C:
     NStr    "Satellite Delivered scroll speed (%c)"
-LAB_1D8A:
+GLOB_STR_SPEED_ZERO_NOT_AVAILABLE:
     NStr    "Speed 0 not available"
-LAB_1D8B:
+GLOB_STR_SPEED_ONE_NOT_AVAILABLE:
     NStr    "Speed 1 not available"
 LAB_1D8C:
     NStr    "Scroll speed = 2 (fastest)"
@@ -76522,13 +76608,13 @@ LAB_1D91:
     NStr    "Scroll speed = 7 (slowest)"
 
 ; Strings for ESC -> Special Functions
-LAB_1D92:
+GLOB_STR_SAVE_ALL_TO_DISK:
     NStr    "Save ALL to disk"
-LAB_1D93:
+GLOB_STR_SAVE_DATA_TO_DISK:
     NStr    "Save data to disk"
-LAB_1D94:
+GLOB_STR_LOAD_TEXT_ADS_FROM_DISK:
     NStr    "Load text ads from disk"
-LAB_1D95:
+GLOB_STR_REBOOT_COMPUTER:
     NStr    "Reboot computer"
 
 ; Strings for ESC - Edit Ads?
@@ -76590,11 +76676,11 @@ LAB_1DB1:
     NStr    "F4: Left Justify       F9: Apply Color"
 LAB_1DB2:
     NStr    "F5: Right Justify     F10: Insert char"
-LAB_1DB3:
+GLOB_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR:
     NStr    "Shift ->: next Ad     DEL: Delete char"
-LAB_1DB4:
+GLOB_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE:
     NStr    "Shift <-: prev Ad   CTRLC: Color Mode"
-LAB_1DB5:
+GLOB_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND:
     NStr    "CTRLF: Foreground   CTRLB: Background"
 
 GLOB_REF_GRAPHICS_LIBRARY:
@@ -76654,7 +76740,7 @@ LAB_1DC8:
     DC.B    "B"
 LAB_1DC9:
     DC.B    "E"
-LAB_1DCA:
+GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
 LAB_1DCB:
     DC.B    "3"
