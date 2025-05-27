@@ -15,9 +15,17 @@ _LVOSeek            = -66
 _LVODeleteFile      = -72
 _LVOLock            = -84
 _LVOUnLock          = -90
+_LVOInfo            = -114
 _LVOCurrentDir      = -126
 _LVOIoErr           = -132
+_LVOCreateProc      = -138
+_LVODelay           = -198
+_LVOExecute         = -222
+_LVOSystemTagTest   = -606
 ACCESS_READ         = -2
+MODE_READWRITE      = 1004
+MODE_OLDFILE        = 1005
+MODE_NEWFILE        = 1006
 
 ; exec.library
 _LVOSupervisor      = -30
