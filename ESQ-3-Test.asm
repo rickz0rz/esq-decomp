@@ -10136,6 +10136,7 @@ LAB_0396:
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7
     MOVEQ   #0,D6
+
     JSR     LAB_0466(PC)
     TST.L   LAB_1BCB
     BNE.S   LAB_0399
@@ -10164,6 +10165,7 @@ LAB_0397:
     MOVE.L  D0,LAB_1BA0
 LAB_0398:
     JSR     LAB_0466(PC)
+
 LAB_0399:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7/A3
@@ -27311,124 +27313,124 @@ LAB_096F:
 
 LAB_0970:
     TST.W   LAB_1FB0
-    BEQ.S   LAB_0971
+    BEQ.S   .LAB_0971
     JSR     LAB_09A9(PC)
-LAB_0971:
+.LAB_0971:
     MOVEQ   #1,D0
     CMP.L   LAB_1E84,D0
-    BNE.S   LAB_0972
+    BNE.S   .LAB_0972
     BSR.W   LAB_092C
-LAB_0972:
+.LAB_0972:
     TST.W   LAB_2263
-    BNE.S   LAB_0973
+    BNE.S   .LAB_0973
     JSR     LAB_08C2(PC)
-LAB_0973:
+.LAB_0973:
     JSR     LAB_0671(PC)
     TST.W   LAB_2263
-    BNE.S   LAB_0974
+    BNE.S   .LAB_0974
     JSR     LAB_09BC(PC)
-LAB_0974:
+.LAB_0974:
     TST.W   LAB_2264
-    BEQ.W   LAB_097C
+    BEQ.W   .LAB_097C
     JSR     LAB_09B3(PC)
     TST.L   LAB_1E88
-    BEQ.S   LAB_0975
+    BEQ.S   .LAB_0975
     CLR.L   LAB_1E88
     BSR.W   LAB_096F
-LAB_0975:
+.LAB_0975:
     TST.W   LAB_1B83
-    BEQ.W   LAB_097C
+    BEQ.W   .LAB_097C
     BTST    #1,LAB_1EE5
-    BEQ.S   LAB_0976
+    BEQ.S   .LAB_0976
     TST.W   LAB_2263
-    BNE.S   LAB_0976
+    BNE.S   .LAB_0976
     BCLR    #1,LAB_1EE5
     JSR     LAB_09B0(PC)
-    BRA.S   LAB_0977
-LAB_0976:
+    BRA.S   .LAB_0977
+.LAB_0976:
     BTST    #0,LAB_1EE5
-    BEQ.S   LAB_0977
+    BEQ.S   .LAB_0977
     TST.W   LAB_2263
-    BNE.S   LAB_0977
+    BNE.S   .LAB_0977
     BCLR    #0,LAB_1EE5
     PEA     1.W
     JSR     LAB_0A7C(PC)
     ADDQ.W  #4,A7
-LAB_0977:
+.LAB_0977:
     TST.L   LAB_1EE3
-    BNE.S   LAB_0978
+    BNE.S   .LAB_0978
     TST.W   LAB_2263
-    BNE.S   LAB_0978
+    BNE.S   .LAB_0978
     MOVE.W  LAB_22A9,D0
     MOVE.L  D0,D1
     ANDI.W  #$fffd,D1
     MOVE.W  D1,LAB_22A9
-LAB_0978:
+.LAB_0978:
     MOVE.B  LAB_1DD6,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0979
+    BEQ.S   .LAB_0979
     TST.L   LAB_1EE1
-    BNE.S   LAB_0979
+    BNE.S   .LAB_0979
     TST.W   LAB_2263
-    BNE.S   LAB_0979
+    BNE.S   .LAB_0979
     MOVE.W  LAB_22A9,D0
     ANDI.W  #$fffe,D0
     MOVE.W  D0,LAB_22A9
-LAB_0979:
+.LAB_0979:
     TST.L   LAB_1B25
-    BNE.S   LAB_097A
+    BNE.S   .LAB_097A
     TST.L   LAB_1B23
-    BEQ.S   LAB_097A
+    BEQ.S   .LAB_097A
     CLR.L   -(A7)
     JSR     LAB_09F9(PC)
     ADDQ.W  #4,A7
-LAB_097A:
+.LAB_097A:
     CMPI.L  #$00000001,LAB_1B28
-    BGE.S   LAB_097B
+    BGE.S   .LAB_097B
     CLR.L   -(A7)
     JSR     LAB_0A76(PC)
     ADDQ.W  #4,A7
-    BRA.S   LAB_097C
-LAB_097B:
+    BRA.S   .LAB_097C
+.LAB_097B:
     MOVE.B  LAB_1DD6,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_097C
+    BEQ.S   .LAB_097C
     CMPI.L  #$00000002,LAB_1B27
-    BGE.S   LAB_097C
+    BGE.S   .LAB_097C
     TST.W   LAB_2263
-    BNE.S   LAB_097C
+    BNE.S   .LAB_097C
     PEA     1.W
     JSR     LAB_0A76(PC)
     ADDQ.W  #4,A7
-LAB_097C:
+.LAB_097C:
     JSR     LAB_09BE(PC)
     TST.B   LAB_1E89
-    BEQ.S   LAB_097D
+    BEQ.S   .return
     TST.B   LAB_1FA9
-    BNE.S   LAB_097D
+    BNE.S   .return
     CLR.B   LAB_1E89
     JSR     LAB_08DE(PC)
-LAB_097D:
+.return:
     RTS
 
 ;!======
 
 LAB_097E:
     TST.W   LAB_1DE5
-    BEQ.S   LAB_097F
+    BEQ.S   .return
     BSR.W   LAB_0970
-LAB_097F:
+.return:
     RTS
 
 ;!======
 
     JSR     LAB_08C2(PC)
     TST.W   LAB_2264
-    BEQ.S   LAB_0980
+    BEQ.S   .LAB_0980
     JSR     LAB_09B3(PC)
-LAB_0980:
+.LAB_0980:
     JSR     LAB_09BE(PC)
     RTS
 
@@ -27607,6 +27609,7 @@ LAB_0990:
 
 ;!======
 
+; draw the screen showing available memory
 LAB_0991:
     LINK.W  A5,#-80
     MOVEM.L D2-D7,-(A7)
@@ -27616,13 +27619,16 @@ LAB_0991:
     MOVE.L  #LAB_221B,4(A0)
     TST.W   LAB_2252
     BEQ.W   LAB_0998
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L LAB_2217,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
+
     MOVE.W  LAB_226A,D0
     BNE.W   LAB_0997
     MOVEQ   #0,D0
@@ -27631,59 +27637,70 @@ LAB_0991:
     EXT.L   D1
     MOVE.W  LAB_2287,D2
     EXT.L   D2
+
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_1EA0
+    PEA     GLOB_STR_DATA_CMDS_CERRS_LERRS
     PEA     -72(A5)
     JSR     JMP_TBL_PRINTF_0(PC)
+
     PEA     -72(A5)
     PEA     112.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+
     MOVEQ   #0,D0
     MOVE.W  LAB_2347,D0
     MOVE.W  LAB_2348,D1
     EXT.L   D1
     MOVE.W  LAB_2349,D2
     EXT.L   D2
+
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_1EA1
+    PEA     GLOB_STR_CTRL_CMDS_CERRS_LERRS
     PEA     -72(A5)
     JSR     JMP_TBL_PRINTF_0(PC)
+
     PEA     -72(A5)
     PEA     142.W
     PEA     40.W
     MOVE.L  LAB_2217,-(A7)
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     68(A7),A7
     MOVEQ   #7,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #7,D0
-    BNE.S   LAB_0992
-    MOVE.L  #$00020002,D1
-    MOVEA.L AbsExecBase,A6
+    BNE.S   .LAB_0992
+
+    MOVE.L  #$00020002,D1       ; Attributes: 0x20000 = Largest
+    MOVEA.L AbsExecBase,A6      ; so 0x20002 = Largest | Chip
     JSR     _LVOAvailMem(A6)
     MOVE.L  D0,D7
-    MOVEQ   #4,D1
+
+    MOVEQ   #4,D1               ; Attributes: 0x4 = Fast
     JSR     _LVOAvailMem(A6)
     MOVE.L  D0,D6
-    MOVEQ   #2,D1
+
+    MOVEQ   #2,D1               ; Attributes: 0x2 = Chip
     SWAP    D1
     JSR     _LVOAvailMem(A6)
     MOVE.L  D0,D5
+
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
-    PEA     LAB_1EA2
+    PEA     GLOB_STR_L_CHIP_FAST_MAX
     PEA     -72(A5)
     JSR     JMP_TBL_PRINTF_0(PC)
+
     LEA     20(A7),A7
     BRA.W   LAB_0996
-LAB_0992:
+.LAB_0992:
     MOVEQ   #1,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #1,D0
@@ -77805,11 +77822,11 @@ GLOB_STR_PUSH_ANY_KEY_TO_CONTINUE_1:
     NStr    "Push any key to continue."
 
 ; Strings for: ESC -> Diagnostic Mode
-LAB_1EA0:
+GLOB_STR_DATA_CMDS_CERRS_LERRS:
     NStr    "DATA: Cmds:%08ld CErrs:%03ld LErrs:%03ld"
-LAB_1EA1:
+GLOB_STR_CTRL_CMDS_CERRS_LERRS:
     NStr    "CTRL: Cmds:%08ld CErrs:%03ld LErrs:%03ld"
-LAB_1EA2:
+GLOB_STR_L_CHIP_FAST_MAX:
     NStr    "L_CHIP:%7ld  FAST:%8ld  MAX:%8ld"
 LAB_1EA3:
     NStr    "CHIP:%7ld                             "
