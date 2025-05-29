@@ -12,13 +12,13 @@ LocalDosLibraryDisplacement = 22832
 
     SECTION S_0,CODE
 
-SECSTRT_0:
+SECSTRT_0:                      ; PC: 0021EE58
     MOVEM.L D1-D6/A0-A6,-(A7)   ; Backup registers to the stack
     MOVEA.L A0,A2               ; A0 is a pointer to the command string at startup, copy to A2
     MOVE.L  D0,D2               ; D0 is the length of the command string at startup, copy to D2
-    LEA     LAB_21BB,A4         ; Copy address of LAB_21BB into A4
-    MOVEA.L AbsExecBase.W,A6
-    LEA     BUFFER_5929_LONGWORDS,A3
+    LEA     LAB_21BB,A4         ; Copy address of LAB_21BB into A4 (0x3BB24) - 00017118
+    MOVEA.L AbsExecBase.W,A6            ; 00000004 but this address is dynamically translated at runtime to 002007a0 (confirmed by checking exec.library when dumping libs in fs-uae)
+    LEA     BUFFER_5929_LONGWORDS,A3    ; 00016e80
     MOVEQ   #0,D1
     MOVE.L  #5929,D0
     BRA.S   .5929BufferCounterCompare
@@ -26,25 +26,25 @@ SECSTRT_0:
     MOVE.L  D1,(A3)+            ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
 .5929BufferCounterCompare:
     DBF     D0,.copyByteFromD1To5929Buffer ; If our counter (D1) is not zero then jump to .copyByteFromD1To5929Buffer else continue
-    MOVE.L  A7,-600(A4)         ; Copy the current stack pointer to -600(A4)
-    MOVE.L  A6,-608(A4)         ; Copy A6 which should be AbsExecBase into -608(A4)
-    CLR.L   -604(A4)            ; Clear the long at -604(A4)
+    MOVE.L  A7,-600(A4)         ; Copy the current stack pointer to -600(A4) (0x3B8CC, a value within LAB_21AA)
+    MOVE.L  A6,-608(A4)         ; Copy A6 which should be AbsExecBase into -608(A4) (0x3B8C4, a value within LAB_21AA)
+    CLR.L   -604(A4)            ; Clear the long at -604(A4) (0x3B8C8, a value within LAB_21AA) - CLR.L (A4, -$025c) == $00016ebc
     MOVEQ   #0,D0               ; Old signal, 0x00000000 into D0
     MOVE.L  #$00003000,D1       ; New signal mask: 0x00003000 into D1
     JSR     _LVOSetSignal(A6)
-    LEA     LOCAL_STR_DOS_LIBRARY(PC),A1
+    LEA     LOCAL_STR_DOS_LIBRARY(PC),A1    ; LEA.L (PC,$0158) == $0021eff2,A1
 
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6) ; Open dos.library version 0 (any) locally...
-    MOVE.L  D0,LocalDosLibraryDisplacement(A4) ; and store it in a known location in memory (displacement + A4)
+    MOVE.L  D0,LocalDosLibraryDisplacement(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or GLOB_REF_DOS_LIBRARY_2
     BNE.S   .successfullyMadeLocalDOSLib
 
     MOVEQ   #100,D0             ; If it wasn't opened, set D0 to 100
     BRA.W   LAB_000A            ; and jump to LAB_000A
 .successfullyMadeLocalDOSLib:
-    MOVEA.L 276(A6),A3          ; A6 is AbsExecBase so is this 280?
-    MOVE.L  152(A3),-612(A4)    ; A3 points to BUFFER_5929_LONGWORDS
-    TST.L   172(A3)
+    MOVEA.L 276(A6),A3          ; A6 002007a0 + 276 = 002008b4 into A3 - MOVEA.L (A6, $0114) == $002008b4,A3
+    MOVE.L  152(A3),-612(A4)    ; wrong: Move the value at A3 002008b4 + 152 = 00200A06 -- -612(A4) - MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4
+    TST.L   172(A3)             ; wrong: Then we test the value at A3 002008b4 + 172 = 00200960 - TST.L (A3, $00ac) == $0021e184 [PC: 0021EEB8]
     BEQ.S   .LAB_0005
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
@@ -4198,14 +4198,39 @@ LAB_01AB:
 
 ;!======
 
+; IORequest: https://github.com/prb28/vscode-amiga-assembly/blob/master/docs/libs/exec/_0094.md
+
+; struct IORequest {
+;     struct Message {
+;         struct Node {
+;             struct  Node *ln_Succ;        /* Pointer to next (successor) -- bytes 0-3 */
+;             struct  Node *ln_Pred;        /* Pointer to previous (predecessor) - bytes 4-7 */
+;             UBYTE   ln_Type;              /* http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0091.html#line43 - byte 8 */
+;             BYTE    ln_Pri;               /* Priority, for sorting - byte 9 */
+;             char    *ln_Name;             /* ID string, null terminated - byte 10 */
+;         };                                /* Note: word aligned - null byte 11? */
+;         struct  MsgPort *mn_ReplyPort;    /* message reply port - bytes 12-15 */
+;         UWORD   mn_Length;                /* total message length, in bytes - bytes 16-17 */
+;     }                                     /* (include the size of the Message structure in the length) */
+;     struct  Device  *io_Device;           /* device node pointer - bytes 18-21 */
+;     struct  Unit    *io_Unit;             /* unit (driver private) - bytes 22-25 */
+;     UWORD   io_Command;                   /* device command - bytes 26-27 */
+;     UBYTE   io_Flags;                     /* byte 28 */
+;     BYTE    io_Error;                     /* error or warning num - byte 29 */
+; }
+
 LAB_01AC:
     MOVEA.L GLOB_REF_IOREQUEST_STRUCT_INPUT_DEVICE,A0
-    MOVE.W  #$000a,28(A0)
+    MOVE.W  #$000a,28(A0)   ; 
+
     MOVEA.L GLOB_REF_IOREQUEST_STRUCT_INPUT_DEVICE,A0
-    MOVE.L  LAB_2314,40(A0)
+    MOVE.L  LAB_2314,40(A0) ; 
+
     MOVEA.L GLOB_REF_IOREQUEST_STRUCT_INPUT_DEVICE,A1
+
     MOVEA.L AbsExecBase,A6
     JSR     _LVODoIO(A6)
+
     PEA     22.W
     MOVE.L  LAB_2314,-(A7)
     PEA     127.W
@@ -4214,8 +4239,10 @@ LAB_01AC:
     MOVEA.L GLOB_REF_IOREQUEST_STRUCT_INPUT_DEVICE,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseDevice(A6)
+
     MOVEA.L GLOB_REF_IOREQUEST_STRUCT_CONSOLE_DEVICE,A1
     JSR     _LVOCloseDevice(A6)
+
     MOVE.L  LAB_2316,(A7)
     JSR     LAB_0465(PC)
     MOVE.L  LAB_2317,(A7)
@@ -71913,15 +71940,15 @@ LAB_1984:
 LAB_1985:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
-LAB_1986:
+.LAB_1986:
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
     LEA     -1007(A4),A0
     BTST    #3,0(A0,D0.L)
-    BEQ.S   LAB_1987
+    BEQ.S   .LAB_1987
     ADDQ.L  #1,A3
-    BRA.S   LAB_1986
-LAB_1987:
+    BRA.S   .LAB_1986
+.LAB_1987:
     MOVE.L  A3,D0
     MOVEA.L (A7)+,A3
     RTS
@@ -72005,19 +72032,19 @@ LAB_198F:
     MOVE.L  8(A7),D0
     MOVEA.L 4(A7),A0
     LEA     4(A7),A1
-LAB_1990:
+.LAB_1990:
     MOVE.W  D0,D1
     ANDI.W  #$000f,D1
     MOVE.B  LAB_198E(PC,D1.W),(A1)+
     LSR.L   #4,D0
-    BNE.S   LAB_1990
+    BNE.S   .LAB_1990
     MOVE.L  A1,D0
     MOVE.L  A7,D1
     ADDQ.L  #4,D1
-LAB_1991:
+.LAB_1991:
     MOVE.B  -(A1),(A0)+
     CMP.L   A1,D1
-    BNE.S   LAB_1991
+    BNE.S   .LAB_1991
     CLR.B   (A0)
     SUB.L   D1,D0
     RTS
@@ -72031,10 +72058,10 @@ LAB_1992:
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
     CMPI.B  #$2b,(A0)
-    BEQ.S   LAB_1993
+    BEQ.S   .LAB_1993
     CMPI.B  #$2d,(A0)
     BNE.S   LAB_1994
-LAB_1993:
+.LAB_1993:
     ADDQ.W  #1,A0
 LAB_1994:
     MOVE.B  (A0)+,D0
@@ -73175,6 +73202,7 @@ LAB_1A0C:
 ; Allocate memory for an IORequest?
 LAB_1A13:
     MOVEM.L A2-A3/A6,-(A7)
+
     MOVEA.L 16(A7),A3           ; Pass address 16(A7) to A3 [look up if there's an easier way to ref these]
     MOVE.L  A3,D0               ; ...then move it to D0
     BNE.S   .a3NotZero          ; If it's not 0, jump.
