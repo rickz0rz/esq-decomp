@@ -42,8 +42,8 @@ SECSTRT_0:                      ; PC: 0021EE58
     MOVEQ   #100,D0             ; If it wasn't opened, set D0 to 100
     BRA.W   LAB_000A            ; and jump to LAB_000A
 .successfullyMadeLocalDOSLib:
-    MOVEA.L 276(A6),A3          ; A6 002007a0 + 276 = 002008b4 into A3 - MOVEA.L (A6, $0114) == $002008b4,A3
-    MOVE.L  152(A3),-612(A4)    ; wrong: Move the value at A3 002008b4 + 152 = 00200A06 -- -612(A4) - MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4
+    MOVEA.L 276(A6),A3          ; A6 002007a0 + 276 = 002008b4 into A3 - MOVEA.L (A6, $0114) == $002008b4,A3 -- where is this coming from? Just an arbitrary fast-ram location? --- 002008B4 0021 E0D8 0000 012B 0000 0818 0004 0003
+    MOVE.L  152(A3),-612(A4)    ; wrong: Move the value at A3 002008b4 + 152 = 00200A06 -- -612(A4) - MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4 [0021EEB2]
     TST.L   172(A3)             ; wrong: Then we test the value at A3 002008b4 + 172 = 00200960 - TST.L (A3, $00ac) == $0021e184 [PC: 0021EEB8]
     BEQ.S   .LAB_0005
     MOVE.L  A7,D0
