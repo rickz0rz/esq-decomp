@@ -42,9 +42,13 @@ SECSTRT_0:                      ; PC: 0021EE58
     MOVEQ   #100,D0             ; If it wasn't opened, set D0 to 100
     BRA.W   LAB_000A            ; and jump to LAB_000A
 .successfullyMadeLocalDOSLib:
-    MOVEA.L 276(A6),A3          ; A6 002007a0 + 276 = 002008b4 into A3 - MOVEA.L (A6, $0114) == $002008b4,A3 -- where is this coming from? Just an arbitrary fast-ram location? --- 002008B4 0021 E0D8 0000 012B 0000 0818 0004 0003
-    MOVE.L  152(A3),-612(A4)    ; wrong: Move the value at A3 002008b4 + 152 = 00200A06 -- -612(A4) - MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4 [0021EEB2]
-    TST.L   172(A3)             ; wrong: Then we test the value at A3 002008b4 + 172 = 00200960 - TST.L (A3, $00ac) == $0021e184 [PC: 0021EEB8]
+    ; This is wild. So 276(A6) is apparently a pointer to ThisTask (see: http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0551.html
+    ; and http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node009E.html) ... so the pointer to ThisTask gets pushed into A3, and then
+    ; offset 152 on ThisTask ( http://amigadev.elowar.com/read/ADCD_2.1/Libraries_Manual_guide/node02BB.html ) points to _some_ field... is it the stack pointer
+    ; or something? Need to work on this...
+    MOVEA.L 276(A6),A3          ; A6 002007a0 + 276 = 002008b4 (ThisTask pointer) into A3: MOVEA.L (A6, $0114) == $002008b4,A3
+    MOVE.L  152(A3),-612(A4)    ; Move the address at A3 002008b4 + 152 = 00200A06 and move it's value in to -612(A4): MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4 [0021EEB2]
+    TST.L   172(A3)             ; Then we test the value at A3 002008b4 + 172 = 00200960: TST.L (A3, $00ac) == $0021e184 [0021EEB8]
     BEQ.S   .LAB_0005
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
