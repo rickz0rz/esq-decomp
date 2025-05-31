@@ -29210,31 +29210,38 @@ LAB_0A0B:
     MOVEM.L D2-D3/D6-D7,-(A7)
     MOVE.L  20(A7),D7
     TST.W   LAB_1B83
-    BEQ.W   LAB_0A13
+    BEQ.W   .return
+
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.W   LAB_0A10
+    BNE.W   .LAB_0A10
+
     MOVE.B  LAB_1DD6,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.W   LAB_0A10
+    BEQ.W   .LAB_0A10
     TST.L   LAB_2319
-    BNE.W   LAB_0A10
+    BNE.W   .LAB_0A10
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
+
     CLR.L   -(A7)
+
     PEA     LAB_1ED2
     JSR     LAB_0AA4(PC)
+
     ADDQ.W  #8,A7
+
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_1B27
     CLR.W   LAB_22AD
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
+
     TST.L   LAB_1EE1
-    BEQ.S   LAB_0A0C
+    BEQ.S   .LAB_0A0C
     TST.L   LAB_1EE0
-    BEQ.S   LAB_0A0C
+    BEQ.S   .LAB_0A0C
     MOVE.L  LAB_1EE0,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
@@ -29242,74 +29249,92 @@ LAB_0A0B:
     PEA     882.W
     PEA     LAB_1EEF
     JSR     LAB_0A9F(PC)
+
     LEA     16(A7),A7
-LAB_0A0C:
+
+.LAB_0A0C:
     CLR.L   LAB_1EE1
     CLR.L   LAB_1EE0
 
-    PEA     1005.W
+    PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_GFX_G_ADS,-(A7)
     JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BLE.S   LAB_0A0E
+    BLE.S   .LAB_0A0E
     MOVE.L  D6,-(A7)
     JSR     LAB_0A98(PC)
+
     ADDQ.W  #4,A7
     MOVE.L  D0,LAB_1EE0
     TST.L   D0
-    BLE.S   LAB_0A0D
+    BLE.S   .LAB_0A0D
+
     ADDQ.L  #1,D0
     PEA     1.W
     MOVE.L  D0,-(A7)
     PEA     898.W
     PEA     LAB_1EF0
     JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
+
     LEA     16(A7),A7
+
     MOVE.L  D0,LAB_1EE1
     MOVE.L  D6,D1
     MOVE.L  D0,D2
     MOVE.L  LAB_1EE0,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
+
     CMP.L   LAB_1EE0,D0
-    BNE.S   LAB_0A0D
+    BNE.S   .LAB_0A0D
+
     MOVE.W  LAB_22A9,D0
     ORI.W   #$0001,D0
     MOVE.W  D0,LAB_22A9
-LAB_0A0D:
+
+.LAB_0A0D:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
-LAB_0A0E:
+
+.LAB_0A0E:
     TST.W   LAB_2294
-    BEQ.S   LAB_0A0F
+    BEQ.S   .LAB_0A0F
+
     MOVE.W  #$0001,LAB_22AD
-    BRA.S   LAB_0A10
-LAB_0A0F:
+    BRA.S   .LAB_0A10
+
+.LAB_0A0F:
     CLR.W   LAB_22AD
-LAB_0A10:
+
+.LAB_0A10:
     TST.L   D7
-    BNE.W   LAB_0A13
+    BNE.W   .return
     TST.L   LAB_2318
-    BNE.W   LAB_0A13
+    BNE.W   .return
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
+
     CLR.L   -(A7)
     PEA     LAB_1ED3
     JSR     LAB_0AA4(PC)
+
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_1B28
     CLR.W   LAB_22AC
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
+
     TST.L   LAB_1EE3
-    BEQ.S   LAB_0A11
+    BEQ.S   .LAB_0A11
+
     TST.L   LAB_1EE2
-    BEQ.S   LAB_0A11
+    BEQ.S   .LAB_0A11
+
     MOVE.L  LAB_1EE2,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
@@ -29317,29 +29342,35 @@ LAB_0A10:
     PEA     963.W
     PEA     LAB_1EF1
     JSR     LAB_0A9F(PC)
+
     LEA     16(A7),A7
-LAB_0A11:
+
+.LAB_0A11:
     CLR.L   LAB_1EE3
     CLR.L   LAB_1EE2
-    PEA     1005.W
+    PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_DF0_LOGO_LST,-(A7)
     JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE(PC)
+
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BLE.S   LAB_0A13
+    BLE.S   .return
     MOVE.L  D6,-(A7)
     JSR     LAB_0A98(PC)
+
     ADDQ.W  #4,A7
     MOVE.L  D0,LAB_1EE2
     TST.L   D0
-    BLE.S   LAB_0A12
+    BLE.S   .LAB_0A12
     ADDQ.L  #1,D0
+
     PEA     1.W
     MOVE.L  D0,-(A7)
     PEA     979.W
-    PEA     LAB_1EF2
+    PEA     GLOB_STR_ESQIFF_C_6
     JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1EE3
     MOVE.L  D6,D1
@@ -29347,16 +29378,20 @@ LAB_0A11:
     MOVE.L  LAB_1EE2,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
+
     CMP.L   LAB_1EE2,D0
-    BNE.S   LAB_0A12
+    BNE.S   .LAB_0A12
+
     MOVE.W  LAB_22A9,D0
     ORI.W   #$0002,D0
     MOVE.W  D0,LAB_22A9
-LAB_0A12:
+
+.LAB_0A12:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
-LAB_0A13:
+
+.return:
     MOVEM.L (A7)+,D2-D3/D6-D7
     RTS
 
@@ -78070,7 +78105,7 @@ LAB_1EF0:
     NStr    "ESQIFF.c"
 LAB_1EF1:
     NStr    "ESQIFF.c"
-LAB_1EF2:
+GLOB_STR_ESQIFF_C_6:
     NStr    "ESQIFF.c"
 LAB_1EF3:
     NStr    "df0:"
