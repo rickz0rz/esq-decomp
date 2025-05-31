@@ -5465,7 +5465,7 @@ LAB_0206:
     LINK.W  A5,#-36
     MOVEM.L D2-D3/D5-D7,-(A7)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVE.W  LAB_2274,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -5579,7 +5579,7 @@ LAB_0209:
     MOVEM.L D2-D3,-(A7)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -5619,7 +5619,7 @@ LAB_020A:
     MOVEM.L D2-D3,-(A7)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -5658,7 +5658,7 @@ LAB_020B:
     MOVEM.L D2-D3,-(A7)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -5697,7 +5697,7 @@ LAB_020C:
     MOVEM.L D2-D3,-(A7)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -6481,7 +6481,7 @@ LAB_0263:
     MOVE.L  A0,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
-    PEA     LAB_2219
+    PEA     GLOB_REF_320_240_BITMAP
     JSR     LAB_026C(PC)
     JSR     LAB_026A(PC)
 LAB_0264:
@@ -20106,7 +20106,7 @@ LAB_070E:
     MOVEA.L GLOB_HANDLE_H26F_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
-    LEA     LAB_221B,A0
+    LEA     GLOB_REF_696_400_BITMAP,A0
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVE.L  A0,4(A1)
     MOVEQ   #3,D0
@@ -20236,7 +20236,7 @@ LAB_0713:
 
     CLR.W   LAB_1B85
 
-    LEA     LAB_221B,A0
+    LEA     GLOB_REF_696_400_BITMAP,A0
     MOVEQ   #3,D0
     MOVE.L  #696,D1
     MOVE.L  #400,D2
@@ -21267,7 +21267,7 @@ LAB_076E:
     MOVE.L  A0,-(A7)
     JSR     LAB_07D2(PC)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVE.L  GLOB_REF_RASTPORT_1,(A7)
     JSR     LAB_07D2(PC)
     ADDQ.W  #4,A7
@@ -21608,7 +21608,7 @@ LAB_0794:
     BRA.S   LAB_0799
 LAB_0795:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVE.L  LAB_2267,-(A7)
     PEA     LAB_1D69
     PEA     -50(A5)
@@ -21641,7 +21641,7 @@ LAB_0799:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -24448,7 +24448,7 @@ LAB_085E:
     JSR     _LVOInitRastPort(A6)    ; In the memory we have, initialize a RastPort struct
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)         ; #LAB_221B into address of the rastport #1 bitmap
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)         ; #GLOB_REF_696_400_BITMAP into address of the rastport #1 bitmap
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -24471,8 +24471,8 @@ LAB_085E:
 .LAB_086E:
     MOVE.L  #$00010001,-(A7)
     PEA     100.W
-    PEA     645.W
-    PEA     GLOB_STR_ESQ_C_2
+    PEA     645.W               ; What is the 645 ...
+    PEA     GLOB_STR_ESQ_C_2    ; and "esq.c" reference for? Line number?
     JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
 
     LEA     16(A7),A7
@@ -24483,7 +24483,7 @@ LAB_085E:
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_2,A0
-    MOVE.L  #LAB_2219,4(A0)         ; #LAB_2219 into address of the rastport #2 bitmap
+    MOVE.L  #GLOB_REF_320_240_BITMAP,4(A0)      ; #GLOB_REF_320_240_BITMAP into GLOB_REF_RASTPORT_2.BitMap
 
     MOVEA.L GLOB_REF_RASTPORT_2,A1
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -24506,7 +24506,7 @@ LAB_085E:
     BRA.S   .LAB_086F
 
 .LAB_0870:
-    LEA     LAB_2219,A0     ; bm struct pointer
+    LEA     GLOB_REF_320_240_BITMAP,A0     ; BitMap struct pointer
     MOVEQ   #4,D0           ; depth: 4 bitplanes or 16 colors (2 ^ 4) into D0
     MOVE.L  #352,D1         ; width: 352 into D1
     MOVEQ   #120,D2         ; height: 120 into D2
@@ -24527,7 +24527,7 @@ LAB_085E:
     PEA     240.W
     PEA     352.W
     PEA     668.W
-    PEA     LAB_1E03
+    PEA     GLOB_STR_ESQ_C_3
     MOVE.L  A0,44(A7)
     JSR     LAB_08E1(PC)
     LEA     16(A7),A7
@@ -24561,7 +24561,7 @@ LAB_085E:
     MOVE.L  #$00010001,-(A7)
     PEA     34.W
     PEA     683.W
-    PEA     LAB_1E04
+    PEA     GLOB_STR_ESQ_C_4
     JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
 
     LEA     16(A7),A7
@@ -24584,7 +24584,7 @@ LAB_085E:
     MOVE.L  #$00010001,(A7)
     PEA     34.W
     PEA     698.W
-    PEA     LAB_1E05
+    PEA     GLOB_STR_ESQ_C_5
     JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
 
     LEA     16(A7),A7
@@ -24668,7 +24668,7 @@ LAB_085E:
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L 0(A3,D0.L),A0
-    LEA     LAB_1E06,A1
+    LEA     GLOB_STR_CART,A1
 .LAB_087A:
     MOVE.B  (A0)+,D1
     CMP.B   (A1)+,D1
@@ -24699,17 +24699,20 @@ LAB_085E:
     MOVE.L  #2400,D0
     MOVE.L  D0,GLOB_REF_BAUD_RATE
     BRA.S   .LAB_087E
+
 .LAB_087D:
     MOVE.L  #2400,GLOB_REF_BAUD_RATE
-.LAB_087E:
-    MOVE.L  #$00010001,-(A7)                    ; 65537
-    PEA     9000.W
-    PEA     854.W
-    PEA     LAB_1E07
-    JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
 
+.LAB_087E:
+    MOVE.L  #$00010001,-(A7)                    ; flags
+    PEA     9000.W                              ; 9000 bytes
+    PEA     854.W                               ; ?
+    PEA     GLOB_STR_ESQ_C_6                    ; esq.c
+    JSR     JMP_TBL_ALLOCATE_MEMORY(PC)
     MOVE.L  D0,LAB_229A
+
     CLR.L   (A7)
+
     PEA     GLOB_STR_SERIAL_READ
     JSR     LAB_089C(PC)
 
@@ -24735,7 +24738,7 @@ LAB_085E:
     
     MOVE.L  D0,D6                       ; Copy D0 into D6
     TST.L   D6                          ; Test D6 to see if it's 0 (failed)
-    BNE.W   .return                   ; Branch if unable to open serial device
+    BNE.W   .return                     ; Branch if unable to open serial device
 
     MOVEA.L LAB_2211,A0
     MOVE.B  #$10,79(A0)
@@ -24759,27 +24762,28 @@ LAB_085E:
 
     JSR     LAB_0963(PC)
 
-    ; step through this to see if the params are all being used...
-    PEA     1.W
-    PEA     96.W
-    PEA     984.W
-    PEA     LAB_1E0A        ; ESQ.c
-    JSR     JMP_TBL_ALLOCATE_MEMORY(PC)    ; allocmem thing?
+    PEA     1.W                             ; attribs
+    PEA     96.W                            ; 96 bytes
+    PEA     984.W                           ; ??
+    PEA     GLOB_STR_ESQ_C_7                        ; ESQ.c
+    JSR     JMP_TBL_ALLOCATE_MEMORY(PC)     ; Allocate some memory
 
     LEA     16(A7),A7
-    MOVE.L  D0,LAB_2215
-    LEA     LAB_221B,A0
-    MOVEQ   #3,D0
-    MOVE.L  #$000002b8,D1
-    MOVE.L  #$00000190,D2
+
+    MOVE.L  D0,LAB_2215                     ; whatever was allocated above
+
+    LEA     GLOB_REF_696_400_BITMAP,A0
+    MOVEQ   #3,D0       ; 3 bitplanes
+    MOVE.L  #696,D1     ; 696 w
+    MOVE.L  #400,D2     ; 400 h
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
-    LEA     LAB_2223,A0
-    MOVEQ   #4,D0
-    MOVE.L  #$000002b8,D1
-    MOVEQ   #14,D2
-    NOT.B   D2
+    LEA     GLOB_REF_696_241_BITMAP,A0
+    MOVEQ   #4,D0       ; 4 bitplanes
+    MOVE.L  #696,D1     ; 696 w
+    MOVEQ   #14,D2      ; 14 h
+    NOT.B   D2          ; Flip last byte of D2 means D2 is now 241 h
     JSR     _LVOInitBitMap(A6)
 
     MOVEQ   #0,D5
@@ -25018,7 +25022,7 @@ LAB_085E:
     JSR     _LVORectFill(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_2223,4(A0)
+    MOVE.L  #GLOB_REF_696_241_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
 
     MOVEQ   #7,D0
@@ -25034,7 +25038,7 @@ LAB_085E:
     JSR     _LVORectFill(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -25580,7 +25584,7 @@ LAB_08C9:
     EXT.W   D5
     EXT.L   D5
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEQ   #7,D0
     CMP.L   D0,D7
     BEQ.S   LAB_08CA
@@ -26550,7 +26554,7 @@ LAB_0931:
 LAB_0932:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     JSR     LAB_09B5(PC)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
@@ -27664,7 +27668,7 @@ LAB_0991:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-76(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     TST.W   LAB_2252
     BEQ.W   LAB_0998
 
@@ -31598,7 +31602,7 @@ LAB_0B23:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     CLR.W   LAB_2252
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
@@ -31703,7 +31707,7 @@ LAB_0B2A:
     JSR     _LVOEnable(A6)
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-138(A5)
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     CLR.W   LAB_2252
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
@@ -33518,7 +33522,7 @@ LAB_0BBC:
     BNE.S   LAB_0BC0
     MOVE.W  #$5208,LAB_2363
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
 LAB_0BBD:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEA.L 52(A1),A0
@@ -39727,7 +39731,7 @@ LAB_0DC6:
     PEA     98.W
     MOVE.L  LAB_1FA8,-(A7)
     PEA     LAB_1E2B
-    PEA     LAB_221B
+    PEA     GLOB_REF_696_400_BITMAP
     BSR.W   LAB_0DB6
     MOVEQ   #88,D0
     ADD.L   LAB_2307,D0
@@ -39735,7 +39739,7 @@ LAB_0DC6:
     PEA     98.W
     MOVE.L  LAB_1FA8,-(A7)
     PEA     LAB_1E58
-    PEA     LAB_221B
+    PEA     GLOB_REF_696_400_BITMAP
     BSR.W   LAB_0DB6
     LEA     36(A7),A7
     MOVE.L  LAB_2308,D0
@@ -40450,7 +40454,7 @@ LAB_0DE8:
     MOVE.L  LAB_2307,-(A7)
     PEA     2992.W
     PEA     LAB_1E2B
-    PEA     LAB_221B
+    PEA     GLOB_REF_696_400_BITMAP
     BSR.W   LAB_0DE7
     MOVE.B  D7,-1(A5)
     MOVEQ   #88,D0
@@ -40465,7 +40469,7 @@ LAB_0DE8:
     MOVE.L  D0,-(A7)
     PEA     3080.W
     PEA     LAB_1E58
-    PEA     LAB_221B
+    PEA     GLOB_REF_696_400_BITMAP
     BSR.W   LAB_0DE7
     BSR.W   LAB_0DBC
     MOVE.W  #$0001,LAB_1D31
@@ -45214,7 +45218,7 @@ LAB_0FA4:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
     MOVEA.L LAB_1FFC,A0
-    MOVE.L  #LAB_221B,4(A0)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L LAB_1FFC,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -73228,7 +73232,7 @@ LAB_1A13:
     MOVE.L  A3,D0               ; ...then move it to D0
     BNE.S   .a3NotZero          ; If it's not 0, jump.
     MOVEQ   #0,D0               ; Set D0 to 0
-    BRA.S   .endOfSubRoutine    ; ... and terminate.
+    BRA.S   .return             ; ... and terminate.
 .a3NotZero:
     MOVEQ   #48,D0              ; 48 bytes .. size of IORequest struct?
     MOVE.L  #$00010001,D1       ; flags
@@ -73242,7 +73246,7 @@ LAB_1A13:
     MOVE.L  A3,14(A2)           ; manual bit and value manipulation to.
 .LAB_1A15:
     MOVE.L  A2,D0               ; Copy value A2 to D0
-.endOfSubRoutine:
+.return:
     MOVEM.L (A7)+,A2-A3/A6
     RTS
 
@@ -73262,7 +73266,7 @@ LAB_1A17:
     CMPI.B  #$ff,D6             ; compare the signal with ff or -1
     BNE.S   .LAB_1A18           ; if it's not equal, jump
     MOVEQ   #0,D0               ; put 0 in D0
-    BRA.S   .LAB_1A1C           ; jump to the end of this
+    BRA.S   .return             ; jump to the end of this
 .LAB_1A18:
     MOVEQ   #34,D0              ; 34 bytes
     MOVE.L  #$00010001,D1       ; flags ... break this down...?
@@ -73301,7 +73305,8 @@ LAB_1A17:
 
 .LAB_1A1B:
     MOVE.L  A2,D0                   ; Move A2 into D0 for consumption
-.LAB_1A1C:
+
+.return:
     MOVEM.L (A7)+,D6-D7/A2-A3/A6
     RTS
 
@@ -73331,12 +73336,12 @@ LAB_1A1D:
     LEA     22492(A4),A0
     ADDA.L  D0,A0
     MOVE.L  A0,D0
-    BRA.S   .LAB_1A1F
+    BRA.S   .return
 .LAB_1A1E:
     MOVEQ   #9,D0
     MOVE.L  D0,22828(A4)
     MOVEQ   #0,D0
-.LAB_1A1F:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -73354,7 +73359,7 @@ LAB_1A20:
     MOVE.L  A3,D0
     BNE.S   .LAB_1A21
     MOVEQ   #0,D0
-    BRA.S   .LAB_1A22
+    BRA.S   .return
 .LAB_1A21:
     MOVE.L  A3,-(A7)
     JSR     LAB_1985(PC)
@@ -73363,7 +73368,7 @@ LAB_1A20:
     MOVE.L  A3,-(A7)
     JSR     LAB_1992(PC)
     MOVE.L  -4(A5),D0
-.LAB_1A22:
+.return:
     MOVEA.L -8(A5),A3
     UNLK    A5
     RTS
@@ -73375,10 +73380,10 @@ LAB_1A23:
     MOVE.L  A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  A3,D0
-    BNE.S   LAB_1A24
+    BNE.S   .LAB_1A24
     MOVEQ   #0,D0
-    BRA.S   LAB_1A25
-LAB_1A24:
+    BRA.S   .return
+.LAB_1A24:
     MOVE.L  A3,-(A7)
     JSR     LAB_1985(PC)
     MOVEA.L D0,A3
@@ -73386,7 +73391,7 @@ LAB_1A24:
     MOVE.L  A3,-(A7)
     JSR     LAB_199A(PC)
     MOVE.L  -4(A5),D0
-LAB_1A25:
+.return:
     MOVEA.L -8(A5),A3
     UNLK    A5
     RTS
@@ -73396,17 +73401,17 @@ LAB_1A25:
 LAB_1A26:
     MOVEM.L A2-A3/A6,-(A7)
     MOVEA.L 22836(A4),A3
-LAB_1A27:
+.LAB_1A27:
     MOVE.L  A3,D0
-    BEQ.S   LAB_1A28
+    BEQ.S   .LAB_1A28
     MOVEA.L (A3),A2
     MOVEA.L A3,A1
     MOVE.L  8(A3),D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFreeMem(A6)
     MOVEA.L A2,A3
-    BRA.S   LAB_1A27
-LAB_1A28:
+    BRA.S   .LAB_1A27
+.LAB_1A28:
     SUBA.L  A0,A0
     MOVE.L  A0,22840(A4)
     MOVE.L  A0,22836(A4)
@@ -73418,18 +73423,22 @@ LAB_1A28:
 LAB_1A29:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVE.L  20(A7),D7
+
     MOVEQ   #12,D0
     ADD.L   D0,D7
     MOVE.L  D7,D0
     MOVEQ   #0,D1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocMem(A6)
+
     MOVEA.L D0,A3
     MOVE.L  A3,D0
-    BNE.S   LAB_1A2A
+    BNE.S   .LAB_1A2A
+
     MOVEQ   #0,D0
-    BRA.S   LAB_1A2E
-LAB_1A2A:
+    BRA.S   .return
+
+.LAB_1A2A:
     MOVE.L  D7,8(A3)
     LEA     22836(A4),A2
     MOVEA.L 4(A2),A0
@@ -73437,22 +73446,28 @@ LAB_1A2A:
     SUBA.L  A0,A0
     MOVE.L  A0,(A3)
     TST.L   (A2)
-    BNE.S   LAB_1A2B
+    BNE.S   .LAB_1A2B
     MOVE.L  A3,(A2)
-LAB_1A2B:
+
+.LAB_1A2B:
     TST.L   4(A2)
-    BEQ.S   LAB_1A2C
+    BEQ.S   .LAB_1A2C
+
     MOVEA.L 4(A2),A1
     MOVE.L  A3,(A1)
-LAB_1A2C:
+
+.LAB_1A2C:
     MOVE.L  A3,4(A2)
     TST.L   -1144(A4)
-    BNE.S   LAB_1A2D
+    BNE.S   .LAB_1A2D
+
     MOVE.L  A3,-1144(A4)
-LAB_1A2D:
+
+.LAB_1A2D:
     LEA     12(A3),A0
     MOVE.L  A0,D0
-LAB_1A2E:
+
+.return:
     MOVEM.L (A7)+,D7/A2-A3/A6
     RTS
 
@@ -73487,30 +73502,36 @@ LAB_1A2F:
 
 ;!======
 
+; dynamically allocate memory
 LAB_1A30:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7
     MOVE.L  A3,D0
-    BNE.S   LAB_1A31
+    BNE.S   .LAB_1A31
+
     MOVEQ   #0,D0
-    BRA.S   LAB_1A33
-LAB_1A31:
+    BRA.S   .return
+
+.LAB_1A31:
     MOVE.L  D7,D0
     MOVE.L  #$00010001,D1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocMem(A6)
     MOVEA.L D0,A2
     MOVE.L  A2,D0
-    BEQ.S   LAB_1A32
+    BEQ.S   .failedToAllocateMemory
+
     MOVE.B  #$05,8(A2)
     CLR.B   9(A2)
     MOVE.L  A3,14(A2)
     MOVE.L  D7,D0
     MOVE.W  D0,18(A2)
-LAB_1A32:
+
+.failedToAllocateMemory:
     MOVE.L  A2,D0
-LAB_1A33:
+
+.return:
     MOVEM.L (A7)+,D7/A2-A3/A6
     RTS
 
@@ -76932,21 +76953,21 @@ GLOB_STR_ESQ_C_1:
     NStr    "ESQ.c"
 GLOB_STR_ESQ_C_2:
     NStr    "ESQ.c"
-LAB_1E03:
+GLOB_STR_ESQ_C_3:
     NStr    "ESQ.c"
-LAB_1E04:
+GLOB_STR_ESQ_C_4:
     NStr    "ESQ.c"
-LAB_1E05:
+GLOB_STR_ESQ_C_5:
     NStr    "ESQ.c"
-LAB_1E06:
+GLOB_STR_CART:
     NStr    "CART"
-LAB_1E07:
+GLOB_STR_ESQ_C_6:
     NStr    "ESQ.c"
 GLOB_STR_SERIAL_READ:
     NStr    "Serial.Read"
 GLOB_STR_SERIAL_DEVICE:
     NStr    "serial.device"
-LAB_1E0A:
+GLOB_STR_ESQ_C_7:
     NStr    "ESQ.c"
 LAB_1E0B:
     NStr    "ESQ.c"
@@ -79959,11 +79980,11 @@ GLOB_REF_RASTPORT_1:
     DS.L    1
 GLOB_REF_RASTPORT_2:
     DS.L    1
-LAB_2219:
+GLOB_REF_320_240_BITMAP:
     DS.L    2
 LAB_221A:
     DS.L    8
-LAB_221B:
+GLOB_REF_696_400_BITMAP:
     DS.L    2
 LAB_221C:
     DS.L    1
@@ -79979,7 +80000,7 @@ LAB_2221:
     DS.L    1
 LAB_2222:
     DS.L    6
-LAB_2223:
+GLOB_REF_696_241_BITMAP:
     DS.L    2
 LAB_2224:
     DS.L    1
