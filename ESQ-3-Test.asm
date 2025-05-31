@@ -12729,7 +12729,7 @@ LAB_046A:
 LAB_046B:
     JMP     ALLOCATE_MEMORY
 LAB_046C:
-    JMP     LAB_190E
+    JMP     OPEN_FILE_WITH_ACCESS_MODE
 LAB_046D:
     JMP     LAB_14C6
 LAB_046E:
@@ -21170,7 +21170,7 @@ LAB_075E:
     CLR.L   -118(A5)
     PEA     1005.W
     PEA     LAB_1D5A
-    JSR     LAB_0AB1(PC)
+    JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE(PC)
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
@@ -29246,9 +29246,11 @@ LAB_0A0B:
 LAB_0A0C:
     CLR.L   LAB_1EE1
     CLR.L   LAB_1EE0
+
     PEA     1005.W
-    MOVE.L  LAB_1ED6,-(A7)
-    JSR     LAB_0AB1(PC)
+    MOVE.L  GLOB_PTR_STR_GFX_G_ADS,-(A7)
+    JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE(PC)
+
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
@@ -29321,7 +29323,7 @@ LAB_0A11:
     CLR.L   LAB_1EE2
     PEA     1005.W
     MOVE.L  GLOB_PTR_STR_DF0_LOGO_LST,-(A7)
-    JSR     LAB_0AB1(PC)
+    JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE(PC)
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
@@ -30572,8 +30574,8 @@ JMP_TBL_ALLOCATE_MEMORY:
     JMP     ALLOCATE_MEMORY
 LAB_0AB0:
     JMP     LAB_038E
-LAB_0AB1:
-    JMP     LAB_190E
+JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE:
+    JMP     OPEN_FILE_WITH_ACCESS_MODE
 LAB_0AB2:
     JMP     LAB_0071
 LAB_0AB3:
@@ -71062,14 +71064,16 @@ LAB_190D:
 
 ;!======
 
-LAB_190E:
+OPEN_FILE_WITH_ACCESS_MODE:
     MOVEM.L D2/D6-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7
+
     MOVE.L  A3,D1
     MOVE.L  D7,D2
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOOpen(A6)
+
     MOVE.L  D0,D6
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D2/D6-D7/A3
@@ -76787,7 +76791,7 @@ GLOB_STR_PREVUEC_FONT:
     NStr    "PrevueC.font"
 GLOB_STRUCT_TEXTATTR_PREVUEC_FONT:
     DC.L    GLOB_STR_PREVUEC_FONT
-    DC.W    $0019   ; Size 25 font
+    DC.W    25      ; Size 25 font
     DC.B    $40
     DC.B    $20
 
@@ -76795,15 +76799,15 @@ GLOB_STR_H26F_FONT:
     NStr    "h26f.font"
 GLOB_STRUCT_TEXTATTR_H26F_FONT:
     DC.L    GLOB_STR_H26F_FONT
-    DC.W    $001a   ; Size 26 font
-    DC.B    0      ; Style: 0 (Normal)
-    DC.B    0      ; Flags: 0 (Normal)
+    DC.W    26      ; Size 26 font
+    DC.B    0       ; Style: 0 (Normal)
+    DC.B    0       ; Flags: 0 (Normal)
 
 GLOB_STR_TOPAZ_FONT:
     NStr    "topaz.font"
 GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
     DC.L    GLOB_STR_TOPAZ_FONT
-    DC.W    $0008   ; Size 8 font
+    DC.W    8      ; Size 8 font
     DC.B    0      ; Style: 0 (Normal)
     DC.B    1      ; Flags: 1 (FPB_DISKFONT from font.library)
 
@@ -76811,7 +76815,7 @@ GLOB_STR_PREVUE_FONT:
     NStr    "Prevue.font"
 GLOB_STRUCT_TEXTATTR_PREVUE_FONT:
     DC.L    GLOB_STR_PREVUE_FONT
-    DC.W    $000d   ; Size 13 font
+    DC.W    13      ; Size 13 font
     DC.B    $40     ;
     DC.B    $20     ;
 
@@ -76909,7 +76913,7 @@ LAB_1DEB:
 LAB_1DEC:
     DS.L    1
 GLOB_LONG_ROM_VERSION_CHECK:
-    DC.L    $00000001
+    DC.L    1
 LAB_1DEE:
     DS.B    1
 LAB_1DEF:
@@ -77988,7 +77992,7 @@ LAB_1ECC:
     DC.L    $0000030c,$0c0c0000,$000c0c00,$05010201
     DC.L    $060a0505,$05000003
 LAB_1ECD:
-    DC.W    $0001
+    DC.W    1
 GLOB_STR_DF0_LOGO_LST:
     NStr    "df0:logo.lst"
 GLOB_PTR_STR_DF0_LOGO_LST:
@@ -78003,10 +78007,10 @@ LAB_1ED3:
     DS.L    1
 LAB_1ED4:
     DS.L    1
-LAB_1ED5:
+GLOB_STR_GFX_G_ADS:
     NStr    "gfx:g.ads"
-LAB_1ED6:
-    DC.L    LAB_1ED5
+GLOB_PTR_STR_GFX_G_ADS:
+    DC.L    GLOB_STR_GFX_G_ADS
 LAB_1ED7:
     NStr    "pwbrush"
 LAB_1ED8:
