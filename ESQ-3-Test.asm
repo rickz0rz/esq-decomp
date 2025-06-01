@@ -7918,7 +7918,7 @@ LAB_02CE:
     PEA     42.W
     MOVE.L  A2,-(A7)
     PEA     815.W
-    PEA     LAB_1B6B
+    PEA     GLOB_STR_COI_C_3
     JSR     LAB_0462(PC)
     LEA     16(A7),A7
 LAB_02CF:
@@ -8051,7 +8051,7 @@ LAB_02D9:
     MOVE.L  D0,(A7)
     MOVE.L  38(A3),-(A7)
     PEA     876.W
-    PEA     LAB_1B6C
+    PEA     GLOB_STR_COI_C_4
     JSR     LAB_0462(PC)
     LEA     24(A7),A7
 LAB_02DA:
@@ -8702,7 +8702,7 @@ LAB_0318:
     MOVE.L  #$00010001,-(A7)
     MOVE.L  D0,-(A7)
     PEA     1123.W
-    PEA     LAB_1B76
+    PEA     GLOB_STR_COI_C_5
     JSR     GLOB_JMP_TBL_ALLOCATE_MEMORY_3(PC)
     MOVEA.L -4(A5),A0
     MOVE.L  D0,38(A0)
@@ -8794,7 +8794,7 @@ LAB_031D:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     PEA     1198.W
-    PEA     LAB_1B78
+    PEA     GLOB_STR_COI_C_6
     JSR     LAB_0462(PC)
     MOVEQ   #-1,D0
     BRA.W   LAB_0344
@@ -9429,7 +9429,7 @@ LAB_0343:
     MOVE.L  D0,-(A7)
     MOVE.L  -570(A5),-(A7)
     PEA     1443.W
-    PEA     LAB_1B7D
+    PEA     GLOB_STR_COI_C_1
     JSR     LAB_0462(PC)
     MOVEQ   #0,D0
 LAB_0344:
@@ -9451,7 +9451,7 @@ LAB_0345:
     MOVE.L  #$00010001,-(A7)
     PEA     42.W
     PEA     1458.W
-    PEA     LAB_1B7E
+    PEA     GLOB_STR_COI_C_2
     JSR     GLOB_JMP_TBL_ALLOCATE_MEMORY_3(PC)
     MOVE.L  D0,48(A3)
     MOVEA.L D0,A0
@@ -71410,17 +71410,22 @@ LAB_190A:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 16(A5),A3
     MOVE.L  20(A5),D7
+
     MOVE.L  A3,D0
-    BEQ.S   LAB_190B
+    BEQ.S   .return
+
     TST.L   D7
-    BEQ.S   LAB_190B
+    BEQ.S   .return
+
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFreeMem(A6)
+
     SUB.L   D7,LAB_21A1
     ADDQ.L  #1,LAB_21A3
-LAB_190B:
+
+.return:
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
     RTS
@@ -75832,9 +75837,9 @@ LAB_1B69:
     NStr    "NNNNNNXX00"
 LAB_1B6A:
     NStr    "NNNNNNXX00"
-LAB_1B6B:
+GLOB_STR_COI_C_3:
     NStr    "COI.c"
-LAB_1B6C:
+GLOB_STR_COI_C_4:
     NStr    "COI.c"
 LAB_1B6D:
     NStr    "df0:OI_%02lx.dat"
@@ -75854,11 +75859,11 @@ LAB_1B74:
     NStr    ":"
 LAB_1B75:
     NStr    "%d"
-LAB_1B76:
+GLOB_STR_COI_C_5:
     NStr    "COI.c"
 LAB_1B77:
     NStr    "df0:OI_%02lx.dat"
-LAB_1B78:
+GLOB_STR_COI_C_6:
     NStr    "COI.c"
 LAB_1B79:
     ; New line, carriage return
@@ -75870,9 +75875,9 @@ LAB_1B7B:
     NStr    "NNNNNNXX00"
 LAB_1B7C:
     NStr    "%s"
-LAB_1B7D:
+GLOB_STR_COI_C_1:
     NStr    "COI.c"
-LAB_1B7E:
+GLOB_STR_COI_C_2:
     NStr    "COI.c"
 LAB_1B7F:
     NStr    "NNNNNNXX00"
