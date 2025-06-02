@@ -24588,14 +24588,19 @@ LAB_0857:
 
 LAB_0858:
     JMP     LAB_0EE5
+
 LAB_0859:
     JMP     LAB_0EE9
+
 LAB_085A:
     JMP     LAB_0EDB
+
 LAB_085B:
     JMP     LAB_00CB
+
 LAB_085C:
     JMP     LAB_0EAF
+
 LAB_085D:
     JMP     LAB_0EE8
 
@@ -24606,29 +24611,39 @@ LAB_085D:
 LAB_085E:
     LINK.W  A5,#-16
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
+
     MOVE.L  8(A5),D7
     MOVEA.L 12(A5),A3
     MOVEQ   #2,D0
     CMP.L   D0,D7
     BLT.S   .LAB_0860
+
     MOVEA.L 4(A3),A0
     LEA     LAB_226B,A1
+
 .LAB_085F:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .LAB_085F
+
     BRA.S   .LAB_0861
+
 .LAB_0860:
     CLR.B   LAB_226B
+
 .LAB_0861:
     LEA     LAB_226B,A0
     LEA     GLOB_STR_RAVESC,A1
+
 .LAB_0862:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
     BNE.S   .LAB_0863
+
     TST.B   D0
     BNE.S   .LAB_0862
+
     BNE.S   .LAB_0863
+
     MOVE.W  #$0001,LAB_1DF5
     BRA.S   .runStartupSequence
 
@@ -24656,12 +24671,14 @@ LAB_085E:
 
     LEA     GLOB_STR_GRAPHICS_LIBRARY,A1
     JSR     _LVOOpenLibrary(A6)
-    MOVE.L  D0,GLOB_REF_GRAPHICS_LIBRARY
 
+    MOVE.L  D0,GLOB_REF_GRAPHICS_LIBRARY
     TST.L   D0
     BNE.S   .loadDiskfontLibrary
+
     MOVE.L  D2,-(A7)
     JSR     JMP_TBP_LIBRARIES_LOAD_FAILED(PC)
+
     ADDQ.W  #4,A7
 
 .loadDiskfontLibrary:
@@ -24669,10 +24686,13 @@ LAB_085E:
     MOVEQ   #0,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
+
     MOVE.L  D0,GLOB_REF_DISKFONT_LIBRARY
     BNE.S   .loadDosLibrary
+
     CLR.L   -(A7)
     JSR     JMP_TBP_LIBRARIES_LOAD_FAILED(PC)
+
     ADDQ.W  #4,A7
 
 .loadDosLibrary:
@@ -24680,10 +24700,13 @@ LAB_085E:
     MOVEQ   #0,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
+
     MOVE.L  D0,GLOB_REF_DOS_LIBRARY
     BNE.S   .loadIntuitionLibrary
+
     CLR.L   -(A7)
     JSR     JMP_TBP_LIBRARIES_LOAD_FAILED(PC)
+
     ADDQ.W  #4,A7
 
 .loadIntuitionLibrary:
@@ -24691,10 +24714,12 @@ LAB_085E:
     MOVEQ   #0,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
+
     MOVE.L  D0,GLOB_REF_INTUITION_LIBRARY
     BNE.S   .loadUtilityLibraryAndBattclockResource
     CLR.L   -(A7)
     JSR     JMP_TBP_LIBRARIES_LOAD_FAILED(PC)
+
     ADDQ.W  #4,A7
 
 .loadUtilityLibraryAndBattclockResource:
@@ -24703,12 +24728,14 @@ LAB_085E:
     MOVEQ   #37,D1      ; Compare it to 37 ...
     CMP.W   D1,D0       ; CMP.W -> subtract D1 from D0 and store CCR conditions
     BCS.S   .loadFonts  ; If carry is set post comparison, jump to .loadFonts
+
     LEA     GLOB_STR_UTILITY_LIBRARY,A1
 
     ; Open the "utility.library" library, version 37
     MOVEQ   #37,D0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOOpenLibrary(A6)
+
     MOVE.L  D0,GLOB_REF_UTILITY_LIBRARY
 
     ; If we couldn't load the utility.library jump
@@ -24717,6 +24744,7 @@ LAB_085E:
     ; Open the "battclock.resource" resource
     LEA     GLOB_STR_BATTCLOCK_RESOURCE,A1
     JSR     _LVOOpenResource(A6)
+
     MOVE.L  D0,GLOB_REF_BATTCLOCK_RESOURCE
 
 .unableToLoadUtilityLibrary:
@@ -24730,6 +24758,7 @@ LAB_085E:
     LEA     GLOB_STRUCT_TEXTATTR_TOPAZ_FONT,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOOpenFont(A6)
+
     MOVE.L  D0,GLOB_HANDLE_TOPAZ_FONT
     ; If we couldn't open the font, jump
     TST.L   D0
@@ -24738,11 +24767,13 @@ LAB_085E:
     ; Open the "PrevueC.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT,A0
     MOVEA.L GLOB_REF_DISKFONT_LIBRARY,A6
+
     JSR     _LVOOpenDiskFont(A6)
     MOVE.L  D0,GLOB_HANDLE_PREVUEC_FONT
     ; If we opened the font, jump.
     TST.L   D0
     BNE.S   .openH264fFont
+
     ; Fallback to the topaz font.
     MOVE.L  GLOB_HANDLE_TOPAZ_FONT,GLOB_HANDLE_PREVUEC_FONT
 
@@ -24750,10 +24781,12 @@ LAB_085E:
     ; Open the "h26f.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_H26F_FONT,A0
     JSR     _LVOOpenDiskFont(A6)
+
     MOVE.L  D0,GLOB_HANDLE_H26F_FONT
     ; If we couldn't open the font, jump.
     TST.L   D0
     BNE.S   .openPrevueFont
+
     ; Fallback to the topaz font.
     MOVE.L  GLOB_HANDLE_TOPAZ_FONT,GLOB_HANDLE_H26F_FONT
 
@@ -24761,10 +24794,12 @@ LAB_085E:
     ; Open the "Prevue.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT,A0
     JSR     _LVOOpenDiskFont(A6)
+
     MOVE.L  D0,GLOB_HANDLE_PREVUE_FONT
     ; If we couldn't open the font, jump.
     TST.L   D0
     BNE.S   .loadedFonts
+
     ; Fall back to the topaz font.
     MOVE.L  GLOB_HANDLE_TOPAZ_FONT,GLOB_HANDLE_PREVUE_FONT
 
@@ -24786,7 +24821,7 @@ LAB_085E:
     JSR     _LVOInitRastPort(A6)    ; In the memory we have, initialize a RastPort struct
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)         ; #GLOB_REF_696_400_BITMAP into address of the rastport #1 bitmap
+    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)  ; #GLOB_REF_696_400_BITMAP into address of the rastport #1 bitmap
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -24800,8 +24835,10 @@ LAB_085E:
     MOVE.L  D1,D0
     MOVEQ   #2,D1
     JSR     LAB_0A99(PC)
+
     TST.L   D1
     BEQ.S   .LAB_086E
+
     MOVE.W  LAB_222B,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_222B
@@ -24829,16 +24866,19 @@ LAB_085E:
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #0,D5
+
 .LAB_086F:
     MOVEQ   #4,D0
     CMP.W   D0,D5
     BGE.S   .LAB_0870
+
     MOVE.L  D5,D0
     MULS    #$0028,D0
     LEA     LAB_22A7,A0
     ADDA.L  D0,A0
     MOVE.L  A0,-(A7)
     JSR     LAB_08BB(PC)
+
     ADDQ.W  #4,A7
     ADDQ.W  #1,D5
     BRA.S   .LAB_086F
@@ -24853,10 +24893,12 @@ LAB_085E:
     JSR     _LVOInitBitMap(A6)
 
     MOVEQ   #0,D5
+
 .LAB_0871:
     MOVEQ   #4,D0
     CMP.W   D0,D5
     BGE.S   .LAB_0872
+
     MOVE.L  D5,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -24868,6 +24910,7 @@ LAB_085E:
     PEA     GLOB_STR_ESQ_C_3
     MOVE.L  A0,44(A7)
     JSR     LAB_08E1(PC)
+
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
     MOVE.L  D0,(A0)
@@ -24885,15 +24928,19 @@ LAB_085E:
 
     ADDQ.W  #1,D5
     BRA.S   .LAB_0871
+
 .LAB_0872:
     MOVE.B  LAB_1BC0,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .LAB_0873
+
     LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
     BRA.S   .LAB_0874
+
 .LAB_0873:
     LEA     GLOB_JMP_TBL_HALF_HOURS_12_HR_FMT,A0
+
 .LAB_0874:
     MOVE.L  A0,LAB_1DDD
     MOVE.L  #$00010001,-(A7)
@@ -24906,6 +24953,7 @@ LAB_085E:
     MOVE.L  D0,LAB_1DC5
     TST.L   D0
     BEQ.W   .return
+
     MOVEA.L D0,A0
     CLR.L   10(A0)
     MOVEA.L LAB_1DC5,A0
@@ -24929,6 +24977,7 @@ LAB_085E:
     MOVE.L  D0,LAB_1DC6
     TST.L   D0
     BEQ.W   .return
+
     MOVEA.L D0,A0
     CLR.L   10(A0)
     MOVEA.L LAB_1DC6,A0
@@ -24944,10 +24993,12 @@ LAB_085E:
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
+
 .LAB_0875:
     MOVEQ   #4,D0
     CMP.W   D0,D5
     BGE.S   .LAB_0876
+
     MOVE.L  D5,D0
     MULS    #$00a0,D0
     LEA     LAB_22A6,A0
@@ -24963,6 +25014,7 @@ LAB_085E:
     ADDQ.W  #8,A7
     ADDQ.W  #1,D5
     BRA.S   .LAB_0875
+
 .LAB_0876:
     JSR     LAB_08B8(PC)
 
@@ -24972,7 +25024,9 @@ LAB_085E:
     MOVEQ   #34,D1
     CMP.W   D1,D0
     BCS.S   .LAB_0877
+
     MOVE.W  #$0001,LAB_222A
+
 .LAB_0877:
     MOVEQ   #4,D1
     MOVEA.L AbsExecBase,A6
@@ -24981,59 +25035,80 @@ LAB_085E:
     CMPI.L  #$001ab3f0,D0
     BLE.S   .LAB_0878
     MOVE.W  #$0002,LAB_222A
+
 .LAB_0878:
     JSR     LAB_08AC(PC)
+
     TST.L   D0
     BNE.W   .return
+
     JSR     JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY(PC)
+
     JSR     JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP(PC)
+
     JSR     LAB_08A1(PC)
+
     MOVE.L  #LAB_223A,LAB_1B06
     MOVE.L  #LAB_2274,LAB_1B07
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2241
     MOVE.W  D0,LAB_227B
     JSR     LAB_089E(PC)
+
     JSR     LAB_065E(PC)
+
     CLR.W   LAB_2294
     MOVEQ   #1,D5
+
 .LAB_0879:
     MOVE.L  D5,D0
     EXT.L   D0
     CMP.L   D7,D0
     BGE.S   .LAB_087C
+
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L 0(A3,D0.L),A0
     LEA     GLOB_STR_CART,A1
+
 .LAB_087A:
     MOVE.B  (A0)+,D1
     CMP.B   (A1)+,D1
     BNE.S   .LAB_087B
+
     TST.B   D1
     BNE.S   .LAB_087A
+
     BNE.S   .LAB_087B
+
     MOVE.W  #$0001,LAB_2294
+
 ; it looks like this tests a value to determine if we can spin up
 ; to a specific baud rate or if we should just jump down to 2400.
 .LAB_087B:
     ADDQ.W  #1,D5
     BRA.S   .LAB_0879
+
 .LAB_087C:
     MOVEQ   #2,D0
     CMP.L   D0,D7
+
     BLE.S   .LAB_087D
     MOVE.L  8(A3),-(A7)
     JSR     LAB_0BFA(PC)
+
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_BAUD_RATE
     CMPI.L  #2400,D0
     BEQ.S   .LAB_087E
+
     CMPI.L  #4800,D0
     BEQ.S   .LAB_087E
+
     CMPI.L  #9600,D0
     BEQ.S   .LAB_087E
+
     MOVE.L  #2400,D0
     MOVE.L  D0,GLOB_REF_BAUD_RATE
     BRA.S   .LAB_087E
@@ -25047,10 +25122,9 @@ LAB_085E:
     PEA     854.W                               ; line number?
     PEA     GLOB_STR_ESQ_C_6
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+
     MOVE.L  D0,LAB_229A
-
     CLR.L   (A7)
-
     PEA     GLOB_STR_SERIAL_READ
     JSR     LAB_089C(PC)
 
