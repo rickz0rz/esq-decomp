@@ -28248,12 +28248,15 @@ LAB_097E:
 LAB_0981:
     LINK.W  A5,#-20
     MOVEM.L D4-D7,-(A7)
+
     MOVE.W  10(A5),D7
     MOVEQ   #0,D4
+
 LAB_0982:
     MOVE.W  LAB_2231,D0
     CMP.W   D0,D4
     BGE.S   LAB_0989
+
     MOVE.L  D4,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -28267,16 +28270,21 @@ LAB_0982:
     MOVEQ   #34,D0
     CMP.W   D0,D7
     BGT.S   LAB_0983
+
     MOVE.L  D7,D0
     EXT.L   D0
     BRA.S   LAB_0984
+
 LAB_0983:
     MOVEQ   #34,D0
+
 LAB_0984:
     MOVE.L  D0,D5
+
 LAB_0985:
     TST.W   D5
     BMI.S   LAB_0988
+
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -28285,11 +28293,14 @@ LAB_0985:
     MOVE.L  A0,-12(A5)
     MOVE.L  A0,D0
     BEQ.S   LAB_0987
+
     TST.W   D6
     BEQ.S   LAB_0986
+
     MOVE.L  A0,-(A7)
     CLR.L   -(A7)
     JSR     LAB_0B44(PC)
+
     ADDQ.W  #8,A7
     MOVE.L  D5,D0
     EXT.L   D0
@@ -28297,14 +28308,18 @@ LAB_0985:
     MOVEA.L -8(A5),A0
     CLR.L   56(A0,D0.L)
     BRA.S   LAB_0987
+
 LAB_0986:
     MOVEQ   #1,D6
+
 LAB_0987:
     SUBQ.W  #1,D5
     BRA.S   LAB_0985
+
 LAB_0988:
     ADDQ.W  #1,D4
     BRA.S   LAB_0982
+
 LAB_0989:
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
@@ -28314,32 +28329,40 @@ LAB_0989:
 
 LAB_098A:
     LINK.W  A5,#0
+
     MOVE.L  D7,-(A7)
     MOVE.L  12(A5),D7
     MOVE.W  #$0001,LAB_1ECD
     TST.L   LAB_2260
     BEQ.S   LAB_098B
+
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_225F
     MOVE.L  D0,LAB_2260
     MOVE.W  #$0090,LAB_1F53
     MOVE.W  #$0230,LAB_1F54
     JSR     LAB_0C9B
+
 LAB_098B:
     TST.L   D7
     BNE.S   LAB_098C
+
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_2261
     BRA.S   LAB_098D
+
 LAB_098C:
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_2261
     TST.L   LAB_2262
     BNE.S   LAB_098D
+
     CLR.L   LAB_225F
+
 LAB_098D:
     MOVE.L  D7,LAB_2262
     MOVE.L  (A7)+,D7
+
     UNLK    A5
     RTS
 
@@ -60463,74 +60486,101 @@ serialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
 
     TST.W   LAB_1DF5
-    BNE.S   LAB_14E9
+    BNE.S   .LAB_14E9
+
     MOVE.B  LAB_1BC8,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
-    BNE.S   LAB_14EA
-LAB_14E9:
+    BNE.S   .LAB_14EA
+
+.LAB_14E9:
     MOVE.W  #$ffff,LAB_234A
-    BRA.S   LAB_14EC
-LAB_14EA:
+    BRA.S   .LAB_14EC
+
+.LAB_14EA:
     TST.W   LAB_1DF3
-    BEQ.S   LAB_14EB
+    BEQ.S   .LAB_14EB
+
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_234A
-    BRA.W   LAB_14FD
-LAB_14EB:
+    BRA.W   .LAB_14FD
+
+.LAB_14EB:
     MOVEQ   #1,D0
     CMP.L   LAB_1E84,D0
-    BEQ.W   LAB_14FD
-LAB_14EC:
+    BEQ.W   .LAB_14FD
+
+.LAB_14EC:
     TST.W   LAB_212B
-    BEQ.S   LAB_14ED
+    BEQ.S   .LAB_14ED
+
     MOVE.W  LAB_2240,D0
     MOVE.W  LAB_2344,D1
     CMP.W   D1,D0
-    BEQ.S   LAB_14ED
+    BEQ.S   .LAB_14ED
+
     ADDQ.W  #1,LAB_2344
     CMPI.W  #$0003,LAB_2344
-    BLT.S   LAB_14ED
+    BLT.S   .LAB_14ED
+
     CLR.W   LAB_212B
     CLR.L   -(A7)
     PEA     32.W
     JSR     LAB_1596(PC)
+
     ADDQ.W  #8,A7
-LAB_14ED:
+
+.LAB_14ED:
     JSR     LAB_1494(PC)
+
     MOVE.L  D0,D6
     TST.W   LAB_2263
-    BNE.W   LAB_14FD
+    BNE.W   .LAB_14FD
+
     TST.W   D6
-    BEQ.W   LAB_14FD
+    BEQ.W   .LAB_14FD
+
     MOVE.W  LAB_234A,D0
     ADDQ.W  #1,D0
-    BEQ.S   LAB_14EE
+    BEQ.S   .LAB_14EE
+
     CLR.W   LAB_234A
-LAB_14EE:
+
+.LAB_14EE:
     JSR j2_getCTRLBuffer(PC)
+
     MOVE.L  D0,D7
     MOVE.W  CTRLRead3,D0
     TST.W   D0
-    BEQ.S   LAB_14EF
+    BEQ.S   .LAB_14EF
+
     SUBQ.W  #1,D0
-    BEQ.W   LAB_14F2
+    BEQ.W   .LAB_14F2
+
     SUBQ.W  #1,D0
-    BEQ.W   LAB_14F4
+    BEQ.W   .LAB_14F4
+
     SUBQ.W  #1,D0
-    BEQ.W   LAB_14FA
-    BRA.W   LAB_14FB
-LAB_14EF:
+    BEQ.W   .LAB_14FA
+
+    BRA.W   .LAB_14FB
+
+.LAB_14EF:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     SUBQ.W  #1,D0
-    BLT.W   finish_29ABA
+    BLT.W   .finish_29ABA
+
     CMPI.W  #$0016,D0
-    BGE.W   finish_29ABA
+    BGE.W   .finish_29ABA
+
     ADD.W   D0,D0
-    MOVE.W  LAB_14F0(PC,D0.W),D0
-    JMP     LAB_14F0+2(PC,D0.W)
-LAB_14F0:
+    MOVE.W  .LAB_14F0(PC,D0.W),D0
+    JMP     .LAB_14F0+2(PC,D0.W)
+
+.LAB_14F0:
+
+    ; garbage start
     ORI.W   #$0036,D0
     ORI.B   #$36,54(A6,D0.W)
     BCLR    D0,-(A0)
@@ -60547,10 +60597,13 @@ LAB_14F0:
     DC.W    $0036
     BCLR    D0,-(A0)
     DC.W    $0036
+    ; garbage end
+
     MOVE.W  #$0003,CTRLRead3
-    BRA.W   finish_29ABA
+    BRA.W   .finish_29ABA
     TST.W   LAB_1DF5
-    BNE.W   LAB_14FD
+    BNE.W   .LAB_14FD
+
     MOVEQ   #1,D0
     LEA     LAB_22A2,A0
     ADDA.W  CTRLRead1,A0
@@ -60562,8 +60615,9 @@ LAB_14F0:
     ADDQ.W  #1,D1
     MOVE.W  D1,LAB_2347
     MOVE.W  D0,CTRLRead3
-    BRA.W   finish_29ABA
-LAB_14F2:
+    BRA.W   .finish_29ABA
+
+.LAB_14F2:
     MOVE.W  CTRLRead1,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
@@ -60574,62 +60628,79 @@ LAB_14F2:
     MOVE.B  D0,(A0)
     MOVEQ   #13,D1
     CMP.B   D1,D0
-    BNE.S   LAB_14F3
+    BNE.S   .LAB_14F3
+
     MOVE.W  #$0002,CTRLRead3
-LAB_14F3:
+
+.LAB_14F3:
     MOVE.W  CTRLRead2,D0
     EXT.L   D0
     MOVEQ   #0,D1
     MOVE.B  D7,D1
     EOR.L   D1,D0
     MOVE.W  D0,CTRLRead2
-    BRA.W   finish_29ABA
-LAB_14F4:
+    BRA.W   .finish_29ABA
+
+.LAB_14F4:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.W  CTRLRead2,D1
     EXT.L   D1
     CMP.L   D1,D0
-    BNE.S   LAB_14F8
+    BNE.S   .LAB_14F8
+
     TST.W   LAB_1DF5
-    BEQ.S   LAB_14F5
+    BEQ.S   .LAB_14F5
+
     MOVE.W  CTRLRead1,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_22A2
     PEA     LAB_2355
     BSR.W   LAB_14FE
+
     BSR.W   LAB_1560
+
     JSR     LAB_18D2(PC)
+
     CLR.L   (A7)
     JSR     LAB_167E(PC)
+
     LEA     12(A7),A7
-    BRA.S   LAB_14F9
-LAB_14F5:
+    BRA.S   .LAB_14F9
+
+.LAB_14F5:
     MOVE.W  LAB_1DDE,D0
-    BEQ.S   LAB_14F6
+    BEQ.S   .LAB_14F6
+
     SUBQ.W  #1,D0
-    BNE.S   LAB_14F7
-LAB_14F6:
+    BNE.S   .LAB_14F7
+
+.LAB_14F6:
     MOVE.W  CTRLRead1,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_22A2
     PEA     LAB_2355
     BSR.W   LAB_14FE
+
     PEA     LAB_2355
     BSR.W   LAB_154C
+
     LEA     16(A7),A7
-    BRA.S   LAB_14F9
-LAB_14F7:
+    BRA.S   .LAB_14F9
+
+.LAB_14F7:
     MOVE.W  LAB_211B,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_211B
-    BRA.S   LAB_14F9
-LAB_14F8:
+    BRA.S   .LAB_14F9
+
+.LAB_14F8:
     PEA     1.W
     PEA     32.W
     JSR     LAB_1596(PC)
+
     ADDQ.W  #8,A7
     MOVE.W  LAB_2240,LAB_2344
     MOVEQ   #1,D0
@@ -60637,24 +60708,29 @@ LAB_14F8:
     ADDQ.W  #1,D1
     MOVE.W  D1,LAB_2348
     MOVE.W  D0,LAB_212B
-LAB_14F9:
+
+.LAB_14F9:
     MOVEQ   #0,D0
     MOVE.W  D0,CTRLRead2
     MOVE.W  D0,CTRLRead1
     MOVE.W  D0,CTRLRead3
-    BRA.S   finish_29ABA
-LAB_14FA:
+    BRA.S   .finish_29ABA
+
+.LAB_14FA:
     CLR.W   CTRLRead3
-    BRA.S   finish_29ABA
-LAB_14FB:
+    BRA.S   .finish_29ABA
+
+.LAB_14FB:
     MOVEQ   #0,D0
     MOVE.W  D0,CTRLRead2
     MOVE.W  D0,CTRLRead1
     MOVE.W  D0,CTRLRead3
-finish_29ABA:
+
+.finish_29ABA:
     MOVE.W  CTRLRead1,D0
     CMPI.W  #$00c6,D0
-    BLE.S   LAB_14FD
+    BLE.S   .LAB_14FD
+
     MOVE.W  LAB_2349,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_2349
@@ -60664,9 +60740,11 @@ finish_29ABA:
     MOVE.W  LAB_2346,D1
     MOVE.W  D0,CTRLRead3
     TST.W   D1
-    BNE.S   LAB_14FD
+    BNE.S   .LAB_14FD
+
     JSR     LAB_167D(PC)
-LAB_14FD:
+
+.LAB_14FD:
     MOVEM.L (A7)+,D6-D7
     RTS
 
