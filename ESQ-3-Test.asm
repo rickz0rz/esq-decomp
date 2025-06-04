@@ -124,7 +124,7 @@ SECSTRT_0:                      ; PC: 0021EE58
     MOVE.L  32(A2),D1
     BEQ.S   .LAB_0007
 
-    MOVE.L  #$000003ed,D2
+    MOVE.L  #1005,D2
     JSR     _LVOSupervisor(A6)
 
     MOVE.L  D0,-596(A4)
@@ -696,9 +696,9 @@ LAB_003C:
 ;!======
 
 GET_BIT_3_OF_CIAB_PRA_INTO_D1:
-    MOVEQ   #0,D1           ; Copy 0 into D1
+    MOVEQ   #0,D1           ; Copy 0 into D1 to clear all bytes
     MOVEA.L #CIAB_PRA,A5    ; Copy the address of CIAB_PRA into A5
-    MOVE.B  (A5),D1         ; Get contents of the memory at A5 and copy into D1
+    MOVE.B  (A5),D1         ; Get contents of the least significant byte at A5 and copy into D1
     BTST    #3,D1           ; Test bit 3, set Z to true if it's 0
     SEQ     D1              ; SEQ (set equal) sets D1 to 0 if Z is 0, otherwise 1 if it's 1
     RTS
@@ -706,9 +706,9 @@ GET_BIT_3_OF_CIAB_PRA_INTO_D1:
 ;!======
 
 GET_BIT_4_OF_CIAB_PRA_INTO_D1:
-    MOVEQ   #0,D1           ; Copy 0 into D1
+    MOVEQ   #0,D1           ; Copy 0 into D1 to clear all bytes
     MOVEA.L #CIAB_PRA,A5    ; Copy the address of CIAB_PRA into A5
-    MOVE.B  (A5),D1         ; Get contents of the memory at A5 and copy into D1
+    MOVE.B  (A5),D1         ; Get contents of the least significant byte at A5 and copy into D1
     BTST    #4,D1           ; Test bit 4, set Z to true if it's 0
     SEQ     D1              ; SEQ (set equal) sets D1 to 0 if Z is 0, otherwise 1 if it's 1
     RTS
@@ -1757,7 +1757,8 @@ LAB_00B8:
     MOVEQ   #0,D0           ; Move 0 into D0
     MOVE.B  LAB_2253,D0     ; Move the byte in LAB_2253 to D0
     TST.B   LAB_2206        ; Test LAB_2206 against 0
-    BNE.S   .LAB_00BA       ; If it's not equal, jump to .LAB_00BA
+    BNE.S   .return         ; If it's not equal, jump to .LAB_00BA
+
     MOVE.L  4(A7),D0
     MOVEA.L 8(A7),A0
     MOVE.L  12(A7),D1
@@ -1766,13 +1767,16 @@ LAB_00B8:
     SUBQ.W  #1,D2
     EORI.B   #$ff,D0
     MOVEQ   #0,D1
+
 .LAB_00B9:
     MOVE.B  (A0)+,D1
     EOR.B   D1,D0
     DBF     D2,.LAB_00B9
+
     ANDI.L  #$000000ff,D0
     MOVE.L  (A7)+,D2
-.LAB_00BA:
+
+.return:
     RTS
 
 ;!======
@@ -2556,7 +2560,8 @@ LAB_00ED:
 
 ;!======
 
-LAB_00EE:
+; Process ILBM (IFF Interleaved Bitmap) Image
+PROCESS_ILBM_IMAGE:
     LINK.W  A5,#-20
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
 
@@ -2600,7 +2605,7 @@ LAB_00F0:
     BRA.W   LAB_010A
 
 LAB_00F1:
-    CMPI.L  #$494c424d,-4(A5) ; #$494c424d = "ILBM"
+    CMPI.L  #'ILBM',-4(A5)
     BEQ.W   LAB_0109
 
     MOVE.L  D7,D1
@@ -2631,10 +2636,10 @@ LAB_00F3:
 LAB_00F4:
 
     MOVE.L  -4(A5),D1
-    CMPI.L  #$464f524d,D1
+    CMPI.L  #'FORM',D1
     BEQ.W   LAB_0109
 
-    CMPI.L  #$424d4844,D1
+    CMPI.L  #'BMHD',D1
     BNE.W   LAB_00FB
     MOVEQ   #20,D1
 
@@ -2706,7 +2711,7 @@ LAB_00FA:
     BRA.W   LAB_0109
 
 LAB_00FB:
-    CMPI.L  #$434d4150,D1
+    CMPI.L  #'CMAP',D1
     BNE.S   LAB_00FC
 
     MOVE.L  28(A5),-(A7)
@@ -2723,7 +2728,7 @@ LAB_00FB:
     BRA.W   LAB_0109
 
 LAB_00FC:
-    CMPI.L  #$424f4459,D1
+    CMPI.L  #'BODY',D1
     BNE.S   LAB_00FE
 
     MOVE.L  28(A5),-(A7)
@@ -2745,7 +2750,7 @@ LAB_00FD:
     BRA.W   LAB_0109
 
 LAB_00FE:
-    CMPI.L  #$43414d47,D1
+    CMPI.L  #'CAMG',D1
     BNE.S   LAB_0101
 
     MOVEA.L 28(A5),A0
@@ -2784,7 +2789,7 @@ LAB_0100:
     BRA.W   LAB_0109
 
 LAB_0101:
-    CMPI.L  #$43524e47,D1
+    CMPI.L  #'CRNG',D1
     BNE.W   LAB_0108
 
     MOVEA.L 28(A5),A0
@@ -2913,7 +2918,7 @@ LAB_010B:
     PEA     96.W
     PEA     396.W
     PEA     GLOB_STR_BRUSH_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-14(A5)
@@ -3555,6 +3560,7 @@ LAB_0155:
 LAB_0156:
     LINK.W  A5,#-76
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
+
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
     MOVEQ   #1,D5
@@ -3568,89 +3574,113 @@ LAB_0156:
     MOVE.L  A0,-46(A5)
     MOVE.L  A0,-16(A5)
     JSR     LAB_046C(PC)
+
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
     TST.L   D7
     BEQ.W   LAB_0159
+
     MOVE.L  D7,D1
     LEA     -64(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #6,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
+
     SUBQ.L  #6,D0
     BNE.W   LAB_0159
+
     PEA     4.W
     PEA     LAB_1B34
     MOVE.L  D2,-(A7)
     JSR     LAB_01A6(PC)
+
     LEA     12(A7),A7
     TST.L   D0
     BEQ.S   LAB_0157
+
     MOVE.L  D7,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
+
     BRA.S   LAB_0159
+
 LAB_0157:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #-1,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOSeek(A6)
+
+    ; Allocate 130k of memory
     MOVE.L  #$00010001,-(A7)
-    MOVE.L  #$0001fbd0,-(A7)
+    MOVE.L  #130000,-(A7)
     PEA     977.W
     PEA     LAB_1B35
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,-46(A5)
     MOVE.L  D0,-50(A5)
     TST.L   D0
     BEQ.S   LAB_0158
+
     LEA     152(A3),A0
     LEA     32(A3),A1
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  #$0001fbd0,-(A7)
+    MOVE.L  #130000,-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_00EE
+    BSR.W   PROCESS_ILBM_IMAGE
+
     LEA     24(A7),A7
     SUBQ.L  #1,D0
     BNE.S   LAB_0158
+
     MOVEQ   #0,D5
+
 LAB_0158:
     MOVE.L  D7,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
+
 LAB_0159:
     BTST    #7,150(A3)
     BEQ.S   LAB_015A
+
     MOVEQ   #4,D0
     MOVE.L  #640,D1
     MOVE.L  D0,-54(A5)
     MOVE.L  D1,-58(A5)
+
 LAB_015A:
     MOVEQ   #0,D0
     MOVE.B  136(A3),D0
     CMP.L   -54(A5),D0
     BGT.S   LAB_015B
+
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
     CMP.L   -58(A5),D0
     BLE.S   LAB_015F
+
 LAB_015B:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
+
     MOVEQ   #0,D0
     MOVE.B  136(A3),D0
     CMP.L   -54(A5),D0
     BLE.S   LAB_015C
+
     MOVEQ   #2,D1
     BRA.S   LAB_015D
+
 LAB_015C:
     MOVEQ   #3,D1
+
 LAB_015D:
     MOVE.L  D1,LAB_1B2A
     MOVEQ   #0,D0
@@ -3661,35 +3691,46 @@ LAB_015D:
     MOVE.L  D0,LAB_21AF
     MOVEA.L A3,A0
     LEA     LAB_21AD,A1
+
 LAB_015E:
     MOVE.B  (A0)+,(A1)+
     BNE.S   LAB_015E
+
     JSR     _LVOPermit(A6)
+
     MOVEQ   #1,D5
+
 LAB_015F:
     TST.L   D5
     BNE.W   LAB_0178
+
     MOVE.L  #$00010001,-(A7)
     PEA     372.W
     PEA     1064.W
-    PEA     LAB_1B36
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    PEA     LAB_1B36    ; brush.c
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
     TST.L   D0
     BEQ.W   LAB_0178
+
     MOVEA.L A3,A0
     MOVEA.L D0,A1
+
 LAB_0160:
     MOVE.B  (A0)+,(A1)+
     BNE.S   LAB_0160
+
     MOVEA.L -16(A5),A0
     ADDA.W  #$00b0,A0
     LEA     128(A3),A1
     MOVEQ   #4,D0
+
 LAB_0161:
     MOVE.L  (A1)+,(A0)+
     DBF     D0,LAB_0161
+
     MOVEA.L -16(A5),A0
     ADDA.W  #$00c4,A0
     LEA     148(A3),A1
@@ -3706,6 +3747,7 @@ LAB_0161:
     MOVEA.L A1,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
+
     MOVEA.L -16(A5),A0
     MOVE.B  190(A3),32(A0)
     MOVE.L  194(A3),328(A0)
@@ -3716,10 +3758,12 @@ LAB_0161:
     MOVE.L  222(A3),356(A0)
     MOVE.L  226(A3),360(A0)
     MOVEQ   #0,D6
+
 LAB_0162:
     MOVEQ   #4,D0
     CMP.L   D0,D6
     BGE.S   LAB_0163
+
     MOVE.L  D6,D0
     ASL.L   #3,D0
     MOVEA.L -16(A5),A0
@@ -3732,43 +3776,55 @@ LAB_0162:
     MOVE.L  (A0)+,(A2)+
     ADDQ.L  #1,D6
     BRA.S   LAB_0162
+
 LAB_0163:
     MOVEA.L -16(A5),A0
     ADDA.W  #$0021,A0
     LEA     191(A3),A1
+
 LAB_0164:
     MOVE.B  (A1)+,(A0)+
     BNE.S   LAB_0164
+
     MOVEA.L -16(A5),A0
     MOVE.L  230(A3),364(A0)
     TST.L   214(A3)
     BEQ.S   LAB_0165
+
     MOVE.L  214(A3),348(A0)
     BRA.S   LAB_0166
+
 LAB_0165:
     MOVEQ   #0,D0
     MOVE.W  176(A0),D0
     MOVE.L  D0,348(A0)
+
 LAB_0166:
     TST.L   218(A3)
     BEQ.S   LAB_0167
+
     MOVE.L  218(A3),352(A0)
     BRA.S   LAB_0168
+
 LAB_0167:
     MOVEQ   #0,D0
     MOVE.W  178(A0),D0
     MOVE.L  D0,352(A0)
+
 LAB_0168:
     MOVEQ   #0,D6
+
 LAB_0169:
     MOVEQ   #0,D0
     MOVEA.L -16(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
     BGE.W   LAB_016D
+
     MOVEQ   #5,D0
     CMP.L   D0,D6
     BGE.W   LAB_016D
+
     MOVE.L  D6,D0
     ASL.L   #2,D0
     MOVEQ   #0,D1
@@ -3782,6 +3838,7 @@ LAB_0169:
     MOVE.L  D0,52(A7)
     MOVE.L  D0,48(A7)
     JSR     LAB_01A8(PC)
+
     LEA     16(A7),A7
     MOVE.L  36(A7),D1
     MOVE.L  D0,-42(A5,D1.L)
@@ -3795,47 +3852,59 @@ LAB_0169:
     ADDI.L  #$00000090,D1
     TST.L   0(A0,D1.L)
     BNE.S   LAB_016C
+
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
+
     TST.L   LAB_1B2A
     BNE.S   LAB_016B
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_1B2A
     MOVEA.L -16(A5),A0
     LEA     LAB_21AD,A1
+
 LAB_016A:
     MOVE.B  (A0)+,(A1)+
     BNE.S   LAB_016A
+
 LAB_016B:
     JSR     _LVOPermit(A6)
+
     BRA.S   LAB_016D
+
 LAB_016C:
     ADDQ.L  #1,D6
     BRA.W   LAB_0169
+
 LAB_016D:
     MOVEQ   #0,D0
     MOVEA.L -16(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
     BNE.W   LAB_0175
+
     LEA     36(A0),A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
+
     MOVEA.L -16(A5),A0
     ADDA.W  #$0088,A0
     MOVEA.L -16(A5),A1
     MOVE.L  A0,40(A1)
     MOVEQ   #0,D6
+
 LAB_016E:
     MOVEQ   #96,D0
     CMP.L   D0,D6
     BGE.S   LAB_016F
+
     MOVEA.L -16(A5),A0
     MOVE.L  D6,D0
     ADDI.L  #$000000e8,D0
     MOVE.B  32(A3,D6.L),0(A0,D0.L)
     ADDQ.L  #1,D6
     BRA.S   LAB_016E
+
 LAB_016F:
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
@@ -3843,15 +3912,19 @@ LAB_016F:
     ADD.L   D1,D0
     MOVEQ   #16,D1
     JSR     LAB_0461(PC)
+
     ADD.L   D0,D0
     CLR.W   -18(A5)
     MOVE.W  D0,-22(A5)
+
 LAB_0170:
     MOVE.W  -18(A5),D0
     MOVEA.L -16(A5),A0
     CMP.W   178(A0),D0
     BGE.W   LAB_0173
+
     CLR.W   -20(A5)
+
 LAB_0171:
     MOVE.W  -20(A5),D0
     EXT.L   D0
@@ -3859,6 +3932,7 @@ LAB_0171:
     MOVE.B  136(A3),D1
     CMP.L   D1,D0
     BGE.S   LAB_0172
+
     MOVE.W  -20(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -3871,6 +3945,7 @@ LAB_0171:
     MOVE.L  0(A0,D2.L),-(A7)
     MOVE.L  -46(A5),-(A7)
     JSR     LAB_00CD(PC)
+
     LEA     12(A7),A7
     MOVE.W  -20(A5),D1
     EXT.L   D1
@@ -3887,20 +3962,25 @@ LAB_0171:
     MOVE.L  D0,-46(A5)
     ADDQ.W  #1,-20(A5)
     BRA.S   LAB_0171
+
 LAB_0172:
     ADDQ.W  #1,-18(A5)
     BRA.W   LAB_0170
+
 LAB_0173:
     MOVEQ   #0,D6
+
 LAB_0174:
     MOVEQ   #0,D0
     MOVEA.L -16(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
     BGE.W   LAB_0178
+
     MOVEQ   #5,D0
     CMP.L   D0,D6
     BGE.W   LAB_0178
+
     MOVE.L  D6,D0
     ASL.L   #2,D0
     MOVE.L  D0,D1
@@ -3908,19 +3988,23 @@ LAB_0174:
     MOVE.L  -42(A5,D0.L),0(A0,D1.L)
     ADDQ.L  #1,D6
     BRA.S   LAB_0174
+
 LAB_0175:
     MOVEA.L -16(A5),A0
     TST.B   184(A0)
     BEQ.S   LAB_0177
+
     MOVEQ   #5,D0
     CMP.L   D0,D6
     BGE.S   LAB_0177
+
     MOVE.L  D6,D0
     ASL.L   #2,D0
     MOVE.L  D0,D1
     ADDI.L  #$00000090,D1
     TST.L   0(A0,D1.L)
     BEQ.S   LAB_0176
+
     MOVEQ   #0,D1
     MOVE.W  176(A0),D1
     MOVEQ   #0,D2
@@ -3933,44 +4017,56 @@ LAB_0175:
     PEA     1202.W
     PEA     LAB_1B38
     JSR     LAB_01C8(PC)
+
     LEA     20(A7),A7
+
 LAB_0176:
     ADDQ.L  #1,D6
     BRA.S   LAB_0175
+
 LAB_0177:
     PEA     372.W
     MOVE.L  -16(A5),-(A7)
     PEA     1205.W
     PEA     LAB_1B39
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     CLR.L   -16(A5)
+
 LAB_0178:
     MOVEQ   #11,D0
     CMP.B   190(A3),D0
     BNE.S   LAB_017B
+
     MOVE.L  #$00010001,-(A7)
     PEA     372.W
     PEA     1220.W
     PEA     LAB_1B3A
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
     TST.L   D0
     BEQ.S   LAB_017B
+
     MOVEA.L A3,A0
     MOVEA.L D0,A1
+
 LAB_0179:
     MOVE.B  (A0)+,(A1)+
     BNE.S   LAB_0179
+
     MOVEA.L -16(A5),A0
     MOVE.B  190(A3),32(A0)
     LEA     176(A0),A1
     LEA     128(A3),A2
     MOVEQ   #4,D0
+
 LAB_017A:
     MOVE.L  (A2)+,(A1)+
     DBF     D0,LAB_017A
+
     MOVEA.L -16(A5),A0
     ADDA.W  #$00c4,A0
     LEA     148(A3),A1
@@ -3978,15 +4074,19 @@ LAB_017A:
     SUBA.L  A0,A0
     MOVEA.L -16(A5),A1
     MOVE.L  A0,368(A1)
+
 LAB_017B:
     TST.L   -50(A5)
     BEQ.S   LAB_017C
+
     MOVE.L  #$0001fbd0,-(A7)
     MOVE.L  -50(A5),-(A7)
     PEA     1236.W
     PEA     LAB_1B3B
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
+
 LAB_017C:
     MOVE.L  -16(A5),D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
@@ -4004,7 +4104,7 @@ LAB_017D:
     PEA     372.W
     PEA     1248.W
     PEA     LAB_1B3C
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
@@ -4180,7 +4280,7 @@ LAB_018E:
     PEA     238.W
     PEA     1352.W
     PEA     LAB_1B3E
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,LAB_21AB
     TST.L   D0
@@ -8891,7 +8991,7 @@ LAB_0318:
     MOVE.L  D0,-(A7)
     PEA     1123.W
     PEA     GLOB_STR_COI_C_5
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     MOVEA.L -4(A5),A0
     MOVE.L  D0,38(A0)
     MOVE.W  36(A0),D1
@@ -9642,7 +9742,7 @@ LAB_0345:
     PEA     42.W
     PEA     1458.W
     PEA     GLOB_STR_COI_C_2
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     MOVE.L  D0,48(A3)
     MOVEA.L D0,A0
@@ -10298,7 +10398,7 @@ LAB_0391:
     PEA     14.W
     PEA     159.W
     PEA     LAB_1B88
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     MOVE.L  D0,LAB_21B5
     MOVEQ   #14,D1
     MOVEA.L D0,A0
@@ -10360,7 +10460,7 @@ LAB_0394:
     PEA     14.W
     PEA     203.W
     PEA     LAB_1B8D
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
 
@@ -10440,7 +10540,7 @@ LAB_0397:
     MOVE.L  LAB_21D0,-(A7)
     PEA     286.W
     PEA     GLOB_STR_DISKIO_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
     MOVE.L  LAB_21D0,LAB_21D1
@@ -10679,7 +10779,7 @@ LAB_03AE:
     MOVE.L  D0,-(A7)
     PEA     472.W
     PEA     GLOB_STR_DISKIO_C_3
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,LAB_21BC
     TST.L   D0
@@ -10834,7 +10934,7 @@ LAB_03C0:
     PEA     36.W
     PEA     567.W
     PEA     GLOB_STR_DISKIO_C_5
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
@@ -10877,43 +10977,54 @@ LAB_03C3:
 LAB_03C4:
     LINK.W  A5,#-12
     MOVEM.L D2/D6-D7/A3,-(A7)
+
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
     MOVE.L  A3,D1
     MOVEQ   #-2,D2
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
+
     MOVE.L  D0,D6
     TST.L   D6
     BEQ.S   LAB_03C7
+
     MOVE.L  #$00010000,-(A7)
     PEA     36.W
     PEA     593.W
     PEA     GLOB_STR_DISKIO_C_7
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
     BEQ.S   LAB_03C6
+
     MOVE.L  D6,D1
     MOVE.L  D0,D2
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOInfo(A6)
+
     TST.L   D0
     BEQ.S   LAB_03C5
+
     MOVEA.L D2,A0
     MOVE.L  (A0),D7
+
 LAB_03C5:
     PEA     36.W
     MOVE.L  D2,-(A7)
     PEA     599.W
     PEA     GLOB_STR_DISKIO_C_8
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
+
 LAB_03C6:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
+
 LAB_03C7:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D2/D6-D7/A3
@@ -10924,6 +11035,7 @@ LAB_03C7:
 
 LAB_03C8:
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
+
     MOVEA.L 24(A7),A3
     MOVE.W  30(A7),D7
     MOVE.W  LAB_1F45,LAB_21CB
@@ -10935,15 +11047,19 @@ LAB_03C8:
     MOVE.L  LAB_21C5,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
+
     MOVE.L  D0,D6
     CMP.W   D7,D6
     MOVE.W  LAB_21CB,LAB_1F45
     CMP.W   D7,D6
     BEQ.S   LAB_03C9
+
     MOVEQ   #-1,D0
     BRA.S   LAB_03CA
+
 LAB_03C9:
     MOVEQ   #0,D0
+
 LAB_03CA:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
     RTS
@@ -13017,7 +13133,7 @@ LAB_0469:
     JMP     LAB_14D0
 LAB_046A:
     JMP     LAB_0EF9
-JMP_TBL_ALLOCATE_MEMORY_:
+JMP_TBL_ALLOCATE_MEMORY_1:
     JMP     ALLOCATE_MEMORY
 LAB_046C:
     JMP     OPEN_FILE_WITH_ACCESS_MODE
@@ -13057,7 +13173,7 @@ LAB_0473:
     PEA     1000.W
     PEA     152.W
     PEA     LAB_1C42
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-22(A5)
     BNE.S   LAB_0474
@@ -13677,7 +13793,7 @@ LAB_04A9:
     PEA     52.W
     PEA     634.W
     PEA     LAB_1C59
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A3
     MOVE.L  A3,D0
@@ -13690,7 +13806,7 @@ LAB_04AA:
     PEA     500.W
     PEA     640.W
     PEA     LAB_1C5A
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A2
     MOVE.L  A2,D0
@@ -13927,7 +14043,7 @@ LAB_04C3:
     PEA     1000.W
     PEA     817.W
     PEA     GLOB_STR_DISKIO2_C_10
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-22(A5)
@@ -14168,7 +14284,7 @@ LAB_04D2:
     PEA     52.W
     PEA     948.W
     PEA     LAB_1C62
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A3
     MOVE.L  A3,D0
@@ -14181,7 +14297,7 @@ LAB_04D3:
     PEA     500.W
     PEA     954.W
     PEA     LAB_1C63
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A2
     MOVE.L  A2,D0
@@ -14803,7 +14919,7 @@ LAB_0508:
     PEA     36.W
     PEA     1312.W
     PEA     LAB_1C72
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-72(A5)
@@ -14909,7 +15025,7 @@ LAB_050E:
     PEA     4352.W
     PEA     1389.W
     PEA     LAB_1C74
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_21C9
@@ -15634,7 +15750,7 @@ LAB_0557:
     MOVE.L  D0,-(A7)
     PEA     194.W
     PEA     LAB_1CE6
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
@@ -15861,7 +15977,7 @@ LAB_056C:
     MOVE.L  D7,-(A7)
     PEA     127.W
     PEA     LAB_1CE9
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
 LAB_056D:
@@ -16128,13 +16244,13 @@ LAB_0588:
     PEA     1000.W
     PEA     320.W
     PEA     LAB_1CEE
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     MOVE.L  #$00010001,(A7)
     PEA     1000.W
     PEA     321.W
     PEA     LAB_1CEF
     MOVE.L  D0,LAB_21DD
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     28(A7),A7
     MOVE.L  D0,LAB_21DE
 LAB_0589:
@@ -17747,7 +17863,7 @@ LAB_0618:
     PEA     18.W
     PEA     798.W
     PEA     LAB_1D06
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A3
     TST.L   D0
@@ -17756,7 +17872,7 @@ LAB_0618:
     PEA     22.W
     PEA     803.W
     PEA     LAB_1D07
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,(A3)
     TST.L   D0
@@ -17765,7 +17881,7 @@ LAB_0618:
     PEA     22.W
     PEA     807.W
     PEA     LAB_1D08
-    JSR     JMP_TBL_ALLOCATE_MEMORY_(PC)
+    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,4(A3)
     TST.L   D0
@@ -34963,6 +35079,7 @@ LAB_0B4F:
     PEA     40.W
     MOVE.L  A1,-(A7)
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_3(PC)
+
     LEA     16(A7),A7
     BRA.S   .LAB_0BBD
 
