@@ -2578,7 +2578,7 @@ LAB_010B:
     MOVEA.L 16(A5),A3
 
     PEA     1.W
-    PEA     96.W
+    PEA     96.W    ; 96 bytes
     PEA     396.W
     PEA     GLOB_STR_BRUSH_C_1
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
@@ -74796,7 +74796,7 @@ LAB_19FB:
     BRA.S   LAB_19FE
 LAB_19FC:
     MOVE.L  A3,D1
-    MOVE.L  #$000003ee,D2
+    MOVE.L  #MODE_NEWFILE,D2
     JSR     _LVOOpen(A6)
     MOVE.L  D0,D7
     TST.L   D7
@@ -74845,7 +74845,7 @@ LAB_19FF:
 
 .lockFailed:
     MOVE.L  A3,D1                               ; Filename -> D1
-    MOVE.L  #$000003ee,D2                       ; Access mode = 3EE
+    MOVE.L  #MODE_NEWFILE,D2                    ; Access mode = MODE_NEWFILE
     JSR     _LVOOpen(A6)                        ; Open zee file!
 
     MOVE.L  D0,D7                               ; D0 = result as BCPL pointer, copied to D7
@@ -76148,7 +76148,7 @@ LAB_1A84:
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     LEA     22856(A4),A0
     MOVE.L  A0,D1
-    MOVE.L  #$000003ee,D2
+    MOVE.L  #MODE_NEWFILE,D2
     JSR     _LVOOpen(A6)
 
     MOVE.L  D0,22496(A4)
