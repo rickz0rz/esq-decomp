@@ -220,7 +220,7 @@ CHECK_AVAILABLE_FAST_MEMORY:
     CMPI.L  #$000927C0,D0       ; See if we have more than 600,000 bytes of available memory
     BGE.S   .skipFastMemorySet  ; If we have equal to or more than our target, jump to .skipFastMemorySet
 
-    MOVE.W  #$0001,HAS_REQUESTED_FAST_MEMORY; Set HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
+    MOVE.W  #$0001,HAS_REQUESTED_FAST_MEMORY    ; Set HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
 
 .skipFastMemorySet:
     RTS
@@ -233,16 +233,21 @@ CHECK_AVAILABLE_FAST_MEMORY:
 ; (3) 33 = 8374 (Alice) rev 3 thru rev 4, NTSC
 CHECK_IF_COMPATIBLE_VIDEO_CHIP:
     MOVEM.L D6-D7,-(A7)
+
     MOVE.W  VPOSR,D7        ; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
     MOVE.L  D7,D6           ; Copy VPOSR value into D6
     ANDI.W  #$7f00,D6       ; Logical AND D6 with $7F00 (01111111 00000000) and store back into D6
     CMPI.W  #$3000,D6       ; Compare it with high byte of $3000 (00110000 00000000) aka $30 to see if we're chip 1
     BEQ.S   .return         ; If equal, jump to bottom.
+
     CMPI.W  #$2000,D6       ; Compare it with high byte of $2000 (00110000 00000000) aka $20 to see if we're chip 2
     BEQ.S   .return         ; If equal, jump to bottom.
+
     CMPI.W  #$3300,D6       ; Compare it with high byte of $3300 (00110011 00000000) aka $33 to see if we're chip 3
     BEQ.S   .return         ; If equal, jump to bottom.
+
     MOVE.W  #$0001,IS_COMPATIBLE_VIDEO_CHIP ; Set $0001 into IS_COMPATIBLE_VIDEO_CHIP
+
 .return:
     MOVEM.L (A7)+,D6-D7
     RTS
@@ -2560,349 +2565,7 @@ LAB_00ED:
 
 ;!======
 
-; Process ILBM (IFF Interleaved Bitmap) Image
-PROCESS_ILBM_IMAGE:
-    LINK.W  A5,#-20
-    MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
-
-    MOVE.L  8(A5),D7
-    MOVEA.L 16(A5),A3
-    MOVE.L  20(A5),D6
-    MOVEA.L 24(A5),A2
-    MOVEQ   #0,D5
-    MOVEQ   #-1,D0
-    MOVE.L  D0,-14(A5)
-    MOVEA.L 28(A5),A0
-    CLR.W   184(A0)
-    CLR.L   -18(A5)
-
-LAB_00EF:
-    MOVE.L  -18(A5),D0
-    MOVEQ   #4,D1
-    CMP.L   D1,D0
-    BGE.S   LAB_00F0
-
-    ASL.L   #3,D0
-    MOVEA.L 28(A5),A0
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009c,D1
-    CLR.W   0(A0,D1.L)
-    ADDQ.L  #1,-18(A5)
-    BRA.S   LAB_00EF
-
-LAB_00F0:
-    MOVE.L  D7,D1
-    LEA     -4(A5),A0
-    MOVE.L  A0,D2
-    MOVEQ   #4,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
-    JSR     _LVORead(A6)
-
-    SUBQ.L  #4,D0
-    BEQ.S   LAB_00F1
-
-    MOVEQ   #1,D5
-    BRA.W   LAB_010A
-
-LAB_00F1:
-    CMPI.L  #'ILBM',-4(A5)
-    BEQ.W   LAB_0109
-
-    MOVE.L  D7,D1
-    LEA     -8(A5),A0
-    MOVE.L  A0,D2
-    JSR     _LVORead(A6)
-
-    SUBQ.L  #4,D0
-    BEQ.S   LAB_00F2
-
-    MOVEQ   #1,D5
-    BRA.W   LAB_010A
-
-LAB_00F2:
-    TST.L   -8(A5)
-    BNE.S   LAB_00F3
-
-    MOVEQ   #1,D5
-    BRA.W   LAB_010A
-
-LAB_00F3:
-    MOVE.L  -8(A5),D0
-    TST.L   D0
-    BPL.S   LAB_00F4
-    MOVEQ   #1,D5
-
-    BRA.W   LAB_010A
-LAB_00F4:
-
-    MOVE.L  -4(A5),D1
-    CMPI.L  #'FORM',D1
-    BEQ.W   LAB_0109
-
-    CMPI.L  #'BMHD',D1
-    BNE.W   LAB_00FB
-    MOVEQ   #20,D1
-
-    CMP.L   D1,D0
-    BEQ.S   LAB_00F5
-
-    MOVEQ   #1,D5
-
-LAB_00F5:
-    MOVEA.L 28(A5),A0
-    ADDA.W  #$0080,A0
-    MOVE.L  D7,D1
-    MOVE.L  A0,D2
-    MOVEQ   #20,D3
-    JSR     _LVORead(A6)
-    CMP.L   D3,D0
-    BEQ.S   LAB_00F6
-
-    MOVEQ   #1,D5
-
-LAB_00F6:
-    MOVEQ   #0,D0
-    MOVEA.L 28(A5),A0
-    MOVE.L  D0,148(A0)
-    CMPI.W  #$0140,128(A0)
-    BLS.S   LAB_00F7
-
-    BSET    #15,D0
-    MOVE.L  D0,148(A0)
-
-LAB_00F7:
-    MOVE.W  130(A0),D0
-    CMPI.W  #$00c8,D0
-    BLS.S   LAB_00F9
-
-    BSET    #2,151(A0)
-    CMPI.W  #$00dc,130(A0)
-    BLS.W   LAB_0109
-
-    MOVE.B  190(A0),D0
-    MOVEQ   #5,D1
-    CMP.B   D1,D0
-    BEQ.S   LAB_00F8
-
-    MOVEQ   #4,D2
-    CMP.B   D2,D0
-    BNE.W   LAB_0109
-
-LAB_00F8:
-    MOVE.W  #$00dc,D2
-    MOVE.W  D2,130(A0)
-    BRA.W   LAB_0109
-
-LAB_00F9:
-    MOVEQ   #110,D1
-    CMP.W   D1,D0
-    BLS.W   LAB_0109
-
-    MOVE.B  190(A0),D0
-    MOVEQ   #5,D2
-    CMP.B   D2,D0
-    BEQ.S   LAB_00FA
-
-    SUBQ.B  #4,D0
-    BNE.W   LAB_0109
-
-LAB_00FA:
-    MOVE.W  D1,130(A0)
-    BRA.W   LAB_0109
-
-LAB_00FB:
-    CMPI.L  #'CMAP',D1
-    BNE.S   LAB_00FC
-
-    MOVE.L  28(A5),-(A7)
-    MOVE.L  A3,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  D7,-(A7)
-    BSR.W   LAB_010B
-
-    LEA     16(A7),A7
-    SUBQ.L  #1,D0
-    BEQ.W   LAB_0109
-
-    MOVEQ   #1,D5
-    BRA.W   LAB_0109
-
-LAB_00FC:
-    CMPI.L  #'BODY',D1
-    BNE.S   LAB_00FE
-
-    MOVE.L  28(A5),-(A7)
-    MOVE.L  A2,-(A7)
-    MOVE.L  D6,-(A7)
-    MOVE.L  D0,-(A7)
-    MOVE.L  D7,-(A7)
-    BSR.W   LAB_0114
-
-    LEA     20(A7),A7
-    SUBQ.L  #1,D0
-    BNE.S   LAB_00FD
-
-    MOVEQ   #1,D0
-    MOVE.L  D0,-14(A5)
-
-LAB_00FD:
-    MOVEQ   #1,D5
-    BRA.W   LAB_0109
-
-LAB_00FE:
-    CMPI.L  #'CAMG',D1
-    BNE.S   LAB_0101
-
-    MOVEA.L 28(A5),A0
-    CLR.L   148(A0)
-    CMP.L   -8(A5),D3
-    BEQ.S   LAB_00FF
-
-    MOVEQ   #1,D5
-
-LAB_00FF:
-    LEA     148(A0),A1
-    MOVE.L  D7,D1
-    MOVE.L  A1,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
-    JSR     _LVORead(A6)
-
-    SUBQ.L  #4,D0
-    BEQ.W   LAB_0109
-
-    MOVEQ   #1,D5
-    MOVEQ   #0,D0
-    MOVEA.L 28(A5),A0
-    MOVE.L  D0,148(A0)
-    CMPI.W  #$0140,128(A0)
-    BLS.S   LAB_0100
-
-    BSET    #15,D0
-    MOVE.L  D0,148(A0)
-
-LAB_0100:
-    CMPI.W  #$00c8,130(A0)
-    BLS.W   LAB_0109
-
-    BSET    #2,D0
-    MOVE.L  D0,148(A0)
-    BRA.W   LAB_0109
-
-LAB_0101:
-    CMPI.L  #'CRNG',D1
-    BNE.W   LAB_0108
-
-    MOVEA.L 28(A5),A0
-    MOVE.W  184(A0),D0
-    MOVEQ   #4,D1
-    CMP.W   D1,D0
-    BGE.W   LAB_0108
-
-    MOVEQ   #8,D1
-    CMP.L   -8(A5),D1
-    BEQ.S   LAB_0102
-
-    MOVEQ   #1,D5
-    BRA.W   LAB_0109
-
-LAB_0102:
-    MOVE.L  D0,D2
-    EXT.L   D2
-    ASL.L   #3,D2
-    ADDA.L  D2,A0
-    LEA     152(A0),A1
-    MOVE.L  D7,D1
-    MOVE.L  A1,D2
-    MOVEQ   #8,D3
-    JSR     _LVORead(A6)
-
-    SUBQ.L  #8,D0
-    BEQ.S   LAB_0103
-
-    MOVEQ   #1,D5
-
-LAB_0103:
-    MOVEA.L 28(A5),A0
-    MOVE.W  184(A0),D0
-    EXT.L   D0
-    ASL.L   #3,D0
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009e,D1
-    CMPI.B  #$1f,0(A0,D1.L)
-    BLS.S   LAB_0104
-
-    MOVEQ   #0,D1
-    MOVE.L  D0,D2
-    ADDI.L  #$0000009e,D2
-    MOVE.B  D1,0(A0,D2.L)
-
-LAB_0104:
-    MOVE.W  184(A0),D0
-    EXT.L   D0
-    ASL.L   #3,D0
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009f,D1
-    CMPI.B  #$1f,0(A0,D1.L)
-    BLS.S   LAB_0105
-
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009f,D1
-    CLR.B   0(A0,D1.L)
-
-LAB_0105:
-    MOVE.W  184(A0),D0
-    EXT.L   D0
-    ASL.L   #3,D0
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009a,D1
-    MOVE.W  0(A0,D1.L),D1
-    TST.W   D1
-    BLE.S   LAB_0106
-
-    MOVEQ   #36,D1
-    MOVE.L  D0,D2
-    ADDI.L  #$0000009a,D2
-    CMP.W   0(A0,D2.L),D1
-    BEQ.S   LAB_0106
-
-    MOVE.W  184(A0),D0
-    EXT.L   D0
-    ASL.L   #3,D0
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009e,D1
-    MOVE.B  0(A0,D1.L),D1
-    MOVE.L  D0,D2
-    ADDI.L  #$0000009f,D2
-    CMP.B   0(A0,D2.L),D1
-    BCS.S   LAB_0107
-
-LAB_0106:
-    MOVE.W  184(A0),D0
-    EXT.L   D0
-    ASL.L   #3,D0
-    MOVE.L  D0,D1
-    ADDI.L  #$0000009c,D1
-    CLR.W   0(A0,D1.L)
-
-LAB_0107:
-    ADDQ.W  #1,184(A0)
-    BRA.S   LAB_0109
-
-LAB_0108:
-    MOVE.L  D7,D1
-    MOVE.L  -8(A5),D2
-    MOVEQ   #0,D3
-    JSR     _LVOSeek(A6)
-
-LAB_0109:
-    TST.W   D5
-    BEQ.W   LAB_00F0
-
-LAB_010A:
-    MOVE.L  -14(A5),D0
-    MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
-    UNLK    A5
-    RTS
+    include "subroutines/image/process_ilbm_image.s"
 
 ;!======
 
@@ -3500,24 +3163,30 @@ LAB_014D:
 LAB_014E:
     LINK.W  A5,#-8
     MOVE.L  A3,-(A7)
+
     MOVEA.L 8(A5),A3
     CLR.L   -4(A5)
     MOVE.L  (A3),-8(A5)
-LAB_014F:
+
+.LAB_014F:
     TST.L   -8(A5)
-    BEQ.S   LAB_0150
+    BEQ.S   .return
+
     MOVEA.L -8(A5),A0
     MOVE.L  234(A0),-4(A5)
     PEA     238.W
     MOVE.L  A0,-(A7)
     PEA     887.W
-    PEA     LAB_1B33
+    PEA     GLOB_STR_BRUSH_C_9
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     MOVE.L  -4(A5),-8(A5)
-    BRA.S   LAB_014F
-LAB_0150:
+    BRA.S   .LAB_014F
+
+.return:
     CLR.L   (A3)
+
     MOVEA.L (A7)+,A3
     UNLK    A5
     RTS
@@ -3605,6 +3274,7 @@ LAB_0156:
 
     BRA.S   LAB_0159
 
+; Open and process an image?
 LAB_0157:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
@@ -3616,7 +3286,7 @@ LAB_0157:
     MOVE.L  #$00010001,-(A7)
     MOVE.L  #130000,-(A7)
     PEA     977.W
-    PEA     LAB_1B35
+    PEA     GLOB_STR_BRUSH_C_10
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -5160,11 +4830,11 @@ LAB_01E3:
 
     MOVE.W  GLOB_WORD_CURRENT_HOUR,D0
     EXT.L   D0
-    MOVE.W  LAB_227D,D1
+    MOVE.W  GLOB_WORD_USE_24_HR_FMT,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0219(PC)
+    JSR     JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT(PC)
 
     MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
     EXT.L   D1
@@ -5173,7 +4843,7 @@ LAB_01E3:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_1B56
+    PEA     GLOB_STR_EXTRA_TIME_FORMAT
     PEA     -10(A5)
     JSR     JMP_TBL_PRINTF_1(PC)
 
@@ -5680,11 +5350,11 @@ LAB_01FE:
     BNE.S   LAB_01FF
     MOVE.W  GLOB_WORD_CURRENT_HOUR,D0
     EXT.L   D0
-    MOVE.W  LAB_227D,D1
+    MOVE.W  GLOB_WORD_USE_24_HR_FMT,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0219(PC)
+    JSR     JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT(PC)
     MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
     EXT.L   D1
     MOVE.W  GLOB_WORD_CURRENT_SECOND,D2
@@ -6085,8 +5755,8 @@ LAB_0217:
     JMP     LAB_065E
 LAB_0218:
     JMP     DRAW_ESC_MENU_VERSION_SCREEN
-LAB_0219:
-    JMP     LAB_1474
+JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT:
+    JMP     ADJUST_HOURS_TO_24_HR_FMT
 
 ;!======
 
@@ -59899,7 +59569,7 @@ LAB_146E:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_1474
+    BSR.W   ADJUST_HOURS_TO_24_HR_FMT
     MOVE.W  D0,-14(A5)
     MOVE.W  LAB_223F,D0
     MOVE.W  D0,-16(A5)
@@ -60018,25 +59688,33 @@ LAB_1473:
 
 ;!======
 
-LAB_1474:
+ADJUST_HOURS_TO_24_HR_FMT:
     MOVEM.L D6-D7,-(A7)
     MOVE.W  14(A7),D7
     MOVE.W  18(A7),D6
+
+    ; If we're over 12 hours, jump.
     MOVEQ   #12,D0
     CMP.W   D0,D7
-    BNE.S   LAB_1475
+    BNE.S   .add12ToHour
+
+    ; If D6 is not 0, jump.
     TST.W   D6
-    BNE.S   LAB_1475
+    BNE.S   .add12ToHour
+
+    ; Return 0 if we're 12 AM.
     MOVEQ   #0,D7
-    BRA.S   LAB_1476
-LAB_1475:
+    BRA.S   .return
+
+.add12ToHour:
     CMP.W   D0,D7
-    BGE.S   LAB_1476
+    BGE.S   .return
     MOVEQ   #-1,D1
     CMP.W   D1,D6
-    BNE.S   LAB_1476
-    ADDI.W  #$000c,D7
-LAB_1476:
+    BNE.S   .return
+    ADDI.W  #12,D7
+
+.return:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEM.L (A7)+,D6-D7
@@ -66410,7 +66088,7 @@ LAB_1701:
     EXT.L   D0
     MOVEQ   #12,D1
     JSR     LAB_1A07(PC)
-    TST.W   LAB_227D
+    TST.W   GLOB_WORD_USE_24_HR_FMT
     BEQ.S   LAB_1702
     MOVEQ   #12,D0
     BRA.S   LAB_1703
@@ -73047,52 +72725,8 @@ LAB_1908:
 
 ;!======
 
-ALLOCATE_MEMORY:
-    LINK.W  A5,#-4
-    MOVEM.L D6-D7,-(A7)
-
-    MOVE.L  16(A5),D7
-    MOVE.L  20(A5),D6
-
-    MOVE.L  D7,D0               ; Number of bytes
-    MOVE.L  D6,D1               ; Attributes
-    MOVEA.L AbsExecBase,A6
-    JSR     _LVOAllocMem(A6)    ; D0 gets set to a pointer to the mem block or zero if it fails
-
-    ADD.L   D7,GLOB_BYTES_ALLOCATED
-    ADDQ.L  #1,GLOB_ALLOCATIONS
-
-    MOVEM.L (A7)+,D6-D7
-    UNLK    A5
-
-    RTS
-
-;!======
-
-DEALLOCATE_MEMORY:
-    LINK.W  A5,#0
-    MOVEM.L D7/A3,-(A7)
-    MOVEA.L 16(A5),A3
-    MOVE.L  20(A5),D7
-
-    MOVE.L  A3,D0
-    BEQ.S   .return
-
-    TST.L   D7
-    BEQ.S   .return
-
-    MOVEA.L A3,A1
-    MOVE.L  D7,D0
-    MOVEA.L AbsExecBase,A6
-    JSR     _LVOFreeMem(A6)
-
-    SUB.L   D7,GLOB_BYTES_ALLOCATED
-    ADDQ.L  #1,GLOB_DEALLOCATIONS
-
-.return:
-    MOVEM.L (A7)+,D7/A3
-    UNLK    A5
-    RTS
+    include "subroutines/memory/allocate_memory.s"
+    include "subroutines/memory/deallocate_memory.s"
 
 ;!======
 
@@ -73124,7 +72758,7 @@ LAB_190D:
     MOVE.L  20(A5),D7
     MOVE.L  24(A5),D6
 
-        MOVEA.L A3,A0
+    MOVEA.L A3,A0
     MOVE.L  D7,D0
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -77332,6 +76966,7 @@ POPULATE_CLOCKDATE_FROM_SECS:
     MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6
     MOVEM.L 8(A7),D0/A0
     JSR     _LVOAmiga2Date(A6)
+
     MOVEA.L (A7)+,A6
     RTS
 
@@ -77620,11 +77255,11 @@ LAB_1B31:
     NStr    "BRUSH.c"
 LAB_1B32:
     NStr    "BRUSH.c"
-LAB_1B33:
+GLOB_STR_BRUSH_C_9:
     NStr    "BRUSH.c"
 LAB_1B34:
     NStr    "FORM"
-LAB_1B35:
+GLOB_STR_BRUSH_C_10:
     NStr    "BRUSH.c"
 LAB_1B36:
     NStr    "BRUSH.c"
@@ -77694,7 +77329,7 @@ LAB_1B54:
     DS.L    1
 LAB_1B55:
     DC.L    $0000003c
-LAB_1B56:
+GLOB_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
     NStr    "%2d:%02d:%02d"
 GLOB_STR_GRID_TIME_FORMAT:
     NStr    "%2d:%02d:%02d"
@@ -82630,7 +82265,7 @@ LAB_227B:
     DS.W    1
 LAB_227C:
     DS.W    1
-LAB_227D:
+GLOB_WORD_USE_24_HR_FMT:
     DS.W    1
 LAB_227E:
     DS.W    1
