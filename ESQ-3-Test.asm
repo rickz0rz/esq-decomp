@@ -21980,7 +21980,7 @@ LAB_0797:
     JSR     LAB_07CB(PC)
     BRA.S   LAB_0799
 LAB_0798:
-    PEA     LAB_1D6A
+    PEA     GLOB_STR_DF0_GRADIENT_INI_1
     JSR     LAB_07C6(PC)
     ADDQ.W  #4,A7
 LAB_0799:
@@ -25757,7 +25757,7 @@ LAB_085E:
 
     JSR     LAB_08B3(PC)
 
-    PEA     LAB_1E13
+    PEA     GLOB_STR_DF0_GRADIENT_INI_2
     JSR     LAB_07C6(PC)
 
     JSR     LAB_08AA(PC)
@@ -25861,7 +25861,7 @@ LAB_085E:
 
     JSR     LAB_08A5(PC)
 
-    PEA     LAB_1E19
+    PEA     GLOB_STR_DF0_DEFAULT_INI_1
     JSR     LAB_07C6(PC)
 
     PEA     GLOB_STR_DF0_BRUSH_INI_1
@@ -25892,7 +25892,7 @@ LAB_085E:
     MOVE.L  D0,LAB_1ED0
     JSR     LAB_09DB(PC)
 
-    PEA     LAB_1E1D
+    PEA     GLOB_STR_DF0_BANNER_INI_1
     JSR     LAB_07C6(PC)
 
     JSR     LAB_08B6(PC)
@@ -59179,14 +59179,14 @@ LAB_1416:
     BRA.W   .return
 
 .LAB_1424:
-    PEA     GLOB_STR_DF0_GRADIENT_INI
+    PEA     GLOB_STR_DF0_GRADIENT_INI_3
     BSR.W   LAB_139B
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
 .LAB_1425:
-    PEA     GLOB_STR_DF0_BANNER_INI_1
+    PEA     GLOB_STR_DF0_BANNER_INI_2
     JSR     LAB_14C6(PC)
 
     ADDQ.W  #4,A7
@@ -59203,7 +59203,7 @@ LAB_1416:
 
     PEA     LAB_1B23
     JSR     LAB_1459(PC)
-    PEA     GLOB_STR_DF0_BANNER_INI_2
+    PEA     GLOB_STR_DF0_BANNER_INI_3
 
     BSR.W   LAB_139B
     PEA     1.W
@@ -59213,13 +59213,13 @@ LAB_1416:
     BRA.S   .return
 
 .LAB_1427:
-    PEA     GLOB_STR_DF0_DEFAULT_INI
+    PEA     GLOB_STR_DF0_DEFAULT_INI_2
     BSR.W   LAB_139B
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .LAB_1428:
-    PEA     GLOB_STR_DF0_SOURCECFG_INI
+    PEA     GLOB_STR_DF0_SOURCECFG_INI_1
     BSR.W   LAB_139B
 
     JSR     LAB_1670(PC)
@@ -64546,7 +64546,7 @@ LAB_1665:
 LAB_1666:
     CLR.L   LAB_235F
     CLR.B   LAB_2131
-    PEA     LAB_2150
+    PEA     GLOB_STR_DF0_SOURCECFG_INI_2
     JSR     LAB_139B(PC)
     ADDQ.W  #4,A7
     MOVE.L  (A7)+,D7
@@ -78557,7 +78557,7 @@ LAB_1D68:
     NStr3   TextLineFeed,"banner_for_weather = %d",TextLineFeed
 LAB_1D69:
     NStr    "BitPlane1 =%8lx  "
-LAB_1D6A:
+GLOB_STR_DF0_GRADIENT_INI_1:
     NStr    "df0:Gradient.ini"
 LAB_1D6B:
     NStr    "NRLS"
@@ -78937,7 +78937,7 @@ GLOB_STR_MAJOR_MINOR_VERSION:
     NStr    "9.0"   ; Major/minor version string
 LAB_1E12:
     NStr    "                                       "
-LAB_1E13:
+GLOB_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
 LAB_1E14:
     NStr    "System Initializing"
@@ -78949,7 +78949,7 @@ LAB_1E17:
     NStr    "Report Error Code ER011 to TV Guide Technical Services."
 LAB_1E18:
     NStr    "Report Error Code ER012 to TV Guide Technical Services."
-LAB_1E19:
+GLOB_STR_DF0_DEFAULT_INI_1:
     NStr    "df0:default.ini"
 GLOB_STR_DF0_BRUSH_INI_1:
     NStr    "df0:brush.ini"
@@ -78957,7 +78957,7 @@ LAB_1E1B:
     NStr    "DT"
 LAB_1E1C:
     NStr    "DITHER"
-LAB_1E1D:
+GLOB_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
 LAB_1E1E:
     NStr    "GRANADA"
@@ -81037,15 +81037,15 @@ LAB_2090:
     NStr    "COLOR%d"
 GLOB_STR_PERCENT_S:
     NStr    "%s"
-GLOB_STR_DF0_GRADIENT_INI:
+GLOB_STR_DF0_GRADIENT_INI_3:
     NStr    "df0:Gradient.ini"
-GLOB_STR_DF0_BANNER_INI_1:
-    NStr    "df0:banner.ini"
 GLOB_STR_DF0_BANNER_INI_2:
     NStr    "df0:banner.ini"
-GLOB_STR_DF0_DEFAULT_INI:
+GLOB_STR_DF0_BANNER_INI_3:
+    NStr    "df0:banner.ini"
+GLOB_STR_DF0_DEFAULT_INI_2:
     NStr    "df0:default.ini"
-GLOB_STR_DF0_SOURCECFG_INI:
+GLOB_STR_DF0_SOURCECFG_INI_1:
     NStr    "df0:SourceCfg.ini"
 LAB_2097:
     NStr    "list >RAM:logodir.txt DH2:LOGOS nohead quick"
@@ -81498,7 +81498,7 @@ LAB_214E:
     NStr    " "
 LAB_214F:
     NStr    "TEXTDISP.c"
-LAB_2150:
+GLOB_STR_DF0_SOURCECFG_INI_2:
     NStr    "df0:SourceCfg.ini"
 LAB_2151:
     NStr    "TEXTDISP.c"
