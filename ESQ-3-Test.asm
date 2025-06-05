@@ -20931,15 +20931,17 @@ LAB_072F:
     MOVE.W  LAB_2231,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_1D39
+    PEA     GLOB_STR_PI_CLU_POS1
     PEA     -120(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
+
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     90.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
+
     LEA     28(A7),A7
     MOVEA.L LAB_1D32,A0
     MOVEA.L A0,A1
@@ -20969,7 +20971,7 @@ LAB_0735:
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
-    PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS
+    PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS_1
     PEA     -120(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
     MOVEA.L LAB_2216,A0
@@ -21120,22 +21122,28 @@ LAB_0742:
 LAB_0743:
     LINK.W  A5,#-120
     MOVEM.L D2/A2-A3,-(A7)
+
     MOVE.W  LAB_21E5,D0
     MOVE.W  LAB_2231,D1
     CMP.W   D1,D0
     BGE.S   LAB_0744
+
     TST.W   D0
     BPL.S   LAB_0745
+
 LAB_0744:
     MOVEQ   #0,D2
     MOVE.W  D2,LAB_21E5
+
 LAB_0745:
     TST.W   D1
     BNE.S   LAB_0746
+
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1D32
     MOVE.L  A0,LAB_1D33
     BRA.S   LAB_0747
+
 LAB_0746:
     MOVE.W  LAB_21E5,D0
     EXT.L   D0
@@ -21145,30 +21153,35 @@ LAB_0746:
     MOVEA.L (A0),A1
     MOVE.L  A1,LAB_1D32
     CLR.W   LAB_21E6
+
 LAB_0747:
     TST.L   LAB_1D32
     BEQ.W   LAB_0755
+
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
+
     MOVE.W  LAB_21E5,D0
     EXT.L   D0
     MOVEQ   #0,D1
     MOVE.W  LAB_2231,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_1D49
+    PEA     GLOB_STR_CLU_CLU_POS1
     PEA     -120(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
+
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     120.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
+
     MOVEA.L LAB_1D32,A0
     MOVEA.L A0,A1
     ADDQ.L  #1,A1
@@ -21177,88 +21190,114 @@ LAB_0747:
     MOVE.L  A3,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
-    PEA     LAB_1D4A
+    PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS_2
     PEA     -120(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
+
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     150.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
+
     LEA     56(A7),A7
     CLR.B   -120(A5)
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #0,D0
     BEQ.S   LAB_0748
+
     PEA     LAB_1D4B
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0748:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #1,D0
     BEQ.S   LAB_0749
+
     PEA     LAB_1D4C
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0749:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #2,D0
     BEQ.S   LAB_074A
+
     PEA     LAB_1D4D
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_074A:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #3,D0
     BEQ.S   LAB_074B
+
     PEA     LAB_1D4E
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_074B:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #4,D0
     BEQ.S   LAB_074C
+
     PEA     LAB_1D4F
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_074C:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #5,D0
     BEQ.S   LAB_074D
+
     PEA     LAB_1D50
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_074D:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #6,D0
     BEQ.S   LAB_074E
+
     PEA     LAB_1D51
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_074E:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #7,D0
     BEQ.S   LAB_074F
+
     PEA     LAB_1D52
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_074F:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -21266,52 +21305,68 @@ LAB_074F:
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
+
     LEA     12(A7),A7
     CLR.B   -120(A5)
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #0,D0
     BEQ.S   LAB_0750
+
     PEA     LAB_1D53
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0750:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #1,D0
     BEQ.S   LAB_0751
+
     PEA     LAB_1D54
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0751:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #2,D0
     BEQ.S   LAB_0752
+
     PEA     LAB_1D55
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0752:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #3,D0
     BEQ.S   LAB_0753
+
     PEA     LAB_1D56
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0753:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #4,D0
     BEQ.S   LAB_0754
+
     PEA     LAB_1D57
     PEA     -120(A5)
     JSR     LAB_05C5(PC)
+
     ADDQ.W  #8,A7
+
 LAB_0754:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -21319,7 +21374,9 @@ LAB_0754:
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
+
     LEA     12(A7),A7
+
 LAB_0755:
     MOVEM.L (A7)+,D2/A2-A3
     UNLK    A5
@@ -21330,8 +21387,9 @@ LAB_0755:
 LAB_0756:
     LINK.W  A5,#-120
     MOVEM.L D2-D7,-(A7)
+
     MOVE.L  LAB_231C,D0
-    LSL.L   #2,D0
+    LSL.L   #2,D0           ; multiply by 4
     ADD.L   LAB_231C,D0
     LEA     LAB_231D,A0
     ADDA.L  D0,A0
@@ -21341,107 +21399,159 @@ LAB_0756:
     MOVE.B  D0,D1
     SUBQ.W  #2,D1
     BEQ.W   LAB_076A
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0781
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_076B
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_076D
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_076E
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_075B
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_075D
+
     SUBQ.W  #5,D1
     BEQ.W   LAB_0778
+
     SUBQ.W  #4,D1
     BEQ.W   LAB_0793
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_0777
+
     SUBQ.W  #3,D1
     BEQ.W   LAB_0779
+
     SUBQ.W  #3,D1
     BEQ.W   LAB_077C
+
     SUBI.W  #$0010,D1
     BEQ.W   LAB_077E
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_077D
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_0768
+
     SUBI.W  #$000e,D1
     BEQ.W   LAB_077F
+
     SUBQ.W  #4,D1
     BEQ.W   LAB_0782
+
     SUBQ.W  #3,D1
     BEQ.W   LAB_078A
+
     SUBQ.W  #3,D1
     BEQ.W   LAB_078F
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_078D
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_0797
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0785
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0786
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0795
+
     SUBQ.W  #3,D1
     BEQ.W   LAB_0799
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0784
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0792
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0783
+
     SUBQ.W  #8,D1
     BEQ.W   LAB_0769
+
     SUBQ.W  #7,D1
     BEQ.W   LAB_0787
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_078B
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0759
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0790
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_075A
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_075C
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_075E
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_078C
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_0796
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_0798
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0799
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_078E
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0791
+
     SUBQ.W  #5,D1
     BEQ.W   LAB_0780
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0789
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0794
+
     SUBI.W  #$0026,D1
     BEQ.W   LAB_076F
+
     SUBQ.W  #1,D1
     BEQ.W   LAB_0776
+
     SUBI.W  #$003e,D1
     BEQ.S   LAB_0757
+
     SUBQ.W  #6,D1
     BEQ.W   LAB_0770
+
     SUBQ.W  #2,D1
     BEQ.W   LAB_0771
+
     SUBI.W  #$0017,D1
     BEQ.S   LAB_0758
+
     BRA.W   LAB_0799
+
 LAB_0757:
     TST.W   LAB_1FA5
     SEQ D0
@@ -21450,169 +21560,229 @@ LAB_0757:
     EXT.L   D0
     MOVE.W  D0,LAB_1FA5
     BRA.W   LAB_0799
+
 LAB_0758:
     PEA     LAB_223A
     PEA     LAB_1D58
     JSR     LAB_0657(PC)
+
     PEA     LAB_2274
     PEA     LAB_1D59
     JSR     LAB_0657(PC)
+
     LEA     16(A7),A7
     BRA.W   LAB_0799
+
 LAB_0759:
     BSR.W   LAB_0729
+
     BRA.W   LAB_0799
+
 LAB_075A:
     MOVE.W  LAB_21E5,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_21E5
     BSR.W   LAB_0743
+
     BRA.W   LAB_0799
+
 LAB_075B:
     MOVE.W  LAB_21E5,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_21E5
     BSR.W   LAB_0743
+
     BRA.W   LAB_0799
+
 LAB_075C:
     MOVE.W  LAB_21E6,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_21E6
     BSR.W   LAB_072A
+
     BRA.W   LAB_0799
+
 LAB_075D:
     MOVE.W  LAB_21E6,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_21E6
     BSR.W   LAB_072A
+
     BRA.W   LAB_0799
+
 LAB_075E:
     MOVEQ   #0,D6
     CLR.L   -118(A5)
-    PEA     1005.W
-    PEA     LAB_1D5A
+    PEA     (MODE_OLDFILE).W
+    PEA     GLOB_STR_DF0_CLOCK_CMD
     JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE(PC)
+
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
     BEQ.W   LAB_0799
+
     MOVE.L  D6,D1
     LEA     -105(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #50,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
+
     MOVE.L  D0,D4
     MOVEQ   #11,D0
     CMP.L   D0,D4
     BLT.S   LAB_0767
+
     MOVEQ   #0,D5
+
 LAB_075F:
     CMP.L   D4,D5
     BGE.S   LAB_0767
+
     MOVE.L  -118(A5),D0
     TST.L   D0
     BEQ.S   LAB_0760
+
     SUBQ.L  #1,D0
     BEQ.S   LAB_0761
+
     SUBQ.L  #1,D0
     BEQ.S   LAB_0763
+
     SUBQ.L  #1,D0
     BEQ.S   LAB_0765
+
     BRA.S   LAB_0766
+
 LAB_0760:
     MOVEQ   #85,D0
     CMP.B   -105(A5,D5.L),D0
     BNE.S   LAB_0766
+
     ADDQ.L  #1,-118(A5)
     BRA.S   LAB_0766
+
 LAB_0761:
     CMPI.B  #$aa,-105(A5,D5.L)
     BNE.S   LAB_0762
+
     ADDQ.L  #1,-118(A5)
     BRA.S   LAB_0766
+
 LAB_0762:
     CLR.L   -118(A5)
     BRA.S   LAB_0766
+
 LAB_0763:
     MOVEQ   #75,D0
     CMP.B   -105(A5,D5.L),D0
     BNE.S   LAB_0764
+
     ADDQ.L  #1,-118(A5)
     BRA.S   LAB_0766
+
 LAB_0764:
     CLR.L   -118(A5)
     BRA.S   LAB_0766
+
 LAB_0765:
     LEA     -105(A5),A0
     ADDA.L  D5,A0
     MOVE.L  A0,-(A7)
     JSR     LAB_07C9(PC)
+
     ADDQ.W  #4,A7
     MOVE.L  D4,D5
+
 LAB_0766:
     ADDQ.L  #1,D5
     BRA.S   LAB_075F
+
 LAB_0767:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
+
     BRA.W   LAB_0799
+
 LAB_0768:
     JSR     LAB_07C5(PC)
+
     BRA.W   LAB_0799
+
 LAB_0769:
     MOVE.B  #$18,LAB_1D13
+
     BRA.W   LAB_0799
+
 LAB_076A:
     BSR.W   LAB_0728
+
     BRA.W   LAB_0799
+
 LAB_076B:
     TST.W   LAB_1F40
     BEQ.S   LAB_076C
+
     MOVE.W  LAB_1F40,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_1F40
+
 LAB_076C:
     BSR.W   LAB_0728
+
     BRA.W   LAB_0799
+
 LAB_076D:
     MOVE.W  LAB_1F40,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_1F40
     BSR.W   LAB_0728
+
     BRA.W   LAB_0799
+
 LAB_076E:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     MOVE.L  A0,-(A7)
     JSR     LAB_07D2(PC)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVE.L  GLOB_REF_RASTPORT_1,(A7)
     JSR     LAB_07D2(PC)
+
     ADDQ.W  #4,A7
     BRA.W   LAB_0799
+
 LAB_076F:
     CLR.L   -(A7)
     JSR     LAB_0484(PC)
+
     ADDQ.W  #4,A7
     BRA.W   LAB_0799
+
 LAB_0770:
     MOVE.W  #$0001,LAB_1DE4
     BRA.W   LAB_0799
+
 LAB_0771:
     PEA     LAB_1D5B
     JSR     LAB_066D(PC)
+
     ADDQ.W  #4,A7
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     TST.B   LAB_224A
     BEQ.S   LAB_0772
+
     LEA     GLOB_STR_TRUE_1,A0
     BRA.S   LAB_0773
+
 LAB_0772:
     LEA     GLOB_STR_FALSE_1,A0
+
 LAB_0773:
     MOVEQ   #0,D1
     MOVE.B  LAB_2238,D1
@@ -21624,8 +21794,10 @@ LAB_0773:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D5C
     JSR     LAB_066D(PC)
+
     LEA     20(A7),A7
     MOVEQ   #0,D7
+
 LAB_0774:
     MOVE.L  D7,D0
     EXT.W   D0
@@ -21634,6 +21806,7 @@ LAB_0774:
     MOVE.W  LAB_2231,D1
     CMP.L   D1,D0
     BGE.S   LAB_0775
+
     CLR.W   LAB_2363
     MOVE.B  D7,D0
     EXT.W   D0
@@ -21657,31 +21830,39 @@ LAB_0774:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     JSR     LAB_0439(PC)
+
     JSR     LAB_097E(PC)
+
     ADDQ.W  #8,A7
     ADDQ.B  #1,D7
     BRA.S   LAB_0774
+
 LAB_0775:
     PEA     LAB_1D5F
     JSR     LAB_066D(PC)
+
     ADDQ.W  #4,A7
     BRA.W   LAB_0799
+
 LAB_0776:
     MOVE.B  LAB_1DEF,D0
     NOT.B   D0
     MOVE.B  D0,LAB_1DEF
     BRA.W   LAB_0799
+
 LAB_0777:
     MOVEQ   #0,D0
     MOVE.B  LAB_229C,D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1D60
     JSR     LAB_066D(PC)
+
     MOVEQ   #0,D0
     MOVE.B  LAB_227F,D0
     MOVE.L  D0,(A7)
     PEA     LAB_1D61
     JSR     LAB_066D(PC)
+
     MOVE.W  LAB_229D,D0
     EXT.L   D0
     MOVEQ   #48,D1
@@ -21692,6 +21873,7 @@ LAB_0777:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D62
     JSR     LAB_066D(PC)
+
     MOVE.W  LAB_2380,D0
     EXT.L   D0
     MOVE.W  LAB_2380,D1
@@ -21700,25 +21882,32 @@ LAB_0777:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D63
     JSR     LAB_066D(PC)
+
     MOVE.L  LAB_1DEC,(A7)
     PEA     LAB_1D64
     JSR     LAB_066D(PC)
+
     MOVE.L  LAB_1DD9,(A7)
     PEA     LAB_1D65
     JSR     LAB_066D(PC)
+
     PEA     LAB_2245
     PEA     LAB_1D66
     JSR     LAB_066D(PC)
+
     MOVEQ   #0,D0
     MOVE.B  LAB_229B,D0
     MOVE.L  D0,(A7)
     PEA     LAB_1D67
     JSR     LAB_066D(PC)
+
     MOVE.L  LAB_2059,(A7)
     PEA     LAB_1D68
     JSR     LAB_066D(PC)
+
     LEA     52(A7),A7
     BRA.W   LAB_0799
+
 LAB_0778:
     MOVE.B  #$3c,LAB_227F
     MOVE.B  #$01,LAB_229B
@@ -21726,68 +21915,89 @@ LAB_0778:
     MOVE.W  #$0032,LAB_229D
     CLR.W   LAB_2380
     BRA.W   LAB_0799
+
 LAB_0779:
     MOVE.B  LAB_1BA2,D0
     TST.B   D0
     BEQ.S   LAB_077A
+
     MOVE.B  D0,LAB_21E7
     CLR.B   LAB_1BA2
     BRA.S   LAB_077B
+
 LAB_077A:
     MOVE.B  LAB_21E7,D1
     MOVE.B  D1,LAB_1BA2
+
 LAB_077B:
     MOVE.B  LAB_1BA2,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
     JSR     LAB_0AB6(PC)
+
     MOVE.L  D0,LAB_1BCA
     BRA.W   LAB_0799
+
 LAB_077C:
     JSR     LAB_070E(PC)
+
     BRA.W   LAB_0799
+
 LAB_077D:
     JSR     LAB_07C8(PC)
+
     SUBQ.W  #1,D0
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     JSR     LAB_0AAE(PC)
+
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
+
 LAB_077E:
     JSR     LAB_07C8(PC)
+
     ADDQ.W  #1,D0
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     JSR     LAB_0AAE(PC)
+
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
+
 LAB_077F:
     MOVE.W  LAB_1BC2,D0
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     JSR     LAB_0AAE(PC)
+
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
+
 LAB_0780:
     MOVE.B  #$1f,LAB_1B05
     JSR     LAB_07CE(PC)
+
     BRA.W   LAB_0799
+
 LAB_0781:
     PEA     4.W
     CLR.L   -(A7)
     PEA     3.W
     JSR     LAB_0A97(PC)
+
     MOVE.L  D0,LAB_2216
     JSR     LAB_07E2(PC)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEQ   #0,D0
     MOVEA.L LAB_2216,A0
     MOVE.W  2(A0),D0
@@ -21799,54 +22009,73 @@ LAB_0781:
     MOVEQ   #0,D0
     MOVEQ   #20,D1
     JSR     _LVORectFill(A6)
+
     JSR     LAB_08B1(PC)
+
     LEA     12(A7),A7
     MOVE.W  #$0001,LAB_1DF3
     BRA.W   LAB_0799
+
 LAB_0782:
     TST.L   LAB_1FE7
     BNE.W   LAB_0799
+
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_1FE9
     PEA     3.W
     JSR     LAB_07C4(PC)
+
     ADDQ.W  #4,A7
     MOVE.W  #$0003,LAB_1DDE
     MOVE.W  #$0001,LAB_1DDF
     BRA.W   LAB_0799
+
 LAB_0783:
     TST.L   LAB_1FE7
     BNE.W   LAB_0799
+
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_1FE9
     MOVE.L  D0,-(A7)
     JSR     LAB_07C4(PC)
+
     ADDQ.W  #4,A7
     MOVE.W  #$0003,LAB_1DDE
     MOVE.W  #$0001,LAB_1DDF
     BRA.W   LAB_0799
+
 LAB_0784:
     JSR     LAB_071B(PC)
+
     BRA.W   LAB_0799
+
 LAB_0785:
     JSR     LAB_071A(PC)
+
     BRA.W   LAB_0799
+
 LAB_0786:
     JSR     LAB_07D3(PC)
+
     BRA.W   LAB_0799
+
 LAB_0787:
     JSR     LAB_07E2(PC)
+
     MOVEQ   #0,D7
+
 LAB_0788:
     MOVEQ   #32,D0
     CMP.B   D0,D7
     BGE.W   LAB_0799
+
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
@@ -21867,66 +22096,89 @@ LAB_0788:
     MOVEQ   #100,D3
     ADD.L   D3,D3
     JSR     _LVORectFill(A6)
+
     ADDQ.B  #1,D7
     BRA.S   LAB_0788
+
 LAB_0789:
     PEA     31.W
     CLR.L   -(A7)
     JSR     LAB_0AA2(PC)
+
     ADDQ.W  #8,A7
     CLR.W   LAB_22AA
     BRA.W   LAB_0799
+
 LAB_078A:
     JSR     LAB_0539(PC)
+
     BRA.W   LAB_0799
+
 LAB_078B:
     JSR     LAB_07CA(PC)
+
     BRA.W   LAB_0799
+
 LAB_078C:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     1.W
     JSR     LAB_07CF(PC)
+
     LEA     12(A7),A7
     BRA.W   LAB_0799
+
 LAB_078D:
     CLR.W   LAB_2346
     BRA.W   LAB_0799
+
 LAB_078E:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     JSR     LAB_07CF(PC)
+
     LEA     12(A7),A7
     BRA.W   LAB_0799
+
 LAB_078F:
     PEA     1.W
     JSR     LAB_0A7C(PC)
+
     ADDQ.W  #4,A7
     BRA.W   LAB_0799
+
 LAB_0790:
     JSR     LAB_09B0(PC)
+
     BRA.W   LAB_0799
+
 LAB_0791:
     CLR.W   LAB_1F45
     BRA.W   LAB_0799
+
 LAB_0792:
     MOVE.W  #$0100,LAB_1F45
     BRA.W   LAB_0799
+
 LAB_0793:
     MOVE.W  #$0200,LAB_1F45
     BRA.W   LAB_0799
+
 LAB_0794:
     JSR     LAB_0969(PC)
+
     MOVE.W  LAB_2266,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     JSR     LAB_095F(PC)
+
     ADDQ.W  #4,A7
     MOVE.W  D0,LAB_2266
     BRA.S   LAB_0799
+
 LAB_0795:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
@@ -21934,42 +22186,56 @@ LAB_0795:
     PEA     LAB_1D69
     PEA     -50(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
+
     PEA     -50(A5)
     PEA     232.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
     LEA     28(A7),A7
+
     BRA.S   LAB_0799
+
 LAB_0796:
     JSR     LAB_08B1(PC)
+
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
+
     PEA     1.W
     JSR     LAB_07C4(PC)
+
     ADDQ.W  #8,A7
     BRA.S   LAB_0799
+
 LAB_0797:
     JSR     LAB_07CB(PC)
     BRA.S   LAB_0799
+
 LAB_0798:
     PEA     GLOB_STR_DF0_GRADIENT_INI_1
     JSR     LAB_07C6(PC)
+
     ADDQ.W  #4,A7
+
 LAB_0799:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
+
     MOVEM.L (A7)+,D2-D7
     UNLK    A5
     RTS
@@ -69238,10 +69504,14 @@ LAB_181D:
 LAB_181E:
     LINK.W  A5,#-20
     MOVEM.L D5-D7/A2-A3,-(A7)
+
+    ; this is just a funny way of getting values from the stack.
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  16(A5),D7
+
     CLR.B   -18(A5)
+
     MOVE.B  28(A3),-15(A5)
     MOVE.B  25(A3),-16(A5)
     MOVE.B  26(A3),-17(A5)
@@ -69252,65 +69522,84 @@ LAB_181E:
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #7,D0
     JSR     _LVOSetBPen(A6)
+
     MOVEA.L 4(A3),A0
     MOVEQ   #0,D5
     MOVE.W  (A0),D5
     ASL.L   #3,D5
+
 LAB_181F:
     MOVEA.L A2,A0
+
 LAB_1820:
     TST.B   (A0)+
     BNE.S   LAB_1820
+
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,-12(A5)
+
 LAB_1821:
     MOVE.L  -12(A5),D0
     TST.L   D0
     BLE.S   LAB_1823
+
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
+
     MOVE.L  D5,D1
     SUB.L   D0,D1
     TST.L   D1
     BPL.S   LAB_1822
+
     ADDQ.L  #1,D1
+
 LAB_1822:
     ASR.L   #1,D1
     MOVE.L  D1,D6
     BGE.S   LAB_1823
+
     SUBQ.L  #1,-12(A5)
     BRA.S   LAB_1821
+
 LAB_1823:
     TST.B   -18(A5)
     BEQ.S   LAB_1824
+
     MOVEQ   #0,D0
     BRA.S   LAB_1825
+
 LAB_1824:
     MOVE.L  -12(A5),D0
     MOVE.B  0(A2,D0.L),D0
     EXT.W   D0
     EXT.L   D0
 LAB_1825:
+
     MOVE.L  -12(A5),D1
     CLR.B   0(A2,D1.L)
     MOVE.B  D0,-18(A5)
     TST.L   D6
     BMI.S   LAB_1826
+
     MOVE.L  A2,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+
     LEA     16(A7),A7
+
 LAB_1826:
     MOVEA.L 52(A3),A0
     MOVEQ   #0,D0
@@ -69323,25 +69612,30 @@ LAB_1826:
     MOVEA.L A0,A2
     TST.B   (A2)
     BNE.W   LAB_181F
+
     MOVE.B  -16(A5),D0
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A3,A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
+
     MOVE.B  -17(A5),D0
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A3,A1
     JSR     _LVOSetBPen(A6)
+
     MOVE.B  -15(A5),D0
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A3,A1
     JSR     _LVOSetDrMd(A6)
+
     MOVE.B  -14(A5),24(A3)
     MOVEA.L 4(A3),A0
     MOVE.B  -13(A5),5(A0)
+
     MOVEM.L (A7)+,D5-D7/A2-A3
     UNLK    A5
     RTS
@@ -76956,35 +77250,44 @@ LOCAL_STR_INTUITION_LIBRARY:
 
 LAB_1ACC:
     MOVEM.L D7/A3,-(A7)
+
     MOVE.L  12(A7),D7
     MOVE.L  D7,-(A7)
     JSR     LAB_1A1D(PC)
+
     ADDQ.W  #4,A7
     MOVEA.L D0,A3
     MOVE.L  A3,D0
-    BNE.S   LAB_1ACD
+    BNE.S   .LAB_1ACD
+
     MOVEQ   #-1,D0
-    BRA.S   LAB_1AD2
-LAB_1ACD:
+    BRA.S   .return
+
+.LAB_1ACD:
     BTST    #4,3(A3)
-    BEQ.S   LAB_1ACF
+    BEQ.S   .LAB_1ACF
+
     MOVEQ   #0,D0
     MOVE.L  D0,(A3)
-    BRA.S   LAB_1AD2
-LAB_1ACF:
+    BRA.S   .return
+
+.LAB_1ACF:
     MOVE.L  4(A3),-(A7)
-LAB_1AD0:
     JSR     LAB_1A04(PC)
+
     ADDQ.W  #4,A7
     MOVEQ   #0,D0
     MOVE.L  D0,(A3)
     TST.L   -640(A4)
-    BEQ.S   LAB_1AD1
+    BEQ.S   .LAB_1AD1
+
     MOVEQ   #-1,D0
-    BRA.S   LAB_1AD2
-LAB_1AD1:
+    BRA.S   .return
+
+.LAB_1AD1:
     MOVEQ   #0,D0
-LAB_1AD2:
+
+.return:
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -76999,30 +77302,36 @@ LAB_1AD2:
 
 LAB_1AD3:
     MOVE.L  D7,-(A7)
+
     MOVEQ   #0,D0
-LAB_1AD4:
     MOVE.L  #$00003000,D1
     MOVEA.L AbsExecBase,A6
-LAB_1AD5:
     JSR     _LVOSetSignal(A6)
+
     MOVE.L  D0,D7
-LAB_1AD6:
     ANDI.L  #$00003000,D7
     TST.L   D7
-    BEQ.S   LAB_1AD9
+    BEQ.S   .LAB_1AD9
+ 
     TST.L   -616(A4)
-    BEQ.S   LAB_1AD9
+    BEQ.S   .LAB_1AD9
+ 
     MOVEA.L -616(A4),A0
     JSR     (A0)
+ 
     TST.L   D0
-    BNE.S   LAB_1AD8
-    BRA.S   LAB_1AD9
-LAB_1AD8:
+    BNE.S   .LAB_1AD8
+ 
+    BRA.S   .LAB_1AD9
+
+.LAB_1AD8:
     CLR.L   -616(A4)
     PEA     20.W
     JSR     LAB_1A92(PC)
+ 
     ADDQ.W  #4,A7
-LAB_1AD9:
+
+.LAB_1AD9:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -77037,12 +77346,14 @@ LAB_1AD9:
 
 LAB_1ADA:
     MOVEM.L D2-D6/A6,-(A7)
+
     MOVEA.L -22440(A4),A6
     MOVEA.L 28(A7),A0
     MOVEM.L 32(A7),D0-D1
     MOVEA.L 40(A7),A1
     MOVEM.L 44(A7),D2-D6
     JSR     -606(A6)            ; I think this may be BltBitMapRastPort in Graphics.library
+
     MOVEM.L (A7)+,D2-D6/A6
     RTS
 
@@ -77057,8 +77368,10 @@ LAB_1ADA:
 
 GET_CLOCK_CHIP_TIME:
     MOVE.L  A6,-(A7)
+
     MOVEA.L GLOB_REF_BATTCLOCK_RESOURCE,A6
     JSR     _LVOReadBattClock(A6)
+
     MOVEA.L (A7)+,A6
     RTS
 
@@ -77066,9 +77379,11 @@ GET_CLOCK_CHIP_TIME:
 
 SET_CLOCK_CHIP_TIME:
     MOVE.L  A6,-(A7)
+
     MOVEA.L GLOB_REF_BATTCLOCK_RESOURCE,A6
     MOVE.L  8(A7),D0
     JSR     _LVOWriteBattClock(A6)
+
     MOVEA.L (A7)+,A6
     RTS
 
@@ -77076,10 +77391,12 @@ SET_CLOCK_CHIP_TIME:
 
 LAB_1ADD:
     MOVEM.L A2/A6,-(A7)
+
     MOVEA.L LAB_231E,A6
     MOVEM.L 12(A7),A0-A1
     MOVEM.L 20(A7),D1/A2
     JSR     -48(A6)         ; Traced A6 to be AbsExecBase here? _LVOexecPrivate3
+
     MOVEM.L (A7)+,A2/A6
     RTS
 
@@ -77099,9 +77416,11 @@ DO_DELAY:
 
 LAB_1ADF:
     MOVEM.L D2/A6,-(A7)
+
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     MOVEM.L 12(A7),D1-D2
-    JSR     _LVOSystemTagTest(A6)
+    JSR     _LVOSystemTagList(A6)
+
     MOVEM.L (A7)+,D2/A6
     RTS
 
@@ -77116,6 +77435,7 @@ LAB_1ADF:
 ; a provided ULONG of the number of seconds from Amiga epoch
 POPULATE_CLOCKDATE_FROM_SECS:
     MOVE.L  A6,-(A7)
+
     MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6
     MOVEM.L 8(A7),D0/A0
     JSR     _LVOAmiga2Date(A6)
@@ -77159,6 +77479,9 @@ GET_SECONDS_FROM_EPOCH:
 ;!======
 
     MOVE.L  4(A7),D0
+
+;!======
+
 LAB_1AE3:
     JSR     LAB_1AEB
     RTS
@@ -77167,11 +77490,16 @@ LAB_1AE3:
 
     MOVEA.L 4(A7),A0
 
+;!======
+
 LAB_1AE4:
     MOVE.B  (A0)+,D0
     BEQ.S   .return
+
     BSR.S   LAB_1AE3
+
     BRA.S   LAB_1AE4
+
 .return:
     RTS
 
@@ -77179,16 +77507,21 @@ LAB_1AE4:
 
 LAB_1AE6:
     BSR.S   LAB_1AE7
+
     TST.L   D0
     BMI.S   LAB_1AE6
+
     RTS
 
 ;!======
 
 LAB_1AE7:
     JSR     LAB_1AEF
+
     RTS
 
+;!======
+; Below seems to be dead code...
 ;!======
 
     MOVEA.L 4(A7),A0
@@ -78690,9 +79023,9 @@ LAB_1D37:
     NStr    "ClockCmd=%c"
 GLOB_STR_ED2_C_1:
     NStr    "ED2.c"
-LAB_1D39:
+GLOB_STR_PI_CLU_POS1:
     NStr    "PI[%d] Clu_pos1=%d"
-GLOB_STR_CHAN_SOURCE_CALLLTRS:
+GLOB_STR_CHAN_SOURCE_CALLLTRS_1:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
 LAB_1D3B:
     NStr    "NULL"
@@ -78722,9 +79055,9 @@ LAB_1D47:
     NStr    "PREVDAYSDATA "
 GLOB_STR_ED2_C_2:
     NStr    "ED2.c"
-LAB_1D49:
+GLOB_STR_CLU_CLU_POS1:
     NStr    "CLU[%d] Clu_pos1=%d"
-LAB_1D4A:
+GLOB_STR_CHAN_SOURCE_CALLLTRS_2:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
 LAB_1D4B:
     NStr    "None "
@@ -78757,7 +79090,7 @@ LAB_1D58:
     NStr    "CTime"
 LAB_1D59:
     NStr    "BTime"
-LAB_1D5A:
+GLOB_STR_DF0_CLOCK_CMD:
     NStr    "df0:clock.cmd"
 LAB_1D5B:
     NStr3   TextLineFeed,"ED.C: Short DUMP OF CLU",TextLineFeed
