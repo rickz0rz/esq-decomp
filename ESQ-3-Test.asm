@@ -5612,7 +5612,7 @@ LAB_0206:
     MOVE.L  D0,-(A7)
     MOVE.L  (A1),-(A7)
     MOVE.L  (A0),-(A7)
-    PEA     LAB_1B5B
+    PEA     GLOB_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED
     PEA     -32(A5)
     JSR     JMP_TBL_PRINTF_1(PC)
     LEA     20(A7),A7
@@ -5650,9 +5650,11 @@ LAB_0206:
 
     LEA     -32(A5),A0
     MOVEA.L A0,A1
+
 LAB_0207:
     TST.B   (A1)+
     BNE.S   LAB_0207
+
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D6
@@ -5666,7 +5668,9 @@ LAB_0207:
     SUB.L   D5,D0
     TST.L   D0
     BPL.S   LAB_0208
+
     ADDQ.L  #1,D0
+
 LAB_0208:
     ASR.L   #1,D0
     MOVE.L  D0,D7
@@ -5699,6 +5703,7 @@ LAB_0208:
     MOVE.L  D1,-(A7)
     MOVE.L  4(A0),-(A7)
     JSR     LAB_026C(PC)
+
     MOVEM.L -56(A5),D2-D3/D5-D7
     UNLK    A5
     RTS
@@ -5708,19 +5713,22 @@ LAB_0208:
 LAB_0209:
     LINK.W  A5,#-4
     MOVEM.L D2-D3,-(A7)
+
+.rastPortBitmap = -4
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  4(A0),-4(A5)
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
+    MOVE.L  Struct_RastPort__BitMap(A0),.rastPortBitmap(A5)
+    MOVE.L  #GLOB_REF_696_400_BITMAP,Struct_RastPort__BitMap(A0)
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.W  32(A0),D0
+    MOVE.W  Struct_RastPort__Flags(A0),D0
     ANDI.W  #$fff7,D0
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.W  D0,32(A0)
+    MOVE.W  D0,Struct_RastPort__Flags(A0)
     MOVEA.L A0,A1
     MOVEQ   #40,D0
     MOVEQ   #34,D1
@@ -5737,8 +5745,10 @@ LAB_0209:
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     LAB_00ED(PC)
+    
     MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  -4(A5),4(A0)
+    MOVE.L  .rastPortBitmap(A5),Struct_RastPort__BitMap(A0)
+    
     MOVEM.L -12(A5),D2-D3
     UNLK    A5
     RTS
@@ -78215,7 +78225,7 @@ GLOB_STR_12_44_44_SINGLE_SPACE:
     NStr    "12:44:44 "
 GLOB_STR_12_44_44_PM:
     NStr    "12:44:44 PM"
-LAB_1B5B:
+GLOB_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
     NStr    "%s%s%ld  "
     DS.L    1
 LAB_1B5C:

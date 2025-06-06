@@ -48,3 +48,6 @@ Struct_Node__ln_Pri             = 9
 Struct_Node__ln_Name            = 10
 NT_MSGPORT      = 4
 NT_MESSAGE      = 5
+
+Struct_RastPort__BitMap         = 4
+Struct_RastPort__Flags          = 32
