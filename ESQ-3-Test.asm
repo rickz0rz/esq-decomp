@@ -15426,6 +15426,7 @@ LAB_0519:
 LAB_051A:
     LINK.W  A5,#-1040
     MOVEM.L D2-D7,-(A7)
+
     MOVE.B  11(A5),D7
     MOVEQ   #-1,D0
     MOVE.L  D0,-10(A5)
@@ -15434,9 +15435,11 @@ LAB_051A:
     LEA     LAB_1C7E,A0
     LEA     -1040(A5),A1
     MOVE.W  #$00ff,D0
+
 LAB_051B:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,LAB_051B
+
     JSR     LAB_0544(PC)
     JSR     LAB_0549(PC)
     MOVE.L  D0,D4
