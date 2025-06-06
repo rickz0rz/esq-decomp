@@ -3,17 +3,34 @@
 ; offset 152 on ThisTask ( http://amigadev.elowar.com/read/ADCD_2.1/Libraries_Manual_guide/node02BB.html ) points to _some_ field... is it the stack pointer
 ; or something? Need to work on this...
 
+; ExecBase
+; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node009E.html
 Struct_ExecBase__ThisTask       = 276
 Struct_ExecBase__TaskWait       = 420
 Struct_ExecBase__SoftInts       = 434
 
+Struct_SoftIntList_Size         = 16
+Struct_SoftIntList__sh_List     = 0
+Struct_SoftIntList__sh_Pad      = 14
+
 Struct_IORequest__io_Message    = 0
 Struct_IORequest__io_Command    = 28
 
+Struct_IOStdReq_Size            = 48
 Struct_IOStdReq__io_Message     = Struct_IORequest__io_Message
 Struct_IOStdReq__io_Command     = Struct_IORequest__io_Command
 Struct_IOStdReq__io_Data        = 40
 
+; List
+; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node007D.html
+Struct_List__lh_Head            = 0
+Struct_List__lh_Tail            = 4
+Struct_List__lh_TailPred        = 8
+Struct_List__lh_Type            = 12
+Struct_List__l_pad              = 13
+
+; Message and MsgPort
+; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0099.html
 Struct__Message__mn_Node        = 0
 Struct__Message__mn_ReplyPort   = 14
 
@@ -22,13 +39,12 @@ Struct_MsgPort__mp_Flags        = 14
 Struct_MsgPort__mp_SigBit       = 15
 Struct_MsgPort__mp_SigTask      = 16
 
+; Node
+; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node062F.html
 Struct_Node__ln_Succ            = 0
 Struct_Node__ln_Pred            = 4
 Struct_Node__ln_Type            = 8
 Struct_Node__ln_Pri             = 9
 Struct_Node__ln_Name            = 10
-
-; Node types
-; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node062F.html
 NT_MSGPORT      = 4
 NT_MESSAGE      = 5
