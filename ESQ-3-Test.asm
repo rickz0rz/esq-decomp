@@ -13,6 +13,12 @@ SetOffsetForStack macro
 .stackOffsetBytes = .numberOfStackValues*4
 endm
 
+SetOffsetForStackAfterLink macro
+.numberOfLinkBytes = \1
+.numberOfStackValues = \2
+.stackOffsetBytes = .numberOfLinkBytes+4+(.numberOfStackValues*4)
+endm
+
 ; Some values of importance
 LocalDosLibraryDisplacement = 22832
 DesiredMemoryAvailability   = $00800000 ; 8388608 bytes/8 MiBytes
@@ -465,22 +471,25 @@ LAB_0017:
 
 LAB_001E:
     MOVEM.L D6-D7,-(A7)
+
+    SetOffsetForStack   2
+
     PEA     LAB_1AF4
     JSR     LAB_03C4(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BLE.S   LAB_001F
+    BLE.S   .LAB_001F
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_DISK_ERRORS_FORMATTED
     PEA     LAB_2249
     JSR     JMP_TBL_PRINTF_1(PC)
 
-    LEA     12(A7),A7
-    BRA.S   LAB_0020
+    LEA     .stackOffsetBytes+4(A7),A7
+    BRA.S   .LAB_0020
 
-LAB_001F:
+.LAB_001F:
     PEA     LAB_1AF6
     JSR     LAB_03C0(PC)
 
@@ -490,9 +499,9 @@ LAB_001F:
     PEA     LAB_2249
     JSR     JMP_TBL_PRINTF_1(PC)
 
-    LEA     12(A7),A7
+    LEA     .stackOffsetBytes+4(A7),A7
 
-LAB_0020:
+.LAB_0020:
     MOVEQ   #0,D0
     MOVEM.L (A7)+,D6-D7
     RTS
@@ -2656,7 +2665,7 @@ LAB_010B:
     PEA     96.W
     MOVE.L  D2,-(A7)
     PEA     431.W
-    PEA     LAB_1B2D
+    PEA     GLOB_STR_BRUSH_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     MOVEQ   #-1,D0
@@ -2699,7 +2708,7 @@ LAB_010B:
     PEA     96.W
     MOVE.L  -14(A5),-(A7)
     PEA     445.W
-    PEA     LAB_1B2E
+    PEA     GLOB_STR_BRUSH_C_4
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     MOVEQ   #1,D0
@@ -2806,7 +2815,7 @@ LAB_011D:
     ADDI.L  #$00000090,D3
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     549.W
-    PEA     LAB_1B2F
+    PEA     GLOB_STR_BRUSH_C_5
     JSR     JMP_TBL_FREE_RASTER(PC)
     LEA     20(A7),A7
     ADDQ.L  #1,D6
@@ -2822,7 +2831,7 @@ LAB_011F:
     PEA     12.W
     MOVE.L  A0,-(A7)
     PEA     561.W
-    PEA     LAB_1B30
+    PEA     GLOB_STR_BRUSH_C_6
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  -20(A5),-16(A5)
@@ -2831,7 +2840,7 @@ LAB_0120:
     PEA     372.W
     MOVE.L  -8(A5),-(A7)
     PEA     567.W
-    PEA     LAB_1B31
+    PEA     GLOB_STR_BRUSH_C_7
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  -12(A5),-8(A5)
@@ -3190,7 +3199,7 @@ LAB_0149:
     PEA     238.W
     MOVE.L  A3,-(A7)
     PEA     845.W
-    PEA     LAB_1B32
+    PEA     GLOB_STR_BRUSH_C_8
     MOVE.L  D0,-4(A5)
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
@@ -3458,7 +3467,7 @@ LAB_0156:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
     PEA     1064.W
-    PEA     LAB_1B36    ; brush.c
+    PEA     GLOB_STR_BRUSH_C_11    ; brush.c
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -3585,7 +3594,7 @@ LAB_0156:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     PEA     1134.W
-    PEA     LAB_1B37
+    PEA     GLOB_STR_BRUSH_C_12
     MOVE.L  D0,52(A7)
     MOVE.L  D0,48(A7)
     JSR     LAB_01A8(PC)
@@ -3766,7 +3775,7 @@ LAB_0156:
     ADDI.L  #$00000090,D3
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     1202.W
-    PEA     LAB_1B38
+    PEA     GLOB_STR_BRUSH_C_13
     JSR     JMP_TBL_FREE_RASTER(PC)
 
     LEA     20(A7),A7
@@ -73717,8 +73726,7 @@ LAB_1916:
     LINK.W  A5,#-20
     MOVEM.L D2/D4-D7/A3,-(A7)
 
-    ; 5 for A5, D2,D4-D7,A3 = 6, 1 for previous SP
-    SetOffsetForStack 5+6+1
+    SetOffsetForStackAfterLink 20,6
 
     MOVE.L  .stackOffsetBytes+4(A7),D7
     MOVEA.L .stackOffsetBytes+8(A7),A3
@@ -74362,9 +74370,11 @@ LAB_1955:
 LAB_195B:
     MOVEM.L D6-D7/A2-A3,-(A7)
 
-    MOVEA.L 20(A7),A3
-    MOVEA.L 24(A7),A2
-    MOVE.L  28(A7),D7
+    SetOffsetForStack 4
+
+    MOVEA.L .stackOffsetBytes+4(A7),A3
+    MOVEA.L .stackOffsetBytes+8(A7),A2
+    MOVE.L  .stackOffsetBytes+12(A7),D7
 
 .LAB_195C:
     TST.L   D7
@@ -74422,9 +74432,11 @@ LAB_1962:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A2-A3,-(A7)
 
-    MOVEA.L 32(A7),A3
-    MOVEA.L 36(A7),A2
-    MOVE.L  40(A7),D7
+    SetOffsetForStackAfterLink 8,4
+
+    MOVEA.L .stackOffsetBytes+4(A7),A3
+    MOVEA.L .stackOffsetBytes+8(A7),A2
+    MOVE.L  .stackOffsetBytes+12(A7),D7
     MOVEA.L A2,A0
 
 .LAB_1963:
@@ -78361,23 +78373,23 @@ LAB_1B29:
 LAB_1B2A:
     DS.L    1
 
-; ========== BRUSH.C ==========
+; ========== BRUSH.c ==========
 
 GLOB_STR_BRUSH_C_1:
     NStr    "BRUSH.c"
 GLOB_STR_BRUSH_C_2:
     NStr    "BRUSH.c"
-LAB_1B2D:
+GLOB_STR_BRUSH_C_3:
     NStr    "BRUSH.c"
-LAB_1B2E:
+GLOB_STR_BRUSH_C_4:
     NStr    "BRUSH.c"
-LAB_1B2F:
+GLOB_STR_BRUSH_C_5:
     NStr    "BRUSH.c"
-LAB_1B30:
+GLOB_STR_BRUSH_C_6:
     NStr    "BRUSH.c"
-LAB_1B31:
+GLOB_STR_BRUSH_C_7:
     NStr    "BRUSH.c"
-LAB_1B32:
+GLOB_STR_BRUSH_C_8:
     NStr    "BRUSH.c"
 GLOB_STR_BRUSH_C_9:
     NStr    "BRUSH.c"
@@ -78385,11 +78397,11 @@ LAB_1B34:
     NStr    "FORM"
 GLOB_STR_BRUSH_C_10:
     NStr    "BRUSH.c"
-LAB_1B36:
+GLOB_STR_BRUSH_C_11:
     NStr    "BRUSH.c"
-LAB_1B37:
+GLOB_STR_BRUSH_C_12:
     NStr    "BRUSH.c"
-LAB_1B38:
+GLOB_STR_BRUSH_C_13:
     NStr    "BRUSH.c"
 GLOB_STR_BRUSH_C_14:
     NStr    "BRUSH.c"
@@ -78413,7 +78425,7 @@ LAB_1B42:
     NStr    "DITHER"
     DS.W    1
 
-; ========== CLEANUP.C ==========
+; ========== CLEANUP.c ==========
 
 GLOB_STR_CLEANUP_C_1:
     NStr    "CLEANUP.c"
@@ -78453,6 +78465,9 @@ LAB_1B54:
     DS.L    1
 LAB_1B55:
     DC.L    $0000003c
+
+; ========== CLOCK.c ========== probably
+
 GLOB_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
     NStr    "%2d:%02d:%02d"
 GLOB_STR_GRID_TIME_FORMAT:
@@ -78499,7 +78514,7 @@ LAB_1B69:
 LAB_1B6A:
     NStr    "NNNNNNXX00"
 
-; ========== COI.C ==========
+; ========== COI.c ==========
 
 GLOB_STR_COI_C_3:
     NStr    "COI.c"
@@ -78559,7 +78574,7 @@ LAB_1B84:
 LAB_1B85:
     DS.W    1
 
-; ========== CTASKS.C ==========
+; ========== CTASKS.c ==========
 
 LAB_1B86:
     NStr    "CTASKS.c"
@@ -78714,7 +78729,7 @@ LAB_1BCA:
 LAB_1BCB:
     DS.L    1
 
-; ========== DISKIO.C ==========
+; ========== DISKIO.c ==========
 
 GLOB_STR_DISKIO_C_1:
     NStr    "DISKIO.c"
@@ -78962,7 +78977,7 @@ LAB_1C40:
 LAB_1C41:
     DS.W    1
 
-; ========== DISKIO2.C ==========
+; ========== DISKIO2.c ==========
 
 LAB_1C42:
     NStr    "DISKIO2.c"
