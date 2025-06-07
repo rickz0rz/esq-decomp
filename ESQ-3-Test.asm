@@ -78220,7 +78220,7 @@ GET_SECONDS_FROM_EPOCH:
     MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6
     MOVEA.L 8(A7),A0
     JSR     _LVODate2Amiga(A6)
-   
+
     MOVEA.L (A7)+,A6        ;33a6c: 2c5f
     RTS
 
