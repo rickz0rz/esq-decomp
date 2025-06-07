@@ -5896,6 +5896,7 @@ LAB_020A:
 LAB_020B:
     LINK.W  A5,#-4
     MOVEM.L D2-D3,-(A7)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
@@ -5924,6 +5925,7 @@ LAB_020B:
     PEA     448.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     LAB_00ED(PC)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
     MOVEM.L -12(A5),D2-D3
@@ -5935,6 +5937,7 @@ LAB_020B:
 LAB_020C:
     LINK.W  A5,#-4
     MOVEM.L D2-D3,-(A7)
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
@@ -5957,10 +5960,14 @@ LAB_020C:
     JSR     _LVORectFill(A6)
 
     BSR.W   LAB_0209
+
     BSR.W   LAB_020A
+
     BSR.W   LAB_020B
+
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
+
     MOVEM.L (A7)+,D2-D3
     UNLK    A5
     RTS
@@ -24473,17 +24480,17 @@ LAB_0808:
 
     CLR.L   LAB_21E8
 
-LAB_0809:
+.LAB_0809:
     MOVE.L  LAB_21E8,D0
     CMP.L   LAB_21EB,D0
-    BGE.S   LAB_080A
+    BGE.S   .return
 
     BSR.W   LAB_07F4
 
     ADDQ.L  #1,LAB_21E8
-    BRA.S   LAB_0809
+    BRA.S   .LAB_0809
 
-LAB_080A:
+.return:
     MOVE.L  D7,LAB_21E8
     MOVEM.L (A7)+,D2-D3/D7
     RTS
@@ -29727,7 +29734,7 @@ LAB_09A2:
     EXT.L   D3
     MOVE.W  LAB_223F,D4
     EXT.L   D4
-    MOVE.W  LAB_2240,D5
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D5
     EXT.L   D5
     TST.W   LAB_2243
     BEQ.S   LAB_09A3
@@ -33855,7 +33862,7 @@ LAB_0B4E:
     MOVE.B  3(A3),D0
     EXT.W   D0
     EXT.L   D0
-    ADDI.L  #$0000076c,D0
+    ADDI.L  #1900,D0
     MOVE.W  D0,-18(A5)
     MOVE.B  4(A3),D0
     EXT.W   D0
@@ -33873,7 +33880,7 @@ LAB_0B4E:
     JSR     LAB_0931(PC)
 
     MOVE.W  LAB_1F45,D7
-    MOVE.W  #$0100,LAB_1F45
+    MOVE.W  #256,LAB_1F45
     JSR     LAB_0BF6(PC)
 
     MOVE.W  D7,LAB_1F45
@@ -38697,7 +38704,7 @@ LAB_0CB9:
     MOVE.L  D1,8(A7)
     MOVEQ   #100,D1
     JSR     LAB_101E(PC)
-    MOVE.W  LAB_2240,D0
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     EXT.L   D0
     MOVE.L  D1,12(A7)
     MOVEQ   #100,D1
@@ -60377,10 +60384,15 @@ JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
 LAB_146E:
     LINK.W  A5,#-20
     MOVE.L  D7,-(A7)
+
+.clockDataStruct    = -18
+
     TST.L   GLOB_REF_UTILITY_LIBRARY
-    BEQ.W   LAB_146F
+    BEQ.W   .return
+
     TST.L   GLOB_REF_BATTCLOCK_RESOURCE
-    BEQ.S   LAB_146F
+    BEQ.S   .return
+
     MOVE.W  LAB_223A,D0
     MOVE.W  D0,-6(A5)
     MOVE.W  LAB_223B,D0
@@ -60397,23 +60409,30 @@ LAB_146E:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     BSR.W   ADJUST_HOURS_TO_24_HR_FMT
+
     MOVE.W  D0,-14(A5)
     MOVE.W  LAB_223F,D0
     MOVE.W  D0,-16(A5)
-    MOVE.W  LAB_2240,D0
-    MOVE.W  D0,-18(A5)
-    PEA     -18(A5)
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  D0,.clockDataStruct(A5)
+    PEA     .clockDataStruct(A5)
     JSR     JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH(PC)
+
+    ; Clean the stack and test validity of clockdata struct seconds
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   LAB_146F
-    PEA     -18(A5)
+    BEQ.S   .return
+
+    PEA     .clockDataStruct(A5)
     JSR     JMP_TBL_GET_SECONDS_FROM_EPOCH(PC)
+
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
     JSR     JMP_TBL_SET_CLOCK_CHIP_TIME(PC)
+
     ADDQ.W  #4,A7
-LAB_146F:
+
+.return:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
@@ -60704,7 +60723,7 @@ LAB_148E:
     TST.W   D7          ; Test D7 against 0
     BEQ.S   .LAB_148F   ; If D7 is now 0, jump to .LAB_148F
 
-    MOVE.W  LAB_2240,LAB_20A3   ; Move just a word from 2240 into 20A3
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,LAB_20A3  ; Get the first word of the clockdata struct, which is seconds
     MOVEQ   #1,D0               ; Move 1 into D0
     CMP.W   LAB_20A5,D0         ; Compare LAB_20A5 - D0 (1)
     BEQ.S   .return             ; If LAB_20A5 was 1, then return
@@ -60722,7 +60741,7 @@ LAB_148E:
     TST.W   LAB_20A5
     BEQ.S   .return
 
-    MOVE.W  LAB_2240,D0
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  LAB_20A3,D1
     CMP.W   D0,D1
     BEQ.S   .return
@@ -60773,6 +60792,7 @@ LAB_1493:
 
 LAB_1494:
     MOVEM.L D2/D7,-(A7)
+
     MOVEQ   #0,D7
     MOVE.W  CTRL_H,D0
     MOVE.W  LAB_2282,D1
@@ -60784,38 +60804,49 @@ LAB_1494:
     MOVE.L  D2,D7
     TST.W   D7
     BEQ.S   LAB_1495
+
     TST.W   LAB_2266
     BEQ.S   LAB_1495
-    MOVE.W  LAB_2240,LAB_20A6
+
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,LAB_20A6
     CLR.W   LAB_20A7
     MOVEQ   #1,D0
     CMP.W   LAB_20A8,D0
     BEQ.S   LAB_1497
+
     PEA     1.W
     PEA     16.W
     MOVE.W  D0,LAB_20A8
     JSR     LAB_1596(PC)
+
     ADDQ.W  #8,A7
     BRA.S   LAB_1497
+
 LAB_1495:
     TST.W   LAB_20A8
     BEQ.S   LAB_1497
-    MOVE.W  LAB_2240,D0
+
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  LAB_20A6,D1
     CMP.W   D0,D1
     BEQ.S   LAB_1497
+
     MOVE.W  D0,LAB_20A6
     TST.W   LAB_2266
     BEQ.S   LAB_1496
+
     ADDQ.W  #1,LAB_20A7
     CMPI.W  #$0003,LAB_20A7
     BLT.S   LAB_1497
+
 LAB_1496:
     CLR.W   LAB_20A8
     CLR.L   -(A7)
     PEA     16.W
     JSR     LAB_1596(PC)
+
     ADDQ.W  #8,A7
+
 LAB_1497:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D2/D7
@@ -60826,13 +60857,18 @@ LAB_1497:
 LAB_1498:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
-    MOVEA.L 28(A7),A3
-    MOVE.W  34(A7),D7
-    MOVE.W  38(A7),D6
+
+    SetOffsetForStackAfterLink 4,4
+
+    MOVEA.L .stackOffsetBytes+4(A7),A3
+    MOVE.W  .stackOffsetBytes+10(A7),D7
+    MOVE.W  .stackOffsetBytes+14(A7),D6
     MOVEQ   #0,D5
+
 LAB_1499:
     CMP.W   D6,D5
     BGE.S   LAB_149A
+
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -60844,6 +60880,7 @@ LAB_1499:
     PEA     GLOB_STR_SCRIPT_C_1
     MOVE.L  D0,32(A7)
     JSR     JMP_TBL_ALLOCATE_MEMORY_4(PC)
+
     LEA     16(A7),A7
     MOVE.L  16(A7),D1
     MOVE.L  D0,0(A3,D1.L)
@@ -61537,7 +61574,7 @@ serialCtrlCmd:
     TST.W   LAB_212B
     BEQ.S   .LAB_14ED
 
-    MOVE.W  LAB_2240,D0
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  LAB_2344,D1
     CMP.W   D1,D0
     BEQ.S   .LAB_14ED
@@ -61724,7 +61761,7 @@ serialCtrlCmd:
     JSR     LAB_1596(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  LAB_2240,LAB_2344
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,LAB_2344
     MOVEQ   #1,D0
     MOVE.W  LAB_2348,D1
     ADDQ.W  #1,D1
@@ -78094,13 +78131,15 @@ POPULATE_CLOCKDATE_FROM_SECS:
 
 ;!======
 
-; Given a valid ClockData struct in 8(A7) return the number of
+; Given a valid ClockData struct pushed to the stack, return the number of
 ; seconds from Amiga epoch, or 0 if illegal and store in D0.
 GET_LEGAL_OR_SECONDS_FROM_EPOCH:
     MOVE.L  A6,-(A7)
 
+    SetOffsetForStack 1
+
     MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6
-    MOVEA.L 8(A7),A0
+    MOVEA.L .stackOffsetBytes+4(A7),A0
     JSR     _LVOCheckDate(A6)
 
     MOVEA.L (A7)+,A6
@@ -83277,7 +83316,7 @@ LAB_223E:
     DS.W    1
 LAB_223F:
     DS.W    1
-LAB_2240:
+GLOB_REF_CLOCKDATA_STRUCT:
     DS.W    1
 LAB_2241:
     DS.W    1
