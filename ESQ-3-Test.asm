@@ -12206,7 +12206,7 @@ LAB_0415:
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   LAB_0416
-    MOVE.B  #$4e,LAB_1BC8
+    MOVE.B  #'N',LAB_1BC8
 LAB_0416:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
@@ -62093,7 +62093,7 @@ serialCtrlCmd:
     BNE.S   .selectCodeIsNotRAVSEC
 
     MOVE.B  LAB_1BC8,D0
-    MOVEQ   #77,D1
+    MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   .LAB_14EA
 
@@ -62842,7 +62842,7 @@ LAB_1525:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   LAB_1526
     MOVE.B  LAB_1BC8,D0
-    MOVEQ   #77,D1
+    MOVEQ   #'M',D1
     CMP.B   D1,D0
     BEQ.S   LAB_1526
     LEA     6(A2),A0
@@ -63200,7 +63200,7 @@ LAB_154C:
     MOVE.L  D0,LAB_2125
 LAB_154D:
     MOVE.B  LAB_1BC8,D0
-    MOVEQ   #77,D1
+    MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   LAB_154E
     MOVE.L  LAB_2351,D0
@@ -63417,7 +63417,7 @@ LAB_1566:
     JSR     LAB_167E(PC)
     ADDQ.W  #4,A7
     MOVE.B  LAB_1BC8,D0
-    MOVEQ   #77,D1
+    MOVEQ   #'M',D1
     CMP.B   D1,D0
     BEQ.S   LAB_1567
     MOVEQ   #83,D1
@@ -63589,7 +63589,7 @@ LAB_157C:
     JSR     LAB_167E(PC)
     ADDQ.W  #4,A7
     MOVE.B  LAB_1BC8,D0
-    MOVEQ   #77,D1
+    MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   LAB_157D
     PEA     3.W
