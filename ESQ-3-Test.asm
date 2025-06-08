@@ -25580,41 +25580,42 @@ LAB_085E:
 
     MOVE.L  8(A5),D7
     MOVEA.L 12(A5),A3
+
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BLT.S   .LAB_0860
+    BLT.S   .clearSelectCodeByte
 
     MOVEA.L 4(A3),A0
     LEA     GLOB_PTR_STR_SELECT_CODE,A1
 
-.LAB_085F:
+.loopWhileA0IsNotNull:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_085F
+    BNE.S   .loopWhileA0IsNotNull
 
     BRA.S   .LAB_0861
 
-.LAB_0860:
+.clearSelectCodeByte:
     CLR.B   GLOB_PTR_STR_SELECT_CODE
 
 .LAB_0861:
     LEA     GLOB_PTR_STR_SELECT_CODE,A0
     LEA     GLOB_STR_RAVESC,A1
 
-.LAB_0862:
+.testSelectCodeForRAVESC:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .LAB_0863
+    BNE.S   .clear_GLOB_WORD_SELECT_CODE_IS_RAVESC
 
     TST.B   D0
-    BNE.S   .LAB_0862
+    BNE.S   .testSelectCodeForRAVESC
 
-    BNE.S   .LAB_0863
+    BNE.S   .clear_GLOB_WORD_SELECT_CODE_IS_RAVESC
 
-    MOVE.W  #$0001,LAB_1DF5
+    MOVE.W  #$0001,GLOB_WORD_SELECT_CODE_IS_RAVESC
     BRA.S   .runStartupSequence
 
-.LAB_0863:
-    CLR.W   LAB_1DF5
+.clear_GLOB_WORD_SELECT_CODE_IS_RAVESC:
+    CLR.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
 
 .runStartupSequence:
     LEA     GLOB_STR_COPY_NIL_ASSIGN_RAM,A0
@@ -25718,7 +25719,7 @@ LAB_085E:
     MOVE.L  D0,GLOB_LONG_ROM_VERSION_CHECK
 
 .loadFonts:
-    JSR     LAB_08B4(PC)
+    JSR     JMP_TBL_OVERRIDE_INTUITION_FUNCS(PC)
 
     ; Open the "topaz.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_TOPAZ_FONT,A0
@@ -25839,7 +25840,7 @@ LAB_085E:
     BGE.S   .LAB_0870
 
     MOVE.L  D5,D0
-    MULS    #$0028,D0
+    MULS    #40,D0
     LEA     LAB_22A7,A0
     ADDA.L  D0,A0
     MOVE.L  A0,-(A7)
@@ -25887,7 +25888,7 @@ LAB_085E:
     ADDA.L  D0,A0
 
     MOVEA.L (A0),A1         ; memBlock
-    MOVE.L  #$00002940,D0   ; bytecount, 2940 = 10560 bytes
+    MOVE.L  #10560,D0       ; byte count
     MOVEQ   #0,D1           ; flags
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
@@ -26741,7 +26742,7 @@ LAB_085E:
     BRA.S   .LAB_0896
 
 .LAB_0897:
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .LAB_0898
 
     JSR     LAB_08B1(PC)
@@ -26865,8 +26866,8 @@ LAB_08B2:
 LAB_08B3:
     JMP     LAB_0D89
 
-LAB_08B4:
-    JMP     LAB_0F9E
+JMP_TBL_OVERRIDE_INTUITION_FUNCS:
+    JMP     OVERRIDE_INTUITION_FUNCS
 
 JMP_TBP_LIBRARIES_LOAD_FAILED:
     JMP     LIBRARIES_LOAD_FAILED
@@ -31961,7 +31962,7 @@ LAB_0A75:
 LAB_0A76:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   LAB_0A7B
     JSR     LAB_08C2(PC)
     TST.W   LAB_1B85
@@ -47331,7 +47332,7 @@ LAB_0F9D:
 
 ;!======
 
-LAB_0F9E:
+OVERRIDE_INTUITION_FUNCS:
     MOVE.L  A2,-(A7)
 
     ; overriding the AutoRequest function in intuition.library
@@ -49366,7 +49367,7 @@ LAB_1047:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  20(A5),D7
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   LAB_1049
     MOVEA.L 16(A5),A0
     LEA     -26(A5),A1
@@ -57034,7 +57035,7 @@ LAB_12F4:
     PEA     -136(A5)
     JSR     LAB_1464(PC)
     ADDQ.W  #8,A7
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   LAB_12F6
     MOVEA.L -8(A5),A0
     LEA     -146(A5),A1
@@ -61916,7 +61917,7 @@ LAB_14D0:
     SUB.L   D0,D2
     MOVE.L  D2,D4
     MOVE.B  D1,LAB_2352
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .LAB_14D5
     MOVE.B  LAB_1BC8,D0
     MOVEQ   #77,D1
@@ -62044,7 +62045,7 @@ LAB_14E7:
 serialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
 
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .LAB_14E9
 
     MOVE.B  LAB_1BC8,D0
@@ -62159,7 +62160,7 @@ serialCtrlCmd:
     MOVE.W  #$0003,CTRLRead3
     BRA.W   .finish_29ABA
 
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.W   .return
 
     MOVEQ   #1,D0
@@ -62207,7 +62208,7 @@ serialCtrlCmd:
     CMP.L   D1,D0
     BNE.S   .LAB_14F8
 
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .LAB_14F5
 
     MOVE.W  CTRLRead1,D0
@@ -62791,7 +62792,7 @@ LAB_1524:
     MOVE.L  D0,LAB_2351
     BRA.W   LAB_1543
 LAB_1525:
-    TST.W   LAB_1DF5
+    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   LAB_1526
     MOVE.B  LAB_1BC8,D0
     MOVEQ   #77,D1
@@ -80627,7 +80628,7 @@ LAB_1DF3:
     DS.W    1
 LAB_1DF4:
     DS.W    1
-LAB_1DF5:
+GLOB_WORD_SELECT_CODE_IS_RAVESC:
     DS.W    1
 LAB_1DF6:
     DS.W    1
