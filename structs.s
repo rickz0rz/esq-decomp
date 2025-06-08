@@ -21,6 +21,15 @@ Struct_IOStdReq__io_Message     = Struct_IORequest__io_Message
 Struct_IOStdReq__io_Command     = Struct_IORequest__io_Command
 Struct_IOStdReq__io_Data        = 40
 
+Struct_ClockData_Size           = 14
+Struct_ClockData__Sec           = 0
+Struct_ClockData__Min           = 2
+Struct_ClockData__Hour          = 4
+Struct_ClockData__MDay          = 6
+Struct_ClockData__Month         = 8
+Struct_ClockData__Year          = 10
+Struct_ClockData__WDay          = 12
+
 ; List
 ; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node007D.html
 Struct_List__lh_Head            = 0
