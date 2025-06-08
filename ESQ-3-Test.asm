@@ -61733,6 +61733,7 @@ LAB_14C3:
 GENERATE_GRID_DATE_STRING:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
+
     MOVE.W  LAB_2274,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -61754,19 +61755,24 @@ GENERATE_GRID_DATE_STRING:
     PEA     GLOB_STR_GRID_DATE_FORMAT_STRING
     MOVE.L  A3,-(A7)
     JSR     JMP_TBL_PRINTF_4(PC)
+
     LEA     24(A7),A7
     MOVEA.L (A7)+,A3
     RTS
 
 ;!======
 
+; likely dead code.
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
+
     LEA     GLOB_STR_WEATHER_UPDATE_FOR,A0
     MOVEA.L A3,A1
-LAB_14C5:
+
+.LAB_14C5:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_14C5
+    BNE.S   .LAB_14C5
+
     MOVEA.L (A7)+,A3
     RTS
 
@@ -61785,14 +61791,14 @@ LAB_14C6:
 
     MOVE.L  D0,D7
     TST.L   D7
-    BEQ.S   LAB_14C7
+    BEQ.S   .return
 
     MOVE.L  D7,D1
-
     JSR     _LVOUnLock(A6)
 
     MOVEQ   #1,D6
-LAB_14C7:
+
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D2/D6-D7/A3
     RTS
@@ -61878,38 +61884,51 @@ LAB_14CF:
 LAB_14D0:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7,-(A7)
+
     MOVE.W  10(A5),D7
     MOVE.W  14(A5),D6
+
     MOVEQ   #0,D5
     MOVE.B  LAB_1BC7,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return
-    CMPI.W  #$0082,D7
+
+    CMPI.W  #130,D7
     BGE.S   .LAB_14D1
-    MOVE.W  #$0082,D7
+
+    MOVE.W  #130,D7
     BRA.S   .LAB_14D2
+
 .LAB_14D1:
-    CMPI.W  #$00e2,D7
+    CMPI.W  #226,D7
     BLE.S   .LAB_14D2
-    MOVE.W  #$00e2,D7
+
+    MOVE.W  #226,D7
+
 .LAB_14D2:
     MOVEQ   #0,D0
     CMP.W   D0,D6
     BCC.S   .LAB_14D3
+
     MOVE.L  D0,D6
     BRA.S   .LAB_14D4
+
 .LAB_14D3:
     CMPI.W  #$1d4c,D6
     BLS.S   .LAB_14D4
     MOVE.W  #$1d4c,D6
+
 .LAB_14D4:
     JSR     LAB_1597(PC)
+
     MOVE.W  D0,-12(A5)
     TST.W   LAB_2121
     BNE.W   .return
+
     CMP.W   D7,D0
     BEQ.W   .return
+
     MOVE.L  D7,D1
     MOVE.L  D7,D2
     EXT.L   D2
@@ -61918,73 +61937,95 @@ LAB_14D0:
     MOVE.L  D2,D4
     MOVE.B  D1,LAB_2352
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
-    BNE.S   .LAB_14D5
+    BNE.S   .selectCodeIsNotRAVSEC
+
     MOVE.B  LAB_1BC8,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
     BNE.S   .LAB_14D8
-.LAB_14D5:
+
+.selectCodeIsNotRAVSEC:
     TST.L   D4
     BPL.S   .LAB_14D6
-    MOVE.L  #$00001d4c,D0
+
+    MOVE.L  #7500,D0
     BRA.S   .LAB_14D7
+
 .LAB_14D6:
     MOVEQ   #0,D0
+
 .LAB_14D7:
     MOVE.L  D0,D6
+
 .LAB_14D8:
     MOVE.L  D6,D0
-    MULU    #$003c,D0
+    MULU    #60,D0
     MOVE.L  #1000,D1
     JSR     LAB_1593(PC)
+
     MOVE.L  D0,-10(A5)
     BGT.S   .LAB_14D9
+
     MOVE.L  D4,D1
     MOVE.W  D1,LAB_2353
     BRA.S   .LAB_14E0
+
 .LAB_14D9:
     TST.L   D4
     BPL.S   .LAB_14DA
+
     MOVEQ   #-1,D1
     BRA.S   .LAB_14DB
+
 .LAB_14DA:
     MOVEQ   #1,D1
+
 .LAB_14DB:
     MOVE.W  D1,LAB_2354
     TST.L   D4
     BPL.S   .LAB_14DC
+
     MOVE.L  D4,D2
     NEG.L   D2
     BRA.S   .LAB_14DD
+
 .LAB_14DC:
     MOVE.L  D4,D2
+
 .LAB_14DD:
     MOVE.L  D2,D4
     MOVE.L  D4,D0
     MOVE.L  -10(A5),D1
     JSR     LAB_1593(PC)
+
     MOVE.W  D0,LAB_2353
     EXT.L   D0
     MOVE.L  -10(A5),D1
     JSR     LAB_159F(PC)
+
     SUB.L   D0,D4
     BLE.S   .LAB_14DE
     MOVE.L  -10(A5),D0
     MOVE.L  D4,D1
     JSR     LAB_1593(PC)
+
     MOVE.W  D0,LAB_2120
     BRA.S   .LAB_14DF
+
 .LAB_14DE:
     CLR.W   LAB_2120
+
 .LAB_14DF:
     MOVE.W  LAB_2353,D0
     MULS    LAB_2354,D0
     MOVE.W  D0,LAB_2353
+
 .LAB_14E0:
     MOVE.L  D6,D0
     MOVEQ   #1,D5
     MOVE.W  D5,LAB_2121
     MOVE.W  D0,LAB_211F
+
 .return:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D2/D4-D7
@@ -61995,7 +62036,9 @@ LAB_14D0:
 
 LAB_14E2:
     MOVEM.L D2-D3/D7,-(A7)
+
     JSR     LAB_1597(PC)
+
     MOVE.L  D0,D7
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2121
@@ -62008,6 +62051,7 @@ LAB_14E2:
     MOVE.B  D1,LAB_2352
     MOVE.W  D2,LAB_2353
     BGE.S   .LAB_14E3
+
     MOVEQ   #-1,D1
     BRA.S   .LAB_14E4
 
@@ -62046,14 +62090,14 @@ serialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
 
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
-    BNE.S   .LAB_14E9
+    BNE.S   .selectCodeIsNotRAVSEC
 
     MOVE.B  LAB_1BC8,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
     BNE.S   .LAB_14EA
 
-.LAB_14E9:
+.selectCodeIsNotRAVSEC:
     MOVE.W  #$ffff,LAB_234A
     BRA.S   .LAB_14EC
 
@@ -62139,6 +62183,7 @@ serialCtrlCmd:
     JMP     .LAB_14F0+2(PC,D0.W)
 
 .LAB_14F0:
+    ; garbage start
     ORI.W   #$0036,D0
     ORI.B   #$36,54(A6,D0.W)
     BCLR    D0,-(A0)
@@ -62333,6 +62378,7 @@ LAB_14FE:
     ADD.W   D0,D0
     MOVE.W  LAB_14FF(PC,D0.W),D0
     JMP     LAB_1500(PC,D0.W)
+    ; garbage start
 LAB_14FF:
     BCLR    D1,(A0)
 LAB_1500:
@@ -62354,6 +62400,7 @@ LAB_1500:
     BCLR    D0,28(A6,D0.L)
     DC.W    $06ea
     MOVEQ   #0,D0
+    ; garbage end?
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
