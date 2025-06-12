@@ -1,8 +1,11 @@
 DEALLOCATE_MEMORY:
     LINK.W  A5,#0
     MOVEM.L D7/A3,-(A7)
-    MOVEA.L 16(A5),A3
-    MOVE.L  20(A5),D7
+
+    SetOffsetForStackAfterLink 0,2
+
+    UseLinkStackLong    MOVEA.L,1,A3
+    UseLinkStackLong    MOVE.L,2,D7
 
     MOVE.L  A3,D0
     BEQ.S   .return

@@ -16,3 +16,7 @@ endm
 UseStackLong macro
     \1  .stackOffsetBytes+(\2*4)(A7),\3
 endm
+
+UseLinkStackLong macro
+    \1  .stackOffsetBytes+(\2*4)(A5),\3
+endm
