@@ -9,10 +9,10 @@ SetOffsetForStackAfterLink macro
 .stackOffsetBytes = .numberOfLinkBytes+4+(.numberOfStackValues*4)
 endm
 
-CopyStackValueIntoRegister macro
-    MOVE.L  .stackOffsetBytes+(\1*4)(A7),\2
+UseStackWord macro
+    \1  .stackOffsetBytes+(\2*2)(A7),\3
 endm
 
-CopyStackValueIntoAddressRegister macro
-    MOVEA.L .stackOffsetBytes+(\1*4)(A7),\2
+UseStackLong macro
+    \1  .stackOffsetBytes+(\2*4)(A7),\3
 endm
