@@ -18184,7 +18184,7 @@ LAB_0613:
     PEA     22.W
     MOVE.L  (A3),-(A7)
     PEA     773.W
-    PEA     LAB_1D03
+    PEA     GLOB_STR_DST_C_1
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
 LAB_0614:
@@ -18193,14 +18193,14 @@ LAB_0614:
     PEA     22.W
     MOVE.L  4(A3),-(A7)
     PEA     777.W
-    PEA     LAB_1D04
+    PEA     GLOB_STR_DST_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
 LAB_0615:
     PEA     18.W
     MOVE.L  A3,-(A7)
     PEA     779.W
-    PEA     LAB_1D05
+    PEA     GLOB_STR_DST_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
 LAB_0616:
@@ -18233,7 +18233,7 @@ LAB_0618:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     18.W
     PEA     798.W
-    PEA     LAB_1D06
+    PEA     GLOB_STR_DST_C_4
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A3
@@ -18242,7 +18242,7 @@ LAB_0618:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     22.W
     PEA     803.W
-    PEA     LAB_1D07
+    PEA     GLOB_STR_DST_C_5
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,(A3)
@@ -18251,7 +18251,7 @@ LAB_0618:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     22.W
     PEA     807.W
-    PEA     LAB_1D08
+    PEA     GLOB_STR_DST_C_6
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,4(A3)
@@ -18366,7 +18366,7 @@ LAB_0621:
     MOVE.L  D0,-(A7)
     MOVE.L  -48(A5),-(A7)
     PEA     889.W
-    PEA     LAB_1D0B
+    PEA     GLOB_STR_DST_C_7
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVE.L  A3,(A7)
     BSR.W   LAB_0628
@@ -26388,7 +26388,7 @@ LAB_085E:
     PEA     509.W
     PEA     696.W
     PEA     991.W
-    PEA     LAB_1E0B
+    PEA     GLOB_STR_ESQ_C_8
     MOVE.L  A0,44(A7)
     JSR     JMP_TBL_ALLOC_RASTER_2(PC)
 
@@ -26449,7 +26449,7 @@ LAB_085E:
     PEA     241.W
     PEA     696.W
     PEA     1008.W
-    PEA     LAB_1E0C
+    PEA     GLOB_STR_ESQ_C_9
     MOVE.L  A0,44(A7)
     JSR     JMP_TBL_ALLOC_RASTER_2(PC)
 
@@ -26510,7 +26510,7 @@ LAB_085E:
     PEA     2.W
     PEA     696.W
     PEA     1027.W
-    PEA     LAB_1E0D
+    PEA     GLOB_STR_ESQ_C_10
     MOVE.L  A0,44(A7)
     JSR     JMP_TBL_ALLOC_RASTER_2(PC)
 
@@ -26540,7 +26540,7 @@ LAB_085E:
     PEA     15.W
     PEA     696.W
     PEA     1038.W
-    PEA     LAB_1E0E
+    PEA     GLOB_STR_ESQ_C_11
     JSR     JMP_TBL_ALLOC_RASTER_2(PC)
 
     MOVE.L  D0,LAB_2229
@@ -37529,7 +37529,7 @@ LAB_0C56:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     50.W
     PEA     720.W
-    PEA     LAB_1F28
+    PEA     GLOB_STR_ESQPARS2_C_1
     MOVE.L  D0,-42(A5)
     MOVE.L  D0,-38(A5)
     MOVE.L  A1,-70(A5)
@@ -37637,7 +37637,7 @@ LAB_0C5E:
     PEA     50.W
     MOVE.L  -70(A5),-(A7)
     PEA     765.W
-    PEA     LAB_1F2D
+    PEA     GLOB_STR_ESQPARS2_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
     LEA     16(A7),A7
 LAB_0C5F:
@@ -39114,7 +39114,7 @@ LAB_0CBB:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D1,-(A7)
     PEA     173.W
-    PEA     LAB_1F5D
+    PEA     GLOB_STR_FLIB_C_1
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.W  LAB_233A,D1
@@ -39144,7 +39144,7 @@ LAB_0CBE:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     198.W
-    PEA     LAB_1F5E
+    PEA     GLOB_STR_FLIB_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     CLR.L   LAB_1F57
 LAB_0CBF:
@@ -39703,7 +39703,7 @@ LAB_0CE9:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     575.W
-    PEA     LAB_1F6B
+    PEA     GLOB_STR_GCOMMAND_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     24(A7),A7
     CLR.L   -16(A5)
@@ -40323,7 +40323,7 @@ LAB_0D21:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     993.W
-    PEA     LAB_1F74
+    PEA     GLOB_STR_GCOMMAND_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     24(A7),A7
     TST.L   D5
@@ -43453,7 +43453,7 @@ LAB_0E0A:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     14.W
     PEA     116.W
-    PEA     LAB_1FBB
+    PEA     GLOB_STR_LADFUNC_C_1
     MOVE.L  A0,20(A7)
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
@@ -43526,7 +43526,7 @@ LAB_0E10:
     MOVE.L  D6,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     147.W
-    PEA     LAB_1FBC
+    PEA     GLOB_STR_LADFUNC_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0E11:
@@ -43537,7 +43537,7 @@ LAB_0E11:
     PEA     14.W
     MOVE.L  (A0),-(A7)
     PEA     150.W
-    PEA     LAB_1FBD
+    PEA     GLOB_STR_LADFUNC_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.L  D7,D0
@@ -43642,7 +43642,7 @@ LAB_0E19:
     MOVE.L  D6,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     212.W
-    PEA     LAB_1FBE
+    PEA     GLOB_STR_LADFUNC_C_4
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0E1A:
@@ -44033,7 +44033,7 @@ LAB_0E3B:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     304.W
     PEA     367.W
-    PEA     LAB_1FC1
+    PEA     GLOB_STR_LADFUNC_C_5
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-412(A5)
@@ -44145,7 +44145,7 @@ LAB_0E40:
     PEA     304.W
     MOVE.L  10(A2),-(A7)
     PEA     412.W
-    PEA     LAB_1FC2
+    PEA     GLOB_STR_LADFUNC_C_6
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0E41:
@@ -44154,7 +44154,7 @@ LAB_0E41:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     413.W
-    PEA     LAB_1FC3
+    PEA     GLOB_STR_LADFUNC_C_7
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.L  D0,10(A2)
@@ -44174,7 +44174,7 @@ LAB_0E44:
     PEA     304.W
     MOVE.L  -412(A5),-(A7)
     PEA     416.W
-    PEA     LAB_1FC4
+    PEA     GLOB_STR_LADFUNC_C_8
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     BSR.W   LAB_0E05
     LEA     16(A7),A7
@@ -44402,7 +44402,7 @@ LAB_0E5D:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     591.W
-    PEA     LAB_1FC7
+    PEA     GLOB_STR_LADFUNC_C_9
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -44415,7 +44415,7 @@ LAB_0E5E:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D4,-(A7)
     PEA     600.W
-    PEA     LAB_1FC8
+    PEA     GLOB_STR_LADFUNC_C_10
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -44506,7 +44506,7 @@ LAB_0E65:
     MOVE.L  D0,-(A7)
     MOVE.L  6(A1),-(A7)
     PEA     638.W
-    PEA     LAB_1FC9
+    PEA     GLOB_STR_LADFUNC_C_11
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     SUBA.L  A0,A0
@@ -44517,7 +44517,7 @@ LAB_0E65:
     MOVE.L  D4,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     642.W
-    PEA     LAB_1FCA
+    PEA     GLOB_STR_LADFUNC_C_12
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -44531,7 +44531,7 @@ LAB_0E67:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     653.W
-    PEA     LAB_1FCB
+    PEA     GLOB_STR_LADFUNC_C_13
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     MOVEQ   #0,D0
 LAB_0E68:
@@ -44608,7 +44608,7 @@ LAB_0E6B:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     712.W
-    PEA     LAB_1FCD
+    PEA     GLOB_STR_LADFUNC_C_14
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -44827,7 +44827,7 @@ LAB_0E81:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     824.W
-    PEA     LAB_1FCE
+    PEA     GLOB_STR_LADFUNC_C_15
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0E82:
@@ -44869,12 +44869,12 @@ LAB_0E83:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  D0,-(A7)
     PEA     857.W
-    PEA     LAB_1FD0
+    PEA     GLOB_STR_LADFUNC_C_16
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  D6,-(A7)
     PEA     858.W
-    PEA     LAB_1FD1
+    PEA     GLOB_STR_LADFUNC_C_17
     MOVE.L  D0,-4(A5)
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     36(A7),A7
@@ -45048,7 +45048,7 @@ LAB_0E8F:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     926.W
-    PEA     LAB_1FD2
+    PEA     GLOB_STR_LADFUNC_C_18
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0E90:
@@ -45057,7 +45057,7 @@ LAB_0E90:
     MOVE.L  D6,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     928.W
-    PEA     LAB_1FD3
+    PEA     GLOB_STR_LADFUNC_C_19
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0E91:
@@ -45084,12 +45084,12 @@ LAB_0E93:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     1025.W
-    PEA     LAB_1FD4
+    PEA     GLOB_STR_LADFUNC_C_20
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  -116(A5),-(A7)
     PEA     1026.W
-    PEA     LAB_1FD5
+    PEA     GLOB_STR_LADFUNC_C_21
     MOVE.L  D0,-6(A5)
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     28(A7),A7
@@ -45283,7 +45283,7 @@ LAB_0EAC:
     MOVE.L  D0,-(A7)
     MOVE.L  -6(A5),-(A7)
     PEA     1146.W
-    PEA     LAB_1FD6
+    PEA     GLOB_STR_LADFUNC_C_22
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0EAD:
@@ -45292,7 +45292,7 @@ LAB_0EAD:
     MOVE.L  -116(A5),-(A7)
     MOVE.L  -10(A5),-(A7)
     PEA     1148.W
-    PEA     LAB_1FD7
+    PEA     GLOB_STR_LADFUNC_C_23
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0EAE:
@@ -45409,12 +45409,12 @@ LAB_0EBB:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     1214.W
-    PEA     LAB_1FD8
+    PEA     GLOB_STR_LADFUNC_C_24
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  -108(A5),-(A7)
     PEA     1215.W
-    PEA     LAB_1FD9
+    PEA     GLOB_STR_LADFUNC_C_25
     MOVE.L  D0,-6(A5)
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     28(A7),A7
@@ -45676,7 +45676,7 @@ LAB_0ED8:
     MOVE.L  D0,-(A7)
     MOVE.L  -6(A5),-(A7)
     PEA     1322.W
-    PEA     LAB_1FDA
+    PEA     GLOB_STR_LADFUNC_C_26
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0ED9:
@@ -45685,7 +45685,7 @@ LAB_0ED9:
     MOVE.L  -108(A5),-(A7)
     MOVE.L  -10(A5),-(A7)
     PEA     1324.W
-    PEA     LAB_1FDB
+    PEA     GLOB_STR_LADFUNC_C_27
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0EDA:
@@ -45716,7 +45716,7 @@ LAB_0EDB:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     14.W
     PEA     1362.W
-    PEA     LAB_1FDC
+    PEA     GLOB_STR_LADFUNC_C_28
     MOVE.L  A0,36(A7)
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
@@ -45795,7 +45795,7 @@ LAB_0EDF:
     MOVE.L  D6,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     1386.W
-    PEA     LAB_1FDD
+    PEA     GLOB_STR_LADFUNC_C_29
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0EE0:
@@ -45819,7 +45819,7 @@ LAB_0EE1:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D6,-(A7)
     PEA     1389.W
-    PEA     LAB_1FDE
+    PEA     GLOB_STR_LADFUNC_C_30
     MOVE.L  A1,36(A7)
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
@@ -46164,7 +46164,7 @@ LAB_0F04:
     MOVE.L  D0,-(A7)
     MOVE.L  6(A3),-(A7)
     PEA     106.W
-    PEA     LAB_1FEB
+    PEA     GLOB_STR_LOCAVAIL_C_1
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0F05:
@@ -46218,7 +46218,7 @@ LAB_0F09:
     PEA     4.W
     MOVE.L  A0,-(A7)
     PEA     159.W
-    PEA     LAB_1FEC
+    PEA     GLOB_STR_LOCAVAIL_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVEQ   #0,D7
@@ -46242,7 +46242,7 @@ LAB_0F0B:
     MOVE.L  D0,-(A7)
     MOVE.L  20(A3),-(A7)
     PEA     164.W
-    PEA     LAB_1FED
+    PEA     GLOB_STR_LOCAVAIL_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
 LAB_0F0C:
@@ -46288,7 +46288,7 @@ LAB_0F10:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4.W
     PEA     218.W
-    PEA     LAB_1FEE
+    PEA     GLOB_STR_LOCAVAIL_C_4
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.L  D0,16(A3)
@@ -46302,7 +46302,7 @@ LAB_0F10:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     229.W
-    PEA     LAB_1FEF
+    PEA     GLOB_STR_LOCAVAIL_C_5
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVE.L  D0,20(A3)
@@ -46496,7 +46496,7 @@ LAB_0F21:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     341.W
-    PEA     LAB_1FF1
+    PEA     GLOB_STR_LOCAVAIL_C_6
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVEA.L -28(A5),A0
@@ -47151,7 +47151,7 @@ LAB_0F5F:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     786.W
-    PEA     LAB_1FF9
+    PEA     GLOB_STR_LOCAVAIL_C_7
     JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     MOVEA.L -28(A5),A0
@@ -47288,7 +47288,7 @@ LAB_0F73:
     MOVE.L  D0,-(A7)
     MOVE.L  -48(A5),-(A7)
     PEA     897.W
-    PEA     LAB_1FFA
+    PEA     GLOB_STR_LOCAVAIL_C_8
     JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
     LEA     16(A7),A7
     BRA.S   LAB_0F77
@@ -69175,7 +69175,7 @@ LAB_1760:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     1842.W
-    PEA     LAB_2161
+    PEA     GLOB_STR_TLIBA1_C_1
     JSR     ALLOCATE_MEMORY(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -69275,7 +69275,7 @@ LAB_176A:
     MOVE.L  -20(A5),-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     1885.W
-    PEA     LAB_2162
+    PEA     GLOB_STR_TLIBA1_C_2
     JSR     DEALLOCATE_MEMORY(PC)
     LEA     16(A7),A7
 LAB_176B:
@@ -69669,7 +69669,7 @@ LAB_178E:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     2115.W
-    PEA     LAB_2163
+    PEA     GLOB_STR_TLIBA1_C_3
     JSR     ALLOCATE_MEMORY(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -81070,23 +81070,23 @@ LAB_1D01:
     NStr    " g2:"
 LAB_1D02:
     NStr    " g3:"
-LAB_1D03:
+GLOB_STR_DST_C_1:
     NStr    "DST.c"
-LAB_1D04:
+GLOB_STR_DST_C_2:
     NStr    "DST.c"
-LAB_1D05:
+GLOB_STR_DST_C_3:
     NStr    "DST.c"
-LAB_1D06:
+GLOB_STR_DST_C_4:
     NStr    "DST.c"
-LAB_1D07:
+GLOB_STR_DST_C_5:
     NStr    "DST.c"
-LAB_1D08:
+GLOB_STR_DST_C_6:
     NStr    "DST.c"
 GLOB_STR_G2:
     NStr    "g2"
 GLOB_STR_G3:
     NStr    "g3"
-LAB_1D0B:
+GLOB_STR_DST_C_7:
     NStr    "DST.c"
 LAB_1D0C:
     NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed
@@ -81663,13 +81663,13 @@ GLOB_STR_SERIAL_DEVICE:
     NStr    "serial.device"
 GLOB_STR_ESQ_C_7:
     NStr    "ESQ.c"
-LAB_1E0B:
+GLOB_STR_ESQ_C_8:
     NStr    "ESQ.c"
-LAB_1E0C:
+GLOB_STR_ESQ_C_9:
     NStr    "ESQ.c"
-LAB_1E0D:
+GLOB_STR_ESQ_C_10:
     NStr    "ESQ.c"
-LAB_1E0E:
+GLOB_STR_ESQ_C_11:
     NStr    "ESQ.c"
 LAB_1E0F:
     NStr    "no df1 present"
@@ -82915,7 +82915,7 @@ GLOB_TBL_TV_PROGRAM_RATINGS:
 LAB_1F27:
     DC.L    $90939b99,$a3a39a00
 
-LAB_1F28:
+GLOB_STR_ESQPARS2_C_1:
     NStr    "ESQPARS2.c"
 LAB_1F29:
     NStr    "%d "
@@ -82925,7 +82925,7 @@ LAB_1F2B:
     NStr    "(%d "
 LAB_1F2C:
     NStr    ")"
-LAB_1F2D:
+GLOB_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
     DS.W    1
 GLOB_LONG_PATCH_VERSION_NUMBER:
@@ -83026,9 +83026,9 @@ LAB_1F5C:
 
 ; ========== FLIB.c ==========
 
-LAB_1F5D:
+GLOB_STR_FLIB_C_1:
     NStr    "FLIB.c"
-LAB_1F5E:
+GLOB_STR_FLIB_C_2:
     NStr    "FLIB.c"
 LAB_1F5F:
     DS.W    1
@@ -83057,7 +83057,7 @@ LAB_1F69:
     DS.W    1
 LAB_1F6A:
     NStr    "DF0:Digital_Mplex.dat"
-LAB_1F6B:
+GLOB_STR_GCOMMAND_C_2:
     NStr    "GCOMMAND.c"
 LAB_1F6C:
     NStr    "%T"
@@ -83075,7 +83075,7 @@ LAB_1F72:
     NStr    "DF0:Digital_PPV.dat"
 LAB_1F73:
     NStr    "DF0:Digital_PPV.dat"
-LAB_1F74:
+GLOB_STR_GCOMMAND_C_3:
     NStr    "GCOMMAND.c"
 LAB_1F75:
     NStr    "DF0:Digital_PPV3.dat"
@@ -83334,77 +83334,77 @@ LAB_1FBA:
 
 ; ========== LADFUNC.c ==========
 
-LAB_1FBB:
+GLOB_STR_LADFUNC_C_1:
     NStr    "LADFUNC.c"
-LAB_1FBC:
+GLOB_STR_LADFUNC_C_2:
     NStr    "LADFUNC.c"
-LAB_1FBD:
+GLOB_STR_LADFUNC_C_3:
     NStr    "LADFUNC.c"
-LAB_1FBE:
+GLOB_STR_LADFUNC_C_4:
     NStr    "LADFUNC.c"
 LAB_1FBF:
     NStr    "RS"
 LAB_1FC0:
     NStr    "RS"
-LAB_1FC1:
+GLOB_STR_LADFUNC_C_5:
     NStr    "LADFUNC.c"
-LAB_1FC2:
+GLOB_STR_LADFUNC_C_6:
     NStr    "LADFUNC.c"
-LAB_1FC3:
+GLOB_STR_LADFUNC_C_7:
     NStr    "LADFUNC.c"
-LAB_1FC4:
+GLOB_STR_LADFUNC_C_8:
     NStr    "LADFUNC.c"
 LAB_1FC5:
     NStr    "%c%02X"
 LAB_1FC6:
     DS.W    1
-LAB_1FC7:
+GLOB_STR_LADFUNC_C_9:
     NStr    "LADFUNC.c"
-LAB_1FC8:
+GLOB_STR_LADFUNC_C_10:
     NStr    "LADFUNC.c"
-LAB_1FC9:
+GLOB_STR_LADFUNC_C_11:
     NStr    "LADFUNC.c"
-LAB_1FCA:
+GLOB_STR_LADFUNC_C_12:
     NStr    "LADFUNC.c"
-LAB_1FCB:
+GLOB_STR_LADFUNC_C_13:
     NStr    "LADFUNC.c"
 GLOB_STR_SINGLE_SPACE_1:
     NStr    " "
-LAB_1FCD:
+GLOB_STR_LADFUNC_C_14:
     NStr    "LADFUNC.c"
-LAB_1FCE:
+GLOB_STR_LADFUNC_C_15:
     NStr    "LADFUNC.c"
 GLOB_STR_SINGLE_SPACE_2:
     NStr    " "
-LAB_1FD0:
+GLOB_STR_LADFUNC_C_16:
     NStr    "LADFUNC.c"
-LAB_1FD1:
+GLOB_STR_LADFUNC_C_17:
     NStr    "LADFUNC.c"
-LAB_1FD2:
+GLOB_STR_LADFUNC_C_18:
     NStr    "LADFUNC.c"
-LAB_1FD3:
+GLOB_STR_LADFUNC_C_19:
     NStr    "LADFUNC.c"
-LAB_1FD4:
+GLOB_STR_LADFUNC_C_20:
     NStr    "LADFUNC.c"
-LAB_1FD5:
+GLOB_STR_LADFUNC_C_21:
     NStr    "LADFUNC.c"
-LAB_1FD6:
+GLOB_STR_LADFUNC_C_22:
     NStr    "LADFUNC.c"
-LAB_1FD7:
+GLOB_STR_LADFUNC_C_23:
     NStr    "LADFUNC.c"
-LAB_1FD8:
+GLOB_STR_LADFUNC_C_24:
     NStr    "LADFUNC.c"
-LAB_1FD9:
+GLOB_STR_LADFUNC_C_25:
     NStr    "LADFUNC.c"
-LAB_1FDA:
+GLOB_STR_LADFUNC_C_26:
     NStr    "LADFUNC.c"
-LAB_1FDB:
+GLOB_STR_LADFUNC_C_27:
     NStr    "LADFUNC.c"
-LAB_1FDC:
+GLOB_STR_LADFUNC_C_28:
     NStr    "LADFUNC.c"
-LAB_1FDD:
+GLOB_STR_LADFUNC_C_29:
     NStr    "LADFUNC.c"
-LAB_1FDE:
+GLOB_STR_LADFUNC_C_30:
     NStr    "LADFUNC.c"
 LAB_1FDF:
     NStr2   """",TextLineFeed
@@ -83433,19 +83433,19 @@ LAB_1FEA:
 
 ; ========== LOCAVAIL.c ==========
 
-LAB_1FEB:
+GLOB_STR_LOCAVAIL_C_1:
     NStr    "LOCAVAIL.c"
-LAB_1FEC:
+GLOB_STR_LOCAVAIL_C_2:
     NStr    "LOCAVAIL.c"
-LAB_1FED:
+GLOB_STR_LOCAVAIL_C_3:
     NStr    "LOCAVAIL.c"
-LAB_1FEE:
+GLOB_STR_LOCAVAIL_C_4:
     NStr    "LOCAVAIL.c"
-LAB_1FEF:
+GLOB_STR_LOCAVAIL_C_5:
     NStr    "LOCAVAIL.c"
 LAB_1FF0:
     NStr    "FV"
-LAB_1FF1:
+GLOB_STR_LOCAVAIL_C_6:
     NStr    "LOCAVAIL.c"
 LAB_1FF2:
     NStr    "YyLlZ"
@@ -83461,9 +83461,9 @@ LAB_1FF7:
     NStr    "DF0:LocAvail.dat"
 LAB_1FF8:
     NStr    "LA_VER"
-LAB_1FF9:
+GLOB_STR_LOCAVAIL_C_7:
     NStr    "LOCAVAIL.c"
-LAB_1FFA:
+GLOB_STR_LOCAVAIL_C_8:
     NStr    "LOCAVAIL.c"
 LAB_1FFB:
     NStr    "YyLlZ"
@@ -84293,11 +84293,11 @@ LAB_2160:
 
 ; ========== TLIBA1.c ==========
 
-LAB_2161:
+GLOB_STR_TLIBA1_C_1:
     NStr    "TLIBA1.c"
-LAB_2162:
+GLOB_STR_TLIBA1_C_2:
     NStr    "TLIBA1.c"
-LAB_2163:
+GLOB_STR_TLIBA1_C_3:
     NStr    "TLIBA1.c"
 LAB_2164:
     DC.B    "TLIBA1.c",0
