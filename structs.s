@@ -32,6 +32,7 @@ Struct_ClockData__WDay          = 12
 
 ; List
 ; http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node007D.html
+Struct_List_Size                = 14
 Struct_List__lh_Head            = 0
 Struct_List__lh_Tail            = 4
 Struct_List__lh_TailPred        = 8

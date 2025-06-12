@@ -3,21 +3,11 @@
 ; ==========================================
 
     include "lvo-offsets.s"
-    include "string-macros.s"
-    include "text-formatting.s"
     include "hardware-addresses.s"
     include "structs.s"
-
-SetOffsetForStack macro
-.numberOfStackValues = \1
-.stackOffsetBytes = .numberOfStackValues*4
-endm
-
-SetOffsetForStackAfterLink macro
-.numberOfLinkBytes = \1
-.numberOfStackValues = \2
-.stackOffsetBytes = .numberOfLinkBytes+4+(.numberOfStackValues*4)
-endm
+    include "macros.s"
+    include "string-macros.s"
+    include "text-formatting.s"
 
 ; Some values of importance
 LocalDosLibraryDisplacement = 22832
@@ -2202,23 +2192,23 @@ LAB_00E4:
 
 LAB_00E5:
     LEA     $1000000,A0
-    SUBA.L  -20(A0),A0
+    SUBA.L  -20(A0),A0  ; 0xFFFFEC
     MOVEA.L 4(A0),A0
     SUBQ.L  #2,A0
     RESET
     JMP     (A0)
 
-    MOVE.L  #$fbfffc,D0
+    MOVE.L  #$FBFFFC,D0 ; Something in the system rom.
     MOVEA.L D0,A0
     MOVE.W  (A0),D1
-    MOVE.W  #$55aa,(A0)
+    MOVE.W  #$55AA,(A0) ; Are we dynamically patching the rom?
     MOVE.W  (A0),D0
-    CMPI.W  #$55aa,D0
+    CMPI.W  #$55AA,D0
     BNE.W   LAB_00E6
 
-    MOVE.W  #$aa55,(A0)
+    MOVE.W  #$AA55,(A0)
     MOVE.W  (A0),D0
-    CMPI.W  #$aa55,D0
+    CMPI.W  #$AA55,D0
     BNE.W   LAB_00E6
 
     MOVE.W  D1,(A0)
@@ -2236,6 +2226,7 @@ LAB_00E6:
 LAB_00E7:
     MOVEM.L A0-A1,-(A7)
     JSR     LAB_0DFB
+
     ADDQ.L  #8,A7
     RTS
 
@@ -2253,29 +2244,34 @@ LAB_00E8:
     MOVE.L  12(A5),D7
     MOVE.L  16(A5),D6
     MOVE.L  20(A5),D5
+
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
+
     MOVEA.L A3,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
+
     MOVE.W  #(-1),34(A3)
     BSET    #0,33(A3)
-    MOVE.B  #$f,30(A3)
+    MOVE.B  #15,30(A3)
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
+
     MOVE.L  D5,D0
     SUBQ.L  #1,D0
     MOVEA.L A3,A1
     MOVE.L  D6,D1
     JSR     _LVODraw(A6)
+
     MOVE.W  #(-1),34(A3)
     BSET    #0,33(A3)
-    MOVE.B  #$f,30(A3)
+    MOVE.B  #15,30(A3)
     MOVE.L  D6,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,16(A7)
@@ -2284,15 +2280,17 @@ LAB_00E8:
     MOVE.L  16(A7),D1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
+
     MOVE.L  D5,D0
     SUBQ.L  #2,D0
     MOVE.L  D6,D1
     ADDQ.L  #1,D1
     MOVEA.L A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W  #(-1),34(A3)
     BSET    #0,33(A3)
-    MOVE.B  #$f,30(A3)
+    MOVE.B  #15,30(A3)
     MOVE.L  D6,D0
     ADDQ.L  #2,D0
     MOVE.L  D0,16(A7)
@@ -2301,15 +2299,17 @@ LAB_00E8:
     MOVE.L  16(A7),D1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
+
     MOVE.L  D5,D0
     SUBQ.L  #3,D0
     MOVE.L  D6,D1
     ADDQ.L  #2,D1
     MOVEA.L A3,A1
     JSR     _LVODraw(A6)
+
     MOVE.W  #(-1),34(A3)
     BSET    #0,33(A3)
-    MOVE.B  #$f,30(A3)
+    MOVE.B  #15,30(A3)
     MOVE.L  D6,D0
     ADDQ.L  #3,D0
     MOVE.L  D0,16(A7)
@@ -2318,12 +2318,14 @@ LAB_00E8:
     MOVE.L  16(A7),D1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
+
     MOVE.L  D5,D0
     SUBQ.L  #4,D0
     MOVE.L  D6,D1
     ADDQ.L  #3,D1
     MOVEA.L A3,A1
     JSR     _LVODraw(A6)
+
     MOVEM.L (A7)+,D5-D7/A3
     UNLK    A5
     RTS
@@ -10603,9 +10605,9 @@ LAB_038D:
     MOVE.W  #1,LAB_1B83
     CLR.W   LAB_1B84
     PEA     14.W
-    MOVE.L  LAB_21B5,-(A7)
+    MOVE.L  GLOB_REF_LIST_IFF_TASK_PROC,-(A7)
     PEA     127.W
-    PEA     LAB_1B86
+    PEA     GLOB_STR_CTASKS_C_1
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEA.L -8(A5),A4
     UNLK    A5
@@ -10616,52 +10618,64 @@ LAB_038D:
 LAB_038E:
     LINK.W  A5,#-4
     MOVEM.L D2-D4,-(A7)
+
 LAB_038F:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
-    LEA     LAB_1B87,A1
+
+    LEA     GLOB_STR_IFF_TASK_1,A1
     JSR     _LVOFindTask(A6)
+
     MOVE.L  D0,-4(A5)
     JSR     _LVOPermit(A6)
+
     TST.L   -4(A5)
     BNE.S   LAB_038F
+
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1B83
     MOVE.W  LAB_1B84,D1
     SUBQ.W  #6,D1
     BEQ.S   LAB_0391
+
     MOVE.W  LAB_22C0,D1
     BEQ.S   LAB_0390
+
     MOVE.W  #4,LAB_1B84
     BRA.S   LAB_0391
+
 LAB_0390:
     MOVE.W  #5,LAB_1B84
+
 LAB_0391:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
-    PEA     14.W
+    PEA     (Struct_List_Size).W
     PEA     159.W
-    PEA     LAB_1B88
+    PEA     GLOB_STR_CTASKS_C_2
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
-    MOVE.L  D0,LAB_21B5
-    MOVEQ   #14,D1
+
+    MOVE.L  D0,GLOB_REF_LIST_IFF_TASK_PROC
+    MOVEQ   #(Struct_List_Size),D1
     MOVEA.L D0,A0
     MOVE.L  D1,(A0)
     LEA     LAB_0386(PC),A0
-    MOVEA.L LAB_21B5,A1
+    MOVEA.L GLOB_REF_LIST_IFF_TASK_PROC,A1
     MOVE.L  A0,10(A1)
-    MOVE.W  #$4ef9,8(A1)
-    MOVEA.L LAB_21B5,A0
+    MOVE.W  #20217,8(A1)
+
+    MOVEA.L GLOB_REF_LIST_IFF_TASK_PROC,A0
     ADDQ.L  #4,A0
     MOVE.L  A0,D0
     LSR.L   #2,D0
     MOVE.L  D0,LAB_21B6
     MOVE.L  D0,D3
-    LEA     LAB_1B89,A0
+    LEA     GLOB_STR_IFF_TASK_2,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOCreateProc(A6)
+
     MOVE.L  D0,LAB_21B7
     MOVEM.L -16(A5),D2-D4
     UNLK    A5
@@ -10671,24 +10685,31 @@ LAB_0391:
 
 LAB_0392:
     MOVE.L  A4,-(A7)
+
     LEA     LAB_21BB,A4
     TST.L   LAB_1B8B
     BEQ.S   .LAB_0393
+
     MOVE.L  LAB_1B8B,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
+
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_1B8B
+
 .LAB_0393:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
+
     PEA     14.W
-    MOVE.L  LAB_21B8,-(A7)
+    MOVE.L  GLOB_REF_LIST_CLOSE_TASK_PROC,-(A7)
     PEA     194.W
-    PEA     LAB_1B8C
+    PEA     GLOB_STR_CTASKS_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+
     LEA     16(A7),A7
     MOVE.W  #1,LAB_1B8A
+
     MOVEA.L (A7)+,A4
     RTS
 
@@ -10697,31 +10718,34 @@ LAB_0392:
 LAB_0394:
     MOVEM.L D2-D4/D7,-(A7)
     MOVE.L  20(A7),D7
+
     CLR.W   LAB_1B8A
     MOVE.L  D7,LAB_1B8B
+
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
-    PEA     14.W
+    PEA     (Struct_List_Size).W
     PEA     203.W
-    PEA     LAB_1B8D
+    PEA     GLOB_STR_CTASKS_C_4
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
 
-    MOVE.L  D0,LAB_21B8
-    MOVEQ   #14,D1
+    MOVE.L  D0,GLOB_REF_LIST_CLOSE_TASK_PROC
+    MOVEQ   #(Struct_List_Size),D1
     MOVEA.L D0,A0
     MOVE.L  D1,(A0)
     LEA     LAB_0392(PC),A0
-    MOVEA.L LAB_21B8,A1
+    MOVEA.L GLOB_REF_LIST_CLOSE_TASK_PROC,A1
     MOVE.L  A0,10(A1)
-    MOVE.W  #$4ef9,8(A1)
-    MOVEA.L LAB_21B8,A0
+    MOVE.W  #20217,8(A1)
+    MOVEA.L GLOB_REF_LIST_CLOSE_TASK_PROC,A0
     ADDQ.L  #4,A0
     MOVE.L  A0,D0
     LSR.L   #2,D0
     MOVE.L  D0,LAB_21B9
     MOVE.L  D0,D3
-    LEA     LAB_1B8E,A0
+
+    LEA     GLOB_STR_CLOSE_TASK,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
@@ -10877,25 +10901,34 @@ LAB_039F:
 
 LAB_03A0:
     MOVEM.L D2-D7/A3,-(A7)
-    MOVE.L  32(A7),D7
-    MOVEA.L 36(A7),A3
-    MOVE.L  40(A7),D6
+
+    SetOffsetForStack 7
+    CopyStackValueIntoRegister  1,D7
+    CopyStackValueIntoAddressRegister   2,A3
+    CopyStackValueIntoRegister  3,D6
+
     MOVE.L  D6,D5
     MOVE.L  D6,D4
     MOVE.L  A3,D0
     BEQ.S   LAB_03A1
+
     TST.L   D6
     BEQ.S   LAB_03A1
+
     MOVEQ   #1,D0
     CMP.L   LAB_1BA1,D0
     BEQ.S   LAB_03A1
+
     TST.L   D7
     BNE.S   LAB_03A2
+
 LAB_03A1:
     MOVEQ   #0,D0
     BRA.S   LAB_03A8
+
 LAB_03A2:
     JSR     LAB_0466(PC)
+
 LAB_03A3:
     MOVEA.L LAB_21CF,A0
     MOVE.B  (A3)+,(A0)+
@@ -10905,33 +10938,43 @@ LAB_03A3:
     MOVE.L  A0,LAB_21CF
     TST.L   LAB_21D1
     BEQ.S   LAB_03A4
+
     TST.L   D6
     BNE.S   LAB_03A3
+
 LAB_03A4:
     JSR     LAB_0466(PC)
+
     TST.L   LAB_21D1
     BNE.S   LAB_03A6
+
     MOVE.L  D7,D1
     MOVE.L  LAB_1BA0,D2
     MOVE.L  LAB_21D0,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
+
     MOVE.L  D0,D5
     CMP.L   D3,D5
     BEQ.S   LAB_03A5
+
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_1BA1
     BRA.S   LAB_03A7
+
 LAB_03A5:
     MOVE.L  D4,D5
     MOVE.L  D2,LAB_21CF
     MOVE.L  D3,LAB_21D1
     JSR     LAB_0466(PC)
+
 LAB_03A6:
     TST.L   D6
     BNE.S   LAB_03A2
+
 LAB_03A7:
     MOVE.L  D5,D0
+
 LAB_03A8:
     MOVEM.L (A7)+,D2-D7/A3
     RTS
@@ -13446,7 +13489,7 @@ LAB_0473:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1000.W
     PEA     152.W
-    PEA     LAB_1C42
+    PEA     GLOB_STR_DISKIO2_C_1
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-22(A5)
@@ -13466,7 +13509,7 @@ LAB_0474:
     PEA     1000.W
     MOVE.L  -22(A5),-(A7)
     PEA     176.W
-    PEA     LAB_1C43
+    PEA     GLOB_STR_DISKIO2_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_1B9F
@@ -13483,7 +13526,7 @@ LAB_0475:
     MOVE.L  LAB_21BE,-(A7)
     JSR     LAB_03A9(PC)
     PEA     7.W
-    PEA     LAB_1C44
+    PEA     GLOB_STR_DREV_5_1
     MOVE.L  LAB_21BE,-(A7)
     JSR     LAB_03A0(PC)
     LEA     LAB_2245,A0
@@ -13683,7 +13726,7 @@ LAB_0481:
     PEA     1000.W
     MOVE.L  -22(A5),-(A7)
     PEA     275.W
-    PEA     LAB_1C45
+    PEA     GLOB_STR_DISKIO2_C_3
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #0,D0
 LAB_0482:
@@ -13918,7 +13961,7 @@ LAB_049C:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     520.W
-    PEA     LAB_1C50
+    PEA     GLOB_STR_DISKIO2_C_4
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #-1,D0
     BRA.W   LAB_04C0
@@ -13988,7 +14031,7 @@ LAB_04A3:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     561.W
-    PEA     LAB_1C56
+    PEA     GLOB_STR_DISKIO2_C_5
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #-1,D0
     BRA.W   LAB_04C0
@@ -14003,7 +14046,7 @@ LAB_04A4:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     570.W
-    PEA     LAB_1C57
+    PEA     GLOB_STR_DISKIO2_C_6
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #-1,D0
     BRA.W   LAB_04C0
@@ -14026,7 +14069,7 @@ LAB_04A6:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     588.W
-    PEA     LAB_1C58
+    PEA     GLOB_STR_DISKIO2_C_7
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #-1,D0
     BRA.W   LAB_04C0
@@ -14066,7 +14109,7 @@ LAB_04A9:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     634.W
-    PEA     LAB_1C59
+    PEA     GLOB_STR_DISKIO2_C_8
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A3
@@ -14079,7 +14122,7 @@ LAB_04AA:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     500.W
     PEA     640.W
-    PEA     LAB_1C5A
+    PEA     GLOB_STR_DISKIO2_C_9
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -14090,7 +14133,7 @@ LAB_04AA:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     644.W
-    PEA     LAB_1C5B
+    PEA     GLOB_STR_DISKIO2_C_10
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     BRA.W   LAB_04BD
@@ -14238,12 +14281,12 @@ LAB_04BA:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     736.W
-    PEA     LAB_1C5C
+    PEA     GLOB_STR_DISKIO2_C_11
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     PEA     500.W
     MOVE.L  A2,-(A7)
     PEA     737.W
-    PEA     LAB_1C5D
+    PEA     GLOB_STR_DISKIO2_C_12
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     32(A7),A7
     BRA.S   LAB_04BD
@@ -14271,7 +14314,7 @@ LAB_04BD:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     764.W
-    PEA     LAB_1C5E
+    PEA     GLOB_STR_DISKIO2_C_13
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #0,D0
     MOVE.B  -41(A5),D0
@@ -14324,7 +14367,7 @@ LAB_04C1:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (.desiredMemory).W
     PEA     817.W
-    PEA     GLOB_STR_DISKIO2_C_10
+    PEA     GLOB_STR_DISKIO2_C_14
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -14351,7 +14394,7 @@ LAB_04C1:
     PEA     (.desiredMemory).W
     MOVE.L  .offsetAllocatedMemory(A5),-(A7)
     PEA     839.W
-    PEA     GLOB_STR_DISKIO2_C_11
+    PEA     GLOB_STR_DISKIO2_C_15
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     MOVEQ   #-1,D0
@@ -14553,7 +14596,7 @@ LAB_04C1:
     PEA     (.desiredMemory).W
     MOVE.L  -22(A5),-(A7)
     PEA     901.W
-    PEA     GLOB_STR_DISKIO2_C_12
+    PEA     GLOB_STR_DISKIO2_C_16
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     MOVEQ   #0,D0
@@ -14607,7 +14650,7 @@ LAB_04D2:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     948.W
-    PEA     GLOB_STR_DISKIO2_C_13
+    PEA     GLOB_STR_DISKIO2_C_17
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -14621,7 +14664,7 @@ LAB_04D3:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     500.W
     PEA     954.W
-    PEA     GLOB_STR_DISKIO2_C_14
+    PEA     GLOB_STR_DISKIO2_C_18
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -14632,7 +14675,7 @@ LAB_04D3:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     958.W
-    PEA     GLOB_STR_DISKIO2_C_15
+    PEA     GLOB_STR_DISKIO2_C_19
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     BRA.W   LAB_04E2
@@ -14765,12 +14808,12 @@ LAB_04E0:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     1027.W
-    PEA     GLOB_STR_DISKIO2_C_16
+    PEA     GLOB_STR_DISKIO2_C_20
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     PEA     500.W
     MOVE.L  A2,-(A7)
     PEA     1028.W
-    PEA     GLOB_STR_DISKIO2_C_17
+    PEA     GLOB_STR_DISKIO2_C_21
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     32(A7),A7
     BRA.S   LAB_04E2
@@ -14795,7 +14838,7 @@ LAB_04E2:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     1041.W
-    PEA     GLOB_STR_DISKIO2_C_18
+    PEA     GLOB_STR_DISKIO2_C_22
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     MOVEQ   #0,D0
     MOVE.B  -37(A5),D0
@@ -15065,7 +15108,7 @@ LAB_04FD:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     1191.W
-    PEA     LAB_1C6E
+    PEA     GLOB_STR_DISKIO2_C_23
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     MOVEQ   #0,D0
@@ -15243,7 +15286,7 @@ LAB_0508:
     MOVE.L  #(MEMF_CLEAR),-(A7)
     PEA     36.W
     PEA     1312.W
-    PEA     LAB_1C72
+    PEA     GLOB_STR_DISKIO2_C_24
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -15271,7 +15314,7 @@ LAB_0509:
     PEA     36.W
     MOVE.L  D2,-(A7)
     PEA     1318.W
-    PEA     LAB_1C73
+    PEA     GLOB_STR_DISKIO2_C_25
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -15349,7 +15392,7 @@ LAB_050E:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4352.W
     PEA     1389.W
-    PEA     LAB_1C74
+    PEA     GLOB_STR_DISKIO2_C_26
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -15472,7 +15515,7 @@ LAB_0514:
     PEA     4352.W
     MOVE.L  LAB_21C9,-(A7)
     PEA     1499.W
-    PEA     LAB_1C75
+    PEA     GLOB_STR_DISKIO2_C_27
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
@@ -15506,7 +15549,7 @@ LAB_0515:
 
     JSR     LAB_03CB(PC)
 
-    LEA     LAB_1C78,A0
+    LEA     GLOB_STR_COPY_NIL,A0
     LEA     -156(A5),A1
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
@@ -16077,7 +16120,7 @@ LAB_0557:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D0,-(A7)
     PEA     194.W
-    PEA     LAB_1CE6
+    PEA     GLOB_STR_DISPLIB_C_1
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -16110,7 +16153,7 @@ LAB_055A:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     204.W
-    PEA     LAB_1CE7
+    PEA     GLOB_STR_DISPLIB_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     20(A7),A7
 
@@ -16304,7 +16347,7 @@ LAB_056C:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D7,-(A7)
     PEA     127.W
-    PEA     LAB_1CE9
+    PEA     GLOB_STR_DISPTEXT_C_1
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -16571,12 +16614,12 @@ LAB_0588:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1000.W
     PEA     320.W
-    PEA     LAB_1CEE
+    PEA     GLOB_STR_DISPTEXT_C_2
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     1000.W
     PEA     321.W
-    PEA     LAB_1CEF
+    PEA     GLOB_STR_DISPTEXT_C_3
     MOVE.L  D0,LAB_21DD
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
     LEA     28(A7),A7
@@ -16593,7 +16636,7 @@ LAB_058A:
     PEA     1000.W
     MOVE.L  LAB_21DD,-(A7)
     PEA     338.W
-    PEA     LAB_1CF0
+    PEA     GLOB_STR_DISPTEXT_C_4
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     CLR.L   LAB_21DD
@@ -16603,7 +16646,7 @@ LAB_058B:
     PEA     1000.W
     MOVE.L  LAB_21DE,-(A7)
     PEA     343.W
-    PEA     LAB_1CF1
+    PEA     GLOB_STR_DISPTEXT_C_5
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
     LEA     16(A7),A7
     CLR.L   LAB_21DE
@@ -80063,23 +80106,23 @@ LAB_1B85:
 
 ; ========== CTASKS.c ==========
 
-LAB_1B86:
+GLOB_STR_CTASKS_C_1:
     NStr    "CTASKS.c"
-LAB_1B87:
+GLOB_STR_IFF_TASK_1:
     NStr    "iff_task"
-LAB_1B88:
+GLOB_STR_CTASKS_C_2:
     NStr    "CTASKS.c"
-LAB_1B89:
+GLOB_STR_IFF_TASK_2:
     NStr    "iff_task"
 LAB_1B8A:
-    DC.W    $0001
+    DC.W    1
 LAB_1B8B:
     DS.L    1
-LAB_1B8C:
+GLOB_STR_CTASKS_C_3:
     NStr    "CTASKS.c"
-LAB_1B8D:
+GLOB_STR_CTASKS_C_4:
     NStr    "CTASKS.c"
-LAB_1B8E:
+GLOB_STR_CLOSE_TASK:
     NStr    "close_task"
 LAB_1B8F:
     DS.B    1
@@ -80469,13 +80512,13 @@ LAB_1C41:
 
 ; ========== DISKIO2.c ==========
 
-LAB_1C42:
+GLOB_STR_DISKIO2_C_1:
     NStr    "DISKIO2.c"
-LAB_1C43:
+GLOB_STR_DISKIO2_C_2:
     NStr    "DISKIO2.c"
-LAB_1C44:
+GLOB_STR_DREV_5_1:
     NStr    "DREV 5"
-LAB_1C45:
+GLOB_STR_DISKIO2_C_3:
     NStr    "DISKIO2.c"
 LAB_1C46:
     NStr    "                                      "
@@ -80497,7 +80540,7 @@ LAB_1C4E:
     NStr    "Saving Promo Types                 "
 LAB_1C4F:
     NStr    "Saving Data View config            "
-LAB_1C50:
+GLOB_STR_DISKIO2_C_4:
     NStr    "DISKIO2.c"
 LAB_1C51:
     NStr    "DREV 1"
@@ -80509,23 +80552,15 @@ LAB_1C54:
     NStr    "DREV 4"
 LAB_1C55:
     NStr    "DREV 5"
-LAB_1C56:
+GLOB_STR_DISKIO2_C_5:
     NStr    "DISKIO2.c"
-LAB_1C57:
+GLOB_STR_DISKIO2_C_6:
     NStr    "DISKIO2.c"
-LAB_1C58:
+GLOB_STR_DISKIO2_C_7:
     NStr    "DISKIO2.c"
-LAB_1C59:
+GLOB_STR_DISKIO2_C_8:
     NStr    "DISKIO2.c"
-LAB_1C5A:
-    NStr    "DISKIO2.c"
-LAB_1C5B:
-    NStr    "DISKIO2.c"
-LAB_1C5C:
-    NStr    "DISKIO2.c"
-LAB_1C5D:
-    NStr    "DISKIO2.c"
-LAB_1C5E:
+GLOB_STR_DISKIO2_C_9:
     NStr    "DISKIO2.c"
 GLOB_STR_DISKIO2_C_10:
     NStr    "DISKIO2.c"
@@ -80545,6 +80580,14 @@ GLOB_STR_DISKIO2_C_17:
     NStr    "DISKIO2.c"
 GLOB_STR_DISKIO2_C_18:
     NStr    "DISKIO2.c"
+GLOB_STR_DISKIO2_C_19:
+    NStr    "DISKIO2.c"
+GLOB_STR_DISKIO2_C_20:
+    NStr    "DISKIO2.c"
+GLOB_STR_DISKIO2_C_21:
+    NStr    "DISKIO2.c"
+GLOB_STR_DISKIO2_C_22:
+    NStr    "DISKIO2.c"
 LAB_1C68:
     NStr    "[Qtable]"
 LAB_1C69:
@@ -80557,7 +80600,7 @@ LAB_1C6C:
     NStr    """" ; escaped quote
 LAB_1C6D:
     NStr2   TextCarriageReturn,TextLineFeed
-LAB_1C6E:
+GLOB_STR_DISKIO2_C_23:
     NStr    "DISKIO2.c"
 GLOB_STR_SPECIAL_NGAD:
     NStr    "Special NGAD"
@@ -80565,19 +80608,19 @@ GLOB_STR_RAM:
     NStr    "RAM:"
 GLOB_STR_FILENAME:
     NStr    "Filename:                            "
-LAB_1C72:
+GLOB_STR_DISKIO2_C_24:
     NStr    "DISKIO2.c"
-LAB_1C73:
+GLOB_STR_DISKIO2_C_25:
     NStr    "DISKIO2.c"
-LAB_1C74:
+GLOB_STR_DISKIO2_C_26:
     NStr    "DISKIO2.c"
-LAB_1C75:
+GLOB_STR_DISKIO2_C_27:
     NStr    "DISKIO2.c"
 LAB_1C76:
     NStr    "                                      "
 LAB_1C77:
     NStr    "                                      "
-LAB_1C78:
+GLOB_STR_COPY_NIL:
     NStr    "Copy >nil: "
 LAB_1C79:
     NStr    " "
@@ -80960,16 +81003,16 @@ LAB_1CE5:
 
 ; ========== DISPLIB.c ==========
 
-LAB_1CE6:
+GLOB_STR_DISPLIB_C_1:
     NStr    "DISPLIB.c"
-LAB_1CE7:
+GLOB_STR_DISPLIB_C_2:
     NStr    "DISPLIB.c"
 LAB_1CE8:
     DS.L    1
 
 ; ========== DISPTEXT.c ==========
 
-LAB_1CE9:
+GLOB_STR_DISPTEXT_C_1:
     NStr    "DISPTEXT.c"
 LAB_1CEA:
     NStr    " "
@@ -80979,13 +81022,13 @@ LAB_1CEC:
     NStr    " "
 LAB_1CED:
     DC.L    1
-LAB_1CEE:
+GLOB_STR_DISPTEXT_C_2:
     NStr    "DISPTEXT.c"
-LAB_1CEF:
+GLOB_STR_DISPTEXT_C_3:
     NStr    "DISPTEXT.c"
-LAB_1CF0:
+GLOB_STR_DISPTEXT_C_4:
     NStr    "DISPTEXT.c"
-LAB_1CF1:
+GLOB_STR_DISPTEXT_C_5:
     NStr    "DISPTEXT.c"
 LAB_1CF2:
     NStr    " "
@@ -84480,13 +84523,13 @@ LAB_21B3:
     DS.B    1
 LAB_21B4:
     DS.B    1
-LAB_21B5:
+GLOB_REF_LIST_IFF_TASK_PROC:
     DS.L    1
 LAB_21B6:
     DS.L    1
 LAB_21B7:
     DS.L    1
-LAB_21B8:
+GLOB_REF_LIST_CLOSE_TASK_PROC:
     DS.L    1
 LAB_21B9:
     DS.L    1
