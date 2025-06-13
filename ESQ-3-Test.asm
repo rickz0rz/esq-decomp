@@ -12368,6 +12368,7 @@ LAB_03BF:
 LAB_03C0:
     LINK.W  A5,#-12
     MOVEM.L D2/D6-D7/A3,-(A7)
+
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
     MOVE.L  A3,D1
@@ -12377,7 +12378,7 @@ LAB_03C0:
 
     MOVE.L  D0,D6
     TST.L   D6
-    BEQ.S   LAB_03C3
+    BEQ.S   .return
 
     MOVE.L  #(MEMF_CLEAR),-(A7)
     PEA     36.W
@@ -12388,7 +12389,7 @@ LAB_03C0:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.S   LAB_03C2
+    BEQ.S   .LAB_03C2
 
     MOVE.L  D6,D1
     MOVE.L  D0,D2
@@ -12396,7 +12397,7 @@ LAB_03C0:
     JSR     _LVOInfo(A6)
 
     TST.L   D0
-    BEQ.S   LAB_03C1
+    BEQ.S   .LAB_03C1
 
     MOVEA.L D2,A0
     MOVE.L  16(A0),D0
@@ -12411,7 +12412,7 @@ LAB_03C0:
     ADD.L   D0,D0
     MOVE.L  D0,LAB_21D0
 
-LAB_03C1:
+.LAB_03C1:
     PEA     36.W
     MOVE.L  D2,-(A7)
     PEA     574.W
@@ -12420,12 +12421,12 @@ LAB_03C1:
 
     LEA     16(A7),A7
 
-LAB_03C2:
+.LAB_03C2:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
 
-LAB_03C3:
+.return:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D2/D6-D7/A3
     UNLK    A5
@@ -12511,15 +12512,15 @@ LAB_03C8:
     CMP.W   D7,D6
     MOVE.W  LAB_21CB,LAB_1F45
     CMP.W   D7,D6
-    BEQ.S   LAB_03C9
+    BEQ.S   .LAB_03C9
 
     MOVEQ   #-1,D0
-    BRA.S   LAB_03CA
+    BRA.S   .return
 
-LAB_03C9:
+.LAB_03C9:
     MOVEQ   #0,D0
 
-LAB_03CA:
+.return:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
     RTS
 
@@ -13413,7 +13414,6 @@ LAB_03FC:
     MOVE.B  D2,GLOB_REF_STR_USE_24_HR_CLOCK
 
 LAB_03FD:
-    ; GLOB_REF_STR_USE_24_HR_CLOCK = use 12/24 hr format
     MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D1
     CMP.B   D0,D1
     BNE.S   LAB_03FE
@@ -13494,7 +13494,7 @@ LAB_0403:
     BRA.S   LAB_0406
 
 LAB_0404:
-    MOVE.W  #$80,GLOB_REF_WORD_HEX_CODE_8E
+    MOVE.W  #128,GLOB_REF_WORD_HEX_CODE_8E
     ADDQ.W  #1,D6
     BRA.S   LAB_0407
 
@@ -13512,10 +13512,10 @@ LAB_0406:
 
 LAB_0407:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
-    CMPI.W  #$80,D0
+    CMPI.W  #128,D0
     BCS.S   LAB_0408
 
-    CMPI.W  #$dc,D0
+    CMPI.W  #220,D0
     BLS.S   LAB_0409
 
 LAB_0408:
@@ -38303,7 +38303,7 @@ LAB_0B2D:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_1(PC)
 
-    PEA     LAB_1F06
+    PEA     GLOB_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
     PEA     210.W
     PEA     35.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
@@ -41868,17 +41868,19 @@ LAB_0C3B:
 LAB_0C3C:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
-    MOVEA.L 8(A5),A3
+
+    UseLinkStackLong    MOVEA.L,1,A3
+
     MOVEQ   #0,D5
     MOVEQ   #0,D7
 
-LAB_0C3D:
+.LAB_0C3D:
     MOVEQ   #7,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0C41
+    BGE.S   .return
 
     TST.W   D5
-    BNE.S   LAB_0C41
+    BNE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -41891,7 +41893,7 @@ LAB_0C3D:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   LAB_0C40
+    BEQ.S   .LAB_0C40
 
     LEA     LAB_1F1E,A0
     ADDA.L  D7,A0
@@ -41904,9 +41906,9 @@ LAB_0C3D:
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
-LAB_0C3E:
+.LAB_0C3E:
     TST.B   (A2)+
-    BNE.S   LAB_0C3E
+    BNE.S   .LAB_0C3E
 
     SUBQ.L  #1,A2
     SUBA.L  (A0),A2
@@ -41917,9 +41919,9 @@ LAB_0C3E:
     ADDA.L  D6,A1
     MOVEA.L A1,A0
 
-LAB_0C3F:
+.LAB_0C3F:
     TST.B   (A0)+
-    BNE.S   LAB_0C3F
+    BNE.S   .LAB_0C3F
 
     SUBQ.L  #1,A0
     SUBA.L  A1,A0
@@ -41932,11 +41934,11 @@ LAB_0C3F:
 
     MOVEQ   #1,D5
 
-LAB_0C40:
+.LAB_0C40:
     ADDQ.L  #1,D7
-    BRA.S   LAB_0C3D
+    BRA.S   .LAB_0C3D
 
-LAB_0C41:
+.return:
     MOVEM.L (A7)+,D5-D7/A2-A3
     UNLK    A5
     RTS
@@ -41948,17 +41950,19 @@ LAB_0C41:
 LAB_0C42:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
-    MOVEA.L 8(A5),A3
+
+    UseLinkStackLong    MOVEA.L,1,A3
+
     MOVEQ   #0,D5
     MOVEQ   #0,D7
 
-LAB_0C43:
+.LAB_0C43:
     MOVEQ   #7,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0C47
+    BGE.S   .return
 
     TST.W   D5
-    BNE.S   LAB_0C47
+    BNE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -41971,7 +41975,7 @@ LAB_0C43:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   LAB_0C46
+    BEQ.S   .LAB_0C46
 
     LEA     LAB_1F27,A0
     ADDA.L  D7,A0
@@ -41984,9 +41988,9 @@ LAB_0C43:
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
-LAB_0C44:
+.LAB_0C44:
     TST.B   (A2)+
-    BNE.S   LAB_0C44
+    BNE.S   .LAB_0C44
 
     SUBQ.L  #1,A2
     SUBA.L  (A0),A2
@@ -41997,9 +42001,9 @@ LAB_0C44:
     ADDA.L  D6,A1
     MOVEA.L A1,A0
 
-LAB_0C45:
+.LAB_0C45:
     TST.B   (A0)+
-    BNE.S   LAB_0C45
+    BNE.S   .LAB_0C45
 
     SUBQ.L  #1,A0
     SUBA.L  A1,A0
@@ -42012,11 +42016,11 @@ LAB_0C45:
 
     MOVEQ   #1,D5
 
-LAB_0C46:
+.LAB_0C46:
     ADDQ.L  #1,D7
-    BRA.S   LAB_0C43
+    BRA.S   .LAB_0C43
 
-LAB_0C47:
+.return:
     MOVEM.L (A7)+,D5-D7/A2-A3
     UNLK    A5
     RTS
@@ -42026,11 +42030,13 @@ LAB_0C47:
 LAB_0C48:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
+
     MOVEA.L 8(A5),A3
     MOVE.B  15(A5),D7
     MOVE.B  19(A5),D6
     MOVE.B  23(A5),D5
     MOVEA.L 24(A5),A2
+
     MOVE.L  D6,D0
     ANDI.B  #$40,D0
     ANDI.B  #$3f,D6
@@ -42647,7 +42653,7 @@ LAB_0C78:
 
 ;!======
 
-    ; ???
+    ; Dead code
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  LAB_226D,D0
     JSR     LAB_0C79
@@ -42664,6 +42670,7 @@ LAB_0C78:
 
 ;!======
 
+    ; Dead code.
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  LAB_226D,D0
     JSR     LAB_0C79
@@ -44086,6 +44093,7 @@ LAB_0CC2:
 
 ;!======
 
+    ; Dead code
     MOVEM.L D2-D3/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
@@ -44216,7 +44224,7 @@ LAB_0CC7:
 
     MOVE.L  D0,LAB_22F1
     MOVE.L  LAB_22F2,(A7)
-    PEA     GLOB_STR_DIGITAL_NICHE_PERIOD
+    PEA     GLOB_STR_DIGITAL_PPV_PERIOD
     JSR     LAB_0B44(PC)
 
     LEA     12(A7),A7
@@ -47541,6 +47549,7 @@ LAB_0DBE:
 
 ;!======
 
+    ; Dead code.
     LINK.W  A5,#-16
     MOVEM.L D2-D3/D6-D7,-(A7)
     MOVE.L  #LAB_1E2B,-4(A5)
@@ -48141,13 +48150,14 @@ LAB_0DE6:
 
 ;!======
 
-LAB_0DE7:
+COPY_IMAGE_DATA_TO_BITMAP:
     LINK.W  A5,#-4
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
-    MOVEA.L 8(A5),A3
-    MOVEA.L 12(A5),A2
-    MOVE.L  16(A5),D7
-    MOVE.L  20(A5),D6
+
+    UseLinkStackLong    MOVEA.L,1,A3
+    UseLinkStackLong    MOVEA.L,2,A2
+    UseLinkStackLong    MOVE.L,3,D7
+    UseLinkStackLong    MOVE.L,4,D6
     MOVE.W  30(A5),D5
     MOVE.B  35(A5),D4
 
@@ -48512,7 +48522,7 @@ LAB_0DE8:
     PEA     2992.W
     PEA     LAB_1E2B
     PEA     GLOB_REF_696_400_BITMAP
-    BSR.W   LAB_0DE7
+    BSR.W   COPY_IMAGE_DATA_TO_BITMAP
 
     MOVE.B  D7,-1(A5)
     MOVEQ   #88,D0
@@ -48528,7 +48538,7 @@ LAB_0DE8:
     PEA     3080.W
     PEA     LAB_1E58
     PEA     GLOB_REF_696_400_BITMAP
-    BSR.W   LAB_0DE7
+    BSR.W   COPY_IMAGE_DATA_TO_BITMAP
 
     BSR.W   LAB_0DBC
 
@@ -93925,7 +93935,7 @@ GLOB_STR_FILE_WIDTH_COLORS_FORMATTED:
     NStr    "File='%s'  Width=%d  Colors=%d"
 GLOB_STR_FILE_PERCENT_S:
     NStr    "File '%s'"
-LAB_1F06:
+GLOB_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL:
     NStr    "Press ESC key twice to resume scroll"
 
 ; ========== ESQPARS.c ==========
@@ -94156,7 +94166,7 @@ LAB_1F63:
     NStr    "Digital Multiplex at %s"
 LAB_1F64:
     NStr    "Digital PPV Listings"
-GLOB_STR_DIGITAL_NICHE_PERIOD:
+GLOB_STR_DIGITAL_PPV_PERIOD:
     NStr    "Digital PPV."
 
 ; ========== GCOMMAND.c ==========

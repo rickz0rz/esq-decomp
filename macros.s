@@ -18,5 +18,5 @@ UseStackLong macro
 endm
 
 UseLinkStackLong macro
-    \1  .stackOffsetBytes+(\2*4)(A5),\3
+    \1 ((\2+1)*4)(A5),\3
 endm
