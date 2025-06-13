@@ -20,3 +20,7 @@ endm
 UseLinkStackLong macro
     \1 ((\2+1)*4)(A5),\3
 endm
+
+EmitStackAddress macro
+.stackLong\1    = .stackOffsetBytes+(\1*4)
+endm

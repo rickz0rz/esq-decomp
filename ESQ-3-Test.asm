@@ -3024,6 +3024,7 @@ LAB_0114:
 LAB_011B:
     LINK.W  A5,#-20
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
+
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
 
@@ -6087,7 +6088,7 @@ LAB_01FE:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_1B58
+    PEA     GLOB_STR_GRID_TIME_FORMAT_DUPLICATE
     PEA     -32(A5)
     JSR     JMP_TBL_PRINTF_1(PC)
 
@@ -9346,7 +9347,7 @@ LAB_02E6:
     MOVE.W  D1,-30(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     LAB_1B6D
+    PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1
     PEA     -112(A5)
     JSR     JMP_TBL_PRINTF_1(PC)
 
@@ -10115,7 +10116,7 @@ LAB_031A:
     MOVE.W  D1,-334(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     GLOB_STR_DF0_OI_02LX_DAT
+    PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2
     PEA     -566(A5)
     JSR     JMP_TBL_PRINTF_1(PC)
 
@@ -11780,6 +11781,7 @@ LAB_0391:
 
 ;!======
 
+; End the CLOSE_TASK task.
 LAB_0392:
     MOVE.L  A4,-(A7)
 
@@ -11812,6 +11814,7 @@ LAB_0392:
 
 ;!======
 
+; Start the CLOSE_TASK task
 LAB_0394:
     MOVEM.L D2-D4/D7,-(A7)
 
@@ -11875,6 +11878,7 @@ LAB_0395:
 
 ;!======
 
+; Load the contents of the file into memory?
 LAB_0396:
     MOVEM.L D6-D7/A3,-(A7)
 
@@ -13785,7 +13789,7 @@ LAB_041A:
     LINK.W  A5,#-212
     MOVEM.L D2-D7,-(A7)
     PEA     1006.W
-    PEA     LAB_1BE9
+    PEA     GLOB_STR_DF0_CONFIG_DAT_1
     BSR.W   LAB_0396
 
     ADDQ.W  #8,A7
@@ -14017,10 +14021,12 @@ LAB_041C:
 
 ;!======
 
+; Load the configuration
 LAB_041D:
     LINK.W  A5,#-12
     MOVEM.L D6-D7,-(A7)
-    PEA     LAB_1BEB
+
+    PEA     GLOB_STR_DF0_CONFIG_DAT_2
     BSR.W   LAB_03AC
 
     ADDQ.W  #4,A7
@@ -24189,7 +24195,7 @@ LAB_0710:
     JSR     LAB_0AB6(PC)
 
     MOVEQ   #0,D1
-    MOVE.B  LAB_1DCC,D1
+    MOVE.B  LAB_1DCB+1,D1
     ADD.L   D1,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
@@ -25496,7 +25502,7 @@ LAB_0760:
     BRA.S   LAB_0766
 
 LAB_0761:
-    CMPI.B  #$aa,-105(A5,D5.L)
+    CMPI.B  #$AA,-105(A5,D5.L)
     BNE.S   LAB_0762
 
     ADDQ.L  #1,-118(A5)
@@ -26959,7 +26965,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     LEA     LAB_1DD7,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(LAB_1DC7_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -26970,7 +26976,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     LEA     LAB_1DC8,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(LAB_1DC8_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -26980,7 +26986,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     LEA     LAB_1DC9,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(LAB_1DC9_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -26990,7 +26996,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     LEA     GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -27000,7 +27006,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     LEA     LAB_1DCB,A0
-    MOVEQ   #2,D0
+    MOVEQ   #(LAB_1DCB_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -27010,7 +27016,7 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     LEA     LAB_1DCD,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(LAB_1DCD_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -32904,7 +32910,7 @@ LAB_0970:
     ADDQ.W  #4,A7
 
 .LAB_0977:
-    TST.L   LAB_1EE3
+    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
     BNE.S   .LAB_0978
 
     TST.W   LAB_2263
@@ -34830,13 +34836,13 @@ LAB_09FC:
 
     MOVE.L  D0,LAB_1B24
     MOVEA.L D0,A0
-    MOVE.B  #$b,190(A0)
+    MOVE.B  #11,190(A0)
     MOVEA.L LAB_1B24,A0
     MOVE.W  #$280,128(A0)
     MOVEA.L LAB_1B24,A0
-    MOVE.W  #$a0,130(A0)
+    MOVE.W  #160,130(A0)
     MOVEA.L LAB_1B24,A0
-    MOVE.B  #$3,136(A0)
+    MOVE.B  #3,136(A0)
     MOVE.L  LAB_1B24,(A7)
     JSR     LAB_0AA1(PC)
 
@@ -34894,8 +34900,11 @@ LAB_09FF:
 
 LAB_0A00:
     MOVEM.L D2/D6-D7/A2-A3,-(A7)
-    MOVEA.L 24(A7),A3
-    MOVEA.L 28(A7),A2
+
+    SetOffsetForStack   5
+    UseStackLong    MOVEA.L,1,A3
+    UseStackLong    MOVEA.L,2,A2
+
     MOVE.L  A2,D0
     BNE.S   LAB_0A01
 
@@ -35054,7 +35063,12 @@ LAB_0A0A:
 
 LAB_0A0B:
     MOVEM.L D2-D3/D6-D7,-(A7)
-    MOVE.L  20(A7),D7
+
+    SetOffsetForStack   4
+    ; UseStackLong    MOVE.L,1,D7
+    EmitStackAddress    1
+    MOVE.L  .stackLong1(A7),D7
+
     TST.W   LAB_1B83
     BEQ.W   .return
 
@@ -35182,25 +35196,25 @@ LAB_0A0B:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    TST.L   LAB_1EE3
-    BEQ.S   .LAB_0A11
+    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    BEQ.S   .loadDf0LogoLstFile
 
-    TST.L   LAB_1EE2
-    BEQ.S   .LAB_0A11
+    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
+    BEQ.S   .loadDf0LogoLstFile
 
-    MOVE.L  LAB_1EE2,D0
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_1EE3,-(A7)
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     963.W
     PEA     GLOB_STR_ESQIFF_C_5
     JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
 
     LEA     16(A7),A7
 
-.LAB_0A11:
-    CLR.L   LAB_1EE3
-    CLR.L   LAB_1EE2
+.loadDf0LogoLstFile:
+    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
     PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_DF0_LOGO_LST,-(A7)
     JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_2(PC)
@@ -35214,9 +35228,9 @@ LAB_0A0B:
     JSR     JMP_TBL_GET_FILESIZE_FROM_HANDLE(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,LAB_1EE2
+    MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
     TST.L   D0
-    BLE.S   .LAB_0A12
+    BLE.S   .df0LogoLstFileWithoutData
 
     ADDQ.L  #1,D0
 
@@ -35227,21 +35241,21 @@ LAB_0A0B:
     JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,LAB_1EE3
+    MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_DATA
     MOVE.L  D6,D1
     MOVE.L  D0,D2
-    MOVE.L  LAB_1EE2,D3
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
-    CMP.L   LAB_1EE2,D0
-    BNE.S   .LAB_0A12
+    CMP.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
+    BNE.S   .df0LogoLstFileWithoutData
 
     MOVE.W  LAB_22A9,D0
     ORI.W   #2,D0
     MOVE.W  D0,LAB_22A9
 
-.LAB_0A12:
+.df0LogoLstFileWithoutData:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
@@ -35300,7 +35314,7 @@ LAB_0A17:
     MOVE.W  LAB_22AC,D6
     MOVEQ   #0,D1
     MOVE.W  D1,-128(A5)
-    TST.L   LAB_1EE3
+    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   LAB_0A18
 
     MOVE.W  LAB_22C0,D2
@@ -35560,8 +35574,8 @@ LAB_0A35:
     MOVE.W  LAB_22C0,D0
     BEQ.S   LAB_0A36
 
-    MOVE.L  LAB_1EE2,D4
-    MOVE.L  LAB_1EE3,-14(A5)
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
     MOVE.W  LAB_22AC,D6
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_22C3
@@ -35610,8 +35624,8 @@ LAB_0A3B:
     MOVE.W  LAB_22C0,D0
     BEQ.S   LAB_0A3C
 
-    MOVE.L  LAB_1EE2,D4
-    MOVE.L  LAB_1EE3,-14(A5)
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
     BRA.S   LAB_0A3D
 
 LAB_0A3C:
@@ -36592,23 +36606,23 @@ LAB_0A8B:
     CLR.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE
 
 .LAB_0A8C:
-    TST.L   LAB_1EE3
+    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   .return
 
-    TST.L   LAB_1EE2
+    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
     BEQ.S   .return
 
-    MOVE.L  LAB_1EE2,D0
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_1EE3,-(A7)
+    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     1994.W
     PEA     GLOB_STR_ESQIFF_C_8
     JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
 
     LEA     16(A7),A7
-    CLR.L   LAB_1EE3
-    CLR.L   LAB_1EE2
+    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
 
 .return:
     RTS
@@ -41289,7 +41303,9 @@ LAB_0C09:
 LAB_0C0A:
     LINK.W  A5,#-32
     MOVEM.L D4-D7/A3,-(A7)
+
     MOVEA.L 8(A5),A3
+
     CLR.B   -10(A5)
     MOVE.B  LAB_1DEB,D0
     MOVEQ   #0,D6
@@ -91139,7 +91155,7 @@ GLOB_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
     NStr    "%2d:%02d:%02d"
 GLOB_STR_GRID_TIME_FORMAT:
     NStr    "%2d:%02d:%02d"
-LAB_1B58:
+GLOB_STR_GRID_TIME_FORMAT_DUPLICATE:
     NStr    "%2d:%02d:%02d "
 GLOB_STR_12_44_44_SINGLE_SPACE:
     NStr    "12:44:44 "
@@ -91187,7 +91203,7 @@ GLOB_STR_COI_C_3:
     NStr    "COI.c"
 GLOB_STR_COI_C_4:
     NStr    "COI.c"
-LAB_1B6D:
+GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1:
     NStr    "df0:OI_%02lx.dat"
 LAB_1B6E:
     NStr    "%ld"
@@ -91207,7 +91223,7 @@ LAB_1B75:
     NStr    "%d"
 GLOB_STR_COI_C_5:
     NStr    "COI.c"
-GLOB_STR_DF0_OI_02LX_DAT:
+GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2:
     NStr    "df0:OI_%02lx.dat"
 GLOB_STR_COI_C_6:
     NStr    "COI.c"
@@ -91459,14 +91475,14 @@ LAB_1BE7:
     NStr    "Mount PC1:"
 LAB_1BE8:
     NStr    "Assign GFX: PC1:"
-LAB_1BE9:
+GLOB_STR_DF0_CONFIG_DAT_1:
     NStr    "df0:config.dat"
 GLOB_STR_DEFAULT_CONFIG_FORMATTED:
     DC.B    "%01ld%01lc%01ld%01ld%02ld%02ld%01lc%01lc%01lc%01lc%01ld%01ld%"
     DC.B    "01lc%01lc%01lc%01lc%01lc%01lc%01lc%02ld%02ld%01lc%01lc%01lc%0"
     DC.B    "2ld%02ld%02ld%03ld%01ld%2.2s%01lc%01lc%01lc%01c%01c%01d%01c%0"
     NStr2   "1c%01c%01c%01c%01c",TextLineFeed
-LAB_1BEB:
+GLOB_STR_DF0_CONFIG_DAT_2:
     NStr    "df0:config.dat"
 GLOB_STR_DISKIO_C_9:
     NStr    "DISKIO.c"
@@ -92655,34 +92671,40 @@ LAB_1DC6:
     DS.L    1
 LAB_1DC7:
     DS.L    1
+LAB_1DC7_Length = 1
 LAB_1DC8:
     DC.B    "B"
+LAB_1DC8_Length = 1
 LAB_1DC9:
     DC.B    "E"
+LAB_1DC9_Length = 1
 GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
+GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length    = 1
 LAB_1DCB:
-    DC.B    "3"
-LAB_1DCC:
-    DC.B    "6"
+    DC.B    "36"
+LAB_1DCB_Length = 2
 LAB_1DCD:
     DC.B    "6"
+LAB_1DCD_Length = 1
 LAB_1DCE:
     DC.B    "N"
 LAB_1DCF:
-    DC.B    $01
+    DC.B    1
 LAB_1DD0:
-    DC.B    $01
+    DC.B    1
 LAB_1DD1:
     DC.B    "6"
 LAB_1DD2:
     DC.B    "N"
 LAB_1DD3:
-    DC.B    "YN"
+    DC.B    "Y"
+    DC.B    "N"
 LAB_1DD4:
     DC.B    "N"
 LAB_1DD5:
-    DC.B    "NYA"
+    DC.B    "N"
+    DC.B    "YA"
 LAB_1DD6:
     DC.B    "N"
 LAB_1DD7:
@@ -93870,9 +93892,9 @@ GLOB_REF_LONG_GFX_G_ADS_FILESIZE:
     DS.L    1
 GLOB_REF_LONG_GFX_G_ADS_DATA:
     DS.L    1
-LAB_1EE2:
+GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE:
     DS.L    1
-LAB_1EE3:
+GLOB_REF_LONG_DF0_LOGO_LST_DATA:
     DS.L    1
 LAB_1EE4:
     DS.W    1
