@@ -1,0 +1,49 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "amiga-assembly",
+            "request": "launch",
+            "name": "FS-UAE Debug",
+            "stopOnEntry": false,
+            "program": "{workspaceFolder}/assets/disks/prevue/ESQ",
+            "remoteProgram": "DH1:ESQ",
+            "trace": true,
+            "emulatorType": "fs-uae",
+            "emulatorArgs": [
+                "--amiga_model=A500+",
+                "--chip_memory=1024",
+                "--cpu=68000",
+                "--fast_memory=1024",
+                "--floppy_drive_0=${workspaceFolder}/assets/disks/blank.adf",
+                "--hard_drive_1=${workspaceFolder}/assets/disks/prevue",
+                "--floppy_drive_speed=0",
+                "--joystick_port_2_mode=joystick",
+                "--kickstart_file=${workspaceFolder}/assets/kickstart/v2.04.rom",
+                "--ntsc_mode=1",
+                "--serial_port=tcp://127.0.0.1:1234",
+                "--line_doubling=1",
+                "--automatic_input_grab=0"
+            ],
+            "preLaunchTask": "Setup for Emulation"
+        },
+        {
+            "type": "amiga-assembly",
+            "request": "launch",
+            "name": "FS-UAE Launch",
+            "noDebug": true,
+            "program": "${workspaceFolder}/out/bin/ESQ",
+            "remoteProgram": "SYS:ESQ",
+            "emulatorType": "fs-uae",
+            "emulatorArgs": [
+                "--kickstart_file=/Users/rj/Downloads/Kickstart - 390979-01 (USA, Europe) (v2.04 Rev 37.175) (A500 Plus, A2000).rom",
+                "--hard_drive_0=${workspaceFolder}/out/bin/ESQ",
+                "--automatic_input_grab=0"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        }
+    ]
+}

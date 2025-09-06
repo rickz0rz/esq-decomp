@@ -1,0 +1,42 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "amigaassembly",
+			"vasm": {
+				"enabled": true,
+				"command": "${config:amiga-assembly.binDir}/vasmm68k_mot",
+				"args": [
+					"-m68000",
+					"-Fhunk",
+					"-linedebug"
+				]
+			},
+			"vlink": {
+				"enabled": true,
+				"command": "${config:amiga-assembly.binDir}/vlink",
+				"includes": "src/ESQ.asm",
+				"excludes": "",
+				"createStartupSequence": true,
+				"createExeFileParentDir": true,
+				"exefilename": "ESQ",
+				"args": [
+					"-bamigahunk",
+					"-Bstatic"
+				]
+			},
+			"problemMatcher": [],
+			"label": "amigaassembly: build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "Setup for Emulation",
+			"command": "cp -f build/ESQ ${workspaceFolder}/assets/disks/prevue/ESQ",
+			"dependsOn": ["amigaassembly: build"]
+		}
+	]
+}
