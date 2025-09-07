@@ -1,2 +1,5 @@
 .DS_Store
-*.rom
+
+assets/kickstart/*.rom
+assets/disks/prevue/*
+!assets/disks/prevue/PrevueFilesGoHere
