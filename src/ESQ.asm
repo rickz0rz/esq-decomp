@@ -2522,9 +2522,6 @@ LAB_00E8:
 LAB_00E9:
     MOVEM.L D4-D7/A3,-(A7)
 
-    ; why start at 24? because ...? does the stack contain the return address
-    ; to go to for RTS? what other stuff is there? or some other stuff from the
-    ; calling code?
     MOVEA.L 24(A7),A3
     MOVE.L  28(A7),D7
     MOVE.L  32(A7),D6
@@ -2758,6 +2755,7 @@ LAB_00EB:
     MOVE.L  32(A7),D6
     MOVE.L  36(A7),D5
     MOVE.L  40(A7),D4
+
     MOVE.L  D4,-(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
