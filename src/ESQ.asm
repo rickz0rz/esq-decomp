@@ -1350,6 +1350,7 @@ LAB_0074:
 
 ;!======
 
+; Unreachable Code
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E2E,A2
     LEA     LAB_1E5B,A3
@@ -1384,28 +1385,28 @@ LAB_0077:
     MOVE.B  (A1)+,D3
     LSL.W   #8,D3
     CMP.W   D3,D1
-    BEQ.S   LAB_0078
+    BEQ.S   .LAB_0078
 
     ADDI.W  #$100,D1
 
-LAB_0078:
+.LAB_0078:
     MOVEQ   #0,D3
     MOVE.B  (A1)+,D3
     LSL.W   #4,D3
     CMP.W   D3,D2
-    BEQ.S   LAB_0079
+    BEQ.S   .LAB_0079
 
     ADDI.W  #16,D2
 
-LAB_0079:
+.LAB_0079:
     MOVEQ   #0,D3
     MOVE.B  (A1)+,D3
     CMP.W   D3,D0
-    BEQ.S   LAB_007A
+    BEQ.S   .return
 
     ADDI.W  #1,D0
 
-LAB_007A:
+.return:
     ADD.W   D1,D0
     ADD.W   D2,D0
     RTS
@@ -1422,7 +1423,7 @@ LAB_007B:
     MOVEQ   #60,D3
     MOVE.W  12(A0),D0
     CMP.W   D3,D0
-    BLT.W   LAB_0088
+    BLT.W   .return
 
     SUB.W   D3,12(A0)
     MOVEQ   #1,D4
@@ -1430,48 +1431,48 @@ LAB_007B:
     ADD.W   D1,D0
     MOVE.W  D0,10(A0)
     CMPI.W  #$1e,D0
-    BNE.W   LAB_007C
+    BNE.W   .LAB_007C
 
     MOVEQ   #2,D4
-    BRA.W   LAB_0088
+    BRA.W   .return
 
-LAB_007C:
+.LAB_007C:
     CMP.W   D3,D0
-    BGE.W   LAB_0082
+    BGE.W   .LAB_0082
 
     CMP.W   LAB_1B0C,D0
-    BEQ.W   LAB_007D
+    BEQ.W   .LAB_007D
 
     CMP.W   LAB_1B0B,D0
-    BNE.W   LAB_007E
+    BNE.W   .LAB_007E
 
-LAB_007D:
+.LAB_007D:
     MOVEQ   #5,D4
-    BRA.W   LAB_0088
+    BRA.W   .return
 
-LAB_007E:
+.LAB_007E:
     CMPI.W  #20,D0
-    BEQ.W   LAB_007F
+    BEQ.W   .LAB_007F
 
     CMPI.W  #$32,D0
-    BNE.W   LAB_0080
+    BNE.W   .LAB_0080
 
-LAB_007F:
+.LAB_007F:
     MOVEQ   #4,D4
-    BRA.W   LAB_0088
+    BRA.W   .return
 
-LAB_0080:
+.LAB_0080:
     CMP.W   LAB_1B09,D0
-    BEQ.W   LAB_0081
+    BEQ.W   .LAB_0081
 
     CMP.W   LAB_1B0A,D0
-    BNE.W   LAB_0088
+    BNE.W   .return
 
-LAB_0081:
+.LAB_0081:
     MOVEQ   #3,D4
-    BRA.W   LAB_0088
+    BRA.W   .return
 
-LAB_0082:
+.LAB_0082:
     MOVE.W  D2,10(A0)
     MOVEQ   #2,D4
     MOVE.W  8(A0),D0
@@ -1479,39 +1480,39 @@ LAB_0082:
     MOVE.W  D0,8(A0)
     MOVEQ   #12,D3
     CMP.W   D3,D0
-    BLT.W   LAB_0088
+    BLT.W   .return
 
-    BEQ.S   LAB_0083
+    BEQ.S   .LAB_0083
 
     MOVE.W  D1,8(A0)
-    BRA.W   LAB_0088
+    BRA.W   .return
 
-LAB_0083:
+.LAB_0083:
     EORI.W   #$ffff,18(A0)
-    BMI.W   LAB_0088
+    BMI.W   .return
 
     MOVE.W  0(A0),D0
     ADD.W   D1,D0
     MOVE.W  D0,0(A0)
     MOVEQ   #7,D3
     CMP.W   D3,D0
-    BNE.S   LAB_0084
+    BNE.S   .LAB_0084
 
     MOVE.W  D2,0(A0)
 
-LAB_0084:
+.LAB_0084:
     MOVE.W  16(A0),D0
     ADD.W   D1,D0
     MOVE.W  D0,16(A0)
     MOVE.W  #$16e,D3
     TST.W   20(A0)
-    BEQ.S   LAB_0085
+    BEQ.S   .LAB_0085
 
     ADD.W   D1,D3
 
-LAB_0085:
+.LAB_0085:
     CMP.W   D3,D0
-    BLT.S   LAB_0087
+    BLT.S   .LAB_0087
 
     MOVE.W  6(A0),D0
     ADD.W   D1,D0
@@ -1519,24 +1520,25 @@ LAB_0085:
     MOVE.W  D1,16(A0)
     MOVEQ   #0,D1
     ANDI.W  #3,D0
-    BNE.S   LAB_0086
+    BNE.S   .LAB_0086
 
     MOVE.W  #(-1),D1
 
-LAB_0086:
+.LAB_0086:
     MOVE.W  D1,20(A0)
 
-LAB_0087:
+.LAB_0087:
     JSR     LAB_0089
 
-LAB_0088:
+.return:
     MOVE.W  D4,D0
     MOVEM.L (A7)+,D2-D4
     RTS
 
 ;!======
 
-    MOVEA.L 4(A7),A0 ; how is this accessed?
+; Unreachable Code
+    MOVEA.L 4(A7),A0
 
 LAB_0089:
     MOVE.L  D2,-(A7)
@@ -1544,20 +1546,20 @@ LAB_0089:
     MOVEQ   #0,D2
     LEA     LAB_1B1D,A1
     TST.W   20(A0)
-    BEQ.S   LAB_008A
+    BEQ.S   .LAB_008A
 
     ADDA.L  #$18,A1
 
-LAB_008A:
+.LAB_008A:
     MOVE.W  (A1)+,D1
     CMP.W   D1,D0
-    BLE.S   LAB_008B
+    BLE.S   .return
 
     SUB.W   D1,D0
     ADDQ.W  #1,D2
-    BRA.S   LAB_008A
+    BRA.S   .LAB_008A
 
-LAB_008B:
+.return:
     MOVE.W  D2,2(A0)
     MOVE.W  D0,4(A0)
     MOVE.L  (A7)+,D2
@@ -1570,21 +1572,21 @@ LAB_008C:
     MOVE.W  2(A0),D1
     MOVEQ   #0,D0
     LEA     LAB_1B1D,A1
-    DBF     D1,LAB_008D
+    DBF     D1,.LAB_008D
 
-    BRA.S   LAB_008F
+    BRA.S   .return
 
-LAB_008D:
+.LAB_008D:
     TST.W   20(A0)
-    BEQ.S   LAB_008E
+    BEQ.S   .LAB_008E
 
     ADDA.L  #$18,A1
 
-LAB_008E:
+.LAB_008E:
     ADD.W   (A1)+,D0
-    DBF     D1,LAB_008E
+    DBF     D1,.LAB_008E
 
-LAB_008F:
+.return:
     ADD.W   4(A0),D0
     MOVE.W  D0,16(A0)
     RTS
@@ -1599,15 +1601,15 @@ LAB_0090:
     MOVE.B  #0,(A0)
     MOVE.B  #$4d,-(A0)
     TST.W   18(A1)
-    BPL.S   LAB_0091
+    BPL.S   .LAB_0091
 
     MOVE.B  #$50,-(A0)
-    BRA.S   LAB_0092
+    BRA.S   .LAB_0092
 
-LAB_0091:
+.LAB_0091:
     MOVE.B  #$41,-(A0)
 
-LAB_0092:
+.LAB_0092:
     MOVE.B  #$20,-(A0)
     MOVE.W  12(A1),D2
     EXT.L   D2
@@ -1637,15 +1639,15 @@ LAB_0092:
     MOVE.B  D0,-(A0)
     SWAP    D0
     TST.B   D0
-    BEQ.S   LAB_0093
+    BEQ.S   .LAB_0093
 
     ADDI.B  #$30,D0
-    BRA.S   LAB_0094
+    BRA.S   .return
 
-LAB_0093:
+.LAB_0093:
     MOVE.B  #$20,D0
 
-LAB_0094:
+.return:
     MOVE.B  D0,-(A0)
     MOVE.L  (A7)+,D2
     RTS
@@ -1926,12 +1928,12 @@ LAB_00B3:
     MOVEM.L D2-D4,-(A7)
     MOVEQ   #5,D0
 
-LAB_00B4:
+.LAB_00B4:
     MOVE.B  (A1)+,D4
-    BEQ.S   LAB_00B7
+    BEQ.S   .LAB_00B7
 
     CMPI.B  #$ff,D4
-    BEQ.S   LAB_00B7
+    BEQ.S   .LAB_00B7
 
     MOVEQ   #0,D3
     MOVE.L  D3,D1
@@ -1939,19 +1941,20 @@ LAB_00B4:
     MOVE.L  D3,D4
     MOVEQ   #7,D2
 
-LAB_00B5:
+.LAB_00B5:
     BTST    D2,D1
-    BEQ.S   LAB_00B6
+    BEQ.S   .LAB_00B6
 
     BSET    D3,D4
 
-LAB_00B6:
+.LAB_00B6:
     ADDQ.W  #1,D3
-    DBF     D2,LAB_00B5
+    DBF     D2,.LAB_00B5
 
-LAB_00B7:
+.LAB_00B7:
     MOVE.B  D4,(A0)+
-    DBF     D0,LAB_00B4
+    DBF     D0,.LAB_00B4
+
     MOVEM.L (A7)+,D2-D4
     RTS
 
@@ -1985,29 +1988,31 @@ GENERATE_CHECKSUM_BYTE_INTO_D0:
 
 ;!======
 
+; Unreachable Code
+LAB_00BB_Unreachable:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
     MOVE.W  D0,D1
     MOVEQ   #34,D2
 
-LAB_00BB:
+.LAB_00BB:
     MOVE.B  (A0)+,D1
-    BEQ.S   LAB_00BD
+    BEQ.S   .return
 
     CMP.B   D2,D1
-    BNE.S   LAB_00BB
+    BNE.S   .LAB_00BB
 
-LAB_00BC:
+.LAB_00BC:
     MOVE.B  (A0)+,D1
-    BEQ.S   LAB_00BD
+    BEQ.S   .return
 
     CMP.B   D2,D1
-    BNE.S   LAB_00BC
+    BNE.S   .LAB_00BC
 
     MOVE.B  D0,(A0)
 
-LAB_00BD:
+.return:
     MOVE.L  (A7)+,D2
     RTS
 
@@ -2024,7 +2029,7 @@ LAB_00BE:
 
     MOVEQ   #0,D0
 
-LAB_00BF:
+.LAB_00BF:
     MOVE.B  (A0)+,D0
     MOVE.B  (A1)+,D1
     CMPI.B  #$2a,D1
@@ -2034,10 +2039,10 @@ LAB_00BF:
     BEQ.S   LAB_00C1
 
     CMPI.B  #$3f,D1
-    BEQ.S   LAB_00BF
+    BEQ.S   .LAB_00BF
 
     SUB.B   D1,D0
-    BEQ.S   LAB_00BF
+    BEQ.S   .LAB_00BF
 
 LAB_00C0:
     MOVE.B  #$1,D0
