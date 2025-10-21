@@ -621,12 +621,12 @@ LAB_002B:
 
 LAB_002F:
     MOVEA.L #BLTDDAT,A0
-    LEA     LAB_1E7E,A1     ; LAB_1E7E = $0000004c
-    MOVE.L  A1,176(A0)
-    MOVE.W  #1,180(A0)
-    MOVE.W  #0,184(A0)
-    MOVE.W  #$65b,182(A0)
-    MOVE.W  #$8202,150(A0)
+    LEA     GLOB_PTR_AUD1_DMA,A1
+    MOVE.L  A1,(AUD1LCH-BLTDDAT)(A0)    ; Store DMA data in GLOB_PTR_AUD1_DMA
+    MOVE.W  #1,(AUD1LEN-BLTDDAT)(A0)
+    MOVE.W  #0,(AUD1VOL-BLTDDAT)(A0)
+    MOVE.W  #$65b,(AUD1PER-BLTDDAT)(A0)
+    MOVE.W  #$8202,(DMACON-BLTDDAT)(A0)
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1AF8
     MOVE.W  D0,LAB_1AFA
@@ -795,9 +795,7 @@ callCTRL:
 
 .LAB_0040:
     MOVEA.L #BLTDDAT,A0
-    MOVE.W  #$100,156(A0)
-    ; Write $0100 to BLTDDAT + 156 = DFF09C (INTREQ - clear or set)
-    ; http://amiga-dev.wikidot.com/hardware:intreqr
+    MOVE.W  #$100,(INTREQ-BLTDDAT)(A0)
     ; Looking at that, 0100 means bit 8 starting from the right as 0 is set
     ; so we're setting "Audio channel 1 block finished"
 
@@ -42956,13 +42954,13 @@ LAB_0C7E:
 ;!======
 
 LAB_0C80:
-    LEA     BLTDDAT,A0      ; BLTDDAT or 0xDFF000 into A0
-    MOVE.W  #$1761,142(A0)  ; 0x1761 into 0xDFF000 + 142 = 0xDFF08E or DIWSTRT http://amiga-dev.wikidot.com/hardware:diwstrt
-    MOVE.W  #$ffc5,144(A0)  ; 0xFFC5 into 0xDFF000 + 144 = 0xDFF090 or DIWSTOP http://amiga-dev.wikidot.com/hardware:diwstrt
-    MOVE.W  #$30,146(A0)  ; 0x0030 into 0xDFF000 + 146 = 0xDFF092 or DDFSTRT http://amiga-dev.wikidot.com/hardware:ddfstrt
-    MOVE.W  #$d8,148(A0)  ; 0x00D8 into 0xDFF000 + 148 = 0xDFF094 or DDFSTOP http://amiga-dev.wikidot.com/hardware:ddfstrt
-    MOVE.W  #$58,264(A0)  ; 0x0058 into 0xDFF000 + 264 = 0xDFF108 or BPL1MOD http://amiga-dev.wikidot.com/hardware:bplxmod
-    MOVE.W  #$58,266(A0)  ; 0x0058 into 0xDFF000 + 266 = 0xDFF10A or BPL2MOD http://amiga-dev.wikidot.com/hardware:bplxmod
+    LEA     BLTDDAT,A0
+    MOVE.W  #$1761,(DIWSTRT-BLTDDAT)(A0)
+    MOVE.W  #$ffc5,(DIWSTOP-BLTDDAT)(A0)
+    MOVE.W  #DDFSTRT_WIDE,(DDFSTRT-BLTDDAT)(A0)
+    MOVE.W  #DDFSTOP_WIDE,(DDFSTOP-BLTDDAT)(A0)
+    MOVE.W  #$58,(BPL1MOD-BLTDDAT)(A0)
+    MOVE.W  #$58,(BPL2MOD-BLTDDAT)(A0)
     JSR     LAB_0CA7
 
     LEA     LAB_1E51,A2
@@ -43006,14 +43004,14 @@ LAB_0C82:
     LEA     BLTDDAT,A0          ; BLTDDAT or 0xDFF000 into A0
     LEA     LAB_1E22,A2
     MOVEQ   #1,D1
-    MOVE.W  4(A0),D0            ; 0xDFF000 + 4 = 0xDFF004 or VPOSR http://amiga-dev.wikidot.com/hardware:vposr contents into D0
+    MOVE.W  (VPOSR-BLTDDAT)(A0),D0
     BPL.S   .LAB_0C83            ; BPL = checks to see if bit 15 is set (LOF), if it is jump to LAB_0C83
 
     LEA     LAB_1E51,A2
     MOVEQ   #0,D1
 
 .LAB_0C83:
-    MOVE.L  A2,128(A0)          ; A2 contents into 0xDFF000 + 128 = 0xDFF080 or COP1LCH http://amiga-dev.wikidot.com/hardware:cop1lch
+    MOVE.L  A2,(COP1LCH-BLTDDAT)(A0)
     MOVE.L  D1,LAB_1F51
     TST.W   LAB_1F3B
     BEQ.S   .LAB_0C84
@@ -93709,7 +93707,7 @@ LAB_1E7D:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-LAB_1E7E:
+GLOB_PTR_AUD1_DMA:
     DC.L    76
 
 ; ========== ESQDISP.c ==========
