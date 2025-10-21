@@ -26,9 +26,7 @@ SERDAT             = $DFF030
 
 ;; Coprocessor first location register (high 5 bits) (old-3 bits)
 COP1LCH            = $DFF080
-
-;; Interrupt enable bits (clear or set bits)
-INTENA             = $DFF09A
+COPJMP1            = $DFF088
 
 ;; http://amiga-dev.wikidot.com/hardware:diwstrt
 DIWSTRT            = $DFF08E
@@ -45,6 +43,9 @@ DDFSTOP            = $DFF094
 DDFSTOP_WIDE       = $D8
 
 DMACON             = $DFF096
+
+;; Interrupt enable bits (clear or set bits)
+INTENA             = $DFF09A
 
 ;; http://amiga-dev.wikidot.com/hardware:intreqr
 INTREQ             = $DFF09C

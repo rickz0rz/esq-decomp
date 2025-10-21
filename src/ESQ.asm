@@ -42955,8 +42955,8 @@ LAB_0C7E:
 
 LAB_0C80:
     LEA     BLTDDAT,A0
-    MOVE.W  #$1761,(DIWSTRT-BLTDDAT)(A0)
-    MOVE.W  #$ffc5,(DIWSTOP-BLTDDAT)(A0)
+    MOVE.W  #$1761,(DIWSTRT-BLTDDAT)(A0)    ; $17, $61  -> 23, 97
+    MOVE.W  #$ffc5,(DIWSTOP-BLTDDAT)(A0)    ; $ff, $c5  -> 255, 197
     MOVE.W  #DDFSTRT_WIDE,(DDFSTRT-BLTDDAT)(A0)
     MOVE.W  #DDFSTOP_WIDE,(DDFSTOP-BLTDDAT)(A0)
     MOVE.W  #$58,(BPL1MOD-BLTDDAT)(A0)
@@ -42984,16 +42984,16 @@ LAB_0C80:
     SWAP    D0
     MOVE.W  D0,LAB_1E6E
     LEA     LAB_1E51,A2
-    MOVE.W  4(A0),D0
+    MOVE.W  (VPOSR-BLTDDAT)(A0),D0
     BPL.S   LAB_0C81
 
     LEA     LAB_1E22,A2
 
 LAB_0C81:
-    MOVE.L  A2,128(A0)          ; A2 contents into 0xDFF000 + 128 = 0xDFF080 or COP1LCH http://amiga-dev.wikidot.com/hardware:cop1lch
-    MOVE.W  136(A0),D0          ; 0xDFF000 + 136 = 0xDFF088 or COPJMP1 http://amiga-dev.wikidot.com/hardware:copjmp contents into D0
-    MOVE.W  #$20,150(A0)      ; 0x0020 into 0xDFF000 + 150 = 0xDFF096 or DMACON http://amiga-dev.wikidot.com/hardware:dmaconr
-    MOVE.W  #$8180,150(A0)      ; 0x8180 into 0xDFF000 + 150 = 0xDFF096 or DMACON http://amiga-dev.wikidot.com/hardware:dmaconr
+    MOVE.L  A2,(COP1LCH-BLTDDAT)(A0)
+    MOVE.W  (COPJMP1-BLTDDAT)(A0),D0
+    MOVE.W  #$20,(DMACON-BLTDDAT)(A0)
+    MOVE.W  #$8180,(DMACON-BLTDDAT)(A0)
     RTS
 
 ;!======
@@ -43001,7 +43001,7 @@ LAB_0C81:
 LAB_0C82:
     MOVEM.L D0-D3/A0-A6,-(A7)
 
-    LEA     BLTDDAT,A0          ; BLTDDAT or 0xDFF000 into A0
+    LEA     BLTDDAT,A0
     LEA     LAB_1E22,A2
     MOVEQ   #1,D1
     MOVE.W  (VPOSR-BLTDDAT)(A0),D0
