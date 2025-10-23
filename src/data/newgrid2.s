@@ -1,0 +1,26 @@
+; ========== NEWGRID2.c ==========
+
+GLOB_STR_NEWGRID2_C_1:
+    NStr    "NEWGRID2.c"
+GLOB_STR_NEWGRID2_C_2:
+    NStr    "NEWGRID2.c"
+LAB_2040:
+    DS.L    1
+LAB_2041:
+    DS.L    1
+LAB_2042:
+    DS.L    1
+LAB_2043:
+    DS.L    1
+LAB_2044:
+    DC.L    $00000001
+GLOB_STR_NEWGRID2_C_3:
+    NStr    "NEWGRID2.c"
+GLOB_STR_NEWGRID2_C_4:
+    NStr    "NEWGRID2.c"
+GLOB_STR_NEWGRID2_C_5:
+    NStr    "NEWGRID2.c"
+GLOB_STR_NEWGRID2_C_6:
+    NStr    "NEWGRID2.c"
+LAB_2049:
+    DS.L    1

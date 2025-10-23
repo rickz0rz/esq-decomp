@@ -156,7 +156,7 @@ PROCESS_ILBM_IMAGE:
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_010B
+    BSR.W   BRUSH_LoadColorTextFont
 
     LEA     16(A7),A7
     SUBQ.L  #1,D0
@@ -174,7 +174,7 @@ PROCESS_ILBM_IMAGE:
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_0114
+    BSR.W   BRUSH_StreamFontChunk
 
     LEA     20(A7),A7
     SUBQ.L  #1,D0

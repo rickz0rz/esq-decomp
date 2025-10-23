@@ -1,0 +1,355 @@
+;!======
+
+LAB_0CB5:
+    LINK.W  A5,#-132
+    MOVEM.L D7/A3,-(A7)
+    MOVEA.L 8(A5),A3
+
+LAB_0CB6:
+    TST.L   LAB_1F57
+    BNE.S   LAB_0CB6
+
+    MOVEQ   #1,D0
+    MOVE.L  D0,LAB_1F57
+    MOVE.W  LAB_233A,D0
+    CMPI.W  #$2710,D0
+    BLE.S   LAB_0CB7
+
+    CLR.L   LAB_1F57
+    MOVEQ   #0,D0
+    BRA.W   LAB_0CBF
+
+LAB_0CB7:
+    MOVEA.L A3,A0
+
+LAB_0CB8:
+    TST.B   (A0)+
+    BNE.S   LAB_0CB8
+
+    SUBQ.L  #1,A0
+    SUBA.L  A3,A0
+    MOVE.L  A0,D7
+    MOVEQ   #100,D0
+    CMP.W   D0,D7
+    BLE.S   LAB_0CB9
+
+    MOVE.L  D0,D7
+    CLR.B   99(A3)
+
+LAB_0CB9:
+    MOVE.W  LAB_223E,D0
+    EXT.L   D0
+    MOVEQ   #100,D1
+    JSR     JMP_TBL_LAB_1A07_3(PC)
+
+    MOVE.W  LAB_223F,D0
+    EXT.L   D0
+    MOVE.L  D1,8(A7)
+    MOVEQ   #100,D1
+    JSR     JMP_TBL_LAB_1A07_3(PC)
+
+    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
+    EXT.L   D0
+    MOVE.L  D1,12(A7)
+    MOVEQ   #100,D1
+    JSR     JMP_TBL_LAB_1A07_3(PC)
+
+    TST.W   LAB_2243
+    BEQ.S   LAB_0CBA
+
+    LEA     LAB_1F59,A0
+    BRA.S   LAB_0CBB
+
+LAB_0CBA:
+    LEA     LAB_1F5A,A0
+
+LAB_0CBB:
+    MOVE.L  A0,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  20(A7),-(A7)
+    MOVE.L  20(A7),-(A7)
+    PEA     LAB_1F58
+    PEA     -119(A5)
+    JSR     JMP_TBL_PRINTF_3(PC)
+
+    LEA     24(A7),A7
+    ADDI.W  #14,D7
+    PEA     LAB_1F5B
+    PEA     -119(A5)
+    JSR     JMP_TBL_APPEND_DATA_AT_NULL_2(PC)
+
+    MOVE.L  A3,(A7)
+    PEA     -119(A5)
+    JSR     JMP_TBL_APPEND_DATA_AT_NULL_2(PC)
+
+    PEA     LAB_1F5C
+    PEA     -119(A5)
+    JSR     JMP_TBL_APPEND_DATA_AT_NULL_2(PC)
+
+    LEA     20(A7),A7
+    MOVE.W  LAB_233A,D0
+    MOVE.L  D0,D1
+    ADD.W   D7,D1
+    MOVE.W  D1,LAB_233A
+    EXT.L   D1
+    ADDQ.L  #1,D1
+    PEA     (MEMF_PUBLIC).W
+    MOVE.L  D1,-(A7)
+    PEA     173.W
+    PEA     GLOB_STR_FLIB_C_1
+    JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
+
+    LEA     16(A7),A7
+    MOVE.W  LAB_233A,D1
+    MOVE.L  D0,-4(A5)
+    CMP.W   D7,D1
+    BEQ.S   LAB_0CBD
+
+    MOVEA.L LAB_2049,A0
+    MOVEA.L D0,A1
+
+LAB_0CBC:
+    MOVE.B  (A0)+,(A1)+
+    BNE.S   LAB_0CBC
+
+    BRA.S   LAB_0CBE
+
+LAB_0CBD:
+    MOVEA.L D0,A0
+    CLR.B   (A0)
+
+LAB_0CBE:
+    PEA     -119(A5)
+    MOVE.L  -4(A5),-(A7)
+    JSR     JMP_TBL_APPEND_DATA_AT_NULL_2(PC)
+
+    MOVE.L  LAB_2049,(A7)
+    MOVE.L  -4(A5),-(A7)
+    JSR     LAB_0B44(PC)
+
+    MOVE.L  D0,LAB_2049
+    MOVE.W  LAB_233A,D0
+    EXT.L   D0
+    ADDQ.L  #1,D0
+    MOVE.L  D0,(A7)
+    MOVE.L  -4(A5),-(A7)
+    PEA     198.W
+    PEA     GLOB_STR_FLIB_C_2
+    JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
+
+    CLR.L   LAB_1F57
+
+LAB_0CBF:
+    MOVEM.L -140(A5),D7/A3
+    UNLK    A5
+    RTS
+
+;!======
+
+    MOVEM.L D6-D7,-(A7)
+    MOVE.W  14(A7),D7
+    MOVEQ   #0,D6
+    TST.W   D7
+    BNE.S   LAB_0CC0
+
+    MOVE.W  LAB_223A,D0
+    SUBQ.W  #3,D0
+    BNE.S   LAB_0CC1
+
+    MOVE.W  LAB_223C,D0
+    MOVEQ   #7,D1
+    CMP.W   D1,D0
+    BGE.S   LAB_0CC1
+
+    MOVE.W  LAB_223E,D0
+    SUBQ.W  #5,D0
+    BNE.S   LAB_0CC1
+
+LAB_0CC0:
+    MOVEQ   #1,D6
+
+LAB_0CC1:
+    TST.W   D6
+    BEQ.S   LAB_0CC2
+
+    MOVE.L  LAB_2049,-(A7)
+    PEA     LAB_1F5F
+    JSR     LAB_0B44(PC)
+
+    ADDQ.W  #8,A7
+    MOVE.L  D0,LAB_2049
+    CLR.W   LAB_233A
+
+LAB_0CC2:
+    PEA     LAB_22CB
+    BSR.W   LAB_0CB5
+
+    JSR     LAB_0CC3(PC)
+
+    ADDQ.W  #4,A7
+    MOVEM.L (A7)+,D6-D7
+    RTS
+
+;!======
+
+    ; Dead code
+    MOVEM.L D2-D3/A2-A3,-(A7)
+    MOVEA.L 20(A7),A3
+    MOVEA.L 24(A7),A2
+    MOVE.B  3(A3),D0
+    EXT.W   D0
+    EXT.L   D0
+    MOVE.B  2(A3),D1
+    EXT.W   D1
+    EXT.L   D1
+    MOVE.B  1(A3),D2
+    EXT.W   D2
+    EXT.L   D2
+    MOVE.B  (A3),D3
+    EXT.W   D3
+    EXT.L   D3
+    MOVE.L  D3,-(A7)
+    MOVE.L  D2,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     LAB_1F60
+    MOVE.L  A2,-(A7)
+    JSR     JMP_TBL_PRINTF_3(PC)
+
+    LEA     24(A7),A7
+    MOVEM.L (A7)+,D2-D3/A2-A3
+    RTS
+
+;!======
+
+    RTS
+
+;!======
+
+LAB_0CC3:
+    JMP     LAB_1487
+
+JMP_TBL_APPEND_DATA_AT_NULL_2:
+    JMP     APPEND_DATA_AT_NULL
+
+;!======
+
+LAB_0CC5:
+    MOVE.B  #$4e,LAB_22CC
+    MOVEQ   #1,D0
+    MOVE.L  D0,LAB_22CD
+    MOVEQ   #5,D1
+    MOVE.L  D1,LAB_22CE
+    MOVE.L  D0,LAB_22CF
+    MOVE.L  D1,LAB_22D0
+    MOVEQ   #0,D0
+    MOVE.L  D0,LAB_22D1
+    MOVE.L  D0,LAB_22D2
+    MOVE.B  #$42,LAB_22D3
+    MOVE.L  LAB_22D4,-(A7)
+    PEA     LAB_1F61
+    JSR     LAB_0B44(PC)
+
+    ADDQ.W  #8,A7
+    MOVE.L  D0,LAB_22D4
+    RTS
+
+;!======
+
+LAB_0CC6:
+    MOVEM.L D2-D3,-(A7)
+    MOVEQ   #78,D0
+    MOVE.B  D0,LAB_22D5
+    MOVEQ   #0,D1
+    MOVE.L  D1,LAB_22D6
+    MOVE.L  D1,LAB_22D7
+    MOVEQ   #10,D1
+    MOVE.L  D1,LAB_22D8
+    MOVEQ   #3,D1
+    MOVE.L  D1,LAB_22D9
+    MOVEQ   #6,D2
+    MOVE.L  D2,LAB_22DA
+    MOVEQ   #1,D2
+    MOVE.L  D2,LAB_22DB
+    MOVEQ   #4,D3
+    MOVE.L  D3,LAB_22DC
+    MOVE.L  D2,LAB_22DD
+    MOVE.L  D1,LAB_22DE
+    MOVE.L  D3,LAB_22DF
+    MOVE.B  #$42,LAB_22E0
+    MOVE.B  D0,LAB_22E1
+    MOVE.L  LAB_22E2,-(A7)
+    PEA     LAB_1F62
+    JSR     LAB_0B44(PC)
+
+    MOVE.L  D0,LAB_22E2
+    MOVE.L  LAB_22E3,(A7)
+    PEA     LAB_1F63
+    JSR     LAB_0B44(PC)
+
+    LEA     12(A7),A7
+    MOVE.L  D0,LAB_22E3
+    MOVEM.L (A7)+,D2-D3
+    RTS
+
+;!======
+
+LAB_0CC7:
+    MOVE.L  D2,-(A7)
+    MOVE.B  #$4e,LAB_22E4
+    CLR.L   LAB_22E5
+    MOVEQ   #60,D0
+    MOVE.L  D0,LAB_22E6
+    MOVEQ   #30,D0
+    MOVE.L  D0,LAB_22E7
+    MOVEQ   #3,D0
+    MOVE.L  D0,LAB_22E8
+    MOVEQ   #4,D1
+    MOVE.L  D1,LAB_22E9
+    MOVEQ   #1,D1
+    MOVE.L  D1,LAB_22EA
+    MOVEQ   #7,D2
+    MOVE.L  D2,LAB_22EB
+    MOVE.L  D1,LAB_22EC
+    MOVE.L  D0,LAB_22ED
+    MOVE.L  D2,LAB_22EE
+    MOVEQ   #24,D0
+    MOVE.L  D0,LAB_22F3
+    MOVE.B  #$42,LAB_22EF
+    MOVE.B  #$59,LAB_22F0
+    MOVE.L  LAB_22F1,-(A7)
+    PEA     LAB_1F64
+    JSR     LAB_0B44(PC)
+
+    MOVE.L  D0,LAB_22F1
+    MOVE.L  LAB_22F2,(A7)
+    PEA     GLOB_STR_DIGITAL_PPV_PERIOD
+    JSR     LAB_0B44(PC)
+
+    LEA     12(A7),A7
+    MOVE.L  D0,LAB_22F2
+    MOVE.L  (A7)+,D2
+    RTS
+
+;!======
+
+LAB_0CC8:
+    SUBA.L  A0,A0
+    MOVE.L  A0,LAB_22D4
+    MOVE.L  A0,LAB_22E2
+    MOVE.L  A0,LAB_22E3
+    MOVE.L  A0,LAB_22F1
+    MOVE.L  A0,LAB_22F2
+    BSR.W   LAB_0CC5
+
+    BSR.W   LAB_0CC6
+
+    BSR.W   LAB_0CC7
+
+    BSR.W   GCOMMAND_LoadDefaultTable
+
+    BSR.W   LAB_0CE8
+
+    BSR.W   LAB_0D1E
+
+    RTS
