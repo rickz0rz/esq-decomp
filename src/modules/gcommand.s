@@ -1967,54 +1967,54 @@ LAB_0D59:
     MOVEA.L 8(A5),A3
     MOVEA.L A3,A0
 
-LAB_0D5A:
+.LAB_0D5A:
     TST.B   (A0)+
-    BNE.S   LAB_0D5A
+    BNE.S   .LAB_0D5A
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
     MOVE.L  A0,D7
     TST.L   D7
-    BEQ.S   LAB_0D5F
+    BEQ.S   .LAB_0D5F
 
     MOVEA.L A3,A0
     ADDA.L  D7,A0
     SUBQ.L  #1,A0
     MOVE.L  A0,-4(A5)
 
-LAB_0D5B:
+.LAB_0D5B:
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
-    MOVEQ   #58,D1
+    MOVEQ   #':',D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0D5C
+    BEQ.S   .LAB_0D5C
 
-    MOVEQ   #47,D1
+    MOVEQ   #'/',D1
     CMP.B   D1,D0
-    BNE.S   LAB_0D5D
+    BNE.S   .LAB_0D5D
 
-LAB_0D5C:
+.LAB_0D5C:
     ADDQ.L  #1,-4(A5)
-    BRA.S   LAB_0D60
+    BRA.S   .return
 
-LAB_0D5D:
+.LAB_0D5D:
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BEQ.S   LAB_0D5E
+    BEQ.S   .LAB_0D5E
 
     SUBQ.L  #1,-4(A5)
 
-LAB_0D5E:
+.LAB_0D5E:
     SUBQ.L  #1,D7
-    BNE.S   LAB_0D5B
+    BNE.S   .LAB_0D5B
 
-    BRA.S   LAB_0D60
+    BRA.S   .return
 
-LAB_0D5F:
+.LAB_0D5F:
     MOVEA.L A3,A0
     MOVE.L  A0,-4(A5)
 
-LAB_0D60:
+.return:
     MOVE.L  -4(A5),D0
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
