@@ -4225,7 +4225,7 @@ LAB_1858:
 ;!======
 
 LAB_185B:
-    JMP     LAB_0D6A
+    JMP     GCOMMAND_ApplyHighlightFlag
 
 ;!======
 

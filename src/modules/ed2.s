@@ -1942,7 +1942,7 @@ LAB_07C7:
     JMP     LAB_16F7
 
 LAB_07C8:
-    JMP     LAB_0DB2
+    JMP     GCOMMAND_GetBannerChar
 
 LAB_07C9:
     JMP     LAB_0B4E

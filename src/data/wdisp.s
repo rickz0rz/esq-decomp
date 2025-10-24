@@ -798,7 +798,8 @@ LAB_22FC:
     DS.L    2
 LAB_22FD:
     DS.L    4
-LAB_22FE:
+; Tracks whether the digital banner highlight is enabled (0/1).
+GCOMMAND_HighlightFlag:
     DS.W    1
 LAB_22FF:
     DS.L    1

@@ -10,6 +10,14 @@
     XDEF    GCOMMAND_SeedBannerDefaults
     XDEF    GCOMMAND_SeedBannerFromPrefs
     XDEF    GCOMMAND_FindPathSeparator
+    XDEF    GCOMMAND_ApplyHighlightFlag
+    XDEF    GCOMMAND_EnableHighlight
+    XDEF    GCOMMAND_DisableHighlight
+    XDEF    GCOMMAND_SetPresetEntry
+    XDEF    GCOMMAND_ExpandPresetBlock
+    XDEF    GCOMMAND_MapKeycodeToPreset
+    XDEF    GCOMMAND_GetBannerChar
+    XDEF    GCOMMAND_LoadPPV3Template
 
 ; Load the built-in gcommand table template into the working buffer (LAB_21BC).
 GCOMMAND_LoadDefaultTable:
@@ -1156,6 +1164,8 @@ LAB_0D1D:
 
 ;!======
 
+; Load the Digital_PPV3 template into the working buffer tables.
+GCOMMAND_LoadPPV3Template:
 LAB_0D1E:
     LINK.W  A5,#-20
     MOVEM.L D5-D7,-(A7)
@@ -2086,6 +2096,8 @@ LAB_0D65:
 
 ;!======
 
+; Interpret a keyboard scan code and map it to a preset palette index.
+GCOMMAND_MapKeycodeToPreset:
 LAB_0D66:
     MOVEM.L D6-D7,-(A7)
     MOVE.B  15(A7),D7
@@ -2106,7 +2118,7 @@ LAB_0D67:
     CMP.B   D1,D0
     BNE.S   LAB_0D68
 
-    BSR.W   LAB_0DB2
+    BSR.W   GCOMMAND_GetBannerChar
 
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D1
     CMP.W   D0,D1
@@ -2133,10 +2145,12 @@ LAB_0D69:
 
 ;!======
 
+; Update all banner layout rows to reflect the current highlight flag.
+GCOMMAND_ApplyHighlightFlag:
 LAB_0D6A:
     LINK.W  A5,#-12
     MOVE.L  D7,-(A7)
-    TST.W   LAB_22FE
+    TST.W   GCOMMAND_HighlightFlag
     BEQ.S   LAB_0D6B
 
     MOVEQ   #2,D0
@@ -2209,17 +2223,19 @@ LAB_0D6C:
 
 ;!======
 
+GCOMMAND_EnableHighlight:
 LAB_0D6D:
-    MOVE.W  #1,LAB_22FE
-    BSR.W   LAB_0D6A
+    MOVE.W  #1,GCOMMAND_HighlightFlag
+    BSR.W   GCOMMAND_ApplyHighlightFlag
 
     RTS
 
 ;!======
 
+GCOMMAND_DisableHighlight:
 LAB_0D6E:
-    CLR.W   LAB_22FE
-    BSR.W   LAB_0D6A
+    CLR.W   GCOMMAND_HighlightFlag
+    BSR.W   GCOMMAND_ApplyHighlightFlag
 
     RTS
 
@@ -2295,6 +2311,8 @@ LAB_0D72:
 
 ;!======
 
+; Update the preset table entry for row D7 with the supplied value D6.
+GCOMMAND_SetPresetEntry:
 LAB_0D73:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
@@ -2325,6 +2343,8 @@ LAB_0D74:
 
 ;!======
 
+; Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.
+GCOMMAND_ExpandPresetBlock:
 LAB_0D75:
     MOVEM.L D2/D5-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -2368,7 +2388,7 @@ LAB_0D78:
     MOVE.W  D5,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_0D73
+    BSR.W   GCOMMAND_SetPresetEntry
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D7
@@ -2730,7 +2750,7 @@ LAB_0D96:
     MOVE.L  D1,8(A3)
     PEA     1365.W
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0D73
+    BSR.W   GCOMMAND_SetPresetEntry
 
     ADDQ.W  #8,A7
 
@@ -2838,6 +2858,8 @@ LAB_0DA1:
 
 ;!======
 
+; Cache banner geometry parameters used by the display routines.
+GCOMMAND_UpdateBannerBounds:
 LAB_0DA2:
     LINK.W  A5,#-4
     MOVEM.L D4-D7,-(A7)
@@ -3061,6 +3083,8 @@ LAB_0DB1:
 
 ;!======
 
+; Return the current banner character stored at LAB_1E2B.
+GCOMMAND_GetBannerChar:
 LAB_0DB2:
     LINK.W  A5,#-4
     MOVE.L  #LAB_1E2B,-4(A5)
@@ -3548,7 +3572,7 @@ LAB_0DC8:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
-    BSR.W   LAB_0D66
+    BSR.W   GCOMMAND_MapKeycodeToPreset
 
     ADDQ.W  #4,A7
     MOVEA.L LAB_1FA6,A0

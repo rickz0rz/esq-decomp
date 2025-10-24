@@ -350,6 +350,6 @@ LAB_0CC8:
 
     BSR.W   LAB_0CE8
 
-    BSR.W   LAB_0D1E
+    BSR.W   GCOMMAND_LoadPPV3Template
 
     RTS

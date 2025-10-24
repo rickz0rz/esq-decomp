@@ -1904,7 +1904,7 @@ LAB_0210:
     JMP     LAB_1571
 
 LAB_0211:
-    JMP     LAB_0DA2
+    JMP     GCOMMAND_UpdateBannerBounds
 
 LAB_0212:
     JMP     LAB_14BA

@@ -1036,7 +1036,7 @@ LAB_0056:
     MOVE.B  #0,D1
     JSR     LAB_0058
 
-    JSR     LAB_0D6E
+    JSR     GCOMMAND_DisableHighlight
 
     RTS
 
@@ -1052,7 +1052,7 @@ LAB_0057:
     MOVE.B  #0,D1
     JSR     LAB_0058
 
-    JSR     LAB_0D6D
+    JSR     GCOMMAND_EnableHighlight
 
     RTS
 

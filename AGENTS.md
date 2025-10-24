@@ -1,38 +1,29 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-The `src/` tree houses the main disassembly. `src/ESQ.asm` is the entry point and pulls in shared modules such as `macros.s`, `structs.s`, `string-macros.s`, and `text-formatting.s`. Interrupt-specific code sits under `src/interrupts/`. Hardware constants and linker fragments live in the sibling `.s` files; place new shared tables alongside the closest conceptual peer. Runtime dependencies are external: drop the Workbench ROM at `assets/kickstart/v2.04.rom` and unpack the HDD image under `assets/prevue/`. The `build/` directory is scratch output and can be regenerated at any time.
+`src/ESQ.asm` is the root include; it stitches together feature modules under `src/modules/` (UI control in `gcommand.s`, keyboard input in `kybd.s`, disk helpers in `diskio2.s`) plus shared routines from `src/subroutines/`. Display tables and highlight presets live in `src/data/`, while interrupt-specific logic sits in `src/interrupts/`. Keep module-level assets beside their code: banner strings go in the matching data file, and new shared macros belong in `macros.s` or `text-formatting.s`. External requirements (Workbench ROM, HDD image) are stored under `assets/`. Treat `build/` as disposable output.
 
 ## Build, Test, and Development Commands
-Use the vasm 68000 toolchain. Update the absolute path in `build.sh` to match your local install, then run:
+Ensure the vasm 68k toolchain is installed and update the hard-coded path inside `build.sh` and `test-hash.sh` if needed. Typical workflow:
 ```bash
-chmod +x build.sh
-./build.sh
+chmod +x build.sh test-hash.sh
+./build.sh        # Produces ESQ in ~/Downloads/Prevue/ or your configured path
+./test-hash.sh    # Rebuilds to a temp file and verifies SHA-256 = 6bd4760d...
 ```
-This assembles `src/ESQ.asm` and writes `ESQ` into `~/Downloads/Prevue/` by default. For experiments you can assemble directly into the repo:
+For targeted experiments, invoke vasm directly (example path):
 ```bash
 ~/Downloads/vasm/vasmm68k_mot -Fhunkexe -linedebug -o build/ESQ src/ESQ.asm
 ```
-Keep build artifacts out of version control unless they document a regression.
+Never commit generated binaries; stash them or place them in `build/`.
 
 ## Coding Style & Naming Conventions
-Indent instructions with four spaces and align operands in columns as seen in the existing files. Keep opcodes uppercase, labels in mixed-case Pascal style (`SECSTRT_0`, `.copyByteFromD1To5929Buffer`), and reserve leading dots for local scope. Place shared constants or macros in the dedicated `.s` files and accompany non-obvious logic with concise `;` comments. Prefer macros over duplicated instruction sequences and gate optional code with flags such as `includeCustomAriAssembly`.
-
-When adding descriptive aliases for existing jump destinations, keep the original `LAB_xxxx` label in place and introduce the new name directly above it, e.g.:
-```
-; Describe intent here.
-KYBD_UpdateHighlightState:
-LAB_0E05:
-    ...
-```
-This preserves binary compatibility while giving future readers a stable symbol.
+Use four-space indentation, uppercase opcodes, and align operands as in the existing modules. Public entry points should follow the `MODULE_ActionVerb` pattern (`GCOMMAND_LoadDefaultTable`, `KYBD_HandleRepeat`), with the original `LAB_xxxx` label retained immediately below the alias. Local labels stay lowercase with a leading dot. Favor short descriptive comments over block prose; explain hardware magic numbers and state transitions, not obvious move instructions. Share repeated sequences through macros and keep configuration flags (`includeCustomAriAssembly`) centralized.
 
 ## Testing Guidelines
-Run the deterministic hash check before submitting:
-```bash
-./test-hash.sh
-```
-It assembles without symbols and prints a SHA-256 digest; confirm it matches the expected line or update the annotation with justification. When altering ROM-dependent behavior, capture emulator traces to accompany the hash evidence.
+Every behavior change must preserve the canonical hash unless the goal is an intentional divergence. Run `./test-hash.sh` after each meaningful edit; if the output differs from `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`, investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
 
 ## Commit & Pull Request Guidelines
-Follow the short, imperative commit style already used (`Add more hardware addresses.`). Limit each commit to a single logical change and mention the touched module or hardware table when relevant. Pull requests should summarize behavioral impact, list setup notes (ROM paths, emulator configuration), and attach hash/test output or relevant screenshots. Link to any related issue or external research to give reviewers context.
+Commits should be small, scoped, and written in imperative mood (`Rename LAB_0D57 highlight helpers`). Reference affected modules in the body and call out any new tables or configuration knobs. Pull requests need a brief summary, testing evidence (hash output, emulator logs), and links to related research threads. Highlight any remaining anonymous labels (`LAB_****`) that still require naming so reviewers can coordinate follow-up work.
+
+## Documentation & Review Workflow
+Update inline comments, `README.md`, and tables in `src/data/` when you rename labels or introduce new presets so future contributors can follow the thread. Cross-link helpers between modules (e.g., note when `gcommand.s` exports are consumed by `wdisp.s`) and record open renaming targets in the AGENTS checklist to keep the disassembly uniformly annotated.

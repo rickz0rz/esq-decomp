@@ -3005,7 +3005,7 @@ LAB_1596:
     JMP     LAB_08DA
 
 LAB_1597:
-    JMP     LAB_0DB2
+    JMP     GCOMMAND_GetBannerChar
 
 LAB_1598:
     JMP     LAB_0E2D
