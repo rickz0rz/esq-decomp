@@ -11865,21 +11865,21 @@ LAB_12FD:
     MOVEQ   #0,D7
     MOVE.L  D7,D4
 
-LAB_12FE:
+.LAB_12FE:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BGE.W   LAB_1309
+    BGE.W   .LAB_1309
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_1309
+    BNE.W   .LAB_1309
 
     MOVE.L  D4,D5
     JSR     LAB_1359(PC)
 
     TST.L   D0
-    BEQ.S   LAB_1301
+    BEQ.S   .LAB_1301
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
@@ -11896,11 +11896,11 @@ LAB_12FE:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_12FF
+    BPL.S   .LAB_12FF
 
     ADDQ.L  #1,D0
 
-LAB_12FF:
+.LAB_12FF:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
@@ -11908,34 +11908,34 @@ LAB_12FF:
     SUB.L   D1,D0
     SUBQ.L  #4,D0
     TST.L   D0
-    BPL.S   LAB_1300
+    BPL.S   .LAB_1300
 
     ADDQ.L  #1,D0
 
-LAB_1300:
+.LAB_1300:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     ADDQ.L  #3,D0
     ADD.L   D0,D5
-    BRA.S   LAB_1307
+    BRA.S   .LAB_1307
 
-LAB_1301:
+.LAB_1301:
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_1304
+    BEQ.S   .LAB_1304
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_1302
+    BPL.S   .LAB_1302
 
     ADDQ.L  #1,D1
 
-LAB_1302:
+.LAB_1302:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -11943,39 +11943,39 @@ LAB_1302:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_1303
+    BPL.S   .LAB_1303
 
     ADDQ.L  #1,D1
 
-LAB_1303:
+.LAB_1303:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     ADD.L   D2,D1
     SUBQ.L  #1,D1
     ADD.L   D1,D5
-    BRA.S   LAB_1307
+    BRA.S   .LAB_1307
 
-LAB_1304:
+.LAB_1304:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_1305
+    BPL.S   .LAB_1305
 
     ADDQ.L  #1,D0
 
-LAB_1305:
+.LAB_1305:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   LAB_1306
+    BPL.S   .LAB_1306
 
     ADDQ.L  #1,D0
 
-LAB_1306:
+.LAB_1306:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -11983,7 +11983,7 @@ LAB_1306:
     SUBQ.L  #1,D0
     ADD.L   D0,D5
 
-LAB_1307:
+.LAB_1307:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
@@ -11994,21 +11994,21 @@ LAB_1307:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_1308
+    BPL.S   .LAB_1308
 
     ADDQ.L  #1,D0
 
-LAB_1308:
+.LAB_1308:
     ASR.L   #1,D0
     ADD.L   LAB_1CE8,D0
     ADD.L   D0,D4
-    BRA.W   LAB_12FE
+    BRA.W   .LAB_12FE
 
-LAB_1309:
+.LAB_1309:
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BEQ.S   LAB_130A
+    BEQ.S   .LAB_130A
 
     MOVE.L  D4,D0
     SUBQ.L  #1,D0
@@ -12022,14 +12022,14 @@ LAB_1309:
 
     LEA     20(A7),A7
 
-LAB_130A:
+.LAB_130A:
     MOVE.L  D4,D0
     TST.L   D0
-    BPL.S   LAB_130B
+    BPL.S   .return
 
     ADDQ.L  #1,D0
 
-LAB_130B:
+.return:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
     JSR     LAB_1350(PC)
@@ -12047,53 +12047,56 @@ LAB_130C:
     MOVEA.L 12(A5),A3
     MOVEQ   #0,D5
     MOVE.L  A3,D0
-    BEQ.S   LAB_1310
+    BEQ.S   .return
 
     MOVEA.L 48(A3),A0
     MOVE.L  A0,-4(A5)
     MOVE.L  A0,D0
-    BEQ.S   LAB_1310
+    BEQ.S   .return
 
     MOVE.L  A0,D0
-    BEQ.S   LAB_1310
+    BEQ.S   .return
 
     MOVE.B  1(A0),D6
     MOVE.B  D6,D0
     EXT.W   D0
-    SUBI.W  #$4e,D0
-    BEQ.S   LAB_130D
+    SUBI.W  #'N',D0 ; Does it equal 'N'?
+    BEQ.S   .equalsN
 
-    SUBQ.W  #2,D0
-    BEQ.S   LAB_130E
+    SUBQ.W  #('P'-'N'),D0 ; Does it equal 'P'?
+    BEQ.S   .equalsP
 
-    SUBI.W  #$1e,D0
-    BEQ.S   LAB_130D
+    SUBI.W  #('n'-'P'),D0 ; Does it equal 'n'?
+    BEQ.S   .equalsN
 
-    SUBQ.W  #2,D0
-    BEQ.S   LAB_130E
+    SUBQ.W  #('p'-'n'),D0 ; Does it equal 'p'?
+    BEQ.S   .equalsP
 
-    BRA.S   LAB_130F
+    BRA.S   .equalsNeither
 
-LAB_130D:
+.equalsN:
     MOVEQ   #0,D5
-    BRA.S   LAB_1310
+    BRA.S   .return
 
-LAB_130E:
+.equalsP:
+    ; Is D7 less than 18?
     MOVEQ   #18,D0
     CMP.L   D0,D7
-    BLE.S   LAB_1310
+    BLE.S   .return
 
+    ; Is D7 greater than 22?
     MOVEQ   #22,D0
     CMP.L   D0,D7
-    BGE.S   LAB_1310
+    BGE.S   .return
 
+    ; If it's between 18 and 22 put 1 in D5 and return.
     MOVEQ   #1,D5
-    BRA.S   LAB_1310
+    BRA.S   .return
 
-LAB_130F:
+.equalsNeither:
     MOVEQ   #1,D5
 
-LAB_1310:
+.return:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D5-D7/A3
     UNLK    A5

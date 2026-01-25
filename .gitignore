@@ -3,3 +3,5 @@
 assets/kickstart/*.rom
 assets/disks/prevue/*
 !assets/disks/prevue/PrevueFilesGoHere
+
+build
