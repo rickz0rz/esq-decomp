@@ -901,37 +901,40 @@ serialCtrlCmd:
     MOVE.W  .LAB_14F0(PC,D0.W),D0
     JMP     .LAB_14F0+2(PC,D0.W)
 
-; TODO: This is a switch statement that's turned into a jump table.
+; This is a switch statement that's turned into a jump table.
 .LAB_14F0:
-    DC.W    $0040
-    DC.W    $0036
-    DC.W    $0036
-    DC.W    $0036
-    DC.W    $0036
-    DC.W    $01A0
-    DC.W    $0036
-    DC.W    $01A0
-    DC.W    $01A0
-    DC.W    $01A0
-    DC.W    $0036
-    DC.W    $0040
-    DC.W    $002A
-    DC.W    $01A0
-    DC.W    $0040
-    DC.W    $0036
-    DC.W    $0036
-    DC.W    $01A0
-    DC.W    $01A0
-    DC.W    $0036
-    DC.W    $01A0
-    DC.W    $0036
+    DC.W    .LAB_14F0_0040-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_0040-.LAB_14F0-2
+    DC.W    .LAB_14F0_002A-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_0040-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
+    DC.W    .LAB_14F0_0036-.LAB_14F0-2
 
+.LAB_14F0_002A:
     MOVE.W  #3,CTRLRead3
-    BRA.W   .finish_29ABA
+    BRA.W   .finish_29ABA    
 
+.LAB_14F0_0036:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.W   .return
 
+.LAB_14F0_0040:
     MOVEQ   #1,D0
     LEA     LAB_22A2,A0
     ADDA.W  CTRLRead1,A0
@@ -1054,6 +1057,7 @@ serialCtrlCmd:
     MOVE.W  D0,CTRLRead1
     MOVE.W  D0,CTRLRead3
 
+.LAB_14F0_01A0:
 .finish_29ABA:
     MOVE.W  CTRLRead1,D0
     CMPI.W  #198,D0
@@ -1110,31 +1114,32 @@ LAB_14FE:
     MOVE.W  .LAB_14FF(PC,D0.W),D0
     JMP     .LAB_14FF+2(PC,D0.W)
 
-; TODO: This is a switch statement that's turned into a jump table.
+; This is a switch statement that's turned into a jump table.
 .LAB_14FF:
-    DC.W    $0390
-    DC.W    $002a
-    DC.W    $081c
-    DC.W    $01e4
-    DC.W    $01c8
-    DC.W    $081c
-    DC.W    $06de
-    DC.W    $081c
-    DC.W    $081c
-    DC.W    $081c
-    DC.W    $0224
-    DC.W    $02e0
-    DC.W    $081c
-    DC.W    $081c
-    DC.W    $06a0
-    DC.W    $06d2
-    DC.W    $0812
-    DC.W    $081c
-    DC.W    $081c
-    DC.W    $01b6
-    DC.W    $081c
-    DC.W    $06ea
+    DC.W    .LAB_14FF_0390-.LAB_14FF-2
+    DC.W    .LAB_14FF_002A-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_01E4-.LAB_14FF-2
+    DC.W    .LAB_14FF_01C8-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_06DE-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_0224-.LAB_14FF-2
+    DC.W    .LAB_14FF_02E0-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_06A0-.LAB_14FF-2
+    DC.W    .LAB_14FF_06D2-.LAB_14FF-2
+    DC.W    .LAB_14FF_0812-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_01B6-.LAB_14FF-2
+    DC.W    .LAB_14FF_081C-.LAB_14FF-2
+    DC.W    .LAB_14FF_06EA-.LAB_14FF-2
 
+.LAB_14FF_002A:
     MOVEQ   #0,D0
     LEA     3(A2),A0
     PEA     2.W
@@ -1285,6 +1290,7 @@ LAB_14FE:
     MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection
     BRA.W   .LAB_1543
 
+.LAB_14FF_01B6:
     MOVE.L  A2,-(A7)
     JSR     LAB_136D(PC)
 
@@ -1292,6 +1298,7 @@ LAB_14FE:
     MOVE.B  D0,LAB_211D
     BRA.W   .LAB_1543
 
+.LAB_14FF_01C8:
     MOVEQ   #0,D0
     MOVE.B  1(A2),D0
     MOVE.W  D0,LAB_234D
@@ -1300,6 +1307,7 @@ LAB_14FE:
     MOVE.W  D0,LAB_234E
     BRA.W   .LAB_1543
 
+.LAB_14FF_01E4:
     MOVE.B  1(A2),D0
     MOVEQ   #76,D1
     CMP.B   D1,D0
@@ -1331,6 +1339,7 @@ LAB_14FE:
     MOVE.W  D0,LAB_2356
     BRA.W   .LAB_1543
 
+.LAB_14FF_0224:
     MOVE.B  LAB_1BC9,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
@@ -1400,6 +1409,7 @@ LAB_14FE:
     ADDQ.W  #4,A7
     BRA.W   .LAB_1543
 
+.LAB_14FF_02E0:
     MOVE.L  LAB_1FE7,D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
@@ -1472,6 +1482,7 @@ LAB_14FE:
     CLR.W   LAB_2357
     BRA.W   .LAB_1543
 
+.LAB_14FF_0390:
     PEA     LAB_211D
     JSR     LAB_136F(PC)
 
@@ -1786,6 +1797,7 @@ LAB_14FE:
     MOVE.L  D0,D6
     BRA.W   .LAB_1543
 
+.LAB_14FF_06A0:
     LEA     1(A2),A0
     MOVE.L  A0,-(A7)
     JSR     LAB_159A(PC)
@@ -1810,14 +1822,17 @@ LAB_14FE:
     MOVE.L  D0,LAB_2351
     BRA.W   .LAB_1543
 
+.LAB_14FF_06D2:
     MOVEQ   #14,D0
     MOVE.L  D0,LAB_2351
     BRA.W   .LAB_1543
 
+.LAB_14FF_06DE:
     MOVEQ   #15,D0
     MOVE.L  D0,LAB_2351
     BRA.W   .LAB_1543
 
+.LAB_14FF_06EA:
     MOVEQ   #57,D0
     CMP.B   1(A2),D0
     BNE.S   .LAB_1532
@@ -1983,12 +1998,14 @@ LAB_14FE:
     MOVEQ   #0,D6
     BRA.S   .LAB_1543
 
+.LAB_14FF_0812:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     BSR.W   LAB_1554
 
     ADDQ.W  #8,A7
 
+.LAB_14FF_081C:
 .LAB_1543:
     MOVE.L  A3,-(A7)
     BSR.W   LAB_158C
@@ -2590,33 +2607,36 @@ LAB_157A:
     MOVE.W  .LAB_157B(PC,D0.W),D0
     JMP     .LAB_157B+2(PC,D0.W)
 
-; TODO: This is a switch statement that's turned into a jump table.
+; This is a switch statement that's turned into a jump table.
 .LAB_157B:
-    DC.W    $008A
-    DC.W    $0092
-    DC.W    $00CE
-    DC.W    $00EE
-    DC.W    $011E
-    DC.W    $0140
-    DC.W    $015E
-    DC.W    $0178
-    DC.W    $0192
-    DC.W    $01BE
-    DC.W    $0042
-    DC.W    $006A
-    DC.W    $0082
-    DC.W    $001C
-    DC.W    $0030
+    DC.W    .LAB_157B_008A-.LAB_157B-2
+    DC.W    .LAB_157B_0092-.LAB_157B-2
+    DC.W    .LAB_157B_00CE-.LAB_157B-2
+    DC.W    .LAB_157B_00EE-.LAB_157B-2
+    DC.W    .LAB_157B_011E-.LAB_157B-2
+    DC.W    .LAB_157B_0140-.LAB_157B-2
+    DC.W    .LAB_157B_015E-.LAB_157B-2
+    DC.W    .LAB_157B_0178-.LAB_157B-2
+    DC.W    .LAB_157B_0192-.LAB_157B-2
+    DC.W    .LAB_157B_01BE-.LAB_157B-2
+    DC.W    .LAB_157B_0042-.LAB_157B-2
+    DC.W    .LAB_157B_006A-.LAB_157B-2
+    DC.W    .LAB_157B_0082-.LAB_157B-2
+    DC.W    .LAB_157B_001C-.LAB_157B-2
+    DC.W    .LAB_157B_0030-.LAB_157B-2
 
+.LAB_157B_001C:
     MOVE.W  #1,LAB_2122
     MOVE.W  #256,LAB_1F45
     BRA.W   .return
 
+.LAB_157B_0030:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2122
     MOVE.W  D0,LAB_1F45
     BRA.W   .return
 
+.LAB_157B_0042:
     JSR     LAB_18D2(PC)
 
     CLR.L   -(A7)
@@ -2629,19 +2649,23 @@ LAB_157A:
     MOVE.W  D0,LAB_211E
     BRA.W   .return
 
+.LAB_157B_006A:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     MOVE.W  #1000,LAB_211F
     MOVE.W  D0,LAB_211E
     BRA.W   .return
 
+.LAB_157B_0082:
     JSR     LAB_159C(PC)
 
     BRA.W   .return
 
+.LAB_157B_008A:
     JSR     LAB_167D(PC)
 
     BRA.W   .return
 
+.LAB_157B_0092:
     MOVE.W  #(-1),LAB_2364
     JSR     LAB_18D2(PC)
 
@@ -2667,6 +2691,7 @@ LAB_157A:
     ADDQ.W  #4,A7
     BRA.W   .return
 
+.LAB_157B_00CE:
     MOVE.W  #(-1),LAB_2364
     JSR     LAB_18D2(PC)
 
@@ -2679,6 +2704,7 @@ LAB_157A:
     ADDQ.W  #8,A7
     BRA.W   .return
 
+.LAB_157B_00EE
     MOVE.W  #(-1),LAB_2364
     MOVE.W  LAB_1DDE,D0
     BNE.W   .return
@@ -2691,6 +2717,7 @@ LAB_157A:
     MOVE.W  #1,LAB_1DDF
     BRA.W   .return
 
+.LAB_157B_011E:
     MOVE.W  LAB_2365,D0
     EXT.L   D0
     MOVE.W  LAB_234F,D1
@@ -2703,6 +2730,7 @@ LAB_157A:
     LEA     12(A7),A7
     BRA.W   .return
 
+.LAB_157B_0140:
     MOVE.L  LAB_2350,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2713,6 +2741,7 @@ LAB_157A:
     LEA     12(A7),A7
     BRA.W   .return
 
+.LAB_157B_015E:
     MOVE.L  LAB_2350,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2723,6 +2752,7 @@ LAB_157A:
     LEA     12(A7),A7
     BRA.S   .return
 
+.LAB_157B_0178:
     MOVE.W  #(-1),LAB_2364
     MOVEQ   #0,D0
     MOVE.B  LAB_2126,D0
@@ -2732,6 +2762,7 @@ LAB_157A:
     ADDQ.W  #4,A7
     BRA.S   .return
 
+.LAB_157B_0192:
     MOVE.W  #(-1),LAB_2364
     MOVEQ   #0,D0
     MOVE.B  LAB_2127,D0
@@ -2745,6 +2776,7 @@ LAB_157A:
     LEA     12(A7),A7
     BRA.S   .return
 
+.LAB_157B_01BE:
     JSR     LAB_14B8(PC)
 
     MOVE.W  #1,LAB_2346

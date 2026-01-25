@@ -6,7 +6,7 @@
 
 ## Active Refactor Threads
 - `src/modules/gcommand.s` is mid-pass: many routines already export `GCOMMAND_*` aliases layered above their legacy `LAB_xxxx` labels. Remaining extern-visible labels referenced outside the module include `LAB_0CCF`, `LAB_0CE8`, `LAB_0D57`, `LAB_0D58`, `LAB_0D61`, `LAB_0D75`, `LAB_0D7A`, `LAB_0D84`, `LAB_0D89`, `LAB_0D8E`, `LAB_0DCF`, `LAB_0DD5`, `LAB_0DE9`, `LAB_0DF1`, `LAB_0DFA`. Check cross-references with `rg 'LAB_0[CD]' -g'*.s' --glob '!src/modules/gcommand.s'`.
-- Associated data tables in `src/data/wdisp.s` still carry anonymous `LAB_22F*` symbols. Name them as their purpose becomes clear during gcommand work (e.g., highlight flag tables, banner presets).
+- Associated data tables in `src/data/wdisp.s` still carry anonymous `LAB_22F*` symbols. Many are now annotated as likely switch/jump tables; name them as their purpose becomes clear during gcommand work (e.g., highlight flag tables, banner presets).
 - `src/modules/newgrid.s` remains largely unaliased with raw `LAB_` labels; plan a naming/comment pass once the gcommand/wdisp path settles.
 
 ## Documentation Touchpoints

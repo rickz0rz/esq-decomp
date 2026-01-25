@@ -174,32 +174,32 @@ LAB_0FAB:
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_0FAC
+    BNE.S   .LAB_0FAC
 
     TST.B   LAB_222E
-    BEQ.S   LAB_0FAD
+    BEQ.S   .LAB_0FAD
 
     MOVE.W  LAB_222F,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   LAB_0FAD
+    BLS.S   .LAB_0FAD
 
-LAB_0FAC:
+.LAB_0FAC:
     TST.B   LAB_224A
-    BEQ.S   LAB_0FAD
+    BEQ.S   .LAB_0FAD
 
     MOVE.W  LAB_2231,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   LAB_0FAD
+    BLS.S   .LAB_0FAD
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0FAE
+    BRA.S   .return
 
-LAB_0FAD:
+.LAB_0FAD:
     MOVEQ   #1,D0
 
-LAB_0FAE:
+.return:
     MOVE.L  D0,D6
     MOVE.L  D6,D0
 
@@ -216,128 +216,128 @@ LAB_0FAF:
     LEA     -38(A5),A1
     MOVEQ   #6,D0
 
-LAB_0FB0:
+.LAB_0FB0:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,LAB_0FB0
+    DBF     D0,.LAB_0FB0
     MOVE.B  LAB_1BB7,D0
-    MOVEQ   #89,D1
+    MOVEQ   #'Y',D1
     CMP.B   D1,D0
-    BNE.S   LAB_0FB3
+    BNE.S   .LAB_0FB3
 
     MOVE.L  LAB_1BBE,D0
     TST.L   D0
-    BLE.S   LAB_0FB2
+    BLE.S   .LAB_0FB2
 
     MOVE.L  LAB_2003,D1
     TST.L   D1
-    BGT.S   LAB_0FB1
+    BGT.S   .LAB_0FB1
 
     MOVE.L  LAB_200A,D7
     MOVE.L  D0,LAB_2003
-    BRA.S   LAB_0FB3
+    BRA.S   .LAB_0FB3
 
-LAB_0FB1:
+.LAB_0FB1:
     SUBQ.L  #1,LAB_2003
     MOVEQ   #12,D6
     MOVEQ   #1,D5
-    BRA.S   LAB_0FB3
+    BRA.S   .LAB_0FB3
 
-LAB_0FB2:
+.LAB_0FB2:
     MOVEQ   #12,D6
     MOVEQ   #1,D5
 
-LAB_0FB3:
+.LAB_0FB3:
     TST.W   D5
-    BNE.W   LAB_0FC8
+    BNE.W   .return
 
     MOVE.L  LAB_200A,D0
     ASL.L   #2,D0
     MOVE.L  -38(A5,D0.L),D6
     MOVEQ   #12,D0
     CMP.L   D0,D6
-    BNE.S   LAB_0FB4
+    BNE.S   .LAB_0FB4
 
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_200A
-    BRA.S   LAB_0FB5
+    BRA.S   .LAB_0FB5
 
-LAB_0FB4:
+.LAB_0FB4:
     ADDQ.L  #1,LAB_200A
 
-LAB_0FB5:
+.LAB_0FB5:
     MOVE.B  LAB_1BB7,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_0FB9
+    BNE.W   .LAB_0FB9
 
     MOVE.L  D6,D0
     SUBQ.L  #5,D0
-    BLT.W   LAB_0FB8
+    BLT.W   .LAB_0FB8
 
     CMPI.L  #$8,D0
-    BGE.W   LAB_0FB8
+    BGE.W   .LAB_0FB8
 
     ADD.W   D0,D0
-    MOVE.W  LAB_0FB6(PC,D0.W),D0
-    JMP     LAB_0FB6+2(PC,D0.W)
+    MOVE.W  .LAB_0FB6(PC,D0.W),D0
+    JMP     .LAB_0FB6+2(PC,D0.W)
 
 ; This is a switch statement that's turned into a jump table.
-LAB_0FB6:
-    DC.W    LAB_0FB6_0044-LAB_0FB6-2
-    DC.W    LAB_0FB6_000E-LAB_0FB6-2
-    DC.W    LAB_0FB6_0020-LAB_0FB6-2
-    DC.W    LAB_0FB6_0032-LAB_0FB6-2
-    DC.W    LAB_0FB6_0056-LAB_0FB6-2
-    DC.W    LAB_0FB6_0068-LAB_0FB6-2
-    DC.W    LAB_0FB6_0078-LAB_0FB6-2
-    DC.W    LAB_0FB6_0078-LAB_0FB6-2
+.LAB_0FB6:
+    DC.W    .LAB_0FB6_0044-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_000E-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_0020-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_0032-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_0056-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_0068-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_0078-.LAB_0FB6-2
+    DC.W    .LAB_0FB6_0078-.LAB_0FB6-2
 
-LAB_0FB6_000E:
+.LAB_0FB6_000E:
     MOVE.B  LAB_1BA4,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,D5
-    BRA.S   LAB_0FB8
+    BRA.S   .LAB_0FB8
 
-LAB_0FB6_0020:
+.LAB_0FB6_0020:
     MOVE.B  LAB_1BA5,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,D5
-    BRA.S   LAB_0FB8
+    BRA.S   .LAB_0FB8
 
-LAB_0FB6_0032:
+.LAB_0FB6_0032:
     MOVE.B  LAB_1BAD,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,D5
-    BRA.S   LAB_0FB8
+    BRA.S   .LAB_0FB8
 
-LAB_0FB6_0044:
+.LAB_0FB6_0044:
     TST.L   LAB_22D1
     SNE     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D5
-    BRA.S   LAB_0FB8
+    BRA.S   .LAB_0FB8
 
-LAB_0FB6_0056:
+.LAB_0FB6_0056:
     TST.L   LAB_22D6
     SNE     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D5
-    BRA.S   LAB_0FB8
+    BRA.S   .LAB_0FB8
 
-LAB_0FB6_0068:
+.LAB_0FB6_0068:
     TST.L   LAB_22E5
     SNE     D0
     NEG.B   D0
@@ -345,180 +345,179 @@ LAB_0FB6_0068:
     EXT.L   D0
     MOVE.L  D0,D5
 
-LAB_0FB6_0078:
-
-LAB_0FB8:
+.LAB_0FB6_0078:
+.LAB_0FB8:
     TST.W   D5
-    BNE.W   LAB_0FB3
+    BNE.W   .LAB_0FB3
 
     MOVE.L  LAB_200A,D0
     CMP.L   D7,D0
-    BNE.W   LAB_0FB3
+    BNE.W   .LAB_0FB3
 
     MOVEQ   #12,D6
     MOVEQ   #1,D5
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FB9:
+.LAB_0FB9:
     MOVE.L  D6,D0
     SUBQ.L  #5,D0
-    BLT.W   LAB_0FB3
+    BLT.W   .LAB_0FB3
 
     CMPI.L  #$8,D0
-    BGE.W   LAB_0FB3
+    BGE.W   .LAB_0FB3
 
     ADD.W   D0,D0
-    MOVE.W  LAB_0FBA(PC,D0.W),D0
-    JMP     LAB_0FBA+2(PC,D0.W)
+    MOVE.W  .LAB_0FBA(PC,D0.W),D0
+    JMP     .LAB_0FBA+2(PC,D0.W)
 
 ; This is a switch statement that's turned into a jump table.
-LAB_0FBA:
-    DC.W    LAB_0FC2_008C-LAB_0FBA-2
-    DC.W    LAB_0FBA_000E-LAB_0FBA-2
-    DC.W    LAB_0FBD_0038-LAB_0FBA-2
-    DC.W    LAB_0FBF_0062-LAB_0FBA-2
-    DC.W    LAB_0FC3_00B6-LAB_0FBA-2
-    DC.W    LAB_0FC5_00E0-LAB_0FBA-2
-    DC.W    LAB_0FB3-LAB_0FBA-2
-    DC.W    LAB_0FC7_010A-LAB_0FBA-2
+.LAB_0FBA:
+    DC.W    .LAB_0FC2_008C-.LAB_0FBA-2
+    DC.W    .LAB_0FBA_000E-.LAB_0FBA-2
+    DC.W    .LAB_0FBD_0038-.LAB_0FBA-2
+    DC.W    .LAB_0FBF_0062-.LAB_0FBA-2
+    DC.W    .LAB_0FC3_00B6-.LAB_0FBA-2
+    DC.W    .LAB_0FC5_00E0-.LAB_0FBA-2
+    DC.W    .LAB_0FB3-.LAB_0FBA-2
+    DC.W    .LAB_0FC7_010A-.LAB_0FBA-2
 
-LAB_0FBA_000E:
+.LAB_0FBA_000E:
     MOVE.B  (LAB_1BA4).L,D0
     TST.B   D0
-    BLE.S   LAB_0FBC
+    BLE.S   .LAB_0FBC
 
     SUBQ.B  #1,LAB_2005
-    BGT.S   LAB_0FBC
+    BGT.S   .LAB_0FBC
 
     MOVEQ   #1,D1
-    BRA.S   LAB_0FBD
+    BRA.S   .LAB_0FBD
 
-LAB_0FBC:
+.LAB_0FBC:
     MOVEQ   #0,D1
 
-LAB_0FBD:
+.LAB_0FBD:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   LAB_0FB3
+    BEQ.W   .LAB_0FB3
 
     MOVE.B  D0,LAB_2005
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FBD_0038:
+.LAB_0FBD_0038:
     MOVE.B  LAB_1BA5,D0
     TST.B   D0
-    BLE.S   LAB_0FBE
+    BLE.S   .LAB_0FBE
 
     SUBQ.B  #1,LAB_2004
-    BGT.S   LAB_0FBE
+    BGT.S   .LAB_0FBE
 
     MOVEQ   #1,D1
-    BRA.S   LAB_0FBF
+    BRA.S   .LAB_0FBF
 
-LAB_0FBE:
+.LAB_0FBE:
     MOVEQ   #0,D1
 
-LAB_0FBF:
+.LAB_0FBF:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   LAB_0FB3
+    BEQ.W   .LAB_0FB3
 
     MOVE.B  D0,LAB_2004
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FBF_0062:
+.LAB_0FBF_0062:
     MOVE.B  LAB_1BAD,D0
     TST.B   D0
-    BLE.S   LAB_0FC0
+    BLE.S   .LAB_0FC0
 
     SUBQ.B  #1,LAB_2006
-    BGT.S   LAB_0FC0
+    BGT.S   .LAB_0FC0
 
     MOVEQ   #1,D1
-    BRA.S   LAB_0FC1
+    BRA.S   .LAB_0FC1
 
-LAB_0FC0:
+.LAB_0FC0:
     MOVEQ   #0,D1
 
-LAB_0FC1:
+.LAB_0FC1:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   LAB_0FB3
+    BEQ.W   .LAB_0FB3
 
     MOVE.B  D0,LAB_2006
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FC2_008C:
+.LAB_0FC2_008C:
     MOVE.L  LAB_22D1,D0
     TST.L   D0
-    BLE.S   LAB_0FC2
+    BLE.S   .LAB_0FC2
 
     SUBQ.B  #1,LAB_2007
-    BGT.S   LAB_0FC2
+    BGT.S   .LAB_0FC2
 
     MOVEQ   #1,D1
-    BRA.S   LAB_0FC3
+    BRA.S   .LAB_0FC3
 
-LAB_0FC2:
+.LAB_0FC2:
     MOVEQ   #0,D1
 
-LAB_0FC3:
+.LAB_0FC3:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   LAB_0FB3
+    BEQ.W   .LAB_0FB3
 
     MOVE.B  D0,LAB_2007
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FC3_00B6:
+.LAB_0FC3_00B6:
     MOVE.L  LAB_22D6,D0
     TST.L   D0
-    BLE.S   LAB_0FC4
+    BLE.S   .LAB_0FC4
 
     SUBQ.B  #1,LAB_2008
-    BGT.S   LAB_0FC4
+    BGT.S   .LAB_0FC4
 
     MOVEQ   #1,D1
-    BRA.S   LAB_0FC5
+    BRA.S   .LAB_0FC5
 
-LAB_0FC4:
+.LAB_0FC4:
     MOVEQ   #0,D1
 
-LAB_0FC5:
+.LAB_0FC5:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   LAB_0FB3
+    BEQ.W   .LAB_0FB3
 
     MOVE.B  D0,LAB_2008
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FC5_00E0:
+.LAB_0FC5_00E0:
     MOVE.L  LAB_22E5,D0
     TST.L   D0
-    BLE.S   LAB_0FC6
+    BLE.S   .LAB_0FC6
 
     SUBQ.B  #1,LAB_2009
-    BGT.S   LAB_0FC6
+    BGT.S   .LAB_0FC6
 
     MOVEQ   #1,D1
-    BRA.S   LAB_0FC7
+    BRA.S   .LAB_0FC7
 
-LAB_0FC6:
+.LAB_0FC6:
     MOVEQ   #0,D1
 
-LAB_0FC7:
+.LAB_0FC7:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   LAB_0FB3
+    BEQ.W   .LAB_0FB3
 
     MOVE.B  D0,LAB_2009
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FC7_010A:
+.LAB_0FC7_010A:
     MOVEQ   #1,D5
-    BRA.W   LAB_0FB3
+    BRA.W   .LAB_0FB3
 
-LAB_0FC8:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
@@ -538,31 +537,35 @@ LAB_0FC9:
     MOVE.W  LAB_0FCA(PC,D0.W),D0
     JMP     LAB_0FCA+2(PC,D0.W)
 
-; TODO: This is a switch statement that's turned into a jump table.
+; This is a switch statement that's turned into a jump table.
 LAB_0FCA:
-    DC.W    $0018
-    DC.W    $001c
-    DC.W    $0020
-    DC.W    $0024
-    DC.W    $003e
-    DC.W    $0050
-    DC.W    $0050
-    DC.W    $0050
-    DC.W    $0050
-    DC.W    $0050
-    DC.W    $0050
-    DC.W    $0058
-    DC.W    $0018
+    DC.W    LAB_0FCA_0018-LAB_0FCA-2
+    DC.W    LAB_0FCA_001C-LAB_0FCA-2
+    DC.W    LAB_0FCA_0020-LAB_0FCA-2
+    DC.W    LAB_0FCA_0024-LAB_0FCA-2
+    DC.W    LAB_0FCA_003E-LAB_0FCA-2
+    DC.W    LAB_0FCA_0050-LAB_0FCA-2
+    DC.W    LAB_0FCA_0050-LAB_0FCA-2
+    DC.W    LAB_0FCA_0050-LAB_0FCA-2
+    DC.W    LAB_0FCA_0050-LAB_0FCA-2
+    DC.W    LAB_0FCA_0050-LAB_0FCA-2
+    DC.W    LAB_0FCA_0050-LAB_0FCA-2
+    DC.W    LAB_0FCA_0058-LAB_0FCA-2
+    DC.W    LAB_0FCA_0018-LAB_0FCA-2
 
+LAB_0FCA_0018:
     MOVEQ   #1,D7
     BRA.S   LAB_0FD0
 
+LAB_0FCA_001C:
     MOVEQ   #2,D7
     BRA.S   LAB_0FD0
 
+LAB_0FCA_0020:
     MOVEQ   #3,D7
     BRA.S   LAB_0FD0
 
+LAB_0FCA_0024:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -582,6 +585,7 @@ LAB_0FCD:
     MOVE.L  D0,D7
     BRA.S   LAB_0FD0
 
+LAB_0FCA_003E:
     TST.L   LAB_22D2
     BEQ.S   LAB_0FCE
 
@@ -589,12 +593,14 @@ LAB_0FCD:
     CLR.L   LAB_22D1
     BRA.S   LAB_0FD0
 
+LAB_0FCA_0050:
 LAB_0FCE:
     BSR.W   LAB_0FAF
 
     MOVE.L  D0,D7
     BRA.S   LAB_0FD0
 
+LAB_0FCA_0058:
     MOVEQ   #1,D7
     BRA.S   LAB_0FD0
 

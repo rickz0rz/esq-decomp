@@ -18,6 +18,7 @@ Never commit generated binaries; stash them or place them in `build/`.
 
 ## Coding Style & Naming Conventions
 Use four-space indentation, uppercase opcodes, and align operands as in the existing modules. Public entry points should follow the `MODULE_ActionVerb` pattern (`GCOMMAND_LoadDefaultTable`, `KYBD_HandleRepeat`), with the original `LAB_xxxx` label retained immediately below the alias. Local labels stay lowercase with a leading dot. Favor short descriptive comments over block prose; explain hardware magic numbers and state transitions, not obvious move instructions. Share repeated sequences through macros and keep configuration flags (`includeCustomAriAssembly`) centralized.
+When opaque data blocks appear (formerly “garbage”), annotate them as likely switch/jump tables and name them accordingly as you confirm usage.
 
 ## Testing Guidelines
 Every behavior change must preserve the canonical hash unless the goal is an intentional divergence. Run `./test-hash.sh` after each meaningful edit; if the output differs from `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`, investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
