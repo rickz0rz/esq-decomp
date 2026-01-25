@@ -3733,30 +3733,33 @@ LAB_0B26:
 
     ADD.W   D0,D0
     MOVE.W  LAB_0B28(PC,D0.W),D0
-    JMP     LAB_0B29(PC,D0.W)
+    JMP     LAB_0B28+2(PC,D0.W)
 
+; This is a switch statement that's turned into a jump table.
 LAB_0B28:
-    ; Garbage start
-    DC.W    $0008
+    DC.W    LAB_0B29_0008-LAB_0B28-2
+    DC.W    LAB_0B29_000C-LAB_0B28-2
+    DC.W    LAB_0B29_0010-LAB_0B28-2
+    DC.W    LAB_0B29_0014-LAB_0B28-2
+    DC.W    LAB_0B29_0018-LAB_0B28-2
 
-LAB_0B29:
-    DC.W    $000c
-    ORI.B   #$14,(A0)
-    DC.W    $0018
-    ; Garbage End
-
+LAB_0B29_0008:
     MOVEQ   #1,D5
     BRA.S   LAB_0B2A
 
+LAB_0B29_000C:
     MOVEQ   #2,D5
     BRA.S   LAB_0B2A
 
+LAB_0B29_0010:
     MOVEQ   #8,D5
     BRA.S   LAB_0B2A
 
+LAB_0B29_0014:
     MOVEQ   #9,D5
     BRA.S   LAB_0B2A
 
+LAB_0B29_0018:
     MOVEQ   #10,D5
 
 LAB_0B2A:

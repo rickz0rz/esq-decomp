@@ -1350,7 +1350,7 @@ LAB_0074:
 
 ;!======
 
-; Unreachable Code
+; Unreachable Code?
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E2E,A2
     LEA     LAB_1E5B,A3
@@ -1537,7 +1537,7 @@ LAB_007B:
 
 ;!======
 
-; Unreachable Code
+; Unreachable Code?
     MOVEA.L 4(A7),A0
 
 LAB_0089:
@@ -1893,6 +1893,13 @@ LAB_00B0:
 
 ;!======
 
+; int32_t test_bit_1based(const uint8_t *base, uint32_t bit_index)
+; {
+;     uint32_t n = bit_index - 1;          // 1-based -> 0-based
+;     uint32_t byte_i = (n & 0xFFFF) >> 3; // because LSR.W
+;     uint32_t bit_i  = n & 7;
+;     return (base[byte_i] & (1u << bit_i)) ? -1 : 0;
+; }
 LAB_00B1:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
@@ -1975,11 +1982,13 @@ GENERATE_CHECKSUM_BYTE_INTO_D0:
     EORI.B  #$ff,D0
     MOVEQ   #0,D1
 
-.doWhileNotNull:
+; do { byte = *A0++; D0 ^= byte; } while (--D2 != -1);
+.doXorChecksum:
     MOVE.B  (A0)+,D1
     EOR.B   D1,D0
-    DBF     D2,.doWhileNotNull
+    DBF     D2,.doXorChecksum
 
+; D0 = D0 & 0xFF // clearing everything but low byte.
     ANDI.L  #$ff,D0
     MOVE.L  (A7)+,D2
 
@@ -1988,7 +1997,7 @@ GENERATE_CHECKSUM_BYTE_INTO_D0:
 
 ;!======
 
-; Unreachable Code
+; Unreachable Code?
 LAB_00BB_Unreachable:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)

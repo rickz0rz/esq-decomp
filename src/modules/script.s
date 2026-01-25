@@ -901,25 +901,30 @@ serialCtrlCmd:
     MOVE.W  .LAB_14F0(PC,D0.W),D0
     JMP     .LAB_14F0+2(PC,D0.W)
 
+; TODO: This is a switch statement that's turned into a jump table.
 .LAB_14F0:
-    ; garbage start
-    ORI.W   #$36,D0
-    ORI.B   #$36,54(A6,D0.W)
-    BCLR    D0,-(A0)
+    DC.W    $0040
     DC.W    $0036
-    BCLR    D0,-(A0)
-    BCLR    D0,-(A0)
-    BCLR    D0,-(A0)
-    ORI.B   #$40,42(A6,D0.W)
-    BCLR    D0,-(A0)
-    ORI.W   #$36,D0
     DC.W    $0036
-    BCLR    D0,-(A0)
-    BCLR    D0,-(A0)
     DC.W    $0036
-    BCLR    D0,-(A0)
     DC.W    $0036
-    ; garbage end
+    DC.W    $01A0
+    DC.W    $0036
+    DC.W    $01A0
+    DC.W    $01A0
+    DC.W    $01A0
+    DC.W    $0036
+    DC.W    $0040
+    DC.W    $002A
+    DC.W    $01A0
+    DC.W    $0040
+    DC.W    $0036
+    DC.W    $0036
+    DC.W    $01A0
+    DC.W    $01A0
+    DC.W    $0036
+    DC.W    $01A0
+    DC.W    $0036
 
     MOVE.W  #3,CTRLRead3
     BRA.W   .finish_29ABA
@@ -1103,19 +1108,16 @@ LAB_14FE:
 
     ADD.W   D0,D0
     MOVE.W  .LAB_14FF(PC,D0.W),D0
+    JMP     .LAB_14FF+2(PC,D0.W)
 
-    JMP     .LAB_1500(PC,D0.W)
-
+; TODO: This is a switch statement that's turned into a jump table.
 .LAB_14FF:
     DC.W    $0390
-
-.LAB_1500:
     DC.W    $002a
-
-    ; garbage start
     DC.W    $081c
-    BSET    D0,-(A4)
-    MOVEP.L D0,2076(A0)
+    DC.W    $01e4
+    DC.W    $01c8
+    DC.W    $081c
     DC.W    $06de
     DC.W    $081c
     DC.W    $081c
@@ -1124,14 +1126,16 @@ LAB_14FE:
     DC.W    $02e0
     DC.W    $081c
     DC.W    $081c
-    ADDI.L  #$6d20812,-(A0)
+    DC.W    $06a0
+    DC.W    $06d2
+    DC.W    $0812
     DC.W    $081c
     DC.W    $081c
-    BCLR    D0,28(A6,D0.L)
+    DC.W    $01b6
+    DC.W    $081c
     DC.W    $06ea
-    MOVEQ   #0,D0
-    ; garbage end?
 
+    MOVEQ   #0,D0
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
@@ -2584,22 +2588,26 @@ LAB_157A:
 
     ADD.W   D0,D0
     MOVE.W  .LAB_157B(PC,D0.W),D0
-    JMP     .LAB_157C(PC,D0.W)
+    JMP     .LAB_157B+2(PC,D0.W)
 
-    ; more garbage data here.
+; TODO: This is a switch statement that's turned into a jump table.
 .LAB_157B:
-    DC.W    $008a
+    DC.W    $008A
+    DC.W    $0092
+    DC.W    $00CE
+    DC.W    $00EE
+    DC.W    $011E
+    DC.W    $0140
+    DC.W    $015E
+    DC.W    $0178
+    DC.W    $0192
+    DC.W    $01BE
+    DC.W    $0042
+    DC.W    $006A
+    DC.W    $0082
+    DC.W    $001C
+    DC.W    $0030
 
-.LAB_157C:
-    ORI.L   #$ce00ee,(A2)
-    BTST    D0,(A6)+
-    BCHG    D0,D0
-    BCHG    D0,(A6)+
-    BCHG    D0,$192.W
-    DC.W    $01be
-    ORI.W   #$6a,D2
-    ORI.L   #$1c0030,D2
-    ; garbage ends here?
     MOVE.W  #1,LAB_2122
     MOVE.W  #256,LAB_1F45
     BRA.W   .return

@@ -281,14 +281,18 @@ LAB_0FB5:
     MOVE.W  LAB_0FB6(PC,D0.W),D0
     JMP     LAB_0FB6+2(PC,D0.W)
 
+; This is a switch statement that's turned into a jump table.
 LAB_0FB6:
-    ; garbage start
-    ORI.W   #14,D4
-    ORI.B   #$32,-(A0)
-    ORI.W   #$68,(A6)
-    DC.W    $0078
-    DC.W    $0078
-    ; garbage end
+    DC.W    LAB_0FB6_0044-LAB_0FB6-2
+    DC.W    LAB_0FB6_000E-LAB_0FB6-2
+    DC.W    LAB_0FB6_0020-LAB_0FB6-2
+    DC.W    LAB_0FB6_0032-LAB_0FB6-2
+    DC.W    LAB_0FB6_0056-LAB_0FB6-2
+    DC.W    LAB_0FB6_0068-LAB_0FB6-2
+    DC.W    LAB_0FB6_0078-LAB_0FB6-2
+    DC.W    LAB_0FB6_0078-LAB_0FB6-2
+
+LAB_0FB6_000E:
     MOVE.B  LAB_1BA4,D0
     SNE     D1
     NEG.B   D1
@@ -297,6 +301,7 @@ LAB_0FB6:
     MOVE.L  D1,D5
     BRA.S   LAB_0FB8
 
+LAB_0FB6_0020:
     MOVE.B  LAB_1BA5,D0
     SNE     D1
     NEG.B   D1
@@ -305,6 +310,7 @@ LAB_0FB6:
     MOVE.L  D1,D5
     BRA.S   LAB_0FB8
 
+LAB_0FB6_0032:
     MOVE.B  LAB_1BAD,D0
     SNE     D1
     NEG.B   D1
@@ -313,6 +319,7 @@ LAB_0FB6:
     MOVE.L  D1,D5
     BRA.S   LAB_0FB8
 
+LAB_0FB6_0044:
     TST.L   LAB_22D1
     SNE     D0
     NEG.B   D0
@@ -321,6 +328,7 @@ LAB_0FB6:
     MOVE.L  D0,D5
     BRA.S   LAB_0FB8
 
+LAB_0FB6_0056:
     TST.L   LAB_22D6
     SNE     D0
     NEG.B   D0
@@ -329,12 +337,15 @@ LAB_0FB6:
     MOVE.L  D0,D5
     BRA.S   LAB_0FB8
 
+LAB_0FB6_0068:
     TST.L   LAB_22E5
     SNE     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D5
+
+LAB_0FB6_0078:
 
 LAB_0FB8:
     TST.W   D5
@@ -358,20 +369,21 @@ LAB_0FB9:
 
     ADD.W   D0,D0
     MOVE.W  LAB_0FBA(PC,D0.W),D0
-    JMP     LAB_0FBB(PC,D0.W)
+    JMP     LAB_0FBA+2(PC,D0.W)
 
+; This is a switch statement that's turned into a jump table.
 LAB_0FBA:
-    ; garbage start
-    DC.W    $008c
+    DC.W    LAB_0FC2_008C-LAB_0FBA-2
+    DC.W    LAB_0FBA_000E-LAB_0FBA-2
+    DC.W    LAB_0FBD_0038-LAB_0FBA-2
+    DC.W    LAB_0FBF_0062-LAB_0FBA-2
+    DC.W    LAB_0FC3_00B6-LAB_0FBA-2
+    DC.W    LAB_0FC5_00E0-LAB_0FBA-2
+    DC.W    LAB_0FB3-LAB_0FBA-2
+    DC.W    LAB_0FC7_010A-LAB_0FBA-2
 
-LAB_0FBB:
-    DC.W    $000e
-    ORI.B   #$62,$B6.W
-    DC.W    $00e0
-    DC.W    $fefc
-    ; garbage end
-    MOVEP.W 4153(A2),D0
-    DC.L    LAB_1BA4
+LAB_0FBA_000E:
+    MOVE.B  (LAB_1BA4).L,D0
     TST.B   D0
     BLE.S   LAB_0FBC
 
@@ -392,6 +404,7 @@ LAB_0FBD:
     MOVE.B  D0,LAB_2005
     BRA.W   LAB_0FB3
 
+LAB_0FBD_0038:
     MOVE.B  LAB_1BA5,D0
     TST.B   D0
     BLE.S   LAB_0FBE
@@ -413,6 +426,7 @@ LAB_0FBF:
     MOVE.B  D0,LAB_2004
     BRA.W   LAB_0FB3
 
+LAB_0FBF_0062:
     MOVE.B  LAB_1BAD,D0
     TST.B   D0
     BLE.S   LAB_0FC0
@@ -434,6 +448,7 @@ LAB_0FC1:
     MOVE.B  D0,LAB_2006
     BRA.W   LAB_0FB3
 
+LAB_0FC2_008C:
     MOVE.L  LAB_22D1,D0
     TST.L   D0
     BLE.S   LAB_0FC2
@@ -455,6 +470,7 @@ LAB_0FC3:
     MOVE.B  D0,LAB_2007
     BRA.W   LAB_0FB3
 
+LAB_0FC3_00B6:
     MOVE.L  LAB_22D6,D0
     TST.L   D0
     BLE.S   LAB_0FC4
@@ -476,6 +492,7 @@ LAB_0FC5:
     MOVE.B  D0,LAB_2008
     BRA.W   LAB_0FB3
 
+LAB_0FC5_00E0:
     MOVE.L  LAB_22E5,D0
     TST.L   D0
     BLE.S   LAB_0FC6
@@ -497,6 +514,7 @@ LAB_0FC7:
     MOVE.B  D0,LAB_2009
     BRA.W   LAB_0FB3
 
+LAB_0FC7_010A:
     MOVEQ   #1,D5
     BRA.W   LAB_0FB3
 
@@ -520,16 +538,22 @@ LAB_0FC9:
     MOVE.W  LAB_0FCA(PC,D0.W),D0
     JMP     LAB_0FCA+2(PC,D0.W)
 
+; TODO: This is a switch statement that's turned into a jump table.
 LAB_0FCA:
-    ; garbage start
-    ORI.B   #$1c,(A0)+
-    ORI.B   #$24,-(A0)
+    DC.W    $0018
+    DC.W    $001c
+    DC.W    $0020
+    DC.W    $0024
     DC.W    $003e
-    ORI.W   #$50,(A0)
-    ORI.W   #$50,(A0)
-    ORI.W   #$50,(A0)
-    ORI.W   #$18,(A0)+
-    ; garbage end
+    DC.W    $0050
+    DC.W    $0050
+    DC.W    $0050
+    DC.W    $0050
+    DC.W    $0050
+    DC.W    $0050
+    DC.W    $0058
+    DC.W    $0018
+
     MOVEQ   #1,D7
     BRA.S   LAB_0FD0
 
