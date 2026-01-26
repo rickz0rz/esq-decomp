@@ -1,3 +1,27 @@
+;------------------------------------------------------------------------------
+; FUNC: PROCESS_ILBM_IMAGE   (ProcessIlbmImage)
+; ARGS:
+;   stack +8:  fileHandle?? (loaded into D7)
+;   stack +16: outPtrOrCtx?? (loaded into A3)
+;   stack +20: dataLenOrMode?? (loaded into D6)
+;   stack +24: auxPtr?? (loaded into A2)
+;   stack +28: ilbmInfoPtr?? (loaded into A0)
+; RET:
+;   D0: ?? (status/bytes??)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   dos.library Read, BRUSH_LoadColorTextFont
+; READS:
+;   A0+128/130/148/151/184/190 ??
+; WRITES:
+;   A0+128/130/148/151/184 ??, local temps
+; DESC:
+;   Parses ILBM/IFF chunks from a DOS file handle and populates an ILBM info block.
+; NOTES:
+;   Marks error state in D5; clamps BMHD height in some modes; uses chunk tags
+;   like 'FORM', 'ILBM', 'BMHD', 'CMAP'.
+;------------------------------------------------------------------------------
 ; Process ILBM (IFF Interleaved Bitmap) Image
 PROCESS_ILBM_IMAGE:
     LINK.W  A5,#-20
@@ -11,7 +35,7 @@ PROCESS_ILBM_IMAGE:
     MOVEQ   #-1,D0
     MOVE.L  D0,-14(A5)
     MOVEA.L 28(A5),A0
-    CLR.W   184(A0)
+    CLR.W   184(A0)        ; A0+184 = ?? (cleared before parsing)
     CLR.L   -18(A5)
 
 .LAB_00EF:

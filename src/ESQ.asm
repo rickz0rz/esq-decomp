@@ -1593,59 +1593,64 @@ LAB_008C:
 
 ;!======
 
+; Create timestamp from a time.
+; 8(A1): Hours
+; 10(A1): Minutes
+; 12(A1): Seconds
+; 18(A1): AM/PM Sign Flag
 LAB_0090:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVE.L  D2,-(A7)
     ADDA.L  #$b,A0
     MOVE.B  #0,(A0)
-    MOVE.B  #$4d,-(A0)
+    MOVE.B  #'M',-(A0)
     TST.W   18(A1)
     BPL.S   .LAB_0091
 
-    MOVE.B  #$50,-(A0)
+    MOVE.B  #'P',-(A0)
     BRA.S   .LAB_0092
 
 .LAB_0091:
-    MOVE.B  #$41,-(A0)
+    MOVE.B  #'A',-(A0)
 
 .LAB_0092:
-    MOVE.B  #$20,-(A0)
+    MOVE.B  #' ',-(A0)
     MOVE.W  12(A1),D2
     EXT.L   D2
     DIVS    #10,D2
     SWAP    D2
-    ADDI.B  #$30,D2
+    ADDI.B  #'0',D2
     MOVE.B  D2,-(A0)
     SWAP    D2
-    ADDI.B  #$30,D2
+    ADDI.B  #'0',D2
     MOVE.B  D2,-(A0)
-    MOVE.B  #$3a,-(A0)
+    MOVE.B  #':',-(A0)
     MOVE.W  10(A1),D1
     EXT.L   D1
     DIVS    #10,D1
     SWAP    D1
-    ADDI.B  #$30,D1
+    ADDI.B  #'0',D1
     MOVE.B  D1,-(A0)
     SWAP    D1
-    ADDI.B  #$30,D1
+    ADDI.B  #'0',D1
     MOVE.B  D1,-(A0)
-    MOVE.B  #$3a,-(A0)
+    MOVE.B  #':',-(A0)
     MOVE.W  8(A1),D0
     EXT.L   D0
     DIVS    #10,D0
     SWAP    D0
-    ADDI.B  #$30,D0
+    ADDI.B  #'0',D0
     MOVE.B  D0,-(A0)
     SWAP    D0
     TST.B   D0
     BEQ.S   .LAB_0093
 
-    ADDI.B  #$30,D0
+    ADDI.B  #'0',D0
     BRA.S   .return
 
 .LAB_0093:
-    MOVE.B  #$20,D0
+    MOVE.B  #' ',D0
 
 .return:
     MOVE.B  D0,-(A0)
@@ -1654,6 +1659,7 @@ LAB_0090:
 
 ;!======
 
+; Calculate a 1/2 hour "slot" given a time
 LAB_0095:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)
@@ -1661,33 +1667,33 @@ LAB_0095:
     MOVEQ   #12,D1
     MOVE.W  8(A0),D0
     TST.W   18(A0)
-    BPL.S   LAB_0096
+    BPL.S   .LAB_0096
 
     ADD.W   D1,D0
-    BRA.S   LAB_0097
+    BRA.S   .LAB_0097
 
-LAB_0096:
+.LAB_0096:
     CMP.W   D1,D0
-    BNE.S   LAB_0097
+    BNE.S   .LAB_0097
 
     MOVEQ   #0,D0
 
-LAB_0097:
+.LAB_0097:
     MOVEQ   #24,D1
     CMP.W   D1,D0
-    BEQ.S   LAB_0098
+    BEQ.S   .LAB_0098
 
     ADD.W   D0,D0
 
-LAB_0098:
+.LAB_0098:
     MOVE.W  10(A0),D2
     MOVEQ   #30,D1
     CMP.W   D1,D2
-    BLT.S   LAB_0099
+    BLT.S   .return
 
     ADDQ.W  #1,D0
 
-LAB_0099:
+.return:
     LEA     LAB_1B1E,A1
     MOVE.B  0(A1,D0.W),D0
     MOVE.L  (A7)+,D2
@@ -1703,28 +1709,28 @@ LAB_009A:
     MOVE.L  A0,D2
     MOVEQ   #65,D3
     CMP.W   D3,D1
-    BLT.S   LAB_009B
+    BLT.S   .LAB_009B
 
     MOVEQ   #67,D3
     CMP.W   D3,D1
-    BLT.S   LAB_009C
+    BLT.S   .LAB_009C
 
-LAB_009B:
+.LAB_009B:
     MOVEQ   #65,D1
 
-LAB_009C:
+.LAB_009C:
     MOVEQ   #65,D3
     CMP.W   D3,D2
-    BLT.S   LAB_009D
+    BLT.S   .LAB_009D
 
     MOVEQ   #73,D3
     CMP.W   D3,D2
-    BLE.S   LAB_009E
+    BLE.S   .LAB_009E
 
-LAB_009D:
+.LAB_009D:
     MOVEQ   #69,D2
 
-LAB_009E:
+.LAB_009E:
     MOVEQ   #65,D3
     SUB.W   D3,D1
     SUB.W   D3,D2
@@ -1732,22 +1738,22 @@ LAB_009E:
     MOVEQ   #48,D4
     MOVE.W  D0,D3
     TST.W   D1
-    BEQ.S   LAB_009F
+    BEQ.S   .LAB_009F
 
     SUB.W   D1,D0
     CMPI.W  #1,D0
-    BGE.S   LAB_009F
+    BGE.S   .LAB_009F
 
     ADD.W   D4,D0
 
-LAB_009F:
+.LAB_009F:
     ADD.W   D2,D3
     CMP.W   D4,D3
-    BLE.S   LAB_00A0
+    BLE.S   .return
 
     SUB.W   D4,D3
 
-LAB_00A0:
+.return:
     MOVE.W  D0,LAB_226F
     MOVE.W  D3,LAB_2280
     MOVEM.L (A7)+,D2-D4
@@ -1755,6 +1761,7 @@ LAB_00A0:
 
 ;!======
 
+; Unreachable code?
     MOVEM.L D2-D3,-(A7)
     MOVE.W  LAB_2257,D0
     MOVEQ   #1,D2
@@ -1813,81 +1820,81 @@ LAB_00A7:
     MOVEM.L D2-D4,-(A7)
     MOVE.L  D0,D4
 
-LAB_00A8:
+.LAB_00A8:
     MOVEQ   #0,D0
     MOVE.L  D0,D1
     MOVE.L  D0,D2
     MOVEQ   #91,D3
 
-LAB_00A9:
+.LAB_00A9:
     MOVE.B  (A0)+,D2
-    BEQ.W   LAB_00B0
+    BEQ.W   .return
 
     CMP.B   D3,D2
-    BNE.S   LAB_00A9
+    BNE.S   .LAB_00A9
 
     SUBQ.W  #1,A0
     MOVEQ   #40,D3
     MOVE.B  D3,(A0)+
     TST.B   D4
-    BEQ.S   LAB_00AE
+    BEQ.S   .LAB_00AE
 
     MOVE.B  (A0)+,D1
     CMPI.B  #$20,D1
-    BEQ.S   LAB_00AA
+    BEQ.S   .LAB_00AA
 
     MOVEQ   #10,D0
 
-LAB_00AA:
+.LAB_00AA:
     MOVE.B  (A0)+,D1
     SUBI.B  #$30,D1
     ADD.B   D1,D0
     MOVEQ   #12,D1
     ADD.B   D4,D0
     CMPI.B  #$1,D0
-    BGE.S   LAB_00AB
+    BGE.S   .LAB_00AB
 
     ADD.B   D1,D0
-    BRA.S   LAB_00AC
+    BRA.S   .LAB_00AC
 
-LAB_00AB:
+.LAB_00AB:
     CMP.B   D1,D0
-    BLE.S   LAB_00AC
+    BLE.S   .LAB_00AC
 
     SUB.B   D1,D0
-    BRA.S   LAB_00AB
+    BRA.S   .LAB_00AB
 
-LAB_00AC:
+.LAB_00AC:
     MOVEQ   #10,D1
     MOVEQ   #32,D2
     MOVEA.L A0,A1
     CMP.B   D1,D0
-    BLT.S   LAB_00AD
+    BLT.S   .LAB_00AD
 
     SUB.B   D1,D0
     MOVEQ   #49,D2
 
-LAB_00AD:
+.LAB_00AD:
     ADDI.B  #$30,D0
     MOVE.B  D0,-(A1)
     MOVE.B  D2,-(A1)
 
-LAB_00AE:
+.LAB_00AE:
     MOVEQ   #93,D3
 
-LAB_00AF:
+.LAB_00AF:
     MOVE.B  (A0)+,D2
-    BEQ.S   LAB_00B0
+    BEQ.S   .return
 
     CMP.B   D3,D2
-    BNE.S   LAB_00AF
+    BNE.S   .LAB_00AF
 
     SUBQ.W  #1,A0
     MOVEQ   #41,D3
     MOVE.B  D3,(A0)+
-    BRA.S   LAB_00A8
+    BRA.S   .LAB_00A8
 
-LAB_00B0:
+.return:
     MOVEM.L (A7)+,D2-D4
     RTS
 

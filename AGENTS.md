@@ -20,6 +20,75 @@ Never commit generated binaries; stash them or place them in `build/`.
 Use four-space indentation, uppercase opcodes, and align operands as in the existing modules. Public entry points should follow the `MODULE_ActionVerb` pattern (`GCOMMAND_LoadDefaultTable`, `KYBD_HandleRepeat`), with the original `LAB_xxxx` label retained immediately below the alias. Local labels stay lowercase with a leading dot. Favor short descriptive comments over block prose; explain hardware magic numbers and state transitions, not obvious move instructions. Share repeated sequences through macros and keep configuration flags (`includeCustomAriAssembly`) centralized.
 When opaque data blocks appear (formerly “garbage”), annotate them as likely switch/jump tables and name them accordingly as you confirm usage.
 
+## Inline Documentation Standards (vasm-friendly)
+Prefer inline comments in the `.s`/`.asm` files over external docs. Do not change instruction semantics; do not optimize or reorder code unless explicitly requested. Avoid renaming labels unless asked; add an alias label or comment-based name instead.
+
+### Function header blocks
+Add a standardized header block immediately above each identified subroutine entry label (or expand an existing block). Use this template:
+```
+;------------------------------------------------------------------------------
+; FUNC: <primary_label>   (<human_name_or_guess>)
+; ARGS:
+;   stack +4: <type/name>  (if known)
+;   stack +8: <type/name>  (if known)
+;   A0/A1/A2/A3: <meaning> (if known)
+;   D0-D7: <meaning>       (if known)
+; RET:
+;   D0: <meaning>          (or "none")
+; CLOBBERS:
+;   <regs modified>
+; CALLS:
+;   <library or local calls>
+; READS:
+;   <globals/struct offsets read>
+; WRITES:
+;   <globals/struct offsets written>
+; DESC:
+;   <1–4 lines describing behavior>
+; NOTES:
+;   <edge cases, DBF count semantics, signedness, etc.>
+;------------------------------------------------------------------------------
+```
+Rules:
+- If uncertain, mark with `??` rather than inventing facts.
+- Keep DESC short and factual.
+- For `DBF`, state loop count as “runs (Dn+1) iterations”.
+- If the code looks like a compiler idiom (switch/jumptable, memcpy loop, checksum), say so in DESC.
+
+### Symbol/data blocks
+Add a symbol block above data/table definitions you touch:
+```
+;------------------------------------------------------------------------------
+; SYM: <label>   (<human_name_or_guess>)
+; TYPE: <u8/u16/u32/struct/array>  (best estimate)
+; PURPOSE: <what it represents>
+; USED BY: <key functions>
+; NOTES: <indexing scheme, units, bounds, sentinel values>
+;------------------------------------------------------------------------------
+```
+Prefer naming by role (e.g., `gChoiceIndex`, `kHalfHourLookup`) even if the original label remains. Document sentinel values and indexing formulas.
+
+### Struct offset annotations
+When code accesses offsets like `112(A3)` or `18(A0)`, add inline end-of-line comments:
+```
+    MOVE.W  10(A0),D1        ; A0+10 = minute (0..59) ??
+```
+Use the format `; A<reg>+<offset> = <field>` or `; <base>+<offset> = <field>`. If uncertain, keep `??` and reuse consistent field names across files.
+
+### Compiler idiom annotations
+Add a short descriptive comment near common patterns:
+- PC-relative jump table → “switch/jumptable”
+- `SNE/NEG/EXT` → “booleanize to 0/-1”
+- `DIVS #10; SWAP` → “extract decimal digits”
+- `DBF` loops → “count = Dn+1”
+
+### Naming guidance (comment aliases)
+- Globals/state: `gX` (e.g., `gChoiceIndex`, `gCooldownCounter`)
+- Constant tables: `kX` (e.g., `kChoiceTable`, `kHalfHourLookup`)
+- Booleans: `isX`, `hasX` (e.g., `isPmFlag`, `hasBodyChunk`)
+- Functions: `Draw*`, `Load*`, `Format*`, `Test*`
+If unsure, use a conservative name with `??`, e.g., `(PickChoiceFromTable??)`.
+
 ## Testing Guidelines
 Every behavior change must preserve the canonical hash unless the goal is an intentional divergence. Run `./test-hash.sh` after each meaningful edit; if the output differs from `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`, investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
 
