@@ -2225,7 +2225,7 @@ LAB_00D3:
     CMPI.W  #$5460,D0
     BNE.S   LAB_00D4
 
-    JSR     LAB_00E3
+    JSR     ESQ_ColdReboot
 
 LAB_00D4:
     MOVE.W  D0,LAB_2363
@@ -2371,17 +2371,55 @@ LAB_00E2:
 
 ;!======
 
-LAB_00E3:
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ColdReboot   (ColdRebootOrSupervisor??)
+; ARGS:
+;   (none)
+; RET:
+;   none (does not return)
+; CLOBBERS:
+;   A6
+; CALLS:
+;   exec.library ColdReboot, exec.library Supervisor
+; READS:
+;   AbsExecBase, ExecBase+20 (version)
+; WRITES:
+;   (none)
+; DESC:
+;   Performs a cold reboot via Exec when available; otherwise uses Supervisor.
+; NOTES:
+;   Branches to a Supervisor-mode reset path on older Exec versions (< $24).
+;------------------------------------------------------------------------------
+ESQ_ColdReboot:
     MOVEA.L AbsExecBase,A6
     CMPI.W  #$24,20(A6)
-    BLT.S   LAB_00E4
+    BLT.S   ESQ_ColdRebootViaSupervisor
 
     JMP     _LVOColdReboot(A6)
 
 ;!======
 
-LAB_00E4:
-    LEA     LAB_00E5(PC),A5
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ColdRebootViaSupervisor   (ColdRebootViaSupervisor??)
+; ARGS:
+;   (none)
+; RET:
+;   none (does not return)
+; CLOBBERS:
+;   A5/A6
+; CALLS:
+;   exec.library Supervisor
+; READS:
+;   AbsExecBase, ExecBase+20 (version)
+; WRITES:
+;   (none)
+; DESC:
+;   Falls back to a Supervisor-mode reboot path on older Exec versions.
+; NOTES:
+;   Loads the supervisor entry address into A5 and calls _LVOSupervisor.
+;------------------------------------------------------------------------------
+ESQ_ColdRebootViaSupervisor:
+    LEA     ESQ_SupervisorColdReboot(PC),A5
     JSR     _LVOSupervisor(A6)
 
 ;!======
@@ -2391,13 +2429,34 @@ LAB_00E4:
 
 ;!======
 
-LAB_00E5:
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdReboot??)
+; ARGS:
+;   (none)
+; RET:
+;   none (does not return)
+; CLOBBERS:
+;   D0/D1/A0
+; CALLS:
+;   (none)
+; READS:
+;   [$00FFFFEC]??, [A0+4]??
+; WRITES:
+;   (none) (see NOTES)
+; DESC:
+;   Supervisor-mode reboot path that computes a ROM reset vector and jumps to it.
+; NOTES:
+;   Entered via _LVOSupervisor when Exec version < $24.
+;   Uses the longword at $00FFFFEC to derive a base, then jumps via [base+4]-2.
+;   A ROM write-test sequence follows but is unreachable due to the JMP; keep as-is.
+;------------------------------------------------------------------------------
+ESQ_SupervisorColdReboot:
     LEA     $1000000,A0
-    SUBA.L  -20(A0),A0  ; 0xFFFFEC
-    MOVEA.L 4(A0),A0
-    SUBQ.L  #2,A0
-    RESET
-    JMP     (A0)
+    SUBA.L  -20(A0),A0  ; [0x00FFFFEC] = ?? (ROM base offset?)
+    MOVEA.L 4(A0),A0    ; [A0+4] = reset vector?? (to be jumped to)
+    SUBQ.L  #2,A0       ; Adjust vector address (align/format?) ??
+    RESET               ; Reset external devices
+    JMP     (A0)        ; Jump to reset vector
 
     MOVE.L  #$FBFFFC,D0 ; Something in the system rom.
     MOVEA.L D0,A0

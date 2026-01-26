@@ -3907,7 +3907,7 @@ LAB_0720:
     JMP     LAB_0E48
 
 LAB_0721:
-    JMP     LAB_00E3
+    JMP     ESQ_ColdReboot
 
 LAB_0722:
     JMP     LAB_0CA7

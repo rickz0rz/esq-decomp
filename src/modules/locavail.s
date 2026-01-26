@@ -1946,7 +1946,7 @@ LAB_0FA2:
 ;!======
 
 LAB_0FA3:
-    JMP     LAB_00E3
+    JMP     ESQ_ColdReboot
 
 ;!======
 
