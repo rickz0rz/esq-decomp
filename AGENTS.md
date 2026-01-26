@@ -90,7 +90,7 @@ Add a short descriptive comment near common patterns:
 If unsure, use a conservative name with `??`, e.g., `(PickChoiceFromTable??)`.
 
 ## Testing Guidelines
-Every behavior change must preserve the canonical hash unless the goal is an intentional divergence. Run `./test-hash.sh` after each meaningful edit; if the output differs from `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`, investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
+Every change should be followed by `./test-hash.sh` as the default verification step. If the output matches the canonical hash (`6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`), the build is in a good spot; otherwise investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
 
 ## Commit & Pull Request Guidelines
 Commits should be small, scoped, and written in imperative mood (`Rename LAB_0D57 highlight helpers`). Reference affected modules in the body and call out any new tables or configuration knobs. Pull requests need a brief summary, testing evidence (hash output, emulator logs), and links to related research threads. Highlight any remaining anonymous labels (`LAB_****`) that still require naming so reviewers can coordinate follow-up work.

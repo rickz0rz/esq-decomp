@@ -1407,7 +1407,7 @@ LAB_17C8:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -2115,7 +2115,7 @@ LAB_1808:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

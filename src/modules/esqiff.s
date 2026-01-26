@@ -1554,7 +1554,7 @@ LAB_0A5C:
     EXT.L   D0
     PEA     1000.W
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_LAB_14D0_2(PC)
+    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
 
     ADDQ.W  #8,A7
 
@@ -2358,8 +2358,9 @@ LAB_0AAC:
 LAB_0AAD:
     JMP     LAB_14B3
 
+JMP_TBL_SCRIPT_BeginBannerCharTransition_2:
 JMP_TBL_LAB_14D0_2:
-    JMP     LAB_14D0
+    JMP     SCRIPT_BeginBannerCharTransition
 
 JMP_TBL_ALLOCATE_MEMORY_2:
     JMP     ALLOCATE_MEMORY

@@ -3229,7 +3229,7 @@ LAB_0F01:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

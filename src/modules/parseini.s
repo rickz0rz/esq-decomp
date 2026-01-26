@@ -2522,7 +2522,7 @@ JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

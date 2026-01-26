@@ -1875,7 +1875,7 @@ JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_1:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -1941,7 +1941,7 @@ LAB_0FA2:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

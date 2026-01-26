@@ -2023,7 +2023,7 @@ LAB_101D:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

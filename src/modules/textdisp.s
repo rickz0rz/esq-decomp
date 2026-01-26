@@ -1658,7 +1658,7 @@ LAB_1652:
     EXT.L   D0
     PEA     500.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_14D0(PC)
+    JSR     SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
 
@@ -2184,7 +2184,7 @@ LAB_1677:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -2488,7 +2488,7 @@ LAB_1692:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

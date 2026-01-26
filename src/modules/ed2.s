@@ -1138,7 +1138,7 @@ LAB_077D:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_LAB_14D0_2(PC)
+    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
 
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
@@ -1150,7 +1150,7 @@ LAB_077E:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_LAB_14D0_2(PC)
+    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
 
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
@@ -1160,7 +1160,7 @@ LAB_077F:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_LAB_14D0_2(PC)
+    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
 
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
@@ -1991,7 +1991,7 @@ LAB_07D3:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4478,7 +4478,7 @@ LAB_0857:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

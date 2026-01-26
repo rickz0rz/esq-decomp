@@ -490,7 +490,7 @@ LAB_01BB:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -1887,7 +1887,7 @@ LAB_020C:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -2858,7 +2858,7 @@ LAB_021A:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

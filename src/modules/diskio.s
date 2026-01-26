@@ -1810,7 +1810,7 @@ LAB_03E0:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_LAB_14D0_1(PC)
+    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_1(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  #$4e,LAB_1BC7
@@ -3106,7 +3106,7 @@ LAB_045F:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3137,8 +3137,9 @@ LAB_0467:
 LAB_0468:
     JMP     LAB_1A23
 
+JMP_TBL_SCRIPT_BeginBannerCharTransition_1:
 JMP_TBL_LAB_14D0_1:
-    JMP     LAB_14D0
+    JMP     SCRIPT_BeginBannerCharTransition
 
 LAB_046A:
     JMP     LAB_0EF9

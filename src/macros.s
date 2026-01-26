@@ -24,3 +24,7 @@ endm
 EmitStackAddress macro
 .stackLong\1    = .stackOffsetBytes+(\1*4)
 endm
+
+ALIGN_WORD macro
+    DC.W    $0000
+endm

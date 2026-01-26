@@ -232,6 +232,7 @@ LAB_14AF:
 
 ;!======
 
+SCRIPT_GetCtrlBuffer:
 j2_getCTRLBuffer:
     JSR     j_getCTRLBuffer(PC)
 
@@ -422,6 +423,7 @@ LAB_14C1:
 
 ;!======
 
+JMP_TBL_GET_CTRL_BUFFER:
 j_getCTRLBuffer:
     JMP     getCTRLBuffer
 
@@ -598,6 +600,28 @@ LAB_14C8:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_BeginBannerCharTransition   (BeginBannerCharTransition??)
+; ARGS:
+;   stack +10: targetChar?? (word, low 16 bits used)
+;   stack +14: rateOrDelay?? (word, low 16 bits used)
+; RET:
+;   D0: 1 if a transition was started, 0 otherwise
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   GCOMMAND_GetBannerChar, JMP_TBL_LAB_1A07_4, JMP_TBL_LAB_1A06_7
+; READS:
+;   LAB_1BC7/LAB_1BC8, GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_2121
+; WRITES:
+;   LAB_2352/2353/2354, LAB_2120, LAB_2121, LAB_211F
+; DESC:
+;   Prepares parameters for a banner-char transition toward a target value.
+; NOTES:
+;   Clamps target to 130..226 and rate to 0..$1D4C. Uses current banner char
+;   from GCOMMAND_GetBannerChar; returns 0 if already at target or busy.
+;------------------------------------------------------------------------------
+SCRIPT_BeginBannerCharTransition:
 LAB_14D0:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7,-(A7)
@@ -795,9 +819,29 @@ LAB_14E2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_InitCtrlContext   (InitCtrlContext??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D7/A3
+; CALLS:
+;   LAB_1580
+; READS:
+;   SCRIPT_CTRL_CONTEXT (control context base)
+; WRITES:
+;   SCRIPT_CTRL_CONTEXT (initializes context)
+; DESC:
+;   Initializes the script CTRL/control context block with a mode flag of 1.
+; NOTES:
+;   Wrapper around LAB_1580 which fully clears/initializes the context struct.
+;------------------------------------------------------------------------------
+SCRIPT_InitCtrlContext:
 LAB_14E7:
     PEA     1.W
-    PEA     LAB_2355
+    PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   LAB_1580
 
     ADDQ.W  #8,A7
@@ -805,6 +849,34 @@ LAB_14E7:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_HandleSerialCtrlCmd   (HandleSerialCtrlCmd)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none (status handled via globals)
+; CLOBBERS:
+;   D0-D7/A0-A1
+; CALLS:
+;   SCRIPT_GetCtrlBuffer, LAB_1494, SCRIPT_HandleBrushCommand, LAB_1560,
+;   LAB_18D2, LAB_167E, LAB_154C, LAB_1596, LAB_167D
+; READS:
+;   GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_1BC8, LAB_1DF3, LAB_1E84, LAB_212B
+;   GLOB_REF_CLOCKDATA_STRUCT, GLOB_WORD_CLOCK_SECONDS
+;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
+;   LAB_2346/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
+; WRITES:
+;   LAB_234A, LAB_212B, GLOB_WORD_CLOCK_SECONDS,
+;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
+;   SCRIPT_CTRL_CMD_BUFFER, LAB_2347/2348/2349
+; DESC:
+;   Polls the CTRL input buffer and advances a small state machine to parse
+;   serial control commands; dispatches actions via a jump table.
+; NOTES:
+;   The jump table is a compiler switch/jumptable on the input byte (0..21).
+;   SCRIPT_CTRL_STATE acts as a parser state: 0=idle, 1/2/3=substates ??.
+;------------------------------------------------------------------------------
+SCRIPT_HandleSerialCtrlCmd:
 serialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
 
@@ -870,10 +942,10 @@ serialCtrlCmd:
     CLR.W   LAB_234A
 
 .LAB_14EE:
-    JSR     j2_getCTRLBuffer(PC)
+    JSR     SCRIPT_GetCtrlBuffer(PC)
 
     MOVE.L  D0,D7
-    MOVE.W  CTRLRead3,D0
+    MOVE.W  SCRIPT_CTRL_STATE,D0
     TST.W   D0
     BEQ.S   .LAB_14EF
 
@@ -927,7 +999,7 @@ serialCtrlCmd:
     DC.W    .LAB_14F0_0036-.LAB_14F0-2
 
 .LAB_14F0_002A:
-    MOVE.W  #3,CTRLRead3
+    MOVE.W  #3,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA    
 
 .LAB_14F0_0036:
@@ -936,24 +1008,24 @@ serialCtrlCmd:
 
 .LAB_14F0_0040:
     MOVEQ   #1,D0
-    LEA     LAB_22A2,A0
-    ADDA.W  CTRLRead1,A0
+    LEA     SCRIPT_CTRL_CMD_BUFFER,A0
+    ADDA.W  SCRIPT_CTRL_READ_INDEX,A0
     MOVE.B  D7,(A0)
     MOVEQ   #0,D1
     MOVE.B  D7,D1
-    MOVE.W  D1,CTRLRead2
+    MOVE.W  D1,SCRIPT_CTRL_CHECKSUM
     MOVE.W  LAB_2347,D1
     ADDQ.W  #1,D1
     MOVE.W  D1,LAB_2347
-    MOVE.W  D0,CTRLRead3
+    MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA
 
 .LAB_14F2:
-    MOVE.W  CTRLRead1,D0
+    MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,CTRLRead1
-    LEA     LAB_22A2,A0
+    MOVE.W  D1,SCRIPT_CTRL_READ_INDEX
+    LEA     SCRIPT_CTRL_CMD_BUFFER,A0
     ADDA.W  D1,A0
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
@@ -961,21 +1033,21 @@ serialCtrlCmd:
     CMP.B   D1,D0
     BNE.S   .LAB_14F3
 
-    MOVE.W  #2,CTRLRead3
+    MOVE.W  #2,SCRIPT_CTRL_STATE
 
 .LAB_14F3:
-    MOVE.W  CTRLRead2,D0
+    MOVE.W  SCRIPT_CTRL_CHECKSUM,D0
     EXT.L   D0
     MOVEQ   #0,D1
     MOVE.B  D7,D1
     EOR.L   D1,D0
-    MOVE.W  D0,CTRLRead2
+    MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     BRA.W   .finish_29ABA
 
 .LAB_14F4:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.W  CTRLRead2,D1
+    MOVE.W  SCRIPT_CTRL_CHECKSUM,D1
     EXT.L   D1
     CMP.L   D1,D0
     BNE.S   .LAB_14F8
@@ -983,11 +1055,11 @@ serialCtrlCmd:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .LAB_14F5
 
-    MOVE.W  CTRLRead1,D0
+    MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_22A2
-    PEA     LAB_2355
+    PEA     SCRIPT_CTRL_CMD_BUFFER
+    PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   SCRIPT_HandleBrushCommand
 
     BSR.W   LAB_1560
@@ -1008,14 +1080,14 @@ serialCtrlCmd:
     BNE.S   .LAB_14F7
 
 .LAB_14F6:
-    MOVE.W  CTRLRead1,D0
+    MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_22A2
-    PEA     LAB_2355
+    PEA     SCRIPT_CTRL_CMD_BUFFER
+    PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   SCRIPT_HandleBrushCommand
 
-    PEA     LAB_2355
+    PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   LAB_154C
 
     LEA     16(A7),A7
@@ -1042,24 +1114,24 @@ serialCtrlCmd:
 
 .LAB_14F9:
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRLRead2
-    MOVE.W  D0,CTRLRead1
-    MOVE.W  D0,CTRLRead3
+    MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
+    MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
+    MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.S   .finish_29ABA
 
 .LAB_14FA:
-    CLR.W   CTRLRead3
+    CLR.W   SCRIPT_CTRL_STATE
     BRA.S   .finish_29ABA
 
 .LAB_14FB:
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRLRead2
-    MOVE.W  D0,CTRLRead1
-    MOVE.W  D0,CTRLRead3
+    MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
+    MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
+    MOVE.W  D0,SCRIPT_CTRL_STATE
 
 .LAB_14F0_01A0:
 .finish_29ABA:
-    MOVE.W  CTRLRead1,D0
+    MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     CMPI.W  #198,D0
     BLE.S   .return
 
@@ -1067,10 +1139,10 @@ serialCtrlCmd:
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_2349
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRLRead2
-    MOVE.W  D0,CTRLRead1
+    MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
+    MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
     MOVE.W  LAB_2346,D1
-    MOVE.W  D0,CTRLRead3
+    MOVE.W  D0,SCRIPT_CTRL_STATE
     TST.W   D1
     BNE.S   .return
 
@@ -2366,7 +2438,7 @@ LAB_1560:
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_14D0
+    BSR.W   SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
     MOVE.W  #(-1),LAB_211E
@@ -2383,7 +2455,7 @@ LAB_1560:
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_14D0
+    BSR.W   SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
     MOVE.W  #(-1),LAB_211E
@@ -2419,7 +2491,7 @@ LAB_1565:
     EXT.L   D0
     PEA     1000.W
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_14D0
+    BSR.W   SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
 
@@ -2797,6 +2869,27 @@ LAB_157A:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_SetCtrlContextMode   (SetCtrlContextMode??)
+; ARGS:
+;   stack +12: ctxPtr (A3)
+;   stack +18: modeFlag?? (D7)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D7/A3
+; CALLS:
+;   LAB_1581
+; READS:
+;   (none)
+; WRITES:
+;   A3+0, A3+2, and full context via LAB_1581
+; DESC:
+;   Stores a mode flag into the CTRL context header and reinitializes it.
+; NOTES:
+;   Calls LAB_1581 to clear and reset the rest of the structure.
+;------------------------------------------------------------------------------
+SCRIPT_SetCtrlContextMode:
 LAB_1580:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -2812,6 +2905,27 @@ LAB_1580:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_ResetCtrlContext   (ResetCtrlContext??)
+; ARGS:
+;   stack +12: ctxPtr (A3)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D1/D7/A3
+; CALLS:
+;   LAB_1905
+; READS:
+;   A3+440 (resource handle??)
+; WRITES:
+;   A3 fields: +26/+226 strings, +426 flag, +436..+439, +440 handle, and
+;   clears ranges at +428..+431 and +0x1B0..+0x1B3 (4 bytes each).
+; DESC:
+;   Clears and initializes the CTRL context structure and refreshes a resource.
+; NOTES:
+;   The loop runs 4 iterations (D7 = 0..3), clearing two 4-byte subranges.
+;------------------------------------------------------------------------------
+SCRIPT_ResetCtrlContext:
 LAB_1581:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -3021,7 +3135,7 @@ LAB_1591:
     MOVE.L  D0,-(A7)
     JSR     LAB_1656(PC)
 
-    PEA     LAB_2355
+    PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   LAB_1581
 
     LEA     16(A7),A7
@@ -3272,7 +3386,7 @@ LAB_15AD:
     EXT.L   D0
     PEA     500.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_14D0(PC)
+    JSR     SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  A3,D0

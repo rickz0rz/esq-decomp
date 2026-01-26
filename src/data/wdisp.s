@@ -603,10 +603,13 @@ LAB_22A0:
     DS.W    1
 LAB_22A1:
     DS.W    1
+SCRIPT_CTRL_CMD_BUFFER:
 LAB_22A2:
     DS.L    50
+SCRIPT_CTRL_READ_INDEX:
 CTRLRead1:
     DS.W    1
+SCRIPT_CTRL_CHECKSUM:
 CTRLRead2:
     DS.W    1
 LAB_22A5:
@@ -944,6 +947,7 @@ LAB_2343:
     DS.L    1
 GLOB_WORD_CLOCK_SECONDS:
     DS.W    1
+SCRIPT_CTRL_STATE:
 CTRLRead3:
     DS.W    1
 LAB_2346:
@@ -976,6 +980,14 @@ LAB_2353:
     DS.W    1
 LAB_2354:
     DS.W    1
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_CTRL_CONTEXT   (CtrlContextStruct??)
+; TYPE: struct
+; PURPOSE: Control/script context storage used by script control handlers.
+; USED BY: SCRIPT_InitCtrlContext, SCRIPT_SetCtrlContextMode, SCRIPT_ResetCtrlContext
+; NOTES: Size = 112 longs (448 bytes). Field meanings largely unknown.
+;------------------------------------------------------------------------------
+SCRIPT_CTRL_CONTEXT:
 LAB_2355:
     DS.L    112
 LAB_2356:

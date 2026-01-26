@@ -1947,7 +1947,7 @@ LAB_0D56:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -2076,7 +2076,7 @@ LAB_0D62:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4540,7 +4540,7 @@ LAB_0DF4:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 

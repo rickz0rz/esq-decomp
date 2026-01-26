@@ -1433,7 +1433,7 @@ LAB_09BB:
     JMP     LAB_00D3
 
 LAB_09BC:
-    JMP     serialCtrlCmd
+    JMP     SCRIPT_HandleSerialCtrlCmd
 
 JMP_TBL_INTB_RBF_EXEC:
     JMP     INTB_RBF_EXEC

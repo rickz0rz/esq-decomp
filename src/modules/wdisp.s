@@ -1653,7 +1653,7 @@ LAB_18C2:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3004,7 +3004,7 @@ LAB_1934:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!=====
 
@@ -3025,7 +3025,7 @@ REPLACE_LOWER_CASE_LETTER_WITH_SPACE:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3067,7 +3067,7 @@ LAB_1949:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3329,7 +3329,7 @@ LAB_1968:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3353,7 +3353,7 @@ APPEND_DATA_AT_NULL:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3598,7 +3598,7 @@ LAB_1988:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -3631,7 +3631,7 @@ LAB_198B:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4041,7 +4041,7 @@ LAB_19B3:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!=====
 
@@ -4216,7 +4216,7 @@ LAB_19C3:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4420,7 +4420,7 @@ LAB_19DB:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4487,7 +4487,7 @@ LAB_19DC:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4534,7 +4534,7 @@ LIBRARIES_LOAD_FAILED:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4577,7 +4577,7 @@ LAB_19E7:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4647,7 +4647,7 @@ LAB_19EA:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4740,7 +4740,7 @@ LAB_19F3:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -4900,7 +4900,7 @@ LAB_19FF:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -5187,7 +5187,7 @@ SETUP_SIGNAL_AND_MSGPORT:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -5228,7 +5228,7 @@ LAB_1A1D:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -5436,7 +5436,7 @@ LAB_1A30:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -5492,7 +5492,7 @@ LAB_1A34:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -6097,7 +6097,7 @@ LAB_1A71:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -6371,7 +6371,7 @@ LAB_1A8C:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -6472,7 +6472,7 @@ LAB_1A95:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -6750,7 +6750,7 @@ LAB_1AB1:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -6809,7 +6809,7 @@ LAB_1AB8:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -7183,7 +7183,7 @@ LAB_1ADF:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -7202,7 +7202,7 @@ POPULATE_CLOCKDATA_FROM_SECS:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -7362,6 +7362,6 @@ LAB_1AEF:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======

@@ -596,7 +596,7 @@ LAB_0C70:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -1875,4 +1875,4 @@ LAB_0CB4:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD

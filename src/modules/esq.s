@@ -839,9 +839,9 @@ LAB_085E:
     MOVE.B  #$1,LAB_222D
     MOVE.W  #7,LAB_225E
     MOVE.W  #2,LAB_2270
-    MOVE.W  D0,CTRLRead1
+    MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
     MOVE.W  D0,LAB_2266
-    MOVE.W  #$ff,CTRLRead2
+    MOVE.W  #$ff,SCRIPT_CTRL_CHECKSUM
     JSR     LAB_0A45(PC)
 
     JSR     LAB_0A49(PC)
@@ -1218,7 +1218,7 @@ LAB_085E:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
@@ -1232,7 +1232,7 @@ LAB_089E:
     JMP     LAB_1470
 
 LAB_089F:
-    JMP     LAB_14E7
+    JMP     SCRIPT_InitCtrlContext
 
 LAB_08A0:
     JMP     LAB_04F0

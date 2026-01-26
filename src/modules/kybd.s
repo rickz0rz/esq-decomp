@@ -1,5 +1,28 @@
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: KYBD_InitializeInputDevices   (InitializeInputDevices)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none (result codes ignored)
+; CLOBBERS:
+;   D0-D1/A0-A1/A6
+; CALLS:
+;   exec.library OpenDevice, exec.library DoIO
+;   JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_3, JMP_TBL_ALLOCATE_IOSTDREQ, JMP_TBL_ALLOCATE_MEMORY_3
+; READS:
+;   GLOB_STR_INPUTDEVICE, GLOB_STR_CONSOLEDEVICE, GLOB_STR_INPUT_DEVICE, GLOB_STR_CONSOLE_DEVICE
+; WRITES:
+;   GLOB_REF_INPUTDEVICE_MSGPORT, GLOB_REF_CONSOLEDEVICE_MSGPORT
+;   GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE
+;   GLOB_REF_DATA_INPUT_BUFFER, LAB_231E, LAB_231B, LAB_231C
+; DESC:
+;   Allocates message ports and IOStdReqs, opens input/console devices,
+;   and initializes the input event buffer for keyboard handling.
+; NOTES:
+;   Uses a 22-byte buffer and sets IOStdReq io_Command = 9 before DoIO.
+;------------------------------------------------------------------------------
 ; Allocate message ports/IORequests and open console/input devices for keyboard handling.
 KYBD_InitializeInputDevices:
     JSR     LAB_0E02(PC)
@@ -98,6 +121,25 @@ LAB_0E04:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: KYBD_UpdateHighlightState   (UpdateHighlightState)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1/A0
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1BC4, LAB_2251, LAB_2270
+; WRITES:
+;   WDISP_HighlightActive, WDISP_HighlightIndex, [A3] fields
+; DESC:
+;   Clears highlight state and walks banner rectangles to mark the active one.
+; NOTES:
+;   Loop count is 47 iterations (D7 from 0..46) via compare against 46.
+;------------------------------------------------------------------------------
 ; Mark banner rectangles that should be highlighted based on the current cursor slot.
 KYBD_UpdateHighlightState:
     MOVEM.L D7/A3,-(A7)

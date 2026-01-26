@@ -661,4 +661,4 @@ LAB_135A:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD

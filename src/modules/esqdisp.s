@@ -487,7 +487,7 @@ LAB_08DF:
 ;!======
 
     ; Alignment
-    DC.W    $0000
+    ALIGN_WORD
 
 ;!======
 
