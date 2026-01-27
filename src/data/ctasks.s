@@ -61,9 +61,10 @@ GLOB_STR_DF0_NXTDAY_DAT:
     DC.B    "df0:nxtday.dat",0
 LAB_1B9F:
     DC.L    $00000001
-LAB_1BA0:
+DISKIO_BufferControl:
+DISKIO_BufferBase:
     DS.L    1
-LAB_1BA1:
+DISKIO_BufferErrorFlag:
     DS.L    1
 
 ; Values used for the default configuration.
@@ -153,5 +154,5 @@ LAB_1BC9:
 
 LAB_1BCA:
     DC.L    120
-LAB_1BCB:
+DISKIO_OpenCount:
     DS.L    1

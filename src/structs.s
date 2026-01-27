@@ -28,6 +28,18 @@ Struct_InputEvent_Size          = 22
 
 Struct_Interrupt_Size           = 22
 
+; Disk I/O buffer state (see DISKIO_BufferPtr/DISKIO_BufferSize in data files)
+Struct_DiskIoBufferState_Size           = 16
+Struct_DiskIoBufferState__BufferPtr     = 0
+Struct_DiskIoBufferState__BufferSize    = 4
+Struct_DiskIoBufferState__Remaining     = 8
+Struct_DiskIoBufferState__SavedF45      = 12
+
+; Disk I/O buffer control (see DISKIO_BufferBase/DISKIO_BufferErrorFlag)
+Struct_DiskIoBufferControl_Size         = 8
+Struct_DiskIoBufferControl__BufferBase  = 0
+Struct_DiskIoBufferControl__ErrorFlag   = 4
+
 Struct_IORequest__io_Message    = 0
 Struct_IORequest__io_Command    = 28
 

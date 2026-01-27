@@ -319,10 +319,8 @@ LAB_2122:
     DS.W    1
 ; Brush pointers exposed to scripting (primary/secondary selections).
 BRUSH_ScriptPrimarySelection:
-LAB_2123:
     DS.L    1
 BRUSH_ScriptSecondarySelection:
-LAB_2124:
     DS.L    1
 LAB_2125:
     DS.L    1

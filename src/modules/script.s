@@ -213,8 +213,8 @@ LAB_14AC:
 JMP_TBL_ALLOCATE_MEMORY_4:
     JMP     ALLOCATE_MEMORY
 
-JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_2:
-    JMP     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE
+JMP_TBL_DISKIO_OpenFileWithBuffer_2:
+    JMP     DISKIO_OpenFileWithBuffer
 
 ;======
 
@@ -233,7 +233,6 @@ LAB_14AF:
 ;!======
 
 SCRIPT_GetCtrlBuffer:
-j2_getCTRLBuffer:
     JSR     j_getCTRLBuffer(PC)
 
     RTS
@@ -423,7 +422,6 @@ LAB_14C1:
 
 ;!======
 
-JMP_TBL_GET_CTRL_BUFFER:
 j_getCTRLBuffer:
     JMP     getCTRLBuffer
 
@@ -622,7 +620,6 @@ LAB_14C8:
 ;   from GCOMMAND_GetBannerChar; returns 0 if already at target or busy.
 ;------------------------------------------------------------------------------
 SCRIPT_BeginBannerCharTransition:
-LAB_14D0:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7,-(A7)
 
@@ -828,7 +825,7 @@ LAB_14E2:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   LAB_1580
+;   SCRIPT_SetCtrlContextMode
 ; READS:
 ;   SCRIPT_CTRL_CONTEXT (control context base)
 ; WRITES:
@@ -836,13 +833,12 @@ LAB_14E2:
 ; DESC:
 ;   Initializes the script CTRL/control context block with a mode flag of 1.
 ; NOTES:
-;   Wrapper around LAB_1580 which fully clears/initializes the context struct.
+;   Wrapper around SCRIPT_SetCtrlContextMode which fully clears/initializes the context struct.
 ;------------------------------------------------------------------------------
 SCRIPT_InitCtrlContext:
-LAB_14E7:
     PEA     1.W
     PEA     SCRIPT_CTRL_CONTEXT
-    BSR.W   LAB_1580
+    BSR.W   SCRIPT_SetCtrlContextMode
 
     ADDQ.W  #8,A7
     RTS
@@ -877,7 +873,6 @@ LAB_14E7:
 ;   SCRIPT_CTRL_STATE acts as a parser state: 0=idle, 1/2/3=substates ??.
 ;------------------------------------------------------------------------------
 SCRIPT_HandleSerialCtrlCmd:
-serialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
 
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
@@ -1156,7 +1151,6 @@ serialCtrlCmd:
 
 ; Dispatch helper for brush-control script commands (handles primary/secondary selection requests).
 SCRIPT_HandleBrushCommand:
-LAB_14FE:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A2-A3,-(A7)
 
@@ -2879,15 +2873,15 @@ LAB_157A:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   LAB_1581
+;   SCRIPT_ResetCtrlContext
 ; READS:
 ;   (none)
 ; WRITES:
-;   A3+0, A3+2, and full context via LAB_1581
+;   A3+0, A3+2, and full context via SCRIPT_ResetCtrlContext
 ; DESC:
 ;   Stores a mode flag into the CTRL context header and reinitializes it.
 ; NOTES:
-;   Calls LAB_1581 to clear and reset the rest of the structure.
+;   Calls SCRIPT_ResetCtrlContext to clear and reset the rest of the structure.
 ;------------------------------------------------------------------------------
 SCRIPT_SetCtrlContextMode:
 LAB_1580:
@@ -2897,7 +2891,7 @@ LAB_1580:
     MOVE.W  D7,(A3)
     MOVE.W  #1,2(A3)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1581
+    BSR.W   SCRIPT_ResetCtrlContext
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D7/A3
@@ -3136,7 +3130,7 @@ LAB_1591:
     JSR     LAB_1656(PC)
 
     PEA     SCRIPT_CTRL_CONTEXT
-    BSR.W   LAB_1581
+    BSR.W   SCRIPT_ResetCtrlContext
 
     LEA     16(A7),A7
     RTS

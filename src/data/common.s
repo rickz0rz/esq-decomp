@@ -116,7 +116,6 @@ LAB_1B25:
     DS.L    1
 ; Points to the most recently loaded brush node (shared across modules).
 BRUSH_SelectedNode:
-LAB_1B26:
     DS.L    1
 LAB_1B27:
     DS.L    1
@@ -124,7 +123,6 @@ LAB_1B28:
     DS.L    1
 ; Non-zero while BRUSH_PopulateBrushList is mutating the brush list.
 BRUSH_LoadInProgressFlag:
-LAB_1B29:
     DS.L    1
 ; Tracks which cleanup alert message (if any) should be shown after brush loads.
 BRUSH_PendingAlertCode:

@@ -211,14 +211,17 @@ LAB_1321:
 
     ADD.W   D0,D0
     MOVE.W  LAB_1322(PC,D0.W),D0
-    JMP     LAB_1323(PC,D0.W)
+    JMP     LAB_1322+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_1322:
-    DC.W    $000a
+    DC.W    $000A
+	DC.W    $0020
+    DC.W    $00F2
+	DC.W    $006A
+    DC.W    $006A
+    DC.W    $0088
 
-LAB_1323:
-    ORI.B   #$f2,-(A0)
-    ORI.W   #$6a,136(A2)
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D6,-(A7)
@@ -363,15 +366,19 @@ LAB_132D:
 
     ADD.W   D0,D0
     MOVE.W  LAB_132E(PC,D0.W),D0
-    JMP     LAB_132F(PC,D0.W)
+    JMP     LAB_132E+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_132E:
     DC.W    $000c
+    DC.W    $0024
+    DC.W    $0044
+	DC.W    $005e
+    DC.W    $007a
+	DC.W    $0090
+    DC.W    $00ae
 
-LAB_132F:
-    ORI.B   #$44,-(A4)
-    ORI.W   #$7a,(A6)+
-    ORI.L   #$ae2006,(A0)
+    MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)

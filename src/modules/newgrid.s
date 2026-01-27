@@ -1689,6 +1689,7 @@ LAB_1012:
     MOVE.W  LAB_1013(PC,D0.W),D0
     JMP     LAB_1013+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_1013:
     ORI.B   #$50,(A6)
     ORI.L   #$ee0138,(A6)+
@@ -4986,6 +4987,7 @@ LAB_1107:
     MOVE.W  LAB_1108(PC,D0.W),D0
     JMP     LAB_1108+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_1108:
     ORI.B   #$c,12(A0)
     DC.W    $000c
@@ -5048,10 +5050,17 @@ LAB_110E:
     MOVE.W  LAB_110F(PC,D0.W),D0
     JMP     LAB_110F+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_110F:
-    ORI.B   #$30,48(A0,D0.W)
-    ORI.B   #$c,24(A0,D0.W)
+    DC.W    $0030
+    DC.W    $0030
+    DC.W    $0030
+    DC.W    $0030
+    DC.W    $000c
+    DC.W    $0018
     DC.W    $0024
+
+
     MOVE.L  LAB_22CD,LAB_2334
     BRA.S   LAB_1112
 
@@ -6236,17 +6245,20 @@ LAB_116D:
 
     ADD.W   D0,D0
     MOVE.W  LAB_116E(PC,D0.W),D0
-    JMP     LAB_116F(PC,D0.W)
+    JMP     LAB_116E+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_116E:
-    DC.W    $000e
-
-LAB_116F:
-    BSET    D0,-(A6)
+    DC.W    LAB_116E_000E-LAB_116E-2
+    DC.W    $01e6
     DC.W    $003a
-    ORI.L   #$9200ac,(A2)
-    BSET    D0,-(A6)
-    BCLR    D0,(A4)
+    DC.W    $0092
+    DC.W    $0092
+    DC.W    $00ac
+    DC.W    $01e6
+    DC.W    $0194
+
+LAB_116E_000E:
     CLR.L   LAB_2023
     MOVE.L  LAB_2021,-(A7)
     MOVE.L  LAB_2022,-(A7)
@@ -7270,16 +7282,17 @@ LAB_11AF:
 
     ADD.W   D0,D0
     MOVE.W  LAB_11B0(PC,D0.W),D0
-    JMP     LAB_11B1(PC,D0.W)
+    JMP     LAB_11B0+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_11B0:
     DC.W    $000a
-
-LAB_11B1:
     DC.W    $003e
     DC.W    $00e8
-    ORI.W   #$60,-(A0)
+    DC.W    $0060
+    DC.W    $0060
     DC.W    $0082
+
     CLR.L   LAB_2025
     MOVE.L  D7,D0
     EXT.L   D0
@@ -8083,18 +8096,19 @@ LAB_11E4:
 
     ADD.W   D0,D0
     MOVE.W  LAB_11E5(PC,D0.W),D0
-    JMP     LAB_11E6(PC,D0.W)
+    JMP     LAB_11E5+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_11E5:
     DC.W    $000e
-
-LAB_11E6:
     DC.W    $00c2
     DC.W    $00f4
-    MOVEP.L 328(A0),D0
+    DC.W    $0148
+    DC.W    $0148
     DC.W    $0170
     DC.W    $0238
     DC.W    $029c
+
     MOVE.B  LAB_22E0,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
@@ -10363,17 +10377,18 @@ LAB_128F:
 
     ADD.W   D0,D0
     MOVE.W  LAB_1290(PC,D0.W),D0
-    JMP     LAB_1291(PC,D0.W)
+    JMP     LAB_1290+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_1290:
     DC.W    $000e
-
-LAB_1291:
-    ORI.W   #$5a,D0
+    DC.W    $0040
+    DC.W    $005a
     DC.W    $00b2
     DC.W    $00b2
     DC.W    $00c6
     DC.W    $01b6
+
     BCHG    D0,-(A2)
     MOVE.L  D7,D0
     EXT.L   D0
@@ -10839,15 +10854,18 @@ LAB_12BB:
 
     ADD.W   D0,D0
     MOVE.W  LAB_12BC(PC,D0.W),D0
-    JMP     LAB_12BD(PC,D0.W)
+    JMP     LAB_12BC+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_12BC:
     DC.W    $000a
+    DC.W    $0028
+    DC.W    $0044
+    DC.W    $0040
+	DC.W    $0038
+    DC.W    $0040
 
-LAB_12BD:
-    ORI.B   #$44,64(A0)
-    ORI.B   #$40,$42B9.W
-    DC.L    LAB_2039
+    CLR.L   (LAB_2039).L
     MOVE.W  22(A3),D0
     MOVE.W  D0,LAB_203A
     EXT.L   D0

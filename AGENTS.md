@@ -75,6 +75,14 @@ When code accesses offsets like `112(A3)` or `18(A0)`, add inline end-of-line co
 ```
 Use the format `; A<reg>+<offset> = <field>` or `; <base>+<offset> = <field>`. If uncertain, keep `??` and reuse consistent field names across files.
 
+### Struct definitions (vasm mot)
+vasm (mot syntax) has no native struct/record syntax, so define explicit offset symbols:
+- `Struct_Foo__Field = <offset>`
+- `Struct_Foo__Field_Size = <bytes>` (optional)
+- `Struct_Foo_Size = <total bytes>`
+
+Use these in operands for clarity, e.g. `MOVE.W Struct_Foo__Field(A0),D0`.
+
 ### Compiler idiom annotations
 Add a short descriptive comment near common patterns:
 - PC-relative jump table → “switch/jumptable”

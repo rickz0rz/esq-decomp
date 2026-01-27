@@ -209,19 +209,18 @@ PARSE_INI:
 
     ADD.W   D0,D0
     MOVE.W  .LAB_13A9(PC,D0.W),D0
-    JMP     .LAB_13AA(PC,D0.W)
+    JMP     .LAB_13A9+2(PC,D0.W)
 
+; TODO: Switch case
 .LAB_13A9:
-    DC.W    $000e
-
-.LAB_13AA:
+    DC.W    $000E
     DC.W    $0176
     DC.W    $0222
     DC.W    $0236
     DC.W    $0236
-    DC.W    $02e6
-    BCLR    D1,(A2)
-    DC.W    $043e
+    DC.W    $02E6
+	DC.W    $0392
+    DC.W    $043E
 
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
@@ -2526,6 +2525,15 @@ JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
 
 ;!======
 
+;EVEN
+;    rsReset                          ; start struct scrTxtMem
+;scrTxtMem_PtrTopBlank       rs.l 1   ; pointer to top blank
+;scrTxtMem_PtrTopOpen        rs.l 1   ; pointer to top open/visible area
+;scrTxtMem_PtrBottomBlank    rs.l 1   ; pointer to bottom blank
+;scrTxtMem_SizeOf            rs.w     ; end/size of struct scrTxtMem
+
+
+
 LAB_146E:
     LINK.W  A5,#-20
     MOVE.L  D7,-(A7)
@@ -2873,7 +2881,7 @@ LAB_1487:
 .LAB_1488:
     PEA     MODE_NEWFILE.W
     PEA     GLOB_STR_DF0_ERR_LOG
-    JSR     JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_2(PC)
+    JSR     JMP_TBL_DISKIO_OpenFileWithBuffer_2(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7

@@ -1,6 +1,27 @@
 ;!======
 
-LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE:
+;------------------------------------------------------------------------------
+; FUNC: DISKIO_OpenFileWithBuffer   (Open file and initialize I/O buffer??)
+; ARGS:
+;   stack +16: filePathPtr (A3)
+;   stack +20: accessMode (D7)
+; RET:
+;   D0: file handle or 0 on failure
+; CLOBBERS:
+;   D0/D6-D7/A3
+; CALLS:
+;   LAB_0466, OPEN_FILE_WITH_ACCESS_MODE, ALLOCATE_MEMORY
+; READS:
+;   DISKIO_OpenCount, LAB_1F45, DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize
+; WRITES:
+;   DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase, DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag, DISKIO_OpenCount, LAB_1F45, DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr, DISKIO_BufferState+Struct_DiskIoBufferState__Remaining, DISKIO_BufferState+Struct_DiskIoBufferState__SavedF45
+; DESC:
+;   Opens a file and allocates a global buffer used by disk I/O helpers.
+; NOTES:
+;   Early-exits if DISKIO_OpenCount is non-zero (already active). On first open, saves
+;   LAB_1F45 into DISKIO_BufferState+Struct_DiskIoBufferState__SavedF45 and forces LAB_1F45 = $0100. Buffer size is DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize.
+;------------------------------------------------------------------------------
+DISKIO_OpenFileWithBuffer:
     MOVEM.L D6-D7/A3,-(A7)
 
     SetOffsetForStack 3
@@ -10,10 +31,10 @@ LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE:
     MOVEQ   #0,D6
     JSR     LAB_0466(PC)
 
-    TST.L   LAB_1BCB
+    TST.L   DISKIO_OpenCount
     BNE.S   .return
 
-    CLR.L   LAB_1BA1
+    CLR.L   DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
     JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_1(PC)
@@ -23,25 +44,25 @@ LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE:
     TST.L   D6
     BEQ.S   .LAB_0398
 
-    TST.L   LAB_1BCB
+    TST.L   DISKIO_OpenCount
     BNE.S   .LAB_0397
 
-    MOVE.W  LAB_1F45,LAB_21D2
+    MOVE.W  LAB_1F45,DISKIO_BufferState+Struct_DiskIoBufferState__SavedF45
 
 .LAB_0397:
-    ADDQ.L  #1,LAB_1BCB
+    ADDQ.L  #1,DISKIO_OpenCount
     MOVE.W  #$100,LAB_1F45
 
     PEA     (MEMF_PUBLIC).W
-    MOVE.L  LAB_21D0,-(A7)
+    MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
     PEA     286.W
     PEA     GLOB_STR_DISKIO_C_1
     JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
 
     LEA     16(A7),A7
-    MOVE.L  LAB_21D0,LAB_21D1
-    MOVE.L  D0,LAB_21CF
-    MOVE.L  D0,LAB_1BA0
+    MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,DISKIO_BufferState+Struct_DiskIoBufferState__Remaining
+    MOVE.L  D0,DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr
+    MOVE.L  D0,DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase
 
 .LAB_0398:
     JSR     LAB_0466(PC)
@@ -64,16 +85,16 @@ LAB_039A:
     TST.L   D7
     BEQ.S   LAB_039D
 
-    CLR.L   LAB_1BA1
-    MOVE.L  LAB_21D0,D0
-    SUB.L   LAB_21D1,D0
+    CLR.L   DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag
+    MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,D0
+    SUB.L   DISKIO_BufferState+Struct_DiskIoBufferState__Remaining,D0
     MOVE.L  D0,D6
     TST.L   D6
     BEQ.S   LAB_039B
 
     MOVE.L  D7,D1
     MOVE.L  D6,D3
-    MOVE.L  LAB_1BA0,D2
+    MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,D2
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
@@ -99,8 +120,8 @@ LAB_039C:
     TST.W   LAB_1B8A
     BEQ.S   LAB_039C
 
-    MOVE.L  LAB_21D0,-(A7)
-    MOVE.L  LAB_1BA0,-(A7)
+    MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
+    MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,-(A7)
     PEA     353.W
     PEA     GLOB_STR_DISKIO_C_2
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
@@ -110,20 +131,20 @@ LAB_039C:
     LEA     16(A7),A7
 
 LAB_039D:
-    MOVE.L  LAB_1BCB,D0
+    MOVE.L  DISKIO_OpenCount,D0
     TST.L   D0
     BLE.S   LAB_039E
 
-    SUBQ.L  #1,LAB_1BCB
+    SUBQ.L  #1,DISKIO_OpenCount
 
 LAB_039E:
-    TST.L   LAB_1BCB
+    TST.L   DISKIO_OpenCount
     BNE.S   LAB_039F
 
     TST.W   LAB_2263
     BNE.S   LAB_039F
 
-    MOVE.W  LAB_21D2,LAB_1F45
+    MOVE.W  DISKIO_BufferState+Struct_DiskIoBufferState__SavedF45,LAB_1F45
 
 LAB_039F:
     MOVEM.L (A7)+,D2-D3/D6-D7
@@ -148,7 +169,7 @@ LAB_03A0:
     BEQ.S   LAB_03A1
 
     MOVEQ   #1,D0
-    CMP.L   LAB_1BA1,D0
+    CMP.L   DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag,D0
     BEQ.S   LAB_03A1
 
     TST.L   D7
@@ -162,13 +183,13 @@ LAB_03A2:
     JSR     LAB_0466(PC)
 
 LAB_03A3:
-    MOVEA.L LAB_21CF,A0
+    MOVEA.L DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr,A0
     MOVE.B  (A3)+,(A0)+
-    MOVE.L  A0,LAB_21CF
-    SUBQ.L  #1,LAB_21D1
+    MOVE.L  A0,DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr
+    SUBQ.L  #1,DISKIO_BufferState+Struct_DiskIoBufferState__Remaining
     SUBQ.L  #1,D6
-    MOVE.L  A0,LAB_21CF
-    TST.L   LAB_21D1
+    MOVE.L  A0,DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr
+    TST.L   DISKIO_BufferState+Struct_DiskIoBufferState__Remaining
     BEQ.S   LAB_03A4
 
     TST.L   D6
@@ -177,12 +198,12 @@ LAB_03A3:
 LAB_03A4:
     JSR     LAB_0466(PC)
 
-    TST.L   LAB_21D1
+    TST.L   DISKIO_BufferState+Struct_DiskIoBufferState__Remaining
     BNE.S   LAB_03A6
 
     MOVE.L  D7,D1
-    MOVE.L  LAB_1BA0,D2
-    MOVE.L  LAB_21D0,D3
+    MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,D2
+    MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,D3
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
@@ -191,13 +212,13 @@ LAB_03A4:
     BEQ.S   LAB_03A5
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_1BA1
+    MOVE.L  D0,DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag
     BRA.S   LAB_03A7
 
 LAB_03A5:
     MOVE.L  D4,D5
-    MOVE.L  D2,LAB_21CF
-    MOVE.L  D3,LAB_21D1
+    MOVE.L  D2,DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr
+    MOVE.L  D3,DISKIO_BufferState+Struct_DiskIoBufferState__Remaining
     JSR     LAB_0466(PC)
 
 LAB_03A6:
@@ -535,7 +556,7 @@ LAB_03C0:
     MOVE.L  D0,D7
     MOVE.L  20(A0),D0
     ADD.L   D0,D0
-    MOVE.L  D0,LAB_21D0
+    MOVE.L  D0,DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize
 
 .LAB_03C1:
     PEA     Struct_InfoData_Size.W
@@ -1912,7 +1933,7 @@ LAB_041A:
     MOVEM.L D2-D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     GLOB_STR_DF0_CONFIG_DAT_1
-    BSR.W   LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE
+    BSR.W   DISKIO_OpenFileWithBuffer
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -3138,7 +3159,6 @@ LAB_0468:
     JMP     LAB_1A23
 
 JMP_TBL_SCRIPT_BeginBannerCharTransition_1:
-JMP_TBL_LAB_14D0_1:
     JMP     SCRIPT_BeginBannerCharTransition
 
 LAB_046A:

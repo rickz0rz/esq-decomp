@@ -76,24 +76,19 @@ BUFFER_5929_LONGWORDS:
     DS.L    19
 ; Pointer to the most recently allocated brush node (BRUSH_AllocBrushNode).
 BRUSH_LastAllocatedNode:
-LAB_21AB:
     DS.L    1
 ; Scratch buffer used by BRUSH_SelectBrushByLabel during comparisons.
 BRUSH_LabelScratch:
-LAB_21AC:
     DS.W    1
     DS.B    1
 BRUSH_SnapshotHeader:
-LAB_21AD:
     DS.B    1
     DS.L    8
 ; Cached brush width captured while BRUSH_PendingAlertCode is set.
 BRUSH_SnapshotWidth:
-LAB_21AE:
     DS.L    1
 ; Cached brush depth (planes) captured alongside BRUSH_SnapshotWidth.
 BRUSH_SnapshotDepth:
-LAB_21AF:
     DS.L    1
 LAB_21B0:
     DS.L    128
@@ -160,13 +155,21 @@ LAB_21CD:
     DS.L    1
 LAB_21CE:
     DS.L    1
-LAB_21CF:
+;------------------------------------------------------------------------------
+; SYM: DISKIO_BufferState   (DiskIoBufferState??)
+; TYPE: struct
+; PURPOSE: Global disk I/O buffer state used by DISKIO_OpenFileWithBuffer and writers.
+; USED BY: DISKIO_OpenFileWithBuffer, LAB_03A0, LAB_039A
+; NOTES: Layout matches Struct_DiskIoBufferState__* offsets.
+;------------------------------------------------------------------------------
+DISKIO_BufferState:
+DISKIO_BufferPtr:
     DS.L    1
-LAB_21D0:
+DISKIO_BufferSize:
     DS.L    1
-LAB_21D1:
+; Struct_DiskIoBufferState__Remaining
     DS.L    1
-LAB_21D2:
+; Struct_DiskIoBufferState__SavedF45
     DS.L    1
 LAB_21D3:
     DS.L    1
@@ -604,13 +607,10 @@ LAB_22A0:
 LAB_22A1:
     DS.W    1
 SCRIPT_CTRL_CMD_BUFFER:
-LAB_22A2:
     DS.L    50
 SCRIPT_CTRL_READ_INDEX:
-CTRLRead1:
     DS.W    1
 SCRIPT_CTRL_CHECKSUM:
-CTRLRead2:
     DS.W    1
 LAB_22A5:
     DS.W    1
@@ -948,7 +948,6 @@ LAB_2343:
 GLOB_WORD_CLOCK_SECONDS:
     DS.W    1
 SCRIPT_CTRL_STATE:
-CTRLRead3:
     DS.W    1
 LAB_2346:
     DS.W    1
@@ -988,7 +987,6 @@ LAB_2354:
 ; NOTES: Size = 112 longs (448 bytes). Field meanings largely unknown.
 ;------------------------------------------------------------------------------
 SCRIPT_CTRL_CONTEXT:
-LAB_2355:
     DS.L    112
 LAB_2356:
     DS.W    1

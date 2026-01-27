@@ -199,6 +199,28 @@ LAB_02DB:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: COI_CountEscape14BeforeNull   (CountEscape14BeforeNull??)
+; ARGS:
+;   stack +4: bufPtr (A3)
+;   stack +8: maxLen (D7)
+; RET:
+;   D0: count of $14 bytes before NUL/limit
+; CLOBBERS:
+;   D0/D4-D7/A3
+; CALLS:
+;   (none)
+; READS:
+;   A3 buffer bytes
+; WRITES:
+;   (none)
+; DESC:
+;   Scans a byte buffer until NUL or maxLen, counting $14 bytes and skipping the
+;   following byte each time a $14 is seen.
+; NOTES:
+;   Stops when a 0 byte is encountered or when index reaches maxLen.
+;------------------------------------------------------------------------------
+COI_CountEscape14BeforeNull:
 LAB_02DC:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -207,87 +229,110 @@ LAB_02DC:
     MOVEQ   #0,D6
     MOVE.L  D6,D4
 
-LAB_02DD:
+.scan_loop:
     TST.W   D5
-    BNE.S   LAB_02E1
+    BNE.S   .done
 
     MOVE.L  D6,D0
     EXT.L   D0
     CMP.L   D7,D0
-    BGE.S   LAB_02E1
+    BGE.S   .done
 
     MOVEQ   #0,D0
     MOVE.B  0(A3,D6.W),D0
     TST.W   D0
-    BEQ.S   LAB_02DE
+    BEQ.S   .found_null
 
     SUBI.W  #20,D0
-    BEQ.S   LAB_02DF
+    BEQ.S   .found_escape
 
-    BRA.S   LAB_02E0
+    BRA.S   .advance
 
-LAB_02DE:
+.found_null:
     MOVEQ   #1,D5
-    BRA.S   LAB_02E0
+    BRA.S   .advance
 
-LAB_02DF:
+.found_escape:
     ADDQ.W  #1,D4
     ADDQ.W  #1,D6
 
-LAB_02E0:
+.advance:
     ADDQ.W  #1,D6
-    BRA.S   LAB_02DD
+    BRA.S   .scan_loop
 
-LAB_02E1:
+.done:
     MOVE.L  D4,D0
     MOVEM.L (A7)+,D4-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: COI_WriteOiDataFile   (WriteOiDataFile??)
+; ARGS:
+;   stack +8: diskId?? (low byte used -> D7)
+; RET:
+;   D0: 0 on success, 1 on invalid header, -3 on file open failure
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, DISKIO_OpenFileWithBuffer,
+;   LAB_03A0, LAB_00BE, LAB_039A
+; READS:
+;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235
+; WRITES:
+;   LAB_1B8F/LAB_1B90/LAB_1B91/LAB_1B92 (flags), output file contents
+; DESC:
+;   Writes `df0:OI_%02lx.dat` for the selected diskId, emitting a tab-delimited
+;   header plus per-entry and per-subentry records with CR/LF separators.
+; NOTES:
+;   Uses wildcard name matching to skip duplicate entries, and writes $1A as an
+;   EOF marker at the end of the file.
+;------------------------------------------------------------------------------
+COI_WriteOiDataFile:
 LAB_02E2:
     LINK.W  A5,#-152
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVE.B  11(A5),D7
     MOVE.W  LAB_2231,D0
     CMPI.W  #$c8,D0
-    BLS.S   LAB_02E3
+    BLS.S   .check_primary_header
 
     MOVEQ   #1,D0
-    BRA.W   LAB_0315
+    BRA.W   .return_status
 
-LAB_02E3:
+.check_primary_header:
     MOVE.B  LAB_222D,D0
     CMP.B   D7,D0
-    BNE.S   LAB_02E4
+    BNE.S   .check_secondary_header
 
     MOVE.B  LAB_222E,D0
     SUBQ.B  #1,D0
-    BNE.S   LAB_02E4
+    BNE.S   .check_secondary_header
 
     MOVEQ   #1,D0
     MOVE.B  D0,LAB_1B90
     MOVE.B  D7,LAB_1B92
     MOVE.W  LAB_222F,D1
     MOVE.W  D1,-32(A5)
-    BRA.S   LAB_02E6
+    BRA.S   .format_filename
 
-LAB_02E4:
+.check_secondary_header:
     MOVE.B  LAB_2230,D0
     CMP.B   D7,D0
-    BNE.S   LAB_02E5
+    BNE.S   .invalid_disk_id
 
     MOVE.B  #$1,LAB_1B8F
     MOVE.B  D7,LAB_1B91
     MOVE.W  LAB_2231,D0
     MOVE.W  D0,-32(A5)
-    BRA.S   LAB_02E6
+    BRA.S   .format_filename
 
-LAB_02E5:
+.invalid_disk_id:
     MOVEQ   #1,D0
-    BRA.W   LAB_0315
+    BRA.W   .return_status
 
-LAB_02E6:
+.format_filename:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #2,D1
@@ -302,17 +347,17 @@ LAB_02E6:
 
     PEA     MODE_NEWFILE.W
     PEA     -112(A5)
-    JSR     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE(PC)
+    JSR     DISKIO_OpenFileWithBuffer(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,D5
     TST.L   D5
-    BNE.S   LAB_02E7
+    BNE.S   .write_header_disk_id
 
     MOVEQ   #-3,D0
-    BRA.W   LAB_0315
+    BRA.W   .return_status
 
-LAB_02E7:
+.write_header_disk_id:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
@@ -323,9 +368,9 @@ LAB_02E7:
     LEA     -152(A5),A0
     MOVEA.L A0,A1
 
-LAB_02E8:
+.measure_header_disk_id:
     TST.B   (A1)+
-    BNE.S   LAB_02E8
+    BNE.S   .measure_header_disk_id
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -347,9 +392,9 @@ LAB_02E8:
     LEA     -152(A5),A0
     MOVEA.L A0,A1
 
-LAB_02E9:
+.measure_header_second_field:
     TST.B   (A1)+
-    BNE.S   LAB_02E9
+    BNE.S   .measure_header_second_field
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -366,18 +411,18 @@ LAB_02E9:
     LEA     64(A7),A7
     CLR.W   -26(A5)
 
-LAB_02EA:
+.entry_loop:
     MOVE.W  -26(A5),D0
     CMP.W   -32(A5),D0
-    BGE.W   LAB_0314
+    BGE.W   .write_eof
 
     MOVE.B  LAB_222D,D1
     CMP.B   D1,D7
-    BNE.S   LAB_02EB
+    BNE.S   .select_default_table
 
     MOVE.B  LAB_222E,D1
     SUBQ.B  #1,D1
-    BNE.S   LAB_02EB
+    BNE.S   .select_default_table
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -385,9 +430,9 @@ LAB_02EA:
     LEA     LAB_2235,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A3
-    BRA.S   LAB_02EC
+    BRA.S   .entry_selected
 
-LAB_02EB:
+.select_default_table:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -395,26 +440,26 @@ LAB_02EB:
     ADDA.L  D1,A0
     MOVEA.L (A0),A3
 
-LAB_02EC:
+.entry_selected:
     CLR.W   -28(A5)
     MOVE.W  -28(A5),D6
     EXT.L   D6
 
-LAB_02ED:
+.find_duplicate_entry:
     MOVE.W  -28(A5),D0
     CMP.W   -26(A5),D0
-    BGE.S   LAB_02F0
+    BGE.S   .entry_ready
 
     TST.L   D6
-    BNE.S   LAB_02F0
+    BNE.S   .entry_ready
 
     MOVE.B  LAB_222D,D1
     CMP.B   D1,D7
-    BNE.S   LAB_02EE
+    BNE.S   .select_compare_table
 
     MOVE.B  LAB_222E,D1
     SUBQ.B  #1,D1
-    BNE.S   LAB_02EE
+    BNE.S   .select_compare_table
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -422,9 +467,9 @@ LAB_02ED:
     LEA     LAB_2235,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
-    BRA.S   LAB_02EF
+    BRA.S   .compare_entry_names
 
-LAB_02EE:
+.select_compare_table:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -432,7 +477,7 @@ LAB_02EE:
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
 
-LAB_02EF:
+.compare_entry_names:
     LEA     12(A3),A0
     LEA     12(A1),A6
     MOVE.L  A6,-(A7)
@@ -448,24 +493,24 @@ LAB_02EF:
     EXT.L   D1
     MOVE.L  D1,D6
     ADDQ.W  #1,-28(A5)
-    BRA.S   LAB_02ED
+    BRA.S   .find_duplicate_entry
 
-LAB_02F0:
+.entry_ready:
     TST.L   D6
-    BNE.W   LAB_0313
+    BNE.W   .next_entry_group
 
     MOVEA.L 48(A3),A2
     LEA     12(A3),A0
     MOVE.L  A0,D0
-    BEQ.S   LAB_02F2
+    BEQ.S   .write_field24
 
     LEA     12(A3),A0
     LEA     12(A3),A1
     MOVEA.L A1,A6
 
-LAB_02F1:
+.measure_entry_name:
     TST.B   (A6)+
-    BNE.S   LAB_02F1
+    BNE.S   .measure_entry_name
 
     SUBQ.L  #1,A6
     SUBA.L  A1,A6
@@ -476,7 +521,7 @@ LAB_02F1:
 
     LEA     12(A7),A7
 
-LAB_02F2:
+.write_field24:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -484,13 +529,13 @@ LAB_02F2:
 
     LEA     12(A7),A7
     TST.L   24(A2)
-    BEQ.S   LAB_02F4
+    BEQ.S   .write_field28
 
     MOVEA.L 24(A2),A0
 
-LAB_02F3:
+.measure_field24:
     TST.B   (A0)+
-    BNE.S   LAB_02F3
+    BNE.S   .measure_field24
 
     SUBQ.L  #1,A0
     SUBA.L  24(A2),A0
@@ -501,7 +546,7 @@ LAB_02F3:
 
     LEA     12(A7),A7
 
-LAB_02F4:
+.write_field28:
     PEA     1.W
     PEA     LAB_1B70
     MOVE.L  D5,-(A7)
@@ -509,13 +554,13 @@ LAB_02F4:
 
     LEA     12(A7),A7
     TST.L   28(A2)
-    BEQ.S   LAB_02F6
+    BEQ.S   .write_field32
 
     MOVEA.L 28(A2),A0
 
-LAB_02F5:
+.measure_field28:
     TST.B   (A0)+
-    BNE.S   LAB_02F5
+    BNE.S   .measure_field28
 
     SUBQ.L  #1,A0
     SUBA.L  28(A2),A0
@@ -526,7 +571,7 @@ LAB_02F5:
 
     LEA     12(A7),A7
 
-LAB_02F6:
+.write_field32:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -540,9 +585,9 @@ LAB_02F6:
     LEA     -152(A5),A0
     MOVEA.L A0,A1
 
-LAB_02F7:
+.measure_field32:
     TST.B   (A1)+
-    BNE.S   LAB_02F7
+    BNE.S   .measure_field32
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -558,13 +603,13 @@ LAB_02F7:
 
     LEA     40(A7),A7
     TST.L   4(A2)
-    BEQ.S   LAB_02F9
+    BEQ.S   .write_field0
 
     MOVEA.L 4(A2),A0
 
-LAB_02F8:
+.measure_field4:
     TST.B   (A0)+
-    BNE.S   LAB_02F8
+    BNE.S   .measure_field4
 
     SUBQ.L  #1,A0
     SUBA.L  4(A2),A0
@@ -575,7 +620,7 @@ LAB_02F8:
 
     LEA     12(A7),A7
 
-LAB_02F9:
+.write_field0:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -583,9 +628,9 @@ LAB_02F9:
 
     MOVEA.L A2,A0
 
-LAB_02FA:
+.measure_field0:
     TST.B   (A0)+
-    BNE.S   LAB_02FA
+    BNE.S   .measure_field0
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
@@ -601,13 +646,13 @@ LAB_02FA:
 
     LEA     32(A7),A7
     TST.L   12(A2)
-    BEQ.S   LAB_02FC
+    BEQ.S   .write_field16
 
     MOVEA.L 12(A2),A0
 
-LAB_02FB:
+.measure_field12:
     TST.B   (A0)+
-    BNE.S   LAB_02FB
+    BNE.S   .measure_field12
 
     SUBQ.L  #1,A0
     SUBA.L  12(A2),A0
@@ -618,7 +663,7 @@ LAB_02FB:
 
     LEA     12(A7),A7
 
-LAB_02FC:
+.write_field16:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -626,13 +671,13 @@ LAB_02FC:
 
     LEA     12(A7),A7
     TST.L   16(A2)
-    BEQ.S   LAB_02FE
+    BEQ.S   .write_field20
 
     MOVEA.L 16(A2),A0
 
-LAB_02FD:
+.measure_field16:
     TST.B   (A0)+
-    BNE.S   LAB_02FD
+    BNE.S   .measure_field16
 
     SUBQ.L  #1,A0
     SUBA.L  16(A2),A0
@@ -643,7 +688,7 @@ LAB_02FD:
 
     LEA     12(A7),A7
 
-LAB_02FE:
+.write_field20:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -651,13 +696,13 @@ LAB_02FE:
 
     LEA     12(A7),A7
     TST.L   20(A2)
-    BEQ.S   LAB_0300
+    BEQ.S   .write_field8
 
     MOVEA.L 20(A2),A0
 
-LAB_02FF:
+.measure_field20:
     TST.B   (A0)+
-    BNE.S   LAB_02FF
+    BNE.S   .measure_field20
 
     SUBQ.L  #1,A0
     SUBA.L  20(A2),A0
@@ -668,7 +713,7 @@ LAB_02FF:
 
     LEA     12(A7),A7
 
-LAB_0300:
+.write_field8:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -676,13 +721,13 @@ LAB_0300:
 
     LEA     12(A7),A7
     TST.L   8(A2)
-    BEQ.S   LAB_0302
+    BEQ.S   .write_entry_count
 
     MOVEA.L 8(A2),A0
 
-LAB_0301:
+.measure_field8:
     TST.B   (A0)+
-    BNE.S   LAB_0301
+    BNE.S   .measure_field8
 
     SUBQ.L  #1,A0
     SUBA.L  8(A2),A0
@@ -693,7 +738,7 @@ LAB_0301:
 
     LEA     12(A7),A7
 
-LAB_0302:
+.write_entry_count:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -709,9 +754,9 @@ LAB_0302:
     LEA     -152(A5),A0
     MOVEA.L A0,A1
 
-LAB_0303:
+.measure_entry_count:
     TST.B   (A1)+
-    BNE.S   LAB_0303
+    BNE.S   .measure_entry_count
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -728,10 +773,10 @@ LAB_0303:
     LEA     40(A7),A7
     CLR.W   -28(A5)
 
-LAB_0304:
+.subentry_loop:
     MOVE.W  -28(A5),D0
     CMP.W   36(A2),D0
-    BGE.W   LAB_0313
+    BGE.W   .next_entry_group
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -750,9 +795,9 @@ LAB_0304:
     LEA     -152(A5),A0
     MOVEA.L A0,A1
 
-LAB_0305:
+.measure_subentry_id:
     TST.B   (A1)+
-    BNE.S   LAB_0305
+    BNE.S   .measure_subentry_id
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -769,13 +814,13 @@ LAB_0305:
     LEA     32(A7),A7
     MOVEA.L -12(A5),A0
     TST.L   18(A0)
-    BEQ.S   LAB_0307
+    BEQ.S   .write_subentry_field22
 
     MOVEA.L 18(A0),A1
 
-LAB_0306:
+.measure_subentry_field18:
     TST.B   (A1)+
-    BNE.S   LAB_0306
+    BNE.S   .measure_subentry_field18
 
     SUBQ.L  #1,A1
     SUBA.L  18(A0),A1
@@ -786,7 +831,7 @@ LAB_0306:
 
     LEA     12(A7),A7
 
-LAB_0307:
+.write_subentry_field22:
     PEA     1.W
     PEA     LAB_1B74
     MOVE.L  D5,-(A7)
@@ -795,14 +840,14 @@ LAB_0307:
     LEA     12(A7),A7
     MOVEA.L -12(A5),A0
     TST.L   22(A0)
-    BEQ.S   LAB_0309
+    BEQ.S   .write_subentry_field26
 
     MOVEA.L -12(A5),A1
     MOVEA.L 22(A1),A0
 
-LAB_0308:
+.measure_subentry_field22:
     TST.B   (A0)+
-    BNE.S   LAB_0308
+    BNE.S   .measure_subentry_field22
 
     SUBQ.L  #1,A0
     SUBA.L  22(A1),A0
@@ -813,7 +858,7 @@ LAB_0308:
 
     LEA     12(A7),A7
 
-LAB_0309:
+.write_subentry_field26:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -828,9 +873,9 @@ LAB_0309:
     LEA     -152(A5),A0
     MOVEA.L A0,A1
 
-LAB_030A:
+.measure_subentry_field26:
     TST.B   (A1)+
-    BNE.S   LAB_030A
+    BNE.S   .measure_subentry_field26
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -847,14 +892,14 @@ LAB_030A:
     LEA     40(A7),A7
     MOVEA.L -12(A5),A0
     TST.L   6(A0)
-    BEQ.S   LAB_030C
+    BEQ.S   .write_subentry_field10
 
     MOVEA.L -12(A5),A1
     MOVEA.L 6(A1),A0
 
-LAB_030B:
+.measure_subentry_field6:
     TST.B   (A0)+
-    BNE.S   LAB_030B
+    BNE.S   .measure_subentry_field6
 
     SUBQ.L  #1,A0
     SUBA.L  6(A1),A0
@@ -865,7 +910,7 @@ LAB_030B:
 
     LEA     12(A7),A7
 
-LAB_030C:
+.write_subentry_field10:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -874,14 +919,14 @@ LAB_030C:
     LEA     12(A7),A7
     MOVEA.L -12(A5),A0
     TST.L   10(A0)
-    BEQ.S   LAB_030E
+    BEQ.S   .write_subentry_field14
 
     MOVEA.L -12(A5),A1
     MOVEA.L 10(A1),A0
 
-LAB_030D:
+.measure_subentry_field10:
     TST.B   (A0)+
-    BNE.S   LAB_030D
+    BNE.S   .measure_subentry_field10
 
     SUBQ.L  #1,A0
     SUBA.L  10(A1),A0
@@ -892,7 +937,7 @@ LAB_030D:
 
     LEA     12(A7),A7
 
-LAB_030E:
+.write_subentry_field14:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -901,14 +946,14 @@ LAB_030E:
     LEA     12(A7),A7
     MOVEA.L -12(A5),A0
     TST.L   14(A0)
-    BEQ.S   LAB_0310
+    BEQ.S   .write_subentry_field2
 
     MOVEA.L -12(A5),A1
     MOVEA.L 14(A1),A0
 
-LAB_030F:
+.measure_subentry_field14:
     TST.B   (A0)+
-    BNE.S   LAB_030F
+    BNE.S   .measure_subentry_field14
 
     SUBQ.L  #1,A0
     SUBA.L  14(A1),A0
@@ -919,7 +964,7 @@ LAB_030F:
 
     LEA     12(A7),A7
 
-LAB_0310:
+.write_subentry_field2:
     PEA     1.W
     PEA     LAB_1B5F
     MOVE.L  D5,-(A7)
@@ -928,14 +973,14 @@ LAB_0310:
     LEA     12(A7),A7
     MOVEA.L -12(A5),A0
     TST.L   2(A0)
-    BEQ.S   LAB_0312
+    BEQ.S   .next_subentry
 
     MOVEA.L -12(A5),A1
     MOVEA.L 2(A1),A0
 
-LAB_0311:
+.measure_subentry_field2:
     TST.B   (A0)+
-    BNE.S   LAB_0311
+    BNE.S   .measure_subentry_field2
 
     SUBQ.L  #1,A0
     SUBA.L  2(A1),A0
@@ -946,7 +991,7 @@ LAB_0311:
 
     LEA     12(A7),A7
 
-LAB_0312:
+.next_subentry:
     PEA     2.W
     PEA     LAB_1B60
     MOVE.L  D5,-(A7)
@@ -954,13 +999,13 @@ LAB_0312:
 
     LEA     12(A7),A7
     ADDQ.W  #1,-28(A5)
-    BRA.W   LAB_0304
+    BRA.W   .subentry_loop
 
-LAB_0313:
+.next_entry_group:
     ADDQ.W  #1,-26(A5)
-    BRA.W   LAB_02EA
+    BRA.W   .entry_loop
 
-LAB_0314:
+.write_eof:
     PEA     1.W
     PEA     LAB_1B5E
     MOVE.L  D5,-(A7)
@@ -971,35 +1016,56 @@ LAB_0314:
 
     MOVEQ   #0,D0
 
-LAB_0315:
+.return_status:
     MOVEM.L -176(A5),D5-D7/A2-A3/A6
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: COI_AllocSubEntryTable   (AllocSubEntryTable??)
+; ARGS:
+;   stack +8: entryPtr (A3)
+; RET:
+;   D0: subentry table pointer (or 0 if none/failed)
+; CLOBBERS:
+;   D0-D1/A0-A3
+; CALLS:
+;   JMP_TBL_ALLOCATE_MEMORY_1, LAB_0383
+; READS:
+;   A3+48 (subentry owner??), A0+36 (subentry count)
+; WRITES:
+;   A0+38 (subentry table pointer)
+; DESC:
+;   Allocates and initializes a cleared longword table for subentries when the
+;   entry's count field is positive.
+; NOTES:
+;   Table size is `count * 4` bytes; LAB_0383 initializes the table entries.
+;------------------------------------------------------------------------------
+COI_AllocSubEntryTable:
 LAB_0316:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
 
     MOVEA.L 8(A5),A3
     MOVE.L  A3,D0
-    BEQ.S   .LAB_0317
+    BEQ.S   .null_parent
 
     MOVEA.L 48(A3),A0
-    BRA.S   .LAB_0318
+    BRA.S   .have_anim_ptr
 
-.LAB_0317:
+.null_parent:
     SUBA.L  A0,A0
 
-.LAB_0318:
+.have_anim_ptr:
     MOVE.L  A0,-4(A5)
     MOVE.L  A0,D0
-    BEQ.S   .return
+    BEQ.S   .return_status
 
     MOVE.W  36(A0),D0
     TST.W   D0
-    BLE.S   .return
+    BLE.S   .return_status
 
     EXT.L   D0
     ASL.L   #2,D0
@@ -1020,13 +1086,42 @@ LAB_0316:
 
     LEA     24(A7),A7
 
-.return:
+.return_status:
     MOVEA.L (A7)+,A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: COI_LoadOiDataFile   (LoadOiDataFile??)
+; ARGS:
+;   stack +8: diskId?? (low byte used -> D7)
+; RET:
+;   D0: 0 on success, -1 on failure
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, LAB_03AC, LAB_05C1, LAB_0468,
+;   LAB_037D, LAB_0385, LAB_0290, LAB_00BE, JMP_TBL_DEALLOCATE_MEMORY_1,
+;   COI_AllocSubEntryTable
+; READS:
+;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235,
+;   LAB_21BC, GLOB_REF_LONG_FILE_SCRATCH
+; WRITES:
+;   LAB_21BC, GLOB_REF_LONG_FILE_SCRATCH, structures referenced by LAB_2233/
+;   LAB_2235 (fields +0..+36), local scratch buffers/flags
+; DESC:
+;   Builds `df0:OI_%02lx.dat` from diskId parity, loads the file into memory,
+;   validates header fields, then parses CR/LF-delimited records to populate
+;   object info structures and sub-entries using wildcard name matches.
+; NOTES:
+;   - File variant is inferred from a header field (format 2 vs default).
+;   - Replaces CR/LF bytes in the loaded buffer with NUL terminators.
+;   - Uses tab separators and parses numeric fields via LAB_0468.
+;   - DBF loops run (Dn+1) iterations when clearing scratch buffers.
+;------------------------------------------------------------------------------
+COI_LoadOiDataFile:
 LAB_031A:
     LINK.W  A5,#-648
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -1074,38 +1169,38 @@ LAB_031A:
 
     LEA     16(A7),A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_031B
+    BNE.S   .file_loaded
 
     MOVEQ   #-1,D0
-    BRA.W   LAB_0344
+    BRA.W   .return_status
 
-LAB_031B:
+.file_loaded:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
     MOVEA.L LAB_21BC,A0
     MOVE.B  LAB_222D,D1
     MOVE.L  D0,-574(A5)
     MOVE.L  A0,-570(A5)
     CMP.B   D7,D1
-    BNE.S   LAB_031C
+    BNE.S   .check_alt_header
 
     MOVE.B  LAB_222E,D0
     SUBQ.B  #1,D0
-    BNE.S   LAB_031C
+    BNE.S   .check_alt_header
 
     MOVE.W  LAB_222F,D0
     MOVE.W  D0,-336(A5)
-    BRA.S   LAB_031E
+    BRA.S   .init_parse_state
 
-LAB_031C:
+.check_alt_header:
     MOVE.B  LAB_2230,D0
     CMP.B   D0,D7
-    BNE.S   LAB_031D
+    BNE.S   .invalid_header
 
     MOVE.W  LAB_2231,D0
     MOVE.W  D0,-336(A5)
-    BRA.S   LAB_031E
+    BRA.S   .init_parse_state
 
-LAB_031D:
+.invalid_header:
     MOVE.L  -574(A5),D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
@@ -1115,14 +1210,14 @@ LAB_031D:
     JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
 
     MOVEQ   #-1,D0
-    BRA.W   LAB_0344
+    BRA.W   .return_status
 
-LAB_031E:
+.init_parse_state:
     MOVEQ   #0,D0
     MOVE.L  D0,-578(A5)
     MOVE.L  D0,-582(A5)
 
-LAB_031F:
+.copy_header_line:
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
     ADDA.L  -582(A5),A0
@@ -1134,7 +1229,7 @@ LAB_031F:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_0320
+    BNE.S   .finish_header_line
 
     LEA     -486(A5),A0
     MOVE.L  -582(A5),D0
@@ -1144,9 +1239,9 @@ LAB_031F:
     ADDA.L  D0,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,-582(A5)
-    BRA.S   LAB_031F
+    BRA.S   .copy_header_line
 
-LAB_0320:
+.finish_header_line:
     LEA     -486(A5),A0
     MOVEA.L A0,A1
     ADDA.L  -582(A5),A1
@@ -1158,7 +1253,7 @@ LAB_0320:
     ADDQ.W  #8,A7
     MOVE.L  D0,-648(A5)
     TST.L   D0
-    BEQ.S   LAB_0321
+    BEQ.S   .no_header_tab
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
@@ -1168,12 +1263,12 @@ LAB_0320:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-644(A5)
-    BRA.S   LAB_0322
+    BRA.S   .validate_disk_id
 
-LAB_0321:
+.no_header_tab:
     CLR.L   -644(A5)
 
-LAB_0322:
+.validate_disk_id:
     PEA     -486(A5)
     JSR     LAB_0468(PC)
 
@@ -1181,12 +1276,12 @@ LAB_0322:
     MOVEQ   #0,D1
     MOVE.B  D7,D1
     CMP.L   D0,D1
-    BEQ.S   LAB_0323
+    BEQ.S   .strip_line_terminators
 
     MOVEQ   #-1,D0
-    BRA.W   LAB_0344
+    BRA.W   .return_status
 
-LAB_0323:
+.strip_line_terminators:
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
     ADDA.L  -582(A5),A0
@@ -1198,7 +1293,7 @@ LAB_0323:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_0324
+    BEQ.S   .clear_seen_flags
 
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
@@ -1206,27 +1301,27 @@ LAB_0323:
     ADDA.L  D0,A0
     CLR.B   (A0)
     ADDQ.L  #1,-582(A5)
-    BRA.S   LAB_0323
+    BRA.S   .strip_line_terminators
 
-LAB_0324:
+.clear_seen_flags:
     MOVE.W  #$12d,D0
     MOVEQ   #0,D1
     LEA     -326(A5),A0
 
-LAB_0325:
+.zero_seen_flags:
     MOVE.B  D1,(A0)+
-    DBF     D0,LAB_0325
+    DBF     D0,.zero_seen_flags
     MOVEQ   #0,D6
 
-LAB_0326:
+.record_loop:
     CMP.W   -336(A5),D6
-    BGE.W   LAB_0343
+    BGE.W   .cleanup_and_return
 
     MOVE.L  -582(A5),D0
     ADD.L   D0,-578(A5)
     MOVEQ   #2,D0
     CMP.L   -644(A5),D0
-    BNE.S   LAB_0327
+    BNE.S   .parse_record_legacy
 
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
@@ -1242,16 +1337,16 @@ LAB_0326:
     JSR     LAB_037D(PC)
 
     LEA     28(A7),A7
-    BRA.S   LAB_0329
+    BRA.S   .init_entry_loop
 
-LAB_0327:
+.parse_record_legacy:
     MOVEQ   #21,D0
     MOVEQ   #0,D1
     LEA     -604(A5),A0
 
-LAB_0328:
+.clear_record_fields:
     MOVE.B  D1,(A0)+
-    DBF     D0,LAB_0328
+    DBF     D0,.clear_record_fields
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -574(A5),D0
@@ -1267,23 +1362,23 @@ LAB_0328:
 
     LEA     28(A7),A7
 
-LAB_0329:
+.init_entry_loop:
     MOVE.W  -584(A5),D0
     EXT.L   D0
     MOVEQ   #0,D5
     MOVE.L  D0,-582(A5)
 
-LAB_032A:
+.entry_loop:
     CMP.W   -336(A5),D5
-    BGE.W   LAB_033C
+    BGE.W   .advance_entry
 
     MOVE.B  LAB_222D,D0
     CMP.B   D0,D7
-    BNE.S   LAB_032B
+    BNE.S   .select_default_table
 
     MOVE.B  LAB_222E,D0
     SUBQ.B  #1,D0
-    BNE.S   LAB_032B
+    BNE.S   .select_default_table
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -1291,9 +1386,9 @@ LAB_032A:
     LEA     LAB_2235,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
-    BRA.S   LAB_032C
+    BRA.S   .match_entry_pattern
 
-LAB_032B:
+.select_default_table:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -1301,7 +1396,7 @@ LAB_032B:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
 
-LAB_032C:
+.match_entry_pattern:
     LEA     12(A1),A0
     MOVEA.L LAB_21BC,A2
     ADDA.L  -578(A5),A2
@@ -1312,12 +1407,12 @@ LAB_032C:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.W   LAB_033B
+    BNE.W   .next_entry
 
     LEA     -326(A5),A0
     ADDA.W  D5,A0
     TST.B   (A0)
-    BNE.W   LAB_0331
+    BNE.W   .alloc_subentries
 
     MOVEA.L -4(A5),A0
     MOVE.L  48(A0),-8(A5)
@@ -1375,7 +1470,7 @@ LAB_032C:
     MOVEA.L -8(A5),A0
     MOVE.L  D0,8(A0)
     MOVE.W  -604(A5),D0
-    BLE.S   LAB_032D
+    BLE.S   .default_field24
 
     MOVE.L  -578(A5),D1
     MOVEA.L LAB_21BC,A1
@@ -1383,7 +1478,7 @@ LAB_032C:
     ADDA.L  D1,A2
     ADDA.W  D0,A2
     MOVE.L  A2,D2
-    BEQ.S   LAB_032D
+    BEQ.S   .default_field24
 
     LEA     24(A0),A2
     LEA     28(A0),A3
@@ -1395,9 +1490,9 @@ LAB_032C:
     BSR.W   LAB_0290
 
     LEA     12(A7),A7
-    BRA.S   LAB_032E
+    BRA.S   .after_field24
 
-LAB_032D:
+.default_field24:
     MOVE.L  24(A0),-(A7)
     CLR.L   -(A7)
     JSR     LAB_0385(PC)
@@ -1412,9 +1507,9 @@ LAB_032D:
     MOVEA.L -8(A5),A0
     MOVE.L  D0,28(A0)
 
-LAB_032E:
+.after_field24:
     MOVE.W  -602(A5),D0
-    BEQ.S   LAB_032F
+    BEQ.S   .missing_field32
 
     MOVE.L  -578(A5),D1
     MOVEA.L LAB_21BC,A0
@@ -1422,7 +1517,7 @@ LAB_032E:
     ADDA.L  D1,A1
     ADDA.W  D0,A1
     MOVE.L  A1,D2
-    BEQ.S   LAB_032F
+    BEQ.S   .missing_field32
 
     ADDA.L  D1,A0
     ADDA.W  D0,A0
@@ -1432,14 +1527,14 @@ LAB_032E:
     ADDQ.W  #4,A7
     MOVEA.L -8(A5),A0
     MOVE.L  D0,32(A0)
-    BRA.S   LAB_0330
+    BRA.S   .store_field36
 
-LAB_032F:
+.missing_field32:
     MOVEQ   #-1,D0
     MOVEA.L -8(A5),A0
     MOVE.L  D0,32(A0)
 
-LAB_0330:
+.store_field36:
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
     ADDA.W  -588(A5),A0
@@ -1455,18 +1550,18 @@ LAB_0330:
     MOVEA.L -8(A5),A0
     MOVE.W  D0,36(A0)
 
-LAB_0331:
+.alloc_subentries:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0316
+    BSR.W   COI_AllocSubEntryTable
 
     ADDQ.W  #4,A7
     CLR.W   -332(A5)
 
-LAB_0332:
+.subentry_loop:
     MOVE.W  -332(A5),D0
     MOVEA.L -8(A5),A0
     CMP.W   36(A0),D0
-    BGE.W   LAB_033A
+    BGE.W   .mark_entry_seen
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -1479,7 +1574,7 @@ LAB_0332:
     ADD.L   D0,-578(A5)
     MOVEQ   #2,D0
     CMP.L   -644(A5),D0
-    BNE.S   LAB_0333
+    BNE.S   .parse_subentry_legacy
 
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
@@ -1495,16 +1590,16 @@ LAB_0332:
     JSR     LAB_037D(PC)
 
     LEA     28(A7),A7
-    BRA.S   LAB_0335
+    BRA.S   .process_subentry
 
-LAB_0333:
+.parse_subentry_legacy:
     MOVEQ   #15,D0
     MOVEQ   #0,D1
     LEA     -632(A5),A0
 
-LAB_0334:
+.clear_subentry_fields:
     MOVE.B  D1,(A0)+
-    DBF     D0,LAB_0334
+    DBF     D0,.clear_subentry_fields
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -574(A5),D0
@@ -1520,11 +1615,11 @@ LAB_0334:
 
     LEA     28(A7),A7
 
-LAB_0335:
+.process_subentry:
     LEA     -326(A5),A0
     ADDA.W  D5,A0
     TST.B   (A0)
-    BNE.W   LAB_0339
+    BNE.W   .advance_subentry
 
     MOVEA.L LAB_21BC,A0
     ADDA.L  -578(A5),A0
@@ -1571,7 +1666,7 @@ LAB_0335:
     MOVEA.L -12(A5),A0
     MOVE.L  D0,2(A0)
     MOVE.W  -632(A5),D0
-    BLE.S   LAB_0336
+    BLE.S   .default_subentry_field18
 
     MOVE.L  -578(A5),D1
     MOVEA.L LAB_21BC,A1
@@ -1579,7 +1674,7 @@ LAB_0335:
     ADDA.L  D1,A2
     ADDA.W  D0,A2
     MOVE.L  A2,D2
-    BEQ.S   LAB_0336
+    BEQ.S   .default_subentry_field18
 
     LEA     18(A0),A2
     LEA     22(A0),A3
@@ -1591,9 +1686,9 @@ LAB_0335:
     BSR.W   LAB_0290
 
     LEA     12(A7),A7
-    BRA.S   LAB_0337
+    BRA.S   .after_subentry_field18
 
-LAB_0336:
+.default_subentry_field18:
     MOVE.L  18(A0),-(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  24(A0),-(A7)
@@ -1610,9 +1705,9 @@ LAB_0336:
     MOVEA.L -12(A5),A0
     MOVE.L  D0,22(A0)
 
-LAB_0337:
+.after_subentry_field18:
     MOVE.W  -630(A5),D0
-    BLE.S   LAB_0338
+    BLE.S   .inherit_subentry_field26
 
     MOVE.L  -578(A5),D1
     MOVEA.L LAB_21BC,A0
@@ -1620,7 +1715,7 @@ LAB_0337:
     ADDA.L  D1,A1
     ADDA.W  D0,A1
     MOVE.L  A1,D2
-    BEQ.S   LAB_0338
+    BEQ.S   .inherit_subentry_field26
 
     ADDA.L  D1,A0
     ADDA.W  D0,A0
@@ -1630,49 +1725,49 @@ LAB_0337:
     ADDQ.W  #4,A7
     MOVEA.L -12(A5),A0
     MOVE.L  D0,26(A0)
-    BRA.S   LAB_0339
+    BRA.S   .advance_subentry
 
-LAB_0338:
+.inherit_subentry_field26:
     MOVEA.L -8(A5),A0
     MOVEA.L -12(A5),A1
     MOVE.L  32(A0),26(A1)
 
-LAB_0339:
+.advance_subentry:
     MOVE.W  -618(A5),D0
     EXT.L   D0
     MOVE.L  D0,-582(A5)
     ADDQ.W  #1,-332(A5)
-    BRA.W   LAB_0332
+    BRA.W   .subentry_loop
 
-LAB_033A:
+.mark_entry_seen:
     LEA     -326(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D5,A1
     TST.B   (A1)
-    BNE.S   LAB_033C
+    BNE.S   .advance_entry
 
     ADDA.W  D5,A0
     MOVE.B  #$1,(A0)
-    BRA.S   LAB_033C
+    BRA.S   .advance_entry
 
-LAB_033B:
+.next_entry:
     ADDQ.W  #1,D5
-    BRA.W   LAB_032A
+    BRA.W   .entry_loop
 
-LAB_033C:
+.advance_entry:
     ADDQ.W  #1,D5
 
-LAB_033D:
+.second_pass_loop:
     CMP.W   -336(A5),D5
-    BGE.W   LAB_0342
+    BGE.W   .next_record
 
     MOVE.B  LAB_222D,D0
     CMP.B   D0,D7
-    BNE.S   LAB_033E
+    BNE.S   .select_table_second_pass
 
     MOVE.B  LAB_222E,D0
     SUBQ.B  #1,D0
-    BNE.S   LAB_033E
+    BNE.S   .select_table_second_pass
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -1680,9 +1775,9 @@ LAB_033D:
     LEA     LAB_2235,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
-    BRA.S   LAB_033F
+    BRA.S   .match_entry_second_pass
 
-LAB_033E:
+.select_table_second_pass:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -1690,7 +1785,7 @@ LAB_033E:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
 
-LAB_033F:
+.match_entry_second_pass:
     MOVEA.L -4(A5),A0
     ADDA.W  #12,A0
     LEA     12(A1),A2
@@ -1701,13 +1796,13 @@ LAB_033F:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.W   LAB_0341
+    BNE.W   .next_second_pass_entry
 
     LEA     -326(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D5,A1
     TST.B   (A1)
-    BNE.W   LAB_0341
+    BNE.W   .next_second_pass_entry
 
     ADDA.W  D5,A0
     MOVE.B  #$1,(A0)
@@ -1773,16 +1868,16 @@ LAB_033F:
     MOVE.L  32(A0),32(A1)
     MOVE.W  36(A0),36(A1)
     MOVE.L  -16(A5),(A7)
-    BSR.W   LAB_0316
+    BSR.W   COI_AllocSubEntryTable
 
     LEA     32(A7),A7
     CLR.W   -332(A5)
 
-LAB_0340:
+.copy_subentries:
     MOVE.W  -332(A5),D0
     MOVEA.L -20(A5),A0
     CMP.W   36(A0),D0
-    BGE.W   LAB_0341
+    BGE.W   .next_second_pass_entry
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -1844,17 +1939,17 @@ LAB_0340:
     MOVEA.L -24(A5),A1
     MOVE.L  26(A0),26(A1)
     ADDQ.W  #1,-332(A5)
-    BRA.W   LAB_0340
+    BRA.W   .copy_subentries
 
-LAB_0341:
+.next_second_pass_entry:
     ADDQ.W  #1,D5
-    BRA.W   LAB_033D
+    BRA.W   .second_pass_loop
 
-LAB_0342:
+.next_record:
     ADDQ.W  #1,D6
-    BRA.W   LAB_0326
+    BRA.W   .record_loop
 
-LAB_0343:
+.cleanup_and_return:
     MOVE.L  -574(A5),D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
@@ -1865,7 +1960,7 @@ LAB_0343:
 
     MOVEQ   #0,D0
 
-LAB_0344:
+.return_status:
     MOVEM.L -676(A5),D2-D3/D5-D7/A2-A3
     UNLK    A5
     RTS
@@ -1967,6 +2062,7 @@ LAB_034C:
     MOVE.W  LAB_034D(PC,D0.W),D0
     JMP     LAB_034D+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_034D:
     ORI.B   #$26,(A0)+
     ORI.W   #$64,D6

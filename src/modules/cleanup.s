@@ -3520,11 +3520,13 @@ LAB_0295:
     MOVE.W  LAB_0296(PC,D0.W),D0
     JMP     LAB_0296+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_0296:
     ORI.B   #$10,(A0)
     ORI.B   #$10,(A0)
     ORI.B   #$10,(A0)
     ORI.W   #$70,-94(A0,D0.W)
+
     MOVEA.L -26(A5),A0
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0
@@ -3794,7 +3796,7 @@ LAB_02AB:
     SUB.L   D0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_02DC
+    BSR.W   COI_CountEscape14BeforeNull
 
     EXT.L   D0
     MOVEA.L A3,A0
@@ -4046,7 +4048,7 @@ LAB_02B8:
 LAB_02B9:
     ADDQ.L  #1,-66(A5)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0316
+    BSR.W   COI_AllocSubEntryTable
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
@@ -4358,7 +4360,7 @@ LAB_02CA:
     MOVEA.L -16(A5),A1
     MOVE.L  32(A0),32(A1)
     MOVE.L  -8(A5),(A7)
-    BSR.W   LAB_0316
+    BSR.W   COI_AllocSubEntryTable
 
     LEA     32(A7),A7
     MOVEQ   #0,D7

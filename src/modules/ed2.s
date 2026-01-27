@@ -2029,12 +2029,11 @@ LAB_07D6:
 
     ADD.W   D0,D0
     MOVE.W  LAB_07D7(PC,D0.W),D0
-    JMP     LAB_07D8(PC,D0.W)
+    JMP     LAB_07D7+2(PC,D0.W)
 
+    ; TODO: Another jump table for switch
 LAB_07D7:
     DC.W    $000a
-
-LAB_07D8:
     DC.W    $000e
     ORI.B   #$16,(A2)
     ORI.B   #$1e,(A2)+

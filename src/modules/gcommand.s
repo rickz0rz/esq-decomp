@@ -19,6 +19,25 @@
     XDEF    GCOMMAND_GetBannerChar
     XDEF    GCOMMAND_LoadPPV3Template
 
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_LoadDefaultTable   (Load the built-in gcommand table template into the working buffer (LAB_21BC).)
+; ARGS:
+;   ??
+; RET:
+;   D0: ?? (non-zero on success?)
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Load the built-in gcommand table template into the working buffer (LAB_21BC).
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 ; Load the built-in gcommand table template into the working buffer (LAB_21BC).
 GCOMMAND_LoadDefaultTable:
     LINK.W  A5,#-8
@@ -64,6 +83,25 @@ LAB_0CCA:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_LoadCommandFile   (Load a command definition from disk (LAB_1F68) and copy it into the workspace.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Load a command definition from disk (LAB_1F68) and copy it into the workspace.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Load a command definition from disk (LAB_1F68) and copy it into the workspace.
 GCOMMAND_LoadCommandFile:
@@ -71,7 +109,7 @@ GCOMMAND_LoadCommandFile:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1F68
-    JSR     JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_1(PC)
+    JSR     JMP_TBL_DISKIO_OpenFileWithBuffer_1(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -119,6 +157,25 @@ LAB_0CCE:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0CCF   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0CCF:
     LINK.W  A5,#-20
@@ -409,6 +466,25 @@ LAB_0CE7:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_LoadMplexTemplate   (Load the Digital_Mplex template and stage it in LAB_22E2/LAB_22E3.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Load the Digital_Mplex template and stage it in LAB_22E2/LAB_22E3.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Load the Digital_Mplex template and stage it in LAB_22E2/LAB_22E3.
 GCOMMAND_LoadMplexTemplate:
@@ -503,6 +579,25 @@ LAB_0CEB:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_LoadMplexFile   (Load Digital_Mplex.dat from disk and merge it into the workspace buffers.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Load Digital_Mplex.dat from disk and merge it into the workspace buffers.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Load Digital_Mplex.dat from disk and merge it into the workspace buffers.
 GCOMMAND_LoadMplexFile:
@@ -511,7 +606,7 @@ LAB_0CEC:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1F6D
-    JSR     JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_1(PC)
+    JSR     JMP_TBL_DISKIO_OpenFileWithBuffer_1(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -582,6 +677,25 @@ LAB_0CF0:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_ParseCommandString   (Parse a command line into token flags, returning indices for gcommand execution.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Parse a command line into token flags, returning indices for gcommand execution.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Parse a command line into token flags, returning indices for gcommand execution.
 GCOMMAND_ParseCommandString:
@@ -1163,6 +1277,25 @@ LAB_0D1D:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_LoadPPV3Template   (Load the Digital_PPV3 template into the working buffer tables.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Load the Digital_PPV3 template into the working buffer tables.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Load the Digital_PPV3 template into the working buffer tables.
 GCOMMAND_LoadPPV3Template:
@@ -1261,6 +1394,25 @@ LAB_0D22:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_LoadPPVTemplate   (Load the PPV table template into the workspace buffers.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Load the PPV table template into the workspace buffers.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Load the PPV table template into the workspace buffers.
 GCOMMAND_LoadPPVTemplate:
@@ -1269,7 +1421,7 @@ LAB_0D23:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1F75
-    JSR     JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_1(PC)
+    JSR     JMP_TBL_DISKIO_OpenFileWithBuffer_1(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -1340,6 +1492,25 @@ LAB_0D27:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_ParsePPVCommand   (Parse a PPV command string into tokens/indices for execution.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Parse a PPV command string into tokens/indices for execution.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Parse a PPV command string into tokens/indices for execution.
 GCOMMAND_ParsePPVCommand:
@@ -1950,6 +2121,25 @@ LAB_0D56:
     ALIGN_WORD
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D57   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D57:
     JMP     LAB_1979
@@ -1958,6 +2148,25 @@ LAB_0D58:
     JMP     LAB_00C3
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_FindPathSeparator   (Return a pointer to the final path separator (':' or '/') in the buffer.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Return a pointer to the final path separator (':' or '/') in the buffer.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Return a pointer to the final path separator (':' or '/') in the buffer.
 GCOMMAND_FindPathSeparator:
@@ -2021,6 +2230,25 @@ LAB_0D59:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D61   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D61:
     MOVEM.L D2/D6-D7,-(A7)
@@ -2079,6 +2307,25 @@ LAB_0D62:
     ALIGN_WORD
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D63   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D63:
     JMP     LAB_071B
@@ -2095,6 +2342,25 @@ LAB_0D65:
     MOVEQ   #97,D0
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_MapKeycodeToPreset   (Interpret a keyboard scan code and map it to a preset palette index.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Interpret a keyboard scan code and map it to a preset palette index.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Interpret a keyboard scan code and map it to a preset palette index.
 GCOMMAND_MapKeycodeToPreset:
@@ -2144,6 +2410,25 @@ LAB_0D69:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_ApplyHighlightFlag   (Update all banner layout rows to reflect the current highlight flag.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Update all banner layout rows to reflect the current highlight flag.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Update all banner layout rows to reflect the current highlight flag.
 GCOMMAND_ApplyHighlightFlag:
@@ -2222,6 +2507,25 @@ LAB_0D6C:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_EnableHighlight   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 GCOMMAND_EnableHighlight:
 LAB_0D6D:
@@ -2231,6 +2535,25 @@ LAB_0D6D:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_DisableHighlight   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 GCOMMAND_DisableHighlight:
 LAB_0D6E:
@@ -2310,6 +2633,25 @@ LAB_0D72:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_SetPresetEntry   (Update the preset table entry for row D7 with the supplied value D6.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Update the preset table entry for row D7 with the supplied value D6.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Update the preset table entry for row D7 with the supplied value D6.
 GCOMMAND_SetPresetEntry:
@@ -2342,6 +2684,25 @@ LAB_0D74:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_ExpandPresetBlock   (Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.
 GCOMMAND_ExpandPresetBlock:
@@ -2399,6 +2760,25 @@ LAB_0D79:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D7A   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D7A:
     MOVEM.L D5-D7/A3,-(A7)
@@ -2503,6 +2883,25 @@ LAB_0D83:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D84   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D84:
     LINK.W  A5,#-8
@@ -2558,6 +2957,25 @@ LAB_0D88:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D89   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D89:
     PEA     LAB_22F4
@@ -2567,6 +2985,25 @@ LAB_0D89:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D8A   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D8A:
     LINK.W  A5,#-12
@@ -2619,6 +3056,25 @@ LAB_0D8D:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D8E   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D8E:
     LINK.W  A5,#-16
@@ -2660,6 +3116,25 @@ LAB_0D90:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D91   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D91:
     LINK.W  A5,#-8
@@ -2693,6 +3168,25 @@ LAB_0D93:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D94   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D94:
     MOVEM.L D5-D7/A3,-(A7)
@@ -2759,6 +3253,25 @@ LAB_0D97:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D98   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D98:
     MOVEM.L D7/A3,-(A7)
@@ -2795,6 +3308,25 @@ LAB_0D9A:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0D9B   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0D9B:
     LINK.W  A5,#-8
@@ -2857,6 +3389,25 @@ LAB_0DA1:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_UpdateBannerBounds   (Cache banner geometry parameters used by the display routines.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Cache banner geometry parameters used by the display routines.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Cache banner geometry parameters used by the display routines.
 GCOMMAND_UpdateBannerBounds:
@@ -2913,6 +3464,25 @@ LAB_0DA4:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DA5   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DA5:
     LINK.W  A5,#-24
@@ -3082,6 +3652,25 @@ LAB_0DB1:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_GetBannerChar   (Return the current banner character stored at LAB_1E2B.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Return the current banner character stored at LAB_1E2B.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Return the current banner character stored at LAB_1E2B.
 GCOMMAND_GetBannerChar:
@@ -3095,6 +3684,25 @@ LAB_0DB2:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DB3   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DB3:
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
@@ -3168,6 +3776,25 @@ LAB_0DB5:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DB6   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DB6:
     LINK.W  A5,#-12
@@ -3318,6 +3945,25 @@ LAB_0DBB:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DBC   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DBC:
     MOVE.L  D7,-(A7)
@@ -3437,6 +4083,25 @@ LAB_0DC0:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DC1   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DC1:
     MOVE.L  D2,-(A7)
@@ -3505,6 +4170,25 @@ LAB_0DC5:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DC6   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DC6:
     MOVE.L  LAB_2307,-(A7)
@@ -3537,6 +4221,25 @@ LAB_0DC6:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DC7   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DC7:
     TST.L   LAB_1FA6
@@ -3644,6 +4347,25 @@ LAB_0DCE:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DCF   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DCF:
     MOVEM.L D2/A4,-(A7)
@@ -3701,6 +4423,25 @@ LAB_0DD4:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DD5   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DD5:
     LINK.W  A5,#-8
@@ -3748,6 +4489,25 @@ LAB_0DD5:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DDA   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DDA:
     LINK.W  A5,#-12
@@ -3941,6 +4701,25 @@ LAB_0DE6:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: COPY_IMAGE_DATA_TO_BITMAP   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 COPY_IMAGE_DATA_TO_BITMAP:
     LINK.W  A5,#-4
@@ -4276,6 +5055,25 @@ COPY_IMAGE_DATA_TO_BITMAP:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DE8   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DE8:
     LINK.W  A5,#-4
@@ -4344,6 +5142,25 @@ LAB_0DE8:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DE9   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DE9:
     TST.W   LAB_1FAF
@@ -4366,6 +5183,25 @@ LAB_0DEA:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DEB   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DEB:
     MOVEM.L D7/A3,-(A7)
@@ -4376,6 +5212,25 @@ LAB_0DEB:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DEC   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DEC:
     MOVE.L  D7,-(A7)
@@ -4423,6 +5278,25 @@ LAB_0DF0:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DF1   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DF1:
     LINK.W  A5,#-4
@@ -4472,6 +5346,25 @@ LAB_0DF2:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_SeedBannerDefaults   (Reset banner buffers to the default values embedded in the binary.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Reset banner buffers to the default values embedded in the binary.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Reset banner buffers to the default values embedded in the binary.
 GCOMMAND_SeedBannerDefaults:
@@ -4508,6 +5401,25 @@ LAB_0DF3:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_SeedBannerFromPrefs   (Seed banner buffers using values read from preferences.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Seed banner buffers using values read from preferences.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Seed banner buffers using values read from preferences.
 GCOMMAND_SeedBannerFromPrefs:
@@ -4543,6 +5455,25 @@ LAB_0DF4:
     ALIGN_WORD
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_SaveBrushResult   (Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 ; Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
 GCOMMAND_SaveBrushResult:
@@ -4624,6 +5555,25 @@ LAB_0DF5:
     RTS
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DF9   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DF9:
     JMP     BRUSH_AppendBrushNode
@@ -4632,6 +5582,25 @@ LAB_0DFA:
     JMP     BRUSH_PopulateBrushList
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_0DFB   (??)
+; ARGS:
+;   ??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 
 LAB_0DFB:
     LINK.W  A5,#-4

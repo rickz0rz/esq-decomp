@@ -40,7 +40,7 @@ LAB_0473:
 LAB_0474:
     PEA     MODE_NEWFILE.W
     PEA     LAB_1B9B
-    JSR     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE(PC)
+    JSR     DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_21BE
@@ -1073,7 +1073,7 @@ LAB_04BD:
     MOVEQ   #0,D0
     MOVE.B  -41(A5),D0
     MOVE.L  D0,(A7)
-    JSR     LAB_031A(PC)
+    JSR     COI_LoadOiDataFile(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D0
@@ -1141,7 +1141,7 @@ LAB_04C1:
 .LAB_04C4:
     PEA     (MODE_NEWFILE).W
     PEA     GLOB_STR_DF0_NXTDAY_DAT
-    JSR     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE(PC)
+    JSR     DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_21C1
@@ -1658,7 +1658,7 @@ LAB_04E2:
     MOVEQ   #0,D0
     MOVE.B  -37(A5),D0
     MOVE.L  D0,(A7)
-    JSR     LAB_031A(PC)
+    JSR     COI_LoadOiDataFile(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D0
@@ -1698,7 +1698,7 @@ LAB_04E6:
 LAB_04E7:
     PEA     MODE_NEWFILE.W
     PEA     LAB_1B9C
-    JSR     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE(PC)
+    JSR     DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_21BF
@@ -1823,7 +1823,7 @@ LAB_04F1:
     LINK.W  A5,#-8
     PEA     MODE_NEWFILE.W
     PEA     LAB_1B9D
-    JSR     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE(PC)
+    JSR     DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_21C0
@@ -2887,7 +2887,7 @@ LAB_0535:
     MOVEQ   #0,D0
     MOVE.B  LAB_1B91,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_02E2(PC)
+    JSR     COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 
@@ -2898,7 +2898,7 @@ LAB_0536:
     MOVEQ   #0,D0
     MOVE.B  LAB_1B92,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_02E2(PC)
+    JSR     COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 

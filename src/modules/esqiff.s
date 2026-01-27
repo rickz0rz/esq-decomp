@@ -2359,7 +2359,6 @@ LAB_0AAD:
     JMP     LAB_14B3
 
 JMP_TBL_SCRIPT_BeginBannerCharTransition_2:
-JMP_TBL_LAB_14D0_2:
     JMP     SCRIPT_BeginBannerCharTransition
 
 JMP_TBL_ALLOCATE_MEMORY_2:

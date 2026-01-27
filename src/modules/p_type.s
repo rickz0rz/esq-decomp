@@ -374,7 +374,7 @@ LAB_1378:
     MOVEM.L D5-D7,-(A7)
     PEA     1006.W
     PEA     LAB_204F
-    JSR     JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_2(PC)
+    JSR     JMP_TBL_DISKIO_OpenFileWithBuffer_2(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7

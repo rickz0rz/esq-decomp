@@ -1790,6 +1790,7 @@ LAB_09DB:
     MOVE.W  .LAB_09DD(PC,D0.W),D0
     JMP     .LAB_09DE(PC,D0.W)
 
+; TODO: Switch case
 .LAB_09DD:
     DC.W    $000a
 

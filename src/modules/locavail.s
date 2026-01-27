@@ -901,7 +901,7 @@ LAB_0F4E:
     DBF     D0,LAB_0F4E
     PEA     MODE_NEWFILE.W
     PEA     LAB_1FF4
-    JSR     JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_1(PC)
+    JSR     JMP_TBL_DISKIO_OpenFileWithBuffer_1(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
@@ -1024,6 +1024,7 @@ LAB_0F53:
     MOVE.W  LAB_0F54(PC,D0.W),D0
     JMP     LAB_0F55(PC,D0.W)
 
+; TODO: Switch case
 LAB_0F54:
     DC.W    $0008
 
@@ -1553,6 +1554,7 @@ LAB_0F7E:
     MOVE.W  LAB_0F7F(PC,D0.W),D0
     JMP     LAB_0F7F+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_0F7F:
     ORI.W   #8,$40.W
     ORI.W   #$78,-(A2)
@@ -1666,6 +1668,7 @@ LAB_0F85:
     MOVE.W  LAB_0F86(PC,D0.W),D0
     JMP     LAB_0F86+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_0F86:
     BTST    D0,30(A4)
     ORI.B   #$1e,(A6)+
@@ -1753,6 +1756,7 @@ LAB_0F8B:
     MOVE.W  LAB_0F8C(PC,D0.W),D0
     JMP     LAB_0F8C+2(PC,D0.W)
 
+; TODO: Switch case
 LAB_0F8C:
     ORI.W   #$1e,(A4)
     ORI.B   #$1e,(A6)+
@@ -1867,8 +1871,8 @@ LAB_0F9B:
 LAB_0F9C:
     JMP     LAB_14BF
 
-JMP_TBL_LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE_1:
-    JMP     LOAD_FILE_CONTENTS_INTO_MEMORY_MAYBE
+JMP_TBL_DISKIO_OpenFileWithBuffer_1:
+    JMP     DISKIO_OpenFileWithBuffer
 
     RTS
 
