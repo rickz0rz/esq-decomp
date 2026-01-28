@@ -1668,7 +1668,7 @@ LAB_0B4F:
     MOVE.W  LAB_2285,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_2285
-    JSR     callCTRL
+    JSR     ESQ_PollCtrlInput
 
     MOVEQ   #0,D0
     LEA     76(A7),A7
@@ -2852,8 +2852,9 @@ LAB_0C00:
 LAB_0C01:
     JMP     LAB_03E0
 
+ESQPARS_JMP_TBL_CLEANUP_ParseAlignedListingBlock:
 LAB_0C02:
-    JMP     LAB_02A5
+    JMP     CLEANUP_ParseAlignedListingBlock
 
 LAB_0C03:
     JMP     LAB_14AF

@@ -1642,9 +1642,9 @@ LAB_1010:
     BSR.W   LAB_0FED
 
     MOVE.L  D0,(A7)
-    JSR     LAB_1022(PC)
+    JSR     JMP_TBL_CLEANUP_DrawClockFormatList(PC)
 
-    JSR     LAB_1027(PC)
+    JSR     JMP_TBL_CLEANUP_DrawClockFormatFrame(PC)
 
     CLR.W   LAB_1F45
     MOVEQ   #2,D0
@@ -2056,8 +2056,9 @@ JMP_TBL_GENERATE_GRID_DATE_STRING:
 JMP_TBL_DEALLOCATE_MEMORY_3:
     JMP     DEALLOCATE_MEMORY
 
+JMP_TBL_CLEANUP_DrawClockFormatList:
 LAB_1022:
-    JMP     LAB_01EE
+    JMP     CLEANUP_DrawClockFormatList
 
 LAB_1023:
     JMP     LAB_058A
@@ -2072,8 +2073,9 @@ JMP_TBL_ALLOCATE_MEMORY_3:
 LAB_1026:
     JMP     LAB_0588
 
+JMP_TBL_CLEANUP_DrawClockFormatFrame:
 LAB_1027:
-    JMP     LAB_01FD
+    JMP     CLEANUP_DrawClockFormatFrame
 
 LAB_1028:
     JMP     LAB_05D3

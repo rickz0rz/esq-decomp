@@ -22,6 +22,30 @@ savedStackPointer   = -600
 savedMsg            = -604
 savedExecBase       = -608
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_StartupEntry   (StartupEntry??)
+; ARGS:
+;   D0: cmdLen?? (startup command length)
+;   A0: cmdPtr?? (startup command string)
+; RET:
+;   D0: exit code
+; CLOBBERS:
+;   D0-D6/A0-A6
+; CALLS:
+;   _LVOSetSignal, _LVOOpenLibrary, _LVOWaitPort, _LVOGetMsg, _LVOCurrentDir,
+;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
+;   ESQ_JMP_TBL_LAB_190F, ESQ_JMP_TBL_LAB_1A76, ESQ_JMP_TBL_LAB_1A26, ESQ_JMP_TBL_LAB_1910
+; READS:
+;   AbsExecBase, LOCAL_STR_DOS_LIBRARY
+; WRITES:
+;   savedStackPointer, savedExecBase, savedMsg, LocalDosLibraryDisplacement
+; DESC:
+;   Entry/segment startup: clears temp buffers, opens dos.library, handles
+;   Workbench/CLI startup message, invokes init routines, and returns exit code.
+; NOTES:
+;   - Uses Workbench message fields when launched from Workbench.
+;------------------------------------------------------------------------------
+ESQ_StartupEntry:
 SECSTRT_0:                                  ; PC: 0021EE58
     MOVEM.L D1-D6/A0-A6,-(A7)               ; Backup registers to the stack
 
@@ -32,13 +56,13 @@ SECSTRT_0:                                  ; PC: 0021EE58
     LEA     BUFFER_5929_LONGWORDS,A3        ; 00016e80
     MOVEQ   #0,D1
     MOVE.L  #5929,D0
-    BRA.S   .5929BufferCounterCompare
+    BRA.S   .clear_5929_buffer_check
 
-.copyByteFromD1To5929Buffer:
+.clear_5929_buffer_loop:
     MOVE.L  D1,(A3)+                        ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
 
-.5929BufferCounterCompare:
-    DBF     D0,.copyByteFromD1To5929Buffer  ; If our counter (D1) is not zero then jump to .copyByteFromD1To5929Buffer else continue
+.clear_5929_buffer_check:
+    DBF     D0,.clear_5929_buffer_loop  ; If our counter (D1) is not zero then jump to .clear_5929_buffer_loop else continue
 
     MOVE.L  A7,savedStackPointer(A4)        ; Save the current stack pointer from A7
     MOVE.L  A6,savedExecBase(A4)            ; Save a pointer to AbsExecBase from A6
@@ -52,16 +76,16 @@ SECSTRT_0:                                  ; PC: 0021EE58
     JSR     _LVOOpenLibrary(A6)             ; Open dos.library version 0 (any) locally...
 
     MOVE.L  D0,LocalDosLibraryDisplacement(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or GLOB_REF_DOS_LIBRARY_2
-    BNE.S   .successfullyMadeLocalDOSLib    ; Jump to .successfullyMadeLocalDOSLib if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
+    BNE.S   .local_dos_opened    ; Jump to .local_dos_opened if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
 
     MOVEQ   #100,D0                         ; If it wasn't opened, set D0 to 100...
-    BRA.W   LAB_000A                        ; and jump to LAB_000A
+    BRA.W   ESQ_ShutdownAndReturn           ; and jump to LAB_000A
 
-.successfullyMadeLocalDOSLib:
+.local_dos_opened:
     MOVEA.L Struct_ExecBase__ThisTask(A6),A3                                                                ; A6 002007a0 + 276 = 002008b4 (ThisTask pointer) into A3: MOVEA.L (A6, $0114) == $002008b4,A3
     MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),-612(A4)   ; Move the address at A3 002008b4 + 152 = 00200A06 and move it's value in to -612(A4): MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4 [0021EEB2]
     TST.L   (Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+(Struct_SoftIntList__sh_Pad)(A3)          ; This is checking SoftInts[1] (starting at zero)
-    BEQ.S   .LAB_0005
+    BEQ.S   .wait_for_wb_message
 
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
@@ -89,23 +113,23 @@ SECSTRT_0:                                  ; PC: 0021EE58
     SUBQ.L  #1,D0
     ADD.L   D1,D2
 
-.LAB_0003:
+.copy_cmdline_loop:
     MOVE.B  0(A2,D0.W),0(A7,D2.W)
     SUBQ.L  #1,D2
-    DBF     D0,.LAB_0003
+    DBF     D0,.copy_cmdline_loop
 
     MOVE.B  #$20,0(A7,D2.W)
     SUBQ.L  #1,D2
 
-.LAB_0004:
+.copy_softint_tail_loop:
     MOVE.B  0(A1,D2.W),0(A7,D2.W)
-    DBF     D2,.LAB_0004
+    DBF     D2,.copy_softint_tail_loop
 
     MOVEA.L A7,A1
     MOVE.L  A1,-(A7)
-    BRA.S   .LAB_0008
+    BRA.S   .run_main_init
 
-.LAB_0005:
+.wait_for_wb_message:
     MOVE.L  58(A3),-660(A4)
     MOVEQ   #127,D0 ; ...
     ADDQ.L  #1,D0   ; 128 into D0
@@ -121,7 +145,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  D0,-(A7)
     MOVEA.L D0,A2
     MOVE.L  36(A2),D0
-    BEQ.S   .LAB_0006
+    BEQ.S   .maybe_set_current_dir
 
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     MOVEA.L D0,A0
@@ -129,73 +153,110 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  D1,-612(A4)
     JSR     _LVOCurrentDir(A6)
 
-.LAB_0006:
+.maybe_set_current_dir:
     MOVE.L  32(A2),D1
-    BEQ.S   .LAB_0007
+    BEQ.S   .maybe_update_window_ptr
 
     MOVE.L  #1005,D2
     JSR     _LVOSupervisor(A6)
 
     MOVE.L  D0,-596(A4)
-    BEQ.S   .LAB_0007
+    BEQ.S   .maybe_update_window_ptr
 
     LSL.L   #2,D0
     MOVEA.L D0,A0
     MOVE.L  8(A0),164(A3)
 
-.LAB_0007:
+.maybe_update_window_ptr:
     MOVEA.L -604(A4),A0
     MOVE.L  A0,-(A7)
     PEA     -664(A4)
     MOVEA.L 36(A0),A0
     MOVE.L  4(A0),-592(A4)
 
-.LAB_0008:
-    JSR     LAB_0010(PC)
+.run_main_init:
+    JSR     ESQ_JMP_TBL_LAB_190F(PC)
 
-    JSR     LAB_0012(PC)
+    JSR     ESQ_JMP_TBL_LAB_1A76(PC)
 
     MOVEQ   #0,D0
-    BRA.S   LAB_000A
+    BRA.S   ESQ_ShutdownAndReturn
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ReturnWithStackCode   (ReturnWithStackCode)
+; ARGS:
+;   stack +4: exitCode (long)
+; RET:
+;   D0: exit code
+; CLOBBERS:
+;   D0
+; CALLS:
+;   ESQ_ShutdownAndReturn
+; READS:
+;   (none)
+; WRITES:
+;   D0
+; DESC:
+;   Loads exit code from the stack and jumps to shutdown/return path.
+;------------------------------------------------------------------------------
+ESQ_ReturnWithStackCode:
 LAB_0009:
     MOVE.L  4(A7),D0
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ShutdownAndReturn   (ShutdownAndReturn)
+; ARGS:
+;   D0: exit code
+; RET:
+;   D0: exit code
+; CLOBBERS:
+;   D0/A0-A6
+; CALLS:
+;   ESQ_JMP_TBL_LAB_1A26, _LVOCloseLibrary, ESQ_JMP_TBL_LAB_1910, _LVOReplyMsg
+; READS:
+;   savedMsg, savedStackPointer, savedExecBase, LocalDosLibraryDisplacement
+; WRITES:
+;   (none)
+; DESC:
+;   Runs shutdown hooks, closes dos.library, replies to Workbench msg, and
+;   restores registers/stack before returning.
+;------------------------------------------------------------------------------
+ESQ_ShutdownAndReturn:
 LAB_000A:
     MOVE.L  D0,-(A7)
     MOVE.L  -620(A4),D0
-    BEQ.S   .LAB_000B
+    BEQ.S   .call_exit_hook
 
     MOVEA.L D0,A0
     JSR     (A0)
 
-.LAB_000B:
-    JSR     LAB_0011(PC)
+.call_exit_hook:
+    JSR     ESQ_JMP_TBL_LAB_1A26(PC)
 
     MOVEA.L AbsExecBase,A6
     MOVEA.L LocalDosLibraryDisplacement(A4),A1
     JSR     _LVOCloseLibrary(A6)
 
-    JSR     LAB_000F(PC)
+    JSR     ESQ_JMP_TBL_LAB_1910(PC)
 
     TST.L   savedMsg(A4)
-    BEQ.S   .restoreRegistersAndTerminate
+    BEQ.S   .restore_registers_and_return
 
     MOVE.L  -596(A4),D1
-    BEQ.S   .LAB_000C
+    BEQ.S   .maybe_restore_supervisor
 
     JSR     _LVOexecPrivate1(A6) ; this might be inaccurate?
 
-.LAB_000C:
+.maybe_restore_supervisor:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     MOVEA.L savedMsg(A4),A1
     JSR     _LVOReplyMsg(A6)
 
-.restoreRegistersAndTerminate:
+.restore_registers_and_return:
     MOVE.L  (A7)+,D0
     MOVEA.L savedStackPointer(A4),A7
     MOVEM.L (A7)+,D1-D6/A0-A6
@@ -206,20 +267,112 @@ LAB_000A:
 LOCAL_STR_DOS_LIBRARY:
     NStr    "dos.library"
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1910   (JumpStub_LAB_1910)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1910
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1910.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1910:
 LAB_000F:
     JMP     LAB_1910
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_190F   (JumpStub_LAB_190F)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_190F
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_190F.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_190F:
 LAB_0010:
     JMP     LAB_190F
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1A26   (JumpStub_LAB_1A26)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1A26
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1A26.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1A26:
 LAB_0011:
     JMP     LAB_1A26
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1A76   (JumpStub_LAB_1A76)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1A76
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1A76.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1A76:
 LAB_0012:
     JMP     LAB_1A76
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CHECK_AVAILABLE_FAST_MEMORY   (CheckAvailableFastMemory)
+; ARGS:
+;   (none)
+; RET:
+;   D0: available fast memory bytes
+; CLOBBERS:
+;   D0-D1/A6
+; CALLS:
+;   _LVOAvailMem
+; READS:
+;   AbsExecBase
+; WRITES:
+;   HAS_REQUESTED_FAST_MEMORY
+; DESC:
+;   Checks available fast memory and sets HAS_REQUESTED_FAST_MEMORY if below
+;   the desired threshold.
+; NOTES:
+;   - Threshold is .desiredMemory (600,000 bytes).
+;------------------------------------------------------------------------------
 ; If the system has at least 600,000 bytes of fast memory, keep HAS_REQUESTED_FAST_MEMORY set to 0.
 ; Otherwise, set it to 1.
 CHECK_AVAILABLE_FAST_MEMORY:
@@ -231,15 +384,35 @@ CHECK_AVAILABLE_FAST_MEMORY:
     JSR     _LVOAvailMem(A6)                ; store the result in D0.
 
     CMPI.L  #(.desiredMemory),D0            ; See if we have more than 600,000 bytes of available memory
-    BGE.S   .skipFastMemorySet              ; If we have equal to or more than our target, jump to .skipFastMemorySet
+    BGE.S   .done                           ; If we have equal to or more than our target, jump to .skipFastMemorySet
 
     MOVE.W  #1,HAS_REQUESTED_FAST_MEMORY    ; Set HAS_REQUESTED_FAST_MEMORY to 0x0001 (it's 0x0000 by default)
 
-.skipFastMemorySet:
+.done:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CHECK_IF_COMPATIBLE_VIDEO_CHIP   (CheckCompatibleVideoChip)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D6-D7
+; CALLS:
+;   (none)
+; READS:
+;   VPOSR
+; WRITES:
+;   IS_COMPATIBLE_VIDEO_CHIP
+; DESC:
+;   Checks VPOSR chip ID against a whitelist; sets IS_COMPATIBLE_VIDEO_CHIP if
+;   the current chip does not match the known IDs.
+; NOTES:
+;   - Whitelist: $30, $20, $33 (see chip table below).
+;------------------------------------------------------------------------------
 ; Chip table here:
 ; (1) 30 = 8372 (Fat-hr) (agnushr),thru rev4, NTSC
 ; (2) 20 = 8372 (Fat-hr) (agnushr),thru rev4, PAL
@@ -251,22 +424,47 @@ CHECK_IF_COMPATIBLE_VIDEO_CHIP:
     MOVE.L  D7,D6                       ; Copy VPOSR value into D6
     ANDI.W  #$7f00,D6                   ; Logical AND D6 with $7F00 (01111111 00000000) and store back into D6
     CMPI.W  #$3000,D6                   ; Compare it with high byte of $3000 (00110000 00000000) aka $30 to see if we're chip 1
-    BEQ.S   .return                     ; If equal, jump to .return
+    BEQ.S   .done                       ; If equal, jump to .return
 
     CMPI.W  #$2000,D6                   ; Compare it with high byte of $2000 (00110000 00000000) aka $20 to see if we're chip 2
-    BEQ.S   .return                     ; If equal, jump to .return
+    BEQ.S   .done                       ; If equal, jump to .return
 
     CMPI.W  #$3300,D6                   ; Compare it with high byte of $3300 (00110011 00000000) aka $33 to see if we're chip 3
-    BEQ.S   .return                     ; If equal, jump to .return
+    BEQ.S   .done                       ; If equal, jump to .return
 
     MOVE.W  #1,IS_COMPATIBLE_VIDEO_CHIP ; Set $0001 (true) into IS_COMPATIBLE_VIDEO_CHIP
 
-.return:
+.done:
     MOVEM.L (A7)+,D6-D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_CheckTopazFontGuard   (CheckTopazFontGuard??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A6
+; CALLS:
+;   JMP_TBL_DO_DELAY, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
+;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
+;   JMP_TBL_LAB_1A06_1, JMP_TBL_LAB_1911, JMP_TBL_LIBRARIES_LOAD_FAILED_1
+; READS:
+;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TOPAZ_FONT,
+;   LAB_1DE9_B, LAB_1DD8_RASTPORT,
+;   GLB_STR_PLEASE_STANDBY_1, GLOB_STR_ATTENTION_SYSTEM_ENGINEER_1,
+;   GLOB_STR_REPORT_CODE_ER003
+; WRITES:
+;   (none)
+; DESC:
+;   Checks topaz font/intuition state and may display a warning/lockup screen.
+; NOTES:
+;   - Soft-locks in a loop for the engineer warning path.
+;------------------------------------------------------------------------------
+ESQ_CheckTopazFontGuard:
 LAB_0017:
     LINK.W  A5,#-32
     MOVEM.L D2-D7,-(A7)
@@ -287,7 +485,7 @@ LAB_0017:
     MOVE.L  A0,.lab1DE9(A5)
     MOVEQ   #2,D0
     CMP.B   5(A0),D0
-    BNE.W   .LAB_001C
+    BNE.W   .show_rerun_error
 
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A0
     MOVE.L  (GLOB_STR_TOPAZ_FONT-GLOB_REF_INTUITION_LIBRARY)(A0),.strTopazFont2(A5)
@@ -396,8 +594,8 @@ LAB_0017:
     JSR     _LVOText(A6)
 
 ; Loop here to soft-lock the system.
-.softLockAtAttentionSystemEngineer:
-    BRA.S   .softLockAtAttentionSystemEngineer
+.engineer_lock_loop:
+    BRA.S   .engineer_lock_loop
 
 .bypassSystemEngineerLockup:
     MOVEA.L .strTopazFont1(A5),A0
@@ -447,9 +645,9 @@ LAB_0017:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFreeMem(A6)
 
-    BRA.S   .LAB_001D
+    BRA.S   .done
 
-.LAB_001C:
+.show_rerun_error:
     PEA     GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
     JSR     JMP_TBL_LAB_1911(PC)
 
@@ -458,13 +656,34 @@ LAB_0017:
 
     ADDQ.W  #4,A7
 
-.LAB_001D:
+.done:
     MOVEM.L (A7)+,D2-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_FormatDiskErrorMessage   (FormatDiskErrorMessage)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   LAB_03C4, LAB_03C0, JMP_TBL_PRINTF_1
+; READS:
+;   LAB_1AF4, LAB_1AF6, GLOB_STR_DISK_ERRORS_FORMATTED,
+;   GLOB_STR_DISK_IS_FULL_FORMATTED, LAB_2249
+; WRITES:
+;   LAB_2249 (formatted text buffer)
+; DESC:
+;   Builds a disk error message into LAB_2249 based on disk error counts.
+; NOTES:
+;   - Uses LAB_03C4 and LAB_03C0 helpers for error count retrieval.
+;------------------------------------------------------------------------------
+ESQ_FormatDiskErrorMessage:
 LAB_001E:
     MOVEM.L D6-D7,-(A7)
 
@@ -484,7 +703,7 @@ LAB_001E:
     JSR     JMP_TBL_PRINTF_1(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
-    BRA.S   .LAB_0020
+    BRA.S   .done
 
 .createDiskIsFullMessage:
     PEA     LAB_1AF6
@@ -498,7 +717,7 @@ LAB_001E:
 
     LEA     .stackOffsetBytes+4(A7),A7
 
-.LAB_0020:
+.done:
     MOVEQ   #0,D0
     MOVEM.L (A7)+,D6-D7
     RTS
@@ -531,6 +750,28 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: INTB_RBF_EXEC   (HandleSerialRbfInterrupt)
+; ARGS:
+;   A0: interrupt context?? (reads 24(A0), writes 156(A0))
+;   A1: base of receive ring buffer?? (offset by head index)
+; RET:
+;   D0: 0
+; CLOBBERS:
+;   D0-D1, A1
+; CALLS:
+;   (none)
+; READS:
+;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_WORD_MAX_VALUE, LAB_1F45
+; WRITES:
+;   (A1+head), LAB_228A, GLOB_WORD_H_VALUE, LAB_228C, GLOB_WORD_MAX_VALUE,
+;   LAB_1F45, LAB_20AB, 156(A0)
+; DESC:
+;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
+;   and tracks max fill and overflow threshold.
+; NOTES:
+;   Buffer wraps at $FA00. Sets LAB_1F45 to $102 when fill reaches $DAC0.
+;------------------------------------------------------------------------------
 INTB_RBF_EXEC:
     MOVEQ   #0,D0
     MOVE.W  GLOB_WORD_H_VALUE,D0
@@ -538,35 +779,35 @@ INTB_RBF_EXEC:
     MOVE.W  24(A0),D1
     MOVE.B  D1,(A1)
     BTST    #15,D1
-    BEQ.S   .LAB_0026
+    BEQ.S   .skip_error_count
 
     MOVE.W  LAB_228A,D1
     ADDQ.W  #1,D1
     MOVE.W  D1,LAB_228A
 
-.LAB_0026:
+.skip_error_count:
     ADDQ.W  #1,D0
     CMPI.W  #$fa00,D0
-    BNE.S   .LAB_0027
+    BNE.S   .head_update_done
 
     MOVEQ   #0,D0
 
-.LAB_0027:
+.head_update_done:
     MOVE.W  D0,GLOB_WORD_H_VALUE
     MOVE.W  GLOB_WORD_T_VALUE,D1
     SUB.W   D1,D0
-    BCC.W   .LAB_0028
+    BCC.W   .fill_count_ok
 
     ADDI.W  #$fa00,D0
 
-.LAB_0028:
+.fill_count_ok:
     MOVE.W  D0,LAB_228C
     CMP.W   GLOB_WORD_MAX_VALUE,D0
-    BCS.W   .LAB_0029
+    BCS.W   .skip_max_update
 
     MOVE.W  D0,GLOB_WORD_MAX_VALUE
 
-.LAB_0029:
+.skip_max_update:
     CMPI.W  #$dac0,D0
     BCS.W   .return
 
@@ -582,6 +823,26 @@ INTB_RBF_EXEC:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ReadSerialRbfByte   (ReadSerialRbfByte)
+; ARGS:
+;   (none)
+; RET:
+;   D0: next byte from RBF ring buffer (low byte)
+; CLOBBERS:
+;   D0-D1, A0
+; CALLS:
+;   (none)
+; READS:
+;   GLOB_WORD_T_VALUE, GLOB_WORD_H_VALUE, LAB_1F45, GLOB_REF_INTB_RBF_64K_BUFFER
+; WRITES:
+;   GLOB_WORD_T_VALUE, LAB_1F45
+; DESC:
+;   Reads one byte from the RBF ring buffer and advances the tail index.
+; NOTES:
+;   Clears LAB_1F45 when fill drops below $BB80 (if previously set to $102).
+;------------------------------------------------------------------------------
+ESQ_ReadSerialRbfByte:
 LAB_002B:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
@@ -591,34 +852,52 @@ LAB_002B:
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
     CMPI.W  #$fa00,D1
-    BNE.S   .LAB_002C
+    BNE.S   .tail_update_done
 
     MOVEQ   #0,D1
 
-.LAB_002C:
+.tail_update_done:
     MOVE.W  D1,GLOB_WORD_T_VALUE
     MOVE.L  D0,-(A7)
     MOVE.W  GLOB_WORD_H_VALUE,D0
     SUB.W   D1,D0
-    BCC.W   .LAB_002D
+    BCC.W   .fill_count_ok
 
     ADDI.W  #$fa00,D0
 
-.LAB_002D:
+.fill_count_ok:
     CMPI.W  #$102,LAB_1F45
-    BNE.W   .LAB_002E
+    BNE.W   .return
 
     CMPI.W  #$bb80,D0   ; Box off.
-    BCC.W   .LAB_002E
+    BCC.W   .return
 
     MOVE.W  #0,LAB_1F45
 
-.LAB_002E:
+.return:
     MOVE.L  (A7)+,D0
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_InitAudio1Dma   (InitAudioChannel1Dma)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0
+; CLOBBERS:
+;   D0, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   GLOB_PTR_AUD1_DMA
+; WRITES:
+;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, LAB_1AF8, LAB_1AFA, LAB_1B03
+; DESC:
+;   Initializes audio channel 1 DMA and clears related CTRL capture state.
+;------------------------------------------------------------------------------
+ESQ_InitAudio1Dma:
 LAB_002F:
     MOVEA.L #BLTDDAT,A0
     LEA     GLOB_PTR_AUD1_DMA,A1
@@ -635,14 +914,35 @@ LAB_002F:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_CaptureCtrlBit3Stream   (CaptureCiabPraBit3Stream)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0
+; CLOBBERS:
+;   D0-D1, A5
+; CALLS:
+;   GET_BIT_3_OF_CIAB_PRA_INTO_D1, LAB_0050
+; READS:
+;   LAB_1AFC, LAB_1AF9, LAB_1AFD, LAB_1B03
+; WRITES:
+;   LAB_1AFC, LAB_1AF9, LAB_1AFD, LAB_1AFF, LAB_1B03, LAB_1B04
+; DESC:
+;   Samples CIAB PRA bit 3 over time, builds bytes from samples, and stores
+;   them into the LAB_1B04 ring buffer.
+; NOTES:
+;   Uses LAB_1AFC/1AF9/1AFD as sampling state. Sample buffer is LAB_1AFF.
+;------------------------------------------------------------------------------
+ESQ_CaptureCtrlBit3Stream:
 LAB_0030:
     TST.W   LAB_1AFC
-    BNE.S   LAB_0031
+    BNE.S   .advance_state
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     TST.B   D1
-    BPL.W   LAB_003C
+    BPL.W   .return
 
     ADDQ.W  #1,LAB_1AFC
     MOVE.W  #4,LAB_1AF9
@@ -651,36 +951,36 @@ LAB_0030:
 
 ;!======
 
-LAB_0031:
+.advance_state:
     MOVE.W  LAB_1AFC,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_1AFC
     MOVE.W  LAB_1AF9,D1
     CMP.W   D0,D1
-    BGT.W   LAB_003C
+    BGT.W   .return
 
     MOVEQ   #4,D1
     CMP.W   D1,D0
-    BGT.W   LAB_0034
+    BGT.W   .collect_samples
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     TST.B   D1
-    BPL.S   LAB_0033
+    BPL.S   .reset_state
 
     MOVE.W  #14,LAB_1AF9
     MOVEQ   #7,D0
     LEA     LAB_1AFF,A5
     MOVEQ   #0,D1
 
-.LAB_0032:
+.clear_sample_buffer_loop:
     MOVE.B  D1,(A5)+
-    DBF     D0,.LAB_0032
+    DBF     D0,.clear_sample_buffer_loop
     RTS
 
 ;!======
 
-LAB_0033:
+.reset_state:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1AF9
     MOVE.W  D0,LAB_1AFD
@@ -689,10 +989,10 @@ LAB_0033:
 
 ;!======
 
-LAB_0034:
+.collect_samples:
     MOVEQ   #94,D1
     CMP.W   D1,D0
-    BGE.S   LAB_0035
+    BGE.S   .assemble_and_store
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
@@ -705,11 +1005,11 @@ LAB_0034:
 
 ;!======
 
-LAB_0035:
+.assemble_and_store:
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
     TST.B   D1
-    BMI.S   LAB_003B
+    BMI.S   .reset_state_and_exit
 
     LEA     LAB_1AFF,A5
     ADDA.W  LAB_1AFD,A5
@@ -717,81 +1017,135 @@ LAB_0035:
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
-LAB_0036:
+.build_byte_loop:
     TST.B   -(A5)
-    BMI.S   LAB_0037
+    BMI.S   .clear_bit
 
     BSET    D1,D0
-    BRA.S   LAB_0038
+    BRA.S   .next_bit
 
-LAB_0037:
+.clear_bit:
     BCLR    D1,D0
 
-LAB_0038:
-    DBF     D1,LAB_0036
+.next_bit:
+    DBF     D1,.build_byte_loop
     LEA     LAB_1B04,A1
     MOVE.W  LAB_1B03,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)
-    BEQ.S   LAB_0039
+    BEQ.S   .flush_on_zero
 
     ADDQ.W  #1,D1
     CMPI.W  #5,D1
-    BLT.S   LAB_003A
+    BLT.S   .store_index
 
     MOVE.B  #0,(A1)
 
-LAB_0039:
+.flush_on_zero:
     JSR     LAB_0050
 
     MOVEQ   #0,D1
 
-LAB_003A:
+.store_index:
     MOVE.W  D1,LAB_1B03
 
-LAB_003B:
+.reset_state_and_exit:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1AF9
     MOVE.W  D0,LAB_1AFD
     MOVE.W  D0,LAB_1AFC
 
-LAB_003C:
+.return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: GET_BIT_3_OF_CIAB_PRA_INTO_D1   (GetCiabPraBit3)
+; ARGS:
+;   (none)
+; RET:
+;   D1: $FF if CIAB_PRA bit 3 is 0, else 0
+; CLOBBERS:
+;   D1, A5
+; CALLS:
+;   (none)
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   (none)
+; DESC:
+;   Reads CIAB_PRA and returns an inverted boolean for bit 3 in D1.
+;------------------------------------------------------------------------------
 GET_BIT_3_OF_CIAB_PRA_INTO_D1:
     MOVEQ   #0,D1           ; Copy 0 into D1 to clear all bytes
     MOVEA.L #CIAB_PRA,A5    ; Copy the address of CIAB_PRA into A5
     MOVE.B  (A5),D1         ; Get contents of the least significant byte at A5 and copy into D1
     BTST    #3,D1           ; Test bit 3, set Z to true if it's 0
-    SEQ     D1              ; SEQ (set equal) sets D1 to 0 if Z is 0, otherwise 1 if it's 1
+    SEQ     D1              ; SEQ sets D1 to $FF when Z=1, otherwise 0
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: GET_BIT_4_OF_CIAB_PRA_INTO_D1   (GetCiabPraBit4)
+; ARGS:
+;   (none)
+; RET:
+;   D1: $FF if CIAB_PRA bit 4 is 0, else 0
+; CLOBBERS:
+;   D1, A5
+; CALLS:
+;   (none)
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   (none)
+; DESC:
+;   Reads CIAB_PRA and returns an inverted boolean for bit 4 in D1.
+;------------------------------------------------------------------------------
 GET_BIT_4_OF_CIAB_PRA_INTO_D1:
     MOVEQ   #0,D1           ; Copy 0 into D1 to clear all bytes
     MOVEA.L #CIAB_PRA,A5    ; Copy the address of CIAB_PRA into A5
     MOVE.B  (A5),D1         ; Get contents of the least significant byte at A5 and copy into D1
     BTST    #4,D1           ; Test bit 4, set Z to true if it's 0
-    SEQ     D1              ; SEQ (set equal) sets D1 to 0 if Z is 0, otherwise 1 if it's 1
+    SEQ     D1              ; SEQ sets D1 to $FF when Z=1, otherwise 0
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_PollCtrlInput   (PollCtrlInput)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A0-A1, A4-A5
+; CALLS:
+;   ESQ_CaptureCtrlBit4Stream, ESQ_CaptureCtrlBit3Stream
+; READS:
+;   LAB_1DC8
+; WRITES:
+;   INTREQ
+; DESC:
+;   Updates CTRL sampling state and acknowledges the audio channel 1 interrupt.
+; NOTES:
+;   Only captures the bit-3 stream when LAB_1DC8+18 holds 'N'.
+;------------------------------------------------------------------------------
+ESQ_PollCtrlInput:
 callCTRL:
     MOVE.L  A5,-(A7)
     MOVE.L  A4,-(A7)
 
-    JSR     readCTRL
+    JSR     ESQ_CaptureCtrlBit4Stream
 
     LEA     LAB_1DC8,A4
     MOVE.B  18(A4),D1
     CMPI.B  #"N",D1
     BNE.S   .LAB_0040
 
-    JSR     LAB_0030(PC)
+    JSR     ESQ_CaptureCtrlBit3Stream(PC)
 
 .LAB_0040:
     MOVEA.L #BLTDDAT,A0
@@ -805,14 +1159,36 @@ callCTRL:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_CaptureCtrlBit4Stream   (CaptureCiabPraBit4Stream)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0 (on reset path)
+; CLOBBERS:
+;   D0-D1, A5
+; CALLS:
+;   GET_BIT_4_OF_CIAB_PRA_INTO_D1
+; READS:
+;   LAB_1AFA, LAB_1AF8, LAB_1AFB
+; WRITES:
+;   LAB_1AFA, LAB_1AF8, LAB_1AFB, LAB_1AFE, CTRL_BUFFER, CTRL_H, LAB_2282,
+;   LAB_2283, LAB_2284
+; DESC:
+;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
+;   CTRL_BUFFER.
+; NOTES:
+;   Uses LAB_1AFA/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
+;------------------------------------------------------------------------------
+ESQ_CaptureCtrlBit4Stream:
 readCTRL:
     TST.W   LAB_1AFA            ; Test LAB_1AFA...
-    BNE.S   LAB_0042            ; and if it's not equal to zero, jump to LAB_0042
+    BNE.S   .advance_state       ; and if it's not equal to zero, jump to LAB_0042
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)        ; Read the bit from CIAB_PRA and store bit 4's value in D1
 
     TST.B   D1                  ; Test the value (this cheaply is seeing if it's 1 or 0)
-    BPL.W   LAB_004D            ; If it's 1, jump to LAB_004D (which is just RTS) so exit this subroutine.
+    BPL.W   .return              ; If it's 1, jump to LAB_004D (which is just RTS) so exit this subroutine.
 
     ADDQ.W  #1,LAB_1AFA
     MOVE.W  #4,LAB_1AF8
@@ -821,37 +1197,37 @@ readCTRL:
 
 ;!======
 
-LAB_0042:
+.advance_state:
     MOVE.W  LAB_1AFA,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_1AFA
     MOVE.W  LAB_1AF8,D1
     CMP.W   D0,D1
-    BGT.W   LAB_004D
+    BGT.W   .return
 
     MOVEQ   #4,D1
     CMP.W   D1,D0
-    BGT.W   LAB_0045
+    BGT.W   .collect_samples
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
 
     TST.B   D1
-    BPL.S   LAB_0044
+    BPL.S   .reset_state
 
     MOVE.W  #14,LAB_1AF8
     MOVEQ   #7,D0
     LEA     LAB_1AFE,A5
     MOVEQ   #0,D1
 
-.LAB_0043:
+.clear_sample_buffer_loop:
     MOVE.B  D1,(A5)+
-    DBF     D0,.LAB_0043
+    DBF     D0,.clear_sample_buffer_loop
 
     RTS
 
 ;!======
 
-LAB_0044:
+.reset_state:
     MOVEQ   #0,D0           ; Set D0 to 0
     MOVE.W  D0,LAB_1AF8     ; Set LAB_1AF8 to D0 (0)
     MOVE.W  D0,LAB_1AFB     ; Set LAB_1AFB to D0 (0)
@@ -860,10 +1236,10 @@ LAB_0044:
 
 ;!======
 
-LAB_0045:
+.collect_samples:
     MOVEQ   #94,D1              ; Move 94 ('^') into D1
     CMP.W   D1,D0
-    BGE.S   LAB_0046
+    BGE.S   .assemble_and_store
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
 
@@ -876,11 +1252,11 @@ LAB_0045:
 
 ;!======
 
-LAB_0046:
+.assemble_and_store:
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
 
     TST.B   D1
-    BMI.S   .LAB_004C
+    BMI.S   .reset_state_and_exit
 
     LEA     LAB_1AFE,A5
     ADDA.W  LAB_1AFB,A5
@@ -888,55 +1264,75 @@ LAB_0046:
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
-.LAB_0047:
+.build_byte_loop:
     TST.B   -(A5)
-    BMI.S   .LAB_0048
+    BMI.S   .clear_bit
 
     BSET    D1,D0
-    BRA.S   .LAB_0049
+    BRA.S   .next_bit
 
-.LAB_0048:
+.clear_bit:
     BCLR    D1,D0
 
-.LAB_0049:
-    DBF     D1,.LAB_0047
+.next_bit:
+    DBF     D1,.build_byte_loop
     LEA     CTRL_BUFFER,A1
     MOVE.W  CTRL_H,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)+
     ADDQ.W  #1,D1
     CMPI.W  #$1f4,D1
-    BNE.S   .LAB_004A
+    BNE.S   .store_tail
 
     MOVEQ   #0,D1
 
-.LAB_004A:
+.store_tail:
     MOVE.W  D1,CTRL_H
     MOVE.W  D1,D0
     MOVE.W  LAB_2282,D1
     SUB.W   D1,D0
-    BCC.W   .LAB_004B
+    BCC.W   .fill_count_ok
 
     ADDI.W  #$1f4,D0
 
-.LAB_004B:
+.fill_count_ok:
     MOVE.W  D0,LAB_2284
     CMP.W   LAB_2283,D0
-    BCS.W   .LAB_004C
+    BCS.W   .reset_state_and_exit
 
     MOVE.W  D0,LAB_2283
 
-.LAB_004C:
+.reset_state_and_exit:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1AF8
     MOVE.W  D0,LAB_1AFB
     MOVE.W  D0,LAB_1AFA
 
-LAB_004D:
+.return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ReadCtrlBufferByte   (ReadCtrlBufferByte)
+; ARGS:
+;   (none)
+; RET:
+;   D0: next byte from CTRL_BUFFER (low byte)
+; CLOBBERS:
+;   D0-D1, A0
+; CALLS:
+;   (none)
+; READS:
+;   LAB_2282, CTRL_BUFFER
+; WRITES:
+;   LAB_2282
+; DESC:
+;   Reads one byte from CTRL_BUFFER and advances the tail index.
+; NOTES:
+;   Buffer wraps at $01F4.
+;------------------------------------------------------------------------------
+ESQ_ReadCtrlBufferByte:
 getCTRLBuffer:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
@@ -946,11 +1342,11 @@ getCTRLBuffer:
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
     CMPI.W  #$1f4,D1
-    BNE.S   .LAB_004F
+    BNE.S   .tail_update_done
 
     MOVEQ   #0,D1
 
-.LAB_004F:
+.tail_update_done:
     MOVE.W  D1,LAB_2282
     RTS
 

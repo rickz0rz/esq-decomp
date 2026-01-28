@@ -33,8 +33,9 @@ Keep any generated binaries out of version control.
 ## Development Workflow
 - When you rename a label, keep the original `LAB_xxxx` symbol in place and add the new alias directly above it. This preserves binary parity while growing readable names.
 - Record noteworthy alias work and outstanding anonymous labels in [`AGENTS.md`](AGENTS.md) so future passes know where to continue.
+- Follow the inline documentation template in `AGENTS.md` for function headers, symbol blocks, and struct offsets; keep notes in code rather than new markdown docs.
 - Update adjacent data tables (e.g., entries in `src/data/wdisp.s`) whenever you adjust presets or highlight behavior inside `src/modules/gcommand.s`.
-- Re-run `./test-hash.sh` after each significant change; treat hash deltas as regressions unless intentionally diverging.
+- Re-run `./test-hash.sh` after each change; treat hash deltas as regressions unless intentionally diverging.
 
 ## Contributor Guide
 If you plan to extend or annotate the disassembly, read the contributor guidelines in [`AGENTS.md`](AGENTS.md) for module organization, coding style, testing expectations, and review workflow.

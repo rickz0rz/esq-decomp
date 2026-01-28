@@ -640,10 +640,10 @@ LAB_14C1:
 ;!======
 
 j_getCTRLBuffer:
-    JMP     getCTRLBuffer
+    JMP     ESQ_ReadCtrlBufferByte
 
 LAB_14C3:
-    JMP     LAB_002B
+    JMP     ESQ_ReadSerialRbfByte
 
 ;!======
 
@@ -3029,7 +3029,7 @@ LAB_157A:
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_159D(PC)
+    JSR     SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   .return
@@ -3040,7 +3040,7 @@ LAB_157A:
     MOVE.L  D0,-(A7)
     PEA     53.W
     PEA     1.W
-    JSR     LAB_159D(PC)
+    JSR     SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   .return
@@ -3051,7 +3051,7 @@ LAB_157A:
     MOVE.L  D0,-(A7)
     PEA     53.W
     CLR.L   -(A7)
-    JSR     LAB_159D(PC)
+    JSR     SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.S   .return
@@ -3408,8 +3408,9 @@ LAB_159B:
 LAB_159C:
     JMP     LAB_0054
 
+SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen:
 LAB_159D:
-    JMP     LAB_021A
+    JMP     CLEANUP_RenderAlignedStatusScreen
 
 LAB_159E:
     JMP     LAB_0F3D

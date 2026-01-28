@@ -6313,7 +6313,7 @@ LAB_1A88:
     MOVE.L  A0,-616(A4)
     MOVE.L  22918(A4),-(A7)
     MOVE.L  22914(A4),-(A7)
-    JSR     LAB_1A8B(PC)
+    JSR     WDISP_JMP_TBL_ESQ_MainInitAndRun(PC)
 
     CLR.L   (A7)
     JSR     LIBRARIES_LOAD_FAILED(PC)
@@ -6332,8 +6332,9 @@ GLOB_STR_ASTERISK_1:
 
 ;!======
 
+WDISP_JMP_TBL_ESQ_MainInitAndRun:
 LAB_1A8B:
-    JMP     LAB_085E
+    JMP     ESQ_MainInitAndRun
 
 ;!======
 
@@ -6476,8 +6477,9 @@ LAB_1A95:
 
 ;!======
 
+WDISP_JMP_TBL_ESQ_ReturnWithStackCode:
 LAB_1A96:
-    JMP     LAB_0009
+    JMP     ESQ_ReturnWithStackCode
 
 ;!======
 

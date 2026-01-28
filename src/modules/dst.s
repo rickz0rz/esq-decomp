@@ -2986,7 +2986,7 @@ LAB_06E6:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
-    JSR     LAB_08A3(PC)
+    JSR     ESQ_JMP_TBL_LAB_0E57(PC)
 
     LEA     16(A7),A7
 
@@ -3592,7 +3592,7 @@ LAB_0710:
     PEA     3.W
     JSR     LAB_07C4(PC)
 
-    JSR     LAB_08B8(PC)
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     CLR.L   LAB_21E4
     JSR     LAB_0723(PC)
@@ -3641,7 +3641,7 @@ LAB_0711:
     PEA     -41(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
 
-    JSR     LAB_0726(PC)
+    JSR     DST_JMP_TBL_CLEANUP_DrawDateTimeBannerRow(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
@@ -3718,7 +3718,7 @@ LAB_0713:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2252
     MOVE.W  D0,LAB_1DF3
-    JSR     LAB_08AD(PC)
+    JSR     ESQ_JMP_TBL_LAB_14E2(PC)
 
     CLR.W   LAB_1F3C
     JSR     LAB_09B7(PC)
@@ -3963,8 +3963,9 @@ LAB_0724:
 LAB_0725:
     JMP     GCOMMAND_SeedBannerFromPrefs
 
+DST_JMP_TBL_CLEANUP_DrawDateTimeBannerRow:
 LAB_0726:
-    JMP     LAB_020C
+    JMP     CLEANUP_DrawDateTimeBannerRow
 
 LAB_0727:
     JMP     LAB_0EE6

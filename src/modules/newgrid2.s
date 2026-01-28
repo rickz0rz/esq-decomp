@@ -599,8 +599,9 @@ LAB_133F:
 LAB_1340:
     JMP     LAB_0597
 
+NEWGRID2_JMP_TBL_CLEANUP_UpdateEntryFlagBytes:
 LAB_1341:
-    JMP     LAB_027A
+    JMP     CLEANUP_UpdateEntryFlagBytes
 
 LAB_1342:
     JMP     LAB_0358
@@ -620,8 +621,9 @@ LAB_1346:
 LAB_1347:
     JMP     LAB_036C
 
+NEWGRID2_JMP_TBL_CLEANUP_FormatClockFormatEntry:
 LAB_1348:
-    JMP     LAB_01E9
+    JMP     CLEANUP_FormatClockFormatEntry
 
 LAB_1349:
     JMP     LAB_00EC
@@ -641,8 +643,9 @@ LAB_134D:
 LAB_134E:
     JMP     LAB_1A23
 
+NEWGRID2_JMP_TBL_CLEANUP_TestEntryFlagYAndBit1:
 LAB_134F:
-    JMP     LAB_0277
+    JMP     CLEANUP_TestEntryFlagYAndBit1
 
 LAB_1350:
     JMP     LAB_05BA

@@ -1,4 +1,5 @@
 Legacy notes (pre-repo cleanup). These may be out of date; see README.md for current setup.
+This file is retained for historical context only.
 
 https://discord.com/channels/490365964119179275/490369571019292672/1373474466084032542
 
@@ -6,5 +7,7 @@ prevue_work.tar is the HDD image
 Prevue.uae is the WinUAE config, the main thing to port over to another emulator is the HDD config
 ESQ-3.asm is the source im using, the main changes is that i hardcoded everything from DF0 to DH2, i changed some var names regarding CTRL, added a custom subfunc for my bootleg InjectCTRL command (mapped to command =) and set the version info to Ver 10.0 Build 69 LOL
 esq-ari-disassembly_sami_05-17.i64 is the IDA 9.1 database that ive been working with so far
+
+Note: old scratch artifacts like `old/`, `old.zip`, and `src-vbcc.zip` were removed after cleanup.
 
 C:\vbcc\bin>vasmm68k_mot.exe -Fhunkexe -o "G:\Software\WinUAE\disks\prevue_work\ESQ2.bin" -nosym "D:\!move\ESQ-3.asm"

@@ -1967,7 +1967,7 @@ LAB_0A7E:
 
     BSR.W   LAB_0A45
 
-    JSR     LAB_08B8(PC)
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     PEA     2.W
     JSR     LAB_09A7(PC)
@@ -1976,7 +1976,7 @@ LAB_0A7E:
     BRA.W   LAB_0A88
 
 LAB_0A7F:
-    JSR     LAB_08B8(PC)
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     PEA     1.W
     CLR.L   -(A7)
@@ -2096,7 +2096,7 @@ LAB_0A86:
 LAB_0A87:
     BSR.W   LAB_0A45
 
-    JSR     LAB_08B8(PC)
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     PEA     2.W
     JSR     LAB_09A7(PC)

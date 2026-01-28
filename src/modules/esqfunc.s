@@ -1523,7 +1523,7 @@ LAB_09BE:
     JMP     LAB_168B
 
 LAB_09BF:
-    JMP     callCTRL
+    JMP     ESQ_PollCtrlInput
 
 LAB_09C0:
     JMP     LAB_0F93

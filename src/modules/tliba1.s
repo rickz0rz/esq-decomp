@@ -1426,8 +1426,9 @@ LAB_17CC:
 LAB_17CD:
     JMP     LAB_036C
 
+TLIBA1_JMP_TBL_CLEANUP_FormatClockFormatEntry:
 LAB_17CE:
-    JMP     LAB_01E9
+    JMP     CLEANUP_FormatClockFormatEntry
 
 LAB_17CF:
     JMP     LAB_08DF

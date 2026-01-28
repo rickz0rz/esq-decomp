@@ -1,7 +1,58 @@
 ;!======
 
-; there's a lot going on here so i'm wondering if this
-; is the main initialization + run loop?
+;------------------------------------------------------------------------------
+; FUNC: ESQ_MainInitAndRun   (MainInitAndRun??)
+; ARGS:
+;   stack +4: argcOrMode?? (long)
+;   stack +8: argvOrConfig?? (long*)
+; RET:
+;   D0: status/result?? (0 on success)
+; CLOBBERS:
+;   D0-D7/A0-A6
+; CALLS:
+;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
+;   JMP_TBL_LIBRARIES_LOAD_FAILED_2, JMP_TBL_OVERRIDE_INTUITION_FUNCS,
+;   _LVOOpenFont, _LVOOpenDiskFont, JMP_TBL_ALLOCATE_MEMORY_2,
+;   _LVOInitRastPort, _LVOSetFont, JMP_TBL_LAB_1A07_2, JMP_TBL_ALLOC_RASTER_2,
+;   _LVOBltClear, _LVOInitBitMap, JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY,
+;   JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMP_TBL_LAB_1AAD, LAB_08C1,
+;   ESQ_JMP_TBL_LAB_0056, ESQ_JMP_TBL_LAB_001E, ESQ_JMP_TBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
+;   LAB_0BFA, JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_2, ESQ_JMP_TBL_LAB_1A30, _LVOOpenDevice,
+;   _LVODoIO, SETUP_INTERRUPT_INTB_RBF, SETUP_INTERRUPT_INTB_AUD1,
+;   ESQ_JMP_TBL_LAB_002F, ESQ_JMP_TBL_SCRIPT_InitCtrlContext, ESQ_JMP_TBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMP_TBL_LAB_041D, LAB_098A, LAB_0C7A,
+;   ESQ_JMP_TBL_LAB_180B, SETUP_INTERRUPT_INTB_VERTB, LAB_0A45, LAB_0A49, _LVOSetAPen,
+;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, LAB_09AD, LAB_09A9,
+;   JMP_TBL_PRINTF_2, ESQ_JMP_TBL_LAB_14E2, ESQ_JMP_TBL_LAB_0D89, JMP_TBL_PARSE_INI, ESQ_JMP_TBL_LAB_0DE9
+; READS:
+;   GLOB_REF_DOS_LIBRARY_2, AbsExecBase, GLOB_STR_GRAPHICS_LIBRARY,
+;   GLOB_STR_DISKFONT_LIBRARY, GLOB_STR_DOS_LIBRARY, GLOB_STR_INTUITION_LIBRARY,
+;   GLOB_STR_UTILITY_LIBRARY, GLOB_STR_BATTCLOCK_RESOURCE,
+;   GLOB_STRUCT_TEXTATTR_TOPAZ_FONT, GLOB_STRUCT_TEXTATTR_PREVUEC_FONT,
+;   GLOB_STRUCT_TEXTATTR_H26F_FONT, GLOB_STRUCT_TEXTATTR_PREVUE_FONT,
+;   GLOB_STR_RAVESC, GLOB_STR_COPY_NIL_ASSIGN_RAM, GLOB_STR_ESQ_C_1..11,
+;   GLOB_STR_SERIAL_READ, GLOB_STR_SERIAL_DEVICE, GLOB_STR_DF0_GRADIENT_INI_2,
+;   GLOB_STR_GUIDE_START_VERSION_AND_BUILD, GLOB_STR_MAJOR_MINOR_VERSION,
+;   GLOB_PTR_STR_BUILD_ID, GLOB_LONG_BUILD_NUMBER, GLOB_LONG_PATCH_VERSION_NUMBER
+; WRITES:
+;   GLOB_PTR_STR_SELECT_CODE, GLOB_WORD_SELECT_CODE_IS_RAVESC,
+;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_DISKFONT_LIBRARY, GLOB_REF_DOS_LIBRARY,
+;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE,
+;   GLOB_HANDLE_TOPAZ_FONT, GLOB_HANDLE_PREVUEC_FONT, GLOB_HANDLE_H26F_FONT,
+;   GLOB_HANDLE_PREVUE_FONT, GLOB_REF_RASTPORT_1, GLOB_REF_RASTPORT_2,
+;   GLOB_REF_STR_CLOCK_FORMAT, LAB_1DC5, LAB_1DC6, LAB_222A, LAB_222B,
+;   LAB_221A/LAB_221C/LAB_2220/LAB_2224 tables, LAB_2216, LAB_2229,
+;   LAB_2294, LAB_229A, LAB_2267-LAB_2269, LAB_2207-LAB_220E,
+;   GLOB_REF_BAUD_RATE, LAB_2211_SERIAL_PORT_MAYBE, LAB_2212,
+;   GLOB_REF_96_BYTES_ALLOCATED, numerous state globals cleared in .init_global_state
+; DESC:
+;   Main startup routine: loads libraries/resources, opens fonts, allocates
+;   rastports/bitmaps/rasters, initializes display state, sets serial/interrupts,
+;   parses INI, and seeds global state for the main loop.
+; NOTES:
+;   - Treats argv[1] as a select code string; detects \"RAVESC\".
+;   - Falls back to topaz for missing disk fonts.
+;------------------------------------------------------------------------------
+ESQ_MainInitAndRun:
 LAB_085E:
     LINK.W  A5,#-16
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -11,38 +62,38 @@ LAB_085E:
 
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BLT.S   .clearSelectCodeByte
+    BLT.S   .clear_select_code
 
     MOVEA.L 4(A3),A0
     LEA     GLOB_PTR_STR_SELECT_CODE,A1
 
-.loopWhileA0IsNotNull:
+.copy_select_code_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .loopWhileA0IsNotNull
+    BNE.S   .copy_select_code_loop
 
-    BRA.S   .LAB_0861
+    BRA.S   .select_code_ready
 
-.clearSelectCodeByte:
+.clear_select_code:
     CLR.B   GLOB_PTR_STR_SELECT_CODE
 
-.LAB_0861:
+.select_code_ready:
     LEA     GLOB_PTR_STR_SELECT_CODE,A0
     LEA     GLOB_STR_RAVESC,A1
 
-.testSelectCodeForRAVESC:
+.compare_select_code_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .clear_GLOB_WORD_SELECT_CODE_IS_RAVESC
+    BNE.S   .clear_select_code_flag
 
     TST.B   D0
-    BNE.S   .testSelectCodeForRAVESC
+    BNE.S   .compare_select_code_loop
 
-    BNE.S   .clear_GLOB_WORD_SELECT_CODE_IS_RAVESC
+    BNE.S   .clear_select_code_flag
 
     MOVE.W  #1,GLOB_WORD_SELECT_CODE_IS_RAVESC
     BRA.S   .runStartupSequence
 
-.clear_GLOB_WORD_SELECT_CODE_IS_RAVESC:
+.clear_select_code_flag:
     CLR.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
 
 .runStartupSequence:
@@ -231,13 +282,13 @@ LAB_085E:
     JSR     JMP_TBL_LAB_1A07_2(PC)
 
     TST.L   D1
-    BEQ.S   .LAB_086E
+    BEQ.S   .adjust_rastport_text_spacing
 
     MOVE.W  LAB_222B,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_222B
 
-.LAB_086E:
+.adjust_rastport_text_spacing:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     645.W
@@ -261,10 +312,10 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.LAB_086F:
+.init_rastport1_rows_loop:
     MOVEQ   #4,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0870
+    BGE.S   .init_bitmap_320_240
 
     MOVE.L  D5,D0
     MULS    #40,D0
@@ -275,9 +326,9 @@ LAB_085E:
 
     ADDQ.W  #4,A7
     ADDQ.W  #1,D5
-    BRA.S   .LAB_086F
+    BRA.S   .init_rastport1_rows_loop
 
-.LAB_0870:
+.init_bitmap_320_240:
     LEA     GLOB_REF_320_240_BITMAP,A0     ; BitMap struct pointer
     MOVEQ   #4,D0           ; depth: 4 bitplanes or 16 colors (2 ^ 4) into D0
     MOVE.L  #352,D1         ; width: 352 into D1
@@ -288,10 +339,10 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.LAB_0871:
+.alloc_rasters_352x240_loop:
     MOVEQ   #4,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0872
+    BGE.S   .select_clock_format_table
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -322,21 +373,21 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0871
+    BRA.S   .alloc_rasters_352x240_loop
 
-.LAB_0872:
+.select_clock_format_table:
     MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D0
     MOVEQ   #'Y',D1
     CMP.B   D1,D0
     BNE.S   .use12HourClock
 
     LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
-    BRA.S   .LAB_0874
+    BRA.S   .store_clock_format_table
 
 .use12HourClock:
     LEA     GLOB_JMP_TBL_HALF_HOURS_12_HR_FMT,A0
 
-.LAB_0874:
+.store_clock_format_table:
     MOVE.L  A0,GLOB_REF_STR_CLOCK_FORMAT
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -361,7 +412,7 @@ LAB_085E:
     MOVEA.L LAB_1DC5,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_08B0(PC)
+    JSR     ESQ_JMP_TBL_LAB_1AAD(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     34.W
@@ -385,15 +436,15 @@ LAB_085E:
     MOVEA.L LAB_1DC6,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_08B0(PC)
+    JSR     ESQ_JMP_TBL_LAB_1AAD(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
 
-.LAB_0875:
+.init_entry_tables_loop:
     MOVEQ   #4,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0876
+    BGE.S   .after_entry_tables
 
     MOVE.L  D5,D0
     MULS    #$a0,D0
@@ -409,32 +460,32 @@ LAB_085E:
 
     ADDQ.W  #8,A7
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0875
+    BRA.S   .init_entry_tables_loop
 
-.LAB_0876:
-    JSR     LAB_08B8(PC)
+.after_entry_tables:
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     CLR.W   LAB_222A
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  20(A0),D0
     MOVEQ   #34,D1
     CMP.W   D1,D0
-    BCS.S   .LAB_0877
+    BCS.S   .check_graphics_version
 
     MOVE.W  #1,LAB_222A
 
-.LAB_0877:
+.check_graphics_version:
     MOVEQ   #4,D1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAvailMem(A6)
 
     CMPI.L  #1750000,D0
-    BLE.S   .LAB_0878
+    BLE.S   .check_available_mem
 
     MOVE.W  #2,LAB_222A
 
-.LAB_0878:
-    JSR     LAB_08AC(PC)
+.check_available_mem:
+    JSR     ESQ_JMP_TBL_LAB_001E(PC)
 
     TST.L   D0
     BNE.W   .return
@@ -443,7 +494,7 @@ LAB_085E:
 
     JSR     JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP(PC)
 
-    JSR     LAB_08A1(PC)
+    JSR     ESQ_JMP_TBL_LAB_0017(PC)
 
     MOVE.L  #LAB_223A,LAB_1B06
     MOVE.L  #LAB_2274,LAB_1B07
@@ -457,11 +508,11 @@ LAB_085E:
     CLR.W   LAB_2294
     MOVEQ   #1,D5
 
-.LAB_0879:
+.scan_cart_args_loop:
     MOVE.L  D5,D0
     EXT.L   D0
     CMP.L   D7,D0
-    BGE.S   .LAB_087C
+    BGE.S   .select_baud_rate
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -469,25 +520,25 @@ LAB_085E:
     MOVEA.L 0(A3,D0.L),A0
     LEA     GLOB_STR_CART,A1
 
-.LAB_087A:
+.compare_cart_string_loop:
     MOVE.B  (A0)+,D1
     CMP.B   (A1)+,D1
-    BNE.S   .LAB_087B
+    BNE.S   .next_cart_arg
 
     TST.B   D1
-    BNE.S   .LAB_087A
+    BNE.S   .compare_cart_string_loop
 
-    BNE.S   .LAB_087B
+    BNE.S   .next_cart_arg
 
     MOVE.W  #1,LAB_2294
 
 ; it looks like this tests a value to determine if we can spin up
 ; to a specific baud rate or if we should just jump down to 2400.
-.LAB_087B:
+.next_cart_arg:
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0879
+    BRA.S   .scan_cart_args_loop
 
-.LAB_087C:
+.select_baud_rate:
     MOVEQ   #2,D0
     CMP.L   D0,D7
 
@@ -499,22 +550,22 @@ LAB_085E:
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_BAUD_RATE
     CMPI.L  #2400,D0
-    BEQ.S   .LAB_087E
+    BEQ.S   .after_baud_rate
 
     CMPI.L  #4800,D0
-    BEQ.S   .LAB_087E
+    BEQ.S   .after_baud_rate
 
     CMPI.L  #9600,D0
-    BEQ.S   .LAB_087E
+    BEQ.S   .after_baud_rate
 
     MOVE.L  #2400,D0
     MOVE.L  D0,GLOB_REF_BAUD_RATE
-    BRA.S   .LAB_087E
+    BRA.S   .after_baud_rate
 
 .setBaudRateTo2400:
     MOVE.L  #2400,GLOB_REF_BAUD_RATE
 
-.LAB_087E:
+.after_baud_rate:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)     ; flags
     PEA     9000.W                              ; 9000 bytes
     PEA     854.W                               ; line number?
@@ -532,7 +583,7 @@ LAB_085E:
 
     PEA     82.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_08A9(PC)
+    JSR     ESQ_JMP_TBL_LAB_1A30(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2211_SERIAL_PORT_MAYBE
@@ -563,11 +614,11 @@ LAB_085E:
 
     JSR     SETUP_INTERRUPT_INTB_AUD1(PC)
 
-    JSR     LAB_08AF(PC)
+    JSR     ESQ_JMP_TBL_LAB_002F(PC)
 
-    JSR     LAB_089F(PC)
+    JSR     ESQ_JMP_TBL_SCRIPT_InitCtrlContext(PC)
 
-    JSR     LAB_08A6(PC)
+    JSR     ESQ_JMP_TBL_KYBD_InitializeInputDevices(PC)
 
     JSR     LAB_0963(PC)
 
@@ -597,10 +648,10 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.LAB_087F:
+.alloc_rasters_696x509_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0880
+    BGE.S   .seed_raster_aliases
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -630,18 +681,18 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .LAB_087F
+    BRA.S   .alloc_rasters_696x509_loop
 
-.LAB_0880:
+.seed_raster_aliases:
     MOVE.L  LAB_221C,LAB_2267
     MOVE.L  LAB_221D,LAB_2268
     MOVE.L  LAB_221E,LAB_2269
     MOVEQ   #0,D5
 
-.LAB_0881:
+.seed_raster_offsets_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0882
+    BGE.S   .begin_alloc_rasters_696x241
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -654,15 +705,15 @@ LAB_085E:
     ADDA.W  #$5c20,A2
     MOVE.L  A2,(A0)
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0881
+    BRA.S   .seed_raster_offsets_loop
 
-.LAB_0882:
+.begin_alloc_rasters_696x241:
     MOVEQ   #3,D5
 
-.LAB_0883:
+.alloc_rasters_696x241_loop:
     MOVEQ   #5,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0884
+    BGE.S   .init_main_rastport
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -692,9 +743,9 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0883
+    BRA.S   .alloc_rasters_696x241_loop
 
-.LAB_0884:
+.init_main_rastport:
     MOVE.L  LAB_2224,LAB_220A
     MOVE.L  LAB_2225,LAB_220B
     MOVE.L  LAB_2226,LAB_220C
@@ -721,10 +772,10 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.LAB_0885:
+.alloc_rasters_696x2_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
-    BGE.S   .LAB_0886
+    BGE.S   .after_raster_setup
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -756,9 +807,9 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0885
+    BRA.S   .alloc_rasters_696x2_loop
 
-.LAB_0886:
+.after_raster_setup:
     MOVE.L  LAB_2220,LAB_2207
     MOVE.L  LAB_2221,LAB_2208
     MOVE.L  LAB_2222,LAB_2209
@@ -774,11 +825,11 @@ LAB_085E:
     CLR.L   LAB_225F
     MOVEQ   #-1,D0
     MOVE.L  D0,LAB_2260
-    JSR     LAB_08A4(PC)
+    JSR     ESQ_JMP_TBL_LAB_041D(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D0
-    BNE.S   .LAB_0887
+    BNE.S   .init_global_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -787,10 +838,10 @@ LAB_085E:
 
     ADDQ.W  #8,A7
 
-.LAB_0887:
+.init_global_state:
     JSR     LAB_0C7A(PC)
 
-    JSR     LAB_08AB(PC)
+    JSR     ESQ_JMP_TBL_LAB_180B(PC)
 
     JSR     SETUP_INTERRUPT_INTB_VERTB(PC)
 
@@ -904,7 +955,7 @@ LAB_085E:
     MOVEQ   #109,D0
     ADD.L   D0,D0
     CMP.L   LAB_2319,D0
-    BNE.S   .LAB_0888
+    BNE.S   .format_version_banner
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -916,7 +967,7 @@ LAB_085E:
     LEA     12(A7),A7
 
 ; Fill out "Ver %s.%ld Build %ld %s"
-.LAB_0888:
+.format_version_banner:
     MOVE.L  GLOB_PTR_STR_BUILD_ID,-(A7)             ; JGT
     MOVE.L  GLOB_LONG_BUILD_NUMBER,-(A7)            ; 21
     MOVE.L  GLOB_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 4
@@ -929,18 +980,18 @@ LAB_085E:
     LEA     LAB_2249,A1
     MOVEQ   #9,D0
 
-.LAB_0889:
+.copy_version_template_loop:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,.LAB_0889
+    DBF     D0,.copy_version_template_loop
 
-    JSR     LAB_08AD(PC)
+    JSR     ESQ_JMP_TBL_LAB_14E2(PC)
 
-    JSR     LAB_08B3(PC)
+    JSR     ESQ_JMP_TBL_LAB_0D89(PC)
 
     PEA     GLOB_STR_DF0_GRADIENT_INI_2
     JSR     JMP_TBL_PARSE_INI(PC)
 
-    JSR     LAB_08AA(PC)
+    JSR     ESQ_JMP_TBL_LAB_0DE9(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -972,12 +1023,12 @@ LAB_085E:
 
     LEA     76(A7),A7
     TST.W   IS_COMPATIBLE_VIDEO_CHIP
-    BNE.S   .LAB_088A
+    BNE.S   .check_memory_and_video_caps
 
     TST.W   HAS_REQUESTED_FAST_MEMORY
-    BEQ.W   .LAB_0890
+    BEQ.W   .continue_startup
 
-.LAB_088A:
+.check_memory_and_video_caps:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     180.W
@@ -987,7 +1038,7 @@ LAB_085E:
 
     LEA     12(A7),A7
     TST.W   HAS_REQUESTED_FAST_MEMORY
-    BEQ.S   .LAB_088B
+    BEQ.S   .maybe_show_compat_note
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -998,24 +1049,24 @@ LAB_085E:
 
     LEA     12(A7),A7
 
-.LAB_088B:
+.maybe_show_compat_note:
     TST.W   IS_COMPATIBLE_VIDEO_CHIP
-    BEQ.S   .LAB_088E
+    BEQ.S   .init_compat_wait
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     TST.W   HAS_REQUESTED_FAST_MEMORY
-    BEQ.S   .LAB_088C
+    BEQ.S   .select_compat_note_y_no_fastmem
 
     MOVEQ   #120,D0
     ADD.L   D0,D0
-    BRA.S   .LAB_088D
+    BRA.S   .draw_compat_note
 
-.LAB_088C:
+.select_compat_note_y_no_fastmem:
     MOVEQ   #105,D0
     ADD.L   D0,D0
 
-.LAB_088D:
+.draw_compat_note:
     MOVE.L  D0,-(A7)
     PEA     LAB_1E18
     MOVE.L  A0,-(A7)
@@ -1023,24 +1074,24 @@ LAB_085E:
 
     LEA     12(A7),A7
 
-.LAB_088E:
+.init_compat_wait:
     JSR     LAB_0A48(PC)
 
-.LAB_088F:
-    BRA.S   .LAB_088F
+.compat_halt_loop:
+    BRA.S   .compat_halt_loop
 
-.LAB_0890:
+.continue_startup:
     JSR     LAB_0A48(PC)
 
-    JSR     LAB_08BA(PC)
+    JSR     ESQ_JMP_TBL_LAB_0E09(PC)
 
-    JSR     LAB_089D(PC)
+    JSR     ESQ_JMP_TBL_LAB_0E14(PC)
 
     JSR     LAB_0539(PC)
 
-    JSR     LAB_08A0(PC)
+    JSR     ESQ_JMP_TBL_LAB_04F0(PC)
 
-    JSR     LAB_08A5(PC)
+    JSR     ESQ_JMP_TBL_LAB_1664(PC)
 
     PEA     GLOB_STR_DF0_DEFAULT_INI_1
     JSR     JMP_TBL_PARSE_INI(PC)
@@ -1057,7 +1108,7 @@ LAB_085E:
 
     LEA     20(A7),A7
     TST.L   BRUSH_SelectedNode
-    BNE.S   .LAB_0891
+    BNE.S   .ensure_brush_selected
 
     PEA     LAB_1ED1
     PEA     LAB_1E1C
@@ -1066,7 +1117,7 @@ LAB_085E:
     ADDQ.W  #8,A7
     MOVE.L  D0,BRUSH_SelectedNode
 
-.LAB_0891:
+.ensure_brush_selected:
     PEA     LAB_1ED1
     JSR     LAB_0AA5(PC)
 
@@ -1076,9 +1127,9 @@ LAB_085E:
     PEA     GLOB_STR_DF0_BANNER_INI_1
     JSR     JMP_TBL_PARSE_INI(PC)
 
-    JSR     LAB_08B6(PC)
+    JSR     ESQ_JMP_TBL_LAB_0CC8(PC)
 
-    JSR     LAB_08A3(PC)
+    JSR     ESQ_JMP_TBL_LAB_0E57(PC)
 
     JSR     LAB_09B7(PC)
 
@@ -1089,17 +1140,17 @@ LAB_085E:
     JSR     LAB_08DA(PC)
 
     MOVE.W  #$8100,INTENA
-    JSR     LAB_08A2(PC)
+    JSR     ESQ_JMP_TBL_LAB_1365(PC)
 
     PEA     LAB_2321
-    JSR     LAB_08AE(PC)
+    JSR     ESQ_JMP_TBL_LAB_0F07(PC)
 
     PEA     LAB_2324
-    JSR     LAB_08AE(PC)
+    JSR     ESQ_JMP_TBL_LAB_0F07(PC)
 
     PEA     LAB_2324
     PEA     LAB_2321
-    JSR     LAB_08B2(PC)
+    JSR     ESQ_JMP_TBL_LAB_0F5D(PC)
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_21DF
@@ -1114,11 +1165,11 @@ LAB_085E:
     CLR.L   LAB_1E84
     MOVEQ   #1,D5
 
-.LAB_0892:
+.scan_startup_flags_loop:
     MOVE.L  D5,D0
     EXT.L   D0
     CMP.L   D7,D0
-    BGE.S   .LAB_0895
+    BGE.S   .after_startup_flag_scan
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -1126,24 +1177,24 @@ LAB_085E:
     MOVEA.L 0(A3,D0.L),A0
     LEA     LAB_1E1E,A1
 
-.LAB_0893:
+.compare_startup_flag_loop:
     MOVE.B  (A0)+,D1
     CMP.B   (A1)+,D1
-    BNE.S   .LAB_0894
+    BNE.S   .next_startup_flag
 
     TST.B   D1
-    BNE.S   .LAB_0893
+    BNE.S   .compare_startup_flag_loop
 
-    BNE.S   .LAB_0894
+    BNE.S   .next_startup_flag
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_1E84
 
-.LAB_0894:
+.next_startup_flag:
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0892
+    BRA.S   .scan_startup_flags_loop
 
-.LAB_0895:
+.after_startup_flag_scan:
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
@@ -1159,14 +1210,14 @@ LAB_085E:
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
 
-    JSR     LAB_08B8(PC)
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
 
-.LAB_0896:
+.clear_schedule_table_loop:
     CMPI.W  #$12e,D5
-    BGE.S   .LAB_0897
+    BGE.S   .after_schedule_table_clear
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -1175,41 +1226,41 @@ LAB_085E:
     ADDA.L  D0,A0
     CLR.W   (A0)
     ADDQ.W  #1,D5
-    BRA.S   .LAB_0896
+    BRA.S   .clear_schedule_table_loop
 
-.LAB_0897:
+.after_schedule_table_clear:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
-    BEQ.S   .LAB_0898
+    BEQ.S   .after_ravesc_banner
 
-    JSR     LAB_08B1(PC)
+    JSR     ESQ_JMP_TBL_LAB_0057(PC)
 
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
 
     ADDQ.W  #4,A7
 
-.LAB_0898:
+.after_ravesc_banner:
     MOVE.W  #1,LAB_1DE5
 
-.LAB_0899:
+.main_idle_loop:
     JSR     LAB_097E(PC)
 
     JSR     LAB_09B1(PC)
 
     TST.W   D0
-    BEQ.S   .LAB_089A
+    BEQ.S   .check_exit_condition
 
     TST.W   LAB_1DE4
-    BNE.S   .LAB_089A
+    BNE.S   .check_exit_condition
 
     JSR     LAB_0B4F(PC)
 
-.LAB_089A:
+.check_exit_condition:
     TST.W   LAB_1DE4
-    BEQ.S   .LAB_0899
+    BEQ.S   .main_idle_loop
 
 .return:
-    JSR     LAB_08B9(PC)
+    JSR     ESQ_JMP_TBL_CLEANUP_ShutdownSystem(PC)
 
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5
@@ -1222,70 +1273,462 @@ LAB_085E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_2   (JumpStub_SETUP_SIGNAL_AND_MSGPORT)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   SETUP_SIGNAL_AND_MSGPORT
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to SETUP_SIGNAL_AND_MSGPORT.
+;------------------------------------------------------------------------------
 JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_2:
     JMP     SETUP_SIGNAL_AND_MSGPORT
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0E14   (JumpStub_LAB_0E14)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0E14
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0E14.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0E14:
 LAB_089D:
     JMP     LAB_0E14
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_PARSEINI_UpdateClockFromRtc   (JumpStub_PARSEINI_UpdateClockFromRtc)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   PARSEINI_UpdateClockFromRtc
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to PARSEINI_UpdateClockFromRtc.
+;------------------------------------------------------------------------------
 JMP_TBL_PARSEINI_UpdateClockFromRtc:
 LAB_089E:
     JMP     PARSEINI_UpdateClockFromRtc
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_SCRIPT_InitCtrlContext   (JumpStub_SCRIPT_InitCtrlContext)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   SCRIPT_InitCtrlContext
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to SCRIPT_InitCtrlContext.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_SCRIPT_InitCtrlContext:
 LAB_089F:
     JMP     SCRIPT_InitCtrlContext
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_04F0   (JumpStub_LAB_04F0)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_04F0
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_04F0.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_04F0:
 LAB_08A0:
     JMP     LAB_04F0
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0017   (JumpStub_LAB_0017)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0017
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0017.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0017:
 LAB_08A1:
     JMP     LAB_0017
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1365   (JumpStub_LAB_1365)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1365
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1365.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1365:
 LAB_08A2:
     JMP     LAB_1365
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0E57   (JumpStub_LAB_0E57)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0E57
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0E57.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0E57:
 LAB_08A3:
     JMP     LAB_0E57
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_041D   (JumpStub_LAB_041D)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_041D
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_041D.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_041D:
 LAB_08A4:
     JMP     LAB_041D
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1664   (JumpStub_LAB_1664)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1664
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1664.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1664:
 LAB_08A5:
     JMP     LAB_1664
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_KYBD_InitializeInputDevices   (JumpStub_KYBD_InitializeInputDevices)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   KYBD_InitializeInputDevices
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to KYBD_InitializeInputDevices.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_KYBD_InitializeInputDevices:
 LAB_08A6:
     JMP     KYBD_InitializeInputDevices
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP   (JumpStub_CHECK_IF_COMPATIBLE_VIDEO_CHIP)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   CHECK_IF_COMPATIBLE_VIDEO_CHIP
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to CHECK_IF_COMPATIBLE_VIDEO_CHIP.
+;------------------------------------------------------------------------------
 JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP:
     JMP     CHECK_IF_COMPATIBLE_VIDEO_CHIP
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY   (JumpStub_CHECK_AVAILABLE_FAST_MEMORY)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   CHECK_AVAILABLE_FAST_MEMORY
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to CHECK_AVAILABLE_FAST_MEMORY.
+;------------------------------------------------------------------------------
 JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY:
     JMP     CHECK_AVAILABLE_FAST_MEMORY
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1A30   (JumpStub_LAB_1A30)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1A30
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1A30.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1A30:
 LAB_08A9:
     JMP     LAB_1A30
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0DE9   (JumpStub_LAB_0DE9)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0DE9
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0DE9.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0DE9:
 LAB_08AA:
     JMP     LAB_0DE9
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_180B   (JumpStub_LAB_180B)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_180B
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_180B.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_180B:
 LAB_08AB:
     JMP     LAB_180B
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_001E   (JumpStub_LAB_001E)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_001E
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_001E.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_001E:
 LAB_08AC:
     JMP     LAB_001E
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_14E2   (JumpStub_LAB_14E2)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_14E2
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_14E2.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_14E2:
 LAB_08AD:
     JMP     LAB_14E2
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0F07   (JumpStub_LAB_0F07)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0F07
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0F07.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0F07:
 LAB_08AE:
     JMP     LAB_0F07
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_002F   (JumpStub_LAB_002F)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_002F
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_002F.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_002F:
 LAB_08AF:
     JMP     LAB_002F
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_1AAD   (JumpStub_LAB_1AAD)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1AAD
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1AAD.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_1AAD:
 LAB_08B0:
     JMP     LAB_1AAD
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0057   (JumpStub_LAB_0057)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0057
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0057.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0057:
 LAB_08B1:
     JMP     LAB_0057
 
@@ -1297,15 +1740,85 @@ LAB_08B1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0F5D   (JumpStub_LAB_0F5D)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0F5D
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0F5D.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0F5D:
 LAB_08B2:
     JMP     LAB_0F5D
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0D89   (JumpStub_LAB_0D89)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0D89
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0D89.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0D89:
 LAB_08B3:
     JMP     LAB_0D89
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_OVERRIDE_INTUITION_FUNCS   (JumpStub_OVERRIDE_INTUITION_FUNCS)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   OVERRIDE_INTUITION_FUNCS
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to OVERRIDE_INTUITION_FUNCS.
+;------------------------------------------------------------------------------
 JMP_TBL_OVERRIDE_INTUITION_FUNCS:
     JMP     OVERRIDE_INTUITION_FUNCS
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_LIBRARIES_LOAD_FAILED_2   (JumpStub_LIBRARIES_LOAD_FAILED)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LIBRARIES_LOAD_FAILED
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LIBRARIES_LOAD_FAILED.
+;------------------------------------------------------------------------------
 JMP_TBL_LIBRARIES_LOAD_FAILED_2:
     JMP     LIBRARIES_LOAD_FAILED
 
@@ -1317,18 +1830,107 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0CC8   (JumpStub_LAB_0CC8)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0CC8
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0CC8.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0CC8:
 LAB_08B6:
     JMP     LAB_0CC8
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_PRINTF_2   (JumpStub_PRINTF)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   PRINTF
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to PRINTF.
+;------------------------------------------------------------------------------
 JMP_TBL_PRINTF_2:
     JMP     PRINTF
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0056   (JumpStub_LAB_0056)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0056
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0056.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0056:
 LAB_08B8:
     JMP     LAB_0056
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_CLEANUP_ShutdownSystem   (JumpStub_CLEANUP_ShutdownSystem)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   CLEANUP_ShutdownSystem
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to CLEANUP_ShutdownSystem.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_CLEANUP_ShutdownSystem:
 LAB_08B9:
     JMP     CLEANUP_ShutdownSystem
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_JMP_TBL_LAB_0E09   (JumpStub_LAB_0E09)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0E09
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0E09.
+;------------------------------------------------------------------------------
+ESQ_JMP_TBL_LAB_0E09:
 LAB_08BA:
     JMP     LAB_0E09
 

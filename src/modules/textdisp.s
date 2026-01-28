@@ -2197,11 +2197,13 @@ LAB_1679:
 LAB_167A:
     JMP     LAB_0A48
 
+TEXTDISP_JMP_TBL_CLEANUP_BuildAlignedStatusLine:
 LAB_167B:
-    JMP     LAB_0281
+    JMP     CLEANUP_BuildAlignedStatusLine
 
+TEXTDISP_JMP_TBL_CLEANUP_DrawInsetRectFrame:
 LAB_167C:
-    JMP     LAB_028F
+    JMP     CLEANUP_DrawInsetRectFrame
 
 ;!======
 

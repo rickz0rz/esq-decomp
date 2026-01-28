@@ -1197,7 +1197,7 @@ LAB_0781:
     MOVEQ   #20,D1
     JSR     _LVORectFill(A6)
 
-    JSR     LAB_08B1(PC)
+    JSR     ESQ_JMP_TBL_LAB_0057(PC)
 
     LEA     12(A7),A7
     MOVE.W  #1,LAB_1DF3
@@ -1311,7 +1311,7 @@ LAB_078C:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     1.W
-    JSR     LAB_07CF(PC)
+    JSR     ED2_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   LAB_0799
@@ -1325,7 +1325,7 @@ LAB_078E:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_07CF(PC)
+    JSR     ED2_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   LAB_0799
@@ -1385,7 +1385,7 @@ LAB_0795:
     BRA.S   LAB_0799
 
 LAB_0796:
-    JSR     LAB_08B1(PC)
+    JSR     ESQ_JMP_TBL_LAB_0057(PC)
 
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
@@ -1718,7 +1718,7 @@ LAB_07AF:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
-    JSR     LAB_08B8(PC)
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
 
     LEA     16(A7),A7
     BRA.W   LAB_07B7
@@ -1730,7 +1730,7 @@ LAB_07B0:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
-    JSR     LAB_08B1(PC)
+    JSR     ESQ_JMP_TBL_LAB_0057(PC)
 
     LEA     16(A7),A7
     BRA.W   LAB_07B7
@@ -1962,8 +1962,9 @@ LAB_07CD:
 LAB_07CE:
     JMP     LAB_0054
 
+ED2_JMP_TBL_CLEANUP_RenderAlignedStatusScreen:
 LAB_07CF:
-    JMP     LAB_021A
+    JMP     CLEANUP_RenderAlignedStatusScreen
 
 ;!======
 

@@ -1103,7 +1103,7 @@ LAB_0316:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, LAB_03AC, LAB_05C1, LAB_0468,
-;   LAB_037D, LAB_0385, LAB_0290, LAB_00BE, JMP_TBL_DEALLOCATE_MEMORY_1,
+;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, LAB_00BE, JMP_TBL_DEALLOCATE_MEMORY_1,
 ;   COI_AllocSubEntryTable
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235,
@@ -1487,7 +1487,7 @@ LAB_031A:
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_0290
+    BSR.W   CLEANUP_FormatEntryStringTokens
 
     LEA     12(A7),A7
     BRA.S   .after_field24
@@ -1683,7 +1683,7 @@ LAB_031A:
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_0290
+    BSR.W   CLEANUP_FormatEntryStringTokens
 
     LEA     12(A7),A7
     BRA.S   .after_subentry_field18
@@ -2269,7 +2269,7 @@ LAB_035E:
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0277
+    BSR.W   CLEANUP_TestEntryFlagYAndBit1
 
     LEA     12(A7),A7
     TST.L   D0
@@ -2296,7 +2296,7 @@ LAB_035E:
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_027A
+    BSR.W   CLEANUP_UpdateEntryFlagBytes
 
     LEA     36(A7),A7
     BRA.S   LAB_0360
