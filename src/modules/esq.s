@@ -1228,8 +1228,9 @@ JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_2:
 LAB_089D:
     JMP     LAB_0E14
 
+JMP_TBL_PARSEINI_UpdateClockFromRtc:
 LAB_089E:
-    JMP     LAB_1470
+    JMP     PARSEINI_UpdateClockFromRtc
 
 LAB_089F:
     JMP     SCRIPT_InitCtrlContext

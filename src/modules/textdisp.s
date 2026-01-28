@@ -2439,7 +2439,7 @@ LAB_168C:
     JSR     LAB_1693(PC)
 
     MOVE.W  D0,LAB_22A5
-    JSR     LAB_14B3(PC)
+    JSR     SCRIPT_AssertCtrlLineIfEnabled(PC)
 
     BSR.W   LAB_1683
 

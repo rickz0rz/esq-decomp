@@ -1,5 +1,24 @@
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEAR_INTERRUPT_INTB_VERTB   (ClearVertbInterruptServer??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/A1/A6
+; CALLS:
+;   _LVORemIntServer, JMP_TBL_DEALLOCATE_MEMORY_1
+; READS:
+;   GLOB_REF_INTERRUPT_STRUCT_INTB_VERTB, AbsExecBase, GLOB_STR_CLEANUP_C_1
+; WRITES:
+;   (none)
+; DESC:
+;   Removes the INTB_VERTB interrupt server and frees its interrupt structure.
+; NOTES:
+;   - Deallocates the struct via JMP_TBL_DEALLOCATE_MEMORY_1.
+;------------------------------------------------------------------------------
 CLEAR_INTERRUPT_INTB_VERTB:
     MOVEQ   #INTB_VERTB,D0
     MOVEA.L GLOB_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
@@ -17,6 +36,26 @@ CLEAR_INTERRUPT_INTB_VERTB:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEAR_INTERRUPT_INTB_AUD1   (ClearAud1InterruptVector??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/A1/A6
+; CALLS:
+;   _LVOSetIntVector, JMP_TBL_DEALLOCATE_MEMORY_1
+; READS:
+;   GLOB_REF_INTB_AUD1_INTERRUPT, GLOB_REF_INTERRUPT_STRUCT_INTB_AUD1,
+;   AbsExecBase, GLOB_STR_CLEANUP_C_2
+; WRITES:
+;   INTENA
+; DESC:
+;   Restores the AUD1 interrupt vector and frees its interrupt structure.
+; NOTES:
+;   - Disables INTB_AUD1 in INTENA before restoring the vector.
+;------------------------------------------------------------------------------
 CLEAR_INTERRUPT_INTB_AUD1:
     MOVE.W  #$100,INTENA
     MOVEQ   #INTB_AUD1,D0
@@ -35,6 +74,29 @@ CLEAR_INTERRUPT_INTB_AUD1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEAR_INTERRUPT_INTB_RBF   (ClearRbfInterruptAndSerial??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/A1/A6
+; CALLS:
+;   _LVOCloseDevice, JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT, LAB_0467,
+;   _LVOSetIntVector, JMP_TBL_DEALLOCATE_MEMORY_1
+; READS:
+;   LAB_2211_SERIAL_PORT_MAYBE, LAB_2212, GLOB_REF_INTB_RBF_INTERRUPT,
+;   GLOB_REF_INTB_RBF_64K_BUFFER, GLOB_REF_INTERRUPT_STRUCT_INTB_RBF,
+;   AbsExecBase, GLOB_STR_CLEANUP_C_3, GLOB_STR_CLEANUP_C_4
+; WRITES:
+;   INTENA
+; DESC:
+;   Closes the serial device, restores the INTB_RBF interrupt vector, and
+;   frees the RBF interrupt buffer/structure.
+; NOTES:
+;   - Signals the serial msg port before closing/freeing resources.
+;------------------------------------------------------------------------------
 CLEAR_INTERRUPT_INTB_RBF:
     MOVE.W  #$800,INTENA
     MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A1
@@ -91,6 +153,27 @@ CLEAR_INTERRUPT_INTB_RBF:
 ;     BYTE    io_Error;                     /* error or warning num - byte 29 */
 ; }
 
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_ShutdownInputDevices   (ShutdownInputDevices)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/A0-A1/A6
+; CALLS:
+;   _LVODoIO, JMP_TBL_DEALLOCATE_MEMORY_1, _LVOCloseDevice,
+;   JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT, JMP_TBL_LAB_19F7
+; READS:
+;   GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, GLOB_REF_DATA_INPUT_BUFFER,
+;   GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE, GLOB_REF_INPUTDEVICE_MSGPORT,
+;   GLOB_REF_CONSOLEDEVICE_MSGPORT, AbsExecBase, GLOB_STR_CLEANUP_C_5
+; WRITES:
+;   IOStdReq input fields (io_Command/io_Data)
+; DESC:
+;   Flushes and closes input/console devices, frees the input buffer, and
+;   releases the associated msg ports and IO request blocks.
+;------------------------------------------------------------------------------
 ; Tears down console/input devices opened during startup, including msg ports.
 CLEANUP_ShutdownInputDevices:
 LAB_01AC:
@@ -135,6 +218,33 @@ LAB_01AC:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEAR_RASTPORT_1   (ReleaseDisplayResources??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1/D7/A0-A1/A6
+; CALLS:
+;   JMP_TBL_DEALLOCATE_MEMORY_1, JMP_TBL_FREE_RASTER,
+;   _LVOCloseFont, _LVOCloseLibrary
+; READS:
+;   GLOB_REF_96_BYTES_ALLOCATED, GLOB_REF_RASTPORT_1, LAB_2220, LAB_221A,
+;   LAB_221C, LAB_2224, LAB_2229, GLOB_HANDLE_PREVUE_FONT,
+;   GLOB_HANDLE_TOPAZ_FONT, GLOB_HANDLE_H26F_FONT, GLOB_HANDLE_PREVUEC_FONT,
+;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_DISKFONT_LIBRARY,
+;   GLOB_REF_DOS_LIBRARY, GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY,
+;   GLOB_STR_CLEANUP_C_6, GLOB_STR_CLEANUP_C_7, GLOB_STR_CLEANUP_C_8,
+;   GLOB_STR_CLEANUP_C_9, GLOB_STR_CLEANUP_C_10, GLOB_STR_CLEANUP_C_11,
+;   GLOB_STR_CLEANUP_C_12
+; WRITES:
+;   (none)
+; DESC:
+;   Frees rastport memory, raster allocations, and closes font/library handles.
+; NOTES:
+;   - Iterates over multiple raster pointer tables to free each entry.
+;------------------------------------------------------------------------------
 CLEAR_RASTPORT_1:
     MOVE.L  D7,-(A7)
 
@@ -153,10 +263,10 @@ CLEAR_RASTPORT_1:
     LEA     32(A7),A7
     MOVEQ   #0,D7
 
-.LAB_01AE:
+.free_raster_set1_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_01AF
+    BGE.S   .after_raster_set1
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -171,15 +281,15 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_01AE
+    BRA.S   .free_raster_set1_loop
 
-.LAB_01AF:
+.after_raster_set1:
     MOVEQ   #0,D7
 
-.LAB_01B0:
+.free_raster_set2_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_01B1
+    BGE.S   .after_raster_set2
 
     MOVE.L  D7,D1
     ASL.L   #2,D1
@@ -194,15 +304,15 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_01B0
+    BRA.S   .free_raster_set2_loop
 
-.LAB_01B1:
+.after_raster_set2:
     MOVEQ   #0,D7
 
-.LAB_01B2:
+.free_raster_set3_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_01B3
+    BGE.S   .after_raster_set3
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -217,15 +327,15 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_01B2
+    BRA.S   .free_raster_set3_loop
 
-.LAB_01B3:
+.after_raster_set3:
     MOVEQ   #3,D7
 
-.LAB_01B4:
+.free_raster_set4_loop:
     MOVEQ   #5,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_01B5
+    BGE.S   .after_raster_set4
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -240,9 +350,9 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_01B4
+    BRA.S   .free_raster_set4_loop
 
-.LAB_01B5:
+.after_raster_set4:
     PEA     15.W
     PEA     696.W
     MOVE.L  LAB_2229,-(A7)
@@ -310,6 +420,36 @@ CLEAR_RASTPORT_1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_ShutdownSystem   (ShutdownSystem)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1/A6
+; CALLS:
+;   _LVOForbid, LOCAVAIL_FreeResourceChain, BRUSH_FreeBrushList,
+;   CLEAR_INTERRUPT_INTB_VERTB, CLEAR_INTERRUPT_INTB_AUD1,
+;   CLEAR_INTERRUPT_INTB_RBF, JMP_TBL_DEALLOCATE_MEMORY_1,
+;   CLEANUP_ShutdownInputDevices, CLEAR_RASTPORT_1, LAB_01C4, LAB_054A,
+;   JMP_TBL_LAB_0AC8, LAB_01C3, JMP_TBL_LAB_0B38, JMP_TBL_LAB_0966,
+;   _LVOSetFunction, _LVOVBeamPos, LAB_01C5, _LVOPermit
+; READS:
+;   LAB_2321, LAB_2324, LAB_1ED1, LAB_1ED2, LAB_1ED3, LAB_1ED4, LAB_229A,
+;   LAB_1DC5, LAB_1DC6, LAB_22A7, LAB_222B, LAB_1DD9, LAB_1DEC, LAB_1DC7,
+;   LAB_222C, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_INTUITION_LIBRARY,
+;   GLOB_REF_BACKED_UP_INTUITION_AUTOREQUEST, GLOB_REF_BACKED_UP_INTUITION_DISPLAYALERT,
+;   AbsExecBase, GLOB_STR_CLEANUP_C_13, GLOB_STR_CLEANUP_C_14, GLOB_STR_CLEANUP_C_15,
+;   GLOB_STR_CLEANUP_C_16
+; WRITES:
+;   LAB_1DD9, LAB_1DEC
+; DESC:
+;   Global shutdown: forbids task switches, releases resources, restores patched
+;   system vectors, and re-enables multitasking.
+; NOTES:
+;   - Frees raster tables via nested loops over LAB_22A7 entries.
+;------------------------------------------------------------------------------
 ; Global shutdown sequence: stop interrupts, free rsrcs, reset display.
 CLEANUP_ShutdownSystem:
 LAB_01BB:
@@ -398,17 +538,17 @@ LAB_01BB:
 
     MOVEQ   #0,D6
 
-.LAB_01BC:
+.free_raster_rows_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D6
-    BGE.S   .LAB_01BF
+    BGE.S   .after_raster_table
 
     MOVEQ   #0,D7
 
-.LAB_01BD:
+.free_raster_cols_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_01BE
+    BGE.S   .next_raster_row
 
     MOVE.L  D6,D0
     MOVEQ   #40,D1
@@ -430,13 +570,13 @@ LAB_01BB:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_01BD
+    BRA.S   .free_raster_cols_loop
 
-.LAB_01BE:
+.next_raster_row:
     ADDQ.L  #1,D6
-    BRA.S   .LAB_01BC
+    BRA.S   .free_raster_rows_loop
 
-.LAB_01BF:
+.after_raster_table:
     MOVE.L  LAB_1DD9,-(A7)
     CLR.L   -(A7)
     JSR     LAB_0385(PC)
@@ -473,12 +613,12 @@ LAB_01BB:
     JSR     _LVOVBeamPos(A6)
 
     TST.L   LAB_1DC7
-    BEQ.S   .LAB_01C0
+    BEQ.S   .after_optional_restore
 
     MOVEA.L LAB_222C,A0
     MOVE.L  LAB_1DC7,184(A0)
 
-.LAB_01C0:
+.after_optional_restore:
     JSR     LAB_01C5(PC)
 
     MOVEA.L AbsExecBase,A6
@@ -533,60 +673,94 @@ JMP_TBL_LAB_0AC8:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_ProcessAlerts   (ProcessAlerts??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D2/D7
+; CALLS:
+;   CLEANUP_JMP_TBL_ESQFUNC_DrawDiagnosticsScreen, LAB_0464, LAB_007B,
+;   CLEANUP_JMP_TBL_SCRIPT_ClearCtrlLineIfEnabled, CLEANUP_JMP_TBL_SCRIPT_UpdateCtrlLineTimeout,
+;   LAB_0546, CLEANUP_JMP_TBL_DST_UpdateBannerQueue, CLEANUP_JMP_TBL_ESQDISP_DrawStatusBanner,
+;   CLEANUP_JMP_TBL_PARSEINI_UpdateClockFromRtc, CLEANUP_JMP_TBL_DST_RefreshBannerBuffer,
+;   LAB_055F, LAB_01FE, CLEANUP_DrawClockBanner,
+;   CLEANUP_JMP_TBL_ESQFUNC_PruneEntryTextPointers, CLEANUP_JMP_TBL_SCRIPT_UpdateCtrlStateMachine,
+;   CLEANUP_JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN, CLEANUP_JMP_TBL_ESQFUNC_DrawMemoryStatusScreen,
+;   _LVOSetAPen, JMP_TBL_LAB_1A07_1
+; READS:
+;   LAB_2264, CLEANUP_AlertProcessingFlag, LAB_1DEF, LAB_2263,
+;   CLEANUP_AlertCooldownTicks, LAB_1FE7, LAB_2325, LAB_223A, LAB_2274,
+;   LAB_22A5, BRUSH_PendingAlertCode, LAB_227F, CLEANUP_BannerTickCounter,
+;   LAB_2196, LAB_21DF, LAB_1DD5, LAB_1DD4, LAB_1D13, LAB_2270,
+;   GLOB_REF_RASTPORT_1, GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, LAB_1FE7,
+;   LAB_2325, LAB_2264, LAB_22A5, BRUSH_PendingAlertCode, LAB_227F,
+;   CLEANUP_BannerTickCounter, LAB_2196, LAB_1E85, LAB_1B08,
+;   LAB_226F, LAB_2280
+; DESC:
+;   Processes pending alert state, advances the alert/badge state machine,
+;   handles brush alerts, updates banner timers, and redraws the banner/clock.
+; NOTES:
+;   - Uses LAB_1FE7 as a multi-step alert state (2 → 3 → 4).
+;   - Clears the one-shot pending flag (LAB_2264) after processing.
+;------------------------------------------------------------------------------
 ; Process pending alert/notification state and update on-screen banners.
 CLEANUP_ProcessAlerts:
-LAB_01CB:
     MOVEM.L D2/D7,-(A7)
     TST.W   LAB_2264
-    BEQ.W   LAB_01E2
+    BEQ.W   .return_status
 
     TST.L   CLEANUP_AlertProcessingFlag
-    BNE.W   LAB_01E2
+    BNE.W   .return_status
 
     MOVEQ   #1,D0
     MOVE.L  D0,CLEANUP_AlertProcessingFlag
     TST.B   LAB_1DEF
-    BEQ.S   LAB_01CC
+    BEQ.S   .update_alert_state
 
     TST.W   LAB_2263
-    BNE.S   LAB_01CC
+    BNE.S   .update_alert_state
 
     SUBQ.L  #1,CLEANUP_AlertCooldownTicks
-    BGT.S   LAB_01CC
+    BGT.S   .update_alert_state
 
-    JSR     LAB_020E(PC)
+    JSR     CLEANUP_JMP_TBL_ESQFUNC_DrawDiagnosticsScreen(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,CLEANUP_AlertCooldownTicks
 
-LAB_01CC:
+.update_alert_state:
     MOVEQ   #2,D0
     CMP.L   LAB_1FE7,D0
-    BNE.S   LAB_01CD
+    BNE.S   .check_state_three
 
     MOVE.W  LAB_2325,D0
-    BGT.S   LAB_01CE
+    BGT.S   .after_state_update
 
     MOVE.L  D0,D1
     ADDI.W  #10,D1
     MOVE.W  D1,LAB_2325
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_1FE7
-    BRA.S   LAB_01CE
+    BRA.S   .after_state_update
 
-LAB_01CD:
+.check_state_three:
     MOVEQ   #3,D0
     CMP.L   LAB_1FE7,D0
-    BNE.S   LAB_01CE
+    BNE.S   .after_state_update
 
     MOVE.W  LAB_2325,D0
-    BGT.S   LAB_01CE
+    BGT.S   .after_state_update
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_1FE7
     JSR     LAB_0464(PC)
 
-LAB_01CE:
+.after_state_update:
     CLR.W   LAB_2264
     PEA     LAB_223A
     JSR     LAB_007B(PC)
@@ -598,25 +772,25 @@ LAB_01CE:
 
     ADDQ.W  #8,A7
     MOVE.W  LAB_22A5,D0
-    BLT.S   LAB_01CF
+    BLT.S   .update_banner_queue
 
     MOVEQ   #11,D1
     CMP.W   D1,D0
-    BGE.S   LAB_01CF
+    BGE.S   .update_banner_queue
 
-    JSR     LAB_0213(PC)
+    JSR     CLEANUP_JMP_TBL_SCRIPT_ClearCtrlLineIfEnabled(PC)
 
     MOVE.W  LAB_22A5,D0
-    BNE.S   LAB_01CF
+    BNE.S   .update_banner_queue
 
     MOVE.W  #(-1),LAB_22A5
 
-LAB_01CF:
-    JSR     LAB_0212(PC)
+.update_banner_queue:
+    JSR     CLEANUP_JMP_TBL_SCRIPT_UpdateCtrlLineTimeout(PC)
 
     MOVEQ   #1,D0
     CMP.L   BRUSH_PendingAlertCode,D0   ; brush loader flagged \"category 1\" alert
-    BNE.S   LAB_01D0
+    BNE.S   .handle_brush_alert_code1
 
     PEA     3.W
     JSR     LAB_0546(PC)
@@ -625,10 +799,10 @@ LAB_01CF:
     MOVEQ   #4,D0
     MOVE.L  D0,BRUSH_PendingAlertCode
 
-LAB_01D0:
+.handle_brush_alert_code1:
     MOVEQ   #2,D0
     CMP.L   BRUSH_PendingAlertCode,D0   ; same, but for wider-than-allowed brushes
-    BNE.S   LAB_01D1
+    BNE.S   .handle_brush_alert_code2
 
     PEA     4.W
     JSR     LAB_0546(PC)
@@ -637,10 +811,10 @@ LAB_01D0:
     MOVEQ   #4,D0
     MOVE.L  D0,BRUSH_PendingAlertCode
 
-LAB_01D1:
+.handle_brush_alert_code2:
     MOVEQ   #3,D0
     CMP.L   BRUSH_PendingAlertCode,D0   ; or for taller-than-allowed brushes
-    BNE.S   LAB_01D2
+    BNE.S   .handle_brush_alert_code3
 
     PEA     5.W
     JSR     LAB_0546(PC)
@@ -649,98 +823,98 @@ LAB_01D1:
     MOVEQ   #4,D0
     MOVE.L  D0,BRUSH_PendingAlertCode
 
-LAB_01D2:
+.handle_brush_alert_code3:
     TST.L   D7
-    BEQ.S   LAB_01D5
+    BEQ.S   .after_banner_poll
 
     MOVE.B  LAB_227F,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.S   LAB_01D3
+    BLS.S   .decrement_banner_counter
 
     SUBQ.B  #1,D0
     MOVE.B  D0,LAB_227F
 
-LAB_01D3:
+.decrement_banner_counter:
     SUBQ.L  #1,CLEANUP_BannerTickCounter
-    BNE.S   LAB_01D4
+    BNE.S   .poll_banner_event
 
     MOVEQ   #60,D0
     MOVE.L  D0,CLEANUP_BannerTickCounter
     MOVE.B  LAB_2196,D0
     CMP.B   D1,D0
-    BLS.S   LAB_01D4
+    BLS.S   .poll_banner_event
 
     SUBQ.B  #1,D0
     MOVE.B  D0,LAB_2196
 
-LAB_01D4:
+.poll_banner_event:
     PEA     LAB_21DF
-    JSR     LAB_0216(PC)
+    JSR     CLEANUP_JMP_TBL_DST_UpdateBannerQueue(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_01D5
+    BEQ.S   .after_banner_poll
 
     PEA     1.W
-    JSR     LAB_0215(PC)
+    JSR     CLEANUP_JMP_TBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
 
-LAB_01D5:
+.after_banner_poll:
     MOVE.B  LAB_1DD5,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_01D6
+    BNE.S   .handle_alert_type2
 
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BNE.S   LAB_01D6
+    BNE.S   .handle_alert_type2
 
     CLR.W   LAB_1E85
     CLR.L   -(A7)
-    JSR     LAB_0215(PC)
+    JSR     CLEANUP_JMP_TBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  #1,LAB_1E85
 
-LAB_01D6:
+.handle_alert_type2:
     MOVE.B  LAB_1DD5,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_01D7
+    BNE.S   .check_alert_type5_or_type2
 
     MOVEQ   #5,D2
     CMP.L   D2,D7
-    BEQ.S   LAB_01D8
+    BEQ.S   .handle_alert_type5_or_type2
 
-LAB_01D7:
+.check_alert_type5_or_type2:
     CMP.B   D1,D0
-    BEQ.S   LAB_01D9
+    BEQ.S   .init_alert_counters
 
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BNE.S   LAB_01D9
+    BNE.S   .init_alert_counters
 
-LAB_01D8:
-    JSR     LAB_020D(PC)
+.handle_alert_type5_or_type2:
+    JSR     CLEANUP_JMP_TBL_PARSEINI_UpdateClockFromRtc(PC)
 
-    JSR     LAB_0217(PC)
+    JSR     CLEANUP_JMP_TBL_DST_RefreshBannerBuffer(PC)
 
     CLR.L   -(A7)
-    JSR     LAB_0215(PC)
+    JSR     CLEANUP_JMP_TBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
 
-LAB_01D9:
+.init_alert_counters:
     MOVE.B  LAB_1DD5,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_01DA
+    BNE.S   .advance_alert_counters
 
     MOVEQ   #3,D0
     CMP.L   D0,D7
-    BNE.S   LAB_01DA
+    BNE.S   .advance_alert_counters
 
     MOVEQ   #1,D0
     MOVE.W  D0,LAB_1B08
@@ -764,15 +938,15 @@ LAB_01D9:
     LEA     24(A7),A7
     MOVE.W  D0,LAB_2280
 
-LAB_01DA:
+.advance_alert_counters:
     MOVE.B  LAB_1DD4,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_01DB
+    BNE.S   .draw_banner
 
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BNE.S   LAB_01DB
+    BNE.S   .draw_banner
 
     MOVE.W  LAB_226F,D0
     MOVE.L  D0,D1
@@ -799,26 +973,26 @@ LAB_01DA:
     LEA     12(A7),A7
     MOVE.W  D0,LAB_2280
 
-LAB_01DB:
+.draw_banner:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     TST.W   LAB_2263
-    BEQ.S   LAB_01DC
+    BEQ.S   .draw_clock_banner
 
     BSR.W   LAB_01FE
 
-    BRA.S   LAB_01DD
+    BRA.S   .after_banner_draw
 
-LAB_01DC:
+.draw_clock_banner:
     BSR.W   CLEANUP_DrawClockBanner
 
-LAB_01DD:
+.after_banner_draw:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BNE.S   LAB_01DF
+    BNE.S   .update_grid_flash
 
     MOVEQ   #0,D1
     MOVE.W  LAB_2270,D1
@@ -827,57 +1001,80 @@ LAB_01DD:
     JSR     JMP_TBL_LAB_1A07_1(PC)
 
     SUBQ.L  #1,D1
-    BNE.S   LAB_01DE
+    BNE.S   .maybe_clear_brush_alert
 
     CLR.L   BRUSH_PendingAlertCode
 
-LAB_01DE:
+.maybe_clear_brush_alert:
     MOVE.W  LAB_226F,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0214(PC)
+    JSR     CLEANUP_JMP_TBL_ESQFUNC_PruneEntryTextPointers(PC)
 
     ADDQ.W  #4,A7
 
-LAB_01DF:
-    JSR     LAB_0210(PC)
+.update_grid_flash:
+    JSR     CLEANUP_JMP_TBL_SCRIPT_UpdateCtrlStateMachine(PC)
 
     MOVE.B  LAB_1D13,D0
     SUBQ.B  #8,D0
-    BNE.S   LAB_01E0
+    BNE.S   .check_grid_flash_alt
 
-    JSR     LAB_0218(PC)
+    JSR     CLEANUP_JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN(PC)
 
-    BRA.S   LAB_01E1
+    BRA.S   .finish
 
-LAB_01E0:
+.check_grid_flash_alt:
     MOVE.B  LAB_1D13,D0
     SUBQ.B  #7,D0
-    BNE.S   LAB_01E1
+    BNE.S   .finish
 
-    JSR     LAB_020F(PC)
+    JSR     CLEANUP_JMP_TBL_ESQFUNC_DrawMemoryStatusScreen(PC)
 
-LAB_01E1:
+.finish:
     CLR.L   CLEANUP_AlertProcessingFlag
 
-LAB_01E2:
+.return_status:
     MOVEM.L (A7)+,D2/D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CLEANUP_DrawClockBanner   (DrawClockBanner)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D3/A0-A1/A5-A6
+; CALLS:
+;   JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT, JMP_TBL_PRINTF_1, _LVOSetAPen,
+;   _LVORectFill, _LVOMove, _LVOText, LAB_00ED, LAB_026C
+; READS:
+;   LAB_2263, GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_WORD_CURRENT_HOUR,
+;   GLOB_WORD_USE_24_HR_FMT, GLOB_WORD_CURRENT_MINUTE, GLOB_WORD_CURRENT_SECOND,
+;   GLOB_STR_EXTRA_TIME_FORMAT, GLOB_STR_GRID_TIME_FORMAT,
+;   GLOB_REF_GRID_RASTPORT_MAYBE_1, LAB_232A, GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   Stack buffer at -10(A5)
+; DESC:
+;   Formats the current time string and renders it into the top banner area.
+; NOTES:
+;   - Centers the rendered time based on the font metrics.
+;------------------------------------------------------------------------------
 ; Render the top-of-screen clock/banner text.
 CLEANUP_DrawClockBanner:
 LAB_01E3:
     LINK.W  A5,#-12
     MOVEM.L D2-D3,-(A7)
     TST.W   LAB_2263
-    BNE.W   LAB_01E8
+    BNE.W   .done
 
     MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_01E4
+    BNE.S   .format_grid_time
 
     MOVE.W  GLOB_WORD_CURRENT_HOUR,D0
     EXT.L   D0
@@ -899,9 +1096,9 @@ LAB_01E3:
     JSR     JMP_TBL_PRINTF_1(PC)
 
     LEA     24(A7),A7
-    BRA.S   LAB_01E5
+    BRA.S   .draw_banner
 
-LAB_01E4:
+.format_grid_time:
     MOVE.W  GLOB_WORD_CURRENT_HOUR,D0
     EXT.L   D0
     MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
@@ -917,7 +1114,7 @@ LAB_01E4:
 
     LEA     20(A7),A7
 
-LAB_01E5:
+.draw_banner:
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
     MOVEQ   #7,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -962,11 +1159,11 @@ LAB_01E5:
     MOVEQ   #34,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_01E6
+    BPL.S   .center_text_y
 
     ADDQ.L  #1,D1
 
-LAB_01E6:
+.center_text_y:
     ASR.L   #1,D1
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -984,9 +1181,9 @@ LAB_01E6:
 
     MOVEA.L A0,A1
 
-LAB_01E7:
+.measure_text_loop:
     TST.B   (A1)+
-    BNE.S   LAB_01E7
+    BNE.S   .measure_text_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -1012,7 +1209,7 @@ LAB_01E7:
     MOVE.L  4(A0),-(A7)
     JSR     LAB_026C(PC)
 
-LAB_01E8:
+.done:
     MOVEM.L -20(A5),D2-D3
     UNLK    A5
     RTS
@@ -1891,39 +2088,51 @@ LAB_020C:
 
 ;!======
 
+CLEANUP_JMP_TBL_PARSEINI_UpdateClockFromRtc:
 LAB_020D:
-    JMP     LAB_1470
+    JMP     PARSEINI_UpdateClockFromRtc
 
+CLEANUP_JMP_TBL_ESQFUNC_DrawDiagnosticsScreen:
 LAB_020E:
-    JMP     LAB_0999
+    JMP     ESQFUNC_DrawDiagnosticsScreen
 
+CLEANUP_JMP_TBL_ESQFUNC_DrawMemoryStatusScreen:
 LAB_020F:
-    JMP     LAB_0991
+    JMP     ESQFUNC_DrawMemoryStatusScreen
 
+CLEANUP_JMP_TBL_SCRIPT_UpdateCtrlStateMachine:
 LAB_0210:
-    JMP     LAB_1571
+    JMP     SCRIPT_UpdateCtrlStateMachine
 
+CLEANUP_JMP_TBL_GCOMMAND_UpdateBannerBounds:
 LAB_0211:
     JMP     GCOMMAND_UpdateBannerBounds
 
+CLEANUP_JMP_TBL_SCRIPT_UpdateCtrlLineTimeout:
 LAB_0212:
-    JMP     LAB_14BA
+    JMP     SCRIPT_UpdateCtrlLineTimeout
 
+CLEANUP_JMP_TBL_SCRIPT_ClearCtrlLineIfEnabled:
 LAB_0213:
-    JMP     LAB_14B6
+    JMP     SCRIPT_ClearCtrlLineIfEnabled
 
+CLEANUP_JMP_TBL_ESQFUNC_PruneEntryTextPointers:
 LAB_0214:
-    JMP     LAB_0981
+    JMP     ESQFUNC_PruneEntryTextPointers
 
+CLEANUP_JMP_TBL_ESQDISP_DrawStatusBanner:
 LAB_0215:
     JMP     ESQDISP_DrawStatusBanner
 
+CLEANUP_JMP_TBL_DST_UpdateBannerQueue:
 LAB_0216:
     JMP     DST_UpdateBannerQueue
 
+CLEANUP_JMP_TBL_DST_RefreshBannerBuffer:
 LAB_0217:
     JMP     DST_RefreshBannerBuffer
 
+CLEANUP_JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
 LAB_0218:
     JMP     DRAW_ESC_MENU_VERSION_SCREEN
 
@@ -3520,18 +3729,19 @@ LAB_0295:
     MOVE.W  LAB_0296(PC,D0.W),D0
     JMP     LAB_0296+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 LAB_0296:
-	DC.W    $0010
-    DC.W    $0010
-	DC.W    $0010
-    DC.W    $0010
-	DC.W    $0010
-    DC.W    $0010
-	DC.W    $0070
-    DC.W    $0070
-    DC.W    $00a2
+	DC.W    LAB_0296_0010-LAB_0296-2
+    DC.W    LAB_0296_0010-LAB_0296-2
+	DC.W    LAB_0296_0010-LAB_0296-2
+    DC.W    LAB_0296_0010-LAB_0296-2
+	DC.W    LAB_0296_0010-LAB_0296-2
+    DC.W    LAB_0296_0010-LAB_0296-2
+	DC.W    LAB_0296_0070-LAB_0296-2
+    DC.W    LAB_0296_0070-LAB_0296-2
+    DC.W    LAB_0296_00A2-LAB_0296-2
 
+LAB_0296_0010:
     MOVEA.L -26(A5),A0
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0
@@ -3573,6 +3783,7 @@ LAB_029A:
     MOVE.B  -22(A5,D7.L),-11(A5,D7.L)
     BRA.W   LAB_02A1
 
+LAB_0296_0070:
     MOVEA.L -26(A5),A0
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0
@@ -3590,6 +3801,7 @@ LAB_029B:
     MOVE.B  -22(A5,D7.L),-11(A5,D7.L)
     BRA.W   LAB_02A1
 
+LAB_0296_00A2:
     MOVEA.L -26(A5),A0
     MOVE.B  0(A0,D7.L),D0
     EXT.W   D0

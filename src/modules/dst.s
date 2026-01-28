@@ -1167,97 +1167,113 @@ LAB_0671:
     MOVE.W  .LAB_0673(PC,D0.W),D0
     JMP     .LAB_0673+2(PC,D0.W)
 
-; TODO: This is a switch statement that's turned into a jump table.
+; This is a switch statement that's turned into a jump table.
 .LAB_0673:
     DC.W    .LAB_0673_0030-.LAB_0673-2
-    DC.W    $003C
-    DC.W    $0042
-    DC.W    $0042
-    DC.W    $004E
-    DC.W    $0048
-    DC.W    $005A
-    DC.W    $0060
-    DC.W    $0066
-    DC.W    $0054
-    DC.W    $006C
-    DC.W    $0072
-    DC.W    $0078
-    DC.W    $007E
-    DC.W    $0084
-    DC.W    $008A
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $008E
-    DC.W    $0036
+    DC.W    .LAB_0673_003C-.LAB_0673-2
+    DC.W    .LAB_0673_0042-.LAB_0673-2
+    DC.W    .LAB_0673_0042-.LAB_0673-2
+    DC.W    .LAB_0673_004E-.LAB_0673-2
+    DC.W    .LAB_0673_0048-.LAB_0673-2
+    DC.W    .LAB_0673_005A-.LAB_0673-2
+    DC.W    .LAB_0673_0060-.LAB_0673-2
+    DC.W    .LAB_0673_0066-.LAB_0673-2
+    DC.W    .LAB_0673_0054-.LAB_0673-2
+    DC.W    .LAB_0673_006C-.LAB_0673-2
+    DC.W    .LAB_0673_0072-.LAB_0673-2
+    DC.W    .LAB_0673_0078-.LAB_0673-2
+    DC.W    .LAB_0673_007E-.LAB_0673-2
+    DC.W    .LAB_0673_0084-.LAB_0673-2
+    DC.W    .LAB_0673_008A-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_008E-.LAB_0673-2
+    DC.W    .LAB_0673_0036-.LAB_0673-2
 
 .LAB_0673_0030:
     JSR     LAB_0756(PC)
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0036:
     BSR.W   LAB_06C1
 
     BRA.S   .LAB_0675
 
+.LAB_0673_003C:
     BSR.W   LAB_0701
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0042:
     BSR.W   LAB_06EC
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0048:
     BSR.W   LAB_06FC
 
     BRA.S   .LAB_0675
 
+.LAB_0673_004E:
     BSR.W   LAB_0678
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0054:
     BSR.W   LAB_06C0
 
     BRA.S   .LAB_0675
 
+.LAB_0673_005A:
     JSR     LAB_07B8(PC)
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0060:
     JSR     LAB_079A(PC)
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0066:
     BSR.W   LAB_070C
 
     BRA.S   .LAB_0675
 
+.LAB_0673_006C:
     BSR.W   LAB_06DB
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0072:
     BSR.W   LAB_06E2
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0078:
     BSR.W   LAB_06E4
 
     BRA.S   .LAB_0675
 
+.LAB_0673_007E:
     BSR.W   LAB_06E6
 
     BRA.S   .LAB_0675
 
+.LAB_0673_0084:
     BSR.W   LAB_06E8
 
     BRA.S   .LAB_0675
 
+.LAB_0673_008A:
     BSR.W   LAB_06CE
 
+.LAB_0673_008E:
 .LAB_0675:
     ADDQ.L  #1,LAB_231C
     CMPI.L  #$14,LAB_231C
@@ -2690,11 +2706,10 @@ LAB_06DB:
 
     ADD.W   D0,D0
 
-    ; TODO: Another jump table for switch
     MOVE.W  LAB_06DC(PC,D0.W),D0
     JMP     LAB_06DC+2(PC,D0.W)
 
-; TOOD: Switch case
+; Switch case
 LAB_06DC:
     DC.W    LAB_06DC_000E-LAB_06DC-2
 	DC.W    LAB_06DC_0016-LAB_06DC-2
@@ -3355,22 +3370,24 @@ LAB_0701:
     MOVE.W  .LAB_0702(PC,D0.W),D0
     JMP     .LAB_0702+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 .LAB_0702:
-    DC.W    $0010
-    DC.W    $0018
-    DC.W    $003a
-	DC.W    $005c
-    DC.W    $0084
-    DC.W    $008a
-	DC.W    $00ae
-    DC.W    $00c6
-    DC.W    $00bc
+    DC.W    .LAB_0702_0010-.LAB_0702-2
+    DC.W    .LAB_0702_0018-.LAB_0702-2
+    DC.W    .LAB_0702_003A-.LAB_0702-2
+	DC.W    .LAB_0702_005C-.LAB_0702-2
+    DC.W    .LAB_0702_0084-.LAB_0702-2
+    DC.W    .LAB_0702_008A-.LAB_0702-2
+	DC.W    .LAB_0702_00AE-.LAB_0702-2
+    DC.W    .LAB_0702_00C6-.LAB_0702-2
+    DC.W    .LAB_0702_00BC-.LAB_0702-2
 
+.LAB_0702_0010:
     BSR.W   *+(LAB_0712_033E-.LAB_0702+2)
 
     BRA.W   .LAB_0709
 
+.LAB_0702_0018:
     MOVE.B  LAB_1BC4,D0
     MOVEQ   #76,D1
     CMP.B   D1,D0
@@ -3385,6 +3402,7 @@ LAB_0701:
     MOVEQ   #1,D6
     BRA.W   .LAB_0709
 
+.LAB_0702_003A:
     MOVE.B  LAB_1BC4,D0
     MOVEQ   #76,D1
     CMP.B   D1,D0
@@ -3399,6 +3417,7 @@ LAB_0701:
     MOVEQ   #1,D6
     BRA.W   .LAB_0709
 
+.LAB_0702_005C:
     MOVE.B  #$6,LAB_1D13
     JSR     LAB_07EB(PC)
 
@@ -3412,10 +3431,12 @@ LAB_0701:
     MOVEQ   #0,D6
     BRA.S   .LAB_0709
 
+.LAB_0702_0084:
     BSR.W   LAB_0718
 
     BRA.S   .LAB_0709
 
+.LAB_0702_008A:
     MOVE.B  #$a,LAB_1D13
     JSR     LAB_07EB(PC)
 
@@ -3429,14 +3450,17 @@ LAB_0701:
     MOVEQ   #0,D6
     BRA.S   .LAB_0709
 
+.LAB_0702_00AE:
     MOVE.B  #$8,LAB_1D13
     JSR     LAB_07E4(PC)
 
     BRA.S   .LAB_0709
 
+.LAB_0702_00BC:
     MOVE.W  #1,LAB_1DE4
     BRA.S   .LAB_0709
 
+.LAB_0702_00C6:
 .LAB_0706:
     MOVEQ   #9,D0
     CMP.B   D0,D7

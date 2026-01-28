@@ -259,7 +259,7 @@ LAB_14B1:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,-(A7)
-    BSR.W   LAB_14C1
+    BSR.W   SCRIPT_WriteSerialDataWord
 
     ADDQ.W  #4,A7
 
@@ -268,6 +268,27 @@ LAB_14B1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_AssertCtrlLine   (AssertCtrlLine??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_WriteSerialDataWord
+; READS:
+;   LAB_2341
+; WRITES:
+;   LAB_20AC, LAB_2341, SERDAT
+; DESC:
+;   Sets the CTRL/serial output bit in the shadow register and pushes it to
+;   the serial data register.
+; NOTES:
+;   LAB_20AC appears to mirror the asserted/deasserted state.
+;------------------------------------------------------------------------------
+SCRIPT_AssertCtrlLine:
 LAB_14B2:
     MOVE.W  #1,LAB_20AC
     MOVE.W  LAB_2341,D0
@@ -277,24 +298,65 @@ LAB_14B2:
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_14C1
+    BSR.W   SCRIPT_WriteSerialDataWord
 
     ADDQ.W  #4,A7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_AssertCtrlLineIfEnabled   (AssertCtrlLineIfEnabled??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_AssertCtrlLine
+; READS:
+;   LAB_2294
+; WRITES:
+;   LAB_20AC, LAB_2341, SERDAT
+; DESC:
+;   Asserts the CTRL/serial output bit when the control interface is enabled.
+; NOTES:
+;   LAB_2294 acts as an enable gate.
+;------------------------------------------------------------------------------
+SCRIPT_AssertCtrlLineIfEnabled:
 LAB_14B3:
     TST.W   LAB_2294
-    BEQ.S   .return
+    BEQ.S   .return_status
 
-    BSR.S   LAB_14B2
+    BSR.S   SCRIPT_AssertCtrlLine
 
-.return:
+.return_status:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_DeassertCtrlLine   (DeassertCtrlLine??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_WriteSerialDataWord
+; READS:
+;   LAB_2341
+; WRITES:
+;   LAB_20AC, LAB_2341, SERDAT
+; DESC:
+;   Clears the CTRL/serial output bit in the shadow register and pushes it to
+;   the serial data register.
+; NOTES:
+;   LAB_20AC appears to mirror the asserted/deasserted state.
+;------------------------------------------------------------------------------
+SCRIPT_DeassertCtrlLine:
 LAB_14B5:
     CLR.W   LAB_20AC
     MOVE.W  LAB_2341,D0
@@ -304,46 +366,123 @@ LAB_14B5:
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_14C1
+    BSR.W   SCRIPT_WriteSerialDataWord
 
     ADDQ.W  #4,A7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_ClearCtrlLineIfEnabled   (ClearCtrlLineIfEnabled??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D1
+; CALLS:
+;   SCRIPT_DeassertCtrlLine
+; READS:
+;   LAB_2294
+; WRITES:
+;   LAB_20AC, LAB_2341 (via SCRIPT_DeassertCtrlLine)
+; DESC:
+;   Clears the CTRL/serial output bit when the control interface is enabled.
+; NOTES:
+;   SCRIPT_DeassertCtrlLine updates LAB_2341 and sends SERDAT.
+;------------------------------------------------------------------------------
+SCRIPT_ClearCtrlLineIfEnabled:
 LAB_14B6:
     TST.W   LAB_2294
-    BEQ.S   .return
+    BEQ.S   .return_status
 
-    BSR.S   LAB_14B5
+    BSR.S   SCRIPT_DeassertCtrlLine
 
-.return:
+.return_status:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_AssertCtrlLineNow   (AssertCtrlLineNow??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_AssertCtrlLine
+; READS:
+;   LAB_2341
+; WRITES:
+;   LAB_20AC, LAB_2341, SERDAT
+; DESC:
+;   Unconditionally asserts the CTRL/serial output bit.
+;------------------------------------------------------------------------------
+SCRIPT_AssertCtrlLineNow:
 LAB_14B8:
-    BSR.S   LAB_14B2
+    BSR.S   SCRIPT_AssertCtrlLine
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_DeassertCtrlLineNow   (DeassertCtrlLineNow??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_DeassertCtrlLine
+; READS:
+;   LAB_2341
+; WRITES:
+;   LAB_20AC, LAB_2341, SERDAT
+; DESC:
+;   Unconditionally deasserts the CTRL/serial output bit.
+;------------------------------------------------------------------------------
+SCRIPT_DeassertCtrlLineNow:
 LAB_14B9:
-    BSR.S   LAB_14B5
+    BSR.S   SCRIPT_DeassertCtrlLine
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_UpdateCtrlLineTimeout   (UpdateCtrlLineTimeout??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_ReadCiaBBit5Mask
+; READS:
+;   LAB_2294, CIAB_PRA
+; WRITES:
+;   LAB_2343, LAB_22A9, LAB_2265
+; DESC:
+;   Polls the CTRL line and increments a counter while it stays asserted; once
+;   a threshold is reached, resets related counters/flags.
+; NOTES:
+;   Uses CIAB_PRA bitmask (via SCRIPT_ReadCiaBBit5Mask).
+;------------------------------------------------------------------------------
+SCRIPT_UpdateCtrlLineTimeout:
 LAB_14BA:
     TST.W   LAB_2294
-    BEQ.S   .return
+    BEQ.S   .return_status
 
-    BSR.W   LAB_14BF
+    BSR.W   SCRIPT_ReadCiaBBit5Mask
 
     TST.B   D0
-    BEQ.S   .return
+    BEQ.S   .return_status
 
     MOVE.W  LAB_2343,D0
     MOVE.L  D0,D1
@@ -351,39 +490,79 @@ LAB_14BA:
     MOVE.W  D1,LAB_2343
     MOVEQ   #20,D0
     CMP.W   D0,D1
-    BCS.S   .return
+    BCS.S   .return_status
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_22A9
     MOVE.W  #$24,LAB_2265
     MOVE.W  D0,LAB_2343
 
-.return:
+.return_status:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_ReadCiaBBit3Flag   (ReadCiaBBit3Flag??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 1 if CIAB_PRA bit3 set, else 0
+; CLOBBERS:
+;   D0/D6-D7
+; CALLS:
+;   (none)
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   (none)
+; DESC:
+;   Reads CIAB port A bit 3 and returns it as a boolean.
+; NOTES:
+;   Bit meaning is hardware-defined (handshake/status line).
+;------------------------------------------------------------------------------
+SCRIPT_ReadCiaBBit3Flag:
 LAB_14BC:
     MOVEM.L D6-D7,-(A7)
 
     MOVEQ   #0,D7
     MOVE.B  CIAB_PRA,D7
     BTST    #3,D7
-    BEQ.S   .LAB_14BD
+    BEQ.S   .clear_flag
 
     MOVEQ   #1,D6
-    BRA.S   .return
+    BRA.S   .return_status
 
-.LAB_14BD:
+.clear_flag:
     MOVEQ   #0,D6
 
-.return:
+.return_status:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_ReadCiaBBit5Mask   (ReadCiaBBit5Mask??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: CIAB_PRA & $20 (0 or 0x20)
+; CLOBBERS:
+;   D0-D1/D6-D7
+; CALLS:
+;   (none)
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   (none)
+; DESC:
+;   Returns CIAB port A bit 5 masked into D0.
+; NOTES:
+;   Bit meaning is hardware-defined (handshake/status line).
+;------------------------------------------------------------------------------
+SCRIPT_ReadCiaBBit5Mask:
 LAB_14BF:
     MOVEM.L D6-D7,-(A7)
 
@@ -401,6 +580,24 @@ LAB_14BF:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_GetCtrlLineFlag   (GetCtrlLineFlag??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: LAB_20AC (shadow flag)
+; CLOBBERS:
+;   D0
+; CALLS:
+;   (none)
+; READS:
+;   LAB_20AC
+; WRITES:
+;   (none)
+; DESC:
+;   Returns the cached CTRL line asserted flag.
+;------------------------------------------------------------------------------
+SCRIPT_GetCtrlLineFlag:
 LAB_14C0:
     MOVE.L  D7,-(A7)
     MOVE.W  LAB_20AC,D7
@@ -410,6 +607,26 @@ LAB_14C0:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_WriteSerialDataWord   (WriteSerialDataWord??)
+; ARGS:
+;   stack +10: dataWord (low byte used)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D7
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   SERDAT, LAB_2341
+; DESC:
+;   Writes a byte to SERDAT with bit8 set and mirrors it into LAB_2341.
+; NOTES:
+;   Uses only the low byte of the provided word.
+;------------------------------------------------------------------------------
+SCRIPT_WriteSerialDataWord:
 LAB_14C1:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
@@ -2051,7 +2268,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1542
 
 .LAB_1541:
-    JSR     LAB_14BF(PC)
+    JSR     SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
     BEQ.S   .LAB_1542
@@ -2562,7 +2779,7 @@ LAB_1565:
     SUBQ.W  #3,D0
     BNE.S   .LAB_156F
 
-    JSR     LAB_14B9(PC)
+    JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_211A
@@ -2577,16 +2794,37 @@ LAB_1565:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_UpdateCtrlStateMachine   (UpdateCtrlStateMachine??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   SCRIPT_DeassertCtrlLineNow, LAB_167D, LAB_1979, SCRIPT_ReadCiaBBit3Flag
+; READS:
+;   LAB_2346, LAB_2118, LAB_2119, LAB_1DD7, LAB_2263
+; WRITES:
+;   LAB_2346, LAB_2118, LAB_2119
+; DESC:
+;   Advances a small control state machine and triggers follow-up actions when
+;   counters hit thresholds.
+; NOTES:
+;   Uses LAB_1DD7 via LAB_1979 to probe a control flag string.
+;------------------------------------------------------------------------------
+SCRIPT_UpdateCtrlStateMachine:
 LAB_1571:
-    BSR.W   .LAB_1576
+    BSR.W   .refresh_ctrl_state
 
     MOVE.W  LAB_2346,D0
     SUBQ.W  #2,D0
-    BNE.S   .LAB_1574
+    BNE.S   .reset_state
 
     MOVE.W  LAB_2118,D0
     SUBQ.W  #1,D0
-    BNE.S   .LAB_1572
+    BNE.S   .check_state_two
 
     MOVE.W  LAB_2119,D0
     MOVE.L  D0,D1
@@ -2594,41 +2832,41 @@ LAB_1571:
     MOVE.W  D1,LAB_2119
     MOVEQ   #3,D0
     CMP.W   D0,D1
-    BLT.S   .LAB_1575
+    BLT.S   .return_status
 
     CLR.W   LAB_2119
     MOVE.W  D0,LAB_2346
-    JSR     LAB_14B9(PC)
+    JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
     JSR     LAB_167D(PC)
 
-    BRA.S   .LAB_1575
+    BRA.S   .return_status
 
-.LAB_1572:
+.check_state_two:
     MOVE.W  LAB_2118,D0
     SUBQ.W  #2,D0
-    BNE.S   .LAB_1573
+    BNE.S   .check_banner_active
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2119
-    BRA.S   .LAB_1575
+    BRA.S   .return_status
 
-.LAB_1573:
+.check_banner_active:
     TST.W   LAB_2263
-    BEQ.S   .LAB_1575
+    BEQ.S   .return_status
 
     MOVE.W  #3,LAB_2346
-    BRA.S   .LAB_1575
+    BRA.S   .return_status
 
-.LAB_1574:
+.reset_state:
     CLR.W   LAB_2119
 
-.LAB_1575:
+.return_status:
     RTS
 
 ;!======
 
-.LAB_1576:
+.refresh_ctrl_state:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD7,D0
     MOVE.L  D0,-(A7)
@@ -2637,24 +2875,24 @@ LAB_1571:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   .LAB_1578
+    BEQ.S   .clear_state
 
-    JSR     LAB_14BC(PC)
+    JSR     SCRIPT_ReadCiaBBit3Flag(PC)
 
     TST.B   D0
-    BEQ.S   .LAB_1577
+    BEQ.S   .set_state_one
 
     MOVE.W  #2,LAB_2118
-    BRA.S   .LAB_1579
+    BRA.S   .refresh_done
 
-.LAB_1577:
+.set_state_one:
     MOVE.W  #1,LAB_2118
-    BRA.S   .LAB_1579
+    BRA.S   .refresh_done
 
-.LAB_1578:
+.clear_state:
     CLR.W   LAB_2118
 
-.LAB_1579:
+.refresh_done:
     RTS
 
 ;!======
@@ -2843,7 +3081,7 @@ LAB_157A:
     BRA.S   .return
 
 .LAB_157B_01BE:
-    JSR     LAB_14B8(PC)
+    JSR     SCRIPT_AssertCtrlLineNow(PC)
 
     MOVE.W  #1,LAB_2346
     BRA.S   .return

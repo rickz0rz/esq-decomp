@@ -322,7 +322,7 @@ LAB_0970:
     TST.W   LAB_2264
     BEQ.W   .LAB_097C
 
-    JSR     LAB_09B3(PC)
+    JSR     ESQFUNC_JMP_TBL_CLEANUP_ProcessAlerts(PC)
 
     TST.L   LAB_1E88
     BEQ.S   .LAB_0975
@@ -458,7 +458,7 @@ LAB_097E:
     TST.W   LAB_2264
     BEQ.S   .LAB_0980
 
-    JSR     LAB_09B3(PC)
+    JSR     ESQFUNC_JMP_TBL_CLEANUP_ProcessAlerts(PC)
 
 .LAB_0980:
     JSR     LAB_09BE(PC)
@@ -467,6 +467,27 @@ LAB_097E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQFUNC_PruneEntryTextPointers   (PruneEntryTextPointers??)
+; ARGS:
+;   stack +10: maxIndex (D7)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D4-D7/A0-A1
+; CALLS:
+;   LAB_0B44 (deallocate)
+; READS:
+;   LAB_2231, LAB_2233, LAB_2236
+; WRITES:
+;   LAB_2236[entry].field56[] (pointer array cleared)
+; DESC:
+;   Walks the entry tables and frees extra non-null text pointers up to the
+;   given index, leaving the first non-null pointer intact.
+; NOTES:
+;   The inner loop runs down from min(maxIndex, 34).
+;------------------------------------------------------------------------------
+ESQFUNC_PruneEntryTextPointers:
 LAB_0981:
     LINK.W  A5,#-20
     MOVEM.L D4-D7,-(A7)
@@ -474,10 +495,10 @@ LAB_0981:
     MOVE.W  10(A5),D7
     MOVEQ   #0,D4
 
-LAB_0982:
+.entry_loop:
     MOVE.W  LAB_2231,D0
     CMP.W   D0,D4
-    BGE.S   LAB_0989
+    BGE.S   .return_status
 
     MOVE.L  D4,D0
     EXT.L   D0
@@ -491,21 +512,21 @@ LAB_0982:
     MOVEQ   #0,D6
     MOVEQ   #34,D0
     CMP.W   D0,D7
-    BGT.S   LAB_0983
+    BGT.S   .cap_limit
 
     MOVE.L  D7,D0
     EXT.L   D0
-    BRA.S   LAB_0984
+    BRA.S   .set_limit
 
-LAB_0983:
+.cap_limit:
     MOVEQ   #34,D0
 
-LAB_0984:
+.set_limit:
     MOVE.L  D0,D5
 
-LAB_0985:
+.slot_loop:
     TST.W   D5
-    BMI.S   LAB_0988
+    BMI.S   .next_entry
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -514,10 +535,10 @@ LAB_0985:
     MOVEA.L 56(A0,D0.L),A0
     MOVE.L  A0,-12(A5)
     MOVE.L  A0,D0
-    BEQ.S   LAB_0987
+    BEQ.S   .next_slot
 
     TST.W   D6
-    BEQ.S   LAB_0986
+    BEQ.S   .mark_first_seen
 
     MOVE.L  A0,-(A7)
     CLR.L   -(A7)
@@ -529,20 +550,20 @@ LAB_0985:
     ASL.L   #2,D0
     MOVEA.L -8(A5),A0
     CLR.L   56(A0,D0.L)
-    BRA.S   LAB_0987
+    BRA.S   .next_slot
 
-LAB_0986:
+.mark_first_seen:
     MOVEQ   #1,D6
 
-LAB_0987:
+.next_slot:
     SUBQ.W  #1,D5
-    BRA.S   LAB_0985
+    BRA.S   .slot_loop
 
-LAB_0988:
+.next_entry:
     ADDQ.W  #1,D4
-    BRA.S   LAB_0982
+    BRA.S   .entry_loop
 
-LAB_0989:
+.return_status:
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
     RTS
@@ -666,7 +687,35 @@ LAB_0990:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQFUNC_DrawMemoryStatusScreen   (DrawMemoryStatusScreen)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1
+; CALLS:
+;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, JMP_TBL_PRINTF_2,
+;   JMP_TBL_DISPLAY_TEXT_AT_POSITION_1, JMP_TBL_CALCULATE_H_T_C_MAX_VALUES,
+;   ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax
+; READS:
+;   LAB_2252, LAB_226A, LAB_1DF0, LAB_2285, DATACErrs, LAB_2287,
+;   LAB_2347/2348/2349, LAB_228A, GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE,
+;   GLOB_WORD_MAX_VALUE, CTRL_H, LAB_2282, LAB_2283, LAB_2230/LAB_222D,
+;   LAB_2238/LAB_2239, LAB_224A/LAB_222E, LAB_223C/223B/2244/223D,
+;   LAB_2276/2275/227E/2277, LAB_2241/227B/225C, LAB_223E,
+;   GLOB_WORD_CURRENT_HOUR, LAB_2270
+; WRITES:
+;   LAB_2252 (early return gate), temporary text buffer on stack
+; DESC:
+;   Draws the ESC diagnostics memory/status screen with data/CTRL counts,
+;   available memory totals, and various clock/calendar diagnostics.
+; NOTES:
+;   Uses LAB_1DF0 bitmask to select which memory types to show.
+;------------------------------------------------------------------------------
 ; draw the screen showing available memory
+ESQFUNC_DrawMemoryStatusScreen:
 LAB_0991:
     LINK.W  A5,#-80
     MOVEM.L D2-D7,-(A7)
@@ -687,7 +736,7 @@ LAB_0991:
     JSR     _LVOSetDrMd(A6)
 
     MOVE.W  LAB_226A,D0
-    BNE.W   .LAB_0997
+    BNE.W   .draw_calendar_section
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2285,D0
@@ -733,7 +782,7 @@ LAB_0991:
     MOVEQ   #7,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #7,D0
-    BNE.S   .LAB_0992
+    BNE.S   .check_chip_only
 
     MOVE.L  #$20002,D1          ; Attributes: 0x20000 = Largest
     MOVEA.L AbsExecBase,A6      ; so 0x20002 = Largest | Chip
@@ -760,13 +809,13 @@ LAB_0991:
     JSR     JMP_TBL_PRINTF_2(PC)
 
     LEA     20(A7),A7
-    BRA.W   .LAB_0996
+    BRA.W   .draw_memory_section
 
-.LAB_0992:
+.check_chip_only:
     MOVEQ   #1,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #1,D0
-    BNE.S   .LAB_0993
+    BNE.S   .check_fast_only
 
     MOVEQ   #2,D1
     MOVEA.L AbsExecBase,A6
@@ -779,13 +828,13 @@ LAB_0991:
     JSR     JMP_TBL_PRINTF_2(PC)
 
     LEA     12(A7),A7
-    BRA.S   .LAB_0996
+    BRA.S   .draw_memory_section
 
-.LAB_0993:
+.check_fast_only:
     MOVEQ   #2,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #2,D0
-    BNE.S   .LAB_0994
+    BNE.S   .check_max_only
 
     MOVEQ   #4,D1
     MOVEA.L AbsExecBase,A6
@@ -798,13 +847,13 @@ LAB_0991:
     JSR     JMP_TBL_PRINTF_2(PC)
 
     LEA     12(A7),A7
-    BRA.S   .LAB_0996
+    BRA.S   .draw_memory_section
 
-.LAB_0994:
+.check_max_only:
     MOVEQ   #4,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #4,D0
-    BNE.S   .LAB_0995
+    BNE.S   .show_disabled
 
     MOVEQ   #2,D1
     SWAP    D1
@@ -818,16 +867,16 @@ LAB_0991:
     JSR     JMP_TBL_PRINTF_2(PC)
 
     LEA     12(A7),A7
-    BRA.S   .LAB_0996
+    BRA.S   .draw_memory_section
 
-.LAB_0995:
+.show_disabled:
     PEA     GLOB_STR_MEMORY_TYPES_DISABLED
     PEA     -72(A5)
     JSR     JMP_TBL_PRINTF_2(PC)
 
     ADDQ.W  #8,A7
 
-.LAB_0996:
+.draw_memory_section:
     PEA     -72(A5)
     PEA     172.W
     PEA     40.W
@@ -871,7 +920,7 @@ LAB_0991:
     JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_1(PC)
 
     LEA     76(A7),A7
-    JSR     LAB_09AA(PC)
+    JSR     ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax(PC)
 
     MOVE.L  D0,D4
     MOVEQ   #0,D0
@@ -896,7 +945,7 @@ LAB_0991:
 
     LEA     40(A7),A7
 
-.LAB_0997:
+.draw_calendar_section:
     MOVE.W  LAB_226A,D0
     SUBQ.W  #1,D0
     BNE.W   .return
@@ -1045,7 +1094,33 @@ LAB_0991:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQFUNC_DrawDiagnosticsScreen   (DrawDiagnosticsScreen??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1
+; CALLS:
+;   _LVOSetFont, ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit5Mask,
+;   ESQFUNC_JMP_TBL_SCRIPT_GetCtrlLineFlag, ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit3Flag,
+;   JMP_TBL_PRINTF_2, JMP_TBL_DISPLAY_TEXT_AT_POSITION_1,
+;   ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax
+; READS:
+;   LAB_1EB6, LAB_2118, LAB_1EB8/1EB9, LAB_1EBA/1EBB, LAB_1EBC/1EBD,
+;   GLOB_HANDLE_TOPAZ_FONT, GLOB_REF_GRAPHICS_LIBRARY, LAB_2216
+; WRITES:
+;   LAB_1E26/1E27/1E28/1E29/1E2A, LAB_1E55/1E56/1E57 (status fields),
+;   LAB_1E26/1E27/1E28/1E29/1E2A (cleared/initialized), stack buffers
+; DESC:
+;   Builds and renders the ESC diagnostics screen, selecting status strings
+;   based on multiple subsystem checks and a mode selector.
+; NOTES:
+;   Uses several helper probes (CIA bit/flag reads) to choose message text.
+;------------------------------------------------------------------------------
 ; Printing of more diagnostic data
+ESQFUNC_DrawDiagnosticsScreen:
 LAB_0999:
     LINK.W  A5,#-164
     MOVEM.L D2-D7,-(A7)
@@ -1074,64 +1149,64 @@ LAB_0999:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
-    JSR     LAB_09B9(PC)
+    JSR     ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
-    BEQ.S   LAB_099A
+    BEQ.S   .status_a_false
 
     LEA     LAB_1EB8,A0
 
-    BRA.S   LAB_099B
+    BRA.S   .status_a_selected
 
-LAB_099A:
+.status_a_false:
     LEA     LAB_1EB9,A0
 
-LAB_099B:
+.status_a_selected:
     MOVE.L  A0,24(A7)
-    JSR     LAB_09AE(PC)
+    JSR     ESQFUNC_JMP_TBL_SCRIPT_GetCtrlLineFlag(PC)
 
     TST.B   D0
-    BEQ.S   LAB_099C
+    BEQ.S   .status_b_false
 
     LEA     LAB_1EBA,A0
-    BRA.S   LAB_099D
+    BRA.S   .status_b_selected
 
-LAB_099C:
+.status_b_false:
     LEA     LAB_1EBB,A0
 
-LAB_099D:
+.status_b_selected:
     MOVE.L  A0,28(A7)
-    JSR     LAB_09AC(PC)
+    JSR     ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit3Flag(PC)
 
     TST.B   D0
-    BEQ.S   LAB_099E
+    BEQ.S   .status_c_false
 
     LEA     LAB_1EBC,A0
-    BRA.S   LAB_099F
+    BRA.S   .status_c_selected
 
-LAB_099E:
+.status_c_false:
     LEA     LAB_1EBD,A0
 
-LAB_099F:
+.status_c_selected:
     MOVE.W  LAB_2118,D0
     SUBQ.W  #2,D0
-    BNE.S   LAB_09A0
+    BNE.S   .select_mode_two
 
     LEA     LAB_1EBE,A1
-    BRA.S   LAB_09A2
+    BRA.S   .format_main_line
 
-LAB_09A0:
+.select_mode_two:
     MOVE.W  LAB_2118,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_09A1
+    BNE.S   .select_mode_one
 
     LEA     LAB_1EBF,A1
-    BRA.S   LAB_09A2
+    BRA.S   .format_main_line
 
-LAB_09A1:
+.select_mode_one:
     LEA     LAB_1EC0,A1
 
-LAB_09A2:
+.format_main_line:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  36(A7),-(A7)
@@ -1301,7 +1376,7 @@ LAB_09A4:
     MOVE.L  D1,76(A7)
     MOVE.L  D2,80(A7)
     MOVE.L  D3,84(A7)
-    JSR     LAB_09AA(PC)
+    JSR     ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  84(A7),-(A7)
@@ -1377,20 +1452,23 @@ LAB_09A8:
 LAB_09A9:
     JMP     LAB_03CF
 
+ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax:
 LAB_09AA:
-    JMP     LAB_1491
+    JMP     PARSEINI_UpdateCtrlHDeltaMax
 
 LAB_09AB:
     JMP     LAB_009A
 
+ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit3Flag:
 LAB_09AC:
-    JMP     LAB_14BC
+    JMP     SCRIPT_ReadCiaBBit3Flag
 
 LAB_09AD:
     JMP     LAB_181E
 
+ESQFUNC_JMP_TBL_SCRIPT_GetCtrlLineFlag:
 LAB_09AE:
-    JMP     LAB_14C0
+    JMP     SCRIPT_GetCtrlLineFlag
 
 LAB_09AF:
     JMP     LAB_0F91
@@ -1404,6 +1482,7 @@ LAB_09B1:
 LAB_09B2:
     JMP     LAB_0E2D
 
+ESQFUNC_JMP_TBL_CLEANUP_ProcessAlerts:
 LAB_09B3:
     ; Update on-screen alerts and pending timers (cleanup module owns the UI state).
     JMP     CLEANUP_ProcessAlerts
@@ -1411,6 +1490,7 @@ LAB_09B3:
 LAB_09B4:
     JMP     LAB_0095
 
+ESQFUNC_JMP_TBL_CLEANUP_DrawClockBanner:
 LAB_09B5:
     JMP     CLEANUP_DrawClockBanner
 
@@ -1423,8 +1503,9 @@ LAB_09B7:
 LAB_09B8:
     JMP     LAB_136A
 
+ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit5Mask:
 LAB_09B9:
-    JMP     LAB_14BF
+    JMP     SCRIPT_ReadCiaBBit5Mask
 
 LAB_09BA:
     JMP     LAB_1477
@@ -1790,35 +1871,41 @@ LAB_09DB:
     MOVE.W  .LAB_09DD(PC,D0.W),D0
     JMP     .LAB_09DD+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 .LAB_09DD:
-    DC.W    $000a
-	DC.W    $0016
-    DC.W    $0022
-	DC.W    $002e
-    DC.W    $003a
-    DC.W    $0046
+    DC.W    .LAB_09DD_000A-.LAB_09DD-2
+	DC.W    .LAB_09DD_0016-.LAB_09DD-2
+    DC.W    .LAB_09DD_0022-.LAB_09DD-2
+	DC.W    .LAB_09DD_002E-.LAB_09DD-2
+    DC.W    .LAB_09DD_003A-.LAB_09DD-2
+    DC.W    .LAB_09DD_0046-.LAB_09DD-2
 
+.LAB_09DD_000A:
     MOVEA.L -4(A5),A0
     MOVE.B  #$8,190(A0)
     BRA.S   .LAB_09DF
 
+.LAB_09DD_0016:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
     BRA.S   .LAB_09DF
 
+.LAB_09DD_0022:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
     BRA.S   .LAB_09DF
 
+.LAB_09DD_002E:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
     BRA.S   .LAB_09DF
 
+.LAB_09DD_003A:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
     BRA.S   .LAB_09DF
 
+.LAB_09DD_0046:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
 

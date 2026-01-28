@@ -1754,7 +1754,7 @@ LAB_07B2:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLAY_TEXT_AT_POSITION(PC)
 
-    JSR     LAB_09B9(PC)
+    JSR     ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     LEA     16(A7),A7
     TST.B   D0
@@ -1954,7 +1954,7 @@ LAB_07CB:
     JMP     LAB_142E
 
 LAB_07CC:
-    JMP     LAB_14B9
+    JMP     SCRIPT_DeassertCtrlLineNow
 
 LAB_07CD:
     JMP     LAB_0053
@@ -1977,7 +1977,7 @@ LAB_07D0:
     JMP     LAB_0055
 
 LAB_07D1:
-    JMP     LAB_14B8
+    JMP     SCRIPT_AssertCtrlLineNow
 
 LAB_07D2:
     JMP     LAB_1837
@@ -2031,30 +2031,36 @@ LAB_07D6:
     MOVE.W  LAB_07D7(PC,D0.W),D0
     JMP     LAB_07D7+2(PC,D0.W)
 
-    ; TODO: Another jump table for switch
+; Another jump table for switch
 LAB_07D7:
-    DC.W    $000a
-    DC.W    $000e
-	DC.W    $0012
-    DC.W    $0016
-	DC.W    $001a
-    DC.W    $001e
+    DC.W    LAB_07D7_000A-LAB_07D7-2
+    DC.W    LAB_07D7_000E-LAB_07D7-2
+	DC.W    LAB_07D7_0012-LAB_07D7-2
+    DC.W    LAB_07D7_0016-LAB_07D7-2
+	DC.W    LAB_07D7_001A-LAB_07D7-2
+    DC.W    LAB_07D7_001E-LAB_07D7-2
 
+LAB_07D7_000A:
     MOVEQ   #1,D0
     BRA.S   LAB_07DC
 
+LAB_07D7_000E:
     MOVEQ   #2,D0
     BRA.S   LAB_07DC
 
+LAB_07D7_0012:
     MOVEQ   #3,D0
     BRA.S   LAB_07DC
 
+LAB_07D7_0016:
     MOVEQ   #4,D0
     BRA.S   LAB_07DC
 
+LAB_07D7_001A:
     MOVEQ   #5,D0
     BRA.S   LAB_07DC
 
+LAB_07D7_001E:
     MOVEQ   #6,D0
     BRA.S   LAB_07DC
 

@@ -211,17 +211,18 @@ PARSE_INI:
     MOVE.W  .LAB_13A9(PC,D0.W),D0
     JMP     .LAB_13A9+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 .LAB_13A9:
-    DC.W    $000E
-    DC.W    $0176
-    DC.W    $0222
-    DC.W    $0236
-    DC.W    $0236
-    DC.W    $02E6
-	DC.W    $0392
-    DC.W    $043E
+    DC.W    .LAB_13A9_000E-.LAB_13A9-2
+    DC.W    .LAB_13B3_0176-.LAB_13A9-2
+    DC.W    .LAB_13B9_0222-.LAB_13A9-2
+    DC.W    .LAB_13B9_0236-.LAB_13A9-2
+    DC.W    .LAB_13B9_0236-.LAB_13A9-2
+    DC.W    .LAB_13BF_02E6-.LAB_13A9-2
+	DC.W    .LAB_13C5_0392-.LAB_13A9-2
+    DC.W    .LAB_13CB_043E-.LAB_13A9-2
 
+.LAB_13A9_000E:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
@@ -369,6 +370,7 @@ PARSE_INI:
     CLR.W   LAB_1DDA
     BRA.W   .LAB_139D
 
+.LAB_13B3_0176:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
@@ -447,6 +449,7 @@ PARSE_INI:
     ADDQ.W  #8,A7
     BRA.W   .LAB_139D
 
+.LAB_13B9_0222:
     PEA     LAB_233F
     MOVE.L  -8(A5),-(A7)
     BSR.W   LAB_13D7
@@ -454,6 +457,7 @@ PARSE_INI:
     ADDQ.W  #8,A7
     BRA.W   .LAB_139D
 
+.LAB_13B9_0236:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
@@ -535,6 +539,7 @@ PARSE_INI:
     LEA     12(A7),A7
     BRA.W   .LAB_139D
 
+.LAB_13BF_02E6:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
@@ -613,6 +618,7 @@ PARSE_INI:
     ADDQ.W  #8,A7
     BRA.W   .LAB_139D
 
+.LAB_13C5_0392:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
@@ -691,6 +697,7 @@ PARSE_INI:
     ADDQ.W  #8,A7
     BRA.W   .LAB_139D
 
+.LAB_13CB_043E:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
@@ -2592,8 +2599,28 @@ LAB_146E:
 
 ;!======
 
-; This is used to fetch the current time and load it
-; into variables..?
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_UpdateClockFromRtc   (UpdateClockFromRtc??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none (status is implicit via globals)
+; CLOBBERS:
+;   D0-D7/A0-A1
+; CALLS:
+;   JMP_TBL_GET_CLOCK_CHIP_TIME, JMP_TBL_POPULATE_CLOCKDATA_FROM_SECS,
+;   JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH, LAB_1477
+; READS:
+;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE
+; WRITES:
+;   LAB_223A (date/time fields via LAB_1477)
+; DESC:
+;   Reads the battery-backed clock, validates the resulting date/time fields,
+;   and updates the global date/time structure used by the UI.
+; NOTES:
+;   If the clock data is invalid or unavailable, a fallback/default is written.
+;------------------------------------------------------------------------------
+PARSEINI_UpdateClockFromRtc:
 LAB_1470:
     LINK.W  A5,#-40
     MOVEM.L D2-D7,-(A7)
@@ -2608,10 +2635,10 @@ LAB_1470:
 .localWDay  = -40
 
     TST.L   GLOB_REF_UTILITY_LIBRARY
-    BEQ.W   .return
+    BEQ.W   .return_status
 
     TST.L   GLOB_REF_BATTCLOCK_RESOURCE
-    BEQ.W   .return
+    BEQ.W   .return_status
 
     JSR     JMP_TBL_GET_CLOCK_CHIP_TIME(PC)
 
@@ -2625,7 +2652,7 @@ LAB_1470:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.W   .LAB_1472
+    BEQ.W   .fallback_default_date
 
     MOVE.W  (.clockData+Struct_ClockData__WDay)(A5),D0
     MOVE.W  D0,.localWDay(A5)
@@ -2656,69 +2683,69 @@ LAB_1470:
 
     MOVEQ   #0,D6
     CMP.W   D6,D0
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     MOVEQ   #6,D5
     CMP.W   D5,D0
-    BHI.S   .invalidDateData
+    BHI.S   .invalid_date_data
 
     CMP.W   D6,D1
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     MOVEQ   #11,D0      ; Month?
     CMP.W   D0,D1
-    BHI.S   .invalidDateData
+    BHI.S   .invalid_date_data
 
     CMP.W   D6,D2
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     MOVEQ   #31,D0      ; Day number
     CMP.W   D0,D2
-    BHI.S   .invalidDateData
+    BHI.S   .invalid_date_data
 
     CMP.W   D6,D3
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     CMPI.W  #9999,D3    ; Year
-    BHI.S   .invalidDateData
+    BHI.S   .invalid_date_data
 
     CMP.W   D6,D4
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     MOVEQ   #23,D0      ; Hour
     CMP.W   D0,D4
-    BHI.S   .invalidDateData
+    BHI.S   .invalid_date_data
 
     MOVE.W  -16(A5),D0
     CMP.W   D6,D0
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     MOVEQ   #59,D1      ; Minutes
     CMP.W   D1,D0
-    BHI.S   .invalidDateData
+    BHI.S   .invalid_date_data
 
     MOVE.W  -18(A5),D0
     CMP.W   D6,D0
-    BCS.S   .invalidDateData
+    BCS.S   .invalid_date_data
 
     CMP.W   D1,D0
 
-.invalidDateData:
+.invalid_date_data:
     PEA     -40(A5)
     PEA     LAB_223A
     BSR.W   LAB_1477
 
     ADDQ.W  #8,A7
-    BRA.S   .return
+    BRA.S   .return_status
 
-.LAB_1472:
+.fallback_default_date:
     PEA     LAB_20A1
     PEA     LAB_223A
     BSR.W   LAB_1477
 
     ADDQ.W  #8,A7
 
-.return:
+.return_status:
     MOVEM.L (A7)+,D2-D7
     UNLK    A5
     RTS
@@ -3002,6 +3029,27 @@ LAB_148E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_UpdateCtrlHDeltaMax   (UpdateCtrlHDeltaMax??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: current delta (non-negative, wrapped)
+; CLOBBERS:
+;   D0/D7
+; CALLS:
+;   (none)
+; READS:
+;   CTRL_H, LAB_2282, LAB_2283
+; WRITES:
+;   LAB_2283
+; DESC:
+;   Computes CTRL_H - LAB_2282 (wrapped by +500 if negative) and updates the
+;   recorded max delta when the new value exceeds the previous max.
+; NOTES:
+;   Wrap size 500 suggests a ring buffer or modulo counter.
+;------------------------------------------------------------------------------
+PARSEINI_UpdateCtrlHDeltaMax:
 LAB_1491:
     MOVE.L  D7,-(A7)
 
@@ -3012,20 +3060,20 @@ LAB_1491:
     SUB.L   D1,D0
     MOVE.L  D0,D7
     TST.L   D7
-    BPL.S   .LAB_1492
+    BPL.S   .delta_ok
 
     ADDI.L  #500,D7
 
-.LAB_1492:
+.delta_ok:
     MOVEQ   #0,D0
     MOVE.W  LAB_2283,D0
     CMP.L   D7,D0
-    BGE.S   .return
+    BGE.S   .return_status
 
     MOVE.L  D7,D0
     MOVE.W  D0,LAB_2283
 
-.return:
+.return_status:
     MOVE.L  D7,D0
     MOVE.L  (A7)+,D7
     RTS

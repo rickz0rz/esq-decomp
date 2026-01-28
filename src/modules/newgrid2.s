@@ -213,15 +213,16 @@ LAB_1321:
     MOVE.W  LAB_1322(PC,D0.W),D0
     JMP     LAB_1322+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 LAB_1322:
-    DC.W    $000A
-	DC.W    $0020
-    DC.W    $00F2
-	DC.W    $006A
-    DC.W    $006A
-    DC.W    $0088
+    DC.W    LAB_1322_000A-LAB_1322-2
+	DC.W    LAB_1322_0020-LAB_1322-2
+    DC.W    LAB_1322_00F2-LAB_1322-2
+	DC.W    LAB_1322_006A-LAB_1322-2
+    DC.W    LAB_1322_006A-LAB_1322-2
+    DC.W    LAB_1322_0088-LAB_1322-2
 
+LAB_1322_000A:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D6,-(A7)
@@ -230,6 +231,8 @@ LAB_1322:
     BSR.W   LAB_12B4
 
     LEA     12(A7),A7
+
+LAB_1322_0020:
     MOVE.L  D6,-(A7)
     PEA     LAB_2332
     MOVE.L  LAB_2041,-(A7)
@@ -255,6 +258,7 @@ LAB_1324:
     CLR.L   LAB_2041
     BRA.W   LAB_1328
 
+LAB_1322_006A:
     MOVE.L  D6,-(A7)
     PEA     LAB_2332
     MOVE.L  LAB_2041,-(A7)
@@ -265,6 +269,8 @@ LAB_1324:
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
+
+LAB_1322_0088:
     TST.L   LAB_2332
     BEQ.S   LAB_1326
 
@@ -309,6 +315,7 @@ LAB_1326:
     MOVE.L  D0,LAB_2041
     BRA.S   LAB_1328
 
+LAB_1322_00F2:
 LAB_1327:
     CLR.L   LAB_2041
 
@@ -368,16 +375,17 @@ LAB_132D:
     MOVE.W  LAB_132E(PC,D0.W),D0
     JMP     LAB_132E+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 LAB_132E:
-    DC.W    $000c
-    DC.W    $0024
-    DC.W    $0044
-	DC.W    $005e
-    DC.W    $007a
-	DC.W    $0090
-    DC.W    $00ae
+    DC.W    LAB_132E_000C-LAB_132E-2
+    DC.W    LAB_132E_0024-LAB_132E-2
+    DC.W    LAB_132E_0044-LAB_132E-2
+	DC.W    LAB_132E_005E-LAB_132E-2
+    DC.W    LAB_132E_007A-LAB_132E-2
+	DC.W    LAB_132E_0090-LAB_132E-2
+    DC.W    LAB_132E_00AE-LAB_132E-2
 
+LAB_132E_000C:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -388,6 +396,7 @@ LAB_132E:
     MOVE.L  D0,LAB_2043
     BRA.W   LAB_1331
 
+LAB_132E_0024:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D5,D1
@@ -401,6 +410,7 @@ LAB_132E:
     MOVE.L  D0,LAB_2043
     BRA.W   LAB_1331
 
+LAB_132E_0044:
     MOVE.L  D6,D0
     EXT.L   D0
     CLR.L   -(A7)
@@ -412,6 +422,7 @@ LAB_132E:
     MOVE.L  D0,LAB_2043
     BRA.S   LAB_1331
 
+LAB_132E_005E:
     MOVE.L  D6,D0
     EXT.L   D0
     PEA     1.W
@@ -423,6 +434,7 @@ LAB_132E:
     MOVE.L  D0,LAB_2043
     BRA.S   LAB_1331
 
+LAB_132E_007A:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -433,6 +445,7 @@ LAB_132E:
     MOVE.L  D0,LAB_2043
     BRA.S   LAB_1331
 
+LAB_132E_0090:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D5,D1
@@ -446,6 +459,7 @@ LAB_132E:
     MOVE.L  D0,LAB_2043
     BRA.S   LAB_1331
 
+LAB_132E_00AE:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D5,D1

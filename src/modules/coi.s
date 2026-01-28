@@ -2062,24 +2062,27 @@ LAB_034C:
     MOVE.W  LAB_034D(PC,D0.W),D0
     JMP     LAB_034D+2(PC,D0.W)
 
-; TODO: Switch case
+; Switch case
 LAB_034D:
-	DC.W    $0018
-    DC.W    $0026
-	DC.W    $0046
-    DC.W    $0064
-	DC.W    $0080
-    DC.W    $000e
-    DC.W    $009c
-	DC.W    $00b8
+	DC.W    LAB_034D_0018-LAB_034D-2
+    DC.W    LAB_034D_0026-LAB_034D-2
+	DC.W    LAB_034D_0046-LAB_034D-2
+    DC.W    LAB_034D_0064-LAB_034D-2
+	DC.W    LAB_034D_0080-LAB_034D-2
+    DC.W    LAB_034D_000E-LAB_034D-2
+    DC.W    LAB_034D_009C-LAB_034D-2
+	DC.W    LAB_034D_00B8-LAB_034D-2
 
+LAB_034D_000E:
     MOVE.L  -4(A5),-16(A5)
     BRA.W   LAB_0356
 
+LAB_034D_0018:
     MOVEA.L -4(A5),A0
     MOVE.L  4(A0),-16(A5)
     BRA.W   LAB_0356
 
+LAB_034D_0026:
     TST.W   D4
     BEQ.S   LAB_034F
 
@@ -2092,6 +2095,7 @@ LAB_034F:
     MOVE.L  8(A0),-16(A5)
     BRA.W   LAB_0356
 
+LAB_034D_0046:
     TST.W   D4
     BEQ.S   LAB_0350
 
@@ -2104,6 +2108,7 @@ LAB_0350:
     MOVE.L  12(A0),-16(A5)
     BRA.S   LAB_0356
 
+LAB_034D_0064:
     TST.W   D4
     BEQ.S   LAB_0351
 
@@ -2116,6 +2121,7 @@ LAB_0351:
     MOVE.L  16(A0),-16(A5)
     BRA.S   LAB_0356
 
+LAB_034D_0080:
     TST.W   D4
     BEQ.S   LAB_0352
 
@@ -2128,6 +2134,7 @@ LAB_0352:
     MOVE.L  20(A0),-16(A5)
     BRA.S   LAB_0356
 
+LAB_034D_009C:
     TST.W   D4
     BEQ.S   LAB_0353
 
@@ -2140,6 +2147,7 @@ LAB_0353:
     MOVE.L  24(A0),-16(A5)
     BRA.S   LAB_0356
 
+LAB_034D_00B8:
     TST.W   D4
     BEQ.S   LAB_0354
 

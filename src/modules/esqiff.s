@@ -2356,7 +2356,7 @@ LAB_0AAC:
     JMP     LAB_194E
 
 LAB_0AAD:
-    JMP     LAB_14B3
+    JMP     SCRIPT_AssertCtrlLineIfEnabled
 
 JMP_TBL_SCRIPT_BeginBannerCharTransition_2:
     JMP     SCRIPT_BeginBannerCharTransition
