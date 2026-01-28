@@ -2035,8 +2035,11 @@ LAB_07D6:
 LAB_07D7:
     DC.W    $000a
     DC.W    $000e
-    ORI.B   #$16,(A2)
-    ORI.B   #$1e,(A2)+
+	DC.W    $0012
+    DC.W    $0016
+	DC.W    $001a
+    DC.W    $001e
+
     MOVEQ   #1,D0
     BRA.S   LAB_07DC
 

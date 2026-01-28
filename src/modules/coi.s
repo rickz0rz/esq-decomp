@@ -2064,10 +2064,16 @@ LAB_034C:
 
 ; TODO: Switch case
 LAB_034D:
-    ORI.B   #$26,(A0)+
-    ORI.W   #$64,D6
-    ORI.L   #$e009c,D0
-    ORI.L   #$2b6dfffc,$FFFFFFF0
+	DC.W    $0018
+    DC.W    $0026
+	DC.W    $0046
+    DC.W    $0064
+	DC.W    $0080
+    DC.W    $000e
+    DC.W    $009c
+	DC.W    $00b8
+
+    MOVE.L  -4(A5),-16(A5)
     BRA.W   LAB_0356
 
     MOVEA.L -4(A5),A0

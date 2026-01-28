@@ -3522,10 +3522,15 @@ LAB_0295:
 
 ; TODO: Switch case
 LAB_0296:
-    ORI.B   #$10,(A0)
-    ORI.B   #$10,(A0)
-    ORI.B   #$10,(A0)
-    ORI.W   #$70,-94(A0,D0.W)
+	DC.W    $0010
+    DC.W    $0010
+	DC.W    $0010
+    DC.W    $0010
+	DC.W    $0010
+    DC.W    $0010
+	DC.W    $0070
+    DC.W    $0070
+    DC.W    $00a2
 
     MOVEA.L -26(A5),A0
     MOVE.B  0(A0,D7.L),D0

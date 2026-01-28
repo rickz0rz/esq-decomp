@@ -1788,15 +1788,17 @@ LAB_09DB:
 
     ADD.W   D0,D0
     MOVE.W  .LAB_09DD(PC,D0.W),D0
-    JMP     .LAB_09DE(PC,D0.W)
+    JMP     .LAB_09DD+2(PC,D0.W)
 
 ; TODO: Switch case
 .LAB_09DD:
     DC.W    $000a
+	DC.W    $0016
+    DC.W    $0022
+	DC.W    $002e
+    DC.W    $003a
+    DC.W    $0046
 
-.LAB_09DE:
-    ORI.B   #$22,(A6)
-    ORI.B   #$3a,70(A6)
     MOVEA.L -4(A5),A0
     MOVE.B  #$8,190(A0)
     BRA.S   .LAB_09DF

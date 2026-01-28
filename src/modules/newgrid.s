@@ -1691,15 +1691,19 @@ LAB_1012:
 
 ; TODO: Switch case
 LAB_1013:
-    ORI.B   #$50,(A6)
-    ORI.L   #$ee0138,(A6)+
-    BCLR    D0,D2
-    BSET    D0,(A6)
+    DC.W    $0016
+    DC.W    $0050
+    DC.W    $009e
+    DC.W    $00ee
+    DC.W    $0138
+    DC.W    $0182
+    DC.W    $01d6
     DC.W    $022a
     DC.W    $027e
     DC.W    $02ec
     DC.W    $00c6
-    BCHG    D1,(A6)
+    DC.W    $0356
+
     MOVEA.L -4(A5),A0
     ADDA.W  #$3c,A0
     MOVE.L  -4(A5),-(A7)
@@ -4989,10 +4993,14 @@ LAB_1107:
 
 ; TODO: Switch case
 LAB_1108:
-    ORI.B   #$c,12(A0)
+    DC.W    $0028
     DC.W    $000c
-    ORI.B   #$18,(A0)
+    DC.W    $000c
+    DC.W    $000c
+    DC.W    $0010
+    DC.W    $0018
     DC.W    $0020
+
     MOVEQ   #6,D7
     BRA.S   LAB_110B
 

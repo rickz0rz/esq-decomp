@@ -1022,17 +1022,16 @@ LAB_0F53:
 
     ADD.W   D0,D0
     MOVE.W  LAB_0F54(PC,D0.W),D0
-    JMP     LAB_0F55(PC,D0.W)
+    JMP     LAB_0F54+2(PC,D0.W)
 
 ; TODO: Switch case
 LAB_0F54:
     DC.W    $0008
+    DC.W    $0008
+    DC.W    $0008
+    DC.W    $0008
+    DC.W    $0008
 
-LAB_0F55:
-    DC.W    $0008
-    DC.W    $0008
-    DC.W    $0008
-    DC.W    $0008
     LEA     -148(A5),A0
     ADDA.L  D6,A0
     MOVEA.L -8(A5),A6
@@ -1556,8 +1555,12 @@ LAB_0F7E:
 
 ; TODO: Switch case
 LAB_0F7F:
-    ORI.W   #8,$40.W
-    ORI.W   #$78,-(A2)
+	DC.W    $0078
+    DC.W    $0008
+    DC.W    $0040
+	DC.W    $0062
+    DC.W    $0078
+
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD7,D0
     MOVE.L  D0,-(A7)
@@ -1670,16 +1673,24 @@ LAB_0F85:
 
 ; TODO: Switch case
 LAB_0F86:
-    BTST    D0,30(A4)
-    ORI.B   #$1e,(A6)+
-    ORI.W   #$1e,-(A6)
-    ORI.B   #$1e,(A6)+
+	DC.W    $012c
     DC.W    $001e
-    BTST    D0,300(A4)
-    BTST    D0,300(A4)
-    BTST    D0,300(A4)
-    BTST    D0,8301(A4)
-    DC.W    $fffc
+	DC.W    $001e
+    DC.W    $001e
+	DC.W    $0066
+    DC.W    $001e
+	DC.W    $001e
+    DC.W    $001e
+    DC.W    $001e
+	DC.W    $012c
+    DC.W    $012c
+	DC.W    $012c
+    DC.W    $012c
+	DC.W    $012c
+    DC.W    $012c
+	DC.W    $012c
+
+    MOVEA.L -4(A5),A0
     MOVE.W  2(A0),D0
     MOVE.L  D0,D1
     SUBQ.W  #5,D1
@@ -1758,14 +1769,23 @@ LAB_0F8B:
 
 ; TODO: Switch case
 LAB_0F8C:
-    ORI.W   #$1e,(A4)
-    ORI.B   #$1e,(A6)+
-    ORI.W   #$1e,D6
-    ORI.B   #$1e,(A6)+
-    ORI.B   #$54,(A6)+
-    ORI.W   #$54,(A4)
-    ORI.W   #$54,(A4)
-    ORI.W   #$54,(A4)
+	DC.W    $0054
+    DC.W    $001e
+	DC.W    $001e
+    DC.W    $001e
+	DC.W    $0046
+    DC.W    $001e
+	DC.W    $001e
+    DC.W    $001e
+	DC.W    $001e
+    DC.W    $0054
+	DC.W    $0054
+    DC.W    $0054
+	DC.W    $0054
+    DC.W    $0054
+	DC.W    $0054
+    DC.W    $0054
+
     MOVEQ   #1,D0
     CMP.L   LAB_1FE8,D0
     BNE.S   LAB_0F8E

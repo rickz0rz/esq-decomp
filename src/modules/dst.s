@@ -3357,12 +3357,18 @@ LAB_0701:
 
 ; TODO: Switch case
 .LAB_0702:
-    ORI.B   #$18,(A0)
+    DC.W    $0010
+    DC.W    $0018
     DC.W    $003a
-    ORI.W   #$84,(A4)+
+	DC.W    $005c
+    DC.W    $0084
     DC.W    $008a
-    ORI.L   #$c600bc,24832(A6)
-    DC.W    $033e
+	DC.W    $00ae
+    DC.W    $00c6
+    DC.W    $00bc
+
+    BSR.W   *+(LAB_0712_033E-.LAB_0702+2)
+
     BRA.W   .LAB_0709
 
     MOVE.B  LAB_1BC4,D0
@@ -3657,6 +3663,7 @@ LAB_0712:
 
     JSR     LAB_0A48(PC)
 
+LAB_0712_033E: 
     PEA     LAB_2321
     JSR     LAB_071D(PC)
 
