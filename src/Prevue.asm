@@ -776,6 +776,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/displib.s"
 
     include "modules/disptext.s"
+    include "modules/disptext2.s"
 
     include "modules/dst.s"
 
@@ -814,6 +815,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/locavail2.s"
 
     include "modules/newgrid.s"
+    include "modules/newgrid1.s"
     include "modules/newgrid2.s"
 
     include "modules/p_type.s"
@@ -821,6 +823,9 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/parseini.s"
 
     include "modules/script.s"
+    include "modules/script2.s"
+    include "modules/script3.s"
+    include "modules/script4.s"
 
     include "modules/textdisp.s"
     include "modules/textdisp2.s"
