@@ -1,40 +1,38 @@
-;!======
-
 LAB_0386:
     LINK.W  A5,#-4
     MOVE.L  A4,-(A7)
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #4,D0
-    BNE.S   LAB_0387
+    BNE.S   .LAB_0387
 
     MOVE.L  LAB_1B20,-4(A5)
-    BRA.S   LAB_038A
+    BRA.S   .LAB_038A
 
-LAB_0387:
+.LAB_0387:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #5,D0
-    BNE.S   LAB_0388
+    BNE.S   .LAB_0388
 
     MOVE.L  LAB_1B21,-4(A5)
-    BRA.S   LAB_038A
+    BRA.S   .LAB_038A
 
-LAB_0388:
+.LAB_0388:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #6,D0
-    BEQ.S   LAB_0389
+    BEQ.S   .LAB_0389
 
     MOVE.W  LAB_1B84,D0
     MOVEQ   #11,D1
     CMP.W   D1,D0
-    BNE.S   LAB_038A
+    BNE.S   .LAB_038A
 
-LAB_0389:
+.LAB_0389:
     MOVE.L  LAB_1B24,-4(A5)
 
-LAB_038A:
+.LAB_038A:
     TST.L   BRUSH_LoadInProgressFlag      ; defer cleanup until brush list mutations finish
-    BNE.S   LAB_038A
+    BNE.S   .LAB_038A
 
     MOVE.L  -4(A5),-(A7)
     JSR     LAB_0395(PC)
@@ -42,29 +40,29 @@ LAB_038A:
     ADDQ.W  #4,A7
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #4,D0
-    BNE.S   LAB_038B
+    BNE.S   .LAB_038B
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1B20
-    BRA.S   LAB_038D
+    BRA.S   .LAB_038D
 
-LAB_038B:
+.LAB_038B:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #5,D0
-    BNE.S   LAB_038C
+    BNE.S   .LAB_038C
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1B21
-    BRA.S   LAB_038D
+    BRA.S   .LAB_038D
 
-LAB_038C:
+.LAB_038C:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #6,D0
-    BNE.S   LAB_038D
+    BNE.S   .LAB_038D
 
     CLR.L   LAB_1B24
 
-LAB_038D:
+.LAB_038D:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
@@ -86,7 +84,7 @@ LAB_038E:
     LINK.W  A5,#-4
     MOVEM.L D2-D4,-(A7)
 
-LAB_038F:
+.LAB_038F:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
@@ -97,24 +95,24 @@ LAB_038F:
     JSR     _LVOPermit(A6)
 
     TST.L   -4(A5)
-    BNE.S   LAB_038F
+    BNE.S   .LAB_038F
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1B83
     MOVE.W  LAB_1B84,D1
     SUBQ.W  #6,D1
-    BEQ.S   LAB_0391
+    BEQ.S   .LAB_0391
 
     MOVE.W  LAB_22C0,D1
-    BEQ.S   LAB_0390
+    BEQ.S   .LAB_0390
 
     MOVE.W  #4,LAB_1B84
-    BRA.S   LAB_0391
+    BRA.S   .LAB_0391
 
-LAB_0390:
+.LAB_0390:
     MOVE.W  #5,LAB_1B84
 
-LAB_0391:
+.LAB_0391:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (Struct_List_Size).W
     PEA     159.W

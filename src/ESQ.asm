@@ -76,21 +76,22 @@ SECSTRT_0:                                  ; PC: 0021EE58
     JSR     _LVOOpenLibrary(A6)             ; Open dos.library version 0 (any) locally...
 
     MOVE.L  D0,LocalDosLibraryDisplacement(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or GLOB_REF_DOS_LIBRARY_2
-    BNE.S   .local_dos_opened    ; Jump to .local_dos_opened if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
+    BNE.S   .dos_opened_prepare_startup    ; Jump to .dos_opened_prepare_startup if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
 
     MOVEQ   #100,D0                         ; If it wasn't opened, set D0 to 100...
     BRA.W   ESQ_ShutdownAndReturn           ; and jump to LAB_000A
 
-.local_dos_opened:
-    MOVEA.L Struct_ExecBase__ThisTask(A6),A3                                                                ; A6 002007a0 + 276 = 002008b4 (ThisTask pointer) into A3: MOVEA.L (A6, $0114) == $002008b4,A3
-    MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),-612(A4)   ; Move the address at A3 002008b4 + 152 = 00200A06 and move it's value in to -612(A4): MOVE.L (A3, $0098) == $0021e170,(A4, -$0264) == $00016eb4 [0021EEB2]
-    TST.L   (Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+(Struct_SoftIntList__sh_Pad)(A3)          ; This is checking SoftInts[1] (starting at zero)
+; Decide startup path (CLI vs WB) after dos.library opens.
+.dos_opened_prepare_startup:
+    MOVEA.L Struct_ExecBase__ThisTask(A6),A3                                                                ; A6+276 = ThisTask pointer ??
+    MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),-612(A4)   ; A3+152 = TaskWait.lh_TailPred ?? -> A4-612 = saved dir/lock ??
+    TST.L   (Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+(Struct_SoftIntList__sh_Pad)(A3)          ; A3+172 = SoftIntList.sh_Pad ?? (SoftInts[1]) ??
     BEQ.S   .wait_for_wb_message
 
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
     ADDI.L  #128,D0
-    MOVE.L  D0,-660(A4)
+    MOVE.L  D0,-660(A4)                                     ; A4-660 = cmdline buffer size ??
     MOVEA.L ((Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+Struct_SoftIntList__sh_Pad)(A3),A0       ; Again, like above. SoftInts[1]
     ADDA.L  A0,A0
     ADDA.L  A0,A0
@@ -100,7 +101,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  D2,D0
     MOVEQ   #0,D1
     MOVE.B  (A1)+,D1
-    MOVE.L  A1,-592(A4)
+    MOVE.L  A1,-592(A4)                                     ; A4-592 = softint tail ptr ??
     ADD.L   D1,D0
     ADDQ.L  #1,D0
     CLR.W   -(A7)
@@ -130,31 +131,31 @@ SECSTRT_0:                                  ; PC: 0021EE58
     BRA.S   .run_main_init
 
 .wait_for_wb_message:
-    MOVE.L  58(A3),-660(A4)
+    MOVE.L  58(A3),-660(A4)                                 ; A3+58 = Task/Proc stack size ?? -> A4-660 = wb stack size ??
     MOVEQ   #127,D0 ; ...
     ADDQ.L  #1,D0   ; 128 into D0
     ADD.L   D0,-660(A4)
 
-    LEA     92(A3),A0
+    LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port ??
     JSR     _LVOWaitPort(A6) ; A6 should still have AbsExecBase in it at this point
 
-    LEA     92(A3),A0
+    LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port ??
     JSR     _LVOGetMsg(A6)
 
-    MOVE.L  D0,savedMsg(A4)
+    MOVE.L  D0,savedMsg(A4)                                 ; A4-604 = saved WBStartup msg ??
     MOVE.L  D0,-(A7)
     MOVEA.L D0,A2
-    MOVE.L  36(A2),D0
+    MOVE.L  36(A2),D0                                       ; WBStartup+36 = sm_ArgList ??
     BEQ.S   .maybe_set_current_dir
 
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     MOVEA.L D0,A0
-    MOVE.L  0(A0),D1
-    MOVE.L  D1,-612(A4)
+    MOVE.L  0(A0),D1                                        ; WBArg[0].wa_Lock ??
+    MOVE.L  D1,-612(A4)                                     ; A4-612 = current dir lock ?? (from WB startup msg)
     JSR     _LVOCurrentDir(A6)
 
 .maybe_set_current_dir:
-    MOVE.L  32(A2),D1
+    MOVE.L  32(A2),D1                                       ; WBStartup+32 = sm_NumArgs ??
     BEQ.S   .maybe_update_window_ptr
 
     MOVE.L  #1005,D2
@@ -168,11 +169,11 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  8(A0),164(A3)
 
 .maybe_update_window_ptr:
-    MOVEA.L -604(A4),A0
+    MOVEA.L -604(A4),A0                                     ; A4-604 = saved WBStartup msg ??
     MOVE.L  A0,-(A7)
     PEA     -664(A4)
-    MOVEA.L 36(A0),A0
-    MOVE.L  4(A0),-592(A4)
+    MOVEA.L 36(A0),A0                                       ; WBStartup+36 = sm_ArgList ??
+    MOVE.L  4(A0),-592(A4)                                  ; WBArg[0].wa_Name ??
 
 .run_main_init:
     JSR     ESQ_JMP_TBL_LAB_190F(PC)
@@ -923,7 +924,7 @@ LAB_002F:
 ; CLOBBERS:
 ;   D0-D1, A5
 ; CALLS:
-;   GET_BIT_3_OF_CIAB_PRA_INTO_D1, LAB_0050
+;   GET_BIT_3_OF_CIAB_PRA_INTO_D1, ESQ_StoreCtrlSampleEntry
 ; READS:
 ;   LAB_1AFC, LAB_1AF9, LAB_1AFD, LAB_1B03
 ; WRITES:
@@ -1042,7 +1043,7 @@ LAB_0030:
     MOVE.B  #0,(A1)
 
 .flush_on_zero:
-    JSR     LAB_0050
+    JSR     ESQ_StoreCtrlSampleEntry
 
     MOVEQ   #0,D1
 
@@ -1225,16 +1226,12 @@ readCTRL:
 
     RTS
 
-;!======
-
 .reset_state:
     MOVEQ   #0,D0           ; Set D0 to 0
     MOVE.W  D0,LAB_1AF8     ; Set LAB_1AF8 to D0 (0)
     MOVE.W  D0,LAB_1AFB     ; Set LAB_1AFB to D0 (0)
     MOVE.W  D0,LAB_1AFA     ; Set LAB_1AFA to D0 (0)
     RTS
-
-;!======
 
 .collect_samples:
     MOVEQ   #94,D1              ; Move 94 ('^') into D1
@@ -1249,8 +1246,6 @@ readCTRL:
     ADDQ.W  #1,LAB_1AFB
     ADDI.W  #10,LAB_1AF8
     RTS
-
-;!======
 
 .assemble_and_store:
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
@@ -1357,6 +1352,27 @@ getCTRLBuffer:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_StoreCtrlSampleEntry   (StoreCtrlSampleEntry??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1B04, LAB_231B
+; WRITES:
+;   LAB_231D, LAB_231B
+; DESC:
+;   Copies a null-terminated byte sequence from LAB_1B04 into the current
+;   5-byte slot of LAB_231D, then advances the slot index.
+; NOTES:
+;   Slot index wraps at 20 entries. Entry size includes the terminator.
+;------------------------------------------------------------------------------
+ESQ_StoreCtrlSampleEntry:
 LAB_0050:
     MOVEM.L D0-D1/A0-A1,-(A7)
 
@@ -1374,26 +1390,67 @@ LAB_0050:
     ADDQ.L  #1,D0
     MOVEQ   #20,D1
     CMP.L   D1,D0
-    BLT.S   .LAB_0052
+    BLT.S   .return
 
     MOVEQ   #0,D0
 
-.LAB_0052:
+.return:
     MOVE.L  D0,LAB_231B
     MOVEM.L (A7)+,D0-D1/A0-A1
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetCopperEffect_Default   (SetCopperEffectDefault??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   ESQ_SetCopperEffectParams
+; READS:
+;   (none)
+; WRITES:
+;   LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+; DESC:
+;   Loads a default effect parameter pair (0/$3F) and updates copper tables.
+; NOTES:
+;   Likely tied to a highlight/flash effect; exact purpose unknown.
+;------------------------------------------------------------------------------
+ESQ_SetCopperEffect_Default:
 LAB_0053:
     MOVE.B  #0,D0
     MOVE.B  #$3f,D1
-    JSR     LAB_0058
+    JSR     ESQ_SetCopperEffectParams
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetCopperEffect_Custom   (SetCopperEffectCustom??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A1
+; CALLS:
+;   ESQ_SetCopperEffectParams
+; READS:
+;   LAB_1B05, CIAB_PRA
+; WRITES:
+;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+; DESC:
+;   Forces CIAB_PRA bits 6/7 high, uses LAB_1B05 as a parameter, and updates
+;   the copper tables.
+; NOTES:
+;   Exact meaning of the parameters is unknown.
+;------------------------------------------------------------------------------
+ESQ_SetCopperEffect_Custom:
 LAB_0054:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
@@ -1402,12 +1459,33 @@ LAB_0054:
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
     MOVE.B  LAB_1B05,D1
-    JSR     LAB_0058
+    JSR     ESQ_SetCopperEffectParams
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOn??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A1
+; CALLS:
+;   ESQ_SetCopperEffectParams
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+; DESC:
+;   Clears CIAB_PRA bits 6/7, sets both parameters to $3F, and updates the
+;   copper tables.
+; NOTES:
+;   Exact meaning of the parameters is unknown.
+;------------------------------------------------------------------------------
+ESQ_SetCopperEffect_AllOn:
 LAB_0055:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
@@ -1416,12 +1494,33 @@ LAB_0055:
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
     MOVE.B  #$3f,D1
-    JSR     LAB_0058
+    JSR     ESQ_SetCopperEffectParams
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetCopperEffect_OffDisableHighlight   (SetCopperEffectOffDisableHighlight??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A1
+; CALLS:
+;   ESQ_SetCopperEffectParams, GCOMMAND_DisableHighlight
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+; DESC:
+;   Sets CIAB_PRA bits to 01, clears both parameters, updates copper tables,
+;   and disables UI highlight.
+; NOTES:
+;   Exact meaning of the parameters is unknown.
+;------------------------------------------------------------------------------
+ESQ_SetCopperEffect_OffDisableHighlight:
 LAB_0056:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
@@ -1430,7 +1529,7 @@ LAB_0056:
     MOVE.B  D1,(A1)
     MOVE.B  #0,D0
     MOVE.B  #0,D1
-    JSR     LAB_0058
+    JSR     ESQ_SetCopperEffectParams
 
     JSR     GCOMMAND_DisableHighlight
 
@@ -1438,6 +1537,27 @@ LAB_0056:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetCopperEffect_OnEnableHighlight   (SetCopperEffectOnEnableHighlight??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A1
+; CALLS:
+;   ESQ_SetCopperEffectParams, GCOMMAND_EnableHighlight
+; READS:
+;   CIAB_PRA
+; WRITES:
+;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+; DESC:
+;   Sets CIAB_PRA bits to 11, loads parameters ($3F/0), updates copper tables,
+;   and enables UI highlight.
+; NOTES:
+;   Exact meaning of the parameters is unknown.
+;------------------------------------------------------------------------------
+ESQ_SetCopperEffect_OnEnableHighlight:
 LAB_0057:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
@@ -1446,7 +1566,7 @@ LAB_0057:
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
     MOVE.B  #0,D1
-    JSR     LAB_0058
+    JSR     ESQ_SetCopperEffectParams
 
     JSR     GCOMMAND_EnableHighlight
 
@@ -1454,16 +1574,57 @@ LAB_0057:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetCopperEffectParams   (SetCopperEffectParams??)
+; ARGS:
+;   D0.b: paramA (0..$3F ??)
+;   D1.b: paramB (0..$3F ??)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1
+; CALLS:
+;   ESQ_UpdateCopperListsFromParams
+; READS:
+;   (none)
+; WRITES:
+;   LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+; DESC:
+;   Stores the effect parameters and regenerates the copper tables.
+; NOTES:
+;   Parameters are packed into LAB_1B00..LAB_1B02 for ESQ_UpdateCopperListsFromParams.
+;------------------------------------------------------------------------------
+ESQ_SetCopperEffectParams:
 LAB_0058:
     MOVE.B  D0,LAB_1B01
     MOVE.B  D1,LAB_1B02
     MOVE.W  #5,LAB_1B00
-    JSR     LAB_0059
+    JSR     ESQ_UpdateCopperListsFromParams
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_UpdateCopperListsFromParams   (UpdateCopperListsFromParams??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0
+; CLOBBERS:
+;   D0-D4, A0-A1, A6
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E25
+; WRITES:
+;   LAB_1E22, LAB_1E51
+; DESC:
+;   Expands packed effect parameters into copper list words for two tables.
+; NOTES:
+;   Writes 16 entries (DBF runs D4+1 iterations). Exact effect semantics unknown.
+;------------------------------------------------------------------------------
+ESQ_UpdateCopperListsFromParams:
 LAB_0059:
     LEA     LAB_1E25,A0
     MOVE.W  26(A0),D1
@@ -1478,11 +1639,11 @@ LAB_0059:
     ADD.W   D0,D0
     SWAP    D0
     TST.B   D0
-    BNE.S   .LAB_005A
+    BNE.S   .normalize_seed
 
     MOVEQ   #0,D0
 
-.LAB_005A:
+.normalize_seed:
     ROL.L   #5,D0
     MOVEM.L D2-D4/A6,-(A7)
     MOVEA.W #$100,A6
@@ -1490,7 +1651,7 @@ LAB_0059:
     BCLR    #8,D3
     MOVEQ   #15,D4
 
-.LAB_005B:
+.write_copper_loop:
     MOVE.W  A6,D2
     AND.W   D0,D2
     OR.W    D3,D2
@@ -1505,7 +1666,7 @@ LAB_0059:
     ADDQ.L  #8,A0
     ADDQ.L  #8,A1
     ROL.L   #1,D0
-    DBF     D4,.LAB_005B
+    DBF     D4,.write_copper_loop
 
     MOVE.W  D1,(A0)
     MOVE.W  D1,(A1)
@@ -1517,11 +1678,50 @@ LAB_0059:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_NoOp   (NoOpStub)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   No-op stub that returns immediately.
+;------------------------------------------------------------------------------
+ESQ_NoOp:
 LAB_005C:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ClearCopperListFlags   (ClearCopperListFlags??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   LAB_1E2B, LAB_1E58
+; DESC:
+;   Clears the lead bytes of two copper list tables.
+; NOTES:
+;   Exact meaning of the cleared bytes is unknown.
+;------------------------------------------------------------------------------
+ESQ_ClearCopperListFlags:
+LAB_005C_CLEAR:
     MOVE.B  #0,D0
     MOVE.B  D0,LAB_1E2B
     MOVE.B  D0,LAB_1E58
@@ -1529,6 +1729,28 @@ LAB_005C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_MoveCopperEntryTowardStart   (MoveCopperEntryTowardStart??)
+; ARGS:
+;   stack +4: dstIndex (entry index, masked to 0..31)
+;   stack +8: srcIndex (entry index, masked to 0..31)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D4
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1E26, LAB_1E55
+; WRITES:
+;   LAB_1E26, LAB_1E55
+; DESC:
+;   Moves an entry toward the start of the table by shifting intervening
+;   entries down and inserting the original value at dstIndex.
+; NOTES:
+;   Table entries are 4 bytes wide; the secondary table mirrors part of the range.
+;------------------------------------------------------------------------------
+ESQ_MoveCopperEntryTowardStart:
 LAB_005D:
     MOVE.L  4(A7),D1
     MOVE.L  8(A7),D0
@@ -1547,22 +1769,22 @@ LAB_005D:
     SUBI.W  #4,D3
     MOVE.W  0(A1,D2.W),D0
 
-.LAB_005E:
+.shift_down_loop:
     CMP.W   D1,D2
-    BMI.W   .LAB_0060
+    BMI.W   .insert_entry
 
     MOVE.W  0(A1,D3.W),0(A1,D2.W)
     CMP.W   D2,D4
-    BMI.W   .LAB_005F
+    BMI.W   .copy_secondary_if_in_range
 
     MOVE.W  0(A1,D3.W),0(A0,D2.W)
 
-.LAB_005F:
+.copy_secondary_if_in_range:
     SUBI.W  #4,D2
     SUBI.W  #4,D3
-    BRA.S   .LAB_005E
+    BRA.S   .shift_down_loop
 
-.LAB_0060:
+.insert_entry:
     MOVE.W  D0,0(A1,D1.W)
     CMP.W   D2,D4
     BMI.W   .return
@@ -1577,6 +1799,28 @@ LAB_005D:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_MoveCopperEntryTowardEnd   (MoveCopperEntryTowardEnd??)
+; ARGS:
+;   stack +4: srcIndex (entry index, masked to 0..31)
+;   stack +8: dstIndex (entry index, masked to 0..31)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D4
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1E26, LAB_1E55
+; WRITES:
+;   LAB_1E26, LAB_1E55
+; DESC:
+;   Moves an entry toward the end of the table by shifting intervening
+;   entries up and inserting the original value at dstIndex.
+; NOTES:
+;   Table entries are 4 bytes wide; the secondary table mirrors part of the range.
+;------------------------------------------------------------------------------
+ESQ_MoveCopperEntryTowardEnd:
 LAB_0062:
     MOVE.L  4(A7),D1
     MOVE.L  8(A7),D0
@@ -1595,22 +1839,22 @@ LAB_0062:
     ADD.W   D1,D3
     MOVE.W  0(A1,D1.W),D0
 
-.LAB_0063:
+.shift_up_loop:
     CMP.W   D2,D1
-    BPL.W   .LAB_0065
+    BPL.W   .insert_entry
 
     MOVE.W  0(A1,D3.W),0(A1,D1.W)
     CMP.W   D4,D1
-    BPL.W   .LAB_0064
+    BPL.W   .copy_secondary_if_in_range
 
     MOVE.W  0(A1,D3.W),0(A0,D1.W)
 
-.LAB_0064:
+.copy_secondary_if_in_range:
     ADDI.W  #4,D1
     ADDI.W  #4,D3
-    BRA.S   .LAB_0063
+    BRA.S   .shift_up_loop
 
-.LAB_0065:
+.insert_entry:
     MOVE.W  D0,0(A1,D1.W)
     CMP.W   D4,D1
     BPL.W   .return
@@ -1623,6 +1867,27 @@ LAB_0062:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DecCopperListsPrimary   (DecCopperListsPrimary??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0, D2-D5, A2-A3
+; CALLS:
+;   ESQ_DecColorStep
+; READS:
+;   LAB_1E26, LAB_1E55
+; WRITES:
+;   LAB_1E26, LAB_1E55
+; DESC:
+;   Decrements color components for entries in the primary copper lists.
+; NOTES:
+;   Updates the first 8 entries in both lists, then the next 24 entries only
+;   in LAB_1E26.
+;------------------------------------------------------------------------------
+ESQ_DecCopperListsPrimary:
 LAB_0067:
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E26,A2
@@ -1630,57 +1895,117 @@ LAB_0067:
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
-.LAB_0068:
+.update_dual_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     LAB_006D
+    JSR     ESQ_DecColorStep
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,.LAB_0068
+    DBF     D4,.update_dual_loop
     MOVEQ   #23,D4
 
-.LAB_0069:
+.update_primary_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     LAB_006D
+    JSR     ESQ_DecColorStep
 
     MOVE.W  D0,0(A2,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,.LAB_0069
+    DBF     D4,.update_primary_loop
     MOVEM.L (A7)+,D2-D5/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_NoOp_006A   (NoOpStub_006A)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   No-op stub that returns immediately.
+;------------------------------------------------------------------------------
+ESQ_NoOp_006A:
 LAB_006A:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DecCopperListsAltSkipIndex4   (DecCopperListsAltSkipIndex4??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0, D2-D5, A2-A3
+; CALLS:
+;   ESQ_DecColorStep
+; READS:
+;   LAB_1E2E, LAB_1E5B
+; WRITES:
+;   LAB_1E2E, LAB_1E5B
+; DESC:
+;   Decrements color components for entries in the alternate copper lists,
+;   skipping the entry at byte offset 4.
+; NOTES:
+;   Skips when D5 == 4.
+;------------------------------------------------------------------------------
+ESQ_DecCopperListsAltSkipIndex4:
+LAB_006B_ENTRY:
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E2E,A2
     LEA     LAB_1E5B,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
-.LAB_006B:
+.update_loop:
     CMPI.W  #4,D5
-    BEQ.W   .LAB_006C
+    BEQ.W   .skip_index4
 
     MOVE.W  0(A2,D5.W),D0
-    JSR     LAB_006D
+    JSR     ESQ_DecColorStep
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
 
-.LAB_006C:
+.skip_index4:
     ADDQ.W  #4,D5
-    DBF     D4,.LAB_006B
+    DBF     D4,.update_loop
     MOVEM.L (A7)+,D2-D5/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DecColorStep   (DecColorStep??)
+; ARGS:
+;   D0.w: color value (packed nibbles, likely RGB)
+; RET:
+;   D0.w: color value with each non-zero component decremented by 1
+; CLOBBERS:
+;   D0-D2
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Decrements each non-zero 4-bit color component by one step.
+; NOTES:
+;   Assumes packed 0RGB format; component layout is inferred.
+;------------------------------------------------------------------------------
+ESQ_DecColorStep:
 LAB_006D:
     MOVE.W  D0,D1
     MOVE.W  D0,D2
@@ -1688,29 +2013,49 @@ LAB_006D:
     ANDI.W  #$f0,D2
     ANDI.W  #15,D0
     TST.W   D1
-    BEQ.S   .LAB_006E
+    BEQ.S   .green_check
 
     SUBI.W  #$100,D1
 
-.LAB_006E:
+.green_check:
     TST.W   D2
-    BEQ.S   .LAB_006F
+    BEQ.S   .blue_check
 
     SUBI.W  #16,D2
 
-.LAB_006F:
+.blue_check:
     TST.W   D0
-    BEQ.S   .LAB_0070
+    BEQ.S   .combine_components
 
     SUBI.W  #1,D0
 
-.LAB_0070:
+.combine_components:
     ADD.W   D1,D0
     ADD.W   D2,D0
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_IncCopperListsTowardsTargets   (IncCopperListsTowardsTargets??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0, D2-D6, A1-A3
+; CALLS:
+;   ESQ_BumpColorTowardTargets
+; READS:
+;   LAB_2295, LAB_1E26, LAB_1E55
+; WRITES:
+;   LAB_1E26, LAB_1E55
+; DESC:
+;   Adjusts copper list colors based on a per-entry target table.
+; NOTES:
+;   Uses LAB_2295 as a 3-byte-per-entry target stream.
+;------------------------------------------------------------------------------
+ESQ_IncCopperListsTowardsTargets:
 LAB_0071:
     MOVEM.L D2-D6/A2-A3,-(A7)
     LEA     LAB_2295,A1
@@ -1719,58 +2064,119 @@ LAB_0071:
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
-.LAB_0072:
+.update_dual_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     LAB_0077
+    JSR     ESQ_BumpColorTowardTargets
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,.LAB_0072
+    DBF     D4,.update_dual_loop
     MOVEQ   #23,D4
 
-.LAB_0073:
+.update_primary_loop:
     MOVE.W  0(A2,D5.W),D0
-    JSR     LAB_0077
+    JSR     ESQ_BumpColorTowardTargets
 
     MOVE.W  D0,0(A2,D5.W)
     ADDQ.W  #4,D5
-    DBF     D4,.LAB_0073
+    DBF     D4,.update_primary_loop
     MOVEM.L (A7)+,D2-D6/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_NoOp_0074   (NoOpStub_0074)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   No-op stub that returns immediately.
+;------------------------------------------------------------------------------
+ESQ_NoOp_0074:
 LAB_0074:
     RTS
 
 ;!======
 
-; Unreachable Code?
+; Orphaned helper? No known callers; only referenced internally.
+;------------------------------------------------------------------------------
+; FUNC: ESQ_IncCopperListsAltSkipIndex4   (IncCopperListsAltSkipIndex4??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0, D2-D5, A1-A3
+; CALLS:
+;   ESQ_BumpColorTowardTargets
+; READS:
+;   LAB_1E2E, LAB_1E5B
+; WRITES:
+;   LAB_1E2E, LAB_1E5B
+; DESC:
+;   Adjusts alternate copper list colors based on the target stream,
+;   skipping the entry at byte offset 4.
+; NOTES:
+;   This block is currently marked unreachable.
+;------------------------------------------------------------------------------
+ESQ_IncCopperListsAltSkipIndex4:
+LAB_0075_ENTRY:
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E2E,A2
     LEA     LAB_1E5B,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
-.LAB_0075:
+.update_loop:
     CMPI.W  #4,D5
-    BEQ.W   .LAB_0076
+    BEQ.W   .skip_index4
 
     MOVE.W  0(A2,D5.W),D0
-    JSR     LAB_0077
+    JSR     ESQ_BumpColorTowardTargets
 
     MOVE.W  D0,0(A2,D5.W)
     MOVE.W  D0,0(A3,D5.W)
 
-.LAB_0076:
+.skip_index4:
     ADDQ.W  #4,D5
-    DBF     D4,.LAB_0075
+    DBF     D4,.update_loop
     MOVEM.L (A7)+,D2-D5/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_BumpColorTowardTargets   (BumpColorTowardTargets??)
+; ARGS:
+;   D0.w: color value (packed nibbles, likely RGB)
+;   A1: pointer to 3-byte target stream (advances by 3)
+; RET:
+;   D0.w: adjusted color value
+; CLOBBERS:
+;   D0-D3, A1
+; CALLS:
+;   (none)
+; READS:
+;   (A1)+
+; WRITES:
+;   (none)
+; DESC:
+;   Adjusts each color component based on a per-component target byte.
+; NOTES:
+;   Component layout and adjustment direction are inferred.
+;------------------------------------------------------------------------------
+ESQ_BumpColorTowardTargets:
 LAB_0077:
     MOVE.W  D0,D1
     MOVE.W  D0,D2
@@ -1781,20 +2187,20 @@ LAB_0077:
     MOVE.B  (A1)+,D3
     LSL.W   #8,D3
     CMP.W   D3,D1
-    BEQ.S   .LAB_0078
+    BEQ.S   .after_red
 
     ADDI.W  #$100,D1
 
-.LAB_0078:
+.after_red:
     MOVEQ   #0,D3
     MOVE.B  (A1)+,D3
     LSL.W   #4,D3
     CMP.W   D3,D2
-    BEQ.S   .LAB_0079
+    BEQ.S   .after_green
 
     ADDI.W  #16,D2
 
-.LAB_0079:
+.after_green:
     MOVEQ   #0,D3
     MOVE.B  (A1)+,D3
     CMP.W   D3,D0
@@ -1809,6 +2215,27 @@ LAB_0077:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_TickClockAndFlagEvents   (TickClockAndFlagEvents??)
+; ARGS:
+;   stack +4: timePtr (struct with date/time fields)
+; RET:
+;   D0: event code (0..5 ??)
+; CLOBBERS:
+;   D0-D4
+; CALLS:
+;   ESQ_UpdateMonthDayFromDayOfYear
+; READS:
+;   LAB_1B09, LAB_1B0A, LAB_1B0B, LAB_1B0C
+; WRITES:
+;   [timePtr] fields (0,2,4,6,8,10,12,16,18,20)
+; DESC:
+;   Advances the time structure by one second and returns a status/event code
+;   for notable boundaries (minute/half-hour/hour/day changes).
+; NOTES:
+;   Field meanings are inferred; 18(A0) is treated as an AM/PM sign flag.
+;------------------------------------------------------------------------------
+ESQ_TickClockAndFlagEvents:
 LAB_007B:
     MOVEA.L 4(A7),A0
     MOVEM.L D2-D4,-(A7)
@@ -1827,48 +2254,48 @@ LAB_007B:
     ADD.W   D1,D0
     MOVE.W  D0,10(A0)
     CMPI.W  #$1e,D0
-    BNE.W   .LAB_007C
+    BNE.W   .check_minute_flags
 
     MOVEQ   #2,D4
     BRA.W   .return
 
-.LAB_007C:
+.check_minute_flags:
     CMP.W   D3,D0
-    BGE.W   .LAB_0082
+    BGE.W   .hour_rollover
 
     CMP.W   LAB_1B0C,D0
-    BEQ.W   .LAB_007D
+    BEQ.W   .minute_trigger_5
 
     CMP.W   LAB_1B0B,D0
-    BNE.W   .LAB_007E
+    BNE.W   .check_minute_20_or_50
 
-.LAB_007D:
+.minute_trigger_5:
     MOVEQ   #5,D4
     BRA.W   .return
 
-.LAB_007E:
+.check_minute_20_or_50:
     CMPI.W  #20,D0
-    BEQ.W   .LAB_007F
+    BEQ.W   .minute_trigger_4
 
     CMPI.W  #$32,D0
-    BNE.W   .LAB_0080
+    BNE.W   .check_minute_special_3
 
-.LAB_007F:
+.minute_trigger_4:
     MOVEQ   #4,D4
     BRA.W   .return
 
-.LAB_0080:
+.check_minute_special_3:
     CMP.W   LAB_1B09,D0
-    BEQ.W   .LAB_0081
+    BEQ.W   .minute_trigger_3
 
     CMP.W   LAB_1B0A,D0
     BNE.W   .return
 
-.LAB_0081:
+.minute_trigger_3:
     MOVEQ   #3,D4
     BRA.W   .return
 
-.LAB_0082:
+.hour_rollover:
     MOVE.W  D2,10(A0)
     MOVEQ   #2,D4
     MOVE.W  8(A0),D0
@@ -1878,12 +2305,12 @@ LAB_007B:
     CMP.W   D3,D0
     BLT.W   .return
 
-    BEQ.S   .LAB_0083
+    BEQ.S   .toggle_am_pm
 
     MOVE.W  D1,8(A0)
     BRA.W   .return
 
-.LAB_0083:
+.toggle_am_pm:
     EORI.W   #$ffff,18(A0)
     BMI.W   .return
 
@@ -1892,23 +2319,23 @@ LAB_007B:
     MOVE.W  D0,0(A0)
     MOVEQ   #7,D3
     CMP.W   D3,D0
-    BNE.S   .LAB_0084
+    BNE.S   .wrap_weekday
 
     MOVE.W  D2,0(A0)
 
-.LAB_0084:
+.wrap_weekday:
     MOVE.W  16(A0),D0
     ADD.W   D1,D0
     MOVE.W  D0,16(A0)
     MOVE.W  #$16e,D3
     TST.W   20(A0)
-    BEQ.S   .LAB_0085
+    BEQ.S   .day_of_year_check
 
     ADD.W   D1,D3
 
-.LAB_0085:
+.day_of_year_check:
     CMP.W   D3,D0
-    BLT.S   .LAB_0087
+    BLT.S   .update_month_day
 
     MOVE.W  6(A0),D0
     ADD.W   D1,D0
@@ -1916,15 +2343,15 @@ LAB_007B:
     MOVE.W  D1,16(A0)
     MOVEQ   #0,D1
     ANDI.W  #3,D0
-    BNE.S   .LAB_0086
+    BNE.S   .update_leap_flag
 
     MOVE.W  #(-1),D1
 
-.LAB_0086:
+.update_leap_flag:
     MOVE.W  D1,20(A0)
 
-.LAB_0087:
-    JSR     LAB_0089
+.update_month_day:
+    JSR     ESQ_UpdateMonthDayFromDayOfYear
 
 .return:
     MOVE.W  D4,D0
@@ -1936,24 +2363,44 @@ LAB_007B:
 ; Unreachable Code?
     MOVEA.L 4(A7),A0
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_UpdateMonthDayFromDayOfYear   (UpdateMonthDayFromDayOfYear??)
+; ARGS:
+;   stack +4: timePtr (struct with day-of-year fields)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2, A1
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1B1D
+; WRITES:
+;   2(A0), 4(A0)
+; DESC:
+;   Converts day-of-year to month index and day-of-month fields.
+; NOTES:
+;   Uses alternate month-length table when 20(A0) is non-zero.
+;------------------------------------------------------------------------------
+ESQ_UpdateMonthDayFromDayOfYear:
 LAB_0089:
     MOVE.L  D2,-(A7)
     MOVE.W  16(A0),D0
     MOVEQ   #0,D2
     LEA     LAB_1B1D,A1
     TST.W   20(A0)
-    BEQ.S   .LAB_008A
+    BEQ.S   .scan_months
 
     ADDA.L  #$18,A1
 
-.LAB_008A:
+.scan_months:
     MOVE.W  (A1)+,D1
     CMP.W   D1,D0
     BLE.S   .return
 
     SUB.W   D1,D0
     ADDQ.W  #1,D2
-    BRA.S   .LAB_008A
+    BRA.S   .scan_months
 
 .return:
     MOVE.W  D2,2(A0)
@@ -1963,24 +2410,44 @@ LAB_0089:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_CalcDayOfYearFromMonthDay   (CalcDayOfYearFromMonthDay??)
+; ARGS:
+;   stack +4: timePtr (struct with month/day fields)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A1
+; CALLS:
+;   (none)
+; READS:
+;   LAB_1B1D
+; WRITES:
+;   16(A0)
+; DESC:
+;   Converts month index and day-of-month into day-of-year.
+; NOTES:
+;   Uses alternate month-length table when 20(A0) is non-zero.
+;------------------------------------------------------------------------------
+ESQ_CalcDayOfYearFromMonthDay:
 LAB_008C:
     MOVEA.L 4(A7),A0
     MOVE.W  2(A0),D1
     MOVEQ   #0,D0
     LEA     LAB_1B1D,A1
-    DBF     D1,.LAB_008D
+    DBF     D1,.month_loop
 
     BRA.S   .return
 
-.LAB_008D:
+.month_loop:
     TST.W   20(A0)
-    BEQ.S   .LAB_008E
+    BEQ.S   .select_table
 
     ADDA.L  #$18,A1
 
-.LAB_008E:
+.select_table:
     ADD.W   (A1)+,D0
-    DBF     D1,.LAB_008E
+    DBF     D1,.select_table
 
 .return:
     ADD.W   4(A0),D0
@@ -1989,11 +2456,27 @@ LAB_008C:
 
 ;!======
 
-; Create timestamp from a time.
-; 8(A1): Hours
-; 10(A1): Minutes
-; 12(A1): Seconds
-; 18(A1): AM/PM Sign Flag
+;------------------------------------------------------------------------------
+; FUNC: ESQ_FormatTimeStamp   (FormatTimeStamp??)
+; ARGS:
+;   stack +4: outBuf (expects at least 12 bytes)
+;   stack +8: timePtr (struct with time fields)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   8(A1), 10(A1), 12(A1), 18(A1)
+; WRITES:
+;   outBuf (null-terminated string)
+; DESC:
+;   Formats "hh:mm:ss AM/PM" into the output buffer.
+; NOTES:
+;   Writes the string backward from outBuf+$0B. Uses 18(A1) sign for AM/PM.
+;------------------------------------------------------------------------------
+ESQ_FormatTimeStamp:
 LAB_0090:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
@@ -2002,15 +2485,15 @@ LAB_0090:
     MOVE.B  #0,(A0)
     MOVE.B  #'M',-(A0)
     TST.W   18(A1)
-    BPL.S   .LAB_0091
+    BPL.S   .set_am
 
     MOVE.B  #'P',-(A0)
-    BRA.S   .LAB_0092
+    BRA.S   .after_ampm
 
-.LAB_0091:
+.set_am:
     MOVE.B  #'A',-(A0)
 
-.LAB_0092:
+.after_ampm:
     MOVE.B  #' ',-(A0)
     MOVE.W  12(A1),D2
     EXT.L   D2
@@ -2040,12 +2523,12 @@ LAB_0090:
     MOVE.B  D0,-(A0)
     SWAP    D0
     TST.B   D0
-    BEQ.S   .LAB_0093
+    BEQ.S   .leading_space
 
     ADDI.B  #'0',D0
     BRA.S   .return
 
-.LAB_0093:
+.leading_space:
     MOVE.B  #' ',D0
 
 .return:
@@ -2055,7 +2538,26 @@ LAB_0090:
 
 ;!======
 
-; Calculate a 1/2 hour "slot" given a time
+;------------------------------------------------------------------------------
+; FUNC: ESQ_GetHalfHourSlotIndex   (GetHalfHourSlotIndex??)
+; ARGS:
+;   stack +4: timePtr (struct with time fields)
+; RET:
+;   D0: slot index (mapped through LAB_1B1E)
+; CLOBBERS:
+;   D0-D2, A1
+; CALLS:
+;   (none)
+; READS:
+;   8(A0), 10(A0), 18(A0), LAB_1B1E
+; WRITES:
+;   (none)
+; DESC:
+;   Computes a half-hour slot for the time and returns a lookup-mapped value.
+; NOTES:
+;   Slot = hour*2 (+1 if minutes >= 30), with 12-hour and AM/PM handling.
+;------------------------------------------------------------------------------
+ESQ_GetHalfHourSlotIndex:
 LAB_0095:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)
@@ -2063,25 +2565,25 @@ LAB_0095:
     MOVEQ   #12,D1
     MOVE.W  8(A0),D0
     TST.W   18(A0)
-    BPL.S   .LAB_0096
+    BPL.S   .normalize_midnight
 
     ADD.W   D1,D0
-    BRA.S   .LAB_0097
+    BRA.S   .wrap_24h
 
-.LAB_0096:
+.normalize_midnight:
     CMP.W   D1,D0
-    BNE.S   .LAB_0097
+    BNE.S   .wrap_24h
 
     MOVEQ   #0,D0
 
-.LAB_0097:
+.wrap_24h:
     MOVEQ   #24,D1
     CMP.W   D1,D0
-    BEQ.S   .LAB_0098
+    BEQ.S   .maybe_add_half
 
     ADD.W   D0,D0
 
-.LAB_0098:
+.maybe_add_half:
     MOVE.W  10(A0),D2
     MOVEQ   #30,D1
     CMP.W   D1,D2
@@ -2097,6 +2599,28 @@ LAB_0095:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ClampBannerCharRange   (ClampBannerCharRange??)
+; ARGS:
+;   stack +4: value0
+;   stack +8: value1
+;   stack +12: value2
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D4
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   LAB_226F, LAB_2280
+; DESC:
+;   Normalizes values into a bounded A..C/I range and writes two globals.
+; NOTES:
+;   Heavily context-dependent; likely relates to banner character bounds.
+;------------------------------------------------------------------------------
+ESQ_ClampBannerCharRange:
 LAB_009A:
     MOVE.L  4(A7),D0
     MOVE.L  8(A7),D1
@@ -2105,28 +2629,28 @@ LAB_009A:
     MOVE.L  A0,D2
     MOVEQ   #65,D3
     CMP.W   D3,D1
-    BLT.S   .LAB_009B
+    BLT.S   .force_low_char
 
     MOVEQ   #67,D3
     CMP.W   D3,D1
-    BLT.S   .LAB_009C
+    BLT.S   .force_high_char
 
-.LAB_009B:
+.force_low_char:
     MOVEQ   #65,D1
 
-.LAB_009C:
+.force_high_char:
     MOVEQ   #65,D3
     CMP.W   D3,D2
-    BLT.S   .LAB_009D
+    BLT.S   .force_second_default
 
     MOVEQ   #73,D3
     CMP.W   D3,D2
-    BLE.S   .LAB_009E
+    BLE.S   .normalize_chars
 
-.LAB_009D:
+.force_second_default:
     MOVEQ   #69,D2
 
-.LAB_009E:
+.normalize_chars:
     MOVEQ   #65,D3
     SUB.W   D3,D1
     SUB.W   D3,D2
@@ -2134,15 +2658,15 @@ LAB_009A:
     MOVEQ   #48,D4
     MOVE.W  D0,D3
     TST.W   D1
-    BEQ.S   .LAB_009F
+    BEQ.S   .wrap_first_char
 
     SUB.W   D1,D0
     CMPI.W  #1,D0
-    BGE.S   .LAB_009F
+    BGE.S   .wrap_first_char
 
     ADD.W   D4,D0
 
-.LAB_009F:
+.wrap_first_char:
     ADD.W   D2,D3
     CMP.W   D4,D3
     BLE.S   .return
@@ -2157,7 +2681,27 @@ LAB_009A:
 
 ;!======
 
-; Unreachable code?
+;------------------------------------------------------------------------------
+; FUNC: ESQ_AdvanceBannerCharIndex   (AdvanceBannerCharIndex??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3
+; CALLS:
+;   (none)
+; READS:
+;   LAB_2257, LAB_225C, LAB_226F, LAB_2280, LAB_1B08
+; WRITES:
+;   LAB_2256, LAB_2257, LAB_2273, LAB_1B08
+; DESC:
+;   Advances a cycling index in the 1..48 range and applies a step offset.
+; NOTES:
+;   If LAB_1B08 is non-zero, forces a reset path and clears the flag.
+;   Also resets when the index matches LAB_2280, using LAB_226F as the base.
+;------------------------------------------------------------------------------
+ESQ_AdvanceBannerCharIndex:
     MOVEM.L D2-D3,-(A7)
     MOVE.W  LAB_2257,D0
     MOVEQ   #1,D2
@@ -2210,85 +2754,108 @@ LAB_00A6:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_AdjustBracketedHourInString   (AdjustBracketedHourInString??)
+; ARGS:
+;   stack +4: textPtr
+;   stack +8: hourOffset (byte, signed??)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D4, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   [textPtr]
+; WRITES:
+;   [textPtr]
+; DESC:
+;   Scans for bracketed hour fields, replaces '['/']' with '(' / ')' and
+;   optionally offsets the hour value, wrapping it into 1..12.
+; NOTES:
+;   Only adjusts when hourOffset != 0; parsing assumes two-digit hours with
+;   a possible leading space.
+;------------------------------------------------------------------------------
+ESQ_AdjustBracketedHourInString:
 LAB_00A7:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
     MOVEM.L D2-D4,-(A7)
     MOVE.L  D0,D4
 
-.LAB_00A8:
+.scan_for_left_bracket:
     MOVEQ   #0,D0
     MOVE.L  D0,D1
     MOVE.L  D0,D2
     MOVEQ   #91,D3
 
-.LAB_00A9:
+.find_left_bracket:
     MOVE.B  (A0)+,D2
     BEQ.W   .return
 
     CMP.B   D3,D2
-    BNE.S   .LAB_00A9
+    BNE.S   .find_left_bracket
 
     SUBQ.W  #1,A0
     MOVEQ   #40,D3
     MOVE.B  D3,(A0)+
     TST.B   D4
-    BEQ.S   .LAB_00AE
+    BEQ.S   .scan_for_right_bracket
 
     MOVE.B  (A0)+,D1
     CMPI.B  #$20,D1
-    BEQ.S   .LAB_00AA
+    BEQ.S   .parse_second_digit
 
     MOVEQ   #10,D0
 
-.LAB_00AA:
+.parse_second_digit:
     MOVE.B  (A0)+,D1
     SUBI.B  #$30,D1
     ADD.B   D1,D0
     MOVEQ   #12,D1
     ADD.B   D4,D0
     CMPI.B  #$1,D0
-    BGE.S   .LAB_00AB
+    BGE.S   .wrap_hour_range
 
     ADD.B   D1,D0
-    BRA.S   .LAB_00AC
+    BRA.S   .emit_hour
 
-.LAB_00AB:
+.wrap_hour_range:
     CMP.B   D1,D0
-    BLE.S   .LAB_00AC
+    BLE.S   .emit_hour
 
     SUB.B   D1,D0
-    BRA.S   .LAB_00AB
+    BRA.S   .wrap_hour_range
 
-.LAB_00AC:
+.emit_hour:
     MOVEQ   #10,D1
     MOVEQ   #32,D2
     MOVEA.L A0,A1
     CMP.B   D1,D0
-    BLT.S   .LAB_00AD
+    BLT.S   .write_hour_digits
 
     SUB.B   D1,D0
     MOVEQ   #49,D2
 
-.LAB_00AD:
+.write_hour_digits:
     ADDI.B  #$30,D0
     MOVE.B  D0,-(A1)
     MOVE.B  D2,-(A1)
 
-.LAB_00AE:
+.scan_for_right_bracket:
     MOVEQ   #93,D3
 
-.LAB_00AF:
+.find_right_bracket:
     MOVE.B  (A0)+,D2
     BEQ.S   .return
 
     CMP.B   D3,D2
-    BNE.S   .LAB_00AF
+    BNE.S   .find_right_bracket
 
     SUBQ.W  #1,A0
     MOVEQ   #41,D3
     MOVE.B  D3,(A0)+
-    BRA.S   .LAB_00A8
+    BRA.S   .scan_for_left_bracket
 
 .return:
     MOVEM.L (A7)+,D2-D4
@@ -2303,6 +2870,27 @@ LAB_00A7:
 ;     uint32_t bit_i  = n & 7;
 ;     return (base[byte_i] & (1u << bit_i)) ? -1 : 0;
 ; }
+;------------------------------------------------------------------------------
+; FUNC: ESQ_TestBit1Based   (TestBit1Based)
+; ARGS:
+;   stack +4: base (byte array)
+;   stack +8: bitIndex (1-based)
+; RET:
+;   D0: -1 if bit is set, 0 if clear
+; CLOBBERS:
+;   D0-D1, A0
+; CALLS:
+;   (none)
+; READS:
+;   [base]
+; WRITES:
+;   (none)
+; DESC:
+;   Tests a 1-based bit index in a byte array.
+; NOTES:
+;   Uses LSR.W so index is masked to 16 bits before byte addressing.
+;------------------------------------------------------------------------------
+ESQ_TestBit1Based:
 LAB_00B1:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
@@ -2319,6 +2907,27 @@ LAB_00B1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SetBit1Based   (SetBit1Based)
+; ARGS:
+;   stack +4: base (byte array)
+;   stack +8: bitIndex (1-based)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A0
+; CALLS:
+;   (none)
+; READS:
+;   [base]
+; WRITES:
+;   [base]
+; DESC:
+;   Sets a 1-based bit index in a byte array.
+; NOTES:
+;   Uses LSR.W so index is masked to 16 bits before byte addressing.
+;------------------------------------------------------------------------------
+ESQ_SetBit1Based:
 LAB_00B2:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
@@ -2332,18 +2941,39 @@ LAB_00B2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ReverseBitsIn6Bytes   (ReverseBitsIn6Bytes??)
+; ARGS:
+;   stack +4: dst (6 bytes)
+;   stack +8: src (6 bytes)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D4, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   [src]
+; WRITES:
+;   [dst]
+; DESC:
+;   Copies six bytes, bit-reversing each non-0/0xFF byte.
+; NOTES:
+;   Preserves 0x00 and 0xFF without reversal.
+;------------------------------------------------------------------------------
+ESQ_ReverseBitsIn6Bytes:
 LAB_00B3:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVEM.L D2-D4,-(A7)
     MOVEQ   #5,D0
 
-.LAB_00B4:
+.copy_loop:
     MOVE.B  (A1)+,D4
-    BEQ.S   .LAB_00B7
+    BEQ.S   .store_byte
 
     CMPI.B  #$ff,D4
-    BEQ.S   .LAB_00B7
+    BEQ.S   .store_byte
 
     MOVEQ   #0,D3
     MOVE.L  D3,D1
@@ -2351,47 +2981,67 @@ LAB_00B3:
     MOVE.L  D3,D4
     MOVEQ   #7,D2
 
-.LAB_00B5:
+.reverse_loop:
     BTST    D2,D1
-    BEQ.S   .LAB_00B6
+    BEQ.S   .next_bit
 
     BSET    D3,D4
 
-.LAB_00B6:
+.next_bit:
     ADDQ.W  #1,D3
-    DBF     D2,.LAB_00B5
+    DBF     D2,.reverse_loop
 
-.LAB_00B7:
+.store_byte:
     MOVE.B  D4,(A0)+
-    DBF     D0,.LAB_00B4
+    DBF     D0,.copy_loop
 
     MOVEM.L (A7)+,D2-D4
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_GenerateXorChecksumByte   (GenerateXorChecksumByte??)
+; ARGS:
+;   stack +4: seed (initial byte, low 8 bits used)
+;   stack +8: src (byte buffer)
+;   stack +12: length (bytes)
+; RET:
+;   D0: checksum byte (low 8 bits)
+; CLOBBERS:
+;   D0-D2, A0
+; CALLS:
+;   (none)
+; READS:
+;   LAB_2253, LAB_2206
+; WRITES:
+;   (none)
+; DESC:
+;   Computes an XOR checksum over a buffer, seeded by an inverted byte.
+; NOTES:
+;   If LAB_2206 is non-zero, returns LAB_2253 instead of computing.
+;------------------------------------------------------------------------------
+ESQ_GenerateXorChecksumByte:
 GENERATE_CHECKSUM_BYTE_INTO_D0:
-    MOVEQ   #0,D0           ; Move 0 into D0
-    MOVE.B  LAB_2253,D0     ; Move the byte in LAB_2253 to D0
-    TST.B   LAB_2206        ; Test LAB_2206 against 0
-    BNE.S   .return         ; If it's not equal, jump to .LAB_00BA
+    MOVEQ   #0,D0
+    MOVE.B  LAB_2253,D0
+    TST.B   LAB_2206
+    BNE.S   .return
 
-    MOVE.L  4(A7),D0        ; D0
-    MOVEA.L 8(A7),A0        ; LAB_229A
-    MOVE.L  12(A7),D1       ; 256
+    MOVE.L  4(A7),D0
+    MOVEA.L 8(A7),A0
+    MOVE.L  12(A7),D1
     MOVE.L  D2,-(A7)
     MOVE.L  D1,D2
     SUBQ.W  #1,D2
     EORI.B  #$ff,D0
     MOVEQ   #0,D1
 
-; do { byte = *A0++; D0 ^= byte; } while (--D2 != -1);
-.doXorChecksum:
+.xor_loop:
     MOVE.B  (A0)+,D1
     EOR.B   D1,D0
-    DBF     D2,.doXorChecksum
+    DBF     D2,.xor_loop
 
-; D0 = D0 & 0xFF // clearing everything but low byte.
     ANDI.L  #$ff,D0
     MOVE.L  (A7)+,D2
 
@@ -2400,7 +3050,26 @@ GENERATE_CHECKSUM_BYTE_INTO_D0:
 
 ;!======
 
-; Unreachable Code?
+;------------------------------------------------------------------------------
+; FUNC: ESQ_TerminateAfterSecondQuote   (TerminateAfterSecondQuote??)
+; ARGS:
+;   stack +4: textPtr
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2, A0
+; CALLS:
+;   (none)
+; READS:
+;   [textPtr]
+; WRITES:
+;   [textPtr] (writes a null byte)
+; DESC:
+;   Scans for the second double-quote and writes a terminator after it.
+; NOTES:
+;   No callers found via static search; may be reached via computed jump.
+;------------------------------------------------------------------------------
+ESQ_TerminateAfterSecondQuote:
 LAB_00BB_Unreachable:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)
@@ -2408,19 +3077,19 @@ LAB_00BB_Unreachable:
     MOVE.W  D0,D1
     MOVEQ   #34,D2
 
-.LAB_00BB:
+.find_first_quote:
     MOVE.B  (A0)+,D1
     BEQ.S   .return
 
     CMP.B   D2,D1
-    BNE.S   .LAB_00BB
+    BNE.S   .find_first_quote
 
-.LAB_00BC:
+.find_second_quote:
     MOVE.B  (A0)+,D1
     BEQ.S   .return
 
     CMP.B   D2,D1
-    BNE.S   .LAB_00BC
+    BNE.S   .find_second_quote
 
     MOVE.B  D0,(A0)
 
@@ -2430,48 +3099,90 @@ LAB_00BB_Unreachable:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_WildcardMatch   (WildcardMatch??)
+; ARGS:
+;   stack +4: str
+;   stack +8: pattern
+; RET:
+;   D0.b: 0 if match, 1 if mismatch
+; CLOBBERS:
+;   D0-D1, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   [str], [pattern]
+; WRITES:
+;   (none)
+; DESC:
+;   Compares a string against a pattern supporting '*' and '?' wildcards.
+; NOTES:
+;   Returns mismatch on null pointers. '*' short-circuits to match.
+;------------------------------------------------------------------------------
+ESQ_WildcardMatch:
 LAB_00BE:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     CMPA.L  #0,A0
-    BEQ.S   LAB_00C0
+    BEQ.S   .mismatch
 
     CMPA.L  #0,A1
-    BEQ.S   LAB_00C0
+    BEQ.S   .mismatch
 
     MOVEQ   #0,D0
 
-.LAB_00BF:
+.match_loop:
     MOVE.B  (A0)+,D0
     MOVE.B  (A1)+,D1
     CMPI.B  #$2a,D1
-    BEQ.S   LAB_00C2
+    BEQ.S   .match
 
     TST.B   D0
-    BEQ.S   LAB_00C1
+    BEQ.S   .check_end
 
     CMPI.B  #$3f,D1
-    BEQ.S   .LAB_00BF
+    BEQ.S   .match_loop
 
     SUB.B   D1,D0
-    BEQ.S   .LAB_00BF
+    BEQ.S   .match_loop
 
-LAB_00C0:
+.mismatch:
     MOVE.B  #$1,D0
     RTS
 
 ;!======
 
-LAB_00C1:
+.check_end:
     TST.B   D1
-    BNE.S   LAB_00C0
+    BNE.S   .mismatch
 
-LAB_00C2:
+.match:
     MOVE.B  #0,D0
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_FindSubstringCaseFold   (FindSubstringCaseFold??)
+; ARGS:
+;   stack +4: haystack
+;   stack +8: needle
+; RET:
+;   D0: pointer to match (or 0 if not found)
+; CLOBBERS:
+;   D0-D2, A0-A3
+; CALLS:
+;   (none)
+; READS:
+;   [haystack], [needle]
+; WRITES:
+;   (none)
+; DESC:
+;   Searches for needle inside haystack with ASCII case folding.
+; NOTES:
+;   Case fold uses BCHG #5 (ASCII letter case bit).
+;------------------------------------------------------------------------------
+ESQ_FindSubstringCaseFold:
 LAB_00C3:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
@@ -2479,60 +3190,82 @@ LAB_00C3:
 
     MOVEQ   #0,D0
     TST.B   (A1)
-    BEQ.S   LAB_00C6
+    BEQ.S   .return
 
     MOVEA.L A0,A3
     MOVEA.L A1,A2
 
-LAB_00C4:
+.search_loop:
     TST.B   (A0)
-    BNE.S   LAB_00C7
+    BNE.S   .compare_loop
 
     TST.B   (A2)
-    BNE.S   LAB_00C6
+    BNE.S   .return
 
-LAB_00C5:
+.found:
     MOVE.L  A3,D0
 
-LAB_00C6:
+.return:
     MOVEM.L (A7)+,A2-A3
     RTS
 
 ;!======
 
-LAB_00C7:
+.compare_loop:
     TST.B   (A2)
-    BEQ.S   LAB_00C5
+    BEQ.S   .found
 
     MOVE.B  (A0)+,D1
     CMP.B   (A2),D1
-    BNE.S   LAB_00C8
+    BNE.S   .try_case_fold
 
     TST.B   (A2)+
-    BRA.S   LAB_00C4
+    BRA.S   .search_loop
 
-LAB_00C8:
+.try_case_fold:
     BCHG    #5,D1
     CMP.B   (A2),D1
-    BNE.S   LAB_00C9
+    BNE.S   .reset_search
 
     TST.B   (A2)+
-    BRA.S   LAB_00C4
+    BRA.S   .search_loop
 
-LAB_00C9:
+.reset_search:
     MOVE.L  A2,D2
     CMPA.L  D2,A1
-    BEQ.S   LAB_00CA
+    BEQ.S   .restart_from_next
 
     MOVE.L  A0,D1
     SUBI.L  #$1,D1
     MOVEA.L D1,A0
 
-LAB_00CA:
+.restart_from_next:
     MOVEA.L A0,A3
     MOVEA.L A1,A2
-    BRA.S   LAB_00C4
+    BRA.S   .search_loop
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_WriteDecFixedWidth   (WriteDecFixedWidth??)
+; ARGS:
+;   stack +4: outBuf
+;   stack +8: value
+;   stack +12: digits
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1, A0
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   outBuf
+; DESC:
+;   Writes a fixed-width decimal string into outBuf.
+; NOTES:
+;   Writes digits right-to-left and terminates with null at outBuf+digits.
+;------------------------------------------------------------------------------
+ESQ_WriteDecFixedWidth:
 LAB_00CB:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
@@ -2541,19 +3274,41 @@ LAB_00CB:
     MOVE.B  #0,(A0)
     SUBQ.W  #1,D1
 
-LAB_00CC:
+.emit_digit_loop:
     EXT.L   D0
     DIVS    #10,D0
     SWAP    D0
     MOVE.B  D0,-(A0)
     ADDI.B  #$30,(A0)
     SWAP    D0
-    DBF     D1,LAB_00CC
+    DBF     D1,.emit_digit_loop
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_PackBitsDecode   (PackBitsDecode??)
+; ARGS:
+;   stack +4: src
+;   stack +8: dst
+;   stack +12: dstLen
+; RET:
+;   D0: src pointer after decoding
+; CLOBBERS:
+;   D0-D1, D6-D7, A0-A1
+; CALLS:
+;   (none)
+; READS:
+;   [src]
+; WRITES:
+;   [dst]
+; DESC:
+;   Decodes PackBits-style RLE from src into dst.
+; NOTES:
+;   Positive counts copy literal bytes; negative counts repeat next byte.
+;------------------------------------------------------------------------------
+ESQ_PackBitsDecode:
 LAB_00CD:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
@@ -2563,51 +3318,51 @@ LAB_00CD:
     MOVE.L  D7,-(A7)
     MOVE.L  D6,-(A7)
 
-LAB_00CE:
+.decode_loop:
     CMP.W   D0,D1
-    BGE.W   LAB_00D2
+    BGE.W   .done
 
     MOVE.B  (A0)+,D7
     TST.B   D7
-    BMI.W   LAB_00D0
+    BMI.W   .repeat_run
 
     ADDQ.B  #1,D7
 
-LAB_00CF:
+.copy_literals:
     TST.B   D7
-    BLE.S   LAB_00CE
+    BLE.S   .decode_loop
 
     MOVE.B  (A0)+,(A1)+
     ADDQ.W  #1,D1
     CMP.W   D0,D1
-    BGE.W   LAB_00D2
+    BGE.W   .done
 
     SUBQ.B  #1,D7
-    BRA.S   LAB_00CF
+    BRA.S   .copy_literals
 
-LAB_00D0:
+.repeat_run:
     EXT.W   D7
     EXT.L   D7
     CMPI.L  #$ff,D7
-    BEQ.S   LAB_00CE
+    BEQ.S   .decode_loop
 
     NEG.L   D7
     ADDQ.L  #1,D7
     MOVE.B  (A0)+,D6
 
-LAB_00D1:
+.repeat_byte:
     TST.B   D7
-    BLE.S   LAB_00CE
+    BLE.S   .decode_loop
 
     MOVE.B  D6,(A1)+
     ADDQ.W  #1,D1
     CMP.W   D0,D1
-    BGE.W   LAB_00D2
+    BGE.W   .done
 
     SUBQ.B  #1,D7
-    BRA.S   LAB_00D1
+    BRA.S   .repeat_byte
 
-LAB_00D2:
+.done:
     MOVE.L  A0,D0
     MOVE.L  (A7)+,D6
     MOVE.L  (A7)+,D7
@@ -2615,6 +3370,28 @@ LAB_00D2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_TickGlobalCounters   (TickGlobalCounters??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0
+; CLOBBERS:
+;   D0-D1, A0-A1
+; CALLS:
+;   ESQ_ColdReboot, LAB_0C82, LAB_0A4A
+; READS:
+;   LAB_2363, LAB_2205, LAB_2325, LAB_234A, LAB_22A5, LAB_22AA, LAB_22AB
+; WRITES:
+;   LAB_2363, LAB_2205, LAB_2264, LAB_2325, LAB_234A, LAB_22A5, LAB_1DDF,
+;   LAB_1B11..LAB_1B18
+; DESC:
+;   Increments global timing counters, performs periodic resets, and updates
+;   accumulator fields with saturation flags.
+; NOTES:
+;   Triggers ESQ_ColdReboot when LAB_2363 reaches $5460.
+;------------------------------------------------------------------------------
+ESQ_TickGlobalCounters:
 LAB_00D3:
     MOVE.W  LAB_2363,D0
     ADDQ.W  #1,D0
@@ -2748,6 +3525,27 @@ LAB_00E1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_SeedMinuteEventThresholds   (SeedMinuteEventThresholds??)
+; ARGS:
+;   stack +4: baseMinute
+;   stack +8: baseOffset
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   LAB_1B09, LAB_1B0A, LAB_1B0B, LAB_1B0C
+; DESC:
+;   Computes minute thresholds based on two base values.
+; NOTES:
+;   Stores (60-base), (30-base), (baseOffset), (baseOffset+30).
+;------------------------------------------------------------------------------
+ESQ_SeedMinuteEventThresholds:
 LAB_00E2:
     MOVE.L  4(A7),D0
     MOVE.L  8(A7),D1
@@ -2860,12 +3658,12 @@ ESQ_SupervisorColdReboot:
     MOVE.W  #$55AA,(A0) ; Are we dynamically patching the rom?
     MOVE.W  (A0),D0
     CMPI.W  #$55AA,D0
-    BNE.W   LAB_00E6
+    BNE.W   ESQ_TryRomWriteTest
 
     MOVE.W  #$AA55,(A0)
     MOVE.W  (A0),D0
     CMPI.W  #$AA55,D0
-    BNE.W   LAB_00E6
+    BNE.W   ESQ_TryRomWriteTest
 
     MOVE.W  D1,(A0)
     MOVEQ   #0,D0
@@ -2873,15 +3671,55 @@ ESQ_SupervisorColdReboot:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_TryRomWriteTest   (TryRomWriteTest??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 1 on failure, 0 on success
+; CLOBBERS:
+;   D0-D1, A0
+; CALLS:
+;   (none)
+; READS:
+;   [ROM?]
+; WRITES:
+;   [ROM?] (write-test values)
+; DESC:
+;   Attempts a ROM write-test sequence and reports success/failure.
+; NOTES:
+;   Used by ESQ_SupervisorColdReboot; likely unreachable when ROM is read-only.
+;------------------------------------------------------------------------------
+ESQ_TryRomWriteTest:
 LAB_00E6:
     MOVEQ   #1,D0
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_InvokeGcommandInit   (InvokeGcommandInit??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   A0-A1
+; CALLS:
+;   GCOMMAND_ProcessCtrlCommand
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Simple wrapper around GCOMMAND_ProcessCtrlCommand with register preservation.
+; NOTES:
+;   Likely used as a callback.
+;------------------------------------------------------------------------------
+ESQ_InvokeGcommandInit:
 LAB_00E7:
     MOVEM.L A0-A1,-(A7)
-    JSR     LAB_0DFB
+    JSR     GCOMMAND_ProcessCtrlCommand
 
     ADDQ.L  #8,A7
     RTS
@@ -2893,6 +3731,29 @@ LAB_00E7:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DrawVerticalBevel   (DrawVerticalBevel??)
+; ARGS:
+;   stack +4: rastPort
+;   stack +8: x
+;   stack +12: y
+;   stack +16: height
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7, A3, A6
+; CALLS:
+;   graphics.library Move/Draw/SetDrMd/SetAPen
+; READS:
+;   (none)
+; WRITES:
+;   RastPort
+; DESC:
+;   Draws a multi-line vertical beveled edge at x/y with pen 1.
+; NOTES:
+;   Repeats offset strokes to create a thicker edge.
+;------------------------------------------------------------------------------
+ESQ_DrawVerticalBevel:
 LAB_00E8:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
@@ -2990,6 +3851,30 @@ LAB_00E8:
 
 ; The moves and draws seem like this is making some kind of
 ; outlined box... maybe with a shadow or bevel?
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DrawVerticalBevelPair   (DrawVerticalBevelPair??)
+; ARGS:
+;   stack +4: rastPort
+;   stack +8: leftX
+;   stack +12: topY
+;   stack +16: rightX
+;   stack +20: bottomY
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7, A3, A6
+; CALLS:
+;   graphics.library Move/Draw/SetDrMd/SetAPen
+; READS:
+;   (none)
+; WRITES:
+;   RastPort
+; DESC:
+;   Draws two vertical beveled edges using pen 1 and pen 2.
+; NOTES:
+;   Offsets by +/-1..3 to thicken edges.
+;------------------------------------------------------------------------------
+ESQ_DrawVerticalBevelPair:
 LAB_00E9:
     MOVEM.L D4-D7/A3,-(A7)
 
@@ -3121,6 +4006,29 @@ LAB_00E9:
 ;!======
 
 ; drawing some lines
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DrawHorizontalBevel   (DrawHorizontalBevel??)
+; ARGS:
+;   stack +4: rastPort
+;   stack +8: leftX
+;   stack +12: rightX
+;   stack +16: y
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7, A3, A6
+; CALLS:
+;   graphics.library Move/Draw/SetDrMd/SetAPen
+; READS:
+;   (none)
+; WRITES:
+;   RastPort
+; DESC:
+;   Draws a multi-line horizontal beveled edge at y with pen 2.
+; NOTES:
+;   Repeats offset strokes to create a thicker edge.
+;------------------------------------------------------------------------------
+ESQ_DrawHorizontalBevel:
 LAB_00EA:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
@@ -3219,6 +4127,30 @@ LAB_00EA:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DrawBeveledFrame   (DrawBeveledFrame??)
+; ARGS:
+;   stack +4: rastPort
+;   stack +8: leftX
+;   stack +12: topY
+;   stack +16: rightX
+;   stack +20: bottomY
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7, A3
+; CALLS:
+;   ESQ_DrawVerticalBevelPair, ESQ_DrawVerticalBevel
+; READS:
+;   (none)
+; WRITES:
+;   RastPort
+; DESC:
+;   Draws a beveled frame with left/right edges and a corner accent.
+; NOTES:
+;   Composes LAB_00E9 + LAB_00E8 helpers.
+;------------------------------------------------------------------------------
+ESQ_DrawBeveledFrame:
 LAB_00EB:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -3232,14 +4164,14 @@ LAB_00EB:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_00E9
+    BSR.W   ESQ_DrawVerticalBevelPair
 
     MOVE.L  D4,(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_00E8
+    BSR.W   ESQ_DrawVerticalBevel
 
     LEA     36(A7),A7
 
@@ -3265,6 +4197,30 @@ LAB_00EB:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DrawBevelFrameWithTop   (DrawBevelFrameWithTop??)
+; ARGS:
+;   stack +4: rastPort
+;   stack +8: leftX
+;   stack +12: topY
+;   stack +16: rightX
+;   stack +20: bottomY
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7, A3
+; CALLS:
+;   ESQ_DrawVerticalBevelPair, ESQ_DrawHorizontalBevel
+; READS:
+;   (none)
+; WRITES:
+;   RastPort
+; DESC:
+;   Draws a beveled frame with a top horizontal edge.
+; NOTES:
+;   Composes LAB_00E9 + LAB_00EA helpers.
+;------------------------------------------------------------------------------
+ESQ_DrawBevelFrameWithTop:
 LAB_00EC:
     MOVEM.L D4-D7/A3,-(A7)
 
@@ -3278,14 +4234,14 @@ LAB_00EC:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_00E9
+    BSR.W   ESQ_DrawVerticalBevelPair
 
     MOVE.L  D4,(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_00EA
+    BSR.W   ESQ_DrawHorizontalBevel
 
     LEA     36(A7),A7
 
@@ -3294,6 +4250,30 @@ LAB_00EC:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQ_DrawBevelFrameWithTopRight   (DrawBevelFrameWithTopRight??)
+; ARGS:
+;   stack +4: rastPort
+;   stack +8: leftX
+;   stack +12: topY
+;   stack +16: rightX
+;   stack +20: bottomY
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7, A3
+; CALLS:
+;   ESQ_DrawBeveledFrame, ESQ_DrawHorizontalBevel
+; READS:
+;   (none)
+; WRITES:
+;   RastPort
+; DESC:
+;   Draws a beveled frame plus a top edge and right-side accent.
+; NOTES:
+;   Composes LAB_00EB + LAB_00EA helpers.
+;------------------------------------------------------------------------------
+ESQ_DrawBevelFrameWithTopRight:
 LAB_00ED:
     MOVEM.L D4-D7/A3,-(A7)
 
@@ -3307,14 +4287,14 @@ LAB_00ED:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_00EB
+    BSR.W   ESQ_DrawBeveledFrame
 
     MOVE.L  D4,(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_00EA
+    BSR.W   ESQ_DrawHorizontalBevel
 
     LEA     36(A7),A7
 

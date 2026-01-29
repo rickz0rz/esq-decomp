@@ -1,5 +1,3 @@
-;!======
-
 LAB_135B:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A3,-(A7)

@@ -277,7 +277,7 @@ LAB_02DC:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, DISKIO_OpenFileWithBuffer,
-;   LAB_03A0, LAB_00BE, LAB_039A
+;   LAB_03A0, ESQ_WildcardMatch, LAB_039A
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235
 ; WRITES:
@@ -483,7 +483,7 @@ LAB_02E2:
     MOVE.L  A6,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A1,-16(A5)
-    JSR     LAB_00BE(PC)
+    JSR     ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1103,7 +1103,7 @@ LAB_0316:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, LAB_03AC, LAB_05C1, LAB_0468,
-;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, LAB_00BE, JMP_TBL_DEALLOCATE_MEMORY_1,
+;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, JMP_TBL_DEALLOCATE_MEMORY_1,
 ;   COI_AllocSubEntryTable
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235,
@@ -1403,7 +1403,7 @@ LAB_031A:
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A1,-4(A5)
-    JSR     LAB_00BE(PC)
+    JSR     ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1792,7 +1792,7 @@ LAB_031A:
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A1,-16(A5)
-    JSR     LAB_00BE(PC)
+    JSR     ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -2676,7 +2676,7 @@ LAB_0381:
     JMP     LAB_149B
 
 JMP_TBL_PRINTF_1:
-    JMP     PRINTF
+    JMP     WDISP_SPrintf
 
 LAB_0383:
     JMP     LAB_1498

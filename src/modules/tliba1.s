@@ -1339,7 +1339,7 @@ LAB_17C6:
     MOVE.L  D0,-(A7)
     PEA     LAB_216A
     PEA     -532(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     PEA     -532(A5)
     MOVE.L  A3,-(A7)
@@ -1434,7 +1434,7 @@ LAB_17CF:
     JMP     LAB_08DF
 
 LAB_17D0:
-    JMP     LAB_00C3
+    JMP     ESQ_FindSubstringCaseFold
 
 LAB_17D1:
     JMP     LAB_054C
@@ -2124,7 +2124,7 @@ LAB_1809:
     JMP     LAB_0656
 
 LAB_180A:
-    JMP     LAB_00B1
+    JMP     ESQ_TestBit1Based
 
 ;!======
 
@@ -2786,7 +2786,7 @@ LAB_1827:
     MOVE.L  D6,-(A7)
     PEA     LAB_2175
     PEA     -84(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     LEA     -84(A5),A0
@@ -2901,7 +2901,7 @@ LAB_182D:
     MOVE.L  D6,-(A7)
     PEA     LAB_2176
     PEA     -84(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     LEA     -84(A5),A0
@@ -3231,7 +3231,7 @@ LAB_183A:
     MOVE.L  D7,(A7)
     PEA     LAB_2177
     PEA     -88(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
@@ -3895,7 +3895,7 @@ LAB_1850_NOT_DIRECT_CALLED:
     MOVE.L  LAB_2178,-(A7)
     PEA     GLOB_STR_VM_ARRAY_1
     PEA     -80(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     MOVE.L  LAB_2178,D0
     MOVEQ   #76,D1
@@ -3925,7 +3925,7 @@ LAB_1850_NOT_DIRECT_CALLED:
     MOVE.L  D7,-(A7)
     PEA     GLOB_STR_VM_ARRAY_2
     PEA     -84(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     MOVE.L  D7,D0
     MOVEQ   #76,D1

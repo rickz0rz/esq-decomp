@@ -1957,10 +1957,10 @@ LAB_07CC:
     JMP     SCRIPT_DeassertCtrlLineNow
 
 LAB_07CD:
-    JMP     LAB_0053
+    JMP     ESQ_SetCopperEffect_Default
 
 LAB_07CE:
-    JMP     LAB_0054
+    JMP     ESQ_SetCopperEffect_Custom
 
 ED2_JMP_TBL_CLEANUP_RenderAlignedStatusScreen:
 LAB_07CF:
@@ -1975,7 +1975,7 @@ LAB_07CF:
 ;!======
 
 LAB_07D0:
-    JMP     LAB_0055
+    JMP     ESQ_SetCopperEffect_AllOn
 
 LAB_07D1:
     JMP     SCRIPT_AssertCtrlLineNow
@@ -1984,7 +1984,7 @@ LAB_07D2:
     JMP     LAB_1837
 
 LAB_07D3:
-    JMP     LAB_0D61
+    JMP     GCOMMAND_CopyGfxToWorkIfAvailable
 
     MOVEQ   #97,D0
     RTS
@@ -4501,7 +4501,7 @@ LAB_085A:
     JMP     LAB_0EDB
 
 LAB_085B:
-    JMP     LAB_00CB
+    JMP     ESQ_WriteDecFixedWidth
 
 LAB_085C:
     JMP     LAB_0EAF

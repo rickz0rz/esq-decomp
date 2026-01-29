@@ -1457,7 +1457,7 @@ LAB_09AA:
     JMP     PARSEINI_UpdateCtrlHDeltaMax
 
 LAB_09AB:
-    JMP     LAB_009A
+    JMP     ESQ_ClampBannerCharRange
 
 ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit3Flag:
 LAB_09AC:
@@ -1488,7 +1488,7 @@ LAB_09B3:
     JMP     CLEANUP_ProcessAlerts
 
 LAB_09B4:
-    JMP     LAB_0095
+    JMP     ESQ_GetHalfHourSlotIndex
 
 ESQFUNC_JMP_TBL_CLEANUP_DrawClockBanner:
 LAB_09B5:
@@ -1511,7 +1511,7 @@ LAB_09BA:
     JMP     LAB_1477
 
 LAB_09BB:
-    JMP     LAB_00D3
+    JMP     ESQ_TickGlobalCounters
 
 LAB_09BC:
     JMP     SCRIPT_HandleSerialCtrlCmd

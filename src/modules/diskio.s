@@ -2399,7 +2399,7 @@ LAB_042C:
     MOVE.B  D4,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_00B1(PC)
+    JSR     ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -2504,7 +2504,7 @@ LAB_0434:
     MOVE.B  D4,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_00B1(PC)
+    JSR     ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0

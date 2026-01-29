@@ -281,7 +281,7 @@ LAB_0F18:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FF0
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -823,7 +823,7 @@ LAB_0F44:
     MOVE.B  LAB_1DD7,D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FF2
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1567,7 +1567,7 @@ LAB_0F7F_0008:
     MOVE.B  LAB_1DD7,D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FFB
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

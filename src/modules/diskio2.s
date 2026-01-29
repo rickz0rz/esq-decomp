@@ -2948,7 +2948,7 @@ LAB_0541:
     JMP     GCOMMAND_LoadCommandFile
 
 LAB_0542:
-    JMP     LAB_00BE
+    JMP     ESQ_WildcardMatch
 
 LAB_0543:
     JMP     LAB_1378
@@ -2957,7 +2957,7 @@ LAB_0544:
     JMP     LAB_096D
 
 LAB_0545:
-    JMP     LAB_00B1
+    JMP     ESQ_TestBit1Based
 
 LAB_0546:
     JMP     LAB_0B26

@@ -2467,7 +2467,7 @@ LAB_0B4F:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_23
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2597,7 +2597,7 @@ LAB_0B4F:
     BNE.S   .LAB_0BDF
 
     MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0CCF(PC)
+    JSR     GCOMMAND_ParseCommandOptions(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  LAB_2285,D0
@@ -2786,7 +2786,7 @@ LAB_0BF0:
     JMP     LAB_0623
 
 LAB_0BF1:
-    JMP     LAB_00E2
+    JMP     ESQ_SeedMinuteEventThresholds
 
 LAB_0BF2:
     JMP     LAB_1416
@@ -3381,7 +3381,7 @@ LAB_0C32:
 
     PEA     GLOB_STR_CLOSED_CAPTIONED
     MOVE.L  A3,-(A7)
-    JSR     LAB_0D58(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -3421,7 +3421,7 @@ LAB_0C35:
     MOVE.L  12(A5),D7
     PEA     GLOB_STR_IN_STEREO
     MOVE.L  A3,-(A7)
-    JSR     LAB_0D58(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -3526,7 +3526,7 @@ LAB_0C3C:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_0D58(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -3608,7 +3608,7 @@ LAB_0C42:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_0D58(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)

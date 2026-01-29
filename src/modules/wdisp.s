@@ -812,7 +812,7 @@ LAB_1883:
     MOVE.L  8(A0),-(A7)
     PEA     GLOB_STR_PERCENT_D_SLASH
     PEA     -46(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -841,7 +841,7 @@ LAB_1883:
     MOVE.L  12(A0),-(A7)
     PEA     GLOB_STR_PERCENT_D
     PEA     -26(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -1682,7 +1682,7 @@ LAB_18D1:
     JMP     BRUSH_PlaneMaskForIndex
 
 LAB_18D2:
-    JMP     LAB_0057
+    JMP     ESQ_SetCopperEffect_OnEnableHighlight
 
 LAB_18D3:
     JMP     LAB_0A00
@@ -2253,7 +2253,7 @@ JMP_TBL_DISPLAY_TEXT_AT_POSITION_2:
     JMP     DISPLAY_TEXT_AT_POSITION
 
 LAB_1902:
-    JMP     LAB_00BE
+    JMP     ESQ_WildcardMatch
 
 LAB_1903:
     JMP     LAB_0631
@@ -3770,6 +3770,26 @@ LAB_199E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: WDISP_PrintfPutc   (PrintfPutcToBuffer)
+; ARGS:
+;   D0.b: character to append
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0, D7
+; CALLS:
+;   (none)
+; READS:
+;   22812(A4), 22816(A4)
+; WRITES:
+;   22812(A4), 22816(A4), [buffer]
+; DESC:
+;   Appends one byte to the current printf output buffer and advances the cursor.
+; NOTES:
+;   Uses A4-relative globals for the buffer pointer and byte count.
+;------------------------------------------------------------------------------
+WDISP_PrintfPutc:
 LAB_199F:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
@@ -3785,6 +3805,28 @@ LAB_199F:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: WDISP_SPrintf   (SPrintfToBuffer)
+; ARGS:
+;   stack +4: outBuf
+;   stack +8: formatStr
+;   stack +12+: varargs
+; RET:
+;   D0: bytes written (excluding terminator)
+; CLOBBERS:
+;   D0, A0, A2-A3
+; CALLS:
+;   WDISP_FormatWithCallback (core formatter), WDISP_PrintfPutc
+; READS:
+;   (none)
+; WRITES:
+;   outBuf, 22812(A4), 22816(A4)
+; DESC:
+;   Formats into the provided buffer using the local printf core and returns length.
+; NOTES:
+;   Zero-terminates the output.
+;------------------------------------------------------------------------------
+WDISP_SPrintf:
 PRINTF:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
@@ -3795,8 +3837,8 @@ PRINTF:
     MOVE.L  A3,22812(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
-    PEA     LAB_199F(PC)
-    JSR     LAB_1A71(PC)
+    PEA     WDISP_PrintfPutc(PC)
+    JSR     WDISP_FormatWithCallback(PC)
 
     MOVEA.L 22812(A4),A0
     CLR.B   (A0)
@@ -4202,7 +4244,7 @@ LAB_19C3:
     PEA     16(A5)
     MOVE.L  A2,-(A7)
     PEA     LAB_19C0(PC)
-    JSR     LAB_1A71(PC)
+    JSR     WDISP_FormatWithCallback(PC)
 
     MOVE.L  A3,(A7)
     PEA     -1.W
@@ -5522,7 +5564,7 @@ LAB_1A3A:
     MOVE.L  16(A5),-(A7)
     MOVE.L  A2,-(A7)
     PEA     LAB_1A39(PC)
-    JSR     LAB_1A71(PC)
+    JSR     WDISP_FormatWithCallback(PC)
 
     MOVEA.L 22848(A4),A0
     CLR.B   (A0)
@@ -6043,7 +6085,28 @@ LAB_1A70:
 
 ;!======
 
-; Core printf logic
+;------------------------------------------------------------------------------
+; FUNC: WDISP_FormatWithCallback   (FormatWithCallback??)
+; ARGS:
+;   stack +4: outputFunc (called with D0=byte)
+;   stack +8: formatStr
+;   stack +12: varArgsPtr (pointer to arguments)
+; RET:
+;   D0: ?? (format parser return)
+; CLOBBERS:
+;   D0, D7, A2-A3
+; CALLS:
+;   LAB_1A3B, outputFunc
+; READS:
+;   [formatStr], [varArgsPtr]
+; WRITES:
+;   (none)
+; DESC:
+;   Core printf-style formatter that emits bytes via a callback.
+; NOTES:
+;   Handles %% and delegates spec parsing to LAB_1A3B.
+;------------------------------------------------------------------------------
+WDISP_FormatWithCallback:
 LAB_1A71:
     LINK.W  A5,#-12
     MOVEM.L D7/A2-A3,-(A7)

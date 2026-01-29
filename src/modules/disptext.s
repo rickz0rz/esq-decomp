@@ -1,5 +1,3 @@
-;!======
-
 LAB_056A:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)

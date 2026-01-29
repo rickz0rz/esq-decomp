@@ -1,5 +1,3 @@
-;!======
-
 LAB_0CB5:
     LINK.W  A5,#-132
     MOVEM.L D7/A3,-(A7)

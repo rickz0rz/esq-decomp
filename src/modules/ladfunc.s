@@ -623,7 +623,7 @@ LAB_0E34:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FBF
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -650,7 +650,7 @@ LAB_0E37:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FC0
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -3017,10 +3017,10 @@ LAB_0EEF:
     JMP     LAB_1AAE
 
 JMP_TBL_PRINTF_3:
-    JMP     PRINTF
+    JMP     WDISP_SPrintf
 
 LAB_0EF1:
-    JMP     LAB_0056
+    JMP     ESQ_SetCopperEffect_OffDisableHighlight
 
 ;!======
 

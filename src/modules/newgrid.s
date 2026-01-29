@@ -141,7 +141,7 @@ LAB_0FA9:
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
-    JSR     LAB_0DD5(PC)
+    JSR     GCOMMAND_ResetHighlightMessages(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)
@@ -2015,7 +2015,7 @@ LAB_101B:
     BLS.W   LAB_1012
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_0D8E(PC)
+    JSR     GCOMMAND_UpdatePresetEntryCache(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L LAB_1DC5,A0

@@ -158,7 +158,7 @@ LAB_0CCE:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0CCF   (??)
+; FUNC: GCOMMAND_ParseCommandOptions   (ParseCommandOptions??)
 ; ARGS:
 ;   ??
 ; RET:
@@ -172,11 +172,11 @@ LAB_0CCE:
 ; WRITES:
 ;   ??
 ; DESC:
-;   ??
+;   Parses a command/options string into global gcommand state.
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ParseCommandOptions:
 LAB_0CCF:
     LINK.W  A5,#-20
     MOVEM.L D4-D7/A3,-(A7)
@@ -513,7 +513,7 @@ LAB_0CE8:
     MOVE.L  A0,LAB_22E3
     PEA     18.W
     MOVE.L  LAB_21BC,-(A7)
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -557,7 +557,7 @@ LAB_0CE9:
 
     PEA     LAB_1F6C
     MOVE.L  A0,-(A7)
-    JSR     LAB_0D58(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-16(A5)
@@ -1165,7 +1165,7 @@ LAB_0D16:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-24(A5)
@@ -1248,7 +1248,7 @@ LAB_0D1B:
 
     PEA     LAB_1F70
     MOVE.L  A0,-(A7)
-    JSR     LAB_0D58(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-28(A5)
@@ -1348,7 +1348,7 @@ LAB_0D20:
     ADD.L   D6,LAB_21BC
     PEA     18.W
     MOVE.L  LAB_21BC,-(A7)
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -2024,7 +2024,7 @@ LAB_0D50:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-24(A5)
@@ -2122,30 +2122,46 @@ LAB_0D56:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D57   (??)
+; FUNC: GCOMMAND_JMP_TBL_LAB_1979   (JumpStub_LAB_1979)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
 ;   D0: ??
 ; CLOBBERS:
-;   ??
+;   (none)
 ; CALLS:
-;   ??
+;   LAB_1979
 ; READS:
-;   ??
+;   (none)
 ; WRITES:
-;   ??
+;   (none)
 ; DESC:
-;   ??
-; NOTES:
-;   ??
+;   Jump stub to LAB_1979.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_JMP_TBL_LAB_1979:
 LAB_0D57:
     JMP     LAB_1979
 
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_JMP_TBL_LAB_00C3   (JumpStub_LAB_00C3)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQ_FindSubstringCaseFold
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQ_FindSubstringCaseFold.
+;------------------------------------------------------------------------------
+GCOMMAND_JMP_TBL_LAB_00C3:
 LAB_0D58:
-    JMP     LAB_00C3
+    JMP     ESQ_FindSubstringCaseFold
 
 ;!======
 ;------------------------------------------------------------------------------
@@ -2231,25 +2247,25 @@ LAB_0D59:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D61   (??)
+; FUNC: GCOMMAND_CopyGfxToWorkIfAvailable   (CopyGfxToWorkIfAvailable??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D2, D6-D7, A0-A6
 ; CALLS:
-;   ??
+;   dos.library Lock/UnLock, LAB_0D64, LAB_0D63, LAB_0D65
 ; READS:
-;   ??
+;   LAB_1F9E, LAB_1F9F, LAB_1FA0, LAB_1FA1
 ; WRITES:
-;   ??
+;   LAB_1FA3
 ; DESC:
-;   ??
+;   Verifies GFX:/WORK: assigns and issues COPY commands to stage graphics.
 ; NOTES:
-;   ??
+;   Uses shell command strings (COPY >NIL: ...) and leaves early if assigns missing.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_CopyGfxToWorkIfAvailable:
 LAB_0D61:
     MOVEM.L D2/D6-D7,-(A7)
     MOVEQ   #0,D7
@@ -2282,18 +2298,18 @@ LAB_0D61:
     MOVEQ   #0,D7
     CLR.L   -(A7)
     PEA     LAB_1FA0
-    JSR     LAB_0D64(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1ADF(PC)
 
     MOVE.L  D0,D6
     CLR.L   (A7)
     PEA     LAB_1FA1
-    JSR     LAB_0D64(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1ADF(PC)
 
     MOVE.L  D0,D6
 
-    JSR     LAB_0D63(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_071B(PC)
 
-    JSR     LAB_0D65(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_071A(PC)
 
     LEA     12(A7),A7
 
@@ -2308,31 +2324,65 @@ LAB_0D62:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D63   (??)
+; FUNC: GCOMMAND_JMP_TBL_LAB_071B   (JumpStub_LAB_071B)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   (none)
 ; CALLS:
-;   ??
+;   LAB_071B
 ; READS:
-;   ??
+;   (none)
 ; WRITES:
-;   ??
+;   (none)
 ; DESC:
-;   ??
-; NOTES:
-;   ??
+;   Jump stub to LAB_071B.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_JMP_TBL_LAB_071B:
 LAB_0D63:
     JMP     LAB_071B
 
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_JMP_TBL_LAB_1ADF   (JumpStub_LAB_1ADF)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_1ADF
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_1ADF.
+;------------------------------------------------------------------------------
+GCOMMAND_JMP_TBL_LAB_1ADF:
 LAB_0D64:
     JMP     LAB_1ADF
 
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_JMP_TBL_LAB_071A   (JumpStub_LAB_071A)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_071A
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_071A.
+;------------------------------------------------------------------------------
+GCOMMAND_JMP_TBL_LAB_071A:
 LAB_0D65:
     JMP     LAB_071A
 
@@ -2761,25 +2811,26 @@ LAB_0D79:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D7A   (??)
+; FUNC: GCOMMAND_ValidatePresetTable   (ValidatePresetTable??)
 ; ARGS:
-;   ??
+;   stack +4: presetTable (base pointer)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A1, A3, A6
 ; CALLS:
-;   ??
+;   LAB_0DA2, _LVODisable, _LVOEnable
 ; READS:
-;   ??
+;   [presetTable], LAB_22F4
 ; WRITES:
-;   ??
+;   LAB_1FA3, LAB_22F4
 ; DESC:
-;   ??
+;   Validates preset table values and, if needed, copies defaults and resets
+;   associated state.
 ; NOTES:
-;   ??
+;   Value ranges are inferred (1..$40 and 0..$1000 checks).
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ValidatePresetTable:
 LAB_0D7A:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -2884,25 +2935,25 @@ LAB_0D83:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D84   (??)
+; FUNC: GCOMMAND_InitPresetTableFromPalette   (InitPresetTableFromPalette??)
 ; ARGS:
-;   ??
+;   stack +4: presetTable (base pointer)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A3
 ; CALLS:
-;   ??
+;   JMP_TBL_LAB_1A06_6
 ; READS:
-;   ??
+;   LAB_1FA2
 ; WRITES:
-;   ??
+;   [presetTable]
 ; DESC:
-;   ??
+;   Fills preset table entries using palette data in LAB_1FA2.
 ; NOTES:
-;   ??
+;   Uses a helper at LAB_1A06 to compute palette index; layout inferred.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_InitPresetTableFromPalette:
 LAB_0D84:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A3,-(A7)
@@ -2958,53 +3009,54 @@ LAB_0D88:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D89   (??)
+; FUNC: GCOMMAND_InitPresetDefaults   (InitPresetDefaults??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A3
 ; CALLS:
-;   ??
+;   GCOMMAND_InitPresetTableFromPalette
 ; READS:
-;   ??
+;   LAB_22F4
 ; WRITES:
-;   ??
+;   LAB_22F4
 ; DESC:
-;   ??
+;   Initializes the default preset table at LAB_22F4.
 ; NOTES:
-;   ??
+;   Wrapper around GCOMMAND_InitPresetTableFromPalette.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_InitPresetDefaults:
 LAB_0D89:
     PEA     LAB_22F4
-    BSR.S   LAB_0D84
+    BSR.S   GCOMMAND_InitPresetTableFromPalette
 
     ADDQ.W  #4,A7
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D8A   (??)
+; FUNC: GCOMMAND_ComputePresetIncrement   (ComputePresetIncrement??)
 ; ARGS:
-;   ??
+;   stack +4: presetIndex (0..15)
+;   stack +8: span (value > 4 to enable scaling)
 ; RET:
-;   D0: ??
+;   D0: scaled increment (0 when out of range)
 ; CLOBBERS:
-;   ??
+;   D0-D7
 ; CALLS:
-;   ??
+;   JMP_TBL_LAB_1A06_6, JMP_TBL_LAB_1A07_3
 ; READS:
-;   ??
+;   LAB_22F4
 ; WRITES:
-;   ??
+;   (none)
 ; DESC:
-;   ??
+;   Computes a scaled increment based on a preset table entry and span.
 ; NOTES:
-;   ??
+;   Returns 0 when presetIndex is out of range or span <= 4.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ComputePresetIncrement:
 LAB_0D8A:
     LINK.W  A5,#-12
     MOVEM.L D4-D7,-(A7)
@@ -3013,15 +3065,15 @@ LAB_0D8A:
     MOVEQ   #0,D0
     MOVE.L  D0,-12(A5)
     TST.L   D7
-    BMI.S   LAB_0D8D
+    BMI.S   .return
 
     MOVEQ   #16,D1
     CMP.L   D1,D7
-    BGE.S   LAB_0D8D
+    BGE.S   .return
 
     MOVEQ   #4,D1
     CMP.L   D1,D6
-    BLE.S   LAB_0D8D
+    BLE.S   .return
 
     MOVE.L  D7,D1
     ADD.L   D1,D1
@@ -3033,7 +3085,7 @@ LAB_0D8A:
     SUBQ.L  #1,D5
     MOVE.L  D6,D4
     SUBQ.L  #5,D4
-    BLE.S   LAB_0D8B
+    BLE.S   .set_zero
 
     MOVE.L  D5,D0
     MOVE.L  #1000,D1
@@ -3042,40 +3094,40 @@ LAB_0D8A:
     MOVE.L  D4,D1
     JSR     JMP_TBL_LAB_1A07_3(PC)
 
-    BRA.S   LAB_0D8C
+    BRA.S   .store_result
 
-LAB_0D8B:
+.set_zero:
     MOVEQ   #0,D0
 
-LAB_0D8C:
+.store_result:
     MOVE.L  D0,-12(A5)
 
-LAB_0D8D:
+.return:
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D8E   (??)
+; FUNC: GCOMMAND_UpdatePresetEntryCache   (UpdatePresetEntryCache??)
 ; ARGS:
-;   ??
+;   stack +4: presetRecord (struct pointer)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A3
 ; CALLS:
-;   ??
+;   GCOMMAND_ComputePresetIncrement
 ; READS:
-;   ??
+;   32(A3), 36(A3), 55(A3)
 ; WRITES:
-;   ??
+;   36(A3)..
 ; DESC:
-;   ??
+;   Computes four cached values from presetRecord fields via GCOMMAND_ComputePresetIncrement.
 ; NOTES:
-;   ??
+;   Field layout is inferred; cache is written starting at offset 36.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_UpdatePresetEntryCache:
 LAB_0D8E:
     LINK.W  A5,#-16
     MOVEM.L D6-D7/A3,-(A7)
@@ -3100,7 +3152,7 @@ LAB_0D8F:
     MOVE.B  (A0),D0
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     ADDQ.W  #8,A7
     MOVEA.L -8(A5),A0
@@ -3117,35 +3169,35 @@ LAB_0D90:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D91   (??)
+; FUNC: GCOMMAND_ResetPresetWorkTables   (ResetPresetWorkTables??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   (none)
 ; WRITES:
-;   ??
+;   LAB_22F6..LAB_22FC, LAB_1FA3
 ; DESC:
-;   ??
+;   Clears the preset work tables and resets the pending flag.
 ; NOTES:
-;   ??
+;   Each table entry is 24 bytes; the first longword is set to index+4.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ResetPresetWorkTables:
 LAB_0D91:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
     MOVE.L  #LAB_22F6,-8(A5)
 
-LAB_0D92:
+.entry_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0D93
+    BGE.S   .done
 
     MOVE.L  D7,D0
     ADDQ.L  #4,D0
@@ -3159,9 +3211,9 @@ LAB_0D92:
     ADDQ.L  #1,D7
     MOVEQ   #24,D0
     ADD.L   D0,-8(A5)
-    BRA.S   LAB_0D92
+    BRA.S   .entry_loop
 
-LAB_0D93:
+.done:
     CLR.W   LAB_1FA3
     MOVE.L  (A7)+,D7
     UNLK    A5
@@ -3169,25 +3221,28 @@ LAB_0D93:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D94   (??)
+; FUNC: GCOMMAND_InitPresetWorkEntry   (InitPresetWorkEntry??)
 ; ARGS:
-;   ??
+;   stack +4: entryPtr (work entry)
+;   stack +8: presetIndex
+;   stack +12: span
+;   stack +16: baseValue
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0, A3
 ; CALLS:
-;   ??
+;   GCOMMAND_SetPresetEntry
 ; READS:
-;   ??
+;   LAB_22F4
 ; WRITES:
-;   ??
+;   [entryPtr]
 ; DESC:
-;   ??
+;   Initializes a preset work entry based on index/span parameters.
 ; NOTES:
-;   ??
+;   If index is invalid, forces entry index to 6 and updates the preset table.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_InitPresetWorkEntry:
 LAB_0D94:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -3195,18 +3250,18 @@ LAB_0D94:
     MOVE.L  28(A7),D6
     MOVE.L  32(A7),D5
     TST.L   D7
-    BMI.S   LAB_0D96
+    BMI.S   .invalid_index
 
     MOVEQ   #16,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0D96
+    BGE.S   .invalid_index
 
     MOVE.L  D7,(A3)
     MOVEQ   #0,D0
     MOVE.L  D0,16(A3)
     MOVEQ   #4,D1
     CMP.L   D1,D6
-    BLE.S   LAB_0D95
+    BLE.S   .span_small
 
     MOVE.L  D5,12(A3)
     MOVE.L  D7,D1
@@ -3221,19 +3276,19 @@ LAB_0D94:
     MOVE.L  D1,20(A3)
     MOVEQ   #1,D1
     MOVE.L  D1,8(A3)
-    BRA.S   LAB_0D97
+    BRA.S   .done
 
-LAB_0D95:
+.span_small:
     TST.L   D6
-    BMI.S   LAB_0D97
+    BMI.S   .done
 
     MOVE.L  D0,12(A3)
     MOVE.L  D0,4(A3)
     MOVE.L  D0,20(A3)
     MOVE.L  D0,8(A3)
-    BRA.S   LAB_0D97
+    BRA.S   .done
 
-LAB_0D96:
+.invalid_index:
     MOVEQ   #6,D0
     MOVE.L  D0,(A3)
     MOVEQ   #0,D1
@@ -3248,40 +3303,40 @@ LAB_0D96:
 
     ADDQ.W  #8,A7
 
-LAB_0D97:
+.done:
     MOVEM.L (A7)+,D5-D7/A3
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D98   (??)
+; FUNC: GCOMMAND_LoadPresetWorkEntries   (LoadPresetWorkEntries??)
 ; ARGS:
-;   ??
+;   stack +4: presetRecord
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0, A3
 ; CALLS:
-;   ??
+;   GCOMMAND_InitPresetWorkEntry
 ; READS:
-;   ??
+;   32(A3), 36(A3), 55(A3)
 ; WRITES:
-;   ??
+;   LAB_22F6..LAB_22FC
 ; DESC:
-;   ??
+;   Seeds the preset work tables using the current preset record fields.
 ; NOTES:
-;   ??
+;   Writes four entries into the LAB_22F6 block (stride 24 bytes).
 ;------------------------------------------------------------------------------
-
+GCOMMAND_LoadPresetWorkEntries:
 LAB_0D98:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
 
-LAB_0D99:
+.entry_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0D9A
+    BGE.S   .done
 
     MOVE.L  D7,D0
     MOVEQ   #24,D1
@@ -3297,93 +3352,93 @@ LAB_0D99:
     MOVE.L  32(A3),-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     LEA     16(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   LAB_0D99
+    BRA.S   .entry_loop
 
-LAB_0D9A:
+.done:
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0D9B   (??)
+; FUNC: GCOMMAND_TickPresetWorkEntries   (TickPresetWorkEntries??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   LAB_22F6..LAB_22FC
 ; WRITES:
-;   ??
+;   LAB_22F6..LAB_22FC
 ; DESC:
-;   ??
+;   Advances preset work entry accumulators and clamps them to bounds.
 ; NOTES:
-;   ??
+;   Accumulator 16(A0) uses 1000 as the carry threshold.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_TickPresetWorkEntries:
 LAB_0D9B:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
     MOVE.L  #LAB_22F6,-4(A5)
 
-LAB_0D9C:
+.entry_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0DA1
+    BGE.S   .done
 
     MOVEA.L -4(A5),A0
     TST.L   20(A0)
-    BEQ.S   LAB_0D9D
+    BEQ.S   .maybe_advance
 
     SUBQ.L  #1,20(A0)
-    BRA.S   LAB_0DA0
+    BRA.S   .next_entry
 
-LAB_0D9D:
+.maybe_advance:
     MOVE.L  12(A0),D0
     TST.L   D0
-    BLE.S   LAB_0DA0
+    BLE.S   .next_entry
 
     MOVE.L  8(A0),D1
     CMP.L   4(A0),D1
-    BGE.S   LAB_0DA0
+    BGE.S   .next_entry
 
     ADD.L   D0,16(A0)
 
-LAB_0D9E:
+.carry_loop:
     MOVEA.L -4(A5),A0
     MOVE.L  16(A0),D0
     CMPI.L  #1000,D0
-    BLT.S   LAB_0D9F
+    BLT.S   .check_bounds
 
     ADDQ.L  #1,8(A0)
     SUBI.L  #1000,16(A0)
-    BRA.S   LAB_0D9E
+    BRA.S   .carry_loop
 
-LAB_0D9F:
+.check_bounds:
     MOVEA.L -4(A5),A0
     MOVE.L  4(A0),D0
     MOVE.L  8(A0),D1
     CMP.L   D0,D1
-    BLE.S   LAB_0DA0
+    BLE.S   .next_entry
 
     CLR.L   12(A0)
     MOVE.L  4(A0),8(A0)
 
-LAB_0DA0:
+.next_entry:
     ADDQ.L  #1,D7
     MOVEQ   #24,D0
     ADD.L   D0,-4(A5)
-    BRA.S   LAB_0D9C
+    BRA.S   .entry_loop
 
-LAB_0DA1:
+.done:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
@@ -3392,21 +3447,25 @@ LAB_0DA1:
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_UpdateBannerBounds   (Cache banner geometry parameters used by the display routines.)
 ; ARGS:
-;   ??
+;   stack +4: left
+;   stack +8: top
+;   stack +12: right
+;   stack +16: bottom
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A6
 ; CALLS:
-;   ??
+;   GCOMMAND_ComputePresetIncrement, _LVODisable, _LVOEnable
 ; READS:
-;   ??
+;   LAB_2263
 ; WRITES:
-;   ??
+;   LAB_22FF, LAB_2300, LAB_2301, LAB_2302,
+;   LAB_2303..LAB_2306, LAB_1FA4
 ; DESC:
 ;   Cache banner geometry parameters used by the display routines.
 ; NOTES:
-;   ??
+;   Sets LAB_1FA4 to request a banner-table rebuild on the next tick.
 ;------------------------------------------------------------------------------
 
 ; Cache banner geometry parameters used by the display routines.
@@ -3423,34 +3482,34 @@ LAB_0DA2:
     MOVE.L  D5,LAB_2301
     MOVE.L  D4,LAB_2302
     TST.W   LAB_2263
-    BEQ.S   LAB_0DA3
+    BEQ.S   .use_zero
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0DA4
+    BRA.S   .seed_base
 
-LAB_0DA3:
+.use_zero:
     MOVEQ   #17,D0
 
-LAB_0DA4:
+.seed_base:
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  D0,-4(A5)
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,LAB_2303
     MOVE.L  -4(A5),(A7)
     MOVE.L  D6,-(A7)
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,LAB_2304
     MOVE.L  -4(A5),(A7)
     MOVE.L  D5,-(A7)
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,LAB_2305
     MOVE.L  -4(A5),(A7)
     MOVE.L  D4,-(A7)
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,LAB_2306
     MOVEA.L AbsExecBase,A6
@@ -3465,25 +3524,25 @@ LAB_0DA4:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DA5   (??)
+; FUNC: GCOMMAND_RebuildBannerTablesFromBounds   (RebuildBannerTablesFromBounds??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A3
 ; CALLS:
-;   ??
+;   GCOMMAND_InitPresetWorkEntry, GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   ??
+;   LAB_22FF..LAB_2306, LAB_22F5..LAB_22FD, LAB_1DE0..LAB_1DE3, LAB_2263
 ; WRITES:
-;   ??
+;   LAB_22F6..LAB_22FC, LAB_1E2B, LAB_1E58
 ; DESC:
-;   ??
+;   Rebuilds banner tables from the cached bounds and preset definitions.
 ; NOTES:
-;   ??
+;   Uses LAB_1DE0..LAB_1DE3 as fallback values when preset tables are negative.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_RebuildBannerTablesFromBounds:
 LAB_0DA5:
     LINK.W  A5,#-24
     MOVEM.L D2/D6-D7/A2-A3,-(A7)
@@ -3496,59 +3555,59 @@ LAB_0DA5:
     MOVE.L  A0,-12(A5)
     MOVE.L  A1,-16(A5)
     TST.W   LAB_2263
-    BEQ.S   LAB_0DA6
+    BEQ.S   .use_zero
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0DA7
+    BRA.S   .seed_entries
 
-LAB_0DA6:
+.use_zero:
     MOVEQ   #17,D0
 
-LAB_0DA7:
+.seed_entries:
     MOVE.L  D0,D6
     MOVE.L  LAB_2303,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  LAB_22FF,-(A7)
     PEA     LAB_22F6
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  LAB_2304,(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  LAB_2300,-(A7)
     PEA     LAB_22F8
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  LAB_2305,(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  LAB_2301,-(A7)
     PEA     LAB_22FA
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  LAB_2306,(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  LAB_2302,-(A7)
     PEA     LAB_22FC
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     LEA     52(A7),A7
     MOVEQ   #0,D7
 
-LAB_0DA8:
+.row_loop:
     MOVEQ   #17,D0
     CMP.L   D0,D7
-    BGE.W   LAB_0DB1
+    BGE.W   .done
 
     MOVE.L  D7,D0
     ASL.L   #5,D0
     MOVE.L  LAB_22F7,D1
     TST.L   D1
-    BPL.S   LAB_0DA9
+    BPL.S   .use_preset0
 
     MOVEQ   #0,D2
     MOVE.B  LAB_1DE0,D2
-    BRA.S   LAB_0DAA
+    BRA.S   .store_entry0
 
-LAB_0DA9:
+.use_preset0:
     MOVE.L  LAB_22F6,D2
     ASL.L   #7,D2
     LEA     LAB_22F5,A0
@@ -3560,7 +3619,7 @@ LAB_0DA9:
     MOVE.W  (A1),D1
     MOVE.L  D1,D2
 
-LAB_0DAA:
+.store_entry0:
     MOVEA.L -12(A5),A0
     MOVE.W  D2,6(A0,D0.L)
     MOVEA.L -16(A5),A1
@@ -3569,13 +3628,13 @@ LAB_0DAA:
     ASL.L   #5,D0
     MOVE.L  LAB_22F9,D1
     TST.L   D1
-    BPL.S   LAB_0DAB
+    BPL.S   .use_preset1
 
     MOVEQ   #0,D2
     MOVE.B  LAB_1DE1,D2
-    BRA.S   LAB_0DAC
+    BRA.S   .store_entry1
 
-LAB_0DAB:
+.use_preset1:
     MOVE.L  LAB_22F8,D2
     ASL.L   #7,D2
     LEA     LAB_22F5,A2
@@ -3587,20 +3646,20 @@ LAB_0DAB:
     MOVE.W  (A3),D1
     MOVE.L  D1,D2
 
-LAB_0DAC:
+.store_entry1:
     MOVE.W  D2,10(A0,D0.L)
     MOVE.W  D2,10(A1,D0.L)
     MOVE.L  D7,D0
     ASL.L   #5,D0
     MOVE.L  LAB_22FB,D1
     TST.L   D1
-    BPL.S   LAB_0DAD
+    BPL.S   .use_preset2
 
     MOVEQ   #0,D2
     MOVE.B  LAB_1DE2,D2
-    BRA.S   LAB_0DAE
+    BRA.S   .store_entry2
 
-LAB_0DAD:
+.use_preset2:
     MOVE.L  LAB_22FA,D2
     ASL.L   #7,D2
     LEA     LAB_22F5,A2
@@ -3612,20 +3671,20 @@ LAB_0DAD:
     MOVE.W  (A3),D1
     MOVE.L  D1,D2
 
-LAB_0DAE:
+.store_entry2:
     MOVE.W  D2,14(A0,D0.L)
     MOVE.W  D2,14(A1,D0.L)
     MOVE.L  D7,D0
     ASL.L   #5,D0
     MOVE.L  LAB_22FD,D1
     TST.L   D1
-    BPL.S   LAB_0DAF
+    BPL.S   .use_preset3
 
     MOVEQ   #0,D2
     MOVE.B  LAB_1DE3,D2
-    BRA.S   LAB_0DB0
+    BRA.S   .store_entry3
 
-LAB_0DAF:
+.use_preset3:
     MOVE.L  LAB_22FC,D2
     ASL.L   #7,D2
     LEA     LAB_22F5,A0
@@ -3636,16 +3695,16 @@ LAB_0DAF:
     MOVE.W  (A0),D1
     MOVE.L  D1,D2
 
-LAB_0DB0:
+.store_entry3:
     MOVEA.L -12(A5),A0
     MOVE.W  D2,18(A0,D0.L)
     MOVE.W  D2,18(A1,D0.L)
-    BSR.W   LAB_0D9B
+    BSR.W   GCOMMAND_TickPresetWorkEntries
 
     ADDQ.L  #1,D7
-    BRA.W   LAB_0DA8
+    BRA.W   .row_loop
 
-LAB_0DB1:
+.done:
     CLR.W   LAB_1FA4
     MOVEM.L (A7)+,D2/D6-D7/A2-A3
     UNLK    A5
@@ -3685,32 +3744,32 @@ LAB_0DB2:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DB3   (??)
+; FUNC: GCOMMAND_UpdateBannerRowPointers   (UpdateBannerRowPointers??)
 ; ARGS:
-;   ??
+;   stack +4: tablePtr (banner table base)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D3, D6-D7, A0-A1, A3
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   LAB_230B, LAB_230C
 ; WRITES:
-;   ??
+;   [tablePtr + index*32 + $2FA], [tablePtr + index*32 + $2FE]
 ; DESC:
-;   ??
+;   Updates pointer words in the banner table based on current/previous indices.
 ; NOTES:
-;   ??
+;   Special-cases LAB_230B == 97 to use the tail entry at offset 3876.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_UpdateBannerRowPointers:
 LAB_0DB3:
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.L  LAB_230B,D0
     MOVE.L  LAB_230C,D1
     CMP.L   D0,D1
-    BEQ.W   LAB_0DB5
+    BEQ.W   .return
 
     ASL.L   #5,D0
     MOVEA.L A3,A0
@@ -3744,7 +3803,7 @@ LAB_0DB3:
     MOVE.L  LAB_230B,D0
     MOVEQ   #97,D1
     CMP.L   D1,D0
-    BNE.S   LAB_0DB4
+    BNE.S   .store_prev_ptr
 
     ASL.L   #5,D0
     LEA     3876(A3),A0
@@ -3760,9 +3819,9 @@ LAB_0DB3:
     MOVE.L  D0,D2
     ADDI.L  #$2fe,D2
     MOVE.W  D1,0(A3,D2.L)
-    BRA.S   LAB_0DB5
+    BRA.S   .return
 
-LAB_0DB4:
+.store_prev_ptr:
     ASL.L   #5,D0
     MOVE.L  D0,D1
     ADDI.L  #$2fa,D1
@@ -3771,31 +3830,35 @@ LAB_0DB4:
     ADDI.L  #$2fe,D1
     MOVE.W  D6,0(A3,D1.L)
 
-LAB_0DB5:
+.return:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DB6   (??)
+; FUNC: GCOMMAND_BuildBannerRow   (BuildBannerRow??)
 ; ARGS:
-;   ??
+;   stack +4: bitmapPtr
+;   stack +8: tablePtr (banner table base)
+;   stack +12: rowIndex (or 0 for fallback)
+;   stack +16: fallbackIndex
+;   stack +20: baseOffset
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A6
 ; CALLS:
-;   ??
+;   GCOMMAND_UpdateBannerRowPointers
 ; READS:
-;   ??
+;   LAB_22F6..LAB_22FD, LAB_1FA5
 ; WRITES:
-;   ??
+;   [tablePtr + offsets], LAB_1FA5?
 ; DESC:
-;   ??
+;   Writes banner row pointer fields and color values into the table.
 ; NOTES:
-;   ??
+;   Uses rowIndex when > 0, otherwise fallbackIndex. Row stride is 32 bytes.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_BuildBannerRow:
 LAB_0DB6:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7/A2-A3/A6,-(A7)
@@ -3853,24 +3916,24 @@ LAB_0DB6:
     MOVE.W  D0,706(A0)
     MOVEM.L A0,-4(A5)
     TST.L   D7
-    BLE.S   LAB_0DB7
+    BLE.S   .use_fallback_index
 
     MOVE.L  D7,D0
-    BRA.S   LAB_0DB8
+    BRA.S   .index_ready
 
-LAB_0DB7:
+.use_fallback_index:
     MOVE.L  D6,D0
 
-LAB_0DB8:
+.index_ready:
     MOVE.L  D0,D4
     SUBQ.L  #1,D4
     TST.W   LAB_1FA5
-    BEQ.S   LAB_0DB9
+    BEQ.S   .write_from_tables
 
     TST.L   D4
-    BLE.W   LAB_0DBA
+    BLE.W   .write_defaults
 
-LAB_0DB9:
+.write_from_tables:
     MOVE.L  D4,D0
     ASL.L   #5,D0
     MOVEA.L A0,A1
@@ -3915,9 +3978,9 @@ LAB_0DB9:
     ADDA.L  D0,A1
     MOVE.W  (A1),(A6)
     MOVE.L  A6,-12(A5)
-    BRA.S   LAB_0DBB
+    BRA.S   .update_row_ptrs
 
-LAB_0DBA:
+.write_defaults:
     MOVE.L  D4,D0
     ASL.L   #5,D0
     MOVEA.L A0,A1
@@ -3936,9 +3999,9 @@ LAB_0DBA:
     MOVE.W  D0,(A6)
     MOVE.L  A6,-12(A5)
 
-LAB_0DBB:
+.update_row_ptrs:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0DB3
+    BSR.W   GCOMMAND_UpdateBannerRowPointers
 
     MOVEM.L -44(A5),D2/D4-D7/A2-A3/A6
     UNLK    A5
@@ -3946,42 +4009,42 @@ LAB_0DBB:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DBC   (??)
+; FUNC: GCOMMAND_ClearBannerQueue   (ClearBannerQueue??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D7, A0
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   (none)
 ; WRITES:
-;   ??
+;   LAB_1F41, LAB_1F48
 ; DESC:
-;   ??
+;   Clears the banner queue buffer and resets the queue state.
 ; NOTES:
-;   ??
+;   Zeros 98 bytes in LAB_1F48 and sets LAB_1F41 to -1.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ClearBannerQueue:
 LAB_0DBC:
     MOVE.L  D7,-(A7)
     MOVE.W  #(-1),LAB_1F41
     MOVEQ   #0,D7
 
-LAB_0DBD:
+.clear_loop:
     MOVEQ   #98,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0DBE
+    BGE.S   .return
 
     LEA     LAB_1F48,A0
     ADDA.L  D7,A0
     CLR.B   (A0)
     ADDQ.L  #1,D7
-    BRA.S   LAB_0DBD
+    BRA.S   .clear_loop
 
-LAB_0DBE:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -4084,25 +4147,25 @@ LAB_0DC0:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DC1   (??)
+; FUNC: GCOMMAND_ConsumeBannerQueueEntry   (ConsumeBannerQueueEntry??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D2, A0-A1
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   LAB_230A, LAB_1F48, LAB_1F56
 ; WRITES:
-;   ??
+;   LAB_1F41, LAB_1F45, LAB_1DEE, LAB_1FA9, LAB_1E89, LAB_1F48
 ; DESC:
-;   ??
+;   Consumes the current banner queue entry and updates highlight flags.
 ; NOTES:
-;   ??
+;   Recognizes 0xFF and 0xFE as control bytes with special handling.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ConsumeBannerQueueEntry:
 LAB_0DC1:
     MOVE.L  D2,-(A7)
     LEA     LAB_1F48,A0
@@ -4110,7 +4173,7 @@ LAB_0DC1:
     MOVEA.L A0,A1
     ADDA.W  D0,A1
     TST.B   (A1)
-    BEQ.S   LAB_0DC4
+    BEQ.S   .clear_entry
 
     MOVEA.L A0,A1
     ADDA.W  D0,A1
@@ -4119,16 +4182,16 @@ LAB_0DC1:
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
-    BNE.S   LAB_0DC2
+    BNE.S   .check_0xfe
 
     MOVE.W  LAB_1F56,D1
     SUBQ.W  #1,D1
     MOVE.W  D1,LAB_1F41
     MOVEQ   #1,D2
     MOVE.B  D2,LAB_1DEE
-    BRA.S   LAB_0DC4
+    BRA.S   .clear_entry
 
-LAB_0DC2:
+.check_0xfe:
     MOVEA.L A0,A1
     ADDA.W  D0,A1
     MOVEQ   #0,D1
@@ -4136,67 +4199,67 @@ LAB_0DC2:
     MOVEQ   #127,D2
     ADD.L   D2,D2
     CMP.L   D2,D1
-    BNE.S   LAB_0DC3
+    BNE.S   .store_value
 
     MOVE.W  #$101,LAB_1F45
-    BRA.S   LAB_0DC4
+    BRA.S   .clear_entry
 
-LAB_0DC3:
+.store_value:
     MOVEA.L A0,A1
     ADDA.W  D0,A1
     MOVEQ   #0,D1
     MOVE.B  (A1),D1
     MOVE.W  D1,LAB_1F45
 
-LAB_0DC4:
+.clear_entry:
     ADDA.W  D0,A0
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
     MOVE.W  LAB_1F41,D1
-    BLT.S   LAB_0DC5
+    BLT.S   .return
 
     MOVE.L  D1,D2
     SUBQ.W  #1,D2
     MOVE.W  D2,LAB_1F41
     MOVE.B  #$2,LAB_1FA9
     TST.W   D2
-    BPL.S   LAB_0DC5
+    BPL.S   .return
 
     MOVE.B  D0,LAB_1DEE
     MOVE.B  #$1,LAB_1E89
 
-LAB_0DC5:
+.return:
     MOVE.L  (A7)+,D2
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DC6   (??)
+; FUNC: GCOMMAND_RefreshBannerTables   (RefreshBannerTables??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A1
 ; CALLS:
-;   ??
+;   GCOMMAND_BuildBannerRow
 ; READS:
-;   ??
+;   LAB_2307, LAB_2308, LAB_1FA8, LAB_221C..LAB_221E, LAB_1E2B, LAB_1E58
 ; WRITES:
-;   ??
+;   LAB_1F2F, LAB_1F31, LAB_1F33
 ; DESC:
-;   ??
+;   Rebuilds banner rows for both tables and refreshes row pointer globals.
 ; NOTES:
-;   ??
+;   Uses LAB_2307 as the active row index and LAB_1FA8 as the base offset.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_RefreshBannerTables:
 LAB_0DC6:
     MOVE.L  LAB_2307,-(A7)
     PEA     98.W
     MOVE.L  LAB_1FA8,-(A7)
     PEA     LAB_1E2B
     PEA     GLOB_REF_696_400_BITMAP
-    BSR.W   LAB_0DB6
+    BSR.W   GCOMMAND_BuildBannerRow
 
     MOVEQ   #88,D0
     ADD.L   LAB_2307,D0
@@ -4205,7 +4268,7 @@ LAB_0DC6:
     MOVE.L  LAB_1FA8,-(A7)
     PEA     LAB_1E58
     PEA     GLOB_REF_696_400_BITMAP
-    BSR.W   LAB_0DB6
+    BSR.W   GCOMMAND_BuildBannerRow
 
     LEA     36(A7),A7
     MOVE.L  LAB_2308,D0
@@ -4222,28 +4285,32 @@ LAB_0DC6:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DC7   (??)
+; FUNC: GCOMMAND_ServiceHighlightMessages   (ServiceHighlightMessages??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D2, A0-A1, A6
 ; CALLS:
-;   ??
+;   _LVOGetMsg, _LVOReplyMsg, GCOMMAND_LoadPresetWorkEntries,
+;   GCOMMAND_RefreshBannerTables, GCOMMAND_ConsumeBannerQueueEntry,
+;   GCOMMAND_ResetPresetWorkTables, GCOMMAND_TickPresetWorkEntries,
+;   LAB_0C93, LAB_0C97, GCOMMAND_MapKeycodeToPreset
 ; READS:
-;   ??
+;   LAB_1FA6, LAB_1FA3, LAB_1DC5, LAB_230D..LAB_230F
 ; WRITES:
-;   ??
+;   LAB_1FA6, LAB_230D..LAB_230F, message fields at 20/24/28/32/52/54(A0)
 ; DESC:
-;   ??
+;   Polls the highlight message port, processes active messages, and updates
+;   banner/preset state each tick.
 ; NOTES:
-;   ??
+;   Replies to messages when their countdown at 52(A0) reaches zero.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ServiceHighlightMessages:
 LAB_0DC7:
     TST.L   LAB_1FA6
-    BNE.S   LAB_0DC9
+    BNE.S   .update_tables
 
     MOVEA.L LAB_1DC5,A0
     MOVEA.L AbsExecBase,A6
@@ -4251,26 +4318,26 @@ LAB_0DC7:
 
     MOVE.L  D0,LAB_1FA6
     TST.L   D0
-    BEQ.S   LAB_0DC9
+    BEQ.S   .update_tables
 
     MOVEA.L D0,A0
     MOVE.L  32(A0),D1
     TST.L   D1
-    BMI.S   LAB_0DC8
+    BMI.S   .maybe_store_msg
 
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0D98
+    BSR.W   GCOMMAND_LoadPresetWorkEntries
 
     ADDQ.W  #4,A7
 
-LAB_0DC8:
+.maybe_store_msg:
     MOVEA.L LAB_1FA6,A0
     MOVE.L  20(A0),LAB_230D
     MOVE.L  24(A0),LAB_230E
     MOVE.L  28(A0),LAB_230F
     MOVE.B  54(A0),D0
     TST.B   D0
-    BEQ.S   LAB_0DC9
+    BEQ.S   .update_tables
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -4281,32 +4348,32 @@ LAB_0DC8:
     MOVEA.L LAB_1FA6,A0
     CLR.B   54(A0)
 
-LAB_0DC9:
-    BSR.W   LAB_0DC6
+.update_tables:
+    BSR.W   GCOMMAND_RefreshBannerTables
 
-    BSR.W   LAB_0DC1
+    BSR.W   GCOMMAND_ConsumeBannerQueueEntry
 
     TST.L   LAB_1FA6
-    BEQ.W   LAB_0DCD
+    BEQ.W   .no_active_msg
 
     MOVEA.L LAB_1FA6,A0
     MOVE.W  52(A0),D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BHI.S   LAB_0DCA
+    BHI.S   .handle_active_msg
 
     JSR     LAB_0C97(PC)
 
-    BRA.S   LAB_0DCC
+    BRA.S   .check_countdown
 
-LAB_0DCA:
+.handle_active_msg:
     TST.W   LAB_1FA3
-    BEQ.S   LAB_0DCB
+    BEQ.S   .tick_active_msg
 
-    BSR.W   LAB_0D91
+    BSR.W   GCOMMAND_ResetPresetWorkTables
 
-LAB_0DCB:
-    BSR.W   LAB_0D9B
+.tick_active_msg:
+    BSR.W   GCOMMAND_TickPresetWorkEntries
 
     MOVEA.L LAB_1FA6,A1
     JSR     LAB_0C93(PC)
@@ -4318,12 +4385,12 @@ LAB_0DCB:
     MOVEA.L LAB_1FA6,A0
     MOVE.W  D1,52(A0)
 
-LAB_0DCC:
+.check_countdown:
     MOVEA.L LAB_1FA6,A0
     MOVE.W  52(A0),D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BHI.S   LAB_0DCE
+    BHI.S   .return
 
     MOVE.L  LAB_230D,20(A0)
     MOVEA.L LAB_1FA6,A0
@@ -4338,49 +4405,49 @@ LAB_0DCC:
     JSR     _LVOReplyMsg(A6)
 
     CLR.L   LAB_1FA6
-    BRA.S   LAB_0DCE
+    BRA.S   .return
 
-LAB_0DCD:
+.no_active_msg:
     JSR     LAB_0C97(PC)
 
-LAB_0DCE:
+.return:
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DCF   (??)
+; FUNC: GCOMMAND_TickHighlightState   (TickHighlightState??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D2, A4
 ; CALLS:
-;   ??
+;   GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_ServiceHighlightMessages
 ; READS:
-;   ??
+;   LAB_1FA4, LAB_1FA7, LAB_1FA8, LAB_2307, LAB_2312, LAB_230A, LAB_230C
 ; WRITES:
-;   ??
+;   LAB_1FA8, LAB_2307, LAB_2311, LAB_2309, LAB_230A, LAB_230B, LAB_230C
 ; DESC:
-;   ??
+;   Advances highlight/cycle counters and updates related globals.
 ; NOTES:
-;   ??
+;   Counter wrap thresholds inferred from constants (98, 88, 32).
 ;------------------------------------------------------------------------------
-
+GCOMMAND_TickHighlightState:
 LAB_0DCF:
     MOVEM.L D2/A4,-(A7)
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
     TST.W   LAB_1FA4
-    BEQ.S   LAB_0DD0
+    BEQ.S   .skip_rebuild
 
-    BSR.W   LAB_0DA5
+    BSR.W   GCOMMAND_RebuildBannerTablesFromBounds
 
-LAB_0DD0:
+.skip_rebuild:
     ADDQ.L  #1,LAB_1FA8
     MOVE.L  LAB_2307,LAB_2308
     MOVEQ   #98,D0
     CMP.L   LAB_1FA8,D0
-    BNE.S   LAB_0DD1
+    BNE.S   .advance_indices
 
     MOVEQ   #0,D1
     MOVE.L  D1,LAB_1FA8
@@ -4388,67 +4455,67 @@ LAB_0DD0:
     MOVE.L  D2,LAB_2307
     MOVE.L  LAB_2312,D2
     MOVE.L  D2,LAB_2311
-    BRA.S   LAB_0DD2
+    BRA.S   .update_counters
 
-LAB_0DD1:
+.advance_indices:
     MOVEQ   #88,D1
     ADD.L   D1,D1
     ADD.L   D1,LAB_2307
     MOVEQ   #32,D1
     ADD.L   D1,LAB_2311
 
-LAB_0DD2:
+.update_counters:
     MOVE.W  LAB_230A,D1
     MOVE.W  D1,LAB_2309
     MOVE.L  D1,D2
     SUBQ.W  #1,D2
     MOVE.W  D2,LAB_230A
-    BGE.S   LAB_0DD3
+    BGE.S   .maybe_reset_slot
 
     MOVE.W  #$61,LAB_230A
 
-LAB_0DD3:
+.maybe_reset_slot:
     MOVE.L  LAB_230C,D1
     MOVE.L  D1,LAB_230B
     ADDQ.L  #1,LAB_230C
     CMP.L   LAB_230C,D0
-    BNE.S   LAB_0DD4
+    BNE.S   .service_messages
 
     CLR.L   LAB_230C
 
-LAB_0DD4:
-    BSR.W   LAB_0DC7
+.service_messages:
+    BSR.W   GCOMMAND_ServiceHighlightMessages
 
     MOVEM.L (A7)+,D2/A4
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DD5   (??)
+; FUNC: GCOMMAND_ResetHighlightMessages   (ResetHighlightMessages??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   LAB_1FA6, LAB_230D, LAB_230E, LAB_230F
 ; WRITES:
-;   ??
+;   LAB_22A6.., LAB_1FA6
 ; DESC:
-;   ??
+;   Clears pending highlight message records and resets message state.
 ; NOTES:
-;   ??
+;   Writes into a sequence of structs starting at LAB_22A6.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ResetHighlightMessages:
 LAB_0DD5:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
 
     TST.L   LAB_1FA6
-    BEQ.S   .LAB_0DD6
+    BEQ.S   .clear_message_slots
 
     MOVEA.L LAB_1FA6,A0
     MOVE.L  LAB_230D,20(A0)
@@ -4457,14 +4524,14 @@ LAB_0DD5:
     MOVEA.L LAB_1FA6,A0
     MOVE.L  LAB_230F,28(A0)
 
-.LAB_0DD6:
+.clear_message_slots:
     MOVEQ   #0,D7
     MOVE.L  #LAB_22A6,-4(A5)
 
-.LAB_0DD7:
+.slot_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_0DD8
+    BGE.S   .clear_queue
 
     MOVEA.L -4(A5),A0
     CLR.W   52(A0)
@@ -4473,16 +4540,16 @@ LAB_0DD5:
     MOVEQ   #80,D0
     ADD.L   D0,D0
     ADD.L   D0,-4(A5)
-    BRA.S   .LAB_0DD7
+    BRA.S   .slot_loop
 
-.LAB_0DD8:
+.clear_queue:
     MOVEQ   #98,D0
     MOVEQ   #0,D1
     LEA     LAB_1F48,A0
 
-.LAB_0DD9:
+.queue_loop:
     MOVE.B  D1,(A0)+
-    DBF     D0,.LAB_0DD9
+    DBF     D0,.queue_loop
 
     MOVE.L  (A7)+,D7
     UNLK    A5
@@ -4490,25 +4557,31 @@ LAB_0DD5:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DDA   (??)
+; FUNC: GCOMMAND_BuildBannerBlock   (BuildBannerBlock??)
 ; ARGS:
-;   ??
+;   stack +4: outPtr
+;   stack +8: count
+;   stack +12: srcPtr
+;   stack +16: argByte0
+;   stack +20: argWord0
+;   stack +24: argByte1
 ; RET:
-;   D0: ??
+;   D0: outPtr after last entry
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A3, A6
 ; CALLS:
-;   ??
+;   GCOMMAND_ComputePresetIncrement, GCOMMAND_InitPresetWorkEntry,
+;   GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   ??
+;   LAB_2263, LAB_22F5..LAB_22FD, LAB_1DE0..LAB_1DE3
 ; WRITES:
-;   ??
+;   [outPtr] (writes 32-byte entries)
 ; DESC:
-;   ??
+;   Emits a block of banner/copper entries using preset tables and source bytes.
 ; NOTES:
-;   ??
+;   Entry count comes from stack +8; uses LAB_2263 to optionally force count=0.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_BuildBannerBlock:
 LAB_0DDA:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A2-A3/A6,-(A7)
@@ -4520,63 +4593,63 @@ LAB_0DDA:
     MOVE.B  31(A5),D4
     MOVE.L  A3,-4(A5)
     TST.W   LAB_2263
-    BEQ.S   LAB_0DDB
+    BEQ.S   .use_count
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0DDC
+    BRA.S   .seed_tables
 
-LAB_0DDB:
+.use_count:
     MOVE.L  D7,D0
 
-LAB_0DDC:
+.seed_tables:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     MOVE.L  D0,-12(A5)
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     CLR.L   -(A7)
     PEA     LAB_22F6
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
     PEA     5.W
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     5.W
     PEA     LAB_22F8
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
     PEA     6.W
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     6.W
     PEA     LAB_22FA
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
     PEA     7.W
-    BSR.W   LAB_0D8A
+    BSR.W   GCOMMAND_ComputePresetIncrement
 
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     7.W
     PEA     LAB_22FC
-    BSR.W   LAB_0D94
+    BSR.W   GCOMMAND_InitPresetWorkEntry
 
     LEA     68(A7),A7
     CLR.L   -8(A5)
 
-LAB_0DDD:
+.emit_loop:
     MOVE.L  -8(A5),D0
     CMP.L   D7,D0
-    BGE.W   LAB_0DE6
+    BGE.W   .done
 
     MOVE.B  (A2),D0
     MOVEA.L -4(A5),A0
@@ -4587,13 +4660,13 @@ LAB_0DDD:
     MOVE.W  #$188,4(A0)
     MOVE.L  LAB_22F7,D0
     TST.L   D0
-    BPL.S   LAB_0DDE
+    BPL.S   .use_preset0
 
     MOVEQ   #0,D1
     MOVE.B  LAB_1DE0,D1
-    BRA.S   LAB_0DDF
+    BRA.S   .store_preset0
 
-LAB_0DDE:
+.use_preset0:
     MOVE.L  LAB_22F6,D1
     ASL.L   #7,D1
     LEA     LAB_22F5,A1
@@ -4605,18 +4678,18 @@ LAB_0DDE:
     MOVE.W  (A6),D0
     MOVE.L  D0,D1
 
-LAB_0DDF:
+.store_preset0:
     MOVE.W  D1,6(A0)
     MOVE.W  #$18a,8(A0)
     MOVE.L  LAB_22F9,D0
     TST.L   D0
-    BPL.S   LAB_0DE0
+    BPL.S   .use_preset1
 
     MOVEQ   #0,D1
     MOVE.B  LAB_1DE1,D1
-    BRA.S   LAB_0DE1
+    BRA.S   .store_preset1
 
-LAB_0DE0:
+.use_preset1:
     MOVE.L  LAB_22F8,D1
     ASL.L   #7,D1
     LEA     LAB_22F5,A1
@@ -4628,18 +4701,18 @@ LAB_0DE0:
     MOVE.W  (A6),D0
     MOVE.L  D0,D1
 
-LAB_0DE1:
+.store_preset1:
     MOVE.W  D1,10(A0)
     MOVE.W  #$18c,12(A0)
     MOVE.L  LAB_22FB,D0
     TST.L   D0
-    BPL.S   LAB_0DE2
+    BPL.S   .use_preset2
 
     MOVEQ   #0,D1
     MOVE.B  LAB_1DE2,D1
-    BRA.S   LAB_0DE3
+    BRA.S   .store_preset2
 
-LAB_0DE2:
+.use_preset2:
     MOVE.L  LAB_22FA,D1
     ASL.L   #7,D1
     LEA     LAB_22F5,A1
@@ -4651,18 +4724,18 @@ LAB_0DE2:
     MOVE.W  (A6),D0
     MOVE.L  D0,D1
 
-LAB_0DE3:
+.store_preset2:
     MOVE.W  D1,14(A0)
     MOVE.W  #$18e,16(A0)
     MOVE.L  LAB_22FD,D0
     TST.L   D0
-    BPL.S   LAB_0DE4
+    BPL.S   .use_preset3
 
     MOVEQ   #0,D1
     MOVE.B  LAB_1DE3,D1
-    BRA.S   LAB_0DE5
+    BRA.S   .store_preset3
 
-LAB_0DE4:
+.use_preset3:
     MOVE.L  LAB_22FC,D1
     ASL.L   #7,D1
     LEA     LAB_22F5,A1
@@ -4673,7 +4746,7 @@ LAB_0DE4:
     MOVE.W  (A1),D0
     MOVE.L  D0,D1
 
-LAB_0DE5:
+.store_preset3:
     MOVE.W  D1,18(A0)
     MOVE.W  #$84,20(A0)
     LEA     32(A0),A1
@@ -4687,14 +4760,14 @@ LAB_0DE5:
     MOVE.W  D0,26(A0)
     MOVE.W  #$8a,28(A0)
     CLR.W   30(A0)
-    BSR.W   LAB_0D9B
+    BSR.W   GCOMMAND_TickPresetWorkEntries
 
     ADDQ.L  #1,-8(A5)
     MOVEQ   #32,D0
     ADD.L   D0,-4(A5)
-    BRA.W   LAB_0DDD
+    BRA.W   .emit_loop
 
-LAB_0DE6:
+.done:
     MOVE.L  -4(A5),D0
     MOVEM.L (A7)+,D4-D7/A2-A3/A6
     UNLK    A5
@@ -4702,25 +4775,30 @@ LAB_0DE6:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: COPY_IMAGE_DATA_TO_BITMAP   (??)
+; FUNC: GCOMMAND_CopyImageDataToBitmap   (CopyImageDataToBitmap??)
 ; ARGS:
-;   ??
+;   stack +4: bitmapPtr
+;   stack +8: tablePtr
+;   stack +12: length
+;   stack +16: baseOffset
+;   stack +20: argWord0
+;   stack +24: argByte0
 ; RET:
-;   D0: ??
+;   D0: tablePtr (echoed)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A3, A6
 ; CALLS:
-;   ??
+;   GCOMMAND_BuildBannerBlock
 ; READS:
-;   ??
+;   LAB_2229, [A3+8/12/16]
 ; WRITES:
-;   ??
+;   [tablePtr] (copper list entries)
 ; DESC:
-;   ??
+;   Emits a banner copper-list block into tablePtr using source offsets.
 ; NOTES:
-;   ??
+;   Argument layout inferred from call sites; exact semantics still TBD.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_CopyImageDataToBitmap:
 COPY_IMAGE_DATA_TO_BITMAP:
     LINK.W  A5,#-4
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
@@ -4859,7 +4937,7 @@ COPY_IMAGE_DATA_TO_BITMAP:
     MOVE.L  A1,-(A7)
     PEA     17.W
     MOVE.L  A6,-(A7)
-    BSR.W   LAB_0DDA
+    BSR.W   GCOMMAND_BuildBannerBlock
 
     LEA     24(A7),A7
     MOVEA.L 24(A5),A0
@@ -4958,14 +5036,14 @@ COPY_IMAGE_DATA_TO_BITMAP:
     MOVE.L  24(A5),-(A7)
     PEA     98.W
     MOVE.L  A1,-(A7)
-    BSR.W   LAB_0DDA
+    BSR.W   GCOMMAND_BuildBannerBlock
 
     MOVE.L  D6,(A7)
     PEA     98.W
     CLR.L   -(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0DB6
+    BSR.W   GCOMMAND_BuildBannerRow
 
     LEA     40(A7),A7
     MOVEA.L -4(A5),A0
@@ -5056,25 +5134,28 @@ COPY_IMAGE_DATA_TO_BITMAP:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DE8   (??)
+; FUNC: GCOMMAND_BuildBannerTables   (BuildBannerTables??)
 ; ARGS:
-;   ??
+;   stack +8: arg0 (byte, low byte used)
+;   stack +12: arg1 (word, low word used)
+;   stack +16: arg2 (byte, low byte used)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D7, A0-A6
 ; CALLS:
-;   ??
+;   _LVODisable, _LVOEnable, GCOMMAND_ResetPresetWorkTables,
+;   GCOMMAND_ClearBannerQueue, GCOMMAND_CopyImageDataToBitmap
 ; READS:
-;   ??
+;   LAB_1FA7, LAB_2312, GLOB_REF_696_400_BITMAP
 ; WRITES:
-;   ??
+;   LAB_1FA8, LAB_2307, LAB_2308, LAB_2309..LAB_230C, LAB_2311, LAB_1D31, LAB_1F45
 ; DESC:
-;   ??
+;   Resets banner-related globals and rebuilds the banner tables into the bitmap.
 ; NOTES:
-;   ??
+;   Argument bytes/words are forwarded into GCOMMAND_CopyImageDataToBitmap calls.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_BuildBannerTables:
 LAB_0DE8:
     LINK.W  A5,#-4
     MOVEM.L D2/D5-D7,-(A7)
@@ -5085,7 +5166,7 @@ LAB_0DE8:
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
-    BSR.W   LAB_0D91
+    BSR.W   GCOMMAND_ResetPresetWorkTables
 
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_1FA8
@@ -5112,7 +5193,7 @@ LAB_0DE8:
     PEA     2992.W
     PEA     LAB_1E2B
     PEA     GLOB_REF_696_400_BITMAP
-    BSR.W   COPY_IMAGE_DATA_TO_BITMAP
+    BSR.W   GCOMMAND_CopyImageDataToBitmap
 
     MOVE.B  D7,-1(A5)
     MOVEQ   #88,D0
@@ -5128,9 +5209,9 @@ LAB_0DE8:
     PEA     3080.W
     PEA     LAB_1E58
     PEA     GLOB_REF_696_400_BITMAP
-    BSR.W   COPY_IMAGE_DATA_TO_BITMAP
+    BSR.W   GCOMMAND_CopyImageDataToBitmap
 
-    BSR.W   LAB_0DBC
+    BSR.W   GCOMMAND_ClearBannerQueue
 
     MOVE.W  #1,LAB_1D31
     MOVE.W  #$100,LAB_1F45
@@ -5143,25 +5224,26 @@ LAB_0DE8:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DE9   (??)
+; FUNC: GCOMMAND_ResetBannerFadeState   (ResetBannerFadeState??)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0, A7
 ; CALLS:
-;   ??
+;   GCOMMAND_BuildBannerTables
 ; READS:
-;   ??
+;   LAB_1FAF
 ; WRITES:
-;   ??
+;   LAB_1FAF, LAB_2310, LAB_2312
 ; DESC:
-;   ??
+;   Resets banner fade parameters when the pending flag is set.
 ; NOTES:
-;   ??
+;   Initializes LAB_2310/LAB_2312 with fixed offsets after calling
+;   GCOMMAND_BuildBannerTables.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ResetBannerFadeState:
 LAB_0DE9:
     TST.W   LAB_1FAF
     BEQ.S   LAB_0DEA
@@ -5170,7 +5252,7 @@ LAB_0DE9:
     CLR.L   -(A7)
     MOVE.L  #$80fe,-(A7)
     PEA     128.W
-    BSR.W   LAB_0DE8
+    BSR.W   GCOMMAND_BuildBannerTables
 
     LEA     12(A7),A7
     MOVEQ   #64,D0
@@ -5184,25 +5266,26 @@ LAB_0DEA:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DEB   (??)
+; FUNC: GCOMMAND_AddBannerTableByteDelta   (AddBannerTableByteDelta??)
 ; ARGS:
-;   ??
+;   stack +4: tablePtr
+;   stack +8: delta (byte)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D7, A3
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   [tablePtr]
 ; WRITES:
-;   ??
+;   [tablePtr]
 ; DESC:
-;   ??
+;   Adds a signed byte delta to the first byte of a banner table.
 ; NOTES:
-;   ??
+;   Used by GCOMMAND_AdjustBannerCopperOffset to bias banner data in-place.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_AddBannerTableByteDelta:
 LAB_0DEB:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -5213,25 +5296,26 @@ LAB_0DEB:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DEC   (??)
+; FUNC: GCOMMAND_UpdateBannerOffset   (UpdateBannerOffset??)
 ; ARGS:
-;   ??
+;   stack +8: delta (byte)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D1, D7
 ; CALLS:
-;   ??
+;   GCOMMAND_UpdateBannerRowPointers
 ; READS:
-;   ??
+;   LAB_230C
 ; WRITES:
-;   ??
+;   LAB_230B, LAB_230C, LAB_1E2B, LAB_1E58
 ; DESC:
-;   ??
+;   Applies a signed delta to LAB_230C, wrapping it into 0..97, then updates
+;   banner tables via GCOMMAND_UpdateBannerRowPointers.
 ; NOTES:
-;   ??
+;   Skips all work when delta is zero.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_UpdateBannerOffset:
 LAB_0DEC:
     MOVE.L  D7,-(A7)
     MOVE.B  11(A7),D7
@@ -5266,10 +5350,10 @@ LAB_0DEE:
 
 LAB_0DEF:
     PEA     LAB_1E2B
-    BSR.W   LAB_0DB3
+    BSR.W   GCOMMAND_UpdateBannerRowPointers
 
     PEA     LAB_1E58
-    BSR.W   LAB_0DB3
+    BSR.W   GCOMMAND_UpdateBannerRowPointers
 
     ADDQ.W  #8,A7
 
@@ -5279,25 +5363,26 @@ LAB_0DF0:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DF1   (??)
+; FUNC: GCOMMAND_AdjustBannerCopperOffset   (AdjustBannerCopperOffset??)
 ; ARGS:
-;   ??
+;   stack +4: delta (byte)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D1, D7, A0
 ; CALLS:
-;   ??
+;   GCOMMAND_AddBannerTableByteDelta, GCOMMAND_UpdateBannerOffset
 ; READS:
-;   ??
+;   LAB_1E2B
 ; WRITES:
-;   ??
+;   LAB_1E2B, LAB_1E58
 ; DESC:
-;   ??
+;   Applies a signed offset to banner tables when in range.
 ; NOTES:
-;   ??
+;   Uses GCOMMAND_AddBannerTableByteDelta/GCOMMAND_UpdateBannerOffset helpers
+;   to update the banner data.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_AdjustBannerCopperOffset:
 LAB_0DF1:
     LINK.W  A5,#-4
     MOVE.L  D7,-(A7)
@@ -5323,20 +5408,20 @@ LAB_0DF1:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_0DEB
+    BSR.W   GCOMMAND_AddBannerTableByteDelta
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_1E58
-    BSR.W   LAB_0DEB
+    BSR.W   GCOMMAND_AddBannerTableByteDelta
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    BSR.W   LAB_0DEC
+    BSR.W   GCOMMAND_UpdateBannerOffset
 
     LEA     12(A7),A7
 
@@ -5349,21 +5434,21 @@ LAB_0DF2:
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_SeedBannerDefaults   (Reset banner buffers to the default values embedded in the binary.)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D3, A0
 ; CALLS:
-;   ??
+;   GCOMMAND_BuildBannerTables
 ; READS:
-;   ??
+;   (none)
 ; WRITES:
-;   ??
+;   LAB_1E2B, LAB_1E58
 ; DESC:
 ;   Reset banner buffers to the default values embedded in the binary.
 ; NOTES:
-;   ??
+;   Seeds both tables with fixed sentinel bytes and invokes GCOMMAND_BuildBannerTables.
 ;------------------------------------------------------------------------------
 
 ; Reset banner buffers to the default values embedded in the binary.
@@ -5374,7 +5459,7 @@ LAB_0DF3:
     PEA     1.W
     MOVE.L  #$fffe,-(A7)
     PEA     32.W
-    BSR.W   LAB_0DE8
+    BSR.W   GCOMMAND_BuildBannerTables
 
     MOVE.L  #LAB_1E2B,-4(A5)
     MOVEQ   #31,D0
@@ -5404,21 +5489,21 @@ LAB_0DF3:
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_SeedBannerFromPrefs   (Seed banner buffers using values read from preferences.)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0-D2, A0
 ; CALLS:
-;   ??
+;   GCOMMAND_BuildBannerTables
 ; READS:
-;   ??
+;   GLOB_REF_WORD_HEX_CODE_8E
 ; WRITES:
-;   ??
+;   LAB_1E2B, LAB_1E58
 ; DESC:
 ;   Seed banner buffers using values read from preferences.
 ; NOTES:
-;   ??
+;   Seeds the leading bytes from GLOB_REF_WORD_HEX_CODE_8E and applies defaults.
 ;------------------------------------------------------------------------------
 
 ; Seed banner buffers using values read from preferences.
@@ -5429,7 +5514,7 @@ LAB_0DF4:
     CLR.L   -(A7)
     MOVE.L  #$80fe,-(A7)
     PEA     128.W
-    BSR.W   LAB_0DE8
+    BSR.W   GCOMMAND_BuildBannerTables
 
     MOVE.L  #LAB_1E2B,-4(A5)
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
@@ -5458,21 +5543,22 @@ LAB_0DF4:
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_SaveBrushResult   (Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.)
 ; ARGS:
-;   ??
+;   stack +8: workPtr (brush context)
 ; RET:
-;   D0: ??
+;   (none)
 ; CLOBBERS:
-;   ??
+;   D0, A0, A3, A6
 ; CALLS:
-;   ??
+;   GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList, _LVOForbid,
+;   GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode
 ; READS:
-;   ??
+;   190(A3), LAB_1ED3
 ; WRITES:
-;   ??
+;   LAB_1B84, LAB_1ED3
 ; DESC:
 ;   Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
 ; NOTES:
-;   ??
+;   Only swaps LAB_1ED3 when the current brush mode equals 4 and the new list exists.
 ;------------------------------------------------------------------------------
 
 ; Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
@@ -5487,7 +5573,7 @@ LAB_0DF5:
     MOVE.W  D0,LAB_1B84
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
-    JSR     LAB_0DFA(PC)
+    JSR     GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  LAB_1B84,D0
@@ -5502,7 +5588,7 @@ LAB_0DF5:
 
     MOVE.L  -4(A5),-(A7)
     MOVE.L  LAB_1ED3,-(A7)
-    JSR     LAB_0DF9(PC)
+    JSR     GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_1ED3
@@ -5525,7 +5611,7 @@ LAB_0DF5:
 
     MOVE.L  -4(A5),-(A7)
     MOVE.L  LAB_1ED2,-(A7)
-    JSR     LAB_0DF9(PC)
+    JSR     GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_1ED2
@@ -5556,52 +5642,69 @@ LAB_0DF5:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DF9   (??)
+; FUNC: GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode   (JumpStub_BRUSH_AppendBrushNode)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
 ;   D0: ??
 ; CLOBBERS:
-;   ??
+;   (none)
 ; CALLS:
-;   ??
+;   BRUSH_AppendBrushNode
 ; READS:
-;   ??
+;   (none)
 ; WRITES:
-;   ??
+;   (none)
 ; DESC:
-;   ??
-; NOTES:
-;   ??
+;   Jump stub to BRUSH_AppendBrushNode.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode:
 LAB_0DF9:
     JMP     BRUSH_AppendBrushNode
 
+;------------------------------------------------------------------------------
+; FUNC: GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList   (JumpStub_BRUSH_PopulateBrushList)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   BRUSH_PopulateBrushList
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to BRUSH_PopulateBrushList.
+;------------------------------------------------------------------------------
+GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList:
 LAB_0DFA:
     JMP     BRUSH_PopulateBrushList
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0DFB   (??)
+; FUNC: GCOMMAND_ProcessCtrlCommand   (ProcessCtrlCommand??)
 ; ARGS:
-;   ??
+;   stack +4: cmdPtr
 ; RET:
-;   D0: ??
+;   D0: 0
 ; CLOBBERS:
-;   ??
+;   D0-D7, A3-A4
 ; CALLS:
-;   ??
+;   LAB_0E04
 ; READS:
-;   ??
+;   4(A3), LAB_231B, LAB_231D
 ; WRITES:
-;   ??
+;   LAB_231B, LAB_1FB0
 ; DESC:
-;   ??
+;   Handles control commands, updating the circular ctrl buffer index.
 ; NOTES:
-;   ??
+;   When command type is 1, compares against LAB_231D entry via LAB_0E04.
+;   Command types 15/16 set LAB_1FB0.
 ;------------------------------------------------------------------------------
-
+GCOMMAND_ProcessCtrlCommand:
 LAB_0DFB:
     LINK.W  A5,#-4
     MOVEM.L D7/A3-A4,-(A7)
@@ -5609,7 +5712,7 @@ LAB_0DFB:
     MOVEA.L 8(A5),A3
     MOVEQ   #1,D0
     CMP.B   4(A3),D0
-    BNE.S   .LAB_0DFC
+    BNE.S   .check_special_types
 
     MOVE.L  LAB_231B,D0
     LSL.L   #2,D0
@@ -5625,37 +5728,37 @@ LAB_0DFB:
     LEA     16(A7),A7
     MOVE.L  D0,D7
     TST.L   D7
-    BLE.S   .LAB_0DFE
+    BLE.S   .return
 
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BEQ.S   .LAB_0DFE
+    BEQ.S   .return
 
     ADDQ.L  #1,LAB_231B
     CMPI.L  #$14,LAB_231B
-    BLT.S   .LAB_0DFE
+    BLT.S   .return
 
     CLR.L   LAB_231B
-    BRA.S   .LAB_0DFE
+    BRA.S   .return
 
-.LAB_0DFC:
+.check_special_types:
     MOVE.B  4(A3),D0
     MOVEQ   #16,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0DFD
+    BNE.S   .check_type_15
 
     MOVEQ   #1,D1
     MOVE.W  D1,LAB_1FB0
-    BRA.S   .LAB_0DFE
+    BRA.S   .return
 
-.LAB_0DFD:
+.check_type_15:
     MOVEQ   #15,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0DFE
+    BNE.S   .return
 
     MOVE.W  #1,LAB_1FB0
 
-.LAB_0DFE:
+.return:
     MOVEQ   #0,D0
     MOVEM.L (A7)+,D7/A3-A4
     UNLK    A5

@@ -307,7 +307,7 @@ LAB_15DE:
     MOVE.L  D0,-(A7)
     PEA     LAB_2139
     PEA     -188(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     PEA     -188(A5)
     PEA     -137(A5)
@@ -951,7 +951,7 @@ LAB_161B:
     MOVE.L  -12(A5),-(A7)
     PEA     LAB_213F
     PEA     -524(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     PEA     LAB_2140
     PEA     -524(A5)
@@ -1758,7 +1758,7 @@ LAB_1657:
     MOVE.L  A3,-(A7)
     PEA     LAB_214C
     PEA     -200(A5)
-    JSR     PRINTF(PC)
+    JSR     WDISP_SPrintf(PC)
 
     MOVE.W  LAB_234D,D0
     EXT.L   D0

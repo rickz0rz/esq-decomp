@@ -1050,7 +1050,7 @@ CLEANUP_ProcessAlerts:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
 ;   JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT, JMP_TBL_PRINTF_1, _LVOSetAPen,
-;   _LVORectFill, _LVOMove, _LVOText, LAB_00ED, LAB_026C
+;   _LVORectFill, _LVOMove, _LVOText, ESQ_DrawBevelFrameWithTopRight, LAB_026C
 ; READS:
 ;   LAB_2263, GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_WORD_CURRENT_HOUR,
 ;   GLOB_WORD_USE_24_HR_FMT, GLOB_WORD_CURRENT_MINUTE, GLOB_WORD_CURRENT_SECOND,
@@ -1150,7 +1150,7 @@ LAB_01E3:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
-    JSR     LAB_00ED(PC)
+    JSR     ESQ_DrawBevelFrameWithTopRight(PC)
 
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
     MOVEA.L 52(A1),A0
@@ -1311,7 +1311,7 @@ LAB_01E9:
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A5-A6
 ; CALLS:
-;   LAB_0211, _LVOSetAPen, _LVORectFill, JMP_TBL_LAB_1A06_2, LAB_00ED,
+;   LAB_0211, _LVOSetAPen, _LVORectFill, JMP_TBL_LAB_1A06_2, ESQ_DrawBevelFrameWithTopRight,
 ;   CLEANUP_FormatClockFormatEntry, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   LAB_232A, LAB_232B, GLOB_REF_GRID_RASTPORT_MAYBE_1, GLOB_REF_GRAPHICS_LIBRARY
@@ -1409,7 +1409,7 @@ LAB_01EE:
     CLR.L   -(A7)
     MOVE.L  32(A7),-(A7)
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
-    JSR     LAB_00ED(PC)
+    JSR     ESQ_DrawBevelFrameWithTopRight(PC)
 
     PEA     -89(A5)
     MOVE.L  D5,-(A7)
@@ -1532,7 +1532,7 @@ LAB_01EE:
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
-    JSR     LAB_00ED(PC)
+    JSR     ESQ_DrawBevelFrameWithTopRight(PC)
 
     PEA     -89(A5)
     MOVE.L  D5,-(A7)
@@ -1685,7 +1685,7 @@ LAB_01FD:
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A5-A6
 ; CALLS:
-;   LAB_0090, _LVOSetAPen, _LVOSetDrMd, _LVORectFill, _LVOTextLength,
+;   ESQ_FormatTimeStamp, _LVOSetAPen, _LVOSetDrMd, _LVORectFill, _LVOTextLength,
 ;   _LVOMove, _LVOText, JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT, JMP_TBL_PRINTF_1,
 ;   LAB_026C
 ; READS:
@@ -1709,7 +1709,7 @@ LAB_01FE:
     MOVEQ   #0,D5
     PEA     LAB_2274
     PEA     -32(A5)
-    JSR     LAB_0090(PC)
+    JSR     ESQ_FormatTimeStamp(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -2038,7 +2038,7 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill, RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY,
-;   LAB_00ED
+;   ESQ_DrawBevelFrameWithTopRight
 ; READS:
 ;   GLOB_REF_RASTPORT_1, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_696_400_BITMAP
 ; WRITES:
@@ -2084,7 +2084,7 @@ LAB_0209:
     PEA     34.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     LAB_00ED(PC)
+    JSR     ESQ_DrawBevelFrameWithTopRight(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  .rastPortBitmap(A5),Struct_RastPort__BitMap(A0)
@@ -2104,7 +2104,7 @@ LAB_0209:
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
-;   _LVOSetAPen, _LVORectFill, LAB_00ED
+;   _LVOSetAPen, _LVORectFill, ESQ_DrawBevelFrameWithTopRight
 ; READS:
 ;   GLOB_REF_RASTPORT_1, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_696_400_BITMAP
 ; WRITES:
@@ -2143,7 +2143,7 @@ LAB_020A:
     PEA     34.W
     PEA     256.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     LAB_00ED(PC)
+    JSR     ESQ_DrawBevelFrameWithTopRight(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
@@ -2162,7 +2162,7 @@ LAB_020A:
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
-;   _LVOSetAPen, _LVORectFill, CLEANUP_DrawGridTimeBanner, LAB_00ED
+;   _LVOSetAPen, _LVORectFill, CLEANUP_DrawGridTimeBanner, ESQ_DrawBevelFrameWithTopRight
 ; READS:
 ;   GLOB_REF_RASTPORT_1, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_696_400_BITMAP
 ; WRITES:
@@ -2203,7 +2203,7 @@ LAB_020B:
     PEA     34.W
     PEA     448.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     LAB_00ED(PC)
+    JSR     ESQ_DrawBevelFrameWithTopRight(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
@@ -2345,8 +2345,8 @@ JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT:
 ; CLOBBERS:
 ;   D0-D7/A0-A2/A6
 ; CALLS:
-;   LAB_05C1, LAB_026E, LAB_055F, LAB_0056, LAB_026D, _LVOSetRast,
-;   LAB_0265, LAB_0273, LAB_0266, _LVOSetAPen, LAB_0268, LAB_0057,
+;   LAB_05C1, LAB_026E, LAB_055F, ESQ_SetCopperEffect_OffDisableHighlight, LAB_026D, _LVOSetRast,
+;   LAB_0265, LAB_0273, LAB_0266, _LVOSetAPen, LAB_0268, ESQ_SetCopperEffect_OnEnableHighlight,
 ;   LAB_037F, LAB_026B, JMP_TBL_APPEND_DATA_AT_NULL_1, LAB_0267, LAB_0269,
 ;   LAB_026F, CLEANUP_BuildAlignedStatusLine, LAB_0271, LAB_0270, LAB_0272, LAB_0276,
 ;   _LVORectFill, LAB_026C, LAB_026A
@@ -2689,7 +2689,7 @@ LAB_021A:
     CMP.W   D0,D6
     BNE.S   .maybe_refresh_display
 
-    JSR     LAB_0056(PC)
+    JSR     ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
 .maybe_refresh_display:
     JSR     LAB_026D(PC)
@@ -2783,7 +2783,7 @@ LAB_021A:
     JSR     _LVOSetRast(A6)
 
 .maybe_clear_rastport_secondary:
-    JSR     LAB_005C(PC)
+    JSR     ESQ_NoOp(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
@@ -2805,7 +2805,7 @@ LAB_021A:
     MOVE.L  D0,-(A7)
     JSR     LAB_0268(PC)
 
-    JSR     LAB_0057(PC)
+    JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D0
     MOVE.B  D0,LAB_2366
@@ -3259,7 +3259,7 @@ LAB_021A:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
-    JSR     LAB_0057(PC)
+    JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -4570,7 +4570,7 @@ LAB_0290:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   COI_CountEscape14BeforeNull, LAB_037D, LAB_00BE, LAB_0468, LAB_0385,
+;   COI_CountEscape14BeforeNull, LAB_037D, ESQ_WildcardMatch, LAB_0468, LAB_0385,
 ;   CLEANUP_FormatEntryStringTokens, COI_AllocSubEntryTable, LAB_02D1, LAB_02D5
 ; READS:
 ;   LAB_222D-LAB_2235, LAB_2232, LAB_1B8F-LAB_1B92,
@@ -4749,7 +4749,7 @@ LAB_02A5:
     ADDA.L  -66(A5),A1
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_00BE(PC)
+    JSR     ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0

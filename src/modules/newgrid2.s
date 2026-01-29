@@ -588,13 +588,13 @@ LAB_133C:
 ;!======
 
 LAB_133D:
-    JMP     LAB_00ED
+    JMP     ESQ_DrawBevelFrameWithTopRight
 
 LAB_133E:
     JMP     LAB_0926
 
 LAB_133F:
-    JMP     LAB_00E8
+    JMP     ESQ_DrawVerticalBevel
 
 LAB_1340:
     JMP     LAB_0597
@@ -626,10 +626,10 @@ LAB_1348:
     JMP     CLEANUP_FormatClockFormatEntry
 
 LAB_1349:
-    JMP     LAB_00EC
+    JMP     ESQ_DrawBevelFrameWithTop
 
 LAB_134A:
-    JMP     LAB_0095
+    JMP     ESQ_GetHalfHourSlotIndex
 
 LAB_134B:
     JMP     LAB_1985
@@ -654,7 +654,7 @@ LAB_1351:
     JMP     LAB_05B9
 
 LAB_1352:
-    JMP     LAB_00EB
+    JMP     ESQ_DrawBeveledFrame
 
 LAB_1353:
     JMP     LAB_054C
@@ -663,10 +663,10 @@ LAB_1354:
     JMP     LAB_0592
 
 LAB_1355:
-    JMP     LAB_00B1
+    JMP     ESQ_TestBit1Based
 
 LAB_1356:
-    JMP     LAB_00E9
+    JMP     ESQ_DrawVerticalBevelPair
 
 LAB_1357:
     JMP     LAB_05BB
@@ -678,7 +678,7 @@ LAB_1359:
     JMP     LAB_05B6
 
 LAB_135A:
-    JMP     LAB_00EA
+    JMP     ESQ_DrawHorizontalBevel
 
     RTS
 

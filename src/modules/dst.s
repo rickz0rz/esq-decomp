@@ -3940,7 +3940,7 @@ LAB_071D:
 ;!======
 
 LAB_071E:
-    JMP     LAB_0DD5
+    JMP     GCOMMAND_ResetHighlightMessages
 
 LAB_071F:
     JMP     LAB_0EE7

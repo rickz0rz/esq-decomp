@@ -1573,17 +1573,17 @@ LAB_08A9:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0DE9
+;   GCOMMAND_ResetBannerFadeState
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0DE9.
+;   Jump stub to GCOMMAND_ResetBannerFadeState.
 ;------------------------------------------------------------------------------
 ESQ_JMP_TBL_LAB_0DE9:
 LAB_08AA:
-    JMP     LAB_0DE9
+    JMP     GCOMMAND_ResetBannerFadeState
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMP_TBL_LAB_180B   (JumpStub_LAB_180B)
@@ -1720,17 +1720,17 @@ LAB_08B0:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0057
+;   ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0057.
+;   Jump stub to ESQ_SetCopperEffect_OnEnableHighlight.
 ;------------------------------------------------------------------------------
 ESQ_JMP_TBL_LAB_0057:
 LAB_08B1:
-    JMP     LAB_0057
+    JMP     ESQ_SetCopperEffect_OnEnableHighlight
 
 ;!======
 
@@ -1770,17 +1770,17 @@ LAB_08B2:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0D89
+;   GCOMMAND_InitPresetDefaults
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0D89.
+;   Jump stub to GCOMMAND_InitPresetDefaults.
 ;------------------------------------------------------------------------------
 ESQ_JMP_TBL_LAB_0D89:
 LAB_08B3:
-    JMP     LAB_0D89
+    JMP     GCOMMAND_InitPresetDefaults
 
 ;------------------------------------------------------------------------------
 ; FUNC: JMP_TBL_OVERRIDE_INTUITION_FUNCS   (JumpStub_OVERRIDE_INTUITION_FUNCS)
@@ -1860,16 +1860,16 @@ LAB_08B6:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   PRINTF
+;   WDISP_SPrintf
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to PRINTF.
+;   Jump stub to WDISP_SPrintf.
 ;------------------------------------------------------------------------------
 JMP_TBL_PRINTF_2:
-    JMP     PRINTF
+    JMP     WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMP_TBL_LAB_0056   (JumpStub_LAB_0056)
@@ -1880,17 +1880,17 @@ JMP_TBL_PRINTF_2:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0056
+;   ESQ_SetCopperEffect_OffDisableHighlight
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0056.
+;   Jump stub to ESQ_SetCopperEffect_OffDisableHighlight.
 ;------------------------------------------------------------------------------
 ESQ_JMP_TBL_LAB_0056:
 LAB_08B8:
-    JMP     LAB_0056
+    JMP     ESQ_SetCopperEffect_OffDisableHighlight
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMP_TBL_CLEANUP_ShutdownSystem   (JumpStub_CLEANUP_ShutdownSystem)

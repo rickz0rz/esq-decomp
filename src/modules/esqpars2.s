@@ -375,7 +375,7 @@ LAB_0C5F:
     ASL.L   #2,D1
     PEA     91.W
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     LAB_0D57(PC)
+    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
@@ -604,25 +604,25 @@ LAB_0C71:
     JMP     LAB_064D
 
 LAB_0C72:
-    JMP     LAB_00B3
+    JMP     ESQ_ReverseBitsIn6Bytes
 
 LAB_0C73:
-    JMP     LAB_00B2
+    JMP     ESQ_SetBit1Based
 
 LAB_0C74:
-    JMP     LAB_00A7
+    JMP     ESQ_AdjustBracketedHourInString
 
 LAB_0C75:
     JMP     LAB_0345
 
 LAB_0C76:
-    JMP     LAB_00BE
+    JMP     ESQ_WildcardMatch
 
 LAB_0C77:
     JMP     LAB_1985
 
 LAB_0C78:
-    JMP     LAB_00B1
+    JMP     ESQ_TestBit1Based
 
 ;!======
 
@@ -993,7 +993,7 @@ LAB_0C82:
     TST.W   LAB_1D31
     BEQ.S   .LAB_0C8B
 
-    JSR     LAB_0DCF
+    JSR     GCOMMAND_TickHighlightState
 
     BRA.S   .LAB_0C8B
 
@@ -1763,7 +1763,7 @@ LAB_0CAA:
     BPL.W   LAB_0CAB
 
     MOVE.W  #0,LAB_1F3D
-    JSR     LAB_005C
+    JSR     ESQ_NoOp
 
 LAB_0CAB:
     SUBI.W  #1,LAB_1F46
@@ -1821,7 +1821,7 @@ LAB_0CAF:
     BPL.W   LAB_0CB0
 
     MOVE.W  #0,LAB_1F3E
-    JSR     LAB_005C
+    JSR     ESQ_NoOp
 
 LAB_0CB0:
     ADDI.W  #1,LAB_1F46

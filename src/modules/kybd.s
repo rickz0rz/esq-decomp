@@ -109,7 +109,7 @@ LAB_0E02:
     JMP     LAB_03CF
 
 LAB_0E03:
-    JMP     LAB_00E7
+    JMP     ESQ_InvokeGcommandInit
 
 LAB_0E04:
     JMP     LAB_1ADD

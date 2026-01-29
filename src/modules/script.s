@@ -3403,10 +3403,10 @@ LAB_159A:
     JMP     LAB_1A23
 
 LAB_159B:
-    JMP     LAB_0DF1
+    JMP     GCOMMAND_AdjustBannerCopperOffset
 
 LAB_159C:
-    JMP     LAB_0054
+    JMP     ESQ_SetCopperEffect_Custom
 
 SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen:
 LAB_159D:

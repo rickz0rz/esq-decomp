@@ -2250,7 +2250,7 @@ LAB_0A93:
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)
-    JSR     LAB_0DFA(PC)
+    JSR     GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList(PC)
 
     PEA     LAB_1EF8
     JSR     LAB_0AB5(PC)
@@ -2305,13 +2305,13 @@ JMP_TBL_LAB_195B_2:
     JMP     LAB_195B
 
 LAB_0A9C:
-    JMP     LAB_005C
+    JMP     ESQ_NoOp
 
 LAB_0A9D:
     JMP     LAB_16E3
 
 LAB_0A9E:
-    JMP     LAB_005D
+    JMP     ESQ_MoveCopperEntryTowardStart
 
 JMP_TBL_DEALLOCATE_MEMORY_2:
     JMP     DEALLOCATE_MEMORY
@@ -2323,7 +2323,7 @@ LAB_0AA1:
     JMP     BRUSH_CloneBrushRecord
 
 LAB_0AA2:
-    JMP     LAB_0062
+    JMP     ESQ_MoveCopperEntryTowardEnd
 
 LAB_0AA3:
     JMP     BRUSH_FindBrushByPredicate
@@ -2341,7 +2341,7 @@ LAB_0AA7:
     JMP     BRUSH_AllocBrushNode
 
 LAB_0AA8:
-    JMP     LAB_006A
+    JMP     ESQ_NoOp_006A
 
 LAB_0AA9:
     JMP     LAB_1038
@@ -2350,7 +2350,7 @@ LAB_0AAA:
     JMP     BRUSH_PopulateBrushList
 
 LAB_0AAB:
-    JMP     LAB_0074
+    JMP     ESQ_NoOp_0074
 
 LAB_0AAC:
     JMP     LAB_194E
@@ -2371,10 +2371,10 @@ JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_2:
     JMP     OPEN_FILE_WITH_ACCESS_MODE
 
 LAB_0AB2:
-    JMP     LAB_0071
+    JMP     ESQ_IncCopperListsTowardsTargets
 
 LAB_0AB3:
-    JMP     LAB_0067
+    JMP     ESQ_DecCopperListsPrimary
 
 LAB_0AB4:
     JMP     BRUSH_SelectBrushSlot

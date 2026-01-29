@@ -1184,7 +1184,7 @@ LAB_0156:
     ADDI.L  #$90,D2
     MOVE.L  0(A0,D2.L),-(A7)
     MOVE.L  -46(A5),-(A7)
-    JSR     LAB_00CD(PC)
+    JSR     ESQ_PackBitsDecode(PC)
 
     LEA     12(A7),A7
     MOVE.W  -20(A5),D1

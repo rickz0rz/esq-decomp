@@ -1,5 +1,3 @@
-;!======
-
 LAB_08BB:
     LINK.W  A5,#-4
     MOVEM.L D2/D7/A3,-(A7)

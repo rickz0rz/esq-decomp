@@ -2479,7 +2479,7 @@ LAB_145E:
     JMP     BRUSH_FreeBrushList
 
 LAB_145F:
-    JMP     LAB_0D7A
+    JMP     GCOMMAND_ValidatePresetTable
 
 LAB_1460:
     JMP     BRUSH_AllocBrushNode
@@ -2488,7 +2488,7 @@ LAB_1461:
     JMP     LAB_1AB9
 
 LAB_1462:
-    JMP     LAB_0D84
+    JMP     GCOMMAND_InitPresetTableFromPalette
 
 LAB_1463:
     JMP     LAB_194E
@@ -2503,7 +2503,7 @@ LAB_1466:
     JMP     LAB_071A
 
 JMP_TBL_PRINTF_4:
-    JMP     PRINTF
+    JMP     WDISP_SPrintf
 
 LAB_1468:
     JMP     LAB_19DC
@@ -2872,7 +2872,7 @@ JMP_TBL_POPULATE_CLOCKDATA_FROM_SECS:
     JMP     POPULATE_CLOCKDATA_FROM_SECS
 
 LAB_1481:
-    JMP     LAB_008C
+    JMP     ESQ_CalcDayOfYearFromMonthDay
 
 JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH:
     JMP     GET_LEGAL_OR_SECONDS_FROM_EPOCH
