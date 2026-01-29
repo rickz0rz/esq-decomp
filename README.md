@@ -4,7 +4,7 @@ This repository contains a living disassembly and annotation of the Esquire 9.04
 
 ## Repository Layout
 - `src/ESQ.asm` – Root include that pulls in every module. Use it as the entry point for builds.
-- `src/modules/` – Feature modules (`gcommand.s`, `kybd.s`, `diskio2.s`, etc.) where we replace legacy `LAB_xxxx` labels with descriptive aliases.
+- `src/modules/` – Feature modules (`gcommand.s`, `kybd.s`, `diskio2.s`, etc.) where we replace legacy `LAB_xxxx` labels with descriptive aliases. Some larger modules are split into numbered companions (e.g., `disptext2.s`, `newgrid1.s`, `script2.s`–`script4.s`).
 - `src/modules/submod/` – Provisional utility chunks split out during the re-org; filenames may remain `unknown*.s` until their roles are confirmed.
 - `src/data/` – Display tables, highlight presets, string resources, and lookup maps shared across modules.
 - `src/subroutines/` and `src/interrupts/` – Common helpers and interrupt handlers referenced from multiple modules.

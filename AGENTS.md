@@ -6,6 +6,7 @@
 Recent re-org notes:
 - Code has been split into smaller files along more logical boundaries; module names may change again as functionality becomes clearer.
 - `src/modules/submod/` currently groups utility-like routines that have not been confidently named yet. Expect placeholders such as `unknown*.s` until behavior is understood.
+- Some larger modules now have numbered companion files (e.g., `disptext2.s`, `newgrid1.s`, `script2.s`–`script4.s`) to keep related chunks together.
 - Alignment/padding bytes after jump tables are likely compiler artifacts that mark original object/source boundaries; treat them as file-end markers unless proven otherwise.
   - Heuristic only: padding can also appear mid-file for table/code alignment, and jump tables are suggestive but not definitive boundaries.
 
