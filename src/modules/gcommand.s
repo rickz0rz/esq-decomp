@@ -2392,6 +2392,9 @@ LAB_0D65:
     MOVEQ   #97,D0
 
 ;!======
+; The content above or below belongs in its own file... need to determine which
+;!======
+
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_MapKeycodeToPreset   (Interpret a keyboard scan code and map it to a preset palette index.)
 ; ARGS:
