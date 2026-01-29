@@ -1,5 +1,3 @@
-;!======
-
 LAB_072A:
     LINK.W  A5,#-148
     MOVEM.L A2-A3,-(A7)
@@ -1994,6 +1992,8 @@ LAB_07D3:
     ; Alignment
     ALIGN_WORD
 
+;!======
+; Either the above or below belongs in its own file... need to determine which.
 ;!======
 
 LAB_07D4:

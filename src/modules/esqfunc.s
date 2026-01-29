@@ -1498,7 +1498,7 @@ JMP_TBL_CALCULATE_H_T_C_MAX_VALUES:
     JMP     CALCULATE_H_T_C_MAX_VALUES
 
 LAB_09B7:
-    JMP     KYBD_UpdateHighlightState
+    JMP     LADFUNC_UpdateHighlightState
 
 LAB_09B8:
     JMP     LAB_136A

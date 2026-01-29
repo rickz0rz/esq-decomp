@@ -1,3 +1,56 @@
+LAB_054C:
+    MOVEM.L D5-D7/A2-A3,-(A7)
+
+    MOVEA.L 24(A7),A3
+    MOVEA.L 28(A7),A2
+    MOVE.L  32(A7),D7
+
+    BTST    #5,27(A3)
+    BEQ.S   LAB_054D
+
+    MOVEQ   #48,D5
+    BRA.S   LAB_054E
+
+LAB_054D:
+    MOVEQ   #7,D5
+
+LAB_054E:
+    MOVE.L  D7,D6
+    SUB.L   D5,D6
+    MOVEQ   #1,D0
+    CMP.L   D0,D6
+    BGE.S   LAB_054F
+
+    MOVE.L  D0,D6
+
+LAB_054F:
+    MOVE.L  D7,D0
+    ASL.L   #2,D0
+    TST.L   56(A2,D0.L)
+    BNE.S   LAB_0551
+
+    SUBQ.L  #1,D7
+    CMP.L   D6,D7
+    BGE.S   LAB_0550
+
+    MOVEQ   #0,D7
+    CLR.W   LAB_2255
+    BRA.S   LAB_0551
+
+LAB_0550:
+    BTST    #5,27(A3)
+    BNE.S   LAB_054F
+
+    MOVE.W  #1,LAB_2255
+    BRA.S   LAB_054F
+
+LAB_0551:
+    MOVE.L  D7,D0
+    MOVEM.L (A7)+,D5-D7/A2-A3
+    RTS
+
+;!======
+
 LAB_0552:
     LINK.W  A5,#-28
     MOVEM.L D4-D7/A3,-(A7)

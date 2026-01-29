@@ -1,3 +1,14 @@
+LAB_0F03:
+    MOVE.L  A3,-(A7)
+    MOVEA.L 8(A7),A3
+    CLR.B   (A3)
+    MOVEQ   #0,D0
+    MOVE.W  D0,2(A3)
+    MOVE.W  D0,4(A3)
+    CLR.L   6(A3)
+    MOVEA.L (A7)+,A3
+    RTS
+
 ;!======
 
 LAB_0F04:

@@ -37,5 +37,10 @@ Keep any generated binaries out of version control.
 - Update adjacent data tables (e.g., entries in `src/data/wdisp.s`) whenever you adjust presets or highlight behavior inside `src/modules/gcommand.s`.
 - Re-run `./test-hash.sh` after each change; treat hash deltas as regressions unless intentionally diverging.
 
+## Recent Work
+- Completed a full gcommand sweep: all routines now have `GCOMMAND_*` aliases, header blocks, and descriptive local labels (banner/preset pipeline included).
+- Banner helpers now include `GCOMMAND_BuildBannerTables`, `GCOMMAND_RebuildBannerTablesFromBounds`, and `GCOMMAND_ServiceHighlightMessages`; see `CONTEXT.md` for the latest rename list.
+- Moved `KYBD_UpdateHighlightState` into `src/modules/ladfunc.s` as `LADFUNC_UpdateHighlightState`.
+
 ## Contributor Guide
 If you plan to extend or annotate the disassembly, read the contributor guidelines in [`AGENTS.md`](AGENTS.md) for module organization, coding style, testing expectations, and review workflow.
