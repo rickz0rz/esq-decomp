@@ -19,6 +19,7 @@
 ## Documentation Touchpoints
 - `AGENTS.md` now captures module layout, naming conventions (`MODULE_ActionVerb` aliases), and the expected hash workflow. Keep it updated as you clarify additional modules.
 - `README.md` summarizes the current build steps and structure (including asset paths and `src/decomp/`); update it if the layout or policies change.
+- Alignment/jump-table boundaries: padding after jump stubs is a useful heuristic for file/object boundaries, but it is not definitive and can appear mid-file for alignment.
 
 ## Suggested Next Steps
 1. Keep pushing through `src/ESQ.asm`, adding header blocks/aliases after the CTRL/RBF routines and documenting any orphaned helpers/data blocks.

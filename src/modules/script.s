@@ -195,7 +195,7 @@ LAB_149E
 
 ;!======
 
-    ; Alignment?
+    ; Alignment
     RTS
     DC.W    $0000
 
@@ -218,7 +218,7 @@ JMP_TBL_DISKIO_OpenFileWithBuffer_2:
 
 ;======
 
-    ; Alignment?
+    ; Alignment
     MOVEQ   #97,D0
     RTS
     DC.W    $0000

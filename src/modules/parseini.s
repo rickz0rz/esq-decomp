@@ -1,6 +1,27 @@
 ;!======
 
 ; INI loading?
+;------------------------------------------------------------------------------
+; FUNC: PARSE_INI   (Parse INI-like configuration file??)
+; ARGS:
+;   stack +8: A3 = pointer to buffer/string to parse
+; RET:
+;   D0: -1 on failure, 0/?? on success
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1465, LAB_145C, LAB_1455, LAB_1462, JMP_TBL_LAB_1968_3, LAB_1667, LAB_146B,
+;   LAB_145B, LAB_1456/1457/1458..., LAB_13E6/LAB_1400/LAB_1404/LAB_1408 helpers
+; READS:
+;   LAB_21BC, LAB_21A8 (char class table), many LAB_205* globals, LAB_1B1F, LAB_233D
+; WRITES:
+;   LAB_2059-2064/206A..., LAB_1DDA, LAB_2073, LAB_233D, LAB_206D, LAB_205A-C, etc.
+; DESC:
+;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
+;   section headers and key/value pairs, and dispatches to per-section handlers.
+; NOTES:
+;   Uses BRACKETED sections '['...']', lower-level helpers validate/allocate strings.
+;------------------------------------------------------------------------------
 PARSE_INI:
     LINK.W  A5,#-44
     MOVEM.L D5-D7/A2-A3,-(A7)
@@ -828,6 +849,28 @@ LAB_13D6:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_ParseRangeKeyValue   (Parse range key/value??)
+; ARGS:
+;   stack +8: A3 = source string pointer
+;   stack +12: A2 = output struct pointer
+; RET:
+;   D0: status (0 = ok, -1 on invalid)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1455, LAB_134B, LAB_1469, LAB_1463, LAB_145F, LAB_159A
+; READS:
+;   LAB_206D, LAB_206E/206F/2070-2072 lookup strings, LAB_223A-D fields
+; WRITES:
+;   LAB_206D, LAB_206D-indexed output in A2, LAB_206D sentinel when invalid
+; DESC:
+;   Parses a pair of bracketed numeric fields (two strings), validates them,
+;   and writes results into a 16-entry table pointed to by A2.
+; NOTES:
+;   Uses 61 '=' delimiter; clamps/validates ranges 0..15 for index, 1..999 for value.
+;------------------------------------------------------------------------------
+PARSEINI_ParseRangeKeyValue:
 LAB_13D7:
     LINK.W  A5,#-16
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -1061,6 +1104,28 @@ LAB_13E5:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_ProcessWeatherBlocks   (Process weather-related INI blocks??)
+; ARGS:
+;   stack +8: A3 = current line pointer
+;   stack +12: A2 = target struct pointer
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMP_TBL_LAB_1968_3, LAB_1460, LAB_1463, LAB_159A, LAB_15A1
+; READS:
+;   LAB_1B1F, LAB_233D, LAB_2073, LAB_2059, LAB_206D
+; WRITES:
+;   LAB_233D, LAB_1B1F, LAB_2073, LAB_206D, fields at offsets 190+ in LAB_233D struct
+; DESC:
+;   Handles a collection of weather configuration keys (WX strings, codes, timing)
+;   populating a weather/display struct and related globals.
+; NOTES:
+;   Many keys are matched via JMP_TBL_LAB_1968_3 against literal strings LAB_2074..208A.
+;------------------------------------------------------------------------------
+PARSEINI_ProcessWeatherBlocks:
 LAB_13E6:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
@@ -1461,6 +1526,28 @@ LAB_13FF:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_LoadWeatherStrings   (Load weather strings/locations??)
+; ARGS:
+;   stack +8: A3 = source string pointer
+;   stack +12: A2 = destination buffer/struct
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMP_TBL_LAB_1968_3, LAB_1460, LAB_1469, LAB_1463, LAB_159A
+; READS:
+;   LAB_1B23, LAB_233E, LAB_2059
+; WRITES:
+;   LAB_233E, LAB_1B23, LAB_2059
+; DESC:
+;   Parses weather string keys, allocates/sets current weather display entries,
+;   and handles default/fallback cases.
+; NOTES:
+;   Sets field 190(A0) to 0x0A when a new block is created.
+;------------------------------------------------------------------------------
+PARSEINI_LoadWeatherStrings:
 LAB_1400:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -1527,6 +1614,27 @@ LAB_1403:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_LoadWeatherMessageStrings   (Load message strings??)
+; ARGS:
+;   stack +12: A3 = source string pointer
+;   stack +16: A2 = destination buffer
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMP_TBL_LAB_1968_3, LAB_146B
+; READS:
+;   LAB_205A/B/C, LAB_2059
+; WRITES:
+;   LAB_205A/B/C
+; DESC:
+;   Parses three related message strings and stores them in LAB_205A/B/C.
+; NOTES:
+;   Uses sequential key matching LAB_208D/E/F.
+;------------------------------------------------------------------------------
+PARSEINI_LoadWeatherMessageStrings:
 LAB_1404:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -1586,6 +1694,29 @@ LAB_1407:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_ParseColorTable   (Parse color table entries??)
+; ARGS:
+;   stack +8: A3 = source string pointer
+;   stack +12: A2 = destination table ptr
+;   stack +16: D7 = mode selector (0: rgb?, 1: palette??, 4 triggers checksum)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMP_TBL_PRINTF_4, JMP_TBL_LAB_1968_3, LAB_1598, LAB_167A
+; READS:
+;   LAB_1ECC/LAB_1FB8 tables, GLOB_STR_COLOR_PERCENT_D
+; WRITES:
+;   color tables pointed by A2 (8x3 bytes)
+; DESC:
+;   Iterates through color percentages strings, converts them, and fills a table;
+;   for mode 4 triggers LAB_167A afterward.
+; NOTES:
+;   Converts using LAB_1598 (string→value) and stores into preset tables.
+;------------------------------------------------------------------------------
+PARSEINI_ParseColorTable:
 LAB_1408:
     LINK.W  A5,#-120
     MOVEM.L D4-D7/A2-A3,-(A7)
@@ -1675,6 +1806,29 @@ LAB_1408:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_TestMemoryAndOpenTopazFont   (Test memory then open Topaz)
+; ARGS:
+;   stack +8: A3 = pointer to font handle storage
+;   stack +12: A2 = TextAttr for desired font
+; RET:
+;   D0: 0 on success, 1 on failure
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   _LVOCloseFont, _LVOForbid/_LVOPermit, _LVOAllocMem/_LVOFreeMem, _LVOOpenDiskFont
+; READS:
+;   GLOB_HANDLE_TOPAZ_FONT
+; WRITES:
+;   (A3) font handle
+; DESC:
+;   Ensures a Topaz font is open, first probing for a small alloc; closes an
+;   existing non-Topaz handle, tries to open the requested font, otherwise falls
+;   back to the global Topaz handle.
+; NOTES:
+;   Sets D0=1 when it could not load the desired font.
+;------------------------------------------------------------------------------
+PARSEINI_TestMemoryAndOpenTopazFont:
 TEST_MEMORY_AND_OPEN_TOPAZ_FONT:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
@@ -1735,6 +1889,27 @@ TEST_MEMORY_AND_OPEN_TOPAZ_FONT:
 ;!======
 
 ; we're doing a bunch of font stuff in here!
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_HandleFontCommand   (Parse font command sequence??)
+; ARGS:
+;   stack +8: A3 = command string pointer
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   JMP_TBL_PRINTF_4, _LVOExecute, PARSEINI_TestMemoryAndOpenTopazFont, LAB_1429
+; READS:
+;   GLOB_REF_DOS_LIBRARY_2, GLOB_HANDLE_TOPAZ_FONT
+; WRITES:
+;   (font handles via PARSEINI_TestMemoryAndOpenTopazFont)
+; DESC:
+;   Parses a command string starting with '3' '2' ... handling subcommands to
+;   execute shell commands or open fonts depending on the trailing byte.
+; NOTES:
+;   Matches subcodes 0x34–0x38 etc.; returns early on non-matching prefixes.
+;------------------------------------------------------------------------------
+PARSEINI_HandleFontCommand:
 LAB_1416:
     LINK.W  A5,#-88
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
@@ -2036,6 +2211,27 @@ LAB_1416:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_ScanLogoDirectory   (Scan logo directory, build lists??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A2
+; CALLS:
+;   _LVOExecute, LAB_1456, LAB_1468, LAB_145B, JMP_TBL_ALLOCATE_MEMORY_4
+; READS:
+;   GLOB_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, LAB_2098/2099/209A/209B strings
+; WRITES:
+;   local temp buffers and allocated lists at -500/-900(A5)
+; DESC:
+;   Executes helper commands to list logo directories, reads entries into temp
+;   buffers, allocates per-entry strings, and populates two arrays (probably names/paths).
+; NOTES:
+;   Iterates up to 100 entries per list, trimming CR/LF/commas from lines.
+;------------------------------------------------------------------------------
+PARSEINI_ScanLogoDirectory:
 LAB_142E:
     LINK.W  A5,#-960
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
@@ -2439,6 +2635,21 @@ LAB_142E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_LAB_1968_3   (JumpStub_LAB_1968)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_1968
+; DESC:
+;   Jump stub to LAB_1968 (string compare/parse helper).
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_LAB_1968_3:
     JMP     LAB_1968
 
@@ -2493,6 +2704,21 @@ LAB_1462:
 LAB_1463:
     JMP     LAB_194E
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_APPEND_DATA_AT_NULL_3   (JumpStub_APPEND_DATA_AT_NULL)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   APPEND_DATA_AT_NULL
+; DESC:
+;   Jump stub to APPEND_DATA_AT_NULL.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_APPEND_DATA_AT_NULL_3:
     JMP     APPEND_DATA_AT_NULL
 
@@ -2502,6 +2728,21 @@ LAB_1465:
 LAB_1466:
     JMP     LAB_071A
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_PRINTF_4   (JumpStub_WDISP_SPrintf)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   WDISP_SPrintf
+; DESC:
+;   Jump stub to WDISP_SPrintf.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_PRINTF_4:
     JMP     WDISP_SPrintf
 
@@ -2520,6 +2761,21 @@ LAB_146B:
 LAB_146C:
     JMP     LAB_070E
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN   (JumpStub_DRAW_ESC_MENU_VERSION_SCREEN)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   DRAW_ESC_MENU_VERSION_SCREEN
+; DESC:
+;   Jump stub to DRAW_ESC_MENU_VERSION_SCREEN.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
     JMP     DRAW_ESC_MENU_VERSION_SCREEN
 
@@ -2541,6 +2797,29 @@ JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
 
 
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_WriteRtcFromGlobals   (Write globals to RTC chip)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D1/D7/A0/A6
+; CALLS:
+;   ADJUST_HOURS_TO_24_HR_FMT, JMP_TBL_GET_LEGAL_OR_SECONDS_FROM_EPOCH,
+;   JMP_TBL_GET_SECONDS_FROM_EPOCH, JMP_TBL_SET_CLOCK_CHIP_TIME
+; READS:
+;   LAB_223A-E, LAB_2243, GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE,
+;   GLOB_REF_CLOCKDATA_STRUCT
+; WRITES:
+;   RTC chip via SET_CLOCK_CHIP_TIME
+; DESC:
+;   Converts current global date/time fields to a legal struct and writes them
+;   to the battery-backed clock if the RTC resources are available.
+; NOTES:
+;   Early-exits if utility library or battclock resource is unavailable.
+;------------------------------------------------------------------------------
+PARSEINI_WriteRtcFromGlobals:
 LAB_146E:
     LINK.W  A5,#-20
     MOVE.L  D7,-(A7)
@@ -2752,6 +3031,25 @@ LAB_1470:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ADJUST_HOURS_TO_24_HR_FMT   (12h→24h adjust helper)
+; ARGS:
+;   stack +14: D7 = hour (0-12?)
+;   stack +18: D6 = AM/PM flag? (-1 for PM)
+; RET:
+;   D0: adjusted hour (long)
+; CLOBBERS:
+;   D0/D1/D6-D7
+; CALLS:
+;   none
+; READS/WRITES:
+;   none (pure)
+; DESC:
+;   Converts 12-hour clock fields to 24-hour format: returns 0 for 12 AM,
+;   adds 12 when PM flag is set and hour < 12.
+; NOTES:
+;   Expects flag -1 to indicate PM; keeps hour unchanged otherwise.
+;------------------------------------------------------------------------------
 ADJUST_HOURS_TO_24_HR_FMT:
     MOVEM.L D6-D7,-(A7)
     MOVE.W  14(A7),D7
@@ -2788,6 +3086,28 @@ ADJUST_HOURS_TO_24_HR_FMT:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_NormalizeClockData   (Normalize/validate clock data struct??)
+; ARGS:
+;   stack +8: A3 = clockdata dest struct
+;   stack +12: A2 = source struct
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D2/A0-A3
+; CALLS:
+;   LAB_1484 (LAB_0660), LAB_1481 (ESQ_CalcDayOfYearFromMonthDay)
+; READS:
+;   A2 contents
+; WRITES:
+;   A3 contents (year/month/day/hour/min/sec, wday), LAB_20A4/20A5??
+; DESC:
+;   Copies clock fields, adjusts year (<1900), clamps/normalizes month/day/hour,
+;   computes day-of-year, and sets validity flags.
+; NOTES:
+;   Adds 1 to day before validation; treats month/day indices as 0-based internally.
+;------------------------------------------------------------------------------
+PARSEINI_NormalizeClockData:
 LAB_1477:
     MOVEM.L D2/A2-A3,-(A7)
 
@@ -2896,6 +3216,25 @@ JMP_TBL_GET_SECONDS_FROM_EPOCH:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_WriteErrorLogEntry   (Write error log entry??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: -1 on failure, 0 on success
+; CLOBBERS:
+;   D0/D7
+; CALLS:
+;   JMP_TBL_DISKIO_OpenFileWithBuffer_2, LAB_14AB, LAB_14AC
+; READS:
+;   LAB_2049, LAB_233A, LAB_1B5E
+; WRITES:
+;   Err log file on disk
+; DESC:
+;   Opens df0:err.log (MODE_NEWFILE), writes two entries via LAB_14AB and closes.
+; NOTES:
+;   Returns -1 when logging is disabled or open fails.
+;------------------------------------------------------------------------------
 LAB_1487:
     MOVE.L  D7,-(A7)
 
@@ -2942,6 +3281,25 @@ LAB_1487:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: CALCULATE_H_T_C_MAX_VALUES   (Compute H/T delta max??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: max delta (updated)
+; CLOBBERS:
+;   D0/D7
+; CALLS:
+;   none
+; READS:
+;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_WORD_MAX_VALUE
+; WRITES:
+;   GLOB_WORD_MAX_VALUE
+; DESC:
+;   Computes (H - T) modulo 64000, updating the stored max when larger.
+; NOTES:
+;   Wrap logic suggests a circular counter.
+;------------------------------------------------------------------------------
 CALCULATE_H_T_C_MAX_VALUES:
     MOVE.L  D7,-(A7)
 
@@ -2972,6 +3330,27 @@ CALCULATE_H_T_C_MAX_VALUES:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_MonitorClockChange   (Track clock delta / debounce??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: status (0/1??)
+; CLOBBERS:
+;   D0-D2/D7
+; CALLS:
+;   LAB_1596
+; READS:
+;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_REF_CLOCKDATA_STRUCT,
+;   LAB_20A3-20A8
+; WRITES:
+;   LAB_20A3-20A8
+; DESC:
+;   Detects changes between H and T values, compares to stored clockdata seconds,
+;   and updates counters/flags, occasionally queuing an action via LAB_1596.
+; NOTES:
+;   Uses a 3-count threshold before clearing LAB_20A5.
+;------------------------------------------------------------------------------
 LAB_148E:
     MOVEM.L D2/D7,-(A7)
 
@@ -3080,6 +3459,26 @@ LAB_1491:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_CheckCtrlHChange   (Detect CTRL_H change and act??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: boolean (nonzero when change detected and action taken)
+; CLOBBERS:
+;   D0-D2/D7
+; CALLS:
+;   LAB_1596
+; READS:
+;   CTRL_H, LAB_2282, LAB_2266, LAB_20A6-20A8, LAB_20A5
+; WRITES:
+;   LAB_20A6-20A8
+; DESC:
+;   Compares current CTRL_H to previous value, optionally triggers LAB_1596 when
+;   changes are detected and control flags permit.
+; NOTES:
+;   Uses LAB_2266 as gate; resets LAB_20A5 when no change.
+;------------------------------------------------------------------------------
 LAB_1494:
     MOVEM.L D2/D7,-(A7)
 

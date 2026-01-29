@@ -1,3 +1,23 @@
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_056A   (Append to display text buffer??)
+; ARGS:
+;   stack +8: A3 = string pointer
+; RET:
+;   D0: boolean success (0/-1)
+; CLOBBERS:
+;   D0-D1/D7/A0-A1/A6 ??
+; CALLS:
+;   _LVOAvailMem, JMP_TBL_ALLOCATE_MEMORY_1, JMP_TBL_APPEND_DATA_AT_NULL_1, LAB_0385
+; READS:
+;   LAB_21D3
+; WRITES:
+;   LAB_21D3
+; DESC:
+;   Appends a string to the global display-text buffer, reallocating if needed.
+; NOTES:
+;   Booleanize pattern: SNE/NEG/EXT.
+;------------------------------------------------------------------------------
 LAB_056A:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
@@ -86,7 +106,28 @@ LAB_0570:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0571   (Format text into line buffer with width constraint??)
+; ARGS:
+;   stack +8: A3 = font/rastport??
+;   stack +12: A2 = source string
+;   stack +16: A0 = output buffer
+;   stack +20: D7 = max width
+; RET:
+;   D0: updated A2 (next source position)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   _LVOTextLength, JMP_TBL_APPEND_DATA_AT_NULL_1, LAB_05C4, LAB_05C6
+; READS:
+;   LAB_1CEA..LAB_1CEC, LAB_21D6/21D9/21DA/21DC
+; WRITES:
+;   output buffer, LAB_21DC
+; DESC:
+;   Builds a line from the source string, inserting separators and trimming to fit.
+; NOTES:
+;   Uses 0x13/0x12 separators (see data tables).
+;------------------------------------------------------------------------------
 LAB_0571:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -261,7 +302,25 @@ LAB_057E:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_057F   (Build display line pointer table??)
+; ARGS:
+;   stack +8: D7 = ?? (nonzero enables table build)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   none
+; READS:
+;   LAB_21D3/21D4/21D6/21D7/21DB
+; WRITES:
+;   LAB_21D4, LAB_21DB
+; DESC:
+;   Builds per-line pointer table based on offsets when not locked.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_057F:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVE.L  24(A7),D7
@@ -322,7 +381,25 @@ LAB_0584:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0585   (Finalize pending line table??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D1/A0 ??
+; CALLS:
+;   LAB_057F
+; READS:
+;   LAB_21DB, LAB_21D6, LAB_21D7
+; WRITES:
+;   LAB_21D5, LAB_21D6
+; DESC:
+;   Ensures line table state is current and clears LAB_21D6 when needed.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0585:
     TST.L   LAB_21DB
     BNE.S   LAB_0587
@@ -351,7 +428,25 @@ LAB_0587:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0588   (Initialize disptext buffers)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A7 ??
+; CALLS:
+;   LAB_0563, JMP_TBL_ALLOCATE_MEMORY_1
+; READS:
+;   LAB_1CED
+; WRITES:
+;   LAB_21D3, LAB_1CED, GLOB_REF_1000_BYTES_ALLOCATED_1/2
+; DESC:
+;   Allocates working buffers for display text if initialization flag set.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0588:
     TST.L   LAB_1CED
     BEQ.S   .return
@@ -381,7 +476,25 @@ LAB_0588:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_058A   (Free disptext buffers)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A7 ??
+; CALLS:
+;   LAB_0566, JMP_TBL_DEALLOCATE_MEMORY_1
+; READS:
+;   GLOB_REF_1000_BYTES_ALLOCATED_1/2
+; WRITES:
+;   GLOB_REF_1000_BYTES_ALLOCATED_1/2
+; DESC:
+;   Releases the 1000-byte buffers used by display text.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_058A:
     BSR.W   LAB_0566
 
@@ -414,7 +527,27 @@ LAB_058A:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_058D   (Set display layout params??)
+; ARGS:
+;   stack +8: D7 = width?? (1..624)
+;   stack +12: D6 = line count?? (1..20)
+;   stack +16: D5 = ?? (passed to LAB_0567)
+; RET:
+;   D0: 1 if applied, 0 if clamped/no change
+; CLOBBERS:
+;   D0-D7 ??
+; CALLS:
+;   LAB_0566, LAB_0567
+; READS:
+;   LAB_21D9, LAB_21D5
+; WRITES:
+;   LAB_21D9, LAB_21D5
+; DESC:
+;   Updates layout parameters and returns whether the requested values matched.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_058D:
     MOVEM.L D5-D7,-(A7)
     MOVE.L  16(A7),D7
@@ -466,7 +599,27 @@ LAB_0591:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0592   (Compute padding widths??)
+; ARGS:
+;   stack +8: A3 = font/rastport??
+;   stack +12: D7 = ?? (width)
+;   stack +16: D6 = ?? (width)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   LAB_05C0, _LVOTextLength
+; READS:
+;   LAB_21DA
+; WRITES:
+;   LAB_21DA
+; DESC:
+;   Computes combined text lengths for two optional markers and stores in LAB_21DA.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0592:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A3,-(A7)
@@ -522,7 +675,26 @@ LAB_0596:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0597   (Layout source text into lines)
+; ARGS:
+;   stack +8: A3 = font/rastport??
+;   stack +12: A2 = source string
+; RET:
+;   D0: boolean success (0/-1)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   LAB_0571, _LVOTextLength
+; READS:
+;   LAB_21D3/21D4/21D5/21D6/21D7/21D9/21DA/21DB
+; WRITES:
+;   LAB_21D6
+; DESC:
+;   Iterates over lines, measuring and formatting text into the line buffer.
+; NOTES:
+;   Uses line offset tables LAB_21D4/LAB_21D7.
+;------------------------------------------------------------------------------
 LAB_0597:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
@@ -661,7 +833,26 @@ LAB_059E:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_059F   (Layout and append into output buffer)
+; ARGS:
+;   stack +8: A3 = font/rastport??
+;   stack +12: A2 = source string
+; RET:
+;   D0: boolean success (0/-1)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   LAB_0571, LAB_0567, JMP_TBL_APPEND_DATA_AT_NULL_1, _LVOTextLength
+; READS:
+;   LAB_21D3/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
+; WRITES:
+;   LAB_21D6, LAB_21D7, GLOB_REF_1000_BYTES_ALLOCATED_2
+; DESC:
+;   Builds line segments into the scratch buffer and appends to global text.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_059F:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
@@ -861,7 +1052,26 @@ LAB_05A9:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05AA   (Build layout for a source string)
+; ARGS:
+;   stack +8: A3 = font/rastport??
+;   stack +12: ?? (source string)
+; RET:
+;   D0: boolean success
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_05C3, LAB_059F
+; READS:
+;   LAB_21DB, GLOB_REF_1000_BYTES_ALLOCATED_1
+; WRITES:
+;   GLOB_REF_1000_BYTES_ALLOCATED_1 (via LAB_05C3)
+; DESC:
+;   Prepares output buffer and runs layout; returns success flag.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05AA:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
@@ -891,7 +1101,25 @@ LAB_05AB:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05AC   (Set current line index)
+; ARGS:
+;   stack +8: D7 = line index (1..3)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/D7 ??
+; CALLS:
+;   LAB_0567
+; READS:
+;   LAB_21DB
+; WRITES:
+;   (via LAB_0567)
+; DESC:
+;   Updates current line selection if valid and not locked.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05AC:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
@@ -916,7 +1144,25 @@ LAB_05AC:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05AE   (Compute visible line count??)
+; ARGS:
+;   stack +8: D7 = ?? (line index)
+; RET:
+;   D0: line count or offset
+; CLOBBERS:
+;   D0-D7 ??
+; CALLS:
+;   LAB_0585, JMP_TBL_LAB_1A06_2, LAB_05C1
+; READS:
+;   LAB_21D5/21D6/21DC/21D3, LAB_2328
+; WRITES:
+;   ??
+; DESC:
+;   Computes a derived line count with optional prefix adjustments.
+; NOTES:
+;   Uses booleanize pattern on LAB_21DC.
+;------------------------------------------------------------------------------
 LAB_05AE:
     LINK.W  A5,#-12
     MOVEM.L D5-D7,-(A7)
@@ -1000,7 +1246,25 @@ LAB_05B4:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05B5   (Get total line count)
+; ARGS:
+;   (none)
+; RET:
+;   D0: LAB_21D5
+; CLOBBERS:
+;   D0 ??
+; CALLS:
+;   LAB_0585
+; READS:
+;   LAB_21D5
+; WRITES:
+;   ??
+; DESC:
+;   Returns the total number of lines after ensuring state is current.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05B5:
     BSR.W   LAB_0585
 
@@ -1009,7 +1273,25 @@ LAB_05B5:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05B6   (Has multiple lines??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: boolean
+; CLOBBERS:
+;   D0-D1 ??
+; CALLS:
+;   LAB_0585
+; READS:
+;   LAB_21D5/21D6
+; WRITES:
+;   ??
+; DESC:
+;   Returns true when more than one line is available.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05B6:
     BSR.W   LAB_0585
 
@@ -1031,7 +1313,25 @@ LAB_05B6:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05B9   (Is last line selected??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: boolean
+; CLOBBERS:
+;   D0-D2 ??
+; CALLS:
+;   LAB_0585
+; READS:
+;   LAB_21D5/21D6
+; WRITES:
+;   ??
+; DESC:
+;   Returns true if current line index is the last line.
+; NOTES:
+;   Booleanize pattern: SEQ/NEG/EXT.
+;------------------------------------------------------------------------------
 LAB_05B9:
     MOVE.L  D2,-(A7)
     BSR.W   LAB_0585
@@ -1051,7 +1351,25 @@ LAB_05B9:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05BA   (Is current line last??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: boolean
+; CLOBBERS:
+;   D0-D2 ??
+; CALLS:
+;   LAB_0585
+; READS:
+;   LAB_21D5/21D6
+; WRITES:
+;   ??
+; DESC:
+;   Returns true if LAB_21D6 equals LAB_21D5.
+; NOTES:
+;   Booleanize pattern: SEQ/NEG/EXT.
+;------------------------------------------------------------------------------
 LAB_05BA:
     MOVE.L  D2,-(A7)
     BSR.W   LAB_0585
@@ -1068,7 +1386,25 @@ LAB_05BA:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05BB   (Measure current line text length)
+; ARGS:
+;   stack +8: A3 = font/rastport??
+; RET:
+;   D0: text length
+; CLOBBERS:
+;   D0-D1/A0-A1/A6 ??
+; CALLS:
+;   LAB_0585, _LVOTextLength
+; READS:
+;   LAB_21D4/21D6/21D7
+; WRITES:
+;   ??
+; DESC:
+;   Measures text length for the current line.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05BB:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
@@ -1095,7 +1431,27 @@ LAB_05BB:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05BC   (Render one line of display text)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = x
+;   stack +16: D6 = y
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   LAB_0585, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, LAB_05C1, LAB_05C2
+; READS:
+;   LAB_21D4/21D6/21D7/21D9/21DC/21B1/21B2/21D8
+; WRITES:
+;   LAB_21D6, LAB_1CE8
+; DESC:
+;   Draws the current line at the given position, honoring highlight markers.
+; NOTES:
+;   Uses 0x13/0x14 control markers when LAB_21DC set.
+;------------------------------------------------------------------------------
 LAB_05BC:
     LINK.W  A5,#-12
     MOVEM.L D2-D7/A3,-(A7)
@@ -1214,30 +1570,183 @@ LAB_05BF:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C0   (JumpStub_LAB_10BE)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_10BE
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_10BE.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_05C0:
     JMP     LAB_10BE
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C1   (JumpStub_LAB_1979)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_1979
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_1979.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_05C1:
     JMP     LAB_1979
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C2   (JumpStub_LAB_175F)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_175F
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_175F.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_05C2:
     JMP     LAB_175F
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C3   (JumpStub_LAB_1A3A)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_1A3A
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_1A3A.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_05C3:
     JMP     LAB_1A3A
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C4   (JumpStub_LAB_1985)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_1985
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_1985.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_05C4:
     JMP     LAB_1985
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_APPEND_DATA_AT_NULL_1   (JumpStub_APPEND_DATA_AT_NULL)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   APPEND_DATA_AT_NULL
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to APPEND_DATA_AT_NULL.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_APPEND_DATA_AT_NULL_1:
     JMP     APPEND_DATA_AT_NULL
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C6   (JumpStub_LAB_1970)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_1970
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_1970.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_05C6:
     JMP     LAB_1970
 
     MOVEQ   #97,D0
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_05C7   (Convert seconds to time struct??)
+; ARGS:
+;   stack +8: D7 = seconds??
+;   stack +12: A3 = output struct
+; RET:
+;   D0: A3
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   JMP_TBL_LAB_1A07_1, JMP_TBL_LAB_1A06_3, LAB_0660, LAB_066E, LAB_0668
+; READS:
+;   LAB_1CF5
+; WRITES:
+;   A3+0/2/4/6/8/10/12/16/20
+; DESC:
+;   Converts a seconds value into fields stored in the output struct.
+; NOTES:
+;   Uses repeated division/modulo with 60/24 and year/day tables.
+;------------------------------------------------------------------------------
 LAB_05C7:
     MOVEM.L D4-D7/A3,-(A7)
     MOVE.L  24(A7),D7
@@ -1413,7 +1922,25 @@ LAB_05D2:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05D3   (Normalize time struct to seconds??)
+; ARGS:
+;   stack +8: A3 = time struct
+; RET:
+;   D0: seconds or -1 on invalid
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_0665, LAB_0660, JMP_TBL_LAB_1A06_2, LAB_0668
+; READS:
+;   A3+2/4/6/8/10/12/16
+; WRITES:
+;   A3+2/4/6/8/10/12/16/20
+; DESC:
+;   Normalizes fields in the time struct and computes total seconds.
+; NOTES:
+;   Uses DIVS #10 and SWAP idioms for decimal extraction.
+;------------------------------------------------------------------------------
 LAB_05D3:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -1591,6 +2118,28 @@ LAB_05E0:
 ;!======
 
 ;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_05E1   (Build time struct from date/time??)
+; ARGS:
+;   stack +8: A3 = time struct
+;   stack +12: A2 = output struct
+;   stack +18: D7 = ?? (base day)
+;   stack +22: D6 = ?? (flag)
+; RET:
+;   D0: seconds?
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_05D3, JMP_TBL_LAB_1A06_2, LAB_05C7
+; READS:
+;   A2
+; WRITES:
+;   A2 fields, A2+14 cleared
+; DESC:
+;   Computes a derived time value and fills output fields.
+; NOTES:
+;   Uses offset of 0x36 and 0x0E10 scaling.
+;------------------------------------------------------------------------------
 LAB_05E1:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A2-A3,-(A7)
@@ -1637,7 +2186,25 @@ LAB_05E3:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05E4   (Populate time struct from LAB_2241)
+; ARGS:
+;   stack +8: A3 = output struct
+; RET:
+;   D0: seconds?
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_05E1
+; READS:
+;   LAB_2241, LAB_223A
+; WRITES:
+;   output struct
+; DESC:
+;   Wrapper that builds a time struct using global base data.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05E4:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -1656,7 +2223,26 @@ LAB_05E4:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05E5   (Compare value against struct bounds)
+; ARGS:
+;   stack +8: A3 = struct pointer
+;   stack +12: D7 = value
+; RET:
+;   D0: 0/1 ??
+; CLOBBERS:
+;   D0-D7/A3 ??
+; CALLS:
+;   none
+; READS:
+;   A3+8/12/16
+; WRITES:
+;   -11(A5) (flags)
+; DESC:
+;   Compares value against two bounds and returns a derived selector.
+; NOTES:
+;   Switch-like sequence on flags in -11(A5).
+;------------------------------------------------------------------------------
 LAB_05E5:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7/A3,-(A7)
@@ -1772,7 +2358,25 @@ LAB_05F5:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05F6   (Update A3 based on time comparison??)
+; ARGS:
+;   stack +8: A3 = struct pointer
+; RET:
+;   D0: boolean changed
+; CLOBBERS:
+;   D0-D7/A3 ??
+; CALLS:
+;   LAB_05E4, LAB_05E5
+; READS:
+;   A3+16
+; WRITES:
+;   A3+16
+; DESC:
+;   Recomputes a selection value and stores it if changed.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_05F6:
     LINK.W  A5,#-32
     MOVEM.L D5-D7/A3,-(A7)
@@ -1805,7 +2409,27 @@ LAB_05F7:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05F8   (Copy two date structs and recalc)
+; ARGS:
+;   stack +8: A3 = dest struct
+;   stack +12: A2 = src1 pointer
+;   stack +16: A0 = src2 pointer
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A0-A3 ??
+; CALLS:
+;   LAB_05D3
+; READS:
+;   A2, A0
+; WRITES:
+;   A3+0/4/8/12
+; DESC:
+;   Copies two 22-byte blocks into A3 and recalculates time values.
+; NOTES:
+;   DBF loops run (Dn+1) iterations (22 bytes).
+;------------------------------------------------------------------------------
 LAB_05F8:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
@@ -1850,7 +2474,27 @@ LAB_05FB:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_05FC   (Parse date/time from string??)
+; ARGS:
+;   stack +8: A3 = output struct
+;   stack +12: A2 = input string
+;   stack +19: D7 = ?? (flags)
+; RET:
+;   D0: boolean success
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_05C1, LAB_0470, LAB_0468, JMP_TBL_LAB_1A07_1, LAB_0660, LAB_0668, LAB_05D3, LAB_05C7
+; READS:
+;   LAB_223D
+; WRITES:
+;   A3 fields
+; DESC:
+;   Parses a date/time string into a struct and validates ranges.
+; NOTES:
+;   Uses 0x12/0x0B offsets in the parsed buffer.
+;------------------------------------------------------------------------------
 LAB_05FC:
     LINK.W  A5,#-20
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
@@ -2018,7 +2662,26 @@ LAB_0604:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0605   (Dump time structs to stream??)
+; ARGS:
+;   stack +8: D7 = stream/handle
+;   stack +12: A3 = struct pair
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   JMP_TBL_PRINTF_2, JMP_TBL_APPEND_DATA_AT_NULL_1, JMP_TBL_LAB_1A07_1, LAB_03A0
+; READS:
+;   LAB_1CF8..LAB_1D00
+; WRITES:
+;   local buffer -87(A5)
+; DESC:
+;   Formats two optional time structs into text and writes to the stream.
+; NOTES:
+;   Uses local buffer with append helper.
+;------------------------------------------------------------------------------
 LAB_0605:
     LINK.W  A5,#-140
     MOVEM.L D6-D7/A3,-(A7)
@@ -2201,7 +2864,25 @@ LAB_060F:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_0610   (Save time structs to file)
+; ARGS:
+;   stack +8: A3 = struct pair
+; RET:
+;   D0: boolean success
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   DISKIO_OpenFileWithBuffer, LAB_03A0, LAB_0605, LAB_039A
+; READS:
+;   LAB_1CF7, LAB_1D01, LAB_1D02
+; WRITES:
+;   file
+; DESC:
+;   Writes formatted struct data to a file using a buffered handle.
+; NOTES:
+;   Requires both struct pointers to be non-null.
+;------------------------------------------------------------------------------
 LAB_0610:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3

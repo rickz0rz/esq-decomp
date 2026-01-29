@@ -1934,5 +1934,5 @@ LAB_08BA:
 
 ;!======
 
-    ; ?????
+    ; Alignment
     MOVEQ   #97,D0

@@ -1,3 +1,24 @@
+;!======
+;------------------------------------------------------------------------------
+; FUNC: ??   (Dead code: LAB_1A3A/LAB_1AE8 wrapper??)
+; ARGS:
+;   stack +8: ?? (arg for LAB_1A3A)
+;   stack +12: ?? (arg for LAB_1A3A)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A0 ??
+; CALLS:
+;   LAB_1A3A, LAB_1AE8
+; READS:
+;   LAB_2381
+; WRITES:
+;   LAB_2381
+; DESC:
+;   Dead code wrapper that formats/updates LAB_2381 and then calls LAB_1AE8.
+; NOTES:
+;   Entry label not present in source.
+;------------------------------------------------------------------------------
     ; Dead code.
     LINK.W  A5,#-4
 
@@ -16,6 +37,27 @@
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1906   (LAB_1A3A/LAB_1AE8 wrapper)
+; ARGS:
+;   stack +8: ?? (arg for LAB_1A3A)
+;   stack +12: ?? (arg for LAB_1A3A)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A0 ??
+; CALLS:
+;   LAB_1A3A, LAB_1AE8
+; READS:
+;   LAB_2381
+; WRITES:
+;   LAB_2381
+; DESC:
+;   Wrapper that formats/updates LAB_2381 and then calls LAB_1AE8.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1906:
     LINK.W  A5,#-4
     LEA     12(A5),A0
@@ -33,6 +75,27 @@ LAB_1906:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: ??   (Dead code: open log file and write LAB_2381??)
+; ARGS:
+;   stack +8: ?? (arg for LAB_1A3A)
+;   stack +12: ?? (arg for LAB_1A3A)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A0 ??
+; CALLS:
+;   LAB_1AB2, LAB_1A3A, LAB_19C3, LAB_1AB9
+; READS:
+;   GLOB_STR_A_PLUS, GLOB_STR_DF1_DEBUG_LOG, LAB_2381
+; WRITES:
+;   LAB_2381
+; DESC:
+;   Dead code that opens a debug log, formats LAB_2381, writes it, and closes.
+; NOTES:
+;   Entry label not present in source.
+;------------------------------------------------------------------------------
     ; Dead code.
     LINK.W  A5,#-8
 
@@ -66,6 +129,26 @@ LAB_1906:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1908   (Stub)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   none
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Empty stub.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1908:
     RTS
 
@@ -81,6 +164,27 @@ LAB_1908:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: ALLOC_RASTER   (AllocRaster wrapper)
+; ARGS:
+;   stack +16: D7 = width
+;   stack +20: D6 = height
+; RET:
+;   D0: raster pointer (or 0)
+; CLOBBERS:
+;   D0-D1/A6 ??
+; CALLS:
+;   _LVOAllocRaster
+; READS:
+;   GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   ??
+; DESC:
+;   Allocates a raster via graphics.library.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 ALLOC_RASTER:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
@@ -98,6 +202,28 @@ ALLOC_RASTER:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: FREE_RASTER   (FreeRaster wrapper)
+; ARGS:
+;   stack +16: A3 = raster pointer
+;   stack +20: D7 = width
+;   stack +24: D6 = height
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D1/A6 ??
+; CALLS:
+;   _LVOFreeRaster
+; READS:
+;   GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   ??
+; DESC:
+;   Frees a raster via graphics.library.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 FREE_RASTER:
     LINK.W  A5,#0
     MOVEM.L D6-D7/A3,-(A7)
@@ -118,6 +244,27 @@ FREE_RASTER:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: OPEN_FILE_WITH_ACCESS_MODE   (Open wrapper)
+; ARGS:
+;   stack +8: A3 = filename pointer
+;   stack +12: D7 = access mode
+; RET:
+;   D0: file handle (or 0)
+; CLOBBERS:
+;   D0-D2/A6 ??
+; CALLS:
+;   _LVOOpen
+; READS:
+;   GLOB_REF_DOS_LIBRARY_2
+; WRITES:
+;   ??
+; DESC:
+;   Opens a file via dos.library using the provided access mode.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 OPEN_FILE_WITH_ACCESS_MODE:
     MOVEM.L D2/D6-D7/A3,-(A7)
 
@@ -139,16 +286,76 @@ OPEN_FILE_WITH_ACCESS_MODE:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_190F   (Stub)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   none
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Empty stub.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_190F:
     RTS
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1910   (Stub)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   none
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Empty stub.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1910:
     RTS
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1911   (Buffered write of string??)
+; ARGS:
+;   stack +8: A3 = string pointer
+; RET:
+;   D0: string length
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_1916
+; READS:
+;   -1074(A4), -1082(A4)
+; WRITES:
+;   -1074(A4), -1082(A4), -1086(A4)
+; DESC:
+;   Writes a NUL-terminated string into a buffer, flushing via LAB_1916 on overflow.
+; NOTES:
+;   Uses DBF-style loop over bytes until NUL.
+;------------------------------------------------------------------------------
 LAB_1911:
     MOVEM.L D6-D7/A3,-(A7)
 
@@ -207,6 +414,27 @@ LAB_1911:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1916   (Buffered putc/flush handler??)
+; ARGS:
+;   stack +8: D7 = byte or -1
+;   stack +12: A3 = handle/struct pointer??
+; RET:
+;   D0: status or byte??
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_1A8E, LAB_1A34, LAB_19B3, LAB_1AA9, LAB_1934
+; READS:
+;   A3+4/8/12/16/20/24/26/27/28, -1124(A4), -640(A4)
+; WRITES:
+;   A3+4/8/12/27, -640(A4)
+; DESC:
+;   Handles buffered output, flushing or writing directly based on flags and mode.
+; NOTES:
+;   Booleanize pattern: SNE/NEG/EXT. Uses 0x1A/0x0D handling.
+;------------------------------------------------------------------------------
 LAB_1916:
     LINK.W  A5,#-20
     MOVEM.L D2/D4-D7/A3,-(A7)
@@ -532,12 +760,52 @@ LAB_1916:
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1933   (Callback: MOVEP.W 0(A2)->D6)
+; ARGS:
+;   A2 = source pointer??
+; RET:
+;   D6: word loaded via MOVEP
+; CLOBBERS:
+;   D6
+; CALLS:
+;   none
+; READS:
+;   (A2)
+; WRITES:
+;   D6
+; DESC:
+;   Tiny helper used as a callback to read a word via MOVEP.
+; NOTES:
+;   Followed by padding word.
+;------------------------------------------------------------------------------
 LAB_1933:
     MOVEP.W 0(A2),D6
     DC.W    $0000
 
 ;!======
 
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_1934   (Buffered read/getc handler??)
+; ARGS:
+;   stack +8: A3 = handle/struct pointer??
+; RET:
+;   D0: byte or -1 on error/EOF
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_1916, LAB_1A8E, LAB_1AA9
+; READS:
+;   A3+4/8/16/20/24/26/27/28
+; WRITES:
+;   A3+4/8/20/27
+; DESC:
+;   Ensures buffer is ready and returns next byte, refilling as needed.
+; NOTES:
+;   Handles 0x1A and 0x0D specially; uses SNE/NEG/EXT booleanization.
+;------------------------------------------------------------------------------
 LAB_1934:
     MOVEM.L D5-D7/A3,-(A7)
 

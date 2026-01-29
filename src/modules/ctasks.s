@@ -1,38 +1,61 @@
+;!======
+;------------------------------------------------------------------------------
+; FUNC: CTASKS_IFFTaskCleanup   (IFF task cleanup / SaveBrushResult??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ?? (passes through from JMP_TBL_DEALLOCATE_MEMORY_1?)
+; CLOBBERS:
+;   D0-D1/A0/A4/A6
+; CALLS:
+;   LAB_0395 (GCOMMAND_SaveBrushResult), _LVOForbid, JMP_TBL_DEALLOCATE_MEMORY_1
+; READS:
+;   LAB_1B84 (state), LAB_1B20/LAB_1B21/LAB_1B24 (scratch ptrs), BRUSH_LoadInProgressFlag
+;   GLOB_REF_LIST_IFF_TASK_PROC, GLOB_STR_CTASKS_C_1
+; WRITES:
+;   LAB_1B20/LAB_1B21/LAB_1B24, LAB_1B83, LAB_1B84
+; DESC:
+;   Waits for brush load to finish, saves brush data, clears the active scratch
+;   pointer based on LAB_1B84, and frees the IFF task list before marking the task done.
+; NOTES:
+;   Spins while BRUSH_LoadInProgressFlag is nonzero; uses Forbid during teardown.
+;------------------------------------------------------------------------------
+CTASKS_IFFTaskCleanup:
 LAB_0386:
     LINK.W  A5,#-4
     MOVE.L  A4,-(A7)
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
-    MOVE.W  LAB_1B84,D0
+    MOVE.W  LAB_1B84,D0                  ; pick scratch buffer based on current state
     SUBQ.W  #4,D0
-    BNE.S   .LAB_0387
+    BNE.S   .check_state_5
 
     MOVE.L  LAB_1B20,-4(A5)
-    BRA.S   .LAB_038A
+    BRA.S   .wait_for_brush
 
-.LAB_0387:
+.check_state_5:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #5,D0
-    BNE.S   .LAB_0388
+    BNE.S   .check_state_6_or_11
 
     MOVE.L  LAB_1B21,-4(A5)
-    BRA.S   .LAB_038A
+    BRA.S   .wait_for_brush
 
-.LAB_0388:
+.check_state_6_or_11:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #6,D0
-    BEQ.S   .LAB_0389
+    BEQ.S   .state_6_or_11
 
     MOVE.W  LAB_1B84,D0
     MOVEQ   #11,D1
     CMP.W   D1,D0
-    BNE.S   .LAB_038A
+    BNE.S   .wait_for_brush
 
-.LAB_0389:
+.state_6_or_11:
     MOVE.L  LAB_1B24,-4(A5)
 
-.LAB_038A:
+.wait_for_brush:
     TST.L   BRUSH_LoadInProgressFlag      ; defer cleanup until brush list mutations finish
-    BNE.S   .LAB_038A
+    BNE.S   .wait_for_brush
 
     MOVE.L  -4(A5),-(A7)
     JSR     LAB_0395(PC)
@@ -40,30 +63,30 @@ LAB_0386:
     ADDQ.W  #4,A7
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #4,D0
-    BNE.S   .LAB_038B
+    BNE.S   .clear_state5
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1B20
-    BRA.S   .LAB_038D
+    BRA.S   .finish_reset
 
-.LAB_038B:
+.clear_state5:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #5,D0
-    BNE.S   .LAB_038C
+    BNE.S   .clear_state6
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1B21
-    BRA.S   .LAB_038D
+    BRA.S   .finish_reset
 
-.LAB_038C:
+.clear_state6:
     MOVE.W  LAB_1B84,D0
     SUBQ.W  #6,D0
-    BNE.S   .LAB_038D
+    BNE.S   .finish_reset
 
     CLR.L   LAB_1B24
 
-.LAB_038D:
-    MOVEA.L AbsExecBase,A6
+.finish_reset:
+    MOVEA.L AbsExecBase,A6               ; block task switches during teardown
     JSR     _LVOForbid(A6)
 
     MOVE.W  #1,LAB_1B83
@@ -79,40 +102,60 @@ LAB_0386:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: CTASKS_StartIffTaskProcess   (Start IFF task process)
+; ARGS:
+;   (none)
+; RET:
+;   D0: created task pointer (LAB_21B7)
+; CLOBBERS:
+;   D0-D4/A0-A1/A6
+; CALLS:
+;   _LVOForbid/_LVOPermit, _LVOFindTask, JMP_TBL_ALLOCATE_MEMORY_1, _LVOCreateProc
+; READS:
+;   LAB_1B84, LAB_22C0, GLOB_STR_IFF_TASK_1/2, GLOB_REF_DOS_LIBRARY_2
+; WRITES:
+;   LAB_1B83, LAB_1B84, GLOB_REF_LIST_IFF_TASK_PROC, LAB_21B6, LAB_21B7
+; DESC:
+;   Waits until no existing IFF task is present, sets the startup state,
+;   allocates a List struct, installs LAB_0386 as its entry, and spawns the IFF task process.
+; NOTES:
+;   Selects initial LAB_1B84 state based on LAB_22C0 (4 vs 5 vs 6).
+;------------------------------------------------------------------------------
+CTASKS_StartIffTaskProcess:
 LAB_038E:
     LINK.W  A5,#-4
     MOVEM.L D2-D4,-(A7)
 
-.LAB_038F:
+.wait_for_prior_iff_task:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     LEA     GLOB_STR_IFF_TASK_1,A1
     JSR     _LVOFindTask(A6)
 
-    MOVE.L  D0,-4(A5)
+    MOVE.L  D0,-4(A5)                     ; keep result of FindTask
     JSR     _LVOPermit(A6)
 
     TST.L   -4(A5)
-    BNE.S   .LAB_038F
+    BNE.S   .wait_for_prior_iff_task      ; spin until task is gone
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1B83
-    MOVE.W  LAB_1B84,D1
+    MOVE.W  LAB_1B84,D1                  ; seed state if caller already set it to 6
     SUBQ.W  #6,D1
-    BEQ.S   .LAB_0391
+    BEQ.S   .alloc_list_and_spawn
 
-    MOVE.W  LAB_22C0,D1
-    BEQ.S   .LAB_0390
+    MOVE.W  LAB_22C0,D1                  ; choose default state (4 vs 5) based on flag
+    BEQ.S   .set_state_to_5
 
     MOVE.W  #4,LAB_1B84
-    BRA.S   .LAB_0391
+    BRA.S   .alloc_list_and_spawn
 
-.LAB_0390:
+.set_state_to_5:
     MOVE.W  #5,LAB_1B84
 
-.LAB_0391:
+.alloc_list_and_spawn:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (Struct_List_Size).W
     PEA     159.W
@@ -138,7 +181,7 @@ LAB_038E:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6    ; spawn IFF task process
     JSR     _LVOCreateProc(A6)
 
     MOVE.L  D0,LAB_21B7
@@ -149,21 +192,41 @@ LAB_038E:
 ;!======
 
 ; End the CLOSE_TASK task.
+;------------------------------------------------------------------------------
+; FUNC: CTASKS_CloseTaskTeardown   (Close task teardown)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D1/A0/A4/A6
+; CALLS:
+;   _LVOClose, _LVOForbid, JMP_TBL_DEALLOCATE_MEMORY_1
+; READS:
+;   LAB_1B8B (file handle), GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LIST_CLOSE_TASK_PROC
+; WRITES:
+;   LAB_1B8B, LAB_1B8A
+; DESC:
+;   Closes the stored file handle (if any), frees the CLOSE_TASK list, and marks the task done.
+; NOTES:
+;   Uses Forbid during deallocation.
+;------------------------------------------------------------------------------
+CTASKS_CloseTaskTeardown:
 LAB_0392:
     MOVE.L  A4,-(A7)
 
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
     TST.L   LAB_1B8B
-    BEQ.S   .LAB_0393
+    BEQ.S   .skip_close_handle
 
     MOVE.L  LAB_1B8B,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #0,D0
-    MOVE.L  D0,LAB_1B8B
+    MOVE.L  D0,LAB_1B8B                  ; clear stored handle
 
-.LAB_0393:
+.skip_close_handle:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
@@ -182,13 +245,34 @@ LAB_0392:
 ;!======
 
 ; Start the CLOSE_TASK task
+;------------------------------------------------------------------------------
+; FUNC: CTASKS_StartCloseTaskProcess   (Start close-task process)
+; ARGS:
+;   stack +8: D7 = file handle to close??
+; RET:
+;   D0: created task pointer (LAB_21BA)
+; CLOBBERS:
+;   D0-D4/D7/A0-A1/A6
+; CALLS:
+;   JMP_TBL_ALLOCATE_MEMORY_1, _LVOCreateProc
+; READS:
+;   GLOB_STR_CLOSE_TASK, GLOB_REF_DOS_LIBRARY_2
+; WRITES:
+;   LAB_1B8A, LAB_1B8B, GLOB_REF_LIST_CLOSE_TASK_PROC, LAB_21B9, LAB_21BA
+; DESC:
+;   Stores the target handle, allocates a List struct, installs LAB_0392 as its entry,
+;   and spawns the CLOSE_TASK process.
+; NOTES:
+;   Clears LAB_1B8A before launch.
+;------------------------------------------------------------------------------
+CTASKS_StartCloseTaskProcess:
 LAB_0394:
     MOVEM.L D2-D4/D7,-(A7)
 
     SetOffsetForStack 4
     UseStackLong    MOVE.L,1,D7
 
-    CLR.W   LAB_1B8A
+    CLR.W   LAB_1B8A                     ; mark task as running
     MOVE.L  D7,LAB_1B8B
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -231,7 +315,26 @@ LAB_0394:
     ALIGN_WORD
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: CTASKS_JMP_TBL_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   GCOMMAND_SaveBrushResult
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to GCOMMAND_SaveBrushResult.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+CTASKS_JMP_TBL_SaveBrushResult:
 LAB_0395:
     JMP     GCOMMAND_SaveBrushResult
 

@@ -1,3 +1,24 @@
+;!======
+;------------------------------------------------------------------------------
+; FUNC: LAB_18D7   (Parse record, update globals, and display??)
+; ARGS:
+;   stack +8: A3 = input buffer pointer??
+; RET:
+;   D0: ?? (pass/fail via side effects)
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_1902, LAB_1905, JMP_TBL_DISPLAY_TEXT_AT_POSITION_2
+; READS:
+;   LAB_2252, LAB_2245, LAB_1DEC, GLOB_REF_RASTPORT_1
+; WRITES:
+;   LAB_1DEC, LAB_227F, LAB_229B, LAB_229C
+; DESC:
+;   Parses a small record from the input buffer, validates via wildcard match,
+;   updates globals, and optionally redraws text.
+; NOTES:
+;   Uses 0x12 sentinel and max length 10 for local buffer.
+;------------------------------------------------------------------------------
 LAB_18D7:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A3,-(A7)
@@ -76,7 +97,26 @@ LAB_18D7:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_18DD   (Parse list and update LAB_2197 entries??)
+; ARGS:
+;   stack +8: A3 = input buffer pointer??
+; RET:
+;   D0: ?? (pass/fail via side effects)
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_1902, LAB_1903, LAB_1955, LAB_1A23, LAB_1A06
+; READS:
+;   LAB_2246, LAB_227C, LAB_2277, LAB_2197
+; WRITES:
+;   LAB_2196, LAB_2197 entries, LAB_229C?? (indirect)
+; DESC:
+;   Parses a list of records from the input buffer and updates LAB_2197
+;   table entries, including optional numeric fields and flags.
+; NOTES:
+;   Uses 0x12 sentinel and max length 10 for local buffer.
+;------------------------------------------------------------------------------
 LAB_18DD:
     LINK.W  A5,#-36
     MOVEM.L D4-D7/A3,-(A7)
@@ -345,7 +385,25 @@ LAB_18DD:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_18EF   (Validate checksum and dispatch to LAB_18D7)
+; ARGS:
+;   stack +8: D7 = ?? (byte parameter)
+; RET:
+;   D0: ?? (pass/fail via side effects)
+; CLOBBERS:
+;   D0-D7 ??
+; CALLS:
+;   LAB_1900, JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18D7
+; READS:
+;   LAB_229A, LAB_2253, DATACErrs
+; WRITES:
+;   LAB_2285, LAB_2232, DATACErrs
+; DESC:
+;   Computes a checksum and, on success, invokes LAB_18D7; otherwise bumps error count.
+; NOTES:
+;   Uses stack param byte at 11(A7).
+;------------------------------------------------------------------------------
 LAB_18EF:
     MOVE.L  D7,-(A7)
 
@@ -391,7 +449,25 @@ LAB_18EF:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_18F2   (Validate checksum and dispatch to LAB_18DD)
+; ARGS:
+;   stack +8: D7 = ?? (byte parameter)
+; RET:
+;   D0: ?? (pass/fail via side effects)
+; CLOBBERS:
+;   D0-D7 ??
+; CALLS:
+;   LAB_1900, JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18DD
+; READS:
+;   LAB_229A, LAB_2253, DATACErrs
+; WRITES:
+;   LAB_2285, LAB_2232, DATACErrs
+; DESC:
+;   Computes a checksum and, on success, invokes LAB_18DD; otherwise bumps error count.
+; NOTES:
+;   Uses stack param byte at 11(A7).
+;------------------------------------------------------------------------------
 LAB_18F2:
     MOVE.L  D7,-(A7)
 
@@ -437,7 +513,25 @@ LAB_18F2:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_18F5   (Parse digit + label, update globals, and display??)
+; ARGS:
+;   stack +8: A3 = input buffer pointer??
+; RET:
+;   D0: ?? (pass/fail via side effects)
+; CLOBBERS:
+;   D0-D2/D7/A0-A3 ??
+; CALLS:
+;   LAB_1905, JMP_TBL_DISPLAY_TEXT_AT_POSITION_2
+; READS:
+;   LAB_1DD9, LAB_2252, GLOB_REF_RASTPORT_1
+; WRITES:
+;   LAB_229D, LAB_1DD9, LAB_2245
+; DESC:
+;   Parses a digit plus a short label string, stores it, and optionally redraws text.
+; NOTES:
+;   Clamps digit to '0'..'9'; uses 0x12 sentinel and max length 10 for label.
+;------------------------------------------------------------------------------
 LAB_18F5:
     LINK.W  A5,#-16
     MOVEM.L D2/D7/A3,-(A7)
@@ -506,7 +600,25 @@ LAB_18F5:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_18FC   (Copy short label into LAB_2246)
+; ARGS:
+;   stack +8: A3 = input buffer pointer??
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   none
+; READS:
+;   (none)
+; WRITES:
+;   LAB_2246
+; DESC:
+;   Copies a short label string from the input buffer into LAB_2246.
+; NOTES:
+;   Uses 0x12 sentinel and max length 10 for label.
+;------------------------------------------------------------------------------
 LAB_18FC:
     LINK.W  A5,#-16
     MOVEM.L D7/A3,-(A7)
@@ -541,22 +653,135 @@ LAB_18FC:
     RTS
 
 ;!======
-
+;------------------------------------------------------------------------------
+; FUNC: LAB_1900   (JumpStub_LAB_0B0E)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_0B0E
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_0B0E.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_1900:
     JMP     LAB_0B0E
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_DISPLAY_TEXT_AT_POSITION_2   (JumpStub_DISPLAY_TEXT_AT_POSITION)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   DISPLAY_TEXT_AT_POSITION
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to DISPLAY_TEXT_AT_POSITION.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_DISPLAY_TEXT_AT_POSITION_2:
     JMP     DISPLAY_TEXT_AT_POSITION
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1902   (JumpStub_ESQ_WildcardMatch)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ESQ_WildcardMatch
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to ESQ_WildcardMatch.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_1902:
     JMP     ESQ_WildcardMatch
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1903   (JumpStub_LAB_0631)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_0631
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_0631.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_1903:
     JMP     LAB_0631
 
+;------------------------------------------------------------------------------
+; FUNC: JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2   (JumpStub_GENERATE_CHECKSUM_BYTE_INTO_D0)
+; ARGS:
+;   ??
+; RET:
+;   D0: checksum byte
+; CLOBBERS:
+;   ??
+; CALLS:
+;   GENERATE_CHECKSUM_BYTE_INTO_D0
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to GENERATE_CHECKSUM_BYTE_INTO_D0.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2:
     JMP     GENERATE_CHECKSUM_BYTE_INTO_D0
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1905   (JumpStub_LAB_0B44)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_0B44
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Jump stub to LAB_0B44.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 LAB_1905:
     JMP     LAB_0B44
 

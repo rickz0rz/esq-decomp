@@ -5,6 +5,7 @@ This repository contains a living disassembly and annotation of the Esquire 9.04
 ## Repository Layout
 - `src/ESQ.asm` – Root include that pulls in every module. Use it as the entry point for builds.
 - `src/modules/` – Feature modules (`gcommand.s`, `kybd.s`, `diskio2.s`, etc.) where we replace legacy `LAB_xxxx` labels with descriptive aliases.
+- `src/modules/submod/` – Provisional utility chunks split out during the re-org; filenames may remain `unknown*.s` until their roles are confirmed.
 - `src/data/` – Display tables, highlight presets, string resources, and lookup maps shared across modules.
 - `src/subroutines/` and `src/interrupts/` – Common helpers and interrupt handlers referenced from multiple modules.
 - `src/decomp/` – Experimental C decomp/cleanup helpers (reference-only, not part of the build).
@@ -31,6 +32,8 @@ For targeted experiments you can run vasm directly, for example:
 Keep any generated binaries out of version control.
 
 ## Development Workflow
+- Alignment/padding bytes found after jump tables are likely compiler artifacts that mark original source/object boundaries; treat them as file-end markers unless proven otherwise.
+  - Heuristic only: padding can appear mid-file for alignment, and jump tables are suggestive but not definitive boundaries.
 - When you rename a label, keep the original `LAB_xxxx` symbol in place and add the new alias directly above it. This preserves binary parity while growing readable names.
 - Record noteworthy alias work and outstanding anonymous labels in [`AGENTS.md`](AGENTS.md) so future passes know where to continue.
 - Follow the inline documentation template in `AGENTS.md` for function headers, symbol blocks, and struct offsets; keep notes in code rather than new markdown docs.

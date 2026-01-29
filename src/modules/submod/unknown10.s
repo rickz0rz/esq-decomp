@@ -213,6 +213,29 @@ PRINTF:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_19A1   (Allocate/open entry in handle table??)
+; ARGS:
+;   stack +8: A3 = path/buffer pointer??
+;   stack +12: D7 = flags/mode bits??
+;   stack +16: ?? (nonzero enables alt error code path)
+;   stack +19: ?? (bit 2 used with stack +16)
+; RET:
+;   D0: slot/index on success, -1 on failure
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LAB_19F3, LAB_19FA, LAB_19FF, LAB_1A04
+; READS:
+;   -1148(A4), 22492(A4) (table), -1124(A4) (flags), 22828(A4)
+; WRITES:
+;   22828(A4), -640(A4), (A2), 4(A2)
+; DESC:
+;   Finds a free entry in the handle table, validates mode bits, and performs
+;   setup/open work via helper calls; stores entry data on success.
+; NOTES:
+;   Uses SEQ/NEG/EXT booleanization in callers; sets error code in 22828(A4).
+;------------------------------------------------------------------------------
 LAB_19A1:
     LINK.W  A5,#-26
     MOVEM.L D4-D7/A2-A3,-(A7)

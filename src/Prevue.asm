@@ -762,13 +762,15 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/brush.s"
 
     include "modules/cleanup.s"
+    include "modules/cleanup2.s"
+    include "modules/cleanup3.s"
+    include "modules/cleanup4.s"
 
     include "modules/coi.s"
 
     include "modules/ctasks.s"
 
     include "modules/diskio.s"
-
     include "modules/diskio2.s"
 
     include "modules/displib.s"
@@ -779,6 +781,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
 
     include "modules/ed.s"
     include "modules/ed2.s"
+    include "modules/ed3.s"
 
     include "modules/esq.s"
 
@@ -794,6 +797,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/esqpars3.s"
 
     include "modules/flib.s"
+    include "modules/flib2.s"
 
     include "modules/gcommand.s"
     include "modules/gcommand2.s"
@@ -807,6 +811,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/ladfunc2.s"
 
     include "modules/locavail.s"
+    include "modules/locavail2.s"
 
     include "modules/newgrid.s"
     include "modules/newgrid2.s"
@@ -819,22 +824,56 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
 
     include "modules/textdisp.s"
     include "modules/textdisp2.s"
+    include "modules/textdisp3.s"
 
     include "modules/tliba1.s"
+    include "modules/tliba2.s"
+    include "modules/tliba3.s"
 
     include "modules/wdisp.s"
-    include "modules/wdisp2.s"
-    include "modules/wdisp3.s"
-    include "modules/wdisp4.s"
-    include "modules/wdisp5.s"
-    include "modules/wdisp6.s"
-    include "modules/wdisp7.s"
-    include "modules/wdisp8.s"
-    include "modules/wdisp9.s"
-    include "modules/wdisp10.s"
-    include "modules/wdisp11.s"
-    include "modules/wdisp12.s"
-    include "modules/wdisp13.s"
+
+    include "modules/submod/unknown.s"
+    include "modules/submod/unknown2.s"
+    include "modules/submod/unknown3.s"
+    include "modules/submod/unknown4.s"
+    include "modules/submod/unknown5.s"
+    include "modules/submod/unknown6.s"
+    include "modules/submod/unknown7.s"
+    include "modules/submod/unknown8.s"
+    include "modules/submod/unknown9.s"
+    include "modules/submod/unknown10.s"
+    include "modules/submod/unknown11.s"
+    include "modules/submod/unknown12.s"
+    include "modules/submod/unknown13.s"
+    include "modules/submod/unknown14.s"
+    include "modules/submod/unknown15.s"
+    include "modules/submod/unknown16.s"
+    include "modules/submod/unknown17.s"
+    include "modules/submod/unknown18.s"
+    include "modules/submod/unknown19.s"
+    include "modules/submod/unknown20.s"
+    include "modules/submod/unknown21.s"
+    include "modules/submod/unknown22.s"
+    include "modules/submod/unknown23.s"
+    include "modules/submod/unknown24.s"
+    include "modules/submod/unknown25.s"
+    include "modules/submod/unknown26.s"
+    include "modules/submod/unknown27.s"
+    include "modules/submod/unknown28.s"
+    include "modules/submod/unknown29.s"
+    include "modules/submod/unknown30.s"
+    include "modules/submod/unknown31.s"
+    include "modules/submod/unknown32.s"
+    include "modules/submod/unknown33.s"
+    include "modules/submod/unknown34.s"
+    include "modules/submod/unknown35.s"
+    include "modules/submod/unknown36.s"
+    include "modules/submod/unknown37.s"
+    include "modules/submod/unknown38.s"
+    include "modules/submod/unknown39.s"
+    include "modules/submod/unknown40.s"
+    include "modules/submod/unknown41.s"
+    include "modules/submod/unknown42.s"
 
 ;!================
 ; Data Section
@@ -855,7 +894,6 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "data/ctasks.s"
 
     include "data/diskio.s"
-
     include "data/diskio2.s"
 
     include "data/displib.s"
@@ -875,7 +913,6 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "data/esqiff.s"
 
     include "data/esqpars.s"
-
     include "data/esqpars2.s"
 
     include "data/flib.s"
@@ -889,7 +926,6 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "data/locavail.s"
 
     include "data/newgrid.s"
-
     include "data/newgrid2.s"
 
     include "data/p_type.s"
