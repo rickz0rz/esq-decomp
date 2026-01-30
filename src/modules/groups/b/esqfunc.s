@@ -633,7 +633,7 @@ DRAW_ESC_MENU_VERSION_SCREEN:
     MOVE.L  GLOB_LONG_BUILD_NUMBER,-(A7)    ; parameter 1
     PEA     GLOB_STR_BUILD_NUMBER_FORMATTED ; format string
     PEA     -81(A5)                         ; result string pointer
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)            ; call printf
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)            ; call printf
 
     ; Display string at position
     PEA     -81(A5)                         ; string
@@ -658,7 +658,7 @@ LAB_0990:
     MOVE.L  A0,-(A7)                        ; parameter 1
     PEA     GLOB_STR_ROM_VERSION_FORMATTED  ; format string
     PEA     -81(A5)                         ; result string pointer
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)            ; call printf
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)            ; call printf
 
     PEA     -81(A5)                         ; string
     PEA     360.W                           ; y
@@ -696,7 +696,7 @@ LAB_0990:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, GROUPB_JMP_TBL_WDISP_SPrintf,
+;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, GROUPAB_JMP_TBL_WDISP_SPrintf,
 ;   JMP_TBL_DISPLAY_TEXT_AT_POSITION_1, JMP_TBL_CALCULATE_H_T_C_MAX_VALUES,
 ;   ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
@@ -750,7 +750,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_DATA_CMDS_CERRS_LERRS
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     112.W
@@ -770,7 +770,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_CTRL_CMDS_CERRS_LERRS
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     142.W
@@ -806,7 +806,7 @@ LAB_0991:
     MOVE.L  D7,-(A7)
     PEA     GLOB_STR_L_CHIP_FAST_MAX
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
     BRA.W   .draw_memory_section
@@ -825,7 +825,7 @@ LAB_0991:
     MOVE.L  D7,-(A7)
     PEA     GLOB_STR_CHIP_PLACEHOLDER
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     BRA.S   .draw_memory_section
@@ -844,7 +844,7 @@ LAB_0991:
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_FAST_PLACEHOLDER
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     BRA.S   .draw_memory_section
@@ -864,7 +864,7 @@ LAB_0991:
     MOVE.L  D5,-(A7)
     PEA     GLOB_STR_MAX_PLACEHOLDER
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     BRA.S   .draw_memory_section
@@ -872,7 +872,7 @@ LAB_0991:
 .show_disabled:
     PEA     GLOB_STR_MEMORY_TYPES_DISABLED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     ADDQ.W  #8,A7
 
@@ -888,7 +888,7 @@ LAB_0991:
     MOVE.L  D0,(A7)
     PEA     GLOB_STR_DATA_OVERRUNS_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     202.W
@@ -911,7 +911,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_DATA_H_T_C_MAX_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     232.W
@@ -935,7 +935,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_CTRL_H_T_C_MAX_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     262.W
@@ -958,7 +958,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_JULIAN_DAY_NEXT_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)                                 ; Text address to display
     PEA     112.W                                   ; X position
@@ -974,7 +974,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_JDAY1_JDAY2_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     142.W
@@ -990,7 +990,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_CURCLU_NXTCLU_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     72(A7),A7
     PEA     -72(A5)
@@ -1013,7 +1013,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_C_DATE_C_MONTH_LP_YR_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     202.W
@@ -1035,7 +1035,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_B_DATE_B_MONTH_LP_YR_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     72(A7),A7
     PEA     -72(A5)
@@ -1055,7 +1055,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_C_DST_B_DST_PSHIFT_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     262.W
@@ -1074,7 +1074,7 @@ LAB_0991:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_C_HOUR_B_HOUR_CS_FORMATTED
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -72(A5)
     PEA     292.W
@@ -1105,7 +1105,7 @@ LAB_0991:
 ; CALLS:
 ;   _LVOSetFont, ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit5Mask,
 ;   ESQFUNC_JMP_TBL_SCRIPT_GetCtrlLineFlag, ESQFUNC_JMP_TBL_SCRIPT_ReadCiaBBit3Flag,
-;   GROUPB_JMP_TBL_WDISP_SPrintf, JMP_TBL_DISPLAY_TEXT_AT_POSITION_1,
+;   GROUPAB_JMP_TBL_WDISP_SPrintf, JMP_TBL_DISPLAY_TEXT_AT_POSITION_1,
 ;   ESQFUNC_JMP_TBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   LAB_1EB6, LAB_2118, LAB_1EB8/1EB9, LAB_1EBA/1EBB, LAB_1EBC/1EBD,
@@ -1213,7 +1213,7 @@ LAB_0999:
     MOVE.L  36(A7),-(A7)
     PEA     LAB_1EB7
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1233,7 +1233,7 @@ LAB_0999:
     MOVE.L  (A0),-(A7)
     PEA     LAB_1EC1
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1255,7 +1255,7 @@ LAB_0999:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EC2
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     92(A7),A7
     MOVEA.L LAB_2216,A0
@@ -1300,7 +1300,7 @@ LAB_09A4:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EC3
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1327,7 +1327,7 @@ LAB_09A4:
     MOVE.L  80(A7),-(A7)
     PEA     LAB_1EC6
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     68(A7),A7
     MOVEA.L LAB_2216,A0
@@ -1355,7 +1355,7 @@ LAB_09A4:
     MOVE.L  D0,-(A7)
     PEA     LAB_1EC7
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1385,7 +1385,7 @@ LAB_09A4:
     MOVE.L  84(A7),-(A7)
     PEA     LAB_1EC8
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     72(A7),A7
     MOVEA.L LAB_2216,A0
@@ -1421,7 +1421,7 @@ LAB_09A6:
     MOVE.L  LAB_1EB1,-(A7)
     PEA     LAB_1EC9
     PEA     -132(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0

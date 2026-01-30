@@ -1692,7 +1692,7 @@ LAB_0B4F:
     MOVE.L  D0,-(A7)
     PEA     LAB_CTRLHTCMAX
     PEA     -72(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W

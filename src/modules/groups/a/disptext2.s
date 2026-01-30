@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   JMP_TBL_LAB_1A07_1, JMP_TBL_LAB_1A06_3, LAB_0660, LAB_066E, LAB_0668
+;   JMP_TBL_LAB_1A07_1, GROUPBC_JMP_TBL_LAB_1A06, LAB_0660, LAB_066E, LAB_0668
 ; READS:
 ;   LAB_1CF5
 ; WRITES:
@@ -60,7 +60,7 @@ LAB_05C7:
     ADDI.W  #$7b2,6(A3)
     MOVE.L  D5,D0
     MOVE.L  #$5b5,D1
-    JSR     JMP_TBL_LAB_1A06_3(PC)
+    JSR     GROUPBC_JMP_TBL_LAB_1A06(PC)
 
     MOVE.L  D0,D4
     MOVE.L  D7,D0
@@ -944,7 +944,7 @@ LAB_0604:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   GROUPB_JMP_TBL_WDISP_SPrintf, JMP_TBL_APPEND_DATA_AT_NULL_1, JMP_TBL_LAB_1A07_1, LAB_03A0
+;   GROUPAB_JMP_TBL_WDISP_SPrintf, JMP_TBL_APPEND_DATA_AT_NULL_1, JMP_TBL_LAB_1A07_1, LAB_03A0
 ; READS:
 ;   LAB_1CF8..LAB_1D00
 ; WRITES:
@@ -971,7 +971,7 @@ LAB_0605:
     PEA     4.W
     PEA     LAB_1CF8
     PEA     -138(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -986,7 +986,7 @@ LAB_0605:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CF9
     PEA     -138(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1019,7 +1019,7 @@ LAB_0607:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFA
     PEA     -138(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1044,7 +1044,7 @@ LAB_0609:
     PEA     19.W
     PEA     LAB_1CFC
     PEA     -138(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1059,7 +1059,7 @@ LAB_0609:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFD
     PEA     -138(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1092,7 +1092,7 @@ LAB_060B:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFE
     PEA     -138(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)

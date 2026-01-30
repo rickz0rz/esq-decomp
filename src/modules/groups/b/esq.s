@@ -20,7 +20,7 @@
 ;   ESQ_JMP_TBL_LAB_002F, ESQ_JMP_TBL_SCRIPT_InitCtrlContext, ESQ_JMP_TBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMP_TBL_LAB_041D, LAB_098A, LAB_0C7A,
 ;   ESQ_JMP_TBL_LAB_180B, SETUP_INTERRUPT_INTB_VERTB, LAB_0A45, LAB_0A49, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, LAB_09AD, LAB_09A9,
-;   GROUPB_JMP_TBL_WDISP_SPrintf, ESQ_JMP_TBL_LAB_14E2, ESQ_JMP_TBL_LAB_0D89, JMP_TBL_PARSE_INI, ESQ_JMP_TBL_LAB_0DE9
+;   GROUPAB_JMP_TBL_WDISP_SPrintf, ESQ_JMP_TBL_LAB_14E2, ESQ_JMP_TBL_LAB_0D89, JMP_TBL_PARSE_INI, ESQ_JMP_TBL_LAB_0DE9
 ; READS:
 ;   GLOB_REF_DOS_LIBRARY_2, AbsExecBase, GLOB_STR_GRAPHICS_LIBRARY,
 ;   GLOB_STR_DISKFONT_LIBRARY, GLOB_STR_DOS_LIBRARY, GLOB_STR_INTUITION_LIBRARY,
@@ -972,7 +972,7 @@ LAB_085E:
     PEA     GLOB_STR_MAJOR_MINOR_VERSION            ; 9.0
     PEA     GLOB_STR_GUIDE_START_VERSION_AND_BUILD
     PEA     LAB_2204
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     LAB_1E12,A0
     LEA     LAB_2249,A1
@@ -1850,7 +1850,7 @@ LAB_08B6:
     JMP     LAB_0CC8
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPB_JMP_TBL_WDISP_SPrintf   (JumpStub_PRINTF)
+; FUNC: GROUPAB_JMP_TBL_WDISP_SPrintf   (JumpStub_PRINTF)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1866,7 +1866,7 @@ LAB_08B6:
 ; DESC:
 ;   Jump stub to WDISP_SPrintf.
 ;------------------------------------------------------------------------------
-GROUPB_JMP_TBL_WDISP_SPrintf:
+GROUPAB_JMP_TBL_WDISP_SPrintf:
     JMP     WDISP_SPrintf
 
 ;------------------------------------------------------------------------------

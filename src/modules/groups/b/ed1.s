@@ -282,7 +282,7 @@ LAB_0711:
     PEA     GLOB_STR_NINE_POINT_ZERO
     PEA     GLOB_STR_VER_PERCENT_S_PERCENT_L_D
     PEA     -41(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     JSR     DST_JMP_TBL_CLEANUP_DrawDateTimeBannerRow(PC)
 
@@ -474,7 +474,7 @@ LAB_0718:
     MOVE.L  GLOB_REF_BAUD_RATE,(A7)
     PEA     GLOB_STR_BAUD_RATE_DIAGNOSTIC_MODE
     PEA     .printfResult(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     .printfResult(A5)
     PEA     360.W
@@ -493,7 +493,7 @@ LAB_0718:
     MOVE.L  64(A7),-(A7)
     PEA     GLOB_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS
     PEA     .printfResult(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     76(A7),A7
     PEA     .printfResult(A5)
@@ -625,7 +625,7 @@ LAB_0728:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D34
     PEA     -41(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -663,7 +663,7 @@ LAB_0729:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D35
     PEA     -51(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -680,7 +680,7 @@ LAB_0729:
     MOVE.L  D0,-(A7)
     PEA     LAB_1D36
     PEA     -51(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -695,7 +695,7 @@ LAB_0729:
     MOVE.L  D0,(A7)
     PEA     GLOB_STR_CLOCKCMD_EQUALS_PCT_C
     PEA     -51(A5)
-    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     68(A7),A7
     MOVEA.L LAB_2216,A0
