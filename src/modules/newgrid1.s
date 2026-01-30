@@ -1,12 +1,32 @@
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ResetRowTable   (Initialize row indices and slots)
+; ARGS:
+;   stack +8: A3 = grid struct
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A3
+; CALLS:
+;   none
+; READS:
+;   none
+; WRITES:
+;   55(A3) and 36(A3, index)
+; DESC:
+;   Initializes four row entries and clears associated slot values.
+; NOTES:
+;   DBF runs (D0+1) iterations (5 entries incl. zero).
+;------------------------------------------------------------------------------
+NEWGRID_ResetRowTable:
 LAB_102C:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
 
-LAB_102D:
+.loop_rows:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   LAB_102E
+    BGE.S   .done
 
     MOVE.L  D7,D1
     ADDQ.L  #4,D1
@@ -15,14 +35,36 @@ LAB_102D:
     ASL.L   #2,D1
     CLR.L   36(A3,D1.L)
     ADDQ.L  #1,D7
-    BRA.S   LAB_102D
+    BRA.S   .loop_rows
 
-LAB_102E:
+.done:
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_SetRowColor   (Set row color slot)
+; ARGS:
+;   stack +8: A3 = grid struct
+;   stack +12: D7 = selector (0..3)
+;   stack +16: D6 = color index (0..16) or -1
+; RET:
+;   D0: selected pen index
+; CLOBBERS:
+;   D0-D7/A3
+; CALLS:
+;   none
+; READS:
+;   none
+; WRITES:
+;   55(A3, row)
+; DESC:
+;   Maps selector to a pen index and updates row color if D6 is in range.
+; NOTES:
+;   Out-of-range color defaults to 7.
+;------------------------------------------------------------------------------
+NEWGRID_SetRowColor:
 LAB_102F:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -30,63 +72,85 @@ LAB_102F:
     MOVE.L  28(A7),D6
     MOVE.L  D7,D0
     ADDQ.W  #1,D0
-    BEQ.S   LAB_1030
+    BEQ.S   .case_pen7
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_1031
+    BEQ.S   .case_pen4
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_1032
+    BEQ.S   .case_pen5
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_1033
+    BEQ.S   .case_pen6
 
-    BRA.S   LAB_1034
+    BRA.S   .case_default
 
-LAB_1030:
+.case_pen7:
     MOVEQ   #7,D5
-    BRA.S   LAB_1035
+    BRA.S   .apply
 
-LAB_1031:
+.case_pen4:
     MOVEQ   #4,D5
-    BRA.S   LAB_1035
+    BRA.S   .apply
 
-LAB_1032:
+.case_pen5:
     MOVEQ   #5,D5
-    BRA.S   LAB_1035
+    BRA.S   .apply
 
-LAB_1033:
+.case_pen6:
     MOVEQ   #6,D5
-    BRA.S   LAB_1035
+    BRA.S   .apply
 
-LAB_1034:
+.case_default:
     MOVEQ   #4,D5
 
-LAB_1035:
+.apply:
     MOVE.L  D5,D0
     SUBQ.L  #4,D0
     MOVE.L  D0,D7
     TST.L   D6
-    BMI.S   LAB_1036
+    BMI.S   .set_default
 
     MOVEQ   #16,D0
     CMP.L   D0,D6
-    BGT.S   LAB_1036
+    BGT.S   .set_default
 
     MOVE.L  D6,D0
     MOVE.B  D0,55(A3,D7.W)
-    BRA.S   LAB_1037
+    BRA.S   .done
 
-LAB_1036:
+.set_default:
     MOVE.B  #$7,55(A3,D7.W)
 
-LAB_1037:
+.done:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D5-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ValidateSelectionCode   (Validate selection code against flags)
+; ARGS:
+;   stack +8: A3 = grid struct
+;   stack +12: D7 = selection code
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   none
+; READS:
+;   LAB_1BBF/1BB2/1BB9/1BAE/1BB1/1BAF, LAB_22CC/22D5/22E4
+; WRITES:
+;   54(A3)
+; DESC:
+;   Validates a selection code against feature flags and updates the active
+;   selection byte when allowed.
+; NOTES:
+;   Long chain of comparisons over coded ranges.
+;------------------------------------------------------------------------------
+NEWGRID_ValidateSelectionCode:
 LAB_1038:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -94,190 +158,214 @@ LAB_1038:
     MOVEQ   #0,D0
     MOVE.B  54(A3),D0
     CMP.L   D7,D0
-    BGE.W   LAB_1045
+    BGE.W   .maybe_clear_on_zero
 
     MOVE.L  D7,D0
     MOVEQ   #16,D1
     SUB.L   D1,D0
-    BEQ.S   LAB_1039
+    BEQ.S   .case_16
 
     MOVEQ   #16,D1
     SUB.L   D1,D0
-    BEQ.W   LAB_103A
+    BEQ.W   .case_32
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_103C
+    BEQ.W   .case_33
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_103E
+    BEQ.W   .case_34
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1040
+    BEQ.W   .case_35
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1041
+    BEQ.W   .case_36
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1042
+    BEQ.W   .case_37
 
     MOVEQ   #11,D1
     SUB.L   D1,D0
-    BEQ.S   LAB_103B
+    BEQ.S   .case_48
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_103D
+    BEQ.W   .case_49
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_103E
+    BEQ.W   .case_34
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1040
+    BEQ.W   .case_35
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1041
+    BEQ.W   .case_36
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1042
+    BEQ.W   .case_37
 
     MOVEQ   #11,D1
     SUB.L   D1,D0
-    BEQ.W   LAB_1043
+    BEQ.W   .case_64
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1043
+    BEQ.W   .case_64
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1043
+    BEQ.W   .case_64
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1043
+    BEQ.W   .case_64
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1043
+    BEQ.W   .case_64
 
-    BRA.W   LAB_1044
+    BRA.W   .clear_selection
 
-LAB_1039:
+.case_16:
     MOVE.B  LAB_1BBF,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_1046
+    BNE.W   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   LAB_1046
+    BRA.W   .done
 
-LAB_103A:
+.case_32:
     MOVE.B  LAB_1BB2,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_1046
+    BNE.W   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   LAB_1046
+    BRA.W   .done
 
-LAB_103B:
+.case_48:
     MOVE.B  LAB_1BB9,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_1046
+    BNE.W   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   LAB_1046
+    BRA.W   .done
 
-LAB_103C:
+.case_33:
     MOVE.B  LAB_22CC,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_1046
+    BNE.W   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   LAB_1046
+    BRA.W   .done
 
-LAB_103D:
+.case_49:
     MOVE.B  LAB_1BB9,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_1046
+    BNE.W   .done
 
     MOVE.B  LAB_22CC,D0
     CMP.B   D1,D0
-    BNE.S   LAB_1046
+    BNE.S   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_103E:
+.case_34:
     MOVE.B  LAB_1BAE,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_103F
+    BEQ.S   .case_34_alt
 
     MOVE.B  LAB_1BB1,D0
     CMP.B   D1,D0
-    BNE.S   LAB_1046
+    BNE.S   .done
 
-LAB_103F:
+.case_34_alt:
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_1040:
+.case_35:
     MOVE.B  LAB_1BAF,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1046
+    BNE.S   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_1041:
+.case_36:
     MOVE.B  LAB_22D5,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1046
+    BNE.S   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_1042:
+.case_37:
     MOVE.B  LAB_22E4,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1046
+    BNE.S   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_1043:
+.case_64:
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_1044:
+.clear_selection:
     CLR.B   54(A3)
-    BRA.S   LAB_1046
+    BRA.S   .done
 
-LAB_1045:
+.maybe_clear_on_zero:
     TST.L   D7
-    BNE.S   LAB_1046
+    BNE.S   .done
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
 
-LAB_1046:
+.done:
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridCellText   (Draw primary/secondary cell labels)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = primary string
+;   stack +16: A0 = secondary string
+;   stack +20: D7 = align flag
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   JMP_TBL_APPEND_DATA_AT_NULL_3, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength,
+;   _LVOMove, _LVOText
+; READS:
+;   LAB_2328/2329, LAB_2014, LAB_22CD, LAB_1BA3
+; WRITES:
+;   local temp strings (-26(A5))
+; DESC:
+;   Draws up to two strings centered within a grid cell, handling RAVESC markers.
+; NOTES:
+;   Uses LAB_2014/LAB_1BA3 to alter pen/centering behavior.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridCellText:
 LAB_1047:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -285,14 +373,14 @@ LAB_1047:
     MOVEA.L 12(A5),A2
     MOVE.L  20(A5),D7
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
-    BEQ.S   LAB_1049
+    BEQ.S   .compute_layout
 
     MOVEA.L 16(A5),A0
     LEA     -26(A5),A1
 
-LAB_1048:
+.copy_secondary_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1048
+    BNE.S   .copy_secondary_loop
 
     MOVE.B  #$2d,-24(A5)
     CLR.B   -23(A5)
@@ -306,15 +394,16 @@ LAB_1048:
     LEA     -26(A5),A0
     MOVE.L  A0,16(A5)
 
-LAB_1049:
+.compute_layout:
     MOVEQ   #0,D0
     MOVE.W  LAB_2329,D0
     TST.L   D0
-    BPL.S   LAB_104A
+    ; adjust negative values before ASR (round toward 0)
+    BPL.S   .round_height_half
 
     ADDQ.L  #1,D0
 
-LAB_104A:
+.round_height_half:
     ASR.L   #1,D0
     MOVE.L  D0,D5
     MOVEQ   #42,D1
@@ -323,11 +412,11 @@ LAB_104A:
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_104B
+    BPL.S   .round_width_half
 
     ADDQ.L  #1,D1
 
-LAB_104B:
+.round_width_half:
     ASR.L   #1,D1
     MOVEA.L 52(A3),A0
     MOVEQ   #0,D2
@@ -335,11 +424,11 @@ LAB_104B:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_104C
+    BPL.S   .round_width_half_adjust
 
     ADDQ.L  #1,D1
 
-LAB_104C:
+.round_width_half_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
@@ -349,125 +438,127 @@ LAB_104C:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     TST.L   D1
-    BPL.S   LAB_104D
+    BPL.S   .round_text_half
 
     ADDQ.L  #1,D1
 
-LAB_104D:
+.round_text_half:
     ASR.L   #1,D1
     TST.L   D7
-    BNE.S   LAB_1050
+    BNE.S   .compute_right_align
 
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     TST.L   D2
-    BPL.S   LAB_104E
+    BPL.S   .round_left_half
 
     ADDQ.L  #1,D2
 
-LAB_104E:
+.round_left_half:
     ASR.L   #1,D2
     MOVEQ   #0,D3
     MOVE.W  26(A0),D3
     SUB.L   D3,D2
     TST.L   D2
-    BPL.S   LAB_104F
+    BPL.S   .round_left_half_adjust
 
     ADDQ.L  #1,D2
 
-LAB_104F:
+.round_left_half_adjust:
     ASR.L   #1,D2
     MOVEQ   #0,D3
     MOVE.W  26(A0),D3
     ADD.L   D3,D2
     SUBQ.L  #1,D2
-    BRA.S   LAB_1053
+    BRA.S   .store_baselines
 
-LAB_1050:
+.compute_right_align:
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     TST.L   D2
-    BPL.S   LAB_1051
+    BPL.S   .round_right_half
 
     ADDQ.L  #1,D2
 
-LAB_1051:
+.round_right_half:
     ASR.L   #1,D2
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
     SUB.L   D0,D2
     SUBQ.L  #4,D2
     TST.L   D2
-    BPL.S   LAB_1052
+    BPL.S   .round_right_half_adjust
 
     ADDQ.L  #1,D2
 
-LAB_1052:
+.round_right_half_adjust:
     ASR.L   #1,D2
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
     ADD.L   D0,D2
     SUBQ.L  #1,D2
 
-LAB_1053:
+.store_baselines:
     ADD.L   D2,D1
     MOVEM.L D1,-16(A5)
     MOVEQ   #5,D0
     CMP.L   LAB_2014,D0
-    BNE.S   LAB_1054
+    BNE.S   .use_alt_pen
 
     MOVEA.L A3,A1
     MOVE.L  LAB_22CD,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    BRA.S   LAB_1055
+    BRA.S   .pen_set
 
-LAB_1054:
+.use_alt_pen:
     MOVEA.L A3,A1
     MOVEQ   #3,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-LAB_1055:
+.pen_set:
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L A2,A0
 
-LAB_1056:
+.scan_primary_end:
+    ; find primary string length
     TST.B   (A0)+
-    BNE.S   LAB_1056
+    BNE.S   .scan_primary_end
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,D0
     TST.L   D0
-    BLE.S   LAB_105D
+    BLE.S   .secondary_start
 
     MOVEA.L A2,A0
 
-LAB_1057:
+.scan_primary_end2:
     TST.B   (A0)+
-    BNE.S   LAB_1057
+    BNE.S   .scan_primary_end2
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,D6
 
-LAB_1058:
+.trim_primary_trailing_space:
+    ; trim trailing spaces
     TST.L   D6
-    BLE.S   LAB_1059
+    BLE.S   .primary_trim_done
 
     MOVEQ   #32,D0
     CMP.B   -1(A2,D6.L),D0
-    BNE.S   LAB_1059
+    BNE.S   .primary_trim_done
 
     SUBQ.L  #1,D6
-    BRA.S   LAB_1058
+    BRA.S   .trim_primary_trailing_space
 
-LAB_1059:
+.primary_trim_done:
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVE.L  D6,D0
@@ -475,26 +566,26 @@ LAB_1059:
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
-    BPL.S   LAB_105A
+    BPL.S   .primary_half_width
 
     ADDQ.L  #1,D0
 
-LAB_105A:
+.primary_half_width:
     ASR.L   #1,D0
     MOVE.L  D5,D1
     SUB.L   D0,D1
     MOVE.B  LAB_1BA3,D0
     MOVEQ   #83,D2
     CMP.B   D2,D0
-    BNE.S   LAB_105B
+    BNE.S   .primary_use_alt_x
 
     MOVE.L  D4,D0
-    BRA.S   LAB_105C
+    BRA.S   .primary_draw
 
-LAB_105B:
+.primary_use_alt_x:
     MOVE.L  -16(A5),D0
 
-LAB_105C:
+.primary_draw:
     MOVE.L  D0,36(A7)
     MOVEA.L A3,A1
     MOVE.L  D1,D0
@@ -506,42 +597,44 @@ LAB_105C:
     MOVE.L  D6,D0
     JSR     _LVOText(A6)
 
-LAB_105D:
+.secondary_start:
     MOVEA.L 16(A5),A0
 
-LAB_105E:
+.scan_secondary_end:
+    ; find secondary string length
     TST.B   (A0)+
-    BNE.S   LAB_105E
+    BNE.S   .scan_secondary_end
 
     SUBQ.L  #1,A0
     SUBA.L  16(A5),A0
     MOVE.L  A0,D0
     TST.L   D0
-    BLE.S   LAB_1065
+    BLE.S   .done
 
     MOVEA.L 16(A5),A0
 
-LAB_105F:
+.scan_secondary_end2:
     TST.B   (A0)+
-    BNE.S   LAB_105F
+    BNE.S   .scan_secondary_end2
 
     SUBQ.L  #1,A0
     SUBA.L  16(A5),A0
     MOVE.L  A0,D6
 
-LAB_1060:
+.trim_secondary_trailing_space:
+    ; trim trailing spaces
     TST.L   D6
-    BLE.S   LAB_1061
+    BLE.S   .secondary_trim_done
 
     MOVEQ   #32,D0
     MOVEA.L 16(A5),A0
     CMP.B   -1(A0,D6.L),D0
-    BNE.S   LAB_1061
+    BNE.S   .secondary_trim_done
 
     SUBQ.L  #1,D6
-    BRA.S   LAB_1060
+    BRA.S   .trim_secondary_trailing_space
 
-LAB_1061:
+.secondary_trim_done:
     MOVEA.L A3,A1
     MOVE.L  D6,D0
     MOVEA.L 16(A5),A0
@@ -549,26 +642,26 @@ LAB_1061:
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
-    BPL.S   LAB_1062
+    BPL.S   .secondary_half_width
 
     ADDQ.L  #1,D0
 
-LAB_1062:
+.secondary_half_width:
     ASR.L   #1,D0
     MOVE.L  D5,D1
     SUB.L   D0,D1
     MOVE.B  LAB_1BA3,D0
     MOVEQ   #83,D2
     CMP.B   D2,D0
-    BNE.S   LAB_1063
+    BNE.S   .secondary_use_alt_x
 
     MOVE.L  -16(A5),D0
-    BRA.S   LAB_1064
+    BRA.S   .secondary_draw
 
-LAB_1063:
+.secondary_use_alt_x:
     MOVE.L  D4,D0
 
-LAB_1064:
+.secondary_draw:
     MOVE.L  D0,36(A7)
     MOVEA.L A3,A1
     MOVE.L  D1,D0
@@ -580,13 +673,35 @@ LAB_1064:
     MOVEA.L 16(A5),A0
     JSR     _LVOText(A6)
 
-LAB_1065:
+.done:
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridCell   (Draw cell background and text)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = cell struct
+;   stack +16: D7 = row index
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_134B, LAB_1352, LAB_133D, NEWGRID_DrawGridCellText
+; READS:
+;   LAB_2328/232A
+; WRITES:
+;   none
+; DESC:
+;   Draws the cell background (highlight or normal) and renders its labels.
+; NOTES:
+;   Uses two string pointers from the cell struct (1(A2), 19(A2)).
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridCell:
 LAB_1066:
     LINK.W  A5,#-8
     MOVEM.L D2/D7/A2-A3,-(A7)
@@ -606,8 +721,9 @@ LAB_1066:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
+    ; choose frame style based on row flag
     TST.L   D7
-    BNE.S   LAB_1067
+    BNE.S   .draw_alternate_frame
 
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -625,9 +741,9 @@ LAB_1066:
     JSR     LAB_1352(PC)
 
     LEA     20(A7),A7
-    BRA.S   LAB_1068
+    BRA.S   .draw_cell_text
 
-LAB_1067:
+.draw_alternate_frame:
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
     MOVEQ   #35,D1
@@ -645,12 +761,12 @@ LAB_1067:
 
     LEA     20(A7),A7
 
-LAB_1068:
+.draw_cell_text:
     MOVE.L  D7,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1047
+    BSR.W   NEWGRID_DrawGridCellText
 
     MOVEM.L -24(A5),D2/D7/A2-A3
     UNLK    A5
@@ -658,6 +774,28 @@ LAB_1068:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_Apply24HourFormatting   (Patch time string for 24h)
+; ARGS:
+;   stack +8: A3 = string pointer
+;   stack +12: D7 = hour index
+;   stack +19: D6 = minute index
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1455, LAB_134D
+; READS:
+;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT
+; WRITES:
+;   A3 string contents
+; DESC:
+;   If 24-hour clock flag is set and format matches, updates HH:MM digits in-place.
+; NOTES:
+;   Expects string with ':' at offset 3.
+;------------------------------------------------------------------------------
+NEWGRID_Apply24HourFormatting:
 LAB_1069:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
@@ -667,10 +805,10 @@ LAB_1069:
     MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_106A
+    BNE.W   .done
 
     MOVE.L  A3,D0
-    BEQ.S   LAB_106A
+    BEQ.S   .done
 
     PEA     40.W
     MOVE.L  A3,-(A7)
@@ -679,12 +817,12 @@ LAB_1069:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   LAB_106A
+    BEQ.S   .done
 
     MOVEQ   #58,D0
     MOVEA.L -4(A5),A0
     CMP.B   3(A0),D0
-    BNE.S   LAB_106A
+    BNE.S   .done
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -723,29 +861,49 @@ LAB_1069:
     MOVEA.L -4(A5),A0
     MOVE.B  D0,2(A0)
 
-LAB_106A:
+.done:
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ComputeColumnIndex   (Compute column index from selection)
+; ARGS:
+;   stack +8: A3 = grid struct
+; RET:
+;   D0: column index (0..?)
+; CLOBBERS:
+;   D0-D7/A3
+; CALLS:
+;   JMP_TBL_LAB_1A07_3
+; READS:
+;   LAB_2328, 52(A3), 54(A3)
+; WRITES:
+;   none
+; DESC:
+;   Computes a column index based on selection byte and header width.
+; NOTES:
+;   Returns 0 when selection >= 0x40.
+;------------------------------------------------------------------------------
+NEWGRID_ComputeColumnIndex:
 LAB_106B:
     LINK.W  A5,#-4
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEQ   #0,D7
     CMPI.B  #$40,54(A3)
-    BCC.S   LAB_106D
+    BCC.S   .done
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_106C
+    BPL.S   .center
 
     ADDQ.L  #3,D0
 
-LAB_106C:
+.center:
     ASR.L   #2,D0
     MOVEQ   #0,D1
     MOVE.W  52(A3),D1
@@ -756,7 +914,7 @@ LAB_106C:
 
     MOVE.L  D0,D7
 
-LAB_106D:
+.done:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
@@ -764,15 +922,35 @@ LAB_106D:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_GetGridModeIndex   (Return grid mode index)
+; ARGS:
+;   (none)
+; RET:
+;   D0: mode index (1 or 6)
+; CLOBBERS:
+;   D0/D7
+; CALLS:
+;   none
+; READS:
+;   LAB_2261
+; WRITES:
+;   none
+; DESC:
+;   Returns 1 when LAB_2261==1, otherwise 6.
+; NOTES:
+;   Simple helper for mode selection.
+;------------------------------------------------------------------------------
+NEWGRID_GetGridModeIndex:
 LAB_106E:
     MOVE.L  D7,-(A7)
     MOVEQ   #1,D0
     CMP.L   LAB_2261,D0
-    BEQ.S   LAB_106F
+    BEQ.S   .done
 
     MOVEQ   #6,D0
 
-LAB_106F:
+.done:
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     MOVE.L  (A7)+,D7
@@ -780,19 +958,39 @@ LAB_106F:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_RebuildIndexCache   (Rebuild lookup cache)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0
+; CALLS:
+;   LAB_1345, LAB_133B
+; READS:
+;   LAB_2013, LAB_1F45, LAB_2231, LAB_222F
+; WRITES:
+;   LAB_2013, LAB_1F45
+; DESC:
+;   Clears and repopulates the cache table at LAB_2013 based on current entries.
+; NOTES:
+;   Temporarily sets LAB_1F45 to 0x0100 while rebuilding.
+;------------------------------------------------------------------------------
+NEWGRID_RebuildIndexCache:
 LAB_1070:
     LINK.W  A5,#-16
     MOVEM.L D5-D7,-(A7)
     TST.L   LAB_2013
-    BEQ.W   LAB_1076
+    BEQ.W   .done
 
     MOVE.W  LAB_1F45,D5
     MOVE.W  #$100,LAB_1F45
     MOVEQ   #0,D7
 
-LAB_1071:
+.clear_cache_loop:
     CMPI.L  #$12e,D7
-    BGE.S   LAB_1072
+    BGE.S   .rebuild_start
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -800,16 +998,16 @@ LAB_1071:
     MOVEA.L LAB_2013,A0
     MOVE.L  D1,0(A0,D0.L)
     ADDQ.L  #1,D7
-    BRA.S   LAB_1071
+    BRA.S   .clear_cache_loop
 
-LAB_1072:
+.rebuild_start:
     MOVEQ   #0,D7
 
-LAB_1073:
+.rebuild_loop:
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D7
-    BGE.S   LAB_1075
+    BGE.S   .restore_flags
 
     PEA     1.W
     MOVE.L  D7,-(A7)
@@ -818,7 +1016,7 @@ LAB_1073:
     ADDQ.W  #8,A7
     MOVE.L  D0,-14(A5)
     TST.L   D0
-    BEQ.S   LAB_1074
+    BEQ.S   .next_entry
 
     MOVEA.L D0,A0
     ADDA.W  #12,A0
@@ -829,32 +1027,55 @@ LAB_1073:
     MOVE.L  D0,D6
     MOVEQ   #-1,D0
     CMP.L   D0,D6
-    BLE.S   LAB_1074
+    BLE.S   .next_entry
 
     MOVEQ   #0,D0
     MOVE.W  LAB_222F,D0
     CMP.L   D0,D6
-    BGE.S   LAB_1074
+    BGE.S   .next_entry
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
     MOVEA.L LAB_2013,A0
     MOVE.L  D6,0(A0,D0.L)
 
-LAB_1074:
+.next_entry:
     ADDQ.L  #1,D7
-    BRA.S   LAB_1073
+    BRA.S   .rebuild_loop
 
-LAB_1075:
+.restore_flags:
     MOVE.W  D5,LAB_1F45
 
-LAB_1076:
+.done:
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_UpdatePresetEntry   (Update preset entry mapping)
+; ARGS:
+;   stack +8: A3 = dst pointer
+;   stack +12: A2 = src pointer
+;   stack +18: D7 = index
+;   stack +20: D6 = key
+; RET:
+;   D0: updated index
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_1345, LAB_133E, LAB_134A, LAB_133B
+; READS:
+;   LAB_222E, LAB_222F, LAB_2235, LAB_2013
+; WRITES:
+;   LAB_2013 table entries
+; DESC:
+;   Updates preset entry mapping based on key/index and validates against list.
+; NOTES:
+;   Uses lookup table LAB_2235 and caches indices in LAB_2013.
+;------------------------------------------------------------------------------
+NEWGRID_UpdatePresetEntry:
 LAB_1077:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A2-A3/A6,-(A7)
@@ -868,12 +1089,12 @@ LAB_1077:
     MOVE.L  (A2),-16(A5)
     MOVEQ   #48,D0
     CMP.W   D0,D7
-    BLE.S   LAB_1078
+    BLE.S   .normalized_index
 
     SUBI.W  #$30,D7
     MOVEQ   #1,D4
 
-LAB_1078:
+.normalized_index:
     PEA     1.W
     MOVE.L  D6,-(A7)
     JSR     LAB_1345(PC)
@@ -886,43 +1107,43 @@ LAB_1078:
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
     TST.L   -12(A5)
-    BEQ.W   LAB_107E
+    BEQ.W   .done
 
     TST.L   D0
-    BEQ.W   LAB_107E
+    BEQ.W   .done
 
     MOVEQ   #1,D1
     CMP.W   D1,D7
-    BEQ.S   LAB_1079
+    BEQ.S   .check_entry_enabled
 
     PEA     LAB_223A
     JSR     LAB_134A(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BEQ.S   LAB_1079
+    BEQ.S   .check_entry_enabled
 
     TST.L   D4
-    BEQ.W   LAB_107E
+    BEQ.W   .done
 
-LAB_1079:
+.check_entry_enabled:
     TST.B   LAB_222E
-    BEQ.W   LAB_107E
+    BEQ.W   .done
 
     TST.L   LAB_2013
-    BEQ.S   LAB_107C
+    BEQ.S   .cache_miss
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
     MOVEA.L LAB_2013,A0
     MOVE.L  0(A0,D0.L),D5
     TST.L   D5
-    BMI.S   LAB_107B
+    BMI.S   .rebuild_cache_entry
 
     MOVEQ   #0,D0
     MOVE.W  LAB_222F,D0
     CMP.L   D0,D5
-    BGE.S   LAB_107B
+    BGE.S   .rebuild_cache_entry
 
     MOVEA.L -12(A5),A0
     ADDA.W  #12,A0
@@ -933,17 +1154,17 @@ LAB_1079:
     MOVEA.L (A1),A6
     LEA     12(A6),A1
 
-LAB_107A:
+.compare_string_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   LAB_107B
+    BNE.S   .rebuild_cache_entry
 
     TST.B   D0
-    BNE.S   LAB_107A
+    BNE.S   .compare_string_loop
 
-    BEQ.S   LAB_107D
+    BEQ.S   .update_entry
 
-LAB_107B:
+.rebuild_cache_entry:
     MOVE.L  -16(A5),-(A7)
     JSR     LAB_133B(PC)
 
@@ -953,16 +1174,16 @@ LAB_107B:
     ASL.L   #2,D0
     MOVEA.L LAB_2013,A0
     MOVE.L  D5,0(A0,D0.L)
-    BRA.S   LAB_107D
+    BRA.S   .update_entry
 
-LAB_107C:
+.cache_miss:
     MOVE.L  -16(A5),-(A7)
     JSR     LAB_133B(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
 
-LAB_107D:
+.update_entry:
     PEA     2.W
     MOVE.L  D5,-(A7)
     JSR     LAB_1345(PC)
@@ -975,7 +1196,7 @@ LAB_107D:
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
 
-LAB_107E:
+.done:
     MOVE.L  -12(A5),(A3)
     MOVE.L  -16(A5),(A2)
     MOVE.L  D7,D0
@@ -986,6 +1207,30 @@ LAB_107E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridEntry   (Draw grid entry line)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = entry list
+;   stack +22: D7 = row index
+;   stack +26: D6 = column index
+;   stack +28: D5 = flags
+; RET:
+;   D0: ?? (status)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridCellText, LAB_133B, LAB_134A, LAB_1345, LAB_133E
+; READS:
+;   LAB_2019, LAB_2014, LAB_22CD
+; WRITES:
+;   local buffer -19(A5)
+; DESC:
+;   Draws a single grid entry row using text and selection state.
+; NOTES:
+;   Validates entry pointers and row bounds before drawing.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridEntry:
 LAB_107F:
     LINK.W  A5,#-20
     MOVEM.L D5-D7/A2-A3,-(A7)
@@ -1007,55 +1252,57 @@ LAB_107F:
     MOVEA.L 56(A0,D0.L),A0
     MOVE.L  A0,-16(A5)
     MOVE.L  A2,D0
-    BEQ.W   LAB_109D
+    BEQ.W   .draw_missing_entry
 
     TST.L   16(A5)
-    BEQ.W   LAB_109D
+    BEQ.W   .draw_missing_entry
 
     TST.W   D7
-    BLE.W   LAB_109D
+    BLE.W   .draw_missing_entry
 
     MOVEQ   #49,D0
     CMP.W   D0,D7
-    BGE.W   LAB_109D
+    BGE.W   .draw_missing_entry
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_109D
+    BEQ.W   .draw_missing_entry
 
     TST.B   (A0)
-    BEQ.W   LAB_109D
+    BEQ.W   .draw_missing_entry
 
     MOVE.L  32(A5),D0
     MOVEQ   #3,D1
     CMP.L   D1,D0
-    BEQ.S   LAB_1080
+    BEQ.S   .check_time_prefix
 
     ADDQ.L  #1,D0
-    BNE.S   LAB_1081
+    BNE.S   .no_time_prefix
 
-LAB_1080:
+.check_time_prefix:
+    ; detect time prefix to skip
     MOVEQ   #40,D0
     CMP.B   (A0),D0
-    BNE.S   LAB_1081
+    BNE.S   .no_time_prefix
 
     MOVEQ   #58,D0
     CMP.B   3(A0),D0
-    BNE.S   LAB_1081
+    BNE.S   .no_time_prefix
 
     MOVEQ   #8,D0
-    BRA.S   LAB_1082
+    BRA.S   .apply_prefix_offset
 
-LAB_1081:
+.no_time_prefix:
     MOVEQ   #0,D0
 
-LAB_1082:
+.apply_prefix_offset:
     ADD.L   D0,-16(A5)
     MOVEA.L -16(A5),A0
     MOVEA.L LAB_2335,A1
 
-LAB_1083:
+.copy_entry_string:
+    ; copy entry text into scratch buffer
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1083
+    BNE.S   .copy_entry_string
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -1065,23 +1312,23 @@ LAB_1083:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_2335,-(A7)
-    BSR.W   LAB_1069
+    BSR.W   NEWGRID_Apply24HourFormatting
 
     LEA     12(A7),A7
     MOVEA.L 16(A5),A0
     BTST    #1,7(A0,D7.W)
-    BNE.S   LAB_1084
+    BNE.S   .check_custom_render
 
     BTST    #4,27(A2)
-    BEQ.W   LAB_109C
+    BEQ.W   .draw_empty_entry
 
-LAB_1084:
+.check_custom_render:
     TST.L   D5
-    BEQ.S   LAB_1085
+    BEQ.S   .split_primary_line
 
     MOVEQ   #3,D0
     CMP.W   D0,D6
-    BNE.S   LAB_1085
+    BNE.S   .split_primary_line
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -1097,16 +1344,17 @@ LAB_1084:
     JSR     LAB_1339(PC)
 
     LEA     24(A7),A7
-    BRA.W   LAB_109E
+    BRA.W   .done
 
-LAB_1085:
+.split_primary_line:
+    ; split primary line on delimiter (offset 34)
     PEA     34.W
     MOVE.L  LAB_2335,-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
-    BEQ.S   LAB_1086
+    BEQ.S   .after_split_search
 
     ADDQ.L  #1,-4(A5)
     PEA     34.W
@@ -1116,9 +1364,9 @@ LAB_1085:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
 
-LAB_1086:
+.after_split_search:
     TST.L   D0
-    BEQ.S   LAB_108A
+    BEQ.S   .draw_primary_line
 
     PEA     LAB_2018
     MOVE.L  D0,-(A7)
@@ -1126,49 +1374,50 @@ LAB_1086:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
-    BEQ.S   LAB_1087
+    BEQ.S   .skip_primary_leading
 
     MOVE.L  D0,-4(A5)
 
-LAB_1087:
+.skip_primary_leading:
+    ; skip leading spaces
     MOVEA.L -4(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1088
+    BEQ.S   .terminate_primary
 
     MOVEQ   #32,D0
     CMP.B   (A0),D0
-    BEQ.S   LAB_1088
+    BEQ.S   .terminate_primary
 
     ADDQ.L  #1,-4(A5)
-    BRA.S   LAB_1087
+    BRA.S   .skip_primary_leading
 
-LAB_1088:
+.terminate_primary:
     MOVEA.L -4(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1089
+    BEQ.S   .clear_primary_ptr
 
     CLR.B   (A0)+
     MOVE.L  A0,-4(A5)
-    BRA.S   LAB_108A
+    BRA.S   .draw_primary_line
 
-LAB_1089:
+.clear_primary_ptr:
     CLR.L   -4(A5)
 
-LAB_108A:
+.draw_primary_line:
     MOVE.L  LAB_2335,-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
     TST.L   D5
-    BEQ.W   LAB_1098
+    BEQ.W   .post_draw
 
     TST.L   -4(A5)
-    BEQ.W   LAB_1098
+    BEQ.W   .post_draw
 
     MOVEQ   #1,D0
     CMP.W   D0,D6
-    BLE.W   LAB_1098
+    BLE.W   .post_draw
 
     PEA     40.W
     MOVE.L  -4(A5),-(A7)
@@ -1177,48 +1426,49 @@ LAB_108A:
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.S   LAB_108F
+    BEQ.S   .check_subtitle
 
     MOVEQ   #41,D1
     MOVEA.L D0,A0
     CMP.B   5(A0),D1
-    BNE.S   LAB_108F
+    BNE.S   .check_subtitle
 
     LEA     6(A0),A1
     MOVE.L  A1,-4(A5)
 
-LAB_108B:
+.skip_secondary_leading:
+    ; skip leading spaces
     MOVEA.L -4(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_108C
+    BEQ.S   .terminate_secondary
 
     MOVEQ   #32,D0
     CMP.B   (A0),D0
-    BEQ.S   LAB_108C
+    BEQ.S   .terminate_secondary
 
     ADDQ.L  #1,-4(A5)
-    BRA.S   LAB_108B
+    BRA.S   .skip_secondary_leading
 
-LAB_108C:
+.terminate_secondary:
     MOVEA.L -4(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_108D
+    BEQ.S   .clear_secondary_ptr
 
     CLR.B   (A0)+
     MOVE.L  A0,-4(A5)
-    BRA.S   LAB_108E
+    BRA.S   .draw_secondary_line
 
-LAB_108D:
+.clear_secondary_ptr:
     CLR.L   -4(A5)
 
-LAB_108E:
+.draw_secondary_line:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1340(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_108F
+    BEQ.S   .check_subtitle
 
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
@@ -1226,16 +1476,16 @@ LAB_108E:
 
     ADDQ.W  #8,A7
 
-LAB_108F:
+.check_subtitle:
     TST.L   -4(A5)
-    BEQ.W   LAB_1098
+    BEQ.W   .post_draw
 
     MOVE.L  -4(A5),-(A7)
     JSR     LAB_134B(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
-    BEQ.S   LAB_1091
+    BEQ.S   .after_subtitle_parse
 
     PEA     44.W
     MOVE.L  D0,-(A7)
@@ -1243,7 +1493,7 @@ LAB_108F:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
-    BEQ.S   LAB_1090
+    BEQ.S   .fallback_subtitle
 
     PEA     46.W
     MOVE.L  D0,-(A7)
@@ -1251,73 +1501,74 @@ LAB_108F:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
-    BNE.S   LAB_1091
+    BNE.S   .after_subtitle_parse
 
     MOVE.L  -12(A5),-4(A5)
     CLR.L   -12(A5)
     MOVEA.L -4(A5),A0
     MOVE.B  #$2e,(A0)
-    BRA.S   LAB_1091
+    BRA.S   .after_subtitle_parse
 
-LAB_1090:
+.fallback_subtitle:
     PEA     46.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
-    BNE.S   LAB_1091
+    BNE.S   .after_subtitle_parse
 
     SUBA.L  A0,A0
     MOVE.L  A0,-8(A5)
 
-LAB_1091:
+.after_subtitle_parse:
     TST.L   -8(A5)
-    BEQ.W   LAB_1098
+    BEQ.W   .post_draw
 
-LAB_1092:
+.skip_subtitle_leading:
+    ; skip leading spaces
     MOVEA.L -4(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1093
+    BEQ.S   .terminate_subtitle
 
     MOVEQ   #32,D0
     CMP.B   (A0),D0
-    BEQ.S   LAB_1093
+    BEQ.S   .terminate_subtitle
 
     ADDQ.L  #1,-4(A5)
-    BRA.S   LAB_1092
+    BRA.S   .skip_subtitle_leading
 
-LAB_1093:
+.terminate_subtitle:
     MOVEA.L -4(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1094
+    BEQ.S   .clear_subtitle_ptr
 
     CLR.B   (A0)+
     MOVE.L  A0,-4(A5)
-    BRA.S   LAB_1095
+    BRA.S   .draw_subtitle_line
 
-LAB_1094:
+.clear_subtitle_ptr:
     CLR.L   -4(A5)
 
-LAB_1095:
+.draw_subtitle_line:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1340(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_1096
+    BEQ.S   .draw_subtitle_fallback
 
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_1098
+    BRA.S   .post_draw
 
-LAB_1096:
+.draw_subtitle_fallback:
     TST.L   -12(A5)
-    BEQ.S   LAB_1098
+    BEQ.S   .post_draw
 
     MOVEA.L -12(A5),A0
     MOVE.B  #$2e,(A0)
@@ -1333,23 +1584,23 @@ LAB_1096:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_1097
+    BEQ.S   .draw_subtitle_alt
 
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_1098
+    BRA.S   .post_draw
 
-LAB_1097:
+.draw_subtitle_alt:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1340(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_1098
+    BEQ.S   .post_draw
 
     MOVE.L  -12(A5),-(A7)
     MOVE.L  A3,-(A7)
@@ -1357,9 +1608,9 @@ LAB_1097:
 
     ADDQ.W  #8,A7
 
-LAB_1098:
+.post_draw:
     TST.L   -4(A5)
-    BEQ.S   LAB_109B
+    BEQ.S   .post_split_draw
 
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
@@ -1367,7 +1618,7 @@ LAB_1098:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
-    BEQ.S   LAB_109B
+    BEQ.S   .post_split_draw
 
     MOVEA.L D0,A0
     ADDQ.L  #1,A0
@@ -1379,9 +1630,9 @@ LAB_1098:
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
 
-LAB_1099:
+.split_loop:
     TST.L   -12(A5)
-    BEQ.S   LAB_109A
+    BEQ.S   .finalize_split
 
     MOVEA.L -12(A5),A0
     ADDQ.L  #1,A0
@@ -1392,9 +1643,9 @@ LAB_1099:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
-    BRA.S   LAB_1099
+    BRA.S   .split_loop
 
-LAB_109A:
+.finalize_split:
     MOVEA.L -4(A5),A0
     CLR.B   (A0)
     MOVE.L  -8(A5),-(A7)
@@ -1403,18 +1654,18 @@ LAB_109A:
 
     ADDQ.W  #8,A7
 
-LAB_109B:
+.post_split_draw:
     MOVE.L  32(A5),D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BNE.S   LAB_109E
+    BNE.S   .done
 
     TST.L   D5
-    BEQ.S   LAB_109E
+    BEQ.S   .done
 
     MOVEQ   #1,D1
     CMP.W   D1,D6
-    BLE.S   LAB_109E
+    BLE.S   .done
 
     MOVEA.L LAB_2335,A0
     CLR.B   (A0)
@@ -1432,30 +1683,53 @@ LAB_109B:
     JSR     LAB_1339(PC)
 
     LEA     24(A7),A7
-    BRA.S   LAB_109E
+    BRA.S   .done
 
-LAB_109C:
+.draw_empty_entry:
     MOVE.L  LAB_2335,-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_109E
+    BRA.S   .done
 
-LAB_109D:
+.draw_missing_entry:
     MOVE.L  LAB_2111,-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
 
-LAB_109E:
+.done:
     MOVEM.L (A7)+,D5-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawEntryFlagBadge   (Draw entry flag indicator)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = entry pointer
+;   stack +18: D7 = row index
+;   stack +24: D6 = data pointer ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A2-A3
+; CALLS:
+;   LAB_1358, LAB_134F, LAB_1337, LAB_1341, LAB_133C, LAB_1339
+; READS:
+;   27(A2)
+; WRITES:
+;   none
+; DESC:
+;   Draws a badge/flag indicator for entries with specific flags set.
+; NOTES:
+;   Uses cleanup/test helpers to validate the entry before drawing.
+;------------------------------------------------------------------------------
+NEWGRID_DrawEntryFlagBadge:
 LAB_109F:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -1470,10 +1744,10 @@ LAB_109F:
 
     LEA     12(A7),A7
     MOVE.L  A2,D0
-    BEQ.S   LAB_10A0
+    BEQ.S   .fallback_draw
 
     BTST    #4,27(A2)
-    BEQ.S   LAB_10A0
+    BEQ.S   .fallback_draw
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -1484,7 +1758,7 @@ LAB_109F:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   LAB_10A0
+    BEQ.S   .fallback_draw
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -1496,7 +1770,7 @@ LAB_109F:
     LEA     12(A7),A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   LAB_10A0
+    BEQ.S   .fallback_draw
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -1513,22 +1787,44 @@ LAB_109F:
     JSR     LAB_133C(PC)
 
     LEA     28(A7),A7
-    BRA.S   LAB_10A1
+    BRA.S   .done
 
-LAB_10A0:
+.fallback_draw:
     MOVE.L  20(A5),-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
 
-LAB_10A1:
+.done:
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridFrameAndRows   (Draw grid frame and row dividers)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = flags ??
+; RET:
+;   D0: status from LAB_1350
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_1350, LAB_102F, _LVOSetAPen, _LVORectFill, LAB_133A, LAB_1357,
+;   LAB_1359, LAB_1351, LAB_1346, LAB_133F, LAB_135A
+; READS:
+;   LAB_2328, LAB_1CE8
+; WRITES:
+;   52(A3)
+; DESC:
+;   Draws the grid background/frame and row separator lines, updating layout.
+; NOTES:
+;   Uses rounding before ASR to keep centering stable for negative values.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridFrameAndRows:
 LAB_10A2:
     LINK.W  A5,#-28
     MOVEM.L D2-D7/A3,-(A7)
@@ -1538,14 +1834,14 @@ LAB_10A2:
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_10B4
+    BNE.W   .done
 
     LEA     60(A3),A0
     MOVE.L  D7,-(A7)
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A0,40(A7)
-    BSR.W   LAB_102F
+    BSR.W   NEWGRID_SetRowColor
 
     MOVEA.L 40(A7),A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1568,7 +1864,7 @@ LAB_10A2:
 
     LEA     12(A7),A7
     SUBQ.L  #1,D0
-    BNE.S   LAB_10A4
+    BNE.S   .after_header
 
     LEA     60(A3),A0
     MOVE.L  A0,-(A7)
@@ -1578,46 +1874,46 @@ LAB_10A2:
     MOVE.L  #612,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_10A3
+    BPL.S   .center_header
 
     ADDQ.L  #1,D1
 
-LAB_10A3:
+.center_header:
     ASR.L   #1,D1
     ADD.L   D1,D5
     MOVEQ   #4,D0
     MOVE.L  D0,-16(A5)
 
-LAB_10A4:
+.after_header:
     JSR     LAB_1359(PC)
 
     MOVEQ   #0,D6
     MOVE.L  D0,-24(A5)
 
-LAB_10A5:
+.row_loop:
     MOVEQ   #2,D0
     CMP.L   D0,D6
-    BGE.W   LAB_10B0
+    BGE.W   .after_rows
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_10B0
+    BNE.W   .after_rows
 
     TST.L   D6
-    BNE.S   LAB_10A8
+    BNE.S   .row_flag_path
 
     TST.L   -24(A5)
-    BEQ.S   LAB_10A8
+    BEQ.S   .row_flag_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_10A6
+    BPL.S   .row_half_width
 
     ADDQ.L  #1,D0
 
-LAB_10A6:
+.row_half_width:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
@@ -1625,34 +1921,34 @@ LAB_10A6:
     SUB.L   D1,D0
     SUBQ.L  #4,D0
     TST.L   D0
-    BPL.S   LAB_10A7
+    BPL.S   .row_half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_10A7:
+.row_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     MOVE.L  D0,D4
     ADDQ.L  #3,D4
-    BRA.S   LAB_10AE
+    BRA.S   .draw_row_line
 
-LAB_10A8:
+.row_flag_path:
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_10AB
+    BEQ.S   .row_default_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_10A9
+    BPL.S   .row_flag_half_width
 
     ADDQ.L  #1,D1
 
-LAB_10A9:
+.row_flag_half_width:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -1660,11 +1956,11 @@ LAB_10A9:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_10AA
+    BPL.S   .row_flag_half_width_adjust
 
     ADDQ.L  #1,D1
 
-LAB_10AA:
+.row_flag_half_width_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
@@ -1673,28 +1969,28 @@ LAB_10AA:
     ADD.L   D2,D1
     MOVE.L  D1,D4
     SUBQ.L  #1,D4
-    BRA.S   LAB_10AE
+    BRA.S   .draw_row_line
 
-LAB_10AB:
+.row_default_path:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_10AC
+    BPL.S   .row_default_half_width
 
     ADDQ.L  #1,D0
 
-LAB_10AC:
+.row_default_half_width:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   LAB_10AD
+    BPL.S   .row_default_half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_10AD:
+.row_default_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -1704,7 +2000,7 @@ LAB_10AD:
     MOVE.L  D1,D4
     SUBQ.L  #1,D4
 
-LAB_10AE:
+.draw_row_line:
     LEA     60(A3),A0
     MOVE.L  D4,-(A7)
     MOVE.L  D5,-(A7)
@@ -1716,22 +2012,22 @@ LAB_10AE:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_10AF
+    BPL.S   .advance_row
 
     ADDQ.L  #1,D0
 
-LAB_10AF:
+.advance_row:
     ASR.L   #1,D0
     ADD.L   LAB_1CE8,D0
     ADD.L   D0,-16(A5)
-    BRA.W   LAB_10A5
+    BRA.W   .row_loop
 
-LAB_10B0:
+.after_rows:
     JSR     LAB_1350(PC)
 
     MOVE.L  D0,-20(A5)
     TST.L   -24(A5)
-    BEQ.S   LAB_10B1
+    BEQ.S   .draw_bottom_bevel
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -1747,9 +2043,9 @@ LAB_10B0:
 
     LEA     20(A7),A7
 
-LAB_10B1:
+.draw_bottom_bevel:
     TST.L   -20(A5)
-    BEQ.S   LAB_10B2
+    BEQ.S   .draw_top_bevel
 
     LEA     60(A3),A0
     MOVE.L  -16(A5),D0
@@ -1764,17 +2060,17 @@ LAB_10B1:
 
     LEA     20(A7),A7
 
-LAB_10B2:
+.draw_top_bevel:
     MOVE.L  -16(A5),D0
-    BPL.S   LAB_10B3
+    BPL.S   .store_header_width
 
     ADDQ.L  #1,D0
 
-LAB_10B3:
+.store_header_width:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
 
-LAB_10B4:
+.done:
     MOVE.L  -20(A5),D0
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
@@ -1782,6 +2078,29 @@ LAB_10B4:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_UpdateGridState   (Advance grid state machine)
+; ARGS:
+;   stack +8: A3 = grid struct
+;   stack +12: D7 = key/index
+;   stack +18: D6 = row index
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_UpdatePresetEntry, NEWGRID_DrawEntryFlagBadge,
+;   NEWGRID_DrawGridFrameAndRows, LAB_1355, LAB_1353, LAB_1344
+; READS:
+;   LAB_201B
+; WRITES:
+;   LAB_201B, LAB_2333, 32(A3)
+; DESC:
+;   Updates grid state, resolves the selected entry, and redraws frame content.
+; NOTES:
+;   State machine uses LAB_201B values 4/5.
+;------------------------------------------------------------------------------
+NEWGRID_UpdateGridState:
 LAB_10B5:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A3,-(A7)
@@ -1789,25 +2108,25 @@ LAB_10B5:
     MOVE.L  12(A5),D7
     MOVE.W  18(A5),D6
     MOVE.L  A3,D0
-    BNE.S   LAB_10B6
+    BNE.S   .check_state
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201B
-    BRA.W   LAB_10BD
+    BRA.W   .done
 
-LAB_10B6:
+.check_state:
     MOVE.L  LAB_201B,D0
     MOVEQ   #5,D1
     CMP.L   D1,D0
-    BNE.S   LAB_10B7
+    BNE.S   .state_is_five
 
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
-    BRA.W   LAB_10BA
+    BRA.W   .update_frame_state
 
-LAB_10B7:
+.state_is_five:
     SUBQ.L  #4,D0
-    BNE.W   LAB_10B9
+    BNE.W   .force_state_4
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1815,15 +2134,15 @@ LAB_10B7:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   LAB_1077
+    BSR.W   NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D6
     TST.L   -4(A5)
-    BEQ.W   LAB_10BA
+    BEQ.W   .update_frame_state
 
     TST.L   -8(A5)
-    BEQ.W   LAB_10BA
+    BEQ.W   .update_frame_state
 
     MOVEA.L -4(A5),A0
     ADDA.W  #$1c,A0
@@ -1835,7 +2154,7 @@ LAB_10B7:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_10BA
+    BNE.S   .update_frame_state
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1846,7 +2165,7 @@ LAB_10B7:
 
     MOVE.L  D0,D6
     MOVE.L  -4(A5),(A7)
-    BSR.W   LAB_1103
+    BSR.W   NEWGRID_SelectEntryPen
 
     LEA     12(A7),A7
     MOVEA.L -8(A5),A0
@@ -1854,12 +2173,12 @@ LAB_10B7:
     ADDA.W  D6,A1
     MOVE.L  D0,LAB_2333
     BTST    #2,7(A1)
-    BEQ.S   LAB_10B8
+    BEQ.S   .set_entry_mode
 
     MOVEQ   #5,D0
     MOVE.L  D0,LAB_2333
 
-LAB_10B8:
+.set_entry_mode:
     LEA     60(A3),A1
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1872,44 +2191,65 @@ LAB_10B8:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   LAB_109F
+    BSR.W   NEWGRID_DrawEntryFlagBadge
 
     CLR.L   (A7)
     JSR     LAB_1344(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,32(A3)
-    BRA.S   LAB_10BA
+    BRA.S   .update_frame_state
 
-LAB_10B9:
+.force_state_4:
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201B
 
-LAB_10BA:
+.update_frame_state:
     MOVE.L  LAB_2333,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10A2
+    BSR.W   NEWGRID_DrawGridFrameAndRows
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_10BB
+    BEQ.S   .set_state_4
 
     MOVEQ   #4,D0
-    BRA.S   LAB_10BC
+    BRA.S   .store_state
 
-LAB_10BB:
+.set_state_4:
     MOVEQ   #5,D0
 
-LAB_10BC:
+.store_state:
     MOVE.L  D0,LAB_201B
 
-LAB_10BD:
+.done:
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_SetSelectionMarkers   (Set glyph markers based on indices)
+; ARGS:
+;   stack +8: D7 = primary selector
+;   stack +12: D6 = secondary selector
+;   stack +16: A3 = primary dst byte
+;   stack +20: A2 = secondary dst byte
+;   stack +24: A0 = tertiary dst byte
+;   stack +28: A0 = quaternary dst byte
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D6-D7/A0-A3
+; CALLS:
+;   none
+; DESC:
+;   Writes marker bytes based on selector values (0/1/2).
+; NOTES:
+;   Uses fixed byte codes 0x80..0x8B for marker glyphs.
+;------------------------------------------------------------------------------
+NEWGRID_SetSelectionMarkers:
 LAB_10BE:
     LINK.W  A5,#0
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -1919,89 +2259,109 @@ LAB_10BE:
     MOVEA.L 20(A5),A2
     MOVE.L  D7,D0
     TST.L   D0
-    BEQ.S   LAB_10C1
+    BEQ.S   .case_primary_default
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10BF
+    BEQ.S   .case_primary1
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10C0
+    BEQ.S   .case_primary2
 
-    BRA.S   LAB_10C1
+    BRA.S   .case_primary_default
 
-LAB_10BF:
+.case_primary1:
     MOVE.B  #$80,(A3)
     MOVE.B  #$81,(A2)
-    BRA.S   LAB_10C2
+    BRA.S   .after_primary
 
-LAB_10C0:
+.case_primary2:
     MOVE.B  #$82,(A3)
     MOVE.B  #$83,(A2)
-    BRA.S   LAB_10C2
+    BRA.S   .after_primary
 
-LAB_10C1:
+.case_primary_default:
     MOVEQ   #0,D0
     MOVE.B  D0,(A3)
     MOVE.B  D0,(A2)
 
-LAB_10C2:
+.after_primary:
     MOVE.L  D6,D0
     TST.L   D0
-    BEQ.S   LAB_10C5
+    BEQ.S   .case_secondary_default
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10C3
+    BEQ.S   .case_secondary1
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10C4
+    BEQ.S   .case_secondary2
 
-    BRA.S   LAB_10C5
+    BRA.S   .case_secondary_default
 
-LAB_10C3:
+.case_secondary1:
     MOVEA.L 24(A5),A0
     MOVE.B  #$88,(A0)
     MOVEA.L 28(A5),A0
     MOVE.B  #$89,(A0)
-    BRA.S   LAB_10C6
+    BRA.S   .done
 
-LAB_10C4:
+.case_secondary2:
     MOVEA.L 24(A5),A0
     MOVE.B  #$8a,(A0)
     MOVEA.L 28(A5),A0
     MOVE.B  #$8b,(A0)
-    BRA.S   LAB_10C6
+    BRA.S   .done
 
-LAB_10C5:
+.case_secondary_default:
     MOVEQ   #0,D0
     MOVEA.L 24(A5),A0
     MOVE.B  D0,(A0)
     MOVEA.L 28(A5),A0
     MOVE.B  D0,(A0)
 
-LAB_10C6:
+.done:
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_GetEntryStateCode   (Compute entry state code)
+; ARGS:
+;   stack +8: A3 = grid struct
+;   stack +12: A2 = entry list
+;   stack +18: D7 = row index
+; RET:
+;   D0: state code (1..3)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1355
+; READS:
+;   7(A2,D7), 56(A2,index)
+; DESC:
+;   Computes a state code based on entry flags and availability.
+; NOTES:
+;   Returns 1 for invalid/out-of-range.
+;------------------------------------------------------------------------------
+NEWGRID_GetEntryStateCode:
 LAB_10C7:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
     MOVE.W  30(A7),D7
     MOVE.L  A3,D0
-    BEQ.S   LAB_10CB
+    BEQ.S   .invalid
 
     MOVE.L  A2,D0
-    BEQ.S   LAB_10CB
+    BEQ.S   .invalid
 
     TST.W   D7
-    BLE.S   LAB_10CB
+    BLE.S   .invalid
 
     MOVEQ   #49,D0
     CMP.W   D0,D7
-    BGE.S   LAB_10CB
+    BGE.S   .invalid
 
     LEA     28(A3),A0
     MOVE.L  D7,D0
@@ -2012,39 +2372,58 @@ LAB_10C7:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BEQ.S   LAB_10C8
+    BEQ.S   .check_entry_flags
 
     MOVEQ   #0,D6
-    BRA.S   LAB_10CC
+    BRA.S   .done
 
-LAB_10C8:
+.check_entry_flags:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
     TST.L   56(A2,D0.L)
-    BEQ.S   LAB_10C9
+    BEQ.S   .set_state3
 
     BTST    #7,7(A2,D7.W)
-    BEQ.S   LAB_10CA
+    BEQ.S   .set_state2
 
-LAB_10C9:
+.set_state3:
     MOVEQ   #3,D6
-    BRA.S   LAB_10CC
+    BRA.S   .done
 
-LAB_10CA:
+.set_state2:
     MOVEQ   #2,D6
-    BRA.S   LAB_10CC
+    BRA.S   .done
 
-LAB_10CB:
+.invalid:
     MOVEQ   #1,D6
 
-LAB_10CC:
+.done:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_TestEntryState   (Test entry state against mode)
+; ARGS:
+;   stack +8: D7 = mode selector
+;   stack +12: D6 = key
+;   stack +16: D5 = entry pointer
+;   stack +22: D4 = selector value
+; RET:
+;   D0: boolean (-1/0) result
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   NEWGRID_GetEntryStateCode, LAB_1345, LAB_133E
+; DESC:
+;   Determines whether an entry matches the requested selector/mode.
+; NOTES:
+;   Uses SNE/NEG/EXT to booleanize in mode 0.
+;------------------------------------------------------------------------------
+NEWGRID_TestEntryState:
 LAB_10CD:
     LINK.W  A5,#-16
     MOVEM.L D4-D7,-(A7)
@@ -2055,13 +2434,13 @@ LAB_10CD:
     CLR.L   -12(A5)
     MOVEQ   #48,D0
     CMP.W   D0,D4
-    BGT.S   LAB_10CE
+    BGT.S   .use_second_key
 
     MOVEQ   #1,D0
     CMP.W   D0,D4
-    BNE.S   LAB_10D0
+    BNE.S   .use_first_key
 
-LAB_10CE:
+.use_second_key:
     PEA     2.W
     MOVE.L  D5,-(A7)
     JSR     LAB_1345(PC)
@@ -2074,15 +2453,15 @@ LAB_10CE:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
 
-LAB_10CF:
+.normalize_key:
     MOVEQ   #48,D0
     CMP.W   D0,D4
-    BLE.S   LAB_10D1
+    BLE.S   .compute_state
 
     SUBI.W  #$30,D4
-    BRA.S   LAB_10CF
+    BRA.S   .normalize_key
 
-LAB_10D0:
+.use_first_key:
     PEA     1.W
     MOVE.L  D6,-(A7)
     JSR     LAB_1345(PC)
@@ -2095,60 +2474,60 @@ LAB_10D0:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
 
-LAB_10D1:
+.compute_state:
     MOVE.L  D4,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_10C7
+    BSR.W   NEWGRID_GetEntryStateCode
 
     LEA     12(A7),A7
     MOVE.L  D0,-16(A5)
     MOVE.L  D7,D0
     TST.L   D0
-    BEQ.S   LAB_10D2
+    BEQ.S   .mode0
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10D3
+    BEQ.S   .mode1
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10D6
+    BEQ.S   .mode2
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10D6
+    BEQ.S   .mode2
 
-    BRA.S   LAB_10D7
+    BRA.S   .done
 
-LAB_10D2:
+.mode0:
     TST.L   -16(A5)
     SEQ     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-12(A5)
-    BRA.S   LAB_10D7
+    BRA.S   .done
 
-LAB_10D3:
+.mode1:
     MOVE.L  -16(A5),D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
-    BEQ.S   LAB_10D4
+    BEQ.S   .mode1_match
 
     SUBQ.L  #3,D0
-    BEQ.S   LAB_10D4
+    BEQ.S   .mode1_match
 
     MOVEQ   #0,D0
-    BRA.S   LAB_10D5
+    BRA.S   .mode1_done
 
-LAB_10D4:
+.mode1_match:
     MOVEQ   #1,D0
 
-LAB_10D5:
+.mode1_done:
     MOVE.L  D0,-12(A5)
-    BRA.S   LAB_10D7
+    BRA.S   .done
 
-LAB_10D6:
+.mode2:
     MOVEQ   #3,D1
     CMP.L   -16(A5),D1
     SEQ     D0
@@ -2157,7 +2536,7 @@ LAB_10D6:
     EXT.L   D0
     MOVE.L  D0,-12(A5)
 
-LAB_10D7:
+.done:
     MOVE.L  -12(A5),D0
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
@@ -2165,6 +2544,28 @@ LAB_10D7:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawEntryRowOrPlaceholder   (Draw entry row or placeholder)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = entry list
+;   stack +16: A1 = entry table ??
+;   stack +22: D7 = row index
+;   stack +26: D6 = column index
+;   stack +28: D5 = flags
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridEntry, LAB_1339
+; READS:
+;   LAB_2015, LAB_1BB8, LAB_2111, LAB_2115
+; DESC:
+;   Draws the grid entry for a row when data is present, otherwise draws a
+;   placeholder label depending on the flags.
+;------------------------------------------------------------------------------
+NEWGRID_DrawEntryRowOrPlaceholder:
 LAB_10D8:
     LINK.W  A5,#0
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -2175,16 +2576,16 @@ LAB_10D8:
     MOVE.L  28(A5),D5
     MOVE.L  D5,D0
     TST.L   D0
-    BEQ.S   LAB_10DA
+    BEQ.S   .draw_empty_placeholder
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_10DB
+    BEQ.S   .draw_missing_placeholder
 
     SUBQ.L  #1,D0
-    BNE.S   LAB_10DB
+    BNE.S   .draw_missing_placeholder
 
     TST.W   LAB_2015
-    BEQ.S   LAB_10D9
+    BEQ.S   .draw_simple_row
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -2204,12 +2605,12 @@ LAB_10D8:
     MOVE.L  16(A5),-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_107F
+    BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
-    BRA.S   LAB_10DC
+    BRA.S   .done
 
-LAB_10D9:
+.draw_simple_row:
     MOVE.L  D7,D0
     EXT.L   D0
     PEA     2.W
@@ -2219,33 +2620,53 @@ LAB_10D9:
     MOVE.L  16(A5),-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_107F
+    BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
-    BRA.S   LAB_10DC
+    BRA.S   .done
 
-LAB_10DA:
+.draw_empty_placeholder:
     MOVE.L  LAB_2115,-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_10DC
+    BRA.S   .done
 
-LAB_10DB:
+.draw_missing_placeholder:
     MOVE.L  LAB_2111,-(A7)
     MOVE.L  A3,-(A7)
     JSR     LAB_1339(PC)
 
     ADDQ.W  #8,A7
 
-LAB_10DC:
+.done:
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridCellBackground   (Draw cell background/frame)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +14: D7 = row index
+;   stack +18: D6 = column index
+;   stack +20: D5 = color selector
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, LAB_1352, LAB_133D
+; READS:
+;   LAB_2328, LAB_232A, LAB_232B, LAB_1BB8
+; DESC:
+;   Fills a grid cell background and draws its frame based on row/column and
+;   clock format flags.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridCellBackground:
 LAB_10DD:
     LINK.W  A5,#-20
     MOVEM.L D2-D7/A3,-(A7)
@@ -2271,12 +2692,12 @@ LAB_10DD:
     MOVE.L  A0,-20(A5)
     MOVEQ   #3,D1
     CMP.L   D1,D0
-    BLT.S   LAB_10DE
+    BLT.S   .compute_cell_right
 
     MOVE.L  #695,D0
-    BRA.S   LAB_10DF
+    BRA.S   .store_bounds
 
-LAB_10DE:
+.compute_cell_right:
     MOVE.W  LAB_232B,D0
     MULU    D6,D0
     MOVE.L  D4,D1
@@ -2284,7 +2705,7 @@ LAB_10DE:
     SUBQ.L  #1,D1
     MOVE.L  D1,D0
 
-LAB_10DF:
+.store_bounds:
     MOVEQ   #0,D1
     MOVE.W  LAB_2328,D1
     SUBQ.L  #1,D1
@@ -2293,7 +2714,7 @@ LAB_10DF:
     MOVEQ   #0,D0
     NOT.B   D0
     CMP.L   D0,D5
-    BEQ.S   LAB_10E0
+    BEQ.S   .skip_fill
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -2314,15 +2735,15 @@ LAB_10DF:
     MOVE.L  -16(A5),D3
     JSR     _LVORectFill(A6)
 
-LAB_10E0:
+.skip_fill:
     MOVEQ   #3,D0
     CMP.W   D0,D6
-    BNE.S   LAB_10E1
+    BNE.S   .draw_normal_frame
 
     MOVE.B  LAB_1BB8,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_10E1
+    BNE.S   .draw_normal_frame
 
     MOVE.L  -16(A5),-(A7)
     MOVE.L  -12(A5),-(A7)
@@ -2332,9 +2753,9 @@ LAB_10E0:
     JSR     LAB_1352(PC)
 
     LEA     20(A7),A7
-    BRA.S   LAB_10E2
+    BRA.S   .done
 
-LAB_10E1:
+.draw_normal_frame:
     MOVE.L  -16(A5),-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
@@ -2344,13 +2765,35 @@ LAB_10E1:
 
     LEA     20(A7),A7
 
-LAB_10E2:
+.done:
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridHeaderRows   (Draw header row separators)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = left offset ??
+;   stack +16: D6 = right offset ??
+; RET:
+;   D0: status from LAB_1350
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridFrame, LAB_1350, LAB_1351, LAB_1346, LAB_1349, LAB_1356
+; READS:
+;   LAB_2328, LAB_232A, LAB_1CE8
+; WRITES:
+;   52(A3)
+; DESC:
+;   Draws header frame and repeated horizontal separators for the grid.
+; NOTES:
+;   Uses rounding before ASR to keep centering stable for negative values.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridHeaderRows:
 LAB_10E3:
     LINK.W  A5,#-20
     MOVEM.L D2/D4-D7/A3,-(A7)
@@ -2365,7 +2808,7 @@ LAB_10E3:
     MOVE.L  D7,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -2376,31 +2819,31 @@ LAB_10E3:
     MOVE.L  D5,D4
     MOVE.L  D0,-12(A5)
 
-LAB_10E4:
+.row_loop:
     MOVEQ   #2,D0
     CMP.L   D0,D5
-    BGE.W   LAB_10EC
+    BGE.W   .after_rows
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_10EC
+    BNE.W   .after_rows
 
     MOVE.L  D4,-16(A5)
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_10E7
+    BEQ.S   .alt_half_width
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_10E5
+    BPL.S   .half_width_round
 
     ADDQ.L  #1,D1
 
-LAB_10E5:
+.half_width_round:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -2408,39 +2851,39 @@ LAB_10E5:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_10E6
+    BPL.S   .half_width_adjust
 
     ADDQ.L  #1,D1
 
-LAB_10E6:
+.half_width_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     ADD.L   D2,D1
     SUBQ.L  #1,D1
     ADD.L   D1,-16(A5)
-    BRA.S   LAB_10EA
+    BRA.S   .draw_row
 
-LAB_10E7:
+.alt_half_width:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_10E8
+    BPL.S   .alt_half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_10E8:
+.alt_half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   LAB_10E9
+    BPL.S   .alt_half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_10E9:
+.alt_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -2448,7 +2891,7 @@ LAB_10E9:
     SUBQ.L  #1,D0
     ADD.L   D0,-16(A5)
 
-LAB_10EA:
+.draw_row:
     LEA     60(A3),A0
     MOVE.L  -16(A5),-(A7)
     MOVE.L  -12(A5),-(A7)
@@ -2460,20 +2903,20 @@ LAB_10EA:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_10EB
+    BPL.S   .advance_row
 
     ADDQ.L  #1,D0
 
-LAB_10EB:
+.advance_row:
     ASR.L   #1,D0
     ADD.L   D0,D4
-    BRA.W   LAB_10E4
+    BRA.W   .row_loop
 
-LAB_10EC:
+.after_rows:
     JSR     LAB_1350(PC)
 
     MOVE.L  D0,-20(A5)
-    BEQ.S   LAB_10ED
+    BEQ.S   .draw_bottom_bevel
 
     ADD.L   LAB_1CE8,D4
     LEA     60(A3),A0
@@ -2506,9 +2949,9 @@ LAB_10EC:
     JSR     LAB_1349(PC)
 
     LEA     36(A7),A7
-    BRA.S   LAB_10EE
+    BRA.S   .store_header_width
 
-LAB_10ED:
+.draw_bottom_bevel:
     LEA     60(A3),A0
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -2540,14 +2983,14 @@ LAB_10ED:
 
     LEA     36(A7),A7
 
-LAB_10EE:
+.store_header_width:
     MOVE.L  D4,D0
     TST.L   D0
-    BPL.S   LAB_10EF
+    BPL.S   .round_header_half
 
     ADDQ.L  #1,D0
 
-LAB_10EF:
+.round_header_half:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
     MOVE.L  -20(A5),D0
@@ -2557,6 +3000,30 @@ LAB_10EF:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawSelectionMarkers   (Draw selection glyph markers)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +14: D7 = row index
+;   stack +18: D6 = column index
+;   stack +20: D5 = flags
+;   stack +24: D4 = primary selector ??
+;   stack +28: D3 = secondary selector ??
+; RET:
+;   D0: status from LAB_1350
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   NEWGRID_DrawGridCellBackground, NEWGRID_SetSelectionMarkers, LAB_1346,
+;   LAB_1350, LAB_1351, _LVOMove, _LVOText, LAB_135A
+; READS:
+;   LAB_2328, LAB_232A, LAB_232B
+; DESC:
+;   Lays out and draws selection marker glyphs for a row and column.
+; NOTES:
+;   Computes centered positions using rounding before ASR.
+;------------------------------------------------------------------------------
+NEWGRID_DrawSelectionMarkers:
 LAB_10F0:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A3,-(A7)
@@ -2575,7 +3042,7 @@ LAB_10F0:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A0,-4(A5)
-    BSR.W   LAB_10DD
+    BSR.W   NEWGRID_DrawGridCellBackground
 
     PEA     -36(A5)
     PEA     -35(A5)
@@ -2583,11 +3050,11 @@ LAB_10F0:
     PEA     -33(A5)
     MOVE.L  28(A5),-(A7)
     MOVE.L  24(A5),-(A7)
-    BSR.W   LAB_10BE
+    BSR.W   NEWGRID_SetSelectionMarkers
 
     LEA     40(A7),A7
     TST.B   -33(A5)
-    BEQ.S   LAB_10F1
+    BEQ.S   .measure_primary
 
     MOVEA.L -4(A5),A1
     LEA     -33(A5),A0
@@ -2595,15 +3062,15 @@ LAB_10F0:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    BRA.S   LAB_10F2
+    BRA.S   .store_primary_width
 
-LAB_10F1:
+.measure_primary:
     MOVEQ   #0,D0
 
-LAB_10F2:
+.store_primary_width:
     MOVE.L  D0,-24(A5)
     TST.B   -35(A5)
-    BEQ.S   LAB_10F3
+    BEQ.S   .measure_secondary
 
     MOVEA.L -4(A5),A1
     LEA     -35(A5),A0
@@ -2611,12 +3078,12 @@ LAB_10F2:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    BRA.S   LAB_10F4
+    BRA.S   .store_secondary_width
 
-LAB_10F3:
+.measure_secondary:
     MOVEQ   #0,D0
 
-LAB_10F4:
+.store_secondary_width:
     MOVEQ   #0,D1
     MOVE.W  LAB_232A,D1
     MOVE.W  LAB_232B,D2
@@ -2630,11 +3097,11 @@ LAB_10F4:
     MOVE.W  LAB_2328,D2
     MOVE.L  D2,D3
     TST.L   D3
-    BPL.S   LAB_10F5
+    BPL.S   .round_width_half
 
     ADDQ.L  #1,D3
 
-LAB_10F5:
+.round_width_half:
     ASR.L   #1,D3
     MOVEA.L -4(A5),A1
     MOVEA.L 52(A1),A0
@@ -2643,11 +3110,11 @@ LAB_10F5:
     SUB.L   D4,D3
     SUBQ.L  #4,D3
     TST.L   D3
-    BPL.S   LAB_10F6
+    BPL.S   .round_width_half_adjust
 
     ADDQ.L  #1,D3
 
-LAB_10F6:
+.round_width_half_adjust:
     ASR.L   #1,D3
     MOVEQ   #0,D4
     MOVE.W  26(A0),D4
@@ -2656,11 +3123,11 @@ LAB_10F6:
     MOVEQ   #0,D4
     MOVE.W  D2,D4
     TST.L   D4
-    BPL.S   LAB_10F7
+    BPL.S   .round_text_half
 
     ADDQ.L  #1,D4
 
-LAB_10F7:
+.round_text_half:
     ASR.L   #1,D4
     MOVE.L  D0,-28(A5)
     MOVEQ   #0,D0
@@ -2668,11 +3135,11 @@ LAB_10F7:
     SUB.L   D0,D4
     SUBQ.L  #4,D4
     TST.L   D4
-    BPL.S   LAB_10F8
+    BPL.S   .round_text_half_adjust
 
     ADDQ.L  #1,D4
 
-LAB_10F8:
+.round_text_half_adjust:
     ASR.L   #1,D4
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -2680,33 +3147,33 @@ LAB_10F8:
     MOVEQ   #0,D0
     MOVE.W  D2,D0
     TST.L   D0
-    BPL.S   LAB_10F9
+    BPL.S   .round_cell_half
 
     ADDQ.L  #1,D0
 
-LAB_10F9:
+.round_cell_half:
     ASR.L   #1,D0
     ADD.L   D0,D4
     SUBQ.L  #1,D4
     MOVEQ   #0,D0
     MOVE.W  D2,D0
     TST.L   D0
-    BPL.S   LAB_10FA
+    BPL.S   .round_cell_half_adjust
 
     ADDQ.L  #1,D0
 
-LAB_10FA:
+.round_cell_half_adjust:
     ASR.L   #1,D0
     MOVE.L  D4,-16(A5)
     MOVEQ   #0,D4
     MOVE.W  26(A0),D4
     SUB.L   D4,D0
     TST.L   D0
-    BPL.S   LAB_10FB
+    BPL.S   .round_left_half
 
     ADDQ.L  #1,D0
 
-LAB_10FB:
+.round_left_half:
     ASR.L   #1,D0
     MOVEQ   #0,D4
     MOVE.W  26(A0),D4
@@ -2714,11 +3181,11 @@ LAB_10FB:
     MOVEQ   #0,D4
     MOVE.W  D2,D4
     TST.L   D4
-    BPL.S   LAB_10FC
+    BPL.S   .round_left_half_adjust
 
     ADDQ.L  #1,D4
 
-LAB_10FC:
+.round_left_half_adjust:
     ASR.L   #1,D4
     ADD.L   D4,D0
     SUBQ.L  #1,D0
@@ -2734,20 +3201,20 @@ LAB_10FC:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   LAB_10FF
+    BNE.S   .after_frame
 
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_10FD
+    BEQ.S   .choose_alt_x
 
     MOVE.L  -16(A5),D0
-    BRA.S   LAB_10FE
+    BRA.S   .choose_default_x
 
-LAB_10FD:
+.choose_alt_x:
     MOVE.L  -20(A5),D0
 
-LAB_10FE:
+.choose_default_x:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
@@ -2755,9 +3222,9 @@ LAB_10FE:
 
     LEA     12(A7),A7
 
-LAB_10FF:
+.after_frame:
     TST.B   -33(A5)
-    BEQ.S   LAB_1100
+    BEQ.S   .draw_secondary_glyphs
 
     MOVE.L  -24(A5),D0
     SUB.L   D0,-8(A5)
@@ -2782,9 +3249,9 @@ LAB_10FF:
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-LAB_1100:
+.draw_secondary_glyphs:
     TST.B   -35(A5)
-    BEQ.S   LAB_1101
+    BEQ.S   .after_glyphs
 
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -2815,20 +3282,20 @@ LAB_1100:
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-LAB_1101:
+.after_glyphs:
     JSR     LAB_1350(PC)
 
     MOVE.L  D0,-32(A5)
-    BEQ.S   LAB_1102
+    BEQ.S   .done
 
     MOVEQ   #3,D0
     CMP.W   D0,D6
-    BNE.S   LAB_1102
+    BNE.S   .done
 
     MOVE.B  LAB_1BB8,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1102
+    BNE.S   .done
 
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -2847,7 +3314,7 @@ LAB_1101:
 
     LEA     20(A7),A7
 
-LAB_1102:
+.done:
     MOVE.L  -32(A5),D0
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
@@ -2855,6 +3322,26 @@ LAB_1102:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_SelectEntryPen   (Select pen index for entry)
+; ARGS:
+;   stack +8: A3 = entry pointer
+; RET:
+;   D0: pen index (0..15)
+; CLOBBERS:
+;   D0-D2/D7/A3
+; CALLS:
+;   none
+; READS:
+;   LAB_2014, LAB_22CD/22CE/22DD/22DF/22EC/22EE, 27(A3), 41(A3), 42(A3)
+; WRITES:
+;   LAB_2334
+; DESC:
+;   Computes a pen index based on entry flags and current selection mode.
+; NOTES:
+;   Uses switch/jumptable lookups for default/override pen selection.
+;------------------------------------------------------------------------------
+NEWGRID_SelectEntryPen:
 LAB_1103:
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 16(A7),A3
@@ -2862,175 +3349,201 @@ LAB_1103:
     MOVEQ   #0,D7
     NOT.B   D7
     MOVE.L  A3,D0
-    BEQ.S   LAB_1107
+    BEQ.S   .pen_selected
 
     MOVEQ   #0,D0
     MOVE.B  41(A3),D0
     MOVEQ   #0,D1
     NOT.B   D1
     CMP.L   D1,D0
-    BEQ.S   LAB_1104
+    BEQ.S   .check_flag_bit1
 
     MOVEQ   #0,D7
     MOVE.B  D0,D7
-    BRA.S   LAB_1107
+    BRA.S   .pen_selected
 
-LAB_1104:
+.check_flag_bit1:
     BTST    #1,27(A3)
-    BEQ.S   LAB_1105
+    BEQ.S   .check_flag_bit6
 
     MOVEQ   #4,D7
-    BRA.S   LAB_1107
+    BRA.S   .pen_selected
 
-LAB_1105:
+.check_flag_bit6:
     BTST    #6,27(A3)
-    BEQ.S   LAB_1106
+    BEQ.S   .check_flag_bit4
 
     MOVEQ   #5,D7
-    BRA.S   LAB_1107
+    BRA.S   .pen_selected
 
-LAB_1106:
+.check_flag_bit4:
     BTST    #4,27(A3)
-    BEQ.S   LAB_1107
+    BEQ.S   .pen_selected
 
     MOVEQ   #7,D7
 
-LAB_1107:
+.pen_selected:
     MOVEQ   #0,D0
     NOT.B   D0
     CMP.L   D0,D7
-    BNE.S   LAB_110B
+    BNE.S   .pen_ready
 
     MOVE.L  LAB_2014,D0
     SUBQ.L  #1,D0
-    BLT.S   LAB_110A
+    BLT.S   .out_of_range
 
     CMPI.L  #$7,D0
-    BGE.S   LAB_110A
+    BGE.S   .out_of_range
 
     ADD.W   D0,D0
-    MOVE.W  LAB_1108(PC,D0.W),D0
-    JMP     LAB_1108+2(PC,D0.W)
+    MOVE.W  .default_jumptable(PC,D0.W),D0
+    JMP     .default_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_1108:
-    DC.W    LAB_1108_0028-LAB_1108-2
-    DC.W    LAB_1108_000C-LAB_1108-2
-    DC.W    LAB_1108_000C-LAB_1108-2
-    DC.W    LAB_1108_000C-LAB_1108-2
-    DC.W    LAB_1108_0010-LAB_1108-2
-    DC.W    LAB_1108_0018-LAB_1108-2
-    DC.W    LAB_1108_0020-LAB_1108-2
+; switch/jumptable
+.default_jumptable:
+    DC.W    .case_out_of_range-.default_jumptable-2
+    DC.W    .case_default_pen-.default_jumptable-2
+    DC.W    .case_default_pen-.default_jumptable-2
+    DC.W    .case_default_pen-.default_jumptable-2
+    DC.W    .case_pen_from_22CE-.default_jumptable-2
+    DC.W    .case_pen_from_22DF-.default_jumptable-2
+    DC.W    .case_pen_from_22EE-.default_jumptable-2
 
-LAB_1108_000C:
+.case_default_pen:
     MOVEQ   #6,D7
-    BRA.S   LAB_110B
+    BRA.S   .pen_ready
 
-LAB_1108_0010:
+.case_pen_from_22CE:
     MOVE.L  LAB_22CE,D7
-    BRA.S   LAB_110B
+    BRA.S   .pen_ready
 
-LAB_1108_0018:
+.case_pen_from_22DF:
     MOVE.L  LAB_22DF,D7
-    BRA.S   LAB_110B
+    BRA.S   .pen_ready
 
-LAB_1108_0020:
+.case_pen_from_22EE:
     MOVE.L  LAB_22EE,D7
-    BRA.S   LAB_110B
+    BRA.S   .pen_ready
 
-LAB_1108_0028:
-LAB_110A:
+.case_out_of_range:
+.out_of_range:
     MOVEQ   #7,D7
 
-LAB_110B:
+.pen_ready:
     TST.L   D7
-    BMI.S   LAB_110C
+    BMI.S   .pen_invalid
 
     MOVEQ   #15,D0
     CMP.L   D0,D7
-    BLE.S   LAB_110D
+    BLE.S   .pen_clamp_done
 
-LAB_110C:
+.pen_invalid:
     MOVEQ   #7,D7
 
-LAB_110D:
+.pen_clamp_done:
     MOVEQ   #0,D0
     NOT.B   D0
     MOVE.L  D0,LAB_2334
     MOVE.L  A3,D1
-    BEQ.S   LAB_110E
+    BEQ.S   .check_override
 
     MOVEQ   #0,D1
     MOVE.B  42(A3),D1
     CMP.L   D0,D1
-    BEQ.S   LAB_110E
+    BEQ.S   .check_override
 
     MOVEQ   #0,D2
     MOVE.B  D1,D2
     MOVE.L  D2,LAB_2334
 
-LAB_110E:
+.check_override:
     CMP.L   LAB_2334,D0
-    BNE.S   LAB_1112
+    BNE.S   .clamp_override
 
     MOVE.L  LAB_2014,D0
     SUBQ.L  #1,D0
-    BLT.S   LAB_1111
+    BLT.S   .override_default
 
     CMPI.L  #$7,D0
-    BGE.S   LAB_1111
+    BGE.S   .override_default
 
     ADD.W   D0,D0
-    MOVE.W  LAB_110F(PC,D0.W),D0
-    JMP     LAB_110F+2(PC,D0.W)
+    MOVE.W  .override_jumptable(PC,D0.W),D0
+    JMP     .override_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_110F:
-    DC.W    LAB_110F_0030-LAB_110F-2
-    DC.W    LAB_110F_0030-LAB_110F-2
-    DC.W    LAB_110F_0030-LAB_110F-2
-    DC.W    LAB_110F_0030-LAB_110F-2
-    DC.W    LAB_110F_000C-LAB_110F-2
-    DC.W    LAB_110F_0018-LAB_110F-2
-    DC.W    LAB_110F_0024-LAB_110F-2
+; switch/jumptable
+.override_jumptable:
+    DC.W    .override_default-.override_jumptable-2
+    DC.W    .override_default-.override_jumptable-2
+    DC.W    .override_default-.override_jumptable-2
+    DC.W    .override_default-.override_jumptable-2
+    DC.W    .override_22CD-.override_jumptable-2
+    DC.W    .override_22DD-.override_jumptable-2
+    DC.W    .override_22EC-.override_jumptable-2
 
-LAB_110F_000C:
+.override_22CD:
     MOVE.L  LAB_22CD,LAB_2334
-    BRA.S   LAB_1112
+    BRA.S   .clamp_override
 
-LAB_110F_0018:
+.override_22DD:
     MOVE.L  LAB_22DD,LAB_2334
-    BRA.S   LAB_1112
+    BRA.S   .clamp_override
 
-LAB_110F_0024:
+.override_22EC:
     MOVE.L  LAB_22EC,LAB_2334
-    BRA.S   LAB_1112
+    BRA.S   .clamp_override
 
-LAB_110F_0030:
-LAB_1111:
+.override_default:
+.override_default_alias:
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_2334
 
-LAB_1112:
+.clamp_override:
     MOVE.L  LAB_2334,D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
-    BLT.S   LAB_1113
+    BLT.S   .override_clamp_default
 
     MOVEQ   #3,D2
     CMP.L   D2,D0
-    BLE.S   LAB_1114
+    BLE.S   .done
 
-LAB_1113:
+.override_clamp_default:
     MOVE.L  D1,LAB_2334
 
-LAB_1114:
+.done:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D2/D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ProcessGridEntries   (Process grid entries/state)
+; ARGS:
+;   stack +8: A3 = rastport ??
+;   stack +12: D7 = entry index ??
+;   stack +18: D6 = row selector ??
+; RET:
+;   D0: state (LAB_201C)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridHeaderRows, NEWGRID_DrawSelectionMarkers,
+;   NEWGRID_DrawEntryRowOrPlaceholder, NEWGRID_GetEntryStateCode,
+;   NEWGRID_TestEntryState, NEWGRID_SelectEntryPen, NEWGRID_DrawGridCell,
+;   NEWGRID_DrawGridFrame, LAB_134A, LAB_1345, LAB_133E, LAB_1353, LAB_1354,
+;   LAB_1358
+; READS:
+;   LAB_2014, LAB_201C, LAB_2233/2236, LAB_223A, LAB_2328/232B/232C/232D/232E
+; WRITES:
+;   LAB_201C, LAB_232C, LAB_232D, LAB_232E, LAB_2333
+; DESC:
+;   Main grid loop that builds row state, selects pens, and draws rows/markers.
+; NOTES:
+;   Uses multiple scratch slots on the stack and a row loop (0..2).
+;------------------------------------------------------------------------------
+NEWGRID_ProcessGridEntries:
 LAB_1115:
     LINK.W  A5,#-48
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -3041,24 +3554,25 @@ LAB_1115:
     MOVEQ   #1,D0
     MOVE.L  D0,-46(A5)
     MOVE.L  A3,D0
-    BNE.S   LAB_1116
+    BNE.S   .state_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201C
-    BRA.W   LAB_113F
+    BRA.W   .return_state
 
-LAB_1116:
+.state_check:
     MOVE.L  LAB_201C,D0
     SUBQ.L  #4,D0
-    BEQ.S   LAB_1117
+    BEQ.S   .state4_begin
 
     SUBQ.L  #1,D0
-    BNE.W   LAB_113E
+    BNE.W   .force_state_4
 
+.state5_redraw:
     MOVE.L  LAB_232D,-(A7)
     MOVE.L  LAB_232E,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10E3
+    BSR.W   NEWGRID_DrawGridHeaderRows
 
     MOVEQ   #-1,D0
     MOVE.L  D0,32(A3)
@@ -3066,29 +3580,29 @@ LAB_1116:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.W   LAB_113F
+    BEQ.W   .return_state
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201C
-    BRA.W   LAB_113F
+    BRA.W   .return_state
 
-LAB_1117:
+.state4_begin:
     MOVEQ   #44,D0
     CMP.W   D0,D6
-    BGT.S   LAB_1118
+    BGT.S   .select_entry_ptr
 
     MOVEQ   #1,D0
     CMP.W   D0,D6
-    BEQ.S   LAB_1118
+    BEQ.S   .select_entry_ptr
 
     PEA     LAB_223A
     JSR     LAB_134A(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1119
+    BNE.S   .no_entry_ptr
 
-LAB_1118:
+.select_entry_ptr:
     MOVE.L  D7,D0
     ASL.L   #2,D0
     LEA     LAB_2236,A0
@@ -3099,33 +3613,33 @@ LAB_1118:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
-    BRA.S   LAB_111A
+    BRA.S   .load_entry_ptr
 
-LAB_1119:
+.no_entry_ptr:
     MOVEQ   #-1,D5
 
-LAB_111A:
+.load_entry_ptr:
     MOVE.L  D7,D0
     ASL.L   #2,D0
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    BSR.W   LAB_1103
+    BSR.W   NEWGRID_SelectEntryPen
 
     ADDQ.W  #4,A7
     MOVE.L  D0,LAB_2333
     MOVEQ   #5,D0
     CMP.L   LAB_2014,D0
-    BNE.S   LAB_111B
+    BNE.S   .set_header_pen
 
     MOVE.L  LAB_22CE,LAB_232E
-    BRA.S   LAB_111C
+    BRA.S   .draw_header_frame
 
-LAB_111B:
+.set_header_pen:
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_232E
 
-LAB_111C:
+.draw_header_frame:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     ADDQ.L  #3,D0
@@ -3134,16 +3648,16 @@ LAB_111C:
     MOVE.L  LAB_232E,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     LEA     20(A7),A7
     CLR.W   -18(A5)
 
-LAB_111D:
+.row_loop:
     MOVE.W  -18(A5),D0
     MOVEQ   #3,D1
     CMP.W   D1,D0
-    BGE.W   LAB_113A
+    BGE.W   .loop_done
 
     SUBA.L  A0,A0
     CLR.W   -22(A5)
@@ -3162,20 +3676,20 @@ LAB_111D:
     MOVE.L  A0,-4(A5)
     MOVEQ   #48,D0
     CMP.L   D0,D3
-    BGT.S   LAB_111E
+    BGT.S   .use_second_key
 
     MOVEQ   #1,D0
     CMP.W   D0,D6
-    BEQ.S   LAB_111E
+    BEQ.S   .use_second_key
 
     PEA     LAB_223A
     JSR     LAB_134A(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1121
+    BNE.S   .use_first_key
 
-LAB_111E:
+.use_second_key:
     PEA     2.W
     MOVE.L  D5,-(A7)
     JSR     LAB_1345(PC)
@@ -3194,7 +3708,7 @@ LAB_111E:
     MOVE.L  D0,-12(A5)
     MOVEQ   #48,D0
     CMP.L   D0,D1
-    BLE.S   LAB_111F
+    BLE.S   .index_in_range
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -3202,9 +3716,9 @@ LAB_111E:
     EXT.L   D2
     ADD.L   D2,D1
     SUB.L   D0,D1
-    BRA.S   LAB_1120
+    BRA.S   .index_wrapped
 
-LAB_111F:
+.index_in_range:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.W  -18(A5),D1
@@ -3212,14 +3726,14 @@ LAB_111F:
     ADD.L   D1,D0
     MOVE.L  D0,D1
 
-LAB_1120:
+.index_wrapped:
     MOVE.W  D1,-24(A5)
     MOVE.W  D1,-20(A5)
     ADDI.W  #$30,D1
     MOVE.W  D1,-26(A5)
-    BRA.S   LAB_1122
+    BRA.S   .row_has_entries
 
-LAB_1121:
+.use_first_key:
     PEA     1.W
     MOVE.L  D7,-(A7)
     JSR     LAB_1345(PC)
@@ -3238,32 +3752,32 @@ LAB_1121:
     MOVE.W  D1,-24(A5)
     MOVE.W  D1,-20(A5)
 
-LAB_1122:
+.row_has_entries:
     TST.L   -4(A5)
-    BEQ.W   LAB_1136
+    BEQ.W   .row_missing_entry
 
     TST.L   -12(A5)
-    BEQ.W   LAB_1136
+    BEQ.W   .row_missing_entry
 
     TST.W   -18(A5)
-    BNE.S   LAB_1123
+    BNE.S   .capture_first_entry
 
     MOVEA.L -4(A5),A0
     MOVE.L  A0,-8(A5)
 
-LAB_1123:
+.capture_first_entry:
     MOVE.W  -24(A5),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_10C7
+    BSR.W   NEWGRID_GetEntryStateCode
 
     LEA     12(A7),A7
     MOVE.W  #1,-22(A5)
     MOVE.L  D0,-30(A5)
 
-LAB_1124:
+.scan_next_entry:
     MOVE.W  -18(A5),D0
     EXT.L   D0
     MOVE.W  -22(A5),D1
@@ -3271,7 +3785,7 @@ LAB_1124:
     ADD.L   D1,D0
     MOVEQ   #3,D1
     CMP.L   D1,D0
-    BGE.S   LAB_1125
+    BGE.S   .scan_done
 
     MOVE.W  -26(A5),D0
     ADD.W   -22(A5),D0
@@ -3280,19 +3794,19 @@ LAB_1124:
     MOVE.L  D5,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  -30(A5),-(A7)
-    BSR.W   LAB_10CD
+    BSR.W   NEWGRID_TestEntryState
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.S   LAB_1125
+    BEQ.S   .scan_done
 
     ADDQ.W  #1,-22(A5)
-    BRA.S   LAB_1124
+    BRA.S   .scan_next_entry
 
-LAB_1125:
+.scan_done:
     MOVEQ   #3,D0
     CMP.L   -30(A5),D0
-    BNE.S   LAB_1127
+    BNE.S   .post_state_adjust
 
     MOVE.W  -24(A5),D0
     EXT.L   D0
@@ -3303,23 +3817,23 @@ LAB_1125:
 
     LEA     12(A7),A7
     MOVE.W  D0,-20(A5)
-    BNE.S   LAB_1126
+    BNE.S   .set_state_alt
 
     MOVEQ   #1,D1
     MOVE.L  D1,-30(A5)
-    BRA.S   LAB_1127
+    BRA.S   .post_state_adjust
 
-LAB_1126:
+.set_state_alt:
     MOVEQ   #2,D1
     MOVE.L  D1,-30(A5)
 
-LAB_1127:
+.post_state_adjust:
     MOVEQ   #2,D0
     CMP.L   -30(A5),D0
-    BNE.W   LAB_1134
+    BNE.W   .draw_simple_cell
 
     TST.W   -18(A5)
-    BNE.W   LAB_112D
+    BNE.W   .check_trailing_pair
 
     MOVE.W  -24(A5),D1
     EXT.L   D1
@@ -3328,31 +3842,31 @@ LAB_1127:
     SUB.L   D2,D1
     MOVEQ   #1,D2
     CMP.L   D2,D1
-    BLE.S   LAB_1128
+    BLE.S   .resolve_state_delta
 
     MOVE.L  D0,-34(A5)
-    BRA.W   LAB_112D
+    BRA.W   .check_trailing_pair
 
-LAB_1128:
+.resolve_state_delta:
     MOVE.W  -24(A5),D0
     EXT.L   D0
     MOVE.W  -20(A5),D1
     EXT.L   D1
     SUB.L   D1,D0
     SUBQ.L  #1,D0
-    BNE.S   LAB_1129
+    BNE.S   .check_edge_case
 
     MOVE.L  D2,-34(A5)
-    BRA.S   LAB_112D
+    BRA.S   .check_trailing_pair
 
-LAB_1129:
+.check_edge_case:
     MOVEQ   #1,D0
     CMP.W   -24(A5),D0
-    BNE.S   LAB_112B
+    BNE.S   .check_special_case
 
     MOVEA.L -12(A5),A0
     BTST    #7,8(A0)
-    BEQ.S   LAB_112B
+    BEQ.S   .check_special_case
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -3363,49 +3877,49 @@ LAB_1129:
     PEA     48.W
     MOVE.L  (A2),-(A7)
     MOVE.L  (A1),-(A7)
-    BSR.W   LAB_10C7
+    BSR.W   NEWGRID_GetEntryStateCode
 
     LEA     12(A7),A7
     SUBQ.L  #2,D0
-    BEQ.S   LAB_112A
+    BEQ.S   .set_state_from_flags
 
     MOVEQ   #2,D0
     MOVE.L  D0,-34(A5)
-    BRA.S   LAB_112D
+    BRA.S   .check_trailing_pair
 
-LAB_112A:
+.set_state_from_flags:
     MOVEQ   #1,D0
     MOVE.L  D0,-34(A5)
-    BRA.S   LAB_112D
+    BRA.S   .check_trailing_pair
 
-LAB_112B:
+.check_special_case:
     MOVEQ   #2,D0
     CMP.W   -24(A5),D0
-    BNE.S   LAB_112D
+    BNE.S   .check_trailing_pair
 
     MOVEQ   #1,D0
     CMP.W   -20(A5),D0
-    BNE.S   LAB_112D
+    BNE.S   .check_trailing_pair
 
     MOVEA.L -12(A5),A0
     BTST    #7,8(A0)
-    BNE.S   LAB_112C
+    BNE.S   .set_state_alt2
 
     MOVE.L  D2,-34(A5)
-    BRA.S   LAB_112D
+    BRA.S   .check_trailing_pair
 
-LAB_112C:
+.set_state_alt2:
     MOVEQ   #2,D0
     MOVE.L  D0,-34(A5)
 
-LAB_112D:
+.check_trailing_pair:
     MOVE.W  -18(A5),D0
     EXT.L   D0
     MOVE.W  -22(A5),D1
     EXT.L   D1
     ADD.L   D1,D0
     SUBQ.L  #3,D0
-    BNE.S   LAB_112F
+    BNE.S   .update_colors
 
     MOVE.W  -26(A5),D0
     ADD.W   -22(A5),D0
@@ -3414,11 +3928,11 @@ LAB_112D:
     MOVE.L  D5,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  -30(A5),-(A7)
-    BSR.W   LAB_10CD
+    BSR.W   NEWGRID_TestEntryState
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.S   LAB_112F
+    BEQ.S   .update_colors
 
     MOVE.W  -26(A5),D0
     ADD.W   -22(A5),D0
@@ -3428,53 +3942,53 @@ LAB_112D:
     MOVE.L  D5,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  -30(A5),-(A7)
-    BSR.W   LAB_10CD
+    BSR.W   NEWGRID_TestEntryState
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.S   LAB_112E
+    BEQ.S   .set_pair_state
 
     MOVEQ   #2,D0
     MOVE.L  D0,-38(A5)
-    BRA.S   LAB_112F
+    BRA.S   .update_colors
 
-LAB_112E:
+.set_pair_state:
     MOVEQ   #1,D0
     MOVE.L  D0,-38(A5)
 
-LAB_112F:
+.update_colors:
     MOVE.L  LAB_2334,D0
     MOVE.L  D0,LAB_232C
     MOVEA.L -12(A5),A0
     MOVE.W  -20(A5),D0
     BTST    #2,7(A0,D0.W)
-    BEQ.S   LAB_1130
+    BEQ.S   .set_default_color
 
     MOVEQ   #5,D0
     MOVE.L  D0,LAB_232D
-    BRA.S   LAB_1131
+    BRA.S   .compute_cell_height
 
-LAB_1130:
+.set_default_color:
     MOVE.L  #$ff,LAB_232D
 
-LAB_1131:
+.compute_cell_height:
     MOVE.W  -22(A5),D0
     MOVEQ   #3,D1
     CMP.W   D1,D0
-    BNE.S   LAB_1132
+    BNE.S   .cell_height_default
 
     MOVE.B  LAB_1BB8,D1
     MOVEQ   #89,D2
     CMP.B   D2,D1
-    BNE.S   LAB_1132
+    BNE.S   .cell_height_default
 
     MOVEQ   #20,D1
-    BRA.S   LAB_1133
+    BRA.S   .draw_cell
 
-LAB_1132:
+.cell_height_default:
     MOVEQ   #2,D1
 
-LAB_1133:
+.draw_cell:
     MOVE.W  LAB_232B,D2
     MULU    D0,D2
     MOVEQ   #12,D0
@@ -3502,16 +4016,16 @@ LAB_1133:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_10D8
+    BSR.W   NEWGRID_DrawEntryRowOrPlaceholder
 
     LEA     40(A7),A7
-    BRA.W   LAB_1138
+    BRA.W   .maybe_draw_markers
 
-LAB_1134:
+.draw_simple_cell:
     MOVE.W  -22(A5),D0
     MOVEQ   #3,D1
     CMP.W   D1,D0
-    BGE.S   LAB_1135
+    BGE.S   .clear_row_flag
 
     MOVEQ   #1,D1
     MOVE.L  #$ff,LAB_232D
@@ -3536,22 +4050,22 @@ LAB_1134:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_10D8
+    BSR.W   NEWGRID_DrawEntryRowOrPlaceholder
 
     LEA     32(A7),A7
-    BRA.S   LAB_1138
+    BRA.S   .maybe_draw_markers
 
-LAB_1135:
+.clear_row_flag:
     CLR.L   -46(A5)
-    BRA.S   LAB_1138
+    BRA.S   .maybe_draw_markers
 
-LAB_1136:
+.row_missing_entry:
     MOVEQ   #3,D0
     MOVE.L  D0,D1
     SUB.W   -18(A5),D1
     MOVEM.W D1,-22(A5)
     CMP.W   D0,D1
-    BGE.S   LAB_1137
+    BGE.S   .row_missing_done
 
     MOVEQ   #1,D0
     MOVE.L  #$ff,LAB_232D
@@ -3577,18 +4091,18 @@ LAB_1136:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_10D8
+    BSR.W   NEWGRID_DrawEntryRowOrPlaceholder
 
     LEA     32(A7),A7
-    BRA.S   LAB_1138
+    BRA.S   .maybe_draw_markers
 
-LAB_1137:
+.row_missing_done:
     MOVEQ   #0,D0
     MOVE.L  D0,-46(A5)
 
-LAB_1138:
+.maybe_draw_markers:
     TST.L   -46(A5)
-    BEQ.S   LAB_1139
+    BEQ.S   .advance_row
 
     MOVE.W  -18(A5),D0
     EXT.L   D0
@@ -3600,38 +4114,38 @@ LAB_1138:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10F0
+    BSR.W   NEWGRID_DrawSelectionMarkers
 
     LEA     24(A7),A7
 
-LAB_1139:
+.advance_row:
     MOVE.W  -22(A5),D0
     ADD.W   D0,-18(A5)
-    BRA.W   LAB_111D
+    BRA.W   .row_loop
 
-LAB_113A:
+.loop_done:
     TST.L   -46(A5)
-    BEQ.W   LAB_113D
+    BEQ.W   .no_rows
 
     MOVEQ   #3,D0
     CMP.W   -22(A5),D0
-    BNE.S   LAB_113B
+    BNE.S   .draw_empty_cell
 
     MOVE.B  LAB_1BB8,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_113B
+    BNE.S   .draw_empty_cell
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.S   LAB_113B
+    BNE.S   .draw_empty_cell
 
     LEA     60(A3),A0
     CLR.L   -(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_1066
+    BSR.W   NEWGRID_DrawGridCell
 
     LEA     12(A7),A7
     MOVEQ   #5,D0
@@ -3639,23 +4153,23 @@ LAB_113A:
     MOVEQ   #0,D0
     NOT.B   D0
     CMP.L   LAB_232D,D0
-    BNE.S   LAB_113C
+    BNE.S   .store_frame_state
 
     MOVE.L  LAB_2333,LAB_232D
-    BRA.S   LAB_113C
+    BRA.S   .store_frame_state
 
-LAB_113B:
+.draw_empty_cell:
     LEA     60(A3),A0
     PEA     1.W
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_1066
+    BSR.W   NEWGRID_DrawGridCell
 
     LEA     12(A7),A7
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201C
 
-LAB_113C:
+.store_frame_state:
     MOVE.W  LAB_2328,D0
     LSR.W   #1,D0
     MOVE.W  D0,52(A3)
@@ -3664,19 +4178,19 @@ LAB_113C:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
-    BRA.S   LAB_113F
+    BRA.S   .return_state
 
-LAB_113D:
+.no_rows:
     CLR.W   52(A3)
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201C
-    BRA.S   LAB_113F
+    BRA.S   .return_state
 
-LAB_113E:
+.force_state_4:
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_201C
 
-LAB_113F:
+.return_state:
     MOVE.L  LAB_201C,D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5
@@ -3684,6 +4198,25 @@ LAB_113F:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_FindNextFlaggedEntry   (Find next entry with flags)
+; ARGS:
+;   stack +8: D7 = mode selector
+;   stack +12: D6 = start index
+; RET:
+;   D0: entry index or -1
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   LAB_1345
+; READS:
+;   LAB_224A, LAB_2231
+; DESC:
+;   Scans forward for an entry with matching flag bits when enabled.
+; NOTES:
+;   Returns -1 if no matching entry is found.
+;------------------------------------------------------------------------------
+NEWGRID_FindNextFlaggedEntry:
 LAB_1140:
     LINK.W  A5,#-8
     MOVEM.L D5-D7,-(A7)
@@ -3692,39 +4225,39 @@ LAB_1140:
     MOVEQ   #0,D5
     MOVE.L  D7,D0
     SUBQ.L  #3,D0
-    BEQ.S   LAB_1141
+    BEQ.S   .case_reset
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_1142
+    BEQ.S   .case_increment
 
-    BRA.S   LAB_1143
+    BRA.S   .set_invalid
 
-LAB_1141:
+.case_reset:
     MOVEQ   #0,D6
-    BRA.S   LAB_1144
+    BRA.S   .check_loop
 
-LAB_1142:
+.case_increment:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1144
+    BRA.S   .check_loop
 
-LAB_1143:
+.set_invalid:
     MOVEQ   #1,D5
 
-LAB_1144:
+.check_loop:
     TST.L   D5
-    BNE.S   LAB_1148
+    BNE.S   .return
 
     TST.B   LAB_224A
-    BEQ.S   LAB_1148
+    BEQ.S   .return
 
-LAB_1145:
+.scan_loop:
     TST.L   D5
-    BNE.S   LAB_1147
+    BNE.S   .scan_done
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D6
-    BGE.S   LAB_1147
+    BGE.S   .scan_done
 
     PEA     1.W
     MOVE.L  D6,-(A7)
@@ -3733,29 +4266,29 @@ LAB_1145:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   LAB_1146
+    BEQ.S   .advance_index
 
     MOVEA.L D0,A0
     BTST    #0,47(A0)
-    BEQ.S   LAB_1146
+    BEQ.S   .advance_index
 
     BTST    #7,40(A0)
-    BEQ.S   LAB_1146
+    BEQ.S   .advance_index
 
     MOVEQ   #1,D5
-    BRA.S   LAB_1145
+    BRA.S   .scan_loop
 
-LAB_1146:
+.advance_index:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1145
+    BRA.S   .scan_loop
 
-LAB_1147:
+.scan_done:
     TST.L   D5
-    BNE.S   LAB_1148
+    BNE.S   .return
 
     MOVEQ   #-1,D6
 
-LAB_1148:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
@@ -3763,17 +4296,37 @@ LAB_1148:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_HandleGridSelection   (Handle selection state transitions)
+; ARGS:
+;   stack +8: A3 = rastport ??
+;   stack +12: D7 = row index
+; RET:
+;   D0: selection state (LAB_201F)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_UpdateGridState, NEWGRID_ProcessGridEntries, NEWGRID_FindNextFlaggedEntry,
+;   NEWGRID_GetGridModeIndex, NEWGRID_ValidateSelectionCode, NEWGRID_ComputeColumnIndex
+; READS:
+;   LAB_201D, LAB_201E, LAB_201F, LAB_1BB2, LAB_1BB9
+; WRITES:
+;   LAB_201D, LAB_201E, LAB_201F
+; DESC:
+;   Advances selection state and triggers grid redraw/update actions.
+;------------------------------------------------------------------------------
+NEWGRID_HandleGridSelection:
 LAB_1149:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.W  22(A7),D7
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BNE.S   LAB_114C
+    BNE.S   .state_dispatch
 
     MOVEQ   #5,D0
     CMP.L   LAB_201F,D0
-    BNE.S   LAB_114B
+    BNE.S   .reset_state
 
     MOVE.L  LAB_201E,D0
     ASL.L   #2,D0
@@ -3784,67 +4337,67 @@ LAB_1149:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_114A
+    BEQ.S   .process_entries
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    BRA.S   LAB_114B
+    BRA.S   .reset_state
 
-LAB_114A:
+.process_entries:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1115
+    BSR.W   NEWGRID_ProcessGridEntries
 
     LEA     12(A7),A7
 
-LAB_114B:
+.reset_state:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_201F
     MOVE.L  D0,LAB_201E
-    BRA.W   LAB_1154
+    BRA.W   .return_state
 
-LAB_114C:
+.state_dispatch:
     MOVE.L  LAB_201F,D0
     TST.L   D0
-    BEQ.S   LAB_114D
+    BEQ.S   .state_init
 
     SUBQ.L  #3,D0
-    BEQ.S   LAB_114E
+    BEQ.S   .state_find_next
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_114E
+    BEQ.S   .state_find_next
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_114F
+    BEQ.S   .state_process_entry
 
-    BRA.W   LAB_1153
+    BRA.W   .clear_state
 
-LAB_114D:
+.state_init:
     CLR.L   LAB_201D
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_201F
 
-LAB_114E:
+.state_find_next:
     MOVE.L  LAB_201E,-(A7)
     MOVE.L  LAB_201F,-(A7)
-    BSR.W   LAB_1140
+    BSR.W   NEWGRID_FindNextFlaggedEntry
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D6
     MOVE.L  D0,LAB_201E
 
-LAB_114F:
+.state_process_entry:
     MOVE.L  LAB_201E,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BEQ.W   LAB_1153
+    BEQ.W   .clear_state
 
     ASL.L   #2,D0
     LEA     LAB_2233,A0
@@ -3854,95 +4407,116 @@ LAB_114F:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_1150
+    BEQ.S   .state_process_entries
 
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_201E,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_201F
-    BRA.S   LAB_1151
+    BRA.S   .post_process
 
-LAB_1150:
+.state_process_entries:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_201E,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1115
+    BSR.W   NEWGRID_ProcessGridEntries
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_201F
     TST.L   D6
-    BEQ.S   LAB_1151
+    BEQ.S   .post_process
 
     CMPI.L  #$1,LAB_201D
-    BGE.S   LAB_1151
+    BGE.S   .post_process
 
     SUBQ.L  #5,D0
-    BNE.S   LAB_1151
+    BNE.S   .post_process
 
     MOVE.B  LAB_1BB9,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1151
+    BNE.S   .post_process
 
     PEA     48.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_201D
 
-LAB_1151:
+.post_process:
     MOVE.B  LAB_1BB2,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1152
+    BNE.S   .adjust_offset
 
     TST.L   D6
-    BEQ.S   LAB_1152
+    BEQ.S   .adjust_offset
 
     CMPI.L  #$1,LAB_201D
-    BGE.S   LAB_1152
+    BGE.S   .adjust_offset
 
     PEA     32.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_201D
 
-LAB_1152:
+.adjust_offset:
     MOVE.L  LAB_201D,D0
     TST.L   D0
-    BLE.S   LAB_1154
+    BLE.S   .return_state
 
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_106B
+    BSR.W   NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,LAB_201D
-    BRA.S   LAB_1154
+    BRA.S   .return_state
 
-LAB_1153:
+.clear_state:
     CLR.L   LAB_201F
 
-LAB_1154:
+.return_state:
     MOVE.L  LAB_201F,D0
     MOVEM.L (A7)+,D6-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_HandleGridEditorState   (Handle editor state transitions)
+; ARGS:
+;   stack +8: A3 = rastport ??
+;   stack +12: D7 = row index
+;   stack +16: D6 = selection state
+;   stack +20: A2 = text pointer ??
+; RET:
+;   D0: state (LAB_2020)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridFrameAndRows, LAB_1339, LAB_1344, LAB_1358
+; READS:
+;   LAB_2020
+; WRITES:
+;   LAB_2020, 32(A3)
+; DESC:
+;   Drives a small state machine for editor-related redraw paths.
+;------------------------------------------------------------------------------
+NEWGRID_HandleGridEditorState:
 LAB_1155:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -3950,23 +4524,23 @@ LAB_1155:
     MOVE.L  28(A7),D6
     MOVEA.L 32(A7),A2
     MOVE.L  A3,D0
-    BNE.S   LAB_1156
+    BNE.S   .state_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2020
-    BRA.S   LAB_115E
+    BRA.S   .return_state
 
-LAB_1156:
+.state_check:
     MOVE.L  LAB_2020,D0
     SUBQ.L  #4,D0
-    BEQ.S   LAB_1157
+    BEQ.S   .state4_draw
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_115A
+    BEQ.S   .state5_draw
 
-    BRA.S   LAB_115D
+    BRA.S   .force_state4
 
-LAB_1157:
+.state4_draw:
     MOVE.L  D7,-(A7)
     PEA     20.W
     PEA     612.W
@@ -3983,54 +4557,71 @@ LAB_1157:
     MOVE.L  D0,32(A3)
     MOVE.L  D6,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10A2
+    BSR.W   NEWGRID_DrawGridFrameAndRows
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.S   LAB_1158
+    BEQ.S   .state4_done
 
     MOVEQ   #4,D0
-    BRA.S   LAB_1159
+    BRA.S   .store_state
 
-LAB_1158:
+.state4_done:
     MOVEQ   #5,D0
 
-LAB_1159:
+.store_state:
     MOVE.L  D0,LAB_2020
-    BRA.S   LAB_115E
+    BRA.S   .return_state
 
-LAB_115A:
+.state5_draw:
     MOVEQ   #-1,D0
     MOVE.L  D0,32(A3)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10A2
+    BSR.W   NEWGRID_DrawGridFrameAndRows
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_115B
+    BEQ.S   .state5_done
 
     MOVEQ   #4,D0
-    BRA.S   LAB_115C
+    BRA.S   .store_state2
 
-LAB_115B:
+.state5_done:
     MOVEQ   #5,D0
 
-LAB_115C:
+.store_state2:
     MOVE.L  D0,LAB_2020
-    BRA.S   LAB_115E
+    BRA.S   .return_state
 
-LAB_115D:
+.force_state4:
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2020
 
-LAB_115E:
+.return_state:
     MOVE.L  LAB_2020,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_FindNextEntryWithFlags   (Find entry with bit2/bit7 set)
+; ARGS:
+;   stack +8: D7 = mode selector
+;   stack +12: D6 = start index
+; RET:
+;   D0: entry index or -1
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   LAB_1345
+; READS:
+;   LAB_2231, LAB_224A
+; DESC:
+;   Scans forward for entries with required flag bits set.
+;------------------------------------------------------------------------------
+NEWGRID_FindNextEntryWithFlags:
 LAB_115F:
     LINK.W  A5,#-8
     MOVEM.L D5-D7,-(A7)
@@ -4039,39 +4630,39 @@ LAB_115F:
     MOVEQ   #0,D5
     MOVE.L  D7,D0
     TST.L   D0
-    BEQ.S   LAB_1160
+    BEQ.S   .case_reset
 
     SUBQ.L  #4,D0
-    BEQ.S   LAB_1161
+    BEQ.S   .case_increment
 
-    BRA.S   LAB_1162
+    BRA.S   .set_invalid
 
-LAB_1160:
+.case_reset:
     MOVEQ   #0,D6
-    BRA.S   LAB_1163
+    BRA.S   .check_loop
 
-LAB_1161:
+.case_increment:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1163
+    BRA.S   .check_loop
 
-LAB_1162:
+.set_invalid:
     MOVEQ   #1,D5
 
-LAB_1163:
+.check_loop:
     TST.L   D5
-    BNE.S   LAB_1167
+    BNE.S   .return
 
-LAB_1164:
+.scan_loop:
     TST.L   D5
-    BNE.S   LAB_1166
+    BNE.S   .scan_done
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D6
-    BGE.S   LAB_1166
+    BGE.S   .scan_done
 
     TST.B   LAB_224A
-    BEQ.S   LAB_1166
+    BEQ.S   .scan_done
 
     PEA     1.W
     MOVE.L  D6,-(A7)
@@ -4080,29 +4671,29 @@ LAB_1164:
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.S   LAB_1165
+    BEQ.S   .advance_index
 
     MOVEA.L D0,A0
     BTST    #2,47(A0)
-    BEQ.S   LAB_1165
+    BEQ.S   .advance_index
 
     BTST    #7,40(A0)
-    BEQ.S   LAB_1165
+    BEQ.S   .advance_index
 
     MOVEQ   #1,D5
-    BRA.S   LAB_1164
+    BRA.S   .scan_loop
 
-LAB_1165:
+.advance_index:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1164
+    BRA.S   .scan_loop
 
-LAB_1166:
+.scan_done:
     TST.L   D5
-    BNE.S   LAB_1167
+    BNE.S   .return
 
     MOVEQ   #-1,D6
 
-LAB_1167:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
@@ -4110,36 +4701,60 @@ LAB_1167:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ProcessSecondaryState   (Process alternate state machine)
+; ARGS:
+;   stack +8: A3 = rastport ??
+;   stack +12: D7 = row index
+; RET:
+;   D0: state (LAB_2022)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
+;   NEWGRID_ProcessGridEntries, NEWGRID_FindNextEntryWithFlags,
+;   NEWGRID_ValidateSelectionCode, NEWGRID_GetGridModeIndex,
+;   NEWGRID_ComputeColumnIndex
+; READS:
+;   LAB_2021/2022/2023, LAB_22CC/22CF/22D0/22D3/22D4, LAB_1BB9
+; WRITES:
+;   LAB_2021/2022/2023
+; DESC:
+;   Drives a secondary state machine for a different grid display path.
+; NOTES:
+;   Uses a switch/jumptable for state dispatch.
+;------------------------------------------------------------------------------
+NEWGRID_ProcessSecondaryState:
 LAB_1168:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.W  22(A7),D7
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BNE.S   LAB_116D
+    BNE.S   .state_dispatch
 
     MOVE.L  LAB_2022,D0
     SUBQ.L  #2,D0
-    BEQ.S   LAB_1169
+    BEQ.S   .state_reset
 
     SUBQ.L  #3,D0
-    BEQ.S   LAB_116A
+    BEQ.S   .state_check_entry
 
     SUBQ.L  #2,D0
-    BNE.S   LAB_116C
+    BNE.S   .state_clear
 
-LAB_1169:
+.state_reset:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    BRA.S   LAB_116C
+    BRA.S   .state_clear
 
-LAB_116A:
+.state_check_entry:
     MOVE.L  LAB_2021,D0
     ASL.L   #2,D0
     LEA     LAB_2233,A0
@@ -4149,115 +4764,115 @@ LAB_116A:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_116B
+    BEQ.S   .state_process_entries
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    BRA.S   LAB_116C
+    BRA.S   .state_clear
 
-LAB_116B:
+.state_process_entries:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1115
+    BSR.W   NEWGRID_ProcessGridEntries
 
     LEA     12(A7),A7
 
-LAB_116C:
+.state_clear:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_2022
     MOVE.L  D0,LAB_2021
-    BRA.W   LAB_117A
+    BRA.W   .return_state
 
-LAB_116D:
+.state_dispatch:
     MOVE.L  LAB_2022,D0
     CMPI.L  #$8,D0
-    BCC.W   LAB_117A
+    BCC.W   .return_state
 
     ADD.W   D0,D0
-    MOVE.W  LAB_116E(PC,D0.W),D0
-    JMP     LAB_116E+2(PC,D0.W)
+    MOVE.W  .state_jumptable(PC,D0.W),D0
+    JMP     .state_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_116E:
-    DC.W    LAB_116E_000E-LAB_116E-2
-    DC.W    LAB_116E_01E6-LAB_116E-2
-    DC.W    LAB_116E_003A-LAB_116E-2
-    DC.W    LAB_116E_0092-LAB_116E-2
-    DC.W    LAB_116E_0092-LAB_116E-2
-    DC.W    LAB_116E_00AC-LAB_116E-2
-    DC.W    LAB_116E_01E6-LAB_116E-2
-    DC.W    LAB_116E_0194-LAB_116E-2
+; switch/jumptable
+.state_jumptable:
+    DC.W    .case_state0-.state_jumptable-2
+    DC.W    .case_state1or6-.state_jumptable-2
+    DC.W    .case_state2-.state_jumptable-2
+    DC.W    .case_state3-.state_jumptable-2
+    DC.W    .case_state3-.state_jumptable-2
+    DC.W    .case_state5-.state_jumptable-2
+    DC.W    .case_state1or6-.state_jumptable-2
+    DC.W    .case_state7-.state_jumptable-2
 
-LAB_116E_000E:
+.case_state0:
     CLR.L   LAB_2023
     MOVE.L  LAB_2021,-(A7)
     MOVE.L  LAB_2022,-(A7)
-    BSR.W   LAB_115F
+    BSR.W   NEWGRID_FindNextEntryWithFlags
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2021
     ADDQ.L  #1,D0
-    BEQ.W   LAB_117A
+    BEQ.W   .return_state
 
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_2022
 
-LAB_116E_003A:
+.case_state2:
     MOVE.B  LAB_22D3,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1170
+    BEQ.S   .case_state2_handle
 
     MOVEQ   #70,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1172
+    BNE.S   .case_state2_default
 
-LAB_1170:
+.case_state2_handle:
     MOVE.L  LAB_22D4,-(A7)
     MOVE.L  LAB_22D0,-(A7)
     MOVE.L  LAB_22CF,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_2022
     SUBQ.L  #5,D0
-    BNE.S   LAB_1171
+    BNE.S   .case_state2_done
 
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_2022
-    BRA.W   LAB_117A
+    BRA.W   .return_state
 
-LAB_1171:
+.case_state2_done:
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_2022
-    BRA.W   LAB_117A
+    BRA.W   .return_state
 
-LAB_1172:
+.case_state2_default:
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_2022
 
-LAB_116E_0092:
+.case_state3:
     MOVE.L  LAB_2021,-(A7)
     MOVE.L  LAB_2022,-(A7)
-    BSR.W   LAB_115F
+    BSR.W   NEWGRID_FindNextEntryWithFlags
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D6
     MOVE.L  D0,LAB_2021
 
-LAB_116E_00AC:
+.case_state5:
     MOVE.L  LAB_2021,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BEQ.W   LAB_1176
+    BEQ.W   .case_state5_no_entry
 
     ASL.L   #2,D0
     LEA     LAB_2233,A0
@@ -4267,131 +4882,150 @@ LAB_116E_00AC:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_1173
+    BEQ.S   .case_state5_process_entries
 
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_2021,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2022
-    BRA.S   LAB_1174
+    BRA.S   .case_state5_post
 
-LAB_1173:
+.case_state5_process_entries:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_2021,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1115
+    BSR.W   NEWGRID_ProcessGridEntries
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2022
     TST.L   D6
-    BEQ.S   LAB_1174
+    BEQ.S   .case_state5_post
 
     CMPI.L  #$1,LAB_2023
-    BGE.S   LAB_1174
+    BGE.S   .case_state5_post
 
     SUBQ.L  #5,D0
-    BNE.S   LAB_1174
+    BNE.S   .case_state5_post
 
     MOVE.B  LAB_1BB9,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1174
+    BNE.S   .case_state5_post
 
     PEA     49.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2023
 
-LAB_1174:
+.case_state5_post:
     MOVE.B  LAB_22CC,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1175
+    BNE.S   .case_state5_adjust
 
     TST.L   D6
-    BEQ.S   LAB_1175
+    BEQ.S   .case_state5_adjust
 
     CMPI.L  #$1,LAB_2023
-    BGE.S   LAB_1175
+    BGE.S   .case_state5_adjust
 
     PEA     33.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2023
 
-LAB_1175:
+.case_state5_adjust:
     MOVE.L  LAB_2023,D0
     TST.L   D0
-    BLE.S   LAB_117A
+    BLE.S   .return_state
 
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_106B
+    BSR.W   NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,LAB_2023
-    BRA.S   LAB_117A
+    BRA.S   .return_state
 
-LAB_1176:
+.case_state5_no_entry:
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_2022
 
-LAB_116E_0194:
+.case_state7:
     MOVE.B  LAB_22D3,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1177
+    BEQ.S   .case_state7_handle
 
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1179
+    BNE.S   .case_state7_default
 
-LAB_1177:
+.case_state7_handle:
     MOVE.L  LAB_22D4,-(A7)
     MOVE.L  LAB_22D0,-(A7)
     MOVE.L  LAB_22CF,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_2022
     SUBQ.L  #5,D0
-    BNE.S   LAB_1178
+    BNE.S   .case_state7_done
 
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_2022
-    BRA.S   LAB_117A
+    BRA.S   .return_state
 
-LAB_1178:
+.case_state7_done:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_2022
-    BRA.S   LAB_117A
+    BRA.S   .return_state
 
-LAB_1179:
+.case_state7_default:
     CLR.L   LAB_2022
 
-LAB_116E_01E6:
-LAB_117A:
+.case_state1or6:
+.return_state:
     MOVE.L  LAB_2022,D0
     MOVEM.L (A7)+,D6-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawEmptyGridMessage   (Draw empty grid message)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +18: D7 = selector ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   NEWGRID_DrawGridFrame, LAB_1348, JMP_TBL_APPEND_DATA_AT_NULL_3,
+;   LAB_133D, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
+;   NEWGRID_ValidateSelectionCode
+; READS:
+;   LAB_210B, LAB_2328, LAB_232A, LAB_232B
+; DESC:
+;   Builds and draws the "no data" banner centered in the grid area.
+;------------------------------------------------------------------------------
+NEWGRID_DrawEmptyGridMessage:
 LAB_117B:
     LINK.W  A5,#-172
     MOVEM.L D2/D7/A2-A3/A6,-(A7)
@@ -4403,14 +5037,14 @@ LAB_117B:
     MOVE.L  D0,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     MOVEA.L LAB_210B,A0
     LEA     -128(A5),A1
 
-LAB_117C:
+.copy_prefix_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_117C
+    BNE.S   .copy_prefix_loop
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -4468,9 +5102,9 @@ LAB_117C:
     LEA     -128(A5),A2
     MOVEA.L A2,A6
 
-LAB_117D:
+.measure_message:
     TST.B   (A6)+
-    BNE.S   LAB_117D
+    BNE.S   .measure_message
 
     SUBQ.L  #1,A6
     SUBA.L  A2,A6
@@ -4485,11 +5119,11 @@ LAB_117D:
     MOVE.L  28(A7),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_117E
+    BPL.S   .center_x
 
     ADDQ.L  #1,D1
 
-LAB_117E:
+.center_x:
     ASR.L   #1,D1
     MOVE.L  24(A7),D0
     ADD.L   D1,D0
@@ -4501,11 +5135,11 @@ LAB_117E:
     MOVEQ   #34,D2
     SUB.L   D1,D2
     TST.L   D2
-    BPL.S   LAB_117F
+    BPL.S   .center_y
 
     ADDQ.L  #1,D2
 
-LAB_117F:
+.center_y:
     ASR.L   #1,D2
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -4518,9 +5152,9 @@ LAB_117F:
     LEA     60(A3),A0
     MOVEA.L A2,A1
 
-LAB_1180:
+.draw_text_loop:
     TST.B   (A1)+
-    BNE.S   LAB_1180
+    BNE.S   .draw_text_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A2,A1
@@ -4537,7 +5171,7 @@ LAB_1180:
     MOVE.L  D1,32(A3)
     PEA     65.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
     MOVEM.L -192(A5),D2/D7/A2-A3/A6
     UNLK    A5
@@ -4545,6 +5179,25 @@ LAB_1180:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridFrameAlt   (Draw alternate grid frame)
+; ARGS:
+;   stack +8: A3 = rastport
+; RET:
+;   D0: status from LAB_1350
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridFrame, LAB_1359, LAB_1350, LAB_1351, LAB_1346,
+;   LAB_133D, LAB_1352, LAB_1349, LAB_1356
+; READS:
+;   LAB_2328, LAB_232A, LAB_232B, LAB_1CE8
+; DESC:
+;   Draws an alternate frame layout with row separators and beveled edges.
+; NOTES:
+;   Uses rounding before ASR to keep centering stable for negative values.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridFrameAlt:
 LAB_1181:
     LINK.W  A5,#-24
     MOVEM.L D2/D4-D7/A3,-(A7)
@@ -4558,7 +5211,7 @@ LAB_1181:
     MOVE.L  D1,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -4572,31 +5225,31 @@ LAB_1181:
     MOVE.L  D7,D4
     MOVE.L  D0,-20(A5)
 
-LAB_1182:
+.row_loop:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BGE.W   LAB_118D
+    BGE.W   .after_rows
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_118D
+    BNE.W   .after_rows
 
     MOVE.L  D4,D5
     TST.L   D7
-    BNE.S   LAB_1185
+    BNE.S   .alt_path
 
     TST.L   -20(A5)
-    BEQ.S   LAB_1185
+    BEQ.S   .alt_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_1183
+    BPL.S   .half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_1183:
+.half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
@@ -4604,34 +5257,34 @@ LAB_1183:
     SUB.L   D1,D0
     SUBQ.L  #4,D0
     TST.L   D0
-    BPL.S   LAB_1184
+    BPL.S   .half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_1184:
+.half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     ADDQ.L  #3,D0
     ADD.L   D0,D5
-    BRA.S   LAB_118B
+    BRA.S   .draw_row
 
-LAB_1185:
+.alt_path:
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_1188
+    BEQ.S   .default_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_1186
+    BPL.S   .alt_half_width_round
 
     ADDQ.L  #1,D1
 
-LAB_1186:
+.alt_half_width_round:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -4639,39 +5292,39 @@ LAB_1186:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_1187
+    BPL.S   .alt_half_width_adjust
 
     ADDQ.L  #1,D1
 
-LAB_1187:
+.alt_half_width_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     ADD.L   D2,D1
     SUBQ.L  #1,D1
     ADD.L   D1,D5
-    BRA.S   LAB_118B
+    BRA.S   .draw_row
 
-LAB_1188:
+.default_path:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_1189
+    BPL.S   .default_half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_1189:
+.default_half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   LAB_118A
+    BPL.S   .default_half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_118A:
+.default_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -4679,7 +5332,7 @@ LAB_118A:
     SUBQ.L  #1,D0
     ADD.L   D0,D5
 
-LAB_118B:
+.draw_row:
     LEA     60(A3),A0
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
@@ -4691,27 +5344,27 @@ LAB_118B:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_118C
+    BPL.S   .advance_row
 
     ADDQ.L  #1,D0
 
-LAB_118C:
+.advance_row:
     ASR.L   #1,D0
     ADD.L   LAB_1CE8,D0
     ADD.L   D0,D4
-    BRA.W   LAB_1182
+    BRA.W   .row_loop
 
-LAB_118D:
+.after_rows:
     JSR     LAB_1350(PC)
 
     MOVE.L  D0,-24(A5)
     TST.L   -20(A5)
-    BEQ.W   LAB_118F
+    BEQ.W   .draw_bevel_bottom
 
     MOVEQ   #0,D4
     MOVE.W  LAB_2328,D4
     TST.L   D0
-    BEQ.S   LAB_118E
+    BEQ.S   .draw_bevel_alt
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -4743,9 +5396,9 @@ LAB_118D:
     JSR     LAB_133D(PC)
 
     LEA     36(A7),A7
-    BRA.W   LAB_1191
+    BRA.W   .store_header_width
 
-LAB_118E:
+.draw_bevel_alt:
     LEA     60(A3),A0
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -4776,11 +5429,11 @@ LAB_118E:
     JSR     LAB_1352(PC)
 
     LEA     36(A7),A7
-    BRA.W   LAB_1191
+    BRA.W   .store_header_width
 
-LAB_118F:
+.draw_bevel_bottom:
     TST.L   D0
-    BEQ.S   LAB_1190
+    BEQ.S   .draw_bevel_pair
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -4812,9 +5465,9 @@ LAB_118F:
     JSR     LAB_1349(PC)
 
     LEA     36(A7),A7
-    BRA.S   LAB_1191
+    BRA.S   .store_header_width
 
-LAB_1190:
+.draw_bevel_pair:
     LEA     60(A3),A0
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -4846,14 +5499,14 @@ LAB_1190:
 
     LEA     36(A7),A7
 
-LAB_1191:
+.store_header_width:
     MOVE.L  D4,D0
     TST.L   D0
-    BPL.S   LAB_1192
+    BPL.S   .round_header_half
 
     ADDQ.L  #1,D0
 
-LAB_1192:
+.round_header_half:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
     MOVE.L  -24(A5),D0
@@ -4863,6 +5516,29 @@ LAB_1192:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_HandleAltGridState   (Handle alternate grid state)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = entry index
+;   stack +18: D6 = selector
+; RET:
+;   D0: state (LAB_2024)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_DrawGridEntry, NEWGRID_DrawGridFrameAlt, NEWGRID_DrawGridCell,
+;   LAB_1345, LAB_133E, LAB_134A, LAB_133B, LAB_1358, LAB_1344
+; READS:
+;   LAB_2017, LAB_223A
+; WRITES:
+;   LAB_2024, 32(A3)
+; DESC:
+;   State machine that draws a single grid entry and updates the frame.
+; NOTES:
+;   Uses LAB_2024 values 4/5.
+;------------------------------------------------------------------------------
+NEWGRID_HandleAltGridState:
 LAB_1193:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A3,-(A7)
@@ -4870,23 +5546,23 @@ LAB_1193:
     MOVE.L  12(A5),D7
     MOVE.W  18(A5),D6
     MOVE.L  A3,D0
-    BNE.S   LAB_1194
+    BNE.S   .state_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2024
-    BRA.W   LAB_11A2
+    BRA.W   .return_state
 
-LAB_1194:
+.state_check:
     MOVE.L  LAB_2024,D0
     SUBQ.L  #4,D0
-    BEQ.S   LAB_1195
+    BEQ.S   .state4_begin
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_119E
+    BEQ.W   .state5_reset
 
-    BRA.W   LAB_11A1
+    BRA.W   .force_state4
 
-LAB_1195:
+.state4_begin:
     PEA     1.W
     MOVE.L  D7,-(A7)
     JSR     LAB_1345(PC)
@@ -4899,20 +5575,20 @@ LAB_1195:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.S   LAB_1197
+    BEQ.S   .have_entry_ptrs
 
     MOVEQ   #1,D1
     CMP.W   D1,D6
-    BEQ.S   LAB_1196
+    BEQ.S   .use_alt_entry_table
 
     PEA     LAB_223A
     JSR     LAB_134A(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1197
+    BNE.S   .have_entry_ptrs
 
-LAB_1196:
+.use_alt_entry_table:
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_133B(PC)
 
@@ -4929,26 +5605,26 @@ LAB_1196:
     LEA     20(A7),A7
     MOVE.L  D0,-8(A5)
 
-LAB_1197:
+.have_entry_ptrs:
     TST.L   -4(A5)
-    BEQ.W   LAB_11A2
+    BEQ.W   .return_state
 
     TST.L   -8(A5)
-    BEQ.W   LAB_11A2
+    BEQ.W   .return_state
 
     MOVE.L  D6,D0
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L -8(A5),A0
     TST.L   56(A0,D0.L)
-    BEQ.W   LAB_11A2
+    BEQ.W   .return_state
 
     MOVE.L  D6,D0
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L 56(A0,D0.L),A0
     TST.B   (A0)
-    BEQ.W   LAB_11A2
+    BEQ.W   .return_state
 
     MOVE.W  LAB_232B,D0
     MULU    #3,D0
@@ -4961,7 +5637,7 @@ LAB_1197:
 
     LEA     12(A7),A7
     TST.W   LAB_2017
-    BEQ.S   LAB_1198
+    BEQ.S   .draw_entry_mode2
 
     LEA     60(A3),A0
     MOVE.L  D6,D0
@@ -4973,12 +5649,12 @@ LAB_1197:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_107F
+    BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
-    BRA.S   LAB_1199
+    BRA.S   .after_entry_draw
 
-LAB_1198:
+.draw_entry_mode2:
     LEA     60(A3),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -4989,74 +5665,74 @@ LAB_1198:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_107F
+    BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
 
-LAB_1199:
+.after_entry_draw:
     PEA     2.W
     JSR     LAB_1344(PC)
 
     MOVE.L  D0,32(A3)
     MOVE.L  A3,(A7)
-    BSR.W   LAB_1181
+    BSR.W   NEWGRID_DrawGridFrameAlt
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_119A
+    BEQ.S   .state5_draw
 
     MOVEQ   #4,D0
-    BRA.S   LAB_119B
+    BRA.S   .store_state
 
-LAB_119A:
+.state5_draw:
     MOVEQ   #5,D0
 
-LAB_119B:
+.store_state:
     LEA     60(A3),A0
     MOVE.L  D0,LAB_2024
     SUBQ.L  #4,D0
-    BNE.S   LAB_119C
+    BNE.S   .set_draw_flag
 
     MOVEQ   #1,D0
-    BRA.S   LAB_119D
+    BRA.S   .draw_cell
 
-LAB_119C:
+.set_draw_flag:
     MOVEQ   #0,D0
 
-LAB_119D:
+.draw_cell:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_1066
+    BSR.W   NEWGRID_DrawGridCell
 
     LEA     12(A7),A7
-    BRA.S   LAB_11A2
+    BRA.S   .return_state
 
-LAB_119E:
+.state5_reset:
     MOVEQ   #-1,D0
     MOVE.L  D0,32(A3)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1181
+    BSR.W   NEWGRID_DrawGridFrameAlt
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_119F
+    BEQ.S   .state5_done
 
     MOVEQ   #4,D0
-    BRA.S   LAB_11A0
+    BRA.S   .store_state2
 
-LAB_119F:
+.state5_done:
     MOVEQ   #5,D0
 
-LAB_11A0:
+.store_state2:
     MOVE.L  D0,LAB_2024
-    BRA.S   LAB_11A2
+    BRA.S   .return_state
 
-LAB_11A1:
+.force_state4:
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2024
 
-LAB_11A2:
+.return_state:
     MOVE.L  LAB_2024,D0
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
@@ -5064,6 +5740,26 @@ LAB_11A2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_FindNextEntryWithMarkers   (Find next entry meeting marker criteria)
+; ARGS:
+;   stack +8: D7 = mode selector
+;   stack +12: D6 = start index
+;   stack +18: D5 = selector value
+; RET:
+;   D0: entry index or -1
+; CLOBBERS:
+;   D0-D7/A0
+; CALLS:
+;   NEWGRID_UpdatePresetEntry, LAB_1355, LAB_0FF5
+; READS:
+;   LAB_2231, LAB_224A
+; DESC:
+;   Scans entries to find the next candidate with required marker/flag bits set.
+; NOTES:
+;   Uses entry flags in 46(A0) and 40(A0).
+;------------------------------------------------------------------------------
+NEWGRID_FindNextEntryWithMarkers:
 LAB_11A3:
     LINK.W  A5,#-12
     MOVEM.L D4-D7,-(A7)
@@ -5073,39 +5769,39 @@ LAB_11A3:
     MOVEQ   #0,D4
     MOVE.L  D7,D0
     TST.L   D0
-    BEQ.S   LAB_11A4
+    BEQ.S   .case_reset
 
     SUBQ.L  #4,D0
-    BEQ.S   LAB_11A5
+    BEQ.S   .case_increment
 
-    BRA.S   LAB_11A6
+    BRA.S   .set_invalid
 
-LAB_11A4:
+.case_reset:
     MOVEQ   #0,D6
-    BRA.S   LAB_11A7
+    BRA.S   .check_loop
 
-LAB_11A5:
+.case_increment:
     ADDQ.L  #1,D6
-    BRA.S   LAB_11A7
+    BRA.S   .check_loop
 
-LAB_11A6:
+.set_invalid:
     MOVEQ   #1,D4
 
-LAB_11A7:
+.check_loop:
     TST.L   D4
-    BNE.W   LAB_11AC
+    BNE.W   .return
 
     TST.B   LAB_224A
-    BEQ.W   LAB_11AC
+    BEQ.W   .return
 
-LAB_11A8:
+.scan_loop:
     TST.L   D4
-    BNE.W   LAB_11AB
+    BNE.W   .scan_done
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D6
-    BGE.W   LAB_11AB
+    BGE.W   .scan_done
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -5113,23 +5809,23 @@ LAB_11A8:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   LAB_1077
+    BSR.W   NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     TST.L   -4(A5)
-    BEQ.W   LAB_11AA
+    BEQ.W   .advance_index
 
     TST.L   -8(A5)
-    BEQ.S   LAB_11AA
+    BEQ.S   .advance_index
 
     MOVEA.L -4(A5),A0
     MOVE.W  46(A0),D0
     BTST    #1,D0
-    BEQ.S   LAB_11AA
+    BEQ.S   .advance_index
 
     MOVE.B  40(A0),D0
     BTST    #7,D0
-    BEQ.S   LAB_11AA
+    BEQ.S   .advance_index
 
     LEA     28(A0),A1
     MOVE.L  D5,D0
@@ -5140,53 +5836,53 @@ LAB_11A8:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_11AA
+    BNE.S   .advance_index
 
     MOVE.L  -4(A5),-(A7)
     JSR     LAB_0FF5(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BNE.S   LAB_11AA
+    BNE.S   .advance_index
 
     MOVEA.L -8(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D5,A1
     BTST    #1,7(A1)
-    BNE.S   LAB_11A9
+    BNE.S   .check_alt_flags
 
     MOVEA.L -4(A5),A1
     MOVE.B  27(A1),D0
     BTST    #4,D0
-    BEQ.S   LAB_11AA
+    BEQ.S   .advance_index
 
-LAB_11A9:
+.check_alt_flags:
     MOVEA.L A0,A1
     ADDA.W  D5,A1
     BTST    #7,7(A1)
-    BNE.S   LAB_11AA
+    BNE.S   .advance_index
 
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
     TST.L   56(A0)
-    BEQ.S   LAB_11AA
+    BEQ.S   .advance_index
 
     MOVEQ   #1,D4
-    BRA.W   LAB_11A8
+    BRA.W   .scan_loop
 
-LAB_11AA:
+.advance_index:
     ADDQ.L  #1,D6
-    BRA.W   LAB_11A8
+    BRA.W   .scan_loop
 
-LAB_11AB:
+.scan_done:
     TST.L   D4
-    BNE.S   LAB_11AC
+    BNE.S   .return
 
     MOVEQ   #-1,D6
 
-LAB_11AC:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
@@ -5194,6 +5890,30 @@ LAB_11AC:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ProcessAltEntryState   (Process alternate entry state)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = row index
+;   stack +16: D6 = selector value
+; RET:
+;   D0: state (LAB_2027)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_HandleAltGridState, NEWGRID_FindNextEntryWithMarkers,
+;   NEWGRID_DrawEmptyGridMessage, NEWGRID_ValidateSelectionCode,
+;   NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
+; READS:
+;   LAB_2025/2026/2027, LAB_1BAF
+; WRITES:
+;   LAB_2025/2026/2027
+; DESC:
+;   State machine wrapper around alternate grid entry handling.
+; NOTES:
+;   Uses a switch/jumptable for state dispatch.
+;------------------------------------------------------------------------------
+NEWGRID_ProcessAltEntryState:
 LAB_11AD:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -5201,62 +5921,62 @@ LAB_11AD:
     MOVE.W  30(A7),D6
     MOVEQ   #0,D5
     MOVE.L  A3,D0
-    BNE.S   LAB_11AF
+    BNE.S   .state_dispatch
 
     MOVEQ   #5,D0
     CMP.L   LAB_2027,D0
-    BNE.S   LAB_11AE
+    BNE.S   .reset_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1193
+    BSR.W   NEWGRID_HandleAltGridState
 
     LEA     12(A7),A7
 
-LAB_11AE:
+.reset_state:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_2027
     MOVE.L  D0,LAB_2026
-    BRA.W   LAB_11B4
+    BRA.W   .return_state
 
-LAB_11AF:
+.state_dispatch:
     MOVE.L  LAB_2027,D0
     CMPI.L  #$6,D0
-    BCC.W   LAB_11B3
+    BCC.W   .clear_state
 
     ADD.W   D0,D0
-    MOVE.W  LAB_11B0(PC,D0.W),D0
-    JMP     LAB_11B0+2(PC,D0.W)
+    MOVE.W  .state_jumptable(PC,D0.W),D0
+    JMP     .state_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_11B0:
-    DC.W    LAB_11B0_000A-LAB_11B0-2
-    DC.W    LAB_11B0_003E-LAB_11B0-2
-    DC.W    LAB_11B0_00E8-LAB_11B0-2
-    DC.W    LAB_11B0_0060-LAB_11B0-2
-    DC.W    LAB_11B0_0060-LAB_11B0-2
-    DC.W    LAB_11B0_0082-LAB_11B0-2
+; switch/jumptable
+.state_jumptable:
+    DC.W    .case_state0-.state_jumptable-2
+    DC.W    .case_state1_draw_empty-.state_jumptable-2
+    DC.W    .case_state_done-.state_jumptable-2
+    DC.W    .case_state3_or4-.state_jumptable-2
+    DC.W    .case_state3_or4-.state_jumptable-2
+    DC.W    .case_state5-.state_jumptable-2
 
-LAB_11B0_000A:
+.case_state0:
     CLR.L   LAB_2025
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_2026,-(A7)
     MOVE.L  LAB_2027,-(A7)
-    BSR.W   LAB_11A3
+    BSR.W   NEWGRID_FindNextEntryWithMarkers
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2026
     ADDQ.L  #1,D0
-    BEQ.W   LAB_11B4
+    BEQ.W   .return_state
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_2027
 
-LAB_11B0_003E:
+.case_state1_draw_empty:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D6,D1
@@ -5264,79 +5984,99 @@ LAB_11B0_003E:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_117B
+    BSR.W   NEWGRID_DrawEmptyGridMessage
 
     LEA     12(A7),A7
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_2027
-    BRA.W   LAB_11B4
+    BRA.W   .return_state
 
-LAB_11B0_0060:
+.case_state3_or4:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_2026,-(A7)
     MOVE.L  LAB_2027,-(A7)
-    BSR.W   LAB_11A3
+    BSR.W   NEWGRID_FindNextEntryWithMarkers
 
     LEA     12(A7),A7
     MOVEQ   #1,D5
     MOVE.L  D0,LAB_2026
 
-LAB_11B0_0082:
+.case_state5:
     MOVE.L  LAB_2026,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BEQ.S   LAB_11B3
+    BEQ.S   .clear_state
 
     MOVE.L  D7,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1193
+    BSR.W   NEWGRID_HandleAltGridState
 
     LEA     12(A7),A7
     MOVE.B  LAB_1BAF,D1
     MOVE.L  D0,LAB_2027
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BNE.S   LAB_11B4
+    BNE.S   .return_state
 
     TST.L   D5
-    BEQ.S   LAB_11B2
+    BEQ.S   .adjust_offset
 
     CMPI.L  #$1,LAB_2025
-    BGE.S   LAB_11B2
+    BGE.S   .adjust_offset
 
     PEA     51.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2025
 
-LAB_11B2:
+.adjust_offset:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_106B
+    BSR.W   NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,LAB_2025
-    BRA.S   LAB_11B4
+    BRA.S   .return_state
 
-LAB_11B0_00E8:
-LAB_11B3:
+.case_state_done:
+.clear_state:
     CLR.L   LAB_2027
 
-LAB_11B4:
+.return_state:
     MOVE.L  LAB_2027,D0
     MOVEM.L (A7)+,D5-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_FindNextEntryWithAltMarkers   (Find next entry with alt markers)
+; ARGS:
+;   stack +8: D7 = mode selector
+;   stack +12: D6 = start index
+;   stack +18: D5 = selector value
+; RET:
+;   D0: entry index or -1
+; CLOBBERS:
+;   D0-D7/A0
+; CALLS:
+;   NEWGRID_UpdatePresetEntry, LAB_1355
+; READS:
+;   LAB_2231, LAB_224A
+; DESC:
+;   Scans entries for a different marker/flag combination.
+; NOTES:
+;   Uses entry flags in 46(A0) and 40(A0).
+;------------------------------------------------------------------------------
+NEWGRID_FindNextEntryWithAltMarkers:
 LAB_11B5:
     LINK.W  A5,#-16
     MOVEM.L D4-D7,-(A7)
@@ -5346,40 +6086,40 @@ LAB_11B5:
     MOVEQ   #0,D4
     MOVE.L  D7,D0
     TST.L   D0
-    BEQ.S   LAB_11B6
+    BEQ.S   .case_reset
 
     SUBQ.L  #4,D0
-    BEQ.S   LAB_11B7
+    BEQ.S   .case_increment
 
     SUBQ.L  #2,D0
-    BNE.S   LAB_11B8
+    BNE.S   .set_invalid
 
-LAB_11B6:
+.case_reset:
     MOVEQ   #0,D6
-    BRA.S   LAB_11B9
+    BRA.S   .check_loop
 
-LAB_11B7:
+.case_increment:
     ADDQ.L  #1,D6
-    BRA.S   LAB_11B9
+    BRA.S   .check_loop
 
-LAB_11B8:
+.set_invalid:
     MOVEQ   #1,D4
 
-LAB_11B9:
+.check_loop:
     TST.L   D4
-    BNE.W   LAB_11BD
+    BNE.W   .return
 
-LAB_11BA:
+.scan_loop:
     TST.L   D4
-    BNE.W   LAB_11BC
+    BNE.W   .scan_done
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D6
-    BGE.W   LAB_11BC
+    BGE.W   .scan_done
 
     TST.B   LAB_224A
-    BEQ.W   LAB_11BC
+    BEQ.W   .scan_done
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -5387,24 +6127,24 @@ LAB_11BA:
     MOVE.L  D0,-(A7)
     PEA     -14(A5)
     PEA     -10(A5)
-    BSR.W   LAB_1077
+    BSR.W   NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.W  D0,-6(A5)
     TST.L   -10(A5)
-    BEQ.S   LAB_11BB
+    BEQ.S   .advance_index
 
     TST.L   -14(A5)
-    BEQ.S   LAB_11BB
+    BEQ.S   .advance_index
 
     MOVEA.L -10(A5),A0
     MOVE.W  46(A0),D0
     BTST    #3,D0
-    BEQ.S   LAB_11BB
+    BEQ.S   .advance_index
 
     MOVE.B  40(A0),D0
     BTST    #7,D0
-    BEQ.S   LAB_11BB
+    BEQ.S   .advance_index
 
     LEA     28(A0),A1
     MOVE.W  -6(A5),D0
@@ -5415,35 +6155,35 @@ LAB_11BA:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_11BB
+    BNE.S   .advance_index
 
     MOVEA.L -14(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D5,A1
     BTST    #7,7(A1)
-    BNE.S   LAB_11BB
+    BNE.S   .advance_index
 
     MOVE.W  -6(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
     TST.L   56(A0)
-    BEQ.S   LAB_11BB
+    BEQ.S   .advance_index
 
     MOVEQ   #1,D4
-    BRA.W   LAB_11BA
+    BRA.W   .scan_loop
 
-LAB_11BB:
+.advance_index:
     ADDQ.L  #1,D6
-    BRA.W   LAB_11BA
+    BRA.W   .scan_loop
 
-LAB_11BC:
+.scan_done:
     TST.L   D4
-    BNE.S   LAB_11BD
+    BNE.S   .return
 
     MOVEQ   #-1,D6
 
-LAB_11BD:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
@@ -5451,6 +6191,25 @@ LAB_11BD:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawStatusMessage   (Draw status message banner)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +14: D7 = selector ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   NEWGRID_DrawGridFrame, LAB_1348, LAB_134B, JMP_TBL_PRINTF_4,
+;   LAB_133D, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
+;   NEWGRID_ValidateSelectionCode
+; READS:
+;   LAB_22DA, LAB_22D9, LAB_22E3, LAB_2328, LAB_232A, LAB_232B
+; DESC:
+;   Formats and centers a status message within the grid.
+;------------------------------------------------------------------------------
+NEWGRID_DrawStatusMessage:
 LAB_11BE:
     LINK.W  A5,#-180
     MOVEM.L D2/D6-D7/A3,-(A7)
@@ -5462,7 +6221,7 @@ LAB_11BE:
     MOVE.L  D0,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -5519,15 +6278,15 @@ LAB_11BE:
     LEA     -132(A5),A0
     MOVEA.L A0,A1
 
-LAB_11BF:
+.scan_message_end:
     TST.B   (A1)+
-    BNE.S   LAB_11BF
+    BNE.S   .scan_message_end
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D6
 
-LAB_11C0:
+.fit_message_width:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVE.L  D6,D0
@@ -5540,12 +6299,12 @@ LAB_11C0:
     MOVEQ   #12,D2
     SUB.L   D2,D1
     CMP.L   D1,D0
-    BLE.S   LAB_11C1
+    BLE.S   .layout_text
 
     SUBQ.L  #1,D6
-    BRA.S   LAB_11C0
+    BRA.S   .fit_message_width
 
-LAB_11C1:
+.layout_text:
     LEA     60(A3),A0
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -5563,11 +6322,11 @@ LAB_11C1:
     MOVE.L  24(A7),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_11C2
+    BPL.S   .center_x
 
     ADDQ.L  #1,D1
 
-LAB_11C2:
+.center_x:
     ASR.L   #1,D1
     MOVE.L  20(A7),D0
     ADD.L   D1,D0
@@ -5579,11 +6338,11 @@ LAB_11C2:
     MOVEQ   #34,D2
     SUB.L   D1,D2
     TST.L   D2
-    BPL.S   LAB_11C3
+    BPL.S   .center_y
 
     ADDQ.L  #1,D2
 
-LAB_11C3:
+.center_y:
     ASR.L   #1,D2
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -5606,7 +6365,7 @@ LAB_11C3:
     MOVE.L  D1,32(A3)
     PEA     66.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
     MOVEM.L -196(A5),D2/D6-D7/A3
     UNLK    A5
@@ -5614,6 +6373,27 @@ LAB_11C3:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridFrameVariant2   (Draw grid frame variant)
+; ARGS:
+;   stack +8: A3 = rastport
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, LAB_1350, LAB_1359,
+;   LAB_133F, LAB_1351, LAB_1346, LAB_135A
+; READS:
+;   LAB_2328, LAB_232A, LAB_1CE8, LAB_22DF
+; WRITES:
+;   52(A3)
+; DESC:
+;   Draws a grid frame with row separators using an alternate style.
+; NOTES:
+;   Uses rounding before ASR to keep centering stable for negative values.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridFrameVariant2:
 LAB_11C4:
     LINK.W  A5,#-20
     MOVEM.L D2-D7/A3,-(A7)
@@ -5623,7 +6403,7 @@ LAB_11C4:
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A0,-20(A5)
-    BSR.W   LAB_102F
+    BSR.W   NEWGRID_SetRowColor
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
@@ -5644,21 +6424,21 @@ LAB_11C4:
     MOVEQ   #0,D7
     MOVE.L  D7,D4
 
-LAB_11C5:
+.row_loop:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BGE.W   LAB_11D0
+    BGE.W   .after_rows
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_11D0
+    BNE.W   .after_rows
 
     MOVE.L  D4,D5
     JSR     LAB_1359(PC)
 
     TST.L   D0
-    BEQ.S   LAB_11C8
+    BEQ.S   .alt_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
@@ -5675,11 +6455,11 @@ LAB_11C5:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_11C6
+    BPL.S   .half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_11C6:
+.half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
@@ -5687,34 +6467,34 @@ LAB_11C6:
     SUB.L   D1,D0
     SUBQ.L  #4,D0
     TST.L   D0
-    BPL.S   LAB_11C7
+    BPL.S   .half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_11C7:
+.half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     ADDQ.L  #3,D0
     ADD.L   D0,D5
-    BRA.S   LAB_11CE
+    BRA.S   .draw_row
 
-LAB_11C8:
+.alt_path:
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_11CB
+    BEQ.S   .default_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_11C9
+    BPL.S   .alt_half_width_round
 
     ADDQ.L  #1,D1
 
-LAB_11C9:
+.alt_half_width_round:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -5722,39 +6502,39 @@ LAB_11C9:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_11CA
+    BPL.S   .alt_half_width_adjust
 
     ADDQ.L  #1,D1
 
-LAB_11CA:
+.alt_half_width_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     ADD.L   D2,D1
     SUBQ.L  #1,D1
     ADD.L   D1,D5
-    BRA.S   LAB_11CE
+    BRA.S   .draw_row
 
-LAB_11CB:
+.default_path:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_11CC
+    BPL.S   .default_half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_11CC:
+.default_half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   LAB_11CD
+    BPL.S   .default_half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_11CD:
+.default_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -5762,7 +6542,7 @@ LAB_11CD:
     SUBQ.L  #1,D0
     ADD.L   D0,D5
 
-LAB_11CE:
+.draw_row:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
@@ -5773,21 +6553,21 @@ LAB_11CE:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_11CF
+    BPL.S   .advance_row
 
     ADDQ.L  #1,D0
 
-LAB_11CF:
+.advance_row:
     ASR.L   #1,D0
     ADD.L   LAB_1CE8,D0
     ADD.L   D0,D4
-    BRA.W   LAB_11C5
+    BRA.W   .row_loop
 
-LAB_11D0:
+.after_rows:
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BEQ.S   LAB_11D1
+    BEQ.S   .draw_bottom_bevel
 
     MOVE.L  D4,D0
     SUBQ.L  #1,D0
@@ -5801,14 +6581,14 @@ LAB_11D0:
 
     LEA     20(A7),A7
 
-LAB_11D1:
+.draw_bottom_bevel:
     MOVE.L  D4,D0
     TST.L   D0
-    BPL.S   LAB_11D2
+    BPL.S   .store_header_width
 
     ADDQ.L  #1,D0
 
-LAB_11D2:
+.store_header_width:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
     JSR     LAB_1350(PC)
@@ -5819,6 +6599,29 @@ LAB_11D2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_HandleDetailGridState   (Handle detailed grid state)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = entry index
+;   stack +18: D6 = selector
+; RET:
+;   D0: state (LAB_2028)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_UpdatePresetEntry, NEWGRID_DrawGridEntry,
+;   NEWGRID_DrawGridFrameVariant2, LAB_1358, LAB_1338, LAB_1339, LAB_1344
+; READS:
+;   LAB_22DD, LAB_22E1, LAB_22DE
+; WRITES:
+;   LAB_2028, 32(A3)
+; DESC:
+;   State machine that formats entry text and redraws the detailed grid view.
+; NOTES:
+;   Uses LAB_2028 values 4/5.
+;------------------------------------------------------------------------------
+NEWGRID_HandleDetailGridState:
 LAB_11D3:
     LINK.W  A5,#-60
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -5829,38 +6632,38 @@ LAB_11D3:
     MOVE.L  A0,-4(A5)
     MOVE.L  A0,-8(A5)
     MOVE.L  A3,D0
-    BNE.S   LAB_11D4
+    BNE.S   .state_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2028
-    BRA.W   LAB_11DE
+    BRA.W   .return_state
 
-LAB_11D4:
+.state_check:
     MOVE.L  LAB_2028,D0
     SUBQ.L  #4,D0
-    BEQ.S   LAB_11D5
+    BEQ.S   .state4_begin
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_11DA
+    BEQ.W   .state5_reset
 
-    BRA.W   LAB_11DD
+    BRA.W   .force_state4
 
-LAB_11D5:
+.state4_begin:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D7,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   LAB_1077
+    BSR.W   NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D6
     TST.L   -4(A5)
-    BEQ.W   LAB_11DE
+    BEQ.W   .return_state
 
     TST.L   -8(A5)
-    BEQ.W   LAB_11DE
+    BEQ.W   .return_state
 
     MOVE.L  LAB_22DD,-(A7)
     PEA     20.W
@@ -5871,7 +6674,7 @@ LAB_11D5:
     MOVE.B  LAB_22E1,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BNE.S   LAB_11D6
+    BNE.S   .draw_entry_mode2
 
     LEA     60(A3),A0
     MOVE.L  D6,D0
@@ -5883,12 +6686,12 @@ LAB_11D5:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_107F
+    BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
-    BRA.S   LAB_11D7
+    BRA.S   .after_draw
 
-LAB_11D6:
+.draw_entry_mode2:
     LEA     60(A3),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -5899,11 +6702,11 @@ LAB_11D6:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_107F
+    BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
 
-LAB_11D7:
+.after_draw:
     MOVE.L  LAB_22DE,-(A7)
     JSR     LAB_1338(PC)
 
@@ -5923,52 +6726,52 @@ LAB_11D7:
     JSR     LAB_1339(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_11C4
+    BSR.W   NEWGRID_DrawGridFrameVariant2
 
     LEA     24(A7),A7
     TST.L   D0
-    BEQ.S   LAB_11D8
+    BEQ.S   .state5_draw
 
     MOVEQ   #4,D0
-    BRA.S   LAB_11D9
+    BRA.S   .store_state
 
-LAB_11D8:
+.state5_draw:
     MOVEQ   #5,D0
 
-LAB_11D9:
+.store_state:
     PEA     2.W
     MOVE.L  D0,LAB_2028
     JSR     LAB_1344(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
-    BRA.S   LAB_11DE
+    BRA.S   .return_state
 
-LAB_11DA:
+.state5_reset:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_11C4
+    BSR.W   NEWGRID_DrawGridFrameVariant2
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_11DB
+    BEQ.S   .state5_done
 
     MOVEQ   #4,D0
-    BRA.S   LAB_11DC
+    BRA.S   .store_state2
 
-LAB_11DB:
+.state5_done:
     MOVEQ   #5,D0
 
-LAB_11DC:
+.store_state2:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
     MOVE.L  D0,LAB_2028
-    BRA.S   LAB_11DE
+    BRA.S   .return_state
 
-LAB_11DD:
+.force_state4:
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2028
 
-LAB_11DE:
+.return_state:
     MOVE.L  LAB_2028,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
@@ -5976,6 +6779,31 @@ LAB_11DE:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ProcessScheduleState   (Process schedule/detail state)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: D7 = row index
+;   stack +16: D6 = selector value
+; RET:
+;   D0: state (LAB_202F)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
+;   NEWGRID_HandleDetailGridState, NEWGRID_FindNextEntryWithAltMarkers,
+;   NEWGRID_DrawStatusMessage, NEWGRID_ValidateSelectionCode,
+;   NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
+; READS:
+;   LAB_202A/202B/202C/202D/202E/202F, LAB_22D5/22D7/22DB/22DC/22E0/22E1/22E2
+; WRITES:
+;   LAB_202A/202B/202C/202D/202E/202F
+; DESC:
+;   Drives a multi-state schedule/detail workflow using a jump table.
+; NOTES:
+;   Uses LAB_202F as a 0..7 state index.
+;------------------------------------------------------------------------------
+NEWGRID_ProcessScheduleState:
 LAB_11DF:
     MOVEM.L D2/D5-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -5983,30 +6811,30 @@ LAB_11DF:
     MOVE.W  34(A7),D6
     MOVEQ   #0,D5
     MOVE.L  A3,D0
-    BNE.S   LAB_11E4
+    BNE.S   .state_dispatch
 
     MOVE.L  LAB_202F,D0
     SUBQ.L  #2,D0
-    BEQ.S   LAB_11E0
+    BEQ.S   .state_reset
 
     SUBQ.L  #3,D0
-    BEQ.S   LAB_11E1
+    BEQ.S   .state_check_entry
 
     SUBQ.L  #2,D0
-    BNE.S   LAB_11E3
+    BNE.S   .state_clear
 
-LAB_11E0:
+.state_reset:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    BRA.S   LAB_11E3
+    BRA.S   .state_clear
 
-LAB_11E1:
+.state_check_entry:
     MOVE.L  LAB_202E,D0
     ASL.L   #2,D0
     LEA     LAB_2233,A0
@@ -6016,106 +6844,106 @@ LAB_11E1:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_11E2
+    BEQ.S   .state_process_detail
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    BRA.S   LAB_11E3
+    BRA.S   .state_clear
 
-LAB_11E2:
+.state_process_detail:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_11D3
+    BSR.W   NEWGRID_HandleDetailGridState
 
     LEA     12(A7),A7
 
-LAB_11E3:
+.state_clear:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_202F
     MOVE.L  D0,LAB_202E
-    BRA.W   LAB_11FE
+    BRA.W   .return_state
 
-LAB_11E4:
+.state_dispatch:
     MOVE.L  LAB_202F,D0
     CMPI.L  #$8,D0
-    BCC.W   LAB_11FD
+    BCC.W   .state_clear2
 
     ADD.W   D0,D0
-    MOVE.W  LAB_11E5(PC,D0.W),D0
-    JMP     LAB_11E5+2(PC,D0.W)
+    MOVE.W  .state_jumptable(PC,D0.W),D0
+    JMP     .state_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_11E5:
-    DC.W    LAB_11E5_000E-LAB_11E5-2
-    DC.W    LAB_11E5_00C2-LAB_11E5-2
-    DC.W    LAB_11E5_00F4-LAB_11E5-2
-    DC.W    LAB_11E5_0148-LAB_11E5-2
-    DC.W    LAB_11E5_0148-LAB_11E5-2
-    DC.W    LAB_11E5_0170-LAB_11E5-2
-    DC.W    LAB_11E5_0238-LAB_11E5-2
-    DC.W    LAB_11E5_029C-LAB_11E5-2
+; switch/jumptable
+.state_jumptable:
+    DC.W    .case_state0-.state_jumptable-2
+    DC.W    .case_state1-.state_jumptable-2
+    DC.W    .case_state2-.state_jumptable-2
+    DC.W    .case_state3_or4-.state_jumptable-2
+    DC.W    .case_state3_or4-.state_jumptable-2
+    DC.W    .case_state5-.state_jumptable-2
+    DC.W    .case_state6-.state_jumptable-2
+    DC.W    .case_state7-.state_jumptable-2
 
-LAB_11E5_000E:
+.case_state0:
     MOVE.B  LAB_22E0,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_11E7
+    BEQ.S   .set_mode_flag
 
     MOVEQ   #70,D2
     CMP.B   D2,D0
-    BEQ.S   LAB_11E7
+    BEQ.S   .set_mode_flag
 
     MOVEQ   #0,D2
-    BRA.S   LAB_11E8
+    BRA.S   .store_mode_flag
 
-LAB_11E7:
+.set_mode_flag:
     MOVEQ   #1,D2
 
-LAB_11E8:
+.store_mode_flag:
     MOVE.L  D2,LAB_202B
     CMP.B   D1,D0
-    BEQ.S   LAB_11E9
+    BEQ.S   .set_alt_flag
 
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_11E9
+    BEQ.S   .set_alt_flag
 
     MOVEQ   #0,D0
-    BRA.S   LAB_11EA
+    BRA.S   .store_alt_flag
 
-LAB_11E9:
+.set_alt_flag:
     MOVEQ   #1,D0
 
-LAB_11EA:
+.store_alt_flag:
     MOVE.L  D7,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  LAB_202E,-(A7)
     MOVE.L  LAB_202F,-(A7)
     MOVE.L  D0,LAB_202C
-    BSR.W   LAB_11B5
+    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
 
     LEA     12(A7),A7
     CLR.W   LAB_202D
     MOVE.L  D0,LAB_202E
 
-LAB_11EB:
+.search_loop:
     MOVE.L  LAB_202E,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BNE.S   LAB_11EC
+    BNE.S   .search_done
 
     MOVE.W  LAB_202D,D1
     EXT.L   D1
     CMP.L   LAB_22D7,D1
-    BGE.S   LAB_11EC
+    BGE.S   .search_done
 
     ADDQ.W  #1,LAB_202D
     MOVE.L  D7,D1
@@ -6124,90 +6952,90 @@ LAB_11EB:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_202F,-(A7)
-    BSR.W   LAB_11B5
+    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_202E
-    BRA.S   LAB_11EB
+    BRA.S   .search_loop
 
-LAB_11EC:
+.search_done:
     MOVEQ   #-1,D0
     CMP.L   LAB_202E,D0
-    BEQ.W   LAB_11FE
+    BEQ.W   .return_state
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_202F
 
-LAB_11E5_00C2:
+.case_state1:
     MOVE.L  D6,D0
     ADD.W   LAB_202D,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_11BE
+    BSR.W   NEWGRID_DrawStatusMessage
 
     ADDQ.W  #8,A7
     CLR.L   LAB_202A
     TST.L   LAB_202B
-    BEQ.S   LAB_11ED
+    BEQ.S   .case_state1_select
 
     MOVEQ   #2,D0
-    BRA.S   LAB_11EE
+    BRA.S   .case_state1_store
 
-LAB_11ED:
+.case_state1_select:
     MOVEQ   #3,D0
 
-LAB_11EE:
+.case_state1_store:
     MOVE.L  D0,LAB_202F
-    BRA.W   LAB_11FE
+    BRA.W   .return_state
 
-LAB_11E5_00F4:
+.case_state2:
     TST.L   LAB_202B
-    BEQ.S   LAB_11F0
+    BEQ.S   .case_state2_default
 
     MOVE.L  LAB_22E2,-(A7)
     MOVE.L  LAB_22DC,-(A7)
     MOVE.L  LAB_22DB,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_202F
     SUBQ.L  #5,D0
-    BNE.S   LAB_11EF
+    BNE.S   .case_state2_done
 
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_202F
-    BRA.W   LAB_11FE
+    BRA.W   .return_state
 
-LAB_11EF:
+.case_state2_done:
     CLR.L   LAB_202B
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_202F
-    BRA.W   LAB_11FE
+    BRA.W   .return_state
 
-LAB_11F0:
+.case_state2_default:
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_202F
 
-LAB_11E5_0148:
+.case_state3_or4:
     MOVE.L  D7,D0
     ADD.W   LAB_202D,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_202E,-(A7)
     MOVE.L  LAB_202F,-(A7)
-    BSR.W   LAB_11B5
+    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
 
     LEA     12(A7),A7
     MOVEQ   #1,D5
     MOVE.L  D0,LAB_202E
 
-LAB_11E5_0170:
+.case_state5:
     MOVE.L  LAB_202E,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BEQ.W   LAB_11F6
+    BEQ.W   .case_state5_no_entry
 
     ASL.L   #2,D0
     LEA     LAB_2233,A0
@@ -6217,7 +7045,7 @@ LAB_11E5_0170:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_11F1
+    BEQ.S   .case_state5_process_detail
 
     MOVE.L  D7,D0
     ADD.W   LAB_202D,D0
@@ -6225,80 +7053,80 @@ LAB_11E5_0170:
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_202E,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_202F
-    BRA.S   LAB_11F2
+    BRA.S   .case_state5_post
 
-LAB_11F1:
+.case_state5_process_detail:
     MOVE.L  D7,D0
     ADD.W   LAB_202D,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_202E,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_11D3
+    BSR.W   NEWGRID_HandleDetailGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_202F
 
-LAB_11F2:
+.case_state5_post:
     MOVE.B  LAB_22D5,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_11FE
+    BNE.W   .return_state
 
     TST.L   D5
-    BEQ.S   LAB_11F5
+    BEQ.S   .adjust_offset
 
     CMPI.L  #$1,LAB_202A
-    BGE.S   LAB_11F5
+    BGE.S   .adjust_offset
 
     MOVE.B  LAB_22E1,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BNE.S   LAB_11F3
+    BNE.S   .set_selection_code
 
     MOVEQ   #36,D0
-    BRA.S   LAB_11F4
+    BRA.S   .store_selection_code
 
-LAB_11F3:
+.set_selection_code:
     MOVEQ   #52,D0
 
-LAB_11F4:
+.store_selection_code:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_202A
 
-LAB_11F5:
+.adjust_offset:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_106B
+    BSR.W   NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,LAB_202A
-    BRA.W   LAB_11FE
+    BRA.W   .return_state
 
-LAB_11F6:
+.case_state5_no_entry:
     MOVEQ   #6,D0
     MOVE.L  D0,LAB_202F
 
-LAB_11E5_0238:
-LAB_11F7:
+.case_state6:
+.case_state6_search:
     MOVE.L  LAB_202E,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BNE.S   LAB_11F8
+    BNE.S   .case_state6_done
 
     MOVE.W  LAB_202D,D1
     EXT.L   D1
     CMP.L   LAB_22D7,D1
-    BGE.S   LAB_11F8
+    BGE.S   .case_state6_done
 
     ADDQ.W  #1,LAB_202D
     MOVE.L  D7,D1
@@ -6307,84 +7135,102 @@ LAB_11F7:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_202F,-(A7)
-    BSR.W   LAB_11B5
+    BSR.W   NEWGRID_FindNextEntryWithAltMarkers
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_202E
-    BRA.S   LAB_11F7
+    BRA.S   .case_state6_search
 
-LAB_11F8:
+.case_state6_done:
     MOVEQ   #-1,D0
     CMP.L   LAB_202E,D0
-    BNE.S   LAB_11F9
+    BNE.S   .case_state6_store
 
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_202F
-    BRA.S   LAB_11FA
+    BRA.S   .case_state7_handle
 
-LAB_11F9:
+.case_state6_store:
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_202F
-    BRA.S   LAB_11FE
+    BRA.S   .return_state
 
-LAB_11E5_029C:
-LAB_11FA:
+.case_state7:
+.case_state7_handle:
     TST.L   LAB_202C
-    BEQ.S   LAB_11FC
+    BEQ.S   .case_state7_clear
 
     MOVE.L  LAB_22E2,-(A7)
     MOVE.L  LAB_22DC,-(A7)
     MOVE.L  LAB_22DB,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_202F
     SUBQ.L  #5,D0
-    BNE.S   LAB_11FB
+    BNE.S   .case_state7_done
 
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_202F
-    BRA.S   LAB_11FE
+    BRA.S   .return_state
 
-LAB_11FB:
+.case_state7_done:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_202F
     MOVE.L  D0,LAB_202C
-    BRA.S   LAB_11FE
+    BRA.S   .return_state
 
-LAB_11FC:
+.case_state7_clear:
     CLR.L   LAB_202F
-    BRA.S   LAB_11FE
+    BRA.S   .return_state
 
-LAB_11FD:
+.state_clear2:
     CLR.L   LAB_202F
 
-LAB_11FE:
+.return_state:
     MOVE.L  LAB_202F,D0
     MOVEM.L (A7)+,D2/D5-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ClearEntryMarkerBits   (Clear entry marker bits ??)
+; ARGS:
+;   stack +8: D7 = mode selector (low word) ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0
+; CALLS:
+;   LAB_1345, LAB_133E
+; READS:
+;   LAB_2231, LAB_222F, LAB_224A, LAB_222E
+; WRITES:
+;   entry flag bytes (bit #5 cleared)
+; DESC:
+;   Walks entry lists and clears marker bits when entries are active.
+;------------------------------------------------------------------------------
+NEWGRID_ClearEntryMarkerBits:
 LAB_11FF:
     LINK.W  A5,#-16
     MOVEM.L D5-D7,-(A7)
     MOVE.W  10(A5),D7
     MOVEQ   #1,D0
     CMP.W   D0,D7
-    BLE.S   LAB_1203
+    BLE.S   .list2_init
 
     MOVEQ   #0,D6
 
-LAB_1200:
+.list1_loop:
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D6
-    BGE.S   LAB_1203
+    BGE.S   .list2_init
 
     TST.B   LAB_224A
-    BEQ.S   LAB_1203
+    BEQ.S   .list2_init
 
     PEA     1.W
     MOVE.L  D6,-(A7)
@@ -6394,7 +7240,7 @@ LAB_1200:
     MOVE.L  D0,-4(A5)
     MOVEA.L D0,A0
     BTST    #4,47(A0)
-    BEQ.S   LAB_1202
+    BEQ.S   .list1_next
 
     PEA     1.W
     MOVE.L  D6,-(A7)
@@ -6404,31 +7250,31 @@ LAB_1200:
     MOVEQ   #1,D5
     MOVE.L  D0,-8(A5)
 
-LAB_1201:
+.list1_clear_flags:
     MOVEQ   #49,D0
     CMP.L   D0,D5
-    BGE.S   LAB_1202
+    BGE.S   .list1_next
 
     MOVEA.L -8(A5),A0
     BCLR    #5,7(A0,D5.L)
     ADDQ.L  #1,D5
-    BRA.S   LAB_1201
+    BRA.S   .list1_clear_flags
 
-LAB_1202:
+.list1_next:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1200
+    BRA.S   .list1_loop
 
-LAB_1203:
+.list2_init:
     MOVEQ   #0,D6
 
-LAB_1204:
+.list2_loop:
     MOVEQ   #0,D0
     MOVE.W  LAB_222F,D0
     CMP.L   D0,D6
-    BGE.S   LAB_1207
+    BGE.S   .return
 
     TST.B   LAB_222E
-    BEQ.S   LAB_1207
+    BEQ.S   .return
 
     PEA     2.W
     MOVE.L  D6,-(A7)
@@ -6438,7 +7284,7 @@ LAB_1204:
     MOVE.L  D0,-4(A5)
     MOVEA.L D0,A0
     BTST    #4,47(A0)
-    BEQ.S   LAB_1206
+    BEQ.S   .list2_next
 
     PEA     2.W
     MOVE.L  D6,-(A7)
@@ -6448,34 +7294,55 @@ LAB_1204:
     MOVEQ   #1,D5
     MOVE.L  D0,-8(A5)
 
-LAB_1205:
+.list2_clear_flags:
     MOVEQ   #49,D0
     CMP.L   D0,D5
-    BGE.S   LAB_1206
+    BGE.S   .list2_next
 
     MOVEA.L -8(A5),A0
     BCLR    #5,7(A0,D5.L)
     ADDQ.L  #1,D5
-    BRA.S   LAB_1205
+    BRA.S   .list2_clear_flags
 
-LAB_1206:
+.list2_next:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1204
+    BRA.S   .list2_loop
 
-LAB_1207:
+.return:
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_InitSelectionWindow   (Init selection window ??)
+; ARGS:
+;   stack +8: A3 = selection state
+;   stack +14: D7 = row/selector ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1345, LAB_134A, JMP_TBL_LAB_1A07_4
+; READS:
+;   LAB_2231, LAB_223A, LAB_22E6
+; WRITES:
+;   0(A3)..24(A3)
+; DESC:
+;   Initializes selection bounds and visible window values.
+; NOTES:
+;   Scans entries for bit #4 to seed min/max indices.
+;------------------------------------------------------------------------------
+NEWGRID_InitSelectionWindow:
 LAB_1208:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.W  14(A5),D7
     MOVE.L  A3,D0
-    BEQ.W   LAB_1213
+    BEQ.W   .return
 
     SUBA.L  A0,A0
     MOVE.L  A0,(A3)
@@ -6483,16 +7350,16 @@ LAB_1208:
     MOVEQ   #0,D0
     MOVE.L  D0,8(A3)
     TST.W   D7
-    BEQ.S   LAB_120E
+    BEQ.S   .default_bounds
 
     MOVEQ   #0,D1
     MOVE.W  LAB_2231,D1
     MOVE.L  D1,12(A3)
     MOVE.L  D0,D6
 
-LAB_1209:
+.scan_forward:
     CMP.L   12(A3),D6
-    BGE.S   LAB_120B
+    BGE.S   .scan_forward_done
 
     PEA     1.W
     MOVE.L  D6,-(A7)
@@ -6502,22 +7369,22 @@ LAB_1209:
     MOVE.L  D0,-8(A5)
     MOVEA.L D0,A0
     BTST    #4,47(A0)
-    BEQ.S   LAB_120A
+    BEQ.S   .scan_forward_next
 
     MOVE.L  D6,12(A3)
 
-LAB_120A:
+.scan_forward_next:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1209
+    BRA.S   .scan_forward
 
-LAB_120B:
+.scan_forward_done:
     MOVE.L  12(A3),16(A3)
     MOVEQ   #0,D6
     MOVE.W  LAB_2231,D6
 
-LAB_120C:
+.scan_reverse:
     CMP.L   16(A3),D6
-    BLE.S   LAB_120F
+    BLE.S   .store_row
 
     MOVE.L  D6,D0
     SUBQ.L  #1,D0
@@ -6529,41 +7396,41 @@ LAB_120C:
     MOVE.L  D0,-8(A5)
     MOVEA.L D0,A0
     BTST    #4,47(A0)
-    BEQ.S   LAB_120D
+    BEQ.S   .scan_reverse_next
 
     MOVE.L  D6,16(A3)
 
-LAB_120D:
+.scan_reverse_next:
     SUBQ.L  #1,D6
-    BRA.S   LAB_120C
+    BRA.S   .scan_reverse
 
-LAB_120E:
+.default_bounds:
     MOVEQ   #0,D0
     MOVE.L  D0,12(A3)
     MOVE.L  D0,16(A3)
 
-LAB_120F:
+.store_row:
     MOVE.W  D7,20(A3)
     MOVEQ   #48,D0
     CMP.W   D0,D7
-    BGE.S   LAB_1211
+    BGE.S   .store_window
 
     MOVEQ   #1,D0
     CMP.W   D0,D7
-    BEQ.S   LAB_1210
+    BEQ.S   .offset_row
 
     PEA     LAB_223A
     JSR     LAB_134A(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1211
+    BNE.S   .store_window
 
-LAB_1210:
+.offset_row:
     MOVEQ   #48,D0
     ADD.W   D0,20(A3)
 
-LAB_1211:
+.store_window:
     MOVE.W  20(A3),D0
     MOVE.W  D0,22(A3)
     MOVEQ   #29,D0
@@ -6577,20 +7444,42 @@ LAB_1211:
     MOVE.W  D1,24(A3)
     MOVEQ   #96,D0
     CMP.W   D0,D1
-    BLE.S   LAB_1212
+    BLE.S   .clamp_done
 
     MOVE.W  D0,24(A3)
 
-LAB_1212:
+.clamp_done:
     ADDQ.W  #1,24(A3)
 
-LAB_1213:
+.return:
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_UpdateSelectionFromInput   (Update selection from input ??)
+; ARGS:
+;   stack +8: D7 = state selector ??
+;   stack +12: A3 = selection state
+; RET:
+;   D0: selection found flag (0/1)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_ClearEntryMarkerBits, NEWGRID_InitSelectionWindow, LAB_1077,
+;   LAB_1353, LAB_1355, LAB_0FF5, LAB_1347
+; READS:
+;   LAB_2030/2031, LAB_2231, LAB_224A, LAB_22E6/22E7
+; WRITES:
+;   LAB_2030/2031, selection state fields
+; DESC:
+;   Advances selection state and scans entries for the next matching row.
+; NOTES:
+;   Uses D6 as a found/stop flag during the scan.
+;------------------------------------------------------------------------------
+NEWGRID_UpdateSelectionFromInput:
 LAB_1214:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A3,-(A7)
@@ -6599,85 +7488,85 @@ LAB_1214:
     MOVEQ   #0,D6
     MOVE.L  D7,D0
     TST.L   D0
-    BEQ.S   LAB_1215
+    BEQ.S   .state0_init
 
     SUBQ.L  #4,D0
-    BEQ.S   LAB_1216
+    BEQ.S   .state4_advance
 
-    BRA.S   LAB_1217
+    BRA.S   .state_unknown
 
-LAB_1215:
+.state0_init:
     MOVE.L  12(A3),LAB_2030
     MOVE.W  22(A3),D0
     MOVE.W  D0,LAB_2031
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_11FF
+    BSR.W   NEWGRID_ClearEntryMarkerBits
 
     ADDQ.W  #4,A7
-    BRA.S   LAB_1218
+    BRA.S   .post_state
 
-LAB_1216:
+.state4_advance:
     ADDQ.L  #1,LAB_2030
-    BRA.S   LAB_1218
+    BRA.S   .post_state
 
-LAB_1217:
+.state_unknown:
     MOVEQ   #1,D6
 
-LAB_1218:
+.post_state:
     TST.L   D6
-    BNE.W   LAB_122A
+    BNE.W   .return
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     MOVE.L  12(A3),D1
     CMP.L   D0,D1
-    BGT.S   LAB_1219
+    BGT.S   .clamp_start_index
 
     TST.L   D1
-    BPL.S   LAB_121A
+    BPL.S   .clamp_start_done
 
-LAB_1219:
+.clamp_start_index:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,12(A3)
 
-LAB_121A:
+.clamp_start_done:
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     MOVE.L  16(A3),D1
     CMP.L   D0,D1
-    BGT.S   LAB_121B
+    BGT.S   .clamp_end_index
 
     TST.L   D1
-    BPL.S   LAB_121C
+    BPL.S   .clamp_end_done
 
-LAB_121B:
+.clamp_end_index:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,16(A3)
 
-LAB_121C:
+.clamp_end_done:
     TST.L   D6
-    BNE.W   LAB_1226
+    BNE.W   .finalize_selection
 
     MOVE.W  LAB_2031,D0
     TST.W   D0
-    BLE.W   LAB_1226
+    BLE.W   .finalize_selection
 
     CMP.W   24(A3),D0
-    BGE.W   LAB_1226
+    BGE.W   .finalize_selection
 
-LAB_121D:
+.scan_entry_loop:
     TST.L   D6
-    BNE.W   LAB_1225
+    BNE.W   .advance_row
 
     MOVE.L  LAB_2030,D0
     CMP.L   16(A3),D0
-    BGE.W   LAB_1225
+    BGE.W   .advance_row
 
     TST.B   LAB_224A
-    BEQ.W   LAB_1225
+    BEQ.W   .advance_row
 
     MOVE.W  LAB_2031,D1
     EXT.L   D1
@@ -6690,23 +7579,23 @@ LAB_121D:
     LEA     16(A7),A7
     MOVE.L  D0,D5
     TST.L   -4(A5)
-    BEQ.W   LAB_1224
+    BEQ.W   .scan_entry_next
 
     TST.L   -8(A5)
-    BEQ.W   LAB_1224
+    BEQ.W   .scan_entry_next
 
     MOVEA.L -4(A5),A0
     MOVE.W  46(A0),D0
     BTST    #4,D0
-    BEQ.W   LAB_1224
+    BEQ.W   .scan_entry_next
 
     MOVE.B  40(A0),D0
     BTST    #7,D0
-    BEQ.W   LAB_1224
+    BEQ.W   .scan_entry_next
 
     MOVE.W  LAB_2031,D0
     CMP.W   22(A3),D0
-    BNE.S   LAB_121E
+    BNE.S   .entry_time_adjust
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -6718,9 +7607,9 @@ LAB_121D:
     LEA     12(A7),A7
     MOVE.L  D0,D5
 
-LAB_121E:
+.entry_time_adjust:
     TST.W   D5
-    BLE.W   LAB_1224
+    BLE.W   .scan_entry_next
 
     MOVEA.L -4(A5),A0
     ADDA.W  #$1c,A0
@@ -6732,25 +7621,25 @@ LAB_121E:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.W   LAB_1224
+    BNE.W   .scan_entry_next
 
     MOVEA.L -8(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D5,A1
     BTST    #5,7(A1)
-    BNE.W   LAB_1224
+    BNE.W   .scan_entry_next
 
     MOVE.L  -4(A5),-(A7)
     JSR     LAB_0FF5(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_1221
+    BEQ.S   .check_alt_match
 
     MOVE.W  LAB_2031,D0
     MOVE.W  22(A3),D1
     CMP.W   D0,D1
-    BNE.S   LAB_121F
+    BNE.S   .check_alt_entry
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -6759,31 +7648,31 @@ LAB_121E:
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     TST.L   56(A1)
-    BEQ.S   LAB_121F
+    BEQ.S   .check_alt_entry
 
     MOVEQ   #1,D1
-    BRA.S   LAB_1220
+    BRA.S   .store_alt_entry
 
-LAB_121F:
+.check_alt_entry:
     MOVEQ   #0,D1
 
-LAB_1220:
+.store_alt_entry:
     MOVE.L  D1,D6
-    BRA.S   LAB_1224
+    BRA.S   .scan_entry_next
 
-LAB_1221:
+.check_alt_match:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L -8(A5),A0
     ADDA.L  D0,A0
     TST.L   56(A0)
-    BEQ.S   LAB_1222
+    BEQ.S   .alt_match_result
 
     MOVEA.L -8(A5),A0
     ADDA.W  LAB_2031,A0
     BTST    #7,7(A0)
-    BNE.S   LAB_1222
+    BNE.S   .alt_match_result
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -6796,53 +7685,53 @@ LAB_1221:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.S   LAB_1222
+    BEQ.S   .alt_match_result
 
     MOVEQ   #1,D1
-    BRA.S   LAB_1223
+    BRA.S   .store_match_result
 
-LAB_1222:
+.alt_match_result:
     MOVEQ   #0,D1
 
-LAB_1223:
+.store_match_result:
     MOVE.L  D1,D6
 
-LAB_1224:
+.scan_entry_next:
     TST.L   D6
-    BNE.W   LAB_121D
+    BNE.W   .scan_entry_loop
 
     ADDQ.L  #1,LAB_2030
-    BRA.W   LAB_121D
+    BRA.W   .scan_entry_loop
 
-LAB_1225:
+.advance_row:
     TST.L   D6
-    BNE.W   LAB_121C
+    BNE.W   .clamp_end_done
 
     ADDQ.W  #1,LAB_2031
     MOVE.L  12(A3),LAB_2030
-    BRA.W   LAB_121C
+    BRA.W   .clamp_end_done
 
-LAB_1226:
+.finalize_selection:
     TST.L   D6
-    BEQ.S   LAB_1229
+    BEQ.S   .reset_selection
 
     MOVE.L  -4(A5),(A3)
     MOVE.L  -8(A5),4(A3)
     MOVE.L  LAB_2030,8(A3)
     CMPI.W  #$30,LAB_2031
-    BLE.S   LAB_1227
+    BLE.S   .set_offset_flag
 
     MOVEQ   #49,D0
     CMP.W   D0,D5
-    BGE.S   LAB_1227
+    BGE.S   .set_offset_flag
 
     MOVEQ   #48,D0
-    BRA.S   LAB_1228
+    BRA.S   .apply_offset
 
-LAB_1227:
+.set_offset_flag:
     MOVEQ   #0,D0
 
-LAB_1228:
+.apply_offset:
     MOVE.L  D5,D1
     EXT.L   D1
     ADD.L   D0,D1
@@ -6850,16 +7739,16 @@ LAB_1228:
     MOVEA.L -8(A5),A0
     ADDA.W  D5,A0
     BSET    #5,7(A0)
-    BRA.S   LAB_122A
+    BRA.S   .return
 
-LAB_1229:
+.reset_selection:
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1208
+    BSR.W   NEWGRID_InitSelectionWindow
 
     ADDQ.W  #8,A7
 
-LAB_122A:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7/A3
     UNLK    A5
@@ -6867,6 +7756,23 @@ LAB_122A:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridMessageAlt   (Draw alternate grid message)
+; ARGS:
+;   stack +8: A3 = rastport
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   NEWGRID_DrawGridFrame, LAB_133D, _LVOSetAPen, _LVOSetDrMd,
+;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
+; READS:
+;   LAB_22E8, LAB_22E9, LAB_22F2, LAB_232A, LAB_232B
+; DESC:
+;   Centers a fixed message string inside the grid frame.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridMessageAlt:
 LAB_122B:
     LINK.W  A5,#-12
     MOVEM.L D2/D7/A3,-(A7)
@@ -6877,7 +7783,7 @@ LAB_122B:
     MOVE.L  D0,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -6918,15 +7824,15 @@ LAB_122B:
 
     MOVEA.L LAB_22F2,A0
 
-LAB_122C:
+.scan_message_end:
     TST.B   (A0)+
-    BNE.S   LAB_122C
+    BNE.S   .scan_message_end
 
     SUBQ.L  #1,A0
     SUBA.L  LAB_22F2,A0
     MOVE.L  A0,D7
 
-LAB_122D:
+.fit_message_width:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVE.L  D7,D0
@@ -6939,12 +7845,12 @@ LAB_122D:
     MOVEQ   #12,D2
     SUB.L   D2,D1
     CMP.L   D1,D0
-    BLE.S   LAB_122E
+    BLE.S   .layout_text
 
     SUBQ.L  #1,D7
-    BRA.S   LAB_122D
+    BRA.S   .fit_message_width
 
-LAB_122E:
+.layout_text:
     LEA     60(A3),A0
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -6962,11 +7868,11 @@ LAB_122E:
     MOVE.L  20(A7),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_122F
+    BPL.S   .center_x
 
     ADDQ.L  #1,D1
 
-LAB_122F:
+.center_x:
     ASR.L   #1,D1
     MOVE.L  16(A7),D0
     ADD.L   D1,D0
@@ -6978,11 +7884,11 @@ LAB_122F:
     MOVEQ   #34,D2
     SUB.L   D1,D2
     TST.L   D2
-    BPL.S   LAB_1230
+    BPL.S   .center_y
 
     ADDQ.L  #1,D2
 
-LAB_1230:
+.center_y:
     ASR.L   #1,D2
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -7005,7 +7911,7 @@ LAB_1230:
     MOVE.L  D1,32(A3)
     PEA     68.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
     MOVEM.L -24(A5),D2/D7/A3
     UNLK    A5
@@ -7013,6 +7919,27 @@ LAB_1230:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridFrameVariant3   (Draw grid frame variant)
+; ARGS:
+;   stack +8: A3 = rastport
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_102F, _LVOSetAPen, _LVORectFill, LAB_1350, LAB_1359,
+;   LAB_133F, LAB_1351, LAB_1346, LAB_135A
+; READS:
+;   LAB_2328, LAB_1CE8, LAB_22EE
+; WRITES:
+;   52(A3)
+; DESC:
+;   Draws a grid frame with row separators using an alternate palette.
+; NOTES:
+;   Uses rounding before ASR to keep centering stable for negative values.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridFrameVariant3:
 LAB_1231:
     LINK.W  A5,#-20
     MOVEM.L D2-D7/A3,-(A7)
@@ -7043,21 +7970,21 @@ LAB_1231:
     MOVEQ   #0,D7
     MOVE.L  D7,D4
 
-LAB_1232:
+.row_loop:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BGE.W   LAB_123D
+    BGE.W   .after_rows
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   LAB_123D
+    BNE.W   .after_rows
 
     MOVE.L  D4,D5
     JSR     LAB_1359(PC)
 
     TST.L   D0
-    BEQ.S   LAB_1235
+    BEQ.S   .alt_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
@@ -7074,11 +8001,11 @@ LAB_1232:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_1233
+    BPL.S   .half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_1233:
+.half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
@@ -7086,34 +8013,34 @@ LAB_1233:
     SUB.L   D1,D0
     SUBQ.L  #4,D0
     TST.L   D0
-    BPL.S   LAB_1234
+    BPL.S   .half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_1234:
+.half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     ADDQ.L  #3,D0
     ADD.L   D0,D5
-    BRA.S   LAB_123B
+    BRA.S   .draw_row
 
-LAB_1235:
+.alt_path:
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   LAB_1238
+    BEQ.S   .default_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   LAB_1236
+    BPL.S   .alt_half_width_round
 
     ADDQ.L  #1,D1
 
-LAB_1236:
+.alt_half_width_round:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -7121,39 +8048,39 @@ LAB_1236:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   LAB_1237
+    BPL.S   .alt_half_width_adjust
 
     ADDQ.L  #1,D1
 
-LAB_1237:
+.alt_half_width_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     ADD.L   D2,D1
     SUBQ.L  #1,D1
     ADD.L   D1,D5
-    BRA.S   LAB_123B
+    BRA.S   .draw_row
 
-LAB_1238:
+.default_path:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_1239
+    BPL.S   .default_half_width_round
 
     ADDQ.L  #1,D0
 
-LAB_1239:
+.default_half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   LAB_123A
+    BPL.S   .default_half_width_adjust
 
     ADDQ.L  #1,D0
 
-LAB_123A:
+.default_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -7161,7 +8088,7 @@ LAB_123A:
     SUBQ.L  #1,D0
     ADD.L   D0,D5
 
-LAB_123B:
+.draw_row:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
@@ -7172,21 +8099,21 @@ LAB_123B:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   LAB_123C
+    BPL.S   .advance_row
 
     ADDQ.L  #1,D0
 
-LAB_123C:
+.advance_row:
     ASR.L   #1,D0
     ADD.L   LAB_1CE8,D0
     ADD.L   D0,D4
-    BRA.W   LAB_1232
+    BRA.W   .row_loop
 
-LAB_123D:
+.after_rows:
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BEQ.S   LAB_123E
+    BEQ.S   .draw_bottom_bevel
 
     MOVE.L  D4,D0
     SUBQ.L  #1,D0
@@ -7200,14 +8127,14 @@ LAB_123D:
 
     LEA     20(A7),A7
 
-LAB_123E:
+.draw_bottom_bevel:
     MOVE.L  D4,D0
     TST.L   D0
-    BPL.S   LAB_123F
+    BPL.S   .store_header_width
 
     ADDQ.L  #1,D0
 
-LAB_123F:
+.store_header_width:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
     JSR     LAB_1350(PC)
@@ -7218,14 +8145,32 @@ LAB_123F:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_InitShowtimeBuckets   (Init showtime buckets ??)
+; ARGS:
+;   none
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A2
+; CALLS:
+;   none
+; READS:
+;   LAB_2336
+; WRITES:
+;   LAB_2338, LAB_2336
+; DESC:
+;   Initializes pointer tables for showtime bucket storage.
+;------------------------------------------------------------------------------
+NEWGRID_InitShowtimeBuckets:
 LAB_1240:
     MOVEM.L D7/A2,-(A7)
     MOVEQ   #0,D7
 
-LAB_1241:
+.bucket_loop:
     MOVEQ   #10,D0
     CMP.L   D0,D7
-    BGE.S   LAB_1242
+    BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -7240,14 +8185,32 @@ LAB_1241:
     ADDA.L  D0,A1
     CLR.L   4(A1)
     ADDQ.L  #1,D7
-    BRA.S   LAB_1241
+    BRA.S   .bucket_loop
 
-LAB_1242:
+.return:
     MOVEM.L (A7)+,D7/A2
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ResetShowtimeBuckets   (Reset showtime buckets)
+; ARGS:
+;   none
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A1
+; CALLS:
+;   LAB_146B
+; READS:
+;   LAB_2336
+; WRITES:
+;   LAB_2339, LAB_2336
+; DESC:
+;   Clears bucket count and reinitializes bucket records.
+;------------------------------------------------------------------------------
+NEWGRID_ResetShowtimeBuckets:
 LAB_1243:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
@@ -7255,10 +8218,10 @@ LAB_1243:
     MOVE.L  D0,LAB_2339
     MOVE.L  D0,D7
 
-LAB_1244:
+.init_loop:
     MOVEQ   #10,D0
     CMP.L   D0,D7
-    BGE.S   LAB_1245
+    BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #3,D0
@@ -7278,15 +8241,36 @@ LAB_1244:
     MOVEA.L 8(A7),A0
     MOVE.L  D0,4(A0)
     ADDQ.L  #1,D7
-    BRA.S   LAB_1244
+    BRA.S   .init_loop
 
-LAB_1245:
+.return:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_AddShowtimeBucketEntry   (Insert showtime bucket entry)
+; ARGS:
+;   stack +8: A3 = allocator/context ??
+;   stack +12: D7 = entry value (low word)
+; RET:
+;   D0: 1 if inserted, 0 if not
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1455, LAB_159A, LAB_146B
+; READS:
+;   LAB_2336, LAB_2338, LAB_2339
+; WRITES:
+;   LAB_2336, LAB_2338, LAB_2339
+; DESC:
+;   Adds an entry into the sorted bucket list if capacity allows.
+; NOTES:
+;   Uses insertion-style shifting to keep buckets sorted.
+;------------------------------------------------------------------------------
+NEWGRID_AddShowtimeBucketEntry:
 LAB_1246:
     LINK.W  A5,#-28
     MOVEM.L D4-D7/A3,-(A7)
@@ -7311,7 +8295,7 @@ LAB_1246:
     MOVE.L  LAB_2339,D0
     MOVEQ   #10,D1
     CMP.L   D1,D0
-    BGE.W   LAB_124C
+    BGE.W   .return
 
     ASL.L   #3,D0
     LEA     LAB_2336,A0
@@ -7331,9 +8315,9 @@ LAB_1246:
     MOVE.L  D0,4(A0)
     MOVE.L  LAB_2339,D5
 
-LAB_1247:
+.find_insert_pos:
     TST.L   D5
-    BLE.S   LAB_1248
+    BLE.S   .check_insert
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
@@ -7341,14 +8325,14 @@ LAB_1247:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     CMP.L   (A1),D6
-    BGE.S   LAB_1248
+    BGE.S   .check_insert
 
     SUBQ.L  #1,D5
-    BRA.S   LAB_1247
+    BRA.S   .find_insert_pos
 
-LAB_1248:
+.check_insert:
     TST.L   D5
-    BEQ.S   LAB_1249
+    BEQ.S   .shift_needed
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
@@ -7356,14 +8340,14 @@ LAB_1248:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     CMP.L   (A1),D6
-    BEQ.S   LAB_124C
+    BEQ.S   .return
 
-LAB_1249:
+.shift_needed:
     MOVE.L  LAB_2339,D4
 
-LAB_124A:
+.shift_loop:
     CMP.L   D5,D4
-    BLE.S   LAB_124B
+    BLE.S   .store_bucket
 
     MOVE.L  D4,D0
     ASL.L   #2,D0
@@ -7375,9 +8359,9 @@ LAB_124A:
     ADDA.L  D0,A1
     MOVE.L  (A1),(A0)
     SUBQ.L  #1,D4
-    BRA.S   LAB_124A
+    BRA.S   .shift_loop
 
-LAB_124B:
+.store_bucket:
     MOVE.L  D5,D0
     ASL.L   #2,D0
     LEA     LAB_2338,A0
@@ -7392,7 +8376,7 @@ LAB_124B:
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
 
-LAB_124C:
+.return:
     MOVE.L  -20(A5),D0
     MOVEM.L (A7)+,D4-D7/A3
     UNLK    A5
@@ -7400,6 +8384,24 @@ LAB_124C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_AppendShowtimeBuckets   (Append showtime buckets to buffer)
+; ARGS:
+;   stack +8: A3 = output buffer
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMP_TBL_APPEND_DATA_AT_NULL_3
+; READS:
+;   LAB_2338, LAB_2339, LAB_2032
+; WRITES:
+;   output buffer contents
+; DESC:
+;   Appends each bucket’s data into the output buffer.
+;------------------------------------------------------------------------------
+NEWGRID_AppendShowtimeBuckets:
 LAB_124D:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -7411,9 +8413,9 @@ LAB_124D:
     ADDQ.W  #8,A7
     MOVEQ   #1,D7
 
-LAB_124E:
+.append_loop:
     CMP.L   LAB_2339,D7
-    BGE.S   LAB_124F
+    BGE.S   .return
 
     PEA     LAB_2032
     MOVE.L  A3,-(A7)
@@ -7430,34 +8432,58 @@ LAB_124E:
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   LAB_124E
+    BRA.S   .append_loop
 
-LAB_124F:
+.return:
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_BuildShowtimesText   (Build showtimes text ??)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = entry state
+;   stack +16: A1 = output buffer
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_1337, LAB_16F7, LAB_1353, LAB_1355, LAB_1347, LAB_134B,
+;   NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
+;   NEWGRID_AppendShowtimeBuckets, JMP_TBL_APPEND_DATA_AT_NULL_3
+; READS:
+;   LAB_224A, LAB_2231, LAB_22E6/22E7, LAB_22F3, LAB_2336..2339
+; WRITES:
+;   output buffer contents, LAB_2339
+; DESC:
+;   Scans entries and builds a formatted showtimes string.
+; NOTES:
+;   Performs multiple string comparisons to coalesce matching showtime entries.
+;------------------------------------------------------------------------------
+NEWGRID_BuildShowtimesText:
 LAB_1250:
     LINK.W  A5,#-108
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     TST.L   (A2)
-    BEQ.W   LAB_127C
+    BEQ.W   .return
 
     TST.L   4(A2)
-    BEQ.W   LAB_127C
+    BEQ.W   .return
 
     MOVEA.L (A2),A0
     BTST    #4,47(A0)
-    BEQ.W   LAB_127C
+    BEQ.W   .return
 
     TST.B   LAB_224A
-    BEQ.W   LAB_127C
+    BEQ.W   .return
 
     TST.L   16(A5)
-    BEQ.W   LAB_127C
+    BEQ.W   .return
 
     MOVEA.L 16(A5),A1
     CLR.B   (A1)
@@ -7465,11 +8491,11 @@ LAB_1250:
     MOVE.L  D6,D5
     MOVEQ   #48,D0
     CMP.W   D0,D6
-    BLE.S   LAB_1251
+    BLE.S   .adjust_row
 
     SUBI.W  #$30,D6
 
-LAB_1251:
+.adjust_row:
     MOVEA.L 4(A2),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -7479,33 +8505,33 @@ LAB_1251:
     MOVEA.L 56(A1),A6
     MOVE.L  A6,-54(A5)
     MOVE.L  A6,D0
-    BEQ.S   LAB_1254
+    BEQ.S   .clear_time_ptr
 
     TST.B   (A6)
-    BEQ.S   LAB_1254
+    BEQ.S   .clear_time_ptr
 
     MOVEQ   #40,D0
     CMP.B   (A6),D0
-    BNE.S   LAB_1252
+    BNE.S   .check_time_prefix
 
     MOVEQ   #58,D0
     CMP.B   3(A6),D0
-    BNE.S   LAB_1252
+    BNE.S   .check_time_prefix
 
     MOVEQ   #8,D0
-    BRA.S   LAB_1253
+    BRA.S   .store_time_offset
 
-LAB_1252:
+.check_time_prefix:
     MOVEQ   #0,D0
 
-LAB_1253:
+.store_time_offset:
     ADD.L   D0,-54(A5)
-    BRA.S   LAB_1255
+    BRA.S   .fetch_fields
 
-LAB_1254:
+.clear_time_ptr:
     CLR.L   -54(A5)
 
-LAB_1255:
+.fetch_fields:
     MOVE.L  D6,D0
     EXT.L   D0
     PEA     1.W
@@ -7548,17 +8574,17 @@ LAB_1255:
     LEA     56(A7),A7
     MOVE.L  #$264,-16(A5)
     TST.L   -62(A5)
-    BEQ.S   LAB_1257
+    BEQ.S   .measure_comma_space
 
     MOVEA.L -62(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1257
+    BEQ.S   .measure_comma_space
 
     LEA     60(A3),A1
 
-LAB_1256:
+.scan_suffix_end:
     TST.B   (A0)+
-    BNE.S   LAB_1256
+    BNE.S   .scan_suffix_end
 
     SUBQ.L  #1,A0
     SUBA.L  -62(A5),A0
@@ -7578,7 +8604,7 @@ LAB_1256:
     ADD.L   D0,D1
     SUB.L   D1,-16(A5)
 
-LAB_1257:
+.measure_comma_space:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     LEA     GLOB_STR_COMMA_AND_SINGLE_SPACE_1,A0
@@ -7588,40 +8614,40 @@ LAB_1257:
 
     MOVE.L  D0,-20(A5)
     TST.L   -54(A5)
-    BEQ.W   LAB_127C
+    BEQ.W   .return
 
-    BSR.W   LAB_1243
+    BSR.W   NEWGRID_ResetShowtimeBuckets
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     MOVE.L  12(A2),D1
     CMP.L   D0,D1
-    BGT.S   LAB_1258
+    BGT.S   .clamp_start_index
 
     TST.L   D1
-    BPL.S   LAB_1259
+    BPL.S   .clamp_start_done
 
-LAB_1258:
+.clamp_start_index:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,12(A2)
 
-LAB_1259:
+.clamp_start_done:
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     MOVE.L  16(A2),D1
     CMP.L   D0,D1
-    BGT.S   LAB_125A
+    BGT.S   .clamp_end_index
 
     TST.L   D1
-    BPL.S   LAB_125B
+    BPL.S   .clamp_end_done
 
-LAB_125A:
+.clamp_end_index:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,16(A2)
 
-LAB_125B:
+.clamp_end_done:
     MOVE.W  22(A2),D0
     EXT.L   D0
     ADD.L   LAB_22F3,D0
@@ -7629,40 +8655,40 @@ LAB_125B:
     MOVE.W  D0,-8(A5)
     MOVEQ   #97,D1
     CMP.W   D1,D0
-    BLE.S   LAB_125C
+    BLE.S   .setup_row_range
 
     MOVE.W  D1,-8(A5)
 
-LAB_125C:
+.setup_row_range:
     MOVE.W  22(A2),D6
 
-LAB_125D:
+.row_loop:
     CMP.W   -8(A5),D6
-    BGE.W   LAB_1278
+    BGE.W   .ensure_showing_at_prefix
 
     MOVE.L  -16(A5),D0
     TST.L   D0
-    BPL.S   LAB_125E
+    BPL.S   .row_check_width
 
     CMP.W   24(A2),D6
-    BGE.W   LAB_1278
+    BGE.W   .ensure_showing_at_prefix
 
-LAB_125E:
+.row_check_width:
     MOVE.L  12(A2),-12(A5)
 
-LAB_125F:
+.col_loop:
     MOVE.L  -12(A5),D0
     CMP.L   16(A2),D0
-    BGE.W   LAB_1277
+    BGE.W   .row_next
 
     MOVE.L  -16(A5),D1
     TST.L   D1
-    BPL.S   LAB_1260
+    BPL.S   .col_check_width
 
     CMP.W   24(A2),D6
-    BGE.W   LAB_1277
+    BGE.W   .row_next
 
-LAB_1260:
+.col_check_width:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  -12(A5),-(A7)
@@ -7674,22 +8700,22 @@ LAB_1260:
     LEA     16(A7),A7
     MOVE.L  D0,D7
     TST.L   -94(A5)
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     TST.L   -98(A5)
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVEA.L -94(A5),A0
     MOVE.W  46(A0),D0
     BTST    #4,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVE.B  40(A0),D0
     BTST    #7,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     CMP.W   22(A2),D6
-    BNE.S   LAB_1261
+    BNE.S   .match_adjust
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -7710,14 +8736,14 @@ LAB_1260:
 
     LEA     28(A7),A7
     TST.L   D0
-    BNE.S   LAB_1261
+    BNE.S   .match_adjust
 
     SUBA.L  A0,A0
     MOVE.L  A0,-98(A5)
 
-LAB_1261:
+.match_adjust:
     TST.L   -98(A5)
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -7725,14 +8751,14 @@ LAB_1261:
     MOVEA.L -98(A5),A0
     ADDA.L  D0,A0
     TST.L   56(A0)
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVEA.L -98(A5),A0
     ADDA.W  D7,A0
     MOVEQ   #-96,D0
     AND.B   7(A0),D0
     TST.B   D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     MOVEA.L -94(A5),A0
     ADDA.W  #$1c,A0
@@ -7744,7 +8770,7 @@ LAB_1261:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -7757,22 +8783,22 @@ LAB_1261:
     MOVEA.L 56(A6),A6
     MOVEQ   #40,D1
     CMP.B   (A6),D1
-    BNE.S   LAB_1262
+    BNE.S   .time_prefix_check
 
     ADDA.L  D0,A0
     MOVEA.L 56(A0),A6
     ADDQ.L  #3,A6
     MOVEQ   #58,D0
     CMP.B   (A6),D0
-    BNE.S   LAB_1262
+    BNE.S   .time_prefix_check
 
     MOVEQ   #8,D0
-    BRA.S   LAB_1263
+    BRA.S   .time_prefix_done
 
-LAB_1262:
+.time_prefix_check:
     MOVEQ   #0,D0
 
-LAB_1263:
+.time_prefix_done:
     MOVEA.L 56(A1),A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
@@ -7810,128 +8836,128 @@ LAB_1263:
     LEA     48(A7),A7
     MOVE.L  D0,-90(A5)
     TST.L   -74(A5)
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVEA.L -54(A5),A0
     MOVEA.L -74(A5),A1
     CMPA.L  A0,A1
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
-LAB_1264:
+.compare_title:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     TST.B   D0
-    BNE.S   LAB_1264
+    BNE.S   .compare_title
 
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     MOVEA.L -58(A5),A0
     MOVEA.L -78(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_1266
+    BEQ.S   .compare_subtitle
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
-LAB_1265:
+.compare_title_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     TST.B   D0
-    BNE.S   LAB_1265
+    BNE.S   .compare_title_loop
 
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
-LAB_1266:
+.compare_subtitle:
     MOVEA.L -62(A5),A0
     MOVEA.L -82(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_1268
+    BEQ.S   .compare_genre
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
-LAB_1267:
+.compare_subtitle_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     TST.B   D0
-    BNE.S   LAB_1267
+    BNE.S   .compare_subtitle_loop
 
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
-LAB_1268:
+.compare_genre:
     MOVEA.L -66(A5),A0
     MOVEA.L -86(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_126A
+    BEQ.S   .compare_rating
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
-LAB_1269:
+.compare_genre_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     TST.B   D0
-    BNE.S   LAB_1269
+    BNE.S   .compare_genre_loop
 
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
-LAB_126A:
+.compare_rating:
     MOVEA.L -70(A5),A0
     MOVEA.L -90(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_126C
+    BEQ.S   .mark_and_append
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_1276
+    BEQ.W   .col_next
 
-LAB_126B:
+.compare_rating_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
     TST.B   D0
-    BNE.S   LAB_126B
+    BNE.S   .compare_rating_loop
 
-    BNE.W   LAB_1276
+    BNE.W   .col_next
 
-LAB_126C:
+.mark_and_append:
     MOVEA.L -98(A5),A0
     ADDA.W  D7,A0
     BSET    #5,7(A0)
     MOVE.L  -16(A5),D0
     TST.L   D0
-    BLE.W   LAB_1276
+    BLE.W   .col_next
 
     MOVEA.L 16(A5),A0
     TST.B   (A0)
-    BNE.S   LAB_1270
+    BNE.S   .append_entry_text
 
     LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 
-LAB_126D:
+.copy_showtimes_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_126D
+    BNE.S   .copy_showtimes_prefix
 
     PEA     -49(A5)
     JSR     LAB_134B(PC)
@@ -7941,16 +8967,16 @@ LAB_126D:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-28(A5)
-    BSR.W   LAB_1246
+    BSR.W   NEWGRID_AddShowtimeBucketEntry
 
     ADDQ.W  #8,A7
     LEA     60(A3),A0
     LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A1
     MOVEA.L A1,A6
 
-LAB_126E:
+.measure_showtimes_prefix:
     TST.B   (A6)+
-    BNE.S   LAB_126E
+    BNE.S   .measure_showtimes_prefix
 
     SUBQ.L  #1,A6
     SUBA.L  A1,A6
@@ -7964,9 +8990,9 @@ LAB_126E:
     LEA     60(A3),A0
     MOVEA.L -28(A5),A1
 
-LAB_126F:
+.measure_entry_text:
     TST.B   (A1)+
-    BNE.S   LAB_126F
+    BNE.S   .measure_entry_text
 
     SUBQ.L  #1,A1
     SUBA.L  -28(A5),A1
@@ -7978,7 +9004,7 @@ LAB_126F:
 
     SUB.L   D0,-16(A5)
 
-LAB_1270:
+.append_entry_text:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  -98(A5),-(A7)
@@ -7993,9 +9019,9 @@ LAB_1270:
     LEA     60(A3),A0
     MOVEA.L D0,A1
 
-LAB_1271:
+.measure_entry_text2:
     TST.B   (A1)+
-    BNE.S   LAB_1271
+    BNE.S   .measure_entry_text2
 
     SUBQ.L  #1,A1
     SUBA.L  D0,A1
@@ -8012,38 +9038,38 @@ LAB_1271:
     MOVEM.L D1,-24(A5)
     MOVE.L  -16(A5),D0
     CMP.L   D1,D0
-    BLT.S   LAB_1274
+    BLT.S   .measure_showtime_text
 
     MOVEQ   #48,D0
     CMP.W   D0,D6
-    BLE.S   LAB_1272
+    BLE.S   .append_showtime_entry
 
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEQ   #48,D1
     ADD.L   D1,D0
-    BRA.S   LAB_1273
+    BRA.S   .append_showtime_entry2
 
-LAB_1272:
+.append_showtime_entry:
     MOVE.L  D7,D0
     EXT.L   D0
 
-LAB_1273:
+.append_showtime_entry2:
     MOVE.L  D0,-(A7)
     MOVE.L  -28(A5),-(A7)
-    BSR.W   LAB_1246
+    BSR.W   NEWGRID_AddShowtimeBucketEntry
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_1276
+    BEQ.S   .col_next
 
-LAB_1274:
+.measure_showtime_text:
     LEA     60(A3),A0
     MOVEA.L -28(A5),A1
 
-LAB_1275:
+.measure_showtime_text2:
     TST.B   (A1)+
-    BNE.S   LAB_1275
+    BNE.S   .measure_showtime_text2
 
     SUBQ.L  #1,A1
     SUBA.L  -28(A5),A1
@@ -8058,25 +9084,25 @@ LAB_1275:
     ADD.L   D0,D1
     SUB.L   D1,-16(A5)
 
-LAB_1276:
+.col_next:
     ADDQ.L  #1,-12(A5)
-    BRA.W   LAB_125F
+    BRA.W   .col_loop
 
-LAB_1277:
+.row_next:
     ADDQ.W  #1,D6
-    BRA.W   LAB_125D
+    BRA.W   .row_loop
 
-LAB_1278:
+.ensure_showing_at_prefix:
     MOVEA.L 16(A5),A0
     TST.B   (A0)
-    BNE.S   LAB_127A
+    BNE.S   .append_showing_at
 
     LEA     GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 
-LAB_1279:
+.copy_showing_at_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1279
+    BNE.S   .copy_showing_at_prefix
 
     PEA     -49(A5)
     JSR     LAB_134B(PC)
@@ -8087,21 +9113,21 @@ LAB_1279:
     JSR     JMP_TBL_APPEND_DATA_AT_NULL_3(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_127B
+    BRA.S   .append_genre
 
-LAB_127A:
+.append_showing_at:
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_124D
+    BSR.W   NEWGRID_AppendShowtimeBuckets
 
     ADDQ.W  #4,A7
 
-LAB_127B:
+.append_genre:
     TST.L   -62(A5)
-    BEQ.S   LAB_127C
+    BEQ.S   .return
 
     MOVEA.L -62(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_127C
+    BEQ.S   .return
 
     PEA     LAB_2035
     MOVE.L  16(A5),-(A7)
@@ -8113,41 +9139,61 @@ LAB_127B:
 
     LEA     12(A7),A7
 
-LAB_127C:
+.return:
     MOVEM.L (A7)+,D5-D7/A2-A3/A6
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_HandleShowtimesState   (Handle showtimes grid state ??)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = entry state
+; RET:
+;   D0: state (LAB_2036)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_107F, LAB_1338, NEWGRID_BuildShowtimesText, LAB_1339,
+;   NEWGRID_DrawGridFrameVariant3, LAB_1344, LAB_1358
+; READS:
+;   LAB_2036, LAB_22EC/22ED/22F0
+; WRITES:
+;   LAB_2036, 32(A3)
+; DESC:
+;   State machine that draws showtimes/details in a grid view.
+;------------------------------------------------------------------------------
+NEWGRID_HandleShowtimesState:
 LAB_127D:
     LINK.W  A5,#-132
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  A3,D0
-    BNE.S   LAB_127E
+    BNE.S   .state_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2036
-    BRA.W   LAB_1289
+    BRA.W   .return_state
 
-LAB_127E:
+.state_check:
     MOVE.L  LAB_2036,D0
     SUBQ.L  #4,D0
-    BEQ.S   LAB_127F
+    BEQ.S   .state4_begin
 
     SUBQ.L  #1,D0
-    BEQ.W   LAB_1285
+    BEQ.W   .state5_reset
 
-    BRA.W   LAB_1288
+    BRA.W   .force_state4
 
-LAB_127F:
+.state4_begin:
     TST.L   (A2)
-    BEQ.W   LAB_1289
+    BEQ.W   .return_state
 
     TST.L   4(A2)
-    BEQ.W   LAB_1289
+    BEQ.W   .return_state
 
     MOVE.L  LAB_22EC,-(A7)
     PEA     20.W
@@ -8158,15 +9204,15 @@ LAB_127F:
     MOVE.W  20(A2),D7
     MOVEQ   #48,D0
     CMP.W   D0,D7
-    BLE.S   LAB_1280
+    BLE.S   .adjust_row
 
     SUBI.W  #$30,D7
 
-LAB_1280:
+.adjust_row:
     MOVE.B  LAB_22F0,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1281
+    BNE.S   .draw_entry_mode2
 
     LEA     60(A3),A0
     MOVE.L  D7,D0
@@ -8181,9 +9227,9 @@ LAB_1280:
     BSR.W   LAB_107F
 
     LEA     28(A7),A7
-    BRA.S   LAB_1282
+    BRA.S   .after_draw
 
-LAB_1281:
+.draw_entry_mode2:
     LEA     60(A3),A0
     MOVE.L  D7,D0
     EXT.L   D0
@@ -8198,14 +9244,14 @@ LAB_1281:
 
     LEA     28(A7),A7
 
-LAB_1282:
+.after_draw:
     MOVE.L  LAB_22ED,-(A7)
     JSR     LAB_1338(PC)
 
     PEA     -130(A5)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1250
+    BSR.W   NEWGRID_BuildShowtimesText
 
     LEA     60(A3),A0
     PEA     -130(A5)
@@ -8213,52 +9259,52 @@ LAB_1282:
     JSR     LAB_1339(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_1231
+    BSR.W   NEWGRID_DrawGridFrameVariant3
 
     LEA     24(A7),A7
     TST.L   D0
-    BEQ.S   LAB_1283
+    BEQ.S   .store_state
 
     MOVEQ   #4,D0
-    BRA.S   LAB_1284
+    BRA.S   .store_state2
 
-LAB_1283:
+.store_state:
     MOVEQ   #5,D0
 
-LAB_1284:
+.store_state2:
     PEA     2.W
     MOVE.L  D0,LAB_2036
     JSR     LAB_1344(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
-    BRA.S   LAB_1289
+    BRA.S   .return_state
 
-LAB_1285:
+.state5_reset:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1231
+    BSR.W   NEWGRID_DrawGridFrameVariant3
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_1286
+    BEQ.S   .state5_done
 
     MOVEQ   #4,D0
-    BRA.S   LAB_1287
+    BRA.S   .store_state3
 
-LAB_1286:
+.state5_done:
     MOVEQ   #5,D0
 
-LAB_1287:
+.store_state3:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
     MOVE.L  D0,LAB_2036
-    BRA.S   LAB_1289
+    BRA.S   .return_state
 
-LAB_1288:
+.force_state4:
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_2036
 
-LAB_1289:
+.return_state:
     MOVE.L  LAB_2036,D0
     MOVEM.L (A7)+,D7/A2-A3
     UNLK    A5
@@ -8266,6 +9312,31 @@ LAB_1289:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ProcessShowtimesWorkflow   (Process showtimes workflow ??)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +14: D7 = row index
+; RET:
+;   D0: state (LAB_2037)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_HandleGridEditorState, NEWGRID_UpdateGridState,
+;   NEWGRID_HandleShowtimesState, NEWGRID_InitSelectionWindow,
+;   NEWGRID_UpdateSelectionFromInput, NEWGRID_DrawGridMessageAlt,
+;   NEWGRID_ClearEntryMarkerBits, NEWGRID_ValidateSelectionCode,
+;   NEWGRID_GetGridModeIndex, NEWGRID_ComputeColumnIndex
+; READS:
+;   LAB_2037/2038, LAB_232F, LAB_22E4/22EF/22F1/22EA/22EB
+; WRITES:
+;   LAB_2037/2038
+; DESC:
+;   Multi-state handler for showtimes selection and detail views.
+; NOTES:
+;   Uses a switch/jumptable for state dispatch.
+;------------------------------------------------------------------------------
+NEWGRID_ProcessShowtimesWorkflow:
 LAB_128A:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
@@ -8273,271 +9344,271 @@ LAB_128A:
     MOVE.W  14(A5),D7
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BNE.W   LAB_128F
+    BNE.W   .state_dispatch
 
     MOVE.L  LAB_2037,D0
     SUBQ.L  #2,D0
-    BEQ.S   LAB_128B
+    BEQ.S   .state_reset
 
     SUBQ.L  #3,D0
-    BEQ.S   LAB_128C
+    BEQ.S   .state_check_entry
 
     SUBQ.L  #2,D0
-    BNE.S   LAB_128E
+    BNE.S   .state_clear
 
-LAB_128B:
+.state_reset:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_2037
-    BRA.S   LAB_128E
+    BRA.S   .state_clear
 
-LAB_128C:
+.state_check_entry:
     MOVE.L  LAB_232F,-(A7)
     JSR     LAB_0FF5(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_128D
+    BEQ.S   .state_process_detail
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2037
-    BRA.S   LAB_128E
+    BRA.S   .state_clear
 
-LAB_128D:
+.state_process_detail:
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_127D
+    BSR.W   NEWGRID_HandleShowtimesState
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2037
 
-LAB_128E:
+.state_clear:
     CLR.L   -(A7)
     PEA     LAB_232F
-    BSR.W   LAB_1208
+    BSR.W   NEWGRID_InitSelectionWindow
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_2037
-    BRA.W   LAB_129D
+    BRA.W   .return_state
 
-LAB_128F:
+.state_dispatch:
     MOVE.L  LAB_2037,D0
     CMPI.L  #$8,D0
-    BCC.W   LAB_129C
+    BCC.W   .state_clear2
 
     ADD.W   D0,D0
-    MOVE.W  LAB_1290(PC,D0.W),D0
-    JMP     LAB_1290+2(PC,D0.W)
+    MOVE.W  .state_jumptable(PC,D0.W),D0
+    JMP     .state_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_1290:
-    DC.W    LAB_1290_000E-LAB_1290-2
-    DC.W    LAB_1290_0040-LAB_1290-2
-    DC.W    LAB_1290_005A-LAB_1290-2
-    DC.W    LAB_1290_00B2-LAB_1290-2
-    DC.W    LAB_1290_00B2-LAB_1290-2
-    DC.W    LAB_1290_00C6-LAB_1290-2
-    DC.W    LAB_1290_01B6-LAB_1290-2
-    DC.W    LAB_1290_0162-LAB_1290-2
+; switch/jumptable
+.state_jumptable:
+    DC.W    .case_state0-.state_jumptable-2
+    DC.W    .case_state1-.state_jumptable-2
+    DC.W    .case_state2-.state_jumptable-2
+    DC.W    .case_state3_or4-.state_jumptable-2
+    DC.W    .case_state3_or4-.state_jumptable-2
+    DC.W    .case_state5-.state_jumptable-2
+    DC.W    .case_state7-.state_jumptable-2
+    DC.W    .case_state6-.state_jumptable-2
 
-LAB_1290_000E:
+.case_state0:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_232F
-    BSR.W   LAB_1208
+    BSR.W   NEWGRID_InitSelectionWindow
 
     PEA     LAB_232F
     MOVE.L  LAB_2037,-(A7)
-    BSR.W   LAB_1214
+    BSR.W   NEWGRID_UpdateSelectionFromInput
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.W   LAB_129D
+    BEQ.W   .return_state
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_2037
 
-LAB_1290_0040:
+.case_state1:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_122B
+    BSR.W   NEWGRID_DrawGridMessageAlt
 
     ADDQ.W  #4,A7
     CLR.L   LAB_2038
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_2037
-    BRA.W   LAB_129D
+    BRA.W   .return_state
 
-LAB_1290_005A:
+.case_state2:
     MOVE.B  LAB_22EF,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1292
+    BEQ.S   .case2_handle
 
     MOVEQ   #70,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1294
+    BNE.S   .case2_default
 
-LAB_1292:
+.case2_handle:
     MOVE.L  LAB_22F1,-(A7)
     MOVE.L  LAB_22EB,-(A7)
     MOVE.L  LAB_22EA,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_2037
     SUBQ.L  #5,D0
-    BNE.S   LAB_1293
+    BNE.S   .case2_done
 
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_2037
-    BRA.W   LAB_129D
+    BRA.W   .return_state
 
-LAB_1293:
+.case2_done:
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_2037
-    BRA.W   LAB_129D
+    BRA.W   .return_state
 
-LAB_1294:
+.case2_default:
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_2037
 
-LAB_1290_00B2:
+.case_state3_or4:
     PEA     LAB_232F
     MOVE.L  LAB_2037,-(A7)
-    BSR.W   LAB_1214
+    BSR.W   NEWGRID_UpdateSelectionFromInput
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D6
 
-LAB_1290_00C6:
+.case_state5:
     TST.L   LAB_232F
-    BEQ.W   LAB_1298
+    BEQ.W   .case5_no_entry
 
     MOVE.L  LAB_232F,-(A7)
     JSR     LAB_0FF5(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_1295
+    BEQ.S   .case5_update
 
     MOVE.W  LAB_2331,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_2330,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_10B5
+    BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2037
-    BRA.S   LAB_1296
+    BRA.S   .case5_post
 
-LAB_1295:
+.case5_update:
     PEA     LAB_232F
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_127D
+    BSR.W   NEWGRID_HandleShowtimesState
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2037
 
-LAB_1296:
+.case5_post:
     MOVE.B  LAB_22E4,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   LAB_129D
+    BNE.W   .return_state
 
     TST.L   D6
-    BEQ.S   LAB_1297
+    BEQ.S   .adjust_offset
 
     CMPI.L  #$1,LAB_2038
-    BGE.S   LAB_1297
+    BGE.S   .adjust_offset
 
     PEA     53.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
-    BSR.W   LAB_106E
+    BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2038
 
-LAB_1297:
+.adjust_offset:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_106B
+    BSR.W   NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
     SUB.L   D0,LAB_2038
-    BRA.S   LAB_129D
+    BRA.S   .return_state
 
-LAB_1298:
+.case5_no_entry:
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_2037
 
-LAB_1290_0162:
+.case_state6:
     MOVE.B  LAB_22EF,D0
     MOVEQ   #66,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1299
+    BEQ.S   .case6_handle
 
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   LAB_129B
+    BNE.S   .case6_clear
 
-LAB_1299:
+.case6_handle:
     MOVE.L  LAB_22F1,-(A7)
     MOVE.L  LAB_22EB,-(A7)
     MOVE.L  LAB_22EA,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1155
+    BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_2037
     SUBQ.L  #5,D0
-    BNE.S   LAB_129A
+    BNE.S   .case6_done
 
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_2037
-    BRA.S   LAB_129D
+    BRA.S   .return_state
 
-LAB_129A:
+.case6_done:
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_2037
-    BRA.S   LAB_129D
+    BRA.S   .return_state
 
-LAB_129B:
+.case6_clear:
     CLR.L   LAB_2037
-    BRA.S   LAB_129D
+    BRA.S   .return_state
 
-LAB_1290_01B6:
-LAB_129C:
+.case_state7:
+.state_clear2:
     CLR.L   LAB_2037
 
-LAB_129D:
+.return_state:
     TST.L   LAB_2037
-    BNE.S   LAB_129E
+    BNE.S   .maybe_clear_markers
 
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_11FF
+    BSR.W   NEWGRID_ClearEntryMarkerBits
 
     ADDQ.W  #4,A7
 
-LAB_129E:
+.maybe_clear_markers:
     MOVE.L  LAB_2037,D0
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
@@ -8545,40 +9616,74 @@ LAB_129E:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_TestModeFlagActive   (Test mode flag active ??)
+; ARGS:
+;   stack +8: D7 = mode selector (0/1)
+; RET:
+;   D0: 1 if flag set, 0 otherwise
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   none
+; READS:
+;   LAB_1BAE, LAB_1BB1
+; DESC:
+;   Returns whether the corresponding global flag is set for the mode.
+;------------------------------------------------------------------------------
+NEWGRID_TestModeFlagActive:
 LAB_129F:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     TST.L   D7
-    BNE.S   LAB_12A0
+    BNE.S   .check_mode1
 
     MOVE.B  LAB_1BAE,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_12A2
+    BEQ.S   .return_true
 
-LAB_12A0:
+.check_mode1:
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_12A1
+    BNE.S   .return_false
 
     MOVE.B  LAB_1BB1,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_12A2
+    BEQ.S   .return_true
 
-LAB_12A1:
+.return_false:
     MOVEQ   #0,D0
-    BRA.S   LAB_12A3
+    BRA.S   .return
 
-LAB_12A2:
+.return_true:
     MOVEQ   #1,D0
 
-LAB_12A3:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_TestEntrySelectable   (Test entry selectable ??)
+; ARGS:
+;   stack +8: A3 = entry header
+;   stack +12: A2 = entry data
+;   stack +16: D7 = mode selector (0/1)
+; RET:
+;   D0: 1 if selectable, 0 otherwise
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_1343
+; READS:
+;   27(A3), 40(A3)
+; DESC:
+;   Checks entry flags and mode rules to decide if selection is allowed.
+;------------------------------------------------------------------------------
+NEWGRID_TestEntrySelectable:
 LAB_12A4:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -8586,57 +9691,76 @@ LAB_12A4:
     MOVE.L  28(A7),D7
     MOVEQ   #0,D6
     TST.L   D7
-    BEQ.S   LAB_12A5
+    BEQ.S   .check_args
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_12AA
+    BNE.S   .return
 
-LAB_12A5:
+.check_args:
     MOVE.L  A3,D0
-    BEQ.S   LAB_12A8
+    BEQ.S   .set_false
 
     MOVE.L  A2,D0
-    BEQ.S   LAB_12A8
+    BEQ.S   .set_false
 
     BTST    #7,40(A3)
-    BEQ.S   LAB_12A8
+    BEQ.S   .set_false
 
     TST.L   D7
-    BNE.S   LAB_12A6
+    BNE.S   .check_mode1
 
     BTST    #2,27(A3)
-    BNE.S   LAB_12A7
+    BNE.S   .set_true
 
-LAB_12A6:
+.check_mode1:
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_12A8
+    BNE.S   .set_false
 
     MOVE.L  A3,-(A7)
     JSR     LAB_1343(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   LAB_12A8
+    BEQ.S   .set_false
 
-LAB_12A7:
+.set_true:
     MOVEQ   #1,D1
-    BRA.S   LAB_12A9
+    BRA.S   .store_result
 
-LAB_12A8:
+.set_false:
     MOVEQ   #0,D1
 
-LAB_12A9:
+.store_result:
     MOVE.L  D1,D6
 
-LAB_12AA:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_ClearMarkersIfSelectable   (Clear markers if selectable)
+; ARGS:
+;   stack +8: D7 = mode selector ??
+;   stack +14: D6 = selector value ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0
+; CALLS:
+;   LAB_1345, LAB_133E, NEWGRID_TestEntrySelectable
+; READS:
+;   LAB_2231, LAB_222F, LAB_224A, LAB_222E
+; WRITES:
+;   entry flag bytes (bit #5 cleared)
+; DESC:
+;   Clears marker bits for entries that pass selection checks.
+;------------------------------------------------------------------------------
+NEWGRID_ClearMarkersIfSelectable:
 LAB_12AB:
     LINK.W  A5,#-16
     MOVEM.L D4-D7,-(A7)
@@ -8644,18 +9768,18 @@ LAB_12AB:
     MOVE.W  14(A5),D6
     MOVEQ   #1,D0
     CMP.W   D0,D6
-    BLE.S   LAB_12AF
+    BLE.S   .list1_done
 
     MOVEQ   #0,D5
 
-LAB_12AC:
+.list1_loop:
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D5
-    BGE.S   LAB_12AF
+    BGE.S   .list1_done
 
     TST.B   LAB_224A
-    BEQ.S   LAB_12AF
+    BEQ.S   .list1_done
 
     PEA     1.W
     MOVE.L  D5,-(A7)
@@ -8670,39 +9794,39 @@ LAB_12AC:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   LAB_12A4
+    BSR.W   NEWGRID_TestEntrySelectable
 
     LEA     24(A7),A7
     TST.L   D0
-    BEQ.S   LAB_12AE
+    BEQ.S   .list1_next
 
     MOVEQ   #1,D4
 
-LAB_12AD:
+.list1_clear_flags:
     MOVEQ   #49,D0
     CMP.L   D0,D4
-    BGE.S   LAB_12AE
+    BGE.S   .list1_next
 
     MOVEA.L -8(A5),A0
     BCLR    #5,7(A0,D4.L)
     ADDQ.L  #1,D4
-    BRA.S   LAB_12AD
+    BRA.S   .list1_clear_flags
 
-LAB_12AE:
+.list1_next:
     ADDQ.L  #1,D5
-    BRA.S   LAB_12AC
+    BRA.S   .list1_loop
 
-LAB_12AF:
+.list1_done:
     MOVEQ   #0,D5
 
-LAB_12B0:
+.list2_loop:
     MOVEQ   #0,D0
     MOVE.W  LAB_222F,D0
     CMP.L   D0,D5
-    BGE.S   LAB_12B3
+    BGE.S   .return
 
     TST.B   LAB_222E
-    BEQ.S   LAB_12B3
+    BEQ.S   .return
 
     PEA     2.W
     MOVE.L  D5,-(A7)
@@ -8717,42 +9841,62 @@ LAB_12B0:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   LAB_12A4
+    BSR.W   NEWGRID_TestEntrySelectable
 
     LEA     24(A7),A7
     TST.L   D0
-    BEQ.S   LAB_12B2
+    BEQ.S   .list2_next
 
     MOVEQ   #1,D4
 
-LAB_12B1:
+.list2_clear_flags:
     MOVEQ   #49,D0
     CMP.L   D0,D4
-    BGE.S   LAB_12B2
+    BGE.S   .list2_next
 
     MOVEA.L -8(A5),A0
     BCLR    #5,7(A0,D4.L)
     ADDQ.L  #1,D4
-    BRA.S   LAB_12B1
+    BRA.S   .list2_clear_flags
 
-LAB_12B2:
+.list2_next:
     ADDQ.L  #1,D5
-    BRA.S   LAB_12B0
+    BRA.S   .list2_loop
 
-LAB_12B3:
+.return:
     MOVEM.L (A7)+,D4-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_InitSelectionWindowAlt   (Init selection window alt)
+; ARGS:
+;   stack +8: A3 = selection state
+;   stack +12: D7 = row/selector ??
+;   stack +16: D6 = mode selector ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_134A
+; READS:
+;   LAB_223A, LAB_1BA7, LAB_1BBC
+; WRITES:
+;   0(A3)..24(A3)
+; DESC:
+;   Initializes selection bounds using an alternate mode offset.
+;------------------------------------------------------------------------------
+NEWGRID_InitSelectionWindowAlt:
 LAB_12B4:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7
     MOVE.L  28(A7),D6
     MOVE.L  A3,D0
-    BEQ.S   LAB_12BA
+    BEQ.S   .return
 
     SUBA.L  A0,A0
     MOVE.L  A0,(A3)
@@ -8761,40 +9905,40 @@ LAB_12B4:
     MOVE.W  D7,20(A3)
     MOVEQ   #48,D0
     CMP.W   D0,D7
-    BGE.S   LAB_12B6
+    BGE.S   .compute_bounds
 
     MOVEQ   #1,D0
     CMP.W   D0,D7
-    BEQ.S   LAB_12B5
+    BEQ.S   .adjust_row
 
     PEA     LAB_223A
     JSR     LAB_134A(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_12B6
+    BNE.S   .compute_bounds
 
-LAB_12B5:
+.adjust_row:
     MOVEQ   #48,D0
     ADD.W   D0,20(A3)
 
-LAB_12B6:
+.compute_bounds:
     MOVE.W  20(A3),D0
     MOVE.W  D0,22(A3)
     TST.L   D6
-    BNE.S   LAB_12B7
+    BNE.S   .mode_offset
 
     MOVE.B  LAB_1BA7,D0
     EXT.W   D0
     EXT.L   D0
-    BRA.S   LAB_12B8
+    BRA.S   .mode_offset_done
 
-LAB_12B7:
+.mode_offset:
     MOVE.B  LAB_1BBC,D0
     EXT.W   D0
     EXT.L   D0
 
-LAB_12B8:
+.mode_offset_done:
     MOVE.L  D0,D5
     MOVE.W  20(A3),D0
     EXT.L   D0
@@ -8802,19 +9946,42 @@ LAB_12B8:
     MOVE.W  D0,24(A3)
     MOVEQ   #96,D1
     CMP.W   D1,D0
-    BLE.S   LAB_12B9
+    BLE.S   .clamp_end
 
     MOVE.W  D1,24(A3)
 
-LAB_12B9:
+.clamp_end:
     ADDQ.W  #1,24(A3)
 
-LAB_12BA:
+.return:
     MOVEM.L (A7)+,D5-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_UpdateSelectionFromInputAlt   (Update selection alt ??)
+; ARGS:
+;   stack +8: D7 = state selector
+;   stack +12: A3 = selection state
+;   stack +16: D6 = mode selector ??
+; RET:
+;   D0: selection found flag (0/1)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   NEWGRID_ClearMarkersIfSelectable, NEWGRID_TestEntrySelectable,
+;   LAB_1077, LAB_1353, LAB_1355, LAB_1347, LAB_1679
+; READS:
+;   LAB_2039/203A, LAB_2231, LAB_224A
+; WRITES:
+;   LAB_2039/203A, selection state fields
+; DESC:
+;   Alternate selection state machine with a jump-table dispatch.
+; NOTES:
+;   Uses a switch/jumptable for state dispatch.
+;------------------------------------------------------------------------------
+NEWGRID_UpdateSelectionFromInputAlt:
 LAB_12BB:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A3,-(A7)
@@ -8824,70 +9991,70 @@ LAB_12BB:
     MOVEQ   #0,D5
     MOVE.L  D7,D0
     CMPI.L  #$6,D0
-    BCC.S   LAB_12BE
+    BCC.S   .state_default
 
     ADD.W   D0,D0
-    MOVE.W  LAB_12BC(PC,D0.W),D0
-    JMP     LAB_12BC+2(PC,D0.W)
+    MOVE.W  .state_jumptable(PC,D0.W),D0
+    JMP     .state_jumptable+2(PC,D0.W)
 
-; Switch case
-LAB_12BC:
-    DC.W    LAB_12BC_000A-LAB_12BC-2
-    DC.W    LAB_12BC_0028-LAB_12BC-2
-    DC.W    LAB_12BC_0044-LAB_12BC-2
-    DC.W    LAB_12BC_0040-LAB_12BC-2
-	DC.W    LAB_12BC_0038-LAB_12BC-2
-    DC.W    LAB_12BC_0040-LAB_12BC-2
+; switch/jumptable
+.state_jumptable:
+    DC.W    .case_state0-.state_jumptable-2
+    DC.W    .case_state1-.state_jumptable-2
+    DC.W    .case_default-.state_jumptable-2
+    DC.W    .case_state3_or5-.state_jumptable-2
+    DC.W    .case_state2-.state_jumptable-2
+    DC.W    .case_state3_or5-.state_jumptable-2
 
-LAB_12BC_000A:
+.case_state0:
     CLR.L   (LAB_2039).L
     MOVE.W  22(A3),D0
     MOVE.W  D0,LAB_203A
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
-    BSR.W   LAB_12AB
+    BSR.W   NEWGRID_ClearMarkersIfSelectable
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_12BF
+    BRA.S   .post_state
 
-LAB_12BC_0028:
+.case_state1:
     ADDQ.L  #1,LAB_2039
     MOVE.W  22(A3),LAB_203A
-    BRA.S   LAB_12BF
+    BRA.S   .post_state
 
-LAB_12BC_0038:
+.case_state2:
     ADDQ.W  #1,LAB_203A
-    BRA.S   LAB_12BF
+    BRA.S   .post_state
 
-LAB_12BC_0040:
+.case_state3_or5:
     MOVEQ   #1,D5
-    BRA.S   LAB_12BF
+    BRA.S   .post_state
 
-LAB_12BC_0044:
-LAB_12BE:
+.case_default:
+.state_default:
     MOVEQ   #5,D7
 
-LAB_12BF:
+.post_state:
     TST.L   D5
-    BNE.W   LAB_12CE
+    BNE.W   .maybe_clear_state
 
-LAB_12C0:
+.scan_loop:
     TST.L   D5
-    BNE.W   LAB_12CB
+    BNE.W   .finalize_selection
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     MOVE.L  LAB_2039,D1
     CMP.L   D0,D1
-    BGE.W   LAB_12CB
+    BGE.W   .finalize_selection
 
     TST.B   LAB_224A
-    BEQ.W   LAB_12CB
+    BEQ.W   .finalize_selection
 
     MOVEQ   #5,D0
     CMP.L   D0,D7
-    BEQ.W   LAB_12CB
+    BEQ.W   .finalize_selection
 
     MOVE.W  LAB_203A,D0
     EXT.L   D0
@@ -8900,26 +10067,26 @@ LAB_12C0:
     MOVE.L  D6,(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_12A4
+    BSR.W   NEWGRID_TestEntrySelectable
 
     LEA     24(A7),A7
     TST.L   D0
-    BEQ.W   LAB_12C9
+    BEQ.W   .scan_reset
 
-LAB_12C1:
+.entry_loop:
     TST.L   D5
-    BNE.W   LAB_12C9
+    BNE.W   .scan_reset
 
     MOVE.W  LAB_203A,D0
     TST.W   D0
-    BLE.W   LAB_12C9
+    BLE.W   .scan_reset
 
     CMP.W   24(A3),D0
-    BGE.W   LAB_12C9
+    BGE.W   .scan_reset
 
     MOVEQ   #49,D1
     CMP.W   D1,D0
-    BNE.S   LAB_12C2
+    BNE.S   .adjust_index
 
     EXT.L   D0
     MOVE.L  LAB_2039,-(A7)
@@ -8930,26 +10097,26 @@ LAB_12C1:
 
     LEA     16(A7),A7
     MOVE.L  D0,D4
-    BRA.S   LAB_12C3
+    BRA.S   .after_adjust
 
-LAB_12C2:
+.adjust_index:
     MOVE.L  D0,D4
     MOVEQ   #48,D1
     CMP.W   D1,D4
-    BLE.S   LAB_12C3
+    BLE.S   .after_adjust
 
     SUBI.W  #$30,D4
 
-LAB_12C3:
+.after_adjust:
     TST.L   -4(A5)
-    BEQ.W   LAB_12C8
+    BEQ.W   .entry_loop_next
 
     TST.L   -8(A5)
-    BEQ.W   LAB_12C8
+    BEQ.W   .entry_loop_next
 
     MOVE.W  LAB_203A,D0
     CMP.W   22(A3),D0
-    BNE.S   LAB_12C4
+    BNE.S   .check_flags
 
     MOVE.L  D4,D0
     EXT.L   D0
@@ -8961,9 +10128,9 @@ LAB_12C3:
     LEA     12(A7),A7
     MOVE.L  D0,D4
 
-LAB_12C4:
+.check_flags:
     TST.W   D4
-    BLE.W   LAB_12C6
+    BLE.W   .set_found_false
 
     MOVEA.L -4(A5),A0
     ADDA.W  #$1c,A0
@@ -8975,25 +10142,25 @@ LAB_12C4:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_12C6
+    BNE.S   .set_found_false
 
     MOVEA.L -8(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D4,A1
     BTST    #5,7(A1)
-    BNE.S   LAB_12C6
+    BNE.S   .set_found_false
 
     MOVEA.L A0,A1
     ADDA.W  LAB_203A,A1
     BTST    #7,7(A1)
-    BNE.S   LAB_12C6
+    BNE.S   .set_found_false
 
     MOVE.L  D4,D0
     EXT.L   D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
     TST.L   56(A0)
-    BEQ.S   LAB_12C6
+    BEQ.S   .set_found_false
 
     MOVE.L  D4,D0
     EXT.L   D0
@@ -9006,11 +10173,11 @@ LAB_12C4:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.S   LAB_12C6
+    BEQ.S   .set_found_false
 
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   LAB_12C5
+    BNE.S   .mark_match
 
     MOVE.L  D4,D0
     EXT.L   D0
@@ -9020,66 +10187,66 @@ LAB_12C4:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_12C6
+    BEQ.S   .set_found_false
 
-LAB_12C5:
+.mark_match:
     MOVEQ   #1,D1
-    BRA.S   LAB_12C7
+    BRA.S   .store_found
 
-LAB_12C6:
+.set_found_false:
     MOVEQ   #0,D1
 
-LAB_12C7:
+.store_found:
     MOVE.L  D1,D5
 
-LAB_12C8:
+.entry_loop_next:
     TST.L   D5
-    BNE.W   LAB_12C1
+    BNE.W   .entry_loop
 
     ADDQ.W  #1,LAB_203A
-    BRA.W   LAB_12C1
+    BRA.W   .entry_loop
 
-LAB_12C9:
+.scan_reset:
     TST.L   D5
-    BNE.W   LAB_12C0
+    BNE.W   .scan_loop
 
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BNE.S   LAB_12CA
+    BNE.S   .advance_row
 
     MOVEQ   #5,D7
-    BRA.W   LAB_12C0
+    BRA.W   .scan_loop
 
-LAB_12CA:
+.advance_row:
     MOVE.W  22(A3),LAB_203A
     ADDQ.L  #1,LAB_2039
-    BRA.W   LAB_12C0
+    BRA.W   .scan_loop
 
-LAB_12CB:
+.finalize_selection:
     TST.L   D5
-    BEQ.S   LAB_12CE
+    BEQ.S   .maybe_clear_state
 
     MOVEQ   #5,D0
     CMP.L   D0,D7
-    BEQ.S   LAB_12CE
+    BEQ.S   .maybe_clear_state
 
     MOVE.L  -4(A5),(A3)
     MOVE.L  -8(A5),4(A3)
     MOVE.L  LAB_2039,8(A3)
     CMPI.W  #$30,LAB_203A
-    BLE.S   LAB_12CC
+    BLE.S   .set_offset_flag
 
     MOVEQ   #49,D0
     CMP.W   D0,D4
-    BGE.S   LAB_12CC
+    BGE.S   .set_offset_flag
 
     MOVEQ   #48,D0
-    BRA.S   LAB_12CD
+    BRA.S   .apply_offset
 
-LAB_12CC:
+.set_offset_flag:
     MOVEQ   #0,D0
 
-LAB_12CD:
+.apply_offset:
     MOVE.L  D4,D1
     EXT.L   D1
     ADD.L   D0,D1
@@ -9088,15 +10255,15 @@ LAB_12CD:
     ADDA.W  D4,A0
     BSET    #5,7(A0)
 
-LAB_12CE:
+.maybe_clear_state:
     TST.L   D5
-    BNE.S   LAB_12CF
+    BNE.S   .return
 
     SUBA.L  A0,A0
     MOVE.L  A0,(A3)
     MOVE.L  A0,4(A3)
 
-LAB_12CF:
+.return:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D4-D7/A3
     UNLK    A5
@@ -9104,6 +10271,29 @@ LAB_12CF:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_AppendShowtimesForRow   (Append showtimes for row ??)
+; ARGS:
+;   stack +12: A3 = selection state
+;   stack +16: A2 = output buffer
+;   stack +20: D7 = mode selector
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_1337, LAB_1679, LAB_16F7, LAB_1355, LAB_1077, LAB_134B,
+;   JMP_TBL_APPEND_DATA_AT_NULL_3
+; READS:
+;   LAB_1BBD, LAB_203B
+; WRITES:
+;   output buffer contents
+; DESC:
+;   Scans rows and appends matching showtime strings into the buffer.
+; NOTES:
+;   Performs multiple field comparisons to coalesce identical showtimes.
+;------------------------------------------------------------------------------
+NEWGRID_AppendShowtimesForRow:
 LAB_12D0:
     LINK.W  A5,#-84
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
@@ -9113,28 +10303,28 @@ LAB_12D0:
     CLR.B   (A2)
     MOVE.W  20(A3),D5
     TST.L   (A3)
-    BEQ.W   LAB_12EE
+    BEQ.W   .return
 
     TST.L   4(A3)
-    BEQ.W   LAB_12EE
+    BEQ.W   .return
 
     MOVE.L  A2,D0
-    BEQ.W   LAB_12EE
+    BEQ.W   .return
 
     TST.W   D5
-    BLE.W   LAB_12EE
+    BLE.W   .return
 
     MOVEQ   #97,D0
     CMP.W   D0,D5
-    BGE.W   LAB_12EE
+    BGE.W   .return
 
     MOVEQ   #48,D0
     CMP.W   D0,D5
-    BLE.S   LAB_12D1
+    BLE.S   .adjust_row_index
 
     SUBI.W  #$30,D5
 
-LAB_12D1:
+.adjust_row_index:
     MOVEA.L 4(A3),A0
     MOVE.L  D5,D0
     EXT.L   D0
@@ -9144,26 +10334,26 @@ LAB_12D1:
     MOVEA.L 56(A1),A6
     MOVE.L  A6,-36(A5)
     MOVE.L  A6,D0
-    BEQ.W   LAB_12EE
+    BEQ.W   .return
 
     TST.B   (A6)
-    BEQ.W   LAB_12EE
+    BEQ.W   .return
 
     MOVEQ   #40,D0
     CMP.B   (A6),D0
-    BNE.S   LAB_12D2
+    BNE.S   .time_prefix_default
 
     MOVEQ   #58,D0
     CMP.B   3(A6),D0
-    BNE.S   LAB_12D2
+    BNE.S   .time_prefix_default
 
     MOVEQ   #8,D0
-    BRA.S   LAB_12D3
+    BRA.S   .time_prefix_done
 
-LAB_12D2:
+.time_prefix_default:
     MOVEQ   #0,D0
 
-LAB_12D3:
+.time_prefix_done:
     ADD.L   D0,-36(A5)
     MOVE.L  D5,D0
     EXT.L   D0
@@ -9200,7 +10390,7 @@ LAB_12D3:
     MOVE.L  D0,-52(A5)
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_12D4
+    BNE.S   .mode_flag_check
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -9210,15 +10400,15 @@ LAB_12D3:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_12D4
+    BEQ.S   .mode_flag_check
 
     MOVEQ   #1,D1
-    BRA.S   LAB_12D5
+    BRA.S   .mode_flag_store
 
-LAB_12D4:
+.mode_flag_check:
     MOVEQ   #0,D1
 
-LAB_12D5:
+.mode_flag_store:
     MOVE.L  D5,D0
     EXT.L   D0
     MOVE.L  4(A3),-(A7)
@@ -9235,22 +10425,22 @@ LAB_12D5:
     MOVEM.W D0,-6(A5)
     MOVEQ   #96,D1
     CMP.W   D1,D0
-    BLE.S   LAB_12D6
+    BLE.S   .compute_bounds
 
     MOVE.W  D1,-6(A5)
 
-LAB_12D6:
+.compute_bounds:
     ADDQ.W  #1,-6(A5)
     MOVE.W  20(A3),D5
     ADDQ.W  #1,D5
 
-LAB_12D7:
+.row_loop:
     CMP.W   -6(A5),D5
-    BGE.W   LAB_12EC
+    BGE.W   .post_loop
 
     MOVEQ   #49,D0
     CMP.W   D0,D5
-    BNE.S   LAB_12D8
+    BNE.S   .row_fetch_entry
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -9262,28 +10452,28 @@ LAB_12D7:
 
     LEA     16(A7),A7
 
-LAB_12D8:
+.row_fetch_entry:
     MOVEQ   #48,D0
     CMP.W   D0,D5
-    BLE.S   LAB_12D9
+    BLE.S   .row_direct_index
 
     MOVE.L  D5,D0
     EXT.L   D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
-    BRA.S   LAB_12DA
+    BRA.S   .row_index_ready
 
-LAB_12D9:
+.row_direct_index:
     MOVE.L  D5,D0
     EXT.L   D0
 
-LAB_12DA:
+.row_index_ready:
     MOVE.L  D0,D6
     TST.L   -80(A5)
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     TST.L   -84(A5)
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     MOVEA.L -80(A5),A0
     ADDA.W  #$1c,A0
@@ -9295,13 +10485,13 @@ LAB_12DA:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     MOVEA.L -84(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D6,A1
     BTST    #5,7(A1)
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -9309,12 +10499,12 @@ LAB_12DA:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   56(A1)
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     MOVEA.L A0,A1
     ADDA.W  D6,A1
     BTST    #7,7(A1)
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -9324,29 +10514,29 @@ LAB_12DA:
     MOVEA.L 56(A1),A6
     MOVE.L  A6,-58(A5)
     MOVE.L  A6,D0
-    BEQ.S   LAB_12DD
+    BEQ.S   .fetch_row_fields
 
     TST.B   (A6)
-    BEQ.S   LAB_12DD
+    BEQ.S   .fetch_row_fields
 
     MOVEQ   #40,D0
     CMP.B   (A6),D0
-    BNE.S   LAB_12DB
+    BNE.S   .time_prefix_check2
 
     MOVEQ   #58,D0
     CMP.B   3(A6),D0
-    BNE.S   LAB_12DB
+    BNE.S   .time_prefix_check2
 
     MOVEQ   #8,D0
-    BRA.S   LAB_12DC
+    BRA.S   .time_prefix_done2
 
-LAB_12DB:
+.time_prefix_check2:
     MOVEQ   #0,D0
 
-LAB_12DC:
+.time_prefix_done2:
     ADD.L   D0,-58(A5)
 
-LAB_12DD:
+.fetch_row_fields:
     MOVE.L  D6,D0
     EXT.L   D0
     PEA     1.W
@@ -9382,7 +10572,7 @@ LAB_12DD:
     MOVE.L  D0,-74(A5)
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_12DE
+    BNE.S   .mode_flag2_false
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -9392,135 +10582,135 @@ LAB_12DD:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_12DE
+    BEQ.S   .mode_flag2_false
 
     MOVEQ   #1,D1
-    BRA.S   LAB_12DF
+    BRA.S   .mode_flag2_store
 
-LAB_12DE:
+.mode_flag2_false:
     MOVEQ   #0,D1
 
-LAB_12DF:
+.mode_flag2_store:
     MOVE.B  D1,-75(A5)
     TST.L   -58(A5)
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     MOVEA.L -36(A5),A0
     MOVEA.L -58(A5),A1
     CMPA.L  A0,A1
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
-LAB_12E0:
+.compare_title_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     TST.B   D0
-    BNE.S   LAB_12E0
+    BNE.S   .compare_title_loop
 
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     MOVE.B  -53(A5),D0
     CMP.B   D1,D0
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     MOVEA.L -40(A5),A0
     MOVEA.L -62(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_12E2
+    BEQ.S   .compare_field2_loop
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
-LAB_12E1:
+.compare_field1_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     TST.B   D0
-    BNE.S   LAB_12E1
+    BNE.S   .compare_field1_loop
 
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
-LAB_12E2:
+.compare_field2_loop:
     MOVEA.L -44(A5),A0
     MOVEA.L -66(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_12E4
+    BEQ.S   .compare_field4
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
-LAB_12E3:
+.compare_field3_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     TST.B   D0
-    BNE.S   LAB_12E3
+    BNE.S   .compare_field3_loop
 
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
-LAB_12E4:
+.compare_field4:
     MOVEA.L -48(A5),A0
     MOVEA.L -70(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_12E6
+    BEQ.S   .compare_field4_done
 
     MOVE.L  A0,D0
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
     MOVE.L  A1,D0
-    BEQ.W   LAB_12EB
+    BEQ.W   .row_next
 
-LAB_12E5:
+.compare_field4_loop2:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
     TST.B   D0
-    BNE.S   LAB_12E5
+    BNE.S   .compare_field4_loop2
 
-    BNE.W   LAB_12EB
+    BNE.W   .row_next
 
-LAB_12E6:
+.compare_field4_done:
     MOVEA.L -52(A5),A0
     MOVEA.L -74(A5),A1
     CMPA.L  A0,A1
-    BEQ.S   LAB_12E8
+    BEQ.S   .append_prefix_check
 
     MOVE.L  A0,D0
-    BEQ.S   LAB_12EB
+    BEQ.S   .row_next
 
     MOVE.L  A1,D0
-    BEQ.S   LAB_12EB
+    BEQ.S   .row_next
 
-LAB_12E7:
+.compare_field4_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   LAB_12EB
+    BNE.S   .row_next
 
     TST.B   D0
-    BNE.S   LAB_12E7
+    BNE.S   .compare_field4_loop
 
-    BNE.S   LAB_12EB
+    BNE.S   .row_next
 
-LAB_12E8:
+.append_prefix_check:
     TST.B   (A2)
-    BNE.S   LAB_12EA
+    BNE.S   .append_showtime
 
     LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 
-LAB_12E9:
+.copy_showtimes_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_12E9
+    BNE.S   .copy_showtimes_prefix
 
     PEA     -31(A5)
     JSR     LAB_134B(PC)
@@ -9532,7 +10722,7 @@ LAB_12E9:
 
     ADDQ.W  #8,A7
 
-LAB_12EA:
+.append_showtime:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  -84(A5),-(A7)
@@ -9557,20 +10747,20 @@ LAB_12EA:
     ADDA.W  D6,A0
     BSET    #5,7(A0)
 
-LAB_12EB:
+.row_next:
     ADDQ.W  #1,D5
-    BRA.W   LAB_12D7
+    BRA.W   .row_loop
 
-LAB_12EC:
+.post_loop:
     TST.B   (A2)
-    BNE.S   LAB_12EE
+    BNE.S   .return
 
     LEA     GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 
-LAB_12ED:
+.copy_showing_at_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_12ED
+    BNE.S   .copy_showing_at_prefix
 
     PEA     -31(A5)
     JSR     LAB_134B(PC)
@@ -9582,13 +10772,35 @@ LAB_12ED:
 
     ADDQ.W  #8,A7
 
-LAB_12EE:
+.return:
     MOVEM.L (A7)+,D5-D7/A2-A3/A6
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawShowtimesPrompt   (Draw showtimes prompt ??)
+; ARGS:
+;   stack +8: A3 = rastport
+;   stack +12: A2 = output buffer
+;   stack +16: D7 = mode selector
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_134B, LAB_134C, JMP_TBL_APPEND_DATA_AT_NULL_3,
+;   NEWGRID_DrawGridFrame, LAB_133D, _LVOSetAPen, _LVOSetDrMd,
+;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
+; READS:
+;   LAB_2109, LAB_210D, LAB_210F, LAB_2328, LAB_232A, LAB_232B
+; WRITES:
+;   output buffer contents, 32(A3), 52(A3)
+; DESC:
+;   Builds a prompt string and centers it inside a grid frame.
+;------------------------------------------------------------------------------
+NEWGRID_DrawShowtimesPrompt:
 LAB_12EF:
     LINK.W  A5,#-168
     MOVEM.L D2/D7/A2-A3/A6,-(A7)
@@ -9596,7 +10808,7 @@ LAB_12EF:
     MOVEA.L 12(A5),A2
     MOVE.L  16(A5),D7
     MOVE.L  A2,D0
-    BEQ.W   LAB_12FC
+    BEQ.W   .return
 
     LEA     19(A2),A0
     MOVE.L  A0,-(A7)
@@ -9612,31 +10824,31 @@ LAB_12EF:
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
     TST.L   D7
-    BNE.S   LAB_12F1
+    BNE.S   .copy_prompt_b
 
     MOVEA.L LAB_210D,A0
     LEA     -136(A5),A1
 
-LAB_12F0:
+.copy_prompt_a:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_12F0
+    BNE.S   .copy_prompt_a
 
-    BRA.S   LAB_12F3
+    BRA.S   .prompt_done
 
-LAB_12F1:
+.copy_prompt_b:
     MOVEA.L LAB_2109,A0
     LEA     -136(A5),A1
 
-LAB_12F2:
+.copy_prompt_b_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_12F2
+    BNE.S   .copy_prompt_b_loop
 
-LAB_12F3:
+.prompt_done:
     MOVEA.L -4(A5),A0
 
-LAB_12F4:
+.measure_prompt:
     TST.B   (A0)+
-    BNE.S   LAB_12F4
+    BNE.S   .measure_prompt
 
     SUBQ.L  #1,A0
     SUBA.L  -4(A5),A0
@@ -9647,11 +10859,11 @@ LAB_12F4:
 
     LEA     12(A7),A7
     TST.L   -8(A5)
-    BEQ.S   LAB_12F7
+    BEQ.S   .draw_frame
 
     MOVEA.L -8(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_12F7
+    BEQ.S   .draw_frame
 
     MOVE.L  LAB_210F,-(A7)
     PEA     -136(A5)
@@ -9659,14 +10871,14 @@ LAB_12F4:
 
     ADDQ.W  #8,A7
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
-    BEQ.S   LAB_12F6
+    BEQ.S   .append_suffix
 
     MOVEA.L -8(A5),A0
     LEA     -146(A5),A1
 
-LAB_12F5:
+.copy_suffix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_12F5
+    BNE.S   .copy_suffix
 
     CLR.B   -144(A5)
     PEA     -146(A5)
@@ -9684,16 +10896,16 @@ LAB_12F5:
     JSR     JMP_TBL_APPEND_DATA_AT_NULL_3(PC)
 
     LEA     20(A7),A7
-    BRA.S   LAB_12F7
+    BRA.S   .draw_frame
 
-LAB_12F6:
+.append_suffix:
     MOVE.L  -8(A5),-(A7)
     PEA     -136(A5)
     JSR     JMP_TBL_APPEND_DATA_AT_NULL_3(PC)
 
     ADDQ.W  #8,A7
 
-LAB_12F7:
+.draw_frame:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #6,D0
@@ -9709,7 +10921,7 @@ LAB_12F7:
     MOVE.L  D1,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0FF4(PC)
+    JSR     NEWGRID_DrawGridFrame(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -9757,9 +10969,9 @@ LAB_12F7:
     MOVE.L  A0,80(A7)
     MOVEA.L A6,A0
 
-LAB_12F8:
+.measure_text:
     TST.B   (A0)+
-    BNE.S   LAB_12F8
+    BNE.S   .measure_text
 
     SUBQ.L  #1,A0
     SUBA.L  A6,A0
@@ -9774,11 +10986,11 @@ LAB_12F8:
     MOVE.L  88(A7),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_12F9
+    BPL.S   .center_x
 
     ADDQ.L  #1,D1
 
-LAB_12F9:
+.center_x:
     ASR.L   #1,D1
     MOVE.L  84(A7),D0
     ADD.L   D1,D0
@@ -9790,11 +11002,11 @@ LAB_12F9:
     MOVEQ   #34,D2
     SUB.L   D1,D2
     TST.L   D2
-    BPL.S   LAB_12FA
+    BPL.S   .center_y
 
     ADDQ.L  #1,D2
 
-LAB_12FA:
+.center_y:
     ASR.L   #1,D2
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -9808,9 +11020,9 @@ LAB_12FA:
     LEA     -136(A5),A1
     MOVEA.L A1,A6
 
-LAB_12FB:
+.draw_text:
     TST.B   (A6)+
-    BNE.S   LAB_12FB
+    BNE.S   .draw_text
 
     SUBQ.L  #1,A6
     SUBA.L  A1,A6
@@ -9827,17 +11039,38 @@ LAB_12FB:
     MOVE.L  D1,32(A3)
     PEA     67.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1038
+    BSR.W   NEWGRID_ValidateSelectionCode
 
     LEA     68(A7),A7
 
-LAB_12FC:
+.return:
     MOVEM.L (A7)+,D2/D7/A2-A3/A6
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_DrawGridFrameVariant4   (Draw grid frame variant)
+; ARGS:
+;   stack +8: A3 = rastport
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   LAB_102F, _LVOSetAPen, _LVORectFill, LAB_1350, LAB_1359,
+;   LAB_133F, LAB_1351, LAB_1346, LAB_135A
+; READS:
+;   LAB_2328, LAB_1CE8
+; WRITES:
+;   52(A3)
+; DESC:
+;   Draws a grid frame with row separators using another variant.
+; NOTES:
+;   Uses rounding before ASR to keep centering stable for negative values.
+;------------------------------------------------------------------------------
+NEWGRID_DrawGridFrameVariant4:
 LAB_12FD:
     LINK.W  A5,#-20
     MOVEM.L D2-D7/A3,-(A7)
@@ -9868,21 +11101,21 @@ LAB_12FD:
     MOVEQ   #0,D7
     MOVE.L  D7,D4
 
-.LAB_12FE:
+.row_loop:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BGE.W   .LAB_1309
+    BGE.W   .after_rows
 
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BNE.W   .LAB_1309
+    BNE.W   .after_rows
 
     MOVE.L  D4,D5
     JSR     LAB_1359(PC)
 
     TST.L   D0
-    BEQ.S   .LAB_1301
+    BEQ.S   .alt_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
@@ -9899,11 +11132,11 @@ LAB_12FD:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   .LAB_12FF
+    BPL.S   .half_width_round
 
     ADDQ.L  #1,D0
 
-.LAB_12FF:
+.half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
@@ -9911,34 +11144,34 @@ LAB_12FD:
     SUB.L   D1,D0
     SUBQ.L  #4,D0
     TST.L   D0
-    BPL.S   .LAB_1300
+    BPL.S   .half_width_adjust
 
     ADDQ.L  #1,D0
 
-.LAB_1300:
+.half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     ADDQ.L  #3,D0
     ADD.L   D0,D5
-    BRA.S   .LAB_1307
+    BRA.S   .draw_row
 
-.LAB_1301:
+.alt_path:
     JSR     LAB_1351(PC)
 
     TST.L   D0
-    BEQ.S   .LAB_1304
+    BEQ.S   .default_path
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     MOVE.L  D0,D1
     TST.L   D1
-    BPL.S   .LAB_1302
+    BPL.S   .alt_half_width_round
 
     ADDQ.L  #1,D1
 
-.LAB_1302:
+.alt_half_width_round:
     ASR.L   #1,D1
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D2
@@ -9946,39 +11179,39 @@ LAB_12FD:
     SUB.L   D2,D1
     SUBQ.L  #4,D1
     TST.L   D1
-    BPL.S   .LAB_1303
+    BPL.S   .alt_half_width_adjust
 
     ADDQ.L  #1,D1
 
-.LAB_1303:
+.alt_half_width_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  26(A0),D2
     ADD.L   D2,D1
     SUBQ.L  #1,D1
     ADD.L   D1,D5
-    BRA.S   .LAB_1307
+    BRA.S   .draw_row
 
-.LAB_1304:
+.default_path:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   .LAB_1305
+    BPL.S   .default_half_width_round
 
     ADDQ.L  #1,D0
 
-.LAB_1305:
+.default_half_width_round:
     ASR.L   #1,D0
     MOVEA.L 112(A3),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
     SUB.L   D1,D0
     TST.L   D0
-    BPL.S   .LAB_1306
+    BPL.S   .default_half_width_adjust
 
     ADDQ.L  #1,D0
 
-.LAB_1306:
+.default_half_width_adjust:
     ASR.L   #1,D0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -9986,7 +11219,7 @@ LAB_12FD:
     SUBQ.L  #1,D0
     ADD.L   D0,D5
 
-.LAB_1307:
+.draw_row:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
@@ -9997,21 +11230,21 @@ LAB_12FD:
     MOVEQ   #0,D0
     MOVE.W  LAB_2328,D0
     TST.L   D0
-    BPL.S   .LAB_1308
+    BPL.S   .advance_row
 
     ADDQ.L  #1,D0
 
-.LAB_1308:
+.advance_row:
     ASR.L   #1,D0
     ADD.L   LAB_1CE8,D0
     ADD.L   D0,D4
-    BRA.W   .LAB_12FE
+    BRA.W   .row_loop
 
-.LAB_1309:
+.after_rows:
     JSR     LAB_1350(PC)
 
     TST.L   D0
-    BEQ.S   .LAB_130A
+    BEQ.S   .draw_bottom_bevel
 
     MOVE.L  D4,D0
     SUBQ.L  #1,D0
@@ -10025,7 +11258,7 @@ LAB_12FD:
 
     LEA     20(A7),A7
 
-.LAB_130A:
+.draw_bottom_bevel:
     MOVE.L  D4,D0
     TST.L   D0
     BPL.S   .return
@@ -10043,6 +11276,25 @@ LAB_12FD:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: NEWGRID_TestPrimeTimeWindow   (Test primetime window ??)
+; ARGS:
+;   stack +8: D7 = hour index ??
+;   stack +12: A3 = entry state
+; RET:
+;   D0: 1 if in window, 0 otherwise
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   none
+; READS:
+;   48(A3)
+; DESC:
+;   Checks an entry flag and applies a time window test.
+; NOTES:
+;   Treats 'N'/'P' as mode hints and applies 18..22 window for 'P'.
+;------------------------------------------------------------------------------
+NEWGRID_TestPrimeTimeWindow:
 LAB_130C:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A3,-(A7)
