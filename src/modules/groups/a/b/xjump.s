@@ -1,0 +1,36 @@
+JMP_TBL_LAB_0B38:
+    JMP     LAB_0B38
+
+JMP_TBL_LAB_0966:
+    JMP     LAB_0966
+
+LAB_01C3:
+    JMP     DEALLOC_ADS_AND_LOGO_LST_DATA
+
+LAB_01C4:
+    JMP     LAB_0E0C
+
+LAB_01C5:
+    JMP     LAB_1908
+
+LAB_01C6:
+    JMP     LAB_0FA7
+
+LAB_01C7:
+    JMP     LOCAVAIL_FreeResourceChain
+
+JMP_TBL_FREE_RASTER:
+    JMP     FREE_RASTER
+
+JMP_TBL_LAB_19F7:
+    JMP     LAB_19F7
+
+JMP_TBL_LAB_0AC8:
+    JMP     LAB_0AC8
+
+;!======
+
+    ; Alignment
+    ORI.B   #0,D0
+    DC.W    $0000
+    MOVEQ   #97,D0

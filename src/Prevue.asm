@@ -751,97 +751,104 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
 
 ;!======
 
-    include "modules/groups/a/app.s"
-    include "modules/groups/a/app2.s"
-    include "modules/groups/a/app3.s"
+    include "modules/groups/a/a/app.s"
+    include "modules/groups/a/a/app2.s"
+    include "modules/groups/a/a/app3.s"
+    include "modules/groups/a/a/bevel.s"
+    include "modules/groups/a/a/bimage.s"
+    include "modules/groups/a/a/brush.s"
+    include "modules/groups/a/a/xjump.s"
 
-    include "modules/groups/a/bevel.s"
+    include "modules/groups/a/b/cleanup.s"
+    include "modules/groups/a/b/xjump.s"
 
-    include "modules/groups/a/bimage.s"
+    include "modules/groups/a/c/cleanup2.s"
+    include "modules/groups/a/c/xjump.s"
 
-    include "modules/groups/a/brush.s"
+    include "modules/groups/a/d/cleanup3.s"
+    include "modules/groups/a/d/xjump.s"
 
-    include "modules/groups/a/cleanup.s"
-    include "modules/groups/a/cleanup2.s"
-    include "modules/groups/a/cleanup3.s"
-    include "modules/groups/a/cleanup4.s"
+    include "modules/groups/a/e/cleanup4.s"
+    include "modules/groups/a/e/coi.s"
+    include "modules/groups/a/e/xjump.s"
 
-    include "modules/groups/a/coi.s"
+    include "modules/groups/a/f/ctasks.s"
+    include "modules/groups/a/f/xjump.s"
 
-    include "modules/groups/a/ctasks.s"
+    include "modules/groups/a/g/diskio.s"
+    include "modules/groups/a/g/diskio1.s"
+    include "modules/groups/a/g/xjump.s"
 
-    include "modules/groups/a/diskio.s"
-    include "modules/groups/a/diskio1.s"
-    include "modules/groups/a/diskio2.s"
+    include "modules/groups/a/h/diskio2.s"
+    include "modules/groups/a/h/xjump.s"
 
-    include "modules/groups/a/displib.s"
+    include "modules/groups/a/i/displib.s"
+    include "modules/groups/a/i/disptext.s"
+    include "modules/groups/a/i/xjump.s"
 
-    include "modules/groups/a/disptext.s"
-    include "modules/groups/a/disptext2.s"
+    include "modules/groups/a/j/disptext2.s"
+    include "modules/groups/a/j/dst.s"
+    include "modules/groups/a/j/dst2.s"
+    include "modules/groups/a/j/xjump.s"
 
-    include "modules/groups/a/dst.s"
-    include "modules/groups/a2/dst2.s"
+    include "modules/groups/a/k/ed.s"
+    include "modules/groups/a/k/ed1.s"
+    include "modules/groups/a/k/ed2.s"
+    include "modules/groups/a/k/xjump.s"
 
-    include "modules/groups/a2/ed.s"
-    include "modules/groups/b/ed1.s"
-    include "modules/groups/b/ed2.s"
-    include "modules/groups/b/ed3.s"
+    include "modules/groups/a/l/ed3.s"
+    include "modules/groups/a/l/xjump.s"
 
-    include "modules/groups/b/esq.s"
+    include "modules/groups/a/m/esq.s"
+    include "modules/groups/a/m/xjump.s"
 
-    include "modules/groups/b/esqdisp.s"
+    include "modules/groups/a/n/esqdisp.s"
+    include "modules/groups/a/n/esqfunc.s"
+    include "modules/groups/a/n/esqiff.s"
 
-    include "modules/groups/b/esqfunc.s"
+    include "modules/groups/a/o/esqiff2.s"
+    include "modules/groups/a/o/esqpars.s"
 
-    include "modules/groups/b/esqiff.s"
-    include "modules/groups/b/esqiff2.s"
+    include "modules/groups/a/p/esqshared.s"
+    include "modules/groups/a/q/esqshared4.s"
 
-    include "modules/groups/b/esqpars.s"
+    include "modules/groups/a/r/flib.s"
 
-    include "modules/groups/b/esqshared.s"
-    include "modules/groups/b/esqshared2.s"
-    include "modules/groups/b/esqshared3.s"
-    include "modules/groups/b/esqshared4.s"
+    include "modules/groups/a/s/flib2.s"
+    include "modules/groups/a/s/gcommand.s"
 
-    include "modules/groups/c/flib.s"
-    include "modules/groups/c/flib2.s"
+    include "modules/groups/a/t/gcommand2.s"
 
-    include "modules/groups/c/gcommand.s"
-    include "modules/groups/c/gcommand2.s"
-    include "modules/groups/c/gcommand3.s"
-    include "modules/groups/c/gcommand4.s"
-    include "modules/groups/c/gcommand5.s"
+    include "modules/groups/a/u/gcommand3.s"
+    include "modules/groups/a/u/gcommand4.s"
 
-    include "modules/groups/c/kybd.s"
+    include "modules/groups/a/v/gcommand5.s"
+    include "modules/groups/a/v/kybd.s"
 
-    include "modules/groups/c/ladfunc.s"
-    include "modules/groups/c/ladfunc2.s"
+    include "modules/groups/a/w/ladfunc.s"
 
-    include "modules/groups/c/locavail.s"
-    include "modules/groups/c/locavail2.s"
+    include "modules/groups/a/x/ladfunc2.s"
 
-    include "modules/groups/c/newgrid.s"
-    include "modules/groups/c/newgrid1.s"
-    include "modules/groups/d/newgrid2.s"
+    include "modules/groups/a/y/locavail.s"
 
-    include "modules/groups/d/p_type.s"
+    include "modules/groups/a/z/locavail2.s"
 
-    include "modules/groups/d/parseini.s"
-
-    include "modules/groups/d/script.s"
-    include "modules/groups/d/script2.s"
-    include "modules/groups/d/script3.s"
-    include "modules/groups/d/script4.s"
-
-    include "modules/groups/d/textdisp.s"
-    include "modules/groups/d/textdisp2.s"
-    include "modules/groups/d/textdisp3.s"
-
-    include "modules/groups/d/tliba1.s"
-    include "modules/groups/d/tliba2.s"
-    include "modules/groups/d/tliba3.s"
-
-    include "modules/groups/d/wdisp.s"
+    include "modules/groups/b/a/newgrid.s"
+    include "modules/groups/b/a/newgrid1.s"
+    include "modules/groups/b/a/newgrid2.s"
+    include "modules/groups/b/a/p_type.s"
+    include "modules/groups/b/a/parseini.s"
+    include "modules/groups/b/a/script.s"
+    include "modules/groups/b/a/script2.s"
+    include "modules/groups/b/a/script3.s"
+    include "modules/groups/b/a/script4.s"
+    include "modules/groups/b/a/textdisp.s"
+    include "modules/groups/b/a/textdisp2.s"
+    include "modules/groups/b/a/textdisp3.s"
+    include "modules/groups/b/a/tliba1.s"
+    include "modules/groups/b/a/tliba2.s"
+    include "modules/groups/b/a/tliba3.s"
+    include "modules/groups/b/a/wdisp.s"
 
     include "modules/submodules/unknown.s"
     include "modules/submodules/unknown2a.s"

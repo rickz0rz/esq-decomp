@@ -1,4 +1,4 @@
-APPEND_DATA_AT_NULL:
+UNKNOWN6_AppendDataAtNull
     MOVEA.L 8(A7),A1
     MOVEA.L 4(A7),A0
     MOVE.L  A0,D0

@@ -1,0 +1,29 @@
+LAB_037C:
+    JMP     LAB_17E6
+
+LAB_037D:
+    JMP     LAB_149E
+
+LAB_037E:
+    JMP     LAB_0926
+
+LAB_037F:
+    JMP     LAB_0923
+
+LAB_0380:
+    JMP     LAB_0E2D
+
+LAB_0381:
+    JMP     LAB_149B
+
+GROUPA_JMP_TBL_WDISP_SPrintf:
+    JMP     WDISP_SPrintf
+
+LAB_0383:
+    JMP     SCRIPT_AllocateBufferArray
+
+LAB_0384:
+    JMP     LAB_16FF
+
+LAB_0385:
+    JMP     LAB_0B44
