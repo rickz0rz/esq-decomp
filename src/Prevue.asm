@@ -673,7 +673,7 @@ LAB_0017:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   LAB_03C4, LAB_03C0, JMP_TBL_PRINTF_1
+;   LAB_03C4, LAB_03C0, GROUPA_JMP_TBL_WDISP_SPrintf
 ; READS:
 ;   LAB_1AF4, LAB_1AF6, GLOB_STR_DISK_ERRORS_FORMATTED,
 ;   GLOB_STR_DISK_IS_FULL_FORMATTED, LAB_2249
@@ -701,7 +701,7 @@ LAB_001E:
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_DISK_ERRORS_FORMATTED
     PEA     LAB_2249
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
     BRA.S   .done
@@ -714,7 +714,7 @@ LAB_001E:
     MOVE.L  D7,(A7)
     PEA     GLOB_STR_DISK_IS_FULL_FORMATTED
     PEA     LAB_2249
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
 
@@ -771,6 +771,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/a/ctasks.s"
 
     include "modules/groups/a/diskio.s"
+    include "modules/groups/a/diskio1.s"
     include "modules/groups/a/diskio2.s"
 
     include "modules/groups/a/displib.s"
@@ -779,8 +780,10 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/a/disptext2.s"
 
     include "modules/groups/a/dst.s"
+    include "modules/groups/a2/dst2.s"
 
-    include "modules/groups/a/ed.s"
+    include "modules/groups/a2/ed.s"
+    include "modules/groups/b/ed1.s"
     include "modules/groups/b/ed2.s"
     include "modules/groups/b/ed3.s"
 

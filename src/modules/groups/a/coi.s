@@ -276,7 +276,7 @@ LAB_02DC:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, DISKIO_OpenFileWithBuffer,
+;   JMP_TBL_LAB_1A07_1, GROUPA_JMP_TBL_WDISP_SPrintf, DISKIO_OpenFileWithBuffer,
 ;   LAB_03A0, ESQ_WildcardMatch, LAB_039A
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235
@@ -343,7 +343,7 @@ LAB_02E2:
     MOVE.L  D1,-(A7)
     PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1
     PEA     -112(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     MODE_NEWFILE.W
     PEA     -112(A5)
@@ -363,7 +363,7 @@ LAB_02E2:
     MOVE.L  D0,-(A7)
     PEA     LAB_1B6E
     PEA     -152(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -387,7 +387,7 @@ LAB_02E2:
     PEA     2.W
     PEA     LAB_1B6F
     PEA     -152(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -580,7 +580,7 @@ LAB_02E2:
     MOVE.L  32(A2),(A7)
     PEA     LAB_1B71
     PEA     -152(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -749,7 +749,7 @@ LAB_02E2:
     MOVE.L  D0,(A7)
     PEA     LAB_1B72
     PEA     -152(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -790,7 +790,7 @@ LAB_02E2:
     MOVE.L  D0,-(A7)
     PEA     LAB_1B73
     PEA     -152(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -868,7 +868,7 @@ LAB_02E2:
     MOVE.L  26(A0),(A7)
     PEA     LAB_1B75
     PEA     -152(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -1102,7 +1102,7 @@ LAB_0316:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, LAB_03AC, LAB_05C1, LAB_0468,
+;   JMP_TBL_LAB_1A07_1, GROUPA_JMP_TBL_WDISP_SPrintf, LAB_03AC, LAB_05C1, LAB_0468,
 ;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUPA_JMP_TBL_MEMORY_DeallocateMemory,
 ;   COI_AllocSubEntryTable
 ; READS:
@@ -1162,7 +1162,7 @@ LAB_031A:
     MOVE.L  D1,-(A7)
     PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2
     PEA     -566(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -566(A5)
     JSR     LAB_03AC(PC)
@@ -1541,7 +1541,7 @@ LAB_031A:
     MOVE.L  A0,-(A7)
     PEA     GLOB_STR_PERCENT_S_1
     PEA     -486(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -486(A5)
     JSR     LAB_0468(PC)
@@ -2288,7 +2288,7 @@ LAB_035E:
     PEA     LAB_1B80
     PEA     -44(A5)
     MOVE.L  D0,-36(A5)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     -44(A5),A0
     MOVE.L  A0,-4(A5)
@@ -2645,7 +2645,7 @@ LAB_037A:
     MOVE.L  -4(A5),-(A7)
     PEA     LAB_1B82
     MOVE.L  A1,-(A7)
-    JSR     JMP_TBL_PRINTF_1(PC)
+    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -2675,7 +2675,7 @@ LAB_0380:
 LAB_0381:
     JMP     LAB_149B
 
-JMP_TBL_PRINTF_1:
+GROUPA_JMP_TBL_WDISP_SPrintf:
     JMP     WDISP_SPrintf
 
 LAB_0383:

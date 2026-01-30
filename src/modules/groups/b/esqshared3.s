@@ -142,7 +142,7 @@ LAB_0C16:
 LAB_0C17:
     MOVE.L  A0,-(A7)
     PEA     GLOB_PTR_STR_SELECT_CODE
-    JSR     LAB_0C76(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D7
@@ -156,7 +156,7 @@ LAB_0C18:
 
     PEA     -30(A5)
     PEA     LAB_2298
-    JSR     LAB_0C76(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D5
@@ -398,7 +398,7 @@ LAB_0C29:
     LEA     28(A0),A1
     MOVE.L  24(A5),-(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0C72(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_ReverseBitsIn6Bytes(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D5
@@ -877,7 +877,7 @@ LAB_0C4F:
 LAB_0C50:
     MOVE.L  A3,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_0C76(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -889,7 +889,7 @@ LAB_0C50:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0C78(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  D0,-12(A5)
@@ -909,7 +909,7 @@ LAB_0C51:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0C73(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_SetBit1Based(PC)
 
     ADDQ.W  #8,A7
 
@@ -1017,7 +1017,7 @@ LAB_0C57:
     SUB.L   D1,D0
     MOVEQ   #10,D1
     MOVE.L  D0,-42(A5)
-    JSR     JMP_TBL_LAB_1A06_4(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
 
     MOVE.B  -2(A0),D1
     EXT.W   D1
@@ -1182,7 +1182,7 @@ LAB_0C5F:
     MOVEQ   #48,D2
     SUB.L   D2,D1
     MOVEQ   #10,D0
-    JSR     JMP_TBL_LAB_1A06_4(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
 
     BRA.S   LAB_0C61
 
@@ -1227,7 +1227,7 @@ LAB_0C63:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     JMP_TBL_LAB_1A06_4(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
 
     BRA.S   LAB_0C65
 
@@ -1349,7 +1349,7 @@ LAB_0C6D:
     MOVEA.L -8(A5),A0
     MOVE.L  44(A7),D1
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     LAB_0C74(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_AdjustBracketedHourInString(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
@@ -1387,23 +1387,23 @@ LAB_0C70:
 LAB_0C71:
     JMP     LAB_064D
 
-LAB_0C72:
+GROUPB_JMP_TBL_ESQ_ReverseBitsIn6Bytes:
     JMP     ESQ_ReverseBitsIn6Bytes
 
-LAB_0C73:
+GROUPB_JMP_TBL_ESQ_SetBit1Based:
     JMP     ESQ_SetBit1Based
 
-LAB_0C74:
+GROUPB_JMP_TBL_ESQ_AdjustBracketedHourInString:
     JMP     ESQ_AdjustBracketedHourInString
 
 LAB_0C75:
     JMP     LAB_0345
 
-LAB_0C76:
+GROUPB_JMP_TBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
 LAB_0C77:
     JMP     LAB_1985
 
-LAB_0C78:
+GROUPB_JMP_TBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based

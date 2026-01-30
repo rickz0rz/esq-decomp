@@ -8,7 +8,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0/A4/A6
 ; CALLS:
-;   LAB_0395 (GCOMMAND_SaveBrushResult), _LVOForbid, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
+;   CTASKS_JMP_TBL_GCOMMAND_SaveBrushResult (GCOMMAND_SaveBrushResult), _LVOForbid, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
 ; READS:
 ;   LAB_1B84 (state), LAB_1B20/LAB_1B21/LAB_1B24 (scratch ptrs), BRUSH_LoadInProgressFlag
 ;   GLOB_REF_LIST_IFF_TASK_PROC, GLOB_STR_CTASKS_C_1
@@ -58,7 +58,7 @@ LAB_0386:
     BNE.S   .wait_for_brush
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_0395(PC)
+    JSR     CTASKS_JMP_TBL_GCOMMAND_SaveBrushResult(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  LAB_1B84,D0
@@ -316,7 +316,7 @@ LAB_0394:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: CTASKS_JMP_TBL_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
+; FUNC: CTASKS_JMP_TBL_GCOMMAND_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
 ; ARGS:
 ;   ??
 ; RET:
@@ -334,10 +334,12 @@ LAB_0394:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-CTASKS_JMP_TBL_SaveBrushResult:
-LAB_0395:
+CTASKS_JMP_TBL_GCOMMAND_SaveBrushResult:
     JMP     GCOMMAND_SaveBrushResult
 
+;!======
+
+    ; Alignment
     MOVEQ   #97,D0
     RTS
 

@@ -53,7 +53,7 @@ LAB_0ABD:
     TST.L   D0
     BNE.S   LAB_0ABE
 
-    JSR     LAB_0C05(PC)
+    JSR     GROUPB_JMP_TBL_DST_RefreshBannerBuffer(PC)
 
 LAB_0ABE:
     PEA     1.W
@@ -1219,13 +1219,13 @@ LAB_0B22:
     PEA     GLOB_STR_MAJOR_MINOR_VERSION_1
     PEA     LAB_1EFA
     PEA     -40(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_229A,A0
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
     PEA     -40(A5)
-    JSR     LAB_0C76(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
 
     LEA     20(A7),A7
     TST.B   D0
@@ -1277,7 +1277,7 @@ LAB_0B23:
     PEA     GLOB_STR_MAJOR_MINOR_VERSION_2
     PEA     LAB_1EFD
     PEA     -40(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -40(A5)
     PEA     120.W
@@ -1427,7 +1427,7 @@ LAB_0B2A:
     MOVE.L  D5,(A7)
     PEA     GLOB_STR_REPORT_ERROR_CODE_FORMATTED
     PEA     -128(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -128(A5)
     PEA     150.W
@@ -1453,7 +1453,7 @@ LAB_0B2B:
     PEA     BRUSH_SnapshotHeader
     PEA     GLOB_STR_FILE_WIDTH_COLORS_FORMATTED
     PEA     -128(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
     MOVE.W  #1,LAB_1B85
@@ -1463,7 +1463,7 @@ LAB_0B2C:
     PEA     BRUSH_SnapshotHeader
     PEA     GLOB_STR_FILE_PERCENT_S
     PEA     -128(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 

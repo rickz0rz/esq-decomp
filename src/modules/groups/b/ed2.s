@@ -74,7 +74,7 @@ LAB_072F:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_PI_CLU_POS1
     PEA     -120(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -123,7 +123,7 @@ LAB_0735:
     MOVE.L  A1,-(A7)
     PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS_1
     PEA     -120(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -175,7 +175,7 @@ LAB_0739:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_TS_TITLE_TIME
     PEA     -120(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -358,7 +358,7 @@ LAB_0747:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_CLU_CLU_POS1
     PEA     -120(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -377,7 +377,7 @@ LAB_0747:
     MOVE.L  A1,-(A7)
     PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS_2
     PEA     -120(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -800,7 +800,7 @@ LAB_075E:
     CLR.L   -118(A5)
     PEA     (MODE_OLDFILE).W
     PEA     GLOB_STR_DF0_CLOCK_CMD
-    JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_2(PC)
+    JSR     GROUPB_JMP_TBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -1119,7 +1119,7 @@ LAB_077B:
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
-    JSR     JMP_TBL_LAB_1A06_4(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
 
     MOVE.L  D0,LAB_1BCA
     BRA.W   LAB_0799
@@ -1136,7 +1136,7 @@ LAB_077D:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
+    JSR     GROUPB_JMP_TBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
@@ -1148,7 +1148,7 @@ LAB_077E:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
+    JSR     GROUPB_JMP_TBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
@@ -1158,7 +1158,7 @@ LAB_077F:
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_SCRIPT_BeginBannerCharTransition_2(PC)
+    JSR     GROUPB_JMP_TBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
     BRA.W   LAB_0799
@@ -1173,7 +1173,7 @@ LAB_0781:
     PEA     4.W
     CLR.L   -(A7)
     PEA     3.W
-    JSR     LAB_0A97(PC)
+    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
 
     MOVE.L  D0,LAB_2216
     JSR     LAB_07E2(PC)
@@ -1370,7 +1370,7 @@ LAB_0795:
     MOVE.L  LAB_2267,-(A7)
     PEA     LAB_1D69
     PEA     -50(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -50(A5)
     PEA     232.W
@@ -1607,7 +1607,7 @@ LAB_07A5:
     SUB.L   D1,D0
     MOVE.L  D0,LAB_21FB
     MOVEQ   #40,D1
-    JSR     JMP_TBL_LAB_1A06_4(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
 
     MOVE.L  D0,LAB_21EB
     JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)

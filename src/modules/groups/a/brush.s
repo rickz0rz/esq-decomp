@@ -811,7 +811,7 @@ LAB_0156:
     MOVE.L  A0,-50(A5)
     MOVE.L  A0,-46(A5)
     MOVE.L  A0,-16(A5)
-    JSR     JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_1(PC)
+    JSR     GROUPA_JMP_TBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7

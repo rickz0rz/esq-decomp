@@ -80,7 +80,7 @@ FREE_RASTER:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: OPEN_FILE_WITH_ACCESS_MODE   (Open wrapper)
+; FUNC: UNKNOWN2B_OpenFileWithAccessMode   (Open wrapper)
 ; ARGS:
 ;   stack +8: A3 = filename pointer
 ;   stack +12: D7 = access mode
@@ -99,7 +99,7 @@ FREE_RASTER:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-OPEN_FILE_WITH_ACCESS_MODE:
+UNKNOWN2B_OpenFileWithAccessMode:
     MOVEM.L D2/D6-D7/A3,-(A7)
 
     SetOffsetForStack 4

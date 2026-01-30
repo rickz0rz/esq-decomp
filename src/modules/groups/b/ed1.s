@@ -1,0 +1,710 @@
+LAB_0701:
+    MOVEM.L D6-D7,-(A7)
+    JSR     LAB_07D4(PC)
+
+    MOVE.L  D0,D7
+    MOVEQ   #0,D6
+    MOVE.B  D7,D0
+    EXT.W   D0
+    CMPI.W  #9,D0
+    BCC.W   .LAB_0706
+
+    ADD.W   D0,D0
+    MOVE.W  .LAB_0702(PC,D0.W),D0
+    JMP     .LAB_0702+2(PC,D0.W)
+
+; switch/jumptable
+.LAB_0702:
+    DC.W    .LAB_0702_0010-.LAB_0702-2
+    DC.W    .LAB_0702_0018-.LAB_0702-2
+    DC.W    .LAB_0702_003A-.LAB_0702-2
+	DC.W    .LAB_0702_005C-.LAB_0702-2
+    DC.W    .LAB_0702_0084-.LAB_0702-2
+    DC.W    .LAB_0702_008A-.LAB_0702-2
+	DC.W    .LAB_0702_00AE-.LAB_0702-2
+    DC.W    .LAB_0702_00C6-.LAB_0702-2
+    DC.W    .LAB_0702_00BC-.LAB_0702-2
+
+.LAB_0702_0010:
+    BSR.W   *+(LAB_0712_033E-.LAB_0702+2)
+
+    BRA.W   .LAB_0709
+
+.LAB_0702_0018:
+    MOVE.B  LAB_1BC4,D0
+    MOVEQ   #76,D1
+    CMP.B   D1,D0
+    BNE.S   .LAB_0704
+
+    JSR     LAB_07F0(PC)
+
+    MOVE.B  #$2,LAB_1D13
+    BRA.W   .LAB_0709
+
+.LAB_0704:
+    MOVEQ   #1,D6
+    BRA.W   .LAB_0709
+
+.LAB_0702_003A:
+    MOVE.B  LAB_1BC4,D0
+    MOVEQ   #76,D1
+    CMP.B   D1,D0
+    BNE.S   .LAB_0705
+
+    JSR     LAB_07F0(PC)
+
+    MOVE.B  #$3,LAB_1D13
+    BRA.W   .LAB_0709
+
+.LAB_0705:
+    MOVEQ   #1,D6
+    BRA.W   .LAB_0709
+
+.LAB_0702_005C:
+    MOVE.B  #$6,LAB_1D13
+    JSR     LAB_07EB(PC)
+
+    MOVE.L  LAB_21E2,LAB_21E8
+    PEA     9.W
+    JSR     LAB_07E9(PC)
+
+    JSR     LAB_07EC(PC)
+
+    ADDQ.W  #4,A7
+    MOVEQ   #0,D6
+    BRA.S   .LAB_0709
+
+.LAB_0702_0084:
+    BSR.W   LAB_0718
+
+    BRA.S   .LAB_0709
+
+.LAB_0702_008A:
+    MOVE.B  #$a,LAB_1D13
+    JSR     LAB_07EB(PC)
+
+    CLR.L   LAB_21E8
+    PEA     4.W
+    JSR     LAB_07E9(PC)
+
+    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
+
+    ADDQ.W  #4,A7
+    MOVEQ   #0,D6
+    BRA.S   .LAB_0709
+
+.LAB_0702_00AE:
+    MOVE.B  #$8,LAB_1D13
+    JSR     LAB_07E4(PC)
+
+    BRA.S   .LAB_0709
+
+.LAB_0702_00BC:
+    MOVE.W  #1,LAB_1DE4
+    BRA.S   .LAB_0709
+
+.LAB_0702_00C6:
+.LAB_0706:
+    MOVEQ   #9,D0
+    CMP.B   D0,D7
+    BNE.S   .LAB_0707
+
+    MOVEQ   #5,D0
+    BRA.S   .LAB_0708
+
+.LAB_0707:
+    MOVEQ   #1,D0
+
+.LAB_0708:
+    ADD.L   D0,LAB_21E8
+    MOVE.L  LAB_21E8,D0
+    MOVEQ   #6,D1
+    JSR     GROUPB_JMP_TBL_LAB_1A07(PC)
+
+    MOVE.L  D1,LAB_21E8
+    JSR     LAB_07E5(PC)
+
+.LAB_0709:
+    TST.B   D6
+    BEQ.S   .LAB_070B
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #4,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVE.B  D6,D0
+    EXT.W   D0
+    SUBQ.W  #1,D0
+    BNE.S   .LAB_070A
+
+    PEA     LAB_1D29
+    PEA     270.W
+    PEA     145.W
+    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    LEA     16(A7),A7
+
+.LAB_070A:
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #1,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+.LAB_070B:
+    MOVEM.L (A7)+,D6-D7
+    RTS
+
+;!======
+
+LAB_070C:
+    MOVE.L  LAB_231C,D0
+    LSL.L   #2,D0
+    ADD.L   LAB_231C,D0
+    LEA     LAB_231D,A0
+    ADDA.L  D0,A0
+    MOVE.B  (A0),D0
+    MOVE.B  D0,LAB_21ED
+    MOVEQ   #0,D1
+    MOVE.B  D0,D1
+    SUBI.W  #$31,D1
+    BEQ.S   LAB_070D
+
+    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+
+    CLR.W   LAB_2252
+
+LAB_070D:
+    RTS
+
+;!======
+
+LAB_070E:
+    LINK.W  A5,#-48
+    MOVEM.L D2/D7,-(A7)
+
+    MOVE.W  #1,LAB_2263
+    MOVE.B  LAB_1DD6,D0
+    MOVE.B  D0,LAB_21E3
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L GLOB_HANDLE_H26F_FONT,A0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetFont(A6)
+
+    LEA     GLOB_REF_696_400_BITMAP,A0
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVE.L  A0,4(A1)
+    MOVEQ   #3,D0
+    MOVE.L  #696,D1
+    MOVE.L  #509,D2
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOInitBitMap(A6)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #2,D0
+    JSR     _LVOSetRast(A6)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #1,D0
+    JSR     _LVOSetDrMd(A6)
+
+    JSR     LAB_0A49(PC)
+
+    MOVEQ   #0,D7
+
+LAB_070F:
+    MOVEQ   #24,D0
+    CMP.L   D0,D7
+    BGE.S   LAB_0710
+
+    LEA     LAB_2295,A0
+    ADDA.L  D7,A0
+    LEA     LAB_1FB8,A1
+    ADDA.L  D7,A1
+    MOVE.B  (A1),(A0)
+    ADDQ.L  #1,D7
+    BRA.S   LAB_070F
+
+LAB_0710:
+    MOVEA.L AbsExecBase,A6
+    JSR     _LVODisable(A6)
+
+    MOVE.W  #$100,LAB_1F45
+    CLR.W   LAB_226D
+    PEA     3.W
+    JSR     LAB_07C4(PC)
+
+    JSR     ESQ_JMP_TBL_LAB_0056(PC)
+
+    CLR.L   LAB_21E4
+    JSR     LAB_0723(PC)
+
+    ADDQ.W  #4,A7
+    MOVEA.L AbsExecBase,A6
+    JSR     _LVOEnable(A6)
+
+    MOVEQ   #0,D0
+    MOVE.B  LAB_1DCB,D0
+    MOVEQ   #48,D1
+    SUB.L   D1,D0
+    MOVEQ   #10,D1
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+
+    MOVEQ   #0,D1
+    MOVE.B  LAB_1DCB+1,D1
+    ADD.L   D1,D0
+    MOVEQ   #48,D1
+    SUB.L   D1,D0
+    MOVE.L  D0,LAB_21FD
+    MOVEQ   #0,D0
+    MOVE.B  LAB_1DCD,D0
+    SUB.L   D1,D0
+    MOVE.L  D0,LAB_21FB
+    MOVEQ   #6,D1
+    CMP.L   D1,D0
+    BLE.S   LAB_0711
+
+    MOVE.L  D1,LAB_21FB
+    MOVE.B  #$36,LAB_1DCD
+
+LAB_0711:
+    MOVE.L  LAB_21FB,D0
+    MOVEQ   #40,D1
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+
+    MOVE.L  D0,LAB_21EB
+    MOVEQ   #1,D0
+    MOVE.L  D0,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+
+    MOVE.L  GLOB_LONG_PATCH_VERSION_NUMBER,-(A7)
+    PEA     GLOB_STR_NINE_POINT_ZERO
+    PEA     GLOB_STR_VER_PERCENT_S_PERCENT_L_D
+    PEA     -41(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    JSR     DST_JMP_TBL_CLEANUP_DrawDateTimeBannerRow(PC)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #3,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #0,D0
+    JSR     _LVOSetDrMd(A6)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L 52(A1),A0
+    MOVEQ   #0,D0
+    MOVE.W  26(A0),D0
+    MOVEQ   #34,D1
+    SUB.L   D0,D1
+    TST.L   D1
+    BPL.S   LAB_0712
+
+    ADDQ.L  #1,D1
+
+LAB_0712:
+    ASR.L   #1,D1
+    MOVEQ   #0,D0
+    MOVE.W  26(A0),D0
+    ADD.L   D0,D1
+    MOVEQ   #33,D0
+    ADD.L   D0,D1
+    PEA     -41(A5)
+    MOVE.L  D1,-(A7)
+    PEA     280.W
+    MOVE.L  A1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #1,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #1,D0
+    JSR     _LVOSetDrMd(A6)
+
+    JSR     LAB_0A48(PC)
+
+LAB_0712_033E: 
+    PEA     LAB_2321
+    JSR     LAB_071D(PC)
+
+    MOVEM.L -56(A5),D2/D7
+    UNLK    A5
+    RTS
+
+;!======
+
+LAB_0713:
+    MOVE.L  D2,-(A7)
+
+    CLR.W   LAB_1B85
+
+    LEA     GLOB_REF_696_400_BITMAP,A0
+    MOVEQ   #3,D0
+    MOVE.L  #696,D1
+    MOVE.L  #400,D2
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOInitBitMap(A6)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1          ; rastport
+    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0     ; font
+    JSR     _LVOSetFont(A6)
+
+    JSR     LAB_071E(PC)
+
+    MOVEQ   #0,D0
+    MOVE.W  D0,LAB_2252
+    MOVE.W  D0,LAB_1DF3
+    JSR     ESQ_JMP_TBL_LAB_14E2(PC)
+
+    CLR.W   LAB_1F3C
+    JSR     LAB_09B7(PC)
+
+    JSR     LAB_0969(PC)
+
+    BSR.W   LAB_0719
+
+    MOVEQ   #1,D0
+    MOVE.L  D0,LAB_225F
+    MOVE.L  LAB_2262,-(A7)
+    MOVE.L  LAB_2260,-(A7)
+    JSR     LAB_098A(PC)
+
+    JSR     JMP_TBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7(PC)
+
+    ADDQ.W  #8,A7
+    MOVEQ   #1,D0
+    CMP.L   LAB_21E4,D0
+    BNE.S   LAB_0714
+
+    JSR     LAB_0720(PC)
+
+LAB_0714:
+    MOVEQ   #-1,D0
+    MOVE.L  D0,LAB_1FE9
+    MOVE.B  LAB_21E3,D0
+    MOVE.B  LAB_1DD6,D1
+    CMP.B   D1,D0
+    BEQ.S   LAB_0716
+
+    MOVEQ   #78,D2
+    CMP.B   D2,D1
+    BEQ.S   LAB_0715
+
+    CMP.B   D2,D0
+    BNE.S   LAB_0715
+
+    BSR.W   LAB_071B
+
+LAB_0715:
+    MOVE.B  LAB_1DD6,D0
+    MOVEQ   #78,D1
+    CMP.B   D1,D0
+    BNE.S   LAB_0716
+
+    MOVE.B  LAB_21E3,D0
+    CMP.B   D1,D0
+    BEQ.S   LAB_0716
+
+    CLR.L   -(A7)
+    PEA     LAB_1ED2
+    JSR     LAB_0AA4(PC)
+
+    ADDQ.W  #8,A7
+    CLR.L   LAB_1B27
+
+LAB_0716:
+    MOVE.W  LAB_2346,D0
+    BEQ.S   LAB_0717
+
+    MOVE.W  #3,LAB_2346
+
+LAB_0717:
+    MOVEQ   #0,D0
+    MOVE.W  D0,LAB_2284
+    MOVE.W  D0,LAB_2282
+    MOVE.W  D0,CTRL_H
+    MOVE.W  D0,LAB_2263
+    JSR     LAB_0725(PC)
+
+    JSR     LAB_07E4(PC)
+
+    PEA     1.W
+    JSR     LAB_09A7(PC)
+
+    JSR     LAB_0A48(PC)
+
+    ADDQ.W  #4,A7
+    CLR.W   LAB_1F45
+
+    MOVE.L  (A7)+,D2
+    RTS
+
+;!======
+
+LAB_0718:
+
+.printfResult   = -41
+
+    LINK.W  A5,#-48
+
+    MOVE.B  #$7,LAB_1D13
+    MOVE.W  #1,LAB_2252
+
+    JSR     LAB_07E4(PC)
+
+    PEA     GLOB_PTR_STR_SELECT_CODE
+    PEA     360.W
+    PEA     90.W
+    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    PEA     LAB_2245    ; I have no idea what this text is...
+    PEA     360.W
+    PEA     210.W
+    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    MOVE.L  GLOB_REF_BAUD_RATE,(A7)
+    PEA     GLOB_STR_BAUD_RATE_DIAGNOSTIC_MODE
+    PEA     .printfResult(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    PEA     .printfResult(A5)
+    PEA     360.W
+    PEA     410.W
+    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    PEA     LAB_1D2E
+    JSR     LAB_03C0(PC)
+
+    PEA     LAB_1D2F
+    MOVE.L  D0,64(A7)
+    JSR     LAB_03C4(PC)
+
+    MOVE.L  D0,(A7)
+    MOVE.L  64(A7),-(A7)
+    PEA     GLOB_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS
+    PEA     .printfResult(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    LEA     76(A7),A7
+    PEA     .printfResult(A5)
+    PEA     88.W
+    PEA     40.W
+    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #6,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    PEA     GLOB_STR_PUSH_ANY_KEY_TO_CONTINUE_2
+    PEA     390.W
+    PEA     175.W
+    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+
+    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEQ   #1,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetAPen(A6)
+
+    UNLK    A5
+    RTS
+
+;!======
+
+LAB_0719:
+    CLR.B   LAB_1D13
+    RTS
+
+;!======
+
+LAB_071A:
+    TST.W   LAB_1B83
+    BEQ.S   LAB_071A
+
+    MOVE.W  #$2e,LAB_2265
+    MOVE.W  LAB_22A9,D0
+    ANDI.W  #$fffd,D0
+    MOVE.W  D0,LAB_22A9
+    CLR.L   -(A7)
+    JSR     LAB_0A0B(PC)
+
+    ADDQ.W  #4,A7
+    RTS
+
+;!======
+
+LAB_071B:
+    TST.W   LAB_1B83
+
+    BEQ.S   LAB_071B
+
+    MOVE.W  #$2e,LAB_2265
+    MOVE.W  LAB_22A9,D0
+    ANDI.W  #$fffe,D0
+    MOVE.W  D0,LAB_22A9
+    PEA     1.W
+    JSR     LAB_0A0B(PC)
+
+    ADDQ.W  #4,A7
+    RTS
+
+;!======
+
+JMP_TBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
+    JMP     DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
+
+LAB_071D:
+    JMP     LAB_0F12
+
+;!======
+
+    ; Alignment
+    ORI.B   #0,D0
+    ORI.B   #0,D0
+    ORI.B   #0,D0
+    ORI.B   #0,D0
+    ORI.B   #0,D0
+    ORI.B   #0,D0
+
+;!======
+
+LAB_071E:
+    JMP     GCOMMAND_ResetHighlightMessages
+
+LAB_071F:
+    JMP     LAB_0EE7
+
+LAB_0720:
+    JMP     LAB_0E48
+
+LAB_0721:
+    JMP     ESQ_ColdReboot
+
+LAB_0722:
+    JMP     LAB_0CA7
+
+LAB_0723:
+    JMP     GCOMMAND_SeedBannerDefaults
+
+LAB_0724:
+    JMP     LAB_1AAE
+
+LAB_0725:
+    JMP     GCOMMAND_SeedBannerFromPrefs
+
+DST_JMP_TBL_CLEANUP_DrawDateTimeBannerRow:
+LAB_0726:
+    JMP     CLEANUP_DrawDateTimeBannerRow
+
+LAB_0727:
+    JMP     LAB_0EE6
+
+;!======
+; The below content should belong in another file... need to determine what it is.
+;!======
+
+LAB_0728:
+    LINK.W  A5,#-44
+
+    MOVE.W  LAB_1F40,D0
+    EXT.L   D0
+    MOVE.L  D0,-(A7)
+    PEA     LAB_1D34
+    PEA     -41(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    MOVEA.L LAB_2216,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    PEA     210.W
+    PEA     -41(A5)
+    MOVE.L  A0,-(A7)
+    JSR     LAB_09AD(PC)
+
+    UNLK    A5
+    RTS
+
+;!======
+
+LAB_0729:
+    LINK.W  A5,#-52
+    MOVE.L  D2,-(A7)
+    MOVEA.L LAB_2216,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVEA.L A0,A1
+    MOVEQ   #2,D0
+    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    JSR     _LVOSetRast(A6)
+
+    MOVE.B  LAB_1BA4,D0
+    EXT.W   D0
+    EXT.L   D0
+    MOVE.B  LAB_1BA5,D1
+    EXT.W   D1
+    EXT.L   D1
+    MOVE.B  LAB_1BAD,D2
+    EXT.W   D2
+    EXT.L   D2
+    MOVE.L  D2,-(A7)
+    MOVE.L  D1,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     LAB_1D35
+    PEA     -51(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    MOVEA.L LAB_2216,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    PEA     120.W
+    PEA     -51(A5)
+    MOVE.L  A0,-(A7)
+    JSR     LAB_09AD(PC)
+
+    MOVE.B  LAB_1BB7,D0
+    EXT.W   D0
+    EXT.L   D0
+    MOVE.L  LAB_1BBD,(A7)
+    MOVE.L  LAB_1BBE,-(A7)
+    MOVE.L  D0,-(A7)
+    PEA     LAB_1D36
+    PEA     -51(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    MOVEA.L LAB_2216,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    PEA     150.W
+    PEA     -51(A5)
+    MOVE.L  A0,-(A7)
+    JSR     LAB_09AD(PC)
+
+    MOVE.B  LAB_1BC9,D0
+    EXT.W   D0
+    EXT.L   D0
+    MOVE.L  D0,(A7)
+    PEA     GLOB_STR_CLOCKCMD_EQUALS_PCT_C
+    PEA     -51(A5)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
+
+    LEA     68(A7),A7
+    MOVEA.L LAB_2216,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    PEA     180.W
+    PEA     -51(A5)
+    MOVE.L  A0,-(A7)
+    JSR     LAB_09AD(PC)
+
+    MOVE.L  -56(A5),D2
+    UNLK    A5
+    RTS

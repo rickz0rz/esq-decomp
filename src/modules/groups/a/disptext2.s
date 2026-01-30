@@ -24,11 +24,11 @@ LAB_05C7:
     MOVE.L  24(A7),D7
     MOVEA.L 28(A7),A3
     TST.L   D7
-    BPL.S   LAB_05C8
+    BPL.S   .LAB_05C8
 
     MOVEQ   #0,D7
 
-LAB_05C8:
+.LAB_05C8:
     MOVE.L  D7,D0
     MOVEQ   #60,D1
     JSR     JMP_TBL_LAB_1A07_1(PC)
@@ -69,7 +69,7 @@ LAB_05C8:
 
     MOVE.L  D1,D7
 
-LAB_05C9:
+.LAB_05C9:
     MOVE.L  #$2238,D6
     MOVE.W  6(A3),D0
     EXT.L   D0
@@ -78,14 +78,14 @@ LAB_05C9:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_05CA
+    BEQ.S   .LAB_05CA
 
     MOVEQ   #24,D0
     ADD.L   D0,D6
 
-LAB_05CA:
+.LAB_05CA:
     CMP.L   D6,D7
-    BLT.S   LAB_05CB
+    BLT.S   .LAB_05CB
 
     MOVE.L  D6,D0
     MOVEQ   #24,D1
@@ -94,9 +94,9 @@ LAB_05CA:
     ADD.L   D0,D4
     ADDQ.W  #1,6(A3)
     SUB.L   D6,D7
-    BRA.S   LAB_05C9
+    BRA.S   .LAB_05C9
 
-LAB_05CB:
+.LAB_05CB:
     MOVE.L  D7,D0
     MOVEQ   #24,D1
     JSR     JMP_TBL_LAB_1A07_1(PC)
@@ -125,29 +125,29 @@ LAB_05CB:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_05CC
+    BEQ.S   .LAB_05CC
 
     MOVEQ   #-1,D0
-    BRA.S   LAB_05CD
+    BRA.S   .LAB_05CD
 
-LAB_05CC:
+.LAB_05CC:
     MOVEQ   #0,D0
 
-LAB_05CD:
+.LAB_05CD:
     MOVE.W  D0,20(A3)
     ADDQ.W  #1,D0
-    BNE.S   LAB_05CF
+    BNE.S   .LAB_05CF
 
     MOVEQ   #60,D0
     CMP.L   D0,D7
-    BLE.S   LAB_05CE
+    BLE.S   .LAB_05CE
 
     SUBQ.L  #1,D7
-    BRA.S   LAB_05CF
+    BRA.S   .LAB_05CF
 
-LAB_05CE:
+.LAB_05CE:
     CMP.L   D0,D7
-    BNE.S   LAB_05CF
+    BNE.S   .LAB_05CF
 
     MOVE.W  #1,2(A3)
     MOVE.W  #$1d,4(A3)
@@ -156,12 +156,12 @@ LAB_05CE:
 
     ADDQ.W  #4,A7
     MOVE.L  A3,D0
-    BRA.S   LAB_05D2
+    BRA.S   .return
 
-LAB_05CF:
+.LAB_05CF:
     CLR.W   2(A3)
 
-LAB_05D0:
+.LAB_05D0:
     LEA     LAB_1CF5,A0
     MOVE.W  2(A3),D0
     MOVEA.L A0,A1
@@ -170,7 +170,7 @@ LAB_05D0:
     EXT.W   D1
     EXT.L   D1
     CMP.L   D7,D1
-    BGE.S   LAB_05D1
+    BGE.S   .LAB_05D1
 
     ADDA.W  D0,A0
     MOVE.B  (A0),D0
@@ -178,9 +178,9 @@ LAB_05D0:
     EXT.L   D0
     SUB.L   D0,D7
     ADDQ.W  #1,2(A3)
-    BRA.S   LAB_05D0
+    BRA.S   .LAB_05D0
 
-LAB_05D1:
+.LAB_05D1:
     MOVE.L  D7,D0
     MOVE.W  D0,4(A3)
     MOVE.L  A3,-(A7)
@@ -189,7 +189,7 @@ LAB_05D1:
     ADDQ.W  #4,A7
     MOVE.L  A3,D0
 
-LAB_05D2:
+.return:
     MOVEM.L (A7)+,D4-D7/A3
     RTS
 
@@ -944,7 +944,7 @@ LAB_0604:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   JMP_TBL_PRINTF_2, JMP_TBL_APPEND_DATA_AT_NULL_1, JMP_TBL_LAB_1A07_1, LAB_03A0
+;   GROUPB_JMP_TBL_WDISP_SPrintf, JMP_TBL_APPEND_DATA_AT_NULL_1, JMP_TBL_LAB_1A07_1, LAB_03A0
 ; READS:
 ;   LAB_1CF8..LAB_1D00
 ; WRITES:
@@ -971,7 +971,7 @@ LAB_0605:
     PEA     4.W
     PEA     LAB_1CF8
     PEA     -138(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -986,7 +986,7 @@ LAB_0605:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CF9
     PEA     -138(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1019,7 +1019,7 @@ LAB_0607:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFA
     PEA     -138(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1044,7 +1044,7 @@ LAB_0609:
     PEA     19.W
     PEA     LAB_1CFC
     PEA     -138(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1059,7 +1059,7 @@ LAB_0609:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFD
     PEA     -138(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)
@@ -1092,7 +1092,7 @@ LAB_060B:
     MOVE.L  D0,-(A7)
     PEA     LAB_1CFE
     PEA     -138(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     PEA     -138(A5)
     PEA     -87(A5)

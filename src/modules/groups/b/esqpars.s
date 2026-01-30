@@ -1023,7 +1023,7 @@ LAB_0B4F:
 .LAB_0B76:
     PEA     -62(A5)
     PEA     -42(A5)
-    JSR     LAB_0C72(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_ReverseBitsIn6Bytes(PC)
 
     ADDQ.W  #8,A7
     CLR.L   -26(A5)
@@ -1225,7 +1225,7 @@ LAB_0B4F:
 
     MOVE.L  D0,-(A7)
     PEA     -42(A5)
-    JSR     LAB_0C78(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-22(A5)
@@ -1242,7 +1242,7 @@ LAB_0B4F:
     MOVEQ   #0,D0
     MOVE.B  -223(A5),D0
     MOVE.L  -26(A5),D1
-    JSR     JMP_TBL_LAB_1A06_4(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
 
     EXT.L   D0
     PEA     -227(A5)
@@ -1292,7 +1292,7 @@ LAB_0B4F:
 
     MOVE.L  D0,-(A7)
     PEA     -42(A5)
-    JSR     LAB_0C78(PC)
+    JSR     GROUPB_JMP_TBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-22(A5)
@@ -1692,7 +1692,7 @@ LAB_0B4F:
     MOVE.L  D0,-(A7)
     PEA     LAB_CTRLHTCMAX
     PEA     -72(A5)
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W

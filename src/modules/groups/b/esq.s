@@ -11,7 +11,7 @@
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
 ;   JMP_TBL_LIBRARIES_LOAD_FAILED_2, JMP_TBL_OVERRIDE_INTUITION_FUNCS,
 ;   _LVOOpenFont, _LVOOpenDiskFont, GROUPB_JMP_TBL_MEMORY_AllocateMemory,
-;   _LVOInitRastPort, _LVOSetFont, JMP_TBL_LAB_1A07_2, JMP_TBL_UNKNOWN2B_AllocRaster_2,
+;   _LVOInitRastPort, _LVOSetFont, GROUPB_JMP_TBL_LAB_1A07, JMP_TBL_UNKNOWN2B_AllocRaster_2,
 ;   _LVOBltClear, _LVOInitBitMap, JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY,
 ;   JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMP_TBL_LAB_1AAD, LAB_08C1,
 ;   ESQ_JMP_TBL_LAB_0056, ESQ_JMP_TBL_LAB_001E, ESQ_JMP_TBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
@@ -20,7 +20,7 @@
 ;   ESQ_JMP_TBL_LAB_002F, ESQ_JMP_TBL_SCRIPT_InitCtrlContext, ESQ_JMP_TBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMP_TBL_LAB_041D, LAB_098A, LAB_0C7A,
 ;   ESQ_JMP_TBL_LAB_180B, SETUP_INTERRUPT_INTB_VERTB, LAB_0A45, LAB_0A49, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, LAB_09AD, LAB_09A9,
-;   JMP_TBL_PRINTF_2, ESQ_JMP_TBL_LAB_14E2, ESQ_JMP_TBL_LAB_0D89, JMP_TBL_PARSE_INI, ESQ_JMP_TBL_LAB_0DE9
+;   GROUPB_JMP_TBL_WDISP_SPrintf, ESQ_JMP_TBL_LAB_14E2, ESQ_JMP_TBL_LAB_0D89, JMP_TBL_PARSE_INI, ESQ_JMP_TBL_LAB_0DE9
 ; READS:
 ;   GLOB_REF_DOS_LIBRARY_2, AbsExecBase, GLOB_STR_GRAPHICS_LIBRARY,
 ;   GLOB_STR_DISKFONT_LIBRARY, GLOB_STR_DOS_LIBRARY, GLOB_STR_INTUITION_LIBRARY,
@@ -277,7 +277,7 @@ LAB_085E:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     JMP_TBL_LAB_1A07_2(PC)
+    JSR     GROUPB_JMP_TBL_LAB_1A07(PC)
 
     TST.L   D1
     BEQ.S   .adjust_rastport_text_spacing
@@ -757,7 +757,7 @@ LAB_085E:
     PEA     3.W
     CLR.L   -(A7)
     PEA     2.W
-    JSR     LAB_0A97(PC)
+    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2216
@@ -972,7 +972,7 @@ LAB_085E:
     PEA     GLOB_STR_MAJOR_MINOR_VERSION            ; 9.0
     PEA     GLOB_STR_GUIDE_START_VERSION_AND_BUILD
     PEA     LAB_2204
-    JSR     JMP_TBL_PRINTF_2(PC)
+    JSR     GROUPB_JMP_TBL_WDISP_SPrintf(PC)
 
     LEA     LAB_1E12,A0
     LEA     LAB_2249,A1
@@ -1099,7 +1099,7 @@ LAB_085E:
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)
-    JSR     LAB_0AAA(PC)
+    JSR     GROUPB_JMP_TBL_BRUSH_PopulateBrushList(PC)
 
     PEA     LAB_1E1B
     JSR     LAB_0AB5(PC)
@@ -1850,7 +1850,7 @@ LAB_08B6:
     JMP     LAB_0CC8
 
 ;------------------------------------------------------------------------------
-; FUNC: JMP_TBL_PRINTF_2   (JumpStub_PRINTF)
+; FUNC: GROUPB_JMP_TBL_WDISP_SPrintf   (JumpStub_PRINTF)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1866,7 +1866,7 @@ LAB_08B6:
 ; DESC:
 ;   Jump stub to WDISP_SPrintf.
 ;------------------------------------------------------------------------------
-JMP_TBL_PRINTF_2:
+GROUPB_JMP_TBL_WDISP_SPrintf:
     JMP     WDISP_SPrintf
 
 ;------------------------------------------------------------------------------

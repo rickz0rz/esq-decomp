@@ -1,6 +1,6 @@
 ;!======
 
-LAB_0C05:
+GROUPB_JMP_TBL_DST_RefreshBannerBuffer:
     JMP     DST_RefreshBannerBuffer
 
 LAB_0C06:
