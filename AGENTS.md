@@ -1,14 +1,16 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`src/ESQ.asm` is the root include; it stitches together feature modules under `src/modules/` (UI control in `gcommand.s`, keyboard input in `kybd.s`, disk helpers in `diskio2.s`) plus shared routines from `src/subroutines/`. Display tables and highlight presets live in `src/data/`, while interrupt-specific logic sits in `src/interrupts/`. `src/decomp/` holds experimental C decomp/cleanup helpers and does not participate in the build. Keep module-level assets beside their code: banner strings go in the matching data file, and new shared macros belong in `macros.s` or `text-formatting.s`. External requirements (Workbench ROM, HDD image) are stored under `assets/kickstart/` and `assets/disks/prevue/`. Treat `build/` as disposable output.
+`src/Prevue.asm` is the root include; it stitches together feature modules under `src/modules/groups/` (UI control in `gcommand.s`, keyboard input in `kybd.s`, disk helpers in `diskio2.s`) plus shared routines from `src/subroutines/`. Display tables and highlight presets live in `src/data/`, while interrupt-specific logic sits in `src/interrupts/`. `src/decomp/` holds experimental C decomp/cleanup helpers and does not participate in the build. Keep module-level assets beside their code: banner strings go in the matching data file, and new shared macros belong in `macros.s` or `text-formatting.s`. External requirements (Workbench ROM, HDD image) are stored under `assets/kickstart/` and `assets/disks/prevue/`. Treat `build/` as disposable output.
 
 Recent re-org notes:
 - Code has been split into smaller files along more logical boundaries; module names may change again as functionality becomes clearer.
-- `src/modules/submod/` currently groups utility-like routines that have not been confidently named yet. Expect placeholders such as `unknown*.s` until behavior is understood.
+- `src/modules/groups/` contains lettered folders (`a`, `b`, `c`, `d`, etc.) that group files sharing jump-table/export patterns. These groupings are heuristic, not definitive source boundaries.
+- `src/modules/submodules/` currently groups utility-like routines that have not been confidently named yet. Expect placeholders such as `unknown*.s` until behavior is understood.
 - Some larger modules now have numbered companion files (e.g., `disptext2.s`, `newgrid1.s`, `script2.s`–`script4.s`) to keep related chunks together.
 - Alignment/padding bytes after jump tables are likely compiler artifacts that mark original object/source boundaries; treat them as file-end markers unless proven otherwise.
   - Heuristic only: padding can also appear mid-file for table/code alignment, and jump tables are suggestive but not definitive boundaries.
+  - Some jump tables appear shared across multiple files; this is likely due to linker layout/segment reuse rather than a strict file-level boundary.
 
 ## Build, Test, and Development Commands
 Ensure the vasm 68k toolchain is installed and update the hard-coded path inside `build.sh` and `test-hash.sh` if needed. Typical workflow:
@@ -19,7 +21,7 @@ chmod +x build.sh test-hash.sh
 ```
 For targeted experiments, invoke vasm directly (example path):
 ```bash
-~/Downloads/vasm/vasmm68k_mot -Fhunkexe -linedebug -o build/ESQ src/ESQ.asm
+~/Downloads/vasm/vasmm68k_mot -Fhunkexe -linedebug -o build/ESQ src/Prevue.asm
 ```
 Never commit generated binaries; stash them or place them in `build/`.
 
