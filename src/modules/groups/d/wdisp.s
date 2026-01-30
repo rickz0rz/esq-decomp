@@ -499,7 +499,7 @@ LAB_185C:
     MOVE.L  -8(A5),-(A7)
     PEA     301.W
     PEA     GLOB_STR_WDISP_C
-    JSR     DEALLOCATE_MEMORY(PC)
+    JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     BRA.W   .return

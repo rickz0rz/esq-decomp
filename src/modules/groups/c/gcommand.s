@@ -72,7 +72,7 @@ GCOMMAND_LoadDefaultTable:
     MOVE.L  -8(A5),-(A7)
     PEA     335.W
     PEA     GLOB_STR_GCOMMAND_C_1
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
+    JSR     GROUPC_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
 
@@ -544,7 +544,7 @@ LAB_0CE9:
     MOVE.L  -4(A5),-(A7)
     PEA     575.W
     PEA     GLOB_STR_GCOMMAND_C_2
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
+    JSR     GROUPC_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
     CLR.L   -16(A5)
@@ -1379,7 +1379,7 @@ LAB_0D21:
     MOVE.L  -4(A5),-(A7)
     PEA     993.W
     PEA     GLOB_STR_GCOMMAND_C_3
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
+    JSR     GROUPC_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
     TST.L   D5

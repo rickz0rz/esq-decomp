@@ -10,7 +10,7 @@ struct Interrupt;
 void RemIntServer(uint8_t interrupt, struct Interrupt *isr);
 
 /* Memory bookkeeping helper exported from the original assembly. */
-void DEALLOCATE_MEMORY(const char *tag, uint16_t line, void *address, uint32_t size);
+void MEMORY_DeallocateMemory(const char *tag, uint16_t line, void *address, uint32_t size);
 
 /* Exec global base exported by the runtime. */
 extern struct ExecBase *AbsExecBase;
@@ -19,7 +19,7 @@ extern struct ExecBase *AbsExecBase;
 extern struct Interrupt *GLOB_REF_INTERRUPT_STRUCT_INTB_VERTB;
 extern const char GLOB_STR_CLEANUP_C_1[];
 
-/* Allocation statistics maintained by DEALLOCATE_MEMORY. */
+/* Allocation statistics maintained by MEMORY_DeallocateMemory. */
 extern uint32_t GLOB_BYTES_ALLOCATED;
 extern uint32_t GLOB_DEALLOCATIONS;
 

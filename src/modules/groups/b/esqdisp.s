@@ -28,7 +28,7 @@ LAB_08BC:
     PEA     79.W                        ; Line Number
     PEA     GLOB_STR_ESQDISP_C          ; Calling File
     MOVE.L  D0,28(A7)
-    JSR     JMP_TBL_ALLOC_RASTER_2(PC)
+    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVE.L  12(A7),D1
@@ -492,8 +492,8 @@ LAB_08DF:
 LAB_08E0:
     JMP     LAB_100D
 
-JMP_TBL_ALLOC_RASTER_2:
-    JMP     ALLOC_RASTER
+JMP_TBL_UNKNOWN2B_AllocRaster_2:
+    JMP     UNKNOWN2B_AllocRaster
 
 ;!======
 

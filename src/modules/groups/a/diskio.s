@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0/D6-D7/A3
 ; CALLS:
-;   LAB_0466, OPEN_FILE_WITH_ACCESS_MODE, ALLOCATE_MEMORY
+;   LAB_0466, OPEN_FILE_WITH_ACCESS_MODE, MEMORY_AllocateMemory
 ; READS:
 ;   DISKIO_OpenCount, LAB_1F45, DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize
 ; WRITES:
@@ -57,7 +57,7 @@ DISKIO_OpenFileWithBuffer:
     MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
     PEA     286.W
     PEA     GLOB_STR_DISKIO_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,DISKIO_BufferState+Struct_DiskIoBufferState__Remaining
@@ -124,7 +124,7 @@ LAB_039C:
     MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,-(A7)
     PEA     353.W
     PEA     GLOB_STR_DISKIO_C_2
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     JSR     LAB_0466(PC)
 
@@ -345,7 +345,7 @@ LAB_03AC:
     MOVE.L  D0,-(A7)
     PEA     472.W
     PEA     GLOB_STR_DISKIO_C_3
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_21BC
@@ -375,7 +375,7 @@ LAB_03AC:
     MOVE.L  LAB_21BC,-(A7)
     PEA     492.W
     PEA     GLOB_STR_DISKIO_C_4
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D7,D1
@@ -530,7 +530,7 @@ LAB_03C0:
     PEA     Struct_InfoData_Size.W
     PEA     567.W
     PEA     GLOB_STR_DISKIO_C_5
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -548,7 +548,7 @@ LAB_03C0:
     MOVEA.L D2,A0
     MOVE.L  16(A0),D0
     MOVEQ   #100,D1
-    JSR     JMP_TBL_LAB_1A06_2(PC)
+    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
 
     MOVE.L  12(A0),D1
     JSR     JMP_TBL_LAB_1A07_1(PC)
@@ -563,7 +563,7 @@ LAB_03C0:
     MOVE.L  D2,-(A7)
     PEA     574.W
     PEA     GLOB_STR_DISKIO_C_6
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -599,7 +599,7 @@ LAB_03C4:
     PEA     Struct_InfoData_Size.W
     PEA     593.W
     PEA     GLOB_STR_DISKIO_C_7
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -622,7 +622,7 @@ LAB_03C4:
     MOVE.L  D2,-(A7)
     PEA     599.W
     PEA     GLOB_STR_DISKIO_C_8
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1894,7 +1894,7 @@ LAB_03E0:
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
-    JSR     JMP_TBL_LAB_1A06_2(PC)
+    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
 
     MOVE.L  D0,LAB_1BCA
     MOVEM.L -28(A5),D2/D5-D7/A3
@@ -2195,7 +2195,7 @@ LAB_041D:
     MOVE.L  -4(A5),-(A7)
     PEA     1344.W
     PEA     GLOB_STR_DISKIO_C_9
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D6
@@ -3137,8 +3137,8 @@ JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_1:
 JMP_TBL_LAB_1A07_1:
     JMP     LAB_1A07
 
-JMP_TBL_DEALLOCATE_MEMORY_1:
-    JMP     DEALLOCATE_MEMORY
+GROUPA_JMP_TBL_MEMORY_DeallocateMemory:
+    JMP     MEMORY_DeallocateMemory
 
 LAB_0463:
     JMP     LAB_1A30
@@ -3164,8 +3164,8 @@ JMP_TBL_SCRIPT_BeginBannerCharTransition_1:
 LAB_046A:
     JMP     LAB_0EF9
 
-JMP_TBL_ALLOCATE_MEMORY_1:
-    JMP     ALLOCATE_MEMORY
+GROUPA_JMP_TBL_MEMORY_AllocateMemory:
+    JMP     MEMORY_AllocateMemory
 
 JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_1:
     JMP     OPEN_FILE_WITH_ACCESS_MODE
@@ -3173,7 +3173,7 @@ JMP_TBL_OPEN_FILE_WITH_ACCESS_MODE_1:
 LAB_046D:
     JMP     LAB_14C6
 
-JMP_TBL_LAB_1A06_2:
+GROUPA_JMP_TBL_LAB_1A06:
     JMP     LAB_1A06
 
 LAB_046F:

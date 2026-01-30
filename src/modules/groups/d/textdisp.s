@@ -1854,7 +1854,7 @@ LAB_165D:
     PEA     732.W
     PEA     1084.W
     PEA     GLOB_STR_TEXTDISP_C_1
-    JSR     ALLOCATE_MEMORY(PC)
+    JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_214B
@@ -1918,7 +1918,7 @@ LAB_1662:
     MOVE.L  LAB_214B,-(A7)
     PEA     1106.W
     PEA     GLOB_STR_TEXTDISP_C_2
-    JSR     DEALLOCATE_MEMORY(PC)
+    JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   LAB_214B
@@ -1995,7 +1995,7 @@ LAB_1668:
     MOVE.L  (A0),-(A7)
     PEA     1153.W
     PEA     GLOB_STR_TEXTDISP_C_3
-    JSR     DEALLOCATE_MEMORY(PC)
+    JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
     MOVE.L  D7,D0
@@ -2141,7 +2141,7 @@ LAB_1675:
     PEA     1229.W
     PEA     GLOB_STR_TEXTDISP_C_4
     MOVE.L  A0,24(A7)
-    JSR     ALLOCATE_MEMORY(PC)
+    JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 8(A7),A0

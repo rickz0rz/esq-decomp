@@ -10,8 +10,8 @@
 ; CALLS:
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
 ;   JMP_TBL_LIBRARIES_LOAD_FAILED_2, JMP_TBL_OVERRIDE_INTUITION_FUNCS,
-;   _LVOOpenFont, _LVOOpenDiskFont, JMP_TBL_ALLOCATE_MEMORY_2,
-;   _LVOInitRastPort, _LVOSetFont, JMP_TBL_LAB_1A07_2, JMP_TBL_ALLOC_RASTER_2,
+;   _LVOOpenFont, _LVOOpenDiskFont, GROUPB_JMP_TBL_MEMORY_AllocateMemory,
+;   _LVOInitRastPort, _LVOSetFont, JMP_TBL_LAB_1A07_2, JMP_TBL_UNKNOWN2B_AllocRaster_2,
 ;   _LVOBltClear, _LVOInitBitMap, JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY,
 ;   JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMP_TBL_LAB_1AAD, LAB_08C1,
 ;   ESQ_JMP_TBL_LAB_0056, ESQ_JMP_TBL_LAB_001E, ESQ_JMP_TBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
@@ -254,7 +254,7 @@ LAB_085E:
     PEA     100.W
     PEA     623.W
     PEA     GLOB_STR_ESQ_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -291,7 +291,7 @@ LAB_085E:
     PEA     100.W
     PEA     645.W
     PEA     GLOB_STR_ESQ_C_2
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -337,7 +337,7 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.alloc_rasters_352x240_loop:
+.UNKNOWN2B_AllocRasters_352x240_loop:
     MOVEQ   #4,D0
     CMP.W   D0,D5
     BGE.S   .select_clock_format_table
@@ -353,7 +353,7 @@ LAB_085E:
     PEA     668.W                       ; Line Number
     PEA     GLOB_STR_ESQ_C_3            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_ALLOC_RASTER_2(PC)
+    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -371,7 +371,7 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .alloc_rasters_352x240_loop
+    BRA.S   .UNKNOWN2B_AllocRasters_352x240_loop
 
 .select_clock_format_table:
     MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D0
@@ -392,7 +392,7 @@ LAB_085E:
     PEA     34.W
     PEA     683.W
     PEA     GLOB_STR_ESQ_C_4
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1DC5
@@ -416,7 +416,7 @@ LAB_085E:
     PEA     34.W
     PEA     698.W
     PEA     GLOB_STR_ESQ_C_5
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1DC6
@@ -568,7 +568,7 @@ LAB_085E:
     PEA     9000.W                              ; 9000 bytes
     PEA     854.W                               ; line number?
     PEA     GLOB_STR_ESQ_C_6
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,LAB_229A
     CLR.L   (A7)
@@ -624,7 +624,7 @@ LAB_085E:
     PEA     96.W                            ; Bytes to Allocate
     PEA     984.W                           ; Line Number
     PEA     GLOB_STR_ESQ_C_7                ; Calling File
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -646,7 +646,7 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.alloc_rasters_696x509_loop:
+.UNKNOWN2B_AllocRasters_696x509_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
     BGE.S   .seed_raster_aliases
@@ -662,7 +662,7 @@ LAB_085E:
     PEA     991.W                       ; Line Number
     PEA     GLOB_STR_ESQ_C_8            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_ALLOC_RASTER_2(PC)
+    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -679,7 +679,7 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .alloc_rasters_696x509_loop
+    BRA.S   .UNKNOWN2B_AllocRasters_696x509_loop
 
 .seed_raster_aliases:
     MOVE.L  LAB_221C,LAB_2267
@@ -690,7 +690,7 @@ LAB_085E:
 .seed_raster_offsets_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
-    BGE.S   .begin_alloc_rasters_696x241
+    BGE.S   .begin_UNKNOWN2B_AllocRasters_696x241
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -705,10 +705,10 @@ LAB_085E:
     ADDQ.W  #1,D5
     BRA.S   .seed_raster_offsets_loop
 
-.begin_alloc_rasters_696x241:
+.begin_UNKNOWN2B_AllocRasters_696x241:
     MOVEQ   #3,D5
 
-.alloc_rasters_696x241_loop:
+.UNKNOWN2B_AllocRasters_696x241_loop:
     MOVEQ   #5,D0
     CMP.W   D0,D5
     BGE.S   .init_main_rastport
@@ -724,7 +724,7 @@ LAB_085E:
     PEA     1008.W                      ; Line Number
     PEA     GLOB_STR_ESQ_C_9            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_ALLOC_RASTER_2(PC)
+    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -741,7 +741,7 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .alloc_rasters_696x241_loop
+    BRA.S   .UNKNOWN2B_AllocRasters_696x241_loop
 
 .init_main_rastport:
     MOVE.L  LAB_2224,LAB_220A
@@ -770,7 +770,7 @@ LAB_085E:
 
     MOVEQ   #0,D5
 
-.alloc_rasters_696x2_loop:
+.UNKNOWN2B_AllocRasters_696x2_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
     BGE.S   .after_raster_setup
@@ -786,7 +786,7 @@ LAB_085E:
     PEA     1027.W                      ; Line Number
     PEA     GLOB_STR_ESQ_C_10           ; Calling file
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_ALLOC_RASTER_2(PC)
+    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -805,7 +805,7 @@ LAB_085E:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .alloc_rasters_696x2_loop
+    BRA.S   .UNKNOWN2B_AllocRasters_696x2_loop
 
 .after_raster_setup:
     MOVE.L  LAB_2220,LAB_2207
@@ -816,7 +816,7 @@ LAB_085E:
     PEA     696.W                       ; Width
     PEA     1038.W                      ; Line Number
     PEA     GLOB_STR_ESQ_C_11           ; Calling file
-    JSR     JMP_TBL_ALLOC_RASTER_2(PC)
+    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
 
     MOVE.L  D0,LAB_2229
     CLR.W   LAB_22AB

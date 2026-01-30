@@ -133,7 +133,7 @@ LAB_0557:
     MOVE.L  D0,-(A7)
     PEA     194.W
     PEA     GLOB_STR_DISPLIB_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -174,7 +174,7 @@ LAB_055A:
     MOVE.L  -4(A5),-(A7)
     PEA     204.W
     PEA     GLOB_STR_DISPLIB_C_2
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
 

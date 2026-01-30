@@ -6,7 +6,7 @@ SETUP_INTERRUPT_INTB_VERTB:
     PEA     22.W                            ; Bytes to Allocate
     PEA     1159.W                          ; Line Number
     PEA     GLOB_STR_ESQFUNC_C_1            ; Calling File
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -40,7 +40,7 @@ SETUP_INTERRUPT_INTB_AUD1:
     PEA     22.W                            ; Bytes to Allocate
     PEA     1172.W                          ; Line Number
     PEA     GLOB_STR_ESQFUNC_C_2            ; Calling File
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -75,7 +75,7 @@ SETUP_INTERRUPT_INTB_RBF:
     PEA     22.W                            ; Bytes to Allocate
     PEA     1195.W                          ; Line Number
     PEA     GLOB_STR_ESQFUNC_C_3            ; Calling File
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,GLOB_REF_INTERRUPT_STRUCT_INTB_RBF
 
@@ -84,7 +84,7 @@ SETUP_INTERRUPT_INTB_RBF:
     MOVE.L  #64000,-(A7)                    ; Bytes to Allocate
     PEA     1197.W                          ; Line Number
     PEA     GLOB_STR_ESQFUNC_C_4            ; Calling File
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
 
@@ -137,7 +137,7 @@ LAB_0963:
     PEA     1222.W                              ; Line Number
     PEA     GLOB_STR_ESQFUNC_C_5                ; Calling File
     MOVE.L  A0,20(A7)
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 4(A7),A0
@@ -175,7 +175,7 @@ LAB_0967:
     MOVE.L  (A0),-(A7)
     PEA     1235.W
     PEA     GLOB_STR_ESQFUNC_C_6
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D7,D0

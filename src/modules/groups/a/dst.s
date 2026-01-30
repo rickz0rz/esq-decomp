@@ -11,7 +11,7 @@ LAB_0613:
     MOVE.L  (A3),-(A7)
     PEA     773.W
     PEA     GLOB_STR_DST_C_1
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -23,7 +23,7 @@ LAB_0613:
     MOVE.L  4(A3),-(A7)
     PEA     777.W
     PEA     GLOB_STR_DST_C_2
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -32,7 +32,7 @@ LAB_0613:
     MOVE.L  A3,-(A7)
     PEA     779.W
     PEA     GLOB_STR_DST_C_3
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -70,7 +70,7 @@ LAB_0618:
     PEA     18.W                            ; What's 18 bytes big?
     PEA     798.W
     PEA     GLOB_STR_DST_C_4
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A3
@@ -81,7 +81,7 @@ LAB_0618:
     PEA     22.W                            ; What's 22 bytes big?
     PEA     803.W
     PEA     GLOB_STR_DST_C_5
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,(A3)
@@ -92,7 +92,7 @@ LAB_0618:
     PEA     22.W                            ; What's 22 bytes big?
     PEA     807.W
     PEA     GLOB_STR_DST_C_6
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,4(A3)
@@ -238,7 +238,7 @@ LAB_0621:
     MOVE.L  -48(A5),-(A7)
     PEA     889.W
     PEA     GLOB_STR_DST_C_7
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   DST_UpdateBannerQueue
@@ -599,7 +599,7 @@ LAB_0640:
     JSR     JMP_TBL_LAB_1A07_1(PC)
 
     MOVEQ   #30,D0
-    JSR     JMP_TBL_LAB_1A06_2(PC)
+    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
 
     MOVE.W  D0,-12(A5)
     MOVE.L  D7,D0
@@ -724,7 +724,7 @@ LAB_064B:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #60,D1
-    JSR     JMP_TBL_LAB_1A06_2(PC)
+    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
 
     ADD.L   D0,D5
     MOVE.L  A2,-(A7)

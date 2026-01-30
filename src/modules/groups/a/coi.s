@@ -21,7 +21,7 @@ LAB_02CE:
     MOVE.L  A2,-(A7)
     PEA     815.W
     PEA     GLOB_STR_COI_C_3
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -184,7 +184,7 @@ LAB_02D9:
     MOVE.L  38(A3),-(A7)
     PEA     876.W
     PEA     GLOB_STR_COI_C_4
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
 
@@ -1032,7 +1032,7 @@ LAB_02E2:
 ; CLOBBERS:
 ;   D0-D1/A0-A3
 ; CALLS:
-;   JMP_TBL_ALLOCATE_MEMORY_1, LAB_0383
+;   GROUPA_JMP_TBL_MEMORY_AllocateMemory, LAB_0383
 ; READS:
 ;   A3+48 (subentry owner??), A0+36 (subentry count)
 ; WRITES:
@@ -1073,7 +1073,7 @@ LAB_0316:
     MOVE.L  D0,-(A7)
     PEA     1123.W
     PEA     GLOB_STR_COI_C_5
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.L  D0,38(A0)
@@ -1103,7 +1103,7 @@ LAB_0316:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   JMP_TBL_LAB_1A07_1, JMP_TBL_PRINTF_1, LAB_03AC, LAB_05C1, LAB_0468,
-;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, JMP_TBL_DEALLOCATE_MEMORY_1,
+;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUPA_JMP_TBL_MEMORY_DeallocateMemory,
 ;   COI_AllocSubEntryTable
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235,
@@ -1207,7 +1207,7 @@ LAB_031A:
     MOVE.L  A0,-(A7)
     PEA     1198.W
     PEA     GLOB_STR_COI_C_6
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .return_status
@@ -1956,7 +1956,7 @@ LAB_031A:
     MOVE.L  -570(A5),-(A7)
     PEA     1443.W
     PEA     GLOB_STR_COI_C_1
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
@@ -1982,7 +1982,7 @@ LAB_0345:
     PEA     Struct_AnimOb_Size.W
     PEA     1458.W
     PEA     GLOB_STR_COI_C_2
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,48(A3)
     MOVEA.L D0,A0
@@ -2508,7 +2508,7 @@ LAB_036D:
     MOVE.W  LAB_2270,D1
     SUB.L   D1,D0
     MOVEQ   #30,D1
-    JSR     JMP_TBL_LAB_1A06_2(PC)
+    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
 
     MOVE.L  D0,-8(A5)
 

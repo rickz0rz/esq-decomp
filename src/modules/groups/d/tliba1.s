@@ -30,7 +30,7 @@ LAB_1760:
     MOVE.L  D0,-(A7)
     PEA     1842.W
     PEA     GLOB_STR_TLIBA1_C_1
-    JSR     ALLOCATE_MEMORY(PC)
+    JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -153,7 +153,7 @@ LAB_176A:
     MOVE.L  -16(A5),-(A7)
     PEA     1885.W
     PEA     GLOB_STR_TLIBA1_C_2
-    JSR     DEALLOCATE_MEMORY(PC)
+    JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -627,7 +627,7 @@ LAB_178E:
     MOVE.L  D0,-(A7)
     PEA     2115.W
     PEA     GLOB_STR_TLIBA1_C_3
-    JSR     ALLOCATE_MEMORY(PC)
+    JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -988,7 +988,7 @@ LAB_17A6:
     MOVE.L  -4(A5),-(A7)
     PEA     2385.W
     PEA     LAB_2164
-    JSR     DEALLOCATE_MEMORY(PC)
+    JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 

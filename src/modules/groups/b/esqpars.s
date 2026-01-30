@@ -36,7 +36,7 @@ LAB_0B35:
     MOVE.L  A0,-(A7)
     PEA     945.W
     PEA     GLOB_STR_ESQPARS_C_1
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D7,D0
@@ -165,7 +165,7 @@ LAB_0B3E:
     MOVE.L  -12(A5),-(A7)
     PEA     1025.W
     PEA     GLOB_STR_ESQPARS_C_2
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D6,D0
@@ -186,7 +186,7 @@ LAB_0B40:
     MOVE.L  -8(A5),-(A7)
     PEA     1031.W
     PEA     GLOB_STR_ESQPARS_C_3
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -202,7 +202,7 @@ LAB_0B41:
     MOVE.L  -4(A5),-(A7)
     PEA     1040.W
     PEA     GLOB_STR_ESQPARS_C_4
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -240,7 +240,7 @@ LAB_0B45:
     MOVE.L  A2,-(A7)
     PEA     1081.W
     PEA     GLOB_STR_ESQPARS_C_5
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -283,7 +283,7 @@ LAB_0B49:
     MOVE.L  D6,-(A7)
     PEA     1100.W
     PEA     GLOB_STR_ESQPARS_C_6
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -2831,47 +2831,3 @@ LAB_0BFB:
     ; Alignment
     ORI.B   #0,D0
     DC.W    $0000
-
-;!======
-
-LAB_0BFC:
-    JMP     LAB_1378
-
-LAB_0BFD:
-    JMP     LAB_02CE
-
-LAB_0BFE:
-    JMP     DST_UpdateBannerQueue
-
-LAB_0BFF:
-    JMP     LAB_18EF
-
-LAB_0C00:
-    JMP     LAB_18F5
-
-LAB_0C01:
-    JMP     LAB_03E0
-
-ESQPARS_JMP_TBL_CLEANUP_ParseAlignedListingBlock:
-LAB_0C02:
-    JMP     CLEANUP_ParseAlignedListingBlock
-
-LAB_0C03:
-    JMP     LAB_14AF
-
-JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1:
-    JMP     GENERATE_CHECKSUM_BYTE_INTO_D0
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000
-
-;!======
-
-LAB_0C05:
-    JMP     DST_RefreshBannerBuffer
-
-LAB_0C06:
-    JMP     LAB_041A

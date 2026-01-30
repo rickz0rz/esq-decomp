@@ -36,7 +36,7 @@ LAB_072D:
     PEA     1000.W
     PEA     374.W
     PEA     GLOB_STR_ED2_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L LAB_2216,A0
@@ -293,7 +293,7 @@ LAB_0741:
     MOVE.L  -144(A5),-(A7)
     PEA     427.W
     PEA     GLOB_STR_ED2_C_2
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_2(PC)
+    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7
 

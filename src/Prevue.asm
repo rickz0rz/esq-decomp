@@ -452,7 +452,7 @@ CHECK_IF_COMPATIBLE_VIDEO_CHIP:
 ; CALLS:
 ;   JMP_TBL_DO_DELAY, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
-;   JMP_TBL_LAB_1A06_1, JMP_TBL_LAB_1911, JMP_TBL_LIBRARIES_LOAD_FAILED_1
+;   PREVUE_JMP_TBL_LAB_1A06, JMP_TBL_LAB_1911, JMP_TBL_LIBRARIES_LOAD_FAILED_1
 ; READS:
 ;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TOPAZ_FONT,
 ;   LAB_1DE9_B, LAB_1DD8_RASTPORT,
@@ -628,7 +628,7 @@ LAB_0017:
     ADDI.L  #4000,D4
     MOVE.L  D7,D0
     MOVE.L  #640,D1
-    JSR     JMP_TBL_LAB_1A06_1(PC)
+    JSR     PREVUE_JMP_TBL_LAB_1A06(PC)
 
     LSR.L   #3,D0
     MOVE.L  D5,D1
@@ -737,7 +737,7 @@ JMP_TBL_DO_DELAY:
 JMP_TBL_LAB_1911:
     JMP     LAB_1911
 
-JMP_TBL_LAB_1A06_1:
+PREVUE_JMP_TBL_LAB_1A06:
     JMP     LAB_1A06
 
 JMP_TBL_LIBRARIES_LOAD_FAILED_1:
@@ -794,8 +794,11 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/b/esqiff2.s"
 
     include "modules/groups/b/esqpars.s"
-    include "modules/groups/b/esqpars2.s"
-    include "modules/groups/b/esqpars3.s"
+
+    include "modules/groups/b/esqshared.s"
+    include "modules/groups/b/esqshared2.s"
+    include "modules/groups/b/esqshared3.s"
+    include "modules/groups/b/esqshared4.s"
 
     include "modules/groups/c/flib.s"
     include "modules/groups/c/flib2.s"

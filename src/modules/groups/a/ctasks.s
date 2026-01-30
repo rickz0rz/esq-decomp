@@ -4,11 +4,11 @@
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ?? (passes through from JMP_TBL_DEALLOCATE_MEMORY_1?)
+;   D0: ?? (passes through from GROUPA_JMP_TBL_MEMORY_DeallocateMemory?)
 ; CLOBBERS:
 ;   D0-D1/A0/A4/A6
 ; CALLS:
-;   LAB_0395 (GCOMMAND_SaveBrushResult), _LVOForbid, JMP_TBL_DEALLOCATE_MEMORY_1
+;   LAB_0395 (GCOMMAND_SaveBrushResult), _LVOForbid, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
 ; READS:
 ;   LAB_1B84 (state), LAB_1B20/LAB_1B21/LAB_1B24 (scratch ptrs), BRUSH_LoadInProgressFlag
 ;   GLOB_REF_LIST_IFF_TASK_PROC, GLOB_STR_CTASKS_C_1
@@ -95,7 +95,7 @@ LAB_0386:
     MOVE.L  GLOB_REF_LIST_IFF_TASK_PROC,-(A7)
     PEA     127.W
     PEA     GLOB_STR_CTASKS_C_1
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     MOVEA.L -8(A5),A4
     UNLK    A5
@@ -111,7 +111,7 @@ LAB_0386:
 ; CLOBBERS:
 ;   D0-D4/A0-A1/A6
 ; CALLS:
-;   _LVOForbid/_LVOPermit, _LVOFindTask, JMP_TBL_ALLOCATE_MEMORY_1, _LVOCreateProc
+;   _LVOForbid/_LVOPermit, _LVOFindTask, GROUPA_JMP_TBL_MEMORY_AllocateMemory, _LVOCreateProc
 ; READS:
 ;   LAB_1B84, LAB_22C0, GLOB_STR_IFF_TASK_1/2, GLOB_REF_DOS_LIBRARY_2
 ; WRITES:
@@ -160,7 +160,7 @@ LAB_038E:
     PEA     (Struct_List_Size).W
     PEA     159.W
     PEA     GLOB_STR_CTASKS_C_2
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,GLOB_REF_LIST_IFF_TASK_PROC
     MOVEQ   #(Struct_List_Size),D1
@@ -201,7 +201,7 @@ LAB_038E:
 ; CLOBBERS:
 ;   D0-D1/A0/A4/A6
 ; CALLS:
-;   _LVOClose, _LVOForbid, JMP_TBL_DEALLOCATE_MEMORY_1
+;   _LVOClose, _LVOForbid, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
 ; READS:
 ;   LAB_1B8B (file handle), GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LIST_CLOSE_TASK_PROC
 ; WRITES:
@@ -234,7 +234,7 @@ LAB_0392:
     MOVE.L  GLOB_REF_LIST_CLOSE_TASK_PROC,-(A7)
     PEA     194.W
     PEA     GLOB_STR_CTASKS_C_3
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.W  #1,LAB_1B8A
@@ -254,7 +254,7 @@ LAB_0392:
 ; CLOBBERS:
 ;   D0-D4/D7/A0-A1/A6
 ; CALLS:
-;   JMP_TBL_ALLOCATE_MEMORY_1, _LVOCreateProc
+;   GROUPA_JMP_TBL_MEMORY_AllocateMemory, _LVOCreateProc
 ; READS:
 ;   GLOB_STR_CLOSE_TASK, GLOB_REF_DOS_LIBRARY_2
 ; WRITES:
@@ -279,7 +279,7 @@ LAB_0394:
     PEA     (Struct_List_Size).W
     PEA     203.W
     PEA     GLOB_STR_CTASKS_C_4
-    JSR     JMP_TBL_ALLOCATE_MEMORY_1(PC)
+    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 

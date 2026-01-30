@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ALLOC_RASTER   (AllocRaster wrapper)
+; FUNC: UNKNOWN2B_AllocRaster   (AllocRaster wrapper)
 ; ARGS:
 ;   stack +16: D7 = width
 ;   stack +20: D6 = height
@@ -19,7 +19,7 @@
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-ALLOC_RASTER:
+UNKNOWN2B_AllocRaster:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
     MOVE.L  16(A5),D7   ; Width

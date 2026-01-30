@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: ALLOCATE_MEMORY   (AllocateMemory??)
+; FUNC: MEMORY_AllocateMemory   (AllocateMemory??)
 ; ARGS:
 ;   stack +16: byteSize (loaded into D7)
 ;   stack +20: attributes (MEMF_* flags) (loaded into D6)
@@ -18,7 +18,7 @@
 ; NOTES:
 ;   Counters are incremented regardless of allocation success.
 ;------------------------------------------------------------------------------
-ALLOCATE_MEMORY:
+MEMORY_AllocateMemory:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
 
@@ -39,7 +39,7 @@ ALLOCATE_MEMORY:
     RTS
 
 ;------------------------------------------------------------------------------
-; FUNC: DEALLOCATE_MEMORY   (DeallocateMemory??)
+; FUNC: MEMORY_DeallocateMemory   (DeallocateMemory??)
 ; ARGS:
 ;   stack +16: memoryBlock (loaded into A3)
 ;   stack +20: byteSize (loaded into D7)
@@ -58,7 +58,7 @@ ALLOCATE_MEMORY:
 ; NOTES:
 ;   Counters are updated only when both ptr and size are non-zero.
 ;------------------------------------------------------------------------------
-DEALLOCATE_MEMORY:
+MEMORY_DeallocateMemory:
     LINK.W  A5,#0
     MOVEM.L D7/A3,-(A7)
 

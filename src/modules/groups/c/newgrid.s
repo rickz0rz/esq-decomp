@@ -8,7 +8,7 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   LAB_1333, LAB_1026, LAB_1240, JMP_TBL_ALLOCATE_MEMORY_3, _LVOInitRastPort,
+;   LAB_1333, LAB_1026, LAB_1240, GROUPC_JMP_TBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7,
 ;   _LVOTextLength, JMP_TBL_LAB_1A07_3
 ; READS:
@@ -37,7 +37,7 @@ LAB_0FA4:
     PEA     100.W
     PEA     99.W
     PEA     GLOB_STR_NEWGRID_C_1
-    JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
+    JSR     GROUPC_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_1
@@ -63,7 +63,7 @@ LAB_0FA4:
     PEA     100.W
     PEA     112.W
     PEA     GLOB_STR_NEWGRID_C_2
-    JSR     JMP_TBL_ALLOCATE_MEMORY_3(PC)
+    JSR     GROUPC_JMP_TBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_2
@@ -142,7 +142,7 @@ LAB_0FA4:
 ; CLOBBERS:
 ;   D0/A0/A6
 ; CALLS:
-;   JMP_TBL_DEALLOCATE_MEMORY_3, LAB_1335, LAB_1023, LAB_1243
+;   GROUPC_JMP_TBL_MEMORY_DeallocateMemory, LAB_1335, LAB_1023, LAB_1243
 ; READS:
 ;   GLOB_REF_GRID_RASTPORT_MAYBE_1
 ; WRITES:
@@ -161,7 +161,7 @@ LAB_0FA7:
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
     PEA     148.W
     PEA     GLOB_STR_NEWGRID_C_3
-    JSR     JMP_TBL_DEALLOCATE_MEMORY_3(PC)
+    JSR     GROUPC_JMP_TBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2520,19 +2520,19 @@ JMP_TBL_GENERATE_GRID_DATE_STRING:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMP_TBL_DeallocateMemory   (Jump stub)
 ; ARGS:
-;   ?? (see DEALLOCATE_MEMORY)
+;   ?? (see MEMORY_DeallocateMemory)
 ; RET:
-;   ?? (see DEALLOCATE_MEMORY)
+;   ?? (see MEMORY_DeallocateMemory)
 ; CLOBBERS:
-;   ?? (see DEALLOCATE_MEMORY)
+;   ?? (see MEMORY_DeallocateMemory)
 ; CALLS:
-;   DEALLOCATE_MEMORY
+;   MEMORY_DeallocateMemory
 ; DESC:
-;   Jump table entry that forwards to DEALLOCATE_MEMORY.
+;   Jump table entry that forwards to MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
 NEWGRID_JMP_TBL_DeallocateMemory:
-JMP_TBL_DEALLOCATE_MEMORY_3:
-    JMP     DEALLOCATE_MEMORY
+GROUPC_JMP_TBL_MEMORY_DeallocateMemory:
+    JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMP_TBL_Cleanup_DrawClockFormatList   (Jump stub)
@@ -2590,19 +2590,19 @@ LAB_1024:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMP_TBL_AllocateMemory   (Jump stub)
 ; ARGS:
-;   ?? (see ALLOCATE_MEMORY)
+;   ?? (see MEMORY_AllocateMemory)
 ; RET:
-;   ?? (see ALLOCATE_MEMORY)
+;   ?? (see MEMORY_AllocateMemory)
 ; CLOBBERS:
-;   ?? (see ALLOCATE_MEMORY)
+;   ?? (see MEMORY_AllocateMemory)
 ; CALLS:
-;   ALLOCATE_MEMORY
+;   MEMORY_AllocateMemory
 ; DESC:
-;   Jump table entry that forwards to ALLOCATE_MEMORY.
+;   Jump table entry that forwards to MEMORY_AllocateMemory.
 ;------------------------------------------------------------------------------
 NEWGRID_JMP_TBL_AllocateMemory:
-JMP_TBL_ALLOCATE_MEMORY_3:
-    JMP     ALLOCATE_MEMORY
+GROUPC_JMP_TBL_MEMORY_AllocateMemory:
+    JMP     MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMP_TBL_LAB_0588   (Jump stub)
