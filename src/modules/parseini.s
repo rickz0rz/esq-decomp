@@ -232,7 +232,7 @@ PARSE_INI:
     MOVE.W  .LAB_13A9(PC,D0.W),D0
     JMP     .LAB_13A9+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 .LAB_13A9:
     DC.W    .LAB_13A9_000E-.LAB_13A9-2
     DC.W    .LAB_13B3_0176-.LAB_13A9-2

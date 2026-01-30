@@ -2062,7 +2062,7 @@ LAB_034C:
     MOVE.W  LAB_034D(PC,D0.W),D0
     JMP     LAB_034D+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 LAB_034D:
 	DC.W    LAB_034D_0018-LAB_034D-2
     DC.W    LAB_034D_0026-LAB_034D-2

@@ -1345,7 +1345,7 @@ LAB_0B26:
     MOVE.W  LAB_0B28(PC,D0.W),D0
     JMP     LAB_0B28+2(PC,D0.W)
 
-; This is a switch statement that's turned into a jump table.
+; switch/jumptable
 LAB_0B28:
     DC.W    LAB_0B29_0008-LAB_0B28-2
     DC.W    LAB_0B29_000C-LAB_0B28-2

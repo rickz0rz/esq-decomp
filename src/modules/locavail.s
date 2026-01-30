@@ -1035,7 +1035,7 @@ LAB_0F53:
     MOVE.W  LAB_0F54(PC,D0.W),D0
     JMP     LAB_0F54+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 LAB_0F54:
     DC.W    LAB_0F54_0008-LAB_0F54-2
     DC.W    LAB_0F54_0008-LAB_0F54-2
@@ -1565,7 +1565,7 @@ LAB_0F7E:
     MOVE.W  LAB_0F7F(PC,D0.W),D0
     JMP     LAB_0F7F+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 LAB_0F7F:
 	DC.W    LAB_0F7F_0078-LAB_0F7F-2
     DC.W    LAB_0F7F_0008-LAB_0F7F-2
@@ -1687,7 +1687,7 @@ LAB_0F85:
     MOVE.W  LAB_0F86(PC,D0.W),D0
     JMP     LAB_0F86+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 LAB_0F86:
 	DC.W    LAB_0F86_012C-LAB_0F86-2
     DC.W    LAB_0F86_001E-LAB_0F86-2
@@ -1785,7 +1785,7 @@ LAB_0F8B:
     MOVE.W  LAB_0F8C(PC,D0.W),D0
     JMP     LAB_0F8C+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 LAB_0F8C:
 	DC.W    LAB_0F8C_0054-LAB_0F8C-2
     DC.W    LAB_0F8C_001E-LAB_0F8C-2

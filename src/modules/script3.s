@@ -539,7 +539,7 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  .LAB_14F0(PC,D0.W),D0
     JMP     .LAB_14F0+2(PC,D0.W)
 
-; This is a switch statement that's turned into a jump table.
+; switch/jumptable
 .LAB_14F0:
     DC.W    .LAB_14F0_0040-.LAB_14F0-2
     DC.W    .LAB_14F0_0036-.LAB_14F0-2
@@ -751,7 +751,7 @@ SCRIPT_HandleBrushCommand:
     MOVE.W  .LAB_14FF(PC,D0.W),D0
     JMP     .LAB_14FF+2(PC,D0.W)
 
-; This is a switch statement that's turned into a jump table.
+; switch/jumptable
 .LAB_14FF:
     DC.W    .LAB_14FF_0390-.LAB_14FF-2
     DC.W    .LAB_14FF_002A-.LAB_14FF-2
@@ -2265,7 +2265,7 @@ LAB_157A:
     MOVE.W  .LAB_157B(PC,D0.W),D0
     JMP     .LAB_157B+2(PC,D0.W)
 
-; This is a switch statement that's turned into a jump table.
+; switch/jumptable
 .LAB_157B:
     DC.W    .LAB_157B_008A-.LAB_157B-2
     DC.W    .LAB_157B_0092-.LAB_157B-2

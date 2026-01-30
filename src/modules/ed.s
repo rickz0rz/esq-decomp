@@ -39,7 +39,7 @@ LAB_0671:
     MOVE.W  .LAB_0673(PC,D0.W),D0
     JMP     .LAB_0673+2(PC,D0.W)
 
-; This is a switch statement that's turned into a jump table.
+; switch/jumptable
 .LAB_0673:
     DC.W    .LAB_0673_0030-.LAB_0673-2
     DC.W    .LAB_0673_003C-.LAB_0673-2
@@ -1581,7 +1581,7 @@ LAB_06DB:
     MOVE.W  LAB_06DC(PC,D0.W),D0
     JMP     LAB_06DC+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 LAB_06DC:
     DC.W    LAB_06DC_000E-LAB_06DC-2
 	DC.W    LAB_06DC_0016-LAB_06DC-2
@@ -2242,7 +2242,7 @@ LAB_0701:
     MOVE.W  .LAB_0702(PC,D0.W),D0
     JMP     .LAB_0702+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 .LAB_0702:
     DC.W    .LAB_0702_0010-.LAB_0702-2
     DC.W    .LAB_0702_0018-.LAB_0702-2

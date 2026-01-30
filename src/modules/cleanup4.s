@@ -717,7 +717,7 @@ LAB_0290:
     MOVE.W  .token_table(PC,D0.W),D0
     JMP     .token_table+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 .token_table:
 	DC.W    .case_alpha_or_copy-.token_table-2
     DC.W    .case_alpha_or_copy-.token_table-2

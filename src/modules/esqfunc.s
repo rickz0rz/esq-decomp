@@ -1871,7 +1871,7 @@ LAB_09DB:
     MOVE.W  .LAB_09DD(PC,D0.W),D0
     JMP     .LAB_09DD+2(PC,D0.W)
 
-; Switch case
+; switch/jumptable
 .LAB_09DD:
     DC.W    .LAB_09DD_000A-.LAB_09DD-2
 	DC.W    .LAB_09DD_0016-.LAB_09DD-2
