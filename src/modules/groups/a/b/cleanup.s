@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVORemIntServer, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
+;   _LVORemIntServer, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   GLOB_REF_INTERRUPT_STRUCT_INTB_VERTB, AbsExecBase, GLOB_STR_CLEANUP_C_1
 ; WRITES:
@@ -17,7 +17,7 @@
 ; DESC:
 ;   Removes the INTB_VERTB interrupt server and frees its interrupt structure.
 ; NOTES:
-;   - Deallocates the struct via GROUPA_JMP_TBL_MEMORY_DeallocateMemory.
+;   - Deallocates the struct via GROUP_AG_JMPTBL_MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
 CLEAR_INTERRUPT_INTB_VERTB:
     MOVEQ   #INTB_VERTB,D0
@@ -29,7 +29,7 @@ CLEAR_INTERRUPT_INTB_VERTB:
     MOVE.L  GLOB_REF_INTERRUPT_STRUCT_INTB_VERTB,-(A7)
     PEA     57.W
     PEA     GLOB_STR_CLEANUP_C_1
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     RTS
@@ -45,7 +45,7 @@ CLEAR_INTERRUPT_INTB_VERTB:
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVOSetIntVector, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
+;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   GLOB_REF_INTB_AUD1_INTERRUPT, GLOB_REF_INTERRUPT_STRUCT_INTB_AUD1,
 ;   AbsExecBase, GLOB_STR_CLEANUP_C_2
@@ -67,7 +67,7 @@ CLEAR_INTERRUPT_INTB_AUD1:
     MOVE.L  GLOB_REF_INTERRUPT_STRUCT_INTB_AUD1,-(A7)
     PEA     74.W
     PEA     GLOB_STR_CLEANUP_C_2
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     RTS
@@ -83,8 +83,8 @@ CLEAR_INTERRUPT_INTB_AUD1:
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVOCloseDevice, JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT, LAB_0467,
-;   _LVOSetIntVector, GROUPA_JMP_TBL_MEMORY_DeallocateMemory
+;   _LVOCloseDevice, GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport, LAB_0467,
+;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   LAB_2211_SERIAL_PORT_MAYBE, LAB_2212, GLOB_REF_INTB_RBF_INTERRUPT,
 ;   GLOB_REF_INTB_RBF_64K_BUFFER, GLOB_REF_INTERRUPT_STRUCT_INTB_RBF,
@@ -104,7 +104,7 @@ CLEAR_INTERRUPT_INTB_RBF:
     JSR     _LVOCloseDevice(A6)
 
     MOVE.L  LAB_2212,-(A7)
-    JSR     JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT(PC)
+    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
 
     MOVE.L  LAB_2211_SERIAL_PORT_MAYBE,(A7)
     JSR     LAB_0467(PC)
@@ -118,13 +118,13 @@ CLEAR_INTERRUPT_INTB_RBF:
     MOVE.L  GLOB_REF_INTB_RBF_64K_BUFFER,-(A7)
     PEA     113.W
     PEA     GLOB_STR_CLEANUP_C_3
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     22.W
     MOVE.L  GLOB_REF_INTERRUPT_STRUCT_INTB_RBF,-(A7)
     PEA     118.W
     PEA     GLOB_STR_CLEANUP_C_4
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
 
@@ -162,8 +162,8 @@ CLEAR_INTERRUPT_INTB_RBF:
 ; CLOBBERS:
 ;   D0/A0-A1/A6
 ; CALLS:
-;   _LVODoIO, GROUPA_JMP_TBL_MEMORY_DeallocateMemory, _LVOCloseDevice,
-;   JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT, JMP_TBL_LAB_19F7
+;   _LVODoIO, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOCloseDevice,
+;   GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport, GROUP_AB_JMPTBL_LAB_19F7
 ; READS:
 ;   GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, GLOB_REF_DATA_INPUT_BUFFER,
 ;   GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE, GLOB_REF_INPUTDEVICE_MSGPORT,
@@ -192,7 +192,7 @@ LAB_01AC:
     MOVE.L  GLOB_REF_DATA_INPUT_BUFFER,-(A7)
     PEA     127.W
     PEA     GLOB_STR_CLEANUP_C_5
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEA.L GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A1
     MOVEA.L AbsExecBase,A6
@@ -202,16 +202,16 @@ LAB_01AC:
     JSR     _LVOCloseDevice(A6)
 
     MOVE.L  GLOB_REF_INPUTDEVICE_MSGPORT,(A7)
-    JSR     JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT(PC)
+    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
 
     MOVE.L  GLOB_REF_CONSOLEDEVICE_MSGPORT,(A7)
-    JSR     JMP_TBL_CLEANUP_SIGNAL_AND_MSGPORT(PC)
+    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
 
     MOVE.L  GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,(A7)
-    JSR     JMP_TBL_LAB_19F7(PC)
+    JSR     GROUP_AB_JMPTBL_LAB_19F7(PC)
 
     MOVE.L  GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,(A7)
-    JSR     JMP_TBL_LAB_19F7(PC)
+    JSR     GROUP_AB_JMPTBL_LAB_19F7(PC)
 
     LEA     16(A7),A7
     RTS
@@ -227,7 +227,7 @@ LAB_01AC:
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A1/A6
 ; CALLS:
-;   GROUPA_JMP_TBL_MEMORY_DeallocateMemory, JMP_TBL_FREE_RASTER,
+;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster,
 ;   _LVOCloseFont, _LVOCloseLibrary
 ; READS:
 ;   GLOB_REF_96_BYTES_ALLOCATED, GLOB_REF_RASTPORT_1, LAB_2220, LAB_221A,
@@ -252,18 +252,18 @@ CLEAR_RASTPORT_1:
     MOVE.L  GLOB_REF_96_BYTES_ALLOCATED,-(A7)
     PEA     148.W
     PEA     GLOB_STR_CLEANUP_C_6
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     100.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     PEA     152.W
     PEA     GLOB_STR_CLEANUP_C_7
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
     MOVEQ   #0,D7
 
-.free_raster_set1_loop:
+.UNKNOWN2B_FreeRaster_set1_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set1
@@ -277,16 +277,16 @@ CLEAR_RASTPORT_1:
     MOVE.L  (A0),-(A7)
     PEA     160.W
     PEA     GLOB_STR_CLEANUP_C_8
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .free_raster_set1_loop
+    BRA.S   .UNKNOWN2B_FreeRaster_set1_loop
 
 .after_raster_set1:
     MOVEQ   #0,D7
 
-.free_raster_set2_loop:
+.UNKNOWN2B_FreeRaster_set2_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set2
@@ -300,16 +300,16 @@ CLEAR_RASTPORT_1:
     MOVE.L  (A0),-(A7)
     PEA     169.W
     PEA     GLOB_STR_CLEANUP_C_9
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .free_raster_set2_loop
+    BRA.S   .UNKNOWN2B_FreeRaster_set2_loop
 
 .after_raster_set2:
     MOVEQ   #0,D7
 
-.free_raster_set3_loop:
+.UNKNOWN2B_FreeRaster_set3_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set3
@@ -323,16 +323,16 @@ CLEAR_RASTPORT_1:
     MOVE.L  (A0),-(A7)
     PEA     178.W
     PEA     GLOB_STR_CLEANUP_C_10
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .free_raster_set3_loop
+    BRA.S   .UNKNOWN2B_FreeRaster_set3_loop
 
 .after_raster_set3:
     MOVEQ   #3,D7
 
-.free_raster_set4_loop:
+.UNKNOWN2B_FreeRaster_set4_loop:
     MOVEQ   #5,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set4
@@ -346,11 +346,11 @@ CLEAR_RASTPORT_1:
     MOVE.L  (A0),-(A7)
     PEA     187.W
     PEA     GLOB_STR_CLEANUP_C_11
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .free_raster_set4_loop
+    BRA.S   .UNKNOWN2B_FreeRaster_set4_loop
 
 .after_raster_set4:
     PEA     15.W
@@ -358,7 +358,7 @@ CLEAR_RASTPORT_1:
     MOVE.L  LAB_2229,-(A7)
     PEA     200.W
     PEA     GLOB_STR_CLEANUP_C_12
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
 
@@ -431,10 +431,10 @@ CLEAR_RASTPORT_1:
 ; CALLS:
 ;   _LVOForbid, LOCAVAIL_FreeResourceChain, BRUSH_FreeBrushList,
 ;   CLEAR_INTERRUPT_INTB_VERTB, CLEAR_INTERRUPT_INTB_AUD1,
-;   CLEAR_INTERRUPT_INTB_RBF, GROUPA_JMP_TBL_MEMORY_DeallocateMemory,
-;   CLEANUP_ShutdownInputDevices, CLEAR_RASTPORT_1, LAB_01C4, GROUP_AH_JMP_TBL_LAB_0B34,
-;   JMP_TBL_LAB_0AC8, LAB_01C3, JMP_TBL_LAB_0B38, JMP_TBL_LAB_0966,
-;   _LVOSetFunction, _LVOVBeamPos, LAB_01C5, _LVOPermit
+;   CLEAR_INTERRUPT_INTB_RBF, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
+;   CLEANUP_ShutdownInputDevices, CLEAR_RASTPORT_1, GROUP_AB_JMPTBL_LAB_0E0C, GROUP_AH_JMPTBL_LAB_0B34,
+;   GROUP_AB_JMPTBL_LAB_0AC8, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, JMPTBL_LAB_0B38, JMPTBL_LAB_0966,
+;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_LAB_1908, _LVOPermit
 ; READS:
 ;   LAB_2321, LAB_2324, LAB_1ED1, LAB_1ED2, LAB_1ED3, LAB_1ED4, LAB_229A,
 ;   LAB_1DC5, LAB_1DC6, LAB_22A7, LAB_222B, LAB_1DD9, LAB_1DEC, LAB_1DC7,
@@ -459,10 +459,10 @@ LAB_01BB:
     JSR     _LVOForbid(A6)
 
     PEA     LAB_2321
-    JSR     LAB_01C7(PC)
+    JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     PEA     LAB_2324
-    JSR     LAB_01C7(PC)
+    JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     CLR.L   (A7)
     PEA     LAB_1ED1
@@ -490,41 +490,41 @@ LAB_01BB:
     MOVE.L  LAB_229A,-(A7)
     PEA     260.W
     PEA     GLOB_STR_CLEANUP_C_13
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     BSR.W   CLEANUP_ShutdownInputDevices
 
     BSR.W   CLEAR_RASTPORT_1
+M
+    JSR     GROUP_AB_JMPTBL_LAB_0E0C(PC)
 
-    JSR     LAB_01C4(PC)
-
-    JSR     GROUP_AH_JMP_TBL_LAB_0B34(PC)
-
-    PEA     1.W
-    JSR     JMP_TBL_LAB_0AC8(PC)
-
-    PEA     2.W
-    JSR     JMP_TBL_LAB_0AC8(PC)
-
-    JSR     LAB_01C3(PC)
-
-    PEA     2.W
-    JSR     JMP_TBL_LAB_0B38(PC)
+    JSR     GROUP_AH_JMPTBL_LAB_0B34(PC)
 
     PEA     1.W
-    JSR     JMP_TBL_LAB_0B38(PC)
+    JSR     GROUP_AB_JMPTBL_LAB_0AC8(PC)
 
-    JSR     JMP_TBL_LAB_0966(PC)
+    PEA     2.W
+    JSR     GROUP_AB_JMPTBL_LAB_0AC8(PC)
+
+    JSR     GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(PC)
+
+    PEA     2.W
+    JSR     JMPTBL_LAB_0B38(PC)
+
+    PEA     1.W
+    JSR     JMPTBL_LAB_0B38(PC)
+
+    JSR     JMPTBL_LAB_0966(PC)
 
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A0
     MOVE.L  38(A0),COP1LCH
-    JSR     LAB_01C6(PC)
+    JSR     GROUP_AB_JMPTBL_LAB_0FA7(PC)
 
     PEA     34.W
     MOVE.L  LAB_1DC5,-(A7)
     PEA     318.W
     PEA     GLOB_STR_CLEANUP_C_14
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     72(A7),A7
 
@@ -532,27 +532,27 @@ LAB_01BB:
     MOVE.L  LAB_1DC6,-(A7)
     PEA     319.W
     PEA     GLOB_STR_CLEANUP_C_15
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
     MOVEQ   #0,D6
 
-.free_raster_rows_loop:
+.UNKNOWN2B_FreeRaster_rows_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D6
     BGE.S   .after_raster_table
 
     MOVEQ   #0,D7
 
-.free_raster_cols_loop:
+.UNKNOWN2B_FreeRaster_cols_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   .next_raster_row
 
     MOVE.L  D6,D0
     MOVEQ   #40,D1
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     LEA     LAB_22A7,A0
     ADDA.L  D0,A0
@@ -566,25 +566,25 @@ LAB_01BB:
     MOVE.L  8(A0),-(A7)
     PEA     329.W
     PEA     GLOB_STR_CLEANUP_C_16
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .free_raster_cols_loop
+    BRA.S   .UNKNOWN2B_FreeRaster_cols_loop
 
 .next_raster_row:
     ADDQ.L  #1,D6
-    BRA.S   .free_raster_rows_loop
+    BRA.S   .UNKNOWN2B_FreeRaster_rows_loop
 
 .after_raster_table:
     MOVE.L  LAB_1DD9,-(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,LAB_1DD9
     MOVE.L  LAB_1DEC,(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_1DEC
@@ -619,7 +619,7 @@ LAB_01BB:
     MOVE.L  LAB_1DC7,184(A0)
 
 .after_optional_restore:
-    JSR     LAB_01C5(PC)
+    JSR     GROUP_AB_JMPTBL_LAB_1908(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)

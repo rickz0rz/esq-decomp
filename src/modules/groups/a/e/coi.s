@@ -21,7 +21,7 @@ LAB_02CE:
     MOVE.L  A2,-(A7)
     PEA     815.W
     PEA     GLOB_STR_COI_C_3
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -58,37 +58,37 @@ LAB_02D3:
     MOVE.B  D0,3(A2)
     MOVE.L  4(A2),-(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,4(A2)
     MOVE.L  8(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,8(A2)
     MOVE.L  12(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,12(A2)
     MOVE.L  16(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,16(A2)
     MOVE.L  20(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,20(A2)
     MOVE.L  24(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,24(A2)
     MOVE.L  28(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     32(A7),A7
     MOVE.L  D0,28(A2)
@@ -133,32 +133,32 @@ LAB_02D8:
     CLR.W   (A2)
     MOVE.L  2(A2),-(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,2(A2)
     MOVE.L  6(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,6(A2)
     MOVE.L  10(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,10(A2)
     MOVE.L  14(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,14(A2)
     MOVE.L  18(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,18(A2)
     MOVE.L  22(A2),(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,22(A2)
@@ -175,7 +175,7 @@ LAB_02D9:
     MOVE.L  D0,-(A7)
     PEA     30.W
     MOVE.L  38(A3),-(A7)
-    JSR     LAB_0381(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_149B(PC)
 
     MOVE.W  36(A3),D0
     EXT.L   D0
@@ -184,7 +184,7 @@ LAB_02D9:
     MOVE.L  38(A3),-(A7)
     PEA     876.W
     PEA     GLOB_STR_COI_C_4
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
 
@@ -276,7 +276,7 @@ LAB_02DC:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   JMP_TBL_LAB_1A07_1, GROUPA_JMP_TBL_WDISP_SPrintf, DISKIO_OpenFileWithBuffer,
+;   GROUP_AG_JMPTBL_LAB_1A07, GROUP_AE_JMPTBL_WDISP_SPrintf, DISKIO_OpenFileWithBuffer,
 ;   LAB_03A0, ESQ_WildcardMatch, LAB_039A
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235
@@ -336,14 +336,14 @@ LAB_02E2:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #2,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVE.W  D1,-30(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
     PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1
     PEA     -112(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     MODE_NEWFILE.W
     PEA     -112(A5)
@@ -363,7 +363,7 @@ LAB_02E2:
     MOVE.L  D0,-(A7)
     PEA     LAB_1B6E
     PEA     -152(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -387,7 +387,7 @@ LAB_02E2:
     PEA     2.W
     PEA     LAB_1B6F
     PEA     -152(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -580,7 +580,7 @@ LAB_02E2:
     MOVE.L  32(A2),(A7)
     PEA     LAB_1B71
     PEA     -152(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -749,7 +749,7 @@ LAB_02E2:
     MOVE.L  D0,(A7)
     PEA     LAB_1B72
     PEA     -152(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -790,7 +790,7 @@ LAB_02E2:
     MOVE.L  D0,-(A7)
     PEA     LAB_1B73
     PEA     -152(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -868,7 +868,7 @@ LAB_02E2:
     MOVE.L  26(A0),(A7)
     PEA     LAB_1B75
     PEA     -152(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -152(A5),A0
     MOVEA.L A0,A1
@@ -1032,7 +1032,7 @@ LAB_02E2:
 ; CLOBBERS:
 ;   D0-D1/A0-A3
 ; CALLS:
-;   GROUPA_JMP_TBL_MEMORY_AllocateMemory, LAB_0383
+;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
 ; READS:
 ;   A3+48 (subentry owner??), A0+36 (subentry count)
 ; WRITES:
@@ -1041,7 +1041,7 @@ LAB_02E2:
 ;   Allocates and initializes a cleared longword table for subentries when the
 ;   entry's count field is positive.
 ; NOTES:
-;   Table size is `count * 4` bytes; LAB_0383 initializes the table entries.
+;   Table size is `count * 4` bytes; GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray initializes the table entries.
 ;------------------------------------------------------------------------------
 COI_AllocSubEntryTable:
 LAB_0316:
@@ -1073,7 +1073,7 @@ LAB_0316:
     MOVE.L  D0,-(A7)
     PEA     1123.W
     PEA     GLOB_STR_COI_C_5
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.L  D0,38(A0)
@@ -1082,7 +1082,7 @@ LAB_0316:
     MOVE.L  D1,(A7)
     PEA     30.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_0383(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(PC)
 
     LEA     24(A7),A7
 
@@ -1102,8 +1102,8 @@ LAB_0316:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMP_TBL_LAB_1A07_1, GROUPA_JMP_TBL_WDISP_SPrintf, LAB_03AC, LAB_05C1, LAB_0468,
-;   LAB_037D, LAB_0385, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUPA_JMP_TBL_MEMORY_DeallocateMemory,
+;   GROUP_AG_JMPTBL_LAB_1A07, GROUP_AE_JMPTBL_WDISP_SPrintf, LAB_03AC, LAB_05C1, LAB_0468,
+;   GROUP_AE_JMPTBL_LAB_149E, GROUP_AE_JMPTBL_LAB_0B44, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
 ;   COI_AllocSubEntryTable
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235,
@@ -1155,14 +1155,14 @@ LAB_031A:
     MOVE.L  D0,-578(A5)
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVE.W  D1,-334(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
     PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2
     PEA     -566(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -566(A5)
     JSR     LAB_03AC(PC)
@@ -1207,7 +1207,7 @@ LAB_031A:
     MOVE.L  A0,-(A7)
     PEA     1198.W
     PEA     GLOB_STR_COI_C_6
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .return_status
@@ -1334,7 +1334,7 @@ LAB_031A:
     PEA     11.W
     PEA     -604(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_037D(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
 
     LEA     28(A7),A7
     BRA.S   .init_entry_loop
@@ -1358,7 +1358,7 @@ LAB_031A:
     PEA     11.W
     PEA     -600(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_037D(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
 
     LEA     28(A7),A7
 
@@ -1422,7 +1422,7 @@ LAB_031A:
     MOVEA.L -8(A5),A1
     MOVE.L  4(A1),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,4(A0)
@@ -1437,7 +1437,7 @@ LAB_031A:
     ADDA.W  -596(A5),A1
     MOVE.L  12(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,12(A0)
@@ -1446,7 +1446,7 @@ LAB_031A:
     ADDA.W  -594(A5),A1
     MOVE.L  16(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,16(A0)
@@ -1455,7 +1455,7 @@ LAB_031A:
     ADDA.W  -592(A5),A1
     MOVE.L  20(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,20(A0)
@@ -1464,7 +1464,7 @@ LAB_031A:
     ADDA.W  -590(A5),A1
     MOVE.L  8(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     24(A7),A7
     MOVEA.L -8(A5),A0
@@ -1495,13 +1495,13 @@ LAB_031A:
 .default_field24:
     MOVE.L  24(A0),-(A7)
     CLR.L   -(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,24(A0)
     MOVE.L  28(A0),(A7)
     PEA     LAB_1B7B
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     12(A7),A7
     MOVEA.L -8(A5),A0
@@ -1541,7 +1541,7 @@ LAB_031A:
     MOVE.L  A0,-(A7)
     PEA     GLOB_STR_PERCENT_S_1
     PEA     -486(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -486(A5)
     JSR     LAB_0468(PC)
@@ -1587,7 +1587,7 @@ LAB_031A:
     PEA     8.W
     PEA     -632(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_037D(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
 
     LEA     28(A7),A7
     BRA.S   .process_subentry
@@ -1611,7 +1611,7 @@ LAB_031A:
     PEA     6.W
     PEA     -628(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_037D(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
 
     LEA     28(A7),A7
 
@@ -1633,7 +1633,7 @@ LAB_031A:
     ADDA.W  -628(A5),A1
     MOVE.L  6(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,6(A0)
@@ -1642,7 +1642,7 @@ LAB_031A:
     ADDA.W  -626(A5),A1
     MOVE.L  10(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,10(A0)
@@ -1651,7 +1651,7 @@ LAB_031A:
     ADDA.W  -624(A5),A1
     MOVE.L  14(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,14(A0)
@@ -1660,7 +1660,7 @@ LAB_031A:
     ADDA.W  -622(A5),A1
     MOVE.L  2(A0),(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     20(A7),A7
     MOVEA.L -12(A5),A0
@@ -1692,14 +1692,14 @@ LAB_031A:
     MOVE.L  18(A0),-(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  24(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,18(A0)
     MOVE.L  22(A0),(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  28(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     12(A7),A7
     MOVEA.L -12(A5),A0
@@ -1812,7 +1812,7 @@ LAB_031A:
     MOVE.L  4(A0),-(A7)
     MOVEA.L -8(A5),A1
     MOVE.L  4(A1),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,4(A0)
@@ -1824,42 +1824,42 @@ LAB_031A:
     MOVE.B  3(A0),3(A1)
     MOVE.L  12(A1),(A7)
     MOVE.L  12(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,12(A0)
     MOVE.L  16(A0),(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  16(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,16(A0)
     MOVE.L  20(A0),(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  20(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,20(A0)
     MOVE.L  8(A0),(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  8(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,8(A0)
     MOVE.L  24(A0),(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  24(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,24(A0)
     MOVE.L  28(A0),(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  28(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -20(A5),A0
     MOVE.L  D0,28(A0)
@@ -1895,42 +1895,42 @@ LAB_031A:
     MOVE.W  (A0),(A1)
     MOVE.L  6(A1),-(A7)
     MOVE.L  6(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,6(A0)
     MOVE.L  10(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  10(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,10(A0)
     MOVE.L  14(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  14(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,14(A0)
     MOVE.L  2(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  2(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,2(A0)
     MOVE.L  18(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  18(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     MOVEA.L -24(A5),A0
     MOVE.L  D0,18(A0)
     MOVE.L  22(A0),(A7)
     MOVEA.L -12(A5),A0
     MOVE.L  22(A0),-(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     28(A7),A7
     MOVEA.L -24(A5),A0
@@ -1956,7 +1956,7 @@ LAB_031A:
     MOVE.L  -570(A5),-(A7)
     PEA     1443.W
     PEA     GLOB_STR_COI_C_1
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
@@ -1982,14 +1982,14 @@ LAB_0345:
     PEA     Struct_AnimOb_Size.W
     PEA     1458.W
     PEA     GLOB_STR_COI_C_2
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,48(A3)
     MOVEA.L D0,A0
     MOVE.L  28(A0),(A7)
     PEA     LAB_1B7F
     MOVE.L  D0,24(A7)
-    JSR     LAB_0385(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
 
     LEA     20(A7),A7
     MOVEA.L 4(A7),A0
@@ -2288,7 +2288,7 @@ LAB_035E:
     PEA     LAB_1B80
     PEA     -44(A5)
     MOVE.L  D0,-36(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -44(A5),A0
     MOVE.L  A0,-4(A5)
@@ -2323,13 +2323,13 @@ LAB_0361:
 
     PEA     LAB_1B81
     MOVE.L  20(A5),-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_1(PC)
+    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
     MOVE.L  -20(A5,D0.L),(A7)
     MOVE.L  20(A5),-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_1(PC)
+    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     LEA     12(A7),A7
 
@@ -2389,14 +2389,14 @@ LAB_0366:
     BNE.S   LAB_0369
 
     MOVE.L  A3,-(A7)
-    JSR     LAB_037C(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_17E6(PC)
 
     MOVE.L  D0,D6
     MOVE.L  D6,D0
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_037E(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_0926(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -2443,7 +2443,7 @@ LAB_036A:
     MOVE.L  D1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0384(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_16FF(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -2495,7 +2495,7 @@ LAB_036C:
     MOVE.L  D1,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0384(PC)
+    JSR     GROUP_AE_JMPTBL_LAB_16FF(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-8(A5)
@@ -2508,7 +2508,7 @@ LAB_036D:
     MOVE.W  LAB_2270,D1
     SUB.L   D1,D0
     MOVEQ   #30,D1
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  D0,-8(A5)
 
@@ -2645,7 +2645,7 @@ LAB_037A:
     MOVE.L  -4(A5),-(A7)
     PEA     LAB_1B82
     MOVE.L  A1,-(A7)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 

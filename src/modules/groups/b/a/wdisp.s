@@ -27,7 +27,7 @@ LAB_185C:
 
     PEA     LAB_1ED4
     MOVE.L  LAB_1EDF,-(A7)
-    JSR     GROUP_BA_JMP_TBL_BRUSH_FindBrushByPredicate(PC)
+    JSR     GROUP_BA_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -41,7 +41,7 @@ LAB_185C:
     ADDA.L  D0,A0
     PEA     LAB_1ED4
     MOVE.L  (A0),-(A7)
-    JSR     GROUP_BA_JMP_TBL_BRUSH_FindBrushByPredicate(PC)
+    JSR     GROUP_BA_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -154,7 +154,7 @@ LAB_185C:
     MOVE.L  D0,356(A0)
     MOVE.L  D0,360(A0)
     PEA     5.W
-    JSR     GROUPD_JMP_TBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     GROUPD_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     MOVE.L  D0,D1
     LSL.L   #2,D1
@@ -164,7 +164,7 @@ LAB_185C:
     MOVE.B  184(A0),D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,-184(A5)
-    JSR     GROUPD_JMP_TBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     GROUPD_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D1
@@ -230,7 +230,7 @@ LAB_185C:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-148(A5)
-    JSR     GROUPD_JMP_TBL_BRUSH_SelectBrushSlot(PC)
+    JSR     GROUP_BA_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
 
@@ -395,7 +395,7 @@ LAB_185C:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -200(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_09E2(PC)
+    JSR     GROUPD_JMPTBL_LAB_09E2(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-204(A5)
@@ -445,7 +445,7 @@ LAB_185C:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -200(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_09E2(PC)
+    JSR     GROUPD_JMPTBL_LAB_09E2(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-204(A5)
@@ -644,7 +644,7 @@ LAB_1883:
     ADDA.L  D0,A0
     PEA     LAB_1ED4
     MOVE.L  (A0),-(A7)
-    JSR     GROUP_BA_JMP_TBL_BRUSH_FindBrushByPredicate(PC)
+    JSR     GROUP_BA_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-104(A5)
@@ -683,7 +683,7 @@ LAB_1883:
     BEQ.W   .LAB_188D
 
     PEA     5.W
-    JSR     GROUPD_JMP_TBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     GROUPD_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     MOVE.L  D0,D1
     LSL.L   #2,D1
@@ -693,7 +693,7 @@ LAB_1883:
     MOVE.B  184(A0),D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,-76(A5)
-    JSR     GROUPD_JMP_TBL_BRUSH_PlaneMaskForIndex(PC)
+    JSR     GROUPD_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D1
@@ -778,13 +778,13 @@ LAB_1883:
     MOVE.L  -104(A5),-(A7)
     MOVE.L  D1,-96(A5)
     MOVE.L  D2,-92(A5)
-    JSR     GROUPD_JMP_TBL_BRUSH_SelectBrushSlot(PC)
+    JSR     GROUP_BA_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     BRA.S   .LAB_188E
 
 .LAB_188D:
-    JSR     GROUPD_JMP_TBL_LAB_0A45(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A45(PC)
 
 .LAB_188E:
     MOVE.L  D7,D0
@@ -941,7 +941,7 @@ LAB_1883:
     MOVE.L  -64(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0FFB(PC)
+    JSR     GROUP_BA_JMPTBL_LAB_0FFB(PC)
 
     LEA     24(A7),A7
     MOVE.L  D0,-58(A5)
@@ -989,7 +989,7 @@ LAB_1883:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-92(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0FFB(PC)
+    JSR     GROUP_BA_JMPTBL_LAB_0FFB(PC)
 
     LEA     24(A7),A7
     MOVEQ   #0,D1
@@ -1037,7 +1037,7 @@ LAB_1883:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-92(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0FFB(PC)
+    JSR     GROUP_BA_JMPTBL_LAB_0FFB(PC)
 
     LEA     24(A7),A7
     MOVE.L  D0,-54(A5)
@@ -1056,7 +1056,7 @@ LAB_1883:
     JSR     LAB_1A07(PC)
 
     ASL.L   #2,D1
-    LEA     GLOB_JMP_TBL_DAYS_OF_WEEK,A0
+    LEA     GLOB_JMPTBL_DAYS_OF_WEEK,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     LEA     -46(A5),A2
@@ -1259,7 +1259,7 @@ LAB_18AD:
     JSR     LAB_183E(PC)
 
     MOVE.L  D0,LAB_2216
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1269,9 +1269,9 @@ LAB_18AD:
     MOVEQ   #0,D5
     MOVE.W  2(A1),D5
     MOVE.L  A0,.localRastport(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0A45(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A45(PC)
 
-    JSR     GROUPD_JMP_TBL_LAB_0A49(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A49(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,(A7)
@@ -1506,12 +1506,12 @@ LAB_18AD:
     ADDA.L  D0,A0
     PEA     LAB_1ED4
     MOVE.L  (A0),-(A7)
-    JSR     GROUP_BA_JMP_TBL_BRUSH_FindBrushByPredicate(PC)
+    JSR     GROUP_BA_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-6(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0A00(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A00(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
@@ -1553,7 +1553,7 @@ LAB_18C2:
 
     MOVE.L  LAB_1B25,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0A00(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A00(PC)
 
     ADDQ.W  #8,A7
     EXT.L   D0
@@ -1571,10 +1571,10 @@ LAB_18C2:
     MOVEA.L LAB_1B25,A0
     ADDA.W  #$e8,A0
     MOVE.L  A0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0D75(PC)
+    JSR     GROUPD_JMPTBL_LAB_0D75(PC)
 
     MOVE.L  A2,(A7)
-    JSR     GROUPD_JMP_TBL_LAB_102C(PC)
+    JSR     GROUPD_JMPTBL_LAB_102C(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_18C6
@@ -1586,7 +1586,7 @@ LAB_18C2:
 
     MOVE.L  LAB_1B25,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0A00(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A00(PC)
 
     ADDQ.W  #8,A7
     EXT.L   D0
@@ -1600,7 +1600,7 @@ LAB_18C2:
 
     CLR.L   -(A7)
     PEA     LAB_1B25
-    JSR     GROUPD_JMP_TBL_BRUSH_FreeBrushList(PC)
+    JSR     GROUPD_JMPTBL_BRUSH_FreeBrushList(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
@@ -1625,7 +1625,7 @@ LAB_18C2:
     BNE.S   .LAB_18C7
 
     PEA     2.W
-    JSR     GROUPD_JMP_TBL_LAB_09F9(PC)
+    JSR     GROUPD_JMPTBL_LAB_09F9(PC)
 
     ADDQ.W  #4,A7
 
@@ -1657,43 +1657,43 @@ LAB_18C2:
 
 ;!======
 
-GROUPD_JMP_TBL_LAB_0A45:
+GROUPD_JMPTBL_LAB_0A45:
     JMP     LAB_0A45
 
-GROUPD_JMP_TBL_LAB_09E2:
+GROUPD_JMPTBL_LAB_09E2:
     JMP     LAB_09E2
 
-GROUPD_JMP_TBL_LAB_0D75:
+GROUPD_JMPTBL_LAB_0D75:
     JMP     LAB_0D75
 
-GROUPD_JMP_TBL_LAB_09F9:
+GROUPD_JMPTBL_LAB_09F9:
     JMP     LAB_09F9
 
-GROUPD_JMP_TBL_LAB_0A49:
+GROUPD_JMPTBL_LAB_0A49:
     JMP     LAB_0A49
 
-GROUP_BA_JMP_TBL_BRUSH_FindBrushByPredicate:
+GROUP_BA_JMPTBL_BRUSH_FindBrushByPredicate:
     JMP     BRUSH_FindBrushByPredicate
 
-GROUPD_JMP_TBL_BRUSH_FreeBrushList:
+GROUPD_JMPTBL_BRUSH_FreeBrushList:
     JMP     BRUSH_FreeBrushList
 
-GROUPD_JMP_TBL_BRUSH_PlaneMaskForIndex:
+GROUPD_JMPTBL_BRUSH_PlaneMaskForIndex:
     JMP     BRUSH_PlaneMaskForIndex
 
-GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight:
+GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
     JMP     ESQ_SetCopperEffect_OnEnableHighlight
 
-GROUPD_JMP_TBL_LAB_0A00:
+GROUPD_JMPTBL_LAB_0A00:
     JMP     LAB_0A00
 
-GROUPD_JMP_TBL_BRUSH_SelectBrushSlot:
+GROUP_BA_JMPTBL_BRUSH_SelectBrushSlot:
     JMP     BRUSH_SelectBrushSlot
 
-GROUPD_JMP_TBL_LAB_0FFB:
+GROUP_BA_JMPTBL_LAB_0FFB:
     JMP     LAB_0FFB
 
-GROUPD_JMP_TBL_LAB_102C:
+GROUPD_JMPTBL_LAB_102C:
     JMP     LAB_102C
 
 ;!======

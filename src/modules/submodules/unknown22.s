@@ -204,7 +204,7 @@ ALLOCATE_IOSTDREQ:
 
 ;!======
 
-SETUP_SIGNAL_AND_MSGPORT:
+UNKNOWN22_SetupSignalAndMsgport:
     MOVEM.L D6-D7/A2-A3/A6,-(A7)
 
     SetOffsetForStack 5

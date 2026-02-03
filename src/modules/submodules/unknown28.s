@@ -20,7 +20,6 @@
 ;   Handles %% and delegates spec parsing to LAB_1A3B.
 ;------------------------------------------------------------------------------
 WDISP_FormatWithCallback:
-LAB_1A71:
     LINK.W  A5,#-12
     MOVEM.L D7/A2-A3,-(A7)
 

@@ -13,7 +13,7 @@ LAB_135B:
     PEA     10.W
     PEA     47.W
     PEA     GLOB_STR_P_TYPE_C_1
-    JSR     GROUPD_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
@@ -39,7 +39,7 @@ LAB_135C:
     MOVE.L  D1,-(A7)
     PEA     58.W
     PEA     GLOB_STR_P_TYPE_C_2
-    JSR     GROUPD_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
@@ -75,7 +75,7 @@ LAB_1360:
     MOVE.L  -4(A5),-(A7)
     PEA     77.W
     PEA     GLOB_STR_P_TYPE_C_3
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     SUBA.L  A0,A0
@@ -103,7 +103,7 @@ LAB_1362:
     MOVE.L  6(A3),-(A7)
     PEA     92.W
     PEA     GLOB_STR_P_TYPE_C_4
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -112,7 +112,7 @@ LAB_1363:
     MOVE.L  A3,-(A7)
     PEA     95.W
     PEA     GLOB_STR_P_TYPE_C_5
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -372,7 +372,7 @@ LAB_1378:
     MOVEM.L D5-D7,-(A7)
     PEA     1006.W
     PEA     LAB_204F
-    JSR     GROUPD_JMP_TBL_DISKIO_OpenFileWithBuffer(PC)
+    JSR     GROUPD_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -410,7 +410,7 @@ LAB_137B:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_03A0(PC)
+    JSR     GROUPD_JMPTBL_LAB_03A0(PC)
 
     LEA     12(A7),A7
     TST.L   -8(A5)
@@ -427,7 +427,7 @@ LAB_137B:
     MOVE.L  D1,-(A7)
     PEA     LAB_2051
     PEA     -109(A5)
-    JSR     JMP_TBL_PRINTF_4(PC)
+    JSR     JMPTBL_PRINTF_4(PC)
 
     LEA     -109(A5),A0
     MOVEA.L A0,A1
@@ -441,7 +441,7 @@ LAB_137C:
     MOVE.L  A1,(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_03A0(PC)
+    JSR     GROUPD_JMPTBL_LAB_03A0(PC)
 
     LEA     24(A7),A7
     MOVEQ   #0,D6
@@ -477,7 +477,7 @@ LAB_137F:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_03A0(PC)
+    JSR     GROUPD_JMPTBL_LAB_03A0(PC)
 
     LEA     12(A7),A7
     BRA.S   LAB_1381
@@ -486,7 +486,7 @@ LAB_1380:
     PEA     9.W
     PEA     LAB_2052
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_03A0(PC)
+    JSR     GROUPD_JMPTBL_LAB_03A0(PC)
 
     LEA     12(A7),A7
 
@@ -517,7 +517,7 @@ LAB_1384:
 
 LAB_1385:
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_039A(PC)
+    JSR     GROUPD_JMPTBL_LAB_039A(PC)
 
     ADDQ.W  #4,A7
 
@@ -555,7 +555,7 @@ LAB_1389:
 
     PEA     -39(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_139A(PC)
+    JSR     GROUPD_JMPTBL_LAB_139A(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -653,7 +653,7 @@ LAB_1392:
 
     PEA     LAB_2056
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_139A(PC)
+    JSR     GROUPD_JMPTBL_LAB_139A(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -727,7 +727,7 @@ LAB_1398:
     MOVE.L  -4(A5),-(A7)
     PEA     406.W
     PEA     GLOB_STR_P_TYPE_C_6
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -739,7 +739,7 @@ LAB_1399:
 
 ;!======
 
-GROUPD_JMP_TBL_LAB_139A:
+GROUPD_JMPTBL_LAB_139A:
     JMP     LAB_1A97
 
 ;!======

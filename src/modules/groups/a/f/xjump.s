@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: CTASKS_JMP_TBL_GCOMMAND_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
+; FUNC: GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
 ; ARGS:
 ;   ??
 ; RET:
@@ -18,7 +18,7 @@
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-CTASKS_JMP_TBL_GCOMMAND_SaveBrushResult:
+GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult:
     JMP     GCOMMAND_SaveBrushResult
 
 ;!======

@@ -154,7 +154,7 @@ LAB_17DC:
     LEA     28(A3),A0
     MOVE.L  D7,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPD_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPD_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -207,7 +207,7 @@ LAB_17E0:
     ADDA.W  #$1c,A0
     MOVE.L  D7,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPD_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPD_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -586,7 +586,7 @@ LAB_1803:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -30(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0656(PC)
+    JSR     GROUPD_JMPTBL_LAB_0656(PC)
 
     LEA     12(A7),A7
     MOVE.W  -24(A5),D0
@@ -668,10 +668,10 @@ LAB_1808:
 
 ;!======
 
-GROUPD_JMP_TBL_LAB_0656:
+GROUPD_JMPTBL_LAB_0656:
     JMP     LAB_0656
 
-GROUPD_JMP_TBL_ESQ_TestBit1Based:
+GROUPD_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based
 
 ;!======

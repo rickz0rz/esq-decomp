@@ -4,13 +4,13 @@ LAB_07C4:
 LAB_07C5:
     JMP     LAB_184F
 
-JMP_TBL_PARSE_INI:
-    JMP     PARSE_INI
+GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer:
+    JMP     PARSEINI_ParseConfigBuffer
 
 LAB_07C7:
     JMP     LAB_16F7
 
-LAB_07C8:
+GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar:
     JMP     GCOMMAND_GetBannerChar
 
 LAB_07C9:
@@ -22,17 +22,16 @@ LAB_07CA:
 LAB_07CB:
     JMP     LAB_142E
 
-LAB_07CC:
+GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow:
     JMP     SCRIPT_DeassertCtrlLineNow
 
-LAB_07CD:
+GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default:
     JMP     ESQ_SetCopperEffect_Default
 
-LAB_07CE:
+GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom:
     JMP     ESQ_SetCopperEffect_Custom
 
-ED2_JMP_TBL_CLEANUP_RenderAlignedStatusScreen:
-LAB_07CF:
+GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
     JMP     CLEANUP_RenderAlignedStatusScreen
 
 ;!======
@@ -40,25 +39,3 @@ LAB_07CF:
     ; Alignment
     ORI.B   #0,D0
     DC.W    $0000
-
-;!======
-
-LAB_07D0:
-    JMP     ESQ_SetCopperEffect_AllOn
-
-LAB_07D1:
-    JMP     SCRIPT_AssertCtrlLineNow
-
-LAB_07D2:
-    JMP     LAB_1837
-
-LAB_07D3:
-    JMP     GCOMMAND_CopyGfxToWorkIfAvailable
-
-    MOVEQ   #97,D0
-    RTS
-
-;!======
-
-    ; Alignment
-    ALIGN_WORD

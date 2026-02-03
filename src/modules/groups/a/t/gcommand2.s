@@ -1,4 +1,3 @@
-;!======
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_FindPathSeparator   (Return a pointer to the final path separator (':' or '/') in the buffer.)
 ; ARGS:
@@ -18,10 +17,7 @@
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-
-; Return a pointer to the final path separator (':' or '/') in the buffer.
 GCOMMAND_FindPathSeparator:
-LAB_0D59:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -101,7 +97,6 @@ LAB_0D59:
 ;   Uses shell command strings (COPY >NIL: ...) and leaves early if assigns missing.
 ;------------------------------------------------------------------------------
 GCOMMAND_CopyGfxToWorkIfAvailable:
-LAB_0D61:
     MOVEM.L D2/D6-D7,-(A7)
     MOVEQ   #0,D7
     MOVEQ   #0,D6
@@ -113,7 +108,7 @@ LAB_0D61:
 
     MOVE.L  D0,D7
     TST.L   D7
-    BEQ.S   LAB_0D62
+    BEQ.S   .return
 
     MOVE.L  D7,D1
     JSR     _LVOUnLock(A6)
@@ -125,7 +120,7 @@ LAB_0D61:
 
     MOVE.L  D0,D7
     TST.L   D7
-    BEQ.S   LAB_0D62
+    BEQ.S   .return
 
     MOVE.L  D7,D1
     JSR     _LVOUnLock(A6)
@@ -133,22 +128,22 @@ LAB_0D61:
     MOVEQ   #0,D7
     CLR.L   -(A7)
     PEA     LAB_1FA0
-    JSR     GCOMMAND_JMP_TBL_LAB_1ADF(PC)
+    JSR     GCOMMAND_JMPTBL_LAB_1ADF(PC)
 
     MOVE.L  D0,D6
     CLR.L   (A7)
     PEA     LAB_1FA1
-    JSR     GCOMMAND_JMP_TBL_LAB_1ADF(PC)
+    JSR     GCOMMAND_JMPTBL_LAB_1ADF(PC)
 
     MOVE.L  D0,D6
 
-    JSR     GCOMMAND_JMP_TBL_LAB_071B(PC)
+    JSR     GCOMMAND_JMPTBL_LAB_071B(PC)
 
-    JSR     GCOMMAND_JMP_TBL_LAB_071A(PC)
+    JSR     GCOMMAND_JMPTBL_LAB_071A(PC)
 
     LEA     12(A7),A7
 
-LAB_0D62:
+.return:
     MOVEM.L (A7)+,D2/D6-D7
     RTS
 
@@ -156,72 +151,3 @@ LAB_0D62:
 
     ; Alignment
     ALIGN_WORD
-
-;!======
-;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMP_TBL_LAB_071B   (JumpStub_LAB_071B)
-; ARGS:
-;   (none)
-; RET:
-;   (none)
-; CLOBBERS:
-;   (none)
-; CALLS:
-;   LAB_071B
-; READS:
-;   (none)
-; WRITES:
-;   (none)
-; DESC:
-;   Jump stub to LAB_071B.
-;------------------------------------------------------------------------------
-GCOMMAND_JMP_TBL_LAB_071B:
-LAB_0D63:
-    JMP     LAB_071B
-
-;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMP_TBL_LAB_1ADF   (JumpStub_LAB_1ADF)
-; ARGS:
-;   (none)
-; RET:
-;   (none)
-; CLOBBERS:
-;   (none)
-; CALLS:
-;   LAB_1ADF
-; READS:
-;   (none)
-; WRITES:
-;   (none)
-; DESC:
-;   Jump stub to LAB_1ADF.
-;------------------------------------------------------------------------------
-GCOMMAND_JMP_TBL_LAB_1ADF:
-LAB_0D64:
-    JMP     LAB_1ADF
-
-;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMP_TBL_LAB_071A   (JumpStub_LAB_071A)
-; ARGS:
-;   (none)
-; RET:
-;   (none)
-; CLOBBERS:
-;   (none)
-; CALLS:
-;   LAB_071A
-; READS:
-;   (none)
-; WRITES:
-;   (none)
-; DESC:
-;   Jump stub to LAB_071A.
-;------------------------------------------------------------------------------
-GCOMMAND_JMP_TBL_LAB_071A:
-LAB_0D65:
-    JMP     LAB_071A
-
-;!======
-
-    ; Alignment
-    MOVEQ   #97,D0

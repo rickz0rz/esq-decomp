@@ -8,9 +8,9 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   LAB_1333, LAB_1026, LAB_1240, GROUPC_JMP_TBL_MEMORY_AllocateMemory, _LVOInitRastPort,
+;   LAB_1333, LAB_1026, LAB_1240, GROUPC_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7,
-;   _LVOTextLength, JMP_TBL_LAB_1A07_3
+;   _LVOTextLength, JMPTBL_LAB_1A07_3
 ; READS:
 ;   LAB_1FFE, GLOB_HANDLE_PREVUEC_FONT, GLOB_STR_44_44_44
 ; WRITES:
@@ -37,7 +37,7 @@ LAB_0FA4:
     PEA     100.W
     PEA     99.W
     PEA     GLOB_STR_NEWGRID_C_1
-    JSR     GROUPC_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_1
@@ -63,7 +63,7 @@ LAB_0FA4:
     PEA     100.W
     PEA     112.W
     PEA     GLOB_STR_NEWGRID_C_2
-    JSR     GROUPC_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_2
@@ -101,7 +101,7 @@ LAB_0FA4:
     MOVE.L  #624,D0
     SUB.L   D1,D0
     MOVEQ   #3,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVE.W  D0,LAB_232B
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
@@ -116,7 +116,7 @@ LAB_0FA4:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     TST.L   D1
     BEQ.S   .align_even
@@ -142,7 +142,7 @@ LAB_0FA4:
 ; CLOBBERS:
 ;   D0/A0/A6
 ; CALLS:
-;   GROUPC_JMP_TBL_MEMORY_DeallocateMemory, LAB_1335, LAB_1023, LAB_1243
+;   GROUPC_JMPTBL_MEMORY_DeallocateMemory, LAB_1335, LAB_1023, LAB_1243
 ; READS:
 ;   GLOB_REF_GRID_RASTPORT_MAYBE_1
 ; WRITES:
@@ -161,7 +161,7 @@ LAB_0FA7:
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
     PEA     148.W
     PEA     GLOB_STR_NEWGRID_C_3
-    JSR     GROUPC_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -750,7 +750,7 @@ LAB_0FC9:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   _LVOSetDrMd, LAB_102F, _LVOSetAPen, _LVORectFill, LAB_133D, LAB_1348,
-;   GROUPC_JMP_TBL_LAB_1A06, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
+;   GROUPC_JMPTBL_LAB_1A06, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
 ; READS:
 ;   LAB_232A/232B, LAB_2328
 ; WRITES:
@@ -838,7 +838,7 @@ LAB_0FD1:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,28(A7)
     MOVE.L  D6,D0
-    JSR     GROUPC_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  28(A7),D1
     ADD.L   D0,D1
@@ -960,7 +960,7 @@ LAB_0FD1:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   JMP_TBL_GENERATE_GRID_DATE_STRING, _LVOSetDrMd, LAB_102F, _LVOSetAPen,
+;   JMPTBL_GENERATE_GRID_DATE_STRING, _LVOSetDrMd, LAB_102F, _LVOSetAPen,
 ;   _LVORectFill, LAB_133D, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   LAB_232A/232B
@@ -983,7 +983,7 @@ LAB_0FDC:
     LEA     60(A3),A0
     PEA     -100(A5)
     MOVE.L  A0,.rastport(A5)
-    JSR     JMP_TBL_GENERATE_GRID_DATE_STRING(PC)
+    JSR     JMPTBL_GENERATE_GRID_DATE_STRING(PC)
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #0,D0
@@ -1388,7 +1388,7 @@ LAB_0FE9:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1028, JMP_TBL_LAB_1A07_3, GROUPC_JMP_TBL_LAB_1A06, LAB_101F, NEWGRID_ComputeDaySlotFromClock
+;   LAB_1028, JMPTBL_LAB_1A07_3, GROUPC_JMPTBL_LAB_1A06, LAB_101F, NEWGRID_ComputeDaySlotFromClock
 ; READS:
 ;   LAB_1DD8
 ; WRITES:
@@ -1418,10 +1418,10 @@ LAB_0FED:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVEQ   #60,D0
-    JSR     GROUPC_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -1446,7 +1446,7 @@ LAB_0FED:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1028, JMP_TBL_LAB_1A07_3, GROUPC_JMP_TBL_LAB_1A06, LAB_101F, NEWGRID_ComputeDaySlotFromClockWithOffset
+;   LAB_1028, JMPTBL_LAB_1A07_3, GROUPC_JMPTBL_LAB_1A06, LAB_101F, NEWGRID_ComputeDaySlotFromClockWithOffset
 ; READS:
 ;   LAB_1DD8
 ; WRITES:
@@ -1477,10 +1477,10 @@ LAB_0FEF:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVEQ   #60,D0
-    JSR     GROUPC_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -2064,9 +2064,9 @@ LAB_100D:
     BSR.W   LAB_0FED
 
     MOVE.L  D0,(A7)
-    JSR     JMP_TBL_CLEANUP_DrawClockFormatList(PC)
+    JSR     JMPTBL_CLEANUP_DrawClockFormatList(PC)
 
-    JSR     JMP_TBL_CLEANUP_DrawClockFormatFrame(PC)
+    JSR     JMPTBL_CLEANUP_DrawClockFormatFrame(PC)
 
     CLR.W   LAB_1F45
     MOVEQ   #2,D0
@@ -2131,7 +2131,7 @@ LAB_100D:
     ADDA.W  #$3c,A0
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPC_JMP_TBL_LAB_18C2(PC)
+    JSR     GROUPC_JMPTBL_LAB_18C2(PC)
 
     ADDQ.W  #8,A7
     TST.W   D0
@@ -2467,7 +2467,7 @@ LAB_100D:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_LAB_1A07   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_1A07   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_1A07)
 ; RET:
@@ -2479,12 +2479,12 @@ LAB_100D:
 ; DESC:
 ;   Jump table entry that forwards to LAB_1A07.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_LAB_1A07:
-JMP_TBL_LAB_1A07_3:
+NEWGRID_JMPTBL_LAB_1A07:
+JMPTBL_LAB_1A07_3:
     JMP     LAB_1A07
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_LAB_05C7   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_05C7   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05C7)
 ; RET:
@@ -2496,12 +2496,12 @@ JMP_TBL_LAB_1A07_3:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05C7.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_LAB_05C7:
+NEWGRID_JMPTBL_LAB_05C7:
 LAB_101F:
     JMP     LAB_05C7
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_GenerateGridDateString   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_GenerateGridDateString   (Jump stub)
 ; ARGS:
 ;   ?? (see GENERATE_GRID_DATE_STRING)
 ; RET:
@@ -2513,12 +2513,12 @@ LAB_101F:
 ; DESC:
 ;   Jump table entry that forwards to GENERATE_GRID_DATE_STRING.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_GenerateGridDateString:
-JMP_TBL_GENERATE_GRID_DATE_STRING:
+NEWGRID_JMPTBL_GenerateGridDateString:
+JMPTBL_GENERATE_GRID_DATE_STRING:
     JMP     GENERATE_GRID_DATE_STRING
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_DeallocateMemory   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_DeallocateMemory   (Jump stub)
 ; ARGS:
 ;   ?? (see MEMORY_DeallocateMemory)
 ; RET:
@@ -2530,12 +2530,12 @@ JMP_TBL_GENERATE_GRID_DATE_STRING:
 ; DESC:
 ;   Jump table entry that forwards to MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_DeallocateMemory:
-GROUPC_JMP_TBL_MEMORY_DeallocateMemory:
+NEWGRID_JMPTBL_DeallocateMemory:
+GROUPC_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_Cleanup_DrawClockFormatList   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_Cleanup_DrawClockFormatList   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_DrawClockFormatList)
 ; RET:
@@ -2547,13 +2547,13 @@ GROUPC_JMP_TBL_MEMORY_DeallocateMemory:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_DrawClockFormatList.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_Cleanup_DrawClockFormatList:
-JMP_TBL_CLEANUP_DrawClockFormatList:
+NEWGRID_JMPTBL_Cleanup_DrawClockFormatList:
+JMPTBL_CLEANUP_DrawClockFormatList:
 LAB_1022:
     JMP     CLEANUP_DrawClockFormatList
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_LAB_058A   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_058A   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_058A)
 ; RET:
@@ -2565,12 +2565,12 @@ LAB_1022:
 ; DESC:
 ;   Jump table entry that forwards to LAB_058A.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_LAB_058A:
+NEWGRID_JMPTBL_LAB_058A:
 LAB_1023:
     JMP     LAB_058A
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_DrawClockBanner   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_DrawClockBanner   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_DrawClockBanner)
 ; RET:
@@ -2582,13 +2582,13 @@ LAB_1023:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_DrawClockBanner.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_DrawClockBanner:
+NEWGRID_JMPTBL_DrawClockBanner:
 LAB_1024:
     ; Reuse cleanup module to draw the shared clock banner.
     JMP     CLEANUP_DrawClockBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_AllocateMemory   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_AllocateMemory   (Jump stub)
 ; ARGS:
 ;   ?? (see MEMORY_AllocateMemory)
 ; RET:
@@ -2600,12 +2600,12 @@ LAB_1024:
 ; DESC:
 ;   Jump table entry that forwards to MEMORY_AllocateMemory.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_AllocateMemory:
-GROUPC_JMP_TBL_MEMORY_AllocateMemory:
+NEWGRID_JMPTBL_AllocateMemory:
+GROUPC_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_LAB_0588   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_0588   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0588)
 ; RET:
@@ -2617,12 +2617,12 @@ GROUPC_JMP_TBL_MEMORY_AllocateMemory:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0588.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_LAB_0588:
+NEWGRID_JMPTBL_LAB_0588:
 LAB_1026:
     JMP     LAB_0588
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_Cleanup_DrawClockFormatFrame   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_Cleanup_DrawClockFormatFrame   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_DrawClockFormatFrame)
 ; RET:
@@ -2634,13 +2634,13 @@ LAB_1026:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_DrawClockFormatFrame.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_Cleanup_DrawClockFormatFrame:
-JMP_TBL_CLEANUP_DrawClockFormatFrame:
+NEWGRID_JMPTBL_Cleanup_DrawClockFormatFrame:
+JMPTBL_CLEANUP_DrawClockFormatFrame:
 LAB_1027:
     JMP     CLEANUP_DrawClockFormatFrame
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_LAB_05D3   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_05D3   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05D3)
 ; RET:
@@ -2652,12 +2652,12 @@ LAB_1027:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05D3.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_LAB_05D3:
+NEWGRID_JMPTBL_LAB_05D3:
 LAB_1028:
     JMP     LAB_05D3
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMP_TBL_LAB_1970   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_1970   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_1970)
 ; RET:
@@ -2669,12 +2669,12 @@ LAB_1028:
 ; DESC:
 ;   Jump table entry that forwards to LAB_1970.
 ;------------------------------------------------------------------------------
-NEWGRID_JMP_TBL_LAB_1970:
+NEWGRID_JMPTBL_LAB_1970:
 LAB_1029:
     JMP     LAB_1970
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPC_JMP_TBL_LAB_18C2   (Jump stub)
+; FUNC: GROUPC_JMPTBL_LAB_18C2   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_18C2)
 ; RET:
@@ -2686,11 +2686,11 @@ LAB_1029:
 ; DESC:
 ;   Jump table entry that forwards to LAB_18C2.
 ;------------------------------------------------------------------------------
-GROUPC_JMP_TBL_LAB_18C2:
+GROUPC_JMPTBL_LAB_18C2:
     JMP     LAB_18C2
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPC_JMP_TBL_LAB_1A06   (Jump stub)
+; FUNC: GROUPC_JMPTBL_LAB_1A06   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_1A06)
 ; RET:
@@ -2702,5 +2702,5 @@ GROUPC_JMP_TBL_LAB_18C2:
 ; DESC:
 ;   Jump table entry that forwards to LAB_1A06.
 ;------------------------------------------------------------------------------
-GROUPC_JMP_TBL_LAB_1A06:
+GROUPC_JMPTBL_LAB_1A06:
     JMP     LAB_1A06

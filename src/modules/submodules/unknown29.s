@@ -206,11 +206,11 @@ LAB_1A88:
     MOVE.L  D7,D0
     ORI.W   #$80,D0
     MOVE.L  D0,-1028(A4)
-    LEA     LAB_1ABE(PC),A0
+    LEA     UNKNOWN36_ShowAbortRequester(PC),A0
     MOVE.L  A0,-616(A4)
     MOVE.L  22918(A4),-(A7)
     MOVE.L  22914(A4),-(A7)
-    JSR     WDISP_JMP_TBL_ESQ_MainInitAndRun(PC)
+    JSR     WDISP_JMPTBL_ESQ_MainInitAndRun(PC)
 
     CLR.L   (A7)
     JSR     LIBRARIES_LOAD_FAILED(PC)
@@ -229,7 +229,7 @@ GLOB_STR_ASTERISK_1:
 
 ;!======
 
-WDISP_JMP_TBL_ESQ_MainInitAndRun:
+WDISP_JMPTBL_ESQ_MainInitAndRun:
 LAB_1A8B:
     JMP     ESQ_MainInitAndRun
 

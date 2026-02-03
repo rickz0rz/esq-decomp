@@ -7,14 +7,14 @@
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   GROUPA1_JMP_TBL_ESQFUNC_DrawDiagnosticsScreen, LAB_0464, LAB_007B,
-;   GROUPA1_JMP_TBL_SCRIPT_ClearCtrlLineIfEnabled, GROUPA1_JMP_TBL_SCRIPT_UpdateCtrlLineTimeout,
-;   LAB_0546, GROUPA1_JMP_TBL_DST_UpdateBannerQueue, GROUPA1_JMP_TBL_ESQDISP_DrawStatusBanner,
-;   GROUPA1_JMP_TBL_PARSEINI_UpdateClockFromRtc, GROUPA1_JMP_TBL_DST_RefreshBannerBuffer,
+;   GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen, LAB_0464, LAB_007B,
+;   GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled, GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout,
+;   LAB_0546, GROUP_AC_JMPTBL_DST_UpdateBannerQueue, GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner,
+;   GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc, GROUP_AC_JMPTBL_DST_RefreshBannerBuffer,
 ;   LAB_055F, CLEANUP_DrawGridTimeBanner, CLEANUP_DrawClockBanner,
-;   GROUPA1_JMP_TBL_ESQFUNC_PruneEntryTextPointers, GROUPA1_JMP_TBL_SCRIPT_UpdateCtrlStateMachine,
-;   GROUPA1_JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN, GROUPA1_JMP_TBL_ESQFUNC_DrawMemoryStatusScreen,
-;   _LVOSetAPen, JMP_TBL_LAB_1A07_1
+;   GROUP_AC_JMPTBL_ESQFUNC_PruneEntryTextPointers, GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine,
+;   GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion, GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen,
+;   _LVOSetAPen, GROUP_AG_JMPTBL_LAB_1A07
 ; READS:
 ;   LAB_2264, CLEANUP_AlertProcessingFlag, LAB_1DEF, LAB_2263,
 ;   CLEANUP_AlertCooldownTicks, LAB_1FE7, LAB_2325, LAB_223A, LAB_2274,
@@ -53,7 +53,7 @@ CLEANUP_ProcessAlerts:
     SUBQ.L  #1,CLEANUP_AlertCooldownTicks
     BGT.S   .update_alert_state
 
-    JSR     GROUPA1_JMP_TBL_ESQFUNC_DrawDiagnosticsScreen(PC)
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,CLEANUP_AlertCooldownTicks
@@ -103,7 +103,7 @@ CLEANUP_ProcessAlerts:
     CMP.W   D1,D0
     BGE.S   .update_banner_queue
 
-    JSR     GROUPA1_JMP_TBL_SCRIPT_ClearCtrlLineIfEnabled(PC)
+    JSR     GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled(PC)
 
     MOVE.W  LAB_22A5,D0
     BNE.S   .update_banner_queue
@@ -111,7 +111,7 @@ CLEANUP_ProcessAlerts:
     MOVE.W  #(-1),LAB_22A5
 
 .update_banner_queue:
-    JSR     GROUPA1_JMP_TBL_SCRIPT_UpdateCtrlLineTimeout(PC)
+    JSR     GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout(PC)
 
     MOVEQ   #1,D0
     CMP.L   BRUSH_PendingAlertCode,D0   ; brush loader flagged \"category 1\" alert
@@ -175,14 +175,14 @@ CLEANUP_ProcessAlerts:
 
 .poll_banner_event:
     PEA     LAB_21DF
-    JSR     GROUPA1_JMP_TBL_DST_UpdateBannerQueue(PC)
+    JSR     GROUP_AC_JMPTBL_DST_UpdateBannerQueue(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
     BEQ.S   .after_banner_poll
 
     PEA     1.W
-    JSR     GROUPA1_JMP_TBL_ESQDISP_DrawStatusBanner(PC)
+    JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
 
@@ -198,7 +198,7 @@ CLEANUP_ProcessAlerts:
 
     CLR.W   LAB_1E85
     CLR.L   -(A7)
-    JSR     GROUPA1_JMP_TBL_ESQDISP_DrawStatusBanner(PC)
+    JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  #1,LAB_1E85
@@ -222,12 +222,12 @@ CLEANUP_ProcessAlerts:
     BNE.S   .init_alert_counters
 
 .handle_alert_type5_or_type2:
-    JSR     GROUPA1_JMP_TBL_PARSEINI_UpdateClockFromRtc(PC)
+    JSR     GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc(PC)
 
-    JSR     GROUPA1_JMP_TBL_DST_RefreshBannerBuffer(PC)
+    JSR     GROUP_AC_JMPTBL_DST_RefreshBannerBuffer(PC)
 
     CLR.L   -(A7)
-    JSR     GROUPA1_JMP_TBL_ESQDISP_DrawStatusBanner(PC)
+    JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
 
@@ -323,7 +323,7 @@ CLEANUP_ProcessAlerts:
     MOVE.W  LAB_2270,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     SUBQ.L  #1,D1
     BNE.S   .maybe_clear_brush_alert
@@ -334,18 +334,18 @@ CLEANUP_ProcessAlerts:
     MOVE.W  LAB_226F,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     GROUPA1_JMP_TBL_ESQFUNC_PruneEntryTextPointers(PC)
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_PruneEntryTextPointers(PC)
 
     ADDQ.W  #4,A7
 
 .update_grid_flash:
-    JSR     GROUPA1_JMP_TBL_SCRIPT_UpdateCtrlStateMachine(PC)
+    JSR     GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine(PC)
 
     MOVE.B  LAB_1D13,D0
     SUBQ.B  #8,D0
     BNE.S   .check_grid_flash_alt
 
-    JSR     GROUPA1_JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN(PC)
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
 
     BRA.S   .finish
 
@@ -354,7 +354,7 @@ CLEANUP_ProcessAlerts:
     SUBQ.B  #7,D0
     BNE.S   .finish
 
-    JSR     GROUPA1_JMP_TBL_ESQFUNC_DrawMemoryStatusScreen(PC)
+    JSR     GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen(PC)
 
 .finish:
     CLR.L   CLEANUP_AlertProcessingFlag
@@ -374,8 +374,8 @@ CLEANUP_ProcessAlerts:
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
-;   JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT, GROUPA_JMP_TBL_WDISP_SPrintf, _LVOSetAPen,
-;   _LVORectFill, _LVOMove, _LVOText, BEVEL_DrawBevelFrameWithTopRight, LAB_026C
+;   GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat, GROUP_AE_JMPTBL_WDISP_SPrintf, _LVOSetAPen,
+;   _LVORectFill, _LVOMove, _LVOText, BEVEL_DrawBevelFrameWithTopRight, GROUP_AD_JMPTBL_LAB_1ADA
 ; READS:
 ;   LAB_2263, GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_WORD_CURRENT_HOUR,
 ;   GLOB_WORD_USE_24_HR_FMT, GLOB_WORD_CURRENT_MINUTE, GLOB_WORD_CURRENT_SECOND,
@@ -407,7 +407,7 @@ LAB_01E3:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT(PC)
+    JSR     GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(PC)
 
     MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
     EXT.L   D1
@@ -418,7 +418,7 @@ LAB_01E3:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_EXTRA_TIME_FORMAT
     PEA     -10(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     24(A7),A7
     BRA.S   .draw_banner
@@ -435,7 +435,7 @@ LAB_01E3:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_GRID_TIME_FORMAT
     PEA     -10(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
 
@@ -532,7 +532,7 @@ LAB_01E3:
     MOVE.L  D2,-(A7)
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A0
     MOVE.L  4(A0),-(A7)
-    JSR     LAB_026C(PC)
+    JSR     GROUP_AD_JMPTBL_LAB_1ADA(PC)
 
 .done:
     MOVEM.L -20(A5),D2-D3
@@ -551,7 +551,7 @@ LAB_01E3:
 ; CLOBBERS:
 ;   D0-D1/D6-D7/A0-A3
 ; CALLS:
-;   JMP_TBL_LAB_1A07_1, GROUPA_JMP_TBL_LAB_1A06
+;   GROUP_AG_JMPTBL_LAB_1A07, GROUP_AG_JMPTBL_LAB_1A06
 ; READS:
 ;   LAB_1DD8, GLOB_REF_STR_CLOCK_FORMAT
 ; WRITES:
@@ -580,7 +580,7 @@ LAB_01E9:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVE.L  D1,D6
     MOVE.L  D7,D0
@@ -603,19 +603,19 @@ LAB_01E9:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     ADD.L   D0,D6
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
     MOVE.B  D0,3(A3)
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -636,7 +636,7 @@ LAB_01E9:
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A5-A6
 ; CALLS:
-;   LAB_0211, _LVOSetAPen, _LVORectFill, GROUPA_JMP_TBL_LAB_1A06, BEVEL_DrawBevelFrameWithTopRight,
+;   GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds, _LVOSetAPen, _LVORectFill, GROUP_AG_JMPTBL_LAB_1A06, BEVEL_DrawBevelFrameWithTopRight,
 ;   CLEANUP_FormatClockFormatEntry, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   LAB_232A, LAB_232B, GLOB_REF_GRID_RASTPORT_MAYBE_1, GLOB_REF_GRAPHICS_LIBRARY
@@ -658,7 +658,7 @@ LAB_01EE:
     PEA     6.W
     PEA     5.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_0211(PC)
+    JSR     GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(PC)
 
     LEA     16(A7),A7
 
@@ -706,7 +706,7 @@ LAB_01EE:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  20(A7),D1
     ADD.L   D0,D1
@@ -720,7 +720,7 @@ LAB_01EE:
     MOVE.L  D6,D0
     MOVE.L  D1,20(A7)
     MOVE.L  D2,D1
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  24(A7),D1
     ADD.L   D0,D1
@@ -747,7 +747,7 @@ LAB_01EE:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  20(A7),D1
     ADD.L   D0,D1
@@ -846,7 +846,7 @@ LAB_01EE:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  20(A7),D1
     ADD.L   D0,D1
@@ -869,7 +869,7 @@ LAB_01EE:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,48(A7)
     MOVE.L  D6,D0
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.L  48(A7),D1
     ADD.L   D0,D1
@@ -957,7 +957,7 @@ LAB_01EE:
 ; CLOBBERS:
 ;   D0-D3/A0
 ; CALLS:
-;   LAB_026C
+;   GROUP_AD_JMPTBL_LAB_1ADA
 ; READS:
 ;   LAB_232A, GLOB_REF_GRID_RASTPORT_MAYBE_1
 ; WRITES:
@@ -993,7 +993,7 @@ LAB_01FD:
     MOVE.L  D1,-(A7)
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A0
     MOVE.L  4(A0),-(A7)
-    JSR     LAB_026C(PC)
+    JSR     GROUP_AD_JMPTBL_LAB_1ADA(PC)
 
     LEA     36(A7),A7
     MOVEM.L (A7)+,D2-D3
@@ -1011,8 +1011,8 @@ LAB_01FD:
 ;   D0-D7/A0-A1/A5-A6
 ; CALLS:
 ;   ESQ_FormatTimeStamp, _LVOSetAPen, _LVOSetDrMd, _LVORectFill, _LVOTextLength,
-;   _LVOMove, _LVOText, JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT, GROUPA_JMP_TBL_WDISP_SPrintf,
-;   LAB_026C
+;   _LVOMove, _LVOText, GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat, GROUP_AE_JMPTBL_WDISP_SPrintf,
+;   GROUP_AD_JMPTBL_LAB_1ADA
 ; READS:
 ;   LAB_2274, GLOB_REF_RASTPORT_1, GLOB_REF_GRAPHICS_LIBRARY,
 ;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_WORD_CURRENT_HOUR, GLOB_WORD_USE_24_HR_FMT,
@@ -1081,7 +1081,7 @@ LAB_01FE:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT(PC)
+    JSR     GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(PC)
 
     MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
     EXT.L   D1
@@ -1092,7 +1092,7 @@ LAB_01FE:
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_GRID_TIME_FORMAT_DUPLICATE
     PEA     -32(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     24(A7),A7
 
@@ -1199,7 +1199,7 @@ LAB_01FE:
     CLR.L   -(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  4(A0),-(A7)
-    JSR     LAB_026C(PC)
+    JSR     GROUP_AD_JMPTBL_LAB_1ADA(PC)
 
     MOVEM.L -64(A5),D2-D7
     UNLK    A5
@@ -1217,11 +1217,11 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A5-A6
 ; CALLS:
-;   GROUPA_JMP_TBL_WDISP_SPrintf, _LVOSetAPen, _LVOSetDrMd, _LVORectFill,
-;   _LVOTextLength, _LVOMove, _LVOText, LAB_026C
+;   GROUP_AE_JMPTBL_WDISP_SPrintf, _LVOSetAPen, _LVOSetDrMd, _LVORectFill,
+;   _LVOTextLength, _LVOMove, _LVOText, GROUP_AD_JMPTBL_LAB_1ADA
 ; READS:
-;   LAB_2274, LAB_2275, LAB_2276, GLOB_JMP_TBL_SHORT_DAYS_OF_WEEK,
-;   GLOB_JMP_TBL_SHORT_MONTHS, GLOB_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED,
+;   LAB_2274, LAB_2275, LAB_2276, GLOB_JMPTBL_SHORT_DAYS_OF_WEEK,
+;   GLOB_JMPTBL_SHORT_MONTHS, GLOB_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED,
 ;   GLOB_REF_RASTPORT_1, GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   Stack buffer at -32(A5)
@@ -1239,13 +1239,13 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
     MOVE.W  LAB_2274,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     GLOB_JMP_TBL_SHORT_DAYS_OF_WEEK,A0
+    LEA     GLOB_JMPTBL_SHORT_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
 
     MOVE.W  LAB_2275,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     GLOB_JMP_TBL_SHORT_MONTHS,A1
+    LEA     GLOB_JMPTBL_SHORT_MONTHS,A1
     ADDA.L  D0,A1
 
     MOVE.W  LAB_2276,D0
@@ -1256,7 +1256,7 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
     MOVE.L  (A0),-(A7)
     PEA     GLOB_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED
     PEA     -32(A5)
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
 
@@ -1345,7 +1345,7 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  4(A0),-(A7)
-    JSR     LAB_026C(PC)
+    JSR     GROUP_AD_JMPTBL_LAB_1ADA(PC)
 
     MOVEM.L -56(A5),D2-D3/D5-D7
     UNLK    A5

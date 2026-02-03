@@ -8,7 +8,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1902, LAB_1905, JMP_TBL_DISPLAY_TEXT_AT_POSITION_2
+;   LAB_1902, LAB_1905, JMPTBL_DISPLAY_TEXT_AT_POSITION_2
 ; READS:
 ;   LAB_2252, LAB_2245, LAB_1DEC, GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -87,7 +87,7 @@ LAB_18D7:
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
 
     LEA     16(A7),A7
 
@@ -394,7 +394,7 @@ LAB_18DD:
 ; CLOBBERS:
 ;   D0-D7 ??
 ; CALLS:
-;   LAB_1900, JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18D7
+;   LAB_1900, JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18D7
 ; READS:
 ;   LAB_229A, LAB_2253, DATACErrs
 ; WRITES:
@@ -425,7 +425,7 @@ LAB_18EF:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2(PC)
+    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -458,7 +458,7 @@ LAB_18EF:
 ; CLOBBERS:
 ;   D0-D7 ??
 ; CALLS:
-;   LAB_1900, JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18DD
+;   LAB_1900, JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18DD
 ; READS:
 ;   LAB_229A, LAB_2253, DATACErrs
 ; WRITES:
@@ -489,7 +489,7 @@ LAB_18F2:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2(PC)
+    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -522,7 +522,7 @@ LAB_18F2:
 ; CLOBBERS:
 ;   D0-D2/D7/A0-A3 ??
 ; CALLS:
-;   LAB_1905, JMP_TBL_DISPLAY_TEXT_AT_POSITION_2
+;   LAB_1905, JMPTBL_DISPLAY_TEXT_AT_POSITION_2
 ; READS:
 ;   LAB_1DD9, LAB_2252, GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -590,7 +590,7 @@ LAB_18F5:
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
 
     LEA     16(A7),A7
 
@@ -676,7 +676,7 @@ LAB_1900:
     JMP     LAB_0B0E
 
 ;------------------------------------------------------------------------------
-; FUNC: JMP_TBL_DISPLAY_TEXT_AT_POSITION_2   (JumpStub_DISPLAY_TEXT_AT_POSITION)
+; FUNC: JMPTBL_DISPLAY_TEXT_AT_POSITION_2   (JumpStub_DISPLAY_TEXT_AT_POSITION)
 ; ARGS:
 ;   ??
 ; RET:
@@ -694,7 +694,7 @@ LAB_1900:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMP_TBL_DISPLAY_TEXT_AT_POSITION_2:
+JMPTBL_DISPLAY_TEXT_AT_POSITION_2:
     JMP     DISPLAY_TEXT_AT_POSITION
 
 ;------------------------------------------------------------------------------
@@ -742,7 +742,7 @@ LAB_1903:
     JMP     LAB_0631
 
 ;------------------------------------------------------------------------------
-; FUNC: JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2   (JumpStub_GENERATE_CHECKSUM_BYTE_INTO_D0)
+; FUNC: JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2   (JumpStub_GENERATE_CHECKSUM_BYTE_INTO_D0)
 ; ARGS:
 ;   ??
 ; RET:
@@ -760,7 +760,7 @@ LAB_1903:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMP_TBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2:
+JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2:
     JMP     GENERATE_CHECKSUM_BYTE_INTO_D0
 
 ;------------------------------------------------------------------------------

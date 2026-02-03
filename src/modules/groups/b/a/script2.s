@@ -1,12 +1,12 @@
 LAB_14AF:
-    JSR     GROUPD_JMP_TBL_ESQ_ReadSerialRbfByte(PC)
+    JSR     GROUPD_JMPTBL_ESQ_ReadSerialRbfByte(PC)
 
     RTS
 
 ;!======
 
 SCRIPT_GetCtrlBuffer:
-    JSR     GROUPD_JMP_TBL_ESQ_ReadCtrlBufferByte(PC)
+    JSR     GROUPD_JMPTBL_ESQ_ReadCtrlBufferByte(PC)
 
     RTS
 
@@ -412,8 +412,8 @@ LAB_14C1:
 
 ;!======
 
-GROUPD_JMP_TBL_ESQ_ReadCtrlBufferByte:
+GROUPD_JMPTBL_ESQ_ReadCtrlBufferByte:
     JMP     ESQ_ReadCtrlBufferByte
 
-GROUPD_JMP_TBL_ESQ_ReadSerialRbfByte:
+GROUPD_JMPTBL_ESQ_ReadSerialRbfByte:
     JMP     ESQ_ReadSerialRbfByte

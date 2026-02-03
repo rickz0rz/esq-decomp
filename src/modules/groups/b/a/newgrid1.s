@@ -354,7 +354,7 @@ LAB_1038:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   JMP_TBL_UNKNOWN6_AppendDataAtNull_3, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength,
+;   JMPTBL_UNKNOWN6_AppendDataAtNull_3, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength,
 ;   _LVOMove, _LVOText
 ; READS:
 ;   LAB_2328/2329, LAB_2014, LAB_22CD, LAB_1BA3
@@ -388,7 +388,7 @@ LAB_1047:
     ADDQ.L  #2,A0
     MOVE.L  A0,-(A7)
     PEA     -26(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
     LEA     -26(A5),A0
@@ -787,7 +787,7 @@ LAB_1066:
 ; CALLS:
 ;   LAB_1455, LAB_134D
 ; READS:
-;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT
+;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_JMPTBL_HALF_HOURS_24_HR_FMT
 ; WRITES:
 ;   A3 string contents
 ; DESC:
@@ -835,7 +835,7 @@ LAB_1069:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.B  (A1),D0
@@ -853,7 +853,7 @@ LAB_1069:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     ADDQ.L  #1,A1
@@ -877,7 +877,7 @@ LAB_1069:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   JMP_TBL_LAB_1A07_3
+;   JMPTBL_LAB_1A07_3
 ; READS:
 ;   LAB_2328, 52(A3), 54(A3)
 ; WRITES:
@@ -910,7 +910,7 @@ LAB_106B:
     MOVE.L  D0,8(A7)
     MOVE.L  D1,D0
     MOVE.L  8(A7),D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVE.L  D0,D7
 
@@ -5017,7 +5017,7 @@ LAB_1168:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_1348, JMP_TBL_UNKNOWN6_AppendDataAtNull_3,
+;   NEWGRID_DrawGridFrame, LAB_1348, JMPTBL_UNKNOWN6_AppendDataAtNull_3,
 ;   LAB_133D, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   NEWGRID_ValidateSelectionCode
 ; READS:
@@ -5054,7 +5054,7 @@ LAB_117B:
 
     PEA     -159(A5)
     PEA     -128(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -6201,7 +6201,7 @@ LAB_11B5:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_1348, LAB_134B, JMP_TBL_PRINTF_4,
+;   NEWGRID_DrawGridFrame, LAB_1348, LAB_134B, JMPTBL_PRINTF_4,
 ;   LAB_133D, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   NEWGRID_ValidateSelectionCode
 ; READS:
@@ -6236,7 +6236,7 @@ LAB_11BE:
     MOVE.L  LAB_22E3,-(A7)
     PEA     -132(A5)
     MOVE.L  D0,-168(A5)
-    JSR     JMP_TBL_PRINTF_4(PC)
+    JSR     JMPTBL_PRINTF_4(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -6718,7 +6718,7 @@ LAB_11D3:
     MOVE.L  A1,-(A7)
     PEA     LAB_2029
     PEA     -58(A5)
-    JSR     JMP_TBL_PRINTF_4(PC)
+    JSR     JMPTBL_PRINTF_4(PC)
 
     LEA     60(A3),A0
     PEA     -58(A5)
@@ -7325,7 +7325,7 @@ LAB_11FF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1345, LAB_134A, JMP_TBL_LAB_1A07_4
+;   LAB_1345, LAB_134A, JMPTBL_LAB_1A07_4
 ; READS:
 ;   LAB_2231, LAB_223A, LAB_22E6
 ; WRITES:
@@ -7436,7 +7436,7 @@ LAB_1208:
     MOVEQ   #29,D0
     ADD.L   LAB_22E6,D0
     MOVEQ   #30,D1
-    JSR     JMP_TBL_LAB_1A07_4(PC)
+    JSR     JMPTBL_LAB_1A07_4(PC)
 
     MOVE.W  20(A3),D1
     EXT.L   D1
@@ -8393,7 +8393,7 @@ LAB_1246:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMP_TBL_UNKNOWN6_AppendDataAtNull_3
+;   JMPTBL_UNKNOWN6_AppendDataAtNull_3
 ; READS:
 ;   LAB_2338, LAB_2339, LAB_2032
 ; WRITES:
@@ -8408,7 +8408,7 @@ LAB_124D:
     MOVEA.L LAB_2338,A0
     MOVE.L  4(A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D7
@@ -8419,7 +8419,7 @@ LAB_124D:
 
     PEA     LAB_2032
     MOVE.L  A3,-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -8428,7 +8428,7 @@ LAB_124D:
     MOVEA.L (A0),A1
     MOVE.L  4(A1),(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -8453,7 +8453,7 @@ LAB_124D:
 ; CALLS:
 ;   LAB_1337, LAB_16F7, LAB_1353, LAB_1355, LAB_1347, LAB_134B,
 ;   NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
-;   NEWGRID_AppendShowtimeBuckets, JMP_TBL_UNKNOWN6_AppendDataAtNull_3
+;   NEWGRID_AppendShowtimeBuckets, JMPTBL_UNKNOWN6_AppendDataAtNull_3
 ; READS:
 ;   LAB_224A, LAB_2231, LAB_22E6/22E7, LAB_22F3, LAB_2336..2339
 ; WRITES:
@@ -9110,7 +9110,7 @@ LAB_1250:
     MOVE.L  D0,(A7)
     MOVE.L  16(A5),-(A7)
     MOVE.L  D0,-28(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .append_genre
@@ -9131,11 +9131,11 @@ LAB_1250:
 
     PEA     LAB_2035
     MOVE.L  16(A5),-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     MOVE.L  -62(A5),(A7)
     MOVE.L  16(A5),-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     LEA     12(A7),A7
 
@@ -10283,7 +10283,7 @@ LAB_12BB:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   LAB_1337, LAB_1679, LAB_16F7, LAB_1355, LAB_1077, LAB_134B,
-;   JMP_TBL_UNKNOWN6_AppendDataAtNull_3
+;   JMPTBL_UNKNOWN6_AppendDataAtNull_3
 ; READS:
 ;   LAB_1BBD, LAB_203B
 ; WRITES:
@@ -10718,7 +10718,7 @@ LAB_12D0:
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-10(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
 
@@ -10736,11 +10736,11 @@ LAB_12D0:
     PEA     LAB_203B
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-10(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     MOVE.L  -10(A5),(A7)
     MOVE.L  A2,-(A7)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     LEA     28(A7),A7
     MOVEA.L -84(A5),A0
@@ -10768,7 +10768,7 @@ LAB_12D0:
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-10(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
 
@@ -10790,7 +10790,7 @@ LAB_12D0:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_134B, LAB_134C, JMP_TBL_UNKNOWN6_AppendDataAtNull_3,
+;   LAB_134B, LAB_134C, JMPTBL_UNKNOWN6_AppendDataAtNull_3,
 ;   NEWGRID_DrawGridFrame, LAB_133D, _LVOSetAPen, _LVOSetDrMd,
 ;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
 ; READS:
@@ -10867,7 +10867,7 @@ LAB_12EF:
 
     MOVE.L  LAB_210F,-(A7)
     PEA     -136(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
@@ -10883,17 +10883,17 @@ LAB_12EF:
     CLR.B   -144(A5)
     PEA     -146(A5)
     PEA     -136(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     PEA     LAB_203C
     PEA     -136(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     MOVEA.L -8(A5),A0
     ADDQ.L  #2,A0
     MOVE.L  A0,(A7)
     PEA     -136(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     LEA     20(A7),A7
     BRA.S   .draw_frame
@@ -10901,7 +10901,7 @@ LAB_12EF:
 .append_suffix:
     MOVE.L  -8(A5),-(A7)
     PEA     -136(A5)
-    JSR     JMP_TBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
 
     ADDQ.W  #8,A7
 

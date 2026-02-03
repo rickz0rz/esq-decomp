@@ -538,7 +538,7 @@ LAB_181E:
     MOVE.L  D7,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMP_TBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
 
     LEA     16(A7),A7
 
@@ -1431,7 +1431,7 @@ LAB_183E:
 .LAB_184E:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.LAB_184E
-    JSR     GROUPD_JMP_TBL_GCOMMAND_ApplyHighlightFlag(PC)
+    JSR     GROUPD_JMPTBL_GCOMMAND_ApplyHighlightFlag(PC)
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
@@ -2089,7 +2089,7 @@ LAB_1858:
 
 ;!======
 
-GROUPD_JMP_TBL_GCOMMAND_ApplyHighlightFlag:
+GROUPD_JMPTBL_GCOMMAND_ApplyHighlightFlag:
     JMP     GCOMMAND_ApplyHighlightFlag
 
 ;!======

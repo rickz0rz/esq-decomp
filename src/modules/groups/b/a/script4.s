@@ -77,7 +77,7 @@ LAB_15A6:
     MOVE.L  D0,-(A7)
     MOVE.L  28(A7),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_167C(PC)
+    JSR     GROUP_BA_JMPTBL_CLEANUP_DrawInsetRectFrame(PC)
 
     LEA     16(A7),A7
 
@@ -157,7 +157,7 @@ LAB_15AD:
     JSR     LAB_183E(PC)
 
     MOVE.L  D0,LAB_2216
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D5
     MOVEA.L LAB_2216,A0
@@ -165,9 +165,9 @@ LAB_15AD:
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
     MOVE.L  D0,-20(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0A49(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A49(PC)
 
-    JSR     GROUPD_JMP_TBL_LAB_0A45(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A45(PC)
 
     LEA     20(A7),A7
     MOVEA.L LAB_2216,A0

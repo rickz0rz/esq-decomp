@@ -11,9 +11,9 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMP_TBL_LAB_058D, LAB_130C, LAB_107F, GROUPD_JMP_TBL_MEMORY_AllocateMemory,
-;   NEWGRID2_JMP_TBL_LAB_05AC, LAB_12D0, NEWGRID2_JMP_TBL_LAB_059F,
-;   GROUPD_JMP_TBL_MEMORY_DeallocateMemory, LAB_12FD, NEWGRID2_JMP_TBL_LAB_05AE
+;   NEWGRID2_JMPTBL_LAB_058D, LAB_130C, LAB_107F, GROUPD_JMPTBL_MEMORY_AllocateMemory,
+;   NEWGRID2_JMPTBL_LAB_05AC, LAB_12D0, NEWGRID2_JMPTBL_LAB_059F,
+;   GROUPD_JMPTBL_MEMORY_DeallocateMemory, LAB_12FD, NEWGRID2_JMPTBL_LAB_05AE
 ; READS:
 ;   LAB_203D, LAB_2016
 ; WRITES:
@@ -60,7 +60,7 @@ LAB_1311:
     PEA     1.W
     PEA     20.W
     PEA     612.W
-    JSR     NEWGRID2_JMP_TBL_LAB_058D(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_058D(PC)
 
     LEA     12(A7),A7
     MOVE.W  20(A2),D6
@@ -121,14 +121,14 @@ LAB_1311:
     PEA     2000.W
     PEA     3947.W
     PEA     GLOB_STR_NEWGRID2_C_1
-    JSR     GROUPD_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-6(A5)
     BEQ.S   .post_alloc
 
     PEA     3.W
-    JSR     NEWGRID2_JMP_TBL_LAB_05AC(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_05AC(PC)
 
     MOVE.L  D7,(A7)
     MOVE.L  -6(A5),-(A7)
@@ -139,13 +139,13 @@ LAB_1311:
     LEA     60(A3),A0
     MOVE.L  -6(A5),(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMP_TBL_LAB_059F(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_059F(PC)
 
     PEA     2000.W
     MOVE.L  -6(A5),-(A7)
     PEA     3953.W
     PEA     GLOB_STR_NEWGRID2_C_2
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A7),A7
 
@@ -166,7 +166,7 @@ LAB_1311:
 .store_state:
     PEA     2.W
     MOVE.L  D0,LAB_203D
-    JSR     NEWGRID2_JMP_TBL_LAB_05AE(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_05AE(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
@@ -594,7 +594,7 @@ LAB_1332:
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   GROUPD_JMP_TBL_MEMORY_AllocateMemory, LAB_1070
+;   GROUPD_JMPTBL_MEMORY_AllocateMemory, LAB_1070
 ; READS:
 ;   LAB_2044
 ; WRITES:
@@ -611,7 +611,7 @@ LAB_1333:
     PEA     1208.W
     PEA     4153.W
     PEA     GLOB_STR_NEWGRID2_C_3
-    JSR     GROUPD_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,LAB_2013
     BSR.W   LAB_1070
@@ -620,7 +620,7 @@ LAB_1333:
     PEA     1000.W
     PEA     4156.W
     PEA     GLOB_STR_NEWGRID2_C_4
-    JSR     GROUPD_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     CLR.L   LAB_2044
@@ -640,7 +640,7 @@ LAB_1333:
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   GROUPD_JMP_TBL_MEMORY_DeallocateMemory
+;   GROUPD_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   LAB_2335, LAB_2013
 ; WRITES:
@@ -657,14 +657,14 @@ LAB_1335:
     MOVE.L  LAB_2335,-(A7)
     PEA     4164.W
     PEA     GLOB_STR_NEWGRID2_C_5
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     CLR.L   LAB_2335
     PEA     1208.W
     MOVE.L  LAB_2013,-(A7)
     PEA     4167.W
     PEA     GLOB_STR_NEWGRID2_C_6
-    JSR     GROUPD_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
     CLR.L   LAB_2013
@@ -675,7 +675,7 @@ LAB_1335:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_0347   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_0347   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0347)
 ; RET:
@@ -687,12 +687,12 @@ LAB_1335:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0347.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_0347:
+NEWGRID2_JMPTBL_LAB_0347:
 LAB_1337:
     JMP     LAB_0347
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05AC   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05AC   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05AC)
 ; RET:
@@ -704,12 +704,12 @@ LAB_1337:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05AC.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05AC:
+NEWGRID2_JMPTBL_LAB_05AC:
 LAB_1338:
     JMP     LAB_05AC
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_059F   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_059F   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_059F)
 ; RET:
@@ -721,12 +721,12 @@ LAB_1338:
 ; DESC:
 ;   Jump table entry that forwards to LAB_059F.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_059F:
+NEWGRID2_JMPTBL_LAB_059F:
 LAB_1339:
     JMP     LAB_059F
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05B5   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05B5   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05B5)
 ; RET:
@@ -738,7 +738,7 @@ LAB_1339:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05B5.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05B5:
+NEWGRID2_JMPTBL_LAB_05B5:
 LAB_133A:
     JMP     LAB_05B5
 
@@ -751,7 +751,7 @@ LAB_133A:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_17E6   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_17E6   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_17E6)
 ; RET:
@@ -763,12 +763,12 @@ LAB_133A:
 ; DESC:
 ;   Jump table entry that forwards to LAB_17E6.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_17E6:
+NEWGRID2_JMPTBL_LAB_17E6:
 LAB_133B:
     JMP     LAB_17E6
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05AA   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05AA   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05AA)
 ; RET:
@@ -780,7 +780,7 @@ LAB_133B:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05AA.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05AA:
+NEWGRID2_JMPTBL_LAB_05AA:
 LAB_133C:
     JMP     LAB_05AA
 
@@ -793,7 +793,7 @@ LAB_133C:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_BEVEL_DrawBevelFrameWithTopRight   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawBevelFrameWithTopRight)
 ; RET:
@@ -805,12 +805,12 @@ LAB_133C:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawBevelFrameWithTopRight.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_BEVEL_DrawBevelFrameWithTopRight:
+NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
 LAB_133D:
     JMP     BEVEL_DrawBevelFrameWithTopRight
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_0926   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_0926   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0926)
 ; RET:
@@ -822,12 +822,12 @@ LAB_133D:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0926.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_0926:
+NEWGRID2_JMPTBL_LAB_0926:
 LAB_133E:
     JMP     LAB_0926
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_BEVEL_DrawVerticalBevel   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawVerticalBevel)
 ; RET:
@@ -839,12 +839,12 @@ LAB_133E:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawVerticalBevel.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_BEVEL_DrawVerticalBevel:
+NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
 LAB_133F:
     JMP     BEVEL_DrawVerticalBevel
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_0597   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_0597   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0597)
 ; RET:
@@ -856,12 +856,12 @@ LAB_133F:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0597.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_0597:
+NEWGRID2_JMPTBL_LAB_0597:
 LAB_1340:
     JMP     LAB_0597
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_CLEANUP_UpdateEntryFlagBytes   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_UpdateEntryFlagBytes)
 ; RET:
@@ -873,12 +873,12 @@ LAB_1340:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_UpdateEntryFlagBytes.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_CLEANUP_UpdateEntryFlagBytes:
+NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
 LAB_1341:
     JMP     CLEANUP_UpdateEntryFlagBytes
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_0358   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_0358   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0358)
 ; RET:
@@ -890,12 +890,12 @@ LAB_1341:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0358.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_0358:
+NEWGRID2_JMPTBL_LAB_0358:
 LAB_1342:
     JMP     LAB_0358
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_091F   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_091F   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_091F)
 ; RET:
@@ -907,12 +907,12 @@ LAB_1342:
 ; DESC:
 ;   Jump table entry that forwards to LAB_091F.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_091F:
+NEWGRID2_JMPTBL_LAB_091F:
 LAB_1343:
     JMP     LAB_091F
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05AE   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05AE   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05AE)
 ; RET:
@@ -924,12 +924,12 @@ LAB_1343:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05AE.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05AE:
+NEWGRID2_JMPTBL_LAB_05AE:
 LAB_1344:
     JMP     LAB_05AE
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_0923   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_0923   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0923)
 ; RET:
@@ -941,12 +941,12 @@ LAB_1344:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0923.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_0923:
+NEWGRID2_JMPTBL_LAB_0923:
 LAB_1345:
     JMP     LAB_0923
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05BC   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05BC   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05BC)
 ; RET:
@@ -958,12 +958,12 @@ LAB_1345:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05BC.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05BC:
+NEWGRID2_JMPTBL_LAB_05BC:
 LAB_1346:
     JMP     LAB_05BC
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_036C   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_036C   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_036C)
 ; RET:
@@ -975,12 +975,12 @@ LAB_1346:
 ; DESC:
 ;   Jump table entry that forwards to LAB_036C.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_036C:
+NEWGRID2_JMPTBL_LAB_036C:
 LAB_1347:
     JMP     LAB_036C
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_CLEANUP_FormatClockFormatEntry   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_FormatClockFormatEntry)
 ; RET:
@@ -992,12 +992,12 @@ LAB_1347:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_CLEANUP_FormatClockFormatEntry:
+NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
 LAB_1348:
     JMP     CLEANUP_FormatClockFormatEntry
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_BEVEL_DrawBevelFrameWithTop   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawBevelFrameWithTop)
 ; RET:
@@ -1009,12 +1009,12 @@ LAB_1348:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawBevelFrameWithTop.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_BEVEL_DrawBevelFrameWithTop:
+NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop:
 LAB_1349:
     JMP     BEVEL_DrawBevelFrameWithTop
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_ESQ_GetHalfHourSlotIndex   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex   (Jump stub)
 ; ARGS:
 ;   ?? (see ESQ_GetHalfHourSlotIndex)
 ; RET:
@@ -1026,12 +1026,12 @@ LAB_1349:
 ; DESC:
 ;   Jump table entry that forwards to ESQ_GetHalfHourSlotIndex.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_ESQ_GetHalfHourSlotIndex:
+NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
 LAB_134A:
     JMP     ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_1985   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_1985   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_1985)
 ; RET:
@@ -1043,12 +1043,12 @@ LAB_134A:
 ; DESC:
 ;   Jump table entry that forwards to LAB_1985.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_1985:
+NEWGRID2_JMPTBL_LAB_1985:
 LAB_134B:
     JMP     LAB_1985
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_1962   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_1962   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_1962)
 ; RET:
@@ -1060,12 +1060,12 @@ LAB_134B:
 ; DESC:
 ;   Jump table entry that forwards to LAB_1962.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_1962:
+NEWGRID2_JMPTBL_LAB_1962:
 LAB_134C:
     JMP     LAB_1962
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_08DF   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_08DF   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_08DF)
 ; RET:
@@ -1077,12 +1077,12 @@ LAB_134C:
 ; DESC:
 ;   Jump table entry that forwards to LAB_08DF.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_08DF:
+NEWGRID2_JMPTBL_LAB_08DF:
 LAB_134D:
     JMP     LAB_08DF
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_1A23   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_1A23   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_1A23)
 ; RET:
@@ -1094,12 +1094,12 @@ LAB_134D:
 ; DESC:
 ;   Jump table entry that forwards to LAB_1A23.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_1A23:
+NEWGRID2_JMPTBL_LAB_1A23:
 LAB_134E:
     JMP     LAB_1A23
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_CLEANUP_TestEntryFlagYAndBit1   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_TestEntryFlagYAndBit1)
 ; RET:
@@ -1111,12 +1111,12 @@ LAB_134E:
 ; DESC:
 ;   Jump table entry that forwards to CLEANUP_TestEntryFlagYAndBit1.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_CLEANUP_TestEntryFlagYAndBit1:
+NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
 LAB_134F:
     JMP     CLEANUP_TestEntryFlagYAndBit1
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05BA   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05BA   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05BA)
 ; RET:
@@ -1128,12 +1128,12 @@ LAB_134F:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05BA.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05BA:
+NEWGRID2_JMPTBL_LAB_05BA:
 LAB_1350:
     JMP     LAB_05BA
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05B9   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05B9   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05B9)
 ; RET:
@@ -1145,12 +1145,12 @@ LAB_1350:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05B9.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05B9:
+NEWGRID2_JMPTBL_LAB_05B9:
 LAB_1351:
     JMP     LAB_05B9
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_BEVEL_DrawBeveledFrame   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawBeveledFrame)
 ; RET:
@@ -1162,12 +1162,12 @@ LAB_1351:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawBeveledFrame.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_BEVEL_DrawBeveledFrame:
+NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
 LAB_1352:
     JMP     BEVEL_DrawBeveledFrame
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_054C   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_054C   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_054C)
 ; RET:
@@ -1179,12 +1179,12 @@ LAB_1352:
 ; DESC:
 ;   Jump table entry that forwards to LAB_054C.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_054C:
+NEWGRID2_JMPTBL_LAB_054C:
 LAB_1353:
     JMP     LAB_054C
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_0592   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_0592   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0592)
 ; RET:
@@ -1196,12 +1196,12 @@ LAB_1353:
 ; DESC:
 ;   Jump table entry that forwards to LAB_0592.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_0592:
+NEWGRID2_JMPTBL_LAB_0592:
 LAB_1354:
     JMP     LAB_0592
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_ESQ_TestBit1Based   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_ESQ_TestBit1Based   (Jump stub)
 ; ARGS:
 ;   ?? (see ESQ_TestBit1Based)
 ; RET:
@@ -1213,12 +1213,12 @@ LAB_1354:
 ; DESC:
 ;   Jump table entry that forwards to ESQ_TestBit1Based.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_ESQ_TestBit1Based:
+NEWGRID2_JMPTBL_ESQ_TestBit1Based:
 LAB_1355:
     JMP     ESQ_TestBit1Based
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_BEVEL_DrawVerticalBevelPair   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawVerticalBevelPair)
 ; RET:
@@ -1230,12 +1230,12 @@ LAB_1355:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawVerticalBevelPair.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_BEVEL_DrawVerticalBevelPair:
+NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
 LAB_1356:
     JMP     BEVEL_DrawVerticalBevelPair
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05BB   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05BB   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05BB)
 ; RET:
@@ -1247,12 +1247,12 @@ LAB_1356:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05BB.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05BB:
+NEWGRID2_JMPTBL_LAB_05BB:
 LAB_1357:
     JMP     LAB_05BB
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_058D   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_058D   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_058D)
 ; RET:
@@ -1264,12 +1264,12 @@ LAB_1357:
 ; DESC:
 ;   Jump table entry that forwards to LAB_058D.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_058D:
+NEWGRID2_JMPTBL_LAB_058D:
 LAB_1358:
     JMP     LAB_058D
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMP_TBL_LAB_05B6   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_LAB_05B6   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_05B6)
 ; RET:
@@ -1281,12 +1281,12 @@ LAB_1358:
 ; DESC:
 ;   Jump table entry that forwards to LAB_05B6.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMP_TBL_LAB_05B6:
+NEWGRID2_JMPTBL_LAB_05B6:
 LAB_1359:
     JMP     LAB_05B6
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPD_JMP_TBL_BEVEL_DrawHorizontalBevel   (Jump stub)
+; FUNC: GROUPD_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawHorizontalBevel)
 ; RET:
@@ -1298,7 +1298,7 @@ LAB_1359:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawHorizontalBevel.
 ;------------------------------------------------------------------------------
-GROUPD_JMP_TBL_BEVEL_DrawHorizontalBevel:
+GROUPD_JMPTBL_BEVEL_DrawHorizontalBevel:
 LAB_135A:
     JMP     BEVEL_DrawHorizontalBevel
 

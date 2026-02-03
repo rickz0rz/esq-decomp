@@ -1,27 +1,48 @@
+;------------------------------------------------------------------------------
+; FUNC: UNKNOWN36_FinalizeRequest   (Release task/queue resources and update status??)
+; ARGS:
+;   stack +16: struct* ?? (A3)
+; RET:
+;   D0: 0 on success? -1? (depends on D7/D6 checks)
+; CLOBBERS:
+;   D0/D6-D7/A3 ??
+; CALLS:
+;   LAB_1916, LAB_1A9D, LAB_1ACC
+; READS:
+;   16(A3), 20(A3), 24(A3), 27(A3), 28(A3)
+; WRITES:
+;   24(A3)
+; DESC:
+;   Conditionally performs cleanup and invokes helper callbacks on the struct.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+UNKNOWN36_FinalizeRequest:
 LAB_1AB9:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     BTST    #1,27(A3)
-    BEQ.S   LAB_1ABA
+    BEQ.S   .no_abort_flag
 
+    ; If flag set, invoke LAB_1916 with -1 and capture result.
     MOVE.L  A3,-(A7)
     PEA     -1.W
     JSR     LAB_1916(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
-    BRA.S   LAB_1ABB
+    BRA.S   .after_abort_call
 
-LAB_1ABA:
+.no_abort_flag:
     MOVEQ   #0,D7
 
-LAB_1ABB:
+.after_abort_call:
     MOVEQ   #12,D0
     AND.L   24(A3),D0
-    BNE.S   LAB_1ABC
+    BNE.S   .after_optional_cleanup
 
     TST.L   20(A3)
-    BEQ.S   LAB_1ABC
+    BEQ.S   .after_optional_cleanup
 
     MOVE.L  20(A3),-(A7)
     MOVE.L  16(A3),-(A7)
@@ -29,8 +50,9 @@ LAB_1ABB:
 
     ADDQ.W  #8,A7
 
-LAB_1ABC:
+.after_optional_cleanup:
     CLR.L   24(A3)
+    ; Invoke handler at 28(A3).
     MOVE.L  28(A3),-(A7)
     JSR     LAB_1ACC(PC)
 
@@ -38,19 +60,40 @@ LAB_1ABC:
     MOVE.L  D0,D6
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BEQ.S   LAB_1ABD
+    BEQ.S   .return
 
     TST.L   D6
-    BNE.S   LAB_1ABD
+    BNE.S   .return
 
     MOVEQ   #0,D0
 
-LAB_1ABD:
+.return:
     MOVEM.L (A7)+,D6-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: UNKNOWN36_ShowAbortRequester   (Emit abort request to console or open dialog??)
+; ARGS:
+;   ??
+; RET:
+;   D0: 0 on success, -1 on failure
+; CLOBBERS:
+;   D0-D7/A6 ??
+; CALLS:
+;   _LVOFindTask, _LVOWrite, _LVOOpenLibrary, LAB_1A8C
+; READS:
+;   LocalDosLibraryDisplacement(A4), task fields at offsets 160/172
+; WRITES:
+;   -81(A5) buffer, -712(A4)
+; DESC:
+;   Attempts to write a “break” line to the current task’s console; otherwise
+;   opens an Intuition requester using pre-baked strings.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+UNKNOWN36_ShowAbortRequester:
 LAB_1ABE:
     LINK.W  A5,#-104
     MOVEM.L D2-D3/D6-D7/A6,-(A7)
@@ -60,22 +103,23 @@ LAB_1ABE:
     MOVE.B  -1(A0),D7
     MOVEQ   #79,D0
     CMP.L   D0,D7
-    BLE.S   LAB_1ABF
+    BLE.S   .clamp_len
 
     MOVE.L  D0,D7
 
-LAB_1ABF:
+.clamp_len:
     MOVE.L  D7,D0
     LEA     -81(A5),A1
-    BRA.S   LAB_1AC1
+    BRA.S   .copy_name_check
 
-LAB_1AC0:
+.copy_name_loop:
     MOVE.B  (A0)+,(A1)+
 
-LAB_1AC1:
+.copy_name_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_1AC0
+    BCC.S   .copy_name_loop
 
+    ; Try to write to the current task's console/CLI if present.
     CLR.B   -81(A5,D7.L)
     MOVEA.L AbsExecBase,A6
     SUBA.L  A1,A1
@@ -84,7 +128,7 @@ LAB_1AC1:
     MOVE.L  D0,-90(A5)
     MOVEA.L D0,A0
     TST.L   172(A0)
-    BEQ.S   LAB_1AC3
+    BEQ.S   .open_requester
 
     MOVE.L  172(A0),D1
     ASL.L   #2,D1
@@ -92,14 +136,15 @@ LAB_1AC1:
     MOVE.L  56(A1),D6
     MOVEM.L D1,-98(A5)
     TST.L   D6
-    BNE.S   LAB_1AC2
+    BNE.S   .have_console
 
     MOVE.L  160(A0),D6
 
-LAB_1AC2:
+.have_console:
     TST.L   D6
-    BEQ.S   LAB_1AC3
+    BEQ.S   .open_requester
 
+    ; Emit a "*** Break: " line and the buffered message.
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     MOVE.L  D6,D1
     LEA     LAB_1ACA(PC),A0
@@ -119,21 +164,22 @@ LAB_1AC2:
     JSR     _LVOWrite(A6)
 
     MOVEQ   #-1,D0
-    BRA.S   LAB_1AC6
+    BRA.S   .return
 
-LAB_1AC3:
+.open_requester:
+    ; Fall back to an Intuition requester if no CLI output is available.
     MOVEA.L AbsExecBase,A6
     LEA     LOCAL_STR_INTUITION_LIBRARY(PC),A1
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)
 
     MOVE.L  D0,-102(A5)
-    BNE.S   LAB_1AC4
+    BNE.S   .have_intuition
 
     MOVEQ   #-1,D0
-    BRA.S   LAB_1AC6
+    BRA.S   .return
 
-LAB_1AC4:
+.have_intuition:
     LEA     -81(A5),A0
     MOVE.L  A0,-712(A4)
     MOVE.L  -102(A5),-(A7)
@@ -150,15 +196,15 @@ LAB_1AC4:
 
     LEA     36(A7),A7
     SUBQ.L  #1,D0
-    BEQ.S   LAB_1AC5
+    BEQ.S   .requester_ok
 
     MOVEQ   #-1,D0
-    BRA.S   LAB_1AC6
+    BRA.S   .return
 
-LAB_1AC5:
+.requester_ok:
     MOVEQ   #0,D0
 
-LAB_1AC6:
+.return:
     MOVEM.L (A7)+,D2-D3/D6-D7/A6
     UNLK    A5
     RTS

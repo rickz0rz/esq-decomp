@@ -6,10 +6,7 @@
 ; points (LAB_xxxx). We keep the legacy symbols for reference but introduce
 ; descriptive aliases below to aid navigation while we continue annotating.
 ; -----------------------------------------------------------------------------
-
-; Loads a ColorTextFont structure from a brush file into the buffer at A3.
 BRUSH_LoadColorTextFont:
-LAB_010B:
     LINK.W  A5,#-16
     MOVEM.L D2-D7/A3,-(A7)
     MOVE.L  8(A5),D7
@@ -20,7 +17,7 @@ LAB_010B:
     PEA     Struct_ColorTextFont_Size.W
     PEA     396.W
     PEA     GLOB_STR_BRUSH_C_1
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-14(A5)
@@ -38,7 +35,7 @@ LAB_010B:
     MOVE.L  -14(A5),-(A7)
     PEA     416.W
     PEA     GLOB_STR_BRUSH_C_2
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.W   .return
@@ -57,7 +54,7 @@ LAB_010B:
     MOVE.L  D2,-(A7)
     PEA     431.W
     PEA     GLOB_STR_BRUSH_C_3
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
     BRA.S   .return
@@ -100,7 +97,7 @@ LAB_010B:
     MOVE.L  -14(A5),-(A7)
     PEA     445.W
     PEA     GLOB_STR_BRUSH_C_4
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #1,D0
 
@@ -113,7 +110,6 @@ LAB_010B:
 
 ; Streams D6 bytes of font data into A3 in 2048-byte chunks.
 BRUSH_StreamFontChunk:
-LAB_0114:
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
     MOVE.L  32(A7),D7
     MOVE.L  36(A7),D6
@@ -175,7 +171,6 @@ LAB_0114:
 
 ; Walks the BRUSH list at (A3), releasing rasters and child allocations.
 BRUSH_FreeBrushList:
-LAB_011B:
     LINK.W  A5,#-20
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
 
@@ -218,7 +213,7 @@ LAB_011D:
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     549.W
     PEA     GLOB_STR_BRUSH_C_5
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D6
@@ -238,7 +233,7 @@ LAB_011F:
     MOVE.L  A0,-(A7)
     PEA     561.W
     PEA     GLOB_STR_BRUSH_C_6
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  -20(A5),-16(A5)
@@ -249,7 +244,7 @@ LAB_0120:
     MOVE.L  -8(A5),-(A7)
     PEA     567.W
     PEA     GLOB_STR_BRUSH_C_7
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  -12(A5),-8(A5)
@@ -269,7 +264,6 @@ LAB_0122:
 
 ; Evaluate the tile slot a brush should occupy, adjusting bounds and offsets.
 BRUSH_SelectBrushSlot:
-LAB_0123:
     LINK.W  A5,#-24
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -541,7 +535,7 @@ LAB_013C:
     MOVE.L  D2,-(A7)
     MOVE.L  -20(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_026C(PC)
+    JSR     GROUP_AD_JMPTBL_LAB_1ADA(PC)
 
 LAB_013D:
     MOVEM.L -56(A5),D2-D7/A2-A3
@@ -552,7 +546,6 @@ LAB_013D:
 
 ; Returns the first brush node for which LAB_1968 (predicate) reports success.
 BRUSH_FindBrushByPredicate:
-LAB_013E:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
 
@@ -566,7 +559,7 @@ LAB_013E:
 
     MOVE.L  A3,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUPA_JMP_TBL_LAB_1968(PC)
+    JSR     GROUP_AA_JMPTBL_LAB_1968(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -592,7 +585,6 @@ LAB_013E:
 
 ; Walk the brush list and return the first entry whose type byte (offset 32) is 3.
 BRUSH_FindType3Brush:
-LAB_0143:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
 
@@ -642,7 +634,6 @@ LAB_0143:
 ; Load every brush descriptor reachable via the singly linked list rooted at A3.
 ; Successful loads are appended to the list pointed at A2.
 BRUSH_PopulateBrushList:
-LAB_0149:
     LINK.W  A5,#-12
     MOVEM.L A2-A3,-(A7)
 
@@ -673,7 +664,7 @@ LAB_0149:
     PEA     845.W
     PEA     GLOB_STR_BRUSH_C_8
     MOVE.L  D0,-4(A5)
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
     MOVEA.L -12(A5),A3
@@ -716,7 +707,6 @@ LAB_0149:
 
 ; Release auxiliary allocations attached to each brush node in the list at A3.
 BRUSH_FreeBrushResources:
-LAB_014E:
     LINK.W  A5,#-8
     MOVE.L  A3,-(A7)
 
@@ -734,7 +724,7 @@ LAB_014E:
     MOVE.L  A0,-(A7)
     PEA     887.W
     PEA     GLOB_STR_BRUSH_C_9
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  -4(A5),-8(A5)
@@ -749,9 +739,8 @@ LAB_014E:
 
 ;!======
 
-; Rewrite the brush filename strings in-place using GROUPA_JMP_TBL_GCOMMAND_FindPathSeparator (path normaliser).
+; Rewrite the brush filename strings in-place using GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator (path normaliser).
 BRUSH_NormalizeBrushNames:
-LAB_0151:
     LINK.W  A5,#-40
     MOVEM.L A2-A3,-(A7)
 
@@ -772,7 +761,7 @@ LAB_0151:
     BNE.S   .LAB_0153
 
     PEA     -40(A5)
-    JSR     GROUPA_JMP_TBL_GCOMMAND_FindPathSeparator(PC)
+    JSR     GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A0
@@ -795,7 +784,6 @@ LAB_0151:
 
 ; Open the brush file described by A3, load its ILBM payload, and prepare raster data.
 BRUSH_LoadBrushAsset:
-LAB_0156:
     LINK.W  A5,#-76
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
 
@@ -811,7 +799,7 @@ LAB_0156:
     MOVE.L  A0,-50(A5)
     MOVE.L  A0,-46(A5)
     MOVE.L  A0,-16(A5)
-    JSR     GROUPA_JMP_TBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -831,7 +819,7 @@ LAB_0156:
     PEA     4.W
     PEA     LAB_1B34
     MOVE.L  D2,-(A7)
-    JSR     GROUPA_JMP_TBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -856,7 +844,7 @@ LAB_0156:
     MOVE.L  #130000,-(A7)
     PEA     977.W
     PEA     GLOB_STR_BRUSH_C_10
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-46(A5)
@@ -947,7 +935,7 @@ LAB_0156:
     PEA     372.W
     PEA     1064.W
     PEA     GLOB_STR_BRUSH_C_11
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -1076,7 +1064,7 @@ LAB_0156:
     PEA     GLOB_STR_BRUSH_C_12           ; Calling file
     MOVE.L  D0,52(A7)
     MOVE.L  D0,48(A7)
-    JSR     GROUPA_JMP_TBL_JMP_TBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVE.L  36(A7),D1
@@ -1151,7 +1139,7 @@ LAB_0156:
     MOVEQ   #15,D1
     ADD.L   D1,D0
     MOVEQ   #16,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     ADD.L   D0,D0
     CLR.W   -18(A5)
@@ -1256,7 +1244,7 @@ LAB_0156:
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     1202.W
     PEA     GLOB_STR_BRUSH_C_13
-    JSR     JMP_TBL_FREE_RASTER(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
 
@@ -1269,7 +1257,7 @@ LAB_0156:
     MOVE.L  -16(A5),-(A7)
     PEA     1205.W
     PEA     GLOB_STR_BRUSH_C_14
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   -16(A5)
@@ -1283,7 +1271,7 @@ LAB_0156:
     PEA     372.W
     PEA     1220.W
     PEA     GLOB_STR_BRUSH_C_15
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -1323,7 +1311,7 @@ LAB_0156:
     MOVE.L  -50(A5),-(A7)
     PEA     1236.W
     PEA     GLOB_STR_BRUSH_C_16
-    JSR     GROUPA_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1337,7 +1325,6 @@ LAB_0156:
 
 ; Clone an in-memory brush definition, rebuilding its bitmap state.
 BRUSH_CloneBrushRecord:
-LAB_017D:
     LINK.W  A5,#-12
     MOVEM.L D2/D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1347,7 +1334,7 @@ LAB_017D:
     PEA     372.W
     PEA     1248.W
     PEA     GLOB_STR_BRUSH_C_17
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -1475,7 +1462,7 @@ LAB_017D:
     PEA     1302.W                        ; Line Number
     PEA     GLOB_STR_BRUSH_C_18           ; Calling file
     MOVE.L  D0,32(A7)
-    JSR     GROUPA_JMP_TBL_JMP_TBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L -8(A5),A0
@@ -1552,7 +1539,6 @@ LAB_017D:
 
 ; Allocate a linked brush node and splice it into the optional list at A2.
 BRUSH_AllocBrushNode:
-LAB_018E:
     MOVEM.L A2-A3,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -1561,7 +1547,7 @@ LAB_018E:
     PEA     238.W
     PEA     1352.W
     PEA     GLOB_STR_BRUSH_C_19
-    JSR     GROUPA_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,BRUSH_LastAllocatedNode   ; expose allocation for cleanup/error handlers
@@ -1599,7 +1585,6 @@ LAB_018E:
 
 ; Convert a plane index (0-8) into the corresponding bitmask.
 BRUSH_PlaneMaskForIndex:
-LAB_0192:
     MOVE.L  D7,-(A7)
 
     MOVE.L  8(A7),D7
@@ -1625,7 +1610,6 @@ LAB_0192:
 
 ; Select a brush by its string label, updating BRUSH_SelectedNode.
 BRUSH_SelectBrushByLabel:
-LAB_0195:
     LINK.W  A5,#-8
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1641,7 +1625,7 @@ LAB_0196:
     PEA     2.W
     PEA     LAB_1B3F
     MOVE.L  A3,-(A7)
-    JSR     GROUPA_JMP_TBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1650,7 +1634,7 @@ LAB_0196:
     PEA     2.W
     PEA     LAB_1B40
     MOVE.L  A3,-(A7)
-    JSR     GROUPA_JMP_TBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1684,7 +1668,7 @@ LAB_0199:
     PEA     2.W
     PEA     -7(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUPA_JMP_TBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1720,7 +1704,6 @@ LAB_019C:
 
 ; Append brush node A2 to the tail of list A3 (tracking via offset 368).
 BRUSH_AppendBrushNode:
-LAB_019D:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1757,7 +1740,6 @@ LAB_019D:
 
 ; Remove the head brush from the list at 8(A5), returning the next node.
 BRUSH_PopBrushHead:
-LAB_01A2:
     LINK.W  A5,#-4
 
     TST.L   8(A5)

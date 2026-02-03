@@ -9,18 +9,18 @@
 ;   D0-D7/A0-A6
 ; CALLS:
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
-;   JMP_TBL_LIBRARIES_LOAD_FAILED_2, JMP_TBL_OVERRIDE_INTUITION_FUNCS,
-;   _LVOOpenFont, _LVOOpenDiskFont, GROUPB_JMP_TBL_MEMORY_AllocateMemory,
-;   _LVOInitRastPort, _LVOSetFont, GROUPB_JMP_TBL_LAB_1A07, JMP_TBL_UNKNOWN2B_AllocRaster_2,
-;   _LVOBltClear, _LVOInitBitMap, JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY,
-;   JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMP_TBL_LAB_1AAD, LAB_08C1,
-;   ESQ_JMP_TBL_LAB_0056, ESQ_JMP_TBL_LAB_001E, ESQ_JMP_TBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
-;   LAB_0BFA, JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_2, ESQ_JMP_TBL_LAB_1A30, _LVOOpenDevice,
+;   JMPTBL_LIBRARIES_LOAD_FAILED_2, JMPTBL_OVERRIDE_INTUITION_FUNCS,
+;   _LVOOpenFont, _LVOOpenDiskFont, GROUPB_JMPTBL_MEMORY_AllocateMemory,
+;   _LVOInitRastPort, _LVOSetFont, GROUPB_JMPTBL_LAB_1A07, JMPTBL_UNKNOWN2B_AllocRaster_2,
+;   _LVOBltClear, _LVOInitBitMap, JMPTBL_CHECK_AVAILABLE_FAST_MEMORY,
+;   JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMPTBL_LAB_1AAD, LAB_08C1,
+;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQ_JMPTBL_LAB_001E, ESQ_JMPTBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
+;   LAB_0BFA, GROUP_AM_JMPTBL_UNKNOWN22_SetupSignalAndMsgport, ESQ_JMPTBL_LAB_1A30, _LVOOpenDevice,
 ;   _LVODoIO, SETUP_INTERRUPT_INTB_RBF, SETUP_INTERRUPT_INTB_AUD1,
-;   ESQ_JMP_TBL_LAB_002F, ESQ_JMP_TBL_SCRIPT_InitCtrlContext, ESQ_JMP_TBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMP_TBL_LAB_041D, LAB_098A, LAB_0C7A,
-;   ESQ_JMP_TBL_LAB_180B, SETUP_INTERRUPT_INTB_VERTB, LAB_0A45, LAB_0A49, _LVOSetAPen,
+;   ESQ_JMPTBL_LAB_002F, ESQ_JMPTBL_SCRIPT_InitCtrlContext, ESQ_JMPTBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMPTBL_LAB_041D, LAB_098A, LAB_0C7A,
+;   ESQ_JMPTBL_LAB_180B, SETUP_INTERRUPT_INTB_VERTB, LAB_0A45, LAB_0A49, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, LAB_09AD, LAB_09A9,
-;   GROUPAB_JMP_TBL_WDISP_SPrintf, ESQ_JMP_TBL_LAB_14E2, ESQ_JMP_TBL_LAB_0D89, JMP_TBL_PARSE_INI, ESQ_JMP_TBL_LAB_0DE9
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, ESQ_JMPTBL_LAB_14E2, ESQ_JMPTBL_LAB_0D89, GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer, ESQ_JMPTBL_LAB_0DE9
 ; READS:
 ;   GLOB_REF_DOS_LIBRARY_2, AbsExecBase, GLOB_STR_GRAPHICS_LIBRARY,
 ;   GLOB_STR_DISKFONT_LIBRARY, GLOB_STR_DOS_LIBRARY, GLOB_STR_INTUITION_LIBRARY,
@@ -121,7 +121,7 @@ LAB_085E:
     BNE.S   .loadDiskfontLibrary
 
     MOVE.L  D2,-(A7)
-    JSR     JMP_TBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -135,7 +135,7 @@ LAB_085E:
     BNE.S   .loadDosLibrary
 
     CLR.L   -(A7)
-    JSR     JMP_TBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -149,7 +149,7 @@ LAB_085E:
     BNE.S   .loadIntuitionLibrary
 
     CLR.L   -(A7)
-    JSR     JMP_TBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -163,7 +163,7 @@ LAB_085E:
     BNE.S   .loadUtilityLibraryAndBattclockResource
 
     CLR.L   -(A7)
-    JSR     JMP_TBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -197,7 +197,7 @@ LAB_085E:
     MOVE.L  D0,GLOB_LONG_ROM_VERSION_CHECK
 
 .loadFonts:
-    JSR     JMP_TBL_OVERRIDE_INTUITION_FUNCS(PC)
+    JSR     JMPTBL_OVERRIDE_INTUITION_FUNCS(PC)
 
     ; Open the "topaz.font" file.
     LEA     GLOB_STRUCT_TEXTATTR_TOPAZ_FONT,A0
@@ -254,7 +254,7 @@ LAB_085E:
     PEA     100.W
     PEA     623.W
     PEA     GLOB_STR_ESQ_C_1
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -277,7 +277,7 @@ LAB_085E:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     GROUPB_JMP_TBL_LAB_1A07(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A07(PC)
 
     TST.L   D1
     BEQ.S   .adjust_rastport_text_spacing
@@ -291,7 +291,7 @@ LAB_085E:
     PEA     100.W
     PEA     645.W
     PEA     GLOB_STR_ESQ_C_2
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -353,7 +353,7 @@ LAB_085E:
     PEA     668.W                       ; Line Number
     PEA     GLOB_STR_ESQ_C_3            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
+    JSR     JMPTBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -379,11 +379,11 @@ LAB_085E:
     CMP.B   D1,D0
     BNE.S   .use12HourClock
 
-    LEA     GLOB_JMP_TBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     BRA.S   .store_clock_format_table
 
 .use12HourClock:
-    LEA     GLOB_JMP_TBL_HALF_HOURS_12_HR_FMT,A0
+    LEA     GLOB_JMPTBL_HALF_HOURS_12_HR_FMT,A0
 
 .store_clock_format_table:
     MOVE.L  A0,GLOB_REF_STR_CLOCK_FORMAT
@@ -392,7 +392,7 @@ LAB_085E:
     PEA     34.W
     PEA     683.W
     PEA     GLOB_STR_ESQ_C_4
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1DC5
@@ -410,13 +410,13 @@ LAB_085E:
     MOVEA.L LAB_1DC5,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     ESQ_JMP_TBL_LAB_1AAD(PC)
+    JSR     ESQ_JMPTBL_LAB_1AAD(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     34.W
     PEA     698.W
     PEA     GLOB_STR_ESQ_C_5
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_1DC6
@@ -434,7 +434,7 @@ LAB_085E:
     MOVEA.L LAB_1DC6,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     ESQ_JMP_TBL_LAB_1AAD(PC)
+    JSR     ESQ_JMPTBL_LAB_1AAD(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
@@ -461,7 +461,7 @@ LAB_085E:
     BRA.S   .init_entry_tables_loop
 
 .after_entry_tables:
-    JSR     ESQ_JMP_TBL_LAB_0056(PC)
+    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     CLR.W   LAB_222A
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A0
@@ -483,16 +483,16 @@ LAB_085E:
     MOVE.W  #2,LAB_222A
 
 .check_available_mem:
-    JSR     ESQ_JMP_TBL_LAB_001E(PC)
+    JSR     ESQ_JMPTBL_LAB_001E(PC)
 
     TST.L   D0
     BNE.W   .return
 
-    JSR     JMP_TBL_CHECK_AVAILABLE_FAST_MEMORY(PC)
+    JSR     JMPTBL_CHECK_AVAILABLE_FAST_MEMORY(PC)
 
-    JSR     JMP_TBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP(PC)
+    JSR     JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0017(PC)
+    JSR     ESQ_JMPTBL_LAB_0017(PC)
 
     MOVE.L  #LAB_223A,LAB_1B06
     MOVE.L  #LAB_2274,LAB_1B07
@@ -568,12 +568,12 @@ LAB_085E:
     PEA     9000.W                              ; 9000 bytes
     PEA     854.W                               ; line number?
     PEA     GLOB_STR_ESQ_C_6
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,LAB_229A
     CLR.L   (A7)
     PEA     GLOB_STR_SERIAL_READ
-    JSR     JMP_TBL_SETUP_SIGNAL_AND_MSGPORT_2(PC)
+    JSR     GROUP_AM_JMPTBL_UNKNOWN22_SetupSignalAndMsgport(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,LAB_2212
@@ -581,7 +581,7 @@ LAB_085E:
 
     PEA     82.W
     MOVE.L  D0,-(A7)
-    JSR     ESQ_JMP_TBL_LAB_1A30(PC)
+    JSR     ESQ_JMPTBL_LAB_1A30(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2211_SERIAL_PORT_MAYBE
@@ -612,11 +612,11 @@ LAB_085E:
 
     JSR     SETUP_INTERRUPT_INTB_AUD1(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_002F(PC)
+    JSR     ESQ_JMPTBL_LAB_002F(PC)
 
-    JSR     ESQ_JMP_TBL_SCRIPT_InitCtrlContext(PC)
+    JSR     ESQ_JMPTBL_SCRIPT_InitCtrlContext(PC)
 
-    JSR     ESQ_JMP_TBL_KYBD_InitializeInputDevices(PC)
+    JSR     ESQ_JMPTBL_KYBD_InitializeInputDevices(PC)
 
     JSR     LAB_0963(PC)
 
@@ -624,7 +624,7 @@ LAB_085E:
     PEA     96.W                            ; Bytes to Allocate
     PEA     984.W                           ; Line Number
     PEA     GLOB_STR_ESQ_C_7                ; Calling File
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -662,7 +662,7 @@ LAB_085E:
     PEA     991.W                       ; Line Number
     PEA     GLOB_STR_ESQ_C_8            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
+    JSR     JMPTBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -724,7 +724,7 @@ LAB_085E:
     PEA     1008.W                      ; Line Number
     PEA     GLOB_STR_ESQ_C_9            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
+    JSR     JMPTBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -757,7 +757,7 @@ LAB_085E:
     PEA     3.W
     CLR.L   -(A7)
     PEA     2.W
-    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
+    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2216
@@ -786,7 +786,7 @@ LAB_085E:
     PEA     1027.W                      ; Line Number
     PEA     GLOB_STR_ESQ_C_10           ; Calling file
     MOVE.L  A0,44(A7)
-    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
+    JSR     JMPTBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -816,14 +816,14 @@ LAB_085E:
     PEA     696.W                       ; Width
     PEA     1038.W                      ; Line Number
     PEA     GLOB_STR_ESQ_C_11           ; Calling file
-    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
+    JSR     JMPTBL_UNKNOWN2B_AllocRaster_2(PC)
 
     MOVE.L  D0,LAB_2229
     CLR.W   LAB_22AB
     CLR.L   LAB_225F
     MOVEQ   #-1,D0
     MOVE.L  D0,LAB_2260
-    JSR     ESQ_JMP_TBL_LAB_041D(PC)
+    JSR     ESQ_JMPTBL_LAB_041D(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D0
@@ -839,7 +839,7 @@ LAB_085E:
 .init_global_state:
     JSR     LAB_0C7A(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_180B(PC)
+    JSR     ESQ_JMPTBL_LAB_180B(PC)
 
     JSR     SETUP_INTERRUPT_INTB_VERTB(PC)
 
@@ -972,7 +972,7 @@ LAB_085E:
     PEA     GLOB_STR_MAJOR_MINOR_VERSION            ; 9.0
     PEA     GLOB_STR_GUIDE_START_VERSION_AND_BUILD
     PEA     LAB_2204
-    JSR     GROUPAB_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     LAB_1E12,A0
     LEA     LAB_2249,A1
@@ -982,14 +982,14 @@ LAB_085E:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.copy_version_template_loop
 
-    JSR     ESQ_JMP_TBL_LAB_14E2(PC)
+    JSR     ESQ_JMPTBL_LAB_14E2(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0D89(PC)
+    JSR     ESQ_JMPTBL_LAB_0D89(PC)
 
     PEA     GLOB_STR_DF0_GRADIENT_INI_2
-    JSR     JMP_TBL_PARSE_INI(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0DE9(PC)
+    JSR     ESQ_JMPTBL_LAB_0DE9(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1081,25 +1081,25 @@ LAB_085E:
 .continue_startup:
     JSR     LAB_0A48(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0E09(PC)
+    JSR     GROUP_AM_JMPTBL_LAB_0E09(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0E14(PC)
+    JSR     ESQ_JMPTBL_LAB_0E14(PC)
 
     JSR     LAB_0539(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_04F0(PC)
+    JSR     ESQ_JMPTBL_LAB_04F0(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_1664(PC)
+    JSR     ESQ_JMPTBL_LAB_1664(PC)
 
     PEA     GLOB_STR_DF0_DEFAULT_INI_1
-    JSR     JMP_TBL_PARSE_INI(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
 
     PEA     GLOB_STR_DF0_BRUSH_INI_1
-    JSR     JMP_TBL_PARSE_INI(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)
-    JSR     GROUPB_JMP_TBL_BRUSH_PopulateBrushList(PC)
+    JSR     GROUPB_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     PEA     LAB_1E1B
     JSR     LAB_0AB5(PC)
@@ -1123,11 +1123,11 @@ LAB_085E:
     JSR     LAB_09DB(PC)
 
     PEA     GLOB_STR_DF0_BANNER_INI_1
-    JSR     JMP_TBL_PARSE_INI(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0CC8(PC)
+    JSR     ESQ_JMPTBL_LAB_0CC8(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0E57(PC)
+    JSR     ESQ_JMPTBL_LAB_0E57(PC)
 
     JSR     LAB_09B7(PC)
 
@@ -1138,17 +1138,17 @@ LAB_085E:
     JSR     LAB_08DA(PC)
 
     MOVE.W  #$8100,INTENA
-    JSR     ESQ_JMP_TBL_LAB_1365(PC)
+    JSR     ESQ_JMPTBL_LAB_1365(PC)
 
     PEA     LAB_2321
-    JSR     ESQ_JMP_TBL_LAB_0F07(PC)
+    JSR     ESQ_JMPTBL_LAB_0F07(PC)
 
     PEA     LAB_2324
-    JSR     ESQ_JMP_TBL_LAB_0F07(PC)
+    JSR     ESQ_JMPTBL_LAB_0F07(PC)
 
     PEA     LAB_2324
     PEA     LAB_2321
-    JSR     ESQ_JMP_TBL_LAB_0F5D(PC)
+    JSR     ESQ_JMPTBL_LAB_0F5D(PC)
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_21DF
@@ -1208,7 +1208,7 @@ LAB_085E:
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_0056(PC)
+    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
@@ -1230,7 +1230,7 @@ LAB_085E:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .after_ravesc_banner
 
-    JSR     ESQ_JMP_TBL_LAB_0057(PC)
+    JSR     ESQ_JMPTBL_LAB_0057(PC)
 
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
@@ -1258,7 +1258,7 @@ LAB_085E:
     BEQ.S   .main_idle_loop
 
 .return:
-    JSR     ESQ_JMP_TBL_CLEANUP_ShutdownSystem(PC)
+    JSR     GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem(PC)
 
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5

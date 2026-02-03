@@ -38,7 +38,7 @@ UNKNOWN2B_AllocRaster:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: FREE_RASTER   (FreeRaster wrapper)
+; FUNC: UNKNOWN2B_FreeRaster   (FreeRaster wrapper)
 ; ARGS:
 ;   stack +16: A3 = raster pointer
 ;   stack +20: D7 = width
@@ -58,7 +58,7 @@ UNKNOWN2B_AllocRaster:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-FREE_RASTER:
+UNKNOWN2B_FreeRaster:
     LINK.W  A5,#0
     MOVEM.L D6-D7/A3,-(A7)
 

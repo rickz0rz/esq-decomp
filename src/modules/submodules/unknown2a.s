@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ??   (Dead code: LAB_1A3A/LAB_1AE8 wrapper??)
+; FUNC: ??   (Dead code: LAB_1A3A/PARALLEL_RawDoFmtStackArgs wrapper??)
 ; ARGS:
 ;   stack +8: ?? (arg for LAB_1A3A)
 ;   stack +12: ?? (arg for LAB_1A3A)
@@ -9,13 +9,14 @@
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_1A3A, LAB_1AE8
+;   LAB_1A3A, PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   LAB_2381
 ; WRITES:
 ;   LAB_2381
 ; DESC:
-;   Dead code wrapper that formats/updates LAB_2381 and then calls LAB_1AE8.
+;   Dead code wrapper that formats/updates LAB_2381 and then calls
+;   PARALLEL_RawDoFmtStackArgs.
 ; NOTES:
 ;   Entry label not present in source.
 ;------------------------------------------------------------------------------
@@ -30,7 +31,7 @@
     JSR     LAB_1A3A(PC)
 
     PEA     LAB_2381
-    JSR     LAB_1AE8(PC)
+    JSR     PARALLEL_RawDoFmtStackArgs(PC)
 
     UNLK    A5
     RTS
@@ -39,7 +40,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1906   (LAB_1A3A/LAB_1AE8 wrapper)
+; FUNC: LAB_1906   (LAB_1A3A/PARALLEL_RawDoFmtStackArgs wrapper)
 ; ARGS:
 ;   stack +8: ?? (arg for LAB_1A3A)
 ;   stack +12: ?? (arg for LAB_1A3A)
@@ -48,13 +49,13 @@
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_1A3A, LAB_1AE8
+;   LAB_1A3A, PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   LAB_2381
 ; WRITES:
 ;   LAB_2381
 ; DESC:
-;   Wrapper that formats/updates LAB_2381 and then calls LAB_1AE8.
+;   Wrapper that formats/updates LAB_2381 and then calls PARALLEL_RawDoFmtStackArgs.
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
@@ -68,7 +69,7 @@ LAB_1906:
     JSR     LAB_1A3A(PC)
 
     PEA     LAB_2381
-    JSR     LAB_1AE8(PC)
+    JSR     PARALLEL_RawDoFmtStackArgs(PC)
 
     UNLK    A5
     RTS
@@ -86,7 +87,7 @@ LAB_1906:
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_1AB2, LAB_1A3A, LAB_19C3, LAB_1AB9
+;   LAB_1AB2, LAB_1A3A, LAB_19C3, UNKNOWN36_FinalizeRequest
 ; READS:
 ;   GLOB_STR_A_PLUS, GLOB_STR_DF1_DEBUG_LOG, LAB_2381
 ; WRITES:
@@ -119,7 +120,7 @@ LAB_1906:
     JSR     LAB_19C3(PC)
 
     MOVE.L  -8(A5),(A7)
-    JSR     LAB_1AB9(PC)
+    JSR     UNKNOWN36_FinalizeRequest(PC)
 
     LEA     20(A7),A7
 

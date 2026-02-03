@@ -19,7 +19,7 @@ LAB_15C5:
 LAB_15C6:
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0926(PC)
+    JSR     GROUPD_JMPTBL_LAB_0926(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D6,D1
@@ -37,7 +37,7 @@ LAB_15C7:
 LAB_15C8:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -111,7 +111,7 @@ LAB_15CD:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_036C(PC)
+    JSR     GROUPD_JMPTBL_LAB_036C(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -329,7 +329,7 @@ LAB_15DF:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -137(A5)
-    JSR     LAB_167B(PC)
+    JSR     GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine(PC)
 
     LEA     24(A7),A7
     BRA.S   LAB_15E3
@@ -389,7 +389,7 @@ LAB_15E5:
 LAB_15E6:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0926(PC)
+    JSR     GROUPD_JMPTBL_LAB_0926(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D6,D1
@@ -407,7 +407,7 @@ LAB_15E7:
 LAB_15E8:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -424,7 +424,7 @@ LAB_15E8:
     MOVE.L  D1,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_036C(PC)
+    JSR     GROUPD_JMPTBL_LAB_036C(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -447,7 +447,7 @@ LAB_15EA:
     PEA     2.W
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0347(PC)
+    JSR     GROUPD_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -455,7 +455,7 @@ LAB_15EA:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-142(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0347(PC)
+    JSR     GROUPD_JMPTBL_LAB_0347(PC)
 
     LEA     24(A7),A7
     MOVE.L  D0,-146(A5)
@@ -519,7 +519,7 @@ LAB_15EF:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -137(A5)
-    JSR     LAB_167B(PC)
+    JSR     GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine(PC)
 
     LEA     24(A7),A7
     TST.B   -137(A5)
@@ -839,12 +839,12 @@ LAB_1612:
     MOVE.L  210(A3),-(A7)
     MOVE.L  214(A3),-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0926(PC)
+    JSR     GROUPD_JMPTBL_LAB_0926(PC)
 
     MOVE.L  210(A3),(A7)
     MOVE.L  214(A3),-(A7)
     MOVE.L  D0,-532(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     LEA     220(A3),A0
     CLR.B   (A0)
@@ -955,7 +955,7 @@ LAB_161B:
 
     PEA     LAB_2140
     PEA     -524(A5)
-    JSR     GROUPD_JMP_TBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     GROUPD_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,-12(A5)
@@ -964,7 +964,7 @@ LAB_161B:
 
     PEA     LAB_2141
     PEA     -524(A5)
-    JSR     GROUPD_JMP_TBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     GROUPD_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -975,7 +975,7 @@ LAB_161C:
 
     PEA     LAB_2142
     PEA     -524(A5)
-    JSR     GROUPD_JMP_TBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     GROUPD_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -1239,7 +1239,7 @@ LAB_1634:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1338,7 +1338,7 @@ LAB_163E:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0926(PC)
+    JSR     GROUPD_JMPTBL_LAB_0926(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1392,7 +1392,7 @@ LAB_1640:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     MOVE.W  -22(A5),D1
     EXT.L   D1
@@ -1402,7 +1402,7 @@ LAB_1640:
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     GROUPD_JMP_TBL_LAB_036C(PC)
+    JSR     GROUPD_JMPTBL_LAB_036C(PC)
 
     LEA     24(A7),A7
     TST.L   D0
@@ -1472,7 +1472,7 @@ LAB_1644:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     MOVEA.L D0,A0
     LEA     28(A0),A1
@@ -1481,7 +1481,7 @@ LAB_1644:
     MOVE.L  D1,(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     GROUPD_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPD_JMPTBL_ESQ_TestBit1Based(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D0
@@ -1586,7 +1586,7 @@ LAB_164D:
     JSR     LAB_183E(PC)
 
     MOVE.L  D0,LAB_2216
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -1626,9 +1626,9 @@ LAB_1650:
     MOVE.L  D0,-18(A5)
     MOVE.L  D1,-22(A5)
     MOVE.L  A0,-4(A5)
-    JSR     GROUPD_JMP_TBL_LAB_0A49(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A49(PC)
 
-    JSR     GROUPD_JMP_TBL_LAB_0A45(PC)
+    JSR     GROUPD_JMPTBL_LAB_0A45(PC)
 
     MOVE.B  LAB_1BC7,D0
     MOVEQ   #89,D1
@@ -1950,7 +1950,7 @@ LAB_1666:
     CLR.L   LAB_235F
     CLR.B   LAB_2131
     PEA     GLOB_STR_DF0_SOURCECFG_INI_2
-    JSR     PARSE_INI(PC)
+    JSR     PARSEINI_ParseConfigBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  (A7)+,D7
@@ -2089,7 +2089,7 @@ LAB_1671:
 
     PEA     1.W
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-8(A5)
@@ -2110,7 +2110,7 @@ LAB_1673:
 
     PEA     2.W
     MOVE.L  D7,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-8(A5)
@@ -2197,12 +2197,10 @@ LAB_1679:
 LAB_167A:
     JMP     LAB_0A48
 
-TEXTDISP_JMP_TBL_CLEANUP_BuildAlignedStatusLine:
-LAB_167B:
+GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine:
     JMP     CLEANUP_BuildAlignedStatusLine
 
-TEXTDISP_JMP_TBL_CLEANUP_DrawInsetRectFrame:
-LAB_167C:
+GROUP_BA_JMPTBL_CLEANUP_DrawInsetRectFrame:
     JMP     CLEANUP_DrawInsetRectFrame
 
 ;!======

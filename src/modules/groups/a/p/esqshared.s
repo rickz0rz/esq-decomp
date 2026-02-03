@@ -142,7 +142,7 @@ LAB_0C16:
 LAB_0C17:
     MOVE.L  A0,-(A7)
     PEA     GLOB_PTR_STR_SELECT_CODE
-    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
+    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D7
@@ -156,7 +156,7 @@ LAB_0C18:
 
     PEA     -30(A5)
     PEA     LAB_2298
-    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
+    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D5
@@ -228,7 +228,7 @@ LAB_0C1E:
     PEA     299.W
     PEA     GLOB_ESQPARS2_C_1
     MOVE.L  A0,40(A7)
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 40(A7),A0
     MOVE.L  D0,(A0)
@@ -242,7 +242,7 @@ LAB_0C1E:
     PEA     301.W
     PEA     GLOB_ESQPARS2_C_2
     MOVE.L  A0,52(A7)
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVEA.L 24(A7),A0
@@ -275,7 +275,7 @@ LAB_0C1F:
     PEA     314.W
     PEA     GLOB_ESQPARS2_C_3
     MOVE.L  A0,40(A7)
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 40(A7),A0
     MOVE.L  D0,(A0)
@@ -289,7 +289,7 @@ LAB_0C1F:
     PEA     315.W
     PEA     GLOB_ESQPARS2_C_4
     MOVE.L  A0,52(A7)
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVEA.L 24(A7),A0
@@ -398,7 +398,7 @@ LAB_0C29:
     LEA     28(A0),A1
     MOVE.L  24(A5),-(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_ReverseBitsIn6Bytes(PC)
+    JSR     GROUPB_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D5
@@ -502,7 +502,7 @@ LAB_0C32:
 
     PEA     GLOB_STR_CLOSED_CAPTIONED
     MOVE.L  A3,-(A7)
-    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
+    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -542,7 +542,7 @@ LAB_0C35:
     MOVE.L  12(A5),D7
     PEA     GLOB_STR_IN_STEREO
     MOVE.L  A3,-(A7)
-    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
+    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -647,7 +647,7 @@ LAB_0C3C:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
+    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -729,7 +729,7 @@ LAB_0C42:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GCOMMAND_JMP_TBL_LAB_00C3(PC)
+    JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -877,7 +877,7 @@ LAB_0C4F:
 LAB_0C50:
     MOVE.L  A3,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
+    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -889,7 +889,7 @@ LAB_0C50:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPB_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  D0,-12(A5)
@@ -909,7 +909,7 @@ LAB_0C51:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_SetBit1Based(PC)
+    JSR     GROUPB_JMPTBL_ESQ_SetBit1Based(PC)
 
     ADDQ.W  #8,A7
 
@@ -992,7 +992,7 @@ LAB_0C56:
     MOVE.L  D0,-38(A5)
     MOVE.L  A1,-70(A5)
     MOVE.L  A1,-66(A5)
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-70(A5)
@@ -1017,7 +1017,7 @@ LAB_0C57:
     SUB.L   D1,D0
     MOVEQ   #10,D1
     MOVE.L  D0,-42(A5)
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     MOVE.B  -2(A0),D1
     EXT.W   D1
@@ -1033,16 +1033,16 @@ LAB_0C57:
     MOVE.L  D0,-(A7)
     PEA     LAB_1F29
     PEA     -52(A5)
-    JSR     JMP_TBL_PRINTF_3(PC)
+    JSR     JMPTBL_PRINTF_3(PC)
 
     MOVE.L  -38(A5),(A7)
     PEA     LAB_1F2A
     PEA     -62(A5)
-    JSR     JMP_TBL_PRINTF_3(PC)
+    JSR     JMPTBL_PRINTF_3(PC)
 
     PEA     -62(A5)
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMP_TBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     LEA     28(A7),A7
     MOVEQ   #1,D0
@@ -1051,7 +1051,7 @@ LAB_0C57:
 
     PEA     LAB_2103
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMP_TBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_0C5A
@@ -1059,7 +1059,7 @@ LAB_0C57:
 LAB_0C58:
     PEA     LAB_2102
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMP_TBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_0C5A
@@ -1068,7 +1068,7 @@ LAB_0C59:
     MOVE.L  D0,-(A7)
     PEA     LAB_1F2B
     PEA     -52(A5)
-    JSR     JMP_TBL_PRINTF_3(PC)
+    JSR     JMPTBL_PRINTF_3(PC)
 
     LEA     12(A7),A7
 
@@ -1079,11 +1079,11 @@ LAB_0C5A:
 
     PEA     -52(A5)
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMP_TBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     PEA     LAB_2104
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMP_TBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     LEA     16(A7),A7
     BRA.S   LAB_0C5D
@@ -1102,7 +1102,7 @@ LAB_0C5C:
     CLR.B   -1(A1,D0.L)
     PEA     LAB_1F2C
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AR_JMP_TBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1122,7 +1122,7 @@ LAB_0C5E:
     MOVE.L  -70(A5),-(A7)
     PEA     765.W
     PEA     GLOB_STR_ESQPARS2_C_2
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1159,7 +1159,7 @@ LAB_0C5F:
     ASL.L   #2,D1
     PEA     91.W
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     GCOMMAND_JMP_TBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
@@ -1182,7 +1182,7 @@ LAB_0C5F:
     MOVEQ   #48,D2
     SUB.L   D2,D1
     MOVEQ   #10,D0
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     BRA.S   LAB_0C61
 
@@ -1227,7 +1227,7 @@ LAB_0C63:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     BRA.S   LAB_0C65
 
@@ -1288,7 +1288,7 @@ LAB_0C6A:
     MOVE.W  -22(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1313,7 +1313,7 @@ LAB_0C6C:
     EXT.L   D1
     MOVE.L  D1,D0
     MOVEQ   #10,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
@@ -1321,7 +1321,7 @@ LAB_0C6C:
     MOVE.W  -24(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1349,7 +1349,7 @@ LAB_0C6D:
     MOVEA.L -8(A5),A0
     MOVE.L  44(A7),D1
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_AdjustBracketedHourInString(PC)
+    JSR     GROUPB_JMPTBL_ESQ_AdjustBracketedHourInString(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
@@ -1387,23 +1387,23 @@ LAB_0C70:
 LAB_0C71:
     JMP     LAB_064D
 
-GROUPB_JMP_TBL_ESQ_ReverseBitsIn6Bytes:
+GROUPB_JMPTBL_ESQ_ReverseBitsIn6Bytes:
     JMP     ESQ_ReverseBitsIn6Bytes
 
-GROUPB_JMP_TBL_ESQ_SetBit1Based:
+GROUPB_JMPTBL_ESQ_SetBit1Based:
     JMP     ESQ_SetBit1Based
 
-GROUPB_JMP_TBL_ESQ_AdjustBracketedHourInString:
+GROUPB_JMPTBL_ESQ_AdjustBracketedHourInString:
     JMP     ESQ_AdjustBracketedHourInString
 
 LAB_0C75:
     JMP     LAB_0345
 
-GROUPB_JMP_TBL_ESQ_WildcardMatch:
+GROUPB_JMPTBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
 LAB_0C77:
     JMP     LAB_1985
 
-GROUPB_JMP_TBL_ESQ_TestBit1Based:
+GROUPB_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based

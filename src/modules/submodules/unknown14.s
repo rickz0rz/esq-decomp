@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1AB9, LAB_19A1
+;   UNKNOWN36_FinalizeRequest, LAB_19A1
 ; READS:
 ;   A4-1016 = ?? (default flags/state)
 ;   A3 (mode string bytes)
@@ -33,7 +33,7 @@ LAB_19C4:
     BEQ.S   .LAB_19C5
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_1AB9(PC)
+    JSR     UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 

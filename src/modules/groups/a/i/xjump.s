@@ -110,7 +110,7 @@ LAB_05C4:
     JMP     LAB_1985
 
 ;------------------------------------------------------------------------------
-; FUNC: JMP_TBL_UNKNOWN6_AppendDataAtNull_1   (JumpStub_UNKNOWN6_AppendDataAtNull)
+; FUNC: GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull   (JumpStub_UNKNOWN6_AppendDataAtNull)
 ; ARGS:
 ;   ??
 ; RET:
@@ -128,7 +128,7 @@ LAB_05C4:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMP_TBL_UNKNOWN6_AppendDataAtNull_1:
+GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull:
     JMP     UNKNOWN6_AppendDataAtNull
 
 ;------------------------------------------------------------------------------

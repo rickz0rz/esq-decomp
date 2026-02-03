@@ -327,14 +327,14 @@ LAB_16B6:
     EXT.L   D0
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0926(PC)
+    JSR     GROUPD_JMPTBL_LAB_0926(PC)
 
     MOVEA.L D0,A3
     MOVE.W  LAB_2364,D0
     EXT.L   D0
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -345,14 +345,14 @@ LAB_16B7:
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0926(PC)
+    JSR     GROUPD_JMPTBL_LAB_0926(PC)
 
     MOVEA.L D0,A3
     MOVE.W  LAB_2364,D0
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -388,7 +388,7 @@ LAB_16BB:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_054C(PC)
+    JSR     GROUPD_JMPTBL_LAB_054C(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -425,7 +425,7 @@ LAB_16BF:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_054C(PC)
+    JSR     GROUPD_JMPTBL_LAB_054C(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -494,7 +494,7 @@ LAB_16C5:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPD_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPD_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -582,7 +582,7 @@ LAB_16C8:
 
     MOVE.L  -34(A5),-(A7)
     MOVE.L  -38(A5),-(A7)
-    JSR     GROUPD_JMP_TBL_ESQ_FindSubstringCaseFold(PC)
+    JSR     GROUPD_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -793,7 +793,7 @@ LAB_16DA:
 LAB_16DB:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A3
@@ -896,7 +896,7 @@ LAB_16E4:
 LAB_16E5:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_0923(PC)
+    JSR     GROUPD_JMPTBL_LAB_0923(PC)
 
     PEA     LAB_236B
     MOVE.L  D0,-(A7)
@@ -1038,7 +1038,7 @@ LAB_16EF:
     MOVE.B  D6,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_08DF(PC)
+    JSR     GROUPD_JMPTBL_LAB_08DF(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D5
@@ -1196,7 +1196,7 @@ LAB_16F7:
     MOVE.B  498(A2),D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMP_TBL_LAB_08DF(PC)
+    JSR     GROUPD_JMPTBL_LAB_08DF(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D5
@@ -1356,7 +1356,7 @@ LAB_16FF:
     MOVE.L  D2,-(A7)
     MOVE.L  D0,36(A7)
     MOVE.L  D1,40(A7)
-    JSR     GROUPD_JMP_TBL_LAB_08DF(PC)
+    JSR     GROUPD_JMPTBL_LAB_08DF(PC)
 
     EXT.L   D0
     PEA     -8(A5)

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0265   (JumpStub_LAB_183E)
+; FUNC: GROUP_AD_JMPTBL_LAB_183E   (JumpStub_LAB_183E)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -15,11 +15,11 @@
 ; DESC:
 ;   Jump stub to LAB_183E.
 ;------------------------------------------------------------------------------
-LAB_0265:
+GROUP_AD_JMPTBL_LAB_183E:
     JMP     LAB_183E
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0266   (JumpStub_LAB_14B1)
+; FUNC: GROUP_AD_JMPTBL_LAB_14B1   (JumpStub_LAB_14B1)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -35,11 +35,11 @@ LAB_0265:
 ; DESC:
 ;   Jump stub to LAB_14B1.
 ;------------------------------------------------------------------------------
-LAB_0266:
+GROUP_AD_JMPTBL_LAB_14B1:
     JMP     LAB_14B1
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0267   (JumpStub_LAB_0668)
+; FUNC: GROUP_AD_JMPTBL_LAB_0668   (JumpStub_LAB_0668)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -55,11 +55,11 @@ LAB_0266:
 ; DESC:
 ;   Jump stub to LAB_0668.
 ;------------------------------------------------------------------------------
-LAB_0267:
+GROUP_AD_JMPTBL_LAB_0668:
     JMP     LAB_0668
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0268   (JumpStub_LAB_16E3)
+; FUNC: GROUP_AD_JMPTBL_LAB_16E3   (JumpStub_LAB_16E3)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -75,11 +75,11 @@ LAB_0267:
 ; DESC:
 ;   Jump stub to LAB_16E3.
 ;------------------------------------------------------------------------------
-LAB_0268:
+GROUP_AD_JMPTBL_LAB_16E3:
     JMP     LAB_16E3
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0269   (JumpStub_LAB_16ED)
+; FUNC: GROUP_AD_JMPTBL_LAB_16ED   (JumpStub_LAB_16ED)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -95,11 +95,11 @@ LAB_0268:
 ; DESC:
 ;   Jump stub to LAB_16ED.
 ;------------------------------------------------------------------------------
-LAB_0269:
+GROUP_AD_JMPTBL_LAB_16ED:
     JMP     LAB_16ED
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_026A   (JumpStub_LAB_0A48)
+; FUNC: GROUP_AD_JMPTBL_LAB_0A48   (JumpStub_LAB_0A48)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -115,11 +115,11 @@ LAB_0269:
 ; DESC:
 ;   Jump stub to LAB_0A48.
 ;------------------------------------------------------------------------------
-LAB_026A:
+GROUP_AD_JMPTBL_LAB_0A48:
     JMP     LAB_0A48
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_026B   (JumpStub_LAB_16D3)
+; FUNC: GROUP_AD_JMPTBL_LAB_16D3   (JumpStub_LAB_16D3)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -135,11 +135,11 @@ LAB_026A:
 ; DESC:
 ;   Jump stub to LAB_16D3.
 ;------------------------------------------------------------------------------
-LAB_026B:
+GROUP_AD_JMPTBL_LAB_16D3:
     JMP     LAB_16D3
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_026C   (JumpStub_LAB_1ADA)
+; FUNC: GROUP_AD_JMPTBL_LAB_1ADA   (JumpStub_LAB_1ADA)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -155,11 +155,11 @@ LAB_026B:
 ; DESC:
 ;   Jump stub to LAB_1ADA.
 ;------------------------------------------------------------------------------
-LAB_026C:
+GROUP_AD_JMPTBL_LAB_1ADA:
     JMP     LAB_1ADA
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_026D   (JumpStub_LAB_0A49)
+; FUNC: GROUP_AD_JMPTBL_LAB_0A49   (JumpStub_LAB_0A49)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -175,11 +175,11 @@ LAB_026C:
 ; DESC:
 ;   Jump stub to LAB_0A49.
 ;------------------------------------------------------------------------------
-LAB_026D:
+GROUP_AD_JMPTBL_LAB_0A49:
     JMP     LAB_0A49
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_026E   (JumpStub_LAB_17A8)
+; FUNC: GROUP_AD_JMPTBL_LAB_17A8   (JumpStub_LAB_17A8)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -195,11 +195,11 @@ LAB_026D:
 ; DESC:
 ;   Jump stub to LAB_17A8.
 ;------------------------------------------------------------------------------
-LAB_026E:
+GROUP_AD_JMPTBL_LAB_17A8:
     JMP     LAB_17A8
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_026F   (JumpStub_LAB_16D9)
+; FUNC: GROUP_AD_JMPTBL_LAB_16D9   (JumpStub_LAB_16D9)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -215,11 +215,11 @@ LAB_026E:
 ; DESC:
 ;   Jump stub to LAB_16D9.
 ;------------------------------------------------------------------------------
-LAB_026F:
+GROUP_AD_JMPTBL_LAB_16D9:
     JMP     LAB_16D9
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0270   (JumpStub_LAB_16CE)
+; FUNC: GROUP_AD_JMPTBL_LAB_16CE   (JumpStub_LAB_16CE)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -235,11 +235,11 @@ LAB_026F:
 ; DESC:
 ;   Jump stub to LAB_16CE.
 ;------------------------------------------------------------------------------
-LAB_0270:
+GROUP_AD_JMPTBL_LAB_16CE:
     JMP     LAB_16CE
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0271   (JumpStub_LAB_1755)
+; FUNC: GROUP_AD_JMPTBL_LAB_1755   (JumpStub_LAB_1755)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -255,11 +255,11 @@ LAB_0270:
 ; DESC:
 ;   Jump stub to LAB_1755.
 ;------------------------------------------------------------------------------
-LAB_0271:
+GROUP_AD_JMPTBL_LAB_1755:
     JMP     LAB_1755
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMP_TBL_LAB_183D   (JumpStub_LAB_183D)
+; FUNC: GROUP_AD_JMPTBL_LAB_183D   (JumpStub_LAB_183D)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -275,11 +275,11 @@ LAB_0271:
 ; DESC:
 ;   Jump stub to LAB_183D.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMP_TBL_LAB_183D:
+GROUP_AD_JMPTBL_LAB_183D:
     JMP     LAB_183D
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMP_TBL_LAB_1755   (JumpStub_LAB_09C2)
+; FUNC: GROUP_AD_JMPTBL_LAB_09C2   (JumpStub_LAB_09C2)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -295,11 +295,11 @@ GROUP_AD_JMP_TBL_LAB_183D:
 ; DESC:
 ;   Jump stub to LAB_09C2.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMP_TBL_LAB_1755:
+GROUP_AD_JMPTBL_LAB_09C2:
     JMP     LAB_09C2
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMP_TBL_LAB_0665   (JumpStub_LAB_0665)
+; FUNC: GROUP_AD_JMPTBL_LAB_0665   (JumpStub_LAB_0665)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -315,11 +315,11 @@ GROUP_AD_JMP_TBL_LAB_1755:
 ; DESC:
 ;   Jump stub to LAB_0665.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMP_TBL_LAB_0665:
+GROUP_AD_JMPTBL_LAB_0665:
     JMP     LAB_0665
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMP_TBL_LAB_064E   (JumpStub_LAB_064E)
+; FUNC: GROUP_AD_JMPTBL_LAB_064E   (JumpStub_LAB_064E)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -335,11 +335,11 @@ GROUP_AD_JMP_TBL_LAB_0665:
 ; DESC:
 ;   Jump stub to LAB_064E.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMP_TBL_LAB_064E:
+GROUP_AD_JMPTBL_LAB_064E:
     JMP     LAB_064E
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMP_TBL_LAB_183B   (JumpStub_LAB_183B)
+; FUNC: GROUP_AD_JMPTBL_LAB_183B   (JumpStub_LAB_183B)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -355,5 +355,5 @@ GROUP_AD_JMP_TBL_LAB_064E:
 ; DESC:
 ;   Jump stub to LAB_183B.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMP_TBL_LAB_183B:
+GROUP_AD_JMPTBL_LAB_183B:
     JMP     LAB_183B

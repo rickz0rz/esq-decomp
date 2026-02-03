@@ -8,12 +8,12 @@ GENERATE_GRID_DATE_STRING:
     MOVE.W  LAB_2274,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     GLOB_JMP_TBL_DAYS_OF_WEEK,A0
+    LEA     GLOB_JMPTBL_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
     MOVE.W  LAB_2275,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     GLOB_JMP_TBL_MONTHS,A1
+    LEA     GLOB_JMPTBL_MONTHS,A1
     ADDA.L  D0,A1
     MOVE.W  LAB_2276,D0
     EXT.L   D0
@@ -25,7 +25,7 @@ GENERATE_GRID_DATE_STRING:
     MOVE.L  (A0),-(A7)
     PEA     GLOB_STR_GRID_DATE_FORMAT_STRING
     MOVE.L  A3,-(A7)
-    JSR     JMP_TBL_PRINTF_4(PC)
+    JSR     JMPTBL_PRINTF_4(PC)
 
     LEA     24(A7),A7
     MOVEA.L (A7)+,A3
@@ -179,7 +179,7 @@ LAB_14C8:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   GCOMMAND_GetBannerChar, JMP_TBL_LAB_1A07_4, JMP_TBL_LAB_1A06_7
+;   GCOMMAND_GetBannerChar, JMPTBL_LAB_1A07_4, JMPTBL_LAB_1A06_7
 ; READS:
 ;   LAB_1BC7/LAB_1BC8, GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_2121
 ; WRITES:
@@ -271,7 +271,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D6,D0
     MULU    #60,D0
     MOVE.L  #1000,D1
-    JSR     JMP_TBL_LAB_1A07_4(PC)
+    JSR     JMPTBL_LAB_1A07_4(PC)
 
     MOVE.L  D0,-10(A5)
     BGT.S   .LAB_14D9
@@ -306,19 +306,19 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D2,D4
     MOVE.L  D4,D0
     MOVE.L  -10(A5),D1
-    JSR     JMP_TBL_LAB_1A07_4(PC)
+    JSR     JMPTBL_LAB_1A07_4(PC)
 
     MOVE.W  D0,LAB_2353
     EXT.L   D0
     MOVE.L  -10(A5),D1
-    JSR     JMP_TBL_LAB_1A06_7(PC)
+    JSR     JMPTBL_LAB_1A06_7(PC)
 
     SUB.L   D0,D4
     BLE.S   .LAB_14DE
 
     MOVE.L  -10(A5),D0
     MOVE.L  D4,D1
-    JSR     JMP_TBL_LAB_1A07_4(PC)
+    JSR     JMPTBL_LAB_1A07_4(PC)
 
     MOVE.W  D0,LAB_2120
     BRA.S   .LAB_14DF
@@ -426,7 +426,7 @@ SCRIPT_InitCtrlContext:
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   SCRIPT_GetCtrlBuffer, LAB_1494, SCRIPT_HandleBrushCommand, LAB_1560,
-;   GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_167E, LAB_154C, LAB_1596, LAB_167D
+;   GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_167E, LAB_154C, LAB_1596, LAB_167D
 ; READS:
 ;   GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_1BC8, LAB_1DF3, LAB_1E84, LAB_212B
 ;   GLOB_REF_CLOCKDATA_STRUCT, GLOB_WORD_CLOCK_SECONDS
@@ -630,7 +630,7 @@ SCRIPT_HandleSerialCtrlCmd:
 
     BSR.W   LAB_1560
 
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   (A7)
     JSR     LAB_167E(PC)
@@ -784,7 +784,7 @@ SCRIPT_HandleBrushCommand:
     PEA     LAB_212C
     MOVE.L  D0,-20(A5)
     MOVE.L  D0,-16(A5)
-    JSR     JMP_TBL_LAB_195B_3(PC)
+    JSR     JMPTBL_LAB_195B_3(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -799,7 +799,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A0,-(A7)
     PEA     LAB_212D
-    JSR     JMP_TBL_LAB_195B_3(PC)
+    JSR     JMPTBL_LAB_195B_3(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -814,7 +814,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A0,-(A7)
     PEA     LAB_212E
-    JSR     JMP_TBL_LAB_195B_3(PC)
+    JSR     JMPTBL_LAB_195B_3(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -832,7 +832,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A0,-(A7)
     PEA     LAB_212F
-    JSR     JMP_TBL_LAB_195B_3(PC)
+    JSR     JMPTBL_LAB_195B_3(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -866,7 +866,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     JMP_TBL_LAB_195B_3(PC)
+    JSR     JMPTBL_LAB_195B_3(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -890,7 +890,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     JMP_TBL_LAB_195B_3(PC)
+    JSR     JMPTBL_LAB_195B_3(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1311,7 +1311,7 @@ SCRIPT_HandleBrushCommand:
     SUB.L   D1,D2
     MOVE.L  D2,D0
     MOVE.L  #1000,D1
-    JSR     JMP_TBL_LAB_1A06_7(PC)
+    JSR     JMPTBL_LAB_1A06_7(PC)
 
     MOVEQ   #0,D1
     MOVE.B  5(A2),D1
@@ -1319,7 +1319,7 @@ SCRIPT_HandleBrushCommand:
     SUB.L   D2,D1
     MOVE.L  D0,32(A7)
     MOVEQ   #100,D0
-    JSR     JMP_TBL_LAB_1A06_7(PC)
+    JSR     JMPTBL_LAB_1A06_7(PC)
 
     MOVE.L  32(A7),D1
     ADD.L   D0,D1
@@ -1780,7 +1780,7 @@ LAB_154C:
     MOVEA.L 12(A7),A3
     PEA     LAB_2321
     MOVE.L  A3,-(A7)
-    JSR     JMP_TBL_LAB_0F7D(PC)
+    JSR     JMPTBL_LAB_0F7D(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   LAB_1584
@@ -2065,7 +2065,7 @@ LAB_1565:
     MOVE.W  #(-1),LAB_2364
     MOVE.W  #2,LAB_2346
     MOVE.W  #1,LAB_211A
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
     JSR     LAB_167E(PC)
@@ -2295,7 +2295,7 @@ LAB_157A:
     BRA.W   .return
 
 .LAB_157B_0042:
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
     JSR     LAB_167E(PC)
@@ -2325,7 +2325,7 @@ LAB_157A:
 
 .LAB_157B_0092:
     MOVE.W  #(-1),LAB_2364
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
     JSR     LAB_167E(PC)
@@ -2351,7 +2351,7 @@ LAB_157A:
 
 .LAB_157B_00CE:
     MOVE.W  #(-1),LAB_2364
-    JSR     GROUP_BA_JMP_TBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
     JSR     LAB_167E(PC)
@@ -2383,7 +2383,7 @@ LAB_157A:
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
+    JSR     SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   .return
@@ -2394,7 +2394,7 @@ LAB_157A:
     MOVE.L  D0,-(A7)
     PEA     53.W
     PEA     1.W
-    JSR     SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
+    JSR     SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   .return
@@ -2405,7 +2405,7 @@ LAB_157A:
     MOVE.L  D0,-(A7)
     PEA     53.W
     CLR.L   -(A7)
-    JSR     SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen(PC)
+    JSR     SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.S   .return
@@ -2729,16 +2729,16 @@ LAB_1591:
 
 ;!======
 
-JMP_TBL_LAB_0F7D:
+JMPTBL_LAB_0F7D:
     JMP     LAB_0F7D
 
-JMP_TBL_LAB_1A07_4:
+JMPTBL_LAB_1A07_4:
     JMP     LAB_1A07
 
 LAB_1594:
     JMP     LAB_0C31
 
-JMP_TBL_LAB_195B_3:
+JMPTBL_LAB_195B_3:
     JMP     LAB_195B
 
 LAB_1596:
@@ -2762,14 +2762,14 @@ LAB_159B:
 LAB_159C:
     JMP     ESQ_SetCopperEffect_Custom
 
-SCRIPT_JMP_TBL_CLEANUP_RenderAlignedStatusScreen:
+SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
 LAB_159D:
     JMP     CLEANUP_RenderAlignedStatusScreen
 
 LAB_159E:
     JMP     LAB_0F3D
 
-JMP_TBL_LAB_1A06_7:
+JMPTBL_LAB_1A06_7:
     JMP     LAB_1A06
 
 LAB_15A0:

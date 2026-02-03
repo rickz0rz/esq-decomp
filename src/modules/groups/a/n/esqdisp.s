@@ -28,7 +28,7 @@ LAB_08BC:
     PEA     79.W                        ; Line Number
     PEA     GLOB_STR_ESQDISP_C          ; Calling File
     MOVE.L  D0,28(A7)
-    JSR     JMP_TBL_UNKNOWN2B_AllocRaster_2(PC)
+    JSR     JMPTBL_UNKNOWN2B_AllocRaster_2(PC)
 
     LEA     16(A7),A7
     MOVE.L  12(A7),D1
@@ -492,7 +492,7 @@ LAB_08DF:
 LAB_08E0:
     JMP     LAB_100D
 
-JMP_TBL_UNKNOWN2B_AllocRaster_2:
+JMPTBL_UNKNOWN2B_AllocRaster_2:
     JMP     UNKNOWN2B_AllocRaster
 
 ;!======
@@ -579,7 +579,7 @@ LAB_08E6:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     BRA.S   LAB_08E8
 
@@ -1415,7 +1415,7 @@ LAB_0931:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
-    JSR     ESQFUNC_JMP_TBL_CLEANUP_DrawClockBanner(PC)
+    JSR     ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
@@ -1578,7 +1578,7 @@ LAB_093D:
 
     MOVE.L  D6,D0
     MOVEQ   #20,D1
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
@@ -1601,7 +1601,7 @@ LAB_093E:
     MOVE.L  D0,24(A7)
     MOVE.L  D6,D0
     MOVEQ   #20,D1
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     ADDA.L  D0,A0
     MOVE.L  24(A7),D0
@@ -1819,7 +1819,7 @@ LAB_0950:
     LEA     28(A1),A0
     PEA     1.W
     MOVE.L  A0,-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPB_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -1849,7 +1849,7 @@ LAB_0951:
     MOVEA.L (A0),A2
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_WildcardMatch(PC)
+    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1888,7 +1888,7 @@ LAB_0954:
     LEA     28(A1),A0
     MOVE.L  D5,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPB_JMP_TBL_ESQ_TestBit1Based(PC)
+    JSR     GROUPB_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0

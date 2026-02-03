@@ -129,7 +129,7 @@ LAB_09E8:
     ASR.L   #1,D1
     MOVE.L  D0,-48(A5)
     MOVE.L  D1,-32(A5)
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     MOVEQ   #80,D1
     ADD.L   D1,D1
@@ -140,7 +140,7 @@ LAB_09E8:
     MOVE.L  D1,D0
     MOVE.L  D1,-40(A5)
     MOVE.L  -36(A5),D1
-    JSR     GROUPB_JMP_TBL_LAB_1A07(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A07(PC)
 
     MOVEQ   #0,D1
     MOVE.W  176(A3),D1
@@ -174,7 +174,7 @@ LAB_09E8:
     MOVE.L  -48(A5),D2
     ADD.L   D1,D2
     MOVE.L  D2,D1
-    JSR     GROUPB_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
 
     ADD.L   -44(A5),D0
     MOVEQ   #0,D1
@@ -311,7 +311,7 @@ LAB_09E8:
     MOVE.L  -4(A5),-(A7)
     PEA     672.W
     PEA     GLOB_STR_ESQIFF_C_1
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A3),A0
     MOVE.B  -65(A5),D0
@@ -354,7 +354,7 @@ LAB_09FB:
 
     PEA     LAB_1EEA
     MOVE.L  LAB_1EE9,-(A7)
-    JSR     GROUPB_JMP_TBL_LAB_1968(PC)
+    JSR     GROUPB_JMPTBL_LAB_1968(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -399,7 +399,7 @@ LAB_09FC:
     MOVE.L  LAB_1B24,-(A7)
     PEA     724.W
     PEA     GLOB_STR_ESQIFF_C_2
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
     BRA.S   LAB_09FE
@@ -657,7 +657,7 @@ LAB_0A0B:
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     882.W
     PEA     GLOB_STR_ESQIFF_C_3
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -667,7 +667,7 @@ LAB_0A0B:
 
     PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_GFX_G_ADS,-(A7)
-    JSR     GROUPB_JMP_TBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -675,7 +675,7 @@ LAB_0A0B:
     BLE.S   .LAB_0A0E
 
     MOVE.L  D6,-(A7)
-    JSR     GROUPB_JMP_TBL_DISKIO_GetFilesizeFromHandle(PC)
+    JSR     GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_LONG_GFX_G_ADS_FILESIZE
@@ -687,7 +687,7 @@ LAB_0A0B:
     MOVE.L  D0,-(A7)
     PEA     898.W
     PEA     GLOB_STR_ESQIFF_C_4
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -753,7 +753,7 @@ LAB_0A0B:
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     963.W
     PEA     GLOB_STR_ESQIFF_C_5
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -762,7 +762,7 @@ LAB_0A0B:
     CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
     PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_DF0_LOGO_LST,-(A7)
-    JSR     GROUPB_JMP_TBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -770,7 +770,7 @@ LAB_0A0B:
     BLE.S   .return
 
     MOVE.L  D6,-(A7)
-    JSR     GROUPB_JMP_TBL_DISKIO_GetFilesizeFromHandle(PC)
+    JSR     GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
@@ -783,7 +783,7 @@ LAB_0A0B:
     MOVE.L  D0,-(A7)
     PEA     979.W
     PEA     GLOB_STR_ESQIFF_C_6
-    JSR     GROUPB_JMP_TBL_MEMORY_AllocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_DATA
@@ -1539,7 +1539,7 @@ LAB_0A5B:
     MOVE.L  D0,20(A7)
     MOVE.L  D1,D0
     MOVE.L  20(A7),D1
-    JSR     GROUPB_JMP_TBL_LAB_1A07(PC)
+    JSR     GROUPB_JMPTBL_LAB_1A07(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #120,D0
@@ -1554,7 +1554,7 @@ LAB_0A5C:
     EXT.L   D0
     PEA     1000.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPB_JMP_TBL_SCRIPT_BeginBannerCharTransition(PC)
+    JSR     GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
 
@@ -1603,7 +1603,7 @@ LAB_0A5F:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     4.W
-    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
+    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2216
@@ -1620,7 +1620,7 @@ LAB_0A60:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     6.W
-    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
+    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2216
@@ -1637,7 +1637,7 @@ LAB_0A61:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     5.W
-    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
+    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2216
@@ -1651,7 +1651,7 @@ LAB_0A62:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     7.W
-    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
+    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,LAB_2216
@@ -1967,7 +1967,7 @@ LAB_0A7E:
 
     BSR.W   LAB_0A45
 
-    JSR     ESQ_JMP_TBL_LAB_0056(PC)
+    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
     JSR     LAB_09A7(PC)
@@ -1976,12 +1976,12 @@ LAB_0A7E:
     BRA.W   LAB_0A88
 
 LAB_0A7F:
-    JSR     ESQ_JMP_TBL_LAB_0056(PC)
+    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     1.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     GROUPB_JMP_TBL_LAB_0A97(PC)
+    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     MOVE.L  D0,LAB_2216
     MOVEA.L D0,A0
@@ -2020,7 +2020,7 @@ LAB_0A81:
     BNE.S   LAB_0A83
 
 LAB_0A82:
-    JSR     GROUPB_JMP_TBL_SCRIPT_AssertCtrlLineIfEnabled(PC)
+    JSR     GROUPB_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled(PC)
 
 LAB_0A83:
     MOVE.L  D7,D0
@@ -2096,7 +2096,7 @@ LAB_0A86:
 LAB_0A87:
     BSR.W   LAB_0A45
 
-    JSR     ESQ_JMP_TBL_LAB_0056(PC)
+    JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
     JSR     LAB_09A7(PC)
@@ -2131,7 +2131,7 @@ LAB_0A8A:
 
 ;!======
 
-DEALLOC_ADS_AND_LOGO_LST_DATA:
+ESQIFF_DeallocateAdsAndLogoLstData:
     TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
     BEQ.S   .deallocLogoLstData
 
@@ -2144,7 +2144,7 @@ DEALLOC_ADS_AND_LOGO_LST_DATA:
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     1988.W
     PEA     GLOB_STR_ESQIFF_C_7
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   GLOB_REF_LONG_GFX_G_ADS_DATA
@@ -2163,7 +2163,7 @@ DEALLOC_ADS_AND_LOGO_LST_DATA:
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     1994.W
     PEA     GLOB_STR_ESQIFF_C_8
-    JSR     GROUPB_JMP_TBL_MEMORY_DeallocateMemory(PC)
+    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
@@ -2246,11 +2246,11 @@ LAB_0A93:
     JSR     LAB_0AA4(PC)
 
     PEA     GLOB_STR_DF0_BRUSH_INI_2
-    JSR     JMP_TBL_PARSE_INI(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)
-    JSR     GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList(PC)
+    JSR     GCOMMAND_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     PEA     LAB_1EF8
     JSR     LAB_0AB5(PC)
@@ -2286,22 +2286,22 @@ LAB_0A93:
 
 ;!======
 
-GROUPB_JMP_TBL_LAB_1968:
+GROUPB_JMPTBL_LAB_1968:
     JMP     LAB_1968
 
-GROUPB_JMP_TBL_LAB_0A97:
+GROUPB_JMPTBL_LAB_0A97:
     JMP     LAB_183E
 
-GROUPB_JMP_TBL_DISKIO_GetFilesizeFromHandle:
+GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle:
     JMP     DISKIO_GetFilesizeFromHandle
 
-GROUPB_JMP_TBL_LAB_1A07:
+GROUPB_JMPTBL_LAB_1A07:
     JMP     LAB_1A07
 
 LAB_0A9A:
     JMP     LAB_1697
 
-JMP_TBL_LAB_195B_2:
+JMPTBL_LAB_195B_2:
     JMP     LAB_195B
 
 LAB_0A9C:
@@ -2313,7 +2313,7 @@ LAB_0A9D:
 LAB_0A9E:
     JMP     ESQ_MoveCopperEntryTowardStart
 
-GROUPB_JMP_TBL_MEMORY_DeallocateMemory:
+GROUPB_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 LAB_0AA0:
@@ -2346,7 +2346,7 @@ LAB_0AA8:
 LAB_0AA9:
     JMP     LAB_1038
 
-GROUPB_JMP_TBL_BRUSH_PopulateBrushList:
+GROUPB_JMPTBL_BRUSH_PopulateBrushList:
     JMP     BRUSH_PopulateBrushList
 
 LAB_0AAB:
@@ -2355,19 +2355,19 @@ LAB_0AAB:
 LAB_0AAC:
     JMP     LAB_194E
 
-GROUPB_JMP_TBL_SCRIPT_AssertCtrlLineIfEnabled:
+GROUPB_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
     JMP     SCRIPT_AssertCtrlLineIfEnabled
 
-GROUPB_JMP_TBL_SCRIPT_BeginBannerCharTransition:
+GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     SCRIPT_BeginBannerCharTransition
 
-GROUPB_JMP_TBL_MEMORY_AllocateMemory:
+GROUPB_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
 LAB_0AB0:
     JMP     LAB_038E
 
-GROUPB_JMP_TBL_UNKNOWN2B_OpenFileWithAccessMode:
+GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
     JMP     UNKNOWN2B_OpenFileWithAccessMode
 
 LAB_0AB2:
@@ -2382,7 +2382,7 @@ LAB_0AB4:
 LAB_0AB5:
     JMP     BRUSH_SelectBrushByLabel
 
-GROUPB_JMP_TBL_LAB_1A06:
+GROUPB_JMPTBL_LAB_1A06:
     JMP     LAB_1A06
 
 LAB_0AB7:

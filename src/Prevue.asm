@@ -34,7 +34,7 @@ savedExecBase       = -608
 ; CALLS:
 ;   _LVOSetSignal, _LVOOpenLibrary, _LVOWaitPort, _LVOGetMsg, _LVOCurrentDir,
 ;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
-;   ESQ_JMP_TBL_LAB_190F, ESQ_JMP_TBL_LAB_1A76, ESQ_JMP_TBL_LAB_1A26, ESQ_JMP_TBL_LAB_1910
+;   ESQ_JMPTBL_LAB_190F, ESQ_JMPTBL_LAB_1A76, ESQ_JMPTBL_LAB_1A26, ESQ_JMPTBL_LAB_1910
 ; READS:
 ;   AbsExecBase, LOCAL_STR_DOS_LIBRARY
 ; WRITES:
@@ -176,9 +176,9 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  4(A0),-592(A4)                                  ; WBArg[0].wa_Name ??
 
 .run_main_init:
-    JSR     ESQ_JMP_TBL_LAB_190F(PC)
+    JSR     ESQ_JMPTBL_LAB_190F(PC)
 
-    JSR     ESQ_JMP_TBL_LAB_1A76(PC)
+    JSR     ESQ_JMPTBL_LAB_1A76(PC)
 
     MOVEQ   #0,D0
     BRA.S   ESQ_ShutdownAndReturn
@@ -215,7 +215,7 @@ LAB_0009:
 ; CLOBBERS:
 ;   D0/A0-A6
 ; CALLS:
-;   ESQ_JMP_TBL_LAB_1A26, _LVOCloseLibrary, ESQ_JMP_TBL_LAB_1910, _LVOReplyMsg
+;   ESQ_JMPTBL_LAB_1A26, _LVOCloseLibrary, ESQ_JMPTBL_LAB_1910, _LVOReplyMsg
 ; READS:
 ;   savedMsg, savedStackPointer, savedExecBase, LocalDosLibraryDisplacement
 ; WRITES:
@@ -234,13 +234,13 @@ LAB_000A:
     JSR     (A0)
 
 .call_exit_hook:
-    JSR     ESQ_JMP_TBL_LAB_1A26(PC)
+    JSR     ESQ_JMPTBL_LAB_1A26(PC)
 
     MOVEA.L AbsExecBase,A6
     MOVEA.L LocalDosLibraryDisplacement(A4),A1
     JSR     _LVOCloseLibrary(A6)
 
-    JSR     ESQ_JMP_TBL_LAB_1910(PC)
+    JSR     ESQ_JMPTBL_LAB_1910(PC)
 
     TST.L   savedMsg(A4)
     BEQ.S   .restore_registers_and_return
@@ -269,7 +269,7 @@ LOCAL_STR_DOS_LIBRARY:
     NStr    "dos.library"
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMP_TBL_LAB_1910   (JumpStub_LAB_1910)
+; FUNC: ESQ_JMPTBL_LAB_1910   (JumpStub_LAB_1910)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -285,12 +285,12 @@ LOCAL_STR_DOS_LIBRARY:
 ; DESC:
 ;   Jump stub to LAB_1910.
 ;------------------------------------------------------------------------------
-ESQ_JMP_TBL_LAB_1910:
+ESQ_JMPTBL_LAB_1910:
 LAB_000F:
     JMP     LAB_1910
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMP_TBL_LAB_190F   (JumpStub_LAB_190F)
+; FUNC: ESQ_JMPTBL_LAB_190F   (JumpStub_LAB_190F)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -306,12 +306,12 @@ LAB_000F:
 ; DESC:
 ;   Jump stub to LAB_190F.
 ;------------------------------------------------------------------------------
-ESQ_JMP_TBL_LAB_190F:
+ESQ_JMPTBL_LAB_190F:
 LAB_0010:
     JMP     LAB_190F
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMP_TBL_LAB_1A26   (JumpStub_LAB_1A26)
+; FUNC: ESQ_JMPTBL_LAB_1A26   (JumpStub_LAB_1A26)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -327,12 +327,12 @@ LAB_0010:
 ; DESC:
 ;   Jump stub to LAB_1A26.
 ;------------------------------------------------------------------------------
-ESQ_JMP_TBL_LAB_1A26:
+ESQ_JMPTBL_LAB_1A26:
 LAB_0011:
     JMP     LAB_1A26
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMP_TBL_LAB_1A76   (JumpStub_LAB_1A76)
+; FUNC: ESQ_JMPTBL_LAB_1A76   (JumpStub_LAB_1A76)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -348,7 +348,7 @@ LAB_0011:
 ; DESC:
 ;   Jump stub to LAB_1A76.
 ;------------------------------------------------------------------------------
-ESQ_JMP_TBL_LAB_1A76:
+ESQ_JMPTBL_LAB_1A76:
 LAB_0012:
     JMP     LAB_1A76
 
@@ -450,9 +450,9 @@ CHECK_IF_COMPATIBLE_VIDEO_CHIP:
 ; CLOBBERS:
 ;   D0-D7/A0-A6
 ; CALLS:
-;   JMP_TBL_DO_DELAY, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
+;   JMPTBL_DO_DELAY, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
-;   PREVUE_JMP_TBL_LAB_1A06, JMP_TBL_LAB_1911, JMP_TBL_LIBRARIES_LOAD_FAILED_1
+;   PREVUE_JMPTBL_LAB_1A06, JMPTBL_LAB_1911, JMPTBL_LIBRARIES_LOAD_FAILED_1
 ; READS:
 ;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TOPAZ_FONT,
 ;   LAB_1DE9_B, LAB_1DD8_RASTPORT,
@@ -497,7 +497,7 @@ LAB_0017:
 
     ; Delay 250 ticks or 5 seconds
     PEA     250.W
-    JSR     JMP_TBL_DO_DELAY(PC)
+    JSR     JMPTBL_DO_DELAY(PC)
 
     ADDQ.W  #4,A7
 
@@ -612,7 +612,7 @@ LAB_0017:
     JSR     _LVOSizeWindow(A6)
 
     PEA     100.W
-    JSR     JMP_TBL_DO_DELAY(PC)
+    JSR     JMPTBL_DO_DELAY(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #50,D0
@@ -628,7 +628,7 @@ LAB_0017:
     ADDI.L  #4000,D4
     MOVE.L  D7,D0
     MOVE.L  #640,D1
-    JSR     PREVUE_JMP_TBL_LAB_1A06(PC)
+    JSR     PREVUE_JMPTBL_LAB_1A06(PC)
 
     LSR.L   #3,D0
     MOVE.L  D5,D1
@@ -650,10 +650,10 @@ LAB_0017:
 
 .show_rerun_error:
     PEA     GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
-    JSR     JMP_TBL_LAB_1911(PC)
+    JSR     JMPTBL_LAB_1911(PC)
 
     CLR.L   (A7)
-    JSR     JMP_TBL_LIBRARIES_LOAD_FAILED_1(PC)
+    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_1(PC)
 
     ADDQ.W  #4,A7
 
@@ -673,7 +673,7 @@ LAB_0017:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   LAB_03C4, LAB_03C0, GROUPA_JMP_TBL_WDISP_SPrintf
+;   LAB_03C4, LAB_03C0, GROUP_AE_JMPTBL_WDISP_SPrintf
 ; READS:
 ;   LAB_1AF4, LAB_1AF6, GLOB_STR_DISK_ERRORS_FORMATTED,
 ;   GLOB_STR_DISK_IS_FULL_FORMATTED, LAB_2249
@@ -701,7 +701,7 @@ LAB_001E:
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_DISK_ERRORS_FORMATTED
     PEA     LAB_2249
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
     BRA.S   .done
@@ -714,7 +714,7 @@ LAB_001E:
     MOVE.L  D7,(A7)
     PEA     GLOB_STR_DISK_IS_FULL_FORMATTED
     PEA     LAB_2249
-    JSR     GROUPA_JMP_TBL_WDISP_SPrintf(PC)
+    JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
 
@@ -731,16 +731,16 @@ LAB_001E:
 
 ;!======
 
-JMP_TBL_DO_DELAY:
+JMPTBL_DO_DELAY:
     JMP     DO_DELAY
 
-JMP_TBL_LAB_1911:
+JMPTBL_LAB_1911:
     JMP     LAB_1911
 
-PREVUE_JMP_TBL_LAB_1A06:
+PREVUE_JMPTBL_LAB_1A06:
     JMP     LAB_1A06
 
-JMP_TBL_LIBRARIES_LOAD_FAILED_1:
+JMPTBL_LIBRARIES_LOAD_FAILED_1:
     JMP     LIBRARIES_LOAD_FAILED
 
 ;!======
@@ -795,6 +795,7 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/a/k/ed1.s"
     include "modules/groups/a/k/ed2.s"
     include "modules/groups/a/k/xjump.s"
+    include "modules/groups/a/k/xjump2.s"
 
     include "modules/groups/a/l/ed3.s"
     include "modules/groups/a/l/xjump.s"
@@ -816,8 +817,10 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
 
     include "modules/groups/a/s/flib2.s"
     include "modules/groups/a/s/gcommand.s"
+    include "modules/groups/a/s/xjump.s"
 
     include "modules/groups/a/t/gcommand2.s"
+    include "modules/groups/a/t/xjump.s"
 
     include "modules/groups/a/u/gcommand3.s"
     include "modules/groups/a/u/gcommand4.s"
@@ -838,6 +841,8 @@ JMP_TBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/b/a/newgrid2.s"
     include "modules/groups/b/a/p_type.s"
     include "modules/groups/b/a/parseini.s"
+    include "modules/groups/b/a/parseini2.s"
+    include "modules/groups/b/a/parseini3.s"
     include "modules/groups/b/a/script.s"
     include "modules/groups/b/a/script2.s"
     include "modules/groups/b/a/script3.s"

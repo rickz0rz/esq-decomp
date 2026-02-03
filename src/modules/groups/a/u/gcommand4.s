@@ -8,8 +8,8 @@
 ; CLOBBERS:
 ;   D0, A0, A3, A6
 ; CALLS:
-;   GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList, _LVOForbid,
-;   GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode
+;   GCOMMAND_JMPTBL_BRUSH_PopulateBrushList, _LVOForbid,
+;   GCOMMAND_JMPTBL_BRUSH_AppendBrushNode
 ; READS:
 ;   190(A3), LAB_1ED3
 ; WRITES:
@@ -32,7 +32,7 @@ LAB_0DF5:
     MOVE.W  D0,LAB_1B84
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
-    JSR     GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList(PC)
+    JSR     GCOMMAND_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  LAB_1B84,D0
@@ -47,7 +47,7 @@ LAB_0DF5:
 
     MOVE.L  -4(A5),-(A7)
     MOVE.L  LAB_1ED3,-(A7)
-    JSR     GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode(PC)
+    JSR     GCOMMAND_JMPTBL_BRUSH_AppendBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_1ED3
@@ -70,7 +70,7 @@ LAB_0DF5:
 
     MOVE.L  -4(A5),-(A7)
     MOVE.L  LAB_1ED2,-(A7)
-    JSR     GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode(PC)
+    JSR     GCOMMAND_JMPTBL_BRUSH_AppendBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_1ED2
@@ -101,7 +101,7 @@ LAB_0DF5:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode   (JumpStub_BRUSH_AppendBrushNode)
+; FUNC: GCOMMAND_JMPTBL_BRUSH_AppendBrushNode   (JumpStub_BRUSH_AppendBrushNode)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -117,12 +117,12 @@ LAB_0DF5:
 ; DESC:
 ;   Jump stub to BRUSH_AppendBrushNode.
 ;------------------------------------------------------------------------------
-GCOMMAND_JMP_TBL_BRUSH_AppendBrushNode:
+GCOMMAND_JMPTBL_BRUSH_AppendBrushNode:
 LAB_0DF9:
     JMP     BRUSH_AppendBrushNode
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList   (JumpStub_BRUSH_PopulateBrushList)
+; FUNC: GCOMMAND_JMPTBL_BRUSH_PopulateBrushList   (JumpStub_BRUSH_PopulateBrushList)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -138,6 +138,6 @@ LAB_0DF9:
 ; DESC:
 ;   Jump stub to BRUSH_PopulateBrushList.
 ;------------------------------------------------------------------------------
-GCOMMAND_JMP_TBL_BRUSH_PopulateBrushList:
+GCOMMAND_JMPTBL_BRUSH_PopulateBrushList:
 LAB_0DFA:
     JMP     BRUSH_PopulateBrushList

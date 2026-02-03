@@ -52,7 +52,7 @@ LAB_0EF5:
 
     MOVE.L  D6,D0
     MOVE.L  D7,D1
-    JSR     JMP_TBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_LAB_1A07_3(PC)
 
     TST.L   D1
     BNE.S   LAB_0EF7

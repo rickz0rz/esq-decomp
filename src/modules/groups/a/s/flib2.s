@@ -112,7 +112,7 @@ LAB_0CC8:
 
     BSR.W   GCOMMAND_LoadDefaultTable
 
-    BSR.W   LAB_0CE8
+    BSR.W   GCOMMAND_LoadMplexTemplate
 
     BSR.W   GCOMMAND_LoadPPV3Template
 

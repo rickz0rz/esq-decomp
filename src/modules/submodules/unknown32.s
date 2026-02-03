@@ -51,7 +51,7 @@ LAB_1A95:
 
 ;!======
 
-WDISP_JMP_TBL_ESQ_ReturnWithStackCode:
+WDISP_JMPTBL_ESQ_ReturnWithStackCode:
 LAB_1A96:
     JMP     ESQ_ReturnWithStackCode
 

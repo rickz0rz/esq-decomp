@@ -17,7 +17,7 @@ LAB_19F7:
 
 ;!======
 
-CLEANUP_SIGNAL_AND_MSGPORT:
+UNKNOWN21_CleanupSignalAndMsgport:
     MOVEM.L A3/A6,-(A7)
 
     MOVEA.L 12(A7),A3

@@ -1,53 +1,41 @@
-GROUPA1_JMP_TBL_PARSEINI_UpdateClockFromRtc:
-LAB_020D:
+GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc:
     JMP     PARSEINI_UpdateClockFromRtc
 
-GROUPA1_JMP_TBL_ESQFUNC_DrawDiagnosticsScreen:
-LAB_020E:
+GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen:
     JMP     ESQFUNC_DrawDiagnosticsScreen
 
-GROUPA1_JMP_TBL_ESQFUNC_DrawMemoryStatusScreen:
-LAB_020F:
+GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen:
     JMP     ESQFUNC_DrawMemoryStatusScreen
 
-GROUPA1_JMP_TBL_SCRIPT_UpdateCtrlStateMachine:
-LAB_0210:
+GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine:
     JMP     SCRIPT_UpdateCtrlStateMachine
 
-GROUPA1_JMP_TBL_GCOMMAND_UpdateBannerBounds:
-LAB_0211:
+GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds:
     JMP     GCOMMAND_UpdateBannerBounds
 
-GROUPA1_JMP_TBL_SCRIPT_UpdateCtrlLineTimeout:
-LAB_0212:
+GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout:
     JMP     SCRIPT_UpdateCtrlLineTimeout
 
-GROUPA1_JMP_TBL_SCRIPT_ClearCtrlLineIfEnabled:
-LAB_0213:
+GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled:
     JMP     SCRIPT_ClearCtrlLineIfEnabled
 
-GROUPA1_JMP_TBL_ESQFUNC_PruneEntryTextPointers:
-LAB_0214:
+GROUP_AC_JMPTBL_ESQFUNC_PruneEntryTextPointers:
     JMP     ESQFUNC_PruneEntryTextPointers
 
-GROUPA1_JMP_TBL_ESQDISP_DrawStatusBanner:
-LAB_0215:
+GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner:
     JMP     ESQDISP_DrawStatusBanner
 
-GROUPA1_JMP_TBL_DST_UpdateBannerQueue:
-LAB_0216:
+GROUP_AC_JMPTBL_DST_UpdateBannerQueue:
     JMP     DST_UpdateBannerQueue
 
-GROUPA1_JMP_TBL_DST_RefreshBannerBuffer:
-LAB_0217:
+GROUP_AC_JMPTBL_DST_RefreshBannerBuffer:
     JMP     DST_RefreshBannerBuffer
 
-GROUPA1_JMP_TBL_DRAW_ESC_MENU_VERSION_SCREEN:
-LAB_0218:
-    JMP     DRAW_ESC_MENU_VERSION_SCREEN
+GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion:
+    JMP     ESQFUNC_DrawEscMenuVersion
 
-JMP_TBL_ADJUST_HOURS_TO_24_HR_FMT:
-    JMP     ADJUST_HOURS_TO_24_HR_FMT
+GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat:
+    JMP     PARSEINI_AdjustHoursTo24HrFormat
 
 ;!======
 

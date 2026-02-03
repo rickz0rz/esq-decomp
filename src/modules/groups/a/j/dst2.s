@@ -1,3 +1,23 @@
+;------------------------------------------------------------------------------
+; FUNC: LAB_0623   (Handle banner command $32/$33 and enqueue text.)
+; ARGS:
+;   stack +7: cmd byte ?? (D7)
+;   stack +8: struct* ?? (A3)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D7/A3 ??
+; CALLS:
+;   LAB_05FC, LAB_05F8, DST_UpdateBannerQueue
+; READS:
+;   LAB_21E0, LAB_21DF
+; WRITES:
+;   ??
+; DESC:
+;   Parses two string segments and enqueues them to the appropriate buffer.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0623:
     LINK.W  A5,#-44
     MOVEM.L D7/A3,-(A7)
@@ -6,14 +26,15 @@ LAB_0623:
     MOVE.B  D7,D0
     EXT.W   D0
     SUBI.W  #$32,D0
-    BEQ.S   LAB_0624
+    BEQ.S   .case_cmd_32
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_0625
+    BEQ.S   .case_cmd_33
 
-    BRA.S   LAB_0626
+    BRA.S   .return
 
-LAB_0624:
+.case_cmd_32:
+    ; Parse two string segments and enqueue into LAB_21E0.
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
@@ -30,9 +51,10 @@ LAB_0624:
     BSR.W   LAB_05F8
 
     LEA     36(A7),A7
-    BRA.S   LAB_0626
+    BRA.S   .return
 
-LAB_0625:
+.case_cmd_33:
+    ; Parse two string segments and enqueue into LAB_21DF.
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
@@ -50,7 +72,7 @@ LAB_0625:
 
     LEA     36(A7),A7
 
-LAB_0626:
+.return:
     PEA     LAB_21DF
     BSR.W   DST_UpdateBannerQueue
 
@@ -60,24 +82,62 @@ LAB_0626:
 
 ;!======
 
-LAB_0627:
+;------------------------------------------------------------------------------
+; FUNC: DST_CallJump_066F   (Jump stub to LAB_066F.)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   LAB_066F
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Small jump stub used by banner update paths.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+DST_CallJump_066F:
     JSR     LAB_066F(PC)
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: DST_UpdateBannerQueue   (Update the rotating banner queue.)
+; ARGS:
+;   stack +4: queue* ?? (A3)
+; RET:
+;   D0: update flag (0/1?)
+; CLOBBERS:
+;   D0/D6/D7/A3 ??
+; CALLS:
+;   LAB_05F6, LAB_0656, LAB_0618, DST_RefreshBannerBuffer, DST_CallJump_066F
+; READS:
+;   LAB_2241, LAB_227B, LAB_1DD2
+; WRITES:
+;   LAB_2241, LAB_227B
+; DESC:
+;   Ticks the banner queue timers and refreshes buffers when entries change.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 ; Update the rotating banner queue; free resources when entries expire.
 DST_UpdateBannerQueue:
-LAB_0628:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BEQ.W   LAB_0630
+    BEQ.W   .return
 
+    ; Slot 0 update: tick timer and free if expired.
     TST.L   (A3)
-    BEQ.S   LAB_062B
+    BEQ.S   .slot0_empty
 
     MOVEA.L (A3),A0
     MOVE.W  LAB_2241,16(A0)
@@ -86,19 +146,19 @@ LAB_0628:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_062C
+    BEQ.S   .slot0_done
 
     MOVEA.L (A3),A0
     TST.W   16(A0)
-    BEQ.S   LAB_0629
+    BEQ.S   .slot0_timer_zero
 
     MOVEQ   #1,D0
-    BRA.S   LAB_062A
+    BRA.S   .slot0_timer_ready
 
-LAB_0629:
+.slot0_timer_zero:
     MOVEQ   #-1,D0
 
-LAB_062A:
+.slot0_timer_ready:
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     EXT.L   D0
@@ -109,16 +169,17 @@ LAB_062A:
 
     MOVEA.L (A3),A0
     MOVE.W  16(A0),LAB_2241
-    BSR.S   LAB_0627
+    BSR.S   DST_CallJump_066F
 
     LEA     12(A7),A7
     MOVEQ   #1,D6
-    BRA.S   LAB_062C
+    BRA.S   .slot0_done
 
-LAB_062B:
+.slot0_empty:
+    ; No active entry: count down LAB_2241 and free when it hits 1.
     MOVE.W  LAB_2241,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_062C
+    BNE.S   .slot0_done
 
     CLR.L   -(A7)
     PEA     -1.W
@@ -129,14 +190,15 @@ LAB_062B:
     CLR.W   LAB_2241
     MOVEQ   #1,D6
 
-LAB_062C:
+.slot0_done:
+    ; Slot 1 update depends on LAB_1DD2 mode.
     MOVE.B  LAB_1DD2,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_062E
+    BNE.S   .slot1_mode_off
 
     TST.L   4(A3)
-    BEQ.S   LAB_062D
+    BEQ.S   .slot1_empty
 
     MOVEA.L 4(A3),A0
     MOVE.W  LAB_227B,16(A0)
@@ -145,28 +207,29 @@ LAB_062C:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_062F
+    BEQ.S   .after_slot1
 
     MOVEA.L 4(A3),A0
     MOVE.W  16(A0),D0
     MOVE.W  D0,LAB_227B
     MOVEQ   #1,D6
-    BRA.S   LAB_062F
+    BRA.S   .after_slot1
 
-LAB_062D:
+.slot1_empty:
     MOVE.W  LAB_227B,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_062F
+    BNE.S   .after_slot1
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_227B
     MOVEQ   #1,D6
-    BRA.S   LAB_062F
+    BRA.S   .after_slot1
 
-LAB_062E:
+.slot1_mode_off:
+    ; Non-'Y' mode: only refresh slot 1 when timer hits 1.
     MOVE.W  LAB_227B,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_062F
+    BNE.S   .after_slot1
 
     MOVE.L  4(A3),-(A7)
     BSR.W   LAB_0618
@@ -176,19 +239,40 @@ LAB_062E:
     CLR.W   LAB_227B
     MOVEQ   #1,D6
 
-LAB_062F:
+.after_slot1:
     TST.L   D6
-    BEQ.S   LAB_0630
+    BEQ.S   .return
 
+    ; At least one slot changed: rebuild the staging buffer.
     BSR.W   DST_RefreshBannerBuffer
 
-LAB_0630:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0631   (Normalize day-of-year across years.)
+; ARGS:
+;   stack +4: dayOfYear ?? (D7)
+;   stack +6: year ?? (D6)
+; RET:
+;   D0: normalized day-of-year ??
+; CLOBBERS:
+;   D0/D5-D7 ??
+; CALLS:
+;   LAB_0660
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Subtracts full years from D7 while adjusting year count in D6.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0631:
     MOVEM.L D5-D7,-(A7)
     MOVE.W  18(A7),D7
@@ -199,21 +283,23 @@ LAB_0631:
     BSR.W   LAB_0660
 
     ADDQ.W  #4,A7
+    ; Determine days in year for the starting year.
     TST.W   D0
-    BEQ.S   LAB_0632
+    BEQ.S   .leap_year
 
     MOVE.L  #366,D0
-    BRA.S   LAB_0633
+    BRA.S   .set_year_days
 
-LAB_0632:
+.leap_year:
     MOVE.L  #$16d,D0
 
-LAB_0633:
+.set_year_days:
     MOVE.L  D0,D5
 
-LAB_0634:
+.year_subtract_loop:
+    ; Normalize D7 by subtracting whole years while it exceeds days/year.
     CMP.W   D5,D7
-    BLE.S   LAB_0637
+    BLE.S   .return
 
     SUB.W   D5,D7
     ADDQ.W  #1,D6
@@ -224,25 +310,47 @@ LAB_0634:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_0635
+    BEQ.S   .leap_year_next
 
     MOVE.L  #366,D0
-    BRA.S   LAB_0636
+    BRA.S   .set_year_days_next
 
-LAB_0635:
+.leap_year_next:
     MOVE.L  #$16d,D0
 
-LAB_0636:
+.set_year_days_next:
     MOVE.L  D0,D5
-    BRA.S   LAB_0634
+    BRA.S   .year_subtract_loop
 
-LAB_0637:
+.return:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D5-D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0638   (Build banner time entry??)
+; ARGS:
+;   stack +10: dayOfYear ?? (D7)
+;   stack +15: flags ?? (D6)
+;   stack +16: outPtr ?? (A3)
+;   stack +20: timePtr ?? (A2)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A2-A3 ??
+; CALLS:
+;   LAB_0660, LAB_05E1, LAB_05E5, LAB_05C7, GROUP_AG_JMPTBL_LAB_1A06/1A07
+; READS:
+;   LAB_223A, LAB_2242, LAB_223D, LAB_1DD2, LAB_1DD1, LAB_1DD8, LAB_21E0, LAB_21DF
+; WRITES:
+;   (A3), 14(A2)
+; DESC:
+;   Builds or updates banner-related time fields and writes them into outputs.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0638:
     LINK.W  A5,#-36
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -254,24 +362,25 @@ LAB_0638:
     LEA     -22(A5),A1
     MOVEQ   #4,D0
 
-LAB_0639:
+    ; Copy queue template into scratch buffer.
+.copy_queue_state:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,LAB_0639
+    DBF     D0,.copy_queue_state
     MOVE.W  (A0),(A1)
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVE.W  LAB_2242,D1
     MOVE.W  D0,-30(A5)
     CMPI.W  #$ff,D1
-    BLT.S   LAB_063B
+    BLT.S   .after_wrap_flag
 
     CMP.W   D0,D1
-    BEQ.S   LAB_063B
+    BEQ.S   .after_wrap_flag
 
     MOVE.L  D1,D2
     ANDI.W  #$ff,D2
     CMP.W   D0,D2
-    BEQ.S   LAB_063A
+    BEQ.S   .set_wrap_flag
 
     EXT.L   D1
     ADDQ.L  #1,D1
@@ -280,33 +389,33 @@ LAB_0639:
     AND.L   D2,D1
     EXT.L   D0
     CMP.L   D1,D0
-    BNE.S   LAB_063B
+    BNE.S   .after_wrap_flag
 
-LAB_063A:
+.set_wrap_flag:
     BSET    #0,-30(A5)
 
-LAB_063B:
+.after_wrap_flag:
     MOVE.W  -30(A5),D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
-    BNE.S   LAB_063C
+    BNE.S   .maybe_increment_year
 
     MOVE.W  LAB_2242,D2
     SUBQ.W  #1,D2
-    BEQ.S   LAB_063C
+    BEQ.S   .maybe_increment_year
 
     MOVE.W  -16(A5),D2
     ADDQ.W  #1,D2
     MOVE.W  D2,-16(A5)
 
-LAB_063C:
+.maybe_increment_year:
     MOVEQ   #39,D2
     CMP.W   D2,D7
-    BLT.S   LAB_063D
+    BLT.S   .adjust_for_threshold
 
     ADDQ.W  #1,-30(A5)
 
-LAB_063D:
+.adjust_for_threshold:
     MOVE.W  LAB_223D,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -314,26 +423,27 @@ LAB_063D:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_063E
+    BEQ.S   .leap_year
 
     MOVE.L  #366,D0
-    BRA.S   LAB_063F
+    BRA.S   .set_year_days
 
-LAB_063E:
+.leap_year:
     MOVE.L  #$16d,D0
 
-LAB_063F:
+.set_year_days:
     MOVE.W  D0,-36(A5)
     MOVE.W  -30(A5),D1
     CMP.W   D0,D1
-    BLE.S   LAB_0640
+    BLE.S   .normalize_day_of_year
 
+    ; Day-of-year overflow: carry into the year counter.
     SUB.W   D0,-30(A5)
     MOVE.W  -16(A5),D0
     ADDQ.W  #1,D0
     MOVE.W  D0,-16(A5)
 
-LAB_0640:
+.normalize_day_of_year:
     MOVE.W  -30(A5),-6(A5)
     MOVEQ   #0,D0
     MOVE.W  D0,-10(A5)
@@ -342,57 +452,57 @@ LAB_0640:
     SUBQ.L  #1,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVEQ   #30,D0
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     MOVE.W  D0,-12(A5)
     MOVE.L  D7,D0
     EXT.L   D0
     SUBQ.L  #1,D0
     TST.L   D0
-    BPL.S   LAB_0641
+    BPL.S   .adjust_dividend
 
     ADDQ.L  #1,D0
 
-LAB_0641:
+.adjust_dividend:
     ASR.L   #1,D0
     ADDQ.L  #5,D0
     MOVEQ   #12,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVE.W  D1,-14(A5)
-    BNE.S   LAB_0642
+    BNE.S   .ensure_nonzero_divisor
 
     MOVE.W  #12,-14(A5)
 
-LAB_0642:
+.ensure_nonzero_divisor:
     MOVE.L  D7,D0
     EXT.L   D0
     SUBQ.L  #1,D0
     TST.L   D0
-    BPL.S   LAB_0643
+    BPL.S   .adjust_dividend_2
 
     ADDQ.L  #1,D0
 
-LAB_0643:
+.adjust_dividend_2:
     ASR.L   #1,D0
     ADDQ.L  #5,D0
     MOVEQ   #24,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     MOVEQ   #11,D0
     CMP.L   D0,D1
-    BLE.S   LAB_0644
+    BLE.S   .set_overflow_flag
 
     MOVEQ   #-1,D0
-    BRA.S   LAB_0645
+    BRA.S   .overflow_flag_ready
 
-LAB_0644:
+.set_overflow_flag:
     MOVEQ   #0,D0
 
-LAB_0645:
+.overflow_flag_ready:
     MOVE.W  D0,-4(A5)
     MOVE.W  -8(A5),D0
     EXT.L   D0
@@ -408,20 +518,21 @@ LAB_0645:
     MOVE.B  LAB_1DD2,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0646
+    BNE.S   .skip_alt_buffer
 
+    ; If in 'Y' mode, write into LAB_21E0 buffer first.
     MOVE.L  D5,-(A7)
     MOVE.L  LAB_21E0,-(A7)
     BSR.W   LAB_05E5
 
     ADDQ.W  #8,A7
     EXT.L   D0
-    BRA.S   LAB_0647
+    BRA.S   .after_alt_buffer
 
-LAB_0646:
+.skip_alt_buffer:
     MOVEQ   #0,D0
 
-LAB_0647:
+.after_alt_buffer:
     MOVE.L  D5,-(A7)
     MOVE.L  LAB_21DF,-(A7)
     MOVE.W  D0,-32(A5)
@@ -436,32 +547,32 @@ LAB_0647:
     MOVEM.W D1,-28(A5)
     MOVEQ   #1,D2
     CMP.W   D2,D0
-    BNE.S   LAB_0648
+    BNE.S   .adjust_row_for_flag
 
     SUBQ.W  #1,-28(A5)
 
-LAB_0648:
+.adjust_row_for_flag:
     CMP.W   -32(A5),D2
-    BNE.S   LAB_0649
+    BNE.S   .adjust_row_for_alt
 
     ADDQ.W  #1,-28(A5)
 
-LAB_0649:
+.adjust_row_for_alt:
     MOVE.W  -28(A5),D1
     MOVE.W  D1,(A3)
     MOVE.L  A2,D3
-    BEQ.S   LAB_064C
+    BEQ.S   .return
 
     SUBQ.W  #1,D0
-    BNE.S   LAB_064A
+    BNE.S   .set_plus_one
 
     MOVEQ   #1,D0
-    BRA.S   LAB_064B
+    BRA.S   .set_plus_one_ready
 
-LAB_064A:
+.set_plus_one:
     MOVEQ   #0,D0
 
-LAB_064B:
+.set_plus_one_ready:
     EXT.L   D1
     ADD.L   D0,D1
     MOVE.W  D1,-28(A5)
@@ -470,7 +581,7 @@ LAB_064B:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #60,D1
-    JSR     GROUPA_JMP_TBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
 
     ADD.L   D0,D5
     MOVE.L  A2,-(A7)
@@ -480,13 +591,33 @@ LAB_064B:
     ADDQ.W  #8,A7
     MOVE.W  -32(A5),14(A2)
 
-LAB_064C:
+.return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_064D   (Wrapper: call LAB_0638 and return word.)
+; ARGS:
+;   stack +10: dayOfYear ?? (D7)
+;   stack +15: flags ?? (D6)
+; RET:
+;   D0: word result ??
+; CLOBBERS:
+;   D0/D6/D7 ??
+; CALLS:
+;   LAB_0638
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Calls LAB_0638 and returns the computed word from stack temp.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_064D:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
@@ -509,6 +640,27 @@ LAB_064D:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_064E   (Compute banner index from time struct??)
+; ARGS:
+;   stack +8: struct* ?? (A3)
+;   stack +14: dayOfYear ?? (D7)
+;   stack +19: flags ?? (D6)
+; RET:
+;   D0: index/value ??
+; CLOBBERS:
+;   D0/D6/D7/A3 ??
+; CALLS:
+;   LAB_0638, GROUP_AG_JMPTBL_LAB_1A07
+; READS:
+;   8(A3), 10(A3), 18(A3)
+; WRITES:
+;   ??
+; DESC:
+;   Calls LAB_0638 and computes a derived index value.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_064E:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
@@ -529,18 +681,18 @@ LAB_064E:
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     TST.W   18(A3)
-    BEQ.S   LAB_064F
+    BEQ.S   .month_offset_zero
 
     MOVEQ   #12,D0
-    BRA.S   LAB_0650
+    BRA.S   .month_offset_ready
 
-LAB_064F:
+.month_offset_zero:
     MOVEQ   #0,D0
 
-LAB_0650:
+.month_offset_ready:
     ADD.L   D0,D1
     ADD.L   D1,D1
     CMPI.W  #$1d,10(A3)
@@ -549,15 +701,15 @@ LAB_0650:
     EXT.W   D0
     EXT.L   D0
     ADD.L   D0,D1
-    BEQ.S   LAB_0651
+    BEQ.S   .set_nonzero_flag
 
     MOVEQ   #1,D0
-    BRA.S   LAB_0652
+    BRA.S   .nonzero_flag_ready
 
-LAB_0651:
+.set_nonzero_flag:
     MOVEQ   #0,D0
 
-LAB_0652:
+.nonzero_flag_ready:
     MOVE.L  D0,D7
     ADDI.W  #$26,D7
     MOVE.L  D7,D0
@@ -573,6 +725,25 @@ LAB_0652:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0653   (Tick banner counters.)
+; ARGS:
+;   ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D1 ??
+; CALLS:
+;   ??
+; READS:
+;   LAB_1DD1, LAB_2241, LAB_227B
+; WRITES:
+;   LAB_225C
+; DESC:
+;   Updates banner counters based on timers and flags.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0653:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD1,D0
@@ -580,26 +751,47 @@ LAB_0653:
     MOVE.W  D0,LAB_225C
     MOVE.W  LAB_2241,D1
     SUBQ.W  #1,D1
-    BNE.S   LAB_0654
+    BNE.S   .after_primary_tick
 
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
     MOVE.W  D1,LAB_225C
 
-LAB_0654:
+.after_primary_tick:
     MOVE.W  LAB_227B,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0655
+    BNE.S   .return
 
     MOVE.W  LAB_225C,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_225C
 
-LAB_0655:
+.return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0656   (Add time offset and store seconds.)
+; ARGS:
+;   stack +4: dest* ?? (A3)
+;   stack +10: hours ?? (D7)
+;   stack +14: mins ?? (D6)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D5-D7/A3 ??
+; CALLS:
+;   LAB_05D3, LAB_05C7
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Computes a seconds offset from hours/minutes and stores it via LAB_05C7.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0656:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -626,20 +818,41 @@ LAB_0656:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0657   (Format banner date/time string.)
+; ARGS:
+;   stack +? : outPtr ?? (A3)
+;   stack +? : timePtr ?? (A2)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D6/A2-A3/A6 ??
+; CALLS:
+;   LAB_066D
+; READS:
+;   GLOB_JMPTBL_SHORT_DAYS_OF_WEEK, GLOB_JMPTBL_SHORT_MONTHS, LAB_1D0C..LAB_1D12
+; WRITES:
+;   ??
+; DESC:
+;   Builds a formatted banner string using day/month tables and flags.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0657:
     LINK.W  A5,#-40
     MOVEM.L D2-D6/A2-A3/A6,-(A7)
     MOVEA.L 80(A7),A3
     MOVEA.L 84(A7),A2
+    ; Build formatted banner string from date/time fields.
     MOVE.W  (A2),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     GLOB_JMP_TBL_SHORT_DAYS_OF_WEEK,A0
+    LEA     GLOB_JMPTBL_SHORT_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
     MOVE.W  2(A2),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     GLOB_JMP_TBL_SHORT_MONTHS,A1
+    LEA     GLOB_JMPTBL_SHORT_MONTHS,A1
     ADDA.L  D0,A1
     MOVE.W  4(A2),D0
     EXT.L   D0
@@ -653,39 +866,40 @@ LAB_0657:
     EXT.L   D4
     MOVE.W  12(A2),D5
     EXT.L   D5
+    ; Select format strings based on flags in A2.
     TST.W   18(A2)
-    BEQ.S   LAB_0658
+    BEQ.S   .use_pm_string
 
     LEA     LAB_1D0D,A6
-    BRA.S   LAB_0659
+    BRA.S   .ampm_string_ready
 
-LAB_0658:
+.use_pm_string:
     LEA     LAB_1D0E,A6
 
-LAB_0659:
+.ampm_string_ready:
     MOVE.L  A6,64(A7)
     MOVEQ   #1,D6
     CMP.W   14(A2),D6
-    BNE.S   LAB_065A
+    BNE.S   .use_day_suffix_1
 
     LEA     LAB_1D0F,A6
-    BRA.S   LAB_065B
+    BRA.S   .day_suffix_ready
 
-LAB_065A:
+.use_day_suffix_1:
     LEA     LAB_1D10,A6
 
-LAB_065B:
+.day_suffix_ready:
     MOVE.L  A6,68(A7)
     TST.W   20(A2)
-    BEQ.S   LAB_065C
+    BEQ.S   .use_dst_on_string
 
     LEA     LAB_1D11,A6
-    BRA.S   LAB_065D
+    BRA.S   .dst_string_ready
 
-LAB_065C:
+.use_dst_on_string:
     LEA     LAB_1D12,A6
 
-LAB_065D:
+.dst_string_ready:
     MOVE.L  A6,-(A7)
     MOVE.L  72(A7),-(A7)
     MOVE.L  72(A7),-(A7)
@@ -707,9 +921,27 @@ LAB_065D:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: DST_RefreshBannerBuffer   (Copy the next banner entry into the staging buffer.)
+; ARGS:
+;   ??
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0/D1/D7/A0/A1 ??
+; CALLS:
+;   LAB_0653, LAB_0656
+; READS:
+;   LAB_223A, LAB_227B, LAB_225C, LAB_1DD8
+; WRITES:
+;   LAB_2274, LAB_227B
+; DESC:
+;   Updates counters, copies the queue state into staging, and writes timestamps.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 ; Copy the next banner entry into the staging buffer and trigger drawing.
 DST_RefreshBannerBuffer:
-LAB_065E:
     MOVE.L  D7,-(A7)
     BSR.W   LAB_0653
 
@@ -718,9 +950,10 @@ LAB_065E:
     LEA     LAB_2274,A1
     MOVEQ   #4,D0
 
-LAB_065F:
+    ; Copy current queue state into staging buffer.
+.copy_queue_state:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,LAB_065F
+    DBF     D0,.copy_queue_state
     MOVE.W  (A0),(A1)
     MOVE.W  D7,LAB_227B
     MOVE.W  LAB_225C,D0
@@ -739,44 +972,64 @@ LAB_065F:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0660   (Leap year test.)
+; ARGS:
+;   stack +4: year ?? (D7)
+; RET:
+;   D0: 1 if leap year, 0 otherwise
+; CLOBBERS:
+;   D0/D6/D7 ??
+; CALLS:
+;   GROUP_AG_JMPTBL_LAB_1A07
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   Tests year divisibility by 4/100/400.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0660:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
+    ; Normalize and test for leap year.
     CMPI.L  #$76c,D7
-    BGE.S   LAB_0661
+    BGE.S   .normalize_year_base
 
     ADDI.L  #$76c,D7
 
-LAB_0661:
+.normalize_year_base:
     MOVE.L  D7,D0
     MOVEQ   #4,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     TST.L   D1
-    BNE.S   LAB_0662
+    BNE.S   .check_century
 
     MOVE.L  D7,D0
     MOVEQ   #100,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     TST.L   D1
-    BNE.S   LAB_0663
+    BNE.S   .set_leap_result
 
-LAB_0662:
+.check_century:
     MOVE.L  D7,D0
     MOVE.L  #400,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     TST.L   D1
-    BEQ.S   LAB_0663
+    BEQ.S   .set_leap_result
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0664
+    BRA.S   .return
 
-LAB_0663:
+.set_leap_result:
     MOVEQ   #1,D0
 
-LAB_0664:
+.return:
     MOVE.L  D0,D6
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7
@@ -784,24 +1037,44 @@ LAB_0664:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0665   (Adjust month index with optional +12 offset.)
+; ARGS:
+;   stack +4: struct* ?? (A3)
+; RET:
+;   D0: adjusted month ??
+; CLOBBERS:
+;   D0/D1/A3 ??
+; CALLS:
+;   GROUP_AG_JMPTBL_LAB_1A07
+; READS:
+;   8(A3), 18(A3)
+; WRITES:
+;   8(A3)
+; DESC:
+;   Adds 12 months when a flag is set and writes back the result.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0665:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
+    ; Adjust month index with optional +12 offset flag.
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     JMP_TBL_LAB_1A07_1(PC)
+    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
 
     TST.W   18(A3)
-    BEQ.S   LAB_0666
+    BEQ.S   .month_offset_zero
 
     MOVEQ   #12,D0
-    BRA.S   LAB_0667
+    BRA.S   .month_offset_ready
 
-LAB_0666:
+.month_offset_zero:
     MOVEQ   #0,D0
 
-LAB_0667:
+.month_offset_ready:
     ADD.L   D0,D1
     MOVE.W  D1,8(A3)
     MOVE.L  D1,D0
@@ -810,21 +1083,41 @@ LAB_0667:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_0668   (Normalize month range and set overflow flag.)
+; ARGS:
+;   stack +4: struct* ?? (A3)
+; RET:
+;   D0: month ??
+; CLOBBERS:
+;   D0/D1/A3 ??
+; CALLS:
+;   ??
+; READS:
+;   8(A3)
+; WRITES:
+;   8(A3), 18(A3)
+; DESC:
+;   Sets an overflow flag and wraps month index into 1..12 range.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_0668:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
+    ; Normalize month range and set overflow flag.
     MOVE.W  8(A3),D0
     MOVEQ   #11,D1
     CMP.W   D1,D0
-    BLE.S   LAB_0669
+    BLE.S   .month_overflow
 
     MOVEQ   #-1,D1
-    BRA.S   LAB_066A
+    BRA.S   .month_overflow_ready
 
-LAB_0669:
+.month_overflow:
     MOVEQ   #0,D1
 
-LAB_066A:
+.month_overflow_ready:
     MOVE.W  D1,18(A3)
     MOVE.W  8(A3),D0
     EXT.L   D0
@@ -833,11 +1126,11 @@ LAB_066A:
     SWAP    D0
     MOVE.W  D0,8(A3)
     TST.W   D0
-    BNE.S   LAB_066B
+    BNE.S   .return
 
     MOVE.W  D1,8(A3)
 
-LAB_066B:
+.return:
     MOVEA.L (A7)+,A3
     RTS
 
