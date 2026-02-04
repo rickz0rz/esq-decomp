@@ -7,7 +7,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A6 ??
 ; CALLS:
-;   LAB_07D4, LAB_07F0, LAB_07EB, LAB_07E9, LAB_07EC, LAB_07E4, LAB_07E5,
+;   ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, ED_DrawDiagnosticModeHelpText, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText, ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
 ;   ED1_DrawDiagnosticsScreen, DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT,
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
@@ -22,7 +22,7 @@
 ED1_HandleEscMenuInput:
 LAB_0701:
     MOVEM.L D6-D7,-(A7)
-    JSR     LAB_07D4(PC)
+    JSR     ED_GetEscMenuActionCode(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D6
@@ -58,7 +58,7 @@ LAB_0701:
     CMP.B   D1,D0
     BNE.S   .case_mode_2_unavailable
 
-    JSR     LAB_07F0(PC)
+    JSR     ED_DrawAdNumberPrompt(PC)
 
     MOVE.B  #$2,LAB_1D13
     BRA.W   .done
@@ -73,7 +73,7 @@ LAB_0701:
     CMP.B   D1,D0
     BNE.S   .case_mode_3_unavailable
 
-    JSR     LAB_07F0(PC)
+    JSR     ED_DrawAdNumberPrompt(PC)
 
     MOVE.B  #$3,LAB_1D13
     BRA.W   .done
@@ -84,13 +84,13 @@ LAB_0701:
 
 .case_mode_6:
     MOVE.B  #$6,LAB_1D13
-    JSR     LAB_07EB(PC)
+    JSR     ED_DrawDiagnosticModeHelpText(PC)
 
     MOVE.L  LAB_21E2,LAB_21E8
     PEA     9.W
-    JSR     LAB_07E9(PC)
+    JSR     ED_DrawMenuSelectionHighlight(PC)
 
-    JSR     LAB_07EC(PC)
+    JSR     ED_DrawScrollSpeedMenuText(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
@@ -103,11 +103,11 @@ LAB_0701:
 
 .case_special_functions:
     MOVE.B  #$a,LAB_1D13
-    JSR     LAB_07EB(PC)
+    JSR     ED_DrawDiagnosticModeHelpText(PC)
 
     CLR.L   LAB_21E8
     PEA     4.W
-    JSR     LAB_07E9(PC)
+    JSR     ED_DrawMenuSelectionHighlight(PC)
 
     JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
 
@@ -117,7 +117,7 @@ LAB_0701:
 
 .case_mode_8:
     MOVE.B  #$8,LAB_1D13
-    JSR     LAB_07E4(PC)
+    JSR     ED_DrawBottomHelpBarBackground(PC)
 
     BRA.S   .done
 
@@ -144,7 +144,7 @@ LAB_0701:
     JSR     GROUPB_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D1,LAB_21E8
-    JSR     LAB_07E5(PC)
+    JSR     ED_DrawEscMainMenuText(PC)
 
 .done:
     TST.B   D6
@@ -421,7 +421,7 @@ LAB_0712_033E:
 ;   ESQ_JMPTBL_LAB_14E2, LAB_09B7, LAB_0969, ED1_ClearEscMenuMode, LAB_098A,
 ;   JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7, ED1_JMPTBL_LAB_0E48,
 ;   ED1_WaitForFlagAndClearBit0, ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
-;   LAB_07E4, LAB_09A7, LAB_0A48
+;   ED_DrawBottomHelpBarBackground, LAB_09A7, LAB_0A48
 ; READS:
 ;   LAB_21E4, LAB_21E3, LAB_1DD6, LAB_2346
 ; WRITES:
@@ -526,7 +526,7 @@ LAB_0713:
     MOVE.W  D0,LAB_2263
     JSR     ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs(PC)
 
-    JSR     LAB_07E4(PC)
+    JSR     ED_DrawBottomHelpBarBackground(PC)
 
     PEA     1.W
     JSR     LAB_09A7(PC)
@@ -550,7 +550,7 @@ LAB_0713:
 ; CLOBBERS:
 ;   D0-D2/A0-A1/A6 ??
 ; CALLS:
-;   LAB_07E4, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
+;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
 ;   LAB_03C0, LAB_03C4, DRAW_DIAGNOSTIC_MODE_TEXT, _LVOSetAPen
 ; READS:
 ;   GLOB_REF_BAUD_RATE, LAB_1D2E, LAB_1D2F, LAB_2245
@@ -571,7 +571,7 @@ LAB_0718:
     MOVE.B  #$7,LAB_1D13
     MOVE.W  #1,LAB_2252
 
-    JSR     LAB_07E4(PC)
+    JSR     ED_DrawBottomHelpBarBackground(PC)
 
     PEA     GLOB_PTR_STR_SELECT_CODE
     PEA     360.W

@@ -26,14 +26,14 @@ LADFUNC_UpdateHighlightState:
     MOVE.B  LAB_1BC4,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0E08
+    BEQ.S   .done
 
     MOVEQ   #0,D7
 
-.LAB_0E06:
+.rect_loop:
     MOVEQ   #46,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_0E08
+    BGE.S   .done
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -44,35 +44,55 @@ LADFUNC_UpdateHighlightState:
     MOVE.W  LAB_2270,D0
     MOVE.W  (A3),D1
     CMP.W   D0,D1
-    BGT.S   .LAB_0E07
+    BGT.S   .next_rect
 
     MOVE.W  2(A3),D1
     CMP.W   D0,D1
-    BLT.S   .LAB_0E07
+    BLT.S   .next_rect
 
     TST.L   6(A3)
-    BEQ.S   .LAB_0E07
+    BEQ.S   .next_rect
 
     MOVEQ   #1,D0
     MOVE.W  D0,4(A3)
     MOVE.W  D0,WDISP_HighlightActive
 
-.LAB_0E07:
+.next_rect:
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0E06
+    BRA.S   .rect_loop
 
-.LAB_0E08:
+.done:
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_AllocBannerRectEntries   (Allocate banner rect entries??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/D7/A0-A1 ??
+; CALLS:
+;   GROUPC_JMPTBL_MEMORY_AllocateMemory
+; READS:
+;   LAB_2251, GLOB_STR_LADFUNC_C_1
+; WRITES:
+;   LAB_2251 (entry pointers)
+; DESC:
+;   Allocates 14-byte structs for each banner rectangle slot.
+; NOTES:
+;   Loop count is 47 iterations (D7 from 0..46).
+;------------------------------------------------------------------------------
+LADFUNC_AllocBannerRectEntries:
 LAB_0E09:
     LINK.W  A5,#-4
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-.LAB_0E0A:
+.alloc_loop:
     MOVEQ   #46,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -92,7 +112,7 @@ LAB_0E09:
     MOVEA.L 4(A7),A0
     MOVE.L  D0,(A0)
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0E0A
+    BRA.S   .alloc_loop
 
 .return:
     MOVE.L  (A7)+,D7
@@ -101,14 +121,34 @@ LAB_0E09:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_FreeBannerRectEntries   (Free banner rect entries??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/D6-D7/A0-A2 ??
+; CALLS:
+;   LAB_0B44, GROUPC_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   LAB_2251, GLOB_STR_LADFUNC_C_2, GLOB_STR_LADFUNC_C_3
+; WRITES:
+;   LAB_2251 (entry pointers)
+; DESC:
+;   Frees per-entry buffers (if present) and the entry structs themselves.
+; NOTES:
+;   Loop count is 47 iterations (D7 from 0..46).
+;------------------------------------------------------------------------------
+LADFUNC_FreeBannerRectEntries:
 LAB_0E0C:
     MOVEM.L D6-D7/A2,-(A7)
     MOVEQ   #0,D7
 
-LAB_0E0D:
+.entry_loop:
     MOVEQ   #46,D0
     CMP.L   D0,D7
-    BGE.W   LAB_0E13
+    BGE.W   .done
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -116,21 +156,21 @@ LAB_0E0D:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
-    BEQ.W   LAB_0E12
+    BEQ.W   .next_entry
 
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
     TST.L   6(A2)
-    BEQ.S   LAB_0E0F
+    BEQ.S   .no_text
 
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEA.L 6(A1),A0
 
-LAB_0E0E:
+.find_null:
     TST.B   (A0)+
-    BNE.S   LAB_0E0E
+    BNE.S   .find_null
 
     SUBQ.L  #1,A0
     SUBA.L  6(A1),A0
@@ -145,14 +185,14 @@ LAB_0E0E:
     JSR     LAB_0B44(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0E10
+    BRA.S   .after_len
 
-LAB_0E0F:
+.no_text:
     MOVEQ   #0,D6
 
-LAB_0E10:
+.after_len:
     TST.L   D6
-    BLE.S   LAB_0E11
+    BLE.S   .after_free_text
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -161,7 +201,7 @@ LAB_0E10:
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
     TST.L   10(A2)
-    BEQ.S   LAB_0E11
+    BEQ.S   .after_free_text
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -175,7 +215,7 @@ LAB_0E10:
 
     LEA     16(A7),A7
 
-LAB_0E11:
+.after_free_text:
     MOVE.L  D7,D0
     ASL.L   #2,D0
     LEA     LAB_2251,A0
@@ -193,24 +233,45 @@ LAB_0E11:
     ADDA.L  D0,A0
     CLR.L   (A0)
 
-LAB_0E12:
+.next_entry:
     ADDQ.L  #1,D7
-    BRA.W   LAB_0E0D
+    BRA.W   .entry_loop
 
-LAB_0E13:
+.done:
     MOVEM.L (A7)+,D6-D7/A2
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_ClearBannerRectEntries   (Clear banner rect entries??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/D7/A0-A3 ??
+; CALLS:
+;   (none)
+; READS:
+;   LAB_2251, LAB_1DCD
+; WRITES:
+;   LAB_2251 entry fields, LAB_21FB, LAB_2291, LAB_2265, LAB_2293,
+;   WDISP_HighlightActive, WDISP_HighlightIndex
+; DESC:
+;   Clears entry fields and resets highlight/row-count globals.
+; NOTES:
+;   Loop count is 47 iterations (D7 from 0..46).
+;------------------------------------------------------------------------------
+LADFUNC_ClearBannerRectEntries:
 LAB_0E14:
     MOVEM.L D7/A3,-(A7)
     MOVEQ   #0,D7
 
-LAB_0E15:
+.entry_loop:
     MOVEQ   #46,D0
     CMP.W   D0,D7
-    BGE.S   LAB_0E16
+    BGE.S   .after_loop
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -226,9 +287,9 @@ LAB_0E15:
     MOVE.L  A0,6(A3)
     MOVE.L  A0,10(A3)
     ADDQ.W  #1,D7
-    BRA.S   LAB_0E15
+    BRA.S   .entry_loop
 
-LAB_0E16:
+.after_loop:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2291
     MOVE.W  D0,LAB_2265

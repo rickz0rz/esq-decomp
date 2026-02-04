@@ -10,9 +10,10 @@
 ;   ED2_HandleMenuActions, ED1_HandleEscMenuInput, ED1_UpdateEscMenuSelection,
 ;   ED2_HandleScrollSpeedSelection, ED2_HandleDiagnosticsMenuActions,
 ;   ED_EnterTextEditMode, ED_CaptureKeySequence, ED_HandleDiagnosticNibbleEdit,
-;   LAB_06DB,
-;   LAB_06E2, LAB_06E4, LAB_06E6,
-;   LAB_06E8, LAB_06EC, LAB_06FC, LAB_0678, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+;   ED_HandleSpecialFunctionsMenu, ED_SaveEverythingToDisk, ED_SavePrevueDataToDisk,
+;   ED_LoadTextAdsFromDh2, ED_RebootComputer, ED_HandleEditAttributesMenu,
+;   ED_HandleEditAttributesInput, ED_HandleEditorInput,
+;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
 ;   LAB_231C, LAB_231B, LAB_1D14, LAB_1D13, LAB_2263
 ; WRITES:
@@ -68,19 +69,19 @@ LAB_0671:
 .dispatch_table:
     DC.W    .case_menu_actions-.dispatch_table-2
     DC.W    .case_handle_esc_menu_input-.dispatch_table-2
-    DC.W    .case_call_06ec-.dispatch_table-2
-    DC.W    .case_call_06ec-.dispatch_table-2
+    DC.W    .case_edit_attributes_menu-.dispatch_table-2
+    DC.W    .case_edit_attributes_menu-.dispatch_table-2
     DC.W    .case_handle_editor_input-.dispatch_table-2
-    DC.W    .case_call_06fc-.dispatch_table-2
+    DC.W    .case_edit_attributes_input-.dispatch_table-2
     DC.W    .case_scroll_speed-.dispatch_table-2
     DC.W    .case_diagnostics_actions-.dispatch_table-2
     DC.W    .case_update_esc_menu_selection-.dispatch_table-2
     DC.W    .case_call_06c0-.dispatch_table-2
     DC.W    .case_call_06db-.dispatch_table-2
-    DC.W    .case_call_06e2-.dispatch_table-2
-    DC.W    .case_call_06e4-.dispatch_table-2
-    DC.W    .case_call_06e6-.dispatch_table-2
-    DC.W    .case_call_06e8-.dispatch_table-2
+    DC.W    .case_save_everything-.dispatch_table-2
+    DC.W    .case_save_prevue_data-.dispatch_table-2
+    DC.W    .case_load_text_ads-.dispatch_table-2
+    DC.W    .case_reboot_computer-.dispatch_table-2
     DC.W    .case_call_06ce-.dispatch_table-2
     DC.W    .case_noop-.dispatch_table-2
     DC.W    .case_noop-.dispatch_table-2
@@ -107,18 +108,18 @@ LAB_0671:
 
     BRA.S   .advance_index
 
-.case_call_06ec:
-    BSR.W   LAB_06EC
+.case_edit_attributes_menu:
+    BSR.W   ED_HandleEditAttributesMenu
 
     BRA.S   .advance_index
 
-.case_call_06fc:
-    BSR.W   LAB_06FC
+.case_edit_attributes_input:
+    BSR.W   ED_HandleEditAttributesInput
 
     BRA.S   .advance_index
 
 .case_handle_editor_input:
-    BSR.W   LAB_0678
+    BSR.W   ED_HandleEditorInput
 
     BRA.S   .advance_index
 
@@ -143,27 +144,27 @@ LAB_0671:
     BRA.S   .advance_index
 
 .case_call_06db:
-    BSR.W   LAB_06DB
+    BSR.W   ED_HandleSpecialFunctionsMenu
 
     BRA.S   .advance_index
 
-.case_call_06e2:
-    BSR.W   LAB_06E2
+.case_save_everything:
+    BSR.W   ED_SaveEverythingToDisk
 
     BRA.S   .advance_index
 
-.case_call_06e4:
-    BSR.W   LAB_06E4
+.case_save_prevue_data:
+    BSR.W   ED_SavePrevueDataToDisk
 
     BRA.S   .advance_index
 
-.case_call_06e6:
-    BSR.W   LAB_06E6
+.case_load_text_ads:
+    BSR.W   ED_LoadTextAdsFromDh2
 
     BRA.S   .advance_index
 
-.case_call_06e8:
-    BSR.W   LAB_06E8
+.case_reboot_computer:
+    BSR.W   ED_RebootComputer
 
     BRA.S   .advance_index
 
@@ -187,11 +188,39 @@ LAB_0677:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_HandleEditorInput   (Handle editor input??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D2/D7/A0-A2 ??
+; CALLS:
+;   ED_DrawCursorChar, ED_ApplyActiveFlagToAdData, ED_RedrawAllRows, ED_RedrawRow, ED_TransformLineSpacing_Mode1, ED_TransformLineSpacing_Mode2, ED_TransformLineSpacing_Mode3,
+;   ED_CommitCurrentAdEdits, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, GROUP_AL_JMPTBL_LADFUNC_GetLowNibble, GROUP_AL_JMPTBL_LADFUNC_GetHighNibble,
+;   ED1_JMPTBL_LAB_0EE7, ED1_JMPTBL_LAB_0EE6, ED1_JMPTBL_MEM_Move,
+;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
+;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+; READS:
+;   LAB_21ED, LAB_21FA, LAB_21E1, LAB_21E8, LAB_21E9, LAB_21EB, LAB_21FB,
+;   LAB_1D15, GLOB_REF_BOOL_IS_TEXT_OR_CURSOR, GLOB_REF_BOOL_IS_LINE_OR_PAGE
+; WRITES:
+;   LAB_1D15, LAB_21E1, LAB_21E8, LAB_21E9, LAB_21EA, LAB_21EE,
+;   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR, GLOB_REF_BOOL_IS_LINE_OR_PAGE
+; DESC:
+;   Handles editor input commands: character changes, cursor movement, and
+;   line/page operations.
+; NOTES:
+;   Switch-like chain on LAB_21ED and a secondary branch on LAB_21FA.
+;------------------------------------------------------------------------------
+ED_HandleEditorInput:
 LAB_0678:
     LINK.W  A5,#-4
     MOVEM.L D2/D7/A2,-(A7)
     TST.L   LAB_1D15
-    BEQ.S   .LAB_0679
+    BEQ.S   .after_pending_init
 
     MOVEQ   #1,D0
     MOVE.L  D0,GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
@@ -200,57 +229,57 @@ LAB_0678:
     MOVE.B  (A0),LAB_21E1
     CLR.L   LAB_1D15
 
-.LAB_0679:
-    JSR     LAB_07F4(PC)
+.after_pending_init:
+    JSR     ED_DrawCursorChar(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_067D
+    BEQ.W   .case_enable_insert_mode
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0680
+    BEQ.W   .case_adjust_char_next
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0681
+    BEQ.W   .case_toggle_text_cursor
 
     SUBQ.W  #3,D0
-    BEQ.W   .LAB_067F
+    BEQ.W   .case_adjust_char_prev
 
     SUBQ.W  #2,D0
-    BEQ.W   .LAB_0684
+    BEQ.W   .case_backspace
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_06BC
+    BEQ.W   .finalize_update
 
     SUBQ.W  #4,D0
-    BEQ.S   .LAB_067B
+    BEQ.S   .case_page_down
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_067E
+    BEQ.W   .case_disable_insert_mode
 
     SUBI.W  #13,D0
-    BEQ.S   .LAB_067A
+    BEQ.S   .case_force_text_mode
 
     SUBI.W  #$64,D0
-    BEQ.W   .LAB_0685
+    BEQ.W   .case_delete_at_cursor
 
     SUBI.W  #$1c,D0
-    BEQ.W   .LAB_0689
+    BEQ.W   .case_nav_key
 
-    BRA.W   .LAB_06BB
+    BRA.W   .case_insert_ascii_char
 
-.LAB_067A:
+.case_force_text_mode:
     MOVEQ   #1,D0
     MOVE.L  D0,GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
     MOVE.L  D0,LAB_1D15
-    JSR     LAB_0852(PC)
+    JSR     ED_CommitCurrentAdEdits(PC)
 
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     BRA.W   .return
 
-.LAB_067B:
+.case_page_down:
     MOVE.L  LAB_21FB,D0
     MOVE.L  D0,D1
     SUBQ.L  #1,D1
@@ -259,7 +288,7 @@ LAB_0678:
 
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.S   .LAB_067C
+    BGE.S   .page_down_clamp
 
     MOVE.L  LAB_21E9,D0
     ADDQ.L  #1,D0
@@ -267,38 +296,38 @@ LAB_0678:
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_067C:
+.page_down_clamp:
     MOVE.L  LAB_21FB,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_067D:
+.case_enable_insert_mode:
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21EA
-    JSR     LAB_0805(PC)
+    JSR     ED_ApplyActiveFlagToAdData(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_067E:
+.case_disable_insert_mode:
     CLR.L   LAB_21EA
-    JSR     LAB_0805(PC)
+    JSR     ED_ApplyActiveFlagToAdData(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_067F:
+.case_adjust_char_prev:
     MOVEQ   #0,D0
     MOVE.B  LAB_21E1,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,16(A7)
-    JSR     LAB_0859(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetLowNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -317,18 +346,18 @@ LAB_0678:
     MOVE.B  D0,LAB_21E1
     MOVEQ   #1,D0
     CMP.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR,D0
-    BNE.W   .LAB_06BC
+    BNE.W   .finalize_update
 
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  LAB_21E1,(A0)
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0680:
+.case_adjust_char_next:
     MOVEQ   #0,D0
     MOVE.B  LAB_21E1,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_085D(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetHighNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -349,47 +378,47 @@ LAB_0678:
     MOVE.B  D0,LAB_21E1
     MOVEQ   #1,D0
     CMP.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR,D0
-    BNE.W   .LAB_06BC
+    BNE.W   .finalize_update
 
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  LAB_21E1,(A0)
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0681:
+.case_toggle_text_cursor:
     MOVEQ   #1,D0
     CMP.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR,D0
-    BNE.S   .LAB_0682
+    BNE.S   .toggle_text_cursor_set0
 
     MOVEQ   #0,D1
-    BRA.S   .LAB_0683
+    BRA.S   .toggle_text_cursor_apply
 
-.LAB_0682:
+.toggle_text_cursor_set0:
     MOVE.L  D0,D1
 
-.LAB_0683:
+.toggle_text_cursor_apply:
     MOVE.L  D1,GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
     MOVE.L  D1,-(A7)
     JSR     SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0684:
+.case_backspace:
     TST.L   LAB_21E8
-    BEQ.W   .LAB_06BC
+    BEQ.W   .finalize_update
 
     SUBQ.L  #1,LAB_21E8
 
-.LAB_0685:
+.case_delete_at_cursor:
     MOVE.L  LAB_21EB,D0
     SUBQ.L  #1,D0
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.W   .LAB_0688
+    BGE.W   .delete_eol_refresh
 
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.W   .LAB_0687
+    BNE.W   .delete_page_mode_update
 
     MOVE.L  LAB_21E9,D0
     ADDQ.L  #1,D0
@@ -400,7 +429,7 @@ LAB_0678:
     MOVE.L  D0,LAB_21EE
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0686
+    BGE.S   .delete_line_mode_update
 
     LEA     LAB_21F1,A0
     ADDA.L  D1,A0
@@ -426,7 +455,7 @@ LAB_0678:
 
     LEA     20(A7),A7
 
-.LAB_0686:
+.delete_line_mode_update:
     LEA     LAB_21F0,A0
     MOVE.L  LAB_21EE,D0
     ADDA.L  D0,A0
@@ -438,12 +467,12 @@ LAB_0678:
     ADDA.L  D0,A1
     MOVE.B  (A1),(A0)
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0687:
+.delete_page_mode_update:
     MOVE.L  LAB_21EB,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,LAB_21EE
@@ -483,20 +512,20 @@ LAB_0678:
     MOVE.B  (A2),(A1)
     ADDA.L  LAB_21EB,A0
     CLR.B   (A0)
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
     LEA     20(A7),A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0688:
+.delete_eol_refresh:
     LEA     LAB_21EF,A0
     ADDA.L  LAB_21EB,A0
     MOVE.B  #$20,(A0)
-    JSR     LAB_07F4(PC)
+    JSR     ED_DrawCursorChar(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0689:
+.case_nav_key:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -507,66 +536,66 @@ LAB_0678:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBI.W  #$20,D1
-    BEQ.W   .LAB_068E
+    BEQ.W   .case_handle_alt_code
 
     SUBI.W  #16,D1
-    BEQ.W   .LAB_0691
+    BEQ.W   .case_sync_cursor_line_page
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_0693
+    BEQ.W   .case_toggle_line_page_mode
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_0696
+    BEQ.W   .case_action_0831
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_069A
+    BEQ.W   .case_action_0813
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_069E
+    BEQ.W   .case_action_0822
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_06A2
+    BEQ.W   .case_clear_line_or_page
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_06AA
+    BEQ.W   .case_insert_row_shift
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_06AE
+    BEQ.W   .case_delete_row_shift
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_06B2
+    BEQ.W   .case_fill_row_chars
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_06B7
+    BEQ.W   .case_insert_char
 
     SUBQ.W  #6,D1
-    BEQ.W   .LAB_0690
+    BEQ.W   .case_enter_mode_9
 
     SUBQ.W  #2,D1
-    BEQ.S   .LAB_068A
+    BEQ.S   .nav_up_row
 
     SUBQ.W  #1,D1
-    BEQ.S   .LAB_068B
+    BEQ.S   .nav_down_row
 
     SUBQ.W  #1,D1
-    BEQ.S   .LAB_068C
+    BEQ.S   .nav_right
 
     SUBQ.W  #1,D1
-    BEQ.S   .LAB_068D
+    BEQ.S   .nav_left
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_068A:
+.nav_up_row:
     MOVE.L  LAB_21E8,D0
     MOVEQ   #39,D1
     CMP.L   D1,D0
-    BLE.W   .LAB_06BC
+    BLE.W   .finalize_update
 
     MOVEQ   #40,D1
     SUB.L   D1,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_068B:
+.nav_down_row:
     MOVE.L  LAB_21FB,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
@@ -574,31 +603,31 @@ LAB_0678:
 
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.W   .LAB_06BC
+    BGE.W   .finalize_update
 
     MOVEQ   #40,D0
     ADD.L   D0,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_068C:
+.nav_right:
     MOVE.L  LAB_21EB,D0
     SUBQ.L  #1,D0
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.W   .LAB_06BC
+    BGE.W   .finalize_update
 
     ADDQ.L  #1,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_068D:
+.nav_left:
     MOVE.L  LAB_21E8,D0
     TST.L   D0
-    BLE.W   .LAB_06BC
+    BLE.W   .finalize_update
 
     SUBQ.L  #1,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_068E:
+.case_handle_alt_code:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -608,43 +637,43 @@ LAB_0678:
     MOVE.B  D0,LAB_21ED
     MOVEQ   #64,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_068F
+    BNE.S   .after_alt_code
 
-    JSR     LAB_0853(PC)
+    JSR     ED_NextAdNumber(PC)
 
-.LAB_068F:
+.after_alt_code:
     MOVE.B  LAB_21ED,D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
-    BNE.W   .LAB_06BC
+    BNE.W   .finalize_update
 
-    JSR     LAB_0855(PC)
+    JSR     ED_PrevAdNumber(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0690:
+.case_enter_mode_9:
     MOVE.B  #$9,LAB_1D13
-    JSR     LAB_0857(PC)
+    JSR     ED_DrawEditHelpText(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0691:
+.case_sync_cursor_line_page:
     MOVEQ   #1,D0
     CMP.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE,D0
-    BNE.S   .LAB_0692
+    BNE.S   .cursor_from_line_index
 
     CLR.L   LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0692:
+.cursor_from_line_index:
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_21E8
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0693:
+.case_toggle_line_page_mode:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -660,15 +689,15 @@ LAB_0678:
     JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D1,GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BEQ.S   .LAB_0694
+    BEQ.S   .select_line_page_label
 
     LEA     LAB_1D16,A0
-    BRA.S   .LAB_0695
+    BRA.S   .draw_line_page_label
 
-.LAB_0694:
+.select_line_page_label:
     LEA     LAB_1D17,A0
 
-.LAB_0695:
+.draw_line_page_label:
     MOVE.L  A0,-(A7)
     PEA     390.W
     PEA     40.W
@@ -681,104 +710,104 @@ LAB_0678:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0696:
+.case_action_0831:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.S   .LAB_0697
+    BNE.S   .action_0831_reset
 
-    JSR     LAB_0831(PC)
+    JSR     ED_TransformLineSpacing_Mode3(PC)
 
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_0697:
+.action_0831_reset:
     CLR.L   LAB_21E9
 
-.LAB_0698:
+.action_0831_loop:
     MOVE.L  LAB_21E9,D0
     CMP.L   LAB_21FB,D0
-    BGE.S   .LAB_0699
+    BGE.S   .action_0831_done
 
-    JSR     LAB_0831(PC)
+    JSR     ED_TransformLineSpacing_Mode3(PC)
 
     ADDQ.L  #1,LAB_21E9
-    BRA.S   .LAB_0698
+    BRA.S   .action_0831_loop
 
-.LAB_0699:
+.action_0831_done:
     CLR.L   LAB_21E8
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_069A:
+.case_action_0813:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.S   .LAB_069B
+    BNE.S   .action_0813_reset
 
-    JSR     LAB_0813(PC)
+    JSR     ED_TransformLineSpacing_Mode1(PC)
 
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_069B:
+.action_0813_reset:
     CLR.L   LAB_21E9
 
-.LAB_069C:
+.action_0813_loop:
     MOVE.L  LAB_21E9,D0
     CMP.L   LAB_21FB,D0
-    BGE.S   .LAB_069D
+    BGE.S   .action_0813_done
 
-    JSR     LAB_0813(PC)
+    JSR     ED_TransformLineSpacing_Mode1(PC)
 
     ADDQ.L  #1,LAB_21E9
-    BRA.S   .LAB_069C
+    BRA.S   .action_0813_loop
 
-.LAB_069D:
+.action_0813_done:
     CLR.L   LAB_21E8
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_069E:
+.case_action_0822:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.S   .LAB_069F
+    BNE.S   .action_0822_reset
 
-    JSR     LAB_0822(PC)
+    JSR     ED_TransformLineSpacing_Mode2(PC)
 
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_069F:
+.action_0822_reset:
     CLR.L   LAB_21E9
 
-.LAB_06A0:
+.action_0822_loop:
     MOVE.L  LAB_21E9,D0
     CMP.L   LAB_21FB,D0
-    BGE.S   .LAB_06A1
+    BGE.S   .action_0822_done
 
-    JSR     LAB_0822(PC)
+    JSR     ED_TransformLineSpacing_Mode2(PC)
 
     ADDQ.L  #1,LAB_21E9
-    BRA.S   .LAB_06A0
+    BRA.S   .action_0822_loop
 
-.LAB_06A1:
+.action_0822_done:
     CLR.L   LAB_21E8
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_06A2:
+.case_clear_line_or_page:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.S   .LAB_06A5
+    BNE.S   .clear_page_setup
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -789,9 +818,9 @@ LAB_0678:
     MOVEQ   #39,D0
     MOVEQ   #32,D1
 
-.LAB_06A3:
+.clear_line_space_loop:
     MOVE.B  D1,(A0)+
-    DBF     D0,.LAB_06A3
+    DBF     D0,.clear_line_space_loop
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -802,54 +831,54 @@ LAB_0678:
     MOVE.B  LAB_21E1,D0
     MOVEQ   #39,D1
 
-.LAB_06A4:
+.clear_line_char_loop:
     MOVE.B  D0,(A0)+
-    DBF     D1,.LAB_06A4
+    DBF     D1,.clear_line_char_loop
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_06A5:
+.clear_page_setup:
     MOVE.L  LAB_21EB,D0
     MOVEQ   #32,D1
     LEA     LAB_21F0,A0
-    BRA.S   .LAB_06A7
+    BRA.S   .clear_page_space_check
 
-.LAB_06A6:
+.clear_page_space_loop:
     MOVE.B  D1,(A0)+
 
-.LAB_06A7:
+.clear_page_space_check:
     SUBQ.L  #1,D0
-    BCC.S   .LAB_06A6
+    BCC.S   .clear_page_space_loop
 
     MOVEQ   #0,D0
     MOVE.B  LAB_21E1,D0
     MOVE.L  LAB_21EB,D1
     LEA     LAB_21F7,A0
-    BRA.S   .LAB_06A9
+    BRA.S   .clear_page_char_check
 
-.LAB_06A8:
+.clear_page_char_loop:
     MOVE.B  D0,(A0)+
 
-.LAB_06A9:
+.clear_page_char_check:
     SUBQ.L  #1,D1
-    BCC.S   .LAB_06A8
+    BCC.S   .clear_page_char_loop
 
     LEA     LAB_21F0,A0
     ADDA.L  LAB_21EB,A0
     CLR.B   (A0)
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_06AA:
+.case_insert_row_shift:
     MOVE.L  LAB_21FB,D0
     SUBQ.L  #1,D0
     MOVE.L  LAB_21E9,D1
     CMP.L   D0,D1
-    BGE.W   .LAB_06BC
+    BGE.W   .finalize_update
 
     MOVEQ   #40,D0
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -900,9 +929,9 @@ LAB_0678:
     MOVEQ   #39,D0
     MOVEQ   #32,D1
 
-.LAB_06AB:
+.insert_row_space_loop:
     MOVE.B  D1,(A0)+
-    DBF     D0,.LAB_06AB
+    DBF     D0,.insert_row_space_loop
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
@@ -913,31 +942,31 @@ LAB_0678:
     MOVE.B  LAB_21E1,D0
     MOVEQ   #39,D1
 
-.LAB_06AC:
+.insert_row_char_loop:
     MOVE.B  D0,(A0)+
-    DBF     D1,.LAB_06AC
+    DBF     D1,.insert_row_char_loop
     LEA     LAB_21F0,A0
     ADDA.L  LAB_21EB,A0
     CLR.B   (A0)
     MOVE.L  LAB_21E9,D7
 
-.LAB_06AD:
+.insert_row_refresh_loop:
     CMP.L   LAB_21FB,D7
-    BGE.W   .LAB_06BC
+    BGE.W   .finalize_update
 
     MOVE.L  D7,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_06AD
+    BRA.S   .insert_row_refresh_loop
 
-.LAB_06AE:
+.case_delete_row_shift:
     MOVE.L  LAB_21FB,D0
     SUBQ.L  #1,D0
     MOVE.L  LAB_21E9,D1
     CMP.L   D0,D1
-    BGE.W   .LAB_06BC
+    BGE.W   .finalize_update
 
     MOVE.L  D1,D0
     ADDQ.L  #1,D0
@@ -995,9 +1024,9 @@ LAB_0678:
     MOVEQ   #39,D0
     MOVEQ   #32,D1
 
-.LAB_06AF:
+.delete_row_space_loop:
     MOVE.B  D1,(A0)+
-    DBF     D0,.LAB_06AF
+    DBF     D0,.delete_row_space_loop
     MOVE.L  LAB_21FB,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
@@ -1009,28 +1038,28 @@ LAB_0678:
     MOVE.B  LAB_21E1,D0
     MOVEQ   #39,D1
 
-.LAB_06B0:
+.delete_row_char_loop:
     MOVE.B  D0,(A0)+
-    DBF     D1,.LAB_06B0
+    DBF     D1,.delete_row_char_loop
     LEA     LAB_21F0,A0
     ADDA.L  LAB_21EB,A0
     CLR.B   (A0)
     MOVE.L  LAB_21E9,D7
 
-.LAB_06B1:
+.delete_row_refresh_loop:
     CMP.L   LAB_21FB,D7
-    BGE.W   .LAB_06BC
+    BGE.W   .finalize_update
 
     MOVE.L  D7,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_06B1
+    BRA.S   .delete_row_refresh_loop
 
-.LAB_06B2:
+.case_fill_row_chars:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.S   .LAB_06B4
+    BNE.S   .fill_page_chars
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1042,42 +1071,42 @@ LAB_0678:
     MOVE.B  LAB_21E1,D0
     MOVEQ   #39,D1
 
-.LAB_06B3:
+.fill_row_chars_loop:
     MOVE.B  D0,(A0)+
-    DBF     D1,.LAB_06B3
+    DBF     D1,.fill_row_chars_loop
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_06B4:
+.fill_page_chars:
     MOVEQ   #0,D0
     MOVE.B  LAB_21E1,D0
     MOVE.L  LAB_21EB,D1
     LEA     LAB_21F7,A0
-    BRA.S   .LAB_06B6
+    BRA.S   .fill_page_chars_check
 
-.LAB_06B5:
+.fill_page_chars_loop:
     MOVE.B  D0,(A0)+
 
-.LAB_06B6:
+.fill_page_chars_check:
     SUBQ.L  #1,D1
-    BCC.S   .LAB_06B5
+    BCC.S   .fill_page_chars_loop
 
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_06B7:
+.case_insert_char:
     MOVE.L  LAB_21EB,D0
     SUBQ.L  #1,D0
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.W   .LAB_06BA
+    BGE.W   .insert_char_eol
 
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
-    BNE.W   .LAB_06B9
+    BNE.W   .insert_char_page_update
 
     MOVE.L  LAB_21E9,D0
     ADDQ.L  #1,D0
@@ -1088,7 +1117,7 @@ LAB_0678:
     MOVE.L  D0,LAB_21EE
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.S   .LAB_06B8
+    BGE.S   .insert_char_line_update
 
     LEA     LAB_21F0,A0
     ADDA.L  D1,A0
@@ -1114,7 +1143,7 @@ LAB_0678:
 
     LEA     20(A7),A7
 
-.LAB_06B8:
+.insert_char_line_update:
     LEA     LAB_21F0,A0
     MOVE.L  LAB_21E8,D0
     ADDA.L  D0,A0
@@ -1123,12 +1152,12 @@ LAB_0678:
     ADDA.L  LAB_21E8,A0
     MOVE.B  LAB_21E1,(A0)
     MOVE.L  LAB_21E9,-(A7)
-    JSR     LAB_080B(PC)
+    JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_06BC
+    BRA.W   .finalize_update
 
-.LAB_06B9:
+.insert_char_page_update:
     MOVE.L  LAB_21EB,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,LAB_21EE
@@ -1165,31 +1194,31 @@ LAB_0678:
     MOVE.B  LAB_21E1,(A1)
     ADDA.L  LAB_21EB,A0
     CLR.B   (A0)
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
     LEA     20(A7),A7
-    BRA.S   .LAB_06BC
+    BRA.S   .finalize_update
 
-.LAB_06BA:
+.insert_char_eol:
     LEA     LAB_21EF,A0
     ADDA.L  LAB_21EB,A0
     MOVE.B  #$20,(A0)
-    JSR     LAB_07F4(PC)
+    JSR     ED_DrawCursorChar(PC)
 
-    BRA.S   .LAB_06BC
+    BRA.S   .finalize_update
 
-.LAB_06BB:
+.case_insert_ascii_char:
     MOVE.B  LAB_21ED,D0
     MOVEQ   #25,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_06BC
+    BLS.S   .finalize_update
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #64,D2
     ADD.L   D2,D2
     CMP.L   D2,D1
-    BGE.S   .LAB_06BC
+    BGE.S   .finalize_update
 
     LEA     LAB_21F0,A0
     MOVE.L  LAB_21E8,D1
@@ -1198,43 +1227,43 @@ LAB_0678:
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  LAB_21E1,(A0)
-    JSR     LAB_07F4(PC)
+    JSR     ED_DrawCursorChar(PC)
 
     MOVE.L  LAB_21EB,D0
     SUBQ.L  #1,D0
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.S   .LAB_06BC
+    BGE.S   .finalize_update
 
     ADDQ.L  #1,LAB_21E8
 
-.LAB_06BC:
+.finalize_update:
     TST.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
-    BNE.S   .LAB_06BD
+    BNE.S   .sync_current_char_from_buffer
 
     LEA     LAB_21F7,A0
     MOVE.L  LAB_21E8,D0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  LAB_21E1,(A1)
-    BRA.S   .LAB_06BE
+    BRA.S   .after_sync_current_char
 
-.LAB_06BD:
+.sync_current_char_from_buffer:
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),LAB_21E1
 
-.LAB_06BE:
+.after_sync_current_char:
     MOVE.B  LAB_1D13,D0
     SUBQ.B  #4,D0
     BNE.S   .return
 
-    JSR     LAB_07F3(PC)
+    JSR     ED_RedrawCursorChar(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_21E1,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_07F8(PC)
+    JSR     ED_DrawCurrentColorIndicator(PC)
 
     ADDQ.W  #4,A7
 
@@ -1254,7 +1283,7 @@ LAB_0678:
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_0812, LAB_0808, LAB_07F3, LAB_07F8
+;   ED_DrawAdEditingScreen, ED_RedrawAllRows, ED_RedrawCursorChar, ED_DrawCurrentColorIndicator
 ; READS:
 ;   LAB_21E8, LAB_21F7
 ; WRITES:
@@ -1267,18 +1296,18 @@ LAB_0678:
 ED_EnterTextEditMode:
 LAB_06C0:
     MOVE.B  #$4,LAB_1D13
-    JSR     LAB_0812(PC)
+    JSR     ED_DrawAdEditingScreen(PC)
 
-    JSR     LAB_0808(PC)
+    JSR     ED_RedrawAllRows(PC)
 
-    JSR     LAB_07F3(PC)
+    JSR     ED_RedrawCursorChar(PC)
 
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_07F8(PC)
+    JSR     ED_DrawCurrentColorIndicator(PC)
 
     ADDQ.W  #4,A7
     RTS
@@ -1480,7 +1509,7 @@ LAB_06CA:
 ; CLOBBERS:
 ;   D0-D2/A0-A1 ??
 ; CALLS:
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED1_JMPTBL_LAB_0CA7, LAB_07EE
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED1_JMPTBL_LAB_0CA7, ED_DrawDiagnosticRegisterValues
 ; READS:
 ;   LAB_21ED, LAB_21EE, LAB_231C, LAB_231D
 ; WRITES:
@@ -1664,7 +1693,7 @@ LAB_06CE:
     JSR     ED1_JMPTBL_LAB_0CA7(PC)
 
 .skip_refresh:
-    JSR     LAB_07EE(PC)
+    JSR     ED_DrawDiagnosticRegisterValues(PC)
 
 .return:
     MOVE.L  (A7)+,D2
@@ -1672,39 +1701,61 @@ LAB_06CE:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_HandleSpecialFunctionsMenu   (Handle ESC special functions menu??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D3/D7/A0-A1/A6 ??
+; CALLS:
+;   ED_GetEscMenuActionCode, ED_DrawAreYouSurePrompt, ED_DrawMenuSelectionHighlight, ED_DrawDiagnosticRegisterValues,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT,
+;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVORectFill
+; READS:
+;   LAB_21E8, LAB_1D13
+; WRITES:
+;   LAB_1D13, LAB_21E8, LAB_21EE
+; DESC:
+;   Dispatches ESC special-functions menu selection and updates display state.
+; NOTES:
+;   Uses a switch/jumptable on the key code returned by ED_GetEscMenuActionCode.
+;------------------------------------------------------------------------------
+ED_HandleSpecialFunctionsMenu:
 LAB_06DB:
     MOVEM.L D2-D3/D7,-(A7)
-    JSR     LAB_07D4(PC)
+    JSR     ED_GetEscMenuActionCode(PC)
 
     MOVE.L  D0,D7
     MOVE.B  D7,D0
     EXT.W   D0
     CMPI.W  #8,D0
-    BCC.W   LAB_06DF
+    BCC.W   .case_next_special_selection
 
     ADD.W   D0,D0
 
-    MOVE.W  LAB_06DC(PC,D0.W),D0
-    JMP     LAB_06DC+2(PC,D0.W)
+    MOVE.W  .dispatch_table(PC,D0.W),D0
+    JMP     .dispatch_table+2(PC,D0.W)
 
 ; switch/jumptable
-LAB_06DC:
-    DC.W    LAB_06DC_000E-LAB_06DC-2
-	DC.W    LAB_06DC_0016-LAB_06DC-2
-    DC.W    LAB_06DC_0042-LAB_06DC-2
-	DC.W    LAB_06DC_006E-LAB_06DC-2
-    DC.W    LAB_06DC_009A-LAB_06DC-2
-    DC.W    LAB_06DF-LAB_06DC-2
-	DC.W    LAB_06DE_0100-LAB_06DC-2
-    DC.W    LAB_06DC_00DE-LAB_06DC-2
+.dispatch_table:
+    DC.W    .case_show_help-.dispatch_table-2
+	DC.W    .case_show_label_1d1b-.dispatch_table-2
+    DC.W    .case_show_label_1d1c-.dispatch_table-2
+	DC.W    .case_show_label_1d1d-.dispatch_table-2
+    DC.W    .case_show_reboot_warning-.dispatch_table-2
+    DC.W    .case_next_special_selection-.dispatch_table-2
+	DC.W    .case_draw_color_bars-.dispatch_table-2
+    DC.W    .case_prev_special_selection-.dispatch_table-2
 
-LAB_06DC_000E:
+.case_show_help:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
-    BRA.W   LAB_06E1
+    BRA.W   .return
 
-LAB_06DC_0016:
-    JSR     LAB_07EF(PC)
+.case_show_label_1d1b:
+    JSR     ED_DrawAreYouSurePrompt(PC)
 
     PEA     LAB_1D1B
     PEA     90.W
@@ -1715,10 +1766,10 @@ LAB_06DC_0016:
     LEA     16(A7),A7
     MOVE.B  #$b,LAB_1D13
 
-    BRA.W   LAB_06E1
+    BRA.W   .return
 
-LAB_06DC_0042:
-    JSR     LAB_07EF(PC)
+.case_show_label_1d1c:
+    JSR     ED_DrawAreYouSurePrompt(PC)
 
     PEA     LAB_1D1C
     PEA     90.W
@@ -1728,10 +1779,10 @@ LAB_06DC_0042:
 
     LEA     16(A7),A7
     MOVE.B  #$c,LAB_1D13
-    BRA.W   LAB_06E1
+    BRA.W   .return
 
-LAB_06DC_006E:
-    JSR     LAB_07EF(PC)
+.case_show_label_1d1d:
+    JSR     ED_DrawAreYouSurePrompt(PC)
 
     PEA     LAB_1D1D
     PEA     90.W
@@ -1741,10 +1792,10 @@ LAB_06DC_006E:
 
     LEA     16(A7),A7
     MOVE.B  #$d,LAB_1D13
-    BRA.W   LAB_06E1
+    BRA.W   .return
 
-LAB_06DC_009A:
-    JSR     LAB_07EF(PC)
+.case_show_reboot_warning:
+    JSR     ED_DrawAreYouSurePrompt(PC)
 
     PEA     GLOB_STR_COMPUTER_WILL_RESET
     PEA     90.W
@@ -1760,28 +1811,28 @@ LAB_06DC_009A:
 
     LEA     32(A7),A7
     MOVE.B  #$e,LAB_1D13
-    BRA.W   LAB_06E1
+    BRA.W   .return
 
-LAB_06DC_00DE:
+.case_prev_special_selection:
     SUBQ.L  #1,LAB_21E8
-    BGE.S   LAB_06DE
+    BGE.S   .redraw_special_menu
 
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_21E8
 
-LAB_06DE:
+.redraw_special_menu:
     PEA     4.W
-    JSR     LAB_07E9(PC)
+    JSR     ED_DrawMenuSelectionHighlight(PC)
 
     JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_06E1
+    BRA.W   .return
 
-LAB_06DE_0100:
+.case_draw_color_bars:
     MOVEQ   #2,D0
     CMP.L   LAB_21E8,D0
-    BNE.W   LAB_06DF
+    BNE.W   .case_next_special_selection
 
     MOVE.B  #$f,LAB_1D13
 
@@ -1869,40 +1920,61 @@ LAB_06DE_0100:
     JSR     _LVORectFill(A6)
 
     CLR.L   LAB_21EE
-    JSR     LAB_07EE(PC)
+    JSR     ED_DrawDiagnosticRegisterValues(PC)
 
-    BRA.S   LAB_06E1
+    BRA.S   .return
 
-LAB_06DF:
+.case_next_special_selection:
     ADDQ.L  #1,LAB_21E8
     MOVEQ   #4,D0
     CMP.L   LAB_21E8,D0
-    BNE.S   LAB_06E0
+    BNE.S   .after_selection_wrap
 
     CLR.L   LAB_21E8
 
-LAB_06E0:
+.after_selection_wrap:
     MOVE.L  D0,-(A7)
-    JSR     LAB_07E9(PC)
+    JSR     ED_DrawMenuSelectionHighlight(PC)
 
     JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
 
     ADDQ.W  #4,A7
 
-LAB_06E1:
+.return:
     MOVEM.L (A7)+,D2-D3/D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_SaveEverythingToDisk   (Save everything to disk??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/D7/A0-A1/A6 ??
+; CALLS:
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, LAB_0484,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Displays "Saving EVERYTHING to disk" and triggers a save operation.
+; NOTES:
+;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
+;------------------------------------------------------------------------------
+ED_SaveEverythingToDisk:
 ; Print 'Saving "EVERYTHING" to disk'
 LAB_06E2:
     MOVE.L  D7,-(A7)
-    JSR     LAB_07DD(PC)
+    JSR     ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
-    BNE.S   LAB_06E3
+    BNE.S   .after_save_everything_message
 
     PEA     GLOB_STR_SAVING_EVERYTHING_TO_DISK
     PEA     90.W
@@ -1915,7 +1987,7 @@ LAB_06E2:
 
     LEA     20(A7),A7
 
-LAB_06E3:
+.after_save_everything_message:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     MOVE.L  (A7)+,D7
@@ -1923,13 +1995,34 @@ LAB_06E3:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_SavePrevueDataToDisk   (Save Prevue data to disk??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/D7/A0-A1/A6 ??
+; CALLS:
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, LAB_0471,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Displays "Saving Prevue data to disk" and triggers the save routine.
+; NOTES:
+;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
+;------------------------------------------------------------------------------
+ED_SavePrevueDataToDisk:
 LAB_06E4:
     MOVE.L  D7,-(A7)
-    JSR     LAB_07DD(PC)
+    JSR     ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
-    BNE.S   LAB_06E5
+    BNE.S   .after_save_prevue_message
 
     PEA     GLOB_STR_SAVING_PREVUE_DATA_TO_DISK
     PEA     120.W
@@ -1941,7 +2034,7 @@ LAB_06E4:
 
     LEA     16(A7),A7
 
-LAB_06E5:
+.after_save_prevue_message:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     MOVE.L  (A7)+,D7
@@ -1949,14 +2042,35 @@ LAB_06E5:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_LoadTextAdsFromDh2   (Load text ads from DH2??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/D7/A0-A1/A6 ??
+; CALLS:
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ESQ_JMPTBL_LAB_0E57,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Displays a loading message and invokes the text-ads load routine.
+; NOTES:
+;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
+;------------------------------------------------------------------------------
+ED_LoadTextAdsFromDh2:
 LAB_06E6:
     MOVE.L  D7,-(A7)
 
-    JSR     LAB_07DD(PC)
+    JSR     ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
-    BNE.S   LAB_06E7
+    BNE.S   .after_load_text_ads
 
     PEA     GLOB_STR_LOADING_TEXT_ADS_FROM_DH2
     PEA     120.W
@@ -1968,7 +2082,7 @@ LAB_06E6:
 
     LEA     16(A7),A7
 
-LAB_06E7:
+.after_load_text_ads:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     MOVE.L  (A7)+,D7
@@ -1976,15 +2090,36 @@ LAB_06E7:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_RebootComputer   (Reboot computer??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/D6-D7/A0-A1/A6 ??
+; CALLS:
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ED1_JMPTBL_ESQ_ColdReboot,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Displays a reboot message, delays briefly, and triggers a cold reboot.
+; NOTES:
+;   Skips display/reboot if ED_IsConfirmKey reports busy (D0 nonzero).
+;------------------------------------------------------------------------------
+ED_RebootComputer:
 ; display 'rebooting computer' while requesting a reboot through supervisor?
 LAB_06E8:
     MOVEM.L D6-D7,-(A7)
 
-    JSR     LAB_07DD(PC)
+    JSR     ED_IsConfirmKey(PC)
 
     MOVE.L  D0,D7
     TST.B   D7
-    BNE.S   LAB_06EB
+    BNE.S   .after_reboot
 
     PEA     GLOB_STR_REBOOTING_COMPUTER     ; string
     PEA     120.W                           ; y
@@ -1995,18 +2130,18 @@ LAB_06E8:
     LEA     16(A7),A7
     MOVEQ   #0,D6
 
-LAB_06E9:
+.delay_loop:
     CMPI.L  #$aae60,D6
-    BGE.S   LAB_06EA
+    BGE.S   .trigger_reboot
 
     ADDQ.L  #1,D6
     ADDQ.L  #1,D6
-    BRA.S   LAB_06E9
+    BRA.S   .delay_loop
 
-LAB_06EA:
+.trigger_reboot:
     JSR     ED1_JMPTBL_ESQ_ColdReboot(PC)
 
-LAB_06EB:
+.after_reboot:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     MOVEM.L (A7)+,D6-D7
@@ -2014,41 +2149,64 @@ LAB_06EB:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_HandleEditAttributesMenu   (Handle edit attributes menu??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D4/A0-A1/A6 ??
+; CALLS:
+;   ED_DrawCursorChar, ED_RedrawCursorChar, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, ED_DrawAdEditingScreen, ED_LoadCurrentAdIntoBuffers,
+;   ED_DrawHelpPanels, ED_UpdateAdNumberDisplay, DISPLIB_DisplayTextAtPosition,
+;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
+;   _LVOSetAPen, _LVOSetDrMd
+; READS:
+;   LAB_21ED, LAB_21E8, LAB_21F2, LAB_21F3, LAB_21FD, LAB_1D13
+; WRITES:
+;   LAB_21E8, LAB_21F0, LAB_1D13, LAB_21E4, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; DESC:
+;   Handles edit-attributes input, updating the buffer and selected ad number.
+; NOTES:
+;   Accepts numeric keys and special menu codes (e.g., $8E).
+;------------------------------------------------------------------------------
+ED_HandleEditAttributesMenu:
 ; Draw 'Edit Attributes' menu
 LAB_06EC:
     MOVEM.L D2-D4,-(A7)
-    JSR     LAB_07F4(PC)
+    JSR     ED_DrawCursorChar(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
     SUBQ.W  #8,D0
-    BEQ.S   LAB_06ED
+    BEQ.S   .case_backspace
 
     SUBQ.W  #5,D0
-    BEQ.S   LAB_06F1
+    BEQ.S   .case_commit_ad_number
 
     SUBI.W  #$8e,D0
-    BEQ.S   LAB_06EF
+    BEQ.S   .case_nav_key
 
-    BRA.W   LAB_06F9
+    BRA.W   .case_digit_input
 
-LAB_06ED:
+.case_backspace:
     MOVE.L  LAB_21E8,D0
     MOVEQ   #12,D1
     CMP.L   D1,D0
-    BLE.S   LAB_06EE
+    BLE.S   .after_backspace
 
     SUBQ.L  #1,LAB_21E8
     LEA     LAB_21F0,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  #$20,(A0)
 
-LAB_06EE:
-    JSR     LAB_07F4(PC)
+.after_backspace:
+    JSR     ED_DrawCursorChar(PC)
 
-    BRA.W   LAB_06FA
+    BRA.W   .refresh_attribute_display
 
-LAB_06EF:
+.case_nav_key:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -2058,56 +2216,56 @@ LAB_06EF:
     MOVE.B  D0,LAB_21FA
     MOVEQ   #67,D1
     CMP.B   D1,D0
-    BNE.S   LAB_06F0
+    BNE.S   .after_nav_key
 
     MOVEQ   #13,D1
     MOVE.L  D1,LAB_21E8
-    BRA.W   LAB_06FA
+    BRA.W   .refresh_attribute_display
 
-LAB_06F0:
+.after_nav_key:
     MOVEQ   #68,D1
     CMP.B   D1,D0
-    BNE.W   LAB_06FA
+    BNE.W   .refresh_attribute_display
 
     MOVEQ   #12,D0
     MOVE.L  D0,LAB_21E8
-    BRA.W   LAB_06FA
+    BRA.W   .refresh_attribute_display
 
-LAB_06F1:
+.case_commit_ad_number:
     MOVE.B  LAB_21F2,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BNE.S   LAB_06F3
+    BNE.S   .ad_second_blank
 
     MOVE.B  LAB_21F3,D2
     CMP.B   D1,D2
-    BEQ.S   LAB_06F2
+    BEQ.S   .ad_both_blank
 
     MOVEQ   #0,D3
     MOVE.B  D2,D3
     MOVEQ   #48,D4
     SUB.L   D4,D3
     MOVE.L  D3,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BRA.S   LAB_06F5
+    BRA.S   .ad_number_ready
 
-LAB_06F2:
+.ad_both_blank:
     MOVEQ   #1,D3
     MOVE.L  D3,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BRA.S   LAB_06F5
+    BRA.S   .ad_number_ready
 
-LAB_06F3:
+.ad_second_blank:
     MOVE.B  LAB_21F3,D2
     CMP.B   D1,D2
-    BNE.S   LAB_06F4
+    BNE.S   .ad_two_digits
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #48,D3
     SUB.L   D3,D1
     MOVE.L  D1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BRA.S   LAB_06F5
+    BRA.S   .ad_number_ready
 
-LAB_06F4:
+.ad_two_digits:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #48,D0
@@ -2122,10 +2280,10 @@ LAB_06F4:
     SUB.L   D1,D0
     MOVE.L  D0,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
 
-LAB_06F5:
+.ad_number_ready:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   LAB_21FD,D0
-    BLE.S   LAB_06F6
+    BLE.S   .ad_number_in_range
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #4,D0
@@ -2144,11 +2302,11 @@ LAB_06F5:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    BRA.W   LAB_06FB
+    BRA.W   .return
 
-LAB_06F6:
+.ad_number_in_range:
     TST.L   D0
-    BNE.S   LAB_06F7
+    BNE.S   .ad_number_mode2
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #4,D0
@@ -2167,28 +2325,28 @@ LAB_06F6:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    BRA.W   LAB_06FB
+    BRA.W   .return
 
-LAB_06F7:
+.ad_number_mode2:
     MOVE.B  LAB_1D13,D0
     SUBQ.B  #2,D0
-    BNE.S   LAB_06F8
+    BNE.S   .ad_number_other_mode
 
     MOVE.B  #$4,LAB_1D13
-    JSR     LAB_0812(PC)
+    JSR     ED_DrawAdEditingScreen(PC)
 
-    JSR     LAB_084B(PC)
+    JSR     ED_LoadCurrentAdIntoBuffers(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21E4
-    BRA.W   LAB_06FB
+    BRA.W   .return
 
-LAB_06F8:
+.ad_number_other_mode:
     MOVE.B  #$5,LAB_1D13
     PEA     6.W
-    JSR     DRAW_SOME_RECTANGLES(PC)
+    JSR     ED_DrawHelpPanels(PC)
 
-    JSR     LAB_0803(PC)
+    JSR     ED_UpdateAdNumberDisplay(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -2223,54 +2381,75 @@ LAB_06F8:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    BRA.S   LAB_06FB
+    BRA.S   .return
 
-LAB_06F9:
+.case_digit_input:
     MOVE.B  LAB_21ED,D0
     MOVEQ   #48,D1
     CMP.B   D1,D0
-    BCS.S   LAB_06FA
+    BCS.S   .refresh_attribute_display
 
     MOVEQ   #57,D1
     CMP.B   D1,D0
-    BHI.S   LAB_06FA
+    BHI.S   .refresh_attribute_display
 
-    JSR     LAB_07F4(PC)
+    JSR     ED_DrawCursorChar(PC)
 
     LEA     LAB_21F0,A0
     MOVE.L  LAB_21E8,D0
     ADDA.L  D0,A0
     MOVE.B  LAB_21ED,(A0)
     CMPI.L  #$d,LAB_21E8
-    BGE.S   LAB_06FA
+    BGE.S   .refresh_attribute_display
 
-    JSR     LAB_07F4(PC)
+    JSR     ED_DrawCursorChar(PC)
 
     LEA     LAB_21F0,A0
     ADDA.L  LAB_21E8,A0
     ADDQ.L  #1,LAB_21E8
     MOVE.B  LAB_21ED,(A0)
 
-LAB_06FA:
-    JSR     LAB_07F3(PC)
+.refresh_attribute_display:
+    JSR     ED_RedrawCursorChar(PC)
 
-LAB_06FB:
+.return:
     MOVEM.L (A7)+,D2-D4
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_HandleEditAttributesInput   (Handle edit attributes input??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D1/A0-A1 ??
+; CALLS:
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED_IncrementAdNumber, ED_DecrementAdNumber, LAB_095F, ED_ApplyActiveFlagToAdData,
+;   ED_UpdateActiveInactiveIndicator
+; READS:
+;   LAB_21ED, LAB_21EA, LAB_231C, LAB_231D
+; WRITES:
+;   LAB_21EA, LAB_21E4, LAB_21FE
+; DESC:
+;   Processes edit-attribute key codes and commits changes to state variables.
+; NOTES:
+;   Recognizes key code $80 with modifier bytes to trigger ED_IncrementAdNumber/ED_DecrementAdNumber.
+;------------------------------------------------------------------------------
+ED_HandleEditAttributesInput:
 LAB_06FC:
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
     SUBI.W  #13,D0
-    BEQ.S   LAB_06FE
+    BEQ.S   .case_show_help
 
     SUBI.W  #14,D0
-    BEQ.S   LAB_06FE
+    BEQ.S   .case_show_help
 
     SUBI.W  #$80,D0
-    BNE.S   LAB_06FF
+    BNE.S   .case_adjust_21ea
 
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
@@ -2280,18 +2459,18 @@ LAB_06FC:
     ADDA.L  D0,A1
     MOVEQ   #32,D1
     CMP.B   1(A1),D1
-    BNE.S   LAB_0700
+    BNE.S   .return
 
     ADDA.L  D0,A0
     MOVEQ   #64,D0
     CMP.B   2(A0),D0
-    BNE.S   LAB_06FD
+    BNE.S   .case_special_65
 
-    JSR     LAB_07FF(PC)
+    JSR     ED_IncrementAdNumber(PC)
 
-    BRA.S   LAB_0700
+    BRA.S   .return
 
-LAB_06FD:
+.case_special_65:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -2299,22 +2478,22 @@ LAB_06FD:
     ADDA.L  D0,A0
     MOVEQ   #65,D0
     CMP.B   2(A0),D0
-    BNE.S   LAB_0700
+    BNE.S   .return
 
-    JSR     LAB_0801(PC)
+    JSR     ED_DecrementAdNumber(PC)
 
-    BRA.S   LAB_0700
+    BRA.S   .return
 
-LAB_06FE:
+.case_show_help:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21E4
-    JSR     LAB_0805(PC)
+    JSR     ED_ApplyActiveFlagToAdData(PC)
 
-    BRA.S   LAB_0700
+    BRA.S   .return
 
-LAB_06FF:
+.case_adjust_21ea:
     MOVE.L  LAB_21EA,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2326,7 +2505,7 @@ LAB_06FF:
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21FE
 
-LAB_0700:
-    JSR     LAB_080E(PC)
+.return:
+    JSR     ED_UpdateActiveInactiveIndicator(PC)
 
     RTS

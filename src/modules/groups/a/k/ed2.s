@@ -1250,7 +1250,7 @@ LAB_0756:
     JSR     GROUPB_JMPTBL_LAB_0A97(PC)
 
     MOVE.L  D0,LAB_2216
-    JSR     LAB_07E2(PC)
+    JSR     ED_InitRastport2Pens(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -1319,7 +1319,7 @@ LAB_0756:
     BRA.W   .restore_display_state
 
 .case_draw_color_bars:
-    JSR     LAB_07E2(PC)
+    JSR     ED_InitRastport2Pens(PC)
 
     MOVEQ   #0,D7
 
@@ -1926,7 +1926,7 @@ LAB_079A:
 ; CLOBBERS:
 ;   D0-D1/A0-A1 ??
 ; CALLS:
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, LAB_07E9, LAB_07EC
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
 ; READS:
 ;   LAB_231C, LAB_231D, LAB_21E8, GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED ??
 ; WRITES:
@@ -2016,9 +2016,9 @@ LAB_07B8:
 
 .after_selection_update:
     PEA     9.W
-    JSR     LAB_07E9(PC)
+    JSR     ED_DrawMenuSelectionHighlight(PC)
 
-    JSR     LAB_07EC(PC)
+    JSR     ED_DrawScrollSpeedMenuText(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
@@ -2042,9 +2042,9 @@ LAB_07B8:
 
 .after_default_update:
     PEA     9.W
-    JSR     LAB_07E9(PC)
+    JSR     ED_DrawMenuSelectionHighlight(PC)
 
-    JSR     LAB_07EC(PC)
+    JSR     ED_DrawScrollSpeedMenuText(PC)
 
     ADDQ.W  #4,A7
 

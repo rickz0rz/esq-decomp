@@ -1,3 +1,23 @@
+;------------------------------------------------------------------------------
+; FUNC: ED_GetEscMenuActionCode   (Get ESC menu action code??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: action code ??
+; CLOBBERS:
+;   D0-D1/A0 ??
+; CALLS:
+;   (none)
+; READS:
+;   LAB_21ED, LAB_21E8, LAB_21FA, LAB_231C, LAB_231D
+; WRITES:
+;   LAB_21FA
+; DESC:
+;   Decodes the current ESC-menu key/selection into an action code.
+; NOTES:
+;   Uses a small switch table when LAB_21ED matches the menu-mode case.
+;------------------------------------------------------------------------------
+ED_GetEscMenuActionCode:
 LAB_07D4:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
@@ -8,121 +28,180 @@ LAB_07D4:
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
     SUBQ.W  #3,D0
-    BEQ.S   LAB_07D9
+    BEQ.S   .case_return_8
 
     SUBI.W  #10,D0
-    BEQ.S   LAB_07D6
+    BEQ.S   .case_index_dispatch
 
     SUBI.W  #14,D0
-    BEQ.S   LAB_07D5
+    BEQ.S   .case_return_zero
 
     SUBI.W  #$80,D0
-    BEQ.S   LAB_07DA
+    BEQ.S   .case_check_alpha
 
-    BRA.S   LAB_07DB
+    BRA.S   .case_default_10
 
-LAB_07D5:
+.case_return_zero:
     MOVEQ   #0,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D6:
+.case_index_dispatch:
     MOVE.L  LAB_21E8,D0
     CMPI.L  #$6,D0
-    BCC.S   LAB_07D9
+    BCC.S   .case_return_8
 
     ADD.W   D0,D0
-    MOVE.W  LAB_07D7(PC,D0.W),D0
-    JMP     LAB_07D7+2(PC,D0.W)
+    MOVE.W  .dispatch_table(PC,D0.W),D0
+    JMP     .dispatch_table+2(PC,D0.W)
 
 ; Another jump table for switch
-LAB_07D7:
-    DC.W    LAB_07D7_000A-LAB_07D7-2
-    DC.W    LAB_07D7_000E-LAB_07D7-2
-	DC.W    LAB_07D7_0012-LAB_07D7-2
-    DC.W    LAB_07D7_0016-LAB_07D7-2
-	DC.W    LAB_07D7_001A-LAB_07D7-2
-    DC.W    LAB_07D7_001E-LAB_07D7-2
+.dispatch_table:
+    DC.W    .select_code1-.dispatch_table-2
+    DC.W    .select_code2-.dispatch_table-2
+	DC.W    .select_code3-.dispatch_table-2
+    DC.W    .select_code4-.dispatch_table-2
+	DC.W    .select_code5-.dispatch_table-2
+    DC.W    .select_code6-.dispatch_table-2
 
-LAB_07D7_000A:
+.select_code1:
     MOVEQ   #1,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D7_000E:
+.select_code2:
     MOVEQ   #2,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D7_0012:
+.select_code3:
     MOVEQ   #3,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D7_0016:
+.select_code4:
     MOVEQ   #4,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D7_001A:
+.select_code5:
     MOVEQ   #5,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D7_001E:
+.select_code6:
     MOVEQ   #6,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07D9:
+.case_return_8:
     MOVEQ   #8,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07DA:
+.case_check_alpha:
     MOVE.B  LAB_21FA,D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
-    BNE.S   LAB_07DB
+    BNE.S   .case_default_10
 
     MOVEQ   #9,D0
-    BRA.S   LAB_07DC
+    BRA.S   .return
 
-LAB_07DB:
+.case_default_10:
     MOVEQ   #10,D0
 
-LAB_07DC:
+.return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_IsConfirmKey   (Check for confirm key??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0 if confirm key, 1 otherwise ??
+; CLOBBERS:
+;   D0/D7 ??
+; CALLS:
+;   (none)
+; READS:
+;   LAB_21ED
+; WRITES:
+;   (none)
+; DESC:
+;   Returns a flag based on the current key code in LAB_21ED.
+; NOTES:
+;   Treats key codes $59 and $20 as confirm keys.
+;------------------------------------------------------------------------------
+ED_IsConfirmKey:
 LAB_07DD:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
     SUBI.W  #$59,D0
-    BEQ.S   LAB_07DE
+    BEQ.S   .case_confirm
 
     SUBI.W  #$20,D0
-    BNE.S   LAB_07DF
+    BNE.S   .case_other
 
-LAB_07DE:
+.case_confirm:
     MOVEQ   #0,D7
-    BRA.S   LAB_07E0
+    BRA.S   .return
 
-LAB_07DF:
+.case_other:
     MOVEQ   #1,D7
 
-LAB_07E0:
+.return:
     MOVE.L  D7,D0
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: DRAW_BOTTOM_HELP_FOR_ESC_MENU   (Draw ESC menu bottom help??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0 ??
+; CALLS:
+;   ED_DrawBottomHelpBarBackground, DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU
+; READS:
+;   (none)
+; WRITES:
+;   LAB_1D13
+; DESC:
+;   Draws the bottom help panel for the ESC menu.
+; NOTES:
+;   Sets LAB_1D13 to 1 before drawing.
+;------------------------------------------------------------------------------
 DRAW_BOTTOM_HELP_FOR_ESC_MENU:
     MOVE.B  #$1,LAB_1D13
-    BSR.W   LAB_07E4
+    BSR.W   ED_DrawBottomHelpBarBackground
 
-    ; this might actually end up drawing all the text..
+    ; this might actually end up drawing all the text.
     BSR.W   DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU
 
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_InitRastport2Pens   (Init rastport 2 pens??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/A0-A1/A6 ??
+; CALLS:
+;   _LVOSetDrMd, _LVOSetAPen, _LVOSetBPen
+; READS:
+;   LAB_2216, LAB_226E, GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   (none)
+; DESC:
+;   Sets drawing mode and pen defaults for the secondary rastport.
+; NOTES:
+;   Uses LAB_226E to select alternate pen setup.
+;------------------------------------------------------------------------------
+ED_InitRastport2Pens:
 LAB_07E2:
     LINK.W  A5,#-4
     MOVEA.L LAB_2216,A0
@@ -139,7 +218,7 @@ LAB_07E2:
 
     MOVEQ   #14,D0
     CMP.L   LAB_226E,D0
-    BNE.S   LAB_07E3
+    BNE.S   .after_alt_pens
 
     MOVEA.L -4(A5),A1
     MOVEQ   #1,D0
@@ -149,12 +228,32 @@ LAB_07E2:
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
-LAB_07E3:
+.after_alt_pens:
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawBottomHelpBarBackground   (Draw bottom help bar background??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/A1/A6 ??
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the bottom help bar background rectangle.
+; NOTES:
+;   Uses APen 2 for the bar and restores APen/DrMd afterward.
+;------------------------------------------------------------------------------
+ED_DrawBottomHelpBarBackground:
 LAB_07E4:
     MOVEM.L D2-D3,-(A7)
 
@@ -183,9 +282,29 @@ LAB_07E4:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawEscMainMenuText   (Draw ESC main menu text??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/D7/A1/A6 ??
+; CALLS:
+;   ED_DrawMenuSelectionHighlight, DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the main ESC menu option list.
+; NOTES:
+;   Calls ED_DrawMenuSelectionHighlight to draw the selection highlight.
+;------------------------------------------------------------------------------
+ED_DrawEscMainMenuText:
 LAB_07E5:
     PEA     6.W
-    BSR.W   LAB_07E9
+    BSR.W   ED_DrawMenuSelectionHighlight
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -243,9 +362,29 @@ LAB_07E5:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU   (Draw ESC menu help text??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/A1/A6 ??
+; CALLS:
+;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition, ED_DrawEscMainMenuText,
+;   _LVOSetDrMd, _LVOSetAPen
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   LAB_21E8
+; DESC:
+;   Draws the ESC menu help footer and then the main menu text.
+; NOTES:
+;   Resets LAB_21E8 to 0 before drawing menu text.
+;------------------------------------------------------------------------------
 DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU:
     PEA     6.W
-    BSR.W   DRAW_SOME_RECTANGLES
+    BSR.W   ED_DrawHelpPanels
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -280,7 +419,7 @@ DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU:
     JSR     _LVOSetDrMd(A6)
 
     CLR.L   LAB_21E8
-    BSR.W   LAB_07E5
+    BSR.W   ED_DrawEscMainMenuText
 
     LEA     52(A7),A7
     RTS
@@ -288,6 +427,26 @@ DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU:
 ;!======
 
 ; Draw the debug strings used in diagnostic mode
+;------------------------------------------------------------------------------
+; FUNC: DRAW_DIAGNOSTIC_MODE_TEXT   (Draw diagnostic mode text??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/D1/A0-A1/A6 ??
+; CALLS:
+;   _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, DISPLIB_DisplayTextAtPosition
+; READS:
+;   GLOB_REF_RASTPORT_1, LAB_1BC4, LAB_1DD6, LAB_1DD7, LAB_1DCD,
+;   GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+; WRITES:
+;   (none)
+; DESC:
+;   Draws diagnostic mode labels and data fields.
+; NOTES:
+;   Uses multiple short text fields for runtime values.
+;------------------------------------------------------------------------------
 DRAW_DIAGNOSTIC_MODE_TEXT:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
 
@@ -439,7 +598,26 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 ;!======
 
 ; Rename this when i know what it actually is drawing
-DRAW_SOME_RECTANGLES:
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawHelpPanels   (Draw help panel rectangles??)
+; ARGS:
+;   stack +4: u16 penIndex ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/D7/A1/A6 ??
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the rectangular panels behind help/menu text.
+; NOTES:
+;   Uses the stack argument to select the secondary pen.
+;------------------------------------------------------------------------------
+ED_DrawHelpPanels:
     MOVEM.L D2-D3/D7,-(A7)
     MOVE.L  16(A7),D7
 
@@ -479,6 +657,26 @@ DRAW_SOME_RECTANGLES:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawMenuSelectionHighlight   (Draw ESC menu selection highlight??)
+; ARGS:
+;   stack +4: u16 selectionIndex ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/D7/A1/A6 ??
+; CALLS:
+;   GROUPB_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
+; READS:
+;   LAB_21E8, GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the selection highlight bar for the ESC menu.
+; NOTES:
+;   Uses LAB_21E8 to optionally draw the current selection marker.
+;------------------------------------------------------------------------------
+ED_DrawMenuSelectionHighlight:
 LAB_07E9:
     MOVEM.L D2-D3/D7,-(A7)
 
@@ -502,7 +700,7 @@ LAB_07E9:
     JSR     _LVORectFill(A6)
 
     CMPI.L  #$ffffffff,LAB_21E8
-    BLE.S   .LAB_07EA
+    BLE.S   .after_optional_marker
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
@@ -523,12 +721,33 @@ LAB_07E9:
     MOVE.L  #640,D2
     JSR     _LVORectFill(A6)
 
-.LAB_07EA:
+.after_optional_marker:
     MOVEM.L (A7)+,D2-D3/D7
     RTS
 
 ;!======
 
+; Draw the ESC -> Diagnostic Mode text
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawDiagnosticModeHelpText   (Draw diagnostic mode help text??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/A1/A6 ??
+; CALLS:
+;   _LVOSetAPen, _LVOSetDrMd, _LVORectFill, DISPLIB_DisplayTextAtPosition
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the diagnostic mode help footer.
+; NOTES:
+;   Writes the return/any-key prompts.
+;------------------------------------------------------------------------------
+ED_DrawDiagnosticModeHelpText:
 ; Draw the ESC -> Diagnostic Mode text
 LAB_07EB:
     MOVEM.L D2-D3,-(A7)
@@ -581,6 +800,28 @@ LAB_07EB:
 
 ;!======
 
+; draw esc - change scroll speed menu text
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawScrollSpeedMenuText   (Draw scroll speed menu text??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/A1/A6 ??
+; CALLS:
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
+;   _LVOSetAPen, _LVOSetDrMd
+; READS:
+;   GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the change-scroll-speed menu text and current speed.
+; NOTES:
+;   Uses a stack buffer for formatted output.
+;------------------------------------------------------------------------------
+ED_DrawScrollSpeedMenuText:
 ; draw esc - change scroll speed menu text
 LAB_07EC:
     LINK.W  A5,#-80
@@ -668,6 +909,25 @@ LAB_07EC:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT   (Draw special functions menu??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/A1/A6 ??
+; CALLS:
+;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the ESC special functions menu text.
+; NOTES:
+;   Restores drawing mode afterward.
+;------------------------------------------------------------------------------
 DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -713,6 +973,27 @@ DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawDiagnosticRegisterValues   (Draw diagnostic register values??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/A0-A1/A6 ??
+; CALLS:
+;   DISPLIB_DisplayTextAtPosition, GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth,
+;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+; READS:
+;   LAB_21EE, LAB_1DE0, LAB_1DE1, LAB_1DE2, GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws diagnostic register labels and formatted values.
+; NOTES:
+;   Formats values into LAB_21F0 before display.
+;------------------------------------------------------------------------------
+ED_DrawDiagnosticRegisterValues:
 LAB_07EE:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -732,7 +1013,7 @@ LAB_07EE:
     PEA     2.W
     MOVE.L  LAB_21EE,-(A7)
     PEA     LAB_21F0
-    JSR     LAB_085B(PC)
+    JSR     GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(PC)
 
     PEA     LAB_21F0
     PEA     240.W
@@ -756,7 +1037,7 @@ LAB_07EE:
     PEA     2.W
     MOVE.L  D0,-(A7)
     PEA     LAB_21F0
-    JSR     LAB_085B(PC)
+    JSR     GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(PC)
 
     LEA     72(A7),A7
     PEA     LAB_21F0
@@ -781,7 +1062,7 @@ LAB_07EE:
     PEA     2.W
     MOVE.L  D0,-(A7)
     PEA     LAB_21F0
-    JSR     LAB_085B(PC)
+    JSR     GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(PC)
 
     PEA     LAB_21F0
     PEA     270.W
@@ -806,7 +1087,7 @@ LAB_07EE:
     PEA     2.W
     MOVE.L  D0,-(A7)
     PEA     LAB_21F0
-    JSR     LAB_085B(PC)
+    JSR     GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(PC)
 
     PEA     LAB_21F0
     PEA     270.W
@@ -819,9 +1100,30 @@ LAB_07EE:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawAreYouSurePrompt   (Draw "Are you sure" prompt??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/A1/A6 ??
+; CALLS:
+;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition,
+;   _LVOSetAPen, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws a confirmation prompt panel.
+; NOTES:
+;   Uses ED_DrawHelpPanels to render the background.
+;------------------------------------------------------------------------------
+ED_DrawAreYouSurePrompt:
 LAB_07EF:
     PEA     6.W
-    BSR.W   DRAW_SOME_RECTANGLES
+    BSR.W   ED_DrawHelpPanels
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -849,12 +1151,34 @@ LAB_07EF:
 ;!======
 
 ; enter ad number prompt
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawAdNumberPrompt   (Draw ad number prompt??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/D7/A0-A1/A6 ??
+; CALLS:
+;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition, GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth,
+;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+; READS:
+;   LAB_21FD, GLOB_REF_RASTPORT_1
+; WRITES:
+;   LAB_21E8, LAB_21F4
+; DESC:
+;   Draws the "enter ad number" prompt and initializes the entry buffer.
+; NOTES:
+;   Initializes LAB_21F0/LAB_21F7 with spaces and default chars.
+;------------------------------------------------------------------------------
+ED_DrawAdNumberPrompt:
+; enter ad number prompt
 LAB_07F0:
     LINK.W  A5,#-4
     MOVEM.L D2-D3/D7,-(A7)
 
     PEA     6.W
-    BSR.W   DRAW_SOME_RECTANGLES
+    BSR.W   ED_DrawHelpPanels
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -874,7 +1198,7 @@ LAB_07F0:
     PEA     2.W
     MOVE.L  LAB_21FD,-(A7)
     PEA     LAB_21F0
-    JSR     LAB_085B(PC)
+    JSR     GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(PC)
 
     PEA     LAB_21F0
     PEA     330.W
@@ -941,10 +1265,10 @@ LAB_07F0:
     MOVE.L  D0,LAB_21E8
     MOVEQ   #0,D7
 
-LAB_07F1:
+.init_entry_loop:
     MOVEQ   #14,D0
     CMP.L   D0,D7
-    BGE.S   LAB_07F2
+    BGE.S   .init_entry_done
 
     LEA     LAB_21F0,A0
     ADDA.L  D7,A0
@@ -954,17 +1278,17 @@ LAB_07F1:
     PEA     1.W
     PEA     2.W
     MOVE.L  A0,20(A7)
-    JSR     LAB_0858(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 12(A7),A0
     MOVE.B  D0,(A0)
     ADDQ.L  #1,D7
-    BRA.S   LAB_07F1
+    BRA.S   .init_entry_loop
 
-LAB_07F2:
+.init_entry_done:
     CLR.B   LAB_21F4
-    BSR.W   LAB_07F3
+    BSR.W   ED_RedrawCursorChar
 
     MOVEM.L (A7)+,D2-D3/D7
     UNLK    A5
@@ -972,13 +1296,33 @@ LAB_07F2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_RedrawCursorChar   (Redraw cursor character??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/A1/A6 ??
+; CALLS:
+;   ED_DrawCursorChar, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the current cursor character using a temporary draw mode.
+; NOTES:
+;   Sets draw mode to 5, draws, then restores draw mode to 1.
+;------------------------------------------------------------------------------
+ED_RedrawCursorChar:
 LAB_07F3:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #5,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    BSR.W   LAB_07F4
+    BSR.W   ED_DrawCursorChar
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -989,6 +1333,27 @@ LAB_07F3:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawCursorChar   (Draw cursor character??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/A0-A1/A6 ??
+; CALLS:
+;   GROUP_AL_JMPTBL_LADFUNC_GetLowNibble, GROUP_AL_JMPTBL_LADFUNC_GetHighNibble, ED_UpdateCursorPosFromIndex, GROUPB_JMPTBL_MATH_Mulu32,
+;   _LVOSetAPen, _LVOSetBPen, _LVOMove, _LVOText
+; READS:
+;   LAB_21E8, LAB_21E9, LAB_2200, LAB_21F0, LAB_21F7, GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the character at the current cursor position.
+; NOTES:
+;   Updates pen colors based on character mapping tables.
+;------------------------------------------------------------------------------
+ED_DrawCursorChar:
 LAB_07F4:
     LINK.W  A5,#-4
     LEA     LAB_21F7,A0
@@ -996,7 +1361,7 @@ LAB_07F4:
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0859(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetLowNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1010,7 +1375,7 @@ LAB_07F4:
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     MOVE.L  D0,(A7)
-    JSR     LAB_085D(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetHighNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1020,7 +1385,7 @@ LAB_07F4:
     JSR     _LVOSetBPen(A6)
 
     MOVE.L  LAB_21E8,(A7)
-    BSR.W   LAB_07F5
+    BSR.W   ED_UpdateCursorPosFromIndex
 
     ADDQ.W  #4,A7
     MOVE.L  LAB_2200,D0
@@ -1052,6 +1417,26 @@ LAB_07F4:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_UpdateCursorPosFromIndex   (Update cursor row/col from index??)
+; ARGS:
+;   stack +4: u32 index
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/D7 ??
+; CALLS:
+;   GROUPB_JMPTBL_MATH_DivS32
+; READS:
+;   LAB_21FB
+; WRITES:
+;   LAB_2200, LAB_21E9, LAB_21E8
+; DESC:
+;   Computes row/column indices from a linear cursor index.
+; NOTES:
+;   Clamps LAB_21E9 and LAB_21E8 to visible ranges.
+;------------------------------------------------------------------------------
+ED_UpdateCursorPosFromIndex:
 LAB_07F5:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
@@ -1066,7 +1451,7 @@ LAB_07F5:
 
     MOVE.L  D0,LAB_21E9
 
-.LAB_07F6:
+.clamp_cursor_loop:
     MOVE.L  LAB_21E9,D0
     CMP.L   LAB_21FB,D0
     BLT.S   .return
@@ -1074,7 +1459,7 @@ LAB_07F5:
     SUBQ.L  #1,LAB_21E9
     MOVEQ   #40,D0
     SUB.L   D0,LAB_21E8
-    BRA.S   .LAB_07F6
+    BRA.S   .clamp_cursor_loop
 
 .return:
     MOVE.L  (A7)+,D7
@@ -1082,6 +1467,27 @@ LAB_07F5:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawCurrentColorIndicator   (Draw current color indicator??)
+; ARGS:
+;   stack +4: u8 colorCode ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/D6-D7/A1/A6 ??
+; CALLS:
+;   GROUP_AL_JMPTBL_LADFUNC_GetHighNibble, GROUP_AL_JMPTBL_LADFUNC_GetLowNibble, GROUP_AM_JMPTBL_WDISP_SPrintf,
+;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVORectFill
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the current color swatch and formatted label.
+; NOTES:
+;   Uses a stack buffer for formatted output.
+;------------------------------------------------------------------------------
+ED_DrawCurrentColorIndicator:
 LAB_07F8:
     LINK.W  A5,#-44
     MOVEM.L D2-D3/D6-D7,-(A7)
@@ -1090,7 +1496,7 @@ LAB_07F8:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_085D(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetHighNibble(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #0,D0
@@ -1111,7 +1517,7 @@ LAB_07F8:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,(A7)
-    JSR     LAB_0859(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetLowNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1153,6 +1559,25 @@ LAB_07F8:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR   (Draw text/cursor label)
+; ARGS:
+;   stack +4: u32 isTextFlag ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/D7/A0-A1/A6 ??
+; CALLS:
+;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws either "TEXT" or "CURSOR" label with fixed pens.
+; NOTES:
+;   Uses D7 as the boolean input.
+;------------------------------------------------------------------------------
 SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
     MOVE.L  D7,-(A7)
 
@@ -1202,6 +1627,25 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE   (Draw line/page label)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/A0-A1/A6 ??
+; CALLS:
+;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+; READS:
+;   GLOB_REF_BOOL_IS_LINE_OR_PAGE, GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws either "LINE" or "PAGE" label with fixed pens.
+; NOTES:
+;   Uses GLOB_REF_BOOL_IS_LINE_OR_PAGE as the selector.
+;------------------------------------------------------------------------------
 SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
     LINK.W  A5,#0
 
@@ -1249,35 +1693,96 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_IncrementAdNumber   (Increment current ad number??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0 ??
+; CALLS:
+;   ED_ApplyActiveFlagToAdData, ED_UpdateAdNumberDisplay
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, LAB_21FD
+; WRITES:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; DESC:
+;   Increments the current ad number if within bounds and refreshes display.
+; NOTES:
+;   Calls ED_ApplyActiveFlagToAdData before increment to commit current state.
+;------------------------------------------------------------------------------
+ED_IncrementAdNumber:
 LAB_07FF:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   LAB_21FD,D0
-    BGE.S   .LAB_0800
+    BGE.S   .return
 
-    BSR.W   LAB_0805
+    BSR.W   ED_ApplyActiveFlagToAdData
 
     ADDQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BSR.W   LAB_0803
-
-.LAB_0800:
-    RTS
-
-;!======
-
-LAB_0801:
-    CMPI.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BLE.S   .return
-
-    BSR.W   LAB_0805
-
-    SUBQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BSR.W   LAB_0803
+    BSR.W   ED_UpdateAdNumberDisplay
 
 .return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_DecrementAdNumber   (Decrement current ad number??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0 ??
+; CALLS:
+;   ED_ApplyActiveFlagToAdData, ED_UpdateAdNumberDisplay
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; WRITES:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; DESC:
+;   Decrements the current ad number if above 1 and refreshes display.
+; NOTES:
+;   Calls ED_ApplyActiveFlagToAdData before decrement to commit current state.
+;------------------------------------------------------------------------------
+ED_DecrementAdNumber:
+LAB_0801:
+    CMPI.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    BLE.S   .return
+
+    BSR.W   ED_ApplyActiveFlagToAdData
+
+    SUBQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    BSR.W   ED_UpdateAdNumberDisplay
+
+.return:
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: ED_UpdateAdNumberDisplay   (Update ad number display??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/A0-A1/A6 ??
+; CALLS:
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
+;   ED_UpdateActiveInactiveIndicator
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, LAB_2250
+; WRITES:
+;   LAB_21EA, LAB_21E9, LAB_21FE, LAB_2202, LAB_2201, LAB_21FF
+; DESC:
+;   Displays the current ad number and resets editing state for the ad.
+; NOTES:
+;   Initializes LAB_21EA based on the ad's active flag.
+;------------------------------------------------------------------------------
+ED_UpdateAdNumberDisplay:
 LAB_0803:
     LINK.W  A5,#-40
 
@@ -1302,12 +1807,12 @@ LAB_0803:
     MOVEA.L (A0),A1
     MOVE.W  (A1),D1
     TST.W   D1
-    BLE.S   .LAB_0804
+    BLE.S   .after_active_check
 
     MOVEQ   #1,D1
     MOVE.L  D1,LAB_21EA
 
-.LAB_0804:
+.after_active_check:
     MOVEQ   #1,D1
     MOVE.L  D1,LAB_21FE
     MOVE.L  D0,LAB_21E9
@@ -1315,18 +1820,38 @@ LAB_0803:
     MOVE.L  D0,LAB_2202
     MOVE.L  D0,LAB_2201
     MOVE.L  D0,LAB_21FF
-    BSR.W   LAB_080E
+    BSR.W   ED_UpdateActiveInactiveIndicator
 
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_ApplyActiveFlagToAdData   (Apply active flag to ad data??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2/A0-A2 ??
+; CALLS:
+;   (none)
+; READS:
+;   LAB_21EA, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, LAB_2250
+; WRITES:
+;   Ad data (first word / word+2) via LAB_2250
+; DESC:
+;   Writes the active/inactive flag for the current ad into its data record.
+; NOTES:
+;   Clears both words when inactive; sets word0=1 and word2=$30 when active.
+;------------------------------------------------------------------------------
+ED_ApplyActiveFlagToAdData:
 LAB_0805:
     MOVEM.L D2/A2,-(A7)
 
     TST.L   LAB_21EA
-    BNE.S   .LAB_0806
+    BNE.S   .set_active
 
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     MOVE.L  D0,D1
@@ -1343,7 +1868,7 @@ LAB_0805:
     MOVE.W  D2,2(A2)
     BRA.S   .return
 
-.LAB_0806:
+.set_active:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     ASL.L   #2,D0
     LEA     LAB_2250,A0
@@ -1361,6 +1886,26 @@ LAB_0805:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_RedrawAllRows   (Redraw all rows??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/D7/A1/A6 ??
+; CALLS:
+;   ED_DrawCursorChar, GROUP_AL_JMPTBL_LADFUNC_GetHighNibble, GROUPB_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
+; READS:
+;   LAB_21E8, LAB_21EB, LAB_21FB, LAB_21F7
+; WRITES:
+;   LAB_21E8
+; DESC:
+;   Redraws all rows using the current buffer contents.
+; NOTES:
+;   Restores LAB_21E8 to its original value after redraw.
+;------------------------------------------------------------------------------
+ED_RedrawAllRows:
 LAB_0808:
     MOVEM.L D2-D3/D7,-(A7)
 
@@ -1368,7 +1913,7 @@ LAB_0808:
     MOVEQ   #0,D0
     MOVE.B  LAB_21F7,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_085D(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_GetHighNibble(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1392,15 +1937,15 @@ LAB_0808:
 
     CLR.L   LAB_21E8
 
-.LAB_0809:
+.redraw_loop:
     MOVE.L  LAB_21E8,D0
     CMP.L   LAB_21EB,D0
     BGE.S   .return
 
-    BSR.W   LAB_07F4
+    BSR.W   ED_DrawCursorChar
 
     ADDQ.L  #1,LAB_21E8
-    BRA.S   .LAB_0809
+    BRA.S   .redraw_loop
 
 .return:
     MOVE.L  D7,LAB_21E8
@@ -1409,6 +1954,26 @@ LAB_0808:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_RedrawRow   (Redraw a row??)
+; ARGS:
+;   stack +4: u32 rowIndex
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/D6-D7/A1/A6 ??
+; CALLS:
+;   ED_DrawCursorChar, GROUPB_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen
+; READS:
+;   LAB_21E8, LAB_21EB, LAB_21FB
+; WRITES:
+;   LAB_21E8
+; DESC:
+;   Redraws a single row of text based on the given row index.
+; NOTES:
+;   Temporarily updates LAB_21E8 to walk the row range.
+;------------------------------------------------------------------------------
+ED_RedrawRow:
 LAB_080B:
     MOVEM.L D6-D7,-(A7)
 
@@ -1420,7 +1985,7 @@ LAB_080B:
 
     MOVE.L  D0,LAB_21E8
 
-LAB_080C:
+.row_loop:
     MOVE.L  D7,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
@@ -1428,14 +1993,14 @@ LAB_080C:
 
     MOVE.L  LAB_21E8,D1
     CMP.L   D0,D1
-    BGE.S   LAB_080D
+    BGE.S   .row_done
 
-    BSR.W   LAB_07F4
+    BSR.W   ED_DrawCursorChar
 
     ADDQ.L  #1,LAB_21E8
-    BRA.S   LAB_080C
+    BRA.S   .row_loop
 
-LAB_080D:
+.row_done:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1451,16 +2016,36 @@ LAB_080D:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_UpdateActiveInactiveIndicator   (Update active/inactive indicator??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A1/A6 ??
+; CALLS:
+;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd, DISPLIB_DisplayTextAtPosition
+; READS:
+;   LAB_21EA, LAB_2201, GLOB_REF_RASTPORT_1
+; WRITES:
+;   LAB_2201
+; DESC:
+;   Updates the active/inactive indicator when the flag changes.
+; NOTES:
+;   Draws two rectangles and the ACTIVE/INACTIVE label.
+;------------------------------------------------------------------------------
+ED_UpdateActiveInactiveIndicator:
 LAB_080E:
     MOVEM.L D2-D7,-(A7)
 
     MOVE.L  LAB_21EA,D0
     MOVE.L  LAB_2201,D1
     CMP.L   D0,D1
-    BEQ.W   LAB_0811
+    BEQ.W   .after_indicator_update
 
     SUBQ.L  #1,D0
-    BNE.S   LAB_080F
+    BNE.S   .select_inactive
 
     MOVEQ   #110,D7
     NOT.B   D7
@@ -1468,9 +2053,9 @@ LAB_080E:
     MOVEQ   #40,D5
     MOVEQ   #65,D4
     ADD.L   D4,D4
-    BRA.S   LAB_0810
+    BRA.S   .draw_indicator
 
-LAB_080F:
+.select_inactive:
     MOVEQ   #40,D7
     MOVEQ   #65,D6
     ADD.L   D6,D6
@@ -1478,7 +2063,7 @@ LAB_080F:
     NOT.B   D5
     MOVE.L  #265,D4
 
-LAB_0810:
+.draw_indicator:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1518,7 +2103,7 @@ LAB_0810:
     LEA     16(A7),A7
     MOVE.L  LAB_21EA,LAB_2201
 
-LAB_0811:
+.after_indicator_update:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1534,6 +2119,31 @@ LAB_0811:
 ;!======
 
 ; draw ad editing screen (editing ad)
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawAdEditingScreen   (Draw ad editing screen??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/A0-A1/A6 ??
+; CALLS:
+;   ED_DrawHelpPanels, SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
+;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
+;   GROUPB_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+; READS:
+;   LAB_21FB, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,
+;   GLOB_REF_BOOL_IS_LINE_OR_PAGE, GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the ad editing screen header and status indicators.
+; NOTES:
+;   Uses a stack buffer for formatted output.
+;------------------------------------------------------------------------------
+ED_DrawAdEditingScreen:
+; draw ad editing screen (editing ad)
 LAB_0812:
     LINK.W  A5,#-44
     MOVEM.L D2-D3,-(A7)
@@ -1541,7 +2151,7 @@ LAB_0812:
 .printfResult   = -41
 
     PEA     6.W
-    BSR.W   DRAW_SOME_RECTANGLES
+    BSR.W   ED_DrawHelpPanels
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -1629,6 +2239,26 @@ LAB_0812:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_TransformLineSpacing_Mode1   (Transform line spacing mode 1??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2/D6-D7/A0-A1 ??
+; CALLS:
+;   GROUPB_JMPTBL_MATH_Mulu32, LAB_09C1
+; READS:
+;   LAB_21E8, LAB_21E9
+; WRITES:
+;   LAB_21F0, LAB_21F7, LAB_21F5, LAB_21F9 ??
+; DESC:
+;   Rearranges line buffers according to a spacing rule (mode 1).
+; NOTES:
+;   Uses local buffers on the stack for processing.
+;------------------------------------------------------------------------------
+ED_TransformLineSpacing_Mode1:
 LAB_0813:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
@@ -1654,53 +2284,53 @@ LAB_0813:
     MOVEQ   #39,D0
     LEA     -90(A5),A1
 
-LAB_0814:
+.copy_line_chars:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_0814
+    DBF     D0,.copy_line_chars
 
     MOVEQ   #0,D7
 
-LAB_0815:
+.scan_leading_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0816
+    BGE.S   .after_leading_spaces
 
     MOVEQ   #32,D0
     CMP.B   -49(A5,D7.L),D0
-    BNE.S   LAB_0816
+    BNE.S   .after_leading_spaces
 
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),-90(A5,D7.L)
     ADDQ.L  #1,D7
-    BRA.S   LAB_0815
+    BRA.S   .scan_leading_spaces
 
-LAB_0816:
+.after_leading_spaces:
     MOVEQ   #0,D6
 
-LAB_0817:
+.scan_trailing_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D6
-    BGE.S   LAB_0818
+    BGE.S   .after_space_scan
 
     MOVEQ   #39,D0
     MOVE.L  D0,D1
     SUB.L   D6,D1
     MOVEQ   #32,D2
     CMP.B   -49(A5,D1.L),D2
-    BNE.S   LAB_0818
+    BNE.S   .after_space_scan
 
     SUB.L   D6,D0
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),-90(A5,D0.L)
     ADDQ.L  #1,D6
-    BRA.S   LAB_0817
+    BRA.S   .scan_trailing_spaces
 
-LAB_0818:
+.after_space_scan:
     MOVEQ   #40,D0
     CMP.L   D0,D7
-    BGE.W   LAB_0821
+    BGE.W   .return
 
     MOVE.L  LAB_21E9,D1
     JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
@@ -1711,14 +2341,14 @@ LAB_0818:
     ADDA.L  D7,A1
     MOVEQ   #40,D0
     SUB.L   D7,D0
-    BRA.S   LAB_081A
+    BRA.S   .copy_prefix_check
 
-LAB_0819:
+.copy_prefix_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_081A:
+.copy_prefix_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0819
+    BCC.S   .copy_prefix_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1730,14 +2360,14 @@ LAB_081A:
     ADDA.L  D7,A1
     MOVEQ   #40,D0
     SUB.L   D7,D0
-    BRA.S   LAB_081C
+    BRA.S   .copy_attrs_check
 
-LAB_081B:
+.copy_attrs_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_081C:
+.copy_attrs_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_081B
+    BCC.S   .copy_attrs_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1748,14 +2378,14 @@ LAB_081C:
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -49(A5),A1
-    BRA.S   LAB_081E
+    BRA.S   .copy_suffix_check
 
-LAB_081D:
+.copy_suffix_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_081E:
+.copy_suffix_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_081D
+    BCC.S   .copy_suffix_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1766,22 +2396,42 @@ LAB_081E:
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -90(A5),A1
-    BRA.S   LAB_0820
+    BRA.S   .copy_tail_check
 
-LAB_081F:
+.copy_tail_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0820:
+.copy_tail_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_081F
+    BCC.S   .copy_tail_loop
 
-LAB_0821:
+.return:
     MOVEM.L (A7)+,D2/D6-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_TransformLineSpacing_Mode2   (Transform line spacing mode 2??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2/D6-D7/A0-A1 ??
+; CALLS:
+;   GROUPB_JMPTBL_MATH_Mulu32, LAB_09C1
+; READS:
+;   LAB_21E8, LAB_21E9
+; WRITES:
+;   LAB_21F0, LAB_21F7 ??
+; DESC:
+;   Rearranges line buffers according to a spacing rule (mode 2).
+; NOTES:
+;   Uses local buffers on the stack for processing.
+;------------------------------------------------------------------------------
+ED_TransformLineSpacing_Mode2:
 LAB_0822:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
@@ -1806,52 +2456,52 @@ LAB_0822:
     MOVEQ   #39,D0
     LEA     -90(A5),A1
 
-LAB_0823:
+.copy_line_chars:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_0823
+    DBF     D0,.copy_line_chars
     MOVEQ   #0,D7
 
-LAB_0824:
+.scan_right_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0825
+    BGE.S   .after_right_spaces
 
     MOVEQ   #39,D0
     MOVE.L  D0,D1
     SUB.L   D7,D1
     MOVEQ   #32,D2
     CMP.B   -49(A5,D1.L),D2
-    BNE.S   LAB_0825
+    BNE.S   .after_right_spaces
 
     SUB.L   D7,D0
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),-90(A5,D0.L)
     ADDQ.L  #1,D7
-    BRA.S   LAB_0824
+    BRA.S   .scan_right_spaces
 
-LAB_0825:
+.after_right_spaces:
     MOVEQ   #0,D6
 
-LAB_0826:
+.scan_left_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D6
-    BGE.S   LAB_0827
+    BGE.S   .after_left_spaces
 
     MOVEQ   #32,D0
     CMP.B   -49(A5,D6.L),D0
-    BNE.S   LAB_0827
+    BNE.S   .after_left_spaces
 
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),-90(A5,D6.L)
     ADDQ.L  #1,D6
-    BRA.S   LAB_0826
+    BRA.S   .scan_left_spaces
 
-LAB_0827:
+.after_left_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D7
-    BGE.W   LAB_0830
+    BGE.W   .return
 
     MOVE.L  LAB_21E9,D1
     JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
@@ -1862,14 +2512,14 @@ LAB_0827:
     MOVEQ   #40,D0
     SUB.L   D7,D0
     LEA     -49(A5),A1
-    BRA.S   LAB_0829
+    BRA.S   .copy_line_check
 
-LAB_0828:
+.copy_line_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0829:
+.copy_line_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0828
+    BCC.S   .copy_line_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1881,14 +2531,14 @@ LAB_0829:
     MOVEQ   #40,D0
     SUB.L   D7,D0
     LEA     -90(A5),A1
-    BRA.S   LAB_082B
+    BRA.S   .copy_attrs_check
 
-LAB_082A:
+.copy_attrs_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_082B:
+.copy_attrs_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_082A
+    BCC.S   .copy_attrs_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1901,14 +2551,14 @@ LAB_082B:
     LEA     -49(A5),A1
     ADDA.L  D0,A1
     MOVE.L  D7,D0
-    BRA.S   LAB_082D
+    BRA.S   .copy_tail_line_check
 
-LAB_082C:
+.copy_tail_line_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_082D:
+.copy_tail_line_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_082C
+    BCC.S   .copy_tail_line_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -1921,22 +2571,42 @@ LAB_082D:
     LEA     -90(A5),A1
     ADDA.L  D0,A1
     MOVE.L  D7,D0
-    BRA.S   LAB_082F
+    BRA.S   .copy_tail_attrs_check
 
-LAB_082E:
+.copy_tail_attrs_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_082F:
+.copy_tail_attrs_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_082E
+    BCC.S   .copy_tail_attrs_loop
 
-LAB_0830:
+.return:
     MOVEM.L (A7)+,D2/D6-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_TransformLineSpacing_Mode3   (Transform line spacing mode 3??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D2/D6-D7/A0-A1 ??
+; CALLS:
+;   GROUPB_JMPTBL_MATH_Mulu32, LAB_09C1
+; READS:
+;   LAB_21E8, LAB_21E9
+; WRITES:
+;   LAB_21F0, LAB_21F7, LAB_21F5, LAB_21F9 ??
+; DESC:
+;   Rearranges line buffers according to a spacing rule (mode 3).
+; NOTES:
+;   Uses local buffers on the stack for processing.
+;------------------------------------------------------------------------------
+ED_TransformLineSpacing_Mode3:
 LAB_0831:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
@@ -1961,63 +2631,63 @@ LAB_0831:
     MOVEQ   #39,D0
     LEA     -90(A5),A1
 
-LAB_0832:
+.copy_line_chars:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_0832
+    DBF     D0,.copy_line_chars
 
     MOVEQ   #0,D7
 
-LAB_0833:
+.scan_leading_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0834
+    BGE.S   .after_leading_spaces
 
     MOVEQ   #32,D0
     CMP.B   -49(A5,D7.L),D0
-    BNE.S   LAB_0834
+    BNE.S   .after_leading_spaces
 
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),-90(A5,D7.L)
     ADDQ.L  #1,D7
-    BRA.S   LAB_0833
+    BRA.S   .scan_leading_spaces
 
-LAB_0834:
+.after_leading_spaces:
     MOVEQ   #0,D6
 
-LAB_0835:
+.scan_trailing_spaces:
     MOVEQ   #40,D0
     CMP.L   D0,D6
-    BGE.S   LAB_0836
+    BGE.S   .after_trailing_spaces
 
     MOVEQ   #39,D0
     MOVE.L  D0,D1
     SUB.L   D6,D1
     MOVEQ   #32,D2
     CMP.B   -49(A5,D1.L),D2
-    BNE.S   LAB_0836
+    BNE.S   .after_trailing_spaces
 
     SUB.L   D6,D0
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
     MOVE.B  (A0),-90(A5,D0.L)
     ADDQ.L  #1,D6
-    BRA.S   LAB_0835
+    BRA.S   .scan_trailing_spaces
 
-LAB_0836:
+.after_trailing_spaces:
     MOVE.L  D6,D0
     SUBQ.L  #1,D0
     CMP.L   D0,D7
-    BGE.W   LAB_0840
+    BGE.W   .case_swap_spacing
 
     MOVE.L  D6,D0
     SUB.L   D7,D0
     TST.L   D0
-    BPL.S   LAB_0837
+    BPL.S   .compute_half_gap
 
     ADDQ.L  #1,D0
 
-LAB_0837:
+.compute_half_gap:
     ASR.L   #1,D0
     MOVE.L  D0,D7
     MOVE.L  LAB_21E9,D0
@@ -2030,14 +2700,14 @@ LAB_0837:
     MOVEQ   #40,D0
     SUB.L   D7,D0
     LEA     -49(A5),A1
-    BRA.S   LAB_0839
+    BRA.S   .copy_prefix_check
 
-LAB_0838:
+.copy_prefix_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0839:
+.copy_prefix_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0838
+    BCC.S   .copy_prefix_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -2049,14 +2719,14 @@ LAB_0839:
     MOVEQ   #40,D0
     SUB.L   D7,D0
     LEA     -90(A5),A1
-    BRA.S   LAB_083B
+    BRA.S   .copy_attrs_check
 
-LAB_083A:
+.copy_attrs_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_083B:
+.copy_attrs_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_083A
+    BCC.S   .copy_attrs_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -2069,14 +2739,14 @@ LAB_083B:
     LEA     -49(A5),A1
     ADDA.L  D0,A1
     MOVE.L  D7,D0
-    BRA.S   LAB_083D
+    BRA.S   .copy_suffix_check
 
-LAB_083C:
+.copy_suffix_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_083D:
+.copy_suffix_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_083C
+    BCC.S   .copy_suffix_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -2089,30 +2759,30 @@ LAB_083D:
     LEA     -90(A5),A1
     ADDA.L  D0,A1
     MOVE.L  D7,D0
-    BRA.S   LAB_083F
+    BRA.S   .copy_tail_check
 
-LAB_083E:
+.copy_tail_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_083F:
+.copy_tail_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_083E
+    BCC.S   .copy_tail_loop
 
-    BRA.W   LAB_084A
+    BRA.W   .return
 
-LAB_0840:
+.case_swap_spacing:
     CMP.L   D6,D7
-    BLE.W   LAB_084A
+    BLE.W   .return
 
     MOVE.L  D7,D0
     SUB.L   D6,D0
     ADDQ.L  #1,D0
     TST.L   D0
-    BPL.S   LAB_0841
+    BPL.S   .compute_half_gap_alt
 
     ADDQ.L  #1,D0
 
-LAB_0841:
+.compute_half_gap_alt:
     ASR.L   #1,D0
     MOVE.L  D0,D7
     MOVE.L  LAB_21E9,D0
@@ -2125,14 +2795,14 @@ LAB_0841:
     ADDA.L  D7,A1
     MOVEQ   #40,D0
     SUB.L   D7,D0
-    BRA.S   LAB_0843
+    BRA.S   .copy_prefix2_check
 
-LAB_0842:
+.copy_prefix2_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0843:
+.copy_prefix2_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0842
+    BCC.S   .copy_prefix2_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -2144,14 +2814,14 @@ LAB_0843:
     ADDA.L  D7,A1
     MOVEQ   #40,D0
     SUB.L   D7,D0
-    BRA.S   LAB_0845
+    BRA.S   .copy_attrs2_check
 
-LAB_0844:
+.copy_attrs2_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0845:
+.copy_attrs2_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0844
+    BCC.S   .copy_attrs2_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -2162,14 +2832,14 @@ LAB_0845:
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -49(A5),A1
-    BRA.S   LAB_0847
+    BRA.S   .copy_suffix2_check
 
-LAB_0846:
+.copy_suffix2_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0847:
+.copy_suffix2_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0846
+    BCC.S   .copy_suffix2_loop
 
     MOVE.L  LAB_21E9,D0
     MOVEQ   #40,D1
@@ -2180,22 +2850,48 @@ LAB_0847:
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -90(A5),A1
-    BRA.S   LAB_0849
+    BRA.S   .copy_tail2_check
 
-LAB_0848:
+.copy_tail2_loop:
     MOVE.B  (A1)+,(A0)+
 
-LAB_0849:
+.copy_tail2_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0848
+    BCC.S   .copy_tail2_loop
 
-LAB_084A:
+.return:
     MOVEM.L (A7)+,D2/D6-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_LoadCurrentAdIntoBuffers   (Load current ad into buffers??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/D7/A0-A1/A6 ??
+; CALLS:
+;   GROUP_AL_JMPTBL_LADFUNC_LAB_0EAF, GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte, ED_RedrawAllRows, ED_DrawCurrentColorIndicator,
+;   ED_RedrawCursorChar,
+;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
+;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
+;   GROUPB_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVORectFill
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, LAB_21EB, LAB_21FB
+; WRITES:
+;   LAB_21E8, LAB_21E9, LAB_21FE, GLOB_REF_BOOL_IS_LINE_OR_PAGE,
+;   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
+; DESC:
+;   Loads the current ad into edit buffers and refreshes the screen.
+; NOTES:
+;   Pads buffers to LAB_21EB and redraws the header/status areas.
+;------------------------------------------------------------------------------
+ED_LoadCurrentAdIntoBuffers:
 LAB_084B:
     LINK.W  A5,#-48
     MOVEM.L D2-D3/D7,-(A7)
@@ -2204,41 +2900,41 @@ LAB_084B:
     PEA     LAB_21F7
     PEA     LAB_21F0
     MOVE.L  D0,-(A7)
-    JSR     LAB_085C(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_LAB_0EAF(PC)
 
     LEA     12(A7),A7
     LEA     LAB_21F0,A0
     MOVEA.L A0,A1
 
-LAB_084C:
+.find_string_end:
     TST.B   (A1)+
-    BNE.S   LAB_084C
+    BNE.S   .find_string_end
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D7
     MOVE.L  LAB_21EB,D0
     CMP.L   D0,D7
-    BGE.S   LAB_0851
+    BGE.S   .after_pad
 
     ADDA.L  D7,A0
     SUB.L   D7,D0
     MOVEQ   #32,D1
-    BRA.S   LAB_084E
+    BRA.S   .pad_spaces_check
 
-LAB_084D:
+.pad_spaces_loop:
     MOVE.B  D1,(A0)+
 
-LAB_084E:
+.pad_spaces_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_084D
+    BCC.S   .pad_spaces_loop
 
     LEA     LAB_21F7,A0
     ADDA.L  D7,A0
     PEA     1.W
     PEA     2.W
     MOVE.L  A0,20(A7)
-    JSR     LAB_0858(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D1
@@ -2246,22 +2942,22 @@ LAB_084E:
     MOVE.L  LAB_21EB,D0
     SUB.L   D7,D0
     MOVEA.L 12(A7),A0
-    BRA.S   LAB_0850
+    BRA.S   .fill_attr_check
 
-LAB_084F:
+.fill_attr_loop:
     MOVE.B  D1,(A0)+
 
-LAB_0850:
+.fill_attr_check:
     SUBQ.L  #1,D0
-    BCC.S   LAB_084F
+    BCC.S   .fill_attr_loop
 
-LAB_0851:
+.after_pad:
     LEA     LAB_21F0,A0
     ADDA.L  LAB_21EB,A0
     CLR.B   (A0)
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21FE
-    BSR.W   LAB_0808
+    BSR.W   ED_RedrawAllRows
 
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_21E8
@@ -2296,7 +2992,7 @@ LAB_0851:
     MOVEQ   #0,D0
     MOVE.B  LAB_21F7,D0
     MOVE.L  D0,(A7)
-    BSR.W   LAB_07F8
+    BSR.W   ED_DrawCurrentColorIndicator
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -2329,7 +3025,7 @@ LAB_0851:
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
-    BSR.W   LAB_07F3
+    BSR.W   ED_RedrawCursorChar
 
     MOVEM.L -60(A5),D2-D3/D7
     UNLK    A5
@@ -2337,53 +3033,135 @@ LAB_0851:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_CommitCurrentAdEdits   (Commit current ad edits??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0 ??
+; CALLS:
+;   GROUP_AL_JMPTBL_LADFUNC_LAB_0EDB
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; WRITES:
+;   (none)
+; DESC:
+;   Commits the current ad buffers to storage.
+; NOTES:
+;   Calls GROUP_AL_JMPTBL_LADFUNC_LAB_0EDB with (adNumber-1).
+;------------------------------------------------------------------------------
+ED_CommitCurrentAdEdits:
 LAB_0852:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     SUBQ.L  #1,D0
     PEA     LAB_21F7
     PEA     LAB_21F0
     MOVE.L  D0,-(A7)
-    JSR     LAB_085A(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_LAB_0EDB(PC)
 
     LEA     12(A7),A7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED_NextAdNumber   (Advance to next ad number??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0 ??
+; CALLS:
+;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, LAB_21FD
+; WRITES:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; DESC:
+;   Commits current edits then advances to the next ad.
+; NOTES:
+;   No-op if already at LAB_21FD.
+;------------------------------------------------------------------------------
+ED_NextAdNumber:
 LAB_0853:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   LAB_21FD,D0
-    BGE.S   LAB_0854
+    BGE.S   .return
 
-    BSR.S   LAB_0852
+    BSR.S   ED_CommitCurrentAdEdits
 
     ADDQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BSR.W   LAB_084B
-
-LAB_0854:
-    RTS
-
-;!======
-
-; Decrement the current ad number being edited
-LAB_0855:
-    CMPI.L  #$1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BLE.S   .return
-
-    BSR.S   LAB_0852
-
-    SUBQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    BSR.W   LAB_084B
+    BSR.W   ED_LoadCurrentAdIntoBuffers
 
 .return:
     RTS
 
 ;!======
 
+; Decrement the current ad number being edited
+;------------------------------------------------------------------------------
+; FUNC: ED_PrevAdNumber   (Go to previous ad number??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
+; READS:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; WRITES:
+;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+; DESC:
+;   Commits current edits then moves to the previous ad.
+; NOTES:
+;   No-op when current ad number is 1.
+;------------------------------------------------------------------------------
+ED_PrevAdNumber:
+; Decrement the current ad number being edited
+LAB_0855:
+    CMPI.L  #$1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    BLE.S   .return
+
+    BSR.S   ED_CommitCurrentAdEdits
+
+    SUBQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    BSR.W   ED_LoadCurrentAdIntoBuffers
+
+.return:
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: ED_DrawEditHelpText   (Draw edit help text??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D3/A1/A6 ??
+; CALLS:
+;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition,
+;   _LVOSetAPen, _LVOSetDrMd, _LVORectFill
+; READS:
+;   GLOB_REF_RASTPORT_1
+; WRITES:
+;   (none)
+; DESC:
+;   Draws the help text for editing operations.
+; NOTES:
+;   Uses a fixed list of help strings.
+;------------------------------------------------------------------------------
+ED_DrawEditHelpText:
 LAB_0857:
     MOVEM.L D2-D3,-(A7)
 
-    BSR.W   LAB_07E4
+    BSR.W   ED_DrawBottomHelpBarBackground
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
