@@ -20,7 +20,6 @@
 ;   Builds a temporary 1000-byte text buffer and frees it before returning.
 ;------------------------------------------------------------------------------
 ED2_DrawEntryDetailsPanel:
-LAB_072A:
     LINK.W  A5,#-148
     MOVEM.L A2-A3,-(A7)
     MOVE.W  LAB_21E5,D0
@@ -347,7 +346,6 @@ LAB_072A:
 ;   Uses flag fields at offsets 27 and 46 in the entry data.
 ;------------------------------------------------------------------------------
 ED2_DrawEntrySummaryPanel:
-LAB_0743:
     LINK.W  A5,#-120
     MOVEM.L D2/A2-A3,-(A7)
 
@@ -643,7 +641,6 @@ LAB_0743:
 ;   Switch-like chain on LAB_231D-selected index; ends by restoring rastport state.
 ;------------------------------------------------------------------------------
 ED2_HandleMenuActions:
-LAB_0756:
     LINK.W  A5,#-120
     MOVEM.L D2-D7,-(A7)
 
@@ -1511,7 +1508,7 @@ LAB_0756:
 ; CLOBBERS:
 ;   D0-D1/A0-A1 ??
 ; CALLS:
-;   LAB_07D2, LAB_06CA, DRAW_DIAGNOSTIC_MODE_TEXT, GROUPB_JMPTBL_MATH_Mulu32,
+;   LAB_07D2, LAB_06CA, ED_DrawDiagnosticModeText, GROUPB_JMPTBL_MATH_Mulu32,
 ;   DISPLIB_DisplayTextAtPosition, LAB_07C4, GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn,
 ;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight,
 ;   ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight,
@@ -1519,7 +1516,7 @@ LAB_0756:
 ;   ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask,
 ;   GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow,
 ;   GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   LAB_231C, LAB_231D, LAB_1DF0, LAB_1BC4, LAB_1DD7, LAB_1DCD, LAB_1DD6,
 ;   LAB_226A ??
@@ -1534,7 +1531,6 @@ LAB_0756:
 ;   Uses a switch-like chain on LAB_231D selection.
 ;------------------------------------------------------------------------------
 ED2_HandleDiagnosticsMenuActions:
-LAB_079A:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -1676,7 +1672,7 @@ LAB_079A:
     JSR     LAB_06CA(PC)
 
     MOVE.B  D0,LAB_1BC4
-    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+    JSR     ED_DrawDiagnosticModeText(PC)
 
     ADDQ.W  #8,A7
     BRA.W   .return
@@ -1689,7 +1685,7 @@ LAB_079A:
     JSR     LAB_06CA(PC)
 
     MOVE.B  D0,LAB_1DD7
-    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+    JSR     ED_DrawDiagnosticModeText(PC)
 
     ADDQ.W  #8,A7
     BRA.W   .return
@@ -1716,7 +1712,7 @@ LAB_079A:
     JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_21EB
-    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+    JSR     ED_DrawDiagnosticModeText(PC)
 
     BRA.W   .return
 
@@ -1728,7 +1724,7 @@ LAB_079A:
     JSR     LAB_06CA(PC)
 
     MOVE.B  D0,LAB_1DD6
-    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+    JSR     ED_DrawDiagnosticModeText(PC)
 
     ADDQ.W  #8,A7
     BRA.W   .return
@@ -1908,7 +1904,7 @@ LAB_079A:
     BRA.S   .return
 
 .case_default_help:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     CLR.W   LAB_2252
 
@@ -1926,7 +1922,7 @@ LAB_079A:
 ; CLOBBERS:
 ;   D0-D1/A0-A1 ??
 ; CALLS:
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
+;   ED_DrawESCMenuBottomHelp, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
 ; READS:
 ;   LAB_231C, LAB_231D, LAB_21E8, GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED ??
 ; WRITES:
@@ -1937,7 +1933,6 @@ LAB_079A:
 ;   Special-cases selection codes 13/27 and $9B?? to adjust LAB_21E8/LAB_1F40.
 ;------------------------------------------------------------------------------
 ED2_HandleScrollSpeedSelection:
-LAB_07B8:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -1980,7 +1975,7 @@ LAB_07B8:
     MOVE.W  D0,LAB_1F40
 
 .after_sync_scroll_speed:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     BRA.W   .return
 

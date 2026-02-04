@@ -1397,7 +1397,7 @@ LAB_0B4F:
     MOVE.B  -5(A5),D0
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E33(PC)
+    JSR     LADFUNC_ParseBannerEntryData(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .LAB_0B94

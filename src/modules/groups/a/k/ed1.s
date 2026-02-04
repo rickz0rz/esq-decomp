@@ -8,7 +8,7 @@
 ;   D0-D7/A0-A1/A6 ??
 ; CALLS:
 ;   ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, ED_DrawDiagnosticModeHelpText, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText, ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
-;   ED1_DrawDiagnosticsScreen, DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT,
+;   ED1_DrawDiagnosticsScreen, ED_DrawSpecialFunctionsMenu,
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
 ;   LAB_1BC4, LAB_21E2, LAB_21E8
@@ -20,7 +20,6 @@
 ;   Uses a switch/jumptable; D6 nonzero triggers an error prompt.
 ;------------------------------------------------------------------------------
 ED1_HandleEscMenuInput:
-LAB_0701:
     MOVEM.L D6-D7,-(A7)
     JSR     ED_GetEscMenuActionCode(PC)
 
@@ -109,7 +108,7 @@ LAB_0701:
     PEA     4.W
     JSR     ED_DrawMenuSelectionHighlight(PC)
 
-    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
+    JSR     ED_DrawSpecialFunctionsMenu(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D6
@@ -189,7 +188,7 @@ LAB_0701:
 ; CLOBBERS:
 ;   D0-D1/A0 ??
 ; CALLS:
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   LAB_231C, LAB_231D
 ; WRITES:
@@ -200,7 +199,6 @@ LAB_0701:
 ;   Clears LAB_2252 when selection is not the first entry.
 ;------------------------------------------------------------------------------
 ED1_UpdateEscMenuSelection:
-LAB_070C:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -213,7 +211,7 @@ LAB_070C:
     SUBI.W  #$31,D1
     BEQ.S   .return
 
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     CLR.W   LAB_2252
 
@@ -233,8 +231,8 @@ LAB_070C:
 ; CALLS:
 ;   _LVOSetFont, _LVOInitBitMap, _LVOSetRast, _LVOSetDrMd, _LVODisable, _LVOEnable,
 ;   LAB_07C4, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight,
-;   ED1_JMPTBL_GCOMMAND_SeedBannerDefaults, DRAW_BOTTOM_HELP_FOR_ESC_MENU,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, DST_JMPTBL_CLEANUP_DrawDateTimeBannerRow,
+;   ED1_JMPTBL_GCOMMAND_SeedBannerDefaults, ED_DrawESCMenuBottomHelp,
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AK_JMPTBL_CLEANUP_DrawDateTimeBannerRow,
 ;   DISPLIB_DisplayTextAtPosition, LAB_0A49, LAB_0A48
 ; READS:
 ;   LAB_1DCB, LAB_1DCD, LAB_1FB8, LAB_1DD6, LAB_21E4
@@ -247,7 +245,6 @@ LAB_070C:
 ;   Copies 24 bytes from LAB_1FB8 into LAB_2295.
 ;------------------------------------------------------------------------------
 ED1_EnterEscMenu:
-LAB_070E:
     LINK.W  A5,#-48
     MOVEM.L D2/D7,-(A7)
 
@@ -343,7 +340,7 @@ LAB_070E:
     MOVE.L  D0,LAB_21EB
     MOVEQ   #1,D0
     MOVE.L  D0,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVE.L  GLOB_LONG_PATCH_VERSION_NUMBER,-(A7)
     PEA     GLOB_STR_NINE_POINT_ZERO
@@ -351,7 +348,7 @@ LAB_070E:
     PEA     -41(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    JSR     DST_JMPTBL_CLEANUP_DrawDateTimeBannerRow(PC)
+    JSR     GROUP_AK_JMPTBL_CLEANUP_DrawDateTimeBannerRow(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
@@ -400,7 +397,7 @@ LAB_070E:
 ED1_EnterEscMenu_AfterVersionText:
 LAB_0712_033E:
     PEA     LAB_2321
-    JSR     ED1_JMPTBL_LAB_0F12(PC)
+    JSR     GROUP_AK_JMPTBL_LAB_0F12(PC)
 
     MOVEM.L -56(A5),D2/D7
     UNLK    A5
@@ -417,10 +414,10 @@ LAB_0712_033E:
 ; CLOBBERS:
 ;   D0-D2/A0-A3/A6 ??
 ; CALLS:
-;   _LVOInitBitMap, _LVOSetFont, ED1_JMPTBL_GCOMMAND_ResetHighlightMessages,
+;   _LVOInitBitMap, _LVOSetFont, GROUP_AK_JMPTBL_GCOMMAND_ResetHighlightMessages,
 ;   ESQ_JMPTBL_LAB_14E2, LAB_09B7, LAB_0969, ED1_ClearEscMenuMode, LAB_098A,
-;   JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7, ED1_JMPTBL_LAB_0E48,
-;   ED1_WaitForFlagAndClearBit0, ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
+;   GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7, GROUP_AK_JMPTBL_LAB_0E48,
+;   ED1_WaitForFlagAndClearBit0, GROUP_AK_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
 ;   ED_DrawBottomHelpBarBackground, LAB_09A7, LAB_0A48
 ; READS:
 ;   LAB_21E4, LAB_21E3, LAB_1DD6, LAB_2346
@@ -433,7 +430,6 @@ LAB_0712_033E:
 ;   Uses LAB_1DD6/LAB_21E3 comparisons to decide whether to wait/clear flags.
 ;------------------------------------------------------------------------------
 ED1_ExitEscMenu:
-LAB_0713:
     MOVE.L  D2,-(A7)
 
     CLR.W   LAB_1B85
@@ -449,7 +445,7 @@ LAB_0713:
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0     ; font
     JSR     _LVOSetFont(A6)
 
-    JSR     ED1_JMPTBL_GCOMMAND_ResetHighlightMessages(PC)
+    JSR     GROUP_AK_JMPTBL_GCOMMAND_ResetHighlightMessages(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2252
@@ -469,14 +465,14 @@ LAB_0713:
     MOVE.L  LAB_2260,-(A7)
     JSR     LAB_098A(PC)
 
-    JSR     JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7(PC)
+    JSR     GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
     CMP.L   LAB_21E4,D0
     BNE.S   .after_optional_refresh
 
-    JSR     ED1_JMPTBL_LAB_0E48(PC)
+    JSR     GROUP_AK_JMPTBL_LAB_0E48(PC)
 
 .after_optional_refresh:
     MOVEQ   #-1,D0
@@ -524,7 +520,7 @@ LAB_0713:
     MOVE.W  D0,LAB_2282
     MOVE.W  D0,CTRL_H
     MOVE.W  D0,LAB_2263
-    JSR     ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs(PC)
+    JSR     GROUP_AK_JMPTBL_GCOMMAND_SeedBannerFromPrefs(PC)
 
     JSR     ED_DrawBottomHelpBarBackground(PC)
 
@@ -551,7 +547,7 @@ LAB_0713:
 ;   D0-D2/A0-A1/A6 ??
 ; CALLS:
 ;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
-;   LAB_03C0, LAB_03C4, DRAW_DIAGNOSTIC_MODE_TEXT, _LVOSetAPen
+;   LAB_03C0, LAB_03C4, ED_DrawDiagnosticModeText, _LVOSetAPen
 ; READS:
 ;   GLOB_REF_BAUD_RATE, LAB_1D2E, LAB_1D2F, LAB_2245
 ; WRITES:
@@ -562,7 +558,6 @@ LAB_0713:
 ;   Uses local printf buffer at -41(A5).
 ;------------------------------------------------------------------------------
 ED1_DrawDiagnosticsScreen:
-LAB_0718:
 
 .printfResult   = -41
 
@@ -616,7 +611,7 @@ LAB_0718:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+    JSR     ED_DrawDiagnosticModeText(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
@@ -659,7 +654,6 @@ LAB_0718:
 ;   ??
 ;------------------------------------------------------------------------------
 ED1_ClearEscMenuMode:
-LAB_0719:
     CLR.B   LAB_1D13
     RTS
 
@@ -685,7 +679,6 @@ LAB_0719:
 ;   Passes 0 to LAB_0A0B.
 ;------------------------------------------------------------------------------
 ED1_WaitForFlagAndClearBit1:
-LAB_071A:
 .wait_flag:
     TST.W   LAB_1B83
     BEQ.S   .wait_flag
@@ -722,7 +715,6 @@ LAB_071A:
 ;   Passes 1 to LAB_0A0B.
 ;------------------------------------------------------------------------------
 ED1_WaitForFlagAndClearBit0:
-LAB_071B:
 .wait_flag:
     TST.W   LAB_1B83
 
@@ -741,7 +733,7 @@ LAB_071B:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7   (Jump stub)
 ; ARGS:
 ;   ?? (see DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7)
 ; RET:
@@ -755,11 +747,11 @@ LAB_071B:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
+GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
     JMP     DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_LAB_0F12   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_LAB_0F12   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0F12)
 ; RET:
@@ -773,8 +765,7 @@ JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_LAB_0F12:
-LAB_071D:
+GROUP_AK_JMPTBL_LAB_0F12:
     JMP     LAB_0F12
 
 ;!======
@@ -790,7 +781,7 @@ LAB_071D:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_GCOMMAND_ResetHighlightMessages   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_GCOMMAND_ResetHighlightMessages   (Jump stub)
 ; ARGS:
 ;   ?? (see GCOMMAND_ResetHighlightMessages)
 ; RET:
@@ -804,12 +795,11 @@ LAB_071D:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_GCOMMAND_ResetHighlightMessages:
-LAB_071E:
+GROUP_AK_JMPTBL_GCOMMAND_ResetHighlightMessages:
     JMP     GCOMMAND_ResetHighlightMessages
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_LAB_0EE7   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_LAB_0EE7   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0EE7)
 ; RET:
@@ -823,12 +813,11 @@ LAB_071E:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_LAB_0EE7:
-LAB_071F:
+GROUP_AK_JMPTBL_LAB_0EE7:
     JMP     LAB_0EE7
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_LAB_0E48   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_LAB_0E48   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0E48)
 ; RET:
@@ -842,12 +831,11 @@ LAB_071F:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_LAB_0E48:
-LAB_0720:
+GROUP_AK_JMPTBL_LAB_0E48:
     JMP     LAB_0E48
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_ESQ_ColdReboot   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_ESQ_ColdReboot   (Jump stub)
 ; ARGS:
 ;   ?? (see ESQ_ColdReboot)
 ; RET:
@@ -861,12 +849,11 @@ LAB_0720:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_ESQ_ColdReboot:
-LAB_0721:
+GROUP_AK_JMPTBL_ESQ_ColdReboot:
     JMP     ESQ_ColdReboot
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_LAB_0CA7   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_LAB_0CA7   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_0CA7)
 ; RET:
@@ -880,8 +867,7 @@ LAB_0721:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_LAB_0CA7:
-LAB_0722:
+GROUP_AK_JMPTBL_LAB_0CA7:
     JMP     LAB_0CA7
 
 ;------------------------------------------------------------------------------
@@ -923,7 +909,7 @@ LAB_0724:
     JMP     MEM_Move
 
 ;------------------------------------------------------------------------------
-; FUNC: ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_GCOMMAND_SeedBannerFromPrefs   (Jump stub)
 ; ARGS:
 ;   ?? (see GCOMMAND_SeedBannerFromPrefs)
 ; RET:
@@ -937,12 +923,11 @@ LAB_0724:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs:
-LAB_0725:
+GROUP_AK_JMPTBL_GCOMMAND_SeedBannerFromPrefs:
     JMP     GCOMMAND_SeedBannerFromPrefs
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_JMPTBL_CLEANUP_DrawDateTimeBannerRow   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_CLEANUP_DrawDateTimeBannerRow   (Jump stub)
 ; ARGS:
 ;   ?? (see CLEANUP_DrawDateTimeBannerRow)
 ; RET:
@@ -956,8 +941,7 @@ LAB_0725:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-DST_JMPTBL_CLEANUP_DrawDateTimeBannerRow:
-LAB_0726:
+GROUP_AK_JMPTBL_CLEANUP_DrawDateTimeBannerRow:
     JMP     CLEANUP_DrawDateTimeBannerRow
 
 ;------------------------------------------------------------------------------
@@ -1003,7 +987,6 @@ LAB_0727:
 ;   Uses local printf buffer at -41(A5).
 ;------------------------------------------------------------------------------
 ED1_DrawStatusLine1:
-LAB_0728:
     LINK.W  A5,#-44
 
     MOVE.W  LAB_1F40,D0
@@ -1045,7 +1028,6 @@ LAB_0728:
 ;   Uses local printf buffer at -51(A5).
 ;------------------------------------------------------------------------------
 ED1_DrawStatusLine2:
-LAB_0729:
     LINK.W  A5,#-52
     MOVE.L  D2,-(A7)
     MOVEA.L LAB_2216,A0

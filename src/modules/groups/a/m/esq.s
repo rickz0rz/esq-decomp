@@ -1081,7 +1081,7 @@ LAB_085E:
 .continue_startup:
     JSR     LAB_0A48(PC)
 
-    JSR     GROUP_AM_JMPTBL_LAB_0E09(PC)
+    JSR     GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries(PC)
 
     JSR     ESQ_JMPTBL_LAB_0E14(PC)
 

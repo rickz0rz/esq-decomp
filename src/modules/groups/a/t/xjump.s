@@ -16,7 +16,6 @@
 ;   Jump stub to ED1_WaitForFlagAndClearBit0.
 ;------------------------------------------------------------------------------
 GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0:
-GCOMMAND_JMPTBL_LAB_071B:
 LAB_0D63:
     JMP     ED1_WaitForFlagAndClearBit0
 
@@ -59,7 +58,6 @@ LAB_0D64:
 ;   Jump stub to ED1_WaitForFlagAndClearBit1.
 ;------------------------------------------------------------------------------
 GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1:
-GCOMMAND_JMPTBL_LAB_071A:
 LAB_0D65:
     JMP     ED1_WaitForFlagAndClearBit1
 

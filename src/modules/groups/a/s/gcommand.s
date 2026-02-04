@@ -274,7 +274,7 @@ GCOMMAND_ParseCommandOptions:
     ADDQ.L  #1,D6
 
 .opt3_start:
-    ; Opt2: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22CE.
+    ; Opt2: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22CE.
     CMP.L   D7,D6
     BGE.S   .opt4_start
 
@@ -291,7 +291,7 @@ GCOMMAND_ParseCommandOptions:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -326,7 +326,7 @@ GCOMMAND_ParseCommandOptions:
     ADDQ.L  #1,D6
 
 .opt5_start:
-    ; Opt4: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22D0.
+    ; Opt4: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22D0.
     CMP.L   D7,D6
     BGE.S   .opt6_start
 
@@ -343,7 +343,7 @@ GCOMMAND_ParseCommandOptions:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -908,7 +908,7 @@ GCOMMAND_ParseCommandString:
     ADDQ.L  #1,D6
 
 .opt6_start:
-    ; Opt5: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22DA.
+    ; Opt5: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22DA.
     CMP.L   D7,D6
     BGE.S   .opt7_start
 
@@ -925,7 +925,7 @@ GCOMMAND_ParseCommandString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -960,7 +960,7 @@ GCOMMAND_ParseCommandString:
     ADDQ.L  #1,D6
 
 .opt8_start:
-    ; Opt7: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22DC.
+    ; Opt7: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22DC.
     CMP.L   D7,D6
     BGE.S   .opt9_start
 
@@ -977,7 +977,7 @@ GCOMMAND_ParseCommandString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1036,7 +1036,7 @@ GCOMMAND_ParseCommandString:
     ADDQ.L  #1,D6
 
 .opt11_start:
-    ; Opt10: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22DF.
+    ; Opt10: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22DF.
     CMP.L   D7,D6
     BGE.S   .opt12_start
 
@@ -1053,7 +1053,7 @@ GCOMMAND_ParseCommandString:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1752,7 +1752,7 @@ GCOMMAND_ParsePPVCommand:
     ADDQ.L  #1,D6
 
 .opt6_start:
-    ; Opt5: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22E9.
+    ; Opt5: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22E9.
     CMP.L   D7,D6
     BGE.S   .opt7_start
 
@@ -1769,7 +1769,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1804,7 +1804,7 @@ GCOMMAND_ParsePPVCommand:
     ADDQ.L  #1,D6
 
 .opt8_start:
-    ; Opt7: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22EB.
+    ; Opt7: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22EB.
     CMP.L   D7,D6
     BGE.S   .opt9_start
 
@@ -1821,7 +1821,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1880,7 +1880,7 @@ GCOMMAND_ParsePPVCommand:
     ADDQ.L  #1,D6
 
 .opt11_start:
-    ; Opt10: numeric char via LAB_0E2D if valid (table bit #7) -> LAB_22EE.
+    ; Opt10: numeric char via LADFUNC_ParseHexDigit if valid (table bit #7) -> LAB_22EE.
     CMP.L   D7,D6
     BGE.S   .opt12_start
 
@@ -1897,7 +1897,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0E2D(PC)
+    JSR     LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1

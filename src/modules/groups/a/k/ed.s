@@ -199,10 +199,10 @@ LAB_0677:
 ; CALLS:
 ;   ED_DrawCursorChar, ED_ApplyActiveFlagToAdData, ED_RedrawAllRows, ED_RedrawRow, ED_TransformLineSpacing_Mode1, ED_TransformLineSpacing_Mode2, ED_TransformLineSpacing_Mode3,
 ;   ED_CommitCurrentAdEdits, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, GROUP_AL_JMPTBL_LADFUNC_GetLowNibble, GROUP_AL_JMPTBL_LADFUNC_GetHighNibble,
-;   ED1_JMPTBL_LAB_0EE7, ED1_JMPTBL_LAB_0EE6, ED1_JMPTBL_MEM_Move,
+;   GROUP_AK_JMPTBL_LAB_0EE7, ED1_JMPTBL_LAB_0EE6, ED1_JMPTBL_MEM_Move,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   LAB_21ED, LAB_21FA, LAB_21E1, LAB_21E8, LAB_21E9, LAB_21EB, LAB_21FB,
 ;   LAB_1D15, GLOB_REF_BOOL_IS_TEXT_OR_CURSOR, GLOB_REF_BOOL_IS_LINE_OR_PAGE
@@ -275,7 +275,7 @@ LAB_0678:
     MOVE.L  D0,LAB_1D15
     JSR     ED_CommitCurrentAdEdits(PC)
 
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     BRA.W   .return
 
@@ -340,7 +340,7 @@ LAB_0678:
     MOVE.B  D1,D0
     MOVE.L  D0,(A7)
     MOVE.L  16(A7),-(A7)
-    JSR     ED1_JMPTBL_LAB_0EE7(PC)
+    JSR     GROUP_AK_JMPTBL_LAB_0EE7(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,LAB_21E1
@@ -1509,7 +1509,7 @@ LAB_06CA:
 ; CLOBBERS:
 ;   D0-D2/A0-A1 ??
 ; CALLS:
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED1_JMPTBL_LAB_0CA7, ED_DrawDiagnosticRegisterValues
+;   ED_DrawESCMenuBottomHelp, GROUP_AK_JMPTBL_LAB_0CA7, ED_DrawDiagnosticRegisterValues
 ; READS:
 ;   LAB_21ED, LAB_21EE, LAB_231C, LAB_231D
 ; WRITES:
@@ -1554,7 +1554,7 @@ LAB_06CE:
     BRA.W   .case_increment_index
 
 .case_show_help:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     BRA.W   .return
 
@@ -1690,7 +1690,7 @@ LAB_06CE:
     CMP.L   D1,D0
     BGE.S   .skip_refresh
 
-    JSR     ED1_JMPTBL_LAB_0CA7(PC)
+    JSR     GROUP_AK_JMPTBL_LAB_0CA7(PC)
 
 .skip_refresh:
     JSR     ED_DrawDiagnosticRegisterValues(PC)
@@ -1711,7 +1711,7 @@ LAB_06CE:
 ;   D0-D3/D7/A0-A1/A6 ??
 ; CALLS:
 ;   ED_GetEscMenuActionCode, ED_DrawAreYouSurePrompt, ED_DrawMenuSelectionHighlight, ED_DrawDiagnosticRegisterValues,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT,
+;   ED_DrawESCMenuBottomHelp, ED_DrawSpecialFunctionsMenu,
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVORectFill
 ; READS:
 ;   LAB_21E8, LAB_1D13
@@ -1750,7 +1750,7 @@ LAB_06DB:
     DC.W    .case_prev_special_selection-.dispatch_table-2
 
 .case_show_help:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     BRA.W   .return
 
@@ -1824,7 +1824,7 @@ LAB_06DB:
     PEA     4.W
     JSR     ED_DrawMenuSelectionHighlight(PC)
 
-    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
+    JSR     ED_DrawSpecialFunctionsMenu(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -1936,7 +1936,7 @@ LAB_06DB:
     MOVE.L  D0,-(A7)
     JSR     ED_DrawMenuSelectionHighlight(PC)
 
-    JSR     DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT(PC)
+    JSR     ED_DrawSpecialFunctionsMenu(PC)
 
     ADDQ.W  #4,A7
 
@@ -1956,7 +1956,7 @@ LAB_06DB:
 ;   D0/D7/A0-A1/A6 ??
 ; CALLS:
 ;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, LAB_0484,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -1988,7 +1988,7 @@ LAB_06E2:
     LEA     20(A7),A7
 
 .after_save_everything_message:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVE.L  (A7)+,D7
     RTS
@@ -2005,7 +2005,7 @@ LAB_06E2:
 ;   D0/D7/A0-A1/A6 ??
 ; CALLS:
 ;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, LAB_0471,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -2035,7 +2035,7 @@ LAB_06E4:
     LEA     16(A7),A7
 
 .after_save_prevue_message:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVE.L  (A7)+,D7
     RTS
@@ -2052,7 +2052,7 @@ LAB_06E4:
 ;   D0/D7/A0-A1/A6 ??
 ; CALLS:
 ;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ESQ_JMPTBL_LAB_0E57,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -2083,7 +2083,7 @@ LAB_06E6:
     LEA     16(A7),A7
 
 .after_load_text_ads:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVE.L  (A7)+,D7
     RTS
@@ -2099,8 +2099,8 @@ LAB_06E6:
 ; CLOBBERS:
 ;   D0/D6-D7/A0-A1/A6 ??
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ED1_JMPTBL_ESQ_ColdReboot,
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, GROUP_AK_JMPTBL_ESQ_ColdReboot,
+;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -2139,10 +2139,10 @@ LAB_06E8:
     BRA.S   .delay_loop
 
 .trigger_reboot:
-    JSR     ED1_JMPTBL_ESQ_ColdReboot(PC)
+    JSR     GROUP_AK_JMPTBL_ESQ_ColdReboot(PC)
 
 .after_reboot:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVEM.L (A7)+,D6-D7
     RTS
@@ -2427,7 +2427,7 @@ LAB_06EC:
 ; CLOBBERS:
 ;   D0-D1/A0-A1 ??
 ; CALLS:
-;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, ED_IncrementAdNumber, ED_DecrementAdNumber, LAB_095F, ED_ApplyActiveFlagToAdData,
+;   ED_DrawESCMenuBottomHelp, ED_IncrementAdNumber, ED_DecrementAdNumber, LAB_095F, ED_ApplyActiveFlagToAdData,
 ;   ED_UpdateActiveInactiveIndicator
 ; READS:
 ;   LAB_21ED, LAB_21EA, LAB_231C, LAB_231D
@@ -2485,7 +2485,7 @@ LAB_06FC:
     BRA.S   .return
 
 .case_show_help:
-    JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
+    JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_21E4

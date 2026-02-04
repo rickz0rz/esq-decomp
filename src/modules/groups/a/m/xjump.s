@@ -639,7 +639,7 @@ GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem:
     JMP     CLEANUP_ShutdownSystem
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_LAB_0E09   (JumpStub_LAB_0E09)
+; FUNC: GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries   (JumpStub_LADFUNC_AllocBannerRectEntries)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -647,16 +647,16 @@ GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0E09
+;   LADFUNC_AllocBannerRectEntries
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0E09.
+;   Jump stub to LADFUNC_AllocBannerRectEntries.
 ;------------------------------------------------------------------------------
-GROUP_AM_JMPTBL_LAB_0E09:
-    JMP     LAB_0E09
+GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries:
+    JMP     LADFUNC_AllocBannerRectEntries
 
 ;!======
 

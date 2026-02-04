@@ -18,7 +18,6 @@
 ;   Uses a small switch table when LAB_21ED matches the menu-mode case.
 ;------------------------------------------------------------------------------
 ED_GetEscMenuActionCode:
-LAB_07D4:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
     ADD.L   LAB_231C,D0
@@ -128,7 +127,6 @@ LAB_07D4:
 ;   Treats key codes $59 and $20 as confirm keys.
 ;------------------------------------------------------------------------------
 ED_IsConfirmKey:
-LAB_07DD:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
@@ -153,7 +151,7 @@ LAB_07DD:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DRAW_BOTTOM_HELP_FOR_ESC_MENU   (Draw ESC menu bottom help??)
+; FUNC: ED_DrawESCMenuBottomHelp
 ; ARGS:
 ;   (none)
 ; RET:
@@ -161,7 +159,7 @@ LAB_07DD:
 ; CLOBBERS:
 ;   D0 ??
 ; CALLS:
-;   ED_DrawBottomHelpBarBackground, DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU
+;   ED_DrawBottomHelpBarBackground, ED_DrawESCMenuHelpText
 ; READS:
 ;   (none)
 ; WRITES:
@@ -171,12 +169,12 @@ LAB_07DD:
 ; NOTES:
 ;   Sets LAB_1D13 to 1 before drawing.
 ;------------------------------------------------------------------------------
-DRAW_BOTTOM_HELP_FOR_ESC_MENU:
+ED_DrawESCMenuBottomHelp:
     MOVE.B  #$1,LAB_1D13
     BSR.W   ED_DrawBottomHelpBarBackground
 
     ; this might actually end up drawing all the text.
-    BSR.W   DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU
+    BSR.W   ED_DrawESCMenuHelpText
 
     RTS
 
@@ -202,7 +200,6 @@ DRAW_BOTTOM_HELP_FOR_ESC_MENU:
 ;   Uses LAB_226E to select alternate pen setup.
 ;------------------------------------------------------------------------------
 ED_InitRastport2Pens:
-LAB_07E2:
     LINK.W  A5,#-4
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -254,7 +251,6 @@ LAB_07E2:
 ;   Uses APen 2 for the bar and restores APen/DrMd afterward.
 ;------------------------------------------------------------------------------
 ED_DrawBottomHelpBarBackground:
-LAB_07E4:
     MOVEM.L D2-D3,-(A7)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -302,7 +298,6 @@ LAB_07E4:
 ;   Calls ED_DrawMenuSelectionHighlight to draw the selection highlight.
 ;------------------------------------------------------------------------------
 ED_DrawEscMainMenuText:
-LAB_07E5:
     PEA     6.W
     BSR.W   ED_DrawMenuSelectionHighlight
 
@@ -363,7 +358,7 @@ LAB_07E5:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU   (Draw ESC menu help text??)
+; FUNC: ED_DrawESCMenuHelpText
 ; ARGS:
 ;   (none)
 ; RET:
@@ -382,7 +377,7 @@ LAB_07E5:
 ; NOTES:
 ;   Resets LAB_21E8 to 0 before drawing menu text.
 ;------------------------------------------------------------------------------
-DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU:
+ED_DrawESCMenuHelpText:
     PEA     6.W
     BSR.W   ED_DrawHelpPanels
 
@@ -426,9 +421,8 @@ DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU:
 
 ;!======
 
-; Draw the debug strings used in diagnostic mode
 ;------------------------------------------------------------------------------
-; FUNC: DRAW_DIAGNOSTIC_MODE_TEXT   (Draw diagnostic mode text??)
+; FUNC: ED_DrawDiagnosticModeText
 ; ARGS:
 ;   (none)
 ; RET:
@@ -447,7 +441,7 @@ DRAW_BOTTOM_HELP_TEXT_FOR_ESC_MENU:
 ; NOTES:
 ;   Uses multiple short text fields for runtime values.
 ;------------------------------------------------------------------------------
-DRAW_DIAGNOSTIC_MODE_TEXT:
+ED_DrawDiagnosticModeText:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
 
     MOVEQ   #1,D0
@@ -597,9 +591,8 @@ DRAW_DIAGNOSTIC_MODE_TEXT:
 
 ;!======
 
-; Rename this when i know what it actually is drawing
 ;------------------------------------------------------------------------------
-; FUNC: ED_DrawHelpPanels   (Draw help panel rectangles??)
+; FUNC: ED_DrawHelpPanels
 ; ARGS:
 ;   stack +4: u16 penIndex ??
 ; RET:
@@ -677,7 +670,6 @@ ED_DrawHelpPanels:
 ;   Uses LAB_21E8 to optionally draw the current selection marker.
 ;------------------------------------------------------------------------------
 ED_DrawMenuSelectionHighlight:
-LAB_07E9:
     MOVEM.L D2-D3/D7,-(A7)
 
     MOVE.L  16(A7),D7
@@ -748,8 +740,6 @@ LAB_07E9:
 ;   Writes the return/any-key prompts.
 ;------------------------------------------------------------------------------
 ED_DrawDiagnosticModeHelpText:
-; Draw the ESC -> Diagnostic Mode text
-LAB_07EB:
     MOVEM.L D2-D3,-(A7)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -822,8 +812,6 @@ LAB_07EB:
 ;   Uses a stack buffer for formatted output.
 ;------------------------------------------------------------------------------
 ED_DrawScrollSpeedMenuText:
-; draw esc - change scroll speed menu text
-LAB_07EC:
     LINK.W  A5,#-80
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -910,7 +898,7 @@ LAB_07EC:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT   (Draw special functions menu??)
+; FUNC: ED_DrawSpecialFunctionsMenu
 ; ARGS:
 ;   (none)
 ; RET:
@@ -928,7 +916,7 @@ LAB_07EC:
 ; NOTES:
 ;   Restores drawing mode afterward.
 ;------------------------------------------------------------------------------
-DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT:
+ED_DrawSpecialFunctionsMenu:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -994,7 +982,6 @@ DRAW_ESC_SPECIAL_FUNCTIONS_MENU_TEXT:
 ;   Formats values into LAB_21F0 before display.
 ;------------------------------------------------------------------------------
 ED_DrawDiagnosticRegisterValues:
-LAB_07EE:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1121,7 +1108,6 @@ LAB_07EE:
 ;   Uses ED_DrawHelpPanels to render the background.
 ;------------------------------------------------------------------------------
 ED_DrawAreYouSurePrompt:
-LAB_07EF:
     PEA     6.W
     BSR.W   ED_DrawHelpPanels
 
@@ -1172,8 +1158,6 @@ LAB_07EF:
 ;   Initializes LAB_21F0/LAB_21F7 with spaces and default chars.
 ;------------------------------------------------------------------------------
 ED_DrawAdNumberPrompt:
-; enter ad number prompt
-LAB_07F0:
     LINK.W  A5,#-4
     MOVEM.L D2-D3/D7,-(A7)
 
@@ -1316,7 +1300,6 @@ LAB_07F0:
 ;   Sets draw mode to 5, draws, then restores draw mode to 1.
 ;------------------------------------------------------------------------------
 ED_RedrawCursorChar:
-LAB_07F3:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #5,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1354,7 +1337,6 @@ LAB_07F3:
 ;   Updates pen colors based on character mapping tables.
 ;------------------------------------------------------------------------------
 ED_DrawCursorChar:
-LAB_07F4:
     LINK.W  A5,#-4
     LEA     LAB_21F7,A0
     ADDA.L  LAB_21E8,A0
@@ -1437,7 +1419,6 @@ LAB_07F4:
 ;   Clamps LAB_21E9 and LAB_21E8 to visible ranges.
 ;------------------------------------------------------------------------------
 ED_UpdateCursorPosFromIndex:
-LAB_07F5:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     MOVE.L  D7,D0
@@ -1488,7 +1469,6 @@ LAB_07F5:
 ;   Uses a stack buffer for formatted output.
 ;------------------------------------------------------------------------------
 ED_DrawCurrentColorIndicator:
-LAB_07F8:
     LINK.W  A5,#-44
     MOVEM.L D2-D3/D6-D7,-(A7)
 
@@ -1713,7 +1693,6 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
 ;   Calls ED_ApplyActiveFlagToAdData before increment to commit current state.
 ;------------------------------------------------------------------------------
 ED_IncrementAdNumber:
-LAB_07FF:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   LAB_21FD,D0
     BGE.S   .return
@@ -1748,7 +1727,6 @@ LAB_07FF:
 ;   Calls ED_ApplyActiveFlagToAdData before decrement to commit current state.
 ;------------------------------------------------------------------------------
 ED_DecrementAdNumber:
-LAB_0801:
     CMPI.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BLE.S   .return
 
@@ -1783,7 +1761,6 @@ LAB_0801:
 ;   Initializes LAB_21EA based on the ad's active flag.
 ;------------------------------------------------------------------------------
 ED_UpdateAdNumberDisplay:
-LAB_0803:
     LINK.W  A5,#-40
 
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,-(A7)
@@ -1847,7 +1824,6 @@ LAB_0803:
 ;   Clears both words when inactive; sets word0=1 and word2=$30 when active.
 ;------------------------------------------------------------------------------
 ED_ApplyActiveFlagToAdData:
-LAB_0805:
     MOVEM.L D2/A2,-(A7)
 
     TST.L   LAB_21EA
@@ -1906,7 +1882,6 @@ LAB_0805:
 ;   Restores LAB_21E8 to its original value after redraw.
 ;------------------------------------------------------------------------------
 ED_RedrawAllRows:
-LAB_0808:
     MOVEM.L D2-D3/D7,-(A7)
 
     MOVE.L  LAB_21E8,D7
@@ -1974,7 +1949,6 @@ LAB_0808:
 ;   Temporarily updates LAB_21E8 to walk the row range.
 ;------------------------------------------------------------------------------
 ED_RedrawRow:
-LAB_080B:
     MOVEM.L D6-D7,-(A7)
 
     MOVE.L  12(A7),D7
@@ -2036,7 +2010,6 @@ LAB_080B:
 ;   Draws two rectangles and the ACTIVE/INACTIVE label.
 ;------------------------------------------------------------------------------
 ED_UpdateActiveInactiveIndicator:
-LAB_080E:
     MOVEM.L D2-D7,-(A7)
 
     MOVE.L  LAB_21EA,D0
@@ -2143,8 +2116,6 @@ LAB_080E:
 ;   Uses a stack buffer for formatted output.
 ;------------------------------------------------------------------------------
 ED_DrawAdEditingScreen:
-; draw ad editing screen (editing ad)
-LAB_0812:
     LINK.W  A5,#-44
     MOVEM.L D2-D3,-(A7)
 
@@ -2259,7 +2230,6 @@ LAB_0812:
 ;   Uses local buffers on the stack for processing.
 ;------------------------------------------------------------------------------
 ED_TransformLineSpacing_Mode1:
-LAB_0813:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
 
@@ -2432,7 +2402,6 @@ LAB_0813:
 ;   Uses local buffers on the stack for processing.
 ;------------------------------------------------------------------------------
 ED_TransformLineSpacing_Mode2:
-LAB_0822:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
     MOVE.L  LAB_21E9,D0
@@ -2607,7 +2576,6 @@ LAB_0822:
 ;   Uses local buffers on the stack for processing.
 ;------------------------------------------------------------------------------
 ED_TransformLineSpacing_Mode3:
-LAB_0831:
     LINK.W  A5,#-92
     MOVEM.L D2/D6-D7,-(A7)
     MOVE.L  LAB_21E9,D0
@@ -2892,7 +2860,6 @@ LAB_0831:
 ;   Pads buffers to LAB_21EB and redraws the header/status areas.
 ;------------------------------------------------------------------------------
 ED_LoadCurrentAdIntoBuffers:
-LAB_084B:
     LINK.W  A5,#-48
     MOVEM.L D2-D3/D7,-(A7)
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
@@ -3053,7 +3020,6 @@ LAB_084B:
 ;   Calls GROUP_AL_JMPTBL_LADFUNC_LAB_0EDB with (adNumber-1).
 ;------------------------------------------------------------------------------
 ED_CommitCurrentAdEdits:
-LAB_0852:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     SUBQ.L  #1,D0
     PEA     LAB_21F7
@@ -3086,7 +3052,6 @@ LAB_0852:
 ;   No-op if already at LAB_21FD.
 ;------------------------------------------------------------------------------
 ED_NextAdNumber:
-LAB_0853:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   LAB_21FD,D0
     BGE.S   .return
@@ -3122,8 +3087,6 @@ LAB_0853:
 ;   No-op when current ad number is 1.
 ;------------------------------------------------------------------------------
 ED_PrevAdNumber:
-; Decrement the current ad number being edited
-LAB_0855:
     CMPI.L  #$1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BLE.S   .return
 
@@ -3158,7 +3121,6 @@ LAB_0855:
 ;   Uses a fixed list of help strings.
 ;------------------------------------------------------------------------------
 ED_DrawEditHelpText:
-LAB_0857:
     MOVEM.L D2-D3,-(A7)
 
     BSR.W   ED_DrawBottomHelpBarBackground

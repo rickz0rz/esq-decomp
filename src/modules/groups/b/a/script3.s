@@ -2748,7 +2748,7 @@ LAB_1597:
     JMP     GCOMMAND_GetBannerChar
 
 LAB_1598:
-    JMP     LAB_0E2D
+    JMP     LADFUNC_ParseHexDigit
 
 LAB_1599:
     JMP     LAB_0B4E

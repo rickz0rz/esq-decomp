@@ -99,7 +99,7 @@ LAB_0AC2:
     TST.W   LAB_2252
     BEQ.S   LAB_0AC3
 
-    JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
+    JSR     ED_DrawDiagnosticModeText(PC)
 
 LAB_0AC3:
     TST.L   LAB_21E2

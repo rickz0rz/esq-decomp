@@ -306,15 +306,35 @@ LAB_0E14:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_RebuildEntryTextBuffers   (Rebuild entry text buffers??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0/D6-D7/A0-A2 ??
+; CALLS:
+;   LAB_0B44, GROUPC_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   LAB_2251, GLOB_STR_LADFUNC_C_4
+; WRITES:
+;   entry buffers via LAB_2251
+; DESC:
+;   Recomputes per-entry text buffers for banner rectangles.
+; NOTES:
+;   Loop count is 47 iterations (D7 from 0..46).
+;------------------------------------------------------------------------------
+LADFUNC_RebuildEntryTextBuffers:
 LAB_0E17:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A2,-(A7)
     MOVEQ   #0,D7
 
-LAB_0E18:
+.entry_loop:
     MOVEQ   #46,D0
     CMP.W   D0,D7
-    BGE.W   LAB_0E1C
+    BGE.W   .done
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -323,27 +343,27 @@ LAB_0E18:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
-    BEQ.W   LAB_0E1B
+    BEQ.W   .next_entry
 
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
     TST.L   6(A2)
-    BEQ.W   LAB_0E1B
+    BEQ.W   .next_entry
 
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEA.L 6(A1),A0
 
-LAB_0E19:
+.scan_text:
     TST.B   (A0)+
-    BNE.S   LAB_0E19
+    BNE.S   .scan_text
 
     SUBQ.L  #1,A0
     SUBA.L  6(A1),A0
     MOVE.L  A0,D6
     TST.L   D6
-    BLE.S   LAB_0E1A
+    BLE.S   .update_entry
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -353,7 +373,7 @@ LAB_0E19:
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
     TST.L   10(A2)
-    BEQ.S   LAB_0E1A
+    BEQ.S   .update_entry
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -368,7 +388,7 @@ LAB_0E19:
 
     LEA     16(A7),A7
 
-LAB_0E1A:
+.update_entry:
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -387,11 +407,11 @@ LAB_0E1A:
     MOVEA.L 16(A7),A0
     MOVE.L  D0,6(A0)
 
-LAB_0E1B:
+.next_entry:
     ADDQ.W  #1,D7
-    BRA.W   LAB_0E18
+    BRA.W   .entry_loop
 
-LAB_0E1C:
+.done:
     BSR.W   LAB_0E14
 
     MOVEM.L (A7)+,D6-D7/A2
@@ -400,14 +420,34 @@ LAB_0E1C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_UpdateHighlightCycle   (Update highlight cycle??)
+; ARGS:
+;   (none)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/A0-A1 ??
+; CALLS:
+;   JMPTBL_MATH_DivS32_3, LADFUNC_BuildHighlightLinesFromText
+; READS:
+;   WDISP_HighlightActive, LAB_2291, LAB_2292, LAB_2265, LAB_2251
+; WRITES:
+;   LAB_2265, LAB_2291
+; DESC:
+;   Advances the highlighted entry when active and refreshes the display.
+; NOTES:
+;   Resets LAB_2291 from LAB_2292 when the countdown underflows.
+;------------------------------------------------------------------------------
+LADFUNC_UpdateHighlightCycle:
     MOVE.W  WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0E1E
+    BNE.S   .maybe_reset
 
     MOVE.W  LAB_2291,D0
-    BLE.S   LAB_0E1E
+    BLE.S   .maybe_reset
 
-LAB_0E1D:
+.find_next_highlight:
     MOVE.W  LAB_2265,D0
     EXT.L   D0
     ADDQ.L  #1,D0
@@ -423,7 +463,7 @@ LAB_0E1D:
     MOVEA.L (A0),A1
     MOVEQ   #1,D0
     CMP.W   4(A1),D0
-    BNE.S   LAB_0E1D
+    BNE.S   .find_next_highlight
 
     MOVE.W  LAB_2265,D0
     EXT.L   D0
@@ -432,7 +472,7 @@ LAB_0E1D:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  6(A1),-(A7)
-    BSR.W   LAB_0E20
+    BSR.W   LADFUNC_BuildHighlightLinesFromText
 
     ADDQ.W  #4,A7
     MOVE.W  LAB_2291,D0
@@ -440,23 +480,43 @@ LAB_0E1D:
     SUBQ.W  #1,D1
     MOVE.W  D1,LAB_2291
 
-LAB_0E1E:
+.maybe_reset:
     MOVE.W  WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0E1F
+    BNE.S   .return
 
     MOVE.W  LAB_2291,D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
-    BGE.S   LAB_0E1F
+    BGE.S   .return
 
     MOVE.W  LAB_2292,LAB_2291
 
-LAB_0E1F:
+.return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_BuildHighlightLinesFromText   (Build highlight lines from text??)
+; ARGS:
+;   stack +4: const u8* textPtr ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   GROUP_AW_JMPTBL_LAB_0552, _LVOTextLength
+; READS:
+;   LAB_2254, LAB_225A, LAB_225B, GLOB_REF_RASTPORT_1
+; WRITES:
+;   LAB_2254, LAB_225A, LAB_225B, stack buffer (-89)
+; DESC:
+;   Splits a text string into displayable segments and populates line buffers.
+; NOTES:
+;   Treats bytes 24/25/26 as control codes and hard line breaks.
+;------------------------------------------------------------------------------
+LADFUNC_BuildHighlightLinesFromText:
 LAB_0E20:
     LINK.W  A5,#-92
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -473,63 +533,63 @@ LAB_0E20:
     MOVE.W  D1,LAB_2254
     MOVEQ   #20,D0
     CMP.W   D0,D1
-    BCS.S   LAB_0E21
+    BCS.S   .init_parse
 
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_2254
 
-LAB_0E21:
+.init_parse:
     MOVEQ   #0,D6
     MOVE.L  #624,D7
     MOVE.B  (A3),D5
     MOVEQ   #24,D0
     CMP.B   D0,D5
-    BEQ.S   LAB_0E22
+    BEQ.S   .skip_control_prefix
 
     MOVEQ   #25,D0
     CMP.B   D0,D5
-    BEQ.S   LAB_0E22
+    BEQ.S   .skip_control_prefix
 
     MOVEQ   #26,D0
     CMP.B   D0,D5
-    BNE.S   LAB_0E23
+    BNE.S   .next_char
 
-LAB_0E22:
+.skip_control_prefix:
     ADDQ.L  #1,A3
 
-LAB_0E23:
+.next_char:
     MOVE.B  (A3)+,D0
     MOVE.B  D0,-7(A5)
     TST.B   D0
-    BEQ.W   LAB_0E29
+    BEQ.W   .flush_final
 
     MOVEQ   #13,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0E23
+    BEQ.S   .next_char
 
     MOVEQ   #10,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0E24
+    BNE.S   .check_flush_or_control
 
-    BRA.S   LAB_0E23
+    BRA.S   .next_char
 
-LAB_0E24:
+.check_flush_or_control:
     TST.L   D7
-    BLE.S   LAB_0E25
+    BLE.S   .flush_segment
 
     MOVEQ   #24,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0E25
+    BEQ.S   .flush_segment
 
     MOVEQ   #25,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0E25
+    BEQ.S   .flush_segment
 
     MOVEQ   #26,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0E28
+    BNE.S   .append_char
 
-LAB_0E25:
+.flush_segment:
     MOVEQ   #0,D0
     MOVE.W  D6,D0
     CLR.B   -89(A5,D0.L)
@@ -548,9 +608,9 @@ LAB_0E25:
     LEA     -89(A5),A1
     MOVEA.L (A0),A2
 
-LAB_0E26:
+.copy_segment:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   LAB_0E26
+    BNE.S   .copy_segment
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2254,D0
@@ -565,17 +625,17 @@ LAB_0E26:
     MOVE.W  D2,LAB_2254
     MOVEQ   #20,D1
     CMP.W   D1,D2
-    BCS.S   LAB_0E27
+    BCS.S   .segment_done
 
     MOVE.W  D0,LAB_2254
 
-LAB_0E27:
+.segment_done:
     MOVE.L  D0,D6
     MOVE.L  #624,D7
     MOVE.B  -7(A5),D5
-    BRA.W   LAB_0E23
+    BRA.W   .next_char
 
-LAB_0E28:
+.append_char:
     MOVE.L  D6,D1
     ADDQ.W  #1,D6
     MOVEQ   #0,D2
@@ -588,9 +648,9 @@ LAB_0E28:
     JSR     _LVOTextLength(A6)
 
     SUB.L   D0,D7
-    BRA.W   LAB_0E23
+    BRA.W   .next_char
 
-LAB_0E29:
+.flush_final:
     MOVEQ   #0,D0
     MOVE.W  D6,D0
     CLR.B   -89(A5,D0.L)
@@ -609,9 +669,9 @@ LAB_0E29:
     LEA     -89(A5),A1
     MOVEA.L (A0),A2
 
-LAB_0E2A:
+.copy_final:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   LAB_0E2A
+    BNE.S   .copy_final
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2254,D0
@@ -627,11 +687,11 @@ LAB_0E2A:
     MOVE.W  D2,LAB_2254
     MOVEQ   #20,D1
     CMP.W   D1,D2
-    BCS.S   LAB_0E2B
+    BCS.S   .advance_slot
 
     MOVE.W  D0,LAB_2254
 
-LAB_0E2B:
+.advance_slot:
     MOVEQ   #0,D2
     MOVE.W  LAB_2254,D2
     ADD.L   D2,D2
@@ -642,17 +702,37 @@ LAB_0E2B:
     ADDQ.W  #1,D3
     MOVE.W  D3,LAB_2254
     CMP.W   D1,D3
-    BCS.S   LAB_0E2C
+    BCS.S   .return
 
     MOVE.W  D0,LAB_2254
 
-LAB_0E2C:
+.return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_ParseHexDigit   (Parse hex digit??)
+; ARGS:
+;   stack +4: u8 char ??
+; RET:
+;   D0: u8 value (0..15) or 0 if invalid ??
+; CLOBBERS:
+;   D0/D7/A0-A1 ??
+; CALLS:
+;   (none)
+; READS:
+;   LAB_21A8
+; WRITES:
+;   (none)
+; DESC:
+;   Converts an ASCII hex digit into a numeric value.
+; NOTES:
+;   Uses LAB_21A8 flags to classify digits/letters.
+;------------------------------------------------------------------------------
+LADFUNC_ParseHexDigit:
 LAB_0E2D:
     MOVE.L  D7,-(A7)
     MOVE.B  11(A7),D7
@@ -663,57 +743,80 @@ LAB_0E2D:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #2,(A1)
-    BEQ.S   LAB_0E2E
+    BEQ.S   .check_alpha
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
-    BRA.S   LAB_0E32
+    BRA.S   .return
 
-LAB_0E2E:
+.check_alpha:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
-    BEQ.S   LAB_0E31
+    BEQ.S   .return_zero
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     ADDA.L  D0,A0
     BTST    #1,(A0)
-    BEQ.S   LAB_0E2F
+    BEQ.S   .alpha_offset
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #32,D1
     SUB.L   D1,D0
-    BRA.S   LAB_0E30
+    BRA.S   .apply_alpha_bias
 
-LAB_0E2F:
+.alpha_offset:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
 
-LAB_0E30:
+.apply_alpha_bias:
     MOVEQ   #55,D1
     SUB.L   D1,D0
-    BRA.S   LAB_0E32
+    BRA.S   .return
 
-LAB_0E31:
+.return_zero:
     MOVEQ   #0,D0
 
-LAB_0E32:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_ParseBannerEntryData   (Parse banner entry data??)
+; ARGS:
+;   stack +4: u8 entryKind ??
+;   stack +8: const u8* streamPtr ??
+; RET:
+;   D0: u16 success flag (0/1) ??
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   LADFUNC_ParseHexDigit, LAB_0EE5, LAB_0EE6, LAB_0EE7, LAB_0AC6, LAB_0B44,
+;   GROUPC_JMPTBL_MEMORY_AllocateMemory, GROUPC_JMPTBL_MEMORY_DeallocateMemory,
+;   GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, LADFUNC_UpdateHighlightState
+; READS:
+;   LAB_1BC4, LAB_1FBF, LAB_1FC0, LAB_2251, LAB_2293, LAB_2299
+; WRITES:
+;   LAB_2293, LAB_2251 entry buffers, WDISP_HighlightActive
+; DESC:
+;   Parses an encoded entry record and updates entry buffers and metadata.
+; NOTES:
+;   Control code 3 appears to change attributes via hex nibbles.
+;------------------------------------------------------------------------------
+LADFUNC_ParseBannerEntryData:
 LAB_0E33:
     LINK.W  A5,#-416
     MOVEM.L D4-D7/A2-A3,-(A7)
@@ -731,20 +834,20 @@ LAB_0E33:
     MOVEQ   #73,D0
     ADD.L   D0,D0
     CMP.L   D0,D1
-    BNE.S   LAB_0E36
+    BNE.S   .check_entry_prefix
 
     MOVEQ   #76,D0
     CMP.B   D0,D7
-    BEQ.S   LAB_0E34
+    BEQ.S   .maybe_refresh
 
     MOVEQ   #116,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0E35
+    BNE.S   .return_zero
 
-LAB_0E34:
+.maybe_refresh:
     MOVE.W  LAB_2299,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0E35
+    BNE.S   .return_zero
 
     MOVE.B  LAB_1BC4,D0
     EXT.W   D0
@@ -755,24 +858,24 @@ LAB_0E34:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_0E35
+    BEQ.S   .return_zero
 
-    BSR.W   LAB_0E17
+    BSR.W   LADFUNC_RebuildEntryTextBuffers
 
-LAB_0E35:
+.return_zero:
     MOVEQ   #0,D0
-    BRA.W   LAB_0E47
+    BRA.W   .return
 
-LAB_0E36:
+.check_entry_prefix:
     MOVEQ   #76,D0
     CMP.B   D0,D7
-    BEQ.S   LAB_0E37
+    BEQ.S   .check_allowed_entry
 
     MOVEQ   #116,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0E3A
+    BNE.S   .return_zero_local2
 
-LAB_0E37:
+.check_allowed_entry:
     MOVE.B  LAB_1BC4,D0
     EXT.W   D0
     EXT.L   D0
@@ -782,11 +885,11 @@ LAB_0E37:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_0E38
+    BEQ.S   .return_zero_local
 
     MOVEQ   #46,D0
     CMP.B   D0,D5
-    BCC.S   LAB_0E38
+    BCC.S   .return_zero_local
 
     MOVE.W  LAB_2293,D0
     MOVE.L  D0,D1
@@ -794,13 +897,13 @@ LAB_0E37:
     MOVE.W  D1,LAB_2293
     MOVEQ   #46,D0
     CMP.W   D0,D1
-    BLT.S   LAB_0E39
+    BLT.S   .setup_entry
 
-LAB_0E38:
+.return_zero_local:
     MOVEQ   #0,D0
-    BRA.W   LAB_0E47
+    BRA.W   .return
 
-LAB_0E39:
+.setup_entry:
     SUBQ.B  #1,D5
     MOVEQ   #0,D0
     MOVE.B  D5,D0
@@ -810,13 +913,13 @@ LAB_0E39:
     LEA     LAB_2251,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A2
-    BRA.S   LAB_0E3B
+    BRA.S   .init_entry_buffers
 
-LAB_0E3A:
+.return_zero_local2:
     MOVEQ   #0,D0
-    BRA.W   LAB_0E47
+    BRA.W   .return
 
-LAB_0E3B:
+.init_entry_buffers:
     MOVE.W  #1,(A2)
     MOVE.W  #$30,2(A2)
     MOVEQ   #0,D6
@@ -828,35 +931,35 @@ LAB_0E3B:
 
     LEA     16(A7),A7
     MOVE.L  D0,-412(A5)
-    BEQ.W   LAB_0E45
+    BEQ.W   .return_zero_local3
 
-LAB_0E3C:
+.parse_loop:
     MOVE.B  (A3)+,D4
     TST.B   D4
-    BEQ.W   LAB_0E40
+    BEQ.W   .finish_parse
 
     CMPI.W  #$190,D6
-    BGE.W   LAB_0E40
+    BGE.W   .finish_parse
 
     MOVEQ   #3,D0
     CMP.B   D0,D4
-    BNE.S   LAB_0E3E
+    BNE.S   .check_set_fields
 
     MOVE.B  (A3)+,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0E2D
+    BSR.W   LADFUNC_ParseHexDigit
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D4
     MOVEQ   #0,D0
     CMP.B   D0,D4
-    BCS.S   LAB_0E3D
+    BCS.S   .parse_second_nibble
 
     MOVEQ   #7,D0
     CMP.B   D0,D4
-    BHI.S   LAB_0E3D
+    BHI.S   .parse_second_nibble
 
     MOVEQ   #0,D0
     MOVE.B  D4,D0
@@ -869,22 +972,22 @@ LAB_0E3C:
     ADDQ.W  #8,A7
     MOVE.B  D0,-413(A5)
 
-LAB_0E3D:
+.parse_second_nibble:
     MOVE.B  (A3)+,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0E2D
+    BSR.W   LADFUNC_ParseHexDigit
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D4
     MOVEQ   #0,D0
     CMP.B   D0,D4
-    BCS.S   LAB_0E3C
+    BCS.S   .parse_loop
 
     MOVEQ   #7,D0
     CMP.B   D0,D4
-    BHI.S   LAB_0E3C
+    BHI.S   .parse_loop
 
     MOVEQ   #0,D0
     MOVE.B  -413(A5),D0
@@ -896,12 +999,12 @@ LAB_0E3D:
 
     ADDQ.W  #8,A7
     MOVE.B  D0,-413(A5)
-    BRA.S   LAB_0E3C
+    BRA.S   .parse_loop
 
-LAB_0E3E:
+.check_set_fields:
     MOVEQ   #20,D0
     CMP.B   D0,D4
-    BNE.S   LAB_0E3F
+    BNE.S   .emit_char
 
     MOVEQ   #0,D0
     MOVE.B  (A3)+,D0
@@ -928,9 +1031,9 @@ LAB_0E3E:
     MOVE.B  D0,D1
     EXT.W   D1
     MOVE.W  D1,2(A2)
-    BRA.W   LAB_0E3C
+    BRA.W   .parse_loop
 
-LAB_0E3F:
+.emit_char:
     MOVEA.L -412(A5),A0
     MOVE.B  -413(A5),0(A0,D6.W)
     MOVE.L  D6,D0
@@ -938,9 +1041,9 @@ LAB_0E3F:
     LEA     -407(A5),A0
     ADDA.W  D0,A0
     MOVE.B  D4,(A0)
-    BRA.W   LAB_0E3C
+    BRA.W   .parse_loop
 
-LAB_0E40:
+.finish_parse:
     LEA     -407(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D6,A1
@@ -952,7 +1055,7 @@ LAB_0E40:
     ADDQ.W  #8,A7
     MOVE.L  D0,6(A2)
     TST.L   10(A2)
-    BEQ.S   LAB_0E41
+    BEQ.S   .alloc_attr_buffer
 
     PEA     304.W
     MOVE.L  10(A2),-(A7)
@@ -962,7 +1065,7 @@ LAB_0E40:
 
     LEA     16(A7),A7
 
-LAB_0E41:
+.alloc_attr_buffer:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -974,22 +1077,22 @@ LAB_0E41:
     LEA     16(A7),A7
     MOVE.L  D0,10(A2)
     TST.L   D0
-    BEQ.S   LAB_0E44
+    BEQ.S   .free_temp
 
     MOVE.L  D6,D1
     EXT.L   D1
     MOVEA.L -412(A5),A0
     MOVEA.L D0,A1
-    BRA.S   LAB_0E43
+    BRA.S   .copy_attr_next
 
-LAB_0E42:
+.copy_attr_loop:
     MOVE.B  (A0)+,(A1)+
 
-LAB_0E43:
+.copy_attr_next:
     SUBQ.L  #1,D1
-    BCC.S   LAB_0E42
+    BCC.S   .copy_attr_loop
 
-LAB_0E44:
+.free_temp:
     PEA     304.W
     MOVE.L  -412(A5),-(A7)
     PEA     416.W
@@ -999,16 +1102,16 @@ LAB_0E44:
     BSR.W   LADFUNC_UpdateHighlightState
 
     LEA     16(A7),A7
-    BRA.S   LAB_0E46
+    BRA.S   .return_one
 
-LAB_0E45:
+.return_zero_local3:
     MOVEQ   #0,D0
-    BRA.S   LAB_0E47
+    BRA.S   .return
 
-LAB_0E46:
+.return_one:
     MOVEQ   #1,D0
 
-LAB_0E47:
+.return:
     MOVEM.L (A7)+,D4-D7/A2-A3
     UNLK    A5
     RTS
@@ -1214,7 +1317,7 @@ LAB_0E57:
 LAB_0E58:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D6
     MOVE.L  LAB_21BC,-12(A5)
-    BSR.W   LAB_0E17
+    BSR.W   LADFUNC_RebuildEntryTextBuffers
 
     MOVEQ   #0,D7
 
@@ -1329,7 +1432,7 @@ LAB_0E60:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-34(A5)
-    BSR.W   LAB_0E2D
+        BSR.W   LADFUNC_ParseHexDigit
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1349,7 +1452,7 @@ LAB_0E60:
     MOVE.L  D2,(A7)
     MOVE.B  D0,-29(A5)
     MOVE.L  D1,28(A7)
-    BSR.W   LAB_0E2D
+        BSR.W   LADFUNC_ParseHexDigit
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
