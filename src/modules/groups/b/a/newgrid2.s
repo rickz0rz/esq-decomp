@@ -1031,38 +1031,38 @@ LAB_134A:
     JMP     ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_1985   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_1985)
+;   ?? (see UNKNOWN7_SkipCharClass3)
 ; RET:
-;   ?? (see LAB_1985)
+;   ?? (see UNKNOWN7_SkipCharClass3)
 ; CLOBBERS:
-;   ?? (see LAB_1985)
+;   ?? (see UNKNOWN7_SkipCharClass3)
 ; CALLS:
-;   LAB_1985
+;   UNKNOWN7_SkipCharClass3
 ; DESC:
-;   Jump table entry that forwards to LAB_1985.
+;   Jump table entry that forwards to UNKNOWN7_SkipCharClass3.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_1985:
+NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3:
 LAB_134B:
-    JMP     LAB_1985
+    JMP     UNKNOWN7_SkipCharClass3
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_1962   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_STRING_AppendN   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_1962)
+;   ?? (see STRING_AppendN)
 ; RET:
-;   ?? (see LAB_1962)
+;   ?? (see STRING_AppendN)
 ; CLOBBERS:
-;   ?? (see LAB_1962)
+;   ?? (see STRING_AppendN)
 ; CALLS:
-;   LAB_1962
+;   STRING_AppendN
 ; DESC:
-;   Jump table entry that forwards to LAB_1962.
+;   Jump table entry that forwards to STRING_AppendN.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_1962:
+NEWGRID2_JMPTBL_STRING_AppendN:
 LAB_134C:
-    JMP     LAB_1962
+    JMP     STRING_AppendN
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_LAB_08DF   (Jump stub)
@@ -1082,21 +1082,21 @@ LAB_134D:
     JMP     LAB_08DF
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_1A23   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_1A23)
+;   ?? (see PARSE_ReadSignedLongSkipClass3_Alt)
 ; RET:
-;   ?? (see LAB_1A23)
+;   ?? (see PARSE_ReadSignedLongSkipClass3_Alt)
 ; CLOBBERS:
-;   ?? (see LAB_1A23)
+;   ?? (see PARSE_ReadSignedLongSkipClass3_Alt)
 ; CALLS:
-;   LAB_1A23
+;   PARSE_ReadSignedLongSkipClass3_Alt
 ; DESC:
-;   Jump table entry that forwards to LAB_1A23.
+;   Jump table entry that forwards to PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_1A23:
+NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 LAB_134E:
-    JMP     LAB_1A23
+    JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1   (Jump stub)

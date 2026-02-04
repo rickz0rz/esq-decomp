@@ -1,6 +1,18 @@
-; Fill in a ClockData struct with the date and time calculated from
-; a provided ULONG of the number of seconds from Amiga epoch
-POPULATE_CLOCKDATA_FROM_SECS:
+;------------------------------------------------------------------------------
+; FUNC: CLOCK_ConvertAmigaSecondsToClockData
+; ARGS:
+;   stack +8: D0 = seconds since Amiga epoch
+;   stack +12: A0 = ClockData struct pointer
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A0/A6
+; CALLS:
+;   _LVOAmiga2Date (Utility.library)
+; DESC:
+;   Wrapper around Utility.library Amiga2Date; fills ClockData fields.
+;------------------------------------------------------------------------------
+CLOCK_ConvertAmigaSecondsToClockData:
     MOVE.L  A6,-(A7)
 
     MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6

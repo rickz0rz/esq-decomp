@@ -1,34 +1,49 @@
-LAB_1949:
+;------------------------------------------------------------------------------
+; FUNC: STRING_ToUpperInPlace   (Convert ASCII string to uppercase in place.)
+; ARGS:
+;   stack +16: A3 = string pointer
+; RET:
+;   D0: original string pointer
+; CLOBBERS:
+;   D0-D2/A0-A3
+; READS:
+;   Global_CharClassTable (bit 1 marks lowercase??)
+; DESC:
+;   Walks the string and maps lowercase letters to uppercase.
+; NOTES:
+;   Uses Global_CharClassTable to decide if a byte is lowercase.
+;------------------------------------------------------------------------------
+STRING_ToUpperInPlace:
     MOVEM.L D2/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEA.L A3,A2
 
-.LAB_194A:
+.loop:
     TST.B   (A2)
-    BEQ.S   .return
+    BEQ.S   .done
 
     MOVEQ   #0,D0
     MOVE.B  (A2),D0
-    LEA     -1007(A4),A0
+    LEA     Global_CharClassTable(A4),A0
     BTST    #1,0(A0,D0.L)
-    BEQ.S   .LAB_194B
+    BEQ.S   .keep_char
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #32,D2
     SUB.L   D2,D1
-    BRA.S   .LAB_194C
+    BRA.S   .store_char
 
-.LAB_194B:
+.keep_char:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
 
-.LAB_194C:
+.store_char:
     MOVE.B  D1,(A2)
     ADDQ.L  #1,A2
-    BRA.S   .LAB_194A
+    BRA.S   .loop
 
-.return:
+.done:
     MOVE.L  A3,D0
     MOVEM.L (A7)+,D2/A2-A3
     RTS

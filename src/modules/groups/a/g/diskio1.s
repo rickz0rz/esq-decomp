@@ -5,7 +5,7 @@
     MOVE.L  12(A5),D7
     MOVE.L  D7,-(A7)
     PEA     LAB_1BED
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
@@ -14,28 +14,28 @@
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1BEE
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
     PEA     LAB_1BEF
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     12(A3),A0
     MOVE.L  A0,(A7)
     PEA     LAB_1BF0
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     19(A3),A0
     MOVE.L  A0,(A7)
     PEA     LAB_1BF1
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  27(A3),D0
     MOVE.L  D0,(A7)
     PEA     LAB_1BF2
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     32(A7),A7
     MOVEQ   #1,D0
@@ -43,7 +43,7 @@
     BNE.S   LAB_0420
 
     PEA     LAB_1BF3
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -52,7 +52,7 @@ LAB_0420:
     BEQ.S   LAB_0421
 
     PEA     LAB_1BF4
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -61,7 +61,7 @@ LAB_0421:
     BEQ.S   LAB_0422
 
     PEA     LAB_1BF5
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -70,7 +70,7 @@ LAB_0422:
     BEQ.S   LAB_0423
 
     PEA     LAB_1BF6
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -79,7 +79,7 @@ LAB_0423:
     BEQ.S   LAB_0424
 
     PEA     LAB_1BF7
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -88,7 +88,7 @@ LAB_0424:
     BEQ.S   LAB_0425
 
     PEA     LAB_1BF8
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -97,7 +97,7 @@ LAB_0425:
     BEQ.S   LAB_0426
 
     PEA     LAB_1BF9
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -106,13 +106,13 @@ LAB_0426:
     BEQ.S   LAB_0427
 
     PEA     LAB_1BFA
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
 LAB_0427:
     PEA     LAB_1BFB
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  28(A3),D0
@@ -135,7 +135,7 @@ LAB_0427:
     MOVE.L  D1,-(A7)
     MOVE.L  48(A7),-(A7)
     PEA     LAB_1BFC
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D5
@@ -157,7 +157,7 @@ LAB_0429:
     BNE.S   LAB_042A
 
     PEA     LAB_1BFD
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     BRA.S   LAB_042F
@@ -167,14 +167,14 @@ LAB_042A:
     BNE.S   LAB_042B
 
     PEA     GLOB_STR_OFF_AIR_2
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     BRA.S   LAB_042F
 
 LAB_042B:
     PEA     LAB_1BFF
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #1,D4
@@ -204,7 +204,7 @@ LAB_042C:
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     LAB_1C00
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -214,7 +214,7 @@ LAB_042D:
 
 LAB_042E:
     PEA     LAB_1C01
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -240,7 +240,7 @@ LAB_042F:
     MOVE.L  D1,-(A7)
     MOVE.L  48(A7),-(A7)
     PEA     LAB_1C02
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D5
@@ -262,7 +262,7 @@ LAB_0431:
     BNE.S   LAB_0432
 
     PEA     LAB_1C03
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     BRA.S   LAB_0437
@@ -272,14 +272,14 @@ LAB_0432:
     BNE.S   LAB_0433
 
     PEA     LAB_1C04
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     BRA.S   LAB_0437
 
 LAB_0433:
     PEA     LAB_1C05
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #1,D4
@@ -309,7 +309,7 @@ LAB_0434:
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     LAB_1C06
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -319,7 +319,7 @@ LAB_0435:
 
 LAB_0436:
     PEA     LAB_1C07
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -339,12 +339,12 @@ LAB_0437:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1C08
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.L  48(A3),D0
     MOVE.L  D0,(A7)
     PEA     LAB_1C09
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     28(A7),A7
     TST.L   48(A3)
@@ -352,58 +352,58 @@ LAB_0437:
 
     MOVE.L  48(A3),-14(A5)
     PEA     LAB_1C0A
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.L  -14(A5),(A7)
     PEA     LAB_1C0B
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 4(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
     PEA     LAB_1C0C
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 8(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
     PEA     LAB_1C0D
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 12(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
     PEA     LAB_1C0E
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 16(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
     PEA     LAB_1C0F
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 20(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
     PEA     LAB_1C10
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A0
     MOVE.W  36(A0),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_1C11
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEA.L -14(A5),A0
     MOVE.L  38(A0),(A7)
     PEA     LAB_1C12
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     56(A7),A7
 
@@ -420,7 +420,7 @@ LAB_0439:
     MOVE.L  36(A7),D7
     MOVE.L  D7,-(A7)
     PEA     LAB_1C13
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
@@ -432,10 +432,10 @@ LAB_0439:
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1C14
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     PEA     LAB_1C15
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     28(A7),A7
     MOVEQ   #1,D0
@@ -443,7 +443,7 @@ LAB_0439:
     BNE.S   LAB_043A
 
     PEA     LAB_1C16
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -452,7 +452,7 @@ LAB_043A:
     BEQ.S   LAB_043B
 
     PEA     LAB_1C17
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -461,7 +461,7 @@ LAB_043B:
     BEQ.S   LAB_043C
 
     PEA     LAB_1C18
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -470,7 +470,7 @@ LAB_043C:
     BEQ.S   LAB_043D
 
     PEA     LAB_1C19
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -479,7 +479,7 @@ LAB_043D:
     BEQ.S   LAB_043E
 
     PEA     LAB_1C1A
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -488,7 +488,7 @@ LAB_043E:
     BEQ.S   LAB_043F
 
     PEA     LAB_1C1B
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -497,7 +497,7 @@ LAB_043F:
     BEQ.S   LAB_0440
 
     PEA     LAB_1C1C
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -506,13 +506,13 @@ LAB_0440:
     BEQ.S   LAB_0441
 
     PEA     LAB_1C1D
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
 LAB_0441:
     PEA     LAB_1C1E
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  28(A3),D0
@@ -533,7 +533,7 @@ LAB_0441:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1C1F
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  34(A3),D0
@@ -554,7 +554,7 @@ LAB_0441:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1C20
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  40(A3),D0
@@ -571,7 +571,7 @@ LAB_0441:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1C21
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     72(A7),A7
     MOVEM.L (A7)+,D2-D5/D7/A2-A3
@@ -584,18 +584,18 @@ LAB_0441:
     MOVE.L  20(A7),D7
     MOVE.L  D7,-(A7)
     PEA     LAB_1C22
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.L  A3,(A7)
     PEA     LAB_1C23
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     12(A7),A7
     MOVE.L  A3,D0
     BNE.S   LAB_0442
 
     PEA     LAB_1C24
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     BRA.W   LAB_044F
@@ -618,7 +618,7 @@ LAB_0443:
     MOVE.L  (A0),-(A7)
     MOVE.L  D6,-(A7)
     PEA     LAB_1C25
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     16(A7),A7
     MOVEQ   #1,D0
@@ -626,7 +626,7 @@ LAB_0443:
     BNE.S   LAB_0444
 
     PEA     LAB_1C26
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -635,7 +635,7 @@ LAB_0444:
     BEQ.S   LAB_0445
 
     PEA     LAB_1C27
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -644,7 +644,7 @@ LAB_0445:
     BEQ.S   LAB_0446
 
     PEA     LAB_1C28
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -653,7 +653,7 @@ LAB_0446:
     BEQ.S   LAB_0447
 
     PEA     LAB_1C29
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -662,7 +662,7 @@ LAB_0447:
     BEQ.S   LAB_0448
 
     PEA     LAB_1C2A
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -671,7 +671,7 @@ LAB_0448:
     BEQ.S   LAB_0449
 
     PEA     LAB_1C2B
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -680,7 +680,7 @@ LAB_0449:
     BEQ.S   LAB_044A
 
     PEA     LAB_1C2C
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -689,13 +689,13 @@ LAB_044A:
     BEQ.S   LAB_044B
 
     PEA     LAB_1C2D
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
 LAB_044B:
     PEA     LAB_1C2E
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D6,D0
@@ -705,14 +705,14 @@ LAB_044B:
 
     MOVE.L  56(A3,D0.L),-(A7)
     PEA     LAB_1C2F
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_044D
 
 LAB_044C:
     PEA     LAB_1C30
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -722,7 +722,7 @@ LAB_044D:
 
 LAB_044E:
     PEA     LAB_1C31
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -738,21 +738,21 @@ LAB_044F:
     MOVE.L  12(A5),D7
     MOVE.L  D7,-(A7)
     PEA     LAB_1C32
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  A3,D0
     BNE.S   LAB_0450
 
     PEA     LAB_1C33
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     BRA.W   LAB_045F
 
 LAB_0450:
     MOVE.L  A3,-(A7)
     PEA     LAB_1C34
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #8,A7
     CLR.B   -5(A5)
@@ -780,7 +780,7 @@ LAB_0452:
     MOVE.L  (A0),-(A7)
     MOVE.L  D6,-(A7)
     PEA     LAB_1C35
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     12(A7),A7
     MOVEQ   #1,D0
@@ -788,7 +788,7 @@ LAB_0452:
     BNE.S   LAB_0453
 
     PEA     LAB_1C36
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -797,7 +797,7 @@ LAB_0453:
     BEQ.S   LAB_0454
 
     PEA     LAB_1C37
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -806,7 +806,7 @@ LAB_0454:
     BEQ.S   LAB_0455
 
     PEA     LAB_1C38
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -815,7 +815,7 @@ LAB_0455:
     BEQ.S   LAB_0456
 
     PEA     LAB_1C39
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -824,7 +824,7 @@ LAB_0456:
     BEQ.S   LAB_0457
 
     PEA     LAB_1C3A
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -833,7 +833,7 @@ LAB_0457:
     BEQ.S   LAB_0458
 
     PEA     LAB_1C3B
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -842,7 +842,7 @@ LAB_0458:
     BEQ.S   LAB_0459
 
     PEA     LAB_1C3C
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
@@ -851,13 +851,13 @@ LAB_0459:
     BEQ.S   LAB_045A
 
     PEA     LAB_1C3D
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
 
 LAB_045A:
     PEA     LAB_1C3E
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D6,D0
@@ -901,7 +901,7 @@ LAB_045D:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1C40
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     16(A7),A7
 

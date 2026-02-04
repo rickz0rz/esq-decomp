@@ -535,7 +535,7 @@ LAB_013C:
     MOVE.L  D2,-(A7)
     MOVE.L  -20(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_1ADA(PC)
+    JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
 LAB_013D:
     MOVEM.L -56(A5),D2-D7/A2-A3
@@ -544,7 +544,7 @@ LAB_013D:
 
 ;!======
 
-; Returns the first brush node for which LAB_1968 (predicate) reports success.
+; Returns the first brush node for which STRING_CompareNoCase (predicate) reports success.
 BRUSH_FindBrushByPredicate:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
@@ -559,7 +559,7 @@ BRUSH_FindBrushByPredicate:
 
     MOVE.L  A3,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUP_AA_JMPTBL_LAB_1968(PC)
+    JSR     GROUP_AA_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -819,7 +819,7 @@ BRUSH_LoadBrushAsset:
     PEA     4.W
     PEA     LAB_1B34
     MOVE.L  D2,-(A7)
-    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -860,7 +860,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   PROCESS_ILBM_IMAGE
+    BSR.W   BITMAP_ProcessIlbmImage
 
     LEA     24(A7),A7
     SUBQ.L  #1,D0
@@ -1139,7 +1139,7 @@ BRUSH_LoadBrushAsset:
     MOVEQ   #15,D1
     ADD.L   D1,D0
     MOVEQ   #16,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     ADD.L   D0,D0
     CLR.W   -18(A5)
@@ -1625,7 +1625,7 @@ LAB_0196:
     PEA     2.W
     PEA     LAB_1B3F
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1634,7 +1634,7 @@ LAB_0196:
     PEA     2.W
     PEA     LAB_1B40
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1668,7 +1668,7 @@ LAB_0199:
     PEA     2.W
     PEA     -7(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AA_JMPTBL_LAB_195B(PC)
+    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0

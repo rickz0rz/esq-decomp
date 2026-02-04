@@ -155,7 +155,7 @@ LAB_15D1:
     JSR     LAB_16F7(PC)
 
     PEA     -188(A5)
-    JSR     LAB_1985(PC)
+    JSR     UNKNOWN7_SkipCharClass3(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-192(A5)
@@ -170,7 +170,7 @@ LAB_15D3:
 
     MOVE.L  -192(A5),-(A7)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -219,7 +219,7 @@ LAB_15D7:
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     PEA     LAB_234B
     JSR     LAB_16A3(PC)
@@ -271,18 +271,18 @@ LAB_15DB:
 
     PEA     LAB_2136
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 LAB_15DC:
     PEA     LAB_2137
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     PEA     -188(A5)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 
@@ -296,7 +296,7 @@ LAB_15DD:
 
     PEA     LAB_2138
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -311,7 +311,7 @@ LAB_15DE:
 
     PEA     -188(A5)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
 
@@ -351,7 +351,7 @@ LAB_15E1:
 
     MOVE.L  LAB_205C,-(A7)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_15E3
@@ -471,7 +471,7 @@ LAB_15EB:
 
     MOVE.L  -142(A5),-(A7)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_15ED
@@ -490,18 +490,18 @@ LAB_15ED:
 
     PEA     LAB_213C
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 LAB_15EE:
     PEA     LAB_213D
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     MOVE.L  -146(A5),(A7)
     PEA     -137(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
 
@@ -657,7 +657,7 @@ LAB_15FE:
     PEA     9.W
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
@@ -677,7 +677,7 @@ LAB_1600:
     PEA     199.W
     MOVE.L  16(A5),-(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
@@ -893,7 +893,7 @@ LAB_1616:
 
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1008,7 +1008,7 @@ LAB_161F:
 LAB_1620:
     PEA     40.W
     MOVE.L  A0,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -1029,7 +1029,7 @@ LAB_1621:
 LAB_1622:
     PEA     -524(A5)
     MOVE.L  -8(A5),-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1064,11 +1064,11 @@ LAB_1625:
 
     PEA     LAB_2143
     MOVE.L  -8(A5),-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     MOVE.L  -12(A5),(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
 
@@ -1105,11 +1105,11 @@ LAB_1629:
 
     PEA     GLOB_STR_ALIGNED_CHANNEL_2
     MOVE.L  -8(A5),-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     PEA     -524(A5)
     MOVE.L  -8(A5),-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 
@@ -1172,7 +1172,7 @@ LAB_1630:
     MOVE.B  #$1,LAB_2145
     MOVE.L  -30(A5),-(A7)
     PEA     LAB_2146
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1180,7 +1180,7 @@ LAB_1630:
 
     MOVE.L  -30(A5),-(A7)
     PEA     LAB_2147
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1196,7 +1196,7 @@ LAB_1632:
     MOVE.L  -30(A5),-(A7)
     PEA     LAB_2148
     MOVE.W  D0,LAB_235B
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1269,7 +1269,7 @@ LAB_1636:
     ADDA.W  #12,A0
     MOVE.L  -30(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1455,7 +1455,7 @@ LAB_1644:
     MOVE.L  A0,-(A7)
     MOVE.L  -26(A5),-(A7)
     MOVE.L  -34(A5),-(A7)
-    JSR     LAB_194E(PC)
+    JSR     STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1607,7 +1607,7 @@ LAB_164E:
     MOVEQ   #1,D0
 
 LAB_164F:
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D0,-26(A5)
     MOVE.L  -22(A5),D1
@@ -1650,7 +1650,7 @@ LAB_1652:
     MOVE.L  D0,28(A7)
     MOVE.L  -22(A5),D0
     MOVE.L  28(A7),D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     ADDI.W  #22,D7
@@ -1983,7 +1983,7 @@ LAB_1668:
     MOVE.L  (A1),-(A7)
     CLR.L   -(A7)
     MOVE.L  A2,20(A7)
-    JSR     LAB_1905(PC)
+    JSR     JMPTBL_LAB_0B44_2(PC)
 
     MOVEA.L 20(A7),A0
     MOVE.L  D0,(A0)
@@ -2052,7 +2052,7 @@ LAB_166D:
     MOVE.L  A0,-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  (A2),-(A7)
-    JSR     LAB_194E(PC)
+    JSR     STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -2154,13 +2154,13 @@ LAB_1675:
     MOVEA.L D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1905(PC)
+    JSR     JMPTBL_LAB_0B44_2(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.L  D0,(A0)
     MOVE.L  LAB_2133,(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1968(PC)
+    JSR     STRING_CompareNoCase(PC)
 
     LEA     12(A7),A7
     TST.L   D0

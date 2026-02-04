@@ -9,15 +9,15 @@
 ;   D0-D7/A0-A6
 ; CALLS:
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
-;   JMPTBL_LIBRARIES_LOAD_FAILED_2, JMPTBL_OVERRIDE_INTUITION_FUNCS,
+;   JMPTBL_BUFFER_FlushAllAndCloseWithCode_2, JMPTBL_OVERRIDE_INTUITION_FUNCS,
 ;   _LVOOpenFont, _LVOOpenDiskFont, GROUPB_JMPTBL_MEMORY_AllocateMemory,
-;   _LVOInitRastPort, _LVOSetFont, GROUPB_JMPTBL_LAB_1A07, JMPTBL_UNKNOWN2B_AllocRaster_2,
+;   _LVOInitRastPort, _LVOSetFont, GROUPB_JMPTBL_MATH_DivS32, JMPTBL_UNKNOWN2B_AllocRaster_2,
 ;   _LVOBltClear, _LVOInitBitMap, JMPTBL_CHECK_AVAILABLE_FAST_MEMORY,
-;   JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMPTBL_LAB_1AAD, LAB_08C1,
+;   JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP, LAB_08BB, ESQ_JMPTBL_LIST_InitHeader, LAB_08C1,
 ;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQ_JMPTBL_LAB_001E, ESQ_JMPTBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
-;   LAB_0BFA, GROUP_AM_JMPTBL_UNKNOWN22_SetupSignalAndMsgport, ESQ_JMPTBL_LAB_1A30, _LVOOpenDevice,
+;   LAB_0BFA, GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal, ESQ_JMPTBL_STRUCT_AllocWithOwner, _LVOOpenDevice,
 ;   _LVODoIO, SETUP_INTERRUPT_INTB_RBF, SETUP_INTERRUPT_INTB_AUD1,
-;   ESQ_JMPTBL_LAB_002F, ESQ_JMPTBL_SCRIPT_InitCtrlContext, ESQ_JMPTBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMPTBL_LAB_041D, LAB_098A, LAB_0C7A,
+;   ESQ_JMPTBL_ESQ_InitAudio1Dma, ESQ_JMPTBL_SCRIPT_InitCtrlContext, ESQ_JMPTBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMPTBL_LAB_041D, LAB_098A, LAB_0C7A,
 ;   ESQ_JMPTBL_LAB_180B, SETUP_INTERRUPT_INTB_VERTB, LAB_0A45, LAB_0A49, _LVOSetAPen,
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, LAB_09AD, LAB_09A9,
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, ESQ_JMPTBL_LAB_14E2, ESQ_JMPTBL_LAB_0D89, GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer, ESQ_JMPTBL_LAB_0DE9
@@ -121,7 +121,7 @@ LAB_085E:
     BNE.S   .loadDiskfontLibrary
 
     MOVE.L  D2,-(A7)
-    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_BUFFER_FlushAllAndCloseWithCode_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -135,7 +135,7 @@ LAB_085E:
     BNE.S   .loadDosLibrary
 
     CLR.L   -(A7)
-    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_BUFFER_FlushAllAndCloseWithCode_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -149,7 +149,7 @@ LAB_085E:
     BNE.S   .loadIntuitionLibrary
 
     CLR.L   -(A7)
-    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_BUFFER_FlushAllAndCloseWithCode_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -163,7 +163,7 @@ LAB_085E:
     BNE.S   .loadUtilityLibraryAndBattclockResource
 
     CLR.L   -(A7)
-    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_2(PC)
+    JSR     JMPTBL_BUFFER_FlushAllAndCloseWithCode_2(PC)
 
     ADDQ.W  #4,A7
 
@@ -277,7 +277,7 @@ LAB_085E:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     GROUPB_JMPTBL_LAB_1A07(PC)
+    JSR     GROUPB_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BEQ.S   .adjust_rastport_text_spacing
@@ -410,7 +410,7 @@ LAB_085E:
     MOVEA.L LAB_1DC5,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     ESQ_JMPTBL_LAB_1AAD(PC)
+    JSR     ESQ_JMPTBL_LIST_InitHeader(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     34.W
@@ -434,7 +434,7 @@ LAB_085E:
     MOVEA.L LAB_1DC6,A0
     ADDA.W  #20,A0
     MOVE.L  A0,-(A7)
-    JSR     ESQ_JMPTBL_LAB_1AAD(PC)
+    JSR     ESQ_JMPTBL_LIST_InitHeader(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
@@ -573,7 +573,7 @@ LAB_085E:
     MOVE.L  D0,LAB_229A
     CLR.L   (A7)
     PEA     GLOB_STR_SERIAL_READ
-    JSR     GROUP_AM_JMPTBL_UNKNOWN22_SetupSignalAndMsgport(PC)
+    JSR     GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,LAB_2212
@@ -581,7 +581,7 @@ LAB_085E:
 
     PEA     82.W
     MOVE.L  D0,-(A7)
-    JSR     ESQ_JMPTBL_LAB_1A30(PC)
+    JSR     ESQ_JMPTBL_STRUCT_AllocWithOwner(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2211_SERIAL_PORT_MAYBE
@@ -612,7 +612,7 @@ LAB_085E:
 
     JSR     SETUP_INTERRUPT_INTB_AUD1(PC)
 
-    JSR     ESQ_JMPTBL_LAB_002F(PC)
+    JSR     ESQ_JMPTBL_ESQ_InitAudio1Dma(PC)
 
     JSR     ESQ_JMPTBL_SCRIPT_InitCtrlContext(PC)
 
@@ -1099,7 +1099,7 @@ LAB_085E:
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)
-    JSR     GROUPB_JMPTBL_BRUSH_PopulateBrushList(PC)
+    JSR     GROUP_AN_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     PEA     LAB_1E1B
     JSR     LAB_0AB5(PC)
@@ -1154,7 +1154,7 @@ LAB_085E:
     MOVE.L  A0,LAB_21DF
     MOVE.L  A0,LAB_21E0
     PEA     LAB_21DF
-    JSR     LAB_061E(PC)
+    JSR     DST_LoadBannerPairFromFiles(PC)
 
     CLR.W   LAB_234A
     JSR     LAB_0969(PC)
@@ -1230,7 +1230,7 @@ LAB_085E:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .after_ravesc_banner
 
-    JSR     ESQ_JMPTBL_LAB_0057(PC)
+    JSR     ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)

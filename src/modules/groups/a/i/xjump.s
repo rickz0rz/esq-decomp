@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C0   (JumpStub_LAB_10BE)
+; FUNC: JMPTBL_LAB_10BE_2   (JumpStub_LAB_10BE)
 ; ARGS:
 ;   ??
 ; RET:
@@ -18,11 +18,12 @@
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+JMPTBL_LAB_10BE_2:
 LAB_05C0:
     JMP     LAB_10BE
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C1   (JumpStub_LAB_1979)
+; FUNC: JMPTBL_UNKNOWN7_FindCharWrapper_2   (JumpStub_UNKNOWN7_FindCharWrapper)
 ; ARGS:
 ;   ??
 ; RET:
@@ -30,21 +31,22 @@ LAB_05C0:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_1979
+;   UNKNOWN7_FindCharWrapper
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to LAB_1979.
+;   Jump stub to UNKNOWN7_FindCharWrapper.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+JMPTBL_UNKNOWN7_FindCharWrapper_2:
 LAB_05C1:
-    JMP     LAB_1979
+    JMP     UNKNOWN7_FindCharWrapper
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C2   (JumpStub_LAB_175F)
+; FUNC: JMPTBL_LAB_175F_2   (JumpStub_LAB_175F)
 ; ARGS:
 ;   ??
 ; RET:
@@ -62,11 +64,12 @@ LAB_05C1:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+JMPTBL_LAB_175F_2:
 LAB_05C2:
     JMP     LAB_175F
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C3   (JumpStub_LAB_1A3A)
+; FUNC: JMPTBL_FORMAT_FormatToBuffer2_2   (JumpStub_FORMAT_FormatToBuffer2)
 ; ARGS:
 ;   ??
 ; RET:
@@ -74,21 +77,22 @@ LAB_05C2:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_1A3A
+;   FORMAT_FormatToBuffer2
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to LAB_1A3A.
+;   Jump stub to FORMAT_FormatToBuffer2.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+JMPTBL_FORMAT_FormatToBuffer2_2:
 LAB_05C3:
-    JMP     LAB_1A3A
+    JMP     FORMAT_FormatToBuffer2
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C4   (JumpStub_LAB_1985)
+; FUNC: JMPTBL_UNKNOWN7_SkipCharClass3_2   (JumpStub_UNKNOWN7_SkipCharClass3)
 ; ARGS:
 ;   ??
 ; RET:
@@ -96,21 +100,22 @@ LAB_05C3:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_1985
+;   UNKNOWN7_SkipCharClass3
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to LAB_1985.
+;   Jump stub to UNKNOWN7_SkipCharClass3.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+JMPTBL_UNKNOWN7_SkipCharClass3_2:
 LAB_05C4:
-    JMP     LAB_1985
+    JMP     UNKNOWN7_SkipCharClass3
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull   (JumpStub_UNKNOWN6_AppendDataAtNull)
+; FUNC: GROUP_AI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
 ; ARGS:
 ;   ??
 ; RET:
@@ -118,21 +123,21 @@ LAB_05C4:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   UNKNOWN6_AppendDataAtNull
+;   STRING_AppendAtNull
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to UNKNOWN6_AppendDataAtNull.
+;   Jump stub to STRING_AppendAtNull.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull:
-    JMP     UNKNOWN6_AppendDataAtNull
+GROUP_AI_JMPTBL_STRING_AppendAtNull:
+    JMP     STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C6   (JumpStub_LAB_1970)
+; FUNC: JMPTBL_UNKNOWN7_CopyUntilDelimiter_2   (JumpStub_UNKNOWN7_CopyUntilDelimiter)
 ; ARGS:
 ;   ??
 ; RET:
@@ -140,18 +145,19 @@ GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_1970
+;   UNKNOWN7_CopyUntilDelimiter
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to LAB_1970.
+;   Jump stub to UNKNOWN7_CopyUntilDelimiter.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+JMPTBL_UNKNOWN7_CopyUntilDelimiter_2:
 LAB_05C6:
-    JMP     LAB_1970
+    JMP     UNKNOWN7_CopyUntilDelimiter
 
     ; Alignment?
     MOVEQ   #97,D0

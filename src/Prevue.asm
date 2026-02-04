@@ -21,6 +21,59 @@ DesiredMemoryAvailability   = $00800000 ; 8388608 bytes/8 MiBytes
 savedStackPointer   = -600
 savedMsg            = -604
 savedExecBase       = -608
+Global_ScratchPtr_592            = -592
+Global_WBStartupWindowPtr        = -596
+Global_SavedDirLock              = -612
+Global_CommandLineSize           = -660
+Global_WBStartupCmdBuffer        = -664
+Global_UNKNOWN36_MessagePtr      = Global_ScratchPtr_592
+Global_UNKNOWN36_RequesterOutPtr = -712
+Global_UNKNOWN36_RequesterText0  = -724
+Global_UNKNOWN36_RequesterText1  = -704
+Global_UNKNOWN36_RequesterText2  = -684
+Global_ExitHookPtr               = -620
+Global_SignalCallbackPtr         = -616
+Global_DosIoErr                  = -640
+Global_A4_748_Ptr                = -748
+Global_CharClassTable            = -1007
+Global_AllocBlockSize            = -1012
+Global_DefaultHandleFlags        = -1016
+Global_A4_1024_State0            = -1024
+Global_A4_1028_State1            = -1028
+Global_A4_1058_State2            = -1058
+Global_A4_1062_State3            = -1062
+Global_A4_1074_Counter           = -1074
+Global_A4_1082_Ptr               = -1082
+Global_A4_1086_Buffer            = -1086
+Global_A4_1092_State4            = -1092
+Global_A4_1096_State5            = -1096
+Global_A4_1120_Base              = -1120
+Global_HandleTableFlags          = -1124
+Global_AllocBytesTotal           = -1128
+Global_AllocListHead             = -1132
+Global_A4_1144_Ptr               = -1144
+Global_HandleTableCount          = -1148
+Global_GraphicsLibraryBase_A4    = -22440
+Global_HandleTableBase           = 22492
+Global_HandleEntry0_Flags        = Global_HandleTableBase+Struct_HandleEntry__Flags
+Global_HandleEntry0_Ptr          = Global_HandleTableBase+Struct_HandleEntry__Ptr
+Global_HandleEntry1_Flags        = Global_HandleTableBase+Struct_HandleEntry_Size+Struct_HandleEntry__Flags
+Global_HandleEntry1_Ptr          = Global_HandleTableBase+Struct_HandleEntry_Size+Struct_HandleEntry__Ptr
+Global_HandleEntry2_Flags        = Global_HandleEntry1_Flags+Struct_HandleEntry_Size
+Global_HandleEntry2_Ptr          = Global_HandleEntry1_Ptr+Struct_HandleEntry_Size
+Global_PrintfBufferPtr           = 22812
+Global_PrintfByteCount           = 22816
+Global_FormatCallbackBufferPtr   = 22820
+Global_FormatCallbackByteCount   = 22824
+Global_AppErrorCode              = 22828
+Global_MemListHead               = 22836
+Global_MemListTail               = 22840
+Global_FormatBufferPtr2          = 22848
+Global_FormatByteCount2          = 22852
+Global_ConsoleNameBuffer         = 22856
+Global_ArgCount                  = 22914
+Global_ArgvPtr                   = 22918
+Global_ArgvStorage               = 22922
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_StartupEntry   (StartupEntry??)
@@ -34,7 +87,7 @@ savedExecBase       = -608
 ; CALLS:
 ;   _LVOSetSignal, _LVOOpenLibrary, _LVOWaitPort, _LVOGetMsg, _LVOCurrentDir,
 ;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
-;   ESQ_JMPTBL_LAB_190F, ESQ_JMPTBL_LAB_1A76, ESQ_JMPTBL_LAB_1A26, ESQ_JMPTBL_LAB_1910
+;   ESQ_JMPTBL_UNKNOWN2B_Stub0, ESQ_JMPTBL_ESQ_ParseCommandLineAndRun, ESQ_JMPTBL_MEMLIST_FreeAll, ESQ_JMPTBL_UNKNOWN2B_Stub1
 ; READS:
 ;   AbsExecBase, LOCAL_STR_DOS_LIBRARY
 ; WRITES:
@@ -84,14 +137,14 @@ SECSTRT_0:                                  ; PC: 0021EE58
 ; Decide startup path (CLI vs WB) after dos.library opens.
 .dos_opened_prepare_startup:
     MOVEA.L Struct_ExecBase__ThisTask(A6),A3                                                                ; A6+276 = ThisTask pointer ??
-    MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),-612(A4)   ; A3+152 = TaskWait.lh_TailPred ?? -> A4-612 = saved dir/lock ??
+    MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),Global_SavedDirLock(A4)   ; A3+152 = TaskWait.lh_TailPred ?? -> saved dir/lock ??
     TST.L   (Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+(Struct_SoftIntList__sh_Pad)(A3)          ; A3+172 = SoftIntList.sh_Pad ?? (SoftInts[1]) ??
     BEQ.S   .wait_for_wb_message
 
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
     ADDI.L  #128,D0
-    MOVE.L  D0,-660(A4)                                     ; A4-660 = cmdline buffer size ??
+    MOVE.L  D0,Global_CommandLineSize(A4)                   ; cmdline buffer size ??
     MOVEA.L ((Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+Struct_SoftIntList__sh_Pad)(A3),A0       ; Again, like above. SoftInts[1]
     ADDA.L  A0,A0
     ADDA.L  A0,A0
@@ -101,7 +154,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  D2,D0
     MOVEQ   #0,D1
     MOVE.B  (A1)+,D1
-    MOVE.L  A1,-592(A4)                                     ; A4-592 = softint tail ptr ??
+    MOVE.L  A1,Global_ScratchPtr_592(A4)                    ; softint tail ptr ??
     ADD.L   D1,D0
     ADDQ.L  #1,D0
     CLR.W   -(A7)
@@ -131,10 +184,10 @@ SECSTRT_0:                                  ; PC: 0021EE58
     BRA.S   .run_main_init
 
 .wait_for_wb_message:
-    MOVE.L  58(A3),-660(A4)                                 ; A3+58 = Task/Proc stack size ?? -> A4-660 = wb stack size ??
+    MOVE.L  58(A3),Global_CommandLineSize(A4)               ; A3+58 = Task/Proc stack size ?? -> wb stack size ??
     MOVEQ   #127,D0 ; ...
     ADDQ.L  #1,D0   ; 128 into D0
-    ADD.L   D0,-660(A4)
+    ADD.L   D0,Global_CommandLineSize(A4)
 
     LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port ??
     JSR     _LVOWaitPort(A6) ; A6 should still have AbsExecBase in it at this point
@@ -151,7 +204,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     MOVEA.L D0,A0
     MOVE.L  0(A0),D1                                        ; WBArg[0].wa_Lock ??
-    MOVE.L  D1,-612(A4)                                     ; A4-612 = current dir lock ?? (from WB startup msg)
+    MOVE.L  D1,Global_SavedDirLock(A4)                      ; current dir lock ?? (from WB startup msg)
     JSR     _LVOCurrentDir(A6)
 
 .maybe_set_current_dir:
@@ -161,7 +214,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  #1005,D2
     JSR     _LVOSupervisor(A6)
 
-    MOVE.L  D0,-596(A4)
+    MOVE.L  D0,Global_WBStartupWindowPtr(A4)
     BEQ.S   .maybe_update_window_ptr
 
     LSL.L   #2,D0
@@ -169,16 +222,16 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  8(A0),164(A3)
 
 .maybe_update_window_ptr:
-    MOVEA.L -604(A4),A0                                     ; A4-604 = saved WBStartup msg ??
+    MOVEA.L savedMsg(A4),A0                                 ; saved WBStartup msg ??
     MOVE.L  A0,-(A7)
-    PEA     -664(A4)
+    PEA     Global_WBStartupCmdBuffer(A4)
     MOVEA.L 36(A0),A0                                       ; WBStartup+36 = sm_ArgList ??
-    MOVE.L  4(A0),-592(A4)                                  ; WBArg[0].wa_Name ??
+    MOVE.L  4(A0),Global_ScratchPtr_592(A4)                 ; WBArg[0].wa_Name ??
 
 .run_main_init:
-    JSR     ESQ_JMPTBL_LAB_190F(PC)
+    JSR     ESQ_JMPTBL_UNKNOWN2B_Stub0(PC)
 
-    JSR     ESQ_JMPTBL_LAB_1A76(PC)
+    JSR     ESQ_JMPTBL_ESQ_ParseCommandLineAndRun(PC)
 
     MOVEQ   #0,D0
     BRA.S   ESQ_ShutdownAndReturn
@@ -215,7 +268,7 @@ LAB_0009:
 ; CLOBBERS:
 ;   D0/A0-A6
 ; CALLS:
-;   ESQ_JMPTBL_LAB_1A26, _LVOCloseLibrary, ESQ_JMPTBL_LAB_1910, _LVOReplyMsg
+;   ESQ_JMPTBL_MEMLIST_FreeAll, _LVOCloseLibrary, ESQ_JMPTBL_UNKNOWN2B_Stub1, _LVOReplyMsg
 ; READS:
 ;   savedMsg, savedStackPointer, savedExecBase, LocalDosLibraryDisplacement
 ; WRITES:
@@ -227,25 +280,25 @@ LAB_0009:
 ESQ_ShutdownAndReturn:
 LAB_000A:
     MOVE.L  D0,-(A7)
-    MOVE.L  -620(A4),D0
+    MOVE.L  Global_ExitHookPtr(A4),D0
     BEQ.S   .call_exit_hook
 
     MOVEA.L D0,A0
     JSR     (A0)
 
 .call_exit_hook:
-    JSR     ESQ_JMPTBL_LAB_1A26(PC)
+    JSR     ESQ_JMPTBL_MEMLIST_FreeAll(PC)
 
     MOVEA.L AbsExecBase,A6
     MOVEA.L LocalDosLibraryDisplacement(A4),A1
     JSR     _LVOCloseLibrary(A6)
 
-    JSR     ESQ_JMPTBL_LAB_1910(PC)
+    JSR     ESQ_JMPTBL_UNKNOWN2B_Stub1(PC)
 
     TST.L   savedMsg(A4)
     BEQ.S   .restore_registers_and_return
 
-    MOVE.L  -596(A4),D1
+    MOVE.L  Global_WBStartupWindowPtr(A4),D1
     BEQ.S   .maybe_restore_supervisor
 
     JSR     _LVOexecPrivate1(A6) ; this might be inaccurate?
@@ -269,7 +322,7 @@ LOCAL_STR_DOS_LIBRARY:
     NStr    "dos.library"
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1910   (JumpStub_LAB_1910)
+; FUNC: ESQ_JMPTBL_UNKNOWN2B_Stub1   (JumpStub_UNKNOWN2B_Stub1)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -277,20 +330,20 @@ LOCAL_STR_DOS_LIBRARY:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1910
+;   UNKNOWN2B_Stub1
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1910.
+;   Jump stub to UNKNOWN2B_Stub1.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1910:
+ESQ_JMPTBL_UNKNOWN2B_Stub1:
 LAB_000F:
-    JMP     LAB_1910
+    JMP     UNKNOWN2B_Stub1
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_190F   (JumpStub_LAB_190F)
+; FUNC: ESQ_JMPTBL_UNKNOWN2B_Stub0   (JumpStub_UNKNOWN2B_Stub0)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -298,20 +351,20 @@ LAB_000F:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_190F
+;   UNKNOWN2B_Stub0
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_190F.
+;   Jump stub to UNKNOWN2B_Stub0.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_190F:
+ESQ_JMPTBL_UNKNOWN2B_Stub0:
 LAB_0010:
-    JMP     LAB_190F
+    JMP     UNKNOWN2B_Stub0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1A26   (JumpStub_LAB_1A26)
+; FUNC: ESQ_JMPTBL_MEMLIST_FreeAll   (JumpStub_MEMLIST_FreeAll)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -319,20 +372,20 @@ LAB_0010:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1A26
+;   MEMLIST_FreeAll
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1A26.
+;   Jump stub to MEMLIST_FreeAll.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1A26:
+ESQ_JMPTBL_MEMLIST_FreeAll:
 LAB_0011:
-    JMP     LAB_1A26
+    JMP     MEMLIST_FreeAll
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1A76   (JumpStub_LAB_1A76)
+; FUNC: ESQ_JMPTBL_ESQ_ParseCommandLineAndRun   (JumpStub_ESQ_ParseCommandLineAndRun)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -340,17 +393,17 @@ LAB_0011:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1A76
+;   ESQ_ParseCommandLineAndRun
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1A76.
+;   Jump stub to ESQ_ParseCommandLineAndRun.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1A76:
+ESQ_JMPTBL_ESQ_ParseCommandLineAndRun:
 LAB_0012:
-    JMP     LAB_1A76
+    JMP     ESQ_ParseCommandLineAndRun
 
 ;!======
 
@@ -450,9 +503,9 @@ CHECK_IF_COMPATIBLE_VIDEO_CHIP:
 ; CLOBBERS:
 ;   D0-D7/A0-A6
 ; CALLS:
-;   JMPTBL_DO_DELAY, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
+;   JMPTBL_DOS_Delay, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
-;   PREVUE_JMPTBL_LAB_1A06, JMPTBL_LAB_1911, JMPTBL_LIBRARIES_LOAD_FAILED_1
+;   PREVUE_JMPTBL_MATH_Mulu32, JMPTBL_STREAM_BufferedWriteString, JMPTBL_BUFFER_FlushAllAndCloseWithCode_1
 ; READS:
 ;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TOPAZ_FONT,
 ;   LAB_1DE9_B, LAB_1DD8_RASTPORT,
@@ -497,7 +550,7 @@ LAB_0017:
 
     ; Delay 250 ticks or 5 seconds
     PEA     250.W
-    JSR     JMPTBL_DO_DELAY(PC)
+    JSR     JMPTBL_DOS_Delay(PC)
 
     ADDQ.W  #4,A7
 
@@ -612,7 +665,7 @@ LAB_0017:
     JSR     _LVOSizeWindow(A6)
 
     PEA     100.W
-    JSR     JMPTBL_DO_DELAY(PC)
+    JSR     JMPTBL_DOS_Delay(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #50,D0
@@ -628,7 +681,7 @@ LAB_0017:
     ADDI.L  #4000,D4
     MOVE.L  D7,D0
     MOVE.L  #640,D1
-    JSR     PREVUE_JMPTBL_LAB_1A06(PC)
+    JSR     PREVUE_JMPTBL_MATH_Mulu32(PC)
 
     LSR.L   #3,D0
     MOVE.L  D5,D1
@@ -650,10 +703,10 @@ LAB_0017:
 
 .show_rerun_error:
     PEA     GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
-    JSR     JMPTBL_LAB_1911(PC)
+    JSR     JMPTBL_STREAM_BufferedWriteString(PC)
 
     CLR.L   (A7)
-    JSR     JMPTBL_LIBRARIES_LOAD_FAILED_1(PC)
+    JSR     JMPTBL_BUFFER_FlushAllAndCloseWithCode_1(PC)
 
     ADDQ.W  #4,A7
 
@@ -731,17 +784,17 @@ LAB_001E:
 
 ;!======
 
-JMPTBL_DO_DELAY:
-    JMP     DO_DELAY
+JMPTBL_DOS_Delay:
+    JMP     DOS_Delay
 
-JMPTBL_LAB_1911:
-    JMP     LAB_1911
+JMPTBL_STREAM_BufferedWriteString:
+    JMP     STREAM_BufferedWriteString
 
-PREVUE_JMPTBL_LAB_1A06:
-    JMP     LAB_1A06
+PREVUE_JMPTBL_MATH_Mulu32:
+    JMP     MATH_Mulu32
 
-JMPTBL_LIBRARIES_LOAD_FAILED_1:
-    JMP     LIBRARIES_LOAD_FAILED
+JMPTBL_BUFFER_FlushAllAndCloseWithCode_1:
+    JMP     BUFFER_FlushAllAndCloseWithCode
 
 ;!======
 
@@ -755,7 +808,7 @@ JMPTBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/a/a/app2.s"
     include "modules/groups/a/a/app3.s"
     include "modules/groups/a/a/bevel.s"
-    include "modules/groups/a/a/bimage.s"
+    include "modules/groups/a/a/bitmap.s"
     include "modules/groups/a/a/brush.s"
     include "modules/groups/a/a/xjump.s"
 
@@ -814,6 +867,7 @@ JMPTBL_LIBRARIES_LOAD_FAILED_1:
     include "modules/groups/a/q/esqshared4.s"
 
     include "modules/groups/a/r/flib.s"
+    include "modules/groups/a/r/xjump.s"
 
     include "modules/groups/a/s/flib2.s"
     include "modules/groups/a/s/gcommand.s"
@@ -824,17 +878,23 @@ JMPTBL_LIBRARIES_LOAD_FAILED_1:
 
     include "modules/groups/a/u/gcommand3.s"
     include "modules/groups/a/u/gcommand4.s"
+    include "modules/groups/a/u/xjump.s"
 
     include "modules/groups/a/v/gcommand5.s"
     include "modules/groups/a/v/kybd.s"
+    include "modules/groups/a/v/xjump.s"
 
     include "modules/groups/a/w/ladfunc.s"
+    include "modules/groups/a/w/xjump.s"
 
     include "modules/groups/a/x/ladfunc2.s"
+    include "modules/groups/a/x/xjump.s"
 
     include "modules/groups/a/y/locavail.s"
+    include "modules/groups/a/y/xjump.s"
 
     include "modules/groups/a/z/locavail2.s"
+    include "modules/groups/a/z/xjump.s"
 
     include "modules/groups/b/a/newgrid.s"
     include "modules/groups/b/a/newgrid1.s"

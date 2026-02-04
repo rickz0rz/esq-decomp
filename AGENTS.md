@@ -29,6 +29,7 @@ Never commit generated binaries; stash them or place them in `build/`.
 Use four-space indentation, uppercase opcodes, and align operands as in the existing modules. Public entry points should follow the `MODULE_ActionVerb` pattern (`GCOMMAND_LoadDefaultTable`, `KYBD_HandleRepeat`), with the original `LAB_xxxx` label retained immediately below the alias. Local labels stay lowercase with a leading dot. Favor short descriptive comments over block prose; explain hardware magic numbers and state transitions, not obvious move instructions. Share repeated sequences through macros and keep configuration flags (`includeCustomAriAssembly`) centralized.
 When opaque data blocks appear (formerly “garbage”), annotate them as likely switch/jump tables and name them accordingly as you confirm usage.
 For jump stubs, use a clear prefix such as `MODULE_JMPTBL_*` or `ESQ_JMPTBL_*` and add a header block (they are still callable entry points).
+Prefer named symbols for A4-based globals (e.g., `Global_SavedDirLock`) instead of raw offsets like `-612(A4)`. Define these in `src/Prevue.asm` and reuse them across modules.
 
 ## Inline Documentation Standards (vasm-friendly)
 Prefer inline comments in the `.s`/`.asm` files over external docs. Do not change instruction semantics; do not optimize or reorder code unless explicitly requested. Avoid renaming labels unless asked; add an alias label or comment-based name instead.
@@ -111,7 +112,7 @@ If unsure, use a conservative name with `??`, e.g., `(PickChoiceFromTable??)`.
 Every change should be followed by `./test-hash.sh` as the default verification step. If the output matches the canonical hash (`6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`), the build is in a good spot; otherwise investigate or document why. When touching input handling or drawing code, capture emulator traces or screenshots to supplement the hash result.
 
 ## Commit & Pull Request Guidelines
-Commits should be small, scoped, and written in imperative mood (`Rename GROUP_AS_JMPTBL_LAB_1979 highlight helpers`). Reference affected modules in the body and call out any new tables or configuration knobs. Pull requests need a brief summary, testing evidence (hash output, emulator logs), and links to related research threads. Highlight any remaining anonymous labels (`LAB_****`) that still require naming so reviewers can coordinate follow-up work.
+Commits should be small, scoped, and written in imperative mood (`Rename GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper highlight helpers`). Reference affected modules in the body and call out any new tables or configuration knobs. Pull requests need a brief summary, testing evidence (hash output, emulator logs), and links to related research threads. Highlight any remaining anonymous labels (`LAB_****`) that still require naming so reviewers can coordinate follow-up work.
 
 ## Documentation & Review Workflow
 Update inline comments, `README.md`, and tables in `src/data/` when you rename labels or introduce new presets so future contributors can follow the thread. Cross-link helpers between modules (e.g., note when `gcommand.s` exports are consumed by `wdisp.s`) and record open renaming targets in the AGENTS checklist to keep the disassembly uniformly annotated.

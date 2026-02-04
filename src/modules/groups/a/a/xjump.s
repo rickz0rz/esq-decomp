@@ -1,8 +1,8 @@
-GROUP_AA_JMPTBL_LAB_1968:
-    JMP     LAB_1968
+GROUP_AA_JMPTBL_STRING_CompareNoCase:
+    JMP     STRING_CompareNoCase
 
-GROUP_AA_JMPTBL_LAB_195B:
-    JMP     LAB_195B
+GROUP_AA_JMPTBL_STRING_CompareN:
+    JMP     STRING_CompareN
 
 GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     GCOMMAND_FindPathSeparator

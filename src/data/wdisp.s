@@ -59,18 +59,18 @@ LAB_21A8:
 LAB_21A9:
     DC.L    $ffff0000,$000e000e
     DS.L    1
-    DC.L    LAB_1AC7
+    DC.L    DEBUG_STR_UserAbortRequested
     DS.L    1
     DC.L    $ffff0000,$00040004
     DS.L    2
     DC.L    LAB_21A9
     DC.L    $ffff0000,$00040004
     DS.L    1
-    DC.L    LAB_1AC8
+    DC.L    DEBUG_STR_Continue
     DS.L    1
     DC.L    $ffff0000,$00040004
     DS.L    1
-    DC.L    LAB_1AC9
+    DC.L    DEBUG_STR_Abort
     DS.L    1
 BUFFER_5929_LONGWORDS:
     DS.L    19

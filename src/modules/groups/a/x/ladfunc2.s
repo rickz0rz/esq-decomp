@@ -1,6 +1,3 @@
-LAB_0EF2:
-    JMP     LAB_1955
-
     ; ??
     MOVEQ   #97,D0
     RTS
@@ -52,7 +49,7 @@ LAB_0EF5:
 
     MOVE.L  D6,D0
     MOVE.L  D7,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     TST.L   D1
     BNE.S   LAB_0EF7
@@ -198,13 +195,3 @@ LAB_0F01:
 
     ; Alignment
     ALIGN_WORD
-
-;!======
-
-LAB_0F02:
-    JMP     LAB_1906
-
-;!======
-
-    ; Alignment
-    MOVEQ   #97,D0

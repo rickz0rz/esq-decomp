@@ -1,22 +1,44 @@
+;------------------------------------------------------------------------------
+; FUNC: ED2_DrawEntryDetailsPanel   (Draw entry details panel??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D2/A0-A3/A6 ??
+; CALLS:
+;   GROUPB_JMPTBL_MEMORY_AllocateMemory, _LVOSetRast, GROUP_AM_JMPTBL_WDISP_SPrintf,
+;   LAB_09AD, LAB_052D, LAB_07C7, GROUP_AI_JMPTBL_STRING_AppendAtNull,
+;   GROUPB_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   LAB_21E5, LAB_2231, LAB_2236, LAB_1D32, LAB_1D33, LAB_2216
+; WRITES:
+;   LAB_1D33, LAB_21E5
+; DESC:
+;   Formats and draws details for the selected entry, including flags and titles.
+; NOTES:
+;   Builds a temporary 1000-byte text buffer and frees it before returning.
+;------------------------------------------------------------------------------
+ED2_DrawEntryDetailsPanel:
 LAB_072A:
     LINK.W  A5,#-148
     MOVEM.L A2-A3,-(A7)
     MOVE.W  LAB_21E5,D0
     MOVE.W  LAB_2231,D1
     CMP.W   D1,D0
-    BGE.S   LAB_072B
+    BGE.S   .reset_index
 
     TST.W   D0
-    BPL.S   LAB_072C
+    BPL.S   .select_entry_ptr
 
-LAB_072B:
+.reset_index:
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1D33
     MOVEQ   #0,D1
     MOVE.W  D1,LAB_21E5
-    BRA.S   LAB_072D
+    BRA.S   .have_entry_ptr
 
-LAB_072C:
+.select_entry_ptr:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -25,12 +47,12 @@ LAB_072C:
     MOVEA.L (A0),A1
     MOVE.L  A1,LAB_1D33
 
-LAB_072D:
+.have_entry_ptr:
     TST.L   LAB_1D33
-    BEQ.W   LAB_0742
+    BEQ.W   .return
 
     TST.L   LAB_1D32
-    BEQ.W   LAB_0742
+    BEQ.W   .return
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1000.W
@@ -50,16 +72,16 @@ LAB_072D:
     MOVE.W  LAB_21E6,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BGT.S   LAB_072E
+    BGT.S   .clamp_row_index
 
     MOVEQ   #1,D1
     CMP.W   D1,D0
-    BGE.S   LAB_072F
+    BGE.S   .row_index_ready
 
-LAB_072E:
+.clamp_row_index:
     MOVE.W  #1,LAB_21E6
 
-LAB_072F:
+.row_index_ready:
     MOVE.W  LAB_21E5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -88,36 +110,36 @@ LAB_072F:
     MOVEA.L A0,A1
     ADDQ.L  #1,A1
     MOVE.L  A1,D0
-    BEQ.S   LAB_0730
+    BEQ.S   .use_default_name
 
     LEA     1(A0),A1
-    BRA.S   LAB_0731
+    BRA.S   .name_ptr_ready
 
-LAB_0730:
+.use_default_name:
     LEA     LAB_1D3B,A1
 
-LAB_0731:
+.name_ptr_ready:
     TST.L   LAB_1D33
-    BEQ.S   LAB_0732
+    BEQ.S   .use_default_source
 
     MOVEA.L LAB_1D33,A2
-    BRA.S   LAB_0733
+    BRA.S   .source_ptr_ready
 
-LAB_0732:
+.use_default_source:
     LEA     LAB_1D3C,A2
 
-LAB_0733:
+.source_ptr_ready:
     LEA     19(A0),A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_0734
+    BEQ.S   .use_default_call_letters
 
     LEA     19(A0),A3
-    BRA.S   LAB_0735
+    BRA.S   .call_letters_ready
 
-LAB_0734:
+.use_default_call_letters:
     LEA     LAB_1D3D,A3
 
-LAB_0735:
+.call_letters_ready:
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
@@ -142,7 +164,7 @@ LAB_0735:
 
     LEA     44(A7),A7
     MOVE.L  D0,-148(A5)
-    BEQ.S   LAB_0736
+    BEQ.S   .no_title_buffer
 
     MOVE.W  LAB_21E6,D0
     EXT.L   D0
@@ -152,24 +174,24 @@ LAB_0735:
     JSR     LAB_07C7(PC)
 
     LEA     12(A7),A7
-    BRA.S   LAB_0737
+    BRA.S   .title_buffer_ready
 
-LAB_0736:
+.no_title_buffer:
     CLR.B   -140(A5)
 
-LAB_0737:
+.title_buffer_ready:
     MOVE.W  LAB_21E6,D0
     EXT.L   D0
     TST.L   -148(A5)
-    BEQ.S   LAB_0738
+    BEQ.S   .use_default_title
 
     MOVEA.L -148(A5),A0
-    BRA.S   LAB_0739
+    BRA.S   .title_ptr_ready
 
-LAB_0738:
+.use_default_title:
     LEA     LAB_1D3F,A0
 
-LAB_0739:
+.title_ptr_ready:
     PEA     -140(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
@@ -189,99 +211,99 @@ LAB_0739:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #0,7(A0)
-    BEQ.S   LAB_073A
+    BEQ.S   .after_flag0
 
     PEA     LAB_1D40
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_073A:
+.after_flag0:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #1,7(A0)
-    BEQ.S   LAB_073B
+    BEQ.S   .after_flag1
 
     PEA     LAB_1D41
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_073B:
+.after_flag1:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #2,7(A0)
-    BEQ.S   LAB_073C
+    BEQ.S   .after_flag2
 
     PEA     LAB_1D42
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_073C:
+.after_flag2:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #3,7(A0)
-    BEQ.S   LAB_073D
+    BEQ.S   .after_flag3
 
     PEA     LAB_1D43
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_073D:
+.after_flag3:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #4,7(A0)
-    BEQ.S   LAB_073E
+    BEQ.S   .after_flag4
 
     PEA     LAB_1D44
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_073E:
+.after_flag4:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #5,7(A0)
-    BEQ.S   LAB_073F
+    BEQ.S   .after_flag5
 
     PEA     LAB_1D45
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_073F:
+.after_flag5:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #6,7(A0)
-    BEQ.S   LAB_0740
+    BEQ.S   .after_flag6
 
     PEA     LAB_1D46
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0740:
+.after_flag6:
     MOVEA.L LAB_1D33,A0
     ADDA.W  LAB_21E6,A0
     BTST    #7,7(A0)
-    BEQ.S   LAB_0741
+    BEQ.S   .after_flag7
 
     PEA     LAB_1D47
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0741:
+.after_flag7:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     210.W
@@ -297,13 +319,34 @@ LAB_0741:
 
     LEA     28(A7),A7
 
-LAB_0742:
+.return:
     MOVEM.L (A7)+,A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED2_DrawEntrySummaryPanel   (Draw entry summary panel??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D2/A0-A3/A6 ??
+; CALLS:
+;   _LVOSetRast, GROUP_AM_JMPTBL_WDISP_SPrintf, LAB_09AD,
+;   GROUP_AI_JMPTBL_STRING_AppendAtNull
+; READS:
+;   LAB_21E5, LAB_2231, LAB_2233, LAB_1D32, LAB_2216
+; WRITES:
+;   LAB_1D32, LAB_1D33, LAB_21E5, LAB_21E6
+; DESC:
+;   Draws summary text and flag strings for the currently selected entry.
+; NOTES:
+;   Uses flag fields at offsets 27 and 46 in the entry data.
+;------------------------------------------------------------------------------
+ED2_DrawEntrySummaryPanel:
 LAB_0743:
     LINK.W  A5,#-120
     MOVEM.L D2/A2-A3,-(A7)
@@ -311,25 +354,25 @@ LAB_0743:
     MOVE.W  LAB_21E5,D0
     MOVE.W  LAB_2231,D1
     CMP.W   D1,D0
-    BGE.S   LAB_0744
+    BGE.S   .reset_index
 
     TST.W   D0
-    BPL.S   LAB_0745
+    BPL.S   .after_index_check
 
-LAB_0744:
+.reset_index:
     MOVEQ   #0,D2
     MOVE.W  D2,LAB_21E5
 
-LAB_0745:
+.after_index_check:
     TST.W   D1
-    BNE.S   LAB_0746
+    BNE.S   .select_entry_ptr
 
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_1D32
     MOVE.L  A0,LAB_1D33
-    BRA.S   LAB_0747
+    BRA.S   .have_entry_ptr
 
-LAB_0746:
+.select_entry_ptr:
     MOVE.W  LAB_21E5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -339,9 +382,9 @@ LAB_0746:
     MOVE.L  A1,LAB_1D32
     CLR.W   LAB_21E6
 
-LAB_0747:
+.have_entry_ptr:
     TST.L   LAB_1D32
-    BEQ.W   LAB_0755
+    BEQ.W   .return
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -391,99 +434,99 @@ LAB_0747:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #0,D0
-    BEQ.S   LAB_0748
+    BEQ.S   .after_flag0
 
     PEA     LAB_1D4B
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0748:
+.after_flag0:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #1,D0
-    BEQ.S   LAB_0749
+    BEQ.S   .after_flag1
 
     PEA     LAB_1D4C
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0749:
+.after_flag1:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #2,D0
-    BEQ.S   LAB_074A
+    BEQ.S   .after_flag2
 
     PEA     LAB_1D4D
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_074A:
+.after_flag2:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #3,D0
-    BEQ.S   LAB_074B
+    BEQ.S   .after_flag3
 
     PEA     LAB_1D4E
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_074B:
+.after_flag3:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #4,D0
-    BEQ.S   LAB_074C
+    BEQ.S   .after_flag4
 
     PEA     LAB_1D4F
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_074C:
+.after_flag4:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #5,D0
-    BEQ.S   LAB_074D
+    BEQ.S   .after_flag5
 
     PEA     LAB_1D50
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_074D:
+.after_flag5:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #6,D0
-    BEQ.S   LAB_074E
+    BEQ.S   .after_flag6
 
     PEA     LAB_1D51
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_074E:
+.after_flag6:
     MOVEA.L LAB_1D32,A0
     MOVE.B  27(A0),D0
     BTST    #7,D0
-    BEQ.S   LAB_074F
+    BEQ.S   .after_flag7
 
     PEA     LAB_1D52
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_074F:
+.after_flag7:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     180.W
@@ -496,63 +539,63 @@ LAB_074F:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #0,D0
-    BEQ.S   LAB_0750
+    BEQ.S   .after_word_flag0
 
     PEA     LAB_1D53
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0750:
+.after_word_flag0:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #1,D0
-    BEQ.S   LAB_0751
+    BEQ.S   .after_word_flag1
 
     PEA     LAB_1D54
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0751:
+.after_word_flag1:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #2,D0
-    BEQ.S   LAB_0752
+    BEQ.S   .after_word_flag2
 
     PEA     LAB_1D55
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0752:
+.after_word_flag2:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #3,D0
-    BEQ.S   LAB_0753
+    BEQ.S   .after_word_flag3
 
     PEA     LAB_1D56
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0753:
+.after_word_flag3:
     MOVEA.L LAB_1D32,A0
     MOVE.W  46(A0),D0
     BTST    #4,D0
-    BEQ.S   LAB_0754
+    BEQ.S   .after_word_flag4
 
     PEA     LAB_1D57
     PEA     -120(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0754:
+.after_word_flag4:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     PEA     210.W
@@ -562,13 +605,44 @@ LAB_0754:
 
     LEA     12(A7),A7
 
-LAB_0755:
+.return:
     MOVEM.L (A7)+,D2/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED2_HandleMenuActions   (Handle ESC menu actions??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   ED1_DrawStatusLine1, ED1_DrawStatusLine2, ED2_DrawEntrySummaryPanel,
+;   ED2_DrawEntryDetailsPanel, DST_FormatBannerDateTime, DST_JMPTBL_FormatToBuffer,
+;   GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVORead, _LVOClose,
+;   GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar, GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition,
+;   GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom, GROUPB_JMPTBL_LAB_0A97,
+;   ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_07C4, LAB_07C5,
+;   LAB_07C9, LAB_07CA, LAB_07CB, LAB_07D2, LAB_09A7, LAB_0969, LAB_095F,
+;   GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer
+; READS:
+;   LAB_231C, LAB_231D, LAB_21E5, LAB_21E6, LAB_1D32, LAB_1D33, LAB_2231,
+;   LAB_2233, LAB_2236, LAB_224A, LAB_227F, LAB_229B, LAB_229C, LAB_229D,
+;   LAB_2380, LAB_1DEC, LAB_1DD9, LAB_2059
+; WRITES:
+;   LAB_21ED, LAB_21E5, LAB_21E6, LAB_1FA5, LAB_1D13, LAB_1DE4, LAB_1DEF,
+;   LAB_1B05, LAB_1F45, LAB_1FE9, LAB_1DDE, LAB_1DDF, LAB_22AA, LAB_2346,
+;   LAB_2266
+; DESC:
+;   Dispatches ESC menu selections to a large set of diagnostic and UI actions.
+; NOTES:
+;   Switch-like chain on LAB_231D-selected index; ends by restoring rastport state.
+;------------------------------------------------------------------------------
+ED2_HandleMenuActions:
 LAB_0756:
     LINK.W  A5,#-120
     MOVEM.L D2-D7,-(A7)
@@ -583,219 +657,219 @@ LAB_0756:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBQ.W  #2,D1
-    BEQ.W   LAB_076A
+    BEQ.W   .case_draw_status_line1
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0781
+    BEQ.W   .case_rebuild_display
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_076B
+    BEQ.W   .case_decrement_status_index
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_076D
+    BEQ.W   .case_increment_status_index
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_076E
+    BEQ.W   .case_refresh_rastports
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_075B
+    BEQ.W   .case_prev_summary_entry
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_075D
+    BEQ.W   .case_prev_detail_row
 
     SUBQ.W  #5,D1
-    BEQ.W   LAB_0778
+    BEQ.W   .case_reset_defaults
 
     SUBQ.W  #4,D1
-    BEQ.W   LAB_0793
+    BEQ.W   .case_set_1f45_200
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_0777
+    BEQ.W   .case_dump_runtime_vars
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_0779
+    BEQ.W   .case_toggle_1ba2
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_077C
+    BEQ.W   .case_enter_esc_menu
 
     SUBI.W  #16,D1
-    BEQ.W   LAB_077E
+    BEQ.W   .case_banner_char_next
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_077D
+    BEQ.W   .case_banner_char_prev
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_0768
+    BEQ.W   .case_call_07c5
 
     SUBI.W  #14,D1
-    BEQ.W   LAB_077F
+    BEQ.W   .case_banner_char_code8e
 
     SUBQ.W  #4,D1
-    BEQ.W   LAB_0782
+    BEQ.W   .case_start_transition_2
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_078A
+    BEQ.W   .case_call_0539
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_078F
+    BEQ.W   .case_call_0a7c
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_078D
+    BEQ.W   .case_clear_pending_flag
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_0797
+    BEQ.W   .case_call_07cb
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0785
+    BEQ.W   .case_wait_clear_bit1
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0786
+    BEQ.W   .case_copy_gfx_to_work
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0795
+    BEQ.W   .case_show_status_message
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_0799
+    BEQ.W   .restore_display_state
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0784
+    BEQ.W   .case_wait_clear_bit0
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0792
+    BEQ.W   .case_set_1f45_100
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0783
+    BEQ.W   .case_start_transition_3
 
     SUBQ.W  #8,D1
-    BEQ.W   LAB_0769
+    BEQ.W   .case_set_mode_18
 
     SUBQ.W  #7,D1
-    BEQ.W   LAB_0787
+    BEQ.W   .case_draw_color_bars
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_078B
+    BEQ.W   .case_call_07ca
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0759
+    BEQ.W   .case_draw_status_line2
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0790
+    BEQ.W   .case_call_09b0
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_075A
+    BEQ.W   .case_next_summary_entry
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_075C
+    BEQ.W   .case_next_detail_row
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_075E
+    BEQ.W   .case_read_clockcmd_file
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_078C
+    BEQ.W   .case_render_aligned_status_short
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_0796
+    BEQ.W   .case_enable_highlight
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_0798
+    BEQ.W   .case_parse_gradient_ini
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0799
+    BEQ.W   .restore_display_state
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_078E
+    BEQ.W   .case_render_aligned_status_full
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0791
+    BEQ.W   .case_clear_1f45
 
     SUBQ.W  #5,D1
-    BEQ.W   LAB_0780
+    BEQ.W   .case_set_copper_custom
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0789
+    BEQ.W   .case_clear_22aa
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0794
+    BEQ.W   .case_adjust_2266
 
     SUBI.W  #$26,D1
-    BEQ.W   LAB_076F
+    BEQ.W   .case_call_0484
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_0776
+    BEQ.W   .case_toggle_1def
 
     SUBI.W  #$3e,D1
-    BEQ.S   LAB_0757
+    BEQ.S   .case_toggle_1fa5
 
     SUBQ.W  #6,D1
-    BEQ.W   LAB_0770
+    BEQ.W   .case_set_1de4
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_0771
+    BEQ.W   .case_format_debug_strings
 
     SUBI.W  #$17,D1
-    BEQ.S   LAB_0758
+    BEQ.S   .case_format_banner_datetime
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0757:
+.case_toggle_1fa5:
     TST.W   LAB_1FA5
     SEQ     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.W  D0,LAB_1FA5
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0758:
+.case_format_banner_datetime:
     PEA     LAB_223A
     PEA     LAB_1D58
-    JSR     LAB_0657(PC)
+    JSR     DST_FormatBannerDateTime(PC)
 
     PEA     LAB_2274
     PEA     LAB_1D59
-    JSR     LAB_0657(PC)
+    JSR     DST_FormatBannerDateTime(PC)
 
     LEA     16(A7),A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0759:
-    BSR.W   LAB_0729
+.case_draw_status_line2:
+    BSR.W   ED1_DrawStatusLine2
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_075A:
+.case_next_summary_entry:
     MOVE.W  LAB_21E5,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_21E5
-    BSR.W   LAB_0743
+    BSR.W   ED2_DrawEntrySummaryPanel
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_075B:
+.case_prev_summary_entry:
     MOVE.W  LAB_21E5,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_21E5
-    BSR.W   LAB_0743
+    BSR.W   ED2_DrawEntrySummaryPanel
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_075C:
+.case_next_detail_row:
     MOVE.W  LAB_21E6,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_21E6
-    BSR.W   LAB_072A
+    BSR.W   ED2_DrawEntryDetailsPanel
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_075D:
+.case_prev_detail_row:
     MOVE.W  LAB_21E6,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_21E6
-    BSR.W   LAB_072A
+    BSR.W   ED2_DrawEntryDetailsPanel
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_075E:
+.case_read_clockcmd_file:
     MOVEQ   #0,D6
     CLR.L   -118(A5)
     PEA     (MODE_OLDFILE).W
@@ -805,7 +879,7 @@ LAB_075E:
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BEQ.W   LAB_0799
+    BEQ.W   .restore_display_state
 
     MOVE.L  D6,D1
     LEA     -105(A5),A0
@@ -817,61 +891,61 @@ LAB_075E:
     MOVE.L  D0,D4
     MOVEQ   #11,D0
     CMP.L   D0,D4
-    BLT.S   LAB_0767
+    BLT.S   .close_file
 
     MOVEQ   #0,D5
 
-LAB_075F:
+.scan_buffer_loop:
     CMP.L   D4,D5
-    BGE.S   LAB_0767
+    BGE.S   .close_file
 
     MOVE.L  -118(A5),D0
     TST.L   D0
-    BEQ.S   LAB_0760
+    BEQ.S   .state_wait_u
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_0761
+    BEQ.S   .state_wait_aa
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_0763
+    BEQ.S   .state_wait_k
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_0765
+    BEQ.S   .state_process_match
 
-    BRA.S   LAB_0766
+    BRA.S   .state_advance
 
-LAB_0760:
+.state_wait_u:
     MOVEQ   #85,D0
     CMP.B   -105(A5,D5.L),D0
-    BNE.S   LAB_0766
+    BNE.S   .state_advance
 
     ADDQ.L  #1,-118(A5)
-    BRA.S   LAB_0766
+    BRA.S   .state_advance
 
-LAB_0761:
+.state_wait_aa:
     CMPI.B  #$AA,-105(A5,D5.L)
-    BNE.S   LAB_0762
+    BNE.S   .state_reset1
 
     ADDQ.L  #1,-118(A5)
-    BRA.S   LAB_0766
+    BRA.S   .state_advance
 
-LAB_0762:
+.state_reset1:
     CLR.L   -118(A5)
-    BRA.S   LAB_0766
+    BRA.S   .state_advance
 
-LAB_0763:
+.state_wait_k:
     MOVEQ   #75,D0
     CMP.B   -105(A5,D5.L),D0
-    BNE.S   LAB_0764
+    BNE.S   .state_reset2
 
     ADDQ.L  #1,-118(A5)
-    BRA.S   LAB_0766
+    BRA.S   .state_advance
 
-LAB_0764:
+.state_reset2:
     CLR.L   -118(A5)
-    BRA.S   LAB_0766
+    BRA.S   .state_advance
 
-LAB_0765:
+.state_process_match:
     LEA     -105(A5),A0
     ADDA.L  D5,A0
     MOVE.L  A0,-(A7)
@@ -880,54 +954,54 @@ LAB_0765:
     ADDQ.W  #4,A7
     MOVE.L  D4,D5
 
-LAB_0766:
+.state_advance:
     ADDQ.L  #1,D5
-    BRA.S   LAB_075F
+    BRA.S   .scan_buffer_loop
 
-LAB_0767:
+.close_file:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0768:
+.case_call_07c5:
     JSR     LAB_07C5(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0769:
+.case_set_mode_18:
     MOVE.B  #$18,LAB_1D13
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_076A:
-    BSR.W   LAB_0728
+.case_draw_status_line1:
+    BSR.W   ED1_DrawStatusLine1
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_076B:
+.case_decrement_status_index:
     TST.W   LAB_1F40
-    BEQ.S   LAB_076C
+    BEQ.S   .after_status_index_dec
 
     MOVE.W  LAB_1F40,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_1F40
 
-LAB_076C:
-    BSR.W   LAB_0728
+.after_status_index_dec:
+    BSR.W   ED1_DrawStatusLine1
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_076D:
+.case_increment_status_index:
     MOVE.W  LAB_1F40,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_1F40
-    BSR.W   LAB_0728
+    BSR.W   ED1_DrawStatusLine1
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_076E:
+.case_refresh_rastports:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     MOVE.L  A0,-(A7)
@@ -939,36 +1013,36 @@ LAB_076E:
     JSR     LAB_07D2(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_076F:
+.case_call_0484:
     CLR.L   -(A7)
     JSR     LAB_0484(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0770:
+.case_set_1de4:
     MOVE.W  #1,LAB_1DE4
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0771:
+.case_format_debug_strings:
     PEA     LAB_1D5B
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     TST.B   LAB_224A
-    BEQ.S   LAB_0772
+    BEQ.S   .select_bool_string
 
     LEA     GLOB_STR_TRUE_1,A0
-    BRA.S   LAB_0773
+    BRA.S   .bool_string_ready
 
-LAB_0772:
+.select_bool_string:
     LEA     GLOB_STR_FALSE_1,A0
 
-LAB_0773:
+.bool_string_ready:
     MOVEQ   #0,D1
     MOVE.B  LAB_2238,D1
     MOVEQ   #0,D2
@@ -978,19 +1052,19 @@ LAB_0773:
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1D5C
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D7
 
-LAB_0774:
+.dump_entry_loop:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #0,D1
     MOVE.W  LAB_2231,D1
     CMP.L   D1,D0
-    BGE.S   LAB_0775
+    BGE.S   .after_dump_entries
 
     CLR.W   LAB_2363
     MOVE.B  D7,D0
@@ -1020,33 +1094,33 @@ LAB_0774:
 
     ADDQ.W  #8,A7
     ADDQ.B  #1,D7
-    BRA.S   LAB_0774
+    BRA.S   .dump_entry_loop
 
-LAB_0775:
+.after_dump_entries:
     PEA     LAB_1D5F
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0776:
+.case_toggle_1def:
     MOVE.B  LAB_1DEF,D0
     NOT.B   D0
     MOVE.B  D0,LAB_1DEF
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0777:
+.case_dump_runtime_vars:
     MOVEQ   #0,D0
     MOVE.B  LAB_229C,D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1D60
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_227F,D0
     MOVE.L  D0,(A7)
     PEA     LAB_1D61
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.W  LAB_229D,D0
     EXT.L   D0
@@ -1057,7 +1131,7 @@ LAB_0777:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1D62
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.W  LAB_2380,D0
     EXT.L   D0
@@ -1066,70 +1140,70 @@ LAB_0777:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_1D63
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.L  LAB_1DEC,(A7)
     PEA     LAB_1D64
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.L  LAB_1DD9,(A7)
     PEA     LAB_1D65
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     PEA     LAB_2245
     PEA     LAB_1D66
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_229B,D0
     MOVE.L  D0,(A7)
     PEA     LAB_1D67
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVE.L  LAB_2059,(A7)
     PEA     LAB_1D68
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     LEA     52(A7),A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0778:
+.case_reset_defaults:
     MOVE.B  #$3c,LAB_227F
     MOVE.B  #$1,LAB_229B
     MOVE.B  #$2,LAB_229C
     MOVE.W  #$32,LAB_229D
     CLR.W   LAB_2380
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0779:
+.case_toggle_1ba2:
     MOVE.B  LAB_1BA2,D0
     TST.B   D0
-    BEQ.S   LAB_077A
+    BEQ.S   .toggle_1ba2_restore
 
     MOVE.B  D0,LAB_21E7
     CLR.B   LAB_1BA2
-    BRA.S   LAB_077B
+    BRA.S   .toggle_1ba2_done
 
-LAB_077A:
+.toggle_1ba2_restore:
     MOVE.B  LAB_21E7,D1
     MOVE.B  D1,LAB_1BA2
 
-LAB_077B:
+.toggle_1ba2_done:
     MOVE.B  LAB_1BA2,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_1BCA
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_077C:
-    JSR     LAB_070E(PC)
+.case_enter_esc_menu:
+    JSR     ED1_EnterEscMenu(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_077D:
+.case_banner_char_prev:
     JSR     GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     SUBQ.W  #1,D0
@@ -1139,9 +1213,9 @@ LAB_077D:
     JSR     GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_077E:
+.case_banner_char_next:
     JSR     GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     ADDQ.W  #1,D0
@@ -1151,9 +1225,9 @@ LAB_077E:
     JSR     GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_077F:
+.case_banner_char_code8e:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     EXT.L   D0
     CLR.L   -(A7)
@@ -1161,15 +1235,15 @@ LAB_077F:
     JSR     GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0780:
+.case_set_copper_custom:
     MOVE.B  #$1f,LAB_1B05
     JSR     GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0781:
+.case_rebuild_display:
     PEA     4.W
     CLR.L   -(A7)
     PEA     3.W
@@ -1195,15 +1269,15 @@ LAB_0781:
     MOVEQ   #20,D1
     JSR     _LVORectFill(A6)
 
-    JSR     ESQ_JMPTBL_LAB_0057(PC)
+    JSR     ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     LEA     12(A7),A7
     MOVE.W  #1,LAB_1DF3
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0782:
+.case_start_transition_2:
     TST.L   LAB_1FE7
-    BNE.W   LAB_0799
+    BNE.W   .restore_display_state
 
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_1FE9
@@ -1213,11 +1287,11 @@ LAB_0782:
     ADDQ.W  #4,A7
     MOVE.W  #3,LAB_1DDE
     MOVE.W  #1,LAB_1DDF
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0783:
+.case_start_transition_3:
     TST.L   LAB_1FE7
-    BNE.W   LAB_0799
+    BNE.W   .restore_display_state
 
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_1FE9
@@ -1227,32 +1301,32 @@ LAB_0783:
     ADDQ.W  #4,A7
     MOVE.W  #3,LAB_1DDE
     MOVE.W  #1,LAB_1DDF
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0784:
-    JSR     LAB_071B(PC)
+.case_wait_clear_bit0:
+    JSR     ED1_WaitForFlagAndClearBit0(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0785:
-    JSR     LAB_071A(PC)
+.case_wait_clear_bit1:
+    JSR     ED1_WaitForFlagAndClearBit1(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0786:
+.case_copy_gfx_to_work:
     JSR     GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0787:
+.case_draw_color_bars:
     JSR     LAB_07E2(PC)
 
     MOVEQ   #0,D7
 
-LAB_0788:
+.color_bar_loop:
     MOVEQ   #32,D0
     CMP.B   D0,D7
-    BGE.W   LAB_0799
+    BGE.W   .restore_display_state
 
     MOVE.L  D7,D0
     EXT.W   D0
@@ -1283,28 +1357,28 @@ LAB_0788:
     JSR     _LVORectFill(A6)
 
     ADDQ.B  #1,D7
-    BRA.S   LAB_0788
+    BRA.S   .color_bar_loop
 
-LAB_0789:
+.case_clear_22aa:
     PEA     31.W
     CLR.L   -(A7)
     JSR     LAB_0AA2(PC)
 
     ADDQ.W  #8,A7
     CLR.W   LAB_22AA
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_078A:
+.case_call_0539:
     JSR     LAB_0539(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_078B:
+.case_call_07ca:
     JSR     LAB_07CA(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_078C:
+.case_render_aligned_status_short:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -1312,13 +1386,13 @@ LAB_078C:
     JSR     GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_078D:
+.case_clear_pending_flag:
     CLR.W   LAB_2346
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_078E:
+.case_render_aligned_status_full:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -1326,33 +1400,33 @@ LAB_078E:
     JSR     GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_078F:
+.case_call_0a7c:
     PEA     1.W
     JSR     LAB_0A7C(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0790:
+.case_call_09b0:
     JSR     LAB_09B0(PC)
 
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0791:
+.case_clear_1f45:
     CLR.W   LAB_1F45
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0792:
+.case_set_1f45_100:
     MOVE.W  #$100,LAB_1F45
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0793:
+.case_set_1f45_200:
     MOVE.W  #$200,LAB_1F45
-    BRA.W   LAB_0799
+    BRA.W   .restore_display_state
 
-LAB_0794:
+.case_adjust_2266:
     JSR     LAB_0969(PC)
 
     MOVE.W  LAB_2266,D0
@@ -1362,9 +1436,9 @@ LAB_0794:
 
     ADDQ.W  #4,A7
     MOVE.W  D0,LAB_2266
-    BRA.S   LAB_0799
+    BRA.S   .restore_display_state
 
-LAB_0795:
+.case_show_status_message:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
     MOVE.L  LAB_2267,-(A7)
@@ -1376,14 +1450,14 @@ LAB_0795:
     PEA     232.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
 
-    BRA.S   LAB_0799
+    BRA.S   .restore_display_state
 
-LAB_0796:
-    JSR     ESQ_JMPTBL_LAB_0057(PC)
+.case_enable_highlight:
+    JSR     ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
     JSR     LAB_09A7(PC)
@@ -1392,20 +1466,20 @@ LAB_0796:
     JSR     LAB_07C4(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0799
+    BRA.S   .restore_display_state
 
-LAB_0797:
+.case_call_07cb:
     JSR     LAB_07CB(PC)
 
-    BRA.S   LAB_0799
+    BRA.S   .restore_display_state
 
-LAB_0798:
+.case_parse_gradient_ini:
     PEA     GLOB_STR_DF0_GRADIENT_INI_1
     JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
 
     ADDQ.W  #4,A7
 
-LAB_0799:
+.restore_display_state:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1428,6 +1502,38 @@ LAB_0799:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED2_HandleDiagnosticsMenuActions   (Handle diagnostics menu actions??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D1/A0-A1 ??
+; CALLS:
+;   LAB_07D2, LAB_06CA, DRAW_DIAGNOSTIC_MODE_TEXT, GROUPB_JMPTBL_MATH_Mulu32,
+;   DISPLIB_DisplayTextAtPosition, LAB_07C4, GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn,
+;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight,
+;   ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight,
+;   GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default,
+;   ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask,
+;   GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow,
+;   GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow,
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU
+; READS:
+;   LAB_231C, LAB_231D, LAB_1DF0, LAB_1BC4, LAB_1DD7, LAB_1DCD, LAB_1DD6,
+;   LAB_226A ??
+; WRITES:
+;   LAB_21ED, LAB_1DF0, LAB_1DF1, GLOB_WORD_MAX_VALUE, LAB_2283, LAB_2287,
+;   DATACErrs, LAB_2285, LAB_2349, LAB_2348, LAB_2347, LAB_1BC4, LAB_1DD7,
+;   LAB_1DCD, LAB_21FB, LAB_21EB, LAB_1DD6, LAB_226A, LAB_2252 ??
+; DESC:
+;   Handles diagnostic/special menu selections, toggling flags, counters, and
+;   invoking test patterns or copper effects.
+; NOTES:
+;   Uses a switch-like chain on LAB_231D selection.
+;------------------------------------------------------------------------------
+ED2_HandleDiagnosticsMenuActions:
 LAB_079A:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
@@ -1439,117 +1545,117 @@ LAB_079A:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBQ.W  #1,D1
-    BEQ.W   LAB_079B
+    BEQ.W   .case_toggle_1df0_low3
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_079D
+    BEQ.W   .case_set_1df1_bit0
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_079E
+    BEQ.W   .case_set_1df1_bit1
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_079F
+    BEQ.W   .case_refresh_rastport_1
 
     SUBQ.W  #6,D1
-    BEQ.W   LAB_07A0
+    BEQ.W   .case_set_1df1_bit2
 
     SUBQ.W  #5,D1
-    BEQ.W   LAB_07A1
+    BEQ.W   .case_clear_error_counters
 
     SUBI.W  #15,D1
-    BEQ.W   LAB_07A2
+    BEQ.W   .case_adjust_1bc4
 
     SUBQ.W  #2,D1
-    BEQ.W   LAB_07A4
+    BEQ.W   .case_cycle_1dcd_digit
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07A6
+    BEQ.W   .case_adjust_1dd6
 
     SUBQ.W  #4,D1
-    BEQ.W   LAB_07B4
+    BEQ.W   .case_assert_ctrl_line
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07B5
+    BEQ.W   .case_deassert_ctrl_line
 
     SUBQ.W  #8,D1
-    BEQ.W   LAB_07AA
+    BEQ.W   .case_transition_0
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07AB
+    BEQ.W   .case_transition_1
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07AC
+    BEQ.W   .case_transition_2
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07AD
+    BEQ.W   .case_transition_3
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07AE
+    BEQ.W   .case_copper_all_on
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07AF
+    BEQ.W   .case_copper_all_off
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07B0
+    BEQ.W   .case_copper_on_highlight
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07B1
+    BEQ.W   .case_copper_default
 
     SUBQ.W  #1,D1
-    BEQ.W   LAB_07B2
+    BEQ.W   .case_show_ciab_bit5
 
     SUBQ.W  #7,D1
-    BEQ.W   LAB_07A3
+    BEQ.W   .case_adjust_1dd7
 
     SUBQ.W  #3,D1
-    BEQ.W   LAB_07A9
+    BEQ.W   .case_increment_226a
 
     SUBI.W  #$20,D1
-    BEQ.W   LAB_07A7
+    BEQ.W   .case_toggle_226a
 
-    BRA.W   LAB_07B6
+    BRA.W   .case_default_help
 
-LAB_079B:
+.case_toggle_1df0_low3:
     MOVEQ   #7,D0
     AND.L   LAB_1DF0,D0
     SUBQ.L  #7,D0
-    BNE.S   LAB_079C
+    BNE.S   .set_1df0_low3
 
     MOVEQ   #-8,D0
     AND.L   D0,LAB_1DF0
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_079C:
+.set_1df0_low3:
     MOVEQ   #7,D0
     OR.L    D0,LAB_1DF0
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_079D:
+.case_set_1df1_bit0:
     MOVEQ   #-8,D0
     AND.L   D0,LAB_1DF0
     BSET    #0,LAB_1DF1
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_079E:
+.case_set_1df1_bit1:
     MOVEQ   #-8,D0
     AND.L   D0,LAB_1DF0
     BSET    #1,LAB_1DF1
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_079F:
+.case_refresh_rastport_1:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     LAB_07D2(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A0:
+.case_set_1df1_bit2:
     MOVEQ   #-8,D0
     AND.L   D0,LAB_1DF0
     BSET    #2,LAB_1DF1
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A1:
+.case_clear_error_counters:
     MOVEQ   #0,D0
     MOVE.W  D0,GLOB_WORD_MAX_VALUE
     MOVE.W  D0,LAB_2283
@@ -1559,9 +1665,9 @@ LAB_07A1:
     MOVE.W  D0,LAB_2349
     MOVE.W  D0,LAB_2348
     MOVE.W  D0,LAB_2347
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A2:
+.case_adjust_1bc4:
     MOVE.B  LAB_1BC4,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1573,9 +1679,9 @@ LAB_07A2:
     JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A3:
+.case_adjust_1dd7:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD7,D0
     PEA     LAB_1D6C
@@ -1586,35 +1692,35 @@ LAB_07A3:
     JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A4:
+.case_cycle_1dcd_digit:
     MOVE.B  LAB_1DCD,D0
     MOVE.L  D0,D1
     SUBQ.B  #1,D1
     MOVE.B  D1,LAB_1DCD
     MOVEQ   #51,D0
     CMP.B   D0,D1
-    BCC.S   LAB_07A5
+    BCC.S   .after_cycle_1dcd
 
     MOVEQ   #54,D0
     MOVE.B  D0,LAB_1DCD
 
-LAB_07A5:
+.after_cycle_1dcd:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DCD,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.L  D0,LAB_21FB
     MOVEQ   #40,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_21EB
     JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
 
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A6:
+.case_adjust_1dd6:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD6,D0
     PEA     LAB_1D6D
@@ -1625,192 +1731,212 @@ LAB_07A6:
     JSR     DRAW_DIAGNOSTIC_MODE_TEXT(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A7:
+.case_toggle_226a:
     MOVE.W  LAB_226A,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_07A8
+    BNE.S   .case_set_226a_one
 
     CLR.W   LAB_226A
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A8:
+.case_set_226a_one:
     MOVE.W  #1,LAB_226A
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07A9:
+.case_increment_226a:
     MOVE.W  LAB_226A,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_226A
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07AA:
+.case_transition_0:
     PEA     LAB_1D6E
     PEA     360.W
     PEA     175.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     CLR.L   (A7)
     JSR     LAB_07C4(PC)
 
     LEA     16(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07AB:
+.case_transition_1:
     PEA     LAB_1D6F
     PEA     360.W
     PEA     175.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     1.W
     JSR     LAB_07C4(PC)
 
     LEA     20(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07AC:
+.case_transition_2:
     PEA     LAB_1D70
     PEA     360.W
     PEA     175.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     2.W
     JSR     LAB_07C4(PC)
 
     LEA     20(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07AD:
+.case_transition_3:
     PEA     LAB_1D71
     PEA     360.W
     PEA     175.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     3.W
     JSR     LAB_07C4(PC)
 
     LEA     20(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07AE:
+.case_copper_all_on:
     PEA     LAB_1D72
     PEA     390.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn(PC)
 
     LEA     16(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07AF:
+.case_copper_all_off:
     PEA     LAB_1D73
     PEA     390.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     LEA     16(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07B0:
+.case_copper_on_highlight:
     PEA     LAB_1D74
     PEA     390.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    JSR     ESQ_JMPTBL_LAB_0057(PC)
+    JSR     ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     LEA     16(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07B1:
+.case_copper_default:
     PEA     LAB_1D75
     PEA     390.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default(PC)
 
     LEA     16(A7),A7
-    BRA.W   LAB_07B7
+    BRA.W   .return
 
-LAB_07B2:
+.case_show_ciab_bit5:
     PEA     LAB_1D76
     PEA     270.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     LEA     16(A7),A7
     TST.B   D0
-    BNE.S   LAB_07B3
+    BNE.S   .show_ciab_bit5_set
 
     PEA     LAB_1D77
     PEA     270.W
     PEA     235.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    BRA.S   LAB_07B7
+    BRA.S   .return
 
-LAB_07B3:
+.show_ciab_bit5_set:
     PEA     LAB_1D78
     PEA     270.W
     PEA     235.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    BRA.S   LAB_07B7
+    BRA.S   .return
 
-LAB_07B4:
+.case_assert_ctrl_line:
     PEA     LAB_1D79
     PEA     270.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow(PC)
 
     LEA     16(A7),A7
-    BRA.S   LAB_07B7
+    BRA.S   .return
 
-LAB_07B5:
+.case_deassert_ctrl_line:
     PEA     LAB_1D7A
     PEA     270.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow(PC)
 
     LEA     16(A7),A7
-    BRA.S   LAB_07B7
+    BRA.S   .return
 
-LAB_07B6:
+.case_default_help:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
     CLR.W   LAB_2252
 
-LAB_07B7:
+.return:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ED2_HandleScrollSpeedSelection   (Handle scroll speed selection??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D1/A0-A1 ??
+; CALLS:
+;   DRAW_BOTTOM_HELP_FOR_ESC_MENU, LAB_07E9, LAB_07EC
+; READS:
+;   LAB_231C, LAB_231D, LAB_21E8, GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED ??
+; WRITES:
+;   LAB_21ED, LAB_21FA, LAB_21E2, LAB_1F40, LAB_21E8
+; DESC:
+;   Updates scroll speed/selection state based on menu codes and redraws help.
+; NOTES:
+;   Special-cases selection codes 13/27 and $9B?? to adjust LAB_21E8/LAB_1F40.
+;------------------------------------------------------------------------------
+ED2_HandleScrollSpeedSelection:
 LAB_07B8:
     MOVE.L  LAB_231C,D0
     LSL.L   #2,D0
@@ -1825,96 +1951,96 @@ LAB_07B8:
     MOVEQ   #0,D0
     MOVE.B  LAB_21ED,D0
     SUBI.W  #13,D0
-    BEQ.S   LAB_07B9
+    BEQ.S   .case_sync_scroll_speed
 
     SUBI.W  #14,D0
-    BEQ.S   LAB_07B9
+    BEQ.S   .case_sync_scroll_speed
 
     SUBI.W  #$80,D0
-    BEQ.S   LAB_07BC
+    BEQ.S   .case_adjust_selection_key
 
-    BRA.W   LAB_07C0
+    BRA.W   .case_adjust_selection_default
 
-LAB_07B9:
+.case_sync_scroll_speed:
     MOVE.L  LAB_21E8,D0
     MOVE.L  D0,LAB_21E2
     TST.L   LAB_21E8
-    BNE.S   LAB_07BA
+    BNE.S   .use_21e8_minus1
 
     MOVEQ   #0,D0
     MOVE.B  GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.W  D0,LAB_1F40
-    BRA.S   LAB_07BB
+    BRA.S   .after_sync_scroll_speed
 
-LAB_07BA:
+.use_21e8_minus1:
     MOVE.L  LAB_21E8,D0
     SUBQ.L  #1,D0
     MOVE.W  D0,LAB_1F40
 
-LAB_07BB:
+.after_sync_scroll_speed:
     JSR     DRAW_BOTTOM_HELP_FOR_ESC_MENU(PC)
 
-    BRA.W   LAB_07C3
+    BRA.W   .return
 
-LAB_07BC:
+.case_adjust_selection_key:
     MOVE.B  LAB_21FA,D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
-    BNE.S   LAB_07BD
+    BNE.S   .case_increment_selection_key
 
     SUBQ.L  #1,LAB_21E8
-    BGE.S   LAB_07BF
+    BGE.S   .after_selection_update
 
     MOVEQ   #8,D0
     MOVE.L  D0,LAB_21E8
-    BRA.S   LAB_07BF
+    BRA.S   .after_selection_update
 
-LAB_07BD:
+.case_increment_selection_key:
     ADDQ.L  #1,LAB_21E8
     MOVEQ   #1,D0
     CMP.L   LAB_21E8,D0
-    BNE.S   LAB_07BE
+    BNE.S   .case_wrap_selection_key
 
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_21E8
-    BRA.S   LAB_07BF
+    BRA.S   .after_selection_update
 
-LAB_07BE:
+.case_wrap_selection_key:
     MOVEQ   #9,D0
     CMP.L   LAB_21E8,D0
-    BNE.S   LAB_07BF
+    BNE.S   .after_selection_update
 
     CLR.L   LAB_21E8
 
-LAB_07BF:
+.after_selection_update:
     PEA     9.W
     JSR     LAB_07E9(PC)
 
     JSR     LAB_07EC(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   LAB_07C3
+    BRA.S   .return
 
-LAB_07C0:
+.case_adjust_selection_default:
     ADDQ.L  #1,LAB_21E8
     MOVEQ   #1,D0
     CMP.L   LAB_21E8,D0
-    BNE.S   LAB_07C1
+    BNE.S   .case_wrap_selection_default
 
     MOVEQ   #3,D0
     MOVE.L  D0,LAB_21E8
-    BRA.S   LAB_07C2
+    BRA.S   .after_default_update
 
-LAB_07C1:
+.case_wrap_selection_default:
     MOVEQ   #9,D0
     CMP.L   LAB_21E8,D0
-    BNE.S   LAB_07C2
+    BNE.S   .after_default_update
 
     CLR.L   LAB_21E8
 
-LAB_07C2:
+.after_default_update:
     PEA     9.W
     JSR     LAB_07E9(PC)
 
@@ -1922,5 +2048,5 @@ LAB_07C2:
 
     ADDQ.W  #4,A7
 
-LAB_07C3:
+.return:
     RTS

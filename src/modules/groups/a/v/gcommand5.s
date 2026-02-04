@@ -8,7 +8,7 @@
 ; CLOBBERS:
 ;   D0-D7, A3-A4
 ; CALLS:
-;   LAB_0E04
+;   GROUP_AV_JMPTBL_EXEC_CallVector_48
 ; READS:
 ;   4(A3), LAB_231B, LAB_231D
 ; WRITES:
@@ -16,7 +16,7 @@
 ; DESC:
 ;   Handles control commands, updating the circular ctrl buffer index.
 ; NOTES:
-;   When command type is 1, compares against LAB_231D entry via LAB_0E04.
+;   When command type is 1, compares against LAB_231D entry via GROUP_AV_JMPTBL_EXEC_CallVector_48.
 ;   Command types 15/16 set LAB_1FB0.
 ;------------------------------------------------------------------------------
 GCOMMAND_ProcessCtrlCommand:
@@ -38,7 +38,7 @@ LAB_0DFB:
     PEA     5.W
     MOVE.L  A0,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_0E04(PC)
+    JSR     GROUP_AV_JMPTBL_EXEC_CallVector_48(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,D7

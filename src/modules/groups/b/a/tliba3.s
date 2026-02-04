@@ -13,7 +13,7 @@ LAB_180C:
 
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237F,A0
     MOVEA.L A0,A1
@@ -76,7 +76,7 @@ LAB_180C:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A1
     MOVEA.L A1,A2
@@ -94,7 +94,7 @@ LAB_180D:
     EXT.L   D0
     MOVE.W  D1,-12(A5)
     MOVEQ   #16,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     ASL.L   #2,D0
     MOVE.W  -16(A5),D1
@@ -135,7 +135,7 @@ LAB_1811:
     MOVE.L  D7,D0
     MOVE.W  D1,-20(A5)
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -146,7 +146,7 @@ LAB_1811:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -163,7 +163,7 @@ LAB_1813:
     MOVE.L  D0,D4
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -174,7 +174,7 @@ LAB_1813:
     MOVE.W  D1,40(A7)
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A3
     ADDA.L  D0,A3
@@ -218,7 +218,7 @@ LAB_1815:
     MOVE.L  D0,D4
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -231,7 +231,7 @@ LAB_1815:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A3
     ADDA.L  D0,A3
@@ -242,7 +242,7 @@ LAB_1815:
     MOVE.L  D0,40(A7)
     MOVE.L  D1,D0
     MOVE.L  D3,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  36(A7),D1
     ADD.L   D0,D1
@@ -280,7 +280,7 @@ LAB_1818:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -298,7 +298,7 @@ LAB_1819:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -312,7 +312,7 @@ LAB_181A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A2
     ADDA.L  D0,A2
@@ -328,7 +328,7 @@ LAB_181B:
 LAB_181C:
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -343,7 +343,7 @@ LAB_181C:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A1,A3
     ADDA.L  D0,A3
@@ -538,7 +538,7 @@ LAB_181E:
     MOVE.L  D7,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
 
     LEA     16(A7),A7
 
@@ -621,7 +621,7 @@ LAB_1827:
 
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .LAB_182A
@@ -673,7 +673,7 @@ LAB_1827:
 .LAB_182A:
     MOVE.L  D6,D0
     MOVEQ   #5,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .LAB_182B
@@ -739,7 +739,7 @@ LAB_182D:
 
     MOVE.L  D6,D0
     MOVEQ   #25,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     TST.L   D1
     BNE.W   .LAB_1832
@@ -795,10 +795,10 @@ LAB_182D:
     MOVE.L  D6,D0
     MOVE.L  D1,16(A7)
     MOVEQ   #2,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #10,D0
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D5,D1
     ADD.L   D0,D1
@@ -825,7 +825,7 @@ LAB_182D:
 .LAB_1832:
     MOVE.L  D6,D0
     MOVEQ   #5,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .LAB_1833
@@ -1020,7 +1020,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     MOVEA.L A0,A1
@@ -1040,7 +1040,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1051,7 +1051,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1062,7 +1062,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1073,7 +1073,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1084,7 +1084,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1100,7 +1100,7 @@ LAB_183A:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1123,7 +1123,7 @@ LAB_183B:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1140,7 +1140,7 @@ LAB_183B:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1158,7 +1158,7 @@ LAB_183C:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1179,7 +1179,7 @@ LAB_183D:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1208,7 +1208,7 @@ LAB_183E:
     MOVE.L  #LAB_1E54,-8(A5)
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237F,A0
     ADDA.L  D0,A0
@@ -1222,7 +1222,7 @@ LAB_183E:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     MOVEA.L A0,A2
@@ -1253,7 +1253,7 @@ LAB_183E:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -1269,7 +1269,7 @@ LAB_183E:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -1304,7 +1304,7 @@ LAB_183E:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEA.L A0,A2
     ADDA.L  D0,A2
@@ -1330,7 +1330,7 @@ LAB_183E:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
     MOVEQ   #0,D0
@@ -1436,7 +1436,7 @@ LAB_183E:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1468,7 +1468,7 @@ LAB_184F:
     MOVE.L  LAB_2178,D0
     ADDQ.L  #1,D0
     MOVEQ   #9,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D1,LAB_2178
     PEA     -1.W
@@ -1500,7 +1500,7 @@ LAB_1850:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     PEA     LAB_217C
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  (A2),D0
@@ -1512,7 +1512,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_217D
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  4(A2),D0
@@ -1525,7 +1525,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_217E
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  8(A2),D0
@@ -1537,7 +1537,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_217F
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  12(A2),D0
@@ -1549,7 +1549,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2180
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     68(A7),A7
     MOVEQ   #0,D0
@@ -1562,7 +1562,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2181
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  20(A2),D0
@@ -1574,7 +1574,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2182
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  24(A2),D0
@@ -1586,7 +1586,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2183
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  28(A2),D0
@@ -1598,7 +1598,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2184
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  32(A2),D0
@@ -1610,7 +1610,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2185
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  36(A2),D0
@@ -1619,7 +1619,7 @@ LAB_1850:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2186
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     72(A7),A7
     MOVEQ   #0,D0
@@ -1637,7 +1637,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2187
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  44(A2),D0
@@ -1646,7 +1646,7 @@ LAB_1850:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2188
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  48(A2),D0
@@ -1663,7 +1663,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2189
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  52(A2),D0
@@ -1672,7 +1672,7 @@ LAB_1850:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_218A
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  56(A2),D0
@@ -1689,7 +1689,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_218B
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  60(A2),D0
@@ -1698,7 +1698,7 @@ LAB_1850:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_218C
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  64(A2),D0
@@ -1715,7 +1715,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_218D
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     76(A7),A7
     MOVEQ   #0,D0
@@ -1725,7 +1725,7 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_218E
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.W  72(A2),D0
@@ -1742,10 +1742,10 @@ LAB_1850:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_218F
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     LAB_2190
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
     MOVEM.L (A7)+,D2-D3/A2-A3
@@ -1763,7 +1763,7 @@ LAB_1850_NOT_DIRECT_CALLED:
 
     MOVE.L  LAB_2178,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237F,A0
     ADDA.L  D0,A0
@@ -1793,7 +1793,7 @@ LAB_1850_NOT_DIRECT_CALLED:
 
     MOVE.L  D7,D0
     MOVEQ   #76,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237F,A0
     ADDA.L  D0,A0
@@ -1802,7 +1802,7 @@ LAB_1850_NOT_DIRECT_CALLED:
     BSR.W   LAB_1850
 
     PEA     LAB_2193
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -1825,7 +1825,7 @@ LAB_1853:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     MOVEA.L A0,A1
@@ -1881,7 +1881,7 @@ LAB_1853:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0
@@ -1898,7 +1898,7 @@ LAB_1853:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     MOVEA.L A0,A1
@@ -2071,7 +2071,7 @@ LAB_1858:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_237E,A0
     ADDA.L  D0,A0

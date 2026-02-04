@@ -23,7 +23,6 @@
 ;   Stops before D7-1; always writes a trailing NUL.
 ;------------------------------------------------------------------------------
 UNKNOWN7_CopyUntilDelimiter:
-LAB_1970:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -96,7 +95,6 @@ LAB_1970:
 ;   Returns 0 if NUL terminator is reached with no match.
 ;------------------------------------------------------------------------------
 UNKNOWN7_FindChar:
-LAB_1975:
     MOVEM.L D7/A3,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -133,7 +131,7 @@ LAB_1975:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   UNKNOWN7_FindChar (LAB_1975)
+;   UNKNOWN7_FindChar (UNKNOWN7_FindChar)
 ; READS:
 ;   A3
 ; WRITES:
@@ -144,23 +142,20 @@ LAB_1975:
 ;   ??
 ;------------------------------------------------------------------------------
 UNKNOWN7_FindCharWrapper:
-LAB_1979:
     MOVEM.L D7/A3,-(A7)
 
     MOVEA.L 12(A7),A3
     MOVE.L  16(A7),D7
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.S   LAB_1975
+    BSR.S   UNKNOWN7_FindChar
 
     ADDQ.W  #8,A7
 
     MOVEM.L (A7)+,D7/A3
     RTS
 
-;!======
-
-    ; Dead code
+    ; Dead code?
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7
@@ -208,7 +203,6 @@ LAB_1979:
 ;   Equivalent to strpbrk.
 ;------------------------------------------------------------------------------
 UNKNOWN7_FindAnyChar:
-LAB_197D:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -259,7 +253,7 @@ LAB_197D:
 ; CLOBBERS:
 ;   D0/A2-A3
 ; CALLS:
-;   UNKNOWN7_FindAnyChar (LAB_197D)
+;   UNKNOWN7_FindAnyChar (UNKNOWN7_FindAnyChar)
 ; READS:
 ;   A3, A2
 ; WRITES:
@@ -270,14 +264,13 @@ LAB_197D:
 ;   ??
 ;------------------------------------------------------------------------------
 UNKNOWN7_FindAnyCharWrapper:
-LAB_1984:
     MOVEM.L A2-A3,-(A7)
 
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.S   LAB_197D
+    BSR.S   UNKNOWN7_FindAnyChar
 
     ADDQ.W  #8,A7
 
@@ -296,7 +289,7 @@ LAB_1984:
 ; CALLS:
 ;   none
 ; READS:
-;   char-class table at -1007(A4)
+;   char-class table at Global_CharClassTable(A4)
 ; WRITES:
 ;   none
 ; DESC:
@@ -306,14 +299,13 @@ LAB_1984:
 ;   Likely skips whitespace/control chars.
 ;------------------------------------------------------------------------------
 UNKNOWN7_SkipCharClass3:
-LAB_1985:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
 .skip_class3:
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
-    LEA     -1007(A4),A0
+    LEA     Global_CharClassTable(A4),A0
     BTST    #3,0(A0,D0.L)
     BEQ.S   .return_ptr
 

@@ -128,18 +128,18 @@ GCOMMAND_CopyGfxToWorkIfAvailable:
     MOVEQ   #0,D7
     CLR.L   -(A7)
     PEA     LAB_1FA0
-    JSR     GCOMMAND_JMPTBL_LAB_1ADF(PC)
+    JSR     GCOMMAND_JMPTBL_DOS_SystemTagList(PC)
 
     MOVE.L  D0,D6
     CLR.L   (A7)
     PEA     LAB_1FA1
-    JSR     GCOMMAND_JMPTBL_LAB_1ADF(PC)
+    JSR     GCOMMAND_JMPTBL_DOS_SystemTagList(PC)
 
     MOVE.L  D0,D6
 
-    JSR     GCOMMAND_JMPTBL_LAB_071B(PC)
+    JSR     GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0(PC)
 
-    JSR     GCOMMAND_JMPTBL_LAB_071A(PC)
+    JSR     GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1(PC)
 
     LEA     12(A7),A7
 

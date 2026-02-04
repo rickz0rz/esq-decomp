@@ -102,7 +102,7 @@ SETUP_INTERRUPT_INTB_RBF:
     MOVEA.L GLOB_REF_INTERRUPT_STRUCT_INTB_RBF,A0
     MOVE.L  GLOB_REF_INTB_RBF_64K_BUFFER,14(A0)
 
-    LEA     JMPTBL_INTB_RBF_EXEC(PC),A0
+    LEA     JMPTBL_ESQ_HandleSerialRbfInterrupt(PC),A0
     MOVEA.L GLOB_REF_INTERRUPT_STRUCT_INTB_RBF,A1
 
     ; Setup IntVector on INTB_RBF (interrupt 11 aka "serial port recieve buffer full") pointing to 18(A1)
@@ -276,7 +276,7 @@ LAB_096F:
     JSR     LAB_0BF7(PC)
 
     PEA     LAB_21DF
-    JSR     LAB_0610(PC)
+    JSR     DATETIME_SavePairToFile(PC)
 
     JSR     LAB_09A8(PC)
 
@@ -640,7 +640,7 @@ ESQFUNC_DrawEscMenuVersion:
     PEA     330.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)                  ; rastport
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     32(A7),A7
 
@@ -664,7 +664,7 @@ LAB_0990:
     PEA     360.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)                  ; rastport
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
@@ -675,7 +675,7 @@ LAB_0990:
     PEA     390.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)                  ; rastport
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
@@ -697,7 +697,7 @@ LAB_0990:
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, GROUP_AM_JMPTBL_WDISP_SPrintf,
-;   JMPTBL_DISPLAY_TEXT_AT_POSITION_1, JMPTBL_CALCULATE_H_T_C_MAX_VALUES,
+;   JMPTBL_DISPLIB_DisplayTextAtPosition_1, JMPTBL_CALCULATE_H_T_C_MAX_VALUES,
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   LAB_2252, LAB_226A, LAB_1DF0, LAB_2285, DATACErrs, LAB_2287,
@@ -756,7 +756,7 @@ LAB_0991:
     PEA     112.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2347,D0
@@ -776,7 +776,7 @@ LAB_0991:
     PEA     142.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     68(A7),A7
     MOVEQ   #7,D0
@@ -881,7 +881,7 @@ LAB_0991:
     PEA     172.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVEQ   #0,D0
     MOVE.W  LAB_228A,D0
@@ -894,7 +894,7 @@ LAB_0991:
     PEA     202.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     JSR     JMPTBL_CALCULATE_H_T_C_MAX_VALUES(PC)
 
@@ -917,7 +917,7 @@ LAB_0991:
     PEA     232.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     76(A7),A7
     JSR     ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(PC)
@@ -941,7 +941,7 @@ LAB_0991:
     PEA     262.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     40(A7),A7
 
@@ -964,7 +964,7 @@ LAB_0991:
     PEA     112.W                                   ; X position
     PEA     40.W                                    ; Y position
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)               ; Rastport
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_2238,D0
@@ -980,7 +980,7 @@ LAB_0991:
     PEA     142.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_224A,D0
@@ -997,7 +997,7 @@ LAB_0991:
     PEA     172.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVE.W  LAB_223C,D0
     EXT.L   D0
@@ -1019,7 +1019,7 @@ LAB_0991:
     PEA     202.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVE.W  LAB_2276,D0
     EXT.L   D0
@@ -1042,7 +1042,7 @@ LAB_0991:
     PEA     232.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVE.W  LAB_2241,D0
     EXT.L   D0
@@ -1061,7 +1061,7 @@ LAB_0991:
     PEA     262.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVE.W  LAB_223E,D0
     EXT.L   D0
@@ -1080,7 +1080,7 @@ LAB_0991:
     PEA     292.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     80(A7),A7
 
@@ -1105,7 +1105,7 @@ LAB_0991:
 ; CALLS:
 ;   _LVOSetFont, ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask,
 ;   ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag, ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, JMPTBL_DISPLAY_TEXT_AT_POSITION_1,
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, JMPTBL_DISPLIB_DisplayTextAtPosition_1,
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   LAB_1EB6, LAB_2118, LAB_1EB8/1EB9, LAB_1EBA/1EBB, LAB_1EBC/1EBD,
@@ -1516,8 +1516,8 @@ LAB_09BB:
 LAB_09BC:
     JMP     SCRIPT_HandleSerialCtrlCmd
 
-JMPTBL_INTB_RBF_EXEC:
-    JMP     INTB_RBF_EXEC
+JMPTBL_ESQ_HandleSerialRbfInterrupt:
+    JMP     ESQ_HandleSerialRbfInterrupt
 
 LAB_09BE:
     JMP     LAB_168B
@@ -1529,7 +1529,7 @@ LAB_09C0:
     JMP     LAB_0F93
 
 LAB_09C1:
-    JMP     LAB_1955
+    JMP     STRING_CopyPadNul
 
 ;!======
 
@@ -1583,7 +1583,7 @@ LAB_09C2:
     PEA     2.W
     PEA     LAB_1EE6
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_195B_2(PC)
+    JSR     JMPTBL_STRING_CompareN_2(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1599,7 +1599,7 @@ LAB_09C2:
     PEA     2.W
     PEA     LAB_1EE7
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_195B_2(PC)
+    JSR     JMPTBL_STRING_CompareN_2(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1676,7 +1676,7 @@ LAB_09C2:
     PEA     2.W
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_195B_2(PC)
+    JSR     JMPTBL_STRING_CompareN_2(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1922,7 +1922,7 @@ LAB_09DB:
 .return:
     PEA     LAB_1ED4
     MOVE.L  LAB_1B22,-(A7)
-    JSR     GROUPB_JMPTBL_BRUSH_PopulateBrushList(PC)
+    JSR     GROUP_AN_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     CLR.L   LAB_1B22
     MOVE.L  -12(A5),D7

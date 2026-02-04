@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: PROCESS_ILBM_IMAGE   (ProcessIlbmImage)
+; FUNC: BITMAP_ProcessIlbmImage
 ; ARGS:
 ;   stack +8:  fileHandle?? (loaded into D7)
 ;   stack +16: outPtrOrCtx?? (loaded into A3)
@@ -23,7 +23,7 @@
 ;   like 'FORM', 'ILBM', 'BMHD', 'CMAP'.
 ;------------------------------------------------------------------------------
 ; Process ILBM (IFF Interleaved Bitmap) Image
-PROCESS_ILBM_IMAGE:
+BITMAP_ProcessIlbmImage:
     LINK.W  A5,#-20
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
 

@@ -1,17 +1,37 @@
-LAB_19F0:
+;------------------------------------------------------------------------------
+; FUNC: DOS_ReadWithErrorState   (Read wrapper that tracks IoErr/AppErrorCode.)
+; ARGS:
+;   stack +28: D7 = file handle
+;   stack +32: A3 = buffer pointer
+;   stack +36: D6 = length
+; RET:
+;   D0: bytes read (or -1 on error)
+; CLOBBERS:
+;   D0-D7/A3/A6
+; CALLS:
+;   SIGNAL_PollAndDispatch (signal callback), _LVORead, _LVOIoErr
+; READS:
+;   Global_SignalCallbackPtr
+; WRITES:
+;   Global_DosIoErr, Global_AppErrorCode
+; DESC:
+;   Optionally calls a signal callback, then performs DOS Read.
+;   On error, captures IoErr and sets AppErrorCode to 5.
+;------------------------------------------------------------------------------
+DOS_ReadWithErrorState:
     MOVEM.L D2-D3/D5-D7/A3,-(A7)
 
     MOVE.L  28(A7),D7
     MOVEA.L 32(A7),A3
     MOVE.L  36(A7),D6
 
-    TST.L   -616(A4)
-    BEQ.S   .LAB_19F1
+    TST.L   Global_SignalCallbackPtr(A4)
+    BEQ.S   .after_signal_callback
 
-    JSR     LAB_1AD3(PC)
+    JSR     SIGNAL_PollAndDispatch(PC)
 
-.LAB_19F1:
-    CLR.L   -640(A4)
+.after_signal_callback:
+    CLR.L   Global_DosIoErr(A4)
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  D6,D3
@@ -25,9 +45,9 @@ LAB_19F0:
 
     JSR     _LVOIoErr(A6)
 
-    MOVE.L  D0,-640(A4)
+    MOVE.L  D0,Global_DosIoErr(A4)
     MOVEQ   #5,D0
-    MOVE.L  D0,22828(A4)
+    MOVE.L  D0,Global_AppErrorCode(A4)
 
 .return:
     MOVE.L  D5,D0

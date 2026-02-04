@@ -47,13 +47,13 @@ LAB_0ABC:
 
 LAB_0ABD:
     PEA     LAB_21DF
-    JSR     LAB_0BFE(PC)
+    JSR     GROUP_AO_JMPTBL_DST_UpdateBannerQueue(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
     BNE.S   LAB_0ABE
 
-    JSR     GROUPB_JMPTBL_DST_RefreshBannerBuffer(PC)
+    JSR     GROUP_AO_JMPTBL_DST_RefreshBannerBuffer(PC)
 
 LAB_0ABE:
     PEA     1.W
@@ -903,7 +903,7 @@ LAB_0B04:
     ADDQ.L  #1,A0
     MOVE.L  A0,-(A7)
     PEA     -24(A5)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -4(A5),A0
@@ -1271,7 +1271,7 @@ LAB_0B23:
     PEA     90.W
     PEA     30.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVE.L  GLOB_LONG_PATCH_VERSION_NUMBER,(A7)
     PEA     GLOB_STR_MAJOR_MINOR_VERSION_2
@@ -1283,7 +1283,7 @@ LAB_0B23:
     PEA     120.W
     PEA     30.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     LAB_1EFF,A0
     LEA     -40(A5),A1
@@ -1300,17 +1300,17 @@ LAB_0B24:
     ADDQ.L  #1,A0
     MOVE.L  A0,(A7)
     PEA     -40(A5)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     GLOB_STR_APOSTROPHE
     PEA     -40(A5)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     -40(A5)
     PEA     150.W
     PEA     30.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     72(A7),A7
 
@@ -1416,13 +1416,13 @@ LAB_0B2A:
     PEA     90.W
     PEA     35.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     PEA     GLOB_STR_ATTENTION_SYSTEM_ENGINEER_2
     PEA     120.W
     PEA     35.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     MOVE.L  D5,(A7)
     PEA     GLOB_STR_REPORT_ERROR_CODE_FORMATTED
@@ -1433,7 +1433,7 @@ LAB_0B2A:
     PEA     150.W
     PEA     35.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     56(A7),A7
     MOVEQ   #9,D0
@@ -1472,13 +1472,13 @@ LAB_0B2D:
     PEA     180.W
     PEA     35.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     PEA     GLOB_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
     PEA     210.W
     PEA     35.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     LEA     32(A7),A7
     MOVE.L  D6,D0

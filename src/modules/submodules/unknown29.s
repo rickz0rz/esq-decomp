@@ -1,149 +1,170 @@
-LAB_1A76:
+;------------------------------------------------------------------------------
+; FUNC: ESQ_ParseCommandLineAndRun   (Parse command line, init handles, run main.)
+; ARGS:
+;   stack +6: A3 = command line buffer
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, BUFFER_FlushAllAndCloseWithCode,
+;   WDISP_JMPTBL_ESQ_MainInitAndRun
+; READS:
+;   Global_ArgCount, Global_ArgvStorage, savedMsg, Global_DefaultHandleFlags
+; WRITES:
+;   Global_ArgCount, Global_ArgvPtr, Global_HandleEntry* globals, Global_*_State*
+; DESC:
+;   Tokenizes the command line into argv storage, sets up console/handles,
+;   installs the abort requester callback, and enters the main loop.
+; NOTES:
+;   Handles quoted strings and whitespace; uses '*' as default output when args exist.
+;------------------------------------------------------------------------------
+ESQ_ParseCommandLineAndRun:
     LINK.W  A5,#-16
     MOVEM.L D2/D7/A2-A3/A6,-(A7)
 
     SetOffsetForStack   5
     UseStackLong    MOVEA.L,6,A3
 
-LAB_1A77:
-    CMPI.L  #' ',22914(A4)
-    BGE.W   LAB_1A82
+.parse_loop:
+    CMPI.L  #' ',Global_ArgCount(A4)
+    BGE.W   .finalize_args
 
-LAB_1A78:
+.skip_whitespace:
     MOVE.B  (A3),D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1A79
+    BEQ.S   .advance_whitespace
 
     MOVEQ   #9,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1A79
+    BEQ.S   .advance_whitespace
 
     MOVEQ   #10,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1A7A
+    BNE.S   .token_start
 
-LAB_1A79:
+.advance_whitespace:
     ADDQ.L  #1,A3
-    BRA.S   LAB_1A78
+    BRA.S   .skip_whitespace
 
-LAB_1A7A:
+.token_start:
     TST.B   (A3)
-    BEQ.S   LAB_1A82
+    BEQ.S   .finalize_args
 
-    MOVE.L  22914(A4),D0
+    MOVE.L  Global_ArgCount(A4),D0
     ASL.L   #2,D0
-    ADDQ.L  #1,22914(A4)
-    LEA     22922(A4),A0
+    ADDQ.L  #1,Global_ArgCount(A4)
+    LEA     Global_ArgvStorage(A4),A0
     ADDA.L  D0,A0
     MOVEA.L A0,A2
     MOVEQ   #34,D0
     CMP.B   (A3),D0
-    BNE.S   LAB_1A7E
+    BNE.S   .token_unquoted
 
     ADDQ.L  #1,A3
     MOVE.L  A3,(A2)
 
-LAB_1A7B:
+.scan_quoted:
     TST.B   (A3)
-    BEQ.S   LAB_1A7C
+    BEQ.S   .end_quote
 
     MOVEQ   #34,D0
     CMP.B   (A3),D0
-    BEQ.S   LAB_1A7C
+    BEQ.S   .end_quote
 
     ADDQ.L  #1,A3
-    BRA.S   LAB_1A7B
+    BRA.S   .scan_quoted
 
-LAB_1A7C:
+.end_quote:
     TST.B   (A3)
-    BNE.S   LAB_1A7D
+    BNE.S   .terminate_quoted
 
     PEA     1.W
-    JSR     LAB_1A92(PC)
+    JSR     HANDLE_CloseAllAndReturnWithCode(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   LAB_1A77
+    BRA.S   .parse_loop
 
-LAB_1A7D:
+.terminate_quoted:
     CLR.B   (A3)+
-    BRA.S   LAB_1A77
+    BRA.S   .parse_loop
 
-LAB_1A7E:
+.token_unquoted:
     MOVE.L  A3,(A2)
 
-LAB_1A7F:
+.scan_unquoted:
     TST.B   (A3)
-    BEQ.S   LAB_1A80
+    BEQ.S   .end_unquoted
 
     MOVE.B  (A3),D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1A80
+    BEQ.S   .end_unquoted
 
     MOVEQ   #9,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1A80
+    BEQ.S   .end_unquoted
 
     MOVEQ   #10,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1A80
+    BEQ.S   .end_unquoted
 
     ADDQ.L  #1,A3
-    BRA.S   LAB_1A7F
+    BRA.S   .scan_unquoted
 
-LAB_1A80:
+.end_unquoted:
     TST.B   (A3)
-    BNE.S   LAB_1A81
+    BNE.S   .terminate_unquoted
 
-    BRA.S   LAB_1A82
+    BRA.S   .finalize_args
 
-LAB_1A81:
+.terminate_unquoted:
     CLR.B   (A3)+
-    BRA.W   LAB_1A77
+    BRA.W   .parse_loop
 
-LAB_1A82:
-    TST.L   22914(A4)
-    BNE.S   LAB_1A83
+.finalize_args:
+    TST.L   Global_ArgCount(A4)
+    BNE.S   .argv_from_storage
 
-    MOVEA.L -604(A4),A0
-    BRA.S   LAB_1A84
+    MOVEA.L savedMsg(A4),A0
+    BRA.S   .set_argv_ptr
 
-LAB_1A83:
-    LEA     22922(A4),A0
+.argv_from_storage:
+    LEA     Global_ArgvStorage(A4),A0
 
-LAB_1A84:
-    MOVE.L  A0,22918(A4)
-    TST.L   22914(A4)
-    BNE.S   LAB_1A85
+.set_argv_ptr:
+    MOVE.L  A0,Global_ArgvPtr(A4)
+    TST.L   Global_ArgCount(A4)
+    BNE.S   .setup_existing_handles
 
     LEA     GLOB_STR_CON_10_10_320_80(PC),A1
-    LEA     22856(A4),A6
+    LEA     Global_ConsoleNameBuffer(A4),A6
     MOVE.L  (A1)+,(A6)+
     MOVE.L  (A1)+,(A6)+
     MOVE.L  (A1)+,(A6)+
     MOVE.L  (A1)+,(A6)+
     MOVE.W  (A1),(A6)
-    MOVEA.L -604(A4),A1
+    MOVEA.L savedMsg(A4),A1
     MOVEA.L 36(A1),A0
     PEA     40.W
     MOVE.L  4(A0),-(A7)
-    PEA     22856(A4)
-    JSR     LAB_1962(PC)
+    PEA     Global_ConsoleNameBuffer(A4)
+    JSR     STRING_AppendN(PC)
 
     LEA     12(A7),A7
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
-    LEA     22856(A4),A0
+    LEA     Global_ConsoleNameBuffer(A4),A0
     MOVE.L  A0,D1
     MOVE.L  #MODE_NEWFILE,D2
     JSR     _LVOOpen(A6)
 
-    MOVE.L  D0,22496(A4)
-    MOVE.L  D0,22504(A4)
+    MOVE.L  D0,Global_HandleEntry0_Ptr(A4)
+    MOVE.L  D0,Global_HandleEntry1_Ptr(A4)
     MOVEQ   #16,D1
-    MOVE.L  D1,22500(A4)
-    MOVE.L  D0,22512(A4)
-    MOVE.L  D1,22508(A4)
+    MOVE.L  D1,Global_HandleEntry1_Flags(A4)
+    MOVE.L  D0,Global_HandleEntry2_Ptr(A4)
+    MOVE.L  D1,Global_HandleEntry2_Flags(A4)
     ASL.L   #2,D0
     MOVE.L  D0,-16(A5)
     MOVEA.L AbsExecBase,A6
@@ -155,65 +176,65 @@ LAB_1A84:
     MOVE.L  8(A0),164(A1)
     MOVEQ   #0,D7
     MOVE.L  D0,-12(A5)
-    BRA.S   LAB_1A86
+    BRA.S   .set_handle_flags
 
-LAB_1A85:
+.setup_existing_handles:
     MOVEA.L LocalDosLibraryDisplacement(A4),A6
     JSR     _LVOInput(A6)
 
-    MOVE.L  D0,22496(A4)    ; Original input file handle
+    MOVE.L  D0,Global_HandleEntry0_Ptr(A4)    ; Original input file handle
     JSR     _LVOOutput(A6)
 
-    MOVE.L  D0,22504(A4)    ; Original output file handle
+    MOVE.L  D0,Global_HandleEntry1_Ptr(A4)    ; Original output file handle
     LEA     GLOB_STR_ASTERISK_1(PC),A0
     MOVE.L  A0,D1
     MOVE.L  #MODE_OLDFILE,D2
     JSR     _LVOOpen(A6)
 
-    MOVE.L  D0,22512(A4)
+    MOVE.L  D0,Global_HandleEntry2_Ptr(A4)
     MOVEQ   #16,D7
 
-LAB_1A86:
+.set_handle_flags:
     MOVE.L  D7,D0
     ORI.W   #$8001,D0
-    OR.L    D0,22492(A4)
+    OR.L    D0,Global_HandleEntry0_Flags(A4)
     MOVE.L  D7,D0
     ORI.W   #$8002,D0
-    OR.L    D0,22500(A4)
-    ORI.L   #$8003,22508(A4) ; memory thing?
-    TST.L   -1016(A4)
-    BEQ.S   LAB_1A87
+    OR.L    D0,Global_HandleEntry1_Flags(A4)
+    ORI.L   #$8003,Global_HandleEntry2_Flags(A4) ; memory thing?
+    TST.L   Global_DefaultHandleFlags(A4)
+    BEQ.S   .default_flags_zero
 
     MOVEQ   #0,D0
-    BRA.S   LAB_1A88
+    BRA.S   .apply_default_flags
 
-LAB_1A87:
+.default_flags_zero:
     MOVE.L  #$8000,D0
 
-LAB_1A88:
+.apply_default_flags:
     MOVE.L  D0,D7
-    CLR.L   -1092(A4)
+    CLR.L   Global_A4_1092_State4(A4)
     MOVE.L  D7,D0
     ORI.W   #1,D0
-    MOVE.L  D0,-1096(A4)
+    MOVE.L  D0,Global_A4_1096_State5(A4)
     MOVEQ   #1,D0
-    MOVE.L  D0,-1058(A4)
+    MOVE.L  D0,Global_A4_1058_State2(A4)
     MOVE.L  D7,D0
     ORI.W   #2,D0
-    MOVE.L  D0,-1062(A4)
+    MOVE.L  D0,Global_A4_1062_State3(A4)
     MOVEQ   #2,D0
-    MOVE.L  D0,-1024(A4)
+    MOVE.L  D0,Global_A4_1024_State0(A4)
     MOVE.L  D7,D0
     ORI.W   #$80,D0
-    MOVE.L  D0,-1028(A4)
+    MOVE.L  D0,Global_A4_1028_State1(A4)
     LEA     UNKNOWN36_ShowAbortRequester(PC),A0
-    MOVE.L  A0,-616(A4)
-    MOVE.L  22918(A4),-(A7)
-    MOVE.L  22914(A4),-(A7)
+    MOVE.L  A0,Global_SignalCallbackPtr(A4)
+    MOVE.L  Global_ArgvPtr(A4),-(A7)
+    MOVE.L  Global_ArgCount(A4),-(A7)
     JSR     WDISP_JMPTBL_ESQ_MainInitAndRun(PC)
 
     CLR.L   (A7)
-    JSR     LIBRARIES_LOAD_FAILED(PC)
+    JSR     BUFFER_FlushAllAndCloseWithCode(PC)
 
     MOVEM.L -36(A5),D2/D7/A2-A3/A6
     UNLK    A5
@@ -229,8 +250,10 @@ GLOB_STR_ASTERISK_1:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: WDISP_JMPTBL_ESQ_MainInitAndRun   (JumpStub_ESQ_MainInitAndRun)
+;------------------------------------------------------------------------------
 WDISP_JMPTBL_ESQ_MainInitAndRun:
-LAB_1A8B:
     JMP     ESQ_MainInitAndRun
 
 ;!======

@@ -7,13 +7,13 @@
 ; CLOBBERS:
 ;   D0-D1/D7/A0/A6
 ; CALLS:
-;   PARSEINI_AdjustHoursTo24HrFormat, JMPTBL_UNKNOWN42_CheckDateOrSecondsFromEpoch,
-;   JMPTBL_UNKNOWN42_SecondsFromEpoch, JMPTBL_SET_CLOCK_CHIP_TIME
+;   PARSEINI_AdjustHoursTo24HrFormat, JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
+;   JMPTBL_CLOCK_SecondsFromEpoch, JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
 ;   LAB_223A-E, LAB_2243, GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE,
 ;   GLOB_REF_CLOCKDATA_STRUCT
 ; WRITES:
-;   RTC chip via SET_CLOCK_CHIP_TIME
+;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; DESC:
 ;   Converts current global date/time fields to a legal struct and writes them
 ;   to the battery-backed clock if the RTC resources are available.
@@ -56,7 +56,7 @@ LAB_146E:
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  D0,.clockDataStruct(A5)
     PEA     .clockDataStruct(A5)
-    JSR     JMPTBL_UNKNOWN42_CheckDateOrSecondsFromEpoch(PC)
+    JSR     JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
 
     ; Clean the stack and test validity of clockdata struct seconds
     LEA     12(A7),A7
@@ -64,11 +64,11 @@ LAB_146E:
     BEQ.S   .return
 
     PEA     .clockDataStruct(A5)
-    JSR     JMPTBL_UNKNOWN42_SecondsFromEpoch(PC)
+    JSR     JMPTBL_CLOCK_SecondsFromEpoch(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
-    JSR     JMPTBL_SET_CLOCK_CHIP_TIME(PC)
+    JSR     JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(PC)
 
     ADDQ.W  #4,A7
 
@@ -88,8 +88,8 @@ LAB_146E:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   JMPTBL_GET_CLOCK_CHIP_TIME, JMPTBL_POPULATE_CLOCKDATA_FROM_SECS,
-;   JMPTBL_UNKNOWN42_CheckDateOrSecondsFromEpoch, LAB_1477
+;   JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
+;   JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, LAB_1477
 ; READS:
 ;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE
 ; WRITES:
@@ -120,15 +120,15 @@ LAB_1470:
     TST.L   GLOB_REF_BATTCLOCK_RESOURCE
     BEQ.W   .return_status
 
-    JSR     JMPTBL_GET_CLOCK_CHIP_TIME(PC)
+    JSR     JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)
 
     MOVE.L  D0,D7
     PEA     .clockData(A5)
     MOVE.L  D7,-(A7)
-    JSR     JMPTBL_POPULATE_CLOCKDATA_FROM_SECS(PC)
+    JSR     JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(PC)
 
     PEA     .clockData(A5)
-    JSR     JMPTBL_UNKNOWN42_CheckDateOrSecondsFromEpoch(PC)
+    JSR     JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -297,7 +297,7 @@ PARSEINI_AdjustHoursTo24HrFormat:
 ; CLOBBERS:
 ;   D0-D2/A0-A3
 ; CALLS:
-;   LAB_1484 (LAB_0660), LAB_1481 (ESQ_CalcDayOfYearFromMonthDay)
+;   LAB_1484 (DATETIME_IsLeapYear), LAB_1481 (ESQ_CalcDayOfYearFromMonthDay)
 ; READS:
 ;   A2 contents
 ; WRITES:
@@ -389,26 +389,26 @@ LAB_1477:
 
 ;!======
 
-JMPTBL_POPULATE_CLOCKDATA_FROM_SECS:
-    JMP     POPULATE_CLOCKDATA_FROM_SECS
+JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
+    JMP     CLOCK_ConvertAmigaSecondsToClockData
 
 LAB_1481:
     JMP     ESQ_CalcDayOfYearFromMonthDay
 
-JMPTBL_UNKNOWN42_CheckDateOrSecondsFromEpoch:
-    JMP     UNKNOWN42_CheckDateOrSecondsFromEpoch
+JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
+    JMP     CLOCK_CheckDateOrSecondsFromEpoch
 
-JMPTBL_GET_CLOCK_CHIP_TIME:
-    JMP     GET_CLOCK_CHIP_TIME
+JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
+    JMP     BATTCLOCK_GetSecondsFromBatteryBackedClock
 
 LAB_1484:
-    JMP     LAB_0660
+    JMP     DATETIME_IsLeapYear
 
-JMPTBL_SET_CLOCK_CHIP_TIME:
-    JMP     SET_CLOCK_CHIP_TIME
+JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
+    JMP     BATTCLOCK_WriteSecondsToBatteryBackedClock
 
-JMPTBL_UNKNOWN42_SecondsFromEpoch:
-    JMP     UNKNOWN42_SecondsFromEpoch
+JMPTBL_CLOCK_SecondsFromEpoch:
+    JMP     CLOCK_SecondsFromEpoch
 
 ;!======
 

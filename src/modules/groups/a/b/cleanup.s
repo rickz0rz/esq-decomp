@@ -1,7 +1,5 @@
-;!======
-
 ;------------------------------------------------------------------------------
-; FUNC: CLEAR_INTERRUPT_INTB_VERTB   (ClearVertbInterruptServer??)
+; FUNC: CLEANUP_ClearVertbInterruptServer
 ; ARGS:
 ;   (none)
 ; RET:
@@ -19,7 +17,7 @@
 ; NOTES:
 ;   - Deallocates the struct via GROUP_AG_JMPTBL_MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
-CLEAR_INTERRUPT_INTB_VERTB:
+CLEANUP_ClearVertbInterruptServer:
     MOVEQ   #INTB_VERTB,D0
     MOVEA.L GLOB_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
     MOVEA.L AbsExecBase,A6
@@ -37,7 +35,7 @@ CLEAR_INTERRUPT_INTB_VERTB:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEAR_INTERRUPT_INTB_AUD1   (ClearAud1InterruptVector??)
+; FUNC: CLEANUP_ClearAud1InterruptVector
 ; ARGS:
 ;   (none)
 ; RET:
@@ -56,7 +54,7 @@ CLEAR_INTERRUPT_INTB_VERTB:
 ; NOTES:
 ;   - Disables INTB_AUD1 in INTENA before restoring the vector.
 ;------------------------------------------------------------------------------
-CLEAR_INTERRUPT_INTB_AUD1:
+CLEANUP_ClearAud1InterruptVector:
     MOVE.W  #$100,INTENA
     MOVEQ   #INTB_AUD1,D0
     MOVEA.L GLOB_REF_INTB_AUD1_INTERRUPT,A1
@@ -75,7 +73,7 @@ CLEAR_INTERRUPT_INTB_AUD1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEAR_INTERRUPT_INTB_RBF   (ClearRbfInterruptAndSerial??)
+; FUNC: CLEANUP_ClearRbfInterruptAndSerial
 ; ARGS:
 ;   (none)
 ; RET:
@@ -83,7 +81,7 @@ CLEAR_INTERRUPT_INTB_AUD1:
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVOCloseDevice, GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport, LAB_0467,
+;   _LVOCloseDevice, GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, LAB_0467,
 ;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   LAB_2211_SERIAL_PORT_MAYBE, LAB_2212, GLOB_REF_INTB_RBF_INTERRUPT,
@@ -97,14 +95,14 @@ CLEAR_INTERRUPT_INTB_AUD1:
 ; NOTES:
 ;   - Signals the serial msg port before closing/freeing resources.
 ;------------------------------------------------------------------------------
-CLEAR_INTERRUPT_INTB_RBF:
+CLEANUP_ClearRbfInterruptAndSerial:
     MOVE.W  #$800,INTENA
     MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseDevice(A6)
 
     MOVE.L  LAB_2212,-(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
+    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
     MOVE.L  LAB_2211_SERIAL_PORT_MAYBE,(A7)
     JSR     LAB_0467(PC)
@@ -154,7 +152,7 @@ CLEAR_INTERRUPT_INTB_RBF:
 ; }
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_ShutdownInputDevices   (ShutdownInputDevices)
+; FUNC: CLEANUP_ShutdownInputDevices
 ; ARGS:
 ;   (none)
 ; RET:
@@ -163,7 +161,7 @@ CLEAR_INTERRUPT_INTB_RBF:
 ;   D0/A0-A1/A6
 ; CALLS:
 ;   _LVODoIO, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOCloseDevice,
-;   GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport, GROUP_AB_JMPTBL_LAB_19F7
+;   GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AB_JMPTBL_IOSTDREQ_Free
 ; READS:
 ;   GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, GLOB_REF_DATA_INPUT_BUFFER,
 ;   GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE, GLOB_REF_INPUTDEVICE_MSGPORT,
@@ -176,7 +174,6 @@ CLEAR_INTERRUPT_INTB_RBF:
 ;------------------------------------------------------------------------------
 ; Tears down console/input devices opened during startup, including msg ports.
 CLEANUP_ShutdownInputDevices:
-LAB_01AC:
     MOVEA.L GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,A0
     MOVE.W  #10,28(A0)
 
@@ -202,16 +199,16 @@ LAB_01AC:
     JSR     _LVOCloseDevice(A6)
 
     MOVE.L  GLOB_REF_INPUTDEVICE_MSGPORT,(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
+    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
     MOVE.L  GLOB_REF_CONSOLEDEVICE_MSGPORT,(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
+    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
     MOVE.L  GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE,(A7)
-    JSR     GROUP_AB_JMPTBL_LAB_19F7(PC)
+    JSR     GROUP_AB_JMPTBL_IOSTDREQ_Free(PC)
 
     MOVE.L  GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,(A7)
-    JSR     GROUP_AB_JMPTBL_LAB_19F7(PC)
+    JSR     GROUP_AB_JMPTBL_IOSTDREQ_Free(PC)
 
     LEA     16(A7),A7
     RTS
@@ -219,7 +216,7 @@ LAB_01AC:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEAR_RASTPORT_1   (ReleaseDisplayResources??)
+; FUNC: CLEANUP_ReleaseDisplayResources
 ; ARGS:
 ;   (none)
 ; RET:
@@ -245,7 +242,7 @@ LAB_01AC:
 ; NOTES:
 ;   - Iterates over multiple raster pointer tables to free each entry.
 ;------------------------------------------------------------------------------
-CLEAR_RASTPORT_1:
+CLEANUP_ReleaseDisplayResources:
     MOVE.L  D7,-(A7)
 
     PEA     96.W
@@ -263,7 +260,7 @@ CLEAR_RASTPORT_1:
     LEA     32(A7),A7
     MOVEQ   #0,D7
 
-.UNKNOWN2B_FreeRaster_set1_loop:
+.freeRaster_set1_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set1
@@ -281,12 +278,12 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .UNKNOWN2B_FreeRaster_set1_loop
+    BRA.S   .freeRaster_set1_loop
 
 .after_raster_set1:
     MOVEQ   #0,D7
 
-.UNKNOWN2B_FreeRaster_set2_loop:
+.freeRaster_set2_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set2
@@ -304,12 +301,12 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .UNKNOWN2B_FreeRaster_set2_loop
+    BRA.S   .freeRaster_set2_loop
 
 .after_raster_set2:
     MOVEQ   #0,D7
 
-.UNKNOWN2B_FreeRaster_set3_loop:
+.freeRaster_set3_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set3
@@ -327,12 +324,12 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .UNKNOWN2B_FreeRaster_set3_loop
+    BRA.S   .freeRaster_set3_loop
 
 .after_raster_set3:
     MOVEQ   #3,D7
 
-.UNKNOWN2B_FreeRaster_set4_loop:
+.freeRaster_set4_loop:
     MOVEQ   #5,D0
     CMP.L   D0,D7
     BGE.S   .after_raster_set4
@@ -350,7 +347,7 @@ CLEAR_RASTPORT_1:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .UNKNOWN2B_FreeRaster_set4_loop
+    BRA.S   .freeRaster_set4_loop
 
 .after_raster_set4:
     PEA     15.W
@@ -421,7 +418,7 @@ CLEAR_RASTPORT_1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_ShutdownSystem   (ShutdownSystem)
+; FUNC: CLEANUP_ShutdownSystem
 ; ARGS:
 ;   (none)
 ; RET:
@@ -430,11 +427,11 @@ CLEAR_RASTPORT_1:
 ;   D0-D7/A0-A1/A6
 ; CALLS:
 ;   _LVOForbid, LOCAVAIL_FreeResourceChain, BRUSH_FreeBrushList,
-;   CLEAR_INTERRUPT_INTB_VERTB, CLEAR_INTERRUPT_INTB_AUD1,
-;   CLEAR_INTERRUPT_INTB_RBF, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
-;   CLEANUP_ShutdownInputDevices, CLEAR_RASTPORT_1, GROUP_AB_JMPTBL_LAB_0E0C, GROUP_AH_JMPTBL_LAB_0B34,
+;   CLEANUP_ClearVertbInterruptServer, CLEANUP_ClearAud1InterruptVector,
+;   CLEANUP_ClearRbfInterruptAndSerial, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
+;   CLEANUP_ShutdownInputDevices, CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LAB_0E0C, GROUP_AH_JMPTBL_LAB_0B34,
 ;   GROUP_AB_JMPTBL_LAB_0AC8, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, JMPTBL_LAB_0B38, JMPTBL_LAB_0966,
-;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_LAB_1908, _LVOPermit
+;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
 ;   LAB_2321, LAB_2324, LAB_1ED1, LAB_1ED2, LAB_1ED3, LAB_1ED4, LAB_229A,
 ;   LAB_1DC5, LAB_1DC6, LAB_22A7, LAB_222B, LAB_1DD9, LAB_1DEC, LAB_1DC7,
@@ -452,7 +449,6 @@ CLEAR_RASTPORT_1:
 ;------------------------------------------------------------------------------
 ; Global shutdown sequence: stop interrupts, free rsrcs, reset display.
 CLEANUP_ShutdownSystem:
-LAB_01BB:
     MOVEM.L D6-D7,-(A7)
 
     MOVEA.L AbsExecBase,A6
@@ -480,11 +476,11 @@ LAB_01BB:
     PEA     LAB_1ED4
     JSR     BRUSH_FreeBrushList(PC)
 
-    BSR.W   CLEAR_INTERRUPT_INTB_VERTB
+    BSR.W   CLEANUP_ClearVertbInterruptServer
 
-    BSR.W   CLEAR_INTERRUPT_INTB_AUD1
+    BSR.W   CLEANUP_ClearAud1InterruptVector
 
-    BSR.W   CLEAR_INTERRUPT_INTB_RBF
+    BSR.W   CLEANUP_ClearRbfInterruptAndSerial
 
     PEA     9000.W
     MOVE.L  LAB_229A,-(A7)
@@ -494,7 +490,7 @@ LAB_01BB:
 
     BSR.W   CLEANUP_ShutdownInputDevices
 
-    BSR.W   CLEAR_RASTPORT_1
+    BSR.W   CLEANUP_ReleaseDisplayResources
 M
     JSR     GROUP_AB_JMPTBL_LAB_0E0C(PC)
 
@@ -538,21 +534,21 @@ M
 
     MOVEQ   #0,D6
 
-.UNKNOWN2B_FreeRaster_rows_loop:
+.freeRaster_rows_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D6
     BGE.S   .after_raster_table
 
     MOVEQ   #0,D7
 
-.UNKNOWN2B_FreeRaster_cols_loop:
+.freeRaster_cols_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   .next_raster_row
 
     MOVE.L  D6,D0
     MOVEQ   #40,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     LEA     LAB_22A7,A0
     ADDA.L  D0,A0
@@ -570,11 +566,11 @@ M
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .UNKNOWN2B_FreeRaster_cols_loop
+    BRA.S   .freeRaster_cols_loop
 
 .next_raster_row:
     ADDQ.L  #1,D6
-    BRA.S   .UNKNOWN2B_FreeRaster_rows_loop
+    BRA.S   .freeRaster_rows_loop
 
 .after_raster_table:
     MOVE.L  LAB_1DD9,-(A7)
@@ -619,7 +615,7 @@ M
     MOVE.L  LAB_1DC7,184(A0)
 
 .after_optional_restore:
-    JSR     GROUP_AB_JMPTBL_LAB_1908(PC)
+    JSR     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)

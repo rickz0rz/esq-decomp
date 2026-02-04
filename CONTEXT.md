@@ -10,7 +10,7 @@
   - Banner/preset pipeline: `GCOMMAND_ComputePresetIncrement`, `GCOMMAND_ResetPresetWorkTables`, `GCOMMAND_InitPresetWorkEntry`, `GCOMMAND_LoadPresetWorkEntries`, `GCOMMAND_TickPresetWorkEntries`, `GCOMMAND_RebuildBannerTablesFromBounds`, `GCOMMAND_UpdateBannerRowPointers`, `GCOMMAND_BuildBannerRow`, `GCOMMAND_RefreshBannerTables`, `GCOMMAND_ClearBannerQueue`.
   - Banner queue/message loop: `GCOMMAND_ConsumeBannerQueueEntry`, `GCOMMAND_ServiceHighlightMessages`.
   - Banner build helpers: `GCOMMAND_BuildBannerBlock`, `GCOMMAND_CopyImageDataToBitmap`, `GCOMMAND_BuildBannerTables`, `GCOMMAND_UpdateBannerOffset`.
-  - Jump stubs: `GCOMMAND_JMPTBL_LAB_071A`, `GCOMMAND_JMPTBL_LAB_071B`, `GCOMMAND_JMPTBL_LAB_1ADF`, `GCOMMAND_JMPTBL_BRUSH_AppendBrushNode`.
+  - Jump stubs: `GCOMMAND_JMPTBL_LAB_071A`, `GCOMMAND_JMPTBL_LAB_071B`, `GCOMMAND_JMPTBL_DOS_SystemTagList`, `GROUP_AU_JMPTBL_BRUSH_AppendBrushNode`.
   - Control command hook: `GCOMMAND_ProcessCtrlCommand` (used by `ESQ_InvokeGcommandInit`).
 - Associated data tables in `src/data/wdisp.s` still carry anonymous `LAB_22F*` symbols. Many are now annotated as likely switch/jump tables; name them as their purpose becomes clear during gcommand work (e.g., highlight flag tables, banner presets).
 - `src/modules/newgrid.s` remains largely unaliased with raw `LAB_` labels; new splits (`newgrid1.s`, `newgrid2.s`) should follow the same naming pass once the gcommand/wdisp path settles.
@@ -23,6 +23,9 @@
 - The recent module split also introduced new numbered companions (`disptext2.s`, `script2.s`–`script4.s`, etc.); keep the build include list aligned with the on-disk structure.
 - Alignment/jump-table boundaries: padding after jump stubs is a useful heuristic for file/object boundaries, but it is not definitive and can appear mid-file for alignment.
 - `src/modules/groups/a/j/dst2.s` and `src/modules/groups/a/j/dst.s` now have descriptive local labels and inline comments around banner queue updates and allocation paths.
+- A4-based globals are being migrated to named symbols in `src/Prevue.asm` (e.g., `Global_SavedDirLock`, `Global_CommandLineSize`) and reused across modules for clarity.
+- Recent A4 migrations include signal/IO globals (`Global_SignalCallbackPtr`, `Global_DosIoErr`), handle-table state, and the A4 char-class table (`Global_CharClassTable`).
+- Positive A4 offsets are now named too (e.g., `Global_HandleTableBase`, `Global_PrintfBufferPtr`, `Global_ArgCount`), replacing raw `22492(A4)`/`22828(A4)` usage.
 
 ## Suggested Next Steps
 1. Keep pushing through `src/ESQ.asm`, adding header blocks/aliases after the CTRL/RBF routines and documenting any orphaned helpers/data blocks.

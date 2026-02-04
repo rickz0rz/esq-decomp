@@ -1,6 +1,6 @@
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05C7   (Convert seconds to time struct??)
+; FUNC: DATETIME_SecondsToStruct   (Convert seconds to time struct??)
 ; ARGS:
 ;   stack +8: D7 = seconds??
 ;   stack +12: A3 = output struct
@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   GROUP_AG_JMPTBL_LAB_1A07, GROUP_AJ_JMPTBL_LAB_1A06, LAB_0660, LAB_066E, LAB_0668
+;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AJ_JMPTBL_MATH_Mulu32, DATETIME_IsLeapYear, DST_JMPTBL_DivMod7, DATETIME_NormalizeMonthRange
 ; READS:
 ;   LAB_1CF5
 ; WRITES:
@@ -19,39 +19,40 @@
 ; NOTES:
 ;   Uses repeated division/modulo with 60/24 and year/day tables.
 ;------------------------------------------------------------------------------
+DATETIME_SecondsToStruct:
 LAB_05C7:
     MOVEM.L D4-D7/A3,-(A7)
     MOVE.L  24(A7),D7
     MOVEA.L 28(A7),A3
     TST.L   D7
-    BPL.S   .LAB_05C8
+    BPL.S   .seconds_ok
 
     MOVEQ   #0,D7
 
-.LAB_05C8:
+.seconds_ok:
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,12(A3)
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,10(A3)
     MOVE.L  D7,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
     MOVE.L  #$88f8,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D5
     MOVE.L  D5,D0
@@ -60,51 +61,51 @@ LAB_05C7:
     ADDI.W  #$7b2,6(A3)
     MOVE.L  D5,D0
     MOVE.L  #$5b5,D1
-    JSR     GROUP_AJ_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AJ_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,D4
     MOVE.L  D7,D0
     MOVE.L  #$88f8,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D1,D7
 
-.LAB_05C9:
+.year_hours_loop:
     MOVE.L  #$2238,D6
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   .LAB_05CA
+    BEQ.S   .check_year_hours
 
     MOVEQ   #24,D0
     ADD.L   D0,D6
 
-.LAB_05CA:
+.check_year_hours:
     CMP.L   D6,D7
-    BLT.S   .LAB_05CB
+    BLT.S   .convert_day_hours
 
     MOVE.L  D6,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     ADD.L   D0,D4
     ADDQ.W  #1,6(A3)
     SUB.L   D6,D7
-    BRA.S   .LAB_05C9
+    BRA.S   .year_hours_loop
 
-.LAB_05CB:
+.convert_day_hours:
     MOVE.L  D7,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,8(A3)
     MOVE.L  D7,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
@@ -112,7 +113,7 @@ LAB_05C7:
     ADD.L   D0,D4
     MOVE.L  D4,D0
     MOVEQ   #7,D1
-    JSR     LAB_066E(PC)
+    JSR     DST_JMPTBL_DivMod7(PC)
 
     MOVE.W  D1,(A3)
     ADDQ.L  #1,D7
@@ -121,47 +122,47 @@ LAB_05C7:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   .LAB_05CC
+    BEQ.S   .set_is_leap_false
 
     MOVEQ   #-1,D0
-    BRA.S   .LAB_05CD
+    BRA.S   .set_is_leap_flag
 
-.LAB_05CC:
+.set_is_leap_false:
     MOVEQ   #0,D0
 
-.LAB_05CD:
+.set_is_leap_flag:
     MOVE.W  D0,20(A3)
     ADDQ.W  #1,D0
-    BNE.S   .LAB_05CF
+    BNE.S   .month_loop_start
 
     MOVEQ   #60,D0
     CMP.L   D0,D7
-    BLE.S   .LAB_05CE
+    BLE.S   .handle_feb29
 
     SUBQ.L  #1,D7
-    BRA.S   .LAB_05CF
+    BRA.S   .month_loop_start
 
-.LAB_05CE:
+.handle_feb29:
     CMP.L   D0,D7
-    BNE.S   .LAB_05CF
+    BNE.S   .month_loop_start
 
     MOVE.W  #1,2(A3)
     MOVE.W  #$1d,4(A3)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0668
+    BSR.W   DATETIME_NormalizeMonthRange
 
     ADDQ.W  #4,A7
     MOVE.L  A3,D0
     BRA.S   .return
 
-.LAB_05CF:
+.month_loop_start:
     CLR.W   2(A3)
 
-.LAB_05D0:
+.month_loop:
     LEA     LAB_1CF5,A0
     MOVE.W  2(A3),D0
     MOVEA.L A0,A1
@@ -170,7 +171,7 @@ LAB_05C7:
     EXT.W   D1
     EXT.L   D1
     CMP.L   D7,D1
-    BGE.S   .LAB_05D1
+    BGE.S   .month_done
 
     ADDA.W  D0,A0
     MOVE.B  (A0),D0
@@ -178,13 +179,13 @@ LAB_05C7:
     EXT.L   D0
     SUB.L   D0,D7
     ADDQ.W  #1,2(A3)
-    BRA.S   .LAB_05D0
+    BRA.S   .month_loop
 
-.LAB_05D1:
+.month_done:
     MOVE.L  D7,D0
     MOVE.W  D0,4(A3)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0668
+    BSR.W   DATETIME_NormalizeMonthRange
 
     ADDQ.W  #4,A7
     MOVE.L  A3,D0
@@ -195,7 +196,7 @@ LAB_05C7:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05D3   (Normalize time struct to seconds??)
+; FUNC: DATETIME_NormalizeStructToSeconds   (Normalize time struct to seconds??)
 ; ARGS:
 ;   stack +8: A3 = time struct
 ; RET:
@@ -203,7 +204,7 @@ LAB_05C7:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_0665, LAB_0660, GROUP_AG_JMPTBL_LAB_1A06, LAB_0668
+;   DATETIME_AdjustMonthIndex, DATETIME_IsLeapYear, GROUP_AG_JMPTBL_MATH_Mulu32, DATETIME_NormalizeMonthRange
 ; READS:
 ;   A3+2/4/6/8/10/12/16
 ; WRITES:
@@ -213,30 +214,31 @@ LAB_05C7:
 ; NOTES:
 ;   Uses DIVS #10 and SWAP idioms for decimal extraction.
 ;------------------------------------------------------------------------------
+DATETIME_NormalizeStructToSeconds:
 LAB_05D3:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.W  6(A3),D0
     CMPI.W  #$76c,D0
-    BGE.S   LAB_05D4
+    BGE.S   .year_check_high
 
     ADDI.W  #$76c,6(A3)
 
-LAB_05D4:
+.year_check_high:
     MOVE.W  6(A3),D0
     CMPI.W  #$7b2,D0
-    BLT.S   LAB_05D5
+    BLT.S   .invalid_year
 
     CMPI.W  #$7f6,D0
-    BLE.S   LAB_05D6
+    BLE.S   .normalize_fields
 
-LAB_05D5:
+.invalid_year:
     MOVEQ   #-1,D0
-    BRA.W   LAB_05E0
+    BRA.W   .return
 
-LAB_05D6:
+.normalize_fields:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0665
+    BSR.W   DATETIME_AdjustMonthIndex
 
     ADDQ.W  #4,A7
     MOVE.W  12(A3),D0
@@ -275,26 +277,26 @@ LAB_05D6:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_05D7
+    BEQ.S   .non_leap_days_in_year
 
     MOVE.L  #366,D0
-    BRA.S   LAB_05D8
+    BRA.S   .set_days_in_year
 
-LAB_05D7:
+.non_leap_days_in_year:
     MOVE.L  #$16d,D0
 
-LAB_05D8:
+.set_days_in_year:
     MOVE.L  D0,D6
 
-LAB_05D9:
+.normalize_day_of_year:
     MOVE.W  16(A3),D0
     EXT.L   D0
     CMP.L   D6,D0
-    BLE.S   LAB_05DC
+    BLE.S   .compute_leap_correction
 
     MOVE.W  16(A3),D0
     EXT.L   D0
@@ -304,51 +306,51 @@ LAB_05D9:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_05DA
+    BEQ.S   .leap_days_in_year
 
     MOVE.L  #366,D0
-    BRA.S   LAB_05DB
+    BRA.S   .days_in_year_ready
 
-LAB_05DA:
+.leap_days_in_year:
     MOVE.L  #$16d,D0
 
-LAB_05DB:
+.days_in_year_ready:
     MOVE.L  D0,D6
-    BRA.S   LAB_05D9
+    BRA.S   .normalize_day_of_year
 
-LAB_05DC:
+.compute_leap_correction:
     MOVE.W  6(A3),D0
     EXT.L   D0
     SUBI.L  #$7b0,D0
     TST.L   D0
-    BPL.S   LAB_05DD
+    BPL.S   .adjust_leap_correction
 
     ADDQ.L  #3,D0
 
-LAB_05DD:
+.adjust_leap_correction:
     ASR.L   #2,D0
     MOVE.L  D0,D7
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_05DE
+    BEQ.S   .compute_total_days
 
     SUBQ.L  #1,D7
 
-LAB_05DE:
+.compute_total_days:
     MOVE.W  6(A3),D0
     EXT.L   D0
     SUBI.L  #$7b2,D0
     MOVE.L  #$16d,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
     MOVE.W  16(A3),D1
@@ -358,7 +360,7 @@ LAB_05DE:
     SUBQ.L  #1,D5
     MOVE.L  D5,D0
     MOVE.L  #$15180,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.W  8(A3),D1
     MULS    #$e10,D1
@@ -371,19 +373,19 @@ LAB_05DE:
     ADD.L   D1,D0
     MOVE.L  D0,D4
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0668
+    BSR.W   DATETIME_NormalizeMonthRange
 
     ADDQ.W  #4,A7
     TST.L   D4
-    BLE.S   LAB_05DF
+    BLE.S   .invalid_result
 
     MOVE.L  D4,D0
-    BRA.S   LAB_05E0
+    BRA.S   .return
 
-LAB_05DF:
+.invalid_result:
     MOVEQ   #-1,D0
 
-LAB_05E0:
+.return:
     MOVEM.L (A7)+,D4-D7/A3
     RTS
 
@@ -391,7 +393,7 @@ LAB_05E0:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05E1   (Build time struct from date/time??)
+; FUNC: DATETIME_BuildFromBaseDay   (Build time struct from date/time??)
 ; ARGS:
 ;   stack +8: A3 = time struct
 ;   stack +12: A2 = output struct
@@ -402,7 +404,7 @@ LAB_05E0:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_05D3, GROUP_AG_JMPTBL_LAB_1A06, LAB_05C7
+;   DATETIME_NormalizeStructToSeconds, GROUP_AG_JMPTBL_MATH_Mulu32, DATETIME_SecondsToStruct
 ; READS:
 ;   A2
 ; WRITES:
@@ -412,6 +414,7 @@ LAB_05E0:
 ; NOTES:
 ;   Uses offset of 0x36 and 0x0E10 scaling.
 ;------------------------------------------------------------------------------
+DATETIME_BuildFromBaseDay:
 LAB_05E1:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A2-A3,-(A7)
@@ -420,7 +423,7 @@ LAB_05E1:
     MOVE.W  18(A5),D7
     MOVE.W  22(A5),D6
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_05D3
+    BSR.W   DATETIME_NormalizeStructToSeconds
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -429,27 +432,27 @@ LAB_05E1:
     MOVEM.W D0,-10(A5)
     MOVEQ   #1,D1
     CMP.W   D1,D6
-    BNE.S   LAB_05E2
+    BNE.S   .flag_zero
 
     MOVEQ   #1,D1
-    BRA.S   LAB_05E3
+    BRA.S   .flag_ready
 
-LAB_05E2:
+.flag_zero:
     MOVEQ   #0,D1
 
-LAB_05E3:
+.flag_ready:
     EXT.L   D0
     MOVE.W  D1,-12(A5)
     EXT.L   D1
     SUB.L   D1,D0
     MOVE.L  #$e10,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D5,D4
     ADD.L   D0,D4
     MOVE.L  A2,-(A7)
     MOVE.L  D4,-(A7)
-    BSR.W   LAB_05C7
+    BSR.W   DATETIME_SecondsToStruct
 
     CLR.W   14(A2)
     MOVE.L  D4,D0
@@ -459,7 +462,7 @@ LAB_05E3:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05E4   (Populate time struct from LAB_2241)
+; FUNC: DATETIME_BuildFromGlobals   (Populate time struct from LAB_2241)
 ; ARGS:
 ;   stack +8: A3 = output struct
 ; RET:
@@ -467,7 +470,7 @@ LAB_05E3:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_05E1
+;   DATETIME_BuildFromBaseDay
 ; READS:
 ;   LAB_2241, LAB_223A
 ; WRITES:
@@ -477,6 +480,7 @@ LAB_05E3:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DATETIME_BuildFromGlobals:
 LAB_05E4:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -486,7 +490,7 @@ LAB_05E4:
     PEA     54.W
     MOVE.L  A3,-(A7)
     PEA     LAB_223A
-    BSR.W   LAB_05E1
+    BSR.W   DATETIME_BuildFromBaseDay
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
@@ -496,7 +500,7 @@ LAB_05E4:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05E5   (Compare value against struct bounds)
+; FUNC: DATETIME_ClassifyValueInRange   (Compare value against struct bounds)
 ; ARGS:
 ;   stack +8: A3 = struct pointer
 ;   stack +12: D7 = value
@@ -515,6 +519,7 @@ LAB_05E4:
 ; NOTES:
 ;   Switch-like sequence on flags in -11(A5).
 ;------------------------------------------------------------------------------
+DATETIME_ClassifyValueInRange:
 LAB_05E5:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7/A3,-(A7)
@@ -523,115 +528,115 @@ LAB_05E5:
     MOVEQ   #0,D0
     MOVE.B  D0,-11(A5)
     MOVE.L  A3,D1
-    BNE.S   LAB_05E6
+    BNE.S   .bounds_ready
 
     MOVEQ   #0,D0
-    BRA.W   LAB_05F5
+    BRA.W   .return
 
-LAB_05E6:
+.bounds_ready:
     MOVE.L  12(A3),D0
     MOVE.L  8(A3),D1
     CMP.L   D0,D1
-    BGE.S   LAB_05E7
+    BGE.S   .bounds_high_gt_low
 
     MOVE.B  -11(A5),D2
     MOVE.L  D1,D5
     MOVE.L  D0,D4
     MOVE.B  D2,-11(A5)
-    BRA.S   LAB_05E9
+    BRA.S   .check_value
 
-LAB_05E7:
+.bounds_high_gt_low:
     CMP.L   D0,D1
-    BLE.S   LAB_05E8
+    BLE.S   .bounds_equal
 
     BSET    #4,-11(A5)
     MOVE.L  D0,D5
     MOVE.L  D1,D4
-    BRA.S   LAB_05E9
+    BRA.S   .check_value
 
-LAB_05E8:
+.bounds_equal:
     MOVEQ   #0,D0
-    BRA.S   LAB_05F5
+    BRA.S   .return
 
-LAB_05E9:
+.check_value:
     CMP.L   D5,D7
-    BGE.S   LAB_05EA
+    BGE.S   .value_below_low
 
     MOVE.B  -11(A5),D0
     MOVE.B  D0,-11(A5)
-    BRA.S   LAB_05EC
+    BRA.S   .select_case
 
-LAB_05EA:
+.value_below_low:
     CMP.L   D4,D7
-    BGE.S   LAB_05EB
+    BGE.S   .value_above_high
 
     BSET    #0,-11(A5)
-    BRA.S   LAB_05EC
+    BRA.S   .select_case
 
-LAB_05EB:
+.value_above_high:
     BSET    #1,-11(A5)
 
-LAB_05EC:
+.select_case:
     MOVEQ   #0,D0
     MOVE.B  -11(A5),D0
     TST.W   D0
-    BEQ.S   LAB_05ED
+    BEQ.S   .case_flag_0
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_05EE
+    BEQ.S   .case_flag_1
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_05EF
+    BEQ.S   .case_flag_2
 
     SUBI.W  #14,D0
-    BEQ.S   LAB_05F0
+    BEQ.S   .case_flag_14
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_05F1
+    BEQ.S   .case_flag_15
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_05F2
+    BEQ.S   .case_flag_16
 
-    BRA.S   LAB_05F3
+    BRA.S   .case_default
 
-LAB_05ED:
+.case_flag_0:
     MOVEQ   #0,D6
-    BRA.S   LAB_05F4
+    BRA.S   .store_result
 
-LAB_05EE:
+.case_flag_1:
     MOVEQ   #1,D6
-    BRA.S   LAB_05F4
+    BRA.S   .store_result
 
-LAB_05EF:
+.case_flag_2:
     MOVEQ   #0,D6
-    BRA.S   LAB_05F4
+    BRA.S   .store_result
 
-LAB_05F0:
+.case_flag_14:
     MOVEQ   #1,D6
-    BRA.S   LAB_05F4
+    BRA.S   .store_result
 
-LAB_05F1:
+.case_flag_15:
     MOVEQ   #0,D6
-    BRA.S   LAB_05F4
+    BRA.S   .store_result
 
-LAB_05F2:
+.case_flag_16:
     MOVEQ   #1,D6
-    BRA.S   LAB_05F4
+    BRA.S   .store_result
 
-LAB_05F3:
+.case_default:
     MOVEQ   #0,D6
 
-LAB_05F4:
+.store_result:
     MOVE.L  D6,D0
 
-LAB_05F5:
+.return:
     MOVEM.L (A7)+,D2/D4-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05F6   (Update A3 based on time comparison??)
+; FUNC: DATETIME_UpdateSelectionField   (Update A3 based on time comparison??)
 ; ARGS:
 ;   stack +8: A3 = struct pointer
 ; RET:
@@ -639,7 +644,7 @@ LAB_05F5:
 ; CLOBBERS:
 ;   D0-D7/A3 ??
 ; CALLS:
-;   LAB_05E4, LAB_05E5
+;   DATETIME_BuildFromGlobals, DATETIME_ClassifyValueInRange
 ; READS:
 ;   A3+16
 ; WRITES:
@@ -649,32 +654,33 @@ LAB_05F5:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DATETIME_UpdateSelectionField:
 LAB_05F6:
     LINK.W  A5,#-32
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BEQ.S   LAB_05F7
+    BEQ.S   .return
 
     PEA     -26(A5)
-    BSR.W   LAB_05E4
+    BSR.W   DATETIME_BuildFromGlobals
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_05E5
+    BSR.W   DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D5
     MOVE.W  16(A3),D0
     CMP.W   D5,D0
-    BEQ.S   LAB_05F7
+    BEQ.S   .return
 
     MOVE.W  D5,16(A3)
     MOVEQ   #1,D6
 
-LAB_05F7:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7/A3
     UNLK    A5
@@ -682,7 +688,7 @@ LAB_05F7:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05F8   (Copy two date structs and recalc)
+; FUNC: DATETIME_CopyPairAndRecalc   (Copy two date structs and recalc)
 ; ARGS:
 ;   stack +8: A3 = dest struct
 ;   stack +12: A2 = src1 pointer
@@ -692,7 +698,7 @@ LAB_05F7:
 ; CLOBBERS:
 ;   D0/A0-A3 ??
 ; CALLS:
-;   LAB_05D3
+;   DATETIME_NormalizeStructToSeconds
 ; READS:
 ;   A2, A0
 ; WRITES:
@@ -702,52 +708,53 @@ LAB_05F7:
 ; NOTES:
 ;   DBF loops run (Dn+1) iterations (22 bytes).
 ;------------------------------------------------------------------------------
+DATETIME_CopyPairAndRecalc:
 LAB_05F8:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  A3,D0
-    BEQ.S   LAB_05FB
+    BEQ.S   .return
 
     TST.L   (A3)
-    BEQ.S   LAB_05FB
+    BEQ.S   .return
 
     TST.L   4(A3)
-    BEQ.S   LAB_05FB
+    BEQ.S   .return
 
     MOVEQ   #21,D0
     MOVEA.L A2,A0
     MOVEA.L (A3),A1
 
-LAB_05F9:
+.copy_first_loop:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_05F9
+    DBF     D0,.copy_first_loop
     MOVEQ   #21,D0
     MOVEA.L 16(A5),A0
     MOVEA.L 4(A3),A1
 
-LAB_05FA:
+.copy_second_loop:
     MOVE.B  (A0)+,(A1)+
-    DBF     D0,LAB_05FA
+    DBF     D0,.copy_second_loop
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_05D3
+    BSR.W   DATETIME_NormalizeStructToSeconds
 
     MOVE.L  D0,8(A3)
     MOVE.L  16(A5),(A7)
-    BSR.W   LAB_05D3
+    BSR.W   DATETIME_NormalizeStructToSeconds
 
     ADDQ.W  #4,A7
     MOVE.L  D0,12(A3)
 
-LAB_05FB:
+.return:
     MOVEM.L (A7)+,A2-A3
     UNLK    A5
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05FC   (Parse date/time from string??)
+; FUNC: DATETIME_ParseString   (Parse date/time from string??)
 ; ARGS:
 ;   stack +8: A3 = output struct
 ;   stack +12: A2 = input string
@@ -757,7 +764,7 @@ LAB_05FB:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_05C1, LAB_0470, LAB_0468, GROUP_AG_JMPTBL_LAB_1A07, LAB_0660, LAB_0668, LAB_05D3, LAB_05C7
+;   LAB_05C1, LAB_0470, LAB_0468, GROUP_AG_JMPTBL_MATH_DivS32, DATETIME_IsLeapYear, DATETIME_NormalizeMonthRange, DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
 ; READS:
 ;   LAB_223D
 ; WRITES:
@@ -767,6 +774,7 @@ LAB_05FB:
 ; NOTES:
 ;   Uses 0x12/0x0B offsets in the parsed buffer.
 ;------------------------------------------------------------------------------
+DATETIME_ParseString:
 LAB_05FC:
     LINK.W  A5,#-20
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
@@ -783,18 +791,18 @@ LAB_05FC:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
-    BEQ.W   LAB_0602
+    BEQ.W   .parse_fail
 
     MOVE.L  A3,D0
-    BEQ.W   LAB_0602
+    BEQ.W   .parse_fail
 
     MOVEQ   #21,D0
     MOVEQ   #0,D1
     MOVEA.L A3,A0
 
-LAB_05FD:
+.clear_struct_loop:
     MOVE.B  D1,(A0)+
-    DBF     D0,LAB_05FD
+    DBF     D0,.clear_struct_loop
     MOVEA.L -12(A5),A0
     ADDQ.L  #1,A0
     PEA     7.W
@@ -810,12 +818,12 @@ LAB_05FD:
     MOVE.L  D0,D6
     MOVE.L  D6,D0
     MOVE.L  #1000,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,6(A3)
     MOVE.L  D6,D0
     MOVE.L  #1000,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,16(A3)
     MOVE.W  6(A3),D0
@@ -823,7 +831,7 @@ LAB_05FD:
     MOVE.W  LAB_223D,D2
     EXT.L   D2
     SUB.L   D2,D0
-    BGE.S   LAB_05FE
+    BGE.S   .year_offset_nonnegative
 
     MOVE.W  6(A3),D0
     EXT.L   D0
@@ -831,45 +839,45 @@ LAB_05FD:
     EXT.L   D2
     SUB.L   D2,D0
     NEG.L   D0
-    BRA.S   LAB_05FF
+    BRA.S   .year_offset_abs
 
-LAB_05FE:
+.year_offset_nonnegative:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.W  LAB_223D,D2
     EXT.L   D2
     SUB.L   D2,D0
 
-LAB_05FF:
+.year_offset_abs:
     MOVEQ   #1,D2
     CMP.L   D2,D0
-    BGT.W   LAB_0602
+    BGT.W   .parse_fail
 
     MOVEQ   #1,D0
     CMP.W   D0,D1
-    BLE.W   LAB_0602
+    BLE.W   .parse_fail
 
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   LAB_0600
+    BEQ.S   .not_leap_year
 
     MOVEQ   #1,D0
-    BRA.S   LAB_0601
+    BRA.S   .leap_adjust_done
 
-LAB_0600:
+.not_leap_year:
     MOVEQ   #0,D0
 
-LAB_0601:
+.leap_adjust_done:
     ADDI.L  #366,D0
     MOVE.W  16(A3),D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   LAB_0602
+    BGE.S   .parse_fail
 
     MOVEA.L -12(A5),A0
     ADDQ.L  #8,A0
@@ -879,11 +887,11 @@ LAB_0601:
     ADDQ.W  #4,A7
     MOVE.W  D0,8(A3)
     TST.W   D0
-    BMI.S   LAB_0602
+    BMI.S   .parse_fail
 
     MOVEQ   #24,D1
     CMP.W   D1,D0
-    BGE.S   LAB_0602
+    BGE.S   .parse_fail
 
     MOVEA.L -12(A5),A0
     ADDA.W  #11,A0
@@ -893,41 +901,41 @@ LAB_0601:
     ADDQ.W  #4,A7
     MOVE.W  D0,10(A3)
     TST.W   D0
-    BMI.S   LAB_0602
+    BMI.S   .parse_fail
 
     MOVEQ   #60,D1
     CMP.W   D1,D0
-    BGE.S   LAB_0602
+    BGE.S   .parse_fail
 
     MOVEQ   #0,D0
     MOVE.W  D0,12(A3)
     MOVE.W  D0,14(A3)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0668
+    BSR.W   DATETIME_NormalizeMonthRange
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_05D3
+    BSR.W   DATETIME_NormalizeStructToSeconds
 
     MOVE.L  A3,(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_05C7
+    BSR.W   DATETIME_SecondsToStruct
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D5
 
-LAB_0602:
+.parse_fail:
     TST.W   D5
-    BNE.S   LAB_0604
+    BNE.S   .return
 
     MOVEQ   #21,D0
     MOVEQ   #0,D1
     MOVEA.L A3,A0
 
-LAB_0603:
+.clear_on_fail_loop:
     MOVE.B  D1,(A0)+
-    DBF     D0,LAB_0603
+    DBF     D0,.clear_on_fail_loop
 
-LAB_0604:
+.return:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D2/D5-D7/A2-A3
     UNLK    A5
@@ -935,7 +943,7 @@ LAB_0604:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0605   (Dump time structs to stream??)
+; FUNC: DATETIME_FormatPairToStream   (Dump time structs to stream??)
 ; ARGS:
 ;   stack +8: D7 = stream/handle
 ;   stack +12: A3 = struct pair
@@ -944,7 +952,7 @@ LAB_0604:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull, GROUP_AG_JMPTBL_LAB_1A07, LAB_03A0
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AG_JMPTBL_MATH_DivS32, LAB_03A0
 ; READS:
 ;   LAB_1CF8..LAB_1D00
 ; WRITES:
@@ -954,6 +962,7 @@ LAB_0604:
 ; NOTES:
 ;   Uses local buffer with append helper.
 ;------------------------------------------------------------------------------
+DATETIME_FormatPairToStream:
 LAB_0605:
     LINK.W  A5,#-140
     MOVEM.L D6-D7/A3,-(A7)
@@ -961,12 +970,12 @@ LAB_0605:
     MOVEA.L 12(A5),A3
     CLR.B   -87(A5)
     MOVE.L  A3,D0
-    BEQ.W   LAB_060D
+    BEQ.W   .structs_missing
 
     MOVEA.L (A3),A0
     MOVE.L  A0,-4(A5)
     MOVE.L  A0,D0
-    BEQ.W   LAB_0608
+    BEQ.W   .first_missing
 
     PEA     4.W
     PEA     LAB_1CF8
@@ -975,7 +984,7 @@ LAB_0605:
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.W  6(A0),D0
@@ -990,25 +999,25 @@ LAB_0605:
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     40(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.W  8(A0),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A0)
-    BEQ.S   LAB_0606
+    BEQ.S   .no_am_pm_adjust
 
     MOVEQ   #12,D0
-    BRA.S   LAB_0607
+    BRA.S   .ampm_adjust_ready
 
-LAB_0606:
+.no_am_pm_adjust:
     MOVEQ   #0,D0
 
-LAB_0607:
+.ampm_adjust_ready:
     ADD.L   D0,D1
     MOVE.L  D1,D6
     MOVE.L  D6,D0
@@ -1023,23 +1032,23 @@ LAB_0607:
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     24(A7),A7
-    BRA.S   LAB_0609
+    BRA.S   .after_first
 
-LAB_0608:
+.first_missing:
     PEA     LAB_1CFB
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0609:
+.after_first:
     MOVEA.L 4(A3),A0
     MOVE.L  A0,-4(A5)
     MOVE.L  A0,D0
-    BEQ.W   LAB_060C
+    BEQ.W   .second_missing
 
     PEA     19.W
     PEA     LAB_1CFC
@@ -1048,7 +1057,7 @@ LAB_0609:
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.W  6(A0),D0
@@ -1063,25 +1072,25 @@ LAB_0609:
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     40(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.W  8(A0),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A0)
-    BEQ.S   LAB_060A
+    BEQ.S   .no_am_pm_adjust_2
 
     MOVEQ   #12,D0
-    BRA.S   LAB_060B
+    BRA.S   .ampm_adjust_ready_2
 
-LAB_060A:
+.no_am_pm_adjust_2:
     MOVEQ   #0,D0
 
-LAB_060B:
+.ampm_adjust_ready_2:
     ADD.L   D0,D1
     MOVE.L  D1,D6
     MOVE.L  D6,D0
@@ -1096,33 +1105,33 @@ LAB_060B:
 
     PEA     -138(A5)
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     24(A7),A7
-    BRA.S   LAB_060E
+    BRA.S   .emit_buffer
 
-LAB_060C:
+.second_missing:
     PEA     LAB_1CFF
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_060E
+    BRA.S   .emit_buffer
 
-LAB_060D:
+.structs_missing:
     PEA     LAB_1D00
     PEA     -87(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_060E:
+.emit_buffer:
     LEA     -87(A5),A0
     MOVEA.L A0,A1
 
-LAB_060F:
+.count_buffer_len:
     TST.B   (A1)+
-    BNE.S   LAB_060F
+    BNE.S   .count_buffer_len
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -1137,7 +1146,7 @@ LAB_060F:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0610   (Save time structs to file)
+; FUNC: DATETIME_SavePairToFile   (Save time structs to file)
 ; ARGS:
 ;   stack +8: A3 = struct pair
 ; RET:
@@ -1145,7 +1154,7 @@ LAB_060F:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   DISKIO_OpenFileWithBuffer, LAB_03A0, LAB_0605, LAB_039A
+;   DISKIO_OpenFileWithBuffer, LAB_03A0, DATETIME_FormatPairToStream, LAB_039A
 ; READS:
 ;   LAB_1CF7, LAB_1D01, LAB_1D02
 ; WRITES:
@@ -1155,17 +1164,18 @@ LAB_060F:
 ; NOTES:
 ;   Requires both struct pointers to be non-null.
 ;------------------------------------------------------------------------------
+DATETIME_SavePairToFile:
 LAB_0610:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   .LAB_0611
+    BEQ.S   .return_false
 
     TST.L   (A3)
-    BEQ.S   .LAB_0611
+    BEQ.S   .return_false
 
     TST.L   4(A3)
-    BEQ.S   .LAB_0611
+    BEQ.S   .return_false
 
     PEA     MODE_NEWFILE.W
     MOVE.L  LAB_1CF7,-(A7)
@@ -1174,7 +1184,7 @@ LAB_0610:
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
     TST.L   D7
-    BEQ.S   .LAB_0611
+    BEQ.S   .return_false
 
     PEA     4.W
     PEA     LAB_1D01
@@ -1183,7 +1193,7 @@ LAB_0610:
 
     MOVE.L  4(A3),(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_0605
+    BSR.W   DATETIME_FormatPairToStream
 
     PEA     4.W
     PEA     LAB_1D02
@@ -1192,7 +1202,7 @@ LAB_0610:
 
     MOVE.L  (A3),(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_0605
+    BSR.W   DATETIME_FormatPairToStream
 
     MOVE.L  D7,(A7)
     JSR     LAB_039A(PC)
@@ -1201,7 +1211,7 @@ LAB_0610:
     MOVEQ   #1,D0
     BRA.S   .return
 
-.LAB_0611:
+.return_false:
     MOVEQ   #0,D0
 
 .return:

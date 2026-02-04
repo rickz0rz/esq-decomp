@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_19C4   (Parse mode string, open/prepare handle??)
+; FUNC: HANDLE_OpenFromModeString   (Parse mode string, open/prepare handle.)
 ; ARGS:
 ;   stack +8: A3 = mode string?? (expects 'r'/'w'/'a', optional 'b', '+')
 ;   stack +12: A2 = handle/struct pointer??
@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   UNKNOWN36_FinalizeRequest, LAB_19A1
+;   UNKNOWN36_FinalizeRequest, HANDLE_OpenEntryWithFlags
 ; READS:
 ;   A4-1016 = ?? (default flags/state)
 ;   A3 (mode string bytes)
@@ -17,12 +17,12 @@
 ; WRITES:
 ;   A2+4/8/12/16/20/24/28 = ?? (handle fields)
 ; DESC:
-;   Parses a mode string (r/w/a with optional b/+), builds flags, calls LAB_19A1,
+;   Parses a mode string (r/w/a with optional b/+), builds flags, calls HANDLE_OpenEntryWithFlags,
 ;   then initializes the handle/struct on success.
 ; NOTES:
 ;   Booleanize pattern: SEQ/NEG/EXT. Returns 0 on failure.
 ;------------------------------------------------------------------------------
-LAB_19C4:
+HANDLE_OpenFromModeString:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A2-A3,-(A7)
 
@@ -30,34 +30,34 @@ LAB_19C4:
     MOVEA.L 56(A7),A2
 
     TST.L   24(A2)
-    BEQ.S   .LAB_19C5
+    BEQ.S   .after_finalize
 
     MOVE.L  A2,-(A7)
     JSR     UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
-.LAB_19C5:
-    MOVE.L  -1016(A4),D5
+.after_finalize:
+    MOVE.L  Global_DefaultHandleFlags(A4),D5
     MOVEQ   #1,D7
     MOVEQ   #0,D0
     MOVE.B  0(A3,D7.L),D0
     CMPI.W  #$62,D0
-    BEQ.S   .LAB_19C6
+    BEQ.S   .set_binary_flag
 
     CMPI.W  #$61,D0
-    BNE.S   .LAB_19C8
+    BNE.S   .check_plus
 
     MOVEQ   #0,D5
-    BRA.S   .LAB_19C7
+    BRA.S   .bump_mode_index
 
-.LAB_19C6:
+.set_binary_flag:
     MOVE.L  #$8000,D5
 
-.LAB_19C7:
+.bump_mode_index:
     ADDQ.L  #1,D7
 
-.LAB_19C8:
+.check_plus:
     MOVEQ   #43,D1
     CMP.B   0(A3,D7.L),D1
     SEQ     D0
@@ -68,133 +68,133 @@ LAB_19C4:
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
     CMPI.W  #$77,D0
-    BEQ.W   .LAB_19D2
+    BEQ.W   .mode_write
 
     CMPI.W  #$72,D0
-    BEQ.S   .LAB_19CC
+    BEQ.S   .mode_read
 
     CMPI.W  #$61,D0
-    BNE.W   .LAB_19D8
+    BNE.W   .mode_invalid
 
     PEA     12.W
     MOVE.L  #$8102,-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     LAB_19A1(PC)
+    JSR     HANDLE_OpenEntryWithFlags(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
     MOVEQ   #-1,D0
     CMP.L   D0,D6
-    BNE.S   .LAB_19C9
+    BNE.S   .mode_append_ok
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_19C9:
+.mode_append_ok:
     TST.L   D4
-    BEQ.S   .LAB_19CA
+    BEQ.S   .append_no_plus
 
     MOVEQ   #64,D0
     ADD.L   D0,D0
-    BRA.S   .LAB_19CB
+    BRA.S   .append_set_handle_flags
 
-.LAB_19CA:
+.append_no_plus:
     MOVEQ   #2,D0
 
-.LAB_19CB:
+.append_set_handle_flags:
     MOVE.L  D0,D7
     ORI.W   #$4000,D7
-    BRA.W   .LAB_19D9
+    BRA.W   .init_handle_fields
 
-.LAB_19CC:
+.mode_read:
     TST.L   D4
-    BEQ.S   .LAB_19CD
+    BEQ.S   .read_no_plus
 
     MOVEQ   #2,D0
-    BRA.S   .LAB_19CE
+    BRA.S   .read_set_flags
 
-.LAB_19CD:
+.read_no_plus:
     MOVEQ   #0,D0
 
-.LAB_19CE:
+.read_set_flags:
     ORI.W   #$8000,D0
     PEA     12.W
     MOVE.L  D0,-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     LAB_19A1(PC)
+    JSR     HANDLE_OpenEntryWithFlags(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
     MOVEQ   #-1,D0
     CMP.L   D0,D6
-    BNE.S   .LAB_19CF
+    BNE.S   .read_open_ok
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_19CF:
+.read_open_ok:
     TST.L   D4
-    BEQ.S   .LAB_19D0
+    BEQ.S   .read_no_plus_flags
 
     MOVEQ   #64,D0
     ADD.L   D0,D0
-    BRA.S   .LAB_19D1
+    BRA.S   .read_set_handle_flags
 
-.LAB_19D0:
+.read_no_plus_flags:
     MOVEQ   #1,D0
 
-.LAB_19D1:
+.read_set_handle_flags:
     MOVE.L  D0,D7
-    BRA.S   .LAB_19D9
+    BRA.S   .init_handle_fields
 
-.LAB_19D2:
+.mode_write:
     TST.L   D4
-    BEQ.S   .LAB_19D3
+    BEQ.S   .write_no_plus
 
     MOVEQ   #2,D0
-    BRA.S   .LAB_19D4
+    BRA.S   .write_set_flags
 
-.LAB_19D3:
+.write_no_plus:
     MOVEQ   #1,D0
 
-.LAB_19D4:
+.write_set_flags:
     ORI.W   #$8000,D0
     ORI.W   #$100,D0
     ORI.W   #$200,D0
     PEA     12.W
     MOVE.L  D0,-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     LAB_19A1(PC)
+    JSR     HANDLE_OpenEntryWithFlags(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
     MOVEQ   #-1,D0
     CMP.L   D0,D6
-    BNE.S   .LAB_19D5
+    BNE.S   .write_open_ok
 
     MOVEQ   #0,D0
     BRA.S   .return
 
-.LAB_19D5:
+.write_open_ok:
     TST.L   D4
-    BEQ.S   .LAB_19D6
+    BEQ.S   .write_no_plus_flags
 
     MOVEQ   #64,D0
     ADD.L   D0,D0
-    BRA.S   .LAB_19D7
+    BRA.S   .write_set_handle_flags
 
-.LAB_19D6:
+.write_no_plus_flags:
     MOVEQ   #2,D0
 
-.LAB_19D7:
+.write_set_handle_flags:
     MOVE.L  D0,D7
-    BRA.S   .LAB_19D9
+    BRA.S   .init_handle_fields
 
-.LAB_19D8:
+.mode_invalid:
     MOVEQ   #0,D0
     BRA.S   .return
 
-.LAB_19D9:
+.init_handle_fields:
     SUBA.L  A0,A0
     MOVE.L  A0,16(A2)
     MOVEQ   #0,D0
@@ -204,11 +204,11 @@ LAB_19C4:
     MOVE.L  D0,12(A2)
     MOVE.L  D0,8(A2)
     TST.L   D5
-    BNE.S   .LAB_19DA
+    BNE.S   .have_default_flags
 
     MOVE.L  #$8000,D0
 
-.LAB_19DA:
+.have_default_flags:
     MOVE.L  D7,D1
     OR.L    D0,D1
     MOVE.L  D1,24(A2)

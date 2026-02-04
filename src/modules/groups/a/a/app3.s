@@ -1,5 +1,3 @@
-; Rename this file to its proper purpose.
-
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdReboot??)
 ; ARGS:
@@ -68,7 +66,6 @@ ESQ_SupervisorColdReboot:
 ;   Used by ESQ_SupervisorColdReboot; likely unreachable when ROM is read-only.
 ;------------------------------------------------------------------------------
 ESQ_TryRomWriteTest:
-LAB_00E6:
     MOVEQ   #1,D0
     RTS
 
@@ -94,7 +91,6 @@ LAB_00E6:
 ;   Likely used as a callback.
 ;------------------------------------------------------------------------------
 ESQ_InvokeGcommandInit:
-LAB_00E7:
     MOVEM.L A0-A1,-(A7)
     JSR     GCOMMAND_ProcessCtrlCommand
 

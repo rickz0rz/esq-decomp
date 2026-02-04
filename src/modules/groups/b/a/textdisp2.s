@@ -83,7 +83,7 @@ LAB_1681:
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVEQ   #46,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.W  D1,LAB_2265
     BRA.S   LAB_1681

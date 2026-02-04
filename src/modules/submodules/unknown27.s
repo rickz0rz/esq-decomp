@@ -1,34 +1,62 @@
-LAB_1A39:
+;------------------------------------------------------------------------------
+; FUNC: FORMAT_Buffer2WriteChar   (Append a byte to format buffer #2.)
+; ARGS:
+;   stack +8: D7 = byte to append
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/D7/A0
+; READS:
+;   Global_FormatBufferPtr2, Global_FormatByteCount2
+; WRITES:
+;   Global_FormatBufferPtr2, Global_FormatByteCount2
+;------------------------------------------------------------------------------
+FORMAT_Buffer2WriteChar:
     MOVE.L  D7,-(A7)
 
     MOVE.L  8(A7),D7
-    ADDQ.L  #1,22852(A4)
+    ADDQ.L  #1,Global_FormatByteCount2(A4)
     MOVE.L  D7,D0
-    MOVEA.L 22848(A4),A0
+    MOVEA.L Global_FormatBufferPtr2(A4),A0
     MOVE.B  D0,(A0)+
-    MOVE.L  A0,22848(A4)
+    MOVE.L  A0,Global_FormatBufferPtr2(A4)
 
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
-LAB_1A3A:
+;------------------------------------------------------------------------------
+; FUNC: FORMAT_FormatToBuffer2   (Format string into buffer #2.)
+; ARGS:
+;   stack +16: A3 = output buffer
+;   stack +20: A2 = format string
+;   stack +24: varargs pointer
+; RET:
+;   D0: bytes written (excluding terminator)
+; CLOBBERS:
+;   D0/A0-A3
+; CALLS:
+;   WDISP_FormatWithCallback, FORMAT_Buffer2WriteChar
+; WRITES:
+;   Global_FormatBufferPtr2, Global_FormatByteCount2
+;------------------------------------------------------------------------------
+FORMAT_FormatToBuffer2:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
 
     MOVEA.L 16(A7),A3
     MOVEA.L 20(A7),A2
-    CLR.L   22852(A4)
-    MOVE.L  A3,22848(A4)
+    CLR.L   Global_FormatByteCount2(A4)
+    MOVE.L  A3,Global_FormatBufferPtr2(A4)
     MOVE.L  16(A5),-(A7)
     MOVE.L  A2,-(A7)
-    PEA     LAB_1A39(PC)
+    PEA     FORMAT_Buffer2WriteChar(PC)
     JSR     WDISP_FormatWithCallback(PC)
 
-    MOVEA.L 22848(A4),A0
+    MOVEA.L Global_FormatBufferPtr2(A4),A0
     CLR.B   (A0)
-    MOVE.L  22852(A4),D0
+    MOVE.L  Global_FormatByteCount2(A4),D0
 
     MOVEM.L -8(A5),A2-A3
     UNLK    A5
@@ -37,7 +65,23 @@ LAB_1A3A:
 ;!======
 
 ; More core printf logic
-LAB_1A3B:
+;------------------------------------------------------------------------------
+; FUNC: FORMAT_ParseFormatSpec   (Core printf format parser.)
+; ARGS:
+;   stack +92: A3 = format string pointer
+;   stack +96: A2 = varargs pointer
+; RET:
+;   D0: pointer into format string after spec (or 0 on failure)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   PARSE_ReadSignedLong_NoBranch, FORMAT_U32ToHexString, FORMAT_U32ToDecimalString, FORMAT_U32ToOctalString, etc.
+; DESC:
+;   Parses flags/width/precision/length and emits formatted output via callback.
+; NOTES:
+;   Large routine; refine labels as needed when deeper analysis is done.
+;------------------------------------------------------------------------------
+FORMAT_ParseFormatSpec:
     LINK.W  A5,#-60
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 92(A7),A3
@@ -59,184 +103,184 @@ LAB_1A3B:
     MOVE.L  D1,-24(A5)
     MOVE.L  A0,-52(A5)
 
-.LAB_1A3C:
+.parse_flags:
     TST.B   (A3)
-    BEQ.S   .LAB_1A41
+    BEQ.S   .check_zero_pad
 
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
     SUBI.W  #' ',D0
-    BEQ.S   .LAB_1A3E
+    BEQ.S   .flag_space
 
     SUBQ.W  #3,D0
-    BEQ.S   .LAB_1A3F
+    BEQ.S   .flag_alt
 
     SUBQ.W  #8,D0
-    BEQ.S   .LAB_1A3D
+    BEQ.S   .flag_plus
 
     SUBQ.W  #2,D0
-    BNE.S   .LAB_1A41
+    BNE.S   .check_zero_pad
 
     MOVEQ   #1,D7
-    BRA.S   .LAB_1A40
+    BRA.S   .advance_flag
 
-.LAB_1A3D:
+.flag_plus:
     MOVEQ   #1,D6
-    BRA.S   .LAB_1A40
+    BRA.S   .advance_flag
 
-.LAB_1A3E:
+.flag_space:
     MOVEQ   #1,D5
-    BRA.S   .LAB_1A40
+    BRA.S   .advance_flag
 
-.LAB_1A3F:
+.flag_alt:
     MOVE.B  #$1,-4(A5)
 
-.LAB_1A40:
+.advance_flag:
     ADDQ.L  #1,A3
-    BRA.S   .LAB_1A3C
+    BRA.S   .parse_flags
 
-.LAB_1A41:
+.check_zero_pad:
     MOVE.B  (A3),D0
     MOVEQ   #'0',D1
     CMP.B   D1,D0
-    BNE.S   .LAB_1A42
+    BNE.S   .parse_width
 
     ADDQ.L  #1,A3
     MOVE.B  D1,-5(A5)
 
-.LAB_1A42:
+.parse_width:
     MOVEQ   #'*',D0
     CMP.B   (A3),D0
-    BNE.S   .LAB_1A43
+    BNE.S   .parse_width_from_str
 
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),-10(A5)
     ADDQ.L  #1,A3
-    BRA.S   .LAB_1A44
+    BRA.S   .parse_precision
 
-.LAB_1A43:
+.parse_width_from_str:
     PEA     -10(A5)
     MOVE.L  A3,-(A7)
-    JSR     LAB_199A(PC)
+    JSR     PARSE_ReadSignedLong_NoBranch(PC)
 
     ADDQ.W  #8,A7
     ADDA.L  D0,A3
 
-.LAB_1A44:
+.parse_precision:
     MOVE.B  (A3),D0
     MOVEQ   #'.',D1
     CMP.B   D1,D0
-    BNE.S   .LAB_1A46
+    BNE.S   .parse_length
 
     ADDQ.L  #1,A3
     MOVEQ   #'*',D0
     CMP.B   (A3),D0
-    BNE.S   .LAB_1A45
+    BNE.S   .parse_precision_from_str
 
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),-14(A5)
     ADDQ.L  #1,A3
-    BRA.S   .LAB_1A46
+    BRA.S   .parse_length
 
-.LAB_1A45:
+.parse_precision_from_str:
     PEA     -14(A5)
     MOVE.L  A3,-(A7)
-    JSR     LAB_199A(PC)
+    JSR     PARSE_ReadSignedLong_NoBranch(PC)
 
     ADDQ.W  #8,A7
     ADDA.L  D0,A3
 
-.LAB_1A46:
+.parse_length:
     MOVE.B  (A3),D0
     MOVEQ   #'l',D1
     CMP.B   D1,D0
-    BNE.S   .LAB_1A47
+    BNE.S   .length_h
 
     MOVE.B  #$1,-15(A5)
     ADDQ.L  #1,A3
-    BRA.S   .LAB_1A48
+    BRA.S   .dispatch_conv
 
-.LAB_1A47:
+.length_h:
     MOVEQ   #104,D1
     CMP.B   D1,D0
 
-    BNE.S   .LAB_1A48
+    BNE.S   .dispatch_conv
 
     ADDQ.L  #1,A3
 
-.LAB_1A48:
+.dispatch_conv:
     MOVE.B  (A3)+,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.B  D0,-16(A5)
     SUBI.W  #$58,D1
-    BEQ.W   .LAB_1A5E
+    BEQ.W   .conv_hex_long
 
     SUBI.W  #11,D1
-    BEQ.W   .LAB_1A65
+    BEQ.W   .conv_char
 
     SUBQ.W  #1,D1
-    BEQ.S   .LAB_1A49
+    BEQ.S   .conv_signed
 
     SUBI.W  #11,D1
-    BEQ.W   .LAB_1A59
+    BEQ.W   .conv_octal
 
     SUBQ.W  #1,D1
-    BEQ.W   .LAB_1A5D
+    BEQ.W   .conv_hex
 
     SUBQ.W  #3,D1
-    BEQ.W   .LAB_1A62
+    BEQ.W   .conv_string
 
     SUBQ.W  #2,D1
-    BEQ.W   .LAB_1A56
+    BEQ.W   .conv_unsigned
 
     SUBQ.W  #3,D1
-    BEQ.W   .LAB_1A5E
+    BEQ.W   .conv_hex_long
 
-    BRA.W   .LAB_1A66
+    BRA.W   .conv_invalid
 
-.LAB_1A49:
+.conv_signed:
     TST.B   -15(A5)
-    BEQ.S   .LAB_1A4A
+    BEQ.S   .conv_signed_long
 
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
-    BRA.S   .LAB_1A4B
+    BRA.S   .conv_signed_done
 
-.LAB_1A4A:
+.conv_signed_long:
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
 
-.LAB_1A4B:
+.conv_signed_done:
     MOVE.L  D0,-20(A5)
-    BGE.S   .LAB_1A4C
+    BGE.S   .conv_signed_setsign
 
     MOVEQ   #1,D1
     NEG.L   -20(A5)
     MOVE.L  D1,-24(A5)
 
-.LAB_1A4C:
+.conv_signed_setsign:
     TST.L   -24(A5)
-    BEQ.S   .LAB_1A4D
+    BEQ.S   .choose_prefix
 
     MOVEQ   #'-',D0
-    BRA.S   .LAB_1A4F
+    BRA.S   .prefix_ready
 
-.LAB_1A4D:
+.choose_prefix:
     TST.B   D6
-    BEQ.S   .LAB_1A4E
+    BEQ.S   .prefix_plus_or_space
 
     MOVEQ   #'+',D0
-    BRA.S   .LAB_1A4F
+    BRA.S   .prefix_ready
 
-.LAB_1A4E:
+.prefix_plus_or_space:
     MOVEQ   #32,D0
 
-.LAB_1A4F:
+.prefix_ready:
     MOVE.B  D0,-48(A5)
     MOVEQ   #0,D0
     MOVE.B  D6,D0
@@ -245,33 +289,33 @@ LAB_1A3B:
     MOVEQ   #0,D0
     MOVE.B  D5,D0
     OR.L    D0,D1
-    BEQ.S   .LAB_1A50
+    BEQ.S   .format_decimal
 
     ADDQ.L  #1,-52(A5)
     ADDQ.L  #1,-28(A5)
 
-.LAB_1A50:
+.format_decimal:
     MOVE.L  -20(A5),-(A7)
     MOVE.L  -52(A5),-(A7)
-    JSR     LAB_1988(PC)
+    JSR     FORMAT_U32ToDecimalString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-56(A5)
 
-.LAB_1A51:
+.apply_precision:
     MOVE.L  -14(A5),D0
     TST.L   D0
-    BPL.S   .LAB_1A52
+    BPL.S   .precision_normalize
 
     MOVEQ   #1,D1
     MOVE.L  D1,-14(A5)
 
-.LAB_1A52:
+.precision_normalize:
     MOVE.L  -56(A5),D0
     MOVE.L  -14(A5),D1
     SUB.L   D0,D1
     MOVEM.L D1,-60(A5)
-    BLE.S   .LAB_1A55
+    BLE.S   .emit_decimal_and_reset
 
     MOVEA.L -52(A5),A0
     MOVEA.L A0,A1
@@ -279,71 +323,71 @@ LAB_1A3B:
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1AAE(PC)
+    JSR     MEM_Move(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  -60(A5),D1
     MOVEA.L -52(A5),A0
-    BRA.S   .LAB_1A54
+    BRA.S   .pad_zero_next
 
-.LAB_1A53:
+.pad_zero_loop:
     MOVE.B  D0,(A0)+
 
-.LAB_1A54:
+.pad_zero_next:
     SUBQ.L  #1,D1
-    BCC.S   .LAB_1A53
+    BCC.S   .pad_zero_loop
 
     MOVE.L  -14(A5),D0
     MOVE.L  D0,-56(A5)
 
-.LAB_1A55:
+.emit_decimal_and_reset:
     ADD.L   D0,-28(A5)
     LEA     -48(A5),A0
     MOVE.L  A0,-52(A5)
     TST.B   D7
-    BEQ.W   .LAB_1A67
+    BEQ.W   .emit_field
 
     MOVE.B  #' ',-5(A5)
-    BRA.W   .LAB_1A67
+    BRA.W   .emit_field
 
-.LAB_1A56:
+.conv_unsigned:
     TST.B   -15(A5)
-    BEQ.S   .LAB_1A57
+    BEQ.S   .conv_unsigned_long
 
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
-    BRA.S   .LAB_1A58
+    BRA.S   .conv_unsigned_done
 
-.LAB_1A57:
+.conv_unsigned_long:
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
 
-.LAB_1A58:
+.conv_unsigned_done:
     MOVE.L  D0,-20(A5)
-    BRA.W   .LAB_1A50
+    BRA.W   .format_decimal
 
-.LAB_1A59:
+.conv_octal:
     TST.B   -15(A5)
-    BEQ.S   .LAB_1A5A
+    BEQ.S   .conv_octal_long
 
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
-    BRA.S   .LAB_1A5B
+    BRA.S   .conv_octal_done
 
-.LAB_1A5A:
+.conv_octal_long:
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
 
-.LAB_1A5B:
+.conv_octal_done:
     MOVE.L  D0,-20(A5)
     TST.B   -4(A5)
-    BEQ.S   .LAB_1A5C
+    BEQ.S   .octal_alt_prefix
 
     MOVEA.L -52(A5),A0
     MOVE.B  #$30,(A0)+
@@ -351,42 +395,42 @@ LAB_1A3B:
     MOVE.L  D1,-28(A5)
     MOVE.L  A0,-52(A5)
 
-.LAB_1A5C:
+.octal_alt_prefix:
     MOVE.L  D0,-(A7)
     MOVE.L  -52(A5),-(A7)
-    JSR     LAB_198B(PC)
+    JSR     FORMAT_U32ToOctalString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-56(A5)
-    BRA.W   .LAB_1A51
+    BRA.W   .apply_precision
 
-.LAB_1A5D:
+.conv_hex:
     MOVE.B  #'0',-5(A5)
     MOVE.L  -14(A5),D0
     TST.L   D0
-    BPL.S   .LAB_1A5E
+    BPL.S   .conv_hex_long
 
     MOVEQ   #8,D0
     MOVE.L  D0,-14(A5)
 
-.LAB_1A5E:
+.conv_hex_long:
     TST.B   -15(A5)
-    BEQ.S   .LAB_1A5F
+    BEQ.S   .conv_hex_done
 
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
-    BRA.S   .LAB_1A60
+    BRA.S   .conv_hex_value
 
-.LAB_1A5F:
+.conv_hex_done:
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVE.L  (A0),D0
 
-.LAB_1A60:
+.conv_hex_value:
     MOVE.L  D0,-20(A5)
     TST.B   -4(A5)
-    BEQ.S   .LAB_1A61
+    BEQ.S   .hex_alt_prefix
 
     MOVEA.L -52(A5),A0
     MOVE.B  #'0',(A0)+
@@ -395,54 +439,54 @@ LAB_1A3B:
     MOVE.L  D1,-28(A5)
     MOVE.L  A0,-52(A5)
 
-.LAB_1A61:
+.hex_alt_prefix:
     MOVE.L  D0,-(A7)
     MOVE.L  -52(A5),-(A7)
-    JSR     LAB_198F(PC)
+    JSR     FORMAT_U32ToHexString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-56(A5)
     MOVEQ   #'X',D0
     CMP.B   -16(A5),D0
-    BNE.W   .LAB_1A51
+    BNE.W   .apply_precision
 
     PEA     -48(A5)
-    JSR     LAB_1949(PC)
+    JSR     STRING_ToUpperInPlace(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_1A51
+    BRA.W   .apply_precision
 
-.LAB_1A62:
+.conv_string:
     MOVEA.L (A2),A0
     ADDQ.L  #4,(A2)
     MOVEA.L (A0),A1
     MOVE.L  A1,-52(A5)
-    BNE.S   .LAB_1A63
+    BNE.S   .string_default
 
-    LEA     LAB_1A70(PC),A0
+    LEA     FORMAT_STR_DefaultNullString(PC),A0
     MOVE.L  A0,-52(A5)
 
-.LAB_1A63:
+.string_default:
     MOVEA.L -52(A5),A0
 
-.LAB_1A64:
+.string_len:
     TST.B   (A0)+
-    BNE.S   .LAB_1A64
+    BNE.S   .string_len
 
     SUBQ.L  #1,A0
     SUBA.L  -52(A5),A0
     MOVE.L  A0,-28(A5)
     MOVE.L  -14(A5),D0
     TST.L   D0
-    BMI.S   .LAB_1A67
+    BMI.S   .emit_field
 
     CMPA.L  D0,A0
-    BLE.S   .LAB_1A67
+    BLE.S   .emit_field
 
     MOVE.L  D0,-28(A5)
-    BRA.S   .LAB_1A67
+    BRA.S   .emit_field
 
-.LAB_1A65:
+.conv_char:
     MOVEQ   #1,D0
     MOVE.L  D0,-28(A5)
     MOVEA.L (A2),A0
@@ -450,32 +494,32 @@ LAB_1A3B:
     MOVE.L  (A0),D0
     MOVE.B  D0,-48(A5)
     CLR.B   -47(A5)
-    BRA.S   .LAB_1A67
+    BRA.S   .emit_field
 
-.LAB_1A66:
+.conv_invalid:
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_1A67:
+.emit_field:
     MOVE.L  -28(A5),D0
     MOVE.L  -10(A5),D1
     CMP.L   D0,D1
-    BGE.S   .LAB_1A68
+    BGE.S   .width_ok
 
     MOVEQ   #0,D2
     MOVE.L  D2,-10(A5)
-    BRA.S   .LAB_1A69
+    BRA.S   .emit_with_pad
 
-.LAB_1A68:
+.width_ok:
     SUB.L   D0,-10(A5)
 
-.LAB_1A69:
+.emit_with_pad:
     TST.B   D7
-    BEQ.S   .LAB_1A6C
+    BEQ.S   .emit_pad_before
 
-.LAB_1A6A:
+.emit_field_bytes:
     SUBQ.L  #1,-28(A5)
-    BLT.S   .LAB_1A6B
+    BLT.S   .emit_pad_after
 
     MOVEQ   #0,D0
     MOVEA.L -52(A5),A0
@@ -486,11 +530,11 @@ LAB_1A3B:
     JSR     (A0)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_1A6A
+    BRA.S   .emit_field_bytes
 
-.LAB_1A6B:
+.emit_pad_after:
     SUBQ.L  #1,-10(A5)
-    BLT.S   .LAB_1A6E
+    BLT.S   .done
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -499,11 +543,11 @@ LAB_1A3B:
     JSR     (A0)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_1A6B
+    BRA.S   .emit_pad_after
 
-.LAB_1A6C:
+.emit_pad_before:
     SUBQ.L  #1,-10(A5)
-    BLT.S   .LAB_1A6D
+    BLT.S   .emit_field_after
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -512,11 +556,11 @@ LAB_1A3B:
     JSR     (A0)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_1A6C
+    BRA.S   .emit_pad_before
 
-.LAB_1A6D:
+.emit_field_after:
     SUBQ.L  #1,-28(A5)
-    BLT.S   .LAB_1A6E
+    BLT.S   .done
 
     MOVEQ   #0,D0
     MOVEA.L -52(A5),A0
@@ -527,9 +571,9 @@ LAB_1A3B:
     JSR     (A0)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_1A6D
+    BRA.S   .emit_field_after
 
-.LAB_1A6E:
+.done:
     MOVE.L  A3,D0
 
 .return:
@@ -539,6 +583,10 @@ LAB_1A3B:
 
 ;!======
 
-    ; Alignment
-LAB_1A70:
+;------------------------------------------------------------------------------
+; SYM: FORMAT_STR_DefaultNullString   (Default "%s" fallback string)
+; TYPE: string (NUL)
+; PURPOSE: Used when %s argument is null.
+;------------------------------------------------------------------------------
+FORMAT_STR_DefaultNullString:
     DC.W    $0000

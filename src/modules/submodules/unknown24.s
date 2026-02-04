@@ -1,22 +1,35 @@
-LAB_1A20:
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLongSkipClass3   (Parse signed long after skipping class3.)
+; ARGS:
+;   stack +16: A3 = input string
+; RET:
+;   D0: parsed value (0 if input is null)
+; CLOBBERS:
+;   D0/A0/A3
+; CALLS:
+;   UNKNOWN7_SkipCharClass3 (skip class3), PARSE_ReadSignedLong (parse signed decimal)
+; DESC:
+;   Skips class-3 characters, parses a signed decimal, returns the value.
+;------------------------------------------------------------------------------
+PARSE_ReadSignedLongSkipClass3:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
     MOVEA.L 16(A7),A3
 
     MOVE.L  A3,D0
-    BNE.S   .LAB_1A21
+    BNE.S   .have_input
 
     MOVEQ   #0,D0
     BRA.S   .return
 
-.LAB_1A21:
+.have_input:
     MOVE.L  A3,-(A7)
-    JSR     LAB_1985(PC)
+    JSR     UNKNOWN7_SkipCharClass3(PC)
 
     MOVEA.L D0,A3
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1992(PC)
+    JSR     PARSE_ReadSignedLong(PC)
 
     MOVE.L  -4(A5),D0
 
@@ -27,25 +40,40 @@ LAB_1A20:
 
 ;!======
 
-LAB_1A23:
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLongSkipClass3_Alt   (Alternate signed decimal parser.)
+; ARGS:
+;   stack +16: A3 = input string
+; RET:
+;   D0: parsed value (0 if input is null)
+; CLOBBERS:
+;   D0/A0/A3
+; CALLS:
+;   UNKNOWN7_SkipCharClass3 (skip class3), PARSE_ReadSignedLong_NoBranch (parse signed decimal)
+; DESC:
+;   Skips class-3 characters, parses a signed decimal, returns the value.
+; NOTES:
+;   Uses PARSE_ReadSignedLong_NoBranch instead of PARSE_ReadSignedLong (behavior differences unknown).
+;------------------------------------------------------------------------------
+PARSE_ReadSignedLongSkipClass3_Alt:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
     MOVEA.L 16(A7),A3
 
     MOVE.L  A3,D0
-    BNE.S   .LAB_1A24
+    BNE.S   .have_input
 
     MOVEQ   #0,D0
     BRA.S   .return
 
-.LAB_1A24:
+.have_input:
     MOVE.L  A3,-(A7)
-    JSR     LAB_1985(PC)
+    JSR     UNKNOWN7_SkipCharClass3(PC)
 
     MOVEA.L D0,A3
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
-    JSR     LAB_199A(PC)
+    JSR     PARSE_ReadSignedLong_NoBranch(PC)
 
     MOVE.L  -4(A5),D0
 
@@ -56,13 +84,30 @@ LAB_1A23:
 
 ;!======
 
-LAB_1A26:
+;------------------------------------------------------------------------------
+; FUNC: MEMLIST_FreeAll   (Free all tracked allocations.)
+; ARGS:
+;   none
+; RET:
+;   D0: ??
+; CLOBBERS:
+;   D0/A0-A3/A6
+; CALLS:
+;   _LVOFreeMem
+; READS:
+;   Global_MemListHead
+; WRITES:
+;   Global_MemListHead, Global_MemListTail
+; DESC:
+;   Walks the tracked allocation list and frees each block.
+;------------------------------------------------------------------------------
+MEMLIST_FreeAll:
     MOVEM.L A2-A3/A6,-(A7)
-    MOVEA.L 22836(A4),A3
+    MOVEA.L Global_MemListHead(A4),A3
 
-.LAB_1A27:
+.free_loop:
     MOVE.L  A3,D0
-    BEQ.S   .LAB_1A28
+    BEQ.S   .done
 
     MOVEA.L (A3),A2
     MOVEA.L A3,A1
@@ -71,18 +116,35 @@ LAB_1A26:
     JSR     _LVOFreeMem(A6)
 
     MOVEA.L A2,A3
-    BRA.S   .LAB_1A27
+    BRA.S   .free_loop
 
-.LAB_1A28:
+.done:
     SUBA.L  A0,A0
-    MOVE.L  A0,22840(A4)
-    MOVE.L  A0,22836(A4)
+    MOVE.L  A0,Global_MemListTail(A4)
+    MOVE.L  A0,Global_MemListHead(A4)
     MOVEM.L (A7)+,A2-A3/A6
     RTS
 
 ;!======
 
-LAB_1A29:
+;------------------------------------------------------------------------------
+; FUNC: MEMLIST_AllocTracked   (Allocate and track a block in the mem list.)
+; ARGS:
+;   stack +20: D7 = requested size (bytes)
+; RET:
+;   D0: pointer to usable bytes (after 12-byte header), or 0 on failure
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   _LVOAllocMem
+; READS:
+;   Global_MemListHead, Global_MemListTail, Global_A4_1144_Ptr
+; WRITES:
+;   Global_MemListHead, Global_MemListTail, Global_A4_1144_Ptr
+; DESC:
+;   Allocates a block (size+12), links it into the list, returns data ptr.
+;------------------------------------------------------------------------------
+MEMLIST_AllocTracked:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVE.L  20(A7),D7
 
@@ -95,38 +157,38 @@ LAB_1A29:
 
     MOVEA.L D0,A3
     MOVE.L  A3,D0
-    BNE.S   .LAB_1A2A
+    BNE.S   .alloc_ok
 
     MOVEQ   #0,D0
     BRA.S   .return
 
-.LAB_1A2A:
+.alloc_ok:
     MOVE.L  D7,8(A3)
-    LEA     22836(A4),A2
+    LEA     Global_MemListHead(A4),A2
     MOVEA.L 4(A2),A0
     MOVE.L  A0,4(A3)
     SUBA.L  A0,A0
     MOVE.L  A0,(A3)
     TST.L   (A2)
-    BNE.S   .LAB_1A2B
+    BNE.S   .link_tail
 
     MOVE.L  A3,(A2)
 
-.LAB_1A2B:
+.link_tail:
     TST.L   4(A2)
-    BEQ.S   .LAB_1A2C
+    BEQ.S   .write_tail
 
     MOVEA.L 4(A2),A1
     MOVE.L  A3,(A1)
 
-.LAB_1A2C:
+.write_tail:
     MOVE.L  A3,4(A2)
-    TST.L   -1144(A4)
-    BNE.S   .LAB_1A2D
+    TST.L   Global_A4_1144_Ptr(A4)
+    BNE.S   .return_data
 
-    MOVE.L  A3,-1144(A4)
+    MOVE.L  A3,Global_A4_1144_Ptr(A4)
 
-.LAB_1A2D:
+.return_data:
     LEA     12(A3),A0
     MOVE.L  A0,D0
 

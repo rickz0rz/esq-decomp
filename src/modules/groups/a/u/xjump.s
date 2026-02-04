@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
+; FUNC: GROUP_AU_JMPTBL_BRUSH_AppendBrushNode   (JumpStub_BRUSH_AppendBrushNode)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -7,19 +7,19 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   UNKNOWN7_FindCharWrapper
+;   BRUSH_AppendBrushNode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to UNKNOWN7_FindCharWrapper.
+;   Jump stub to BRUSH_AppendBrushNode.
 ;------------------------------------------------------------------------------
-GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper:
-    JMP     UNKNOWN7_FindCharWrapper
+GROUP_AU_JMPTBL_BRUSH_AppendBrushNode:
+    JMP     BRUSH_AppendBrushNode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
+; FUNC: GROUP_AU_JMPTBL_BRUSH_PopulateBrushList   (JumpStub_BRUSH_PopulateBrushList)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -27,13 +27,13 @@ GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQ_FindSubstringCaseFold
+;   BRUSH_PopulateBrushList
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQ_FindSubstringCaseFold.
+;   Jump stub to BRUSH_PopulateBrushList.
 ;------------------------------------------------------------------------------
-GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold:
-    JMP     ESQ_FindSubstringCaseFold
+GROUP_AU_JMPTBL_BRUSH_PopulateBrushList:
+    JMP     BRUSH_PopulateBrushList

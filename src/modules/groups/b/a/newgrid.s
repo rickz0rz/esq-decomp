@@ -10,7 +10,7 @@
 ; CALLS:
 ;   LAB_1333, LAB_1026, LAB_1240, GROUPC_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7,
-;   _LVOTextLength, JMPTBL_LAB_1A07_3
+;   _LVOTextLength, JMPTBL_MATH_DivS32_3
 ; READS:
 ;   LAB_1FFE, GLOB_HANDLE_PREVUEC_FONT, GLOB_STR_44_44_44
 ; WRITES:
@@ -101,7 +101,7 @@ LAB_0FA4:
     MOVE.L  #624,D0
     SUB.L   D1,D0
     MOVEQ   #3,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.W  D0,LAB_232B
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
@@ -116,7 +116,7 @@ LAB_0FA4:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     TST.L   D1
     BEQ.S   .align_even
@@ -750,7 +750,7 @@ LAB_0FC9:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   _LVOSetDrMd, LAB_102F, _LVOSetAPen, _LVORectFill, LAB_133D, LAB_1348,
-;   GROUPC_JMPTBL_LAB_1A06, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
+;   GROUPC_JMPTBL_MATH_Mulu32, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
 ; READS:
 ;   LAB_232A/232B, LAB_2328
 ; WRITES:
@@ -838,7 +838,7 @@ LAB_0FD1:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,28(A7)
     MOVE.L  D6,D0
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  28(A7),D1
     ADD.L   D0,D1
@@ -1388,7 +1388,7 @@ LAB_0FE9:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1028, JMPTBL_LAB_1A07_3, GROUPC_JMPTBL_LAB_1A06, LAB_101F, NEWGRID_ComputeDaySlotFromClock
+;   LAB_1028, JMPTBL_MATH_DivS32_3, GROUPC_JMPTBL_MATH_Mulu32, LAB_101F, NEWGRID_ComputeDaySlotFromClock
 ; READS:
 ;   LAB_1DD8
 ; WRITES:
@@ -1418,10 +1418,10 @@ LAB_0FED:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #60,D0
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -1446,7 +1446,7 @@ LAB_0FED:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1028, JMPTBL_LAB_1A07_3, GROUPC_JMPTBL_LAB_1A06, LAB_101F, NEWGRID_ComputeDaySlotFromClockWithOffset
+;   LAB_1028, JMPTBL_MATH_DivS32_3, GROUPC_JMPTBL_MATH_Mulu32, LAB_101F, NEWGRID_ComputeDaySlotFromClockWithOffset
 ; READS:
 ;   LAB_1DD8
 ; WRITES:
@@ -1477,10 +1477,10 @@ LAB_0FEF:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #60,D0
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -2467,38 +2467,38 @@ LAB_100D:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_LAB_1A07   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_MATH_DivS32   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_1A07)
+;   ?? (see MATH_DivS32)
 ; RET:
-;   ?? (see LAB_1A07)
+;   ?? (see MATH_DivS32)
 ; CLOBBERS:
-;   ?? (see LAB_1A07)
+;   ?? (see MATH_DivS32)
 ; CALLS:
-;   LAB_1A07
+;   MATH_DivS32
 ; DESC:
-;   Jump table entry that forwards to LAB_1A07.
+;   Jump table entry that forwards to MATH_DivS32.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_LAB_1A07:
-JMPTBL_LAB_1A07_3:
-    JMP     LAB_1A07
+NEWGRID_JMPTBL_MATH_DivS32:
+JMPTBL_MATH_DivS32_3:
+    JMP     MATH_DivS32
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_LAB_05C7   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05C7)
+;   ?? (see DATETIME_SecondsToStruct)
 ; RET:
-;   ?? (see LAB_05C7)
+;   ?? (see DATETIME_SecondsToStruct)
 ; CLOBBERS:
-;   ?? (see LAB_05C7)
+;   ?? (see DATETIME_SecondsToStruct)
 ; CALLS:
-;   LAB_05C7
+;   DATETIME_SecondsToStruct
 ; DESC:
-;   Jump table entry that forwards to LAB_05C7.
+;   Jump table entry that forwards to DATETIME_SecondsToStruct.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_LAB_05C7:
 LAB_101F:
-    JMP     LAB_05C7
+    JMP     DATETIME_SecondsToStruct
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_GenerateGridDateString   (Jump stub)
@@ -2642,36 +2642,36 @@ LAB_1027:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_LAB_05D3   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05D3)
+;   ?? (see DATETIME_NormalizeStructToSeconds)
 ; RET:
-;   ?? (see LAB_05D3)
+;   ?? (see DATETIME_NormalizeStructToSeconds)
 ; CLOBBERS:
-;   ?? (see LAB_05D3)
+;   ?? (see DATETIME_NormalizeStructToSeconds)
 ; CALLS:
-;   LAB_05D3
+;   DATETIME_NormalizeStructToSeconds
 ; DESC:
-;   Jump table entry that forwards to LAB_05D3.
+;   Jump table entry that forwards to DATETIME_NormalizeStructToSeconds.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_LAB_05D3:
 LAB_1028:
-    JMP     LAB_05D3
+    JMP     DATETIME_NormalizeStructToSeconds
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_LAB_1970   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_1970)
+;   ?? (see UNKNOWN7_CopyUntilDelimiter)
 ; RET:
-;   ?? (see LAB_1970)
+;   ?? (see UNKNOWN7_CopyUntilDelimiter)
 ; CLOBBERS:
-;   ?? (see LAB_1970)
+;   ?? (see UNKNOWN7_CopyUntilDelimiter)
 ; CALLS:
-;   LAB_1970
+;   UNKNOWN7_CopyUntilDelimiter
 ; DESC:
-;   Jump table entry that forwards to LAB_1970.
+;   Jump table entry that forwards to UNKNOWN7_CopyUntilDelimiter.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_LAB_1970:
+NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter:
 LAB_1029:
-    JMP     LAB_1970
+    JMP     UNKNOWN7_CopyUntilDelimiter
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUPC_JMPTBL_LAB_18C2   (Jump stub)
@@ -2690,17 +2690,17 @@ GROUPC_JMPTBL_LAB_18C2:
     JMP     LAB_18C2
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPC_JMPTBL_LAB_1A06   (Jump stub)
+; FUNC: GROUPC_JMPTBL_MATH_Mulu32   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_1A06)
+;   ?? (see MATH_Mulu32)
 ; RET:
-;   ?? (see LAB_1A06)
+;   ?? (see MATH_Mulu32)
 ; CLOBBERS:
-;   ?? (see LAB_1A06)
+;   ?? (see MATH_Mulu32)
 ; CALLS:
-;   LAB_1A06
+;   MATH_Mulu32
 ; DESC:
-;   Jump table entry that forwards to LAB_1A06.
+;   Jump table entry that forwards to MATH_Mulu32.
 ;------------------------------------------------------------------------------
-GROUPC_JMPTBL_LAB_1A06:
-    JMP     LAB_1A06
+GROUPC_JMPTBL_MATH_Mulu32:
+    JMP     MATH_Mulu32

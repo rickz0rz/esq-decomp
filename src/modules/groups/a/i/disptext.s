@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_056A   (Append to display text buffer??)
+; FUNC: DISPTEXT_AppendToBuffer   (Append to display text buffer??)
 ; ARGS:
 ;   stack +8: A3 = string pointer
 ; RET:
@@ -8,7 +8,7 @@
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A1/A6 ??
 ; CALLS:
-;   _LVOAvailMem, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull, GROUP_AE_JMPTBL_LAB_0B44
+;   _LVOAvailMem, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LAB_0B44
 ; READS:
 ;   LAB_21D3
 ; WRITES:
@@ -18,27 +18,28 @@
 ; NOTES:
 ;   Booleanize pattern: SNE/NEG/EXT.
 ;------------------------------------------------------------------------------
+DISPTEXT_AppendToBuffer:
 LAB_056A:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     CLR.L   -8(A5)
     TST.L   LAB_21D3
-    BEQ.W   LAB_056F
+    BEQ.W   .alloc_new_buffer
 
     MOVEA.L LAB_21D3,A0
 
-LAB_056B:
+.find_end_dst:
     TST.B   (A0)+
-    BNE.S   LAB_056B
+    BNE.S   .find_end_dst
 
     SUBQ.L  #1,A0
     SUBA.L  LAB_21D3,A0
     MOVEA.L A3,A1
 
-LAB_056C:
+.find_end_src:
     TST.B   (A1)+
-    BNE.S   LAB_056C
+    BNE.S   .find_end_src
 
     SUBQ.L  #1,A1
     SUBA.L  A3,A1
@@ -52,7 +53,7 @@ LAB_056C:
     JSR     _LVOAvailMem(A6)
 
     CMPI.L  #$2710,D0
-    BLE.S   LAB_056D
+    BLE.S   .realloc_buffer
 
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D7,-(A7)
@@ -63,20 +64,20 @@ LAB_056C:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
 
-LAB_056D:
+.realloc_buffer:
     TST.L   -8(A5)
-    BEQ.S   LAB_0570
+    BEQ.S   .return_status
 
     MOVEA.L LAB_21D3,A0
     MOVEA.L -8(A5),A1
 
-LAB_056E:
+.copy_old_buffer:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_056E
+    BNE.S   .copy_old_buffer
 
     MOVE.L  A3,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  LAB_21D3,(A7)
     CLR.L   -(A7)
@@ -85,9 +86,9 @@ LAB_056E:
     LEA     12(A7),A7
     MOVEA.L -8(A5),A0
     MOVE.L  A0,LAB_21D3
-    BRA.S   LAB_0570
+    BRA.S   .return_status
 
-LAB_056F:
+.alloc_new_buffer:
     MOVE.L  LAB_21D3,-(A7)
     MOVE.L  A3,-(A7)
     JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
@@ -95,7 +96,7 @@ LAB_056F:
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_21D3
 
-LAB_0570:
+.return_status:
     TST.L   LAB_21D3
     SNE     D0
     NEG.B   D0
@@ -107,7 +108,7 @@ LAB_0570:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0571   (Format text into line buffer with width constraint??)
+; FUNC: DISPTEXT_BuildLineWithWidth   (Format text into line buffer with width constraint??)
 ; ARGS:
 ;   stack +8: A3 = font/rastport??
 ;   stack +12: A2 = source string
@@ -118,7 +119,7 @@ LAB_0570:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6 ??
 ; CALLS:
-;   _LVOTextLength, GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull, LAB_05C4, LAB_05C6
+;   _LVOTextLength, GROUP_AI_JMPTBL_STRING_AppendAtNull, JMPTBL_UNKNOWN7_SkipCharClass3_2, JMPTBL_UNKNOWN7_CopyUntilDelimiter_2
 ; READS:
 ;   LAB_1CEA..LAB_1CEC, LAB_21D6/21D9/21DA/21DC
 ; WRITES:
@@ -128,6 +129,7 @@ LAB_0570:
 ; NOTES:
 ;   Uses 0x13/0x12 separators (see data tables).
 ;------------------------------------------------------------------------------
+DISPTEXT_BuildLineWithWidth:
 LAB_0571:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -144,30 +146,30 @@ LAB_0571:
     CLR.B   (A0)
     MOVE.L  D0,-16(A5)
 
-LAB_0572:
+.line_loop:
     MOVE.L  A2,D0
-    BEQ.W   LAB_057D
+    BEQ.W   .done
 
     TST.B   (A2)
-    BEQ.W   LAB_057D
+    BEQ.W   .done
 
     CMP.L   -16(A5),D7
-    BLE.W   LAB_057D
+    BLE.W   .done
 
     MOVEA.L 16(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_0573
+    BEQ.S   .append_separator
 
     PEA     LAB_1CEB
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     SUB.L   -16(A5),D7
 
-LAB_0573:
+.append_separator:
     MOVE.L  A2,-(A7)
-    JSR     LAB_05C4(PC)
+    JSR     JMPTBL_UNKNOWN7_SkipCharClass3_2(PC)
 
     MOVEA.L D0,A2
     MOVE.L  A2,-20(A5)
@@ -175,16 +177,16 @@ LAB_0573:
     PEA     50.W
     PEA     -73(A5)
     MOVE.L  A2,-(A7)
-    JSR     LAB_05C6(PC)
+    JSR     JMPTBL_UNKNOWN7_CopyUntilDelimiter_2(PC)
 
     LEA     20(A7),A7
     MOVEA.L D0,A2
     LEA     -73(A5),A0
     MOVEA.L A0,A1
 
-LAB_0574:
+.measure_word:
     TST.B   (A1)+
-    BNE.S   LAB_0574
+    BNE.S   .measure_word
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -199,41 +201,41 @@ LAB_0574:
     MOVE.B  (A0),D0
     MOVEQ   #19,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0575
+    BNE.S   .measure_adjust
 
     ADDQ.L  #8,D5
 
-LAB_0575:
+.measure_adjust:
     CMP.L   D7,D5
-    BLE.S   LAB_057C
+    BLE.S   .append_word
 
     MOVE.W  LAB_21D6,D2
     MOVEQ   #2,D3
     CMP.W   D3,D2
-    BCC.S   LAB_0576
+    BCC.S   .set_separator_width
 
     MOVE.L  LAB_21DA,D2
-    BRA.S   LAB_0577
+    BRA.S   .compute_remaining_width
 
-LAB_0576:
+.set_separator_width:
     MOVEQ   #0,D2
 
-LAB_0577:
+.compute_remaining_width:
     MOVE.L  LAB_21D9,D3
     SUB.L   D2,D3
     MOVE.L  D3,D4
     CMP.L   D4,D5
-    BLE.S   LAB_057B
+    BLE.S   .skip_word
 
     CMP.B   D1,D0
-    BEQ.W   LAB_0572
+    BEQ.W   .line_loop
 
-LAB_0578:
+.shrink_word:
     CMP.L   D7,D5
-    BLE.S   LAB_0579
+    BLE.S   .emit_word
 
     TST.L   D6
-    BLE.S   LAB_0579
+    BLE.S   .emit_word
 
     SUBQ.L  #1,D6
     MOVEA.L A3,A1
@@ -243,36 +245,36 @@ LAB_0578:
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
-    BRA.S   LAB_0578
+    BRA.S   .shrink_word
 
-LAB_0579:
+.emit_word:
     TST.L   D6
-    BLE.S   LAB_057A
+    BLE.S   .advance_source
 
     CLR.B   -73(A5,D6.L)
     PEA     -73(A5)
     MOVE.L  16(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_057A:
+.advance_source:
     MOVEA.L -20(A5),A0
     MOVEA.L A0,A1
     ADDA.L  D6,A1
     MOVEA.L A1,A2
     MOVEQ   #0,D7
-    BRA.W   LAB_0572
+    BRA.W   .line_loop
 
-LAB_057B:
+.skip_word:
     MOVEA.L -20(A5),A2
     MOVEQ   #0,D7
-    BRA.W   LAB_0572
+    BRA.W   .line_loop
 
-LAB_057C:
+.append_word:
     PEA     -73(A5)
     MOVE.L  16(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     SUB.L   D5,D7
@@ -287,15 +289,15 @@ LAB_057C:
     EXT.L   D1
     OR.L    D0,D1
     MOVE.W  D1,LAB_21DC
-    BRA.W   LAB_0572
+    BRA.W   .line_loop
 
-LAB_057D:
+.done:
     TST.B   (A2)
-    BNE.S   LAB_057E
+    BNE.S   .null_out
 
     SUBA.L  A2,A2
 
-LAB_057E:
+.null_out:
     MOVE.L  A2,D0
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
@@ -303,7 +305,7 @@ LAB_057E:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_057F   (Build display line pointer table??)
+; FUNC: DISPTEXT_BuildLinePointerTable   (Build display line pointer table??)
 ; ARGS:
 ;   stack +8: D7 = ?? (nonzero enables table build)
 ; RET:
@@ -321,11 +323,12 @@ LAB_057E:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_BuildLinePointerTable:
 LAB_057F:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVE.L  24(A7),D7
     TST.L   LAB_21DB
-    BNE.S   LAB_0584
+    BNE.S   .return
 
     MOVE.L  LAB_21D3,LAB_21D4
     MOVEQ   #0,D0
@@ -334,24 +337,24 @@ LAB_057F:
     LEA     LAB_21D7,A0
     ADDA.L  D0,A0
     TST.W   (A0)
-    BEQ.S   LAB_0580
+    BEQ.S   .has_header_line
 
     MOVEQ   #1,D0
-    BRA.S   LAB_0581
+    BRA.S   .init_line_count
 
-LAB_0580:
+.has_header_line:
     MOVEQ   #0,D0
 
-LAB_0581:
+.init_line_count:
     MOVEQ   #0,D1
     MOVE.W  LAB_21D6,D1
     ADD.L   D0,D1
     MOVE.L  D1,D5
     MOVEQ   #1,D6
 
-LAB_0582:
+.build_ptrs_loop:
     CMP.L   D5,D6
-    BGE.S   LAB_0583
+    BGE.S   .set_locked
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -371,18 +374,18 @@ LAB_0582:
     ADDA.L  D0,A3
     MOVE.L  A3,(A0)
     ADDQ.L  #1,D6
-    BRA.S   LAB_0582
+    BRA.S   .build_ptrs_loop
 
-LAB_0583:
+.set_locked:
     MOVE.L  D7,LAB_21DB
 
-LAB_0584:
+.return:
     MOVEM.L (A7)+,D5-D7/A2-A3
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0585   (Finalize pending line table??)
+; FUNC: DISPTEXT_FinalizeLineTable   (Finalize pending line table??)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -390,7 +393,7 @@ LAB_0584:
 ; CLOBBERS:
 ;   D0-D1/A0 ??
 ; CALLS:
-;   LAB_057F
+;   DISPTEXT_BuildLinePointerTable
 ; READS:
 ;   LAB_21DB, LAB_21D6, LAB_21D7
 ; WRITES:
@@ -400,9 +403,10 @@ LAB_0584:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_FinalizeLineTable:
 LAB_0585:
     TST.L   LAB_21DB
-    BNE.S   LAB_0587
+    BNE.S   .return
 
     MOVE.W  LAB_21D6,D0
     MOVE.W  D0,LAB_21D5
@@ -412,24 +416,24 @@ LAB_0585:
     LEA     LAB_21D7,A0
     ADDA.L  D1,A0
     TST.W   (A0)
-    BEQ.S   LAB_0586
+    BEQ.S   .check_extra_line
 
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_21D5
 
-LAB_0586:
+.check_extra_line:
     PEA     1.W
-    BSR.W   LAB_057F
+    BSR.W   DISPTEXT_BuildLinePointerTable
 
     ADDQ.W  #4,A7
     CLR.W   LAB_21D6
 
-LAB_0587:
+.return:
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0588   (Initialize disptext buffers)
+; FUNC: DISPTEXT_InitBuffers   (Initialize disptext buffers)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -447,6 +451,7 @@ LAB_0587:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_InitBuffers:
 LAB_0588:
     TST.L   LAB_1CED
     BEQ.S   .return
@@ -477,7 +482,7 @@ LAB_0588:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_058A   (Free disptext buffers)
+; FUNC: DISPTEXT_FreeBuffers   (Free disptext buffers)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -495,6 +500,7 @@ LAB_0588:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_FreeBuffers:
 LAB_058A:
     BSR.W   LAB_0566
 
@@ -528,7 +534,7 @@ LAB_058A:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_058D   (Set display layout params??)
+; FUNC: DISPTEXT_SetLayoutParams   (Set display layout params??)
 ; ARGS:
 ;   stack +8: D7 = width?? (1..624)
 ;   stack +12: D6 = line count?? (1..20)
@@ -548,6 +554,7 @@ LAB_058A:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_SetLayoutParams:
 LAB_058D:
     MOVEM.L D5-D7,-(A7)
     MOVE.L  16(A7),D7
@@ -556,51 +563,51 @@ LAB_058D:
     BSR.W   LAB_0566
 
     TST.L   D7
-    BMI.S   LAB_058E
+    BMI.S   .clamp_width
 
     CMPI.L  #624,D7
-    BGT.S   LAB_058E
+    BGT.S   .clamp_width
 
     MOVE.L  D7,LAB_21D9
 
-LAB_058E:
+.clamp_width:
     TST.L   D6
-    BLE.S   LAB_058F
+    BLE.S   .clamp_lines
 
     MOVEQ   #20,D0
     CMP.L   D0,D6
-    BGT.S   LAB_058F
+    BGT.S   .clamp_lines
 
     MOVE.L  D6,D0
     MOVE.W  D0,LAB_21D5
 
-LAB_058F:
+.clamp_lines:
     MOVE.L  D5,-(A7)
     BSR.W   LAB_0567
 
     ADDQ.W  #4,A7
     MOVE.L  LAB_21D9,D0
     CMP.L   D7,D0
-    BNE.S   LAB_0590
+    BNE.S   .mismatch
 
     MOVEQ   #0,D0
     MOVE.W  LAB_21D5,D0
     CMP.L   D6,D0
-    BNE.S   LAB_0590
+    BNE.S   .mismatch
 
     MOVEQ   #1,D0
-    BRA.S   LAB_0591
+    BRA.S   .done
 
-LAB_0590:
+.mismatch:
     MOVEQ   #0,D0
 
-LAB_0591:
+.done:
     MOVEM.L (A7)+,D5-D7
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0592   (Compute padding widths??)
+; FUNC: DISPTEXT_ComputeMarkerWidths   (Compute padding widths??)
 ; ARGS:
 ;   stack +8: A3 = font/rastport??
 ;   stack +12: D7 = ?? (width)
@@ -610,7 +617,7 @@ LAB_0591:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6 ??
 ; CALLS:
-;   LAB_05C0, _LVOTextLength
+;   JMPTBL_LAB_10BE_2, _LVOTextLength
 ; READS:
 ;   LAB_21DA
 ; WRITES:
@@ -620,6 +627,7 @@ LAB_0591:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_ComputeMarkerWidths:
 LAB_0592:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A3,-(A7)
@@ -632,11 +640,11 @@ LAB_0592:
     PEA     -1(A5)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     LAB_05C0(PC)
+    JSR     JMPTBL_LAB_10BE_2(PC)
 
     LEA     24(A7),A7
     TST.B   -1(A5)
-    BEQ.S   LAB_0593
+    BEQ.S   .no_prefix1
 
     MOVEA.L A3,A1
     LEA     -1(A5),A0
@@ -644,15 +652,15 @@ LAB_0592:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    BRA.S   LAB_0594
+    BRA.S   .check_prefix2
 
-LAB_0593:
+.no_prefix1:
     MOVEQ   #0,D0
 
-LAB_0594:
+.check_prefix2:
     MOVE.L  D0,D5
     TST.B   -3(A5)
-    BEQ.S   LAB_0595
+    BEQ.S   .no_prefix2
 
     MOVEA.L A3,A1
     LEA     -3(A5),A0
@@ -660,12 +668,12 @@ LAB_0594:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    BRA.S   LAB_0596
+    BRA.S   .store_combined
 
-LAB_0595:
+.no_prefix2:
     MOVEQ   #0,D0
 
-LAB_0596:
+.store_combined:
     MOVE.L  D0,D4
     MOVE.L  D5,D0
     ADD.L   D4,D0
@@ -676,7 +684,7 @@ LAB_0596:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0597   (Layout source text into lines)
+; FUNC: DISPTEXT_LayoutSourceToLines   (Layout source text into lines)
 ; ARGS:
 ;   stack +8: A3 = font/rastport??
 ;   stack +12: A2 = source string
@@ -685,7 +693,7 @@ LAB_0596:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6 ??
 ; CALLS:
-;   LAB_0571, _LVOTextLength
+;   DISPTEXT_BuildLineWithWidth, _LVOTextLength
 ; READS:
 ;   LAB_21D3/21D4/21D5/21D6/21D7/21D9/21DA/21DB
 ; WRITES:
@@ -695,6 +703,7 @@ LAB_0596:
 ; NOTES:
 ;   Uses line offset tables LAB_21D4/LAB_21D7.
 ;------------------------------------------------------------------------------
+DISPTEXT_LayoutSourceToLines:
 LAB_0597:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
@@ -702,12 +711,12 @@ LAB_0597:
     MOVEA.L 12(A5),A2
     MOVEQ   #0,D7
     TST.L   LAB_21DB
-    BNE.W   LAB_059E
+    BNE.W   .return_status
 
     MOVE.W  LAB_21D6,D0
     MOVE.W  LAB_21D5,D1
     CMP.W   D1,D0
-    BCC.W   LAB_059E
+    BCC.W   .return_status
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -716,7 +725,7 @@ LAB_0597:
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     TST.W   (A1)
-    BEQ.S   LAB_0598
+    BEQ.S   .no_prefix_line
 
     MOVEQ   #0,D2
     MOVE.W  D0,D2
@@ -737,27 +746,27 @@ LAB_0597:
     MOVE.L  D1,D2
     SUB.L   D0,D2
     MOVE.L  D2,D6
-    BRA.S   LAB_0599
+    BRA.S   .adjust_for_prefix
 
-LAB_0598:
+.no_prefix_line:
     MOVE.L  LAB_21D9,D6
 
-LAB_0599:
+.adjust_for_prefix:
     MOVE.W  LAB_21D6,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
-    BCC.S   LAB_059A
+    BCC.S   .maybe_subtract_markers
 
     SUB.L   LAB_21DA,D6
 
-LAB_059A:
+.maybe_subtract_markers:
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     ADD.L   D2,D2
     LEA     LAB_21D7,A0
     ADDA.L  D2,A0
     TST.W   (A0)
-    BEQ.S   LAB_059C
+    BEQ.S   .try_build_line
 
     MOVEA.L A3,A1
     LEA     LAB_1CF2,A0
@@ -767,12 +776,12 @@ LAB_059A:
 
     MOVE.L  D0,D5
     CMP.L   D5,D6
-    BLE.S   LAB_059B
+    BLE.S   .reset_width_for_next
 
     SUB.L   D5,D6
-    BRA.S   LAB_059C
+    BRA.S   .try_build_line
 
-LAB_059B:
+.reset_width_for_next:
     ADDQ.L  #1,D7
     MOVEQ   #0,D0
     MOVE.W  LAB_21D6,D0
@@ -780,16 +789,16 @@ LAB_059B:
     MOVEQ   #0,D1
     MOVE.W  LAB_21D5,D1
     CMP.L   D1,D0
-    BGE.S   LAB_059C
+    BGE.S   .try_build_line
 
     MOVE.L  LAB_21D9,D6
 
-LAB_059C:
+.try_build_line:
     MOVE.L  A2,D0
-    BEQ.S   LAB_059E
+    BEQ.S   .return_status
 
     TST.B   (A2)
-    BEQ.S   LAB_059E
+    BEQ.S   .return_status
 
     MOVEQ   #0,D0
     MOVE.W  LAB_21D6,D0
@@ -797,13 +806,13 @@ LAB_059C:
     MOVEQ   #0,D1
     MOVE.W  LAB_21D5,D1
     CMP.L   D1,D0
-    BGE.S   LAB_059E
+    BGE.S   .return_status
 
     MOVE.L  D6,-(A7)
     PEA     -268(A5)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0571
+    BSR.W   DISPTEXT_BuildLineWithWidth
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
@@ -811,18 +820,18 @@ LAB_059C:
     MOVE.W  LAB_21D6,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
-    BCC.S   LAB_059D
+    BCC.S   .after_build_line
 
     SUB.L   LAB_21DA,D6
 
-LAB_059D:
+.after_build_line:
     MOVE.L  A2,D0
-    BEQ.S   LAB_059C
+    BEQ.S   .try_build_line
 
     ADDQ.L  #1,D7
-    BRA.S   LAB_059C
+    BRA.S   .try_build_line
 
-LAB_059E:
+.return_status:
     MOVE.L  A2,D1
     SEQ     D0
     NEG.B   D0
@@ -834,7 +843,7 @@ LAB_059E:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_059F   (Layout and append into output buffer)
+; FUNC: DISPTEXT_LayoutAndAppendToBuffer   (Layout and append into output buffer)
 ; ARGS:
 ;   stack +8: A3 = font/rastport??
 ;   stack +12: A2 = source string
@@ -843,7 +852,7 @@ LAB_059E:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6 ??
 ; CALLS:
-;   LAB_0571, LAB_0567, GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull, _LVOTextLength
+;   DISPTEXT_BuildLineWithWidth, LAB_0567, GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
 ; READS:
 ;   LAB_21D3/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
 ; WRITES:
@@ -853,18 +862,19 @@ LAB_059E:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_LayoutAndAppendToBuffer:
 LAB_059F:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     TST.L   LAB_21DB
-    BNE.W   LAB_05A9
+    BNE.W   .return_status
 
     MOVE.W  LAB_21D6,D0
     MOVE.W  LAB_21D5,D1
     CMP.W   D1,D0
-    BCC.W   LAB_05A9
+    BCC.W   .return_status
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -873,7 +883,7 @@ LAB_059F:
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     TST.W   (A1)
-    BEQ.S   LAB_05A0
+    BEQ.S   .no_prefix_line
 
     MOVEQ   #0,D2
     MOVE.W  D0,D2
@@ -894,20 +904,20 @@ LAB_059F:
     MOVE.L  D1,D2
     SUB.L   D0,D2
     MOVE.L  D2,D7
-    BRA.S   LAB_05A1
+    BRA.S   .adjust_for_prefix
 
-LAB_05A0:
+.no_prefix_line:
     MOVE.L  LAB_21D9,D7
 
-LAB_05A1:
+.adjust_for_prefix:
     MOVE.W  LAB_21D6,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
-    BCC.S   LAB_05A2
+    BCC.S   .init_scratch
 
     SUB.L   LAB_21DA,D7
 
-LAB_05A2:
+.init_scratch:
     MOVEA.L GLOB_REF_1000_BYTES_ALLOCATED_2,A0
     CLR.B   (A0)
     MOVEQ   #0,D0
@@ -916,7 +926,7 @@ LAB_05A2:
     LEA     LAB_21D7,A1
     ADDA.L  D0,A1
     TST.W   (A1)
-    BEQ.S   LAB_05A5
+    BEQ.S   .line_loop
 
     MOVEA.L A3,A1
     LEA     LAB_1CF3,A0
@@ -926,14 +936,14 @@ LAB_05A2:
 
     MOVE.L  D0,D6
     CMP.L   D6,D7
-    BLE.S   LAB_05A4
+    BLE.S   .fallback_layout
 
     LEA     LAB_1CF4,A0
     MOVEA.L GLOB_REF_1000_BYTES_ALLOCATED_2,A1
 
-LAB_05A3:
+.copy_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_05A3
+    BNE.S   .copy_prefix
 
     SUB.L   D6,D7
     MOVEQ   #0,D0
@@ -942,9 +952,9 @@ LAB_05A3:
     LEA     LAB_21D7,A0
     ADDA.L  D0,A0
     ADDQ.W  #1,(A0)
-    BRA.S   LAB_05A5
+    BRA.S   .line_loop
 
-LAB_05A4:
+.fallback_layout:
     MOVEQ   #0,D0
     MOVE.W  LAB_21D6,D0
     ASL.L   #2,D0
@@ -957,42 +967,42 @@ LAB_05A4:
     MOVE.W  LAB_21D6,D0
     MOVE.W  LAB_21D5,D1
     CMP.W   D1,D0
-    BCC.S   LAB_05A5
+    BCC.S   .line_loop
 
     MOVE.L  LAB_21D9,D7
 
-LAB_05A5:
+.line_loop:
     MOVE.L  A2,D0
-    BEQ.W   LAB_05A8
+    BEQ.W   .flush_remaining
 
     TST.B   (A2)
-    BEQ.W   LAB_05A8
+    BEQ.W   .flush_remaining
 
     MOVE.W  LAB_21D6,D0
     MOVE.W  LAB_21D5,D1
     CMP.W   D1,D0
-    BCC.W   LAB_05A8
+    BCC.W   .flush_remaining
 
     MOVE.L  D7,-(A7)
     PEA     -268(A5)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0571
+    BSR.W   DISPTEXT_BuildLineWithWidth
 
     MOVEA.L D0,A2
     LEA     -268(A5),A0
     MOVEA.L A0,A1
 
-LAB_05A6:
+.append_scratch:
     TST.B   (A1)+
-    BNE.S   LAB_05A6
+    BNE.S   .append_scratch
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D5
     MOVE.L  A0,(A7)
     MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_2,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -1009,13 +1019,13 @@ LAB_05A6:
     MOVE.W  LAB_21D6,D0
     MOVEQ   #2,D1
     CMP.W   D1,D0
-    BCC.S   LAB_05A7
+    BCC.S   .after_append
 
     SUB.L   LAB_21DA,D7
 
-LAB_05A7:
+.after_append:
     MOVE.L  A2,D1
-    BEQ.W   LAB_05A5
+    BEQ.W   .line_loop
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -1026,22 +1036,22 @@ LAB_05A7:
     BSR.W   LAB_0567
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_05A5
+    BRA.W   .line_loop
 
-LAB_05A8:
+.flush_remaining:
     MOVEA.L GLOB_REF_1000_BYTES_ALLOCATED_2,A0
     TST.B   (A0)
-    BEQ.S   LAB_05A9
+    BEQ.S   .return_status
 
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_056A
+    BSR.W   DISPTEXT_AppendToBuffer
 
     CLR.L   (A7)
-    BSR.W   LAB_057F
+    BSR.W   DISPTEXT_BuildLinePointerTable
 
     ADDQ.W  #4,A7
 
-LAB_05A9:
+.return_status:
     MOVE.L  A2,D1
     SEQ     D0
     NEG.B   D0
@@ -1053,7 +1063,7 @@ LAB_05A9:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05AA   (Build layout for a source string)
+; FUNC: DISPTEXT_BuildLayoutForSource   (Build layout for a source string)
 ; ARGS:
 ;   stack +8: A3 = font/rastport??
 ;   stack +12: ?? (source string)
@@ -1062,39 +1072,40 @@ LAB_05A9:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_05C3, LAB_059F
+;   JMPTBL_FORMAT_FormatToBuffer2_2, DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
 ;   LAB_21DB, GLOB_REF_1000_BYTES_ALLOCATED_1
 ; WRITES:
-;   GLOB_REF_1000_BYTES_ALLOCATED_1 (via LAB_05C3)
+;   GLOB_REF_1000_BYTES_ALLOCATED_1 (via JMPTBL_FORMAT_FormatToBuffer2_2)
 ; DESC:
 ;   Prepares output buffer and runs layout; returns success flag.
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_BuildLayoutForSource:
 LAB_05AA:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
     TST.L   LAB_21DB
-    BNE.S   LAB_05AB
+    BNE.S   .return_status
 
     LEA     16(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  12(A5),-(A7)
     MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_1,-(A7)
     MOVE.L  A0,-8(A5)
-    JSR     LAB_05C3(PC)
+    JSR     JMPTBL_FORMAT_FormatToBuffer2_2(PC)
 
     MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_1,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_059F
+    BSR.W   DISPTEXT_LayoutAndAppendToBuffer
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
 
-LAB_05AB:
+.return_status:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
@@ -1102,7 +1113,7 @@ LAB_05AB:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05AC   (Set current line index)
+; FUNC: DISPTEXT_SetCurrentLineIndex   (Set current line index)
 ; ARGS:
 ;   stack +8: D7 = line index (1..3)
 ; RET:
@@ -1120,6 +1131,7 @@ LAB_05AB:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_SetCurrentLineIndex:
 LAB_05AC:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
@@ -1145,7 +1157,7 @@ LAB_05AC:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05AE   (Compute visible line count??)
+; FUNC: DISPTEXT_ComputeVisibleLineCount   (Compute visible line count??)
 ; ARGS:
 ;   stack +8: D7 = ?? (line index)
 ; RET:
@@ -1153,7 +1165,7 @@ LAB_05AC:
 ; CLOBBERS:
 ;   D0-D7 ??
 ; CALLS:
-;   LAB_0585, GROUP_AG_JMPTBL_LAB_1A06, LAB_05C1
+;   DISPTEXT_FinalizeLineTable, GROUP_AG_JMPTBL_MATH_Mulu32, JMPTBL_UNKNOWN7_FindCharWrapper_2
 ; READS:
 ;   LAB_21D5/21D6/21DC/21D3, LAB_2328
 ; WRITES:
@@ -1163,53 +1175,54 @@ LAB_05AC:
 ; NOTES:
 ;   Uses booleanize pattern on LAB_21DC.
 ;------------------------------------------------------------------------------
+DISPTEXT_ComputeVisibleLineCount:
 LAB_05AE:
     LINK.W  A5,#-12
     MOVEM.L D5-D7,-(A7)
     MOVE.L  8(A5),D7
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  LAB_21D5,D0
     CMP.L   D7,D0
-    BGE.S   LAB_05AF
+    BGE.S   .line_index_ok
 
     MOVE.L  D7,D1
-    BRA.S   LAB_05B0
+    BRA.S   .use_max_lines
 
-LAB_05AF:
+.line_index_ok:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
 
-LAB_05B0:
+.use_max_lines:
     MOVE.L  D1,D6
     MOVEQ   #0,D1
     MOVE.W  LAB_2328,D1
     MOVE.L  D6,D0
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     TST.L   D0
-    BPL.S   LAB_05B1
+    BPL.S   .add_leading
 
     ADDQ.L  #3,D0
 
-LAB_05B1:
+.add_leading:
     ASR.L   #2,D0
     MOVE.L  D0,D5
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   LAB_05B2
+    BNE.S   .no_leading
 
     MOVEQ   #2,D0
-    BRA.S   LAB_05B3
+    BRA.S   .apply_leading
 
-LAB_05B2:
+.no_leading:
     MOVEQ   #0,D0
 
-LAB_05B3:
+.apply_leading:
     ADD.L   D0,D5
     TST.W   LAB_21DC
-    BEQ.S   LAB_05B4
+    BEQ.S   .return
 
     MOVE.W  LAB_21D5,D0
     MOVEQ   #0,D1
@@ -1219,27 +1232,27 @@ LAB_05B3:
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-12(A5)
-    BEQ.S   LAB_05B4
+    BEQ.S   .return
 
     PEA     19.W
     MOVE.L  A1,-(A7)
-    JSR     LAB_05C1(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper_2(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_05B4
+    BEQ.S   .return
 
     PEA     20.W
     MOVE.L  -12(A5),-(A7)
-    JSR     LAB_05C1(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper_2(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_05B4
+    BEQ.S   .return
 
     ADDQ.L  #2,D5
 
-LAB_05B4:
+.return:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
@@ -1247,7 +1260,7 @@ LAB_05B4:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05B5   (Get total line count)
+; FUNC: DISPTEXT_GetTotalLineCount   (Get total line count)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1255,7 +1268,7 @@ LAB_05B4:
 ; CLOBBERS:
 ;   D0 ??
 ; CALLS:
-;   LAB_0585
+;   DISPTEXT_FinalizeLineTable
 ; READS:
 ;   LAB_21D5
 ; WRITES:
@@ -1265,8 +1278,9 @@ LAB_05B4:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_GetTotalLineCount:
 LAB_05B5:
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  LAB_21D5,D0
@@ -1274,7 +1288,7 @@ LAB_05B5:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05B6   (Has multiple lines??)
+; FUNC: DISPTEXT_HasMultipleLines   (Has multiple lines??)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1282,7 +1296,7 @@ LAB_05B5:
 ; CLOBBERS:
 ;   D0-D1 ??
 ; CALLS:
-;   LAB_0585
+;   DISPTEXT_FinalizeLineTable
 ; READS:
 ;   LAB_21D5/21D6
 ; WRITES:
@@ -1292,21 +1306,22 @@ LAB_05B5:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_HasMultipleLines:
 LAB_05B6:
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVE.W  LAB_21D6,D0
-    BNE.S   .LAB_05B7
+    BNE.S   .return_false
 
     MOVE.W  LAB_21D5,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .LAB_05B7
+    BLS.S   .return_false
 
     MOVEQ   #1,D0
     BRA.S   .return
 
-.LAB_05B7:
+.return_false:
     MOVEQ   #0,D0
 
 .return:
@@ -1314,7 +1329,7 @@ LAB_05B6:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05B9   (Is last line selected??)
+; FUNC: DISPTEXT_IsLastLineSelected   (Is last line selected??)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1322,7 +1337,7 @@ LAB_05B6:
 ; CLOBBERS:
 ;   D0-D2 ??
 ; CALLS:
-;   LAB_0585
+;   DISPTEXT_FinalizeLineTable
 ; READS:
 ;   LAB_21D5/21D6
 ; WRITES:
@@ -1332,9 +1347,10 @@ LAB_05B6:
 ; NOTES:
 ;   Booleanize pattern: SEQ/NEG/EXT.
 ;------------------------------------------------------------------------------
+DISPTEXT_IsLastLineSelected:
 LAB_05B9:
     MOVE.L  D2,-(A7)
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  LAB_21D5,D0
@@ -1352,7 +1368,7 @@ LAB_05B9:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05BA   (Is current line last??)
+; FUNC: DISPTEXT_IsCurrentLineLast   (Is current line last??)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1360,7 +1376,7 @@ LAB_05B9:
 ; CLOBBERS:
 ;   D0-D2 ??
 ; CALLS:
-;   LAB_0585
+;   DISPTEXT_FinalizeLineTable
 ; READS:
 ;   LAB_21D5/21D6
 ; WRITES:
@@ -1370,9 +1386,10 @@ LAB_05B9:
 ; NOTES:
 ;   Booleanize pattern: SEQ/NEG/EXT.
 ;------------------------------------------------------------------------------
+DISPTEXT_IsCurrentLineLast:
 LAB_05BA:
     MOVE.L  D2,-(A7)
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVE.W  LAB_21D6,D0
     MOVE.W  LAB_21D5,D1
@@ -1387,7 +1404,7 @@ LAB_05BA:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05BB   (Measure current line text length)
+; FUNC: DISPTEXT_MeasureCurrentLineLength   (Measure current line text length)
 ; ARGS:
 ;   stack +8: A3 = font/rastport??
 ; RET:
@@ -1395,7 +1412,7 @@ LAB_05BA:
 ; CLOBBERS:
 ;   D0-D1/A0-A1/A6 ??
 ; CALLS:
-;   LAB_0585, _LVOTextLength
+;   DISPTEXT_FinalizeLineTable, _LVOTextLength
 ; READS:
 ;   LAB_21D4/21D6/21D7
 ; WRITES:
@@ -1405,10 +1422,11 @@ LAB_05BA:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DISPTEXT_MeasureCurrentLineLength:
 LAB_05BB:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.W  LAB_21D6,D0
@@ -1432,7 +1450,7 @@ LAB_05BB:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_05BC   (Render one line of display text)
+; FUNC: DISPTEXT_RenderCurrentLine   (Render one line of display text)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: D7 = x
@@ -1442,7 +1460,7 @@ LAB_05BB:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6 ??
 ; CALLS:
-;   LAB_0585, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, LAB_05C1, LAB_05C2
+;   DISPTEXT_FinalizeLineTable, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, JMPTBL_UNKNOWN7_FindCharWrapper_2, JMPTBL_LAB_175F_2
 ; READS:
 ;   LAB_21D4/21D6/21D7/21D9/21DC/21B1/21B2/21D8
 ; WRITES:
@@ -1452,24 +1470,25 @@ LAB_05BB:
 ; NOTES:
 ;   Uses 0x13/0x14 control markers when LAB_21DC set.
 ;------------------------------------------------------------------------------
+DISPTEXT_RenderCurrentLine:
 LAB_05BC:
     LINK.W  A5,#-12
     MOVEM.L D2-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
     MOVE.L  16(A5),D6
-    BSR.W   LAB_0585
+    BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
     MOVE.L  D0,LAB_1CE8
     MOVE.L  LAB_21D9,D1
     TST.L   D1
-    BLE.W   LAB_05BF
+    BLE.W   .return
 
     MOVE.W  LAB_21D6,D1
     MOVE.W  LAB_21D5,D2
     CMP.W   D2,D1
-    BCC.W   LAB_05BF
+    BCC.W   .return
 
     MOVEQ   #0,D2
     MOVE.W  D1,D2
@@ -1478,7 +1497,7 @@ LAB_05BC:
     MOVEA.L A0,A1
     ADDA.L  D2,A1
     TST.L   (A1)
-    BEQ.W   LAB_05BF
+    BEQ.W   .return
 
     MOVEQ   #0,D2
     MOVE.W  D1,D2
@@ -1493,7 +1512,7 @@ LAB_05BC:
     MOVEQ   #0,D4
     MOVE.W  (A0),D4
     TST.L   D4
-    BLE.W   LAB_05BF
+    BLE.W   .return
 
     LEA     LAB_21D8,A0
     ADDA.L  D2,A0
@@ -1510,23 +1529,23 @@ LAB_05BC:
     MOVE.B  0(A0,D4.L),D5
     CLR.B   0(A0,D4.L)
     TST.W   LAB_21DC
-    BEQ.S   LAB_05BD
+    BEQ.S   .draw_plain
 
     PEA     19.W
     MOVE.L  A0,-(A7)
-    JSR     LAB_05C1(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper_2(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_05BD
+    BEQ.S   .draw_plain
 
     PEA     20.W
     MOVE.L  -6(A5),-(A7)
-    JSR     LAB_05C1(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper_2(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_05BD
+    BEQ.S   .draw_plain
 
     MOVEQ   #0,D0
     MOVE.B  LAB_21B2,D0
@@ -1538,14 +1557,14 @@ LAB_05BC:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_05C2(PC)
+    JSR     JMPTBL_LAB_175F_2(PC)
 
     LEA     24(A7),A7
     MOVEQ   #4,D0
     MOVE.L  D0,LAB_1CE8
-    BRA.S   LAB_05BE
+    BRA.S   .restore_char
 
-LAB_05BD:
+.draw_plain:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
@@ -1557,14 +1576,14 @@ LAB_05BD:
     MOVEA.L -6(A5),A0
     JSR     _LVOText(A6)
 
-LAB_05BE:
+.restore_char:
     MOVEA.L -6(A5),A0
     MOVE.B  D5,0(A0,D4.L)
     MOVE.W  LAB_21D6,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_21D6
 
-LAB_05BF:
+.return:
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
     RTS

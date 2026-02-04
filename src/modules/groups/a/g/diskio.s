@@ -546,10 +546,10 @@ LAB_03C0:
     MOVEA.L D2,A0
     MOVE.L  16(A0),D0
     MOVEQ   #100,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  12(A0),D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
     MOVE.L  20(A0),D0
@@ -709,7 +709,7 @@ LAB_03CF:
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
     CLR.L   -(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN22_SetupSignalAndMsgport(PC)
+    JSR     GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
 
     MOVE.L  D0,LAB_21CD
     PEA     56.W
@@ -828,7 +828,7 @@ LAB_03CF:
     JSR     LAB_0467(PC)
 
     MOVE.L  LAB_21CD,(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN21_CleanupSignalAndMsgport(PC)
+    JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
     ADDQ.W  #4,A7
     TST.W   LAB_1DE5
@@ -961,7 +961,7 @@ LAB_03DE:
     PEA     240.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -1892,7 +1892,7 @@ LAB_03E0:
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,LAB_1BCA
     MOVEM.L -28(A5),D2/D5-D7/A3

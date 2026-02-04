@@ -351,7 +351,7 @@ LAB_0E1D:
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVEQ   #46,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.W  D1,LAB_2265
     MOVE.W  LAB_2265,D0
@@ -476,7 +476,7 @@ LAB_0E25:
     MOVE.B  D5,D0
     MOVE.L  D0,-(A7)
     PEA     -89(A5)
-    JSR     LAB_0EEB(PC)
+    JSR     GROUP_AW_JMPTBL_LAB_0552(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
@@ -537,7 +537,7 @@ LAB_0E29:
     MOVE.B  D5,D0
     MOVE.L  D0,-(A7)
     PEA     -89(A5)
-    JSR     LAB_0EEB(PC)
+    JSR     GROUP_AW_JMPTBL_LAB_0552(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
@@ -690,7 +690,7 @@ LAB_0E34:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FBF
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -717,7 +717,7 @@ LAB_0E37:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FC0
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -974,7 +974,7 @@ LAB_0E49:
     CLR.B   -15(A5)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1FB6
-    JSR     JMPTBL_DISKIO_OpenFileWithBuffer_1(PC)
+    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2320
@@ -1065,7 +1065,7 @@ LAB_0E50:
     PEA     3.W
     PEA     LAB_1FC5
     PEA     -35(A5)
-    JSR     JMPTBL_PRINTF_3(PC)
+    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     -35(A5),A0
     MOVEA.L A0,A1
@@ -1420,7 +1420,7 @@ LAB_0E69:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_3(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_3(PC)
 
     LEA     16(A7),A7
     MOVEM.L (A7)+,D5-D7/A2-A3
@@ -1444,7 +1444,7 @@ LAB_0E6A:
     MOVE.L  D0,-26(A5)
     MOVE.L  #624,D0
     MOVE.L  -26(A5),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.L  D0,-22(A5)
     MOVEQ   #40,D1
@@ -1522,7 +1522,7 @@ LAB_0E70:
     MOVE.W  (A0),D2
     ASL.L   #3,D2
     MOVE.L  -26(A5),D0
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D2
     TST.L   D2
@@ -1536,7 +1536,7 @@ LAB_0E71:
     MOVEQ   #0,D0
     MOVE.W  20(A1),D0
     MOVE.L  LAB_21FB,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.W  2(A0),D1
@@ -1554,7 +1554,7 @@ LAB_0E72:
     MOVE.W  20(A1),D4
     MOVE.L  D1,-38(A5)
     MOVE.L  D4,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-38(A5)
     MOVE.L  D2,-34(A5)
@@ -1602,7 +1602,7 @@ LAB_0E77:
 
     MOVE.L  D3,D0
     MOVE.L  -14(A5),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #32,D1
     MOVEA.L -4(A5),A0
@@ -1617,7 +1617,7 @@ LAB_0E79:
 
     MOVE.L  -30(A5),D0
     MOVE.L  -14(A5),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEA.L -4(A5),A0
     CLR.B   0(A0,D0.L)
@@ -1633,11 +1633,11 @@ LAB_0E79:
     LEA     20(A7),A7
     MOVE.L  -30(A5),D0
     MOVE.L  -14(A5),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.L  -26(A5),D1
     MOVE.L  D0,32(A7)
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-34(A5)
     MOVE.L  32(A7),D0
@@ -1690,7 +1690,7 @@ LAB_0E7D:
     LEA     20(A7),A7
     MOVE.L  -26(A5),D0
     MOVE.L  -18(A5),D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-34(A5)
     MOVE.L  -18(A5),D0
@@ -1752,7 +1752,7 @@ LAB_0E83:
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     LAB_0EEA(PC)
+    JSR     GROUP_AW_JMPTBL_LAB_183E(PC)
 
     MOVE.L  D0,LAB_2216
     MOVEA.L D0,A0
@@ -1772,7 +1772,7 @@ LAB_0E83:
     MOVE.L  D0,44(A7)
     MOVE.L  #624,D0
     MOVE.L  44(A7),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.L  D0,D6
     MOVE.L  D6,D0
@@ -1809,7 +1809,7 @@ LAB_0E83:
     MOVEA.L (A0),A1
     MOVE.L  10(A1),-12(A5)
     CLR.W   LAB_22AB
-    JSR     LAB_0EF1(PC)
+    JSR     GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
@@ -1818,7 +1818,7 @@ LAB_0E83:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    JSR     LAB_0EED(PC)
+    JSR     GROUP_AW_JMPTBL_LAB_0A49(PC)
 
     MOVEQ   #0,D4
 
@@ -1977,7 +1977,7 @@ LAB_0E8D:
     BRA.W   LAB_0E87
 
 LAB_0E8E:
-    JSR     LAB_0EEC(PC)
+    JSR     GROUP_AW_JMPTBL_LAB_0A48(PC)
 
 LAB_0E8F:
     MOVEA.L LAB_2216,A0
@@ -2216,7 +2216,7 @@ LAB_0EA3:
 LAB_0EA4:
     MOVE.L  -120(A5),D0
     MOVE.L  -104(A5),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.L  -108(A5),D1
     CMP.L   D0,D1
@@ -2232,7 +2232,7 @@ LAB_0EA4:
 LAB_0EA5:
     MOVE.L  -120(A5),D0
     MOVE.L  -104(A5),D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     SUB.L   D0,-120(A5)
 
@@ -2329,7 +2329,7 @@ LAB_0EAF:
 
     MOVE.L  LAB_21FB,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #32,D1
     MOVEA.L A3,A0
@@ -2344,7 +2344,7 @@ LAB_0EB1:
 
     MOVE.L  LAB_21FB,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     CLR.B   0(A3,D0.L)
     PEA     1.W
@@ -2357,7 +2357,7 @@ LAB_0EB1:
     MOVE.L  LAB_21FB,D0
     MOVE.L  D1,20(A7)
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  20(A7),D1
     MOVEA.L A2,A0
@@ -2490,7 +2490,7 @@ LAB_0EBF:
 
     MOVE.L  D5,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -6(A5),A0
     ADDA.L  D0,A0
@@ -2512,7 +2512,7 @@ LAB_0EC0:
     SUBA.L  A0,A1
     MOVE.L  D5,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -10(A5),A0
     ADDA.L  D0,A0
@@ -2645,7 +2645,7 @@ LAB_0ECD:
     MOVE.L  D1,-(A7)
     PEA     -51(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0EEF(PC)
+    JSR     GROUP_AW_JMPTBL_MEM_Move(PC)
 
     LEA     -91(A5),A0
     MOVE.L  -100(A5),D0
@@ -2656,7 +2656,7 @@ LAB_0ECD:
     MOVE.L  D1,(A7)
     PEA     -91(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0EEF(PC)
+    JSR     GROUP_AW_JMPTBL_MEM_Move(PC)
 
     LEA     20(A7),A7
     BRA.W   LAB_0ED4
@@ -2728,7 +2728,7 @@ LAB_0ED3:
     MOVE.L  D1,-(A7)
     PEA     -51(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0EEF(PC)
+    JSR     GROUP_AW_JMPTBL_MEM_Move(PC)
 
     LEA     -91(A5),A0
     MOVE.L  -100(A5),D0
@@ -2738,7 +2738,7 @@ LAB_0ED3:
     MOVE.L  D1,(A7)
     PEA     -91(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0EEF(PC)
+    JSR     GROUP_AW_JMPTBL_MEM_Move(PC)
 
     LEA     20(A7),A7
 
@@ -3056,38 +3056,6 @@ LAB_0EE9:
     ANDI.B  #$f,D0
     MOVE.L  (A7)+,D7
     RTS
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000
-
-;!======
-
-LAB_0EEA:
-    JMP     LAB_183E
-
-LAB_0EEB:
-    JMP     LAB_0552
-
-LAB_0EEC:
-    JMP     LAB_0A48
-
-LAB_0EED:
-    JMP     LAB_0A49
-
-JMPTBL_DISPLAY_TEXT_AT_POSITION_3:
-    JMP     DISPLAY_TEXT_AT_POSITION
-
-LAB_0EEF:
-    JMP     LAB_1AAE
-
-JMPTBL_PRINTF_3:
-    JMP     WDISP_SPrintf
-
-LAB_0EF1:
-    JMP     ESQ_SetCopperEffect_OffDisableHighlight
 
 ;!======
 

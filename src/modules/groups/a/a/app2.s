@@ -21,7 +21,6 @@
 ;   Slot index wraps at 20 entries. Entry size includes the terminator.
 ;------------------------------------------------------------------------------
 ESQ_StoreCtrlSampleEntry:
-LAB_0050:
     MOVEM.L D0-D1/A0-A1,-(A7)
 
     LEA     LAB_231D,A0
@@ -69,7 +68,6 @@ LAB_0050:
 ;   Likely tied to a highlight/flash effect; exact purpose unknown.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffect_Default:
-LAB_0053:
     MOVE.B  #0,D0
     MOVE.B  #$3f,D1
     JSR     ESQ_SetCopperEffectParams
@@ -99,7 +97,6 @@ LAB_0053:
 ;   Exact meaning of the parameters is unknown.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffect_Custom:
-LAB_0054:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
     BSET    #6,D1
@@ -134,7 +131,6 @@ LAB_0054:
 ;   Exact meaning of the parameters is unknown.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffect_AllOn:
-LAB_0055:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
     BCLR    #6,D1
@@ -169,7 +165,6 @@ LAB_0055:
 ;   Exact meaning of the parameters is unknown.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffect_OffDisableHighlight:
-LAB_0056:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
     BCLR    #6,D1
@@ -206,7 +201,6 @@ LAB_0056:
 ;   Exact meaning of the parameters is unknown.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffect_OnEnableHighlight:
-LAB_0057:
     MOVEA.L #CIAB_PRA,A1
     MOVE.B  (A1),D1
     BSET    #6,D1
@@ -243,7 +237,6 @@ LAB_0057:
 ;   Parameters are packed into LAB_1B00..LAB_1B02 for ESQ_UpdateCopperListsFromParams.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffectParams:
-LAB_0058:
     MOVE.B  D0,LAB_1B01
     MOVE.B  D1,LAB_1B02
     MOVE.W  #5,LAB_1B00
@@ -273,7 +266,6 @@ LAB_0058:
 ;   Writes 16 entries (DBF runs D4+1 iterations). Exact effect semantics unknown.
 ;------------------------------------------------------------------------------
 ESQ_UpdateCopperListsFromParams:
-LAB_0059:
     LEA     LAB_1E25,A0
     MOVE.W  26(A0),D1
     MOVE.L  LAB_1B00,D0
@@ -344,7 +336,6 @@ LAB_0059:
 ;   No-op stub that returns immediately.
 ;------------------------------------------------------------------------------
 ESQ_NoOp:
-LAB_005C:
     RTS
 
 ;!======
@@ -369,7 +360,6 @@ LAB_005C:
 ;   Exact meaning of the cleared bytes is unknown.
 ;------------------------------------------------------------------------------
 ESQ_ClearCopperListFlags:
-LAB_005C_CLEAR:
     MOVE.B  #0,D0
     MOVE.B  D0,LAB_1E2B
     MOVE.B  D0,LAB_1E58
@@ -399,7 +389,6 @@ LAB_005C_CLEAR:
 ;   Table entries are 4 bytes wide; the secondary table mirrors part of the range.
 ;------------------------------------------------------------------------------
 ESQ_MoveCopperEntryTowardStart:
-LAB_005D:
     MOVE.L  4(A7),D1
     MOVE.L  8(A7),D0
     MOVEM.L D2-D4,-(A7)
@@ -469,7 +458,6 @@ LAB_005D:
 ;   Table entries are 4 bytes wide; the secondary table mirrors part of the range.
 ;------------------------------------------------------------------------------
 ESQ_MoveCopperEntryTowardEnd:
-LAB_0062:
     MOVE.L  4(A7),D1
     MOVE.L  8(A7),D0
     MOVEM.L D2-D4,-(A7)
@@ -536,7 +524,6 @@ LAB_0062:
 ;   in LAB_1E26.
 ;------------------------------------------------------------------------------
 ESQ_DecCopperListsPrimary:
-LAB_0067:
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E26,A2
     LEA     LAB_1E55,A3
@@ -583,7 +570,6 @@ LAB_0067:
 ;   No-op stub that returns immediately.
 ;------------------------------------------------------------------------------
 ESQ_NoOp_006A:
-LAB_006A:
     RTS
 
 ;!======
@@ -609,7 +595,6 @@ LAB_006A:
 ;   Skips when D5 == 4.
 ;------------------------------------------------------------------------------
 ESQ_DecCopperListsAltSkipIndex4:
-LAB_006B_ENTRY:
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E2E,A2
     LEA     LAB_1E5B,A3
@@ -654,7 +639,6 @@ LAB_006B_ENTRY:
 ;   Assumes packed 0RGB format; component layout is inferred.
 ;------------------------------------------------------------------------------
 ESQ_DecColorStep:
-LAB_006D:
     MOVE.W  D0,D1
     MOVE.W  D0,D2
     ANDI.W  #$f00,D1
@@ -704,7 +688,6 @@ LAB_006D:
 ;   Uses LAB_2295 as a 3-byte-per-entry target stream.
 ;------------------------------------------------------------------------------
 ESQ_IncCopperListsTowardsTargets:
-LAB_0071:
     MOVEM.L D2-D6/A2-A3,-(A7)
     LEA     LAB_2295,A1
     LEA     LAB_1E26,A2
@@ -752,7 +735,6 @@ LAB_0071:
 ;   No-op stub that returns immediately.
 ;------------------------------------------------------------------------------
 ESQ_NoOp_0074:
-LAB_0074:
     RTS
 
 ;!======
@@ -779,7 +761,6 @@ LAB_0074:
 ;   This block is currently marked unreachable.
 ;------------------------------------------------------------------------------
 ESQ_IncCopperListsAltSkipIndex4:
-LAB_0075_ENTRY:
     MOVEM.L D2-D5/A2-A3,-(A7)
     LEA     LAB_1E2E,A2
     LEA     LAB_1E5B,A3
@@ -825,7 +806,6 @@ LAB_0075_ENTRY:
 ;   Component layout and adjustment direction are inferred.
 ;------------------------------------------------------------------------------
 ESQ_BumpColorTowardTargets:
-LAB_0077:
     MOVE.W  D0,D1
     MOVE.W  D0,D2
     ANDI.W  #$f00,D1
@@ -884,7 +864,6 @@ LAB_0077:
 ;   Field meanings are inferred; 18(A0) is treated as an AM/PM sign flag.
 ;------------------------------------------------------------------------------
 ESQ_TickClockAndFlagEvents:
-LAB_007B:
     MOVEA.L 4(A7),A0
     MOVEM.L D2-D4,-(A7)
     MOVEQ   #0,D0
@@ -1031,7 +1010,6 @@ LAB_007B:
 ;   Uses alternate month-length table when 20(A0) is non-zero.
 ;------------------------------------------------------------------------------
 ESQ_UpdateMonthDayFromDayOfYear:
-LAB_0089:
     MOVE.L  D2,-(A7)
     MOVE.W  16(A0),D0
     MOVEQ   #0,D2
@@ -1078,7 +1056,6 @@ LAB_0089:
 ;   Uses alternate month-length table when 20(A0) is non-zero.
 ;------------------------------------------------------------------------------
 ESQ_CalcDayOfYearFromMonthDay:
-LAB_008C:
     MOVEA.L 4(A7),A0
     MOVE.W  2(A0),D1
     MOVEQ   #0,D0
@@ -1125,7 +1102,6 @@ LAB_008C:
 ;   Writes the string backward from outBuf+$0B. Uses 18(A1) sign for AM/PM.
 ;------------------------------------------------------------------------------
 ESQ_FormatTimeStamp:
-LAB_0090:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVE.L  D2,-(A7)
@@ -1206,7 +1182,6 @@ LAB_0090:
 ;   Slot = hour*2 (+1 if minutes >= 30), with 12-hour and AM/PM handling.
 ;------------------------------------------------------------------------------
 ESQ_GetHalfHourSlotIndex:
-LAB_0095:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
@@ -1269,7 +1244,6 @@ LAB_0095:
 ;   Heavily context-dependent; likely relates to banner character bounds.
 ;------------------------------------------------------------------------------
 ESQ_ClampBannerCharRange:
-LAB_009A:
     MOVE.L  4(A7),D0
     MOVE.L  8(A7),D1
     MOVEA.L 12(A7),A0
@@ -1425,7 +1399,6 @@ LAB_00A6:
 ;   a possible leading space.
 ;------------------------------------------------------------------------------
 ESQ_AdjustBracketedHourInString:
-LAB_00A7:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
     MOVEM.L D2-D4,-(A7)
@@ -1539,7 +1512,6 @@ LAB_00A7:
 ;   Uses LSR.W so index is masked to 16 bits before byte addressing.
 ;------------------------------------------------------------------------------
 ESQ_TestBit1Based:
-LAB_00B1:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
     MOVEQ   #0,D1
@@ -1576,7 +1548,6 @@ LAB_00B1:
 ;   Uses LSR.W so index is masked to 16 bits before byte addressing.
 ;------------------------------------------------------------------------------
 ESQ_SetBit1Based:
-LAB_00B2:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
     MOVEQ   #0,D1
@@ -1610,7 +1581,6 @@ LAB_00B2:
 ;   Preserves 0x00 and 0xFF without reversal.
 ;------------------------------------------------------------------------------
 ESQ_ReverseBitsIn6Bytes:
-LAB_00B3:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVEM.L D2-D4,-(A7)
@@ -1670,7 +1640,6 @@ LAB_00B3:
 ;   If LAB_2206 is non-zero, returns LAB_2253 instead of computing.
 ;------------------------------------------------------------------------------
 ESQ_GenerateXorChecksumByte:
-GENERATE_CHECKSUM_BYTE_INTO_D0:
     MOVEQ   #0,D0
     MOVE.B  LAB_2253,D0
     TST.B   LAB_2206
@@ -1718,7 +1687,6 @@ GENERATE_CHECKSUM_BYTE_INTO_D0:
 ;   No callers found via static search; may be reached via computed jump.
 ;------------------------------------------------------------------------------
 ESQ_TerminateAfterSecondQuote:
-LAB_00BB_Unreachable:
     MOVEA.L 4(A7),A0
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
@@ -1768,7 +1736,6 @@ LAB_00BB_Unreachable:
 ;   Returns mismatch on null pointers. '*' short-circuits to match.
 ;------------------------------------------------------------------------------
 ESQ_WildcardMatch:
-LAB_00BE:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     CMPA.L  #0,A0
@@ -1797,8 +1764,6 @@ LAB_00BE:
 .mismatch:
     MOVE.B  #$1,D0
     RTS
-
-;!======
 
 .check_end:
     TST.B   D1
@@ -1831,7 +1796,6 @@ LAB_00BE:
 ;   Case fold uses BCHG #5 (ASCII letter case bit).
 ;------------------------------------------------------------------------------
 ESQ_FindSubstringCaseFold:
-LAB_00C3:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVEM.L A2-A3,-(A7)
@@ -1856,8 +1820,6 @@ LAB_00C3:
 .return:
     MOVEM.L (A7)+,A2-A3
     RTS
-
-;!======
 
 .compare_loop:
     TST.B   (A2)
@@ -1914,7 +1876,6 @@ LAB_00C3:
 ;   Writes digits right-to-left and terminates with null at outBuf+digits.
 ;------------------------------------------------------------------------------
 ESQ_WriteDecFixedWidth:
-LAB_00CB:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
     MOVE.L  12(A7),D1
@@ -1957,7 +1918,6 @@ LAB_00CB:
 ;   Positive counts copy literal bytes; negative counts repeat next byte.
 ;------------------------------------------------------------------------------
 ESQ_PackBitsDecode:
-LAB_00CD:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVE.L  12(A7),D0
@@ -2019,7 +1979,7 @@ LAB_00CD:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TickGlobalCounters   (TickGlobalCounters??)
+; FUNC: ESQ_TickGlobalCounters
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2040,15 +2000,14 @@ LAB_00CD:
 ;   Triggers ESQ_ColdReboot when LAB_2363 reaches $5460.
 ;------------------------------------------------------------------------------
 ESQ_TickGlobalCounters:
-LAB_00D3:
     MOVE.W  LAB_2363,D0
     ADDQ.W  #1,D0
     CMPI.W  #$5460,D0
-    BNE.S   LAB_00D4
+    BNE.S   .after_reboot_check
 
     JSR     ESQ_ColdReboot
 
-LAB_00D4:
+.after_reboot_check:
     MOVE.W  D0,LAB_2363
     JSR     LAB_0C82
 
@@ -2056,35 +2015,35 @@ LAB_00D4:
     ADDQ.W  #1,D0
     MOVEQ   #60,D1
     CMP.W   D1,D0
-    BNE.W   LAB_00D8
+    BNE.W   .store_tick_counter
 
     MOVE.W  D0,LAB_2264
     MOVE.W  LAB_2325,D0
-    BMI.W   LAB_00D5
+    BMI.W   .after_decrement_2325
 
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_2325
 
-LAB_00D5:
+.after_decrement_2325:
     MOVE.W  LAB_234A,D0
-    BMI.W   LAB_00D6
+    BMI.W   .after_increment_234A
 
     ADDQ.W  #1,D0
     MOVE.W  D0,LAB_234A
 
-LAB_00D6:
+.after_increment_234A:
     MOVE.W  LAB_22A5,D0
-    BMI.W   LAB_00D7
+    BMI.W   .after_decay_22A5
 
-    BEQ.W   LAB_00D7
+    BEQ.W   .after_decay_22A5
 
     SUBQ.W  #1,D0
     MOVE.W  D0,LAB_22A5
-    BNE.W   LAB_00D7
+    BNE.W   .after_decay_22A5
 
     MOVE.W  #1,LAB_1DDF
 
-LAB_00D7:
+.after_decay_22A5:
     LEA     LAB_1B06,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
@@ -2097,77 +2056,77 @@ LAB_00D7:
     MOVE.W  D1,12(A1)
     MOVEQ   #0,D0
 
-LAB_00D8:
+.store_tick_counter:
     MOVE.W  D0,LAB_2205
     TST.W   LAB_22AA
-    BEQ.W   LAB_00E0
+    BEQ.W   .after_accumulators
 
     MOVE.W  LAB_1B0D,D0
-    BEQ.S   LAB_00DA
+    BEQ.S   .after_accum_1b11
 
     MOVE.W  LAB_1B11,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
-    BLT.S   LAB_00D9
+    BLT.S   .after_accum_1b11_saturate
 
     MOVE.W  #1,LAB_1B15
     MOVEQ   #0,D1
 
-LAB_00D9:
+.after_accum_1b11_saturate:
     MOVE.W  D1,LAB_1B11
 
-LAB_00DA:
+.after_accum_1b11:
     MOVE.W  LAB_1B0E,D0
-    BEQ.S   LAB_00DC
+    BEQ.S   .after_accum_1b12
 
     MOVE.W  LAB_1B12,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
-    BLT.S   LAB_00DB
+    BLT.S   .after_accum_1b12_saturate
 
     MOVE.W  #1,LAB_1B16
     MOVEQ   #0,D1
 
-LAB_00DB:
+.after_accum_1b12_saturate:
     MOVE.W  D1,LAB_1B12
 
-LAB_00DC:
+.after_accum_1b12:
     MOVE.W  LAB_1B0F,D0
-    BEQ.S   LAB_00DE
+    BEQ.S   .after_accum_1b13
 
     MOVE.W  LAB_1B13,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
-    BLT.S   LAB_00DD
+    BLT.S   .after_accum_1b13_saturate
 
     MOVE.W  #1,LAB_1B17
     MOVEQ   #0,D1
 
-LAB_00DD:
+.after_accum_1b13_saturate:
     MOVE.W  D1,LAB_1B13
 
-LAB_00DE:
+.after_accum_1b13:
     MOVE.W  LAB_1B10,D0
-    BEQ.S   LAB_00E0
+    BEQ.S   .after_accumulators
 
     MOVE.W  LAB_1B14,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
-    BLT.S   LAB_00DF
+    BLT.S   .after_accum_1b14_saturate
 
     MOVE.W  #1,LAB_1B18
     MOVEQ   #0,D1
 
-LAB_00DF:
+.after_accum_1b14_saturate:
     MOVE.W  D1,LAB_1B14
 
-LAB_00E0:
+.after_accumulators:
     TST.W   LAB_22AB
-    BEQ.W   LAB_00E1
+    BEQ.W   .return
 
     JSR     LAB_0A4A
 
-LAB_00E1:
+.return:
     MOVEQ   #0,D0
     RTS
 
@@ -2194,7 +2153,6 @@ LAB_00E1:
 ;   Stores (60-base), (30-base), (baseOffset), (baseOffset+30).
 ;------------------------------------------------------------------------------
 ESQ_SeedMinuteEventThresholds:
-LAB_00E2:
     MOVE.L  4(A7),D0
     MOVE.L  8(A7),D1
     MOVEQ   #60,D2

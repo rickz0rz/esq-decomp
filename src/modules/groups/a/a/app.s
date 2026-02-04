@@ -1,7 +1,5 @@
-; Rename this file to its proper purpose.
-
 ;------------------------------------------------------------------------------
-; FUNC: INTB_RBF_EXEC   (HandleSerialRbfInterrupt)
+; FUNC: ESQ_HandleSerialRbfInterrupt
 ; ARGS:
 ;   A0: interrupt context?? (reads 24(A0), writes 156(A0))
 ;   A1: base of receive ring buffer?? (offset by head index)
@@ -22,7 +20,7 @@
 ; NOTES:
 ;   Buffer wraps at $FA00. Sets LAB_1F45 to $102 when fill reaches $DAC0.
 ;------------------------------------------------------------------------------
-INTB_RBF_EXEC:
+ESQ_HandleSerialRbfInterrupt:
     MOVEQ   #0,D0
     MOVE.W  GLOB_WORD_H_VALUE,D0
     ADDA.L  D0,A1
@@ -93,7 +91,6 @@ INTB_RBF_EXEC:
 ;   Clears LAB_1F45 when fill drops below $BB80 (if previously set to $102).
 ;------------------------------------------------------------------------------
 ESQ_ReadSerialRbfByte:
-LAB_002B:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
     MOVE.W  GLOB_WORD_T_VALUE,D1
@@ -148,7 +145,6 @@ LAB_002B:
 ;   Initializes audio channel 1 DMA and clears related CTRL capture state.
 ;------------------------------------------------------------------------------
 ESQ_InitAudio1Dma:
-LAB_002F:
     MOVEA.L #BLTDDAT,A0
     LEA     GLOB_PTR_AUD1_DMA,A1
     MOVE.L  A1,(AUD1LCH-BLTDDAT)(A0)    ; Store DMA data in GLOB_PTR_AUD1_DMA
@@ -185,7 +181,6 @@ LAB_002F:
 ;   Uses LAB_1AFC/1AF9/1AFD as sampling state. Sample buffer is LAB_1AFF.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit3Stream:
-LAB_0030:
     TST.W   LAB_1AFC
     BNE.S   .advance_state
 
@@ -198,8 +193,6 @@ LAB_0030:
     MOVE.W  #4,LAB_1AF9
     MOVE.W  #0,LAB_1AFD
     RTS
-
-;!======
 
 .advance_state:
     MOVE.W  LAB_1AFC,D0
@@ -228,16 +221,12 @@ LAB_0030:
     DBF     D0,.clear_sample_buffer_loop
     RTS
 
-;!======
-
 .reset_state:
     MOVEQ   #0,D0
     MOVE.W  D0,LAB_1AF9
     MOVE.W  D0,LAB_1AFD
     MOVE.W  D0,LAB_1AFC
     RTS
-
-;!======
 
 .collect_samples:
     MOVEQ   #94,D1
@@ -252,8 +241,6 @@ LAB_0030:
     ADDQ.W  #1,LAB_1AFD
     ADDI.W  #10,LAB_1AF9
     RTS
-
-;!======
 
 .assemble_and_store:
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
@@ -384,7 +371,6 @@ GET_BIT_4_OF_CIAB_PRA_INTO_D1:
 ;   Only captures the bit-3 stream when LAB_1DC8+18 holds 'N'.
 ;------------------------------------------------------------------------------
 ESQ_PollCtrlInput:
-callCTRL:
     MOVE.L  A5,-(A7)
     MOVE.L  A4,-(A7)
 
@@ -431,7 +417,6 @@ callCTRL:
 ;   Uses LAB_1AFA/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit4Stream:
-readCTRL:
     TST.W   LAB_1AFA            ; Test LAB_1AFA...
     BNE.S   .advance_state       ; and if it's not equal to zero, jump to LAB_0042
 
@@ -444,8 +429,6 @@ readCTRL:
     MOVE.W  #4,LAB_1AF8
     MOVE.W  #0,LAB_1AFB
     RTS
-
-;!======
 
 .advance_state:
     MOVE.W  LAB_1AFA,D0
@@ -558,7 +541,7 @@ readCTRL:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ReadCtrlBufferByte   (ReadCtrlBufferByte)
+; FUNC: ESQ_CaptureCtrlBit4StreamBufferByte   (ESQ_CaptureCtrlBit4StreamBufferByte)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -576,8 +559,7 @@ readCTRL:
 ; NOTES:
 ;   Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
-ESQ_ReadCtrlBufferByte:
-getCTRLBuffer:
+ESQ_CaptureCtrlBit4StreamBufferByte:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
     MOVE.W  LAB_2282,D1

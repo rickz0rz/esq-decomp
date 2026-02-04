@@ -21,7 +21,6 @@
 ;   Repeats offset strokes to create a thicker edge.
 ;------------------------------------------------------------------------------
 BEVEL_DrawVerticalBevel:
-LAB_00E8:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -142,7 +141,6 @@ LAB_00E8:
 ;   Offsets by +/-1..3 to thicken edges.
 ;------------------------------------------------------------------------------
 BEVEL_DrawVerticalBevelPair:
-LAB_00E9:
     MOVEM.L D4-D7/A3,-(A7)
 
     MOVEA.L 24(A7),A3
@@ -272,7 +270,6 @@ LAB_00E9:
 
 ;!======
 
-; drawing some lines
 ;------------------------------------------------------------------------------
 ; FUNC: BEVEL_DrawHorizontalBevel   (DrawHorizontalBevel??)
 ; ARGS:
@@ -296,7 +293,6 @@ LAB_00E9:
 ;   Repeats offset strokes to create a thicker edge.
 ;------------------------------------------------------------------------------
 BEVEL_DrawHorizontalBevel:
-LAB_00EA:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -415,10 +411,9 @@ LAB_00EA:
 ; DESC:
 ;   Draws a beveled frame with left/right edges and a corner accent.
 ; NOTES:
-;   Composes LAB_00E9 + LAB_00E8 helpers.
+;   Composes BEVEL_DrawVerticalBevelPair + BEVEL_DrawVerticalBevel helpers.
 ;------------------------------------------------------------------------------
 BEVEL_DrawBeveledFrame:
-LAB_00EB:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVE.L  28(A7),D7
@@ -485,10 +480,9 @@ LAB_00EB:
 ; DESC:
 ;   Draws a beveled frame with a top horizontal edge.
 ; NOTES:
-;   Composes LAB_00E9 + LAB_00EA helpers.
+;   Composes BEVEL_DrawVerticalBevelPair + BEVEL_DrawHorizontalBevel helpers.
 ;------------------------------------------------------------------------------
 BEVEL_DrawBevelFrameWithTop:
-LAB_00EC:
     MOVEM.L D4-D7/A3,-(A7)
 
     MOVEA.L 24(A7),A3
@@ -538,10 +532,9 @@ LAB_00EC:
 ; DESC:
 ;   Draws a beveled frame plus a top edge and right-side accent.
 ; NOTES:
-;   Composes LAB_00EB + LAB_00EA helpers.
+;   Composes BEVEL_DrawBeveledFrame + BEVEL_DrawHorizontalBevel helpers.
 ;------------------------------------------------------------------------------
 BEVEL_DrawBevelFrameWithTopRight:
-LAB_00ED:
     MOVEM.L D4-D7/A3,-(A7)
 
     MOVEA.L 24(A7),A3

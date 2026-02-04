@@ -23,7 +23,7 @@ LAB_1698:
 
     MOVE.L  8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -82,7 +82,7 @@ LAB_169F:
     MOVE.L  A0,-(A7)
     MOVE.L  (A2),-(A7)
     PEA     -21(A5)
-    JSR     LAB_194E(PC)
+    JSR     STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -184,7 +184,7 @@ LAB_16A9:
     CLR.L   (A0)
     PEA     34.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -195,7 +195,7 @@ LAB_16A9:
     ADDQ.L  #1,A0
     PEA     34.W
     MOVE.L  A0,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -564,7 +564,7 @@ LAB_16C7:
 
     MOVE.L  -38(A5),-(A7)
     MOVE.L  -34(A5),-(A7)
-    JSR     LAB_1968(PC)
+    JSR     STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -764,7 +764,7 @@ LAB_16D7:
     LEA     19(A3),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -839,19 +839,19 @@ LAB_16DF:
 
     PEA     GLOB_STR_ALIGNED_ON
     PEA     LAB_2259
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 LAB_16E0:
     PEA     GLOB_STR_ALIGNED_CHANNEL_1
     PEA     LAB_2259
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
     PEA     LAB_2259
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
     LEA     LAB_2259,A0
@@ -1061,7 +1061,7 @@ LAB_16F0:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -1082,7 +1082,7 @@ LAB_16F1:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.B  5(A0),D1
@@ -1093,7 +1093,7 @@ LAB_16F1:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -1102,13 +1102,13 @@ LAB_16F1:
     MOVE.L  D4,D0
     EXT.L   D0
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVE.L  D1,24(A7)
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  24(A7),D0
     CMP.L   D1,D0
@@ -1146,7 +1146,7 @@ LAB_16F4:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D4,D1
     EXT.L   D1
@@ -1155,7 +1155,7 @@ LAB_16F4:
     MOVE.L  D4,D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
@@ -1163,7 +1163,7 @@ LAB_16F4:
     MOVE.L  D4,D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1219,7 +1219,7 @@ LAB_16F8:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -1240,7 +1240,7 @@ LAB_16F9:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.B  5(A0),D1
@@ -1251,7 +1251,7 @@ LAB_16F9:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -1260,13 +1260,13 @@ LAB_16F9:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVE.L  D1,24(A7)
     MOVEQ   #30,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  24(A7),D0
     CMP.L   D1,D0
@@ -1304,7 +1304,7 @@ LAB_16FC:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -1313,7 +1313,7 @@ LAB_16FC:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
@@ -1321,7 +1321,7 @@ LAB_16FC:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1395,14 +1395,14 @@ LAB_1700:
 LAB_1701:
     MOVE.L  -8(A5),D0
     MOVEQ   #60,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     ADD.L   -4(A5),D0
     MOVE.L  D0,D5
     MOVE.W  GLOB_WORD_CURRENT_HOUR,D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     TST.W   GLOB_WORD_USE_24_HR_FMT
     BEQ.S   LAB_1702
@@ -1416,7 +1416,7 @@ LAB_1702:
 LAB_1703:
     ADD.L   D0,D1
     MOVEQ   #60,D0
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
     EXT.L   D1
@@ -1424,7 +1424,7 @@ LAB_1703:
     SUB.L   D0,D5
     MOVE.L  D4,D0
     MOVE.L  #$5a0,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     ADD.L   D0,D5
     MOVE.L  D5,D0
@@ -1571,7 +1571,7 @@ LAB_170F:
 
     MOVE.L  8(A5),-(A7)
     PEA     LAB_2159
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1583,7 +1583,7 @@ LAB_170F:
 LAB_1710:
     MOVE.L  8(A5),-(A7)
     PEA     LAB_215A
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -1600,7 +1600,7 @@ LAB_1711:
 LAB_1712:
     MOVE.L  8(A5),-(A7)
     PEA     LAB_215B
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     TST.B   D0
     SEQ     D1
@@ -1610,7 +1610,7 @@ LAB_1712:
     MOVE.L  8(A5),(A7)
     PEA     LAB_215C
     MOVE.W  D1,-16(A5)
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     LEA     12(A7),A7
     TST.B   D0
@@ -1725,7 +1725,7 @@ LAB_171D:
 LAB_171E:
     MOVE.L  8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0

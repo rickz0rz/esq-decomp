@@ -1,24 +1,38 @@
-LAB_1988:
+;------------------------------------------------------------------------------
+; FUNC: FORMAT_U32ToDecimalString   (Format an unsigned value as decimal ASCII.)
+; ARGS:
+;   stack +4: A0 = destination buffer
+;   stack +8: D0 = value
+; RET:
+;   D0: length of output string (bytes, excluding NUL)
+; CLOBBERS:
+;   D0-D1/A0-A1
+; CALLS:
+;   MATH_DivU32 (div/mod helper; returns quotient in D0, remainder in D1)
+; DESC:
+;   Emits decimal digits into a temp stack buffer, then reverses into A0.
+;------------------------------------------------------------------------------
+FORMAT_U32ToDecimalString:
     MOVE.L  8(A7),D0
     MOVEA.L 4(A7),A0
     LINK.W  A5,#-12
     MOVEA.L A7,A1
 
-.LAB_1989:
+.digit_loop:
     MOVEQ   #10,D1
-    JSR     LAB_1A0A(PC)
+    JSR     MATH_DivU32(PC)
 
     ADDI.W  #$30,D1
     MOVE.B  D1,(A1)+
     TST.L   D0
-    BNE.S   .LAB_1989
+    BNE.S   .digit_loop
 
     MOVE.L  A1,D0
 
-.LAB_198A:
+.emit_loop:
     MOVE.B  -(A1),(A0)+
     CMPA.L  A1,A7
-    BNE.S   .LAB_198A
+    BNE.S   .emit_loop
 
     CLR.B   (A0)
     SUB.L   A7,D0

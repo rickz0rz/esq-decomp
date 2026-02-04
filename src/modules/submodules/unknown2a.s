@@ -1,15 +1,15 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ??   (Dead code: LAB_1A3A/PARALLEL_RawDoFmtStackArgs wrapper??)
+; FUNC: ??   (Dead code: FORMAT_FormatToBuffer2/PARALLEL_RawDoFmtStackArgs wrapper??)
 ; ARGS:
-;   stack +8: ?? (arg for LAB_1A3A)
-;   stack +12: ?? (arg for LAB_1A3A)
+;   stack +8: ?? (arg for FORMAT_FormatToBuffer2)
+;   stack +12: ?? (arg for FORMAT_FormatToBuffer2)
 ; RET:
 ;   D0: ??
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_1A3A, PARALLEL_RawDoFmtStackArgs
+;   FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   LAB_2381
 ; WRITES:
@@ -28,7 +28,7 @@
     MOVE.L  8(A5),-(A7)
     PEA     LAB_2381
     MOVE.L  A0,-4(A5)
-    JSR     LAB_1A3A(PC)
+    JSR     FORMAT_FormatToBuffer2(PC)
 
     PEA     LAB_2381
     JSR     PARALLEL_RawDoFmtStackArgs(PC)
@@ -40,16 +40,16 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1906   (LAB_1A3A/PARALLEL_RawDoFmtStackArgs wrapper)
+; FUNC: FORMAT_RawDoFmtWithScratchBuffer   (FORMAT_FormatToBuffer2/RawDoFmt wrapper)
 ; ARGS:
-;   stack +8: ?? (arg for LAB_1A3A)
-;   stack +12: ?? (arg for LAB_1A3A)
+;   stack +8: ?? (arg for FORMAT_FormatToBuffer2)
+;   stack +12: ?? (arg for FORMAT_FormatToBuffer2)
 ; RET:
 ;   D0: ??
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_1A3A, PARALLEL_RawDoFmtStackArgs
+;   FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   LAB_2381
 ; WRITES:
@@ -59,14 +59,14 @@
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-LAB_1906:
+FORMAT_RawDoFmtWithScratchBuffer:
     LINK.W  A5,#-4
     LEA     12(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  8(A5),-(A7)
     PEA     LAB_2381
     MOVE.L  A0,-4(A5)
-    JSR     LAB_1A3A(PC)
+    JSR     FORMAT_FormatToBuffer2(PC)
 
     PEA     LAB_2381
     JSR     PARALLEL_RawDoFmtStackArgs(PC)
@@ -80,14 +80,14 @@ LAB_1906:
 ;------------------------------------------------------------------------------
 ; FUNC: ??   (Dead code: open log file and write LAB_2381??)
 ; ARGS:
-;   stack +8: ?? (arg for LAB_1A3A)
-;   stack +12: ?? (arg for LAB_1A3A)
+;   stack +8: ?? (arg for FORMAT_FormatToBuffer2)
+;   stack +12: ?? (arg for FORMAT_FormatToBuffer2)
 ; RET:
 ;   D0: ??
 ; CLOBBERS:
 ;   D0/A0 ??
 ; CALLS:
-;   LAB_1AB2, LAB_1A3A, LAB_19C3, UNKNOWN36_FinalizeRequest
+;   HANDLE_OpenWithMode, FORMAT_FormatToBuffer2, FORMAT_FormatToCallbackBuffer, UNKNOWN36_FinalizeRequest
 ; READS:
 ;   GLOB_STR_A_PLUS, GLOB_STR_DF1_DEBUG_LOG, LAB_2381
 ; WRITES:
@@ -102,29 +102,29 @@ LAB_1906:
 
     PEA     GLOB_STR_A_PLUS
     PEA     GLOB_STR_DF1_DEBUG_LOG
-    JSR     LAB_1AB2(PC)
+    JSR     HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
-    BEQ.S   .LAB_1907
+    BEQ.S   .no_log
 
     LEA     12(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  8(A5),-(A7)
     PEA     LAB_2381
     MOVE.L  A0,-4(A5)
-    JSR     LAB_1A3A(PC)
+    JSR     FORMAT_FormatToBuffer2(PC)
 
     PEA     LAB_2381
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_19C3(PC)
+    JSR     FORMAT_FormatToCallbackBuffer(PC)
 
     MOVE.L  -8(A5),(A7)
     JSR     UNKNOWN36_FinalizeRequest(PC)
 
     LEA     20(A7),A7
 
-.LAB_1907:
+.no_log:
     UNLK    A5
     RTS
 
@@ -132,7 +132,7 @@ LAB_1906:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1908   (Stub)
+; FUNC: UNKNOWN2A_Stub0   (Stub)
 ; ARGS:
 ;   ??
 ; RET:
@@ -150,5 +150,5 @@ LAB_1906:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-LAB_1908:
+UNKNOWN2A_Stub0:
     RTS

@@ -49,7 +49,7 @@ LAB_1762:
     PEA     19.W
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-12(A5)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -67,7 +67,7 @@ LAB_1763:
     PEA     20.W
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -121,7 +121,7 @@ LAB_1767:
     LEA     16(A7),A7
     PEA     19.W
     MOVE.L  -12(A5),-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -212,7 +212,7 @@ LAB_1771:
 
     PEA     19.W
     MOVE.L  A2,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -220,7 +220,7 @@ LAB_1771:
 
     PEA     20.W
     MOVE.L  A2,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -245,7 +245,7 @@ LAB_1771:
 LAB_1772:
     PEA     30.W
     MOVE.L  A2,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -350,7 +350,7 @@ LAB_177B:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1AAE(PC)
+    JSR     MEM_Move(PC)
 
     LEA     12(A7),A7
     BRA.S   LAB_177E
@@ -364,7 +364,7 @@ LAB_177C:
     MOVE.L  D0,-(A7)
     MOVE.L  A6,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_1AAE(PC)
+    JSR     MEM_Move(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  -22(A5),A0
@@ -383,7 +383,7 @@ LAB_177D:
     MOVE.L  D0,(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1AAE(PC)
+    JSR     MEM_Move(PC)
 
     LEA     20(A7),A7
     MOVEA.L -4(A5),A0
@@ -407,7 +407,7 @@ LAB_177D:
 LAB_177E:
     PEA     30.W
     MOVE.L  A2,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -442,7 +442,7 @@ LAB_177F:
 LAB_1780:
     PEA     23.W
     MOVE.L  A2,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -538,7 +538,7 @@ LAB_1787:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
 
     LEA     16(A7),A7
 
@@ -621,7 +621,7 @@ LAB_178E:
     MOVE.W  -18(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
@@ -826,7 +826,7 @@ LAB_179B:
     SUB.L   D1,D0
     MOVE.W  -32(A5),D1
     EXT.L   D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.B  25(A3),-21(A5)
     MOVE.L  52(A3),-26(A5)
@@ -982,7 +982,7 @@ LAB_17A6:
     MOVE.W  -18(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
@@ -1343,7 +1343,7 @@ LAB_17C6:
 
     PEA     -532(A5)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     LEA     24(A7),A7
 
@@ -1362,43 +1362,43 @@ LAB_17C8:
     MOVEA.L 8(A7),A3
     MOVE.L  A3,-(A7)
     PEA     LAB_216B
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     LAB_216C
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  (A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_216D
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  2(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_216E
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  4(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_216F
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_2170
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     LAB_2171
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     LAB_2172
-    JSR     LAB_1906(PC)
+    JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     36(A7),A7
     MOVEA.L (A7)+,A3

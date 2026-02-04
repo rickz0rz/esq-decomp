@@ -15,14 +15,14 @@ LAB_0F04:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_0F06
+    BEQ.S   .LAB_0F06
 
     TST.L   6(A3)
-    BEQ.S   LAB_0F05
+    BEQ.S   .LAB_0F05
 
     MOVE.W  4(A3),D0
     TST.W   D0
-    BLE.S   LAB_0F05
+    BLE.S   .LAB_0F05
 
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -33,13 +33,13 @@ LAB_0F04:
 
     LEA     16(A7),A7
 
-LAB_0F05:
+.LAB_0F05:
     MOVE.L  A3,-(A7)
     BSR.S   LAB_0F03
 
     ADDQ.W  #4,A7
 
-LAB_0F06:
+.LAB_0F06:
     MOVEA.L (A7)+,A3
     RTS
 
@@ -64,33 +64,32 @@ LAB_0F07:
 
 ; Release a LOCAVAIL structure (free node array/bitmap and associated memory).
 LOCAVAIL_FreeResourceChain:
-LAB_0F08:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
-    BEQ.W   LAB_0F0D
+    BEQ.W   .LAB_0F0D
 
     TST.L   16(A3)
-    BEQ.W   LAB_0F0C
+    BEQ.W   .LAB_0F0C
 
     MOVEA.L 16(A3),A0
     MOVE.L  (A0),D0
     TST.L   D0
-    BLE.S   LAB_0F09
+    BLE.S   .LAB_0F09
 
     SUBQ.L  #1,(A0)
 
-LAB_0F09:
+.LAB_0F09:
     TST.L   20(A3)
-    BEQ.S   LAB_0F0C
+    BEQ.S   .LAB_0F0C
 
     MOVE.L  2(A3),D0
     TST.L   D0
-    BLE.S   LAB_0F0C
+    BLE.S   .LAB_0F0C
 
     MOVEA.L 16(A3),A0
     TST.L   (A0)
-    BNE.S   LAB_0F0C
+    BNE.S   .LAB_0F0C
 
     PEA     4.W
     MOVE.L  A0,-(A7)
@@ -101,13 +100,13 @@ LAB_0F09:
     LEA     16(A7),A7
     MOVEQ   #0,D7
 
-LAB_0F0A:
+.LAB_0F0A:
     CMP.L   2(A3),D7
-    BGE.S   LAB_0F0B
+    BGE.S   .LAB_0F0B
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A3),A0
     ADDA.L  D0,A0
@@ -116,12 +115,12 @@ LAB_0F0A:
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D7
-    BRA.S   LAB_0F0A
+    BRA.S   .LAB_0F0A
 
-LAB_0F0B:
+.LAB_0F0B:
     MOVE.L  2(A3),D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_LAB_1A06_5(PC)
+    JSR     GROUP_AY_JMPTBL_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,-(A7)
     MOVE.L  20(A3),-(A7)
@@ -131,13 +130,13 @@ LAB_0F0B:
 
     LEA     16(A7),A7
 
-LAB_0F0C:
+.LAB_0F0C:
     MOVE.L  A3,-(A7)
     BSR.W   LAB_0F07
 
     ADDQ.W  #4,A7
 
-LAB_0F0D:
+.LAB_0F0D:
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -154,12 +153,12 @@ LAB_0F0E:
     MOVE.L  A0,16(A3)
     MOVE.L  20(A2),20(A3)
     TST.L   16(A3)
-    BEQ.S   LAB_0F0F
+    BEQ.S   .LAB_0F0F
 
     MOVEA.L 16(A3),A0
     ADDQ.L  #1,(A0)
 
-LAB_0F0F:
+.LAB_0F0F:
     MOVEM.L (A7)+,A2-A3
     RTS
 
@@ -171,11 +170,11 @@ LAB_0F10:
     MOVEQ   #0,D7
     MOVE.L  2(A3),D0
     TST.L   D0
-    BLE.S   LAB_0F11
+    BLE.S   .LAB_0F11
 
     MOVEQ   #100,D1
     CMP.L   D1,D0
-    BGE.S   LAB_0F11
+    BGE.S   .LAB_0F11
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4.W
@@ -186,13 +185,13 @@ LAB_0F10:
     LEA     16(A7),A7
     MOVE.L  D0,16(A3)
     TST.L   D0
-    BEQ.S   LAB_0F11
+    BEQ.S   .LAB_0F11
 
     MOVEA.L D0,A0
     CLR.L   (A0)
     MOVE.L  2(A3),D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_LAB_1A06_5(PC)
+    JSR     GROUP_AY_JMPTBL_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
@@ -202,11 +201,11 @@ LAB_0F10:
 
     LEA     16(A7),A7
     MOVE.L  D0,20(A3)
-    BEQ.S   LAB_0F11
+    BEQ.S   .LAB_0F11
 
     MOVEQ   #1,D7
 
-LAB_0F11:
+.LAB_0F11:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     RTS
@@ -231,23 +230,23 @@ LAB_0F13:
     MOVE.L  8(A7),D7
     MOVE.L  LAB_1FE6,D0
     CMP.L   D7,D0
-    BEQ.S   LAB_0F15
+    BEQ.S   .LAB_0F15
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BEQ.S   LAB_0F14
+    BEQ.S   .LAB_0F14
 
     TST.L   D7
-    BNE.S   LAB_0F15
+    BNE.S   .LAB_0F15
 
-LAB_0F14:
+.LAB_0F14:
     MOVE.L  D7,LAB_1FE6
     PEA     LAB_2321
     BSR.S   LAB_0F12
 
     ADDQ.W  #4,A7
 
-LAB_0F15:
+.LAB_0F15:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -292,7 +291,7 @@ LAB_0F18:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FF0
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -342,7 +341,7 @@ LAB_0F1B:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
@@ -582,7 +581,7 @@ LAB_0F33:
     BEQ.S   LAB_0F34
 
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     PEA     -24(A5)
     MOVE.L  A2,-(A7)
@@ -593,7 +592,7 @@ LAB_0F33:
 
 LAB_0F34:
     PEA     -24(A5)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
 
@@ -686,7 +685,7 @@ LAB_0F3B:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A3),A0
     ADDA.L  D0,A0
@@ -740,7 +739,7 @@ LAB_0F3F:
 
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -805,7 +804,7 @@ LAB_0F43:
 
     MOVE.L  D4,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -834,13 +833,13 @@ LAB_0F44:
     MOVE.B  LAB_1DD7,D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FF2
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BEQ.S   LAB_0F45
 
-    JSR     LAB_0F9C(PC)
+    JSR     GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
     BNE.S   LAB_0F4B
@@ -912,7 +911,7 @@ LAB_0F4E:
     DBF     D0,LAB_0F4E
     PEA     MODE_NEWFILE.W
     PEA     LAB_1FF4
-    JSR     JMPTBL_DISKIO_OpenFileWithBuffer_1(PC)
+    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
@@ -987,7 +986,7 @@ LAB_0F52:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A1
     MOVEA.L 20(A1),A0
@@ -1135,11 +1134,11 @@ LAB_0F5D:
     BEQ.W   LAB_0F74
 
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     MOVE.B  LAB_2230,(A3)
     MOVE.L  A2,(A7)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     MOVE.B  LAB_222D,(A2)
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D4
@@ -1164,7 +1163,7 @@ LAB_0F5E:
     PEA     6.W
     PEA     LAB_1FF8
     MOVE.L  -44(A5),-(A7)
-    JSR     LAB_0F99(PC)
+    JSR     GROUP_AY_JMPTBL_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1203,7 +1202,7 @@ LAB_0F5F:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
@@ -1395,14 +1394,14 @@ LAB_0F6F:
 
 LAB_0F70:
     PEA     -24(A5)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
     BRA.S   LAB_0F72
 
 LAB_0F71:
     PEA     -24(A5)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
 
@@ -1436,7 +1435,7 @@ LAB_0F74:
     BEQ.S   LAB_0F75
 
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
     MOVE.B  LAB_2230,(A3)
@@ -1448,7 +1447,7 @@ LAB_0F75:
     BEQ.S   LAB_0F76
 
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     ADDQ.W  #4,A7
     MOVE.B  LAB_222D,(A2)
@@ -1529,7 +1528,7 @@ LAB_0F7D:
 
     MOVE.L  D2,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A1
     ADDA.L  D0,A1
@@ -1567,24 +1566,24 @@ LAB_0F7E:
 
 ; switch/jumptable
 LAB_0F7F:
-	DC.W    LAB_0F7F_0078-LAB_0F7F-2
+	DC.W    LAB_0F83-LAB_0F7F-2
     DC.W    LAB_0F7F_0008-LAB_0F7F-2
     DC.W    LAB_0F7F_0040-LAB_0F7F-2
 	DC.W    LAB_0F7F_0062-LAB_0F7F-2
-    DC.W    LAB_0F7F_0078-LAB_0F7F-2
+    DC.W    LAB_0F83-LAB_0F7F-2
 
 LAB_0F7F_0008:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD7,D0
     MOVE.L  D0,-(A7)
     PEA     LAB_1FFB
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BEQ.S   LAB_0F81
 
-    JSR     LAB_0F9C(PC)
+    JSR     GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
     BEQ.S   LAB_0F81
@@ -1626,7 +1625,6 @@ LAB_0F7F_0062:
     ADDQ.W  #4,A7
     BRA.W   LAB_0F90
 
-LAB_0F7F_0078:
 LAB_0F83:
     MOVE.L  A2,-(A7)
     BSR.W   LAB_0F12
@@ -1659,7 +1657,7 @@ LAB_0F84:
     BGE.S   LAB_0F85
 
     MOVEQ   #10,D0
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -1689,7 +1687,7 @@ LAB_0F85:
 
 ; switch/jumptable
 LAB_0F86:
-	DC.W    LAB_0F86_012C-LAB_0F86-2
+	DC.W    LAB_0F90-LAB_0F86-2
     DC.W    LAB_0F86_001E-LAB_0F86-2
 	DC.W    LAB_0F86_001E-LAB_0F86-2
     DC.W    LAB_0F86_001E-LAB_0F86-2
@@ -1698,13 +1696,13 @@ LAB_0F86:
 	DC.W    LAB_0F86_001E-LAB_0F86-2
     DC.W    LAB_0F86_001E-LAB_0F86-2
     DC.W    LAB_0F86_001E-LAB_0F86-2
-	DC.W    LAB_0F86_012C-LAB_0F86-2
-    DC.W    LAB_0F86_012C-LAB_0F86-2
-	DC.W    LAB_0F86_012C-LAB_0F86-2
-    DC.W    LAB_0F86_012C-LAB_0F86-2
-	DC.W    LAB_0F86_012C-LAB_0F86-2
-    DC.W    LAB_0F86_012C-LAB_0F86-2
-	DC.W    LAB_0F86_012C-LAB_0F86-2
+	DC.W    LAB_0F90-LAB_0F86-2
+    DC.W    LAB_0F90-LAB_0F86-2
+	DC.W    LAB_0F90-LAB_0F86-2
+    DC.W    LAB_0F90-LAB_0F86-2
+	DC.W    LAB_0F90-LAB_0F86-2
+    DC.W    LAB_0F90-LAB_0F86-2
+	DC.W    LAB_0F90-LAB_0F86-2
 
 LAB_0F86_001E:
     MOVEA.L -4(A5),A0
@@ -1787,7 +1785,7 @@ LAB_0F8B:
 
 ; switch/jumptable
 LAB_0F8C:
-	DC.W    LAB_0F8C_0054-LAB_0F8C-2
+	DC.W    LAB_0F90-LAB_0F8C-2
     DC.W    LAB_0F8C_001E-LAB_0F8C-2
 	DC.W    LAB_0F8C_001E-LAB_0F8C-2
     DC.W    LAB_0F8C_001E-LAB_0F8C-2
@@ -1796,13 +1794,13 @@ LAB_0F8C:
 	DC.W    LAB_0F8C_001E-LAB_0F8C-2
     DC.W    LAB_0F8C_001E-LAB_0F8C-2
 	DC.W    LAB_0F8C_001E-LAB_0F8C-2
-    DC.W    LAB_0F8C_0054-LAB_0F8C-2
-	DC.W    LAB_0F8C_0054-LAB_0F8C-2
-    DC.W    LAB_0F8C_0054-LAB_0F8C-2
-	DC.W    LAB_0F8C_0054-LAB_0F8C-2
-    DC.W    LAB_0F8C_0054-LAB_0F8C-2
-	DC.W    LAB_0F8C_0054-LAB_0F8C-2
-    DC.W    LAB_0F8C_0054-LAB_0F8C-2
+    DC.W    LAB_0F90-LAB_0F8C-2
+	DC.W    LAB_0F90-LAB_0F8C-2
+    DC.W    LAB_0F90-LAB_0F8C-2
+	DC.W    LAB_0F90-LAB_0F8C-2
+    DC.W    LAB_0F90-LAB_0F8C-2
+	DC.W    LAB_0F90-LAB_0F8C-2
+    DC.W    LAB_0F90-LAB_0F8C-2
 
 LAB_0F8C_001E:
     MOVEQ   #1,D0
@@ -1828,8 +1826,6 @@ LAB_0F8F:
 
     ADDQ.W  #4,A7
 
-LAB_0F86_012C:
-LAB_0F8C_0054:
 LAB_0F90:
     MOVEM.L (A7)+,D2-D5/A2-A3
     UNLK    A5
@@ -1849,7 +1845,7 @@ LAB_0F91:
     BNE.S   LAB_0F92
 
     PEA     LAB_2324
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     PEA     LAB_2321
     PEA     LAB_2324
@@ -1865,14 +1861,14 @@ LAB_0F92:
 
 LAB_0F93:
     PEA     LAB_2321
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     PEA     LAB_2324
     PEA     LAB_2321
     BSR.W   LAB_0F0E
 
     PEA     LAB_2324
-    BSR.W   LAB_0F08
+    BSR.W   LOCAVAIL_FreeResourceChain
 
     LEA     16(A7),A7
     MOVE.B  LAB_2230,D0
@@ -1883,42 +1879,3 @@ LAB_0F93:
 
     ADDQ.W  #4,A7
     RTS
-
-;!======
-
-LAB_0F94:
-    JMP     LAB_03B2
-
-LAB_0F95:
-    JMP     LAB_03B6
-
-LAB_0F96:
-    JMP     LAB_03A9
-
-LAB_0F97:
-    JMP     LAB_03A0
-
-LAB_0F98:
-    JMP     LAB_039A
-
-LAB_0F99:
-    JMP     LAB_194E
-
-JMPTBL_LAB_1A06_5:
-    JMP     LAB_1A06
-
-LAB_0F9B:
-    JMP     LAB_03AC
-
-LAB_0F9C:
-    JMP     SCRIPT_ReadCiaBBit5Mask
-
-JMPTBL_DISKIO_OpenFileWithBuffer_1:
-    JMP     DISKIO_OpenFileWithBuffer
-
-    RTS
-
-;!======
-
-    ; Alignment
-    ALIGN_WORD

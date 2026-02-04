@@ -1,6 +1,5 @@
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_18D7   (Parse record, update globals, and display??)
+; FUNC: UNKNOWN_ParseRecordAndUpdateDisplay   (Parse record, update globals, and display.)
 ; ARGS:
 ;   stack +8: A3 = input buffer pointer??
 ; RET:
@@ -8,7 +7,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1902, LAB_1905, JMPTBL_DISPLAY_TEXT_AT_POSITION_2
+;   JMPTBL_ESQ_WildcardMatch_2, JMPTBL_LAB_0B44_2, JMPTBL_DISPLIB_DisplayTextAtPosition_2
 ; READS:
 ;   LAB_2252, LAB_2245, LAB_1DEC, GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -19,7 +18,7 @@
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for local buffer.
 ;------------------------------------------------------------------------------
-LAB_18D7:
+UNKNOWN_ParseRecordAndUpdateDisplay:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -30,33 +29,33 @@ LAB_18D7:
     ADDQ.L  #1,A3
     MOVEQ   #2,D0
     CMP.B   D0,D4
-    BCS.S   .LAB_18D8
+    BCS.S   .set_default_type
 
     MOVEQ   #6,D0
     CMP.B   D0,D4
-    BLS.S   .LAB_18D9
+    BLS.S   .start_copy
 
-.LAB_18D8:
+.set_default_type:
     MOVEQ   #1,D4
 
-.LAB_18D9:
+.start_copy:
     MOVEQ   #0,D7
 
-.LAB_18DA:
+.copy_loop:
     MOVE.B  (A3)+,D0
     MOVE.B  D0,-16(A5,D7.W)
     MOVEQ   #18,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_18DB
+    BEQ.S   .copy_done
 
     MOVEQ   #10,D0
     CMP.W   D0,D7
-    BGE.S   .LAB_18DB
+    BGE.S   .copy_done
 
     ADDQ.W  #1,D7
-    BRA.S   .LAB_18DA
+    BRA.S   .copy_loop
 
-.LAB_18DB:
+.copy_done:
     MOVEQ   #0,D0
     MOVE.B  D0,-16(A5,D7.W)
     MOVE.B  -16(A5),D1
@@ -65,7 +64,7 @@ LAB_18D7:
 
     PEA     -16(A5)
     PEA     LAB_2245
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -73,7 +72,7 @@ LAB_18D7:
 
     MOVE.L  LAB_1DEC,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1905(PC)
+    JSR     JMPTBL_LAB_0B44_2(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_1DEC
@@ -87,7 +86,7 @@ LAB_18D7:
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
 
     LEA     16(A7),A7
 
@@ -98,7 +97,7 @@ LAB_18D7:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_18DD   (Parse list and update LAB_2197 entries??)
+; FUNC: UNKNOWN_ParseListAndUpdateEntries   (Parse list and update LAB_2197 entries.)
 ; ARGS:
 ;   stack +8: A3 = input buffer pointer??
 ; RET:
@@ -106,7 +105,7 @@ LAB_18D7:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1902, LAB_1903, LAB_1955, LAB_1A23, LAB_1A06
+;   JMPTBL_ESQ_WildcardMatch_2, JMPTBL_DST_NormalizeDayOfYear_2, STRING_CopyPadNul, PARSE_ReadSignedLongSkipClass3_Alt, MATH_Mulu32
 ; READS:
 ;   LAB_2246, LAB_227C, LAB_2277, LAB_2197
 ; WRITES:
@@ -117,28 +116,28 @@ LAB_18D7:
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for local buffer.
 ;------------------------------------------------------------------------------
-LAB_18DD:
+UNKNOWN_ParseListAndUpdateEntries:
     LINK.W  A5,#-36
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
 
     MOVEQ   #0,D7
 
-.LAB_18DE:
+.copy_list_name:
     MOVE.B  (A3)+,D0
     MOVE.B  D0,-15(A5,D7.W)
     MOVEQ   #18,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_18DF
+    BEQ.S   .copy_list_done
 
     MOVEQ   #10,D0
     CMP.W   D0,D7
-    BGE.S   .LAB_18DF
+    BGE.S   .copy_list_done
 
     ADDQ.W  #1,D7
-    BRA.S   .LAB_18DE
+    BRA.S   .copy_list_name
 
-.LAB_18DF:
+.copy_list_done:
     MOVEQ   #0,D0
     MOVE.B  D0,-15(A5,D7.W)
     MOVE.B  -15(A5),D1
@@ -147,7 +146,7 @@ LAB_18DD:
 
     PEA     -15(A5)
     PEA     LAB_2246
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -155,10 +154,10 @@ LAB_18DD:
 
     MOVEQ   #0,D7
 
-.LAB_18E0:
+.init_entries_loop:
     MOVEQ   #4,D0
     CMP.W   D0,D7
-    BGE.S   .LAB_18E1
+    BGE.S   .after_init_entries
 
     MOVE.L  D7,D0
     MULS    #20,D0
@@ -179,20 +178,20 @@ LAB_18DD:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,28(A7)
-    JSR     LAB_1903(PC)
+    JSR     JMPTBL_DST_NormalizeDayOfYear_2(PC)
 
     ADDQ.W  #8,A7
     EXT.L   D0
     MOVEA.L 20(A7),A0
     MOVE.L  D0,(A0)
     ADDQ.W  #1,D7
-    BRA.S   .LAB_18E0
+    BRA.S   .init_entries_loop
 
-.LAB_18E1:
+.after_init_entries:
     MOVE.B  (A3)+,LAB_2196
     MOVE.B  (A3)+,D5
 
-.LAB_18E2:
+.parse_entries_loop:
     MOVEQ   #43,D0
     CMP.B   D0,D5
     BNE.W   .return
@@ -200,55 +199,55 @@ LAB_18DD:
     PEA     3.W
     MOVE.L  A3,-(A7)
     PEA     -25(A5)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     CLR.B   -22(A5)
     PEA     -25(A5)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,D6
     ADDQ.L  #3,A3
     MOVEQ   #0,D4
 
-.LAB_18E3:
+.find_entry_loop:
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
     MOVE.L  D6,D0
     EXT.L   D0
     CMP.L   (A0),D0
-    BEQ.S   .LAB_18E4
+    BEQ.S   .entry_found
 
     MOVEQ   #4,D0
     CMP.L   D0,D4
-    BGE.S   .LAB_18E4
+    BGE.S   .entry_found
 
     ADDQ.L  #1,D4
-    BRA.S   .LAB_18E3
+    BRA.S   .find_entry_loop
 
-.LAB_18E4:
+.entry_found:
     TST.L   D4
-    BMI.S   .LAB_18E5
+    BMI.S   .entry_not_found
 
     MOVEQ   #3,D0
     CMP.L   D0,D4
-    BLE.S   .LAB_18E6
+    BLE.S   .check_entry_marker
 
-.LAB_18E5:
+.entry_not_found:
     MOVEQ   #0,D5
 
-.LAB_18E6:
+.check_entry_marker:
     MOVEQ   #43,D0
     CMP.B   D0,D5
-    BNE.W   .LAB_18ED
+    BNE.W   .skip_entry
 
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
@@ -256,128 +255,128 @@ LAB_18DD:
     PEA     1.W
     MOVE.L  A3,-(A7)
     PEA     -25(A5)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     CLR.B   -24(A5)
     MOVE.B  -25(A5),D0
     MOVEQ   #63,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_18E7
+    BNE.S   .parse_field1
 
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #1,D0
     MOVE.L  D0,4(A1)
-    BRA.S   .LAB_18E8
+    BRA.S   .parse_field2
 
-.LAB_18E7:
+.parse_field1:
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A7),A0
     MOVE.L  D0,4(A0)
 
-.LAB_18E8:
+.parse_field2:
     ADDQ.L  #1,A3
     PEA     3.W
     MOVE.L  A3,-(A7)
     PEA     -25(A5)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     CLR.B   -22(A5)
     MOVE.B  -25(A5),D0
     MOVEQ   #63,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_18E9
+    BNE.S   .parse_field2_value
 
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  #(-999),8(A1)
-    BRA.S   .LAB_18EA
+    BRA.S   .parse_field3
 
-.LAB_18E9:
+.parse_field2_value:
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A7),A0
     MOVE.L  D0,8(A0)
 
-.LAB_18EA:
+.parse_field3:
     ADDQ.L  #3,A3
     PEA     3.W
     MOVE.L  A3,-(A7)
     PEA     -25(A5)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     CLR.B   -22(A5)
     MOVE.B  -25(A5),D0
     MOVEQ   #63,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_18EB
+    BNE.S   .parse_field3_value
 
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  #(-999),12(A1)
-    BRA.S   .LAB_18EC
+    BRA.S   .advance_entry
 
-.LAB_18EB:
+.parse_field3_value:
     MOVE.L  D4,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A7),A0
     MOVE.L  D0,12(A0)
 
-.LAB_18EC:
+.advance_entry:
     ADDQ.L  #3,A3
     MOVE.B  (A3)+,D5
-    BRA.W   .LAB_18E2
+    BRA.W   .parse_entries_loop
 
-.LAB_18ED:
+.skip_entry:
     ADDQ.L  #7,A3
     MOVE.B  (A3)+,D5
-    BRA.W   .LAB_18E2
+    BRA.W   .parse_entries_loop
 
 .return:
     MOVEM.L (A7)+,D4-D7/A3
@@ -386,7 +385,7 @@ LAB_18DD:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_18EF   (Validate checksum and dispatch to LAB_18D7)
+; FUNC: UNKNOWN_VerifyChecksumAndParseRecord   (Validate checksum and dispatch to record parser.)
 ; ARGS:
 ;   stack +8: D7 = ?? (byte parameter)
 ; RET:
@@ -394,17 +393,17 @@ LAB_18DD:
 ; CLOBBERS:
 ;   D0-D7 ??
 ; CALLS:
-;   LAB_1900, JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18D7
+;   JMPTBL_LAB_0B0E_2, JMPTBL_ESQ_GenerateXorChecksumByte_2, UNKNOWN_ParseRecordAndUpdateDisplay
 ; READS:
 ;   LAB_229A, LAB_2253, DATACErrs
 ; WRITES:
 ;   LAB_2285, LAB_2232, DATACErrs
 ; DESC:
-;   Computes a checksum and, on success, invokes LAB_18D7; otherwise bumps error count.
+;   Computes a checksum and, on success, invokes UNKNOWN_ParseRecordAndUpdateDisplay; otherwise bumps error count.
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
-LAB_18EF:
+UNKNOWN_VerifyChecksumAndParseRecord:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -415,7 +414,7 @@ LAB_18EF:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_1900(PC)
+    JSR     JMPTBL_LAB_0B0E_2(PC)
 
     MOVE.W  D0,LAB_2232
     MOVEQ   #0,D0
@@ -425,21 +424,21 @@ LAB_18EF:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2(PC)
+    JSR     JMPTBL_ESQ_GenerateXorChecksumByte_2(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
     MOVE.B  LAB_2253,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_18F0
+    BNE.S   .checksum_mismatch
 
     MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_18D7
+    BSR.W   UNKNOWN_ParseRecordAndUpdateDisplay
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
-.LAB_18F0:
+.checksum_mismatch:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
@@ -450,7 +449,7 @@ LAB_18EF:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_18F2   (Validate checksum and dispatch to LAB_18DD)
+; FUNC: UNKNOWN_VerifyChecksumAndParseList   (Validate checksum and dispatch to list parser.)
 ; ARGS:
 ;   stack +8: D7 = ?? (byte parameter)
 ; RET:
@@ -458,17 +457,17 @@ LAB_18EF:
 ; CLOBBERS:
 ;   D0-D7 ??
 ; CALLS:
-;   LAB_1900, JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2, LAB_18DD
+;   JMPTBL_LAB_0B0E_2, JMPTBL_ESQ_GenerateXorChecksumByte_2, UNKNOWN_ParseListAndUpdateEntries
 ; READS:
 ;   LAB_229A, LAB_2253, DATACErrs
 ; WRITES:
 ;   LAB_2285, LAB_2232, DATACErrs
 ; DESC:
-;   Computes a checksum and, on success, invokes LAB_18DD; otherwise bumps error count.
+;   Computes a checksum and, on success, invokes UNKNOWN_ParseListAndUpdateEntries; otherwise bumps error count.
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
-LAB_18F2:
+UNKNOWN_VerifyChecksumAndParseList:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -479,7 +478,7 @@ LAB_18F2:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_1900(PC)
+    JSR     JMPTBL_LAB_0B0E_2(PC)
 
     MOVE.W  D0,LAB_2232
     MOVEQ   #0,D0
@@ -489,21 +488,21 @@ LAB_18F2:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2(PC)
+    JSR     JMPTBL_ESQ_GenerateXorChecksumByte_2(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
     MOVE.B  LAB_2253,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_18F3
+    BNE.S   .checksum_mismatch
 
     MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_18DD
+    BSR.W   UNKNOWN_ParseListAndUpdateEntries
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
-.LAB_18F3:
+.checksum_mismatch:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
@@ -514,7 +513,7 @@ LAB_18F2:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_18F5   (Parse digit + label, update globals, and display??)
+; FUNC: UNKNOWN_ParseDigitLabelAndDisplay   (Parse digit + label, update globals, and display.)
 ; ARGS:
 ;   stack +8: A3 = input buffer pointer??
 ; RET:
@@ -522,7 +521,7 @@ LAB_18F2:
 ; CLOBBERS:
 ;   D0-D2/D7/A0-A3 ??
 ; CALLS:
-;   LAB_1905, JMPTBL_DISPLAY_TEXT_AT_POSITION_2
+;   JMPTBL_LAB_0B44_2, JMPTBL_DISPLIB_DisplayTextAtPosition_2
 ; READS:
 ;   LAB_1DD9, LAB_2252, GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -532,7 +531,7 @@ LAB_18F2:
 ; NOTES:
 ;   Clamps digit to '0'..'9'; uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
-LAB_18F5:
+UNKNOWN_ParseDigitLabelAndDisplay:
     LINK.W  A5,#-16
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -542,44 +541,44 @@ LAB_18F5:
     MOVE.W  D0,LAB_229D
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BLT.S   .LAB_18F6
+    BLT.S   .clamp_digit
 
     MOVEQ   #57,D2
     CMP.W   D2,D0
-    BLE.S   .LAB_18F7
+    BLE.S   .start_copy
 
-.LAB_18F6:
+.clamp_digit:
     MOVE.W  D1,LAB_229D
 
-.LAB_18F7:
+.start_copy:
     MOVEQ   #0,D7
 
-.LAB_18F8:
+.copy_loop:
     MOVE.B  (A3)+,D0
     MOVE.B  D0,-13(A5,D7.W)
     MOVEQ   #18,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_18F9
+    BEQ.S   .copy_done
 
     MOVEQ   #10,D0
     CMP.W   D0,D7
-    BGE.S   .LAB_18F9
+    BGE.S   .copy_done
 
     ADDQ.W  #1,D7
-    BRA.S   .LAB_18F8
+    BRA.S   .copy_loop
 
-.LAB_18F9:
+.copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
     LEA     LAB_2245,A1
 
-.LAB_18FA:
+.copy_label:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_18FA
+    BNE.S   .copy_label
 
     MOVE.L  LAB_1DD9,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1905(PC)
+    JSR     JMPTBL_LAB_0B44_2(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_1DD9
@@ -590,7 +589,7 @@ LAB_18F5:
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_2(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
 
     LEA     16(A7),A7
 
@@ -601,7 +600,7 @@ LAB_18F5:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_18FC   (Copy short label into LAB_2246)
+; FUNC: UNKNOWN_CopyLabelToGlobal   (Copy short label into LAB_2246.)
 ; ARGS:
 ;   stack +8: A3 = input buffer pointer??
 ; RET:
@@ -619,34 +618,34 @@ LAB_18F5:
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
-LAB_18FC:
+UNKNOWN_CopyLabelToGlobal:
     LINK.W  A5,#-16
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
 
-.LAB_18FD:
+.copy_loop:
     MOVE.B  (A3)+,D0
     MOVE.B  D0,-13(A5,D7.W)
     MOVEQ   #18,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_18FE
+    BEQ.S   .copy_done
 
     MOVEQ   #10,D0
     CMP.W   D0,D7
-    BGE.S   .LAB_18FE
+    BGE.S   .copy_done
 
     ADDQ.W  #1,D7
-    BRA.S   .LAB_18FD
+    BRA.S   .copy_loop
 
-.LAB_18FE:
+.copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
     LEA     LAB_2246,A1
 
-.LAB_18FF:
+.copy_label:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_18FF
+    BNE.S   .copy_label
 
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
@@ -654,7 +653,7 @@ LAB_18FC:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1900   (JumpStub_LAB_0B0E)
+; FUNC: JMPTBL_LAB_0B0E_2   (JumpStub_LAB_0B0E)
 ; ARGS:
 ;   ??
 ; RET:
@@ -672,11 +671,11 @@ LAB_18FC:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_1900:
+JMPTBL_LAB_0B0E_2:
     JMP     LAB_0B0E
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_DISPLAY_TEXT_AT_POSITION_2   (JumpStub_DISPLAY_TEXT_AT_POSITION)
+; FUNC: JMPTBL_DISPLIB_DisplayTextAtPosition_2   (JumpStub_DISPLIB_DisplayTextAtPosition)
 ; ARGS:
 ;   ??
 ; RET:
@@ -684,21 +683,21 @@ LAB_1900:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   DISPLAY_TEXT_AT_POSITION
+;   DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to DISPLAY_TEXT_AT_POSITION.
+;   Jump stub to DISPLIB_DisplayTextAtPosition.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_DISPLAY_TEXT_AT_POSITION_2:
-    JMP     DISPLAY_TEXT_AT_POSITION
+JMPTBL_DISPLIB_DisplayTextAtPosition_2:
+    JMP     DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1902   (JumpStub_ESQ_WildcardMatch)
+; FUNC: JMPTBL_ESQ_WildcardMatch_2   (JumpStub_ESQ_WildcardMatch)
 ; ARGS:
 ;   ??
 ; RET:
@@ -716,11 +715,11 @@ JMPTBL_DISPLAY_TEXT_AT_POSITION_2:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_1902:
+JMPTBL_ESQ_WildcardMatch_2:
     JMP     ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1903   (JumpStub_LAB_0631)
+; FUNC: JMPTBL_DST_NormalizeDayOfYear_2   (JumpStub_LAB_0631)
 ; ARGS:
 ;   ??
 ; RET:
@@ -728,21 +727,21 @@ LAB_1902:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_0631
+;   DST_NormalizeDayOfYear
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to LAB_0631.
+;   Jump stub to DST_NormalizeDayOfYear.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_1903:
-    JMP     LAB_0631
+JMPTBL_DST_NormalizeDayOfYear_2:
+    JMP     DST_NormalizeDayOfYear
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2   (JumpStub_GENERATE_CHECKSUM_BYTE_INTO_D0)
+; FUNC: JMPTBL_ESQ_GenerateXorChecksumByte_2   (JumpStub_ESQ_GenerateXorChecksumByte)
 ; ARGS:
 ;   ??
 ; RET:
@@ -750,21 +749,21 @@ LAB_1903:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   GENERATE_CHECKSUM_BYTE_INTO_D0
+;   ESQ_GenerateXorChecksumByte
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to GENERATE_CHECKSUM_BYTE_INTO_D0.
+;   Jump stub to ESQ_GenerateXorChecksumByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2:
-    JMP     GENERATE_CHECKSUM_BYTE_INTO_D0
+JMPTBL_ESQ_GenerateXorChecksumByte_2:
+    JMP     ESQ_GenerateXorChecksumByte
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1905   (JumpStub_LAB_0B44)
+; FUNC: JMPTBL_LAB_0B44_2   (JumpStub_LAB_0B44)
 ; ARGS:
 ;   ??
 ; RET:
@@ -782,7 +781,7 @@ JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_2:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_1905:
+JMPTBL_LAB_0B44_2:
     JMP     LAB_0B44
 
 ;!======

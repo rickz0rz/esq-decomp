@@ -104,7 +104,7 @@ GCOMMAND_LoadCommandFile:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1F68
-    JSR     JMPTBL_DISKIO_OpenFileWithBuffer_1(PC)
+    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -514,7 +514,7 @@ GCOMMAND_LoadMplexTemplate:
     MOVE.L  A0,LAB_22E3
     PEA     18.W
     MOVE.L  LAB_21BC,-(A7)
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -606,7 +606,7 @@ GCOMMAND_LoadMplexFile:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1F6D
-    JSR     JMPTBL_DISKIO_OpenFileWithBuffer_1(PC)
+    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -1179,7 +1179,7 @@ GCOMMAND_ParseCommandString:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-24(A5)
@@ -1365,7 +1365,7 @@ GCOMMAND_LoadPPV3Template:
     ADD.L   D6,LAB_21BC
     PEA     18.W
     MOVE.L  LAB_21BC,-(A7)
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1436,7 +1436,7 @@ GCOMMAND_LoadPPVTemplate:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     LAB_1F75
-    JSR     JMPTBL_DISKIO_OpenFileWithBuffer_1(PC)
+    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -2054,7 +2054,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-24(A5)

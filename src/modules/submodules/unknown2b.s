@@ -35,8 +35,6 @@ UNKNOWN2B_AllocRaster:
     RTS
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN2B_FreeRaster   (FreeRaster wrapper)
 ; ARGS:
@@ -75,8 +73,6 @@ UNKNOWN2B_FreeRaster:
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
     RTS
-
-;!======
 
 ;!======
 ;------------------------------------------------------------------------------
@@ -119,10 +115,8 @@ UNKNOWN2B_OpenFileWithAccessMode:
     RTS
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_190F   (Stub)
+; FUNC: UNKNOWN2B_Stub0   (Stub)
 ; ARGS:
 ;   ??
 ; RET:
@@ -140,14 +134,12 @@ UNKNOWN2B_OpenFileWithAccessMode:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-LAB_190F:
+UNKNOWN2B_Stub0:
     RTS
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1910   (Stub)
+; FUNC: UNKNOWN2B_Stub1   (Stub)
 ; ARGS:
 ;   ??
 ; RET:
@@ -165,14 +157,12 @@ LAB_190F:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
-LAB_1910:
+UNKNOWN2B_Stub1:
     RTS
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1911   (Buffered write of string??)
+; FUNC: STREAM_BufferedWriteString   (Buffered write of string??)
 ; ARGS:
 ;   stack +8: A3 = string pointer
 ; RET:
@@ -180,17 +170,17 @@ LAB_1910:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1916
+;   STREAM_BufferedPutcOrFlush
 ; READS:
-;   -1074(A4), -1082(A4)
+;   Global_A4_1074_Counter(A4), Global_A4_1082_Ptr(A4)
 ; WRITES:
-;   -1074(A4), -1082(A4), -1086(A4)
+;   Global_A4_1074_Counter(A4), Global_A4_1082_Ptr(A4), Global_A4_1086_Buffer(A4)
 ; DESC:
-;   Writes a NUL-terminated string into a buffer, flushing via LAB_1916 on overflow.
+;   Writes a NUL-terminated string into a buffer, flushing via STREAM_BufferedPutcOrFlush on overflow.
 ; NOTES:
 ;   Uses DBF-style loop over bytes until NUL.
 ;------------------------------------------------------------------------------
-LAB_1911:
+STREAM_BufferedWriteString:
     MOVEM.L D6-D7/A3,-(A7)
 
     SetOffsetForStack 3
@@ -206,40 +196,40 @@ LAB_1911:
     SUBA.L  A3,A0
     MOVE.L  A0,D6   ; String length
 
-.LAB_1913:
+.write_loop:
     MOVEQ   #0,D7
     MOVE.B  (A3)+,D7
     TST.L   D7
-    BEQ.S   .LAB_1915
+    BEQ.S   .done
 
-    SUBQ.L  #1,-1074(A4)
-    BLT.S   .LAB_1914
+    SUBQ.L  #1,Global_A4_1074_Counter(A4)
+    BLT.S   .flush_and_retry
 
-    MOVEA.L -1082(A4),A0
+    MOVEA.L Global_A4_1082_Ptr(A4),A0
     LEA     1(A0),A1
-    MOVE.L  A1,-1082(A4)
+    MOVE.L  A1,Global_A4_1082_Ptr(A4)
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    BRA.S   .LAB_1913
+    BRA.S   .write_loop
 
-.LAB_1914:
+.flush_and_retry:
     MOVE.L  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    PEA     -1086(A4)
+    PEA     Global_A4_1086_Buffer(A4)
     MOVE.L  D1,-(A7)
-    JSR     LAB_1916(PC)
+    JSR     STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
-    BRA.S   .LAB_1913
+    BRA.S   .write_loop
 
-.LAB_1915:
-    PEA     -1086(A4)
+.done:
+    PEA     Global_A4_1086_Buffer(A4)
     PEA     -1.W
-    JSR     LAB_1916(PC)
+    JSR     STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D6,D0
@@ -247,10 +237,8 @@ LAB_1911:
     RTS
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1916   (Buffered putc/flush handler??)
+; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handler??)
 ; ARGS:
 ;   stack +8: D7 = byte or -1
 ;   stack +12: A3 = handle/struct pointer??
@@ -259,17 +247,17 @@ LAB_1911:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1A8E, LAB_1A34, LAB_19B3, LAB_1AA9, LAB_1934
+;   BUFFER_EnsureAllocated, DOS_WriteByIndex, DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
 ; READS:
-;   A3+4/8/12/16/20/24/26/27/28, -1124(A4), -640(A4)
+;   A3+4/8/12/16/20/24/26/27/28, Global_HandleTableFlags(A4), Global_DosIoErr(A4)
 ; WRITES:
-;   A3+4/8/12/27, -640(A4)
+;   A3+4/8/12/27, Global_DosIoErr(A4)
 ; DESC:
 ;   Handles buffered output, flushing or writing directly based on flags and mode.
 ; NOTES:
 ;   Booleanize pattern: SNE/NEG/EXT. Uses 0x1A/0x0D handling.
 ;------------------------------------------------------------------------------
-LAB_1916:
+STREAM_BufferedPutcOrFlush:
     LINK.W  A5,#-20
     MOVEM.L D2/D4-D7/A3,-(A7)
 
@@ -280,12 +268,12 @@ LAB_1916:
     MOVE.L  D7,D4
     MOVEQ   #49,D0
     AND.L   24(A3),D0
-    BEQ.S   .LAB_1917
+    BEQ.S   .check_buffer_state
 
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_1917:
+.check_buffer_state:
     BTST    #7,26(A3)
     SNE     D0
     NEG.B   D0
@@ -293,10 +281,10 @@ LAB_1916:
     EXT.L   D0
     MOVE.L  D0,D6
     TST.L   20(A3)
-    BNE.W   .LAB_191D
+    BNE.W   .direct_or_unbuffered
 
     BTST    #2,27(A3)
-    BNE.S   .LAB_191D
+    BNE.S   .direct_or_unbuffered
 
     MOVEQ   #0,D0
     MOVE.L  D0,12(A3)
@@ -305,34 +293,34 @@ LAB_1916:
     BEQ.W   .return
 
     MOVE.L  A3,-(A7)
-    JSR     LAB_1A8E(PC)
+    JSR     BUFFER_EnsureAllocated(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .LAB_1918
+    BEQ.S   .buffer_ready
 
     BSET    #5,27(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_1918:
+.buffer_ready:
     BSET    #1,27(A3)
     TST.B   D6
-    BEQ.S   .LAB_1919
+    BEQ.S   .set_count_positive
 
     MOVE.L  20(A3),D0
     MOVE.L  D0,D1
     NEG.L   D1
     MOVE.L  D1,12(A3)
-    BRA.S   .LAB_191A
+    BRA.S   .store_to_buffer
 
-.LAB_1919:
+.set_count_positive:
     MOVE.L  20(A3),D0
     MOVE.L  D0,12(A3)
 
-.LAB_191A:
+.store_to_buffer:
     SUBQ.L  #1,12(A3)
-    BLT.S   .LAB_191B
+    BLT.S   .flush_and_retry
 
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
@@ -341,83 +329,83 @@ LAB_1916:
     MOVE.B  D0,(A0)
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    BRA.S   .LAB_191C
+    BRA.S   .return_byte
 
-.LAB_191B:
+.flush_and_retry:
     MOVE.L  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  A3,-(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   LAB_1916
+    BSR.W   STREAM_BufferedPutcOrFlush
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
 
-.LAB_191C:
+.return_byte:
     MOVE.L  D1,D0
     BRA.W   .return
 
-.LAB_191D:
+.direct_or_unbuffered:
     BTST    #2,27(A3)
-    BEQ.S   .LAB_1921
+    BEQ.S   .buffered_path
 
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BNE.S   .LAB_191E
+    BNE.S   .direct_write_byte
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_191E:
+.direct_write_byte:
     MOVE.L  D7,D0
     MOVE.B  D0,-1(A5)
     TST.B   D6
-    BEQ.S   .LAB_191F
+    BEQ.S   .direct_write_one
 
     MOVEQ   #10,D1
     CMP.L   D1,D7
-    BNE.S   .LAB_191F
+    BNE.S   .direct_write_one
 
     MOVEQ   #2,D1
     MOVE.L  D1,-(A7)
-    PEA     LAB_1933(PC)
+    PEA     STREAM_ReadMovepWordCallback(PC)
     MOVE.L  28(A3),-(A7)
     MOVE.L  D1,-16(A5)
-    JSR     LAB_1A34(PC)
+    JSR     DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
-    BRA.S   .LAB_1920
+    BRA.S   .after_direct_write
 
-.LAB_191F:
+.direct_write_one:
     MOVEQ   #1,D1
     MOVE.L  D1,-(A7)
     PEA     -1(A5)
     MOVE.L  28(A3),-(A7)
     MOVE.L  D1,-16(A5)
-    JSR     LAB_1A34(PC)
+    JSR     DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
 
-.LAB_1920:
+.after_direct_write:
     MOVEQ   #-1,D7
-    BRA.W   .LAB_1928
+    BRA.W   .post_write_status
 
-.LAB_1921:
+.buffered_path:
     BSET    #1,27(A3)
     TST.B   D6
-    BEQ.S   .LAB_1924
+    BEQ.S   .flush_buffer
 
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BEQ.S   .LAB_1924
+    BEQ.S   .flush_buffer
 
     ADDQ.L  #2,12(A3)
     MOVEQ   #10,D1
     CMP.L   D1,D7
-    BNE.S   .LAB_1923
+    BNE.S   .store_char
 
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
@@ -425,18 +413,18 @@ LAB_1916:
     MOVE.B  #$d,(A0)
     MOVE.L  12(A3),D1
     TST.L   D1
-    BMI.S   .LAB_1922
+    BMI.S   .after_cr_flush
 
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_1916
+    BSR.W   STREAM_BufferedPutcOrFlush
 
     ADDQ.W  #8,A7
 
-.LAB_1922:
+.after_cr_flush:
     ADDQ.L  #1,12(A3)
 
-.LAB_1923:
+.store_char:
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
     MOVE.L  A1,4(A3)
@@ -448,105 +436,105 @@ LAB_1916:
 
     MOVEQ   #-1,D7
 
-.LAB_1924:
+.flush_buffer:
     MOVE.L  4(A3),D0
     SUB.L   16(A3),D0
     MOVE.L  D0,-16(A5)
-    BEQ.S   .LAB_1927
+    BEQ.S   .no_pending_write
 
     BTST    #6,26(A3)
-    BEQ.S   .LAB_1926
+    BEQ.S   .write_buffer
 
     PEA     2.W
     CLR.L   -(A7)
     MOVE.L  28(A3),-(A7)
-    JSR     LAB_19B3(PC)
+    JSR     DOS_SeekByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-20(A5)
     TST.B   D6
-    BEQ.S   .LAB_1926
+    BEQ.S   .write_buffer
 
-.LAB_1925:
+.linefeed_loop:
     SUBQ.L  #1,-20(A5)
-    BLT.S   .LAB_1926
+    BLT.S   .write_buffer
 
     CLR.L   -(A7)
     MOVE.L  -20(A5),-(A7)
     MOVE.L  28(A3),-(A7)
-    JSR     LAB_19B3(PC)
+    JSR     DOS_SeekByIndex(PC)
 
     PEA     1.W
     PEA     -3(A5)
     MOVE.L  28(A3),-(A7)
-    JSR     LAB_1AA9(PC)
+    JSR     DOS_ReadByIndex(PC)
 
     LEA     24(A7),A7
-    TST.L   -640(A4)
-    BNE.S   .LAB_1926
+    TST.L   Global_DosIoErr(A4)
+    BNE.S   .write_buffer
 
     MOVE.B  -3(A5),D0
     MOVEQ   #26,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_1925
+    BEQ.S   .linefeed_loop
 
-.LAB_1926:
+.write_buffer:
     MOVE.L  -16(A5),-(A7)
     MOVE.L  16(A3),-(A7)
     MOVE.L  28(A3),-(A7)
-    JSR     LAB_1A34(PC)
+    JSR     DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
-    BRA.S   .LAB_1928
+    BRA.S   .post_write_status
 
-.LAB_1927:
+.no_pending_write:
     MOVEQ   #0,D5
 
-.LAB_1928:
+.post_write_status:
     MOVEQ   #-1,D0
     CMP.L   D0,D5
-    BNE.S   .LAB_1929
+    BNE.S   .check_short_write
 
     BSET    #5,27(A3)
-    BRA.S   .LAB_192A
+    BRA.S   .set_buffer_counters
 
-.LAB_1929:
+.check_short_write:
     CMP.L   -16(A5),D5
-    BEQ.S   .LAB_192A
+    BEQ.S   .set_buffer_counters
 
     BSET    #4,27(A3)
 
-.LAB_192A:
+.set_buffer_counters:
     TST.B   D6
-    BEQ.S   .LAB_192B
+    BEQ.S   .set_count_linebuffered
 
     MOVE.L  20(A3),D1
     MOVE.L  D1,D2
     NEG.L   D2
     MOVE.L  D2,12(A3)
-    BRA.S   .LAB_192D
+    BRA.S   .reset_buffer_ptr
 
-.LAB_192B:
+.set_count_linebuffered:
     BTST    #2,27(A3)
-    BEQ.S   .LAB_192C
+    BEQ.S   .set_count_normal
 
     MOVEQ   #0,D1
     MOVE.L  D1,12(A3)
-    BRA.S   .LAB_192D
+    BRA.S   .reset_buffer_ptr
 
-.LAB_192C:
+.set_count_normal:
     MOVE.L  20(A3),D1
     MOVE.L  D1,12(A3)
 
-.LAB_192D:
+.reset_buffer_ptr:
     MOVEA.L 16(A3),A0
     MOVE.L  A0,4(A3)
     CMP.L   D0,D7
-    BEQ.S   .LAB_192F
+    BEQ.S   .final_checks
 
     SUBQ.L  #1,12(A3)
-    BLT.S   .LAB_192E
+    BLT.S   .retry_after_full
 
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
@@ -555,36 +543,36 @@ LAB_1916:
     MOVE.B  D0,(A0)
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    BRA.S   .LAB_192F
+    BRA.S   .final_checks
 
-.LAB_192E:
+.retry_after_full:
     MOVE.L  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  A3,-(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   LAB_1916
+    BSR.W   STREAM_BufferedPutcOrFlush
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
 
-.LAB_192F:
+.final_checks:
     MOVEQ   #48,D0
     AND.L   24(A3),D0
-    BEQ.S   .LAB_1930
+    BEQ.S   .check_flags_return
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_1930:
+.check_flags_return:
     MOVEQ   #-1,D0
     CMP.L   D0,D4
-    BNE.S   .LAB_1931
+    BNE.S   .return_value
 
     MOVEQ   #0,D0
     BRA.S   .return
 
-.LAB_1931:
+.return_value:
     MOVE.L  D4,D0
 
 .return:
@@ -593,10 +581,8 @@ LAB_1916:
     RTS
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1933   (Callback: MOVEP.W 0(A2)->D6)
+; FUNC: STREAM_ReadMovepWordCallback   (Callback: MOVEP.W 0(A2)->D6)
 ; ARGS:
 ;   A2 = source pointer??
 ; RET:
@@ -614,15 +600,13 @@ LAB_1916:
 ; NOTES:
 ;   Followed by padding word.
 ;------------------------------------------------------------------------------
-LAB_1933:
+STREAM_ReadMovepWordCallback:
     MOVEP.W 0(A2),D6
     DC.W    $0000
 
 ;!======
-
-;!======
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1934   (Buffered read/getc handler??)
+; FUNC: STREAM_BufferedGetc   (Buffered read/getc handler??)
 ; ARGS:
 ;   stack +8: A3 = handle/struct pointer??
 ; RET:
@@ -630,7 +614,7 @@ LAB_1933:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_1916, LAB_1A8E, LAB_1AA9
+;   STREAM_BufferedPutcOrFlush, BUFFER_EnsureAllocated, DOS_ReadByIndex
 ; READS:
 ;   A3+4/8/16/20/24/26/27/28
 ; WRITES:
@@ -640,7 +624,7 @@ LAB_1933:
 ; NOTES:
 ;   Handles 0x1A and 0x0D specially; uses SNE/NEG/EXT booleanization.
 ;------------------------------------------------------------------------------
-LAB_1934:
+STREAM_BufferedGetc:
     MOVEM.L D5-D7/A3,-(A7)
 
     SetOffsetForStack 4
@@ -654,59 +638,59 @@ LAB_1934:
     MOVE.L  D0,D7
     MOVEQ   #48,D0
     AND.L   24(A3),D0
-    BEQ.S   .LAB_1935
+    BEQ.S   .check_handle_flags
 
     CLR.L   8(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_1935:
+.check_handle_flags:
     BTST    #7,27(A3)
-    BEQ.S   .LAB_1936
+    BEQ.S   .maybe_flush_on_flags
 
     BTST    #6,27(A3)
-    BEQ.S   .LAB_1936
+    BEQ.S   .maybe_flush_on_flags
 
     MOVE.L  A3,-(A7)
     PEA     -1.W
-    JSR     LAB_1916(PC)
+    JSR     STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
 
-.LAB_1936:
+.maybe_flush_on_flags:
     TST.L   20(A3)
-    BNE.S   .LAB_1938
+    BNE.S   .consume_buffered
 
     CLR.L   8(A3)
     BTST    #2,27(A3)
-    BEQ.S   .LAB_1937
+    BEQ.S   .ensure_buffer
 
     MOVEQ   #1,D0
     MOVE.L  D0,20(A3)
     LEA     32(A3),A0
     MOVE.L  A0,16(A3)
-    BRA.W   .LAB_193C
+    BRA.W   .fill_buffer
 
-.LAB_1937:
+.ensure_buffer:
     MOVE.L  A3,-(A7)
-    JSR     LAB_1A8E(PC)
+    JSR     BUFFER_EnsureAllocated(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .LAB_193C
+    BEQ.S   .fill_buffer
 
     BSET    #5,27(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_1938:
+.consume_buffered:
     TST.B   D7
-    BEQ.S   .LAB_193C
+    BEQ.S   .fill_buffer
 
     ADDQ.L  #2,8(A3)
     MOVE.L  8(A3),D0
     TST.L   D0
-    BGT.S   .LAB_193C
+    BGT.S   .fill_buffer
 
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
@@ -715,13 +699,13 @@ LAB_1934:
     MOVE.B  (A0),D6
     MOVE.L  D6,D0
     CMPI.L  #$1a,D0
-    BEQ.S   .LAB_193A
+    BEQ.S   .handle_ctrl_z
 
     CMPI.L  #$d,D0
-    BNE.S   .LAB_193B
+    BNE.S   .return_char
 
     SUBQ.L  #1,8(A3)
-    BLT.S   .LAB_1939
+    BLT.S   .retry_after_empty
 
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
@@ -730,87 +714,87 @@ LAB_1934:
     MOVE.B  (A0),D0
     BRA.W   .return
 
-.LAB_1939:
+.retry_after_empty:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1934
+    BSR.W   STREAM_BufferedGetc
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
-.LAB_193A:
+.handle_ctrl_z:
     BSET    #4,27(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_193B:
+.return_char:
     MOVE.L  D6,D0
     BRA.W   .return
 
-.LAB_193C:
+.fill_buffer:
     BTST    #1,27(A3)
-    BNE.S   .LAB_1941
+    BNE.S   .post_fill_flags
 
     BSET    #0,27(A3)
     MOVE.L  20(A3),-(A7)
     MOVE.L  16(A3),-(A7)
     MOVE.L  28(A3),-(A7)
-    JSR     LAB_1AA9(PC)
+    JSR     DOS_ReadByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
     TST.L   D5
-    BPL.S   .LAB_193D
+    BPL.S   .mark_error
 
     BSET    #5,27(A3)
 
-.LAB_193D:
+.mark_error:
     TST.L   D5
-    BNE.S   .LAB_193E
+    BNE.S   .mark_eof
 
     BSET    #4,27(A3)
 
-.LAB_193E:
+.mark_eof:
     TST.L   D5
-    BLE.S   .LAB_1941
+    BLE.S   .post_fill_flags
 
     TST.B   D7
-    BEQ.S   .LAB_193F
+    BEQ.S   .set_remaining_neg
 
     MOVE.L  D5,D0
     NEG.L   D0
     MOVE.L  D0,8(A3)
-    BRA.S   .LAB_1940
+    BRA.S   .set_buffer_ptr
 
-.LAB_193F:
+.set_remaining_neg:
     MOVE.L  D5,8(A3)
 
-.LAB_1940:
+.set_buffer_ptr:
     MOVEA.L 16(A3),A0
     MOVE.L  A0,4(A3)
 
-.LAB_1941:
+.post_fill_flags:
     MOVEQ   #50,D0
     AND.L   24(A3),D0
-    BEQ.S   .LAB_1944
+    BEQ.S   .read_next_byte
 
     TST.B   D7
-    BEQ.S   .LAB_1942
+    BEQ.S   .set_remaining_eof
 
     MOVEQ   #-1,D0
     MOVE.L  D0,8(A3)
-    BRA.S   .LAB_1943
+    BRA.S   .return_eof
 
-.LAB_1942:
+.set_remaining_eof:
     MOVEQ   #0,D0
     MOVE.L  D0,8(A3)
 
-.LAB_1943:
+.return_eof:
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_1944:
+.read_next_byte:
     SUBQ.L  #1,8(A3)
-    BLT.S   .LAB_1945
+    BLT.S   .recurse_for_next
 
     MOVEA.L 4(A3),A0
     LEA     1(A0),A1
@@ -819,9 +803,9 @@ LAB_1934:
     MOVE.B  (A0),D0
     BRA.S   .return
 
-.LAB_1945:
+.recurse_for_next:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1934
+    BSR.W   STREAM_BufferedGetc
 
     ADDQ.W  #4,A7
 

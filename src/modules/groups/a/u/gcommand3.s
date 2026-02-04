@@ -553,7 +553,7 @@ LAB_0D83:
 ; CLOBBERS:
 ;   D0-D7, A0-A3
 ; CALLS:
-;   GROUPC_JMPTBL_LAB_1A06
+;   GROUPC_JMPTBL_MATH_Mulu32
 ; READS:
 ;   LAB_1FA2
 ; WRITES:
@@ -561,7 +561,7 @@ LAB_0D83:
 ; DESC:
 ;   Fills preset table entries using palette data in LAB_1FA2.
 ; NOTES:
-;   Uses a helper at LAB_1A06 to compute palette index; layout inferred.
+;   Uses a helper at MATH_Mulu32 to compute palette index; layout inferred.
 ;------------------------------------------------------------------------------
 GCOMMAND_InitPresetTableFromPalette:
 LAB_0D84:
@@ -598,7 +598,7 @@ LAB_0D86:
     MOVE.L  D0,16(A7)
     MOVE.L  D7,D0
     MOVEQ   #62,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     LEA     LAB_1FA2,A1
     ADDA.L  D0,A1
@@ -656,7 +656,7 @@ LAB_0D89:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   GROUPC_JMPTBL_LAB_1A06, JMPTBL_LAB_1A07_3
+;   GROUPC_JMPTBL_MATH_Mulu32, JMPTBL_MATH_DivS32_3
 ; READS:
 ;   LAB_22F4
 ; WRITES:
@@ -699,10 +699,10 @@ LAB_0D8A:
 
     MOVE.L  D5,D0
     MOVE.L  #1000,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D4,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     BRA.S   .store_result
 
@@ -950,7 +950,7 @@ LAB_0D98:
 
     MOVE.L  D7,D0
     MOVEQ   #24,D1
-    JSR     GROUPC_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
 
     LEA     LAB_22F6,A0
     ADDA.L  D0,A0
@@ -3118,7 +3118,6 @@ LAB_0DF3:
 
 ; Seed banner buffers using values read from preferences.
 GCOMMAND_SeedBannerFromPrefs:
-LAB_0DF4:
     LINK.W  A5,#-4
     MOVE.L  D2,-(A7)
     CLR.L   -(A7)

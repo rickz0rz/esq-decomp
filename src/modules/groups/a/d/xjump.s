@@ -39,7 +39,7 @@ GROUP_AD_JMPTBL_LAB_14B1:
     JMP     LAB_14B1
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_0668   (JumpStub_LAB_0668)
+; FUNC: GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange   (JumpStub_DATETIME_NormalizeMonthRange)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -47,16 +47,17 @@ GROUP_AD_JMPTBL_LAB_14B1:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0668
+;   DATETIME_NormalizeMonthRange
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0668.
+;   Jump stub to DATETIME_NormalizeMonthRange.
 ;------------------------------------------------------------------------------
+GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
 GROUP_AD_JMPTBL_LAB_0668:
-    JMP     LAB_0668
+    JMP     DATETIME_NormalizeMonthRange
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_16E3   (JumpStub_LAB_16E3)
@@ -139,7 +140,7 @@ GROUP_AD_JMPTBL_LAB_16D3:
     JMP     LAB_16D3
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_1ADA   (JumpStub_LAB_1ADA)
+; FUNC: GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort   (JumpStub_GRAPHICS_BltBitMapRastPort)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -147,16 +148,16 @@ GROUP_AD_JMPTBL_LAB_16D3:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1ADA
+;   GRAPHICS_BltBitMapRastPort
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1ADA.
+;   Jump stub to GRAPHICS_BltBitMapRastPort.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_1ADA:
-    JMP     LAB_1ADA
+GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
+    JMP     GRAPHICS_BltBitMapRastPort
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_0A49   (JumpStub_LAB_0A49)
@@ -299,7 +300,7 @@ GROUP_AD_JMPTBL_LAB_09C2:
     JMP     LAB_09C2
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_0665   (JumpStub_LAB_0665)
+; FUNC: GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex   (JumpStub_DATETIME_AdjustMonthIndex)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -307,19 +308,20 @@ GROUP_AD_JMPTBL_LAB_09C2:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0665
+;   DATETIME_AdjustMonthIndex
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0665.
+;   Jump stub to DATETIME_AdjustMonthIndex.
 ;------------------------------------------------------------------------------
+GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
 GROUP_AD_JMPTBL_LAB_0665:
-    JMP     LAB_0665
+    JMP     DATETIME_AdjustMonthIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_064E   (JumpStub_LAB_064E)
+; FUNC: GROUP_AD_JMPTBL_DST_ComputeBannerIndex   (JumpStub_DST_ComputeBannerIndex)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -327,16 +329,17 @@ GROUP_AD_JMPTBL_LAB_0665:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_064E
+;   DST_ComputeBannerIndex
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_064E.
+;   Jump stub to DST_ComputeBannerIndex.
 ;------------------------------------------------------------------------------
+GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
 GROUP_AD_JMPTBL_LAB_064E:
-    JMP     LAB_064E
+    JMP     DST_ComputeBannerIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_183B   (JumpStub_LAB_183B)

@@ -1,14 +1,14 @@
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0623   (Handle banner command $32/$33 and enqueue text.)
+; FUNC: DST_HandleBannerCommand32_33   (Handle banner command $32/$33 and enqueue text)
 ; ARGS:
 ;   stack +7: cmd byte ?? (D7)
-;   stack +8: struct* ?? (A3)
+;   stack +8: input string pointer ?? (A3)
 ; RET:
 ;   D0: none
 ; CLOBBERS:
 ;   D0/D7/A3 ??
 ; CALLS:
-;   LAB_05FC, LAB_05F8, DST_UpdateBannerQueue
+;   DATETIME_ParseString, DATETIME_CopyPairAndRecalc, DST_UpdateBannerQueue
 ; READS:
 ;   LAB_21E0, LAB_21DF
 ; WRITES:
@@ -18,6 +18,7 @@
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_HandleBannerCommand32_33:
 LAB_0623:
     LINK.W  A5,#-44
     MOVEM.L D7/A3,-(A7)
@@ -38,17 +39,17 @@ LAB_0623:
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
-    BSR.W   LAB_05FC
+    BSR.W   DATETIME_ParseString
 
     PEA     19.W
     MOVE.L  A3,-(A7)
     PEA     -44(A5)
-    BSR.W   LAB_05FC
+    BSR.W   DATETIME_ParseString
 
     PEA     -44(A5)
     PEA     -22(A5)
     MOVE.L  LAB_21E0,-(A7)
-    BSR.W   LAB_05F8
+    BSR.W   DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
     BRA.S   .return
@@ -58,17 +59,17 @@ LAB_0623:
     PEA     4.W
     MOVE.L  A3,-(A7)
     PEA     -22(A5)
-    BSR.W   LAB_05FC
+    BSR.W   DATETIME_ParseString
 
     PEA     19.W
     MOVE.L  A3,-(A7)
     PEA     -44(A5)
-    BSR.W   LAB_05FC
+    BSR.W   DATETIME_ParseString
 
     PEA     -44(A5)
     PEA     -22(A5)
     MOVE.L  LAB_21DF,-(A7)
-    BSR.W   LAB_05F8
+    BSR.W   DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
 
@@ -83,7 +84,7 @@ LAB_0623:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_CallJump_066F   (Jump stub to LAB_066F.)
+; FUNC: DST_CallJump_066F   (Jump stub to DST_JMPTBL_Call_146E.)
 ; ARGS:
 ;   ??
 ; RET:
@@ -91,7 +92,7 @@ LAB_0623:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_066F
+;   DST_JMPTBL_Call_146E
 ; READS:
 ;   ??
 ; WRITES:
@@ -102,22 +103,22 @@ LAB_0623:
 ;   ??
 ;------------------------------------------------------------------------------
 DST_CallJump_066F:
-    JSR     LAB_066F(PC)
+    JSR     DST_JMPTBL_Call_146E(PC)
 
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_UpdateBannerQueue   (Update the rotating banner queue.)
+; FUNC: DST_UpdateBannerQueue   (Update the rotating banner queue)
 ; ARGS:
-;   stack +4: queue* ?? (A3)
+;   stack +4: banner pair* ?? (A3)
 ; RET:
 ;   D0: update flag (0/1?)
 ; CLOBBERS:
 ;   D0/D6/D7/A3 ??
 ; CALLS:
-;   LAB_05F6, LAB_0656, LAB_0618, DST_RefreshBannerBuffer, DST_CallJump_066F
+;   DATETIME_UpdateSelectionField, DST_AddTimeOffset, DST_AllocateBannerStruct, DST_RefreshBannerBuffer, DST_CallJump_066F
 ; READS:
 ;   LAB_2241, LAB_227B, LAB_1DD2
 ; WRITES:
@@ -142,7 +143,7 @@ DST_UpdateBannerQueue:
     MOVEA.L (A3),A0
     MOVE.W  LAB_2241,16(A0)
     MOVE.L  (A3),-(A7)
-    BSR.W   LAB_05F6
+    BSR.W   DATETIME_UpdateSelectionField
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -165,7 +166,7 @@ DST_UpdateBannerQueue:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_223A
-    BSR.W   LAB_0656
+    BSR.W   DST_AddTimeOffset
 
     MOVEA.L (A3),A0
     MOVE.W  16(A0),LAB_2241
@@ -184,7 +185,7 @@ DST_UpdateBannerQueue:
     CLR.L   -(A7)
     PEA     -1.W
     PEA     LAB_223A
-    BSR.W   LAB_0656
+    BSR.W   DST_AddTimeOffset
 
     LEA     12(A7),A7
     CLR.W   LAB_2241
@@ -203,7 +204,7 @@ DST_UpdateBannerQueue:
     MOVEA.L 4(A3),A0
     MOVE.W  LAB_227B,16(A0)
     MOVE.L  4(A3),-(A7)
-    BSR.W   LAB_05F6
+    BSR.W   DATETIME_UpdateSelectionField
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -232,7 +233,7 @@ DST_UpdateBannerQueue:
     BNE.S   .after_slot1
 
     MOVE.L  4(A3),-(A7)
-    BSR.W   LAB_0618
+    BSR.W   DST_AllocateBannerStruct
 
     ADDQ.W  #4,A7
     MOVE.L  D0,4(A3)
@@ -254,7 +255,7 @@ DST_UpdateBannerQueue:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0631   (Normalize day-of-year across years.)
+; FUNC: DST_NormalizeDayOfYear   (Normalize day-of-year across years.)
 ; ARGS:
 ;   stack +4: dayOfYear ?? (D7)
 ;   stack +6: year ?? (D6)
@@ -263,7 +264,7 @@ DST_UpdateBannerQueue:
 ; CLOBBERS:
 ;   D0/D5-D7 ??
 ; CALLS:
-;   LAB_0660
+;   DATETIME_IsLeapYear
 ; READS:
 ;   ??
 ; WRITES:
@@ -273,6 +274,7 @@ DST_UpdateBannerQueue:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_NormalizeDayOfYear:
 LAB_0631:
     MOVEM.L D5-D7,-(A7)
     MOVE.W  18(A7),D7
@@ -280,7 +282,7 @@ LAB_0631:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     ; Determine days in year for the starting year.
@@ -306,7 +308,7 @@ LAB_0631:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -330,7 +332,7 @@ LAB_0631:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0638   (Build banner time entry??)
+; FUNC: DST_BuildBannerTimeEntry   (Build banner time entry??)
 ; ARGS:
 ;   stack +10: dayOfYear ?? (D7)
 ;   stack +15: flags ?? (D6)
@@ -341,7 +343,7 @@ LAB_0631:
 ; CLOBBERS:
 ;   D0-D7/A2-A3 ??
 ; CALLS:
-;   LAB_0660, LAB_05E1, LAB_05E5, LAB_05C7, GROUP_AG_JMPTBL_LAB_1A06/1A07
+;   DATETIME_IsLeapYear, DATETIME_BuildFromBaseDay, DATETIME_ClassifyValueInRange, DATETIME_SecondsToStruct, GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
 ;   LAB_223A, LAB_2242, LAB_223D, LAB_1DD2, LAB_1DD1, LAB_1DD8, LAB_21E0, LAB_21DF
 ; WRITES:
@@ -351,6 +353,7 @@ LAB_0631:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_BuildBannerTimeEntry:
 LAB_0638:
     LINK.W  A5,#-36
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -419,7 +422,7 @@ LAB_0638:
     MOVE.W  LAB_223D,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0660
+    BSR.W   DATETIME_IsLeapYear
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -452,10 +455,10 @@ LAB_0638:
     SUBQ.L  #1,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #30,D0
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.W  D0,-12(A5)
     MOVE.L  D7,D0
@@ -470,7 +473,7 @@ LAB_0638:
     ASR.L   #1,D0
     ADDQ.L  #5,D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,-14(A5)
     BNE.S   .ensure_nonzero_divisor
@@ -490,7 +493,7 @@ LAB_0638:
     ASR.L   #1,D0
     ADDQ.L  #5,D0
     MOVEQ   #24,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #11,D0
     CMP.L   D0,D1
@@ -511,7 +514,7 @@ LAB_0638:
     LEA     -22(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_05E1
+    BSR.W   DATETIME_BuildFromBaseDay
 
     LEA     16(A7),A7
     MOVE.L  D0,D5
@@ -523,7 +526,7 @@ LAB_0638:
     ; If in 'Y' mode, write into LAB_21E0 buffer first.
     MOVE.L  D5,-(A7)
     MOVE.L  LAB_21E0,-(A7)
-    BSR.W   LAB_05E5
+    BSR.W   DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
     EXT.L   D0
@@ -536,7 +539,7 @@ LAB_0638:
     MOVE.L  D5,-(A7)
     MOVE.L  LAB_21DF,-(A7)
     MOVE.W  D0,-32(A5)
-    BSR.W   LAB_05E5
+    BSR.W   DATETIME_ClassifyValueInRange
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D1
@@ -581,12 +584,12 @@ LAB_0638:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD8,D0
     MOVEQ   #60,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A06(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,D5
     MOVE.L  A2,-(A7)
     MOVE.L  D5,-(A7)
-    BSR.W   LAB_05C7
+    BSR.W   DATETIME_SecondsToStruct
 
     ADDQ.W  #8,A7
     MOVE.W  -32(A5),14(A2)
@@ -599,7 +602,7 @@ LAB_0638:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_064D   (Wrapper: call LAB_0638 and return word.)
+; FUNC: DST_BuildBannerTimeWord   (Wrapper: call DST_BuildBannerTimeEntry and return word.)
 ; ARGS:
 ;   stack +10: dayOfYear ?? (D7)
 ;   stack +15: flags ?? (D6)
@@ -608,16 +611,17 @@ LAB_0638:
 ; CLOBBERS:
 ;   D0/D6/D7 ??
 ; CALLS:
-;   LAB_0638
+;   DST_BuildBannerTimeEntry
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Calls LAB_0638 and returns the computed word from stack temp.
+;   Calls DST_BuildBannerTimeEntry and returns the computed word from stack temp.
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_BuildBannerTimeWord:
 LAB_064D:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
@@ -631,7 +635,7 @@ LAB_064D:
     PEA     -2(A5)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0638
+    BSR.W   DST_BuildBannerTimeEntry
 
     MOVE.W  -2(A5),D0
     MOVEM.L -12(A5),D6-D7
@@ -641,7 +645,7 @@ LAB_064D:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_064E   (Compute banner index from time struct??)
+; FUNC: DST_ComputeBannerIndex   (Compute banner index from time struct??)
 ; ARGS:
 ;   stack +8: struct* ?? (A3)
 ;   stack +14: dayOfYear ?? (D7)
@@ -651,16 +655,17 @@ LAB_064D:
 ; CLOBBERS:
 ;   D0/D6/D7/A3 ??
 ; CALLS:
-;   LAB_0638, GROUP_AG_JMPTBL_LAB_1A07
+;   DST_BuildBannerTimeEntry, GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   8(A3), 10(A3), 18(A3)
 ; WRITES:
 ;   ??
 ; DESC:
-;   Calls LAB_0638 and computes a derived index value.
+;   Calls DST_BuildBannerTimeEntry and computes a derived index value.
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_ComputeBannerIndex:
 LAB_064E:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
@@ -675,13 +680,13 @@ LAB_064E:
     PEA     -2(A5)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0638
+    BSR.W   DST_BuildBannerTimeEntry
 
     LEA     16(A7),A7
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A3)
     BEQ.S   .month_offset_zero
@@ -726,7 +731,7 @@ LAB_064E:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0653   (Tick banner counters.)
+; FUNC: DST_TickBannerCounters   (Tick banner counters.)
 ; ARGS:
 ;   ??
 ; RET:
@@ -744,6 +749,7 @@ LAB_064E:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_TickBannerCounters:
 LAB_0653:
     MOVEQ   #0,D0
     MOVE.B  LAB_1DD1,D0
@@ -772,7 +778,7 @@ LAB_0653:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0656   (Add time offset and store seconds.)
+; FUNC: DST_AddTimeOffset   (Add time offset and store seconds.)
 ; ARGS:
 ;   stack +4: dest* ?? (A3)
 ;   stack +10: hours ?? (D7)
@@ -782,23 +788,24 @@ LAB_0653:
 ; CLOBBERS:
 ;   D0/D5-D7/A3 ??
 ; CALLS:
-;   LAB_05D3, LAB_05C7
+;   DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Computes a seconds offset from hours/minutes and stores it via LAB_05C7.
+;   Computes a seconds offset from hours/minutes and stores it via DATETIME_SecondsToStruct.
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_AddTimeOffset:
 LAB_0656:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7
     MOVE.W  30(A7),D6
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_05D3
+    BSR.W   DATETIME_NormalizeStructToSeconds
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -810,7 +817,7 @@ LAB_0656:
     ADD.L   D0,D5
     MOVE.L  A3,-(A7)
     MOVE.L  D5,-(A7)
-    BSR.W   LAB_05C7
+    BSR.W   DATETIME_SecondsToStruct
 
     ADDQ.W  #8,A7
     MOVEM.L (A7)+,D5-D7/A3
@@ -819,7 +826,7 @@ LAB_0656:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0657   (Format banner date/time string.)
+; FUNC: DST_FormatBannerDateTime   (Format banner date/time string.)
 ; ARGS:
 ;   stack +? : outPtr ?? (A3)
 ;   stack +? : timePtr ?? (A2)
@@ -828,7 +835,7 @@ LAB_0656:
 ; CLOBBERS:
 ;   D0-D6/A2-A3/A6 ??
 ; CALLS:
-;   LAB_066D
+;   DST_JMPTBL_FormatToBuffer
 ; READS:
 ;   GLOB_JMPTBL_SHORT_DAYS_OF_WEEK, GLOB_JMPTBL_SHORT_MONTHS, LAB_1D0C..LAB_1D12
 ; WRITES:
@@ -838,6 +845,7 @@ LAB_0656:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DST_FormatBannerDateTime:
 LAB_0657:
     LINK.W  A5,#-40
     MOVEM.L D2-D6/A2-A3/A6,-(A7)
@@ -913,7 +921,7 @@ LAB_0657:
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
     PEA     LAB_1D0C
-    JSR     LAB_066D(PC)
+    JSR     DST_JMPTBL_FormatToBuffer(PC)
 
     MOVEM.L -72(A5),D2-D6/A2-A3/A6
     UNLK    A5
@@ -930,7 +938,7 @@ LAB_0657:
 ; CLOBBERS:
 ;   D0/D1/D7/A0/A1 ??
 ; CALLS:
-;   LAB_0653, LAB_0656
+;   DST_TickBannerCounters, DST_AddTimeOffset
 ; READS:
 ;   LAB_223A, LAB_227B, LAB_225C, LAB_1DD8
 ; WRITES:
@@ -943,7 +951,7 @@ LAB_0657:
 ; Copy the next banner entry into the staging buffer and trigger drawing.
 DST_RefreshBannerBuffer:
     MOVE.L  D7,-(A7)
-    BSR.W   LAB_0653
+    BSR.W   DST_TickBannerCounters
 
     MOVE.W  LAB_227B,D7
     LEA     LAB_223A,A0
@@ -964,7 +972,7 @@ DST_RefreshBannerBuffer:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     LAB_2274
-    BSR.W   LAB_0656
+    BSR.W   DST_AddTimeOffset
 
     LEA     12(A7),A7
     MOVE.L  (A7)+,D7
@@ -973,7 +981,7 @@ DST_RefreshBannerBuffer:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0660   (Leap year test.)
+; FUNC: DATETIME_IsLeapYear   (Leap year test.)
 ; ARGS:
 ;   stack +4: year ?? (D7)
 ; RET:
@@ -981,7 +989,7 @@ DST_RefreshBannerBuffer:
 ; CLOBBERS:
 ;   D0/D6/D7 ??
 ; CALLS:
-;   GROUP_AG_JMPTBL_LAB_1A07
+;   GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   ??
 ; WRITES:
@@ -991,6 +999,7 @@ DST_RefreshBannerBuffer:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DATETIME_IsLeapYear:
 LAB_0660:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
@@ -1003,14 +1012,14 @@ LAB_0660:
 .normalize_year_base:
     MOVE.L  D7,D0
     MOVEQ   #4,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .check_century
 
     MOVE.L  D7,D0
     MOVEQ   #100,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .set_leap_result
@@ -1018,7 +1027,7 @@ LAB_0660:
 .check_century:
     MOVE.L  D7,D0
     MOVE.L  #400,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BEQ.S   .set_leap_result
@@ -1038,7 +1047,7 @@ LAB_0660:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0665   (Adjust month index with optional +12 offset.)
+; FUNC: DATETIME_AdjustMonthIndex   (Adjust month index with optional +12 offset.)
 ; ARGS:
 ;   stack +4: struct* ?? (A3)
 ; RET:
@@ -1046,7 +1055,7 @@ LAB_0660:
 ; CLOBBERS:
 ;   D0/D1/A3 ??
 ; CALLS:
-;   GROUP_AG_JMPTBL_LAB_1A07
+;   GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   8(A3), 18(A3)
 ; WRITES:
@@ -1056,6 +1065,7 @@ LAB_0660:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DATETIME_AdjustMonthIndex:
 LAB_0665:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
@@ -1063,7 +1073,7 @@ LAB_0665:
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVEQ   #12,D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.W   18(A3)
     BEQ.S   .month_offset_zero
@@ -1084,7 +1094,7 @@ LAB_0665:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_0668   (Normalize month range and set overflow flag.)
+; FUNC: DATETIME_NormalizeMonthRange   (Normalize month range and set overflow flag.)
 ; ARGS:
 ;   stack +4: struct* ?? (A3)
 ; RET:
@@ -1102,6 +1112,7 @@ LAB_0665:
 ; NOTES:
 ;   ??
 ;------------------------------------------------------------------------------
+DATETIME_NormalizeMonthRange:
 LAB_0668:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3

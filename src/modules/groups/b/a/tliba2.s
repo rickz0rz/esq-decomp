@@ -104,7 +104,7 @@ LAB_17D8:
 
     LEA     2(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A5),A0
@@ -114,7 +114,7 @@ LAB_17D8:
 LAB_17D9:
     LEA     1(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L 20(A5),A0
@@ -128,7 +128,7 @@ LAB_17DA:
     MOVEA.L -24(A5),A0
     ADDQ.L  #1,A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVEA.L 20(A5),A0
     MOVE.L  D0,4(A0)
@@ -243,10 +243,10 @@ LAB_17E3:
     MOVEA.L 20(A5),A0
     MOVE.L  D1,(A0)
     MOVEQ   #2,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVEQ   #30,D0
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D0,4(A0)
 
@@ -296,7 +296,7 @@ LAB_17E7:
     MOVEA.L (A0),A1
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1902(PC)
+    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -340,7 +340,7 @@ LAB_17EC:
 
     PEA     40.W
     MOVE.L  A0,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -349,7 +349,7 @@ LAB_17EC:
 
     PEA     58.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-16(A5)
@@ -358,7 +358,7 @@ LAB_17EC:
 
     PEA     41.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -367,7 +367,7 @@ LAB_17EC:
 
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1979(PC)
+    JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
@@ -387,7 +387,7 @@ LAB_17ED:
 
     LEA     2(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,(A2)
@@ -396,7 +396,7 @@ LAB_17ED:
 LAB_17EE:
     LEA     1(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,(A2)
@@ -409,7 +409,7 @@ LAB_17EF:
     MOVEA.L -16(A5),A0
     ADDQ.L  #1,A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_1A23(PC)
+    JSR     PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,4(A2)
@@ -586,7 +586,7 @@ LAB_1803:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -30(A5)
-    JSR     GROUPD_JMPTBL_LAB_0656(PC)
+    JSR     GROUPD_JMPTBL_DST_AddTimeOffset(PC)
 
     LEA     12(A7),A7
     MOVE.W  -24(A5),D0
@@ -668,8 +668,26 @@ LAB_1808:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: GROUPD_JMPTBL_DST_AddTimeOffset   (JumpStub_DST_AddTimeOffset)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   DST_AddTimeOffset
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to DST_AddTimeOffset.
+;------------------------------------------------------------------------------
+GROUPD_JMPTBL_DST_AddTimeOffset:
 GROUPD_JMPTBL_LAB_0656:
-    JMP     LAB_0656
+    JMP     DST_AddTimeOffset
 
 GROUPD_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based

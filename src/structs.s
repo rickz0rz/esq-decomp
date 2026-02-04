@@ -40,6 +40,11 @@ Struct_DiskIoBufferControl_Size         = 8
 Struct_DiskIoBufferControl__BufferBase  = 0
 Struct_DiskIoBufferControl__ErrorFlag   = 4
 
+; Handle table entry (base in A4 globals)
+Struct_HandleEntry_Size         = 8
+Struct_HandleEntry__Flags       = 0
+Struct_HandleEntry__Ptr         = 4
+
 Struct_IORequest__io_Message    = 0
 Struct_IORequest__io_Command    = 28
 

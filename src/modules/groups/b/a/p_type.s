@@ -740,7 +740,7 @@ LAB_1399:
 ;!======
 
 GROUPD_JMPTBL_LAB_139A:
-    JMP     LAB_1A97
+    JMP     STRING_FindSubstring
 
 ;!======
 

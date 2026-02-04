@@ -42,15 +42,15 @@ LAB_0FA0:
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
     MOVEQ   #0,D7
 
-LAB_0FA1:
+.LAB_0FA1:
     CMPI.L  #$f4240,D7
-    BGE.S   LAB_0FA2
+    BGE.S   .LAB_0FA2
 
     ADDQ.L  #1,D7
-    BRA.S   LAB_0FA1
+    BRA.S   .LAB_0FA1
 
-LAB_0FA2:
-    JSR     LAB_0FA3(PC)
+.LAB_0FA2:
+    JSR     GROUP_AZ_JMPTBL_ESQ_ColdReboot(PC)
 
     MOVEQ   #0,D0
     MOVEM.L (A7)+,D7/A4
@@ -62,14 +62,3 @@ LAB_0FA2:
     ; Alignment
     ALIGN_WORD
 
-;!======
-
-LAB_0FA3:
-    JMP     ESQ_ColdReboot
-
-;!======
-
-    ; Alignment
-    MOVEQ   #97,D0
-    RTS
-    DC.W    $0000

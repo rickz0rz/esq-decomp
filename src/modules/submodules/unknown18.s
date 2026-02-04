@@ -1,17 +1,39 @@
-LAB_19EA:
+;------------------------------------------------------------------------------
+; FUNC: DOS_SeekWithErrorState   (Seek wrapper that tracks IoErr/AppErrorCode.)
+; ARGS:
+;   stack +28: D7 = file handle
+;   stack +32: D6 = offset
+;   stack +36: D5 = mode (0/1/2 -> begin/current/end ??)
+; RET:
+;   D0: resulting position or -1 on error
+; CLOBBERS:
+;   D0-D7/A6
+; CALLS:
+;   SIGNAL_PollAndDispatch (signal callback), _LVOSeek, _LVOIoErr
+; READS:
+;   Global_SignalCallbackPtr
+; WRITES:
+;   Global_DosIoErr, Global_AppErrorCode
+; DESC:
+;   Optionally calls a signal callback, then seeks with DOS Seek.
+;   On error, captures IoErr and sets AppErrorCode to 22.
+; NOTES:
+;   Returns adjusted position based on mode (see D5 handling).
+;------------------------------------------------------------------------------
+DOS_SeekWithErrorState:
     MOVEM.L D2-D7,-(A7)
 
     MOVE.L  28(A7),D7
     MOVE.L  32(A7),D6
     MOVE.L  36(A7),D5
 
-    TST.L   -616(A4)
-    BEQ.S   .LAB_19EB
+    TST.L   Global_SignalCallbackPtr(A4)
+    BEQ.S   .after_signal_callback
 
-    JSR     LAB_1AD3(PC)
+    JSR     SIGNAL_PollAndDispatch(PC)
 
-.LAB_19EB:
-    CLR.L   -640(A4)
+.after_signal_callback:
+    CLR.L   Global_DosIoErr(A4)
     MOVE.L  D5,D0
     SUBQ.L  #(OFFSET_END),D0
     MOVE.L  D7,D1
@@ -23,21 +45,21 @@ LAB_19EA:
     MOVE.L  D0,D4
     MOVEQ   #-1,D0
     CMP.L   D0,D4
-    BNE.S   .LAB_19EC
+    BNE.S   .after_seek
 
     JSR     _LVOIoErr(A6)
 
-    MOVE.L  D0,-640(A4)
+    MOVE.L  D0,Global_DosIoErr(A4)
     MOVEQ   #22,D0
-    MOVE.L  D0,22828(A4)
+    MOVE.L  D0,Global_AppErrorCode(A4)
 
-.LAB_19EC:
+.after_seek:
     MOVE.L  D5,D0
     CMPI.L  #$2,D0
-    BEQ.S   .LAB_19EE
+    BEQ.S   .mode_end_adjust
 
     CMPI.L  #$1,D0
-    BEQ.S   .LAB_19ED
+    BEQ.S   .mode_current_adjust
 
     TST.L   D0
     BNE.S   .return
@@ -45,12 +67,12 @@ LAB_19EA:
     MOVE.L  D6,D0
     BRA.S   .return
 
-.LAB_19ED:
+.mode_current_adjust:
     MOVE.L  D4,D0
     ADD.L   D6,D0
     BRA.S   .return
 
-.LAB_19EE:
+.mode_end_adjust:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #(OFFSET_CURRENT),D3

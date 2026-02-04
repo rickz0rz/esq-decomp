@@ -129,7 +129,7 @@ LAB_09E8:
     ASR.L   #1,D1
     MOVE.L  D0,-48(A5)
     MOVE.L  D1,-32(A5)
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #80,D1
     ADD.L   D1,D1
@@ -140,7 +140,7 @@ LAB_09E8:
     MOVE.L  D1,D0
     MOVE.L  D1,-40(A5)
     MOVE.L  -36(A5),D1
-    JSR     GROUPB_JMPTBL_LAB_1A07(PC)
+    JSR     GROUPB_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #0,D1
     MOVE.W  176(A3),D1
@@ -174,7 +174,7 @@ LAB_09E8:
     MOVE.L  -48(A5),D2
     ADD.L   D1,D2
     MOVE.L  D2,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   -44(A5),D0
     MOVEQ   #0,D1
@@ -354,7 +354,7 @@ LAB_09FB:
 
     PEA     LAB_1EEA
     MOVE.L  LAB_1EE9,-(A7)
-    JSR     GROUPB_JMPTBL_LAB_1968(PC)
+    JSR     GROUPB_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1539,7 +1539,7 @@ LAB_0A5B:
     MOVE.L  D0,20(A7)
     MOVE.L  D1,D0
     MOVE.L  20(A7),D1
-    JSR     GROUPB_JMPTBL_LAB_1A07(PC)
+    JSR     GROUPB_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #120,D0
@@ -2250,7 +2250,7 @@ LAB_0A93:
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)
-    JSR     GCOMMAND_JMPTBL_BRUSH_PopulateBrushList(PC)
+    JSR     GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     PEA     LAB_1EF8
     JSR     LAB_0AB5(PC)
@@ -2286,8 +2286,8 @@ LAB_0A93:
 
 ;!======
 
-GROUPB_JMPTBL_LAB_1968:
-    JMP     LAB_1968
+GROUPB_JMPTBL_STRING_CompareNoCase:
+    JMP     STRING_CompareNoCase
 
 GROUPB_JMPTBL_LAB_0A97:
     JMP     LAB_183E
@@ -2295,14 +2295,14 @@ GROUPB_JMPTBL_LAB_0A97:
 GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle:
     JMP     DISKIO_GetFilesizeFromHandle
 
-GROUPB_JMPTBL_LAB_1A07:
-    JMP     LAB_1A07
+GROUPB_JMPTBL_MATH_DivS32:
+    JMP     MATH_DivS32
 
 LAB_0A9A:
     JMP     LAB_1697
 
-JMPTBL_LAB_195B_2:
-    JMP     LAB_195B
+JMPTBL_STRING_CompareN_2:
+    JMP     STRING_CompareN
 
 LAB_0A9C:
     JMP     ESQ_NoOp
@@ -2346,14 +2346,14 @@ LAB_0AA8:
 LAB_0AA9:
     JMP     LAB_1038
 
-GROUPB_JMPTBL_BRUSH_PopulateBrushList:
+GROUP_AN_JMPTBL_BRUSH_PopulateBrushList:
     JMP     BRUSH_PopulateBrushList
 
 LAB_0AAB:
     JMP     ESQ_NoOp_0074
 
 LAB_0AAC:
-    JMP     LAB_194E
+    JMP     STRING_CompareNoCaseN
 
 GROUPB_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
     JMP     SCRIPT_AssertCtrlLineIfEnabled
@@ -2382,8 +2382,8 @@ LAB_0AB4:
 LAB_0AB5:
     JMP     BRUSH_SelectBrushByLabel
 
-GROUPB_JMPTBL_LAB_1A06:
-    JMP     LAB_1A06
+GROUPB_JMPTBL_MATH_Mulu32:
+    JMP     MATH_Mulu32
 
 LAB_0AB7:
     JMP     LAB_03CD

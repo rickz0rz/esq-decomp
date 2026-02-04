@@ -425,7 +425,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -891,7 +891,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1242,7 +1242,7 @@ LAB_0B4F:
     MOVEQ   #0,D0
     MOVE.B  -223(A5),D0
     MOVE.L  -26(A5),D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     EXT.L   D0
     PEA     -227(A5)
@@ -1381,7 +1381,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1496,7 +1496,7 @@ LAB_0B4F:
     MOVE.L  D1,-(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
@@ -1545,7 +1545,7 @@ LAB_0B4F:
     MOVE.L  D1,-(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
@@ -1589,7 +1589,7 @@ LAB_0B4F:
     MOVE.L  D1,-(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
@@ -1604,7 +1604,7 @@ LAB_0B4F:
     BNE.S   .LAB_0BA1
 
     MOVE.L  A0,-(A7)
-    JSR     LAB_0C02(PC)
+    JSR     GROUP_AO_JMPTBL_CLEANUP_ParseAlignedListingBlock(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BA1
@@ -1636,7 +1636,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1697,7 +1697,7 @@ LAB_0B4F:
     PEA     262.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_1(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
     CLR.W   LAB_22A1
     BRA.W   .LAB_0BE4
@@ -1721,7 +1721,7 @@ LAB_0B4F:
     PEA     20.W
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1789,7 +1789,7 @@ LAB_0B4F:
     PEA     8.W
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1857,7 +1857,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1908,7 +1908,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -1960,7 +1960,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2077,7 +2077,7 @@ LAB_0B4F:
     MOVE.L  D1,-(A7)
     PEA     40.W
     MOVE.L  A1,-(A7)
-    JSR     JMPTBL_DISPLAY_TEXT_AT_POSITION_3(PC)
+    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_3(PC)
 
     LEA     16(A7),A7
     BRA.S   .LAB_0BBD
@@ -2173,7 +2173,7 @@ LAB_0B4F:
     PEA     256.W
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2225,7 +2225,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2274,7 +2274,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2350,7 +2350,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
@@ -2418,7 +2418,7 @@ LAB_0B4F:
     MOVE.L  D2,-(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
@@ -2467,7 +2467,7 @@ LAB_0B4F:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     PEA     GLOB_STR_23
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2490,7 +2490,7 @@ LAB_0B4F:
     MOVE.L  D2,-(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
@@ -2544,7 +2544,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2588,7 +2588,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2632,7 +2632,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2676,7 +2676,7 @@ LAB_0B4F:
     MOVE.L  D1,(A7)
     MOVE.L  LAB_229A,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1(PC)
+    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
@@ -2771,19 +2771,19 @@ LAB_0BEB:
     JMP     LAB_1070
 
 LAB_0BEC:
-    JMP     LAB_0610
+    JMP     DATETIME_SavePairToFile
 
 LAB_0BED:
-    JMP     LAB_18F2
+    JMP     UNKNOWN_VerifyChecksumAndParseList
 
 LAB_0BEE:
     JMP     LAB_1373
 
 LAB_0BEF:
-    JMP     LAB_18FC
+    JMP     UNKNOWN_CopyLabelToGlobal
 
 LAB_0BF0:
-    JMP     LAB_0623
+    JMP     DST_HandleBannerCommand32_33
 
 LAB_0BF1:
     JMP     ESQ_SeedMinuteEventThresholds
@@ -2814,14 +2814,14 @@ LAB_0BF6:
 LAB_0BF7:
     JMP     LAB_0F4D
 
-JMPTBL_DISPLAY_TEXT_AT_POSITION_1:
-    JMP     DISPLAY_TEXT_AT_POSITION
+JMPTBL_DISPLIB_DisplayTextAtPosition_1:
+    JMP     DISPLIB_DisplayTextAtPosition
 
 LAB_0BF9:
     JMP     LAB_0E48
 
 LAB_0BFA:
-    JMP     LAB_1A23
+    JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
 LAB_0BFB:
     JMP     LAB_04FF
@@ -2842,27 +2842,26 @@ LAB_0BFC:
 LAB_0BFD:
     JMP     LAB_02CE
 
-LAB_0BFE:
+GROUP_AO_JMPTBL_DST_UpdateBannerQueue:
     JMP     DST_UpdateBannerQueue
 
 LAB_0BFF:
-    JMP     LAB_18EF
+    JMP     UNKNOWN_VerifyChecksumAndParseRecord
 
 LAB_0C00:
-    JMP     LAB_18F5
+    JMP     UNKNOWN_ParseDigitLabelAndDisplay
 
 LAB_0C01:
     JMP     LAB_03E0
 
-ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
-LAB_0C02:
+GROUP_AO_JMPTBL_CLEANUP_ParseAlignedListingBlock:
     JMP     CLEANUP_ParseAlignedListingBlock
 
 LAB_0C03:
     JMP     LAB_14AF
 
-JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1:
-    JMP     GENERATE_CHECKSUM_BYTE_INTO_D0
+GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte:
+    JMP     ESQ_GenerateXorChecksumByte
 
 ;!======
 
@@ -2872,7 +2871,7 @@ JMPTBL_GENERATE_CHECKSUM_BYTE_INTO_D0_1:
 
 ;!======
 
-GROUPB_JMPTBL_DST_RefreshBannerBuffer:
+GROUP_AO_JMPTBL_DST_RefreshBannerBuffer:
     JMP     DST_RefreshBannerBuffer
 
 LAB_0C06:

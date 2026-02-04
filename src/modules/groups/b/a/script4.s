@@ -185,7 +185,7 @@ LAB_15AD:
     MOVE.L  D0,20(A7)
     MOVE.L  D5,D0
     MOVE.L  20(A7),D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.W  D0,-172(A5)
     ADDI.W  #22,D0
@@ -406,7 +406,7 @@ LAB_15AD:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -170(A5),-(A7)
     PEA     -161(A5)
-    JSR     LAB_1955(PC)
+    JSR     STRING_CopyPadNul(PC)
 
     LEA     -161(A5),A0
     MOVEA.L A0,A1

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN42_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpoch??)
+; FUNC: CLOCK_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpoch??)
 ; ARGS:
 ;   stack +4: clockData (ClockData??)
 ; RET:
@@ -17,7 +17,7 @@
 ; NOTES:
 ;   The return semantics of CheckDate are treated as-is; callers interpret D0.
 ;------------------------------------------------------------------------------
-UNKNOWN42_CheckDateOrSecondsFromEpoch:
+CLOCK_CheckDateOrSecondsFromEpoch:
     MOVE.L  A6,-(A7)
 
     SetOffsetForStack 1
@@ -32,7 +32,7 @@ UNKNOWN42_CheckDateOrSecondsFromEpoch:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN42_SecondsFromEpoch
+; FUNC: CLOCK_SecondsFromEpoch
 ; ARGS:
 ;   stack +4: clockData (ClockData??)
 ; RET:
@@ -50,7 +50,7 @@ UNKNOWN42_CheckDateOrSecondsFromEpoch:
 ; NOTES:
 ;   Assumes input was already validated.
 ;------------------------------------------------------------------------------
-UNKNOWN42_SecondsFromEpoch:
+CLOCK_SecondsFromEpoch:
     MOVE.L  A6,-(A7)
 
     MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6
@@ -80,6 +80,7 @@ UNKNOWN42_SecondsFromEpoch:
 ;   Writes a single character using the parallel-port routine.
 ; NOTES:
 ;   Low-level output uses CIAA/CIAB handshake; exact device target is inferred.
+;   Completes the operation by falling through to PARALLEL_WriteCharD0.
 ;------------------------------------------------------------------------------
 PARALLEL_WriteChar:
     MOVE.L  4(A7),D0
@@ -106,7 +107,6 @@ PARALLEL_WriteChar:
 ;   Converts LF to CR+LF behavior before output.
 ;------------------------------------------------------------------------------
 PARALLEL_WriteCharD0:
-LAB_1AE3:
     JSR     PARALLEL_WriteCharHw
 
     RTS
@@ -135,10 +135,7 @@ LAB_1AE3:
 PARALLEL_WriteString:
     MOVEA.L 4(A7),A0
 
-;!======
-
 PARALLEL_WriteStringLoop:
-LAB_1AE4:
     MOVE.B  (A0)+,D0
     BEQ.S   .return
 
@@ -171,11 +168,10 @@ LAB_1AE4:
 ;   Current stub always returns -1, so this loops forever if called.
 ;------------------------------------------------------------------------------
 PARALLEL_WaitReady:
-LAB_1AE6:
     BSR.S   PARALLEL_CheckReady
 
     TST.L   D0
-    BMI.S   LAB_1AE6
+    BMI.S   PARALLEL_WaitReady
 
     RTS
 
@@ -201,13 +197,10 @@ LAB_1AE6:
 ;   Calls PARALLEL_CheckReadyStub which returns -1.
 ;------------------------------------------------------------------------------
 PARALLEL_CheckReady:
-LAB_1AE7:
     JSR     PARALLEL_CheckReadyStub
 
     RTS
 
-;!======
-; Below seems to be dead code...
 ;!======
 
 ;------------------------------------------------------------------------------
@@ -220,7 +213,7 @@ LAB_1AE7:
 ; CLOBBERS:
 ;   A0-A2
 ; CALLS:
-;   JMPTBL_RawDoFmtParallel
+;   JMPTBL_PARALLEL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -245,7 +238,7 @@ PARALLEL_RawDoFmtPtrs:
 ; CLOBBERS:
 ;   A0-A2
 ; CALLS:
-;   JMPTBL_RawDoFmtParallel
+;   JMPTBL_PARALLEL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -262,14 +255,11 @@ PARALLEL_RawDoFmtStackArgs:
 PARALLEL_RawDoFmtCommon:
     MOVEM.L A2,-(A7)
     LEA     PARALLEL_WriteCharD0(PC),A2
-    BSR.S   JMPTBL_RawDoFmtParallel
+    BSR.S   JMPTBL_PARALLEL_RawDoFmt
 
     MOVEM.L (A7)+,A2
     RTS
 
-;!======
-
-JMPTBL_RawDoFmtParallel:
 JMPTBL_PARALLEL_RawDoFmt:
     JSR     PARALLEL_RawDoFmt
 
@@ -286,7 +276,7 @@ JMPTBL_PARALLEL_RawDoFmt:
 ; CLOBBERS:
 ;   A0-A3
 ; CALLS:
-;   JMPTBL_RawDoFmtParallel
+;   JMPTBL_PARALLEL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -299,7 +289,7 @@ JMPTBL_PARALLEL_RawDoFmt:
 PARALLEL_RawDoFmtRegs:
     MOVEM.L A2-A3,-(A7)
     MOVEM.L 12(A7),A0-A3
-    BSR.S   JMPTBL_RawDoFmtParallel
+    BSR.S   JMPTBL_PARALLEL_RawDoFmt
 
     MOVEM.L (A7)+,A2-A3
     RTS

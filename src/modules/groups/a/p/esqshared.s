@@ -1017,7 +1017,7 @@ LAB_0C57:
     SUB.L   D1,D0
     MOVEQ   #10,D1
     MOVE.L  D0,-42(A5)
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.B  -2(A0),D1
     EXT.W   D1
@@ -1033,16 +1033,16 @@ LAB_0C57:
     MOVE.L  D0,-(A7)
     PEA     LAB_1F29
     PEA     -52(A5)
-    JSR     JMPTBL_PRINTF_3(PC)
+    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     MOVE.L  -38(A5),(A7)
     PEA     LAB_1F2A
     PEA     -62(A5)
-    JSR     JMPTBL_PRINTF_3(PC)
+    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -62(A5)
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     28(A7),A7
     MOVEQ   #1,D0
@@ -1051,7 +1051,7 @@ LAB_0C57:
 
     PEA     LAB_2103
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_0C5A
@@ -1059,7 +1059,7 @@ LAB_0C57:
 LAB_0C58:
     PEA     LAB_2102
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   LAB_0C5A
@@ -1068,7 +1068,7 @@ LAB_0C59:
     MOVE.L  D0,-(A7)
     PEA     LAB_1F2B
     PEA     -52(A5)
-    JSR     JMPTBL_PRINTF_3(PC)
+    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -1079,11 +1079,11 @@ LAB_0C5A:
 
     PEA     -52(A5)
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     LAB_2104
     MOVE.L  -66(A5),-(A7)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
     BRA.S   LAB_0C5D
@@ -1102,7 +1102,7 @@ LAB_0C5C:
     CLR.B   -1(A1,D0.L)
     PEA     LAB_1F2C
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AR_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1159,7 +1159,7 @@ LAB_0C5F:
     ASL.L   #2,D1
     PEA     91.W
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     GROUP_AS_JMPTBL_LAB_1979(PC)
+    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
@@ -1182,7 +1182,7 @@ LAB_0C5F:
     MOVEQ   #48,D2
     SUB.L   D2,D1
     MOVEQ   #10,D0
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     BRA.S   LAB_0C61
 
@@ -1227,7 +1227,7 @@ LAB_0C63:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     BRA.S   LAB_0C65
 
@@ -1288,7 +1288,7 @@ LAB_0C6A:
     MOVE.W  -22(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1313,7 +1313,7 @@ LAB_0C6C:
     EXT.L   D1
     MOVE.L  D1,D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
@@ -1321,7 +1321,7 @@ LAB_0C6C:
     MOVE.W  -24(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_LAB_1A07_3(PC)
+    JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1385,7 +1385,7 @@ LAB_0C70:
 ;!======
 
 LAB_0C71:
-    JMP     LAB_064D
+    JMP     DST_BuildBannerTimeWord
 
 GROUPB_JMPTBL_ESQ_ReverseBitsIn6Bytes:
     JMP     ESQ_ReverseBitsIn6Bytes
@@ -1403,7 +1403,7 @@ GROUPB_JMPTBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
 LAB_0C77:
-    JMP     LAB_1985
+    JMP     UNKNOWN7_SkipCharClass3
 
 GROUPB_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based

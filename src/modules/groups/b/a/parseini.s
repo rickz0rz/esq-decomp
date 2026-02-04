@@ -7,7 +7,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1465, LAB_145C, LAB_1455, LAB_1462, JMPTBL_LAB_1968_3, LAB_1667, LAB_146B,
+;   LAB_1465, LAB_145C, LAB_1455, LAB_1462, JMPTBL_STRING_CompareNoCase_3, LAB_1667, LAB_146B,
 ;   LAB_145B, LAB_1456/1457/1458..., LAB_13E6/LAB_1400/LAB_1404/LAB_1408 helpers
 ; READS:
 ;   LAB_21BC, LAB_21A8 (char class table), many LAB_205* globals, LAB_1B1F, LAB_233D
@@ -83,7 +83,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_205D
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -97,7 +97,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_205E
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -111,7 +111,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_205F
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -129,7 +129,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_2060
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -143,7 +143,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_2061
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -157,7 +157,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_2062
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -172,7 +172,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_2063
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -202,7 +202,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,A0
     PEA     LAB_2064
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1111,7 +1111,7 @@ LAB_13E5:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_LAB_1968_3, LAB_1460, LAB_1463, LAB_159A, LAB_15A1
+;   JMPTBL_STRING_CompareNoCase_3, LAB_1460, LAB_1463, LAB_159A, LAB_15A1
 ; READS:
 ;   LAB_1B1F, LAB_233D, LAB_2073, LAB_2059, LAB_206D
 ; WRITES:
@@ -1120,7 +1120,7 @@ LAB_13E5:
 ;   Handles a collection of weather configuration keys (WX strings, codes, timing)
 ;   populating a weather/display struct and related globals.
 ; NOTES:
-;   Many keys are matched via JMPTBL_LAB_1968_3 against literal strings LAB_2074..208A.
+;   Many keys are matched via JMPTBL_STRING_CompareNoCase_3 against literal strings LAB_2074..208A.
 ;------------------------------------------------------------------------------
 PARSEINI_ProcessWeatherBlocks:
 LAB_13E6:
@@ -1139,7 +1139,7 @@ LAB_13E6:
 LAB_13E7:
     PEA     LAB_2074
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1165,7 +1165,7 @@ LAB_13E8:
 
     PEA     LAB_2075
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1173,7 +1173,7 @@ LAB_13E8:
 
     PEA     LAB_2076
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1186,7 +1186,7 @@ LAB_13E8:
 LAB_13E9:
     PEA     LAB_2077
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1200,7 +1200,7 @@ LAB_13E9:
 LAB_13EA:
     PEA     LAB_2078
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1220,7 +1220,7 @@ LAB_13EB:
 LAB_13EC:
     PEA     LAB_2079
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1238,7 +1238,7 @@ LAB_13EC:
 LAB_13ED:
     PEA     LAB_207A
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1246,7 +1246,7 @@ LAB_13ED:
 
     PEA     LAB_207B
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1259,7 +1259,7 @@ LAB_13ED:
 LAB_13EE:
     PEA     LAB_207C
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1277,7 +1277,7 @@ LAB_13EE:
 LAB_13EF:
     PEA     LAB_207D
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1295,7 +1295,7 @@ LAB_13EF:
 LAB_13F0:
     PEA     LAB_207E
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1313,7 +1313,7 @@ LAB_13F0:
 LAB_13F1:
     PEA     LAB_207F
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1331,7 +1331,7 @@ LAB_13F1:
 LAB_13F2:
     PEA     LAB_2080
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1349,7 +1349,7 @@ LAB_13F2:
 LAB_13F3:
     PEA     LAB_2081
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1369,7 +1369,7 @@ LAB_13F4:
 
     PEA     LAB_2082
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1417,7 +1417,7 @@ LAB_13F7:
 LAB_13F8:
     PEA     LAB_2084
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1425,7 +1425,7 @@ LAB_13F8:
 
     PEA     LAB_2085
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1439,7 +1439,7 @@ LAB_13F8:
 LAB_13F9:
     PEA     LAB_2086
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1458,7 +1458,7 @@ LAB_13FA:
 LAB_13FB:
     PEA     LAB_2087
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1466,7 +1466,7 @@ LAB_13FB:
 
     PEA     LAB_2088
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1480,7 +1480,7 @@ LAB_13FB:
 LAB_13FC:
     PEA     LAB_2089
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1499,7 +1499,7 @@ LAB_13FD:
 LAB_13FE:
     PEA     LAB_208A
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1533,7 +1533,7 @@ LAB_13FF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_LAB_1968_3, LAB_1460, LAB_1469, LAB_1463, LAB_159A
+;   JMPTBL_STRING_CompareNoCase_3, LAB_1460, LAB_1469, LAB_1463, LAB_159A
 ; READS:
 ;   LAB_1B23, LAB_233E, LAB_2059
 ; WRITES:
@@ -1557,7 +1557,7 @@ LAB_1400:
 LAB_1401:
     PEA     LAB_208B
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1584,7 +1584,7 @@ LAB_1402:
 
     PEA     LAB_208C
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1621,7 +1621,7 @@ LAB_1403:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_LAB_1968_3, LAB_146B
+;   JMPTBL_STRING_CompareNoCase_3, LAB_146B
 ; READS:
 ;   LAB_205A/B/C, LAB_2059
 ; WRITES:
@@ -1638,7 +1638,7 @@ LAB_1404:
     MOVEA.L 16(A7),A2
     PEA     LAB_208D
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1655,7 +1655,7 @@ LAB_1404:
 LAB_1405:
     PEA     LAB_208E
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1672,7 +1672,7 @@ LAB_1405:
 LAB_1406:
     PEA     LAB_208F
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1702,7 +1702,7 @@ LAB_1407:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_PRINTF_4, JMPTBL_LAB_1968_3, LAB_1598, LAB_167A
+;   JMPTBL_PRINTF_4, JMPTBL_STRING_CompareNoCase_3, LAB_1598, LAB_167A
 ; READS:
 ;   LAB_1ECC/LAB_1FB8 tables, GLOB_STR_COLOR_PERCENT_D
 ; WRITES:
@@ -1754,7 +1754,7 @@ LAB_1408:
 
     PEA     -112(A5)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -2074,7 +2074,7 @@ LAB_1416:
     MOVE.L  D6,D0
     MOVEQ   #80,D1
     ADD.L   D1,D1
-    JSR     JMPTBL_LAB_1A06_7(PC)
+    JSR     JMPTBL_MATH_Mulu32_7(PC)
 
     LEA     LAB_22A6,A0
     ADDA.L  D0,A0
@@ -2501,7 +2501,7 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  (A1),-(A7)
-    JSR     JMPTBL_LAB_1968_3(PC)
+    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2533,7 +2533,7 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     -956(A5)
-    JSR     JMPTBL_UNKNOWN6_AppendDataAtNull_3(PC)
+    JSR     JMPTBL_STRING_AppendAtNull_3(PC)
 
     ADDQ.W  #8,A7
     LEA     -956(A5),A0
@@ -2633,7 +2633,7 @@ LAB_142E:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_1968_3   (JumpStub_LAB_1968)
+; FUNC: JMPTBL_STRING_CompareNoCase_3   (JumpStub_STRING_CompareNoCase)
 ; ARGS:
 ;   ??
 ; RET:
@@ -2641,26 +2641,26 @@ LAB_142E:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_1968
+;   STRING_CompareNoCase
 ; DESC:
-;   Jump stub to LAB_1968 (string compare/parse helper).
+;   Jump stub to STRING_CompareNoCase (string compare/parse helper).
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_1968_3:
-    JMP     LAB_1968
+JMPTBL_STRING_CompareNoCase_3:
+    JMP     STRING_CompareNoCase
 
 LAB_1453:
-    JMP     LAB_071B
+    JMP     ED1_WaitForFlagAndClearBit0
 
 LAB_1454:
     JMP     LAB_04F0
 
 LAB_1455:
-    JMP     LAB_1979
+    JMP     UNKNOWN7_FindCharWrapper
 
 LAB_1456:
-    JMP     LAB_1AB2
+    JMP     HANDLE_OpenWithMode
 
 LAB_1457:
     JMP     LAB_09F9
@@ -2681,7 +2681,7 @@ LAB_145C:
     JMP     LAB_03B9
 
 LAB_145D:
-    JMP     LAB_0718
+    JMP     ED1_DrawDiagnosticsScreen
 
 LAB_145E:
     JMP     BRUSH_FreeBrushList
@@ -2699,10 +2699,10 @@ LAB_1462:
     JMP     GCOMMAND_InitPresetTableFromPalette
 
 LAB_1463:
-    JMP     LAB_194E
+    JMP     STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_UNKNOWN6_AppendDataAtNull_3   (JumpStub_UNKNOWN6_AppendDataAtNull)
+; FUNC: JMPTBL_STRING_AppendAtNull_3   (JumpStub_STRING_AppendAtNull)
 ; ARGS:
 ;   ??
 ; RET:
@@ -2710,20 +2710,20 @@ LAB_1463:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   UNKNOWN6_AppendDataAtNull
+;   STRING_AppendAtNull
 ; DESC:
-;   Jump stub to UNKNOWN6_AppendDataAtNull.
+;   Jump stub to STRING_AppendAtNull.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_UNKNOWN6_AppendDataAtNull_3:
-    JMP     UNKNOWN6_AppendDataAtNull
+JMPTBL_STRING_AppendAtNull_3:
+    JMP     STRING_AppendAtNull
 
 LAB_1465:
     JMP     LAB_03AC
 
 LAB_1466:
-    JMP     LAB_071A
+    JMP     ED1_WaitForFlagAndClearBit1
 
 ;------------------------------------------------------------------------------
 ; FUNC: JMPTBL_PRINTF_4   (JumpStub_WDISP_SPrintf)
@@ -2744,19 +2744,19 @@ JMPTBL_PRINTF_4:
     JMP     WDISP_SPrintf
 
 LAB_1468:
-    JMP     LAB_19DC
+    JMP     STREAM_ReadLineWithLimit
 
 LAB_1469:
-    JMP     LAB_1984
+    JMP     UNKNOWN7_FindAnyCharWrapper
 
 LAB_146A:
-    JMP     LAB_0713
+    JMP     ED1_ExitEscMenu
 
 LAB_146B:
     JMP     LAB_0B44
 
 LAB_146C:
-    JMP     LAB_070E
+    JMP     ED1_EnterEscMenu
 
 ;------------------------------------------------------------------------------
 ; FUNC: JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)

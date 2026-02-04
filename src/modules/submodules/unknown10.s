@@ -1,34 +1,53 @@
-LAB_198E:
+;------------------------------------------------------------------------------
+; SYM: kHexDigitTable_Maybe   (Hex digit lookup bytes??)
+; TYPE: array<u8>
+; PURPOSE: Used by FORMAT_U32ToHexString to map nibbles to ASCII.
+; NOTES: The table likely extends into the following words which are
+;        disassembled as code; do not change without verifying layout.
+;------------------------------------------------------------------------------
+kHexDigitTable_Maybe:
     DC.W    $3031
     DC.W    $3233
     DC.W    $3435
     MOVE.W  57(A7,D3.L),D3
-    BSR.S   LAB_1995
+    BSR.S   PARSE_ReadSignedLong_ParseLoopEntry
 
-    BLS.S   LAB_1996+2
+    BLS.S   PARSE_ReadSignedLong_ParseDone+2
 
-    BCS.S   LAB_1998
+    BCS.S   PARSE_ReadSignedLong_NegateValue
 
-LAB_198F:
+;------------------------------------------------------------------------------
+; FUNC: FORMAT_U32ToHexString   (Format an unsigned value as hex ASCII.)
+; ARGS:
+;   stack +4: A0 = destination buffer
+;   stack +8: D0 = value
+; RET:
+;   D0: length of output string (bytes, excluding NUL)
+; CLOBBERS:
+;   D0-D1/A0-A1
+; DESC:
+;   Emits hex digits into a temp stack buffer, then reverses into A0.
+;------------------------------------------------------------------------------
+FORMAT_U32ToHexString:
     MOVE.L  8(A7),D0
     MOVEA.L 4(A7),A0
     LEA     4(A7),A1
 
-.LAB_1990:
+.digit_loop:
     MOVE.W  D0,D1
     ANDI.W  #15,D1
-    MOVE.B  LAB_198E(PC,D1.W),(A1)+
+    MOVE.B  kHexDigitTable_Maybe(PC,D1.W),(A1)+
     LSR.L   #4,D0
-    BNE.S   .LAB_1990
+    BNE.S   .digit_loop
 
     MOVE.L  A1,D0
     MOVE.L  A7,D1
     ADDQ.L  #4,D1
 
-.LAB_1991:
+.emit_loop:
     MOVE.B  -(A1),(A0)+
     CMP.L   A1,D1
-    BNE.S   .LAB_1991
+    BNE.S   .emit_loop
 
     CLR.B   (A0)
     SUB.L   D1,D0
@@ -36,28 +55,42 @@ LAB_198F:
 
 ;!======
 
-LAB_1992:
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong   (Parse signed decimal into output.)
+; ARGS:
+;   stack +4: A0 = input string
+;   stack +8: A0' = output pointer (stores result)
+; RET:
+;   D0: number of chars consumed
+; CLOBBERS:
+;   D0-D2/A0-A1
+; DESC:
+;   Parses optional sign and decimal digits, stores the result.
+; NOTES:
+;   Similar to PARSE_ReadSignedLong_NoBranch; exact differences are unclear.
+;------------------------------------------------------------------------------
+PARSE_ReadSignedLong:
     MOVEA.L 4(A7),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D1
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
     CMPI.B  #$2b,(A0)
-    BEQ.S   .LAB_1993
+    BEQ.S   PARSE_ReadSignedLong_SkipSign
 
     CMPI.B  #$2d,(A0)
-    BNE.S   LAB_1994
+    BNE.S   PARSE_ReadSignedLong_ParseLoop
 
-.LAB_1993:
+PARSE_ReadSignedLong_SkipSign:
     ADDQ.W  #1,A0
 
-LAB_1994:
+PARSE_ReadSignedLong_ParseLoop:
     MOVE.B  (A0)+,D0
     SUBI.B  #$30,D0
-    BLT.S   LAB_1996
+    BLT.S   PARSE_ReadSignedLong_ParseDone
 
     CMPI.B  #$9,D0
-    BGT.S   LAB_1996
+    BGT.S   PARSE_ReadSignedLong_ParseDone
 
     MOVE.L  D1,D2
     ASL.L   #2,D1
@@ -65,17 +98,17 @@ LAB_1994:
     ADD.L   D1,D1
     ADD.L   D0,D1
 
-LAB_1995:
-    BRA.S   LAB_1994
+PARSE_ReadSignedLong_ParseLoopEntry:
+    BRA.S   PARSE_ReadSignedLong_ParseLoop
 
-LAB_1996:
+PARSE_ReadSignedLong_ParseDone:
     CMPI.B  #$2d,(A1)
-    BNE.S   LAB_1999
+    BNE.S   PARSE_ReadSignedLong_StoreResult
 
-LAB_1998:
+PARSE_ReadSignedLong_NegateValue:
     NEG.L   D1
 
-LAB_1999:
+PARSE_ReadSignedLong_StoreResult:
     MOVE.L  (A7)+,D2
     MOVE.L  A0,D0
     SUBQ.L  #1,D0
@@ -86,43 +119,57 @@ LAB_1999:
 
 ;!======
 
-LAB_199A:
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong_NoBranch   (Parse signed decimal into output.)
+; ARGS:
+;   stack +4: A0 = input string
+;   stack +8: A0' = output pointer (stores result)
+; RET:
+;   D0: number of chars consumed
+; CLOBBERS:
+;   D0-D2/A0-A1
+; DESC:
+;   Parses optional sign and decimal digits, stores the result.
+; NOTES:
+;   Similar to PARSE_ReadSignedLong; exact differences are unclear.
+;------------------------------------------------------------------------------
+PARSE_ReadSignedLong_NoBranch:
     MOVEA.L 4(A7),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D1
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
     CMPI.B  #$2b,(A0)
-    BEQ.S   LAB_199B
+    BEQ.S   PARSE_ReadSignedLong_NoBranch_SkipSign
 
     CMPI.B  #$2d,(A0)
-    BNE.S   LAB_199C
+    BNE.S   PARSE_ReadSignedLong_NoBranch_ParseLoop
 
-LAB_199B:
+PARSE_ReadSignedLong_NoBranch_SkipSign:
     ADDQ.W  #1,A0
 
-LAB_199C:
+PARSE_ReadSignedLong_NoBranch_ParseLoop:
     MOVE.B  (A0)+,D0
     SUBI.B  #$30,D0
-    BLT.S   LAB_199D
+    BLT.S   PARSE_ReadSignedLong_NoBranch_ParseDone
 
     CMPI.B  #$9,D0
-    BGT.S   LAB_199D
+    BGT.S   PARSE_ReadSignedLong_NoBranch_ParseDone
 
     MOVE.L  D1,D2
     ASL.L   #2,D1
     ADD.L   D2,D1
     ADD.L   D1,D1
     ADD.L   D0,D1
-    BRA.S   LAB_199C
+    BRA.S   PARSE_ReadSignedLong_NoBranch_ParseLoop
 
-LAB_199D:
+PARSE_ReadSignedLong_NoBranch_ParseDone:
     CMPI.B  #$2d,(A1)
-    BNE.S   LAB_199E
+    BNE.S   PARSE_ReadSignedLong_NoBranch_StoreResult
 
     NEG.L   D1
 
-LAB_199E:
+PARSE_ReadSignedLong_NoBranch_StoreResult:
     MOVE.L  (A7)+,D2
     MOVE.L  A0,D0
     SUBQ.L  #1,D0
@@ -144,24 +191,23 @@ LAB_199E:
 ; CALLS:
 ;   (none)
 ; READS:
-;   22812(A4), 22816(A4)
+;   Global_PrintfBufferPtr(A4), Global_PrintfByteCount(A4)
 ; WRITES:
-;   22812(A4), 22816(A4), [buffer]
+;   Global_PrintfBufferPtr(A4), Global_PrintfByteCount(A4), [buffer]
 ; DESC:
 ;   Appends one byte to the current printf output buffer and advances the cursor.
 ; NOTES:
 ;   Uses A4-relative globals for the buffer pointer and byte count.
 ;------------------------------------------------------------------------------
 WDISP_PrintfPutc:
-LAB_199F:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
 
-    ADDQ.L  #1,22816(A4)
+    ADDQ.L  #1,Global_PrintfByteCount(A4)
     MOVE.L  D7,D0
-    MOVEA.L 22812(A4),A0
+    MOVEA.L Global_PrintfBufferPtr(A4),A0
     MOVE.B  D0,(A0)+
-    MOVE.L  A0,22812(A4)
+    MOVE.L  A0,Global_PrintfBufferPtr(A4)
 
     MOVE.L  (A7)+,D7
     RTS
@@ -183,29 +229,28 @@ LAB_199F:
 ; READS:
 ;   (none)
 ; WRITES:
-;   outBuf, 22812(A4), 22816(A4)
+;   outBuf, Global_PrintfBufferPtr(A4), Global_PrintfByteCount(A4)
 ; DESC:
 ;   Formats into the provided buffer using the local printf core and returns length.
 ; NOTES:
 ;   Zero-terminates the output.
 ;------------------------------------------------------------------------------
 WDISP_SPrintf:
-PRINTF:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEA.L 20(A7),A2
 
-    CLR.L   22816(A4)       ; Clear 22816(A4)
-    MOVE.L  A3,22812(A4)
+    CLR.L   Global_PrintfByteCount(A4)       ; Clear Global_PrintfByteCount(A4)
+    MOVE.L  A3,Global_PrintfBufferPtr(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
     PEA     WDISP_PrintfPutc(PC)
     JSR     WDISP_FormatWithCallback(PC)
 
-    MOVEA.L 22812(A4),A0
+    MOVEA.L Global_PrintfBufferPtr(A4),A0
     CLR.B   (A0)
-    MOVE.L  22816(A4),D0    ; Store 22816(A4) in D0
+    MOVE.L  Global_PrintfByteCount(A4),D0    ; Store Global_PrintfByteCount(A4) in D0
 
     MOVEM.L -8(A5),A2-A3
     UNLK    A5
@@ -214,7 +259,7 @@ PRINTF:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_19A1   (Allocate/open entry in handle table??)
+; FUNC: HANDLE_OpenEntryWithFlags   (Allocate/open entry in handle table.)
 ; ARGS:
 ;   stack +8: A3 = path/buffer pointer??
 ;   stack +12: D7 = flags/mode bits??
@@ -225,192 +270,192 @@ PRINTF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
-;   LAB_19F3, LAB_19FA, LAB_19FF, LAB_1A04
+;   DOS_OpenWithErrorState, DOS_OpenNewFileIfMissing, DOS_DeleteAndRecreateFile, DOS_CloseWithSignalCheck
 ; READS:
-;   -1148(A4), 22492(A4) (table), -1124(A4) (flags), 22828(A4)
+;   Global_HandleTableCount(A4), Global_HandleTableBase(A4) (table), Global_HandleTableFlags(A4) (flags), Global_AppErrorCode(A4)
 ; WRITES:
-;   22828(A4), -640(A4), (A2), 4(A2)
+;   Global_AppErrorCode(A4), Global_DosIoErr(A4), (A2), 4(A2)
 ; DESC:
 ;   Finds a free entry in the handle table, validates mode bits, and performs
 ;   setup/open work via helper calls; stores entry data on success.
 ; NOTES:
-;   Uses SEQ/NEG/EXT booleanization in callers; sets error code in 22828(A4).
+;   Uses SEQ/NEG/EXT booleanization in callers; sets error code in Global_AppErrorCode(A4).
 ;------------------------------------------------------------------------------
-LAB_19A1:
+HANDLE_OpenEntryWithFlags:
     LINK.W  A5,#-26
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVEA.L 58(A7),A3
     MOVE.L  62(A7),D7
 
     CLR.B   -1(A5)
-    CLR.L   -640(A4)
-    MOVE.L  22828(A4),-14(A5)
+    CLR.L   Global_DosIoErr(A4)
+    MOVE.L  Global_AppErrorCode(A4),-14(A5)
     MOVEQ   #3,D5
 
-.LAB_19A2:
-    CMP.L   -1148(A4),D5
-    BGE.S   .LAB_19A3
+.find_free_slot:
+    CMP.L   Global_HandleTableCount(A4),D5
+    BGE.S   .have_slot_index
 
     MOVE.L  D5,D0
     ASL.L   #3,D0
-    LEA     22492(A4),A0
+    LEA     Global_HandleTableBase(A4),A0
     TST.L   0(A0,D0.L)
-    BEQ.S   .LAB_19A3
+    BEQ.S   .have_slot_index
 
     ADDQ.L  #1,D5
-    BRA.S   .LAB_19A2
+    BRA.S   .find_free_slot
 
-.LAB_19A3:
-    MOVE.L  -1148(A4),D0
+.have_slot_index:
+    MOVE.L  Global_HandleTableCount(A4),D0
     CMP.L   D5,D0
-    BNE.S   .LAB_19A4
+    BNE.S   .init_slot
 
     MOVEQ   #24,D0
-    MOVE.L  D0,22828(A4)
+    MOVE.L  D0,Global_AppErrorCode(A4)
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_19A4:
+.init_slot:
     MOVE.L  D5,D0
     ASL.L   #3,D0
-    LEA     22492(A4),A0
+    LEA     Global_HandleTableBase(A4),A0
     ADDA.L  D0,A0
     MOVEA.L A0,A2
     TST.L   16(A5)
-    BEQ.S   .LAB_19A5
+    BEQ.S   .set_errcode_default
 
     BTST    #2,19(A5)
-    BEQ.S   .LAB_19A6
+    BEQ.S   .set_errcode_alt
 
-.LAB_19A5:
+.set_errcode_default:
     MOVE.L  #$3ec,-18(A5)
-    BRA.S   .LAB_19A7
+    BRA.S   .normalize_flags
 
-.LAB_19A6:
+.set_errcode_alt:
     MOVE.L  #$3ee,-18(A5)
 
-.LAB_19A7:
+.normalize_flags:
     MOVE.L  #$8000,D0
-    AND.L   -1124(A4),D0
+    AND.L   Global_HandleTableFlags(A4),D0
     EOR.L   D0,D7
     BTST    #3,D7
-    BEQ.S   .LAB_19A8
+    BEQ.S   .normalize_access_bits
 
     MOVE.L  D7,D0
     ANDI.W  #$fffc,D0
     MOVE.L  D0,D7
     ORI.W   #2,D7
 
-.LAB_19A8:
+.normalize_access_bits:
     MOVE.L  D7,D0
     MOVEQ   #3,D1
     AND.L   D1,D0
     CMPI.L  #$2,D0
-    BEQ.S   .LAB_19A9
+    BEQ.S   .access_ok
 
     CMPI.L  #$1,D0
-    BEQ.S   .LAB_19A9
+    BEQ.S   .access_ok
 
     TST.L   D0
-    BNE.S   .LAB_19AA
+    BNE.S   .access_invalid
 
-.LAB_19A9:
+.access_ok:
     MOVE.L  D7,D6
     ADDQ.L  #1,D6
-    BRA.S   .LAB_19AB
+    BRA.S   .open_by_mode
 
-.LAB_19AA:
+.access_invalid:
     MOVEQ   #22,D0
-    MOVE.L  D0,22828(A4)
+    MOVE.L  D0,Global_AppErrorCode(A4)
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_19AB:
+.open_by_mode:
     MOVE.L  D7,D0
     ANDI.L  #$300,D0
-    BEQ.W   .LAB_19AF
+    BEQ.W   .simple_open
 
     BTST    #10,D7
-    BEQ.S   .LAB_19AC
+    BEQ.S   .open_mode_bit10
 
     MOVE.B  #$1,-1(A5)
     MOVE.L  -18(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_19FA(PC)
+    JSR     DOS_OpenNewFileIfMissing(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
-    BRA.S   .LAB_19AE
+    BRA.S   .post_open_adjust
 
-.LAB_19AC:
+.open_mode_bit10:
     BTST    #9,D7
-    BNE.S   .LAB_19AD
+    BNE.S   .open_mode_bit9
 
     PEA     1005.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_19F3(PC)
+    JSR     DOS_OpenWithErrorState(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
     TST.L   D4
-    BPL.S   .LAB_19AD
+    BPL.S   .open_mode_bit9
 
     BSET    #9,D7
 
-.LAB_19AD:
+.open_mode_bit9:
     BTST    #9,D7
-    BEQ.S   .LAB_19AE
+    BEQ.S   .post_open_adjust
 
     MOVE.B  #$1,-1(A5)
-    MOVE.L  -14(A5),22828(A4)
+    MOVE.L  -14(A5),Global_AppErrorCode(A4)
     MOVE.L  -18(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_19FF(PC)
+    JSR     DOS_DeleteAndRecreateFile(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
 
-.LAB_19AE:
+.post_open_adjust:
     TST.B   -1(A5)
-    BEQ.S   .LAB_19B0
+    BEQ.S   .check_ioerr
 
     MOVE.L  D7,D0
     MOVEQ   #120,D1
     ADD.L   D1,D1
     AND.L   D1,D0
     TST.L   D0
-    BEQ.S   .LAB_19B0
+    BEQ.S   .check_ioerr
 
     TST.L   D4
-    BMI.S   .LAB_19B0
+    BMI.S   .check_ioerr
 
     MOVE.L  D4,-(A7)
-    JSR     LAB_1A04(PC)
+    JSR     DOS_CloseWithSignalCheck(PC)
 
     PEA     1005.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_19F3(PC)
+    JSR     DOS_OpenWithErrorState(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D4
-    BRA.S   .LAB_19B0
+    BRA.S   .check_ioerr
 
-.LAB_19AF:
+.simple_open:
     PEA     1005.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_19F3(PC)
+    JSR     DOS_OpenWithErrorState(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
 
-.LAB_19B0:
-    TST.L   -640(A4)
-    BEQ.S   .LAB_19B1
+.check_ioerr:
+    TST.L   Global_DosIoErr(A4)
+    BEQ.S   .store_entry
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_19B1:
+.store_entry:
     MOVE.L  D6,(A2)
     MOVE.L  D4,4(A2)
     MOVE.L  D5,D0

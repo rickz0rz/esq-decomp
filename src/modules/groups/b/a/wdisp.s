@@ -67,7 +67,7 @@ LAB_185C:
 .LAB_1860:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  LAB_1DEC,-(A7)
-    JSR     LAB_1905(PC)
+    JSR     JMPTBL_LAB_0B44_2(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -327,7 +327,7 @@ LAB_185C:
     ADD.L   -212(A5),D3
     MOVE.L  D0,-180(A5)
     MOVE.L  D1,-164(A5)
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     SUB.L   D0,D3
     ADDQ.L  #5,D3
@@ -335,7 +335,7 @@ LAB_185C:
     MOVE.L  D2,D1
     MOVE.L  D0,-172(A5)
     MOVE.L  D1,-168(A5)
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D7,D1
     SUB.L   -216(A5),D1
@@ -373,7 +373,7 @@ LAB_185C:
     MOVE.L  -180(A5),D2
     ADD.L   D1,D2
     MOVE.L  D2,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  -196(A5),D1
     ADD.L   D0,D1
@@ -603,16 +603,16 @@ LAB_1883:
 
     MOVE.L  D6,D0
     MOVEQ   #3,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     MOVE.L  D7,D1
     MOVE.L  D0,-4(A5)
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     MOVE.L  D0,-8(A5)
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
@@ -670,7 +670,7 @@ LAB_1883:
 .LAB_1887:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
@@ -789,7 +789,7 @@ LAB_1883:
 .LAB_188E:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
@@ -805,7 +805,7 @@ LAB_1883:
 .LAB_188F:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
@@ -819,7 +819,7 @@ LAB_1883:
 .LAB_1890:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
@@ -834,7 +834,7 @@ LAB_1883:
 .LAB_1891:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
-    JSR     LAB_1A06(PC)
+    JSR     MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     ADDA.L  D0,A0
@@ -848,7 +848,7 @@ LAB_1883:
 .LAB_1892:
     PEA     -26(A5)
     PEA     -46(A5)
-    JSR     UNKNOWN6_AppendDataAtNull(PC)
+    JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L A3,A1
@@ -1053,7 +1053,7 @@ LAB_1883:
     ADD.L   D7,D0
     ADDQ.L  #1,D0
     MOVEQ   #7,D1
-    JSR     LAB_1A07(PC)
+    JSR     MATH_DivS32(PC)
 
     ASL.L   #2,D1
     LEA     GLOB_JMPTBL_DAYS_OF_WEEK,A0

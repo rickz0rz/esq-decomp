@@ -8,7 +8,7 @@
 ;   D0-D1/A0-A1/A6
 ; CALLS:
 ;   exec.library OpenDevice, exec.library DoIO
-;   JMPTBL_UNKNOWN22_SetupSignalAndMsgport_3, JMPTBL_ALLOCATE_IOSTDREQ, GROUPC_JMPTBL_MEMORY_AllocateMemory
+;   GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq, GROUPC_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   GLOB_STR_INPUTDEVICE, GLOB_STR_CONSOLEDEVICE, GLOB_STR_INPUT_DEVICE, GLOB_STR_CONSOLE_DEVICE
 ; WRITES:
@@ -22,29 +22,29 @@
 ;   Uses a 22-byte buffer and sets IOStdReq io_Command = 9 before DoIO.
 ;------------------------------------------------------------------------------
 KYBD_InitializeInputDevices:
-    JSR     LAB_0E02(PC)
+    JSR     GROUP_AV_JMPTBL_LAB_03CF(PC)
 
     CLR.L   -(A7)
 
     PEA     GLOB_STR_INPUTDEVICE
-    JSR     JMPTBL_UNKNOWN22_SetupSignalAndMsgport_3(PC)
+    JSR     GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
 
     MOVE.L  D0,GLOB_REF_INPUTDEVICE_MSGPORT
 
     MOVE.L  D0,(A7)
-    JSR     JMPTBL_ALLOCATE_IOSTDREQ(PC)
+    JSR     GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(PC)
 
     MOVE.L  D0,GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE
 
     CLR.L   (A7)
 
     PEA     GLOB_STR_CONSOLEDEVICE
-    JSR     JMPTBL_UNKNOWN22_SetupSignalAndMsgport_3(PC)
+    JSR     GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
 
     MOVE.L  D0,GLOB_REF_CONSOLEDEVICE_MSGPORT
 
     MOVE.L  D0,(A7)
-    JSR     JMPTBL_ALLOCATE_IOSTDREQ(PC)
+    JSR     GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(PC)
 
     MOVE.L  D0,GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE
 
@@ -76,7 +76,7 @@ KYBD_InitializeInputDevices:
 
     MOVEA.L D0,A0
     MOVE.L  #LAB_231F,14(A0)
-    LEA     LAB_0E03(PC),A0
+    LEA     GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(PC),A0
     MOVEA.L GLOB_REF_DATA_INPUT_BUFFER,A1
     MOVE.L  A0,18(A1)
     MOVE.B  #$33,9(A1)
@@ -93,25 +93,3 @@ KYBD_InitializeInputDevices:
     MOVE.L  D0,LAB_231B
     MOVE.L  D0,LAB_231C
     RTS
-
-;!======
-
-JMPTBL_ALLOCATE_IOSTDREQ:
-    JMP     ALLOCATE_IOSTDREQ
-
-JMPTBL_UNKNOWN22_SetupSignalAndMsgport_3:
-    JMP     UNKNOWN22_SetupSignalAndMsgport
-
-LAB_0E02:
-    JMP     LAB_03CF
-
-LAB_0E03:
-    JMP     ESQ_InvokeGcommandInit
-
-LAB_0E04:
-    JMP     LAB_1ADD
-
-;!======
-
-    ; Alignment
-    MOVEQ   #97,D0

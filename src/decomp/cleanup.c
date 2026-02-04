@@ -1,7 +1,7 @@
 #include "amiga.h"
 
 /*
- * CLEAR_INTERRUPT_INTB_VERTB (cleanup.s)
+ * CLEANUP_ClearVertbInterruptServer (cleanup.s)
  *
  * Tears down the vertical blank interrupt handler when shutting down.
  * The assembly sequence forwards the bookkeeping tag and line number to

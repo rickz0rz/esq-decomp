@@ -358,7 +358,7 @@ LAB_0471:
 ; CLOBBERS:
 ;   D0/A1/A3 ??
 ; CALLS:
-;   DISPLAY_TEXT_AT_POSITION
+;   DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   GLOB_REF_RASTPORT_1
 ; WRITES:
@@ -385,13 +385,13 @@ LAB_0483:
     PEA     120.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  A3,(A7)
     PEA     120.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
     MOVEA.L (A7)+,A3
@@ -408,8 +408,8 @@ LAB_0483:
 ; CLOBBERS:
 ;   D0/D7 ??
 ; CALLS:
-;   LAB_053D, LAB_0483, LAB_0535, LAB_0720, LAB_041A, LAB_0540, LAB_04E6,
-;   LAB_07CA, LAB_0610, LAB_0543, LAB_0541, GCOMMAND_LoadMplexFile,
+;   LAB_053D, LAB_0483, LAB_0535, ED1_JMPTBL_LAB_0E48, LAB_041A, LAB_0540, LAB_04E6,
+;   LAB_07CA, DATETIME_SavePairToFile, LAB_0543, LAB_0541, GCOMMAND_LoadMplexFile,
 ;   GCOMMAND_LoadPPVTemplate
 ; READS:
 ;   LAB_1C47..LAB_1C4F text tables
@@ -465,7 +465,7 @@ LAB_0484:
     ADDQ.W  #4,A7
 
 .loc_0488:
-    JSR     LAB_0720(PC)
+    JSR     ED1_JMPTBL_LAB_0E48(PC)
 
     LEA     LAB_1C49,A0
     LEA     -100(A5),A1
@@ -559,7 +559,7 @@ LAB_0484:
 
 .loc_0492:
     PEA     LAB_21DF
-    JSR     LAB_0610(PC)
+    JSR     DATETIME_SavePairToFile(PC)
 
     ADDQ.W  #4,A7
     LEA     LAB_1C4E,A0
@@ -2211,7 +2211,7 @@ LAB_04FA:
 ; CLOBBERS:
 ;   D0-D7 ??
 ; CALLS:
-;   LAB_053D, LAB_0544, LAB_0549, DISPLAY_TEXT_AT_POSITION, LAB_0470,
+;   LAB_053D, LAB_0544, LAB_0549, DISPLIB_DisplayTextAtPosition, LAB_0470,
 ;   _LVOLock/_LVOUnLock/_LVOOpen/_LVOClose/_LVORead/_LVOWrite/_LVODeleteFile,
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, LAB_0546, LAB_053E, LAB_0547, LAB_0548
 ; READS:
@@ -2297,7 +2297,7 @@ LAB_04FF:
     PEA     240.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -2322,13 +2322,13 @@ LAB_04FF:
     PEA     180.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     LAB_21C2
     PEA     180.W
     PEA     205.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
 
@@ -2632,13 +2632,13 @@ LAB_04FF:
     PEA     210.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     LAB_1C77
     PEA     240.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
 
@@ -2662,15 +2662,15 @@ LAB_04FF:
     MOVE.L  (A0)+,(A1)+
     PEA     -58(A5)
     PEA     -156(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     LAB_1C79
     PEA     -156(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     PEA     LAB_21C2
     PEA     -156(A5)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     -156(A5),A0
     MOVE.L  A0,D1
@@ -2693,7 +2693,7 @@ LAB_04FF:
     PEA     180.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
     BRA.S   .loc_0517
@@ -2739,7 +2739,7 @@ LAB_04FF:
     PEA     90.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     DISPLAY_TEXT_AT_POSITION(PC)
+    JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     36(A7),A7
 

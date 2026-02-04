@@ -90,7 +90,7 @@ LAB_0553:
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
     MOVE.L  20(A7),D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D0
     BPL.S   LAB_0554
@@ -115,7 +115,7 @@ LAB_0555:
     MOVE.L  D0,20(A7)
     MOVE.L  D6,D0
     MOVE.L  20(A7),D1
-    JSR     GROUP_AG_JMPTBL_LAB_1A07(PC)
+    JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D4
     BRA.S   LAB_0557
@@ -166,7 +166,7 @@ LAB_055A:
     CLR.B   (A0)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  D5,D0
     ADDQ.L  #1,D0
@@ -185,7 +185,7 @@ LAB_055B:
 
 ;!======
 
-DISPLAY_TEXT_AT_POSITION:
+DISPLIB_DisplayTextAtPosition:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3,-(A7)
 

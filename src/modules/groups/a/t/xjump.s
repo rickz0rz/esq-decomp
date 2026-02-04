@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMPTBL_LAB_071B   (JumpStub_LAB_071B)
+; FUNC: GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -7,20 +7,21 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_071B
+;   ED1_WaitForFlagAndClearBit0
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_071B.
+;   Jump stub to ED1_WaitForFlagAndClearBit0.
 ;------------------------------------------------------------------------------
+GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0:
 GCOMMAND_JMPTBL_LAB_071B:
 LAB_0D63:
-    JMP     LAB_071B
+    JMP     ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMPTBL_LAB_1ADF   (JumpStub_LAB_1ADF)
+; FUNC: GCOMMAND_JMPTBL_DOS_SystemTagList   (JumpStub_DOS_SystemTagList)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -28,20 +29,20 @@ LAB_0D63:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1ADF
+;   DOS_SystemTagList
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1ADF.
+;   Jump stub to DOS_SystemTagList.
 ;------------------------------------------------------------------------------
-GCOMMAND_JMPTBL_LAB_1ADF:
+GCOMMAND_JMPTBL_DOS_SystemTagList:
 LAB_0D64:
-    JMP     LAB_1ADF
+    JMP     DOS_SystemTagList
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMPTBL_LAB_071A   (JumpStub_LAB_071A)
+; FUNC: GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -49,17 +50,18 @@ LAB_0D64:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_071A
+;   ED1_WaitForFlagAndClearBit1
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_071A.
+;   Jump stub to ED1_WaitForFlagAndClearBit1.
 ;------------------------------------------------------------------------------
+GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1:
 GCOMMAND_JMPTBL_LAB_071A:
 LAB_0D65:
-    JMP     LAB_071A
+    JMP     ED1_WaitForFlagAndClearBit1
 
 ;!======
 

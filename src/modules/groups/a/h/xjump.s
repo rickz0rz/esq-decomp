@@ -38,7 +38,7 @@ LAB_0546:
     JMP     LAB_0B26
 
 LAB_0547:
-    JMP     LAB_1984
+    JMP     UNKNOWN7_FindAnyCharWrapper
 
 GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
     JMP     GCOMMAND_LoadMplexFile
@@ -50,4 +50,4 @@ GROUP_AH_JMPTBL_LAB_0B34:
     JMP     LAB_0B34
 
 LAB_054B:
-    JMP     LAB_1A20
+    JMP     PARSE_ReadSignedLongSkipClass3

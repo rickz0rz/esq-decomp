@@ -190,7 +190,7 @@ LAB_027A:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   GROUP_AE_JMPTBL_LAB_0923, CLEANUP_TestEntryFlagYAndBit1, LAB_0347,
-;   GROUP_AE_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull, GROUP_AE_JMPTBL_LAB_0E2D
+;   GROUP_AE_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LAB_0E2D
 ; READS:
 ;   LAB_1B62, LAB_1B63, LAB_1B64, LAB_21A8, LAB_2157
 ; WRITES:
@@ -265,7 +265,7 @@ LAB_0281:
 
     PEA     LAB_2157
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .append_entry_text
@@ -273,14 +273,14 @@ LAB_0281:
 .append_default_prefix:
     PEA     LAB_1B63
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_entry_text:
     PEA     -12(A5)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN6_AppendDataAtNull(PC)
+    JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  D5,D0
     EXT.L   D0

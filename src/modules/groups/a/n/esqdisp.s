@@ -460,7 +460,7 @@ LAB_08DF:
     MOVE.B  D6,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_064D(PC)
+    JSR     DST_BuildBannerTimeWord(PC)
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -579,7 +579,7 @@ LAB_08E6:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     BRA.S   LAB_08E8
 
@@ -1578,7 +1578,7 @@ LAB_093D:
 
     MOVE.L  D6,D0
     MOVEQ   #20,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     LEA     LAB_2197,A0
     MOVEA.L A0,A1
@@ -1601,7 +1601,7 @@ LAB_093E:
     MOVE.L  D0,24(A7)
     MOVE.L  D6,D0
     MOVEQ   #20,D1
-    JSR     GROUPB_JMPTBL_LAB_1A06(PC)
+    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
     MOVE.L  24(A7),D0

@@ -1,7 +1,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_UNKNOWN22_SetupSignalAndMsgport   (JumpStub_UNKNOWN22_SetupSignalAndMsgport)
+; FUNC: GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (JumpStub_SIGNAL_CreateMsgPortWithSignal)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -9,16 +9,16 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   UNKNOWN22_SetupSignalAndMsgport
+;   SIGNAL_CreateMsgPortWithSignal
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to UNKNOWN22_SetupSignalAndMsgport.
+;   Jump stub to SIGNAL_CreateMsgPortWithSignal.
 ;------------------------------------------------------------------------------
-GROUP_AM_JMPTBL_UNKNOWN22_SetupSignalAndMsgport:
-    JMP     UNKNOWN22_SetupSignalAndMsgport
+GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
+    JMP     SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_LAB_0E14   (JumpStub_LAB_0E14)
@@ -271,7 +271,7 @@ JMPTBL_CHECK_AVAILABLE_FAST_MEMORY:
     JMP     CHECK_AVAILABLE_FAST_MEMORY
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1A30   (JumpStub_LAB_1A30)
+; FUNC: ESQ_JMPTBL_STRUCT_AllocWithOwner   (JumpStub_STRUCT_AllocWithOwner)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -279,17 +279,17 @@ JMPTBL_CHECK_AVAILABLE_FAST_MEMORY:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1A30
+;   STRUCT_AllocWithOwner
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1A30.
+;   Jump stub to STRUCT_AllocWithOwner.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1A30:
+ESQ_JMPTBL_STRUCT_AllocWithOwner:
 LAB_08A9:
-    JMP     LAB_1A30
+    JMP     STRUCT_AllocWithOwner
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_LAB_0DE9   (JumpStub_LAB_0DE9)
@@ -397,7 +397,7 @@ LAB_08AE:
     JMP     LAB_0F07
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_002F   (JumpStub_LAB_002F)
+; FUNC: ESQ_JMPTBL_ESQ_InitAudio1Dma   (JumpStub_ESQ_InitAudio1Dma)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -405,20 +405,20 @@ LAB_08AE:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_002F
+;   ESQ_InitAudio1Dma
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_002F.
+;   Jump stub to ESQ_InitAudio1Dma.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_002F:
+ESQ_JMPTBL_ESQ_InitAudio1Dma:
 LAB_08AF:
-    JMP     LAB_002F
+    JMP     ESQ_InitAudio1Dma
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1AAD   (JumpStub_LAB_1AAD)
+; FUNC: ESQ_JMPTBL_LIST_InitHeader   (JumpStub_LIST_InitHeader)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -426,20 +426,20 @@ LAB_08AF:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1AAD
+;   LIST_InitHeader
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1AAD.
+;   Jump stub to LIST_InitHeader.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1AAD:
+ESQ_JMPTBL_LIST_InitHeader:
 LAB_08B0:
-    JMP     LAB_1AAD
+    JMP     LIST_InitHeader
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0057   (JumpStub_LAB_0057)
+; FUNC: ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (JumpStub_ESQ_SetCopperEffect_OnEnableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -455,7 +455,7 @@ LAB_08B0:
 ; DESC:
 ;   Jump stub to ESQ_SetCopperEffect_OnEnableHighlight.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0057:
+ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
 LAB_08B1:
     JMP     ESQ_SetCopperEffect_OnEnableHighlight
 
@@ -530,7 +530,7 @@ JMPTBL_OVERRIDE_INTUITION_FUNCS:
     JMP     OVERRIDE_INTUITION_FUNCS
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LIBRARIES_LOAD_FAILED_2   (JumpStub_LIBRARIES_LOAD_FAILED)
+; FUNC: JMPTBL_BUFFER_FlushAllAndCloseWithCode_2   (JumpStub_BUFFER_FlushAllAndCloseWithCode)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -538,16 +538,16 @@ JMPTBL_OVERRIDE_INTUITION_FUNCS:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LIBRARIES_LOAD_FAILED
+;   BUFFER_FlushAllAndCloseWithCode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LIBRARIES_LOAD_FAILED.
+;   Jump stub to BUFFER_FlushAllAndCloseWithCode.
 ;------------------------------------------------------------------------------
-JMPTBL_LIBRARIES_LOAD_FAILED_2:
-    JMP     LIBRARIES_LOAD_FAILED
+JMPTBL_BUFFER_FlushAllAndCloseWithCode_2:
+    JMP     BUFFER_FlushAllAndCloseWithCode
 
 ;!======
 
@@ -599,7 +599,7 @@ GROUP_AM_JMPTBL_WDISP_SPrintf:
     JMP     WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (JumpStub_LAB_0056)
+; FUNC: GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (JumpStub_ESQ_SetCopperEffect_OffDisableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
