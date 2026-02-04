@@ -1,4 +1,3 @@
-;!======
 ;------------------------------------------------------------------------------
 ; FUNC: DISPTEXT_AppendToBuffer   (Append to display text buffer??)
 ; ARGS:
@@ -19,7 +18,6 @@
 ;   Booleanize pattern: SNE/NEG/EXT.
 ;------------------------------------------------------------------------------
 DISPTEXT_AppendToBuffer:
-LAB_056A:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -130,7 +128,6 @@ LAB_056A:
 ;   Uses 0x13/0x12 separators (see data tables).
 ;------------------------------------------------------------------------------
 DISPTEXT_BuildLineWithWidth:
-LAB_0571:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -324,7 +321,6 @@ LAB_0571:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_BuildLinePointerTable:
-LAB_057F:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVE.L  24(A7),D7
     TST.L   LAB_21DB
@@ -404,7 +400,6 @@ LAB_057F:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_FinalizeLineTable:
-LAB_0585:
     TST.L   LAB_21DB
     BNE.S   .return
 
@@ -452,7 +447,6 @@ LAB_0585:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_InitBuffers:
-LAB_0588:
     TST.L   LAB_1CED
     BEQ.S   .return
 
@@ -501,7 +495,6 @@ LAB_0588:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_FreeBuffers:
-LAB_058A:
     BSR.W   LAB_0566
 
     TST.L   GLOB_REF_1000_BYTES_ALLOCATED_1
@@ -555,7 +548,6 @@ LAB_058A:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_SetLayoutParams:
-LAB_058D:
     MOVEM.L D5-D7,-(A7)
     MOVE.L  16(A7),D7
     MOVE.L  20(A7),D6
@@ -628,7 +620,6 @@ LAB_058D:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_ComputeMarkerWidths:
-LAB_0592:
     LINK.W  A5,#-12
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -704,7 +695,6 @@ LAB_0592:
 ;   Uses line offset tables LAB_21D4/LAB_21D7.
 ;------------------------------------------------------------------------------
 DISPTEXT_LayoutSourceToLines:
-LAB_0597:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -863,7 +853,6 @@ LAB_0597:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_LayoutAndAppendToBuffer:
-LAB_059F:
     LINK.W  A5,#-276
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1083,7 +1072,6 @@ LAB_059F:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_BuildLayoutForSource:
-LAB_05AA:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1132,7 +1120,6 @@ LAB_05AA:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_SetCurrentLineIndex:
-LAB_05AC:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     TST.L   LAB_21DB
@@ -1176,7 +1163,6 @@ LAB_05AC:
 ;   Uses booleanize pattern on LAB_21DC.
 ;------------------------------------------------------------------------------
 DISPTEXT_ComputeVisibleLineCount:
-LAB_05AE:
     LINK.W  A5,#-12
     MOVEM.L D5-D7,-(A7)
     MOVE.L  8(A5),D7
@@ -1279,7 +1265,6 @@ LAB_05AE:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_GetTotalLineCount:
-LAB_05B5:
     BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVEQ   #0,D0
@@ -1307,7 +1292,6 @@ LAB_05B5:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_HasMultipleLines:
-LAB_05B6:
     BSR.W   DISPTEXT_FinalizeLineTable
 
     MOVE.W  LAB_21D6,D0
@@ -1348,7 +1332,6 @@ LAB_05B6:
 ;   Booleanize pattern: SEQ/NEG/EXT.
 ;------------------------------------------------------------------------------
 DISPTEXT_IsLastLineSelected:
-LAB_05B9:
     MOVE.L  D2,-(A7)
     BSR.W   DISPTEXT_FinalizeLineTable
 
@@ -1387,7 +1370,6 @@ LAB_05B9:
 ;   Booleanize pattern: SEQ/NEG/EXT.
 ;------------------------------------------------------------------------------
 DISPTEXT_IsCurrentLineLast:
-LAB_05BA:
     MOVE.L  D2,-(A7)
     BSR.W   DISPTEXT_FinalizeLineTable
 
@@ -1423,7 +1405,6 @@ LAB_05BA:
 ;   ??
 ;------------------------------------------------------------------------------
 DISPTEXT_MeasureCurrentLineLength:
-LAB_05BB:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     BSR.W   DISPTEXT_FinalizeLineTable
@@ -1471,7 +1452,6 @@ LAB_05BB:
 ;   Uses 0x13/0x14 control markers when LAB_21DC set.
 ;------------------------------------------------------------------------------
 DISPTEXT_RenderCurrentLine:
-LAB_05BC:
     LINK.W  A5,#-12
     MOVEM.L D2-D7/A3,-(A7)
     MOVEA.L 8(A5),A3

@@ -11,9 +11,9 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_LAB_058D, LAB_130C, LAB_107F, GROUPD_JMPTBL_MEMORY_AllocateMemory,
-;   NEWGRID2_JMPTBL_LAB_05AC, LAB_12D0, NEWGRID2_JMPTBL_LAB_059F,
-;   GROUPD_JMPTBL_MEMORY_DeallocateMemory, LAB_12FD, NEWGRID2_JMPTBL_LAB_05AE
+;   NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, LAB_130C, LAB_107F, GROUPD_JMPTBL_MEMORY_AllocateMemory,
+;   NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, LAB_12D0, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
+;   GROUPD_JMPTBL_MEMORY_DeallocateMemory, LAB_12FD, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   LAB_203D, LAB_2016
 ; WRITES:
@@ -60,7 +60,7 @@ LAB_1311:
     PEA     1.W
     PEA     20.W
     PEA     612.W
-    JSR     NEWGRID2_JMPTBL_LAB_058D(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     MOVE.W  20(A2),D6
@@ -128,7 +128,7 @@ LAB_1311:
     BEQ.S   .post_alloc
 
     PEA     3.W
-    JSR     NEWGRID2_JMPTBL_LAB_05AC(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
 
     MOVE.L  D7,(A7)
     MOVE.L  -6(A5),-(A7)
@@ -139,7 +139,7 @@ LAB_1311:
     LEA     60(A3),A0
     MOVE.L  -6(A5),(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_LAB_059F(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     PEA     2000.W
     MOVE.L  -6(A5),-(A7)
@@ -166,7 +166,7 @@ LAB_1311:
 .store_state:
     PEA     2.W
     MOVE.L  D0,LAB_203D
-    JSR     NEWGRID2_JMPTBL_LAB_05AE(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
@@ -692,55 +692,55 @@ LAB_1337:
     JMP     LAB_0347
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05AC   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05AC)
+;   ?? (see DISPTEXT_SetCurrentLineIndex)
 ; RET:
-;   ?? (see LAB_05AC)
+;   ?? (see DISPTEXT_SetCurrentLineIndex)
 ; CLOBBERS:
-;   ?? (see LAB_05AC)
+;   ?? (see DISPTEXT_SetCurrentLineIndex)
 ; CALLS:
-;   LAB_05AC
+;   DISPTEXT_SetCurrentLineIndex
 ; DESC:
-;   Jump table entry that forwards to LAB_05AC.
+;   Jump table entry that forwards to DISPTEXT_SetCurrentLineIndex.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05AC:
+NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex:
 LAB_1338:
-    JMP     LAB_05AC
+    JMP     DISPTEXT_SetCurrentLineIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_059F   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_059F)
+;   ?? (see DISPTEXT_LayoutAndAppendToBuffer)
 ; RET:
-;   ?? (see LAB_059F)
+;   ?? (see DISPTEXT_LayoutAndAppendToBuffer)
 ; CLOBBERS:
-;   ?? (see LAB_059F)
+;   ?? (see DISPTEXT_LayoutAndAppendToBuffer)
 ; CALLS:
-;   LAB_059F
+;   DISPTEXT_LayoutAndAppendToBuffer
 ; DESC:
-;   Jump table entry that forwards to LAB_059F.
+;   Jump table entry that forwards to DISPTEXT_LayoutAndAppendToBuffer.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_059F:
+NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
 LAB_1339:
-    JMP     LAB_059F
+    JMP     DISPTEXT_LayoutAndAppendToBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05B5   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05B5)
+;   ?? (see DISPTEXT_GetTotalLineCount)
 ; RET:
-;   ?? (see LAB_05B5)
+;   ?? (see DISPTEXT_GetTotalLineCount)
 ; CLOBBERS:
-;   ?? (see LAB_05B5)
+;   ?? (see DISPTEXT_GetTotalLineCount)
 ; CALLS:
-;   LAB_05B5
+;   DISPTEXT_GetTotalLineCount
 ; DESC:
-;   Jump table entry that forwards to LAB_05B5.
+;   Jump table entry that forwards to DISPTEXT_GetTotalLineCount.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05B5:
+NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
 LAB_133A:
-    JMP     LAB_05B5
+    JMP     DISPTEXT_GetTotalLineCount
 
 ;!======
 
@@ -768,21 +768,21 @@ LAB_133B:
     JMP     LAB_17E6
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05AA   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05AA)
+;   ?? (see DISPTEXT_BuildLayoutForSource)
 ; RET:
-;   ?? (see LAB_05AA)
+;   ?? (see DISPTEXT_BuildLayoutForSource)
 ; CLOBBERS:
-;   ?? (see LAB_05AA)
+;   ?? (see DISPTEXT_BuildLayoutForSource)
 ; CALLS:
-;   LAB_05AA
+;   DISPTEXT_BuildLayoutForSource
 ; DESC:
-;   Jump table entry that forwards to LAB_05AA.
+;   Jump table entry that forwards to DISPTEXT_BuildLayoutForSource.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05AA:
+NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
 LAB_133C:
-    JMP     LAB_05AA
+    JMP     DISPTEXT_BuildLayoutForSource
 
 ;!======
 
@@ -844,21 +844,21 @@ LAB_133F:
     JMP     BEVEL_DrawVerticalBevel
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_0597   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_0597)
+;   ?? (see DISPTEXT_LayoutSourceToLines)
 ; RET:
-;   ?? (see LAB_0597)
+;   ?? (see DISPTEXT_LayoutSourceToLines)
 ; CLOBBERS:
-;   ?? (see LAB_0597)
+;   ?? (see DISPTEXT_LayoutSourceToLines)
 ; CALLS:
-;   LAB_0597
+;   DISPTEXT_LayoutSourceToLines
 ; DESC:
-;   Jump table entry that forwards to LAB_0597.
+;   Jump table entry that forwards to DISPTEXT_LayoutSourceToLines.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_0597:
+NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
 LAB_1340:
-    JMP     LAB_0597
+    JMP     DISPTEXT_LayoutSourceToLines
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes   (Jump stub)
@@ -912,21 +912,21 @@ LAB_1343:
     JMP     LAB_091F
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05AE   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05AE)
+;   ?? (see DISPTEXT_ComputeVisibleLineCount)
 ; RET:
-;   ?? (see LAB_05AE)
+;   ?? (see DISPTEXT_ComputeVisibleLineCount)
 ; CLOBBERS:
-;   ?? (see LAB_05AE)
+;   ?? (see DISPTEXT_ComputeVisibleLineCount)
 ; CALLS:
-;   LAB_05AE
+;   DISPTEXT_ComputeVisibleLineCount
 ; DESC:
-;   Jump table entry that forwards to LAB_05AE.
+;   Jump table entry that forwards to DISPTEXT_ComputeVisibleLineCount.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05AE:
+NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
 LAB_1344:
-    JMP     LAB_05AE
+    JMP     DISPTEXT_ComputeVisibleLineCount
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_LAB_0923   (Jump stub)
@@ -946,21 +946,21 @@ LAB_1345:
     JMP     LAB_0923
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05BC   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05BC)
+;   ?? (see DISPTEXT_RenderCurrentLine)
 ; RET:
-;   ?? (see LAB_05BC)
+;   ?? (see DISPTEXT_RenderCurrentLine)
 ; CLOBBERS:
-;   ?? (see LAB_05BC)
+;   ?? (see DISPTEXT_RenderCurrentLine)
 ; CALLS:
-;   LAB_05BC
+;   DISPTEXT_RenderCurrentLine
 ; DESC:
-;   Jump table entry that forwards to LAB_05BC.
+;   Jump table entry that forwards to DISPTEXT_RenderCurrentLine.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05BC:
+NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
 LAB_1346:
-    JMP     LAB_05BC
+    JMP     DISPTEXT_RenderCurrentLine
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_LAB_036C   (Jump stub)
@@ -1116,38 +1116,38 @@ LAB_134F:
     JMP     CLEANUP_TestEntryFlagYAndBit1
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05BA   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05BA)
+;   ?? (see DISPTEXT_IsCurrentLineLast)
 ; RET:
-;   ?? (see LAB_05BA)
+;   ?? (see DISPTEXT_IsCurrentLineLast)
 ; CLOBBERS:
-;   ?? (see LAB_05BA)
+;   ?? (see DISPTEXT_IsCurrentLineLast)
 ; CALLS:
-;   LAB_05BA
+;   DISPTEXT_IsCurrentLineLast
 ; DESC:
-;   Jump table entry that forwards to LAB_05BA.
+;   Jump table entry that forwards to DISPTEXT_IsCurrentLineLast.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05BA:
+NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
 LAB_1350:
-    JMP     LAB_05BA
+    JMP     DISPTEXT_IsCurrentLineLast
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05B9   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05B9)
+;   ?? (see DISPTEXT_IsLastLineSelected)
 ; RET:
-;   ?? (see LAB_05B9)
+;   ?? (see DISPTEXT_IsLastLineSelected)
 ; CLOBBERS:
-;   ?? (see LAB_05B9)
+;   ?? (see DISPTEXT_IsLastLineSelected)
 ; CALLS:
-;   LAB_05B9
+;   DISPTEXT_IsLastLineSelected
 ; DESC:
-;   Jump table entry that forwards to LAB_05B9.
+;   Jump table entry that forwards to DISPTEXT_IsLastLineSelected.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05B9:
+NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
 LAB_1351:
-    JMP     LAB_05B9
+    JMP     DISPTEXT_IsLastLineSelected
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame   (Jump stub)
@@ -1184,21 +1184,21 @@ LAB_1353:
     JMP     LAB_054C
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_0592   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_0592)
+;   ?? (see DISPTEXT_ComputeMarkerWidths)
 ; RET:
-;   ?? (see LAB_0592)
+;   ?? (see DISPTEXT_ComputeMarkerWidths)
 ; CLOBBERS:
-;   ?? (see LAB_0592)
+;   ?? (see DISPTEXT_ComputeMarkerWidths)
 ; CALLS:
-;   LAB_0592
+;   DISPTEXT_ComputeMarkerWidths
 ; DESC:
-;   Jump table entry that forwards to LAB_0592.
+;   Jump table entry that forwards to DISPTEXT_ComputeMarkerWidths.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_0592:
+NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths:
 LAB_1354:
-    JMP     LAB_0592
+    JMP     DISPTEXT_ComputeMarkerWidths
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_ESQ_TestBit1Based   (Jump stub)
@@ -1235,55 +1235,55 @@ LAB_1356:
     JMP     BEVEL_DrawVerticalBevelPair
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05BB   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05BB)
+;   ?? (see DISPTEXT_MeasureCurrentLineLength)
 ; RET:
-;   ?? (see LAB_05BB)
+;   ?? (see DISPTEXT_MeasureCurrentLineLength)
 ; CLOBBERS:
-;   ?? (see LAB_05BB)
+;   ?? (see DISPTEXT_MeasureCurrentLineLength)
 ; CALLS:
-;   LAB_05BB
+;   DISPTEXT_MeasureCurrentLineLength
 ; DESC:
-;   Jump table entry that forwards to LAB_05BB.
+;   Jump table entry that forwards to DISPTEXT_MeasureCurrentLineLength.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05BB:
+NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
 LAB_1357:
-    JMP     LAB_05BB
+    JMP     DISPTEXT_MeasureCurrentLineLength
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_058D   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_058D)
+;   ?? (see DISPTEXT_SetLayoutParams)
 ; RET:
-;   ?? (see LAB_058D)
+;   ?? (see DISPTEXT_SetLayoutParams)
 ; CLOBBERS:
-;   ?? (see LAB_058D)
+;   ?? (see DISPTEXT_SetLayoutParams)
 ; CALLS:
-;   LAB_058D
+;   DISPTEXT_SetLayoutParams
 ; DESC:
-;   Jump table entry that forwards to LAB_058D.
+;   Jump table entry that forwards to DISPTEXT_SetLayoutParams.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_058D:
+NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
 LAB_1358:
-    JMP     LAB_058D
+    JMP     DISPTEXT_SetLayoutParams
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_LAB_05B6   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_05B6)
+;   ?? (see DISPTEXT_HasMultipleLines)
 ; RET:
-;   ?? (see LAB_05B6)
+;   ?? (see DISPTEXT_HasMultipleLines)
 ; CLOBBERS:
-;   ?? (see LAB_05B6)
+;   ?? (see DISPTEXT_HasMultipleLines)
 ; CALLS:
-;   LAB_05B6
+;   DISPTEXT_HasMultipleLines
 ; DESC:
-;   Jump table entry that forwards to LAB_05B6.
+;   Jump table entry that forwards to DISPTEXT_HasMultipleLines.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_LAB_05B6:
+NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
 LAB_1359:
-    JMP     LAB_05B6
+    JMP     DISPTEXT_HasMultipleLines
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUPD_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)

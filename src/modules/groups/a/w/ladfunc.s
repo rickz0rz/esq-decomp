@@ -76,7 +76,7 @@ LADFUNC_UpdateHighlightState:
 ; CLOBBERS:
 ;   D0/D7/A0-A1 ??
 ; CALLS:
-;   GROUPC_JMPTBL_MEMORY_AllocateMemory
+;   NEWGRID_JMPTBL_AllocateMemory
 ; READS:
 ;   LAB_2251, GLOB_STR_LADFUNC_C_1
 ; WRITES:
@@ -106,7 +106,7 @@ LAB_0E09:
     PEA     116.W
     PEA     GLOB_STR_LADFUNC_C_1
     MOVE.L  A0,20(A7)
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 4(A7),A0
@@ -130,7 +130,7 @@ LAB_0E09:
 ; CLOBBERS:
 ;   D0/D6-D7/A0-A2 ??
 ; CALLS:
-;   LAB_0B44, GROUPC_JMPTBL_MEMORY_DeallocateMemory
+;   LAB_0B44, NEWGRID_JMPTBL_DeallocateMemory
 ; READS:
 ;   LAB_2251, GLOB_STR_LADFUNC_C_2, GLOB_STR_LADFUNC_C_3
 ; WRITES:
@@ -211,7 +211,7 @@ LAB_0E0C:
     MOVE.L  10(A1),-(A7)
     PEA     147.W
     PEA     GLOB_STR_LADFUNC_C_2
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -224,7 +224,7 @@ LAB_0E0C:
     MOVE.L  (A0),-(A7)
     PEA     150.W
     PEA     GLOB_STR_LADFUNC_C_3
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D7,D0
@@ -315,7 +315,7 @@ LAB_0E14:
 ; CLOBBERS:
 ;   D0/D6-D7/A0-A2 ??
 ; CALLS:
-;   LAB_0B44, GROUPC_JMPTBL_MEMORY_DeallocateMemory
+;   LAB_0B44, NEWGRID_JMPTBL_DeallocateMemory
 ; READS:
 ;   LAB_2251, GLOB_STR_LADFUNC_C_4
 ; WRITES:
@@ -384,7 +384,7 @@ LAB_0E17:
     MOVE.L  10(A1),-(A7)
     PEA     212.W
     PEA     GLOB_STR_LADFUNC_C_4
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -805,7 +805,7 @@ LAB_0E2D:
 ;   D0-D7/A0-A3 ??
 ; CALLS:
 ;   LADFUNC_ParseHexDigit, LAB_0EE5, LAB_0EE6, LAB_0EE7, LAB_0AC6, LAB_0B44,
-;   GROUPC_JMPTBL_MEMORY_AllocateMemory, GROUPC_JMPTBL_MEMORY_DeallocateMemory,
+;   NEWGRID_JMPTBL_AllocateMemory, NEWGRID_JMPTBL_DeallocateMemory,
 ;   GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, LADFUNC_UpdateHighlightState
 ; READS:
 ;   LAB_1BC4, LAB_1FBF, LAB_1FC0, LAB_2251, LAB_2293, LAB_2299
@@ -927,7 +927,7 @@ LAB_0E33:
     PEA     304.W
     PEA     367.W
     PEA     GLOB_STR_LADFUNC_C_5
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-412(A5)
@@ -1061,7 +1061,7 @@ LAB_0E33:
     MOVE.L  10(A2),-(A7)
     PEA     412.W
     PEA     GLOB_STR_LADFUNC_C_6
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -1072,7 +1072,7 @@ LAB_0E33:
     MOVE.L  D0,-(A7)
     PEA     413.W
     PEA     GLOB_STR_LADFUNC_C_7
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,10(A2)
@@ -1097,7 +1097,7 @@ LAB_0E33:
     MOVE.L  -412(A5),-(A7)
     PEA     416.W
     PEA     GLOB_STR_LADFUNC_C_8
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     BSR.W   LADFUNC_UpdateHighlightState
 
@@ -1118,6 +1118,27 @@ LAB_0E33:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_SaveTextAdsToFile   (Save text ads to file??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0/(-1) status ??
+; CLOBBERS:
+;   D0-D7/A0-A1 ??
+; CALLS:
+;   LAB_0EE5, GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer,
+;   LAB_0F96, LAB_0F97, LAB_0F98, GROUP_AW_JMPTBL_WDISP_SPrintf
+; READS:
+;   LAB_1B9F, LAB_1FB6, LAB_1FC5, LAB_1FC6, LAB_2251, LAB_2320
+; WRITES:
+;   LAB_1B9F, LAB_2320
+; DESC:
+;   Encodes entry text/attribute data and writes it to a file.
+; NOTES:
+;   Emits attribute changes using LAB_1FC5 and terminates entries with LAB_1FC6.
+;------------------------------------------------------------------------------
+LADFUNC_SaveTextAdsToFile:
 LAB_0E48:
     LINK.W  A5,#-36
     MOVEM.L D4-D7,-(A7)
@@ -1128,12 +1149,12 @@ LAB_0E48:
     ADDQ.W  #8,A7
     MOVE.B  D0,-25(A5)
     TST.L   LAB_1B9F
-    BNE.S   LAB_0E49
+    BNE.S   .open_file
 
     MOVEQ   #0,D0
-    BRA.W   LAB_0E56
+    BRA.W   .return
 
-LAB_0E49:
+.open_file:
     CLR.L   LAB_1B9F
     CLR.B   -15(A5)
     PEA     MODE_NEWFILE.W
@@ -1143,20 +1164,20 @@ LAB_0E49:
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_2320
     TST.L   D0
-    BNE.S   LAB_0E4A
+    BNE.S   .start_entry_loop
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_1B9F
     MOVEQ   #-1,D0
-    BRA.W   LAB_0E56
+    BRA.W   .return
 
-LAB_0E4A:
+.start_entry_loop:
     MOVEQ   #0,D6
 
-LAB_0E4B:
+.entry_loop:
     MOVEQ   #46,D0
     CMP.W   D0,D6
-    BGE.W   LAB_0E55
+    BGE.W   .close_file
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1181,22 +1202,22 @@ LAB_0E4B:
     LEA     12(A7),A7
     MOVEA.L -4(A5),A0
     TST.L   6(A0)
-    BNE.S   LAB_0E4C
+    BNE.S   .use_entry_text
 
     LEA     -15(A5),A1
     MOVE.L  A1,-8(A5)
-    BRA.S   LAB_0E4D
+    BRA.S   .text_ptr_ready
 
-LAB_0E4C:
+.use_entry_text:
     MOVEA.L 6(A0),A0
     MOVE.L  A0,-8(A5)
 
-LAB_0E4D:
+.text_ptr_ready:
     MOVEA.L -8(A5),A0
 
-LAB_0E4E:
+.scan_text_end:
     TST.B   (A0)+
-    BNE.S   LAB_0E4E
+    BNE.S   .scan_text_end
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -1204,12 +1225,12 @@ LAB_0E4E:
     MOVEQ   #0,D4
     MOVE.L  D4,D5
 
-LAB_0E4F:
+.segment_loop:
     CMP.L   D7,D5
-    BGE.W   LAB_0E54
+    BGE.W   .write_linebreak
 
     CMP.L   D4,D7
-    BEQ.S   LAB_0E50
+    BEQ.S   .flush_segment
 
     MOVEA.L -4(A5),A1
     MOVEA.L 10(A1),A0
@@ -1217,11 +1238,11 @@ LAB_0E4F:
     MOVE.B  (A0),D0
     MOVE.B  -25(A5),D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0E53
+    BEQ.S   .next_char
 
-LAB_0E50:
+.flush_segment:
     TST.L   D4
-    BLE.S   LAB_0E52
+    BLE.S   .update_attr
 
     MOVEQ   #0,D0
     MOVE.B  -25(A5),D0
@@ -1234,9 +1255,9 @@ LAB_0E50:
     LEA     -35(A5),A0
     MOVEA.L A0,A1
 
-LAB_0E51:
+.fmt_len_loop:
     TST.B   (A1)+
-    BNE.S   LAB_0E51
+    BNE.S   .fmt_len_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -1257,20 +1278,20 @@ LAB_0E51:
     LEA     32(A7),A7
     MOVE.L  D4,D5
 
-LAB_0E52:
+.update_attr:
     CMP.L   D7,D5
-    BGE.S   LAB_0E53
+    BGE.S   .next_char
 
     MOVEA.L -4(A5),A1
     MOVEA.L 10(A1),A0
     ADDA.L  D4,A0
     MOVE.B  (A0),-25(A5)
 
-LAB_0E53:
+.next_char:
     ADDQ.L  #1,D4
-    BRA.W   LAB_0E4F
+    BRA.W   .segment_loop
 
-LAB_0E54:
+.write_linebreak:
     PEA     1.W
     PEA     LAB_1FC6
     MOVE.L  LAB_2320,-(A7)
@@ -1278,23 +1299,44 @@ LAB_0E54:
 
     LEA     12(A7),A7
     ADDQ.W  #1,D6
-    BRA.W   LAB_0E4B
+    BRA.W   .entry_loop
 
-LAB_0E55:
+.close_file:
     MOVE.L  LAB_2320,-(A7)
     JSR     LAB_0F98(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_1B9F
 
-LAB_0E56:
+.return:
     MOVEM.L -52(A5),D4-D7
     UNLK    A5
     RTS
 
 ;!======
 
-; load text ads?
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_LoadTextAdsFromFile   (Load text ads from file??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: 0 on success, -1 on failure ??
+; CLOBBERS:
+;   D0-D7/A0-A1 ??
+; CALLS:
+;   LAB_0EE5, LAB_0F9B, LAB_0F95, LAB_0F94, LADFUNC_ParseHexDigit,
+;   LAB_0EE6, LAB_0EE7, NEWGRID_JMPTBL_AllocateMemory,
+;   NEWGRID_JMPTBL_DeallocateMemory, LADFUNC_RebuildEntryTextBuffers
+; READS:
+;   GLOB_REF_LONG_FILE_SCRATCH, LAB_21BC, LAB_2251
+; WRITES:
+;   Entry text/attr buffers (6/10 offsets), LAB_21BC scratch ptr ??
+; DESC:
+;   Reads encoded entry data and rebuilds per-entry text and attribute buffers.
+; NOTES:
+;   Control code 3 carries hex nibbles that update the attribute byte.
+;------------------------------------------------------------------------------
+LADFUNC_LoadTextAdsFromFile:
 LAB_0E57:
     LINK.W  A5,#-40
     MOVEM.L D2/D4-D7,-(A7)
@@ -1309,22 +1351,22 @@ LAB_0E57:
 
     LEA     12(A7),A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_0E58
+    BNE.S   .file_opened
 
     MOVEQ   #-1,D0
-    BRA.W   LAB_0E68
+    BRA.W   .return
 
-LAB_0E58:
+.file_opened:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D6
     MOVE.L  LAB_21BC,-12(A5)
     BSR.W   LADFUNC_RebuildEntryTextBuffers
 
     MOVEQ   #0,D7
 
-LAB_0E59:
+.entry_loop:
     MOVEQ   #46,D0
     CMP.L   D0,D7
-    BGE.W   LAB_0E67
+    BGE.W   .free_file_buffer
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1343,9 +1385,9 @@ LAB_0E59:
 
     MOVEA.L D0,A0
 
-LAB_0E5A:
+.scan_encoded_end:
     TST.B   (A0)+
-    BNE.S   LAB_0E5A
+    BNE.S   .scan_encoded_end
 
     SUBQ.L  #1,A0
     SUBA.L  D0,A0
@@ -1353,28 +1395,28 @@ LAB_0E5A:
     MOVE.L  D0,-34(A5)
     MOVE.L  D0,-8(A5)
 
-LAB_0E5B:
+.measure_text_len:
     TST.L   D4
-    BLE.S   LAB_0E5D
+    BLE.S   .alloc_or_free
 
     MOVEA.L -34(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_0E5D
+    BEQ.S   .alloc_or_free
 
     MOVEQ   #3,D0
     CMP.B   (A0),D0
-    BNE.S   LAB_0E5C
+    BNE.S   .advance_len_ptr
 
     SUBQ.L  #3,D4
     ADDQ.L  #2,-34(A5)
 
-LAB_0E5C:
+.advance_len_ptr:
     ADDQ.L  #1,-34(A5)
-    BRA.S   LAB_0E5B
+    BRA.S   .measure_text_len
 
-LAB_0E5D:
+.alloc_or_free:
     TST.L   D4
-    BLE.W   LAB_0E64
+    BLE.W   .free_existing_buffers
 
     MOVE.L  D4,D0
     ADDQ.L  #1,D0
@@ -1382,48 +1424,48 @@ LAB_0E5D:
     MOVE.L  D0,-(A7)
     PEA     591.W
     PEA     GLOB_STR_LADFUNC_C_9
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.L  D0,6(A0)
     TST.L   D0
-    BNE.S   LAB_0E5E
+    BNE.S   .alloc_attr_buffer
 
     MOVEQ   #-1,D0
-    BRA.W   LAB_0E68
+    BRA.W   .return
 
-LAB_0E5E:
+.alloc_attr_buffer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D4,-(A7)
     PEA     600.W
     PEA     GLOB_STR_LADFUNC_C_10
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.L  D0,10(A0)
-    BNE.S   LAB_0E5F
+    BNE.S   .decode_loop
 
     MOVEQ   #-1,D0
-    BRA.W   LAB_0E68
+    BRA.W   .return
 
-LAB_0E5F:
+.decode_loop:
     MOVEQ   #0,D5
     MOVE.L  -8(A5),-34(A5)
 
-LAB_0E60:
+.decode_loop_next:
     CMP.L   D4,D5
-    BGE.W   LAB_0E63
+    BGE.W   .finish_entry
 
     MOVEA.L -34(A5),A0
     TST.B   (A0)
-    BEQ.W   LAB_0E63
+    BEQ.W   .finish_entry
 
     MOVE.B  (A0),D0
     MOVEQ   #3,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0E61
+    BNE.S   .emit_char
 
     ADDQ.L  #1,-34(A5)
     MOVEA.L -34(A5),A0
@@ -1432,7 +1474,7 @@ LAB_0E60:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-34(A5)
-        BSR.W   LADFUNC_ParseHexDigit
+    BSR.W   LADFUNC_ParseHexDigit
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1452,7 +1494,7 @@ LAB_0E60:
     MOVE.L  D2,(A7)
     MOVE.B  D0,-29(A5)
     MOVE.L  D1,28(A7)
-        BSR.W   LADFUNC_ParseHexDigit
+    BSR.W   LADFUNC_ParseHexDigit
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1462,9 +1504,9 @@ LAB_0E60:
 
     LEA     12(A7),A7
     MOVE.B  D0,-29(A5)
-    BRA.S   LAB_0E62
+    BRA.S   .advance_decode_ptr
 
-LAB_0E61:
+.emit_char:
     MOVEA.L -4(A5),A1
     MOVEA.L 6(A1),A0
     ADDA.L  D5,A0
@@ -1474,29 +1516,29 @@ LAB_0E61:
     ADDQ.L  #1,D5
     MOVE.B  -29(A5),(A0)
 
-LAB_0E62:
+.advance_decode_ptr:
     ADDQ.L  #1,-34(A5)
-    BRA.W   LAB_0E60
+    BRA.W   .decode_loop_next
 
-LAB_0E63:
+.finish_entry:
     MOVEA.L -4(A5),A1
     MOVEA.L 6(A1),A0
     MOVEA.L A0,A1
     ADDA.L  D5,A1
     CLR.B   (A1)
-    BRA.S   LAB_0E66
+    BRA.S   .next_entry
 
-LAB_0E64:
+.free_existing_buffers:
     MOVEA.L -4(A5),A0
     TST.L   6(A0)
-    BEQ.S   LAB_0E66
+    BEQ.S   .next_entry
 
     MOVEA.L -4(A5),A1
     MOVEA.L 6(A1),A0
 
-LAB_0E65:
+.scan_existing_len:
     TST.B   (A0)+
-    BNE.S   LAB_0E65
+    BNE.S   .scan_existing_len
 
     SUBQ.L  #1,A0
     SUBA.L  6(A1),A0
@@ -1507,41 +1549,41 @@ LAB_0E65:
     MOVE.L  6(A1),-(A7)
     PEA     638.W
     PEA     GLOB_STR_LADFUNC_C_11
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     SUBA.L  A0,A0
     MOVEA.L -4(A5),A1
     MOVE.L  A0,6(A1)
     TST.L   10(A1)
-    BEQ.S   LAB_0E66
+    BEQ.S   .next_entry
 
     MOVE.L  D4,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     642.W
     PEA     GLOB_STR_LADFUNC_C_12
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
     CLR.L   10(A0)
 
-LAB_0E66:
+.next_entry:
     ADDQ.L  #1,D7
-    BRA.W   LAB_0E59
+    BRA.W   .entry_loop
 
-LAB_0E67:
+.free_file_buffer:
     MOVE.L  D6,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     653.W
     PEA     GLOB_STR_LADFUNC_C_13
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
 
-LAB_0E68:
+.return:
     MOVEM.L -60(A5),D2/D4-D7
 
     UNLK    A5
@@ -1549,6 +1591,30 @@ LAB_0E68:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_DisplayTextPackedPens   (Display text with packed pens??)
+; ARGS:
+;   stack +4: RastPort* rp ??
+;   stack +8: u16 x ??
+;   stack +12: u16 y ??
+;   stack +16: u8 packedPens (hi=BPen, lo=APen) ??
+;   stack +20: const u8* textPtr ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/D5-D7/A1-A3/A6 ??
+; CALLS:
+;   LAB_0EE9, LAB_0EE8, _LVOSetAPen, _LVOSetBPen, JMPTBL_DISPLIB_DisplayTextAtPosition_3
+; READS:
+;   GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   (none)
+; DESC:
+;   Sets APen/BPen from packed nibble and draws text at position.
+; NOTES:
+;   Packed pen byte uses low nibble for APen and high nibble for BPen.
+;------------------------------------------------------------------------------
+LADFUNC_DisplayTextPackedPens:
 LAB_0E69:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -1592,6 +1658,31 @@ LAB_0E69:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_DrawEntryLineWithAttrs   (Draw entry line with attributes??)
+; ARGS:
+;   stack +4: struct* uiCtx ?? (A3)
+;   stack +8: u16 lineIndex ?? (D7)
+;   stack +12: const u8* textPtr ?? (A2)
+;   stack +16: const u8* attrPtr ?? (A5+20)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   _LVOTextLength, NEWGRID_JMPTBL_MATH_Mulu32, JMPTBL_MATH_DivS32_3,
+;   NEWGRID_JMPTBL_AllocateMemory, NEWGRID_JMPTBL_DeallocateMemory,
+;   LADFUNC_DisplayTextPackedPens
+; READS:
+;   GLOB_STR_SINGLE_SPACE_1, LAB_21FB
+; WRITES:
+;   (none)
+; DESC:
+;   Splits a line into attribute runs and renders them centered within bounds.
+; NOTES:
+;   Control codes 24/25/26 affect leading alignment/attributes.
+;------------------------------------------------------------------------------
+LADFUNC_DrawEntryLineWithAttrs:
 LAB_0E6A:
     LINK.W  A5,#-44
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -1613,104 +1704,104 @@ LAB_0E6A:
     MOVE.L  D0,-22(A5)
     MOVEQ   #40,D1
     CMP.L   D1,D0
-    BLE.S   LAB_0E6B
+    BLE.S   .cap_columns
 
     MOVE.L  D1,-22(A5)
 
-LAB_0E6B:
+.cap_columns:
     MOVE.L  -22(A5),D0
     ADDQ.L  #1,D0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     712.W
     PEA     GLOB_STR_LADFUNC_C_14
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.W   LAB_0E82
+    BEQ.W   .return
 
     MOVE.B  (A2),D1
     MOVEQ   #24,D2
     CMP.B   D2,D1
-    BEQ.S   LAB_0E6C
+    BEQ.S   .control_prefix
 
     MOVEQ   #25,D2
     CMP.B   D2,D1
-    BEQ.S   LAB_0E6C
+    BEQ.S   .control_prefix
 
     MOVEQ   #26,D2
     CMP.B   D2,D1
-    BNE.S   LAB_0E6D
+    BNE.S   .text_ptr_ready
 
-LAB_0E6C:
+.control_prefix:
     MOVE.L  D1,D6
     MOVEA.L 20(A5),A0
     MOVE.B  (A0)+,D5
     ADDQ.L  #1,A2
     MOVE.L  A0,20(A5)
 
-LAB_0E6D:
+.text_ptr_ready:
     MOVEA.L A2,A0
 
-LAB_0E6E:
+.scan_text_end:
     TST.B   (A0)+
-    BNE.S   LAB_0E6E
+    BNE.S   .scan_text_end
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,-10(A5)
     MOVE.L  -22(A5),D1
     CMPA.L  D1,A0
-    BLE.S   LAB_0E6F
+    BLE.S   .length_ready
 
     MOVE.L  D1,-10(A5)
 
-LAB_0E6F:
+.length_ready:
     MOVE.L  -10(A5),D2
     MOVE.L  D1,D3
     SUB.L   D2,D3
     MOVEM.L D3,-30(A5)
-    BLE.S   LAB_0E70
+    BLE.S   .prepare_offsets
 
     TST.B   D6
-    BNE.S   LAB_0E70
+    BNE.S   .prepare_offsets
 
     MOVEA.L 20(A5),A0
     MOVE.B  0(A0,D2.L),D5
 
-LAB_0E70:
+.prepare_offsets:
     MOVEA.L 4(A3),A0
     MOVEQ   #0,D2
     MOVE.W  (A0),D2
     ASL.L   #3,D2
     MOVE.L  -26(A5),D0
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D2
     TST.L   D2
-    BPL.S   LAB_0E71
+    BPL.S   .x_offset_ready
 
     ADDQ.L  #1,D2
 
-LAB_0E71:
+.x_offset_ready:
     ASR.L   #1,D2
     MOVEA.L 52(A3),A1
     MOVEQ   #0,D0
     MOVE.W  20(A1),D0
     MOVE.L  LAB_21FB,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.W  2(A0),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_0E72
+    BPL.S   .y_offset_ready
 
     ADDQ.L  #1,D1
 
-LAB_0E72:
+.y_offset_ready:
     ASR.L   #1,D1
     MOVE.L  D7,D0
     ADDQ.L  #1,D0
@@ -1718,51 +1809,51 @@ LAB_0E72:
     MOVE.W  20(A1),D4
     MOVE.L  D1,-38(A5)
     MOVE.L  D4,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-38(A5)
     MOVE.L  D2,-34(A5)
-    BGE.S   LAB_0E73
+    BGE.S   .clamp_x
 
     MOVEQ   #0,D0
     MOVE.L  D0,-34(A5)
 
-LAB_0E73:
+.clamp_x:
     MOVE.L  -38(A5),D0
     TST.L   D0
-    BPL.S   LAB_0E74
+    BPL.S   .clamp_y
 
     MOVEQ   #0,D0
     MOVE.L  D0,-38(A5)
 
-LAB_0E74:
+.clamp_y:
     MOVEQ   #24,D0
     CMP.B   D0,D6
-    BNE.S   LAB_0E75
+    BNE.S   .indent_for_26
 
     MOVEQ   #2,D0
     MOVE.L  D0,-14(A5)
-    BRA.S   LAB_0E77
+    BRA.S   .indent_ready
 
-LAB_0E75:
+.indent_for_26:
     MOVEQ   #26,D0
     CMP.B   D0,D6
-    BNE.S   LAB_0E76
+    BNE.S   .indent_default
 
     MOVEQ   #1,D0
     MOVE.L  D0,-14(A5)
-    BRA.S   LAB_0E77
+    BRA.S   .indent_ready
 
-LAB_0E76:
+.indent_default:
     MOVEQ   #0,D0
     MOVE.L  D0,-14(A5)
 
-LAB_0E77:
+.indent_ready:
     TST.L   -14(A5)
-    BEQ.S   LAB_0E7A
+    BEQ.S   .after_indent_draw
 
     TST.L   D3
-    BEQ.S   LAB_0E7A
+    BEQ.S   .after_indent_draw
 
     MOVE.L  D3,D0
     MOVE.L  -14(A5),D1
@@ -1770,14 +1861,14 @@ LAB_0E77:
 
     MOVEQ   #32,D1
     MOVEA.L -4(A5),A0
-    BRA.S   LAB_0E79
+    BRA.S   .indent_fill_next
 
-LAB_0E78:
+.indent_fill_loop:
     MOVE.B  D1,(A0)+
 
-LAB_0E79:
+.indent_fill_next:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0E78
+    BCC.S   .indent_fill_loop
 
     MOVE.L  -30(A5),D0
     MOVE.L  -14(A5),D1
@@ -1792,7 +1883,7 @@ LAB_0E79:
     MOVE.L  -38(A5),-(A7)
     MOVE.L  -34(A5),-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0E69
+    BSR.W   LADFUNC_DisplayTextPackedPens
 
     LEA     20(A7),A7
     MOVE.L  -30(A5),D0
@@ -1801,42 +1892,42 @@ LAB_0E79:
 
     MOVE.L  -26(A5),D1
     MOVE.L  D0,32(A7)
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-34(A5)
     MOVE.L  32(A7),D0
     SUB.L   D0,-30(A5)
 
-LAB_0E7A:
+.after_indent_draw:
     CLR.L   -14(A5)
 
-LAB_0E7B:
+.segment_loop:
     MOVE.L  -14(A5),D0
     CMP.L   -10(A5),D0
-    BGE.W   LAB_0E7E
+    BGE.W   .tail_spaces
 
     CLR.L   -18(A5)
 
-LAB_0E7C:
+.segment_scan:
     MOVE.L  -14(A5),D0
     MOVE.L  -18(A5),D1
     MOVE.L  D1,D2
     ADD.L   D0,D2
     CMP.L   -10(A5),D2
-    BGE.S   LAB_0E7D
+    BGE.S   .emit_segment
 
     MOVEA.L 20(A5),A0
     MOVE.B  0(A0,D0.L),D3
     CMP.B   0(A0,D2.L),D3
-    BNE.S   LAB_0E7D
+    BNE.S   .emit_segment
 
     ADD.L   D1,D0
     MOVEA.L -4(A5),A0
     MOVE.B  0(A2,D0.L),0(A0,D1.L)
     ADDQ.L  #1,-18(A5)
-    BRA.S   LAB_0E7C
+    BRA.S   .segment_scan
 
-LAB_0E7D:
+.emit_segment:
     MOVEA.L -4(A5),A0
     MOVE.L  -18(A5),D0
     CLR.B   0(A0,D0.L)
@@ -1849,33 +1940,33 @@ LAB_0E7D:
     MOVE.L  -38(A5),-(A7)
     MOVE.L  -34(A5),-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0E69
+    BSR.W   LADFUNC_DisplayTextPackedPens
 
     LEA     20(A7),A7
     MOVE.L  -26(A5),D0
     MOVE.L  -18(A5),D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D0,-34(A5)
     MOVE.L  -18(A5),D0
     ADD.L   D0,-14(A5)
-    BRA.W   LAB_0E7B
+    BRA.W   .segment_loop
 
-LAB_0E7E:
+.tail_spaces:
     TST.L   -30(A5)
-    BEQ.S   LAB_0E81
+    BEQ.S   .free_buffer
 
     MOVE.L  -30(A5),D0
     MOVEQ   #32,D1
     MOVEA.L -4(A5),A0
-    BRA.S   LAB_0E80
+    BRA.S   .tail_fill_next
 
-LAB_0E7F:
+.tail_fill_loop:
     MOVE.B  D1,(A0)+
 
-LAB_0E80:
+.tail_fill_next:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0E7F
+    BCC.S   .tail_fill_loop
 
     MOVEA.L -4(A5),A0
     MOVE.L  -30(A5),D0
@@ -1887,28 +1978,53 @@ LAB_0E80:
     MOVE.L  -38(A5),-(A7)
     MOVE.L  -34(A5),-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0E69
+    BSR.W   LADFUNC_DisplayTextPackedPens
 
     LEA     20(A7),A7
 
-LAB_0E81:
+.free_buffer:
     MOVE.L  -22(A5),D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     824.W
     PEA     GLOB_STR_LADFUNC_C_15
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0E82:
+.return:
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_DrawEntryPreview   (Draw entry preview??)
+; ARGS:
+;   stack +4: u16 entryIndex ?? (D7)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A0-A3/A6 ??
+; CALLS:
+;   GROUP_AW_JMPTBL_LAB_183E, _LVOSetFont, _LVOTextLength,
+;   JMPTBL_MATH_DivS32_3, NEWGRID_JMPTBL_AllocateMemory,
+;   NEWGRID_JMPTBL_DeallocateMemory, _LVOSetDrMd, _LVOSetRast,
+;   GROUP_AW_JMPTBL_LAB_0A49, GROUP_AW_JMPTBL_LAB_0A48,
+;   LAB_0EE8, LADFUNC_DrawEntryLineWithAttrs
+; READS:
+;   LAB_2251, LAB_1FB8..LAB_1FBA, LAB_21FB, GLOB_HANDLE_H26F_FONT,
+;   GLOB_HANDLE_PREVUEC_FONT
+; WRITES:
+;   LAB_2295..LAB_2297, LAB_22AB, LAB_2216
+; DESC:
+;   Builds line buffers and renders a preview for the selected entry.
+; NOTES:
+;   Splits text/attr streams on newline/control markers (24/25/26).
+;------------------------------------------------------------------------------
+LADFUNC_DrawEntryPreview:
 LAB_0E83:
     LINK.W  A5,#-40
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -1945,22 +2061,22 @@ LAB_0E83:
     MOVE.L  D0,-(A7)
     PEA     857.W
     PEA     GLOB_STR_LADFUNC_C_16
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  D6,-(A7)
     PEA     858.W
     PEA     GLOB_STR_LADFUNC_C_17
     MOVE.L  D0,-4(A5)
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     36(A7),A7
     MOVE.L  D0,-16(A5)
     TST.L   -4(A5)
-    BEQ.W   LAB_0E8F
+    BEQ.W   .cleanup
 
     TST.L   D0
-    BEQ.W   LAB_0E8F
+    BEQ.W   .cleanup
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1986,10 +2102,10 @@ LAB_0E83:
 
     MOVEQ   #0,D4
 
-LAB_0E84:
+.copy_default_palette:
     MOVEQ   #24,D0
     CMP.L   D0,D4
-    BGE.S   LAB_0E85
+    BGE.S   .palette_ready
 
     LEA     LAB_2295,A0
     ADDA.L  D4,A0
@@ -1997,14 +2113,14 @@ LAB_0E84:
     ADDA.L  D4,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D4
-    BRA.S   LAB_0E84
+    BRA.S   .copy_default_palette
 
-LAB_0E85:
+.palette_ready:
     MOVEA.L -8(A5),A0
 
-LAB_0E86:
+.scan_text_end:
     TST.B   (A0)+
-    BNE.S   LAB_0E86
+    BNE.S   .scan_text_end
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -2042,49 +2158,49 @@ LAB_0E86:
     MOVE.L  D0,-32(A5)
     MOVE.L  D0,-36(A5)
 
-LAB_0E87:
+.row_loop:
     CMP.L   LAB_21FB,D4
-    BGE.W   LAB_0E8E
+    BGE.W   .after_rows
 
-LAB_0E88:
+.row_char_loop:
     MOVE.L  -32(A5),D0
     CMP.L   D5,D0
-    BGE.W   LAB_0E8D
+    BGE.W   .render_line
 
     MOVE.L  -36(A5),D1
     CMP.L   D6,D1
-    BGE.W   LAB_0E8D
+    BGE.W   .render_line
 
     MOVEA.L -8(A5),A0
     MOVE.B  0(A0,D0.L),D2
     MOVEQ   #10,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E89
+    BEQ.S   .skip_linebreak
 
     MOVEQ   #13,D3
     CMP.B   D3,D2
-    BNE.S   LAB_0E8A
+    BNE.S   .handle_line_start
 
-LAB_0E89:
+.skip_linebreak:
     ADDQ.L  #1,-32(A5)
-    BRA.S   LAB_0E88
+    BRA.S   .row_char_loop
 
-LAB_0E8A:
+.handle_line_start:
     TST.L   D1
-    BNE.S   LAB_0E8B
+    BNE.S   .handle_control
 
     MOVE.B  0(A0,D0.L),D2
     MOVEQ   #24,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E8B
+    BEQ.S   .handle_control
 
     MOVEQ   #25,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E8B
+    BEQ.S   .handle_control
 
     MOVEQ   #26,D2
     CMP.B   0(A0,D0.L),D2
-    BEQ.S   LAB_0E8B
+    BEQ.S   .handle_control
 
     MOVEA.L -4(A5),A1
     MOVE.B  D3,0(A1,D1.L)
@@ -2092,28 +2208,28 @@ LAB_0E8A:
     MOVEA.L -12(A5),A2
     MOVEA.L -16(A5),A3
     MOVE.B  0(A2,D0.L),0(A3,D1.L)
-    BRA.S   LAB_0E88
+    BRA.S   .row_char_loop
 
-LAB_0E8B:
+.handle_control:
     TST.L   D1
-    BLE.S   LAB_0E8C
+    BLE.S   .copy_char
 
     MOVE.B  0(A0,D0.L),D2
     MOVEQ   #24,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E8D
+    BEQ.S   .render_line
 
     MOVEQ   #25,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E8D
+    BEQ.S   .render_line
 
     MOVEQ   #26,D2
     CMP.B   0(A0,D0.L),D2
-    BNE.S   LAB_0E8C
+    BNE.S   .copy_char
 
-    BRA.S   LAB_0E8D
+    BRA.S   .render_line
 
-LAB_0E8C:
+.copy_char:
     MOVEA.L -12(A5),A1
     MOVEA.L -16(A5),A2
     MOVE.B  0(A1,D0.L),0(A2,D1.L)
@@ -2121,9 +2237,9 @@ LAB_0E8C:
     ADDQ.L  #1,-32(A5)
     MOVEA.L -4(A5),A1
     MOVE.B  0(A0,D0.L),0(A1,D1.L)
-    BRA.W   LAB_0E88
+    BRA.W   .row_char_loop
 
-LAB_0E8D:
+.render_line:
     MOVEA.L -4(A5),A0
     MOVE.L  -36(A5),D0
     CLR.B   0(A0,D0.L)
@@ -2133,17 +2249,17 @@ LAB_0E8D:
     MOVE.L  A0,-(A7)
     MOVE.L  D4,-(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   LAB_0E6A
+    BSR.W   LADFUNC_DrawEntryLineWithAttrs
 
     LEA     16(A7),A7
     ADDQ.L  #1,D4
     CLR.L   -36(A5)
-    BRA.W   LAB_0E87
+    BRA.W   .row_loop
 
-LAB_0E8E:
+.after_rows:
     JSR     GROUP_AW_JMPTBL_LAB_0A48(PC)
 
-LAB_0E8F:
+.cleanup:
     MOVEA.L LAB_2216,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
     MOVEA.L A0,A1
@@ -2152,7 +2268,7 @@ LAB_0E8F:
     JSR     _LVOSetFont(A6)
 
     TST.L   -4(A5)
-    BEQ.S   LAB_0E90
+    BEQ.S   .free_attr_buf
 
     MOVE.L  D6,D0
     ADDQ.L  #1,D0
@@ -2160,29 +2276,51 @@ LAB_0E8F:
     MOVE.L  -4(A5),-(A7)
     PEA     926.W
     PEA     GLOB_STR_LADFUNC_C_18
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0E90:
+.free_attr_buf:
     TST.L   -16(A5)
-    BEQ.S   LAB_0E91
+    BEQ.S   .return
 
     MOVE.L  D6,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     928.W
     PEA     GLOB_STR_LADFUNC_C_19
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0E91:
+.return:
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_ReflowEntryBuffers   (Reflow entry buffers??)
+; ARGS:
+;   stack +4: u8* outText ??
+;   stack +8: u8* outAttr ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A0-A3 ??
+; CALLS:
+;   NEWGRID_JMPTBL_AllocateMemory, NEWGRID_JMPTBL_DeallocateMemory,
+;   JMPTBL_MATH_DivS32_3
+; READS:
+;   LAB_21FB
+; WRITES:
+;   outText/outAttr buffers
+; DESC:
+;   Copies and reflows entry text/attr buffers into fixed-width rows.
+; NOTES:
+;   Honors control bytes 24/25/26 and line breaks.
+;------------------------------------------------------------------------------
+LADFUNC_ReflowEntryBuffers:
 LAB_0E92:
     LINK.W  A5,#-120
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -2190,9 +2328,9 @@ LAB_0E92:
     MOVEA.L 12(A5),A2
     MOVEA.L A3,A0
 
-LAB_0E93:
+.scan_text_end:
     TST.B   (A0)+
-    BNE.S   LAB_0E93
+    BNE.S   .scan_text_end
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
@@ -2203,41 +2341,41 @@ LAB_0E93:
     MOVE.L  D0,-(A7)
     PEA     1025.W
     PEA     GLOB_STR_LADFUNC_C_20
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  -116(A5),-(A7)
     PEA     1026.W
     PEA     GLOB_STR_LADFUNC_C_21
     MOVE.L  D0,-6(A5)
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-10(A5)
     TST.L   -6(A5)
-    BEQ.W   LAB_0EAC
+    BEQ.W   .cleanup
 
     TST.L   D0
-    BEQ.W   LAB_0EAC
+    BEQ.W   .cleanup
 
     MOVEA.L A3,A0
     MOVEA.L -6(A5),A1
 
-LAB_0E94:
+.copy_text_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_0E94
+    BNE.S   .copy_text_loop
 
     MOVE.L  -116(A5),D0
     MOVEA.L A2,A0
     MOVEA.L -10(A5),A1
-    BRA.S   LAB_0E96
+    BRA.S   .copy_attr_next
 
-LAB_0E95:
+.copy_attr_loop:
     MOVE.B  (A0)+,(A1)+
 
-LAB_0E96:
+.copy_attr_next:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0E95
+    BCC.S   .copy_attr_loop
 
     MOVEQ   #0,D7
     MOVE.L  D7,D0
@@ -2248,97 +2386,97 @@ LAB_0E96:
     MOVE.L  D0,-104(A5)
     MOVE.L  D0,-112(A5)
 
-LAB_0E97:
+.row_loop:
     CMP.L   LAB_21FB,D5
-    BGE.W   LAB_0EAB
+    BGE.W   .finish_all
 
-LAB_0E98:
+.scan_row:
     MOVEA.L -6(A5),A0
     MOVE.L  -100(A5),D0
     TST.B   0(A0,D0.L)
-    BEQ.W   LAB_0E9F
+    BEQ.W   .finalize_line
 
     MOVE.L  -104(A5),D1
     MOVEQ   #40,D2
     CMP.L   D2,D1
-    BGE.W   LAB_0E9F
+    BGE.W   .finalize_line
 
     MOVE.B  0(A0,D0.L),D2
     MOVEQ   #10,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E99
+    BEQ.S   .skip_linebreak
 
     MOVEQ   #13,D3
     CMP.B   D3,D2
-    BNE.S   LAB_0E9A
+    BNE.S   .check_control_start
 
-LAB_0E99:
+.skip_linebreak:
     ADDQ.L  #1,-100(A5)
-    BRA.S   LAB_0E98
+    BRA.S   .scan_row
 
-LAB_0E9A:
+.check_control_start:
     TST.B   D7
-    BNE.S   LAB_0E9D
+    BNE.S   .check_control_mid
 
     MOVE.B  0(A0,D0.L),D2
     MOVEQ   #24,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E9B
+    BEQ.S   .set_control_mode
 
     MOVEQ   #25,D4
     CMP.B   D4,D2
-    BEQ.S   LAB_0E9B
+    BEQ.S   .set_control_mode
 
     MOVEQ   #26,D2
     CMP.B   0(A0,D0.L),D2
-    BNE.S   LAB_0E9C
+    BNE.S   .set_default_mode
 
-LAB_0E9B:
+.set_control_mode:
     MOVE.B  0(A0,D0.L),D7
     ADDQ.L  #1,-100(A5)
     MOVEA.L -10(A5),A1
     MOVE.B  0(A1,D0.L),D6
-    BRA.S   LAB_0E98
+    BRA.S   .scan_row
 
-LAB_0E9C:
+.set_default_mode:
     MOVE.L  D4,D7
     MOVEA.L -10(A5),A1
     MOVE.B  0(A1,D0.L),D6
-    BRA.S   LAB_0E98
+    BRA.S   .scan_row
 
-LAB_0E9D:
+.check_control_mid:
     MOVE.B  0(A0,D0.L),D2
     MOVEQ   #24,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E9F
+    BEQ.S   .finalize_line
 
     MOVEQ   #25,D3
     CMP.B   D3,D2
-    BEQ.S   LAB_0E9F
+    BEQ.S   .finalize_line
 
     MOVEQ   #26,D2
     CMP.B   0(A0,D0.L),D2
-    BNE.S   LAB_0E9E
+    BNE.S   .emit_char_to_line
 
-    BRA.S   LAB_0E9F
+    BRA.S   .finalize_line
 
-LAB_0E9E:
+.emit_char_to_line:
     MOVE.B  0(A0,D0.L),-51(A5,D1.L)
     ADDQ.L  #1,-104(A5)
     ADDQ.L  #1,-100(A5)
     MOVEA.L -10(A5),A0
     MOVE.B  0(A0,D0.L),-91(A5,D1.L)
-    BRA.W   LAB_0E98
+    BRA.W   .scan_row
 
-LAB_0E9F:
+.finalize_line:
     MOVE.L  -104(A5),D0
     CLR.B   -51(A5,D0.L)
     LEA     -51(A5),A0
     MOVEA.L A0,A1
 
-LAB_0EA0:
+.scan_line_len:
     TST.B   (A1)+
-    BNE.S   LAB_0EA0
+    BNE.S   .scan_line_len
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -2348,105 +2486,105 @@ LAB_0EA0:
     MOVEM.L D1,-120(A5)
     MOVEQ   #24,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0EA1
+    BNE.S   .indent_for_26
 
     MOVEQ   #2,D0
     MOVE.L  D0,-104(A5)
-    BRA.S   LAB_0EA3
+    BRA.S   .indent_ready
 
-LAB_0EA1:
+.indent_for_26:
     MOVEQ   #26,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0EA2
+    BNE.S   .indent_default
 
     MOVEQ   #1,D0
     MOVE.L  D0,-104(A5)
-    BRA.S   LAB_0EA3
+    BRA.S   .indent_ready
 
-LAB_0EA2:
+.indent_default:
     MOVEQ   #0,D0
     MOVE.L  D0,-104(A5)
 
-LAB_0EA3:
+.indent_ready:
     MOVE.L  -104(A5),D0
     TST.L   D0
-    BLE.S   LAB_0EA6
+    BLE.S   .copy_line_to_output
 
     TST.L   D1
-    BLE.S   LAB_0EA6
+    BLE.S   .copy_line_to_output
 
     CLR.L   -108(A5)
 
-LAB_0EA4:
+.indent_loop:
     MOVE.L  -120(A5),D0
     MOVE.L  -104(A5),D1
     JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVE.L  -108(A5),D1
     CMP.L   D0,D1
-    BGE.S   LAB_0EA5
+    BGE.S   .after_indent
 
     MOVE.L  -112(A5),D0
     MOVE.B  #$20,0(A3,D0.L)
     MOVE.B  D6,0(A2,D0.L)
     ADDQ.L  #1,-108(A5)
     ADDQ.L  #1,-112(A5)
-    BRA.S   LAB_0EA4
+    BRA.S   .indent_loop
 
-LAB_0EA5:
+.after_indent:
     MOVE.L  -120(A5),D0
     MOVE.L  -104(A5),D1
     JSR     JMPTBL_MATH_DivS32_3(PC)
 
     SUB.L   D0,-120(A5)
 
-LAB_0EA6:
+.copy_line_to_output:
     CLR.L   -108(A5)
 
-LAB_0EA7:
+.copy_line_loop:
     MOVE.L  -108(A5),D0
     TST.B   -51(A5,D0.L)
-    BEQ.S   LAB_0EA8
+    BEQ.S   .tail_spaces
 
     MOVE.L  -112(A5),D1
     MOVE.B  -51(A5,D0.L),0(A3,D1.L)
     MOVE.B  -91(A5,D0.L),0(A2,D1.L)
     ADDQ.L  #1,-108(A5)
     ADDQ.L  #1,-112(A5)
-    BRA.S   LAB_0EA7
+    BRA.S   .copy_line_loop
 
-LAB_0EA8:
+.tail_spaces:
     MOVE.L  -120(A5),D0
     TST.L   D0
-    BLE.S   LAB_0EAA
+    BLE.S   .next_row
 
     CLR.L   -108(A5)
 
-LAB_0EA9:
+.tail_space_loop:
     MOVE.L  -108(A5),D0
     CMP.L   -120(A5),D0
-    BGE.S   LAB_0EAA
+    BGE.S   .next_row
 
     MOVE.L  -112(A5),D0
     MOVE.B  #$20,0(A3,D0.L)
     MOVE.B  D6,0(A2,D0.L)
     ADDQ.L  #1,-108(A5)
     ADDQ.L  #1,-112(A5)
-    BRA.S   LAB_0EA9
+    BRA.S   .tail_space_loop
 
-LAB_0EAA:
+.next_row:
     ADDQ.L  #1,D5
     CLR.L   -104(A5)
     MOVEQ   #0,D7
-    BRA.W   LAB_0E97
+    BRA.W   .row_loop
 
-LAB_0EAB:
+.finish_all:
     MOVE.L  -112(A5),D0
     CLR.B   0(A3,D0.L)
 
-LAB_0EAC:
+.cleanup:
     TST.L   -6(A5)
-    BEQ.S   LAB_0EAD
+    BEQ.S   .free_attr
 
     MOVE.L  -116(A5),D0
     ADDQ.L  #1,D0
@@ -2454,29 +2592,51 @@ LAB_0EAC:
     MOVE.L  -6(A5),-(A7)
     PEA     1146.W
     PEA     GLOB_STR_LADFUNC_C_22
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0EAD:
+.free_attr:
     TST.L   -10(A5)
-    BEQ.S   LAB_0EAE
+    BEQ.S   .return
 
     MOVE.L  -116(A5),-(A7)
     MOVE.L  -10(A5),-(A7)
     PEA     1148.W
     PEA     GLOB_STR_LADFUNC_C_23
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0EAE:
+.return:
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LADFUNC_BuildEntryBuffersOrDefault   (Build entry buffers or defaults??)
+; ARGS:
+;   stack +4: u16 entryIndex ?? (D7)
+;   stack +8: u8* outText ??
+;   stack +12: u8* outAttr ??
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A0-A6 ??
+; CALLS:
+;   NEWGRID_JMPTBL_MATH_Mulu32, LAB_0EE5, LADFUNC_ReflowEntryBuffers
+; READS:
+;   LAB_2251, LAB_21FB
+; WRITES:
+;   outText/outAttr buffers
+; DESC:
+;   Copies entry text/attrs if present; otherwise fills defaults and reflows.
+; NOTES:
+;   Uses packed nibble from LAB_0EE5 for default attribute fill.
+;------------------------------------------------------------------------------
+LADFUNC_BuildEntryBuffersOrDefault:
 LAB_0EAF:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A2-A3/A6,-(A7)
@@ -2489,26 +2649,26 @@ LAB_0EAF:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     TST.L   6(A1)
-    BNE.S   LAB_0EB4
+    BNE.S   .copy_existing_buffers
 
     MOVE.L  LAB_21FB,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #32,D1
     MOVEA.L A3,A0
-    BRA.S   LAB_0EB1
+    BRA.S   .fill_text_next
 
-LAB_0EB0:
+.fill_text_loop:
     MOVE.B  D1,(A0)+
 
-LAB_0EB1:
+.fill_text_next:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0EB0
+    BCC.S   .fill_text_loop
 
     MOVE.L  LAB_21FB,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     CLR.B   0(A3,D0.L)
     PEA     1.W
@@ -2521,22 +2681,22 @@ LAB_0EB1:
     MOVE.L  LAB_21FB,D0
     MOVE.L  D1,20(A7)
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  20(A7),D1
     MOVEA.L A2,A0
-    BRA.S   LAB_0EB3
+    BRA.S   .fill_attr_next
 
-LAB_0EB2:
+.fill_attr_loop:
     MOVE.B  D1,(A0)+
 
-LAB_0EB3:
+.fill_attr_next:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0EB2
+    BCC.S   .fill_attr_loop
 
-    BRA.S   LAB_0EB9
+    BRA.S   .return
 
-LAB_0EB4:
+.copy_existing_buffers:
     MOVE.L  D7,D0
     ASL.L   #2,D0
     LEA     LAB_2251,A0
@@ -2545,15 +2705,15 @@ LAB_0EB4:
     MOVEA.L 6(A1),A0
     MOVEA.L A3,A6
 
-LAB_0EB5:
+.copy_text_loop:
     MOVE.B  (A0)+,(A6)+
-    BNE.S   LAB_0EB5
+    BNE.S   .copy_text_loop
 
     MOVEA.L A3,A0
 
-LAB_0EB6:
+.scan_text_end:
     TST.B   (A0)+
-    BNE.S   LAB_0EB6
+    BNE.S   .scan_text_end
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
@@ -2566,22 +2726,22 @@ LAB_0EB6:
     MOVE.L  D6,D0
     MOVEA.L 10(A1),A0
     MOVEA.L A2,A6
-    BRA.S   LAB_0EB8
+    BRA.S   .copy_attr_next2
 
-LAB_0EB7:
+.copy_attr_loop2:
     MOVE.B  (A0)+,(A6)+
 
-LAB_0EB8:
+.copy_attr_next2:
     SUBQ.L  #1,D0
-    BCC.S   LAB_0EB7
+    BCC.S   .copy_attr_loop2
 
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0E92
+    BSR.W   LADFUNC_ReflowEntryBuffers
 
     ADDQ.W  #8,A7
 
-LAB_0EB9:
+.return:
     MOVEM.L (A7)+,D6-D7/A2-A3/A6
     UNLK    A5
     RTS
@@ -2608,14 +2768,14 @@ LAB_0EBB:
     MOVE.L  D0,-(A7)
     PEA     1214.W
     PEA     GLOB_STR_LADFUNC_C_24
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  -108(A5),-(A7)
     PEA     1215.W
     PEA     GLOB_STR_LADFUNC_C_25
     MOVE.L  D0,-6(A5)
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-10(A5)
@@ -2654,7 +2814,7 @@ LAB_0EBF:
 
     MOVE.L  D5,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -6(A5),A0
     ADDA.L  D0,A0
@@ -2676,7 +2836,7 @@ LAB_0EC0:
     SUBA.L  A0,A1
     MOVE.L  D5,D0
     MOVEQ   #40,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -10(A5),A0
     ADDA.L  D0,A0
@@ -2943,7 +3103,7 @@ LAB_0ED8:
     MOVE.L  -6(A5),-(A7)
     PEA     1322.W
     PEA     GLOB_STR_LADFUNC_C_26
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2955,7 +3115,7 @@ LAB_0ED9:
     MOVE.L  -10(A5),-(A7)
     PEA     1324.W
     PEA     GLOB_STR_LADFUNC_C_27
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -2991,7 +3151,7 @@ LAB_0EDB:
     PEA     1362.W
     PEA     GLOB_STR_LADFUNC_C_28
     MOVE.L  A0,36(A7)
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 20(A7),A0
@@ -3081,7 +3241,7 @@ LAB_0EDF:
     MOVE.L  10(A1),-(A7)
     PEA     1386.W
     PEA     GLOB_STR_LADFUNC_C_29
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -3110,7 +3270,7 @@ LAB_0EE1:
     PEA     1389.W
     PEA     GLOB_STR_LADFUNC_C_30
     MOVE.L  A1,36(A7)
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 20(A7),A0

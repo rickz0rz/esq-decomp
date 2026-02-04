@@ -490,7 +490,7 @@ LAB_08DF:
 ;!======
 
 LAB_08E0:
-    JMP     LAB_100D
+    JMP     NEWGRID_ProcessGridMessages
 
 JMPTBL_UNKNOWN2B_AllocRaster_2:
     JMP     UNKNOWN2B_AllocRaster

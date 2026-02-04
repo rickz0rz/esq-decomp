@@ -147,7 +147,7 @@ LAB_08A2:
     JMP     LAB_1365
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0E57   (JumpStub_LAB_0E57)
+; FUNC: ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile   (JumpStub_LADFUNC_LoadTextAdsFromFile)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -155,17 +155,18 @@ LAB_08A2:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0E57
+;   LADFUNC_LoadTextAdsFromFile
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0E57.
+;   Jump stub to LADFUNC_LoadTextAdsFromFile.
 ;------------------------------------------------------------------------------
+ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile:
 ESQ_JMPTBL_LAB_0E57:
 LAB_08A3:
-    JMP     LAB_0E57
+    JMP     LADFUNC_LoadTextAdsFromFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_LAB_041D   (JumpStub_LAB_041D)
@@ -231,7 +232,7 @@ LAB_08A6:
     JMP     KYBD_InitializeInputDevices
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP   (JumpStub_CHECK_IF_COMPATIBLE_VIDEO_CHIP)
+; FUNC: JMPTBL_ESQ_CheckCompatibleVideoChip   (JumpStub_ESQ_CheckCompatibleVideoChip)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -239,19 +240,19 @@ LAB_08A6:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   CHECK_IF_COMPATIBLE_VIDEO_CHIP
+;   ESQ_CheckCompatibleVideoChip
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to CHECK_IF_COMPATIBLE_VIDEO_CHIP.
+;   Jump stub to ESQ_CheckCompatibleVideoChip.
 ;------------------------------------------------------------------------------
-JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP:
-    JMP     CHECK_IF_COMPATIBLE_VIDEO_CHIP
+JMPTBL_ESQ_CheckCompatibleVideoChip:
+    JMP     ESQ_CheckCompatibleVideoChip
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_CHECK_AVAILABLE_FAST_MEMORY   (JumpStub_CHECK_AVAILABLE_FAST_MEMORY)
+; FUNC: JMPTBL_ESQ_CheckAvailableFastMemory   (JumpStub_ESQ_CheckAvailableFastMemory)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -259,16 +260,16 @@ JMPTBL_CHECK_IF_COMPATIBLE_VIDEO_CHIP:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   CHECK_AVAILABLE_FAST_MEMORY
+;   ESQ_CheckAvailableFastMemory
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to CHECK_AVAILABLE_FAST_MEMORY.
+;   Jump stub to ESQ_CheckAvailableFastMemory.
 ;------------------------------------------------------------------------------
-JMPTBL_CHECK_AVAILABLE_FAST_MEMORY:
-    JMP     CHECK_AVAILABLE_FAST_MEMORY
+JMPTBL_ESQ_CheckAvailableFastMemory:
+    JMP     ESQ_CheckAvailableFastMemory
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_STRUCT_AllocWithOwner   (JumpStub_STRUCT_AllocWithOwner)
@@ -334,7 +335,7 @@ LAB_08AB:
     JMP     LAB_180B
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_001E   (JumpStub_LAB_001E)
+; FUNC: ESQ_JMPTBL_ESQ_FormatDiskErrorMessage   (JumpStub_ESQ_FormatDiskErrorMessage)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -342,17 +343,17 @@ LAB_08AB:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_001E
+;   ESQ_FormatDiskErrorMessage
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_001E.
+;   Jump stub to ESQ_FormatDiskErrorMessage.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_001E:
+ESQ_JMPTBL_ESQ_FormatDiskErrorMessage:
 LAB_08AC:
-    JMP     LAB_001E
+    JMP     ESQ_FormatDiskErrorMessage
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_LAB_14E2   (JumpStub_LAB_14E2)

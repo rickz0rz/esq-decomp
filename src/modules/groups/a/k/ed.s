@@ -2051,7 +2051,7 @@ LAB_06E4:
 ; CLOBBERS:
 ;   D0/D7/A0-A1/A6 ??
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ESQ_JMPTBL_LAB_0E57,
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
@@ -2078,7 +2078,7 @@ LAB_06E6:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    JSR     ESQ_JMPTBL_LAB_0E57(PC)
+    JSR     ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile(PC)
 
     LEA     16(A7),A7
 

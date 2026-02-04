@@ -8,7 +8,7 @@
 ;   D0-D1/A0-A1/A6
 ; CALLS:
 ;   exec.library OpenDevice, exec.library DoIO
-;   GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq, GROUPC_JMPTBL_MEMORY_AllocateMemory
+;   GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq, NEWGRID_JMPTBL_AllocateMemory
 ; READS:
 ;   GLOB_STR_INPUTDEVICE, GLOB_STR_CONSOLEDEVICE, GLOB_STR_INPUT_DEVICE, GLOB_STR_CONSOLE_DEVICE
 ; WRITES:
@@ -69,7 +69,7 @@ KYBD_InitializeInputDevices:
     PEA     22.W
     PEA     121.W
     PEA     GLOB_STR_KYBD_C
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,GLOB_REF_DATA_INPUT_BUFFER

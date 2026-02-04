@@ -4,8 +4,9 @@ LAB_07C4:
 LAB_07C5:
     JMP     LAB_184F
 
+GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch:
 GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer:
-    JMP     PARSEINI_ParseConfigBuffer
+    JMP     PARSEINI_ParseIniBufferAndDispatch
 
 LAB_07C7:
     JMP     LAB_16F7

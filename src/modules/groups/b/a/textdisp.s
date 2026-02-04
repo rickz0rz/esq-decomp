@@ -1950,7 +1950,7 @@ LAB_1666:
     CLR.L   LAB_235F
     CLR.B   LAB_2131
     PEA     GLOB_STR_DF0_SOURCECFG_INI_2
-    JSR     PARSEINI_ParseConfigBuffer(PC)
+    JSR     PARSEINI_ParseIniBufferAndDispatch(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  (A7)+,D7
@@ -2189,7 +2189,7 @@ LAB_1677:
 ;!======
 
 LAB_1678:
-    JMP     LAB_0FF5
+    JMP     NEWGRID_ShouldOpenEditor
 
 LAB_1679:
     JMP     LAB_091A

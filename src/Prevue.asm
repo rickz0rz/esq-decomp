@@ -89,7 +89,7 @@ Global_ArgvStorage               = 22922
 ;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
 ;   ESQ_JMPTBL_UNKNOWN2B_Stub0, ESQ_JMPTBL_ESQ_ParseCommandLineAndRun, ESQ_JMPTBL_MEMLIST_FreeAll, ESQ_JMPTBL_UNKNOWN2B_Stub1
 ; READS:
-;   AbsExecBase, LOCAL_STR_DOS_LIBRARY
+;   AbsExecBase, ESQ_STR_DosLibrary
 ; WRITES:
 ;   savedStackPointer, savedExecBase, savedMsg, LocalDosLibraryDisplacement
 ; DESC:
@@ -124,7 +124,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     MOVE.L  #$3000,D1                       ; New signal mask: 0x00003000 into D1
     JSR     _LVOSetSignal(A6)
 
-    LEA     LOCAL_STR_DOS_LIBRARY(PC),A1    ; LEA.L (PC,$0158) == $0021eff2,A1
+    LEA     ESQ_STR_DosLibrary(PC),A1    ; LEA.L (PC,$0158) == $0021eff2,A1
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)             ; Open dos.library version 0 (any) locally...
 
@@ -132,7 +132,7 @@ SECSTRT_0:                                  ; PC: 0021EE58
     BNE.S   .dos_opened_prepare_startup    ; Jump to .dos_opened_prepare_startup if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
 
     MOVEQ   #100,D0                         ; If it wasn't opened, set D0 to 100...
-    BRA.W   ESQ_ShutdownAndReturn           ; and jump to LAB_000A
+    BRA.W   ESQ_ShutdownAndReturn           ; and jump to ESQ_ShutdownAndReturn
 
 ; Decide startup path (CLI vs WB) after dos.library opens.
 .dos_opened_prepare_startup:
@@ -256,7 +256,6 @@ SECSTRT_0:                                  ; PC: 0021EE58
 ;   Loads exit code from the stack and jumps to shutdown/return path.
 ;------------------------------------------------------------------------------
 ESQ_ReturnWithStackCode:
-LAB_0009:
     MOVE.L  4(A7),D0
 
 ;------------------------------------------------------------------------------
@@ -278,7 +277,6 @@ LAB_0009:
 ;   restores registers/stack before returning.
 ;------------------------------------------------------------------------------
 ESQ_ShutdownAndReturn:
-LAB_000A:
     MOVE.L  D0,-(A7)
     MOVE.L  Global_ExitHookPtr(A4),D0
     BEQ.S   .call_exit_hook
@@ -318,7 +316,7 @@ LAB_000A:
 
 ;!======
 
-LOCAL_STR_DOS_LIBRARY:
+ESQ_STR_DosLibrary:
     NStr    "dos.library"
 
 ;------------------------------------------------------------------------------
@@ -339,7 +337,6 @@ LOCAL_STR_DOS_LIBRARY:
 ;   Jump stub to UNKNOWN2B_Stub1.
 ;------------------------------------------------------------------------------
 ESQ_JMPTBL_UNKNOWN2B_Stub1:
-LAB_000F:
     JMP     UNKNOWN2B_Stub1
 
 ;------------------------------------------------------------------------------
@@ -360,7 +357,6 @@ LAB_000F:
 ;   Jump stub to UNKNOWN2B_Stub0.
 ;------------------------------------------------------------------------------
 ESQ_JMPTBL_UNKNOWN2B_Stub0:
-LAB_0010:
     JMP     UNKNOWN2B_Stub0
 
 ;------------------------------------------------------------------------------
@@ -381,7 +377,6 @@ LAB_0010:
 ;   Jump stub to MEMLIST_FreeAll.
 ;------------------------------------------------------------------------------
 ESQ_JMPTBL_MEMLIST_FreeAll:
-LAB_0011:
     JMP     MEMLIST_FreeAll
 
 ;------------------------------------------------------------------------------
@@ -402,13 +397,12 @@ LAB_0011:
 ;   Jump stub to ESQ_ParseCommandLineAndRun.
 ;------------------------------------------------------------------------------
 ESQ_JMPTBL_ESQ_ParseCommandLineAndRun:
-LAB_0012:
     JMP     ESQ_ParseCommandLineAndRun
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CHECK_AVAILABLE_FAST_MEMORY   (CheckAvailableFastMemory)
+; FUNC: ESQ_CheckAvailableFastMemory
 ; ARGS:
 ;   (none)
 ; RET:
@@ -429,7 +423,7 @@ LAB_0012:
 ;------------------------------------------------------------------------------
 ; If the system has at least 600,000 bytes of fast memory, keep HAS_REQUESTED_FAST_MEMORY set to 0.
 ; Otherwise, set it to 1.
-CHECK_AVAILABLE_FAST_MEMORY:
+ESQ_CheckAvailableFastMemory:
 
 .desiredMemory  = 600000
 
@@ -448,7 +442,7 @@ CHECK_AVAILABLE_FAST_MEMORY:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CHECK_IF_COMPATIBLE_VIDEO_CHIP   (CheckCompatibleVideoChip)
+; FUNC: ESQ_CheckCompatibleVideoChip
 ; ARGS:
 ;   (none)
 ; RET:
@@ -471,7 +465,7 @@ CHECK_AVAILABLE_FAST_MEMORY:
 ; (1) 30 = 8372 (Fat-hr) (agnushr),thru rev4, NTSC
 ; (2) 20 = 8372 (Fat-hr) (agnushr),thru rev4, PAL
 ; (3) 33 = 8374 (Alice) rev 3 thru rev 4, NTSC
-CHECK_IF_COMPATIBLE_VIDEO_CHIP:
+ESQ_CheckCompatibleVideoChip:
     MOVEM.L D6-D7,-(A7)
 
     MOVE.W  VPOSR,D7                    ; $DFF004 = http://amiga-dev.wikidot.com/hardware:vposr
@@ -738,7 +732,6 @@ LAB_0017:
 ;   - Uses LAB_03C4 and LAB_03C0 helpers for error count retrieval.
 ;------------------------------------------------------------------------------
 ESQ_FormatDiskErrorMessage:
-LAB_001E:
     MOVEM.L D6-D7,-(A7)
 
     SetOffsetForStack   2

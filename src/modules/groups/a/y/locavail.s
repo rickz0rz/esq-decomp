@@ -29,7 +29,7 @@ LAB_0F04:
     MOVE.L  6(A3),-(A7)
     PEA     106.W
     PEA     GLOB_STR_LOCAVAIL_C_1
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -95,7 +95,7 @@ LOCAVAIL_FreeResourceChain:
     MOVE.L  A0,-(A7)
     PEA     159.W
     PEA     GLOB_STR_LOCAVAIL_C_2
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEQ   #0,D7
@@ -106,7 +106,7 @@ LOCAVAIL_FreeResourceChain:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A3),A0
     ADDA.L  D0,A0
@@ -126,7 +126,7 @@ LOCAVAIL_FreeResourceChain:
     MOVE.L  20(A3),-(A7)
     PEA     164.W
     PEA     GLOB_STR_LOCAVAIL_C_3
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -180,7 +180,7 @@ LAB_0F10:
     PEA     4.W
     PEA     218.W
     PEA     GLOB_STR_LOCAVAIL_C_4
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,16(A3)
@@ -197,7 +197,7 @@ LAB_0F10:
     MOVE.L  D0,-(A7)
     PEA     229.W
     PEA     GLOB_STR_LOCAVAIL_C_5
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,20(A3)
@@ -341,7 +341,7 @@ LAB_0F1B:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
@@ -434,7 +434,7 @@ LAB_0F21:
     MOVE.L  D0,-(A7)
     PEA     341.W
     PEA     GLOB_STR_LOCAVAIL_C_6
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -28(A5),A0
@@ -685,7 +685,7 @@ LAB_0F3B:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A3),A0
     ADDA.L  D0,A0
@@ -739,7 +739,7 @@ LAB_0F3F:
 
     MOVE.L  D6,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -804,7 +804,7 @@ LAB_0F43:
 
     MOVE.L  D4,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0
@@ -986,7 +986,7 @@ LAB_0F52:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A1
     MOVEA.L 20(A1),A0
@@ -1202,7 +1202,7 @@ LAB_0F5F:
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
@@ -1245,7 +1245,7 @@ LAB_0F5F:
     MOVE.L  D0,-(A7)
     PEA     786.W
     PEA     GLOB_STR_LOCAVAIL_C_7
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L -28(A5),A0
@@ -1423,7 +1423,7 @@ LAB_0F73:
     MOVE.L  -48(A5),-(A7)
     PEA     897.W
     PEA     GLOB_STR_LOCAVAIL_C_8
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     BRA.S   LAB_0F77
@@ -1528,7 +1528,7 @@ LAB_0F7D:
 
     MOVE.L  D2,D0
     MOVEQ   #10,D1
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A1
     ADDA.L  D0,A1
@@ -1657,7 +1657,7 @@ LAB_0F84:
     BGE.S   LAB_0F85
 
     MOVEQ   #10,D0
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVEA.L 20(A2),A0
     ADDA.L  D0,A0

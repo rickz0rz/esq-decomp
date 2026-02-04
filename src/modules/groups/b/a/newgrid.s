@@ -8,8 +8,8 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   LAB_1333, LAB_1026, LAB_1240, GROUPC_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
-;   _LVOSetDrMd, _LVOSetFont, DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7,
+;   LAB_1333, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, LAB_1240, NEWGRID_JMPTBL_AllocateMemory, _LVOInitRastPort,
+;   _LVOSetDrMd, _LVOSetFont, NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, JMPTBL_MATH_DivS32_3
 ; READS:
 ;   LAB_1FFE, GLOB_HANDLE_PREVUEC_FONT, GLOB_STR_44_44_44
@@ -22,14 +22,13 @@
 ;   Early-outs if already initialized (LAB_1FFE != 0) or allocation fails.
 ;------------------------------------------------------------------------------
 NEWGRID_InitGridResources:
-LAB_0FA4:
     TST.W   LAB_1FFE
     BNE.W   .return
 
     MOVE.W  #1,LAB_1FFE
     JSR     LAB_1333(PC)
 
-    JSR     LAB_1026(PC)
+    JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
 
     JSR     LAB_1240(PC)
 
@@ -37,7 +36,7 @@ LAB_0FA4:
     PEA     100.W
     PEA     99.W
     PEA     GLOB_STR_NEWGRID_C_1
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_1
@@ -63,7 +62,7 @@ LAB_0FA4:
     PEA     100.W
     PEA     112.W
     PEA     GLOB_STR_NEWGRID_C_2
-    JSR     GROUPC_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_2
@@ -85,7 +84,7 @@ LAB_0FA4:
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
-    BSR.W   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
+    BSR.W   NEWGRID_DrawTopBorderLine
 
     MOVEQ   #8,D0
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
@@ -126,7 +125,7 @@ LAB_0FA4:
     MOVE.W  D0,LAB_2328
 
 .align_even:
-    BSR.W   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
+    BSR.W   NEWGRID_DrawTopBorderLine
 
 .return:
     RTS
@@ -142,7 +141,7 @@ LAB_0FA4:
 ; CLOBBERS:
 ;   D0/A0/A6
 ; CALLS:
-;   GROUPC_JMPTBL_MEMORY_DeallocateMemory, LAB_1335, LAB_1023, LAB_1243
+;   NEWGRID_JMPTBL_DeallocateMemory, LAB_1335, NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, LAB_1243
 ; READS:
 ;   GLOB_REF_GRID_RASTPORT_MAYBE_1
 ; WRITES:
@@ -153,7 +152,6 @@ LAB_0FA4:
 ;   Always clears LAB_1FFE and triggers dependent cleanup routines.
 ;------------------------------------------------------------------------------
 NEWGRID_ShutdownGridResources:
-LAB_0FA7:
     TST.L   GLOB_REF_GRID_RASTPORT_MAYBE_1
     BEQ.S   .skip_free
 
@@ -161,14 +159,14 @@ LAB_0FA7:
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
     PEA     148.W
     PEA     GLOB_STR_NEWGRID_C_3
-    JSR     GROUPC_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .skip_free:
     JSR     LAB_1335(PC)
 
-    JSR     LAB_1023(PC)
+    JSR     NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(PC)
 
     CLR.W   LAB_1FFE
     JSR     LAB_1243(PC)
@@ -197,7 +195,6 @@ LAB_0FA7:
 ;   Uses Exec Disable/Enable around message reset.
 ;------------------------------------------------------------------------------
 NEWGRID_ClearHighlightArea:
-LAB_0FA9:
     MOVEM.L D2-D3,-(A7)
 
     MOVEA.L AbsExecBase,A6
@@ -250,7 +247,6 @@ LAB_0FA9:
 ;   Returns 0 when either gate is active with a positive counter.
 ;------------------------------------------------------------------------------
 NEWGRID_IsGridReadyForInput:
-LAB_0FAB:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
 
@@ -298,7 +294,7 @@ LAB_0FAB:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   NEWGRID_IsGridReadyForInput (LAB_0FAB)
+;   NEWGRID_IsGridReadyForInput (NEWGRID_IsGridReadyForInput)
 ; READS:
 ;   LAB_1BB7, LAB_1BBE, LAB_2003-200A, LAB_1BA4/1BA5/1BAD,
 ;   LAB_22D1/22D2/22D6/22E5, LAB_224A/2231/222E/222F
@@ -311,7 +307,6 @@ LAB_0FAB:
 ;   Uses two switch/jumptable blocks to select flag sources and timers.
 ;------------------------------------------------------------------------------
 NEWGRID_SelectNextMode:
-LAB_0FAF:
     LINK.W  A5,#-40
     MOVEM.L D5-D7,-(A7)
     MOVEQ   #0,D5
@@ -638,7 +633,7 @@ LAB_0FAF:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   NEWGRID_IsGridReadyForInput (LAB_0FAB), NEWGRID_SelectNextMode (LAB_0FAF)
+;   NEWGRID_IsGridReadyForInput (NEWGRID_IsGridReadyForInput), NEWGRID_SelectNextMode (NEWGRID_SelectNextMode)
 ; READS:
 ;   LAB_22D1/22D2
 ; WRITES:
@@ -650,7 +645,6 @@ LAB_0FAF:
 ;   Returns 0 when input is out of range.
 ;------------------------------------------------------------------------------
 NEWGRID_MapSelectionToMode:
-LAB_0FC9:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
     MOVE.W  18(A7),D6
@@ -694,7 +688,7 @@ LAB_0FC9:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0FAB
+    BSR.W   NEWGRID_IsGridReadyForInput
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -720,7 +714,7 @@ LAB_0FC9:
 
 .case_sel_5:
 .case_sel_4_fallback:
-    BSR.W   LAB_0FAF
+    BSR.W   NEWGRID_SelectNextMode
 
     MOVE.L  D0,D7
     BRA.S   .done
@@ -750,7 +744,7 @@ LAB_0FC9:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   _LVOSetDrMd, LAB_102F, _LVOSetAPen, _LVORectFill, LAB_133D, LAB_1348,
-;   GROUPC_JMPTBL_MATH_Mulu32, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
+;   NEWGRID_JMPTBL_MATH_Mulu32, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
 ; READS:
 ;   LAB_232A/232B, LAB_2328
 ; WRITES:
@@ -761,7 +755,6 @@ LAB_0FC9:
 ;   Uses wraparound at 48 and centers text within computed column widths.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawClockFormatHeader:
-LAB_0FD1:
     LINK.W  A5,#-108
     MOVEM.L D2-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -838,7 +831,7 @@ LAB_0FD1:
     MOVE.W  LAB_232B,D1
     MOVE.L  D0,28(A7)
     MOVE.L  D6,D0
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  28(A7),D1
     ADD.L   D0,D1
@@ -972,7 +965,6 @@ LAB_0FD1:
 ;   Uses raster sub-struct at 60(A3).
 ;------------------------------------------------------------------------------
 NEWGRID_DrawDateBanner:
-LAB_0FDC:
 
 .rastport   = -108
 
@@ -1122,7 +1114,7 @@ LAB_0FDC:
 ; CLOBBERS:
 ;   D0-D3/A0-A3/A6
 ; CALLS:
-;   LAB_0FF4, _LVOSetAPen, _LVOTextLength, _LVOMove, LAB_0FFB, LAB_133D
+;   NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, LAB_133D
 ; READS:
 ;   LAB_2328, GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 ; WRITES:
@@ -1133,7 +1125,6 @@ LAB_0FDC:
 ;   Uses text length to center the string within the 624px region.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawAwaitingListingsMessage:
-LAB_0FE1:
     LINK.W  A5,#-4
     MOVEM.L D2/A2-A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -1146,7 +1137,7 @@ LAB_0FE1:
     MOVE.L  D1,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0FF4
+    BSR.W   NEWGRID_DrawGridFrame
 
     LEA     60(A3),A0
     MOVEA.L A0,A1
@@ -1205,7 +1196,7 @@ LAB_0FE1:
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  52(A7),-(A7)
-    BSR.W   LAB_0FFB
+    BSR.W   NEWGRID_DrawWrappedText
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -1254,7 +1245,6 @@ LAB_0FE1:
 ;   Returns 0 when month/day out of supported bounds.
 ;------------------------------------------------------------------------------
 NEWGRID_ComputeDaySlotFromClock:
-LAB_0FE5:
     LINK.W  A5,#-28
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1323,7 +1313,6 @@ LAB_0FE5:
 ;   Similar to NEWGRID_ComputeDaySlotFromClock but adjusts thresholds.
 ;------------------------------------------------------------------------------
 NEWGRID_ComputeDaySlotFromClockWithOffset:
-LAB_0FE9:
     LINK.W  A5,#-28
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1388,7 +1377,7 @@ LAB_0FE9:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1028, JMPTBL_MATH_DivS32_3, GROUPC_JMPTBL_MATH_Mulu32, LAB_101F, NEWGRID_ComputeDaySlotFromClock
+;   NEWGRID_JMPTBL_LAB_05D3, JMPTBL_MATH_DivS32_3, NEWGRID_JMPTBL_MATH_Mulu32, LAB_101F, NEWGRID_ComputeDaySlotFromClock
 ; READS:
 ;   LAB_1DD8
 ; WRITES:
@@ -1399,7 +1388,6 @@ LAB_0FE9:
 ;   Uses 22-byte copy (DBF runs D0+1 iterations).
 ;------------------------------------------------------------------------------
 NEWGRID_AdjustClockStringBySlot:
-LAB_0FED:
     LINK.W  A5,#-28
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1412,7 +1400,7 @@ LAB_0FED:
     MOVE.B  (A0)+,(A1)+
     DBF     D0,.copy_clocktext
     PEA     -22(A5)
-    JSR     LAB_1028(PC)
+    JSR     NEWGRID_JMPTBL_LAB_05D3(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
@@ -1421,7 +1409,7 @@ LAB_0FED:
     JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #60,D0
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -1429,7 +1417,7 @@ LAB_0FED:
     JSR     LAB_101F(PC)
 
     PEA     -22(A5)
-    BSR.W   LAB_0FE5
+    BSR.W   NEWGRID_ComputeDaySlotFromClock
 
     MOVEM.L -36(A5),D7/A3
     UNLK    A5
@@ -1446,7 +1434,7 @@ LAB_0FED:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1028, JMPTBL_MATH_DivS32_3, GROUPC_JMPTBL_MATH_Mulu32, LAB_101F, NEWGRID_ComputeDaySlotFromClockWithOffset
+;   NEWGRID_JMPTBL_LAB_05D3, JMPTBL_MATH_DivS32_3, NEWGRID_JMPTBL_MATH_Mulu32, LAB_101F, NEWGRID_ComputeDaySlotFromClockWithOffset
 ; READS:
 ;   LAB_1DD8
 ; WRITES:
@@ -1457,7 +1445,6 @@ LAB_0FED:
 ;   Uses 22-byte copy (DBF runs D0+1 iterations).
 ;------------------------------------------------------------------------------
 NEWGRID_AdjustClockStringBySlotWithOffset:
-LAB_0FEF:
     LINK.W  A5,#-28
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1471,7 +1458,7 @@ LAB_0FEF:
     DBF     D0,.copy_clocktext
 
     PEA     -22(A5)
-    JSR     LAB_1028(PC)
+    JSR     NEWGRID_JMPTBL_LAB_05D3(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
@@ -1480,7 +1467,7 @@ LAB_0FEF:
     JSR     JMPTBL_MATH_DivS32_3(PC)
 
     MOVEQ   #60,D0
-    JSR     GROUPC_JMPTBL_MATH_Mulu32(PC)
+    JSR     NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D7
     PEA     -22(A5)
@@ -1488,7 +1475,7 @@ LAB_0FEF:
     JSR     LAB_101F(PC)
 
     PEA     -22(A5)
-    BSR.W   LAB_0FE9
+    BSR.W   NEWGRID_ComputeDaySlotFromClockWithOffset
 
     MOVEM.L -36(A5),D7/A3
     UNLK    A5
@@ -1516,7 +1503,6 @@ LAB_0FEF:
 ;   Uses pen 7 on the secondary grid rastport.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawTopBorderLine:
-DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
     MOVEM.L D2-D3,-(A7)
 
     MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_2,A1
@@ -1560,7 +1546,6 @@ DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
 ;   Uses SetOffsetForStack macro for parameters.
 ;------------------------------------------------------------------------------
 NEWGRID_FillGridRects:
-LAB_0FF2:
     MOVEM.L D2-D3/D5-D7/A3,-(A7)
 
     SetOffsetForStack 6
@@ -1613,7 +1598,7 @@ LAB_0FF2:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   NEWGRID_FillGridRects (LAB_0FF2)
+;   NEWGRID_FillGridRects (NEWGRID_FillGridRects)
 ; READS:
 ;   GLOB_REF_GRID_RASTPORT_MAYBE_2
 ; WRITES:
@@ -1624,13 +1609,12 @@ LAB_0FF2:
 ;   Wrapper around NEWGRID_FillGridRects.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawGridTopBars:
-LAB_0FF3:
     PEA     1.W
     MOVEQ   #6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_2,-(A7)
-    BSR.S   LAB_0FF2
+    BSR.S   NEWGRID_FillGridRects
 
     LEA     16(A7),A7
     RTS
@@ -1649,7 +1633,7 @@ LAB_0FF3:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_102F, NEWGRID_FillGridRects (LAB_0FF2)
+;   LAB_102F, NEWGRID_FillGridRects (NEWGRID_FillGridRects)
 ; READS:
 ;   LAB_232A
 ; WRITES:
@@ -1660,7 +1644,6 @@ LAB_0FF3:
 ;   Uses LAB_102F to set pens before filling.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawGridFrame:
-LAB_0FF4:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1685,7 +1668,7 @@ LAB_0FF4:
     MOVE.L  D0,-(A7)
     MOVE.L  44(A7),-(A7)
     MOVE.L  44(A7),-(A7)
-    BSR.W   LAB_0FF2
+    BSR.W   NEWGRID_FillGridRects
 
     MOVEM.L -24(A5),D5-D7/A3
     UNLK    A5
@@ -1713,7 +1696,6 @@ LAB_0FF4:
 ;   Returns true when both strings are empty and flag bit 5 is set.
 ;------------------------------------------------------------------------------
 NEWGRID_ShouldOpenEditor:
-LAB_0FF5:
     LINK.W  A5,#-12
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1784,7 +1766,7 @@ LAB_0FF5:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_134B, LAB_1029, _LVOTextLength, _LVOMove, _LVOText
+;   LAB_134B, NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   GLOB_STR_SINGLE_SPACE, LAB_200D, LAB_200E
 ; WRITES:
@@ -1796,7 +1778,6 @@ LAB_0FF5:
 ;   When draw flag is zero, calculates positions without drawing.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawWrappedText:
-LAB_0FFB:
     LINK.W  A5,#-80
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -1847,7 +1828,7 @@ LAB_0FFB:
     PEA     50.W
     PEA     -74(A5)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_1029(PC)
+    JSR     NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-20(A5)
@@ -2013,7 +1994,7 @@ LAB_0FFB:
 ;   NEWGRID_InitGridResources, NEWGRID_ClearHighlightArea, CLEANUP_DrawClockBanner,
 ;   NEWGRID_AdjustClockStringBySlot, CLEANUP_DrawClockFormatList/Frame, LAB_1332,
 ;   NEWGRID_MapSelectionToMode, _LVOGetMsg, LAB_1038, NEWGRID_DrawClockFormatHeader,
-;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, LAB_132A, LAB_0FC9,
+;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, LAB_132A, NEWGRID_MapSelectionToMode,
 ;   GCOMMAND_UpdatePresetEntryCache, _LVOPutMsg, NEWGRID_DrawGridTopBars
 ; READS:
 ;   LAB_2263, LAB_1F45, LAB_225F, LAB_200F, LAB_200F/2010/2011/2012, LAB_1DC6
@@ -2026,7 +2007,6 @@ LAB_0FFB:
 ;   Uses switch/jumptable for mode handling; resets highlight when needed.
 ;------------------------------------------------------------------------------
 NEWGRID_ProcessGridMessages:
-LAB_100D:
     LINK.W  A5,#-4
     TST.W   LAB_2263
     BNE.W   .done
@@ -2054,19 +2034,19 @@ LAB_100D:
     TST.L   LAB_200F
     BNE.S   .get_msg
 
-    BSR.W   LAB_0FA4
+    BSR.W   NEWGRID_InitGridResources
 
-    BSR.W   LAB_0FA9
+    BSR.W   NEWGRID_ClearHighlightArea
 
-    JSR     LAB_1024(PC)
+    JSR     NEWGRID_JMPTBL_DrawClockBanner(PC)
 
     PEA     LAB_2274
-    BSR.W   LAB_0FED
+    BSR.W   NEWGRID_AdjustClockStringBySlot
 
     MOVE.L  D0,(A7)
-    JSR     JMPTBL_CLEANUP_DrawClockFormatList(PC)
+    JSR     NEWGRID_JMPTBL_Cleanup_DrawClockFormatList(PC)
 
-    JSR     JMPTBL_CLEANUP_DrawClockFormatFrame(PC)
+    JSR     NEWGRID_JMPTBL_Cleanup_DrawClockFormatFrame(PC)
 
     CLR.W   LAB_1F45
     MOVEQ   #2,D0
@@ -2075,7 +2055,7 @@ LAB_100D:
 
     CLR.L   (A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2131,7 +2111,7 @@ LAB_100D:
     ADDA.W  #$3c,A0
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPC_JMPTBL_LAB_18C2(PC)
+    JSR     NEWGRID_JMPTBL_LAB_18C2(PC)
 
     ADDQ.W  #8,A7
     TST.W   D0
@@ -2141,7 +2121,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2149,23 +2129,23 @@ LAB_100D:
 
 .case_mode_1:
     PEA     LAB_223A
-    BSR.W   LAB_0FE5
+    BSR.W   NEWGRID_ComputeDaySlotFromClock
 
     PEA     LAB_2274
     MOVE.W  D0,LAB_2010
-    BSR.W   LAB_0FED
+    BSR.W   NEWGRID_AdjustClockStringBySlot
 
     MOVE.W  D0,LAB_2011
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0FD1
+    BSR.W   NEWGRID_DrawClockFormatHeader
 
     MOVE.W  LAB_2010,D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_200F
@@ -2173,13 +2153,13 @@ LAB_100D:
 
 .case_mode_2:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0FDC
+    BSR.W   NEWGRID_DrawDateBanner
 
     MOVE.W  LAB_2010,D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2187,13 +2167,13 @@ LAB_100D:
 
 .case_mode_10:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0FE1
+    BSR.W   NEWGRID_DrawAwaitingListingsMessage
 
     MOVE.W  LAB_2010,D0
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2218,7 +2198,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2243,7 +2223,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2272,7 +2252,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2301,7 +2281,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2330,7 +2310,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2338,11 +2318,11 @@ LAB_100D:
 
 .case_mode_8:
     PEA     LAB_223A
-    BSR.W   LAB_0FE9
+    BSR.W   NEWGRID_ComputeDaySlotFromClockWithOffset
 
     PEA     LAB_2274
     MOVE.W  D0,LAB_2010
-    BSR.W   LAB_0FEF
+    BSR.W   NEWGRID_AdjustClockStringBySlotWithOffset
 
     MOVE.W  LAB_2010,D1
     EXT.L   D1
@@ -2366,7 +2346,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2374,11 +2354,11 @@ LAB_100D:
 
 .case_mode_9:
     PEA     LAB_223A
-    BSR.W   LAB_0FE5
+    BSR.W   NEWGRID_ComputeDaySlotFromClock
 
     PEA     LAB_2274
     MOVE.W  D0,LAB_2010
-    BSR.W   LAB_0FED
+    BSR.W   NEWGRID_AdjustClockStringBySlot
 
     MOVE.W  LAB_2010,D1
     EXT.L   D1
@@ -2402,7 +2382,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2416,7 +2396,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0FD1
+    BSR.W   NEWGRID_DrawClockFormatHeader
 
     ADDQ.W  #8,A7
     CLR.W   LAB_2012
@@ -2426,7 +2406,7 @@ LAB_100D:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  LAB_200F,-(A7)
-    BSR.W   LAB_0FC9
+    BSR.W   NEWGRID_MapSelectionToMode
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_200F
@@ -2448,12 +2428,12 @@ LAB_100D:
     TST.W   LAB_2012
     BEQ.S   .draw_top_border_line
 
-    BSR.W   LAB_0FF3
+    BSR.W   NEWGRID_DrawGridTopBars
 
     BRA.S   .done
 
 .draw_top_border_line:
-    BSR.W   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
+    BSR.W   NEWGRID_DrawTopBorderLine
 
 .done:
     UNLK    A5
@@ -2531,7 +2511,6 @@ JMPTBL_GENERATE_GRID_DATE_STRING:
 ;   Jump table entry that forwards to MEMORY_DeallocateMemory.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_DeallocateMemory:
-GROUPC_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
@@ -2548,26 +2527,23 @@ GROUPC_JMPTBL_MEMORY_DeallocateMemory:
 ;   Jump table entry that forwards to CLEANUP_DrawClockFormatList.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_Cleanup_DrawClockFormatList:
-JMPTBL_CLEANUP_DrawClockFormatList:
-LAB_1022:
     JMP     CLEANUP_DrawClockFormatList
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_LAB_058A   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_DISPTEXT_FreeBuffers   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_058A)
+;   ?? (see DISPTEXT_FreeBuffers)
 ; RET:
-;   ?? (see LAB_058A)
+;   ?? (see DISPTEXT_FreeBuffers)
 ; CLOBBERS:
-;   ?? (see LAB_058A)
+;   ?? (see DISPTEXT_FreeBuffers)
 ; CALLS:
-;   LAB_058A
+;   DISPTEXT_FreeBuffers
 ; DESC:
-;   Jump table entry that forwards to LAB_058A.
+;   Jump table entry that forwards to DISPTEXT_FreeBuffers.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_LAB_058A:
-LAB_1023:
-    JMP     LAB_058A
+NEWGRID_JMPTBL_DISPTEXT_FreeBuffers:
+    JMP     DISPTEXT_FreeBuffers
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_DrawClockBanner   (Jump stub)
@@ -2583,7 +2559,6 @@ LAB_1023:
 ;   Jump table entry that forwards to CLEANUP_DrawClockBanner.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_DrawClockBanner:
-LAB_1024:
     ; Reuse cleanup module to draw the shared clock banner.
     JMP     CLEANUP_DrawClockBanner
 
@@ -2601,25 +2576,23 @@ LAB_1024:
 ;   Jump table entry that forwards to MEMORY_AllocateMemory.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_AllocateMemory:
-GROUPC_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_LAB_0588   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_DISPTEXT_InitBuffers   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_0588)
+;   ?? (see DISPTEXT_InitBuffers)
 ; RET:
-;   ?? (see LAB_0588)
+;   ?? (see DISPTEXT_InitBuffers)
 ; CLOBBERS:
-;   ?? (see LAB_0588)
+;   ?? (see DISPTEXT_InitBuffers)
 ; CALLS:
-;   LAB_0588
+;   DISPTEXT_InitBuffers
 ; DESC:
-;   Jump table entry that forwards to LAB_0588.
+;   Jump table entry that forwards to DISPTEXT_InitBuffers.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_LAB_0588:
-LAB_1026:
-    JMP     LAB_0588
+NEWGRID_JMPTBL_DISPTEXT_InitBuffers:
+    JMP     DISPTEXT_InitBuffers
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_Cleanup_DrawClockFormatFrame   (Jump stub)
@@ -2635,8 +2608,6 @@ LAB_1026:
 ;   Jump table entry that forwards to CLEANUP_DrawClockFormatFrame.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_Cleanup_DrawClockFormatFrame:
-JMPTBL_CLEANUP_DrawClockFormatFrame:
-LAB_1027:
     JMP     CLEANUP_DrawClockFormatFrame
 
 ;------------------------------------------------------------------------------
@@ -2653,7 +2624,6 @@ LAB_1027:
 ;   Jump table entry that forwards to DATETIME_NormalizeStructToSeconds.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_LAB_05D3:
-LAB_1028:
     JMP     DATETIME_NormalizeStructToSeconds
 
 ;------------------------------------------------------------------------------
@@ -2670,11 +2640,10 @@ LAB_1028:
 ;   Jump table entry that forwards to UNKNOWN7_CopyUntilDelimiter.
 ;------------------------------------------------------------------------------
 NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter:
-LAB_1029:
     JMP     UNKNOWN7_CopyUntilDelimiter
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPC_JMPTBL_LAB_18C2   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_LAB_18C2   (Jump stub)
 ; ARGS:
 ;   ?? (see LAB_18C2)
 ; RET:
@@ -2686,11 +2655,11 @@ LAB_1029:
 ; DESC:
 ;   Jump table entry that forwards to LAB_18C2.
 ;------------------------------------------------------------------------------
-GROUPC_JMPTBL_LAB_18C2:
+NEWGRID_JMPTBL_LAB_18C2:
     JMP     LAB_18C2
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPC_JMPTBL_MATH_Mulu32   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_MATH_Mulu32   (Jump stub)
 ; ARGS:
 ;   ?? (see MATH_Mulu32)
 ; RET:
@@ -2702,5 +2671,5 @@ GROUPC_JMPTBL_LAB_18C2:
 ; DESC:
 ;   Jump table entry that forwards to MATH_Mulu32.
 ;------------------------------------------------------------------------------
-GROUPC_JMPTBL_MATH_Mulu32:
+NEWGRID_JMPTBL_MATH_Mulu32:
     JMP     MATH_Mulu32

@@ -284,7 +284,7 @@ LAB_1693:
     JMP     LAB_0F78
 
 LAB_1694:
-    JMP     LAB_0E83
+    JMP     LADFUNC_DrawEntryPreview
 
 LAB_1695:
     JMP     LAB_0A8E

@@ -92,7 +92,7 @@ LAB_085B:
     JMP     ESQ_WriteDecFixedWidth
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_LAB_0EAF   (Jump stub)
+; FUNC: GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault   (Jump stub)
 ; ARGS:
 ;   ??
 ; RET:
@@ -100,19 +100,20 @@ LAB_085B:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_0EAF
+;   LADFUNC_BuildEntryBuffersOrDefault
 ; READS:
 ;   ??
 ; WRITES:
 ;   ??
 ; DESC:
-;   Jump stub to LAB_0EAF.
+;   Jump stub to LADFUNC_BuildEntryBuffersOrDefault.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault:
 GROUP_AL_JMPTBL_LADFUNC_LAB_0EAF:
 LAB_085C:
-    JMP     LAB_0EAF
+    JMP     LADFUNC_BuildEntryBuffersOrDefault
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AL_JMPTBL_LADFUNC_GetHighNibble   (Jump stub)

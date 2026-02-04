@@ -941,7 +941,7 @@ LAB_1883:
     MOVE.L  -64(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_BA_JMPTBL_LAB_0FFB(PC)
+    JSR     GROUP_BA_JMPTBL_NEWGRID_DrawWrappedText(PC)
 
     LEA     24(A7),A7
     MOVE.L  D0,-58(A5)
@@ -989,7 +989,7 @@ LAB_1883:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-92(A5)
-    JSR     GROUP_BA_JMPTBL_LAB_0FFB(PC)
+    JSR     GROUP_BA_JMPTBL_NEWGRID_DrawWrappedText(PC)
 
     LEA     24(A7),A7
     MOVEQ   #0,D1
@@ -1037,7 +1037,7 @@ LAB_1883:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-92(A5)
-    JSR     GROUP_BA_JMPTBL_LAB_0FFB(PC)
+    JSR     GROUP_BA_JMPTBL_NEWGRID_DrawWrappedText(PC)
 
     LEA     24(A7),A7
     MOVE.L  D0,-54(A5)
@@ -1690,8 +1690,8 @@ GROUPD_JMPTBL_LAB_0A00:
 GROUP_BA_JMPTBL_BRUSH_SelectBrushSlot:
     JMP     BRUSH_SelectBrushSlot
 
-GROUP_BA_JMPTBL_LAB_0FFB:
-    JMP     LAB_0FFB
+GROUP_BA_JMPTBL_NEWGRID_DrawWrappedText:
+    JMP     NEWGRID_DrawWrappedText
 
 GROUPD_JMPTBL_LAB_102C:
     JMP     LAB_102C

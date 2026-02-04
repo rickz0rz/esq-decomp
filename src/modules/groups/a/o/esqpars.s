@@ -2748,7 +2748,7 @@ LAB_0BE8:
 LAB_0BE9:
     JSR     LAB_0BEA(PC)
 
-    JSR     LAB_0E48(PC)
+    JSR     LADFUNC_SaveTextAdsToFile(PC)
 
     PEA     LAB_21DF
     JSR     LAB_0BEC(PC)
@@ -2818,7 +2818,7 @@ JMPTBL_DISPLIB_DisplayTextAtPosition_1:
     JMP     DISPLIB_DisplayTextAtPosition
 
 LAB_0BF9:
-    JMP     LAB_0E48
+    JMP     LADFUNC_SaveTextAdsToFile
 
 LAB_0BFA:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt

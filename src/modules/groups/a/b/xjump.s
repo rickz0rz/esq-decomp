@@ -13,8 +13,8 @@ GROUP_AB_JMPTBL_LAB_0E0C:
 GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
     JMP     UNKNOWN2A_Stub0
 
-GROUP_AB_JMPTBL_LAB_0FA7:
-    JMP     LAB_0FA7
+GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
+    JMP     NEWGRID_ShutdownGridResources
 
 GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
     JMP     LOCAVAIL_FreeResourceChain

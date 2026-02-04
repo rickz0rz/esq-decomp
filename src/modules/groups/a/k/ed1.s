@@ -416,7 +416,7 @@ LAB_0712_033E:
 ; CALLS:
 ;   _LVOInitBitMap, _LVOSetFont, GROUP_AK_JMPTBL_GCOMMAND_ResetHighlightMessages,
 ;   ESQ_JMPTBL_LAB_14E2, LAB_09B7, LAB_0969, ED1_ClearEscMenuMode, LAB_098A,
-;   GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7, GROUP_AK_JMPTBL_LAB_0E48,
+;   GROUP_AK_JMPTBL_NEWGRID_DrawTopBorderLine, GROUP_AK_JMPTBL_LADFUNC_SaveTextAdsToFile,
 ;   ED1_WaitForFlagAndClearBit0, GROUP_AK_JMPTBL_GCOMMAND_SeedBannerFromPrefs,
 ;   ED_DrawBottomHelpBarBackground, LAB_09A7, LAB_0A48
 ; READS:
@@ -465,14 +465,14 @@ ED1_ExitEscMenu:
     MOVE.L  LAB_2260,-(A7)
     JSR     LAB_098A(PC)
 
-    JSR     GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7(PC)
+    JSR     GROUP_AK_JMPTBL_NEWGRID_DrawTopBorderLine(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
     CMP.L   LAB_21E4,D0
     BNE.S   .after_optional_refresh
 
-    JSR     GROUP_AK_JMPTBL_LAB_0E48(PC)
+    JSR     GROUP_AK_JMPTBL_LADFUNC_SaveTextAdsToFile(PC)
 
 .after_optional_refresh:
     MOVEQ   #-1,D0
@@ -733,22 +733,22 @@ ED1_WaitForFlagAndClearBit0:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_NEWGRID_DrawTopBorderLine   (Jump stub)
 ; ARGS:
-;   ?? (see DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7)
+;   ?? (see NEWGRID_DrawTopBorderLine)
 ; RET:
-;   ?? (see DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7)
+;   ?? (see NEWGRID_DrawTopBorderLine)
 ; CLOBBERS:
-;   ?? (see DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7)
+;   ?? (see NEWGRID_DrawTopBorderLine)
 ; CALLS:
-;   DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
+;   NEWGRID_DrawTopBorderLine
 ; DESC:
-;   Jump stub to DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7.
+;   Jump stub to NEWGRID_DrawTopBorderLine.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AK_JMPTBL_DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7:
-    JMP     DRAW_FILLED_RECT_0_0_TO_695_1_PEN_7
+GROUP_AK_JMPTBL_NEWGRID_DrawTopBorderLine:
+    JMP     NEWGRID_DrawTopBorderLine
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_LAB_0F12   (Jump stub)
@@ -817,22 +817,23 @@ GROUP_AK_JMPTBL_LAB_0EE7:
     JMP     LAB_0EE7
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AK_JMPTBL_LAB_0E48   (Jump stub)
+; FUNC: GROUP_AK_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump stub)
 ; ARGS:
-;   ?? (see LAB_0E48)
+;   ?? (see LADFUNC_SaveTextAdsToFile)
 ; RET:
-;   ?? (see LAB_0E48)
+;   ?? (see LADFUNC_SaveTextAdsToFile)
 ; CLOBBERS:
-;   ?? (see LAB_0E48)
+;   ?? (see LADFUNC_SaveTextAdsToFile)
 ; CALLS:
-;   LAB_0E48
+;   LADFUNC_SaveTextAdsToFile
 ; DESC:
-;   Jump stub to LAB_0E48.
+;   Jump stub to LADFUNC_SaveTextAdsToFile.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
+GROUP_AK_JMPTBL_LADFUNC_SaveTextAdsToFile:
 GROUP_AK_JMPTBL_LAB_0E48:
-    JMP     LAB_0E48
+    JMP     LADFUNC_SaveTextAdsToFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_ESQ_ColdReboot   (Jump stub)

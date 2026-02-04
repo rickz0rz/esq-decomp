@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ParseConfigBuffer   (Parse INI-like configuration buffer??)
+; FUNC: PARSEINI_ParseIniBufferAndDispatch   (Parse INI-like buffer; dispatch by section??)
 ; ARGS:
 ;   stack +8: A3 = pointer to buffer/string to parse
 ; RET:
@@ -19,6 +19,7 @@
 ; NOTES:
 ;   Uses BRACKETED sections '['...']', lower-level helpers validate/allocate strings.
 ;------------------------------------------------------------------------------
+PARSEINI_ParseIniBufferAndDispatch:
 PARSEINI_ParseConfigBuffer:
     LINK.W  A5,#-44
     MOVEM.L D5-D7/A2-A3,-(A7)
@@ -32,40 +33,40 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
-    BNE.S   .loc_139C
+    BNE.S   .init_parser_state
 
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.loc_139C:
+.init_parser_state:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D6
     MOVE.L  LAB_21BC,-16(A5)
 
-.loc_139D:
+.next_line:
     JSR     LAB_145C(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-8(A5)
     CMP.L   A0,D0
-    BEQ.W   .loc_13D2
+    BEQ.W   .cleanup_and_free
 
-.loc_139E:
+.skip_leading_ws:
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  (A0),D0
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_139F
+    BEQ.S   .check_section_header
 
     ADDQ.L  #1,-8(A5)
-    BRA.S   .loc_139E
+    BRA.S   .skip_leading_ws
 
-.loc_139F:
+.check_section_header:
     MOVEQ   #91,D0
     MOVEA.L -8(A5),A0
     CMP.B   (A0),D0
-    BNE.W   .loc_13A8
+    BNE.W   .dispatch_section_line
 
     LEA     1(A0),A1
     PEA     93.W
@@ -75,7 +76,7 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-28(A5)
     TST.L   D0
-    BEQ.S   .loc_139D
+    BEQ.S   .next_line
 
     MOVEA.L D0,A0
     CLR.B   (A0)
@@ -87,12 +88,12 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A0
+    BNE.S   .check_section_2
 
     MOVEQ   #1,D7
-    BRA.S   .loc_139D
+    BRA.S   .next_line
 
-.loc_13A0:
+.check_section_2:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_205E
@@ -101,12 +102,12 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A1
+    BNE.S   .check_section_3
 
     MOVEQ   #2,D7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A1:
+.check_section_3:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_205F
@@ -115,16 +116,16 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A2
+    BNE.S   .check_section_4
 
     MOVEQ   #3,D7
     PEA     LAB_233F
     JSR     LAB_1462(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A2:
+.check_section_4:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_2060
@@ -133,12 +134,12 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A3
+    BNE.S   .check_section_5
 
     MOVEQ   #4,D7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A3:
+.check_section_5:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_2061
@@ -147,12 +148,12 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A4
+    BNE.S   .check_section_6
 
     MOVEQ   #5,D7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A4:
+.check_section_6:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_2062
@@ -161,13 +162,13 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A5
+    BNE.S   .check_section_7
 
     MOVEQ   #6,D7
     CLR.L   LAB_2059
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A5:
+.check_section_7:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_2063
@@ -176,7 +177,7 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A6
+    BNE.S   .check_section_8
 
     MOVEQ   #7,D7
     MOVE.L  LAB_205A,-(A7)
@@ -195,9 +196,9 @@ PARSEINI_ParseConfigBuffer:
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_205C
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A6:
+.check_section_8:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
     PEA     LAB_2064
@@ -206,54 +207,54 @@ PARSEINI_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_13A7
+    BNE.S   .unknown_section
 
     JSR     LAB_1667(PC)
 
     MOVEQ   #8,D7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A7:
+.unknown_section:
     MOVEQ   #0,D7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13A8:
+.dispatch_section_line:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
-    BLT.W   .loc_139D
+    BLT.W   .next_line
 
     CMPI.L  #$8,D0
-    BGE.W   .loc_139D
+    BGE.W   .next_line
 
     ADD.W   D0,D0
-    MOVE.W  .loc_13A9(PC,D0.W),D0
-    JMP     .loc_13A9+2(PC,D0.W)
+    MOVE.W  .dispatch_table(PC,D0.W),D0
+    JMP     .dispatch_table+2(PC,D0.W)
 
 ; switch/jumptable
-.loc_13A9:
-    DC.W    .loc_13A9_000E-.loc_13A9-2
-    DC.W    .loc_13B3_0176-.loc_13A9-2
-    DC.W    .loc_13B9_0222-.loc_13A9-2
-    DC.W    .loc_13B9_0236-.loc_13A9-2
-    DC.W    .loc_13B9_0236-.loc_13A9-2
-    DC.W    .loc_13BF_02E6-.loc_13A9-2
-	DC.W    .loc_13C5_0392-.loc_13A9-2
-    DC.W    .loc_13CB_043E-.loc_13A9-2
+.dispatch_table:
+    DC.W    .section1_parse_line-.dispatch_table-2
+    DC.W    .section2_parse_line-.dispatch_table-2
+    DC.W    .section3_parse_range-.dispatch_table-2
+    DC.W    .section4_5_parse_line-.dispatch_table-2
+    DC.W    .section4_5_parse_line-.dispatch_table-2
+    DC.W    .section6_parse_line-.dispatch_table-2
+	DC.W    .section7_parse_line-.dispatch_table-2
+    DC.W    .section8_parse_line-.dispatch_table-2
 
-.loc_13A9_000E:
+.section1_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
-    BEQ.W   .loc_13B3
+    BEQ.W   .section1_reset_count
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
     MOVE.L  A0,-32(A5)
 
-.loc_13AB:
+.section1_skip_value_ws:
     MOVEA.L -32(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -261,12 +262,12 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13AC
+    BEQ.S   .section1_cut_marker
 
     ADDQ.L  #1,-32(A5)
-    BRA.S   .loc_13AB
+    BRA.S   .section1_skip_value_ws
 
-.loc_13AC:
+.section1_cut_marker:
     PEA     LAB_2065
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1469(PC)
@@ -274,17 +275,17 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
     TST.L   D0
-    BEQ.S   .loc_13AD
+    BEQ.S   .section1_after_marker
 
     MOVEA.L D0,A0
     CLR.B   (A0)
 
-.loc_13AD:
+.section1_after_marker:
     MOVEA.L -32(A5),A0
 
-.loc_13AE:
+.section1_find_value_end:
     TST.B   (A0)+
-    BNE.S   .loc_13AE
+    BNE.S   .section1_find_value_end
 
     SUBQ.L  #1,A0
     SUBA.L  -32(A5),A0
@@ -294,10 +295,10 @@ PARSEINI_ParseConfigBuffer:
     SUBQ.L  #1,A1
     MOVE.L  A1,-36(A5)
 
-.loc_13AF:
+.section1_trim_value_end:
     MOVEA.L -36(A5),A0
     CMPA.L  -32(A5),A0
-    BLS.S   .loc_13B0
+    BLS.S   .section1_alloc_entry
 
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -305,13 +306,13 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13B0
+    BEQ.S   .section1_alloc_entry
 
     CLR.B   (A0)
     SUBQ.L  #1,-36(A5)
-    BRA.S   .loc_13AF
+    BRA.S   .section1_trim_value_end
 
-.loc_13B0:
+.section1_alloc_entry:
     ADDQ.L  #1,D5
     MOVE.L  D5,D0
     ASL.L   #2,D0
@@ -346,13 +347,13 @@ PARSEINI_ParseConfigBuffer:
     LEA     28(A7),A7
     MOVE.L  D0,-40(A5)
     TST.L   D0
-    BNE.S   .loc_13B1
+    BNE.S   .section1_after_first_quote
 
     CLR.W   LAB_1DDA
     MOVEQ   #0,D0
     BRA.W   .return
 
-.loc_13B1:
+.section1_after_first_quote:
     MOVEA.L D0,A0
     ADDQ.L  #1,A0
     MOVE.L  A0,-32(A5)
@@ -363,14 +364,14 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-40(A5)
     TST.L   D0
-    BNE.S   .loc_13B2
+    BNE.S   .section1_store_second_string
 
     CLR.W   LAB_1DDA
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.loc_13B2:
+.section1_store_second_string:
     MOVEA.L D0,A0
     CLR.B   (A0)
     MOVE.L  4(A2),-(A7)
@@ -382,26 +383,26 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  D5,D0
     ADDQ.L  #1,D0
     MOVE.W  D0,LAB_1DDA
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13B3:
+.section1_reset_count:
     CLR.W   LAB_1DDA
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13B3_0176:
+.section2_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
-    BEQ.W   .loc_139D
+    BEQ.W   .next_line
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
     MOVE.L  A0,-32(A5)
 
-.loc_13B4:
+.section2_skip_value_ws:
     MOVEA.L -32(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -409,12 +410,12 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13B5
+    BEQ.S   .section2_cut_marker
 
     ADDQ.L  #1,-32(A5)
-    BRA.S   .loc_13B4
+    BRA.S   .section2_skip_value_ws
 
-.loc_13B5:
+.section2_cut_marker:
     PEA     LAB_2067
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1469(PC)
@@ -422,17 +423,17 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
     TST.L   D0
-    BEQ.S   .loc_13B6
+    BEQ.S   .section2_after_marker
 
     MOVEA.L D0,A0
     CLR.B   (A0)
 
-.loc_13B6:
+.section2_after_marker:
     MOVEA.L -32(A5),A0
 
-.loc_13B7:
+.section2_find_value_end:
     TST.B   (A0)+
-    BNE.S   .loc_13B7
+    BNE.S   .section2_find_value_end
 
     SUBQ.L  #1,A0
     SUBA.L  -32(A5),A0
@@ -442,10 +443,10 @@ PARSEINI_ParseConfigBuffer:
     SUBQ.L  #1,A1
     MOVE.L  A1,-36(A5)
 
-.loc_13B8:
+.section2_trim_value_end:
     MOVEA.L -36(A5),A0
     CMPA.L  -32(A5),A0
-    BLS.S   .loc_13B9
+    BLS.S   .section2_dispatch_keyvalue
 
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -453,42 +454,42 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13B9
+    BEQ.S   .section2_dispatch_keyvalue
 
     CLR.B   (A0)
     SUBQ.L  #1,-36(A5)
-    BRA.S   .loc_13B8
+    BRA.S   .section2_trim_value_end
 
-.loc_13B9:
+.section2_dispatch_keyvalue:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     BSR.W   LAB_13E6
 
     ADDQ.W  #8,A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13B9_0222:
+.section3_parse_range:
     PEA     LAB_233F
     MOVE.L  -8(A5),-(A7)
     BSR.W   LAB_13D7
 
     ADDQ.W  #8,A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13B9_0236:
+.section4_5_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
-    BEQ.W   .loc_139D
+    BEQ.W   .next_line
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
     MOVE.L  A0,-32(A5)
 
-.loc_13BA:
+.section4_5_skip_value_ws:
     MOVEA.L -32(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -496,12 +497,12 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13BB
+    BEQ.S   .section4_5_cut_marker
 
     ADDQ.L  #1,-32(A5)
-    BRA.S   .loc_13BA
+    BRA.S   .section4_5_skip_value_ws
 
-.loc_13BB:
+.section4_5_cut_marker:
     PEA     LAB_2068
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1469(PC)
@@ -509,18 +510,18 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
     TST.L   D0
-    BEQ.S   .loc_13BC
+    BEQ.S   .section4_5_after_marker
 
     MOVEA.L D0,A0
 
     CLR.B   (A0)
 
-.loc_13BC:
+.section4_5_after_marker:
     MOVEA.L -32(A5),A0
 
-.loc_13BD:
+.section4_5_find_value_end:
     TST.B   (A0)+
-    BNE.S   .loc_13BD
+    BNE.S   .section4_5_find_value_end
 
     SUBQ.L  #1,A0
 
@@ -531,10 +532,10 @@ PARSEINI_ParseConfigBuffer:
     SUBQ.L  #1,A1
     MOVE.L  A1,-36(A5)
 
-.loc_13BE:
+.section4_5_trim_value_end:
     MOVEA.L -36(A5),A0
     CMPA.L  -32(A5),A0
-    BLS.S   .loc_13BF
+    BLS.S   .section4_5_dispatch
 
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -542,35 +543,35 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13BF
+    BEQ.S   .section4_5_dispatch
 
     CLR.B   (A0)
     SUBQ.L  #1,-36(A5)
-    BRA.S   .loc_13BE
+    BRA.S   .section4_5_trim_value_end
 
-.loc_13BF:
+.section4_5_dispatch:
     MOVE.L  D7,-(A7)
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     BSR.W   LAB_1408
 
     LEA     12(A7),A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13BF_02E6:
+.section6_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
-    BEQ.W   .loc_139D
+    BEQ.W   .next_line
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
     MOVE.L  A0,-32(A5)
 
-.loc_13C0:
+.section6_skip_value_ws:
     MOVEA.L -32(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -578,12 +579,12 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13C1
+    BEQ.S   .section6_cut_marker
 
     ADDQ.L  #1,-32(A5)
-    BRA.S   .loc_13C0
+    BRA.S   .section6_skip_value_ws
 
-.loc_13C1:
+.section6_cut_marker:
     PEA     LAB_2069
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1469(PC)
@@ -591,17 +592,17 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
     TST.L   D0
-    BEQ.S   .loc_13C2
+    BEQ.S   .section6_after_marker
 
     MOVEA.L D0,A0
     CLR.B   (A0)
 
-.loc_13C2:
+.section6_after_marker:
     MOVEA.L -32(A5),A0
 
-.loc_13C3:
+.section6_find_value_end:
     TST.B   (A0)+
-    BNE.S   .loc_13C3
+    BNE.S   .section6_find_value_end
 
     SUBQ.L  #1,A0
     SUBA.L  -32(A5),A0
@@ -611,10 +612,10 @@ PARSEINI_ParseConfigBuffer:
     SUBQ.L  #1,A1
     MOVE.L  A1,-36(A5)
 
-.loc_13C4:
+.section6_trim_value_end:
     MOVEA.L -36(A5),A0
     CMPA.L  -32(A5),A0
-    BLS.S   .loc_13C5
+    BLS.S   .section6_dispatch
 
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -622,34 +623,34 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13C5
+    BEQ.S   .section6_dispatch
 
     CLR.B   (A0)
     SUBQ.L  #1,-36(A5)
-    BRA.S   .loc_13C4
+    BRA.S   .section6_trim_value_end
 
-.loc_13C5:
+.section6_dispatch:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     BSR.W   LAB_1400
 
     ADDQ.W  #8,A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13C5_0392:
+.section7_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
-    BEQ.W   .loc_139D
+    BEQ.W   .next_line
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
     MOVE.L  A0,-32(A5)
 
-.loc_13C6:
+.section7_skip_value_ws:
     MOVEA.L -32(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -657,12 +658,12 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13C7
+    BEQ.S   .section7_cut_marker
 
     ADDQ.L  #1,-32(A5)
-    BRA.S   .loc_13C6
+    BRA.S   .section7_skip_value_ws
 
-.loc_13C7:
+.section7_cut_marker:
     PEA     LAB_206A
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1469(PC)
@@ -670,17 +671,17 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
     TST.L   D0
-    BEQ.S   .loc_13C8
+    BEQ.S   .section7_after_marker
 
     MOVEA.L D0,A0
     CLR.B   (A0)
 
-.loc_13C8:
+.section7_after_marker:
     MOVEA.L -32(A5),A0
 
-.loc_13C9:
+.section7_find_value_end:
     TST.B   (A0)+
-    BNE.S   .loc_13C9
+    BNE.S   .section7_find_value_end
 
     SUBQ.L  #1,A0
     SUBA.L  -32(A5),A0
@@ -690,10 +691,10 @@ PARSEINI_ParseConfigBuffer:
     SUBQ.L  #1,A1
     MOVE.L  A1,-36(A5)
 
-.loc_13CA:
+.section7_trim_value_end:
     MOVEA.L -36(A5),A0
     CMPA.L  -32(A5),A0
-    BLS.S   .loc_13CB
+    BLS.S   .section7_dispatch
 
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -701,34 +702,34 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13CB
+    BEQ.S   .section7_dispatch
 
     CLR.B   (A0)
     SUBQ.L  #1,-36(A5)
-    BRA.S   .loc_13CA
+    BRA.S   .section7_trim_value_end
 
-.loc_13CB:
+.section7_dispatch:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     BSR.W   LAB_1404
 
     ADDQ.W  #8,A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13CB_043E:
+.section8_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1455(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
-    BEQ.W   .loc_139D
+    BEQ.W   .next_line
 
     MOVEA.L D0,A0
     CLR.B   (A0)+
     MOVE.L  A0,-32(A5)
 
-.loc_13CC:
+.section8_skip_value_ws:
     MOVEA.L -32(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -736,12 +737,12 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13CD
+    BEQ.S   .section8_cut_marker
 
     ADDQ.L  #1,-32(A5)
-    BRA.S   .loc_13CC
+    BRA.S   .section8_skip_value_ws
 
-.loc_13CD:
+.section8_cut_marker:
     PEA     LAB_206B
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1469(PC)
@@ -749,17 +750,17 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
     TST.L   D0
-    BEQ.S   .loc_13CE
+    BEQ.S   .section8_after_marker
 
     MOVEA.L D0,A0
     CLR.B   (A0)
 
-.loc_13CE:
+.section8_after_marker:
     MOVEA.L -32(A5),A0
 
-.loc_13CF:
+.section8_find_value_end:
     TST.B   (A0)+
-    BNE.S   .loc_13CF
+    BNE.S   .section8_find_value_end
 
     SUBQ.L  #1,A0
     SUBA.L  -32(A5),A0
@@ -769,10 +770,10 @@ PARSEINI_ParseConfigBuffer:
     SUBQ.L  #1,A1
     MOVE.L  A1,-36(A5)
 
-.loc_13D0:
+.section8_trim_value_end:
     MOVEA.L -36(A5),A0
     CMPA.L  -32(A5),A0
-    BLS.S   .loc_13D1
+    BLS.S   .section8_dispatch
 
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -780,21 +781,21 @@ PARSEINI_ParseConfigBuffer:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .loc_13D1
+    BEQ.S   .section8_dispatch
 
     CLR.B   (A0)
     SUBQ.L  #1,-36(A5)
-    BRA.S   .loc_13D0
+    BRA.S   .section8_trim_value_end
 
-.loc_13D1:
+.section8_dispatch:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     JSR     LAB_1675(PC)
 
     ADDQ.W  #8,A7
-    BRA.W   .loc_139D
+    BRA.W   .next_line
 
-.loc_13D2:
+.cleanup_and_free:
     MOVE.L  D6,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
@@ -2116,7 +2117,7 @@ LAB_1416:
 
 .loc_1424:
     PEA     GLOB_STR_DF0_GRADIENT_INI_3
-    BSR.W   PARSEINI_ParseConfigBuffer
+    BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -2142,7 +2143,7 @@ LAB_1416:
 
     PEA     GLOB_STR_DF0_BANNER_INI_3
 
-    BSR.W   PARSEINI_ParseConfigBuffer
+    BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     PEA     1.W
     JSR     LAB_1457(PC)
@@ -2152,14 +2153,14 @@ LAB_1416:
 
 .loc_1427:
     PEA     GLOB_STR_DF0_DEFAULT_INI_2
-    BSR.W   PARSEINI_ParseConfigBuffer
+    BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .loc_1428:
     PEA     GLOB_STR_DF0_SOURCECFG_INI_1
-    BSR.W   PARSEINI_ParseConfigBuffer
+    BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     JSR     LAB_1670(PC)
 

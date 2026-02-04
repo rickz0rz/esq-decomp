@@ -2246,7 +2246,7 @@ LAB_0A93:
     JSR     LAB_0AA4(PC)
 
     PEA     GLOB_STR_DF0_BRUSH_INI_2
-    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
     PEA     LAB_1ED1
     MOVE.L  LAB_1B1F,-(A7)

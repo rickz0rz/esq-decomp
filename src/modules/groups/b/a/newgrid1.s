@@ -4333,7 +4333,7 @@ LAB_1149:
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -4403,7 +4403,7 @@ LAB_1149:
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -4760,7 +4760,7 @@ LAB_1168:
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -4878,7 +4878,7 @@ LAB_1168:
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -5751,7 +5751,7 @@ LAB_1193:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, LAB_1355, LAB_0FF5
+;   NEWGRID_UpdatePresetEntry, LAB_1355, NEWGRID_ShouldOpenEditor
 ; READS:
 ;   LAB_2231, LAB_224A
 ; DESC:
@@ -5839,7 +5839,7 @@ LAB_11A3:
     BNE.S   .advance_index
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -6840,7 +6840,7 @@ LAB_11DF:
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -7041,7 +7041,7 @@ LAB_11DF:
     LEA     LAB_2233,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -7469,7 +7469,7 @@ LAB_1208:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_ClearEntryMarkerBits, NEWGRID_InitSelectionWindow, LAB_1077,
-;   LAB_1353, LAB_1355, LAB_0FF5, LAB_1347
+;   LAB_1353, LAB_1355, NEWGRID_ShouldOpenEditor, LAB_1347
 ; READS:
 ;   LAB_2030/2031, LAB_2231, LAB_224A, LAB_22E6/22E7
 ; WRITES:
@@ -7630,7 +7630,7 @@ LAB_1214:
     BNE.W   .scan_entry_next
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -9370,7 +9370,7 @@ LAB_128A:
 
 .state_check_entry:
     MOVE.L  LAB_232F,-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -9500,7 +9500,7 @@ LAB_128A:
     BEQ.W   .case5_no_entry
 
     MOVE.L  LAB_232F,-(A7)
-    JSR     LAB_0FF5(PC)
+    JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0

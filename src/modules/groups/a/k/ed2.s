@@ -626,7 +626,7 @@ ED2_DrawEntrySummaryPanel:
 ;   GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom, GROUPB_JMPTBL_LAB_0A97,
 ;   ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_07C4, LAB_07C5,
 ;   LAB_07C9, LAB_07CA, LAB_07CB, LAB_07D2, LAB_09A7, LAB_0969, LAB_095F,
-;   GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer
+;   GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch
 ; READS:
 ;   LAB_231C, LAB_231D, LAB_21E5, LAB_21E6, LAB_1D32, LAB_1D33, LAB_2231,
 ;   LAB_2233, LAB_2236, LAB_224A, LAB_227F, LAB_229B, LAB_229C, LAB_229D,
@@ -1472,7 +1472,7 @@ ED2_HandleMenuActions:
 
 .case_parse_gradient_ini:
     PEA     GLOB_STR_DF0_GRADIENT_INI_1
-    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer(PC)
+    JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
     ADDQ.W  #4,A7
 
