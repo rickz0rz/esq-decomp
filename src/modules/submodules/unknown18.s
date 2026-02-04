@@ -39,7 +39,7 @@ DOS_SeekWithErrorState:
     MOVE.L  D7,D1
     MOVE.L  D6,D2
     MOVE.L  D0,D3
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOSeek(A6)
 
     MOVE.L  D0,D4
@@ -76,7 +76,7 @@ DOS_SeekWithErrorState:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #(OFFSET_CURRENT),D3
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOSeek(A6)
 
 .return:

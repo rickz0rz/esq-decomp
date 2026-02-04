@@ -14,7 +14,7 @@
 ;   _LVOInitRastPort, _LVOSetFont, GROUPB_JMPTBL_MATH_DivS32, JMPTBL_UNKNOWN2B_AllocRaster_2,
 ;   _LVOBltClear, _LVOInitBitMap, JMPTBL_ESQ_CheckAvailableFastMemory,
 ;   JMPTBL_ESQ_CheckCompatibleVideoChip, LAB_08BB, ESQ_JMPTBL_LIST_InitHeader, LAB_08C1,
-;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQ_JMPTBL_ESQ_FormatDiskErrorMessage, ESQ_JMPTBL_LAB_0017, LAB_089E, DST_RefreshBannerBuffer,
+;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQ_JMPTBL_ESQ_FormatDiskErrorMessage, ESQ_JMPTBL_ESQ_CheckTopazFontGuard, LAB_089E, DST_RefreshBannerBuffer,
 ;   LAB_0BFA, GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal, ESQ_JMPTBL_STRUCT_AllocWithOwner, _LVOOpenDevice,
 ;   _LVODoIO, SETUP_INTERRUPT_INTB_RBF, SETUP_INTERRUPT_INTB_AUD1,
 ;   ESQ_JMPTBL_ESQ_InitAudio1Dma, ESQ_JMPTBL_SCRIPT_InitCtrlContext, ESQ_JMPTBL_KYBD_InitializeInputDevices, LAB_0963, ESQ_JMPTBL_LAB_041D, LAB_098A, LAB_0C7A,
@@ -492,7 +492,7 @@ LAB_085E:
 
     JSR     JMPTBL_ESQ_CheckCompatibleVideoChip(PC)
 
-    JSR     ESQ_JMPTBL_LAB_0017(PC)
+    JSR     ESQ_JMPTBL_ESQ_CheckTopazFontGuard(PC)
 
     MOVE.L  #LAB_223A,LAB_1B06
     MOVE.L  #LAB_2274,LAB_1B07

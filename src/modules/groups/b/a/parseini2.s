@@ -339,49 +339,49 @@ LAB_1477:
     MOVE.W  .localMonth(A3),D0
     MOVEQ   #12,D1
     CMP.W   D1,D0
-    BGE.S   .monthIsValid
+    BGE.S   .set_month_invalid_flag
 
     MOVEQ   #0,D2
     MOVE.W  D2,18(A3)
-    BRA.S   .LAB_147B
+    BRA.S   .normalize_month_zero_to_12
 
-.monthIsValid:
+.set_month_invalid_flag:
     MOVE.W  #(-1),18(A3)
 
-.LAB_147B:
+.normalize_month_zero_to_12:
     TST.W   8(A3)
-    BNE.S   .LAB_147C
+    BNE.S   .wrap_month_over_12
 
     MOVE.W  D1,8(A3)
 
-.LAB_147C:
+.wrap_month_over_12:
     MOVE.W  8(A3),D0
     CMP.W   D1,D0
-    BLE.S   .LAB_147D
+    BLE.S   .increment_day_for_calc
 
     MOVEQ   #12,D1
     SUB.W   D1,8(A3)
 
-.LAB_147D:
+.increment_day_for_calc:
     ADDQ.W  #1,4(A3)
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_1484(PC)
+    JSR     JMPTBL_DATETIME_IsLeapYear(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   .LAB_147E
+    BEQ.S   .clear_leap_flag
 
     MOVE.W  #(-1),20(A3)
     BRA.S   .return
 
-.LAB_147E:
+.clear_leap_flag:
     CLR.W   20(A3)
 
 .return:
     MOVE.L  A3,-(A7)
-    JSR     LAB_1481(PC)
+    JSR     JMPTBL_ESQ_CalcDayOfYearFromMonthDay(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D2/A2-A3
@@ -389,24 +389,131 @@ LAB_1477:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_CLOCK_ConvertAmigaSecondsToClockData   (JumpStub_CLOCK_ConvertAmigaSecondsToClockData)
+; ARGS:
+;   ?? (see CLOCK_ConvertAmigaSecondsToClockData)
+; RET:
+;   ?? (see CLOCK_ConvertAmigaSecondsToClockData)
+; CLOBBERS:
+;   ?? (see CLOCK_ConvertAmigaSecondsToClockData)
+; CALLS:
+;   CLOCK_ConvertAmigaSecondsToClockData
+; DESC:
+;   Jump stub to CLOCK_ConvertAmigaSecondsToClockData.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
     JMP     CLOCK_ConvertAmigaSecondsToClockData
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_ESQ_CalcDayOfYearFromMonthDay   (JumpStub_ESQ_CalcDayOfYearFromMonthDay)
+; ARGS:
+;   ?? (see ESQ_CalcDayOfYearFromMonthDay)
+; RET:
+;   ?? (see ESQ_CalcDayOfYearFromMonthDay)
+; CLOBBERS:
+;   ?? (see ESQ_CalcDayOfYearFromMonthDay)
+; CALLS:
+;   ESQ_CalcDayOfYearFromMonthDay
+; DESC:
+;   Jump stub to ESQ_CalcDayOfYearFromMonthDay.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_ESQ_CalcDayOfYearFromMonthDay:
 LAB_1481:
     JMP     ESQ_CalcDayOfYearFromMonthDay
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch   (JumpStub_CLOCK_CheckDateOrSecondsFromEpoch)
+; ARGS:
+;   ?? (see CLOCK_CheckDateOrSecondsFromEpoch)
+; RET:
+;   ?? (see CLOCK_CheckDateOrSecondsFromEpoch)
+; CLOBBERS:
+;   ?? (see CLOCK_CheckDateOrSecondsFromEpoch)
+; CALLS:
+;   CLOCK_CheckDateOrSecondsFromEpoch
+; DESC:
+;   Jump stub to CLOCK_CheckDateOrSecondsFromEpoch.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
     JMP     CLOCK_CheckDateOrSecondsFromEpoch
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock   (JumpStub_BATTCLOCK_GetSecondsFromBatteryBackedClock)
+; ARGS:
+;   ?? (see BATTCLOCK_GetSecondsFromBatteryBackedClock)
+; RET:
+;   ?? (see BATTCLOCK_GetSecondsFromBatteryBackedClock)
+; CLOBBERS:
+;   ?? (see BATTCLOCK_GetSecondsFromBatteryBackedClock)
+; CALLS:
+;   BATTCLOCK_GetSecondsFromBatteryBackedClock
+; DESC:
+;   Jump stub to BATTCLOCK_GetSecondsFromBatteryBackedClock.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
     JMP     BATTCLOCK_GetSecondsFromBatteryBackedClock
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_DATETIME_IsLeapYear   (JumpStub_DATETIME_IsLeapYear)
+; ARGS:
+;   ?? (see DATETIME_IsLeapYear)
+; RET:
+;   ?? (see DATETIME_IsLeapYear)
+; CLOBBERS:
+;   ?? (see DATETIME_IsLeapYear)
+; CALLS:
+;   DATETIME_IsLeapYear
+; DESC:
+;   Jump stub to DATETIME_IsLeapYear.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_DATETIME_IsLeapYear:
 LAB_1484:
     JMP     DATETIME_IsLeapYear
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock   (JumpStub_BATTCLOCK_WriteSecondsToBatteryBackedClock)
+; ARGS:
+;   ?? (see BATTCLOCK_WriteSecondsToBatteryBackedClock)
+; RET:
+;   ?? (see BATTCLOCK_WriteSecondsToBatteryBackedClock)
+; CLOBBERS:
+;   ?? (see BATTCLOCK_WriteSecondsToBatteryBackedClock)
+; CALLS:
+;   BATTCLOCK_WriteSecondsToBatteryBackedClock
+; DESC:
+;   Jump stub to BATTCLOCK_WriteSecondsToBatteryBackedClock.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
     JMP     BATTCLOCK_WriteSecondsToBatteryBackedClock
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_CLOCK_SecondsFromEpoch   (JumpStub_CLOCK_SecondsFromEpoch)
+; ARGS:
+;   ?? (see CLOCK_SecondsFromEpoch)
+; RET:
+;   ?? (see CLOCK_SecondsFromEpoch)
+; CLOBBERS:
+;   ?? (see CLOCK_SecondsFromEpoch)
+; CALLS:
+;   CLOCK_SecondsFromEpoch
+; DESC:
+;   Jump stub to CLOCK_SecondsFromEpoch.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
 JMPTBL_CLOCK_SecondsFromEpoch:
     JMP     CLOCK_SecondsFromEpoch
 

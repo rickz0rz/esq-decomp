@@ -68,16 +68,16 @@ GROUP_AD_JMPTBL_LAB_0668:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_16E3
+;   TEXTDISP_DrawChannelBanner
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_16E3.
+;   Jump stub to TEXTDISP_DrawChannelBanner.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_LAB_16E3:
-    JMP     LAB_16E3
+    JMP     TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_16ED   (JumpStub_LAB_16ED)
@@ -88,16 +88,16 @@ GROUP_AD_JMPTBL_LAB_16E3:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_16ED
+;   TEXTDISP_FormatEntryTime
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_16ED.
+;   Jump stub to TEXTDISP_FormatEntryTime.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_LAB_16ED:
-    JMP     LAB_16ED
+    JMP     TEXTDISP_FormatEntryTime
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_0A48   (JumpStub_LAB_0A48)
@@ -128,16 +128,16 @@ GROUP_AD_JMPTBL_LAB_0A48:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_16D3
+;   TEXTDISP_BuildEntryShortName
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_16D3.
+;   Jump stub to TEXTDISP_BuildEntryShortName.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_LAB_16D3:
-    JMP     LAB_16D3
+    JMP     TEXTDISP_BuildEntryShortName
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort   (JumpStub_GRAPHICS_BltBitMapRastPort)
@@ -208,16 +208,16 @@ GROUP_AD_JMPTBL_LAB_17A8:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_16D9
+;   TEXTDISP_BuildChannelLabel
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_16D9.
+;   Jump stub to TEXTDISP_BuildChannelLabel.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_LAB_16D9:
-    JMP     LAB_16D9
+    JMP     TEXTDISP_BuildChannelLabel
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_16CE   (JumpStub_LAB_16CE)
@@ -228,16 +228,16 @@ GROUP_AD_JMPTBL_LAB_16D9:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_16CE
+;   TEXTDISP_DrawInsetRectFrame
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_16CE.
+;   Jump stub to TEXTDISP_DrawInsetRectFrame.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_LAB_16CE:
-    JMP     LAB_16CE
+    JMP     TEXTDISP_DrawInsetRectFrame
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_1755   (JumpStub_LAB_1755)
@@ -248,16 +248,16 @@ GROUP_AD_JMPTBL_LAB_16CE:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1755
+;   TEXTDISP_TrimTextToPixelWidth
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1755.
+;   Jump stub to TEXTDISP_TrimTextToPixelWidth.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_LAB_1755:
-    JMP     LAB_1755
+    JMP     TEXTDISP_TrimTextToPixelWidth
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_LAB_183D   (JumpStub_LAB_183D)

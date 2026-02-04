@@ -532,7 +532,7 @@ LAB_1387:
     LINK.W  A5,#-52
     MOVEM.L D4-D7,-(A7)
     PEA     LAB_2054
-    JSR     LAB_1465(PC)
+    JSR     JMPTBL_LAB_03AC(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0

@@ -153,7 +153,7 @@ ESQ_ParseCommandLineAndRun:
     JSR     STRING_AppendN(PC)
 
     LEA     12(A7),A7
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     LEA     Global_ConsoleNameBuffer(A4),A0
     MOVE.L  A0,D1
     MOVE.L  #MODE_NEWFILE,D2
@@ -179,7 +179,7 @@ ESQ_ParseCommandLineAndRun:
     BRA.S   .set_handle_flags
 
 .setup_existing_handles:
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOInput(A6)
 
     MOVE.L  D0,Global_HandleEntry0_Ptr(A4)    ; Original input file handle

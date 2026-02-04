@@ -32,7 +32,7 @@ DOS_OpenWithErrorState:
     CLR.L   Global_DosIoErr(A4)
     MOVE.L  A3,D1
     MOVE.L  D7,D2
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOOpen(A6)
 
     MOVE.L  D0,D6

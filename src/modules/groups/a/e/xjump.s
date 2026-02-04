@@ -24,7 +24,7 @@ GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
     JMP     SCRIPT_AllocateBufferArray
 
 GROUP_AE_JMPTBL_LAB_16FF:
-    JMP     LAB_16FF
+    JMP     TEXTDISP_ComputeTimeOffset
 
 GROUP_AE_JMPTBL_LAB_0B44:
     JMP     LAB_0B44

@@ -21,12 +21,12 @@ LAB_1487:
     MOVE.L  D7,-(A7)
 
     TST.L   LAB_2049
-    BNE.S   .LAB_1488
+    BNE.S   .logging_enabled
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_1488:
+.logging_enabled:
     PEA     MODE_NEWFILE.W
     PEA     GLOB_STR_DF0_ERR_LOG
     JSR     GROUPD_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
@@ -34,12 +34,12 @@ LAB_1487:
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
     TST.L   D7
-    BNE.S   .LAB_1489
+    BNE.S   .log_opened
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_1489:
+.log_opened:
     MOVE.W  LAB_233A,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -146,7 +146,7 @@ LAB_148E:
     EXT.L   D2          ; then again sign extend D2 to a longword (0x00000000 or 0xFFFFFFFF)
     MOVE.L  D2,D7       ; Move D2 into D7
     TST.W   D7          ; Test D7 against 0
-    BEQ.S   .LAB_148F   ; If D7 is now 0, jump to .LAB_148F
+    BEQ.S   .check_clockdata_update   ; If D7 is now 0, jump to .check_clockdata_update
 
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,LAB_20A3  ; Get the first word of the clockdata struct, which is seconds
     MOVEQ   #1,D0               ; Move 1 into D0
@@ -162,7 +162,7 @@ LAB_148E:
     ADDQ.W  #8,A7           ; Add 8 to whatever value is in the stack (the stack pointer) clearing the last two values in the stack (D1 x2).
     BRA.S   .return
 
-.LAB_148F:
+.check_clockdata_update:
     TST.W   LAB_20A5
     BEQ.S   .return
 
@@ -274,10 +274,10 @@ LAB_1494:
     EXT.L   D2
     MOVE.L  D2,D7
     TST.W   D7
-    BEQ.S   .LAB_1495
+    BEQ.S   .no_change_or_gate_closed
 
     TST.W   LAB_2266
-    BEQ.S   .LAB_1495
+    BEQ.S   .no_change_or_gate_closed
 
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,LAB_20A6
     CLR.W   LAB_20A7
@@ -293,7 +293,7 @@ LAB_1494:
     ADDQ.W  #8,A7
     BRA.S   .return
 
-.LAB_1495:
+.no_change_or_gate_closed:
     TST.W   LAB_20A8
     BEQ.S   .return
 
@@ -304,13 +304,13 @@ LAB_1494:
 
     MOVE.W  D0,LAB_20A6
     TST.W   LAB_2266
-    BEQ.S   .LAB_1496
+    BEQ.S   .clear_ctrlh_pending
 
     ADDQ.W  #1,LAB_20A7
     CMPI.W  #3,LAB_20A7
     BLT.S   .return
 
-.LAB_1496:
+.clear_ctrlh_pending:
     CLR.W   LAB_20A8
     CLR.L   -(A7)
     PEA     16.W

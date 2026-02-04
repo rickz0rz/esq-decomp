@@ -98,7 +98,7 @@ UNKNOWN36_FinalizeRequest:
 ;   _LVOFindTask, _LVOWrite, _LVOOpenLibrary, EXEC_CallVector_348
 ; READS:
 ;   Global_UNKNOWN36_MessagePtr: ptr to message buffer (length byte at -1(A0))
-;   LocalDosLibraryDisplacement(A4), task fields at offsets 160/172
+;   Global_DosLibrary(A4), task fields at offsets 160/172
 ;   Global_UNKNOWN36_RequesterText0/1/2: requester text tables
 ; WRITES:
 ;   -81(A5) buffer, Global_UNKNOWN36_RequesterOutPtr
@@ -159,7 +159,7 @@ UNKNOWN36_ShowAbortRequester:
     BEQ.S   .open_requester
 
     ; Emit a "*** Break: " line and the buffered message.
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     MOVE.L  D6,D1
     LEA     DEBUG_STR_Break(PC),A0
     MOVE.L  A0,D2
@@ -170,7 +170,7 @@ UNKNOWN36_ShowAbortRequester:
     ADDQ.L  #1,D7
     MOVE.L  A0,D0
     MOVE.B  #$a,-81(A5,D0.L)
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     MOVE.L  D6,D1
     MOVE.L  D7,D3
     LEA     -81(A5),A0

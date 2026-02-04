@@ -2299,7 +2299,7 @@ GROUPB_JMPTBL_MATH_DivS32:
     JMP     MATH_DivS32
 
 LAB_0A9A:
-    JMP     LAB_1697
+    JMP     TEXTDISP_FindEntryIndexByWildcard
 
 JMPTBL_STRING_CompareN_2:
     JMP     STRING_CompareN
@@ -2308,7 +2308,7 @@ LAB_0A9C:
     JMP     ESQ_NoOp
 
 LAB_0A9D:
-    JMP     LAB_16E3
+    JMP     TEXTDISP_DrawChannelBanner
 
 LAB_0A9E:
     JMP     ESQ_MoveCopperEntryTowardStart

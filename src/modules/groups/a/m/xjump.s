@@ -105,7 +105,7 @@ LAB_08A0:
     JMP     LAB_04F0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0017   (JumpStub_LAB_0017)
+; FUNC: ESQ_JMPTBL_ESQ_CheckTopazFontGuard   (JumpStub_ESQ_CheckTopazFontGuard)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -113,17 +113,17 @@ LAB_08A0:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0017
+;   ESQ_CheckTopazFontGuard
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0017.
+;   Jump stub to ESQ_CheckTopazFontGuard.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0017:
+ESQ_JMPTBL_ESQ_CheckTopazFontGuard:
 LAB_08A1:
-    JMP     LAB_0017
+    JMP     ESQ_CheckTopazFontGuard
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_LAB_1365   (JumpStub_LAB_1365)
@@ -198,17 +198,17 @@ LAB_08A4:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1664
+;   TEXTDISP_LoadSourceConfig
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1664.
+;   Jump stub to TEXTDISP_LoadSourceConfig.
 ;------------------------------------------------------------------------------
 ESQ_JMPTBL_LAB_1664:
 LAB_08A5:
-    JMP     LAB_1664
+    JMP     TEXTDISP_LoadSourceConfig
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_KYBD_InitializeInputDevices   (JumpStub_KYBD_InitializeInputDevices)

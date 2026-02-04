@@ -2792,7 +2792,7 @@ LAB_0BF2:
     JMP     LAB_1416
 
 LAB_0BF3:
-    JMP     LAB_1670
+    JMP     TEXTDISP_ApplySourceConfigAllEntries
 
 ;!======
 

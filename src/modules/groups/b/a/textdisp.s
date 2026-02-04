@@ -1,5 +1,30 @@
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_BuildNowShowingStatusLine   (Build aligned "Now Showing" line)
+; ARGS:
+;   stack +10: mode (word, 1/2)
+;   stack +14: groupIndex (word)
+;   stack +18: entryIndex (word)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D3/A0-A1
+; CALLS:
+;   GROUPD_JMPTBL_LAB_0926, GROUPD_JMPTBL_LAB_0923, GROUPD_JMPTBL_LAB_036C,
+;   TEXTDISP_FormatEntryTimeForIndex, UNKNOWN7_SkipCharClass3, STRING_AppendAtNull, TEXTDISP_FindControlToken,
+;   GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine, LAB_15AD
+; READS:
+;   LAB_234D, LAB_2274, LAB_2374/LAB_2377/LAB_2378, LAB_205C
+; WRITES:
+;   LAB_234D
+; DESC:
+;   Builds an aligned status string for the current channel/entry (\"Now Showing\"),
+;   then hands it to the aligned status line renderer; falls back to external text.
+; NOTES:
+;   Uses stack buffers for string assembly.
+;------------------------------------------------------------------------------
+TEXTDISP_BuildNowShowingStatusLine:
 LAB_15C5:
     LINK.W  A5,#-216
     MOVEM.L D2-D3/D5-D7,-(A7)
@@ -12,11 +37,11 @@ LAB_15C5:
     EXT.L   D1
     MOVEM.L D0,-216(A5)
     TST.W   D7
-    BNE.S   LAB_15C6
+    BNE.S   .after_table_kind
 
     MOVEQ   #2,D0
 
-LAB_15C6:
+.after_table_kind:
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
     JSR     GROUPD_JMPTBL_LAB_0926(PC)
@@ -26,15 +51,15 @@ LAB_15C6:
     EXT.L   D1
     MOVEM.L D0,-4(A5)
     TST.W   D7
-    BEQ.S   LAB_15C7
+    BEQ.S   .use_kind_2
 
     MOVEQ   #1,D2
-    BRA.S   LAB_15C8
+    BRA.S   .dispatch_kind
 
-LAB_15C7:
+.use_kind_2:
     MOVEQ   #2,D2
 
-LAB_15C8:
+.dispatch_kind:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     JSR     GROUPD_JMPTBL_LAB_0923(PC)
@@ -42,38 +67,38 @@ LAB_15C8:
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.W   LAB_15E0
+    BEQ.W   .append_external_line
 
     TST.L   -4(A5)
-    BEQ.W   LAB_15E0
+    BEQ.W   .append_external_line
 
     MOVE.W  LAB_234D,D1
-    BNE.S   LAB_15C9
+    BNE.S   .ensure_default_channel
 
     MOVEQ   #48,D2
     MOVE.W  D2,LAB_234D
 
-LAB_15C9:
+.ensure_default_channel:
     CLR.B   -137(A5)
     MOVE.W  LAB_234D,D1
     MOVEQ   #48,D2
     CMP.W   D2,D1
-    BLT.S   LAB_15CA
+    BLT.S   .check_channel_range_alt
 
     MOVEQ   #67,D2
     CMP.W   D2,D1
-    BLE.S   LAB_15CB
+    BLE.S   .check_channel_enabled
 
-LAB_15CA:
+.check_channel_range_alt:
     MOVEQ   #72,D2
     CMP.W   D2,D1
-    BLT.S   LAB_15CC
+    BLT.S   .channel_not_enabled
 
     MOVEQ   #77,D2
     CMP.W   D2,D1
-    BGT.S   LAB_15CC
+    BGT.S   .channel_not_enabled
 
-LAB_15CB:
+.check_channel_enabled:
     EXT.L   D1
     LEA     GLOB_STR_TEXTDISP_C_3,A0
     ADDA.L  D1,A0
@@ -85,24 +110,24 @@ LAB_15CB:
     MOVE.B  (A0),D1
     AND.L   D2,D1
     TST.L   D1
-    BEQ.S   LAB_15CC
+    BEQ.S   .channel_not_enabled
 
     MOVEQ   #1,D2
-    BRA.S   LAB_15CD
+    BRA.S   .store_channel_enabled
 
-LAB_15CC:
+.channel_not_enabled:
     MOVEQ   #0,D2
 
-LAB_15CD:
+.store_channel_enabled:
     MOVE.L  D2,-212(A5)
-    BEQ.W   LAB_15D4
+    BEQ.W   .fallback_channel_line
 
     TST.W   D5
-    BLE.W   LAB_15D4
+    BLE.W   .fallback_channel_line
 
     MOVEQ   #49,D1
     CMP.W   D1,D5
-    BGE.W   LAB_15D4
+    BGE.W   .fallback_channel_line
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -115,44 +140,44 @@ LAB_15CD:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.W   LAB_15D4
+    BEQ.W   .fallback_channel_line
 
     MOVE.B  LAB_2377,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_15CE
+    BEQ.S   .use_channel_digit
 
     MOVEQ   #0,D0
     MOVE.B  LAB_2378,D0
-    BRA.S   LAB_15CF
+    BRA.S   .store_channel_char
 
-LAB_15CE:
+.use_channel_digit:
     MOVEQ   #0,D0
     MOVE.B  LAB_2374,D0
 
-LAB_15CF:
+.store_channel_char:
     MOVE.L  D0,-200(A5)
     SUBQ.L  #1,D0
-    BNE.S   LAB_15D1
+    BNE.S   .build_entry_title
 
     LEA     GLOB_STR_ALIGNED_NOW_SHOWING,A0
     LEA     -188(A5),A1
 
-LAB_15D0:
+.copy_now_showing:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_15D0
+    BNE.S   .copy_now_showing
 
     LEA     -188(A5),A0
     MOVE.L  A0,-192(A5)
-    BRA.S   LAB_15D2
+    BRA.S   .append_center_prefix
 
-LAB_15D1:
+.build_entry_title:
     MOVE.L  D5,D0
     EXT.L   D0
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -188(A5)
-    JSR     LAB_16F7(PC)
+    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -188(A5)
     JSR     UNKNOWN7_SkipCharClass3(PC)
@@ -160,13 +185,13 @@ LAB_15D1:
     LEA     16(A7),A7
     MOVE.L  D0,-192(A5)
 
-LAB_15D2:
+.append_center_prefix:
     LEA     LAB_2134,A0
     LEA     -137(A5),A1
 
-LAB_15D3:
+.copy_center_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_15D3
+    BNE.S   .copy_center_prefix
 
     MOVE.L  -192(A5),-(A7)
     PEA     -137(A5)
@@ -177,39 +202,39 @@ LAB_15D3:
     ASL.L   #2,D0
     MOVEA.L -4(A5),A0
     MOVE.L  56(A0,D0.L),(A7)
-    JSR     LAB_16A3(PC)
+    JSR     TEXTDISP_FindControlToken(PC)
 
     ADDQ.W  #8,A7
     CLR.L   -216(A5)
     MOVE.L  D0,-196(A5)
-    BRA.S   LAB_15D8
+    BRA.S   .build_program_title
 
-LAB_15D4:
+.fallback_channel_line:
     MOVE.W  LAB_234D,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BLE.S   LAB_15D5
+    BLE.S   .check_channel_range_primary
 
     MOVEQ   #67,D1
     CMP.W   D1,D0
-    BLE.S   LAB_15D6
+    BLE.S   .append_channel_name
 
-LAB_15D5:
+.check_channel_range_primary:
     MOVEQ   #72,D1
     CMP.W   D1,D0
-    BLT.S   LAB_15D8
+    BLT.S   .build_program_title
 
     MOVEQ   #77,D1
     CMP.W   D1,D0
-    BGT.S   LAB_15D8
+    BGT.S   .build_program_title
 
-LAB_15D6:
+.append_channel_name:
     LEA     LAB_2135,A0
     LEA     -137(A5),A1
 
-LAB_15D7:
+.copy_channel_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_15D7
+    BNE.S   .copy_channel_prefix
 
     MOVE.W  LAB_234D,D0
     MOVE.L  D0,D1
@@ -222,52 +247,52 @@ LAB_15D7:
     JSR     STRING_AppendAtNull(PC)
 
     PEA     LAB_234B
-    JSR     LAB_16A3(PC)
+    JSR     TEXTDISP_FindControlToken(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
     MOVE.L  D0,-196(A5)
     MOVE.L  D1,-216(A5)
 
-LAB_15D8:
+.build_program_title:
     TST.L   -216(A5)
-    BNE.W   LAB_15E3
+    BNE.W   .render_output
 
     MOVEQ   #0,D0
     MOVE.L  D0,-204(A5)
     MOVE.L  D0,-208(A5)
 
-LAB_15D9:
+.copy_program_loop:
     MOVEA.L -8(A5),A0
     MOVE.L  -204(A5),D0
     TST.B   1(A0,D0.L)
-    BEQ.S   LAB_15DB
+    BEQ.S   .finalize_program_title
 
     MOVEQ   #32,D1
     CMP.B   1(A0,D0.L),D1
-    BEQ.S   LAB_15DA
+    BEQ.S   .skip_program_space
 
     LEA     -188(A5),A1
     ADDA.L  -208(A5),A1
     ADDQ.L  #1,-208(A5)
     MOVE.B  1(A0,D0.L),(A1)
 
-LAB_15DA:
+.skip_program_space:
     ADDQ.L  #1,-204(A5)
-    BRA.S   LAB_15D9
+    BRA.S   .copy_program_loop
 
-LAB_15DB:
+.finalize_program_title:
     LEA     -188(A5),A0
     ADDA.L  -208(A5),A0
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
     MOVE.B  -188(A5),D1
     TST.B   D1
-    BEQ.S   LAB_15DD
+    BEQ.S   .append_time_suffix
 
     MOVE.B  -137(A5),D1
     TST.B   D1
-    BEQ.S   LAB_15DC
+    BEQ.S   .append_channel_label
 
     PEA     LAB_2136
     PEA     -137(A5)
@@ -275,7 +300,7 @@ LAB_15DB:
 
     ADDQ.W  #8,A7
 
-LAB_15DC:
+.append_channel_label:
     PEA     LAB_2137
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
@@ -286,13 +311,13 @@ LAB_15DC:
 
     LEA     16(A7),A7
 
-LAB_15DD:
+.append_time_suffix:
     TST.L   -196(A5)
-    BEQ.S   LAB_15DF
+    BEQ.S   .emit_aligned_line
 
     MOVE.B  -137(A5),D0
     TST.B   D0
-    BEQ.S   LAB_15DE
+    BEQ.S   .append_time_prefix
 
     PEA     LAB_2138
     PEA     -137(A5)
@@ -300,7 +325,7 @@ LAB_15DD:
 
     ADDQ.W  #8,A7
 
-LAB_15DE:
+.append_time_prefix:
     MOVEQ   #0,D0
     MOVEA.L -196(A5),A0
     MOVE.B  (A0),D0
@@ -315,7 +340,7 @@ LAB_15DE:
 
     LEA     20(A7),A7
 
-LAB_15DF:
+.emit_aligned_line:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D6,D1
@@ -332,34 +357,34 @@ LAB_15DF:
     JSR     GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine(PC)
 
     LEA     24(A7),A7
-    BRA.S   LAB_15E3
+    BRA.S   .render_output
 
-LAB_15E0:
+.append_external_line:
     TST.L   LAB_205C
-    BEQ.S   LAB_15E2
+    BEQ.S   .clear_output
 
     MOVEA.L LAB_205C,A0
     TST.B   (A0)
-    BEQ.S   LAB_15E2
+    BEQ.S   .clear_output
 
     LEA     LAB_213A,A0
     LEA     -137(A5),A1
 
-LAB_15E1:
+.copy_external_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_15E1
+    BNE.S   .copy_external_prefix
 
     MOVE.L  LAB_205C,-(A7)
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_15E3
+    BRA.S   .render_output
 
-LAB_15E2:
+.clear_output:
     CLR.B   -137(A5)
 
-LAB_15E3:
+.render_output:
     PEA     -137(A5)
     BSR.W   LAB_15AD
 
@@ -369,6 +394,28 @@ LAB_15E3:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_BuildEntryPairStatusLine   (Build aligned two-part line)
+; ARGS:
+;   stack +10: mode (word, 1/2)
+;   stack +14: groupIndex (word)
+;   stack +18: entryIndex (word)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D3/A0-A1
+; CALLS:
+;   GROUPD_JMPTBL_LAB_0926, GROUPD_JMPTBL_LAB_0923, GROUPD_JMPTBL_LAB_036C,
+;   GROUPD_JMPTBL_LAB_0347, STRING_AppendAtNull,
+;   GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine, LAB_15AD
+; READS:
+;   LAB_213B/LAB_213C/LAB_213D
+; DESC:
+;   Builds a two-part aligned status string for a given entry and renders it.
+; NOTES:
+;   Uses two short strings (slots 2/3) when present; skips if empty.
+;------------------------------------------------------------------------------
+TEXTDISP_BuildEntryPairStatusLine:
 LAB_15E4:
     LINK.W  A5,#-148
     MOVEM.L D2-D3/D5-D7,-(A7)
@@ -378,15 +425,15 @@ LAB_15E4:
     MOVE.L  D6,D0
     EXT.L   D0
     TST.W   D7
-    BEQ.S   LAB_15E5
+    BEQ.S   .use_kind_2
 
     MOVEQ   #1,D1
-    BRA.S   LAB_15E6
+    BRA.S   .dispatch_kind
 
-LAB_15E5:
+.use_kind_2:
     MOVEQ   #2,D1
 
-LAB_15E6:
+.dispatch_kind:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     GROUPD_JMPTBL_LAB_0926(PC)
@@ -396,15 +443,15 @@ LAB_15E6:
     EXT.L   D1
     MOVEM.L D0,-8(A5)
     TST.W   D7
-    BEQ.S   LAB_15E7
+    BEQ.S   .use_kind_1
 
     MOVEQ   #1,D2
-    BRA.S   LAB_15E8
+    BRA.S   .dispatch_kind_2
 
-LAB_15E7:
+.use_kind_1:
     MOVEQ   #2,D2
 
-LAB_15E8:
+.dispatch_kind_2:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     JSR     GROUPD_JMPTBL_LAB_0923(PC)
@@ -412,10 +459,10 @@ LAB_15E8:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.W   LAB_15F0
+    BEQ.W   .return
 
     TST.L   -8(A5)
-    BEQ.W   LAB_15F0
+    BEQ.W   .return
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -428,20 +475,20 @@ LAB_15E8:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.W   LAB_15F0
+    BEQ.W   .return
 
     MOVEQ   #1,D0
     CMP.W   D0,D5
-    BLT.S   LAB_15E9
+    BLT.S   .reject_entry_index
 
     MOVEQ   #48,D0
     CMP.W   D0,D5
-    BLE.S   LAB_15EA
+    BLE.S   .build_entry_parts
 
-LAB_15E9:
+.reject_entry_index:
     MOVEQ   #-1,D5
 
-LAB_15EA:
+.build_entry_parts:
     MOVE.L  D5,D0
     EXT.L   D0
     PEA     2.W
@@ -460,33 +507,33 @@ LAB_15EA:
     LEA     24(A7),A7
     MOVE.L  D0,-146(A5)
     TST.L   -142(A5)
-    BEQ.S   LAB_15EC
+    BEQ.S   .clear_prefix
 
     LEA     LAB_213B,A0
     LEA     -137(A5),A1
 
-LAB_15EB:
+.copy_align_prefix:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_15EB
+    BNE.S   .copy_align_prefix
 
     MOVE.L  -142(A5),-(A7)
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_15ED
+    BRA.S   .append_second_part
 
-LAB_15EC:
+.clear_prefix:
     MOVEQ   #0,D0
     MOVE.B  D0,-137(A5)
 
-LAB_15ED:
+.append_second_part:
     TST.L   -146(A5)
-    BEQ.S   LAB_15EF
+    BEQ.S   .emit_status_line
 
     MOVE.B  -137(A5),D0
     TST.B   D0
-    BEQ.S   LAB_15EE
+    BEQ.S   .append_separator
 
     PEA     LAB_213C
     PEA     -137(A5)
@@ -494,7 +541,7 @@ LAB_15ED:
 
     ADDQ.W  #8,A7
 
-LAB_15EE:
+.append_separator:
     PEA     LAB_213D
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
@@ -505,7 +552,7 @@ LAB_15EE:
 
     LEA     12(A7),A7
 
-LAB_15EF:
+.emit_status_line:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D6,D1
@@ -523,94 +570,144 @@ LAB_15EF:
 
     LEA     24(A7),A7
     TST.B   -137(A5)
-    BEQ.S   LAB_15F0
+    BEQ.S   .return
 
     PEA     -137(A5)
     BSR.W   LAB_15AD
 
     ADDQ.W  #4,A7
 
-LAB_15F0:
+.return:
     MOVEM.L (A7)+,D2-D3/D5-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_ShouldOpenEditorForEntry   (Entry eligible for editor)
+; ARGS:
+;   stack +12: entryPtr (A3)
+; RET:
+;   D0: 1 if eligible, 0 otherwise
+; CLOBBERS:
+;   D0/D7/A3
+; CALLS:
+;   TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor (NEWGRID_ShouldOpenEditor)
+; READS:
+;   entry+27, entry+40
+; DESC:
+;   Returns true when entry flags and editor policy allow opening the editor.
+; NOTES:
+;   Uses entry flag bits (40/27 offsets).
+;------------------------------------------------------------------------------
+TEXTDISP_ShouldOpenEditorForEntry:
 LAB_15F1:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
     MOVE.L  A3,D0
-    BEQ.S   LAB_15F4
+    BEQ.S   .return
 
     BTST    #0,40(A3)
-    BEQ.S   LAB_15F2
+    BEQ.S   .not_selectable
 
     BTST    #3,40(A3)
-    BEQ.S   LAB_15F2
+    BEQ.S   .not_selectable
 
     MOVE.L  A3,-(A7)
-    JSR     LAB_1678(PC)
+    JSR     TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BNE.S   LAB_15F2
+    BNE.S   .not_selectable
 
     BTST    #3,27(A3)
-    BNE.S   LAB_15F2
+    BNE.S   .not_selectable
 
     MOVEQ   #1,D0
-    BRA.S   LAB_15F3
+    BRA.S   .set_result
 
-LAB_15F2:
+.not_selectable:
     MOVEQ   #0,D0
 
-LAB_15F3:
+.set_result:
     MOVE.L  D0,D7
 
-LAB_15F4:
+.return:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_GetGroupEntryCount   (Lookup entry count for group)
+; ARGS:
+;   stack +12: groupId (long)
+; RET:
+;   D0: count (word, zero if unsupported)
+; CLOBBERS:
+;   D0/D6-D7
+; READS:
+;   LAB_2231, LAB_222F
+; DESC:
+;   Returns the entry count for group 1 or 2.
+; NOTES:
+;   Unknown behavior for other group IDs.
+;------------------------------------------------------------------------------
+TEXTDISP_GetGroupEntryCount:
 LAB_15F5:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
-    BEQ.S   LAB_15F6
+    BEQ.S   .use_count_primary
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_15F7
+    BEQ.S   .use_count_secondary
 
-    BRA.S   LAB_15F8
+    BRA.S   .use_count_zero
 
-LAB_15F6:
+.use_count_primary:
     MOVE.W  LAB_2231,D6
-    BRA.S   LAB_15F9
+    BRA.S   .return
 
-LAB_15F7:
+.use_count_secondary:
     MOVE.W  LAB_222F,D6
-    BRA.S   LAB_15F9
+    BRA.S   .return
 
-LAB_15F8:
+.use_count_zero:
     MOVEQ   #0,D6
 
-LAB_15F9:
+.return:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D6-D7
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_ResetSelectionState   (Reset selection fields)
+; ARGS:
+;   stack +8: entryPtr (A3)
+; RET:
+;   none
+; CLOBBERS:
+;   D0/A3
+; WRITES:
+;   entry+210, entry+214, entry+218, entry+220
+; DESC:
+;   Initializes selection state fields to defaults (-1/0) for an entry.
+; NOTES:
+;   Uses mode=3 and clears pending flags.
+;------------------------------------------------------------------------------
+TEXTDISP_ResetSelectionState:
 LAB_15FA:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_15FB
+    BEQ.S   .return
 
     MOVEQ   #3,D0
     MOVE.L  D0,210(A3)
@@ -619,12 +716,34 @@ LAB_15FA:
     MOVE.W  #(-1),218(A3)
     CLR.B   220(A3)
 
-LAB_15FB:
+.return:
     MOVEA.L (A7)+,A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_SetEntryTextFields   (Populate short/long name fields)
+; ARGS:
+;   stack +8: entryPtr (A3)
+;   stack +12: shortNamePtr (A2)
+;   stack +16: longNamePtr
+; RET:
+;   none
+; CLOBBERS:
+;   D0/A0-A3
+; CALLS:
+;   STRING_CopyPadNul
+; READS:
+;   LAB_1BC7, LAB_2174, GLOB_REF_WORD_HEX_CODE_8E
+; WRITES:
+;   entry+0..9, entry+10..208, LAB_2362
+; DESC:
+;   Copies short and long names into the entry struct, padding with NULs.
+; NOTES:
+;   Selects a base width (LAB_2362) depending on region/flag.
+;------------------------------------------------------------------------------
+TEXTDISP_SetEntryTextFields:
 LAB_15FC:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
@@ -633,26 +752,26 @@ LAB_15FC:
     MOVE.B  LAB_1BC7,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_15FD
+    BNE.S   .use_hex_code
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2174,D0
     MOVE.L  D0,LAB_2362
-    BRA.S   LAB_15FE
+    BRA.S   .after_hex_code
 
-LAB_15FD:
+.use_hex_code:
     MOVEQ   #0,D0
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     MOVE.L  D0,LAB_2362
 
-LAB_15FE:
+.after_hex_code:
     MOVE.L  A3,D0
-    BEQ.S   LAB_1602
+    BEQ.S   .return
 
     MOVEA.L A3,A0
     MOVE.L  A0,-4(A5)
     MOVE.L  A2,D0
-    BEQ.S   LAB_15FF
+    BEQ.S   .copy_short_name
 
     PEA     9.W
     MOVE.L  A2,-(A7)
@@ -663,16 +782,16 @@ LAB_15FE:
     MOVEQ   #0,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,9(A0)
-    BRA.S   LAB_1600
+    BRA.S   .after_short_name
 
-LAB_15FF:
+.copy_short_name:
     CLR.B   (A0)
 
-LAB_1600:
+.after_short_name:
     LEA     10(A3),A1
     MOVE.L  A1,-4(A5)
     MOVE.L  A2,D0
-    BEQ.S   LAB_1601
+    BEQ.S   .copy_long_name
 
     PEA     199.W
     MOVE.L  16(A5),-(A7)
@@ -683,18 +802,39 @@ LAB_1600:
     MOVEQ   #0,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,199(A0)
-    BRA.S   LAB_1602
+    BRA.S   .return
 
-LAB_1601:
+.copy_long_name:
     CLR.B   (A1)
 
-LAB_1602:
+.return:
     MOVEM.L (A7)+,A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_SetSelectionFields   (Update mode/index selection)
+; ARGS:
+;   stack +20: entryPtr (A3)
+;   stack +24: mode (long, 1/2/3)
+;   stack +28: displayIndex (long)
+;   stack +32: entryIndex (long)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D1/A3
+; CALLS:
+;   TEXTDISP_GetGroupEntryCount, TEXTDISP_ResetSelectionState
+; WRITES:
+;   entry+210, entry+214, entry+218, entry+220
+; DESC:
+;   Sets selection state fields, clamping indices to valid ranges.
+; NOTES:
+;   Resets state when mode or indices are invalid.
+;------------------------------------------------------------------------------
+TEXTDISP_SetSelectionFields:
 LAB_1603:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -702,139 +842,176 @@ LAB_1603:
     MOVE.L  28(A7),D6
     MOVE.L  32(A7),D5
     MOVE.L  A3,D0
-    BEQ.S   LAB_160C
+    BEQ.S   .return
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BEQ.S   LAB_1604
+    BEQ.S   .use_mode_passed
 
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BNE.S   LAB_1605
+    BNE.S   .use_mode_default
 
-LAB_1604:
+.use_mode_passed:
     MOVE.L  D7,D0
-    BRA.S   LAB_1606
+    BRA.S   .store_mode
 
-LAB_1605:
+.use_mode_default:
     MOVEQ   #3,D0
 
-LAB_1606:
+.store_mode:
     MOVE.L  D0,210(A3)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_15F5
+    BSR.W   TEXTDISP_GetGroupEntryCount
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     CMP.L   D1,D6
-    BGE.S   LAB_1607
+    BGE.S   .clamp_display_index
 
     MOVE.L  D6,D0
-    BRA.S   LAB_1608
+    BRA.S   .store_display_index
 
-LAB_1607:
+.clamp_display_index:
     MOVEQ   #-1,D0
 
-LAB_1608:
+.store_display_index:
     MOVE.L  D0,214(A3)
     TST.L   D5
-    BLE.S   LAB_1609
+    BLE.S   .invalidate_entry_index
 
     MOVEQ   #49,D1
     CMP.L   D1,D5
-    BGE.S   LAB_1609
+    BGE.S   .invalidate_entry_index
 
     MOVE.L  D5,D1
-    BRA.S   LAB_160A
+    BRA.S   .store_entry_index
 
-LAB_1609:
+.invalidate_entry_index:
     MOVEQ   #-1,D1
 
-LAB_160A:
+.store_entry_index:
     MOVE.W  D1,218(A3)
     CLR.B   220(A3)
     MOVEQ   #3,D0
     CMP.L   210(A3),D0
-    BEQ.S   LAB_160B
+    BEQ.S   .reset_selection
 
     MOVEQ   #-1,D0
     CMP.L   214(A3),D0
-    BEQ.S   LAB_160B
+    BEQ.S   .reset_selection
 
     MOVEQ   #-1,D0
     CMP.W   218(A3),D0
-    BNE.S   LAB_160C
+    BNE.S   .return
 
-LAB_160B:
+.reset_selection:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_15FA
+    BSR.W   TEXTDISP_ResetSelectionState
 
     ADDQ.W  #4,A7
 
-LAB_160C:
+.return:
     MOVEM.L (A7)+,D5-D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_SkipControlCodes   (Skip control/alignment bytes)
+; ARGS:
+;   stack +8: textPtr (A3)
+; RET:
+;   D0: advanced pointer (or NULL)
+; CLOBBERS:
+;   D0/A0/A3
+; READS:
+;   LAB_21A8 (char class table)
+; DESC:
+;   Skips leading control/alignment bytes and returns the first displayable char.
+; NOTES:
+;   Treats '@' (0x40) as a special 8-byte prefix.
+;------------------------------------------------------------------------------
+TEXTDISP_SkipControlCodes:
 LAB_160D:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_160F
+    BEQ.S   .return
 
     MOVEQ   #40,D0
     CMP.B   (A3),D0
-    BNE.S   LAB_160E
+    BNE.S   .scan_text
 
     ADDQ.L  #8,A3
 
-LAB_160E:
+.scan_text:
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
     LEA     LAB_21A8,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BEQ.S   LAB_160F
+    BEQ.S   .return
 
     ADDQ.L  #1,A3
-    BRA.S   LAB_160E
+    BRA.S   .scan_text
 
-LAB_160F:
+.return:
     MOVE.L  A3,D0
     MOVEA.L (A7)+,A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_BuildEntryDetailLine   (Build formatted entry detail text)
+; ARGS:
+;   stack +8: entryPtr (A3)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7/A0-A2
+; CALLS:
+;   GROUPD_JMPTBL_LAB_0926, GROUPD_JMPTBL_LAB_0923, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
+;   STRING_AppendAtNull, WDISP_SPrintf, GROUPD_JMPTBL_ESQ_FindSubstringCaseFold,
+;   UNKNOWN7_FindCharWrapper, TEXTDISP_SkipControlCodes, TEXTDISP_TrimTextToPixelWidth
+; READS:
+;   entry+210/214/218, LAB_21A8
+; DESC:
+;   Builds a formatted line for an entry by combining header text, program title,
+;   sports delimiters (\"at\"/\"vs\"), and channel info, then appends alignment.
+; NOTES:
+;   Inserts 0x18 markers around matched delimiters.
+;------------------------------------------------------------------------------
+TEXTDISP_BuildEntryDetailLine:
 LAB_1610:
     LINK.W  A5,#-540
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  A3,D0
-    BEQ.W   LAB_162B
+    BEQ.W   .return
 
     MOVEQ   #3,D0
     CMP.L   210(A3),D0
-    BEQ.S   LAB_1611
+    BEQ.S   .reset_if_invalid
 
     MOVEQ   #-1,D0
     CMP.L   214(A3),D0
-    BEQ.S   LAB_1611
+    BEQ.S   .reset_if_invalid
 
     MOVEQ   #-1,D0
     CMP.W   218(A3),D0
-    BNE.S   LAB_1612
+    BNE.S   .build_buffers
 
-LAB_1611:
+.reset_if_invalid:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_15FA
+    BSR.W   TEXTDISP_ResetSelectionState
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_162B
+    BRA.W   .return
 
-LAB_1612:
+.build_buffers:
     LEA     10(A3),A0
     MOVE.L  210(A3),-(A7)
     MOVE.L  214(A3),-(A7)
@@ -852,44 +1029,44 @@ LAB_1612:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-528(A5)
     MOVE.L  A0,-8(A5)
-    JSR     LAB_16D3(PC)
+    JSR     TEXTDISP_BuildEntryShortName(PC)
 
     LEA     20(A7),A7
     LEA     -524(A5),A0
     MOVE.L  A0,-12(A5)
 
-LAB_1613:
+.skip_control_prefix:
     MOVEQ   #0,D0
     MOVEA.L -12(A5),A0
     MOVE.B  (A0),D0
     LEA     LAB_21A8,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BNE.S   LAB_1614
+    BNE.S   .skip_control_prefix_loop
 
     MOVEQ   #24,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_1614
+    BEQ.S   .skip_control_prefix_loop
 
     MOVEQ   #25,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1615
+    BNE.S   .maybe_add_prefix
 
-LAB_1614:
+.skip_control_prefix_loop:
     ADDQ.L  #1,-12(A5)
-    BRA.S   LAB_1613
+    BRA.S   .skip_control_prefix
 
-LAB_1615:
+.maybe_add_prefix:
     MOVEA.L -12(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1617
+    BEQ.S   .select_entry_string
 
     LEA     LAB_213E,A1
     MOVEA.L -8(A5),A2
 
-LAB_1616:
+.copy_prefix:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   LAB_1616
+    BNE.S   .copy_prefix
 
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
@@ -897,57 +1074,57 @@ LAB_1616:
 
     ADDQ.W  #8,A7
 
-LAB_1617:
+.select_entry_string:
     MOVE.W  218(A3),D0
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L -532(A5),A0
     MOVE.L  56(A0,D0.L),-(A7)
-    BSR.W   LAB_160D
+    BSR.W   TEXTDISP_SkipControlCodes
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-12(A5)
-    BEQ.W   LAB_1623
+    BEQ.W   .append_channel_segment
 
     MOVEA.L D0,A0
     TST.B   (A0)
-    BEQ.W   LAB_1623
+    BEQ.W   .append_channel_segment
 
     MOVEA.L -4(A5),A0
 
-LAB_1618:
+.calc_title_len:
     TST.B   (A0)+
-    BNE.S   LAB_1618
+    BNE.S   .calc_title_len
 
     SUBQ.L  #1,A0
     SUBA.L  -4(A5),A0
     MOVE.L  A0,D7
     MOVEA.L D0,A0
 
-LAB_1619:
+.calc_entry_len:
     TST.B   (A0)+
-    BNE.S   LAB_1619
+    BNE.S   .calc_entry_len
 
     SUBQ.L  #1,A0
     SUBA.L  D0,A0
     CMPA.L  D7,A0
-    BLT.S   LAB_161A
+    BLT.S   .align_entry_tail
 
     ADD.L   D7,-12(A5)
 
-LAB_161A:
+.align_entry_tail:
     MOVEQ   #0,D0
     MOVEA.L -12(A5),A0
     MOVE.B  (A0),D0
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   LAB_161B
+    BEQ.S   .mark_match_delimiters
 
     ADDQ.L  #1,-12(A5)
-    BRA.S   LAB_161A
+    BRA.S   .align_entry_tail
 
-LAB_161B:
+.mark_match_delimiters:
     MOVE.L  -12(A5),-(A7)
     PEA     LAB_213F
     PEA     -524(A5)
@@ -960,7 +1137,7 @@ LAB_161B:
     LEA     20(A7),A7
     MOVE.L  D0,-12(A5)
     TST.L   D0
-    BNE.S   LAB_161C
+    BNE.S   .try_match_vs_dot
 
     PEA     LAB_2141
     PEA     -524(A5)
@@ -969,9 +1146,9 @@ LAB_161B:
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
 
-LAB_161C:
+.try_match_vs_dot:
     TST.L   D0
-    BNE.S   LAB_161D
+    BNE.S   .try_match_vs
 
     PEA     LAB_2142
     PEA     -524(A5)
@@ -980,14 +1157,14 @@ LAB_161C:
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
 
-LAB_161D:
+.try_match_vs:
     TST.L   D0
-    BEQ.S   LAB_161F
+    BEQ.S   .reset_scan_ptr
 
     MOVEA.L D0,A0
     MOVE.B  #$18,(A0)
 
-LAB_161E:
+.mark_match_span:
     ADDQ.L  #1,-12(A5)
     MOVEQ   #0,D0
     MOVEA.L -12(A5),A0
@@ -995,26 +1172,26 @@ LAB_161E:
     LEA     LAB_21A8,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BEQ.S   LAB_161E
+    BEQ.S   .mark_match_span
 
     MOVEA.L -12(A5),A0
     MOVE.B  #$18,(A0)
-    BRA.S   LAB_1620
+    BRA.S   .truncate_at_control
 
-LAB_161F:
+.reset_scan_ptr:
     LEA     -524(A5),A0
     MOVE.L  A0,-12(A5)
 
-LAB_1620:
+.truncate_at_control:
     PEA     40.W
     MOVE.L  A0,-(A7)
     JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
-    BEQ.S   LAB_1622
+    BEQ.S   .append_title_suffix
 
-LAB_1621:
+.backtrack_to_text:
     MOVEA.L -12(A5),A0
     CLR.B   (A0)
     SUBQ.L  #1,-12(A5)
@@ -1024,43 +1201,43 @@ LAB_1621:
     LEA     LAB_21A8,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BNE.S   LAB_1621
+    BNE.S   .backtrack_to_text
 
-LAB_1622:
+.append_title_suffix:
     PEA     -524(A5)
     MOVE.L  -8(A5),-(A7)
     JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_1623:
+.append_channel_segment:
     MOVE.W  218(A3),D0
     EXT.L   D0
     MOVE.L  -532(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -524(A5)
-    JSR     LAB_16F7(PC)
+    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     LEA     12(A7),A7
     LEA     -524(A5),A0
     MOVE.L  A0,-12(A5)
 
-LAB_1624:
+.skip_control_in_segment:
     MOVEQ   #0,D0
     MOVEA.L -12(A5),A0
     MOVE.B  (A0),D0
     LEA     LAB_21A8,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BEQ.S   LAB_1625
+    BEQ.S   .append_channel_label
 
     ADDQ.L  #1,-12(A5)
-    BRA.S   LAB_1624
+    BRA.S   .skip_control_in_segment
 
-LAB_1625:
+.append_channel_label:
     MOVEA.L -12(A5),A0
     TST.B   (A0)
-    BEQ.S   LAB_1626
+    BEQ.S   .copy_program_init
 
     PEA     LAB_2143
     MOVE.L  -8(A5),-(A7)
@@ -1072,36 +1249,36 @@ LAB_1625:
 
     LEA     12(A7),A7
 
-LAB_1626:
+.copy_program_init:
     MOVEQ   #0,D6
     MOVE.L  D6,D7
 
-LAB_1627:
+.copy_program_loop:
     MOVEA.L -528(A5),A0
     TST.B   1(A0,D7.L)
-    BEQ.S   LAB_1629
+    BEQ.S   .finalize_program
 
     MOVEQ   #32,D0
     CMP.B   1(A0,D7.L),D0
-    BEQ.S   LAB_1628
+    BEQ.S   .skip_program_space
 
     LEA     -524(A5),A1
     ADDA.L  D6,A1
     ADDQ.L  #1,D6
     MOVE.B  1(A0,D7.L),(A1)
 
-LAB_1628:
+.skip_program_space:
     ADDQ.L  #1,D7
-    BRA.S   LAB_1627
+    BRA.S   .copy_program_loop
 
-LAB_1629:
+.finalize_program:
     LEA     -524(A5),A0
     ADDA.L  D6,A0
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
     MOVE.B  -524(A5),D1
     TST.B   D1
-    BEQ.S   LAB_162A
+    BEQ.S   .append_channel_word
 
     PEA     GLOB_STR_ALIGNED_CHANNEL_2
     MOVE.L  -8(A5),-(A7)
@@ -1113,20 +1290,44 @@ LAB_1629:
 
     LEA     16(A7),A7
 
-LAB_162A:
+.append_channel_word:
     PEA     284.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1755(PC)
+    JSR     TEXTDISP_TrimTextToPixelWidth(PC)
 
     ADDQ.W  #8,A7
 
-LAB_162B:
+.return:
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_FilterAndSelectEntry   (Filter/update selection)
+; ARGS:
+;   stack +8: entryPtr (A3)
+;   stack +15: cmdByte (D7)
+; RET:
+;   D0: nonzero if selection changed
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   JMPTBL_ESQ_WildcardMatch_2, TEXTDISP_GetGroupEntryCount,
+;   GROUPD_JMPTBL_LAB_0923/0926, TEXTDISP_ShouldOpenEditorForEntry,
+;   TEXTDISP_SetSelectionFields, TEXTDISP_BuildEntryDetailLine, TEXTDISP_ResetSelectionState
+; READS:
+;   LAB_2145/LAB_2358-235C, LAB_2371
+; WRITES:
+;   LAB_2145, LAB_2358-235C, LAB_2371
+; DESC:
+;   Applies PPV/SBE/SPORTS filters, walks entries for matches, and updates
+;   selection state when a match is found.
+; NOTES:
+;   Uses wildcard match strings in data/script.s.
+;------------------------------------------------------------------------------
+TEXTDISP_FilterAndSelectEntry:
 LAB_162C:
     LINK.W  A5,#-36
     MOVEM.L D2/D5-D7/A3,-(A7)
@@ -1134,40 +1335,40 @@ LAB_162C:
     MOVE.B  15(A5),D7
     CLR.L   -20(A5)
     MOVE.L  A3,D0
-    BNE.S   LAB_162D
+    BNE.S   .init_pointers
 
     MOVEQ   #0,D7
-    BRA.S   LAB_162F
+    BRA.S   .dispatch_filter
 
-LAB_162D:
+.init_pointers:
     MOVE.L  A3,-30(A5)
     LEA     10(A3),A0
     MOVE.L  A0,-34(A5)
     MOVEA.L -30(A5),A1
     TST.B   (A1)
-    BEQ.S   LAB_162E
+    BEQ.S   .invalidate_filter
 
     TST.B   (A0)
-    BNE.S   LAB_162F
+    BNE.S   .dispatch_filter
 
-LAB_162E:
+.invalidate_filter:
     MOVEQ   #0,D7
 
-LAB_162F:
+.dispatch_filter:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     TST.W   D0
-    BEQ.W   LAB_164A
+    BEQ.W   .default_mode_3
 
     SUBI.W  #$46,D0
-    BEQ.S   LAB_1630
+    BEQ.S   .handle_mode_F
 
     SUBI.W  #18,D0
-    BEQ.S   LAB_1633
+    BEQ.S   .ensure_filter_ready
 
-    BRA.W   LAB_164A
+    BRA.W   .default_mode_3
 
-LAB_1630:
+.handle_mode_F:
     CLR.W   LAB_2359
     MOVE.B  #$1,LAB_2145
     MOVE.L  -30(A5),-(A7)
@@ -1176,7 +1377,7 @@ LAB_1630:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BEQ.S   LAB_1631
+    BEQ.S   .set_match_flags
 
     MOVE.L  -30(A5),-(A7)
     PEA     LAB_2147
@@ -1184,15 +1385,15 @@ LAB_1630:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BEQ.S   LAB_1631
+    BEQ.S   .set_match_flags
 
     MOVEQ   #0,D0
-    BRA.S   LAB_1632
+    BRA.S   .after_match_flags
 
-LAB_1631:
+.set_match_flags:
     MOVEQ   #1,D0
 
-LAB_1632:
+.after_match_flags:
     MOVE.L  -30(A5),-(A7)
     PEA     LAB_2148
     MOVE.W  D0,LAB_235B
@@ -1206,22 +1407,22 @@ LAB_1632:
     EXT.L   D1
     MOVE.W  D1,LAB_235C
 
-LAB_1633:
+.ensure_filter_ready:
     TST.L   -20(A5)
-    BNE.W   LAB_164B
+    BNE.W   .after_dispatch
 
     MOVE.B  LAB_2145,D0
     MOVEQ   #3,D1
     CMP.B   D1,D0
-    BEQ.W   LAB_164B
+    BEQ.W   .after_dispatch
 
     TST.W   LAB_2359
-    BNE.W   LAB_163D
+    BNE.W   .advance_cursor_set
 
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_15F5
+    BSR.W   TEXTDISP_GetGroupEntryCount
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D5
@@ -1230,9 +1431,9 @@ LAB_1633:
     MOVE.L  D6,D0
     MOVE.W  D0,LAB_235A
 
-LAB_1634:
+.scan_entries_loop:
     CMP.L   D5,D6
-    BGE.W   LAB_1639
+    BGE.W   .finish_match_scan
 
     MOVE.B  LAB_2145,D0
     EXT.W   D0
@@ -1245,26 +1446,26 @@ LAB_1634:
     MOVE.L  D0,-8(A5)
     MOVEA.L D0,A0
     BTST    #3,27(A0)
-    BNE.S   LAB_1638
+    BNE.S   .next_entry
 
     TST.W   LAB_235B
-    BEQ.S   LAB_1635
+    BEQ.S   .check_flag_match
 
     BTST    #4,27(A0)
-    BNE.S   LAB_1637
+    BNE.S   .record_match
 
-LAB_1635:
+.check_flag_match:
     TST.W   LAB_235C
-    BEQ.S   LAB_1636
+    BEQ.S   .check_editor_allowed
 
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_15F1
+    BSR.W   TEXTDISP_ShouldOpenEditorForEntry
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BNE.S   LAB_1637
+    BNE.S   .record_match
 
-LAB_1636:
+.check_editor_allowed:
     MOVEA.L -8(A5),A0
     ADDA.W  #12,A0
     MOVE.L  -30(A5),-(A7)
@@ -1273,9 +1474,9 @@ LAB_1636:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.S   LAB_1638
+    BNE.S   .next_entry
 
-LAB_1637:
+.record_match:
     MOVE.W  LAB_235A,D0
     ADDQ.W  #1,LAB_235A
     LEA     LAB_2371,A0
@@ -1285,47 +1486,47 @@ LAB_1637:
     MOVE.L  D6,D0
     MOVE.B  D0,(A0)
 
-LAB_1638:
+.next_entry:
     ADDQ.L  #1,D6
-    BRA.W   LAB_1634
+    BRA.W   .scan_entries_loop
 
-LAB_1639:
+.finish_match_scan:
     CMPI.W  #0,LAB_235A
-    BLS.S   LAB_163C
+    BLS.S   .no_matches
 
     CLR.W   LAB_2358
     MOVEQ   #1,D0
     CMP.B   LAB_2145,D0
-    BNE.S   LAB_163A
+    BNE.S   .set_default_cursor
 
     MOVEQ   #0,D0
     MOVE.W  LAB_2270,D0
-    BRA.S   LAB_163B
+    BRA.S   .store_cursor_base
 
-LAB_163A:
+.set_default_cursor:
     MOVEQ   #1,D0
 
-LAB_163B:
+.store_cursor_base:
     MOVE.W  D0,LAB_2359
-    BRA.S   LAB_163D
+    BRA.S   .advance_cursor_set
 
-LAB_163C:
+.no_matches:
     MOVE.W  #$31,LAB_2359
 
-LAB_163D:
+.advance_cursor_set:
     TST.L   -20(A5)
-    BNE.W   LAB_1647
+    BNE.W   .advance_mode
 
     CMPI.W  #$31,LAB_2359
-    BCC.W   LAB_1647
+    BCC.W   .advance_mode
 
-LAB_163E:
+.cursor_loop:
     TST.L   -20(A5)
-    BNE.W   LAB_1646
+    BNE.W   .advance_channel_index
 
     MOVE.W  LAB_2358,D0
     CMP.W   LAB_235A,D0
-    BCC.W   LAB_1646
+    BCC.W   .advance_channel_index
 
     LEA     LAB_2371,A0
     MOVEQ   #0,D1
@@ -1343,16 +1544,16 @@ LAB_163E:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.W   LAB_1645
+    BEQ.W   .next_cursor_entry
 
     MOVEQ   #1,D1
     CMP.B   LAB_2145,D1
-    BNE.W   LAB_1641
+    BNE.W   .load_entry_for_cursor
 
     MOVE.W  LAB_2270,D1
     MOVE.W  LAB_2359,D2
     CMP.W   D2,D1
-    BNE.W   LAB_1641
+    BNE.W   .load_entry_for_cursor
 
     MOVEQ   #0,D1
     MOVE.W  D2,D1
@@ -1361,13 +1562,13 @@ LAB_163E:
     MOVE.L  56(A0,D1.L),-26(A5)
     MOVE.W  D2,-22(A5)
 
-LAB_163F:
+.backtrack_channel:
     MOVE.W  -22(A5),D0
     TST.W   D0
-    BLE.S   LAB_1640
+    BLE.S   .ensure_channel_entry
 
     TST.L   -26(A5)
-    BNE.S   LAB_1640
+    BNE.S   .ensure_channel_entry
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -1375,11 +1576,11 @@ LAB_163F:
     MOVEA.L -4(A5),A0
     MOVE.L  56(A0,D1.L),-26(A5)
     SUBQ.W  #1,-22(A5)
-    BRA.S   LAB_163F
+    BRA.S   .backtrack_channel
 
-LAB_1640:
+.ensure_channel_entry:
     TST.L   -26(A5)
-    BEQ.S   LAB_1642
+    BEQ.S   .validate_entry
 
     LEA     LAB_2371,A0
     MOVEQ   #0,D0
@@ -1406,12 +1607,12 @@ LAB_1640:
 
     LEA     24(A7),A7
     TST.L   D0
-    BNE.S   LAB_1642
+    BNE.S   .validate_entry
 
     CLR.L   -26(A5)
-    BRA.S   LAB_1642
+    BRA.S   .validate_entry
 
-LAB_1641:
+.load_entry_for_cursor:
     MOVE.W  LAB_2359,D0
     MOVE.L  D0,D1
     EXT.L   D1
@@ -1421,34 +1622,34 @@ LAB_1641:
     MOVE.W  D0,-22(A5)
     MOVE.L  A0,-26(A5)
 
-LAB_1642:
+.validate_entry:
     TST.L   -26(A5)
-    BEQ.W   LAB_1645
+    BEQ.W   .next_cursor_entry
 
     MOVE.L  -26(A5),-(A7)
-    BSR.W   LAB_160D
+    BSR.W   TEXTDISP_SkipControlCodes
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-26(A5)
     TST.W   LAB_235C
-    BEQ.S   LAB_1643
+    BEQ.S   .check_entry_name_match
 
     MOVE.W  -22(A5),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1679(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_091A(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.W   LAB_1645
+    BEQ.W   .next_cursor_entry
 
-LAB_1643:
+.check_entry_name_match:
     MOVEA.L -34(A5),A0
 
-LAB_1644:
+.compare_entry_names:
     TST.B   (A0)+
-    BNE.S   LAB_1644
+    BNE.S   .compare_entry_names
 
     SUBQ.L  #1,A0
     SUBA.L  -34(A5),A0
@@ -1459,7 +1660,7 @@ LAB_1644:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.W   LAB_1645
+    BNE.W   .next_cursor_entry
 
     LEA     LAB_2371,A0
     MOVEQ   #0,D0
@@ -1485,7 +1686,7 @@ LAB_1644:
 
     LEA     12(A7),A7
     ADDQ.L  #1,D0
-    BNE.S   LAB_1645
+    BNE.S   .next_cursor_entry
 
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
@@ -1504,61 +1705,61 @@ LAB_1644:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1603
+    BSR.W   TEXTDISP_SetSelectionFields
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_1610
+    BSR.W   TEXTDISP_BuildEntryDetailLine
 
     LEA     16(A7),A7
 
-LAB_1645:
+.next_cursor_entry:
     ADDQ.W  #1,LAB_2358
-    BRA.W   LAB_163E
+    BRA.W   .cursor_loop
 
-LAB_1646:
+.advance_channel_index:
     TST.L   -20(A5)
-    BNE.W   LAB_163D
+    BNE.W   .advance_cursor_set
 
     ADDQ.W  #1,LAB_2359
     CLR.W   LAB_2358
-    BRA.W   LAB_163D
+    BRA.W   .advance_cursor_set
 
-LAB_1647:
+.advance_mode:
     CMPI.W  #$30,LAB_2359
-    BLS.W   LAB_1633
+    BLS.W   .ensure_filter_ready
 
     CLR.W   LAB_2359
     MOVE.B  LAB_2145,D0
     EXT.W   D0
     SUBQ.W  #1,D0
-    BEQ.S   LAB_1648
+    BEQ.S   .set_mode_2
 
     SUBQ.W  #1,D0
-    BEQ.S   LAB_1649
+    BEQ.S   .set_mode_3
 
-    BRA.S   LAB_1649
+    BRA.S   .set_mode_3
 
-LAB_1648:
+.set_mode_2:
     MOVE.B  #$2,LAB_2145
-    BRA.W   LAB_1633
+    BRA.W   .ensure_filter_ready
 
-LAB_1649:
+.set_mode_3:
     MOVE.B  #$3,LAB_2145
-    BRA.W   LAB_1633
+    BRA.W   .ensure_filter_ready
 
-LAB_164A:
+.default_mode_3:
     MOVE.B  #$3,LAB_2145
 
-LAB_164B:
+.after_dispatch:
     TST.L   -20(A5)
-    BNE.S   LAB_164C
+    BNE.S   .return
 
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_15FA
+    BSR.W   TEXTDISP_ResetSelectionState
 
     ADDQ.W  #4,A7
 
-LAB_164C:
+.return:
     MOVE.L  -20(A5),D0
     MOVEM.L (A7)+,D2/D5-D7/A3
     UNLK    A5
@@ -1566,15 +1767,37 @@ LAB_164C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_DrawHighlightFrame   (Draw highlight overlay)
+; ARGS:
+;   stack +8: entryPtr (A3)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   LAB_183C, LAB_183E, ESQ_SetCopperEffect_OnEnableHighlight,
+;   GROUPD_JMPTBL_LAB_0A49/0A45, MATH_Mulu32, MATH_DivS32,
+;   SCRIPT_BeginBannerCharTransition, LAB_1789, TEXTDISP_JMPTBL_LAB_0A48, TEXTDISP_ResetSelectionState
+; READS:
+;   entry+220, LAB_1BC7, LAB_2362
+; WRITES:
+;   LAB_2216, LAB_22AA/LAB_22AB, LAB_236C
+; DESC:
+;   Enables the highlight copper effect, computes bounds, and draws the frame.
+; NOTES:
+;   Uses banner transitions when in certain region modes.
+;------------------------------------------------------------------------------
+TEXTDISP_DrawHighlightFrame:
 LAB_164D:
     LINK.W  A5,#-32
     MOVEM.L D2-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  A3,D0
-    BEQ.W   LAB_1655
+    BEQ.W   .return
 
     TST.B   220(A3)
-    BEQ.W   LAB_1655
+    BEQ.W   .return
 
     CLR.L   -(A7)
     PEA     8.W
@@ -1598,25 +1821,25 @@ LAB_164D:
     MOVE.L  D0,-22(A5)
     MOVE.L  D1,-26(A5)
     BTST    #2,D2
-    BEQ.S   LAB_164E
+    BEQ.S   .select_grid_cols
 
     MOVEQ   #2,D0
-    BRA.S   LAB_164F
+    BRA.S   .calc_grid_width
 
-LAB_164E:
+.select_grid_cols:
     MOVEQ   #1,D0
 
-LAB_164F:
+.calc_grid_width:
     JSR     MATH_Mulu32(PC)
 
     MOVE.L  D0,-26(A5)
     MOVE.L  -22(A5),D1
     CMP.L   D0,D1
-    BLT.S   LAB_1650
+    BLT.S   .clamp_width
 
     MOVE.L  D0,D1
 
-LAB_1650:
+.clamp_width:
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
     MOVE.W  #1,LAB_22AA
@@ -1633,20 +1856,20 @@ LAB_1650:
     MOVE.B  LAB_1BC7,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_1653
+    BNE.S   .after_banner
 
     MOVEA.L LAB_2216,A0
     MOVE.W  (A0),D0
     BTST    #2,D0
-    BEQ.S   LAB_1651
+    BEQ.S   .use_cols_2
 
     MOVEQ   #2,D0
-    BRA.S   LAB_1652
+    BRA.S   .after_cols
 
-LAB_1651:
+.use_cols_2:
     MOVEQ   #1,D0
 
-LAB_1652:
+.after_cols:
     MOVE.L  D0,28(A7)
     MOVE.L  -22(A5),D0
     MOVE.L  28(A7),D1
@@ -1662,7 +1885,7 @@ LAB_1652:
 
     ADDQ.W  #8,A7
 
-LAB_1653:
+.after_banner:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -1674,11 +1897,11 @@ LAB_1653:
     MOVE.L  #$fffffee4,D0
     ADD.L   -18(A5),D0
     TST.L   D0
-    BPL.S   LAB_1654
+    BPL.S   .calc_rect
 
     ADDQ.L  #1,D0
 
-LAB_1654:
+.calc_rect:
     ASR.L   #1,D0
     MOVE.L  D0,D6
     MOVEQ   #0,D4
@@ -1716,20 +1939,44 @@ LAB_1654:
     JSR     LAB_183E(PC)
 
     MOVE.L  D0,LAB_2216
-    JSR     LAB_167A(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_0A48(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_15FA
+    BSR.W   TEXTDISP_ResetSelectionState
 
     LEA     36(A7),A7
 
-LAB_1655:
+.return:
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_HandleScriptCommand   (Dispatch text display command)
+; ARGS:
+;   stack +11: cmdChar (D7)
+;   stack +15: modeChar (D6)
+;   stack +16: argPtr (A3)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   TEXTDISP_BuildNowShowingStatusLine, TEXTDISP_BuildEntryPairStatusLine,
+;   TEXTDISP_SetEntryTextFields, TEXTDISP_FilterAndSelectEntry,
+;   TEXTDISP_DrawHighlightFrame, MEMORY_AllocateMemory, MEMORY_DeallocateMemory
+; READS:
+;   LAB_214B, LAB_2360/2361/2364
+; WRITES:
+;   LAB_2149/214A/214B/235D
+; DESC:
+;   Handles a script opcode by updating text display state and SourceCfg data.
+; NOTES:
+;   Command cases inferred from constants (0x43/0x4A/0x52 etc).
+;------------------------------------------------------------------------------
+TEXTDISP_HandleScriptCommand:
 LAB_1656:
     LINK.W  A5,#-208
     MOVEM.L D2/D4-D7/A3,-(A7)
@@ -1741,20 +1988,20 @@ LAB_1656:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     ADDQ.W  #1,D0
-    BEQ.W   LAB_1661
+    BEQ.W   .finalize
 
     SUBI.W  #$43,D0
-    BEQ.S   LAB_1657
+    BEQ.S   .handle_cmd_C
 
     SUBQ.W  #7,D0
-    BEQ.W   LAB_165C
+    BEQ.W   .handle_cmd_J
 
     SUBI.W  #10,D0
-    BEQ.W   LAB_165D
+    BEQ.W   .handle_cmd_source_cfg
 
-    BRA.W   LAB_1661
+    BRA.W   .finalize
 
-LAB_1657:
+.handle_cmd_C:
     MOVE.L  A3,-(A7)
     PEA     LAB_214C
     PEA     -200(A5)
@@ -1765,11 +2012,11 @@ LAB_1657:
     MOVE.L  D0,(A7)
     PEA     LAB_234B
     MOVE.L  A3,-(A7)
-    JSR     LAB_1704(PC)
+    JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     20(A7),A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1658
+    BNE.S   .handle_cmd_C_success
 
     MOVE.W  LAB_2153,LAB_235D
     MOVE.W  LAB_2364,LAB_2149
@@ -1778,37 +2025,37 @@ LAB_1657:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.W  D1,LAB_214A
-    BRA.S   LAB_165B
+    BRA.S   .dispatch_update
 
-LAB_1658:
+.handle_cmd_C_success:
     MOVE.W  LAB_2360,D0
     ADDQ.W  #1,D0
-    BEQ.S   LAB_1659
+    BEQ.S   .handle_cmd_C_try_alt1
 
     MOVE.W  #1,LAB_235D
     MOVE.W  LAB_2360,LAB_2149
     MOVEQ   #-1,D0
     MOVE.W  D0,LAB_214A
-    BRA.S   LAB_165B
+    BRA.S   .dispatch_update
 
-LAB_1659:
+.handle_cmd_C_try_alt1:
     MOVE.W  LAB_2361,D0
     ADDQ.W  #1,D0
-    BEQ.S   LAB_165A
+    BEQ.S   .handle_cmd_C_try_alt2
 
     CLR.W   LAB_235D
     MOVE.W  LAB_2361,LAB_2149
     MOVEQ   #-1,D0
     MOVE.W  D0,LAB_214A
-    BRA.S   LAB_165B
+    BRA.S   .dispatch_update
 
-LAB_165A:
+.handle_cmd_C_try_alt2:
     MOVEQ   #-1,D0
     MOVE.W  D0,LAB_214A
     MOVE.W  D0,LAB_2149
     MOVE.W  D0,LAB_235D
 
-LAB_165B:
+.dispatch_update:
     MOVE.W  LAB_235D,D0
     EXT.L   D0
     MOVE.W  LAB_2149,D1
@@ -1818,15 +2065,15 @@ LAB_165B:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_15C5
+    BSR.W   TEXTDISP_BuildNowShowingStatusLine
 
     BSR.W   LAB_15A2
 
     LEA     12(A7),A7
     MOVEQ   #0,D5
-    BRA.W   LAB_1661
+    BRA.W   .finalize
 
-LAB_165C:
+.handle_cmd_J:
     MOVE.W  LAB_235D,D0
     EXT.L   D0
     MOVE.W  LAB_2149,D1
@@ -1836,19 +2083,19 @@ LAB_165C:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_15E4
+    BSR.W   TEXTDISP_BuildEntryPairStatusLine
 
     LEA     12(A7),A7
     MOVEQ   #0,D5
-    BRA.W   LAB_1661
+    BRA.W   .finalize
 
-LAB_165D:
+.handle_cmd_source_cfg:
     MOVEQ   #70,D0
     CMP.B   D0,D7
-    BNE.S   LAB_1660
+    BNE.S   .apply_source_cfg
 
     TST.L   LAB_214B
-    BNE.S   LAB_165E
+    BNE.S   .init_source_cfg
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     732.W
@@ -1859,60 +2106,60 @@ LAB_165D:
     LEA     16(A7),A7
     MOVE.L  D0,LAB_214B
 
-LAB_165E:
+.init_source_cfg:
     PEA     LAB_234B
     MOVE.L  A3,-(A7)
     MOVE.L  LAB_214B,-(A7)
-    BSR.W   LAB_15FC
+    BSR.W   TEXTDISP_SetEntryTextFields
 
     PEA     70.W
     MOVE.L  LAB_214B,-(A7)
-    BSR.W   LAB_162C
+    BSR.W   TEXTDISP_FilterAndSelectEntry
 
     LEA     20(A7),A7
     TST.L   D0
-    BNE.S   LAB_1660
+    BNE.S   .apply_source_cfg
 
     TST.L   LAB_214B
-    BEQ.S   LAB_1660
+    BEQ.S   .apply_source_cfg
 
     MOVEA.L LAB_214B,A0
     ADDA.W  #$dc,A0
     LEA     LAB_214E,A1
 
-LAB_165F:
+.copy_default_cfg:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   LAB_165F
+    BNE.S   .copy_default_cfg
 
-LAB_1660:
+.apply_source_cfg:
     MOVE.L  LAB_214B,-(A7)
-    BSR.W   LAB_164D
+    BSR.W   TEXTDISP_DrawHighlightFrame
 
     PEA     88.W
     MOVE.L  LAB_214B,-(A7)
-    BSR.W   LAB_162C
+    BSR.W   TEXTDISP_FilterAndSelectEntry
 
     LEA     12(A7),A7
     MOVEQ   #0,D4
 
-LAB_1661:
+.finalize:
     TST.L   D5
-    BEQ.S   LAB_1662
+    BEQ.S   .cleanup_if_needed
 
     MOVE.W  #(-1),LAB_2149
     MOVE.W  #$31,LAB_214A
 
-LAB_1662:
+.cleanup_if_needed:
     TST.L   D4
-    BEQ.S   LAB_1663
+    BEQ.S   .return
 
     CLR.L   -(A7)
     CLR.L   -(A7)
-    BSR.W   LAB_162C
+    BSR.W   TEXTDISP_FilterAndSelectEntry
 
     ADDQ.W  #8,A7
     TST.L   LAB_214B
-    BEQ.S   LAB_1663
+    BEQ.S   .return
 
     PEA     732.W
     MOVE.L  LAB_214B,-(A7)
@@ -1923,20 +2170,40 @@ LAB_1662:
     LEA     16(A7),A7
     CLR.L   LAB_214B
 
-LAB_1663:
+.return:
     MOVEM.L (A7)+,D2/D4-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_LoadSourceConfig   (Load SourceCfg.ini)
+; ARGS:
+;   none
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7/A0
+; CALLS:
+;   PARSEINI_ParseIniBufferAndDispatch
+; READS:
+;   GLOB_STR_DF0_SOURCECFG_INI_2
+; WRITES:
+;   LAB_235E, LAB_235F, LAB_2131
+; DESC:
+;   Clears the SourceCfg table and parses df0:SourceCfg.ini.
+; NOTES:
+;   Table size is 0x12e entries.
+;------------------------------------------------------------------------------
+TEXTDISP_LoadSourceConfig:
 LAB_1664:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-LAB_1665:
+.clear_table_loop:
     CMPI.L  #$12e,D7
-    BGE.S   LAB_1666
+    BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1944,9 +2211,9 @@ LAB_1665:
     ADDA.L  D0,A0
     CLR.L   (A0)
     ADDQ.L  #1,D7
-    BRA.S   LAB_1665
+    BRA.S   .clear_table_loop
 
-LAB_1666:
+.return:
     CLR.L   LAB_235F
     CLR.B   LAB_2131
     PEA     GLOB_STR_DF0_SOURCECFG_INI_2
@@ -1958,14 +2225,34 @@ LAB_1666:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_ClearSourceConfig   (Free SourceCfg table)
+; ARGS:
+;   none
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7/A0-A2
+; CALLS:
+;   JMPTBL_LAB_0B44_2, MEMORY_DeallocateMemory
+; READS:
+;   LAB_235E, LAB_235F
+; WRITES:
+;   LAB_235E, LAB_235F, LAB_2131
+; DESC:
+;   Frees all SourceCfg entries and resets the table/state.
+; NOTES:
+;   Each entry is 6 bytes.
+;------------------------------------------------------------------------------
+TEXTDISP_ClearSourceConfig:
 LAB_1667:
     LINK.W  A5,#-8
     MOVEM.L D7/A2,-(A7)
     MOVEQ   #0,D7
 
-LAB_1668:
+.loop_entries:
     CMP.L   LAB_235F,D7
-    BGE.S   LAB_166A
+    BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1973,7 +2260,7 @@ LAB_1668:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
-    BEQ.S   LAB_1669
+    BEQ.S   .free_entry
 
     MOVEA.L A0,A1
     ADDA.L  D0,A1
@@ -2004,11 +2291,11 @@ LAB_1668:
     ADDA.L  D0,A0
     CLR.L   (A0)
 
-LAB_1669:
+.free_entry:
     ADDQ.L  #1,D7
-    BRA.S   LAB_1668
+    BRA.S   .loop_entries
 
-LAB_166A:
+.return:
     CLR.L   LAB_235F
     CLR.B   LAB_2131
     MOVEM.L (A7)+,D7/A2
@@ -2017,20 +2304,40 @@ LAB_166A:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_ApplySourceConfigToEntry   (Apply SourceCfg flags)
+; ARGS:
+;   stack +20: entryPtr (A3)
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7/A0-A3/A6
+; CALLS:
+;   STRING_CompareNoCaseN
+; READS:
+;   LAB_235E, LAB_235F, LAB_2131
+; WRITES:
+;   entry+40
+; DESC:
+;   Compares entry name against SourceCfg entries and ORs matching flags.
+; NOTES:
+;   Clears masked flags before applying matches.
+;------------------------------------------------------------------------------
+TEXTDISP_ApplySourceConfigToEntry:
 LAB_166B:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_166F
+    BEQ.S   .return
 
     MOVE.B  LAB_2131,D0
     NOT.B   D0
     AND.B   D0,40(A3)
     MOVEQ   #0,D7
 
-LAB_166C:
+.loop_entries:
     CMP.L   LAB_235F,D7
-    BGE.S   LAB_166F
+    BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -2043,9 +2350,9 @@ LAB_166C:
     MOVEA.L (A0),A6
     MOVEA.L (A6),A0
 
-LAB_166D:
+.compare_entry_name:
     TST.B   (A0)+
-    BNE.S   LAB_166D
+    BNE.S   .compare_entry_name
 
     SUBQ.L  #1,A0
     SUBA.L  (A6),A0
@@ -2056,7 +2363,7 @@ LAB_166D:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   LAB_166E
+    BNE.S   .set_entry_flag
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -2066,26 +2373,44 @@ LAB_166D:
     MOVE.B  4(A1),D0
     OR.B    D0,40(A3)
 
-LAB_166E:
+.set_entry_flag:
     ADDQ.L  #1,D7
-    BRA.S   LAB_166C
+    BRA.S   .loop_entries
 
-LAB_166F:
+.return:
     MOVEM.L (A7)+,D7/A2-A3/A6
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_ApplySourceConfigAllEntries   (Apply SourceCfg to all entries)
+; ARGS:
+;   none
+; RET:
+;   none
+; CLOBBERS:
+;   D0-D7
+; CALLS:
+;   GROUPD_JMPTBL_LAB_0923, TEXTDISP_ApplySourceConfigToEntry
+; READS:
+;   LAB_2231, LAB_222F
+; DESC:
+;   Iterates entries across both groups and applies SourceCfg flags.
+; NOTES:
+;   Uses group IDs 1 and 2.
+;------------------------------------------------------------------------------
+TEXTDISP_ApplySourceConfigAllEntries:
 LAB_1670:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-LAB_1671:
+.loop_group1:
     MOVEQ   #0,D0
     MOVE.W  LAB_2231,D0
     CMP.L   D0,D7
-    BGE.S   LAB_1672
+    BGE.S   .loop_group1_done
 
     PEA     1.W
     MOVE.L  D7,-(A7)
@@ -2093,20 +2418,20 @@ LAB_1671:
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   LAB_166B
+    BSR.W   TEXTDISP_ApplySourceConfigToEntry
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D7
-    BRA.S   LAB_1671
+    BRA.S   .loop_group1
 
-LAB_1672:
+.loop_group1_done:
     MOVEQ   #0,D7
 
-LAB_1673:
+.loop_group2:
     MOVEQ   #0,D0
     MOVE.W  LAB_222F,D0
     CMP.L   D0,D7
-    BGE.S   LAB_1674
+    BGE.S   .return
 
     PEA     2.W
     MOVE.L  D7,-(A7)
@@ -2114,19 +2439,40 @@ LAB_1673:
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   LAB_166B
+    BSR.W   TEXTDISP_ApplySourceConfigToEntry
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D7
-    BRA.S   LAB_1673
+    BRA.S   .loop_group2
 
-LAB_1674:
+.return:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_AddSourceConfigEntry   (Append SourceCfg entry)
+; ARGS:
+;   stack +8: namePtr (A3)
+;   stack +12: typePtr (A2)
+; RET:
+;   none
+; CLOBBERS:
+;   D0/A0-A3
+; CALLS:
+;   MEMORY_AllocateMemory, JMPTBL_LAB_0B44_2, STRING_CompareNoCase
+; READS:
+;   LAB_235F, LAB_2133, LAB_2131
+; WRITES:
+;   LAB_235E, LAB_235F, LAB_2131
+; DESC:
+;   Allocates a 6-byte SourceCfg entry, stores name/type, and updates flags.
+; NOTES:
+;   Marks entries matching \"PrevueSports\" with flag 0x08.
+;------------------------------------------------------------------------------
+TEXTDISP_AddSourceConfigEntry:
 LAB_1675:
     LINK.W  A5,#-8
     MOVEM.L A2-A3,-(A7)
@@ -2148,7 +2494,7 @@ LAB_1675:
     MOVE.L  D0,(A0)
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   LAB_1677
+    BEQ.S   .return
 
     ADDQ.L  #1,LAB_235F
     MOVEA.L D0,A0
@@ -2164,19 +2510,19 @@ LAB_1675:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   LAB_1676
+    BNE.S   .set_entry_flag
 
     MOVEQ   #8,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,4(A0)
 
-LAB_1676:
+.set_entry_flag:
     MOVE.B  LAB_2131,D0
     MOVEA.L -4(A5),A0
     OR.B    4(A0),D0
     MOVE.B  D0,LAB_2131
 
-LAB_1677:
+.return:
     MOVEM.L (A7)+,A2-A3
     UNLK    A5
     RTS
@@ -2188,12 +2534,42 @@ LAB_1677:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor   (JumpStub)
+; ARGS:
+;   see NEWGRID_ShouldOpenEditor
+; RET:
+;   see NEWGRID_ShouldOpenEditor
+; DESC:
+;   Jump stub to NEWGRID_ShouldOpenEditor.
+;------------------------------------------------------------------------------
+TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor:
 LAB_1678:
     JMP     NEWGRID_ShouldOpenEditor
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_JMPTBL_LAB_091A   (JumpStub_LAB_091A)
+; ARGS:
+;   see LAB_091A
+; RET:
+;   see LAB_091A
+; DESC:
+;   Jump stub to LAB_091A.
+;------------------------------------------------------------------------------
+TEXTDISP_JMPTBL_LAB_091A:
 LAB_1679:
     JMP     LAB_091A
 
+;------------------------------------------------------------------------------
+; FUNC: TEXTDISP_JMPTBL_LAB_0A48   (JumpStub_LAB_0A48)
+; ARGS:
+;   see LAB_0A48
+; RET:
+;   see LAB_0A48
+; DESC:
+;   Jump stub to LAB_0A48.
+;------------------------------------------------------------------------------
+TEXTDISP_JMPTBL_LAB_0A48:
 LAB_167A:
     JMP     LAB_0A48
 

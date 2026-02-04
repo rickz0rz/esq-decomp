@@ -7,8 +7,8 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1465, LAB_145C, LAB_1455, LAB_1462, JMPTBL_STRING_CompareNoCase_3, LAB_1667, LAB_146B,
-;   LAB_145B, LAB_1456/1457/1458..., LAB_13E6/LAB_1400/LAB_1404/LAB_1408 helpers
+;   JMPTBL_LAB_03AC, JMPTBL_LAB_03B9, JMPTBL_UNKNOWN7_FindCharWrapper, JMPTBL_GCOMMAND_InitPresetTableFromPalette, JMPTBL_STRING_CompareNoCase_3, TEXTDISP_ClearSourceConfig, JMPTBL_LAB_0B44,
+;   JMPTBL_GCOMMAND_FindPathSeparator, JMPTBL_HANDLE_OpenWithMode, JMPTBL_LAB_09F9, JMPTBL_LAB_0A93, LAB_13E6/LAB_1400/LAB_1404/LAB_1408 helpers
 ; READS:
 ;   LAB_21BC, LAB_21A8 (char class table), many LAB_205* globals, LAB_1B1F, LAB_233D
 ; WRITES:
@@ -29,7 +29,7 @@ PARSEINI_ParseConfigBuffer:
     MOVEQ   #0,D7
     MOVEQ   #-1,D5
     MOVE.L  A3,-(A7)
-    JSR     LAB_1465(PC)
+    JSR     JMPTBL_LAB_03AC(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
@@ -43,7 +43,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  LAB_21BC,-16(A5)
 
 .next_line:
-    JSR     LAB_145C(PC)
+    JSR     JMPTBL_LAB_03B9(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-8(A5)
@@ -71,7 +71,7 @@ PARSEINI_ParseConfigBuffer:
     LEA     1(A0),A1
     PEA     93.W
     MOVE.L  A1,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-28(A5)
@@ -120,7 +120,7 @@ PARSEINI_ParseConfigBuffer:
 
     MOVEQ   #3,D7
     PEA     LAB_233F
-    JSR     LAB_1462(PC)
+    JSR     JMPTBL_GCOMMAND_InitPresetTableFromPalette(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .next_line
@@ -182,17 +182,17 @@ PARSEINI_ParseConfigBuffer:
     MOVEQ   #7,D7
     MOVE.L  LAB_205A,-(A7)
     MOVE.L  GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,LAB_205A
     MOVE.L  LAB_205B,(A7)
     MOVE.L  LAB_20B0,-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,LAB_205B
     MOVE.L  LAB_205C,(A7)
     MOVE.L  LAB_20B2,-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,LAB_205C
@@ -209,7 +209,7 @@ PARSEINI_ParseConfigBuffer:
     TST.L   D0
     BNE.S   .unknown_section
 
-    JSR     LAB_1667(PC)
+    JSR     TEXTDISP_ClearSourceConfig(PC)
 
     MOVEQ   #8,D7
     BRA.W   .next_line
@@ -244,7 +244,7 @@ PARSEINI_ParseConfigBuffer:
 .section1_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -270,7 +270,7 @@ PARSEINI_ParseConfigBuffer:
 .section1_cut_marker:
     PEA     LAB_2065
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -337,12 +337,12 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  A0,4(A2)
     MOVE.L  (A2),(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     MOVE.L  D0,(A2)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-40(A5)
@@ -359,7 +359,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  A0,-32(A5)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-40(A5)
@@ -376,7 +376,7 @@ PARSEINI_ParseConfigBuffer:
     CLR.B   (A0)
     MOVE.L  4(A2),-(A7)
     MOVE.L  -32(A5),-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,4(A2)
@@ -392,7 +392,7 @@ PARSEINI_ParseConfigBuffer:
 .section2_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -418,7 +418,7 @@ PARSEINI_ParseConfigBuffer:
 .section2_cut_marker:
     PEA     LAB_2067
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -479,7 +479,7 @@ PARSEINI_ParseConfigBuffer:
 .section4_5_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -505,7 +505,7 @@ PARSEINI_ParseConfigBuffer:
 .section4_5_cut_marker:
     PEA     LAB_2068
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -561,7 +561,7 @@ PARSEINI_ParseConfigBuffer:
 .section6_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -587,7 +587,7 @@ PARSEINI_ParseConfigBuffer:
 .section6_cut_marker:
     PEA     LAB_2069
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -640,7 +640,7 @@ PARSEINI_ParseConfigBuffer:
 .section7_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -666,7 +666,7 @@ PARSEINI_ParseConfigBuffer:
 .section7_cut_marker:
     PEA     LAB_206A
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -719,7 +719,7 @@ PARSEINI_ParseConfigBuffer:
 .section8_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -745,7 +745,7 @@ PARSEINI_ParseConfigBuffer:
 .section8_cut_marker:
     PEA     LAB_206B
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -790,7 +790,7 @@ PARSEINI_ParseConfigBuffer:
 .section8_dispatch:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1675(PC)
+    JSR     TEXTDISP_AddSourceConfigEntry(PC)
 
     ADDQ.W  #8,A7
     BRA.W   .next_line
@@ -857,7 +857,7 @@ LAB_13D6:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1455, LAB_134B, LAB_1469, LAB_1463, LAB_145F, LAB_159A
+;   JMPTBL_UNKNOWN7_FindCharWrapper, LAB_134B, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, JMPTBL_GCOMMAND_ValidatePresetTable, LAB_159A
 ; READS:
 ;   LAB_206D, LAB_206E/206F/2070-2072 lookup strings, LAB_223A-D fields
 ; WRITES:
@@ -880,7 +880,7 @@ LAB_13D7:
 
     PEA     61.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -903,7 +903,7 @@ LAB_13D9:
     PEA     LAB_206E
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -923,7 +923,7 @@ LAB_13DA:
     PEA     LAB_206F
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -942,7 +942,7 @@ LAB_13DB:
     PEA     5.W
     PEA     LAB_2070
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1463(PC)
+    JSR     JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -951,14 +951,14 @@ LAB_13DB:
     PEA     4.W
     PEA     LAB_2071
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1463(PC)
+    JSR     JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
     BNE.S   LAB_13DC
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_145F(PC)
+    JSR     JMPTBL_GCOMMAND_ValidatePresetTable(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #-1,D0
@@ -969,7 +969,7 @@ LAB_13DC:
     PEA     5.W
     PEA     LAB_2072
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1463(PC)
+    JSR     JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1112,7 +1112,7 @@ LAB_13E5:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, LAB_1460, LAB_1463, LAB_159A, LAB_15A1
+;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, JMPTBL_STRING_CompareNoCaseN, LAB_159A, LAB_15A1
 ; READS:
 ;   LAB_1B1F, LAB_233D, LAB_2073, LAB_2059, LAB_206D
 ; WRITES:
@@ -1149,7 +1149,7 @@ LAB_13E7:
     CLR.L   LAB_2073
     MOVE.L  LAB_233D,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1460(PC)
+    JSR     JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -1534,7 +1534,7 @@ LAB_13FF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, LAB_1460, LAB_1469, LAB_1463, LAB_159A
+;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, LAB_159A
 ; READS:
 ;   LAB_1B23, LAB_233E, LAB_2059
 ; WRITES:
@@ -1566,7 +1566,7 @@ LAB_1401:
 
     MOVE.L  LAB_233E,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1460(PC)
+    JSR     JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -1595,7 +1595,7 @@ LAB_1402:
     MOVE.L  D0,LAB_2059
     MOVE.L  LAB_233E,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1460(PC)
+    JSR     JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -1622,7 +1622,7 @@ LAB_1403:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, LAB_146B
+;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_LAB_0B44
 ; READS:
 ;   LAB_205A/B/C, LAB_2059
 ; WRITES:
@@ -1647,7 +1647,7 @@ LAB_1404:
 
     MOVE.L  LAB_205A,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_205A
@@ -1664,7 +1664,7 @@ LAB_1405:
 
     MOVE.L  LAB_205B,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_205B
@@ -1681,7 +1681,7 @@ LAB_1406:
 
     MOVE.L  LAB_205C,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_205C
@@ -1703,14 +1703,14 @@ LAB_1407:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_PRINTF_4, JMPTBL_STRING_CompareNoCase_3, LAB_1598, LAB_167A
+;   JMPTBL_PRINTF_4, JMPTBL_STRING_CompareNoCase_3, LAB_1598, TEXTDISP_JMPTBL_LAB_0A48
 ; READS:
 ;   LAB_1ECC/LAB_1FB8 tables, GLOB_STR_COLOR_PERCENT_D
 ; WRITES:
 ;   color tables pointed by A2 (8x3 bytes)
 ; DESC:
 ;   Iterates through color percentages strings, converts them, and fills a table;
-;   for mode 4 triggers LAB_167A afterward.
+;   for mode 4 triggers TEXTDISP_JMPTBL_LAB_0A48 afterward.
 ; NOTES:
 ;   Converts using LAB_1598 (string→value) and stores into preset tables.
 ;------------------------------------------------------------------------------
@@ -1725,28 +1725,28 @@ LAB_1408:
 
     MOVE.L  D7,D0
     SUBQ.L  #4,D0
-    BEQ.S   .loc_1409
+    BEQ.S   .mode4_select_table
 
     SUBQ.L  #1,D0
-    BEQ.S   .loc_140A
+    BEQ.S   .mode5_select_table
 
-    BRA.S   .loc_140B
+    BRA.S   .init_color_index
 
-.loc_1409:
+.mode4_select_table:
     MOVE.L  #LAB_1FB8,-116(A5)
     MOVEQ   #8,D4
-    BRA.S   .loc_140B
+    BRA.S   .init_color_index
 
-.loc_140A:
+.mode5_select_table:
     MOVE.L  #LAB_1ECC,-116(A5)
     MOVEQ   #8,D4
 
-.loc_140B:
+.init_color_index:
     MOVEQ   #0,D6
 
-.loc_140C:
+.color_index_loop:
     CMP.L   D4,D6
-    BGE.S   .loc_140F
+    BGE.S   .maybe_finalize
 
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_COLOR_PERCENT_D
@@ -1759,14 +1759,14 @@ LAB_1408:
 
     LEA     20(A7),A7
     TST.L   D0
-    BNE.S   .loc_140E
+    BNE.S   .next_color_index
 
     MOVEQ   #0,D5
 
-.loc_140D:
+.channel_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D5
-    BGE.S   .loc_140E
+    BGE.S   .next_color_index
 
     MOVE.L  D6,D1
     LSL.L   #2,D1
@@ -1784,18 +1784,18 @@ LAB_1408:
     MOVE.L  24(A7),D1
     MOVE.B  D0,0(A0,D1.L)
     ADDQ.L  #1,D5
-    BRA.S   .loc_140D
+    BRA.S   .channel_loop
 
-.loc_140E:
+.next_color_index:
     ADDQ.L  #1,D6
-    BRA.S   .loc_140C
+    BRA.S   .color_index_loop
 
-.loc_140F:
+.maybe_finalize:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BNE.S   .return
 
-    JSR     LAB_167A(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_0A48(PC)
 
 .return:
     MOVEM.L (A7)+,D4-D7/A2-A3
@@ -1922,17 +1922,17 @@ LAB_1416:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     SUBI.W  #$32,D0
-    BEQ.S   .loc_1417
+    BEQ.S   .handle_32_execute
 
     SUBQ.W  #1,D0
-    BEQ.S   .loc_1418
+    BEQ.S   .handle_33_subcommands
 
     SUBQ.W  #1,D0
-    BEQ.W   .loc_1429
+    BEQ.W   .handle_34_subcommands
 
     BRA.W   .return
 
-.loc_1417:
+.handle_32_execute:
     MOVE.L  A3,-(A7)
     PEA     GLOB_STR_PERCENT_S_2
     PEA     -80(A5)
@@ -1948,72 +1948,72 @@ LAB_1416:
 
     BRA.W   .return
 
-.loc_1418:
+.handle_33_subcommands:
     MOVE.B  (A3)+,D7
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     SUBI.W  #$34,D0
-    BEQ.S   .loc_1419
+    BEQ.S   .cmd_wait_clear_flag0
 
     SUBQ.W  #1,D0
-    BEQ.S   .loc_141A
+    BEQ.S   .cmd_scan_logos_and_clear_flag1
 
     SUBQ.W  #1,D0
-    BEQ.S   .loc_141C
+    BEQ.S   .cmd_call_lab_09DB
 
     SUBQ.W  #1,D0
-    BEQ.S   .loc_141D
+    BEQ.S   .cmd_set_h26f_font
 
     SUBQ.W  #1,D0
-    BEQ.W   .loc_141E
+    BEQ.W   .cmd_set_prevuec_font
 
     SUBQ.W  #1,D0
-    BEQ.W   .loc_1421
+    BEQ.W   .cmd_set_prevue_font
 
     SUBI.W  #$18,D0
-    BEQ.W   .loc_1422
+    BEQ.W   .cmd_parse_ini_from_disk
 
     SUBI.W  #16,D0
-    BEQ.W   .loc_1423
+    BEQ.W   .cmd_call_lab_0A93
 
     SUBQ.W  #1,D0
-    BEQ.W   .loc_1424
+    BEQ.W   .cmd_parse_gradient_ini
 
     SUBQ.W  #1,D0
-    BEQ.W   .loc_1425
+    BEQ.W   .cmd_parse_banner_ini
 
     SUBQ.W  #1,D0
-    BEQ.W   .loc_1427
+    BEQ.W   .cmd_parse_default_ini
 
     SUBI.W  #15,D0
-    BEQ.W   .loc_1428
+    BEQ.W   .cmd_parse_sourcecfg_ini
 
     BRA.W   .return
 
-.loc_1419:
-    JSR     LAB_1453(PC)
+.cmd_wait_clear_flag0:
+    JSR     JMPTBL_ED1_WaitForFlagAndClearBit0(PC)
 
     BRA.W   .return
 
-.loc_141A:
+.cmd_scan_logos_and_clear_flag1:
     MOVE.B  LAB_1BC1,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .loc_141B
+    BNE.S   .after_optional_logo_scan
 
     BSR.W   LAB_142E
 
-.loc_141B:
-    JSR     LAB_1466(PC)
+.after_optional_logo_scan:
+    JSR     JMPTBL_ED1_WaitForFlagAndClearBit1(PC)
 
     BRA.W   .return
 
-.loc_141C:
-    JSR     LAB_145A(PC)
+.cmd_call_lab_09DB:
+    JSR     JMPTBL_LAB_09DB(PC)
 
     BRA.W   .return
 
-.loc_141D:
+.cmd_set_h26f_font:
     PEA     GLOB_STRUCT_TEXTATTR_H26F_FONT
     PEA     GLOB_HANDLE_H26F_FONT
     BSR.W   TEST_MEMORY_AND_OPEN_TOPAZ_FONT
@@ -2032,7 +2032,7 @@ LAB_1416:
 
     BRA.W   .return
 
-.loc_141E:
+.cmd_set_prevuec_font:
     PEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT
     PEA     GLOB_HANDLE_PREVUEC_FONT
     BSR.W   TEST_MEMORY_AND_OPEN_TOPAZ_FONT
@@ -2067,10 +2067,10 @@ LAB_1416:
 
     MOVEQ   #0,D6
 
-.loc_141F:
+.prevec_font_rastport_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D6
-    BGE.S   .loc_1420
+    BGE.S   .after_prevuec_font_loop
 
     MOVE.L  D6,D0
     MOVEQ   #80,D1
@@ -2085,16 +2085,16 @@ LAB_1416:
     JSR     _LVOSetFont(A6)
 
     ADDQ.L  #1,D6
-    BRA.S   .loc_141F
+    BRA.S   .prevec_font_rastport_loop
 
-.loc_1420:
+.after_prevuec_font_loop:
     MOVE.L  GLOB_HANDLE_PREVUEC_FONT,-(A7)
     JSR     LAB_1858
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
-.loc_1421:
+.cmd_set_prevue_font:
     PEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT
     PEA     GLOB_HANDLE_PREVUE_FONT
     BSR.W   TEST_MEMORY_AND_OPEN_TOPAZ_FONT
@@ -2103,26 +2103,26 @@ LAB_1416:
     TST.W   D0
     BRA.W   .return
 
-.loc_1422:
-    JSR     LAB_1454(PC)
+.cmd_parse_ini_from_disk:
+    JSR     JMPTBL_DISKIO_ParseIniFileFromDisk(PC)
 
     BRA.W   .return
 
-.loc_1423:
+.cmd_call_lab_0A93:
     PEA     97.W
-    JSR     LAB_1458(PC)
+    JSR     JMPTBL_LAB_0A93(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
-.loc_1424:
+.cmd_parse_gradient_ini:
     PEA     GLOB_STR_DF0_GRADIENT_INI_3
     BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
-.loc_1425:
+.cmd_parse_banner_ini:
     PEA     GLOB_STR_DF0_BANNER_INI_2
     JSR     LAB_14C6(PC)
 
@@ -2130,75 +2130,75 @@ LAB_1416:
     TST.W   D0
     BEQ.W   .return
 
-.loc_1426:
+.wait_banner_ready:
     TST.W   LAB_1B83
-    BEQ.S   .loc_1426
+    BEQ.S   .wait_banner_ready
 
     CLR.L   -(A7)
     PEA     LAB_1B25
-    JSR     LAB_145E(PC)
+    JSR     JMPTBL_BRUSH_FreeBrushList(PC)
 
     PEA     LAB_1B23
-    JSR     LAB_1459(PC)
+    JSR     JMPTBL_BRUSH_FreeBrushResources(PC)
 
     PEA     GLOB_STR_DF0_BANNER_INI_3
 
     BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     PEA     1.W
-    JSR     LAB_1457(PC)
+    JSR     JMPTBL_LAB_09F9(PC)
 
     LEA     20(A7),A7
     BRA.S   .return
 
-.loc_1427:
+.cmd_parse_default_ini:
     PEA     GLOB_STR_DF0_DEFAULT_INI_2
     BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
-.loc_1428:
+.cmd_parse_sourcecfg_ini:
     PEA     GLOB_STR_DF0_SOURCECFG_INI_1
     BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
-    JSR     LAB_1670(PC)
+    JSR     TEXTDISP_ApplySourceConfigAllEntries(PC)
 
     ADDQ.W  #4,A7
 
     BRA.S   .return
 
-.loc_1429:
+.handle_34_subcommands:
     MOVE.B  (A3)+,D7
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     SUBI.W  #$30,D0
-    BEQ.S   .loc_142A
+    BEQ.S   .cmd_show_then_exit_esc_menu
 
     SUBQ.W  #1,D0
-    BEQ.S   .loc_142B
+    BEQ.S   .cmd_draw_diagnostics
 
     SUBQ.W  #1,D0
-    BEQ.S   .loc_142C
+    BEQ.S   .cmd_draw_version
 
     BRA.S   .return
 
-.loc_142A:
-    JSR     LAB_146C(PC)
+.cmd_show_then_exit_esc_menu:
+    JSR     JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     LAB_146A(PC)
-
-    BRA.S   .return
-
-.loc_142B:
-    JSR     LAB_146C(PC)
-
-    JSR     LAB_145D(PC)
+    JSR     JMPTBL_ED1_ExitEscMenu(PC)
 
     BRA.S   .return
 
-.loc_142C:
-    JSR     LAB_146C(PC)
+.cmd_draw_diagnostics:
+    JSR     JMPTBL_ED1_EnterEscMenu(PC)
+
+    JSR     JMPTBL_ED1_DrawDiagnosticsScreen(PC)
+
+    BRA.S   .return
+
+.cmd_draw_version:
+    JSR     JMPTBL_ED1_EnterEscMenu(PC)
 
     JSR     JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
 
@@ -2218,7 +2218,7 @@ LAB_1416:
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _LVOExecute, LAB_1456, LAB_1468, LAB_145B, GROUPD_JMPTBL_MEMORY_AllocateMemory
+;   _LVOExecute, JMPTBL_HANDLE_OpenWithMode, GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit, JMPTBL_GCOMMAND_FindPathSeparator, GROUPD_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   GLOB_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, LAB_2098/2099/209A/209B strings
 ; WRITES:
@@ -2239,10 +2239,10 @@ LAB_142E:
     MOVE.L  A0,-100(A5)
     MOVE.L  A0,-96(A5)
 
-.loc_142F:
+.clear_entry_tables_loop:
     MOVEQ   #100,D0
     CMP.L   D0,D6
-    BGE.S   .loc_1430
+    BGE.S   .exec_list_command
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -2254,9 +2254,9 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVE.L  A1,(A0)
     ADDQ.L  #1,D6
-    BRA.S   .loc_142F
+    BRA.S   .clear_entry_tables_loop
 
-.loc_1430:
+.exec_list_command:
     LEA     GLOB_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
@@ -2266,48 +2266,48 @@ LAB_142E:
 
     PEA     LAB_2099
     PEA     LAB_2098
-    JSR     LAB_1456(PC)
+    JSR     JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
-    BNE.S   .loc_1431
+    BNE.S   .after_open_primary
 
     CLR.L   -96(A5)
 
-.loc_1431:
+.after_open_primary:
     PEA     LAB_209B
     PEA     LAB_209A
-    JSR     LAB_1456(PC)
+    JSR     JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
-    BNE.S   .loc_1432
+    BNE.S   .after_open_secondary
 
     CLR.L   -100(A5)
 
-.loc_1432:
+.after_open_secondary:
     MOVEQ   #0,D5
 
-.loc_1433:
+.read_primary_list_loop:
     TST.L   -96(A5)
-    BEQ.W   .loc_143B
+    BEQ.W   .read_secondary_list_loop
 
     MOVEQ   #100,D0
     CMP.L   D0,D5
-    BGE.W   .loc_143B
+    BGE.W   .read_secondary_list_loop
 
     MOVE.L  -4(A5),-(A7)
     PEA     99.W
     PEA     -88(A5)
-    JSR     LAB_1468(PC)
+    JSR     GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit(PC)
 
     LEA     12(A7),A7
     LEA     -88(A5),A0
     MOVEA.L A0,A1
 
-.loc_1434:
+.primary_line_len_loop:
     TST.B   (A1)+
-    BNE.S   .loc_1434
+    BNE.S   .primary_line_len_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -2315,32 +2315,32 @@ LAB_142E:
     MOVEQ   #0,D6
     MOVE.L  D0,-96(A5)
 
-.loc_1435:
+.primary_sanitize_loop:
     CMP.L   D7,D6
-    BGE.S   .loc_1438
+    BGE.S   .primary_alloc_and_store
 
     MOVEQ   #10,D0
     CMP.B   -88(A5,D6.L),D0
-    BEQ.S   .loc_1436
+    BEQ.S   .primary_clear_char
 
     MOVEQ   #13,D0
     CMP.B   -88(A5,D6.L),D0
-    BEQ.S   .loc_1436
+    BEQ.S   .primary_clear_char
 
     MOVEQ   #44,D0
     CMP.B   -88(A5,D6.L),D0
-    BNE.S   .loc_1437
+    BNE.S   .primary_next_char
 
-.loc_1436:
+.primary_clear_char:
     CLR.B   -88(A5,D6.L)
 
-.loc_1437:
+.primary_next_char:
     ADDQ.L  #1,D6
-    BRA.S   .loc_1435
+    BRA.S   .primary_sanitize_loop
 
-.loc_1438:
+.primary_alloc_and_store:
     PEA     -88(A5)
-    JSR     LAB_145B(PC)
+    JSR     JMPTBL_GCOMMAND_FindPathSeparator(PC)
 
     MOVE.L  D5,D1
     ASL.L   #2,D1
@@ -2348,9 +2348,9 @@ LAB_142E:
     ADDA.L  D1,A0
     MOVEA.L D0,A1
 
-.loc_1439:
+.primary_strlen_loop:
     TST.B   (A1)+
-    BNE.S   .loc_1439
+    BNE.S   .primary_strlen_loop
 
     SUBQ.L  #1,A1
     SUBA.L  D0,A1
@@ -2374,36 +2374,36 @@ LAB_142E:
     MOVEA.L -92(A5),A1
     MOVEA.L (A0),A2
 
-.loc_143A:
+.primary_copy_string_loop:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   .loc_143A
+    BNE.S   .primary_copy_string_loop
 
     ADDQ.L  #1,D5
-    BRA.W   .loc_1433
+    BRA.W   .read_primary_list_loop
 
-.loc_143B:
+.read_secondary_list_loop:
     MOVEQ   #0,D5
 
-.loc_143C:
+.secondary_list_loop:
     TST.L   -100(A5)
-    BEQ.W   .loc_1444
+    BEQ.W   .compare_lists_loop
 
     MOVEQ   #100,D0
     CMP.L   D0,D5
-    BGE.W   .loc_1444
+    BGE.W   .compare_lists_loop
 
     MOVE.L  -8(A5),-(A7)
     PEA     99.W
     PEA     -88(A5)
-    JSR     LAB_1468(PC)
+    JSR     GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit(PC)
 
     LEA     12(A7),A7
     LEA     -88(A5),A0
     MOVEA.L A0,A1
 
-.loc_143D:
+.secondary_strlen_loop:
     TST.B   (A1)+
-    BNE.S   .loc_143D
+    BNE.S   .secondary_strlen_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -2411,26 +2411,26 @@ LAB_142E:
     MOVEQ   #0,D6
     MOVE.L  D0,-100(A5)
 
-.loc_143E:
+.secondary_sanitize_loop:
     CMP.L   D7,D6
-    BGE.S   .loc_1441
+    BGE.S   .secondary_alloc_and_store
 
     MOVEQ   #10,D0
     CMP.B   -88(A5,D6.L),D0
-    BEQ.S   .loc_143F
+    BEQ.S   .secondary_clear_char
 
     MOVEQ   #13,D0
     CMP.B   -88(A5,D6.L),D0
-    BNE.S   .loc_1440
+    BNE.S   .secondary_next_char
 
-.loc_143F:
+.secondary_clear_char:
     CLR.B   -88(A5,D6.L)
 
-.loc_1440:
+.secondary_next_char:
     ADDQ.L  #1,D6
-    BRA.S   .loc_143E
+    BRA.S   .secondary_sanitize_loop
 
-.loc_1441:
+.secondary_alloc_and_store:
     MOVE.L  D5,D0
     ASL.L   #2,D0
     LEA     -900(A5),A0
@@ -2438,9 +2438,9 @@ LAB_142E:
     LEA     -88(A5),A1
     MOVEA.L A1,A2
 
-.loc_1442:
+.secondary_strlen_alloc_loop:
     TST.B   (A2)+
-    BNE.S   .loc_1442
+    BNE.S   .secondary_strlen_alloc_loop
 
     SUBQ.L  #1,A2
     SUBA.L  A1,A2
@@ -2463,35 +2463,35 @@ LAB_142E:
     LEA     -88(A5),A1
     MOVEA.L (A0),A2
 
-.loc_1443:
+.secondary_copy_string_loop:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   .loc_1443
+    BNE.S   .secondary_copy_string_loop
 
     ADDQ.L  #1,D5
-    BRA.W   .loc_143C
+    BRA.W   .secondary_list_loop
 
-.loc_1444:
+.compare_lists_loop:
     MOVEQ   #0,D6
 
-.loc_1445:
+.next_secondary_entry:
     MOVE.L  D6,D0
     ASL.L   #2,D0
     LEA     -900(A5),A0
     ADDA.L  D0,A0
     TST.L   (A0)
-    BEQ.W   .loc_144C
+    BEQ.W   .free_primary_entries_loop
 
     MOVEQ   #0,D5
     CLR.L   -916(A5)
 
-.loc_1446:
+.scan_primary_for_match:
     MOVE.L  D5,D0
     ASL.L   #2,D0
     LEA     -500(A5),A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
-    BEQ.S   .loc_1448
+    BEQ.S   .if_no_match_delete
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -2506,26 +2506,26 @@ LAB_142E:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .loc_1447
+    BNE.S   .primary_match_next
 
     MOVEQ   #1,D0
     MOVE.L  D0,-916(A5)
 
-.loc_1447:
+.primary_match_next:
     ADDQ.L  #1,D5
-    BRA.S   .loc_1446
+    BRA.S   .scan_primary_for_match
 
-.loc_1448:
+.if_no_match_delete:
     TST.L   -916(A5)
-    BNE.S   .loc_144A
+    BNE.S   .free_secondary_entry
 
     LEA     GLOB_STR_DELETE_NIL_DH2_LOGOS,A0
     LEA     -956(A5),A1
     MOVEQ   #5,D0
 
-.loc_1449:
+.build_delete_cmd_copy_loop:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,.loc_1449
+    DBF     D0,.build_delete_cmd_copy_loop
 
     CLR.B   (A1)
     MOVE.L  D6,D0
@@ -2544,7 +2544,7 @@ LAB_142E:
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
-.loc_144A:
+.free_secondary_entry:
     MOVE.L  D6,D0
     ASL.L   #2,D0
     LEA     -900(A5),A0
@@ -2553,9 +2553,9 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
-.loc_144B:
+.secondary_strlen_for_free:
     TST.B   (A2)+
-    BNE.S   .loc_144B
+    BNE.S   .secondary_strlen_for_free
 
     SUBQ.L  #1,A2
     SUBA.L  (A0),A2
@@ -2569,19 +2569,19 @@ LAB_142E:
 
     LEA     16(A7),A7
     ADDQ.L  #1,D6
-    BRA.W   .loc_1445
+    BRA.W   .next_secondary_entry
 
-.loc_144C:
+.free_primary_entries_loop:
     MOVEQ   #0,D5
 
-.loc_144D:
+.next_primary_entry_free:
     MOVE.L  D5,D0
     ASL.L   #2,D0
     LEA     -500(A5),A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
-    BEQ.S   .loc_144F
+    BEQ.S   .close_primary_handle
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
@@ -2590,9 +2590,9 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
-.loc_144E:
+.primary_strlen_for_free:
     TST.B   (A2)+
-    BNE.S   .loc_144E
+    BNE.S   .primary_strlen_for_free
 
     SUBQ.L  #1,A2
     SUBA.L  (A0),A2
@@ -2606,23 +2606,23 @@ LAB_142E:
 
     LEA     16(A7),A7
     ADDQ.L  #1,D5
-    BRA.S   .loc_144D
+    BRA.S   .next_primary_entry_free
 
-.loc_144F:
+.close_primary_handle:
     TST.L   -4(A5)
-    BEQ.S   .loc_1450
+    BEQ.S   .close_secondary_handle
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1461(PC)
+    JSR     JMPTBL_UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
-.loc_1450:
+.close_secondary_handle:
     TST.L   -8(A5)
     BEQ.S   .return
 
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1461(PC)
+    JSR     JMPTBL_UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
@@ -2651,54 +2651,326 @@ LAB_142E:
 JMPTBL_STRING_CompareNoCase_3:
     JMP     STRING_CompareNoCase
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
+; ARGS:
+;   ?? (see ED1_WaitForFlagAndClearBit0)
+; RET:
+;   ?? (see ED1_WaitForFlagAndClearBit0)
+; CLOBBERS:
+;   ?? (see ED1_WaitForFlagAndClearBit0)
+; CALLS:
+;   ED1_WaitForFlagAndClearBit0
+; DESC:
+;   Jump stub to ED1_WaitForFlagAndClearBit0.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_ED1_WaitForFlagAndClearBit0:
 LAB_1453:
     JMP     ED1_WaitForFlagAndClearBit0
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_DISKIO_ParseIniFileFromDisk   (JumpStub_LAB_04F0)
+; ARGS:
+;   ?? (see LAB_04F0)
+; RET:
+;   ?? (see LAB_04F0)
+; CLOBBERS:
+;   ?? (see LAB_04F0)
+; CALLS:
+;   LAB_04F0
+; DESC:
+;   Jump stub to LAB_04F0 (Parse INI file from disk).
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_DISKIO_ParseIniFileFromDisk:
 LAB_1454:
     JMP     LAB_04F0
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
+; ARGS:
+;   ?? (see UNKNOWN7_FindCharWrapper)
+; RET:
+;   ?? (see UNKNOWN7_FindCharWrapper)
+; CLOBBERS:
+;   ?? (see UNKNOWN7_FindCharWrapper)
+; CALLS:
+;   UNKNOWN7_FindCharWrapper
+; DESC:
+;   Jump stub to UNKNOWN7_FindCharWrapper.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_UNKNOWN7_FindCharWrapper:
 LAB_1455:
     JMP     UNKNOWN7_FindCharWrapper
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)
+; ARGS:
+;   ?? (see HANDLE_OpenWithMode)
+; RET:
+;   ?? (see HANDLE_OpenWithMode)
+; CLOBBERS:
+;   ?? (see HANDLE_OpenWithMode)
+; CALLS:
+;   HANDLE_OpenWithMode
+; DESC:
+;   Jump stub to HANDLE_OpenWithMode.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_HANDLE_OpenWithMode:
 LAB_1456:
     JMP     HANDLE_OpenWithMode
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_LAB_09F9   (JumpStub_LAB_09F9)
+; ARGS:
+;   ?? (see LAB_09F9)
+; RET:
+;   ?? (see LAB_09F9)
+; CLOBBERS:
+;   ?? (see LAB_09F9)
+; CALLS:
+;   LAB_09F9
+; DESC:
+;   Jump stub to LAB_09F9.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_LAB_09F9:
 LAB_1457:
     JMP     LAB_09F9
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_LAB_0A93   (JumpStub_LAB_0A93)
+; ARGS:
+;   ?? (see LAB_0A93)
+; RET:
+;   ?? (see LAB_0A93)
+; CLOBBERS:
+;   ?? (see LAB_0A93)
+; CALLS:
+;   LAB_0A93
+; DESC:
+;   Jump stub to LAB_0A93.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_LAB_0A93:
 LAB_1458:
     JMP     LAB_0A93
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_BRUSH_FreeBrushResources   (JumpStub_BRUSH_FreeBrushResources)
+; ARGS:
+;   ?? (see BRUSH_FreeBrushResources)
+; RET:
+;   ?? (see BRUSH_FreeBrushResources)
+; CLOBBERS:
+;   ?? (see BRUSH_FreeBrushResources)
+; CALLS:
+;   BRUSH_FreeBrushResources
+; DESC:
+;   Jump stub to BRUSH_FreeBrushResources.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_BRUSH_FreeBrushResources:
 LAB_1459:
     JMP     BRUSH_FreeBrushResources
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_LAB_09DB   (JumpStub_LAB_09DB)
+; ARGS:
+;   ?? (see LAB_09DB)
+; RET:
+;   ?? (see LAB_09DB)
+; CLOBBERS:
+;   ?? (see LAB_09DB)
+; CALLS:
+;   LAB_09DB
+; DESC:
+;   Jump stub to LAB_09DB.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_LAB_09DB:
 LAB_145A:
     JMP     LAB_09DB
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_GCOMMAND_FindPathSeparator   (JumpStub_GCOMMAND_FindPathSeparator)
+; ARGS:
+;   ?? (see GCOMMAND_FindPathSeparator)
+; RET:
+;   ?? (see GCOMMAND_FindPathSeparator)
+; CLOBBERS:
+;   ?? (see GCOMMAND_FindPathSeparator)
+; CALLS:
+;   GCOMMAND_FindPathSeparator
+; DESC:
+;   Jump stub to GCOMMAND_FindPathSeparator.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_GCOMMAND_FindPathSeparator:
 LAB_145B:
     JMP     GCOMMAND_FindPathSeparator
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_LAB_03B9   (JumpStub_LAB_03B9)
+; ARGS:
+;   ?? (see LAB_03B9)
+; RET:
+;   ?? (see LAB_03B9)
+; CLOBBERS:
+;   ?? (see LAB_03B9)
+; CALLS:
+;   LAB_03B9
+; DESC:
+;   Jump stub to LAB_03B9.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_LAB_03B9:
 LAB_145C:
     JMP     LAB_03B9
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_ED1_DrawDiagnosticsScreen   (JumpStub_ED1_DrawDiagnosticsScreen)
+; ARGS:
+;   ?? (see ED1_DrawDiagnosticsScreen)
+; RET:
+;   ?? (see ED1_DrawDiagnosticsScreen)
+; CLOBBERS:
+;   ?? (see ED1_DrawDiagnosticsScreen)
+; CALLS:
+;   ED1_DrawDiagnosticsScreen
+; DESC:
+;   Jump stub to ED1_DrawDiagnosticsScreen.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_ED1_DrawDiagnosticsScreen:
 LAB_145D:
     JMP     ED1_DrawDiagnosticsScreen
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_BRUSH_FreeBrushList   (JumpStub_BRUSH_FreeBrushList)
+; ARGS:
+;   ?? (see BRUSH_FreeBrushList)
+; RET:
+;   ?? (see BRUSH_FreeBrushList)
+; CLOBBERS:
+;   ?? (see BRUSH_FreeBrushList)
+; CALLS:
+;   BRUSH_FreeBrushList
+; DESC:
+;   Jump stub to BRUSH_FreeBrushList.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_BRUSH_FreeBrushList:
 LAB_145E:
     JMP     BRUSH_FreeBrushList
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_GCOMMAND_ValidatePresetTable   (JumpStub_GCOMMAND_ValidatePresetTable)
+; ARGS:
+;   ?? (see GCOMMAND_ValidatePresetTable)
+; RET:
+;   ?? (see GCOMMAND_ValidatePresetTable)
+; CLOBBERS:
+;   ?? (see GCOMMAND_ValidatePresetTable)
+; CALLS:
+;   GCOMMAND_ValidatePresetTable
+; DESC:
+;   Jump stub to GCOMMAND_ValidatePresetTable.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_GCOMMAND_ValidatePresetTable:
 LAB_145F:
     JMP     GCOMMAND_ValidatePresetTable
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_BRUSH_AllocBrushNode   (JumpStub_BRUSH_AllocBrushNode)
+; ARGS:
+;   ?? (see BRUSH_AllocBrushNode)
+; RET:
+;   ?? (see BRUSH_AllocBrushNode)
+; CLOBBERS:
+;   ?? (see BRUSH_AllocBrushNode)
+; CALLS:
+;   BRUSH_AllocBrushNode
+; DESC:
+;   Jump stub to BRUSH_AllocBrushNode.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_BRUSH_AllocBrushNode:
 LAB_1460:
     JMP     BRUSH_AllocBrushNode
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_UNKNOWN36_FinalizeRequest   (JumpStub_UNKNOWN36_FinalizeRequest)
+; ARGS:
+;   ?? (see UNKNOWN36_FinalizeRequest)
+; RET:
+;   ?? (see UNKNOWN36_FinalizeRequest)
+; CLOBBERS:
+;   ?? (see UNKNOWN36_FinalizeRequest)
+; CALLS:
+;   UNKNOWN36_FinalizeRequest
+; DESC:
+;   Jump stub to UNKNOWN36_FinalizeRequest.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_UNKNOWN36_FinalizeRequest:
 LAB_1461:
     JMP     UNKNOWN36_FinalizeRequest
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_GCOMMAND_InitPresetTableFromPalette   (JumpStub_GCOMMAND_InitPresetTableFromPalette)
+; ARGS:
+;   ?? (see GCOMMAND_InitPresetTableFromPalette)
+; RET:
+;   ?? (see GCOMMAND_InitPresetTableFromPalette)
+; CLOBBERS:
+;   ?? (see GCOMMAND_InitPresetTableFromPalette)
+; CALLS:
+;   GCOMMAND_InitPresetTableFromPalette
+; DESC:
+;   Jump stub to GCOMMAND_InitPresetTableFromPalette.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_GCOMMAND_InitPresetTableFromPalette:
 LAB_1462:
     JMP     GCOMMAND_InitPresetTableFromPalette
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_STRING_CompareNoCaseN   (JumpStub_STRING_CompareNoCaseN)
+; ARGS:
+;   ?? (see STRING_CompareNoCaseN)
+; RET:
+;   ?? (see STRING_CompareNoCaseN)
+; CLOBBERS:
+;   ?? (see STRING_CompareNoCaseN)
+; CALLS:
+;   STRING_CompareNoCaseN
+; DESC:
+;   Jump stub to STRING_CompareNoCaseN.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_STRING_CompareNoCaseN:
 LAB_1463:
     JMP     STRING_CompareNoCaseN
 
@@ -2720,9 +2992,41 @@ LAB_1463:
 JMPTBL_STRING_AppendAtNull_3:
     JMP     STRING_AppendAtNull
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_LAB_03AC   (JumpStub_LAB_03AC)
+; ARGS:
+;   ?? (see LAB_03AC)
+; RET:
+;   ?? (see LAB_03AC)
+; CLOBBERS:
+;   ?? (see LAB_03AC)
+; CALLS:
+;   LAB_03AC
+; DESC:
+;   Jump stub to LAB_03AC.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_LAB_03AC:
 LAB_1465:
     JMP     LAB_03AC
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
+; ARGS:
+;   ?? (see ED1_WaitForFlagAndClearBit1)
+; RET:
+;   ?? (see ED1_WaitForFlagAndClearBit1)
+; CLOBBERS:
+;   ?? (see ED1_WaitForFlagAndClearBit1)
+; CALLS:
+;   ED1_WaitForFlagAndClearBit1
+; DESC:
+;   Jump stub to ED1_WaitForFlagAndClearBit1.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_ED1_WaitForFlagAndClearBit1:
 LAB_1466:
     JMP     ED1_WaitForFlagAndClearBit1
 
@@ -2744,18 +3048,95 @@ LAB_1466:
 JMPTBL_PRINTF_4:
     JMP     WDISP_SPrintf
 
-LAB_1468:
+;------------------------------------------------------------------------------
+; FUNC: GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit   (JumpStub_STREAM_ReadLineWithLimit)
+; ARGS:
+;   ?? (see STREAM_ReadLineWithLimit)
+; RET:
+;   ?? (see STREAM_ReadLineWithLimit)
+; CLOBBERS:
+;   ?? (see STREAM_ReadLineWithLimit)
+; CALLS:
+;   STREAM_ReadLineWithLimit
+; DESC:
+;   Jump stub to STREAM_ReadLineWithLimit.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit:
     JMP     STREAM_ReadLineWithLimit
 
-LAB_1469:
+;------------------------------------------------------------------------------
+; FUNC: GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper   (JumpStub_UNKNOWN7_FindAnyCharWrapper)
+; ARGS:
+;   ?? (see UNKNOWN7_FindAnyCharWrapper)
+; RET:
+;   ?? (see UNKNOWN7_FindAnyCharWrapper)
+; CLOBBERS:
+;   ?? (see UNKNOWN7_FindAnyCharWrapper)
+; CALLS:
+;   UNKNOWN7_FindAnyCharWrapper
+; DESC:
+;   Jump stub to UNKNOWN7_FindAnyCharWrapper.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper:
     JMP     UNKNOWN7_FindAnyCharWrapper
 
-LAB_146A:
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)
+; ARGS:
+;   ?? (see ED1_ExitEscMenu)
+; RET:
+;   ?? (see ED1_ExitEscMenu)
+; CLOBBERS:
+;   ?? (see ED1_ExitEscMenu)
+; CALLS:
+;   ED1_ExitEscMenu
+; DESC:
+;   Jump stub to ED1_ExitEscMenu.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_ED1_ExitEscMenu:
     JMP     ED1_ExitEscMenu
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_LAB_0B44   (JumpStub_LAB_0B44)
+; ARGS:
+;   ?? (see LAB_0B44)
+; RET:
+;   ?? (see LAB_0B44)
+; CLOBBERS:
+;   ?? (see LAB_0B44)
+; CALLS:
+;   LAB_0B44
+; DESC:
+;   Jump stub to LAB_0B44.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_LAB_0B44:
 LAB_146B:
     JMP     LAB_0B44
 
+;------------------------------------------------------------------------------
+; FUNC: JMPTBL_ED1_EnterEscMenu   (JumpStub_ED1_EnterEscMenu)
+; ARGS:
+;   ?? (see ED1_EnterEscMenu)
+; RET:
+;   ?? (see ED1_EnterEscMenu)
+; CLOBBERS:
+;   ?? (see ED1_EnterEscMenu)
+; CALLS:
+;   ED1_EnterEscMenu
+; DESC:
+;   Jump stub to ED1_EnterEscMenu.
+; NOTES:
+;   Callable entry point.
+;------------------------------------------------------------------------------
+JMPTBL_ED1_EnterEscMenu:
 LAB_146C:
     JMP     ED1_EnterEscMenu
 

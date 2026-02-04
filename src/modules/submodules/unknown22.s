@@ -21,7 +21,7 @@ DOS_CloseWithSignalCheck:
 
 .after_signal_callback:
     MOVE.L  D7,D1
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #0,D0

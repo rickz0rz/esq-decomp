@@ -785,7 +785,7 @@ LAB_1066:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1455, LAB_134D
+;   JMPTBL_UNKNOWN7_FindCharWrapper, LAB_134D
 ; READS:
 ;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_JMPTBL_HALF_HOURS_24_HR_FMT
 ; WRITES:
@@ -812,7 +812,7 @@ LAB_1069:
 
     PEA     40.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1350,7 +1350,7 @@ LAB_107F:
     ; split primary line on delimiter (offset 34)
     PEA     34.W
     MOVE.L  LAB_2335,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1359,7 +1359,7 @@ LAB_107F:
     ADDQ.L  #1,-4(A5)
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1370,7 +1370,7 @@ LAB_107F:
 
     PEA     LAB_2018
     MOVE.L  D0,-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1421,7 +1421,7 @@ LAB_107F:
 
     PEA     40.W
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1489,7 +1489,7 @@ LAB_107F:
 
     PEA     44.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -1497,7 +1497,7 @@ LAB_107F:
 
     PEA     46.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1512,7 +1512,7 @@ LAB_107F:
 .fallback_subtitle:
     PEA     46.W
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1614,7 +1614,7 @@ LAB_107F:
 
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1625,7 +1625,7 @@ LAB_107F:
     PEA     -19(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -1639,7 +1639,7 @@ LAB_107F:
     MOVE.L  A0,-4(A5)
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1469(PC)
+    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -8202,7 +8202,7 @@ LAB_1240:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   LAB_146B
+;   JMPTBL_LAB_0B44
 ; READS:
 ;   LAB_2336
 ; WRITES:
@@ -8235,7 +8235,7 @@ LAB_1243:
     MOVE.L  4(A0),-(A7)
     CLR.L   -(A7)
     MOVE.L  A1,16(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 8(A7),A0
@@ -8260,7 +8260,7 @@ LAB_1243:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1455, LAB_159A, LAB_146B
+;   JMPTBL_UNKNOWN7_FindCharWrapper, LAB_159A, JMPTBL_LAB_0B44
 ; READS:
 ;   LAB_2336, LAB_2338, LAB_2339
 ; WRITES:
@@ -8279,7 +8279,7 @@ LAB_1246:
     CLR.L   -20(A5)
     PEA     58.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_1455(PC)
+    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     MOVEA.L D0,A0
     LEA     1(A0),A1
@@ -8308,7 +8308,7 @@ LAB_1246:
     MOVE.L  4(A0),-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A1,32(A7)
-    JSR     LAB_146B(PC)
+    JSR     JMPTBL_LAB_0B44(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 24(A7),A0
@@ -8451,7 +8451,7 @@ LAB_124D:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_1337, LAB_16F7, LAB_1353, LAB_1355, LAB_1347, LAB_134B,
+;   LAB_1337, TEXTDISP_FormatEntryTimeForIndex, LAB_1353, LAB_1355, LAB_1347, LAB_134B,
 ;   NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
 ;   NEWGRID_AppendShowtimeBuckets, JMPTBL_STRING_AppendAtNull_3
 ; READS:
@@ -8569,7 +8569,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     PEA     -49(A5)
     MOVE.L  D0,-70(A5)
-    JSR     LAB_16F7(PC)
+    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     LEA     56(A7),A7
     MOVE.L  #$264,-16(A5)
@@ -9010,7 +9010,7 @@ LAB_1250:
     MOVE.L  -98(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -49(A5)
-    JSR     LAB_16F7(PC)
+    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -49(A5)
     JSR     LAB_134B(PC)
@@ -9971,7 +9971,7 @@ LAB_12B4:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_ClearMarkersIfSelectable, NEWGRID_TestEntrySelectable,
-;   LAB_1077, LAB_1353, LAB_1355, LAB_1347, LAB_1679
+;   LAB_1077, LAB_1353, LAB_1355, LAB_1347, TEXTDISP_JMPTBL_LAB_091A
 ; READS:
 ;   LAB_2039/203A, LAB_2231, LAB_224A
 ; WRITES:
@@ -10183,7 +10183,7 @@ LAB_12BB:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_1679(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_091A(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -10282,7 +10282,7 @@ LAB_12BB:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_1337, LAB_1679, LAB_16F7, LAB_1355, LAB_1077, LAB_134B,
+;   LAB_1337, TEXTDISP_JMPTBL_LAB_091A, TEXTDISP_FormatEntryTimeForIndex, LAB_1355, LAB_1077, LAB_134B,
 ;   JMPTBL_STRING_AppendAtNull_3
 ; READS:
 ;   LAB_1BBD, LAB_203B
@@ -10396,7 +10396,7 @@ LAB_12D0:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  4(A3),-(A7)
-    JSR     LAB_1679(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_091A(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -10415,7 +10415,7 @@ LAB_12D0:
     MOVE.L  D0,-(A7)
     PEA     -31(A5)
     MOVE.B  D1,-53(A5)
-    JSR     LAB_16F7(PC)
+    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  (A3),-80(A5)
@@ -10578,7 +10578,7 @@ LAB_12D0:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -84(A5),-(A7)
-    JSR     LAB_1679(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_091A(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -10728,7 +10728,7 @@ LAB_12D0:
     MOVE.L  -84(A5),-(A7)
     MOVE.L  D0,-(A7)
     PEA     -31(A5)
-    JSR     LAB_16F7(PC)
+    JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -31(A5)
     JSR     LAB_134B(PC)

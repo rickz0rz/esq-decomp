@@ -451,7 +451,7 @@ LAB_15AD:
     MOVE.L  D0,LAB_2216
 
 .return:
-    JSR     LAB_167A(PC)
+    JSR     TEXTDISP_JMPTBL_LAB_0A48(PC)
 
     MOVEM.L (A7)+,D2/D5-D7/A3
     UNLK    A5

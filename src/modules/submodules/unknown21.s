@@ -104,7 +104,7 @@ DOS_OpenNewFileIfMissing:
     CLR.L   Global_DosIoErr(A4)
     MOVE.L  A3,D1
     MOVEQ   #-2,D2
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D7
@@ -175,7 +175,7 @@ DOS_DeleteAndRecreateFile:
     CLR.L   Global_DosIoErr(A4)                            ; Clear the long at Global_DosIoErr(A4)
     MOVE.L  A3,D1                               ; Filename -> D1
     MOVEQ   #ACCESS_READ,D2                     ; Filemode = -2 = ACCESS_READ
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D7                               ; D0 = result as BCPL pointer, copied to D7

@@ -35,7 +35,7 @@ DOS_ReadWithErrorState:
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  D6,D3
-    MOVEA.L LocalDosLibraryDisplacement(A4),A6
+    MOVEA.L Global_DosLibrary(A4),A6
     JSR     _LVORead(A6)
 
     MOVE.L  D0,D5

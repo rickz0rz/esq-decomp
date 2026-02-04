@@ -1238,7 +1238,7 @@ SCRIPT_HandleBrushCommand:
     MOVE.W  LAB_2368,LAB_2364
 
 .LAB_1520:
-    JSR     LAB_174D(PC)
+    JSR     TEXTDISP_UpdateChannelRangeFlags(PC)
 
     MOVEQ   #5,D0
     MOVE.L  D0,LAB_2351
@@ -1349,7 +1349,7 @@ SCRIPT_HandleBrushCommand:
 
     LEA     6(A2),A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_1697(PC)
+    JSR     TEXTDISP_FindEntryIndexByWildcard(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -1398,7 +1398,7 @@ SCRIPT_HandleBrushCommand:
 .LAB_152C:
     LEA     2(A2),A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_1697(PC)
+    JSR     TEXTDISP_FindEntryIndexByWildcard(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -1659,7 +1659,7 @@ SCRIPT_HandleBrushCommand:
     NOT.B   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_1656(PC)
+    JSR     TEXTDISP_HandleScriptCommand(PC)
 
     LEA     12(A7),A7
 
@@ -1710,7 +1710,7 @@ LAB_1547:
     MOVE.L  D0,-(A7)
     PEA     LAB_234C
     MOVE.L  A1,-(A7)
-    JSR     LAB_1704(PC)
+    JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
@@ -1727,7 +1727,7 @@ LAB_1548:
     MOVE.L  D0,-(A7)
     PEA     LAB_234B
     MOVE.L  A0,-(A7)
-    JSR     LAB_1704(PC)
+    JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
@@ -1751,7 +1751,7 @@ LAB_1549:
     MOVE.L  D0,-(A7)
     PEA     LAB_234C
     MOVE.L  A1,-(A7)
-    JSR     LAB_1704(PC)
+    JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
@@ -2429,7 +2429,7 @@ LAB_157A:
     MOVE.L  LAB_2129,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_1656(PC)
+    JSR     TEXTDISP_HandleScriptCommand(PC)
 
     LEA     12(A7),A7
     BRA.S   .return
@@ -2719,7 +2719,7 @@ LAB_1591:
     NOT.B   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_1656(PC)
+    JSR     TEXTDISP_HandleScriptCommand(PC)
 
     PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   SCRIPT_ResetCtrlContext
