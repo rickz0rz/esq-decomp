@@ -54,7 +54,7 @@ GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer:
     JMP     PARSEINI_ParseIniBufferAndDispatch
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07C7   (JumpStub_LAB_16F7)
+; FUNC: LAB_07C7   (JumpStub_TEXTDISP_FormatEntryTimeForIndex)
 ; ARGS:
 ;   ?? (see TEXTDISP_FormatEntryTimeForIndex)
 ; RET:
@@ -108,22 +108,22 @@ LAB_07C9:
     JMP     LAB_0B4E
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07CA   (JumpStub_LAB_1487)
+; FUNC: LAB_07CA   (JumpStub_PARSEINI_WriteErrorLogEntry)
 ; ARGS:
-;   ?? (see LAB_1487)
+;   ?? (see PARSEINI_WriteErrorLogEntry)
 ; RET:
-;   ?? (see LAB_1487)
+;   ?? (see PARSEINI_WriteErrorLogEntry)
 ; CLOBBERS:
-;   ?? (see LAB_1487)
+;   ?? (see PARSEINI_WriteErrorLogEntry)
 ; CALLS:
-;   LAB_1487
+;   PARSEINI_WriteErrorLogEntry
 ; DESC:
-;   Jump stub to LAB_1487.
+;   Jump stub to PARSEINI_WriteErrorLogEntry.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 LAB_07CA:
-    JMP     LAB_1487
+    JMP     PARSEINI_WriteErrorLogEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: LAB_07CB   (JumpStub_LAB_142E)

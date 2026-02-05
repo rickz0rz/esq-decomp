@@ -13,7 +13,7 @@
 ; CALLS:
 ;   GROUPD_JMPTBL_LAB_0926, GROUPD_JMPTBL_LAB_0923, GROUPD_JMPTBL_LAB_036C,
 ;   TEXTDISP_FormatEntryTimeForIndex, UNKNOWN7_SkipCharClass3, STRING_AppendAtNull, TEXTDISP_FindControlToken,
-;   GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine, LAB_15AD
+;   GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
 ;   LAB_234D, LAB_2274, LAB_2374/LAB_2377/LAB_2378, LAB_205C
 ; WRITES:
@@ -386,7 +386,7 @@ LAB_15C5:
 
 .render_output:
     PEA     -137(A5)
-    BSR.W   LAB_15AD
+    BSR.W   SCRIPT_SetupHighlightEffect
 
     MOVEM.L -236(A5),D2-D3/D5-D7
     UNLK    A5
@@ -407,7 +407,7 @@ LAB_15C5:
 ; CALLS:
 ;   GROUPD_JMPTBL_LAB_0926, GROUPD_JMPTBL_LAB_0923, GROUPD_JMPTBL_LAB_036C,
 ;   GROUPD_JMPTBL_LAB_0347, STRING_AppendAtNull,
-;   GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine, LAB_15AD
+;   GROUP_BA_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
 ;   LAB_213B/LAB_213C/LAB_213D
 ; DESC:
@@ -573,7 +573,7 @@ LAB_15E4:
     BEQ.S   .return
 
     PEA     -137(A5)
-    BSR.W   LAB_15AD
+    BSR.W   SCRIPT_SetupHighlightEffect
 
     ADDQ.W  #4,A7
 
@@ -2020,7 +2020,7 @@ LAB_1656:
 
     MOVE.W  LAB_2153,LAB_235D
     MOVE.W  LAB_2364,LAB_2149
-    BSR.W   LAB_15A3
+    BSR.W   SCRIPT_GetBannerCharOrFallback
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2067,7 +2067,7 @@ LAB_1656:
     MOVE.L  D0,-(A7)
     BSR.W   TEXTDISP_BuildNowShowingStatusLine
 
-    BSR.W   LAB_15A2
+    BSR.W   SCRIPT_ResetBannerCharDefaults
 
     LEA     12(A7),A7
     MOVEQ   #0,D5

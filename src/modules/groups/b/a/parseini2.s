@@ -21,7 +21,6 @@
 ;   Early-exits if utility library or battclock resource is unavailable.
 ;------------------------------------------------------------------------------
 PARSEINI_WriteRtcFromGlobals:
-LAB_146E:
     LINK.W  A5,#-20
     MOVE.L  D7,-(A7)
 
@@ -89,11 +88,11 @@ LAB_146E:
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
-;   JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, LAB_1477
+;   JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
 ; READS:
 ;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE
 ; WRITES:
-;   LAB_223A (date/time fields via LAB_1477)
+;   LAB_223A (date/time fields via PARSEINI_NormalizeClockData)
 ; DESC:
 ;   Reads the battery-backed clock, validates the resulting date/time fields,
 ;   and updates the global date/time structure used by the UI.
@@ -101,7 +100,6 @@ LAB_146E:
 ;   If the clock data is invalid or unavailable, a fallback/default is written.
 ;------------------------------------------------------------------------------
 PARSEINI_UpdateClockFromRtc:
-LAB_1470:
     LINK.W  A5,#-40
     MOVEM.L D2-D7,-(A7)
 
@@ -213,7 +211,7 @@ LAB_1470:
 .invalid_date_data:
     PEA     -40(A5)
     PEA     LAB_223A
-    BSR.W   LAB_1477
+    BSR.W   PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
     BRA.S   .return_status
@@ -221,7 +219,7 @@ LAB_1470:
 .fallback_default_date:
     PEA     LAB_20A1
     PEA     LAB_223A
-    BSR.W   LAB_1477
+    BSR.W   PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
 
@@ -297,7 +295,7 @@ PARSEINI_AdjustHoursTo24HrFormat:
 ; CLOBBERS:
 ;   D0-D2/A0-A3
 ; CALLS:
-;   LAB_1484 (DATETIME_IsLeapYear), LAB_1481 (ESQ_CalcDayOfYearFromMonthDay)
+;   JMPTBL_DATETIME_IsLeapYear (DATETIME_IsLeapYear), JMPTBL_ESQ_CalcDayOfYearFromMonthDay (ESQ_CalcDayOfYearFromMonthDay)
 ; READS:
 ;   A2 contents
 ; WRITES:
@@ -309,7 +307,6 @@ PARSEINI_AdjustHoursTo24HrFormat:
 ;   Adds 1 to day before validation; treats month/day indices as 0-based internally.
 ;------------------------------------------------------------------------------
 PARSEINI_NormalizeClockData:
-LAB_1477:
     MOVEM.L D2/A2-A3,-(A7)
 
 .localYear  = 6
@@ -423,7 +420,6 @@ JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 JMPTBL_ESQ_CalcDayOfYearFromMonthDay:
-LAB_1481:
     JMP     ESQ_CalcDayOfYearFromMonthDay
 
 ;------------------------------------------------------------------------------
@@ -478,7 +474,6 @@ JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 JMPTBL_DATETIME_IsLeapYear:
-LAB_1484:
     JMP     DATETIME_IsLeapYear
 
 ;------------------------------------------------------------------------------

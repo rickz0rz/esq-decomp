@@ -697,7 +697,7 @@ LAB_0990:
 ;   D0-D7/A0-A1
 ; CALLS:
 ;   _LVOSetAPen, _LVOSetDrMd, _LVOAvailMem, GROUP_AM_JMPTBL_WDISP_SPrintf,
-;   JMPTBL_DISPLIB_DisplayTextAtPosition_1, JMPTBL_CALCULATE_H_T_C_MAX_VALUES,
+;   JMPTBL_DISPLIB_DisplayTextAtPosition_1, JMPTBL_PARSEINI_ComputeHTCMaxValues,
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   LAB_2252, LAB_226A, LAB_1DF0, LAB_2285, DATACErrs, LAB_2287,
@@ -896,7 +896,7 @@ LAB_0991:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
 
-    JSR     JMPTBL_CALCULATE_H_T_C_MAX_VALUES(PC)
+    JSR     JMPTBL_PARSEINI_ComputeHTCMaxValues(PC)
 
     MOVE.L  D0,D4
     MOVEQ   #0,D0
@@ -1337,7 +1337,7 @@ LAB_09A4:
     MOVE.L  A0,-(A7)
     JSR     LAB_09AD(PC)
 
-    JSR     JMPTBL_CALCULATE_H_T_C_MAX_VALUES(PC)
+    JSR     JMPTBL_PARSEINI_ComputeHTCMaxValues(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
@@ -1477,7 +1477,7 @@ LAB_09B0:
     JMP     LAB_167D
 
 LAB_09B1:
-    JMP     LAB_148E
+    JMP     PARSEINI_MonitorClockChange
 
 ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
 LAB_09B2:
@@ -1495,8 +1495,8 @@ ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner:
 LAB_09B5:
     JMP     CLEANUP_DrawClockBanner
 
-JMPTBL_CALCULATE_H_T_C_MAX_VALUES:
-    JMP     CALCULATE_H_T_C_MAX_VALUES
+JMPTBL_PARSEINI_ComputeHTCMaxValues:
+    JMP     PARSEINI_ComputeHTCMaxValues
 
 LAB_09B7:
     JMP     LADFUNC_UpdateHighlightState
@@ -1509,7 +1509,7 @@ LAB_09B9:
     JMP     SCRIPT_ReadCiaBBit5Mask
 
 LAB_09BA:
-    JMP     LAB_1477
+    JMP     PARSEINI_NormalizeClockData
 
 LAB_09BB:
     JMP     ESQ_TickGlobalCounters

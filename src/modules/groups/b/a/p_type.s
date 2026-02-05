@@ -1,3 +1,25 @@
+;------------------------------------------------------------------------------
+; FUNC: P_TYPE_AllocateEntry   (AllocateEntry??)
+; ARGS:
+;   stack +8: typeByte (byte)
+;   stack +12: length (long)
+;   stack +16: dataPtr (byte *)
+; RET:
+;   D0: pointer to entry struct, or 0 on failure
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   GROUPD_JMPTBL_MEMORY_AllocateMemory, GROUPD_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   dataPtr
+; WRITES:
+;   allocated entry fields
+; DESC:
+;   Allocates an entry structure and optionally copies data into a payload buffer.
+; NOTES:
+;   Payload is only allocated when the input length matches the source string length.
+;------------------------------------------------------------------------------
+P_TYPE_AllocateEntry:
 LAB_135B:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A3,-(A7)
@@ -7,7 +29,7 @@ LAB_135B:
 
     CLR.L   -4(A5)
     TST.L   D6
-    BLE.W   LAB_1361
+    BLE.W   .branch_1361
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     10.W
@@ -18,21 +40,21 @@ LAB_135B:
     LEA     16(A7),A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.W   LAB_1361
+    BEQ.W   .branch_1361
 
     MOVEA.L D0,A0
     MOVE.B  D7,(A0)
     MOVE.L  D6,2(A0)
     MOVEA.L A3,A0
 
-LAB_135C:
+.if_ne_135C:
     TST.B   (A0)+
-    BNE.S   LAB_135C
+    BNE.S   .if_ne_135C
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
     CMPA.L  D6,A0
-    BNE.S   LAB_135D
+    BNE.S   .if_ne_135D
 
     MOVE.L  D6,D1
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -44,23 +66,23 @@ LAB_135C:
     LEA     16(A7),A7
     MOVEA.L -4(A5),A0
     MOVE.L  D0,6(A0)
-    BRA.S   LAB_135E
+    BRA.S   .skip_135E
 
-LAB_135D:
+.if_ne_135D:
     SUBA.L  A0,A0
     MOVEA.L D0,A1
     MOVE.L  A0,6(A1)
 
-LAB_135E:
+.skip_135E:
     MOVEA.L -4(A5),A0
     TST.L   6(A0)
-    BEQ.S   LAB_1360
+    BEQ.S   .if_eq_1360
 
     MOVEQ   #0,D5
 
-LAB_135F:
+.loop_135F:
     CMP.L   D6,D5
-    BGE.S   LAB_1361
+    BGE.S   .branch_1361
 
     MOVEA.L -4(A5),A1
     MOVEA.L 6(A1),A0
@@ -68,9 +90,9 @@ LAB_135F:
     MOVE.B  0(A3,D5.L),D0
     MOVE.B  D0,(A0)
     ADDQ.L  #1,D5
-    BRA.S   LAB_135F
+    BRA.S   .loop_135F
 
-LAB_1360:
+.if_eq_1360:
     PEA     10.W
     MOVE.L  -4(A5),-(A7)
     PEA     77.W
@@ -81,7 +103,7 @@ LAB_1360:
     SUBA.L  A0,A0
     MOVE.L  A0,-4(A5)
 
-LAB_1361:
+.branch_1361:
     MOVE.L  -4(A5),D0
     MOVEM.L (A7)+,D5-D7/A3
     UNLK    A5
@@ -89,14 +111,33 @@ LAB_1361:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1362   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1362:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_1364
+    BEQ.S   .return_1364
 
     TST.L   6(A3)
-    BEQ.S   LAB_1363
+    BEQ.S   .if_eq_1363
 
     MOVE.L  2(A3),D0
     MOVE.L  D0,-(A7)
@@ -107,7 +148,7 @@ LAB_1362:
 
     LEA     16(A7),A7
 
-LAB_1363:
+.if_eq_1363:
     PEA     10.W
     MOVE.L  A3,-(A7)
     PEA     95.W
@@ -116,12 +157,31 @@ LAB_1363:
 
     LEA     16(A7),A7
 
-LAB_1364:
+.return_1364:
     MOVEA.L (A7)+,A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1365   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1365:
     SUBA.L  A0,A0
     MOVE.L  A0,LAB_233C
@@ -132,6 +192,25 @@ LAB_1365:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1366   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1366:
     LINK.W  A5,#-104
     MOVEM.L D7/A2-A3,-(A7)
@@ -144,34 +223,34 @@ LAB_1366:
     ADDQ.W  #4,A7
     SUBA.L  A3,A3
     MOVE.L  A2,D0
-    BEQ.S   LAB_1369
+    BEQ.S   .if_eq_1369
 
     MOVEQ   #0,D7
 
-LAB_1367:
+.loop_1367:
     CMP.L   2(A2),D7
-    BGE.S   LAB_1368
+    BGE.S   .if_ge_1368
 
     MOVEA.L 6(A2),A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVE.B  D0,-100(A5,D7.L)
     ADDQ.L  #1,D7
-    BRA.S   LAB_1367
+    BRA.S   .loop_1367
 
-LAB_1368:
+.if_ge_1368:
     CLR.B   -100(A5,D7.L)
     MOVEQ   #0,D0
     MOVE.B  (A2),D0
     PEA     -100(A5)
     MOVE.L  2(A2),-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_135B
+    BSR.W   P_TYPE_AllocateEntry
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
 
-LAB_1369:
+.if_eq_1369:
     MOVE.L  A3,D0
     MOVEM.L (A7)+,D7/A2-A3
     UNLK    A5
@@ -179,12 +258,31 @@ LAB_1369:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_136A   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_136A:
     TST.L   LAB_233B
-    BEQ.S   LAB_136B
+    BEQ.S   .return_136B
 
     TST.L   LAB_233C
-    BNE.S   LAB_136B
+    BNE.S   .return_136B
 
     MOVE.L  LAB_233B,-(A7)
     MOVE.L  LAB_233C,-(A7)
@@ -195,11 +293,30 @@ LAB_136A:
     MOVEA.L D0,A0
     MOVE.B  LAB_222D,(A0)
 
-LAB_136B:
+.return_136B:
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_136C   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_136C:
     MOVE.L  LAB_233B,-(A7)
     BSR.W   LAB_1362
@@ -211,65 +328,103 @@ LAB_136C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_136D   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_136D:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
     MOVE.L  A3,D0
-    BEQ.S   LAB_136E
+    BEQ.S   .return_136E
 
     MOVEQ   #20,D0
     CMP.B   (A3),D0
-    BNE.S   LAB_136E
+    BNE.S   .return_136E
 
     TST.B   1(A3)
-    BEQ.S   LAB_136E
+    BEQ.S   .return_136E
 
     MOVE.B  1(A3),D7
 
-LAB_136E:
+.return_136E:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_136F   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_136F:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEQ   #0,D7
     TST.L   LAB_233B
-    BEQ.S   LAB_1372
+    BEQ.S   .branch_1372
 
     MOVEA.L LAB_233B,A0
     MOVE.L  2(A0),D0
     TST.L   D0
-    BLE.S   LAB_1372
+    BLE.S   .branch_1372
 
     MOVEQ   #0,D6
 
-LAB_1370:
+.loop_1370:
     TST.L   D7
-    BNE.S   LAB_1372
+    BNE.S   .branch_1372
 
     MOVEA.L LAB_233B,A0
     CMP.L   2(A0),D6
-    BGE.S   LAB_1372
+    BGE.S   .branch_1372
 
     MOVEA.L LAB_233B,A1
     MOVEA.L 6(A1),A0
     ADDA.L  D6,A0
     MOVE.B  (A3),D0
     CMP.B   (A0),D0
-    BNE.S   LAB_1371
+    BNE.S   .if_ne_1371
 
     MOVEQ   #1,D7
 
-LAB_1371:
+.if_ne_1371:
     ADDQ.L  #1,D6
-    BRA.S   LAB_1370
+    BRA.S   .loop_1370
 
-LAB_1372:
+.branch_1372:
     CLR.B   (A3)
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D6-D7/A3
@@ -277,6 +432,25 @@ LAB_1372:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1373   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1373:
     LINK.W  A5,#-24
     MOVEM.L D4-D7/A3,-(A7)
@@ -285,11 +459,11 @@ LAB_1373:
     PEA     3.W
     MOVE.L  A3,-(A7)
     PEA     -16(A5)
-    JSR     LAB_15A1(PC)
+    JSR     SCRIPT_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -13(A5)
     PEA     -16(A5)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVEQ   #0,D1
     NOT.B   D1
@@ -299,37 +473,37 @@ LAB_1373:
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -16(A5)
-    JSR     LAB_15A1(PC)
+    JSR     SCRIPT_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -14(A5)
     PEA     -16(A5)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     LEA     32(A7),A7
     MOVE.L  D0,D6
     ADDQ.L  #2,A3
     MOVE.B  LAB_2230,D0
     CMP.B   D7,D0
-    BNE.S   LAB_1374
+    BNE.S   .if_ne_1374
 
     MOVEQ   #0,D5
-    BRA.S   LAB_1376
+    BRA.S   .skip_1376
 
-LAB_1374:
+.if_ne_1374:
     MOVE.B  LAB_222D,D0
     CMP.B   D0,D7
-    BNE.S   LAB_1375
+    BNE.S   .if_ne_1375
 
     MOVEQ   #1,D5
-    BRA.S   LAB_1376
+    BRA.S   .skip_1376
 
-LAB_1375:
+.if_ne_1375:
     MOVEQ   #2,D5
 
-LAB_1376:
+.skip_1376:
     MOVEQ   #2,D0
     CMP.W   D0,D5
-    BEQ.S   LAB_1377
+    BEQ.S   .if_eq_1377
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -352,14 +526,14 @@ LAB_1376:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,32(A7)
-    BSR.W   LAB_135B
+    BSR.W   P_TYPE_AllocateEntry
 
     LEA     12(A7),A7
     MOVEA.L 20(A7),A0
     MOVE.L  D0,(A0)
     MOVEQ   #1,D4
 
-LAB_1377:
+.if_eq_1377:
     MOVE.L  D4,D0
     MOVEM.L (A7)+,D4-D7/A3
     UNLK    A5
@@ -367,6 +541,25 @@ LAB_1377:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1378   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1378:
     LINK.W  A5,#-120
     MOVEM.L D5-D7,-(A7)
@@ -377,21 +570,21 @@ LAB_1378:
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
     TST.L   D7
-    BEQ.W   LAB_1386
+    BEQ.W   .return_1386
 
     LEA     LAB_2050,A0
     LEA     -109(A5),A1
 
-LAB_1379:
+.if_ne_1379:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1379
+    BNE.S   .if_ne_1379
 
     MOVEQ   #0,D5
 
-LAB_137A:
+.loop_137A:
     MOVEQ   #2,D0
     CMP.L   D0,D5
-    BEQ.W   LAB_1385
+    BEQ.W   .if_eq_1385
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
@@ -401,9 +594,9 @@ LAB_137A:
     LEA     -109(A5),A0
     MOVEA.L A0,A1
 
-LAB_137B:
+.if_ne_137B:
     TST.B   (A1)+
-    BNE.S   LAB_137B
+    BNE.S   .if_ne_137B
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -414,12 +607,12 @@ LAB_137B:
 
     LEA     12(A7),A7
     TST.L   -8(A5)
-    BEQ.W   LAB_1380
+    BEQ.W   .branch_1380
 
     MOVEA.L -8(A5),A0
     MOVE.L  2(A0),D0
     TST.L   D0
-    BLE.W   LAB_1380
+    BLE.W   .branch_1380
 
     MOVEQ   #0,D1
     MOVE.B  (A0),D1
@@ -432,9 +625,9 @@ LAB_137B:
     LEA     -109(A5),A0
     MOVEA.L A0,A1
 
-LAB_137C:
+.if_ne_137C:
     TST.B   (A1)+
-    BNE.S   LAB_137C
+    BNE.S   .if_ne_137C
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -446,10 +639,10 @@ LAB_137C:
     LEA     24(A7),A7
     MOVEQ   #0,D6
 
-LAB_137D:
+.loop_137D:
     MOVEA.L -8(A5),A0
     CMP.L   2(A0),D6
-    BGE.S   LAB_137E
+    BGE.S   .if_ge_137E
 
     MOVEA.L -8(A5),A1
     MOVEA.L 6(A1),A0
@@ -457,9 +650,9 @@ LAB_137D:
     MOVE.B  (A0),D0
     MOVE.B  D0,-109(A5,D6.L)
     ADDQ.L  #1,D6
-    BRA.S   LAB_137D
+    BRA.S   .loop_137D
 
-LAB_137E:
+.if_ge_137E:
     MOVEA.L D6,A0
     ADDQ.L  #1,D6
     MOVE.L  A0,D0
@@ -468,9 +661,9 @@ LAB_137E:
     LEA     -109(A5),A0
     MOVEA.L A0,A1
 
-LAB_137F:
+.if_ne_137F:
     TST.B   (A1)+
-    BNE.S   LAB_137F
+    BNE.S   .if_ne_137F
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -480,9 +673,9 @@ LAB_137F:
     JSR     GROUPD_JMPTBL_LAB_03A0(PC)
 
     LEA     12(A7),A7
-    BRA.S   LAB_1381
+    BRA.S   .skip_1381
 
-LAB_1380:
+.branch_1380:
     PEA     9.W
     PEA     LAB_2052
     MOVE.L  D7,-(A7)
@@ -490,44 +683,63 @@ LAB_1380:
 
     LEA     12(A7),A7
 
-LAB_1381:
+.skip_1381:
     MOVE.L  D5,D0
     TST.L   D0
-    BEQ.S   LAB_1382
+    BEQ.S   .if_eq_1382
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_1384
+    BEQ.S   .skip_1384
 
-    BRA.S   LAB_1384
+    BRA.S   .skip_1384
 
-LAB_1382:
+.if_eq_1382:
     MOVEQ   #1,D5
     LEA     LAB_2053,A0
     LEA     -109(A5),A1
 
-LAB_1383:
+.if_ne_1383:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1383
+    BNE.S   .if_ne_1383
 
-    BRA.W   LAB_137A
+    BRA.W   .loop_137A
 
-LAB_1384:
+.skip_1384:
     MOVEQ   #2,D5
-    BRA.W   LAB_137A
+    BRA.W   .loop_137A
 
-LAB_1385:
+.if_eq_1385:
     MOVE.L  D7,-(A7)
     JSR     GROUPD_JMPTBL_LAB_039A(PC)
 
     ADDQ.W  #4,A7
 
-LAB_1386:
+.return_1386:
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1387   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1387:
     LINK.W  A5,#-52
     MOVEM.L D4-D7,-(A7)
@@ -536,7 +748,7 @@ LAB_1387:
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
-    BEQ.W   LAB_1399
+    BEQ.W   .if_eq_1399
 
     MOVE.L  LAB_21BC,-4(A5)
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
@@ -544,14 +756,14 @@ LAB_1387:
     LEA     LAB_2055,A0
     LEA     -39(A5),A1
 
-LAB_1388:
+.if_ne_1388:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1388
+    BNE.S   .if_ne_1388
 
-LAB_1389:
+.loop_1389:
     MOVEQ   #2,D0
     CMP.L   -48(A5),D0
-    BEQ.W   LAB_1398
+    BEQ.W   .if_eq_1398
 
     PEA     -39(A5)
     MOVE.L  -4(A5),-(A7)
@@ -560,21 +772,21 @@ LAB_1389:
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.W   LAB_1394
+    BEQ.W   .if_eq_1394
 
     LEA     -39(A5),A0
     MOVEA.L A0,A1
 
-LAB_138A:
+.if_ne_138A:
     TST.B   (A1)+
-    BNE.S   LAB_138A
+    BNE.S   .if_ne_138A
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
     ADD.L   D0,-8(A5)
 
-LAB_138B:
+.loop_138B:
     MOVEA.L -8(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -582,41 +794,41 @@ LAB_138B:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   LAB_138C
+    BEQ.S   .if_eq_138C
 
     ADDQ.L  #1,-8(A5)
-    BRA.S   LAB_138B
+    BRA.S   .loop_138B
 
-LAB_138C:
+.if_eq_138C:
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
     MOVE.B  LAB_2230,D0
     CMP.B   D6,D0
-    BNE.S   LAB_138D
+    BNE.S   .if_ne_138D
 
     MOVEQ   #0,D4
-    BRA.S   LAB_138F
+    BRA.S   .skip_138F
 
-LAB_138D:
+.if_ne_138D:
     MOVE.B  LAB_222D,D0
     CMP.B   D0,D6
-    BNE.S   LAB_138E
+    BNE.S   .if_ne_138E
 
     MOVEQ   #1,D4
-    BRA.S   LAB_138F
+    BRA.S   .skip_138F
 
-LAB_138E:
+.if_ne_138E:
     MOVEQ   #2,D4
 
-LAB_138F:
+.skip_138F:
     MOVEQ   #2,D0
     CMP.L   D0,D4
-    BEQ.W   LAB_1394
+    BEQ.W   .if_eq_1394
 
-LAB_1390:
+.loop_1390:
     MOVEA.L -8(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -624,12 +836,12 @@ LAB_1390:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #2,(A1)
-    BEQ.S   LAB_1391
+    BEQ.S   .loop_1391
 
     ADDQ.L  #1,-8(A5)
-    BRA.S   LAB_1390
+    BRA.S   .loop_1390
 
-LAB_1391:
+.loop_1391:
     MOVEA.L -8(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -637,19 +849,19 @@ LAB_1391:
     LEA     LAB_21A8,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   LAB_1392
+    BEQ.S   .if_eq_1392
 
     ADDQ.L  #1,-8(A5)
-    BRA.S   LAB_1391
+    BRA.S   .loop_1391
 
-LAB_1392:
+.if_eq_1392:
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     CLR.L   -16(A5)
     MOVE.L  D0,-52(A5)
-    BLE.S   LAB_1393
+    BLE.S   .branch_1393
 
     PEA     LAB_2056
     MOVE.L  -8(A5),-(A7)
@@ -657,7 +869,7 @@ LAB_1392:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
-    BEQ.S   LAB_1393
+    BEQ.S   .branch_1393
 
     MOVEQ   #7,D0
     ADD.L   D0,-8(A5)
@@ -670,7 +882,7 @@ LAB_1392:
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   LAB_135B
+    BSR.W   P_TYPE_AllocateEntry
 
     LEA     12(A7),A7
     MOVEA.L -8(A5),A0
@@ -678,7 +890,7 @@ LAB_1392:
     MOVE.B  D5,0(A0,D1.L)
     MOVE.L  D0,-16(A5)
 
-LAB_1393:
+.branch_1393:
     MOVE.L  D4,D0
     ASL.L   #2,D0
     LEA     LAB_233B,A0
@@ -693,34 +905,34 @@ LAB_1393:
     ADDA.L  D0,A0
     MOVE.L  -16(A5),(A0)
 
-LAB_1394:
+.if_eq_1394:
     MOVE.L  -48(A5),D0
     TST.L   D0
-    BEQ.S   LAB_1395
+    BEQ.S   .if_eq_1395
 
     SUBQ.L  #1,D0
-    BEQ.S   LAB_1397
+    BEQ.S   .skip_1397
 
-    BRA.S   LAB_1397
+    BRA.S   .skip_1397
 
-LAB_1395:
+.if_eq_1395:
     MOVEQ   #1,D0
     MOVE.L  D0,-48(A5)
     LEA     LAB_2057,A0
     LEA     -39(A5),A1
 
-LAB_1396:
+.if_ne_1396:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_1396
+    BNE.S   .if_ne_1396
 
-    BRA.W   LAB_1389
+    BRA.W   .loop_1389
 
-LAB_1397:
+.skip_1397:
     MOVEQ   #2,D0
     MOVE.L  D0,-48(A5)
-    BRA.W   LAB_1389
+    BRA.W   .loop_1389
 
-LAB_1398:
+.if_eq_1398:
     MOVE.L  D7,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
@@ -731,7 +943,7 @@ LAB_1398:
 
     LEA     16(A7),A7
 
-LAB_1399:
+.if_eq_1399:
     MOVEQ   #1,D0
     MOVEM.L (A7)+,D4-D7
     UNLK    A5

@@ -1,6 +1,25 @@
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: GENERATE_GRID_DATE_STRING   (GenerateGridDateString??)
+; ARGS:
+;   stack +8: outBuffer (char *)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D1/A0-A1/A3
+; CALLS:
+;   JMPTBL_PRINTF_4
+; READS:
+;   LAB_2274/2275/2276/2277, GLOB_JMPTBL_DAYS_OF_WEEK, GLOB_JMPTBL_MONTHS
+; WRITES:
+;   outBuffer
+; DESC:
+;   Formats the current grid date string into outBuffer.
+; NOTES:
+;   Uses GLOB_STR_GRID_DATE_FORMAT_STRING as the template.
+;------------------------------------------------------------------------------
 GENERATE_GRID_DATE_STRING:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
@@ -33,22 +52,62 @@ GENERATE_GRID_DATE_STRING:
 
 ;!======
 
-; likely dead code.
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_CopyWeatherUpdateForString   (CopyWeatherUpdateForString??)
+; ARGS:
+;   stack +8: outBuffer (char *)
+; RET:
+;   (none)
+; CLOBBERS:
+;   A0-A1/A3
+; CALLS:
+;   (none)
+; READS:
+;   GLOB_STR_WEATHER_UPDATE_FOR
+; WRITES:
+;   outBuffer
+; DESC:
+;   Copies the "Weather Update For" string into outBuffer.
+; NOTES:
+;   Previously unlabeled; appears unused in current build.
+;------------------------------------------------------------------------------
+SCRIPT_CopyWeatherUpdateForString:
+LAB_14C5:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
     LEA     GLOB_STR_WEATHER_UPDATE_FOR,A0
     MOVEA.L A3,A1
 
-.LAB_14C5:
+.copy_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_14C5
+    BNE.S   .copy_loop
 
     MOVEA.L (A7)+,A3
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_CheckPathExists   (CheckPathExists??)
+; ARGS:
+;   stack +8: path (char *)
+; RET:
+;   D0: 1 if lock/unlock succeeds, 0 otherwise
+; CLOBBERS:
+;   D0-D2/D6-D7/A3
+; CALLS:
+;   _LVOLock, _LVOUnLock
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Attempts a DOS lock on path and returns whether it succeeds.
+; NOTES:
+;   Uses lock mode -2 (shared read).
+;------------------------------------------------------------------------------
+SCRIPT_CheckPathExists:
 LAB_14C6:
     MOVEM.L D2/D6-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -76,14 +135,34 @@ LAB_14C6:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_UpdateBannerCharTransition   (UpdateBannerCharTransition??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A4
+; CALLS:
+;   SCRIPT_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
+; READS:
+;   LAB_2120/LAB_2121/LAB_212A, LAB_2352/2353/2354
+; WRITES:
+;   LAB_2121/LAB_212A, banner character (via SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
+; DESC:
+;   Advances an in-progress banner character transition toward its target.
+; NOTES:
+;   Disables the transition when the target is reached.
+;------------------------------------------------------------------------------
+SCRIPT_UpdateBannerCharTransition:
 LAB_14C8:
     MOVEM.L D2-D7/A4,-(A7)
 
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
     TST.W   LAB_2121
-    BEQ.W   .LAB_14CF
+    BEQ.W   .done
 
-    JSR     LAB_1597(PC)
+    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #0,D0
@@ -91,62 +170,62 @@ LAB_14C8:
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D1,D0
-    BNE.S   .LAB_14C9
+    BNE.S   .advance_step
 
     MOVEQ   #0,D1
     MOVE.W  D1,LAB_2121
     MOVE.W  D1,LAB_212A
-    BRA.W   .LAB_14CF
+    BRA.W   .done
 
-.LAB_14C9:
+.advance_step:
     MOVE.W  LAB_2353,D5
     MOVE.W  LAB_2120,D1
     MOVEQ   #0,D2
     CMP.W   D2,D1
-    BLS.S   .LAB_14CA
+    BLS.S   .calc_candidate
 
     ADDQ.W  #1,LAB_212A
     MOVE.W  LAB_212A,D3
     CMP.W   D1,D3
-    BLT.S   .LAB_14CA
+    BLT.S   .calc_candidate
 
     MOVE.W  LAB_2354,D3
     ADD.W   D3,D5
     MOVE.W  D2,LAB_212A
 
-.LAB_14CA:
+.calc_candidate:
     MOVE.L  D5,D7
     ADD.W   D6,D7
     MOVE.W  LAB_2354,D3
     TST.W   D3
-    BPL.S   .LAB_14CB
+    BPL.S   .check_positive_step
 
     MOVE.L  D7,D4
     EXT.L   D4
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     CMP.L   D1,D4
-    BLT.S   .LAB_14CD
+    BLT.S   .snap_to_target
 
-.LAB_14CB:
+.check_positive_step:
     TST.W   D3
-    BLE.S   .LAB_14CC
+    BLE.S   .check_zero_step
 
     MOVE.L  D7,D1
     EXT.L   D1
     MOVEQ   #0,D3
     MOVE.B  D0,D3
     CMP.L   D3,D1
-    BGT.S   .LAB_14CD
+    BGT.S   .snap_to_target
 
-.LAB_14CC:
+.check_zero_step:
     TST.W   LAB_2353
-    BNE.S   .LAB_14CE
+    BNE.S   .apply_step
 
     TST.W   LAB_2120
-    BNE.S   .LAB_14CE
+    BNE.S   .apply_step
 
-.LAB_14CD:
+.snap_to_target:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D6,D0
@@ -154,16 +233,16 @@ LAB_14C8:
     SUB.L   D0,D1
     MOVE.L  D1,D5
 
-.LAB_14CE:
+.apply_step:
     MOVE.L  D5,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_159B(PC)
+    JSR     SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(PC)
 
     ADDQ.W  #4,A7
 
-.LAB_14CF:
+.done:
     MOVEM.L (A7)+,D2-D7/A4
     RTS
 
@@ -230,7 +309,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.W  #$1d4c,D6
 
 .LAB_14D4:
-    JSR     LAB_1597(PC)
+    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.W  D0,-12(A5)
     TST.W   LAB_2121
@@ -345,10 +424,29 @@ SCRIPT_BeginBannerCharTransition:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_14E2   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_14E2:
     MOVEM.L D2-D3/D7,-(A7)
 
-    JSR     LAB_1597(PC)
+    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
@@ -425,8 +523,8 @@ SCRIPT_InitCtrlContext:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, LAB_1494, SCRIPT_HandleBrushCommand, LAB_1560,
-;   GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_167E, LAB_154C, LAB_1596, LAB_167D
+;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, LAB_1560,
+;   GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_167E, LAB_154C, SCRIPT_JMPTBL_LAB_08DA, LAB_167D
 ; READS:
 ;   GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_1BC8, LAB_1DF3, LAB_1E84, LAB_212B
 ;   GLOB_REF_CLOCKDATA_STRUCT, GLOB_WORD_CLOCK_SECONDS
@@ -487,12 +585,12 @@ SCRIPT_HandleSerialCtrlCmd:
     CLR.W   LAB_212B
     CLR.L   -(A7)
     PEA     32.W
-    JSR     LAB_1596(PC)
+    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
 
     ADDQ.W  #8,A7
 
 .LAB_14ED:
-    JSR     LAB_1494(PC)
+    JSR     PARSEINI_CheckCtrlHChange(PC)
 
     MOVE.L  D0,D6
     TST.W   LAB_2263
@@ -668,7 +766,7 @@ SCRIPT_HandleSerialCtrlCmd:
 .LAB_14F8:
     PEA     1.W
     PEA     32.W
-    JSR     LAB_1596(PC)
+    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,GLOB_WORD_CLOCK_SECONDS
@@ -997,10 +1095,10 @@ SCRIPT_HandleBrushCommand:
     PEA     4.W
     MOVE.L  A0,-(A7)
     PEA     -28(A5)
-    JSR     LAB_15A1(PC)
+    JSR     SCRIPT_JMPTBL_STRING_CopyPadNul(PC)
 
     PEA     -28(A5)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     LEA     16(A7),A7
     MOVEQ   #-48,D1
@@ -1041,7 +1139,7 @@ SCRIPT_HandleBrushCommand:
     BGE.W   .LAB_1543
 
     PEA     -18(A5)
-    JSR     LAB_1599(PC)
+    JSR     SCRIPT_JMPTBL_LAB_0B4E(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_1543
@@ -1273,7 +1371,7 @@ SCRIPT_HandleBrushCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_1598(PC)
+    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1283,7 +1381,7 @@ SCRIPT_HandleBrushCommand:
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,36(A7)
-    JSR     LAB_1598(PC)
+    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1437,7 +1535,7 @@ SCRIPT_HandleBrushCommand:
 .LAB_14FF_06A0:
     LEA     1(A2),A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #63,D1
@@ -1475,12 +1573,12 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1532
 
     PEA     1.W
-    JSR     LAB_15A0(PC)
+    JSR     SCRIPT_JMPTBL_LAB_0F13(PC)
 
     LEA     2(A2),A0
     PEA     LAB_2321
     MOVE.L  A0,-(A7)
-    JSR     LAB_159E(PC)
+    JSR     SCRIPT_JMPTBL_LAB_0F3D(PC)
 
     LEA     12(A7),A7
     BRA.W   .LAB_1543
@@ -1495,7 +1593,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1533
 
     CLR.L   -(A7)
-    JSR     LAB_15A0(PC)
+    JSR     SCRIPT_JMPTBL_LAB_0F13(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_1543
@@ -1673,6 +1771,25 @@ SCRIPT_HandleBrushCommand:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1545   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1545:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
@@ -1683,22 +1800,22 @@ LAB_1545:
     MOVE.W  #1,LAB_2357
     MOVEQ   #3,D5
 
-LAB_1546:
+.loop_1546:
     MOVEQ   #18,D0
     CMP.B   0(A3,D5.W),D0
-    BEQ.S   LAB_1547
+    BEQ.S   .branch_1547
 
     MOVEQ   #30,D0
     CMP.W   D0,D5
-    BGE.S   LAB_1547
+    BGE.S   .branch_1547
 
     ADDQ.W  #1,D5
-    BRA.S   LAB_1546
+    BRA.S   .loop_1546
 
-LAB_1547:
+.branch_1547:
     CLR.B   0(A3,D5.W)
     TST.W   LAB_2356
-    BNE.S   LAB_1548
+    BNE.S   .if_ne_1548
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -1714,13 +1831,13 @@ LAB_1547:
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1548
+    BNE.S   .if_ne_1548
 
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_2351
-    BRA.S   LAB_154B
+    BRA.S   .skip_154B
 
-LAB_1548:
+.if_ne_1548:
     LEA     2(A3),A0
     MOVE.W  LAB_234D,D0
     EXT.L   D0
@@ -1731,15 +1848,15 @@ LAB_1548:
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_1549
+    BNE.S   .if_ne_1549
 
     MOVEQ   #6,D0
     MOVE.L  D0,LAB_2351
-    BRA.S   LAB_154B
+    BRA.S   .skip_154B
 
-LAB_1549:
+.if_ne_1549:
     TST.W   LAB_2356
-    BEQ.S   LAB_154A
+    BEQ.S   .branch_154A
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -1755,19 +1872,19 @@ LAB_1549:
 
     LEA     12(A7),A7
     SUBQ.W  #1,D0
-    BNE.S   LAB_154A
+    BNE.S   .branch_154A
 
     MOVEQ   #7,D0
     MOVE.L  D0,LAB_2351
-    BRA.S   LAB_154B
+    BRA.S   .skip_154B
 
-LAB_154A:
+.branch_154A:
     MOVEQ   #0,D6
     CLR.W   LAB_2357
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_2351
 
-LAB_154B:
+.skip_154B:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7/A3
     UNLK    A5
@@ -1775,6 +1892,25 @@ LAB_154B:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_154C   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_154C:
     MOVEM.L D2/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -1865,6 +2001,25 @@ LAB_154C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1553   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1553:
     MOVEQ   #0,D0
     MOVE.B  D0,LAB_234C
@@ -1876,6 +2031,25 @@ LAB_1553:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1554   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1554:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
@@ -1954,7 +2128,7 @@ LAB_1554:
 
     PEA     128.W
     MOVE.L  A0,-(A7)
-    JSR     LAB_1594(PC)
+    JSR     SCRIPT_JMPTBL_LAB_0C31(PC)
 
     ADDQ.W  #8,A7
 
@@ -1968,7 +2142,7 @@ LAB_1554:
 
     PEA     128.W
     MOVE.L  A0,-(A7)
-    JSR     LAB_1594(PC)
+    JSR     SCRIPT_JMPTBL_LAB_0C31(PC)
 
     ADDQ.W  #8,A7
 
@@ -1978,9 +2152,28 @@ LAB_1554:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1560   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1560:
     MOVEM.L D2/D7,-(A7)
-    JSR     LAB_1597(PC)
+    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #-2,D0
@@ -2039,6 +2232,25 @@ LAB_1560:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1565   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1565:
     MOVE.L  D7,-(A7)
 
@@ -2251,6 +2463,25 @@ LAB_1571:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_157A   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_157A:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
@@ -2314,7 +2545,7 @@ LAB_157A:
     BRA.W   .return
 
 .LAB_157B_0082:
-    JSR     LAB_159C(PC)
+    JSR     SCRIPT_JMPTBL_ESQ_SetCopperEffect_Custom(PC)
 
     BRA.W   .return
 
@@ -2563,6 +2794,25 @@ LAB_1581:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1584   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1584:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -2648,6 +2898,25 @@ LAB_1584:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_158C   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_158C:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
@@ -2713,6 +2982,25 @@ LAB_158C:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_1591   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_1591:
     CLR.L   -(A7)
     MOVEQ   #0,D0
@@ -2735,45 +3023,270 @@ JMPTBL_LAB_0F7D:
 JMPTBL_MATH_DivS32_4:
     JMP     MATH_DivS32
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_LAB_0C31   (JumpStub_LAB_0C31)
+; ARGS:
+;   (none)
+; RET:
+;   D0: (see LAB_0C31) ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0C31
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0C31.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_LAB_0C31:
 LAB_1594:
     JMP     LAB_0C31
 
 JMPTBL_STRING_CompareN_3:
     JMP     STRING_CompareN
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_LAB_08DA   (JumpStub_LAB_08DA)
+; ARGS:
+;   (none)
+; RET:
+;   D0: (see LAB_08DA) ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_08DA
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_08DA.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_LAB_08DA:
 LAB_1596:
     JMP     LAB_08DA
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_GCOMMAND_GetBannerChar   (JumpStub_GCOMMAND_GetBannerChar)
+; ARGS:
+;   (none)
+; RET:
+;   D0: banner char (see GCOMMAND_GetBannerChar)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   GCOMMAND_GetBannerChar
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to GCOMMAND_GetBannerChar.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_GCOMMAND_GetBannerChar:
 LAB_1597:
     JMP     GCOMMAND_GetBannerChar
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_LADFUNC_ParseHexDigit   (JumpStub_LADFUNC_ParseHexDigit)
+; ARGS:
+;   (none)
+; RET:
+;   D0: parsed digit (see LADFUNC_ParseHexDigit)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LADFUNC_ParseHexDigit
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LADFUNC_ParseHexDigit.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_LADFUNC_ParseHexDigit:
 LAB_1598:
     JMP     LADFUNC_ParseHexDigit
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_LAB_0B4E   (JumpStub_LAB_0B4E)
+; ARGS:
+;   (none)
+; RET:
+;   D0: (see LAB_0B4E) ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0B4E
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0B4E.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_LAB_0B4E:
 LAB_1599:
     JMP     LAB_0B4E
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (JumpStub_PARSE_ReadSignedLongSkipClass3_Alt)
+; ARGS:
+;   (none)
+; RET:
+;   D0: parsed value (see PARSE_ReadSignedLongSkipClass3_Alt)
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   PARSE_ReadSignedLongSkipClass3_Alt
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to PARSE_ReadSignedLongSkipClass3_Alt.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 LAB_159A:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset   (JumpStub_GCOMMAND_AdjustBannerCopperOffset)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   GCOMMAND_AdjustBannerCopperOffset
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to GCOMMAND_AdjustBannerCopperOffset.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
 LAB_159B:
     JMP     GCOMMAND_AdjustBannerCopperOffset
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQ_SetCopperEffect_Custom
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQ_SetCopperEffect_Custom.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_ESQ_SetCopperEffect_Custom:
 LAB_159C:
     JMP     ESQ_SetCopperEffect_Custom
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   CLEANUP_RenderAlignedStatusScreen
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to CLEANUP_RenderAlignedStatusScreen.
+;------------------------------------------------------------------------------
 SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
 LAB_159D:
     JMP     CLEANUP_RenderAlignedStatusScreen
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_LAB_0F3D   (JumpStub_LAB_0F3D)
+; ARGS:
+;   (none)
+; RET:
+;   D0: (see LAB_0F3D) ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0F3D
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0F3D.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_LAB_0F3D:
 LAB_159E:
     JMP     LAB_0F3D
 
 JMPTBL_MATH_Mulu32_7:
     JMP     MATH_Mulu32
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_LAB_0F13   (JumpStub_LAB_0F13)
+; ARGS:
+;   (none)
+; RET:
+;   D0: (see LAB_0F13) ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LAB_0F13
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LAB_0F13.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_LAB_0F13:
 LAB_15A0:
     JMP     LAB_0F13
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_STRING_CopyPadNul   (JumpStub_STRING_CopyPadNul)
+; ARGS:
+;   (none)
+; RET:
+;   D0: (see STRING_CopyPadNul) ??
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   STRING_CopyPadNul
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to STRING_CopyPadNul.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_STRING_CopyPadNul:
 LAB_15A1:
     JMP     STRING_CopyPadNul

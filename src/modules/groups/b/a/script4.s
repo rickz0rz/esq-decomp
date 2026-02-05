@@ -1,3 +1,23 @@
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_ResetBannerCharDefaults   (ResetBannerCharDefaults??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   (none)
+; READS:
+;   (none)
+; WRITES:
+;   LAB_2377, LAB_2373, LAB_2364
+; DESC:
+;   Resets banner-char defaults and clears the cached value.
+; NOTES:
+;   Values are hard-coded ($64, $31, -1) pending further context.
+;------------------------------------------------------------------------------
+SCRIPT_ResetBannerCharDefaults:
 LAB_15A2:
     MOVE.B  #$64,LAB_2377
     MOVE.B  #$31,LAB_2373
@@ -6,18 +26,38 @@ LAB_15A2:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_GetBannerCharOrFallback   (GetBannerCharOrFallback??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: banner char value
+; CLOBBERS:
+;   D0-D1/D7
+; CALLS:
+;   (none)
+; READS:
+;   LAB_2377, LAB_2373
+; WRITES:
+;   (none)
+; DESC:
+;   Returns LAB_2377 unless it is 100, in which case returns LAB_2373.
+; NOTES:
+;   Likely selects a fallback character when a sentinel is present.
+;------------------------------------------------------------------------------
+SCRIPT_GetBannerCharOrFallback:
 LAB_15A3:
     MOVE.L  D7,-(A7)
     MOVE.B  LAB_2377,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_15A4
+    BEQ.S   .return_fallback
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     BRA.S   .return
 
-.LAB_15A4:
+.return_fallback:
     MOVEQ   #0,D0
     MOVE.B  LAB_2373,D0
     MOVE.L  D0,D1
@@ -30,6 +70,29 @@ LAB_15A3:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_DrawInsetTextWithFrame   (DrawInsetTextWithFrame??)
+; ARGS:
+;   stack +8: A3 = RastPort??
+;   stack +12: D7 = textPen (byte, -1 = no change)
+;   stack +16: D6 = adjustFrameFlag?? (byte, -1 = no change)
+;   stack +20: A2 = text (char *)
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   _LVOTextLength, _LVOText, _LVOSetAPen, GROUP_BA_JMPTBL_CLEANUP_DrawInsetRectFrame
+; READS:
+;   RastPort fields at 36/38/58/25 offsets
+; WRITES:
+;   RastPort fields (36/38), output via graphics.library
+; DESC:
+;   Draws an inset frame around text and renders the string with optional pen overrides.
+; NOTES:
+;   Uses -1 as a sentinel for “no override”.
+;------------------------------------------------------------------------------
+SCRIPT_DrawInsetTextWithFrame:
 LAB_15A6:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A2-A3,-(A7)
@@ -48,7 +111,7 @@ LAB_15A6:
     MOVEQ   #0,D1
     NOT.B   D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_15A8
+    BEQ.S   .after_frame
 
     ADDQ.W  #4,36(A3)
     MOVE.L  D6,D0
@@ -56,9 +119,9 @@ LAB_15A6:
     EXT.L   D0
     MOVEA.L A2,A0
 
-.LAB_15A7:
+.text_length_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_15A7
+    BNE.S   .text_length_loop
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
@@ -81,13 +144,13 @@ LAB_15A6:
 
     LEA     16(A7),A7
 
-.LAB_15A8:
+.after_frame:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
     NOT.B   D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_15A9
+    BEQ.S   .skip_set_pen
 
     MOVE.B  25(A3),D5
     EXT.W   D5
@@ -98,12 +161,12 @@ LAB_15A6:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-.LAB_15A9:
+.skip_set_pen:
     MOVEA.L A2,A0
 
-.LAB_15AA:
+.text_draw_length_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_15AA
+    BNE.S   .text_draw_length_loop
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
@@ -119,13 +182,13 @@ LAB_15A6:
     MOVEQ   #0,D1
     NOT.B   D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_15AB
+    BEQ.S   .skip_restore_pen
 
     MOVEA.L A3,A1
     MOVE.L  D5,D0
     JSR     _LVOSetAPen(A6)
 
-.LAB_15AB:
+.skip_restore_pen:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVEQ   #0,D1
@@ -143,6 +206,26 @@ LAB_15A6:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_SetupHighlightEffect   (SetupHighlightEffect??)
+; ARGS:
+;   stack +8: A3 = effect config?? (optional)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   D0-D7/A3
+; CALLS:
+;   LAB_183C, LAB_183E, GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+; READS:
+;   LAB_2216, copper/effect state
+; WRITES:
+;   LAB_2216 and effect parameters
+; DESC:
+;   Initializes highlight/copper effect state and kicks a banner transition.
+; NOTES:
+;   Exact effect semantics still under investigation.
+;------------------------------------------------------------------------------
+SCRIPT_SetupHighlightEffect:
 LAB_15AD:
     LINK.W  A5,#-176
     MOVEM.L D2/D5-D7/A3,-(A7)
@@ -173,15 +256,15 @@ LAB_15AD:
     MOVEA.L LAB_2216,A0
     MOVE.W  (A0),D0
     BTST    #2,D0
-    BEQ.S   .LAB_15AE
+    BEQ.S   .is_not_mode2
 
     MOVEQ   #2,D0
-    BRA.S   .LAB_15AF
+    BRA.S   .use_mode2
 
-.LAB_15AE:
+.is_not_mode2:
     MOVEQ   #1,D0
 
-.LAB_15AF:
+.use_mode2:
     MOVE.L  D0,20(A7)
     MOVE.L  D5,D0
     MOVE.L  20(A7),D1
@@ -218,40 +301,40 @@ LAB_15AD:
     CLR.L   -28(A5)
     MOVE.L  A3,-170(A5)
 
-.LAB_15B0:
+.copy_printable_prefix:
     MOVEA.L -170(A5),A0
     TST.B   (A0)
-    BEQ.S   .LAB_15B2
+    BEQ.S   .finalize_prefix
 
     MOVE.L  -28(A5),D0
     MOVEQ   #64,D1
     ADD.L   D1,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_15B2
+    BGE.S   .finalize_prefix
 
     MOVE.B  (A0),D1
     MOVEQ   #32,D2
     CMP.B   D2,D1
-    BCS.S   .LAB_15B1
+    BCS.S   .skip_char_store
 
     LEA     -161(A5),A0
     ADDA.L  D0,A0
     ADDQ.L  #1,-28(A5)
     MOVE.B  D1,(A0)
 
-.LAB_15B1:
+.skip_char_store:
     ADDQ.L  #1,-170(A5)
-    BRA.S   .LAB_15B0
+    BRA.S   .copy_printable_prefix
 
-.LAB_15B2:
+.finalize_prefix:
     MOVEA.L -170(A5),A0
     TST.B   (A0)
-    BEQ.S   .LAB_15B3
+    BEQ.S   .measure_prefix
 
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
 
-.LAB_15B3:
+.measure_prefix:
     LEA     -161(A5),A0
     MOVE.L  -28(A5),D0
     MOVEA.L A0,A1
@@ -262,31 +345,31 @@ LAB_15AD:
     JSR     _LVOTextLength(A6)
 
     TST.B   LAB_1B5D
-    BEQ.S   .LAB_15B4
+    BEQ.S   .no_extra_pad
 
     MOVEQ   #0,D1
     MOVE.B  LAB_21B3,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
-    BEQ.S   .LAB_15B4
+    BEQ.S   .no_extra_pad
 
     MOVEQ   #8,D1
-    BRA.S   .LAB_15B5
+    BRA.S   .apply_extra_pad
 
-.LAB_15B4:
+.no_extra_pad:
     MOVEQ   #0,D1
 
-.LAB_15B5:
+.apply_extra_pad:
     ADD.L   D1,D0
     MOVE.L  -20(A5),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_15B6
+    BPL.S   .center_offset_ready
 
     ADDQ.L  #1,D1
 
-.LAB_15B6:
+.center_offset_ready:
     ASR.L   #1,D1
     MOVE.L  D1,D7
     MOVE.L  D5,D6
@@ -313,68 +396,68 @@ LAB_15AD:
     MOVE.L  A0,-166(A5)
     MOVE.L  A0,-170(A5)
 
-.LAB_15B7:
+.parse_control_loop:
     TST.L   -32(A5)
-    BNE.W   .LAB_15C3
+    BNE.W   .finish_render
 
     MOVEQ   #0,D0
     MOVEA.L -166(A5),A0
     MOVE.B  (A0),D0
     TST.W   D0
-    BEQ.S   .LAB_15B8
+    BEQ.S   .handle_end_of_string
 
     SUBI.W  #19,D0
-    BEQ.W   .LAB_15BE
+    BEQ.W   .handle_skip_control
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_15C0
+    BEQ.W   .handle_inset_control
 
     SUBQ.W  #4,D0
-    BEQ.S   .LAB_15BA
+    BEQ.S   .handle_color_control
 
     SUBQ.W  #1,D0
-    BEQ.S   .LAB_15BA
+    BEQ.S   .handle_color_control
 
-    BRA.W   .LAB_15C1
+    BRA.W   .append_printable_char
 
-.LAB_15B8:
+.handle_end_of_string:
     MOVE.L  -28(A5),D0
     TST.L   D0
-    BLE.S   .LAB_15B9
+    BLE.S   .mark_done
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
-.LAB_15B9:
+.mark_done:
     MOVEQ   #1,D0
     MOVE.L  D0,-32(A5)
-    BRA.W   .LAB_15C2
+    BRA.W   .advance_parse_ptr
 
-.LAB_15BA:
+.handle_color_control:
     MOVE.L  -28(A5),D0
     TST.L   D0
-    BLE.S   .LAB_15BB
+    BLE.S   .after_color_flush
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
-.LAB_15BB:
+.after_color_flush:
     MOVEQ   #24,D0
     MOVEA.L -166(A5),A0
     CMP.B   (A0),D0
-    BNE.S   .LAB_15BC
+    BNE.S   .select_pen_alt
 
     MOVEQ   #1,D0
-    BRA.S   .LAB_15BD
+    BRA.S   .apply_pen_change
 
-.LAB_15BC:
+.select_pen_alt:
     MOVEQ   #3,D0
 
-.LAB_15BD:
+.apply_pen_change:
     MOVEA.L -4(A5),A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
@@ -383,26 +466,26 @@ LAB_15AD:
     ADDQ.L  #1,A0
     CLR.L   -28(A5)
     MOVE.L  A0,-170(A5)
-    BRA.W   .LAB_15C2
+    BRA.W   .advance_parse_ptr
 
-.LAB_15BE:
+.handle_skip_control:
     MOVE.L  -28(A5),D0
     TST.L   D0
-    BLE.S   .LAB_15BF
+    BLE.S   .after_skip_flush
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
-.LAB_15BF:
+.after_skip_flush:
     MOVEA.L -166(A5),A0
     ADDQ.L  #1,A0
     CLR.L   -28(A5)
     MOVE.L  A0,-170(A5)
-    BRA.S   .LAB_15C2
+    BRA.S   .advance_parse_ptr
 
-.LAB_15C0:
+.handle_inset_control:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -170(A5),-(A7)
     PEA     -161(A5)
@@ -420,7 +503,7 @@ LAB_15AD:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_15A6
+    BSR.W   SCRIPT_DrawInsetTextWithFrame
 
     LEA     24(A7),A7
     MOVEA.L -166(A5),A0
@@ -428,20 +511,20 @@ LAB_15AD:
     CLR.L   -28(A5)
     CLR.B   LAB_1B5D
     MOVE.L  A0,-170(A5)
-    BRA.S   .LAB_15C2
+    BRA.S   .advance_parse_ptr
 
-.LAB_15C1:
+.append_printable_char:
     MOVEA.L -166(A5),A0
     CMPI.B  #$20,(A0)
-    BCS.S   .LAB_15C2
+    BCS.S   .advance_parse_ptr
 
     ADDQ.L  #1,-28(A5)
 
-.LAB_15C2:
+.advance_parse_ptr:
     ADDQ.L  #1,-166(A5)
-    BRA.W   .LAB_15B7
+    BRA.W   .parse_control_loop
 
-.LAB_15C3:
+.finish_render:
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W

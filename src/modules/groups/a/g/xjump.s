@@ -39,8 +39,9 @@ GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
 GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
     JMP     UNKNOWN2B_OpenFileWithAccessMode
 
+GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
 LAB_046D:
-    JMP     LAB_14C6
+    JMP     SCRIPT_CheckPathExists
 
 GROUP_AG_JMPTBL_MATH_Mulu32:
     JMP     MATH_Mulu32

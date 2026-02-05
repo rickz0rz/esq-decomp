@@ -1,3 +1,23 @@
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_ReadSerialRbfByte   (ReadSerialRbfByte??)
+; ARGS:
+;   (none)
+; RET:
+;   D0: byte read ?? (from ESQ_ReadSerialRbfByte)
+; CLOBBERS:
+;   D0
+; CALLS:
+;   GROUPD_JMPTBL_ESQ_ReadSerialRbfByte
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Thin wrapper around ESQ_ReadSerialRbfByte.
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
+SCRIPT_ReadSerialRbfByte:
 LAB_14AF:
     JSR     GROUPD_JMPTBL_ESQ_ReadSerialRbfByte(PC)
 
@@ -12,6 +32,25 @@ SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: LAB_14B1   (??)
+; ARGS:
+;   ??
+; RET:
+;   ??
+; CLOBBERS:
+;   ??
+; CALLS:
+;   ??
+; READS:
+;   ??
+; WRITES:
+;   ??
+; DESC:
+;   ??
+; NOTES:
+;   ??
+;------------------------------------------------------------------------------
 LAB_14B1:
     MOVE.L  D7,-(A7)
 

@@ -43,8 +43,9 @@ LAB_0547:
 GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
     JMP     GCOMMAND_LoadMplexFile
 
+GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
 LAB_0549:
-    JMP     LAB_14AF
+    JMP     SCRIPT_ReadSerialRbfByte
 
 GROUP_AH_JMPTBL_LAB_0B34:
     JMP     LAB_0B34

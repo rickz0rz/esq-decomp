@@ -129,6 +129,7 @@ LAB_167E:
 ;------------------------------------------------------------------------------
 TEXTDISP_DrawNextEntryPreview:
 LAB_1681:
+.loop:
     MOVE.W  LAB_2265,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -146,7 +147,7 @@ LAB_1681:
     JSR     MATH_DivS32(PC)
 
     MOVE.W  D1,LAB_2265
-    BRA.S   LAB_1681
+    BRA.S   .loop
 
 .found_entry:
     MOVE.W  LAB_2265,D0

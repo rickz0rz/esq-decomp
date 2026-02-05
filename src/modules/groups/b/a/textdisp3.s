@@ -84,7 +84,6 @@ TEXTDISP_FindEntryIndexByWildcard:
 ;   Copies the entry name to a stack buffer before comparison.
 ;------------------------------------------------------------------------------
 TEXTDISP_FindAliasIndexByName:
-LAB_169C:
     LINK.W  A5,#-24
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -837,7 +836,6 @@ LAB_16CE:
 ;   Falls back to entry+19 and prefixes a center-align token when short.
 ;------------------------------------------------------------------------------
 TEXTDISP_BuildEntryShortName:
-LAB_16D3:
     LINK.W  A5,#-12
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -930,7 +928,6 @@ LAB_16D3:
 ;   Uses group 1/2 based on LAB_2153.
 ;------------------------------------------------------------------------------
 TEXTDISP_BuildChannelLabel:
-LAB_16D9:
     LINK.W  A5,#-20
     MOVEM.L D6-D7/A3,-(A7)
     MOVE.W  10(A5),D7
@@ -1054,7 +1051,6 @@ LAB_16D9:
 ;   Uses LAB_2153 to switch between group 1/2 layouts.
 ;------------------------------------------------------------------------------
 TEXTDISP_DrawChannelBanner:
-LAB_16E3:
     LINK.W  A5,#-8
     MOVEM.L D5-D7,-(A7)
     MOVE.W  10(A5),D7
@@ -1185,7 +1181,6 @@ LAB_16E3:
 ;   Handles either numeric minutes or HH:MM text fields.
 ;------------------------------------------------------------------------------
 TEXTDISP_FormatEntryTime:
-LAB_16ED:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1396,7 +1391,6 @@ LAB_16ED:
 ;   Falls back to numeric minutes when no HH:MM text exists.
 ;------------------------------------------------------------------------------
 TEXTDISP_FormatEntryTimeForIndex:
-LAB_16F7:
     LINK.W  A5,#-12
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
@@ -1572,7 +1566,6 @@ LAB_16F7:
 ;   Computes a time offset (minutes) based on entry data and current time.
 ;------------------------------------------------------------------------------
 TEXTDISP_ComputeTimeOffset:
-LAB_16FF:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A3,-(A7)
     MOVE.W  10(A5),D7
@@ -1690,7 +1683,6 @@ LAB_16FF:
 ;   Uses LAB_2153 to switch between group 1/2.
 ;------------------------------------------------------------------------------
 TEXTDISP_SelectGroupAndEntry:
-LAB_1704:
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVEA.L 28(A7),A2
@@ -1838,7 +1830,6 @@ LAB_1704:
 ;   If pattern starts with FIND1, switches to a \"find\" mode.
 ;------------------------------------------------------------------------------
 TEXTDISP_BuildMatchIndexList:
-LAB_170F:
     LINK.W  A5,#-20
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVE.W  14(A5),D7
@@ -2051,7 +2042,6 @@ LAB_170F:
 ;   Uses tagPtr to detect \"SPT\" and adjusts selection rules accordingly.
 ;------------------------------------------------------------------------------
 TEXTDISP_SelectBestMatchFromList:
-LAB_1722:
     LINK.W  A5,#-24
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -2593,7 +2583,6 @@ LAB_1722:
 ;   Falls back to defaults when channel is out of range.
 ;------------------------------------------------------------------------------
 TEXTDISP_UpdateChannelRangeFlags:
-LAB_174D:
     LINK.W  A5,#-8
     MOVEM.L D2/D7,-(A7)
     MOVE.W  LAB_2365,D0
@@ -2688,7 +2677,6 @@ LAB_174D:
 ;   Uses the rastport stored in LAB_2216 for font metrics.
 ;------------------------------------------------------------------------------
 TEXTDISP_TrimTextToPixelWidth:
-LAB_1755:
     LINK.W  A5,#-28
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3

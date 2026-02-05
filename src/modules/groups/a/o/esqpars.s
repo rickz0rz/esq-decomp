@@ -2809,7 +2809,7 @@ LAB_0BF5:
     JMP     LAB_1591
 
 LAB_0BF6:
-    JMP     LAB_146E
+    JMP     PARSEINI_WriteRtcFromGlobals
 
 LAB_0BF7:
     JMP     LAB_0F4D
@@ -2857,8 +2857,9 @@ LAB_0C01:
 GROUP_AO_JMPTBL_CLEANUP_ParseAlignedListingBlock:
     JMP     CLEANUP_ParseAlignedListingBlock
 
+GROUP_AO_JMPTBL_SCRIPT_ReadSerialRbfByte:
 LAB_0C03:
-    JMP     LAB_14AF
+    JMP     SCRIPT_ReadSerialRbfByte
 
 GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte:
     JMP     ESQ_GenerateXorChecksumByte

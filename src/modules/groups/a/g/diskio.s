@@ -910,7 +910,7 @@ LAB_03CF:
     BNE.S   .return
 
     PEA     LAB_1BE0
-    JSR     LAB_046D(PC)
+    JSR     GROUP_AG_JMPTBL_SCRIPT_CheckPathExists(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0

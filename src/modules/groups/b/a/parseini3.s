@@ -17,7 +17,7 @@
 ; NOTES:
 ;   Returns -1 when logging is disabled or open fails.
 ;------------------------------------------------------------------------------
-LAB_1487:
+PARSEINI_WriteErrorLogEntry:
     MOVE.L  D7,-(A7)
 
     TST.L   LAB_2049
@@ -64,7 +64,7 @@ LAB_1487:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CALCULATE_H_T_C_MAX_VALUES   (Compute H/T delta max??)
+; FUNC: PARSEINI_ComputeHTCMaxValues   (Compute H/T delta max??)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -82,7 +82,7 @@ LAB_1487:
 ; NOTES:
 ;   Wrap logic suggests a circular counter.
 ;------------------------------------------------------------------------------
-CALCULATE_H_T_C_MAX_VALUES:
+PARSEINI_ComputeHTCMaxValues:
     MOVE.L  D7,-(A7)
 
     MOVEQ   #0,D0
@@ -121,7 +121,7 @@ CALCULATE_H_T_C_MAX_VALUES:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   LAB_1596
+;   SCRIPT_JMPTBL_LAB_08DA
 ; READS:
 ;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_REF_CLOCKDATA_STRUCT,
 ;   LAB_20A3-20A8
@@ -129,11 +129,11 @@ CALCULATE_H_T_C_MAX_VALUES:
 ;   LAB_20A3-20A8
 ; DESC:
 ;   Detects changes between H and T values, compares to stored clockdata seconds,
-;   and updates counters/flags, occasionally queuing an action via LAB_1596.
+;   and updates counters/flags, occasionally queuing an action via SCRIPT_JMPTBL_LAB_08DA.
 ; NOTES:
 ;   Uses a 3-count threshold before clearing LAB_20A5.
 ;------------------------------------------------------------------------------
-LAB_148E:
+PARSEINI_MonitorClockChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7       ; Prefill D7 with 0x00000000
@@ -157,7 +157,7 @@ LAB_148E:
     MOVE.L  D1,-(A7)        ; Push D1 onto the stack
     MOVE.L  D1,-(A7)        ; Push it again onto the stack
     MOVE.W  D0,LAB_20A5     ; Push the least 2 sig bytes in D0 into LAB_20A5
-    JSR     LAB_1596(PC)    ; JSR
+    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)    ; JSR
 
     ADDQ.W  #8,A7           ; Add 8 to whatever value is in the stack (the stack pointer) clearing the last two values in the stack (D1 x2).
     BRA.S   .return
@@ -179,7 +179,7 @@ LAB_148E:
     CLR.W   LAB_20A5
     CLR.L   -(A7)
     PEA     1.W
-    JSR     LAB_1596(PC)
+    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
 
     ADDQ.W  #8,A7
 
@@ -211,7 +211,6 @@ LAB_148E:
 ;   Wrap size 500 suggests a ring buffer or modulo counter.
 ;------------------------------------------------------------------------------
 PARSEINI_UpdateCtrlHDeltaMax:
-LAB_1491:
     MOVE.L  D7,-(A7)
 
     MOVEQ   #0,D0
@@ -242,7 +241,7 @@ LAB_1491:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_CheckCtrlHChange   (Detect CTRL_H change and act??)
+; FUNC: PARSEINI_CheckCtrlHChange
 ; ARGS:
 ;   (none)
 ; RET:
@@ -250,18 +249,18 @@ LAB_1491:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   LAB_1596
+;   SCRIPT_JMPTBL_LAB_08DA
 ; READS:
 ;   CTRL_H, LAB_2282, LAB_2266, LAB_20A6-20A8, LAB_20A5
 ; WRITES:
 ;   LAB_20A6-20A8
 ; DESC:
-;   Compares current CTRL_H to previous value, optionally triggers LAB_1596 when
+;   Compares current CTRL_H to previous value, optionally triggers SCRIPT_JMPTBL_LAB_08DA when
 ;   changes are detected and control flags permit.
 ; NOTES:
 ;   Uses LAB_2266 as gate; resets LAB_20A5 when no change.
 ;------------------------------------------------------------------------------
-LAB_1494:
+PARSEINI_CheckCtrlHChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7
@@ -288,7 +287,7 @@ LAB_1494:
     PEA     1.W
     PEA     16.W
     MOVE.W  D0,LAB_20A8
-    JSR     LAB_1596(PC)
+    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .return
@@ -314,7 +313,7 @@ LAB_1494:
     CLR.W   LAB_20A8
     CLR.L   -(A7)
     PEA     16.W
-    JSR     LAB_1596(PC)
+    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
 
     ADDQ.W  #8,A7
 

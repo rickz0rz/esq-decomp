@@ -60,7 +60,7 @@ GROUP_AD_JMPTBL_LAB_0668:
     JMP     DATETIME_NormalizeMonthRange
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_16E3   (JumpStub_LAB_16E3)
+; FUNC: GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner   (JumpStub_TEXTDISP_DrawChannelBanner)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -76,11 +76,11 @@ GROUP_AD_JMPTBL_LAB_0668:
 ; DESC:
 ;   Jump stub to TEXTDISP_DrawChannelBanner.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_16E3:
+GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner:
     JMP     TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_16ED   (JumpStub_LAB_16ED)
+; FUNC: GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime   (JumpStub_TEXTDISP_FormatEntryTime)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -96,7 +96,7 @@ GROUP_AD_JMPTBL_LAB_16E3:
 ; DESC:
 ;   Jump stub to TEXTDISP_FormatEntryTime.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_16ED:
+GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
     JMP     TEXTDISP_FormatEntryTime
 
 ;------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ GROUP_AD_JMPTBL_LAB_0A48:
     JMP     LAB_0A48
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_16D3   (JumpStub_LAB_16D3)
+; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName   (JumpStub_TEXTDISP_BuildEntryShortName)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -136,7 +136,7 @@ GROUP_AD_JMPTBL_LAB_0A48:
 ; DESC:
 ;   Jump stub to TEXTDISP_BuildEntryShortName.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_16D3:
+GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
     JMP     TEXTDISP_BuildEntryShortName
 
 ;------------------------------------------------------------------------------
@@ -200,7 +200,7 @@ GROUP_AD_JMPTBL_LAB_17A8:
     JMP     LAB_17A8
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_16D9   (JumpStub_LAB_16D9)
+; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel   (JumpStub_TEXTDISP_BuildChannelLabel)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -216,7 +216,7 @@ GROUP_AD_JMPTBL_LAB_17A8:
 ; DESC:
 ;   Jump stub to TEXTDISP_BuildChannelLabel.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_16D9:
+GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
     JMP     TEXTDISP_BuildChannelLabel
 
 ;------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ GROUP_AD_JMPTBL_LAB_16CE:
     JMP     TEXTDISP_DrawInsetRectFrame
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_1755   (JumpStub_LAB_1755)
+; FUNC: GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth   (JumpStub_TEXTDISP_TrimTextToPixelWidth)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -256,7 +256,7 @@ GROUP_AD_JMPTBL_LAB_16CE:
 ; DESC:
 ;   Jump stub to TEXTDISP_TrimTextToPixelWidth.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_1755:
+GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
     JMP     TEXTDISP_TrimTextToPixelWidth
 
 ;------------------------------------------------------------------------------

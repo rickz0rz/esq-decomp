@@ -315,7 +315,7 @@ LAB_0F19:
 LAB_0F1A:
     CLR.B   -51(A5,D7.L)
     PEA     -51(A5)
-    JSR     LAB_134E(PC)
+    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVE.L  D0,-22(A5)
     PEA     -24(A5)
@@ -362,7 +362,7 @@ LAB_0F1C:
 LAB_0F1D:
     CLR.B   -51(A5,D6.L)
     PEA     -51(A5)
-    JSR     LAB_134E(PC)
+    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -28(A5),A0
@@ -391,7 +391,7 @@ LAB_0F1E:
 LAB_0F1F:
     CLR.B   -51(A5,D6.L)
     PEA     -51(A5)
-    JSR     LAB_134E(PC)
+    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -28(A5),A0
@@ -417,7 +417,7 @@ LAB_0F20:
 LAB_0F21:
     CLR.B   -51(A5,D6.L)
     PEA     -51(A5)
-    JSR     LAB_134E(PC)
+    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -28(A5),A0

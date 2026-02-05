@@ -314,7 +314,7 @@ LAB_08AA:
     JMP     GCOMMAND_ResetBannerFadeState
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_180B   (JumpStub_LAB_180B)
+; FUNC: ESQ_JMPTBL_TLIBA3_InitPatternTable   (JumpStub_TLIBA3_InitPatternTable)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -322,17 +322,18 @@ LAB_08AA:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_180B
+;   TLIBA3_InitPatternTable
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_180B.
+;   Jump stub to TLIBA3_InitPatternTable.
 ;------------------------------------------------------------------------------
+ESQ_JMPTBL_TLIBA3_InitPatternTable:
 ESQ_JMPTBL_LAB_180B:
 LAB_08AB:
-    JMP     LAB_180B
+    JMP     TLIBA3_InitPatternTable
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_JMPTBL_ESQ_FormatDiskErrorMessage   (JumpStub_ESQ_FormatDiskErrorMessage)

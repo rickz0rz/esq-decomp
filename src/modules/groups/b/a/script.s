@@ -60,6 +60,28 @@ LAB_1498:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_DeallocateBufferArray   (DeallocateBufferArray??)
+; ARGS:
+;   stack +4: outPtrs (array of long pointers)
+;   stack +8: byteSize
+;   stack +12: count
+; RET:
+;   (none)
+; CLOBBERS:
+;   D0-D7/A3
+; CALLS:
+;   GROUPD_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   outPtrs[0..count-1]
+; WRITES:
+;   outPtrs[0..count-1] (cleared)
+; DESC:
+;   Deallocates count blocks of byteSize and clears the pointer slots.
+; NOTES:
+;   Tags deallocations with SCRIPT.C metadata.
+;------------------------------------------------------------------------------
+SCRIPT_DeallocateBufferArray:
 LAB_149B:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -68,7 +90,7 @@ LAB_149B:
 
     MOVEQ   #0,D5
 
-.LAB_149C:
+.free_loop:
     CMP.W   D6,D5
     BGE.S   .return
 
@@ -89,7 +111,7 @@ LAB_149B:
     ASL.L   #2,D0
     CLR.L   0(A3,D0.L)
     ADDQ.W  #1,D5
-    BRA.S   .LAB_149C
+    BRA.S   .free_loop
 
 .return:
     MOVEM.L (A7)+,D5-D7/A3
@@ -97,7 +119,33 @@ LAB_149B:
 
 ;!======
 
-LAB_149E
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_BuildTokenIndexMap   (BuildTokenIndexMap??)
+; ARGS:
+;   stack +8: inputBytes (byte array)
+;   stack +12: outIndexByToken (word array)
+;   stack +18: tokenCount
+;   stack +20: tokenTable (byte array, length tokenCount)
+;   stack +26: maxScanCount
+;   stack +31: terminatorByte
+;   stack +34: fillMissingFlag (non-zero = fill -1 entries)
+; RET:
+;   D0: scanIndex (byte position) ??
+; CLOBBERS:
+;   D0-D7/A0-A3
+; CALLS:
+;   (none)
+; READS:
+;   inputBytes, tokenTable
+; WRITES:
+;   outIndexByToken
+; DESC:
+;   Builds a token->index map by scanning inputBytes for entries in tokenTable.
+; NOTES:
+;   Stops on terminatorByte, maxScanCount, or when last token is assigned.
+;------------------------------------------------------------------------------
+SCRIPT_BuildTokenIndexMap:
+LAB_149E:
     LINK.W  A5,#-12
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -110,44 +158,44 @@ LAB_149E
     MOVE.W  D0,-6(A5)
     MOVE.W  D0,-10(A5)
 
-.LAB_149F:
+.init_table_loop:
     MOVE.W  -6(A5),D0
     CMP.W   D7,D0
-    BGE.S   .LAB_14A0
+    BGE.S   .scan_setup
 
     MOVE.L  D0,D1
     EXT.L   D1
     ADD.L   D1,D1
     MOVE.W  #(-1),0(A2,D1.L)
     ADDQ.W  #1,-6(A5)
-    BRA.S   .LAB_149F
+    BRA.S   .init_table_loop
 
-.LAB_14A0:
+.scan_setup:
     MOVEQ   #0,D0
     MOVE.W  D0,-8(A5)
     MOVE.W  D0,-4(A5)
 
-.LAB_14A1:
+.scan_input_loop:
     MOVE.W  -4(A5),D0
     MOVE.B  0(A3,D0.W),-1(A5)
     MOVE.B  -1(A5),D1
     CMP.B   D5,D1
-    BEQ.S   .LAB_14A5
+    BEQ.S   .scan_done
 
     CMP.W   D6,D0
-    BGE.S   .LAB_14A5
+    BGE.S   .scan_done
 
     MOVE.W  -8(A5),-6(A5)
 
-.LAB_14A2:
+.scan_token_loop:
     MOVE.W  -6(A5),D0
     CMP.W   D7,D0
-    BGE.S   .LAB_14A4
+    BGE.S   .after_token_scan
 
     MOVE.B  -1(A5),D1
     MOVEA.L 20(A5),A0
     CMP.B   0(A0,D0.W),D1
-    BNE.S   .LAB_14A3
+    BNE.S   .scan_token_next
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -159,36 +207,36 @@ LAB_149E
     CLR.B   0(A3,D0.W)
     ADDQ.W  #1,-8(A5)
     MOVE.W  D0,-10(A5)
-    BRA.S   .LAB_14A4
+    BRA.S   .after_token_scan
 
-.LAB_14A3:
+.scan_token_next:
     ADDQ.W  #1,-6(A5)
-    BRA.S   .LAB_14A2
+    BRA.S   .scan_token_loop
 
-.LAB_14A4:
+.after_token_scan:
     MOVE.L  D7,D0
     EXT.L   D0
     ADD.L   D0,D0
     MOVEQ   #-1,D1
     CMP.W   -2(A2,D0.L),D1
-    BNE.S   .LAB_14A5
+    BNE.S   .scan_done
 
     ADDQ.W  #1,-4(A5)
-    BRA.S   .LAB_14A1
+    BRA.S   .scan_input_loop
 
-.LAB_14A5:
+.scan_done:
     TST.W   -10(A5)
-    BNE.S   .LAB_14A6
+    BNE.S   .ensure_last_index
 
     MOVE.W  -4(A5),-10(A5)
 
-.LAB_14A6:
+.ensure_last_index:
     TST.W   34(A5)
     BEQ.S   .return
 
     CLR.W   -6(A5)
 
-.LAB_14A7:
+.fill_missing_loop:
     MOVE.W  -6(A5),D0
     CMP.W   D7,D0
     BGE.S   .return
@@ -198,13 +246,13 @@ LAB_149E
     ADD.L   D1,D1
     MOVEQ   #-1,D0
     CMP.W   0(A2,D1.L),D0
-    BNE.S   .LAB_14A8
+    BNE.S   .fill_missing_next
 
     MOVE.W  -10(A5),0(A2,D1.L)
 
-.LAB_14A8:
+.fill_missing_next:
     ADDQ.W  #1,-6(A5)
-    BRA.S   .LAB_14A7
+    BRA.S   .fill_missing_loop
 
 .return:
     MOVE.W  -4(A5),D0

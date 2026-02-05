@@ -910,7 +910,7 @@ LAB_0290:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_LAB_149E, ESQ_WildcardMatch, LAB_0468, GROUP_AE_JMPTBL_LAB_0B44,
+;   COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, ESQ_WildcardMatch, LAB_0468, GROUP_AE_JMPTBL_LAB_0B44,
 ;   CLEANUP_FormatEntryStringTokens, COI_AllocSubEntryTable, LAB_02D1, LAB_02D5
 ; READS:
 ;   LAB_222D-LAB_2235, LAB_2232, LAB_1B8F-LAB_1B92,
@@ -1042,7 +1042,7 @@ LAB_02A5:
     PEA     -88(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-62(A5)
-    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     36(A7),A7
     EXT.L   D0
@@ -1314,7 +1314,7 @@ LAB_02A5:
     PEA     7.W
     PEA     -116(A5)
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
     MOVE.W  -112(A5),D0

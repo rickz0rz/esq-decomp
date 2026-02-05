@@ -811,36 +811,56 @@ PARSEINI_ParseConfigBuffer:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_ParseHexValueFromString   (ParseHexValueFromString??)
+; ARGS:
+;   stack +8: A3 = pointer to hex string
+; RET:
+;   D0: parsed value
+; CLOBBERS:
+;   D0-D1/D7/A0/A3
+; CALLS:
+;   SCRIPT_JMPTBL_LADFUNC_ParseHexDigit
+; READS:
+;   LAB_21A8 (char class table)
+; WRITES:
+;   (none)
+; DESC:
+;   Parses consecutive hex characters into a 32-bit value until a non-hex.
+; NOTES:
+;   Treats each nibble as upper-case hex via LADFUNC_ParseHexDigit.
+;------------------------------------------------------------------------------
+PARSEINI_ParseHexValueFromString:
 LAB_13D4:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
 
-LAB_13D5:
+.loop_13D5:
     MOVE.L  A3,D0
-    BEQ.S   LAB_13D6
+    BEQ.S   .return_13D6
 
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
     LEA     LAB_21A8,A0
     ADDA.L  D0,A0
     BTST    #7,(A0)
-    BEQ.S   LAB_13D6
+    BEQ.S   .return_13D6
 
     ASL.L   #4,D7
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_1598(PC)
+    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     ADD.L   D1,D7
     ADDQ.L  #1,A3
-    BRA.S   LAB_13D5
+    BRA.S   .loop_13D5
 
-LAB_13D6:
+.return_13D6:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     RTS
@@ -857,7 +877,7 @@ LAB_13D6:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_UNKNOWN7_FindCharWrapper, LAB_134B, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, JMPTBL_GCOMMAND_ValidatePresetTable, LAB_159A
+;   JMPTBL_UNKNOWN7_FindCharWrapper, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, JMPTBL_GCOMMAND_ValidatePresetTable, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   LAB_206D, LAB_206E/206F/2070-2072 lookup strings, LAB_223A-D fields
 ; WRITES:
@@ -876,7 +896,7 @@ LAB_13D7:
     MOVEA.L 12(A5),A2
     MOVEA.L A3,A0
     MOVE.L  A0,-4(A5)
-    BEQ.S   LAB_13D8
+    BEQ.S   .no_source_ptr
 
     PEA     61.W
     MOVE.L  A3,-(A7)
@@ -884,21 +904,21 @@ LAB_13D7:
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
-    BRA.S   LAB_13D9
+    BRA.S   .after_find_equals
 
-LAB_13D8:
+.no_source_ptr:
     SUBA.L  A0,A0
 
-LAB_13D9:
+.after_find_equals:
     MOVE.L  A0,-8(A5)
     TST.L   -4(A5)
-    BEQ.S   LAB_13DB
+    BEQ.S   .term_value_token
 
     MOVE.L  A0,D0
-    BEQ.S   LAB_13DB
+    BEQ.S   .term_value_token
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     PEA     LAB_206E
     MOVE.L  D0,-(A7)
@@ -908,17 +928,17 @@ LAB_13D9:
     LEA     12(A7),A7
     MOVEA.L D0,A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_13DA
+    BEQ.S   .term_key_token
 
     MOVEQ   #0,D0
     MOVE.B  D0,(A3)
 
-LAB_13DA:
+.term_key_token:
     MOVEA.L -8(A5),A0
     CLR.B   (A0)+
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-8(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     PEA     LAB_206F
     MOVE.L  D0,-(A7)
@@ -928,16 +948,16 @@ LAB_13DA:
     LEA     12(A7),A7
     MOVEA.L D0,A3
     MOVE.L  A3,D0
-    BEQ.S   LAB_13DB
+    BEQ.S   .term_value_token
 
     CLR.B   (A3)
 
-LAB_13DB:
+.term_value_token:
     TST.L   -4(A5)
-    BEQ.W   LAB_13E5
+    BEQ.W   .return
 
     TST.L   -8(A5)
-    BEQ.W   LAB_13E5
+    BEQ.W   .return
 
     PEA     5.W
     PEA     LAB_2070
@@ -946,7 +966,7 @@ LAB_13DB:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   LAB_13DC
+    BNE.S   .handle_non_preset_keys
 
     PEA     4.W
     PEA     LAB_2071
@@ -955,7 +975,7 @@ LAB_13DB:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   LAB_13DC
+    BNE.S   .handle_non_preset_keys
 
     MOVE.L  A2,-(A7)
     JSR     JMPTBL_GCOMMAND_ValidatePresetTable(PC)
@@ -963,9 +983,9 @@ LAB_13DB:
     ADDQ.W  #4,A7
     MOVEQ   #-1,D0
     MOVE.L  D0,LAB_206D
-    BRA.W   LAB_13E5
+    BRA.W   .return
 
-LAB_13DC:
+.handle_non_preset_keys:
     PEA     5.W
     PEA     LAB_2072
     MOVE.L  -4(A5),-(A7)
@@ -973,117 +993,117 @@ LAB_13DC:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.W   LAB_13E4
+    BNE.W   .handle_range_assign
 
     MOVEA.L -4(A5),A0
     ADDQ.L  #5,A0
     MOVEQ   #0,D7
     MOVE.L  A0,-12(A5)
     MOVE.L  A0,D0
-    BEQ.S   LAB_13DD
+    BEQ.S   .parse_index_optional_done
 
     TST.B   (A0)
-    BEQ.S   LAB_13DD
+    BEQ.S   .parse_index_optional_done
 
     MOVE.L  A0,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
 
-LAB_13DD:
+.parse_index_optional_done:
     TST.W   D7
-    BMI.S   LAB_13DE
+    BMI.S   .invalid_index
 
     MOVEQ   #16,D0
     CMP.W   D0,D7
-    BLT.S   LAB_13DF
+    BLT.S   .store_index
 
-LAB_13DE:
+.invalid_index:
     MOVEQ   #-1,D0
     MOVE.L  D0,LAB_206D
-    BRA.S   LAB_13E0
+    BRA.S   .after_index_store
 
-LAB_13DF:
+.store_index:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,LAB_206D
     ADD.L   D0,D0
     CLR.W   0(A2,D0.L)
 
-LAB_13E0:
+.after_index_store:
     MOVE.L  LAB_206D,D0
     TST.L   D0
-    BMI.W   LAB_13E5
+    BMI.W   .return
 
     MOVEQ   #16,D1
     CMP.L   D1,D0
-    BGE.W   LAB_13E5
+    BGE.W   .return
 
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
     MOVEQ   #1,D0
     CMP.W   D0,D6
-    BLT.S   LAB_13E1
+    BLT.S   .value_too_small
 
     MOVEQ   #63,D1
     CMP.W   D1,D6
-    BLE.S   LAB_13E2
+    BLE.S   .value_in_range
 
-LAB_13E1:
+.value_too_small:
     MOVEQ   #-1,D6
-    BRA.S   LAB_13E3
+    BRA.S   .after_value_adjust
 
-LAB_13E2:
+.value_in_range:
     ADDQ.W  #1,D6
 
-LAB_13E3:
+.after_value_adjust:
     MOVE.L  LAB_206D,D0
     MOVE.L  D0,D1
     ADD.L   D1,D1
     MOVE.W  D6,0(A2,D1.L)
-    BRA.S   LAB_13E5
+    BRA.S   .return
 
-LAB_13E4:
+.handle_range_assign:
     MOVE.L  LAB_206D,D0
     TST.L   D0
-    BMI.S   LAB_13E5
+    BMI.S   .return
 
     MOVEQ   #16,D1
     CMP.L   D1,D0
-    BGE.S   LAB_13E5
+    BGE.S   .return
 
     ADD.L   D0,D0
     MOVE.W  0(A2,D0.L),D1
     TST.W   D1
-    BLE.S   LAB_13E5
+    BLE.S   .return
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVE.L  D0,D7
     MOVE.L  -8(A5),(A7)
-    BSR.W   LAB_13D4
+    BSR.W   PARSEINI_ParseHexValueFromString
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
     TST.W   D7
-    BLE.S   LAB_13E5
+    BLE.S   .return
 
     MOVE.L  LAB_206D,D0
     MOVE.L  D0,D1
     ADD.L   D1,D1
     CMP.W   0(A2,D1.L),D7
-    BGE.S   LAB_13E5
+    BGE.S   .return
 
     TST.W   D6
-    BMI.S   LAB_13E5
+    BMI.S   .return
 
     CMPI.W  #$1000,D6
-    BGE.S   LAB_13E5
+    BGE.S   .return
 
     ASL.L   #7,D0
     MOVEA.L A2,A0
@@ -1095,7 +1115,7 @@ LAB_13E4:
     MOVE.L  D6,D0
     MOVE.W  D0,32(A0)
 
-LAB_13E5:
+.return:
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
     RTS
@@ -1112,7 +1132,7 @@ LAB_13E5:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, JMPTBL_STRING_CompareNoCaseN, LAB_159A, LAB_15A1
+;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, JMPTBL_STRING_CompareNoCaseN, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   LAB_1B1F, LAB_233D, LAB_2073, LAB_2059, LAB_206D
 ; WRITES:
@@ -1132,19 +1152,19 @@ LAB_13E6:
     SUBA.L  A0,A0
     MOVE.L  A0,-8(A5)
     TST.L   LAB_1B1F
-    BNE.S   LAB_13E7
+    BNE.S   .after_init_state
 
     MOVE.L  A0,LAB_2073
     MOVE.L  A0,LAB_233D
 
-LAB_13E7:
+.after_init_state:
     PEA     LAB_2074
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13E8
+    BNE.S   .check_key_2075
 
     CLR.L   LAB_2073
     MOVE.L  LAB_233D,-(A7)
@@ -1156,13 +1176,13 @@ LAB_13E7:
     MOVE.B  #$1,190(A0)
     MOVE.L  D0,LAB_233D
     TST.L   LAB_1B1F
-    BNE.S   LAB_13E8
+    BNE.S   .check_key_2075
 
     MOVE.L  D0,LAB_1B1F
 
-LAB_13E8:
+.check_key_2075:
     TST.L   LAB_233D
-    BEQ.W   LAB_13FF
+    BEQ.W   .return
 
     PEA     LAB_2075
     MOVE.L  A3,-(A7)
@@ -1170,7 +1190,7 @@ LAB_13E8:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13EC
+    BNE.S   .check_key_2079
 
     PEA     LAB_2076
     MOVE.L  A2,-(A7)
@@ -1178,72 +1198,72 @@ LAB_13E8:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13E9
+    BNE.S   .check_mode_2077
 
     MOVEA.L LAB_233D,A0
     CLR.L   194(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13E9:
+.check_mode_2077:
     PEA     LAB_2077
     MOVE.L  A2,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13EA
+    BNE.S   .check_mode_2078
 
     MOVEQ   #2,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,194(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13EA:
+.check_mode_2078:
     PEA     LAB_2078
     MOVE.L  A2,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13EB
+    BNE.S   .set_default_mode_194
 
     MOVEQ   #3,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,194(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13EB:
+.set_default_mode_194:
     MOVEQ   #1,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,194(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13EC:
+.check_key_2079:
     PEA     LAB_2079
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13ED
+    BNE.S   .check_key_207A
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
     MOVEA.L LAB_233D,A0
     MOVE.L  D7,198(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13ED:
+.check_key_207A:
     PEA     LAB_207A
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13EE
+    BNE.S   .check_key_207C
 
     PEA     LAB_207B
     MOVE.L  A2,-(A7)
@@ -1251,122 +1271,122 @@ LAB_13ED:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.W   LAB_13FF
+    BNE.W   .return
 
     MOVEA.L LAB_233D,A0
     MOVE.B  #$2,190(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13EE:
+.check_key_207C:
     PEA     LAB_207C
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13EF
+    BNE.S   .check_key_207D
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
     MOVEA.L LAB_233D,A0
     MOVE.L  D7,202(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13EF:
+.check_key_207D:
     PEA     LAB_207D
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13F0
+    BNE.S   .check_key_207E
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
     MOVEA.L LAB_233D,A0
     MOVE.L  D7,206(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F0:
+.check_key_207E:
     PEA     LAB_207E
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13F1
+    BNE.S   .check_key_207F
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
     MOVEA.L LAB_233D,A0
     MOVE.L  D7,210(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F1:
+.check_key_207F:
     PEA     LAB_207F
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13F2
+    BNE.S   .check_key_2080
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
     MOVEA.L LAB_233D,A0
     MOVE.L  D7,214(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F2:
+.check_key_2080:
     PEA     LAB_2080
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13F3
+    BNE.S   .check_key_2081
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
     MOVEA.L LAB_233D,A0
     MOVE.L  D7,218(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F3:
+.check_key_2081:
     PEA     LAB_2081
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.W   LAB_13F8
+    BNE.W   .check_key_2084
 
     MOVEA.L A2,A0
 
-LAB_13F4:
+.scan_key_length:
     TST.B   (A0)+
-    BNE.S   LAB_13F4
+    BNE.S   .scan_key_length
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,D0
     TST.L   D0
-    BLE.W   LAB_13F8
+    BLE.W   .check_key_2084
 
     PEA     LAB_2082
     MOVE.L  A2,-(A7)
@@ -1374,13 +1394,13 @@ LAB_13F4:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13F5
+    BNE.S   .alloc_weather_node
 
     MOVEA.L LAB_233D,A0
     MOVE.B  #$3,190(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F5:
+.alloc_weather_node:
     MOVE.L  LAB_2073,-8(A5)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     12.W
@@ -1391,38 +1411,38 @@ LAB_13F5:
     LEA     16(A7),A7
     MOVE.L  D0,LAB_2073
     TST.L   D0
-    BEQ.W   LAB_13FF
+    BEQ.W   .return
 
     MOVEA.L D0,A0
     CLR.L   8(A0)
     MOVEA.L A2,A0
     MOVEA.L D0,A1
 
-LAB_13F6:
+.copy_node_label:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_13F6
+    BNE.S   .copy_node_label
 
     MOVEA.L LAB_233D,A0
     TST.L   230(A0)
-    BNE.S   LAB_13F7
+    BNE.S   .append_node_link
 
     MOVEA.L LAB_2073,A1
     MOVE.L  A1,230(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F7:
+.append_node_link:
     MOVEA.L -8(A5),A1
     MOVE.L  LAB_2073,8(A1)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F8:
+.check_key_2084:
     PEA     LAB_2084
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13FB
+    BNE.S   .check_key_2087
 
     PEA     LAB_2085
     MOVE.L  A2,-(A7)
@@ -1430,40 +1450,40 @@ LAB_13F8:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13F9
+    BNE.S   .check_mode_2086
 
     MOVEQ   #2,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,222(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13F9:
+.check_mode_2086:
     PEA     LAB_2086
     MOVE.L  A2,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13FA
+    BNE.S   .set_mode_222_default
 
     MOVEQ   #1,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,222(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13FA:
+.set_mode_222_default:
     MOVEA.L LAB_233D,A0
     CLR.L   222(A0)
-    BRA.W   LAB_13FF
+    BRA.W   .return
 
-LAB_13FB:
+.check_key_2087:
     PEA     LAB_2087
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13FE
+    BNE.S   .check_key_208A
 
     PEA     LAB_2088
     MOVE.L  A2,-(A7)
@@ -1471,53 +1491,53 @@ LAB_13FB:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13FC
+    BNE.S   .check_mode_2089
 
     MOVEQ   #2,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,226(A0)
-    BRA.S   LAB_13FF
+    BRA.S   .return
 
-LAB_13FC:
+.check_mode_2089:
     PEA     LAB_2089
     MOVE.L  A2,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13FD
+    BNE.S   .set_mode_226_default
 
     MOVEQ   #1,D0
     MOVEA.L LAB_233D,A0
     MOVE.L  D0,226(A0)
-    BRA.S   LAB_13FF
+    BRA.S   .return
 
-LAB_13FD:
+.set_mode_226_default:
     MOVEA.L LAB_233D,A0
     CLR.L   226(A0)
-    BRA.S   LAB_13FF
+    BRA.S   .return
 
-LAB_13FE:
+.check_key_208A:
     PEA     LAB_208A
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_13FF
+    BNE.S   .return
 
     MOVEA.L LAB_233D,A0
     ADDA.W  #191,A0
     PEA     2.W
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_15A1(PC)
+    JSR     SCRIPT_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVEA.L LAB_233D,A0
     CLR.B   193(A0)
 
-LAB_13FF:
+.return:
     MOVEM.L (A7)+,D7/A2-A3
     UNLK    A5
     RTS
@@ -1534,7 +1554,7 @@ LAB_13FF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, LAB_159A
+;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   LAB_1B23, LAB_233E, LAB_2059
 ; WRITES:
@@ -1551,18 +1571,18 @@ LAB_1400:
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
     TST.L   LAB_1B23
-    BNE.S   LAB_1401
+    BNE.S   .if_ne_1401
 
     CLR.L   LAB_233E
 
-LAB_1401:
+.if_ne_1401:
     PEA     LAB_208B
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_1402
+    BNE.S   .if_ne_1402
 
     MOVE.L  LAB_233E,-(A7)
     MOVE.L  A2,-(A7)
@@ -1573,15 +1593,15 @@ LAB_1401:
     MOVE.B  #$a,190(A0)
     MOVE.L  D0,LAB_233E
     TST.L   LAB_1B23
-    BNE.S   LAB_1403
+    BNE.S   .return_1403
 
     MOVE.L  D0,LAB_1B23
-    BRA.S   LAB_1403
+    BRA.S   .return_1403
 
-LAB_1402:
+.if_ne_1402:
     MOVEQ   #0,D0
     TST.L   D0
-    BEQ.S   LAB_1403
+    BEQ.S   .return_1403
 
     PEA     LAB_208C
     MOVE.L  A3,-(A7)
@@ -1589,7 +1609,7 @@ LAB_1402:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_1403
+    BNE.S   .return_1403
 
     MOVEQ   #1,D0
     MOVE.L  D0,LAB_2059
@@ -1602,11 +1622,11 @@ LAB_1402:
     MOVE.B  #10,190(A0)
     MOVE.L  D0,LAB_233E
     TST.L   LAB_1B23
-    BNE.S   LAB_1403
+    BNE.S   .return_1403
 
     MOVE.L  D0,LAB_1B23
 
-LAB_1403:
+.return_1403:
     MOVEM.L (A7)+,A2-A3
     RTS
 
@@ -1643,7 +1663,7 @@ LAB_1404:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_1405
+    BNE.S   .if_ne_1405
 
     MOVE.L  LAB_205A,-(A7)
     MOVE.L  A2,-(A7)
@@ -1651,16 +1671,16 @@ LAB_1404:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_205A
-    BRA.S   LAB_1407
+    BRA.S   .return_1407
 
-LAB_1405:
+.if_ne_1405:
     PEA     LAB_208E
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_1406
+    BNE.S   .if_ne_1406
 
     MOVE.L  LAB_205B,-(A7)
     MOVE.L  A2,-(A7)
@@ -1668,16 +1688,16 @@ LAB_1405:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_205B
-    BRA.S   LAB_1407
+    BRA.S   .return_1407
 
-LAB_1406:
+.if_ne_1406:
     PEA     LAB_208F
     MOVE.L  A3,-(A7)
     JSR     JMPTBL_STRING_CompareNoCase_3(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   LAB_1407
+    BNE.S   .return_1407
 
     MOVE.L  LAB_205C,-(A7)
     MOVE.L  A2,-(A7)
@@ -1686,7 +1706,7 @@ LAB_1406:
     ADDQ.W  #8,A7
     MOVE.L  D0,LAB_205C
 
-LAB_1407:
+.return_1407:
     MOVEM.L (A7)+,A2-A3
     RTS
 
@@ -1703,7 +1723,7 @@ LAB_1407:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_PRINTF_4, JMPTBL_STRING_CompareNoCase_3, LAB_1598, TEXTDISP_JMPTBL_LAB_0A48
+;   JMPTBL_PRINTF_4, JMPTBL_STRING_CompareNoCase_3, SCRIPT_JMPTBL_LADFUNC_ParseHexDigit, TEXTDISP_JMPTBL_LAB_0A48
 ; READS:
 ;   LAB_1ECC/LAB_1FB8 tables, GLOB_STR_COLOR_PERCENT_D
 ; WRITES:
@@ -1712,7 +1732,7 @@ LAB_1407:
 ;   Iterates through color percentages strings, converts them, and fills a table;
 ;   for mode 4 triggers TEXTDISP_JMPTBL_LAB_0A48 afterward.
 ; NOTES:
-;   Converts using LAB_1598 (string→value) and stores into preset tables.
+;   Converts using SCRIPT_JMPTBL_LADFUNC_ParseHexDigit (string→value) and stores into preset tables.
 ;------------------------------------------------------------------------------
 PARSEINI_ParseColorTable:
 LAB_1408:
@@ -1777,7 +1797,7 @@ LAB_1408:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D1,28(A7)
-    JSR     LAB_1598(PC)
+    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -116(A5),A0
@@ -2124,7 +2144,7 @@ LAB_1416:
 
 .cmd_parse_banner_ini:
     PEA     GLOB_STR_DF0_BANNER_INI_2
-    JSR     LAB_14C6(PC)
+    JSR     SCRIPT_CheckPathExists(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0

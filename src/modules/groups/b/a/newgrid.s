@@ -8,7 +8,7 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   LAB_1333, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, LAB_1240, NEWGRID_JMPTBL_AllocateMemory, _LVOInitRastPort,
+;   NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, LAB_1240, NEWGRID_JMPTBL_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, JMPTBL_MATH_DivS32_3
 ; READS:
@@ -26,7 +26,7 @@ NEWGRID_InitGridResources:
     BNE.W   .return
 
     MOVE.W  #1,LAB_1FFE
-    JSR     LAB_1333(PC)
+    JSR     NEWGRID2_EnsureBuffersAllocated(PC)
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
 
@@ -141,7 +141,7 @@ NEWGRID_InitGridResources:
 ; CLOBBERS:
 ;   D0/A0/A6
 ; CALLS:
-;   NEWGRID_JMPTBL_DeallocateMemory, LAB_1335, NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, LAB_1243
+;   NEWGRID_JMPTBL_DeallocateMemory, NEWGRID2_FreeBuffersIfAllocated, NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, LAB_1243
 ; READS:
 ;   GLOB_REF_GRID_RASTPORT_MAYBE_1
 ; WRITES:
@@ -164,7 +164,7 @@ NEWGRID_ShutdownGridResources:
     LEA     16(A7),A7
 
 .skip_free:
-    JSR     LAB_1335(PC)
+    JSR     NEWGRID2_FreeBuffersIfAllocated(PC)
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(PC)
 
@@ -743,7 +743,7 @@ NEWGRID_MapSelectionToMode:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _LVOSetDrMd, LAB_102F, _LVOSetAPen, _LVORectFill, LAB_133D, LAB_1348,
+;   _LVOSetDrMd, LAB_102F, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry,
 ;   NEWGRID_JMPTBL_MATH_Mulu32, _LVOTextLength, _LVOMove, _LVOText, LAB_1038
 ; READS:
 ;   LAB_232A/232B, LAB_2328
@@ -795,7 +795,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -102(A5),-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D6
@@ -822,7 +822,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D0,D5
     PEA     -97(A5)
     MOVE.L  D5,-(A7)
-    JSR     LAB_1348(PC)
+    JSR     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
@@ -858,7 +858,7 @@ NEWGRID_DrawClockFormatHeader:
     MOVE.L  D4,-(A7)
     MOVE.L  -102(A5),-(A7)
     MOVE.L  D0,-16(A5)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     20(A7),A7
 
@@ -954,7 +954,7 @@ NEWGRID_DrawClockFormatHeader:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   JMPTBL_GENERATE_GRID_DATE_STRING, _LVOSetDrMd, LAB_102F, _LVOSetAPen,
-;   _LVORectFill, LAB_133D, _LVOTextLength, _LVOMove, _LVOText
+;   _LVORectFill, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   LAB_232A/232B
 ; WRITES:
@@ -1009,7 +1009,7 @@ NEWGRID_DrawDateBanner:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  .rastport(A5),-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     MOVEQ   #0,D0
     MOVE.W  LAB_232A,D0
@@ -1020,7 +1020,7 @@ NEWGRID_DrawDateBanner:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  .rastport(A5),-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #3,D0
@@ -1114,7 +1114,7 @@ NEWGRID_DrawDateBanner:
 ; CLOBBERS:
 ;   D0-D3/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, LAB_133D
+;   NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
 ; READS:
 ;   LAB_2328, GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 ; WRITES:
@@ -1208,7 +1208,7 @@ NEWGRID_DrawAwaitingListingsMessage:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A7),A7
     MOVE.W  LAB_2328,D0
@@ -1234,7 +1234,7 @@ NEWGRID_DrawAwaitingListingsMessage:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   LAB_134A
+;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
 ;   LAB_1BB7, LAB_2003
 ; WRITES:
@@ -1259,7 +1259,7 @@ NEWGRID_ComputeDaySlotFromClock:
 
     MOVE.W  (A0),(A1)
     PEA     -26(A5)
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D7
@@ -1302,7 +1302,7 @@ NEWGRID_ComputeDaySlotFromClock:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   LAB_134A
+;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
 ;   LAB_22D8
 ; WRITES:
@@ -1327,7 +1327,7 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
 
     MOVE.W  (A0),(A1)
     PEA     -26(A5)
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D7
@@ -1685,7 +1685,7 @@ NEWGRID_DrawGridFrame:
 ; CLOBBERS:
 ;   D0/D7/A0-A3
 ; CALLS:
-;   LAB_134B
+;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3
 ; READS:
 ;   entry fields at 1(A3)/19(A3), bit 5 at 27(A3)
 ; WRITES:
@@ -1706,13 +1706,13 @@ NEWGRID_ShouldOpenEditor:
     LEA     19(A3),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-12(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
     MOVE.L  D0,-12(A5)
     MOVE.L  A0,-8(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -1766,7 +1766,7 @@ NEWGRID_ShouldOpenEditor:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_134B, NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter, _LVOTextLength, _LVOMove, _LVOText
+;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   GLOB_STR_SINGLE_SPACE, LAB_200D, LAB_200E
 ; WRITES:
@@ -1794,7 +1794,7 @@ NEWGRID_DrawWrappedText:
     BEQ.S   .init_input
 
     MOVE.L  A2,-(A7)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-20(A5)
@@ -1832,7 +1832,7 @@ NEWGRID_DrawWrappedText:
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-20(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     LEA     16(A7),A7
     MOVE.B  -74(A5),D1
@@ -1992,9 +1992,9 @@ NEWGRID_DrawWrappedText:
 ;   D0-D7/A0-A6
 ; CALLS:
 ;   NEWGRID_InitGridResources, NEWGRID_ClearHighlightArea, CLEANUP_DrawClockBanner,
-;   NEWGRID_AdjustClockStringBySlot, CLEANUP_DrawClockFormatList/Frame, LAB_1332,
+;   NEWGRID_AdjustClockStringBySlot, CLEANUP_DrawClockFormatList/Frame, NEWGRID2_DispatchOperationDefault,
 ;   NEWGRID_MapSelectionToMode, _LVOGetMsg, LAB_1038, NEWGRID_DrawClockFormatHeader,
-;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, LAB_132A, NEWGRID_MapSelectionToMode,
+;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, NEWGRID2_DispatchGridOperation, NEWGRID_MapSelectionToMode,
 ;   GCOMMAND_UpdatePresetEntryCache, _LVOPutMsg, NEWGRID_DrawGridTopBars
 ; READS:
 ;   LAB_2263, LAB_1F45, LAB_225F, LAB_200F, LAB_200F/2010/2011/2012, LAB_1DC6
@@ -2051,7 +2051,7 @@ NEWGRID_ProcessGridMessages:
     CLR.W   LAB_1F45
     MOVEQ   #2,D0
     MOVE.L  D0,LAB_225F
-    JSR     LAB_1332(PC)
+    JSR     NEWGRID2_DispatchOperationDefault(PC)
 
     CLR.L   (A7)
     MOVE.L  LAB_200F,-(A7)
@@ -2188,7 +2188,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     1.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2213,7 +2213,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     5.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2238,7 +2238,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     2.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2267,7 +2267,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     3.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2296,7 +2296,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     4.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     16(A7),A7
     TST.L   D0
@@ -2332,7 +2332,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     6.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -2368,7 +2368,7 @@ NEWGRID_ProcessGridMessages:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     7.W
-    JSR     LAB_132A(PC)
+    JSR     NEWGRID2_DispatchGridOperation(PC)
 
     LEA     20(A7),A7
     TST.L   D0

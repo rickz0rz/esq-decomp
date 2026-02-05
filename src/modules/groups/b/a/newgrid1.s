@@ -691,7 +691,7 @@ LAB_1047:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_134B, LAB_1352, LAB_133D, NEWGRID_DrawGridCellText
+;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
 ; READS:
 ;   LAB_2328/232A
 ; WRITES:
@@ -713,11 +713,11 @@ LAB_1066:
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
     MOVE.L  A1,-8(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  -8(A5),(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -738,7 +738,7 @@ LAB_1066:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1352(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(PC)
 
     LEA     20(A7),A7
     BRA.S   .draw_cell_text
@@ -757,7 +757,7 @@ LAB_1066:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     20(A7),A7
 
@@ -785,7 +785,7 @@ LAB_1066:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_UNKNOWN7_FindCharWrapper, LAB_134D
+;   JMPTBL_UNKNOWN7_FindCharWrapper, NEWGRID2_JMPTBL_LAB_08DF
 ; READS:
 ;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_JMPTBL_HALF_HOURS_24_HR_FMT
 ; WRITES:
@@ -830,7 +830,7 @@ LAB_1069:
     MOVE.B  D6,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_134D(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_08DF(PC)
 
     MOVE.L  D0,D1
     EXT.L   D1
@@ -847,7 +847,7 @@ LAB_1069:
     MOVE.B  D6,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_134D(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_08DF(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D1
@@ -967,7 +967,7 @@ LAB_106E:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   LAB_1345, LAB_133B
+;   NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_17E6
 ; READS:
 ;   LAB_2013, LAB_1F45, LAB_2231, LAB_222F
 ; WRITES:
@@ -1011,7 +1011,7 @@ LAB_1070:
 
     PEA     1.W
     MOVE.L  D7,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-14(A5)
@@ -1021,7 +1021,7 @@ LAB_1070:
     MOVEA.L D0,A0
     ADDA.W  #12,A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_133B(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_17E6(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
@@ -1065,7 +1065,7 @@ LAB_1070:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_1345, LAB_133E, LAB_134A, LAB_133B
+;   NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926, NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, NEWGRID2_JMPTBL_LAB_17E6
 ; READS:
 ;   LAB_222E, LAB_222F, LAB_2235, LAB_2013
 ; WRITES:
@@ -1097,12 +1097,12 @@ LAB_1077:
 .normalized_index:
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     1.W
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-12(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -1117,7 +1117,7 @@ LAB_1077:
     BEQ.S   .check_entry_enabled
 
     PEA     LAB_223A
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -1166,7 +1166,7 @@ LAB_1077:
 
 .rebuild_cache_entry:
     MOVE.L  -16(A5),-(A7)
-    JSR     LAB_133B(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_17E6(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -1178,7 +1178,7 @@ LAB_1077:
 
 .cache_miss:
     MOVE.L  -16(A5),-(A7)
-    JSR     LAB_133B(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_17E6(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -1186,12 +1186,12 @@ LAB_1077:
 .update_entry:
     PEA     2.W
     MOVE.L  D5,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     2.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-12(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
@@ -1220,7 +1220,7 @@ LAB_1077:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridCellText, LAB_133B, LAB_134A, LAB_1345, LAB_133E
+;   NEWGRID_DrawGridCellText, NEWGRID2_JMPTBL_LAB_17E6, NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926
 ; READS:
 ;   LAB_2019, LAB_2014, LAB_22CD
 ; WRITES:
@@ -1337,11 +1337,11 @@ LAB_107F:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1342(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0358(PC)
 
     MOVE.L  LAB_2335,(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     LEA     24(A7),A7
     BRA.W   .done
@@ -1374,11 +1374,11 @@ LAB_107F:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
-    BEQ.S   .skip_primary_leading
+    BEQ.S   .trim_primary_leading
 
     MOVE.L  D0,-4(A5)
 
-.skip_primary_leading:
+.trim_primary_leading:
     ; skip leading spaces
     MOVEA.L -4(A5),A0
     TST.B   (A0)
@@ -1389,7 +1389,7 @@ LAB_107F:
     BEQ.S   .terminate_primary
 
     ADDQ.L  #1,-4(A5)
-    BRA.S   .skip_primary_leading
+    BRA.S   .trim_primary_leading
 
 .terminate_primary:
     MOVEA.L -4(A5),A0
@@ -1406,7 +1406,7 @@ LAB_107F:
 .draw_primary_line:
     MOVE.L  LAB_2335,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
     TST.L   D5
@@ -1436,7 +1436,7 @@ LAB_107F:
     LEA     6(A0),A1
     MOVE.L  A1,-4(A5)
 
-.skip_secondary_leading:
+.trim_secondary_leading:
     ; skip leading spaces
     MOVEA.L -4(A5),A0
     TST.B   (A0)
@@ -1447,7 +1447,7 @@ LAB_107F:
     BEQ.S   .terminate_secondary
 
     ADDQ.L  #1,-4(A5)
-    BRA.S   .skip_secondary_leading
+    BRA.S   .trim_secondary_leading
 
 .terminate_secondary:
     MOVEA.L -4(A5),A0
@@ -1464,7 +1464,7 @@ LAB_107F:
 .draw_secondary_line:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1340(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1472,7 +1472,7 @@ LAB_107F:
 
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -1481,7 +1481,7 @@ LAB_107F:
     BEQ.W   .post_draw
 
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -1525,7 +1525,7 @@ LAB_107F:
     TST.L   -8(A5)
     BEQ.W   .post_draw
 
-.skip_subtitle_leading:
+.trim_subtitle_leading:
     ; skip leading spaces
     MOVEA.L -4(A5),A0
     TST.B   (A0)
@@ -1536,7 +1536,7 @@ LAB_107F:
     BEQ.S   .terminate_subtitle
 
     ADDQ.L  #1,-4(A5)
-    BRA.S   .skip_subtitle_leading
+    BRA.S   .trim_subtitle_leading
 
 .terminate_subtitle:
     MOVEA.L -4(A5),A0
@@ -1553,7 +1553,7 @@ LAB_107F:
 .draw_subtitle_line:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1340(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1561,7 +1561,7 @@ LAB_107F:
 
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .post_draw
@@ -1575,12 +1575,12 @@ LAB_107F:
     CLR.B   1(A0)
     LEA     2(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  -8(A5),(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-12(A5)
-    JSR     LAB_1340(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1588,7 +1588,7 @@ LAB_107F:
 
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .post_draw
@@ -1596,7 +1596,7 @@ LAB_107F:
 .draw_subtitle_alt:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1340(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1604,7 +1604,7 @@ LAB_107F:
 
     MOVE.L  -12(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -1650,7 +1650,7 @@ LAB_107F:
     CLR.B   (A0)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -1676,11 +1676,11 @@ LAB_107F:
     MOVE.L  D1,-(A7)
     MOVE.L  16(A5),-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1342(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0358(PC)
 
     MOVE.L  LAB_2335,(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     LEA     24(A7),A7
     BRA.S   .done
@@ -1688,7 +1688,7 @@ LAB_107F:
 .draw_empty_entry:
     MOVE.L  LAB_2335,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .done
@@ -1696,7 +1696,7 @@ LAB_107F:
 .draw_missing_entry:
     MOVE.L  LAB_2111,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -1719,7 +1719,7 @@ LAB_107F:
 ; CLOBBERS:
 ;   D0-D7/A2-A3
 ; CALLS:
-;   LAB_1358, LAB_134F, LAB_1337, LAB_1341, LAB_133C, LAB_1339
+;   NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1, NEWGRID2_JMPTBL_LAB_0347, NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes, NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
 ;   27(A2)
 ; WRITES:
@@ -1740,7 +1740,7 @@ LAB_109F:
     MOVE.L  D6,-(A7)
     PEA     20.W
     PEA     612.W
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     MOVE.L  A2,D0
@@ -1754,7 +1754,7 @@ LAB_109F:
     PEA     5.W
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_134F(PC)
+    JSR     NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1765,7 +1765,7 @@ LAB_109F:
     PEA     6.W
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-4(A5)
@@ -1776,7 +1776,7 @@ LAB_109F:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_1341(PC)
+    JSR     NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(PC)
 
     MOVE.L  20(A5),(A7)
     PEA     20.W
@@ -1784,7 +1784,7 @@ LAB_109F:
     PEA     19.W
     PEA     LAB_201A
     MOVE.L  A3,-(A7)
-    JSR     LAB_133C(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(PC)
 
     LEA     28(A7),A7
     BRA.S   .done
@@ -1792,7 +1792,7 @@ LAB_109F:
 .fallback_draw:
     MOVE.L  20(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -1809,12 +1809,12 @@ LAB_109F:
 ;   stack +8: A3 = rastport
 ;   stack +12: D7 = flags ??
 ; RET:
-;   D0: status from LAB_1350
+;   D0: status from NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_1350, LAB_102F, _LVOSetAPen, _LVORectFill, LAB_133A, LAB_1357,
-;   LAB_1359, LAB_1351, LAB_1346, LAB_133F, LAB_135A
+;   NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, LAB_102F, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount, NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength,
+;   NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
 ;   LAB_2328, LAB_1CE8
 ; WRITES:
@@ -1831,7 +1831,7 @@ LAB_10A2:
 
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .done
@@ -1860,7 +1860,7 @@ LAB_10A2:
 
     MOVEQ   #42,D5
     CLR.L   -16(A5)
-    JSR     LAB_133A(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(PC)
 
     LEA     12(A7),A7
     SUBQ.L  #1,D0
@@ -1868,7 +1868,7 @@ LAB_10A2:
 
     LEA     60(A3),A0
     MOVE.L  A0,-(A7)
-    JSR     LAB_1357(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  #612,D1
@@ -1885,7 +1885,7 @@ LAB_10A2:
     MOVE.L  D0,-16(A5)
 
 .after_header:
-    JSR     LAB_1359(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
 
     MOVEQ   #0,D6
     MOVE.L  D0,-24(A5)
@@ -1895,7 +1895,7 @@ LAB_10A2:
     CMP.L   D0,D6
     BGE.W   .after_rows
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
@@ -1935,7 +1935,7 @@ LAB_10A2:
     BRA.S   .draw_row_line
 
 .row_flag_path:
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .row_default_path
@@ -2005,7 +2005,7 @@ LAB_10A2:
     MOVE.L  D4,-(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D6
@@ -2023,7 +2023,7 @@ LAB_10A2:
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVE.L  D0,-20(A5)
     TST.L   -24(A5)
@@ -2039,7 +2039,7 @@ LAB_10A2:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133F(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(PC)
 
     LEA     20(A7),A7
 
@@ -2056,7 +2056,7 @@ LAB_10A2:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_135A(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
 
     LEA     20(A7),A7
 
@@ -2090,7 +2090,7 @@ LAB_10A2:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_UpdatePresetEntry, NEWGRID_DrawEntryFlagBadge,
-;   NEWGRID_DrawGridFrameAndRows, LAB_1355, LAB_1353, LAB_1344
+;   NEWGRID_DrawGridFrameAndRows, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_LAB_054C, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   LAB_201B
 ; WRITES:
@@ -2150,7 +2150,7 @@ LAB_10B5:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -2161,7 +2161,7 @@ LAB_10B5:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1353(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_054C(PC)
 
     MOVE.L  D0,D6
     MOVE.L  -4(A5),(A7)
@@ -2194,7 +2194,7 @@ LAB_10B5:
     BSR.W   NEWGRID_DrawEntryFlagBadge
 
     CLR.L   (A7)
-    JSR     LAB_1344(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,32(A3)
@@ -2336,7 +2336,7 @@ LAB_10BE:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1355
+;   NEWGRID2_JMPTBL_ESQ_TestBit1Based
 ; READS:
 ;   7(A2,D7), 56(A2,index)
 ; DESC:
@@ -2368,7 +2368,7 @@ LAB_10C7:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -2417,7 +2417,7 @@ LAB_10C7:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   NEWGRID_GetEntryStateCode, LAB_1345, LAB_133E
+;   NEWGRID_GetEntryStateCode, NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926
 ; DESC:
 ;   Determines whether an entry matches the requested selector/mode.
 ; NOTES:
@@ -2443,12 +2443,12 @@ LAB_10CD:
 .use_second_key:
     PEA     2.W
     MOVE.L  D5,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     2.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -2464,12 +2464,12 @@ LAB_10CD:
 .use_first_key:
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     1.W
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -2558,7 +2558,7 @@ LAB_10CD:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridEntry, LAB_1339
+;   NEWGRID_DrawGridEntry, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
 ;   LAB_2015, LAB_1BB8, LAB_2111, LAB_2115
 ; DESC:
@@ -2628,7 +2628,7 @@ LAB_10D8:
 .draw_empty_placeholder:
     MOVE.L  LAB_2115,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .done
@@ -2636,7 +2636,7 @@ LAB_10D8:
 .draw_missing_placeholder:
     MOVE.L  LAB_2111,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     ADDQ.W  #8,A7
 
@@ -2659,7 +2659,7 @@ LAB_10D8:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, LAB_1352, LAB_133D
+;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
 ; READS:
 ;   LAB_2328, LAB_232A, LAB_232B, LAB_1BB8
 ; DESC:
@@ -2714,7 +2714,7 @@ LAB_10DD:
     MOVEQ   #0,D0
     NOT.B   D0
     CMP.L   D0,D5
-    BEQ.S   .skip_fill
+    BEQ.S   .skip_background_fill
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -2735,7 +2735,7 @@ LAB_10DD:
     MOVE.L  -16(A5),D3
     JSR     _LVORectFill(A6)
 
-.skip_fill:
+.skip_background_fill:
     MOVEQ   #3,D0
     CMP.W   D0,D6
     BNE.S   .draw_normal_frame
@@ -2750,7 +2750,7 @@ LAB_10DD:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  D4,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_1352(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(PC)
 
     LEA     20(A7),A7
     BRA.S   .done
@@ -2761,7 +2761,7 @@ LAB_10DD:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  D4,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     20(A7),A7
 
@@ -2779,11 +2779,11 @@ LAB_10DD:
 ;   stack +12: D7 = left offset ??
 ;   stack +16: D6 = right offset ??
 ; RET:
-;   D0: status from LAB_1350
+;   D0: status from NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_1350, LAB_1351, LAB_1346, LAB_1349, LAB_1356
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop, NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
 ; READS:
 ;   LAB_2328, LAB_232A, LAB_1CE8
 ; WRITES:
@@ -2824,13 +2824,13 @@ LAB_10E3:
     CMP.L   D0,D5
     BGE.W   .after_rows
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
 
     MOVE.L  D4,-16(A5)
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .alt_half_width
@@ -2896,7 +2896,7 @@ LAB_10E3:
     MOVE.L  -16(A5),-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D5
@@ -2913,7 +2913,7 @@ LAB_10E3:
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVE.L  D0,-20(A5)
     BEQ.S   .draw_bottom_bevel
@@ -2932,7 +2932,7 @@ LAB_10E3:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1349(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -2946,7 +2946,7 @@ LAB_10E3:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1349(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(PC)
 
     LEA     36(A7),A7
     BRA.S   .store_header_width
@@ -2965,7 +2965,7 @@ LAB_10E3:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1356(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -2979,7 +2979,7 @@ LAB_10E3:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1356(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(PC)
 
     LEA     36(A7),A7
 
@@ -3010,12 +3010,12 @@ LAB_10E3:
 ;   stack +24: D4 = primary selector ??
 ;   stack +28: D3 = secondary selector ??
 ; RET:
-;   D0: status from LAB_1350
+;   D0: status from NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridCellBackground, NEWGRID_SetSelectionMarkers, LAB_1346,
-;   LAB_1350, LAB_1351, _LVOMove, _LVOText, LAB_135A
+;   NEWGRID_DrawGridCellBackground, NEWGRID_SetSelectionMarkers, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine,
+;   NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, _LVOMove, _LVOText, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
 ;   LAB_2328, LAB_232A, LAB_232B
 ; DESC:
@@ -3195,15 +3195,15 @@ LAB_10F0:
     MOVE.L  D0,-20(A5)
     MOVE.L  D1,-8(A5)
     MOVE.L  D3,-12(A5)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     LEA     12(A7),A7
     TST.L   D0
     BNE.S   .after_frame
 
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .choose_alt_x
@@ -3218,7 +3218,7 @@ LAB_10F0:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
 
@@ -3283,7 +3283,7 @@ LAB_10F0:
     JSR     _LVOText(A6)
 
 .after_glyphs:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVE.L  D0,-32(A5)
     BEQ.S   .done
@@ -3310,7 +3310,7 @@ LAB_10F0:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_135A(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
 
     LEA     20(A7),A7
 
@@ -3532,8 +3532,8 @@ LAB_1103:
 ;   NEWGRID_DrawGridHeaderRows, NEWGRID_DrawSelectionMarkers,
 ;   NEWGRID_DrawEntryRowOrPlaceholder, NEWGRID_GetEntryStateCode,
 ;   NEWGRID_TestEntryState, NEWGRID_SelectEntryPen, NEWGRID_DrawGridCell,
-;   NEWGRID_DrawGridFrame, LAB_134A, LAB_1345, LAB_133E, LAB_1353, LAB_1354,
-;   LAB_1358
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926, NEWGRID2_JMPTBL_LAB_054C, NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths,
+;   NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
 ;   LAB_2014, LAB_201C, LAB_2233/2236, LAB_223A, LAB_2328/232B/232C/232D/232E
 ; WRITES:
@@ -3576,7 +3576,7 @@ LAB_1115:
 
     MOVEQ   #-1,D0
     MOVE.L  D0,32(A3)
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -3596,7 +3596,7 @@ LAB_1115:
     BEQ.S   .select_entry_ptr
 
     PEA     LAB_223A
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -3609,7 +3609,7 @@ LAB_1115:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-(A7)
-    JSR     LAB_133B(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_17E6(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -3657,7 +3657,7 @@ LAB_1115:
     MOVE.W  -18(A5),D0
     MOVEQ   #3,D1
     CMP.W   D1,D0
-    BGE.W   .loop_done
+    BGE.W   .row_loop_done
 
     SUBA.L  A0,A0
     CLR.W   -22(A5)
@@ -3683,7 +3683,7 @@ LAB_1115:
     BEQ.S   .use_second_key
 
     PEA     LAB_223A
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -3692,12 +3692,12 @@ LAB_1115:
 .use_second_key:
     PEA     2.W
     MOVE.L  D5,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     2.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D6,D1
@@ -3736,12 +3736,12 @@ LAB_1115:
 .use_first_key:
     PEA     1.W
     MOVE.L  D7,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     1.W
     MOVE.L  D7,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D6,D1
@@ -3813,7 +3813,7 @@ LAB_1115:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1353(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_054C(PC)
 
     LEA     12(A7),A7
     MOVE.W  D0,-20(A5)
@@ -3997,13 +3997,13 @@ LAB_1115:
     MOVE.L  D1,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-42(A5)
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     60(A3),A0
     MOVE.L  -38(A5),(A7)
     MOVE.L  -34(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1354(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(PC)
 
     LEA     60(A3),A0
     MOVE.W  -20(A5),D0
@@ -4037,7 +4037,7 @@ LAB_1115:
     PEA     2.W
     MOVE.L  D2,-(A7)
     MOVE.L  D1,LAB_232C
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     60(A3),A0
     MOVE.W  -20(A5),D0
@@ -4078,7 +4078,7 @@ LAB_1115:
     MOVE.L  D2,-(A7)
     MOVE.L  D0,LAB_232C
     MOVE.L  D0,-30(A5)
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     60(A3),A0
     MOVE.W  -20(A5),D0
@@ -4123,7 +4123,7 @@ LAB_1115:
     ADD.W   D0,-18(A5)
     BRA.W   .row_loop
 
-.loop_done:
+.row_loop_done:
     TST.L   -46(A5)
     BEQ.W   .no_rows
 
@@ -4136,7 +4136,7 @@ LAB_1115:
     CMP.B   D1,D0
     BNE.S   .draw_empty_cell
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.S   .draw_empty_cell
@@ -4174,7 +4174,7 @@ LAB_1115:
     LSR.W   #1,D0
     MOVE.W  D0,52(A3)
     PEA     2.W
-    JSR     LAB_1344(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
@@ -4208,7 +4208,7 @@ LAB_1115:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   LAB_1345
+;   NEWGRID2_JMPTBL_LAB_0923
 ; READS:
 ;   LAB_224A, LAB_2231
 ; DESC:
@@ -4261,7 +4261,7 @@ LAB_1140:
 
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -4508,7 +4508,7 @@ LAB_1149:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridFrameAndRows, LAB_1339, LAB_1344, LAB_1358
+;   NEWGRID_DrawGridFrameAndRows, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
 ;   LAB_2020
 ; WRITES:
@@ -4544,15 +4544,15 @@ LAB_1155:
     MOVE.L  D7,-(A7)
     PEA     20.W
     PEA     612.W
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     60(A3),A0
     MOVE.L  A2,(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     CLR.L   (A7)
-    JSR     LAB_1344(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     MOVE.L  D0,32(A3)
     MOVE.L  D6,(A7)
@@ -4615,7 +4615,7 @@ LAB_1155:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   LAB_1345
+;   NEWGRID2_JMPTBL_LAB_0923
 ; READS:
 ;   LAB_2231, LAB_224A
 ; DESC:
@@ -4666,7 +4666,7 @@ LAB_115F:
 
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -5017,8 +5017,8 @@ LAB_1168:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_1348, JMPTBL_STRING_AppendAtNull_3,
-;   LAB_133D, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry, JMPTBL_STRING_AppendAtNull_3,
+;   NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   NEWGRID_ValidateSelectionCode
 ; READS:
 ;   LAB_210B, LAB_2328, LAB_232A, LAB_232B
@@ -5050,7 +5050,7 @@ LAB_117B:
     EXT.L   D0
     PEA     -159(A5)
     MOVE.L  D0,-(A7)
-    JSR     LAB_1348(PC)
+    JSR     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(PC)
 
     PEA     -159(A5)
     PEA     -128(A5)
@@ -5067,7 +5067,7 @@ LAB_117B:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -5079,7 +5079,7 @@ LAB_117B:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     76(A7),A7
     LEA     60(A3),A0
@@ -5184,12 +5184,12 @@ LAB_117B:
 ; ARGS:
 ;   stack +8: A3 = rastport
 ; RET:
-;   D0: status from LAB_1350
+;   D0: status from NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_1359, LAB_1350, LAB_1351, LAB_1346,
-;   LAB_133D, LAB_1352, LAB_1349, LAB_1356
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines, NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine,
+;   NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop, NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
 ; READS:
 ;   LAB_2328, LAB_232A, LAB_232B, LAB_1CE8
 ; DESC:
@@ -5218,7 +5218,7 @@ LAB_1181:
     MOVE.L  D0,D6
     MOVEQ   #42,D1
     ADD.L   D1,D6
-    JSR     LAB_1359(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D7
@@ -5230,7 +5230,7 @@ LAB_1181:
     CMP.L   D0,D7
     BGE.W   .after_rows
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
@@ -5271,7 +5271,7 @@ LAB_1181:
     BRA.S   .draw_row
 
 .alt_path:
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .default_path
@@ -5337,7 +5337,7 @@ LAB_1181:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -5355,7 +5355,7 @@ LAB_1181:
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVE.L  D0,-24(A5)
     TST.L   -20(A5)
@@ -5379,7 +5379,7 @@ LAB_1181:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -5393,7 +5393,7 @@ LAB_1181:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     36(A7),A7
     BRA.W   .store_header_width
@@ -5412,7 +5412,7 @@ LAB_1181:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1352(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -5426,7 +5426,7 @@ LAB_1181:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1352(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(PC)
 
     LEA     36(A7),A7
     BRA.W   .store_header_width
@@ -5448,7 +5448,7 @@ LAB_1181:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1349(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -5462,7 +5462,7 @@ LAB_1181:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1349(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(PC)
 
     LEA     36(A7),A7
     BRA.S   .store_header_width
@@ -5481,7 +5481,7 @@ LAB_1181:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1356(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -5495,7 +5495,7 @@ LAB_1181:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1356(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(PC)
 
     LEA     36(A7),A7
 
@@ -5528,7 +5528,7 @@ LAB_1181:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_DrawGridEntry, NEWGRID_DrawGridFrameAlt, NEWGRID_DrawGridCell,
-;   LAB_1345, LAB_133E, LAB_134A, LAB_133B, LAB_1358, LAB_1344
+;   NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926, NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, NEWGRID2_JMPTBL_LAB_17E6, NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   LAB_2017, LAB_223A
 ; WRITES:
@@ -5565,12 +5565,12 @@ LAB_1193:
 .state4_begin:
     PEA     1.W
     MOVE.L  D7,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     1.W
     MOVE.L  D7,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -5582,7 +5582,7 @@ LAB_1193:
     BEQ.S   .use_alt_entry_table
 
     PEA     LAB_223A
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -5590,17 +5590,17 @@ LAB_1193:
 
 .use_alt_entry_table:
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_133B(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_17E6(PC)
 
     MOVE.L  D0,D7
     PEA     2.W
     MOVE.L  D7,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     2.W
     MOVE.L  D7,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     LEA     20(A7),A7
     MOVE.L  D0,-8(A5)
@@ -5633,7 +5633,7 @@ LAB_1193:
     PEA     1.W
     PEA     20.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     TST.W   LAB_2017
@@ -5671,7 +5671,7 @@ LAB_1193:
 
 .after_entry_draw:
     PEA     2.W
-    JSR     LAB_1344(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     MOVE.L  D0,32(A3)
     MOVE.L  A3,(A7)
@@ -5751,7 +5751,7 @@ LAB_1193:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, LAB_1355, NEWGRID_ShouldOpenEditor
+;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_ShouldOpenEditor
 ; READS:
 ;   LAB_2231, LAB_224A
 ; DESC:
@@ -5832,7 +5832,7 @@ LAB_11A3:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -6068,7 +6068,7 @@ LAB_11AD:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, LAB_1355
+;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_ESQ_TestBit1Based
 ; READS:
 ;   LAB_2231, LAB_224A
 ; DESC:
@@ -6151,7 +6151,7 @@ LAB_11B5:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -6201,8 +6201,8 @@ LAB_11B5:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_1348, LAB_134B, JMPTBL_PRINTF_4,
-;   LAB_133D, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, JMPTBL_PRINTF_4,
+;   NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   NEWGRID_ValidateSelectionCode
 ; READS:
 ;   LAB_22DA, LAB_22D9, LAB_22E3, LAB_2328, LAB_232A, LAB_232B
@@ -6227,10 +6227,10 @@ LAB_11BE:
     EXT.L   D0
     PEA     -163(A5)
     MOVE.L  D0,-(A7)
-    JSR     LAB_1348(PC)
+    JSR     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(PC)
 
     PEA     -163(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  LAB_22E3,-(A7)
@@ -6249,7 +6249,7 @@ LAB_11BE:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -6261,7 +6261,7 @@ LAB_11BE:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     80(A7),A7
     LEA     60(A3),A0
@@ -6382,8 +6382,8 @@ LAB_11BE:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, LAB_1350, LAB_1359,
-;   LAB_133F, LAB_1351, LAB_1346, LAB_135A
+;   NEWGRID_SetRowColor, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
+;   NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
 ;   LAB_2328, LAB_232A, LAB_1CE8, LAB_22DF
 ; WRITES:
@@ -6429,13 +6429,13 @@ LAB_11C4:
     CMP.L   D0,D7
     BGE.W   .after_rows
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
 
     MOVE.L  D4,D5
-    JSR     LAB_1359(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
 
     TST.L   D0
     BEQ.S   .alt_path
@@ -6449,7 +6449,7 @@ LAB_11C4:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_133F(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -6481,7 +6481,7 @@ LAB_11C4:
     BRA.S   .draw_row
 
 .alt_path:
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .default_path
@@ -6546,7 +6546,7 @@ LAB_11C4:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -6564,7 +6564,7 @@ LAB_11C4:
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BEQ.S   .draw_bottom_bevel
@@ -6577,7 +6577,7 @@ LAB_11C4:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_135A(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
 
     LEA     20(A7),A7
 
@@ -6591,7 +6591,7 @@ LAB_11C4:
 .store_header_width:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
@@ -6611,7 +6611,7 @@ LAB_11C4:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_UpdatePresetEntry, NEWGRID_DrawGridEntry,
-;   NEWGRID_DrawGridFrameVariant2, LAB_1358, LAB_1338, LAB_1339, LAB_1344
+;   NEWGRID_DrawGridFrameVariant2, NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   LAB_22DD, LAB_22E1, LAB_22DE
 ; WRITES:
@@ -6668,7 +6668,7 @@ LAB_11D3:
     MOVE.L  LAB_22DD,-(A7)
     PEA     20.W
     PEA     612.W
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     MOVE.B  LAB_22E1,D0
@@ -6708,7 +6708,7 @@ LAB_11D3:
 
 .after_draw:
     MOVE.L  LAB_22DE,-(A7)
-    JSR     LAB_1338(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
 
     MOVEA.L -4(A5),A0
     MOVEA.L A0,A1
@@ -6723,7 +6723,7 @@ LAB_11D3:
     LEA     60(A3),A0
     PEA     -58(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant2
@@ -6741,7 +6741,7 @@ LAB_11D3:
 .store_state:
     PEA     2.W
     MOVE.L  D0,LAB_2028
-    JSR     LAB_1344(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
@@ -7204,7 +7204,7 @@ LAB_11DF:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   LAB_1345, LAB_133E
+;   NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926
 ; READS:
 ;   LAB_2231, LAB_222F, LAB_224A, LAB_222E
 ; WRITES:
@@ -7234,7 +7234,7 @@ LAB_11FF:
 
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -7244,7 +7244,7 @@ LAB_11FF:
 
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D5
@@ -7278,7 +7278,7 @@ LAB_11FF:
 
     PEA     2.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -7288,7 +7288,7 @@ LAB_11FF:
 
     PEA     2.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D5
@@ -7325,7 +7325,7 @@ LAB_11FF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1345, LAB_134A, JMPTBL_MATH_DivS32_4
+;   NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, JMPTBL_MATH_DivS32_4
 ; READS:
 ;   LAB_2231, LAB_223A, LAB_22E6
 ; WRITES:
@@ -7363,7 +7363,7 @@ LAB_1208:
 
     PEA     1.W
     MOVE.L  D6,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -7390,7 +7390,7 @@ LAB_1208:
     SUBQ.L  #1,D0
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -7420,7 +7420,7 @@ LAB_1208:
     BEQ.S   .offset_row
 
     PEA     LAB_223A
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -7469,7 +7469,7 @@ LAB_1208:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_ClearEntryMarkerBits, NEWGRID_InitSelectionWindow, LAB_1077,
-;   LAB_1353, LAB_1355, NEWGRID_ShouldOpenEditor, LAB_1347
+;   NEWGRID2_JMPTBL_LAB_054C, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_ShouldOpenEditor, NEWGRID2_JMPTBL_LAB_036C
 ; READS:
 ;   LAB_2030/2031, LAB_2231, LAB_224A, LAB_22E6/22E7
 ; WRITES:
@@ -7602,7 +7602,7 @@ LAB_1214:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1353(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_054C(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -7617,7 +7617,7 @@ LAB_1214:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -7681,7 +7681,7 @@ LAB_1214:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1347(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_036C(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -7765,7 +7765,7 @@ LAB_1214:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, LAB_133D, _LVOSetAPen, _LVOSetDrMd,
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd,
 ;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
 ; READS:
 ;   LAB_22E8, LAB_22E9, LAB_22F2, LAB_232A, LAB_232B
@@ -7796,7 +7796,7 @@ LAB_122B:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -7808,7 +7808,7 @@ LAB_122B:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A7),A7
     LEA     60(A3),A0
@@ -7928,8 +7928,8 @@ LAB_122B:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_102F, _LVOSetAPen, _LVORectFill, LAB_1350, LAB_1359,
-;   LAB_133F, LAB_1351, LAB_1346, LAB_135A
+;   LAB_102F, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
+;   NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
 ;   LAB_2328, LAB_1CE8, LAB_22EE
 ; WRITES:
@@ -7975,13 +7975,13 @@ LAB_1231:
     CMP.L   D0,D7
     BGE.W   .after_rows
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
 
     MOVE.L  D4,D5
-    JSR     LAB_1359(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
 
     TST.L   D0
     BEQ.S   .alt_path
@@ -7995,7 +7995,7 @@ LAB_1231:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_133F(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -8027,7 +8027,7 @@ LAB_1231:
     BRA.S   .draw_row
 
 .alt_path:
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .default_path
@@ -8092,7 +8092,7 @@ LAB_1231:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -8110,7 +8110,7 @@ LAB_1231:
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BEQ.S   .draw_bottom_bevel
@@ -8123,7 +8123,7 @@ LAB_1231:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_135A(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
 
     LEA     20(A7),A7
 
@@ -8137,7 +8137,7 @@ LAB_1231:
 .store_header_width:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5
@@ -8260,7 +8260,7 @@ LAB_1243:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_UNKNOWN7_FindCharWrapper, LAB_159A, JMPTBL_LAB_0B44
+;   JMPTBL_UNKNOWN7_FindCharWrapper, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, JMPTBL_LAB_0B44
 ; READS:
 ;   LAB_2336, LAB_2338, LAB_2339
 ; WRITES:
@@ -8285,7 +8285,7 @@ LAB_1246:
     LEA     1(A0),A1
     MOVE.L  A1,(A7)
     MOVE.L  A1,-4(A5)
-    JSR     LAB_159A(PC)
+    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -8451,7 +8451,7 @@ LAB_124D:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_1337, TEXTDISP_FormatEntryTimeForIndex, LAB_1353, LAB_1355, LAB_1347, LAB_134B,
+;   NEWGRID2_JMPTBL_LAB_0347, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_LAB_054C, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_LAB_036C, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3,
 ;   NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
 ;   NEWGRID_AppendShowtimeBuckets, JMPTBL_STRING_AppendAtNull_3
 ; READS:
@@ -8537,7 +8537,7 @@ LAB_1250:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  (A2),-(A7)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -8545,7 +8545,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  D0,-58(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -8553,7 +8553,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  D0,-62(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -8561,7 +8561,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     MOVE.L  (A2),-(A7)
     MOVE.L  D0,-66(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -8722,7 +8722,7 @@ LAB_1250:
     MOVE.L  D0,-(A7)
     MOVE.L  -98(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1353(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_054C(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
@@ -8732,7 +8732,7 @@ LAB_1250:
     MOVE.L  D0,-(A7)
     MOVE.L  -98(A5),-(A7)
     MOVE.L  -94(A5),-(A7)
-    JSR     LAB_1347(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_036C(PC)
 
     LEA     28(A7),A7
     TST.L   D0
@@ -8766,7 +8766,7 @@ LAB_1250:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -8807,7 +8807,7 @@ LAB_1250:
     MOVE.L  D0,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  A0,-74(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -8815,7 +8815,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  D0,-78(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -8823,7 +8823,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  D0,-82(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -8831,7 +8831,7 @@ LAB_1250:
     MOVE.L  D1,-(A7)
     MOVE.L  -94(A5),-(A7)
     MOVE.L  D0,-86(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     LEA     48(A7),A7
     MOVE.L  D0,-90(A5)
@@ -8960,7 +8960,7 @@ LAB_1250:
     BNE.S   .copy_showtimes_prefix
 
     PEA     -49(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -9013,7 +9013,7 @@ LAB_1250:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -49(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     LEA     16(A7),A7
     LEA     60(A3),A0
@@ -9105,7 +9105,7 @@ LAB_1250:
     BNE.S   .copy_showing_at_prefix
 
     PEA     -49(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  16(A5),-(A7)
@@ -9156,8 +9156,8 @@ LAB_1250:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_107F, LAB_1338, NEWGRID_BuildShowtimesText, LAB_1339,
-;   NEWGRID_DrawGridFrameVariant3, LAB_1344, LAB_1358
+;   LAB_107F, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_BuildShowtimesText, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
+;   NEWGRID_DrawGridFrameVariant3, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
 ;   LAB_2036, LAB_22EC/22ED/22F0
 ; WRITES:
@@ -9198,7 +9198,7 @@ LAB_127D:
     MOVE.L  LAB_22EC,-(A7)
     PEA     20.W
     PEA     612.W
-    JSR     LAB_1358(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
     MOVE.W  20(A2),D7
@@ -9246,7 +9246,7 @@ LAB_127D:
 
 .after_draw:
     MOVE.L  LAB_22ED,-(A7)
-    JSR     LAB_1338(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
 
     PEA     -130(A5)
     MOVE.L  A2,-(A7)
@@ -9256,7 +9256,7 @@ LAB_127D:
     LEA     60(A3),A0
     PEA     -130(A5)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1339(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant3
@@ -9274,7 +9274,7 @@ LAB_127D:
 .store_state2:
     PEA     2.W
     MOVE.L  D0,LAB_2036
-    JSR     LAB_1344(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,32(A3)
@@ -9677,7 +9677,7 @@ LAB_129F:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_1343
+;   NEWGRID2_JMPTBL_LAB_091F
 ; READS:
 ;   27(A3), 40(A3)
 ; DESC:
@@ -9719,7 +9719,7 @@ LAB_12A4:
     BNE.S   .set_false
 
     MOVE.L  A3,-(A7)
-    JSR     LAB_1343(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_091F(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -9752,7 +9752,7 @@ LAB_12A4:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   LAB_1345, LAB_133E, NEWGRID_TestEntrySelectable
+;   NEWGRID2_JMPTBL_LAB_0923, NEWGRID2_JMPTBL_LAB_0926, NEWGRID_TestEntrySelectable
 ; READS:
 ;   LAB_2231, LAB_222F, LAB_224A, LAB_222E
 ; WRITES:
@@ -9783,12 +9783,12 @@ LAB_12AB:
 
     PEA     1.W
     MOVE.L  D5,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     1.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     MOVE.L  D7,(A7)
     MOVE.L  D0,-(A7)
@@ -9830,12 +9830,12 @@ LAB_12AB:
 
     PEA     2.W
     MOVE.L  D5,-(A7)
-    JSR     LAB_1345(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0923(PC)
 
     PEA     2.W
     MOVE.L  D5,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     LAB_133E(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0926(PC)
 
     MOVE.L  D7,(A7)
     MOVE.L  D0,-(A7)
@@ -9881,7 +9881,7 @@ LAB_12AB:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   LAB_134A
+;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
 ;   LAB_223A, LAB_1BA7, LAB_1BBC
 ; WRITES:
@@ -9912,7 +9912,7 @@ LAB_12B4:
     BEQ.S   .adjust_row
 
     PEA     LAB_223A
-    JSR     LAB_134A(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
@@ -9971,7 +9971,7 @@ LAB_12B4:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   NEWGRID_ClearMarkersIfSelectable, NEWGRID_TestEntrySelectable,
-;   LAB_1077, LAB_1353, LAB_1355, LAB_1347, TEXTDISP_JMPTBL_LAB_091A
+;   LAB_1077, NEWGRID2_JMPTBL_LAB_054C, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_LAB_036C, TEXTDISP_JMPTBL_LAB_091A
 ; READS:
 ;   LAB_2039/203A, LAB_2231, LAB_224A
 ; WRITES:
@@ -10123,7 +10123,7 @@ LAB_12BB:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1353(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_054C(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D4
@@ -10138,7 +10138,7 @@ LAB_12BB:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -10169,7 +10169,7 @@ LAB_12BB:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_1347(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_036C(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -10282,7 +10282,7 @@ LAB_12BB:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_1337, TEXTDISP_JMPTBL_LAB_091A, TEXTDISP_FormatEntryTimeForIndex, LAB_1355, LAB_1077, LAB_134B,
+;   NEWGRID2_JMPTBL_LAB_0347, TEXTDISP_JMPTBL_LAB_091A, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, LAB_1077, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3,
 ;   JMPTBL_STRING_AppendAtNull_3
 ; READS:
 ;   LAB_1BBD, LAB_203B
@@ -10360,7 +10360,7 @@ LAB_12D0:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  (A3),-(A7)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -10368,7 +10368,7 @@ LAB_12D0:
     MOVE.L  D1,-(A7)
     MOVE.L  (A3),-(A7)
     MOVE.L  D0,-40(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -10376,7 +10376,7 @@ LAB_12D0:
     MOVE.L  D1,-(A7)
     MOVE.L  (A3),-(A7)
     MOVE.L  D0,-44(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -10384,7 +10384,7 @@ LAB_12D0:
     MOVE.L  D1,-(A7)
     MOVE.L  (A3),-(A7)
     MOVE.L  D0,-48(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     LEA     48(A7),A7
     MOVE.L  D0,-52(A5)
@@ -10481,7 +10481,7 @@ LAB_12D0:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_1355(PC)
+    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -10542,7 +10542,7 @@ LAB_12D0:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  -80(A5),-(A7)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -10550,7 +10550,7 @@ LAB_12D0:
     MOVE.L  D1,-(A7)
     MOVE.L  -80(A5),-(A7)
     MOVE.L  D0,-62(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -10558,7 +10558,7 @@ LAB_12D0:
     MOVE.L  D1,-(A7)
     MOVE.L  -80(A5),-(A7)
     MOVE.L  D0,-66(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -10566,7 +10566,7 @@ LAB_12D0:
     MOVE.L  D1,-(A7)
     MOVE.L  -80(A5),-(A7)
     MOVE.L  D0,-70(A5)
-    JSR     LAB_1337(PC)
+    JSR     NEWGRID2_JMPTBL_LAB_0347(PC)
 
     LEA     48(A7),A7
     MOVE.L  D0,-74(A5)
@@ -10713,7 +10713,7 @@ LAB_12D0:
     BNE.S   .copy_showtimes_prefix
 
     PEA     -31(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
@@ -10731,7 +10731,7 @@ LAB_12D0:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -31(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     PEA     LAB_203B
     MOVE.L  A2,-(A7)
@@ -10763,7 +10763,7 @@ LAB_12D0:
     BNE.S   .copy_showing_at_prefix
 
     PEA     -31(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
@@ -10790,8 +10790,8 @@ LAB_12D0:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_134B, LAB_134C, JMPTBL_STRING_AppendAtNull_3,
-;   NEWGRID_DrawGridFrame, LAB_133D, _LVOSetAPen, _LVOSetDrMd,
+;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID2_JMPTBL_STRING_AppendN, JMPTBL_STRING_AppendAtNull_3,
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd,
 ;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
 ; READS:
 ;   LAB_2109, LAB_210D, LAB_210F, LAB_2328, LAB_232A, LAB_232B
@@ -10813,13 +10813,13 @@ LAB_12EF:
     LEA     19(A2),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     LEA     1(A2),A0
     MOVE.L  A0,(A7)
     MOVE.L  D0,-4(A5)
     MOVE.L  A0,-8(A5)
-    JSR     LAB_134B(PC)
+    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -10855,7 +10855,7 @@ LAB_12EF:
     MOVE.L  A0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     -136(A5)
-    JSR     LAB_134C(PC)
+    JSR     NEWGRID2_JMPTBL_STRING_AppendN(PC)
 
     LEA     12(A7),A7
     TST.L   -8(A5)
@@ -10934,7 +10934,7 @@ LAB_12EF:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0
@@ -10946,7 +10946,7 @@ LAB_12EF:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_133D(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(PC)
 
     LEA     60(A3),A0
     MOVEA.L A0,A1
@@ -11059,8 +11059,8 @@ LAB_12EF:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   LAB_102F, _LVOSetAPen, _LVORectFill, LAB_1350, LAB_1359,
-;   LAB_133F, LAB_1351, LAB_1346, LAB_135A
+;   LAB_102F, _LVOSetAPen, _LVORectFill, NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast, NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines,
+;   NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel, NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected, NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine, NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
 ; READS:
 ;   LAB_2328, LAB_1CE8
 ; WRITES:
@@ -11106,13 +11106,13 @@ LAB_12FD:
     CMP.L   D0,D7
     BGE.W   .after_rows
 
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BNE.W   .after_rows
 
     MOVE.L  D4,D5
-    JSR     LAB_1359(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(PC)
 
     TST.L   D0
     BEQ.S   .alt_path
@@ -11126,7 +11126,7 @@ LAB_12FD:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_133F(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D0
@@ -11158,7 +11158,7 @@ LAB_12FD:
     BRA.S   .draw_row
 
 .alt_path:
-    JSR     LAB_1351(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(PC)
 
     TST.L   D0
     BEQ.S   .default_path
@@ -11223,7 +11223,7 @@ LAB_12FD:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_1346(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -11241,7 +11241,7 @@ LAB_12FD:
     BRA.W   .row_loop
 
 .after_rows:
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     TST.L   D0
     BEQ.S   .draw_bottom_bevel
@@ -11254,7 +11254,7 @@ LAB_12FD:
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  -20(A5),-(A7)
-    JSR     LAB_135A(PC)
+    JSR     NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(PC)
 
     LEA     20(A7),A7
 
@@ -11268,7 +11268,7 @@ LAB_12FD:
 .return:
     ASR.L   #1,D0
     MOVE.W  D0,52(A3)
-    JSR     LAB_1350(PC)
+    JSR     NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(PC)
 
     MOVEM.L (A7)+,D2-D7/A3
     UNLK    A5

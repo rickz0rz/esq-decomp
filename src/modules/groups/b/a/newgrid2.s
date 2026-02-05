@@ -1,5 +1,3 @@
-;!======
-
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_ProcessGridState   (Process grid state machine)
 ; ARGS:
@@ -25,7 +23,6 @@
 ;   Uses LAB_203D to track state 4/5 transitions.
 ;------------------------------------------------------------------------------
 NEWGRID2_ProcessGridState:
-LAB_1311:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -226,7 +223,6 @@ LAB_1311:
 ;   Uses LAB_2041 as a 0..5 state index.
 ;------------------------------------------------------------------------------
 NEWGRID2_HandleGridState:
-LAB_131F:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7
@@ -368,7 +364,7 @@ LAB_131F:
 
 .return_state:
     TST.L   LAB_2041
-    BNE.S   .skip_reset
+    BNE.S   .skip_state_reset
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -378,7 +374,7 @@ LAB_131F:
 
     ADDQ.W  #8,A7
 
-.skip_reset:
+.skip_state_reset:
     MOVE.L  LAB_2041,D0
     MOVEM.L (A7)+,D5-D7/A3
     RTS
@@ -408,7 +404,6 @@ LAB_131F:
 ;   Booleanizes the return value via SNE/NEG/EXT.
 ;------------------------------------------------------------------------------
 NEWGRID2_DispatchGridOperation:
-LAB_132A:
     MOVEM.L D5-D7/A3,-(A7)
     MOVE.L  20(A7),D7
     MOVEA.L 24(A7),A3
@@ -572,7 +567,6 @@ LAB_132A:
 ;   Dispatches the grid operation with zeroed inputs.
 ;------------------------------------------------------------------------------
 NEWGRID2_DispatchOperationDefault:
-LAB_1332:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -603,7 +597,6 @@ LAB_1332:
 ;   Allocates the grid backing buffers when the request flag is set.
 ;------------------------------------------------------------------------------
 NEWGRID2_EnsureBuffersAllocated:
-LAB_1333:
     TST.L   LAB_2044
     BEQ.S   .done
 
@@ -649,7 +642,6 @@ LAB_1333:
 ;   Frees any allocated grid buffers and clears stored pointers.
 ;------------------------------------------------------------------------------
 NEWGRID2_FreeBuffersIfAllocated:
-LAB_1335:
     TST.L   LAB_2335
     BEQ.S   .done
 
@@ -688,7 +680,6 @@ LAB_1335:
 ;   Jump table entry that forwards to LAB_0347.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_0347:
-LAB_1337:
     JMP     LAB_0347
 
 ;------------------------------------------------------------------------------
@@ -705,7 +696,6 @@ LAB_1337:
 ;   Jump table entry that forwards to DISPTEXT_SetCurrentLineIndex.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex:
-LAB_1338:
     JMP     DISPTEXT_SetCurrentLineIndex
 
 ;------------------------------------------------------------------------------
@@ -722,7 +712,6 @@ LAB_1338:
 ;   Jump table entry that forwards to DISPTEXT_LayoutAndAppendToBuffer.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer:
-LAB_1339:
     JMP     DISPTEXT_LayoutAndAppendToBuffer
 
 ;------------------------------------------------------------------------------
@@ -739,7 +728,6 @@ LAB_1339:
 ;   Jump table entry that forwards to DISPTEXT_GetTotalLineCount.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount:
-LAB_133A:
     JMP     DISPTEXT_GetTotalLineCount
 
 ;!======
@@ -764,7 +752,6 @@ LAB_133A:
 ;   Jump table entry that forwards to LAB_17E6.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_17E6:
-LAB_133B:
     JMP     LAB_17E6
 
 ;------------------------------------------------------------------------------
@@ -781,7 +768,6 @@ LAB_133B:
 ;   Jump table entry that forwards to DISPTEXT_BuildLayoutForSource.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource:
-LAB_133C:
     JMP     DISPTEXT_BuildLayoutForSource
 
 ;!======
@@ -806,7 +792,6 @@ LAB_133C:
 ;   Jump table entry that forwards to BEVEL_DrawBevelFrameWithTopRight.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight:
-LAB_133D:
     JMP     BEVEL_DrawBevelFrameWithTopRight
 
 ;------------------------------------------------------------------------------
@@ -823,7 +808,6 @@ LAB_133D:
 ;   Jump table entry that forwards to LAB_0926.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_0926:
-LAB_133E:
     JMP     LAB_0926
 
 ;------------------------------------------------------------------------------
@@ -840,7 +824,6 @@ LAB_133E:
 ;   Jump table entry that forwards to BEVEL_DrawVerticalBevel.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel:
-LAB_133F:
     JMP     BEVEL_DrawVerticalBevel
 
 ;------------------------------------------------------------------------------
@@ -857,7 +840,6 @@ LAB_133F:
 ;   Jump table entry that forwards to DISPTEXT_LayoutSourceToLines.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines:
-LAB_1340:
     JMP     DISPTEXT_LayoutSourceToLines
 
 ;------------------------------------------------------------------------------
@@ -874,7 +856,6 @@ LAB_1340:
 ;   Jump table entry that forwards to CLEANUP_UpdateEntryFlagBytes.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes:
-LAB_1341:
     JMP     CLEANUP_UpdateEntryFlagBytes
 
 ;------------------------------------------------------------------------------
@@ -891,7 +872,6 @@ LAB_1341:
 ;   Jump table entry that forwards to LAB_0358.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_0358:
-LAB_1342:
     JMP     LAB_0358
 
 ;------------------------------------------------------------------------------
@@ -908,7 +888,6 @@ LAB_1342:
 ;   Jump table entry that forwards to LAB_091F.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_091F:
-LAB_1343:
     JMP     LAB_091F
 
 ;------------------------------------------------------------------------------
@@ -925,7 +904,6 @@ LAB_1343:
 ;   Jump table entry that forwards to DISPTEXT_ComputeVisibleLineCount.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
-LAB_1344:
     JMP     DISPTEXT_ComputeVisibleLineCount
 
 ;------------------------------------------------------------------------------
@@ -942,7 +920,6 @@ LAB_1344:
 ;   Jump table entry that forwards to LAB_0923.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_0923:
-LAB_1345:
     JMP     LAB_0923
 
 ;------------------------------------------------------------------------------
@@ -959,7 +936,6 @@ LAB_1345:
 ;   Jump table entry that forwards to DISPTEXT_RenderCurrentLine.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
-LAB_1346:
     JMP     DISPTEXT_RenderCurrentLine
 
 ;------------------------------------------------------------------------------
@@ -976,7 +952,6 @@ LAB_1346:
 ;   Jump table entry that forwards to LAB_036C.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_036C:
-LAB_1347:
     JMP     LAB_036C
 
 ;------------------------------------------------------------------------------
@@ -993,7 +968,6 @@ LAB_1347:
 ;   Jump table entry that forwards to CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry:
-LAB_1348:
     JMP     CLEANUP_FormatClockFormatEntry
 
 ;------------------------------------------------------------------------------
@@ -1010,7 +984,6 @@ LAB_1348:
 ;   Jump table entry that forwards to BEVEL_DrawBevelFrameWithTop.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop:
-LAB_1349:
     JMP     BEVEL_DrawBevelFrameWithTop
 
 ;------------------------------------------------------------------------------
@@ -1027,7 +1000,6 @@ LAB_1349:
 ;   Jump table entry that forwards to ESQ_GetHalfHourSlotIndex.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
-LAB_134A:
     JMP     ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
@@ -1044,7 +1016,6 @@ LAB_134A:
 ;   Jump table entry that forwards to UNKNOWN7_SkipCharClass3.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3:
-LAB_134B:
     JMP     UNKNOWN7_SkipCharClass3
 
 ;------------------------------------------------------------------------------
@@ -1061,7 +1032,6 @@ LAB_134B:
 ;   Jump table entry that forwards to STRING_AppendN.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_STRING_AppendN:
-LAB_134C:
     JMP     STRING_AppendN
 
 ;------------------------------------------------------------------------------
@@ -1078,7 +1048,6 @@ LAB_134C:
 ;   Jump table entry that forwards to LAB_08DF.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_08DF:
-LAB_134D:
     JMP     LAB_08DF
 
 ;------------------------------------------------------------------------------
@@ -1095,7 +1064,6 @@ LAB_134D:
 ;   Jump table entry that forwards to PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-LAB_134E:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
@@ -1112,7 +1080,6 @@ LAB_134E:
 ;   Jump table entry that forwards to CLEANUP_TestEntryFlagYAndBit1.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1:
-LAB_134F:
     JMP     CLEANUP_TestEntryFlagYAndBit1
 
 ;------------------------------------------------------------------------------
@@ -1129,7 +1096,6 @@ LAB_134F:
 ;   Jump table entry that forwards to DISPTEXT_IsCurrentLineLast.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast:
-LAB_1350:
     JMP     DISPTEXT_IsCurrentLineLast
 
 ;------------------------------------------------------------------------------
@@ -1146,7 +1112,6 @@ LAB_1350:
 ;   Jump table entry that forwards to DISPTEXT_IsLastLineSelected.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected:
-LAB_1351:
     JMP     DISPTEXT_IsLastLineSelected
 
 ;------------------------------------------------------------------------------
@@ -1163,7 +1128,6 @@ LAB_1351:
 ;   Jump table entry that forwards to BEVEL_DrawBeveledFrame.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
-LAB_1352:
     JMP     BEVEL_DrawBeveledFrame
 
 ;------------------------------------------------------------------------------
@@ -1180,7 +1144,6 @@ LAB_1352:
 ;   Jump table entry that forwards to LAB_054C.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_LAB_054C:
-LAB_1353:
     JMP     LAB_054C
 
 ;------------------------------------------------------------------------------
@@ -1197,7 +1160,6 @@ LAB_1353:
 ;   Jump table entry that forwards to DISPTEXT_ComputeMarkerWidths.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths:
-LAB_1354:
     JMP     DISPTEXT_ComputeMarkerWidths
 
 ;------------------------------------------------------------------------------
@@ -1214,7 +1176,6 @@ LAB_1354:
 ;   Jump table entry that forwards to ESQ_TestBit1Based.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_ESQ_TestBit1Based:
-LAB_1355:
     JMP     ESQ_TestBit1Based
 
 ;------------------------------------------------------------------------------
@@ -1231,7 +1192,6 @@ LAB_1355:
 ;   Jump table entry that forwards to BEVEL_DrawVerticalBevelPair.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair:
-LAB_1356:
     JMP     BEVEL_DrawVerticalBevelPair
 
 ;------------------------------------------------------------------------------
@@ -1248,7 +1208,6 @@ LAB_1356:
 ;   Jump table entry that forwards to DISPTEXT_MeasureCurrentLineLength.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength:
-LAB_1357:
     JMP     DISPTEXT_MeasureCurrentLineLength
 
 ;------------------------------------------------------------------------------
@@ -1265,7 +1224,6 @@ LAB_1357:
 ;   Jump table entry that forwards to DISPTEXT_SetLayoutParams.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams:
-LAB_1358:
     JMP     DISPTEXT_SetLayoutParams
 
 ;------------------------------------------------------------------------------
@@ -1282,11 +1240,10 @@ LAB_1358:
 ;   Jump table entry that forwards to DISPTEXT_HasMultipleLines.
 ;------------------------------------------------------------------------------
 NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines:
-LAB_1359:
     JMP     DISPTEXT_HasMultipleLines
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPD_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel   (Jump stub)
 ; ARGS:
 ;   ?? (see BEVEL_DrawHorizontalBevel)
 ; RET:
@@ -1298,9 +1255,10 @@ LAB_1359:
 ; DESC:
 ;   Jump table entry that forwards to BEVEL_DrawHorizontalBevel.
 ;------------------------------------------------------------------------------
-GROUPD_JMPTBL_BEVEL_DrawHorizontalBevel:
-LAB_135A:
+NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel:
     JMP     BEVEL_DrawHorizontalBevel
+
+;!======
 
     RTS
 

@@ -58,13 +58,13 @@ LAB_066E:
 ; CLOBBERS:
 ;   ??
 ; CALLS:
-;   LAB_146E
+;   PARSEINI_WriteRtcFromGlobals
 ; DESC:
-;   Jump stub to LAB_146E.
+;   Jump stub to PARSEINI_WriteRtcFromGlobals.
 ;------------------------------------------------------------------------------
 DST_JMPTBL_Call_146E:
 LAB_066F:
-    JMP     LAB_146E
+    JMP     PARSEINI_WriteRtcFromGlobals
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AJ_JMPTBL_MATH_Mulu32   (Jump stub)

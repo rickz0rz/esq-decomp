@@ -319,7 +319,7 @@ LAB_0C82:
     BRA.W   .LAB_0C8B
 
 .LAB_0C84:
-    JSR     LAB_14C8
+    JSR     SCRIPT_UpdateBannerCharTransition
 
     TST.W   LAB_2121
     BNE.W   .LAB_0C8B

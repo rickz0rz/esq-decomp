@@ -175,7 +175,7 @@ LAB_02D9:
     MOVE.L  D0,-(A7)
     PEA     30.W
     MOVE.L  38(A3),-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_149B(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(PC)
 
     MOVE.W  36(A3),D0
     EXT.L   D0
@@ -1103,7 +1103,7 @@ LAB_0316:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AE_JMPTBL_WDISP_SPrintf, LAB_03AC, LAB_05C1, LAB_0468,
-;   GROUP_AE_JMPTBL_LAB_149E, GROUP_AE_JMPTBL_LAB_0B44, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
+;   GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, GROUP_AE_JMPTBL_LAB_0B44, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
 ;   COI_AllocSubEntryTable
 ; READS:
 ;   LAB_222D/LAB_222E/LAB_222F/LAB_2230/LAB_2231, LAB_2233/LAB_2235,
@@ -1334,7 +1334,7 @@ LAB_031A:
     PEA     11.W
     PEA     -604(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
     BRA.S   .init_entry_loop
@@ -1358,7 +1358,7 @@ LAB_031A:
     PEA     11.W
     PEA     -600(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
 
@@ -1587,7 +1587,7 @@ LAB_031A:
     PEA     8.W
     PEA     -632(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
     BRA.S   .process_subentry
@@ -1611,7 +1611,7 @@ LAB_031A:
     PEA     6.W
     PEA     -628(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_149E(PC)
+    JSR     GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(PC)
 
     LEA     28(A7),A7
 
@@ -2443,7 +2443,7 @@ LAB_036A:
     MOVE.L  D1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_16FF(PC)
+    JSR     GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -2495,7 +2495,7 @@ LAB_036C:
     MOVE.L  D1,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_16FF(PC)
+    JSR     GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-8(A5)

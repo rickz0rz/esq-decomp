@@ -182,7 +182,7 @@ LAB_0CC2:
     PEA     LAB_22CB
     BSR.W   LAB_0CB5
 
-    JSR     GROUP_AR_JMPTBL_LAB_1487(PC)
+    JSR     GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D6-D7
