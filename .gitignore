@@ -5,3 +5,7 @@ assets/disks/prevue/*
 !assets/disks/prevue/PrevueFilesGoHere
 
 build
+
+.vscode
+bin/
+build.sh
