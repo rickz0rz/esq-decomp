@@ -1,8 +1,7 @@
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_StartupEntry   (StartupEntry??)
+; FUNC: ESQ_StartupEntry   (StartupEntryuncertain)
 ; ARGS:
-;   D0: cmdLen?? (startup command length)
-;   A0: cmdPtr?? (startup command string)
+;   (none observed)
 ; RET:
 ;   D0: exit code
 ; CLOBBERS:
@@ -10,7 +9,7 @@
 ; CALLS:
 ;   _LVOSetSignal, _LVOOpenLibrary, _LVOWaitPort, _LVOGetMsg, _LVOCurrentDir,
 ;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
-;   ESQ_JMPTBL_UNKNOWN2B_Stub0, ESQ_JMPTBL_ESQ_ParseCommandLineAndRun, ESQ_JMPTBL_MEMLIST_FreeAll, ESQ_JMPTBL_UNKNOWN2B_Stub1
+;   GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0, GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun, GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1
 ; READS:
 ;   AbsExecBase, ESQ_STR_DosLibrary
 ; WRITES:
@@ -21,7 +20,6 @@
 ; NOTES:
 ;   - Uses Workbench message fields when launched from Workbench.
 ;------------------------------------------------------------------------------
-ESQ_StartupEntry:
     MOVEM.L D1-D6/A0-A6,-(A7)               ; Backup registers to the stack
 
     MOVEA.L A0,A2                           ; A0 is a pointer to the command string at startup, copy to A2
@@ -58,15 +56,15 @@ ESQ_StartupEntry:
 
 ; Decide startup path (CLI vs WB) after dos.library opens.
 .dos_opened_prepare_startup:
-    MOVEA.L Struct_ExecBase__ThisTask(A6),A3                                                                ; A6+276 = ThisTask pointer ??
-    MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),Global_SavedDirLock(A4)   ; A3+152 = TaskWait.lh_TailPred ?? -> saved dir/lock ??
-    TST.L   (Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+(Struct_SoftIntList__sh_Pad)(A3)          ; A3+172 = SoftIntList.sh_Pad ?? (SoftInts[1]) ??
+    MOVEA.L Struct_ExecBase__ThisTask(A6),A3                                                                ; A6+276 = ThisTask pointer uncertain
+    MOVE.L  ((Struct_ExecBase__TaskWait-Struct_ExecBase__ThisTask)+Struct_List__lh_TailPred)(A3),Global_SavedDirLock(A4)   ; A3+152 = TaskWait.lh_TailPred uncertain -> saved dir/lock uncertain
+    TST.L   (Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+(Struct_SoftIntList__sh_Pad)(A3)          ; A3+172 = SoftIntList.sh_Pad uncertain (SoftInts[1]) uncertain
     BEQ.S   .wait_for_wb_message
 
     MOVE.L  A7,D0
     SUB.L   4(A7),D0
     ADDI.L  #128,D0
-    MOVE.L  D0,Global_CommandLineSize(A4)                   ; cmdline buffer size ??
+    MOVE.L  D0,Global_CommandLineSize(A4)                   ; cmdline buffer size uncertain
     MOVEA.L ((Struct_ExecBase__SoftInts-Struct_ExecBase__ThisTask)+Struct_SoftIntList__sh_Pad)(A3),A0       ; Again, like above. SoftInts[1]
     ADDA.L  A0,A0
     ADDA.L  A0,A0
@@ -76,7 +74,7 @@ ESQ_StartupEntry:
     MOVE.L  D2,D0
     MOVEQ   #0,D1
     MOVE.B  (A1)+,D1
-    MOVE.L  A1,Global_ScratchPtr_592(A4)                    ; softint tail ptr ??
+    MOVE.L  A1,Global_ScratchPtr_592(A4)                    ; softint tail ptr uncertain
     ADD.L   D1,D0
     ADDQ.L  #1,D0
     CLR.W   -(A7)
@@ -106,31 +104,31 @@ ESQ_StartupEntry:
     BRA.S   .run_main_init
 
 .wait_for_wb_message:
-    MOVE.L  58(A3),Global_CommandLineSize(A4)               ; A3+58 = Task/Proc stack size ?? -> wb stack size ??
+    MOVE.L  58(A3),Global_CommandLineSize(A4)               ; A3+58 = Task/Proc stack size uncertain -> wb stack size uncertain
     MOVEQ   #127,D0 ; ...
     ADDQ.L  #1,D0   ; 128 into D0
     ADD.L   D0,Global_CommandLineSize(A4)
 
-    LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port ??
+    LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port uncertain
     JSR     _LVOWaitPort(A6) ; A6 should still have AbsExecBase in it at this point
 
-    LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port ??
+    LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port uncertain
     JSR     _LVOGetMsg(A6)
 
-    MOVE.L  D0,savedMsg(A4)                                 ; A4-604 = saved WBStartup msg ??
+    MOVE.L  D0,savedMsg(A4)                                 ; A4-604 = saved WBStartup msg uncertain
     MOVE.L  D0,-(A7)
     MOVEA.L D0,A2
-    MOVE.L  36(A2),D0                                       ; WBStartup+36 = sm_ArgList ??
+    MOVE.L  36(A2),D0                                       ; WBStartup+36 = sm_ArgList uncertain
     BEQ.S   .maybe_set_current_dir
 
     MOVEA.L Global_DosLibrary(A4),A6
     MOVEA.L D0,A0
-    MOVE.L  0(A0),D1                                        ; WBArg[0].wa_Lock ??
-    MOVE.L  D1,Global_SavedDirLock(A4)                      ; current dir lock ?? (from WB startup msg)
+    MOVE.L  0(A0),D1                                        ; WBArg[0].wa_Lock uncertain
+    MOVE.L  D1,Global_SavedDirLock(A4)                      ; current dir lock uncertain (from WB startup msg)
     JSR     _LVOCurrentDir(A6)
 
 .maybe_set_current_dir:
-    MOVE.L  32(A2),D1                                       ; WBStartup+32 = sm_NumArgs ??
+    MOVE.L  32(A2),D1                                       ; WBStartup+32 = sm_NumArgs uncertain
     BEQ.S   .maybe_update_window_ptr
 
     MOVE.L  #1005,D2
@@ -144,16 +142,16 @@ ESQ_StartupEntry:
     MOVE.L  8(A0),164(A3)
 
 .maybe_update_window_ptr:
-    MOVEA.L savedMsg(A4),A0                                 ; saved WBStartup msg ??
+    MOVEA.L savedMsg(A4),A0                                 ; saved WBStartup msg uncertain
     MOVE.L  A0,-(A7)
     PEA     Global_WBStartupCmdBuffer(A4)
-    MOVEA.L 36(A0),A0                                       ; WBStartup+36 = sm_ArgList ??
-    MOVE.L  4(A0),Global_ScratchPtr_592(A4)                 ; WBArg[0].wa_Name ??
+    MOVEA.L 36(A0),A0                                       ; WBStartup+36 = sm_ArgList uncertain
+    MOVE.L  4(A0),Global_ScratchPtr_592(A4)                 ; WBArg[0].wa_Name uncertain
 
 .run_main_init:
-    JSR     ESQ_JMPTBL_UNKNOWN2B_Stub0(PC)
+    JSR     GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0(PC)
 
-    JSR     ESQ_JMPTBL_ESQ_ParseCommandLineAndRun(PC)
+    JSR     GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun(PC)
 
     MOVEQ   #0,D0
     BRA.S   ESQ_ShutdownAndReturn
@@ -189,7 +187,7 @@ ESQ_ReturnWithStackCode:
 ; CLOBBERS:
 ;   D0/A0-A6
 ; CALLS:
-;   ESQ_JMPTBL_MEMLIST_FreeAll, _LVOCloseLibrary, ESQ_JMPTBL_UNKNOWN2B_Stub1, _LVOReplyMsg
+;   GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, _LVOCloseLibrary, GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1, _LVOReplyMsg
 ; READS:
 ;   savedMsg, savedStackPointer, savedExecBase, Global_DosLibrary
 ; WRITES:
@@ -207,13 +205,13 @@ ESQ_ShutdownAndReturn:
     JSR     (A0)
 
 .call_exit_hook:
-    JSR     ESQ_JMPTBL_MEMLIST_FreeAll(PC)
+    JSR     GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll(PC)
 
     MOVEA.L AbsExecBase,A6
     MOVEA.L Global_DosLibrary(A4),A1
     JSR     _LVOCloseLibrary(A6)
 
-    JSR     ESQ_JMPTBL_UNKNOWN2B_Stub1(PC)
+    JSR     GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1(PC)
 
     TST.L   savedMsg(A4)
     BEQ.S   .restore_registers_and_return

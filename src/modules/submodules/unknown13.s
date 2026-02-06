@@ -3,7 +3,7 @@
 ; ARGS:
 ;   stack +12: D7 = byte to write
 ; RET:
-;   D1: ?? (result from STREAM_BufferedPutcOrFlush when overflow)
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A2
 ; CALLS:

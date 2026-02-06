@@ -2,13 +2,22 @@
 
 GLOB_STR_DISPTEXT_C_1:
     NStr    "DISPTEXT.c"
-LAB_1CEA:
+;------------------------------------------------------------------------------
+; SYM: DISPTEXT_STR_SINGLE_SPACE_MEASURE   (single-space literal)
+; TYPE: cstring
+; PURPOSE: Width measurement and separator helpers in line-layout routines.
+; USED BY: DISPTEXT_BuildLineWithWidth
+; NOTES: Multiple aliases preserve original callsite intent while sharing value.
+;------------------------------------------------------------------------------
+DISPTEXT_STR_SINGLE_SPACE_MEASURE:
     NStr    " "
-LAB_1CEB:
+DISPTEXT_STR_SINGLE_SPACE_APPEND:
     NStr    " "
-LAB_1CEC:
+DISPTEXT_STR_SINGLE_SPACE_DELIM:
     NStr    " "
-LAB_1CED:
+; One-shot init guard for buffer allocation path.
+DISPTEXT_InitBuffersPending:
+DATA_DISPTEXT_CONST_LONG_1CED:
     DC.L    1
 GLOB_STR_DISPTEXT_C_2:
     NStr    "DISPTEXT.c"
@@ -18,13 +27,20 @@ GLOB_STR_DISPTEXT_C_4:
     NStr    "DISPTEXT.c"
 GLOB_STR_DISPTEXT_C_5:
     NStr    "DISPTEXT.c"
-LAB_1CF2:
+DISPTEXT_STR_SINGLE_SPACE_PREFIX_1:
     NStr    " "
-LAB_1CF3:
+DISPTEXT_STR_SINGLE_SPACE_PREFIX_2:
     NStr    " "
-LAB_1CF4:
+DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
     NStr    " "
-LAB_1CF5:
+;------------------------------------------------------------------------------
+; SYM: DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES   (month tables)
+; TYPE: byte/long lookup tables
+; PURPOSE: Month-length sequence and cumulative day offsets used by datetime conversion.
+; USED BY: DATETIME_SecondsToStruct
+; NOTES: First bytes encode month lengths; later longs appear to be cumulative offsets.
+;------------------------------------------------------------------------------
+DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES:
     DC.L    $1f1c1f1e,$1f1e1f1f,$1e1f1e1f
     DS.L    1
     DC.L    $0000001f,$0000003b,$0000005a,$00000078

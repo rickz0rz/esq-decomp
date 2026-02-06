@@ -11,13 +11,13 @@
 ;   GROUP_AU_JMPTBL_BRUSH_PopulateBrushList, _LVOForbid,
 ;   GROUP_AU_JMPTBL_BRUSH_AppendBrushNode
 ; READS:
-;   190(A3), LAB_1ED3
+;   190(A3), ESQIFF_LogoBrushListHead
 ; WRITES:
-;   LAB_1B84, LAB_1ED3
+;   CTASKS_IffTaskState, ESQIFF_LogoBrushListHead
 ; DESC:
 ;   Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
 ; NOTES:
-;   Only swaps LAB_1ED3 when the current brush mode equals 4 and the new list exists.
+;   Only swaps ESQIFF_LogoBrushListHead when the current brush mode equals 4 and the new list exists.
 ;------------------------------------------------------------------------------
 
 ; Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
@@ -28,13 +28,13 @@ GCOMMAND_SaveBrushResult:
     CLR.L   -4(A5)
     MOVEQ   #0,D0
     MOVE.B  190(A3),D0
-    MOVE.W  D0,LAB_1B84
+    MOVE.W  D0,CTASKS_IffTaskState
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
     JSR     GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  LAB_1B84,D0
+    MOVE.W  CTASKS_IffTaskState,D0
     SUBQ.W  #4,D0
     BNE.S   .LAB_0DF6
 
@@ -45,19 +45,19 @@ GCOMMAND_SaveBrushResult:
     JSR     _LVOForbid(A6)
 
     MOVE.L  -4(A5),-(A7)
-    MOVE.L  LAB_1ED3,-(A7)
+    MOVE.L  ESQIFF_LogoBrushListHead,-(A7)
     JSR     GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_1ED3
-    ADDQ.L  #1,LAB_1B28
+    MOVE.L  D0,ESQIFF_LogoBrushListHead
+    ADDQ.L  #1,ESQIFF_LogoBrushListCount
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
     BRA.S   .LAB_0DF8
 
 .LAB_0DF6:
-    MOVE.W  LAB_1B84,D0
+    MOVE.W  CTASKS_IffTaskState,D0
     SUBQ.W  #5,D0
     BNE.S   .LAB_0DF7
 
@@ -68,19 +68,19 @@ GCOMMAND_SaveBrushResult:
     JSR     _LVOForbid(A6)
 
     MOVE.L  -4(A5),-(A7)
-    MOVE.L  LAB_1ED2,-(A7)
+    MOVE.L  ESQIFF_GAdsBrushListHead,-(A7)
     JSR     GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_1ED2
-    ADDQ.L  #1,LAB_1B27
+    MOVE.L  D0,ESQIFF_GAdsBrushListHead
+    ADDQ.L  #1,ESQIFF_GAdsBrushListCount
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
     BRA.S   .LAB_0DF8
 
 .LAB_0DF7:
-    MOVE.W  LAB_1B84,D0
+    MOVE.W  CTASKS_IffTaskState,D0
     SUBQ.W  #6,D0
     BNE.S   .LAB_0DF8
 
@@ -90,7 +90,7 @@ GCOMMAND_SaveBrushResult:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    MOVE.L  -4(A5),LAB_1B25
+    MOVE.L  -4(A5),WDISP_WeatherStatusBrushListHead
     JSR     _LVOPermit(A6)
 
 .LAB_0DF8:

@@ -1,9 +1,7 @@
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_SeekWithErrorState   (Seek wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:
-;   stack +28: D7 = file handle
-;   stack +32: D6 = offset
-;   stack +36: D5 = mode (0/1/2 -> begin/current/end ??)
+;   (none observed)
 ; RET:
 ;   D0: resulting position or -1 on error
 ; CLOBBERS:

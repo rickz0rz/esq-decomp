@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_183E   (JumpStub_LAB_183E)
+; FUNC: GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -7,19 +7,19 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_183E
+;   TLIBA3_BuildDisplayContextForViewMode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_183E.
+;   Jump stub to TLIBA3_BuildDisplayContextForViewMode.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_183E:
-    JMP     LAB_183E
+GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
+    JMP     TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_14B1   (JumpStub_LAB_14B1)
+; FUNC: GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -27,16 +27,16 @@ GROUP_AD_JMPTBL_LAB_183E:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_14B1
+;   SCRIPT_UpdateSerialShadowFromCtrlByte
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_14B1.
+;   Jump stub to SCRIPT_UpdateSerialShadowFromCtrlByte.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_14B1:
-    JMP     LAB_14B1
+GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
+    JMP     SCRIPT_UpdateSerialShadowFromCtrlByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange   (JumpStub_DATETIME_NormalizeMonthRange)
@@ -56,7 +56,6 @@ GROUP_AD_JMPTBL_LAB_14B1:
 ;   Jump stub to DATETIME_NormalizeMonthRange.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
-GROUP_AD_JMPTBL_LAB_0668:
     JMP     DATETIME_NormalizeMonthRange
 
 ;------------------------------------------------------------------------------
@@ -100,7 +99,7 @@ GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
     JMP     TEXTDISP_FormatEntryTime
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_0A48   (JumpStub_LAB_0A48)
+; FUNC: GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -108,16 +107,16 @@ GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0A48
+;   ESQIFF_RunCopperRiseTransition
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0A48.
+;   Jump stub to ESQIFF_RunCopperRiseTransition.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_0A48:
-    JMP     LAB_0A48
+GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition:
+    JMP     ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName   (JumpStub_TEXTDISP_BuildEntryShortName)
@@ -160,7 +159,7 @@ GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
     JMP     GRAPHICS_BltBitMapRastPort
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_0A49   (JumpStub_LAB_0A49)
+; FUNC: GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -168,19 +167,19 @@ GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0A49
+;   ESQIFF_RunCopperDropTransition
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0A49.
+;   Jump stub to ESQIFF_RunCopperDropTransition.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_0A49:
-    JMP     LAB_0A49
+GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition:
+    JMP     ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_17A8   (JumpStub_LAB_17A8)
+; FUNC: GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -188,16 +187,16 @@ GROUP_AD_JMPTBL_LAB_0A49:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_17A8
+;   TLIBA1_BuildClockFormatEntryIfVisible
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_17A8.
+;   Jump stub to TLIBA1_BuildClockFormatEntryIfVisible.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_17A8:
-    JMP     LAB_17A8
+GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible:
+    JMP     TLIBA1_BuildClockFormatEntryIfVisible
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel   (JumpStub_TEXTDISP_BuildChannelLabel)
@@ -220,7 +219,7 @@ GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
     JMP     TEXTDISP_BuildChannelLabel
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_16CE   (JumpStub_LAB_16CE)
+; FUNC: GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -236,7 +235,7 @@ GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
 ; DESC:
 ;   Jump stub to TEXTDISP_DrawInsetRectFrame.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_16CE:
+GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame:
     JMP     TEXTDISP_DrawInsetRectFrame
 
 ;------------------------------------------------------------------------------
@@ -260,7 +259,7 @@ GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
     JMP     TEXTDISP_TrimTextToPixelWidth
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_183D   (JumpStub_LAB_183D)
+; FUNC: GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -268,19 +267,19 @@ GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_183D
+;   TLIBA3_GetViewModeRastPort
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_183D.
+;   Jump stub to TLIBA3_GetViewModeRastPort.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_183D:
-    JMP     LAB_183D
+GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort:
+    JMP     TLIBA3_GetViewModeRastPort
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_09C2   (JumpStub_LAB_09C2)
+; FUNC: GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -288,16 +287,16 @@ GROUP_AD_JMPTBL_LAB_183D:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_09C2
+;   ESQFUNC_SelectAndApplyBrushForCurrentEntry
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_09C2.
+;   Jump stub to ESQFUNC_SelectAndApplyBrushForCurrentEntry.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_09C2:
-    JMP     LAB_09C2
+GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry:
+    JMP     ESQFUNC_SelectAndApplyBrushForCurrentEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex   (JumpStub_DATETIME_AdjustMonthIndex)
@@ -317,7 +316,6 @@ GROUP_AD_JMPTBL_LAB_09C2:
 ;   Jump stub to DATETIME_AdjustMonthIndex.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
-GROUP_AD_JMPTBL_LAB_0665:
     JMP     DATETIME_AdjustMonthIndex
 
 ;------------------------------------------------------------------------------
@@ -338,11 +336,10 @@ GROUP_AD_JMPTBL_LAB_0665:
 ;   Jump stub to DST_ComputeBannerIndex.
 ;------------------------------------------------------------------------------
 GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
-GROUP_AD_JMPTBL_LAB_064E:
     JMP     DST_ComputeBannerIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AD_JMPTBL_LAB_183B   (JumpStub_LAB_183B)
+; FUNC: GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -350,13 +347,13 @@ GROUP_AD_JMPTBL_LAB_064E:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_183B
+;   TLIBA3_GetViewModeHeight
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_183B.
+;   Jump stub to TLIBA3_GetViewModeHeight.
 ;------------------------------------------------------------------------------
-GROUP_AD_JMPTBL_LAB_183B:
-    JMP     LAB_183B
+GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight:
+    JMP     TLIBA3_GetViewModeHeight

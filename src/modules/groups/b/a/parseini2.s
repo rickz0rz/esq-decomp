@@ -7,10 +7,10 @@
 ; CLOBBERS:
 ;   D0-D1/D7/A0/A6
 ; CALLS:
-;   PARSEINI_AdjustHoursTo24HrFormat, JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
-;   JMPTBL_CLOCK_SecondsFromEpoch, JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
+;   PARSEINI_AdjustHoursTo24HrFormat, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
+;   PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
-;   LAB_223A-E, LAB_2243, GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE,
+;   CLOCK_DaySlotIndex-E, DATA_WDISP_BSS_WORD_2243, GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE,
 ;   GLOB_REF_CLOCKDATA_STRUCT
 ; WRITES:
 ;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
@@ -32,30 +32,30 @@ PARSEINI_WriteRtcFromGlobals:
     TST.L   GLOB_REF_BATTCLOCK_RESOURCE
     BEQ.S   .return
 
-    MOVE.W  LAB_223A,D0
+    MOVE.W  CLOCK_DaySlotIndex,D0
     MOVE.W  D0,-6(A5)
-    MOVE.W  LAB_223B,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_223B,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,-10(A5)
-    MOVE.W  LAB_223C,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_223C,D0
     MOVE.W  D0,-12(A5)
-    MOVE.W  LAB_223D,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_223D,D0
     MOVE.W  D0,-8(A5)
-    MOVE.W  LAB_223E,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_223E,D0
     EXT.L   D0
-    MOVE.W  LAB_2243,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_2243,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     BSR.W   PARSEINI_AdjustHoursTo24HrFormat
 
     MOVE.W  D0,-14(A5)
-    MOVE.W  LAB_223F,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_223F,D0
     MOVE.W  D0,-16(A5)
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  D0,.clockDataStruct(A5)
     PEA     .clockDataStruct(A5)
-    JSR     JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
+    JSR     PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
 
     ; Clean the stack and test validity of clockdata struct seconds
     LEA     12(A7),A7
@@ -63,11 +63,11 @@ PARSEINI_WriteRtcFromGlobals:
     BEQ.S   .return
 
     PEA     .clockDataStruct(A5)
-    JSR     JMPTBL_CLOCK_SecondsFromEpoch(PC)
+    JSR     PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
-    JSR     JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(PC)
+    JSR     PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(PC)
 
     ADDQ.W  #4,A7
 
@@ -79,7 +79,7 @@ PARSEINI_WriteRtcFromGlobals:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_UpdateClockFromRtc   (UpdateClockFromRtc??)
+; FUNC: PARSEINI_UpdateClockFromRtc   (UpdateClockFromRtcuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -87,12 +87,12 @@ PARSEINI_WriteRtcFromGlobals:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
-;   JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
+;   PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
+;   PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
 ; READS:
 ;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE
 ; WRITES:
-;   LAB_223A (date/time fields via PARSEINI_NormalizeClockData)
+;   CLOCK_DaySlotIndex (date/time fields via PARSEINI_NormalizeClockData)
 ; DESC:
 ;   Reads the battery-backed clock, validates the resulting date/time fields,
 ;   and updates the global date/time structure used by the UI.
@@ -118,15 +118,15 @@ PARSEINI_UpdateClockFromRtc:
     TST.L   GLOB_REF_BATTCLOCK_RESOURCE
     BEQ.W   .return_status
 
-    JSR     JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)
+    JSR     PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)
 
     MOVE.L  D0,D7
     PEA     .clockData(A5)
     MOVE.L  D7,-(A7)
-    JSR     JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(PC)
+    JSR     PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(PC)
 
     PEA     .clockData(A5)
-    JSR     JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
+    JSR     PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -157,7 +157,7 @@ PARSEINI_UpdateClockFromRtc:
     MOVE.W  (.clockData+Struct_ClockData__Sec)(A5),D6
     MOVE.W  D6,.localSec(A5)
 
-    MOVE.W  LAB_2241,-26(A5)
+    MOVE.W  DST_PrimaryCountdown,-26(A5)
 
     MOVEQ   #0,D6
     CMP.W   D6,D0
@@ -210,15 +210,15 @@ PARSEINI_UpdateClockFromRtc:
 
 .invalid_date_data:
     PEA     -40(A5)
-    PEA     LAB_223A
+    PEA     CLOCK_DaySlotIndex
     BSR.W   PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
     BRA.S   .return_status
 
 .fallback_default_date:
-    PEA     LAB_20A1
-    PEA     LAB_223A
+    PEA     DATA_PARSEINI_CONST_LONG_20A1
+    PEA     CLOCK_DaySlotIndex
     BSR.W   PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
@@ -286,20 +286,20 @@ PARSEINI_AdjustHoursTo24HrFormat:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_NormalizeClockData   (Normalize/validate clock data struct??)
+; FUNC: PARSEINI_NormalizeClockData   (Normalize/validate clock data structuncertain)
 ; ARGS:
 ;   stack +8: A3 = clockdata dest struct
 ;   stack +12: A2 = source struct
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D2/A0-A3
 ; CALLS:
-;   JMPTBL_DATETIME_IsLeapYear (DATETIME_IsLeapYear), JMPTBL_ESQ_CalcDayOfYearFromMonthDay (ESQ_CalcDayOfYearFromMonthDay)
+;   PARSEINI2_JMPTBL_DATETIME_IsLeapYear (DATETIME_IsLeapYear), PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay (ESQ_CalcDayOfYearFromMonthDay)
 ; READS:
 ;   A2 contents
 ; WRITES:
-;   A3 contents (year/month/day/hour/min/sec, wday), LAB_20A4/20A5??
+;   (none observed)
 ; DESC:
 ;   Copies clock fields, adjusts year (<1900), clamps/normalizes month/day/hour,
 ;   computes day-of-year, and sets validity flags.
@@ -364,7 +364,7 @@ PARSEINI_NormalizeClockData:
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_DATETIME_IsLeapYear(PC)
+    JSR     PARSEINI2_JMPTBL_DATETIME_IsLeapYear(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0
@@ -378,7 +378,7 @@ PARSEINI_NormalizeClockData:
 
 .return:
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_ESQ_CalcDayOfYearFromMonthDay(PC)
+    JSR     PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D2/A2-A3
@@ -387,13 +387,13 @@ PARSEINI_NormalizeClockData:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_CLOCK_ConvertAmigaSecondsToClockData   (JumpStub_CLOCK_ConvertAmigaSecondsToClockData)
+; FUNC: PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData   (JumpStub_CLOCK_ConvertAmigaSecondsToClockData)
 ; ARGS:
-;   ?? (see CLOCK_ConvertAmigaSecondsToClockData)
+;   (none observed)
 ; RET:
-;   ?? (see CLOCK_ConvertAmigaSecondsToClockData)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see CLOCK_ConvertAmigaSecondsToClockData)
+;   none observed
 ; CALLS:
 ;   CLOCK_ConvertAmigaSecondsToClockData
 ; DESC:
@@ -401,17 +401,17 @@ PARSEINI_NormalizeClockData:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
+PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
     JMP     CLOCK_ConvertAmigaSecondsToClockData
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ESQ_CalcDayOfYearFromMonthDay   (JumpStub_ESQ_CalcDayOfYearFromMonthDay)
+; FUNC: PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay   (JumpStub_ESQ_CalcDayOfYearFromMonthDay)
 ; ARGS:
-;   ?? (see ESQ_CalcDayOfYearFromMonthDay)
+;   (none observed)
 ; RET:
-;   ?? (see ESQ_CalcDayOfYearFromMonthDay)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQ_CalcDayOfYearFromMonthDay)
+;   none observed
 ; CALLS:
 ;   ESQ_CalcDayOfYearFromMonthDay
 ; DESC:
@@ -419,17 +419,17 @@ JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ESQ_CalcDayOfYearFromMonthDay:
+PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay:
     JMP     ESQ_CalcDayOfYearFromMonthDay
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch   (JumpStub_CLOCK_CheckDateOrSecondsFromEpoch)
+; FUNC: PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch   (JumpStub_CLOCK_CheckDateOrSecondsFromEpoch)
 ; ARGS:
-;   ?? (see CLOCK_CheckDateOrSecondsFromEpoch)
+;   (none observed)
 ; RET:
-;   ?? (see CLOCK_CheckDateOrSecondsFromEpoch)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see CLOCK_CheckDateOrSecondsFromEpoch)
+;   none observed
 ; CALLS:
 ;   CLOCK_CheckDateOrSecondsFromEpoch
 ; DESC:
@@ -437,17 +437,17 @@ JMPTBL_ESQ_CalcDayOfYearFromMonthDay:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
+PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
     JMP     CLOCK_CheckDateOrSecondsFromEpoch
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock   (JumpStub_BATTCLOCK_GetSecondsFromBatteryBackedClock)
+; FUNC: PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock   (JumpStub_BATTCLOCK_GetSecondsFromBatteryBackedClock)
 ; ARGS:
-;   ?? (see BATTCLOCK_GetSecondsFromBatteryBackedClock)
+;   (none observed)
 ; RET:
-;   ?? (see BATTCLOCK_GetSecondsFromBatteryBackedClock)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see BATTCLOCK_GetSecondsFromBatteryBackedClock)
+;   none observed
 ; CALLS:
 ;   BATTCLOCK_GetSecondsFromBatteryBackedClock
 ; DESC:
@@ -455,17 +455,17 @@ JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
+PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
     JMP     BATTCLOCK_GetSecondsFromBatteryBackedClock
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_DATETIME_IsLeapYear   (JumpStub_DATETIME_IsLeapYear)
+; FUNC: PARSEINI2_JMPTBL_DATETIME_IsLeapYear   (JumpStub_DATETIME_IsLeapYear)
 ; ARGS:
-;   ?? (see DATETIME_IsLeapYear)
+;   (none observed)
 ; RET:
-;   ?? (see DATETIME_IsLeapYear)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see DATETIME_IsLeapYear)
+;   none observed
 ; CALLS:
 ;   DATETIME_IsLeapYear
 ; DESC:
@@ -473,17 +473,17 @@ JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_DATETIME_IsLeapYear:
+PARSEINI2_JMPTBL_DATETIME_IsLeapYear:
     JMP     DATETIME_IsLeapYear
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock   (JumpStub_BATTCLOCK_WriteSecondsToBatteryBackedClock)
+; FUNC: PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock   (JumpStub_BATTCLOCK_WriteSecondsToBatteryBackedClock)
 ; ARGS:
-;   ?? (see BATTCLOCK_WriteSecondsToBatteryBackedClock)
+;   (none observed)
 ; RET:
-;   ?? (see BATTCLOCK_WriteSecondsToBatteryBackedClock)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see BATTCLOCK_WriteSecondsToBatteryBackedClock)
+;   none observed
 ; CALLS:
 ;   BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; DESC:
@@ -491,17 +491,17 @@ JMPTBL_DATETIME_IsLeapYear:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
+PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
     JMP     BATTCLOCK_WriteSecondsToBatteryBackedClock
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_CLOCK_SecondsFromEpoch   (JumpStub_CLOCK_SecondsFromEpoch)
+; FUNC: PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch   (JumpStub_CLOCK_SecondsFromEpoch)
 ; ARGS:
-;   ?? (see CLOCK_SecondsFromEpoch)
+;   (none observed)
 ; RET:
-;   ?? (see CLOCK_SecondsFromEpoch)
+;   D0: result/status
 ; CLOBBERS:
-;   ?? (see CLOCK_SecondsFromEpoch)
+;   D0
 ; CALLS:
 ;   CLOCK_SecondsFromEpoch
 ; DESC:
@@ -509,7 +509,7 @@ JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_CLOCK_SecondsFromEpoch:
+PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch:
     JMP     CLOCK_SecondsFromEpoch
 
 ;!======

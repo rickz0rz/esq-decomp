@@ -3,12 +3,12 @@
 ; ARGS:
 ;   stack +6: A3 = command line buffer
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, BUFFER_FlushAllAndCloseWithCode,
-;   WDISP_JMPTBL_ESQ_MainInitAndRun
+;   UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
 ; READS:
 ;   Global_ArgCount, Global_ArgvStorage, savedMsg, Global_DefaultHandleFlags
 ; WRITES:
@@ -138,7 +138,7 @@ ESQ_ParseCommandLineAndRun:
     TST.L   Global_ArgCount(A4)
     BNE.S   .setup_existing_handles
 
-    LEA     GLOB_STR_CON_10_10_320_80(PC),A1
+    LEA     .loc(PC),A1
     LEA     Global_ConsoleNameBuffer(A4),A6
     MOVE.L  (A1)+,(A6)+
     MOVE.L  (A1)+,(A6)+
@@ -186,7 +186,7 @@ ESQ_ParseCommandLineAndRun:
     JSR     _LVOOutput(A6)
 
     MOVE.L  D0,Global_HandleEntry1_Ptr(A4)    ; Original output file handle
-    LEA     GLOB_STR_ASTERISK_1(PC),A0
+    LEA     .loc_1(PC),A0
     MOVE.L  A0,D1
     MOVE.L  #MODE_OLDFILE,D2
     JSR     _LVOOpen(A6)
@@ -231,7 +231,7 @@ ESQ_ParseCommandLineAndRun:
     MOVE.L  A0,Global_SignalCallbackPtr(A4)
     MOVE.L  Global_ArgvPtr(A4),-(A7)
     MOVE.L  Global_ArgCount(A4),-(A7)
-    JSR     WDISP_JMPTBL_ESQ_MainInitAndRun(PC)
+    JSR     UNKNOWN29_JMPTBL_ESQ_MainInitAndRun(PC)
 
     CLR.L   (A7)
     JSR     BUFFER_FlushAllAndCloseWithCode(PC)
@@ -242,18 +242,18 @@ ESQ_ParseCommandLineAndRun:
 
 ;!======
 
-GLOB_STR_CON_10_10_320_80:
+.loc:
     NStr    "con.10/10/320/80/"
 
-GLOB_STR_ASTERISK_1:
+.loc_1:
     NStr    "*"
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_JMPTBL_ESQ_MainInitAndRun   (JumpStub_ESQ_MainInitAndRun)
+; FUNC: UNKNOWN29_JMPTBL_ESQ_MainInitAndRun   (JumpStub_ESQ_MainInitAndRun)
 ;------------------------------------------------------------------------------
-WDISP_JMPTBL_ESQ_MainInitAndRun:
+UNKNOWN29_JMPTBL_ESQ_MainInitAndRun:
     JMP     ESQ_MainInitAndRun
 
 ;!======

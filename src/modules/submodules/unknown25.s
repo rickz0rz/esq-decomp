@@ -3,7 +3,7 @@
 ; ARGS:
 ;   stack +12: A3 = struct pointer
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0/A0-A1/A3/A6
 ; CALLS:

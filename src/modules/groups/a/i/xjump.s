@@ -1,133 +1,128 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_10BE_2   (JumpStub_LAB_10BE)
+; FUNC: GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers   (JumpStub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_10BE
+;   NEWGRID_SetSelectionMarkers
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_10BE.
+;   Jump stub to NEWGRID_SetSelectionMarkers.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_10BE_2:
-LAB_05C0:
-    JMP     LAB_10BE
+GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
+    JMP     NEWGRID_SetSelectionMarkers
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_UNKNOWN7_FindCharWrapper_2   (JumpStub_UNKNOWN7_FindCharWrapper)
+; FUNC: GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   UNKNOWN7_FindCharWrapper
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to UNKNOWN7_FindCharWrapper.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_UNKNOWN7_FindCharWrapper_2:
-LAB_05C1:
+GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper:
     JMP     UNKNOWN7_FindCharWrapper
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_175F_2   (JumpStub_LAB_175F)
+; FUNC: GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments   (JumpStub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_175F
+;   TLIBA1_DrawTextWithInsetSegments
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_175F.
+;   Jump stub to TLIBA1_DrawTextWithInsetSegments.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_175F_2:
-LAB_05C2:
-    JMP     LAB_175F
+GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments:
+    JMP     TLIBA1_DrawTextWithInsetSegments
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_FORMAT_FormatToBuffer2_2   (JumpStub_FORMAT_FormatToBuffer2)
+; FUNC: GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2   (JumpStub_FORMAT_FormatToBuffer2)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   FORMAT_FormatToBuffer2
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to FORMAT_FormatToBuffer2.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_FORMAT_FormatToBuffer2_2:
-LAB_05C3:
+GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
     JMP     FORMAT_FormatToBuffer2
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_UNKNOWN7_SkipCharClass3_2   (JumpStub_UNKNOWN7_SkipCharClass3)
+; FUNC: GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3   (JumpStub_UNKNOWN7_SkipCharClass3)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   UNKNOWN7_SkipCharClass3
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to UNKNOWN7_SkipCharClass3.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_UNKNOWN7_SkipCharClass3_2:
-LAB_05C4:
+GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3:
     JMP     UNKNOWN7_SkipCharClass3
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   STRING_AppendAtNull
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to STRING_AppendAtNull.
 ; NOTES:
@@ -137,26 +132,25 @@ GROUP_AI_JMPTBL_STRING_AppendAtNull:
     JMP     STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_UNKNOWN7_CopyUntilDelimiter_2   (JumpStub_UNKNOWN7_CopyUntilDelimiter)
+; FUNC: GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter   (JumpStub_UNKNOWN7_CopyUntilDelimiter)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   D0
 ; CALLS:
 ;   UNKNOWN7_CopyUntilDelimiter
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to UNKNOWN7_CopyUntilDelimiter.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_UNKNOWN7_CopyUntilDelimiter_2:
-LAB_05C6:
+GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter:
     JMP     UNKNOWN7_CopyUntilDelimiter
 
     ; Alignment?

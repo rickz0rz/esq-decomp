@@ -1,9 +1,9 @@
 ;------------------------------------------------------------------------------
-; FUNC: CLOCK_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpoch??)
+; FUNC: CLOCK_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpochuncertain)
 ; ARGS:
-;   stack +4: clockData (ClockData??)
+;   (none observed)
 ; RET:
-;   D0: result from utility.library CheckDate (0/1??)
+;   D0: none observed
 ; CLOBBERS:
 ;   D0, A0, A6
 ; CALLS:
@@ -34,7 +34,7 @@ CLOCK_CheckDateOrSecondsFromEpoch:
 ;------------------------------------------------------------------------------
 ; FUNC: CLOCK_SecondsFromEpoch
 ; ARGS:
-;   stack +4: clockData (ClockData??)
+;   stack +4: clockData (ClockDatauncertain)
 ; RET:
 ;   D0: seconds since Amiga epoch
 ; CLOBBERS:
@@ -63,7 +63,7 @@ CLOCK_SecondsFromEpoch:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_WriteChar   (WriteCharToParallel??)
+; FUNC: PARALLEL_WriteChar   (WriteCharToParalleluncertain)
 ; ARGS:
 ;   stack +4: ch (byte)
 ; RET:
@@ -82,13 +82,12 @@ CLOCK_SecondsFromEpoch:
 ;   Low-level output uses CIAA/CIAB handshake; exact device target is inferred.
 ;   Completes the operation by falling through to PARALLEL_WriteCharD0.
 ;------------------------------------------------------------------------------
-PARALLEL_WriteChar:
     MOVE.L  4(A7),D0
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_WriteCharD0   (WriteCharD0??)
+; FUNC: PARALLEL_WriteCharD0   (WriteCharD0uncertain)
 ; ARGS:
 ;   D0: ch (byte)
 ; RET:
@@ -114,7 +113,7 @@ PARALLEL_WriteCharD0:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_WriteString   (WriteStringToParallel??)
+; FUNC: PARALLEL_WriteString   (WriteStringToParalleluncertain)
 ; ARGS:
 ;   stack +4: str (null-terminated)
 ; RET:
@@ -132,9 +131,27 @@ PARALLEL_WriteCharD0:
 ; NOTES:
 ;   Stops on NUL; uses the D0 output routine for each byte.
 ;------------------------------------------------------------------------------
-PARALLEL_WriteString:
     MOVEA.L 4(A7),A0
 
+;------------------------------------------------------------------------------
+; FUNC: PARALLEL_WriteStringLoop   (Routine at PARALLEL_WriteStringLoop)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARALLEL_WriteStringLoop:
     MOVE.B  (A0)+,D0
     BEQ.S   .return
@@ -149,7 +166,7 @@ PARALLEL_WriteStringLoop:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_WaitReady   (WaitReady??)
+; FUNC: PARALLEL_WaitReady   (WaitReadyuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -178,7 +195,7 @@ PARALLEL_WaitReady:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_CheckReady   (CheckReady??)
+; FUNC: PARALLEL_CheckReady   (CheckReadyuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -204,7 +221,7 @@ PARALLEL_CheckReady:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_RawDoFmtPtrs   (RawDoFmtPtrs??)
+; FUNC: PARALLEL_RawDoFmtPtrs   (RawDoFmtPtrsuncertain)
 ; ARGS:
 ;   stack +4: fmtPtr
 ;   stack +8: argsPtr
@@ -213,7 +230,7 @@ PARALLEL_CheckReady:
 ; CLOBBERS:
 ;   A0-A2
 ; CALLS:
-;   JMPTBL_PARALLEL_RawDoFmt
+;   .lab_JMPTBL_PARALLEL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -223,13 +240,12 @@ PARALLEL_CheckReady:
 ; NOTES:
 ;   Marked dead code; entry label not referenced externally.
 ;------------------------------------------------------------------------------
-PARALLEL_RawDoFmtPtrs:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     BRA.S   PARALLEL_RawDoFmtCommon
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_RawDoFmtStackArgs   (RawDoFmtStackArgs??)
+; FUNC: PARALLEL_RawDoFmtStackArgs   (RawDoFmtStackArgsuncertain)
 ; ARGS:
 ;   stack +4: fmtPtr
 ;   stack +8: first arg on stack
@@ -238,7 +254,7 @@ PARALLEL_RawDoFmtPtrs:
 ; CLOBBERS:
 ;   A0-A2
 ; CALLS:
-;   JMPTBL_PARALLEL_RawDoFmt
+;   .lab_JMPTBL_PARALLEL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -252,15 +268,34 @@ PARALLEL_RawDoFmtStackArgs:
     MOVEA.L 4(A7),A0
     LEA     8(A7),A1
 
+;------------------------------------------------------------------------------
+; FUNC: PARALLEL_RawDoFmtCommon   (Routine at PARALLEL_RawDoFmtCommon)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A0/A2/A7/D0
+; CALLS:
+;   PARALLEL_RawDoFmt
+; READS:
+;   PARALLEL_WriteCharD0
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARALLEL_RawDoFmtCommon:
     MOVEM.L A2,-(A7)
     LEA     PARALLEL_WriteCharD0(PC),A2
-    BSR.S   JMPTBL_PARALLEL_RawDoFmt
+    BSR.S   .lab_JMPTBL_PARALLEL_RawDoFmt
 
     MOVEM.L (A7)+,A2
     RTS
 
-JMPTBL_PARALLEL_RawDoFmt:
+.lab_JMPTBL_PARALLEL_RawDoFmt:
     JSR     PARALLEL_RawDoFmt
 
     RTS
@@ -268,7 +303,7 @@ JMPTBL_PARALLEL_RawDoFmt:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_RawDoFmtRegs   (RawDoFmtRegs??)
+; FUNC: PARALLEL_RawDoFmtRegs   (RawDoFmtRegsuncertain)
 ; ARGS:
 ;   A0-A3: RawDoFmt inputs (format + args + output hook)
 ; RET:
@@ -276,7 +311,7 @@ JMPTBL_PARALLEL_RawDoFmt:
 ; CLOBBERS:
 ;   A0-A3
 ; CALLS:
-;   JMPTBL_PARALLEL_RawDoFmt
+;   .lab_JMPTBL_PARALLEL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -286,10 +321,9 @@ JMPTBL_PARALLEL_RawDoFmt:
 ; NOTES:
 ;   Marked dead code; entry label not referenced externally.
 ;------------------------------------------------------------------------------
-PARALLEL_RawDoFmtRegs:
     MOVEM.L A2-A3,-(A7)
     MOVEM.L 12(A7),A0-A3
-    BSR.S   JMPTBL_PARALLEL_RawDoFmt
+    BSR.S   .lab_JMPTBL_PARALLEL_RawDoFmt
 
     MOVEM.L (A7)+,A2-A3
     RTS
@@ -300,7 +334,7 @@ PARALLEL_RawDoFmtRegs:
     DC.W    $0000
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_WriteCharHwFromStack   (WriteCharHwFromStack??)
+; FUNC: PARALLEL_WriteCharHwFromStack   (WriteCharHwFromStackuncertain)
 ; ARGS:
 ;   stack +4: ch (byte)
 ; RET:
@@ -318,11 +352,10 @@ PARALLEL_RawDoFmtRegs:
 ; NOTES:
 ;   Entry is preceded by a padding word; keep layout intact.
 ;------------------------------------------------------------------------------
-PARALLEL_WriteCharHwFromStack:
     MOVE.L  4(A7),D0
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_WriteCharHw   (WriteCharHw??)
+; FUNC: PARALLEL_WriteCharHw   (WriteCharHwuncertain)
 ; ARGS:
 ;   D0: ch (byte)
 ; RET:
@@ -363,7 +396,7 @@ PARALLEL_WriteCharHw:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_RawDoFmt   (RawDoFmtParallel??)
+; FUNC: PARALLEL_RawDoFmt   (RawDoFmtParalleluncertain)
 ; ARGS:
 ;   A0: format string
 ;   A1: argument stream

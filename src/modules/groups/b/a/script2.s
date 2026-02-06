@@ -1,13 +1,13 @@
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadSerialRbfByte   (ReadSerialRbfByte??)
+; FUNC: SCRIPT_ReadSerialRbfByte   (ReadSerialRbfByteuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: byte read ?? (from ESQ_ReadSerialRbfByte)
+;   D0: none observed
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   GROUPD_JMPTBL_ESQ_ReadSerialRbfByte
+;   SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte
 ; READS:
 ;   (none)
 ; WRITES:
@@ -15,59 +15,78 @@
 ; DESC:
 ;   Thin wrapper around ESQ_ReadSerialRbfByte.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 SCRIPT_ReadSerialRbfByte:
-LAB_14AF:
-    JSR     GROUPD_JMPTBL_ESQ_ReadSerialRbfByte(PC)
-
-    RTS
-
-;!======
-
-SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
-    JSR     GROUPD_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
+    JSR     SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte(PC)
 
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_14B1   (??)
+; FUNC: SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte   (Routine at SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   ??
+;   SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_14B1:
+SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
+    JSR     SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
+
+    RTS
+
+;!======
+
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_UpdateSerialShadowFromCtrlByte   (Latch low control bits and write serial word)
+; ARGS:
+;   stack +8: ctrlByte (u8)
+; RET:
+;   D0: none
+; CLOBBERS:
+;   A7/D0/D1/D7
+; CALLS:
+;   SCRIPT_WriteSerialDataWord
+; READS:
+;   SCRIPT_SerialShadowWord
+; WRITES:
+;   SCRIPT_SerialShadowWord, SCRIPT_SerialInputLatch
+; DESC:
+;   Stores ctrlByte in SCRIPT_SerialInputLatch, merges low 2 bits into the
+;   serial shadow word, then writes the updated word to serial hardware.
+; NOTES:
+;   Preserves non-control bits with mask $FC.
+;------------------------------------------------------------------------------
+SCRIPT_UpdateSerialShadowFromCtrlByte:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.W  D0,LAB_2342
+    MOVE.W  D0,SCRIPT_SerialInputLatch
     ANDI.B  #$3,D7
     MOVEQ   #0,D0
-    MOVE.W  LAB_2341,D0
+    MOVE.W  SCRIPT_SerialShadowWord,D0
     MOVEQ   #126,D1
     ADD.L   D1,D1
     AND.L   D1,D0
     OR.B    D0,D7
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.W  D0,LAB_2341
+    MOVE.W  D0,SCRIPT_SerialShadowWord
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,-(A7)
@@ -81,7 +100,7 @@ LAB_14B1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLine   (AssertCtrlLine??)
+; FUNC: SCRIPT_AssertCtrlLine   (AssertCtrlLineuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -91,22 +110,21 @@ LAB_14B1:
 ; CALLS:
 ;   SCRIPT_WriteSerialDataWord
 ; READS:
-;   LAB_2341
+;   SCRIPT_SerialShadowWord
 ; WRITES:
-;   LAB_20AC, LAB_2341, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Sets the CTRL/serial output bit in the shadow register and pushes it to
 ;   the serial data register.
 ; NOTES:
-;   LAB_20AC appears to mirror the asserted/deasserted state.
+;   SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLine:
-LAB_14B2:
-    MOVE.W  #1,LAB_20AC
-    MOVE.W  LAB_2341,D0
+    MOVE.W  #1,SCRIPT_CtrlLineAssertedFlag
+    MOVE.W  SCRIPT_SerialShadowWord,D0
     MOVE.L  D0,D1
     ORI.W   #32,D1
-    MOVE.W  D1,LAB_2341
+    MOVE.W  D1,SCRIPT_SerialShadowWord
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
@@ -118,7 +136,7 @@ LAB_14B2:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLineIfEnabled   (AssertCtrlLineIfEnabled??)
+; FUNC: SCRIPT_AssertCtrlLineIfEnabled   (AssertCtrlLineIfEnableduncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -128,17 +146,16 @@ LAB_14B2:
 ; CALLS:
 ;   SCRIPT_AssertCtrlLine
 ; READS:
-;   LAB_2294
+;   DATA_WDISP_BSS_WORD_2294
 ; WRITES:
-;   LAB_20AC, LAB_2341, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Asserts the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
-;   LAB_2294 acts as an enable gate.
+;   DATA_WDISP_BSS_WORD_2294 acts as an enable gate.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLineIfEnabled:
-LAB_14B3:
-    TST.W   LAB_2294
+    TST.W   DATA_WDISP_BSS_WORD_2294
     BEQ.S   .return_status
 
     BSR.S   SCRIPT_AssertCtrlLine
@@ -149,7 +166,7 @@ LAB_14B3:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DeassertCtrlLine   (DeassertCtrlLine??)
+; FUNC: SCRIPT_DeassertCtrlLine   (DeassertCtrlLineuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -159,22 +176,21 @@ LAB_14B3:
 ; CALLS:
 ;   SCRIPT_WriteSerialDataWord
 ; READS:
-;   LAB_2341
+;   SCRIPT_SerialShadowWord
 ; WRITES:
-;   LAB_20AC, LAB_2341, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Clears the CTRL/serial output bit in the shadow register and pushes it to
 ;   the serial data register.
 ; NOTES:
-;   LAB_20AC appears to mirror the asserted/deasserted state.
+;   SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
 ;------------------------------------------------------------------------------
 SCRIPT_DeassertCtrlLine:
-LAB_14B5:
-    CLR.W   LAB_20AC
-    MOVE.W  LAB_2341,D0
+    CLR.W   SCRIPT_CtrlLineAssertedFlag
+    MOVE.W  SCRIPT_SerialShadowWord,D0
     MOVE.L  D0,D1
     ANDI.W  #$ffdf,D1
-    MOVE.W  D1,LAB_2341
+    MOVE.W  D1,SCRIPT_SerialShadowWord
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
@@ -186,7 +202,7 @@ LAB_14B5:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ClearCtrlLineIfEnabled   (ClearCtrlLineIfEnabled??)
+; FUNC: SCRIPT_ClearCtrlLineIfEnabled   (ClearCtrlLineIfEnableduncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -196,17 +212,16 @@ LAB_14B5:
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLine
 ; READS:
-;   LAB_2294
+;   DATA_WDISP_BSS_WORD_2294
 ; WRITES:
-;   LAB_20AC, LAB_2341 (via SCRIPT_DeassertCtrlLine)
+;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord (via SCRIPT_DeassertCtrlLine)
 ; DESC:
 ;   Clears the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
-;   SCRIPT_DeassertCtrlLine updates LAB_2341 and sends SERDAT.
+;   SCRIPT_DeassertCtrlLine updates SCRIPT_SerialShadowWord and sends SERDAT.
 ;------------------------------------------------------------------------------
 SCRIPT_ClearCtrlLineIfEnabled:
-LAB_14B6:
-    TST.W   LAB_2294
+    TST.W   DATA_WDISP_BSS_WORD_2294
     BEQ.S   .return_status
 
     BSR.S   SCRIPT_DeassertCtrlLine
@@ -217,7 +232,7 @@ LAB_14B6:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLineNow   (AssertCtrlLineNow??)
+; FUNC: SCRIPT_AssertCtrlLineNow   (AssertCtrlLineNowuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -227,14 +242,13 @@ LAB_14B6:
 ; CALLS:
 ;   SCRIPT_AssertCtrlLine
 ; READS:
-;   LAB_2341
+;   SCRIPT_SerialShadowWord
 ; WRITES:
-;   LAB_20AC, LAB_2341, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Unconditionally asserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLineNow:
-LAB_14B8:
     BSR.S   SCRIPT_AssertCtrlLine
 
     RTS
@@ -242,7 +256,7 @@ LAB_14B8:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DeassertCtrlLineNow   (DeassertCtrlLineNow??)
+; FUNC: SCRIPT_DeassertCtrlLineNow   (DeassertCtrlLineNowuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -252,14 +266,13 @@ LAB_14B8:
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLine
 ; READS:
-;   LAB_2341
+;   SCRIPT_SerialShadowWord
 ; WRITES:
-;   LAB_20AC, LAB_2341, SERDAT
+;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Unconditionally deasserts the CTRL/serial output bit.
 ;------------------------------------------------------------------------------
 SCRIPT_DeassertCtrlLineNow:
-LAB_14B9:
     BSR.S   SCRIPT_DeassertCtrlLine
 
     RTS
@@ -267,7 +280,7 @@ LAB_14B9:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateCtrlLineTimeout   (UpdateCtrlLineTimeout??)
+; FUNC: SCRIPT_UpdateCtrlLineTimeout   (UpdateCtrlLineTimeoutuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -277,9 +290,9 @@ LAB_14B9:
 ; CALLS:
 ;   SCRIPT_ReadCiaBBit5Mask
 ; READS:
-;   LAB_2294, CIAB_PRA
+;   DATA_WDISP_BSS_WORD_2294, CIAB_PRA
 ; WRITES:
-;   LAB_2343, LAB_22A9, LAB_2265
+;   DATA_WDISP_BSS_LONG_2343, ESQIFF_ExternalAssetFlags, LADFUNC_EntryCount
 ; DESC:
 ;   Polls the CTRL line and increments a counter while it stays asserted; once
 ;   a threshold is reached, resets related counters/flags.
@@ -287,8 +300,7 @@ LAB_14B9:
 ;   Uses CIAB_PRA bitmask (via SCRIPT_ReadCiaBBit5Mask).
 ;------------------------------------------------------------------------------
 SCRIPT_UpdateCtrlLineTimeout:
-LAB_14BA:
-    TST.W   LAB_2294
+    TST.W   DATA_WDISP_BSS_WORD_2294
     BEQ.S   .return_status
 
     BSR.W   SCRIPT_ReadCiaBBit5Mask
@@ -296,18 +308,18 @@ LAB_14BA:
     TST.B   D0
     BEQ.S   .return_status
 
-    MOVE.W  LAB_2343,D0
+    MOVE.W  DATA_WDISP_BSS_LONG_2343,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LAB_2343
+    MOVE.W  D1,DATA_WDISP_BSS_LONG_2343
     MOVEQ   #20,D0
     CMP.W   D0,D1
     BCS.S   .return_status
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_22A9
-    MOVE.W  #$24,LAB_2265
-    MOVE.W  D0,LAB_2343
+    MOVE.W  D0,ESQIFF_ExternalAssetFlags
+    MOVE.W  #$24,LADFUNC_EntryCount
+    MOVE.W  D0,DATA_WDISP_BSS_LONG_2343
 
 .return_status:
     RTS
@@ -315,7 +327,7 @@ LAB_14BA:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadCiaBBit3Flag   (ReadCiaBBit3Flag??)
+; FUNC: SCRIPT_ReadCiaBBit3Flag   (ReadCiaBBit3Flaguncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -334,7 +346,6 @@ LAB_14BA:
 ;   Bit meaning is hardware-defined (handshake/status line).
 ;------------------------------------------------------------------------------
 SCRIPT_ReadCiaBBit3Flag:
-LAB_14BC:
     MOVEM.L D6-D7,-(A7)
 
     MOVEQ   #0,D7
@@ -356,7 +367,7 @@ LAB_14BC:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadCiaBBit5Mask   (ReadCiaBBit5Mask??)
+; FUNC: SCRIPT_ReadCiaBBit5Mask   (ReadCiaBBit5Maskuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -375,7 +386,6 @@ LAB_14BC:
 ;   Bit meaning is hardware-defined (handshake/status line).
 ;------------------------------------------------------------------------------
 SCRIPT_ReadCiaBBit5Mask:
-LAB_14BF:
     MOVEM.L D6-D7,-(A7)
 
     MOVEQ   #0,D7
@@ -393,26 +403,25 @@ LAB_14BF:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_GetCtrlLineFlag   (GetCtrlLineFlag??)
+; FUNC: SCRIPT_GetCtrlLineFlag   (GetCtrlLineFlaguncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: LAB_20AC (shadow flag)
+;   D0: SCRIPT_CtrlLineAssertedFlag (shadow flag)
 ; CLOBBERS:
 ;   D0
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_20AC
+;   SCRIPT_CtrlLineAssertedFlag
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Returns the cached CTRL line asserted flag.
 ;------------------------------------------------------------------------------
 SCRIPT_GetCtrlLineFlag:
-LAB_14C0:
     MOVE.L  D7,-(A7)
-    MOVE.W  LAB_20AC,D7
+    MOVE.W  SCRIPT_CtrlLineAssertedFlag,D7
     MOVE.L  D7,D0
     MOVE.L  (A7)+,D7
     RTS
@@ -420,7 +429,7 @@ LAB_14C0:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_WriteSerialDataWord   (WriteSerialDataWord??)
+; FUNC: SCRIPT_WriteSerialDataWord   (WriteSerialDataWorduncertain)
 ; ARGS:
 ;   stack +10: dataWord (low byte used)
 ; RET:
@@ -432,27 +441,64 @@ LAB_14C0:
 ; READS:
 ;   (none)
 ; WRITES:
-;   SERDAT, LAB_2341
+;   SERDAT, SCRIPT_SerialShadowWord
 ; DESC:
-;   Writes a byte to SERDAT with bit8 set and mirrors it into LAB_2341.
+;   Writes a byte to SERDAT with bit8 set and mirrors it into SCRIPT_SerialShadowWord.
 ; NOTES:
 ;   Uses only the low byte of the provided word.
 ;------------------------------------------------------------------------------
 SCRIPT_WriteSerialDataWord:
-LAB_14C1:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
     ANDI.W  #$ff,D7
     BSET    #8,D7
     MOVE.W  D7,SERDAT
-    MOVE.W  D7,LAB_2341
+    MOVE.W  D7,SCRIPT_SerialShadowWord
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
-GROUPD_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte   (Routine at SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_CaptureCtrlBit4StreamBufferByte
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte:
     JMP     ESQ_CaptureCtrlBit4StreamBufferByte
 
-GROUPD_JMPTBL_ESQ_ReadSerialRbfByte:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte   (Routine at SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_ReadSerialRbfByte
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte:
     JMP     ESQ_ReadSerialRbfByte

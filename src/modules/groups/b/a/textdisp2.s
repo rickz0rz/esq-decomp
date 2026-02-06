@@ -7,24 +7,24 @@
 ; CLOBBERS:
 ;   D0/D1
 ; CALLS:
-;   LAB_14B1, JMPTBL_LAB_0A7C
+;   SCRIPT_UpdateSerialShadowFromCtrlByte, TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_2364
+;   TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Resets selection state and triggers a refresh helper.
 ; NOTES:
-;   Uses helper LAB_14B1 with constant 3 and clears LAB_2364.
+;   Uses helper SCRIPT_UpdateSerialShadowFromCtrlByte with constant 3 and clears
+;   TEXTDISP_CurrentMatchIndex.
 ;------------------------------------------------------------------------------
 TEXTDISP_ResetSelectionAndRefresh:
-LAB_167D:
     PEA     3.W
-    JSR     LAB_14B1(PC)
+    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     CLR.L   (A7)
-    JSR     JMPTBL_LAB_0A7C(PC)
+    JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
     RTS
@@ -40,22 +40,21 @@ LAB_167D:
 ; CLOBBERS:
 ;   D0-D2/D7/A0-A1/A6
 ; CALLS:
-;   GROUPD_JMPTBL_LAB_0A49, LAB_183E, _LVOSetRast
+;   WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
 ; READS:
-;   LAB_2295-2297, GLOB_REF_RASTPORT_2, GLOB_REF_GRAPHICS_LIBRARY
+;   WDISP_PaletteTriplesRBase-2297, GLOB_REF_RASTPORT_2, GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   LAB_2216, LAB_2295-2297, LAB_22AB
+;   WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase-2297, WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Allocates/sets the working rastport and updates palette bytes based on mode.
 ; NOTES:
 ;   Mode 0 uses args (3,0,0); nonzero uses (4,0,7).
 ;------------------------------------------------------------------------------
 TEXTDISP_SetRastForMode:
-LAB_167E:
     MOVEM.L D2/D7,-(A7)
     MOVE.W  14(A7),D7
-    CLR.W   LAB_22AB
-    JSR     GROUPD_JMPTBL_LAB_0A49(PC)
+    CLR.W   WDISP_AccumulatorFlushPending
+    JSR     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
     TST.W   D7
     BNE.S   .mode_nonzero
@@ -64,38 +63,38 @@ LAB_167E:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     3.W
-    JSR     LAB_183E(PC)
+    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     BRA.S   .return
 
 .mode_nonzero:
     PEA     4.W
     CLR.L   -(A7)
     PEA     7.W
-    JSR     LAB_183E(PC)
+    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVE.L  D7,D1
     MOVEQ   #3,D2
     MULS    D2,D1
-    LEA     LAB_2295,A0
+    LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D1,A0
-    MOVE.B  (A0),LAB_2295
+    MOVE.B  (A0),WDISP_PaletteTriplesRBase
     MOVE.L  D7,D0
     MULS    D2,D0
-    LEA     LAB_2296,A0
+    LEA     WDISP_PaletteTriplesGBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),LAB_2296
+    MOVE.B  (A0),WDISP_PaletteTriplesGBase
     MOVE.L  D7,D0
     MULS    D2,D0
-    LEA     LAB_2297,A0
+    LEA     WDISP_PaletteTriplesBBase,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),LAB_2297
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVE.B  (A0),WDISP_PaletteTriplesBBase
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEA.L A0,A1
@@ -117,48 +116,47 @@ LAB_167E:
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   MATH_DivS32, JMPTBL_LADFUNC_DrawEntryPreview
+;   MATH_DivS32, TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
 ; READS:
-;   LAB_2251, LAB_2265
+;   LADFUNC_EntryPtrTable, LADFUNC_EntryCount
 ; WRITES:
-;   LAB_2265
+;   LADFUNC_EntryCount
 ; DESC:
 ;   Advances the entry index until a valid slot is found, then draws a preview.
 ; NOTES:
 ;   Wraps via division by 46.
 ;------------------------------------------------------------------------------
 TEXTDISP_DrawNextEntryPreview:
-LAB_1681:
 .loop:
-    MOVE.W  LAB_2265,D0
+    MOVE.W  LADFUNC_EntryCount,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_2251,A0
+    LEA     LADFUNC_EntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEQ   #1,D0
     CMP.W   4(A1),D0
     BEQ.S   .found_entry
 
-    MOVE.W  LAB_2265,D0
+    MOVE.W  LADFUNC_EntryCount,D0
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVEQ   #46,D1
     JSR     MATH_DivS32(PC)
 
-    MOVE.W  D1,LAB_2265
+    MOVE.W  D1,LADFUNC_EntryCount
     BRA.S   .loop
 
 .found_entry:
-    MOVE.W  LAB_2265,D0
+    MOVE.W  LADFUNC_EntryCount,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_LADFUNC_DrawEntryPreview(PC)
+    JSR     TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2265,D0
+    MOVE.W  LADFUNC_EntryCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2265
+    MOVE.W  D0,LADFUNC_EntryCount
     RTS
 
 ;!======
@@ -172,33 +170,32 @@ LAB_1681:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   JMPTBL_LAB_0A7C, TEXTDISP_DrawNextEntryPreview, TEXTDISP_ResetSelectionAndRefresh
+;   TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame, TEXTDISP_DrawNextEntryPreview, TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   LAB_1FE6/1FE8/1FE9, LAB_1DD6, WDISP_HighlightActive
+;   LOCAVAIL_FilterModeFlag/1FE8/1FE9, ED_DiagGraphModeChar, WDISP_HighlightActive
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Chooses between refresh/preview paths based on mode flags and highlight state.
 ; NOTES:
-;   Uses LAB_1DD6 == 'N' (78) gate.
+;   Uses ED_DiagGraphModeChar == 'N' (78) gate.
 ;------------------------------------------------------------------------------
 TEXTDISP_UpdateHighlightOrPreview:
-LAB_1683:
     MOVEM.L D2/D7,-(A7)
     MOVEQ   #1,D0
-    CMP.L   LAB_1FE6,D0
+    CMP.L   LOCAVAIL_FilterModeFlag,D0
     BNE.S   .mode_not_one
 
-    MOVE.L  LAB_1FE8,D1
+    MOVE.L  LOCAVAIL_FilterClassId,D1
     MOVEQ   #-1,D2
     CMP.L   D2,D1
     BNE.S   .mode_index_selected
 
-    MOVE.L  LAB_1FE9,D1
+    MOVE.L  LOCAVAIL_FilterPrevClassId,D1
 
 .mode_index_selected:
     MOVE.L  D1,D7
-    MOVE.B  LAB_1DD6,D1
+    MOVE.B  ED_DiagGraphModeChar,D1
     MOVEQ   #78,D2
     CMP.B   D2,D1
     BEQ.S   .check_highlight_for_mode3
@@ -208,7 +205,7 @@ LAB_1683:
     BNE.S   .check_highlight_for_mode3
 
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_LAB_0A7C(PC)
+    JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
@@ -232,13 +229,13 @@ LAB_1683:
     BRA.S   .return
 
 .mode_not_one:
-    MOVE.B  LAB_1DD6,D1
+    MOVE.B  ED_DiagGraphModeChar,D1
     MOVEQ   #78,D2
     CMP.B   D2,D1
     BEQ.S   .mode_char_is_n
 
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_LAB_0A7C(PC)
+    JSR     TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
@@ -270,27 +267,26 @@ LAB_1683:
 ; CLOBBERS:
 ;   D0-D1/A0
 ; CALLS:
-;   LAB_183E, GROUPD_JMPTBL_LAB_0A45
+;   TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_2216, LAB_22AB
+;   WDISP_DisplayContextBase, WDISP_AccumulatorFlushPending
 ; DESC:
-;   Allocates/sets the working rastport then resets LAB_22AB.
+;   Allocates/sets the working rastport then resets WDISP_AccumulatorFlushPending.
 ; NOTES:
 ;   Unlabeled entry in original binary; added for documentation.
 ;------------------------------------------------------------------------------
-TEXTDISP_InitRastAndResetFlag:
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     LAB_183E(PC)
+    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,LAB_2216
-    JSR     GROUPD_JMPTBL_LAB_0A45(PC)
+    MOVE.L  D0,WDISP_DisplayContextBase
+    JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     LEA     12(A7),A7
-    CLR.W   LAB_22AB
+    CLR.W   WDISP_AccumulatorFlushPending
     RTS
 
 ;!======
@@ -304,51 +300,50 @@ TEXTDISP_InitRastAndResetFlag:
 ; CLOBBERS:
 ;   D0-D2
 ; CALLS:
-;   JMPTBL_LAB_0F78, SCRIPT_AssertCtrlLineIfEnabled, TEXTDISP_UpdateHighlightOrPreview,
-;   TEXTDISP_ResetSelectionAndRefresh, JMPTBL_LAB_0A8E
+;   TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan, SCRIPT_AssertCtrlLineIfEnabled, TEXTDISP_UpdateHighlightOrPreview,
+;   TEXTDISP_ResetSelectionAndRefresh, TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
 ; READS:
-;   LAB_1DF4, LAB_2263, LAB_2346, LAB_1DDE, LAB_1DDF, LAB_1FE9, LAB_234A
+;   DATA_ESQ_BSS_WORD_1DF4, GLOB_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, GLOB_RefreshTickCounter
 ; WRITES:
-;   LAB_2363, LAB_22A5, LAB_1DDF, LAB_1DDE, LAB_234A
+;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, GLOB_RefreshTickCounter
 ; DESC:
 ;   Updates internal display/control counters and triggers refresh/preview steps.
 ; NOTES:
-;   Uses LAB_234A as a timer for periodic refresh.
+;   Uses GLOB_RefreshTickCounter as a timer for periodic refresh.
 ;------------------------------------------------------------------------------
 TEXTDISP_TickDisplayState:
-LAB_168B:
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2363
-    TST.W   LAB_1DF4
+    MOVE.W  D0,DATA_WDISP_BSS_LONG_2363
+    TST.W   DATA_ESQ_BSS_WORD_1DF4
     BNE.W   .return
 
-    TST.W   LAB_2263
+    TST.W   GLOB_UIBusyFlag
     BNE.W   .tick_refresh_timer
 
-    MOVE.W  LAB_2346,D1
+    MOVE.W  SCRIPT_RuntimeMode,D1
     SUBQ.W  #2,D1
     BEQ.S   .tick_refresh_timer
 
-    MOVE.W  LAB_1DDE,D1
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D1
     BEQ.S   .handle_refresh_timer
 
-    MOVE.W  LAB_1DDF,D2
+    MOVE.W  TEXTDISP_DeferredActionArmed,D2
     BEQ.S   .handle_refresh_timer
 
-    MOVE.W  D0,LAB_1DDF
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  D0,TEXTDISP_DeferredActionArmed
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #3,D0
     BEQ.S   .assert_ctrl_and_refresh
 
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #2,D0
     BNE.S   .clear_pending_mode
 
 .assert_ctrl_and_refresh:
-    JSR     JMPTBL_LAB_0F78(PC)
+    JSR     TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan(PC)
 
-    MOVE.W  D0,LAB_22A5
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_22A5
     JSR     SCRIPT_AssertCtrlLineIfEnabled(PC)
 
     BSR.W   TEXTDISP_UpdateHighlightOrPreview
@@ -357,39 +352,39 @@ LAB_168B:
 
 .clear_pending_mode:
     MOVEQ   #-1,D0
-    CMP.L   LAB_1FE9,D0
+    CMP.L   LOCAVAIL_FilterPrevClassId,D0
     BEQ.S   .decrement_delay_counter
 
-    MOVE.L  D0,LAB_1FE9
+    MOVE.L  D0,LOCAVAIL_FilterPrevClassId
 
 .decrement_delay_counter:
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .handle_refresh_timer
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_1DDE
+    MOVE.W  D0,TEXTDISP_DeferredActionCountdown
 
 .handle_refresh_timer:
-    MOVE.W  LAB_234A,D0
+    MOVE.W  GLOB_RefreshTickCounter,D0
     CMPI.W  #$b4,D0
     BLT.S   .dispatch_update
 
-    CLR.W   LAB_234A
+    CLR.W   GLOB_RefreshTickCounter
     BSR.W   TEXTDISP_ResetSelectionAndRefresh
 
     BRA.S   .dispatch_update
 
 .tick_refresh_timer:
-    MOVE.W  LAB_234A,D0
+    MOVE.W  GLOB_RefreshTickCounter,D0
     ADDQ.W  #1,D0
     BEQ.S   .dispatch_update
 
-    CLR.W   LAB_234A
+    CLR.W   GLOB_RefreshTickCounter
 
 .dispatch_update:
-    JSR     JMPTBL_LAB_0A8E(PC)
+    JSR     TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations(PC)
 
 .return:
     MOVE.L  (A7)+,D2
@@ -403,26 +398,25 @@ LAB_168B:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0F78   (JumpStub_LAB_0F78)
+; FUNC: TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan   (JumpStub)
 ; ARGS:
-;   see LAB_0F78)
+;   see LOCAVAIL_GetFilterWindowHalfSpan)
 ; RET:
-;   see LAB_0F78)
+;   see LOCAVAIL_GetFilterWindowHalfSpan)
 ; CLOBBERS:
-;   see LAB_0F78)
+;   see LOCAVAIL_GetFilterWindowHalfSpan)
 ; CALLS:
-;   LAB_0F78
+;   LOCAVAIL_GetFilterWindowHalfSpan
 ; DESC:
-;   Jump stub to LAB_0F78.
+;   Jump stub to LOCAVAIL_GetFilterWindowHalfSpan.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0F78:
-LAB_1693:
-    JMP     LAB_0F78
+TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan:
+    JMP     LOCAVAIL_GetFilterWindowHalfSpan
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LADFUNC_DrawEntryPreview   (JumpStub_LADFUNC_DrawEntryPreview)
+; FUNC: TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview   (JumpStub_LADFUNC_DrawEntryPreview)
 ; ARGS:
 ;   see LADFUNC_DrawEntryPreview)
 ; RET:
@@ -436,44 +430,41 @@ LAB_1693:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LADFUNC_DrawEntryPreview:
-LAB_1694:
+TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview:
     JMP     LADFUNC_DrawEntryPreview
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0A8E   (JumpStub_LAB_0A8E)
+; FUNC: TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations   (JumpStub)
 ; ARGS:
-;   see LAB_0A8E)
+;   see ESQIFF_RunPendingCopperAnimations)
 ; RET:
-;   see LAB_0A8E)
+;   see ESQIFF_RunPendingCopperAnimations)
 ; CLOBBERS:
-;   see LAB_0A8E)
+;   see ESQIFF_RunPendingCopperAnimations)
 ; CALLS:
-;   LAB_0A8E
+;   ESQIFF_RunPendingCopperAnimations
 ; DESC:
-;   Jump stub to LAB_0A8E.
+;   Jump stub to ESQIFF_RunPendingCopperAnimations.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0A8E:
-LAB_1695:
-    JMP     LAB_0A8E
+TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations:
+    JMP     ESQIFF_RunPendingCopperAnimations
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0A7C   (JumpStub_LAB_0A7C)
+; FUNC: TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame   (JumpStub)
 ; ARGS:
-;   see LAB_0A7C)
+;   see ESQIFF_PlayNextExternalAssetFrame)
 ; RET:
-;   see LAB_0A7C)
+;   see ESQIFF_PlayNextExternalAssetFrame)
 ; CLOBBERS:
-;   see LAB_0A7C)
+;   see ESQIFF_PlayNextExternalAssetFrame)
 ; CALLS:
-;   LAB_0A7C
+;   ESQIFF_PlayNextExternalAssetFrame
 ; DESC:
-;   Jump stub to LAB_0A7C.
+;   Jump stub to ESQIFF_PlayNextExternalAssetFrame.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0A7C:
-LAB_1696:
-    JMP     LAB_0A7C
+TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame:
+    JMP     ESQIFF_PlayNextExternalAssetFrame

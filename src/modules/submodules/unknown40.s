@@ -25,7 +25,7 @@ BATTCLOCK_GetSecondsFromBatteryBackedClock:
 ; ARGS:
 ;   stack +8: D0 = seconds since Amiga epoch
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0/A6
 ; CALLS:
@@ -46,21 +46,20 @@ BATTCLOCK_WriteSecondsToBatteryBackedClock:
 ;------------------------------------------------------------------------------
 ; FUNC: EXEC_CallVector_48   (Exec.library call wrapper at LVO -48.)
 ; ARGS:
-;   stack +12: A0-A1 = ??
-;   stack +20: D1/A2 = ??
+;   (none observed)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
 ;   D0/A0-A2/A6
 ; DESC:
-;   Dispatches to LVO -48 using LAB_231E as library base.
+;   Dispatches to LVO -48 using DATA_WDISP_BSS_LONG_231E as library base.
 ; NOTES:
 ;   Vector identity unknown; verify against call sites.
 ;------------------------------------------------------------------------------
 EXEC_CallVector_48:
     MOVEM.L A2/A6,-(A7)
 
-    MOVEA.L LAB_231E,A6
+    MOVEA.L DATA_WDISP_BSS_LONG_231E,A6
     MOVEM.L 12(A7),A0-A1
     MOVEM.L 20(A7),D1/A2
     JSR     -48(A6)         ; Traced A6 to be AbsExecBase here? _LVOexecPrivate3
@@ -75,7 +74,7 @@ EXEC_CallVector_48:
 ; ARGS:
 ;   stack +8: D1 = ticks
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
 ;   D1/A6
 ; CALLS:
@@ -96,7 +95,7 @@ DOS_Delay:
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_SystemTagList   (Call DOS SystemTagList.)
 ; ARGS:
-;   stack +12: D1-D2 = ??
+;   (none observed)
 ; RET:
 ;   D0: status
 ; CLOBBERS:

@@ -1,27 +1,27 @@
 ; ========== ED2.c ==========
 
-LAB_1D16:
+DATA_ED2_STR_PAGE_1D16:
     NStr    " Page"
-LAB_1D17:
+DATA_ED2_STR_LINE_1D17:
     NStr    " Line"
-LAB_1D18:
+DATA_ED2_BSS_LONG_1D18:
     DS.L    1
-LAB_1D19:
+DATA_ED2_BSS_LONG_1D19:
     DS.L    1
-LAB_1D1A:
+DATA_ED2_CONST_LONG_1D1A:
     DC.L    $0000030c,$0c0c0000,$000c0c00,$05010201
     DC.L    $060a0505,$05000003
 
 ; Strings for ESC -> Special Functions -> Save ALL to disk
-LAB_1D1B:
+DATA_ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT_1D1B:
     NStr    "All data is to be saved."
 
 ; Strings for ESC -> Special Functions -> Save data to disk
-LAB_1D1C:
+DATA_ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT_1D1C:
     NStr    "TV Guide data is to be saved."
 
 ; Strings for ESC -> Special Functions -> Load text ads from disk
-LAB_1D1D:
+DATA_ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL_1D1D:
     NStr    "Text Ads will be loaded from DH2:"
 
 ; Strings for ESC -> Special Functions -> Reboot computer
@@ -42,17 +42,17 @@ GLOB_STR_REBOOTING_COMPUTER:
     NStr    "Rebooting Computer........"
 
 ; Strings for ESC - Edit Attributes?
-LAB_1D24:
+DATA_ED2_STR_NUMBER_TOO_BIG_1D24:
     NStr    " Number too big        "
-LAB_1D25:
+DATA_ED2_STR_NUMBER_TOO_SMALL_1D25:
     NStr    " Number too small      "
-LAB_1D26:
+DATA_ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT_1D26:
     NStr    " Push ESC to exit Attribute Edit."
-LAB_1D27:
+DATA_ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION_1D27:
     NStr    " Push RETURN to enter selection"
-LAB_1D28:
+DATA_ED2_STR_PUSH_ANY_KEY_TO_SELECT_1D28:
     NStr    " Push any key to select"
-LAB_1D29:
+DATA_ED2_STR_LOCAL_EDIT_NOT_AVAILABLE_1D29:
     NStr    "Local Edit not available"
 
 ; Version strings shown at the top of the ESC menu
@@ -66,23 +66,30 @@ GLOB_STR_BAUD_RATE_DIAGNOSTIC_MODE:
     NStr    "%ld baud"
 GLOB_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS:
     NStr    "Disk 0 is %2ld%% full with %2ld Errors"
-LAB_1D2E:
+DATA_ED2_BSS_WORD_1D2E:
     DS.W    1
-LAB_1D2F:
+DATA_ED2_BSS_WORD_1D2F:
     DS.W    1
 GLOB_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
     NStr    "Push any key to continue."
-LAB_1D31:
+DATA_ED2_BSS_WORD_1D31:
     DS.W    1
-LAB_1D32:
+;------------------------------------------------------------------------------
+; SYM: ED2_SelectedEntryDataPtr/ED2_SelectedEntryTitlePtr   (currently selected entry pointers)
+; TYPE: pointer/pointer
+; PURPOSE: Tracks the active entry record pointer and its title pointer for ED2 detail/summary panels.
+; USED BY: ED2_DrawEntrySummaryPanel, ED2_DrawEntryDetailsPanel
+; NOTES: Either pointer may be null when there is no valid current selection.
+;------------------------------------------------------------------------------
+ED2_SelectedEntryDataPtr:
     DS.L    1
-LAB_1D33:
+ED2_SelectedEntryTitlePtr:
     DS.L    1
-LAB_1D34:
+DATA_ED2_FMT_SCRSPD_PCT_D_1D34:
     NStr    "SCRSPD=%d"
-LAB_1D35:
+DATA_ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D_1D35:
     NStr    "MR=%d SBS=%d Sport=%d"
-LAB_1D36:
+DATA_ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR_1D36:
     NStr    "Cycle=%c CycleFreq=%d AftrOrdr=%d"
 GLOB_STR_CLOCKCMD_EQUALS_PCT_C:
     NStr    "ClockCmd=%c"
@@ -92,31 +99,31 @@ GLOB_STR_PI_CLU_POS1:
     NStr    "PI[%d] Clu_pos1=%d"
 GLOB_STR_CHAN_SOURCE_CALLLTRS_1:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
-LAB_1D3B:
+DATA_ED2_TAG_NULL_1D3B:
     NStr    "NULL"
-LAB_1D3C:
+DATA_ED2_TAG_NULL_1D3C:
     NStr    "NULL"
-LAB_1D3D:
+DATA_ED2_TAG_NULL_1D3D:
     NStr    "NULL"
 GLOB_STR_TS_TITLE_TIME:
     NStr    "TS=%d Title='%s' Time=%s"
-LAB_1D3F:
+DATA_ED2_TAG_NULL_1D3F:
     NStr    "NULL"
-LAB_1D40:
+DATA_ED2_STR_NONE_1D40:
     NStr    "None "
-LAB_1D41:
+DATA_ED2_STR_MOVIE_1D41:
     NStr    "Movie "
-LAB_1D42:
+DATA_ED2_STR_ALTHILITEPROG_1D42:
     NStr    "ALTHILITEPROG "
-LAB_1D43:
+DATA_ED2_STR_TAGPROG_1D43:
     NStr    "TAGPROG "
-LAB_1D44:
+DATA_ED2_STR_SPORTSPROG_1D44:
     NStr    "SPORTSPROG "
-LAB_1D45:
+DATA_ED2_STR_DVIEW_USED_1D45:
     NStr    "DVIEW_USED "
-LAB_1D46:
+DATA_ED2_STR_REPEATPROG_1D46:
     NStr    "REPEATPROG "
-LAB_1D47:
+DATA_ED2_STR_PREVDAYSDATA_1D47:
     NStr    "PREVDAYSDATA "
 GLOB_STR_ED2_C_2:
     NStr    "ED2.c"
@@ -124,102 +131,102 @@ GLOB_STR_CLU_CLU_POS1:
     NStr    "CLU[%d] Clu_pos1=%d"
 GLOB_STR_CHAN_SOURCE_CALLLTRS_2:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
-LAB_1D4B:
+DATA_ED2_STR_NONE_1D4B:
     NStr    "None "
-LAB_1D4C:
+DATA_ED2_STR_HILITESRC_1D4C:
     NStr    "HILITESRC "
-LAB_1D4D:
+DATA_ED2_STR_SUMBYSRC_1D4D:
     NStr    "SUMBYSRC "
-LAB_1D4E:
+DATA_ED2_STR_VIDEO_TAG_DISABLE_1D4E:
     NStr    "VIDEO_TAG_DISABLE "
-LAB_1D4F:
+DATA_ED2_STR_CAF_PPVSRC_1D4F:
     NStr    "CAF_PPVSRC "
-LAB_1D50:
+DATA_ED2_STR_DITTO_1D50:
     NStr    "DITTO "
-LAB_1D51:
+DATA_ED2_STR_ALTHILITESRC_1D51:
     NStr    "ALTHILITESRC "
-LAB_1D52:
+DATA_ED2_STR_STEREO_1D52:
     NStr    "STEREO "
-LAB_1D53:
+DATA_ED2_STR_GRID_1D53:
     NStr    "Grid "
-LAB_1D54:
+DATA_ED2_STR_MR_1D54:
     NStr    "MR "
-LAB_1D55:
+DATA_ED2_STR_DNICHE_1D55:
     NStr    "DNICHE "
-LAB_1D56:
+DATA_ED2_STR_DMPLEX_1D56:
     NStr    "DMPLEX "
-LAB_1D57:
+DATA_ED2_STR_CF2_DPPV_1D57:
     NStr    "CF2_DPPV "
     DS.W    1
-LAB_1D58:
+DATA_ED2_STR_CTIME_1D58:
     NStr    "CTime"
-LAB_1D59:
+DATA_ED2_STR_BTIME_1D59:
     NStr    "BTime"
 GLOB_STR_DF0_CLOCK_CMD:
     NStr    "df0:clock.cmd"
-LAB_1D5B:
+DATA_ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU_1D5B:
     NStr3   TextLineFeed,"ED.C: Short DUMP OF CLU",TextLineFeed
-LAB_1D5C:
+DATA_ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1__1D5C:
     NStr2   "    clu_pos1=%ld, curclu=%s, jdclu1=%ld, curjd=%ld",TextLineFeed
 GLOB_STR_TRUE_1:
     NStr    "TRUE"
 GLOB_STR_FALSE_1:
     NStr    "FALSE"
-LAB_1D5F:
+DATA_ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU_1D5F:
     NStr3   "ED.C: END OF DUMP OF CLU",TextLineFeed,TextLineFeed
-LAB_1D60:
+DATA_ED2_FMT_WICON_PCT_LD_1D60:
     NStr2   "wicon = %ld",TextLineFeed
-LAB_1D61:
+DATA_ED2_FMT_W_MIN_PCT_LD_MINUTES_1D61:
     NStr2   "w_min = %ld minutes",TextLineFeed
-LAB_1D62:
+DATA_ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD_1D62:
     NStr2   "wdcnt = every %ld times     (%ld)",TextLineFeed
-LAB_1D63:
+DATA_ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD_1D63:
     NStr2   "cwcnt = %ld times from now  (%ld)",TextLineFeed
-LAB_1D64:
+DATA_ED2_FMT_WDATA_PCT_08LX_1D64:
     NStr2   "WData = $%08lx",TextLineFeed
-LAB_1D65:
+DATA_ED2_FMT_WCITY_PCT_S_1D65:
     NStr2   "WCity = '%s'",TextLineFeed
-LAB_1D66:
+DATA_ED2_FMT_WEATHER_ID_PCT_S_1D66:
     NStr2   "Weather_ID = '%s'",TextLineFeed
-LAB_1D67:
+DATA_ED2_FMT_CWCOLOR_PCT_LD_1D67:
     NStr2   "cwcolor = %ld",TextLineFeed
-LAB_1D68:
+DATA_ED2_FMT_BANNER_FOR_WEATHER_PCT_D_1D68:
     NStr3   TextLineFeed,"banner_for_weather = %d",TextLineFeed
-LAB_1D69:
+DATA_ED2_FMT_BITPLANE1_PCT_8LX_1D69:
     NStr    "BitPlane1 =%8lx  "
 GLOB_STR_DF0_GRADIENT_INI_1:
     NStr    "df0:Gradient.ini"
-LAB_1D6B:
+DATA_ED2_TAG_NRLS_1D6B:
     NStr    "NRLS"
-LAB_1D6C:
+DATA_ED2_STR_NYYLLZ_1D6C:
     NStr    "NYyLlZ"
-LAB_1D6D:
+DATA_ED2_TAG_NYLRS_1D6D:
     NStr    "NYLRS"
-LAB_1D6E:
+DATA_ED2_STR_SILENCE_1D6E:
     NStr    "  Silence "
-LAB_1D6F:
+DATA_ED2_STR_LEFT_1D6F:
     NStr    "Left      "
-LAB_1D70:
+DATA_ED2_STR_RIGHT_1D70:
     NStr    "     Right"
-LAB_1D71:
+DATA_ED2_STR_BACKGROUND_1D71:
     NStr    "Background"
-LAB_1D72:
+DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72:
     NStr    "  Ext. Video Only "
-LAB_1D73:
+DATA_ED2_STR_COMPUTER_ONLY_1D73:
     NStr    "  Computer Only   "
-LAB_1D74:
+DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74:
     NStr    "Overlay Ext. Video"
-LAB_1D75:
+DATA_ED2_STR_NEGATIVE_VIDEO_1D75:
     NStr    "Negative Video"
-LAB_1D76:
+DATA_ED2_STR_VIDEO_SWITCH_1D76:
     NStr    "Video Switch "
-LAB_1D77:
+DATA_ED2_STR_OPEN_1D77:
     NStr    "Open  "
-LAB_1D78:
+DATA_ED2_STR_CLOSED_1D78:
     NStr    "Closed"
-LAB_1D79:
+DATA_ED2_STR_START_TAPE_VIDEO_1D79:
     NStr    "Start TAPE Video   "
-LAB_1D7A:
+DATA_ED2_STR_STOP_1D7A:
     NStr    "Stop  "
     DS.W    1
 GLOB_REF_BOOL_IS_TEXT_OR_CURSOR:
@@ -330,19 +337,19 @@ GLOB_STR_EDITING_AD_NUMBER_FORMATTED_1:
     NStr    "Editing Ad Number %2ld"
 GLOB_STR_EDITING_AD_NUMBER_FORMATTED_2:
     NStr    "Editing Ad Number %2ld"
-LAB_1DAC:
+DATA_ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT_1DAC:
     NStr    "Push any key to continue."
-LAB_1DAD:
+DATA_ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S_1DAD:
     NStr    "     ** Line/Page Commands **"
-LAB_1DAE:
+DATA_ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR_1DAE:
     NStr    "F1: Home               F6: Clear"
-LAB_1DAF:
+DATA_ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL_1DAF:
     NStr    "F2: Line/Page mode     F7: Insert Line"
-LAB_1DB0:
+DATA_ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE_1DB0:
     NStr    "F3: Center             F8: Delete Line"
-LAB_1DB1:
+DATA_ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY_1DB1:
     NStr    "F4: Left Justify       F9: Apply Color"
-LAB_1DB2:
+DATA_ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS_1DB2:
     NStr    "F5: Right Justify     F10: Insert char"
 GLOB_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR:
     NStr    "Shift ->: next Ad     DEL: Delete char"

@@ -4,7 +4,7 @@
 ;   stack +8: D0 = seconds since Amiga epoch
 ;   stack +12: A0 = ClockData struct pointer
 ; RET:
-;   D0: ??
+;   D0: result/status from _LVOAmiga2Date
 ; CLOBBERS:
 ;   D0/A0/A6
 ; CALLS:

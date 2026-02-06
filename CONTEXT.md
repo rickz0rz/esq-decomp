@@ -1,7 +1,7 @@
 # Current Work Context
 
 ## Build State
-- Latest `./test-hash.sh` run matches the canonical hash `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2DST_CallJump_066F
+- Latest `./test-hash.sh` run matches the canonical hash `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`.
 - Run `./test-hash.sh` after each batch of label renames; the script assembles with `-nosym` and removes the temporary output automatically.
 - Tooling assumes vasm 68k is installed under `~/Downloads/vasm/`; adjust `build.sh` and `test-hash.sh` if your local path differs.
 
@@ -12,8 +12,9 @@
   - Banner build helpers: `GCOMMAND_BuildBannerBlock`, `GCOMMAND_CopyImageDataToBitmap`, `GCOMMAND_BuildBannerTables`, `GCOMMAND_UpdateBannerOffset`.
   - Jump stubs: `GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1`, `GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0`, `GCOMMAND_JMPTBL_DOS_SystemTagList`, `GROUP_AU_JMPTBL_BRUSH_AppendBrushNode`.
   - Control command hook: `GCOMMAND_ProcessCtrlCommand` (used by `ESQ_InvokeGcommandInit`).
-- Associated data tables in `src/data/wdisp.s` still carry anonymous `LAB_22F*` symbols. Many are now annotated as likely switch/jump tables; name them as their purpose becomes clear during gcommand work (e.g., highlight flag tables, banner presets).
-- `src/modules/newgrid.s` remains largely unaliased with raw `LAB_` labels; new splits (`newgrid1.s`, `newgrid2.s`) should follow the same naming pass once the gcommand/wdisp path settles.
+- The former anonymous Niche/Mplex/PPV globals in `src/data/wdisp.s` now have semantic aliases across `22D*`, `22E*`, and `22F*` fields (workflow/detail flags, mode-cycle/search params, showtimes row span, pen/layout params, and preset work-entry aliases), with legacy labels retained underneath.
+- `src/modules/groups/b/a/newgrid.s` and `src/modules/groups/b/a/newgrid1.s` received local-label cleanup in the mode-selection and pen-selection dispatch blocks (descriptive local names plus duplicate local-label removal in switch/branch glue).
+- `src/modules/groups/a/a/bitmap.s` now has descriptive local labels throughout `BITMAP_ProcessIlbmImage` (chunk dispatch/read/seek paths), replacing opaque `.LAB_00EF`-style flow labels.
 - `src/ESQ.asm` is in progress: core init, serial CTRL/RBF handling, and jump stubs are renamed and documented; banner helper names were added (e.g., `ESQ_AdvanceBannerCharIndex`, `ESQ_GenerateXorChecksumByte`). Continue adding header blocks/aliases after the CTRL buffer routines and audit remaining orphaned helpers/data.
 - Highlight cursor update helper was relocated: `KYBD_UpdateHighlightState` now lives in `src/modules/ladfunc.s` as `LADFUNC_UpdateHighlightState` (callers updated).
 
@@ -29,7 +30,7 @@
 
 ## Suggested Next Steps
 1. Keep pushing through `src/ESQ.asm`, adding header blocks/aliases after the CTRL/RBF routines and documenting any orphaned helpers/data blocks.
-2. Revisit `src/data/wdisp.s` to formalize `LAB_22F*` table names now that the gcommand banner/preset path is named.
-3. Schedule an alias/comment sweep for `src/modules/newgrid.s` and its related tables once the UI naming stabilizes.
+2. Continue `src/data/wdisp.s` naming for remaining anonymous/non-`GCOMMAND_*` blocks outside the completed `22D*`/`22E*`/`22F*` option-state ranges.
+3. Continue alias/comment sweeps in remaining NEWGRID paths (`newgrid2.s` plus unresolved state helpers) after the current dispatch naming pass.
 4. Propagate new names to all call sites across `src/modules/`, `src/subroutines/`, and `src/data/` as you touch adjacent systems.
 5. Re-run `./test-hash.sh` and capture the output hash in commit or PR notes for traceability.

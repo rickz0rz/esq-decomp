@@ -1,11 +1,11 @@
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_FormatWithCallback   (FormatWithCallback??)
+; FUNC: WDISP_FormatWithCallback   (FormatWithCallbackuncertain)
 ; ARGS:
 ;   stack +4: outputFunc (called with D0=byte)
 ;   stack +8: formatStr
 ;   stack +12: varArgsPtr (pointer to arguments)
 ; RET:
-;   D0: ?? (format parser return)
+;   D0: result/status
 ; CLOBBERS:
 ;   D0, D7, A2-A3
 ; CALLS:

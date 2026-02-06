@@ -1,17 +1,18 @@
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_ParseRecordAndUpdateDisplay   (Parse record, update globals, and display.)
 ; ARGS:
-;   stack +8: A3 = input buffer pointer??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +12: arg_2 (via 16(A5))
 ; RET:
-;   D0: ?? (pass/fail via side effects)
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   JMPTBL_ESQ_WildcardMatch_2, JMPTBL_LAB_0B44_2, JMPTBL_DISPLIB_DisplayTextAtPosition_2
+;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   LAB_2252, LAB_2245, LAB_1DEC, GLOB_REF_RASTPORT_1
+;   ED_DiagnosticsScreenActive, DATA_WDISP_BSS_LONG_2245, WDISP_WeatherStatusOverlayTextPtr, GLOB_REF_RASTPORT_1
 ; WRITES:
-;   LAB_1DEC, LAB_227F, LAB_229B, LAB_229C
+;   WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusCountdown, DATA_WDISP_BSS_BYTE_229B, WDISP_WeatherStatusBrushIndex
 ; DESC:
 ;   Parses a small record from the input buffer, validates via wildcard match,
 ;   updates globals, and optionally redraws text.
@@ -63,30 +64,30 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     BEQ.S   .return
 
     PEA     -16(A5)
-    PEA     LAB_2245
-    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
+    PEA     DATA_WDISP_BSS_LONG_2245
+    JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
     BNE.S   .return
 
-    MOVE.L  LAB_1DEC,-(A7)
+    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_0B44_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_1DEC
-    MOVE.B  D6,LAB_227F
-    MOVE.B  D5,LAB_229B
-    MOVE.B  D4,LAB_229C
-    TST.W   LAB_2252
+    MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
+    MOVE.B  D6,WDISP_WeatherStatusCountdown
+    MOVE.B  D5,DATA_WDISP_BSS_BYTE_229B
+    MOVE.B  D4,WDISP_WeatherStatusBrushIndex
+    TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .return
 
-    MOVE.L  LAB_1DEC,-(A7)
+    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
+    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -97,21 +98,25 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_ParseListAndUpdateEntries   (Parse list and update LAB_2197 entries.)
+; FUNC: UNKNOWN_ParseListAndUpdateEntries   (Parse list and update WDISP_StatusDayEntry0 entries.)
 ; ARGS:
-;   stack +8: A3 = input buffer pointer??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +11: arg_2 (via 15(A5))
+;   stack +18: arg_3 (via 22(A5))
+;   stack +20: arg_4 (via 24(A5))
+;   stack +21: arg_5 (via 25(A5))
 ; RET:
-;   D0: ?? (pass/fail via side effects)
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A1/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   JMPTBL_ESQ_WildcardMatch_2, JMPTBL_DST_NormalizeDayOfYear_2, STRING_CopyPadNul, PARSE_ReadSignedLongSkipClass3_Alt, MATH_Mulu32
+;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_DST_NormalizeDayOfYear, STRING_CopyPadNul, PARSE_ReadSignedLongSkipClass3_Alt, MATH_Mulu32
 ; READS:
-;   LAB_2246, LAB_227C, LAB_2277, LAB_2197
+;   DATA_WDISP_BSS_BYTE_2246, DATA_WDISP_BSS_WORD_227C, CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
 ; WRITES:
-;   LAB_2196, LAB_2197 entries, LAB_229C?? (indirect)
+;   DATA_TLIBA1_BSS_WORD_2196
 ; DESC:
-;   Parses a list of records from the input buffer and updates LAB_2197
+;   Parses a list of records from the input buffer and updates WDISP_StatusDayEntry0
 ;   table entries, including optional numeric fields and flags.
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for local buffer.
@@ -145,8 +150,8 @@ UNKNOWN_ParseListAndUpdateEntries:
     BEQ.W   .return
 
     PEA     -15(A5)
-    PEA     LAB_2246
-    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
+    PEA     DATA_WDISP_BSS_BYTE_2246
+    JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -161,24 +166,24 @@ UNKNOWN_ParseListAndUpdateEntries:
 
     MOVE.L  D7,D0
     MULS    #20,D0
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #1,D1
     MOVE.L  D1,16(A1)
-    MOVE.W  LAB_227C,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_227C,D1
     ADD.W   D7,D1
     MOVE.L  D1,D6
     ADDQ.W  #1,D6
     ADDA.L  D0,A0
     MOVE.L  D6,D0
     EXT.L   D0
-    MOVE.W  LAB_2277,D1
+    MOVE.W  CLOCK_CurrentYearValue,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A0,28(A7)
-    JSR     JMPTBL_DST_NormalizeDayOfYear_2(PC)
+    JSR     UNKNOWN_JMPTBL_DST_NormalizeDayOfYear(PC)
 
     ADDQ.W  #8,A7
     EXT.L   D0
@@ -188,7 +193,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     BRA.S   .init_entries_loop
 
 .after_init_entries:
-    MOVE.B  (A3)+,LAB_2196
+    MOVE.B  (A3)+,DATA_TLIBA1_BSS_WORD_2196
     MOVE.B  (A3)+,D5
 
 .parse_entries_loop:
@@ -215,7 +220,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -249,7 +254,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     CLR.L   16(A0)
     PEA     1.W
@@ -268,7 +273,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #1,D0
@@ -280,7 +285,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
@@ -308,7 +313,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  #(-999),8(A1)
@@ -319,7 +324,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
@@ -347,7 +352,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  #(-999),12(A1)
@@ -358,7 +363,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_2197,A0
+    LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     PEA     -25(A5)
     MOVE.L  A0,24(A7)
@@ -387,17 +392,17 @@ UNKNOWN_ParseListAndUpdateEntries:
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_VerifyChecksumAndParseRecord   (Validate checksum and dispatch to record parser.)
 ; ARGS:
-;   stack +8: D7 = ?? (byte parameter)
+;   (none observed)
 ; RET:
-;   D0: ?? (pass/fail via side effects)
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7 ??
+;   A7/D0/D1/D7
 ; CALLS:
-;   JMPTBL_LAB_0B0E_2, JMPTBL_ESQ_GenerateXorChecksumByte_2, UNKNOWN_ParseRecordAndUpdateDisplay
+;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, UNKNOWN_ParseRecordAndUpdateDisplay
 ; READS:
-;   LAB_229A, LAB_2253, DATACErrs
+;   ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, DATACErrs
 ; WRITES:
-;   LAB_2285, LAB_2232, DATACErrs
+;   ESQIFF_ParseAttemptCount, ESQIFF_RecordLength, DATACErrs
 ; DESC:
 ;   Computes a checksum and, on success, invokes UNKNOWN_ParseRecordAndUpdateDisplay; otherwise bumps error count.
 ; NOTES:
@@ -407,32 +412,32 @@ UNKNOWN_VerifyChecksumAndParseRecord:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    JSR     JMPTBL_LAB_0B0E_2(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(PC)
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_ESQ_GenerateXorChecksumByte_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .checksum_mismatch
 
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   UNKNOWN_ParseRecordAndUpdateDisplay
 
     ADDQ.W  #4,A7
@@ -451,17 +456,17 @@ UNKNOWN_VerifyChecksumAndParseRecord:
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_VerifyChecksumAndParseList   (Validate checksum and dispatch to list parser.)
 ; ARGS:
-;   stack +8: D7 = ?? (byte parameter)
+;   (none observed)
 ; RET:
-;   D0: ?? (pass/fail via side effects)
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7 ??
+;   A7/D0/D1/D7
 ; CALLS:
-;   JMPTBL_LAB_0B0E_2, JMPTBL_ESQ_GenerateXorChecksumByte_2, UNKNOWN_ParseListAndUpdateEntries
+;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, UNKNOWN_ParseListAndUpdateEntries
 ; READS:
-;   LAB_229A, LAB_2253, DATACErrs
+;   ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, DATACErrs
 ; WRITES:
-;   LAB_2285, LAB_2232, DATACErrs
+;   ESQIFF_ParseAttemptCount, ESQIFF_RecordLength, DATACErrs
 ; DESC:
 ;   Computes a checksum and, on success, invokes UNKNOWN_ParseListAndUpdateEntries; otherwise bumps error count.
 ; NOTES:
@@ -471,32 +476,32 @@ UNKNOWN_VerifyChecksumAndParseList:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    JSR     JMPTBL_LAB_0B0E_2(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(PC)
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     JMPTBL_ESQ_GenerateXorChecksumByte_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .checksum_mismatch
 
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   UNKNOWN_ParseListAndUpdateEntries
 
     ADDQ.W  #4,A7
@@ -515,17 +520,18 @@ UNKNOWN_VerifyChecksumAndParseList:
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_ParseDigitLabelAndDisplay   (Parse digit + label, update globals, and display.)
 ; ARGS:
-;   stack +8: A3 = input buffer pointer??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +9: arg_2 (via 13(A5))
 ; RET:
-;   D0: ?? (pass/fail via side effects)
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D2/D7/A0-A3 ??
+;   A0/A1/A3/A7/D0/D1/D2/D7
 ; CALLS:
-;   JMPTBL_LAB_0B44_2, JMPTBL_DISPLIB_DisplayTextAtPosition_2
+;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   LAB_1DD9, LAB_2252, GLOB_REF_RASTPORT_1
+;   WDISP_WeatherStatusTextPtr, ED_DiagnosticsScreenActive, GLOB_REF_RASTPORT_1
 ; WRITES:
-;   LAB_229D, LAB_1DD9, LAB_2245
+;   WDISP_WeatherStatusDigitChar, WDISP_WeatherStatusTextPtr, DATA_WDISP_BSS_LONG_2245
 ; DESC:
 ;   Parses a digit plus a short label string, stores it, and optionally redraws text.
 ; NOTES:
@@ -538,7 +544,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 
     MOVEQ   #0,D0
     MOVE.B  (A3)+,D0
-    MOVE.W  D0,LAB_229D
+    MOVE.W  D0,WDISP_WeatherStatusDigitChar
     MOVEQ   #48,D1
     CMP.W   D1,D0
     BLT.S   .clamp_digit
@@ -548,7 +554,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
     BLE.S   .start_copy
 
 .clamp_digit:
-    MOVE.W  D1,LAB_229D
+    MOVE.W  D1,WDISP_WeatherStatusDigitChar
 
 .start_copy:
     MOVEQ   #0,D7
@@ -570,26 +576,26 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 .copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
-    LEA     LAB_2245,A1
+    LEA     DATA_WDISP_BSS_LONG_2245,A1
 
 .copy_label:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_label
 
-    MOVE.L  LAB_1DD9,-(A7)
+    MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_0B44_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_1DD9
-    TST.W   LAB_2252
+    MOVE.L  D0,WDISP_WeatherStatusTextPtr
+    TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .return
 
     MOVE.L  D0,-(A7)
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
+    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -600,21 +606,22 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_CopyLabelToGlobal   (Copy short label into LAB_2246.)
+; FUNC: UNKNOWN_CopyLabelToGlobal   (Copy short label into DATA_WDISP_BSS_BYTE_2246.)
 ; ARGS:
-;   stack +8: A3 = input buffer pointer??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +9: arg_2 (via 13(A5))
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A1/A3/A7/D0/D1/D7
 ; CALLS:
 ;   none
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_2246
+;   DATA_WDISP_BSS_BYTE_2246
 ; DESC:
-;   Copies a short label string from the input buffer into LAB_2246.
+;   Copies a short label string from the input buffer into DATA_WDISP_BSS_BYTE_2246.
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
@@ -641,7 +648,7 @@ UNKNOWN_CopyLabelToGlobal:
 .copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
-    LEA     LAB_2246,A1
+    LEA     DATA_WDISP_BSS_BYTE_2246,A1
 
 .copy_label:
     MOVE.B  (A0)+,(A1)+
@@ -653,136 +660,136 @@ UNKNOWN_CopyLabelToGlobal:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0B0E_2   (JumpStub_LAB_0B0E)
+; FUNC: UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer   (JumpStub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_0B0E
+;   ESQIFF2_ReadSerialRecordIntoBuffer
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_0B0E.
+;   Jump stub to ESQIFF2_ReadSerialRecordIntoBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0B0E_2:
-    JMP     LAB_0B0E
+UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer:
+    JMP     ESQIFF2_ReadSerialRecordIntoBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_DISPLIB_DisplayTextAtPosition_2   (JumpStub_DISPLIB_DisplayTextAtPosition)
+; FUNC: UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition   (JumpStub_DISPLIB_DisplayTextAtPosition)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to DISPLIB_DisplayTextAtPosition.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_DISPLIB_DisplayTextAtPosition_2:
+UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition:
     JMP     DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ESQ_WildcardMatch_2   (JumpStub_ESQ_WildcardMatch)
+; FUNC: UNKNOWN_JMPTBL_ESQ_WildcardMatch   (JumpStub_ESQ_WildcardMatch)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   ESQ_WildcardMatch
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to ESQ_WildcardMatch.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ESQ_WildcardMatch_2:
+UNKNOWN_JMPTBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_DST_NormalizeDayOfYear_2   (JumpStub_LAB_0631)
+; FUNC: UNKNOWN_JMPTBL_DST_NormalizeDayOfYear   (JumpStub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   DST_NormalizeDayOfYear
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to DST_NormalizeDayOfYear.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_DST_NormalizeDayOfYear_2:
+UNKNOWN_JMPTBL_DST_NormalizeDayOfYear:
     JMP     DST_NormalizeDayOfYear
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ESQ_GenerateXorChecksumByte_2   (JumpStub_ESQ_GenerateXorChecksumByte)
+; FUNC: UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte   (JumpStub_ESQ_GenerateXorChecksumByte)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
 ;   D0: checksum byte
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   ESQ_GenerateXorChecksumByte
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to ESQ_GenerateXorChecksumByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ESQ_GenerateXorChecksumByte_2:
+UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte:
     JMP     ESQ_GenerateXorChecksumByte
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0B44_2   (JumpStub_LAB_0B44)
+; FUNC: UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_0B44
+;   ESQPARS_ReplaceOwnedString
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_0B44.
+;   Jump stub to ESQPARS_ReplaceOwnedString.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0B44_2:
-    JMP     LAB_0B44
+UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString:
+    JMP     ESQPARS_ReplaceOwnedString
 
 ;!======
 

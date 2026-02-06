@@ -1,8 +1,8 @@
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_HandleSerialRbfInterrupt
 ; ARGS:
-;   A0: interrupt context?? (reads 24(A0), writes 156(A0))
-;   A1: base of receive ring buffer?? (offset by head index)
+;   A0: interrupt contextuncertain (reads 24(A0), writes 156(A0))
+;   A1: base of receive ring bufferuncertain (offset by head index)
 ; RET:
 ;   D0: 0
 ; CLOBBERS:
@@ -10,15 +10,15 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_WORD_MAX_VALUE, LAB_1F45
+;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_WORD_MAX_VALUE, ESQPARS2_ReadModeFlags
 ; WRITES:
-;   (A1+head), LAB_228A, GLOB_WORD_H_VALUE, LAB_228C, GLOB_WORD_MAX_VALUE,
-;   LAB_1F45, LAB_20AB, 156(A0)
+;   (A1+head), DATA_WDISP_BSS_WORD_228A, GLOB_WORD_H_VALUE, DATA_WDISP_BSS_WORD_228C, GLOB_WORD_MAX_VALUE,
+;   ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_LONG_20AB, 156(A0)
 ; DESC:
 ;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
 ;   and tracks max fill and overflow threshold.
 ; NOTES:
-;   Buffer wraps at $FA00. Sets LAB_1F45 to $102 when fill reaches $DAC0.
+;   Buffer wraps at $FA00. Sets ESQPARS2_ReadModeFlags to $102 when fill reaches $DAC0.
 ;------------------------------------------------------------------------------
 ESQ_HandleSerialRbfInterrupt:
     MOVEQ   #0,D0
@@ -29,9 +29,9 @@ ESQ_HandleSerialRbfInterrupt:
     BTST    #15,D1
     BEQ.S   .skip_error_count
 
-    MOVE.W  LAB_228A,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_228A,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LAB_228A
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_228A
 
 .skip_error_count:
     ADDQ.W  #1,D0
@@ -49,7 +49,7 @@ ESQ_HandleSerialRbfInterrupt:
     ADDI.W  #$fa00,D0
 
 .fill_count_ok:
-    MOVE.W  D0,LAB_228C
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_228C
     CMP.W   GLOB_WORD_MAX_VALUE,D0
     BCS.W   .skip_max_update
 
@@ -59,11 +59,11 @@ ESQ_HandleSerialRbfInterrupt:
     CMPI.W  #$dac0,D0
     BCS.W   .return
 
-    CMPI.W  #$102,LAB_1F45
+    CMPI.W  #$102,ESQPARS2_ReadModeFlags
     BEQ.W   .return
 
-    MOVE.W  #$102,LAB_1F45
-    ADDI.L  #$1,LAB_20AB
+    MOVE.W  #$102,ESQPARS2_ReadModeFlags
+    ADDI.L  #$1,DATA_SCRIPT_BSS_LONG_20AB
 
 .return:
     MOVE.W  #$800,156(A0)
@@ -82,13 +82,13 @@ ESQ_HandleSerialRbfInterrupt:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_WORD_T_VALUE, GLOB_WORD_H_VALUE, LAB_1F45, GLOB_REF_INTB_RBF_64K_BUFFER
+;   GLOB_WORD_T_VALUE, GLOB_WORD_H_VALUE, ESQPARS2_ReadModeFlags, GLOB_REF_INTB_RBF_64K_BUFFER
 ; WRITES:
-;   GLOB_WORD_T_VALUE, LAB_1F45
+;   GLOB_WORD_T_VALUE, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Reads one byte from the RBF ring buffer and advances the tail index.
 ; NOTES:
-;   Clears LAB_1F45 when fill drops below $BB80 (if previously set to $102).
+;   Clears ESQPARS2_ReadModeFlags when fill drops below $BB80 (if previously set to $102).
 ;------------------------------------------------------------------------------
 ESQ_ReadSerialRbfByte:
     MOVEQ   #0,D1
@@ -113,13 +113,13 @@ ESQ_ReadSerialRbfByte:
     ADDI.W  #$fa00,D0
 
 .fill_count_ok:
-    CMPI.W  #$102,LAB_1F45
+    CMPI.W  #$102,ESQPARS2_ReadModeFlags
     BNE.W   .return
 
     CMPI.W  #$bb80,D0   ; Box off.
     BCC.W   .return
 
-    MOVE.W  #0,LAB_1F45
+    MOVE.W  #0,ESQPARS2_ReadModeFlags
 
 .return:
     MOVE.L  (A7)+,D0
@@ -140,7 +140,7 @@ ESQ_ReadSerialRbfByte:
 ; READS:
 ;   GLOB_PTR_AUD1_DMA
 ; WRITES:
-;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, LAB_1AF8, LAB_1AFA, LAB_1B03
+;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1B03
 ; DESC:
 ;   Initializes audio channel 1 DMA and clears related CTRL capture state.
 ;------------------------------------------------------------------------------
@@ -153,9 +153,9 @@ ESQ_InitAudio1Dma:
     MOVE.W  #$65b,(AUD1PER-BLTDDAT)(A0)
     MOVE.W  #$8202,(DMACON-BLTDDAT)(A0)
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1AF8
-    MOVE.W  D0,LAB_1AFA
-    MOVE.W  D0,LAB_1B03
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF8
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B03
     RTS
 
 ;!======
@@ -171,17 +171,17 @@ ESQ_InitAudio1Dma:
 ; CALLS:
 ;   GET_BIT_3_OF_CIAB_PRA_INTO_D1, ESQ_StoreCtrlSampleEntry
 ; READS:
-;   LAB_1AFC, LAB_1AF9, LAB_1AFD, LAB_1B03
+;   DATA_COMMON_BSS_WORD_1AFC, DATA_COMMON_BSS_WORD_1AF9, DATA_COMMON_BSS_WORD_1AFD, DATA_COMMON_BSS_WORD_1B03
 ; WRITES:
-;   LAB_1AFC, LAB_1AF9, LAB_1AFD, LAB_1AFF, LAB_1B03, LAB_1B04
+;   DATA_COMMON_BSS_WORD_1AFC, DATA_COMMON_BSS_WORD_1AF9, DATA_COMMON_BSS_WORD_1AFD, DATA_COMMON_BSS_LONG_1AFF, DATA_COMMON_BSS_WORD_1B03, DATA_COMMON_BSS_LONG_1B04
 ; DESC:
 ;   Samples CIAB PRA bit 3 over time, builds bytes from samples, and stores
-;   them into the LAB_1B04 ring buffer.
+;   them into the DATA_COMMON_BSS_LONG_1B04 ring buffer.
 ; NOTES:
-;   Uses LAB_1AFC/1AF9/1AFD as sampling state. Sample buffer is LAB_1AFF.
+;   Uses DATA_COMMON_BSS_WORD_1AFC/1AF9/1AFD as sampling state. Sample buffer is DATA_COMMON_BSS_LONG_1AFF.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit3Stream:
-    TST.W   LAB_1AFC
+    TST.W   DATA_COMMON_BSS_WORD_1AFC
     BNE.S   .advance_state
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
@@ -189,16 +189,16 @@ ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BPL.W   .return
 
-    ADDQ.W  #1,LAB_1AFC
-    MOVE.W  #4,LAB_1AF9
-    MOVE.W  #0,LAB_1AFD
+    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFC
+    MOVE.W  #4,DATA_COMMON_BSS_WORD_1AF9
+    MOVE.W  #0,DATA_COMMON_BSS_WORD_1AFD
     RTS
 
 .advance_state:
-    MOVE.W  LAB_1AFC,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1AFC,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_1AFC
-    MOVE.W  LAB_1AF9,D1
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFC
+    MOVE.W  DATA_COMMON_BSS_WORD_1AF9,D1
     CMP.W   D0,D1
     BGT.W   .return
 
@@ -211,9 +211,9 @@ ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BPL.S   .reset_state
 
-    MOVE.W  #14,LAB_1AF9
+    MOVE.W  #14,DATA_COMMON_BSS_WORD_1AF9
     MOVEQ   #7,D0
-    LEA     LAB_1AFF,A5
+    LEA     DATA_COMMON_BSS_LONG_1AFF,A5
     MOVEQ   #0,D1
 
 .clear_sample_buffer_loop:
@@ -223,9 +223,9 @@ ESQ_CaptureCtrlBit3Stream:
 
 .reset_state:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1AF9
-    MOVE.W  D0,LAB_1AFD
-    MOVE.W  D0,LAB_1AFC
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF9
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFD
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFC
     RTS
 
 .collect_samples:
@@ -235,11 +235,11 @@ ESQ_CaptureCtrlBit3Stream:
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
-    LEA     LAB_1AFF,A5
-    ADDA.W  LAB_1AFD,A5
+    LEA     DATA_COMMON_BSS_LONG_1AFF,A5
+    ADDA.W  DATA_COMMON_BSS_WORD_1AFD,A5
     MOVE.B  D1,(A5)
-    ADDQ.W  #1,LAB_1AFD
-    ADDI.W  #10,LAB_1AF9
+    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFD
+    ADDI.W  #10,DATA_COMMON_BSS_WORD_1AF9
     RTS
 
 .assemble_and_store:
@@ -248,9 +248,9 @@ ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BMI.S   .reset_state_and_exit
 
-    LEA     LAB_1AFF,A5
-    ADDA.W  LAB_1AFD,A5
-    MOVE.W  LAB_1AFD,D1
+    LEA     DATA_COMMON_BSS_LONG_1AFF,A5
+    ADDA.W  DATA_COMMON_BSS_WORD_1AFD,A5
+    MOVE.W  DATA_COMMON_BSS_WORD_1AFD,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
@@ -266,8 +266,8 @@ ESQ_CaptureCtrlBit3Stream:
 
 .next_bit:
     DBF     D1,.build_byte_loop
-    LEA     LAB_1B04,A1
-    MOVE.W  LAB_1B03,D1
+    LEA     DATA_COMMON_BSS_LONG_1B04,A1
+    MOVE.W  DATA_COMMON_BSS_WORD_1B03,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)
     BEQ.S   .flush_on_zero
@@ -284,13 +284,13 @@ ESQ_CaptureCtrlBit3Stream:
     MOVEQ   #0,D1
 
 .store_index:
-    MOVE.W  D1,LAB_1B03
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B03
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1AF9
-    MOVE.W  D0,LAB_1AFD
-    MOVE.W  D0,LAB_1AFC
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF9
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFD
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFC
 
 .return:
     RTS
@@ -362,13 +362,13 @@ GET_BIT_4_OF_CIAB_PRA_INTO_D1:
 ; CALLS:
 ;   ESQ_CaptureCtrlBit4Stream, ESQ_CaptureCtrlBit3Stream
 ; READS:
-;   LAB_1DC8
+;   DATA_ESQ_STR_B_1DC8
 ; WRITES:
 ;   INTREQ
 ; DESC:
 ;   Updates CTRL sampling state and acknowledges the audio channel 1 interrupt.
 ; NOTES:
-;   Only captures the bit-3 stream when LAB_1DC8+18 holds 'N'.
+;   Only captures the bit-3 stream when DATA_ESQ_STR_B_1DC8+18 holds 'N'.
 ;------------------------------------------------------------------------------
 ESQ_PollCtrlInput:
     MOVE.L  A5,-(A7)
@@ -376,7 +376,7 @@ ESQ_PollCtrlInput:
 
     JSR     ESQ_CaptureCtrlBit4Stream
 
-    LEA     LAB_1DC8,A4
+    LEA     DATA_ESQ_STR_B_1DC8,A4
     MOVE.B  18(A4),D1
     CMPI.B  #"N",D1
     BNE.S   .LAB_0040
@@ -406,18 +406,18 @@ ESQ_PollCtrlInput:
 ; CALLS:
 ;   GET_BIT_4_OF_CIAB_PRA_INTO_D1
 ; READS:
-;   LAB_1AFA, LAB_1AF8, LAB_1AFB
+;   DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFB
 ; WRITES:
-;   LAB_1AFA, LAB_1AF8, LAB_1AFB, LAB_1AFE, CTRL_BUFFER, CTRL_H, LAB_2282,
-;   LAB_2283, LAB_2284
+;   DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFB, DATA_COMMON_BSS_LONG_1AFE, CTRL_BUFFER, CTRL_H, CTRL_HPreviousSample,
+;   CTRL_HDeltaMax, DATA_WDISP_BSS_WORD_2284
 ; DESC:
 ;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
 ;   CTRL_BUFFER.
 ; NOTES:
-;   Uses LAB_1AFA/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
+;   Uses DATA_COMMON_BSS_WORD_1AFA/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit4Stream:
-    TST.W   LAB_1AFA            ; Test LAB_1AFA...
+    TST.W   DATA_COMMON_BSS_WORD_1AFA            ; Test DATA_COMMON_BSS_WORD_1AFA...
     BNE.S   .advance_state       ; and if it's not equal to zero, jump to LAB_0042
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)        ; Read the bit from CIAB_PRA and store bit 4's value in D1
@@ -425,16 +425,16 @@ ESQ_CaptureCtrlBit4Stream:
     TST.B   D1                  ; Test the value (this cheaply is seeing if it's 1 or 0)
     BPL.W   .return              ; If it's 1, jump to LAB_004D (which is just RTS) so exit this subroutine.
 
-    ADDQ.W  #1,LAB_1AFA
-    MOVE.W  #4,LAB_1AF8
-    MOVE.W  #0,LAB_1AFB
+    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFA
+    MOVE.W  #4,DATA_COMMON_BSS_WORD_1AF8
+    MOVE.W  #0,DATA_COMMON_BSS_WORD_1AFB
     RTS
 
 .advance_state:
-    MOVE.W  LAB_1AFA,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1AFA,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_1AFA
-    MOVE.W  LAB_1AF8,D1
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA
+    MOVE.W  DATA_COMMON_BSS_WORD_1AF8,D1
     CMP.W   D0,D1
     BGT.W   .return
 
@@ -447,9 +447,9 @@ ESQ_CaptureCtrlBit4Stream:
     TST.B   D1
     BPL.S   .reset_state
 
-    MOVE.W  #14,LAB_1AF8
+    MOVE.W  #14,DATA_COMMON_BSS_WORD_1AF8
     MOVEQ   #7,D0
-    LEA     LAB_1AFE,A5
+    LEA     DATA_COMMON_BSS_LONG_1AFE,A5
     MOVEQ   #0,D1
 
 .clear_sample_buffer_loop:
@@ -460,9 +460,9 @@ ESQ_CaptureCtrlBit4Stream:
 
 .reset_state:
     MOVEQ   #0,D0           ; Set D0 to 0
-    MOVE.W  D0,LAB_1AF8     ; Set LAB_1AF8 to D0 (0)
-    MOVE.W  D0,LAB_1AFB     ; Set LAB_1AFB to D0 (0)
-    MOVE.W  D0,LAB_1AFA     ; Set LAB_1AFA to D0 (0)
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF8     ; Set DATA_COMMON_BSS_WORD_1AF8 to D0 (0)
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFB     ; Set DATA_COMMON_BSS_WORD_1AFB to D0 (0)
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA     ; Set DATA_COMMON_BSS_WORD_1AFA to D0 (0)
     RTS
 
 .collect_samples:
@@ -472,11 +472,11 @@ ESQ_CaptureCtrlBit4Stream:
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
 
-    LEA     LAB_1AFE,A5
-    ADDA.W  LAB_1AFB,A5
+    LEA     DATA_COMMON_BSS_LONG_1AFE,A5
+    ADDA.W  DATA_COMMON_BSS_WORD_1AFB,A5
     MOVE.B  D1,(A5)
-    ADDQ.W  #1,LAB_1AFB
-    ADDI.W  #10,LAB_1AF8
+    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFB
+    ADDI.W  #10,DATA_COMMON_BSS_WORD_1AF8
     RTS
 
 .assemble_and_store:
@@ -485,9 +485,9 @@ ESQ_CaptureCtrlBit4Stream:
     TST.B   D1
     BMI.S   .reset_state_and_exit
 
-    LEA     LAB_1AFE,A5
-    ADDA.W  LAB_1AFB,A5
-    MOVE.W  LAB_1AFB,D1
+    LEA     DATA_COMMON_BSS_LONG_1AFE,A5
+    ADDA.W  DATA_COMMON_BSS_WORD_1AFB,A5
+    MOVE.W  DATA_COMMON_BSS_WORD_1AFB,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
@@ -516,24 +516,24 @@ ESQ_CaptureCtrlBit4Stream:
 .store_tail:
     MOVE.W  D1,CTRL_H
     MOVE.W  D1,D0
-    MOVE.W  LAB_2282,D1
+    MOVE.W  CTRL_HPreviousSample,D1
     SUB.W   D1,D0
     BCC.W   .fill_count_ok
 
     ADDI.W  #$1f4,D0
 
 .fill_count_ok:
-    MOVE.W  D0,LAB_2284
-    CMP.W   LAB_2283,D0
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2284
+    CMP.W   CTRL_HDeltaMax,D0
     BCS.W   .reset_state_and_exit
 
-    MOVE.W  D0,LAB_2283
+    MOVE.W  D0,CTRL_HDeltaMax
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1AF8
-    MOVE.W  D0,LAB_1AFB
-    MOVE.W  D0,LAB_1AFA
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF8
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFB
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA
 
 .return:
     RTS
@@ -551,9 +551,9 @@ ESQ_CaptureCtrlBit4Stream:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_2282, CTRL_BUFFER
+;   CTRL_HPreviousSample, CTRL_BUFFER
 ; WRITES:
-;   LAB_2282
+;   CTRL_HPreviousSample
 ; DESC:
 ;   Reads one byte from CTRL_BUFFER and advances the tail index.
 ; NOTES:
@@ -562,7 +562,7 @@ ESQ_CaptureCtrlBit4Stream:
 ESQ_CaptureCtrlBit4StreamBufferByte:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
-    MOVE.W  LAB_2282,D1
+    MOVE.W  CTRL_HPreviousSample,D1
     LEA     CTRL_BUFFER,A0
     ADDA.L  D1,A0
     MOVE.B  (A0),D0
@@ -573,7 +573,7 @@ ESQ_CaptureCtrlBit4StreamBufferByte:
     MOVEQ   #0,D1
 
 .tail_update_done:
-    MOVE.W  D1,LAB_2282
+    MOVE.W  D1,CTRL_HPreviousSample
     RTS
 
 ;!======

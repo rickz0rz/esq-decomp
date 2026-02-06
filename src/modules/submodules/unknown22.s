@@ -68,8 +68,7 @@ MATH_Mulu32:
 ;   D0 = dividend
 ;   D1 = divisor
 ; RET:
-;   D0: quotient
-;   D1: remainder ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D3
 ; CALLS:
@@ -116,8 +115,7 @@ MATH_DivS32:
 ;   D0 = dividend
 ;   D1 = divisor
 ; RET:
-;   D0: quotient
-;   D1: remainder ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D3
 ;------------------------------------------------------------------------------

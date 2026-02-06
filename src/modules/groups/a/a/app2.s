@@ -1,7 +1,7 @@
 ; Rename this file to its proper purpose.
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_StoreCtrlSampleEntry   (StoreCtrlSampleEntry??)
+; FUNC: ESQ_StoreCtrlSampleEntry   (StoreCtrlSampleEntryuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -11,24 +11,24 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_1B04, LAB_231B
+;   DATA_COMMON_BSS_LONG_1B04, ED_StateRingWriteIndex
 ; WRITES:
-;   LAB_231D, LAB_231B
+;   ED_StateRingTable, ED_StateRingWriteIndex
 ; DESC:
-;   Copies a null-terminated byte sequence from LAB_1B04 into the current
-;   5-byte slot of LAB_231D, then advances the slot index.
+;   Copies a null-terminated byte sequence from DATA_COMMON_BSS_LONG_1B04 into the current
+;   5-byte slot of ED_StateRingTable, then advances the slot index.
 ; NOTES:
 ;   Slot index wraps at 20 entries. Entry size includes the terminator.
 ;------------------------------------------------------------------------------
 ESQ_StoreCtrlSampleEntry:
     MOVEM.L D0-D1/A0-A1,-(A7)
 
-    LEA     LAB_231D,A0
-    MOVE.L  LAB_231B,D0
+    LEA     ED_StateRingTable,A0
+    MOVE.L  ED_StateRingWriteIndex,D0
     MOVE.W  D0,D1
     MULS    #5,D1
     ADDA.W  D1,A0
-    LEA     LAB_1B04,A1
+    LEA     DATA_COMMON_BSS_LONG_1B04,A1
 
 .LAB_0051:
     MOVE.B  (A1)+,(A0)+
@@ -42,14 +42,14 @@ ESQ_StoreCtrlSampleEntry:
     MOVEQ   #0,D0
 
 .return:
-    MOVE.L  D0,LAB_231B
+    MOVE.L  D0,ED_StateRingWriteIndex
     MOVEM.L (A7)+,D0-D1/A0-A1
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_Default   (SetCopperEffectDefault??)
+; FUNC: ESQ_SetCopperEffect_Default   (SetCopperEffectDefaultuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -61,7 +61,7 @@ ESQ_StoreCtrlSampleEntry:
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
 ;   Loads a default effect parameter pair (0/$3F) and updates copper tables.
 ; NOTES:
@@ -77,7 +77,7 @@ ESQ_SetCopperEffect_Default:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_Custom   (SetCopperEffectCustom??)
+; FUNC: ESQ_SetCopperEffect_Custom   (SetCopperEffectCustomuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -87,11 +87,11 @@ ESQ_SetCopperEffect_Default:
 ; CALLS:
 ;   ESQ_SetCopperEffectParams
 ; READS:
-;   LAB_1B05, CIAB_PRA
+;   DATA_COMMON_STR_VALUE_1B05, CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
-;   Forces CIAB_PRA bits 6/7 high, uses LAB_1B05 as a parameter, and updates
+;   Forces CIAB_PRA bits 6/7 high, uses DATA_COMMON_STR_VALUE_1B05 as a parameter, and updates
 ;   the copper tables.
 ; NOTES:
 ;   Exact meaning of the parameters is unknown.
@@ -103,7 +103,7 @@ ESQ_SetCopperEffect_Custom:
     BSET    #7,D1
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
-    MOVE.B  LAB_1B05,D1
+    MOVE.B  DATA_COMMON_STR_VALUE_1B05,D1
     JSR     ESQ_SetCopperEffectParams
 
     RTS
@@ -111,7 +111,7 @@ ESQ_SetCopperEffect_Custom:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOn??)
+; FUNC: ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOnuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -123,7 +123,7 @@ ESQ_SetCopperEffect_Custom:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
 ;   Clears CIAB_PRA bits 6/7, sets both parameters to $3F, and updates the
 ;   copper tables.
@@ -145,7 +145,7 @@ ESQ_SetCopperEffect_AllOn:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_OffDisableHighlight   (SetCopperEffectOffDisableHighlight??)
+; FUNC: ESQ_SetCopperEffect_OffDisableHighlight   (SetCopperEffectOffDisableHighlightuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -157,7 +157,7 @@ ESQ_SetCopperEffect_AllOn:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
 ;   Sets CIAB_PRA bits to 01, clears both parameters, updates copper tables,
 ;   and disables UI highlight.
@@ -181,7 +181,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_OnEnableHighlight   (SetCopperEffectOnEnableHighlight??)
+; FUNC: ESQ_SetCopperEffect_OnEnableHighlight   (SetCopperEffectOnEnableHighlightuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -193,7 +193,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
 ;   Sets CIAB_PRA bits to 11, loads parameters ($3F/0), updates copper tables,
 ;   and enables UI highlight.
@@ -217,10 +217,9 @@ ESQ_SetCopperEffect_OnEnableHighlight:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffectParams   (SetCopperEffectParams??)
+; FUNC: ESQ_SetCopperEffectParams   (SetCopperEffectParamsuncertain)
 ; ARGS:
-;   D0.b: paramA (0..$3F ??)
-;   D1.b: paramB (0..$3F ??)
+;   (none observed)
 ; RET:
 ;   (none)
 ; CLOBBERS:
@@ -230,16 +229,16 @@ ESQ_SetCopperEffect_OnEnableHighlight:
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E22, LAB_1E51
+;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
 ;   Stores the effect parameters and regenerates the copper tables.
 ; NOTES:
-;   Parameters are packed into LAB_1B00..LAB_1B02 for ESQ_UpdateCopperListsFromParams.
+;   Parameters are packed into DATA_COMMON_BSS_WORD_1B00..DATA_COMMON_BSS_BYTE_1B02 for ESQ_UpdateCopperListsFromParams.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffectParams:
-    MOVE.B  D0,LAB_1B01
-    MOVE.B  D1,LAB_1B02
-    MOVE.W  #5,LAB_1B00
+    MOVE.B  D0,DATA_COMMON_BSS_BYTE_1B01
+    MOVE.B  D1,DATA_COMMON_BSS_BYTE_1B02
+    MOVE.W  #5,DATA_COMMON_BSS_WORD_1B00
     JSR     ESQ_UpdateCopperListsFromParams
 
     RTS
@@ -247,7 +246,7 @@ ESQ_SetCopperEffectParams:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_UpdateCopperListsFromParams   (UpdateCopperListsFromParams??)
+; FUNC: ESQ_UpdateCopperListsFromParams   (UpdateCopperListsFromParamsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -257,20 +256,20 @@ ESQ_SetCopperEffectParams:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_1B00, LAB_1B01, LAB_1B02, LAB_1E25
+;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_BSS_LONG_1E25
 ; WRITES:
-;   LAB_1E22, LAB_1E51
+;   DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
 ; DESC:
 ;   Expands packed effect parameters into copper list words for two tables.
 ; NOTES:
 ;   Writes 16 entries (DBF runs D4+1 iterations). Exact effect semantics unknown.
 ;------------------------------------------------------------------------------
 ESQ_UpdateCopperListsFromParams:
-    LEA     LAB_1E25,A0
+    LEA     DATA_ESQ_BSS_LONG_1E25,A0
     MOVE.W  26(A0),D1
-    MOVE.L  LAB_1B00,D0
-    LEA     LAB_1E22,A0
-    LEA     LAB_1E51,A1
+    MOVE.L  DATA_COMMON_BSS_WORD_1B00,D0
+    LEA     DATA_ESQ_CONST_LONG_1E22,A0
+    LEA     DATA_ESQ_CONST_LONG_1E51,A1
     ADDQ.L  #6,A0
     ADDQ.L  #6,A1
     ADD.B   D0,D0
@@ -341,7 +340,7 @@ ESQ_NoOp:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ClearCopperListFlags   (ClearCopperListFlags??)
+; FUNC: ESQ_ClearCopperListFlags   (ClearCopperListFlagsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -353,22 +352,21 @@ ESQ_NoOp:
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_1E2B, LAB_1E58
+;   ESQ_CopperListBannerA, ESQ_CopperListBannerB
 ; DESC:
 ;   Clears the lead bytes of two copper list tables.
 ; NOTES:
 ;   Exact meaning of the cleared bytes is unknown.
 ;------------------------------------------------------------------------------
-ESQ_ClearCopperListFlags:
     MOVE.B  #0,D0
-    MOVE.B  D0,LAB_1E2B
-    MOVE.B  D0,LAB_1E58
+    MOVE.B  D0,ESQ_CopperListBannerA
+    MOVE.B  D0,ESQ_CopperListBannerB
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_MoveCopperEntryTowardStart   (MoveCopperEntryTowardStart??)
+; FUNC: ESQ_MoveCopperEntryTowardStart   (MoveCopperEntryTowardStartuncertain)
 ; ARGS:
 ;   stack +4: dstIndex (entry index, masked to 0..31)
 ;   stack +8: srcIndex (entry index, masked to 0..31)
@@ -379,9 +377,9 @@ ESQ_ClearCopperListFlags:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; WRITES:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; DESC:
 ;   Moves an entry toward the start of the table by shifting intervening
 ;   entries down and inserting the original value at dstIndex.
@@ -397,8 +395,8 @@ ESQ_MoveCopperEntryTowardStart:
     ANDI.W  #$1f,D1
     LSL.W   #2,D1
     LSL.W   #2,D2
-    LEA     LAB_1E26,A1
-    LEA     LAB_1E55,A0
+    LEA     ESQ_CopperStatusDigitsA,A1
+    LEA     ESQ_CopperStatusDigitsB,A0
     ADDI.W  #0,D1
     ADDI.W  #0,D2
     MOVE.W  #$1c,D4
@@ -437,7 +435,7 @@ ESQ_MoveCopperEntryTowardStart:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_MoveCopperEntryTowardEnd   (MoveCopperEntryTowardEnd??)
+; FUNC: ESQ_MoveCopperEntryTowardEnd   (MoveCopperEntryTowardEnduncertain)
 ; ARGS:
 ;   stack +4: srcIndex (entry index, masked to 0..31)
 ;   stack +8: dstIndex (entry index, masked to 0..31)
@@ -448,9 +446,9 @@ ESQ_MoveCopperEntryTowardStart:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; WRITES:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; DESC:
 ;   Moves an entry toward the end of the table by shifting intervening
 ;   entries up and inserting the original value at dstIndex.
@@ -466,8 +464,8 @@ ESQ_MoveCopperEntryTowardEnd:
     ANDI.W  #$1f,D1
     LSL.W   #2,D1
     LSL.W   #2,D2
-    LEA     LAB_1E26,A1
-    LEA     LAB_1E55,A0
+    LEA     ESQ_CopperStatusDigitsA,A1
+    LEA     ESQ_CopperStatusDigitsB,A0
     ADDI.W  #0,D1
     ADDI.W  #0,D2
     MOVE.W  #$20,D4
@@ -504,7 +502,7 @@ ESQ_MoveCopperEntryTowardEnd:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_DecCopperListsPrimary   (DecCopperListsPrimary??)
+; FUNC: ESQ_DecCopperListsPrimary   (DecCopperListsPrimaryuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -514,19 +512,19 @@ ESQ_MoveCopperEntryTowardEnd:
 ; CALLS:
 ;   ESQ_DecColorStep
 ; READS:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; WRITES:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; DESC:
 ;   Decrements color components for entries in the primary copper lists.
 ; NOTES:
 ;   Updates the first 8 entries in both lists, then the next 24 entries only
-;   in LAB_1E26.
+;   in ESQ_CopperStatusDigitsA.
 ;------------------------------------------------------------------------------
 ESQ_DecCopperListsPrimary:
     MOVEM.L D2-D5/A2-A3,-(A7)
-    LEA     LAB_1E26,A2
-    LEA     LAB_1E55,A3
+    LEA     ESQ_CopperStatusDigitsA,A2
+    LEA     ESQ_CopperStatusDigitsB,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
@@ -575,7 +573,7 @@ ESQ_NoOp_006A:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_DecCopperListsAltSkipIndex4   (DecCopperListsAltSkipIndex4??)
+; FUNC: ESQ_DecCopperListsAltSkipIndex4   (DecCopperListsAltSkipIndex4uncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -585,19 +583,18 @@ ESQ_NoOp_006A:
 ; CALLS:
 ;   ESQ_DecColorStep
 ; READS:
-;   LAB_1E2E, LAB_1E5B
+;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
 ; WRITES:
-;   LAB_1E2E, LAB_1E5B
+;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
 ; DESC:
 ;   Decrements color components for entries in the alternate copper lists,
 ;   skipping the entry at byte offset 4.
 ; NOTES:
 ;   Skips when D5 == 4.
 ;------------------------------------------------------------------------------
-ESQ_DecCopperListsAltSkipIndex4:
     MOVEM.L D2-D5/A2-A3,-(A7)
-    LEA     LAB_1E2E,A2
-    LEA     LAB_1E5B,A3
+    LEA     DATA_ESQ_CONST_LONG_1E2E,A2
+    LEA     DATA_ESQ_CONST_LONG_1E5B,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
@@ -620,7 +617,7 @@ ESQ_DecCopperListsAltSkipIndex4:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_DecColorStep   (DecColorStep??)
+; FUNC: ESQ_DecColorStep   (DecColorStepuncertain)
 ; ARGS:
 ;   D0.w: color value (packed nibbles, likely RGB)
 ; RET:
@@ -669,7 +666,7 @@ ESQ_DecColorStep:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_IncCopperListsTowardsTargets   (IncCopperListsTowardsTargets??)
+; FUNC: ESQ_IncCopperListsTowardsTargets   (IncCopperListsTowardsTargetsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -679,19 +676,19 @@ ESQ_DecColorStep:
 ; CALLS:
 ;   ESQ_BumpColorTowardTargets
 ; READS:
-;   LAB_2295, LAB_1E26, LAB_1E55
+;   WDISP_PaletteTriplesRBase, ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; WRITES:
-;   LAB_1E26, LAB_1E55
+;   ESQ_CopperStatusDigitsA, ESQ_CopperStatusDigitsB
 ; DESC:
 ;   Adjusts copper list colors based on a per-entry target table.
 ; NOTES:
-;   Uses LAB_2295 as a 3-byte-per-entry target stream.
+;   Uses WDISP_PaletteTriplesRBase as a 3-byte-per-entry target stream.
 ;------------------------------------------------------------------------------
 ESQ_IncCopperListsTowardsTargets:
     MOVEM.L D2-D6/A2-A3,-(A7)
-    LEA     LAB_2295,A1
-    LEA     LAB_1E26,A2
-    LEA     LAB_1E55,A3
+    LEA     WDISP_PaletteTriplesRBase,A1
+    LEA     ESQ_CopperStatusDigitsA,A2
+    LEA     ESQ_CopperStatusDigitsB,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
@@ -741,7 +738,7 @@ ESQ_NoOp_0074:
 
 ; Orphaned helper? No known callers; only referenced internally.
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_IncCopperListsAltSkipIndex4   (IncCopperListsAltSkipIndex4??)
+; FUNC: ESQ_IncCopperListsAltSkipIndex4   (IncCopperListsAltSkipIndex4uncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -751,19 +748,18 @@ ESQ_NoOp_0074:
 ; CALLS:
 ;   ESQ_BumpColorTowardTargets
 ; READS:
-;   LAB_1E2E, LAB_1E5B
+;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
 ; WRITES:
-;   LAB_1E2E, LAB_1E5B
+;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
 ; DESC:
 ;   Adjusts alternate copper list colors based on the target stream,
 ;   skipping the entry at byte offset 4.
 ; NOTES:
 ;   This block is currently marked unreachable.
 ;------------------------------------------------------------------------------
-ESQ_IncCopperListsAltSkipIndex4:
     MOVEM.L D2-D5/A2-A3,-(A7)
-    LEA     LAB_1E2E,A2
-    LEA     LAB_1E5B,A3
+    LEA     DATA_ESQ_CONST_LONG_1E2E,A2
+    LEA     DATA_ESQ_CONST_LONG_1E5B,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
@@ -786,7 +782,7 @@ ESQ_IncCopperListsAltSkipIndex4:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_BumpColorTowardTargets   (BumpColorTowardTargets??)
+; FUNC: ESQ_BumpColorTowardTargets   (BumpColorTowardTargetsuncertain)
 ; ARGS:
 ;   D0.w: color value (packed nibbles, likely RGB)
 ;   A1: pointer to 3-byte target stream (advances by 3)
@@ -844,17 +840,17 @@ ESQ_BumpColorTowardTargets:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TickClockAndFlagEvents   (TickClockAndFlagEvents??)
+; FUNC: ESQ_TickClockAndFlagEvents   (TickClockAndFlagEventsuncertain)
 ; ARGS:
 ;   stack +4: timePtr (struct with date/time fields)
 ; RET:
-;   D0: event code (0..5 ??)
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D4
 ; CALLS:
 ;   ESQ_UpdateMonthDayFromDayOfYear
 ; READS:
-;   LAB_1B09, LAB_1B0A, LAB_1B0B, LAB_1B0C
+;   DATA_COMMON_BSS_WORD_1B09, DATA_COMMON_BSS_WORD_1B0A, DATA_COMMON_BSS_WORD_1B0B, DATA_COMMON_BSS_WORD_1B0C
 ; WRITES:
 ;   [timePtr] fields (0,2,4,6,8,10,12,16,18,20)
 ; DESC:
@@ -890,10 +886,10 @@ ESQ_TickClockAndFlagEvents:
     CMP.W   D3,D0
     BGE.W   .hour_rollover
 
-    CMP.W   LAB_1B0C,D0
+    CMP.W   DATA_COMMON_BSS_WORD_1B0C,D0
     BEQ.W   .minute_trigger_5
 
-    CMP.W   LAB_1B0B,D0
+    CMP.W   DATA_COMMON_BSS_WORD_1B0B,D0
     BNE.W   .check_minute_20_or_50
 
 .minute_trigger_5:
@@ -912,10 +908,10 @@ ESQ_TickClockAndFlagEvents:
     BRA.W   .return
 
 .check_minute_special_3:
-    CMP.W   LAB_1B09,D0
+    CMP.W   DATA_COMMON_BSS_WORD_1B09,D0
     BEQ.W   .minute_trigger_3
 
-    CMP.W   LAB_1B0A,D0
+    CMP.W   DATA_COMMON_BSS_WORD_1B0A,D0
     BNE.W   .return
 
 .minute_trigger_3:
@@ -991,7 +987,7 @@ ESQ_TickClockAndFlagEvents:
     MOVEA.L 4(A7),A0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_UpdateMonthDayFromDayOfYear   (UpdateMonthDayFromDayOfYear??)
+; FUNC: ESQ_UpdateMonthDayFromDayOfYear   (UpdateMonthDayFromDayOfYearuncertain)
 ; ARGS:
 ;   stack +4: timePtr (struct with day-of-year fields)
 ; RET:
@@ -1001,7 +997,7 @@ ESQ_TickClockAndFlagEvents:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_1B1D
+;   DATA_COMMON_CONST_LONG_1B1D
 ; WRITES:
 ;   2(A0), 4(A0)
 ; DESC:
@@ -1013,7 +1009,7 @@ ESQ_UpdateMonthDayFromDayOfYear:
     MOVE.L  D2,-(A7)
     MOVE.W  16(A0),D0
     MOVEQ   #0,D2
-    LEA     LAB_1B1D,A1
+    LEA     DATA_COMMON_CONST_LONG_1B1D,A1
     TST.W   20(A0)
     BEQ.S   .scan_months
 
@@ -1037,7 +1033,7 @@ ESQ_UpdateMonthDayFromDayOfYear:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_CalcDayOfYearFromMonthDay   (CalcDayOfYearFromMonthDay??)
+; FUNC: ESQ_CalcDayOfYearFromMonthDay   (CalcDayOfYearFromMonthDayuncertain)
 ; ARGS:
 ;   stack +4: timePtr (struct with month/day fields)
 ; RET:
@@ -1047,7 +1043,7 @@ ESQ_UpdateMonthDayFromDayOfYear:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_1B1D
+;   DATA_COMMON_CONST_LONG_1B1D
 ; WRITES:
 ;   16(A0)
 ; DESC:
@@ -1059,7 +1055,7 @@ ESQ_CalcDayOfYearFromMonthDay:
     MOVEA.L 4(A7),A0
     MOVE.W  2(A0),D1
     MOVEQ   #0,D0
-    LEA     LAB_1B1D,A1
+    LEA     DATA_COMMON_CONST_LONG_1B1D,A1
     DBF     D1,.month_loop
 
     BRA.S   .return
@@ -1082,7 +1078,7 @@ ESQ_CalcDayOfYearFromMonthDay:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_FormatTimeStamp   (FormatTimeStamp??)
+; FUNC: ESQ_FormatTimeStamp   (FormatTimeStampuncertain)
 ; ARGS:
 ;   stack +4: outBuf (expects at least 12 bytes)
 ;   stack +8: timePtr (struct with time fields)
@@ -1163,17 +1159,17 @@ ESQ_FormatTimeStamp:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_GetHalfHourSlotIndex   (GetHalfHourSlotIndex??)
+; FUNC: ESQ_GetHalfHourSlotIndex   (GetHalfHourSlotIndexuncertain)
 ; ARGS:
 ;   stack +4: timePtr (struct with time fields)
 ; RET:
-;   D0: slot index (mapped through LAB_1B1E)
+;   D0: slot index (mapped through DATA_COMMON_CONST_LONG_1B1E)
 ; CLOBBERS:
 ;   D0-D2, A1
 ; CALLS:
 ;   (none)
 ; READS:
-;   8(A0), 10(A0), 18(A0), LAB_1B1E
+;   8(A0), 10(A0), 18(A0), DATA_COMMON_CONST_LONG_1B1E
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1215,7 +1211,7 @@ ESQ_GetHalfHourSlotIndex:
     ADDQ.W  #1,D0
 
 .return:
-    LEA     LAB_1B1E,A1
+    LEA     DATA_COMMON_CONST_LONG_1B1E,A1
     MOVE.B  0(A1,D0.W),D0
     MOVE.L  (A7)+,D2
     RTS
@@ -1223,7 +1219,7 @@ ESQ_GetHalfHourSlotIndex:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ClampBannerCharRange   (ClampBannerCharRange??)
+; FUNC: ESQ_ClampBannerCharRange   (ClampBannerCharRangeuncertain)
 ; ARGS:
 ;   stack +4: value0
 ;   stack +8: value1
@@ -1237,7 +1233,7 @@ ESQ_GetHalfHourSlotIndex:
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_226F, LAB_2280
+;   DATA_WDISP_BSS_WORD_226F, DATA_WDISP_BSS_WORD_2280
 ; DESC:
 ;   Normalizes values into a bounded A..C/I range and writes two globals.
 ; NOTES:
@@ -1296,15 +1292,15 @@ ESQ_ClampBannerCharRange:
     SUB.W   D4,D3
 
 .return:
-    MOVE.W  D0,LAB_226F
-    MOVE.W  D3,LAB_2280
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_226F
+    MOVE.W  D3,DATA_WDISP_BSS_WORD_2280
     MOVEM.L (A7)+,D2-D4
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_AdvanceBannerCharIndex   (AdvanceBannerCharIndex??)
+; FUNC: ESQ_AdvanceBannerCharIndex   (AdvanceBannerCharIndexuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1314,73 +1310,90 @@ ESQ_ClampBannerCharRange:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_2257, LAB_225C, LAB_226F, LAB_2280, LAB_1B08
+;   DATA_WDISP_BSS_WORD_2257, DATA_WDISP_BSS_WORD_225C, DATA_WDISP_BSS_WORD_226F, DATA_WDISP_BSS_WORD_2280, DATA_COMMON_BSS_LONG_1B08
 ; WRITES:
-;   LAB_2256, LAB_2257, LAB_2273, LAB_1B08
+;   DATA_WDISP_BSS_WORD_2256, DATA_WDISP_BSS_WORD_2257, DATA_WDISP_BSS_WORD_2273, DATA_COMMON_BSS_LONG_1B08
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
-;   If LAB_1B08 is non-zero, forces a reset path and clears the flag.
-;   Also resets when the index matches LAB_2280, using LAB_226F as the base.
+;   If DATA_COMMON_BSS_LONG_1B08 is non-zero, forces a reset path and clears the flag.
+;   Also resets when the index matches DATA_WDISP_BSS_WORD_2280, using DATA_WDISP_BSS_WORD_226F as the base.
 ;------------------------------------------------------------------------------
-ESQ_AdvanceBannerCharIndex:
     MOVEM.L D2-D3,-(A7)
-    MOVE.W  LAB_2257,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_2257,D0
     MOVEQ   #1,D2
     ADD.W   D2,D0
     MOVEQ   #48,D3
     CMP.W   D3,D0
-    BLE.S   LAB_00A1
+    BLE.S   .lab_00A1
 
     MOVE.W  D2,D0
 
-LAB_00A1:
-    TST.W   LAB_1B08
-    BEQ.S   LAB_00A2
+.lab_00A1:
+    TST.W   DATA_COMMON_BSS_LONG_1B08
+    BEQ.S   .lab_00A2
 
-    MOVE.W  #0,LAB_1B08
-    BRA.S   LAB_00A3
+    MOVE.W  #0,DATA_COMMON_BSS_LONG_1B08
+    BRA.S   .lab_00A3
 
-LAB_00A2:
-    MOVE.W  LAB_2280,D1
+.lab_00A2:
+    MOVE.W  DATA_WDISP_BSS_WORD_2280,D1
     CMP.W   D1,D0
-    BNE.S   LAB_00A4
+    BNE.S   .lab_00A4
 
-LAB_00A3:
-    MOVE.W  D2,LAB_2256
-    MOVE.W  LAB_226F,D0
+.lab_00A3:
+    MOVE.W  D2,DATA_WDISP_BSS_WORD_2256
+    MOVE.W  DATA_WDISP_BSS_WORD_226F,D0
 
-LAB_00A4:
-    MOVE.W  D0,LAB_2257
-    MOVE.W  LAB_225C,D1
-    BEQ.S   LAB_00A6
+.lab_00A4:
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2257
+    MOVE.W  DATA_WDISP_BSS_WORD_225C,D1
+    BEQ.S   ESQ_AdvanceBannerCharIndex_Return
 
     ADD.W   D1,D0
     ADD.W   D1,D0
     CMP.W   D2,D0
-    BGE.S   LAB_00A5
+    BGE.S   .lab_00A5
 
     ADD.W   D3,D0
-    BRA.S   LAB_00A6
+    BRA.S   ESQ_AdvanceBannerCharIndex_Return
 
-LAB_00A5:
+.lab_00A5:
     CMP.W   D3,D0
-    BLE.S   LAB_00A6
+    BLE.S   ESQ_AdvanceBannerCharIndex_Return
 
     SUB.W   D3,D0
 
-LAB_00A6:
-    MOVE.W  D0,LAB_2273
+;------------------------------------------------------------------------------
+; FUNC: ESQ_AdvanceBannerCharIndex_Return   (Routine at ESQ_AdvanceBannerCharIndex_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   DATA_WDISP_BSS_WORD_2273
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQ_AdvanceBannerCharIndex_Return:
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2273
     MOVEM.L (A7)+,D2-D3
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_AdjustBracketedHourInString   (AdjustBracketedHourInString??)
+; FUNC: ESQ_AdjustBracketedHourInString   (AdjustBracketedHourInStringuncertain)
 ; ARGS:
-;   stack +4: textPtr
-;   stack +8: hourOffset (byte, signed??)
+;   (none observed)
 ; RET:
 ;   (none)
 ; CLOBBERS:
@@ -1561,7 +1574,7 @@ ESQ_SetBit1Based:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ReverseBitsIn6Bytes   (ReverseBitsIn6Bytes??)
+; FUNC: ESQ_ReverseBitsIn6Bytes   (ReverseBitsIn6Bytesuncertain)
 ; ARGS:
 ;   stack +4: dst (6 bytes)
 ;   stack +8: src (6 bytes)
@@ -1619,7 +1632,7 @@ ESQ_ReverseBitsIn6Bytes:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_GenerateXorChecksumByte   (GenerateXorChecksumByte??)
+; FUNC: ESQ_GenerateXorChecksumByte   (GenerateXorChecksumByteuncertain)
 ; ARGS:
 ;   stack +4: seed (initial byte, low 8 bits used)
 ;   stack +8: src (byte buffer)
@@ -1631,18 +1644,18 @@ ESQ_ReverseBitsIn6Bytes:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_2253, LAB_2206
+;   ESQIFF_RecordChecksumByte, DATA_WDISP_BSS_WORD_2206
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Computes an XOR checksum over a buffer, seeded by an inverted byte.
 ; NOTES:
-;   If LAB_2206 is non-zero, returns LAB_2253 instead of computing.
+;   If DATA_WDISP_BSS_WORD_2206 is non-zero, returns ESQIFF_RecordChecksumByte instead of computing.
 ;------------------------------------------------------------------------------
 ESQ_GenerateXorChecksumByte:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2253,D0
-    TST.B   LAB_2206
+    MOVE.B  ESQIFF_RecordChecksumByte,D0
+    TST.B   DATA_WDISP_BSS_WORD_2206
     BNE.S   .return
 
     MOVE.L  4(A7),D0
@@ -1668,7 +1681,7 @@ ESQ_GenerateXorChecksumByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TerminateAfterSecondQuote   (TerminateAfterSecondQuote??)
+; FUNC: ESQ_TerminateAfterSecondQuote   (TerminateAfterSecondQuoteuncertain)
 ; ARGS:
 ;   stack +4: textPtr
 ; RET:
@@ -1716,7 +1729,7 @@ ESQ_TerminateAfterSecondQuote:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_WildcardMatch   (WildcardMatch??)
+; FUNC: ESQ_WildcardMatch   (WildcardMatchuncertain)
 ; ARGS:
 ;   stack +4: str
 ;   stack +8: pattern
@@ -1776,7 +1789,7 @@ ESQ_WildcardMatch:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_FindSubstringCaseFold   (FindSubstringCaseFold??)
+; FUNC: ESQ_FindSubstringCaseFold   (FindSubstringCaseFolduncertain)
 ; ARGS:
 ;   stack +4: haystack
 ;   stack +8: needle
@@ -1855,7 +1868,7 @@ ESQ_FindSubstringCaseFold:
     BRA.S   .search_loop
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_WriteDecFixedWidth   (WriteDecFixedWidth??)
+; FUNC: ESQ_WriteDecFixedWidth   (WriteDecFixedWidthuncertain)
 ; ARGS:
 ;   stack +4: outBuf
 ;   stack +8: value
@@ -1897,7 +1910,7 @@ ESQ_WriteDecFixedWidth:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_PackBitsDecode   (PackBitsDecode??)
+; FUNC: ESQ_PackBitsDecode   (PackBitsDecodeuncertain)
 ; ARGS:
 ;   stack +4: src
 ;   stack +8: dst
@@ -1987,20 +2000,20 @@ ESQ_PackBitsDecode:
 ; CLOBBERS:
 ;   D0-D1, A0-A1
 ; CALLS:
-;   ESQ_ColdReboot, LAB_0C82, LAB_0A4A
+;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   LAB_2363, LAB_2205, LAB_2325, LAB_234A, LAB_22A5, LAB_22AA, LAB_22AB
+;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_LONG_2325, GLOB_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; WRITES:
-;   LAB_2363, LAB_2205, LAB_2264, LAB_2325, LAB_234A, LAB_22A5, LAB_1DDF,
-;   LAB_1B11..LAB_1B18
+;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_LONG_2325, GLOB_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
+;   DATA_COMMON_BSS_WORD_1B11..DATA_COMMON_BSS_LONG_1B18
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
 ;   accumulator fields with saturation flags.
 ; NOTES:
-;   Triggers ESQ_ColdReboot when LAB_2363 reaches $5460.
+;   Triggers ESQ_ColdReboot when DATA_WDISP_BSS_LONG_2363 reaches $5460.
 ;------------------------------------------------------------------------------
 ESQ_TickGlobalCounters:
-    MOVE.W  LAB_2363,D0
+    MOVE.W  DATA_WDISP_BSS_LONG_2363,D0
     ADDQ.W  #1,D0
     CMPI.W  #$5460,D0
     BNE.S   .after_reboot_check
@@ -2008,48 +2021,48 @@ ESQ_TickGlobalCounters:
     JSR     ESQ_ColdReboot
 
 .after_reboot_check:
-    MOVE.W  D0,LAB_2363
-    JSR     LAB_0C82
+    MOVE.W  D0,DATA_WDISP_BSS_LONG_2363
+    JSR     ESQSHARED4_TickCopperAndBannerTransitions
 
-    MOVE.W  LAB_2205,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_2205,D0
     ADDQ.W  #1,D0
     MOVEQ   #60,D1
     CMP.W   D1,D0
     BNE.W   .store_tick_counter
 
-    MOVE.W  D0,LAB_2264
-    MOVE.W  LAB_2325,D0
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2264
+    MOVE.W  DATA_WDISP_BSS_LONG_2325,D0
     BMI.W   .after_decrement_2325
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_2325
+    MOVE.W  D0,DATA_WDISP_BSS_LONG_2325
 
 .after_decrement_2325:
-    MOVE.W  LAB_234A,D0
+    MOVE.W  GLOB_RefreshTickCounter,D0
     BMI.W   .after_increment_234A
 
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_234A
+    MOVE.W  D0,GLOB_RefreshTickCounter
 
 .after_increment_234A:
-    MOVE.W  LAB_22A5,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_22A5,D0
     BMI.W   .after_decay_22A5
 
     BEQ.W   .after_decay_22A5
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_22A5
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_22A5
     BNE.W   .after_decay_22A5
 
-    MOVE.W  #1,LAB_1DDF
+    MOVE.W  #1,TEXTDISP_DeferredActionArmed
 
 .after_decay_22A5:
-    LEA     LAB_1B06,A0
+    LEA     DATA_COMMON_BSS_LONG_1B06,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
     ADDQ.W  #1,D1
     MOVE.W  D1,12(A1)
-    LEA     LAB_1B07,A0
+    LEA     DATA_COMMON_BSS_LONG_1B07,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
     ADDQ.W  #1,D1
@@ -2057,74 +2070,74 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D0
 
 .store_tick_counter:
-    MOVE.W  D0,LAB_2205
-    TST.W   LAB_22AA
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2205
+    TST.W   WDISP_AccumulatorCaptureActive
     BEQ.W   .after_accumulators
 
-    MOVE.W  LAB_1B0D,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B0D,D0
     BEQ.S   .after_accum_1b11
 
-    MOVE.W  LAB_1B11,D1
+    MOVE.W  DATA_COMMON_BSS_WORD_1B11,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b11_saturate
 
-    MOVE.W  #1,LAB_1B15
+    MOVE.W  #1,DATA_COMMON_BSS_WORD_1B15
     MOVEQ   #0,D1
 
 .after_accum_1b11_saturate:
-    MOVE.W  D1,LAB_1B11
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B11
 
 .after_accum_1b11:
-    MOVE.W  LAB_1B0E,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B0E,D0
     BEQ.S   .after_accum_1b12
 
-    MOVE.W  LAB_1B12,D1
+    MOVE.W  DATA_COMMON_BSS_WORD_1B12,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b12_saturate
 
-    MOVE.W  #1,LAB_1B16
+    MOVE.W  #1,DATA_COMMON_BSS_WORD_1B16
     MOVEQ   #0,D1
 
 .after_accum_1b12_saturate:
-    MOVE.W  D1,LAB_1B12
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B12
 
 .after_accum_1b12:
-    MOVE.W  LAB_1B0F,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B0F,D0
     BEQ.S   .after_accum_1b13
 
-    MOVE.W  LAB_1B13,D1
+    MOVE.W  DATA_COMMON_BSS_WORD_1B13,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b13_saturate
 
-    MOVE.W  #1,LAB_1B17
+    MOVE.W  #1,DATA_COMMON_BSS_WORD_1B17
     MOVEQ   #0,D1
 
 .after_accum_1b13_saturate:
-    MOVE.W  D1,LAB_1B13
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B13
 
 .after_accum_1b13:
-    MOVE.W  LAB_1B10,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B10,D0
     BEQ.S   .after_accumulators
 
-    MOVE.W  LAB_1B14,D1
+    MOVE.W  DATA_COMMON_BSS_WORD_1B14,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b14_saturate
 
-    MOVE.W  #1,LAB_1B18
+    MOVE.W  #1,DATA_COMMON_BSS_LONG_1B18
     MOVEQ   #0,D1
 
 .after_accum_1b14_saturate:
-    MOVE.W  D1,LAB_1B14
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B14
 
 .after_accumulators:
-    TST.W   LAB_22AB
+    TST.W   WDISP_AccumulatorFlushPending
     BEQ.W   .return
 
-    JSR     LAB_0A4A
+    JSR     ESQIFF_ServicePendingCopperPaletteMoves
 
 .return:
     MOVEQ   #0,D0
@@ -2133,7 +2146,7 @@ ESQ_TickGlobalCounters:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SeedMinuteEventThresholds   (SeedMinuteEventThresholds??)
+; FUNC: ESQ_SeedMinuteEventThresholds   (SeedMinuteEventThresholdsuncertain)
 ; ARGS:
 ;   stack +4: baseMinute
 ;   stack +8: baseOffset
@@ -2146,7 +2159,7 @@ ESQ_TickGlobalCounters:
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_1B09, LAB_1B0A, LAB_1B0B, LAB_1B0C
+;   DATA_COMMON_BSS_WORD_1B09, DATA_COMMON_BSS_WORD_1B0A, DATA_COMMON_BSS_WORD_1B0B, DATA_COMMON_BSS_WORD_1B0C
 ; DESC:
 ;   Computes minute thresholds based on two base values.
 ; NOTES:
@@ -2157,22 +2170,22 @@ ESQ_SeedMinuteEventThresholds:
     MOVE.L  8(A7),D1
     MOVEQ   #60,D2
     SUB.W   D0,D2
-    MOVE.W  D2,LAB_1B0A
+    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0A
     MOVEQ   #30,D2
     SUB.W   D0,D2
-    MOVE.W  D2,LAB_1B09
+    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B09
     MOVEQ   #0,D2
     ADD.W   D1,D2
-    MOVE.W  D2,LAB_1B0C
+    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0C
     MOVEQ   #30,D2
     ADD.W   D1,D2
-    MOVE.W  D2,LAB_1B0B
+    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0B
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ColdReboot   (ColdRebootOrSupervisor??)
+; FUNC: ESQ_ColdReboot   (ColdRebootOrSupervisoruncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2200,7 +2213,7 @@ ESQ_ColdReboot:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ColdRebootViaSupervisor   (ColdRebootViaSupervisor??)
+; FUNC: ESQ_ColdRebootViaSupervisor   (ColdRebootViaSupervisoruncertain)
 ; ARGS:
 ;   (none)
 ; RET:

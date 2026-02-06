@@ -1,47 +1,47 @@
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07C4   (JumpStub_LAB_14B1)
+; FUNC: GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_14B1)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_14B1)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_14B1)
+;   none observed
 ; CALLS:
-;   LAB_14B1
+;   SCRIPT_UpdateSerialShadowFromCtrlByte
 ; DESC:
-;   Jump stub to LAB_14B1.
+;   Jump stub to SCRIPT_UpdateSerialShadowFromCtrlByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_07C4:
-    JMP     LAB_14B1
+GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte:
+    JMP     SCRIPT_UpdateSerialShadowFromCtrlByte
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07C5   (JumpStub_LAB_184F)
+; FUNC: GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_184F)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_184F)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_184F)
+;   none observed
 ; CALLS:
-;   LAB_184F
+;   TLIBA3_SelectNextViewMode
 ; DESC:
-;   Jump stub to LAB_184F.
+;   Jump stub to TLIBA3_SelectNextViewMode.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_07C5:
-    JMP     LAB_184F
+GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode:
+    JMP     TLIBA3_SelectNextViewMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch   (JumpStub_PARSEINI_ParseIniBufferAndDispatch)
 ; ARGS:
-;   ?? (see PARSEINI_ParseIniBufferAndDispatch)
+;   (none observed)
 ; RET:
-;   ?? (see PARSEINI_ParseIniBufferAndDispatch)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see PARSEINI_ParseIniBufferAndDispatch)
+;   none observed
 ; CALLS:
 ;   PARSEINI_ParseIniBufferAndDispatch
 ; DESC:
@@ -50,17 +50,16 @@ LAB_07C5:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch:
-GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer:
     JMP     PARSEINI_ParseIniBufferAndDispatch
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07C7   (JumpStub_TEXTDISP_FormatEntryTimeForIndex)
+; FUNC: GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex   (JumpStub_TEXTDISP_FormatEntryTimeForIndex)
 ; ARGS:
-;   ?? (see TEXTDISP_FormatEntryTimeForIndex)
+;   (none observed)
 ; RET:
-;   ?? (see TEXTDISP_FormatEntryTimeForIndex)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see TEXTDISP_FormatEntryTimeForIndex)
+;   none observed
 ; CALLS:
 ;   TEXTDISP_FormatEntryTimeForIndex
 ; DESC:
@@ -68,17 +67,17 @@ GROUP_AK_JMPTBL_PARSEINI_ParseConfigBuffer:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_07C7:
+GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex:
     JMP     TEXTDISP_FormatEntryTimeForIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar   (JumpStub_GCOMMAND_GetBannerChar)
 ; ARGS:
-;   ?? (see GCOMMAND_GetBannerChar)
+;   (none observed)
 ; RET:
-;   ?? (see GCOMMAND_GetBannerChar)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see GCOMMAND_GetBannerChar)
+;   none observed
 ; CALLS:
 ;   GCOMMAND_GetBannerChar
 ; DESC:
@@ -90,31 +89,31 @@ GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar:
     JMP     GCOMMAND_GetBannerChar
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07C9   (JumpStub_LAB_0B4E)
+; FUNC: GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_0B4E)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_0B4E)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_0B4E)
+;   none observed
 ; CALLS:
-;   LAB_0B4E
+;   ESQPARS_ApplyRtcBytesAndPersist
 ; DESC:
-;   Jump stub to LAB_0B4E.
+;   Jump stub to ESQPARS_ApplyRtcBytesAndPersist.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_07C9:
-    JMP     LAB_0B4E
+GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
+    JMP     ESQPARS_ApplyRtcBytesAndPersist
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07CA   (JumpStub_PARSEINI_WriteErrorLogEntry)
+; FUNC: GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry   (JumpStub_PARSEINI_WriteErrorLogEntry)
 ; ARGS:
-;   ?? (see PARSEINI_WriteErrorLogEntry)
+;   (none observed)
 ; RET:
-;   ?? (see PARSEINI_WriteErrorLogEntry)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see PARSEINI_WriteErrorLogEntry)
+;   none observed
 ; CALLS:
 ;   PARSEINI_WriteErrorLogEntry
 ; DESC:
@@ -122,35 +121,35 @@ LAB_07C9:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_07CA:
+GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry:
     JMP     PARSEINI_WriteErrorLogEntry
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_07CB   (JumpStub_LAB_142E)
+; FUNC: GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_142E)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_142E)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_142E)
+;   none observed
 ; CALLS:
-;   LAB_142E
+;   PARSEINI_ScanLogoDirectory
 ; DESC:
-;   Jump stub to LAB_142E.
+;   Jump stub to PARSEINI_ScanLogoDirectory.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-LAB_07CB:
-    JMP     LAB_142E
+GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory:
+    JMP     PARSEINI_ScanLogoDirectory
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow   (JumpStub_SCRIPT_DeassertCtrlLineNow)
 ; ARGS:
-;   ?? (see SCRIPT_DeassertCtrlLineNow)
+;   (none observed)
 ; RET:
-;   ?? (see SCRIPT_DeassertCtrlLineNow)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see SCRIPT_DeassertCtrlLineNow)
+;   none observed
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLineNow
 ; DESC:
@@ -164,11 +163,11 @@ GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default   (JumpStub_ESQ_SetCopperEffect_Default)
 ; ARGS:
-;   ?? (see ESQ_SetCopperEffect_Default)
+;   (none observed)
 ; RET:
-;   ?? (see ESQ_SetCopperEffect_Default)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQ_SetCopperEffect_Default)
+;   none observed
 ; CALLS:
 ;   ESQ_SetCopperEffect_Default
 ; DESC:
@@ -182,11 +181,11 @@ GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
 ; ARGS:
-;   ?? (see ESQ_SetCopperEffect_Custom)
+;   (none observed)
 ; RET:
-;   ?? (see ESQ_SetCopperEffect_Custom)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQ_SetCopperEffect_Custom)
+;   none observed
 ; CALLS:
 ;   ESQ_SetCopperEffect_Custom
 ; DESC:
@@ -200,11 +199,11 @@ GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)
 ; ARGS:
-;   ?? (see CLEANUP_RenderAlignedStatusScreen)
+;   (none observed)
 ; RET:
-;   ?? (see CLEANUP_RenderAlignedStatusScreen)
+;   D0: result/status
 ; CLOBBERS:
-;   ?? (see CLEANUP_RenderAlignedStatusScreen)
+;   D0
 ; CALLS:
 ;   CLEANUP_RenderAlignedStatusScreen
 ; DESC:

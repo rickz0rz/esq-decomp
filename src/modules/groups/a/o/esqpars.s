@@ -1,34 +1,53 @@
 ;!======
 
-LAB_0B34:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ClearAliasStringPointers   (Routine at ESQPARS_ClearAliasStringPointers)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A5/A7/D0/D7
+; CALLS:
+;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_ReplaceOwnedString
+; READS:
+;   GLOB_STR_ESQPARS_C_1, TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ClearAliasStringPointers:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-LAB_0B35:
-    MOVE.W  LAB_1DDA,D0
+.branch:
+    MOVE.W  TEXTDISP_AliasCount,D0
     CMP.W   D0,D7
-    BGE.S   LAB_0B37
+    BGE.S   .lab_0B37
 
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_224F,A0
+    LEA     TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-6(A5)
     MOVE.L  A1,D0
-    BEQ.S   LAB_0B36
+    BEQ.S   .branch_1
 
     MOVE.L  (A1),-(A7)
     CLR.L   -(A7)
-    BSR.W   LAB_0B44
+    BSR.W   ESQPARS_ReplaceOwnedString
 
     MOVEA.L -6(A5),A0
     MOVE.L  D0,(A0)
     MOVE.L  4(A0),(A7)
     CLR.L   -(A7)
-    BSR.W   LAB_0B44
+    BSR.W   ESQPARS_ReplaceOwnedString
 
     MOVEA.L -6(A5),A0
     MOVE.L  D0,4(A0)
@@ -36,113 +55,134 @@ LAB_0B35:
     MOVE.L  A0,-(A7)
     PEA     945.W
     PEA     GLOB_STR_ESQPARS_C_1
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D7,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_224F,A0
+    LEA     TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     CLR.L   (A0)
 
-LAB_0B36:
+.branch_1:
     ADDQ.W  #1,D7
-    BRA.S   LAB_0B35
+    BRA.S   .branch
 
-LAB_0B37:
+.lab_0B37:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
 
 ;!======
 
-LAB_0B38:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at ESQPARS_RemoveGroupEntryAndReleaseStrings)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A5/A7/D0/D1/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_JMPTBL_COI_FreeEntryResources, ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine, ESQIFF2_ClearLineHeadTailByMode
+; READS:
+;   GLOB_STR_ESQPARS_C_2, GLOB_STR_ESQPARS_C_3, GLOB_STR_ESQPARS_C_4, ESQPARS_RemoveGroupEntryAndReleaseStrings_Return, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, lab_0B3A
+; WRITES:
+;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_RemoveGroupEntryAndReleaseStrings:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2,-(A7)
     MOVE.W  10(A5),D7
-    JSR     LAB_0BF5(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine(PC)
 
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0AC8
+    BSR.W   ESQIFF2_ClearLineHeadTailByMode
 
     ADDQ.W  #4,A7
     MOVEQ   #2,D0
     CMP.W   D0,D7
-    BNE.S   LAB_0B39
+    BNE.S   .lab_0B39
 
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,D5
     SUBQ.W  #1,D5
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_222F
+    MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
     MOVEQ   #0,D1
-    MOVE.B  D1,LAB_222E
-    BRA.S   LAB_0B3A
+    MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
+    BRA.S   .lab_0B3A
 
-LAB_0B39:
-    MOVE.W  LAB_2231,D0
+.lab_0B39:
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,D5
     SUBQ.W  #1,D5
-    CLR.W   LAB_2231
-    CLR.B   LAB_224A
+    CLR.W   TEXTDISP_PrimaryGroupEntryCount
+    CLR.B   TEXTDISP_PrimaryGroupPresentFlag
 
-LAB_0B3A:
+.lab_0B3A:
     TST.W   D5
-    BMI.W   LAB_0B43
+    BMI.W   ESQPARS_RemoveGroupEntryAndReleaseStrings_Return
 
     MOVEQ   #2,D0
     CMP.W   D0,D7
-    BNE.S   LAB_0B3B
+    BNE.S   .branch
 
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_2235,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),-4(A5)
     ADDA.L  D0,A0
     SUBA.L  A1,A1
     MOVE.L  A1,(A0)
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     MOVE.L  (A2),-8(A5)
     ADDA.L  D0,A0
     MOVE.L  A1,(A0)
-    BRA.S   LAB_0B3C
+    BRA.S   .branch_1
 
-LAB_0B3B:
+.branch:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_2233,A0
+    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),-4(A5)
     ADDA.L  D0,A0
     SUBA.L  A1,A1
     MOVE.L  A1,(A0)
-    LEA     LAB_2236,A0
+    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     MOVE.L  (A2),-8(A5)
     ADDA.L  D0,A0
     MOVE.L  A1,(A0)
 
-LAB_0B3C:
+.branch_1:
     MOVEQ   #0,D6
 
-LAB_0B3D:
+.branch_2:
     TST.L   -8(A5)
-    BEQ.S   LAB_0B40
+    BEQ.S   .branch_5
 
     MOVEQ   #49,D0
     CMP.W   D0,D6
-    BGE.S   LAB_0B40
+    BGE.S   .branch_5
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -151,11 +191,11 @@ LAB_0B3D:
     MOVEA.L 56(A0,D0.L),A0
     MOVE.L  A0,-12(A5)
     MOVE.L  A0,D0
-    BEQ.S   LAB_0B3F
+    BEQ.S   .branch_4
 
-LAB_0B3E:
+.branch_3:
     TST.B   (A0)+
-    BNE.S   LAB_0B3E
+    BNE.S   .branch_3
 
     SUBQ.L  #1,A0
     SUBA.L  -12(A5),A0
@@ -165,7 +205,7 @@ LAB_0B3E:
     MOVE.L  -12(A5),-(A7)
     PEA     1025.W
     PEA     GLOB_STR_ESQPARS_C_2
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D6,D0
@@ -174,62 +214,100 @@ LAB_0B3E:
     MOVEA.L -8(A5),A0
     CLR.L   56(A0,D0.L)
 
-LAB_0B3F:
+.branch_4:
     ADDQ.W  #1,D6
-    BRA.S   LAB_0B3D
+    BRA.S   .branch_2
 
-LAB_0B40:
+.branch_5:
     TST.L   -8(A5)
-    BEQ.S   LAB_0B41
+    BEQ.S   .branch_6
 
     PEA     500.W
     MOVE.L  -8(A5),-(A7)
     PEA     1031.W
     PEA     GLOB_STR_ESQPARS_C_3
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0B41:
+.branch_6:
     MOVE.L  -4(A5),-(A7)
-    JSR     LAB_0BFD(PC)
+    JSR     ESQPARS_JMPTBL_COI_FreeEntryResources(PC)
 
     ADDQ.W  #4,A7
     TST.L   -4(A5)
-    BEQ.S   LAB_0B42
+    BEQ.S   .branch_7
 
     PEA     52.W
     MOVE.L  -4(A5),-(A7)
     PEA     1040.W
     PEA     GLOB_STR_ESQPARS_C_4
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0B42:
+.branch_7:
     SUBQ.W  #1,D5
-    BRA.W   LAB_0B3A
+    BRA.W   .lab_0B3A
 
-LAB_0B43:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings_Return   (Routine at ESQPARS_RemoveGroupEntryAndReleaseStrings_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D5
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
     MOVEM.L (A7)+,D5-D7/A2
     UNLK    A5
     RTS
 
 ;!======
 
-LAB_0B44:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ReplaceOwnedString   (Routine at ESQPARS_ReplaceOwnedString)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A6/A7/D0/D1/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _LVOAvailMem
+; READS:
+;   AbsExecBase, GLOB_STR_ESQPARS_C_5, GLOB_STR_ESQPARS_C_6, MEMF_PUBLIC
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ReplaceOwnedString:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
 
     MOVE.L  A2,D0
-    BEQ.S   LAB_0B46
+    BEQ.S   .lab_0B46
 
     MOVEA.L A2,A0
 
-LAB_0B45:
+.lab_0B45:
     TST.B   (A0)+
-    BNE.S   LAB_0B45
+    BNE.S   .lab_0B45
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
@@ -240,23 +318,23 @@ LAB_0B45:
     MOVE.L  A2,-(A7)
     PEA     1081.W
     PEA     GLOB_STR_ESQPARS_C_5
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0B46:
+.lab_0B46:
     MOVE.L  A3,D0
-    BNE.S   LAB_0B47
+    BNE.S   .lab_0B47
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0B4D
+    BRA.S   ESQPARS_ReplaceOwnedString_Return
 
-LAB_0B47:
+.lab_0B47:
     MOVEA.L A3,A0
 
-LAB_0B48:
+.lab_0B48:
     TST.B   (A0)+
-    BNE.S   LAB_0B48
+    BNE.S   .lab_0B48
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
@@ -265,50 +343,97 @@ LAB_0B48:
     ADDQ.L  #1,D6
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   LAB_0B49
+    BNE.S   .lab_0B49
 
     MOVEQ   #0,D0
-    BRA.S   LAB_0B4D
+    BRA.S   ESQPARS_ReplaceOwnedString_Return
 
-LAB_0B49:
+.lab_0B49:
     SUBA.L  A2,A2
     MOVEQ   #1,D1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAvailMem(A6)
 
     CMPI.L  #$2710,D0
-    BLE.S   LAB_0B4A
+    BLE.S   .lab_0B4A
 
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D6,-(A7)
     PEA     1100.W
     PEA     GLOB_STR_ESQPARS_C_6
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L D0,A2
 
-LAB_0B4A:
+.lab_0B4A:
     MOVE.L  A2,D0
-    BEQ.S   LAB_0B4C
+    BEQ.S   .branch_1
 
     MOVEA.L A3,A0
     MOVEA.L A2,A1
 
-LAB_0B4B:
+.branch:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_0B4B
+    BNE.S   .branch
 
-LAB_0B4C:
+.branch_1:
     MOVE.L  A2,D0
 
-LAB_0B4D:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ReplaceOwnedString_Return   (Routine at ESQPARS_ReplaceOwnedString_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D6
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ReplaceOwnedString_Return:
     MOVEM.L (A7)+,D6-D7/A2-A3
     RTS
 
 ;!======
 
-LAB_0B4E:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ApplyRtcBytesAndPersist   (Routine at ESQPARS_ApplyRtcBytesAndPersist)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +12: arg_5 (via 16(A5))
+;   stack +14: arg_6 (via 18(A5))
+;   stack +16: arg_7 (via 20(A5))
+;   stack +18: arg_8 (via 22(A5))
+;   stack +20: arg_9 (via 24(A5))
+;   stack +28: arg_10 (via 32(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A3/A5/A7/D0/D7
+; CALLS:
+;   ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals, ESQDISP_NormalizeClockAndRedrawBanner
+; READS:
+;   ESQPARS2_ReadModeFlags
+; WRITES:
+;   ESQPARS2_ReadModeFlags
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ApplyRtcBytesAndPersist:
     LINK.W  A5,#-24
     MOVEM.L D7/A3,-(A7)
 
@@ -340,13 +465,13 @@ LAB_0B4E:
     EXT.W   D0
     MOVE.W  D0,-10(A5)
     PEA     -24(A5)
-    JSR     LAB_0931(PC)
+    JSR     ESQDISP_NormalizeClockAndRedrawBanner(PC)
 
-    MOVE.W  LAB_1F45,D7
-    MOVE.W  #256,LAB_1F45
-    JSR     LAB_0BF6(PC)
+    MOVE.W  ESQPARS2_ReadModeFlags,D7
+    MOVE.W  #256,ESQPARS2_ReadModeFlags
+    JSR     ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals(PC)
 
-    MOVE.W  D7,LAB_1F45
+    MOVE.W  D7,ESQPARS2_ReadModeFlags
 
     MOVEM.L -32(A5),D7/A3
     UNLK    A5
@@ -355,13 +480,60 @@ LAB_0B4E:
 ;!======
 
 ; This whole sub-routine appears to be for processing control data
-LAB_0B4F:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ProcessSerialCommandByte   (Routine at ESQPARS_ProcessSerialCommandByte)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +5: arg_2 (via 9(A5))
+;   stack +6: arg_3 (via 10(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +14: arg_5 (via 18(A5))
+;   stack +18: arg_6 (via 22(A5))
+;   stack +22: arg_7 (via 26(A5))
+;   stack +26: arg_8 (via 30(A5))
+;   stack +27: arg_9 (via 31(A5))
+;   stack +32: arg_10 (via 36(A5))
+;   stack +37: arg_11 (via 41(A5))
+;   stack +38: arg_12 (via 42(A5))
+;   stack +57: arg_13 (via 61(A5))
+;   stack +58: arg_14 (via 62(A5))
+;   stack +62: arg_15 (via 66(A5))
+;   stack +66: arg_16 (via 70(A5))
+;   stack +67: arg_17 (via 71(A5))
+;   stack +68: arg_18 (via 72(A5))
+;   stack +206: arg_19 (via 210(A5))
+;   stack +207: arg_20 (via 211(A5))
+;   stack +208: arg_21 (via 212(A5))
+;   stack +209: arg_22 (via 213(A5))
+;   stack +214: arg_23 (via 218(A5))
+;   stack +218: arg_24 (via 222(A5))
+;   stack +219: arg_25 (via 223(A5))
+;   stack +220: arg_26 (via 224(A5))
+;   stack +221: arg_27 (via 225(A5))
+;   stack +222: arg_28 (via 226(A5))
+;   stack +223: arg_29 (via 227(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal, ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadSerialBytesToBuffer, ESQIFF2_ReadSerialBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
+; READS:
+;   CTRL_BUFFER, CTRL_H, DATACErrs, GLOB_REF_696_400_BITMAP, GLOB_REF_RASTPORT_1, GLOB_STR_23, GLOB_STR_RESET_COMMAND_RECEIVED, LAB_0B55, LAB_0B59, LAB_0B6B, LAB_0B6F, LAB_0B86, LAB_0B8C, LAB_0B8F, LAB_0B90, LAB_0B91, LAB_0B99, LAB_0B9C, LAB_0B9F, LAB_0BA2, LAB_0BA6, LAB_0BAD, LAB_0BB1, LAB_0BB5, LAB_0BB9, LAB_0BC1, LAB_0BC2, LAB_0BC8, LAB_0BC9, LAB_0BCE, LAB_0BD1, LAB_0BD5, LAB_0BD9, LAB_0BDC, LAB_0BE4, LAB_0BE5, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, ESQIFF_RecordLength, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, ESQIFF_RecordChecksumByte, ED_DiagnosticsViewMode, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, ESQIFF_RecordBufferPtr, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, LAB_CTRLHTCMAX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, a, cmdDATABinaryDL, cmdTableDATA, de, fc, ff7f, processCommand_D_Diagnostics, processCommand_K_Clock, processCommand_R_Reset, processCommand_V_Version, processCommand_xBB_BoxOff
+; WRITES:
+;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, DATA_WDISP_BSS_LONG_2363
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ProcessSerialCommandByte:
     LINK.W  A5,#-232
     MOVEM.L D2/D5-D7/A2,-(A7)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.W  LAB_229F,D1
+    MOVE.W  ESQPARS_CommandPreambleArmedFlag,D1
     MOVE.B  D0,-5(A5)
     TST.W   D1
     BNE.S   .LAB_0B52
@@ -371,9 +543,9 @@ LAB_0B4F:
     BNE.S   .LAB_0B50       ; and jump to .LAB_0B50 if it's not equa.
 
     MOVEQ   #1,D1           ; Copy 1 into D1...
-    MOVE.W  D1,LAB_229E     ; and then 0x0001 into LAB_229E
+    MOVE.W  D1,ESQPARS_Preamble55SeenFlag     ; and then 0x0001 into ESQPARS_Preamble55SeenFlag
     MOVEQ   #0,D2           ; Copy 0 into D2...
-    MOVE.W  D2,LAB_229F     ; and then 0x0000 into LAB_229F
+    MOVE.W  D2,ESQPARS_CommandPreambleArmedFlag     ; and then 0x0000 into ESQPARS_CommandPreambleArmedFlag
     BRA.W   .LAB_0BE5       ; and branch to .LAB_0BE5
 
 .LAB_0B50:
@@ -384,27 +556,27 @@ LAB_0B4F:
     CMP.L   D2,D1
     BNE.S   .LAB_0B51
 
-    MOVE.W  LAB_229E,D1
+    MOVE.W  ESQPARS_Preamble55SeenFlag,D1
     SUBQ.W  #1,D1
     BNE.S   .LAB_0B51
 
     MOVEQ   #0,D1
-    MOVE.W  D1,LAB_229E
+    MOVE.W  D1,ESQPARS_Preamble55SeenFlag
     MOVEQ   #1,D2
-    MOVE.W  D2,LAB_229F
+    MOVE.W  D2,ESQPARS_CommandPreambleArmedFlag
     BRA.W   .LAB_0BE5
 
 .LAB_0B51:
     MOVEQ   #0,D1
-    MOVE.W  D1,LAB_229E
-    MOVE.W  D1,LAB_229F
+    MOVE.W  D1,ESQPARS_Preamble55SeenFlag
+    MOVE.W  D1,ESQPARS_CommandPreambleArmedFlag
     BRA.W   .LAB_0BE5
 
 .LAB_0B52:
     SUBQ.W  #1,D1
     BNE.W   .cmdTableDATA
 
-    MOVE.W  LAB_22A0,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_22A0,D1
     BNE.W   .cmdTableDATA
 
     MOVEQ   #65,D1
@@ -414,57 +586,57 @@ LAB_0B4F:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B54
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #16,D1
     CMP.W   D1,D0
     BHI.S   .LAB_0B53
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0C0A(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQSHARED_MatchSelectionCodeWithOptionalSuffix(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    MOVE.W  D1,LAB_22A0
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_22A0
     SUBQ.W  #1,D1
     BNE.S   .clearValues
 
-    MOVE.W  #1,LAB_22A1
+    MOVE.W  #1,ESQPARS_ResetArmedFlag
     PEA     1.W
     PEA     2.W
-    JSR     LAB_08DA(PC)
+    JSR     ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_21BD
-    MOVE.W  LAB_2285,D0
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_21BD
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.S   .clearValues
 
 .LAB_0B53:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .clearValues
 
 ;!======
@@ -484,7 +656,7 @@ LAB_0B4F:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
-    JSR     LAB_0BFF(PC)
+    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .clearValues
@@ -497,23 +669,23 @@ LAB_0B4F:
     MOVEQ   #0,D1           ; Move 0 into D1 to clear out all the bits
     MOVE.B  D0,D1           ; Then move a byte from D0 into D1
     MOVE.L  D1,-(A7)        ; Push D1 to the stack
-    JSR     LAB_0BED(PC)    ; Jump to LAB_0BED(PC)
+    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)    ; Jump to ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)
 
     ADDQ.W  #4,A7           ; Add 4 to the stack (nuking the last value in it)
 
-.clearValues:               ; Clear out LAB_229E and LAB_229F
+.clearValues:               ; Clear out ESQPARS_Preamble55SeenFlag and ESQPARS_CommandPreambleArmedFlag
     MOVEQ   #0,D0           ; Copy 0 into D0
-    MOVE.W  D0,LAB_229E     ; Copy D0 (0) into LAB_229E
-    MOVE.W  D0,LAB_229F     ; Copy D0 (0) into LAB_229F
+    MOVE.W  D0,ESQPARS_Preamble55SeenFlag     ; Copy D0 (0) into ESQPARS_Preamble55SeenFlag
+    MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag     ; Copy D0 (0) into ESQPARS_CommandPreambleArmedFlag
     BRA.W   .LAB_0BE5
 
 .cmdTableDATA:
     ; https://prevueguide.com/Documentation/D2400.pdf
-    MOVE.W  LAB_229F,D0
+    MOVE.W  ESQPARS_CommandPreambleArmedFlag,D0
     SUBQ.W  #1,D0
     BNE.W   .LAB_0BE5
 
-    MOVE.W  LAB_22A0,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_22A0,D0
     SUBQ.W  #1,D0
     BNE.W   .LAB_0BE5
 
@@ -612,13 +784,13 @@ LAB_0B4F:
 .LAB_0B59:
     CLR.B   -62(A5)
     MOVE.B  #$de,-71(A5)
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     MOVEQ   #0,D0
     MOVE.B  -61(A5),D0
@@ -626,13 +798,13 @@ LAB_0B4F:
     PEA     1.W
     PEA     -61(A5)
     MOVE.L  D0,-14(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     MOVE.B  -61(A5),-7(A5)
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     36(A7),A7
     MOVE.B  -61(A5),D0
@@ -651,13 +823,13 @@ LAB_0B4F:
     BCS.S   .LAB_0B5A
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_2230,D0
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     MOVE.L  -14(A5),D1
     CMP.L   D1,D0
     BEQ.S   .LAB_0B5B
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_222D,D0
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
 
     CMP.L   D0,D1
     BEQ.S   .LAB_0B5B
@@ -671,7 +843,7 @@ LAB_0B4F:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
 
@@ -698,7 +870,7 @@ LAB_0B4F:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
     BRA.S   .LAB_0B5C
@@ -714,7 +886,7 @@ LAB_0B4F:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
     BRA.S   .LAB_0B5E
@@ -722,7 +894,7 @@ LAB_0B4F:
 .LAB_0B5F:
     PEA     1.W
     PEA     -31(A5)
-    BSR.W   LAB_0B08
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
     ADDQ.W  #8,A7
     MOVE.B  -71(A5),D0
@@ -753,17 +925,17 @@ LAB_0B4F:
 
 .LAB_0B62:
     MOVEQ   #0,D0
-    MOVE.B  LAB_222D,D0
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  -14(A5),D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B63
 
-    MOVE.B  LAB_222E,D0
+    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .LAB_0B63
 
     MOVEQ   #0,D0
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #2,D2
     MOVE.L  D2,-30(A5)
     MOVE.L  D0,-18(A5)
@@ -771,12 +943,12 @@ LAB_0B4F:
 
 .LAB_0B63:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2230,D0
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.L   D0,D1
     BNE.W   .LAB_0BE4
 
     MOVEQ   #0,D0
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVEQ   #1,D1
     MOVE.L  D1,-30(A5)
     MOVE.L  D0,-18(A5)
@@ -791,12 +963,12 @@ LAB_0B4F:
 
     MOVE.L  -30(A5),-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0923(PC)
+    JSR     ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  -30(A5),(A7)
     MOVE.L  -26(A5),-(A7)
     MOVE.L  D0,-66(A5)
-    JSR     LAB_0926(PC)
+    JSR     ESQDISP_GetEntryAuxPointerByMode(PC)
 
     LEA     12(A7),A7
     LEA     -41(A5),A0
@@ -862,7 +1034,7 @@ LAB_0B4F:
     MOVE.L  56(A0,D0.L),-(A7)
     CLR.L   -(A7)
     MOVE.L  D2,28(A7)
-    BSR.W   LAB_0B44
+    BSR.W   ESQPARS_ReplaceOwnedString
 
     ADDQ.W  #8,A7
     MOVEA.L -70(A5),A0
@@ -875,44 +1047,44 @@ LAB_0B4F:
     BRA.S   .LAB_0B6A
 
 .LAB_0B6B:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     2.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B6D
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$1ff,D0
     BHI.S   .LAB_0B6C
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0C07(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQSHARED_ParseCompactEntryRecord(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0B6E
 
 .LAB_0B6C:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .LAB_0B6E
 
 .LAB_0B6D:
@@ -921,20 +1093,20 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0B6E:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0B6F:
     CLR.B   -213(A5)
     MOVE.B  #$1,-224(A5)
     MOVE.B  #$8f,-227(A5)
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     -227(A5)
     PEA     1.W
     PEA     -62(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     MOVEQ   #0,D0
     MOVE.B  -62(A5),D0
@@ -942,7 +1114,7 @@ LAB_0B4F:
     PEA     1.W
     PEA     -62(A5)
     MOVE.L  D0,-10(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     24(A7),A7
     CLR.L   -18(A5)
@@ -962,7 +1134,7 @@ LAB_0B4F:
     PEA     -227(A5)
     PEA     1.W
     PEA     -62(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
     ADDQ.L  #1,-18(A5)
@@ -972,35 +1144,35 @@ LAB_0B4F:
     MOVE.L  -18(A5),D0
     CLR.B   -36(A5,D0.L)
     MOVEQ   #0,D0
-    MOVE.B  LAB_222D,D0
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  -10(A5),D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B72
 
-    MOVE.B  LAB_222E,D0
+    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
     BNE.S   .LAB_0B72
 
     MOVEQ   #0,D0
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,-14(A5)
     BRA.S   .LAB_0B73
 
 .LAB_0B72:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2230,D0
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.L   D0,D1
     BNE.W   .LAB_0BE4
 
     MOVEQ   #0,D0
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,-14(A5)
 
 .LAB_0B73:
     PEA     -227(A5)
     PEA     6.W
     PEA     -62(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
     CLR.L   -18(A5)
@@ -1023,7 +1195,7 @@ LAB_0B4F:
 .LAB_0B76:
     PEA     -62(A5)
     PEA     -42(A5)
-    JSR     GROUPB_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
 
     ADDQ.W  #8,A7
     CLR.L   -26(A5)
@@ -1034,30 +1206,30 @@ LAB_0B4F:
     BGE.S   .LAB_0B7C
 
     MOVEQ   #0,D1
-    MOVE.B  LAB_222D,D1
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
     MOVE.L  -10(A5),D2
     CMP.L   D1,D2
     BNE.S   .LAB_0B78
 
-    MOVE.B  LAB_222E,D1
+    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
     BNE.S   .LAB_0B78
 
     ASL.L   #2,D0
-    LEA     LAB_2235,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-218(A5)
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-222(A5)
     BRA.S   .LAB_0B79
 
 .LAB_0B78:
     ASL.L   #2,D0
-    LEA     LAB_2233,A0
+    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-218(A5)
-    LEA     LAB_2236,A0
+    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-222(A5)
 
@@ -1086,7 +1258,7 @@ LAB_0B4F:
     PEA     -227(A5)
     PEA     1.W
     PEA     -223(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
     MOVE.B  -223(A5),D0
@@ -1115,12 +1287,12 @@ LAB_0B4F:
     PEA     -227(A5)
     MOVE.L  D1,-(A7)
     PEA     -212(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     PEA     -227(A5)
     PEA     1.W
     PEA     -226(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     24(A7),A7
     MOVE.B  -226(A5),D0
@@ -1132,7 +1304,7 @@ LAB_0B4F:
 .LAB_0B7F:
     PEA     1.W
     PEA     -225(A5)
-    BSR.W   LAB_0B08
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
     ADDQ.W  #8,A7
     MOVE.B  -227(A5),D0
@@ -1225,7 +1397,7 @@ LAB_0B4F:
 
     MOVE.L  D0,-(A7)
     PEA     -42(A5)
-    JSR     GROUPB_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-22(A5)
@@ -1242,18 +1414,18 @@ LAB_0B4F:
     MOVEQ   #0,D0
     MOVE.B  -223(A5),D0
     MOVE.L  -26(A5),D1
-    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     EXT.L   D0
     PEA     -227(A5)
     MOVE.L  D0,-(A7)
     PEA     -212(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     PEA     -227(A5)
     PEA     1.W
     PEA     -226(A5)
-    BSR.W   LAB_0B0B
+    BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     24(A7),A7
     MOVE.B  -226(A5),D0
@@ -1265,7 +1437,7 @@ LAB_0B4F:
 .LAB_0B8A:
     PEA     1.W
     PEA     -225(A5)
-    BSR.W   LAB_0B08
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
     ADDQ.W  #8,A7
     MOVE.B  -227(A5),D0
@@ -1292,7 +1464,7 @@ LAB_0B4F:
 
     MOVE.L  D0,-(A7)
     PEA     -42(A5)
-    JSR     GROUPB_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-22(A5)
@@ -1360,42 +1532,42 @@ LAB_0B4F:
     BRA.W   .LAB_0B8C
 
 .LAB_0B90:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0B91:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B93
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$130,D0
     BHI.S   .LAB_0B92
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
     JSR     LADFUNC_ParseBannerEntryData(PC)
 
@@ -1403,9 +1575,9 @@ LAB_0B4F:
     BRA.S   .LAB_0B94
 
 .LAB_0B92:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .LAB_0B94
 
 .LAB_0B93:
@@ -1414,27 +1586,27 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0B94:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .processCommand_xBB_BoxOff:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
-    JSR     LAB_096D(PC)
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.B  D0,-5(A5)
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,LAB_2253
+    MOVE.B  D0,ESQIFF_RecordChecksumByte
     MOVEQ   #0,D1
     MOVE.B  -5(A5),D1
     MOVEQ   #68,D2
@@ -1449,19 +1621,19 @@ LAB_0B4F:
     CMP.L   D0,D1
     BNE.S   .LAB_0B97
 
-    TST.W   LAB_1DF6
+    TST.W   DATA_ESQ_BSS_WORD_1DF6
     BEQ.S   .LAB_0B96
 
-    BSR.W   LAB_0BE9
+    BSR.W   ESQPARS_PersistStateDataAfterCommand
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1DF6
+    MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
 
 .LAB_0B96:
-    CLR.W   LAB_22A0
+    CLR.W   DATA_WDISP_BSS_WORD_22A0
     CLR.L   -(A7)
     PEA     2.W
-    JSR     LAB_08DA(PC)
+    JSR     ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .LAB_0B98
@@ -1472,44 +1644,44 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0B98:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0B99:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     6.W
     PEA     1.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     TST.W   D0
     BEQ.W   .LAB_0BE4
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,-(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B9A
 
-    MOVE.W  LAB_2299,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_2299,D0
     SUBQ.W  #1,D0
     BNE.S   .LAB_0B9B
 
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0AD8
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ParseGroupRecordAndRefresh
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0B9B
@@ -1520,20 +1692,20 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0B9B:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0B9C:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     1.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .LAB_0B9D
@@ -1541,20 +1713,20 @@ LAB_0B4F:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,-(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0B9D
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_08E4(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQDISP_ParseProgramInfoCommandRecord(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0B9E
@@ -1565,46 +1737,46 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0B9E:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0B9F:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     1.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     TST.W   D0
     BEQ.W   .LAB_0BE4
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,-(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BA0
 
-    MOVEA.L LAB_229A,A0
+    MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  1(A0),D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
     BNE.S   .LAB_0BA1
 
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AO_JMPTBL_CLEANUP_ParseAlignedListingBlock(PC)
+    JSR     ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BA1
@@ -1615,37 +1787,37 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BA1:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BA2:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BA4
 
-    MOVEA.L LAB_229A,A0
-    LEA     LAB_2298,A1
+    MOVEA.L ESQIFF_RecordBufferPtr,A0
+    LEA     DATA_WDISP_BSS_LONG_2298,A1
 
 .LAB_0BA3:
     MOVE.B  (A0)+,(A1)+
@@ -1659,15 +1831,15 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BA5:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
     if includeCustomAriAssembly
 
 .LAB_0BA5_2:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     JSR     ESQ_PollCtrlInput
 
     MOVEQ   #0,D0
@@ -1697,39 +1869,39 @@ LAB_0B4F:
     PEA     262.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
-    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_1(PC)
+    JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
     endif
 
 .LAB_0BA6:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     21.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B08
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,LAB_2253
+    MOVE.B  D0,ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     PEA     20.W
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BA8
 
-    MOVEA.L LAB_229A,A0
+    MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  (A0),D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
@@ -1749,7 +1921,7 @@ LAB_0B4F:
     BCC.S   .LAB_0BA8
 
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_0AB8
+    BSR.W   ESQIFF2_ApplyIncomingStatusPacket
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BA9
@@ -1760,40 +1932,40 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BA9:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .processCommand_K_Clock:
-    MOVE.W  LAB_226A,D0
+    MOVE.W  ED_DiagnosticsViewMode,D0
     SUBQ.W  #1,D0
     BEQ.W   .LAB_0BE4
 
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     8.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B08
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,LAB_2253
+    MOVE.B  D0,ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     PEA     8.W
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .command_K_Increment_Data_CErrs
 
@@ -1803,7 +1975,7 @@ LAB_0B4F:
     ; (Byte 4 and onward)
 
     ; Small sanity checks: check day (not over 7)
-    MOVEA.L LAB_229A,A0 ; Pointer to all the data received.
+    MOVEA.L ESQIFF_RecordBufferPtr,A0 ; Pointer to all the data received.
     MOVE.B  (A0),D0     ; Byte 0: Day
     MOVEQ   #7,D1
     CMP.B   D1,D0
@@ -1820,13 +1992,13 @@ LAB_0B4F:
     CMP.B   D1,D0
     BCC.S   .command_K_Increment_Data_CErrs
 
-    MOVE.B  LAB_1BC9,D0
+    MOVE.B  DATA_CTASKS_STR_1_1BC9,D0
     MOVEQ   #50,D1
     CMP.B   D1,D0
     BNE.S   .command_K_Increment_Data_CErrs
 
     MOVE.L  A0,-(A7)    ; Push the address of the data to the stack
-    BSR.W   LAB_0B4E
+    BSR.W   ESQPARS_ApplyRtcBytesAndPersist
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BAC
@@ -1837,48 +2009,48 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BAC:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BAD:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     CLR.L   -(A7)
     PEA     2.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BAF
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$1f4,D0
     BHI.S   .LAB_0BAE
 
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0ACB
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ParseLineHeadTailRecord
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BB0
 
 .LAB_0BAE:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .LAB_0BB0
 
 .LAB_0BAF:
@@ -1887,50 +2059,50 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BB0:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BB1:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BB3
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #39,D1
     CMP.W   D1,D0
     BHI.S   .LAB_0BB2
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0C00(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BB4
 
 .LAB_0BB2:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .LAB_0BB4
 
 .LAB_0BB3:
@@ -1939,50 +2111,50 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BB4:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BB5:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BB7
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #39,D1
     CMP.W   D1,D0
     BHI.S   .LAB_0BB6
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0BEF(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BB8
 
 .LAB_0BB6:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .LAB_0BB8
 
 .LAB_0BB7:
@@ -1991,22 +2163,22 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BB8:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BB9:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
-    JSR     LAB_096D(PC)
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,LAB_2253
+    MOVE.B  D0,ESQIFF_RecordChecksumByte
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #109,D0
@@ -2015,7 +2187,7 @@ LAB_0B4F:
     BNE.S   .LAB_0BBA
 
     MOVEQ   #1,D0
-    MOVE.W  D0,LAB_1DF6
+    MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
     BRA.S   .LAB_0BBB
 
 .LAB_0BBA:
@@ -2024,20 +2196,20 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BBB:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .processCommand_R_Reset:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
-    JSR     LAB_096D(PC)
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2046,11 +2218,11 @@ LAB_0B4F:
     CMP.L   D0,D1
     BNE.S   .LAB_0BBF
 
-    MOVE.W  LAB_22A1,D0
+    MOVE.W  ESQPARS_ResetArmedFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .LAB_0BC0
 
-    MOVE.W  #21000,LAB_2363
+    MOVE.W  #21000,DATA_WDISP_BSS_LONG_2363
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
 
@@ -2077,7 +2249,7 @@ LAB_0B4F:
     MOVE.L  D1,-(A7)
     PEA     40.W
     MOVE.L  A1,-(A7)
-    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_3(PC)
+    JSR     GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
     BRA.S   .LAB_0BBD
@@ -2088,27 +2260,27 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BC0:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BC1:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
-    CLR.W   LAB_22A1
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BC2:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
-    JSR     LAB_096D(PC)
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -2117,7 +2289,7 @@ LAB_0B4F:
     CMP.L   D0,D1
     BNE.S   .LAB_0BC3
 
-    BSR.W   LAB_0B2F
+    BSR.W   ESQIFF2_ClearPrimaryEntryFlags34To39
 
     BRA.S   .LAB_0BC4
 
@@ -2127,18 +2299,18 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BC4:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .cmdDATABinaryDL:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_22A1
+    MOVE.W  D0,ESQPARS_ResetArmedFlag
     MOVE.L  D0,D5
     MOVEQ   #1,D0
-    CMP.L   LAB_21BD,D0
+    CMP.L   DATA_WDISP_BSS_LONG_21BD,D0
     BNE.W   .LAB_0BE4
 
     MOVEQ   #61,D1
@@ -2150,34 +2322,34 @@ LAB_0B4F:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
-    JSR     LAB_0BFB(PC)
+    JSR     ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_0BE4
 
 .processCommand_D_Diagnostics:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     256.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B08
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,LAB_2253
+    MOVE.B  D0,ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     PEA     256.W
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BEQ.S   .LAB_0BC7
 
@@ -2186,14 +2358,14 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BC7:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BC8:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0BFF(PC)
+    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_0BE4
@@ -2202,49 +2374,49 @@ LAB_0B4F:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_0BED(PC)
+    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_0BE4
 
 .processCommand_V_Version:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BCC
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$8b,D0
     BHI.S   .LAB_0BCB
 
-    BSR.W   LAB_0B22
+    BSR.W   ESQIFF2_ShowVersionMismatchOverlay
 
     BRA.S   .LAB_0BCD
 
 .LAB_0BCB:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.S   .LAB_0BCD
 
 .LAB_0BCC:
@@ -2253,42 +2425,42 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BCD:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BCE:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BCF
 
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #80,D1
     CMP.W   D1,D0
     BHI.S   .LAB_0BCF
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0BF2(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQPARS_JMPTBL_PARSEINI_HandleFontCommand(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .LAB_0BD0
@@ -2299,13 +2471,13 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BD0:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BD1:
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D6
     MOVE.B  -5(A5),D0
@@ -2315,59 +2487,59 @@ LAB_0B4F:
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
     MOVE.B  D0,-6(A5)
-    BSR.W   LAB_0BE6
+    BSR.W   ESQPARS_ReadLengthWordWithChecksumXor
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.B  D0,-6(A5)
     CMPI.W  #$2328,D1
     BCS.S   .LAB_0BD2
 
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BD2:
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,LAB_2232
+    MOVE.W  D1,ESQIFF_RecordLength
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B08
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,LAB_2253
+    MOVE.B  D0,ESQIFF_RecordChecksumByte
     MOVEQ   #0,D0
     MOVE.B  -6(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
-    MOVE.B  LAB_2253,D0
+    MOVE.B  ESQIFF_RecordChecksumByte,D0
     CMP.B   D0,D7
     BNE.S   .LAB_0BD3
 
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVEQ   #0,D0
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0C01(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(PC)
 
-    JSR     LAB_0C06(PC)
+    JSR     ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .LAB_0BD4
@@ -2378,13 +2550,13 @@ LAB_0B4F:
     MOVE.W  D0,DATACErrs
 
 .LAB_0BD4:
-    CLR.W   LAB_22A1
+    CLR.W   ESQPARS_ResetArmedFlag
     BRA.W   .LAB_0BE4
 
 .LAB_0BD5:
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D6
     MOVE.B  -5(A5),D0
@@ -2395,65 +2567,65 @@ LAB_0B4F:
     CMP.B   D0,D6
     BNE.W   .LAB_0BD9
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVEA.L LAB_229A,A0
+    MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  D0,(A0)
     LEA     1(A0),A1
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   LAB_0B0E
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
     LEA     12(A7),A7
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D1
     MOVE.B  -6(A5),D1
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     MOVE.L  D2,-(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BD8
 
-    MOVEA.L LAB_229A,A0
+    MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  (A0),D0
-    MOVE.B  LAB_2230,D1
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .LAB_0BD6
 
-    PEA     LAB_2321
+    PEA     LOCAVAIL_PrimaryFilterState
     MOVE.L  A0,-(A7)
-    JSR     LAB_0F16(PC)
+    JSR     LOCAVAIL_ParseFilterStateFromBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .LAB_0BD7
 
 .LAB_0BD6:
-    MOVE.B  LAB_222D,D1
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D0
     BNE.S   .LAB_0BD7
 
-    PEA     LAB_2324
+    PEA     LOCAVAIL_SecondaryFilterState
     MOVE.L  A0,-(A7)
-    JSR     LAB_0F16(PC)
+    JSR     LOCAVAIL_ParseFilterStateFromBuffer(PC)
 
     ADDQ.W  #8,A7
 
 .LAB_0BD7:
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BD8:
@@ -2474,11 +2646,11 @@ LAB_0B4F:
     BEQ.W   .LAB_0BDC
 
     PEA     2.W
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B17
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialSizedTextRecord
 
     ADDQ.W  #8,A7
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BLS.S   .LAB_0BDB
@@ -2488,27 +2660,27 @@ LAB_0B4F:
     MOVEQ   #0,D2
     MOVE.W  D0,D2
     MOVE.L  D2,-(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BDA
 
     MOVE.L  D6,D0
     EXT.W   D0
     EXT.L   D0
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0BF0(PC)
+    JSR     ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BDA:
@@ -2518,9 +2690,9 @@ LAB_0B4F:
     BRA.W   .LAB_0BE4
 
 .LAB_0BDB:
-    MOVE.W  LAB_2287,D0
+    MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2287
+    MOVE.W  D0,ESQIFF_LineErrorCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BDC:
@@ -2528,37 +2700,37 @@ LAB_0B4F:
     CMP.B   D0,D6
     BNE.S   .LAB_0BDE
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -6(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BDD
 
-    MOVE.L  LAB_229A,-(A7)
-    JSR     LAB_0BEE(PC)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    JSR     ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BDD:
@@ -2572,37 +2744,37 @@ LAB_0B4F:
     CMP.B   D0,D6
     BNE.S   .LAB_0BE0
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -6(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BDF
 
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     GCOMMAND_ParseCommandOptions(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BDF:
@@ -2616,37 +2788,37 @@ LAB_0B4F:
     CMP.B   D0,D6
     BNE.S   .LAB_0BE2
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -6(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BE1
 
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     GCOMMAND_ParseCommandString(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.W   .LAB_0BE4
 
 .LAB_0BE1:
@@ -2660,37 +2832,37 @@ LAB_0B4F:
     CMP.B   D0,D6
     BNE.S   .LAB_0BE4
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_229A,-(A7)
-    BSR.W   LAB_0B0E
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
+    BSR.W   ESQIFF2_ReadSerialRecordIntoBuffer
 
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D0
     MOVE.B  -6(A5),D0
     MOVEQ   #0,D1
-    MOVE.W  LAB_2232,D1
+    MOVE.W  ESQIFF_RecordLength,D1
     MOVE.L  D1,(A7)
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
+    JSR     ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(PC)
 
     LEA     20(A7),A7
     MOVEQ   #0,D1
-    MOVE.B  LAB_2253,D1
+    MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
     BNE.S   .LAB_0BE3
 
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     GCOMMAND_ParsePPVCommand(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2285,D0
+    MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2285
+    MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.S   .LAB_0BE4
 
 .LAB_0BE3:
@@ -2700,8 +2872,8 @@ LAB_0B4F:
 
 .LAB_0BE4:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_229E
-    MOVE.W  D0,LAB_229F
+    MOVE.W  D0,ESQPARS_Preamble55SeenFlag
+    MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag
 
 .LAB_0BE5:
     MOVEM.L (A7)+,D2/D5-D7/A2
@@ -2710,88 +2882,335 @@ LAB_0B4F:
 
 ;!======
 
-LAB_0BE6:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ReadLengthWordWithChecksumXor   (Routine at ESQPARS_ReadLengthWordWithChecksumXor)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A7/D0/D1/D5/D6/D7
+; CALLS:
+;   ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQFUNC_WaitForClockChangeAndServiceUi
+; READS:
+;   ESQIFF_RecordLength
+; WRITES:
+;   ESQIFF_RecordLength
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ReadLengthWordWithChecksumXor:
     MOVEM.L D5-D7,-(A7)
     MOVE.B  19(A7),D7
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     MOVE.L  D0,D5
 
-LAB_0BE7:
+.lab_0BE7:
     MOVEQ   #2,D0
     CMP.W   D0,D5
-    BGE.S   LAB_0BE8
+    BGE.S   ESQPARS_ReadLengthWordWithChecksumXor_Return
 
-    JSR     LAB_096D(PC)
+    JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    JSR     LAB_0C03(PC)
+    JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
     MOVE.L  D0,D6
     EOR.B   D6,D7
     MOVEQ   #0,D0
-    MOVE.W  LAB_2232,D0
+    MOVE.W  ESQIFF_RecordLength,D0
     ASL.L   #8,D0
     MOVEQ   #0,D1
     MOVE.B  D6,D1
     ADD.L   D1,D0
-    MOVE.W  D0,LAB_2232
+    MOVE.W  D0,ESQIFF_RecordLength
     ADDQ.W  #1,D5
-    BRA.S   LAB_0BE7
+    BRA.S   .lab_0BE7
 
-LAB_0BE8:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ReadLengthWordWithChecksumXor_Return   (Routine at ESQPARS_ReadLengthWordWithChecksumXor_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0/D5
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_ReadLengthWordWithChecksumXor_Return:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D5-D7
     RTS
 
 ;!======
 
-LAB_0BE9:
-    JSR     LAB_0BEA(PC)
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_PersistStateDataAfterCommand   (Routine at ESQPARS_PersistStateDataAfterCommand)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A7
+; CALLS:
+;   ESQPARS_JMPTBL_DATETIME_SavePairToFile, ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, LOCAVAIL_SaveAvailabilityDataFile, LADFUNC_SaveTextAdsToFile
+; READS:
+;   DST_BannerWindowPrimary, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_PersistStateDataAfterCommand:
+    JSR     ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
 
     JSR     LADFUNC_SaveTextAdsToFile(PC)
 
-    PEA     LAB_21DF
-    JSR     LAB_0BEC(PC)
+    PEA     DST_BannerWindowPrimary
+    JSR     ESQPARS_JMPTBL_DATETIME_SavePairToFile(PC)
 
-    PEA     LAB_2324
-    PEA     LAB_2321
-    JSR     LAB_0F4D(PC)
+    PEA     LOCAVAIL_SecondaryFilterState
+    PEA     LOCAVAIL_PrimaryFilterState
+    JSR     LOCAVAIL_SaveAvailabilityDataFile(PC)
 
-    JSR     LAB_0BFC(PC)
+    JSR     ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
 
     LEA     12(A7),A7
     RTS
 
 ;!======
 
-LAB_0BEA:
-    JMP     LAB_0535
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded   (Routine at ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO2_FlushDataFilesIfNeeded
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
+    JMP     DISKIO2_FlushDataFilesIfNeeded
 
-LAB_0BEB:
-    JMP     LAB_1070
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Routine at ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   NEWGRID_RebuildIndexCache
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
+    JMP     NEWGRID_RebuildIndexCache
 
-LAB_0BEC:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Routine at ESQPARS_JMPTBL_DATETIME_SavePairToFile)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DATETIME_SavePairToFile
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DATETIME_SavePairToFile:
     JMP     DATETIME_SavePairToFile
 
-LAB_0BED:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList   (Routine at ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN_VerifyChecksumAndParseList
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList:
     JMP     UNKNOWN_VerifyChecksumAndParseList
 
-LAB_0BEE:
-    JMP     LAB_1373
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord   (Routine at ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   P_TYPE_ParseAndStoreTypeRecord
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
+    JMP     P_TYPE_ParseAndStoreTypeRecord
 
-LAB_0BEF:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal   (Routine at ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN_CopyLabelToGlobal
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal:
     JMP     UNKNOWN_CopyLabelToGlobal
 
-LAB_0BF0:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DST_HandleBannerCommand32_33   (Routine at ESQPARS_JMPTBL_DST_HandleBannerCommand32_33)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DST_HandleBannerCommand32_33
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DST_HandleBannerCommand32_33:
     JMP     DST_HandleBannerCommand32_33
 
-LAB_0BF1:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds   (Routine at ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_SeedMinuteEventThresholds
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds:
     JMP     ESQ_SeedMinuteEventThresholds
 
-LAB_0BF2:
-    JMP     LAB_1416
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_PARSEINI_HandleFontCommand   (Routine at ESQPARS_JMPTBL_PARSEINI_HandleFontCommand)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   PARSEINI_HandleFontCommand
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
+    JMP     PARSEINI_HandleFontCommand
 
-LAB_0BF3:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries   (Routine at ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   TEXTDISP_ApplySourceConfigAllEntries
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
     JMP     TEXTDISP_ApplySourceConfigAllEntries
 
 ;!======
@@ -2802,29 +3221,179 @@ LAB_0BF3:
 
 ;!======
 
-LAB_0BF4:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex   (Routine at ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_PlaneMaskForIndex
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
     JMP     BRUSH_PlaneMaskForIndex
 
-LAB_0BF5:
-    JMP     LAB_1591
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine   (JumpStub_SCRIPT_ResetCtrlContextAndClearStatusLine)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SCRIPT_ResetCtrlContextAndClearStatusLine
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Jump stub to SCRIPT_ResetCtrlContextAndClearStatusLine.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine:
+    JMP     SCRIPT_ResetCtrlContextAndClearStatusLine
 
-LAB_0BF6:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Routine at ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   PARSEINI_WriteRtcFromGlobals
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
     JMP     PARSEINI_WriteRtcFromGlobals
 
-LAB_0BF7:
-    JMP     LAB_0F4D
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Routine at ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   LOCAVAIL_SaveAvailabilityDataFile
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
+    JMP     LOCAVAIL_SaveAvailabilityDataFile
 
-JMPTBL_DISPLIB_DisplayTextAtPosition_1:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Routine at ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISPLIB_DisplayTextAtPosition
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
     JMP     DISPLIB_DisplayTextAtPosition
 
-LAB_0BF9:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Routine at ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   LADFUNC_SaveTextAdsToFile
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
     JMP     LADFUNC_SaveTextAdsToFile
 
-LAB_0BFA:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Routine at ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   PARSE_ReadSignedLongSkipClass3_Alt
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
-LAB_0BFB:
-    JMP     LAB_04FF
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer   (Routine at ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   DISKIO2_HandleInteractiveFileTransfer
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
+    JMP     DISKIO2_HandleInteractiveFileTransfer
 
 ;!======
 
@@ -2836,32 +3405,202 @@ LAB_0BFB:
 
 ;!======
 
-LAB_0BFC:
-    JMP     LAB_1378
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile   (Routine at ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   P_TYPE_WritePromoIdDataFile
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
+    JMP     P_TYPE_WritePromoIdDataFile
 
-LAB_0BFD:
-    JMP     LAB_02CE
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_COI_FreeEntryResources   (Routine at ESQPARS_JMPTBL_COI_FreeEntryResources)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   COI_FreeEntryResources
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_COI_FreeEntryResources:
+    JMP     COI_FreeEntryResources
 
-GROUP_AO_JMPTBL_DST_UpdateBannerQueue:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DST_UpdateBannerQueue   (Routine at ESQPARS_JMPTBL_DST_UpdateBannerQueue)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DST_UpdateBannerQueue
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DST_UpdateBannerQueue:
     JMP     DST_UpdateBannerQueue
 
-LAB_0BFF:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord   (Routine at ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN_VerifyChecksumAndParseRecord
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord:
     JMP     UNKNOWN_VerifyChecksumAndParseRecord
 
-LAB_0C00:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay   (Routine at ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN_ParseDigitLabelAndDisplay
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay:
     JMP     UNKNOWN_ParseDigitLabelAndDisplay
 
-LAB_0C01:
-    JMP     LAB_03E0
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer   (Routine at ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_ParseConfigBuffer
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
+    JMP     DISKIO_ParseConfigBuffer
 
-GROUP_AO_JMPTBL_CLEANUP_ParseAlignedListingBlock:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock   (Routine at ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   CLEANUP_ParseAlignedListingBlock
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
     JMP     CLEANUP_ParseAlignedListingBlock
 
-GROUP_AO_JMPTBL_SCRIPT_ReadSerialRbfByte:
-LAB_0C03:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Routine at ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SCRIPT_ReadSerialRbfByte
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
     JMP     SCRIPT_ReadSerialRbfByte
 
-GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte   (Routine at ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   ESQ_GenerateXorChecksumByte
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte:
     JMP     ESQ_GenerateXorChecksumByte
 
 ;!======
@@ -2872,8 +3611,46 @@ GROUP_AO_JMPTBL_ESQ_GenerateXorChecksumByte:
 
 ;!======
 
-GROUP_AO_JMPTBL_DST_RefreshBannerBuffer:
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DST_RefreshBannerBuffer   (Routine at ESQPARS_JMPTBL_DST_RefreshBannerBuffer)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DST_RefreshBannerBuffer
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DST_RefreshBannerBuffer:
     JMP     DST_RefreshBannerBuffer
 
-LAB_0C06:
-    JMP     LAB_041A
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle   (Routine at ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_SaveConfigToFileHandle
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle:
+    JMP     DISKIO_SaveConfigToFileHandle

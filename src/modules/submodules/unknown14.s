@@ -2,20 +2,17 @@
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_OpenFromModeString   (Parse mode string, open/prepare handle.)
 ; ARGS:
-;   stack +8: A3 = mode string?? (expects 'r'/'w'/'a', optional 'b', '+')
-;   stack +12: A2 = handle/struct pointer??
+;   stack +4: arg_1 (via 8(A5))
 ; RET:
 ;   D0: A2 on success, 0 on failure
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A2/A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
 ;   UNKNOWN36_FinalizeRequest, HANDLE_OpenEntryWithFlags
 ; READS:
-;   A4-1016 = ?? (default flags/state)
-;   A3 (mode string bytes)
-;   A2+24 (existing handle flags/state)
+;   Global_DefaultHandleFlags, init_handle_fields, mode_invalid, mode_write, return
 ; WRITES:
-;   A2+4/8/12/16/20/24/28 = ?? (handle fields)
+;   (none observed)
 ; DESC:
 ;   Parses a mode string (r/w/a with optional b/+), builds flags, calls HANDLE_OpenEntryWithFlags,
 ;   then initializes the handle/struct on success.

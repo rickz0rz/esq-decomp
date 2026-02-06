@@ -1,12 +1,9 @@
 ;------------------------------------------------------------------------------
-; FUNC: GRAPHICS_BltBitMapRastPort   (Wrapper around Graphics.library blit??)
+; FUNC: GRAPHICS_BltBitMapRastPort   (Wrapper around Graphics.library blituncertain)
 ; ARGS:
-;   stack +4:  A0 = source BitMap??
-;   stack +8:  D0-D1 = src x/y??
-;   stack +16: A1 = destination RastPort??
-;   stack +20: D2-D6 = blit params (dst x/y, size, minterm, mask??)
+;   (none observed)
 ; RET:
-;   D0: status (per Graphics.library) ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D6/A0-A1/A6
 ; DESC:

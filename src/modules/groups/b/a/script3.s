@@ -2,7 +2,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: GENERATE_GRID_DATE_STRING   (GenerateGridDateString??)
+; FUNC: GENERATE_GRID_DATE_STRING   (GenerateGridDateStringuncertain)
 ; ARGS:
 ;   stack +8: outBuffer (char *)
 ; RET:
@@ -10,9 +10,9 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A1/A3
 ; CALLS:
-;   JMPTBL_PRINTF_4
+;   PARSEINI_JMPTBL_WDISP_SPrintf
 ; READS:
-;   LAB_2274/2275/2276/2277, GLOB_JMPTBL_DAYS_OF_WEEK, GLOB_JMPTBL_MONTHS
+;   CLOCK_CurrentDayOfWeekIndex/2275/2276/2277, GLOB_JMPTBL_DAYS_OF_WEEK, GLOB_JMPTBL_MONTHS
 ; WRITES:
 ;   outBuffer
 ; DESC:
@@ -24,19 +24,19 @@ GENERATE_GRID_DATE_STRING:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
-    MOVE.W  LAB_2274,D0
+    MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     GLOB_JMPTBL_DAYS_OF_WEEK,A0
     ADDA.L  D0,A0
-    MOVE.W  LAB_2275,D0
+    MOVE.W  CLOCK_CurrentMonthIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
     LEA     GLOB_JMPTBL_MONTHS,A1
     ADDA.L  D0,A1
-    MOVE.W  LAB_2276,D0
+    MOVE.W  CLOCK_CurrentDayOfMonth,D0
     EXT.L   D0
-    MOVE.W  LAB_2277,D1
+    MOVE.W  CLOCK_CurrentYearValue,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -44,7 +44,7 @@ GENERATE_GRID_DATE_STRING:
     MOVE.L  (A0),-(A7)
     PEA     GLOB_STR_GRID_DATE_FORMAT_STRING
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_PRINTF_4(PC)
+    JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     24(A7),A7
     MOVEA.L (A7)+,A3
@@ -53,7 +53,7 @@ GENERATE_GRID_DATE_STRING:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_CopyWeatherUpdateForString   (CopyWeatherUpdateForString??)
+; FUNC: SCRIPT_CopyWeatherUpdateForString   (CopyWeatherUpdateForStringuncertain)
 ; ARGS:
 ;   stack +8: outBuffer (char *)
 ; RET:
@@ -71,8 +71,6 @@ GENERATE_GRID_DATE_STRING:
 ; NOTES:
 ;   Previously unlabeled; appears unused in current build.
 ;------------------------------------------------------------------------------
-SCRIPT_CopyWeatherUpdateForString:
-LAB_14C5:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
@@ -89,7 +87,7 @@ LAB_14C5:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_CheckPathExists   (CheckPathExists??)
+; FUNC: SCRIPT_CheckPathExists   (CheckPathExistsuncertain)
 ; ARGS:
 ;   stack +8: path (char *)
 ; RET:
@@ -108,7 +106,6 @@ LAB_14C5:
 ;   Uses lock mode -2 (shared read).
 ;------------------------------------------------------------------------------
 SCRIPT_CheckPathExists:
-LAB_14C6:
     MOVEM.L D2/D6-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
 
@@ -136,7 +133,7 @@ LAB_14C6:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateBannerCharTransition   (UpdateBannerCharTransition??)
+; FUNC: SCRIPT_UpdateBannerCharTransition   (UpdateBannerCharTransitionuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -144,59 +141,58 @@ LAB_14C6:
 ; CLOBBERS:
 ;   D0-D7/A4
 ; CALLS:
-;   SCRIPT_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
+;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
 ; READS:
-;   LAB_2120/LAB_2121/LAB_212A, LAB_2352/2353/2354
+;   DATA_SCRIPT_BSS_WORD_2120/SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, DATA_WDISP_BSS_WORD_2352/2353/2354
 ; WRITES:
-;   LAB_2121/LAB_212A, banner character (via SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
+;   SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, banner character (via SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
 ; DESC:
 ;   Advances an in-progress banner character transition toward its target.
 ; NOTES:
 ;   Disables the transition when the target is reached.
 ;------------------------------------------------------------------------------
 SCRIPT_UpdateBannerCharTransition:
-LAB_14C8:
     MOVEM.L D2-D7/A4,-(A7)
 
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
-    TST.W   LAB_2121
+    TST.W   SCRIPT_BannerTransitionActive
     BEQ.W   .done
 
-    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #0,D0
-    MOVE.B  LAB_2352,D0
+    MOVE.B  DATA_WDISP_BSS_WORD_2352,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D1,D0
     BNE.S   .advance_step
 
     MOVEQ   #0,D1
-    MOVE.W  D1,LAB_2121
-    MOVE.W  D1,LAB_212A
+    MOVE.W  D1,SCRIPT_BannerTransitionActive
+    MOVE.W  D1,DATA_SCRIPT_BSS_WORD_212A
     BRA.W   .done
 
 .advance_step:
-    MOVE.W  LAB_2353,D5
-    MOVE.W  LAB_2120,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_2353,D5
+    MOVE.W  DATA_SCRIPT_BSS_WORD_2120,D1
     MOVEQ   #0,D2
     CMP.W   D2,D1
     BLS.S   .calc_candidate
 
-    ADDQ.W  #1,LAB_212A
-    MOVE.W  LAB_212A,D3
+    ADDQ.W  #1,DATA_SCRIPT_BSS_WORD_212A
+    MOVE.W  DATA_SCRIPT_BSS_WORD_212A,D3
     CMP.W   D1,D3
     BLT.S   .calc_candidate
 
-    MOVE.W  LAB_2354,D3
+    MOVE.W  DATA_WDISP_BSS_WORD_2354,D3
     ADD.W   D3,D5
-    MOVE.W  D2,LAB_212A
+    MOVE.W  D2,DATA_SCRIPT_BSS_WORD_212A
 
 .calc_candidate:
     MOVE.L  D5,D7
     ADD.W   D6,D7
-    MOVE.W  LAB_2354,D3
+    MOVE.W  DATA_WDISP_BSS_WORD_2354,D3
     TST.W   D3
     BPL.S   .check_positive_step
 
@@ -219,10 +215,10 @@ LAB_14C8:
     BGT.S   .snap_to_target
 
 .check_zero_step:
-    TST.W   LAB_2353
+    TST.W   DATA_WDISP_BSS_WORD_2353
     BNE.S   .apply_step
 
-    TST.W   LAB_2120
+    TST.W   DATA_SCRIPT_BSS_WORD_2120
     BNE.S   .apply_step
 
 .snap_to_target:
@@ -238,7 +234,7 @@ LAB_14C8:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(PC)
+    JSR     SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(PC)
 
     ADDQ.W  #4,A7
 
@@ -249,20 +245,21 @@ LAB_14C8:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_BeginBannerCharTransition   (BeginBannerCharTransition??)
+; FUNC: SCRIPT_BeginBannerCharTransition   (BeginBannerCharTransitionuncertain)
 ; ARGS:
-;   stack +10: targetChar?? (word, low 16 bits used)
-;   stack +14: rateOrDelay?? (word, low 16 bits used)
+;   stack +6: arg_1 (via 10(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +10: arg_3 (via 14(A5))
 ; RET:
 ;   D0: 1 if a transition was started, 0 otherwise
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   GCOMMAND_GetBannerChar, JMPTBL_MATH_DivS32_4, JMPTBL_MATH_Mulu32_7
+;   GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, SCRIPT3_JMPTBL_MATH_Mulu32
 ; READS:
-;   LAB_1BC7/LAB_1BC8, GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_2121
+;   CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar, GLOB_WORD_SELECT_CODE_IS_RAVESC, SCRIPT_BannerTransitionActive
 ; WRITES:
-;   LAB_2352/2353/2354, LAB_2120, LAB_2121, LAB_211F
+;   DATA_WDISP_BSS_WORD_2352/2353/2354, DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, DATA_SCRIPT_BSS_WORD_211F
 ; DESC:
 ;   Prepares parameters for a banner-char transition toward a target value.
 ; NOTES:
@@ -277,7 +274,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.W  14(A5),D6
 
     MOVEQ   #0,D5
-    MOVE.B  LAB_1BC7,D0
+    MOVE.B  CONFIG_LRBN_FlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .return
@@ -309,10 +306,10 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.W  #$1d4c,D6
 
 .LAB_14D4:
-    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.W  D0,-12(A5)
-    TST.W   LAB_2121
+    TST.W   SCRIPT_BannerTransitionActive
     BNE.W   .return
 
     CMP.W   D7,D0
@@ -324,11 +321,11 @@ SCRIPT_BeginBannerCharTransition:
     EXT.L   D0
     SUB.L   D0,D2
     MOVE.L  D2,D4
-    MOVE.B  D1,LAB_2352
+    MOVE.B  D1,DATA_WDISP_BSS_WORD_2352
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
-    MOVE.B  LAB_1BC8,D0
+    MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   .configValueLAB_1BC8isNotM
@@ -350,13 +347,13 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D6,D0
     MULU    #60,D0
     MOVE.L  #1000,D1
-    JSR     JMPTBL_MATH_DivS32_4(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,-10(A5)
     BGT.S   .LAB_14D9
 
     MOVE.L  D4,D1
-    MOVE.W  D1,LAB_2353
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_2353
     BRA.S   .LAB_14E0
 
 .LAB_14D9:
@@ -370,7 +367,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVEQ   #1,D1
 
 .LAB_14DB:
-    MOVE.W  D1,LAB_2354
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_2354
     TST.L   D4
     BPL.S   .LAB_14DC
 
@@ -385,36 +382,36 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D2,D4
     MOVE.L  D4,D0
     MOVE.L  -10(A5),D1
-    JSR     JMPTBL_MATH_DivS32_4(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,LAB_2353
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2353
     EXT.L   D0
     MOVE.L  -10(A5),D1
-    JSR     JMPTBL_MATH_Mulu32_7(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D4
     BLE.S   .LAB_14DE
 
     MOVE.L  -10(A5),D0
     MOVE.L  D4,D1
-    JSR     JMPTBL_MATH_DivS32_4(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,LAB_2120
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2120
     BRA.S   .LAB_14DF
 
 .LAB_14DE:
-    CLR.W   LAB_2120
+    CLR.W   DATA_SCRIPT_BSS_WORD_2120
 
 .LAB_14DF:
-    MOVE.W  LAB_2353,D0
-    MULS    LAB_2354,D0
-    MOVE.W  D0,LAB_2353
+    MOVE.W  DATA_WDISP_BSS_WORD_2353,D0
+    MULS    DATA_WDISP_BSS_WORD_2354,D0
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2353
 
 .LAB_14E0:
     MOVE.L  D6,D0
     MOVEQ   #1,D5
-    MOVE.W  D5,LAB_2121
-    MOVE.W  D0,LAB_211F
+    MOVE.W  D5,SCRIPT_BannerTransitionActive
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211F
 
 .return:
     MOVE.L  D5,D0
@@ -425,59 +422,61 @@ SCRIPT_BeginBannerCharTransition:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_14E2   (??)
+; FUNC: SCRIPT_PrimeBannerTransitionFromHexCode   (PrimeBannerTransitionFromHexCode)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   ??
+;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
 ; READS:
-;   ??
+;   GLOB_REF_WORD_HEX_CODE_8E (target banner char)
 ; WRITES:
-;   ??
+;   DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, DATA_WDISP_BSS_WORD_2352, DATA_WDISP_BSS_WORD_2353, DATA_WDISP_BSS_WORD_2354
 ; DESC:
-;   ??
+;   Initializes transition-step globals to move the current banner character
+;   directly toward GLOB_REF_WORD_HEX_CODE_8E.
 ; NOTES:
-;   ??
+;   DATA_SCRIPT_BSS_WORD_2120 is reset to 0; transition is enabled only when
+;   current and target characters differ.
 ;------------------------------------------------------------------------------
-LAB_14E2:
+SCRIPT_PrimeBannerTransitionFromHexCode:
     MOVEM.L D2-D3/D7,-(A7)
 
-    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2121
+    MOVE.W  D0,SCRIPT_BannerTransitionActive
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D1
     MOVEQ   #0,D2
     MOVE.B  D1,D2
     MOVE.L  D7,D3
     EXT.L   D3
     SUB.L   D3,D2
-    MOVE.B  D1,LAB_2352
-    MOVE.W  D2,LAB_2353
-    BGE.S   .LAB_14E3
+    MOVE.B  D1,DATA_WDISP_BSS_WORD_2352
+    MOVE.W  D2,DATA_WDISP_BSS_WORD_2353
+    BGE.S   .step_positive_or_zero
 
     MOVEQ   #-1,D1
-    BRA.S   .LAB_14E4
+    BRA.S   .store_step_sign
 
-.LAB_14E3:
+.step_positive_or_zero:
     MOVEQ   #1,D1
 
-.LAB_14E4:
-    MOVE.W  D0,LAB_2120
-    MOVE.W  D1,LAB_2354
+.store_step_sign:
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2120
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_2354
     TST.W   D2
-    BEQ.S   .LAB_14E5
+    BEQ.S   .set_transition_inactive
 
-    MOVE.W  #1,LAB_2121
+    MOVE.W  #1,SCRIPT_BannerTransitionActive
     BRA.S   .return
 
-.LAB_14E5:
-    MOVE.W  D0,LAB_2121
+.set_transition_inactive:
+    MOVE.W  D0,SCRIPT_BannerTransitionActive
 
 .return:
     MOVEM.L (A7)+,D2-D3/D7
@@ -486,7 +485,7 @@ LAB_14E2:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_InitCtrlContext   (InitCtrlContext??)
+; FUNC: SCRIPT_InitCtrlContext   (InitCtrlContextuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -523,23 +522,23 @@ SCRIPT_InitCtrlContext:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, LAB_1560,
-;   GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, LAB_167E, LAB_154C, SCRIPT_JMPTBL_LAB_08DA, LAB_167D
+;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
+;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_1BC8, LAB_1DF3, LAB_1E84, LAB_212B
+;   GLOB_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, DATA_ESQ_BSS_WORD_1DF3, DATA_ESQDISP_BSS_LONG_1E84, DATA_SCRIPT_BSS_WORD_212B
 ;   GLOB_REF_CLOCKDATA_STRUCT, GLOB_WORD_CLOCK_SECONDS
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   LAB_2346/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
+;   SCRIPT_RuntimeMode/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
 ; WRITES:
-;   LAB_234A, LAB_212B, GLOB_WORD_CLOCK_SECONDS,
+;   GLOB_RefreshTickCounter, DATA_SCRIPT_BSS_WORD_212B, GLOB_WORD_CLOCK_SECONDS,
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   SCRIPT_CTRL_CMD_BUFFER, LAB_2347/2348/2349
+;   SCRIPT_CTRL_CMD_BUFFER, DATA_WDISP_BSS_WORD_2347/2348/2349
 ; DESC:
 ;   Polls the CTRL input buffer and advances a small state machine to parse
 ;   serial control commands; dispatches actions via a jump table.
 ; NOTES:
 ;   The jump table is a compiler switch/jumptable on the input byte (0..21).
-;   SCRIPT_CTRL_STATE acts as a parser state: 0=idle, 1/2/3=substates ??.
+;   SCRIPT_CTRL_STATE acts as a parser state: 0=idle, 1/2/3=substates uncertain.
 ;------------------------------------------------------------------------------
 SCRIPT_HandleSerialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
@@ -547,30 +546,30 @@ SCRIPT_HandleSerialCtrlCmd:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
-    MOVE.B  LAB_1BC8,D0
+    MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
     BNE.S   .LAB_14EA
 
 .selectCodeIsNotRAVSEC:
-    MOVE.W  #(-1),LAB_234A
+    MOVE.W  #(-1),GLOB_RefreshTickCounter
     BRA.S   .LAB_14EC
 
 .LAB_14EA:
-    TST.W   LAB_1DF3
+    TST.W   DATA_ESQ_BSS_WORD_1DF3
     BEQ.S   .LAB_14EB
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_234A
+    MOVE.W  D0,GLOB_RefreshTickCounter
     BRA.W   .return
 
 .LAB_14EB:
     MOVEQ   #1,D0
-    CMP.L   LAB_1E84,D0
+    CMP.L   DATA_ESQDISP_BSS_LONG_1E84,D0
     BEQ.W   .return
 
 .LAB_14EC:
-    TST.W   LAB_212B
+    TST.W   DATA_SCRIPT_BSS_WORD_212B
     BEQ.S   .LAB_14ED
 
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
@@ -582,10 +581,10 @@ SCRIPT_HandleSerialCtrlCmd:
     CMPI.W  #3,GLOB_WORD_CLOCK_SECONDS
     BLT.S   .LAB_14ED
 
-    CLR.W   LAB_212B
+    CLR.W   DATA_SCRIPT_BSS_WORD_212B
     CLR.L   -(A7)
     PEA     32.W
-    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
+    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
 
@@ -593,17 +592,17 @@ SCRIPT_HandleSerialCtrlCmd:
     JSR     PARSEINI_CheckCtrlHChange(PC)
 
     MOVE.L  D0,D6
-    TST.W   LAB_2263
+    TST.W   GLOB_UIBusyFlag
     BNE.W   .return
 
     TST.W   D6
     BEQ.W   .return
 
-    MOVE.W  LAB_234A,D0
+    MOVE.W  GLOB_RefreshTickCounter,D0
     ADDQ.W  #1,D0
     BEQ.S   .LAB_14EE
 
-    CLR.W   LAB_234A
+    CLR.W   GLOB_RefreshTickCounter
 
 .LAB_14EE:
     JSR     SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
@@ -678,9 +677,9 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVEQ   #0,D1
     MOVE.B  D7,D1
     MOVE.W  D1,SCRIPT_CTRL_CHECKSUM
-    MOVE.W  LAB_2347,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_2347,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LAB_2347
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_2347
     MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA
 
@@ -726,18 +725,18 @@ SCRIPT_HandleSerialCtrlCmd:
     PEA     SCRIPT_CTRL_CONTEXT
     BSR.W   SCRIPT_HandleBrushCommand
 
-    BSR.W   LAB_1560
+    BSR.W   SCRIPT_ApplyPendingBannerTarget
 
-    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   (A7)
-    JSR     LAB_167E(PC)
+    JSR     TEXTDISP_SetRastForMode(PC)
 
     LEA     12(A7),A7
     BRA.S   .LAB_14F9
 
 .LAB_14F5:
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     BEQ.S   .LAB_14F6
 
     SUBQ.W  #1,D0
@@ -752,29 +751,29 @@ SCRIPT_HandleSerialCtrlCmd:
     BSR.W   SCRIPT_HandleBrushCommand
 
     PEA     SCRIPT_CTRL_CONTEXT
-    BSR.W   LAB_154C
+    BSR.W   SCRIPT_ProcessCtrlContextPlaybackTick
 
     LEA     16(A7),A7
     BRA.S   .LAB_14F9
 
 .LAB_14F7:
-    MOVE.W  LAB_211B,D0
+    MOVE.W  DATA_SCRIPT_BSS_WORD_211B,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_211B
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211B
     BRA.S   .LAB_14F9
 
 .LAB_14F8:
     PEA     1.W
     PEA     32.W
-    JSR     SCRIPT_JMPTBL_LAB_08DA(PC)
+    JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,GLOB_WORD_CLOCK_SECONDS
     MOVEQ   #1,D0
-    MOVE.W  LAB_2348,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_2348,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LAB_2348
-    MOVE.W  D0,LAB_212B
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_2348
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_212B
 
 .LAB_14F9:
     MOVEQ   #0,D0
@@ -799,18 +798,18 @@ SCRIPT_HandleSerialCtrlCmd:
     CMPI.W  #198,D0
     BLE.S   .return
 
-    MOVE.W  LAB_2349,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_2349,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2349
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2349
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
-    MOVE.W  LAB_2346,D1
+    MOVE.W  SCRIPT_RuntimeMode,D1
     MOVE.W  D0,SCRIPT_CTRL_STATE
     TST.W   D1
     BNE.S   .return
 
-    JSR     LAB_167D(PC)
+    JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .return:
     MOVEM.L (A7)+,D6-D7
@@ -819,6 +818,37 @@ SCRIPT_HandleSerialCtrlCmd:
 ;!======
 
 ; Dispatch helper for brush-control script commands (handles primary/secondary selection requests).
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_HandleBrushCommand   (Routine at SCRIPT_HandleBrushCommand)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +7: arg_3 (via 11(A5))
+;   stack +8: arg_4 (via 12(A5))
+;   stack +9: arg_5 (via 13(A5))
+;   stack +10: arg_6 (via 14(A5))
+;   stack +11: arg_7 (via 15(A5))
+;   stack +12: arg_8 (via 16(A5))
+;   stack +13: arg_9 (via 17(A5))
+;   stack +14: arg_10 (via 18(A5))
+;   stack +16: arg_11 (via 20(A5))
+;   stack +24: arg_12 (via 28(A5))
+;   stack +28: arg_13 (via 32(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
+; CALLS:
+;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadCiaBBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+; READS:
+;   BRUSH_SelectedNode, GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_14FF, LAB_14FF_002A, LAB_14FF_01B6, LAB_14FF_01C8, LAB_14FF_01E4, LAB_14FF_0224, LAB_14FF_02E0, LAB_14FF_0390, LAB_14FF_06A0, LAB_14FF_06D2, LAB_14FF_06DE, LAB_14FF_06EA, LAB_14FF_0812, LAB_14FF_081C, LAB_1506, LAB_1509, LAB_1521, LAB_1528, LAB_1529, LAB_152B, LAB_152C, LAB_152E, LAB_152F, LAB_1543, ESQIFF_GAdsBrushListCount, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_BSS_LONG_2129, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, WDISP_CharClassTable, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365, CLEANUP_AlignedStatusMatchIndex, M, WDISP_HighlightActive
+; WRITES:
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, DATA_COMMON_STR_VALUE_1B05, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 SCRIPT_HandleBrushCommand:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -830,12 +860,12 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #1,D6
     MOVEQ   #1,D0
     MOVE.L  D0,-8(A5)
-    MOVE.W  LAB_2346,D5
+    MOVE.W  SCRIPT_RuntimeMode,D5
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1584
+    BSR.W   SCRIPT_LoadCtrlContextSnapshot
 
     ADDQ.W  #4,A7
-    CLR.L   LAB_2351
+    CLR.L   SCRIPT_PlaybackCursor
     CLR.B   0(A2,D7.L)
     MOVEQ   #0,D0
     MOVE.B  (A2),D0
@@ -879,10 +909,10 @@ SCRIPT_HandleBrushCommand:
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     LAB_212C
+    PEA     DATA_SCRIPT_TAG_00_212C
     MOVE.L  D0,-20(A5)
     MOVE.L  D0,-16(A5)
-    JSR     JMPTBL_STRING_CompareN_3(PC)
+    JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -896,8 +926,8 @@ SCRIPT_HandleBrushCommand:
     LEA     1(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     LAB_212D
-    JSR     JMPTBL_STRING_CompareN_3(PC)
+    PEA     DATA_SCRIPT_TAG_00_212D
+    JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -911,8 +941,8 @@ SCRIPT_HandleBrushCommand:
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     LAB_212E
-    JSR     JMPTBL_STRING_CompareN_3(PC)
+    PEA     DATA_SCRIPT_TAG_11_212E
+    JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -929,8 +959,8 @@ SCRIPT_HandleBrushCommand:
     LEA     1(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     LAB_212F
-    JSR     JMPTBL_STRING_CompareN_3(PC)
+    PEA     DATA_SCRIPT_TAG_11_212F
+    JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -951,7 +981,7 @@ SCRIPT_HandleBrushCommand:
     BNE.W   .LAB_1543
 
 .LAB_1505:
-    MOVE.L  LAB_1ED1,-12(A5)
+    MOVE.L  ESQIFF_BrushIniListHead,-12(A5)
 
 .LAB_1506:
     ; Scan available brushes to pick the first entries matching the requested names.
@@ -964,7 +994,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareN_3(PC)
+    JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -988,7 +1018,7 @@ SCRIPT_HandleBrushCommand:
     PEA     2.W
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareN_3(PC)
+    JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1027,19 +1057,19 @@ SCRIPT_HandleBrushCommand:
 
 .LAB_14FF_01B6:
     MOVE.L  A2,-(A7)
-    JSR     LAB_136D(PC)
+    JSR     P_TYPE_GetSubtypeIfType20(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,LAB_211D
+    MOVE.B  D0,DATA_SCRIPT_BSS_WORD_211D
     BRA.W   .LAB_1543
 
 .LAB_14FF_01C8:
     MOVEQ   #0,D0
     MOVE.B  1(A2),D0
-    MOVE.W  D0,LAB_234D
+    MOVE.W  D0,TEXTDISP_PrimaryChannelCode
     MOVEQ   #0,D0
     MOVE.B  2(A2),D0
-    MOVE.W  D0,LAB_234E
+    MOVE.W  D0,TEXTDISP_SecondaryChannelCode
     BRA.W   .LAB_1543
 
 .LAB_14FF_01E4:
@@ -1048,7 +1078,7 @@ SCRIPT_HandleBrushCommand:
     CMP.B   D1,D0
     BNE.S   .LAB_150B
 
-    MOVE.W  #1,LAB_2356
+    MOVE.W  #1,SCRIPT_PrimarySearchFirstFlag
     BRA.W   .LAB_1543
 
 .LAB_150B:
@@ -1057,11 +1087,11 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_150C
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2356
+    MOVE.W  D0,SCRIPT_PrimarySearchFirstFlag
     BRA.W   .LAB_1543
 
 .LAB_150C:
-    TST.W   LAB_2356
+    TST.W   SCRIPT_PrimarySearchFirstFlag
     BEQ.S   .LAB_150D
 
     MOVEQ   #0,D0
@@ -1071,11 +1101,11 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #1,D0
 
 .LAB_150E:
-    MOVE.W  D0,LAB_2356
+    MOVE.W  D0,SCRIPT_PrimarySearchFirstFlag
     BRA.W   .LAB_1543
 
 .LAB_14FF_0224:
-    MOVE.B  LAB_1BC9,D0
+    MOVE.B  DATA_CTASKS_STR_1_1BC9,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
     BNE.W   .LAB_1543
@@ -1095,10 +1125,10 @@ SCRIPT_HandleBrushCommand:
     PEA     4.W
     MOVE.L  A0,-(A7)
     PEA     -28(A5)
-    JSR     SCRIPT_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     PEA     -28(A5)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     LEA     16(A7),A7
     MOVEQ   #-48,D1
@@ -1139,13 +1169,13 @@ SCRIPT_HandleBrushCommand:
     BGE.W   .LAB_1543
 
     PEA     -18(A5)
-    JSR     SCRIPT_JMPTBL_LAB_0B4E(PC)
+    JSR     SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_1543
 
 .LAB_14FF_02E0:
-    MOVE.L  LAB_1FE7,D0
+    MOVE.L  LOCAVAIL_FilterStep,D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
     BEQ.S   .LAB_1510
@@ -1154,21 +1184,21 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1511
 
 .LAB_1510:
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1511:
-    CMP.L   LAB_1FE6,D1
+    CMP.L   LOCAVAIL_FilterModeFlag,D1
     BEQ.S   .LAB_1513
 
-    MOVE.B  LAB_1DD6,D0
+    MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.S   .LAB_1512
 
-    TST.L   LAB_1B27
+    TST.L   ESQIFF_GAdsBrushListCount
     BNE.S   .LAB_1516
 
 .LAB_1512:
@@ -1176,15 +1206,15 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1516
 
 .LAB_1513:
-    PEA     LAB_211D
-    JSR     LAB_136F(PC)
+    PEA     DATA_SCRIPT_BSS_WORD_211D
+    JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
     BEQ.S   .LAB_1514
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1514:
@@ -1195,7 +1225,7 @@ SCRIPT_HandleBrushCommand:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     CLR.L   -(A7)
-    BSR.W   LAB_1545
+    BSR.W   SCRIPT_SelectPlaybackCursorFromSearchText
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
@@ -1206,27 +1236,27 @@ SCRIPT_HandleBrushCommand:
     CMP.B   1(A2),D0
     BNE.W   .LAB_1543
 
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1516:
     MOVEQ   #4,D0
-    MOVE.L  D0,LAB_2351
-    CLR.W   LAB_2357
+    MOVE.L  D0,SCRIPT_PlaybackCursor
+    CLR.W   DATA_WDISP_BSS_LONG_2357
     BRA.W   .LAB_1543
 
 .LAB_14FF_0390:
-    PEA     LAB_211D
-    JSR     LAB_136F(PC)
+    PEA     DATA_SCRIPT_BSS_WORD_211D
+    JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
     BEQ.S   .LAB_1517
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1517:
@@ -1267,35 +1297,35 @@ SCRIPT_HandleBrushCommand:
 
 .LAB_1518:
     MOVEQ   #9,D0
-    MOVE.L  D0,LAB_2351
-    MOVE.B  1(A2),LAB_2127
-    MOVE.B  2(A2),LAB_2128
+    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.B  1(A2),DATA_SCRIPT_BSS_BYTE_2127
+    MOVE.B  2(A2),DATA_SCRIPT_BSS_WORD_2128
     LEA     3(A2),A0
-    MOVE.L  LAB_2129,-(A7)
+    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_LAB_0B44_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_2129
+    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2129
     CLR.L   -8(A5)
-    MOVE.W  #(-2),LAB_211E
+    MOVE.W  #(-2),SCRIPT_PendingBannerTargetChar
     BRA.W   .LAB_1543
 
 .LAB_1519:
     MOVEQ   #8,D0
-    MOVE.L  D0,LAB_2351
-    MOVE.B  2(A2),LAB_2126
+    MOVE.L  D0,SCRIPT_PlaybackCursor
+    MOVE.B  2(A2),DATA_SCRIPT_STR_X_2126
     BRA.W   .LAB_1543
 
 .LAB_151A:
-    TST.W   LAB_2357
+    TST.W   DATA_WDISP_BSS_LONG_2357
     BNE.S   .LAB_151B
 
     MOVEQ   #0,D6
     BRA.W   .LAB_1543
 
 .LAB_151B:
-    MOVE.W  LAB_2365,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
     SUBQ.W  #1,D0
     BNE.S   .LAB_151C
 
@@ -1308,7 +1338,7 @@ SCRIPT_HandleBrushCommand:
 .LAB_151D:
     MOVEQ   #0,D1
     MOVE.B  0(A2,D0.L),D1
-    MOVE.W  D1,LAB_234F
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_234F
     MOVEQ   #48,D0
     CMP.W   D0,D1
     BNE.S   .LAB_151E
@@ -1317,11 +1347,11 @@ SCRIPT_HandleBrushCommand:
     BRA.W   .LAB_1543
 
 .LAB_151E:
-    MOVE.W  LAB_2364,D0
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     ADDQ.W  #1,D0
     BNE.S   .LAB_151F
 
-    MOVE.W  LAB_2368,D0
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     ADDQ.W  #1,D0
     BNE.S   .LAB_151F
 
@@ -1329,34 +1359,34 @@ SCRIPT_HandleBrushCommand:
     BRA.W   .LAB_1543
 
 .LAB_151F:
-    MOVE.W  LAB_2364,D0
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     ADDQ.W  #1,D0
     BNE.S   .LAB_1520
 
-    MOVE.W  LAB_2368,LAB_2364
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,TEXTDISP_CurrentMatchIndex
 
 .LAB_1520:
     JSR     TEXTDISP_UpdateChannelRangeFlags(PC)
 
     MOVEQ   #5,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1521:
-    MOVE.B  LAB_1BC7,D0
+    MOVE.B  CONFIG_LRBN_FlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BEQ.S   .LAB_1522
 
-    MOVE.W  #(-1),LAB_211E
+    MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1522:
     MOVEQ   #0,D0
     MOVE.B  2(A2),D0
-    LEA     LAB_21A8,A0
+    LEA     WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
@@ -1371,7 +1401,7 @@ SCRIPT_HandleBrushCommand:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1381,7 +1411,7 @@ SCRIPT_HandleBrushCommand:
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,36(A7)
-    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -1390,10 +1420,10 @@ SCRIPT_HandleBrushCommand:
     ADD.L   D1,D0
     MOVEQ   #0,D1
     MOVE.B  4(A2),D1
-    LEA     LAB_21A8,A0
+    LEA     WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
-    MOVE.W  D0,LAB_211E
+    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BTST    #2,(A1)
     BEQ.S   .LAB_1523
 
@@ -1409,7 +1439,7 @@ SCRIPT_HandleBrushCommand:
     SUB.L   D1,D2
     MOVE.L  D2,D0
     MOVE.L  #1000,D1
-    JSR     JMPTBL_MATH_Mulu32_7(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.B  5(A2),D1
@@ -1417,30 +1447,30 @@ SCRIPT_HandleBrushCommand:
     SUB.L   D2,D1
     MOVE.L  D0,32(A7)
     MOVEQ   #100,D0
-    JSR     JMPTBL_MATH_Mulu32_7(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  32(A7),D1
     ADD.L   D0,D1
-    MOVE.W  D1,LAB_211F
+    MOVE.W  D1,DATA_SCRIPT_BSS_WORD_211F
     BRA.S   .LAB_1524
 
 .LAB_1523:
-    MOVE.W  #1000,LAB_211F
+    MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
 
 .LAB_1524:
     TST.B   6(A2)
     BNE.S   .checkIfSelectCodeIsRAVESC
 
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .checkIfSelectCodeIsRAVESC:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsRAVESC
 
-    MOVE.B  LAB_1BC8,D0
+    MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
     BEQ.S   .selectCodeIsRAVESC
@@ -1455,42 +1485,42 @@ SCRIPT_HandleBrushCommand:
 
 .selectCodeIsRAVESC:
     MOVEQ   #3,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .selectCodeIsNotRAVESC:
     MOVEQ   #-1,D0
     MOVEQ   #1,D1
-    MOVE.L  D1,LAB_2351
-    MOVE.W  D0,LAB_211E
+    MOVE.L  D1,SCRIPT_PlaybackCursor
+    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .LAB_1543
 
 .LAB_1528:
-    MOVE.W  #(-1),LAB_211E
+    MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_1529:
-    MOVE.W  #(-1),LAB_2364
-    MOVE.B  LAB_1DCE,D0
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    MOVE.B  DATA_ESQ_STR_N_1DCE,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .LAB_152A
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_152A:
     MOVEQ   #2,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_152B:
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_152C:
@@ -1504,19 +1534,19 @@ SCRIPT_HandleBrushCommand:
 
     MOVEQ   #0,D6
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_152D:
     MOVEQ   #3,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_152E:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     CLR.L   -(A7)
-    BSR.W   LAB_1545
+    BSR.W   SCRIPT_SelectPlaybackCursorFromSearchText
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
@@ -1526,7 +1556,7 @@ SCRIPT_HandleBrushCommand:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     PEA     1.W
-    BSR.W   LAB_1545
+    BSR.W   SCRIPT_SelectPlaybackCursorFromSearchText
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
@@ -1535,12 +1565,12 @@ SCRIPT_HandleBrushCommand:
 .LAB_14FF_06A0:
     LEA     1(A2),A0
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #63,D1
     SUB.L   D0,D1
-    MOVE.B  D1,LAB_1B05
+    MOVE.B  D1,DATA_COMMON_STR_VALUE_1B05
     MOVEQ   #63,D0
     CMP.B   D0,D1
 
@@ -1550,21 +1580,21 @@ SCRIPT_HandleBrushCommand:
     BPL.S   .LAB_1531
 
 .LAB_1530:
-    MOVE.B  D0,LAB_1B05
+    MOVE.B  D0,DATA_COMMON_STR_VALUE_1B05
 
 .LAB_1531:
     MOVEQ   #13,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_14FF_06D2:
     MOVEQ   #14,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_14FF_06DE:
     MOVEQ   #15,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.W   .LAB_1543
 
 .LAB_14FF_06EA:
@@ -1573,19 +1603,19 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1532
 
     PEA     1.W
-    JSR     SCRIPT_JMPTBL_LAB_0F13(PC)
+    JSR     SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(PC)
 
     LEA     2(A2),A0
-    PEA     LAB_2321
+    PEA     LOCAVAIL_PrimaryFilterState
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT_JMPTBL_LAB_0F3D(PC)
+    JSR     SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(PC)
 
     LEA     12(A7),A7
     BRA.W   .LAB_1543
 
 .LAB_1532:
     MOVEQ   #1,D0
-    CMP.L   LAB_1FE6,D0
+    CMP.L   LOCAVAIL_FilterModeFlag,D0
     BNE.S   .LAB_1533
 
     MOVEQ   #56,D0
@@ -1593,14 +1623,14 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_1533
 
     CLR.L   -(A7)
-    JSR     SCRIPT_JMPTBL_LAB_0F13(PC)
+    JSR     SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .LAB_1543
 
 .LAB_1533:
     MOVEQ   #1,D0
-    CMP.L   LAB_1FE6,D0
+    CMP.L   LOCAVAIL_FilterModeFlag,D0
     BNE.S   .LAB_1534
 
     MOVEQ   #0,D6
@@ -1608,8 +1638,8 @@ SCRIPT_HandleBrushCommand:
 
 .LAB_1534:
     MOVEQ   #0,D0
-    MOVE.B  LAB_1DD7,D0
-    LEA     LAB_21A8,A0
+    MOVE.B  ED_DiagVinModeChar,D0
+    LEA     WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #1,(A1)
@@ -1664,7 +1694,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .LAB_153B
 
 .LAB_153A:
-    MOVE.W  #3,LAB_2346
+    MOVE.W  #3,SCRIPT_RuntimeMode
     BRA.S   .LAB_1543
 
 .LAB_153B:
@@ -1726,7 +1756,7 @@ SCRIPT_HandleBrushCommand:
     BEQ.S   .LAB_1542
 
     MOVEQ   #10,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.S   .LAB_1543
 
 .LAB_1542:
@@ -1736,20 +1766,20 @@ SCRIPT_HandleBrushCommand:
 .LAB_14FF_0812:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_1554
+    BSR.W   SCRIPT_SplitAndNormalizeSearchBuffer
 
     ADDQ.W  #8,A7
 
 .LAB_14FF_081C:
 .LAB_1543:
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_158C
+    BSR.W   SCRIPT_SaveCtrlContextSnapshot
 
     ADDQ.W  #4,A7
     TST.L   -8(A5)
     BEQ.S   .return
 
-    TST.L   LAB_2351
+    TST.L   SCRIPT_PlaybackCursor
     BEQ.S   .return
 
     CLR.L   -(A7)
@@ -1762,7 +1792,7 @@ SCRIPT_HandleBrushCommand:
     LEA     12(A7),A7
 
 .return:
-    MOVE.W  D5,LAB_2346
+    MOVE.W  D5,SCRIPT_RuntimeMode
     MOVE.L  D6,D0
 
     MOVEM.L (A7)+,D2-D7/A2-A3
@@ -1772,32 +1802,35 @@ SCRIPT_HandleBrushCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1545   (??)
+; FUNC: SCRIPT_SelectPlaybackCursorFromSearchText   (SelectPlaybackCursorFromSearchText)
 ; ARGS:
-;   ??
+;   stack +8: matchCountOrIndex (long) ??
+;   stack +12: parseBuffer (char *)
 ; RET:
-;   ??
+;   D0: 1 when a primary or secondary lookup matched, else 0
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A7/D0/D5/D6/D7
 ; CALLS:
-;   ??
+;   TEXTDISP_SelectGroupAndEntry
 ; READS:
-;   ??
+;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_PrimarySearchFirstFlag
 ; WRITES:
-;   ??
+;   DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, DATA_WDISP_BSS_LONG_2357
 ; DESC:
-;   ??
+;   Splits the incoming parse buffer into primary/secondary lookup windows and
+;   tries entry selection in preferred order based on SCRIPT_PrimarySearchFirstFlag.
 ; NOTES:
-;   ??
+;   Sets SCRIPT_PlaybackCursor to 6/7 on successful primary/secondary matches,
+;   otherwise forces cursor 1 and clears DATA_WDISP_BSS_LONG_2357.
 ;------------------------------------------------------------------------------
-LAB_1545:
+SCRIPT_SelectPlaybackCursorFromSearchText:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
     MOVE.L  8(A5),D7
     MOVEA.L 12(A5),A3
     MOVEQ   #1,D6
-    MOVE.L  D7,LAB_2350
-    MOVE.W  #1,LAB_2357
+    MOVE.L  D7,DATA_WDISP_BSS_LONG_2350
+    MOVE.W  #1,DATA_WDISP_BSS_LONG_2357
     MOVEQ   #3,D5
 
 .loop_1546:
@@ -1814,7 +1847,7 @@ LAB_1545:
 
 .branch_1547:
     CLR.B   0(A3,D5.W)
-    TST.W   LAB_2356
+    TST.W   SCRIPT_PrimarySearchFirstFlag
     BNE.S   .if_ne_1548
 
     MOVE.L  D5,D0
@@ -1822,10 +1855,10 @@ LAB_1545:
     MOVEA.L A3,A0
     ADDA.L  D0,A0
     LEA     1(A0),A1
-    MOVE.W  LAB_234E,D0
+    MOVE.W  TEXTDISP_SecondaryChannelCode,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_234C
+    PEA     TEXTDISP_SecondarySearchText
     MOVE.L  A1,-(A7)
     JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
@@ -1834,15 +1867,15 @@ LAB_1545:
     BNE.S   .if_ne_1548
 
     MOVEQ   #7,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.S   .skip_154B
 
 .if_ne_1548:
     LEA     2(A3),A0
-    MOVE.W  LAB_234D,D0
+    MOVE.W  TEXTDISP_PrimaryChannelCode,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_234B
+    PEA     TEXTDISP_PrimarySearchText
     MOVE.L  A0,-(A7)
     JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
@@ -1851,11 +1884,11 @@ LAB_1545:
     BNE.S   .if_ne_1549
 
     MOVEQ   #6,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.S   .skip_154B
 
 .if_ne_1549:
-    TST.W   LAB_2356
+    TST.W   SCRIPT_PrimarySearchFirstFlag
     BEQ.S   .branch_154A
 
     MOVE.L  D5,D0
@@ -1863,10 +1896,10 @@ LAB_1545:
     MOVEA.L A3,A0
     ADDA.L  D0,A0
     LEA     1(A0),A1
-    MOVE.W  LAB_234E,D0
+    MOVE.W  TEXTDISP_SecondaryChannelCode,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_234C
+    PEA     TEXTDISP_SecondarySearchText
     MOVE.L  A1,-(A7)
     JSR     TEXTDISP_SelectGroupAndEntry(PC)
 
@@ -1875,14 +1908,14 @@ LAB_1545:
     BNE.S   .branch_154A
 
     MOVEQ   #7,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
     BRA.S   .skip_154B
 
 .branch_154A:
     MOVEQ   #0,D6
-    CLR.W   LAB_2357
+    CLR.W   DATA_WDISP_BSS_LONG_2357
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2351
+    MOVE.L  D0,SCRIPT_PlaybackCursor
 
 .skip_154B:
     MOVE.L  D6,D0
@@ -1893,50 +1926,51 @@ LAB_1545:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_154C   (??)
+; FUNC: SCRIPT_ProcessCtrlContextPlaybackTick   (ProcessCtrlContextPlaybackTick)
 ; ARGS:
-;   ??
+;   stack +12: ctxPtr (A3)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A3/A7/D0/D1/D2
 ; CALLS:
-;   ??
+;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, SCRIPT_DispatchPlaybackCursorCommand, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
 ; READS:
-;   ??
+;   CONFIG_MSN_FlagChar, DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   ??
+;   DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, DATA_WDISP_BSS_WORD_236E
 ; DESC:
-;   ??
+;   Loads context state, applies mode/cursor gating, runs playback-command
+;   dispatch, then saves the updated state back into the context snapshot.
 ; NOTES:
-;   ??
+;   Playback cursor dispatch is only attempted for cursor values 1..15.
 ;------------------------------------------------------------------------------
-LAB_154C:
+SCRIPT_ProcessCtrlContextPlaybackTick:
     MOVEM.L D2/A3,-(A7)
     MOVEA.L 12(A7),A3
-    PEA     LAB_2321
+    PEA     LOCAVAIL_PrimaryFilterState
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_0F7D(PC)
+    JSR     SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_1584
+    BSR.W   SCRIPT_LoadCtrlContextSnapshot
 
     ADDQ.W  #8,A7
-    TST.L   LAB_2125
+    TST.L   DATA_SCRIPT_BSS_LONG_2125
     BEQ.S   .LAB_154D
 
     MOVEQ   #3,D0
-    MOVE.W  D0,LAB_2346
+    MOVE.W  D0,SCRIPT_RuntimeMode
     MOVEQ   #0,D0
-    MOVE.L  D0,LAB_2125
+    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2125
 
 .LAB_154D:
-    MOVE.B  LAB_1BC8,D0
+    MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
     BNE.S   .LAB_154E
 
-    MOVE.L  LAB_2351,D0
+    MOVE.L  SCRIPT_PlaybackCursor,D0
     TST.L   D0
     BLE.S   .LAB_154E
 
@@ -1945,23 +1979,23 @@ LAB_154C:
     BGE.S   .LAB_154E
 
     MOVEQ   #2,D2
-    MOVE.L  D2,LAB_2351
+    MOVE.L  D2,SCRIPT_PlaybackCursor
 
 .LAB_154E:
-    MOVE.W  LAB_2346,D0
+    MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
     BNE.S   .LAB_154F
 
-    TST.W   LAB_211A
+    TST.W   DATA_SCRIPT_BSS_WORD_211A
     BEQ.S   .LAB_1551
 
-    MOVE.L  LAB_2351,D0
+    MOVE.L  SCRIPT_PlaybackCursor,D0
     MOVEQ   #10,D1
     CMP.L   D1,D0
     BLE.S   .LAB_1551
 
 .LAB_154F:
-    MOVE.L  LAB_2351,D0
+    MOVE.L  SCRIPT_PlaybackCursor,D0
     TST.L   D0
     BLE.S   .return
 
@@ -1969,31 +2003,31 @@ LAB_154C:
     CMP.L   D1,D0
     BGT.S   .return
 
-    BSR.W   LAB_1565
+    BSR.W   SCRIPT_UpdateRuntimeModeForPlaybackCursor
 
     TST.W   D0
     BNE.S   .return
 
     MOVEQ   #1,D0
-    CMP.L   LAB_2351,D0
+    CMP.L   SCRIPT_PlaybackCursor,D0
     BEQ.S   .LAB_1550
 
-    BSR.W   LAB_1560
+    BSR.W   SCRIPT_ApplyPendingBannerTarget
 
 .LAB_1550:
-    PEA     LAB_2351
-    BSR.W   LAB_157A
+    PEA     SCRIPT_PlaybackCursor
+    BSR.W   SCRIPT_DispatchPlaybackCursorCommand
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .LAB_1551:
-    CLR.W   LAB_211A
+    CLR.W   DATA_SCRIPT_BSS_WORD_211A
 
 .return:
-    MOVE.W  LAB_2364,LAB_236E
+    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_WORD_236E
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_158C
+    BSR.W   SCRIPT_SaveCtrlContextSnapshot
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D2/A3
@@ -2002,55 +2036,55 @@ LAB_154C:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1553   (??)
+; FUNC: SCRIPT_ClearSearchTextsAndChannels   (ClearSearchTextsAndChannels)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   D0
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode
 ; DESC:
-;   ??
-; NOTES:
-;   ??
+;   Clears both search strings and both channel-code selectors.
 ;------------------------------------------------------------------------------
-LAB_1553:
+SCRIPT_ClearSearchTextsAndChannels:
     MOVEQ   #0,D0
-    MOVE.B  D0,LAB_234C
-    MOVE.B  D0,LAB_234B
+    MOVE.B  D0,TEXTDISP_SecondarySearchText
+    MOVE.B  D0,TEXTDISP_PrimarySearchText
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_234E
-    MOVE.W  D0,LAB_234D
+    MOVE.W  D0,TEXTDISP_SecondaryChannelCode
+    MOVE.W  D0,TEXTDISP_PrimaryChannelCode
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1554   (??)
+; FUNC: SCRIPT_SplitAndNormalizeSearchBuffer   (SplitAndNormalizeSearchBuffer)
 ; ARGS:
-;   ??
+;   stack +16: parseBuffer (char *)
+;   stack +20: parseLen (long)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A7/D0/D6/D7
 ; CALLS:
-;   ??
+;   SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
 ; READS:
-;   ??
+;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, c8
 ; WRITES:
-;   ??
+;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText
 ; DESC:
-;   ??
+;   Splits raw search text around delimiter 18 and copies primary/secondary
+;   portions into dedicated buffers.
 ; NOTES:
-;   ??
+;   Calls SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters with max length 128 for non-empty strings.
 ;------------------------------------------------------------------------------
-LAB_1554:
+SCRIPT_SplitAndNormalizeSearchBuffer:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7
@@ -2059,14 +2093,14 @@ LAB_1554:
     BNE.S   .LAB_1556
 
     LEA     2(A3),A0
-    LEA     LAB_234C,A1
+    LEA     TEXTDISP_SecondarySearchText,A1
 
 .LAB_1555:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .LAB_1555
 
     MOVEQ   #0,D0
-    MOVE.B  D0,LAB_234B
+    MOVE.B  D0,TEXTDISP_PrimarySearchText
     BRA.S   .LAB_155D
 
 .LAB_1556:
@@ -2075,13 +2109,13 @@ LAB_1554:
 
     CLR.B   -1(A3,D7.L)
     LEA     1(A3),A0
-    LEA     LAB_234B,A1
+    LEA     TEXTDISP_PrimarySearchText,A1
 
 .LAB_1557:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .LAB_1557
 
-    CLR.B   LAB_234C
+    CLR.B   TEXTDISP_SecondarySearchText
     BRA.S   .LAB_155D
 
 .LAB_1558:
@@ -2105,44 +2139,44 @@ LAB_1554:
     MOVEA.L A3,A0
     ADDA.L  D0,A0
     LEA     1(A0),A1
-    LEA     LAB_234C,A0
+    LEA     TEXTDISP_SecondarySearchText,A0
 
 .LAB_155B:
     MOVE.B  (A1)+,(A0)+
     BNE.S   .LAB_155B
 
     LEA     1(A3),A0
-    LEA     LAB_234B,A1
+    LEA     TEXTDISP_PrimarySearchText,A1
 
 .LAB_155C:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .LAB_155C
 
 .LAB_155D:
-    LEA     LAB_234B,A0
+    LEA     TEXTDISP_PrimarySearchText,A0
     MOVE.L  A0,D0
     BEQ.S   .LAB_155E
 
-    TST.B   LAB_234B
+    TST.B   TEXTDISP_PrimarySearchText
     BEQ.S   .LAB_155E
 
     PEA     128.W
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT_JMPTBL_LAB_0C31(PC)
+    JSR     SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(PC)
 
     ADDQ.W  #8,A7
 
 .LAB_155E:
-    LEA     LAB_234C,A0
+    LEA     TEXTDISP_SecondarySearchText,A0
     MOVE.L  A0,D0
     BEQ.S   .return
 
-    TST.B   LAB_234C
+    TST.B   TEXTDISP_SecondarySearchText
     BEQ.S   .return
 
     PEA     128.W
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT_JMPTBL_LAB_0C31(PC)
+    JSR     SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(PC)
 
     ADDQ.W  #8,A7
 
@@ -2153,45 +2187,45 @@ LAB_1554:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1560   (??)
+; FUNC: SCRIPT_ApplyPendingBannerTarget   (ApplyPendingBannerTarget)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A7/D0/D1/D2/D7
 ; CALLS:
-;   ??
+;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_BeginBannerCharTransition
 ; READS:
-;   ??
+;   GLOB_REF_WORD_HEX_CODE_8E, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_BSS_WORD_2122
 ; WRITES:
-;   ??
+;   ESQPARS2_ReadModeFlags, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_2122
 ; DESC:
-;   ??
+;   Applies any pending banner target request and kicks a transition if needed.
 ; NOTES:
-;   ??
+;   A pending value of -2 is normalized to -1 (no deferred target).
 ;------------------------------------------------------------------------------
-LAB_1560:
+SCRIPT_ApplyPendingBannerTarget:
     MOVEM.L D2/D7,-(A7)
-    JSR     SCRIPT_JMPTBL_GCOMMAND_GetBannerChar(PC)
+    JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #-2,D0
-    CMP.W   LAB_211E,D0
-    BNE.S   .LAB_1561
+    CMP.W   SCRIPT_PendingBannerTargetChar,D0
+    BNE.S   .check_specific_pending_target
 
     MOVEQ   #-1,D0
-    MOVE.W  D0,LAB_211E
-    BRA.S   .LAB_1563
+    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
+    BRA.S   .maybe_clear_readmode_flags
 
-.LAB_1561:
-    MOVE.W  LAB_211E,D0
+.check_specific_pending_target:
+    MOVE.W  SCRIPT_PendingBannerTargetChar,D0
     MOVEQ   #-1,D1
     CMP.W   D1,D0
-    BEQ.S   .LAB_1562
+    BEQ.S   .compare_against_default_target
 
     EXT.L   D0
-    MOVE.W  LAB_211F,D1
+    MOVE.W  DATA_SCRIPT_BSS_WORD_211F,D1
     MOVEQ   #0,D2
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
@@ -2199,16 +2233,16 @@ LAB_1560:
     BSR.W   SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
-    MOVE.W  #(-1),LAB_211E
-    BRA.S   .LAB_1563
+    MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
+    BRA.S   .maybe_clear_readmode_flags
 
-.LAB_1562:
+.compare_against_default_target:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     CMP.W   D0,D7
-    BEQ.S   .LAB_1563
+    BEQ.S   .maybe_clear_readmode_flags
 
     EXT.L   D0
-    MOVE.W  LAB_211F,D1
+    MOVE.W  DATA_SCRIPT_BSS_WORD_211F,D1
     MOVEQ   #0,D2
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
@@ -2216,15 +2250,15 @@ LAB_1560:
     BSR.W   SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
-    MOVE.W  #(-1),LAB_211E
+    MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
 
-.LAB_1563:
-    TST.W   LAB_2122
+.maybe_clear_readmode_flags:
+    TST.W   DATA_SCRIPT_BSS_WORD_2122
     BEQ.S   .return
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1F45
-    MOVE.W  D0,LAB_2122
+    MOVE.W  D0,ESQPARS2_ReadModeFlags
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2122
 
 .return:
     MOVEM.L (A7)+,D2/D7
@@ -2233,32 +2267,33 @@ LAB_1560:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1565   (??)
+; FUNC: SCRIPT_UpdateRuntimeModeForPlaybackCursor   (UpdateRuntimeModeForPlaybackCursor)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   ??
+;   D0: 1 when a mode-change path was consumed, else 0
 ; CLOBBERS:
-;   ??
+;   A7/D0/D1/D7
 ; CALLS:
-;   ??
+;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   ??
+;   GLOB_REF_WORD_HEX_CODE_8E, LAB_156E, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_N_1BC6, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
 ; WRITES:
-;   ??
+;   DATA_SCRIPT_BSS_WORD_2119, DATA_SCRIPT_BSS_WORD_211A, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
-;   ??
+;   Handles runtime-mode transitions around playback cursor commands and
+;   updates the serial shadow byte according to current mode/flags.
 ; NOTES:
-;   ??
+;   Returns 1 when it handled the mode transition and caller should stop.
 ;------------------------------------------------------------------------------
-LAB_1565:
+SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     MOVE.L  D7,-(A7)
 
-    MOVE.W  LAB_2346,D0
+    MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #1,D0
     BNE.W   .LAB_156E
 
-    MOVE.B  LAB_1BB3,D0
+    MOVE.B  DATA_CTASKS_STR_N_1BB3,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .LAB_1566
@@ -2273,17 +2308,17 @@ LAB_1565:
     ADDQ.W  #8,A7
 
 .LAB_1566:
-    CLR.W   LAB_2119
-    MOVE.W  #(-1),LAB_2364
-    MOVE.W  #2,LAB_2346
-    MOVE.W  #1,LAB_211A
-    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    CLR.W   DATA_SCRIPT_BSS_WORD_2119
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    MOVE.W  #2,SCRIPT_RuntimeMode
+    MOVE.W  #1,DATA_SCRIPT_BSS_WORD_211A
+    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
-    JSR     LAB_167E(PC)
+    JSR     TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  LAB_1BC8,D0
+    MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
     BEQ.S   .LAB_1567
@@ -2293,7 +2328,7 @@ LAB_1565:
     BNE.S   .LAB_156C
 
 .LAB_1567:
-    MOVE.B  LAB_1BC6,D0
+    MOVE.B  DATA_CTASKS_STR_N_1BC6,D0
     EXT.W   D0
     SUBI.W  #$42,D0
     BEQ.S   .LAB_156A
@@ -2332,27 +2367,27 @@ LAB_1565:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_14B1(PC)
+    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
-    BSR.W   LAB_1553
+    BSR.W   SCRIPT_ClearSearchTextsAndChannels
 
     ADDQ.W  #4,A7
     MOVEQ   #1,D0
     BRA.S   .LAB_1570
 
 .LAB_156E:
-    MOVE.W  LAB_2346,D0
+    MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #3,D0
     BNE.S   .LAB_156F
 
     JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_211A
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211A
 
 .LAB_156F:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2346
+    MOVE.W  D0,SCRIPT_RuntimeMode
 
 .LAB_1570:
     MOVE.L  (A7)+,D7
@@ -2361,7 +2396,7 @@ LAB_1565:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateCtrlStateMachine   (UpdateCtrlStateMachine??)
+; FUNC: SCRIPT_UpdateCtrlStateMachine   (UpdateCtrlStateMachineuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2369,63 +2404,62 @@ LAB_1565:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_DeassertCtrlLineNow, LAB_167D, UNKNOWN7_FindCharWrapper, SCRIPT_ReadCiaBBit3Flag
+;   SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh, UNKNOWN7_FindCharWrapper, SCRIPT_ReadCiaBBit3Flag
 ; READS:
-;   LAB_2346, LAB_2118, LAB_2119, LAB_1DD7, LAB_2263
+;   SCRIPT_RuntimeMode, DATA_SCRIPT_BSS_WORD_2118, DATA_SCRIPT_BSS_WORD_2119, ED_DiagVinModeChar, GLOB_UIBusyFlag
 ; WRITES:
-;   LAB_2346, LAB_2118, LAB_2119
+;   SCRIPT_RuntimeMode, DATA_SCRIPT_BSS_WORD_2118, DATA_SCRIPT_BSS_WORD_2119
 ; DESC:
 ;   Advances a small control state machine and triggers follow-up actions when
 ;   counters hit thresholds.
 ; NOTES:
-;   Uses LAB_1DD7 via UNKNOWN7_FindCharWrapper to probe a control flag string.
+;   Uses ED_DiagVinModeChar via UNKNOWN7_FindCharWrapper to probe a control flag string.
 ;------------------------------------------------------------------------------
 SCRIPT_UpdateCtrlStateMachine:
-LAB_1571:
     BSR.W   .refresh_ctrl_state
 
-    MOVE.W  LAB_2346,D0
+    MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
     BNE.S   .reset_state
 
-    MOVE.W  LAB_2118,D0
+    MOVE.W  DATA_SCRIPT_BSS_WORD_2118,D0
     SUBQ.W  #1,D0
     BNE.S   .check_state_two
 
-    MOVE.W  LAB_2119,D0
+    MOVE.W  DATA_SCRIPT_BSS_WORD_2119,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,LAB_2119
+    MOVE.W  D1,DATA_SCRIPT_BSS_WORD_2119
     MOVEQ   #3,D0
     CMP.W   D0,D1
     BLT.S   .return_status
 
-    CLR.W   LAB_2119
-    MOVE.W  D0,LAB_2346
+    CLR.W   DATA_SCRIPT_BSS_WORD_2119
+    MOVE.W  D0,SCRIPT_RuntimeMode
     JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
-    JSR     LAB_167D(PC)
+    JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
 
     BRA.S   .return_status
 
 .check_state_two:
-    MOVE.W  LAB_2118,D0
+    MOVE.W  DATA_SCRIPT_BSS_WORD_2118,D0
     SUBQ.W  #2,D0
     BNE.S   .check_banner_active
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2119
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2119
     BRA.S   .return_status
 
 .check_banner_active:
-    TST.W   LAB_2263
+    TST.W   GLOB_UIBusyFlag
     BEQ.S   .return_status
 
-    MOVE.W  #3,LAB_2346
+    MOVE.W  #3,SCRIPT_RuntimeMode
     BRA.S   .return_status
 
 .reset_state:
-    CLR.W   LAB_2119
+    CLR.W   DATA_SCRIPT_BSS_WORD_2119
 
 .return_status:
     RTS
@@ -2434,9 +2468,9 @@ LAB_1571:
 
 .refresh_ctrl_state:
     MOVEQ   #0,D0
-    MOVE.B  LAB_1DD7,D0
+    MOVE.B  ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_2130
+    PEA     DATA_SCRIPT_STR_YL_2130
     JSR     UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
@@ -2448,15 +2482,15 @@ LAB_1571:
     TST.B   D0
     BEQ.S   .set_state_one
 
-    MOVE.W  #2,LAB_2118
+    MOVE.W  #2,DATA_SCRIPT_BSS_WORD_2118
     BRA.S   .refresh_done
 
 .set_state_one:
-    MOVE.W  #1,LAB_2118
+    MOVE.W  #1,DATA_SCRIPT_BSS_WORD_2118
     BRA.S   .refresh_done
 
 .clear_state:
-    CLR.W   LAB_2118
+    CLR.W   DATA_SCRIPT_BSS_WORD_2118
 
 .refresh_done:
     RTS
@@ -2464,25 +2498,26 @@ LAB_1571:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_157A   (??)
+; FUNC: SCRIPT_DispatchPlaybackCursorCommand   (DispatchPlaybackCursorCommand)
 ; ARGS:
-;   ??
+;   stack +8: playbackCursorPtr (long *)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A3/A7/D0/D1
 ; CALLS:
-;   ??
+;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   ??
+;   GLOB_REF_WORD_HEX_CODE_8E, LAB_157B, LAB_157B_001C, LAB_157B_0030, LAB_157B_0042, LAB_157B_006A, LAB_157B_0082, LAB_157B_008A, LAB_157B_0092, LAB_157B_00CE, LAB_157B_00EE, LAB_157B_011E, LAB_157B_0140, LAB_157B_015E, LAB_157B_0178, LAB_157B_0192, LAB_157B_01BE, LAB_157E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, DATA_SCRIPT_BSS_WORD_211C, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, DATA_WDISP_BSS_WORD_2365, f, return
 ; WRITES:
-;   ??
+;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_WORD_211C, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_BSS_WORD_2122, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
-;   ??
+;   Dispatches command behavior from *playbackCursorPtr using a compiler
+;   switch/jumptable and clears the command slot afterward.
 ; NOTES:
-;   ??
+;   Valid dispatch range is cursor values 1..15.
 ;------------------------------------------------------------------------------
-LAB_157A:
+SCRIPT_DispatchPlaybackCursorCommand:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  (A3),D0
@@ -2515,149 +2550,149 @@ LAB_157A:
     DC.W    .LAB_157B_0030-.LAB_157B-2
 
 .LAB_157B_001C:
-    MOVE.W  #1,LAB_2122
-    MOVE.W  #256,LAB_1F45
+    MOVE.W  #1,DATA_SCRIPT_BSS_WORD_2122
+    MOVE.W  #256,ESQPARS2_ReadModeFlags
     BRA.W   .return
 
 .LAB_157B_0030:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_2122
-    MOVE.W  D0,LAB_1F45
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2122
+    MOVE.W  D0,ESQPARS2_ReadModeFlags
     BRA.W   .return
 
 .LAB_157B_0042:
-    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
-    JSR     LAB_167E(PC)
+    JSR     TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     ADDI.W  #28,D0
-    MOVE.W  #1000,LAB_211F
-    MOVE.W  D0,LAB_211E
+    MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
 .LAB_157B_006A:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
-    MOVE.W  #1000,LAB_211F
-    MOVE.W  D0,LAB_211E
+    MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
 .LAB_157B_0082:
-    JSR     SCRIPT_JMPTBL_ESQ_SetCopperEffect_Custom(PC)
+    JSR     SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(PC)
 
     BRA.W   .return
 
 .LAB_157B_008A:
-    JSR     LAB_167D(PC)
+    JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
 
     BRA.W   .return
 
 .LAB_157B_0092:
-    MOVE.W  #(-1),LAB_2364
-    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
-    JSR     LAB_167E(PC)
+    JSR     TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  LAB_1BC8,D0
+    MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
     BNE.S   .LAB_157D
 
     PEA     3.W
-    JSR     LAB_14B1(PC)
+    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
 .LAB_157D:
     PEA     1.W
-    JSR     LAB_14B1(PC)
+    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
 .LAB_157B_00CE:
-    MOVE.W  #(-1),LAB_2364
-    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
-    JSR     LAB_167E(PC)
+    JSR     TEXTDISP_SetRastForMode(PC)
 
     PEA     1.W
-    JSR     LAB_14B1(PC)
+    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #8,A7
     BRA.W   .return
 
 .LAB_157B_00EE
-    MOVE.W  #(-1),LAB_2364
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     BNE.W   .return
 
     PEA     3.W
-    JSR     LAB_14B1(PC)
+    JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  #3,LAB_1DDE
-    MOVE.W  #1,LAB_1DDF
+    MOVE.W  #3,TEXTDISP_DeferredActionCountdown
+    MOVE.W  #1,TEXTDISP_DeferredActionArmed
     BRA.W   .return
 
 .LAB_157B_011E:
-    MOVE.W  LAB_2365,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
     EXT.L   D0
-    MOVE.W  LAB_234F,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_234F,D1
     EXT.L   D1
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
+    JSR     SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   .return
 
 .LAB_157B_0140:
-    MOVE.L  LAB_2350,D0
+    MOVE.L  DATA_WDISP_BSS_LONG_2350,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     53.W
     PEA     1.W
-    JSR     SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
+    JSR     SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.W   .return
 
 .LAB_157B_015E:
-    MOVE.L  LAB_2350,D0
+    MOVE.L  DATA_WDISP_BSS_LONG_2350,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     53.W
     CLR.L   -(A7)
-    JSR     SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
+    JSR     SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(PC)
 
     LEA     12(A7),A7
     BRA.S   .return
 
 .LAB_157B_0178:
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
-    MOVE.B  LAB_2126,D0
+    MOVE.B  DATA_SCRIPT_STR_X_2126,D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_18AD(PC)
+    JSR     WDISP_HandleWeatherStatusCommand(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .LAB_157B_0192:
-    MOVE.W  #(-1),LAB_2364
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
-    MOVE.B  LAB_2127,D0
+    MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_2128,D1
-    MOVE.L  LAB_2129,-(A7)
+    MOVE.B  DATA_SCRIPT_BSS_WORD_2128,D1
+    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     TEXTDISP_HandleScriptCommand(PC)
@@ -2668,17 +2703,17 @@ LAB_157A:
 .LAB_157B_01BE:
     JSR     SCRIPT_AssertCtrlLineNow(PC)
 
-    MOVE.W  #1,LAB_2346
+    MOVE.W  #1,SCRIPT_RuntimeMode
     BRA.S   .return
 
 .LAB_157E:
-    MOVE.W  #(-1),LAB_2364
-    MOVE.W  LAB_211C,D0
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
+    MOVE.W  DATA_SCRIPT_BSS_WORD_211C,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_211C
+    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211C
 
 .return:
-    BSR.W   LAB_1553
+    BSR.W   SCRIPT_ClearSearchTextsAndChannels
 
     CLR.L   (A3)
     MOVEA.L (A7)+,A3
@@ -2687,10 +2722,9 @@ LAB_157A:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_SetCtrlContextMode   (SetCtrlContextMode??)
+; FUNC: SCRIPT_SetCtrlContextMode   (SetCtrlContextModeuncertain)
 ; ARGS:
-;   stack +12: ctxPtr (A3)
-;   stack +18: modeFlag?? (D7)
+;   (none observed)
 ; RET:
 ;   D0: none
 ; CLOBBERS:
@@ -2707,7 +2741,6 @@ LAB_157A:
 ;   Calls SCRIPT_ResetCtrlContext to clear and reset the rest of the structure.
 ;------------------------------------------------------------------------------
 SCRIPT_SetCtrlContextMode:
-LAB_1580:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.W  18(A7),D7
@@ -2723,7 +2756,7 @@ LAB_1580:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ResetCtrlContext   (ResetCtrlContext??)
+; FUNC: SCRIPT_ResetCtrlContext   (ResetCtrlContextuncertain)
 ; ARGS:
 ;   stack +12: ctxPtr (A3)
 ; RET:
@@ -2731,9 +2764,9 @@ LAB_1580:
 ; CLOBBERS:
 ;   D0/D1/D7/A3
 ; CALLS:
-;   JMPTBL_LAB_0B44_2
+;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   A3+440 (resource handle??)
+;   (none observed)
 ; WRITES:
 ;   A3 fields: +26/+226 strings, +426 flag, +436..+439, +440 handle, and
 ;   clears ranges at +428..+431 and +0x1B0..+0x1B3 (4 bytes each).
@@ -2743,7 +2776,6 @@ LAB_1580:
 ;   The loop runs 4 iterations (D7 = 0..3), clearing two 4-byte subranges.
 ;------------------------------------------------------------------------------
 SCRIPT_ResetCtrlContext:
-LAB_1581:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D0
@@ -2753,7 +2785,7 @@ LAB_1581:
     MOVE.B  D0,439(A3)
     MOVE.L  440(A3),-(A7)
     CLR.L   -(A7)
-    JSR     JMPTBL_LAB_0B44_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,440(A3)
@@ -2795,61 +2827,61 @@ LAB_1581:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1584   (??)
+; FUNC: SCRIPT_LoadCtrlContextSnapshot   (LoadCtrlContextSnapshot)
 ; ARGS:
-;   ??
+;   stack +12: ctxPtr (A3)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A7/D0/D1/D7
 ; CALLS:
-;   ??
+;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   ??
+;   DATA_SCRIPT_BSS_LONG_2129, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, DATA_WDISP_BSS_BYTE_2372, DATA_WDISP_BSS_BYTE_2376
 ; WRITES:
-;   ??
+;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365
 ; DESC:
-;   ??
+;   Loads saved CTRL context fields into live script/text-display globals.
 ; NOTES:
-;   ??
+;   Copies two NUL-terminated text buffers from context offsets +26 and +226.
 ;------------------------------------------------------------------------------
-LAB_1584:
+SCRIPT_LoadCtrlContextSnapshot:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
-    MOVE.B  436(A3),LAB_211D
-    MOVE.B  437(A3),LAB_2126
-    MOVE.B  438(A3),LAB_2127
-    MOVE.B  439(A3),LAB_2128
-    MOVE.L  LAB_2129,-(A7)
+    MOVE.B  436(A3),DATA_SCRIPT_BSS_WORD_211D
+    MOVE.B  437(A3),DATA_SCRIPT_STR_X_2126
+    MOVE.B  438(A3),DATA_SCRIPT_BSS_BYTE_2127
+    MOVE.B  439(A3),DATA_SCRIPT_BSS_WORD_2128
+    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
     MOVE.L  440(A3),-(A7)
-    JSR     JMPTBL_LAB_0B44_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_2129
-    MOVE.W  2(A3),LAB_2356
-    MOVE.W  4(A3),LAB_234D
-    MOVE.W  6(A3),LAB_234E
+    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2129
+    MOVE.W  2(A3),SCRIPT_PrimarySearchFirstFlag
+    MOVE.W  4(A3),TEXTDISP_PrimaryChannelCode
+    MOVE.W  6(A3),TEXTDISP_SecondaryChannelCode
     LEA     26(A3),A0
-    LEA     LAB_234B,A1
+    LEA     TEXTDISP_PrimarySearchText,A1
 
 .LAB_1585:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .LAB_1585
 
     LEA     226(A3),A0
-    LEA     LAB_234C,A1
+    LEA     TEXTDISP_SecondarySearchText,A1
 
 .LAB_1586:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .LAB_1586
 
-    MOVE.W  8(A3),LAB_2364
-    MOVE.W  10(A3),LAB_2357
-    MOVE.W  12(A3),LAB_2365
-    MOVE.W  14(A3),LAB_234F
-    MOVE.L  16(A3),LAB_2350
-    MOVE.L  20(A3),LAB_2351
-    MOVE.W  LAB_2346,D0
+    MOVE.W  8(A3),TEXTDISP_CurrentMatchIndex
+    MOVE.W  10(A3),DATA_WDISP_BSS_LONG_2357
+    MOVE.W  12(A3),DATA_WDISP_BSS_WORD_2365
+    MOVE.W  14(A3),DATA_WDISP_BSS_WORD_234F
+    MOVE.L  16(A3),DATA_WDISP_BSS_LONG_2350
+    MOVE.L  20(A3),SCRIPT_PlaybackCursor
+    MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
     BNE.S   .LAB_1587
 
@@ -2859,7 +2891,7 @@ LAB_1584:
     BEQ.S   .LAB_1588
 
 .LAB_1587:
-    MOVE.W  LAB_2346,D0
+    MOVE.W  SCRIPT_RuntimeMode,D0
     BNE.S   .LAB_1589
 
     MOVE.W  24(A3),D0
@@ -2868,10 +2900,10 @@ LAB_1584:
     BNE.S   .LAB_1589
 
 .LAB_1588:
-    MOVE.W  D0,LAB_2346
+    MOVE.W  D0,SCRIPT_RuntimeMode
 
 .LAB_1589:
-    MOVE.W  426(A3),LAB_2153
+    MOVE.W  426(A3),TEXTDISP_ActiveGroupId
     MOVEQ   #0,D7
 
 .LAB_158A:
@@ -2879,12 +2911,12 @@ LAB_1584:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     LAB_2372,A0
+    LEA     DATA_WDISP_BSS_BYTE_2372,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1ac,D0
     MOVE.B  0(A3,D0.L),(A0)
-    LEA     LAB_2376,A0
+    LEA     DATA_WDISP_BSS_BYTE_2376,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1b0,D0
@@ -2899,63 +2931,61 @@ LAB_1584:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_158C   (??)
+; FUNC: SCRIPT_SaveCtrlContextSnapshot   (SaveCtrlContextSnapshot)
 ; ARGS:
-;   ??
+;   stack +12: ctxPtr (A3)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A7/D0/D7
 ; CALLS:
-;   ??
+;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   ??
+;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365, DATA_WDISP_BSS_BYTE_2372, DATA_WDISP_BSS_BYTE_2376
 ; WRITES:
-;   ??
+;   Context fields at A3+2/+4/+6/+8/+10/+12/+14/+16/+20/+24/+26/+226/+426/+436..+440 and A3+0x1AC..0x1B3
 ; DESC:
-;   ??
-; NOTES:
-;   ??
+;   Saves live script/text-display globals back into the CTRL context block.
 ;------------------------------------------------------------------------------
-LAB_158C:
+SCRIPT_SaveCtrlContextSnapshot:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
 
-    MOVE.B  LAB_211D,436(A3)
-    MOVE.B  LAB_2126,437(A3)
-    MOVE.B  LAB_2127,438(A3)
-    MOVE.B  LAB_2128,439(A3)
+    MOVE.B  DATA_SCRIPT_BSS_WORD_211D,436(A3)
+    MOVE.B  DATA_SCRIPT_STR_X_2126,437(A3)
+    MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,438(A3)
+    MOVE.B  DATA_SCRIPT_BSS_WORD_2128,439(A3)
     MOVE.L  440(A3),-(A7)
-    MOVE.L  LAB_2129,-(A7)
-    JSR     JMPTBL_LAB_0B44_2(PC)
+    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
+    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,440(A3)
-    MOVE.W  LAB_2356,2(A3)
-    MOVE.W  LAB_234D,4(A3)
-    MOVE.W  LAB_234E,6(A3)
+    MOVE.W  SCRIPT_PrimarySearchFirstFlag,2(A3)
+    MOVE.W  TEXTDISP_PrimaryChannelCode,4(A3)
+    MOVE.W  TEXTDISP_SecondaryChannelCode,6(A3)
     LEA     26(A3),A0
-    LEA     LAB_234B,A1
+    LEA     TEXTDISP_PrimarySearchText,A1
 
 .LAB_158D:
     MOVE.B  (A1)+,(A0)+
     BNE.S   .LAB_158D
 
     LEA     226(A3),A0
-    LEA     LAB_234C,A1
+    LEA     TEXTDISP_SecondarySearchText,A1
 
 .LAB_158E:
     MOVE.B  (A1)+,(A0)+
     BNE.S   .LAB_158E
 
-    MOVE.W  LAB_2364,8(A3)
-    MOVE.W  LAB_2357,10(A3)
-    MOVE.W  LAB_2365,12(A3)
-    MOVE.W  LAB_234F,14(A3)
-    MOVE.L  LAB_2350,16(A3)
-    MOVE.L  LAB_2351,20(A3)
-    MOVE.W  LAB_2346,24(A3)
-    MOVE.W  LAB_2153,426(A3)
+    MOVE.W  TEXTDISP_CurrentMatchIndex,8(A3)
+    MOVE.W  DATA_WDISP_BSS_LONG_2357,10(A3)
+    MOVE.W  DATA_WDISP_BSS_WORD_2365,12(A3)
+    MOVE.W  DATA_WDISP_BSS_WORD_234F,14(A3)
+    MOVE.L  DATA_WDISP_BSS_LONG_2350,16(A3)
+    MOVE.L  SCRIPT_PlaybackCursor,20(A3)
+    MOVE.W  SCRIPT_RuntimeMode,24(A3)
+    MOVE.W  TEXTDISP_ActiveGroupId,426(A3)
     MOVEQ   #0,D7
 
 .LAB_158F:
@@ -2963,12 +2993,12 @@ LAB_158C:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     LAB_2372,A0
+    LEA     DATA_WDISP_BSS_BYTE_2372,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1ac,D0
     MOVE.B  (A0),0(A3,D0.L)
-    LEA     LAB_2376,A0
+    LEA     DATA_WDISP_BSS_BYTE_2376,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1b0,D0
@@ -2983,25 +3013,24 @@ LAB_158C:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1591   (??)
+; FUNC: SCRIPT_ResetCtrlContextAndClearStatusLine   (ResetCtrlContextAndClearStatusLine)
 ; ARGS:
-;   ??
+;   (none)
 ; RET:
-;   ??
+;   D0: none
 ; CLOBBERS:
-;   ??
+;   A7/D0
 ; CALLS:
-;   ??
+;   SCRIPT_ResetCtrlContext, TEXTDISP_HandleScriptCommand
 ; READS:
-;   ??
+;   SCRIPT_CTRL_CONTEXT
 ; WRITES:
-;   ??
+;   SCRIPT_CTRL_CONTEXT (via SCRIPT_ResetCtrlContext)
 ; DESC:
-;   ??
-; NOTES:
-;   ??
+;   Clears the status line via TEXTDISP_HandleScriptCommand and reinitializes
+;   SCRIPT_CTRL_CONTEXT.
 ;------------------------------------------------------------------------------
-LAB_1591:
+SCRIPT_ResetCtrlContextAndClearStatusLine:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     NOT.B   D0
@@ -3017,63 +3046,118 @@ LAB_1591:
 
 ;!======
 
-JMPTBL_LAB_0F7D:
-    JMP     LAB_0F7D
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine   (Routine at SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   LOCAVAIL_UpdateFilterStateMachine
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
+    JMP     LOCAVAIL_UpdateFilterStateMachine
 
-JMPTBL_MATH_DivS32_4:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT3_JMPTBL_MATH_DivS32   (Routine at SCRIPT3_JMPTBL_MATH_DivS32)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MATH_DivS32
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT3_JMPTBL_MATH_DivS32:
     JMP     MATH_DivS32
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_LAB_0C31   (JumpStub_LAB_0C31)
+; FUNC: SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see LAB_0C31) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0C31
+;   ESQSHARED_ApplyProgramTitleTextFilters
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0C31.
+;   Jump stub to ESQSHARED_ApplyProgramTitleTextFilters.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_LAB_0C31:
-LAB_1594:
-    JMP     LAB_0C31
+SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
+    JMP     ESQSHARED_ApplyProgramTitleTextFilters
 
-JMPTBL_STRING_CompareN_3:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT3_JMPTBL_STRING_CompareN   (Routine at SCRIPT3_JMPTBL_STRING_CompareN)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CompareN
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT3_JMPTBL_STRING_CompareN:
     JMP     STRING_CompareN
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_LAB_08DA   (JumpStub_LAB_08DA)
+; FUNC: SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see LAB_08DA) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_08DA
+;   ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_08DA.
+;   Jump stub to ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_LAB_08DA:
-LAB_1596:
-    JMP     LAB_08DA
+SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh:
+    JMP     ESQDISP_UpdateStatusMaskAndRefresh
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_GCOMMAND_GetBannerChar   (JumpStub_GCOMMAND_GetBannerChar)
+; FUNC: SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar   (JumpStub_GCOMMAND_GetBannerChar)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3089,12 +3173,11 @@ LAB_1596:
 ; DESC:
 ;   Jump stub to GCOMMAND_GetBannerChar.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_GCOMMAND_GetBannerChar:
-LAB_1597:
+SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar:
     JMP     GCOMMAND_GetBannerChar
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_LADFUNC_ParseHexDigit   (JumpStub_LADFUNC_ParseHexDigit)
+; FUNC: SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit   (JumpStub_LADFUNC_ParseHexDigit)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3110,35 +3193,33 @@ LAB_1597:
 ; DESC:
 ;   Jump stub to LADFUNC_ParseHexDigit.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_LADFUNC_ParseHexDigit:
-LAB_1598:
+SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit:
     JMP     LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_LAB_0B4E   (JumpStub_LAB_0B4E)
+; FUNC: SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see LAB_0B4E) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0B4E
+;   ESQPARS_ApplyRtcBytesAndPersist
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0B4E.
+;   Jump stub to ESQPARS_ApplyRtcBytesAndPersist.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_LAB_0B4E:
-LAB_1599:
-    JMP     LAB_0B4E
+SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
+    JMP     ESQPARS_ApplyRtcBytesAndPersist
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (JumpStub_PARSE_ReadSignedLongSkipClass3_Alt)
+; FUNC: SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (JumpStub_PARSE_ReadSignedLongSkipClass3_Alt)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3154,12 +3235,11 @@ LAB_1599:
 ; DESC:
 ;   Jump stub to PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
-LAB_159A:
+SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset   (JumpStub_GCOMMAND_AdjustBannerCopperOffset)
+; FUNC: SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset   (JumpStub_GCOMMAND_AdjustBannerCopperOffset)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3175,12 +3255,11 @@ LAB_159A:
 ; DESC:
 ;   Jump stub to GCOMMAND_AdjustBannerCopperOffset.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
-LAB_159B:
+SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
     JMP     GCOMMAND_AdjustBannerCopperOffset
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
+; FUNC: SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3196,12 +3275,11 @@ LAB_159B:
 ; DESC:
 ;   Jump stub to ESQ_SetCopperEffect_Custom.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_ESQ_SetCopperEffect_Custom:
-LAB_159C:
+SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom:
     JMP     ESQ_SetCopperEffect_Custom
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)
+; FUNC: SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen   (JumpStub_CLEANUP_RenderAlignedStatusScreen)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -3217,65 +3295,81 @@ LAB_159C:
 ; DESC:
 ;   Jump stub to CLEANUP_RenderAlignedStatusScreen.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
-LAB_159D:
+SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
     JMP     CLEANUP_RenderAlignedStatusScreen
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_LAB_0F3D   (JumpStub_LAB_0F3D)
+; FUNC: SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see LAB_0F3D) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0F3D
+;   LOCAVAIL_ComputeFilterOffsetForEntry
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0F3D.
+;   Jump stub to LOCAVAIL_ComputeFilterOffsetForEntry.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_LAB_0F3D:
-LAB_159E:
-    JMP     LAB_0F3D
+SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
+    JMP     LOCAVAIL_ComputeFilterOffsetForEntry
 
-JMPTBL_MATH_Mulu32_7:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT3_JMPTBL_MATH_Mulu32   (Routine at SCRIPT3_JMPTBL_MATH_Mulu32)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MATH_Mulu32
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT3_JMPTBL_MATH_Mulu32:
     JMP     MATH_Mulu32
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_LAB_0F13   (JumpStub_LAB_0F13)
+; FUNC: SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see LAB_0F13) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0F13
+;   LOCAVAIL_SetFilterModeAndResetState
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0F13.
+;   Jump stub to LOCAVAIL_SetFilterModeAndResetState.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_LAB_0F13:
-LAB_15A0:
-    JMP     LAB_0F13
+SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState:
+    JMP     LOCAVAIL_SetFilterModeAndResetState
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_JMPTBL_STRING_CopyPadNul   (JumpStub_STRING_CopyPadNul)
+; FUNC: SCRIPT3_JMPTBL_STRING_CopyPadNul   (JumpStub_STRING_CopyPadNul)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see STRING_CopyPadNul) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
@@ -3287,6 +3381,5 @@ LAB_15A0:
 ; DESC:
 ;   Jump stub to STRING_CopyPadNul.
 ;------------------------------------------------------------------------------
-SCRIPT_JMPTBL_STRING_CopyPadNul:
-LAB_15A1:
+SCRIPT3_JMPTBL_STRING_CopyPadNul:
     JMP     STRING_CopyPadNul

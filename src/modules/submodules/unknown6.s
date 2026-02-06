@@ -4,7 +4,7 @@
 ;   stack +4: A0 = destination buffer (NUL-terminated)
 ;   stack +8: A1 = source buffer (NUL-terminated)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   A0-A1
 ; DESC:

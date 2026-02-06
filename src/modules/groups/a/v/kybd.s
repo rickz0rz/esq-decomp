@@ -8,13 +8,13 @@
 ;   D0-D1/A0-A1/A6
 ; CALLS:
 ;   exec.library OpenDevice, exec.library DoIO
-;   GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq, NEWGRID_JMPTBL_AllocateMemory
+;   GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq, NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   GLOB_STR_INPUTDEVICE, GLOB_STR_CONSOLEDEVICE, GLOB_STR_INPUT_DEVICE, GLOB_STR_CONSOLE_DEVICE
 ; WRITES:
 ;   GLOB_REF_INPUTDEVICE_MSGPORT, GLOB_REF_CONSOLEDEVICE_MSGPORT
 ;   GLOB_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE
-;   GLOB_REF_DATA_INPUT_BUFFER, LAB_231E, LAB_231B, LAB_231C
+;   GLOB_REF_DATA_INPUT_BUFFER, DATA_WDISP_BSS_LONG_231E, ED_StateRingWriteIndex, ED_StateRingIndex
 ; DESC:
 ;   Allocates message ports and IOStdReqs, opens input/console devices,
 ;   and initializes the input event buffer for keyboard handling.
@@ -22,7 +22,7 @@
 ;   Uses a 22-byte buffer and sets IOStdReq io_Command = 9 before DoIO.
 ;------------------------------------------------------------------------------
 KYBD_InitializeInputDevices:
-    JSR     GROUP_AV_JMPTBL_LAB_03CF(PC)
+    JSR     GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
 
     CLR.L   -(A7)
 
@@ -62,20 +62,20 @@ KYBD_InitializeInputDevices:
     JSR     _LVOOpenDevice(A6)
 
     MOVEA.L GLOB_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,A0
-    MOVE.L  20(A0),LAB_231E
+    MOVE.L  20(A0),DATA_WDISP_BSS_LONG_231E
 
     ; 22 bytes
     PEA     (MEMF_PUBLIC).W
     PEA     22.W
     PEA     121.W
     PEA     GLOB_STR_KYBD_C
-    JSR     NEWGRID_JMPTBL_AllocateMemory(PC)
+    JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,GLOB_REF_DATA_INPUT_BUFFER
 
     MOVEA.L D0,A0
-    MOVE.L  #LAB_231F,14(A0)
+    MOVE.L  #DATA_WDISP_BSS_LONG_231F,14(A0)
     LEA     GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(PC),A0
     MOVEA.L GLOB_REF_DATA_INPUT_BUFFER,A1
     MOVE.L  A0,18(A1)
@@ -90,6 +90,6 @@ KYBD_InitializeInputDevices:
     JSR     _LVODoIO(A6)
 
     MOVEQ   #0,D0
-    MOVE.L  D0,LAB_231B
-    MOVE.L  D0,LAB_231C
+    MOVE.L  D0,ED_StateRingWriteIndex
+    MOVE.L  D0,ED_StateRingIndex
     RTS

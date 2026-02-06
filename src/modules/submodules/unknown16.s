@@ -3,7 +3,7 @@
 ; ARGS:
 ;   stack +16: D7 = return/status code
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0/D6-D7/A3
 ; CALLS:

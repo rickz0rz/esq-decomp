@@ -1,79 +1,75 @@
 ;------------------------------------------------------------------------------
-; FUNC: DST_JMPTBL_OpenFileMaybe   (Jump stub)
+; FUNC: GROUP_AJ_JMPTBL_STRING_FindSubstring   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   STRING_FindSubstring
 ; DESC:
 ;   Jump stub to STRING_FindSubstring.
 ;------------------------------------------------------------------------------
-DST_JMPTBL_OpenFileMaybe:
-LAB_066C:
+GROUP_AJ_JMPTBL_STRING_FindSubstring:
     JMP     STRING_FindSubstring
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_JMPTBL_FormatToBuffer   (Jump stub)
+; FUNC: GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   FORMAT_RawDoFmtWithScratchBuffer
 ; DESC:
 ;   Jump stub to FORMAT_RawDoFmtWithScratchBuffer.
 ;------------------------------------------------------------------------------
-DST_JMPTBL_FormatToBuffer:
-LAB_066D:
+GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer:
     JMP     FORMAT_RawDoFmtWithScratchBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_JMPTBL_DivMod7   (Jump stub)
+; FUNC: GROUP_AJ_JMPTBL_MATH_DivU32   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   MATH_DivU32
 ; DESC:
 ;   Jump stub to MATH_DivU32.
 ;------------------------------------------------------------------------------
-DST_JMPTBL_DivMod7:
-LAB_066E:
+GROUP_AJ_JMPTBL_MATH_DivU32:
     JMP     MATH_DivU32
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_JMPTBL_Call_146E   (Jump stub)
+; FUNC: GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   PARSEINI_WriteRtcFromGlobals
 ; DESC:
 ;   Jump stub to PARSEINI_WriteRtcFromGlobals.
 ;------------------------------------------------------------------------------
-DST_JMPTBL_Call_146E:
-LAB_066F:
+GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals:
     JMP     PARSEINI_WriteRtcFromGlobals
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AJ_JMPTBL_MATH_Mulu32   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   D0
 ; CALLS:
 ;   MATH_Mulu32
 ; DESC:

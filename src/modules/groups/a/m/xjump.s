@@ -21,7 +21,7 @@ GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
     JMP     SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0E14   (JumpStub_LAB_0E14)
+; FUNC: GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -29,20 +29,19 @@ GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0E14
+;   LADFUNC_ClearBannerRectEntries
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0E14.
+;   Jump stub to LADFUNC_ClearBannerRectEntries.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0E14:
-LAB_089D:
-    JMP     LAB_0E14
+GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries:
+    JMP     LADFUNC_ClearBannerRectEntries
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_PARSEINI_UpdateClockFromRtc   (JumpStub_PARSEINI_UpdateClockFromRtc)
+; FUNC: GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc   (JumpStub_PARSEINI_UpdateClockFromRtc)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -58,12 +57,11 @@ LAB_089D:
 ; DESC:
 ;   Jump stub to PARSEINI_UpdateClockFromRtc.
 ;------------------------------------------------------------------------------
-JMPTBL_PARSEINI_UpdateClockFromRtc:
-LAB_089E:
+GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc:
     JMP     PARSEINI_UpdateClockFromRtc
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_SCRIPT_InitCtrlContext   (JumpStub_SCRIPT_InitCtrlContext)
+; FUNC: GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext   (JumpStub_SCRIPT_InitCtrlContext)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -79,12 +77,11 @@ LAB_089E:
 ; DESC:
 ;   Jump stub to SCRIPT_InitCtrlContext.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_SCRIPT_InitCtrlContext:
-LAB_089F:
+GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext:
     JMP     SCRIPT_InitCtrlContext
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_04F0   (JumpStub_LAB_04F0)
+; FUNC: GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -92,20 +89,19 @@ LAB_089F:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_04F0
+;   DISKIO2_ParseIniFileFromDisk
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_04F0.
+;   Jump stub to DISKIO2_ParseIniFileFromDisk.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_04F0:
-LAB_08A0:
-    JMP     LAB_04F0
+GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk:
+    JMP     DISKIO2_ParseIniFileFromDisk
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_ESQ_CheckTopazFontGuard   (JumpStub_ESQ_CheckTopazFontGuard)
+; FUNC: GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard   (JumpStub_ESQ_CheckTopazFontGuard)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -121,12 +117,11 @@ LAB_08A0:
 ; DESC:
 ;   Jump stub to ESQ_CheckTopazFontGuard.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_ESQ_CheckTopazFontGuard:
-LAB_08A1:
+GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard:
     JMP     ESQ_CheckTopazFontGuard
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1365   (JumpStub_LAB_1365)
+; FUNC: GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds   (JumpStub_P_TYPE_ResetListsAndLoadPromoIds)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -134,20 +129,19 @@ LAB_08A1:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_1365
+;   P_TYPE_ResetListsAndLoadPromoIds
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_1365.
+;   Jump stub to P_TYPE_ResetListsAndLoadPromoIds.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1365:
-LAB_08A2:
-    JMP     LAB_1365
+GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds:
+    JMP     P_TYPE_ResetListsAndLoadPromoIds
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile   (JumpStub_LADFUNC_LoadTextAdsFromFile)
+; FUNC: GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile   (JumpStub_LADFUNC_LoadTextAdsFromFile)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -163,13 +157,11 @@ LAB_08A2:
 ; DESC:
 ;   Jump stub to LADFUNC_LoadTextAdsFromFile.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile:
-ESQ_JMPTBL_LAB_0E57:
-LAB_08A3:
+GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile:
     JMP     LADFUNC_LoadTextAdsFromFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_041D   (JumpStub_LAB_041D)
+; FUNC: GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -177,20 +169,19 @@ LAB_08A3:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_041D
+;   DISKIO_LoadConfigFromDisk
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_041D.
+;   Jump stub to DISKIO_LoadConfigFromDisk.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_041D:
-LAB_08A4:
-    JMP     LAB_041D
+GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk:
+    JMP     DISKIO_LoadConfigFromDisk
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_1664   (JumpStub_LAB_1664)
+; FUNC: GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -206,12 +197,11 @@ LAB_08A4:
 ; DESC:
 ;   Jump stub to TEXTDISP_LoadSourceConfig.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_1664:
-LAB_08A5:
+GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig:
     JMP     TEXTDISP_LoadSourceConfig
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_KYBD_InitializeInputDevices   (JumpStub_KYBD_InitializeInputDevices)
+; FUNC: GROUP_AM_JMPTBL_KYBD_InitializeInputDevices   (JumpStub_KYBD_InitializeInputDevices)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -227,12 +217,11 @@ LAB_08A5:
 ; DESC:
 ;   Jump stub to KYBD_InitializeInputDevices.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_KYBD_InitializeInputDevices:
-LAB_08A6:
+GROUP_AM_JMPTBL_KYBD_InitializeInputDevices:
     JMP     KYBD_InitializeInputDevices
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ESQ_CheckCompatibleVideoChip   (JumpStub_ESQ_CheckCompatibleVideoChip)
+; FUNC: GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip   (JumpStub_ESQ_CheckCompatibleVideoChip)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -248,11 +237,11 @@ LAB_08A6:
 ; DESC:
 ;   Jump stub to ESQ_CheckCompatibleVideoChip.
 ;------------------------------------------------------------------------------
-JMPTBL_ESQ_CheckCompatibleVideoChip:
+GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip:
     JMP     ESQ_CheckCompatibleVideoChip
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ESQ_CheckAvailableFastMemory   (JumpStub_ESQ_CheckAvailableFastMemory)
+; FUNC: GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory   (JumpStub_ESQ_CheckAvailableFastMemory)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -268,11 +257,11 @@ JMPTBL_ESQ_CheckCompatibleVideoChip:
 ; DESC:
 ;   Jump stub to ESQ_CheckAvailableFastMemory.
 ;------------------------------------------------------------------------------
-JMPTBL_ESQ_CheckAvailableFastMemory:
+GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory:
     JMP     ESQ_CheckAvailableFastMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_STRUCT_AllocWithOwner   (JumpStub_STRUCT_AllocWithOwner)
+; FUNC: GROUP_AM_JMPTBL_STRUCT_AllocWithOwner   (JumpStub_STRUCT_AllocWithOwner)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -288,12 +277,11 @@ JMPTBL_ESQ_CheckAvailableFastMemory:
 ; DESC:
 ;   Jump stub to STRUCT_AllocWithOwner.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_STRUCT_AllocWithOwner:
-LAB_08A9:
+GROUP_AM_JMPTBL_STRUCT_AllocWithOwner:
     JMP     STRUCT_AllocWithOwner
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0DE9   (JumpStub_LAB_0DE9)
+; FUNC: GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -309,12 +297,11 @@ LAB_08A9:
 ; DESC:
 ;   Jump stub to GCOMMAND_ResetBannerFadeState.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0DE9:
-LAB_08AA:
+GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState:
     JMP     GCOMMAND_ResetBannerFadeState
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_TLIBA3_InitPatternTable   (JumpStub_TLIBA3_InitPatternTable)
+; FUNC: GROUP_AM_JMPTBL_TLIBA3_InitPatternTable   (JumpStub_TLIBA3_InitPatternTable)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -330,13 +317,11 @@ LAB_08AA:
 ; DESC:
 ;   Jump stub to TLIBA3_InitPatternTable.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_TLIBA3_InitPatternTable:
-ESQ_JMPTBL_LAB_180B:
-LAB_08AB:
+GROUP_AM_JMPTBL_TLIBA3_InitPatternTable:
     JMP     TLIBA3_InitPatternTable
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_ESQ_FormatDiskErrorMessage   (JumpStub_ESQ_FormatDiskErrorMessage)
+; FUNC: GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage   (JumpStub_ESQ_FormatDiskErrorMessage)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -352,12 +337,11 @@ LAB_08AB:
 ; DESC:
 ;   Jump stub to ESQ_FormatDiskErrorMessage.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_ESQ_FormatDiskErrorMessage:
-LAB_08AC:
+GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage:
     JMP     ESQ_FormatDiskErrorMessage
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_14E2   (JumpStub_LAB_14E2)
+; FUNC: GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode   (JumpStub_SCRIPT_PrimeBannerTransitionFromHexCode)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -365,20 +349,19 @@ LAB_08AC:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_14E2
+;   SCRIPT_PrimeBannerTransitionFromHexCode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_14E2.
+;   Jump stub to SCRIPT_PrimeBannerTransitionFromHexCode.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_14E2:
-LAB_08AD:
-    JMP     LAB_14E2
+GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode:
+    JMP     SCRIPT_PrimeBannerTransitionFromHexCode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0F07   (JumpStub_LAB_0F07)
+; FUNC: GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -386,20 +369,19 @@ LAB_08AD:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0F07
+;   LOCAVAIL_ResetFilterStateStruct
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0F07.
+;   Jump stub to LOCAVAIL_ResetFilterStateStruct.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0F07:
-LAB_08AE:
-    JMP     LAB_0F07
+GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct:
+    JMP     LOCAVAIL_ResetFilterStateStruct
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_ESQ_InitAudio1Dma   (JumpStub_ESQ_InitAudio1Dma)
+; FUNC: GROUP_AM_JMPTBL_ESQ_InitAudio1Dma   (JumpStub_ESQ_InitAudio1Dma)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -415,12 +397,11 @@ LAB_08AE:
 ; DESC:
 ;   Jump stub to ESQ_InitAudio1Dma.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_ESQ_InitAudio1Dma:
-LAB_08AF:
+GROUP_AM_JMPTBL_ESQ_InitAudio1Dma:
     JMP     ESQ_InitAudio1Dma
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LIST_InitHeader   (JumpStub_LIST_InitHeader)
+; FUNC: GROUP_AM_JMPTBL_LIST_InitHeader   (JumpStub_LIST_InitHeader)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -436,12 +417,11 @@ LAB_08AF:
 ; DESC:
 ;   Jump stub to LIST_InitHeader.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LIST_InitHeader:
-LAB_08B0:
+GROUP_AM_JMPTBL_LIST_InitHeader:
     JMP     LIST_InitHeader
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (JumpStub_ESQ_SetCopperEffect_OnEnableHighlight)
+; FUNC: GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (JumpStub_ESQ_SetCopperEffect_OnEnableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -457,8 +437,7 @@ LAB_08B0:
 ; DESC:
 ;   Jump stub to ESQ_SetCopperEffect_OnEnableHighlight.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
-LAB_08B1:
+GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
     JMP     ESQ_SetCopperEffect_OnEnableHighlight
 
 ;!======
@@ -470,7 +449,7 @@ LAB_08B1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0F5D   (JumpStub_LAB_0F5D)
+; FUNC: GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -478,20 +457,19 @@ LAB_08B1:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0F5D
+;   LOCAVAIL_LoadAvailabilityDataFile
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0F5D.
+;   Jump stub to LOCAVAIL_LoadAvailabilityDataFile.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0F5D:
-LAB_08B2:
-    JMP     LAB_0F5D
+GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile:
+    JMP     LOCAVAIL_LoadAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0D89   (JumpStub_LAB_0D89)
+; FUNC: GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -507,12 +485,11 @@ LAB_08B2:
 ; DESC:
 ;   Jump stub to GCOMMAND_InitPresetDefaults.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0D89:
-LAB_08B3:
+GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults:
     JMP     GCOMMAND_InitPresetDefaults
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_OVERRIDE_INTUITION_FUNCS   (JumpStub_OVERRIDE_INTUITION_FUNCS)
+; FUNC: GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS   (JumpStub_OVERRIDE_INTUITION_FUNCS)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -528,11 +505,11 @@ LAB_08B3:
 ; DESC:
 ;   Jump stub to OVERRIDE_INTUITION_FUNCS.
 ;------------------------------------------------------------------------------
-JMPTBL_OVERRIDE_INTUITION_FUNCS:
+GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS:
     JMP     OVERRIDE_INTUITION_FUNCS
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_BUFFER_FlushAllAndCloseWithCode_2   (JumpStub_BUFFER_FlushAllAndCloseWithCode)
+; FUNC: GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode   (JumpStub_BUFFER_FlushAllAndCloseWithCode)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -548,7 +525,7 @@ JMPTBL_OVERRIDE_INTUITION_FUNCS:
 ; DESC:
 ;   Jump stub to BUFFER_FlushAllAndCloseWithCode.
 ;------------------------------------------------------------------------------
-JMPTBL_BUFFER_FlushAllAndCloseWithCode_2:
+GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode:
     JMP     BUFFER_FlushAllAndCloseWithCode
 
 ;!======
@@ -560,7 +537,7 @@ JMPTBL_BUFFER_FlushAllAndCloseWithCode_2:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_LAB_0CC8   (JumpStub_LAB_0CC8)
+; FUNC: GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -568,17 +545,16 @@ JMPTBL_BUFFER_FlushAllAndCloseWithCode_2:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LAB_0CC8
+;   FLIB2_ResetAndLoadListingTemplates
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LAB_0CC8.
+;   Jump stub to FLIB2_ResetAndLoadListingTemplates.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_LAB_0CC8:
-LAB_08B6:
-    JMP     LAB_0CC8
+GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates:
+    JMP     FLIB2_ResetAndLoadListingTemplates
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AM_JMPTBL_WDISP_SPrintf   (JumpStub_PRINTF)

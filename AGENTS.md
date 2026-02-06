@@ -116,3 +116,10 @@ Commits should be small, scoped, and written in imperative mood (`Rename GROUP_A
 
 ## Documentation & Review Workflow
 Update inline comments, `README.md`, and tables in `src/data/` when you rename labels or introduce new presets so future contributors can follow the thread. Cross-link helpers between modules (e.g., note when `gcommand.s` exports are consumed by `wdisp.s`) and record open renaming targets in the AGENTS checklist to keep the disassembly uniformly annotated.
+
+## AGENTS Checklist
+- [x] Add semantic aliases for Digital Niche/Mplex option-state globals in `src/data/wdisp.s` (`22D*`/`22E*` range) and propagate to callsites.
+- [x] Rename/clean local dispatch labels in `src/modules/groups/b/a/newgrid.s` and `src/modules/groups/b/a/newgrid1.s` (including duplicate local-label removals).
+- [x] Rename local control-flow labels in `src/modules/groups/a/a/bitmap.s` (`BITMAP_ProcessIlbmImage`) to descriptive names.
+- [ ] Continue naming remaining anonymous data blocks in `src/data/wdisp.s` outside the completed option-state ranges.
+- [ ] Continue local-label clarity passes in remaining NEWGRID companion files (`newgrid2.s` and unresolved helpers).

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA2_FindLastCharInString   (FindLastCharInString??)
+; FUNC: TLIBA2_FindLastCharInString   (FindLastCharInStringuncertain)
 ; ARGS:
 ;   stack +8: str (char *)
 ;   stack +12: targetChar (byte)
@@ -19,7 +19,6 @@
 ;   Returns 0 when no match is found.
 ;------------------------------------------------------------------------------
 TLIBA2_FindLastCharInString:
-LAB_17D3:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -63,25 +62,37 @@ LAB_17D3:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_17D8   (??)
+; FUNC: TLIBA2_ResolveEntryWindowAndSlotCount   (Resolve explicit time range or compute slot count fallback)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +16: arg_4 (via 20(A5))
+;   stack +20: arg_5 (via 24(A5))
+;   stack +24: arg_6 (via 28(A5))
+;   stack +30: arg_7 (via 34(A5))
+;   stack +34: arg_8 (via 38(A5))
+;   stack +56: arg_9 (via 60(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA_FindFirstWildcardMatchIndex, MATH_DivS32, MATH_Mulu32,
+;   PARSE_ReadSignedLongSkipClass3_Alt, TLIBA2_FindLastCharInString,
+;   TLIBA2_JMPTBL_ESQ_TestBit1Based
 ; READS:
-;   ??
+;   TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable, if_eq_17DB, return_17E5
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Tries to parse an explicit "(HH:MM)" range from the entry text. When no
+;   explicit range is present, counts matching/eligible slots and optionally
+;   derives a half-hour based fallback window.
 ; NOTES:
-;   ??
+;   Uses text and bitfield gates in both primary and secondary tables.
 ;------------------------------------------------------------------------------
-LAB_17D8:
+TLIBA2_ResolveEntryWindowAndSlotCount:
     LINK.W  A5,#-40
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -194,7 +205,7 @@ LAB_17D8:
     LEA     28(A3),A0
     MOVE.L  D7,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPD_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -221,7 +232,7 @@ LAB_17D8:
     BNE.S   .branch_17E2
 
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_17E6
+    BSR.W   TLIBA_FindFirstWildcardMatchIndex
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-38(A5)
@@ -230,10 +241,10 @@ LAB_17D8:
 
     MOVE.L  -38(A5),D0
     ASL.L   #2,D0
-    LEA     LAB_2235,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVEQ   #1,D7
@@ -247,7 +258,7 @@ LAB_17D8:
     ADDA.W  #$1c,A0
     MOVE.L  D7,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPD_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     TLIBA2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -300,6 +311,23 @@ LAB_17D8:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: TLIBA2_ResolveEntryWindowWithDefaultRange   (Wrapper with zeroed range outputs)
+; ARGS:
+;   stack +8: A3 = primary entry state/context pointer
+;   stack +12: A2 = secondary entry table pointer
+;   stack +16: D7 = entry index
+; RET:
+;   D0: result/status from TLIBA2_ResolveEntryWindowAndSlotCount
+; CLOBBERS:
+;   D0/D7/A2-A3
+; CALLS:
+;   TLIBA2_ResolveEntryWindowAndSlotCount
+; DESC:
+;   Convenience wrapper that forwards to TLIBA2_ResolveEntryWindowAndSlotCount
+;   with both output-range arguments set to zero.
+;------------------------------------------------------------------------------
+TLIBA2_ResolveEntryWindowWithDefaultRange:
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEA.L 20(A7),A2
@@ -309,7 +337,7 @@ LAB_17D8:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_17D8
+    BSR.W   TLIBA2_ResolveEntryWindowAndSlotCount
 
     LEA     20(A7),A7
     MOVEM.L (A7)+,D7/A2-A3
@@ -318,25 +346,26 @@ LAB_17D8:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_17E6   (??)
+; FUNC: TLIBA_FindFirstWildcardMatchIndex   (Find first wildcard match index)
 ; ARGS:
-;   ??
+;   stack +8: wildcardPattern (char *)
 ; RET:
-;   ??
+;   D0: matched index, or -1 if no title matches
 ; CLOBBERS:
-;   ??
+;   D0/D6/D7/A0-A1/A3
 ; CALLS:
-;   ??
+;   UNKNOWN_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   ??
+;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Scans secondary titles and returns the first index whose title wildcard-
+;   matches the supplied pattern.
 ; NOTES:
-;   ??
+;   Match is accepted when ESQ_WildcardMatch returns zero.
 ;------------------------------------------------------------------------------
-LAB_17E6:
+TLIBA_FindFirstWildcardMatchIndex:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEQ   #-1,D6
@@ -344,18 +373,18 @@ LAB_17E6:
 
 .loop_17E7:
     MOVEQ   #0,D0
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D7
     BGE.S   .return_17E9
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  A1,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_ESQ_WildcardMatch_2(PC)
+    JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
@@ -376,25 +405,29 @@ LAB_17E6:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_17EA   (??)
+; FUNC: TLIBA2_ParseEntryTimeWindow   (Parse "(HH:MM)" style window from entry text)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +16: arg_4 (via 20(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A7/D0/D6/D7
 ; CALLS:
-;   ??
+;   PARSE_ReadSignedLongSkipClass3_Alt, UNKNOWN7_FindCharWrapper
 ; READS:
-;   ??
+;   branch_17F0
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Extracts time values from the selected entry text into the output pair.
+;   Requires delimiter sequence including ':' and ')' before accepting.
 ; NOTES:
-;   ??
+;   Returns 1 on successful parse, 0 otherwise.
 ;------------------------------------------------------------------------------
-LAB_17EA:
+TLIBA2_ParseEntryTimeWindow:
     LINK.W  A5,#-24
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -504,25 +537,38 @@ LAB_17EA:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_17F1   (??)
+; FUNC: TLIBA2_ComputeBroadcastTimeWindow   (Build adjusted date/time window for an entry)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +12: arg_4 (via 16(A5))
+;   stack +16: arg_5 (via 20(A5))
+;   stack +18: arg_6 (via 22(A5))
+;   stack +20: arg_7 (via 24(A5))
+;   stack +22: arg_8 (via 26(A5))
+;   stack +24: arg_9 (via 28(A5))
+;   stack +26: arg_10 (via 30(A5))
+;   stack +28: arg_11 (via 32(A5))
+;   stack +30: arg_12 (via 34(A5))
+;   stack +32: arg_13 (via 36(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA2_ParseEntryTimeWindow, TLIBA2_JMPTBL_DST_AddTimeOffset
 ; READS:
-;   ??
+;   TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfWeekIndex, DATA_WDISP_BSS_LONG_237B, DATA_WDISP_BSS_LONG_237C, DATA_WDISP_BSS_LONG_237D, copy_months_loop, copy_time_fields, ffe2
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Computes an adjusted time window, applies DST/date offsets, and writes
+;   normalized time fields to the provided output structures.
 ; NOTES:
-;   ??
+;   Optionally clamps/overrides the upper bound when parsed entry times exist.
 ;------------------------------------------------------------------------------
-LAB_17F1:
+TLIBA2_ComputeBroadcastTimeWindow:
     LINK.W  A5,#-36
     MOVEM.L D2-D3/D5-D7/A2-A3/A6,-(A7)
     MOVE.W  10(A5),D7
@@ -530,8 +576,8 @@ LAB_17F1:
     MOVE.L  16(A5),D6
     MOVE.L  20(A5),D5
     MOVEA.L 24(A5),A2
-    LEA     LAB_2274,A0
-    LEA     LAB_237B,A1
+    LEA     CLOCK_CurrentDayOfWeekIndex,A0
+    LEA     DATA_WDISP_BSS_LONG_237B,A1
     MOVEA.L A1,A6
     MOVEQ   #4,D0
 
@@ -539,12 +585,12 @@ LAB_17F1:
     MOVE.L  (A0)+,(A6)+
     DBF     D0,.copy_months_loop
     MOVE.W  (A0),(A6)
-    MOVE.W  LAB_237C,D0
+    MOVE.W  DATA_WDISP_BSS_LONG_237C,D0
     MOVEQ   #12,D1
     CMP.W   D1,D0
     BNE.S   .if_ne_17F3
 
-    MOVE.W  LAB_237D,D2
+    MOVE.W  DATA_WDISP_BSS_LONG_237D,D2
     BEQ.S   .if_eq_17F4
 
 .if_ne_17F3:
@@ -552,7 +598,7 @@ LAB_17F1:
     CMP.W   D2,D0
     BGE.S   .branch_17FD
 
-    MOVE.W  LAB_237D,D0
+    MOVE.W  DATA_WDISP_BSS_LONG_237D,D0
     BNE.S   .branch_17FD
 
 .if_eq_17F4:
@@ -657,7 +703,7 @@ LAB_17F1:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEQ   #0,D2
-    MOVE.B  LAB_2230,D2
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D2
     CMP.L   D2,D0
     BEQ.S   .if_eq_1802
 
@@ -683,7 +729,7 @@ LAB_17F1:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -30(A5)
-    JSR     GROUPD_JMPTBL_DST_AddTimeOffset(PC)
+    JSR     TLIBA2_JMPTBL_DST_AddTimeOffset(PC)
 
     LEA     12(A7),A7
     MOVE.W  -24(A5),D0
@@ -732,7 +778,7 @@ LAB_17F1:
     PEA     -8(A5)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_17EA
+    BSR.W   TLIBA2_ParseEntryTimeWindow
 
     LEA     12(A7),A7
     MOVE.W  D0,-36(A5)
@@ -766,7 +812,7 @@ LAB_17F1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUPD_JMPTBL_DST_AddTimeOffset   (JumpStub_DST_AddTimeOffset)
+; FUNC: TLIBA2_JMPTBL_DST_AddTimeOffset   (JumpStub_DST_AddTimeOffset)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -782,11 +828,27 @@ LAB_17F1:
 ; DESC:
 ;   Jump stub to DST_AddTimeOffset.
 ;------------------------------------------------------------------------------
-GROUPD_JMPTBL_DST_AddTimeOffset:
-GROUPD_JMPTBL_LAB_0656:
+TLIBA2_JMPTBL_DST_AddTimeOffset:
     JMP     DST_AddTimeOffset
 
-GROUPD_JMPTBL_ESQ_TestBit1Based:
+;------------------------------------------------------------------------------
+; FUNC: TLIBA2_JMPTBL_ESQ_TestBit1Based   (JumpStub_ESQ_TestBit1Based)
+; ARGS:
+;   (none)
+; RET:
+;   D0: result from ESQ_TestBit1Based
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQ_TestBit1Based
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQ_TestBit1Based.
+;------------------------------------------------------------------------------
+TLIBA2_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based
 
 ;!======

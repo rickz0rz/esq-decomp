@@ -81,10 +81,10 @@ CLEANUP_ClearAud1InterruptVector:
 ; CLOBBERS:
 ;   D0/A1/A6
 ; CALLS:
-;   _LVOCloseDevice, GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, LAB_0467,
+;   _LVOCloseDevice, GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField,
 ;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   LAB_2211_SERIAL_PORT_MAYBE, LAB_2212, GLOB_REF_INTB_RBF_INTERRUPT,
+;   LAB_2211_SERIAL_PORT_MAYBE, DATA_WDISP_BSS_LONG_2212, GLOB_REF_INTB_RBF_INTERRUPT,
 ;   GLOB_REF_INTB_RBF_64K_BUFFER, GLOB_REF_INTERRUPT_STRUCT_INTB_RBF,
 ;   AbsExecBase, GLOB_STR_CLEANUP_C_3, GLOB_STR_CLEANUP_C_4
 ; WRITES:
@@ -101,11 +101,11 @@ CLEANUP_ClearRbfInterruptAndSerial:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseDevice(A6)
 
-    MOVE.L  LAB_2212,-(A7)
+    MOVE.L  DATA_WDISP_BSS_LONG_2212,-(A7)
     JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
     MOVE.L  LAB_2211_SERIAL_PORT_MAYBE,(A7)
-    JSR     LAB_0467(PC)
+    JSR     GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(PC)
 
     MOVEQ   #INTB_RBF,D0
     MOVEA.L GLOB_REF_INTB_RBF_INTERRUPT,A1
@@ -227,8 +227,8 @@ CLEANUP_ShutdownInputDevices:
 ;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster,
 ;   _LVOCloseFont, _LVOCloseLibrary
 ; READS:
-;   GLOB_REF_96_BYTES_ALLOCATED, GLOB_REF_RASTPORT_1, LAB_2220, LAB_221A,
-;   LAB_221C, LAB_2224, LAB_2229, GLOB_HANDLE_PREVUE_FONT,
+;   GLOB_REF_96_BYTES_ALLOCATED, GLOB_REF_RASTPORT_1, DATA_WDISP_BSS_LONG_2220, DATA_WDISP_BSS_LONG_221A,
+;   DATA_WDISP_BSS_LONG_221C, DATA_WDISP_BSS_LONG_2224, WDISP_BannerWorkRasterPtr, GLOB_HANDLE_PREVUE_FONT,
 ;   GLOB_HANDLE_TOPAZ_FONT, GLOB_HANDLE_H26F_FONT, GLOB_HANDLE_PREVUEC_FONT,
 ;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_DISKFONT_LIBRARY,
 ;   GLOB_REF_DOS_LIBRARY, GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY,
@@ -267,7 +267,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LAB_2220,A0
+    LEA     DATA_WDISP_BSS_LONG_2220,A0
     ADDA.L  D0,A0
     PEA     2.W
     PEA     696.W
@@ -290,7 +290,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D1
     ASL.L   #2,D1
-    LEA     LAB_221A,A0
+    LEA     DATA_WDISP_BSS_LONG_221A,A0
     ADDA.L  D1,A0
     PEA     240.W
     PEA     352.W
@@ -313,7 +313,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LAB_221C,A0
+    LEA     DATA_WDISP_BSS_LONG_221C,A0
     ADDA.L  D0,A0
     PEA     509.W
     PEA     696.W
@@ -336,7 +336,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     LAB_2224,A0
+    LEA     DATA_WDISP_BSS_LONG_2224,A0
     ADDA.L  D0,A0
     PEA     241.W
     PEA     696.W
@@ -352,7 +352,7 @@ CLEANUP_ReleaseDisplayResources:
 .after_raster_set4:
     PEA     15.W
     PEA     696.W
-    MOVE.L  LAB_2229,-(A7)
+    MOVE.L  WDISP_BannerWorkRasterPtr,-(A7)
     PEA     200.W
     PEA     GLOB_STR_CLEANUP_C_12
     JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
@@ -429,23 +429,23 @@ CLEANUP_ReleaseDisplayResources:
 ;   _LVOForbid, LOCAVAIL_FreeResourceChain, BRUSH_FreeBrushList,
 ;   CLEANUP_ClearVertbInterruptServer, CLEANUP_ClearAud1InterruptVector,
 ;   CLEANUP_ClearRbfInterruptAndSerial, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
-;   CLEANUP_ShutdownInputDevices, CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LAB_0E0C, GROUP_AH_JMPTBL_LAB_0B34,
-;   GROUP_AB_JMPTBL_LAB_0AC8, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, JMPTBL_LAB_0B38, JMPTBL_LAB_0966,
+;   CLEANUP_ShutdownInputDevices, CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries, GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers,
+;   GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
-;   LAB_2321, LAB_2324, LAB_1ED1, LAB_1ED2, LAB_1ED3, LAB_1ED4, LAB_229A,
-;   LAB_1DC5, LAB_1DC6, LAB_22A7, LAB_222B, LAB_1DD9, LAB_1DEC, LAB_1DC7,
-;   LAB_222C, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_INTUITION_LIBRARY,
+;   LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
+;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, DATA_WDISP_BSS_LONG_22A7, DATA_WDISP_BSS_WORD_222B, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, DATA_ESQ_BSS_LONG_1DC7,
+;   DATA_WDISP_BSS_LONG_222C, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_INTUITION_LIBRARY,
 ;   GLOB_REF_BACKED_UP_INTUITION_AUTOREQUEST, GLOB_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, GLOB_STR_CLEANUP_C_13, GLOB_STR_CLEANUP_C_14, GLOB_STR_CLEANUP_C_15,
 ;   GLOB_STR_CLEANUP_C_16
 ; WRITES:
-;   LAB_1DD9, LAB_1DEC
+;   WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr
 ; DESC:
 ;   Global shutdown: forbids task switches, releases resources, restores patched
 ;   system vectors, and re-enables multitasking.
 ; NOTES:
-;   - Frees raster tables via nested loops over LAB_22A7 entries.
+;   - Frees raster tables via nested loops over DATA_WDISP_BSS_LONG_22A7 entries.
 ;------------------------------------------------------------------------------
 ; Global shutdown sequence: stop interrupts, free rsrcs, reset display.
 CLEANUP_ShutdownSystem:
@@ -454,26 +454,26 @@ CLEANUP_ShutdownSystem:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    PEA     LAB_2321
+    PEA     LOCAVAIL_PrimaryFilterState
     JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
-    PEA     LAB_2324
+    PEA     LOCAVAIL_SecondaryFilterState
     JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     CLR.L   (A7)
-    PEA     LAB_1ED1
+    PEA     ESQIFF_BrushIniListHead
     JSR     BRUSH_FreeBrushList(PC)      ; release primary brush list
 
     CLR.L   (A7)
-    PEA     LAB_1ED2
+    PEA     ESQIFF_GAdsBrushListHead
     JSR     BRUSH_FreeBrushList(PC)      ; release alternate brush buckets
 
     CLR.L   (A7)
-    PEA     LAB_1ED3
+    PEA     ESQIFF_LogoBrushListHead
     JSR     BRUSH_FreeBrushList(PC)
 
     CLR.L   (A7)
-    PEA     LAB_1ED4
+    PEA     ESQFUNC_PwBrushListHead
     JSR     BRUSH_FreeBrushList(PC)
 
     BSR.W   CLEANUP_ClearVertbInterruptServer
@@ -483,7 +483,7 @@ CLEANUP_ShutdownSystem:
     BSR.W   CLEANUP_ClearRbfInterruptAndSerial
 
     PEA     9000.W
-    MOVE.L  LAB_229A,-(A7)
+    MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     PEA     260.W
     PEA     GLOB_STR_CLEANUP_C_13
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
@@ -492,32 +492,32 @@ CLEANUP_ShutdownSystem:
 
     BSR.W   CLEANUP_ReleaseDisplayResources
 M
-    JSR     GROUP_AB_JMPTBL_LAB_0E0C(PC)
+    JSR     GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(PC)
 
-    JSR     GROUP_AH_JMPTBL_LAB_0B34(PC)
+    JSR     GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)
 
     PEA     1.W
-    JSR     GROUP_AB_JMPTBL_LAB_0AC8(PC)
+    JSR     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
 
     PEA     2.W
-    JSR     GROUP_AB_JMPTBL_LAB_0AC8(PC)
+    JSR     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
 
     JSR     GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(PC)
 
     PEA     2.W
-    JSR     JMPTBL_LAB_0B38(PC)
+    JSR     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
 
     PEA     1.W
-    JSR     JMPTBL_LAB_0B38(PC)
+    JSR     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
 
-    JSR     JMPTBL_LAB_0966(PC)
+    JSR     GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(PC)
 
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A0
     MOVE.L  38(A0),COP1LCH
     JSR     GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(PC)
 
     PEA     34.W
-    MOVE.L  LAB_1DC5,-(A7)
+    MOVE.L  ESQ_HighlightMsgPort,-(A7)
     PEA     318.W
     PEA     GLOB_STR_CLEANUP_C_14
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
@@ -525,7 +525,7 @@ M
     LEA     72(A7),A7
 
     PEA     34.W
-    MOVE.L  LAB_1DC6,-(A7)
+    MOVE.L  ESQ_HighlightReplyPort,-(A7)
     PEA     319.W
     PEA     GLOB_STR_CLEANUP_C_15
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
@@ -550,13 +550,13 @@ M
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_22A7,A0
+    LEA     DATA_WDISP_BSS_LONG_22A7,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.W  LAB_222B,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_222B,D0
     MOVE.L  D0,-(A7)
     PEA     696.W
     MOVE.L  8(A0),-(A7)
@@ -573,17 +573,17 @@ M
     BRA.S   .freeRaster_rows_loop
 
 .after_raster_table:
-    MOVE.L  LAB_1DD9,-(A7)
+    MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
+    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,LAB_1DD9
-    MOVE.L  LAB_1DEC,(A7)
+    MOVE.L  D0,WDISP_WeatherStatusTextPtr
+    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,(A7)
     CLR.L   -(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_0B44(PC)
+    JSR     GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_1DEC
+    MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
 
     ; this must be restoring functions that were hijacked?
     ; ...the other use of this stores D0 and this doesn't.
@@ -608,11 +608,11 @@ M
     MOVEA.L GLOB_REF_INTUITION_LIBRARY,A6
     JSR     _LVOVBeamPos(A6)
 
-    TST.L   LAB_1DC7
+    TST.L   DATA_ESQ_BSS_LONG_1DC7
     BEQ.S   .after_optional_restore
 
-    MOVEA.L LAB_222C,A0
-    MOVE.L  LAB_1DC7,184(A0)
+    MOVEA.L DATA_WDISP_BSS_LONG_222C,A0
+    MOVE.L  DATA_ESQ_BSS_LONG_1DC7,184(A0)
 
 .after_optional_restore:
     JSR     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(PC)

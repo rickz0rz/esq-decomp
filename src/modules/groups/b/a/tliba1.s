@@ -1,25 +1,32 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_175F   (??)
+; FUNC: TLIBA1_DrawTextWithInsetSegments   (Draw text with inline $13/$14 inset segments)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +16: arg_4 (via 20(A5))
+;   stack +19: arg_5 (via 23(A5))
+;   stack +23: arg_6 (via 27(A5))
+;   stack +24: arg_7 (via 28(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, UNKNOWN7_FindCharWrapper, _LVOMove, _LVOText
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TLIBA1_C_1, GLOB_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Copies source text into a scratch buffer, splits on control bytes $13/$14,
+;   draws plain spans directly, and renders inset spans via SCRIPT helper.
 ; NOTES:
-;   ??
+;   Gracefully returns when input text is null/empty or allocation fails.
 ;------------------------------------------------------------------------------
-LAB_175F:
+TLIBA1_DrawTextWithInsetSegments:
     LINK.W  A5,#-20
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -184,25 +191,25 @@ LAB_175F:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_176C   (??)
+; FUNC: TLIBA1_ParseStyleCodeChar   (Parse style char '1'..'7' or 'X')
 ; ARGS:
-;   ??
+;   stack +8: styleChar (u8)
 ; RET:
-;   ??
+;   D0: -1 for 'X', 1..7 for '1'..'7', else 0
 ; CLOBBERS:
-;   ??
+;   A7/D0/D7
 ; CALLS:
-;   ??
+;   (none)
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Converts single-character style tokens into compact numeric style IDs.
 ; NOTES:
-;   ??
+;   Input is case-sensitive for 'X'.
 ;------------------------------------------------------------------------------
-LAB_176C:
+TLIBA1_ParseStyleCodeChar:
     MOVE.L  D7,-(A7)
     MOVE.B  11(A7),D7
     MOVEQ   #88,D0
@@ -236,25 +243,35 @@ LAB_176C:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1771   (??)
+; FUNC: TLIBA1_DrawInlineStyledText   (Render one text line with inline style markers)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +12: arg_5 (via 16(A5))
+;   stack +14: arg_6 (via 18(A5))
+;   stack +16: arg_7 (via 20(A5))
+;   stack +18: arg_8 (via 22(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA1_DrawTextWithInsetSegments, TLIBA1_ParseStyleCodeChar, MEM_Move,
+;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, UNKNOWN7_FindCharWrapper,
+;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, DATA_CLOCK_CONST_WORD_1B5D, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_BYTE_21B4, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
 ; WRITES:
-;   ??
+;   DATA_CLOCK_CONST_WORD_1B5D
 ; DESC:
-;   ??
+;   Parses inline marker sequences and chooses framed/plain drawing paths for a
+;   single rendered text row.
 ; NOTES:
-;   ??
+;   Updates DATA_CLOCK_CONST_WORD_1B5D gating flag after framed draw path.
 ;------------------------------------------------------------------------------
-LAB_1771:
+TLIBA1_DrawInlineStyledText:
     LINK.W  A5,#-24
     MOVEM.L D2-D3/D5-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
@@ -264,7 +281,7 @@ LAB_1771:
     MOVEQ   #0,D0
     MOVE.L  D0,-18(A5)
     MOVE.L  D0,-14(A5)
-    TST.B   LAB_1B5D
+    TST.B   DATA_CLOCK_CONST_WORD_1B5D
     BEQ.S   .if_eq_1772
 
     PEA     19.W
@@ -284,19 +301,19 @@ LAB_1771:
     BEQ.S   .if_eq_1772
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_21B4,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_21B4,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_21B3,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
     MOVE.L  A2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_175F
+    BSR.W   TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
-    CLR.B   LAB_1B5D
+    CLR.B   DATA_CLOCK_CONST_WORD_1B5D
     BRA.W   .return_1788
 
 .if_eq_1772:
@@ -340,14 +357,14 @@ LAB_1771:
     MOVEA.L -4(A5),A0
     MOVE.B  1(A0),D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_176C
+    BSR.W   TLIBA1_ParseStyleCodeChar
 
     MOVEQ   #0,D1
     MOVEA.L -4(A5),A0
     MOVE.B  2(A0),D1
     MOVE.L  D1,(A7)
     MOVE.B  D0,-10(A5)
-    BSR.W   LAB_176C
+    BSR.W   TLIBA1_ParseStyleCodeChar
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -491,7 +508,7 @@ LAB_1771:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_175F
+    BSR.W   TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
     BRA.W   .return_1788
@@ -526,7 +543,7 @@ LAB_1771:
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMPTBL_LAB_0EE8(PC)
+    JSR     TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(PC)
 
     ADDQ.W  #4,A7
     MOVE.B  D0,-10(A5)
@@ -546,7 +563,7 @@ LAB_1771:
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMPTBL_LAB_0EE9(PC)
+    JSR     TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -585,7 +602,7 @@ LAB_1771:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_175F
+    BSR.W   TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
     BRA.S   .return_1788
@@ -595,7 +612,7 @@ LAB_1771:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
+    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -607,25 +624,43 @@ LAB_1771:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1789   (??)
+; FUNC: TLIBA1_DrawFormattedTextBlock   (Layout and draw a multi-line formatted block)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +12: arg_5 (via 16(A5))
+;   stack +14: arg_6 (via 18(A5))
+;   stack +16: arg_7 (via 20(A5))
+;   stack +17: arg_8 (via 21(A5))
+;   stack +18: arg_9 (via 22(A5))
+;   stack +22: arg_10 (via 26(A5))
+;   stack +24: arg_11 (via 28(A5))
+;   stack +26: arg_12 (via 30(A5))
+;   stack +28: arg_13 (via 32(A5))
+;   stack +30: arg_14 (via 34(A5))
+;   stack +32: arg_15 (via 36(A5))
+;   stack +34: arg_16 (via 38(A5))
+;   stack +36: arg_17 (via 40(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA1_DrawInlineStyledText, MATH_DivS32, MATH_Mulu32, MEMORY_AllocateMemory,
+;   MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   ??
+;   GLOB_HANDLE_PREVUE_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TLIBA1_C_3, DATA_CLOCK_CONST_WORD_1B5D, DATA_TLIBA1_STR_TLIBA1_DOT_C_2164, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_WORD_236C, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Tokenizes source text into render runs, computes per-line offsets/fonts,
+;   then renders each line with TLIBA1_DrawInlineStyledText.
 ; NOTES:
-;   ??
+;   Uses a temporary 10-byte record table per emitted line.
 ;------------------------------------------------------------------------------
-LAB_1789:
+TLIBA1_DrawFormattedTextBlock:
     LINK.W  A5,#-48
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -915,7 +950,7 @@ LAB_1789:
     CMP.W   -18(A5),D0
     BGE.W   .if_ge_17A6
 
-    TST.W   LAB_236C
+    TST.W   DATA_WDISP_BSS_WORD_236C
     BEQ.S   .if_eq_179D
 
     MULS    #10,D0
@@ -966,11 +1001,11 @@ LAB_1789:
     MOVE.L  36(A7),D0
     JSR     _LVOTextLength(A6)
 
-    TST.B   LAB_1B5D
+    TST.B   DATA_CLOCK_CONST_WORD_1B5D
     BEQ.S   .if_eq_17A1
 
     MOVEQ   #0,D1
-    MOVE.B  LAB_21B3,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
@@ -1034,7 +1069,7 @@ LAB_1789:
     MOVE.L  D1,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1771
+    BSR.W   TLIBA1_DrawInlineStyledText
 
     LEA     16(A7),A7
     ADDQ.W  #1,-12(A5)
@@ -1063,7 +1098,7 @@ LAB_1789:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     2385.W
-    PEA     LAB_2164
+    PEA     DATA_TLIBA1_STR_TLIBA1_DOT_C_2164
     JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1076,25 +1111,37 @@ LAB_1789:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_17A8   (??)
+; FUNC: TLIBA1_BuildClockFormatEntryIfVisible   (Build formatted entry string when slot is active)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +12: arg_5 (via 16(A5))
+;   stack +16: arg_6 (via 20(A5))
+;   stack +18: arg_7 (via 22(A5))
+;   stack +20: arg_8 (via 24(A5))
+;   stack +24: arg_9 (via 28(A5))
+;   stack +26: arg_10 (via 30(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA1_FormatClockFormatEntry, TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode,
+;   TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode,
+;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
 ; READS:
-;   ??
+;   CONFIG_TimeWindowMinutes, TEXTDISP_ActiveGroupId
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Gathers timing fields for the active group, tests visibility against the
+;   configured time window, then emits a formatted entry string when valid.
 ; NOTES:
-;   ??
+;   Clears output buffer when no visible fields are available.
 ;------------------------------------------------------------------------------
-LAB_17A8:
+TLIBA1_BuildClockFormatEntryIfVisible:
     LINK.W  A5,#-32
     MOVEM.L D5-D7/A3,-(A7)
     MOVE.W  10(A5),D7
@@ -1102,7 +1149,7 @@ LAB_17A8:
     MOVEA.L 16(A5),A3
     MOVE.W  22(A5),D5
     CLR.W   -30(A5)
-    MOVE.W  LAB_2153,D0
+    MOVE.W  TEXTDISP_ActiveGroupId,D0
     SUBQ.W  #1,D0
     BNE.S   .if_ne_17A9
 
@@ -1110,14 +1157,14 @@ LAB_17A8:
     EXT.L   D0
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMPTBL_LAB_0923(PC)
+    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
     PEA     1.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     GROUPD_JMPTBL_LAB_0926(PC)
+    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -1128,14 +1175,14 @@ LAB_17A8:
     EXT.L   D0
     PEA     2.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPD_JMPTBL_LAB_0923(PC)
+    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
     MOVE.L  D7,D1
     EXT.L   D1
     PEA     2.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     GROUPD_JMPTBL_LAB_0926(PC)
+    JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
@@ -1146,7 +1193,7 @@ LAB_17A8:
     PEA     5.W
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUPD_JMPTBL_LAB_0347(PC)
+    JSR     TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -1154,7 +1201,7 @@ LAB_17A8:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-12(A5)
-    JSR     GROUPD_JMPTBL_LAB_0347(PC)
+    JSR     TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -1162,7 +1209,7 @@ LAB_17A8:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-16(A5)
-    JSR     GROUPD_JMPTBL_LAB_0347(PC)
+    JSR     TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -1170,7 +1217,7 @@ LAB_17A8:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-20(A5)
-    JSR     GROUPD_JMPTBL_LAB_0347(PC)
+    JSR     TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(PC)
 
     MOVE.L  D6,D1
     EXT.L   D1
@@ -1178,7 +1225,7 @@ LAB_17A8:
     MOVE.L  D1,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-24(A5)
-    JSR     GROUPD_JMPTBL_LAB_0347(PC)
+    JSR     TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(PC)
 
     LEA     60(A7),A7
     MOVE.L  D0,-28(A5)
@@ -1188,12 +1235,12 @@ LAB_17A8:
 
     MOVE.L  D6,D0
     EXT.L   D0
-    MOVE.L  LAB_1BBD,-(A7)
+    MOVE.L  CONFIG_TimeWindowMinutes,-(A7)
     PEA     1440.W
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUPD_JMPTBL_LAB_036C(PC)
+    JSR     TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -1228,7 +1275,7 @@ LAB_17A8:
     MOVE.L  -16(A5),-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_17B1
+    BSR.W   TLIBA1_FormatClockFormatEntry
 
     LEA     28(A7),A7
 
@@ -1255,31 +1302,41 @@ LAB_17A8:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_17B1   (??)
+; FUNC: TLIBA1_FormatClockFormatEntry   (Compose TLFORMAT metadata + values into output text)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +16: arg_4 (via 20(A5))
+;   stack +20: arg_5 (via 24(A5))
+;   stack +24: arg_6 (via 28(A5))
+;   stack +30: arg_7 (via 34(A5))
+;   stack +528: arg_8 (via 532(A5))
+;   stack +534: arg_9 (via 538(A5))
+;   stack +538: arg_10 (via 542(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   ??
+;   FORMAT_RawDoFmtWithScratchBuffer, STRING_AppendAtNull, WDISP_SPrintf
 ; READS:
-;   ??
+;   DATA_TEXTDISP_CONST_LONG_2156, DATA_TLIBA1_BSS_BYTE_2165, DATA_TLIBA1_BSS_WORD_2166, DATA_TLIBA1_BSS_WORD_2167, DATA_TLIBA1_BSS_WORD_2168, DATA_TLIBA1_BSS_WORD_2169, DATA_TLIBA1_FMT_PCT_C_PCT_S_216A, DATA_TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X_216B, DATA_TLIBA1_STR_VALUE_216C, DATA_TLIBA1_FMT_TLF_COLOR_PCT_D_216D, DATA_TLIBA1_FMT_TLF_OFFSET_PCT_D_216E, DATA_TLIBA1_FMT_TLF_FONTSEL_PCT_D_216F, DATA_TLIBA1_FMT_TLF_ALIGN_PCT_D_2170, DATA_TLIBA1_FMT_TLF_PREGAP_PCT_D_2171, DATA_TLIBA1_STR_VALUE_2172, WDISP_CharClassTable, copy_loop
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Builds a formatted output string by combining template fragments and current
+;   TLFORMAT/value fields, appending each fragment into destination buffer.
 ; NOTES:
-;   ??
+;   Falls back to module default field strings when optional pointers are null.
 ;------------------------------------------------------------------------------
-LAB_17B1:
+TLIBA1_FormatClockFormatEntry:
     LINK.W  A5,#-544
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.W  34(A5),D7
-    LEA     LAB_2165,A0
+    LEA     DATA_TLIBA1_BSS_BYTE_2165,A0
     LEA     -532(A5),A1
     MOVE.W  #$1ff,D0
 ; This is weird, it's purposefully one byte back
@@ -1299,7 +1356,7 @@ LAB_17B1:
     MOVEQ   #65,D0
 
 .skip_17B4:
-    LEA     LAB_21A8,A0
+    LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #1,(A0)
     BEQ.S   .if_eq_17B7
@@ -1352,13 +1409,13 @@ LAB_17B1:
     MOVE.L  D1,D2
     EXT.L   D2
     ASL.L   #2,D2
-    LEA     LAB_2156,A0
+    LEA     DATA_TEXTDISP_CONST_LONG_2156,A0
     ADDA.L  D2,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .skip_17BB
 
 .branch_17BA:
-    MOVE.L  LAB_2156,-4(A5)
+    MOVE.L  DATA_TEXTDISP_CONST_LONG_2156,-4(A5)
 
 .skip_17BB:
     TST.L   28(A5)
@@ -1368,7 +1425,7 @@ LAB_17B1:
     BRA.S   .skip_17BD
 
 .if_eq_17BC:
-    LEA     LAB_2166,A0
+    LEA     DATA_TLIBA1_BSS_WORD_2166,A0
 
 .skip_17BD:
     MOVE.L  A0,-20(A5)
@@ -1379,7 +1436,7 @@ LAB_17B1:
     BRA.S   .skip_17BF
 
 .if_eq_17BE:
-    LEA     LAB_2167,A0
+    LEA     DATA_TLIBA1_BSS_WORD_2167,A0
 
 .skip_17BF:
     MOVE.L  A0,-16(A5)
@@ -1390,7 +1447,7 @@ LAB_17B1:
     BRA.S   .skip_17C1
 
 .if_eq_17C0:
-    LEA     LAB_2168,A0
+    LEA     DATA_TLIBA1_BSS_WORD_2168,A0
 
 .skip_17C1:
     MOVE.L  A0,-12(A5)
@@ -1401,7 +1458,7 @@ LAB_17B1:
     BRA.S   .skip_17C3
 
 .if_eq_17C2:
-    LEA     LAB_2169,A0
+    LEA     DATA_TLIBA1_BSS_WORD_2169,A0
 
 .skip_17C3:
     MOVE.L  A0,-8(A5)
@@ -1451,7 +1508,7 @@ LAB_17B1:
     ASL.L   #2,D1
     MOVE.L  -20(A5,D1.L),-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_216A
+    PEA     DATA_TLIBA1_FMT_PCT_C_PCT_S_216A
     PEA     -532(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -1475,43 +1532,43 @@ LAB_17B1:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,-(A7)
-    PEA     LAB_216B
+    PEA     DATA_TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X_216B
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     LAB_216C
+    PEA     DATA_TLIBA1_STR_VALUE_216C
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  (A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     LAB_216D
+    PEA     DATA_TLIBA1_FMT_TLF_COLOR_PCT_D_216D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  2(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     LAB_216E
+    PEA     DATA_TLIBA1_FMT_TLF_OFFSET_PCT_D_216E
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  4(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     LAB_216F
+    PEA     DATA_TLIBA1_FMT_TLF_FONTSEL_PCT_D_216F
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     LAB_2170
+    PEA     DATA_TLIBA1_FMT_TLF_ALIGN_PCT_D_2170
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     LAB_2171
+    PEA     DATA_TLIBA1_FMT_TLF_PREGAP_PCT_D_2171
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     LAB_2172
+    PEA     DATA_TLIBA1_STR_VALUE_2172
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     36(A7),A7
@@ -1525,27 +1582,112 @@ LAB_17B1:
 
 ;!======
 
-GROUPD_JMPTBL_LAB_0347:
-    JMP     LAB_0347
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   COI_GetAnimFieldPointerByMode
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to COI_GetAnimFieldPointerByMode.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode:
+    JMP     COI_GetAnimFieldPointerByMode
 
-GROUPD_JMPTBL_LAB_0926:
-    JMP     LAB_0926
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQDISP_GetEntryAuxPointerByMode
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQDISP_GetEntryAuxPointerByMode.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
+    JMP     ESQDISP_GetEntryAuxPointerByMode
 
-GROUPD_JMPTBL_LAB_0EE9:
-    JMP     LAB_0EE9
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LADFUNC_GetPackedPenLowNibble
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LADFUNC_GetPackedPenLowNibble.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
+    JMP     LADFUNC_GetPackedPenLowNibble
 
-GROUPD_JMPTBL_LAB_0923:
-    JMP     LAB_0923
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQDISP_GetEntryPointerByMode
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQDISP_GetEntryPointerByMode.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode:
+    JMP     ESQDISP_GetEntryPointerByMode
 
-GROUPD_JMPTBL_LAB_036C:
-    JMP     LAB_036C
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   COI_TestEntryWithinTimeWindow
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to COI_TestEntryWithinTimeWindow.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow:
+    JMP     COI_TestEntryWithinTimeWindow
 
 ;------------------------------------------------------------------------------
 ; FUNC: TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry   (JumpStub_CLEANUP_FormatClockFormatEntry)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: (see CLEANUP_FormatClockFormatEntry) ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
@@ -1558,20 +1700,87 @@ GROUPD_JMPTBL_LAB_036C:
 ;   Jump stub to CLEANUP_FormatClockFormatEntry.
 ;------------------------------------------------------------------------------
 TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry:
-LAB_17CE:
     JMP     CLEANUP_FormatClockFormatEntry
 
-GROUPD_JMPTBL_LAB_08DF:
-    JMP     LAB_08DF
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQDISP_ComputeScheduleOffsetForRow
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQDISP_ComputeScheduleOffsetForRow.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
+    JMP     ESQDISP_ComputeScheduleOffsetForRow
 
-GROUPD_JMPTBL_ESQ_FindSubstringCaseFold:
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   ESQ_FindSubstringCaseFold
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to ESQ_FindSubstringCaseFold.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold:
     JMP     ESQ_FindSubstringCaseFold
 
-GROUPD_JMPTBL_LAB_054C:
-    JMP     LAB_054C
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   DISPLIB_FindPreviousValidEntryIndex
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to DISPLIB_FindPreviousValidEntryIndex.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
+    JMP     DISPLIB_FindPreviousValidEntryIndex
 
-GROUPD_JMPTBL_LAB_0EE8:
-    JMP     LAB_0EE8
+;------------------------------------------------------------------------------
+; FUNC: TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble   (JumpStub)
+; ARGS:
+;   (none)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   (none)
+; CALLS:
+;   LADFUNC_GetPackedPenHighNibble
+; READS:
+;   (none)
+; WRITES:
+;   (none)
+; DESC:
+;   Jump stub to LADFUNC_GetPackedPenHighNibble.
+;------------------------------------------------------------------------------
+TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble:
+    JMP     LADFUNC_GetPackedPenHighNibble
 
 ;!======
 

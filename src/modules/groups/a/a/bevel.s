@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawVerticalBevel   (DrawVerticalBevel??)
+; FUNC: BEVEL_DrawVerticalBevel   (DrawVerticalBeveluncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: x
@@ -118,7 +118,7 @@ BEVEL_DrawVerticalBevel:
 ; The moves and draws seem like this is making some kind of
 ; outlined box... maybe with a shadow or bevel?
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawVerticalBevelPair   (DrawVerticalBevelPair??)
+; FUNC: BEVEL_DrawVerticalBevelPair   (DrawVerticalBevelPairuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -271,7 +271,7 @@ BEVEL_DrawVerticalBevelPair:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawHorizontalBevel   (DrawHorizontalBevel??)
+; FUNC: BEVEL_DrawHorizontalBevel   (DrawHorizontalBeveluncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -391,7 +391,7 @@ BEVEL_DrawHorizontalBevel:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawBeveledFrame   (DrawBeveledFrame??)
+; FUNC: BEVEL_DrawBeveledFrame   (DrawBeveledFrameuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -460,7 +460,7 @@ BEVEL_DrawBeveledFrame:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawBevelFrameWithTop   (DrawBevelFrameWithTop??)
+; FUNC: BEVEL_DrawBevelFrameWithTop   (DrawBevelFrameWithTopuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX
@@ -512,7 +512,7 @@ BEVEL_DrawBevelFrameWithTop:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: BEVEL_DrawBevelFrameWithTopRight   (DrawBevelFrameWithTopRight??)
+; FUNC: BEVEL_DrawBevelFrameWithTopRight   (DrawBevelFrameWithTopRightuncertain)
 ; ARGS:
 ;   stack +4: rastPort
 ;   stack +8: leftX

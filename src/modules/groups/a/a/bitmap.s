@@ -1,21 +1,21 @@
 ;------------------------------------------------------------------------------
 ; FUNC: BITMAP_ProcessIlbmImage
 ; ARGS:
-;   stack +8:  fileHandle?? (loaded into D7)
-;   stack +16: outPtrOrCtx?? (loaded into A3)
-;   stack +20: dataLenOrMode?? (loaded into D6)
-;   stack +24: auxPtr?? (loaded into A2)
-;   stack +28: ilbmInfoPtr?? (loaded into A0)
+;   stack +8:  fileHandleuncertain (loaded into D7)
+;   stack +16: outPtrOrCtxuncertain (loaded into A3)
+;   stack +20: dataLenOrModeuncertain (loaded into D6)
+;   stack +24: auxPtruncertain (loaded into A2)
+;   stack +28: ilbmInfoPtruncertain (loaded into A0)
 ; RET:
-;   D0: ?? (status/bytes??)
+;   D0: status/bytes from final parser read path
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
 ;   dos.library Read, BRUSH_LoadColorTextFont
 ; READS:
-;   A0+128/130/148/151/184/190 ??
+;   A0+128/130/148/151/184/190 uncertain
 ; WRITES:
-;   A0+128/130/148/151/184 ??, local temps
+;   A0+128/130/148/151/184 uncertain, local temps
 ; DESC:
 ;   Parses ILBM/IFF chunks from a DOS file handle and populates an ILBM info block.
 ; NOTES:
@@ -35,14 +35,14 @@ BITMAP_ProcessIlbmImage:
     MOVEQ   #-1,D0
     MOVE.L  D0,-14(A5)
     MOVEA.L 28(A5),A0
-    CLR.W   184(A0)        ; A0+184 = ?? (cleared before parsing)
+    CLR.W   184(A0)        ; A0+184 = uncertain (cleared before parsing)
     CLR.L   -18(A5)
 
-.LAB_00EF:
+.clear_crng_table_loop:
     MOVE.L  -18(A5),D0
     MOVEQ   #4,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_00F0
+    BGE.S   .read_chunk_id
 
     ASL.L   #3,D0
     MOVEA.L 28(A5),A0
@@ -50,9 +50,9 @@ BITMAP_ProcessIlbmImage:
     ADDI.L  #$0000009c,D1
     CLR.W   0(A0,D1.L)
     ADDQ.L  #1,-18(A5)
-    BRA.S   .LAB_00EF
+    BRA.S   .clear_crng_table_loop
 
-.LAB_00F0:
+.read_chunk_id:
     MOVE.L  D7,D1
     LEA     -4(A5),A0
     MOVE.L  A0,D2
@@ -61,14 +61,14 @@ BITMAP_ProcessIlbmImage:
     JSR     _LVORead(A6)
 
     SUBQ.L  #4,D0
-    BEQ.S   .LAB_00F1
+    BEQ.S   .read_chunk_size
 
     MOVEQ   #1,D5
-    BRA.W   .LAB_010A
+    BRA.W   .return_result
 
-.LAB_00F1:
+.read_chunk_size:
     CMPI.L  #'ILBM',-4(A5)
-    BEQ.W   .LAB_0109
+    BEQ.W   .continue_or_exit
 
     MOVE.L  D7,D1
     LEA     -8(A5),A0
@@ -76,41 +76,41 @@ BITMAP_ProcessIlbmImage:
     JSR     _LVORead(A6)
 
     SUBQ.L  #4,D0
-    BEQ.S   .LAB_00F2
+    BEQ.S   .validate_chunk_size_nonzero
 
     MOVEQ   #1,D5
-    BRA.W   .LAB_010A
+    BRA.W   .return_result
 
-.LAB_00F2:
+.validate_chunk_size_nonzero:
     TST.L   -8(A5)
-    BNE.S   .LAB_00F3
+    BNE.S   .validate_chunk_size_signed
 
     MOVEQ   #1,D5
-    BRA.W   .LAB_010A
+    BRA.W   .return_result
 
-.LAB_00F3:
+.validate_chunk_size_signed:
     MOVE.L  -8(A5),D0
     TST.L   D0
-    BPL.S   .LAB_00F4
+    BPL.S   .dispatch_chunk_tag
     MOVEQ   #1,D5
 
-    BRA.W   .LAB_010A
+    BRA.W   .return_result
 
-.LAB_00F4:
+.dispatch_chunk_tag:
     MOVE.L  -4(A5),D1
     CMPI.L  #'FORM',D1
-    BEQ.W   .LAB_0109
+    BEQ.W   .continue_or_exit
 
     CMPI.L  #'BMHD',D1
-    BNE.W   .LAB_00FB
+    BNE.W   .check_chunk_cmap
     MOVEQ   #20,D1      ; Size of the BMHD header
 
     CMP.L   D1,D0
-    BEQ.S   .LAB_00F5
+    BEQ.S   .read_bmhd_payload
 
     MOVEQ   #1,D5
 
-.LAB_00F5:
+.read_bmhd_payload:
     MOVEA.L 28(A5),A0
     ADDA.W  #$0080,A0
     MOVE.L  D7,D1
@@ -118,63 +118,63 @@ BITMAP_ProcessIlbmImage:
     MOVEQ   #20,D3
     JSR     _LVORead(A6)
     CMP.L   D3,D0
-    BEQ.S   .LAB_00F6
+    BEQ.S   .post_bmhd_read
 
     MOVEQ   #1,D5
 
-.LAB_00F6:
+.post_bmhd_read:
     MOVEQ   #0,D0
     MOVEA.L 28(A5),A0
     MOVE.L  D0,148(A0)
     CMPI.W  #$0140,128(A0)
-    BLS.S   .LAB_00F7
+    BLS.S   .clamp_bmhd_height
 
     BSET    #15,D0
     MOVE.L  D0,148(A0)
 
-.LAB_00F7:
+.clamp_bmhd_height:
     MOVE.W  130(A0),D0
     CMPI.W  #$00c8,D0
-    BLS.S   .LAB_00F9
+    BLS.S   .check_lowres_height_clamp
 
     BSET    #2,151(A0)
     CMPI.W  #$00dc,130(A0)
-    BLS.W   .LAB_0109
+    BLS.W   .continue_or_exit
 
     MOVE.B  190(A0),D0
     MOVEQ   #5,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_00F8
+    BEQ.S   .clamp_height_to_220
 
     MOVEQ   #4,D2
     CMP.B   D2,D0
-    BNE.W   .LAB_0109
+    BNE.W   .continue_or_exit
 
-.LAB_00F8:
+.clamp_height_to_220:
     MOVE.W  #$00dc,D2
     MOVE.W  D2,130(A0)
-    BRA.W   .LAB_0109
+    BRA.W   .continue_or_exit
 
-.LAB_00F9:
+.check_lowres_height_clamp:
     MOVEQ   #110,D1
     CMP.W   D1,D0
-    BLS.W   .LAB_0109
+    BLS.W   .continue_or_exit
 
     MOVE.B  190(A0),D0
     MOVEQ   #5,D2
     CMP.B   D2,D0
-    BEQ.S   .LAB_00FA
+    BEQ.S   .clamp_height_to_110
 
     SUBQ.B  #4,D0
-    BNE.W   .LAB_0109
+    BNE.W   .continue_or_exit
 
-.LAB_00FA:
+.clamp_height_to_110:
     MOVE.W  D1,130(A0)
-    BRA.W   .LAB_0109
+    BRA.W   .continue_or_exit
 
-.LAB_00FB:
+.check_chunk_cmap:
     CMPI.L  #'CMAP',D1
-    BNE.S   .LAB_00FC
+    BNE.S   .check_chunk_body
 
     MOVE.L  28(A5),-(A7)
     MOVE.L  A3,-(A7)
@@ -184,14 +184,14 @@ BITMAP_ProcessIlbmImage:
 
     LEA     16(A7),A7
     SUBQ.L  #1,D0
-    BEQ.W   .LAB_0109
+    BEQ.W   .continue_or_exit
 
     MOVEQ   #1,D5
-    BRA.W   .LAB_0109
+    BRA.W   .continue_or_exit
 
-.LAB_00FC:
+.check_chunk_body:
     CMPI.L  #'BODY',D1
-    BNE.S   .LAB_00FE
+    BNE.S   .check_chunk_camg
 
     MOVE.L  28(A5),-(A7)
     MOVE.L  A2,-(A7)
@@ -202,27 +202,27 @@ BITMAP_ProcessIlbmImage:
 
     LEA     20(A7),A7
     SUBQ.L  #1,D0
-    BNE.S   .LAB_00FD
+    BNE.S   .after_body_stream
 
     MOVEQ   #1,D0
     MOVE.L  D0,-14(A5)
 
-.LAB_00FD:
+.after_body_stream:
     MOVEQ   #1,D5
-    BRA.W   .LAB_0109
+    BRA.W   .continue_or_exit
 
-.LAB_00FE:
+.check_chunk_camg:
     CMPI.L  #'CAMG',D1
-    BNE.S   .LAB_0101
+    BNE.S   .check_chunk_crng
 
     MOVEA.L 28(A5),A0
     CLR.L   148(A0)
     CMP.L   -8(A5),D3
-    BEQ.S   .LAB_00FF
+    BEQ.S   .read_camg_mode
 
     MOVEQ   #1,D5
 
-.LAB_00FF:
+.read_camg_mode:
     LEA     148(A0),A1
     MOVE.L  D7,D1
     MOVE.L  A1,D2
@@ -230,44 +230,44 @@ BITMAP_ProcessIlbmImage:
     JSR     _LVORead(A6)
 
     SUBQ.L  #4,D0
-    BEQ.W   .LAB_0109
+    BEQ.W   .continue_or_exit
 
     MOVEQ   #1,D5
     MOVEQ   #0,D0
     MOVEA.L 28(A5),A0
     MOVE.L  D0,148(A0)
     CMPI.W  #$0140,128(A0)
-    BLS.S   .LAB_0100
+    BLS.S   .post_camg_fallback_flags
 
     BSET    #15,D0
     MOVE.L  D0,148(A0)
 
-.LAB_0100:
+.post_camg_fallback_flags:
     CMPI.W  #$00c8,130(A0)
-    BLS.W   .LAB_0109
+    BLS.W   .continue_or_exit
 
     BSET    #2,D0
     MOVE.L  D0,148(A0)
-    BRA.W   .LAB_0109
+    BRA.W   .continue_or_exit
 
-.LAB_0101:
+.check_chunk_crng:
     CMPI.L  #'CRNG',D1
-    BNE.W   .LAB_0108
+    BNE.W   .seek_skip_unknown_chunk
 
     MOVEA.L 28(A5),A0
     MOVE.W  184(A0),D0
     MOVEQ   #4,D1
     CMP.W   D1,D0
-    BGE.W   .LAB_0108
+    BGE.W   .seek_skip_unknown_chunk
 
     MOVEQ   #8,D1
     CMP.L   -8(A5),D1
-    BEQ.S   .LAB_0102
+    BEQ.S   .read_crng_entry
 
     MOVEQ   #1,D5
-    BRA.W   .LAB_0109
+    BRA.W   .continue_or_exit
 
-.LAB_0102:
+.read_crng_entry:
     MOVE.L  D0,D2
     EXT.L   D2
     ASL.L   #3,D2
@@ -279,11 +279,11 @@ BITMAP_ProcessIlbmImage:
     JSR     _LVORead(A6)
 
     SUBQ.L  #8,D0
-    BEQ.S   .LAB_0103
+    BEQ.S   .validate_crng_bounds
 
     MOVEQ   #1,D5
 
-.LAB_0103:
+.validate_crng_bounds:
     MOVEA.L 28(A5),A0
     MOVE.W  184(A0),D0
     EXT.L   D0
@@ -291,27 +291,27 @@ BITMAP_ProcessIlbmImage:
     MOVE.L  D0,D1
     ADDI.L  #$0000009e,D1
     CMPI.B  #$1f,0(A0,D1.L)
-    BLS.S   .LAB_0104
+    BLS.S   .clamp_crng_low_nibble
 
     MOVEQ   #0,D1
     MOVE.L  D0,D2
     ADDI.L  #$0000009e,D2
     MOVE.B  D1,0(A0,D2.L)
 
-.LAB_0104:
+.clamp_crng_low_nibble:
     MOVE.W  184(A0),D0
     EXT.L   D0
     ASL.L   #3,D0
     MOVE.L  D0,D1
     ADDI.L  #$0000009f,D1
     CMPI.B  #$1f,0(A0,D1.L)
-    BLS.S   .LAB_0105
+    BLS.S   .validate_crng_high_nibble
 
     MOVE.L  D0,D1
     ADDI.L  #$0000009f,D1
     CLR.B   0(A0,D1.L)
 
-.LAB_0105:
+.validate_crng_high_nibble:
     MOVE.W  184(A0),D0
     EXT.L   D0
     ASL.L   #3,D0
@@ -319,13 +319,13 @@ BITMAP_ProcessIlbmImage:
     ADDI.L  #$0000009a,D1
     MOVE.W  0(A0,D1.L),D1
     TST.W   D1
-    BLE.S   .LAB_0106
+    BLE.S   .disable_crng_entry
 
     MOVEQ   #36,D1
     MOVE.L  D0,D2
     ADDI.L  #$0000009a,D2
     CMP.W   0(A0,D2.L),D1
-    BEQ.S   .LAB_0106
+    BEQ.S   .disable_crng_entry
 
     MOVE.W  184(A0),D0
     EXT.L   D0
@@ -336,9 +336,9 @@ BITMAP_ProcessIlbmImage:
     MOVE.L  D0,D2
     ADDI.L  #$0000009f,D2
     CMP.B   0(A0,D2.L),D1
-    BCS.S   .LAB_0107
+    BCS.S   .increment_crng_count
 
-.LAB_0106:
+.disable_crng_entry:
     MOVE.W  184(A0),D0
     EXT.L   D0
     ASL.L   #3,D0
@@ -346,21 +346,21 @@ BITMAP_ProcessIlbmImage:
     ADDI.L  #$0000009c,D1
     CLR.W   0(A0,D1.L)
 
-.LAB_0107:
+.increment_crng_count:
     ADDQ.W  #1,184(A0)
-    BRA.S   .LAB_0109
+    BRA.S   .continue_or_exit
 
-.LAB_0108:
+.seek_skip_unknown_chunk:
     MOVE.L  D7,D1
     MOVE.L  -8(A5),D2
     MOVEQ   #0,D3
     JSR     _LVOSeek(A6)
 
-.LAB_0109:
+.continue_or_exit:
     TST.W   D5
-    BEQ.W   .LAB_00F0
+    BEQ.W   .read_chunk_id
 
-.LAB_010A:
+.return_result:
     MOVE.L  -14(A5),D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5

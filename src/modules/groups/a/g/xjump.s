@@ -1,55 +1,377 @@
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (Routine at GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SIGNAL_CreateMsgPortWithSignal
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
     JMP     SIGNAL_CreateMsgPortWithSignal
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_MATH_DivS32   (Routine at GROUP_AG_JMPTBL_MATH_DivS32)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MATH_DivS32
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_MATH_DivS32:
     JMP     MATH_DivS32
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_MEMORY_DeallocateMemory   (Routine at GROUP_AG_JMPTBL_MEMORY_DeallocateMemory)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEMORY_DeallocateMemory
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
-LAB_0463:
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_STRUCT_AllocWithOwner   (Routine at GROUP_AG_JMPTBL_STRUCT_AllocWithOwner)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRUCT_AllocWithOwner
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
     JMP     STRUCT_AllocWithOwner
 
-LAB_0464:
-    JMP     LAB_167D
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Routine at GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   TEXTDISP_ResetSelectionAndRefresh
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
+    JMP     TEXTDISP_ResetSelectionAndRefresh
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport   (Routine at GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   IOSTDREQ_CleanupSignalAndMsgport
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport:
     JMP     IOSTDREQ_CleanupSignalAndMsgport
 
-LAB_0466:
-    JMP     LAB_097E
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning   (Routine at GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQFUNC_ServiceUiTickIfRunning
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning:
+    JMP     ESQFUNC_ServiceUiTickIfRunning
 
-LAB_0467:
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField   (Routine at GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRUCT_FreeWithSizeField
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField:
     JMP     STRUCT_FreeWithSizeField
 
-LAB_0468:
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Routine at GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   PARSE_ReadSignedLongSkipClass3_Alt
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition   (Routine at GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SCRIPT_BeginBannerCharTransition
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     SCRIPT_BeginBannerCharTransition
 
-LAB_046A:
-    JMP     LAB_0EF9
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch   (Routine at GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   LADFUNC2_EmitEscapedStringToScratch
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
+    JMP     LADFUNC2_EmitEscapedStringToScratch
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_MEMORY_AllocateMemory   (Routine at GROUP_AG_JMPTBL_MEMORY_AllocateMemory)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEMORY_AllocateMemory
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode   (Routine at GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN2B_OpenFileWithAccessMode
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
     JMP     UNKNOWN2B_OpenFileWithAccessMode
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_SCRIPT_CheckPathExists   (Routine at GROUP_AG_JMPTBL_SCRIPT_CheckPathExists)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SCRIPT_CheckPathExists
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_SCRIPT_CheckPathExists:
-LAB_046D:
     JMP     SCRIPT_CheckPathExists
 
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_MATH_Mulu32   (Routine at GROUP_AG_JMPTBL_MATH_Mulu32)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MATH_Mulu32
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 GROUP_AG_JMPTBL_MATH_Mulu32:
     JMP     MATH_Mulu32
 
-LAB_046F:
-    JMP     LAB_098A
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState   (Routine at GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQFUNC_UpdateRefreshModeState
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState:
+    JMP     ESQFUNC_UpdateRefreshModeState
 
-LAB_0470:
+;------------------------------------------------------------------------------
+; FUNC: GROUP_AG_JMPTBL_STRING_CopyPadNul   (Routine at GROUP_AG_JMPTBL_STRING_CopyPadNul)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   STRING_CopyPadNul
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+GROUP_AG_JMPTBL_STRING_CopyPadNul:
     JMP     STRING_CopyPadNul
 
 ;!======

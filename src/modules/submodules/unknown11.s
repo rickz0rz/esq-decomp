@@ -1,9 +1,7 @@
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_SeekByIndex   (Seek using a handle index.)
 ; ARGS:
-;   stack +24: D7 = handle index
-;   stack +28: D6 = offset ??
-;   stack +32: D5 = mode (OFFSET_BEGIN/CURRENT/END ??)
+;   (none observed)
 ; RET:
 ;   D0: seek result, or -1 on error
 ; CLOBBERS:

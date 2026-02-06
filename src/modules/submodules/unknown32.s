@@ -3,7 +3,7 @@
 ; ARGS:
 ;   stack +4: D7 = return code passed to ESQ_ReturnWithStackCode
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
@@ -54,7 +54,7 @@ HANDLE_CloseAllAndReturnWithCode:
 
 .after_close:
     MOVE.L  D7,-(A7)
-    JSR     WDISP_JMPTBL_ESQ_ReturnWithStackCode(PC)
+    JSR     UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D5-D7
@@ -68,9 +68,9 @@ HANDLE_CloseAllAndReturnWithCode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_JMPTBL_ESQ_ReturnWithStackCode   (Jump stub to ESQ_ReturnWithStackCode)
+; FUNC: UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode   (Jump stub to ESQ_ReturnWithStackCode)
 ;------------------------------------------------------------------------------
-WDISP_JMPTBL_ESQ_ReturnWithStackCode:
+UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:
     JMP     ESQ_ReturnWithStackCode
 
 ;!======

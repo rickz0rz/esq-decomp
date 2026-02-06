@@ -6,6 +6,30 @@
 ; points (LAB_xxxx). We keep the legacy symbols for reference but introduce
 ; descriptive aliases below to aid navigation while we continue annotating.
 ; -----------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_LoadColorTextFont   (Routine at BRUSH_LoadColorTextFont)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +12: arg_5 (via 16(A5))
+;   stack +40: arg_6 (via 44(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
+; CALLS:
+;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVORead
+; READS:
+;   GLOB_REF_DOS_LIBRARY_2, GLOB_STR_BRUSH_C_1, GLOB_STR_BRUSH_C_2, GLOB_STR_BRUSH_C_3, GLOB_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_LoadColorTextFont:
     LINK.W  A5,#-16
     MOVEM.L D2-D7/A3,-(A7)
@@ -109,6 +133,25 @@ BRUSH_LoadColorTextFont:
 ;!======
 
 ; Streams D6 bytes of font data into A3 in 2048-byte chunks.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_StreamFontChunk   (Routine at BRUSH_StreamFontChunk)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A2/A3/A6/A7/D0/D1/D2/D3/D5/D6/D7
+; CALLS:
+;   _LVORead
+; READS:
+;   GLOB_REF_DOS_LIBRARY_2
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_StreamFontChunk:
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
     MOVE.L  32(A7),D7
@@ -170,6 +213,28 @@ BRUSH_StreamFontChunk:
 ;!======
 
 ; Walks the BRUSH list at (A3), releasing rasters and child allocations.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_FreeBrushList   (Routine at BRUSH_FreeBrushList)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +16: arg_4 (via 20(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A3/A5/A7/D0/D1/D2/D3/D6/D7
+; CALLS:
+;   GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   GLOB_STR_BRUSH_C_5, GLOB_STR_BRUSH_C_6, GLOB_STR_BRUSH_C_7, BRUSH_FreeBrushList_Return, branch, lab_0121
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_FreeBrushList:
     LINK.W  A5,#-20
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
@@ -181,24 +246,24 @@ BRUSH_FreeBrushList:
     MOVE.L  A0,-20(A5)
     MOVE.L  A0,-16(A5)
     TST.L   (A3)
-    BEQ.W   LAB_0122
+    BEQ.W   BRUSH_FreeBrushList_Return
 
     MOVE.L  (A3),-8(A5)
 
-LAB_011C:
+.branch:
     TST.L   -8(A5)
-    BEQ.W   LAB_0121
+    BEQ.W   .lab_0121
 
     MOVEA.L -8(A5),A0
     MOVE.L  368(A0),-12(A5)
     MOVEQ   #0,D6
 
-LAB_011D:
+.lab_011D:
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
-    BGE.S   LAB_011E
+    BGE.S   .lab_011E
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -217,15 +282,15 @@ LAB_011D:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D6
-    BRA.S   LAB_011D
+    BRA.S   .lab_011D
 
-LAB_011E:
+.lab_011E:
     MOVEA.L -8(A5),A0
     MOVE.L  364(A0),-16(A5)
 
-LAB_011F:
+.branch_1:
     TST.L   -16(A5)
-    BEQ.S   LAB_0120
+    BEQ.S   .branch_2
 
     MOVEA.L -16(A5),A0
     MOVE.L  8(A0),-20(A5)
@@ -237,9 +302,9 @@ LAB_011F:
 
     LEA     16(A7),A7
     MOVE.L  -20(A5),-16(A5)
-    BRA.S   LAB_011F
+    BRA.S   .branch_1
 
-LAB_0120:
+.branch_2:
     PEA     372.W
     MOVE.L  -8(A5),-(A7)
     PEA     567.W
@@ -250,12 +315,31 @@ LAB_0120:
     MOVE.L  -12(A5),-8(A5)
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.W   LAB_011C
+    BNE.W   .branch
 
-LAB_0121:
+.lab_0121:
     MOVE.L  -8(A5),(A3)
 
-LAB_0122:
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_FreeBrushList_Return   (Routine at BRUSH_FreeBrushList_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+BRUSH_FreeBrushList_Return:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
     UNLK    A5
     RTS
@@ -263,6 +347,31 @@ LAB_0122:
 ;!======
 
 ; Evaluate the tile slot a brush should occupy, adjusting bounds and offsets.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_SelectBrushSlot   (Routine at BRUSH_SelectBrushSlot)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +16: arg_4 (via 20(A5))
+;   stack +20: arg_5 (via 24(A5))
+;   stack +24: arg_6 (via 28(A5))
+;   stack +28: arg_7 (via 32(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
+; CALLS:
+;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+; READS:
+;   BRUSH_SelectBrushSlot_Return, branch_12, lab_012E
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_SelectBrushSlot:
     LINK.W  A5,#-24
     MOVEM.L D2-D7/A2-A3,-(A7)
@@ -273,7 +382,7 @@ BRUSH_SelectBrushSlot:
     MOVEA.L 28(A5),A2
 
     MOVE.L  A3,D0
-    BEQ.W   LAB_013D
+    BEQ.W   BRUSH_SelectBrushSlot_Return
 
     MOVE.L  D5,D0
     SUB.L   D7,D0
@@ -281,110 +390,110 @@ BRUSH_SelectBrushSlot:
     ADDQ.L  #1,D1
     MOVE.L  348(A3),D2
     CMP.L   D1,D2
-    BLE.S   LAB_0128
+    BLE.S   .lab_0128
 
     MOVE.L  D7,-4(A5)
     MOVE.L  356(A3),D1
     MOVEQ   #2,D3
     CMP.L   D3,D1
-    BNE.S   LAB_0124
+    BNE.S   .lab_0124
 
     MOVE.L  D2,D4
     SUB.L   D0,D4
     SUBQ.L  #1,D4
     MOVE.L  D4,-20(A5)
-    BRA.W   LAB_012E
+    BRA.W   .lab_012E
 
-LAB_0124:
+.lab_0124:
     MOVEQ   #1,D0
     CMP.L   D0,D1
-    BNE.S   LAB_0127
+    BNE.S   .lab_0127
 
     MOVE.L  D2,D4
     TST.L   D4
-    BPL.S   LAB_0125
+    BPL.S   .lab_0125
 
     ADDQ.L  #1,D4
 
-LAB_0125:
+.lab_0125:
     ASR.L   #1,D4
     MOVE.L  D5,D1
     SUB.L   D7,D1
     ADDQ.L  #1,D1
     TST.L   D1
-    BPL.S   LAB_0126
+    BPL.S   .lab_0126
 
     ADDQ.L  #1,D1
 
-LAB_0126:
+.lab_0126:
     ASR.L   #1,D1
     SUB.L   D1,D4
     MOVE.L  D4,-20(A5)
-    BRA.S   LAB_012E
+    BRA.S   .lab_012E
 
-LAB_0127:
+.lab_0127:
     MOVE.L  340(A3),D4
     MOVE.L  D4,-20(A5)
-    BRA.S   LAB_012E
+    BRA.S   .lab_012E
 
-LAB_0128:
+.lab_0128:
     MOVE.L  D5,D0
     SUB.L   D7,D0
     ADDQ.L  #1,D0
     CMP.L   D0,D2
-    BGE.S   LAB_012D
+    BGE.S   .lab_012D
 
     MOVE.L  340(A3),D0
     MOVE.L  D0,-20(A5)
     MOVE.L  356(A3),D1
     MOVEQ   #2,D3
     CMP.L   D3,D1
-    BNE.S   LAB_0129
+    BNE.S   .lab_0129
 
     MOVE.L  D5,D4
     SUB.L   D2,D4
     ADDQ.L  #1,D4
     MOVE.L  D4,-4(A5)
-    BRA.S   LAB_012E
+    BRA.S   .lab_012E
 
-LAB_0129:
+.lab_0129:
     SUBQ.L  #1,D1
-    BNE.S   LAB_012C
+    BNE.S   .lab_012C
 
     MOVE.L  D5,D1
     SUB.L   D7,D1
     ADDQ.L  #1,D1
     TST.L   D1
-    BPL.S   LAB_012A
+    BPL.S   .branch
 
     ADDQ.L  #1,D1
 
-LAB_012A:
+.branch:
     ASR.L   #1,D1
     ADD.L   D7,D1
     MOVE.L  D2,D4
     TST.L   D4
-    BPL.S   LAB_012B
+    BPL.S   .branch_1
 
     ADDQ.L  #1,D4
 
-LAB_012B:
+.branch_1:
     ASR.L   #1,D4
     SUB.L   D4,D1
     MOVE.L  D1,-4(A5)
-    BRA.S   LAB_012E
+    BRA.S   .lab_012E
 
-LAB_012C:
+.lab_012C:
     MOVE.L  D7,-4(A5)
-    BRA.S   LAB_012E
+    BRA.S   .lab_012E
 
-LAB_012D:
+.lab_012D:
     MOVE.L  340(A3),D0
     MOVE.L  D7,D1
     MOVE.L  D0,-20(A5)
     MOVE.L  D1,-4(A5)
 
-LAB_012E:
+.lab_012E:
     MOVE.L  24(A5),D0
     MOVE.L  D0,D1
     SUB.L   D6,D1
@@ -392,140 +501,140 @@ LAB_012E:
     ADDQ.L  #1,D3
     MOVE.L  352(A3),D4
     CMP.L   D3,D4
-    BLE.S   LAB_0133
+    BLE.S   .branch_6
 
     MOVE.L  D6,-8(A5)
     MOVE.L  360(A3),D3
     MOVEQ   #2,D2
     CMP.L   D2,D3
-    BNE.S   LAB_012F
+    BNE.S   .branch_2
 
     MOVE.L  D4,D0
     SUB.L   D1,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,-24(A5)
-    BRA.W   LAB_0139
+    BRA.W   .branch_12
 
-LAB_012F:
+.branch_2:
     MOVEQ   #1,D1
     CMP.L   D1,D3
-    BNE.S   LAB_0132
+    BNE.S   .branch_5
 
     MOVE.L  D4,D3
     TST.L   D3
-    BPL.S   LAB_0130
+    BPL.S   .branch_3
 
     ADDQ.L  #1,D3
 
-LAB_0130:
+.branch_3:
     ASR.L   #1,D3
     MOVE.L  D0,D4
     SUB.L   D6,D4
     ADDQ.L  #1,D4
     TST.L   D4
-    BPL.S   LAB_0131
+    BPL.S   .branch_4
 
     ADDQ.L  #1,D4
 
-LAB_0131:
+.branch_4:
     ASR.L   #1,D4
     SUB.L   D4,D3
     MOVE.L  D3,-24(A5)
-    BRA.S   LAB_0139
+    BRA.S   .branch_12
 
-LAB_0132:
+.branch_5:
     MOVE.L  344(A3),D2
     MOVE.L  D2,-24(A5)
-    BRA.S   LAB_0139
+    BRA.S   .branch_12
 
-LAB_0133:
+.branch_6:
     MOVE.L  D0,D1
     SUB.L   D6,D1
     ADDQ.L  #1,D1
     CMP.L   D1,D4
-    BGE.S   LAB_0138
+    BGE.S   .branch_11
 
     MOVE.L  344(A3),D1
     MOVE.L  D1,-24(A5)
     MOVE.L  360(A3),D3
     MOVEQ   #2,D2
     CMP.L   D2,D3
-    BNE.S   LAB_0134
+    BNE.S   .branch_7
 
     MOVE.L  D0,D1
     SUB.L   D4,D1
     ADDQ.L  #1,D1
     MOVE.L  D1,-8(A5)
-    BRA.S   LAB_0139
+    BRA.S   .branch_12
 
-LAB_0134:
+.branch_7:
     SUBQ.L  #1,D3
-    BNE.S   LAB_0137
+    BNE.S   .branch_10
 
     MOVE.L  D0,D3
     SUB.L   D6,D3
     ADDQ.L  #1,D3
     TST.L   D3
-    BPL.S   LAB_0135
+    BPL.S   .branch_8
 
     ADDQ.L  #1,D3
 
-LAB_0135:
+.branch_8:
     ASR.L   #1,D3
     ADD.L   D6,D3
     MOVE.L  D4,D2
     TST.L   D2
-    BPL.S   LAB_0136
+    BPL.S   .branch_9
 
     ADDQ.L  #1,D2
 
-LAB_0136:
+.branch_9:
     ASR.L   #1,D2
     SUB.L   D2,D3
     MOVE.L  D3,-8(A5)
-    BRA.S   LAB_0139
+    BRA.S   .branch_12
 
-LAB_0137:
+.branch_10:
     MOVE.L  D6,-8(A5)
-    BRA.S   LAB_0139
+    BRA.S   .branch_12
 
-LAB_0138:
+.branch_11:
     MOVE.L  344(A3),D1
     MOVE.L  D6,D3
     MOVE.L  D1,-24(A5)
     MOVE.L  D3,-8(A5)
 
-LAB_0139:
+.branch_12:
     MOVE.L  D5,D0
     SUB.L   D7,D0
     ADDQ.L  #1,D0
     MOVE.L  348(A3),D1
     CMP.L   D1,D0
-    BLE.S   LAB_013A
+    BLE.S   .branch_13
 
     MOVE.L  D1,D0
 
-LAB_013A:
+.branch_13:
     MOVE.L  24(A5),D1
     SUB.L   D6,D1
     ADDQ.L  #1,D1
     MOVEM.L D0,-12(A5)
     MOVE.L  352(A3),D2
     CMP.L   D2,D1
-    BLE.S   LAB_013B
+    BLE.S   .branch_14
 
     MOVE.L  D2,D1
 
-LAB_013B:
+.branch_14:
     LEA     136(A3),A0
     MOVE.L  D1,-16(A5)
     MOVE.L  32(A5),D2
     TST.L   D2
-    BGT.S   LAB_013C
+    BGT.S   .branch_15
 
     MOVE.L  -24(A5),D2
 
-LAB_013C:
+.branch_15:
     PEA     192.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -537,7 +646,26 @@ LAB_013C:
     MOVE.L  A0,-(A7)
     JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
-LAB_013D:
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_SelectBrushSlot_Return   (Routine at BRUSH_SelectBrushSlot_Return)
+; ARGS:
+;   stack +52: arg_1 (via 56(A5))
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+BRUSH_SelectBrushSlot_Return:
     MOVEM.L -56(A5),D2-D7/A2-A3
     UNLK    A5
     RTS
@@ -545,6 +673,26 @@ LAB_013D:
 ;!======
 
 ; Returns the first brush node for which STRING_CompareNoCase (predicate) reports success.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_FindBrushByPredicate   (Routine at BRUSH_FindBrushByPredicate)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A2/A3/A5/A7/D0
+; CALLS:
+;   GROUP_AA_JMPTBL_STRING_CompareNoCase
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_FindBrushByPredicate:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
@@ -584,6 +732,25 @@ BRUSH_FindBrushByPredicate:
 ;!======
 
 ; Walk the brush list and return the first entry whose type byte (offset 32) is 3.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_FindType3Brush   (Routine at BRUSH_FindType3Brush)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A3/A5/A7/D0/D7
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_FindType3Brush:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
@@ -633,6 +800,27 @@ BRUSH_FindType3Brush:
 
 ; Load every brush descriptor reachable via the singly linked list rooted at A3.
 ; Successful loads are appended to the list pointed at A2.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_PopulateBrushList   (Routine at BRUSH_PopulateBrushList)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +16: arg_3 (via 20(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0
+; CALLS:
+;   BRUSH_LoadBrushAsset, BRUSH_NormalizeBrushNames, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid, _LVOPermit
+; READS:
+;   AbsExecBase, GLOB_STR_BRUSH_C_8
+; WRITES:
+;   BRUSH_LoadInProgressFlag, PARSEINI_ParsedDescriptorListHead
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_PopulateBrushList:
     LINK.W  A5,#-12
     MOVEM.L A2-A3,-(A7)
@@ -688,7 +876,7 @@ BRUSH_PopulateBrushList:
     BRA.S   .LAB_014A
 
 .LAB_014D:
-    CLR.L   LAB_1B1F
+    CLR.L   PARSEINI_ParsedDescriptorListHead
     MOVE.L  A2,-(A7)
     BSR.W   BRUSH_NormalizeBrushNames
 
@@ -706,6 +894,25 @@ BRUSH_PopulateBrushList:
 ;!======
 
 ; Release auxiliary allocations attached to each brush node in the list at A3.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_FreeBrushResources   (Routine at BRUSH_FreeBrushResources)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A0/A3/A5/A7
+; CALLS:
+;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   GLOB_STR_BRUSH_C_9
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_FreeBrushResources:
     LINK.W  A5,#-8
     MOVE.L  A3,-(A7)
@@ -740,6 +947,26 @@ BRUSH_FreeBrushResources:
 ;!======
 
 ; Rewrite the brush filename strings in-place using GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator (path normaliser).
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_NormalizeBrushNames   (Routine at BRUSH_NormalizeBrushNames)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +36: arg_2 (via 40(A5))
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A7
+; CALLS:
+;   GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_NormalizeBrushNames:
     LINK.W  A5,#-40
     MOVEM.L A2-A3,-(A7)
@@ -783,6 +1010,34 @@ BRUSH_NormalizeBrushNames:
 ;!======
 
 ; Open the brush file described by A3, load its ILBM payload, and prepare raster data.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_LoadBrushAsset   (Routine at BRUSH_LoadBrushAsset)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +12: arg_2 (via 16(A5))
+;   stack +14: arg_3 (via 18(A5))
+;   stack +16: arg_4 (via 20(A5))
+;   stack +18: arg_5 (via 22(A5))
+;   stack +42: arg_6 (via 46(A5))
+;   stack +46: arg_7 (via 50(A5))
+;   stack +50: arg_8 (via 54(A5))
+;   stack +54: arg_9 (via 58(A5))
+;   stack +60: arg_10 (via 64(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
+; CALLS:
+;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
+; READS:
+;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_10, GLOB_STR_BRUSH_C_11, GLOB_STR_BRUSH_C_12, GLOB_STR_BRUSH_C_13, GLOB_STR_BRUSH_C_14, GLOB_STR_BRUSH_C_15, GLOB_STR_BRUSH_C_16, LAB_0159, LAB_0161, LAB_0169, LAB_016D, LAB_0170, LAB_0173, LAB_0175, LAB_0178, LAB_017A, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, e8
+; WRITES:
+;   BRUSH_PendingAlertCode, BRUSH_SnapshotDepth, BRUSH_SnapshotWidth
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_LoadBrushAsset:
     LINK.W  A5,#-76
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
@@ -817,7 +1072,7 @@ BRUSH_LoadBrushAsset:
     BNE.W   .LAB_0159
 
     PEA     4.W
-    PEA     LAB_1B34
+    PEA     BRUSH_STR_IFF_FORM
     MOVE.L  D2,-(A7)
     JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
@@ -1324,6 +1579,25 @@ BRUSH_LoadBrushAsset:
 ;!======
 
 ; Clone an in-memory brush definition, rebuilding its bitmap state.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_CloneBrushRecord   (Routine at BRUSH_CloneBrushRecord)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D7
+; CALLS:
+;   GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
+; READS:
+;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_17, GLOB_STR_BRUSH_C_18, LAB_017F, LAB_0187, LAB_018B, MEMF_CLEAR, MEMF_PUBLIC, b0, return
+; WRITES:
+;   BRUSH_PendingAlertCode
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_CloneBrushRecord:
     LINK.W  A5,#-12
     MOVEM.L D2/D7/A2-A3,-(A7)
@@ -1538,6 +1812,25 @@ BRUSH_CloneBrushRecord:
 ;!======
 
 ; Allocate a linked brush node and splice it into the optional list at A2.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_AllocBrushNode   (Routine at BRUSH_AllocBrushNode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A7/D0
+; CALLS:
+;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+; READS:
+;   BRUSH_LastAllocatedNode, GLOB_STR_BRUSH_C_19, MEMF_CLEAR, MEMF_PUBLIC
+; WRITES:
+;   BRUSH_LastAllocatedNode
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_AllocBrushNode:
     MOVEM.L A2-A3,-(A7)
 
@@ -1584,6 +1877,25 @@ BRUSH_AllocBrushNode:
 ;!======
 
 ; Convert a plane index (0-8) into the corresponding bitmask.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_PlaneMaskForIndex   (Routine at BRUSH_PlaneMaskForIndex)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A7/D0/D7
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_PlaneMaskForIndex:
     MOVE.L  D7,-(A7)
 
@@ -1609,6 +1921,25 @@ BRUSH_PlaneMaskForIndex:
 ;!======
 
 ; Select a brush by its string label, updating BRUSH_SelectedNode.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_SelectBrushByLabel   (Routine at BRUSH_SelectBrushByLabel)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A0/A1/A3/A5/A7
+; CALLS:
+;   BRUSH_FindBrushByPredicate, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AG_JMPTBL_STRING_CopyPadNul
+; READS:
+;   BRUSH_LabelScratch, BRUSH_SelectedNode, BRUSH_STR_ALIAS_CODE_00, BRUSH_STR_ALIAS_CODE_11, BRUSH_STR_ALIAS_CODE_DT, BRUSH_STR_FALLBACK_DITHER, ESQIFF_BrushIniListHead
+; WRITES:
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_SelectBrushByLabel:
     LINK.W  A5,#-8
     MOVE.L  A3,-(A7)
@@ -1616,52 +1947,52 @@ BRUSH_SelectBrushByLabel:
     MOVEA.L A3,A0
     LEA     BRUSH_LabelScratch,A1
 
-LAB_0196:
+.lab_0196:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_0196
+    BNE.S   .lab_0196
 
-    MOVE.L  LAB_1ED1,-4(A5)
+    MOVE.L  ESQIFF_BrushIniListHead,-4(A5)
     CLR.L   BRUSH_SelectedNode
     PEA     2.W
-    PEA     LAB_1B3F
+    PEA     BRUSH_STR_ALIAS_CODE_00
     MOVE.L  A3,-(A7)
     JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   LAB_0197
+    BEQ.S   .lab_0197
 
     PEA     2.W
-    PEA     LAB_1B40
+    PEA     BRUSH_STR_ALIAS_CODE_11
     MOVE.L  A3,-(A7)
     JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   LAB_0197
+    BEQ.S   .lab_0197
 
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -7(A5)
-    JSR     LAB_0470(PC)
+    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    BRA.S   LAB_0198
+    BRA.S   .lab_0198
 
-LAB_0197:
+.lab_0197:
     PEA     2.W
-    PEA     LAB_1B41
+    PEA     BRUSH_STR_ALIAS_CODE_DT
     PEA     -7(A5)
-    JSR     LAB_0470(PC)
+    JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
 
-LAB_0198:
+.lab_0198:
     CLR.B   -5(A5)
 
-LAB_0199:
+.lab_0199:
     TST.L   -4(A5)
-    BEQ.S   LAB_019B
+    BEQ.S   .lab_019B
 
     MOVEA.L -4(A5),A0
     ADDA.W  #$21,A0
@@ -1672,27 +2003,27 @@ LAB_0199:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   LAB_019A
+    BNE.S   .lab_019A
 
     MOVE.L  -4(A5),BRUSH_SelectedNode
 
-LAB_019A:
+.lab_019A:
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   LAB_0199
+    BRA.S   .lab_0199
 
-LAB_019B:
+.lab_019B:
     TST.L   BRUSH_SelectedNode
-    BNE.S   LAB_019C
+    BNE.S   .lab_019C
 
-    PEA     LAB_1ED1
-    PEA     LAB_1B42
+    PEA     ESQIFF_BrushIniListHead
+    PEA     BRUSH_STR_FALLBACK_DITHER
     BSR.W   BRUSH_FindBrushByPredicate
 
     ADDQ.W  #8,A7
     MOVE.L  D0,BRUSH_SelectedNode
 
-LAB_019C:
+.lab_019C:
     MOVEA.L BRUSH_SelectedNode,A0
     MOVE.L  A0,BRUSH_ScriptPrimarySelection   ; expose latest selection to script subsystem
     MOVE.L  A0,BRUSH_ScriptSecondarySelection ; and remember it as the fallback option
@@ -1703,6 +2034,26 @@ LAB_019C:
 ;!======
 
 ; Append brush node A2 to the tail of list A3 (tracking via offset 368).
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_AppendBrushNode   (Routine at BRUSH_AppendBrushNode)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A2/A3/A5/A7/D0
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_AppendBrushNode:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
@@ -1739,6 +2090,25 @@ BRUSH_AppendBrushNode:
 ;!======
 
 ; Remove the head brush from the list at 8(A5), returning the next node.
+;------------------------------------------------------------------------------
+; FUNC: BRUSH_PopBrushHead   (Routine at BRUSH_PopBrushHead)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A5/A7/D0
+; CALLS:
+;   BRUSH_FreeBrushList
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 BRUSH_PopBrushHead:
     LINK.W  A5,#-4
 
@@ -1761,4 +2131,3 @@ BRUSH_PopBrushHead:
     MOVE.L  -4(A5),D0
     UNLK    A5
     RTS
-

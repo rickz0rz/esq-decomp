@@ -1,6 +1,6 @@
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ProcessCtrlCommand   (ProcessCtrlCommand??)
+; FUNC: GCOMMAND_ProcessCtrlCommand   (ProcessCtrlCommanduncertain)
 ; ARGS:
 ;   stack +4: cmdPtr
 ; RET:
@@ -10,17 +10,16 @@
 ; CALLS:
 ;   GROUP_AV_JMPTBL_EXEC_CallVector_48
 ; READS:
-;   4(A3), LAB_231B, LAB_231D
+;   4(A3), ED_StateRingWriteIndex, ED_StateRingTable
 ; WRITES:
-;   LAB_231B, LAB_1FB0
+;   ED_StateRingWriteIndex, DATA_GCOMMAND_CONST_WORD_1FB0
 ; DESC:
 ;   Handles control commands, updating the circular ctrl buffer index.
 ; NOTES:
-;   When command type is 1, compares against LAB_231D entry via GROUP_AV_JMPTBL_EXEC_CallVector_48.
-;   Command types 15/16 set LAB_1FB0.
+;   When command type is 1, compares against ED_StateRingTable entry via GROUP_AV_JMPTBL_EXEC_CallVector_48.
+;   Command types 15/16 set DATA_GCOMMAND_CONST_WORD_1FB0.
 ;------------------------------------------------------------------------------
 GCOMMAND_ProcessCtrlCommand:
-LAB_0DFB:
     LINK.W  A5,#-4
     MOVEM.L D7/A3-A4,-(A7)
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
@@ -29,10 +28,10 @@ LAB_0DFB:
     CMP.B   4(A3),D0
     BNE.S   .check_special_types
 
-    MOVE.L  LAB_231B,D0
+    MOVE.L  ED_StateRingWriteIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231B,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingWriteIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     CLR.L   -(A7)
     PEA     5.W
@@ -49,11 +48,11 @@ LAB_0DFB:
     CMP.L   D0,D7
     BEQ.S   .return
 
-    ADDQ.L  #1,LAB_231B
-    CMPI.L  #$14,LAB_231B
+    ADDQ.L  #1,ED_StateRingWriteIndex
+    CMPI.L  #$14,ED_StateRingWriteIndex
     BLT.S   .return
 
-    CLR.L   LAB_231B
+    CLR.L   ED_StateRingWriteIndex
     BRA.S   .return
 
 .check_special_types:
@@ -63,7 +62,7 @@ LAB_0DFB:
     BNE.S   .check_type_15
 
     MOVEQ   #1,D1
-    MOVE.W  D1,LAB_1FB0
+    MOVE.W  D1,DATA_GCOMMAND_CONST_WORD_1FB0
     BRA.S   .return
 
 .check_type_15:
@@ -71,7 +70,7 @@ LAB_0DFB:
     CMP.B   D1,D0
     BNE.S   .return
 
-    MOVE.W  #1,LAB_1FB0
+    MOVE.W  #1,DATA_GCOMMAND_CONST_WORD_1FB0
 
 .return:
     MOVEQ   #0,D0

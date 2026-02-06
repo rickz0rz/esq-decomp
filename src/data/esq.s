@@ -47,83 +47,153 @@ GLOB_REF_DISKFONT_LIBRARY:
     DS.L    1
 GLOB_REF_DOS_LIBRARY:
     DS.L    1
-LAB_1DC5:
+;------------------------------------------------------------------------------
+; SYM: ESQ_HighlightMsgPort/ESQ_HighlightReplyPort   (highlight message ports)
+; TYPE: pointer/pointer (Exec MsgPort)
+; PURPOSE: Main message port for highlight work messages and paired reply port.
+; USED BY: ESQ init/cleanup, ESQDISP message submit, GCOMMAND message service, NEWGRID polling
+; NOTES: Allocated as MsgPort-sized blocks during ESQ startup.
+;------------------------------------------------------------------------------
+ESQ_HighlightMsgPort:
     DS.L    1
-LAB_1DC6:
+ESQ_HighlightReplyPort:
     DS.L    1
-LAB_1DC7:
+DATA_ESQ_BSS_LONG_1DC7:
     DS.L    1
 LAB_1DC7_Length = 1
-LAB_1DC8:
+DATA_ESQ_STR_B_1DC8:
     DC.B    "B"
 LAB_1DC8_Length = 1
-LAB_1DC9:
+DATA_ESQ_STR_E_1DC9:
     DC.B    "E"
 LAB_1DC9_Length = 1
 GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
 GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length    = 1
-LAB_1DCB:
+DATA_ESQ_TAG_36_1DCB:
     DC.B    "36"
 LAB_1DCB_Length = 2
-LAB_1DCD:
+;------------------------------------------------------------------------------
+; SYM: ED_DiagScrollSpeedChar   (diagnostic SSPD selector char)
+; TYPE: u8 (ASCII digit)
+; PURPOSE: Single-character diagnostic scroll-speed selector shown in ED diagnostics.
+; USED BY: ED_DrawDiagnosticModeText, ED2 diagnostic menu speed cycling, ESQIFF2 diagnostics
+; NOTES: Default is `'6'`; ED2 cycles this value and mirrors it into related counters.
+;------------------------------------------------------------------------------
+ED_DiagScrollSpeedChar:
     DC.B    "6"
 LAB_1DCD_Length = 1
-LAB_1DCE:
+DATA_ESQ_STR_N_1DCE:
     DC.B    "N"
-LAB_1DCF:
+DATA_ESQ_CONST_BYTE_1DCF:
     DC.B    1
-LAB_1DD0:
+DATA_ESQ_CONST_BYTE_1DD0:
     DC.B    1
-LAB_1DD1:
+DATA_ESQ_STR_6_1DD1:
     DC.B    "6"
-LAB_1DD2:
+DATA_ESQ_STR_N_1DD2:
     DC.B    "N"
-LAB_1DD3:
+DATA_ESQ_STR_Y_1DD3:
     DC.B    "Y"
     DC.B    "N"
-LAB_1DD4:
+DATA_ESQ_STR_N_1DD4:
     DC.B    "N"
-LAB_1DD5:
+DATA_ESQ_STR_N_1DD5:
     DC.B    "N"
     DC.B    "YA"
-LAB_1DD6:
+;------------------------------------------------------------------------------
+; SYM: ED_DiagGraphModeChar/ED_DiagVinModeChar   (diagnostic GRPH/VIN selector chars)
+; TYPE: u8/u8 (ASCII)
+; PURPOSE: Current single-char selectors shown in ED diagnostics for GRPH and VIN columns.
+; USED BY: ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, SCRIPT3_/ESQIFF2_/ESQFUNC_ flows
+; NOTES: Values are cycled through fixed option tables by ED diagnostics handlers.
+;------------------------------------------------------------------------------
+ED_DiagGraphModeChar:
     DC.B    "N"
-LAB_1DD7:
+ED_DiagVinModeChar:
     DC.B    "N"
-LAB_1DD8:
+;------------------------------------------------------------------------------
+; SYM: CLOCK_FormatVariantCode   (clock format variant code)
+; TYPE: u8
+; PURPOSE: Selects variant for clock/time text formatting.
+; USED BY: TEXTDISP3_*, NEWGRID_*, CLEANUP2_*, DST2_*
+; NOTES: Consumed by routines that format hour/minute display variants.
+;------------------------------------------------------------------------------
+CLOCK_FormatVariantCode:
     DS.B    1
 LAB_1DD8_RASTPORT:
     DS.W    1
-LAB_1DD9:
+;------------------------------------------------------------------------------
+; SYM: WDISP_WeatherStatusTextPtr   (weather/status text pointer)
+; TYPE: pointer
+; PURPOSE: Optional pointer to dynamic weather/status text for display/export.
+; USED BY: WDISP_*, DISKIO2_*, CLEANUP_*, UNKNOWN_*
+; NOTES: Null when no status text is available.
+;------------------------------------------------------------------------------
+WDISP_WeatherStatusTextPtr:
     DS.L    1
-LAB_1DDA:
+;------------------------------------------------------------------------------
+; SYM: TEXTDISP_AliasCount   (alias table entry count)
+; TYPE: u16
+; PURPOSE: Number of active alias-table entries.
+; USED BY: TEXTDISP_FindAliasIndexByName, PARSEINI_*, DISKIO2_*, ESQPARS_*
+; NOTES: Used as loop bound for alias-pointer table scans.
+;------------------------------------------------------------------------------
+TEXTDISP_AliasCount:
     DS.W    1
-LAB_1DDB:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_PrimaryLineHeadPtr   (primary line head text pointer)
+; TYPE: pointer
+; PURPOSE: First segment pointer for primary ESQIFF line text.
+; USED BY: ESQIFF2_*, DISKIO2_*, CLEANUP3_*, ESQDISP_*
+; NOTES: Paired with ESQIFF_PrimaryLineTailPtr.
+;------------------------------------------------------------------------------
+ESQIFF_PrimaryLineHeadPtr:
     DS.L    1
-LAB_1DDC:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_PrimaryLineTailPtr   (primary line tail text pointer)
+; TYPE: pointer
+; PURPOSE: Second segment pointer for primary ESQIFF line text.
+; USED BY: ESQIFF2_*, DISKIO2_*, CLEANUP3_*, ESQDISP_*
+; NOTES: Paired with ESQIFF_PrimaryLineHeadPtr.
+;------------------------------------------------------------------------------
+ESQIFF_PrimaryLineTailPtr:
     DS.L    1
 GLOB_REF_STR_CLOCK_FORMAT:
     DS.L    1
-LAB_1DDE:
+;------------------------------------------------------------------------------
+; SYM: TEXTDISP_DeferredActionCountdown   (deferred action countdown)
+; TYPE: u16
+; PURPOSE: Tick countdown before committing a deferred text/display action.
+; USED BY: TEXTDISP_TickDisplayState, SCRIPT3_*, ED2_*, ESQFUNC_*
+; NOTES: Decremented each tick while TEXTDISP_DeferredActionArmed is set.
+;------------------------------------------------------------------------------
+TEXTDISP_DeferredActionCountdown:
     DS.W    1
-LAB_1DDF:
+;------------------------------------------------------------------------------
+; SYM: TEXTDISP_DeferredActionArmed   (deferred action armed flag)
+; TYPE: u16
+; PURPOSE: Indicates a deferred action countdown is active.
+; USED BY: TEXTDISP_TickDisplayState, SCRIPT3_*, APP2_*
+; NOTES: Treated as boolean/non-zero guard for countdown handling.
+;------------------------------------------------------------------------------
+TEXTDISP_DeferredActionArmed:
     DS.W    1
-LAB_1DE0:
+DATA_ESQ_BSS_BYTE_1DE0:
     DS.B    1
-LAB_1DE1:
+DATA_ESQ_BSS_BYTE_1DE1:
     DS.B    1
-LAB_1DE2:
+DATA_ESQ_CONST_BYTE_1DE2:
     DC.B    $03
-LAB_1DE3:
+DATA_ESQ_CONST_BYTE_1DE3:
     ; Could be a bunch of carriage returns in a row...
     DC.B    $0c
     DC.L    $0c0c0000,$000c0c00,$05010201,$060a0505
     DC.L    $05000003,$00080007,$00070007,$07000c00
     DC.L    $0c000c00,$0c0c0c00,$0000000c
-LAB_1DE4:
+DATA_ESQ_BSS_WORD_1DE4:
     DS.W    1
-LAB_1DE5:
+DATA_ESQ_BSS_WORD_1DE5:
     DS.W    1
 GLOB_HANDLE_PREVUEC_FONT:
     DS.L    1
@@ -133,36 +203,64 @@ GLOB_HANDLE_TOPAZ_FONT:
     DS.L    1
     DS.L    2
     DS.W    1
-LAB_1DE9:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_SecondaryLineHeadPtr   (secondary line head text pointer)
+; TYPE: pointer (stored as two words)
+; PURPOSE: First segment pointer for secondary ESQIFF line text.
+; USED BY: ESQIFF2_*, ESQDISP_*
+; NOTES: Declared as two words to preserve original layout/alignment.
+;------------------------------------------------------------------------------
+ESQIFF_SecondaryLineHeadPtr:
     DS.W    1
 LAB_1DE9_B:
     DS.W    1
-LAB_1DEA:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_SecondaryLineTailPtr   (secondary line tail text pointer)
+; TYPE: pointer
+; PURPOSE: Second segment pointer for secondary ESQIFF line text.
+; USED BY: ESQIFF2_*, ESQDISP_*
+; NOTES: Paired with ESQIFF_SecondaryLineHeadPtr.
+;------------------------------------------------------------------------------
+ESQIFF_SecondaryLineTailPtr:
     DS.L    1
-LAB_1DEB:
+DATA_ESQ_STR_A_1DEB:
     NStr    "A"
-LAB_1DEC:
+;------------------------------------------------------------------------------
+; SYM: WDISP_WeatherStatusOverlayTextPtr   (weather overlay text pointer)
+; TYPE: pointer
+; PURPOSE: Dynamic text pointer used by weather/status overlay formatting paths.
+; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, WDISP weather draw paths, ESQIFF helpers
+; NOTES: Updated through ESQPARS_ReplaceOwnedString-style realloc/copy helper flows.
+;------------------------------------------------------------------------------
+WDISP_WeatherStatusOverlayTextPtr:
     DS.L    1
 GLOB_LONG_ROM_VERSION_CHECK:
     DC.L    1
-LAB_1DEE:
+DATA_ESQ_BSS_BYTE_1DEE:
     DS.B    1
-LAB_1DEF:
+DATA_ESQ_BSS_BYTE_1DEF:
     DS.B    1
-LAB_1DF0:
+;------------------------------------------------------------------------------
+; SYM: ED_DiagAvailMemMask   (diagnostics available-memory mask)
+; TYPE: u32 (stored in word slot + alignment)
+; PURPOSE: Selects which memory classes (chip/fast/max/largest) are displayed on diagnostics screen.
+; USED BY: ED2_HandleDiagnosticsMenuActions, ESQFUNC_DrawMemoryStatusScreen
+; NOTES: Low three bits are toggled by diagnostics actions.
+;------------------------------------------------------------------------------
+ED_DiagAvailMemMask:
     DS.W    1
     DS.B    1
-LAB_1DF1:
+DATA_ESQ_BSS_BYTE_1DF1:
     DS.B    1
-LAB_1DF2:
+DATA_ESQ_BSS_WORD_1DF2:
     DS.W    1
-LAB_1DF3:
+DATA_ESQ_BSS_WORD_1DF3:
     DS.W    1
-LAB_1DF4:
+DATA_ESQ_BSS_WORD_1DF4:
     DS.W    1
 GLOB_WORD_SELECT_CODE_IS_RAVESC:
     DS.W    1
-LAB_1DF6:
+DATA_ESQ_BSS_WORD_1DF6:
     DS.W    1
 HAS_REQUESTED_FAST_MEMORY:
     DS.W    1
@@ -212,37 +310,37 @@ GLOB_STR_ESQ_C_10:
     NStr    "ESQ.c"
 GLOB_STR_ESQ_C_11:
     NStr    "ESQ.c"
-LAB_1E0F:
+DATA_ESQ_STR_NO_DF1_PRESENT_1E0F:
     NStr    "no df1 present"
 GLOB_STR_GUIDE_START_VERSION_AND_BUILD:
     NStr    "Ver %s.%ld Build %ld %s"
 GLOB_STR_MAJOR_MINOR_VERSION:
     NStr    "9.0"   ; Major/minor version string
-LAB_1E12:
+DATA_ESQ_38_Spaces:
     NStr    "                                       "
 GLOB_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
-LAB_1E14:
+DATA_ESQ_STR_SystemInitializing:
     NStr    "System Initializing"
-LAB_1E15:
+DATA_ESQ_STR_PleaseStandByEllipsis:
     NStr    "Please Stand By..."
-LAB_1E16:
+DATA_ESQ_STR_AttentionSystemEngineer:
     NStr    "ATTENTION SYSTEM ENGINEER!"
-LAB_1E17:
+DATA_ESQ_STR_ReportErrorCodeEr011ToTVGuide:
     NStr    "Report Error Code ER011 to TV Guide Technical Services."
-LAB_1E18:
+DATA_ESQ_STR_ReportErrorCodeER012ToTVGuide:
     NStr    "Report Error Code ER012 to TV Guide Technical Services."
 GLOB_STR_DF0_DEFAULT_INI_1:
     NStr    "df0:default.ini"
 GLOB_STR_DF0_BRUSH_INI_1:
     NStr    "df0:brush.ini"
-LAB_1E1B:
+DATA_ESQ_STR_DT:
     NStr    "DT"
-LAB_1E1C:
+DATA_ESQ_STR_DITHER:
     NStr    "DITHER"
 GLOB_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
-LAB_1E1E:
+DATA_ESQ_TAG_GRANADA:
     NStr    "GRANADA"
 GLOB_LONG_BUILD_NUMBER:
     DC.L    $00000015   ; 21
@@ -250,7 +348,7 @@ GLOB_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
 GLOB_PTR_STR_BUILD_ID:
     DC.L    GLOB_STR_BUILD_ID
-LAB_1E22:
+DATA_ESQ_CONST_LONG_1E22:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -270,57 +368,71 @@ LAB_1E22:
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $03d9fffe
     DC.W    $0080
-LAB_1E23:
+DATA_ESQ_CONST_LONG_1E23:
     DC.L    $00000082
-LAB_1E24:
+DATA_ESQ_BSS_WORD_1E24:
     DS.W    1
-LAB_1E25:
+DATA_ESQ_BSS_LONG_1E25:
     DS.L    19
     DC.W    $0180
-LAB_1E26:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperStatusDigitsA   (copper status digit list A)
+; TYPE: u32[]
+; PURPOSE: Base copperlist words for status-digit rendering set A.
+; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
+; NOTES: Paired with ESQ_CopperStatusDigitsB.
+;------------------------------------------------------------------------------
+ESQ_CopperStatusDigitsA:
     DC.L    $00030182
-LAB_1E27:
+DATA_ESQ_CONST_LONG_1E27:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
     DC.L    $016a018c,$0cc0018e
-LAB_1E28:
+DATA_ESQ_CONST_LONG_1E28:
     DC.L    $00030190,$00030192,$00030194,$00030196
     DC.L    $00030198,$0003019a,$0003019c,$0003019e
-LAB_1E29:
+DATA_ESQ_CONST_LONG_1E29:
     DC.L    $000301a0,$000301a2,$000301a4,$000301a6
     DC.L    $000301a8,$000301aa,$000301ac,$000301ae
     DC.L    $000301b0,$000301b2,$000301b4,$000301b6
     DC.L    $000301b8,$000301ba,$000301bc,$000301be
-LAB_1E2A:
+DATA_ESQ_CONST_WORD_1E2A:
     DC.W    $0003
-LAB_1E2B:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperListBannerA   (banner copper list A)
+; TYPE: u32[]
+; PURPOSE: Copper command template for banner/digital overlay variant A.
+; USED BY: GCOMMAND3_*, APP2_*, ESQSHARED4_*
+; NOTES: Contains register/value words plus wait terminator.
+;------------------------------------------------------------------------------
+ESQ_CopperListBannerA:
     DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
     DC.W    $00e0
-LAB_1E2C:
+DATA_ESQ_CONST_LONG_1E2C:
     DC.L    $000000e2
-LAB_1E2D:
+DATA_ESQ_CONST_LONG_1E2D:
     DC.L    $00000180
-LAB_1E2E:
+DATA_ESQ_CONST_LONG_1E2E:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003
-LAB_1E2F:
+DATA_ESQ_CONST_LONG_1E2F:
     DC.L    $00dffffe
     DC.W    $00e0
-LAB_1E30:
+DATA_ESQ_CONST_LONG_1E30:
     DC.L    $000000e2
-LAB_1E31:
+DATA_ESQ_CONST_LONG_1E31:
     DC.L    $000000e4
-LAB_1E32:
+DATA_ESQ_CONST_LONG_1E32:
     DC.L    $000000e6
-LAB_1E33:
+DATA_ESQ_CONST_LONG_1E33:
     DC.L    $000000e8
-LAB_1E34:
+DATA_ESQ_CONST_LONG_1E34:
     DC.L    $000000ea
-LAB_1E35:
+DATA_ESQ_CONST_LONG_1E35:
     DC.L    $00000182
-LAB_1E36:
+DATA_ESQ_CONST_LONG_1E36:
     DC.L    $0aaa0100,$b30680d5,$80fe0188,$0100018a
     DC.L    $0000018c,$0000018e,$000180d5,$80fe0188
     DC.L    $0200018a,$0011018c,$0111018e,$000280d5
@@ -343,61 +455,61 @@ LAB_1E36:
     DC.L    $000f80d5,$80fe0188,$0512018a,$016a018c
     DC.L    $0555018e
     DC.W    $0003
-LAB_1E37:
+DATA_ESQ_CONST_LONG_1E37:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
-LAB_1E38:
+DATA_ESQ_CONST_LONG_1E38:
     DC.L    $000000e2
-LAB_1E39:
+DATA_ESQ_BSS_WORD_1E39:
     DS.W    1
-LAB_1E3A:
+DATA_ESQ_CONST_LONG_1E3A:
     DC.L    $00dffffe
     DC.W    $00e0
-LAB_1E3B:
+DATA_ESQ_CONST_LONG_1E3B:
     DC.L    $000000e2
-LAB_1E3C:
+DATA_ESQ_CONST_LONG_1E3C:
     DC.L    $000000e4
-LAB_1E3D:
+DATA_ESQ_CONST_LONG_1E3D:
     DC.L    $000000e6
-LAB_1E3E:
+DATA_ESQ_CONST_LONG_1E3E:
     DC.L    $000000e8
-LAB_1E3F:
+DATA_ESQ_CONST_LONG_1E3F:
     DC.L    $000000ea
-LAB_1E40:
+DATA_ESQ_CONST_LONG_1E40:
     DC.L    $00000100,$b3060084
-LAB_1E41:
+DATA_ESQ_CONST_LONG_1E41:
     DC.L    $00000086
-LAB_1E42:
+DATA_ESQ_CONST_LONG_1E42:
     DC.L    $00000182
-LAB_1E43:
+DATA_ESQ_CONST_LONG_1E43:
     DC.L    $0aaa018e
-LAB_1E44:
+DATA_ESQ_CONST_WORD_1E44:
     DC.W    $0003
-LAB_1E45:
+DATA_ESQ_BSS_BYTE_1E45:
     DS.B    1
-LAB_1E46:
+DATA_ESQ_CONST_BYTE_1E46:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
-LAB_1E47:
+DATA_ESQ_CONST_LONG_1E47:
     DC.L    $000000e2
-LAB_1E48:
+DATA_ESQ_CONST_LONG_1E48:
     DC.L    $000000e4
-LAB_1E49:
+DATA_ESQ_CONST_LONG_1E49:
     DC.L    $000000e6
-LAB_1E4A:
+DATA_ESQ_CONST_LONG_1E4A:
     DC.L    $000000e8
-LAB_1E4B:
+DATA_ESQ_CONST_LONG_1E4B:
     DC.L    $000000ea
-LAB_1E4C:
+DATA_ESQ_BSS_WORD_1E4C:
     DS.W    1
-LAB_1E4D:
+DATA_ESQ_CONST_LONG_1E4D:
     DC.L    $009c8010
-LAB_1E4E:
+DATA_ESQ_CONST_LONG_1E4E:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
-LAB_1E4F:
+DATA_ESQ_CONST_LONG_1E4F:
     DC.L    $000000e2
-LAB_1E50:
+DATA_ESQ_CONST_LONG_1E50:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
@@ -656,7 +768,7 @@ LAB_1E50:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-LAB_1E51:
+DATA_ESQ_CONST_LONG_1E51:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -676,49 +788,63 @@ LAB_1E51:
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $03d9fffe
     DC.W    $0080
-LAB_1E52:
+DATA_ESQ_CONST_LONG_1E52:
     DC.L    $00000082
-LAB_1E53:
+DATA_ESQ_BSS_WORD_1E53:
     DS.W    1
-LAB_1E54:
+DATA_ESQ_BSS_LONG_1E54:
     DS.L    19
     DC.W    $0180
-LAB_1E55:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperStatusDigitsB   (copper status digit list B)
+; TYPE: u32[]
+; PURPOSE: Alternate status-digit copperlist template.
+; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
+; NOTES: Mirrors ESQ_CopperStatusDigitsA structure with companion data set.
+;------------------------------------------------------------------------------
+ESQ_CopperStatusDigitsB:
     DC.L    $00030182
-LAB_1E56:
+DATA_ESQ_CONST_LONG_1E56:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
     DC.L    $016a018c,$0cc0018e
-LAB_1E57:
+DATA_ESQ_CONST_WORD_1E57:
     DC.W    $0003
-LAB_1E58:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperListBannerB   (banner copper list B)
+; TYPE: u32[]
+; PURPOSE: Copper command template for banner/digital overlay variant B.
+; USED BY: GCOMMAND3_*, APP2_*, ESQSHARED4_*
+; NOTES: Companion to ESQ_CopperListBannerA.
+;------------------------------------------------------------------------------
+ESQ_CopperListBannerB:
     DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
     DC.W    $00e0
-LAB_1E59:
+DATA_ESQ_CONST_LONG_1E59:
     DC.L    $000000e2
-LAB_1E5A:
+DATA_ESQ_CONST_LONG_1E5A:
     DC.L    $00000180
-LAB_1E5B:
+DATA_ESQ_CONST_LONG_1E5B:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003
-LAB_1E5C:
+DATA_ESQ_CONST_LONG_1E5C:
     DC.L    $00dffffe
     DC.W    $00e0
-LAB_1E5D:
+DATA_ESQ_CONST_LONG_1E5D:
     DC.L    $000000e2
-LAB_1E5E:
+DATA_ESQ_CONST_LONG_1E5E:
     DC.L    $000000e4
-LAB_1E5F:
+DATA_ESQ_CONST_LONG_1E5F:
     DC.L    $000000e6
-LAB_1E60:
+DATA_ESQ_CONST_LONG_1E60:
     DC.L    $000000e8
-LAB_1E61:
+DATA_ESQ_CONST_LONG_1E61:
     DC.L    $000000ea
-LAB_1E62:
+DATA_ESQ_CONST_LONG_1E62:
     DC.L    $00000182
-LAB_1E63:
+DATA_ESQ_CONST_LONG_1E63:
     DC.L    $0aaa018e,$03330100,$b30680d5,$80fe0188
     DC.L    $0100018a,$0000018c,$0000018e,$000180d5
     DC.L    $80fe0188,$0200018a,$0011018c,$0111018e
@@ -741,61 +867,61 @@ LAB_1E63:
     DC.L    $0eee018e,$000f80d5,$80fe0188,$0512018a
     DC.L    $016a018c,$0555018e
     DC.W    $0003
-LAB_1E64:
+DATA_ESQ_CONST_LONG_1E64:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
-LAB_1E65:
+DATA_ESQ_CONST_LONG_1E65:
     DC.L    $000000e2
-LAB_1E66:
+DATA_ESQ_BSS_WORD_1E66:
     DS.W    1
-LAB_1E67:
+DATA_ESQ_CONST_LONG_1E67:
     DC.L    $00dffffe
     DC.W    $00e0
-LAB_1E68:
+DATA_ESQ_CONST_LONG_1E68:
     DC.L    $000000e2
-LAB_1E69:
+DATA_ESQ_CONST_LONG_1E69:
     DC.L    $000000e4
-LAB_1E6A:
+DATA_ESQ_CONST_LONG_1E6A:
     DC.L    $000000e6
-LAB_1E6B:
+DATA_ESQ_CONST_LONG_1E6B:
     DC.L    $000000e8
-LAB_1E6C:
+DATA_ESQ_CONST_LONG_1E6C:
     DC.L    $000000ea
-LAB_1E6D:
+DATA_ESQ_CONST_LONG_1E6D:
     DC.L    $00000100,$b3060084
-LAB_1E6E:
+DATA_ESQ_CONST_LONG_1E6E:
     DC.L    $00000086
-LAB_1E6F:
+DATA_ESQ_CONST_LONG_1E6F:
     DC.L    $00000182
-LAB_1E70:
+DATA_ESQ_CONST_LONG_1E70:
     DC.L    $0aaa018e
-LAB_1E71:
+DATA_ESQ_CONST_WORD_1E71:
     DC.W    $0003
-LAB_1E72:
+DATA_ESQ_BSS_BYTE_1E72:
     DS.B    1
-LAB_1E73:
+DATA_ESQ_CONST_BYTE_1E73:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
-LAB_1E74:
+DATA_ESQ_CONST_LONG_1E74:
     DC.L    $000000e2
-LAB_1E75:
+DATA_ESQ_CONST_LONG_1E75:
     DC.L    $000000e4
-LAB_1E76:
+DATA_ESQ_CONST_LONG_1E76:
     DC.L    $000000e6
-LAB_1E77:
+DATA_ESQ_CONST_LONG_1E77:
     DC.L    $000000e8
-LAB_1E78:
+DATA_ESQ_CONST_LONG_1E78:
     DC.L    $000000ea
-LAB_1E79:
+DATA_ESQ_BSS_WORD_1E79:
     DS.W    1
-LAB_1E7A:
+DATA_ESQ_CONST_LONG_1E7A:
     DC.L    $009c8010
-LAB_1E7B:
+DATA_ESQ_CONST_LONG_1E7B:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
-LAB_1E7C:
+DATA_ESQ_CONST_LONG_1E7C:
     DC.L    $000000e2
-LAB_1E7D:
+DATA_ESQ_CONST_LONG_1E7D:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff

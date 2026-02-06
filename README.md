@@ -45,6 +45,8 @@ Keep any generated binaries out of version control.
 - Completed a full gcommand sweep: all routines now have `GCOMMAND_*` aliases, header blocks, and descriptive local labels (banner/preset pipeline included).
 - Banner helpers now include `GCOMMAND_BuildBannerTables`, `GCOMMAND_RebuildBannerTablesFromBounds`, and `GCOMMAND_ServiceHighlightMessages`; see `CONTEXT.md` for the latest rename list.
 - Moved `KYBD_UpdateHighlightState` into `src/modules/ladfunc.s` as `LADFUNC_UpdateHighlightState`.
+- Added semantic aliases in `src/data/wdisp.s` for Digital Niche/Mplex option-state globals formerly referenced as raw `22D*`/`22E*` offsets (e.g., `GCOMMAND_Niche*` / `GCOMMAND_Mplex*` symbols).
+- Renamed local control-flow labels in `src/modules/groups/a/a/bitmap.s` (`BITMAP_ProcessIlbmImage`) and cleaned up NEWGRID local dispatch labels in `src/modules/groups/b/a/newgrid.s` / `src/modules/groups/b/a/newgrid1.s`.
 
 ## Contributor Guide
 If you plan to extend or annotate the disassembly, read the contributor guidelines in [`AGENTS.md`](AGENTS.md) for module organization, coding style, testing expectations, and review workflow.

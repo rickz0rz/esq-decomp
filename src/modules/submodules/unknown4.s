@@ -7,7 +7,7 @@
 ; CLOBBERS:
 ;   D0-D2/A0-A3
 ; READS:
-;   Global_CharClassTable (bit 1 marks lowercase??)
+;   Global_CharClassTable
 ; DESC:
 ;   Walks the string and maps lowercase letters to uppercase.
 ; NOTES:

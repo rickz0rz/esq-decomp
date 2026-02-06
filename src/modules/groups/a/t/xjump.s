@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
+; FUNC: GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -15,12 +15,11 @@
 ; DESC:
 ;   Jump stub to ED1_WaitForFlagAndClearBit0.
 ;------------------------------------------------------------------------------
-GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit0:
-LAB_0D63:
+GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0:
     JMP     ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMPTBL_DOS_SystemTagList   (JumpStub_DOS_SystemTagList)
+; FUNC: GROUP_AT_JMPTBL_DOS_SystemTagList   (JumpStub_DOS_SystemTagList)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -36,12 +35,11 @@ LAB_0D63:
 ; DESC:
 ;   Jump stub to DOS_SystemTagList.
 ;------------------------------------------------------------------------------
-GCOMMAND_JMPTBL_DOS_SystemTagList:
-LAB_0D64:
+GROUP_AT_JMPTBL_DOS_SystemTagList:
     JMP     DOS_SystemTagList
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
+; FUNC: GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -57,8 +55,7 @@ LAB_0D64:
 ; DESC:
 ;   Jump stub to ED1_WaitForFlagAndClearBit1.
 ;------------------------------------------------------------------------------
-GCOMMAND_JMPTBL_ED1_WaitForFlagAndClearBit1:
-LAB_0D65:
+GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1:
     JMP     ED1_WaitForFlagAndClearBit1
 
 ;!======

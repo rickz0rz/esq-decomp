@@ -1,74 +1,86 @@
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_RenderAlignedStatusScreen   (RenderAlignedStatusScreen??)
+; FUNC: CLEANUP_RenderAlignedStatusScreen   (RenderAlignedStatusScreenuncertain)
 ; ARGS:
-;   stack +4: modeOrFlag?? (word; low word used)
-;   stack +8: codeOrIndex?? (word; low word used)
-;   stack +12: optionOrFlag?? (word; low word used)
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +14: arg_5 (via 18(A5))
+;   stack +20: arg_6 (via 24(A5))
+;   stack +22: arg_7 (via 26(A5))
+;   stack +30: arg_8 (via 34(A5))
+;   stack +32: arg_9 (via 36(A5))
+;   stack +34: arg_10 (via 38(A5))
+;   stack +36: arg_11 (via 40(A5))
+;   stack +38: arg_12 (via 42(A5))
+;   stack +550: arg_13 (via 554(A5))
+;   stack +750: arg_14 (via 754(A5))
+;   stack +830: arg_15 (via 834(A5))
+;   stack +864: arg_16 (via 868(A5))
 ; RET:
 ;   D0: none
 ; CLOBBERS:
 ;   D0-D7/A0-A2/A6
 ; CALLS:
-;   LAB_05C1, GROUP_AD_JMPTBL_LAB_17A8, LAB_055F, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_LAB_0A49, _LVOSetRast,
-;   GROUP_AD_JMPTBL_LAB_183E, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth , GROUP_AD_JMPTBL_LAB_14B1, _LVOSetAPen, GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner, ESQ_SetCopperEffect_OnEnableHighlight,
-;   GROUP_AE_JMPTBL_LAB_0923, GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange, GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime,
-;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_LAB_16CE, GROUP_AD_JMPTBL_LAB_183D, GROUP_AD_JMPTBL_LAB_183B,
-;   _LVORectFill, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_LAB_0A48
+;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, DISPLIB_NormalizeValueByStep, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
+;   GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth , GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, _LVOSetAPen, GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner, ESQ_SetCopperEffect_OnEnableHighlight,
+;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange, GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime,
+;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame, GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort, GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight,
+;   _LVORectFill, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   LAB_234B, LAB_234C, LAB_234D, LAB_234E, LAB_2364-LAB_236E,
-;   LAB_2367, LAB_2368, LAB_2369, LAB_2373-LAB_2379, LAB_237A,
-;   LAB_2236, LAB_236A, LAB_20ED, LAB_2153, LAB_2157, LAB_2158,
-;   LAB_222D, LAB_2230, LAB_227C, LAB_1DDB, LAB_1DDC,
+;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-DATA_WDISP_BSS_WORD_236E,
+;   DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369, TEXTDISP_BannerCharFallback-DATA_WDISP_BSS_BYTE_2379, DATA_WDISP_BSS_LONG_237A,
+;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
+;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, DATA_WDISP_BSS_WORD_227C, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
 ;   GLOB_REF_RASTPORT_2, GLOB_REF_GRAPHICS_LIBRARY,
 ;   GLOB_STR_ALIGNED_NOW_SHOWING, GLOB_STR_ALIGNED_NEXT_SHOWING,
 ;   GLOB_STR_ALIGNED_TODAY_AT, GLOB_STR_ALIGNED_TONIGHT_AT,
 ;   GLOB_STR_ALIGNED_TOMORROW_AT
 ; WRITES:
-;   LAB_2259, LAB_2365, LAB_2366, LAB_2367, LAB_2368, LAB_2369,
-;   LAB_236C, LAB_236D, LAB_236E, LAB_2373, LAB_2377
+;   TEXTDISP_ChannelLabelBuffer, DATA_WDISP_BSS_WORD_2365, CLEANUP_AlignedStatusSuffixBuffer, DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369,
+;   DATA_WDISP_BSS_WORD_236C, DATA_WDISP_BSS_WORD_236D, DATA_WDISP_BSS_WORD_236E, TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Builds and renders the aligned status banner text (now/next and time
 ;   phrases), updates alignment globals, and draws into rastport 2.
 ; NOTES:
 ;   - Uses several template buffers and tables to choose which status line
-;     to render based on a code derived from LAB_234D/E.
+;     to render based on a code derived from TEXTDISP_PrimaryChannelCode/E.
 ;------------------------------------------------------------------------------
 CLEANUP_RenderAlignedStatusScreen:
-LAB_021A:
     LINK.W  A5,#-840
     MOVEM.L D2-D7/A2,-(A7)
 
     MOVE.W  10(A5),D7
     MOVE.W  14(A5),D6
     MOVE.W  18(A5),D5
-    MOVE.W  D7,LAB_2365
+    MOVE.W  D7,DATA_WDISP_BSS_WORD_2365
     CLR.B   -554(A5)
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_22AB
+    MOVE.W  D0,WDISP_AccumulatorFlushPending
     MOVE.W  D0,-40(A5)
     MOVEQ   #1,D0
     CMP.W   D0,D7
     BNE.S   .use_secondary_template
 
-    LEA     LAB_234B,A0
+    LEA     TEXTDISP_PrimarySearchText,A0
     LEA     -554(A5),A1
 
 .copy_template_primary_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_template_primary_loop
 
-    MOVE.W  LAB_234D,-38(A5)
+    MOVE.W  TEXTDISP_PrimaryChannelCode,-38(A5)
     BRA.S   .backup_template_text
 
 .use_secondary_template:
-    LEA     LAB_234C,A0
+    LEA     TEXTDISP_SecondarySearchText,A0
     LEA     -554(A5),A1
 
 .copy_template_secondary_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_template_secondary_loop
 
-    MOVE.W  LAB_234E,-38(A5)
+    MOVE.W  TEXTDISP_SecondaryChannelCode,-38(A5)
 
 .backup_template_text:
     LEA     -554(A5),A0
@@ -88,23 +100,23 @@ LAB_021A:
     MOVE.W  -38(A5),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_1B5C
-    JSR     LAB_05C1(PC)
+    PEA     CLOCK_STR_TEMPLATE_CODE_SET_FGN
+    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BEQ.S   .maybe_format_alt_time_text
 
-    CLR.B   LAB_2367
-    MOVE.W  LAB_2368,D0
+    CLR.B   DATA_WDISP_BSS_BYTE_2367
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     EXT.L   D0
-    MOVE.W  LAB_2369,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_2369,D1
     EXT.L   D1
     CLR.L   -(A7)
-    PEA     LAB_2367
+    PEA     DATA_WDISP_BSS_BYTE_2367
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_17A8(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(PC)
 
     LEA     16(A7),A7
     BRA.S   .dispatch_template_code
@@ -114,16 +126,16 @@ LAB_021A:
     CMP.W   -38(A5),D0
     BNE.S   .dispatch_template_code
 
-    CLR.B   LAB_21B0
-    MOVE.W  LAB_2368,D0
+    CLR.B   DATA_WDISP_BSS_LONG_21B0
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     EXT.L   D0
-    MOVE.W  LAB_2369,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_2369,D1
     EXT.L   D1
     PEA     1.W
-    PEA     LAB_21B0
+    PEA     DATA_WDISP_BSS_LONG_21B0
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_17A8(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(PC)
 
     LEA     16(A7),A7
 
@@ -132,16 +144,16 @@ LAB_021A:
     CMP.W   -38(A5),D0
     BNE.W   .check_code_F
 
-    MOVE.W  LAB_2364,D0
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_2236,A0
+    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
-    MOVE.W  LAB_2364,D0
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ADD.L   D0,D0
-    LEA     LAB_236A,A0
+    LEA     DATA_WDISP_BSS_LONG_236A,A0
     ADDA.L  D0,A0
     MOVE.W  (A0),-42(A5)
     CLR.W   -36(A5)
@@ -153,13 +165,13 @@ LAB_021A:
     PEA     48.W
     PEA     1.W
     MOVE.L  D0,-(A7)
-    JSR     LAB_055F(PC)
+    JSR     DISPLIB_NormalizeValueByStep(PC)
 
     LEA     12(A7),A7
-    MOVE.W  LAB_2364,D1
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ADD.L   D1,D1
-    LEA     LAB_236A,A0
+    LEA     DATA_WDISP_BSS_LONG_236A,A0
     ADDA.L  D1,A0
     MOVE.W  D0,-42(A5)
     CMP.W   (A0),D0
@@ -181,10 +193,10 @@ LAB_021A:
     BRA.S   .scan_entry_loop
 
 .apply_entry_selection:
-    MOVE.W  LAB_2364,D0
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ADD.L   D0,D0
-    LEA     LAB_236A,A0
+    LEA     DATA_WDISP_BSS_LONG_236A,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.W  -42(A5),D0
@@ -192,13 +204,13 @@ LAB_021A:
     CMP.W   D0,D1
     BNE.S   .store_entry_selection
 
-    MOVE.W  LAB_236E,D1
-    MOVE.W  LAB_2364,D2
+    MOVE.W  DATA_WDISP_BSS_WORD_236E,D1
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
     CMP.W   D2,D1
     BEQ.W   .done
 
 .store_entry_selection:
-    MOVE.W  LAB_2364,D1
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ADD.L   D1,D1
     MOVEA.L A0,A1
@@ -224,15 +236,15 @@ LAB_021A:
     CMP.W   -38(A5),D0
     BNE.S   .check_code_G
 
-    MOVE.W  LAB_2368,D0
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     ADDQ.W  #1,D0
     BEQ.S   .fallback_title_buffer
 
-    MOVE.B  LAB_2367,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2367,D0
     TST.B   D0
     BEQ.S   .fallback_title_buffer
 
-    LEA     LAB_2367,A0
+    LEA     DATA_WDISP_BSS_BYTE_2367,A0
     LEA     -554(A5),A1
 
 .copy_buffer_title_loop:
@@ -242,10 +254,10 @@ LAB_021A:
     BRA.S   .set_title_ready
 
 .fallback_title_buffer:
-    TST.L   LAB_1DDB
+    TST.L   ESQIFF_PrimaryLineHeadPtr
     BEQ.W   .done
 
-    MOVEA.L LAB_1DDB,A0
+    MOVEA.L ESQIFF_PrimaryLineHeadPtr,A0
     LEA     -554(A5),A1
 
 .copy_fallback_title_loop:
@@ -261,15 +273,15 @@ LAB_021A:
     CMP.W   -38(A5),D0
     BNE.S   .check_code_N
 
-    MOVE.W  LAB_2368,D0
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     ADDQ.W  #1,D0
     BEQ.S   .fallback_title_buffer_g
 
-    MOVE.B  LAB_2367,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2367,D0
     TST.B   D0
     BEQ.S   .fallback_title_buffer_g
 
-    LEA     LAB_2367,A0
+    LEA     DATA_WDISP_BSS_BYTE_2367,A0
     LEA     -554(A5),A1
 
 .copy_buffer_title_loop_g:
@@ -279,10 +291,10 @@ LAB_021A:
     BRA.S   .set_title_ready_g
 
 .fallback_title_buffer_g:
-    TST.L   LAB_1DDC
+    TST.L   ESQIFF_PrimaryLineTailPtr
     BEQ.W   .done
 
-    MOVEA.L LAB_1DDC,A0
+    MOVEA.L ESQIFF_PrimaryLineTailPtr,A0
     LEA     -554(A5),A1
 
 .copy_fallback_title_loop_g:
@@ -298,15 +310,15 @@ LAB_021A:
     CMP.W   -38(A5),D0
     BNE.S   .check_code_O
 
-    MOVE.W  LAB_2368,D0
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     ADDQ.W  #1,D0
     BEQ.W   .done
 
-    MOVE.B  LAB_2367,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2367,D0
     TST.B   D0
     BEQ.W   .done
 
-    LEA     LAB_2367,A0
+    LEA     DATA_WDISP_BSS_BYTE_2367,A0
     LEA     -554(A5),A1
 
 .copy_buffer_title_loop_n:
@@ -321,15 +333,15 @@ LAB_021A:
     CMP.W   -38(A5),D0
     BNE.S   .finalize_title_state
 
-    MOVE.W  LAB_2368,D0
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     ADDQ.W  #1,D0
     BEQ.W   .done
 
-    MOVE.B  LAB_21B0,D0
+    MOVE.B  DATA_WDISP_BSS_LONG_21B0,D0
     TST.B   D0
     BEQ.W   .done
 
-    LEA     LAB_21B0,A0
+    LEA     DATA_WDISP_BSS_LONG_21B0,A0
     LEA     -554(A5),A1
 
 .copy_alt_title_loop_o:
@@ -345,8 +357,8 @@ LAB_021A:
     BEQ.S   .sync_time_defaults
 
     MOVEQ   #-1,D0
-    MOVE.W  D0,LAB_2368
-    MOVE.W  D0,LAB_2369
+    MOVE.W  D0,CLEANUP_AlignedStatusMatchIndex
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2369
 
 .sync_time_defaults:
     MOVEQ   #53,D0
@@ -356,11 +368,11 @@ LAB_021A:
     JSR     ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
 .maybe_refresh_display:
-    JSR     GROUP_AD_JMPTBL_LAB_0A49(PC)
+    JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
-    MOVEA.L LAB_2216,A2
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    MOVEA.L WDISP_DisplayContextBase,A2
     MOVEA.L 14(A2),A1
     MOVEQ   #0,D0
     MOVE.B  5(A1),D0
@@ -380,10 +392,10 @@ LAB_021A:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_183E(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     BRA.S   .primary_rastport_ready
 
 .alloc_rastport_primary:
@@ -391,10 +403,10 @@ LAB_021A:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_183E(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
 
 .primary_rastport_ready:
     TST.W   D5
@@ -403,7 +415,7 @@ LAB_021A:
     MOVE.L  D7,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_09C2(PC)
+    JSR     GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry(PC)
 
     ADDQ.W  #4,A7
 
@@ -414,11 +426,11 @@ LAB_021A:
     PEA     4.W
     CLR.L   -(A7)
     PEA     1.W
-    JSR     GROUP_AD_JMPTBL_LAB_183E(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     PEA     2.W
-    JSR     GROUP_AD_JMPTBL_LAB_14B1(PC)
+    JSR     GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     LEA     16(A7),A7
     BRA.S   .after_secondary_alloc
@@ -428,11 +440,11 @@ LAB_021A:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_183E(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     PEA     1.W
-    JSR     GROUP_AD_JMPTBL_LAB_14B1(PC)
+    JSR     GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     LEA     16(A7),A7
 
@@ -454,7 +466,7 @@ LAB_021A:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVE.W  LAB_2364,LAB_236E
+    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_WORD_236E
     MOVEQ   #48,D0
     CMP.W   -38(A5),D0
     BNE.S   .handle_empty_template
@@ -472,15 +484,15 @@ LAB_021A:
     JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  D0,LAB_2366
-    MOVE.W  LAB_2364,D1
-    MOVE.W  D1,LAB_2368
+    MOVE.B  D0,CLEANUP_AlignedStatusSuffixBuffer
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D1
+    MOVE.W  D1,CLEANUP_AlignedStatusMatchIndex
     MOVEQ   #-1,D1
-    MOVE.W  D1,LAB_2369
+    MOVE.W  D1,DATA_WDISP_BSS_WORD_2369
     BRA.W   .done
 
 .handle_empty_template:
-    MOVE.B  LAB_2377,D0
+    MOVE.B  TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BEQ.S   .select_aligned_index
@@ -492,7 +504,7 @@ LAB_021A:
 
 .select_aligned_index:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2373,D0
+    MOVE.B  TEXTDISP_BannerCharFallback,D0
     MOVE.W  D0,-36(A5)
 
 .check_aligned_index_valid:
@@ -506,9 +518,9 @@ LAB_021A:
     BEQ.S   .reset_alignment_state
 
     MOVEQ   #1,D1
-    MOVE.W  LAB_2364,D2
-    MOVE.W  D2,LAB_2368
-    MOVE.W  D0,LAB_2369
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  D2,CLEANUP_AlignedStatusMatchIndex
+    MOVE.W  D0,DATA_WDISP_BSS_WORD_2369
     MOVE.W  D1,-40(A5)
     BRA.S   .prepare_channel_line
 
@@ -518,19 +530,19 @@ LAB_021A:
     CMP.W   D1,D0
     BEQ.S   .prepare_channel_line
 
-    CLR.B   LAB_2366
-    MOVE.W  LAB_2364,D2
-    MOVE.W  D2,LAB_2368
-    MOVE.W  #(-1),LAB_2369
+    CLR.B   CLEANUP_AlignedStatusSuffixBuffer
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D2
+    MOVE.W  D2,CLEANUP_AlignedStatusMatchIndex
+    MOVE.W  #(-1),DATA_WDISP_BSS_WORD_2369
 
 .prepare_channel_line:
     MOVEQ   #2,D0
     CMP.W   -40(A5),D0
     BEQ.S   .clear_channel_string
 
-    MOVE.W  LAB_2364,D0
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
-    TST.W   LAB_2153
+    TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_channel_format
 
     MOVEQ   #1,D1
@@ -542,16 +554,16 @@ LAB_021A:
 .format_channel_string:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LAB_0923(PC)
+    JSR     GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
-    PEA     LAB_236B
+    PEA     DATA_WDISP_BSS_LONG_236B
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-12(A5)
     JSR     GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName(PC)
 
     LEA     16(A7),A7
-    LEA     LAB_236B,A0
-    LEA     LAB_2259,A1
+    LEA     DATA_WDISP_BSS_LONG_236B,A0
+    LEA     TEXTDISP_ChannelLabelBuffer,A1
 
 .copy_channel_string_loop:
     MOVE.B  (A0)+,(A1)+
@@ -561,22 +573,22 @@ LAB_021A:
 
 .clear_channel_string:
     MOVEQ   #0,D0
-    MOVE.B  D0,LAB_2259
+    MOVE.B  D0,TEXTDISP_ChannelLabelBuffer
 
 .append_optional_prefix:
     MOVE.B  -554(A5),D0
     TST.B   D0
     BEQ.S   .append_template_text
 
-    PEA     LAB_2158
-    PEA     LAB_2259
+    PEA     DATA_TEXTDISP_CONST_BYTE_2158
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_template_text:
     PEA     -554(A5)
-    PEA     LAB_2259
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -584,52 +596,52 @@ LAB_021A:
     CMP.W   -40(A5),D0
     BNE.W   .check_template_fallback
 
-    MOVE.B  LAB_2377,D0
+    MOVE.B  TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BNE.S   .select_now_showing_index
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_2374,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2374,D0
     BRA.S   .after_now_showing_index
 
 .select_now_showing_index:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2378,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2378,D0
 
 .after_now_showing_index:
     TST.L   D0
     BEQ.S   .build_time_phrase
 
     LEA     GLOB_STR_ALIGNED_NOW_SHOWING,A0
-    LEA     LAB_2366,A1
+    LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_now_showing_label_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_now_showing_label_loop
 
-    MOVE.B  LAB_2377,D0
+    MOVE.B  TEXTDISP_BannerCharSelected,D0
     CMP.B   D1,D0
     BNE.S   .select_next_showing_index
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_2375,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2375,D0
     BRA.S   .after_next_showing_index
 
 .select_next_showing_index:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2379,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_2379,D0
 
 .after_next_showing_index:
     TST.L   D0
     BEQ.W   .append_alignment_text
 
-    PEA     LAB_2366
-    PEA     LAB_2259
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     GLOB_STR_ALIGNED_NEXT_SHOWING,A0
-    LEA     LAB_2366,A1
+    LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_next_showing_label_loop:
     MOVE.B  (A0)+,(A1)+
@@ -642,7 +654,7 @@ LAB_021A:
     JSR     GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(PC)
 
     PEA     -834(A5)
-    PEA     LAB_2366
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
@@ -651,16 +663,16 @@ LAB_021A:
 .build_time_phrase:
     MOVE.W  -36(A5),D0
     EXT.L   D0
-    TST.W   LAB_2153
+    TST.W   TEXTDISP_ActiveGroupId
     BEQ.S   .select_time_table
 
     MOVEQ   #0,D1
-    MOVE.B  LAB_2230,D1
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D1
     BRA.S   .format_time_components
 
 .select_time_table:
     MOVEQ   #0,D1
-    MOVE.B  LAB_222D,D1
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
 
 .format_time_components:
     MOVEQ   #0,D2
@@ -675,12 +687,12 @@ LAB_021A:
 
     LEA     16(A7),A7
     MOVE.W  -18(A5),D0
-    MOVE.W  LAB_227C,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_227C,D1
     CMP.W   D1,D0
     BEQ.S   .check_today_vs_tonight
 
     LEA     GLOB_STR_ALIGNED_TOMORROW_AT,A0
-    LEA     LAB_2366,A1
+    LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_tomorrow_label_loop:
     MOVE.B  (A0)+,(A1)+
@@ -704,7 +716,7 @@ LAB_021A:
 
 .copy_today_label:
     LEA     GLOB_STR_ALIGNED_TODAY_AT,A0
-    LEA     LAB_2366,A1
+    LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_today_label_loop:
     MOVE.B  (A0)+,(A1)+
@@ -714,7 +726,7 @@ LAB_021A:
 
 .copy_tonight_label:
     LEA     GLOB_STR_ALIGNED_TONIGHT_AT,A0
-    LEA     LAB_2366,A1
+    LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_tonight_label_loop:
     MOVE.B  (A0)+,(A1)+
@@ -731,14 +743,14 @@ LAB_021A:
     JSR     GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(PC)
 
     PEA     -834(A5)
-    PEA     LAB_2366
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
 
 .append_alignment_text:
-    PEA     LAB_2366
-    PEA     LAB_2259
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -768,8 +780,8 @@ LAB_021A:
     BGT.S   .maybe_submit_record
 
 .copy_template_label:
-    LEA     LAB_2157,A0
-    LEA     LAB_2366,A1
+    LEA     DATA_TEXTDISP_CONST_BYTE_2157,A0
+    LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_template_label_loop:
     MOVE.B  (A0)+,(A1)+
@@ -778,14 +790,14 @@ LAB_021A:
     MOVE.W  -38(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     LAB_20ED,A0
+    LEA     DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
-    PEA     LAB_2366
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     LAB_2366
-    PEA     LAB_2259
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
@@ -817,11 +829,11 @@ LAB_021A:
     JSR     GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  LAB_2153,D0
+    MOVE.W  TEXTDISP_ActiveGroupId,D0
     EXT.L   D0
-    MOVE.W  LAB_2368,D1
+    MOVE.W  CLEANUP_AlignedStatusMatchIndex,D1
     EXT.L   D1
-    MOVE.W  LAB_2369,D2
+    MOVE.W  DATA_WDISP_BSS_WORD_2369,D2
     EXT.L   D2
     MOVEQ   #2,D3
     CMP.W   -40(A5),D3
@@ -834,7 +846,7 @@ LAB_021A:
     MOVEQ   #0,D3
 
 .submit_output_record:
-    TST.L   LAB_237A
+    TST.L   DATA_WDISP_BSS_LONG_237A
     SEQ     D4
     NEG.B   D4
     EXT.W   D4
@@ -844,7 +856,7 @@ LAB_021A:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2259
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     CLEANUP_BuildAlignedStatusLine(PC)
 
     LEA     24(A7),A7
@@ -852,33 +864,33 @@ LAB_021A:
     CMP.W   -40(A5),D0
     BNE.S   .render_output_text
 
-    PEA     LAB_2366
-    PEA     LAB_2259
+    PEA     CLEANUP_AlignedStatusSuffixBuffer
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .render_output_text:
-    MOVE.B  #$64,LAB_2377
-    MOVE.B  #$31,LAB_2373
-    CLR.W   LAB_236D
+    MOVE.B  #$64,TEXTDISP_BannerCharSelected
+    MOVE.B  #$31,TEXTDISP_BannerCharFallback
+    CLR.W   DATA_WDISP_BSS_WORD_236D
 
     MOVEA.L GLOB_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVE.W  #1,LAB_236C
+    MOVE.W  #1,DATA_WDISP_BSS_WORD_236C
     MOVEQ   #0,D0
-    MOVEA.L LAB_2216,A0
+    MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
     MOVE.L  D0,-(A7)
-    PEA     LAB_2259
+    PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth(PC)
 
     PEA     3.W
-    PEA     LAB_2259
-    JSR     GROUP_AD_JMPTBL_LAB_16CE(PC)
+    PEA     TEXTDISP_ChannelLabelBuffer
+    JSR     GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(PC)
 
     MOVEA.L GLOB_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
@@ -886,7 +898,7 @@ LAB_021A:
     JSR     _LVOSetDrMd(A6)
 
     PEA     2.W
-    JSR     GROUP_AD_JMPTBL_LAB_183D(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort(PC)
 
     MOVE.L  D0,-4(A5)
 
@@ -896,7 +908,7 @@ LAB_021A:
     JSR     _LVOSetAPen(A6)
 
     PEA     2.W
-    JSR     GROUP_AD_JMPTBL_LAB_183B(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight(PC)
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -909,7 +921,7 @@ LAB_021A:
     ASR.L   #1,D1
     PEA     2.W
     MOVE.L  D1,56(A7)
-    JSR     GROUP_AD_JMPTBL_LAB_183B(PC)
+    JSR     GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight(PC)
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -925,10 +937,10 @@ LAB_021A:
 
     JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEQ   #0,D0
-    MOVEA.L LAB_2216,A1
+    MOVEA.L WDISP_DisplayContextBase,A1
     MOVE.W  2(A1),D0
     SUBQ.L  #1,D0
     MOVEQ   #0,D1
@@ -946,7 +958,7 @@ LAB_021A:
     PEA     GLOB_REF_320_240_BITMAP
     JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
-    JSR     GROUP_AD_JMPTBL_LAB_0A48(PC)
+    JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
 .done:
     MOVEM.L -868(A5),D2-D7/A2

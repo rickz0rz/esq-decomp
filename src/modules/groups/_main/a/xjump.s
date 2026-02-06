@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_UNKNOWN2B_Stub1   (JumpStub_UNKNOWN2B_Stub1)
+; FUNC: GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1   (JumpStub_UNKNOWN2B_Stub1)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -15,11 +15,11 @@
 ; DESC:
 ;   Jump stub to UNKNOWN2B_Stub1.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_UNKNOWN2B_Stub1:
+GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1:
     JMP     UNKNOWN2B_Stub1
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_UNKNOWN2B_Stub0   (JumpStub_UNKNOWN2B_Stub0)
+; FUNC: GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0   (JumpStub_UNKNOWN2B_Stub0)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -35,11 +35,11 @@ ESQ_JMPTBL_UNKNOWN2B_Stub1:
 ; DESC:
 ;   Jump stub to UNKNOWN2B_Stub0.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_UNKNOWN2B_Stub0:
+GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0:
     JMP     UNKNOWN2B_Stub0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_MEMLIST_FreeAll   (JumpStub_MEMLIST_FreeAll)
+; FUNC: GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll   (JumpStub_MEMLIST_FreeAll)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -55,11 +55,11 @@ ESQ_JMPTBL_UNKNOWN2B_Stub0:
 ; DESC:
 ;   Jump stub to MEMLIST_FreeAll.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_MEMLIST_FreeAll:
+GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll:
     JMP     MEMLIST_FreeAll
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_JMPTBL_ESQ_ParseCommandLineAndRun   (JumpStub_ESQ_ParseCommandLineAndRun)
+; FUNC: GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun   (JumpStub_ESQ_ParseCommandLineAndRun)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -75,5 +75,5 @@ ESQ_JMPTBL_MEMLIST_FreeAll:
 ; DESC:
 ;   Jump stub to ESQ_ParseCommandLineAndRun.
 ;------------------------------------------------------------------------------
-ESQ_JMPTBL_ESQ_ParseCommandLineAndRun:
+GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun:
     JMP     ESQ_ParseCommandLineAndRun

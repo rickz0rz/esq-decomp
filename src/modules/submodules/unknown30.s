@@ -1,15 +1,7 @@
 ;------------------------------------------------------------------------------
 ; FUNC: EXEC_CallVector_348   (Exec.library call wrapper at LVO -348.)
 ; ARGS:
-;   stack +4:  A6 = ExecBase?? (loaded via UseStackLong)
-;   stack +8:  A0 ??
-;   stack +12: A1 ??
-;   stack +16: A2 ??
-;   stack +20: A3 ??
-;   stack +24: D0 ??
-;   stack +28: D1 ??
-;   stack +32: D2 ??
-;   stack +36: D3 ??
+;   (none observed)
 ; RET:
 ;   D0: status/return from LVO -348
 ; CLOBBERS:

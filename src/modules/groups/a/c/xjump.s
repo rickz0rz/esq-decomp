@@ -1,11 +1,11 @@
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc   (JumpStub_PARSEINI_UpdateClockFromRtc)
 ; ARGS:
-;   ?? (see PARSEINI_UpdateClockFromRtc)
+;   (none observed)
 ; RET:
-;   ?? (see PARSEINI_UpdateClockFromRtc)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see PARSEINI_UpdateClockFromRtc)
+;   none observed
 ; CALLS:
 ;   PARSEINI_UpdateClockFromRtc
 ; DESC:
@@ -19,11 +19,11 @@ GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen   (JumpStub_ESQFUNC_DrawDiagnosticsScreen)
 ; ARGS:
-;   ?? (see ESQFUNC_DrawDiagnosticsScreen)
+;   (none observed)
 ; RET:
-;   ?? (see ESQFUNC_DrawDiagnosticsScreen)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQFUNC_DrawDiagnosticsScreen)
+;   none observed
 ; CALLS:
 ;   ESQFUNC_DrawDiagnosticsScreen
 ; DESC:
@@ -37,11 +37,11 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen   (JumpStub_ESQFUNC_DrawMemoryStatusScreen)
 ; ARGS:
-;   ?? (see ESQFUNC_DrawMemoryStatusScreen)
+;   (none observed)
 ; RET:
-;   ?? (see ESQFUNC_DrawMemoryStatusScreen)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQFUNC_DrawMemoryStatusScreen)
+;   none observed
 ; CALLS:
 ;   ESQFUNC_DrawMemoryStatusScreen
 ; DESC:
@@ -55,11 +55,11 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine   (JumpStub_SCRIPT_UpdateCtrlStateMachine)
 ; ARGS:
-;   ?? (see SCRIPT_UpdateCtrlStateMachine)
+;   (none observed)
 ; RET:
-;   ?? (see SCRIPT_UpdateCtrlStateMachine)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see SCRIPT_UpdateCtrlStateMachine)
+;   none observed
 ; CALLS:
 ;   SCRIPT_UpdateCtrlStateMachine
 ; DESC:
@@ -73,11 +73,11 @@ GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds   (JumpStub_GCOMMAND_UpdateBannerBounds)
 ; ARGS:
-;   ?? (see GCOMMAND_UpdateBannerBounds)
+;   (none observed)
 ; RET:
-;   ?? (see GCOMMAND_UpdateBannerBounds)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see GCOMMAND_UpdateBannerBounds)
+;   none observed
 ; CALLS:
 ;   GCOMMAND_UpdateBannerBounds
 ; DESC:
@@ -91,11 +91,11 @@ GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout   (JumpStub_SCRIPT_UpdateCtrlLineTimeout)
 ; ARGS:
-;   ?? (see SCRIPT_UpdateCtrlLineTimeout)
+;   (none observed)
 ; RET:
-;   ?? (see SCRIPT_UpdateCtrlLineTimeout)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see SCRIPT_UpdateCtrlLineTimeout)
+;   none observed
 ; CALLS:
 ;   SCRIPT_UpdateCtrlLineTimeout
 ; DESC:
@@ -109,11 +109,11 @@ GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled   (JumpStub_SCRIPT_ClearCtrlLineIfEnabled)
 ; ARGS:
-;   ?? (see SCRIPT_ClearCtrlLineIfEnabled)
+;   (none observed)
 ; RET:
-;   ?? (see SCRIPT_ClearCtrlLineIfEnabled)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see SCRIPT_ClearCtrlLineIfEnabled)
+;   none observed
 ; CALLS:
 ;   SCRIPT_ClearCtrlLineIfEnabled
 ; DESC:
@@ -125,31 +125,31 @@ GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled:
     JMP     SCRIPT_ClearCtrlLineIfEnabled
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AC_JMPTBL_ESQFUNC_PruneEntryTextPointers   (JumpStub_ESQFUNC_PruneEntryTextPointers)
+; FUNC: GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers   (JumpStub_ESQFUNC_FreeExtraTitleTextPointers)
 ; ARGS:
-;   ?? (see ESQFUNC_PruneEntryTextPointers)
+;   (none observed)
 ; RET:
-;   ?? (see ESQFUNC_PruneEntryTextPointers)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQFUNC_PruneEntryTextPointers)
+;   none observed
 ; CALLS:
-;   ESQFUNC_PruneEntryTextPointers
+;   ESQFUNC_FreeExtraTitleTextPointers
 ; DESC:
-;   Jump stub to ESQFUNC_PruneEntryTextPointers.
+;   Jump stub to ESQFUNC_FreeExtraTitleTextPointers.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AC_JMPTBL_ESQFUNC_PruneEntryTextPointers:
-    JMP     ESQFUNC_PruneEntryTextPointers
+GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers:
+    JMP     ESQFUNC_FreeExtraTitleTextPointers
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner   (JumpStub_ESQDISP_DrawStatusBanner)
 ; ARGS:
-;   ?? (see ESQDISP_DrawStatusBanner)
+;   (none observed)
 ; RET:
-;   ?? (see ESQDISP_DrawStatusBanner)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQDISP_DrawStatusBanner)
+;   none observed
 ; CALLS:
 ;   ESQDISP_DrawStatusBanner
 ; DESC:
@@ -163,11 +163,11 @@ GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_DST_UpdateBannerQueue   (JumpStub_DST_UpdateBannerQueue)
 ; ARGS:
-;   ?? (see DST_UpdateBannerQueue)
+;   (none observed)
 ; RET:
-;   ?? (see DST_UpdateBannerQueue)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see DST_UpdateBannerQueue)
+;   none observed
 ; CALLS:
 ;   DST_UpdateBannerQueue
 ; DESC:
@@ -181,11 +181,11 @@ GROUP_AC_JMPTBL_DST_UpdateBannerQueue:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_DST_RefreshBannerBuffer   (JumpStub_DST_RefreshBannerBuffer)
 ; ARGS:
-;   ?? (see DST_RefreshBannerBuffer)
+;   (none observed)
 ; RET:
-;   ?? (see DST_RefreshBannerBuffer)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see DST_RefreshBannerBuffer)
+;   none observed
 ; CALLS:
 ;   DST_RefreshBannerBuffer
 ; DESC:
@@ -199,11 +199,11 @@ GROUP_AC_JMPTBL_DST_RefreshBannerBuffer:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)
 ; ARGS:
-;   ?? (see ESQFUNC_DrawEscMenuVersion)
+;   (none observed)
 ; RET:
-;   ?? (see ESQFUNC_DrawEscMenuVersion)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ESQFUNC_DrawEscMenuVersion)
+;   none observed
 ; CALLS:
 ;   ESQFUNC_DrawEscMenuVersion
 ; DESC:
@@ -217,11 +217,11 @@ GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion:
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat   (JumpStub_PARSEINI_AdjustHoursTo24HrFormat)
 ; ARGS:
-;   ?? (see PARSEINI_AdjustHoursTo24HrFormat)
+;   (none observed)
 ; RET:
-;   ?? (see PARSEINI_AdjustHoursTo24HrFormat)
+;   D0: result/status
 ; CLOBBERS:
-;   ?? (see PARSEINI_AdjustHoursTo24HrFormat)
+;   D0
 ; CALLS:
 ;   PARSEINI_AdjustHoursTo24HrFormat
 ; DESC:

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdReboot??)
+; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdRebootuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -9,7 +9,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   [$00FFFFEC]??, [A0+4]??
+;   AA55, ESQ_TryRomWriteTest, FBFFFC
 ; WRITES:
 ;   (none) (see NOTES)
 ; DESC:
@@ -21,9 +21,9 @@
 ;------------------------------------------------------------------------------
 ESQ_SupervisorColdReboot:
     LEA     $1000000,A0
-    SUBA.L  -20(A0),A0  ; [0x00FFFFEC] = ?? (ROM base offset?)
-    MOVEA.L 4(A0),A0    ; [A0+4] = reset vector?? (to be jumped to)
-    SUBQ.L  #2,A0       ; Adjust vector address (align/format?) ??
+    SUBA.L  -20(A0),A0  ; [0x00FFFFEC] = uncertain (ROM base offset?)
+    MOVEA.L 4(A0),A0    ; [A0+4] = reset vectoruncertain (to be jumped to)
+    SUBQ.L  #2,A0       ; Adjust vector address (align/format?) uncertain
     RESET               ; Reset external devices
     JMP     (A0)        ; Jump to reset vector
 
@@ -47,7 +47,7 @@ ESQ_SupervisorColdReboot:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TryRomWriteTest   (TryRomWriteTest??)
+; FUNC: ESQ_TryRomWriteTest   (TryRomWriteTestuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -72,7 +72,7 @@ ESQ_TryRomWriteTest:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_InvokeGcommandInit   (InvokeGcommandInit??)
+; FUNC: ESQ_InvokeGcommandInit   (InvokeGcommandInituncertain)
 ; ARGS:
 ;   (none)
 ; RET:

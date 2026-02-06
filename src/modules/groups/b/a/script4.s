@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ResetBannerCharDefaults   (ResetBannerCharDefaults??)
+; FUNC: SCRIPT_ResetBannerCharDefaults   (ResetBannerCharDefaultsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -11,23 +11,22 @@
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_2377, LAB_2373, LAB_2364
+;   TEXTDISP_BannerCharSelected, TEXTDISP_BannerCharFallback, TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Resets banner-char defaults and clears the cached value.
 ; NOTES:
 ;   Values are hard-coded ($64, $31, -1) pending further context.
 ;------------------------------------------------------------------------------
 SCRIPT_ResetBannerCharDefaults:
-LAB_15A2:
-    MOVE.B  #$64,LAB_2377
-    MOVE.B  #$31,LAB_2373
-    MOVE.W  #(-1),LAB_2364
+    MOVE.B  #$64,TEXTDISP_BannerCharSelected
+    MOVE.B  #$31,TEXTDISP_BannerCharFallback
+    MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_GetBannerCharOrFallback   (GetBannerCharOrFallback??)
+; FUNC: SCRIPT_GetBannerCharOrFallback   (GetBannerCharOrFallbackuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -37,18 +36,17 @@ LAB_15A2:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LAB_2377, LAB_2373
+;   TEXTDISP_BannerCharSelected, TEXTDISP_BannerCharFallback
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Returns LAB_2377 unless it is 100, in which case returns LAB_2373.
+;   Returns TEXTDISP_BannerCharSelected unless it is 100, in which case returns TEXTDISP_BannerCharFallback.
 ; NOTES:
 ;   Likely selects a fallback character when a sentinel is present.
 ;------------------------------------------------------------------------------
 SCRIPT_GetBannerCharOrFallback:
-LAB_15A3:
     MOVE.L  D7,-(A7)
-    MOVE.B  LAB_2377,D0
+    MOVE.B  TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
     CMP.B   D1,D0
     BEQ.S   .return_fallback
@@ -59,7 +57,7 @@ LAB_15A3:
 
 .return_fallback:
     MOVEQ   #0,D0
-    MOVE.B  LAB_2373,D0
+    MOVE.B  TEXTDISP_BannerCharFallback,D0
     MOVE.L  D0,D1
 
 .return:
@@ -71,18 +69,15 @@ LAB_15A3:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DrawInsetTextWithFrame   (DrawInsetTextWithFrame??)
+; FUNC: SCRIPT_DrawInsetTextWithFrame   (DrawInsetTextWithFrameuncertain)
 ; ARGS:
-;   stack +8: A3 = RastPort??
-;   stack +12: D7 = textPen (byte, -1 = no change)
-;   stack +16: D6 = adjustFrameFlag?? (byte, -1 = no change)
-;   stack +20: A2 = text (char *)
+;   (none observed)
 ; RET:
 ;   (none)
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _LVOTextLength, _LVOText, _LVOSetAPen, GROUP_BA_JMPTBL_CLEANUP_DrawInsetRectFrame
+;   _LVOTextLength, _LVOText, _LVOSetAPen, TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame
 ; READS:
 ;   RastPort fields at 36/38/58/25 offsets
 ; WRITES:
@@ -93,7 +88,6 @@ LAB_15A3:
 ;   Uses -1 as a sentinel for “no override”.
 ;------------------------------------------------------------------------------
 SCRIPT_DrawInsetTextWithFrame:
-LAB_15A6:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 36(A7),A3
@@ -140,7 +134,7 @@ LAB_15A6:
     MOVE.L  D0,-(A7)
     MOVE.L  28(A7),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_BA_JMPTBL_CLEANUP_DrawInsetRectFrame(PC)
+    JSR     TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(PC)
 
     LEA     16(A7),A7
 
@@ -207,53 +201,60 @@ LAB_15A6:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_SetupHighlightEffect   (SetupHighlightEffect??)
+; FUNC: SCRIPT_SetupHighlightEffect   (SetupHighlightEffectuncertain)
 ; ARGS:
-;   stack +8: A3 = effect config?? (optional)
+;   stack +4: arg_1 (via 8(A5))
+;   stack +16: arg_2 (via 20(A5))
+;   stack +20: arg_3 (via 24(A5))
+;   stack +24: arg_4 (via 28(A5))
+;   stack +28: arg_5 (via 32(A5))
+;   stack +157: arg_6 (via 161(A5))
+;   stack +162: arg_7 (via 166(A5))
+;   stack +166: arg_8 (via 170(A5))
+;   stack +168: arg_9 (via 172(A5))
 ; RET:
 ;   D0: none
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   LAB_183C, LAB_183E, GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   TLIBA3_ClearViewModeRastPort, TLIBA3_BuildDisplayContextForViewMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   LAB_2216, copper/effect state
+;   WDISP_DisplayContextBase, copper/effect state
 ; WRITES:
-;   LAB_2216 and effect parameters
+;   WDISP_DisplayContextBase and effect parameters
 ; DESC:
 ;   Initializes highlight/copper effect state and kicks a banner transition.
 ; NOTES:
 ;   Exact effect semantics still under investigation.
 ;------------------------------------------------------------------------------
 SCRIPT_SetupHighlightEffect:
-LAB_15AD:
     LINK.W  A5,#-176
     MOVEM.L D2/D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     CLR.L   -(A7)
     PEA     4.W
-    JSR     LAB_183C(PC)
+    JSR     TLIBA3_ClearViewModeRastPort(PC)
 
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     LAB_183E(PC)
+    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,LAB_2216
-    JSR     GROUP_BA_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
+    MOVE.L  D0,WDISP_DisplayContextBase
+    JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEQ   #0,D5
-    MOVEA.L LAB_2216,A0
+    MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  4(A0),D5
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
     MOVE.L  D0,-20(A5)
-    JSR     GROUPD_JMPTBL_LAB_0A49(PC)
+    JSR     WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
-    JSR     GROUPD_JMPTBL_LAB_0A45(PC)
+    JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
     LEA     20(A7),A7
-    MOVEA.L LAB_2216,A0
+    MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  (A0),D0
     BTST    #2,D0
     BEQ.S   .is_not_mode2
@@ -285,19 +286,19 @@ LAB_15AD:
     TST.B   (A3)
     BEQ.W   .return
 
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
-    MOVE.W  #1,LAB_22AA
-    CLR.W   LAB_22AB
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    CLR.W   WDISP_AccumulatorFlushPending
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     3.W
     MOVE.L  A0,-4(A5)
-    JSR     LAB_183E(PC)
+    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     CLR.L   -28(A5)
     MOVE.L  A3,-170(A5)
 
@@ -344,11 +345,11 @@ LAB_15AD:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    TST.B   LAB_1B5D
+    TST.B   DATA_CLOCK_CONST_WORD_1B5D
     BEQ.S   .no_extra_pad
 
     MOVEQ   #0,D1
-    MOVE.B  LAB_21B3,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
@@ -496,9 +497,9 @@ LAB_15AD:
     ADDA.L  -28(A5),A1
     CLR.B   (A1)
     MOVEQ   #0,D0
-    MOVE.B  LAB_21B4,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_21B4,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_21B3,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
     MOVE.L  A0,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -509,7 +510,7 @@ LAB_15AD:
     MOVEA.L -166(A5),A0
     ADDQ.L  #1,A0
     CLR.L   -28(A5)
-    CLR.B   LAB_1B5D
+    CLR.B   DATA_CLOCK_CONST_WORD_1B5D
     MOVE.L  A0,-170(A5)
     BRA.S   .advance_parse_ptr
 
@@ -528,13 +529,13 @@ LAB_15AD:
     PEA     3.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     LAB_183E(PC)
+    JSR     TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
 
 .return:
-    JSR     TEXTDISP_JMPTBL_LAB_0A48(PC)
+    JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
     MOVEM.L (A7)+,D2/D5-D7/A3
     UNLK    A5

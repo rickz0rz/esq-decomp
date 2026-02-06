@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AllocateBufferArray   (AllocateBufferArray??)
+; FUNC: SCRIPT_AllocateBufferArray   (AllocateBufferArrayuncertain)
 ; ARGS:
 ;   stack +4: outPtrs (array of long pointers)
 ;   stack +8: byteSize
@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7, A3
 ; CALLS:
-;   GROUPD_JMPTBL_MEMORY_AllocateMemory
+;   SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
 ;   (none)
 ; WRITES:
@@ -20,7 +20,6 @@
 ;   Uses MEMF_PUBLIC+MEMF_CLEAR and tags allocations with SCRIPT.C metadata.
 ;------------------------------------------------------------------------------
 SCRIPT_AllocateBufferArray:
-LAB_1498:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
 
@@ -45,7 +44,7 @@ LAB_1498:
     PEA     394.W
     PEA     GLOB_STR_SCRIPT_C_1
     MOVE.L  D0,32(A7)
-    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  16(A7),D1
@@ -61,7 +60,7 @@ LAB_1498:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DeallocateBufferArray   (DeallocateBufferArray??)
+; FUNC: SCRIPT_DeallocateBufferArray   (DeallocateBufferArrayuncertain)
 ; ARGS:
 ;   stack +4: outPtrs (array of long pointers)
 ;   stack +8: byteSize
@@ -71,7 +70,7 @@ LAB_1498:
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   GROUPD_JMPTBL_MEMORY_DeallocateMemory
+;   SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   outPtrs[0..count-1]
 ; WRITES:
@@ -82,7 +81,6 @@ LAB_1498:
 ;   Tags deallocations with SCRIPT.C metadata.
 ;------------------------------------------------------------------------------
 SCRIPT_DeallocateBufferArray:
-LAB_149B:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7
@@ -103,7 +101,7 @@ LAB_149B:
     MOVE.L  0(A3,D0.L),-(A7)
     PEA     405.W
     PEA     GLOB_STR_SCRIPT_C_2
-    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D5,D0
@@ -120,7 +118,7 @@ LAB_149B:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_BuildTokenIndexMap   (BuildTokenIndexMap??)
+; FUNC: SCRIPT_BuildTokenIndexMap   (BuildTokenIndexMapuncertain)
 ; ARGS:
 ;   stack +8: inputBytes (byte array)
 ;   stack +12: outIndexByToken (word array)
@@ -130,7 +128,7 @@ LAB_149B:
 ;   stack +31: terminatorByte
 ;   stack +34: fillMissingFlag (non-zero = fill -1 entries)
 ; RET:
-;   D0: scanIndex (byte position) ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
@@ -145,7 +143,6 @@ LAB_149B:
 ;   Stops on terminatorByte, maxScanCount, or when last token is assigned.
 ;------------------------------------------------------------------------------
 SCRIPT_BuildTokenIndexMap:
-LAB_149E:
     LINK.W  A5,#-12
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -269,19 +266,114 @@ LAB_149E:
 
 ;!======
 
-GROUPD_JMPTBL_MEMORY_DeallocateMemory:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_MEMORY_DeallocateMemory   (Routine at SCRIPT_JMPTBL_MEMORY_DeallocateMemory)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEMORY_DeallocateMemory
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
-GROUPD_JMPTBL_LAB_03A0:
-    JMP     LAB_03A0
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes   (Routine at SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_WriteBufferedBytes
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes:
+    JMP     DISKIO_WriteBufferedBytes
 
-GROUPD_JMPTBL_LAB_039A:
-    JMP     LAB_039A
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush   (Routine at SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_CloseBufferedFileAndFlush
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
+    JMP     DISKIO_CloseBufferedFileAndFlush
 
-GROUPD_JMPTBL_MEMORY_AllocateMemory:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_MEMORY_AllocateMemory   (Routine at SCRIPT_JMPTBL_MEMORY_AllocateMemory)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEMORY_AllocateMemory
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
-GROUPD_JMPTBL_DISKIO_OpenFileWithBuffer:
+;------------------------------------------------------------------------------
+; FUNC: SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer   (Routine at SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   DISKIO_OpenFileWithBuffer
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer:
     JMP     DISKIO_OpenFileWithBuffer
 
 ;======

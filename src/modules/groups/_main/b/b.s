@@ -1,5 +1,3 @@
-;!======
-
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_CheckAvailableFastMemory
 ; ARGS:
@@ -88,7 +86,7 @@ ESQ_CheckCompatibleVideoChip:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_CheckTopazFontGuard   (CheckTopazFontGuard??)
+; FUNC: ESQ_CheckTopazFontGuard   (CheckTopazFontGuarduncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -96,9 +94,9 @@ ESQ_CheckCompatibleVideoChip:
 ; CLOBBERS:
 ;   D0-D7/A0-A6
 ; CALLS:
-;   JMPTBL_DOS_Delay, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
+;   GROUP_MAIN_B_JMPTBL_DOS_Delay, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
-;   PREVUE_JMPTBL_MATH_Mulu32, JMPTBL_STREAM_BufferedWriteString, JMPTBL_BUFFER_FlushAllAndCloseWithCode_1
+;   GROUP_MAIN_B_JMPTBL_MATH_Mulu32, GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString, GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
 ; READS:
 ;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TOPAZ_FONT,
 ;   LAB_1DE9_B, LAB_1DD8_RASTPORT,
@@ -142,7 +140,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Delay 250 ticks or 5 seconds
     PEA     250.W
-    JSR     JMPTBL_DOS_Delay(PC)
+    JSR     GROUP_MAIN_B_JMPTBL_DOS_Delay(PC)
 
     ADDQ.W  #4,A7
 
@@ -257,7 +255,7 @@ ESQ_CheckTopazFontGuard:
     JSR     _LVOSizeWindow(A6)
 
     PEA     100.W
-    JSR     JMPTBL_DOS_Delay(PC)
+    JSR     GROUP_MAIN_B_JMPTBL_DOS_Delay(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #50,D0
@@ -273,7 +271,7 @@ ESQ_CheckTopazFontGuard:
     ADDI.L  #4000,D4
     MOVE.L  D7,D0
     MOVE.L  #640,D1
-    JSR     PREVUE_JMPTBL_MATH_Mulu32(PC)
+    JSR     GROUP_MAIN_B_JMPTBL_MATH_Mulu32(PC)
 
     LSR.L   #3,D0
     MOVE.L  D5,D1
@@ -295,10 +293,10 @@ ESQ_CheckTopazFontGuard:
 
 .show_rerun_error:
     PEA     GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
-    JSR     JMPTBL_STREAM_BufferedWriteString(PC)
+    JSR     GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(PC)
 
     CLR.L   (A7)
-    JSR     JMPTBL_BUFFER_FlushAllAndCloseWithCode_1(PC)
+    JSR     GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
 
     ADDQ.W  #4,A7
 
@@ -318,24 +316,24 @@ ESQ_CheckTopazFontGuard:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   LAB_03C4, LAB_03C0, GROUP_AE_JMPTBL_WDISP_SPrintf
+;   DISKIO_QueryVolumeSoftErrorCount, DISKIO_QueryDiskUsagePercentAndSetBufferSize, GROUP_AE_JMPTBL_WDISP_SPrintf
 ; READS:
-;   LAB_1AF4, LAB_1AF6, GLOB_STR_DISK_ERRORS_FORMATTED,
-;   GLOB_STR_DISK_IS_FULL_FORMATTED, LAB_2249
+;   DATA_COMMON_BSS_WORD_1AF4, DATA_COMMON_BSS_WORD_1AF6, GLOB_STR_DISK_ERRORS_FORMATTED,
+;   GLOB_STR_DISK_IS_FULL_FORMATTED, DISKIO_ErrorMessageScratch
 ; WRITES:
-;   LAB_2249 (formatted text buffer)
+;   DISKIO_ErrorMessageScratch (formatted text buffer)
 ; DESC:
-;   Builds a disk error message into LAB_2249 based on disk error counts.
+;   Builds a disk error message into DISKIO_ErrorMessageScratch based on disk error counts.
 ; NOTES:
-;   - Uses LAB_03C4 and LAB_03C0 helpers for error count retrieval.
+;   - Uses DISKIO_QueryVolumeSoftErrorCount and DISKIO_QueryDiskUsagePercentAndSetBufferSize helpers for error count retrieval.
 ;------------------------------------------------------------------------------
 ESQ_FormatDiskErrorMessage:
     MOVEM.L D6-D7,-(A7)
 
     SetOffsetForStack   2
 
-    PEA     LAB_1AF4
-    JSR     LAB_03C4(PC)
+    PEA     DATA_COMMON_BSS_WORD_1AF4
+    JSR     DISKIO_QueryVolumeSoftErrorCount(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
@@ -344,20 +342,20 @@ ESQ_FormatDiskErrorMessage:
 
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_DISK_ERRORS_FORMATTED
-    PEA     LAB_2249
+    PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7
     BRA.S   .done
 
 .createDiskIsFullMessage:
-    PEA     LAB_1AF6
-    JSR     LAB_03C0(PC)
+    PEA     DATA_COMMON_BSS_WORD_1AF6
+    JSR     DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
     PEA     GLOB_STR_DISK_IS_FULL_FORMATTED
-    PEA     LAB_2249
+    PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     .stackOffsetBytes+4(A7),A7

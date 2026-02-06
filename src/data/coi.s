@@ -6,21 +6,28 @@ GLOB_STR_COI_C_4:
     NStr    "COI.c"
 GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1:
     NStr    "df0:OI_%02lx.dat"
-LAB_1B6E:
+;------------------------------------------------------------------------------
+; SYM: COI_FMT_LONG_DEC_A   (decimal formatting strings)
+; TYPE: cstring
+; PURPOSE: Format strings and separators used while parsing/building COI fields.
+; USED BY: COI parsing/serialization helpers
+; NOTES: Multiple aliases point to similar formats with context-specific usage.
+;------------------------------------------------------------------------------
+COI_FMT_LONG_DEC_A:
     NStr    "%ld"
-LAB_1B6F:
+COI_FMT_DEC_A:
     NStr    "%d"
-LAB_1B70:
+COI_STR_COLON_A:
     NStr    ":"
-LAB_1B71:
+COI_FMT_LONG_DEC_B:
     NStr    "%ld"
-LAB_1B72:
+COI_FMT_LONG_DEC_C:
     NStr    "%ld"
-LAB_1B73:
+COI_FMT_LONG_DEC_PAD2:
     NStr    "%02ld"
-LAB_1B74:
+COI_STR_COLON_B:
     NStr    ":"
-LAB_1B75:
+COI_FMT_DEC_B:
     NStr    "%d"
 GLOB_STR_COI_C_5:
     NStr    "COI.c"
@@ -28,11 +35,11 @@ GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2:
     NStr    "df0:OI_%02lx.dat"
 GLOB_STR_COI_C_6:
     NStr    "COI.c"
-LAB_1B79:
+COI_STR_LINEFEED_CR_1:
     NStr2   TextLineFeed,TextCarriageReturn
-LAB_1B7A:
+COI_STR_LINEFEED_CR_2:
     NStr2   TextLineFeed,TextCarriageReturn
-LAB_1B7B:
+COI_STR_DEFAULT_TOKEN_TEMPLATE_A:
     NStr    "NNNNNNXX00"
 GLOB_STR_PERCENT_S_1:
     NStr    "%s"
@@ -40,18 +47,25 @@ GLOB_STR_COI_C_1:
     NStr    "COI.c"
 GLOB_STR_COI_C_2:
     NStr    "COI.c"
-LAB_1B7F:
+COI_STR_DEFAULT_TOKEN_TEMPLATE_B:
     NStr    "NNNNNNXX00"
-LAB_1B80:
+COI_FMT_WRAP_CHAR_STRING_CHAR:
     NStr    "%c%s%c"
-LAB_1B81:
+COI_STR_SINGLE_SPACE:
     NStr    " "
-LAB_1B82:
+COI_FMT_WIDE_STR_WITH_TRAILING_SPACE:
     NStr    "%ls "
     DS.W    1
-LAB_1B83:
+;------------------------------------------------------------------------------
+; SYM: CTASKS_IffTaskDoneFlag/CTASKS_IffTaskState   (IFF task completion + state)
+; TYPE: u16/u16
+; PURPOSE: Coordinates IFF loader task lifecycle and target-state selection.
+; USED BY: CTASKS_*, ESQIFF_*, ESQFUNC_*, PARSEINI_*, GCOMMAND_SaveBrushResult
+; NOTES: Observed states include 0 (idle), 4/5/6 (active target classes), 11 (special case).
+;------------------------------------------------------------------------------
+CTASKS_IffTaskDoneFlag:
     DC.W    $0001
-LAB_1B84:
+CTASKS_IffTaskState:
     DC.W    $0004
-LAB_1B85:
+DATA_COI_BSS_WORD_1B85:
     DS.W    1

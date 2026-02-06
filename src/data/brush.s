@@ -18,7 +18,14 @@ GLOB_STR_BRUSH_C_8:
     NStr    "BRUSH.c"
 GLOB_STR_BRUSH_C_9:
     NStr    "BRUSH.c"
-LAB_1B34:
+;------------------------------------------------------------------------------
+; SYM: BRUSH_STR_IFF_FORM   (IFF FORM chunk tag)
+; TYPE: cstring
+; PURPOSE: Signature used to validate brush asset files before ILBM decode.
+; USED BY: BRUSH_LoadBrushAsset
+; NOTES: Compared with STRING_CompareN using length 4.
+;------------------------------------------------------------------------------
+BRUSH_STR_IFF_FORM:
     NStr    "FORM"
 GLOB_STR_BRUSH_C_10:
     NStr    "BRUSH.c"
@@ -40,12 +47,19 @@ GLOB_STR_BRUSH_C_18:
     NStr    "BRUSH.c"
 GLOB_STR_BRUSH_C_19:
     NStr    "BRUSH.c"
-LAB_1B3F:
+;------------------------------------------------------------------------------
+; SYM: BRUSH_STR_ALIAS_CODE_00   (legacy brush alias token)
+; TYPE: cstring
+; PURPOSE: Two-character brush alias accepted by BRUSH_SelectBrushByLabel.
+; USED BY: BRUSH_SelectBrushByLabel
+; NOTES: "00" and "11" are normalized to "DT"; "DITHER" is the fallback query.
+;------------------------------------------------------------------------------
+BRUSH_STR_ALIAS_CODE_00:
     NStr    "00"
-LAB_1B40:
+BRUSH_STR_ALIAS_CODE_11:
     NStr    "11"
-LAB_1B41:
+BRUSH_STR_ALIAS_CODE_DT:
     NStr    "DT"
-LAB_1B42:
+BRUSH_STR_FALLBACK_DITHER:
     NStr    "DITHER"
     DS.W    1

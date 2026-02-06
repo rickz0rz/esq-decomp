@@ -1,24 +1,23 @@
 ;------------------------------------------------------------------------------
 ; FUNC: DST_FreeBannerStruct   (Free banner struct and its two buffers)
 ; ARGS:
-;   stack +4: banner struct* ?? (A3)
+;   (none observed)
 ; RET:
 ;   D0: none
 ; CLOBBERS:
-;   D0/A3 ??
+;   A3/A7/D0
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   A3+0/4 (buffer pointers)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Frees the two buffers referenced by the banner struct, then the struct itself.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DST_FreeBannerStruct:
-LAB_0613:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
@@ -68,11 +67,11 @@ LAB_0613:
 ;------------------------------------------------------------------------------
 ; FUNC: DST_FreeBannerPair   (Free both banner structs referenced by the pair.)
 ; ARGS:
-;   stack +4: banner pair* ?? (A3)
+;   (none observed)
 ; RET:
 ;   D0: none
 ; CLOBBERS:
-;   D0/A3 ??
+;   A3/A7
 ; CALLS:
 ;   DST_FreeBannerStruct
 ; READS:
@@ -82,10 +81,9 @@ LAB_0613:
 ; DESC:
 ;   Frees both banner structs referenced by the pair and clears the pointers.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DST_FreeBannerPair:
-LAB_0617:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     ; Free both banner structs referenced by the pair.
@@ -106,24 +104,23 @@ LAB_0617:
 ;------------------------------------------------------------------------------
 ; FUNC: DST_AllocateBannerStruct   (Allocate banner struct and its buffers)
 ; ARGS:
-;   stack +4: banner struct* ?? (A3) (existing, may be freed)
+;   (none observed)
 ; RET:
-;   D0: struct* ?? (or 0 on failure)
+;   D0: result/status
 ; CLOBBERS:
-;   D0/D7/A3 ??
+;   A3/A7/D0/D7
 ; CALLS:
 ;   DST_FreeBannerStruct, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   ??
+;   GLOB_STR_DST_C_4, GLOB_STR_DST_C_5, GLOB_STR_DST_C_6, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   A3+0/4/16 (buffer pointers, state)
 ; DESC:
 ;   Frees any existing banner struct, then allocates a new struct plus two buffers.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DST_AllocateBannerStruct:
-LAB_0618:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -187,11 +184,11 @@ LAB_0618:
 ;------------------------------------------------------------------------------
 ; FUNC: DST_RebuildBannerPair   (Rebuild both banner structs in the pair)
 ; ARGS:
-;   stack +4: banner pair* ?? (A3)
+;   (none observed)
 ; RET:
 ;   D0: success flag (0/1?)
 ; CLOBBERS:
-;   D0/D7/A3 ??
+;   A3/A7/D0/D7
 ; CALLS:
 ;   DST_FreeBannerPair, DST_AllocateBannerStruct
 ; READS:
@@ -201,10 +198,9 @@ LAB_0618:
 ; DESC:
 ;   Frees and re-allocates both banner structs referenced by the pair.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DST_RebuildBannerPair:
-LAB_061B:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -249,24 +245,28 @@ LAB_061B:
 ;------------------------------------------------------------------------------
 ; FUNC: DST_LoadBannerPairFromFiles   (Load G2/G3 banner fragments and refresh queue)
 ; ARGS:
-;   stack +4: banner pair* ?? (A3)
+;   stack +4: arg_1 (via 8(A5))
+;   stack +18: arg_2 (via 22(A5))
+;   stack +40: arg_3 (via 44(A5))
+;   stack +44: arg_4 (via 48(A5))
+;   stack +48: arg_5 (via 52(A5))
+;   stack +60: arg_6 (via 64(A5))
 ; RET:
 ;   D0: 1 on success, 0 on failure
 ; CLOBBERS:
-;   D0/D7/A3 ??
+;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   DST_RebuildBannerPair, LAB_03AC, DST_JMPTBL_OpenFileMaybe, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
+;   DST_RebuildBannerPair, DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
 ; READS:
-;   LAB_1CF7, GLOB_STR_G2, GLOB_STR_G3
+;   DATA_DST_CONST_LONG_1CF7, GLOB_STR_G2, GLOB_STR_G3
 ; WRITES:
 ;   (A3), 4(A3)
 ; DESC:
 ;   Rebuilds the pair, loads G2/G3 fragments, and updates the banner queue.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DST_LoadBannerPairFromFiles:
-LAB_061E:
     LINK.W  A5,#-56
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -274,8 +274,8 @@ LAB_061E:
     MOVE.L  A3,-(A7)
     BSR.S   DST_RebuildBannerPair
 
-    MOVE.L  LAB_1CF7,(A7)
-    JSR     LAB_03AC(PC)
+    MOVE.L  DATA_DST_CONST_LONG_1CF7,(A7)
+    JSR     DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
@@ -285,12 +285,12 @@ LAB_061E:
     BRA.W   .return
 
 .init_ok:
-    MOVEA.L LAB_21BC,A0
+    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
     PEA     GLOB_STR_G2
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-48(A5)
-    JSR     DST_JMPTBL_OpenFileMaybe(PC)
+    JSR     GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-52(A5)
@@ -316,7 +316,7 @@ LAB_061E:
 .skip_g2:
     PEA     GLOB_STR_G3
     MOVE.L  -48(A5),-(A7)
-    JSR     DST_JMPTBL_OpenFileMaybe(PC)
+    JSR     GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-52(A5)

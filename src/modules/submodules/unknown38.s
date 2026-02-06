@@ -3,7 +3,7 @@
 ; ARGS:
 ;   none
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D1/A0/A6
 ; CALLS:

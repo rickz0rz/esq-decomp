@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: MEMORY_AllocateMemory   (AllocateMemory??)
+; FUNC: MEMORY_AllocateMemory   (AllocateMemoryuncertain)
 ; ARGS:
 ;   stack +16: byteSize (loaded into D7)
 ;   stack +20: attributes (MEMF_* flags) (loaded into D6)
@@ -39,7 +39,7 @@ MEMORY_AllocateMemory:
     RTS
 
 ;------------------------------------------------------------------------------
-; FUNC: MEMORY_DeallocateMemory   (DeallocateMemory??)
+; FUNC: MEMORY_DeallocateMemory   (DeallocateMemoryuncertain)
 ; ARGS:
 ;   stack +16: memoryBlock (loaded into A3)
 ;   stack +20: byteSize (loaded into D7)

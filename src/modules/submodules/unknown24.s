@@ -89,7 +89,7 @@ PARSE_ReadSignedLongSkipClass3_Alt:
 ; ARGS:
 ;   none
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0/A0-A3/A6
 ; CALLS:

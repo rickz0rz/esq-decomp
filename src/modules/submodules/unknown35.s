@@ -1,8 +1,9 @@
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_OpenWithMode   (Allocate/locate handle struct and open by mode.)
 ; ARGS:
-;   stack +8: A0 = path string ??
-;   stack +12: A1 = mode string ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
 ; RET:
 ;   D0: handle/struct pointer, or 0 on failure
 ; CLOBBERS:

@@ -1,11 +1,11 @@
 ;------------------------------------------------------------------------------
-; FUNC: ED_DispatchEscMenuState   (Dispatch ESC menu state??)
+; FUNC: ED_DispatchEscMenuState   (Dispatch ESC menu stateuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0/A0-A1/A6 ??
+;   A0/A1/A6/D0/D1
 ; CALLS:
 ;   ED2_HandleMenuActions, ED1_HandleEscMenuInput, ED1_UpdateEscMenuSelection,
 ;   ED2_HandleScrollSpeedSelection, ED2_HandleDiagnosticsMenuActions,
@@ -15,31 +15,30 @@
 ;   ED_HandleEditAttributesInput, ED_HandleEditorInput,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   LAB_231C, LAB_231B, LAB_1D14, LAB_1D13, LAB_2263
+;   ED_StateRingIndex, ED_StateRingWriteIndex, DATA_DST_CONST_LONG_1D14, ED_MenuStateId, GLOB_UIBusyFlag
 ; WRITES:
-;   LAB_1D14, LAB_21ED, LAB_231C
+;   DATA_DST_CONST_LONG_1D14, ED_LastKeyCode, ED_StateRingIndex
 ; DESC:
-;   Dispatches ESC-menu state handlers based on LAB_1D13 using a jumptable.
+;   Dispatches ESC-menu state handlers based on ED_MenuStateId using a jumptable.
 ; NOTES:
-;   Increments LAB_231C modulo $14 after each dispatch.
+;   Increments ED_StateRingIndex modulo $14 after each dispatch.
 ;------------------------------------------------------------------------------
 ED_DispatchEscMenuState:
-LAB_0671:
-    MOVE.L  LAB_231C,D0
-    MOVE.L  LAB_231B,D1
+    MOVE.L  ED_StateRingIndex,D0
+    MOVE.L  ED_StateRingWriteIndex,D1
     CMP.L   D0,D1
-    BEQ.W   LAB_0677
+    BEQ.W   .lab_0677
 
-    TST.L   LAB_1D14
-    BEQ.W   LAB_0677
+    TST.L   DATA_DST_CONST_LONG_1D14
+    BEQ.W   .lab_0677
 
-    CLR.L   LAB_1D14
+    CLR.L   DATA_DST_CONST_LONG_1D14
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
-    MOVE.B  (A0),LAB_21ED
-    TST.W   LAB_2263
+    MOVE.B  (A0),ED_LastKeyCode
+    TST.W   GLOB_UIBusyFlag
     BEQ.S   .after_pen_setup
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -56,7 +55,7 @@ LAB_0671:
     JSR     _LVOSetDrMd(A6)
 
 .after_pen_setup:
-    MOVE.B  LAB_1D13,D0
+    MOVE.B  ED_MenuStateId,D0
     EXT.W   D0
     CMPI.W  #$19,D0
     BCC.W   .advance_index
@@ -173,67 +172,66 @@ LAB_0671:
 
 .case_noop:
 .advance_index:
-    ADDQ.L  #1,LAB_231C
-    CMPI.L  #$14,LAB_231C
+    ADDQ.L  #1,ED_StateRingIndex
+    CMPI.L  #$14,ED_StateRingIndex
     BLT.S   .after_wrap_index
 
-    CLR.L   LAB_231C
+    CLR.L   ED_StateRingIndex
 
 .after_wrap_index:
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_1D14
+    MOVE.L  D0,DATA_DST_CONST_LONG_1D14
 
-LAB_0677:
+.lab_0677:
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_HandleEditorInput   (Handle editor input??)
+; FUNC: ED_HandleEditorInput   (Handle editor inputuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D2/D7/A0-A2 ??
+;   A0/A1/A2/A6/A7/D0/D1/D2/D7
 ; CALLS:
 ;   ED_DrawCursorChar, ED_ApplyActiveFlagToAdData, ED_RedrawAllRows, ED_RedrawRow, ED_TransformLineSpacing_Mode1, ED_TransformLineSpacing_Mode2, ED_TransformLineSpacing_Mode3,
-;   ED_CommitCurrentAdEdits, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, GROUP_AL_JMPTBL_LADFUNC_GetLowNibble, GROUP_AL_JMPTBL_LADFUNC_GetHighNibble,
-;   GROUP_AK_JMPTBL_LAB_0EE7, ED1_JMPTBL_LAB_0EE6, ED1_JMPTBL_MEM_Move,
+;   ED_CommitCurrentAdEdits, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble, GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble,
+;   ED1_JMPTBL_LADFUNC_MergeHighLowNibbles, ED1_JMPTBL_LADFUNC_PackNibblesToByte, ED1_JMPTBL_MEM_Move,
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
-;   LAB_21ED, LAB_21FA, LAB_21E1, LAB_21E8, LAB_21E9, LAB_21EB, LAB_21FB,
-;   LAB_1D15, GLOB_REF_BOOL_IS_TEXT_OR_CURSOR, GLOB_REF_BOOL_IS_LINE_OR_PAGE
+;   ED_LastKeyCode, ED_LastMenuInputChar, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_BlockOffset, ED_TextLimit,
+;   DATA_DST_CONST_LONG_1D15, GLOB_REF_BOOL_IS_TEXT_OR_CURSOR, GLOB_REF_BOOL_IS_LINE_OR_PAGE
 ; WRITES:
-;   LAB_1D15, LAB_21E1, LAB_21E8, LAB_21E9, LAB_21EA, LAB_21EE,
+;   DATA_DST_CONST_LONG_1D15, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_AdActiveFlag, ED_TempCopyOffset,
 ;   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR, GLOB_REF_BOOL_IS_LINE_OR_PAGE
 ; DESC:
 ;   Handles editor input commands: character changes, cursor movement, and
 ;   line/page operations.
 ; NOTES:
-;   Switch-like chain on LAB_21ED and a secondary branch on LAB_21FA.
+;   Switch-like chain on ED_LastKeyCode and a secondary branch on ED_LastMenuInputChar.
 ;------------------------------------------------------------------------------
 ED_HandleEditorInput:
-LAB_0678:
     LINK.W  A5,#-4
     MOVEM.L D2/D7/A2,-(A7)
-    TST.L   LAB_1D15
+    TST.L   DATA_DST_CONST_LONG_1D15
     BEQ.S   .after_pending_init
 
     MOVEQ   #1,D0
     MOVE.L  D0,GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
-    MOVE.B  (A0),LAB_21E1
-    CLR.L   LAB_1D15
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    MOVE.B  (A0),ED_CurrentChar
+    CLR.L   DATA_DST_CONST_LONG_1D15
 
 .after_pending_init:
     JSR     ED_DrawCursorChar(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     SUBQ.W  #1,D0
     BEQ.W   .case_enable_insert_mode
 
@@ -272,7 +270,7 @@ LAB_0678:
 .case_force_text_mode:
     MOVEQ   #1,D0
     MOVE.L  D0,GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
-    MOVE.L  D0,LAB_1D15
+    MOVE.L  D0,DATA_DST_CONST_LONG_1D15
     JSR     ED_CommitCurrentAdEdits(PC)
 
     JSR     ED_DrawESCMenuBottomHelp(PC)
@@ -280,54 +278,54 @@ LAB_0678:
     BRA.W   .return
 
 .case_page_down:
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     MOVE.L  D0,D1
     SUBQ.L  #1,D1
     MOVEQ   #40,D0
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.S   .page_down_clamp
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  D0,LAB_21E8
+    MOVE.L  D0,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .page_down_clamp:
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  D0,LAB_21E8
+    MOVE.L  D0,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .case_enable_insert_mode:
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_21EA
+    MOVE.L  D0,ED_AdActiveFlag
     JSR     ED_ApplyActiveFlagToAdData(PC)
 
     BRA.W   .finalize_update
 
 .case_disable_insert_mode:
-    CLR.L   LAB_21EA
+    CLR.L   ED_AdActiveFlag
     JSR     ED_ApplyActiveFlagToAdData(PC)
 
     BRA.W   .finalize_update
 
 .case_adjust_char_prev:
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,16(A7)
-    JSR     GROUP_AL_JMPTBL_LADFUNC_GetLowNibble(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -340,24 +338,24 @@ LAB_0678:
     MOVE.B  D1,D0
     MOVE.L  D0,(A7)
     MOVE.L  16(A7),-(A7)
-    JSR     GROUP_AK_JMPTBL_LAB_0EE7(PC)
+    JSR     ED1_JMPTBL_LADFUNC_MergeHighLowNibbles(PC)
 
     ADDQ.W  #8,A7
-    MOVE.B  D0,LAB_21E1
+    MOVE.B  D0,ED_CurrentChar
     MOVEQ   #1,D0
     CMP.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR,D0
     BNE.W   .finalize_update
 
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
-    MOVE.B  LAB_21E1,(A0)
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    MOVE.B  ED_CurrentChar,(A0)
     BRA.W   .finalize_update
 
 .case_adjust_char_next:
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AL_JMPTBL_LADFUNC_GetHighNibble(PC)
+    JSR     GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(PC)
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -369,20 +367,20 @@ LAB_0678:
     MOVEQ   #0,D0
     MOVE.B  D1,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_21E1,D1
+    MOVE.B  ED_CurrentChar,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    JSR     ED1_JMPTBL_LAB_0EE6(PC)
+    JSR     ED1_JMPTBL_LADFUNC_PackNibblesToByte(PC)
 
     ADDQ.W  #8,A7
-    MOVE.B  D0,LAB_21E1
+    MOVE.B  D0,ED_CurrentChar
     MOVEQ   #1,D0
     CMP.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR,D0
     BNE.W   .finalize_update
 
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
-    MOVE.B  LAB_21E1,(A0)
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    MOVE.B  ED_CurrentChar,(A0)
     BRA.W   .finalize_update
 
 .case_toggle_text_cursor:
@@ -405,35 +403,35 @@ LAB_0678:
     BRA.W   .finalize_update
 
 .case_backspace:
-    TST.L   LAB_21E8
+    TST.L   ED_EditCursorOffset
     BEQ.W   .finalize_update
 
-    SUBQ.L  #1,LAB_21E8
+    SUBQ.L  #1,ED_EditCursorOffset
 
 .case_delete_at_cursor:
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.W   .delete_eol_refresh
 
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
     BNE.W   .delete_page_mode_update
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     SUBQ.L  #1,D0
-    MOVE.L  D0,LAB_21EE
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  D0,ED_TempCopyOffset
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.S   .delete_line_mode_update
 
-    LEA     LAB_21F1,A0
+    LEA     DATA_WDISP_BSS_BYTE_21F1,A0
     ADDA.L  D1,A0
-    LEA     LAB_21F0,A1
+    LEA     ED_EditBufferScratch,A1
     ADDA.L  D1,A1
     SUB.L   D1,D0
     MOVE.L  D0,-(A7)
@@ -441,12 +439,12 @@ LAB_0678:
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     LAB_21F8,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     DATA_WDISP_BSS_BYTE_21F8,A0
+    MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    LEA     LAB_21F7,A1
+    LEA     ED_EditBufferLive,A1
     ADDA.L  D0,A1
-    MOVE.L  LAB_21EE,D1
+    MOVE.L  ED_TempCopyOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  A1,-(A7)
@@ -456,30 +454,30 @@ LAB_0678:
     LEA     20(A7),A7
 
 .delete_line_mode_update:
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21EE,D0
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_TempCopyOffset,D0
     ADDA.L  D0,A0
     MOVE.B  #$20,(A0)
-    LEA     LAB_21F7,A0
-    MOVE.L  LAB_21EE,D0
+    LEA     ED_EditBufferLive,A0
+    MOVE.L  ED_TempCopyOffset,D0
     ADDA.L  D0,A0
-    LEA     LAB_21F6,A1
+    LEA     DATA_WDISP_BSS_BYTE_21F6,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),(A0)
-    MOVE.L  LAB_21E9,-(A7)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .delete_page_mode_update:
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
-    MOVE.L  D0,LAB_21EE
-    LEA     LAB_21F1,A0
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  D0,ED_TempCopyOffset
+    LEA     DATA_WDISP_BSS_BYTE_21F1,A0
+    MOVE.L  ED_EditCursorOffset,D1
     ADDA.L  D1,A0
-    LEA     LAB_21F0,A1
+    LEA     ED_EditBufferScratch,A1
     ADDA.L  D1,A1
     SUB.L   D1,D0
     MOVE.L  D0,-(A7)
@@ -487,30 +485,30 @@ LAB_0678:
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     LAB_21F8,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     DATA_WDISP_BSS_BYTE_21F8,A0
+    MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    LEA     LAB_21F7,A1
+    LEA     ED_EditBufferLive,A1
     ADDA.L  D0,A1
-    MOVE.L  LAB_21EE,D1
+    MOVE.L  ED_TempCopyOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21EE,D0
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_TempCopyOffset,D0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  #$20,(A1)
-    LEA     LAB_21F7,A1
-    MOVE.L  LAB_21EE,D0
+    LEA     ED_EditBufferLive,A1
+    MOVE.L  ED_TempCopyOffset,D0
     ADDA.L  D0,A1
-    LEA     LAB_21F6,A2
+    LEA     DATA_WDISP_BSS_BYTE_21F6,A2
     ADDA.L  D0,A2
     MOVE.B  (A2),(A1)
-    ADDA.L  LAB_21EB,A0
+    ADDA.L  ED_BlockOffset,A0
     CLR.B   (A0)
     JSR     ED_RedrawAllRows(PC)
 
@@ -518,21 +516,21 @@ LAB_0678:
     BRA.W   .finalize_update
 
 .delete_eol_refresh:
-    LEA     LAB_21EF,A0
-    ADDA.L  LAB_21EB,A0
+    LEA     DATA_WDISP_BSS_BYTE_21EF,A0
+    ADDA.L  ED_BlockOffset,A0
     MOVE.B  #$20,(A0)
     JSR     ED_DrawCursorChar(PC)
 
     BRA.W   .finalize_update
 
 .case_nav_key:
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  1(A0),D0
-    MOVE.B  D0,LAB_21FA
+    MOVE.B  D0,ED_LastMenuInputChar
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     SUBI.W  #$20,D1
@@ -586,55 +584,55 @@ LAB_0678:
     BRA.W   .finalize_update
 
 .nav_up_row:
-    MOVE.L  LAB_21E8,D0
+    MOVE.L  ED_EditCursorOffset,D0
     MOVEQ   #39,D1
     CMP.L   D1,D0
     BLE.W   .finalize_update
 
     MOVEQ   #40,D1
-    SUB.L   D1,LAB_21E8
+    SUB.L   D1,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .nav_down_row:
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.W   .finalize_update
 
     MOVEQ   #40,D0
-    ADD.L   D0,LAB_21E8
+    ADD.L   D0,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .nav_right:
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.W   .finalize_update
 
-    ADDQ.L  #1,LAB_21E8
+    ADDQ.L  #1,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .nav_left:
-    MOVE.L  LAB_21E8,D0
+    MOVE.L  ED_EditCursorOffset,D0
     TST.L   D0
     BLE.W   .finalize_update
 
-    SUBQ.L  #1,LAB_21E8
+    SUBQ.L  #1,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .case_handle_alt_code:
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  2(A0),D0
-    MOVE.B  D0,LAB_21ED
+    MOVE.B  D0,ED_LastKeyCode
     MOVEQ   #64,D1
     CMP.B   D1,D0
     BNE.S   .after_alt_code
@@ -642,7 +640,7 @@ LAB_0678:
     JSR     ED_NextAdNumber(PC)
 
 .after_alt_code:
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
     BNE.W   .finalize_update
@@ -652,7 +650,7 @@ LAB_0678:
     BRA.W   .finalize_update
 
 .case_enter_mode_9:
-    MOVE.B  #$9,LAB_1D13
+    MOVE.B  #$9,ED_MenuStateId
     JSR     ED_DrawEditHelpText(PC)
 
     BRA.W   .finalize_update
@@ -662,15 +660,15 @@ LAB_0678:
     CMP.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE,D0
     BNE.S   .cursor_from_line_index
 
-    CLR.L   LAB_21E8
+    CLR.L   ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .cursor_from_line_index:
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  D0,LAB_21E8
+    MOVE.L  D0,ED_EditCursorOffset
     BRA.W   .finalize_update
 
 .case_toggle_line_page_mode:
@@ -691,11 +689,11 @@ LAB_0678:
     MOVE.L  D1,GLOB_REF_BOOL_IS_LINE_OR_PAGE
     BEQ.S   .select_line_page_label
 
-    LEA     LAB_1D16,A0
+    LEA     DATA_ED2_STR_PAGE_1D16,A0
     BRA.S   .draw_line_page_label
 
 .select_line_page_label:
-    LEA     LAB_1D17,A0
+    LEA     DATA_ED2_STR_LINE_1D17,A0
 
 .draw_line_page_label:
     MOVE.L  A0,-(A7)
@@ -718,27 +716,27 @@ LAB_0678:
 
     JSR     ED_TransformLineSpacing_Mode3(PC)
 
-    MOVE.L  LAB_21E9,-(A7)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .action_0831_reset:
-    CLR.L   LAB_21E9
+    CLR.L   ED_ViewportOffset
 
 .action_0831_loop:
-    MOVE.L  LAB_21E9,D0
-    CMP.L   LAB_21FB,D0
+    MOVE.L  ED_ViewportOffset,D0
+    CMP.L   ED_TextLimit,D0
     BGE.S   .action_0831_done
 
     JSR     ED_TransformLineSpacing_Mode3(PC)
 
-    ADDQ.L  #1,LAB_21E9
+    ADDQ.L  #1,ED_ViewportOffset
     BRA.S   .action_0831_loop
 
 .action_0831_done:
-    CLR.L   LAB_21E8
+    CLR.L   ED_EditCursorOffset
     JSR     ED_RedrawAllRows(PC)
 
     BRA.W   .finalize_update
@@ -749,27 +747,27 @@ LAB_0678:
 
     JSR     ED_TransformLineSpacing_Mode1(PC)
 
-    MOVE.L  LAB_21E9,-(A7)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .action_0813_reset:
-    CLR.L   LAB_21E9
+    CLR.L   ED_ViewportOffset
 
 .action_0813_loop:
-    MOVE.L  LAB_21E9,D0
-    CMP.L   LAB_21FB,D0
+    MOVE.L  ED_ViewportOffset,D0
+    CMP.L   ED_TextLimit,D0
     BGE.S   .action_0813_done
 
     JSR     ED_TransformLineSpacing_Mode1(PC)
 
-    ADDQ.L  #1,LAB_21E9
+    ADDQ.L  #1,ED_ViewportOffset
     BRA.S   .action_0813_loop
 
 .action_0813_done:
-    CLR.L   LAB_21E8
+    CLR.L   ED_EditCursorOffset
     JSR     ED_RedrawAllRows(PC)
 
     BRA.W   .finalize_update
@@ -780,27 +778,27 @@ LAB_0678:
 
     JSR     ED_TransformLineSpacing_Mode2(PC)
 
-    MOVE.L  LAB_21E9,-(A7)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .action_0822_reset:
-    CLR.L   LAB_21E9
+    CLR.L   ED_ViewportOffset
 
 .action_0822_loop:
-    MOVE.L  LAB_21E9,D0
-    CMP.L   LAB_21FB,D0
+    MOVE.L  ED_ViewportOffset,D0
+    CMP.L   ED_TextLimit,D0
     BGE.S   .action_0822_done
 
     JSR     ED_TransformLineSpacing_Mode2(PC)
 
-    ADDQ.L  #1,LAB_21E9
+    ADDQ.L  #1,ED_ViewportOffset
     BRA.S   .action_0822_loop
 
 .action_0822_done:
-    CLR.L   LAB_21E8
+    CLR.L   ED_EditCursorOffset
     JSR     ED_RedrawAllRows(PC)
 
     BRA.W   .finalize_update
@@ -809,11 +807,11 @@ LAB_0678:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .clear_page_setup
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #39,D0
     MOVEQ   #32,D1
@@ -821,29 +819,29 @@ LAB_0678:
 .clear_line_space_loop:
     MOVE.B  D1,(A0)+
     DBF     D0,.clear_line_space_loop
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F7,A0
+    LEA     ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVEQ   #39,D1
 
 .clear_line_char_loop:
     MOVE.B  D0,(A0)+
     DBF     D1,.clear_line_char_loop
-    MOVE.L  LAB_21E9,-(A7)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .clear_page_setup:
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     MOVEQ   #32,D1
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     BRA.S   .clear_page_space_check
 
 .clear_page_space_loop:
@@ -854,9 +852,9 @@ LAB_0678:
     BCC.S   .clear_page_space_loop
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
-    MOVE.L  LAB_21EB,D1
-    LEA     LAB_21F7,A0
+    MOVE.B  ED_CurrentChar,D0
+    MOVE.L  ED_BlockOffset,D1
+    LEA     ED_EditBufferLive,A0
     BRA.S   .clear_page_char_check
 
 .clear_page_char_loop:
@@ -866,53 +864,53 @@ LAB_0678:
     SUBQ.L  #1,D1
     BCC.S   .clear_page_char_loop
 
-    LEA     LAB_21F0,A0
-    ADDA.L  LAB_21EB,A0
+    LEA     ED_EditBufferScratch,A0
+    ADDA.L  ED_BlockOffset,A0
     CLR.B   (A0)
     JSR     ED_RedrawAllRows(PC)
 
     BRA.W   .finalize_update
 
 .case_insert_row_shift:
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     SUBQ.L  #1,D0
-    MOVE.L  LAB_21E9,D1
+    MOVE.L  ED_ViewportOffset,D1
     CMP.L   D0,D1
     BGE.W   .finalize_update
 
     MOVEQ   #40,D0
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
-    MOVE.L  LAB_21EB,D1
+    MOVE.L  ED_BlockOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A1,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F7,A0
+    LEA     ED_EditBufferLive,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
-    MOVE.L  LAB_21EB,D1
+    MOVE.L  ED_BlockOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  A0,-(A7)
@@ -920,11 +918,11 @@ LAB_0678:
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
     LEA     20(A7),A7
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #39,D0
     MOVEQ   #32,D1
@@ -932,26 +930,26 @@ LAB_0678:
 .insert_row_space_loop:
     MOVE.B  D1,(A0)+
     DBF     D0,.insert_row_space_loop
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F7,A0
+    LEA     ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVEQ   #39,D1
 
 .insert_row_char_loop:
     MOVE.B  D0,(A0)+
     DBF     D1,.insert_row_char_loop
-    LEA     LAB_21F0,A0
-    ADDA.L  LAB_21EB,A0
+    LEA     ED_EditBufferScratch,A0
+    ADDA.L  ED_BlockOffset,A0
     CLR.B   (A0)
-    MOVE.L  LAB_21E9,D7
+    MOVE.L  ED_ViewportOffset,D7
 
 .insert_row_refresh_loop:
-    CMP.L   LAB_21FB,D7
+    CMP.L   ED_TextLimit,D7
     BGE.W   .finalize_update
 
     MOVE.L  D7,-(A7)
@@ -962,9 +960,9 @@ LAB_0678:
     BRA.S   .insert_row_refresh_loop
 
 .case_delete_row_shift:
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     SUBQ.L  #1,D0
-    MOVE.L  LAB_21E9,D1
+    MOVE.L  ED_ViewportOffset,D1
     CMP.L   D0,D1
     BGE.W   .finalize_update
 
@@ -973,40 +971,40 @@ LAB_0678:
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  D0,12(A7)
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
     MOVE.L  12(A7),D0
-    MOVE.L  LAB_21EB,D1
+    MOVE.L  ED_BlockOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  A1,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVE.L  D0,D1
     ADDQ.L  #1,D1
     MOVEQ   #40,D0
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F7,A0
+    LEA     ED_EditBufferLive,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  D0,24(A7)
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
     MOVE.L  24(A7),D0
-    MOVE.L  LAB_21EB,D1
+    MOVE.L  ED_BlockOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  A0,-(A7)
@@ -1014,12 +1012,12 @@ LAB_0678:
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
     LEA     20(A7),A7
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     MOVEQ   #39,D0
     MOVEQ   #32,D1
@@ -1027,27 +1025,27 @@ LAB_0678:
 .delete_row_space_loop:
     MOVE.B  D1,(A0)+
     DBF     D0,.delete_row_space_loop
-    MOVE.L  LAB_21FB,D0
+    MOVE.L  ED_TextLimit,D0
     SUBQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F7,A0
+    LEA     ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVEQ   #39,D1
 
 .delete_row_char_loop:
     MOVE.B  D0,(A0)+
     DBF     D1,.delete_row_char_loop
-    LEA     LAB_21F0,A0
-    ADDA.L  LAB_21EB,A0
+    LEA     ED_EditBufferScratch,A0
+    ADDA.L  ED_BlockOffset,A0
     CLR.B   (A0)
-    MOVE.L  LAB_21E9,D7
+    MOVE.L  ED_ViewportOffset,D7
 
 .delete_row_refresh_loop:
-    CMP.L   LAB_21FB,D7
+    CMP.L   ED_TextLimit,D7
     BGE.W   .finalize_update
 
     MOVE.L  D7,-(A7)
@@ -1061,20 +1059,20 @@ LAB_0678:
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .fill_page_chars
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_21F7,A0
+    LEA     ED_EditBufferLive,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVEQ   #39,D1
 
 .fill_row_chars_loop:
     MOVE.B  D0,(A0)+
     DBF     D1,.fill_row_chars_loop
-    MOVE.L  LAB_21E9,-(A7)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
@@ -1082,9 +1080,9 @@ LAB_0678:
 
 .fill_page_chars:
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
-    MOVE.L  LAB_21EB,D1
-    LEA     LAB_21F7,A0
+    MOVE.B  ED_CurrentChar,D0
+    MOVE.L  ED_BlockOffset,D1
+    LEA     ED_EditBufferLive,A0
     BRA.S   .fill_page_chars_check
 
 .fill_page_chars_loop:
@@ -1099,29 +1097,29 @@ LAB_0678:
     BRA.W   .finalize_update
 
 .case_insert_char:
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.W   .insert_char_eol
 
     TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
     BNE.W   .insert_char_page_update
 
-    MOVE.L  LAB_21E9,D0
+    MOVE.L  ED_ViewportOffset,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
     SUBQ.L  #1,D0
-    MOVE.L  D0,LAB_21EE
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  D0,ED_TempCopyOffset
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.S   .insert_char_line_update
 
-    LEA     LAB_21F0,A0
+    LEA     ED_EditBufferScratch,A0
     ADDA.L  D1,A0
-    LEA     LAB_21F1,A1
+    LEA     DATA_WDISP_BSS_BYTE_21F1,A1
     ADDA.L  D1,A1
     SUB.L   D1,D0
     MOVE.L  D0,-(A7)
@@ -1129,12 +1127,12 @@ LAB_0678:
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     LAB_21F7,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     ED_EditBufferLive,A0
+    MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    LEA     LAB_21F8,A1
+    LEA     DATA_WDISP_BSS_BYTE_21F8,A1
     ADDA.L  D0,A1
-    MOVE.L  LAB_21EE,D1
+    MOVE.L  ED_TempCopyOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  A1,-(A7)
@@ -1144,27 +1142,27 @@ LAB_0678:
     LEA     20(A7),A7
 
 .insert_char_line_update:
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
     MOVE.B  #$20,(A0)
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
-    MOVE.B  LAB_21E1,(A0)
-    MOVE.L  LAB_21E9,-(A7)
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    MOVE.B  ED_CurrentChar,(A0)
+    MOVE.L  ED_ViewportOffset,-(A7)
     JSR     ED_RedrawRow(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .finalize_update
 
 .insert_char_page_update:
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
-    MOVE.L  D0,LAB_21EE
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  D0,ED_TempCopyOffset
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_EditCursorOffset,D1
     ADDA.L  D1,A0
-    LEA     LAB_21F1,A1
+    LEA     DATA_WDISP_BSS_BYTE_21F1,A1
     ADDA.L  D1,A1
     SUB.L   D1,D0
     MOVE.L  D0,-(A7)
@@ -1172,27 +1170,27 @@ LAB_0678:
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     LAB_21F7,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     ED_EditBufferLive,A0
+    MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    LEA     LAB_21F8,A1
+    LEA     DATA_WDISP_BSS_BYTE_21F8,A1
     ADDA.L  D0,A1
-    MOVE.L  LAB_21EE,D1
+    MOVE.L  ED_TempCopyOffset,D1
     SUB.L   D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_EditCursorOffset,D0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  #$20,(A1)
-    LEA     LAB_21F7,A1
-    ADDA.L  LAB_21E8,A1
-    MOVE.B  LAB_21E1,(A1)
-    ADDA.L  LAB_21EB,A0
+    LEA     ED_EditBufferLive,A1
+    ADDA.L  ED_EditCursorOffset,A1
+    MOVE.B  ED_CurrentChar,(A1)
+    ADDA.L  ED_BlockOffset,A0
     CLR.B   (A0)
     JSR     ED_RedrawAllRows(PC)
 
@@ -1200,15 +1198,15 @@ LAB_0678:
     BRA.S   .finalize_update
 
 .insert_char_eol:
-    LEA     LAB_21EF,A0
-    ADDA.L  LAB_21EB,A0
+    LEA     DATA_WDISP_BSS_BYTE_21EF,A0
+    ADDA.L  ED_BlockOffset,A0
     MOVE.B  #$20,(A0)
     JSR     ED_DrawCursorChar(PC)
 
     BRA.S   .finalize_update
 
 .case_insert_ascii_char:
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     MOVEQ   #25,D1
     CMP.B   D1,D0
     BLS.S   .finalize_update
@@ -1220,48 +1218,48 @@ LAB_0678:
     CMP.L   D2,D1
     BGE.S   .finalize_update
 
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21E8,D1
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_EditCursorOffset,D1
     ADDA.L  D1,A0
     MOVE.B  D0,(A0)
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
-    MOVE.B  LAB_21E1,(A0)
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    MOVE.B  ED_CurrentChar,(A0)
     JSR     ED_DrawCursorChar(PC)
 
-    MOVE.L  LAB_21EB,D0
+    MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
-    MOVE.L  LAB_21E8,D1
+    MOVE.L  ED_EditCursorOffset,D1
     CMP.L   D0,D1
     BGE.S   .finalize_update
 
-    ADDQ.L  #1,LAB_21E8
+    ADDQ.L  #1,ED_EditCursorOffset
 
 .finalize_update:
     TST.L   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
     BNE.S   .sync_current_char_from_buffer
 
-    LEA     LAB_21F7,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     ED_EditBufferLive,A0
+    MOVE.L  ED_EditCursorOffset,D0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
-    MOVE.B  LAB_21E1,(A1)
+    MOVE.B  ED_CurrentChar,(A1)
     BRA.S   .after_sync_current_char
 
 .sync_current_char_from_buffer:
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
-    MOVE.B  (A0),LAB_21E1
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    MOVE.B  (A0),ED_CurrentChar
 
 .after_sync_current_char:
-    MOVE.B  LAB_1D13,D0
+    MOVE.B  ED_MenuStateId,D0
     SUBQ.B  #4,D0
     BNE.S   .return
 
     JSR     ED_RedrawCursorChar(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_21E1,D0
+    MOVE.B  ED_CurrentChar,D0
     MOVE.L  D0,-(A7)
     JSR     ED_DrawCurrentColorIndicator(PC)
 
@@ -1275,35 +1273,34 @@ LAB_0678:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_EnterTextEditMode   (Enter text edit mode??)
+; FUNC: ED_EnterTextEditMode   (Enter text edit modeuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0/A0 ??
+;   A0/A7/D0
 ; CALLS:
 ;   ED_DrawAdEditingScreen, ED_RedrawAllRows, ED_RedrawCursorChar, ED_DrawCurrentColorIndicator
 ; READS:
-;   LAB_21E8, LAB_21F7
+;   ED_EditCursorOffset, ED_EditBufferLive
 ; WRITES:
-;   LAB_1D13
+;   ED_MenuStateId
 ; DESC:
 ;   Switches to mode 4 and refreshes the edit display for the current entry.
 ; NOTES:
-;   Uses LAB_21F7 + LAB_21E8 to fetch the current byte for display.
+;   Uses ED_EditBufferLive + ED_EditCursorOffset to fetch the current byte for display.
 ;------------------------------------------------------------------------------
 ED_EnterTextEditMode:
-LAB_06C0:
-    MOVE.B  #$4,LAB_1D13
+    MOVE.B  #$4,ED_MenuStateId
     JSR     ED_DrawAdEditingScreen(PC)
 
     JSR     ED_RedrawAllRows(PC)
 
     JSR     ED_RedrawCursorChar(PC)
 
-    LEA     LAB_21F7,A0
-    ADDA.L  LAB_21E8,A0
+    LEA     ED_EditBufferLive,A0
+    ADDA.L  ED_EditCursorOffset,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
@@ -1315,45 +1312,44 @@ LAB_06C0:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_CaptureKeySequence   (Capture key sequence??)
+; FUNC: ED_CaptureKeySequence   (Capture key sequenceuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D1/D7/A0-A1 ??
+;   A0/A1/A7/D0/D1/D7
 ; CALLS:
-;   LAB_09B2, GROUP_AG_JMPTBL_MATH_DivS32
+;   ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
-;   LAB_231C, LAB_231D, LAB_21A8, LAB_1D18, LAB_1D19
+;   ED_StateRingIndex, ED_StateRingTable, WDISP_CharClassTable, DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19
 ; WRITES:
-;   LAB_1D18, LAB_1D19, LAB_1FB7, LAB_1FB8, LAB_1D13
+;   DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19, DATA_KYBD_BSS_BYTE_1FB7, DATA_KYBD_BSS_BYTE_1FB8, ED_MenuStateId
 ; DESC:
-;   Captures an input sequence and writes it into the LAB_1FB7/LAB_1FB8 buffers.
+;   Captures an input sequence and writes it into the DATA_KYBD_BSS_BYTE_1FB7/DATA_KYBD_BSS_BYTE_1FB8 buffers.
 ; NOTES:
-;   Copies a 24-byte template from LAB_1D1A into the output buffer on completion.
+;   Copies a 24-byte template from DATA_ED2_CONST_LONG_1D1A into the output buffer on completion.
 ;------------------------------------------------------------------------------
 ED_CaptureKeySequence:
-LAB_06C1:
     LINK.W  A5,#-28
     MOVE.L  D7,-(A7)
-    LEA     LAB_1D1A,A0
+    LEA     DATA_ED2_CONST_LONG_1D1A,A0
     LEA     -25(A5),A1
     MOVEQ   #23,D0
 
 .copy_template_to_stack:
     MOVE.B  (A0)+,(A1)+
     DBF     D0,.copy_template_to_stack
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),D0
-    MOVE.B  D0,LAB_21ED
+    MOVE.B  D0,ED_LastKeyCode
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    LEA     LAB_21A8,A0
+    LEA     WDISP_CharClassTable,A0
     ADDA.L  D1,A0
     BTST    #7,(A0)
     BEQ.S   .no_capture_flag
@@ -1361,20 +1357,20 @@ LAB_06C1:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_09B2(PC)
+    JSR     ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    TST.L   LAB_1D18
+    TST.L   DATA_ED2_BSS_LONG_1D18
     BNE.S   .have_pending_capture
 
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.L  D0,LAB_1D19
+    MOVE.L  D0,DATA_ED2_BSS_LONG_1D19
     BRA.S   .advance_capture_slot
 
 .have_pending_capture:
-    MOVE.L  LAB_1D19,D0
+    MOVE.L  DATA_ED2_BSS_LONG_1D19,D0
     TST.L   D0
     BMI.S   .invalidate_capture
 
@@ -1387,52 +1383,52 @@ LAB_06C1:
     BCC.S   .invalidate_capture
 
     LSL.L   #2,D0
-    SUB.L   LAB_1D19,D0
-    MOVE.L  LAB_1D18,D1
+    SUB.L   DATA_ED2_BSS_LONG_1D19,D0
+    MOVE.L  DATA_ED2_BSS_LONG_1D18,D1
     ADD.L   D1,D0
-    LEA     LAB_1FB7,A0
+    LEA     DATA_KYBD_BSS_BYTE_1FB7,A0
     ADDA.L  D0,A0
     MOVE.B  D7,(A0)
     BRA.S   .advance_capture_slot
 
 .invalidate_capture:
     MOVEQ   #-1,D0
-    MOVE.L  D0,LAB_1D19
+    MOVE.L  D0,DATA_ED2_BSS_LONG_1D19
     BRA.S   .advance_capture_slot
 
 .no_capture_flag:
     MOVEQ   #-1,D0
-    MOVE.L  D0,LAB_1D19
+    MOVE.L  D0,DATA_ED2_BSS_LONG_1D19
 
 .advance_capture_slot:
-    MOVE.L  LAB_1D18,D0
+    MOVE.L  DATA_ED2_BSS_LONG_1D18,D0
     ADDQ.L  #1,D0
     MOVEQ   #4,D1
     JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.L  D1,LAB_1D18
+    MOVE.L  D1,DATA_ED2_BSS_LONG_1D18
     BNE.S   .return
 
-    MOVE.L  LAB_1D19,D0
+    MOVE.L  DATA_ED2_BSS_LONG_1D19,D0
     TST.L   D0
     BPL.S   .finish_capture
 
-    CLR.L   LAB_1D19
+    CLR.L   DATA_ED2_BSS_LONG_1D19
 
 .copy_buffer_loop:
-    MOVE.L  LAB_1D19,D0
+    MOVE.L  DATA_ED2_BSS_LONG_1D19,D0
     MOVEQ   #24,D1
     CMP.L   D1,D0
     BGE.S   .finish_capture
 
-    LEA     LAB_1FB8,A0
+    LEA     DATA_KYBD_BSS_BYTE_1FB8,A0
     ADDA.L  D0,A0
     MOVE.B  -25(A5,D0.L),(A0)
-    ADDQ.L  #1,LAB_1D19
+    ADDQ.L  #1,DATA_ED2_BSS_LONG_1D19
     BRA.S   .copy_buffer_loop
 
 .finish_capture:
-    CLR.B   LAB_1D13
+    CLR.B   ED_MenuStateId
 
 .return:
     MOVE.L  (A7)+,D7
@@ -1442,16 +1438,16 @@ LAB_06C1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_FindNextCharInTable   (Find next char in table??)
+; FUNC: ED_FindNextCharInTable   (Find next char in tableuncertain)
 ; ARGS:
-;   stack +4: u8 currentChar ??
-;   stack +8: char* table
+;   stack +7: arg_1 (via 11(A5))
+;   stack +8: arg_2 (via 12(A5))
 ; RET:
-;   D0: u8 nextChar ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0/A0/A3 ??
+;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   LAB_05C1
+;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper
 ; READS:
 ;   (none)
 ; WRITES:
@@ -1462,7 +1458,6 @@ LAB_06C1:
 ;   If the lookup returns null, it falls back to the table base.
 ;------------------------------------------------------------------------------
 ED_FindNextCharInTable:
-LAB_06CA:
     LINK.W  A5,#-4
     MOVEM.L D7/A3,-(A7)
     MOVE.B  11(A5),D7
@@ -1471,7 +1466,7 @@ LAB_06CA:
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     LAB_05C1(PC)
+    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1501,29 +1496,28 @@ LAB_06CA:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_HandleDiagnosticNibbleEdit   (Handle diagnostic nibble edits??)
+; FUNC: ED_HandleDiagnosticNibbleEdit   (Handle diagnostic nibble editsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D2/A0-A1 ??
+;   A0/A1/A7/D0/D1/D2
 ; CALLS:
-;   ED_DrawESCMenuBottomHelp, GROUP_AK_JMPTBL_LAB_0CA7, ED_DrawDiagnosticRegisterValues
+;   ED_DrawESCMenuBottomHelp, ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp, ED_DrawDiagnosticRegisterValues
 ; READS:
-;   LAB_21ED, LAB_21EE, LAB_231C, LAB_231D
+;   ED_LastKeyCode, ED_TempCopyOffset, ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
-;   LAB_21EE, LAB_21FA, LAB_1DE0, LAB_1DE1, LAB_1DE2
+;   ED_TempCopyOffset, ED_LastMenuInputChar, DATA_ESQ_BSS_BYTE_1DE0, DATA_ESQ_BSS_BYTE_1DE1, DATA_ESQ_CONST_BYTE_1DE2
 ; DESC:
 ;   Adjusts per-entry nibble values and selection index, then refreshes display.
 ; NOTES:
 ;   Wraps nibble values in the 0..15 range.
 ;------------------------------------------------------------------------------
 ED_HandleDiagnosticNibbleEdit:
-LAB_06CE:
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     SUBI.W  #13,D0
     BEQ.S   .case_show_help
 
@@ -1559,10 +1553,10 @@ LAB_06CE:
     BRA.W   .return
 
 .case_inc_table0:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
-    SUB.L   LAB_21EE,D0
-    LEA     LAB_1DE0,A0
+    SUB.L   ED_TempCopyOffset,D0
+    LEA     DATA_ESQ_BSS_BYTE_1DE0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
@@ -1576,10 +1570,10 @@ LAB_06CE:
     BRA.W   .after_index_update
 
 .case_dec_table0:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
-    SUB.L   LAB_21EE,D0
-    LEA     LAB_1DE0,A0
+    SUB.L   ED_TempCopyOffset,D0
+    LEA     DATA_ESQ_BSS_BYTE_1DE0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     SUBQ.B  #1,(A1)
@@ -1591,10 +1585,10 @@ LAB_06CE:
     BRA.W   .after_index_update
 
 .case_inc_table1:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
-    SUB.L   LAB_21EE,D0
-    LEA     LAB_1DE1,A0
+    SUB.L   ED_TempCopyOffset,D0
+    LEA     DATA_ESQ_BSS_BYTE_1DE1,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
@@ -1608,10 +1602,10 @@ LAB_06CE:
     BRA.W   .after_index_update
 
 .case_dec_table1:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
-    SUB.L   LAB_21EE,D0
-    LEA     LAB_1DE1,A0
+    SUB.L   ED_TempCopyOffset,D0
+    LEA     DATA_ESQ_BSS_BYTE_1DE1,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     SUBQ.B  #1,(A1)
@@ -1623,10 +1617,10 @@ LAB_06CE:
     BRA.W   .after_index_update
 
 .case_inc_table2:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
-    SUB.L   LAB_21EE,D0
-    LEA     LAB_1DE2,A0
+    SUB.L   ED_TempCopyOffset,D0
+    LEA     DATA_ESQ_CONST_BYTE_1DE2,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
@@ -1640,10 +1634,10 @@ LAB_06CE:
     BRA.S   .after_index_update
 
 .case_dec_table2:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
-    SUB.L   LAB_21EE,D0
-    LEA     LAB_1DE2,A0
+    SUB.L   ED_TempCopyOffset,D0
+    LEA     DATA_ESQ_CONST_BYTE_1DE2,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     SUBQ.B  #1,(A1)
@@ -1655,34 +1649,34 @@ LAB_06CE:
     BRA.S   .after_index_update
 
 .case_adjust_index:
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  1(A0),D0
-    MOVE.B  D0,LAB_21FA
+    MOVE.B  D0,ED_LastMenuInputChar
     MOVEQ   #68,D1
     CMP.B   D1,D0
     BNE.S   .case_increment_index
 
-    SUBQ.L  #1,LAB_21EE
+    SUBQ.L  #1,ED_TempCopyOffset
     BGE.S   .after_index_update
 
     MOVEQ   #39,D0
-    MOVE.L  D0,LAB_21EE
+    MOVE.L  D0,ED_TempCopyOffset
     BRA.S   .after_index_update
 
 .case_increment_index:
-    ADDQ.L  #1,LAB_21EE
+    ADDQ.L  #1,ED_TempCopyOffset
     MOVEQ   #40,D0
-    CMP.L   LAB_21EE,D0
+    CMP.L   ED_TempCopyOffset,D0
     BNE.S   .after_index_update
 
-    CLR.L   LAB_21EE
+    CLR.L   ED_TempCopyOffset
 
 .after_index_update:
-    MOVE.L  LAB_21EE,D0
+    MOVE.L  ED_TempCopyOffset,D0
     TST.L   D0
     BMI.S   .skip_refresh
 
@@ -1690,7 +1684,7 @@ LAB_06CE:
     CMP.L   D1,D0
     BGE.S   .skip_refresh
 
-    JSR     GROUP_AK_JMPTBL_LAB_0CA7(PC)
+    JSR     ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp(PC)
 
 .skip_refresh:
     JSR     ED_DrawDiagnosticRegisterValues(PC)
@@ -1702,28 +1696,27 @@ LAB_06CE:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_HandleSpecialFunctionsMenu   (Handle ESC special functions menu??)
+; FUNC: ED_HandleSpecialFunctionsMenu   (Handle ESC special functions menuuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D3/D7/A0-A1/A6 ??
+;   A1/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
 ;   ED_GetEscMenuActionCode, ED_DrawAreYouSurePrompt, ED_DrawMenuSelectionHighlight, ED_DrawDiagnosticRegisterValues,
 ;   ED_DrawESCMenuBottomHelp, ED_DrawSpecialFunctionsMenu,
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVORectFill
 ; READS:
-;   LAB_21E8, LAB_1D13
+;   ED_EditCursorOffset, ED_MenuStateId
 ; WRITES:
-;   LAB_1D13, LAB_21E8, LAB_21EE
+;   ED_MenuStateId, ED_EditCursorOffset, ED_TempCopyOffset
 ; DESC:
 ;   Dispatches ESC special-functions menu selection and updates display state.
 ; NOTES:
 ;   Uses a switch/jumptable on the key code returned by ED_GetEscMenuActionCode.
 ;------------------------------------------------------------------------------
 ED_HandleSpecialFunctionsMenu:
-LAB_06DB:
     MOVEM.L D2-D3/D7,-(A7)
     JSR     ED_GetEscMenuActionCode(PC)
 
@@ -1757,41 +1750,41 @@ LAB_06DB:
 .case_show_label_1d1b:
     JSR     ED_DrawAreYouSurePrompt(PC)
 
-    PEA     LAB_1D1B
+    PEA     DATA_ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT_1D1B
     PEA     90.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVE.B  #$b,LAB_1D13
+    MOVE.B  #$b,ED_MenuStateId
 
     BRA.W   .return
 
 .case_show_label_1d1c:
     JSR     ED_DrawAreYouSurePrompt(PC)
 
-    PEA     LAB_1D1C
+    PEA     DATA_ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT_1D1C
     PEA     90.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVE.B  #$c,LAB_1D13
+    MOVE.B  #$c,ED_MenuStateId
     BRA.W   .return
 
 .case_show_label_1d1d:
     JSR     ED_DrawAreYouSurePrompt(PC)
 
-    PEA     LAB_1D1D
+    PEA     DATA_ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL_1D1D
     PEA     90.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVE.B  #$d,LAB_1D13
+    MOVE.B  #$d,ED_MenuStateId
     BRA.W   .return
 
 .case_show_reboot_warning:
@@ -1810,15 +1803,15 @@ LAB_06DB:
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
-    MOVE.B  #$e,LAB_1D13
+    MOVE.B  #$e,ED_MenuStateId
     BRA.W   .return
 
 .case_prev_special_selection:
-    SUBQ.L  #1,LAB_21E8
+    SUBQ.L  #1,ED_EditCursorOffset
     BGE.S   .redraw_special_menu
 
     MOVEQ   #3,D0
-    MOVE.L  D0,LAB_21E8
+    MOVE.L  D0,ED_EditCursorOffset
 
 .redraw_special_menu:
     PEA     4.W
@@ -1831,10 +1824,10 @@ LAB_06DB:
 
 .case_draw_color_bars:
     MOVEQ   #2,D0
-    CMP.L   LAB_21E8,D0
+    CMP.L   ED_EditCursorOffset,D0
     BNE.W   .case_next_special_selection
 
-    MOVE.B  #$f,LAB_1D13
+    MOVE.B  #$f,ED_MenuStateId
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
@@ -1919,18 +1912,18 @@ LAB_06DB:
     MOVE.L  #$280,D2
     JSR     _LVORectFill(A6)
 
-    CLR.L   LAB_21EE
+    CLR.L   ED_TempCopyOffset
     JSR     ED_DrawDiagnosticRegisterValues(PC)
 
     BRA.S   .return
 
 .case_next_special_selection:
-    ADDQ.L  #1,LAB_21E8
+    ADDQ.L  #1,ED_EditCursorOffset
     MOVEQ   #4,D0
-    CMP.L   LAB_21E8,D0
+    CMP.L   ED_EditCursorOffset,D0
     BNE.S   .after_selection_wrap
 
-    CLR.L   LAB_21E8
+    CLR.L   ED_EditCursorOffset
 
 .after_selection_wrap:
     MOVE.L  D0,-(A7)
@@ -1947,15 +1940,15 @@ LAB_06DB:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_SaveEverythingToDisk   (Save everything to disk??)
+; FUNC: ED_SaveEverythingToDisk   (Save everything to diskuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
-;   D0/D7/A0-A1/A6 ??
+;   A7/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, LAB_0484,
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, DISKIO2_RunDiskSyncWorkflow,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
@@ -1968,7 +1961,6 @@ LAB_06DB:
 ;------------------------------------------------------------------------------
 ED_SaveEverythingToDisk:
 ; Print 'Saving "EVERYTHING" to disk'
-LAB_06E2:
     MOVE.L  D7,-(A7)
     JSR     ED_IsConfirmKey(PC)
 
@@ -1983,7 +1975,7 @@ LAB_06E2:
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     1.W
-    JSR     LAB_0484(PC)
+    JSR     DISKIO2_RunDiskSyncWorkflow(PC)
 
     LEA     20(A7),A7
 
@@ -1996,15 +1988,15 @@ LAB_06E2:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_SavePrevueDataToDisk   (Save Prevue data to disk??)
+; FUNC: ED_SavePrevueDataToDisk   (Save Prevue data to diskuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
-;   D0/D7/A0-A1/A6 ??
+;   A7/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, LAB_0471,
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, DISKIO2_WriteCurDayDataFile,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
@@ -2016,7 +2008,6 @@ LAB_06E2:
 ;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
 ;------------------------------------------------------------------------------
 ED_SavePrevueDataToDisk:
-LAB_06E4:
     MOVE.L  D7,-(A7)
     JSR     ED_IsConfirmKey(PC)
 
@@ -2030,7 +2021,7 @@ LAB_06E4:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    JSR     LAB_0471(PC)
+    JSR     DISKIO2_WriteCurDayDataFile(PC)
 
     LEA     16(A7),A7
 
@@ -2043,15 +2034,15 @@ LAB_06E4:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_LoadTextAdsFromDh2   (Load text ads from DH2??)
+; FUNC: ED_LoadTextAdsFromDh2   (Load text ads from DH2uncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
-;   D0/D7/A0-A1/A6 ??
+;   A7/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile,
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
@@ -2063,7 +2054,6 @@ LAB_06E4:
 ;   Skips display/trigger if ED_IsConfirmKey reports busy (D0 nonzero).
 ;------------------------------------------------------------------------------
 ED_LoadTextAdsFromDh2:
-LAB_06E6:
     MOVE.L  D7,-(A7)
 
     JSR     ED_IsConfirmKey(PC)
@@ -2078,7 +2068,7 @@ LAB_06E6:
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    JSR     ESQ_JMPTBL_LADFUNC_LoadTextAdsFromFile(PC)
+    JSR     GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(PC)
 
     LEA     16(A7),A7
 
@@ -2091,15 +2081,15 @@ LAB_06E6:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_RebootComputer   (Reboot computer??)
+; FUNC: ED_RebootComputer   (Reboot computeruncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
-;   D0/D6-D7/A0-A1/A6 ??
+;   A7/D6/D7
 ; CALLS:
-;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, GROUP_AK_JMPTBL_ESQ_ColdReboot,
+;   ED_IsConfirmKey, DISPLIB_DisplayTextAtPosition, ED1_JMPTBL_ESQ_ColdReboot,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   GLOB_REF_RASTPORT_1
@@ -2112,7 +2102,6 @@ LAB_06E6:
 ;------------------------------------------------------------------------------
 ED_RebootComputer:
 ; display 'rebooting computer' while requesting a reboot through supervisor?
-LAB_06E8:
     MOVEM.L D6-D7,-(A7)
 
     JSR     ED_IsConfirmKey(PC)
@@ -2139,7 +2128,7 @@ LAB_06E8:
     BRA.S   .delay_loop
 
 .trigger_reboot:
-    JSR     GROUP_AK_JMPTBL_ESQ_ColdReboot(PC)
+    JSR     ED1_JMPTBL_ESQ_ColdReboot(PC)
 
 .after_reboot:
     JSR     ED_DrawESCMenuBottomHelp(PC)
@@ -2150,22 +2139,22 @@ LAB_06E8:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_HandleEditAttributesMenu   (Handle edit attributes menu??)
+; FUNC: ED_HandleEditAttributesMenu   (Handle edit attributes menuuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D4/A0-A1/A6 ??
+;   A0/A1/A6/A7/D0/D1/D2/D3/D4
 ; CALLS:
 ;   ED_DrawCursorChar, ED_RedrawCursorChar, ED_NextAdNumber, ED_PrevAdNumber, ED_DrawEditHelpText, ED_DrawAdEditingScreen, ED_LoadCurrentAdIntoBuffers,
 ;   ED_DrawHelpPanels, ED_UpdateAdNumberDisplay, DISPLIB_DisplayTextAtPosition,
 ;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
 ;   _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   LAB_21ED, LAB_21E8, LAB_21F2, LAB_21F3, LAB_21FD, LAB_1D13
+;   ED_LastKeyCode, ED_EditCursorOffset, DATA_WDISP_BSS_BYTE_21F2, DATA_WDISP_BSS_BYTE_21F3, DATA_WDISP_BSS_LONG_21FD, ED_MenuStateId
 ; WRITES:
-;   LAB_21E8, LAB_21F0, LAB_1D13, LAB_21E4, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   ED_EditCursorOffset, ED_EditBufferScratch, ED_MenuStateId, DATA_WDISP_BSS_LONG_21E4, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
 ;   Handles edit-attributes input, updating the buffer and selected ad number.
 ; NOTES:
@@ -2173,12 +2162,11 @@ LAB_06E8:
 ;------------------------------------------------------------------------------
 ED_HandleEditAttributesMenu:
 ; Draw 'Edit Attributes' menu
-LAB_06EC:
     MOVEM.L D2-D4,-(A7)
     JSR     ED_DrawCursorChar(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     SUBQ.W  #8,D0
     BEQ.S   .case_backspace
 
@@ -2191,14 +2179,14 @@ LAB_06EC:
     BRA.W   .case_digit_input
 
 .case_backspace:
-    MOVE.L  LAB_21E8,D0
+    MOVE.L  ED_EditCursorOffset,D0
     MOVEQ   #12,D1
     CMP.L   D1,D0
     BLE.S   .after_backspace
 
-    SUBQ.L  #1,LAB_21E8
-    LEA     LAB_21F0,A0
-    ADDA.L  LAB_21E8,A0
+    SUBQ.L  #1,ED_EditCursorOffset
+    LEA     ED_EditBufferScratch,A0
+    ADDA.L  ED_EditCursorOffset,A0
     MOVE.B  #$20,(A0)
 
 .after_backspace:
@@ -2207,19 +2195,19 @@ LAB_06EC:
     BRA.W   .refresh_attribute_display
 
 .case_nav_key:
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVE.B  1(A0),D0
-    MOVE.B  D0,LAB_21FA
+    MOVE.B  D0,ED_LastMenuInputChar
     MOVEQ   #67,D1
     CMP.B   D1,D0
     BNE.S   .after_nav_key
 
     MOVEQ   #13,D1
-    MOVE.L  D1,LAB_21E8
+    MOVE.L  D1,ED_EditCursorOffset
     BRA.W   .refresh_attribute_display
 
 .after_nav_key:
@@ -2228,16 +2216,16 @@ LAB_06EC:
     BNE.W   .refresh_attribute_display
 
     MOVEQ   #12,D0
-    MOVE.L  D0,LAB_21E8
+    MOVE.L  D0,ED_EditCursorOffset
     BRA.W   .refresh_attribute_display
 
 .case_commit_ad_number:
-    MOVE.B  LAB_21F2,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_21F2,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
     BNE.S   .ad_second_blank
 
-    MOVE.B  LAB_21F3,D2
+    MOVE.B  DATA_WDISP_BSS_BYTE_21F3,D2
     CMP.B   D1,D2
     BEQ.S   .ad_both_blank
 
@@ -2254,7 +2242,7 @@ LAB_06EC:
     BRA.S   .ad_number_ready
 
 .ad_second_blank:
-    MOVE.B  LAB_21F3,D2
+    MOVE.B  DATA_WDISP_BSS_BYTE_21F3,D2
     CMP.B   D1,D2
     BNE.S   .ad_two_digits
 
@@ -2282,7 +2270,7 @@ LAB_06EC:
 
 .ad_number_ready:
     MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
-    CMP.L   LAB_21FD,D0
+    CMP.L   DATA_WDISP_BSS_LONG_21FD,D0
     BLE.S   .ad_number_in_range
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -2290,7 +2278,7 @@ LAB_06EC:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    PEA     LAB_1D24
+    PEA     DATA_ED2_STR_NUMBER_TOO_BIG_1D24
     PEA     150.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
@@ -2313,7 +2301,7 @@ LAB_06EC:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    PEA     LAB_1D25
+    PEA     DATA_ED2_STR_NUMBER_TOO_SMALL_1D25
     PEA     150.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
@@ -2328,21 +2316,21 @@ LAB_06EC:
     BRA.W   .return
 
 .ad_number_mode2:
-    MOVE.B  LAB_1D13,D0
+    MOVE.B  ED_MenuStateId,D0
     SUBQ.B  #2,D0
     BNE.S   .ad_number_other_mode
 
-    MOVE.B  #$4,LAB_1D13
+    MOVE.B  #$4,ED_MenuStateId
     JSR     ED_DrawAdEditingScreen(PC)
 
     JSR     ED_LoadCurrentAdIntoBuffers(PC)
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_21E4
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_21E4
     BRA.W   .return
 
 .ad_number_other_mode:
-    MOVE.B  #$5,LAB_1D13
+    MOVE.B  #$5,ED_MenuStateId
     PEA     6.W
     JSR     ED_DrawHelpPanels(PC)
 
@@ -2357,19 +2345,19 @@ LAB_06EC:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     LAB_1D26
+    PEA     DATA_ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT_1D26
     PEA     330.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     LAB_1D27
+    PEA     DATA_ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION_1D27
     PEA     360.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     LAB_1D28
+    PEA     DATA_ED2_STR_PUSH_ANY_KEY_TO_SELECT_1D28
     PEA     390.W
     PEA     40.W
     MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
@@ -2384,7 +2372,7 @@ LAB_06EC:
     BRA.S   .return
 
 .case_digit_input:
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     MOVEQ   #48,D1
     CMP.B   D1,D0
     BCS.S   .refresh_attribute_display
@@ -2395,19 +2383,19 @@ LAB_06EC:
 
     JSR     ED_DrawCursorChar(PC)
 
-    LEA     LAB_21F0,A0
-    MOVE.L  LAB_21E8,D0
+    LEA     ED_EditBufferScratch,A0
+    MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    MOVE.B  LAB_21ED,(A0)
-    CMPI.L  #$d,LAB_21E8
+    MOVE.B  ED_LastKeyCode,(A0)
+    CMPI.L  #$d,ED_EditCursorOffset
     BGE.S   .refresh_attribute_display
 
     JSR     ED_DrawCursorChar(PC)
 
-    LEA     LAB_21F0,A0
-    ADDA.L  LAB_21E8,A0
-    ADDQ.L  #1,LAB_21E8
-    MOVE.B  LAB_21ED,(A0)
+    LEA     ED_EditBufferScratch,A0
+    ADDA.L  ED_EditCursorOffset,A0
+    ADDQ.L  #1,ED_EditCursorOffset
+    MOVE.B  ED_LastKeyCode,(A0)
 
 .refresh_attribute_display:
     JSR     ED_RedrawCursorChar(PC)
@@ -2419,29 +2407,28 @@ LAB_06EC:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_HandleEditAttributesInput   (Handle edit attributes input??)
+; FUNC: ED_HandleEditAttributesInput   (Handle edit attributes inputuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D1/A0-A1 ??
+;   A0/A1/A7/D0/D1
 ; CALLS:
-;   ED_DrawESCMenuBottomHelp, ED_IncrementAdNumber, ED_DecrementAdNumber, LAB_095F, ED_ApplyActiveFlagToAdData,
+;   ED_DrawESCMenuBottomHelp, ED_IncrementAdNumber, ED_DecrementAdNumber, ESQDISP_TestWordIsZeroBooleanize, ED_ApplyActiveFlagToAdData,
 ;   ED_UpdateActiveInactiveIndicator
 ; READS:
-;   LAB_21ED, LAB_21EA, LAB_231C, LAB_231D
+;   ED_LastKeyCode, ED_AdActiveFlag, ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
-;   LAB_21EA, LAB_21E4, LAB_21FE
+;   ED_AdActiveFlag, DATA_WDISP_BSS_LONG_21E4, DATA_WDISP_BSS_LONG_21FE
 ; DESC:
 ;   Processes edit-attribute key codes and commits changes to state variables.
 ; NOTES:
 ;   Recognizes key code $80 with modifier bytes to trigger ED_IncrementAdNumber/ED_DecrementAdNumber.
 ;------------------------------------------------------------------------------
 ED_HandleEditAttributesInput:
-LAB_06FC:
     MOVEQ   #0,D0
-    MOVE.B  LAB_21ED,D0
+    MOVE.B  ED_LastKeyCode,D0
     SUBI.W  #13,D0
     BEQ.S   .case_show_help
 
@@ -2451,10 +2438,10 @@ LAB_06FC:
     SUBI.W  #$80,D0
     BNE.S   .case_adjust_21ea
 
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #32,D1
@@ -2471,10 +2458,10 @@ LAB_06FC:
     BRA.S   .return
 
 .case_special_65:
-    MOVE.L  LAB_231C,D0
+    MOVE.L  ED_StateRingIndex,D0
     LSL.L   #2,D0
-    ADD.L   LAB_231C,D0
-    LEA     LAB_231D,A0
+    ADD.L   ED_StateRingIndex,D0
+    LEA     ED_StateRingTable,A0
     ADDA.L  D0,A0
     MOVEQ   #65,D0
     CMP.B   2(A0),D0
@@ -2488,22 +2475,22 @@ LAB_06FC:
     JSR     ED_DrawESCMenuBottomHelp(PC)
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_21E4
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_21E4
     JSR     ED_ApplyActiveFlagToAdData(PC)
 
     BRA.S   .return
 
 .case_adjust_21ea:
-    MOVE.L  LAB_21EA,D0
+    MOVE.L  ED_AdActiveFlag,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     LAB_095F(PC)
+    JSR     ESQDISP_TestWordIsZeroBooleanize(PC)
 
     ADDQ.W  #4,A7
     EXT.L   D0
-    MOVE.L  D0,LAB_21EA
+    MOVE.L  D0,ED_AdActiveFlag
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_21FE
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_21FE
 
 .return:
     JSR     ED_UpdateActiveInactiveIndicator(PC)

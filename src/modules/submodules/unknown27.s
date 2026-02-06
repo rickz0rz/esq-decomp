@@ -3,7 +3,7 @@
 ; ARGS:
 ;   stack +8: D7 = byte to append
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0/D7/A0
 ; READS:
@@ -463,7 +463,7 @@ FORMAT_ParseFormatSpec:
     MOVE.L  A1,-52(A5)
     BNE.S   .string_default
 
-    LEA     FORMAT_STR_DefaultNullString(PC),A0
+    LEA     .loc(PC),A0
     MOVE.L  A0,-52(A5)
 
 .string_default:
@@ -584,9 +584,9 @@ FORMAT_ParseFormatSpec:
 ;!======
 
 ;------------------------------------------------------------------------------
-; SYM: FORMAT_STR_DefaultNullString   (Default "%s" fallback string)
+; SYM: .loc   (Default "%s" fallback string)
 ; TYPE: string (NUL)
 ; PURPOSE: Used when %s argument is null.
 ;------------------------------------------------------------------------------
-FORMAT_STR_DefaultNullString:
+.loc:
     DC.W    $0000

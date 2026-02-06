@@ -1,5 +1,26 @@
 
-LAB_0C07:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_ParseCompactEntryRecord   (Routine at ESQSHARED_ParseCompactEntryRecord)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +11: arg_2 (via 15(A5))
+;   stack +36: arg_3 (via 40(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A3/A7/D0/D1/D2/D4/D5/D6/D7
+; CALLS:
+;   ESQSHARED_UpdateMatchingEntriesByTitle
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_ParseCompactEntryRecord:
     LINK.W  A5,#-16
     MOVEM.L D2/D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -7,21 +28,21 @@ LAB_0C07:
     MOVE.B  (A3)+,D5
     MOVEQ   #0,D7
 
-LAB_0C08:
+.branch:
     MOVE.B  (A3)+,D0
     MOVE.B  D0,-15(A5,D7.W)
     MOVEQ   #18,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0C09
+    BEQ.S   .lab_0C09
 
     MOVEQ   #8,D0
     CMP.W   D0,D7
-    BGE.S   LAB_0C09
+    BGE.S   .lab_0C09
 
     ADDQ.W  #1,D7
-    BRA.S   LAB_0C08
+    BRA.S   .branch
 
-LAB_0C09:
+.lab_0C09:
     CLR.B   -15(A5,D7.W)
     MOVE.B  (A3)+,D4
     MOVEQ   #0,D0
@@ -35,7 +56,7 @@ LAB_0C09:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -15(A5)
-    BSR.W   LAB_0C48
+    BSR.W   ESQSHARED_UpdateMatchingEntriesByTitle
 
     MOVEM.L -40(A5),D2/D4-D7/A3
     UNLK    A5
@@ -43,151 +64,212 @@ LAB_0C09:
 
 ;!======
 
-LAB_0C0A:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_MatchSelectionCodeWithOptionalSuffix   (Routine at ESQSHARED_MatchSelectionCodeWithOptionalSuffix)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +5: arg_2 (via 9(A5))
+;   stack +6: arg_3 (via 10(A5))
+;   stack +22: arg_4 (via 26(A5))
+;   stack +26: arg_5 (via 30(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A3/A5/A7/D0/D1/D4/D5/D6/D7
+; CALLS:
+;   ESQSHARED_JMPTBL_ESQ_WildcardMatch
+; READS:
+;   GLOB_PTR_STR_SELECT_CODE, DATA_ESQ_STR_A_1DEB, DATA_WDISP_BSS_LONG_2298
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     LINK.W  A5,#-32
     MOVEM.L D4-D7/A3,-(A7)
 
     MOVEA.L 8(A5),A3
 
     CLR.B   -10(A5)
-    MOVE.B  LAB_1DEB,D0
+    MOVE.B  DATA_ESQ_STR_A_1DEB,D0
     MOVEQ   #0,D6
     MOVE.B  D0,-8(A5)
     MOVE.B  D0,-9(A5)
 
-LAB_0C0B:
+.branch:
     MOVE.B  (A3)+,D4
     TST.B   D4
-    BEQ.S   LAB_0C13
+    BEQ.S   .lab_0C13
 
     MOVEQ   #0,D0
     MOVE.B  D4,D0
     SUBI.W  #$2e,D0
-    BEQ.S   LAB_0C0F
+    BEQ.S   .lab_0C0F
 
     SUBI.W  #12,D0
-    BNE.S   LAB_0C10
+    BNE.S   .lab_0C10
 
     MOVE.B  -8(A5),D0
     MOVEQ   #63,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0C0C
+    BEQ.S   .lab_0C0C
 
     MOVEQ   #42,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0C0C
+    BEQ.S   .lab_0C0C
 
     TST.W   D6
-    BNE.S   LAB_0C0D
+    BNE.S   .lab_0C0D
 
-LAB_0C0C:
-    MOVE.B  LAB_1DEB,-9(A5)
-    BRA.S   LAB_0C0E
+.lab_0C0C:
+    MOVE.B  DATA_ESQ_STR_A_1DEB,-9(A5)
+    BRA.S   .branch_1
 
-LAB_0C0D:
+.lab_0C0D:
     MOVE.B  D0,-9(A5)
 
-LAB_0C0E:
+.branch_1:
     MOVEQ   #0,D6
-    BRA.S   LAB_0C0B
+    BRA.S   .branch
 
-LAB_0C0F:
+.lab_0C0F:
     CLR.B   -26(A5,D6.W)
     MOVE.B  #$1,-10(A5)
     MOVEQ   #0,D6
-    BRA.S   LAB_0C0B
+    BRA.S   .branch
 
-LAB_0C10:
+.lab_0C10:
     MOVE.B  D4,-8(A5)
     TST.B   -10(A5)
-    BEQ.S   LAB_0C11
+    BEQ.S   .branch_2
 
     MOVE.B  D4,-30(A5,D6.W)
-    BRA.S   LAB_0C12
+    BRA.S   .branch_3
 
-LAB_0C11:
+.branch_2:
     MOVE.B  D4,-26(A5,D6.W)
 
-LAB_0C12:
+.branch_3:
     ADDQ.W  #1,D6
-    BRA.S   LAB_0C0B
+    BRA.S   .branch
 
-LAB_0C13:
+.lab_0C13:
     TST.B   -10(A5)
-    BEQ.S   LAB_0C14
+    BEQ.S   .branch_4
 
     MOVEQ   #0,D0
     MOVE.B  D0,-30(A5,D6.W)
-    BRA.S   LAB_0C15
+    BRA.S   .branch_5
 
-LAB_0C14:
+.branch_4:
     CLR.B   -26(A5,D6.W)
 
-LAB_0C15:
+.branch_5:
     LEA     -26(A5),A0
     MOVEA.L A0,A1
 
-LAB_0C16:
+.branch_6:
     TST.B   (A1)+
-    BNE.S   LAB_0C16
+    BNE.S   .branch_6
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    BNE.S   LAB_0C17
+    BNE.S   .branch_7
 
     MOVEQ   #-1,D7
-    BRA.S   LAB_0C18
+    BRA.S   .branch_8
 
-LAB_0C17:
+.branch_7:
     MOVE.L  A0,-(A7)
     PEA     GLOB_PTR_STR_SELECT_CODE
-    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D7
     EXT.W   D7
 
-LAB_0C18:
+.branch_8:
     MOVEQ   #0,D5
     MOVEQ   #1,D0
     CMP.B   -10(A5),D0
-    BNE.S   LAB_0C19
+    BNE.S   .branch_9
 
     PEA     -30(A5)
-    PEA     LAB_2298
-    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
+    PEA     DATA_WDISP_BSS_LONG_2298
+    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     MOVE.B  D0,D5
     EXT.W   D5
 
-LAB_0C19:
+.branch_9:
     TST.W   D7
-    BNE.S   LAB_0C1A
+    BNE.S   .branch_10
 
     TST.W   D5
-    BNE.S   LAB_0C1A
+    BNE.S   .branch_10
 
-    MOVE.B  LAB_1DEB,D0
+    MOVE.B  DATA_ESQ_STR_A_1DEB,D0
     MOVE.B  -9(A5),D1
     CMP.B   D0,D1
-    BNE.S   LAB_0C1A
+    BNE.S   .branch_10
 
     MOVEQ   #1,D0
-    BRA.S   LAB_0C1B
+    BRA.S   ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return
 
-LAB_0C1A:
+.branch_10:
     MOVEQ   #0,D0
 
-LAB_0C1B:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return   (Routine at ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D4
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
     MOVEM.L (A7)+,D4-D7/A3
     UNLK    A5
     RTS
 
 ;!======
 
-LAB_0C1C:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_InitEntryDefaults   (Routine at ESQSHARED_InitEntryDefaults)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A3/A7/D0
+; CALLS:
+;   (none)
+; READS:
+;   GLOB_STR_00
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_InitEntryDefaults:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.B  #$2,40(A3)
@@ -197,9 +279,9 @@ LAB_0C1C:
     LEA     43(A3),A0
     LEA     GLOB_STR_00,A1
 
-LAB_0C1D:
+.lab_0C1D:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   LAB_0C1D
+    BNE.S   .lab_0C1D
 
     MOVE.W  #3,46(A3)
     MOVEA.L (A7)+,A3
@@ -207,117 +289,143 @@ LAB_0C1D:
 
 ;!======
 
-LAB_0C1E:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_CreateGroupEntryAndTitle   (Routine at ESQSHARED_CreateGroupEntryAndTitle)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +7: arg_2 (via 11(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +11: arg_4 (via 15(A5))
+;   stack +12: arg_5 (via 16(A5))
+;   stack +16: arg_6 (via 20(A5))
+;   stack +20: arg_7 (via 24(A5))
+;   stack +24: arg_8 (via 28(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated, ESQSHARED_InitEntryDefaults
+; READS:
+;   GLOB_ESQPARS2_C_1, GLOB_ESQPARS2_C_2, GLOB_ESQPARS2_C_3, GLOB_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
+; WRITES:
+;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_CreateGroupEntryAndTitle:
     LINK.W  A5,#-24
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVE.B  11(A5),D7
     MOVE.B  15(A5),D6
     MOVEA.L 16(A5),A3
     MOVEA.L 20(A5),A2
-    MOVE.B  LAB_222D,D0
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
-    BNE.W   LAB_0C1F
+    BNE.W   .lab_0C1F
 
     MOVEQ   #0,D0
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     LAB_2235,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     299.W
     PEA     GLOB_ESQPARS2_C_1
     MOVE.L  A0,40(A7)
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 40(A7),A0
     MOVE.L  D0,(A0)
     MOVEQ   #0,D0
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     301.W
     PEA     GLOB_ESQPARS2_C_2
     MOVE.L  A0,52(A7)
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVEA.L 24(A7),A0
     MOVE.L  D0,(A0)
-    MOVE.B  #$1,LAB_222E
-    MOVE.B  D7,LAB_2239
+    MOVE.B  #$1,TEXTDISP_SecondaryGroupPresentFlag
+    MOVE.B  D7,TEXTDISP_SecondaryGroupHeaderCode
     MOVEQ   #0,D0
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     LAB_2235,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-4(A5)
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
-    BRA.W   LAB_0C21
+    BRA.W   .lab_0C21
 
-LAB_0C1F:
-    MOVE.B  LAB_2230,D0
+.lab_0C1F:
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
-    BNE.W   LAB_0C20
+    BNE.W   .lab_0C20
 
     MOVEQ   #0,D0
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     LAB_2233,A0
+    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     314.W
     PEA     GLOB_ESQPARS2_C_3
     MOVE.L  A0,40(A7)
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 40(A7),A0
     MOVE.L  D0,(A0)
     MOVEQ   #0,D0
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     LAB_2236,A0
+    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     315.W
     PEA     GLOB_ESQPARS2_C_4
     MOVE.L  A0,52(A7)
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
     MOVEA.L 24(A7),A0
     MOVE.L  D0,(A0)
-    MOVE.B  #$1,LAB_224A
-    MOVE.B  D7,LAB_2238
+    MOVE.B  #$1,TEXTDISP_PrimaryGroupPresentFlag
+    MOVE.B  D7,TEXTDISP_PrimaryGroupHeaderCode
     MOVEQ   #0,D0
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     ASL.L   #2,D0
-    LEA     LAB_2233,A0
+    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
-    LEA     LAB_2236,A0
+    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
     MOVE.L  A1,-4(A5)
-    BRA.S   LAB_0C21
+    BRA.S   .lab_0C21
 
-LAB_0C20:
+.lab_0C20:
     MOVEQ   #0,D0
-    BRA.W   LAB_0C30
+    BRA.W   ESQSHARED_CreateGroupEntryAndTitle_Return
 
-LAB_0C21:
+.lab_0C21:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   LAB_0C1C
+    BSR.W   ESQSHARED_InitEntryDefaults
 
     MOVE.L  -4(A5),(A7)
-    JSR     LAB_0C75(PC)
+    JSR     ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -4(A5),A0
@@ -326,35 +434,35 @@ LAB_0C21:
     LEA     1(A0),A1
     MOVEA.L A2,A0
 
-LAB_0C22:
+.branch:
     TST.B   (A0)+
-    BNE.S   LAB_0C22
+    BNE.S   .branch
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,D5
     MOVE.L  A1,-16(A5)
 
-LAB_0C23:
+.branch_1:
     TST.W   D5
-    BEQ.S   LAB_0C25
+    BEQ.S   .branch_3
 
     MOVEA.L -12(A5),A0
     MOVE.B  (A0),D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BEQ.S   LAB_0C24
+    BEQ.S   .branch_2
 
     MOVEA.L -16(A5),A1
     MOVE.B  D0,(A1)+
     MOVE.L  A1,-16(A5)
 
-LAB_0C24:
+.branch_2:
     ADDQ.L  #1,-12(A5)
     SUBQ.W  #1,D5
-    BRA.S   LAB_0C23
+    BRA.S   .branch_1
 
-LAB_0C25:
+.branch_3:
     MOVEA.L -16(A5),A0
     MOVE.B  #$20,(A0)+
     CLR.B   (A0)
@@ -362,73 +470,73 @@ LAB_0C25:
     ADDQ.L  #1,A1
     MOVEA.L A1,A6
 
-LAB_0C26:
+.branch_4:
     TST.B   (A6)+
-    BNE.S   LAB_0C26
+    BNE.S   .branch_4
 
     SUBQ.L  #1,A6
     SUBA.L  A1,A6
     MOVE.L  A6,D5
-    MOVE.W  LAB_224C,D0
+    MOVE.W  TEXTDISP_MaxEntryTitleLength,D0
     MOVE.L  A0,-16(A5)
     CMP.W   D0,D5
-    BLE.S   LAB_0C27
+    BLE.S   .branch_5
 
-    MOVE.W  D5,LAB_224C
+    MOVE.W  D5,TEXTDISP_MaxEntryTitleLength
 
-LAB_0C27:
+.branch_5:
     MOVEA.L -4(A5),A0
     ADDA.W  #12,A0
     MOVEA.L A3,A1
 
-LAB_0C28:
+.branch_6:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   LAB_0C28
+    BNE.S   .branch_6
 
     MOVEA.L -4(A5),A0
     ADDA.W  #19,A0
     MOVEA.L 28(A5),A1
 
-LAB_0C29:
+.branch_7:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   LAB_0C29
+    BNE.S   .branch_7
 
     MOVEA.L -4(A5),A0
     MOVE.B  D6,27(A0)
     LEA     28(A0),A1
     MOVE.L  24(A5),-(A7)
     MOVE.L  A1,-(A7)
-    JSR     GROUPB_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D5
 
-LAB_0C2A:
+.branch_8:
     MOVEQ   #6,D0
     CMP.W   D0,D5
-    BGE.S   LAB_0C2B
+    BGE.S   .branch_9
 
     MOVEA.L -4(A5),A0
     CLR.B   34(A0,D5.W)
     ADDQ.W  #1,D5
-    BRA.S   LAB_0C2A
+    BRA.S   .branch_8
 
-LAB_0C2B:
+.branch_9:
     MOVEA.L A3,A0
     MOVEA.L -8(A5),A1
 
-LAB_0C2C:
+.branch_10:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   LAB_0C2C
+    BNE.S   .branch_10
 
     MOVEA.L -8(A5),A0
     MOVE.B  D7,498(A0)
     MOVEQ   #0,D5
 
-LAB_0C2D:
+.branch_11:
     MOVEQ   #49,D0
     CMP.W   D0,D5
-    BGE.S   LAB_0C2E
+    BGE.S   .branch_12
 
     MOVEA.L -8(A5),A0
     MOVE.B  #$1,7(A0,D5.W)
@@ -437,57 +545,95 @@ LAB_0C2D:
     ASL.L   #2,D0
     CLR.L   56(A0,D0.L)
     ADDQ.W  #1,D5
-    BRA.S   LAB_0C2D
+    BRA.S   .branch_11
 
-LAB_0C2E:
-    MOVE.B  LAB_2230,D0
+.branch_12:
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D7,D0
-    BNE.S   LAB_0C2F
+    BNE.S   .branch_13
 
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_2231
-    MOVE.W  LAB_224B,D0
+    MOVE.W  D0,TEXTDISP_PrimaryGroupEntryCount
+    MOVE.W  TEXTDISP_GroupMutationState,D0
     SUBQ.W  #2,D0
-    BEQ.S   LAB_0C30
+    BEQ.S   ESQSHARED_CreateGroupEntryAndTitle_Return
 
     MOVEQ   #1,D0
-    MOVE.W  D0,LAB_224B
-    BRA.S   LAB_0C30
+    MOVE.W  D0,TEXTDISP_GroupMutationState
+    BRA.S   ESQSHARED_CreateGroupEntryAndTitle_Return
 
-LAB_0C2F:
-    MOVE.B  LAB_222D,D0
+.branch_13:
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0C30
+    BNE.S   ESQSHARED_CreateGroupEntryAndTitle_Return
 
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,LAB_222F
-    MOVE.W  #2,LAB_224B
+    MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
+    MOVE.W  #2,TEXTDISP_GroupMutationState
 
-LAB_0C30:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_CreateGroupEntryAndTitle_Return   (Routine at ESQSHARED_CreateGroupEntryAndTitle_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D5
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_CreateGroupEntryAndTitle_Return:
     MOVEM.L (A7)+,D5-D7/A2-A3/A6
     UNLK    A5
     RTS
 
 ;!======
 
-LAB_0C31:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_ApplyProgramTitleTextFilters   (Routine at ESQSHARED_ApplyProgramTitleTextFilters)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A3/A7/D7
+; CALLS:
+;   ESQSHARED_CompressClosedCaptionedTag, ESQSHARED_NormalizeInStereoTag, ESQSHARED_ReplaceMovieRatingToken, ESQSHARED_ReplaceTvRatingToken
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_ApplyProgramTitleTextFilters:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  16(A7),D7
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0C32
+    BSR.W   ESQSHARED_CompressClosedCaptionedTag
 
     MOVE.L  D7,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_0C35
+    BSR.W   ESQSHARED_NormalizeInStereoTag
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_0C3C
+    BSR.W   ESQSHARED_ReplaceMovieRatingToken
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_0C42
+    BSR.W   ESQSHARED_ReplaceTvRatingToken
 
     ADDQ.W  #8,A7
     MOVEM.L (A7)+,D7/A3
@@ -495,7 +641,26 @@ LAB_0C31:
 
 ;!======
 
-LAB_0C32:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_CompressClosedCaptionedTag   (Routine at ESQSHARED_CompressClosedCaptionedTag)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0
+; CALLS:
+;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+; READS:
+;   AbsExecBase, GLOB_STR_CLOSED_CAPTIONED
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_CompressClosedCaptionedTag:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -535,7 +700,27 @@ LAB_0C32:
 
 ;!======
 
-LAB_0C35:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_NormalizeInStereoTag   (Routine at ESQSHARED_NormalizeInStereoTag)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A3/A5/A6/A7/D0/D1/D7
+; CALLS:
+;   ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+; READS:
+;   AbsExecBase, GLOB_STR_IN_STEREO, ESQSHARED_NormalizeInStereoTag_Return, WDISP_CharClassTable
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_NormalizeInStereoTag:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -547,19 +732,19 @@ LAB_0C35:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.W   LAB_0C3B
+    BEQ.W   ESQSHARED_NormalizeInStereoTag_Return
 
     MOVEA.L D0,A0
     MOVE.B  #$91,(A0)
     LEA     9(A0),A1
     MOVE.L  A1,-8(A5)
     BTST    #7,D7
-    BNE.S   LAB_0C39
+    BNE.S   .lab_0C39
 
     TST.B   (A1)
-    BNE.S   LAB_0C37
+    BNE.S   .lab_0C37
 
-LAB_0C36:
+.lab_0C36:
     MOVEA.L -4(A5),A0
     CLR.B   (A0)
     SUBQ.L  #1,-4(A5)
@@ -567,23 +752,23 @@ LAB_0C36:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A0
+    LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BNE.S   LAB_0C36
+    BNE.S   .lab_0C36
 
-    BRA.S   LAB_0C3B
+    BRA.S   ESQSHARED_NormalizeInStereoTag_Return
 
-LAB_0C37:
+.lab_0C37:
     MOVE.L  -8(A5),-(A7)
-    JSR     LAB_0C77(PC)
+    JSR     ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A0
 
-LAB_0C38:
+.lab_0C38:
     TST.B   (A0)+
-    BNE.S   LAB_0C38
+    BNE.S   .lab_0C38
 
     SUBQ.L  #1,A0
     SUBA.L  D0,A0
@@ -596,15 +781,15 @@ LAB_0C38:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCopyMem(A6)
 
-    BRA.S   LAB_0C3B
+    BRA.S   ESQSHARED_NormalizeInStereoTag_Return
 
-LAB_0C39:
+.lab_0C39:
     ADDQ.L  #1,-4(A5)
     MOVEA.L -8(A5),A0
 
-LAB_0C3A:
+.lab_0C3A:
     TST.B   (A0)+
-    BNE.S   LAB_0C3A
+    BNE.S   .lab_0C3A
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -615,7 +800,26 @@ LAB_0C3A:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCopyMem(A6)
 
-LAB_0C3B:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_NormalizeInStereoTag_Return   (Routine at ESQSHARED_NormalizeInStereoTag_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D7
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_NormalizeInStereoTag_Return:
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
     RTS
@@ -624,7 +828,26 @@ LAB_0C3B:
 
 ; Possibly the code that replaces the strings of TV ratings like (TV-G) into
 ; a corresponding character in the font
-LAB_0C3C:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_ReplaceMovieRatingToken   (Routine at ESQSHARED_ReplaceMovieRatingToken)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A5/A6/A7/D0/D5/D6/D7
+; CALLS:
+;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+; READS:
+;   AbsExecBase, GLOB_TBL_MOVIE_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F1E
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_ReplaceMovieRatingToken:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -654,7 +877,7 @@ LAB_0C3C:
     TST.L   D0
     BEQ.S   .LAB_0C40
 
-    LEA     LAB_1F1E,A0
+    LEA     DATA_ESQPARS2_CONST_BYTE_1F1E,A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVEA.L -4(A5),A1
@@ -706,7 +929,26 @@ LAB_0C3C:
 
 ; Possibly the code that replaces the strings of movie ratings like (R) into
 ; a corresponding character in the font
-LAB_0C42:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_ReplaceTvRatingToken   (Routine at ESQSHARED_ReplaceTvRatingToken)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A5/A6/A7/D0/D5/D6/D7
+; CALLS:
+;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+; READS:
+;   AbsExecBase, GLOB_TBL_TV_PROGRAM_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F27
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_ReplaceTvRatingToken:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -736,7 +978,7 @@ LAB_0C42:
     TST.L   D0
     BEQ.S   .LAB_0C46
 
-    LEA     LAB_1F27,A0
+    LEA     DATA_ESQPARS2_CONST_BYTE_1F27,A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVEA.L -4(A5),A1
@@ -784,7 +1026,45 @@ LAB_0C42:
     UNLK    A5
     RTS
 
-LAB_0C48:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle   (Routine at ESQSHARED_UpdateMatchingEntriesByTitle)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +6: arg_2 (via 10(A5))
+;   stack +8: arg_3 (via 12(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +11: arg_5 (via 15(A5))
+;   stack +15: arg_6 (via 19(A5))
+;   stack +16: arg_7 (via 20(A5))
+;   stack +18: arg_8 (via 22(A5))
+;   stack +19: arg_9 (via 23(A5))
+;   stack +20: arg_10 (via 24(A5))
+;   stack +24: arg_11 (via 28(A5))
+;   stack +25: arg_12 (via 29(A5))
+;   stack +26: arg_13 (via 30(A5))
+;   stack +30: arg_14 (via 34(A5))
+;   stack +34: arg_15 (via 38(A5))
+;   stack +38: arg_16 (via 42(A5))
+;   stack +48: arg_17 (via 52(A5))
+;   stack +58: arg_18 (via 62(A5))
+;   stack +62: arg_19 (via 66(A5))
+;   stack +66: arg_20 (via 70(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, ESQSHARED_JMPTBL_ESQ_SetBit1Based, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQSHARED_JMPTBL_ESQ_WildcardMatch, GROUP_AR_JMPTBL_STRING_AppendAtNull, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_WDISP_SPrintf, ESQPARS_ReplaceOwnedString, ESQSHARED_ApplyProgramTitleTextFilters, NEWGRID_JMPTBL_MATH_DivS32
+; READS:
+;   GLOB_STR_ESQPARS2_C_1, GLOB_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, CLOCK_FormatVariantCode, DATA_ESQPARS2_FMT_PCT_D_1F29, DATA_ESQPARS2_FMT_PCT_D_1F2A, DATA_ESQPARS2_FMT_PCT_D_1F2B, DATA_ESQPARS2_STR_VALUE_1F2C, DATA_SCRIPT_STR_HRS_2102, DATA_SCRIPT_STR_HR_2103, DATA_SCRIPT_STR_MIN_2104, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_UpdateMatchingEntriesByTitle:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
 
@@ -800,88 +1080,88 @@ LAB_0C48:
     MOVE.B  D0,-15(A5)
     MOVEQ   #1,D0
     CMP.B   D0,D6
-    BCS.S   LAB_0C49
+    BCS.S   .lab_0C49
 
     MOVEQ   #48,D1
     CMP.B   D1,D6
-    BLS.S   LAB_0C4A
+    BLS.S   .lab_0C4A
 
-LAB_0C49:
+.lab_0C49:
     MOVEQ   #0,D0
-    BRA.W   LAB_0C70
+    BRA.W   ESQSHARED_UpdateMatchingEntriesByTitle_Return
 
-LAB_0C4A:
-    MOVE.B  LAB_222D,D0
+.lab_0C4A:
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     CMP.B   D7,D0
-    BNE.S   LAB_0C4B
+    BNE.S   .lab_0C4B
 
-    MOVE.B  LAB_222E,D0
+    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
-    BNE.S   LAB_0C4B
+    BNE.S   .lab_0C4B
 
-    MOVE.W  LAB_222F,D0
+    MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.W  D0,-14(A5)
-    BRA.S   LAB_0C4D
+    BRA.S   .lab_0C4D
 
-LAB_0C4B:
-    MOVE.B  LAB_2230,D0
+.lab_0C4B:
+    MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.B   D0,D7
-    BNE.S   LAB_0C4C
+    BNE.S   .lab_0C4C
 
-    MOVE.W  LAB_2231,D0
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.W  D0,-14(A5)
-    BRA.S   LAB_0C4D
+    BRA.S   .lab_0C4D
 
-LAB_0C4C:
+.lab_0C4C:
     MOVEQ   #0,D0
-    BRA.W   LAB_0C70
+    BRA.W   ESQSHARED_UpdateMatchingEntriesByTitle_Return
 
-LAB_0C4D:
+.lab_0C4D:
     CLR.W   -10(A5)
 
-LAB_0C4E:
+.branch:
     MOVE.W  -10(A5),D0
     CMP.W   -14(A5),D0
-    BGE.W   LAB_0C70
+    BGE.W   ESQSHARED_UpdateMatchingEntriesByTitle_Return
 
-    MOVE.B  LAB_222D,D1
+    MOVE.B  TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D7
-    BNE.S   LAB_0C4F
+    BNE.S   .lab_0C4F
 
-    MOVE.B  LAB_222E,D1
+    MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
-    BNE.S   LAB_0C4F
+    BNE.S   .lab_0C4F
 
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     LAB_2235,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-4(A5)
-    LEA     LAB_2237,A0
+    LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-8(A5)
-    BRA.S   LAB_0C50
+    BRA.S   .lab_0C50
 
-LAB_0C4F:
+.lab_0C4F:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     LAB_2233,A0
+    LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-4(A5)
-    LEA     LAB_2236,A0
+    LEA     TEXTDISP_PrimaryTitlePtrTable,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-8(A5)
 
-LAB_0C50:
+.lab_0C50:
     MOVE.L  A3,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUPB_JMPTBL_ESQ_WildcardMatch(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.W   LAB_0C6F
+    BNE.W   .lab_0C6F
 
     MOVEA.L -4(A5),A0
     ADDA.W  #$22,A0
@@ -889,19 +1169,19 @@ LAB_0C50:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPB_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  D0,-12(A5)
     TST.B   -15(A5)
-    BNE.S   LAB_0C51
+    BNE.S   .lab_0C51
 
     TST.W   D0
-    BNE.W   LAB_0C6F
+    BNE.W   .lab_0C6F
 
-LAB_0C51:
+.lab_0C51:
     TST.B   -15(A5)
-    BEQ.S   LAB_0C52
+    BEQ.S   .lab_0C52
 
     MOVEA.L -4(A5),A0
     ADDA.W  #$22,A0
@@ -909,11 +1189,11 @@ LAB_0C51:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUPB_JMPTBL_ESQ_SetBit1Based(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_SetBit1Based(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0C52:
+.lab_0C52:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVEA.L -8(A5),A0
@@ -923,16 +1203,16 @@ LAB_0C52:
     MOVE.B  27(A1),D0
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   LAB_0C31
+    BSR.W   ESQSHARED_ApplyProgramTitleTextFilters
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
     MOVEA.L A2,A0
     MOVEA.L A0,A1
 
-LAB_0C53:
+.lab_0C53:
     TST.B   (A1)+
-    BNE.S   LAB_0C53
+    BNE.S   .lab_0C53
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -945,43 +1225,43 @@ LAB_0C53:
     MOVE.B  -1(A0),D0
     MOVEQ   #41,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0C54
+    BNE.S   .lab_0C54
 
     MOVE.B  -4(A0),D2
     MOVEQ   #58,D3
     CMP.B   D3,D2
-    BNE.S   LAB_0C54
+    BNE.S   .lab_0C54
 
     MOVEQ   #40,D4
     CMP.B   -6(A0),D4
-    BNE.S   LAB_0C54
+    BNE.S   .lab_0C54
 
     MOVEQ   #1,D4
     MOVE.B  D4,-29(A5)
 
-LAB_0C54:
+.lab_0C54:
     CMP.B   D1,D0
-    BNE.S   LAB_0C55
+    BNE.S   .lab_0C55
 
     MOVEQ   #58,D0
     CMP.B   -4(A0),D0
-    BNE.S   LAB_0C55
+    BNE.S   .lab_0C55
 
     MOVEQ   #40,D0
     CMP.B   -5(A0),D0
-    BNE.S   LAB_0C55
+    BNE.S   .lab_0C55
 
     MOVEQ   #1,D0
     MOVE.B  D0,-30(A5)
 
-LAB_0C55:
+.lab_0C55:
     TST.B   -29(A5)
-    BNE.S   LAB_0C56
+    BNE.S   .lab_0C56
 
     TST.B   -30(A5)
-    BEQ.W   LAB_0C5F
+    BEQ.W   .lab_0C5F
 
-LAB_0C56:
+.lab_0C56:
     MOVEQ   #0,D0
     SUBA.L  A1,A1
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -992,13 +1272,13 @@ LAB_0C56:
     MOVE.L  D0,-38(A5)
     MOVE.L  A1,-70(A5)
     MOVE.L  A1,-66(A5)
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-70(A5)
     MOVE.L  D0,-66(A5)
     TST.B   -29(A5)
-    BEQ.S   LAB_0C57
+    BEQ.S   .lab_0C57
 
     MOVEA.L -28(A5),A0
     MOVE.B  -5(A0),D0
@@ -1008,7 +1288,7 @@ LAB_0C56:
     SUB.L   D1,D0
     MOVE.L  D0,-38(A5)
 
-LAB_0C57:
+.lab_0C57:
     MOVEA.L -28(A5),A0
     MOVE.B  -3(A0),D0
     EXT.W   D0
@@ -1017,7 +1297,7 @@ LAB_0C57:
     SUB.L   D1,D0
     MOVEQ   #10,D1
     MOVE.L  D0,-42(A5)
-    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.B  -2(A0),D1
     EXT.W   D1
@@ -1028,15 +1308,15 @@ LAB_0C57:
     MOVEM.L D0,-42(A5)
     MOVE.L  -38(A5),D1
     TST.L   D1
-    BLE.S   LAB_0C59
+    BLE.S   .branch_2
 
     MOVE.L  D0,-(A7)
-    PEA     LAB_1F29
+    PEA     DATA_ESQPARS2_FMT_PCT_D_1F29
     PEA     -52(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     MOVE.L  -38(A5),(A7)
-    PEA     LAB_1F2A
+    PEA     DATA_ESQPARS2_FMT_PCT_D_1F2A
     PEA     -62(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1047,86 +1327,86 @@ LAB_0C57:
     LEA     28(A7),A7
     MOVEQ   #1,D0
     CMP.L   -38(A5),D0
-    BNE.S   LAB_0C58
+    BNE.S   .branch_1
 
-    PEA     LAB_2103
+    PEA     DATA_SCRIPT_STR_HR_2103
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0C5A
+    BRA.S   .branch_3
 
-LAB_0C58:
-    PEA     LAB_2102
+.branch_1:
+    PEA     DATA_SCRIPT_STR_HRS_2102
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0C5A
+    BRA.S   .branch_3
 
-LAB_0C59:
+.branch_2:
     MOVE.L  D0,-(A7)
-    PEA     LAB_1F2B
+    PEA     DATA_ESQPARS2_FMT_PCT_D_1F2B
     PEA     -52(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
-LAB_0C5A:
+.branch_3:
     MOVE.L  -42(A5),D0
     TST.L   D0
-    BLE.S   LAB_0C5B
+    BLE.S   .branch_4
 
     PEA     -52(A5)
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     LAB_2104
+    PEA     DATA_SCRIPT_STR_MIN_2104
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     16(A7),A7
-    BRA.S   LAB_0C5D
+    BRA.S   .branch_6
 
-LAB_0C5B:
+.branch_4:
     MOVEA.L -66(A5),A0
 
-LAB_0C5C:
+.branch_5:
     TST.B   (A0)+
-    BNE.S   LAB_0C5C
+    BNE.S   .branch_5
 
     SUBQ.L  #1,A0
     SUBA.L  -66(A5),A0
     MOVEA.L -66(A5),A1
     MOVE.L  A0,D0
     CLR.B   -1(A1,D0.L)
-    PEA     LAB_1F2C
+    PEA     DATA_ESQPARS2_STR_VALUE_1F2C
     MOVE.L  A1,-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0C5D:
+.branch_6:
     MOVEA.L -28(A5),A0
     SUBQ.L  #6,A0
     MOVEA.L -66(A5),A1
 
-LAB_0C5E:
+.branch_7:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   LAB_0C5E
+    BNE.S   .branch_7
 
     TST.L   -70(A5)
-    BEQ.S   LAB_0C5F
+    BEQ.S   .lab_0C5F
 
     PEA     50.W
     MOVE.L  -70(A5),-(A7)
     PEA     765.W
     PEA     GLOB_STR_ESQPARS2_C_2
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
-LAB_0C5F:
+.lab_0C5F:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVE.L  D0,D1
@@ -1141,16 +1421,16 @@ LAB_0C5F:
     MOVE.L  56(A0,D2.L),-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D1,44(A7)
-    JSR     LAB_0B44(PC)
+    JSR     ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L -8(A5),A0
     MOVE.L  36(A7),D1
     MOVE.L  D0,56(A0,D1.L)
-    MOVE.B  LAB_1DD8,D0
+    MOVE.B  CLOCK_FormatVariantCode,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.W   LAB_0C6D
+    BLS.W   .branch_21
 
     MOVEQ   #0,D0
     MOVE.B  D6,D0
@@ -1164,17 +1444,17 @@ LAB_0C5F:
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)
     TST.L   D0
-    BEQ.W   LAB_0C6D
+    BEQ.W   .branch_21
 
     MOVEA.L D0,A0
     MOVE.B  1(A0),D1
     EXT.W   D1
     EXT.L   D1
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     MOVEA.L A1,A6
     ADDA.L  D1,A6
     BTST    #2,(A6)
-    BEQ.S   LAB_0C60
+    BEQ.S   .branch_8
 
     MOVE.B  1(A0),D1
     EXT.W   D1
@@ -1182,14 +1462,14 @@ LAB_0C5F:
     MOVEQ   #48,D2
     SUB.L   D2,D1
     MOVEQ   #10,D0
-    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    BRA.S   LAB_0C61
+    BRA.S   .branch_9
 
-LAB_0C60:
+.branch_8:
     MOVEQ   #0,D0
 
-LAB_0C61:
+.branch_9:
     MOVE.B  2(A0),D1
     EXT.W   D1
     EXT.L   D1
@@ -1197,19 +1477,19 @@ LAB_0C61:
     ADDA.L  D1,A6
     MOVE.W  D0,-22(A5)
     BTST    #2,(A6)
-    BEQ.S   LAB_0C62
+    BEQ.S   .branch_10
 
     MOVE.B  2(A0),D1
     EXT.W   D1
     EXT.L   D1
     MOVEQ   #48,D2
     SUB.L   D2,D1
-    BRA.S   LAB_0C63
+    BRA.S   .branch_11
 
-LAB_0C62:
+.branch_10:
     MOVEQ   #0,D1
 
-LAB_0C63:
+.branch_11:
     EXT.L   D0
     ADD.L   D1,D0
     MOVE.B  4(A0),D1
@@ -1219,7 +1499,7 @@ LAB_0C63:
     ADDA.L  D1,A6
     MOVE.W  D0,-22(A5)
     BTST    #2,(A6)
-    BEQ.S   LAB_0C64
+    BEQ.S   .branch_12
 
     MOVE.B  4(A0),D0
     EXT.W   D0
@@ -1227,68 +1507,68 @@ LAB_0C63:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    BRA.S   LAB_0C65
+    BRA.S   .branch_13
 
-LAB_0C64:
+.branch_12:
     MOVEQ   #0,D0
 
-LAB_0C65:
+.branch_13:
     MOVE.B  5(A0),D1
     EXT.W   D1
     EXT.L   D1
     ADDA.L  D1,A1
     MOVE.W  D0,-24(A5)
     BTST    #2,(A1)
-    BEQ.S   LAB_0C66
+    BEQ.S   .branch_14
 
     MOVE.B  5(A0),D1
     EXT.W   D1
     EXT.L   D1
     MOVEQ   #48,D2
     SUB.L   D2,D1
-    BRA.S   LAB_0C67
+    BRA.S   .branch_15
 
-LAB_0C66:
+.branch_14:
     MOVEQ   #0,D1
 
-LAB_0C67:
+.branch_15:
     EXT.L   D0
     ADD.L   D1,D0
     MOVE.W  D0,-24(A5)
     EXT.L   D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_1DD8,D1
+    MOVE.B  CLOCK_FormatVariantCode,D1
     ADD.L   D1,D0
     MOVE.W  D0,-24(A5)
 
-LAB_0C68:
+.branch_16:
     MOVE.W  -24(A5),D0
     MOVEQ   #59,D1
     CMP.W   D1,D0
-    BLE.S   LAB_0C69
+    BLE.S   .branch_17
 
     MOVEQ   #60,D1
     SUB.W   D1,-24(A5)
     ADDQ.W  #1,-22(A5)
-    BRA.S   LAB_0C68
+    BRA.S   .branch_16
 
-LAB_0C69:
+.branch_17:
     MOVE.W  -22(A5),D0
     MOVEQ   #12,D1
     CMP.W   D1,D0
-    BLE.S   LAB_0C6A
+    BLE.S   .branch_18
 
     MOVEQ   #12,D1
     SUB.W   D1,-22(A5)
-    BRA.S   LAB_0C69
+    BRA.S   .branch_17
 
-LAB_0C6A:
+.branch_18:
     MOVE.W  -22(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_MATH_DivS32_3(PC)
+    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -1298,22 +1578,22 @@ LAB_0C6A:
     EXT.L   D1
     DIVS    #10,D1
     MOVEM.W D1,-22(A5)
-    BLE.S   LAB_0C6B
+    BLE.S   .branch_19
 
     EXT.L   D1
     ADD.L   D0,D1
-    BRA.S   LAB_0C6C
+    BRA.S   .branch_20
 
-LAB_0C6B:
+.branch_19:
     MOVEQ   #32,D1
 
-LAB_0C6C:
+.branch_20:
     MOVE.B  D1,1(A0)
     MOVE.W  -24(A5),D1
     EXT.L   D1
     MOVE.L  D1,D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_MATH_DivS32_3(PC)
+    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
@@ -1321,13 +1601,13 @@ LAB_0C6C:
     MOVE.W  -24(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     JMPTBL_MATH_DivS32_3(PC)
+    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
     MOVE.B  D1,5(A0)
 
-LAB_0C6D:
+.branch_21:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVE.L  D0,D1
@@ -1342,37 +1622,56 @@ LAB_0C6D:
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D1,44(A7)
-    JSR     LAB_0C71(PC)
+    JSR     ESQSHARED_JMPTBL_DST_BuildBannerTimeWord(PC)
 
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  44(A7),D1
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     GROUPB_JMPTBL_ESQ_AdjustBracketedHourInString(PC)
+    JSR     ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVEA.L -8(A5),A0
     BTST    #4,7(A0,D0.W)
-    BEQ.S   LAB_0C6E
+    BEQ.S   .branch_22
 
     MOVEA.L -4(A5),A0
     BSET    #0,40(A0)
 
-LAB_0C6E:
+.branch_22:
     MOVEQ   #0,D0
     MOVEA.L -4(A5),A0
     MOVE.B  40(A0),D0
     ORI.W   #$80,D0
     MOVE.B  D0,40(A0)
 
-LAB_0C6F:
+.lab_0C6F:
     ADDQ.W  #1,-10(A5)
-    BRA.W   LAB_0C4E
+    BRA.W   .branch
 
-LAB_0C70:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle_Return   (Routine at ESQSHARED_UpdateMatchingEntriesByTitle_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_UpdateMatchingEntriesByTitle_Return:
     MOVEM.L (A7)+,D2-D7/A2-A3/A6
     UNLK    A5
     RTS
@@ -1384,26 +1683,178 @@ LAB_0C70:
 
 ;!======
 
-LAB_0C71:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_DST_BuildBannerTimeWord   (Routine at ESQSHARED_JMPTBL_DST_BuildBannerTimeWord)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DST_BuildBannerTimeWord
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_DST_BuildBannerTimeWord:
     JMP     DST_BuildBannerTimeWord
 
-GROUPB_JMPTBL_ESQ_ReverseBitsIn6Bytes:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes   (Routine at ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_ReverseBitsIn6Bytes
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes:
     JMP     ESQ_ReverseBitsIn6Bytes
 
-GROUPB_JMPTBL_ESQ_SetBit1Based:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_ESQ_SetBit1Based   (Routine at ESQSHARED_JMPTBL_ESQ_SetBit1Based)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_SetBit1Based
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_ESQ_SetBit1Based:
     JMP     ESQ_SetBit1Based
 
-GROUPB_JMPTBL_ESQ_AdjustBracketedHourInString:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString   (Routine at ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_AdjustBracketedHourInString
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString:
     JMP     ESQ_AdjustBracketedHourInString
 
-LAB_0C75:
-    JMP     LAB_0345
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated   (Routine at ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   COI_EnsureAnimObjectAllocated
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated:
+    JMP     COI_EnsureAnimObjectAllocated
 
-GROUPB_JMPTBL_ESQ_WildcardMatch:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_ESQ_WildcardMatch   (Routine at ESQSHARED_JMPTBL_ESQ_WildcardMatch)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_WildcardMatch
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
-LAB_0C77:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3   (Routine at ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN7_SkipCharClass3
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3:
     JMP     UNKNOWN7_SkipCharClass3
 
-GROUPB_JMPTBL_ESQ_TestBit1Based:
+;------------------------------------------------------------------------------
+; FUNC: ESQSHARED_JMPTBL_ESQ_TestBit1Based   (Routine at ESQSHARED_JMPTBL_ESQ_TestBit1Based)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_TestBit1Based
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQSHARED_JMPTBL_ESQ_TestBit1Based:
     JMP     ESQ_TestBit1Based

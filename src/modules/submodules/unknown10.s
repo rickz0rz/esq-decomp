@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; SYM: kHexDigitTable_Maybe   (Hex digit lookup bytes??)
+; SYM: kHexDigitTable_Maybe   (Hex digit lookup bytesuncertain)
 ; TYPE: array<u8>
 ; PURPOSE: Used by FORMAT_U32ToHexString to map nibbles to ASCII.
 ; NOTES: The table likely extends into the following words which are
@@ -76,14 +76,33 @@ PARSE_ReadSignedLong:
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
     CMPI.B  #$2b,(A0)
-    BEQ.S   PARSE_ReadSignedLong_SkipSign
+    BEQ.S   .lab_PARSE_ReadSignedLong_SkipSign
 
     CMPI.B  #$2d,(A0)
     BNE.S   PARSE_ReadSignedLong_ParseLoop
 
-PARSE_ReadSignedLong_SkipSign:
+.lab_PARSE_ReadSignedLong_SkipSign:
     ADDQ.W  #1,A0
 
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong_ParseLoop   (Routine at PARSE_ReadSignedLong_ParseLoop)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0/D1/D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_ParseLoop:
     MOVE.B  (A0)+,D0
     SUBI.B  #$30,D0
@@ -98,16 +117,92 @@ PARSE_ReadSignedLong_ParseLoop:
     ADD.L   D1,D1
     ADD.L   D0,D1
 
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong_ParseLoopEntry   (Routine at PARSE_ReadSignedLong_ParseLoopEntry)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_ParseLoopEntry:
     BRA.S   PARSE_ReadSignedLong_ParseLoop
 
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong_ParseDone   (Routine at PARSE_ReadSignedLong_ParseDone)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   A1
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_ParseDone:
     CMPI.B  #$2d,(A1)
     BNE.S   PARSE_ReadSignedLong_StoreResult
 
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong_NegateValue   (Routine at PARSE_ReadSignedLong_NegateValue)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D1
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_NegateValue:
     NEG.L   D1
 
+;------------------------------------------------------------------------------
+; FUNC: PARSE_ReadSignedLong_StoreResult   (Routine at PARSE_ReadSignedLong_StoreResult)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/D0/D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_StoreResult:
     MOVE.L  (A7)+,D2
     MOVE.L  A0,D0
@@ -140,36 +235,36 @@ PARSE_ReadSignedLong_NoBranch:
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
     CMPI.B  #$2b,(A0)
-    BEQ.S   PARSE_ReadSignedLong_NoBranch_SkipSign
+    BEQ.S   .lab_PARSE_ReadSignedLong_NoBranch_SkipSign
 
     CMPI.B  #$2d,(A0)
-    BNE.S   PARSE_ReadSignedLong_NoBranch_ParseLoop
+    BNE.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseLoop
 
-PARSE_ReadSignedLong_NoBranch_SkipSign:
+.lab_PARSE_ReadSignedLong_NoBranch_SkipSign:
     ADDQ.W  #1,A0
 
-PARSE_ReadSignedLong_NoBranch_ParseLoop:
+.lab_PARSE_ReadSignedLong_NoBranch_ParseLoop:
     MOVE.B  (A0)+,D0
     SUBI.B  #$30,D0
-    BLT.S   PARSE_ReadSignedLong_NoBranch_ParseDone
+    BLT.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseDone
 
     CMPI.B  #$9,D0
-    BGT.S   PARSE_ReadSignedLong_NoBranch_ParseDone
+    BGT.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseDone
 
     MOVE.L  D1,D2
     ASL.L   #2,D1
     ADD.L   D2,D1
     ADD.L   D1,D1
     ADD.L   D0,D1
-    BRA.S   PARSE_ReadSignedLong_NoBranch_ParseLoop
+    BRA.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseLoop
 
-PARSE_ReadSignedLong_NoBranch_ParseDone:
+.lab_PARSE_ReadSignedLong_NoBranch_ParseDone:
     CMPI.B  #$2d,(A1)
-    BNE.S   PARSE_ReadSignedLong_NoBranch_StoreResult
+    BNE.S   .lab_PARSE_ReadSignedLong_NoBranch_StoreResult
 
     NEG.L   D1
 
-PARSE_ReadSignedLong_NoBranch_StoreResult:
+.lab_PARSE_ReadSignedLong_NoBranch_StoreResult:
     MOVE.L  (A7)+,D2
     MOVE.L  A0,D0
     SUBQ.L  #1,D0
@@ -181,7 +276,7 @@ PARSE_ReadSignedLong_NoBranch_StoreResult:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_PrintfPutc   (PrintfPutcToBuffer)
+; FUNC: UNKNOWN10_PrintfPutcToBuffer   (PrintfPutcToBuffer)
 ; ARGS:
 ;   D0.b: character to append
 ; RET:
@@ -199,7 +294,7 @@ PARSE_ReadSignedLong_NoBranch_StoreResult:
 ; NOTES:
 ;   Uses A4-relative globals for the buffer pointer and byte count.
 ;------------------------------------------------------------------------------
-WDISP_PrintfPutc:
+UNKNOWN10_PrintfPutcToBuffer:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
 
@@ -225,7 +320,7 @@ WDISP_PrintfPutc:
 ; CLOBBERS:
 ;   D0, A0, A2-A3
 ; CALLS:
-;   WDISP_FormatWithCallback (core formatter), WDISP_PrintfPutc
+;   WDISP_FormatWithCallback (core formatter), UNKNOWN10_PrintfPutcToBuffer
 ; READS:
 ;   (none)
 ; WRITES:
@@ -245,7 +340,7 @@ WDISP_SPrintf:
     MOVE.L  A3,Global_PrintfBufferPtr(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
-    PEA     WDISP_PrintfPutc(PC)
+    PEA     UNKNOWN10_PrintfPutcToBuffer(PC)
     JSR     WDISP_FormatWithCallback(PC)
 
     MOVEA.L Global_PrintfBufferPtr(A4),A0
@@ -261,14 +356,14 @@ WDISP_SPrintf:
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_OpenEntryWithFlags   (Allocate/open entry in handle table.)
 ; ARGS:
-;   stack +8: A3 = path/buffer pointer??
-;   stack +12: D7 = flags/mode bits??
-;   stack +16: ?? (nonzero enables alt error code path)
-;   stack +19: ?? (bit 2 used with stack +16)
+;   stack +10: arg_1 (via 14(A5))
+;   stack +12: arg_2 (via 16(A5))
+;   stack +14: arg_3 (via 18(A5))
+;   stack +15: arg_4 (via 19(A5))
 ; RET:
 ;   D0: slot/index on success, -1 on failure
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A2/A3/A4/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
 ;   DOS_OpenWithErrorState, DOS_OpenNewFileIfMissing, DOS_DeleteAndRecreateFile, DOS_CloseWithSignalCheck
 ; READS:

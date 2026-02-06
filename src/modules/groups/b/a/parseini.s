@@ -1,18 +1,18 @@
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ParseIniBufferAndDispatch   (Parse INI-like buffer; dispatch by section??)
+; FUNC: PARSEINI_ParseIniBufferAndDispatch   (Parse INI-like buffer; dispatch by sectionuncertain)
 ; ARGS:
 ;   stack +8: A3 = pointer to buffer/string to parse
 ; RET:
-;   D0: -1 on failure, 0/?? on success
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   JMPTBL_LAB_03AC, JMPTBL_LAB_03B9, JMPTBL_UNKNOWN7_FindCharWrapper, JMPTBL_GCOMMAND_InitPresetTableFromPalette, JMPTBL_STRING_CompareNoCase_3, TEXTDISP_ClearSourceConfig, JMPTBL_LAB_0B44,
-;   JMPTBL_GCOMMAND_FindPathSeparator, JMPTBL_HANDLE_OpenWithMode, JMPTBL_LAB_09F9, JMPTBL_LAB_0A93, LAB_13E6/LAB_1400/LAB_1404/LAB_1408 helpers
+;   PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer, PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette, PARSEINI_JMPTBL_STRING_CompareNoCase, TEXTDISP_ClearSourceConfig, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString,
+;   PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad, PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey, PARSEINI_ProcessWeatherBlocks/PARSEINI_LoadWeatherStrings/PARSEINI_LoadWeatherMessageStrings/PARSEINI_ParseColorTable helpers
 ; READS:
-;   LAB_21BC, LAB_21A8 (char class table), many LAB_205* globals, LAB_1B1F, LAB_233D
+;   GLOB_PTR_WORK_BUFFER, WDISP_CharClassTable (char class table), many LAB_205* globals, PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
 ; WRITES:
-;   LAB_2059-2064/206A..., LAB_1DDA, LAB_2073, LAB_233D, LAB_206D, LAB_205A-C, etc.
+;   DATA_P_TYPE_BSS_LONG_2059-2064/206A..., TEXTDISP_AliasCount, DATA_PARSEINI_BSS_LONG_2073, PARSEINI_CurrentWeatherBlockPtr, PARSEINI_CurrentRangeTableIndex, DATA_P_TYPE_BSS_LONG_205A-C, etc.
 ; DESC:
 ;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
 ;   section headers and key/value pairs, and dispatches to per-section handlers.
@@ -20,7 +20,6 @@
 ;   Uses BRACKETED sections '['...']', lower-level helpers validate/allocate strings.
 ;------------------------------------------------------------------------------
 PARSEINI_ParseIniBufferAndDispatch:
-PARSEINI_ParseConfigBuffer:
     LINK.W  A5,#-44
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -29,7 +28,7 @@ PARSEINI_ParseConfigBuffer:
     MOVEQ   #0,D7
     MOVEQ   #-1,D5
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_LAB_03AC(PC)
+    JSR     PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
@@ -40,10 +39,10 @@ PARSEINI_ParseConfigBuffer:
 
 .init_parser_state:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D6
-    MOVE.L  LAB_21BC,-16(A5)
+    MOVE.L  GLOB_PTR_WORK_BUFFER,-16(A5)
 
 .next_line:
-    JSR     JMPTBL_LAB_03B9(PC)
+    JSR     PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-8(A5)
@@ -54,7 +53,7 @@ PARSEINI_ParseConfigBuffer:
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  (A0),D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .check_section_header
@@ -71,7 +70,7 @@ PARSEINI_ParseConfigBuffer:
     LEA     1(A0),A1
     PEA     93.W
     MOVE.L  A1,-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-28(A5)
@@ -82,9 +81,9 @@ PARSEINI_ParseConfigBuffer:
     CLR.B   (A0)
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_205D
+    PEA     DATA_P_TYPE_STR_QTABLE_205D
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -96,9 +95,9 @@ PARSEINI_ParseConfigBuffer:
 .check_section_2:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_205E
+    PEA     DATA_P_TYPE_TAG_BACKDROP_205E
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -110,17 +109,17 @@ PARSEINI_ParseConfigBuffer:
 .check_section_3:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_205F
+    PEA     DATA_P_TYPE_TAG_GRADIENT_205F
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_section_4
 
     MOVEQ   #3,D7
-    PEA     LAB_233F
-    JSR     JMPTBL_GCOMMAND_InitPresetTableFromPalette(PC)
+    PEA     DATA_WDISP_BSS_LONG_233F
+    JSR     PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .next_line
@@ -128,9 +127,9 @@ PARSEINI_ParseConfigBuffer:
 .check_section_4:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_2060
+    PEA     DATA_P_TYPE_TAG_TEXTADS_2060
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -142,9 +141,9 @@ PARSEINI_ParseConfigBuffer:
 .check_section_5:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_2061
+    PEA     DATA_P_TYPE_TAG_BRUSH_2061
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -156,54 +155,54 @@ PARSEINI_ParseConfigBuffer:
 .check_section_6:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_2062
+    PEA     DATA_P_TYPE_TAG_BANNER_2062
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_section_7
 
     MOVEQ   #6,D7
-    CLR.L   LAB_2059
+    CLR.L   DATA_P_TYPE_BSS_LONG_2059
     BRA.W   .next_line
 
 .check_section_7:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_2063
+    PEA     DATA_P_TYPE_STR_DEFAULT_TEXT_2063
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_section_8
 
     MOVEQ   #7,D7
-    MOVE.L  LAB_205A,-(A7)
+    MOVE.L  DATA_P_TYPE_BSS_LONG_205A,-(A7)
     MOVE.L  GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,LAB_205A
-    MOVE.L  LAB_205B,(A7)
-    MOVE.L  LAB_20B0,-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205A
+    MOVE.L  DATA_P_TYPE_BSS_LONG_205B,(A7)
+    MOVE.L  DATA_SCRIPT_CONST_LONG_20B0,-(A7)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,LAB_205B
-    MOVE.L  LAB_205C,(A7)
-    MOVE.L  LAB_20B2,-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205B
+    MOVE.L  DATA_P_TYPE_BSS_LONG_205C,(A7)
+    MOVE.L  DATA_SCRIPT_CONST_LONG_20B2,-(A7)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,LAB_205C
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205C
     BRA.W   .next_line
 
 .check_section_8:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     LAB_2064
+    PEA     DATA_P_TYPE_STR_SOURCE_CONFIG_2064
     MOVE.L  A0,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -244,7 +243,7 @@ PARSEINI_ParseConfigBuffer:
 .section1_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -259,7 +258,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section1_cut_marker
@@ -268,9 +267,9 @@ PARSEINI_ParseConfigBuffer:
     BRA.S   .section1_skip_value_ws
 
 .section1_cut_marker:
-    PEA     LAB_2065
+    PEA     DATA_P_TYPE_SPACE_VALUE_2065
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -303,7 +302,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section1_alloc_entry
@@ -316,20 +315,20 @@ PARSEINI_ParseConfigBuffer:
     ADDQ.L  #1,D5
     MOVE.L  D5,D0
     ASL.L   #2,D0
-    LEA     LAB_224F,A0
+    LEA     TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     8.W
     PEA     219.W
     PEA     GLOB_STR_PARSEINI_C_1
     MOVE.L  A0,36(A7)
-    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L 36(A7),A0
     MOVE.L  D0,(A0)
     MOVE.L  D5,D0
     ASL.L   #2,D0
-    LEA     LAB_224F,A0
+    LEA     TEXTDISP_AliasPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
     SUBA.L  A0,A0
@@ -337,19 +336,19 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  A0,4(A2)
     MOVE.L  (A2),(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,(A2)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-40(A5)
     TST.L   D0
     BNE.S   .section1_after_first_quote
 
-    CLR.W   LAB_1DDA
+    CLR.W   TEXTDISP_AliasCount
     MOVEQ   #0,D0
     BRA.W   .return
 
@@ -359,14 +358,14 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  A0,-32(A5)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-40(A5)
     TST.L   D0
     BNE.S   .section1_store_second_string
 
-    CLR.W   LAB_1DDA
+    CLR.W   TEXTDISP_AliasCount
 
     MOVEQ   #0,D0
     BRA.W   .return
@@ -376,23 +375,23 @@ PARSEINI_ParseConfigBuffer:
     CLR.B   (A0)
     MOVE.L  4(A2),-(A7)
     MOVE.L  -32(A5),-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,4(A2)
     MOVE.L  D5,D0
     ADDQ.L  #1,D0
-    MOVE.W  D0,LAB_1DDA
+    MOVE.W  D0,TEXTDISP_AliasCount
     BRA.W   .next_line
 
 .section1_reset_count:
-    CLR.W   LAB_1DDA
+    CLR.W   TEXTDISP_AliasCount
     BRA.W   .next_line
 
 .section2_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -407,7 +406,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section2_cut_marker
@@ -416,9 +415,9 @@ PARSEINI_ParseConfigBuffer:
     BRA.S   .section2_skip_value_ws
 
 .section2_cut_marker:
-    PEA     LAB_2067
+    PEA     DATA_PARSEINI_SPACE_VALUE_2067
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -451,7 +450,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section2_dispatch_keyvalue
@@ -463,15 +462,15 @@ PARSEINI_ParseConfigBuffer:
 .section2_dispatch_keyvalue:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    BSR.W   LAB_13E6
+    BSR.W   PARSEINI_ProcessWeatherBlocks
 
     ADDQ.W  #8,A7
     BRA.W   .next_line
 
 .section3_parse_range:
-    PEA     LAB_233F
+    PEA     DATA_WDISP_BSS_LONG_233F
     MOVE.L  -8(A5),-(A7)
-    BSR.W   LAB_13D7
+    BSR.W   PARSEINI_ParseRangeKeyValue
 
     ADDQ.W  #8,A7
     BRA.W   .next_line
@@ -479,7 +478,7 @@ PARSEINI_ParseConfigBuffer:
 .section4_5_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -494,7 +493,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section4_5_cut_marker
@@ -503,9 +502,9 @@ PARSEINI_ParseConfigBuffer:
     BRA.S   .section4_5_skip_value_ws
 
 .section4_5_cut_marker:
-    PEA     LAB_2068
+    PEA     DATA_PARSEINI_SPACE_VALUE_2068
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -540,7 +539,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section4_5_dispatch
@@ -553,7 +552,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  D7,-(A7)
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    BSR.W   LAB_1408
+    BSR.W   PARSEINI_ParseColorTable
 
     LEA     12(A7),A7
     BRA.W   .next_line
@@ -561,7 +560,7 @@ PARSEINI_ParseConfigBuffer:
 .section6_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -576,7 +575,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section6_cut_marker
@@ -585,9 +584,9 @@ PARSEINI_ParseConfigBuffer:
     BRA.S   .section6_skip_value_ws
 
 .section6_cut_marker:
-    PEA     LAB_2069
+    PEA     DATA_PARSEINI_SPACE_VALUE_2069
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -620,7 +619,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section6_dispatch
@@ -632,7 +631,7 @@ PARSEINI_ParseConfigBuffer:
 .section6_dispatch:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    BSR.W   LAB_1400
+    BSR.W   PARSEINI_LoadWeatherStrings
 
     ADDQ.W  #8,A7
     BRA.W   .next_line
@@ -640,7 +639,7 @@ PARSEINI_ParseConfigBuffer:
 .section7_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -655,7 +654,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section7_cut_marker
@@ -664,9 +663,9 @@ PARSEINI_ParseConfigBuffer:
     BRA.S   .section7_skip_value_ws
 
 .section7_cut_marker:
-    PEA     LAB_206A
+    PEA     DATA_PARSEINI_SPACE_VALUE_206A
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -699,7 +698,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section7_dispatch
@@ -711,7 +710,7 @@ PARSEINI_ParseConfigBuffer:
 .section7_dispatch:
     MOVE.L  -32(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    BSR.W   LAB_1404
+    BSR.W   PARSEINI_LoadWeatherMessageStrings
 
     ADDQ.W  #8,A7
     BRA.W   .next_line
@@ -719,7 +718,7 @@ PARSEINI_ParseConfigBuffer:
 .section8_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -734,7 +733,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section8_cut_marker
@@ -743,9 +742,9 @@ PARSEINI_ParseConfigBuffer:
     BRA.S   .section8_skip_value_ws
 
 .section8_cut_marker:
-    PEA     LAB_206B
+    PEA     DATA_PARSEINI_SPACE_VALUE_206B
     MOVE.L  -8(A5),-(A7)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -778,7 +777,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.B  (A0),D0
     EXT.W   D0
     EXT.L   D0
-    LEA     LAB_21A8,A1
+    LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
     BEQ.S   .section8_dispatch
@@ -802,7 +801,7 @@ PARSEINI_ParseConfigBuffer:
     MOVE.L  -16(A5),-(A7)
     PEA     403.W
     PEA     GLOB_STR_PARSEINI_C_2
-    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
 .return:
     MOVEM.L -64(A5),D5-D7/A2-A3
@@ -812,7 +811,7 @@ PARSEINI_ParseConfigBuffer:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ParseHexValueFromString   (ParseHexValueFromString??)
+; FUNC: PARSEINI_ParseHexValueFromString   (ParseHexValueFromStringuncertain)
 ; ARGS:
 ;   stack +8: A3 = pointer to hex string
 ; RET:
@@ -820,9 +819,9 @@ PARSEINI_ParseConfigBuffer:
 ; CLOBBERS:
 ;   D0-D1/D7/A0/A3
 ; CALLS:
-;   SCRIPT_JMPTBL_LADFUNC_ParseHexDigit
+;   SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   LAB_21A8 (char class table)
+;   WDISP_CharClassTable (char class table)
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -831,7 +830,6 @@ PARSEINI_ParseConfigBuffer:
 ;   Treats each nibble as upper-case hex via LADFUNC_ParseHexDigit.
 ;------------------------------------------------------------------------------
 PARSEINI_ParseHexValueFromString:
-LAB_13D4:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -842,7 +840,7 @@ LAB_13D4:
 
     MOVEQ   #0,D0
     MOVE.B  (A3),D0
-    LEA     LAB_21A8,A0
+    LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #7,(A0)
     BEQ.S   .return_13D6
@@ -851,7 +849,7 @@ LAB_13D4:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -868,28 +866,26 @@ LAB_13D4:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ParseRangeKeyValue   (Parse range key/value??)
+; FUNC: PARSEINI_ParseRangeKeyValue   (Routine at PARSEINI_ParseRangeKeyValue)
 ; ARGS:
-;   stack +8: A3 = source string pointer
-;   stack +12: A2 = output struct pointer
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
 ; RET:
-;   D0: status (0 = ok, -1 on invalid)
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3
+;   A0/A2/A3/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   JMPTBL_UNKNOWN7_FindCharWrapper, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, JMPTBL_GCOMMAND_ValidatePresetTable, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper, PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
-;   LAB_206D, LAB_206E/206F/2070-2072 lookup strings, LAB_223A-D fields
+;   PARSEINI_CurrentRangeTableIndex, DATA_PARSEINI_SPACE_VALUE_206E, DATA_PARSEINI_STR_VALUE_206F, DATA_PARSEINI_TAG_TABLE_2070, DATA_PARSEINI_TAG_DONE_2071, DATA_PARSEINI_TAG_COLOR_2072, handle_range_assign, return
 ; WRITES:
-;   LAB_206D, LAB_206D-indexed output in A2, LAB_206D sentinel when invalid
+;   PARSEINI_CurrentRangeTableIndex
 ; DESC:
-;   Parses a pair of bracketed numeric fields (two strings), validates them,
-;   and writes results into a 16-entry table pointed to by A2.
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   Uses 61 '=' delimiter; clamps/validates ranges 0..15 for index, 1..999 for value.
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 PARSEINI_ParseRangeKeyValue:
-LAB_13D7:
     LINK.W  A5,#-16
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -900,7 +896,7 @@ LAB_13D7:
 
     PEA     61.W
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -920,10 +916,10 @@ LAB_13D7:
     MOVE.L  -4(A5),-(A7)
     JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
-    PEA     LAB_206E
+    PEA     DATA_PARSEINI_SPACE_VALUE_206E
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -940,10 +936,10 @@ LAB_13D7:
     MOVE.L  A0,-8(A5)
     JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
-    PEA     LAB_206F
+    PEA     DATA_PARSEINI_STR_VALUE_206F
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -960,36 +956,36 @@ LAB_13D7:
     BEQ.W   .return
 
     PEA     5.W
-    PEA     LAB_2070
+    PEA     DATA_PARSEINI_TAG_TABLE_2070
     MOVE.L  -4(A5),-(A7)
-    JSR     JMPTBL_STRING_CompareNoCaseN(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
     BNE.S   .handle_non_preset_keys
 
     PEA     4.W
-    PEA     LAB_2071
+    PEA     DATA_PARSEINI_TAG_DONE_2071
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_STRING_CompareNoCaseN(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
     BNE.S   .handle_non_preset_keys
 
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_GCOMMAND_ValidatePresetTable(PC)
+    JSR     PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #-1,D0
-    MOVE.L  D0,LAB_206D
+    MOVE.L  D0,PARSEINI_CurrentRangeTableIndex
     BRA.W   .return
 
 .handle_non_preset_keys:
     PEA     5.W
-    PEA     LAB_2072
+    PEA     DATA_PARSEINI_TAG_COLOR_2072
     MOVE.L  -4(A5),-(A7)
-    JSR     JMPTBL_STRING_CompareNoCaseN(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -1006,7 +1002,7 @@ LAB_13D7:
     BEQ.S   .parse_index_optional_done
 
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
@@ -1021,18 +1017,18 @@ LAB_13D7:
 
 .invalid_index:
     MOVEQ   #-1,D0
-    MOVE.L  D0,LAB_206D
+    MOVE.L  D0,PARSEINI_CurrentRangeTableIndex
     BRA.S   .after_index_store
 
 .store_index:
     MOVE.L  D7,D0
     EXT.L   D0
-    MOVE.L  D0,LAB_206D
+    MOVE.L  D0,PARSEINI_CurrentRangeTableIndex
     ADD.L   D0,D0
     CLR.W   0(A2,D0.L)
 
 .after_index_store:
-    MOVE.L  LAB_206D,D0
+    MOVE.L  PARSEINI_CurrentRangeTableIndex,D0
     TST.L   D0
     BMI.W   .return
 
@@ -1041,7 +1037,7 @@ LAB_13D7:
     BGE.W   .return
 
     MOVE.L  -8(A5),-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6
@@ -1061,14 +1057,14 @@ LAB_13D7:
     ADDQ.W  #1,D6
 
 .after_value_adjust:
-    MOVE.L  LAB_206D,D0
+    MOVE.L  PARSEINI_CurrentRangeTableIndex,D0
     MOVE.L  D0,D1
     ADD.L   D1,D1
     MOVE.W  D6,0(A2,D1.L)
     BRA.S   .return
 
 .handle_range_assign:
-    MOVE.L  LAB_206D,D0
+    MOVE.L  PARSEINI_CurrentRangeTableIndex,D0
     TST.L   D0
     BMI.S   .return
 
@@ -1082,7 +1078,7 @@ LAB_13D7:
     BLE.S   .return
 
     MOVE.L  -4(A5),-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVE.L  D0,D7
     MOVE.L  -8(A5),(A7)
@@ -1093,7 +1089,7 @@ LAB_13D7:
     TST.W   D7
     BLE.S   .return
 
-    MOVE.L  LAB_206D,D0
+    MOVE.L  PARSEINI_CurrentRangeTableIndex,D0
     MOVE.L  D0,D1
     ADD.L   D1,D1
     CMP.W   0(A2,D1.L),D7
@@ -1123,254 +1119,252 @@ LAB_13D7:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ProcessWeatherBlocks   (Process weather-related INI blocks??)
+; FUNC: PARSEINI_ProcessWeatherBlocks   (Routine at PARSEINI_ProcessWeatherBlocks)
 ; ARGS:
-;   stack +8: A3 = current line pointer
-;   stack +12: A2 = target struct pointer
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3
+;   A0/A1/A2/A3/A5/A7/D0/D7
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, JMPTBL_STRING_CompareNoCaseN, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT_JMPTBL_STRING_CopyPadNul
+;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   LAB_1B1F, LAB_233D, LAB_2073, LAB_2059, LAB_206D
+;   GLOB_STR_PARSEINI_C_3, PARSEINI_ParsedDescriptorListHead, DATA_PARSEINI_BSS_LONG_2073, DATA_PARSEINI_TAG_FILENAME_2074, DATA_PARSEINI_STR_LOADCOLOR_2075, DATA_PARSEINI_TAG_ALL_2076, DATA_PARSEINI_TAG_NONE_2077, DATA_PARSEINI_TAG_TEXT_2078, DATA_PARSEINI_TAG_XPOS_2079, DATA_PARSEINI_TAG_TYPE_207A, DATA_PARSEINI_TAG_DITHER_207B, DATA_PARSEINI_TAG_YPOS_207C, DATA_PARSEINI_TAG_XSOURCE_207D, DATA_PARSEINI_TAG_YSOURCE_207E, DATA_PARSEINI_TAG_SIZEX_207F, DATA_PARSEINI_TAG_SIZEY_2080, DATA_PARSEINI_TAG_SOURCE_2081, DATA_PARSEINI_TAG_PPV_2082, DATA_PARSEINI_STR_HORIZONTAL_2084, DATA_PARSEINI_TAG_RIGHT_2085, DATA_PARSEINI_TAG_CENTER_2086, DATA_PARSEINI_TAG_VERTICAL_2087, DATA_PARSEINI_TAG_BOTTOM_2088, DATA_PARSEINI_TAG_CENTER_2089, DATA_PARSEINI_TAG_ID_208A, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
 ; WRITES:
-;   LAB_233D, LAB_1B1F, LAB_2073, LAB_206D, fields at offsets 190+ in LAB_233D struct
+;   PARSEINI_ParsedDescriptorListHead, DATA_PARSEINI_BSS_LONG_2073, PARSEINI_CurrentWeatherBlockPtr
 ; DESC:
-;   Handles a collection of weather configuration keys (WX strings, codes, timing)
-;   populating a weather/display struct and related globals.
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   Many keys are matched via JMPTBL_STRING_CompareNoCase_3 against literal strings LAB_2074..208A.
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 PARSEINI_ProcessWeatherBlocks:
-LAB_13E6:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     SUBA.L  A0,A0
     MOVE.L  A0,-8(A5)
-    TST.L   LAB_1B1F
+    TST.L   PARSEINI_ParsedDescriptorListHead
     BNE.S   .after_init_state
 
-    MOVE.L  A0,LAB_2073
-    MOVE.L  A0,LAB_233D
+    MOVE.L  A0,DATA_PARSEINI_BSS_LONG_2073
+    MOVE.L  A0,PARSEINI_CurrentWeatherBlockPtr
 
 .after_init_state:
-    PEA     LAB_2074
+    PEA     DATA_PARSEINI_TAG_FILENAME_2074
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_2075
 
-    CLR.L   LAB_2073
-    MOVE.L  LAB_233D,-(A7)
+    CLR.L   DATA_PARSEINI_BSS_LONG_2073
+    MOVE.L  PARSEINI_CurrentWeatherBlockPtr,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #$1,190(A0)
-    MOVE.L  D0,LAB_233D
-    TST.L   LAB_1B1F
+    MOVE.L  D0,PARSEINI_CurrentWeatherBlockPtr
+    TST.L   PARSEINI_ParsedDescriptorListHead
     BNE.S   .check_key_2075
 
-    MOVE.L  D0,LAB_1B1F
+    MOVE.L  D0,PARSEINI_ParsedDescriptorListHead
 
 .check_key_2075:
-    TST.L   LAB_233D
+    TST.L   PARSEINI_CurrentWeatherBlockPtr
     BEQ.W   .return
 
-    PEA     LAB_2075
+    PEA     DATA_PARSEINI_STR_LOADCOLOR_2075
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_2079
 
-    PEA     LAB_2076
+    PEA     DATA_PARSEINI_TAG_ALL_2076
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_mode_2077
 
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.L   194(A0)
     BRA.W   .return
 
 .check_mode_2077:
-    PEA     LAB_2077
+    PEA     DATA_PARSEINI_TAG_NONE_2077
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_mode_2078
 
     MOVEQ   #2,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,194(A0)
     BRA.W   .return
 
 .check_mode_2078:
-    PEA     LAB_2078
+    PEA     DATA_PARSEINI_TAG_TEXT_2078
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .set_default_mode_194
 
     MOVEQ   #3,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,194(A0)
     BRA.W   .return
 
 .set_default_mode_194:
     MOVEQ   #1,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,194(A0)
     BRA.W   .return
 
 .check_key_2079:
-    PEA     LAB_2079
+    PEA     DATA_PARSEINI_TAG_XPOS_2079
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_207A
 
     MOVE.L  A2,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,198(A0)
     BRA.W   .return
 
 .check_key_207A:
-    PEA     LAB_207A
+    PEA     DATA_PARSEINI_TAG_TYPE_207A
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_207C
 
-    PEA     LAB_207B
+    PEA     DATA_PARSEINI_TAG_DITHER_207B
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.W   .return
 
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.B  #$2,190(A0)
     BRA.W   .return
 
 .check_key_207C:
-    PEA     LAB_207C
+    PEA     DATA_PARSEINI_TAG_YPOS_207C
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_207D
 
     MOVE.L  A2,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,202(A0)
     BRA.W   .return
 
 .check_key_207D:
-    PEA     LAB_207D
+    PEA     DATA_PARSEINI_TAG_XSOURCE_207D
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_207E
 
     MOVE.L  A2,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,206(A0)
     BRA.W   .return
 
 .check_key_207E:
-    PEA     LAB_207E
+    PEA     DATA_PARSEINI_TAG_YSOURCE_207E
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_207F
 
     MOVE.L  A2,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,210(A0)
     BRA.W   .return
 
 .check_key_207F:
-    PEA     LAB_207F
+    PEA     DATA_PARSEINI_TAG_SIZEX_207F
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_2080
 
     MOVE.L  A2,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,214(A0)
     BRA.W   .return
 
 .check_key_2080:
-    PEA     LAB_2080
+    PEA     DATA_PARSEINI_TAG_SIZEY_2080
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_2081
 
     MOVE.L  A2,-(A7)
-    JSR     SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,218(A0)
     BRA.W   .return
 
 .check_key_2081:
-    PEA     LAB_2081
+    PEA     DATA_PARSEINI_TAG_SOURCE_2081
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1388,28 +1382,28 @@ LAB_13E6:
     TST.L   D0
     BLE.W   .check_key_2084
 
-    PEA     LAB_2082
+    PEA     DATA_PARSEINI_TAG_PPV_2082
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .alloc_weather_node
 
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.B  #$3,190(A0)
     BRA.W   .return
 
 .alloc_weather_node:
-    MOVE.L  LAB_2073,-8(A5)
+    MOVE.L  DATA_PARSEINI_BSS_LONG_2073,-8(A5)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     12.W
     PEA     670.W
     PEA     GLOB_STR_PARSEINI_C_3
-    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,LAB_2073
+    MOVE.L  D0,DATA_PARSEINI_BSS_LONG_2073
     TST.L   D0
     BEQ.W   .return
 
@@ -1422,119 +1416,119 @@ LAB_13E6:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_node_label
 
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     TST.L   230(A0)
     BNE.S   .append_node_link
 
-    MOVEA.L LAB_2073,A1
+    MOVEA.L DATA_PARSEINI_BSS_LONG_2073,A1
     MOVE.L  A1,230(A0)
     BRA.W   .return
 
 .append_node_link:
     MOVEA.L -8(A5),A1
-    MOVE.L  LAB_2073,8(A1)
+    MOVE.L  DATA_PARSEINI_BSS_LONG_2073,8(A1)
     BRA.W   .return
 
 .check_key_2084:
-    PEA     LAB_2084
+    PEA     DATA_PARSEINI_STR_HORIZONTAL_2084
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_2087
 
-    PEA     LAB_2085
+    PEA     DATA_PARSEINI_TAG_RIGHT_2085
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_mode_2086
 
     MOVEQ   #2,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,222(A0)
     BRA.W   .return
 
 .check_mode_2086:
-    PEA     LAB_2086
+    PEA     DATA_PARSEINI_TAG_CENTER_2086
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .set_mode_222_default
 
     MOVEQ   #1,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,222(A0)
     BRA.W   .return
 
 .set_mode_222_default:
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.L   222(A0)
     BRA.W   .return
 
 .check_key_2087:
-    PEA     LAB_2087
+    PEA     DATA_PARSEINI_TAG_VERTICAL_2087
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_key_208A
 
-    PEA     LAB_2088
+    PEA     DATA_PARSEINI_TAG_BOTTOM_2088
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .check_mode_2089
 
     MOVEQ   #2,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,226(A0)
     BRA.S   .return
 
 .check_mode_2089:
-    PEA     LAB_2089
+    PEA     DATA_PARSEINI_TAG_CENTER_2089
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .set_mode_226_default
 
     MOVEQ   #1,D0
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,226(A0)
     BRA.S   .return
 
 .set_mode_226_default:
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.L   226(A0)
     BRA.S   .return
 
 .check_key_208A:
-    PEA     LAB_208A
+    PEA     DATA_PARSEINI_TAG_ID_208A
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .return
 
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     ADDA.W  #191,A0
     PEA     2.W
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     SCRIPT_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    MOVEA.L LAB_233D,A0
+    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.B   193(A0)
 
 .return:
@@ -1545,57 +1539,54 @@ LAB_13E6:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_LoadWeatherStrings   (Load weather strings/locations??)
+; FUNC: PARSEINI_LoadWeatherStrings   (Routine at PARSEINI_LoadWeatherStrings)
 ; ARGS:
-;   stack +8: A3 = source string pointer
-;   stack +12: A2 = destination buffer/struct
+;   (none observed)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3
+;   A0/A2/A3/A7/D0
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_BRUSH_AllocBrushNode, GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper, JMPTBL_STRING_CompareNoCaseN, SCRIPT_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   LAB_1B23, LAB_233E, LAB_2059
+;   PARSEINI_BannerBrushResourceHead, DATA_PARSEINI_TAG_FILENAME_208B, DATA_PARSEINI_TAG_WEATHER_208C, DATA_WDISP_BSS_LONG_233E, a
 ; WRITES:
-;   LAB_233E, LAB_1B23, LAB_2059
+;   PARSEINI_BannerBrushResourceHead, DATA_P_TYPE_BSS_LONG_2059, DATA_WDISP_BSS_LONG_233E
 ; DESC:
-;   Parses weather string keys, allocates/sets current weather display entries,
-;   and handles default/fallback cases.
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   Sets field 190(A0) to 0x0A when a new block is created.
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 PARSEINI_LoadWeatherStrings:
-LAB_1400:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
-    TST.L   LAB_1B23
+    TST.L   PARSEINI_BannerBrushResourceHead
     BNE.S   .if_ne_1401
 
-    CLR.L   LAB_233E
+    CLR.L   DATA_WDISP_BSS_LONG_233E
 
 .if_ne_1401:
-    PEA     LAB_208B
+    PEA     DATA_PARSEINI_TAG_FILENAME_208B
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .if_ne_1402
 
-    MOVE.L  LAB_233E,-(A7)
+    MOVE.L  DATA_WDISP_BSS_LONG_233E,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #$a,190(A0)
-    MOVE.L  D0,LAB_233E
-    TST.L   LAB_1B23
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_233E
+    TST.L   PARSEINI_BannerBrushResourceHead
     BNE.S   .return_1403
 
-    MOVE.L  D0,LAB_1B23
+    MOVE.L  D0,PARSEINI_BannerBrushResourceHead
     BRA.S   .return_1403
 
 .if_ne_1402:
@@ -1603,28 +1594,28 @@ LAB_1400:
     TST.L   D0
     BEQ.S   .return_1403
 
-    PEA     LAB_208C
+    PEA     DATA_PARSEINI_TAG_WEATHER_208C
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .return_1403
 
     MOVEQ   #1,D0
-    MOVE.L  D0,LAB_2059
-    MOVE.L  LAB_233E,-(A7)
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_2059
+    MOVE.L  DATA_WDISP_BSS_LONG_233E,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_BRUSH_AllocBrushNode(PC)
+    JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #10,190(A0)
-    MOVE.L  D0,LAB_233E
-    TST.L   LAB_1B23
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_233E
+    TST.L   PARSEINI_BannerBrushResourceHead
     BNE.S   .return_1403
 
-    MOVE.L  D0,LAB_1B23
+    MOVE.L  D0,PARSEINI_BannerBrushResourceHead
 
 .return_1403:
     MOVEM.L (A7)+,A2-A3
@@ -1633,78 +1624,76 @@ LAB_1400:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_LoadWeatherMessageStrings   (Load message strings??)
+; FUNC: PARSEINI_LoadWeatherMessageStrings   (Routine at PARSEINI_LoadWeatherMessageStrings)
 ; ARGS:
-;   stack +12: A3 = source string pointer
-;   stack +16: A2 = destination buffer
+;   (none observed)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
-;   D0-D7/A0-A3
+;   A2/A3/A7
 ; CALLS:
-;   JMPTBL_STRING_CompareNoCase_3, JMPTBL_LAB_0B44
+;   PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   LAB_205A/B/C, LAB_2059
+;   DATA_P_TYPE_BSS_LONG_205A, DATA_P_TYPE_BSS_LONG_205B, DATA_P_TYPE_BSS_LONG_205C, DATA_PARSEINI_STR_WEATHERCURRENT_208D, DATA_PARSEINI_STR_WEATHERFORECAST_208E, DATA_PARSEINI_STR_BOTTOMLINETAG_208F
 ; WRITES:
-;   LAB_205A/B/C
+;   DATA_P_TYPE_BSS_LONG_205A, DATA_P_TYPE_BSS_LONG_205B, DATA_P_TYPE_BSS_LONG_205C
 ; DESC:
-;   Parses three related message strings and stores them in LAB_205A/B/C.
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   Uses sequential key matching LAB_208D/E/F.
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 PARSEINI_LoadWeatherMessageStrings:
-LAB_1404:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
-    PEA     LAB_208D
+    PEA     DATA_PARSEINI_STR_WEATHERCURRENT_208D
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .if_ne_1405
 
-    MOVE.L  LAB_205A,-(A7)
+    MOVE.L  DATA_P_TYPE_BSS_LONG_205A,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_205A
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205A
     BRA.S   .return_1407
 
 .if_ne_1405:
-    PEA     LAB_208E
+    PEA     DATA_PARSEINI_STR_WEATHERFORECAST_208E
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .if_ne_1406
 
-    MOVE.L  LAB_205B,-(A7)
+    MOVE.L  DATA_P_TYPE_BSS_LONG_205B,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_205B
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205B
     BRA.S   .return_1407
 
 .if_ne_1406:
-    PEA     LAB_208F
+    PEA     DATA_PARSEINI_STR_BOTTOMLINETAG_208F
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BNE.S   .return_1407
 
-    MOVE.L  LAB_205C,-(A7)
+    MOVE.L  DATA_P_TYPE_BSS_LONG_205C,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     JMPTBL_LAB_0B44(PC)
+    JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_205C
+    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205C
 
 .return_1407:
     MOVEM.L (A7)+,A2-A3
@@ -1713,29 +1702,29 @@ LAB_1404:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ParseColorTable   (Parse color table entries??)
+; FUNC: PARSEINI_ParseColorTable   (Routine at PARSEINI_ParseColorTable)
 ; ARGS:
-;   stack +8: A3 = source string pointer
-;   stack +12: A2 = destination table ptr
-;   stack +16: D7 = mode selector (0: rgb?, 1: palette??, 4 triggers checksum)
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +12: arg_3 (via 16(A5))
+;   stack +108: arg_4 (via 112(A5))
+;   stack +112: arg_5 (via 116(A5))
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3
+;   A0/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   JMPTBL_PRINTF_4, JMPTBL_STRING_CompareNoCase_3, SCRIPT_JMPTBL_LADFUNC_ParseHexDigit, TEXTDISP_JMPTBL_LAB_0A48
+;   PARSEINI_JMPTBL_STRING_CompareNoCase, PARSEINI_JMPTBL_WDISP_SPrintf, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   LAB_1ECC/LAB_1FB8 tables, GLOB_STR_COLOR_PERCENT_D
+;   GLOB_STR_COLOR_PERCENT_D, DATA_ESQFUNC_CONST_LONG_1ECC, DATA_KYBD_BSS_BYTE_1FB8
 ; WRITES:
-;   color tables pointed by A2 (8x3 bytes)
+;   (none observed)
 ; DESC:
-;   Iterates through color percentages strings, converts them, and fills a table;
-;   for mode 4 triggers TEXTDISP_JMPTBL_LAB_0A48 afterward.
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   Converts using SCRIPT_JMPTBL_LADFUNC_ParseHexDigit (string→value) and stores into preset tables.
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 PARSEINI_ParseColorTable:
-LAB_1408:
     LINK.W  A5,#-120
     MOVEM.L D4-D7/A2-A3,-(A7)
 
@@ -1753,12 +1742,12 @@ LAB_1408:
     BRA.S   .init_color_index
 
 .mode4_select_table:
-    MOVE.L  #LAB_1FB8,-116(A5)
+    MOVE.L  #DATA_KYBD_BSS_BYTE_1FB8,-116(A5)
     MOVEQ   #8,D4
     BRA.S   .init_color_index
 
 .mode5_select_table:
-    MOVE.L  #LAB_1ECC,-116(A5)
+    MOVE.L  #DATA_ESQFUNC_CONST_LONG_1ECC,-116(A5)
     MOVEQ   #8,D4
 
 .init_color_index:
@@ -1771,11 +1760,11 @@ LAB_1408:
     MOVE.L  D6,-(A7)
     PEA     GLOB_STR_COLOR_PERCENT_D
     PEA     -112(A5)
-    JSR     JMPTBL_PRINTF_4(PC)
+    JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -112(A5)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -1797,7 +1786,7 @@ LAB_1408:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  D1,28(A7)
-    JSR     SCRIPT_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -116(A5),A0
@@ -1815,7 +1804,7 @@ LAB_1408:
     CMP.L   D0,D7
     BNE.S   .return
 
-    JSR     TEXTDISP_JMPTBL_LAB_0A48(PC)
+    JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
 .return:
     MOVEM.L (A7)+,D4-D7/A2-A3
@@ -1825,7 +1814,7 @@ LAB_1408:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_TestMemoryAndOpenTopazFont   (Test memory then open Topaz)
+; FUNC: TEST_MEMORY_AND_OPEN_TOPAZ_FONT   (Test memory then open Topaz)
 ; ARGS:
 ;   stack +8: A3 = pointer to font handle storage
 ;   stack +12: A2 = TextAttr for desired font
@@ -1846,8 +1835,27 @@ LAB_1408:
 ; NOTES:
 ;   Sets D0=1 when it could not load the desired font.
 ;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+; FUNC: PARSEINI_TestMemoryAndOpenTopazFont   (Routine at PARSEINI_TestMemoryAndOpenTopazFont)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D7
+; CALLS:
+;   _LVOAllocMem, _LVOCloseFont, _LVOForbid, _LVOFreeMem, _LVOOpenDiskFont, _LVOPermit
+; READS:
+;   AbsExecBase, DesiredMemoryAvailability, GLOB_HANDLE_TOPAZ_FONT, GLOB_REF_DISKFONT_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 PARSEINI_TestMemoryAndOpenTopazFont:
-TEST_MEMORY_AND_OPEN_TOPAZ_FONT:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
 
@@ -1908,19 +1916,19 @@ TEST_MEMORY_AND_OPEN_TOPAZ_FONT:
 
 ; we're doing a bunch of font stuff in here!
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_HandleFontCommand   (Parse font command sequence??)
+; FUNC: PARSEINI_HandleFontCommand   (Parse font command sequenceuncertain)
 ; ARGS:
 ;   stack +8: A3 = command string pointer
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   JMPTBL_PRINTF_4, _LVOExecute, PARSEINI_TestMemoryAndOpenTopazFont, LAB_1429
+;   PARSEINI_JMPTBL_WDISP_SPrintf, _LVOExecute, TEST_MEMORY_AND_OPEN_TOPAZ_FONT, LAB_1429
 ; READS:
 ;   GLOB_REF_DOS_LIBRARY_2, GLOB_HANDLE_TOPAZ_FONT
 ; WRITES:
-;   (font handles via PARSEINI_TestMemoryAndOpenTopazFont)
+;   (font handles via TEST_MEMORY_AND_OPEN_TOPAZ_FONT)
 ; DESC:
 ;   Parses a command string starting with '3' '2' ... handling subcommands to
 ;   execute shell commands or open fonts depending on the trailing byte.
@@ -1928,7 +1936,6 @@ TEST_MEMORY_AND_OPEN_TOPAZ_FONT:
 ;   Matches subcodes 0x34–0x38 etc.; returns early on non-matching prefixes.
 ;------------------------------------------------------------------------------
 PARSEINI_HandleFontCommand:
-LAB_1416:
     LINK.W  A5,#-88
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1956,7 +1963,7 @@ LAB_1416:
     MOVE.L  A3,-(A7)
     PEA     GLOB_STR_PERCENT_S_2
     PEA     -80(A5)
-    JSR     JMPTBL_PRINTF_4(PC)
+    JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
     LEA     -80(A5),A0
@@ -2011,38 +2018,38 @@ LAB_1416:
     BRA.W   .return
 
 .cmd_wait_clear_flag0:
-    JSR     JMPTBL_ED1_WaitForFlagAndClearBit0(PC)
+    JSR     PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(PC)
 
     BRA.W   .return
 
 .cmd_scan_logos_and_clear_flag1:
-    MOVE.B  LAB_1BC1,D0
+    MOVE.B  DATA_CTASKS_STR_Y_1BC1,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .after_optional_logo_scan
 
-    BSR.W   LAB_142E
+    BSR.W   PARSEINI_ScanLogoDirectory
 
 .after_optional_logo_scan:
-    JSR     JMPTBL_ED1_WaitForFlagAndClearBit1(PC)
+    JSR     PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(PC)
 
     BRA.W   .return
 
 .cmd_call_lab_09DB:
-    JSR     JMPTBL_LAB_09DB(PC)
+    JSR     PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(PC)
 
     BRA.W   .return
 
 .cmd_set_h26f_font:
     PEA     GLOB_STRUCT_TEXTATTR_H26F_FONT
     PEA     GLOB_HANDLE_H26F_FONT
-    BSR.W   TEST_MEMORY_AND_OPEN_TOPAZ_FONT
+    BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
     BEQ.W   .return
 
-    TST.W   LAB_2263
+    TST.W   GLOB_UIBusyFlag
     BEQ.W   .return
 
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -2055,14 +2062,14 @@ LAB_1416:
 .cmd_set_prevuec_font:
     PEA     GLOB_STRUCT_TEXTATTR_PREVUEC_FONT
     PEA     GLOB_HANDLE_PREVUEC_FONT
-    BSR.W   TEST_MEMORY_AND_OPEN_TOPAZ_FONT
+    BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
     BEQ.W   .return
 
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
 
     MOVEA.L A0,A1
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -2095,9 +2102,9 @@ LAB_1416:
     MOVE.L  D6,D0
     MOVEQ   #80,D1
     ADD.L   D1,D1
-    JSR     JMPTBL_MATH_Mulu32_7(PC)
+    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     LAB_22A6,A0
+    LEA     DATA_WDISP_BSS_LONG_22A6,A0
     ADDA.L  D0,A0
     LEA     60(A0),A1
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -2109,7 +2116,7 @@ LAB_1416:
 
 .after_prevuec_font_loop:
     MOVE.L  GLOB_HANDLE_PREVUEC_FONT,-(A7)
-    JSR     LAB_1858
+    JSR     TLIBA3_SetFontForAllViewModes
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -2117,20 +2124,20 @@ LAB_1416:
 .cmd_set_prevue_font:
     PEA     GLOB_STRUCT_TEXTATTR_PREVUE_FONT
     PEA     GLOB_HANDLE_PREVUE_FONT
-    BSR.W   TEST_MEMORY_AND_OPEN_TOPAZ_FONT
+    BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
     BRA.W   .return
 
 .cmd_parse_ini_from_disk:
-    JSR     JMPTBL_DISKIO_ParseIniFileFromDisk(PC)
+    JSR     PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(PC)
 
     BRA.W   .return
 
 .cmd_call_lab_0A93:
     PEA     97.W
-    JSR     JMPTBL_LAB_0A93(PC)
+    JSR     PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -2151,22 +2158,22 @@ LAB_1416:
     BEQ.W   .return
 
 .wait_banner_ready:
-    TST.W   LAB_1B83
+    TST.W   CTASKS_IffTaskDoneFlag
     BEQ.S   .wait_banner_ready
 
     CLR.L   -(A7)
-    PEA     LAB_1B25
-    JSR     JMPTBL_BRUSH_FreeBrushList(PC)
+    PEA     WDISP_WeatherStatusBrushListHead
+    JSR     PARSEINI_JMPTBL_BRUSH_FreeBrushList(PC)
 
-    PEA     LAB_1B23
-    JSR     JMPTBL_BRUSH_FreeBrushResources(PC)
+    PEA     PARSEINI_BannerBrushResourceHead
+    JSR     PARSEINI_JMPTBL_BRUSH_FreeBrushResources(PC)
 
     PEA     GLOB_STR_DF0_BANNER_INI_3
 
     BSR.W   PARSEINI_ParseIniBufferAndDispatch
 
     PEA     1.W
-    JSR     JMPTBL_LAB_09F9(PC)
+    JSR     PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(PC)
 
     LEA     20(A7),A7
     BRA.S   .return
@@ -2204,23 +2211,23 @@ LAB_1416:
     BRA.S   .return
 
 .cmd_show_then_exit_esc_menu:
-    JSR     JMPTBL_ED1_EnterEscMenu(PC)
+    JSR     PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     JMPTBL_ED1_ExitEscMenu(PC)
+    JSR     PARSEINI_JMPTBL_ED1_ExitEscMenu(PC)
 
     BRA.S   .return
 
 .cmd_draw_diagnostics:
-    JSR     JMPTBL_ED1_EnterEscMenu(PC)
+    JSR     PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     JMPTBL_ED1_DrawDiagnosticsScreen(PC)
+    JSR     PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(PC)
 
     BRA.S   .return
 
 .cmd_draw_version:
-    JSR     JMPTBL_ED1_EnterEscMenu(PC)
+    JSR     PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
+    JSR     PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
 
 .return:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
@@ -2230,17 +2237,17 @@ LAB_1416:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ScanLogoDirectory   (Scan logo directory, build lists??)
+; FUNC: PARSEINI_ScanLogoDirectory   (Scan logo directory, build listsuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _LVOExecute, JMPTBL_HANDLE_OpenWithMode, GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit, JMPTBL_GCOMMAND_FindPathSeparator, GROUPD_JMPTBL_MEMORY_AllocateMemory
+;   _LVOExecute, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_STREAM_ReadLineWithLimit, PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   GLOB_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, LAB_2098/2099/209A/209B strings
+;   GLOB_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, DATA_PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST_2098/2099/209A/209B strings
 ; WRITES:
 ;   local temp buffers and allocated lists at -500/-900(A5)
 ; DESC:
@@ -2250,7 +2257,6 @@ LAB_1416:
 ;   Iterates up to 100 entries per list, trimming CR/LF/commas from lines.
 ;------------------------------------------------------------------------------
 PARSEINI_ScanLogoDirectory:
-LAB_142E:
     LINK.W  A5,#-960
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
 
@@ -2284,9 +2290,9 @@ LAB_142E:
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
-    PEA     LAB_2099
-    PEA     LAB_2098
-    JSR     JMPTBL_HANDLE_OpenWithMode(PC)
+    PEA     DATA_PARSEINI_STR_RB_2099
+    PEA     DATA_PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST_2098
+    JSR     PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -2295,9 +2301,9 @@ LAB_142E:
     CLR.L   -96(A5)
 
 .after_open_primary:
-    PEA     LAB_209B
-    PEA     LAB_209A
-    JSR     JMPTBL_HANDLE_OpenWithMode(PC)
+    PEA     DATA_PARSEINI_STR_RB_209B
+    PEA     DATA_PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT_209A
+    JSR     PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -2319,7 +2325,7 @@ LAB_142E:
     MOVE.L  -4(A5),-(A7)
     PEA     99.W
     PEA     -88(A5)
-    JSR     GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit(PC)
+    JSR     PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(PC)
 
     LEA     12(A7),A7
     LEA     -88(A5),A0
@@ -2360,7 +2366,7 @@ LAB_142E:
 
 .primary_alloc_and_store:
     PEA     -88(A5)
-    JSR     JMPTBL_GCOMMAND_FindPathSeparator(PC)
+    JSR     PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(PC)
 
     MOVE.L  D5,D1
     ASL.L   #2,D1
@@ -2382,7 +2388,7 @@ LAB_142E:
     PEA     GLOB_STR_PARSEINI_C_4
     MOVE.L  D0,-92(A5)
     MOVE.L  A0,40(A7)
-    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 24(A7),A0
@@ -2415,7 +2421,7 @@ LAB_142E:
     MOVE.L  -8(A5),-(A7)
     PEA     99.W
     PEA     -88(A5)
-    JSR     GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit(PC)
+    JSR     PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(PC)
 
     LEA     12(A7),A7
     LEA     -88(A5),A0
@@ -2471,7 +2477,7 @@ LAB_142E:
     PEA     1287.W
     PEA     GLOB_STR_PARSEINI_C_5
     MOVE.L  A0,40(A7)
-    JSR     GROUPD_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L 24(A7),A0
@@ -2522,7 +2528,7 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  (A1),-(A7)
-    JSR     JMPTBL_STRING_CompareNoCase_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2554,7 +2560,7 @@ LAB_142E:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     -956(A5)
-    JSR     JMPTBL_STRING_AppendAtNull_3(PC)
+    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     LEA     -956(A5),A0
@@ -2585,7 +2591,7 @@ LAB_142E:
     MOVE.L  (A1),-(A7)
     PEA     1323.W
     PEA     GLOB_STR_PARSEINI_C_6
-    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D6
@@ -2622,7 +2628,7 @@ LAB_142E:
     MOVE.L  (A1),-(A7)
     PEA     1329.W
     PEA     GLOB_STR_PARSEINI_C_7
-    JSR     GROUPD_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     ADDQ.L  #1,D5
@@ -2633,7 +2639,7 @@ LAB_142E:
     BEQ.S   .close_secondary_handle
 
     MOVE.L  -4(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN36_FinalizeRequest(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
@@ -2642,7 +2648,7 @@ LAB_142E:
     BEQ.S   .return
 
     MOVE.L  -8(A5),-(A7)
-    JSR     JMPTBL_UNKNOWN36_FinalizeRequest(PC)
+    JSR     PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
@@ -2654,13 +2660,13 @@ LAB_142E:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_STRING_CompareNoCase_3   (JumpStub_STRING_CompareNoCase)
+; FUNC: PARSEINI_JMPTBL_STRING_CompareNoCase   (JumpStub_STRING_CompareNoCase)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   STRING_CompareNoCase
 ; DESC:
@@ -2668,17 +2674,17 @@ LAB_142E:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_STRING_CompareNoCase_3:
+PARSEINI_JMPTBL_STRING_CompareNoCase:
     JMP     STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
+; FUNC: PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
 ; ARGS:
-;   ?? (see ED1_WaitForFlagAndClearBit0)
+;   (none observed)
 ; RET:
-;   ?? (see ED1_WaitForFlagAndClearBit0)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ED1_WaitForFlagAndClearBit0)
+;   none observed
 ; CALLS:
 ;   ED1_WaitForFlagAndClearBit0
 ; DESC:
@@ -2686,37 +2692,35 @@ JMPTBL_STRING_CompareNoCase_3:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ED1_WaitForFlagAndClearBit0:
-LAB_1453:
+PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0:
     JMP     ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_DISKIO_ParseIniFileFromDisk   (JumpStub_LAB_04F0)
+; FUNC: PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_04F0)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_04F0)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_04F0)
+;   none observed
 ; CALLS:
-;   LAB_04F0
+;   DISKIO2_ParseIniFileFromDisk
 ; DESC:
-;   Jump stub to LAB_04F0 (Parse INI file from disk).
+;   Jump stub to DISKIO2_ParseIniFileFromDisk (Parse INI file from disk).
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_DISKIO_ParseIniFileFromDisk:
-LAB_1454:
-    JMP     LAB_04F0
+PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
+    JMP     DISKIO2_ParseIniFileFromDisk
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
+; FUNC: PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
 ; ARGS:
-;   ?? (see UNKNOWN7_FindCharWrapper)
+;   (none observed)
 ; RET:
-;   ?? (see UNKNOWN7_FindCharWrapper)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see UNKNOWN7_FindCharWrapper)
+;   none observed
 ; CALLS:
 ;   UNKNOWN7_FindCharWrapper
 ; DESC:
@@ -2724,18 +2728,17 @@ LAB_1454:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_UNKNOWN7_FindCharWrapper:
-LAB_1455:
+PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper:
     JMP     UNKNOWN7_FindCharWrapper
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)
+; FUNC: PARSEINI_JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)
 ; ARGS:
-;   ?? (see HANDLE_OpenWithMode)
+;   (none observed)
 ; RET:
-;   ?? (see HANDLE_OpenWithMode)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see HANDLE_OpenWithMode)
+;   none observed
 ; CALLS:
 ;   HANDLE_OpenWithMode
 ; DESC:
@@ -2743,56 +2746,53 @@ LAB_1455:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_HANDLE_OpenWithMode:
-LAB_1456:
+PARSEINI_JMPTBL_HANDLE_OpenWithMode:
     JMP     HANDLE_OpenWithMode
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_09F9   (JumpStub_LAB_09F9)
+; FUNC: PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_09F9)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_09F9)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_09F9)
+;   none observed
 ; CALLS:
-;   LAB_09F9
+;   ESQIFF_QueueIffBrushLoad
 ; DESC:
-;   Jump stub to LAB_09F9.
+;   Jump stub to ESQIFF_QueueIffBrushLoad.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_09F9:
-LAB_1457:
-    JMP     LAB_09F9
+PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad:
+    JMP     ESQIFF_QueueIffBrushLoad
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0A93   (JumpStub_LAB_0A93)
+; FUNC: PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_0A93)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_0A93)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_0A93)
+;   none observed
 ; CALLS:
-;   LAB_0A93
+;   ESQIFF_HandleBrushIniReloadHotkey
 ; DESC:
-;   Jump stub to LAB_0A93.
+;   Jump stub to ESQIFF_HandleBrushIniReloadHotkey.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0A93:
-LAB_1458:
-    JMP     LAB_0A93
+PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey:
+    JMP     ESQIFF_HandleBrushIniReloadHotkey
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_BRUSH_FreeBrushResources   (JumpStub_BRUSH_FreeBrushResources)
+; FUNC: PARSEINI_JMPTBL_BRUSH_FreeBrushResources   (JumpStub_BRUSH_FreeBrushResources)
 ; ARGS:
-;   ?? (see BRUSH_FreeBrushResources)
+;   (none observed)
 ; RET:
-;   ?? (see BRUSH_FreeBrushResources)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see BRUSH_FreeBrushResources)
+;   none observed
 ; CALLS:
 ;   BRUSH_FreeBrushResources
 ; DESC:
@@ -2800,37 +2800,35 @@ LAB_1458:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_BRUSH_FreeBrushResources:
-LAB_1459:
+PARSEINI_JMPTBL_BRUSH_FreeBrushResources:
     JMP     BRUSH_FreeBrushResources
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_09DB   (JumpStub_LAB_09DB)
+; FUNC: PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_09DB)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_09DB)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_09DB)
+;   none observed
 ; CALLS:
-;   LAB_09DB
+;   ESQFUNC_RebuildPwBrushListFromTagTable
 ; DESC:
-;   Jump stub to LAB_09DB.
+;   Jump stub to ESQFUNC_RebuildPwBrushListFromTagTable.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_09DB:
-LAB_145A:
-    JMP     LAB_09DB
+PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable:
+    JMP     ESQFUNC_RebuildPwBrushListFromTagTable
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_GCOMMAND_FindPathSeparator   (JumpStub_GCOMMAND_FindPathSeparator)
+; FUNC: PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator   (JumpStub_GCOMMAND_FindPathSeparator)
 ; ARGS:
-;   ?? (see GCOMMAND_FindPathSeparator)
+;   (none observed)
 ; RET:
-;   ?? (see GCOMMAND_FindPathSeparator)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see GCOMMAND_FindPathSeparator)
+;   none observed
 ; CALLS:
 ;   GCOMMAND_FindPathSeparator
 ; DESC:
@@ -2838,37 +2836,35 @@ LAB_145A:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_GCOMMAND_FindPathSeparator:
-LAB_145B:
+PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_03B9   (JumpStub_LAB_03B9)
+; FUNC: PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_03B9)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_03B9)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_03B9)
+;   none observed
 ; CALLS:
-;   LAB_03B9
+;   DISKIO_ConsumeLineFromWorkBuffer
 ; DESC:
-;   Jump stub to LAB_03B9.
+;   Jump stub to DISKIO_ConsumeLineFromWorkBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_03B9:
-LAB_145C:
-    JMP     LAB_03B9
+PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer:
+    JMP     DISKIO_ConsumeLineFromWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ED1_DrawDiagnosticsScreen   (JumpStub_ED1_DrawDiagnosticsScreen)
+; FUNC: PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen   (JumpStub_ED1_DrawDiagnosticsScreen)
 ; ARGS:
-;   ?? (see ED1_DrawDiagnosticsScreen)
+;   (none observed)
 ; RET:
-;   ?? (see ED1_DrawDiagnosticsScreen)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ED1_DrawDiagnosticsScreen)
+;   none observed
 ; CALLS:
 ;   ED1_DrawDiagnosticsScreen
 ; DESC:
@@ -2876,18 +2872,17 @@ LAB_145C:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ED1_DrawDiagnosticsScreen:
-LAB_145D:
+PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen:
     JMP     ED1_DrawDiagnosticsScreen
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_BRUSH_FreeBrushList   (JumpStub_BRUSH_FreeBrushList)
+; FUNC: PARSEINI_JMPTBL_BRUSH_FreeBrushList   (JumpStub_BRUSH_FreeBrushList)
 ; ARGS:
-;   ?? (see BRUSH_FreeBrushList)
+;   (none observed)
 ; RET:
-;   ?? (see BRUSH_FreeBrushList)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see BRUSH_FreeBrushList)
+;   none observed
 ; CALLS:
 ;   BRUSH_FreeBrushList
 ; DESC:
@@ -2895,18 +2890,17 @@ LAB_145D:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_BRUSH_FreeBrushList:
-LAB_145E:
+PARSEINI_JMPTBL_BRUSH_FreeBrushList:
     JMP     BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_GCOMMAND_ValidatePresetTable   (JumpStub_GCOMMAND_ValidatePresetTable)
+; FUNC: PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable   (JumpStub_GCOMMAND_ValidatePresetTable)
 ; ARGS:
-;   ?? (see GCOMMAND_ValidatePresetTable)
+;   (none observed)
 ; RET:
-;   ?? (see GCOMMAND_ValidatePresetTable)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see GCOMMAND_ValidatePresetTable)
+;   none observed
 ; CALLS:
 ;   GCOMMAND_ValidatePresetTable
 ; DESC:
@@ -2914,18 +2908,17 @@ LAB_145E:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_GCOMMAND_ValidatePresetTable:
-LAB_145F:
+PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable:
     JMP     GCOMMAND_ValidatePresetTable
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_BRUSH_AllocBrushNode   (JumpStub_BRUSH_AllocBrushNode)
+; FUNC: PARSEINI_JMPTBL_BRUSH_AllocBrushNode   (JumpStub_BRUSH_AllocBrushNode)
 ; ARGS:
-;   ?? (see BRUSH_AllocBrushNode)
+;   (none observed)
 ; RET:
-;   ?? (see BRUSH_AllocBrushNode)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see BRUSH_AllocBrushNode)
+;   none observed
 ; CALLS:
 ;   BRUSH_AllocBrushNode
 ; DESC:
@@ -2933,18 +2926,17 @@ LAB_145F:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_BRUSH_AllocBrushNode:
-LAB_1460:
+PARSEINI_JMPTBL_BRUSH_AllocBrushNode:
     JMP     BRUSH_AllocBrushNode
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_UNKNOWN36_FinalizeRequest   (JumpStub_UNKNOWN36_FinalizeRequest)
+; FUNC: PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest   (JumpStub_UNKNOWN36_FinalizeRequest)
 ; ARGS:
-;   ?? (see UNKNOWN36_FinalizeRequest)
+;   (none observed)
 ; RET:
-;   ?? (see UNKNOWN36_FinalizeRequest)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see UNKNOWN36_FinalizeRequest)
+;   none observed
 ; CALLS:
 ;   UNKNOWN36_FinalizeRequest
 ; DESC:
@@ -2952,18 +2944,17 @@ LAB_1460:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_UNKNOWN36_FinalizeRequest:
-LAB_1461:
+PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
     JMP     UNKNOWN36_FinalizeRequest
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_GCOMMAND_InitPresetTableFromPalette   (JumpStub_GCOMMAND_InitPresetTableFromPalette)
+; FUNC: PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette   (JumpStub_GCOMMAND_InitPresetTableFromPalette)
 ; ARGS:
-;   ?? (see GCOMMAND_InitPresetTableFromPalette)
+;   (none observed)
 ; RET:
-;   ?? (see GCOMMAND_InitPresetTableFromPalette)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see GCOMMAND_InitPresetTableFromPalette)
+;   none observed
 ; CALLS:
 ;   GCOMMAND_InitPresetTableFromPalette
 ; DESC:
@@ -2971,18 +2962,17 @@ LAB_1461:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_GCOMMAND_InitPresetTableFromPalette:
-LAB_1462:
+PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette:
     JMP     GCOMMAND_InitPresetTableFromPalette
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_STRING_CompareNoCaseN   (JumpStub_STRING_CompareNoCaseN)
+; FUNC: PARSEINI_JMPTBL_STRING_CompareNoCaseN   (JumpStub_STRING_CompareNoCaseN)
 ; ARGS:
-;   ?? (see STRING_CompareNoCaseN)
+;   (none observed)
 ; RET:
-;   ?? (see STRING_CompareNoCaseN)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see STRING_CompareNoCaseN)
+;   none observed
 ; CALLS:
 ;   STRING_CompareNoCaseN
 ; DESC:
@@ -2990,18 +2980,17 @@ LAB_1462:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_STRING_CompareNoCaseN:
-LAB_1463:
+PARSEINI_JMPTBL_STRING_CompareNoCaseN:
     JMP     STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_STRING_AppendAtNull_3   (JumpStub_STRING_AppendAtNull)
+; FUNC: PARSEINI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   STRING_AppendAtNull
 ; DESC:
@@ -3009,36 +2998,35 @@ LAB_1463:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_STRING_AppendAtNull_3:
+PARSEINI_JMPTBL_STRING_AppendAtNull:
     JMP     STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_03AC   (JumpStub_LAB_03AC)
+; FUNC: PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_03AC)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_03AC)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_03AC)
+;   none observed
 ; CALLS:
-;   LAB_03AC
+;   DISKIO_LoadFileToWorkBuffer
 ; DESC:
-;   Jump stub to LAB_03AC.
+;   Jump stub to DISKIO_LoadFileToWorkBuffer.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_03AC:
-LAB_1465:
-    JMP     LAB_03AC
+PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
+    JMP     DISKIO_LoadFileToWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
+; FUNC: PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
 ; ARGS:
-;   ?? (see ED1_WaitForFlagAndClearBit1)
+;   (none observed)
 ; RET:
-;   ?? (see ED1_WaitForFlagAndClearBit1)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ED1_WaitForFlagAndClearBit1)
+;   none observed
 ; CALLS:
 ;   ED1_WaitForFlagAndClearBit1
 ; DESC:
@@ -3046,18 +3034,17 @@ LAB_1465:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ED1_WaitForFlagAndClearBit1:
-LAB_1466:
+PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1:
     JMP     ED1_WaitForFlagAndClearBit1
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_PRINTF_4   (JumpStub_WDISP_SPrintf)
+; FUNC: PARSEINI_JMPTBL_WDISP_SPrintf   (JumpStub_WDISP_SPrintf)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   WDISP_SPrintf
 ; DESC:
@@ -3065,17 +3052,17 @@ LAB_1466:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_PRINTF_4:
+PARSEINI_JMPTBL_WDISP_SPrintf:
     JMP     WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit   (JumpStub_STREAM_ReadLineWithLimit)
+; FUNC: PARSEINI_JMPTBL_STREAM_ReadLineWithLimit   (JumpStub_STREAM_ReadLineWithLimit)
 ; ARGS:
-;   ?? (see STREAM_ReadLineWithLimit)
+;   (none observed)
 ; RET:
-;   ?? (see STREAM_ReadLineWithLimit)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see STREAM_ReadLineWithLimit)
+;   none observed
 ; CALLS:
 ;   STREAM_ReadLineWithLimit
 ; DESC:
@@ -3083,17 +3070,17 @@ JMPTBL_PRINTF_4:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit:
+PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
     JMP     STREAM_ReadLineWithLimit
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper   (JumpStub_UNKNOWN7_FindAnyCharWrapper)
+; FUNC: PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper   (JumpStub_UNKNOWN7_FindAnyCharWrapper)
 ; ARGS:
-;   ?? (see UNKNOWN7_FindAnyCharWrapper)
+;   (none observed)
 ; RET:
-;   ?? (see UNKNOWN7_FindAnyCharWrapper)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see UNKNOWN7_FindAnyCharWrapper)
+;   none observed
 ; CALLS:
 ;   UNKNOWN7_FindAnyCharWrapper
 ; DESC:
@@ -3101,17 +3088,17 @@ GROUP_BA_JMPTBL_STREAM_ReadLineWithLimit:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper:
+PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper:
     JMP     UNKNOWN7_FindAnyCharWrapper
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)
+; FUNC: PARSEINI_JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)
 ; ARGS:
-;   ?? (see ED1_ExitEscMenu)
+;   (none observed)
 ; RET:
-;   ?? (see ED1_ExitEscMenu)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ED1_ExitEscMenu)
+;   none observed
 ; CALLS:
 ;   ED1_ExitEscMenu
 ; DESC:
@@ -3119,36 +3106,35 @@ GROUP_BA_JMPTBL_UNKNOWN7_FindAnyCharWrapper:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ED1_ExitEscMenu:
+PARSEINI_JMPTBL_ED1_ExitEscMenu:
     JMP     ED1_ExitEscMenu
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_LAB_0B44   (JumpStub_LAB_0B44)
+; FUNC: PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)
 ; ARGS:
-;   ?? (see LAB_0B44)
+;   (none observed)
 ; RET:
-;   ?? (see LAB_0B44)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see LAB_0B44)
+;   none observed
 ; CALLS:
-;   LAB_0B44
+;   ESQPARS_ReplaceOwnedString
 ; DESC:
-;   Jump stub to LAB_0B44.
+;   Jump stub to ESQPARS_ReplaceOwnedString.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_LAB_0B44:
-LAB_146B:
-    JMP     LAB_0B44
+PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString:
+    JMP     ESQPARS_ReplaceOwnedString
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ED1_EnterEscMenu   (JumpStub_ED1_EnterEscMenu)
+; FUNC: PARSEINI_JMPTBL_ED1_EnterEscMenu   (JumpStub_ED1_EnterEscMenu)
 ; ARGS:
-;   ?? (see ED1_EnterEscMenu)
+;   (none observed)
 ; RET:
-;   ?? (see ED1_EnterEscMenu)
+;   D0: none observed
 ; CLOBBERS:
-;   ?? (see ED1_EnterEscMenu)
+;   none observed
 ; CALLS:
 ;   ED1_EnterEscMenu
 ; DESC:
@@ -3156,18 +3142,17 @@ LAB_146B:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ED1_EnterEscMenu:
-LAB_146C:
+PARSEINI_JMPTBL_ED1_EnterEscMenu:
     JMP     ED1_EnterEscMenu
 
 ;------------------------------------------------------------------------------
-; FUNC: JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)
+; FUNC: PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   ESQFUNC_DrawEscMenuVersion
 ; DESC:
@@ -3175,7 +3160,7 @@ LAB_146C:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-JMPTBL_ESQFUNC_DrawEscMenuVersion:
+PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion:
     JMP     ESQFUNC_DrawEscMenuVersion
 
     RTS

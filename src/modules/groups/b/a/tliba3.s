@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_InitPatternTable   (InitPatternTable??)
+; FUNC: TLIBA3_InitPatternTable   (InitPatternTableuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -7,22 +7,21 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A1/A3
 ; CALLS:
-;   MATH_Mulu32, LAB_1857
+;   MATH_Mulu32, TLIBA3_InitRuntimeEntries
 ; READS:
 ;   (none)
 ; WRITES:
-;   LAB_237F, LAB_2173
+;   TLIBA3_VmArrayPatternTable, DATA_TLIBA1_BSS_WORD_2173
 ; DESC:
 ;   Initializes a pattern/lookup table with a fixed sequence of word values.
 ; NOTES:
-;   Fills 10 records of 76 bytes each in LAB_237F.
+;   Fills 10 records of 76 bytes each in TLIBA3_VmArrayPatternTable.
 ;------------------------------------------------------------------------------
 TLIBA3_InitPatternTable:
-LAB_180B:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A2-A3,-(A7)
-    MOVE.W  #1,LAB_2173
-    BSR.W   LAB_1857
+    MOVE.W  #1,DATA_TLIBA1_BSS_WORD_2173
+    BSR.W   TLIBA3_InitRuntimeEntries
 
     MOVEQ   #0,D7
 
@@ -35,7 +34,7 @@ LAB_180B:
     MOVEQ   #76,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237F,A0
+    LEA     TLIBA3_VmArrayPatternTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.W  #$8e,(A1)
@@ -98,7 +97,7 @@ LAB_180B:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A1
+    LEA     TLIBA3_VmArrayRuntimeTable,A1
     MOVEA.L A1,A2
     ADDA.L  D0,A2
     MOVE.W  6(A2),D0
@@ -466,25 +465,32 @@ LAB_180B:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_181E   (??)
+; FUNC: TLIBA3_DrawCenteredWrappedTextLines   (TLIBA3_DrawCenteredWrappedTextLines)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +9: arg_3 (via 13(A5))
+;   stack +10: arg_4 (via 14(A5))
+;   stack +11: arg_5 (via 15(A5))
+;   stack +12: arg_6 (via 16(A5))
+;   stack +13: arg_7 (via 17(A5))
+;   stack +14: arg_8 (via 18(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOTextLength
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, LAB_181F
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_181E:
+TLIBA3_DrawCenteredWrappedTextLines:
     LINK.W  A5,#-20
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -577,7 +583,7 @@ LAB_181E:
     MOVE.L  D7,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     JMPTBL_DISPLIB_DisplayTextAtPosition_2(PC)
+    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -624,25 +630,27 @@ LAB_181E:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1827   (??)
+; FUNC: TLIBA3_DrawVerticalScaleTicks   (TLIBA3_DrawVerticalScaleTicks)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +80: arg_3 (via 84(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   MATH_DivS32, WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, LAB_1828, DATA_TLIBA1_FMT_PCT_03LD_2175, return
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1827:
+TLIBA3_DrawVerticalScaleTicks:
     LINK.W  A5,#-92
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -706,7 +714,7 @@ LAB_1827:
     JSR     _LVOMove(A6)
 
     MOVE.L  D6,-(A7)
-    PEA     LAB_2175
+    PEA     DATA_TLIBA1_FMT_PCT_03LD_2175
     PEA     -84(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -761,25 +769,27 @@ LAB_1827:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_182D   (??)
+; FUNC: TLIBA3_DrawHorizontalScaleTicks   (TLIBA3_DrawHorizontalScaleTicks)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +8: arg_2 (via 12(A5))
+;   stack +80: arg_3 (via 84(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   MATH_DivS32, MATH_Mulu32, WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText, _LVOTextLength
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, LAB_182E, LAB_1832, DATA_TLIBA1_FMT_PCT_03LD_2176, return
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_182D:
+TLIBA3_DrawHorizontalScaleTicks:
     LINK.W  A5,#-92
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -840,7 +850,7 @@ LAB_182D:
     JSR     _LVODraw(A6)
 
     MOVE.L  D6,-(A7)
-    PEA     LAB_2176
+    PEA     DATA_TLIBA1_FMT_PCT_03LD_2176
     PEA     -84(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -934,25 +944,25 @@ LAB_182D:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1835   (??)
+; FUNC: TLIBA3_DrawOuterFrameBorder   (TLIBA3_DrawOuterFrameBorder)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A6/A7/D0/D1
 ; CALLS:
-;   ??
+;   _LVODraw, _LVOMove
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1835:
+TLIBA3_DrawOuterFrameBorder:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
@@ -1003,25 +1013,25 @@ LAB_1835:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1836   (??)
+; FUNC: TLIBA3_DrawInnerFrameBorder   (TLIBA3_DrawInnerFrameBorder)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A6/A7/D0/D1
 ; CALLS:
-;   ??
+;   _LVODraw, _LVOMove
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1836:
+TLIBA3_DrawInnerFrameBorder:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
@@ -1066,25 +1076,25 @@ LAB_1836:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1837   (??)
+; FUNC: TLIBA3_DrawViewModeGuides   (TLIBA3_DrawViewModeGuides)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A6/A7/D0
 ; CALLS:
-;   ??
+;   TLIBA3_DrawVerticalScaleTicks, TLIBA3_DrawHorizontalScaleTicks, TLIBA3_DrawOuterFrameBorder, TLIBA3_DrawInnerFrameBorder, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   ??
+;   GLOB_HANDLE_PREVUEC_FONT, GLOB_HANDLE_TOPAZ_FONT, GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1837:
+TLIBA3_DrawViewModeGuides:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVEA.L A3,A1
@@ -1113,7 +1123,7 @@ LAB_1837:
     ASR.L   #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_1827
+    BSR.W   TLIBA3_DrawVerticalScaleTicks
 
     MOVEA.L 4(A3),A0
     MOVEQ   #0,D0
@@ -1127,13 +1137,13 @@ LAB_1837:
     ASR.L   #1,D0
     MOVE.L  D0,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   LAB_182D
+    BSR.W   TLIBA3_DrawHorizontalScaleTicks
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_1835
+    BSR.W   TLIBA3_DrawOuterFrameBorder
 
     MOVE.L  A3,(A7)
-    BSR.W   LAB_1836
+    BSR.W   TLIBA3_DrawInnerFrameBorder
 
     LEA     12(A7),A7
     MOVEA.L A3,A1
@@ -1147,25 +1157,27 @@ LAB_1837:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_183A   (??)
+; FUNC: TLIBA3_DrawViewModeOverlay   (TLIBA3_DrawViewModeOverlay)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +84: arg_2 (via 88(A5))
+;   stack +96: arg_3 (via 100(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA3_DrawCenteredWrappedTextLines, TLIBA3_DrawViewModeGuides, MATH_Mulu32, WDISP_SPrintf, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast
 ; READS:
-;   ??
+;   GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, DATA_TLIBA1_FMT_VIEWMODE_PCT_LD_2177, TLIBA3_VmArrayRuntimeTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_183A:
+TLIBA3_DrawViewModeOverlay:
     LINK.W  A5,#-88
     MOVEM.L D5-D7,-(A7)
     MOVE.L  8(A5),D7
@@ -1175,7 +1187,7 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D6
@@ -1195,7 +1207,7 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #0,D0
@@ -1206,7 +1218,7 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #1,D0
@@ -1217,7 +1229,7 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #1,D0
@@ -1228,7 +1240,7 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEQ   #0,D0
@@ -1239,14 +1251,14 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  A1,-(A7)
-    BSR.W   LAB_1837
+    BSR.W   TLIBA3_DrawViewModeGuides
 
     MOVE.L  D7,(A7)
-    PEA     LAB_2177
+    PEA     DATA_TLIBA1_FMT_VIEWMODE_PCT_LD_2177
     PEA     -88(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -1255,13 +1267,13 @@ LAB_183A:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     PEA     90.W
     PEA     -88(A5)
     MOVE.L  A1,-(A7)
-    BSR.W   LAB_181E
+    BSR.W   TLIBA3_DrawCenteredWrappedTextLines
 
     MOVEM.L -100(A5),D5-D7
     UNLK    A5
@@ -1270,25 +1282,25 @@ LAB_183A:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_183B   (??)
+; FUNC: TLIBA3_GetViewModeHeight   (TLIBA3_GetViewModeHeight)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A7/D0/D1/D7
 ; CALLS:
-;   ??
+;   MATH_Mulu32
 ; READS:
-;   ??
+;   TLIBA3_VmArrayRuntimeTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_183B:
+TLIBA3_GetViewModeHeight:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
 
@@ -1297,7 +1309,7 @@ LAB_183B:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.W  4(A0),D0
 
@@ -1314,7 +1326,7 @@ LAB_183B:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.W  2(A0),D0
     MOVE.L  (A7)+,D7
@@ -1323,25 +1335,25 @@ LAB_183B:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_183C   (??)
+; FUNC: TLIBA3_ClearViewModeRastPort   (TLIBA3_ClearViewModeRastPort)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   ??
+;   MATH_Mulu32, _LVOSetRast
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, TLIBA3_VmArrayRuntimeTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_183C:
+TLIBA3_ClearViewModeRastPort:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
     MOVE.L  16(A7),D6
@@ -1351,7 +1363,7 @@ LAB_183C:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  D6,D0
@@ -1364,25 +1376,25 @@ LAB_183C:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_183D   (??)
+; FUNC: TLIBA3_GetViewModeRastPort   (TLIBA3_GetViewModeRastPort)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A7/D0/D1/D7
 ; CALLS:
-;   ??
+;   MATH_Mulu32
 ; READS:
-;   ??
+;   TLIBA3_VmArrayRuntimeTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_183D:
+TLIBA3_GetViewModeRastPort:
     MOVE.L  D7,-(A7)
 
     MOVE.L  8(A7),D7
@@ -1391,7 +1403,7 @@ LAB_183D:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  A1,D0
@@ -1402,44 +1414,57 @@ LAB_183D:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_183E   (??)
+; FUNC: TLIBA3_BuildDisplayContextForViewMode   (TLIBA3_BuildDisplayContextForViewMode)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +14: arg_2 (via 18(A5))
+;   stack +54: arg_3 (via 58(A5))
+;   stack +66: arg_4 (via 70(A5))
+;   stack +70: arg_5 (via 74(A5))
+;   stack +80: arg_6 (via 84(A5))
+;   stack +118: arg_7 (via 122(A5))
+;   stack +156: arg_8 (via 160(A5))
+;   stack +194: arg_9 (via 198(A5))
+;   stack +232: arg_10 (via 236(A5))
+;   stack +240: arg_11 (via 244(A5))
+;   stack +244: arg_12 (via 248(A5))
+;   stack +248: arg_13 (via 252(A5))
+;   stack +252: arg_14 (via 256(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ??
+;   TLIBA3_BuildDisplayContextForViewMode, MATH_Mulu32, TLIBA3_InitPatternTable, TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
 ; READS:
-;   ??
+;   LAB_1840, LAB_1847, LAB_1848, LAB_184D, LAB_184E, DATA_ESQ_BSS_LONG_1E25, DATA_ESQ_BSS_LONG_1E54, DATA_TLIBA1_BSS_WORD_2173, DATA_TLIBA1_BSS_LONG_2178, TLIBA3_VmArrayRuntimeTable, TLIBA3_VmArrayPatternTable, fffe, ffff
 ; WRITES:
-;   ??
+;   DATA_TLIBA1_BSS_LONG_2178, WDISP_DisplayContextBase
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_183E:
+TLIBA3_BuildDisplayContextForViewMode:
     LINK.W  A5,#-256
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
     MOVE.L  8(A5),D7
     MOVE.W  18(A5),D6
 
-    MOVE.L  D7,LAB_2178
-    TST.W   LAB_2173
+    MOVE.L  D7,DATA_TLIBA1_BSS_LONG_2178
+    TST.W   DATA_TLIBA1_BSS_WORD_2173
     BNE.S   .LAB_183F
 
     BSR.W   TLIBA3_InitPatternTable
 
 .LAB_183F:
-    MOVE.L  #LAB_1E25,-4(A5)
-    MOVE.L  #LAB_1E54,-8(A5)
+    MOVE.L  #DATA_ESQ_BSS_LONG_1E25,-4(A5)
+    MOVE.L  #DATA_ESQ_BSS_LONG_1E54,-8(A5)
     MOVE.L  D7,D0
     MOVEQ   #76,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237F,A0
+    LEA     TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
     LEA     -84(A5),A1
     MOVEA.L A1,A2
@@ -1453,7 +1478,7 @@ LAB_183E:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     MOVEQ   #0,D1
@@ -1660,14 +1685,14 @@ LAB_183E:
 .LAB_184E:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.LAB_184E
-    JSR     GROUPD_JMPTBL_GCOMMAND_ApplyHighlightFlag(PC)
+    JSR     TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag(PC)
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A2
@@ -1683,50 +1708,50 @@ LAB_183E:
     EXT.L   D0
     PEA     -1.W
     MOVE.L  D0,-(A7)
-    MOVE.L  LAB_2178,-(A7)
-    BSR.W   LAB_183E
+    MOVE.L  DATA_TLIBA1_BSS_LONG_2178,-(A7)
+    BSR.W   TLIBA3_BuildDisplayContextForViewMode
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_184F   (??)
+; FUNC: TLIBA3_SelectNextViewMode   (TLIBA3_SelectNextViewMode)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A7/D0/D1
 ; CALLS:
-;   ??
+;   TLIBA3_DrawViewModeOverlay, TLIBA3_BuildDisplayContextForViewMode, MATH_DivS32
 ; READS:
-;   ??
+;   DATA_TLIBA1_BSS_LONG_2178
 ; WRITES:
-;   ??
+;   DATA_TLIBA1_BSS_LONG_2178, WDISP_DisplayContextBase
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_184F:
-    MOVE.L  LAB_2178,D0
+TLIBA3_SelectNextViewMode:
+    MOVE.L  DATA_TLIBA1_BSS_LONG_2178,D0
     ADDQ.L  #1,D0
     MOVEQ   #9,D1
     JSR     MATH_DivS32(PC)
 
-    MOVE.L  D1,LAB_2178
+    MOVE.L  D1,DATA_TLIBA1_BSS_LONG_2178
     PEA     -1.W
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   LAB_183E
+    BSR.W   TLIBA3_BuildDisplayContextForViewMode
 
-    MOVE.L  D0,LAB_2216
-    MOVE.L  LAB_2178,(A7)
-    BSR.W   LAB_183A
+    MOVE.L  D0,WDISP_DisplayContextBase
+    MOVE.L  DATA_TLIBA1_BSS_LONG_2178,(A7)
+    BSR.W   TLIBA3_DrawViewModeOverlay
 
     LEA     12(A7),A7
     RTS
@@ -1734,39 +1759,40 @@ LAB_184F:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1850   (??)
+; FUNC: TLIBA3_FormatPatternRegisterDump   (TLIBA3_FormatPatternRegisterDump)
 ; ARGS:
-;   ??
+;   stack +76: arg_1 (via 80(A5))
+;   stack +80: arg_2 (via 84(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A2/A3/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   ??
+;   FORMAT_RawDoFmtWithScratchBuffer, TLIBA3_FormatPatternRegisterDump, MATH_Mulu32, WDISP_SPrintf
 ; READS:
-;   ??
+;   GLOB_STR_VM_ARRAY_1, GLOB_STR_VM_ARRAY_2, DATA_TLIBA1_BSS_LONG_2178, DATA_TLIBA1_BSS_WORD_2179, DATA_TLIBA1_BSS_WORD_217A, DATA_TLIBA1_BSS_WORD_217B, DATA_TLIBA1_FMT_PCT_S_COLON_DIWOFFSET_PCT_04LX_DDFOF_217C, DATA_TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L_217D, DATA_TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L_217E, DATA_TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L_217F, DATA_TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L_2180, DATA_TLIBA1_FMT_BPL1MOD_COLON_0X_PCT_04LX_0X_PCT_04L_2181, DATA_TLIBA1_FMT_BPL2MOD_COLON_0X_PCT_04LX_0X_PCT_04L_2182, DATA_TLIBA1_FMT_BPLCON0_COLON_0X_PCT_04LX_0X_PCT_04L_2183, DATA_TLIBA1_FMT_BPLCON1_COLON_0X_PCT_04LX_0X_PCT_04L_2184, DATA_TLIBA1_FMT_BPLCON2_COLON_0X_PCT_04LX_0X_PCT_04L_2185, DATA_TLIBA1_FMT_BPL1PTH_COLON_0X_PCT_04LX_0X_PCT_04L_2186, DATA_TLIBA1_FMT_BPL1PTL_COLON_0X_PCT_04LX_0X_PCT_04L_2187, DATA_TLIBA1_FMT_BPL2PTH_COLON_0X_PCT_04LX_0X_PCT_04L_2188, DATA_TLIBA1_FMT_BPL2PTL_COLON_0X_PCT_04LX_0X_PCT_04L_2189, DATA_TLIBA1_FMT_BPL3PTH_COLON_0X_PCT_04LX_0X_PCT_04L_218A, DATA_TLIBA1_FMT_BPL3PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218B, DATA_TLIBA1_FMT_BPL4PTH_COLON_0X_PCT_04LX_0X_PCT_04L_218C, DATA_TLIBA1_FMT_BPL4PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218D, DATA_TLIBA1_FMT_BPL5PTH_COLON_0X_PCT_04LX_0X_PCT_04L_218E, DATA_TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218F, DATA_TLIBA1_STR_2190, DATA_TLIBA1_STR_2193, TLIBA3_VmArrayPatternTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1850:
+TLIBA3_FormatPatternRegisterDump:
     MOVEM.L D2-D3/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
-    MOVE.W  LAB_2179,D0
+    MOVE.W  DATA_TLIBA1_BSS_WORD_2179,D0
     EXT.L   D0
-    MOVE.W  LAB_217A,D1
+    MOVE.W  DATA_TLIBA1_BSS_WORD_217A,D1
     EXT.L   D1
-    MOVE.W  LAB_217B,D2
+    MOVE.W  DATA_TLIBA1_BSS_WORD_217B,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    PEA     LAB_217C
+    PEA     DATA_TLIBA1_FMT_PCT_S_COLON_DIWOFFSET_PCT_04LX_DDFOF_217C
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1778,7 +1804,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_217D
+    PEA     DATA_TLIBA1_FMT_DIWSTRT_COLON_0X_PCT_04LX_0X_PCT_04L_217D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1791,7 +1817,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_217E
+    PEA     DATA_TLIBA1_FMT_DIWSTOP_COLON_0X_PCT_04LX_0X_PCT_04L_217E
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1803,7 +1829,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_217F
+    PEA     DATA_TLIBA1_FMT_DDFSTRT_COLON_0X_PCT_04LX_0X_PCT_04L_217F
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1815,7 +1841,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2180
+    PEA     DATA_TLIBA1_FMT_DDFSTOP_COLON_0X_PCT_04LX_0X_PCT_04L_2180
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     68(A7),A7
@@ -1828,7 +1854,7 @@ LAB_1850:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2181
+    PEA     DATA_TLIBA1_FMT_BPL1MOD_COLON_0X_PCT_04LX_0X_PCT_04L_2181
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1840,7 +1866,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2182
+    PEA     DATA_TLIBA1_FMT_BPL2MOD_COLON_0X_PCT_04LX_0X_PCT_04L_2182
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1852,7 +1878,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2183
+    PEA     DATA_TLIBA1_FMT_BPLCON0_COLON_0X_PCT_04LX_0X_PCT_04L_2183
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1864,7 +1890,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2184
+    PEA     DATA_TLIBA1_FMT_BPLCON1_COLON_0X_PCT_04LX_0X_PCT_04L_2184
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1876,7 +1902,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2185
+    PEA     DATA_TLIBA1_FMT_BPLCON2_COLON_0X_PCT_04LX_0X_PCT_04L_2185
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1885,7 +1911,7 @@ LAB_1850:
     MOVE.W  38(A2),D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2186
+    PEA     DATA_TLIBA1_FMT_BPL1PTH_COLON_0X_PCT_04LX_0X_PCT_04L_2186
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     72(A7),A7
@@ -1903,7 +1929,7 @@ LAB_1850:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2187
+    PEA     DATA_TLIBA1_FMT_BPL1PTL_COLON_0X_PCT_04LX_0X_PCT_04L_2187
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1912,7 +1938,7 @@ LAB_1850:
     MOVE.W  46(A2),D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2188
+    PEA     DATA_TLIBA1_FMT_BPL2PTH_COLON_0X_PCT_04LX_0X_PCT_04L_2188
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1929,7 +1955,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_2189
+    PEA     DATA_TLIBA1_FMT_BPL2PTL_COLON_0X_PCT_04LX_0X_PCT_04L_2189
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1938,7 +1964,7 @@ LAB_1850:
     MOVE.W  54(A2),D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_218A
+    PEA     DATA_TLIBA1_FMT_BPL3PTH_COLON_0X_PCT_04LX_0X_PCT_04L_218A
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1955,7 +1981,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_218B
+    PEA     DATA_TLIBA1_FMT_BPL3PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218B
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1964,7 +1990,7 @@ LAB_1850:
     MOVE.W  62(A2),D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_218C
+    PEA     DATA_TLIBA1_FMT_BPL4PTH_COLON_0X_PCT_04LX_0X_PCT_04L_218C
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1981,7 +2007,7 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_218D
+    PEA     DATA_TLIBA1_FMT_BPL4PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     76(A7),A7
@@ -1991,7 +2017,7 @@ LAB_1850:
     MOVE.W  70(A2),D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_218E
+    PEA     DATA_TLIBA1_FMT_BPL5PTH_COLON_0X_PCT_04LX_0X_PCT_04L_218E
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -2008,10 +2034,10 @@ LAB_1850:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_218F
+    PEA     DATA_TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218F
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     LAB_2190
+    PEA     DATA_TLIBA1_STR_2190
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
@@ -2020,23 +2046,22 @@ LAB_1850:
 
 ;!======
 
-LAB_1850_NOT_DIRECT_CALLED:
     LINK.W  A5,#-80
 
-    MOVE.L  LAB_2178,-(A7)
+    MOVE.L  DATA_TLIBA1_BSS_LONG_2178,-(A7)
     PEA     GLOB_STR_VM_ARRAY_1
     PEA     -80(A5)
     JSR     WDISP_SPrintf(PC)
 
-    MOVE.L  LAB_2178,D0
+    MOVE.L  DATA_TLIBA1_BSS_LONG_2178,D0
     MOVEQ   #76,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237F,A0
+    LEA     TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,(A7)
     PEA     -80(A5)
-    BSR.W   LAB_1850
+    BSR.W   TLIBA3_FormatPatternRegisterDump
 
     UNLK    A5
     RTS
@@ -2062,13 +2087,13 @@ LAB_1850_NOT_DIRECT_CALLED:
     MOVEQ   #76,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237F,A0
+    LEA     TLIBA3_VmArrayPatternTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,(A7)
     PEA     -84(A5)
-    BSR.W   LAB_1850
+    BSR.W   TLIBA3_FormatPatternRegisterDump
 
-    PEA     LAB_2193
+    PEA     DATA_TLIBA1_STR_2193
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     20(A7),A7
@@ -2083,25 +2108,31 @@ LAB_1850_NOT_DIRECT_CALLED:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1853   (??)
+; FUNC: TLIBA3_InitRuntimeEntry   (TLIBA3_InitRuntimeEntry)
 ; ARGS:
-;   ??
+;   stack +4: arg_1 (via 8(A5))
+;   stack +10: arg_2 (via 14(A5))
+;   stack +14: arg_3 (via 18(A5))
+;   stack +18: arg_4 (via 22(A5))
+;   stack +22: arg_5 (via 26(A5))
+;   stack +26: arg_6 (via 30(A5))
+;   stack +31: arg_7 (via 35(A5))
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ??
+;   MATH_Mulu32, _LVOInitBitMap
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, LAB_1854, DATA_WDISP_BSS_LONG_2224, TLIBA3_VmArrayRuntimeTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1853:
+TLIBA3_InitRuntimeEntry:
     LINK.W  A5,#-4
     MOVEM.L D2/D4-D7/A2-A3,-(A7)
     MOVE.L  8(A5),D7
@@ -2113,7 +2144,7 @@ LAB_1853:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.W  D6,(A1)
@@ -2169,12 +2200,12 @@ LAB_1853:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     MOVE.L  -4(A5),D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
-    LEA     LAB_2224,A1
+    LEA     DATA_WDISP_BSS_LONG_2224,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),118(A0)
     ADDQ.L  #1,-4(A5)
@@ -2186,7 +2217,7 @@ LAB_1853:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D1
@@ -2200,25 +2231,25 @@ LAB_1853:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1857   (??)
+; FUNC: TLIBA3_InitRuntimeEntries   (TLIBA3_InitRuntimeEntries)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A7/D0/D1/D7
 ; CALLS:
-;   ??
+;   TLIBA3_InitRuntimeEntry
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, c300, c304
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1857:
+TLIBA3_InitRuntimeEntries:
     MOVE.L  D7,-(A7)
 
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A0
@@ -2238,7 +2269,7 @@ LAB_1857:
     PEA     352.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     MOVEQ   #0,D0
     MOVE.W  D7,D0
@@ -2252,7 +2283,7 @@ LAB_1857:
     PEA     352.W
     MOVE.L  D1,-(A7)
     PEA     1.W
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     MOVEQ   #0,D0
     MOVE.W  D7,D0
@@ -2266,7 +2297,7 @@ LAB_1857:
     PEA     696.W
     MOVE.L  D1,-(A7)
     PEA     2.W
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     LEA     84(A7),A7
     MOVEQ   #0,D0
@@ -2282,7 +2313,7 @@ LAB_1857:
     PEA     696.W
     MOVE.L  D1,-(A7)
     PEA     3.W
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     MOVEQ   #0,D0
     MOVE.W  D7,D0
@@ -2297,7 +2328,7 @@ LAB_1857:
     PEA     640.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     LEA     52(A7),A7
     MOVE.L  D7,D0
@@ -2312,7 +2343,7 @@ LAB_1857:
     PEA     320.W
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     MOVEQ   #0,D0
     MOVE.W  D7,D0
@@ -2326,7 +2357,7 @@ LAB_1857:
     PEA     640.W
     MOVE.L  D1,-(A7)
     PEA     6.W
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     LEA     56(A7),A7
     MOVE.L  D7,D0
@@ -2340,7 +2371,7 @@ LAB_1857:
     PEA     320.W
     MOVE.L  D1,-(A7)
     PEA     7.W
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     MOVEQ   #0,D0
     MOVE.W  D7,D0
@@ -2354,7 +2385,7 @@ LAB_1857:
     PEA     320.W
     MOVE.L  D1,-(A7)
     PEA     8.W
-    BSR.W   LAB_1853
+    BSR.W   TLIBA3_InitRuntimeEntry
 
     LEA     56(A7),A7
 
@@ -2364,25 +2395,25 @@ LAB_1857:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LAB_1858   (??)
+; FUNC: TLIBA3_SetFontForAllViewModes   (TLIBA3_SetFontForAllViewModes)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: result/status
 ; CLOBBERS:
-;   ??
+;   A0/A1/A3/A6/A7/D0/D1/D7
 ; CALLS:
-;   ??
+;   MATH_Mulu32, _LVOSetFont
 ; READS:
-;   ??
+;   GLOB_REF_GRAPHICS_LIBRARY, TLIBA3_VmArrayRuntimeTable
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   ??
+;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
-;   ??
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LAB_1858:
+TLIBA3_SetFontForAllViewModes:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -2397,7 +2428,7 @@ LAB_1858:
     ADD.L   D1,D1
     JSR     MATH_Mulu32(PC)
 
-    LEA     LAB_237E,A0
+    LEA     TLIBA3_VmArrayRuntimeTable,A0
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEA.L A3,A0
@@ -2413,7 +2444,26 @@ LAB_1858:
 
 ;!======
 
-GROUPD_JMPTBL_GCOMMAND_ApplyHighlightFlag:
+;------------------------------------------------------------------------------
+; FUNC: TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag   (TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0
+; CALLS:
+;   GCOMMAND_ApplyHighlightFlag
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag:
     JMP     GCOMMAND_ApplyHighlightFlag
 
 ;!======

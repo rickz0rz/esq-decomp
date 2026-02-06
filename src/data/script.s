@@ -4,25 +4,32 @@ GLOB_STR_SCRIPT_C_1:
     NStr    "SCRIPT.c"
 GLOB_STR_SCRIPT_C_2:
     NStr    "SCRIPT.c"
-LAB_20AB:
+DATA_SCRIPT_BSS_LONG_20AB:
     DS.L    1
-LAB_20AC:
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_CtrlLineAssertedFlag   (CTRL-line asserted mirror)
+; TYPE: u16 (stored in s32 slot)
+; PURPOSE: Mirrors asserted/deasserted CTRL-line state for serial control helpers.
+; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, SCRIPT_ClearCtrlLineIfEnabled
+; NOTES: Written as 0/1 while SCRIPT_SerialShadowWord is updated and sent to SERDAT.
+;------------------------------------------------------------------------------
+SCRIPT_CtrlLineAssertedFlag:
     DS.L    1
 GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     NStr    "No Current Weather Data Available"
 GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     DC.L    GLOB_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
-LAB_20AF:
+DATA_SCRIPT_STR_NO_FORECAST_WEATHER_DATA_AVAILABLE_20AF:
     NStr    "No Forecast Weather Data Available"
-LAB_20B0:
-    DC.L    LAB_20AF
-LAB_20B1:
+DATA_SCRIPT_CONST_LONG_20B0:
+    DC.L    DATA_SCRIPT_STR_NO_FORECAST_WEATHER_DATA_AVAILABLE_20AF
+DATA_SCRIPT_STR_MAY_NOT_BE_AVAILABLE_IN_ALL_AREAS_DO_20B1:
     NStr    "May not be available in all areas."
-LAB_20B2:
-    DC.L    LAB_20B1
-LAB_20B3:
+DATA_SCRIPT_CONST_LONG_20B2:
+    DC.L    DATA_SCRIPT_STR_MAY_NOT_BE_AVAILABLE_IN_ALL_AREAS_DO_20B1
+DATA_SCRIPT_STR_CONTINUED_20B3:
     NStr    "Continued"
-    DC.L    LAB_20B3
+    DC.L    DATA_SCRIPT_STR_CONTINUED_20B3
 
 GLOB_STR_JANUARY:
     NStr    "January"
@@ -63,44 +70,44 @@ GLOB_JMPTBL_MONTHS:
     DC.L    GLOB_STR_NOVEMBER
     DC.L    GLOB_STR_DECEMBER
 
-LAB_20C1:
+DATA_SCRIPT_STR_JAN_20C1:
     NStr    "Jan "
-LAB_20C2:
+DATA_SCRIPT_STR_FEB_20C2:
     NStr    "Feb "
-LAB_20C3:
+DATA_SCRIPT_STR_MAR_20C3:
     NStr    "Mar "
-LAB_20C4:
+DATA_SCRIPT_STR_APR_20C4:
     NStr    "Apr "
-LAB_20C5:
+DATA_SCRIPT_STR_MAY_20C5:
     NStr    "May "
-LAB_20C6:
+DATA_SCRIPT_STR_JUN_20C6:
     NStr    "Jun "
-LAB_20C7:
+DATA_SCRIPT_STR_JUL_20C7:
     NStr    "Jul "
-LAB_20C8:
+DATA_SCRIPT_STR_AUG_20C8:
     NStr    "Aug "
-LAB_20C9:
+DATA_SCRIPT_STR_SEP_20C9:
     NStr    "Sep "
-LAB_20CA:
+DATA_SCRIPT_STR_OCT_20CA:
     NStr    "Oct "
-LAB_20CB:
+DATA_SCRIPT_STR_NOV_20CB:
     NStr    "Nov "
-LAB_20CC:
+DATA_SCRIPT_STR_DEC_20CC:
     NStr    "Dec "
 
 GLOB_JMPTBL_SHORT_MONTHS:
-    DC.L    LAB_20C1
-    DC.L    LAB_20C2
-    DC.L    LAB_20C3
-    DC.L    LAB_20C4
-    DC.L    LAB_20C5
-    DC.L    LAB_20C6
-    DC.L    LAB_20C7
-    DC.L    LAB_20C8
-    DC.L    LAB_20C9
-    DC.L    LAB_20CA
-    DC.L    LAB_20CB
-    DC.L    LAB_20CC
+    DC.L    DATA_SCRIPT_STR_JAN_20C1
+    DC.L    DATA_SCRIPT_STR_FEB_20C2
+    DC.L    DATA_SCRIPT_STR_MAR_20C3
+    DC.L    DATA_SCRIPT_STR_APR_20C4
+    DC.L    DATA_SCRIPT_STR_MAY_20C5
+    DC.L    DATA_SCRIPT_STR_JUN_20C6
+    DC.L    DATA_SCRIPT_STR_JUL_20C7
+    DC.L    DATA_SCRIPT_STR_AUG_20C8
+    DC.L    DATA_SCRIPT_STR_SEP_20C9
+    DC.L    DATA_SCRIPT_STR_OCT_20CA
+    DC.L    DATA_SCRIPT_STR_NOV_20CB
+    DC.L    DATA_SCRIPT_STR_DEC_20CC
 
 GLOB_STR_SUNDAY_1:
     NStr    "Sunday"
@@ -126,117 +133,117 @@ GLOB_JMPTBL_DAYS_OF_WEEK:
     DC.L    GLOB_STR_FRIDAY_1
     DC.L    GLOB_STR_SATURDAY_1
 
-LAB_20D6:
+DATA_SCRIPT_STR_SUN_20D6:
     NStr    "Sun "
-LAB_20D7:
+DATA_SCRIPT_STR_MON_20D7:
     NStr    "Mon "
-LAB_20D8:
+DATA_SCRIPT_STR_TUE_20D8:
     NStr    "Tue "
-LAB_20D9:
+DATA_SCRIPT_STR_WED_20D9:
     NStr    "Wed "
-LAB_20DA:
+DATA_SCRIPT_STR_THU_20DA:
     NStr    "Thu "
-LAB_20DB:
+DATA_SCRIPT_STR_FRI_20DB:
     NStr    "Fri "
-LAB_20DC:
+DATA_SCRIPT_STR_SAT_20DC:
     NStr    "Sat "
 GLOB_JMPTBL_SHORT_DAYS_OF_WEEK:
-    DC.L    LAB_20D6
-    DC.L    LAB_20D7
-    DC.L    LAB_20D8
-    DC.L    LAB_20D9
-    DC.L    LAB_20DA
-    DC.L    LAB_20DB
-    DC.L    LAB_20DC
-LAB_20DE:
+    DC.L    DATA_SCRIPT_STR_SUN_20D6
+    DC.L    DATA_SCRIPT_STR_MON_20D7
+    DC.L    DATA_SCRIPT_STR_TUE_20D8
+    DC.L    DATA_SCRIPT_STR_WED_20D9
+    DC.L    DATA_SCRIPT_STR_THU_20DA
+    DC.L    DATA_SCRIPT_STR_FRI_20DB
+    DC.L    DATA_SCRIPT_STR_SAT_20DC
+DATA_SCRIPT_STR_MONDAY_20DE:
     NStr    "Monday"
-LAB_20DF:
+DATA_SCRIPT_STR_TUESDAY_20DF:
     NStr    "Tuesday"
-LAB_20E0:
+DATA_SCRIPT_STR_WEDNESDAY_20E0:
     NStr    "Wednesday"
-LAB_20E1:
+DATA_SCRIPT_STR_THURSDAY_20E1:
     NStr    "Thursday"
-LAB_20E2:
+DATA_SCRIPT_STR_FRIDAY_20E2:
     NStr    "Friday"
-LAB_20E3:
+DATA_SCRIPT_STR_SATURDAY_20E3:
     NStr    "Saturday"
-LAB_20E4:
+DATA_SCRIPT_STR_SUNDAY_20E4:
     NStr    "Sunday"
-LAB_20E5:
+DATA_SCRIPT_STR_WEEKDAYS_20E5:
     NStr    "Weekdays"
-LAB_20E6:
+DATA_SCRIPT_STR_WEEKNIGHTS_20E6:
     NStr    "Weeknights"
-LAB_20E7:
+DATA_SCRIPT_STR_COMING_SOON_20E7:
     NStr    "Coming Soon"
-LAB_20E8:
+DATA_SCRIPT_STR_THIS_MONTH_20E8:
     NStr    "This Month"
-LAB_20E9:
+DATA_SCRIPT_STR_NEXT_MONTH_20E9:
     NStr    "Next Month"
-LAB_20EA:
+DATA_SCRIPT_STR_THIS_FALL_20EA:
     NStr    "This Fall"
-LAB_20EB:
+DATA_SCRIPT_STR_THIS_SUMMER_20EB:
     NStr    "This Summer"
-LAB_20EC:
+DATA_SCRIPT_CONST_WORD_20EC:
     DC.W    "Tu"
-LAB_20ED:
+DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED:
     NStr    "esdays & Fridays"
-LAB_20EE:
+DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE:
     NStr    "Mondays & Saturdays"
-LAB_20EF:
+DATA_SCRIPT_STR_WEEKENDS_20EF:
     NStr    "Weekends"
-LAB_20F0:
+DATA_SCRIPT_STR_EVERY_NIGHT_20F0:
     NStr    "Every Night"
-LAB_20F1:
+DATA_SCRIPT_STR_EVERY_DAY_20F1:
     NStr    "Every Day"
-LAB_20F2:
+DATA_SCRIPT_BSS_WORD_20F2:
     DS.W    1
-LAB_20F3:
+DATA_SCRIPT_BSS_WORD_20F3:
     DS.W    1
-LAB_20F4:
+DATA_SCRIPT_BSS_WORD_20F4:
     DS.W    1
-LAB_20F5:
+DATA_SCRIPT_BSS_WORD_20F5:
     DS.W    1
-LAB_20F6:
+DATA_SCRIPT_STR_MONDAYS_THRU_SATURDAYS_20F6:
     NStr    "Mondays thru Saturdays"
-LAB_20F7:
+DATA_SCRIPT_STR_MONDAYS_THRU_THURSDAYS_20F7:
     NStr    "Mondays thru Thursdays"
-LAB_20F8:
+DATA_SCRIPT_STR_WEEKDAY_MORNINGS_20F8:
     NStr    "Weekday Mornings"
-LAB_20F9:
+DATA_SCRIPT_STR_WEEKDAY_AFTERNOONS_20F9:
     NStr    "Weekday Afternoons"
-LAB_20FA:
+DATA_SCRIPT_STR_TUESDAYS_THURSDAYS_20FA:
     NStr    "Tuesdays & Thursdays"
-LAB_20FB:
+DATA_SCRIPT_STR_THIS_WEEK_20FB:
     NStr    "This Week"
-    DC.L    LAB_20DE
-    DC.L    LAB_20DF
-    DC.L    LAB_20E0
-    DC.L    LAB_20E1
-    DC.L    LAB_20E2
-    DC.L    LAB_20E3
-    DC.L    LAB_20E4
-    DC.L    LAB_20E5
-    DC.L    LAB_20E6
-    DC.L    LAB_20E7
-    DC.L    LAB_20E8
-    DC.L    LAB_20E9
-    DC.L    LAB_20EA
-    DC.L    LAB_20EB
-    DC.L    LAB_20EC
-    DC.L    LAB_20EE
-    DC.L    LAB_20EF
-    DC.L    LAB_20F0
-    DC.L    LAB_20F1
-    DC.L    LAB_20F2
-    DC.L    LAB_20F3
-    DC.L    LAB_20F4
-    DC.L    LAB_20F5
-    DC.L    LAB_20F6
-    DC.L    LAB_20F7
-    DC.L    LAB_20F8
-    DC.L    LAB_20F9
-    DC.L    LAB_20FA
-    DC.L    LAB_20FB
+    DC.L    DATA_SCRIPT_STR_MONDAY_20DE
+    DC.L    DATA_SCRIPT_STR_TUESDAY_20DF
+    DC.L    DATA_SCRIPT_STR_WEDNESDAY_20E0
+    DC.L    DATA_SCRIPT_STR_THURSDAY_20E1
+    DC.L    DATA_SCRIPT_STR_FRIDAY_20E2
+    DC.L    DATA_SCRIPT_STR_SATURDAY_20E3
+    DC.L    DATA_SCRIPT_STR_SUNDAY_20E4
+    DC.L    DATA_SCRIPT_STR_WEEKDAYS_20E5
+    DC.L    DATA_SCRIPT_STR_WEEKNIGHTS_20E6
+    DC.L    DATA_SCRIPT_STR_COMING_SOON_20E7
+    DC.L    DATA_SCRIPT_STR_THIS_MONTH_20E8
+    DC.L    DATA_SCRIPT_STR_NEXT_MONTH_20E9
+    DC.L    DATA_SCRIPT_STR_THIS_FALL_20EA
+    DC.L    DATA_SCRIPT_STR_THIS_SUMMER_20EB
+    DC.L    DATA_SCRIPT_CONST_WORD_20EC
+    DC.L    DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE
+    DC.L    DATA_SCRIPT_STR_WEEKENDS_20EF
+    DC.L    DATA_SCRIPT_STR_EVERY_NIGHT_20F0
+    DC.L    DATA_SCRIPT_STR_EVERY_DAY_20F1
+    DC.L    DATA_SCRIPT_BSS_WORD_20F2
+    DC.L    DATA_SCRIPT_BSS_WORD_20F3
+    DC.L    DATA_SCRIPT_BSS_WORD_20F4
+    DC.L    DATA_SCRIPT_BSS_WORD_20F5
+    DC.L    DATA_SCRIPT_STR_MONDAYS_THRU_SATURDAYS_20F6
+    DC.L    DATA_SCRIPT_STR_MONDAYS_THRU_THURSDAYS_20F7
+    DC.L    DATA_SCRIPT_STR_WEEKDAY_MORNINGS_20F8
+    DC.L    DATA_SCRIPT_STR_WEEKDAY_AFTERNOONS_20F9
+    DC.L    DATA_SCRIPT_STR_TUESDAYS_THURSDAYS_20FA
+    DC.L    DATA_SCRIPT_STR_THIS_WEEK_20FB
 
 ; Another struct?
 GLOB_STR_ALIGNED_NOW_SHOWING:
@@ -251,11 +258,11 @@ GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE:
     NStr    "Showtimes "
 GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE:
     NStr    "Showing at "
-LAB_2102:
+DATA_SCRIPT_STR_HRS_2102:
     DC.B    "hrs ",0
-LAB_2103:
+DATA_SCRIPT_STR_HR_2103:
     DC.B    "hr ",0
-LAB_2104:
+DATA_SCRIPT_STR_MIN_2104:
     DC.B    "min)",0
 GLOB_STR_ALIGNED_TONIGHT_AT:
     DC.B    TextAlignCenter,"Tonight at ",0
@@ -263,143 +270,157 @@ GLOB_STR_ALIGNED_ON:
     DC.B    TextAlignCenter,"on",0
 GLOB_STR_ALIGNED_CHANNEL_1:
     NStr2   TextAlignCenter,"Channel "
-LAB_2108:
+DATA_SCRIPT_STR_SPORTS_ON_2108:
     NStr    "Sports on "
-LAB_2109:
-    DC.L    LAB_2108
-LAB_210A:
+DATA_SCRIPT_CONST_LONG_2109:
+    DC.L    DATA_SCRIPT_STR_SPORTS_ON_2108
+DATA_SCRIPT_STR_MOVIE_SUMMARY_FOR_210A:
     NStr    "Movie Summary for "
-LAB_210B:
-    DC.L    LAB_210A
-LAB_210C:
+DATA_SCRIPT_CONST_LONG_210B:
+    DC.L    DATA_SCRIPT_STR_MOVIE_SUMMARY_FOR_210A
+DATA_SCRIPT_STR_SUMMARY_OF_210C:
     NStr    "Summary of "
-LAB_210D:
-    DC.L    LAB_210C
-LAB_210E:
+DATA_SCRIPT_CONST_LONG_210D:
+    DC.L    DATA_SCRIPT_STR_SUMMARY_OF_210C
+DATA_SCRIPT_STR_CHANNEL_210E:
     NStr    " channel "
-LAB_210F:
-    DC.L    LAB_210E
-LAB_2110:
+DATA_SCRIPT_CONST_LONG_210F:
+    DC.L    DATA_SCRIPT_STR_CHANNEL_210E
+DATA_SCRIPT_STR_NO_DATA_DOT_2110:
     NStr    "No Data."
-LAB_2111:
-    DC.L    LAB_2110
+DATA_SCRIPT_CONST_LONG_2111:
+    DC.L    DATA_SCRIPT_STR_NO_DATA_DOT_2110
 GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr    "Please Stand By for your Local Listings.  ER007"
 GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     DC.L    GLOB_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 GLOB_STR_OFF_AIR_1:
     NStr    "Off Air."
-LAB_2115:
+DATA_SCRIPT_CONST_LONG_2115:
     DC.L    GLOB_STR_OFF_AIR_1
 GLOB_STR_GRID_DATE_FORMAT_STRING:
     NStr    "%s %s %ld %04ld"
 GLOB_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
-LAB_2118:
+DATA_SCRIPT_BSS_WORD_2118:
     DS.W    1
-LAB_2119:
+DATA_SCRIPT_BSS_WORD_2119:
     DS.W    1
-LAB_211A:
+DATA_SCRIPT_BSS_WORD_211A:
     DS.W    1
-LAB_211B:
+DATA_SCRIPT_BSS_WORD_211B:
     DS.W    1
-LAB_211C:
+DATA_SCRIPT_BSS_WORD_211C:
     DS.W    1
-LAB_211D:
+DATA_SCRIPT_BSS_WORD_211D:
     DS.W    1
-LAB_211E:
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_PendingBannerTargetChar/SCRIPT_BannerTransitionActive   (banner transition control)
+; TYPE: s16/u16
+; PURPOSE: Stores a deferred banner-char target and whether a transition is currently active.
+; USED BY: SCRIPT_BeginBannerCharTransition, SCRIPT_UpdateBannerCharTransition, SCRIPT_ApplyPendingBannerTarget
+; NOTES: `SCRIPT_PendingBannerTargetChar` uses sentinels (-2 = one-shot staged value, -1 = none pending).
+;------------------------------------------------------------------------------
+SCRIPT_PendingBannerTargetChar:
     DC.W    $ffff
-LAB_211F:
+DATA_SCRIPT_BSS_WORD_211F:
     DS.W    1
-LAB_2120:
+DATA_SCRIPT_BSS_WORD_2120:
     DS.W    1
-LAB_2121:
+SCRIPT_BannerTransitionActive:
     DS.W    1
-LAB_2122:
+DATA_SCRIPT_BSS_WORD_2122:
     DS.W    1
 ; Brush pointers exposed to scripting (primary/secondary selections).
 BRUSH_ScriptPrimarySelection:
     DS.L    1
 BRUSH_ScriptSecondarySelection:
     DS.L    1
-LAB_2125:
+DATA_SCRIPT_BSS_LONG_2125:
     DS.L    1
-LAB_2126:
+DATA_SCRIPT_STR_X_2126:
     DC.B    "x"
-LAB_2127:
+DATA_SCRIPT_BSS_BYTE_2127:
     DS.B    1
-LAB_2128:
+DATA_SCRIPT_BSS_WORD_2128:
     DS.W    1
-LAB_2129:
+DATA_SCRIPT_BSS_LONG_2129:
     DS.L    1
-LAB_212A:
+DATA_SCRIPT_BSS_WORD_212A:
     DS.W    1
-LAB_212B:
+DATA_SCRIPT_BSS_WORD_212B:
     DS.W    1
-LAB_212C:
+DATA_SCRIPT_TAG_00_212C:
     NStr    "00"
-LAB_212D:
+DATA_SCRIPT_TAG_00_212D:
     NStr    "00"
-LAB_212E:
+DATA_SCRIPT_TAG_11_212E:
     NStr    "11"
-LAB_212F:
+DATA_SCRIPT_TAG_11_212F:
     NStr    "11"
-LAB_2130:
+DATA_SCRIPT_STR_YL_2130:
     NStr    "yl"
     DS.W    1
-LAB_2131:
+DATA_SCRIPT_BSS_WORD_2131:
     DS.W    1
 GLOB_STR_PREVUESPORTS:
     NStr    "PrevueSports"
-LAB_2133:
+DATA_SCRIPT_CONST_LONG_2133:
     DC.L    GLOB_STR_PREVUESPORTS
-LAB_2134:
+DATA_SCRIPT_STR_2134:
     NStr    TextAlignCenter
-LAB_2135:
+DATA_SCRIPT_STR_2135:
     NStr    TextAlignCenter
-LAB_2136:
+DATA_SCRIPT_SPACE_VALUE_2136:
     NStr    "   "
-LAB_2137:
+DATA_SCRIPT_STR_CH_DOT_2137:
     NStr2   TextAlignCenter,"Ch. "
-LAB_2138:
+DATA_SCRIPT_SPACE_VALUE_2138:
     NStr    "   "
-LAB_2139:
+DATA_SCRIPT_FMT_PCT_C_2139:
     NStr2   TextAlignCenter,"%c"
-LAB_213A:
+DATA_SCRIPT_STR_213A:
     NStr    TextAlignCenter
-LAB_213B:
+DATA_SCRIPT_STR_213B:
     NStr    TextAlignCenter
-LAB_213C:
+DATA_SCRIPT_SPACE_VALUE_213C:
     NStr    "   "
-LAB_213D:
+DATA_SCRIPT_STR_213D:
     NStr    TextAlignCenter
-LAB_213E:
+DATA_SCRIPT_STR_213E:
     NStr    TextAlignCenter
-LAB_213F:
+DATA_SCRIPT_FMT_PCT_S_213F:
     NStr2   TextAlignCenter,"%s"
-LAB_2140:
+DATA_SCRIPT_STR_AT_2140:
     NStr    " at "
-LAB_2141:
+DATA_SCRIPT_STR_VS_DOT_2141:
     NStr    " vs. "
-LAB_2142:
+DATA_SCRIPT_STR_VS_2142:
     NStr    " vs "
-LAB_2143:
+DATA_SCRIPT_STR_2143:
     NStr    TextAlignCenter
 GLOB_STR_ALIGNED_CHANNEL_2:
     NStr2   TextAlignCenter,"Channel "
-LAB_2145:
+;------------------------------------------------------------------------------
+; SYM: TEXTDISP_FilterModeId   (text-display filter mode id)
+; TYPE: u8 (stored in word slot)
+; PURPOSE: Active mode selector for TEXTDISP filter/search passes.
+; USED BY: TEXTDISP_FilterAndSelectEntry
+; NOTES: Observed values cycle through 1..3.
+;------------------------------------------------------------------------------
+TEXTDISP_FilterModeId:
     DC.W    $0300
-LAB_2146:
+DATA_SCRIPT_TAG_PPV_2146:
     NStr    "PPV"
-LAB_2147:
+DATA_SCRIPT_TAG_SBE_2147:
     NStr    "SBE"
-LAB_2148:
+DATA_SCRIPT_TAG_SPORTS_2148:
     NStr    "SPORTS"
-LAB_2149:
+DATA_SCRIPT_CONST_WORD_2149:
     DC.W    $ffff
-LAB_214A:
+DATA_SCRIPT_CONST_BYTE_214A:
     DC.B    0,"1"
-LAB_214B:
+DATA_SCRIPT_BSS_LONG_214B:
     DS.L    1
-LAB_214C:
+DATA_SCRIPT_FMT_XX_PCT_S_214C:
     NStr3   "xx%s",18,"TEMPO"

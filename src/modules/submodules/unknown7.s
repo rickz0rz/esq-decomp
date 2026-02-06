@@ -139,7 +139,7 @@ UNKNOWN7_FindChar:
 ; DESC:
 ;   Convenience wrapper around UNKNOWN7_FindChar.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN7_FindCharWrapper:
     MOVEM.L D7/A3,-(A7)
@@ -261,7 +261,7 @@ UNKNOWN7_FindAnyChar:
 ; DESC:
 ;   Convenience wrapper around UNKNOWN7_FindAnyChar.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN7_FindAnyCharWrapper:
     MOVEM.L A2-A3,-(A7)

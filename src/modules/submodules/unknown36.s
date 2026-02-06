@@ -14,15 +14,11 @@ Struct_UNKNOWN36_Request__Handler   = 28
 ; RET:
 ;   D0: 0 on success, -1 on failure
 ; CLOBBERS:
-;   D0/D6-D7/A3 ??
+;   A3/A7/D0/D6/D7
 ; CALLS:
 ;   STREAM_BufferedPutcOrFlush, ALLOC_InsertFreeBlock, HANDLE_CloseByIndex
 ; READS:
-;   Struct_UNKNOWN36_Request__Arg16: ptr ??
-;   Struct_UNKNOWN36_Request__Arg20: ptr ??
-;   Struct_UNKNOWN36_Request__Flags: flags (bitmask, uses 0x0c)
-;   Struct_UNKNOWN36_Request__FlagByte: flags (bit 1 triggers STREAM_BufferedPutcOrFlush)
-;   Struct_UNKNOWN36_Request__Handler: handler/callback pointer
+;   Struct_UNKNOWN36_Request__Arg16, Struct_UNKNOWN36_Request__Arg20, Struct_UNKNOWN36_Request__FlagByte, Struct_UNKNOWN36_Request__Flags, Struct_UNKNOWN36_Request__Handler
 ; WRITES:
 ;   Struct_UNKNOWN36_Request__Flags: flags cleared
 ; DESC:
@@ -93,7 +89,7 @@ UNKNOWN36_FinalizeRequest:
 ; RET:
 ;   D0: 0 on requester success, -1 on failure
 ; CLOBBERS:
-;   D0-D7/A6 ??
+;   A0/A1/A4/A5/A6/A7/D0/D1/D2/D3/D6/D7
 ; CALLS:
 ;   _LVOFindTask, _LVOWrite, _LVOOpenLibrary, EXEC_CallVector_348
 ; READS:
@@ -161,7 +157,7 @@ UNKNOWN36_ShowAbortRequester:
     ; Emit a "*** Break: " line and the buffered message.
     MOVEA.L Global_DosLibrary(A4),A6
     MOVE.L  D6,D1
-    LEA     DEBUG_STR_Break(PC),A0
+    LEA     UNKNOWN36_STR_BreakPrefix(PC),A0
     MOVE.L  A0,D2
     MOVEQ   #11,D3
     JSR     _LVOWrite(A6)
@@ -183,7 +179,7 @@ UNKNOWN36_ShowAbortRequester:
 .open_requester:
     ; Fall back to an Intuition requester if no CLI output is available.
     MOVEA.L AbsExecBase,A6
-    LEA     DEBUG_STR_INTUITION_LIBRARY(PC),A1
+    LEA     UNKNOWN36_STR_IntuitionLibrary(PC),A1
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)
 
@@ -234,10 +230,10 @@ DEBUG_STR_Continue:
 DEBUG_STR_Abort:
     DC.B    "ABORT",0
 
-DEBUG_STR_Break:
+UNKNOWN36_STR_BreakPrefix:
     DC.B    "*** Break: ",0
 
-DEBUG_STR_INTUITION_LIBRARY:
+UNKNOWN36_STR_IntuitionLibrary:
     DC.B    "intuition.library",0
 
 ;!======

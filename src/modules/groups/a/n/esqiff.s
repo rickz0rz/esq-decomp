@@ -1,6 +1,39 @@
 ;!======
 
-LAB_09E8:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_DrawWeatherStatusOverlayIntoBrush   (Routine at ESQIFF_DrawWeatherStatusOverlayIntoBrush)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +20: arg_2 (via 24(A5))
+;   stack +24: arg_3 (via 28(A5))
+;   stack +28: arg_4 (via 32(A5))
+;   stack +32: arg_5 (via 36(A5))
+;   stack +36: arg_6 (via 40(A5))
+;   stack +40: arg_7 (via 44(A5))
+;   stack +44: arg_8 (via 48(A5))
+;   stack +48: arg_9 (via 52(A5))
+;   stack +52: arg_10 (via 56(A5))
+;   stack +56: arg_11 (via 60(A5))
+;   stack +60: arg_12 (via 64(A5))
+;   stack +61: arg_13 (via 65(A5))
+;   stack +62: arg_14 (via 66(A5))
+;   stack +84: arg_15 (via 88(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQFUNC_TrimTextToPixelWidthWordBoundary, ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
+; READS:
+;   GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_ESQIFF_C_1, LAB_09F1, LAB_09F6, LAB_09F8, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_WeatherStatusBrushIndex
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LINK.W  A5,#-68
     MOVEM.L D2/D5-D7/A3,-(A7)
 
@@ -11,18 +44,18 @@ LAB_09E8:
     MOVEQ   #0,D5
     CLR.L   -24(A5)
     MOVEQ   #0,D0
-    MOVE.B  LAB_229C,D0
+    MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
-    LEA     LAB_1EDD,A0
+    LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
     ADDA.L  D0,A0
-    PEA     LAB_1ED4
+    PEA     ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
-    JSR     LAB_0AA3(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     MOVE.L  -4(A5),(A7)
-    MOVE.L  LAB_1DEC,-(A7)
+    MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
     MOVE.L  D0,-52(A5)
-    JSR     LAB_0B44(PC)
+    JSR     ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A0
@@ -112,7 +145,7 @@ LAB_09E8:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     LAB_0AB4(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D0
@@ -129,7 +162,7 @@ LAB_09E8:
     ASR.L   #1,D1
     MOVE.L  D0,-48(A5)
     MOVE.L  D1,-32(A5)
-    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #80,D1
     ADD.L   D1,D1
@@ -140,7 +173,7 @@ LAB_09E8:
     MOVE.L  D1,D0
     MOVE.L  D1,-40(A5)
     MOVE.L  -36(A5),D1
-    JSR     GROUPB_JMPTBL_MATH_DivS32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #0,D1
     MOVE.W  176(A3),D1
@@ -174,7 +207,7 @@ LAB_09E8:
     MOVE.L  -48(A5),D2
     ADD.L   D1,D2
     MOVE.L  D2,D1
-    JSR     GROUPB_JMPTBL_MATH_Mulu32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   -44(A5),D0
     MOVEQ   #0,D1
@@ -198,7 +231,7 @@ LAB_09E8:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -56(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_09E2
+    BSR.W   ESQFUNC_TrimTextToPixelWidthWordBoundary
 
     LEA     12(A7),A7
     LEA     36(A3),A0
@@ -252,7 +285,7 @@ LAB_09E8:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -56(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   LAB_09E2
+    BSR.W   ESQFUNC_TrimTextToPixelWidthWordBoundary
 
     LEA     12(A7),A7
     LEA     36(A3),A0
@@ -311,7 +344,7 @@ LAB_09E8:
     MOVE.L  -4(A5),-(A7)
     PEA     672.W
     PEA     GLOB_STR_ESQIFF_C_1
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A3),A0
     MOVE.B  -65(A5),D0
@@ -334,104 +367,123 @@ LAB_09E8:
 
 ;!======
 
-LAB_09F9:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_QueueIffBrushLoad   (Routine at ESQIFF_QueueIffBrushLoad)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A7/D0/D1/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
+; READS:
+;   GLOB_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, DATA_ESQIFF_BSS_LONG_1EE9, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, lab_09FD, lab_09FE
+; WRITES:
+;   CTASKS_PendingIffBrushDescriptor, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskState, DATA_ESQIFF_BSS_LONG_1EE9
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_QueueIffBrushLoad:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
-    TST.L   LAB_1EE9
-    BEQ.S   LAB_09FA
+    TST.L   DATA_ESQIFF_BSS_LONG_1EE9
+    BEQ.S   .lab_09FA
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   LAB_09FB
+    BNE.S   .lab_09FB
 
-LAB_09FA:
-    MOVE.L  LAB_1B23,LAB_1EE9
+.lab_09FA:
+    MOVE.L  PARSEINI_BannerBrushResourceHead,DATA_ESQIFF_BSS_LONG_1EE9
 
-LAB_09FB:
+.lab_09FB:
     MOVEQ   #0,D0
     TST.L   D0
-    BEQ.W   LAB_09FD
+    BEQ.W   .lab_09FD
 
-    PEA     LAB_1EEA
-    MOVE.L  LAB_1EE9,-(A7)
-    JSR     GROUPB_JMPTBL_STRING_CompareNoCase(PC)
+    PEA     DATA_ESQIFF_STR_WEATHER_1EEA
+    MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
+    JSR     ESQIFF_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   LAB_09FC
+    BEQ.S   .lab_09FC
 
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BNE.W   LAB_09FD
+    BNE.W   .lab_09FD
 
-LAB_09FC:
-    MOVE.B  LAB_227F,D0
+.lab_09FC:
+    MOVE.B  WDISP_WeatherStatusCountdown,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.W   LAB_09FE
+    BLS.W   .lab_09FE
 
-    MOVE.W  LAB_229D,D0
+    MOVE.W  WDISP_WeatherStatusDigitChar,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BEQ.W   LAB_09FE
+    BEQ.W   .lab_09FE
 
     CLR.L   -(A7)
-    MOVE.L  LAB_1EE9,-(A7)
-    JSR     LAB_0AA7(PC)
+    MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
+    JSR     ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
 
-    MOVE.L  D0,LAB_1B24
+    MOVE.L  D0,CTASKS_PendingIffBrushDescriptor
     MOVEA.L D0,A0
     MOVE.B  #11,190(A0)
-    MOVEA.L LAB_1B24,A0
+    MOVEA.L CTASKS_PendingIffBrushDescriptor,A0
     MOVE.W  #$280,128(A0)
-    MOVEA.L LAB_1B24,A0
+    MOVEA.L CTASKS_PendingIffBrushDescriptor,A0
     MOVE.W  #160,130(A0)
-    MOVEA.L LAB_1B24,A0
+    MOVEA.L CTASKS_PendingIffBrushDescriptor,A0
     MOVE.B  #3,136(A0)
-    MOVE.L  LAB_1B24,(A7)
-    JSR     LAB_0AA1(PC)
+    MOVE.L  CTASKS_PendingIffBrushDescriptor,(A7)
+    JSR     ESQIFF_JMPTBL_BRUSH_CloneBrushRecord(PC)
 
-    MOVE.L  D0,LAB_1B25
+    MOVE.L  D0,WDISP_WeatherStatusBrushListHead
     MOVE.L  D0,(A7)
-    BSR.W   LAB_09E8
+    BSR.W   ESQIFF_DrawWeatherStatusOverlayIntoBrush
 
     PEA     238.W
-    MOVE.L  LAB_1B24,-(A7)
+    MOVE.L  CTASKS_PendingIffBrushDescriptor,-(A7)
     PEA     724.W
     PEA     GLOB_STR_ESQIFF_C_2
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
-    BRA.S   LAB_09FE
+    BRA.S   .lab_09FE
 
-LAB_09FD:
-    TST.L   LAB_1EE9
-    BEQ.S   LAB_09FE
+.lab_09FD:
+    TST.L   DATA_ESQIFF_BSS_LONG_1EE9
+    BEQ.S   .lab_09FE
 
-    TST.L   LAB_1EE9
-    BEQ.S   LAB_09FE
+    TST.L   DATA_ESQIFF_BSS_LONG_1EE9
+    BEQ.S   .lab_09FE
 
     CLR.L   -(A7)
-    MOVE.L  LAB_1EE9,-(A7)
-    JSR     LAB_0AA7(PC)
+    MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
+    JSR     ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
 
-    MOVE.L  D0,LAB_1B24
+    MOVE.L  D0,CTASKS_PendingIffBrushDescriptor
     MOVEA.L D0,A0
     MOVE.B  #$6,190(A0)
-    MOVE.W  #6,LAB_1B84
-    JSR     LAB_0AB0(PC)
+    MOVE.W  #6,CTASKS_IffTaskState
+    JSR     ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
 
     ADDQ.W  #8,A7
 
-LAB_09FE:
+.lab_09FE:
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BEQ.S   LAB_09FF
+    BEQ.S   .return
 
-    MOVEA.L LAB_1EE9,A0
-    MOVE.L  234(A0),LAB_1EE9
+    MOVEA.L DATA_ESQIFF_BSS_LONG_1EE9,A0
+    MOVE.L  234(A0),DATA_ESQIFF_BSS_LONG_1EE9
 
-LAB_09FF:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -443,7 +495,26 @@ LAB_09FF:
 
 ;!======
 
-LAB_0A00:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_RenderWeatherStatusBrushSlice   (Routine at ESQIFF_RenderWeatherStatusBrushSlice)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A3/A7/D0/D1/D2/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
+; READS:
+;   ESQIFF_RenderWeatherStatusBrushSlice_Return, DATA_CTASKS_STR_Y_1BBF, DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQIFF_BSS_WORD_1EEC, DATA_ESQIFF_BSS_WORD_1EED, DATA_ESQIFF_CONST_WORD_1EEE
+; WRITES:
+;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQIFF_BSS_WORD_1EEC, DATA_ESQIFF_BSS_WORD_1EED, DATA_ESQIFF_CONST_WORD_1EEE
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_RenderWeatherStatusBrushSlice:
     MOVEM.L D2/D6-D7/A2-A3,-(A7)
 
     SetOffsetForStack   5
@@ -451,44 +522,44 @@ LAB_0A00:
     UseStackLong    MOVEA.L,2,A2
 
     MOVE.L  A2,D0
-    BNE.S   LAB_0A01
+    BNE.S   .lab_0A01
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1EEC
-    BRA.W   LAB_0A0A
+    MOVE.W  D0,DATA_ESQIFF_BSS_WORD_1EEC
+    BRA.W   ESQIFF_RenderWeatherStatusBrushSlice_Return
 
-LAB_0A01:
-    MOVE.W  LAB_1EEC,D0
+.lab_0A01:
+    MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
     TST.W   D0
-    BLE.S   LAB_0A02
+    BLE.S   .lab_0A02
 
-    TST.W   LAB_1ECD
-    BEQ.S   LAB_0A03
+    TST.W   DATA_ESQFUNC_CONST_WORD_1ECD
+    BEQ.S   .lab_0A03
 
-LAB_0A02:
+.lab_0A02:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1ECD
+    MOVE.W  D0,DATA_ESQFUNC_CONST_WORD_1ECD
     MOVE.W  178(A2),D1
-    MOVE.B  #$1,LAB_1EEE
-    MOVE.W  D0,LAB_1EED
-    MOVE.W  D1,LAB_1EEC
+    MOVE.B  #$1,DATA_ESQIFF_CONST_WORD_1EEE
+    MOVE.W  D0,DATA_ESQIFF_BSS_WORD_1EED
+    MOVE.W  D1,DATA_ESQIFF_BSS_WORD_1EEC
 
-LAB_0A03:
-    MOVE.W  LAB_1EEC,D0
+.lab_0A03:
+    MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
     MOVEQ   #30,D1
     CMP.W   D1,D0
-    BGE.S   LAB_0A04
+    BGE.S   .lab_0A04
 
     MOVE.L  D0,D7
-    BRA.S   LAB_0A05
+    BRA.S   .lab_0A05
 
-LAB_0A04:
+.lab_0A04:
     MOVE.L  D1,D7
 
-LAB_0A05:
+.lab_0A05:
     MOVEQ   #9,D0
     CMP.B   32(A2),D0
-    BNE.S   LAB_0A06
+    BNE.S   .lab_0A06
 
     MOVEQ   #42,D6
     MOVEQ   #0,D0
@@ -497,7 +568,7 @@ LAB_0A05:
     MOVE.L  D7,D1
     EXT.L   D1
     LEA     60(A3),A0
-    MOVE.W  LAB_1EED,D2
+    MOVE.W  DATA_ESQIFF_BSS_WORD_1EED,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
@@ -506,7 +577,7 @@ LAB_0A05:
     CLR.L   -(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_0AB4(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     MOVEQ   #0,D0
     MOVE.W  176(A2),D0
@@ -520,7 +591,7 @@ LAB_0A05:
     MOVE.L  D7,D0
     EXT.L   D0
     LEA     60(A3),A0
-    MOVE.W  LAB_1EED,D2
+    MOVE.W  DATA_ESQIFF_BSS_WORD_1EED,D2
     EXT.L   D2
     MOVE.L  D2,(A7)
     MOVE.L  A0,-(A7)
@@ -529,22 +600,22 @@ LAB_0A05:
     CLR.L   -(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_0AB4(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     52(A7),A7
-    BRA.S   LAB_0A08
+    BRA.S   .branch_1
 
-LAB_0A06:
+.lab_0A06:
     MOVEQ   #0,D0
     MOVE.W  176(A2),D0
     MOVE.L  #696,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   LAB_0A07
+    BPL.S   .branch
 
     ADDQ.L  #1,D1
 
-LAB_0A07:
+.branch:
     ASR.L   #1,D1
     MOVE.L  D1,D6
     SUBQ.L  #1,D6
@@ -554,7 +625,7 @@ LAB_0A07:
     MOVE.L  D7,D0
     EXT.L   D0
     LEA     60(A3),A0
-    MOVE.W  LAB_1EED,D2
+    MOVE.W  DATA_ESQIFF_BSS_WORD_1EED,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
@@ -563,50 +634,88 @@ LAB_0A07:
     CLR.L   -(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     LAB_0AB4(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     MOVEQ   #11,D0
     CMP.B   32(A2),D0
-    BNE.S   LAB_0A08
+    BNE.S   .branch_1
 
     MOVEQ   #1,D0
-    CMP.B   LAB_1EEE,D0
-    BNE.S   LAB_0A08
+    CMP.B   DATA_ESQIFF_CONST_WORD_1EEE,D0
+    BNE.S   .branch_1
 
-    MOVE.B  LAB_1BBF,D0
+    MOVE.B  DATA_CTASKS_STR_Y_1BBF,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   LAB_0A08
+    BNE.S   .branch_1
 
     PEA     16.W
     MOVE.L  A3,-(A7)
-    JSR     LAB_0AA9(PC)
+    JSR     ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(PC)
 
     ADDQ.W  #8,A7
-    CLR.B   LAB_1EEE
+    CLR.B   DATA_ESQIFF_CONST_WORD_1EEE
 
-LAB_0A08:
-    SUB.W   D7,LAB_1EEC
-    ADD.W   D7,LAB_1EED
+.branch_1:
+    SUB.W   D7,DATA_ESQIFF_BSS_WORD_1EEC
+    ADD.W   D7,DATA_ESQIFF_BSS_WORD_1EED
     MOVE.L  D7,D0
     TST.W   D0
-    BPL.S   LAB_0A09
+    BPL.S   .branch_2
 
     ADDQ.W  #1,D0
 
-LAB_0A09:
+.branch_2:
     ASR.W   #1,D0
     MOVE.W  D0,52(A3)
-    MOVE.W  LAB_1EEC,D0
+    MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
 
-LAB_0A0A:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_RenderWeatherStatusBrushSlice_Return   (Routine at ESQIFF_RenderWeatherStatusBrushSlice_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_RenderWeatherStatusBrushSlice_Return:
     MOVEM.L (A7)+,D2/D6-D7/A2-A3
     RTS
 
 ;!======
 
-LAB_0A0B:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_ReloadExternalAssetCatalogBuffers   (Routine at ESQIFF_ReloadExternalAssetCatalogBuffers)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A6/A7/D0/D1/D2/D3/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
+; READS:
+;   AbsExecBase, GLOB_PTR_STR_DF0_LOGO_LST, GLOB_PTR_STR_GFX_G_ADS, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, GLOB_STR_ESQIFF_C_3, GLOB_STR_ESQIFF_C_4, GLOB_STR_ESQIFF_C_5, GLOB_STR_ESQIFF_C_6, LAB_0A10, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE, return, stackLong1
+; WRITES:
+;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_ExternalAssetFlags, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVEM.L D2-D3/D6-D7,-(A7)
 
     SetOffsetForStack   4
@@ -614,19 +723,19 @@ LAB_0A0B:
     EmitStackAddress    1
     MOVE.L  .stackLong1(A7),D7
 
-    TST.W   LAB_1B83
+    TST.W   CTASKS_IffTaskDoneFlag
     BEQ.W   .return
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
     BNE.W   .LAB_0A10
 
-    MOVE.B  LAB_1DD6,D0
+    MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
     BEQ.W   .LAB_0A10
 
-    TST.L   LAB_2319
+    TST.L   DATA_WDISP_BSS_LONG_2319
     BNE.W   .LAB_0A10
 
     MOVEA.L AbsExecBase,A6
@@ -634,14 +743,14 @@ LAB_0A0B:
 
     CLR.L   -(A7)
 
-    PEA     LAB_1ED2
-    JSR     LAB_0AA4(PC)
+    PEA     ESQIFF_GAdsBrushListHead
+    JSR     ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
 
     ADDQ.W  #8,A7
 
     MOVEQ   #0,D0
-    MOVE.L  D0,LAB_1B27
-    CLR.W   LAB_22AD
+    MOVE.L  D0,ESQIFF_GAdsBrushListCount
+    CLR.W   DATA_WDISP_BSS_LONG_22AD
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
@@ -657,7 +766,7 @@ LAB_0A0B:
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     882.W
     PEA     GLOB_STR_ESQIFF_C_3
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -667,7 +776,7 @@ LAB_0A0B:
 
     PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_GFX_G_ADS,-(A7)
-    JSR     GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -675,7 +784,7 @@ LAB_0A0B:
     BLE.S   .LAB_0A0E
 
     MOVE.L  D6,-(A7)
-    JSR     GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
+    JSR     ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_LONG_GFX_G_ADS_FILESIZE
@@ -687,7 +796,7 @@ LAB_0A0B:
     MOVE.L  D0,-(A7)
     PEA     898.W
     PEA     GLOB_STR_ESQIFF_C_4
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -701,9 +810,9 @@ LAB_0A0B:
     CMP.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D0
     BNE.S   .gfxGAdsFileWithoutData
 
-    MOVE.W  LAB_22A9,D0
+    MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ORI.W   #1,D0
-    MOVE.W  D0,LAB_22A9
+    MOVE.W  D0,ESQIFF_ExternalAssetFlags
 
 .gfxGAdsFileWithoutData:
     MOVE.L  D6,D1
@@ -711,33 +820,33 @@ LAB_0A0B:
     JSR     _LVOClose(A6)
 
 .LAB_0A0E:
-    TST.W   LAB_2294
+    TST.W   DATA_WDISP_BSS_WORD_2294
     BEQ.S   .LAB_0A0F
 
-    MOVE.W  #1,LAB_22AD
+    MOVE.W  #1,DATA_WDISP_BSS_LONG_22AD
     BRA.S   .LAB_0A10
 
 .LAB_0A0F:
-    CLR.W   LAB_22AD
+    CLR.W   DATA_WDISP_BSS_LONG_22AD
 
 .LAB_0A10:
     TST.L   D7
     BNE.W   .return
 
-    TST.L   LAB_2318
+    TST.L   DISKIO_Drive0WriteProtectedCode
     BNE.W   .return
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     CLR.L   -(A7)
-    PEA     LAB_1ED3
-    JSR     LAB_0AA4(PC)
+    PEA     ESQIFF_LogoBrushListHead
+    JSR     ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
-    MOVE.L  D0,LAB_1B28
-    CLR.W   LAB_22AC
+    MOVE.L  D0,ESQIFF_LogoBrushListCount
+    CLR.W   DATA_WDISP_BSS_WORD_22AC
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
@@ -753,7 +862,7 @@ LAB_0A0B:
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     963.W
     PEA     GLOB_STR_ESQIFF_C_5
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
@@ -762,7 +871,7 @@ LAB_0A0B:
     CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
     PEA     MODE_OLDFILE
     MOVE.L  GLOB_PTR_STR_DF0_LOGO_LST,-(A7)
-    JSR     GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -770,7 +879,7 @@ LAB_0A0B:
     BLE.S   .return
 
     MOVE.L  D6,-(A7)
-    JSR     GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
+    JSR     ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
@@ -783,7 +892,7 @@ LAB_0A0B:
     MOVE.L  D0,-(A7)
     PEA     979.W
     PEA     GLOB_STR_ESQIFF_C_6
-    JSR     GROUPB_JMPTBL_MEMORY_AllocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_DATA
@@ -796,9 +905,9 @@ LAB_0A0B:
     CMP.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     BNE.S   .df0LogoLstFileWithoutData
 
-    MOVE.W  LAB_22A9,D0
+    MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ORI.W   #2,D0
-    MOVE.W  D0,LAB_22A9
+    MOVE.W  D0,ESQIFF_ExternalAssetFlags
 
 .df0LogoLstFileWithoutData:
     MOVE.L  D6,D1
@@ -811,7 +920,34 @@ LAB_0A0B:
 
 ;!======
 
-LAB_0A14:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_QueueNextExternalAssetIffJob   (Routine at ESQIFF_QueueNextExternalAssetIffJob)
+; ARGS:
+;   stack +36: arg_1 (via 40(A5))
+;   stack +37: arg_2 (via 41(A5))
+;   stack +76: arg_3 (via 80(A5))
+;   stack +116: arg_4 (via 120(A5))
+;   stack +124: arg_5 (via 128(A5))
+;   stack +126: arg_6 (via 130(A5))
+;   stack +130: arg_7 (via 134(A5))
+;   stack +134: arg_8 (via 138(A5))
+;   stack +138: arg_9 (via 142(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A5/A6/A7/D0/D1/D2/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, GCOMMAND_FindPathSeparator, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
+; READS:
+;   AbsExecBase, GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_GFX_G_ADS_DATA, LAB_0A1A, LAB_0A22, LAB_0A23, LAB_0A27, LAB_0A32, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_ESQIFF_PATH_DF0_COLON_1EF3, DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4, DATA_WDISP_BSS_WORD_22AC, ESQIFF_AssetSourceSelect, DATA_WDISP_BSS_LONG_22C3, TEXTDISP_CurrentMatchIndex, fa00, return
+; WRITES:
+;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_WDISP_BSS_LONG_22A8, DATA_WDISP_BSS_LONG_22C2, TEXTDISP_CurrentMatchIndex
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_QueueNextExternalAssetIffJob:
     LINK.W  A5,#-144
     MOVEM.L D2/D5-D7,-(A7)
     MOVEQ   #0,D0
@@ -819,7 +955,7 @@ LAB_0A14:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    TST.W   LAB_1B83
+    TST.W   CTASKS_IffTaskDoneFlag
     BNE.S   .LAB_0A15
 
     JSR     _LVOPermit(A6)
@@ -828,10 +964,10 @@ LAB_0A14:
     BRA.W   .return
 
 .LAB_0A15:
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A16
 
-    CMPI.L  #$1,LAB_1B28
+    CMPI.L  #$1,ESQIFF_LogoBrushListCount
     BLT.S   .LAB_0A16
 
     JSR     _LVOPermit(A6)
@@ -840,10 +976,10 @@ LAB_0A14:
     BRA.W   .return
 
 .LAB_0A16:
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BNE.S   .LAB_0A17
 
-    CMPI.L  #$2,LAB_1B27
+    CMPI.L  #$2,ESQIFF_GAdsBrushListCount
     BLT.S   .LAB_0A17
 
     JSR     _LVOPermit(A6)
@@ -856,29 +992,29 @@ LAB_0A14:
 
     MOVEQ   #0,D0
     MOVE.B  D0,-40(A5)
-    MOVE.W  LAB_22AC,D6
+    MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
     MOVEQ   #0,D1
     MOVE.W  D1,-128(A5)
     TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   .LAB_0A18
 
-    MOVE.W  LAB_22C0,D2
+    MOVE.W  ESQIFF_AssetSourceSelect,D2
     BNE.S   .LAB_0A19
 
 .LAB_0A18:
     TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
     BEQ.W   .LAB_0A32
 
-    MOVE.W  LAB_22C0,D2
+    MOVE.W  ESQIFF_AssetSourceSelect,D2
     BNE.W   .LAB_0A32
 
 .LAB_0A19:
     MOVE.B  D0,-41(A5)
-    MOVE.W  LAB_2364,D5
+    MOVE.W  TEXTDISP_CurrentMatchIndex,D5
 
 .LAB_0A1A:
     PEA     -40(A5)
-    BSR.W   LAB_0A35
+    BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
 
     ADDQ.W  #4,A7
     LEA     -40(A5),A0
@@ -893,10 +1029,10 @@ LAB_0A14:
     MOVE.L  A1,D0
     BEQ.W   .LAB_0A22
 
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A20
 
-    TST.W   LAB_22C3
+    TST.W   DATA_WDISP_BSS_LONG_22C3
     BEQ.S   .LAB_0A1C
 
     MOVE.W  #1,-128(A5)
@@ -933,22 +1069,22 @@ LAB_0A14:
     JSR     GCOMMAND_FindPathSeparator(PC)
 
     MOVE.L  D0,(A7)
-    JSR     LAB_0A9A(PC)
+    JSR     ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
     BNE.S   .LAB_0A21
 
     MOVE.W  #1,-128(A5)
-    MOVE.W  LAB_2364,LAB_22C2
+    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_LONG_22C2
     BRA.S   .LAB_0A23
 
 .LAB_0A20:
     MOVEQ   #4,D0
     MOVE.L  D0,-(A7)
     PEA     -40(A5)
-    PEA     LAB_1EF3
-    JSR     LAB_0AAC(PC)
+    PEA     DATA_ESQIFF_PATH_DF0_COLON_1EF3
+    JSR     ESQIFF_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -957,8 +1093,8 @@ LAB_0A14:
     MOVEQ   #11,D0
     MOVE.L  D0,-(A7)
     PEA     -40(A5)
-    PEA     LAB_1EF4
-    JSR     LAB_0AAC(PC)
+    PEA     DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4
+    JSR     ESQIFF_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -968,19 +1104,19 @@ LAB_0A14:
     BRA.S   .LAB_0A23
 
 .LAB_0A21:
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
 .LAB_0A22:
-    MOVE.W  LAB_22AC,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_22AC,D0
     CMP.W   D0,D6
     BNE.W   .LAB_0A1A
 
 .LAB_0A23:
-    MOVE.W  D5,LAB_2364
+    MOVE.W  D5,TEXTDISP_CurrentMatchIndex
     TST.W   -128(A5)
     BEQ.W   .LAB_0A32
 
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A24
 
     MOVE.L  #$fa00,-134(A5)
@@ -999,24 +1135,24 @@ LAB_0A14:
 
 .LAB_0A27:
     MOVE.W  #1,-130(A5)
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A28
 
-    MOVEA.L LAB_1ED3,A0
+    MOVEA.L ESQIFF_LogoBrushListHead,A0
     MOVE.L  A0,-142(A5)
     BRA.S   .LAB_0A29
 
 .LAB_0A28:
-    MOVEA.L LAB_1ED2,A0
+    MOVEA.L ESQIFF_GAdsBrushListHead,A0
     MOVE.L  A0,-142(A5)
 
 .LAB_0A29:
     MOVE.L  A0,D0
     BEQ.S   .LAB_0A2B
 
-    CMPA.L  LAB_1ED3,A0
+    CMPA.L  ESQIFF_LogoBrushListHead,A0
     BNE.S   .LAB_0A2B
 
     LEA     -40(A5),A0
@@ -1041,36 +1177,36 @@ LAB_0A14:
 
     CLR.L   -(A7)
     PEA     -40(A5)
-    JSR     LAB_0AA7(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  LAB_22C0,D1
-    MOVE.L  D0,LAB_22A8
+    MOVE.W  ESQIFF_AssetSourceSelect,D1
+    MOVE.L  D0,DATA_WDISP_BSS_LONG_22A8
     TST.W   D1
     BEQ.S   .LAB_0A2C
 
     MOVEA.L D0,A0
     MOVE.B  #$4,190(A0)
-    MOVE.L  D0,LAB_1B20
+    MOVE.L  D0,CTASKS_PendingLogoBrushDescriptor
     BRA.S   .LAB_0A2D
 
 .LAB_0A2C:
     MOVEA.L D0,A0
     MOVE.B  #$5,190(A0)
-    MOVE.L  D0,LAB_1B21
+    MOVE.L  D0,CTASKS_PendingGAdsBrushDescriptor
 
 .LAB_0A2D:
-    JSR     LAB_0AB0(PC)
+    JSR     ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
 
 .LAB_0A2E:
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVEQ   #-1,D0
     CMP.W   -130(A5),D0
     BNE.S   .LAB_0A2F
 
     PEA     -40(A5)
-    BSR.W   LAB_0A35
+    BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
 
     ADDQ.W  #4,A7
 
@@ -1110,29 +1246,49 @@ LAB_0A14:
 
 ;!======
 
-LAB_0A35:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_ReadNextExternalAssetPathEntry   (Routine at ESQIFF_ReadNextExternalAssetPathEntry)
+; ARGS:
+;   stack +4: arg_1 (via 8(A5))
+;   stack +10: arg_2 (via 14(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A3/A5/A7/D0/D4/D5/D6/D7
+; CALLS:
+;   ESQDISP_ProcessGridMessagesIfIdle
+; READS:
+;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled, return
+; WRITES:
+;   DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, DATA_WDISP_BSS_LONG_22C3
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_ReadNextExternalAssetPathEntry:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A36
 
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
-    MOVE.W  LAB_22AC,D6
+    MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_22C3
+    MOVE.W  D0,DATA_WDISP_BSS_LONG_22C3
     BRA.S   .LAB_0A38
 
 .LAB_0A36:
-    MOVE.W  LAB_22C1,D0
+    MOVE.W  ESQIFF_GAdsSourceEnabled,D0
     BEQ.S   .LAB_0A37
 
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D4
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-14(A5)
-    MOVE.W  LAB_22AD,D6
+    MOVE.W  DATA_WDISP_BSS_LONG_22AD,D6
     BRA.S   .LAB_0A38
 
 .LAB_0A37:
@@ -1166,7 +1322,7 @@ LAB_0A35:
     TST.L   D4
     BNE.S   .LAB_0A3E
 
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A3C
 
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
@@ -1185,14 +1341,14 @@ LAB_0A35:
     ADDQ.W  #1,D6
 
 .LAB_0A3F:
-    MOVE.W  LAB_22C0,D0
+    MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .LAB_0A40
 
-    MOVE.W  D6,LAB_22AC
+    MOVE.W  D6,DATA_WDISP_BSS_WORD_22AC
     BRA.S   .LAB_0A41
 
 .LAB_0A40:
-    MOVE.W  D6,LAB_22AD
+    MOVE.W  D6,DATA_WDISP_BSS_LONG_22AD
 
 .LAB_0A41:
     MOVEA.L -14(A5),A0
@@ -1220,7 +1376,7 @@ LAB_0A35:
     BNE.S   .LAB_0A42
 
     CLR.B   (A3)
-    MOVE.W  #1,LAB_22C3
+    MOVE.W  #1,DATA_WDISP_BSS_LONG_22C3
     BRA.S   .LAB_0A43
 
 .LAB_0A42:
@@ -1238,7 +1394,26 @@ LAB_0A35:
 
 ;!======
 
-LAB_0A45:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_RestoreBasePaletteTriples   (Routine at ESQIFF_RestoreBasePaletteTriples)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A7/D0/D7
+; CALLS:
+;   (none)
+; READS:
+;   DATA_ESQFUNC_CONST_LONG_1ECC, WDISP_PaletteTriplesRBase
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_RestoreBasePaletteTriples:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
@@ -1247,9 +1422,9 @@ LAB_0A45:
     CMP.W   D0,D7
     BGE.S   .return
 
-    LEA     LAB_2295,A0
+    LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.W  D7,A0
-    LEA     LAB_1ECC,A1
+    LEA     DATA_ESQFUNC_CONST_LONG_1ECC,A1
     ADDA.W  D7,A1
     MOVE.B  (A1),(A0)
     ADDQ.W  #1,D7
@@ -1261,204 +1436,280 @@ LAB_0A45:
 
 ;!======
 
-LAB_0A48:
-    MOVE.W  #15,LAB_1B1C
-    BSR.W   LAB_0A8E
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_RunCopperRiseTransition   (Routine at ESQIFF_RunCopperRiseTransition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQIFF_RunPendingCopperAnimations
+; READS:
+;   (none observed)
+; WRITES:
+;   DATA_COMMON_BSS_WORD_1B1C
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_RunCopperRiseTransition:
+    MOVE.W  #15,DATA_COMMON_BSS_WORD_1B1C
+    BSR.W   ESQIFF_RunPendingCopperAnimations
 
     RTS
 
 ;!======
 
-LAB_0A49:
-    MOVE.W  #15,LAB_1B1B
-    BSR.W   LAB_0A8E
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_RunCopperDropTransition   (Routine at ESQIFF_RunCopperDropTransition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQIFF_RunPendingCopperAnimations
+; READS:
+;   (none observed)
+; WRITES:
+;   DATA_COMMON_BSS_WORD_1B1B
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_RunCopperDropTransition:
+    MOVE.W  #15,DATA_COMMON_BSS_WORD_1B1B
+    BSR.W   ESQIFF_RunPendingCopperAnimations
 
     RTS
 
 ;!======
 
-LAB_0A4A:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_ServicePendingCopperPaletteMoves   (Routine at ESQIFF_ServicePendingCopperPaletteMoves)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A4/A7/D0/D1
+; CALLS:
+;   ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd, ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart
+; READS:
+;   GLOB_REF_LONG_FILE_SCRATCH, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, DATA_WDISP_BSS_WORD_22B1, DATA_WDISP_BSS_BYTE_22B2, DATA_WDISP_BSS_BYTE_22B3, DATA_WDISP_BSS_WORD_22B5, DATA_WDISP_BSS_BYTE_22B6, DATA_WDISP_BSS_BYTE_22B7, DATA_WDISP_BSS_WORD_22B9, DATA_WDISP_BSS_BYTE_22BA, DATA_WDISP_BSS_BYTE_22BB, DATA_WDISP_BSS_WORD_22BD, DATA_WDISP_BSS_BYTE_22BE, DATA_WDISP_BSS_BYTE_22BF
+; WRITES:
+;   DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_ServicePendingCopperPaletteMoves:
     MOVE.L  A4,-(A7)
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
-    MOVE.W  LAB_1B15,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B15,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0A4C
+    BNE.S   .lab_0A4C
 
-    TST.W   LAB_22B1
-    BEQ.S   LAB_0A4C
+    TST.W   DATA_WDISP_BSS_WORD_22B1
+    BEQ.S   .lab_0A4C
 
-    CLR.W   LAB_1B15
-    MOVE.W  LAB_22B1,D0
+    CLR.W   DATA_COMMON_BSS_WORD_1B15
+    MOVE.W  DATA_WDISP_BSS_WORD_22B1,D0
     BTST    #1,D0
-    BEQ.S   LAB_0A4B
+    BEQ.S   .lab_0A4B
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_22B2,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22B3,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0AA2(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0A4C
+    BRA.S   .lab_0A4C
 
-LAB_0A4B:
+.lab_0A4B:
     MOVEQ   #0,D0
-    MOVE.B  LAB_22B2,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22B3,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0A9E(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0A4C:
-    MOVE.W  LAB_1B16,D0
+.lab_0A4C:
+    MOVE.W  DATA_COMMON_BSS_WORD_1B16,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0A4E
+    BNE.S   .lab_0A4E
 
-    TST.W   LAB_22B5
-    BEQ.S   LAB_0A4E
+    TST.W   DATA_WDISP_BSS_WORD_22B5
+    BEQ.S   .lab_0A4E
 
-    CLR.W   LAB_1B16
-    MOVE.W  LAB_22B5,D0
+    CLR.W   DATA_COMMON_BSS_WORD_1B16
+    MOVE.W  DATA_WDISP_BSS_WORD_22B5,D0
     BTST    #1,D0
-    BEQ.S   LAB_0A4D
+    BEQ.S   .lab_0A4D
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_22B6,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22B7,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0AA2(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0A4E
+    BRA.S   .lab_0A4E
 
-LAB_0A4D:
+.lab_0A4D:
     MOVEQ   #0,D0
-    MOVE.B  LAB_22B6,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22B7,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0A9E(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0A4E:
-    MOVE.W  LAB_1B17,D0
+.lab_0A4E:
+    MOVE.W  DATA_COMMON_BSS_WORD_1B17,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0A50
+    BNE.S   .lab_0A50
 
-    TST.W   LAB_22B9
-    BEQ.S   LAB_0A50
+    TST.W   DATA_WDISP_BSS_WORD_22B9
+    BEQ.S   .lab_0A50
 
-    CLR.W   LAB_1B17
-    MOVE.W  LAB_22B9,D0
+    CLR.W   DATA_COMMON_BSS_WORD_1B17
+    MOVE.W  DATA_WDISP_BSS_WORD_22B9,D0
     BTST    #1,D0
-    BEQ.S   LAB_0A4F
+    BEQ.S   .lab_0A4F
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_22BA,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22BB,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0AA2(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0A50
+    BRA.S   .lab_0A50
 
-LAB_0A4F:
+.lab_0A4F:
     MOVEQ   #0,D0
-    MOVE.B  LAB_22BA,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22BB,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0A9E(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0A50:
-    MOVE.W  LAB_1B18,D0
+.lab_0A50:
+    MOVE.W  DATA_COMMON_BSS_LONG_1B18,D0
     SUBQ.W  #1,D0
-    BNE.S   LAB_0A52
+    BNE.S   .lab_0A52
 
-    TST.W   LAB_22BD
-    BEQ.S   LAB_0A52
+    TST.W   DATA_WDISP_BSS_WORD_22BD
+    BEQ.S   .lab_0A52
 
-    CLR.W   LAB_1B18
-    MOVE.W  LAB_22BD,D0
+    CLR.W   DATA_COMMON_BSS_LONG_1B18
+    MOVE.W  DATA_WDISP_BSS_WORD_22BD,D0
     BTST    #1,D0
-    BEQ.S   LAB_0A51
+    BEQ.S   .lab_0A51
 
     MOVEQ   #0,D0
-    MOVE.B  LAB_22BE,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22BF,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0AA2(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   LAB_0A52
+    BRA.S   .lab_0A52
 
-LAB_0A51:
+.lab_0A51:
     MOVEQ   #0,D0
-    MOVE.B  LAB_22BE,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_22BF,D1
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     LAB_0A9E(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0A52:
+.lab_0A52:
     MOVEA.L (A7)+,A4
     RTS
 
 ;!======
 
-LAB_0A53:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_SetApenToBrightestPaletteIndex   (Routine at ESQIFF_SetApenToBrightestPaletteIndex)
+; ARGS:
+;   stack +10: arg_1 (via 14(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
+; CALLS:
+;   _LVOSetAPen
+; READS:
+;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_PaletteTriplesGBase, WDISP_PaletteTriplesBBase, DATA_WDISP_BSS_LONG_22AE
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_SetApenToBrightestPaletteIndex:
     LINK.W  A5,#-16
     MOVEM.L D2/D4-D7,-(A7)
     MOVEQ   #0,D0
-    MOVE.B  LAB_22AE,D0
+    MOVE.B  DATA_WDISP_BSS_LONG_22AE,D0
     MOVEQ   #1,D1
     ASL.L   D0,D1
     MOVE.L  D1,D4
     MOVEQ   #0,D0
-    MOVE.B  LAB_2295,D0
+    MOVE.B  WDISP_PaletteTriplesRBase,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_2296,D1
+    MOVE.B  WDISP_PaletteTriplesGBase,D1
     ADD.L   D1,D0
     MOVEQ   #0,D1
-    MOVE.B  LAB_2297,D1
+    MOVE.B  WDISP_PaletteTriplesBBase,D1
     ADD.L   D1,D0
     MOVE.L  D0,D6
     CLR.L   -14(A5)
     MOVEQ   #1,D7
 
-LAB_0A54:
+.lab_0A54:
     MOVE.L  D7,D0
     EXT.L   D0
     CMP.L   D4,D0
-    BGE.S   LAB_0A56
+    BGE.S   .lab_0A56
 
     MOVE.L  D7,D0
     MOVEQ   #3,D1
     MULS    D1,D0
-    LEA     LAB_2295,A0
+    LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     MULS    D1,D0
-    LEA     LAB_2296,A1
+    LEA     WDISP_PaletteTriplesGBase,A1
     ADDA.L  D0,A1
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -1467,27 +1718,27 @@ LAB_0A54:
     ADD.L   D2,D0
     MOVE.L  D7,D2
     MULS    D1,D2
-    LEA     LAB_2297,A0
+    LEA     WDISP_PaletteTriplesBBase,A0
     ADDA.L  D2,A0
     MOVEQ   #0,D1
     MOVE.B  (A0),D1
     ADD.L   D1,D0
     MOVE.L  D0,D5
     CMP.W   D5,D6
-    BGE.S   LAB_0A55
+    BGE.S   .lab_0A55
 
     MOVE.L  D5,D6
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-14(A5)
 
-LAB_0A55:
+.lab_0A55:
     ADDQ.W  #1,D7
-    BRA.S   LAB_0A54
+    BRA.S   .lab_0A54
 
-LAB_0A56:
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+.lab_0A56:
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVE.L  -14(A5),D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1499,84 +1750,106 @@ LAB_0A56:
 
 ;!======
 
-LAB_0A57:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_ShowExternalAssetWithCopperFx   (Routine at ESQIFF_ShowExternalAssetWithCopperFx)
+; ARGS:
+;   stack +6: arg_1 (via 10(A5))
+;   stack +10: arg_2 (via 14(A5))
+;   stack +14: arg_3 (via 18(A5))
+;   stack +18: arg_4 (via 22(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
+; READS:
+;   AbsExecBase, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, DATA_WDISP_BSS_WORD_22AF, DATA_WDISP_BSS_WORD_22B0, DATA_WDISP_BSS_BYTE_22B2, DATA_WDISP_BSS_BYTE_22B3, DATA_WDISP_BSS_WORD_22B4, DATA_WDISP_BSS_BYTE_22B6, DATA_WDISP_BSS_BYTE_22B7, DATA_WDISP_BSS_WORD_22B8, DATA_WDISP_BSS_BYTE_22BA, DATA_WDISP_BSS_BYTE_22BB, DATA_WDISP_BSS_WORD_22BC, DATA_WDISP_BSS_BYTE_22BE, DATA_WDISP_BSS_BYTE_22BF, e8, lab_0A72
+; WRITES:
+;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, DATA_ESQFUNC_BSS_WORD_1EE4, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_ShowExternalAssetWithCopperFx:
     LINK.W  A5,#-36
     MOVEM.L D2/D4-D7,-(A7)
     MOVE.W  10(A5),D7
     TST.W   D7
-    BEQ.S   LAB_0A58
+    BEQ.S   .lab_0A58
 
-    MOVE.L  LAB_1ED2,-22(A5)
+    MOVE.L  ESQIFF_GAdsBrushListHead,-22(A5)
 
-LAB_0A58:
+.lab_0A58:
     TST.W   D7
-    BNE.S   LAB_0A59
+    BNE.S   .lab_0A59
 
-    MOVEA.L LAB_1ED3,A0
+    MOVEA.L ESQIFF_LogoBrushListHead,A0
     MOVE.L  A0,-22(A5)
 
-LAB_0A59:
+.lab_0A59:
     TST.L   -22(A5)
-    BEQ.W   LAB_0A72
+    BEQ.W   .lab_0A72
 
-    BSR.W   LAB_0A49
+    BSR.W   ESQIFF_RunCopperDropTransition
 
     MOVEQ   #20,D6
     MOVEA.L -22(A5),A0
     ADD.W   178(A0),D6
     BTST    #2,199(A0)
-    BEQ.S   LAB_0A5A
+    BEQ.S   .lab_0A5A
 
     MOVEQ   #2,D0
-    BRA.S   LAB_0A5B
+    BRA.S   .lab_0A5B
 
-LAB_0A5A:
+.lab_0A5A:
     MOVEQ   #1,D0
 
-LAB_0A5B:
+.lab_0A5B:
     MOVE.L  D6,D1
     EXT.L   D1
     MOVE.L  D0,20(A7)
     MOVE.L  D1,D0
     MOVE.L  20(A7),D1
-    JSR     GROUPB_JMPTBL_MATH_DivS32(PC)
+    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #120,D0
     CMP.W   D0,D6
-    BLE.S   LAB_0A5C
+    BLE.S   .lab_0A5C
 
     MOVE.L  D0,D6
 
-LAB_0A5C:
+.lab_0A5C:
     ADDI.W  #22,D6
     MOVE.L  D6,D0
     EXT.L   D0
     PEA     1000.W
     MOVE.L  D0,-(A7)
-    JSR     GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
+    JSR     ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
 
-LAB_0A5D:
-    TST.W   LAB_2121
-    BNE.S   LAB_0A5D
+.lab_0A5D:
+    TST.W   SCRIPT_BannerTransitionActive
+    BNE.S   .lab_0A5D
 
-    MOVE.W  #1,LAB_22AA
-    CLR.W   LAB_22AB
+    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    CLR.W   WDISP_AccumulatorFlushPending
     MOVEQ   #0,D5
 
-LAB_0A5E:
+.lab_0A5E:
     MOVEQ   #4,D0
     CMP.L   D0,D5
-    BGE.S   LAB_0A5F
+    BGE.S   .lab_0A5F
 
     MOVE.L  D5,D0
     ASL.L   #3,D0
     MOVEA.L -22(A5),A0
     ADDA.L  D0,A0
     LEA     200(A0),A1
-    LEA     LAB_22AF,A0
+    LEA     DATA_WDISP_BSS_WORD_22AF,A0
     ADDA.L  D0,A0
     MOVE.L  A0,28(A7)
     MOVEA.L A1,A0
@@ -1586,16 +1859,16 @@ LAB_0A5E:
     JSR     _LVOCopyMem(A6)
 
     ADDQ.L  #1,D5
-    BRA.S   LAB_0A5E
+    BRA.S   .lab_0A5E
 
-LAB_0A5F:
-    CLR.W   LAB_22AA
-    MOVE.W  #1,LAB_22AB
+.lab_0A5F:
+    CLR.W   WDISP_AccumulatorCaptureActive
+    MOVE.W  #1,WDISP_AccumulatorFlushPending
     MOVE.L  #$8004,D0
     MOVEA.L -22(A5),A0
     AND.L   196(A0),D0
     CMPI.L  #$8004,D0
-    BNE.S   LAB_0A60
+    BNE.S   .lab_0A60
 
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
@@ -1603,16 +1876,16 @@ LAB_0A5F:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     4.W
-    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
+    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #20,D4
-    BRA.S   LAB_0A63
+    BRA.S   .lab_0A63
 
-LAB_0A60:
+.lab_0A60:
     BTST    #7,198(A0)
-    BEQ.S   LAB_0A61
+    BEQ.S   .lab_0A61
 
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
@@ -1620,16 +1893,16 @@ LAB_0A60:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     6.W
-    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
+    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #10,D4
-    BRA.S   LAB_0A63
+    BRA.S   .lab_0A63
 
-LAB_0A61:
+.lab_0A61:
     BTST    #2,199(A0)
-    BEQ.S   LAB_0A62
+    BEQ.S   .lab_0A62
 
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
@@ -1637,42 +1910,42 @@ LAB_0A61:
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     5.W
-    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
+    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #20,D4
-    BRA.S   LAB_0A63
+    BRA.S   .lab_0A63
 
-LAB_0A62:
+.lab_0A62:
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     PEA     7.W
-    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
+    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
     LEA     12(A7),A7
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #10,D4
 
-LAB_0A63:
+.lab_0A63:
     MOVEA.L D0,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #7,D0
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
-    MOVEA.L LAB_2216,A0
+    MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
     SUBQ.L  #1,D0
     MOVEQ   #0,D1
@@ -1687,20 +1960,20 @@ LAB_0A63:
     MOVE.L  D4,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  -22(A5),-(A7)
-    JSR     LAB_0AB4(PC)
+    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     MOVEA.L -22(A5),A0
     TST.L   328(A0)
-    BEQ.S   LAB_0A64
+    BEQ.S   .lab_0A64
 
     MOVEQ   #1,D0
     CMP.L   328(A0),D0
-    BNE.S   LAB_0A66
+    BNE.S   .lab_0A66
 
-LAB_0A64:
+.lab_0A64:
     PEA     5.W
-    JSR     LAB_0BF4(PC)
+    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     MOVE.L  D0,D1
     LSL.L   #2,D1
@@ -1710,7 +1983,7 @@ LAB_0A64:
     MOVE.B  184(A0),D0
     MOVE.L  D0,(A7)
     MOVE.L  D1,-14(A5)
-    JSR     LAB_0BF4(PC)
+    JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D1
@@ -1719,214 +1992,252 @@ LAB_0A64:
     MOVEQ   #0,D5
     MOVE.L  D1,-18(A5)
 
-LAB_0A65:
+.branch:
     CMP.L   -18(A5),D5
-    BGE.S   LAB_0A66
+    BGE.S   .lab_0A66
 
     CMP.L   -14(A5),D5
-    BGE.S   LAB_0A66
+    BGE.S   .lab_0A66
 
-    LEA     LAB_2295,A0
+    LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D5,A0
     MOVEA.L -22(A5),A1
     MOVE.L  D5,D0
     ADDI.L  #$e8,D0
     MOVE.B  0(A1,D0.L),(A0)
     ADDQ.L  #1,D5
-    BRA.S   LAB_0A65
+    BRA.S   .branch
 
-LAB_0A66:
-    MOVE.B  LAB_22B2,D0
+.lab_0A66:
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BCC.S   LAB_0A67
+    BCC.S   .branch_1
 
-    MOVE.B  LAB_22B3,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D0
     CMP.B   D1,D0
-    BCC.S   LAB_0A67
+    BCC.S   .branch_1
 
-    MOVE.W  LAB_22B0,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_22B0,D0
     CMPI.W  #$4000,D0
-    BGE.S   LAB_0A67
+    BGE.S   .branch_1
 
-    MOVE.W  D0,LAB_1B0D
-    BRA.S   LAB_0A68
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
+    BRA.S   .branch_2
 
-LAB_0A67:
+.branch_1:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1B0D
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
 
-LAB_0A68:
-    MOVE.B  LAB_22B6,D2
+.branch_2:
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D2
     CMP.B   D1,D2
-    BCC.S   LAB_0A69
+    BCC.S   .branch_3
 
-    MOVE.B  LAB_22B7,D2
+    MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D2
     CMP.B   D1,D2
-    BCC.S   LAB_0A69
+    BCC.S   .branch_3
 
-    MOVE.W  LAB_22B4,D2
+    MOVE.W  DATA_WDISP_BSS_WORD_22B4,D2
     CMPI.W  #$4000,D2
-    BGE.S   LAB_0A69
+    BGE.S   .branch_3
 
-    MOVE.W  D2,LAB_1B0E
-    BRA.S   LAB_0A6A
+    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
+    BRA.S   .branch_4
 
-LAB_0A69:
+.branch_3:
     MOVEQ   #0,D2
-    MOVE.W  D2,LAB_1B0E
+    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
 
-LAB_0A6A:
-    MOVE.B  LAB_22BA,D0
+.branch_4:
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
     CMP.B   D1,D0
-    BCC.S   LAB_0A6B
+    BCC.S   .branch_5
 
-    MOVE.B  LAB_22BB,D0
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D0
     CMP.B   D1,D0
-    BCC.S   LAB_0A6B
+    BCC.S   .branch_5
 
-    MOVE.W  LAB_22B8,D0
+    MOVE.W  DATA_WDISP_BSS_WORD_22B8,D0
     CMPI.W  #$4000,D0
-    BGE.S   LAB_0A6B
+    BGE.S   .branch_5
 
-    MOVE.W  D0,LAB_1B0F
-    BRA.S   LAB_0A6C
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
+    BRA.S   .branch_6
 
-LAB_0A6B:
+.branch_5:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1B0F
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
 
-LAB_0A6C:
-    MOVE.B  LAB_22BE,D2
+.branch_6:
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D2
     CMP.B   D1,D2
-    BCC.S   LAB_0A6D
+    BCC.S   .branch_7
 
-    MOVE.B  LAB_22BF,D2
+    MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D2
     CMP.B   D1,D2
-    BCC.S   LAB_0A6D
+    BCC.S   .branch_7
 
-    MOVE.W  LAB_22BC,D1
+    MOVE.W  DATA_WDISP_BSS_WORD_22BC,D1
     CMPI.W  #$4000,D1
-    BGE.S   LAB_0A6D
+    BGE.S   .branch_7
 
-    MOVE.W  D1,LAB_1B10
-    BRA.S   LAB_0A6E
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B10
+    BRA.S   .branch_8
 
-LAB_0A6D:
+.branch_7:
     MOVEQ   #0,D1
-    MOVE.W  D1,LAB_1B10
+    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B10
 
-LAB_0A6E:
-    TST.W   LAB_1B0D
-    BNE.S   LAB_0A6F
+.branch_8:
+    TST.W   DATA_COMMON_BSS_WORD_1B0D
+    BNE.S   .branch_9
 
-    TST.W   LAB_1B0E
-    BNE.S   LAB_0A6F
+    TST.W   DATA_COMMON_BSS_WORD_1B0E
+    BNE.S   .branch_9
 
-    TST.W   LAB_1B0F
-    BNE.S   LAB_0A6F
+    TST.W   DATA_COMMON_BSS_WORD_1B0F
+    BNE.S   .branch_9
 
     TST.W   D1
-    BEQ.S   LAB_0A70
+    BEQ.S   .branch_10
 
-LAB_0A6F:
-    MOVE.W  #1,LAB_22AA
-    BRA.S   LAB_0A71
+.branch_9:
+    MOVE.W  #1,WDISP_AccumulatorCaptureActive
+    BRA.S   .branch_11
 
-LAB_0A70:
+.branch_10:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_22AA
+    MOVE.W  D0,WDISP_AccumulatorCaptureActive
 
-LAB_0A71:
+.branch_11:
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_1B11
-    MOVE.W  D0,LAB_1B15
-    MOVE.W  D0,LAB_1B12
-    MOVE.W  D0,LAB_1B16
-    MOVE.W  D0,LAB_1B13
-    MOVE.W  D0,LAB_1B17
-    MOVE.W  D0,LAB_1B14
-    MOVE.W  D0,LAB_1B18
-    BSR.W   LAB_0A48
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B11
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B15
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B12
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B16
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B13
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B17
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B14
+    MOVE.W  D0,DATA_COMMON_BSS_LONG_1B18
+    BSR.W   ESQIFF_RunCopperRiseTransition
 
-    BRA.S   LAB_0A75
+    BRA.S   ESQIFF_ShowExternalAssetWithCopperFx_Return
 
-LAB_0A72:
+.lab_0A72:
     TST.W   D7
-    BEQ.S   LAB_0A73
+    BEQ.S   .branch_12
 
     MOVEQ   #1,D0
-    BRA.S   LAB_0A74
+    BRA.S   .branch_13
 
-LAB_0A73:
+.branch_12:
     MOVEQ   #2,D0
 
-LAB_0A74:
-    OR.L    D0,LAB_1EE4
+.branch_13:
+    OR.L    D0,DATA_ESQFUNC_BSS_WORD_1EE4
 
-LAB_0A75:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_ShowExternalAssetWithCopperFx_Return   (Routine at ESQIFF_ShowExternalAssetWithCopperFx_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D2
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_ShowExternalAssetWithCopperFx_Return:
     MOVEM.L (A7)+,D2/D4-D7
     UNLK    A5
     RTS
 
 ;!======
 
-LAB_0A76:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_ServiceExternalAssetSourceState   (Routine at ESQIFF_ServiceExternalAssetSourceState)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A7/D0/D1/D7
+; CALLS:
+;   ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
+; READS:
+;   GLOB_WORD_SELECT_CODE_IS_RAVESC, DATA_COI_BSS_WORD_1B85, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319
+; WRITES:
+;   ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_ServiceExternalAssetSourceState:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .return
 
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    TST.W   LAB_1B85
+    TST.W   DATA_COI_BSS_WORD_1B85
     BNE.S   .return
 
     TST.W   D7
     BEQ.S   .LAB_0A77
 
     MOVEQ   #0,D0
-    MOVE.W  D0,LAB_22C0
+    MOVE.W  D0,ESQIFF_AssetSourceSelect
     MOVEQ   #-1,D1
-    MOVE.W  D1,LAB_22C1
+    MOVE.W  D1,ESQIFF_GAdsSourceEnabled
     BRA.S   .LAB_0A78
 
 .LAB_0A77:
-    CLR.W   LAB_22C1
-    MOVE.W  #(-1),LAB_22C0
+    CLR.W   ESQIFF_GAdsSourceEnabled
+    MOVE.W  #(-1),ESQIFF_AssetSourceSelect
 
 .LAB_0A78:
-    TST.L   LAB_2318
+    TST.L   DISKIO_Drive0WriteProtectedCode
     BNE.S   .LAB_0A79
 
-    MOVE.W  LAB_22A9,D0
+    MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #2,D0
     SUBQ.W  #2,D0
     BEQ.S   .LAB_0A79
 
     CLR.L   -(A7)
-    BSR.W   LAB_0A0B
+    BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
 .LAB_0A79:
-    TST.L   LAB_2319
+    TST.L   DATA_WDISP_BSS_LONG_2319
     BNE.S   .LAB_0A7A
 
-    MOVE.W  LAB_22A9,D0
+    MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #1,D0
     SUBQ.W  #1,D0
     BEQ.S   .LAB_0A7A
 
     PEA     1.W
-    BSR.W   LAB_0A0B
+    BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
 .LAB_0A7A:
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    BSR.W   LAB_0A14
+    BSR.W   ESQIFF_QueueNextExternalAssetIffJob
 
 .return:
     MOVE.L  (A7)+,D7
@@ -1934,132 +2245,151 @@ LAB_0A76:
 
 ;!======
 
-LAB_0A7C:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_PlayNextExternalAssetFrame   (Routine at ESQIFF_PlayNextExternalAssetFrame)
+; ARGS:
+;   stack +6: arg_1 (via 10(A5))
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A0/A1/A5/A6/A7/D0/D1/D6/D7
+; CALLS:
+;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
+; READS:
+;   AbsExecBase, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_22C2, DATA_WDISP_BSS_LONG_22C3, lab_0A87, lab_0A88
+; WRITES:
+;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, TEXTDISP_CurrentMatchIndex
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_PlayNextExternalAssetFrame:
     LINK.W  A5,#-8
     MOVEM.L D6-D7,-(A7)
     MOVE.W  10(A5),D7
-    BSR.W   LAB_0A49
+    BSR.W   ESQIFF_RunCopperDropTransition
 
     TST.W   D7
-    BEQ.S   LAB_0A7D
+    BEQ.S   .lab_0A7D
 
-    TST.L   LAB_1ED2
-    BNE.S   LAB_0A7E
+    TST.L   ESQIFF_GAdsBrushListHead
+    BNE.S   .lab_0A7E
 
-LAB_0A7D:
+.lab_0A7D:
     TST.W   D7
-    BNE.W   LAB_0A87
+    BNE.W   .lab_0A87
 
-    TST.L   LAB_1ED3
-    BEQ.W   LAB_0A87
+    TST.L   ESQIFF_LogoBrushListHead
+    BEQ.W   .lab_0A87
 
-LAB_0A7E:
-    MOVE.W  LAB_2231,D0
-    MOVE.W  LAB_22C2,D1
+.lab_0A7E:
+    MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
+    MOVE.W  DATA_WDISP_BSS_LONG_22C2,D1
     CMP.W   D1,D0
-    BCC.S   LAB_0A7F
+    BCC.S   .lab_0A7F
 
     TST.W   D7
-    BNE.S   LAB_0A7F
+    BNE.S   .lab_0A7F
 
-    TST.W   LAB_22C3
-    BNE.S   LAB_0A7F
+    TST.W   DATA_WDISP_BSS_LONG_22C3
+    BNE.S   .lab_0A7F
 
-    BSR.W   LAB_0A45
+    BSR.W   ESQIFF_RestoreBasePaletteTriples
 
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
-    JSR     LAB_09A7(PC)
+    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   LAB_0A88
+    BRA.W   .lab_0A88
 
-LAB_0A7F:
+.lab_0A7F:
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     1.W
     CLR.L   -(A7)
     PEA     4.W
-    JSR     GROUPB_JMPTBL_LAB_0A97(PC)
+    JSR     ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(PC)
 
-    MOVE.L  D0,LAB_2216
+    MOVE.L  D0,WDISP_DisplayContextBase
     MOVEA.L D0,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    JSR     LAB_08C2(PC)
+    JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     LEA     12(A7),A7
     TST.W   D7
-    BEQ.S   LAB_0A80
+    BEQ.S   .lab_0A80
 
-    MOVEA.L LAB_1ED2,A0
-    BRA.S   LAB_0A81
+    MOVEA.L ESQIFF_GAdsBrushListHead,A0
+    BRA.S   .lab_0A81
 
-LAB_0A80:
-    MOVEA.L LAB_1ED3,A0
+.lab_0A80:
+    MOVEA.L ESQIFF_LogoBrushListHead,A0
 
-LAB_0A81:
+.lab_0A81:
     MOVE.L  A0,-6(A5)
-    JSR     LAB_0A9C(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_NoOp(PC)
 
     MOVEQ   #1,D0
     CMP.W   D0,D7
-    BNE.S   LAB_0A83
+    BNE.S   .lab_0A83
 
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #2,D0
-    BEQ.S   LAB_0A82
+    BEQ.S   .lab_0A82
 
-    MOVE.W  LAB_1DDE,D0
+    MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #3,D0
-    BNE.S   LAB_0A83
+    BNE.S   .lab_0A83
 
-LAB_0A82:
-    JSR     GROUPB_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled(PC)
+.lab_0A82:
+    JSR     ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled(PC)
 
-LAB_0A83:
+.lab_0A83:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    BSR.W   LAB_0A57
+    BSR.W   ESQIFF_ShowExternalAssetWithCopperFx
 
     ADDQ.W  #4,A7
     TST.W   D7
-    BNE.S   LAB_0A84
+    BNE.S   .lab_0A84
 
-    TST.W   LAB_22C3
-    BNE.S   LAB_0A84
+    TST.W   DATA_WDISP_BSS_LONG_22C3
+    BNE.S   .lab_0A84
 
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    BSR.W   LAB_0A53
+    BSR.W   ESQIFF_SetApenToBrightestPaletteIndex
 
-    MOVE.W  LAB_22C2,LAB_2364
+    MOVE.W  DATA_WDISP_BSS_LONG_22C2,TEXTDISP_CurrentMatchIndex
     PEA     2.W
     PEA     1.W
-    JSR     LAB_0A9D(PC)
+    JSR     ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(PC)
 
     ADDQ.W  #8,A7
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-LAB_0A84:
-    MOVEA.L LAB_2216,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-LAB_2216)+2),A0
+.lab_0A84:
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -2069,68 +2399,106 @@ LAB_0A84:
     JSR     _LVOForbid(A6)
 
     TST.W   D7
-    BEQ.S   LAB_0A85
+    BEQ.S   .lab_0A85
 
-    SUBQ.L  #1,LAB_1B27
-    MOVE.L  LAB_1ED2,-(A7)
-    JSR     LAB_0AA6(PC)
-
-    ADDQ.W  #4,A7
-    MOVE.L  D0,LAB_1ED2
-    BRA.S   LAB_0A86
-
-LAB_0A85:
-    SUBQ.L  #1,LAB_1B28
-    MOVE.L  LAB_1ED3,-(A7)
-    JSR     LAB_0AA6(PC)
+    SUBQ.L  #1,ESQIFF_GAdsBrushListCount
+    MOVE.L  ESQIFF_GAdsBrushListHead,-(A7)
+    JSR     ESQIFF_JMPTBL_BRUSH_PopBrushHead(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,LAB_1ED3
+    MOVE.L  D0,ESQIFF_GAdsBrushListHead
+    BRA.S   .lab_0A86
 
-LAB_0A86:
+.lab_0A85:
+    SUBQ.L  #1,ESQIFF_LogoBrushListCount
+    MOVE.L  ESQIFF_LogoBrushListHead,-(A7)
+    JSR     ESQIFF_JMPTBL_BRUSH_PopBrushHead(PC)
+
+    ADDQ.W  #4,A7
+    MOVE.L  D0,ESQIFF_LogoBrushListHead
+
+.lab_0A86:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    BRA.S   LAB_0A88
+    BRA.S   .lab_0A88
 
-LAB_0A87:
-    BSR.W   LAB_0A45
+.lab_0A87:
+    BSR.W   ESQIFF_RestoreBasePaletteTriples
 
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     2.W
-    JSR     LAB_09A7(PC)
+    JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
 
-LAB_0A88:
-    MOVE.W  LAB_22AA,D6
-    CLR.W   LAB_22AA
-    BSR.W   LAB_0A48
+.lab_0A88:
+    MOVE.W  WDISP_AccumulatorCaptureActive,D6
+    CLR.W   WDISP_AccumulatorCaptureActive
+    BSR.W   ESQIFF_RunCopperRiseTransition
 
-    MOVE.W  D6,LAB_22AA
+    MOVE.W  D6,WDISP_AccumulatorCaptureActive
     TST.W   D7
-    BEQ.S   LAB_0A89
+    BEQ.S   .lab_0A89
 
     PEA     1.W
-    BSR.W   LAB_0A76
+    BSR.W   ESQIFF_ServiceExternalAssetSourceState
 
     ADDQ.W  #4,A7
-    BRA.S   LAB_0A8A
+    BRA.S   ESQIFF_PlayNextExternalAssetFrame_Return
 
-LAB_0A89:
+.lab_0A89:
     CLR.L   -(A7)
-    BSR.W   LAB_0A76
+    BSR.W   ESQIFF_ServiceExternalAssetSourceState
 
     ADDQ.W  #4,A7
 
-LAB_0A8A:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_PlayNextExternalAssetFrame_Return   (Routine at ESQIFF_PlayNextExternalAssetFrame_Return)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   D6
+; CALLS:
+;   (none)
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_PlayNextExternalAssetFrame_Return:
     MOVEM.L (A7)+,D6-D7
     UNLK    A5
     RTS
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_DeallocateAdsAndLogoLstData   (Routine at ESQIFF_DeallocateAdsAndLogoLstData)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A7/D0
+; CALLS:
+;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory
+; READS:
+;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, GLOB_STR_ESQIFF_C_7, GLOB_STR_ESQIFF_C_8
+; WRITES:
+;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
 ESQIFF_DeallocateAdsAndLogoLstData:
     TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
     BEQ.S   .deallocLogoLstData
@@ -2144,7 +2512,7 @@ ESQIFF_DeallocateAdsAndLogoLstData:
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     1988.W
     PEA     GLOB_STR_ESQIFF_C_7
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   GLOB_REF_LONG_GFX_G_ADS_DATA
@@ -2163,7 +2531,7 @@ ESQIFF_DeallocateAdsAndLogoLstData:
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     1994.W
     PEA     GLOB_STR_ESQIFF_C_8
-    JSR     GROUPB_JMPTBL_MEMORY_DeallocateMemory(PC)
+    JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
@@ -2174,64 +2542,102 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 
 ;!======
 
-LAB_0A8E:
-    MOVE.W  LAB_1B19,D0
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_RunPendingCopperAnimations   (Routine at ESQIFF_RunPendingCopperAnimations)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   D0/D1
+; CALLS:
+;   ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary, ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets, ESQIFF_JMPTBL_ESQ_NoOp_006A, ESQIFF_JMPTBL_ESQ_NoOp_0074
+; READS:
+;   DATA_COMMON_BSS_WORD_1B19, DATA_COMMON_BSS_WORD_1B1A, DATA_COMMON_BSS_WORD_1B1B, DATA_COMMON_BSS_WORD_1B1C
+; WRITES:
+;   DATA_COMMON_BSS_WORD_1B19, DATA_COMMON_BSS_WORD_1B1A, DATA_COMMON_BSS_WORD_1B1B, DATA_COMMON_BSS_WORD_1B1C
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_RunPendingCopperAnimations:
+    MOVE.W  DATA_COMMON_BSS_WORD_1B19,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   LAB_0A8F
+    BLS.S   .lab_0A8F
 
-    JSR     LAB_0AA8(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_NoOp_006A(PC)
 
-    MOVE.W  LAB_1B19,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B19,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_1B19
-    BRA.S   LAB_0A8E
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B19
+    BRA.S   ESQIFF_RunPendingCopperAnimations
 
-LAB_0A8F:
-    MOVE.W  LAB_1B1A,D0
+.lab_0A8F:
+    MOVE.W  DATA_COMMON_BSS_WORD_1B1A,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   LAB_0A90
+    BLS.S   .lab_0A90
 
-    JSR     LAB_0AAB(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_NoOp_0074(PC)
 
-    MOVE.W  LAB_1B1A,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B1A,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_1B1A
-    BRA.S   LAB_0A8F
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B1A
+    BRA.S   .lab_0A8F
 
-LAB_0A90:
-    MOVE.W  LAB_1B1B,D0
+.lab_0A90:
+    MOVE.W  DATA_COMMON_BSS_WORD_1B1B,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   LAB_0A91
+    BLS.S   .lab_0A91
 
-    JSR     LAB_0AB3(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary(PC)
 
-    MOVE.W  LAB_1B1B,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B1B,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_1B1B
-    BRA.S   LAB_0A90
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B1B
+    BRA.S   .lab_0A90
 
-LAB_0A91:
-    MOVE.W  LAB_1B1C,D0
+.lab_0A91:
+    MOVE.W  DATA_COMMON_BSS_WORD_1B1C,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   LAB_0A92
+    BLS.S   .lab_0A92
 
-    JSR     LAB_0AB2(PC)
+    JSR     ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets(PC)
 
-    MOVE.W  LAB_1B1C,D0
+    MOVE.W  DATA_COMMON_BSS_WORD_1B1C,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,LAB_1B1C
-    BRA.S   LAB_0A91
+    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B1C
+    BRA.S   .lab_0A91
 
-LAB_0A92:
+.lab_0A92:
     RTS
 
 ;!======
 
-LAB_0A93:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_HandleBrushIniReloadHotkey   (Routine at ESQIFF_HandleBrushIniReloadHotkey)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: result/status
+; CLOBBERS:
+;   A7/D0/D7
+; CALLS:
+;   ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_FindType3Brush, ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel, ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle, ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle, GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, GROUP_AU_JMPTBL_BRUSH_PopulateBrushList
+; READS:
+;   BRUSH_SelectedNode, GLOB_STR_DF0_BRUSH_INI_2, PARSEINI_ParsedDescriptorListHead, ESQIFF_BrushIniListHead, DATA_ESQIFF_TAG_DT_1EF8, DATA_ESQIFF_TAG_DITHER_1EF9
+; WRITES:
+;   BRUSH_SelectedNode, DATA_ESQFUNC_BSS_LONG_1ED0
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_HandleBrushIniReloadHotkey:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -2239,39 +2645,39 @@ LAB_0A93:
     CMP.B   D0,D7
     BNE.S   .return
 
-    JSR     LAB_0AA0(PC)
+    JSR     ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle(PC)
 
     CLR.L   -(A7)
-    PEA     LAB_1ED1
-    JSR     LAB_0AA4(PC)
+    PEA     ESQIFF_BrushIniListHead
+    JSR     ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
 
     PEA     GLOB_STR_DF0_BRUSH_INI_2
     JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
-    PEA     LAB_1ED1
-    MOVE.L  LAB_1B1F,-(A7)
+    PEA     ESQIFF_BrushIniListHead
+    MOVE.L  PARSEINI_ParsedDescriptorListHead,-(A7)
     JSR     GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(PC)
 
-    PEA     LAB_1EF8
-    JSR     LAB_0AB5(PC)
+    PEA     DATA_ESQIFF_TAG_DT_1EF8
+    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(PC)
 
     LEA     24(A7),A7
     TST.L   BRUSH_SelectedNode
     BNE.S   .LAB_0A94
 
-    PEA     LAB_1ED1
-    PEA     LAB_1EF9
-    JSR     LAB_0AA3(PC)
+    PEA     ESQIFF_BrushIniListHead
+    PEA     DATA_ESQIFF_TAG_DITHER_1EF9
+    JSR     ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,BRUSH_SelectedNode
 
 .LAB_0A94:
-    PEA     LAB_1ED1
-    JSR     LAB_0AA5(PC)
+    PEA     ESQIFF_BrushIniListHead
+    JSR     ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
 
-    MOVE.L  D0,LAB_1ED0
-    JSR     LAB_0AB7(PC)
+    MOVE.L  D0,DATA_ESQFUNC_BSS_LONG_1ED0
+    JSR     ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle(PC)
 
     ADDQ.W  #4,A7
 
@@ -2286,104 +2692,750 @@ LAB_0A93:
 
 ;!======
 
-GROUPB_JMPTBL_STRING_CompareNoCase:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCase   (Routine at ESQIFF_JMPTBL_STRING_CompareNoCase)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CompareNoCase
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_STRING_CompareNoCase:
     JMP     STRING_CompareNoCase
 
-GROUPB_JMPTBL_LAB_0A97:
-    JMP     LAB_183E
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Routine at ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   TLIBA3_BuildDisplayContextForViewMode
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
+    JMP     TLIBA3_BuildDisplayContextForViewMode
 
-GROUPB_JMPTBL_DISKIO_GetFilesizeFromHandle:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle   (Routine at ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_GetFilesizeFromHandle
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
     JMP     DISKIO_GetFilesizeFromHandle
 
-GROUPB_JMPTBL_MATH_DivS32:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_MATH_DivS32   (Routine at ESQIFF_JMPTBL_MATH_DivS32)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MATH_DivS32
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_MATH_DivS32:
     JMP     MATH_DivS32
 
-LAB_0A9A:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard   (Routine at ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   TEXTDISP_FindEntryIndexByWildcard
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
     JMP     TEXTDISP_FindEntryIndexByWildcard
 
-JMPTBL_STRING_CompareN_2:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_STRING_CompareN   (Routine at ESQIFF_JMPTBL_STRING_CompareN)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CompareN
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_STRING_CompareN:
     JMP     STRING_CompareN
 
-LAB_0A9C:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_NoOp   (Routine at ESQIFF_JMPTBL_ESQ_NoOp)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_NoOp
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_NoOp:
     JMP     ESQ_NoOp
 
-LAB_0A9D:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner   (Routine at ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   TEXTDISP_DrawChannelBanner
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner:
     JMP     TEXTDISP_DrawChannelBanner
 
-LAB_0A9E:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart   (Routine at ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_MoveCopperEntryTowardStart
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
     JMP     ESQ_MoveCopperEntryTowardStart
 
-GROUPB_JMPTBL_MEMORY_DeallocateMemory:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_MEMORY_DeallocateMemory   (Routine at ESQIFF_JMPTBL_MEMORY_DeallocateMemory)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEMORY_DeallocateMemory
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
-LAB_0AA0:
-    JMP     LAB_03CB
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle   (Routine at ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_ForceUiRefreshIfIdle
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle:
+    JMP     DISKIO_ForceUiRefreshIfIdle
 
-LAB_0AA1:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_CloneBrushRecord   (Routine at ESQIFF_JMPTBL_BRUSH_CloneBrushRecord)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_CloneBrushRecord
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_CloneBrushRecord:
     JMP     BRUSH_CloneBrushRecord
 
-LAB_0AA2:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd   (Routine at ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_MoveCopperEntryTowardEnd
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd:
     JMP     ESQ_MoveCopperEntryTowardEnd
 
-LAB_0AA3:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate   (Routine at ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_FindBrushByPredicate
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
     JMP     BRUSH_FindBrushByPredicate
 
-LAB_0AA4:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_FreeBrushList   (Routine at ESQIFF_JMPTBL_BRUSH_FreeBrushList)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_FreeBrushList
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_FreeBrushList:
     JMP     BRUSH_FreeBrushList
 
-LAB_0AA5:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_FindType3Brush   (Routine at ESQIFF_JMPTBL_BRUSH_FindType3Brush)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_FindType3Brush
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_FindType3Brush:
     JMP     BRUSH_FindType3Brush
 
-LAB_0AA6:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_PopBrushHead   (Routine at ESQIFF_JMPTBL_BRUSH_PopBrushHead)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_PopBrushHead
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_PopBrushHead:
     JMP     BRUSH_PopBrushHead
 
-LAB_0AA7:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_AllocBrushNode   (Routine at ESQIFF_JMPTBL_BRUSH_AllocBrushNode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_AllocBrushNode
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_AllocBrushNode:
     JMP     BRUSH_AllocBrushNode
 
-LAB_0AA8:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_006A   (Routine at ESQIFF_JMPTBL_ESQ_NoOp_006A)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_NoOp_006A
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_NoOp_006A:
     JMP     ESQ_NoOp_006A
 
-LAB_0AA9:
-    JMP     LAB_1038
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode   (Routine at ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   NEWGRID_ValidateSelectionCode
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
+    JMP     NEWGRID_ValidateSelectionCode
 
-GROUP_AN_JMPTBL_BRUSH_PopulateBrushList:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_PopulateBrushList   (Routine at ESQIFF_JMPTBL_BRUSH_PopulateBrushList)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_PopulateBrushList
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
     JMP     BRUSH_PopulateBrushList
 
-LAB_0AAB:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_0074   (Routine at ESQIFF_JMPTBL_ESQ_NoOp_0074)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_NoOp_0074
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_NoOp_0074:
     JMP     ESQ_NoOp_0074
 
-LAB_0AAC:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCaseN   (Routine at ESQIFF_JMPTBL_STRING_CompareNoCaseN)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   STRING_CompareNoCaseN
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_STRING_CompareNoCaseN:
     JMP     STRING_CompareNoCaseN
 
-GROUPB_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled   (Routine at ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SCRIPT_AssertCtrlLineIfEnabled
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
     JMP     SCRIPT_AssertCtrlLineIfEnabled
 
-GROUPB_JMPTBL_SCRIPT_BeginBannerCharTransition:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition   (Routine at ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   SCRIPT_BeginBannerCharTransition
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     SCRIPT_BeginBannerCharTransition
 
-GROUPB_JMPTBL_MEMORY_AllocateMemory:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_MEMORY_AllocateMemory   (Routine at ESQIFF_JMPTBL_MEMORY_AllocateMemory)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MEMORY_AllocateMemory
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
-LAB_0AB0:
-    JMP     LAB_038E
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess   (Routine at ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   CTASKS_StartIffTaskProcess
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
+    JMP     CTASKS_StartIffTaskProcess
 
-GROUPB_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode   (Routine at ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   UNKNOWN2B_OpenFileWithAccessMode
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
     JMP     UNKNOWN2B_OpenFileWithAccessMode
 
-LAB_0AB2:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Routine at ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_IncCopperListsTowardsTargets
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets:
     JMP     ESQ_IncCopperListsTowardsTargets
 
-LAB_0AB3:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary   (Routine at ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   ESQ_DecCopperListsPrimary
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
     JMP     ESQ_DecCopperListsPrimary
 
-LAB_0AB4:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushSlot   (Routine at ESQIFF_JMPTBL_BRUSH_SelectBrushSlot)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_SelectBrushSlot
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
     JMP     BRUSH_SelectBrushSlot
 
-LAB_0AB5:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel   (Routine at ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   BRUSH_SelectBrushByLabel
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
     JMP     BRUSH_SelectBrushByLabel
 
-GROUPB_JMPTBL_MATH_Mulu32:
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_MATH_Mulu32   (Routine at ESQIFF_JMPTBL_MATH_Mulu32)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   MATH_Mulu32
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_MATH_Mulu32:
     JMP     MATH_Mulu32
 
-LAB_0AB7:
-    JMP     LAB_03CD
+;------------------------------------------------------------------------------
+; FUNC: ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle   (Routine at ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle)
+; ARGS:
+;   (none observed)
+; RET:
+;   D0: none observed
+; CLOBBERS:
+;   none observed
+; CALLS:
+;   DISKIO_ResetCtrlInputStateIfIdle
+; READS:
+;   (none observed)
+; WRITES:
+;   (none observed)
+; DESC:
+;   Entry-point routine; static scan captures calls and symbol accesses.
+; NOTES:
+;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;------------------------------------------------------------------------------
+ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle:
+    JMP     DISKIO_ResetCtrlInputStateIfIdle

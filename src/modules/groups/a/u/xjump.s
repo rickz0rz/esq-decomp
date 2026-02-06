@@ -3,7 +3,7 @@
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
@@ -23,7 +23,7 @@ GROUP_AU_JMPTBL_BRUSH_AppendBrushNode:
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
 ;   (none)
 ; CALLS:

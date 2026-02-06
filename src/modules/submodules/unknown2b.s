@@ -7,17 +7,17 @@
 ; RET:
 ;   D0: raster pointer (or 0)
 ; CLOBBERS:
-;   D0-D1/A6 ??
+;   A6/A7/D0/D1/D6/D7
 ; CALLS:
 ;   _LVOAllocRaster
 ; READS:
 ;   GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Allocates a raster via graphics.library.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN2B_AllocRaster:
     LINK.W  A5,#-4
@@ -42,19 +42,19 @@ UNKNOWN2B_AllocRaster:
 ;   stack +20: D7 = width
 ;   stack +24: D6 = height
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D1/A6 ??
+;   A0/A3/A6/A7/D0/D1/D6/D7
 ; CALLS:
 ;   _LVOFreeRaster
 ; READS:
 ;   GLOB_REF_GRAPHICS_LIBRARY
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Frees a raster via graphics.library.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN2B_FreeRaster:
     LINK.W  A5,#0
@@ -83,17 +83,17 @@ UNKNOWN2B_FreeRaster:
 ; RET:
 ;   D0: file handle (or 0)
 ; CLOBBERS:
-;   D0-D2/A6 ??
+;   A3/A6/A7/D0/D1/D2/D6/D7
 ; CALLS:
 ;   _LVOOpen
 ; READS:
 ;   GLOB_REF_DOS_LIBRARY_2
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Opens a file via dos.library using the provided access mode.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN2B_OpenFileWithAccessMode:
     MOVEM.L D2/D6-D7/A3,-(A7)
@@ -118,21 +118,21 @@ UNKNOWN2B_OpenFileWithAccessMode:
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN2B_Stub0   (Stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   none
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Empty stub.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN2B_Stub0:
     RTS
@@ -141,34 +141,34 @@ UNKNOWN2B_Stub0:
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN2B_Stub1   (Stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   none
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Empty stub.
 ; NOTES:
-;   ??
+;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 UNKNOWN2B_Stub1:
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedWriteString   (Buffered write of string??)
+; FUNC: STREAM_BufferedWriteString   (Buffered write of stringuncertain)
 ; ARGS:
 ;   stack +8: A3 = string pointer
 ; RET:
 ;   D0: string length
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A1/A3/A4/A7/D0/D1/D6/D7
 ; CALLS:
 ;   STREAM_BufferedPutcOrFlush
 ; READS:
@@ -238,14 +238,14 @@ STREAM_BufferedWriteString:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handler??)
+; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handleruncertain)
 ; ARGS:
-;   stack +8: D7 = byte or -1
-;   stack +12: A3 = handle/struct pointer??
+;   stack +12: arg_1 (via 16(A5))
+;   stack +16: arg_2 (via 20(A5))
 ; RET:
-;   D0: status or byte??
+;   D0: result/status
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A1/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
 ;   BUFFER_EnsureAllocated, DOS_WriteByIndex, DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
 ; READS:
@@ -369,7 +369,7 @@ STREAM_BufferedPutcOrFlush:
 
     MOVEQ   #2,D1
     MOVE.L  D1,-(A7)
-    PEA     STREAM_ReadMovepWordCallback(PC)
+    PEA     UNKNOWN2B_MovepReadCallback(PC)
     MOVE.L  28(A3),-(A7)
     MOVE.L  D1,-16(A5)
     JSR     DOS_WriteByIndex(PC)
@@ -582,9 +582,9 @@ STREAM_BufferedPutcOrFlush:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_ReadMovepWordCallback   (Callback: MOVEP.W 0(A2)->D6)
+; FUNC: UNKNOWN2B_MovepReadCallback   (Callback: MOVEP.W 0(A2)->D6)
 ; ARGS:
-;   A2 = source pointer??
+;   A2 = source pointeruncertain
 ; RET:
 ;   D6: word loaded via MOVEP
 ; CLOBBERS:
@@ -600,19 +600,19 @@ STREAM_BufferedPutcOrFlush:
 ; NOTES:
 ;   Followed by padding word.
 ;------------------------------------------------------------------------------
-STREAM_ReadMovepWordCallback:
+UNKNOWN2B_MovepReadCallback:
     MOVEP.W 0(A2),D6
     DC.W    $0000
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedGetc   (Buffered read/getc handler??)
+; FUNC: STREAM_BufferedGetc   (Buffered read/getc handleruncertain)
 ; ARGS:
-;   stack +8: A3 = handle/struct pointer??
+;   (none observed)
 ; RET:
 ;   D0: byte or -1 on error/EOF
 ; CLOBBERS:
-;   D0-D7/A0-A3 ??
+;   A0/A1/A3/A7/D0/D5/D6/D7
 ; CALLS:
 ;   STREAM_BufferedPutcOrFlush, BUFFER_EnsureAllocated, DOS_ReadByIndex
 ; READS:

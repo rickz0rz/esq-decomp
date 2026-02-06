@@ -2,138 +2,131 @@
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   D0: u8 packed from low nibbles ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_0EE5
+;   LADFUNC_ComposePackedPenByte
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_0EE5.
+;   Jump stub to LADFUNC_ComposePackedPenByte.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte:
-LAB_0858:
-    JMP     LAB_0EE5
+    JMP     LADFUNC_ComposePackedPenByte
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_GetLowNibble   (Jump stub)
+; FUNC: GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   D0: u8 low nibble ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_0EE9
+;   LADFUNC_GetPackedPenLowNibble
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_0EE9.
+;   Jump stub to LADFUNC_GetPackedPenLowNibble.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_LADFUNC_GetLowNibble:
-LAB_0859:
-    JMP     LAB_0EE9
+GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble:
+    JMP     LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_LAB_0EDB   (Jump stub)
+; FUNC: GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_0EDB
+;   LADFUNC_UpdateEntryFromTextAndAttrBuffers
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_0EDB.
+;   Jump stub to LADFUNC_UpdateEntryFromTextAndAttrBuffers.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_LADFUNC_LAB_0EDB:
-LAB_085A:
-    JMP     LAB_0EDB
+GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex:
+    JMP     LADFUNC_UpdateEntryFromTextAndAttrBuffers
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   ESQ_WriteDecFixedWidth
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to ESQ_WriteDecFixedWidth.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth:
-LAB_085B:
     JMP     ESQ_WriteDecFixedWidth
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
 ;   LADFUNC_BuildEntryBuffersOrDefault
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
 ;   Jump stub to LADFUNC_BuildEntryBuffersOrDefault.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault:
-GROUP_AL_JMPTBL_LADFUNC_LAB_0EAF:
-LAB_085C:
     JMP     LADFUNC_BuildEntryBuffersOrDefault
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AL_JMPTBL_LADFUNC_GetHighNibble   (Jump stub)
+; FUNC: GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble   (Jump stub)
 ; ARGS:
-;   ??
+;   (none observed)
 ; RET:
-;   D0: u8 high nibble ??
+;   D0: none observed
 ; CLOBBERS:
-;   ??
+;   none observed
 ; CALLS:
-;   LAB_0EE8
+;   LADFUNC_GetPackedPenHighNibble
 ; READS:
-;   ??
+;   (none observed)
 ; WRITES:
-;   ??
+;   (none observed)
 ; DESC:
-;   Jump stub to LAB_0EE8.
+;   Jump stub to LADFUNC_GetPackedPenHighNibble.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AL_JMPTBL_LADFUNC_GetHighNibble:
-LAB_085D:
-    JMP     LAB_0EE8
+GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble:
+    JMP     LADFUNC_GetPackedPenHighNibble

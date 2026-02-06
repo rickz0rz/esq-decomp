@@ -8,9 +8,9 @@ GLOB_STR_LADFUNC_C_3:
     NStr    "LADFUNC.c"
 GLOB_STR_LADFUNC_C_4:
     NStr    "LADFUNC.c"
-LAB_1FBF:
+DATA_LADFUNC_TAG_RS_1FBF:
     NStr    "RS"
-LAB_1FC0:
+DATA_LADFUNC_TAG_RS_1FC0:
     NStr    "RS"
 GLOB_STR_LADFUNC_C_5:
     NStr    "LADFUNC.c"
@@ -20,9 +20,9 @@ GLOB_STR_LADFUNC_C_7:
     NStr    "LADFUNC.c"
 GLOB_STR_LADFUNC_C_8:
     NStr    "LADFUNC.c"
-LAB_1FC5:
+DATA_LADFUNC_FMT_PCT_C_PCT_02X_1FC5:
     NStr    "%c%02X"
-LAB_1FC6:
+DATA_LADFUNC_BSS_WORD_1FC6:
     DS.W    1
 GLOB_STR_LADFUNC_C_9:
     NStr    "LADFUNC.c"
@@ -72,27 +72,34 @@ GLOB_STR_LADFUNC_C_29:
     NStr    "LADFUNC.c"
 GLOB_STR_LADFUNC_C_30:
     NStr    "LADFUNC.c"
-LAB_1FDF:
+DATA_LADFUNC_STR_VALUE_1FDF:
     NStr2   """",TextLineFeed
-LAB_1FE0:
+DATA_LADFUNC_STR_VALUE_1FE0:
     NStr    """"
-LAB_1FE1:
+DATA_LADFUNC_FMT_PCT_LC_1FE1:
     NStr    "^%lc"
-LAB_1FE2:
+DATA_LADFUNC_FMT_PCT_LC_1FE2:
     NStr    "%lc"
-LAB_1FE3:
+DATA_LADFUNC_FMT_PCT_LC_1FE3:
     NStr    "%lc"
-LAB_1FE4:
+DATA_LADFUNC_FMT_PCT_02LX_1FE4:
     NStr    "$%02lx"
-LAB_1FE5:
+DATA_LADFUNC_FMT_PCT_LC_1FE5:
     NStr    "%lc"
-LAB_1FE6:
+;------------------------------------------------------------------------------
+; SYM: LOCAVAIL_FilterModeFlag/LOCAVAIL_FilterStep/LOCAVAIL_FilterClassId/LOCAVAIL_FilterPrevClassId   (locavail filter state)
+; TYPE: s32/s32/s32/s32
+; PURPOSE: Stores mode and step state for locavail-style filter/selection transitions.
+; USED BY: LOCAVAIL_*, SCRIPT3_*, TEXTDISP2_*, ED1_*, ED2_*
+; NOTES: `-1` is a sentinel for "no class selected/previous class cleared".
+;------------------------------------------------------------------------------
+LOCAVAIL_FilterModeFlag:
     DS.L    1
-LAB_1FE7:
+LOCAVAIL_FilterStep:
     DS.L    1
-LAB_1FE8:
+LOCAVAIL_FilterClassId:
     DC.L    $ffffffff
-LAB_1FE9:
+LOCAVAIL_FilterPrevClassId:
     DC.L    $ffffffff
-LAB_1FEA:
+DATA_LADFUNC_CONST_WORD_1FEA:
     DC.W    $ffff

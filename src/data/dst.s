@@ -1,29 +1,29 @@
 ; ========== DST.c ==========
-LAB_1CF6:
+DATA_DST_PATH_DF0_COLON_DST_DOT_DAT_1CF6:
     NStr    "df0:dst.dat"
-LAB_1CF7:
-    DC.L    LAB_1CF6
-LAB_1CF8:
+DATA_DST_CONST_LONG_1CF7:
+    DC.L    DATA_DST_PATH_DF0_COLON_DST_DOT_DAT_1CF6
+DATA_DST_FMT_PCT_C_1CF8:
     NStr    "%c"
-LAB_1CF9:
+DATA_DST_FMT_PCT_04D_PCT_03D_1CF9:
     NStr    "%04d%03d"
-LAB_1CFA:
+DATA_DST_FMT_PCT_02D_COLON_PCT_02D_1CFA:
     NStr    "%02d:%02d"
-LAB_1CFB:
+DATA_DST_STR_NO_IN_TIME_1CFB:
     NStr    " NO IN TIME "
-LAB_1CFC:
+DATA_DST_FMT_PCT_C_1CFC:
     NStr    "%c"
-LAB_1CFD:
+DATA_DST_FMT_PCT_04D_PCT_03D_1CFD:
     NStr    "%04d%03d"
-LAB_1CFE:
+DATA_DST_FMT_PCT_02D_COLON_PCT_02D_1CFE:
     NStr    "%02d:%02d"
-LAB_1CFF:
+DATA_DST_STR_NO_OUT_TIME_1CFF:
     NStr    " NO OUT TIME "
-LAB_1D00:
+DATA_DST_STR_NO_DST_DATA_1D00:
     NStr    " NO DST DATA "
-LAB_1D01:
+DATA_DST_STR_G2_COLON_1D01:
     NStr    " g2:"
-LAB_1D02:
+DATA_DST_STR_G3_COLON_1D02:
     NStr    " g3:"
 GLOB_STR_DST_C_1:
     NStr    "DST.c"
@@ -43,24 +43,31 @@ GLOB_STR_G3:
     NStr    "g3"
 GLOB_STR_DST_C_7:
     NStr    "DST.c"
-LAB_1D0C:
+DATA_DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT__1D0C:
     NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed
-LAB_1D0D:
+DATA_DST_TAG_PM_1D0D:
     NStr    "PM"
-LAB_1D0E:
+DATA_DST_TAG_AM_1D0E:
     NStr    "AM"
-LAB_1D0F:
+DATA_DST_TAG_DST_1D0F:
     NStr    "DST"
-LAB_1D10:
+DATA_DST_TAG_STD_1D10:
     NStr    "STD"
-LAB_1D11:
+DATA_DST_STR_LEAP_YEAR_1D11:
     NStr    "Leap Year"
-LAB_1D12:
+DATA_DST_STR_NORM_YEAR_1D12:
     NStr    "Norm Year"
     DS.W    1
-LAB_1D13:
+;------------------------------------------------------------------------------
+; SYM: ED_MenuStateId   (editor menu state id)
+; TYPE: u16
+; PURPOSE: Tracks active editor/menu substate for ED/ED1/ED2/ED3 dispatch.
+; USED BY: ED_*, ED1_*, ED2_*, ED3_*, CLEANUP2_*, ESQFUNC_*
+; NOTES: Used as a jump-dispatch selector in ED handlers.
+;------------------------------------------------------------------------------
+ED_MenuStateId:
     DS.W    1
-LAB_1D14:
+DATA_DST_CONST_LONG_1D14:
     DC.L    1
-LAB_1D15:
+DATA_DST_CONST_LONG_1D15:
     DC.L    1

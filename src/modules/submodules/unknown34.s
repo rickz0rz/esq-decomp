@@ -65,7 +65,7 @@ DOS_ReadByIndex:
 ; ARGS:
 ;   stack +4: A0 = list header pointer
 ; RET:
-;   D0: ??
+;   D0: none observed
 ; CLOBBERS:
 ;   A0
 ; DESC:
@@ -94,7 +94,7 @@ LIST_InitHeader:
 ;   stack +8:  A1 = destination
 ;   stack +12: D0 = length
 ; RET:
-;   D0: ??
+;   D0: result/status
 ; CLOBBERS:
 ;   D0/A0-A1
 ; DESC:
