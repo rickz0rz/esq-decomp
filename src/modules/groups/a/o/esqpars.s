@@ -519,7 +519,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal, ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadSerialBytesToBuffer, ESQIFF2_ReadSerialBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
-;   CTRL_BUFFER, CTRL_H, DATACErrs, GLOB_REF_696_400_BITMAP, GLOB_REF_RASTPORT_1, GLOB_STR_23, GLOB_STR_RESET_COMMAND_RECEIVED, LAB_0B55, LAB_0B59, LAB_0B6B, LAB_0B6F, LAB_0B86, LAB_0B8C, LAB_0B8F, LAB_0B90, LAB_0B91, LAB_0B99, LAB_0B9C, LAB_0B9F, LAB_0BA2, LAB_0BA6, LAB_0BAD, LAB_0BB1, LAB_0BB5, LAB_0BB9, LAB_0BC1, LAB_0BC2, LAB_0BC8, LAB_0BC9, LAB_0BCE, LAB_0BD1, LAB_0BD5, LAB_0BD9, LAB_0BDC, LAB_0BE4, LAB_0BE5, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, ESQIFF_RecordLength, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, ESQIFF_RecordChecksumByte, ED_DiagnosticsViewMode, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, ESQIFF_RecordBufferPtr, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, LAB_CTRLHTCMAX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, a, cmdDATABinaryDL, cmdTableDATA, de, fc, ff7f, processCommand_D_Diagnostics, processCommand_K_Clock, processCommand_R_Reset, processCommand_V_Version, processCommand_xBB_BoxOff
+;   CTRL_BUFFER, CTRL_H, DATACErrs, GLOB_REF_696_400_BITMAP, GLOB_REF_RASTPORT_1, GLOB_STR_23, GLOB_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, DATA_WDISP_BSS_WORD_22A0, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
 ;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, DATA_WDISP_BSS_LONG_2363
 ; DESC:
@@ -536,43 +536,43 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQPARS_CommandPreambleArmedFlag,D1
     MOVE.B  D0,-5(A5)
     TST.W   D1
-    BNE.S   .LAB_0B52
+    BNE.S   .preamble_dispatch_command_byte
 
     MOVEQ   #$55,D1         ; Copy 0x55 ('U') into D1
     CMP.B   D1,D0           ; Compare that byte to D0
-    BNE.S   .LAB_0B50       ; and jump to .LAB_0B50 if it's not equa.
+    BNE.S   .preamble_check_double_sync       ; and jump to .preamble_check_double_sync if it's not equa.
 
     MOVEQ   #1,D1           ; Copy 1 into D1...
     MOVE.W  D1,ESQPARS_Preamble55SeenFlag     ; and then 0x0001 into ESQPARS_Preamble55SeenFlag
     MOVEQ   #0,D2           ; Copy 0 into D2...
     MOVE.W  D2,ESQPARS_CommandPreambleArmedFlag     ; and then 0x0000 into ESQPARS_CommandPreambleArmedFlag
-    BRA.W   .LAB_0BE5       ; and branch to .LAB_0BE5
+    BRA.W   .cmdbyte_return       ; and branch to .cmdbyte_return
 
-.LAB_0B50:
+.preamble_check_double_sync:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #$55,D2
     ADD.L   D2,D2
     CMP.L   D2,D1
-    BNE.S   .LAB_0B51
+    BNE.S   .preamble_reset_state
 
     MOVE.W  ESQPARS_Preamble55SeenFlag,D1
     SUBQ.W  #1,D1
-    BNE.S   .LAB_0B51
+    BNE.S   .preamble_reset_state
 
     MOVEQ   #0,D1
     MOVE.W  D1,ESQPARS_Preamble55SeenFlag
     MOVEQ   #1,D2
     MOVE.W  D2,ESQPARS_CommandPreambleArmedFlag
-    BRA.W   .LAB_0BE5
+    BRA.W   .cmdbyte_return
 
-.LAB_0B51:
+.preamble_reset_state:
     MOVEQ   #0,D1
     MOVE.W  D1,ESQPARS_Preamble55SeenFlag
     MOVE.W  D1,ESQPARS_CommandPreambleArmedFlag
-    BRA.W   .LAB_0BE5
+    BRA.W   .cmdbyte_return
 
-.LAB_0B52:
+.preamble_dispatch_command_byte:
     SUBQ.W  #1,D1
     BNE.W   .cmdTableDATA
 
@@ -581,7 +581,7 @@ ESQPARS_ProcessSerialCommandByte:
 
     MOVEQ   #65,D1
     CMP.B   D1,D0
-    BNE.W   .LAB_0B55
+    BNE.W   .cmd_initial_w_upper
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -603,12 +603,12 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B54
+    BNE.S   .cmd_a_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #16,D1
     CMP.W   D1,D0
-    BHI.S   .LAB_0B53
+    BHI.S   .cmd_a_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQSHARED_MatchSelectionCodeWithOptionalSuffix(PC)
@@ -633,7 +633,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     BRA.S   .clearValues
 
-.LAB_0B53:
+.cmd_a_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
@@ -642,16 +642,16 @@ ESQPARS_ProcessSerialCommandByte:
 ;!======
 
 ; Increment the number of DATACErrs encountered
-.LAB_0B54:
+.cmd_a_checksum_error:
     MOVE.W  DATACErrs,D0    ; Move DATACErrs to D0
     ADDQ.W  #1,D0           ; Add 1 to D0
     MOVE.W  D0,DATACErrs    ; Move D0 back to DATACErrs
     BRA.S   .clearValues    ; Clear the values
 
-.LAB_0B55:
+.cmd_initial_w_upper:
     MOVEQ   #87,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0B56
+    BNE.S   .cmd_initial_w_lower
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -661,7 +661,7 @@ ESQPARS_ProcessSerialCommandByte:
     ADDQ.W  #4,A7
     BRA.S   .clearValues
 
-.LAB_0B56:
+.cmd_initial_w_lower:
     MOVEQ   #119,D1         ; Copy 119 ('w') into D1
     CMP.B   D1,D0           ; Compare 'w' in D1 to D0
     BNE.S   .clearValues    ; If they're not equal, jump to clear values
@@ -677,62 +677,62 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D0           ; Copy 0 into D0
     MOVE.W  D0,ESQPARS_Preamble55SeenFlag     ; Copy D0 (0) into ESQPARS_Preamble55SeenFlag
     MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag     ; Copy D0 (0) into ESQPARS_CommandPreambleArmedFlag
-    BRA.W   .LAB_0BE5
+    BRA.W   .cmdbyte_return
 
 .cmdTableDATA:
     ; https://prevueguide.com/Documentation/D2400.pdf
     MOVE.W  ESQPARS_CommandPreambleArmedFlag,D0
     SUBQ.W  #1,D0
-    BNE.W   .LAB_0BE5
+    BNE.W   .cmdbyte_return
 
     MOVE.W  DATA_WDISP_BSS_WORD_22A0,D0
     SUBQ.W  #1,D0
-    BNE.W   .LAB_0BE5
+    BNE.W   .cmdbyte_return
 
     MOVEQ   #0,D0       ; Move 0 into D0 to clear it out
     MOVE.B  -5(A5),D0   ; Copy the byte at -5(A5) which is the byte from serial to D0
 
     SUBI.W  #$21,D0   ; Subtract x21/33 from D0
-    BEQ.W   .LAB_0B59   ; Does D0 equal zero (exactly)? Means D0 was 33 or '!'
+    BEQ.W   .cmd_bang_begin   ; Does D0 equal zero (exactly)? Means D0 was 33 or '!'
 
     SUBQ.W  #4,D0       ; Subtract 4 more so x25/37
-    BEQ.W   .LAB_0BB9   ; Does D0 equal zero now? This is mode '%'
+    BEQ.W   .cmd_percent_begin   ; Does D0 equal zero now? This is mode '%'
 
     SUBI.W  #$18,D0   ; Subtract x18/24 so x3D/61
     BEQ.W   .cmdDATABinaryDL ; Does D0 equal zero now? This is mode '='
 
     SUBQ.W  #6,D0       ; Subtract x6/6 so 67
-    BEQ.W   .LAB_0B99   ; Same as above... this time mode 'C'
+    BEQ.W   .cmd_c_group_record   ; Same as above... this time mode 'C'
 
     SUBQ.W  #1,D0       ; Subtract 1 so 68
     BEQ.W   .processCommand_D_Diagnostics   ; Mode 'D' (diagnostic command)
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BA2   ; 'E'
+    BEQ.W   .cmd_e_copy_string   ; 'E'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BA6   ; 'F'
+    BEQ.W   .cmd_f_status_packet   ; 'F'
 
     SUBQ.W  #2,D0
     BEQ.W   .cmdDATABinaryDL ; 'H'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BB1 ; 'I'
+    BEQ.W   .cmd_i_parse_digit_label ; 'I'
 
     SUBQ.W  #2,D0
     BEQ.W   .processCommand_K_Clock ; 'K'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0B91 ; 'L'
+    BEQ.W   .cmd_l_or_t_banner_entry ; 'L'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BC1 ; 'M'
+    BEQ.W   .cmd_m_ack ; 'M'
 
     SUBQ.W  #2,D0
-    BEQ.W   .LAB_0BC2 ; 'O'
+    BEQ.W   .cmd_o_clear_primary_flags ; 'O'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0B6B ; 'P'
+    BEQ.W   .cmd_p_compact_entry ; 'P'
 
     SUBQ.W  #2,D0
     BEQ.W   .processCommand_R_Reset ; 'R'
@@ -741,47 +741,47 @@ ESQPARS_ProcessSerialCommandByte:
     BEQ.W   .processCommand_V_Version ; 'V'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BC8 ; 'W'
+    BEQ.W   .cmd_upper_w_verify_record ; 'W'
 
     SUBI.W  #12,D0
-    BEQ.W   .LAB_0B9C ; 'c'
+    BEQ.W   .cmd_c_lower_program_info ; 'c'
 
     SUBQ.W  #3,D0
-    BEQ.W   .LAB_0BD1 ; 'f'
+    BEQ.W   .cmd_f_lower_config_record ; 'f'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BD5 ; 'g'
+    BEQ.W   .cmd_g_filter_or_banner ; 'g'
 
     SUBQ.W  #1,D0
     BEQ.W   .cmdDATABinaryDL ; 'h'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BB5 ; 'i'
+    BEQ.W   .cmd_i_lower_copy_label ; 'i'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BAD ; 'j'
+    BEQ.W   .cmd_j_line_head_tail ; 'j'
 
     SUBQ.W  #6,D0
-    BEQ.W   .LAB_0B6F ; 'p'
+    BEQ.W   .cmd_p_lower_begin ; 'p'
 
     SUBQ.W  #4,D0
-    BEQ.W   .LAB_0B91 ; 't'
+    BEQ.W   .cmd_l_or_t_banner_entry ; 't'
 
     SUBQ.W  #2,D0
-    BEQ.W   .LAB_0B9F ; 'v'
+    BEQ.W   .cmd_v_lower_aligned_listing ; 'v'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BC9 ; 'w'
+    BEQ.W   .cmd_lower_w_verify_list ; 'w'
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BCE ; 'x'
+    BEQ.W   .cmd_x_font_command ; 'x'
 
     SUBI.W  #$43,D0
     BEQ.W   .processCommand_xBB_BoxOff ; xBB (Box off)
 
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B59:
+.cmd_bang_begin:
     CLR.B   -62(A5)
     MOVE.B  #$de,-71(A5)
     MOVE.W  ESQIFF_ParseAttemptCount,D0
@@ -812,33 +812,33 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  -7(A5),D0
     MOVEQ   #1,D1
     CMP.B   D1,D0
-    BCS.S   .LAB_0B5A
+    BCS.S   .cmd_bang_reject
 
     MOVE.B  -8(A5),D1
     MOVEQ   #48,D2
     CMP.B   D2,D1
-    BHI.S   .LAB_0B5A
+    BHI.S   .cmd_bang_reject
 
     CMP.B   D0,D1
-    BCS.S   .LAB_0B5A
+    BCS.S   .cmd_bang_reject
 
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     MOVE.L  -14(A5),D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_0B5B
+    BEQ.S   .cmd_bang_read_title_key
 
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_SecondaryGroupCode,D0
 
     CMP.L   D0,D1
-    BEQ.S   .LAB_0B5B
+    BEQ.S   .cmd_bang_read_title_key
 
-.LAB_0B5A:
+.cmd_bang_reject:
     CLR.B   -62(A5)
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B5B:
+.cmd_bang_read_title_key:
     CLR.L   -22(A5)
     PEA     -71(A5)
     PEA     1.W
@@ -847,23 +847,23 @@ ESQPARS_ProcessSerialCommandByte:
 
     LEA     12(A7),A7
 
-.LAB_0B5C:
+.cmd_bang_collect_title_loop:
     TST.B   -61(A5)
-    BEQ.S   .LAB_0B5D
+    BEQ.S   .cmd_bang_terminate_title
 
     MOVE.B  -61(A5),D0
     MOVEQ   #18,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0B5D
+    BEQ.S   .cmd_bang_terminate_title
 
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0B5D
+    BEQ.S   .cmd_bang_terminate_title
 
     MOVE.L  -22(A5),D1
     MOVEQ   #6,D2
     CMP.L   D2,D1
-    BGE.S   .LAB_0B5D
+    BGE.S   .cmd_bang_terminate_title
 
     ADDQ.L  #1,-22(A5)
     MOVE.B  D0,-41(A5,D1.L)
@@ -873,15 +873,15 @@ ESQPARS_ProcessSerialCommandByte:
     BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
-    BRA.S   .LAB_0B5C
+    BRA.S   .cmd_bang_collect_title_loop
 
-.LAB_0B5D:
+.cmd_bang_terminate_title:
     MOVE.L  -22(A5),D0
     CLR.B   -41(A5,D0.L)
 
-.LAB_0B5E:
+.cmd_bang_skip_to_nul_loop:
     TST.B   -61(A5)
-    BEQ.S   .LAB_0B5F
+    BEQ.S   .cmd_bang_verify_xor
 
     PEA     -71(A5)
     PEA     1.W
@@ -889,9 +889,9 @@ ESQPARS_ProcessSerialCommandByte:
     BSR.W   ESQIFF2_ReadSerialBytesWithXor
 
     LEA     12(A7),A7
-    BRA.S   .LAB_0B5E
+    BRA.S   .cmd_bang_skip_to_nul_loop
 
-.LAB_0B5F:
+.cmd_bang_verify_xor:
     PEA     1.W
     PEA     -31(A5)
     BSR.W   ESQIFF2_ReadSerialBytesToBuffer
@@ -900,52 +900,52 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  -71(A5),D0
     MOVE.B  -31(A5),D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0B60
+    BEQ.S   .cmd_bang_verify_xor_ok
 
     MOVEQ   #0,D0
     MOVE.B  D0,-62(A5)
-    BRA.S   .LAB_0B61
+    BRA.S   .cmd_bang_after_verify
 
-.LAB_0B60:
+.cmd_bang_verify_xor_ok:
     MOVEQ   #1,D0
     MOVE.B  D0,-62(A5)
 
-.LAB_0B61:
+.cmd_bang_after_verify:
     SUBQ.B  #1,D0
-    BNE.W   .LAB_0BE4
+    BNE.W   .cmdbyte_clear_preamble_and_finish
 
     CLR.B   -62(A5)
     MOVEQ   #89,D0
     CMP.B   -7(A5),D0
-    BNE.S   .LAB_0B62
+    BNE.S   .cmd_bang_normalize_y_group
 
     MOVEQ   #1,D0
     MOVE.B  #$30,-8(A5)
     MOVE.B  D0,-7(A5)
 
-.LAB_0B62:
+.cmd_bang_normalize_y_group:
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  -14(A5),D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B63
+    BNE.S   .cmd_bang_try_primary_group
 
     MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
-    BNE.S   .LAB_0B63
+    BNE.S   .cmd_bang_try_primary_group
 
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #2,D2
     MOVE.L  D2,-30(A5)
     MOVE.L  D0,-18(A5)
-    BRA.S   .LAB_0B64
+    BRA.S   .cmd_bang_prepare_entry_scan
 
-.LAB_0B63:
+.cmd_bang_try_primary_group:
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.L   D0,D1
-    BNE.W   .LAB_0BE4
+    BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
@@ -953,13 +953,13 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.L  D1,-30(A5)
     MOVE.L  D0,-18(A5)
 
-.LAB_0B64:
+.cmd_bang_prepare_entry_scan:
     CLR.L   -26(A5)
 
-.LAB_0B65:
+.cmd_bang_find_entry_loop:
     MOVE.L  -26(A5),D0
     CMP.L   -18(A5),D0
-    BGE.S   .LAB_0B68
+    BGE.S   .cmd_bang_entry_scan_done
 
     MOVE.L  -30(A5),-(A7)
     MOVE.L  D0,-(A7)
@@ -975,36 +975,36 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEA.L D0,A1
     MOVE.L  D0,-70(A5)
 
-.LAB_0B66:
+.cmd_bang_compare_title_loop:
     MOVE.B  (A0)+,D1
     CMP.B   (A1)+,D1
-    BNE.S   .LAB_0B67
+    BNE.S   .cmd_bang_next_entry
 
     TST.B   D1
-    BNE.S   .LAB_0B66
+    BNE.S   .cmd_bang_compare_title_loop
 
-    BNE.S   .LAB_0B67
+    BNE.S   .cmd_bang_next_entry
 
     MOVE.B  #$1,-62(A5)
-    BRA.S   .LAB_0B68
+    BRA.S   .cmd_bang_entry_scan_done
 
-.LAB_0B67:
+.cmd_bang_next_entry:
     ADDQ.L  #1,-26(A5)
-    BRA.S   .LAB_0B65
+    BRA.S   .cmd_bang_find_entry_loop
 
-.LAB_0B68:
+.cmd_bang_entry_scan_done:
     MOVEQ   #1,D0
     CMP.B   -62(A5),D0
-    BNE.W   .LAB_0BE4
+    BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVE.B  -7(A5),D0
     MOVEQ   #1,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0B69
+    BNE.S   .cmd_bang_after_optional_flag_clear
 
     MOVEQ   #48,D1
     CMP.B   -8(A5),D1
-    BNE.S   .LAB_0B69
+    BNE.S   .cmd_bang_after_optional_flag_clear
 
     MOVEQ   #0,D1
     MOVEA.L -66(A5),A0
@@ -1012,13 +1012,13 @@ ESQPARS_ProcessSerialCommandByte:
     ANDI.W  #$ff7f,D1
     MOVE.B  D1,40(A0)
 
-.LAB_0B69:
+.cmd_bang_after_optional_flag_clear:
     MOVE.B  D0,-9(A5)
 
-.LAB_0B6A:
+.cmd_bang_apply_slot_range_loop:
     MOVE.B  -9(A5),D0
     CMP.B   -8(A5),D0
-    BHI.W   .LAB_0BE4
+    BHI.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1044,9 +1044,9 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  -9(A5),D0
     MOVE.B  #$1,7(A0,D0.W)
     ADDQ.B  #1,-9(A5)
-    BRA.S   .LAB_0B6A
+    BRA.S   .cmd_bang_apply_slot_range_loop
 
-.LAB_0B6B:
+.cmd_p_compact_entry:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1069,34 +1069,34 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B6D
+    BNE.S   .cmd_p_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$1ff,D0
-    BHI.S   .LAB_0B6C
+    BHI.S   .cmd_p_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQSHARED_ParseCompactEntryRecord(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0B6E
+    BRA.S   .cmd_p_finish
 
-.LAB_0B6C:
+.cmd_p_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.S   .LAB_0B6E
+    BRA.S   .cmd_p_finish
 
-.LAB_0B6D:
+.cmd_p_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0B6E:
+.cmd_p_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B6F:
+.cmd_p_lower_begin:
     CLR.B   -213(A5)
     MOVE.B  #$1,-224(A5)
     MOVE.B  #$8f,-227(A5)
@@ -1119,17 +1119,17 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     24(A7),A7
     CLR.L   -18(A5)
 
-.LAB_0B70:
+.cmd_p_lower_read_key_loop:
     MOVE.B  -62(A5),D0
     MOVE.L  -18(A5),D1
     MOVE.B  D0,-36(A5,D1.L)
     MOVEQ   #18,D2
     CMP.B   D2,D0
-    BEQ.S   .LAB_0B71
+    BEQ.S   .cmd_p_lower_key_ready
 
     MOVEQ   #8,D0
     CMP.L   D0,D1
-    BGE.S   .LAB_0B71
+    BGE.S   .cmd_p_lower_key_ready
 
     PEA     -227(A5)
     PEA     1.W
@@ -1138,37 +1138,37 @@ ESQPARS_ProcessSerialCommandByte:
 
     LEA     12(A7),A7
     ADDQ.L  #1,-18(A5)
-    BRA.S   .LAB_0B70
+    BRA.S   .cmd_p_lower_read_key_loop
 
-.LAB_0B71:
+.cmd_p_lower_key_ready:
     MOVE.L  -18(A5),D0
     CLR.B   -36(A5,D0.L)
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_SecondaryGroupCode,D0
     MOVE.L  -10(A5),D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B72
+    BNE.S   .cmd_p_lower_try_primary_group
 
     MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D0
     SUBQ.B  #1,D0
-    BNE.S   .LAB_0B72
+    BNE.S   .cmd_p_lower_try_primary_group
 
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,-14(A5)
-    BRA.S   .LAB_0B73
+    BRA.S   .cmd_p_lower_read_bitmap6
 
-.LAB_0B72:
+.cmd_p_lower_try_primary_group:
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_PrimaryGroupCode,D0
     CMP.L   D0,D1
-    BNE.W   .LAB_0BE4
+    BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,-14(A5)
 
-.LAB_0B73:
+.cmd_p_lower_read_bitmap6:
     PEA     -227(A5)
     PEA     6.W
     PEA     -62(A5)
@@ -1177,22 +1177,22 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     12(A7),A7
     CLR.L   -18(A5)
 
-.LAB_0B74:
+.cmd_p_lower_validate_bitmap_loop:
     MOVE.L  -18(A5),D0
     MOVEQ   #6,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_0B76
+    BGE.S   .cmd_p_lower_after_bitmap_validation
 
     TST.B   -62(A5,D0.L)
-    BEQ.S   .LAB_0B75
+    BEQ.S   .cmd_p_lower_next_bitmap_byte
 
     CLR.B   -224(A5)
 
-.LAB_0B75:
+.cmd_p_lower_next_bitmap_byte:
     ADDQ.L  #1,-18(A5)
-    BRA.S   .LAB_0B74
+    BRA.S   .cmd_p_lower_validate_bitmap_loop
 
-.LAB_0B76:
+.cmd_p_lower_after_bitmap_validation:
     PEA     -62(A5)
     PEA     -42(A5)
     JSR     ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
@@ -1200,20 +1200,20 @@ ESQPARS_ProcessSerialCommandByte:
     ADDQ.W  #8,A7
     CLR.L   -26(A5)
 
-.LAB_0B77:
+.cmd_p_lower_find_title_loop:
     MOVE.L  -26(A5),D0
     CMP.L   -14(A5),D0
-    BGE.S   .LAB_0B7C
+    BGE.S   .cmd_p_lower_read_payload_width
 
     MOVEQ   #0,D1
     MOVE.B  TEXTDISP_SecondaryGroupCode,D1
     MOVE.L  -10(A5),D2
     CMP.L   D1,D2
-    BNE.S   .LAB_0B78
+    BNE.S   .cmd_p_lower_use_primary_tables
 
     MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
-    BNE.S   .LAB_0B78
+    BNE.S   .cmd_p_lower_use_primary_tables
 
     ASL.L   #2,D0
     LEA     TEXTDISP_SecondaryEntryPtrTable,A0
@@ -1222,9 +1222,9 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     TEXTDISP_SecondaryTitlePtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-222(A5)
-    BRA.S   .LAB_0B79
+    BRA.S   .cmd_p_lower_compare_title_start
 
-.LAB_0B78:
+.cmd_p_lower_use_primary_tables:
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
@@ -1233,28 +1233,28 @@ ESQPARS_ProcessSerialCommandByte:
     ADDA.L  D0,A0
     MOVE.L  (A0),-222(A5)
 
-.LAB_0B79:
+.cmd_p_lower_compare_title_start:
     LEA     -36(A5),A0
     MOVEA.L -222(A5),A1
 
-.LAB_0B7A:
+.cmd_p_lower_compare_title_loop:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .LAB_0B7B
+    BNE.S   .cmd_p_lower_next_title
 
     TST.B   D0
-    BNE.S   .LAB_0B7A
+    BNE.S   .cmd_p_lower_compare_title_loop
 
-    BNE.S   .LAB_0B7B
+    BNE.S   .cmd_p_lower_next_title
 
     MOVE.B  #$1,-213(A5)
-    BRA.S   .LAB_0B7C
+    BRA.S   .cmd_p_lower_read_payload_width
 
-.LAB_0B7B:
+.cmd_p_lower_next_title:
     ADDQ.L  #1,-26(A5)
-    BRA.S   .LAB_0B77
+    BRA.S   .cmd_p_lower_find_title_loop
 
-.LAB_0B7C:
+.cmd_p_lower_read_payload_width:
     PEA     -227(A5)
     PEA     1.W
     PEA     -223(A5)
@@ -1264,22 +1264,22 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  -223(A5),D0
     MOVEQ   #1,D1
     CMP.B   D1,D0
-    BCS.S   .LAB_0B7D
+    BCS.S   .cmd_p_lower_invalid_payload_width
 
     MOVEQ   #3,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_0B7E
+    BLS.S   .cmd_p_lower_apply_payload_mode
 
-.LAB_0B7D:
+.cmd_p_lower_invalid_payload_width:
     MOVEQ   #0,D1
     MOVE.B  D1,-213(A5)
 
-.LAB_0B7E:
+.cmd_p_lower_apply_payload_mode:
     TST.B   -224(A5)
-    BEQ.W   .LAB_0B86
+    BEQ.W   .cmd_p_lower_sparse_path
 
     TST.B   -213(A5)
-    BEQ.W   .LAB_0B86
+    BEQ.W   .cmd_p_lower_sparse_path
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
@@ -1297,11 +1297,11 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     24(A7),A7
     MOVE.B  -226(A5),D0
     TST.B   D0
-    BEQ.S   .LAB_0B7F
+    BEQ.S   .cmd_p_lower_after_payload_trailer
 
     CLR.B   -213(A5)
 
-.LAB_0B7F:
+.cmd_p_lower_after_payload_trailer:
     PEA     1.W
     PEA     -225(A5)
     BSR.W   ESQIFF2_ReadSerialBytesToBuffer
@@ -1310,90 +1310,90 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  -227(A5),D0
     MOVE.B  -225(A5),D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0B80
+    BEQ.S   .cmd_p_lower_after_checksum_byte
 
     MOVEQ   #0,D0
     MOVE.B  D0,-213(A5)
 
-.LAB_0B80:
+.cmd_p_lower_after_checksum_byte:
     TST.B   -213(A5)
-    BEQ.W   .LAB_0B90
+    BEQ.W   .cmd_p_lower_finish
 
     MOVE.B  -223(A5),D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_0B81
+    BLS.S   .cmd_p_lower_after_optional_highlight_flag
 
     MOVE.B  -212(A5),D0
     MOVEQ   #5,D1
     CMP.B   D1,D0
-    BCS.S   .LAB_0B81
+    BCS.S   .cmd_p_lower_after_optional_highlight_flag
 
     MOVEQ   #10,D1
     CMP.B   D1,D0
-    BHI.S   .LAB_0B81
+    BHI.S   .cmd_p_lower_after_optional_highlight_flag
 
     MOVEA.L -218(A5),A0
     BSET    #0,40(A0)
 
-.LAB_0B81:
+.cmd_p_lower_after_optional_highlight_flag:
     CLR.L   -18(A5)
 
-.LAB_0B82:
+.cmd_p_lower_fill_all_rows_loop:
     MOVE.L  -18(A5),D0
     MOVEQ   #49,D1
     CMP.L   D1,D0
-    BGE.W   .LAB_0B90
+    BGE.W   .cmd_p_lower_finish
 
     MOVE.B  -223(A5),D1
     MOVEQ   #0,D2
     CMP.B   D2,D1
-    BLS.S   .LAB_0B83
+    BLS.S   .cmd_p_lower_after_col0
 
     MOVEA.L -222(A5),A0
     MOVE.L  D0,D2
     ADDI.L  #$fc,D2
     MOVE.B  -212(A5),0(A0,D2.L)
 
-.LAB_0B83:
+.cmd_p_lower_after_col0:
     MOVE.B  -223(A5),D1
     MOVEQ   #1,D2
     CMP.B   D2,D1
-    BLS.S   .LAB_0B84
+    BLS.S   .cmd_p_lower_after_col1
 
     MOVEA.L -222(A5),A0
     MOVE.L  D0,D2
     ADDI.L  #$12d,D2
     MOVE.B  -211(A5),0(A0,D2.L)
 
-.LAB_0B84:
+.cmd_p_lower_after_col1:
     MOVE.B  -223(A5),D1
     MOVEQ   #2,D2
     CMP.B   D2,D1
-    BLS.S   .LAB_0B85
+    BLS.S   .cmd_p_lower_next_row_all
 
     MOVEA.L -222(A5),A0
     MOVE.L  D0,D0
     ADDI.L  #$15e,D0
     MOVE.B  -210(A5),0(A0,D0.L)
 
-.LAB_0B85:
+.cmd_p_lower_next_row_all:
     ADDQ.L  #1,-18(A5)
-    BRA.S   .LAB_0B82
+    BRA.S   .cmd_p_lower_fill_all_rows_loop
 
-.LAB_0B86:
+.cmd_p_lower_sparse_path:
     TST.B   -213(A5)
-    BEQ.W   .LAB_0B90
+    BEQ.W   .cmd_p_lower_finish
 
     CLR.L   -26(A5)
     MOVEQ   #1,D0
     MOVE.L  D0,-18(A5)
 
-.LAB_0B87:
+.cmd_p_lower_count_marked_rows_loop:
     MOVE.L  -18(A5),D0
     MOVEQ   #49,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_0B89
+    BGE.S   .cmd_p_lower_read_sparse_payload
 
     MOVE.L  D0,-(A7)
     PEA     -42(A5)
@@ -1402,15 +1402,15 @@ ESQPARS_ProcessSerialCommandByte:
     ADDQ.W  #8,A7
     MOVE.L  D0,-22(A5)
     ADDQ.L  #1,D0
-    BNE.S   .LAB_0B88
+    BNE.S   .cmd_p_lower_next_bit_index
 
     ADDQ.L  #1,-26(A5)
 
-.LAB_0B88:
+.cmd_p_lower_next_bit_index:
     ADDQ.L  #1,-18(A5)
-    BRA.S   .LAB_0B87
+    BRA.S   .cmd_p_lower_count_marked_rows_loop
 
-.LAB_0B89:
+.cmd_p_lower_read_sparse_payload:
     MOVEQ   #0,D0
     MOVE.B  -223(A5),D0
     MOVE.L  -26(A5),D1
@@ -1430,11 +1430,11 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     24(A7),A7
     MOVE.B  -226(A5),D0
     TST.B   D0
-    BEQ.S   .LAB_0B8A
+    BEQ.S   .cmd_p_lower_after_sparse_trailer
 
     CLR.B   -213(A5)
 
-.LAB_0B8A:
+.cmd_p_lower_after_sparse_trailer:
     PEA     1.W
     PEA     -225(A5)
     BSR.W   ESQIFF2_ReadSerialBytesToBuffer
@@ -1443,24 +1443,24 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  -227(A5),D0
     MOVE.B  -225(A5),D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0B8B
+    BEQ.S   .cmd_p_lower_after_sparse_checksum_byte
 
     MOVEQ   #0,D0
     MOVE.B  D0,-213(A5)
 
-.LAB_0B8B:
+.cmd_p_lower_after_sparse_checksum_byte:
     TST.B   -213(A5)
-    BEQ.W   .LAB_0B90
+    BEQ.W   .cmd_p_lower_finish
 
     CLR.L   -26(A5)
     MOVEQ   #1,D0
     MOVE.L  D0,-18(A5)
 
-.LAB_0B8C:
+.cmd_p_lower_apply_sparse_rows_loop:
     MOVE.L  -18(A5),D0
     MOVEQ   #49,D1
     CMP.L   D1,D0
-    BGE.W   .LAB_0B90
+    BGE.W   .cmd_p_lower_finish
 
     MOVE.L  D0,-(A7)
     PEA     -42(A5)
@@ -1469,12 +1469,12 @@ ESQPARS_ProcessSerialCommandByte:
     ADDQ.W  #8,A7
     MOVE.L  D0,-22(A5)
     ADDQ.L  #1,D0
-    BNE.W   .LAB_0B8F
+    BNE.W   .cmd_p_lower_next_sparse_row
 
     MOVE.B  -223(A5),D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_0B8D
+    BLS.S   .cmd_p_lower_after_sparse_col0
 
     LEA     -212(A5),A0
     MOVE.L  -26(A5),D1
@@ -1487,22 +1487,22 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     CMPI.B  #$5,(A1)
-    BCS.S   .LAB_0B8D
+    BCS.S   .cmd_p_lower_after_sparse_col0
 
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     CMPI.B  #$a,(A1)
-    BHI.S   .LAB_0B8D
+    BHI.S   .cmd_p_lower_after_sparse_col0
 
     MOVEA.L -218(A5),A1
     BSET    #0,40(A1)
 
-.LAB_0B8D:
+.cmd_p_lower_after_sparse_col0:
     ADDQ.L  #1,-26(A5)
     MOVE.B  -223(A5),D0
     MOVEQ   #1,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_0B8E
+    BLS.S   .cmd_p_lower_after_sparse_col1
 
     LEA     -212(A5),A0
     MOVEA.L A0,A1
@@ -1513,11 +1513,11 @@ ESQPARS_ProcessSerialCommandByte:
     ADDI.L  #301,D1
     MOVE.B  (A1),0(A2,D1.L)
 
-.LAB_0B8E:
+.cmd_p_lower_after_sparse_col1:
     MOVE.B  -223(A5),D0
     MOVEQ   #2,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_0B8F
+    BLS.S   .cmd_p_lower_next_sparse_row
 
     LEA     -212(A5),A0
     ADDA.L  -26(A5),A0
@@ -1527,15 +1527,15 @@ ESQPARS_ProcessSerialCommandByte:
     ADDI.L  #$15e,D0
     MOVE.B  (A0),0(A1,D0.L)
 
-.LAB_0B8F:
+.cmd_p_lower_next_sparse_row:
     ADDQ.L  #1,-18(A5)
-    BRA.W   .LAB_0B8C
+    BRA.W   .cmd_p_lower_apply_sparse_rows_loop
 
-.LAB_0B90:
+.cmd_p_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B91:
+.cmd_l_or_t_banner_entry:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1559,11 +1559,11 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B93
+    BNE.S   .cmd_l_or_t_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$130,D0
-    BHI.S   .LAB_0B92
+    BHI.S   .cmd_l_or_t_record_too_long
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -1572,22 +1572,22 @@ ESQPARS_ProcessSerialCommandByte:
     JSR     LADFUNC_ParseBannerEntryData(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .LAB_0B94
+    BRA.S   .cmd_l_or_t_finish
 
-.LAB_0B92:
+.cmd_l_or_t_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.S   .LAB_0B94
+    BRA.S   .cmd_l_or_t_finish
 
-.LAB_0B93:
+.cmd_l_or_t_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0B94:
+.cmd_l_or_t_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_xBB_BoxOff:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
@@ -1612,42 +1612,42 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #68,D2
     NOT.B   D2
     CMP.L   D2,D1
-    BNE.S   .LAB_0B97
+    BNE.S   .cmd_boxoff_checksum_error
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #0,D0
     NOT.B   D0
     CMP.L   D0,D1
-    BNE.S   .LAB_0B97
+    BNE.S   .cmd_boxoff_checksum_error
 
     TST.W   DATA_ESQ_BSS_WORD_1DF6
-    BEQ.S   .LAB_0B96
+    BEQ.S   .cmd_boxoff_apply
 
     BSR.W   ESQPARS_PersistStateDataAfterCommand
 
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
 
-.LAB_0B96:
+.cmd_boxoff_apply:
     CLR.W   DATA_WDISP_BSS_WORD_22A0
     CLR.L   -(A7)
     PEA     2.W
     JSR     ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .LAB_0B98
+    BRA.S   .cmd_boxoff_finish
 
-.LAB_0B97:
+.cmd_boxoff_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0B98:
+.cmd_boxoff_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B99:
+.cmd_c_group_record:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1659,7 +1659,7 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     12(A7),A7
     MOVE.W  D0,ESQIFF_RecordLength
     TST.W   D0
-    BEQ.W   .LAB_0BE4
+    BEQ.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -1674,28 +1674,28 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B9A
+    BNE.S   .cmd_c_checksum_error
 
     MOVE.W  DATA_WDISP_BSS_WORD_2299,D0
     SUBQ.W  #1,D0
-    BNE.S   .LAB_0B9B
+    BNE.S   .cmd_c_finish
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   ESQIFF2_ParseGroupRecordAndRefresh
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0B9B
+    BRA.S   .cmd_c_finish
 
-.LAB_0B9A:
+.cmd_c_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0B9B:
+.cmd_c_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B9C:
+.cmd_c_lower_program_info:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1708,7 +1708,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .LAB_0B9D
+    BLS.S   .cmd_c_lower_invalid_record
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -1723,24 +1723,24 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0B9D
+    BNE.S   .cmd_c_lower_invalid_record
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQDISP_ParseProgramInfoCommandRecord(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0B9E
+    BRA.S   .cmd_c_lower_finish
 
-.LAB_0B9D:
+.cmd_c_lower_invalid_record:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0B9E:
+.cmd_c_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0B9F:
+.cmd_v_lower_aligned_listing:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1752,7 +1752,7 @@ ESQPARS_ProcessSerialCommandByte:
     LEA     12(A7),A7
     MOVE.W  D0,ESQIFF_RecordLength
     TST.W   D0
-    BEQ.W   .LAB_0BE4
+    BEQ.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
@@ -1767,30 +1767,30 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BA0
+    BNE.S   .cmd_v_lower_checksum_error
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  1(A0),D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0BA1
+    BNE.S   .cmd_v_lower_finish
 
     MOVE.L  A0,-(A7)
     JSR     ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BA1
+    BRA.S   .cmd_v_lower_finish
 
-.LAB_0BA0:
+.cmd_v_lower_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BA1:
+.cmd_v_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BA2:
+.cmd_e_copy_string:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1814,29 +1814,29 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BA4
+    BNE.S   .cmd_e_checksum_error
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     LEA     DATA_WDISP_BSS_LONG_2298,A1
 
-.LAB_0BA3:
+.cmd_e_copy_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_0BA3
+    BNE.S   .cmd_e_copy_loop
 
-    BRA.S   .LAB_0BA5
+    BRA.S   .cmd_e_finish
 
-.LAB_0BA4:
+.cmd_e_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BA5:
+.cmd_e_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
     if includeCustomAriAssembly
 
-.LAB_0BA5_2:
+.cmd_e_debug_status_dump:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1872,10 +1872,10 @@ ESQPARS_ProcessSerialCommandByte:
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
     endif
 
-.LAB_0BA6:
+.cmd_f_status_packet:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -1899,46 +1899,46 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BA8
+    BNE.S   .cmd_f_invalid_packet
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  (A0),D0
     MOVEQ   #65,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0BA7
+    BEQ.S   .cmd_f_validate_packet_header
 
     MOVEQ   #66,D2
     CMP.B   D2,D0
-    BNE.S   .LAB_0BA8
+    BNE.S   .cmd_f_invalid_packet
 
-.LAB_0BA7:
+.cmd_f_validate_packet_header:
     MOVE.B  1(A0),D0
     CMP.B   D1,D0
-    BCS.S   .LAB_0BA8
+    BCS.S   .cmd_f_invalid_packet
 
     MOVEQ   #74,D1
     CMP.B   D1,D0
-    BCC.S   .LAB_0BA8
+    BCC.S   .cmd_f_invalid_packet
 
     MOVE.L  A0,-(A7)
     BSR.W   ESQIFF2_ApplyIncomingStatusPacket
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BA9
+    BRA.S   .cmd_f_finish
 
-.LAB_0BA8:
+.cmd_f_invalid_packet:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BA9:
+.cmd_f_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_K_Clock:
     MOVE.W  ED_DiagnosticsViewMode,D0
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_0BE4
+    BEQ.W   .cmdbyte_clear_preamble_and_finish
 
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
@@ -2001,18 +2001,18 @@ ESQPARS_ProcessSerialCommandByte:
     BSR.W   ESQPARS_ApplyRtcBytesAndPersist
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BAC
+    BRA.S   .cmd_k_finish
 
 .command_K_Increment_Data_CErrs:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BAC:
+.cmd_k_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BAD:
+.cmd_j_line_head_tail:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -2035,34 +2035,34 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BAF
+    BNE.S   .cmd_j_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$1f4,D0
-    BHI.S   .LAB_0BAE
+    BHI.S   .cmd_j_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     BSR.W   ESQIFF2_ParseLineHeadTailRecord
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BB0
+    BRA.S   .cmd_j_finish
 
-.LAB_0BAE:
+.cmd_j_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.S   .LAB_0BB0
+    BRA.S   .cmd_j_finish
 
-.LAB_0BAF:
+.cmd_j_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BB0:
+.cmd_j_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BB1:
+.cmd_i_parse_digit_label:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -2086,35 +2086,35 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BB3
+    BNE.S   .cmd_i_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #39,D1
     CMP.W   D1,D0
-    BHI.S   .LAB_0BB2
+    BHI.S   .cmd_i_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BB4
+    BRA.S   .cmd_i_finish
 
-.LAB_0BB2:
+.cmd_i_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.S   .LAB_0BB4
+    BRA.S   .cmd_i_finish
 
-.LAB_0BB3:
+.cmd_i_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BB4:
+.cmd_i_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BB5:
+.cmd_i_lower_copy_label:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -2138,35 +2138,35 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BB7
+    BNE.S   .cmd_i_lower_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #39,D1
     CMP.W   D1,D0
-    BHI.S   .LAB_0BB6
+    BHI.S   .cmd_i_lower_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BB8
+    BRA.S   .cmd_i_lower_finish
 
-.LAB_0BB6:
+.cmd_i_lower_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.S   .LAB_0BB8
+    BRA.S   .cmd_i_lower_finish
 
-.LAB_0BB7:
+.cmd_i_lower_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BB8:
+.cmd_i_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BB9:
+.cmd_percent_begin:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -2184,20 +2184,20 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #109,D0
     ADD.L   D0,D0
     CMP.L   D0,D1
-    BNE.S   .LAB_0BBA
+    BNE.S   .cmd_percent_checksum_error
 
     MOVEQ   #1,D0
     MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
-    BRA.S   .LAB_0BBB
+    BRA.S   .cmd_percent_finish
 
-.LAB_0BBA:
+.cmd_percent_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BBB:
+.cmd_percent_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_R_Reset:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
@@ -2216,17 +2216,17 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #82,D0
     NOT.B   D0
     CMP.L   D0,D1
-    BNE.S   .LAB_0BBF
+    BNE.S   .cmd_r_checksum_error
 
     MOVE.W  ESQPARS_ResetArmedFlag,D0
     SUBQ.W  #1,D0
-    BNE.S   .LAB_0BC0
+    BNE.S   .cmd_r_finish
 
     MOVE.W  #21000,DATA_WDISP_BSS_LONG_2363
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
 
-.LAB_0BBD:
+.cmd_r_reset_overlay_loop:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
@@ -2234,11 +2234,11 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #34,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_0BBE
+    BPL.S   .cmd_r_reset_overlay_center_adjust
 
     ADDQ.L  #1,D1
 
-.LAB_0BBE:
+.cmd_r_reset_overlay_center_adjust:
     ASR.L   #1,D1
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -2252,25 +2252,25 @@ ESQPARS_ProcessSerialCommandByte:
     JSR     GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    BRA.S   .LAB_0BBD
+    BRA.S   .cmd_r_reset_overlay_loop
 
-.LAB_0BBF:
+.cmd_r_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BC0:
+.cmd_r_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BC1:
+.cmd_m_ack:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BC2:
+.cmd_o_clear_primary_flags:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -2287,20 +2287,20 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #88,D0
     ADD.L   D0,D0
     CMP.L   D0,D1
-    BNE.S   .LAB_0BC3
+    BNE.S   .cmd_o_checksum_error
 
     BSR.W   ESQIFF2_ClearPrimaryEntryFlags34To39
 
-    BRA.S   .LAB_0BC4
+    BRA.S   .cmd_o_finish
 
-.LAB_0BC3:
+.cmd_o_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BC4:
+.cmd_o_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .cmdDATABinaryDL:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
@@ -2311,7 +2311,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.L  D0,D5
     MOVEQ   #1,D0
     CMP.L   DATA_WDISP_BSS_LONG_21BD,D0
-    BNE.W   .LAB_0BE4
+    BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #61,D1
     CMP.B   -5(A5),D1
@@ -2325,7 +2325,7 @@ ESQPARS_ProcessSerialCommandByte:
     JSR     ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_D_Diagnostics:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
@@ -2351,33 +2351,33 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_0BC7
+    BEQ.S   .cmd_d_finish
 
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BC7:
+.cmd_d_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BC8:
+.cmd_upper_w_verify_record:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  D0,-(A7)
     JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BC9:
+.cmd_lower_w_verify_list:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  D0,-(A7)
     JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
 .processCommand_V_Version:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
@@ -2403,32 +2403,32 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BCC
+    BNE.S   .cmd_v_checksum_error
 
     MOVE.W  ESQIFF_RecordLength,D0
     CMPI.W  #$8b,D0
-    BHI.S   .LAB_0BCB
+    BHI.S   .cmd_v_record_too_long
 
     BSR.W   ESQIFF2_ShowVersionMismatchOverlay
 
-    BRA.S   .LAB_0BCD
+    BRA.S   .cmd_v_finish
 
-.LAB_0BCB:
+.cmd_v_record_too_long:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.S   .LAB_0BCD
+    BRA.S   .cmd_v_finish
 
-.LAB_0BCC:
+.cmd_v_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BCD:
+.cmd_v_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BCE:
+.cmd_x_font_command:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -2452,29 +2452,29 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BCF
+    BNE.S   .cmd_x_invalid_record
 
     MOVE.W  ESQIFF_RecordLength,D0
     MOVEQ   #80,D1
     CMP.W   D1,D0
-    BHI.S   .LAB_0BCF
+    BHI.S   .cmd_x_invalid_record
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQPARS_JMPTBL_PARSEINI_HandleFontCommand(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_0BD0
+    BRA.S   .cmd_x_finish
 
-.LAB_0BCF:
+.cmd_x_invalid_record:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BD0:
+.cmd_x_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BD1:
+.cmd_f_lower_config_record:
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
@@ -2493,14 +2493,14 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQIFF_RecordLength,D1
     MOVE.B  D0,-6(A5)
     CMPI.W  #$2328,D1
-    BCS.S   .LAB_0BD2
+    BCS.S   .cmd_f_lower_read_config_payload
 
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BD2:
+.cmd_f_lower_read_config_payload:
     MOVE.W  ESQIFF_RecordLength,D0
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
@@ -2528,7 +2528,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.L  D0,D7
     MOVE.B  ESQIFF_RecordChecksumByte,D0
     CMP.B   D0,D7
-    BNE.S   .LAB_0BD3
+    BNE.S   .cmd_f_lower_checksum_error
 
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
@@ -2542,18 +2542,18 @@ ESQPARS_ProcessSerialCommandByte:
     JSR     ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .LAB_0BD4
+    BRA.S   .cmd_f_lower_finish
 
-.LAB_0BD3:
+.cmd_f_lower_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BD4:
+.cmd_f_lower_finish:
     CLR.W   ESQPARS_ResetArmedFlag
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BD5:
+.cmd_g_filter_or_banner:
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
     JSR     ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
@@ -2565,7 +2565,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  D0,-6(A5)
     MOVEQ   #49,D0
     CMP.B   D0,D6
-    BNE.W   .LAB_0BD9
+    BNE.W   .cmd_g_dispatch_banner_subcommand
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2596,25 +2596,25 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BD8
+    BNE.S   .cmd_g_type1_checksum_error
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
     MOVE.B  (A0),D0
     MOVE.B  TEXTDISP_PrimaryGroupCode,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0BD6
+    BNE.S   .cmd_g_apply_secondary_filter
 
     PEA     LOCAVAIL_PrimaryFilterState
     MOVE.L  A0,-(A7)
     JSR     LOCAVAIL_ParseFilterStateFromBuffer(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .LAB_0BD7
+    BRA.S   .cmd_g_filter_finish
 
-.LAB_0BD6:
+.cmd_g_apply_secondary_filter:
     MOVE.B  TEXTDISP_SecondaryGroupCode,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0BD7
+    BNE.S   .cmd_g_filter_finish
 
     PEA     LOCAVAIL_SecondaryFilterState
     MOVE.L  A0,-(A7)
@@ -2622,19 +2622,19 @@ ESQPARS_ProcessSerialCommandByte:
 
     ADDQ.W  #8,A7
 
-.LAB_0BD7:
+.cmd_g_filter_finish:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BD8:
+.cmd_g_type1_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BD9:
+.cmd_g_dispatch_banner_subcommand:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
@@ -2643,7 +2643,7 @@ ESQPARS_ProcessSerialCommandByte:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.W   .LAB_0BDC
+    BEQ.W   .cmd_g_maybe_type_or_options
 
     PEA     2.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
@@ -2653,7 +2653,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  D0,ESQIFF_RecordLength
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .LAB_0BDB
+    BLS.S   .cmd_g_banner_line_error
 
     MOVEQ   #0,D1
     MOVE.B  -6(A5),D1
@@ -2668,7 +2668,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BDA
+    BNE.S   .cmd_g_banner_checksum_error
 
     MOVE.L  D6,D0
     EXT.W   D0
@@ -2681,24 +2681,24 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BDA:
+.cmd_g_banner_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BDB:
+.cmd_g_banner_line_error:
     MOVE.W  ESQIFF_LineErrorCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_LineErrorCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BDC:
+.cmd_g_maybe_type_or_options:
     MOVEQ   #53,D0
     CMP.B   D0,D6
-    BNE.S   .LAB_0BDE
+    BNE.S   .cmd_g_maybe_cmd_options
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2722,7 +2722,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BDD
+    BNE.S   .cmd_g_type5_checksum_error
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(PC)
@@ -2731,18 +2731,18 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BDD:
+.cmd_g_type5_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BDE:
+.cmd_g_maybe_cmd_options:
     MOVEQ   #54,D0
     CMP.B   D0,D6
-    BNE.S   .LAB_0BE0
+    BNE.S   .cmd_g_maybe_cmd_string
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2766,7 +2766,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BDF
+    BNE.S   .cmd_g_type6_checksum_error
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     GCOMMAND_ParseCommandOptions(PC)
@@ -2775,18 +2775,18 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BDF:
+.cmd_g_type6_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BE0:
+.cmd_g_maybe_cmd_string:
     MOVEQ   #55,D0
     CMP.B   D0,D6
-    BNE.S   .LAB_0BE2
+    BNE.S   .cmd_g_maybe_ppv
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2810,7 +2810,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BE1
+    BNE.S   .cmd_g_type7_checksum_error
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     GCOMMAND_ParseCommandString(PC)
@@ -2819,18 +2819,18 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    BRA.W   .LAB_0BE4
+    BRA.W   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BE1:
+.cmd_g_type7_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
-    BRA.S   .LAB_0BE4
+    BRA.S   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BE2:
+.cmd_g_maybe_ppv:
     MOVEQ   #56,D0
     CMP.B   D0,D6
-    BNE.S   .LAB_0BE4
+    BNE.S   .cmdbyte_clear_preamble_and_finish
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2854,7 +2854,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  ESQIFF_RecordChecksumByte,D1
     CMP.L   D1,D0
-    BNE.S   .LAB_0BE3
+    BNE.S   .cmd_g_type8_checksum_error
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
     JSR     GCOMMAND_ParsePPVCommand(PC)
@@ -2863,19 +2863,19 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    BRA.S   .LAB_0BE4
+    BRA.S   .cmdbyte_clear_preamble_and_finish
 
-.LAB_0BE3:
+.cmd_g_type8_checksum_error:
     MOVE.W  DATACErrs,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATACErrs
 
-.LAB_0BE4:
+.cmdbyte_clear_preamble_and_finish:
     MOVEQ   #0,D0
     MOVE.W  D0,ESQPARS_Preamble55SeenFlag
     MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag
 
-.LAB_0BE5:
+.cmdbyte_return:
     MOVEM.L (A7)+,D2/D5-D7/A2
     UNLK    A5
     RTS

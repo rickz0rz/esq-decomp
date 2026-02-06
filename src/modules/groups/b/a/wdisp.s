@@ -33,7 +33,7 @@
 ; CALLS:
 ;   MATH_DivS32, MATH_Mulu32, MEMORY_DeallocateMemory, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, GLOB_STR_WDISP_C, LAB_186B, LAB_1874, LAB_187B, LAB_187C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, DATA_ESQFUNC_CONST_LONG_1EDF, DATA_P_TYPE_BSS_LONG_205A, WDISP_WeatherStatusCountdown, WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_WORD_22AF, a, aa, e8, return
+;   AbsExecBase, GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, GLOB_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, DATA_ESQFUNC_CONST_LONG_1EDF, DATA_P_TYPE_BSS_LONG_205A, WDISP_WeatherStatusCountdown, WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_WORD_22AF
 ; WRITES:
 ;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -55,16 +55,16 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D0,-152(A5)
     MOVEQ   #0,D0
     CMP.B   D0,D1
-    BLS.W   .LAB_187C
+    BLS.W   .overlay_draw_fallback_text
 
     MOVE.W  WDISP_WeatherStatusDigitChar,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BEQ.W   .LAB_187C
+    BEQ.W   .overlay_draw_fallback_text
 
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     SUBQ.B  #1,D0
-    BNE.S   .LAB_185D
+    BNE.S   .overlay_lookup_brush_by_index
 
     PEA     ESQFUNC_PwBrushListHead
     MOVE.L  DATA_ESQFUNC_CONST_LONG_1EDF,-(A7)
@@ -72,9 +72,9 @@ WDISP_DrawWeatherStatusOverlay:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
-    BRA.S   .LAB_185E
+    BRA.S   .overlay_after_brush_lookup
 
-.LAB_185D:
+.overlay_lookup_brush_by_index:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
@@ -87,9 +87,9 @@ WDISP_DrawWeatherStatusOverlay:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
 
-.LAB_185E:
+.overlay_after_brush_lookup:
     TST.L   D0
-    BEQ.S   .LAB_185F
+    BEQ.S   .overlay_use_default_brush_size
 
     MOVEQ   #0,D1
     MOVEA.L D0,A0
@@ -98,14 +98,14 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.W  176(A0),D0
     MOVE.L  D0,-216(A5)
     MOVE.L  D1,-212(A5)
-    BRA.S   .LAB_1860
+    BRA.S   .overlay_dup_and_scan_text
 
-.LAB_185F:
+.overlay_use_default_brush_size:
     MOVEQ   #90,D0
     MOVE.L  D0,-212(A5)
     MOVE.L  #$aa,-216(A5)
 
-.LAB_1860:
+.overlay_dup_and_scan_text:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
@@ -113,9 +113,9 @@ WDISP_DrawWeatherStatusOverlay:
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
 
-.LAB_1861:
+.overlay_scan_overlay_text_len_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_1861
+    BNE.S   .overlay_scan_overlay_text_len_loop
 
     SUBQ.L  #1,A0
     SUBA.L  D0,A0
@@ -125,39 +125,39 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D0,-8(A5)
     MOVE.L  D1,-160(A5)
 
-.LAB_1862:
+.overlay_split_on_delimiter_loop:
     MOVEA.L -12(A5),A0
     TST.B   (A0)
-    BEQ.S   .LAB_1864
+    BEQ.S   .overlay_after_split
 
     MOVEQ   #24,D0
     CMP.B   (A0),D0
-    BNE.S   .LAB_1863
+    BNE.S   .overlay_split_next_char
 
     CLR.B   (A0)
     ADDQ.L  #1,-152(A5)
 
-.LAB_1863:
+.overlay_split_next_char:
     ADDQ.L  #1,-12(A5)
-    BRA.S   .LAB_1862
+    BRA.S   .overlay_split_on_delimiter_loop
 
-.LAB_1864:
+.overlay_after_split:
     MOVEA.L -8(A5),A0
     MOVE.L  A0,-12(A5)
     TST.B   (A0)
-    BNE.S   .LAB_1865
+    BNE.S   .overlay_skip_leading_empty_line
 
     ADDQ.L  #1,-12(A5)
     SUBQ.L  #1,-152(A5)
 
-.LAB_1865:
+.overlay_skip_leading_empty_line:
     CMPI.L  #$a,-152(A5)
-    BLE.S   .LAB_1866
+    BLE.S   .overlay_clamp_line_count
 
     MOVEQ   #10,D0
     MOVE.L  D0,-152(A5)
 
-.LAB_1866:
+.overlay_clamp_line_count:
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -185,10 +185,10 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     MOVE.L  D1,-196(A5)
     SUBQ.B  #1,D0
-    BEQ.W   .LAB_186B
+    BEQ.W   .overlay_prepare_status_text
 
     TST.L   -4(A5)
-    BEQ.W   .LAB_186B
+    BEQ.W   .overlay_prepare_status_text
 
     MOVEQ   #1,D0
     MOVEA.L -4(A5),A0
@@ -214,13 +214,13 @@ WDISP_DrawWeatherStatusOverlay:
     CLR.L   -192(A5)
     MOVE.L  D1,-188(A5)
 
-.LAB_1867:
+.overlay_copy_palette_from_brush_loop:
     MOVE.L  -192(A5),D0
     CMP.L   -188(A5),D0
-    BGE.S   .LAB_1868
+    BGE.S   .overlay_after_palette_copy
 
     CMP.L   -184(A5),D0
-    BGE.S   .LAB_1868
+    BGE.S   .overlay_after_palette_copy
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D0,A0
@@ -229,18 +229,18 @@ WDISP_DrawWeatherStatusOverlay:
     ADDI.L  #$e8,D0
     MOVE.B  0(A1,D0.L),(A0)
     ADDQ.L  #1,-192(A5)
-    BRA.S   .LAB_1867
+    BRA.S   .overlay_copy_palette_from_brush_loop
 
-.LAB_1868:
+.overlay_after_palette_copy:
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     CLR.L   -192(A5)
 
-.LAB_1869:
+.overlay_copy_accumulator_rows_loop:
     MOVE.L  -192(A5),D0
     MOVEQ   #4,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_186A
+    BGE.S   .overlay_after_accumulator_copy
 
     ASL.L   #3,D0
     MOVEA.L -4(A5),A0
@@ -256,9 +256,9 @@ WDISP_DrawWeatherStatusOverlay:
     JSR     _LVOCopyMem(A6)
 
     ADDQ.L  #1,-192(A5)
-    BRA.S   .LAB_1869
+    BRA.S   .overlay_copy_accumulator_rows_loop
 
-.LAB_186A:
+.overlay_after_accumulator_copy:
     CLR.W   WDISP_AccumulatorCaptureActive
     MOVE.W  #1,WDISP_AccumulatorFlushPending
     MOVE.L  -196(A5),D0
@@ -275,37 +275,37 @@ WDISP_DrawWeatherStatusOverlay:
 
     LEA     28(A7),A7
 
-.LAB_186B:
+.overlay_prepare_status_text:
     TST.L   WDISP_WeatherStatusTextPtr
-    BEQ.S   .LAB_186D
+    BEQ.S   .overlay_clear_status_text
 
     MOVEA.L WDISP_WeatherStatusTextPtr,A0
     TST.B   (A0)
-    BEQ.S   .LAB_186D
+    BEQ.S   .overlay_clear_status_text
 
     LEA     -140(A5),A1
 
-.LAB_186C:
+.overlay_copy_status_text_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_186C
+    BNE.S   .overlay_copy_status_text_loop
 
-    BRA.S   .LAB_186E
+    BRA.S   .overlay_measure_status_text
 
-.LAB_186D:
+.overlay_clear_status_text:
     CLR.B   -140(A5)
 
-.LAB_186E:
+.overlay_measure_status_text:
     LEA     -140(A5),A0
     MOVEA.L A0,A1
 
-.LAB_186F:
+.overlay_scan_status_text_len_loop:
     TST.B   (A1)+
-    BNE.S   .LAB_186F
+    BNE.S   .overlay_scan_status_text_len_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,-204(A5)
-    BLE.S   .LAB_1871
+    BLE.S   .overlay_prepare_multiline_metrics
 
     MOVEA.L A3,A1
     MOVE.L  -204(A5),D0
@@ -315,11 +315,11 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D7,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_1870
+    BPL.S   .overlay_center_status_text_x
 
     ADDQ.L  #1,D1
 
-.LAB_1870:
+.overlay_center_status_text_x:
     ASR.L   #1,D1
     MOVE.L  D1,D5
     MOVEQ   #0,D0
@@ -348,18 +348,18 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  -204(A5),D0
     JSR     _LVOText(A6)
 
-.LAB_1871:
+.overlay_prepare_multiline_metrics:
     MOVEQ   #0,D0
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  -152(A5),D1
     ADDQ.L  #1,D1
     TST.L   D1
-    BPL.S   .LAB_1872
+    BPL.S   .overlay_divide_line_count
 
     ADDQ.L  #1,D1
 
-.LAB_1872:
+.overlay_divide_line_count:
     ASR.L   #1,D1
     MOVE.L  D1,D2
     ADDQ.L  #1,D2
@@ -381,11 +381,11 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D7,D1
     SUB.L   -216(A5),D1
     TST.L   D1
-    BPL.S   .LAB_1873
+    BPL.S   .overlay_center_line_width
 
     ADDQ.L  #1,D1
 
-.LAB_1873:
+.overlay_center_line_width:
     ASR.L   #1,D1
     MOVE.L  D0,-176(A5)
     MOVE.L  D1,-200(A5)
@@ -398,17 +398,17 @@ WDISP_DrawWeatherStatusOverlay:
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-.LAB_1874:
+.overlay_draw_lines_loop:
     MOVE.L  -156(A5),D0
     CMP.L   -152(A5),D0
-    BGE.W   .LAB_187B
+    BGE.W   .overlay_cleanup_text_copy
 
     TST.L   D0
-    BPL.S   .LAB_1875
+    BPL.S   .overlay_half_line_index
 
     ADDQ.L  #1,D0
 
-.LAB_1875:
+.overlay_half_line_index:
     ASR.L   #1,D0
     MOVE.L  -176(A5),D1
     MOVE.L  -180(A5),D2
@@ -431,7 +431,7 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.W  D0,D2
     SUB.L   D2,D1
     CMP.L   D6,D1
-    BGE.W   .LAB_187B
+    BGE.W   .overlay_cleanup_text_copy
 
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -200(A5),-(A7)
@@ -449,11 +449,11 @@ WDISP_DrawWeatherStatusOverlay:
     SUB.L   D0,D1
     SUBQ.L  #1,D1
     TST.L   D1
-    BPL.S   .LAB_1876
+    BPL.S   .overlay_center_first_line
 
     ADDQ.L  #1,D1
 
-.LAB_1876:
+.overlay_center_first_line:
     ASR.L   #1,D1
     MOVE.L  D1,D5
     MOVE.L  D0,-208(A5)
@@ -470,13 +470,13 @@ WDISP_DrawWeatherStatusOverlay:
     ADDQ.L  #1,-156(A5)
     MOVE.L  -156(A5),D0
     CMP.L   -152(A5),D0
-    BGE.S   .LAB_1879
+    BGE.S   .overlay_after_optional_second_line
 
     MOVEA.L -12(A5),A0
 
-.LAB_1877:
+.overlay_find_next_line_start_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_1877
+    BNE.S   .overlay_find_next_line_start_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -12(A5),A0
@@ -498,11 +498,11 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  -200(A5),D1
     ADD.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_1878
+    BPL.S   .overlay_center_next_line
 
     ADDQ.L  #1,D1
 
-.LAB_1878:
+.overlay_center_next_line:
     ASR.L   #1,D1
     MOVE.L  D7,D2
     SUB.L   D1,D2
@@ -521,21 +521,21 @@ WDISP_DrawWeatherStatusOverlay:
 
     ADDQ.L  #1,-156(A5)
 
-.LAB_1879:
+.overlay_after_optional_second_line:
     MOVEA.L -12(A5),A0
 
-.LAB_187A:
+.overlay_skip_current_line_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_187A
+    BNE.S   .overlay_skip_current_line_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -12(A5),A0
     MOVE.L  A0,D0
     ADDQ.L  #1,D0
     ADD.L   D0,-12(A5)
-    BRA.W   .LAB_1874
+    BRA.W   .overlay_draw_lines_loop
 
-.LAB_187B:
+.overlay_cleanup_text_copy:
     MOVE.L  -160(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     PEA     301.W
@@ -545,23 +545,23 @@ WDISP_DrawWeatherStatusOverlay:
     LEA     16(A7),A7
     BRA.W   .return
 
-.LAB_187C:
+.overlay_draw_fallback_text:
     TST.L   DATA_P_TYPE_BSS_LONG_205A
-    BEQ.S   .LAB_187D
+    BEQ.S   .overlay_use_no_data_string
 
     MOVE.L  DATA_P_TYPE_BSS_LONG_205A,-12(A5)
-    BRA.S   .LAB_187E
+    BRA.S   .overlay_measure_fallback_text
 
-.LAB_187D:
+.overlay_use_no_data_string:
     MOVEA.L GLOB_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,A0
     MOVE.L  A0,-12(A5)
 
-.LAB_187E:
+.overlay_measure_fallback_text:
     MOVEA.L -12(A5),A0
 
-.LAB_187F:
+.overlay_scan_fallback_len_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_187F
+    BNE.S   .overlay_scan_fallback_len_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -12(A5),A0
@@ -583,11 +583,11 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D7,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_1880
+    BPL.S   .overlay_center_fallback_x
 
     ADDQ.L  #1,D1
 
-.LAB_1880:
+.overlay_center_fallback_x:
     ASR.L   #1,D1
     MOVEQ   #0,D0
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -595,11 +595,11 @@ WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D6,D2
     SUB.L   D0,D2
     TST.L   D2
-    BPL.S   .LAB_1881
+    BPL.S   .overlay_center_fallback_y
 
     ADDQ.L  #1,D2
 
-.LAB_1881:
+.overlay_center_fallback_y:
     ASR.L   #1,D2
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -652,7 +652,7 @@ WDISP_DrawWeatherStatusOverlay:
 ; CALLS:
 ;   MATH_DivS32, MATH_Mulu32, STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, GLOB_HANDLE_PREVUEC_FONT, GLOB_JMPTBL_DAYS_OF_WEEK, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_PERCENT_D, GLOB_STR_PERCENT_D_SLASH, LAB_188D, LAB_1895, LAB_1896, LAB_189B, LAB_189E, LAB_189F, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, DATA_P_TYPE_BSS_LONG_205B, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, WDISP_PaletteTriplesRBase, DATA_WDISP_BSS_WORD_22AF, e8, fffffc19, return
+;   AbsExecBase, GLOB_HANDLE_PREVUEC_FONT, GLOB_JMPTBL_DAYS_OF_WEEK, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_PERCENT_D, GLOB_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, DATA_P_TYPE_BSS_LONG_205B, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, WDISP_PaletteTriplesRBase, DATA_WDISP_BSS_WORD_22AF
 ; WRITES:
 ;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -702,22 +702,22 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVEM.L D1,-88(A5)
     MOVEQ   #1,D0
     CMP.L   16(A0),D0
-    BEQ.S   .LAB_1884
+    BEQ.S   .dayentry_normalize_brush_index
 
     MOVEQ   #2,D0
     CMP.L   D0,D1
-    BLT.S   .LAB_1884
+    BLT.S   .dayentry_normalize_brush_index
 
     MOVEQ   #6,D3
     CMP.L   D3,D1
-    BLE.S   .LAB_1885
+    BLE.S   .dayentry_lookup_brush
 
-.LAB_1884:
+.dayentry_normalize_brush_index:
     MOVEQ   #2,D0
     CLR.L   -100(A5)
     MOVE.L  D0,-88(A5)
 
-.LAB_1885:
+.dayentry_lookup_brush:
     MOVE.L  -88(A5),D0
     ASL.L   #2,D0
     LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
@@ -729,7 +729,7 @@ WDISP_DrawWeatherStatusDayEntry:
     ADDQ.W  #8,A7
     MOVE.L  D0,-104(A5)
     TST.L   D0
-    BEQ.S   .LAB_1886
+    BEQ.S   .dayentry_use_default_brush_size
 
     MOVEQ   #0,D1
     MOVEA.L D0,A0
@@ -738,16 +738,16 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.W  176(A0),D2
     MOVE.L  D1,-12(A5)
     MOVE.L  D2,-16(A5)
-    BRA.S   .LAB_1887
+    BRA.S   .dayentry_branch_by_status_mode
 
-.LAB_1886:
+.dayentry_use_default_brush_size:
     MOVEQ   #90,D1
     MOVE.L  D1,-12(A5)
     MOVEQ   #0,D1
     MOVE.L  D1,-100(A5)
     MOVE.L  D1,-16(A5)
 
-.LAB_1887:
+.dayentry_branch_by_status_mode:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
@@ -755,12 +755,12 @@ WDISP_DrawWeatherStatusDayEntry:
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     TST.L   16(A0)
-    BNE.W   .LAB_1895
+    BNE.W   .dayentry_draw_multiline_forecast
 
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     TST.L   -100(A5)
-    BEQ.W   .LAB_188D
+    BEQ.W   .dayentry_restore_base_palette
 
     PEA     5.W
     JSR     WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
@@ -782,13 +782,13 @@ WDISP_DrawWeatherStatusDayEntry:
     CLR.L   -84(A5)
     MOVE.L  D1,-80(A5)
 
-.LAB_1888:
+.dayentry_copy_palette_from_brush_loop:
     MOVE.L  -84(A5),D0
     CMP.L   -80(A5),D0
-    BGE.S   .LAB_1889
+    BGE.S   .dayentry_after_palette_copy
 
     CMP.L   -76(A5),D0
-    BGE.S   .LAB_1889
+    BGE.S   .dayentry_after_palette_copy
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D0,A0
@@ -797,16 +797,16 @@ WDISP_DrawWeatherStatusDayEntry:
     ADDI.L  #$e8,D0
     MOVE.B  0(A1,D0.L),(A0)
     ADDQ.L  #1,-84(A5)
-    BRA.S   .LAB_1888
+    BRA.S   .dayentry_copy_palette_from_brush_loop
 
-.LAB_1889:
+.dayentry_after_palette_copy:
     CLR.L   -84(A5)
 
-.LAB_188A:
+.dayentry_copy_accumulator_rows_loop:
     MOVE.L  -84(A5),D0
     MOVEQ   #4,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_188B
+    BGE.S   .dayentry_after_accumulator_copy
 
     ASL.L   #3,D0
     MOVEA.L -104(A5),A0
@@ -822,20 +822,20 @@ WDISP_DrawWeatherStatusDayEntry:
     JSR     _LVOCopyMem(A6)
 
     ADDQ.L  #1,-84(A5)
-    BRA.S   .LAB_188A
+    BRA.S   .dayentry_copy_accumulator_rows_loop
 
-.LAB_188B:
+.dayentry_after_accumulator_copy:
     CLR.W   WDISP_AccumulatorCaptureActive
     MOVE.W  #1,WDISP_AccumulatorFlushPending
     MOVE.L  -16(A5),D0
     MOVE.L  -4(A5),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_188C
+    BPL.S   .dayentry_center_brush_x
 
     ADDQ.L  #1,D1
 
-.LAB_188C:
+.dayentry_center_brush_x:
     ASR.L   #1,D1
     MOVE.L  -8(A5),D2
     ADD.L   D1,D2
@@ -861,12 +861,12 @@ WDISP_DrawWeatherStatusDayEntry:
     JSR     WDISP_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
-    BRA.S   .LAB_188E
+    BRA.S   .dayentry_build_temperature_strings
 
-.LAB_188D:
+.dayentry_restore_base_palette:
     JSR     WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(PC)
 
-.LAB_188E:
+.dayentry_build_temperature_strings:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
@@ -874,15 +874,15 @@ WDISP_DrawWeatherStatusDayEntry:
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     CMPI.L  #$fffffc19,8(A0)
-    BNE.S   .LAB_188F
+    BNE.S   .dayentry_format_high_temp_numeric
 
     LEA     WDISP_STR_UNKNOWN_NUM_WITH_SLASH,A0
     LEA     -46(A5),A1
     MOVE.L  (A0)+,(A1)+
     CLR.B   (A1)
-    BRA.S   .LAB_1890
+    BRA.S   .dayentry_format_low_temp_string
 
-.LAB_188F:
+.dayentry_format_high_temp_numeric:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
@@ -896,7 +896,7 @@ WDISP_DrawWeatherStatusDayEntry:
 
     LEA     12(A7),A7
 
-.LAB_1890:
+.dayentry_format_low_temp_string:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
@@ -904,14 +904,14 @@ WDISP_DrawWeatherStatusDayEntry:
     LEA     WDISP_StatusDayEntry0,A0
     ADDA.L  D0,A0
     CMPI.L  #$fffffc19,12(A0)   ; -999
-    BNE.S   .LAB_1891
+    BNE.S   .dayentry_format_low_temp_numeric
 
     LEA     WDISP_STR_UNKNOWN_NUM,A0
     LEA     -26(A5),A1
     MOVE.L  (A0)+,(A1)+
-    BRA.S   .LAB_1892
+    BRA.S   .dayentry_draw_temperature_line
 
-.LAB_1891:
+.dayentry_format_low_temp_numeric:
     MOVE.L  D7,D0
     MOVEQ   #20,D1
     JSR     MATH_Mulu32(PC)
@@ -925,7 +925,7 @@ WDISP_DrawWeatherStatusDayEntry:
 
     LEA     12(A7),A7
 
-.LAB_1892:
+.dayentry_draw_temperature_line:
     PEA     -26(A5)
     PEA     -46(A5)
     JSR     STRING_AppendAtNull(PC)
@@ -943,9 +943,9 @@ WDISP_DrawWeatherStatusDayEntry:
     LEA     -46(A5),A0
     MOVEA.L A0,A1
 
-.LAB_1893:
+.dayentry_scan_temp_line_len_loop:
     TST.B   (A1)+
-    BNE.S   .LAB_1893
+    BNE.S   .dayentry_scan_temp_line_len_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -957,11 +957,11 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  -4(A5),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_1894
+    BPL.S   .dayentry_center_temp_line_x
 
     ADDQ.L  #1,D1
 
-.LAB_1894:
+.dayentry_center_temp_line_x:
     ASR.L   #1,D1
     MOVE.L  -8(A5),D0
     ADD.L   D1,D0
@@ -977,9 +977,9 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  -50(A5),D0
     JSR     _LVOText(A6)
 
-    BRA.W   .LAB_189F
+    BRA.W   .dayentry_draw_weekday_label
 
-.LAB_1895:
+.dayentry_draw_multiline_forecast:
     MOVE.L  DATA_P_TYPE_BSS_LONG_205B,-54(A5)
     MOVEQ   #20,D0
     SUB.L   D0,-4(A5)
@@ -994,14 +994,14 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-.LAB_1896:
+.dayentry_multiline_loop:
     TST.L   -54(A5)
-    BEQ.W   .LAB_189E
+    BEQ.W   .dayentry_restore_panel_width
 
     CMPI.L  #$4,-68(A5)
-    BGE.W   .LAB_189E
+    BGE.W   .dayentry_restore_panel_width
 
-.LAB_1897:
+.dayentry_skip_class3_chars_loop:
     MOVEA.L -54(A5),A0
     MOVE.B  (A0),D0
     EXT.W   D0
@@ -1009,12 +1009,12 @@ WDISP_DrawWeatherStatusDayEntry:
     LEA     WDISP_CharClassTable,A1
     ADDA.L  D0,A1
     BTST    #3,(A1)
-    BEQ.S   .LAB_1898
+    BEQ.S   .dayentry_draw_wrapped_line
 
     ADDQ.L  #1,-54(A5)
-    BRA.S   .LAB_1897
+    BRA.S   .dayentry_skip_class3_chars_loop
 
-.LAB_1898:
+.dayentry_draw_wrapped_line:
     CLR.L   -(A7)
     MOVE.L  -54(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
@@ -1026,16 +1026,16 @@ WDISP_DrawWeatherStatusDayEntry:
     LEA     24(A7),A7
     MOVE.L  D0,-58(A5)
     TST.L   D0
-    BEQ.W   .LAB_189B
+    BEQ.W   .dayentry_draw_plain_line
 
     MOVEA.L D0,A0
     MOVE.B  (A0),-59(A5)
     CLR.B   (A0)
     MOVEA.L -54(A5),A0
 
-.LAB_1899:
+.dayentry_find_wrapped_line_end_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_1899
+    BNE.S   .dayentry_find_wrapped_line_end_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -54(A5),A0
@@ -1054,11 +1054,11 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVEQ   #20,D0
     ADD.L   D0,D2
     TST.L   D2
-    BPL.S   .LAB_189A
+    BPL.S   .dayentry_center_wrapped_line_x
 
     ADDQ.L  #1,D2
 
-.LAB_189A:
+.dayentry_center_wrapped_line_x:
     ASR.L   #1,D2
     MOVE.L  -8(A5),D0
     ADD.L   D2,D0
@@ -1079,14 +1079,14 @@ WDISP_DrawWeatherStatusDayEntry:
     ADD.L   D1,-64(A5)
     ADDQ.L  #1,-68(A5)
     MOVE.L  D0,-54(A5)
-    BRA.W   .LAB_1896
+    BRA.W   .dayentry_multiline_loop
 
-.LAB_189B:
+.dayentry_draw_plain_line:
     MOVEA.L -54(A5),A0
 
-.LAB_189C:
+.dayentry_find_plain_line_end_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_189C
+    BNE.S   .dayentry_find_plain_line_end_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -54(A5),A0
@@ -1102,11 +1102,11 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVEQ   #20,D0
     ADD.L   D0,D2
     TST.L   D2
-    BPL.S   .LAB_189D
+    BPL.S   .dayentry_center_plain_line_x
 
     ADDQ.L  #1,D2
 
-.LAB_189D:
+.dayentry_center_plain_line_x:
     ASR.L   #1,D2
     MOVE.L  -8(A5),D0
     ADD.L   D2,D0
@@ -1121,13 +1121,13 @@ WDISP_DrawWeatherStatusDayEntry:
 
     LEA     24(A7),A7
     MOVE.L  D0,-54(A5)
-    BRA.W   .LAB_1896
+    BRA.W   .dayentry_multiline_loop
 
-.LAB_189E:
+.dayentry_restore_panel_width:
     MOVEQ   #20,D0
     ADD.L   D0,-4(A5)
 
-.LAB_189F:
+.dayentry_draw_weekday_label:
     MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
     ADD.L   D7,D0
@@ -1141,16 +1141,16 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVEA.L (A0),A1
     LEA     -46(A5),A2
 
-.LAB_18A0:
+.dayentry_copy_weekday_text_loop:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   .LAB_18A0
+    BNE.S   .dayentry_copy_weekday_text_loop
 
     LEA     -46(A5),A0
     MOVEA.L A0,A1
 
-.LAB_18A1:
+.dayentry_scan_weekday_len_loop:
     TST.B   (A1)+
-    BNE.S   .LAB_18A1
+    BNE.S   .dayentry_scan_weekday_len_loop
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -1163,11 +1163,11 @@ WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  -4(A5),D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_18A2
+    BPL.S   .dayentry_center_weekday_x
 
     ADDQ.L  #1,D1
 
-.LAB_18A2:
+.dayentry_center_weekday_x:
     ASR.L   #1,D1
     MOVE.L  -8(A5),D0
     ADD.L   D1,D0
@@ -1243,16 +1243,16 @@ WDISP_DrawWeatherStatusSummary:
     MOVE.B  DATA_TLIBA1_BSS_WORD_2196,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_18A6
+    BLS.S   .summary_draw_fallback_text
 
     MOVE.W  WDISP_WeatherStatusDigitChar,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BEQ.S   .LAB_18A6
+    BEQ.S   .summary_draw_fallback_text
 
     MOVEQ   #0,D4
 
-.LAB_18A5:
+.summary_draw_day_panels_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D4
     BGE.W   .return
@@ -1265,25 +1265,25 @@ WDISP_DrawWeatherStatusSummary:
 
     LEA     16(A7),A7
     ADDQ.L  #1,D4
-    BRA.S   .LAB_18A5
+    BRA.S   .summary_draw_day_panels_loop
 
-.LAB_18A6:
+.summary_draw_fallback_text:
     TST.L   DATA_P_TYPE_BSS_LONG_205B
-    BEQ.S   .LAB_18A7
+    BEQ.S   .summary_use_default_fallback_text
 
     MOVE.L  DATA_P_TYPE_BSS_LONG_205B,-4(A5)
-    BRA.S   .LAB_18A8
+    BRA.S   .summary_measure_fallback_text
 
-.LAB_18A7:
+.summary_use_default_fallback_text:
     MOVEA.L DATA_SCRIPT_CONST_LONG_20B0,A0
     MOVE.L  A0,-4(A5)
 
-.LAB_18A8:
+.summary_measure_fallback_text:
     MOVEA.L -4(A5),A0
 
-.LAB_18A9:
+.summary_scan_fallback_len_loop:
     TST.B   (A0)+
-    BNE.S   .LAB_18A9
+    BNE.S   .summary_scan_fallback_len_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -4(A5),A0
@@ -1297,11 +1297,11 @@ WDISP_DrawWeatherStatusSummary:
     MOVE.L  D7,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_18AA
+    BPL.S   .summary_center_fallback_x
 
     ADDQ.L  #1,D1
 
-.LAB_18AA:
+.summary_center_fallback_x:
     ASR.L   #1,D1
     MOVEQ   #0,D0
     MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
@@ -1309,11 +1309,11 @@ WDISP_DrawWeatherStatusSummary:
     MOVE.L  D6,D2
     SUB.L   D0,D2
     TST.L   D2
-    BPL.S   .LAB_18AB
+    BPL.S   .summary_center_fallback_y
 
     ADDQ.L  #1,D2
 
-.LAB_18AB:
+.summary_center_fallback_y:
     ASR.L   #1,D2
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -1347,7 +1347,7 @@ WDISP_DrawWeatherStatusSummary:
 ; CALLS:
 ;   TEXTDISP_ResetSelectionAndRefresh, TLIBA3_ClearViewModeRastPort, TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, LAB_18BC, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_WORD_22B0, DATA_WDISP_BSS_BYTE_22B2, DATA_WDISP_BSS_BYTE_22B3, DATA_WDISP_BSS_WORD_22B4, DATA_WDISP_BSS_BYTE_22B6, DATA_WDISP_BSS_BYTE_22B7, DATA_WDISP_BSS_WORD_22B8, DATA_WDISP_BSS_BYTE_22BA, DATA_WDISP_BSS_BYTE_22BB, DATA_WDISP_BSS_WORD_22BC, DATA_WDISP_BSS_BYTE_22BE, DATA_WDISP_BSS_BYTE_22BF, DATA_WDISP_BSS_LONG_2380, localRastport
+;   GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_WORD_22B0, DATA_WDISP_BSS_BYTE_22B2, DATA_WDISP_BSS_BYTE_22B3, DATA_WDISP_BSS_WORD_22B4, DATA_WDISP_BSS_BYTE_22B6, DATA_WDISP_BSS_BYTE_22B7, DATA_WDISP_BSS_WORD_22B8, DATA_WDISP_BSS_BYTE_22BA, DATA_WDISP_BSS_BYTE_22BB, DATA_WDISP_BSS_WORD_22BC, DATA_WDISP_BSS_BYTE_22BE, DATA_WDISP_BSS_BYTE_22BF, DATA_WDISP_BSS_LONG_2380
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_2380, localRastport
 ; DESC:
@@ -1365,13 +1365,13 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.L  8(A5),D7
     MOVEQ   #48,D0
     CMP.L   D0,D7
-    BEQ.S   .LAB_18AE
+    BEQ.S   .handle_status_cmd_render_panel
 
     MOVEQ   #51,D0
     CMP.L   D0,D7
-    BNE.W   .LAB_18BC
+    BNE.W   .handle_status_cmd_fallback_refresh
 
-.LAB_18AE:
+.handle_status_cmd_render_panel:
     CLR.L   -(A7)
     PEA     4.W
     JSR     TLIBA3_ClearViewModeRastPort(PC)
@@ -1421,7 +1421,7 @@ WDISP_HandleWeatherStatusCommand:
 
     MOVEQ   #48,D0
     CMP.L   D0,D7
-    BNE.S   .LAB_18AF
+    BNE.S   .handle_status_cmd_draw_summary
 
     MOVE.L  D6,-(A7)
     MOVE.L  D5,-(A7)
@@ -1429,12 +1429,12 @@ WDISP_HandleWeatherStatusCommand:
     BSR.W   WDISP_DrawWeatherStatusOverlay
 
     LEA     12(A7),A7
-    BRA.S   .LAB_18B0
+    BRA.S   .handle_status_cmd_restore_context
 
-.LAB_18AF:
+.handle_status_cmd_draw_summary:
     MOVEQ   #51,D0
     CMP.L   D0,D7
-    BNE.S   .LAB_18B0
+    BNE.S   .handle_status_cmd_restore_context
 
     MOVE.L  D6,-(A7)
     MOVE.L  D5,-(A7)
@@ -1443,7 +1443,7 @@ WDISP_HandleWeatherStatusCommand:
 
     LEA     12(A7),A7
 
-.LAB_18B0:
+.handle_status_cmd_restore_context:
     MOVEQ   #4,D0
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
@@ -1455,105 +1455,105 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
-    BCC.S   .LAB_18B1
+    BCC.S   .handle_status_cmd_clear_slot_1b0d
 
     MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D0
     CMP.B   D1,D0
-    BCC.S   .LAB_18B1
+    BCC.S   .handle_status_cmd_clear_slot_1b0d
 
     MOVE.W  DATA_WDISP_BSS_WORD_22B0,D0
     CMPI.W  #$4000,D0
-    BGE.S   .LAB_18B1
+    BGE.S   .handle_status_cmd_clear_slot_1b0d
 
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
-    BRA.S   .LAB_18B2
+    BRA.S   .handle_status_cmd_validate_slot_1b0e
 
-.LAB_18B1:
+.handle_status_cmd_clear_slot_1b0d:
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
 
-.LAB_18B2:
+.handle_status_cmd_validate_slot_1b0e:
     MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D2
     CMP.B   D1,D2
-    BCC.S   .LAB_18B3
+    BCC.S   .handle_status_cmd_clear_slot_1b0e
 
     MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D2
     CMP.B   D1,D2
-    BCC.S   .LAB_18B3
+    BCC.S   .handle_status_cmd_clear_slot_1b0e
 
     MOVE.W  DATA_WDISP_BSS_WORD_22B4,D2
     CMPI.W  #$4000,D2
-    BGE.S   .LAB_18B3
+    BGE.S   .handle_status_cmd_clear_slot_1b0e
 
     MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
-    BRA.S   .LAB_18B4
+    BRA.S   .handle_status_cmd_validate_slot_1b0f
 
-.LAB_18B3:
+.handle_status_cmd_clear_slot_1b0e:
     MOVEQ   #0,D2
     MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
 
-.LAB_18B4:
+.handle_status_cmd_validate_slot_1b0f:
     MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
     CMP.B   D1,D0
-    BCC.S   .LAB_18B5
+    BCC.S   .handle_status_cmd_clear_slot_1b0f
 
     MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D0
     CMP.B   D1,D0
-    BCC.S   .LAB_18B5
+    BCC.S   .handle_status_cmd_clear_slot_1b0f
 
     MOVE.W  DATA_WDISP_BSS_WORD_22B8,D0
     CMPI.W  #16384,D0
-    BGE.S   .LAB_18B5
+    BGE.S   .handle_status_cmd_clear_slot_1b0f
 
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
-    BRA.S   .LAB_18B6
+    BRA.S   .handle_status_cmd_validate_slot_1b10
 
-.LAB_18B5:
+.handle_status_cmd_clear_slot_1b0f:
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
 
-.LAB_18B6:
+.handle_status_cmd_validate_slot_1b10:
     MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D2
     CMP.B   D1,D2
-    BCC.S   .LAB_18B7
+    BCC.S   .handle_status_cmd_clear_slot_1b10
 
     MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D2
     CMP.B   D1,D2
-    BCC.S   .LAB_18B7
+    BCC.S   .handle_status_cmd_clear_slot_1b10
 
     MOVE.W  DATA_WDISP_BSS_WORD_22BC,D1
     CMPI.W  #16384,D1
-    BGE.S   .LAB_18B7
+    BGE.S   .handle_status_cmd_clear_slot_1b10
 
     MOVE.W  D1,DATA_COMMON_BSS_WORD_1B10
-    BRA.S   .LAB_18B8
+    BRA.S   .handle_status_cmd_apply_capture_flag
 
-.LAB_18B7:
+.handle_status_cmd_clear_slot_1b10:
     MOVEQ   #0,D1
     MOVE.W  D1,DATA_COMMON_BSS_WORD_1B10
 
-.LAB_18B8:
+.handle_status_cmd_apply_capture_flag:
     TST.W   DATA_COMMON_BSS_WORD_1B0D
-    BNE.S   .LAB_18B9
+    BNE.S   .handle_status_cmd_enable_capture
 
     TST.W   DATA_COMMON_BSS_WORD_1B0E
-    BNE.S   .LAB_18B9
+    BNE.S   .handle_status_cmd_enable_capture
 
     TST.W   DATA_COMMON_BSS_WORD_1B0F
-    BNE.S   .LAB_18B9
+    BNE.S   .handle_status_cmd_enable_capture
 
     TST.W   D1
-    BEQ.S   .LAB_18BA
+    BEQ.S   .handle_status_cmd_disable_capture
 
-.LAB_18B9:
+.handle_status_cmd_enable_capture:
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
-    BRA.S   .LAB_18BB
+    BRA.S   .handle_status_cmd_finalize_state
 
-.LAB_18BA:
+.handle_status_cmd_disable_capture:
     MOVEQ   #0,D0
     MOVE.W  D0,WDISP_AccumulatorCaptureActive
 
-.LAB_18BB:
+.handle_status_cmd_finalize_state:
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B11
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B15
@@ -1565,12 +1565,12 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.W  D0,DATA_COMMON_BSS_LONG_1B18
     JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
-    BRA.S   .LAB_18BD
+    BRA.S   .handle_status_cmd_return
 
-.LAB_18BC:
+.handle_status_cmd_fallback_refresh:
     JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
 
-.LAB_18BD:
+.handle_status_cmd_return:
     MOVEM.L (A7)+,D2/D5-D7
     UNLK    A5
     RTS
@@ -1611,18 +1611,18 @@ WDISP_HandleWeatherStatusCommand:
     MOVEA.L 8(A5),A3
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     SUBQ.B  #1,D0
-    BEQ.S   .LAB_18BF
+    BEQ.S   .dead_slice_no_valid_brush
 
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     MOVEQ   #6,D1
     CMP.B   D1,D0
-    BLS.S   .LAB_18C0
+    BLS.S   .dead_slice_lookup_and_render
 
-.LAB_18BF:
+.dead_slice_no_valid_brush:
     MOVEQ   #0,D0
-    BRA.S   .LAB_18C1
+    BRA.S   .dead_slice_return
 
-.LAB_18C0:
+.dead_slice_lookup_and_render:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
@@ -1640,7 +1640,7 @@ WDISP_HandleWeatherStatusCommand:
     MOVE.L  D0,D7
     MOVE.L  D7,D0
 
-.LAB_18C1:
+.dead_slice_return:
     MOVEM.L -16(A5),D7/A3
     UNLK    A5
     RTS
@@ -1659,7 +1659,7 @@ WDISP_HandleWeatherStatusCommand:
 ; CALLS:
 ;   WDISP_JMPTBL_BRUSH_FreeBrushList, WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock, WDISP_JMPTBL_NEWGRID_ResetRowTable, _LVOSetRast
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, LAB_18C9, WDISP_WeatherStatusBrushListHead, DATA_P_TYPE_BSS_LONG_2059, DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_LONG_2380, e8
+;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, WDISP_WeatherStatusBrushListHead, DATA_P_TYPE_BSS_LONG_2059, DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_LONG_2380
 ; WRITES:
 ;   DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195
 ; DESC:
@@ -1676,14 +1676,14 @@ WDISP_UpdateSelectionPreviewPanel:
 
     MOVEQ   #8,D0
     CMP.L   DATA_TLIBA1_BSS_LONG_2194,D0
-    BNE.S   .LAB_18C3
+    BNE.S   .preview_refresh_panel
 
     MOVEQ   #0,D0
     MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2194
     MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
-    BRA.W   .LAB_18C9
+    BRA.W   .preview_return_boolean
 
-.LAB_18C3:
+.preview_refresh_panel:
     LEA     60(A2),A0
     MOVEA.L A0,A1
     MOVEQ   #7,D0
@@ -1694,7 +1694,7 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVE.L  4(A0),-4(A5)
     MOVE.L  4(A3),4(A0)
     TST.L   DATA_TLIBA1_BSS_LONG_2194
-    BNE.S   .LAB_18C5
+    BNE.S   .preview_refresh_existing_slot
 
     MOVE.L  WDISP_WeatherStatusBrushListHead,-(A7)
     MOVE.L  A2,-(A7)
@@ -1704,14 +1704,14 @@ WDISP_UpdateSelectionPreviewPanel:
     EXT.L   D0
     MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
     TST.L   D0
-    BEQ.S   .LAB_18C4
+    BEQ.S   .preview_after_initial_render
 
     MOVEQ   #7,D0
     MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2194
 
-.LAB_18C4:
+.preview_after_initial_render:
     TST.L   WDISP_WeatherStatusBrushListHead
-    BEQ.S   .LAB_18C6
+    BEQ.S   .preview_after_render_paths
 
     MOVEA.L WDISP_WeatherStatusBrushListHead,A0
     ADDA.W  #$e8,A0
@@ -1722,12 +1722,12 @@ WDISP_UpdateSelectionPreviewPanel:
     JSR     WDISP_JMPTBL_NEWGRID_ResetRowTable(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_18C6
+    BRA.S   .preview_after_render_paths
 
-.LAB_18C5:
+.preview_refresh_existing_slot:
     MOVEQ   #7,D0
     CMP.L   DATA_TLIBA1_BSS_LONG_2194,D0
-    BNE.S   .LAB_18C6
+    BNE.S   .preview_after_render_paths
 
     MOVE.L  WDISP_WeatherStatusBrushListHead,-(A7)
     MOVE.L  A2,-(A7)
@@ -1739,9 +1739,9 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A2)
 
-.LAB_18C6:
+.preview_after_render_paths:
     TST.L   DATA_TLIBA1_BSS_LONG_2195
-    BNE.S   .LAB_18C8
+    BNE.S   .preview_restore_rastport_bitmap
 
     CLR.L   -(A7)
     PEA     WDISP_WeatherStatusBrushListHead
@@ -1750,41 +1750,41 @@ WDISP_UpdateSelectionPreviewPanel:
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
     TST.L   D0
-    BEQ.S   .LAB_18C7
+    BEQ.S   .preview_mark_reload_pending
 
     MOVE.W  WDISP_WeatherStatusDigitChar,D1
     MOVEQ   #48,D2
     CMP.W   D2,D1
-    BEQ.S   .LAB_18C7
+    BEQ.S   .preview_mark_reload_pending
 
     MOVE.B  WDISP_WeatherStatusCountdown,D1
     TST.B   D1
-    BEQ.S   .LAB_18C7
+    BEQ.S   .preview_mark_reload_pending
 
     MOVE.W  DATA_WDISP_BSS_LONG_2380,D1
     MOVEQ   #1,D2
     CMP.W   D2,D1
-    BGT.S   .LAB_18C7
+    BGT.S   .preview_mark_reload_pending
 
     TST.L   DATA_P_TYPE_BSS_LONG_2059
-    BNE.S   .LAB_18C7
+    BNE.S   .preview_mark_reload_pending
 
     PEA     2.W
     JSR     WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad(PC)
 
     ADDQ.W  #4,A7
 
-.LAB_18C7:
+.preview_mark_reload_pending:
     MOVEQ   #8,D0
     MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2194
     MOVEQ   #-1,D0
     MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
 
-.LAB_18C8:
+.preview_restore_rastport_bitmap:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
 
-.LAB_18C9:
+.preview_return_boolean:
     TST.L   DATA_TLIBA1_BSS_LONG_2195
     SNE     D0
     NEG.B   D0

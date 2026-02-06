@@ -45,15 +45,15 @@ BRUSH_LoadColorTextFont:
 
     LEA     16(A7),A7
     MOVE.L  D0,-14(A5)
-    BNE.S   .LAB_010C
+    BNE.S   .font_alloc_ok
 
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_010C:
+.font_alloc_ok:
     MOVEQ   #Struct_ColorTextFont_Size,D0
     CMP.L   D0,D6
-    BLE.S   .LAB_010D
+    BLE.S   .font_size_valid
 
     MOVE.L  D0,-(A7)
     MOVE.L  -14(A5),-(A7)
@@ -64,7 +64,7 @@ BRUSH_LoadColorTextFont:
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_010D:
+.font_size_valid:
     MOVE.L  D7,D1
     MOVE.L  D6,D3
     MOVE.L  -14(A5),D2
@@ -72,7 +72,7 @@ BRUSH_LoadColorTextFont:
     JSR     _LVORead(A6)
 
     CMP.L   D3,D0
-    BEQ.S   .LAB_010E
+    BEQ.S   .font_read_ok
 
     PEA     Struct_ColorTextFont_Size.W
     MOVE.L  D2,-(A7)
@@ -83,22 +83,22 @@ BRUSH_LoadColorTextFont:
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_010E:
+.font_read_ok:
     MOVEQ   #0,D5
     MOVEQ   #0,D4
     MOVE.L  -14(A5),-4(A5)
 
-.LAB_010F:
+.font_unpack_outer_loop:
     MOVE.L  D4,D0
     EXT.L   D0
     CMP.L   D6,D0
-    BGE.S   .LAB_0112
+    BGE.S   .font_free_temp_and_success
 
     CLR.W   -10(A5)
 
-.LAB_0110:
+.font_unpack_nibble_triplet_loop:
     CMPI.W  #3,-10(A5)
-    BGE.S   .LAB_0111
+    BGE.S   .font_unpack_next_triplet
 
     MOVEQ   #0,D0
     MOVEA.L -4(A5),A0
@@ -110,13 +110,13 @@ BRUSH_LoadColorTextFont:
     ADDQ.W  #1,D5
     MOVE.L  A0,-4(A5)
     ADDQ.W  #1,-10(A5)
-    BRA.S   .LAB_0110
+    BRA.S   .font_unpack_nibble_triplet_loop
 
-.LAB_0111:
+.font_unpack_next_triplet:
     ADDQ.W  #3,D4
-    BRA.S   .LAB_010F
+    BRA.S   .font_unpack_outer_loop
 
-.LAB_0112:
+.font_free_temp_and_success:
     PEA     96.W
     MOVE.L  -14(A5),-(A7)
     PEA     445.W
@@ -161,17 +161,17 @@ BRUSH_StreamFontChunk:
     MOVEA.L 48(A7),A2
 
     CMP.L   D5,D6
-    BLE.S   .LAB_0115
+    BLE.S   .streamfont_args_valid
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_0115:
+.streamfont_args_valid:
     MOVE.L  D6,186(A2)
 
-.LAB_0116:
+.streamfont_read_full_chunks_loop:
     CMPI.L  #2048,D6
-    BLE.S   .LAB_0118
+    BLE.S   .streamfont_read_tail_chunk
 
     MOVE.L  D7,D1
     MOVE.L  A3,D2
@@ -180,17 +180,17 @@ BRUSH_StreamFontChunk:
     JSR     _LVORead(A6)
 
     CMPI.L  #2048,D0
-    BEQ.S   .LAB_0117
+    BEQ.S   .streamfont_after_full_chunk
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_0117:
+.streamfont_after_full_chunk:
     ADDA.W  #2048,A3
     SUBI.L  #2048,D6
-    BRA.S   .LAB_0116
+    BRA.S   .streamfont_read_full_chunks_loop
 
-.LAB_0118:
+.streamfont_read_tail_chunk:
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  D6,D3
@@ -198,12 +198,12 @@ BRUSH_StreamFontChunk:
     JSR     _LVORead(A6)
 
     CMP.L   D3,D0
-    BEQ.S   .LAB_0119
+    BEQ.S   .streamfont_success
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_0119:
+.streamfont_success:
     MOVEQ   #1,D0
 
 .return:
@@ -701,9 +701,9 @@ BRUSH_FindBrushByPredicate:
     MOVEA.L 12(A5),A2
     MOVE.L  (A2),-4(A5)
 
-.LAB_013F:
+.findbrush_iterate_list:
     TST.L   -4(A5)
-    BEQ.S   .LAB_0141
+    BEQ.S   .findbrush_not_found
 
     MOVE.L  A3,-(A7)
     MOVE.L  -4(A5),-(A7)
@@ -711,17 +711,17 @@ BRUSH_FindBrushByPredicate:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .LAB_0140
+    BNE.S   .findbrush_next_node
 
     MOVE.L  -4(A5),D0
     BRA.S   .return
 
-.LAB_0140:
+.findbrush_next_node:
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .LAB_013F
+    BRA.S   .findbrush_iterate_list
 
-.LAB_0141:
+.findbrush_not_found:
     MOVEQ   #0,D0
 
 .return:
@@ -759,38 +759,38 @@ BRUSH_FindType3Brush:
     MOVE.L  (A3),-4(A5)
     MOVEQ   #0,D7
 
-.LAB_0144:
+.findtype3_scan_loop:
     TST.L   -4(A5)
-    BEQ.S   .LAB_0146
+    BEQ.S   .findtype3_after_scan
 
     TST.L   D7
-    BNE.S   .LAB_0146
+    BNE.S   .findtype3_after_scan
 
     MOVEQ   #3,D0
     MOVEA.L -4(A5),A0
     CMP.B   32(A0),D0
-    BNE.S   .LAB_0145
+    BNE.S   .findtype3_after_type_check
 
     MOVEQ   #1,D7
 
-.LAB_0145:
+.findtype3_after_type_check:
     TST.L   D7
-    BNE.S   .LAB_0144
+    BNE.S   .findtype3_scan_loop
 
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .LAB_0144
+    BRA.S   .findtype3_scan_loop
 
-.LAB_0146:
+.findtype3_after_scan:
     TST.L   D7
-    BEQ.S   .LAB_0147
+    BEQ.S   .findtype3_not_found
 
     MOVEA.L -4(A5),A0
-    BRA.S   .LAB_0148
+    BRA.S   .findtype3_return
 
-.LAB_0147:
+.findtype3_not_found:
     SUBA.L  A0,A0
 
-.LAB_0148:
+.findtype3_return:
     MOVE.L  A0,D0
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
@@ -839,9 +839,9 @@ BRUSH_PopulateBrushList:
 
     CLR.L   (A2)
 
-.LAB_014A:
+.populate_loop_next_descriptor:
     MOVE.L  A3,D0
-    BEQ.S   .LAB_014D
+    BEQ.S   .populate_finalize
 
     MOVE.L  A3,-(A7)
     BSR.W   BRUSH_LoadBrushAsset
@@ -857,25 +857,25 @@ BRUSH_PopulateBrushList:
     LEA     20(A7),A7
     MOVEA.L -12(A5),A3
     TST.L   -4(A5)
-    BEQ.S   .LAB_014A
+    BEQ.S   .populate_loop_next_descriptor
 
     TST.L   (A2)
-    BNE.S   .LAB_014B
+    BNE.S   .populate_append_to_tail
 
     MOVEA.L -4(A5),A0
     MOVE.L  A0,(A2)
-    BRA.S   .LAB_014C
+    BRA.S   .populate_record_tail
 
-.LAB_014B:
+.populate_append_to_tail:
     MOVEA.L -4(A5),A0
     MOVEA.L -8(A5),A1
     MOVE.L  A0,368(A1)
 
-.LAB_014C:
+.populate_record_tail:
     MOVE.L  A0,-8(A5)
-    BRA.S   .LAB_014A
+    BRA.S   .populate_loop_next_descriptor
 
-.LAB_014D:
+.populate_finalize:
     CLR.L   PARSEINI_ParsedDescriptorListHead
     MOVE.L  A2,-(A7)
     BSR.W   BRUSH_NormalizeBrushNames
@@ -921,7 +921,7 @@ BRUSH_FreeBrushResources:
     CLR.L   -4(A5)
     MOVE.L  (A3),-8(A5)
 
-.LAB_014F:
+.free_resources_loop:
     TST.L   -8(A5)
     BEQ.S   .return
 
@@ -935,7 +935,7 @@ BRUSH_FreeBrushResources:
 
     LEA     16(A7),A7
     MOVE.L  -4(A5),-8(A5)
-    BRA.S   .LAB_014F
+    BRA.S   .free_resources_loop
 
 .return:
     CLR.L   (A3)
@@ -974,7 +974,7 @@ BRUSH_NormalizeBrushNames:
     MOVEA.L 8(A5),A3
     MOVE.L  (A3),-4(A5)
 
-.LAB_0152:
+.normalize_names_loop:
     TST.L   -4(A5)
     BEQ.S   .return
 
@@ -983,9 +983,9 @@ BRUSH_NormalizeBrushNames:
     MOVEA.L A0,A1
     LEA     -40(A5),A2
 
-.LAB_0153:
+.normalize_copy_to_scratch:
     MOVE.B  (A1)+,(A2)+
-    BNE.S   .LAB_0153
+    BNE.S   .normalize_copy_to_scratch
 
     PEA     -40(A5)
     JSR     GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(PC)
@@ -994,13 +994,13 @@ BRUSH_NormalizeBrushNames:
     MOVEA.L D0,A0
     MOVEA.L -4(A5),A1
 
-.LAB_0154:
+.normalize_copy_back:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_0154
+    BNE.S   .normalize_copy_back
 
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .LAB_0152
+    BRA.S   .normalize_names_loop
 
 .return:
     MOVEM.L (A7)+,A2-A3
@@ -1030,7 +1030,7 @@ BRUSH_NormalizeBrushNames:
 ; CALLS:
 ;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_10, GLOB_STR_BRUSH_C_11, GLOB_STR_BRUSH_C_12, GLOB_STR_BRUSH_C_13, GLOB_STR_BRUSH_C_14, GLOB_STR_BRUSH_C_15, GLOB_STR_BRUSH_C_16, LAB_0159, LAB_0161, LAB_0169, LAB_016D, LAB_0170, LAB_0173, LAB_0175, LAB_0178, LAB_017A, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, e8
+;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_10, GLOB_STR_BRUSH_C_11, GLOB_STR_BRUSH_C_12, GLOB_STR_BRUSH_C_13, GLOB_STR_BRUSH_C_14, GLOB_STR_BRUSH_C_15, GLOB_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   BRUSH_PendingAlertCode, BRUSH_SnapshotDepth, BRUSH_SnapshotWidth
 ; DESC:
@@ -1059,7 +1059,7 @@ BRUSH_LoadBrushAsset:
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
     TST.L   D7
-    BEQ.W   .LAB_0159
+    BEQ.W   .loadasset_after_file_stage
 
     MOVE.L  D7,D1
     LEA     -64(A5),A0
@@ -1069,7 +1069,7 @@ BRUSH_LoadBrushAsset:
     JSR     _LVORead(A6)
 
     SUBQ.L  #6,D0
-    BNE.W   .LAB_0159
+    BNE.W   .loadasset_after_file_stage
 
     PEA     4.W
     PEA     BRUSH_STR_IFF_FORM
@@ -1078,16 +1078,16 @@ BRUSH_LoadBrushAsset:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .LAB_0157
+    BEQ.S   .loadasset_form_header_ok
 
     MOVE.L  D7,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
-    BRA.S   .LAB_0159
+    BRA.S   .loadasset_after_file_stage
 
 ; Seek to the start of the FORM payload and decode the ILBM image data.
-.LAB_0157:
+.loadasset_form_header_ok:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #-1,D3
@@ -1105,7 +1105,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  D0,-46(A5)
     MOVE.L  D0,-50(A5)
     TST.L   D0
-    BEQ.S   .LAB_0158
+    BEQ.S   .loadasset_after_ilbm_decode
 
     LEA     152(A3),A0
     LEA     32(A3),A1
@@ -1119,51 +1119,51 @@ BRUSH_LoadBrushAsset:
 
     LEA     24(A7),A7
     SUBQ.L  #1,D0
-    BNE.S   .LAB_0158
+    BNE.S   .loadasset_after_ilbm_decode
 
     MOVEQ   #0,D5
 
-.LAB_0158:
+.loadasset_after_ilbm_decode:
     MOVE.L  D7,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
-.LAB_0159:
+.loadasset_after_file_stage:
     BTST    #7,150(A3)
-    BEQ.S   .LAB_015A
+    BEQ.S   .loadasset_after_mode_clamp
 
     MOVEQ   #4,D0
     MOVE.L  #640,D1
     MOVE.L  D0,-54(A5)
     MOVE.L  D1,-58(A5)
 
-.LAB_015A:
+.loadasset_after_mode_clamp:
     MOVEQ   #0,D0
     MOVE.B  136(A3),D0
     CMP.L   -54(A5),D0
-    BGT.S   .LAB_015B
+    BGT.S   .loadasset_reject_oversize
 
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
     CMP.L   -58(A5),D0
-    BLE.S   .LAB_015F
+    BLE.S   .loadasset_allocate_brush_node
 
-.LAB_015B:
+.loadasset_reject_oversize:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     MOVEQ   #0,D0
     MOVE.B  136(A3),D0
     CMP.L   -54(A5),D0
-    BLE.S   .LAB_015C
+    BLE.S   .loadasset_alert_depth_exceeded
 
     MOVEQ   #2,D1
-    BRA.S   .LAB_015D
+    BRA.S   .loadasset_capture_alert_snapshot
 
-.LAB_015C:
+.loadasset_alert_depth_exceeded:
     MOVEQ   #3,D1
 
-.LAB_015D:
+.loadasset_capture_alert_snapshot:
     MOVE.L  D1,BRUSH_PendingAlertCode      ; remember which cleanup alert to trigger
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
@@ -1174,17 +1174,17 @@ BRUSH_LoadBrushAsset:
     MOVEA.L A3,A0
     LEA     BRUSH_SnapshotHeader,A1
 
-.LAB_015E:
+.loadasset_copy_snapshot_header_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_015E
+    BNE.S   .loadasset_copy_snapshot_header_loop
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #1,D5
 
-.LAB_015F:
+.loadasset_allocate_brush_node:
     TST.L   D5
-    BNE.W   .LAB_0178
+    BNE.W   .loadasset_maybe_clone_type11
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
@@ -1195,23 +1195,23 @@ BRUSH_LoadBrushAsset:
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
     TST.L   D0
-    BEQ.W   .LAB_0178
+    BEQ.W   .loadasset_maybe_clone_type11
 
     MOVEA.L A3,A0
     MOVEA.L D0,A1
 
-.LAB_0160:
+.loadasset_copy_node_header_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_0160
+    BNE.S   .loadasset_copy_node_header_loop
 
     MOVEA.L -16(A5),A0
     ADDA.W  #176,A0
     LEA     128(A3),A1
     MOVEQ   #4,D0
 
-.LAB_0161:
+.loadasset_copy_bitmap_dims_loop:
     MOVE.L  (A1)+,(A0)+
-    DBF     D0,.LAB_0161
+    DBF     D0,.loadasset_copy_bitmap_dims_loop
 
     MOVEA.L -16(A5),A0
     ADDA.W  #196,A0
@@ -1241,10 +1241,10 @@ BRUSH_LoadBrushAsset:
     MOVE.L  226(A3),360(A0)
     MOVEQ   #0,D6
 
-.LAB_0162:
+.loadasset_copy_row_offsets_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D6
-    BGE.S   .LAB_0163
+    BGE.S   .loadasset_copy_label
 
     MOVE.L  D6,D0
     ASL.L   #3,D0
@@ -1257,55 +1257,55 @@ BRUSH_LoadBrushAsset:
     MOVE.L  (A0)+,(A2)+
     MOVE.L  (A0)+,(A2)+
     ADDQ.L  #1,D6
-    BRA.S   .LAB_0162
+    BRA.S   .loadasset_copy_row_offsets_loop
 
-.LAB_0163:
+.loadasset_copy_label:
     MOVEA.L -16(A5),A0
     ADDA.W  #$21,A0
     LEA     191(A3),A1
 
-.LAB_0164:
+.loadasset_copy_label_loop:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   .LAB_0164
+    BNE.S   .loadasset_copy_label_loop
 
     MOVEA.L -16(A5),A0
     MOVE.L  230(A3),364(A0)
     TST.L   214(A3)
-    BEQ.S   .LAB_0165
+    BEQ.S   .loadasset_default_width_limit
 
     MOVE.L  214(A3),348(A0)
-    BRA.S   .LAB_0166
+    BRA.S   .loadasset_after_width_limit
 
-.LAB_0165:
+.loadasset_default_width_limit:
     MOVEQ   #0,D0
     MOVE.W  176(A0),D0
     MOVE.L  D0,348(A0)
 
-.LAB_0166:
+.loadasset_after_width_limit:
     TST.L   218(A3)
-    BEQ.S   .LAB_0167
+    BEQ.S   .loadasset_default_height_limit
 
     MOVE.L  218(A3),352(A0)
-    BRA.S   .LAB_0168
+    BRA.S   .loadasset_after_height_limit
 
-.LAB_0167:
+.loadasset_default_height_limit:
     MOVEQ   #0,D0
     MOVE.W  178(A0),D0
     MOVE.L  D0,352(A0)
 
-.LAB_0168:
+.loadasset_after_height_limit:
     MOVEQ   #0,D6
 
-.LAB_0169:
+.loadasset_alloc_planes_loop:
     MOVEQ   #0,D0
     MOVEA.L -16(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
-    BGE.W   .LAB_016D
+    BGE.W   .loadasset_after_plane_alloc
 
     MOVEQ   #5,D0
     CMP.L   D0,D6
-    BGE.W   .LAB_016D
+    BGE.W   .loadasset_after_plane_alloc
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -1333,38 +1333,38 @@ BRUSH_LoadBrushAsset:
     MOVE.L  D0,D1
     ADDI.L  #$90,D1
     TST.L   0(A0,D1.L)
-    BNE.S   .LAB_016C
+    BNE.S   .loadasset_next_plane_alloc
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     TST.L   BRUSH_PendingAlertCode
-    BNE.S   .LAB_016B
+    BNE.S   .loadasset_alert_already_set
 
     MOVEQ   #1,D0
     MOVE.L  D0,BRUSH_PendingAlertCode      ; flag that cleanup should warn about oversized brushes
     MOVEA.L -16(A5),A0
     LEA     BRUSH_SnapshotHeader,A1
 
-.LAB_016A:
+.loadasset_copy_snapshot_for_alert_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_016A
+    BNE.S   .loadasset_copy_snapshot_for_alert_loop
 
-.LAB_016B:
+.loadasset_alert_already_set:
     JSR     _LVOPermit(A6)
 
-    BRA.S   .LAB_016D
+    BRA.S   .loadasset_after_plane_alloc
 
-.LAB_016C:
+.loadasset_next_plane_alloc:
     ADDQ.L  #1,D6
-    BRA.W   .LAB_0169
+    BRA.W   .loadasset_alloc_planes_loop
 
-.LAB_016D:
+.loadasset_after_plane_alloc:
     MOVEQ   #0,D0
     MOVEA.L -16(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
-    BNE.W   .LAB_0175
+    BNE.W   .loadasset_cleanup_partial_alloc
 
     LEA     36(A0),A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1376,19 +1376,19 @@ BRUSH_LoadBrushAsset:
     MOVE.L  A0,40(A1)
     MOVEQ   #0,D6
 
-.LAB_016E:
+.loadasset_copy_palette_bytes_loop:
     MOVEQ   #96,D0
     CMP.L   D0,D6
-    BGE.S   .LAB_016F
+    BGE.S   .loadasset_compute_row_word_span
 
     MOVEA.L -16(A5),A0
     MOVE.L  D6,D0
     ADDI.L  #$e8,D0
     MOVE.B  32(A3,D6.L),0(A0,D0.L)
     ADDQ.L  #1,D6
-    BRA.S   .LAB_016E
+    BRA.S   .loadasset_copy_palette_bytes_loop
 
-.LAB_016F:
+.loadasset_compute_row_word_span:
     MOVEQ   #0,D0
     MOVE.W  128(A3),D0
     MOVEQ   #15,D1
@@ -1400,21 +1400,21 @@ BRUSH_LoadBrushAsset:
     CLR.W   -18(A5)
     MOVE.W  D0,-22(A5)
 
-.LAB_0170:
+.loadasset_decode_rows_loop:
     MOVE.W  -18(A5),D0
     MOVEA.L -16(A5),A0
     CMP.W   178(A0),D0
-    BGE.W   .LAB_0173
+    BGE.W   .loadasset_restore_plane_ptrs
 
     CLR.W   -20(A5)
 
-.LAB_0171:
+.loadasset_decode_planes_loop:
     MOVE.W  -20(A5),D0
     EXT.L   D0
     MOVEQ   #0,D1
     MOVE.B  136(A3),D1
     CMP.L   D1,D0
-    BGE.S   .LAB_0172
+    BGE.S   .loadasset_next_row
 
     MOVE.W  -20(A5),D0
     EXT.L   D0
@@ -1444,25 +1444,25 @@ BRUSH_LoadBrushAsset:
     MOVE.L  A0,0(A1,D2.L)
     MOVE.L  D0,-46(A5)
     ADDQ.W  #1,-20(A5)
-    BRA.S   .LAB_0171
+    BRA.S   .loadasset_decode_planes_loop
 
-.LAB_0172:
+.loadasset_next_row:
     ADDQ.W  #1,-18(A5)
-    BRA.W   .LAB_0170
+    BRA.W   .loadasset_decode_rows_loop
 
-.LAB_0173:
+.loadasset_restore_plane_ptrs:
     MOVEQ   #0,D6
 
-.LAB_0174:
+.loadasset_restore_plane_ptrs_loop:
     MOVEQ   #0,D0
     MOVEA.L -16(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D6
-    BGE.W   .LAB_0178
+    BGE.W   .loadasset_maybe_clone_type11
 
     MOVEQ   #5,D0
     CMP.L   D0,D6
-    BGE.W   .LAB_0178
+    BGE.W   .loadasset_maybe_clone_type11
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -1470,23 +1470,23 @@ BRUSH_LoadBrushAsset:
     ADDI.L  #$90,D1
     MOVE.L  -42(A5,D0.L),0(A0,D1.L)
     ADDQ.L  #1,D6
-    BRA.S   .LAB_0174
+    BRA.S   .loadasset_restore_plane_ptrs_loop
 
-.LAB_0175:
+.loadasset_cleanup_partial_alloc:
     MOVEA.L -16(A5),A0
     TST.B   184(A0)
-    BEQ.S   .LAB_0177
+    BEQ.S   .loadasset_free_node_and_clear
 
     MOVEQ   #5,D0
     CMP.L   D0,D6
-    BGE.S   .LAB_0177
+    BGE.S   .loadasset_free_node_and_clear
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
     MOVE.L  D0,D1
     ADDI.L  #$90,D1
     TST.L   0(A0,D1.L)
-    BEQ.S   .LAB_0176
+    BEQ.S   .loadasset_cleanup_next_plane
 
     MOVEQ   #0,D1
     MOVE.W  176(A0),D1
@@ -1503,11 +1503,11 @@ BRUSH_LoadBrushAsset:
 
     LEA     20(A7),A7
 
-.LAB_0176:
+.loadasset_cleanup_next_plane:
     ADDQ.L  #1,D6
-    BRA.S   .LAB_0175
+    BRA.S   .loadasset_cleanup_partial_alloc
 
-.LAB_0177:
+.loadasset_free_node_and_clear:
     PEA     372.W
     MOVE.L  -16(A5),-(A7)
     PEA     1205.W
@@ -1517,10 +1517,10 @@ BRUSH_LoadBrushAsset:
     LEA     16(A7),A7
     CLR.L   -16(A5)
 
-.LAB_0178:
+.loadasset_maybe_clone_type11:
     MOVEQ   #11,D0
     CMP.B   190(A3),D0
-    BNE.S   .LAB_017B
+    BNE.S   .loadasset_cleanup_decode_buffer
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
@@ -1531,14 +1531,14 @@ BRUSH_LoadBrushAsset:
     LEA     16(A7),A7
     MOVE.L  D0,-16(A5)
     TST.L   D0
-    BEQ.S   .LAB_017B
+    BEQ.S   .loadasset_cleanup_decode_buffer
 
     MOVEA.L A3,A0
     MOVEA.L D0,A1
 
-.LAB_0179:
+.loadasset_copy_clone_header_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_0179
+    BNE.S   .loadasset_copy_clone_header_loop
 
     MOVEA.L -16(A5),A0
     MOVE.B  190(A3),32(A0)
@@ -1546,9 +1546,9 @@ BRUSH_LoadBrushAsset:
     LEA     128(A3),A2
     MOVEQ   #4,D0
 
-.LAB_017A:
+.loadasset_copy_clone_dims_loop:
     MOVE.L  (A2)+,(A1)+
-    DBF     D0,.LAB_017A
+    DBF     D0,.loadasset_copy_clone_dims_loop
 
     MOVEA.L -16(A5),A0
     ADDA.W  #196,A0
@@ -1558,7 +1558,7 @@ BRUSH_LoadBrushAsset:
     MOVEA.L -16(A5),A1
     MOVE.L  A0,368(A1)
 
-.LAB_017B:
+.loadasset_cleanup_decode_buffer:
     TST.L   -50(A5)
     BEQ.S   .return
 
@@ -1590,7 +1590,7 @@ BRUSH_LoadBrushAsset:
 ; CALLS:
 ;   GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_17, GLOB_STR_BRUSH_C_18, LAB_017F, LAB_0187, LAB_018B, MEMF_CLEAR, MEMF_PUBLIC, b0, return
+;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_17, GLOB_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   BRUSH_PendingAlertCode
 ; DESC:
@@ -1618,18 +1618,18 @@ BRUSH_CloneBrushRecord:
     MOVEA.L A3,A0
     MOVEA.L D0,A1
 
-.LAB_017E:
+.clone_copy_header_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_017E
+    BNE.S   .clone_copy_header_loop
 
     MOVEA.L -8(A5),A0
     ADDA.W  #$b0,A0
     LEA     128(A3),A1
     MOVEQ   #4,D0
 
-.LAB_017F:
+.clone_copy_bitmap_dims_loop:
     MOVE.L  (A1)+,(A0)+
-    DBF     D0,.LAB_017F
+    DBF     D0,.clone_copy_bitmap_dims_loop
 
     MOVEA.L -8(A5),A0
     ADDA.W  #196,A0
@@ -1659,10 +1659,10 @@ BRUSH_CloneBrushRecord:
     MOVE.L  226(A3),360(A0)
     MOVEQ   #0,D7
 
-.LAB_0180:
+.clone_copy_row_offsets_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_0181
+    BGE.S   .clone_copy_label
 
     MOVE.L  D7,D0
     ASL.L   #3,D0
@@ -1675,55 +1675,55 @@ BRUSH_CloneBrushRecord:
     MOVE.L  (A0)+,(A2)+
     MOVE.L  (A0)+,(A2)+
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0180
+    BRA.S   .clone_copy_row_offsets_loop
 
-.LAB_0181:
+.clone_copy_label:
     MOVEA.L -8(A5),A0
     ADDA.W  #$21,A0
     LEA     191(A3),A1
 
-.LAB_0182:
+.clone_copy_label_loop:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   .LAB_0182
+    BNE.S   .clone_copy_label_loop
 
     MOVEA.L -8(A5),A0
     MOVE.L  230(A3),364(A0)
     TST.L   214(A3)
-    BEQ.S   .LAB_0183
+    BEQ.S   .clone_default_width_limit
 
     MOVE.L  214(A3),348(A0)
-    BRA.S   .LAB_0184
+    BRA.S   .clone_after_width_limit
 
-.LAB_0183:
+.clone_default_width_limit:
     MOVEQ   #0,D0
     MOVE.W  176(A0),D0
     MOVE.L  D0,348(A0)
 
-.LAB_0184:
+.clone_after_width_limit:
     TST.L   218(A3)
-    BEQ.S   .LAB_0185
+    BEQ.S   .clone_default_height_limit
 
     MOVE.L  218(A3),352(A0)
-    BRA.S   .LAB_0186
+    BRA.S   .clone_after_height_limit
 
-.LAB_0185:
+.clone_default_height_limit:
     MOVEQ   #0,D0
     MOVE.W  178(A0),D0
     MOVE.L  D0,352(A0)
 
-.LAB_0186:
+.clone_after_height_limit:
     MOVEQ   #0,D7
 
-.LAB_0187:
+.clone_alloc_planes_loop:
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  184(A0),D0
     CMP.L   D0,D7
-    BGE.W   .LAB_018B
+    BGE.W   .clone_after_plane_alloc
 
     MOVEQ   #5,D0
     CMP.L   D0,D7
-    BGE.W   .LAB_018B
+    BGE.W   .clone_after_plane_alloc
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1748,33 +1748,33 @@ BRUSH_CloneBrushRecord:
     MOVE.L  D0,D1
     ADDI.L  #$90,D1
     TST.L   0(A0,D1.L)
-    BNE.S   .LAB_018A
+    BNE.S   .clone_next_plane_alloc
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     TST.L   BRUSH_PendingAlertCode
-    BNE.S   .LAB_0189
+    BNE.S   .clone_alert_already_set
 
     MOVEQ   #1,D0
     MOVE.L  D0,BRUSH_PendingAlertCode      ; capture snapshot so cleanup can restore UI hints
     MOVEA.L -8(A5),A0
     LEA     BRUSH_SnapshotHeader,A1
 
-.LAB_0188:
+.clone_copy_snapshot_for_alert_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_0188
+    BNE.S   .clone_copy_snapshot_for_alert_loop
 
-.LAB_0189:
+.clone_alert_already_set:
     JSR     _LVOPermit(A6)
 
-    BRA.S   .LAB_018B
+    BRA.S   .clone_after_plane_alloc
 
-.LAB_018A:
+.clone_next_plane_alloc:
     ADDQ.L  #1,D7
-    BRA.W   .LAB_0187
+    BRA.W   .clone_alloc_planes_loop
 
-.LAB_018B:
+.clone_after_plane_alloc:
     MOVEQ   #0,D0
     MOVEA.L -8(A5),A0
     MOVE.B  184(A0),D0
@@ -1791,7 +1791,7 @@ BRUSH_CloneBrushRecord:
     MOVE.L  A0,40(A1)
     MOVEQ   #0,D7
 
-.LAB_018C:
+.clone_copy_palette_bytes_loop:
     MOVEQ   #96,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -1801,7 +1801,7 @@ BRUSH_CloneBrushRecord:
     ADDI.L  #232,D0
     MOVE.B  32(A3,D7.L),0(A0,D0.L)
     ADDQ.L  #1,D7
-    BRA.S   .LAB_018C
+    BRA.S   .clone_copy_palette_bytes_loop
 
 .return:
     MOVE.L  -8(A5),D0
@@ -1845,14 +1845,14 @@ BRUSH_AllocBrushNode:
     LEA     16(A7),A7
     MOVE.L  D0,BRUSH_LastAllocatedNode   ; expose allocation for cleanup/error handlers
     TST.L   D0
-    BEQ.S   .LAB_0191
+    BEQ.S   .allocnode_return
 
     MOVEA.L A3,A0
     MOVEA.L D0,A1
 
-.LAB_018F:
+.allocnode_copy_header_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_018F
+    BNE.S   .allocnode_copy_header_loop
 
     MOVEQ   #1,D0
     MOVEA.L BRUSH_LastAllocatedNode,A0
@@ -1862,14 +1862,14 @@ BRUSH_AllocBrushNode:
     MOVE.L  D0,222(A0)
     MOVE.L  D0,226(A0)
     MOVE.L  A2,D0
-    BEQ.S   .LAB_0190
+    BEQ.S   .allocnode_link_previous_tail
 
     MOVE.L  A0,234(A2)
 
-.LAB_0190:
+.allocnode_link_previous_tail:
     CLR.L   234(A0)
 
-.LAB_0191:
+.allocnode_return:
     MOVE.L  BRUSH_LastAllocatedNode,D0
     MOVEM.L (A7)+,A2-A3
     RTS
@@ -1901,20 +1901,20 @@ BRUSH_PlaneMaskForIndex:
 
     MOVE.L  8(A7),D7
     TST.L   D7
-    BLE.S   .LAB_0193
+    BLE.S   .planemask_invalid_index
 
     MOVEQ   #9,D0
     CMP.L   D0,D7
-    BGE.S   .LAB_0193
+    BGE.S   .planemask_invalid_index
 
     MOVEQ   #1,D0
     ASL.L   D7,D0
-    BRA.S   .LAB_0194
+    BRA.S   .planemask_return
 
-.LAB_0193:
+.planemask_invalid_index:
     MOVEQ   #0,D0
 
-.LAB_0194:
+.planemask_return:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -2060,28 +2060,28 @@ BRUSH_AppendBrushNode:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  A3,D0
-    BNE.S   .LAB_019E
+    BNE.S   .append_node_find_tail
 
     MOVEA.L A2,A3
-    BRA.S   .LAB_01A1
+    BRA.S   .append_node_return
 
-.LAB_019E:
+.append_node_find_tail:
     MOVE.L  A3,-4(A5)
 
-.LAB_019F:
+.append_node_tail_loop:
     MOVEA.L -4(A5),A0
     TST.L   368(A0)
-    BEQ.S   .LAB_01A0
+    BEQ.S   .append_node_link_tail
 
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .LAB_019F
+    BRA.S   .append_node_tail_loop
 
-.LAB_01A0:
+.append_node_link_tail:
     MOVEA.L -4(A5),A0
     MOVE.L  A2,368(A0)
 
-.LAB_01A1:
+.append_node_return:
     MOVE.L  A3,D0
     MOVEM.L (A7)+,A2-A3
     UNLK    A5
@@ -2113,12 +2113,12 @@ BRUSH_PopBrushHead:
     LINK.W  A5,#-4
 
     TST.L   8(A5)
-    BNE.S   .LAB_01A3
+    BNE.S   .pophead_has_node
 
     CLR.L   -4(A5)
-    BRA.S   .LAB_01A4
+    BRA.S   .pophead_return
 
-.LAB_01A3:
+.pophead_has_node:
     MOVEA.L 8(A5),A0
     MOVE.L  368(A0),-4(A5)
     PEA     1.W
@@ -2127,7 +2127,7 @@ BRUSH_PopBrushHead:
 
     ADDQ.W  #8,A7
 
-.LAB_01A4:
+.pophead_return:
     MOVE.L  -4(A5),D0
     UNLK    A5
     RTS

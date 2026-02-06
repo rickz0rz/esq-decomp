@@ -280,32 +280,32 @@ SCRIPT_BeginBannerCharTransition:
     BNE.W   .return
 
     CMPI.W  #130,D7
-    BGE.S   .LAB_14D1
+    BGE.S   .begin_banner_clamp_high_check
 
     MOVE.W  #130,D7
-    BRA.S   .LAB_14D2
+    BRA.S   .begin_banner_after_target_clamp
 
-.LAB_14D1:
+.begin_banner_clamp_high_check:
     CMPI.W  #226,D7
-    BLE.S   .LAB_14D2
+    BLE.S   .begin_banner_after_target_clamp
 
     MOVE.W  #226,D7
 
-.LAB_14D2:
+.begin_banner_after_target_clamp:
     MOVEQ   #0,D0
     CMP.W   D0,D6
-    BCC.S   .LAB_14D3
+    BCC.S   .begin_banner_clamp_rate_high_check
 
     MOVE.L  D0,D6
-    BRA.S   .LAB_14D4
+    BRA.S   .begin_banner_after_rate_clamp
 
-.LAB_14D3:
+.begin_banner_clamp_rate_high_check:
     CMPI.W  #$1d4c,D6
-    BLS.S   .LAB_14D4
+    BLS.S   .begin_banner_after_rate_clamp
 
     MOVE.W  #$1d4c,D6
 
-.LAB_14D4:
+.begin_banner_after_rate_clamp:
     JSR     SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
     MOVE.W  D0,-12(A5)
@@ -328,57 +328,57 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
-    BNE.S   .configValueLAB_1BC8isNotM
+    BNE.S   .config_msn_flag_not_m
 
 .selectCodeIsNotRAVSEC:
     TST.L   D4
-    BPL.S   .LAB_14D6
+    BPL.S   .begin_banner_default_rate_if_forward
 
     MOVE.L  #7500,D0
-    BRA.S   .LAB_14D7
+    BRA.S   .begin_banner_after_rate_override
 
-.LAB_14D6:
+.begin_banner_default_rate_if_forward:
     MOVEQ   #0,D0
 
-.LAB_14D7:
+.begin_banner_after_rate_override:
     MOVE.L  D0,D6
 
-.configValueLAB_1BC8isNotM:
+.config_msn_flag_not_m:
     MOVE.L  D6,D0
     MULU    #60,D0
     MOVE.L  #1000,D1
     JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,-10(A5)
-    BGT.S   .LAB_14D9
+    BGT.S   .begin_banner_compute_step
 
     MOVE.L  D4,D1
     MOVE.W  D1,DATA_WDISP_BSS_WORD_2353
-    BRA.S   .LAB_14E0
+    BRA.S   .begin_banner_activate
 
-.LAB_14D9:
+.begin_banner_compute_step:
     TST.L   D4
-    BPL.S   .LAB_14DA
+    BPL.S   .begin_banner_direction_positive
 
     MOVEQ   #-1,D1
-    BRA.S   .LAB_14DB
+    BRA.S   .begin_banner_direction_selected
 
-.LAB_14DA:
+.begin_banner_direction_positive:
     MOVEQ   #1,D1
 
-.LAB_14DB:
+.begin_banner_direction_selected:
     MOVE.W  D1,DATA_WDISP_BSS_WORD_2354
     TST.L   D4
-    BPL.S   .LAB_14DC
+    BPL.S   .begin_banner_abs_delta_positive
 
     MOVE.L  D4,D2
     NEG.L   D2
-    BRA.S   .LAB_14DD
+    BRA.S   .begin_banner_abs_delta_ready
 
-.LAB_14DC:
+.begin_banner_abs_delta_positive:
     MOVE.L  D4,D2
 
-.LAB_14DD:
+.begin_banner_abs_delta_ready:
     MOVE.L  D2,D4
     MOVE.L  D4,D0
     MOVE.L  -10(A5),D1
@@ -390,24 +390,24 @@ SCRIPT_BeginBannerCharTransition:
     JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D4
-    BLE.S   .LAB_14DE
+    BLE.S   .begin_banner_no_remainder
 
     MOVE.L  -10(A5),D0
     MOVE.L  D4,D1
     JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2120
-    BRA.S   .LAB_14DF
+    BRA.S   .begin_banner_finalize_step_sign
 
-.LAB_14DE:
+.begin_banner_no_remainder:
     CLR.W   DATA_SCRIPT_BSS_WORD_2120
 
-.LAB_14DF:
+.begin_banner_finalize_step_sign:
     MOVE.W  DATA_WDISP_BSS_WORD_2353,D0
     MULS    DATA_WDISP_BSS_WORD_2354,D0
     MOVE.W  D0,DATA_WDISP_BSS_WORD_2353
 
-.LAB_14E0:
+.begin_banner_activate:
     MOVE.L  D6,D0
     MOVEQ   #1,D5
     MOVE.W  D5,SCRIPT_BannerTransitionActive
@@ -549,37 +549,37 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #'M',D1
     CMP.B   D1,D0
-    BNE.S   .LAB_14EA
+    BNE.S   .ctrl_cmd_gate_refresh_disabled
 
 .selectCodeIsNotRAVSEC:
     MOVE.W  #(-1),GLOB_RefreshTickCounter
-    BRA.S   .LAB_14EC
+    BRA.S   .ctrl_cmd_handle_status_timeout
 
-.LAB_14EA:
+.ctrl_cmd_gate_refresh_disabled:
     TST.W   DATA_ESQ_BSS_WORD_1DF3
-    BEQ.S   .LAB_14EB
+    BEQ.S   .ctrl_cmd_check_display_state
 
     MOVEQ   #0,D0
     MOVE.W  D0,GLOB_RefreshTickCounter
     BRA.W   .return
 
-.LAB_14EB:
+.ctrl_cmd_check_display_state:
     MOVEQ   #1,D0
     CMP.L   DATA_ESQDISP_BSS_LONG_1E84,D0
     BEQ.W   .return
 
-.LAB_14EC:
+.ctrl_cmd_handle_status_timeout:
     TST.W   DATA_SCRIPT_BSS_WORD_212B
-    BEQ.S   .LAB_14ED
+    BEQ.S   .ctrl_cmd_poll_input
 
     MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  GLOB_WORD_CLOCK_SECONDS,D1
     CMP.W   D1,D0
-    BEQ.S   .LAB_14ED
+    BEQ.S   .ctrl_cmd_poll_input
 
     ADDQ.W  #1,GLOB_WORD_CLOCK_SECONDS
     CMPI.W  #3,GLOB_WORD_CLOCK_SECONDS
-    BLT.S   .LAB_14ED
+    BLT.S   .ctrl_cmd_poll_input
 
     CLR.W   DATA_SCRIPT_BSS_WORD_212B
     CLR.L   -(A7)
@@ -588,7 +588,7 @@ SCRIPT_HandleSerialCtrlCmd:
 
     ADDQ.W  #8,A7
 
-.LAB_14ED:
+.ctrl_cmd_poll_input:
     JSR     PARSEINI_CheckCtrlHChange(PC)
 
     MOVE.L  D0,D6
@@ -600,30 +600,30 @@ SCRIPT_HandleSerialCtrlCmd:
 
     MOVE.W  GLOB_RefreshTickCounter,D0
     ADDQ.W  #1,D0
-    BEQ.S   .LAB_14EE
+    BEQ.S   .ctrl_cmd_parse_state_dispatch
 
     CLR.W   GLOB_RefreshTickCounter
 
-.LAB_14EE:
+.ctrl_cmd_parse_state_dispatch:
     JSR     SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
 
     MOVE.L  D0,D7
     MOVE.W  SCRIPT_CTRL_STATE,D0
     TST.W   D0
-    BEQ.S   .LAB_14EF
+    BEQ.S   .ctrl_cmd_state_idle
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_14F2
+    BEQ.W   .ctrl_cmd_state_collect_body
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_14F4
+    BEQ.W   .ctrl_cmd_state_expect_checksum
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_14FA
+    BEQ.W   .ctrl_cmd_state3_clear
 
-    BRA.W   .LAB_14FB
+    BRA.W   .ctrl_cmd_state_invalid_reset
 
-.LAB_14EF:
+.ctrl_cmd_state_idle:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     SUBQ.W  #1,D0
@@ -633,43 +633,43 @@ SCRIPT_HandleSerialCtrlCmd:
     BGE.W   .finish_29ABA
 
     ADD.W   D0,D0
-    MOVE.W  .LAB_14F0(PC,D0.W),D0
-    JMP     .LAB_14F0+2(PC,D0.W)
+    MOVE.W  .ctrl_cmd_jmptbl(PC,D0.W),D0
+    JMP     .ctrl_cmd_jmptbl+2(PC,D0.W)
 
 ; switch/jumptable
-.LAB_14F0:
-    DC.W    .LAB_14F0_0040-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_0040-.LAB_14F0-2
-    DC.W    .LAB_14F0_002A-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_0040-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
-    DC.W    .LAB_14F0_01A0-.LAB_14F0-2
-    DC.W    .LAB_14F0_0036-.LAB_14F0-2
+.ctrl_cmd_jmptbl:
+    DC.W    .ctrl_cmd_case_start_packet-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_start_packet-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_enter_state3-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_start_packet-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_finish_dispatch-.ctrl_cmd_jmptbl-2
+    DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
 
-.LAB_14F0_002A:
+.ctrl_cmd_case_enter_state3:
     MOVE.W  #3,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA    
 
-.LAB_14F0_0036:
+.ctrl_cmd_case_gated_by_select_code:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
     BNE.W   .return
 
-.LAB_14F0_0040:
+.ctrl_cmd_case_start_packet:
     MOVEQ   #1,D0
     LEA     SCRIPT_CTRL_CMD_BUFFER,A0
     ADDA.W  SCRIPT_CTRL_READ_INDEX,A0
@@ -683,7 +683,7 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA
 
-.LAB_14F2:
+.ctrl_cmd_state_collect_body:
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
@@ -694,11 +694,11 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.B  D0,(A0)
     MOVEQ   #13,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_14F3
+    BNE.S   .ctrl_cmd_state_collect_update_checksum
 
     MOVE.W  #2,SCRIPT_CTRL_STATE
 
-.LAB_14F3:
+.ctrl_cmd_state_collect_update_checksum:
     MOVE.W  SCRIPT_CTRL_CHECKSUM,D0
     EXT.L   D0
     MOVEQ   #0,D1
@@ -707,16 +707,16 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     BRA.W   .finish_29ABA
 
-.LAB_14F4:
+.ctrl_cmd_state_expect_checksum:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.W  SCRIPT_CTRL_CHECKSUM,D1
     EXT.L   D1
     CMP.L   D1,D0
-    BNE.S   .LAB_14F8
+    BNE.S   .ctrl_cmd_checksum_mismatch
 
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
-    BEQ.S   .LAB_14F5
+    BEQ.S   .ctrl_cmd_checksum_ok_normal_mode
 
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
@@ -733,16 +733,16 @@ SCRIPT_HandleSerialCtrlCmd:
     JSR     TEXTDISP_SetRastForMode(PC)
 
     LEA     12(A7),A7
-    BRA.S   .LAB_14F9
+    BRA.S   .ctrl_cmd_reset_parser
 
-.LAB_14F5:
+.ctrl_cmd_checksum_ok_normal_mode:
     MOVE.W  TEXTDISP_DeferredActionCountdown,D0
-    BEQ.S   .LAB_14F6
+    BEQ.S   .ctrl_cmd_dispatch_brush_now
 
     SUBQ.W  #1,D0
-    BNE.S   .LAB_14F7
+    BNE.S   .ctrl_cmd_defer_dispatch
 
-.LAB_14F6:
+.ctrl_cmd_dispatch_brush_now:
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -754,15 +754,15 @@ SCRIPT_HandleSerialCtrlCmd:
     BSR.W   SCRIPT_ProcessCtrlContextPlaybackTick
 
     LEA     16(A7),A7
-    BRA.S   .LAB_14F9
+    BRA.S   .ctrl_cmd_reset_parser
 
-.LAB_14F7:
+.ctrl_cmd_defer_dispatch:
     MOVE.W  DATA_SCRIPT_BSS_WORD_211B,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211B
-    BRA.S   .LAB_14F9
+    BRA.S   .ctrl_cmd_reset_parser
 
-.LAB_14F8:
+.ctrl_cmd_checksum_mismatch:
     PEA     1.W
     PEA     32.W
     JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
@@ -775,24 +775,24 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  D1,DATA_WDISP_BSS_WORD_2348
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_212B
 
-.LAB_14F9:
+.ctrl_cmd_reset_parser:
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
     MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.S   .finish_29ABA
 
-.LAB_14FA:
+.ctrl_cmd_state3_clear:
     CLR.W   SCRIPT_CTRL_STATE
     BRA.S   .finish_29ABA
 
-.LAB_14FB:
+.ctrl_cmd_state_invalid_reset:
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
     MOVE.W  D0,SCRIPT_CTRL_STATE
 
-.LAB_14F0_01A0:
+.ctrl_cmd_finish_dispatch:
 .finish_29ABA:
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     CMPI.W  #198,D0
@@ -841,7 +841,7 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CALLS:
 ;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadCiaBBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   BRUSH_SelectedNode, GLOB_WORD_SELECT_CODE_IS_RAVESC, LAB_14FF, LAB_14FF_002A, LAB_14FF_01B6, LAB_14FF_01C8, LAB_14FF_01E4, LAB_14FF_0224, LAB_14FF_02E0, LAB_14FF_0390, LAB_14FF_06A0, LAB_14FF_06D2, LAB_14FF_06DE, LAB_14FF_06EA, LAB_14FF_0812, LAB_14FF_081C, LAB_1506, LAB_1509, LAB_1521, LAB_1528, LAB_1529, LAB_152B, LAB_152C, LAB_152E, LAB_152F, LAB_1543, ESQIFF_GAdsBrushListCount, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_BSS_LONG_2129, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, WDISP_CharClassTable, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365, CLEANUP_AlignedStatusMatchIndex, M, WDISP_HighlightActive
+;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, GLOB_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_BSS_LONG_2129, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, DATA_WDISP_BSS_LONG_2357, DATA_WDISP_BSS_WORD_2365, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
 ; WRITES:
 ;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, DATA_COMMON_STR_VALUE_1B05, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -870,41 +870,41 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #0,D0
     MOVE.B  (A2),D0
     SUBQ.W  #1,D0
-    BLT.W   .LAB_1543
+    BLT.W   .brush_cmd_finalize
 
     CMPI.W  #22,D0
-    BGE.W   .LAB_1543
+    BGE.W   .brush_cmd_finalize
 
     ADD.W   D0,D0
-    MOVE.W  .LAB_14FF(PC,D0.W),D0
-    JMP     .LAB_14FF+2(PC,D0.W)
+    MOVE.W  .brush_cmd_jmptbl(PC,D0.W),D0
+    JMP     .brush_cmd_jmptbl+2(PC,D0.W)
 
 ; switch/jumptable
-.LAB_14FF:
-    DC.W    .LAB_14FF_0390-.LAB_14FF-2
-    DC.W    .LAB_14FF_002A-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_01E4-.LAB_14FF-2
-    DC.W    .LAB_14FF_01C8-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_06DE-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_0224-.LAB_14FF-2
-    DC.W    .LAB_14FF_02E0-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_06A0-.LAB_14FF-2
-    DC.W    .LAB_14FF_06D2-.LAB_14FF-2
-    DC.W    .LAB_14FF_0812-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_01B6-.LAB_14FF-2
-    DC.W    .LAB_14FF_081C-.LAB_14FF-2
-    DC.W    .LAB_14FF_06EA-.LAB_14FF-2
+.brush_cmd_jmptbl:
+    DC.W    .brush_cmd_case_dispatch_subcommand-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_select_primary_secondary-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_toggle_primary_search_order-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_set_channel_codes-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_set_cursor_15-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_apply_rtc_yyyymmddhhmm-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_select_playback_mode-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_set_string_value-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_set_cursor_14-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_split_search_buffer-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_type20_subtype-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_noop-.brush_cmd_jmptbl-2
+    DC.W    .brush_cmd_case_filter_or_runtime_mode-.brush_cmd_jmptbl-2
 
-.LAB_14FF_002A:
+.brush_cmd_case_select_primary_secondary:
     MOVEQ   #0,D0
     LEA     3(A2),A0
     PEA     2.W
@@ -916,13 +916,13 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_1501
+    BNE.S   .brush_cmd_after_tag_primary00
 
     MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptPrimarySelection    ; default primary selection to current brush
     MOVEQ   #1,D0
     MOVE.L  D0,-16(A5)
 
-.LAB_1501:
+.brush_cmd_after_tag_primary00:
     LEA     1(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
@@ -931,13 +931,13 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_1502
+    BNE.S   .brush_cmd_after_tag_secondary00
 
     MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection  ; same for secondary fallback
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
 
-.LAB_1502:
+.brush_cmd_after_tag_secondary00:
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
@@ -946,16 +946,16 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_1503
+    BNE.S   .brush_cmd_after_tag_primary11
 
     TST.L   -16(A5)
-    BNE.S   .LAB_1503
+    BNE.S   .brush_cmd_after_tag_primary11
 
     CLR.L   BRUSH_ScriptPrimarySelection
     MOVEQ   #1,D0
     MOVE.L  D0,-16(A5)
 
-.LAB_1503:
+.brush_cmd_after_tag_primary11:
     LEA     1(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
@@ -964,29 +964,29 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_1504
+    BNE.S   .brush_cmd_after_tag_secondary11
 
     TST.L   -20(A5)
-    BNE.S   .LAB_1504
+    BNE.S   .brush_cmd_after_tag_secondary11
 
     CLR.L   BRUSH_ScriptSecondarySelection
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
 
-.LAB_1504:
+.brush_cmd_after_tag_secondary11:
     TST.L   -16(A5)
-    BEQ.S   .LAB_1505
+    BEQ.S   .brush_cmd_scan_selection_list
 
     TST.L   -20(A5)
-    BNE.W   .LAB_1543
+    BNE.W   .brush_cmd_finalize
 
-.LAB_1505:
+.brush_cmd_scan_selection_list:
     MOVE.L  ESQIFF_BrushIniListHead,-12(A5)
 
-.LAB_1506:
+.brush_cmd_scan_nodes_loop:
     ; Scan available brushes to pick the first entries matching the requested names.
     TST.L   -12(A5)
-    BEQ.W   .LAB_1509
+    BEQ.W   .brush_cmd_scan_complete
 
     MOVEA.L -12(A5),A0
     ADDA.W  #$21,A0
@@ -998,20 +998,20 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_1507
+    BNE.S   .brush_cmd_check_secondary_tag_loop
 
     TST.L   -16(A5)
-    BNE.S   .LAB_1507
+    BNE.S   .brush_cmd_check_secondary_tag_loop
 
     MOVE.L  -12(A5),BRUSH_ScriptPrimarySelection
     MOVEQ   #1,D0
     MOVE.L  D0,-16(A5)
-    BEQ.S   .LAB_1507
+    BEQ.S   .brush_cmd_check_secondary_tag_loop
 
     TST.L   -20(A5)
-    BNE.S   .LAB_1509
+    BNE.S   .brush_cmd_scan_complete
 
-.LAB_1507:
+.brush_cmd_check_secondary_tag_loop:
     MOVEA.L -12(A5),A0
     ADDA.W  #$21,A0
     LEA     1(A2),A1
@@ -1022,104 +1022,104 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_1508
+    BNE.S   .brush_cmd_advance_node
 
     TST.L   -20(A5)
-    BNE.S   .LAB_1508
+    BNE.S   .brush_cmd_advance_node
 
     MOVE.L  -12(A5),BRUSH_ScriptSecondarySelection
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
     TST.L   -16(A5)
-    BEQ.S   .LAB_1508
+    BEQ.S   .brush_cmd_advance_node
 
     TST.L   D0
-    BNE.S   .LAB_1509
+    BNE.S   .brush_cmd_scan_complete
 
-.LAB_1508:
+.brush_cmd_advance_node:
     MOVEA.L -12(A5),A0
     MOVE.L  368(A0),-12(A5)
-    BRA.W   .LAB_1506
+    BRA.W   .brush_cmd_scan_nodes_loop
 
-.LAB_1509:
+.brush_cmd_scan_complete:
     TST.L   -16(A5)
-    BNE.S   .LAB_150A
+    BNE.S   .brush_cmd_ensure_primary_default
 
     MOVEA.L BRUSH_SelectedNode,A0
     MOVE.L  A0,BRUSH_ScriptPrimarySelection
 
-.LAB_150A:
+.brush_cmd_ensure_primary_default:
     TST.L   -20(A5)
-    BNE.W   .LAB_1543
+    BNE.W   .brush_cmd_finalize
 
     MOVE.L  BRUSH_SelectedNode,BRUSH_ScriptSecondarySelection
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_01B6:
+.brush_cmd_case_type20_subtype:
     MOVE.L  A2,-(A7)
     JSR     P_TYPE_GetSubtypeIfType20(PC)
 
     ADDQ.W  #4,A7
     MOVE.B  D0,DATA_SCRIPT_BSS_WORD_211D
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_01C8:
+.brush_cmd_case_set_channel_codes:
     MOVEQ   #0,D0
     MOVE.B  1(A2),D0
     MOVE.W  D0,TEXTDISP_PrimaryChannelCode
     MOVEQ   #0,D0
     MOVE.B  2(A2),D0
     MOVE.W  D0,TEXTDISP_SecondaryChannelCode
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_01E4:
+.brush_cmd_case_toggle_primary_search_order:
     MOVE.B  1(A2),D0
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_150B
+    BNE.S   .brush_cmd_toggle_primary_search_if_r
 
     MOVE.W  #1,SCRIPT_PrimarySearchFirstFlag
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_150B:
+.brush_cmd_toggle_primary_search_if_r:
     MOVEQ   #82,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_150C
+    BNE.S   .brush_cmd_toggle_primary_search_auto
 
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_PrimarySearchFirstFlag
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_150C:
+.brush_cmd_toggle_primary_search_auto:
     TST.W   SCRIPT_PrimarySearchFirstFlag
-    BEQ.S   .LAB_150D
+    BEQ.S   .brush_cmd_toggle_pick_secondary_first
 
     MOVEQ   #0,D0
-    BRA.S   .LAB_150E
+    BRA.S   .brush_cmd_toggle_store_flag
 
-.LAB_150D:
+.brush_cmd_toggle_pick_secondary_first:
     MOVEQ   #1,D0
 
-.LAB_150E:
+.brush_cmd_toggle_store_flag:
     MOVE.W  D0,SCRIPT_PrimarySearchFirstFlag
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_0224:
+.brush_cmd_case_apply_rtc_yyyymmddhhmm:
     MOVE.B  DATA_CTASKS_STR_1_1BC9,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
-    BNE.W   .LAB_1543
+    BNE.W   .brush_cmd_finalize
 
     MOVEA.L A2,A0
 
-.LAB_150F:
+.brush_cmd_find_cmd_terminator:
     TST.B   (A0)+
-    BNE.S   .LAB_150F
+    BNE.S   .brush_cmd_find_cmd_terminator
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     CMPA.W  #12,A0
-    BNE.W   .LAB_1543
+    BNE.W   .brush_cmd_finalize
 
     LEA     4(A2),A0
     PEA     4.W
@@ -1158,69 +1158,69 @@ SCRIPT_HandleBrushCommand:
     CLR.B   -10(A5)
     MOVEQ   #7,D3
     CMP.B   D3,D1
-    BGE.W   .LAB_1543
+    BGE.W   .brush_cmd_finalize
 
     MOVEQ   #12,D1
     CMP.B   D1,D2
-    BGE.W   .LAB_1543
+    BGE.W   .brush_cmd_finalize
 
     MOVEQ   #60,D1
     CMP.B   D1,D0
-    BGE.W   .LAB_1543
+    BGE.W   .brush_cmd_finalize
 
     PEA     -18(A5)
     JSR     SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_02E0:
+.brush_cmd_case_select_playback_mode:
     MOVE.L  LOCAVAIL_FilterStep,D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_1510
+    BEQ.S   .brush_cmd_playback_cursor_mode2
 
     SUBQ.L  #2,D0
-    BNE.S   .LAB_1511
+    BNE.S   .brush_cmd_filter_mode_dispatch
 
-.LAB_1510:
+.brush_cmd_playback_cursor_mode2:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1511:
+.brush_cmd_filter_mode_dispatch:
     CMP.L   LOCAVAIL_FilterModeFlag,D1
-    BEQ.S   .LAB_1513
+    BEQ.S   .brush_cmd_try_consume_primary_type
 
     MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_1512
+    BEQ.S   .brush_cmd_filter_highlight_gate
 
     TST.L   ESQIFF_GAdsBrushListCount
-    BNE.S   .LAB_1516
+    BNE.S   .brush_cmd_set_playback_cursor_4
 
-.LAB_1512:
+.brush_cmd_filter_highlight_gate:
     TST.W   WDISP_HighlightActive
-    BNE.S   .LAB_1516
+    BNE.S   .brush_cmd_set_playback_cursor_4
 
-.LAB_1513:
+.brush_cmd_try_consume_primary_type:
     PEA     DATA_SCRIPT_BSS_WORD_211D
     JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .LAB_1514
+    BEQ.S   .brush_cmd_filter_cmd_dispatch
 
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1514:
+.brush_cmd_filter_cmd_dispatch:
     MOVEQ   #49,D0
     CMP.B   1(A2),D0
-    BNE.S   .LAB_1515
+    BNE.S   .brush_cmd_filter_cmd_case3
 
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
@@ -1229,73 +1229,73 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1515:
+.brush_cmd_filter_cmd_case3:
     MOVEQ   #51,D0
     CMP.B   1(A2),D0
-    BNE.W   .LAB_1543
+    BNE.W   .brush_cmd_finalize
 
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1516:
+.brush_cmd_set_playback_cursor_4:
     MOVEQ   #4,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
     CLR.W   DATA_WDISP_BSS_LONG_2357
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_0390:
+.brush_cmd_case_dispatch_subcommand:
     PEA     DATA_SCRIPT_BSS_WORD_211D
     JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .LAB_1517
+    BEQ.S   .brush_cmd_dispatch_by_subcode
 
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1517:
+.brush_cmd_dispatch_by_subcode:
     MOVEQ   #0,D0
     MOVE.B  1(A2),D0
     SUBI.W  #$31,D0
-    BEQ.W   .LAB_152E
+    BEQ.W   .brush_cmd_case_select_cursor_from_primary_search
 
     SUBQ.W  #2,D0
-    BEQ.W   .LAB_1529
+    BEQ.W   .brush_cmd_case_reset_match_and_pick_cursor
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_152C
+    BEQ.W   .brush_cmd_case_find_wildcard_then_set_cursor
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_1521
+    BEQ.W   .brush_cmd_case_pending_banner_hex
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_152C
+    BEQ.W   .brush_cmd_case_find_wildcard_then_set_cursor
 
     SUBQ.W  #1,D0
-    BEQ.S   .LAB_151A
+    BEQ.S   .brush_cmd_case_channel_range_gate
 
     SUBQ.W  #1,D0
-    BEQ.W   .LAB_152F
+    BEQ.W   .brush_cmd_case_select_cursor_from_secondary_search
 
     SUBI.W  #12,D0
-    BEQ.W   .LAB_152B
+    BEQ.W   .brush_cmd_case_reset_match_cursor_1
 
     SUBQ.W  #2,D0
-    BEQ.S   .LAB_1518
+    BEQ.S   .brush_cmd_case_set_cursor_9_and_banner_text
 
     SUBI.W  #17,D0
-    BEQ.S   .LAB_1519
+    BEQ.S   .brush_cmd_case_set_cursor_8_and_byte
 
     SUBQ.W  #1,D0
-    BNE.W   .LAB_1543
+    BNE.W   .brush_cmd_finalize
 
-.LAB_1518:
+.brush_cmd_case_set_cursor_9_and_banner_text:
     MOVEQ   #9,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
     MOVE.B  1(A2),DATA_SCRIPT_BSS_BYTE_2127
@@ -1309,94 +1309,94 @@ SCRIPT_HandleBrushCommand:
     MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2129
     CLR.L   -8(A5)
     MOVE.W  #(-2),SCRIPT_PendingBannerTargetChar
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1519:
+.brush_cmd_case_set_cursor_8_and_byte:
     MOVEQ   #8,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
     MOVE.B  2(A2),DATA_SCRIPT_STR_X_2126
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_151A:
+.brush_cmd_case_channel_range_gate:
     TST.W   DATA_WDISP_BSS_LONG_2357
-    BNE.S   .LAB_151B
+    BNE.S   .brush_cmd_case_channel_range_read_digit
 
     MOVEQ   #0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_151B:
+.brush_cmd_case_channel_range_read_digit:
     MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
     SUBQ.W  #1,D0
-    BNE.S   .LAB_151C
+    BNE.S   .brush_cmd_case_channel_offset_secondary
 
     MOVEQ   #2,D0
-    BRA.S   .LAB_151D
+    BRA.S   .brush_cmd_case_channel_offset_selected
 
-.LAB_151C:
+.brush_cmd_case_channel_offset_secondary:
     MOVEQ   #3,D0
 
-.LAB_151D:
+.brush_cmd_case_channel_offset_selected:
     MOVEQ   #0,D1
     MOVE.B  0(A2,D0.L),D1
     MOVE.W  D1,DATA_WDISP_BSS_WORD_234F
     MOVEQ   #48,D0
     CMP.W   D0,D1
-    BNE.S   .LAB_151E
+    BNE.S   .brush_cmd_case_require_match_index
 
     MOVEQ   #0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_151E:
+.brush_cmd_case_require_match_index:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     ADDQ.W  #1,D0
-    BNE.S   .LAB_151F
+    BNE.S   .brush_cmd_case_resolve_match_index
 
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     ADDQ.W  #1,D0
-    BNE.S   .LAB_151F
+    BNE.S   .brush_cmd_case_resolve_match_index
 
     MOVEQ   #0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_151F:
+.brush_cmd_case_resolve_match_index:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     ADDQ.W  #1,D0
-    BNE.S   .LAB_1520
+    BNE.S   .brush_cmd_case_apply_channel_range
 
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,TEXTDISP_CurrentMatchIndex
 
-.LAB_1520:
+.brush_cmd_case_apply_channel_range:
     JSR     TEXTDISP_UpdateChannelRangeFlags(PC)
 
     MOVEQ   #5,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1521:
+.brush_cmd_case_pending_banner_hex:
     MOVE.B  CONFIG_LRBN_FlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_1522
+    BEQ.S   .brush_cmd_case_parse_pending_banner_hex
 
     MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1522:
+.brush_cmd_case_parse_pending_banner_hex:
     MOVEQ   #0,D0
     MOVE.B  2(A2),D0
     LEA     WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #7,(A1)
-    BEQ.W   .LAB_1528
+    BEQ.W   .brush_cmd_case_pending_banner_invalid
 
     MOVEQ   #0,D1
     MOVE.B  3(A2),D1
     ADDA.L  D1,A0
     BTST    #7,(A0)
-    BEQ.W   .LAB_1528
+    BEQ.W   .brush_cmd_case_pending_banner_invalid
 
     EXT.W   D0
     EXT.L   D0
@@ -1425,13 +1425,13 @@ SCRIPT_HandleBrushCommand:
     ADDA.L  D1,A1
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BTST    #2,(A1)
-    BEQ.S   .LAB_1523
+    BEQ.S   .brush_cmd_case_default_banner_speed
 
     MOVEQ   #0,D0
     MOVE.B  5(A2),D0
     ADDA.L  D0,A0
     BTST    #2,(A0)
-    BEQ.S   .LAB_1523
+    BEQ.S   .brush_cmd_case_default_banner_speed
 
     MOVEQ   #0,D2
     MOVE.B  D1,D2
@@ -1452,19 +1452,19 @@ SCRIPT_HandleBrushCommand:
     MOVE.L  32(A7),D1
     ADD.L   D0,D1
     MOVE.W  D1,DATA_SCRIPT_BSS_WORD_211F
-    BRA.S   .LAB_1524
+    BRA.S   .brush_cmd_case_after_banner_speed
 
-.LAB_1523:
+.brush_cmd_case_default_banner_speed:
     MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
 
-.LAB_1524:
+.brush_cmd_case_after_banner_speed:
     TST.B   6(A2)
     BNE.S   .checkIfSelectCodeIsRAVESC
 
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #2,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
 .checkIfSelectCodeIsRAVESC:
     TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
@@ -1486,63 +1486,63 @@ SCRIPT_HandleBrushCommand:
 .selectCodeIsRAVESC:
     MOVEQ   #3,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
 .selectCodeIsNotRAVESC:
     MOVEQ   #-1,D0
     MOVEQ   #1,D1
     MOVE.L  D1,SCRIPT_PlaybackCursor
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1528:
+.brush_cmd_case_pending_banner_invalid:
     MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1529:
+.brush_cmd_case_reset_match_and_pick_cursor:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVE.B  DATA_ESQ_STR_N_1DCE,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_152A
+    BNE.S   .brush_cmd_case_set_cursor_2
 
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_152A:
+.brush_cmd_case_set_cursor_2:
     MOVEQ   #2,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_152B:
+.brush_cmd_case_reset_match_cursor_1:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_152C:
+.brush_cmd_case_find_wildcard_then_set_cursor:
     LEA     2(A2),A0
     MOVE.L  A0,-(A7)
     JSR     TEXTDISP_FindEntryIndexByWildcard(PC)
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BNE.S   .LAB_152D
+    BNE.S   .brush_cmd_case_wildcard_found_cursor_3
 
     MOVEQ   #0,D6
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_152D:
+.brush_cmd_case_wildcard_found_cursor_3:
     MOVEQ   #3,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_152E:
+.brush_cmd_case_select_cursor_from_primary_search:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     CLR.L   -(A7)
@@ -1550,9 +1550,9 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_152F:
+.brush_cmd_case_select_cursor_from_secondary_search:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     PEA     1.W
@@ -1560,9 +1560,9 @@ SCRIPT_HandleBrushCommand:
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_06A0:
+.brush_cmd_case_set_string_value:
     LEA     1(A2),A0
     MOVE.L  A0,-(A7)
     JSR     SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
@@ -1574,33 +1574,33 @@ SCRIPT_HandleBrushCommand:
     MOVEQ   #63,D0
     CMP.B   D0,D1
 
-    BGT.S   .LAB_1530
+    BGT.S   .brush_cmd_case_clamp_common_str_value
 
     TST.B   D1
-    BPL.S   .LAB_1531
+    BPL.S   .brush_cmd_case_set_cursor_13
 
-.LAB_1530:
+.brush_cmd_case_clamp_common_str_value:
     MOVE.B  D0,DATA_COMMON_STR_VALUE_1B05
 
-.LAB_1531:
+.brush_cmd_case_set_cursor_13:
     MOVEQ   #13,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_06D2:
+.brush_cmd_case_set_cursor_14:
     MOVEQ   #14,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_06DE:
+.brush_cmd_case_set_cursor_15:
     MOVEQ   #15,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_14FF_06EA:
+.brush_cmd_case_filter_or_runtime_mode:
     MOVEQ   #57,D0
     CMP.B   1(A2),D0
-    BNE.S   .LAB_1532
+    BNE.S   .brush_cmd_case_filter_update_entry
 
     PEA     1.W
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(PC)
@@ -1611,167 +1611,167 @@ SCRIPT_HandleBrushCommand:
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(PC)
 
     LEA     12(A7),A7
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1532:
+.brush_cmd_case_filter_update_entry:
     MOVEQ   #1,D0
     CMP.L   LOCAVAIL_FilterModeFlag,D0
-    BNE.S   .LAB_1533
+    BNE.S   .brush_cmd_case_filter_mode_checks
 
     MOVEQ   #56,D0
     CMP.B   1(A2),D0
-    BNE.S   .LAB_1533
+    BNE.S   .brush_cmd_case_filter_mode_checks
 
     CLR.L   -(A7)
     JSR     SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1533:
+.brush_cmd_case_filter_mode_checks:
     MOVEQ   #1,D0
     CMP.L   LOCAVAIL_FilterModeFlag,D0
-    BNE.S   .LAB_1534
+    BNE.S   .brush_cmd_case_diag_char_mode_checks
 
     MOVEQ   #0,D6
-    BRA.W   .LAB_1543
+    BRA.W   .brush_cmd_finalize
 
-.LAB_1534:
+.brush_cmd_case_diag_char_mode_checks:
     MOVEQ   #0,D0
     MOVE.B  ED_DiagVinModeChar,D0
     LEA     WDISP_CharClassTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #1,(A1)
-    BEQ.S   .LAB_1535
+    BEQ.S   .brush_cmd_case_diag_char_keep
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #32,D2
     SUB.L   D2,D1
-    BRA.S   .LAB_1536
+    BRA.S   .brush_cmd_case_diag_char_normalized
 
-.LAB_1535:
+.brush_cmd_case_diag_char_keep:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
 
-.LAB_1536:
+.brush_cmd_case_diag_char_normalized:
     MOVEQ   #89,D2
     CMP.L   D2,D1
-    BNE.S   .LAB_1537
+    BNE.S   .brush_cmd_case_check_l2
 
     MOVE.B  1(A2),D1
     MOVEQ   #48,D3
     CMP.B   D3,D1
-    BEQ.S   .LAB_153A
+    BEQ.S   .brush_cmd_case_set_runtime_mode_3
 
-.LAB_1537:
+.brush_cmd_case_check_l2:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     BTST    #1,(A1)
-    BEQ.S   .LAB_1538
+    BEQ.S   .brush_cmd_case_check_l2_keep
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #32,D3
     SUB.L   D3,D1
-    BRA.S   .LAB_1539
+    BRA.S   .brush_cmd_case_check_l2_normalized
 
-.LAB_1538:
+.brush_cmd_case_check_l2_keep:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
 
-.LAB_1539:
+.brush_cmd_case_check_l2_normalized:
     MOVEQ   #76,D3
     CMP.L   D3,D1
-    BNE.S   .LAB_153B
+    BNE.S   .brush_cmd_case_check_y1
 
     MOVE.B  1(A2),D1
     MOVEQ   #50,D4
     CMP.B   D4,D1
-    BNE.S   .LAB_153B
+    BNE.S   .brush_cmd_case_check_y1
 
-.LAB_153A:
+.brush_cmd_case_set_runtime_mode_3:
     MOVE.W  #3,SCRIPT_RuntimeMode
-    BRA.S   .LAB_1543
+    BRA.S   .brush_cmd_finalize
 
-.LAB_153B:
+.brush_cmd_case_check_y1:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     BTST    #1,(A1)
-    BEQ.S   .LAB_153C
+    BEQ.S   .brush_cmd_case_check_y1_keep
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #32,D4
     SUB.L   D4,D1
-    BRA.S   .LAB_153D
+    BRA.S   .brush_cmd_case_check_y1_normalized
 
-.LAB_153C:
+.brush_cmd_case_check_y1_keep:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
 
-.LAB_153D:
+.brush_cmd_case_check_y1_normalized:
     CMP.L   D2,D1
-    BNE.S   .LAB_153E
+    BNE.S   .brush_cmd_case_check_l3
 
     MOVE.B  1(A2),D1
     MOVEQ   #49,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_1541
+    BEQ.S   .brush_cmd_case_try_cursor_10
 
-.LAB_153E:
+.brush_cmd_case_check_l3:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     ADDA.L  D1,A0
     BTST    #1,(A0)
-    BEQ.S   .LAB_153F
+    BEQ.S   .brush_cmd_case_check_l3_keep
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVEQ   #32,D2
     SUB.L   D2,D1
-    BRA.S   .LAB_1540
+    BRA.S   .brush_cmd_case_check_l3_normalized
 
-.LAB_153F:
+.brush_cmd_case_check_l3_keep:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
 
-.LAB_1540:
+.brush_cmd_case_check_l3_normalized:
     CMP.L   D3,D1
-    BNE.S   .LAB_1542
+    BNE.S   .brush_cmd_case_fail
 
     MOVEQ   #51,D0
     CMP.B   1(A2),D0
-    BNE.S   .LAB_1542
+    BNE.S   .brush_cmd_case_fail
 
-.LAB_1541:
+.brush_cmd_case_try_cursor_10:
     JSR     SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
-    BEQ.S   .LAB_1542
+    BEQ.S   .brush_cmd_case_fail
 
     MOVEQ   #10,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    BRA.S   .LAB_1543
+    BRA.S   .brush_cmd_finalize
 
-.LAB_1542:
+.brush_cmd_case_fail:
     MOVEQ   #0,D6
-    BRA.S   .LAB_1543
+    BRA.S   .brush_cmd_finalize
 
-.LAB_14FF_0812:
+.brush_cmd_case_split_search_buffer:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     BSR.W   SCRIPT_SplitAndNormalizeSearchBuffer
 
     ADDQ.W  #8,A7
 
-.LAB_14FF_081C:
-.LAB_1543:
+.brush_cmd_case_noop:
+.brush_cmd_finalize:
     MOVE.L  A3,-(A7)
     BSR.W   SCRIPT_SaveCtrlContextSnapshot
 
@@ -1957,44 +1957,44 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
 
     ADDQ.W  #8,A7
     TST.L   DATA_SCRIPT_BSS_LONG_2125
-    BEQ.S   .LAB_154D
+    BEQ.S   .playback_tick_apply_pending_mode_change
 
     MOVEQ   #3,D0
     MOVE.W  D0,SCRIPT_RuntimeMode
     MOVEQ   #0,D0
     MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2125
 
-.LAB_154D:
+.playback_tick_apply_pending_mode_change:
     MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_154E
+    BNE.S   .playback_tick_gate_cursor_for_m_mode
 
     MOVE.L  SCRIPT_PlaybackCursor,D0
     TST.L   D0
-    BLE.S   .LAB_154E
+    BLE.S   .playback_tick_gate_cursor_for_m_mode
 
     MOVEQ   #10,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_154E
+    BGE.S   .playback_tick_gate_cursor_for_m_mode
 
     MOVEQ   #2,D2
     MOVE.L  D2,SCRIPT_PlaybackCursor
 
-.LAB_154E:
+.playback_tick_gate_cursor_for_m_mode:
     MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
-    BNE.S   .LAB_154F
+    BNE.S   .playback_tick_maybe_dispatch_cursor
 
     TST.W   DATA_SCRIPT_BSS_WORD_211A
-    BEQ.S   .LAB_1551
+    BEQ.S   .playback_tick_clear_runtime_latch
 
     MOVE.L  SCRIPT_PlaybackCursor,D0
     MOVEQ   #10,D1
     CMP.L   D1,D0
-    BLE.S   .LAB_1551
+    BLE.S   .playback_tick_clear_runtime_latch
 
-.LAB_154F:
+.playback_tick_maybe_dispatch_cursor:
     MOVE.L  SCRIPT_PlaybackCursor,D0
     TST.L   D0
     BLE.S   .return
@@ -2010,18 +2010,18 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
 
     MOVEQ   #1,D0
     CMP.L   SCRIPT_PlaybackCursor,D0
-    BEQ.S   .LAB_1550
+    BEQ.S   .playback_tick_dispatch_cursor
 
     BSR.W   SCRIPT_ApplyPendingBannerTarget
 
-.LAB_1550:
+.playback_tick_dispatch_cursor:
     PEA     SCRIPT_PlaybackCursor
     BSR.W   SCRIPT_DispatchPlaybackCursorCommand
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
-.LAB_1551:
+.playback_tick_clear_runtime_latch:
     CLR.W   DATA_SCRIPT_BSS_WORD_211A
 
 .return:
@@ -2090,49 +2090,49 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
     MOVE.L  20(A7),D7
     MOVEQ   #18,D0
     CMP.B   1(A3),D0
-    BNE.S   .LAB_1556
+    BNE.S   .split_search_check_trailing_delimiter
 
     LEA     2(A3),A0
     LEA     TEXTDISP_SecondarySearchText,A1
 
-.LAB_1555:
+.split_search_copy_secondary_only:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_1555
+    BNE.S   .split_search_copy_secondary_only
 
     MOVEQ   #0,D0
     MOVE.B  D0,TEXTDISP_PrimarySearchText
-    BRA.S   .LAB_155D
+    BRA.S   .split_search_filter_primary
 
-.LAB_1556:
+.split_search_check_trailing_delimiter:
     CMP.B   -1(A3,D7.L),D0
-    BNE.S   .LAB_1558
+    BNE.S   .split_search_find_mid_delimiter
 
     CLR.B   -1(A3,D7.L)
     LEA     1(A3),A0
     LEA     TEXTDISP_PrimarySearchText,A1
 
-.LAB_1557:
+.split_search_copy_primary_only:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_1557
+    BNE.S   .split_search_copy_primary_only
 
     CLR.B   TEXTDISP_SecondarySearchText
-    BRA.S   .LAB_155D
+    BRA.S   .split_search_filter_primary
 
-.LAB_1558:
+.split_search_find_mid_delimiter:
     MOVEQ   #1,D6
 
-.LAB_1559:
+.split_search_find_mid_delimiter_loop:
     MOVEQ   #18,D0
     CMP.B   0(A3,D6.W),D0
-    BEQ.S   .LAB_155A
+    BEQ.S   .split_search_split_at_delimiter
 
     CMPI.W  #$c8,D6
-    BGE.S   .LAB_155A
+    BGE.S   .split_search_split_at_delimiter
 
     ADDQ.W  #1,D6
-    BRA.S   .LAB_1559
+    BRA.S   .split_search_find_mid_delimiter_loop
 
-.LAB_155A:
+.split_search_split_at_delimiter:
     CLR.B   0(A3,D6.W)
     MOVE.L  D6,D0
     EXT.L   D0
@@ -2141,24 +2141,24 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
     LEA     1(A0),A1
     LEA     TEXTDISP_SecondarySearchText,A0
 
-.LAB_155B:
+.split_search_copy_secondary_part:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   .LAB_155B
+    BNE.S   .split_search_copy_secondary_part
 
     LEA     1(A3),A0
     LEA     TEXTDISP_PrimarySearchText,A1
 
-.LAB_155C:
+.split_search_copy_primary_part:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_155C
+    BNE.S   .split_search_copy_primary_part
 
-.LAB_155D:
+.split_search_filter_primary:
     LEA     TEXTDISP_PrimarySearchText,A0
     MOVE.L  A0,D0
-    BEQ.S   .LAB_155E
+    BEQ.S   .split_search_filter_secondary
 
     TST.B   TEXTDISP_PrimarySearchText
-    BEQ.S   .LAB_155E
+    BEQ.S   .split_search_filter_secondary
 
     PEA     128.W
     MOVE.L  A0,-(A7)
@@ -2166,7 +2166,7 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 
     ADDQ.W  #8,A7
 
-.LAB_155E:
+.split_search_filter_secondary:
     LEA     TEXTDISP_SecondarySearchText,A0
     MOVE.L  A0,D0
     BEQ.S   .return
@@ -2277,7 +2277,7 @@ SCRIPT_ApplyPendingBannerTarget:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   GLOB_REF_WORD_HEX_CODE_8E, LAB_156E, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_N_1BC6, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
+;   GLOB_REF_WORD_HEX_CODE_8E, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_N_1BC6, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
 ; WRITES:
 ;   DATA_SCRIPT_BSS_WORD_2119, DATA_SCRIPT_BSS_WORD_211A, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2291,12 +2291,12 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 
     MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #1,D0
-    BNE.W   .LAB_156E
+    BNE.W   .runtime_mode_else_paths
 
     MOVE.B  DATA_CTASKS_STR_N_1BB3,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_1566
+    BNE.S   .runtime_mode_enter_mode2
 
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     ADDI.W  #28,D0
@@ -2307,7 +2307,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 
     ADDQ.W  #8,A7
 
-.LAB_1566:
+.runtime_mode_enter_mode2:
     CLR.W   DATA_SCRIPT_BSS_WORD_2119
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVE.W  #2,SCRIPT_RuntimeMode
@@ -2321,49 +2321,49 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_1567
+    BEQ.S   .runtime_mode_pick_shadow_byte
 
     MOVEQ   #83,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_156C
+    BNE.S   .runtime_mode_shadow_default
 
-.LAB_1567:
+.runtime_mode_pick_shadow_byte:
     MOVE.B  DATA_CTASKS_STR_N_1BC6,D0
     EXT.W   D0
     SUBI.W  #$42,D0
-    BEQ.S   .LAB_156A
+    BEQ.S   .runtime_mode_shadow_case_3
 
     SUBI.W  #10,D0
-    BEQ.S   .LAB_1568
+    BEQ.S   .runtime_mode_shadow_case_1
 
     SUBQ.W  #2,D0
-    BEQ.S   .LAB_156B
+    BEQ.S   .runtime_mode_shadow_case_0
 
     SUBQ.W  #4,D0
-    BEQ.S   .LAB_1569
+    BEQ.S   .runtime_mode_shadow_case_2
 
-    BRA.S   .LAB_156B
+    BRA.S   .runtime_mode_shadow_case_0
 
-.LAB_1568:
+.runtime_mode_shadow_case_1:
     MOVEQ   #1,D7
-    BRA.S   .LAB_156D
+    BRA.S   .runtime_mode_apply_shadow_and_clear_search
 
-.LAB_1569:
+.runtime_mode_shadow_case_2:
     MOVEQ   #2,D7
-    BRA.S   .LAB_156D
+    BRA.S   .runtime_mode_apply_shadow_and_clear_search
 
-.LAB_156A:
+.runtime_mode_shadow_case_3:
     MOVEQ   #3,D7
-    BRA.S   .LAB_156D
+    BRA.S   .runtime_mode_apply_shadow_and_clear_search
 
-.LAB_156B:
+.runtime_mode_shadow_case_0:
     MOVEQ   #0,D7
-    BRA.S   .LAB_156D
+    BRA.S   .runtime_mode_apply_shadow_and_clear_search
 
-.LAB_156C:
+.runtime_mode_shadow_default:
     MOVEQ   #0,D7
 
-.LAB_156D:
+.runtime_mode_apply_shadow_and_clear_search:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
@@ -2373,23 +2373,23 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 
     ADDQ.W  #4,A7
     MOVEQ   #1,D0
-    BRA.S   .LAB_1570
+    BRA.S   .runtime_mode_return
 
-.LAB_156E:
+.runtime_mode_else_paths:
     MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #3,D0
-    BNE.S   .LAB_156F
+    BNE.S   .runtime_mode_clear_to_zero
 
     JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211A
 
-.LAB_156F:
+.runtime_mode_clear_to_zero:
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_RuntimeMode
 
-.LAB_1570:
+.runtime_mode_return:
     MOVE.L  (A7)+,D7
     RTS
 
@@ -2508,7 +2508,7 @@ SCRIPT_UpdateCtrlStateMachine:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   GLOB_REF_WORD_HEX_CODE_8E, LAB_157B, LAB_157B_001C, LAB_157B_0030, LAB_157B_0042, LAB_157B_006A, LAB_157B_0082, LAB_157B_008A, LAB_157B_0092, LAB_157B_00CE, LAB_157B_00EE, LAB_157B_011E, LAB_157B_0140, LAB_157B_015E, LAB_157B_0178, LAB_157B_0192, LAB_157B_01BE, LAB_157E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, DATA_SCRIPT_BSS_WORD_211C, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, DATA_WDISP_BSS_WORD_2365, f, return
+;   GLOB_REF_WORD_HEX_CODE_8E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, DATA_SCRIPT_BSS_WORD_211C, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, DATA_SCRIPT_BSS_LONG_2129, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, DATA_WDISP_BSS_WORD_2365
 ; WRITES:
 ;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_WORD_211C, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_BSS_WORD_2122, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2522,45 +2522,45 @@ SCRIPT_DispatchPlaybackCursorCommand:
     MOVEA.L 8(A7),A3
     MOVE.L  (A3),D0
     SUBQ.L  #1,D0
-    BLT.W   .LAB_157E
+    BLT.W   .playback_cmd_case_default_increment
 
     CMPI.L  #$f,D0
-    BGE.W   .LAB_157E
+    BGE.W   .playback_cmd_case_default_increment
 
     ADD.W   D0,D0
-    MOVE.W  .LAB_157B(PC,D0.W),D0
-    JMP     .LAB_157B+2(PC,D0.W)
+    MOVE.W  .playback_cmd_jmptbl(PC,D0.W),D0
+    JMP     .playback_cmd_jmptbl+2(PC,D0.W)
 
 ; switch/jumptable
-.LAB_157B:
-    DC.W    .LAB_157B_008A-.LAB_157B-2
-    DC.W    .LAB_157B_0092-.LAB_157B-2
-    DC.W    .LAB_157B_00CE-.LAB_157B-2
-    DC.W    .LAB_157B_00EE-.LAB_157B-2
-    DC.W    .LAB_157B_011E-.LAB_157B-2
-    DC.W    .LAB_157B_0140-.LAB_157B-2
-    DC.W    .LAB_157B_015E-.LAB_157B-2
-    DC.W    .LAB_157B_0178-.LAB_157B-2
-    DC.W    .LAB_157B_0192-.LAB_157B-2
-    DC.W    .LAB_157B_01BE-.LAB_157B-2
-    DC.W    .LAB_157B_0042-.LAB_157B-2
-    DC.W    .LAB_157B_006A-.LAB_157B-2
-    DC.W    .LAB_157B_0082-.LAB_157B-2
-    DC.W    .LAB_157B_001C-.LAB_157B-2
-    DC.W    .LAB_157B_0030-.LAB_157B-2
+.playback_cmd_jmptbl:
+    DC.W    .playback_cmd_case_reset_selection-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_enter_mode2_and_shadow-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_enter_mode2_no_defer-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_enter_mode2_defer-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_render_aligned_current-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_render_aligned_primary-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_render_aligned_secondary-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_weather_status-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_textdisp_command-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_assert_ctrl_mode1-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_highlight_and_banner_plus28-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_banner_current-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_custom_copper_effect-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_set_read_mode_on-.playback_cmd_jmptbl-2
+    DC.W    .playback_cmd_case_set_read_mode_off-.playback_cmd_jmptbl-2
 
-.LAB_157B_001C:
+.playback_cmd_case_set_read_mode_on:
     MOVE.W  #1,DATA_SCRIPT_BSS_WORD_2122
     MOVE.W  #256,ESQPARS2_ReadModeFlags
     BRA.W   .return
 
-.LAB_157B_0030:
+.playback_cmd_case_set_read_mode_off:
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2122
     MOVE.W  D0,ESQPARS2_ReadModeFlags
     BRA.W   .return
 
-.LAB_157B_0042:
+.playback_cmd_case_highlight_and_banner_plus28:
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
@@ -2573,23 +2573,23 @@ SCRIPT_DispatchPlaybackCursorCommand:
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
-.LAB_157B_006A:
+.playback_cmd_case_banner_current:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
-.LAB_157B_0082:
+.playback_cmd_case_custom_copper_effect:
     JSR     SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(PC)
 
     BRA.W   .return
 
-.LAB_157B_008A:
+.playback_cmd_case_reset_selection:
     JSR     TEXTDISP_ResetSelectionAndRefresh(PC)
 
     BRA.W   .return
 
-.LAB_157B_0092:
+.playback_cmd_case_enter_mode2_and_shadow:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
@@ -2600,7 +2600,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     MOVE.B  CONFIG_MSN_FlagChar,D0
     MOVEQ   #77,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_157D
+    BNE.S   .playback_cmd_case_shadow_fallback
 
     PEA     3.W
     JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
@@ -2608,14 +2608,14 @@ SCRIPT_DispatchPlaybackCursorCommand:
     ADDQ.W  #4,A7
     BRA.W   .return
 
-.LAB_157D:
+.playback_cmd_case_shadow_fallback:
     PEA     1.W
     JSR     SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
-.LAB_157B_00CE:
+.playback_cmd_case_enter_mode2_no_defer:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
@@ -2628,7 +2628,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     ADDQ.W  #8,A7
     BRA.W   .return
 
-.LAB_157B_00EE
+.playback_cmd_case_enter_mode2_defer
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     BNE.W   .return
@@ -2641,7 +2641,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     MOVE.W  #1,TEXTDISP_DeferredActionArmed
     BRA.W   .return
 
-.LAB_157B_011E:
+.playback_cmd_case_render_aligned_current:
     MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
     EXT.L   D0
     MOVE.W  DATA_WDISP_BSS_WORD_234F,D1
@@ -2654,7 +2654,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     LEA     12(A7),A7
     BRA.W   .return
 
-.LAB_157B_0140:
+.playback_cmd_case_render_aligned_primary:
     MOVE.L  DATA_WDISP_BSS_LONG_2350,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2665,7 +2665,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     LEA     12(A7),A7
     BRA.W   .return
 
-.LAB_157B_015E:
+.playback_cmd_case_render_aligned_secondary:
     MOVE.L  DATA_WDISP_BSS_LONG_2350,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2676,7 +2676,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     LEA     12(A7),A7
     BRA.S   .return
 
-.LAB_157B_0178:
+.playback_cmd_case_weather_status:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
     MOVE.B  DATA_SCRIPT_STR_X_2126,D0
@@ -2686,7 +2686,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     ADDQ.W  #4,A7
     BRA.S   .return
 
-.LAB_157B_0192:
+.playback_cmd_case_textdisp_command:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
     MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,D0
@@ -2700,13 +2700,13 @@ SCRIPT_DispatchPlaybackCursorCommand:
     LEA     12(A7),A7
     BRA.S   .return
 
-.LAB_157B_01BE:
+.playback_cmd_case_assert_ctrl_mode1:
     JSR     SCRIPT_AssertCtrlLineNow(PC)
 
     MOVE.W  #1,SCRIPT_RuntimeMode
     BRA.S   .return
 
-.LAB_157E:
+.playback_cmd_case_default_increment:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVE.W  DATA_SCRIPT_BSS_WORD_211C,D0
     ADDQ.W  #1,D0
@@ -2805,7 +2805,7 @@ SCRIPT_ResetCtrlContext:
     MOVE.W  #1,426(A3)
     MOVE.L  D1,D7
 
-.LAB_1582:
+.ctrl_context_reset_clear_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -2818,7 +2818,7 @@ SCRIPT_ResetCtrlContext:
     ADDI.L  #$1b0,D1
     MOVE.B  D0,0(A3,D1.L)
     ADDQ.L  #1,D7
-    BRA.S   .LAB_1582
+    BRA.S   .ctrl_context_reset_clear_loop
 
 .return:
     MOVEM.L (A7)+,D7/A3
@@ -2864,16 +2864,16 @@ SCRIPT_LoadCtrlContextSnapshot:
     LEA     26(A3),A0
     LEA     TEXTDISP_PrimarySearchText,A1
 
-.LAB_1585:
+.ctrl_context_load_copy_primary_search:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_1585
+    BNE.S   .ctrl_context_load_copy_primary_search
 
     LEA     226(A3),A0
     LEA     TEXTDISP_SecondarySearchText,A1
 
-.LAB_1586:
+.ctrl_context_load_copy_secondary_search:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_1586
+    BNE.S   .ctrl_context_load_copy_secondary_search
 
     MOVE.W  8(A3),TEXTDISP_CurrentMatchIndex
     MOVE.W  10(A3),DATA_WDISP_BSS_LONG_2357
@@ -2883,30 +2883,30 @@ SCRIPT_LoadCtrlContextSnapshot:
     MOVE.L  20(A3),SCRIPT_PlaybackCursor
     MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
-    BNE.S   .LAB_1587
+    BNE.S   .ctrl_context_load_runtime_gate
 
     MOVE.W  24(A3),D0
     MOVEQ   #3,D1
     CMP.W   D1,D0
-    BEQ.S   .LAB_1588
+    BEQ.S   .ctrl_context_load_apply_saved_mode
 
-.LAB_1587:
+.ctrl_context_load_runtime_gate:
     MOVE.W  SCRIPT_RuntimeMode,D0
-    BNE.S   .LAB_1589
+    BNE.S   .ctrl_context_load_copy_active_group
 
     MOVE.W  24(A3),D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
-    BNE.S   .LAB_1589
+    BNE.S   .ctrl_context_load_copy_active_group
 
-.LAB_1588:
+.ctrl_context_load_apply_saved_mode:
     MOVE.W  D0,SCRIPT_RuntimeMode
 
-.LAB_1589:
+.ctrl_context_load_copy_active_group:
     MOVE.W  426(A3),TEXTDISP_ActiveGroupId
     MOVEQ   #0,D7
 
-.LAB_158A:
+.ctrl_context_load_copy_shadow_bytes_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -2922,7 +2922,7 @@ SCRIPT_LoadCtrlContextSnapshot:
     ADDI.L  #$1b0,D0
     MOVE.B  0(A3,D0.L),(A0)
     ADDQ.L  #1,D7
-    BRA.S   .LAB_158A
+    BRA.S   .ctrl_context_load_copy_shadow_bytes_loop
 
 .return:
     MOVEM.L (A7)+,D7/A3
@@ -2967,16 +2967,16 @@ SCRIPT_SaveCtrlContextSnapshot:
     LEA     26(A3),A0
     LEA     TEXTDISP_PrimarySearchText,A1
 
-.LAB_158D:
+.ctrl_context_save_copy_primary_search:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   .LAB_158D
+    BNE.S   .ctrl_context_save_copy_primary_search
 
     LEA     226(A3),A0
     LEA     TEXTDISP_SecondarySearchText,A1
 
-.LAB_158E:
+.ctrl_context_save_copy_secondary_search:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   .LAB_158E
+    BNE.S   .ctrl_context_save_copy_secondary_search
 
     MOVE.W  TEXTDISP_CurrentMatchIndex,8(A3)
     MOVE.W  DATA_WDISP_BSS_LONG_2357,10(A3)
@@ -2988,7 +2988,7 @@ SCRIPT_SaveCtrlContextSnapshot:
     MOVE.W  TEXTDISP_ActiveGroupId,426(A3)
     MOVEQ   #0,D7
 
-.LAB_158F:
+.ctrl_context_save_copy_shadow_bytes_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -3004,7 +3004,7 @@ SCRIPT_SaveCtrlContextSnapshot:
     ADDI.L  #$1b0,D0
     MOVE.B  (A0),0(A3,D0.L)
     ADDQ.L  #1,D7
-    BRA.S   .LAB_158F
+    BRA.S   .ctrl_context_save_copy_shadow_bytes_loop
 
 .return:
     MOVEM.L (A7)+,D7/A3
