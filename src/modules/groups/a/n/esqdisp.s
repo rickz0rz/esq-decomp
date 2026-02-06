@@ -291,15 +291,15 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  12(A5),D6
 
     TST.L   D6
-    BEQ.S   .LAB_08C5
+    BEQ.S   .lab_08C5
 
     MOVEQ   #1,D0
     CMP.L   D0,D6
     BNE.W   .return
 
-.LAB_08C5:
+.lab_08C5:
     TST.B   DATA_ESQ_BSS_BYTE_1DEE
-    BEQ.S   .LAB_08C6
+    BEQ.S   .lab_08C6
 
     MOVEQ   #-1,D0
     CMP.L   D0,D7
@@ -313,10 +313,10 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  D7,(A1)
     BRA.W   .return
 
-.LAB_08C6:
+.lab_08C6:
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BNE.S   .LAB_08C7
+    BNE.S   .lab_08C7
 
     MOVE.L  D6,D1
     ASL.L   #2,D1
@@ -328,7 +328,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
     ADDA.L  D1,A1
     MOVE.L  D0,(A1)
 
-.LAB_08C7:
+.lab_08C7:
     MOVE.L  D6,D0
     ASL.L   #2,D0
     LEA     DATA_ESQDISP_CONST_LONG_1E80,A0
@@ -343,17 +343,17 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  #$28f,D4
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   .LAB_08C8
+    BNE.S   .lab_08C8
 
     MOVEQ   #40,D0
     MOVE.L  D0,-16(A5)
-    BRA.S   .LAB_08C9
+    BRA.S   .lab_08C9
 
-.LAB_08C8:
+.lab_08C8:
     MOVEQ   #57,D0
     MOVE.L  D0,-16(A5)
 
-.LAB_08C9:
+.lab_08C9:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.B  25(A0),D5
     EXT.W   D5
@@ -366,7 +366,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
     MOVEQ   #6,D0
     CMP.L   D0,D7
-    BNE.S   .LAB_08CB
+    BNE.S   .lab_08CB
 
 .readPixelAt655x55:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
@@ -377,7 +377,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
     MOVE.L  D0,D7
 
-.LAB_08CB:
+.lab_08CB:
     MOVE.L  D7,D0
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -1588,18 +1588,18 @@ ESQDISP_TestEntryBits0And2_Core:
     BEQ.S   .return
 
     BTST    #0,40(A3)
-    BEQ.S   .LAB_0920
+    BEQ.S   .lab_0920
 
     BTST    #2,40(A3)
-    BEQ.S   .LAB_0920
+    BEQ.S   .lab_0920
 
     MOVEQ   #1,D0
-    BRA.S   .LAB_0921
+    BRA.S   .lab_0921
 
-.LAB_0920:
+.lab_0920:
     MOVEQ   #0,D0
 
-.LAB_0921:
+.lab_0921:
     MOVE.L  D0,D7
 
 .return:
@@ -1656,7 +1656,7 @@ ESQDISP_GetEntryPointerByMode:
 
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   .LAB_0924
+    BNE.S   .lab_0924
 
     TST.L   D7
     BMI.S   .return
@@ -1673,7 +1673,7 @@ ESQDISP_GetEntryPointerByMode:
     MOVE.L  (A0),-4(A5)
     BRA.S   .return
 
-.LAB_0924:
+.lab_0924:
     MOVEQ   #2,D0
     CMP.L   D0,D6
     BNE.S   .return
@@ -1748,7 +1748,7 @@ ESQDISP_GetEntryAuxPointerByMode:
 
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   .LAB_0927
+    BNE.S   .lab_0927
 
     TST.L   D7
     BMI.S   .return
@@ -1765,7 +1765,7 @@ ESQDISP_GetEntryAuxPointerByMode:
     MOVE.L  (A0),-4(A5)
     BRA.S   .return
 
-.LAB_0927:
+.lab_0927:
     MOVEQ   #2,D0
     CMP.L   D0,D6
     BNE.S   .return
@@ -1816,28 +1816,28 @@ ESQDISP_GetEntryAuxPointerByMode:
 
     MOVEQ   #-1,D0
     CMP.W   D0,D6
-    BNE.S   .LAB_0929
+    BNE.S   .lab_0929
 
     CMPI.W  #$16e,D7
-    BLE.S   .LAB_0929
+    BLE.S   .lab_0929
 
     MOVEQ   #1,D5
-    BRA.S   .LAB_092B
+    BRA.S   .lab_092B
 
-.LAB_0929:
+.lab_0929:
     TST.W   D6
-    BNE.S   .LAB_092A
+    BNE.S   .lab_092A
 
     CMPI.W  #$16d,D7
-    BLE.S   .LAB_092A
+    BLE.S   .lab_092A
 
     MOVEQ   #1,D5
-    BRA.S   .LAB_092B
+    BRA.S   .lab_092B
 
-.LAB_092A:
+.lab_092A:
     MOVEQ   #0,D5
 
-.LAB_092B:
+.lab_092B:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D5-D7
     RTS
@@ -1904,16 +1904,16 @@ ESQDISP_PollInputModeAndRefreshSelection:
     AND.B   (A0),D7
     MOVE.B  DATA_ESQDISP_CONST_BYTE_1E8B,D0
     CMP.B   D7,D0
-    BEQ.S   .LAB_092D
+    BEQ.S   .lab_092D
 
     ADDQ.L  #1,DATA_ESQDISP_BSS_LONG_1E8C
-    BRA.S   .LAB_092E
+    BRA.S   .lab_092E
 
-.LAB_092D:
+.lab_092D:
     MOVEQ   #0,D0
     MOVE.L  D0,DATA_ESQDISP_BSS_LONG_1E8C
 
-.LAB_092E:
+.lab_092E:
     CMPI.L  #$5,DATA_ESQDISP_BSS_LONG_1E8C
     BLE.S   .return
 
@@ -1922,7 +1922,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
     MOVEQ   #0,D1
     MOVE.L  D1,DATA_ESQDISP_BSS_LONG_1E8C
     TST.B   D0
-    BNE.S   .LAB_092F
+    BNE.S   .lab_092F
 
     MOVE.L  D1,-(A7)
     JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
@@ -1930,7 +1930,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
     ADDQ.W  #4,A7
     BRA.S   .return
 
-.LAB_092F:
+.lab_092F:
     JSR     ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .return:
@@ -1972,11 +1972,11 @@ ESQDISP_NormalizeClockAndRedrawBanner:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_0932
+    BNE.S   .lab_0932
 
     JSR     DST_RefreshBannerBuffer(PC)
 
-.LAB_0932:
+.lab_0932:
     MOVEA.L GLOB_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)

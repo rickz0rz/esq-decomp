@@ -1772,12 +1772,12 @@ ESQIFF2_ShowAttentionOverlay:
     MOVE.B  11(A5),D7
     MOVEQ   #-1,D5
     TST.W   GLOB_UIBusyFlag
-    BEQ.S   .LAB_0B27
+    BEQ.S   .lab_0B27
 
     TST.W   ED_DiagnosticsScreenActive
     BEQ.W   ESQIFF2_ShowAttentionOverlay_Return
 
-.LAB_0B27:
+.lab_0B27:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     SUBQ.W  #1,D0

@@ -99,14 +99,14 @@ LOCAVAIL2_DisplayAlertDelayAndReboot:
     LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
     MOVEQ   #0,D7
 
-.LAB_0FA1:
+.lab_0FA1:
     CMPI.L  #$f4240,D7
-    BGE.S   .LAB_0FA2
+    BGE.S   .lab_0FA2
 
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0FA1
+    BRA.S   .lab_0FA1
 
-.LAB_0FA2:
+.lab_0FA2:
     JSR     GROUP_AZ_JMPTBL_ESQ_ColdReboot(PC)
 
     MOVEQ   #0,D0

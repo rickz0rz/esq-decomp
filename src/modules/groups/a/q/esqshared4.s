@@ -351,9 +351,9 @@ ESQSHARED4_ClearBannerWorkRasterWithOnes:
     LEA (A0),A0
     MOVE.L  #$149,D1
 
-.LAB_0C7F:
+.lab_0C7F:
     MOVE.L  #$ffffffff,(A0)+
-    DBF     D1,.LAB_0C7F
+    DBF     D1,.lab_0C7F
     RTS
 
 ;!======
@@ -454,79 +454,79 @@ ESQSHARED4_TickCopperAndBannerTransitions:
     LEA     DATA_ESQ_CONST_LONG_1E22,A2
     MOVEQ   #1,D1
     MOVE.W  (VPOSR-BLTDDAT)(A0),D0
-    BPL.S   .LAB_0C83            ; BPL = checks to see if bit 15 is set (LOF), if it is jump to LAB_0C83
+    BPL.S   .lab_0C83            ; BPL = checks to see if bit 15 is set (LOF), if it is jump to LAB_0C83
 
     LEA     DATA_ESQ_CONST_LONG_1E51,A2
     MOVEQ   #0,D1
 
-.LAB_0C83:
+.lab_0C83:
     MOVE.L  A2,(COP1LCH-BLTDDAT)(A0)
     MOVE.L  D1,DATA_ESQPARS2_BSS_LONG_1F51
     TST.W   DATA_ESQPARS2_BSS_WORD_1F3B
-    BEQ.S   .LAB_0C84
+    BEQ.S   .lab_0C84
 
     JSR     ESQSHARED4_ProgramDisplayWindowAndCopper(PC)
 
     MOVE.W  #0,DATA_ESQPARS2_BSS_WORD_1F3B
-    BRA.W   .LAB_0C8B
+    BRA.W   .lab_0C8B
 
-.LAB_0C84:
+.lab_0C84:
     JSR     SCRIPT_UpdateBannerCharTransition
 
     TST.W   SCRIPT_BannerTransitionActive
-    BNE.W   .LAB_0C8B
+    BNE.W   .lab_0C8B
 
     TST.B   DATA_GCOMMAND_BSS_WORD_1FA9
-    BNE.W   .LAB_0C8A
+    BNE.W   .lab_0C8A
 
     CMPI.W  #$200,ESQPARS2_ReadModeFlags
-    BNE.W   .LAB_0C85
+    BNE.W   .lab_0C85
 
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
-    BRA.W   .LAB_0C89
+    BRA.W   .lab_0C89
 
-.LAB_0C85:
+.lab_0C85:
     CMPI.W  #$102,ESQPARS2_ReadModeFlags
-    BNE.W   .LAB_0C86
+    BNE.W   .lab_0C86
 
-    BRA.W   .LAB_0C8B
+    BRA.W   .lab_0C8B
 
-.LAB_0C86:
+.lab_0C86:
     CMPI.W  #$101,ESQPARS2_ReadModeFlags
-    BNE.W   .LAB_0C87
+    BNE.W   .lab_0C87
 
-    BRA.W   .LAB_0C8B
+    BRA.W   .lab_0C8B
 
-.LAB_0C87:
+.lab_0C87:
     CMPI.W  #$100,ESQPARS2_ReadModeFlags
-    BEQ.W   .LAB_0C8B
+    BEQ.W   .lab_0C8B
 
     TST.W   ESQPARS2_ReadModeFlags
-    BMI.S   .LAB_0C88
+    BMI.S   .lab_0C88
 
     MOVEQ   #1,D0
     SUB.W   D0,ESQPARS2_ReadModeFlags
-    BRA.W   .LAB_0C8B
+    BRA.W   .lab_0C8B
 
-.LAB_0C88:
+.lab_0C88:
     SUBQ.W  #1,DATA_ESQPARS2_BSS_WORD_1F3F
-    BPL.S   .LAB_0C8B
+    BPL.S   .lab_0C8B
 
-.LAB_0C89:
+.lab_0C89:
     MOVE.W  ESQPARS2_StateIndex,DATA_ESQPARS2_BSS_WORD_1F3F
     TST.W   DATA_ED2_BSS_WORD_1D31
-    BEQ.S   .LAB_0C8B
+    BEQ.S   .lab_0C8B
 
     JSR     GCOMMAND_TickHighlightState
 
-    BRA.S   .LAB_0C8B
+    BRA.S   .lab_0C8B
 
-.LAB_0C8A:
+.lab_0C8A:
     SUBQ.B  #1,DATA_GCOMMAND_BSS_WORD_1FA9
     SUBQ.W  #1,DATA_ESQPARS2_BSS_WORD_1F3F
     JSR     ESQSHARED4_BlitBannerRowsForActiveField
 
-.LAB_0C8B:
+.lab_0C8B:
     MOVEM.L (A7)+,D0-D3/A0-A6
     RTS
 

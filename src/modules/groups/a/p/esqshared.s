@@ -672,16 +672,16 @@ ESQSHARED_CompressClosedCaptionedTag:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   .LAB_0C34
+    BEQ.S   .lab_0C34
 
     MOVEA.L D0,A0
     MOVE.B  #$7c,(A0)+
     LEA     3(A0),A1
     MOVEA.L A1,A2
 
-.LAB_0C33:
+.lab_0C33:
     TST.B   (A2)+
-    BNE.S   .LAB_0C33
+    BNE.S   .lab_0C33
 
     SUBQ.L  #1,A2
     SUBA.L  A1,A2
@@ -693,7 +693,7 @@ ESQSHARED_CompressClosedCaptionedTag:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCopyMem(A6)
 
-.LAB_0C34:
+.lab_0C34:
     MOVEM.L (A7)+,A2-A3
     UNLK    A5
     RTS
@@ -856,7 +856,7 @@ ESQSHARED_ReplaceMovieRatingToken:
     MOVEQ   #0,D5
     MOVEQ   #0,D7
 
-.LAB_0C3D:
+.lab_0C3D:
     MOVEQ   #7,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -875,7 +875,7 @@ ESQSHARED_ReplaceMovieRatingToken:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   .LAB_0C40
+    BEQ.S   .lab_0C40
 
     LEA     DATA_ESQPARS2_CONST_BYTE_1F1E,A0
     ADDA.L  D7,A0
@@ -888,9 +888,9 @@ ESQSHARED_ReplaceMovieRatingToken:
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
-.LAB_0C3E:
+.lab_0C3E:
     TST.B   (A2)+
-    BNE.S   .LAB_0C3E
+    BNE.S   .lab_0C3E
 
     SUBQ.L  #1,A2
     SUBA.L  (A0),A2
@@ -901,9 +901,9 @@ ESQSHARED_ReplaceMovieRatingToken:
     ADDA.L  D6,A1
     MOVEA.L A1,A0
 
-.LAB_0C3F:
+.lab_0C3F:
     TST.B   (A0)+
-    BNE.S   .LAB_0C3F
+    BNE.S   .lab_0C3F
 
     SUBQ.L  #1,A0
     SUBA.L  A1,A0
@@ -916,9 +916,9 @@ ESQSHARED_ReplaceMovieRatingToken:
 
     MOVEQ   #1,D5
 
-.LAB_0C40:
+.lab_0C40:
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0C3D
+    BRA.S   .lab_0C3D
 
 .return:
     MOVEM.L (A7)+,D5-D7/A2-A3
@@ -957,7 +957,7 @@ ESQSHARED_ReplaceTvRatingToken:
     MOVEQ   #0,D5
     MOVEQ   #0,D7
 
-.LAB_0C43:
+.lab_0C43:
     MOVEQ   #7,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -976,7 +976,7 @@ ESQSHARED_ReplaceTvRatingToken:
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.S   .LAB_0C46
+    BEQ.S   .lab_0C46
 
     LEA     DATA_ESQPARS2_CONST_BYTE_1F27,A0
     ADDA.L  D7,A0
@@ -989,9 +989,9 @@ ESQSHARED_ReplaceTvRatingToken:
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
-.LAB_0C44:
+.lab_0C44:
     TST.B   (A2)+
-    BNE.S   .LAB_0C44
+    BNE.S   .lab_0C44
 
     SUBQ.L  #1,A2
     SUBA.L  (A0),A2
@@ -1002,9 +1002,9 @@ ESQSHARED_ReplaceTvRatingToken:
     ADDA.L  D6,A1
     MOVEA.L A1,A0
 
-.LAB_0C45:
+.lab_0C45:
     TST.B   (A0)+
-    BNE.S   .LAB_0C45
+    BNE.S   .lab_0C45
 
     SUBQ.L  #1,A0
     SUBA.L  A1,A0
@@ -1017,9 +1017,9 @@ ESQSHARED_ReplaceTvRatingToken:
 
     MOVEQ   #1,D5
 
-.LAB_0C46:
+.lab_0C46:
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0C43
+    BRA.S   .lab_0C43
 
 .return:
     MOVEM.L (A7)+,D5-D7/A2-A3

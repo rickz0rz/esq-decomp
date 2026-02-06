@@ -40,14 +40,14 @@ DISKIO_OpenFileWithBuffer:
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BEQ.S   .LAB_0398
+    BEQ.S   .lab_0398
 
     TST.L   DISKIO_OpenCount
-    BNE.S   .LAB_0397
+    BNE.S   .lab_0397
 
     MOVE.W  ESQPARS2_ReadModeFlags,DISKIO_BufferState+Struct_DiskIoBufferState__SavedF45
 
-.LAB_0397:
+.lab_0397:
     ADDQ.L  #1,DISKIO_OpenCount
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
 
@@ -62,7 +62,7 @@ DISKIO_OpenFileWithBuffer:
     MOVE.L  D0,DISKIO_BufferState+Struct_DiskIoBufferState__BufferPtr
     MOVE.L  D0,DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase
 
-.LAB_0398:
+.lab_0398:
     JSR     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)
 
 .return:
@@ -345,9 +345,9 @@ DISKIO_WriteDecimalField:
     LEA     -10(A5),A0
     MOVEA.L A0,A1
 
-.LAB_03AA:
+.lab_03AA:
     TST.B   (A1)+
-    BNE.S   .LAB_03AA
+    BNE.S   .lab_03AA
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -463,7 +463,7 @@ DISKIO_LoadFileToWorkBuffer:
     ADDQ.W  #4,A7
     MOVE.L  D0,GLOB_REF_LONG_FILE_SCRATCH
     TST.L   D0
-    BGT.S   .LAB_03AE
+    BGT.S   .lab_03AE
 
     MOVE.L  D7,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
@@ -472,7 +472,7 @@ DISKIO_LoadFileToWorkBuffer:
     MOVEQ   #-1,D0
     BRA.W   .return
 
-.LAB_03AE:
+.lab_03AE:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
     ADDQ.L  #1,D0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -484,7 +484,7 @@ DISKIO_LoadFileToWorkBuffer:
     LEA     16(A7),A7
     MOVE.L  D0,GLOB_PTR_WORK_BUFFER
     TST.L   D0
-    BNE.S   .LAB_03AF
+    BNE.S   .lab_03AF
 
     MOVE.L  D7,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
@@ -493,7 +493,7 @@ DISKIO_LoadFileToWorkBuffer:
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_03AF:
+.lab_03AF:
     MOVE.L  D7,D1
     MOVE.L  GLOB_PTR_WORK_BUFFER,D2
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D3
@@ -502,7 +502,7 @@ DISKIO_LoadFileToWorkBuffer:
 
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_03B0
+    BEQ.S   .lab_03B0
 
     ADDQ.L  #1,D1
     MOVE.L  D1,-(A7)
@@ -519,7 +519,7 @@ DISKIO_LoadFileToWorkBuffer:
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_03B0:
+.lab_03B0:
     MOVE.L  D7,D1
     JSR     _LVOClose(A6)
 
@@ -608,12 +608,12 @@ DISKIO_ParseLongFromWorkBuffer:
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-4(A5)
     CMP.L   A0,D0
-    BNE.S   .LAB_03B7
+    BNE.S   .lab_03B7
 
     MOVE.L  A0,D0
     BRA.S   .return
 
-.LAB_03B7:
+.lab_03B7:
     MOVE.L  D0,-(A7)
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
@@ -745,7 +745,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.S   .LAB_03C2
+    BEQ.S   .lab_03C2
 
     MOVE.L  D6,D1
     MOVE.L  D0,D2
@@ -753,7 +753,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
     JSR     _LVOInfo(A6)
 
     TST.L   D0
-    BEQ.S   .LAB_03C1
+    BEQ.S   .lab_03C1
 
     MOVEA.L D2,A0
     MOVE.L  16(A0),D0
@@ -768,7 +768,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
     ADD.L   D0,D0
     MOVE.L  D0,DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize
 
-.LAB_03C1:
+.lab_03C1:
     PEA     Struct_InfoData_Size.W
     MOVE.L  D2,-(A7)
     PEA     574.W
@@ -777,7 +777,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
 
     LEA     16(A7),A7
 
-.LAB_03C2:
+.lab_03C2:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
@@ -833,7 +833,7 @@ DISKIO_QueryVolumeSoftErrorCount:
     LEA     16(A7),A7
     MOVE.L  D0,-8(A5)
     TST.L   D0
-    BEQ.S   .LAB_03C6
+    BEQ.S   .lab_03C6
 
     MOVE.L  D6,D1
     MOVE.L  D0,D2
@@ -841,12 +841,12 @@ DISKIO_QueryVolumeSoftErrorCount:
     JSR     _LVOInfo(A6)
 
     TST.L   D0
-    BEQ.S   .LAB_03C5
+    BEQ.S   .lab_03C5
 
     MOVEA.L D2,A0
     MOVE.L  (A0),D7
 
-.LAB_03C5:
+.lab_03C5:
     PEA     Struct_InfoData_Size.W
     MOVE.L  D2,-(A7)
     PEA     599.W
@@ -855,7 +855,7 @@ DISKIO_QueryVolumeSoftErrorCount:
 
     LEA     16(A7),A7
 
-.LAB_03C6:
+.lab_03C6:
     MOVE.L  D6,D1
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
@@ -906,12 +906,12 @@ DISKIO_WriteBytesToOutputHandleGuarded:
     CMP.W   D7,D6
     MOVE.W  DISKIO_SavedReadModeFlags,ESQPARS2_ReadModeFlags
     CMP.W   D7,D6
-    BEQ.S   .LAB_03C9
+    BEQ.S   .lab_03C9
 
     MOVEQ   #-1,D0
     BRA.S   .return
 
-.LAB_03C9:
+.lab_03C9:
     MOVEQ   #0,D0
 
 .return:
@@ -1027,10 +1027,10 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  D0,DISKIO_TrackdiskIoReqPtr
     MOVEQ   #0,D7
 
-.LAB_03D0:
+.lab_03D0:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.W   .LAB_03D7
+    BGE.W   .lab_03D7
 
     MOVE.L  D7,D1
     ASL.L   #2,D1
@@ -1050,7 +1050,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     MOVE.L  D0,D6
     TST.L   D6
-    BEQ.S   .LAB_03D1
+    BEQ.S   .lab_03D1
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1060,9 +1060,9 @@ DISKIO_ProbeDrivesAndAssignPaths:
     LEA     DATA_WDISP_BSS_LONG_231A,A0
     ADDA.L  D0,A0
     MOVE.L  #223,(A0)
-    BRA.W   .LAB_03D6
+    BRA.W   .lab_03D6
 
-.LAB_03D1:
+.lab_03D1:
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A0
     MOVE.W  #14,28(A0)
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A1
@@ -1070,7 +1070,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A0
     TST.B   31(A0)
-    BEQ.S   .LAB_03D2
+    BEQ.S   .lab_03D2
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1080,11 +1080,11 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVEQ   #113,D0
     ADD.L   D0,D0
     MOVE.L  D0,(A2)
-    BRA.S   .LAB_03D3
+    BRA.S   .lab_03D3
 
-.LAB_03D2:
+.lab_03D2:
     TST.L   32(A0)
-    BEQ.S   .LAB_03D3
+    BEQ.S   .lab_03D3
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1092,7 +1092,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     ADDA.L  D0,A1
     MOVE.L  #$e2,(A1)
 
-.LAB_03D3:
+.lab_03D3:
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A0
     MOVE.W  #15,28(A0)
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A1
@@ -1100,7 +1100,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A0
     TST.B   31(A0)
-    BEQ.S   .LAB_03D4
+    BEQ.S   .lab_03D4
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1110,11 +1110,11 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVEQ   #32,D0
     NOT.B   D0
     MOVE.L  D0,(A1)
-    BRA.S   .LAB_03D5
+    BRA.S   .lab_03D5
 
-.LAB_03D4:
+.lab_03D4:
     TST.L   32(A0)
-    BEQ.S   .LAB_03D5
+    BEQ.S   .lab_03D5
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -1122,15 +1122,15 @@ DISKIO_ProbeDrivesAndAssignPaths:
     ADDA.L  D0,A0
     MOVE.L  #$df,(A0)
 
-.LAB_03D5:
+.lab_03D5:
     MOVEA.L DISKIO_TrackdiskIoReqPtr,A1
     JSR     _LVOCloseDevice(A6)
 
-.LAB_03D6:
+.lab_03D6:
     ADDQ.L  #1,D7
-    BRA.W   .LAB_03D0
+    BRA.W   .lab_03D0
 
-.LAB_03D7:
+.lab_03D7:
     MOVE.L  DISKIO_TrackdiskIoReqPtr,-(A7)
     JSR     GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(PC)
 
@@ -1143,24 +1143,24 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     CLR.W   DATA_GCOMMAND_CONST_WORD_1FB0
     TST.L   DISKIO_Drive0WriteProtectedCode
-    BEQ.S   .LAB_03D8
+    BEQ.S   .lab_03D8
 
     MOVEQ   #1,D0
     MOVE.L  D0,DATA_DISKIO_CONST_LONG_1BD5
 
-.LAB_03D8:
+.lab_03D8:
     TST.L   DATA_WDISP_BSS_LONG_2319
-    BEQ.S   .LAB_03D9
+    BEQ.S   .lab_03D9
 
     MOVEQ   #1,D0
     MOVE.L  D0,DATA_DISKIO_CONST_LONG_1BD6
 
-.LAB_03D9:
+.lab_03D9:
     TST.L   DATA_DISKIO_CONST_LONG_1BD5
-    BEQ.W   .LAB_03DA
+    BEQ.W   .lab_03DA
 
     TST.L   DISKIO_Drive0WriteProtectedCode
-    BNE.W   .LAB_03DA
+    BNE.W   .lab_03DA
 
     MOVE.W  ESQPARS2_ReadModeFlags,D5
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
@@ -1209,7 +1209,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.W  D5,ESQPARS2_ReadModeFlags
     MOVE.L  D2,DATA_DISKIO_CONST_LONG_1BD5
 
-.LAB_03DA:
+.lab_03DA:
     TST.L   DATA_DISKIO_CONST_LONG_1BD6
     BEQ.S   .return
 
@@ -1221,7 +1221,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   .LAB_03DB
+    BEQ.S   .lab_03DB
 
     LEA     DISKIO_CMD_ASSIGN_GFX_DF1,A0
     MOVE.L  A0,D1
@@ -1230,9 +1230,9 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
-    BRA.S   .LAB_03DC
+    BRA.S   .lab_03DC
 
-.LAB_03DB:
+.lab_03DB:
     LEA     DISKIO_CMD_ASSIGN_GFX_PC1,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
@@ -1240,7 +1240,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
-.LAB_03DC:
+.lab_03DC:
     MOVE.L  D2,DATA_DISKIO_CONST_LONG_1BD6
 
 .return:
@@ -1381,36 +1381,36 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03E1
+    BGE.S   .lab_03E1
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
     MOVE.B  D1,DATA_CTASKS_STR_N_1BA9
-    BRA.S   .LAB_03E2
+    BRA.S   .lab_03E2
 
-.LAB_03E1:
+.lab_03E1:
     MOVEQ   #78,D0
     MOVE.B  D0,DATA_CTASKS_STR_N_1BA9
 
-.LAB_03E2:
+.lab_03E2:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03E3
+    BGE.S   .lab_03E3
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
     MOVE.B  D1,DATA_CTASKS_STR_A_1BAA
-    BRA.S   .LAB_03E4
+    BRA.S   .lab_03E4
 
-.LAB_03E3:
+.lab_03E3:
     MOVE.B  #$41,DATA_CTASKS_STR_A_1BAA
 
-.LAB_03E4:
+.lab_03E4:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
@@ -1420,7 +1420,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03E6
+    BGE.S   .lab_03E6
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1428,23 +1428,23 @@ DISKIO_ParseConfigBuffer:
     ADD.B   0(A3,D0.W),D1
     MOVE.B  D1,DATA_CTASKS_BSS_BYTE_1BAC
     TST.B   D1
-    BMI.S   .LAB_03E5
+    BMI.S   .lab_03E5
 
     MOVEQ   #9,D0
     CMP.B   D0,D1
-    BLE.S   .LAB_03E6
+    BLE.S   .lab_03E6
 
-.LAB_03E5:
+.lab_03E5:
     MOVEQ   #0,D0
     MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1BAC
 
-.LAB_03E6:
+.lab_03E6:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03E8
+    BGE.S   .lab_03E8
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1452,23 +1452,23 @@ DISKIO_ParseConfigBuffer:
     ADD.B   0(A3,D0.W),D1
     MOVE.B  D1,DATA_CTASKS_BSS_BYTE_1BAD
     TST.B   D1
-    BMI.S   .LAB_03E7
+    BMI.S   .lab_03E7
 
     MOVEQ   #9,D0
     CMP.B   D0,D1
-    BLE.S   .LAB_03E8
+    BLE.S   .lab_03E8
 
-.LAB_03E7:
+.lab_03E7:
     MOVEQ   #0,D0
     MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1BAD
 
-.LAB_03E8:
+.lab_03E8:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03E9
+    BGE.S   .lab_03E9
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1476,21 +1476,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BAE
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03E9
+    BEQ.S   .lab_03E9
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03E9
+    BEQ.S   .lab_03E9
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BAE
 
-.LAB_03E9:
+.lab_03E9:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03EA
+    BGE.S   .lab_03EA
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1498,21 +1498,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BAF
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03EA
+    BEQ.S   .lab_03EA
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03EA
+    BEQ.S   .lab_03EA
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BAF
 
-.LAB_03EA:
+.lab_03EA:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03EB
+    BGE.S   .lab_03EB
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1520,21 +1520,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_N_1BB0
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03EB
+    BEQ.S   .lab_03EB
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03EB
+    BEQ.S   .lab_03EB
 
     MOVE.B  D2,DATA_CTASKS_STR_N_1BB0
 
-.LAB_03EB:
+.lab_03EB:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03EC
+    BGE.S   .lab_03EC
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1542,21 +1542,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_N_1BB1
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03EC
+    BEQ.S   .lab_03EC
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03EC
+    BEQ.S   .lab_03EC
 
     MOVE.B  D2,DATA_CTASKS_STR_N_1BB1
 
-.LAB_03EC:
+.lab_03EC:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03ED
+    BGE.S   .lab_03ED
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1564,21 +1564,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BB2
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03ED
+    BEQ.S   .lab_03ED
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03ED
+    BEQ.S   .lab_03ED
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BB2
 
-.LAB_03ED:
+.lab_03ED:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03EE
+    BGE.S   .lab_03EE
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1586,21 +1586,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_N_1BB3
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03EE
+    BEQ.S   .lab_03EE
 
     MOVEQ   #78,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03EE
+    BEQ.S   .lab_03EE
 
     MOVE.B  D0,DATA_CTASKS_STR_N_1BB3
 
-.LAB_03EE:
+.lab_03EE:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03EF
+    BGE.S   .lab_03EF
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1608,25 +1608,25 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_L_1BB4
     MOVEQ   #76,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03EF
+    BEQ.S   .lab_03EF
 
     MOVEQ   #83,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03EF
+    BEQ.S   .lab_03EF
 
     MOVEQ   #86,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03EF
+    BEQ.S   .lab_03EF
 
     MOVE.B  D0,DATA_CTASKS_STR_L_1BB4
 
-.LAB_03EF:
+.lab_03EF:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F0
+    BGE.S   .lab_03F0
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1641,13 +1641,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #4,A7
     MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BB5
 
-.LAB_03F0:
+.lab_03F0:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F1
+    BGE.S   .lab_03F1
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1662,13 +1662,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #4,A7
     MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BB6
 
-.LAB_03F1:
+.lab_03F1:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F2
+    BGE.S   .lab_03F2
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1676,21 +1676,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BB7
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03F2
+    BEQ.S   .lab_03F2
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03F2
+    BEQ.S   .lab_03F2
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BB7
 
-.LAB_03F2:
+.lab_03F2:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F3
+    BGE.S   .lab_03F3
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1698,21 +1698,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BB8
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03F3
+    BEQ.S   .lab_03F3
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03F3
+    BEQ.S   .lab_03F3
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BB8
 
-.LAB_03F3:
+.lab_03F3:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F4
+    BGE.S   .lab_03F4
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1720,21 +1720,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_N_1BB9
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03F4
+    BEQ.S   .lab_03F4
 
     MOVEQ   #78,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03F4
+    BEQ.S   .lab_03F4
 
     MOVE.B  D0,DATA_CTASKS_STR_N_1BB9
 
-.LAB_03F4:
+.lab_03F4:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F5
+    BGE.S   .lab_03F5
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1749,13 +1749,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #4,A7
     MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BBA
 
-.LAB_03F5:
+.lab_03F5:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F6
+    BGE.S   .lab_03F6
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1770,13 +1770,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #4,A7
     MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BBB
 
-.LAB_03F6:
+.lab_03F6:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F7
+    BGE.S   .lab_03F7
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1791,13 +1791,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #4,A7
     MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BBC
 
-.LAB_03F7:
+.lab_03F7:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03F8
+    BGE.S   .lab_03F8
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1815,13 +1815,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #4,A7
     MOVE.L  D0,CONFIG_TimeWindowMinutes
 
-.LAB_03F8:
+.lab_03F8:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03FA
+    BGE.S   .lab_03FA
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1832,22 +1832,22 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D1,DATA_CTASKS_CONST_LONG_1BBE
     MOVEQ   #1,D0
     CMP.L   D0,D1
-    BLT.S   .LAB_03F9
+    BLT.S   .lab_03F9
 
     MOVEQ   #9,D2
     CMP.L   D2,D1
-    BLE.S   .LAB_03FA
+    BLE.S   .lab_03FA
 
-.LAB_03F9:
+.lab_03F9:
     MOVE.L  D0,DATA_CTASKS_CONST_LONG_1BBE
 
-.LAB_03FA:
+.lab_03FA:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03FB
+    BGE.S   .lab_03FB
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1861,13 +1861,13 @@ DISKIO_ParseConfigBuffer:
 
     ADDQ.W  #4,A7
 
-.LAB_03FB:
+.lab_03FB:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_03FC
+    BGE.S   .lab_03FC
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1875,21 +1875,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BBF
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03FC
+    BEQ.S   .lab_03FC
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03FC
+    BEQ.S   .lab_03FC
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BBF
 
-.LAB_03FC:
+.lab_03FC:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0400
+    BGE.S   .lab_0400
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1897,35 +1897,35 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,GLOB_REF_STR_USE_24_HR_CLOCK
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_03FD
+    BEQ.S   .lab_03FD
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_03FD
+    BEQ.S   .lab_03FD
 
     MOVE.B  D2,GLOB_REF_STR_USE_24_HR_CLOCK
 
-.LAB_03FD:
+.lab_03FD:
     MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D1
     CMP.B   D0,D1
-    BNE.S   .LAB_03FE
+    BNE.S   .lab_03FE
 
     LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
-    BRA.S   .LAB_03FF
+    BRA.S   .lab_03FF
 
-.LAB_03FE:
+.lab_03FE:
     LEA     GLOB_JMPTBL_HALF_HOURS_12_HR_FMT,A0
 
-.LAB_03FF:
+.lab_03FF:
     MOVE.L  A0,GLOB_REF_STR_CLOCK_FORMAT
 
-.LAB_0400:
+.lab_0400:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0401
+    BGE.S   .lab_0401
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1933,21 +1933,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_Y_1BC1
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_0401
+    BEQ.S   .lab_0401
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_0401
+    BEQ.S   .lab_0401
 
     MOVE.B  D0,DATA_CTASKS_STR_Y_1BC1
 
-.LAB_0401:
+.lab_0401:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.W   .LAB_0409
+    BGE.W   .lab_0409
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -1957,69 +1957,69 @@ DISKIO_ParseConfigBuffer:
     LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #1,(A0)
-    BEQ.S   .LAB_0402
+    BEQ.S   .lab_0402
 
     MOVEQ   #0,D0
     MOVE.B  D5,D0
     MOVEQ   #32,D1
     SUB.L   D1,D0
-    BRA.S   .LAB_0403
+    BRA.S   .lab_0403
 
-.LAB_0402:
+.lab_0402:
     MOVEQ   #0,D0
     MOVE.B  D5,D0
 
-.LAB_0403:
+.lab_0403:
     MOVEQ   #67,D1
     SUB.L   D1,D0
-    BEQ.S   .LAB_0405
+    BEQ.S   .lab_0405
 
     SUBQ.L  #3,D0
-    BEQ.S   .LAB_0404
+    BEQ.S   .lab_0404
 
     SUBQ.L  #2,D0
-    BEQ.S   .LAB_0406
+    BEQ.S   .lab_0406
 
     SUBQ.L  #8,D0
-    BEQ.S   .LAB_0406
+    BEQ.S   .lab_0406
 
-    BRA.S   .LAB_0406
+    BRA.S   .lab_0406
 
-.LAB_0404:
+.lab_0404:
     MOVE.W  #128,GLOB_REF_WORD_HEX_CODE_8E
     ADDQ.W  #1,D6
-    BRA.S   .LAB_0407
+    BRA.S   .lab_0407
 
-.LAB_0405:
+.lab_0405:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVEQ   #0,D1
     MOVE.B  0(A3,D0.W),D1
     MOVE.W  D1,GLOB_REF_WORD_HEX_CODE_8E
-    BRA.S   .LAB_0407
+    BRA.S   .lab_0407
 
-.LAB_0406:
+.lab_0406:
     MOVE.W  #$8e,GLOB_REF_WORD_HEX_CODE_8E
     ADDQ.W  #1,D6
 
-.LAB_0407:
+.lab_0407:
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
     CMPI.W  #128,D0
-    BCS.S   .LAB_0408
+    BCS.S   .lab_0408
 
     CMPI.W  #220,D0
-    BLS.S   .LAB_0409
+    BLS.S   .lab_0409
 
-.LAB_0408:
+.lab_0408:
     MOVE.W  #$8e,GLOB_REF_WORD_HEX_CODE_8E
 
-.LAB_0409:
+.lab_0409:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_040B
+    BGE.S   .lab_040B
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -2028,21 +2028,21 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES
     MOVEQ   #8,D0
     CMP.B   D0,D1
-    BLT.S   .LAB_040A
+    BLT.S   .lab_040A
 
     CMP.B   D0,D1
-    BLE.S   .LAB_040B
+    BLE.S   .lab_040B
 
-.LAB_040A:
+.lab_040A:
     MOVE.B  D0,GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES
 
-.LAB_040B:
+.lab_040B:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_040F
+    BGE.S   .lab_040F
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -2052,19 +2052,19 @@ DISKIO_ParseConfigBuffer:
     LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #1,(A0)
-    BEQ.S   .LAB_040C
+    BEQ.S   .lab_040C
 
     MOVEQ   #0,D0
     MOVE.B  D5,D0
     MOVEQ   #32,D1
     SUB.L   D1,D0
-    BRA.S   .LAB_040D
+    BRA.S   .lab_040D
 
-.LAB_040C:
+.lab_040C:
     MOVEQ   #0,D0
     MOVE.B  D5,D0
 
-.LAB_040D:
+.lab_040D:
     MOVE.B  D0,ED_DiagTextModeChar
     EXT.W   D0
     EXT.L   D0
@@ -2074,23 +2074,23 @@ DISKIO_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   .LAB_040E
+    BEQ.S   .lab_040E
 
     MOVE.B  ED_DiagTextModeChar,D0
     TST.B   D0
-    BNE.S   .LAB_040F
+    BNE.S   .lab_040F
 
-.LAB_040E:
+.lab_040E:
     MOVEQ   #78,D0
     MOVE.B  D0,ED_DiagTextModeChar
 
-.LAB_040F:
+.lab_040F:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0410
+    BGE.S   .lab_0410
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -2098,29 +2098,29 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,DATA_CTASKS_STR_N_1BC5
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_0410
+    BEQ.S   .lab_0410
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_0410
+    BEQ.S   .lab_0410
 
     MOVE.B  D2,DATA_CTASKS_STR_N_1BC5
 
-.LAB_0410:
+.lab_0410:
     MOVE.B  DATA_CTASKS_STR_N_1BC5,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0411
+    BNE.S   .lab_0411
 
     BSR.W   DISKIO_EnsurePc1MountedAndGfxAssigned
 
-.LAB_0411:
+.lab_0411:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0413
+    BGE.S   .lab_0413
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -2134,23 +2134,23 @@ DISKIO_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   .LAB_0412
+    BEQ.S   .lab_0412
 
     MOVE.B  DATA_CTASKS_STR_N_1BC6,D0
     TST.B   D0
-    BNE.S   .LAB_0413
+    BNE.S   .lab_0413
 
-.LAB_0412:
+.lab_0412:
     MOVEQ   #78,D0
     MOVE.B  D0,DATA_CTASKS_STR_N_1BC6
 
-.LAB_0413:
+.lab_0413:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0415
+    BGE.S   .lab_0415
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -2158,18 +2158,18 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  D1,CONFIG_LRBN_FlagChar
     MOVEQ   #89,D0
     CMP.B   D0,D1
-    BEQ.S   .LAB_0414
+    BEQ.S   .lab_0414
 
     MOVEQ   #78,D2
     CMP.B   D2,D1
-    BEQ.S   .LAB_0414
+    BEQ.S   .lab_0414
 
     MOVE.B  D0,CONFIG_LRBN_FlagChar
 
-.LAB_0414:
+.lab_0414:
     MOVE.B  CONFIG_LRBN_FlagChar,D1
     CMP.B   D0,D1
-    BEQ.S   .LAB_0415
+    BEQ.S   .lab_0415
 
     MOVE.B  D0,CONFIG_LRBN_FlagChar
     MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
@@ -2181,13 +2181,13 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #8,A7
     MOVE.B  #$4e,CONFIG_LRBN_FlagChar
 
-.LAB_0415:
+.lab_0415:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D0,D1
-    BGE.S   .LAB_0416
+    BGE.S   .lab_0416
 
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
@@ -2201,11 +2201,11 @@ DISKIO_ParseConfigBuffer:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BNE.S   .LAB_0416
+    BNE.S   .lab_0416
 
     MOVE.B  #'N',CONFIG_MSN_FlagChar
 
-.LAB_0416:
+.lab_0416:
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
@@ -2614,12 +2614,12 @@ DISKIO_LoadConfigFromDisk:
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D0
-    BNE.S   .LAB_041E
+    BNE.S   .lab_041E
 
     MOVEQ   #-1,D6
     BRA.S   .return
 
-.LAB_041E:
+.lab_041E:
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
     MOVEA.L GLOB_PTR_WORK_BUFFER,A0
     MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0

@@ -14,7 +14,7 @@
   - Control command hook: `GCOMMAND_ProcessCtrlCommand` (used by `ESQ_InvokeGcommandInit`).
 - The former anonymous Niche/Mplex/PPV globals in `src/data/wdisp.s` now have semantic aliases across `22D*`, `22E*`, and `22F*` fields (workflow/detail flags, mode-cycle/search params, showtimes row span, pen/layout params, and preset work-entry aliases), with legacy labels retained underneath.
 - `src/modules/groups/b/a/newgrid.s` and `src/modules/groups/b/a/newgrid1.s` received local-label cleanup in the mode-selection and pen-selection dispatch blocks (descriptive local names plus duplicate local-label removal in switch/branch glue).
-- `src/modules/groups/a/a/bitmap.s` now has descriptive local labels throughout `BITMAP_ProcessIlbmImage` (chunk dispatch/read/seek paths), replacing opaque `.LAB_00EF`-style flow labels.
+- `src/modules/groups/a/a/bitmap.s` now has descriptive local labels throughout `BITMAP_ProcessIlbmImage` (chunk dispatch/read/seek paths), replacing opaque `.lab_00EF`-style flow labels.
 - `src/ESQ.asm` is in progress: core init, serial CTRL/RBF handling, and jump stubs are renamed and documented; banner helper names were added (e.g., `ESQ_AdvanceBannerCharIndex`, `ESQ_GenerateXorChecksumByte`). Continue adding header blocks/aliases after the CTRL buffer routines and audit remaining orphaned helpers/data.
 - Highlight cursor update helper was relocated: `KYBD_UpdateHighlightState` now lives in `src/modules/ladfunc.s` as `LADFUNC_UpdateHighlightState` (callers updated).
 

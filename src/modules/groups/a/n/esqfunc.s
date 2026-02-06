@@ -197,7 +197,7 @@ ESQFUNC_AllocateLineTextBuffers:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-.LAB_0964:
+.lab_0964:
     MOVEQ   #20,D0
     CMP.W   D0,D7
     BGE.S   .return
@@ -219,7 +219,7 @@ ESQFUNC_AllocateLineTextBuffers:
     MOVEA.L 4(A7),A0
     MOVE.L  D0,(A0)
     ADDQ.W  #1,D7
-    BRA.S   .LAB_0964
+    BRA.S   .lab_0964
 
 .return:
     MOVEQ   #0,D0
@@ -311,19 +311,19 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
     JSR     ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
 
     TST.L   DISKIO_Drive0WriteProtectedCode
-    BNE.S   .LAB_096B
+    BNE.S   .lab_096B
 
     TST.L   DATA_WDISP_BSS_LONG_231A
-    BNE.S   .LAB_096A
+    BNE.S   .lab_096A
 
     MOVE.W  GLOB_RefreshTickCounter,D0
     ADDQ.W  #1,D0
-    BNE.S   .LAB_096C
+    BNE.S   .lab_096C
 
     CLR.W   GLOB_RefreshTickCounter
-    BRA.S   .LAB_096C
+    BRA.S   .lab_096C
 
-.LAB_096A:
+.lab_096A:
     MOVE.W  #(-1),GLOB_RefreshTickCounter
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
@@ -333,9 +333,9 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
-    BRA.S   .LAB_096C
+    BRA.S   .lab_096C
 
-.LAB_096B:
+.lab_096B:
     MOVE.W  #(-1),GLOB_RefreshTickCounter
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
@@ -346,7 +346,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 
     LEA     12(A7),A7
 
-.LAB_096C:
+.lab_096C:
     RTS
 
 ;!======
@@ -464,64 +464,64 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ;------------------------------------------------------------------------------
 ESQFUNC_ProcessUiFrameTick:
     TST.W   DATA_GCOMMAND_CONST_WORD_1FB0
-    BEQ.S   .LAB_0971
+    BEQ.S   .lab_0971
 
     JSR     ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
 
-.LAB_0971:
+.lab_0971:
     MOVEQ   #1,D0
     CMP.L   DATA_ESQDISP_BSS_LONG_1E84,D0
-    BNE.S   .LAB_0972
+    BNE.S   .lab_0972
 
     BSR.W   ESQDISP_PollInputModeAndRefreshSelection
 
-.LAB_0972:
+.lab_0972:
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_0973
+    BNE.S   .lab_0973
 
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-.LAB_0973:
+.lab_0973:
     JSR     ED_DispatchEscMenuState(PC)
 
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_0974
+    BNE.S   .lab_0974
 
     JSR     ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd(PC)
 
-.LAB_0974:
+.lab_0974:
     TST.W   DATA_WDISP_BSS_WORD_2264
-    BEQ.W   .LAB_097C
+    BEQ.W   .lab_097C
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
 
     TST.L   DATA_ESQDISP_BSS_LONG_1E88
-    BEQ.S   .LAB_0975
+    BEQ.S   .lab_0975
 
     CLR.L   DATA_ESQDISP_BSS_LONG_1E88
     BSR.W   ESQFUNC_CommitSecondaryStateAndPersist
 
-.LAB_0975:
+.lab_0975:
     TST.W   CTASKS_IffTaskDoneFlag
-    BEQ.W   .LAB_097C
+    BEQ.W   .lab_097C
 
     BTST    #1,DATA_ESQFUNC_BSS_BYTE_1EE5
-    BEQ.S   .LAB_0976
+    BEQ.S   .lab_0976
 
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_0976
+    BNE.S   .lab_0976
 
     BCLR    #1,DATA_ESQFUNC_BSS_BYTE_1EE5
     JSR     ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
-    BRA.S   .LAB_0977
+    BRA.S   .lab_0977
 
-.LAB_0976:
+.lab_0976:
     BTST    #0,DATA_ESQFUNC_BSS_BYTE_1EE5
-    BEQ.S   .LAB_0977
+    BEQ.S   .lab_0977
 
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_0977
+    BNE.S   .lab_0977
 
     BCLR    #0,DATA_ESQFUNC_BSS_BYTE_1EE5
     PEA     1.W
@@ -529,74 +529,74 @@ ESQFUNC_ProcessUiFrameTick:
 
     ADDQ.W  #4,A7
 
-.LAB_0977:
+.lab_0977:
     TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
-    BNE.S   .LAB_0978
+    BNE.S   .lab_0978
 
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_0978
+    BNE.S   .lab_0978
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
     MOVE.L  D0,D1
     ANDI.W  #$fffd,D1
     MOVE.W  D1,ESQIFF_ExternalAssetFlags
 
-.LAB_0978:
+.lab_0978:
     MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0979
+    BEQ.S   .lab_0979
 
     TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
-    BNE.S   .LAB_0979
+    BNE.S   .lab_0979
 
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_0979
+    BNE.S   .lab_0979
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #$fffe,D0
     MOVE.W  D0,ESQIFF_ExternalAssetFlags
 
-.LAB_0979:
+.lab_0979:
     TST.L   WDISP_WeatherStatusBrushListHead
-    BNE.S   .LAB_097A
+    BNE.S   .lab_097A
 
     TST.L   PARSEINI_BannerBrushResourceHead
-    BEQ.S   .LAB_097A
+    BEQ.S   .lab_097A
 
     CLR.L   -(A7)
     JSR     ESQIFF_QueueIffBrushLoad(PC)
 
     ADDQ.W  #4,A7
 
-.LAB_097A:
+.lab_097A:
     CMPI.L  #$1,ESQIFF_LogoBrushListCount
-    BGE.S   .LAB_097B
+    BGE.S   .lab_097B
 
     CLR.L   -(A7)
     JSR     ESQIFF_ServiceExternalAssetSourceState(PC)
 
     ADDQ.W  #4,A7
-    BRA.S   .LAB_097C
+    BRA.S   .lab_097C
 
-.LAB_097B:
+.lab_097B:
     MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_097C
+    BEQ.S   .lab_097C
 
     CMPI.L  #$2,ESQIFF_GAdsBrushListCount
-    BGE.S   .LAB_097C
+    BGE.S   .lab_097C
 
     TST.W   GLOB_UIBusyFlag
-    BNE.S   .LAB_097C
+    BNE.S   .lab_097C
 
     PEA     1.W
     JSR     ESQIFF_ServiceExternalAssetSourceState(PC)
 
     ADDQ.W  #4,A7
 
-.LAB_097C:
+.lab_097C:
     JSR     ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(PC)
 
     TST.B   DATA_ESQDISP_BSS_WORD_1E89
@@ -646,11 +646,11 @@ ESQFUNC_ServiceUiTickIfRunning:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     TST.W   DATA_WDISP_BSS_WORD_2264
-    BEQ.S   .LAB_0980
+    BEQ.S   .lab_0980
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
 
-.LAB_0980:
+.lab_0980:
     JSR     ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(PC)
 
     RTS
@@ -2299,22 +2299,22 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVE.L  ESQIFF_BrushIniListHead,-4(A5)
     MOVEQ   #0,D5
     TST.W   D7
-    BNE.S   .LAB_09C3
+    BNE.S   .lab_09C3
 
     MOVE.L  BRUSH_ScriptPrimarySelection,-24(A5) ; prefer script-selected brush if present
-    BRA.S   .LAB_09C4
+    BRA.S   .lab_09C4
 
-.LAB_09C3:
+.lab_09C3:
     MOVEA.L BRUSH_ScriptSecondarySelection,A0 ; fall back to secondary slot when requested
     MOVE.L  A0,-24(A5)
 
-.LAB_09C4:
+.lab_09C4:
     TST.L   -24(A5)
-    BNE.W   .LAB_09CF
+    BNE.W   .lab_09CF
 
     MOVE.W  TEXTDISP_ActiveGroupId,D0
     SUBQ.W  #1,D0
-    BNE.S   .LAB_09C5
+    BNE.S   .lab_09C5
 
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
@@ -2322,9 +2322,9 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
-    BRA.S   .LAB_09C6
+    BRA.S   .lab_09C6
 
-.LAB_09C5:
+.lab_09C5:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -2332,7 +2332,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
 
-.LAB_09C6:
+.lab_09C6:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
@@ -2342,13 +2342,13 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_09C7
+    BNE.S   .lab_09C7
 
     MOVE.L  BRUSH_SelectedNode,-4(A5)
     MOVEQ   #1,D5
-    BRA.W   .LAB_09D0
+    BRA.W   .lab_09D0
 
-.LAB_09C7:
+.lab_09C7:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
@@ -2358,24 +2358,24 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_09CD
+    BNE.S   .lab_09CD
 
-.LAB_09C8:
+.lab_09C8:
     TST.L   -4(A5)
-    BEQ.S   .LAB_09CC
+    BEQ.S   .lab_09CC
 
     TST.L   D5
-    BNE.S   .LAB_09CC
+    BNE.S   .lab_09CC
 
     MOVEA.L -4(A5),A0
     MOVE.L  364(A0),-20(A5)
 
-.LAB_09C9:
+.lab_09C9:
     TST.L   -20(A5)
-    BEQ.S   .LAB_09CB
+    BEQ.S   .lab_09CB
 
     TST.L   D5
-    BNE.S   .LAB_09CB
+    BNE.S   .lab_09CB
 
     MOVEA.L -8(A5),A0
     ADDA.W  #12,A0
@@ -2385,44 +2385,44 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.S   .LAB_09CA
+    BNE.S   .lab_09CA
 
     MOVEQ   #1,D5
 
-.LAB_09CA:
+.lab_09CA:
     MOVEA.L -20(A5),A0
     MOVE.L  8(A0),-20(A5)
-    BRA.S   .LAB_09C9
+    BRA.S   .lab_09C9
 
-.LAB_09CB:
+.lab_09CB:
     TST.L   D5
-    BNE.S   .LAB_09C8
+    BNE.S   .lab_09C8
 
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .LAB_09C8
+    BRA.S   .lab_09C8
 
-.LAB_09CC:
+.lab_09CC:
     TST.L   D5
-    BNE.S   .LAB_09D0
+    BNE.S   .lab_09D0
 
     MOVEA.L -8(A5),A0
     BTST    #4,27(A0)
-    BEQ.S   .LAB_09D0
+    BEQ.S   .lab_09D0
 
     TST.L   DATA_ESQFUNC_BSS_LONG_1ED0
-    BEQ.S   .LAB_09D0
+    BEQ.S   .lab_09D0
 
     MOVEQ   #1,D5
     MOVE.L  DATA_ESQFUNC_BSS_LONG_1ED0,-4(A5)
-    BRA.S   .LAB_09D0
+    BRA.S   .lab_09D0
 
-.LAB_09CD:
+.lab_09CD:
     TST.L   -4(A5)
-    BEQ.S   .LAB_09D0
+    BEQ.S   .lab_09D0
 
     TST.L   D5
-    BNE.S   .LAB_09D0
+    BNE.S   .lab_09D0
 
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
@@ -2435,29 +2435,29 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .LAB_09CE
+    BNE.S   .lab_09CE
 
     MOVEQ   #1,D5
 
-.LAB_09CE:
+.lab_09CE:
     TST.L   D5
-    BNE.S   .LAB_09CD
+    BNE.S   .lab_09CD
 
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .LAB_09CD
+    BRA.S   .lab_09CD
 
-.LAB_09CF:
+.lab_09CF:
     MOVEQ   #1,D5
     MOVE.L  -24(A5),-4(A5)
 
-.LAB_09D0:
+.lab_09D0:
     TST.L   D5
-    BNE.S   .LAB_09D1
+    BNE.S   .lab_09D1
 
     MOVE.L  BRUSH_SelectedNode,-4(A5)
 
-.LAB_09D1:
+.lab_09D1:
     MOVEA.L GLOB_REF_RASTPORT_2,A1
     MOVEQ   #31,D0
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
@@ -2470,15 +2470,15 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     JSR     _LVOSetRast(A6)
 
     TST.L   -4(A5)
-    BEQ.S   .LAB_09D3
+    BEQ.S   .lab_09D3
 
     TST.L   BRUSH_SelectedNode
-    BNE.S   .LAB_09D2
+    BNE.S   .lab_09D2
 
     TST.L   D5
-    BEQ.S   .LAB_09D3
+    BEQ.S   .lab_09D3
 
-.LAB_09D2:
+.lab_09D2:
     MOVEQ   #0,D0
     MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
@@ -2498,23 +2498,23 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     28(A7),A7
 
-.LAB_09D3:
+.lab_09D3:
     TST.L   -4(A5)
-    BEQ.W   .LAB_09D9
+    BEQ.W   .lab_09D9
 
     MOVEA.L -4(A5),A0
     TST.L   328(A0)
-    BEQ.S   .LAB_09D4
+    BEQ.S   .lab_09D4
 
     MOVE.L  328(A0),D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
-    BEQ.S   .LAB_09D4
+    BEQ.S   .lab_09D4
 
     SUBQ.L  #3,D0
-    BNE.S   .LAB_09D6
+    BNE.S   .lab_09D6
 
-.LAB_09D4:
+.lab_09D4:
     PEA     5.W
     JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
@@ -2535,12 +2535,12 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEQ   #0,D6
     MOVE.L  D1,-32(A5)
 
-.LAB_09D5:
+.lab_09D5:
     CMP.L   -32(A5),D6
-    BGE.S   .LAB_09D6
+    BGE.S   .lab_09D6
 
     CMP.L   D4,D6
-    BGE.S   .LAB_09D6
+    BGE.S   .lab_09D6
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D6,A0
@@ -2549,26 +2549,26 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDI.L  #$e8,D0
     MOVE.B  0(A1,D0.L),(A0)
     ADDQ.L  #1,D6
-    BRA.S   .LAB_09D5
+    BRA.S   .lab_09D5
 
-.LAB_09D6:
+.lab_09D6:
     MOVEQ   #1,D0
     MOVEA.L -4(A5),A0
     CMP.L   328(A0),D0
-    BNE.S   .LAB_09D7
+    BNE.S   .lab_09D7
 
     BSR.W   ESQIFF_RestoreBasePaletteTriples
 
     BRA.S   .return
 
-.LAB_09D7:
+.lab_09D7:
     MOVEQ   #3,D0
     CMP.L   328(A0),D0
     BNE.S   .return
 
     MOVEQ   #0,D6
 
-.LAB_09D8:
+.lab_09D8:
     MOVEQ   #12,D0
     CMP.L   D0,D6
     BGE.S   .return
@@ -2579,9 +2579,9 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDA.L  D6,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D6
-    BRA.S   .LAB_09D8
+    BRA.S   .lab_09D8
 
-.LAB_09D9:
+.lab_09D9:
     BSR.W   ESQIFF_RestoreBasePaletteTriples
 
 .return:
@@ -2622,7 +2622,7 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
     ADDQ.W  #8,A7
     MOVEQ   #0,D7
 
-.LAB_09DC:
+.lab_09DC:
     MOVEQ   #6,D0
     CMP.L   D0,D7
     BGE.W   .return
@@ -2639,59 +2639,59 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
     MOVE.L  D0,-4(A5)
     MOVE.L  D7,D0
     CMPI.L  #$6,D0
-    BCC.S   .LAB_09DF
+    BCC.S   .lab_09DF
 
     ADD.W   D0,D0
-    MOVE.W  .LAB_09DD(PC,D0.W),D0
-    JMP     .LAB_09DD+2(PC,D0.W)
+    MOVE.W  .lab_09DD(PC,D0.W),D0
+    JMP     .lab_09DD+2(PC,D0.W)
 
 ; switch/jumptable
-.LAB_09DD:
-    DC.W    .LAB_09DD_000A-.LAB_09DD-2
-	DC.W    .LAB_09DD_0016-.LAB_09DD-2
-    DC.W    .LAB_09DD_0022-.LAB_09DD-2
-	DC.W    .LAB_09DD_002E-.LAB_09DD-2
-    DC.W    .LAB_09DD_003A-.LAB_09DD-2
-    DC.W    .LAB_09DD_0046-.LAB_09DD-2
+.lab_09DD:
+    DC.W    .lab_09DD_000A-.lab_09DD-2
+	DC.W    .lab_09DD_0016-.lab_09DD-2
+    DC.W    .lab_09DD_0022-.lab_09DD-2
+	DC.W    .lab_09DD_002E-.lab_09DD-2
+    DC.W    .lab_09DD_003A-.lab_09DD-2
+    DC.W    .lab_09DD_0046-.lab_09DD-2
 
-.LAB_09DD_000A:
+.lab_09DD_000A:
     MOVEA.L -4(A5),A0
     MOVE.B  #$8,190(A0)
-    BRA.S   .LAB_09DF
+    BRA.S   .lab_09DF
 
-.LAB_09DD_0016:
+.lab_09DD_0016:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .LAB_09DF
+    BRA.S   .lab_09DF
 
-.LAB_09DD_0022:
+.lab_09DD_0022:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .LAB_09DF
+    BRA.S   .lab_09DF
 
-.LAB_09DD_002E:
+.lab_09DD_002E:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .LAB_09DF
+    BRA.S   .lab_09DF
 
-.LAB_09DD_003A:
+.lab_09DD_003A:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .LAB_09DF
+    BRA.S   .lab_09DF
 
-.LAB_09DD_0046:
+.lab_09DD_0046:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
 
-.LAB_09DF:
+.lab_09DF:
     TST.L   ESQFUNC_PwBrushDescriptorHead
-    BNE.S   .LAB_09E0
+    BNE.S   .lab_09E0
 
     MOVE.L  -4(A5),ESQFUNC_PwBrushDescriptorHead
 
-.LAB_09E0:
+.lab_09E0:
     ADDQ.L  #1,D7
-    BRA.W   .LAB_09DC
+    BRA.W   .lab_09DC
 
 .return:
     PEA     ESQFUNC_PwBrushListHead

@@ -523,21 +523,21 @@ TLIBA3_DrawCenteredWrappedTextLines:
     MOVE.W  (A0),D5
     ASL.L   #3,D5
 
-.LAB_181F:
+.lab_181F:
     MOVEA.L A2,A0
 
-.LAB_1820:
+.lab_1820:
     TST.B   (A0)+
-    BNE.S   .LAB_1820
+    BNE.S   .lab_1820
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,-12(A5)
 
-.LAB_1821:
+.lab_1821:
     MOVE.L  -12(A5),D0
     TST.L   D0
-    BLE.S   .LAB_1823
+    BLE.S   .lab_1823
 
     MOVEA.L A3,A1
     MOVEA.L A2,A0
@@ -547,37 +547,37 @@ TLIBA3_DrawCenteredWrappedTextLines:
     MOVE.L  D5,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_1822
+    BPL.S   .lab_1822
 
     ADDQ.L  #1,D1
 
-.LAB_1822:
+.lab_1822:
     ASR.L   #1,D1
     MOVE.L  D1,D6
-    BGE.S   .LAB_1823
+    BGE.S   .lab_1823
 
     SUBQ.L  #1,-12(A5)
-    BRA.S   .LAB_1821
+    BRA.S   .lab_1821
 
-.LAB_1823:
+.lab_1823:
     TST.B   -18(A5)
-    BEQ.S   .LAB_1824
+    BEQ.S   .lab_1824
 
     MOVEQ   #0,D0
-    BRA.S   .LAB_1825
+    BRA.S   .lab_1825
 
-.LAB_1824:
+.lab_1824:
     MOVE.L  -12(A5),D0
     MOVE.B  0(A2,D0.L),D0
     EXT.W   D0
     EXT.L   D0
 
-.LAB_1825:
+.lab_1825:
     MOVE.L  -12(A5),D1
     CLR.B   0(A2,D1.L)
     MOVE.B  D0,-18(A5)
     TST.L   D6
-    BMI.S   .LAB_1826
+    BMI.S   .lab_1826
 
     MOVE.L  A2,-(A7)
     MOVE.L  D7,-(A7)
@@ -587,7 +587,7 @@ TLIBA3_DrawCenteredWrappedTextLines:
 
     LEA     16(A7),A7
 
-.LAB_1826:
+.lab_1826:
     MOVEA.L 52(A3),A0
     MOVEQ   #0,D0
     MOVE.W  20(A0),D0
@@ -598,7 +598,7 @@ TLIBA3_DrawCenteredWrappedTextLines:
     MOVE.B  -18(A5),(A0)
     MOVEA.L A0,A2
     TST.B   (A2)
-    BNE.W   .LAB_181F
+    BNE.W   .lab_181F
 
     MOVE.B  -16(A5),D0
     EXT.W   D0
@@ -677,7 +677,7 @@ TLIBA3_DrawVerticalScaleTicks:
 
     MOVEQ   #0,D6
 
-.LAB_1828:
+.lab_1828:
     MOVEA.L 4(A3),A0
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
@@ -690,10 +690,10 @@ TLIBA3_DrawVerticalScaleTicks:
     JSR     MATH_DivS32(PC)
 
     TST.L   D1
-    BNE.S   .LAB_182A
+    BNE.S   .lab_182A
 
     TST.L   D6
-    BEQ.S   .LAB_182A
+    BEQ.S   .lab_182A
 
     MOVEA.L A3,A1
     MOVE.L  D7,D0
@@ -722,9 +722,9 @@ TLIBA3_DrawVerticalScaleTicks:
     LEA     -84(A5),A0
     MOVEA.L A0,A1
 
-.LAB_1829:
+.lab_1829:
     TST.B   (A1)+
-    BNE.S   .LAB_1829
+    BNE.S   .lab_1829
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -734,15 +734,15 @@ TLIBA3_DrawVerticalScaleTicks:
     MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
-    BRA.S   .LAB_182B
+    BRA.S   .lab_182B
 
-.LAB_182A:
+.lab_182A:
     MOVE.L  D6,D0
     MOVEQ   #5,D1
     JSR     MATH_DivS32(PC)
 
     TST.L   D1
-    BNE.S   .LAB_182B
+    BNE.S   .lab_182B
 
     MOVEA.L A3,A1
     MOVE.L  D7,D0
@@ -757,9 +757,9 @@ TLIBA3_DrawVerticalScaleTicks:
     MOVE.L  D6,D1
     JSR     _LVODraw(A6)
 
-.LAB_182B:
+.lab_182B:
     ADDQ.L  #1,D6
-    BRA.W   .LAB_1828
+    BRA.W   .lab_1828
 
 .return:
     MOVEM.L (A7)+,D5-D7/A3
@@ -815,7 +815,7 @@ TLIBA3_DrawHorizontalScaleTicks:
 
     MOVEQ   #0,D6
 
-.LAB_182E:
+.lab_182E:
     MOVEA.L 4(A3),A0
     MOVEQ   #0,D0
     MOVE.W  (A0),D0
@@ -829,10 +829,10 @@ TLIBA3_DrawHorizontalScaleTicks:
     JSR     MATH_DivS32(PC)
 
     TST.L   D1
-    BNE.W   .LAB_1832
+    BNE.W   .lab_1832
 
     TST.L   D6
-    BEQ.W   .LAB_1832
+    BEQ.W   .lab_1832
 
     MOVEA.L A3,A1
     MOVE.L  D6,D0
@@ -858,9 +858,9 @@ TLIBA3_DrawHorizontalScaleTicks:
     LEA     -84(A5),A0
     MOVEA.L A0,A1
 
-.LAB_182F:
+.lab_182F:
     TST.B   (A1)+
-    BNE.S  .LAB_182F
+    BNE.S  .lab_182F
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -871,11 +871,11 @@ TLIBA3_DrawHorizontalScaleTicks:
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
-    BPL.S   .LAB_1830
+    BPL.S   .lab_1830
 
     ADDQ.L  #1,D0
 
-.LAB_1830:
+.lab_1830:
     ASR.L   #1,D0
     MOVE.L  D6,D1
     SUB.L   D0,D1
@@ -896,9 +896,9 @@ TLIBA3_DrawHorizontalScaleTicks:
     LEA     -84(A5),A0
     MOVEA.L A0,A1
 
-.LAB_1831:
+.lab_1831:
     TST.B   (A1)+
-    BNE.S   .LAB_1831
+    BNE.S   .lab_1831
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
@@ -907,15 +907,15 @@ TLIBA3_DrawHorizontalScaleTicks:
     MOVE.L  16(A7),D0
     JSR     _LVOText(A6)
 
-    BRA.S   .LAB_1833
+    BRA.S   .lab_1833
 
-.LAB_1832:
+.lab_1832:
     MOVE.L  D6,D0
     MOVEQ   #5,D1
     JSR     MATH_DivS32(PC)
 
     TST.L   D1
-    BNE.S   .LAB_1833
+    BNE.S   .lab_1833
 
     MOVEA.L A3,A1
     MOVE.L  D6,D0
@@ -932,9 +932,9 @@ TLIBA3_DrawHorizontalScaleTicks:
     MOVE.L  16(A7),D1
     JSR     _LVODraw(A6)
 
-.LAB_1833:
+.lab_1833:
     ADDQ.L  #1,D6
-    BRA.W   .LAB_182E
+    BRA.W   .lab_182E
 
 .return:
     MOVEM.L (A7)+,D5-D7/A3
@@ -1115,11 +1115,11 @@ TLIBA3_DrawViewModeGuides:
     MOVE.W  (A0),D0
     ASL.L   #3,D0
     TST.L   D0
-    BPL.S   .LAB_1838
+    BPL.S   .lab_1838
 
     ADDQ.L  #1,D0
 
-.LAB_1838:
+.lab_1838:
     ASR.L   #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
@@ -1129,11 +1129,11 @@ TLIBA3_DrawViewModeGuides:
     MOVEQ   #0,D0
     MOVE.W  2(A0),D0
     TST.L   D0
-    BPL.S   .LAB_1839
+    BPL.S   .lab_1839
 
     ADDQ.L  #1,D0
 
-.LAB_1839:
+.lab_1839:
     ASR.L   #1,D0
     MOVE.L  D0,(A7)
     MOVE.L  A3,-(A7)
@@ -1453,11 +1453,11 @@ TLIBA3_BuildDisplayContextForViewMode:
 
     MOVE.L  D7,DATA_TLIBA1_BSS_LONG_2178
     TST.W   DATA_TLIBA1_BSS_WORD_2173
-    BNE.S   .LAB_183F
+    BNE.S   .lab_183F
 
     BSR.W   TLIBA3_InitPatternTable
 
-.LAB_183F:
+.lab_183F:
     MOVE.L  #DATA_ESQ_BSS_LONG_1E25,-4(A5)
     MOVE.L  #DATA_ESQ_BSS_LONG_1E54,-8(A5)
     MOVE.L  D7,D0
@@ -1470,9 +1470,9 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVEA.L A1,A2
     MOVEQ   #18,D0
 
-.LAB_1840:
+.lab_1840:
     MOVE.L  (A0)+,(A2)+
-    DBF     D0,.LAB_1840
+    DBF     D0,.lab_1840
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -1486,7 +1486,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.L  #$8004,D2
     AND.L   D2,D1
     CMPI.L  #$8004,D1
-    BNE.S   .LAB_1841
+    BNE.S   .lab_1841
 
     MOVEQ   #-2,D1
     MOVEA.L A0,A2
@@ -1501,9 +1501,9 @@ TLIBA3_BuildDisplayContextForViewMode:
     SUBQ.L  #2,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D1,-244(A5)
-    BRA.S   .LAB_1844
+    BRA.S   .lab_1844
 
-.LAB_1841:
+.lab_1841:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -1512,14 +1512,14 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     BTST    #7,(A2)
-    BEQ.S   .LAB_1842
+    BEQ.S   .lab_1842
 
     MOVEQ   #-2,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D0,-244(A5)
-    BRA.S   .LAB_1844
+    BRA.S   .lab_1844
 
-.LAB_1842:
+.lab_1842:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -1528,7 +1528,7 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVEA.L A0,A2
     ADDA.L  D0,A2
     BTST    #2,1(A2)
-    BEQ.S   .LAB_1843
+    BEQ.S   .lab_1843
 
     MOVEQ   #0,D1
     MOVEA.L A0,A2
@@ -1542,16 +1542,16 @@ TLIBA3_BuildDisplayContextForViewMode:
     AND.L   D3,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D1,-244(A5)
-    BRA.S   .LAB_1844
+    BRA.S   .lab_1844
 
-.LAB_1843:
+.lab_1843:
     MOVEQ   #0,D0
     MOVE.L  D0,-248(A5)
     MOVE.L  D0,-244(A5)
 
-.LAB_1844:
+.lab_1844:
     TST.L   D7
-    BNE.S   .LAB_1845
+    BNE.S   .lab_1845
 
     MOVEQ   #0,D0
     MOVE.L  D0,-244(A5)
@@ -1576,10 +1576,10 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.W  D1,-70(A5)
     MOVE.L  D0,-248(A5)
 
-.LAB_1845:
+.lab_1845:
     MOVEQ   #-1,D0
     CMP.W   D0,D6
-    BEQ.S   .LAB_1846
+    BEQ.S   .lab_1846
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
@@ -1597,27 +1597,27 @@ TLIBA3_BuildDisplayContextForViewMode:
     OR.L    D1,D0
     MOVE.W  D0,-58(A5)
 
-.LAB_1846:
+.lab_1846:
     MOVEA.L A1,A0
     LEA     -160(A5),A2
     MOVEQ   #18,D0
 
-.LAB_1847:
+.lab_1847:
     MOVE.L  (A0)+,(A2)+
-    DBF     D0,.LAB_1847
+    DBF     D0,.lab_1847
     LEA     -236(A5),A0
     MOVEQ   #18,D0
 
-.LAB_1848:
+.lab_1848:
     MOVE.L  (A1)+,(A0)+
-    DBF     D0,.LAB_1848
+    DBF     D0,.lab_1848
     LEA     -122(A5),A0
     CLR.L   -256(A5)
     MOVE.L  A0,-252(A5)
 
-.LAB_1849:
+.lab_1849:
     CMPI.L  #$5,-256(A5)
-    BGE.S   .LAB_184A
+    BGE.S   .lab_184A
 
     MOVEQ   #0,D0
     MOVEA.L -252(A5),A0
@@ -1638,16 +1638,16 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.W  D0,4(A0)
     ADDQ.L  #8,-252(A5)
     ADDQ.L  #1,-256(A5)
-    BRA.S   .LAB_1849
+    BRA.S   .lab_1849
 
-.LAB_184A:
+.lab_184A:
     LEA     -198(A5),A0
     CLR.L   -256(A5)
     MOVE.L  A0,-252(A5)
 
-.LAB_184B:
+.lab_184B:
     CMPI.L  #$5,-256(A5)
-    BGE.S   .LAB_184C
+    BGE.S   .lab_184C
 
     MOVEQ   #0,D0
     MOVEA.L -252(A5),A0
@@ -1668,23 +1668,23 @@ TLIBA3_BuildDisplayContextForViewMode:
     MOVE.W  D0,4(A0)
     ADDQ.L  #8,-252(A5)
     ADDQ.L  #1,-256(A5)
-    BRA.S   .LAB_184B
+    BRA.S   .lab_184B
 
-.LAB_184C:
+.lab_184C:
     LEA     -160(A5),A0
     MOVEA.L -4(A5),A1
     MOVEQ   #18,D0
 
-.LAB_184D:
+.lab_184D:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,.LAB_184D
+    DBF     D0,.lab_184D
     LEA     -236(A5),A0
     MOVEA.L -8(A5),A1
     MOVEQ   #18,D0
 
-.LAB_184E:
+.lab_184E:
     MOVE.L  (A0)+,(A1)+
-    DBF     D0,.LAB_184E
+    DBF     D0,.lab_184E
     JSR     TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag(PC)
 
     MOVE.L  D7,D0
@@ -2073,7 +2073,7 @@ TLIBA3_FormatPatternRegisterDump:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-.LAB_1851:              ; maybe this is the entry point and it's getting removed by a few bytes?
+.lab_1851:              ; maybe this is the entry point and it's getting removed by a few bytes?
     MOVEQ   #9,D0       ; or is this just being calculated weirdly?
     CMP.L   D0,D7
     BGE.S   .return
@@ -2098,7 +2098,7 @@ TLIBA3_FormatPatternRegisterDump:
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_1851
+    BRA.S   .lab_1851
 
 .return:
     MOVE.L  (A7)+,D7
@@ -2166,9 +2166,9 @@ TLIBA3_InitRuntimeEntry:
     MOVEA.L GLOB_REF_RASTPORT_1,A1
     MOVEQ   #24,D1
 
-.LAB_1854:
+.lab_1854:
     MOVE.L  (A1)+,(A2)+
-    DBF     D1,.LAB_1854
+    DBF     D1,.lab_1854
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L A0,A2
@@ -2189,11 +2189,11 @@ TLIBA3_InitRuntimeEntry:
 
     CLR.L   -4(A5)
 
-.LAB_1855:
+.lab_1855:
     MOVE.L  -4(A5),D0
     MOVEQ   #5,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_1856
+    BGE.S   .lab_1856
 
     MOVE.L  D7,D0
     MOVEQ   #77,D1
@@ -2209,9 +2209,9 @@ TLIBA3_InitRuntimeEntry:
     ADDA.L  D0,A1
     MOVE.L  (A1),118(A0)
     ADDQ.L  #1,-4(A5)
-    BRA.S   .LAB_1855
+    BRA.S   .lab_1855
 
-.LAB_1856:
+.lab_1856:
     MOVE.L  D7,D0
     MOVEQ   #77,D1
     ADD.L   D1,D1
@@ -2418,7 +2418,7 @@ TLIBA3_SetFontForAllViewModes:
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
 
-.LAB_1859:
+.lab_1859:
     MOVEQ   #9,D0
     CMP.L   D0,D7
     BGE.S   .return
@@ -2436,7 +2436,7 @@ TLIBA3_SetFontForAllViewModes:
     JSR     _LVOSetFont(A6)
 
     ADDQ.L  #1,D7
-    BRA.S   .LAB_1859
+    BRA.S   .lab_1859
 
 .return:
     MOVEM.L (A7)+,D7/A3

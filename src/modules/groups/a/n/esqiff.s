@@ -60,9 +60,9 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LEA     12(A7),A7
     MOVEA.L D0,A0
 
-.LAB_09E9:
+.lab_09E9:
     TST.B   (A0)+
-    BNE.S   .LAB_09E9
+    BNE.S   .lab_09E9
 
     SUBQ.L  #1,A0
     SUBA.L  D0,A0
@@ -72,39 +72,39 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D0,-4(A5)
     MOVE.L  D1,-28(A5)
 
-.LAB_09EA:
+.lab_09EA:
     MOVEA.L -8(A5),A0
     TST.B   (A0)
-    BEQ.S   .LAB_09EC
+    BEQ.S   .lab_09EC
 
     MOVEQ   #24,D0
     CMP.B   (A0),D0
-    BNE.S   .LAB_09EB
+    BNE.S   .lab_09EB
 
     CLR.B   (A0)
     ADDQ.L  #1,D5
 
-.LAB_09EB:
+.lab_09EB:
     ADDQ.L  #1,-8(A5)
-    BRA.S   .LAB_09EA
+    BRA.S   .lab_09EA
 
-.LAB_09EC:
+.lab_09EC:
     MOVEA.L -4(A5),A0
     MOVE.L  A0,-8(A5)
     TST.B   (A0)
-    BNE.S   .LAB_09ED
+    BNE.S   .lab_09ED
 
     ADDQ.L  #1,-8(A5)
     SUBQ.L  #1,D5
 
-.LAB_09ED:
+.lab_09ED:
     MOVEQ   #10,D0
     CMP.L   D0,D5
-    BLE.S   .LAB_09EE
+    BLE.S   .lab_09EE
 
     MOVE.L  D0,D5
 
-.LAB_09EE:
+.lab_09EE:
     MOVE.B  64(A3),-65(A5)
     MOVE.B  61(A3),-66(A5)
     LEA     36(A3),A0
@@ -154,11 +154,11 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D5,D1
     ADDQ.L  #1,D1
     TST.L   D1
-    BPL.S   .LAB_09EF
+    BPL.S   .lab_09EF
 
     ADDQ.L  #1,D1
 
-.LAB_09EF:
+.lab_09EF:
     ASR.L   #1,D1
     MOVE.L  D0,-48(A5)
     MOVE.L  D1,-32(A5)
@@ -182,26 +182,26 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.W  176(A0),D2
     SUB.L   D2,D1
     TST.L   D1
-    BPL.S   .LAB_09F0
+    BPL.S   .lab_09F0
 
     ADDQ.L  #1,D1
 
-.LAB_09F0:
+.lab_09F0:
     ASR.L   #1,D1
     MOVE.L  D0,-44(A5)
     MOVE.L  D1,-56(A5)
 
-.LAB_09F1:
+.lab_09F1:
     MOVE.L  -24(A5),D0
     CMP.L   D5,D0
-    BGE.W   .LAB_09F8
+    BGE.W   .lab_09F8
 
     TST.L   D0
-    BPL.S   .LAB_09F2
+    BPL.S   .lab_09F2
 
     ADDQ.L  #1,D0
 
-.LAB_09F2:
+.lab_09F2:
     ASR.L   #1,D0
     MOVE.L  -44(A5),D1
     MOVE.L  -48(A5),D2
@@ -225,7 +225,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVEQ   #80,D0
     ADD.L   D0,D0
     CMP.L   D0,D2
-    BGE.W   .LAB_09F8
+    BGE.W   .lab_09F8
 
     LEA     36(A3),A0
     MOVE.L  -8(A5),-(A7)
@@ -245,11 +245,11 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     SUB.L   D0,D1
     SUBQ.L  #1,D1
     TST.L   D1
-    BPL.S   .LAB_09F3
+    BPL.S   .lab_09F3
 
     ADDQ.L  #1,D1
 
-.LAB_09F3:
+.lab_09F3:
     ASR.L   #1,D1
     MOVE.L  D1,D7
     LEA     36(A3),A0
@@ -268,13 +268,13 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     ADDQ.L  #1,-24(A5)
     MOVE.L  -24(A5),D0
     CMP.L   D5,D0
-    BGE.W   .LAB_09F6
+    BGE.W   .lab_09F6
 
     MOVEA.L -8(A5),A0
 
-.LAB_09F4:
+.lab_09F4:
     TST.B   (A0)+
-    BNE.S   .LAB_09F4
+    BNE.S   .lab_09F4
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -298,11 +298,11 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -56(A5),D1
     ADD.L   D0,D1
     TST.L   D1
-    BPL.S   .LAB_09F5
+    BPL.S   .lab_09F5
 
     ADDQ.L  #1,D1
 
-.LAB_09F5:
+.lab_09F5:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  176(A3),D2
@@ -324,12 +324,12 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 
     ADDQ.L  #1,-24(A5)
 
-.LAB_09F6:
+.lab_09F6:
     MOVEA.L -8(A5),A0
 
-.LAB_09F7:
+.lab_09F7:
     TST.B   (A0)+
-    BNE.S   .LAB_09F7
+    BNE.S   .lab_09F7
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -337,9 +337,9 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     ADDQ.L  #1,D0
     ADD.L   D0,-8(A5)
 
-    BRA.W   .LAB_09F1
+    BRA.W   .lab_09F1
 
-.LAB_09F8:
+.lab_09F8:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     672.W
@@ -728,15 +728,15 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.W   .LAB_0A10
+    BNE.W   .lab_0A10
 
     MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.W   .LAB_0A10
+    BEQ.W   .lab_0A10
 
     TST.L   DATA_WDISP_BSS_LONG_2319
-    BNE.W   .LAB_0A10
+    BNE.W   .lab_0A10
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
@@ -781,7 +781,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BLE.S   .LAB_0A0E
+    BLE.S   .lab_0A0E
 
     MOVE.L  D6,-(A7)
     JSR     ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
@@ -819,17 +819,17 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
-.LAB_0A0E:
+.lab_0A0E:
     TST.W   DATA_WDISP_BSS_WORD_2294
-    BEQ.S   .LAB_0A0F
+    BEQ.S   .lab_0A0F
 
     MOVE.W  #1,DATA_WDISP_BSS_LONG_22AD
-    BRA.S   .LAB_0A10
+    BRA.S   .lab_0A10
 
-.LAB_0A0F:
+.lab_0A0F:
     CLR.W   DATA_WDISP_BSS_LONG_22AD
 
-.LAB_0A10:
+.lab_0A10:
     TST.L   D7
     BNE.W   .return
 
@@ -956,38 +956,38 @@ ESQIFF_QueueNextExternalAssetIffJob:
     JSR     _LVOForbid(A6)
 
     TST.W   CTASKS_IffTaskDoneFlag
-    BNE.S   .LAB_0A15
+    BNE.S   .lab_0A15
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_0A15:
+.lab_0A15:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A16
+    BEQ.S   .lab_0A16
 
     CMPI.L  #$1,ESQIFF_LogoBrushListCount
-    BLT.S   .LAB_0A16
+    BLT.S   .lab_0A16
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_0A16:
+.lab_0A16:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BNE.S   .LAB_0A17
+    BNE.S   .lab_0A17
 
     CMPI.L  #$2,ESQIFF_GAdsBrushListCount
-    BLT.S   .LAB_0A17
+    BLT.S   .lab_0A17
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_0A17:
+.lab_0A17:
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
@@ -996,23 +996,23 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVEQ   #0,D1
     MOVE.W  D1,-128(A5)
     TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
-    BEQ.S   .LAB_0A18
+    BEQ.S   .lab_0A18
 
     MOVE.W  ESQIFF_AssetSourceSelect,D2
-    BNE.S   .LAB_0A19
+    BNE.S   .lab_0A19
 
-.LAB_0A18:
+.lab_0A18:
     TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
-    BEQ.W   .LAB_0A32
+    BEQ.W   .lab_0A32
 
     MOVE.W  ESQIFF_AssetSourceSelect,D2
-    BNE.W   .LAB_0A32
+    BNE.W   .lab_0A32
 
-.LAB_0A19:
+.lab_0A19:
     MOVE.B  D0,-41(A5)
     MOVE.W  TEXTDISP_CurrentMatchIndex,D5
 
-.LAB_0A1A:
+.lab_0A1A:
     PEA     -40(A5)
     BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
 
@@ -1020,51 +1020,51 @@ ESQIFF_QueueNextExternalAssetIffJob:
     LEA     -40(A5),A0
     MOVEA.L A0,A1
 
-.LAB_0A1B:
+.lab_0A1B:
     TST.B   (A1)+
-    BNE.S   .LAB_0A1B
+    BNE.S   .lab_0A1B
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    BEQ.W   .LAB_0A22
+    BEQ.W   .lab_0A22
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A20
+    BEQ.S   .lab_0A20
 
     TST.W   DATA_WDISP_BSS_LONG_22C3
-    BEQ.S   .LAB_0A1C
+    BEQ.S   .lab_0A1C
 
     MOVE.W  #1,-128(A5)
-    BRA.W   .LAB_0A23
+    BRA.W   .lab_0A23
 
-.LAB_0A1C:
+.lab_0A1C:
     MOVEQ   #0,D7
 
-.LAB_0A1D:
+.lab_0A1D:
     MOVEQ   #40,D0
     CMP.W   D0,D7
-    BGE.S   .LAB_0A1F
+    BGE.S   .lab_0A1F
 
     MOVE.B  -40(A5,D7.W),-80(A5,D7.W)
     TST.B   -80(A5,D7.W)
-    BEQ.S   .LAB_0A1F
+    BEQ.S   .lab_0A1F
 
     MOVEQ   #33,D0
     CMP.B   -80(A5,D7.W),D0
-    BNE.S   .LAB_0A1E
+    BNE.S   .lab_0A1E
 
     MOVE.B  #$2a,-80(A5,D7.W)
     MOVE.L  D7,D0
     EXT.L   D0
     CLR.B   -79(A5,D0.L)
-    BRA.S   .LAB_0A1F
+    BRA.S   .lab_0A1F
 
-.LAB_0A1E:
+.lab_0A1E:
     ADDQ.W  #1,D7
-    BRA.S   .LAB_0A1D
+    BRA.S   .lab_0A1D
 
-.LAB_0A1F:
+.lab_0A1F:
     PEA     -80(A5)
     JSR     GCOMMAND_FindPathSeparator(PC)
 
@@ -1073,13 +1073,13 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   .LAB_0A21
+    BNE.S   .lab_0A21
 
     MOVE.W  #1,-128(A5)
     MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_LONG_22C2
-    BRA.S   .LAB_0A23
+    BRA.S   .lab_0A23
 
-.LAB_0A20:
+.lab_0A20:
     MOVEQ   #4,D0
     MOVE.L  D0,-(A7)
     PEA     -40(A5)
@@ -1088,7 +1088,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .LAB_0A23
+    BEQ.S   .lab_0A23
 
     MOVEQ   #11,D0
     MOVE.L  D0,-(A7)
@@ -1098,82 +1098,82 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .LAB_0A23
+    BEQ.S   .lab_0A23
 
     MOVE.W  #1,-128(A5)
-    BRA.S   .LAB_0A23
+    BRA.S   .lab_0A23
 
-.LAB_0A21:
+.lab_0A21:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-.LAB_0A22:
+.lab_0A22:
     MOVE.W  DATA_WDISP_BSS_WORD_22AC,D0
     CMP.W   D0,D6
-    BNE.W   .LAB_0A1A
+    BNE.W   .lab_0A1A
 
-.LAB_0A23:
+.lab_0A23:
     MOVE.W  D5,TEXTDISP_CurrentMatchIndex
     TST.W   -128(A5)
-    BEQ.W   .LAB_0A32
+    BEQ.W   .lab_0A32
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A24
+    BEQ.S   .lab_0A24
 
     MOVE.L  #$fa00,-134(A5)
-    BRA.S   .LAB_0A25
+    BRA.S   .lab_0A25
 
-.LAB_0A24:
+.lab_0A24:
     MOVE.L  #$13880,-134(A5)
 
-.LAB_0A25:
+.lab_0A25:
     LEA     -40(A5),A0
     LEA     -120(A5),A1
 
-.LAB_0A26:
+.lab_0A26:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .LAB_0A26
+    BNE.S   .lab_0A26
 
-.LAB_0A27:
+.lab_0A27:
     MOVE.W  #1,-130(A5)
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A28
+    BEQ.S   .lab_0A28
 
     MOVEA.L ESQIFF_LogoBrushListHead,A0
     MOVE.L  A0,-142(A5)
-    BRA.S   .LAB_0A29
+    BRA.S   .lab_0A29
 
-.LAB_0A28:
+.lab_0A28:
     MOVEA.L ESQIFF_GAdsBrushListHead,A0
     MOVE.L  A0,-142(A5)
 
-.LAB_0A29:
+.lab_0A29:
     MOVE.L  A0,D0
-    BEQ.S   .LAB_0A2B
+    BEQ.S   .lab_0A2B
 
     CMPA.L  ESQIFF_LogoBrushListHead,A0
-    BNE.S   .LAB_0A2B
+    BNE.S   .lab_0A2B
 
     LEA     -40(A5),A0
     MOVEA.L -142(A5),A1
 
-.LAB_0A2A:
+.lab_0A2A:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .LAB_0A2B
+    BNE.S   .lab_0A2B
 
     TST.B   D0
-    BNE.S   .LAB_0A2A
+    BNE.S   .lab_0A2A
 
-    BNE.S   .LAB_0A2B
+    BNE.S   .lab_0A2B
 
     MOVEQ   #1,D0
     MOVE.L  D0,-138(A5)
 
-.LAB_0A2B:
+.lab_0A2B:
     TST.L   -138(A5)
-    BNE.S   .LAB_0A2E
+    BNE.S   .lab_0A2E
 
     CLR.L   -(A7)
     PEA     -40(A5)
@@ -1183,60 +1183,60 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVE.W  ESQIFF_AssetSourceSelect,D1
     MOVE.L  D0,DATA_WDISP_BSS_LONG_22A8
     TST.W   D1
-    BEQ.S   .LAB_0A2C
+    BEQ.S   .lab_0A2C
 
     MOVEA.L D0,A0
     MOVE.B  #$4,190(A0)
     MOVE.L  D0,CTASKS_PendingLogoBrushDescriptor
-    BRA.S   .LAB_0A2D
+    BRA.S   .lab_0A2D
 
-.LAB_0A2C:
+.lab_0A2C:
     MOVEA.L D0,A0
     MOVE.B  #$5,190(A0)
     MOVE.L  D0,CTASKS_PendingGAdsBrushDescriptor
 
-.LAB_0A2D:
+.lab_0A2D:
     JSR     ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
 
-.LAB_0A2E:
+.lab_0A2E:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVEQ   #-1,D0
     CMP.W   -130(A5),D0
-    BNE.S   .LAB_0A2F
+    BNE.S   .lab_0A2F
 
     PEA     -40(A5)
     BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
 
     ADDQ.W  #4,A7
 
-.LAB_0A2F:
+.lab_0A2F:
     LEA     -120(A5),A0
     LEA     -40(A5),A1
 
-.LAB_0A30:
+.lab_0A30:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .LAB_0A31
+    BNE.S   .lab_0A31
 
     TST.B   D0
-    BNE.S   .LAB_0A30
+    BNE.S   .lab_0A30
 
-    BEQ.S   .LAB_0A32
+    BEQ.S   .lab_0A32
 
-.LAB_0A31:
+.lab_0A31:
     MOVEQ   #-1,D0
     CMP.W   -130(A5),D0
-    BEQ.W   .LAB_0A27
+    BEQ.W   .lab_0A27
 
-.LAB_0A32:
+.lab_0A32:
     TST.W   -128(A5)
-    BNE.S   .LAB_0A33
+    BNE.S   .lab_0A33
 
     MOVEQ   #-1,D0
     MOVE.W  D0,-130(A5)
 
-.LAB_0A33:
+.lab_0A33:
     MOVE.W  -130(A5),D0
 
 .return:
@@ -1273,117 +1273,117 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A36
+    BEQ.S   .lab_0A36
 
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
     MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_WDISP_BSS_LONG_22C3
-    BRA.S   .LAB_0A38
+    BRA.S   .lab_0A38
 
-.LAB_0A36:
+.lab_0A36:
     MOVE.W  ESQIFF_GAdsSourceEnabled,D0
-    BEQ.S   .LAB_0A37
+    BEQ.S   .lab_0A37
 
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D4
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-14(A5)
     MOVE.W  DATA_WDISP_BSS_LONG_22AD,D6
-    BRA.S   .LAB_0A38
+    BRA.S   .lab_0A38
 
-.LAB_0A37:
+.lab_0A37:
     MOVEQ   #0,D0
     BRA.W   .return
 
-.LAB_0A38:
+.lab_0A38:
     MOVEQ   #0,D7
 
-.LAB_0A39:
+.lab_0A39:
     CMP.W   D6,D7
-    BGE.S   .LAB_0A3B
+    BGE.S   .lab_0A3B
 
     TST.L   D4
-    BLE.S   .LAB_0A3B
+    BLE.S   .lab_0A3B
 
     MOVEA.L -14(A5),A0
     MOVE.B  (A0)+,D5
     MOVE.L  A0,-14(A5)
     MOVEQ   #10,D0
     CMP.B   D0,D5
-    BNE.S   .LAB_0A3A
+    BNE.S   .lab_0A3A
 
     ADDQ.W  #1,D7
 
-.LAB_0A3A:
+.lab_0A3A:
     SUBQ.L  #1,D4
-    BRA.S   .LAB_0A39
+    BRA.S   .lab_0A39
 
-.LAB_0A3B:
+.lab_0A3B:
     TST.L   D4
-    BNE.S   .LAB_0A3E
+    BNE.S   .lab_0A3E
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A3C
+    BEQ.S   .lab_0A3C
 
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
     MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
-    BRA.S   .LAB_0A3D
+    BRA.S   .lab_0A3D
 
-.LAB_0A3C:
+.lab_0A3C:
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D4
     MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-14(A5)
 
-.LAB_0A3D:
+.lab_0A3D:
     MOVEQ   #1,D6
-    BRA.S   .LAB_0A3F
+    BRA.S   .lab_0A3F
 
-.LAB_0A3E:
+.lab_0A3E:
     ADDQ.W  #1,D6
 
-.LAB_0A3F:
+.lab_0A3F:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .LAB_0A40
+    BEQ.S   .lab_0A40
 
     MOVE.W  D6,DATA_WDISP_BSS_WORD_22AC
-    BRA.S   .LAB_0A41
+    BRA.S   .lab_0A41
 
-.LAB_0A40:
+.lab_0A40:
     MOVE.W  D6,DATA_WDISP_BSS_LONG_22AD
 
-.LAB_0A41:
+.lab_0A41:
     MOVEA.L -14(A5),A0
     MOVE.B  (A0)+,D5
     MOVE.L  A0,-14(A5)
     MOVEQ   #10,D0
     CMP.B   D0,D5
-    BEQ.S   .LAB_0A43
+    BEQ.S   .lab_0A43
 
     MOVEQ   #13,D0
     CMP.B   D0,D5
-    BEQ.S   .LAB_0A43
+    BEQ.S   .lab_0A43
 
     MOVEQ   #32,D0
     CMP.B   D0,D5
-    BEQ.S   .LAB_0A43
+    BEQ.S   .lab_0A43
 
     MOVE.L  D4,D0
     SUBQ.L  #1,D4
     TST.L   D0
-    BLE.S   .LAB_0A43
+    BLE.S   .lab_0A43
 
     MOVEQ   #44,D0
     CMP.B   D0,D5
-    BNE.S   .LAB_0A42
+    BNE.S   .lab_0A42
 
     CLR.B   (A3)
     MOVE.W  #1,DATA_WDISP_BSS_LONG_22C3
-    BRA.S   .LAB_0A43
+    BRA.S   .lab_0A43
 
-.LAB_0A42:
+.lab_0A42:
     MOVE.B  D5,(A3)+
-    BRA.S   .LAB_0A41
+    BRA.S   .lab_0A41
 
-.LAB_0A43:
+.lab_0A43:
     CLR.B   (A3)
     MOVEQ   #1,D0
 
@@ -1417,7 +1417,7 @@ ESQIFF_RestoreBasePaletteTriples:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-.LAB_0A46:
+.lab_0A46:
     MOVEQ   #24,D0
     CMP.W   D0,D7
     BGE.S   .return
@@ -1428,7 +1428,7 @@ ESQIFF_RestoreBasePaletteTriples:
     ADDA.W  D7,A1
     MOVE.B  (A1),(A0)
     ADDQ.W  #1,D7
-    BRA.S   .LAB_0A46
+    BRA.S   .lab_0A46
 
 .return:
     MOVE.L  (A7)+,D7
@@ -2194,47 +2194,47 @@ ESQIFF_ServiceExternalAssetSourceState:
     BNE.S   .return
 
     TST.W   D7
-    BEQ.S   .LAB_0A77
+    BEQ.S   .lab_0A77
 
     MOVEQ   #0,D0
     MOVE.W  D0,ESQIFF_AssetSourceSelect
     MOVEQ   #-1,D1
     MOVE.W  D1,ESQIFF_GAdsSourceEnabled
-    BRA.S   .LAB_0A78
+    BRA.S   .lab_0A78
 
-.LAB_0A77:
+.lab_0A77:
     CLR.W   ESQIFF_GAdsSourceEnabled
     MOVE.W  #(-1),ESQIFF_AssetSourceSelect
 
-.LAB_0A78:
+.lab_0A78:
     TST.L   DISKIO_Drive0WriteProtectedCode
-    BNE.S   .LAB_0A79
+    BNE.S   .lab_0A79
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #2,D0
     SUBQ.W  #2,D0
-    BEQ.S   .LAB_0A79
+    BEQ.S   .lab_0A79
 
     CLR.L   -(A7)
     BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
-.LAB_0A79:
+.lab_0A79:
     TST.L   DATA_WDISP_BSS_LONG_2319
-    BNE.S   .LAB_0A7A
+    BNE.S   .lab_0A7A
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #1,D0
     SUBQ.W  #1,D0
-    BEQ.S   .LAB_0A7A
+    BEQ.S   .lab_0A7A
 
     PEA     1.W
     BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
-.LAB_0A7A:
+.lab_0A7A:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     BSR.W   ESQIFF_QueueNextExternalAssetIffJob
@@ -2663,7 +2663,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
 
     LEA     24(A7),A7
     TST.L   BRUSH_SelectedNode
-    BNE.S   .LAB_0A94
+    BNE.S   .lab_0A94
 
     PEA     ESQIFF_BrushIniListHead
     PEA     DATA_ESQIFF_TAG_DITHER_1EF9
@@ -2672,7 +2672,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
     ADDQ.W  #8,A7
     MOVE.L  D0,BRUSH_SelectedNode
 
-.LAB_0A94:
+.lab_0A94:
     PEA     ESQIFF_BrushIniListHead
     JSR     ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
 

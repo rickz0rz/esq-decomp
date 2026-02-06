@@ -102,13 +102,13 @@ STRING_CopyPadNul:
     MOVEA.L 4(A7),A0
     MOVE.L  12(A7),D0
     MOVE.L  A0,D1
-    BRA.S   .LAB_1957
+    BRA.S   .lab_1957
 
 .copy_loop:
     MOVE.B  (A1)+,(A0)+
     BEQ.S   .pad_nuls
 
-.LAB_1957:
+.lab_1957:
     SUBQ.L  #1,D0
     BCC.S   .copy_loop
 

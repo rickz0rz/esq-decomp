@@ -379,11 +379,11 @@ ESQ_PollCtrlInput:
     LEA     DATA_ESQ_STR_B_1DC8,A4
     MOVE.B  18(A4),D1
     CMPI.B  #"N",D1
-    BNE.S   .LAB_0040
+    BNE.S   .lab_0040
 
     JSR     ESQ_CaptureCtrlBit3Stream(PC)
 
-.LAB_0040:
+.lab_0040:
     MOVEA.L #BLTDDAT,A0
     MOVE.W  #$100,(INTREQ-BLTDDAT)(A0)
     ; Looking at that, 0100 means bit 8 starting from the right as 0 is set

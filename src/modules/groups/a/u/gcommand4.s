@@ -36,10 +36,10 @@ GCOMMAND_SaveBrushResult:
     ADDQ.W  #8,A7
     MOVE.W  CTASKS_IffTaskState,D0
     SUBQ.W  #4,D0
-    BNE.S   .LAB_0DF6
+    BNE.S   .lab_0DF6
 
     TST.L   -4(A5)
-    BEQ.S   .LAB_0DF6
+    BEQ.S   .lab_0DF6
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
@@ -54,15 +54,15 @@ GCOMMAND_SaveBrushResult:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    BRA.S   .LAB_0DF8
+    BRA.S   .lab_0DF8
 
-.LAB_0DF6:
+.lab_0DF6:
     MOVE.W  CTASKS_IffTaskState,D0
     SUBQ.W  #5,D0
-    BNE.S   .LAB_0DF7
+    BNE.S   .lab_0DF7
 
     TST.L   -4(A5)
-    BEQ.S   .LAB_0DF7
+    BEQ.S   .lab_0DF7
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
@@ -77,15 +77,15 @@ GCOMMAND_SaveBrushResult:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    BRA.S   .LAB_0DF8
+    BRA.S   .lab_0DF8
 
-.LAB_0DF7:
+.lab_0DF7:
     MOVE.W  CTASKS_IffTaskState,D0
     SUBQ.W  #6,D0
-    BNE.S   .LAB_0DF8
+    BNE.S   .lab_0DF8
 
     TST.L   -4(A5)
-    BEQ.S   .LAB_0DF8
+    BEQ.S   .lab_0DF8
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
@@ -93,7 +93,7 @@ GCOMMAND_SaveBrushResult:
     MOVE.L  -4(A5),WDISP_WeatherStatusBrushListHead
     JSR     _LVOPermit(A6)
 
-.LAB_0DF8:
+.lab_0DF8:
     MOVEA.L (A7)+,A3
     UNLK    A5
     RTS

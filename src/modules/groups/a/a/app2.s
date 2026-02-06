@@ -30,9 +30,9 @@ ESQ_StoreCtrlSampleEntry:
     ADDA.W  D1,A0
     LEA     DATA_COMMON_BSS_LONG_1B04,A1
 
-.LAB_0051:
+.lab_0051:
     MOVE.B  (A1)+,(A0)+
-    BNE.S   .LAB_0051
+    BNE.S   .lab_0051
 
     ADDQ.L  #1,D0
     MOVEQ   #20,D1

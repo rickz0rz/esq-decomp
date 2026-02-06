@@ -23,50 +23,50 @@ GCOMMAND_FindPathSeparator:
     MOVEA.L 8(A5),A3
     MOVEA.L A3,A0
 
-.LAB_0D5A:
+.lab_0D5A:
     TST.B   (A0)+
-    BNE.S   .LAB_0D5A
+    BNE.S   .lab_0D5A
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
     MOVE.L  A0,D7
     TST.L   D7
-    BEQ.S   .LAB_0D5F
+    BEQ.S   .lab_0D5F
 
     MOVEA.L A3,A0
     ADDA.L  D7,A0
     SUBQ.L  #1,A0
     MOVE.L  A0,-4(A5)
 
-.LAB_0D5B:
+.lab_0D5B:
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
     MOVEQ   #':',D1
     CMP.B   D1,D0
-    BEQ.S   .LAB_0D5C
+    BEQ.S   .lab_0D5C
 
     MOVEQ   #'/',D1
     CMP.B   D1,D0
-    BNE.S   .LAB_0D5D
+    BNE.S   .lab_0D5D
 
-.LAB_0D5C:
+.lab_0D5C:
     ADDQ.L  #1,-4(A5)
     BRA.S   .return
 
-.LAB_0D5D:
+.lab_0D5D:
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BEQ.S   .LAB_0D5E
+    BEQ.S   .lab_0D5E
 
     SUBQ.L  #1,-4(A5)
 
-.LAB_0D5E:
+.lab_0D5E:
     SUBQ.L  #1,D7
-    BNE.S   .LAB_0D5B
+    BNE.S   .lab_0D5B
 
     BRA.S   .return
 
-.LAB_0D5F:
+.lab_0D5F:
     MOVEA.L A3,A0
     MOVE.L  A0,-4(A5)
 

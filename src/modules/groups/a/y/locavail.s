@@ -53,14 +53,14 @@ LOCAVAIL_FreeNodeAtPointer:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   .LAB_0F06
+    BEQ.S   .lab_0F06
 
     TST.L   6(A3)
-    BEQ.S   .LAB_0F05
+    BEQ.S   .lab_0F05
 
     MOVE.W  4(A3),D0
     TST.W   D0
-    BLE.S   .LAB_0F05
+    BLE.S   .lab_0F05
 
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -71,13 +71,13 @@ LOCAVAIL_FreeNodeAtPointer:
 
     LEA     16(A7),A7
 
-.LAB_0F05:
+.lab_0F05:
     MOVE.L  A3,-(A7)
     BSR.S   LOCAVAIL_FreeNodeRecord
 
     ADDQ.W  #4,A7
 
-.LAB_0F06:
+.lab_0F06:
     MOVEA.L (A7)+,A3
     RTS
 
@@ -143,29 +143,29 @@ LOCAVAIL_FreeResourceChain:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
-    BEQ.W   .LAB_0F0D
+    BEQ.W   .lab_0F0D
 
     TST.L   16(A3)
-    BEQ.W   .LAB_0F0C
+    BEQ.W   .lab_0F0C
 
     MOVEA.L 16(A3),A0
     MOVE.L  (A0),D0
     TST.L   D0
-    BLE.S   .LAB_0F09
+    BLE.S   .lab_0F09
 
     SUBQ.L  #1,(A0)
 
-.LAB_0F09:
+.lab_0F09:
     TST.L   20(A3)
-    BEQ.S   .LAB_0F0C
+    BEQ.S   .lab_0F0C
 
     MOVE.L  2(A3),D0
     TST.L   D0
-    BLE.S   .LAB_0F0C
+    BLE.S   .lab_0F0C
 
     MOVEA.L 16(A3),A0
     TST.L   (A0)
-    BNE.S   .LAB_0F0C
+    BNE.S   .lab_0F0C
 
     PEA     4.W
     MOVE.L  A0,-(A7)
@@ -176,9 +176,9 @@ LOCAVAIL_FreeResourceChain:
     LEA     16(A7),A7
     MOVEQ   #0,D7
 
-.LAB_0F0A:
+.lab_0F0A:
     CMP.L   2(A3),D7
-    BGE.S   .LAB_0F0B
+    BGE.S   .lab_0F0B
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
@@ -191,9 +191,9 @@ LOCAVAIL_FreeResourceChain:
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D7
-    BRA.S   .LAB_0F0A
+    BRA.S   .lab_0F0A
 
-.LAB_0F0B:
+.lab_0F0B:
     MOVE.L  2(A3),D0
     MOVEQ   #10,D1
     JSR     GROUP_AY_JMPTBL_MATH_Mulu32(PC)
@@ -206,13 +206,13 @@ LOCAVAIL_FreeResourceChain:
 
     LEA     16(A7),A7
 
-.LAB_0F0C:
+.lab_0F0C:
     MOVE.L  A3,-(A7)
     BSR.W   LOCAVAIL_ResetFilterStateStruct
 
     ADDQ.W  #4,A7
 
-.LAB_0F0D:
+.lab_0F0D:
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -248,12 +248,12 @@ LOCAVAIL_CopyFilterStateStructRetainRefs:
     MOVE.L  A0,16(A3)
     MOVE.L  20(A2),20(A3)
     TST.L   16(A3)
-    BEQ.S   .LAB_0F0F
+    BEQ.S   .lab_0F0F
 
     MOVEA.L 16(A3),A0
     ADDQ.L  #1,(A0)
 
-.LAB_0F0F:
+.lab_0F0F:
     MOVEM.L (A7)+,A2-A3
     RTS
 
@@ -284,11 +284,11 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVEQ   #0,D7
     MOVE.L  2(A3),D0
     TST.L   D0
-    BLE.S   .LAB_0F11
+    BLE.S   .lab_0F11
 
     MOVEQ   #100,D1
     CMP.L   D1,D0
-    BGE.S   .LAB_0F11
+    BGE.S   .lab_0F11
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4.W
@@ -299,7 +299,7 @@ LOCAVAIL_AllocNodeArraysForState:
     LEA     16(A7),A7
     MOVE.L  D0,16(A3)
     TST.L   D0
-    BEQ.S   .LAB_0F11
+    BEQ.S   .lab_0F11
 
     MOVEA.L D0,A0
     CLR.L   (A0)
@@ -315,11 +315,11 @@ LOCAVAIL_AllocNodeArraysForState:
 
     LEA     16(A7),A7
     MOVE.L  D0,20(A3)
-    BEQ.S   .LAB_0F11
+    BEQ.S   .lab_0F11
 
     MOVEQ   #1,D7
 
-.LAB_0F11:
+.lab_0F11:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     RTS
@@ -382,23 +382,23 @@ LOCAVAIL_SetFilterModeAndResetState:
     MOVE.L  8(A7),D7
     MOVE.L  LOCAVAIL_FilterModeFlag,D0
     CMP.L   D7,D0
-    BEQ.S   .LAB_0F15
+    BEQ.S   .lab_0F15
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BEQ.S   .LAB_0F14
+    BEQ.S   .lab_0F14
 
     TST.L   D7
-    BNE.S   .LAB_0F15
+    BNE.S   .lab_0F15
 
-.LAB_0F14:
+.lab_0F14:
     MOVE.L  D7,LOCAVAIL_FilterModeFlag
     PEA     LOCAVAIL_PrimaryFilterState
     BSR.S   LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
 
-.LAB_0F15:
+.lab_0F15:
     MOVE.L  (A7)+,D7
     RTS
 
