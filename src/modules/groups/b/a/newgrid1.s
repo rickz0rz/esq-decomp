@@ -3481,6 +3481,7 @@ NEWGRID_SelectEntryPen:
 
 .override_ppv_showtimes_layout_pen:
     MOVE.L  GCOMMAND_PpvShowtimesLayoutPen,NEWGRID_OverridePenIndex
+    ; MOVE.L  Global_GCOMMAND_PpvShowtimesLayoutPen(A4),NEWGRID_OverridePenIndex
     BRA.S   .clamp_override
 
 .override_default:

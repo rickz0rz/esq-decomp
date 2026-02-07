@@ -52,7 +52,7 @@ DATA_ESQIFF_STR_CORRECT_VERSION_IS_1EFF:
     NStr    "Correct version is '"
 Global_STR_APOSTROPHE:
     NStr    "'"
-GLB_STR_PLEASE_STANDBY_2:
+Global_STR_PLEASE_STANDBY_2:
     NStr    "Please Standby..."
 Global_STR_ATTENTION_SYSTEM_ENGINEER_2:
     NStr    "ATTENTION SYSTEM ENGINEER!"

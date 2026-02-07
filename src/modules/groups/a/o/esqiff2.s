@@ -1758,7 +1758,7 @@ ESQIFF2_ShowVersionMismatchOverlay_Return:
 ; CALLS:
 ;   ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, GCOMMAND_SeedBannerFromPrefs, GROUP_AM_JMPTBL_WDISP_SPrintf, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   AbsExecBase, BRUSH_SnapshotDepth, BRUSH_SnapshotHeader, BRUSH_SnapshotWidth, GLB_STR_PLEASE_STANDBY_2, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_2, Global_STR_FILE_PERCENT_S, Global_STR_FILE_WIDTH_COLORS_FORMATTED, Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, ED_DiagnosticsScreenActive, Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
+;   AbsExecBase, BRUSH_SnapshotDepth, BRUSH_SnapshotHeader, BRUSH_SnapshotWidth, Global_STR_PLEASE_STANDBY_2, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_2, Global_STR_FILE_PERCENT_S, Global_STR_FILE_WIDTH_COLORS_FORMATTED, Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, ED_DiagnosticsScreenActive, Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
 ; WRITES:
 ;   DATA_COI_BSS_WORD_1B85, ESQPARS2_ReadModeFlags, ED_DiagnosticsScreenActive
 ; DESC:
@@ -1857,7 +1857,7 @@ ESQIFF2_ShowAttentionOverlay:
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     GLB_STR_PLEASE_STANDBY_2
+    PEA     Global_STR_PLEASE_STANDBY_2
     PEA     90.W
     PEA     35.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)

@@ -1728,11 +1728,9 @@ DATA_WDISP_BSS_LONG_22E9:
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_ProcessShowtimesWorkflow
 ; NOTES: Layout pen feeds DISPTEXT_SetLayoutParams commit-pen arg; row pen feeds NEWGRID_DrawGridFrameAndRows.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvEditorLayoutPen:
-DATA_WDISP_BSS_LONG_22EA:
+GCOMMAND_PpvEditorLayoutPen:    ; 22EA
     DS.L    1
-GCOMMAND_PpvEditorRowPen:
-DATA_WDISP_BSS_LONG_22EB:
+GCOMMAND_PpvEditorRowPen:       ; 22EB
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_PpvShowtimesLayoutPen/GCOMMAND_PpvShowtimesInitialLineIndex/GCOMMAND_PpvShowtimesRowPen   (PPV showtimes layout params)
@@ -1741,14 +1739,11 @@ DATA_WDISP_BSS_LONG_22EB:
 ; USED BY: GCOMMAND_ParsePPVCommand, FLIB2_LoadDigitalPpvDefaults, NEWGRID_HandleShowtimesState, NEWGRID_DrawGridFrameVariant3
 ; NOTES: InitialLineIndex is passed to DISPTEXT_SetCurrentLineIndex; row pen also participates in grid-operation pen fallback.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvShowtimesLayoutPen:
-DATA_WDISP_BSS_LONG_22EC:
+GCOMMAND_PpvShowtimesLayoutPen:         ; 22EC
     DS.L    1
-GCOMMAND_PpvShowtimesInitialLineIndex:
-DATA_WDISP_BSS_LONG_22ED:
+GCOMMAND_PpvShowtimesInitialLineIndex:  ; 22ED
     DS.L    1
-GCOMMAND_PpvShowtimesRowPen:
-DATA_WDISP_BSS_LONG_22EE:
+GCOMMAND_PpvShowtimesRowPen:            ; 22EE
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_PpvShowtimesWorkflowMode/GCOMMAND_PpvDetailLayoutFlag   (PPV showtimes mode flags)
