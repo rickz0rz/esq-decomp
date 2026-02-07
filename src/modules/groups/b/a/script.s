@@ -42,7 +42,7 @@ SCRIPT_AllocateBufferArray:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D1,-(A7)
     PEA     394.W
-    PEA     GLOB_STR_SCRIPT_C_1
+    PEA     Global_STR_SCRIPT_C_1
     MOVE.L  D0,32(A7)
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -100,7 +100,7 @@ SCRIPT_DeallocateBufferArray:
     MOVE.L  D1,-(A7)
     MOVE.L  0(A3,D0.L),-(A7)
     PEA     405.W
-    PEA     GLOB_STR_SCRIPT_C_2
+    PEA     Global_STR_SCRIPT_C_2
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

@@ -3,6 +3,11 @@
 ; offset 152 on ThisTask ( http://amigadev.elowar.com/read/ADCD_2.1/Libraries_Manual_guide/node02BB.html ) points to _some_ field... is it the stack pointer
 ; or something? Need to work on this...
 
+Type_Byte_Size                  = 1
+Type_Word_Size                  = 2
+Type_Long_Size                  = 4
+Type_LongWord_Size              = Type_Long_Size
+
 Struct_AnimOb_Size              = 42
 
 Struct_ClockData_Size           = 14

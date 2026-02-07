@@ -79,7 +79,7 @@ ESQSHARED_ParseCompactEntryRecord:
 ; CALLS:
 ;   ESQSHARED_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   GLOB_PTR_STR_SELECT_CODE, DATA_ESQ_STR_A_1DEB, DATA_WDISP_BSS_LONG_2298
+;   Global_PTR_STR_SELECT_CODE, DATA_ESQ_STR_A_1DEB, DATA_WDISP_BSS_LONG_2298
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -185,7 +185,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
 
 .branch_7:
     MOVE.L  A0,-(A7)
-    PEA     GLOB_PTR_STR_SELECT_CODE
+    PEA     Global_PTR_STR_SELECT_CODE
     JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -261,7 +261,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_STR_00
+;   Global_STR_00
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -277,7 +277,7 @@ ESQSHARED_InitEntryDefaults:
     MOVE.B  D0,41(A3)
     MOVE.B  D0,42(A3)
     LEA     43(A3),A0
-    LEA     GLOB_STR_00,A1
+    LEA     Global_STR_00,A1
 
 .lab_0C1D:
     MOVE.B  (A1)+,(A0)+
@@ -307,7 +307,7 @@ ESQSHARED_InitEntryDefaults:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated, ESQSHARED_InitEntryDefaults
 ; READS:
-;   GLOB_ESQPARS2_C_1, GLOB_ESQPARS2_C_2, GLOB_ESQPARS2_C_3, GLOB_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
+;   Global_ESQPARS2_C_1, Global_ESQPARS2_C_2, Global_ESQPARS2_C_3, Global_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
 ; WRITES:
 ;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength
 ; DESC:
@@ -334,7 +334,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     299.W
-    PEA     GLOB_ESQPARS2_C_1
+    PEA     Global_ESQPARS2_C_1
     MOVE.L  A0,40(A7)
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -348,7 +348,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     301.W
-    PEA     GLOB_ESQPARS2_C_2
+    PEA     Global_ESQPARS2_C_2
     MOVE.L  A0,52(A7)
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -381,7 +381,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     314.W
-    PEA     GLOB_ESQPARS2_C_3
+    PEA     Global_ESQPARS2_C_3
     MOVE.L  A0,40(A7)
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -395,7 +395,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     315.W
-    PEA     GLOB_ESQPARS2_C_4
+    PEA     Global_ESQPARS2_C_4
     MOVE.L  A0,52(A7)
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -652,7 +652,7 @@ ESQSHARED_ApplyProgramTitleTextFilters:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, GLOB_STR_CLOSED_CAPTIONED
+;   AbsExecBase, Global_STR_CLOSED_CAPTIONED
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -665,7 +665,7 @@ ESQSHARED_CompressClosedCaptionedTag:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
 
-    PEA     GLOB_STR_CLOSED_CAPTIONED
+    PEA     Global_STR_CLOSED_CAPTIONED
     MOVE.L  A3,-(A7)
     JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -712,7 +712,7 @@ ESQSHARED_CompressClosedCaptionedTag:
 ; CALLS:
 ;   ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, GLOB_STR_IN_STEREO, ESQSHARED_NormalizeInStereoTag_Return, WDISP_CharClassTable
+;   AbsExecBase, Global_STR_IN_STEREO, ESQSHARED_NormalizeInStereoTag_Return, WDISP_CharClassTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -725,7 +725,7 @@ ESQSHARED_NormalizeInStereoTag:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
-    PEA     GLOB_STR_IN_STEREO
+    PEA     Global_STR_IN_STEREO
     MOVE.L  A3,-(A7)
     JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -839,7 +839,7 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, GLOB_TBL_MOVIE_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F1E
+;   AbsExecBase, Global_TBL_MOVIE_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F1E
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -866,7 +866,7 @@ ESQSHARED_ReplaceMovieRatingToken:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     GLOB_TBL_MOVIE_RATINGS,A0
+    LEA     Global_TBL_MOVIE_RATINGS,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
@@ -884,7 +884,7 @@ ESQSHARED_ReplaceMovieRatingToken:
     MOVE.B  D0,(A1)+
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     GLOB_TBL_MOVIE_RATINGS,A0
+    LEA     Global_TBL_MOVIE_RATINGS,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
@@ -940,7 +940,7 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, GLOB_TBL_TV_PROGRAM_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F27
+;   AbsExecBase, Global_TBL_TV_PROGRAM_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F27
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -967,7 +967,7 @@ ESQSHARED_ReplaceTvRatingToken:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     GLOB_TBL_TV_PROGRAM_RATINGS,A0
+    LEA     Global_TBL_TV_PROGRAM_RATINGS,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
@@ -985,7 +985,7 @@ ESQSHARED_ReplaceTvRatingToken:
     MOVE.B  D0,(A1)+
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     GLOB_TBL_TV_PROGRAM_RATINGS,A0
+    LEA     Global_TBL_TV_PROGRAM_RATINGS,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A2
 
@@ -1056,7 +1056,7 @@ ESQSHARED_ReplaceTvRatingToken:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, ESQSHARED_JMPTBL_ESQ_SetBit1Based, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQSHARED_JMPTBL_ESQ_WildcardMatch, GROUP_AR_JMPTBL_STRING_AppendAtNull, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_WDISP_SPrintf, ESQPARS_ReplaceOwnedString, ESQSHARED_ApplyProgramTitleTextFilters, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   GLOB_STR_ESQPARS2_C_1, GLOB_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, CLOCK_FormatVariantCode, DATA_ESQPARS2_FMT_PCT_D_1F29, DATA_ESQPARS2_FMT_PCT_D_1F2A, DATA_ESQPARS2_FMT_PCT_D_1F2B, DATA_ESQPARS2_STR_VALUE_1F2C, DATA_SCRIPT_STR_HRS_2102, DATA_SCRIPT_STR_HR_2103, DATA_SCRIPT_STR_MIN_2104, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
+;   Global_STR_ESQPARS2_C_1, Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, CLOCK_FormatVariantCode, DATA_ESQPARS2_FMT_PCT_D_1F29, DATA_ESQPARS2_FMT_PCT_D_1F2A, DATA_ESQPARS2_FMT_PCT_D_1F2B, DATA_ESQPARS2_STR_VALUE_1F2C, DATA_SCRIPT_STR_HRS_2102, DATA_SCRIPT_STR_HR_2103, DATA_SCRIPT_STR_MIN_2104, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1267,7 +1267,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     50.W
     PEA     720.W
-    PEA     GLOB_STR_ESQPARS2_C_1
+    PEA     Global_STR_ESQPARS2_C_1
     MOVE.L  D0,-42(A5)
     MOVE.L  D0,-38(A5)
     MOVE.L  A1,-70(A5)
@@ -1401,7 +1401,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     PEA     50.W
     MOVE.L  -70(A5),-(A7)
     PEA     765.W
-    PEA     GLOB_STR_ESQPARS2_C_2
+    PEA     Global_STR_ESQPARS2_C_2
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

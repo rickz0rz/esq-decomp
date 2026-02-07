@@ -1,10 +1,10 @@
 ; ========== TLIBA1.c ==========
 
-GLOB_STR_TLIBA1_C_1:
+Global_STR_TLIBA1_C_1:
     NStr    "TLIBA1.c"
-GLOB_STR_TLIBA1_C_2:
+Global_STR_TLIBA1_C_2:
     NStr    "TLIBA1.c"
-GLOB_STR_TLIBA1_C_3:
+Global_STR_TLIBA1_C_3:
     NStr    "TLIBA1.c"
 DATA_TLIBA1_STR_TLIBA1_DOT_C_2164:
     DC.B    "TLIBA1.c",0
@@ -97,9 +97,9 @@ DATA_TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L_218F:
     NStr2   "BPL5PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 DATA_TLIBA1_STR_2190:
     NStr    10
-GLOB_STR_VM_ARRAY_1:
+Global_STR_VM_ARRAY_1:
     NStr    "VM[ARRAY[%ld]"
-GLOB_STR_VM_ARRAY_2:
+Global_STR_VM_ARRAY_2:
     NStr    "VM[ARRAY[%ld]"
 DATA_TLIBA1_STR_2193:
     NStr    10

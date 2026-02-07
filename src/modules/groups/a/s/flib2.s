@@ -107,7 +107,7 @@ FLIB2_LoadDigitalMplexDefaults:
 ; CALLS:
 ;   ESQPARS_ReplaceOwnedString
 ; READS:
-;   GLOB_STR_DIGITAL_PPV_PERIOD, DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
+;   Global_STR_DIGITAL_PPV_PERIOD, DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
 ; WRITES:
 ;   GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PpvModeCycleCount, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes, GCOMMAND_PpvMessageTextPen, GCOMMAND_PpvMessageFramePen, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PpvShowtimesLayoutPen, GCOMMAND_PpvShowtimesInitialLineIndex, GCOMMAND_PpvShowtimesRowPen, GCOMMAND_PpvShowtimesWorkflowMode, GCOMMAND_PpvDetailLayoutFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, GCOMMAND_PpvShowtimesRowSpan
 ; DESC:
@@ -144,7 +144,7 @@ FLIB2_LoadDigitalPpvDefaults:
 
     MOVE.L  D0,GCOMMAND_PPVListingsTemplatePtr
     MOVE.L  GCOMMAND_PPVPeriodTemplatePtr,(A7)
-    PEA     GLOB_STR_DIGITAL_PPV_PERIOD
+    PEA     Global_STR_DIGITAL_PPV_PERIOD
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7

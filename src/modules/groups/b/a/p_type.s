@@ -33,7 +33,7 @@ P_TYPE_AllocateEntry:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     10.W
     PEA     47.W
-    PEA     GLOB_STR_P_TYPE_C_1
+    PEA     Global_STR_P_TYPE_C_1
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -59,7 +59,7 @@ P_TYPE_AllocateEntry:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D1,-(A7)
     PEA     58.W
-    PEA     GLOB_STR_P_TYPE_C_2
+    PEA     Global_STR_P_TYPE_C_2
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -95,7 +95,7 @@ P_TYPE_AllocateEntry:
     PEA     10.W
     MOVE.L  -4(A5),-(A7)
     PEA     77.W
-    PEA     GLOB_STR_P_TYPE_C_3
+    PEA     Global_STR_P_TYPE_C_3
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -121,7 +121,7 @@ P_TYPE_AllocateEntry:
 ; CALLS:
 ;   SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_STR_P_TYPE_C_4, GLOB_STR_P_TYPE_C_5
+;   Global_STR_P_TYPE_C_4, Global_STR_P_TYPE_C_5
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -142,7 +142,7 @@ P_TYPE_FreeEntry:
     MOVE.L  D0,-(A7)
     MOVE.L  6(A3),-(A7)
     PEA     92.W
-    PEA     GLOB_STR_P_TYPE_C_4
+    PEA     Global_STR_P_TYPE_C_4
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -151,7 +151,7 @@ P_TYPE_FreeEntry:
     PEA     10.W
     MOVE.L  A3,-(A7)
     PEA     95.W
-    PEA     GLOB_STR_P_TYPE_C_5
+    PEA     Global_STR_P_TYPE_C_5
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -738,7 +738,7 @@ P_TYPE_WritePromoIdDataFile:
 ; CALLS:
 ;   P_TYPE_FreeEntry, PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, P_TYPE_AllocateEntry, P_TYPE_JMPTBL_STRING_FindSubstring, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_P_TYPE_C_6, DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_2054, DATA_P_TYPE_STR_CURDAY_COLON_2055, DATA_P_TYPE_STR_TYPES_COLON_2056, DATA_P_TYPE_STR_NXTDAY_COLON_2057, WDISP_CharClassTable, GLOB_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, P_TYPE_PrimaryGroupListPtr, if_eq_1394, if_eq_1398, if_eq_1399, loop_1389
+;   Global_REF_LONG_FILE_SCRATCH, Global_STR_P_TYPE_C_6, DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_2054, DATA_P_TYPE_STR_CURDAY_COLON_2055, DATA_P_TYPE_STR_TYPES_COLON_2056, DATA_P_TYPE_STR_NXTDAY_COLON_2057, WDISP_CharClassTable, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, P_TYPE_PrimaryGroupListPtr, if_eq_1394, if_eq_1398, if_eq_1399, loop_1389
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -757,8 +757,8 @@ P_TYPE_LoadPromoIdDataFile:
     ADDQ.L  #1,D0
     BEQ.W   .if_eq_1399
 
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-4(A5)
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
+    MOVE.L  Global_PTR_WORK_BUFFER,-4(A5)
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
     CLR.L   -48(A5)
     LEA     DATA_P_TYPE_STR_CURDAY_COLON_2055,A0
     LEA     -39(A5),A1
@@ -945,7 +945,7 @@ P_TYPE_LoadPromoIdDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     406.W
-    PEA     GLOB_STR_P_TYPE_C_6
+    PEA     Global_STR_P_TYPE_C_6
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

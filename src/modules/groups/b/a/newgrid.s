@@ -12,9 +12,9 @@
 ;   _LVOSetDrMd, _LVOSetFont, NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   DATA_LOCAVAIL_BSS_WORD_1FFE, GLOB_HANDLE_PREVUEC_FONT, GLOB_STR_44_44_44
+;   DATA_LOCAVAIL_BSS_WORD_1FFE, Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
 ; WRITES:
-;   DATA_LOCAVAIL_BSS_WORD_1FFE, GLOB_REF_GRID_RASTPORT_MAYBE_1/2, NEWGRID_RowHeightPx-232B
+;   DATA_LOCAVAIL_BSS_WORD_1FFE, Global_REF_GRID_RASTPORT_MAYBE_1/2, NEWGRID_RowHeightPx-232B
 ; DESC:
 ;   Allocates two RastPorts, attaches bitmaps/fonts, and computes layout metrics
 ;   for the grid header/banner area.
@@ -35,61 +35,61 @@ NEWGRID_InitGridResources:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     99.W
-    PEA     GLOB_STR_NEWGRID_C_1
+    PEA     Global_STR_NEWGRID_C_1
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_1
+    MOVE.L  D0,Global_REF_GRID_RASTPORT_MAYBE_1
     TST.L   D0
     BEQ.W   .return
 
     MOVEA.L D0,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A0
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A0
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
-    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     112.W
-    PEA     GLOB_STR_NEWGRID_C_2
+    PEA     Global_STR_NEWGRID_C_2
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,GLOB_REF_GRID_RASTPORT_MAYBE_2
+    MOVE.L  D0,Global_REF_GRID_RASTPORT_MAYBE_2
     TST.L   D0
     BEQ.W   .return
 
     MOVEA.L D0,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_2,A0
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A0
     MOVE.L  #DATA_WDISP_BSS_LONG_221F,4(A0)
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_2,A1
-    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     BSR.W   NEWGRID_DrawTopBorderLine
 
     MOVEQ   #8,D0
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
-    LEA     GLOB_STR_44_44_44,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    LEA     Global_STR_44_44_44,A0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  D0,NEWGRID_SampleTimeTextWidthPx
@@ -103,7 +103,7 @@ NEWGRID_InitGridResources:
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,NEWGRID_ColumnWidthPx
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
     MOVE.W  20(A0),D0
@@ -143,22 +143,22 @@ NEWGRID_InitGridResources:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory, NEWGRID2_FreeBuffersIfAllocated, NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, NEWGRID_ResetShowtimeBuckets
 ; READS:
-;   GLOB_REF_GRID_RASTPORT_MAYBE_1
+;   Global_REF_GRID_RASTPORT_MAYBE_1
 ; WRITES:
-;   GLOB_REF_GRID_RASTPORT_MAYBE_1, DATA_LOCAVAIL_BSS_WORD_1FFE
+;   Global_REF_GRID_RASTPORT_MAYBE_1, DATA_LOCAVAIL_BSS_WORD_1FFE
 ; DESC:
 ;   Frees the grid rastport allocation and resets grid state flags.
 ; NOTES:
 ;   Always clears DATA_LOCAVAIL_BSS_WORD_1FFE and triggers dependent cleanup routines.
 ;------------------------------------------------------------------------------
 NEWGRID_ShutdownGridResources:
-    TST.L   GLOB_REF_GRID_RASTPORT_MAYBE_1
+    TST.L   Global_REF_GRID_RASTPORT_MAYBE_1
     BEQ.S   .skip_free
 
     PEA     100.W
-    MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
     PEA     148.W
-    PEA     GLOB_STR_NEWGRID_C_3
+    PEA     Global_STR_NEWGRID_C_3
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -208,13 +208,13 @@ NEWGRID_ClearHighlightArea:
     TST.L   NEWGRID_RefreshStateFlag
     BNE.S   .return
 
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
     MOVEQ   #7,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,68 to 695,267
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
     MOVEQ   #0,D0
     MOVEQ   #68,D1
     MOVE.L  #695,D2
@@ -763,7 +763,7 @@ NEWGRID_DrawClockFormatHeader:
 
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEQ   #0,D0
@@ -773,7 +773,7 @@ NEWGRID_DrawClockFormatHeader:
     JSR     NEWGRID_SetRowColor(PC)
 
     MOVEA.L -102(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L -102(A5),A1
@@ -862,7 +862,7 @@ NEWGRID_DrawClockFormatHeader:
 
     MOVEA.L -102(A5),A1
     MOVEQ   #3,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     -97(A5),A0
@@ -977,7 +977,7 @@ NEWGRID_DrawDateBanner:
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     PEA     7.W
@@ -986,7 +986,7 @@ NEWGRID_DrawDateBanner:
     JSR     NEWGRID_SetRowColor(PC)
 
     MOVEA.L .rastport(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Fill in the blue background for behind the date string
@@ -1022,7 +1022,7 @@ NEWGRID_DrawDateBanner:
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #3,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -1114,7 +1114,7 @@ NEWGRID_DrawDateBanner:
 ; CALLS:
 ;   NEWGRID_DrawGridFrame, _LVOSetAPen, _LVOTextLength, _LVOMove, NEWGRID_DrawWrappedText, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
 ; READS:
-;   NEWGRID_RowHeightPx, GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
+;   NEWGRID_RowHeightPx, Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 ; WRITES:
 ;   52(A3), 32(A3)
 ; DESC:
@@ -1140,24 +1140,24 @@ NEWGRID_DrawAwaitingListingsMessage:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
     LEA     60(A3),A1
-    MOVEA.L GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
+    MOVEA.L Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
 
 .measure_message:
     TST.B   (A2)+
     BNE.S   .measure_message
 
     SUBQ.L  #1,A2
-    SUBA.L  GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
+    SUBA.L  Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A2
     MOVE.L  A0,32(A7)
     MOVE.L  A2,D0
 
     ; Get the length of the Awaiting Listings Data text and subtract it from 624
-    MOVEA.L GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A0
+    MOVEA.L Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,A0
     JSR     _LVOTextLength(A6)
 
     MOVE.L  #624,D1
@@ -1189,7 +1189,7 @@ NEWGRID_DrawAwaitingListingsMessage:
     ADD.L   D2,D0
     SUBQ.L  #1,D0
     PEA     1.W
-    MOVE.L  GLOB_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,-(A7)
+    MOVE.L  Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION,-(A7)
     PEA     612.W
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
@@ -1492,7 +1492,7 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill
 ; READS:
-;   GLOB_REF_GRID_RASTPORT_MAYBE_2
+;   Global_REF_GRID_RASTPORT_MAYBE_2
 ; WRITES:
 ;   none
 ; DESC:
@@ -1503,13 +1503,13 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 NEWGRID_DrawTopBorderLine:
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
     MOVEQ   #7,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,0 to 695,1
-    MOVEA.L GLOB_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
     MOVEQ   #0,D0               ; x.min = 0
     MOVE.L  D0,D1               ; y.min = 0
     MOVE.L  #695,D2             ; x.max = 695
@@ -1555,7 +1555,7 @@ NEWGRID_FillGridRects:
 
     MOVEA.L A3,A1
     MOVE.L  D7,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -1598,7 +1598,7 @@ NEWGRID_FillGridRects:
 ; CALLS:
 ;   NEWGRID_FillGridRects (NEWGRID_FillGridRects)
 ; READS:
-;   GLOB_REF_GRID_RASTPORT_MAYBE_2
+;   Global_REF_GRID_RASTPORT_MAYBE_2
 ; WRITES:
 ;   none
 ; DESC:
@@ -1611,7 +1611,7 @@ NEWGRID_DrawGridTopBars:
     MOVEQ   #6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  GLOB_REF_GRID_RASTPORT_MAYBE_2,-(A7)
+    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_2,-(A7)
     BSR.S   NEWGRID_FillGridRects
 
     LEA     16(A7),A7
@@ -1767,7 +1767,7 @@ NEWGRID_ShouldOpenEditor:
 ; CALLS:
 ;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
-;   GLOB_STR_SINGLE_SPACE, DATA_NEWGRID_SPACE_VALUE_200D, DATA_NEWGRID_SPACE_VALUE_200E
+;   Global_STR_SINGLE_SPACE, DATA_NEWGRID_SPACE_VALUE_200D, DATA_NEWGRID_SPACE_VALUE_200E
 ; WRITES:
 ;   local buffers -74(A5)
 ; DESC:
@@ -1808,9 +1808,9 @@ NEWGRID_DrawWrappedText:
     MOVEA.L A3,A1
 
     ; Get the width of a single space
-    LEA     GLOB_STR_SINGLE_SPACE,A0
+    LEA     Global_STR_SINGLE_SPACE,A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,-8(A5)
@@ -1855,7 +1855,7 @@ NEWGRID_DrawWrappedText:
     MOVE.L  A1,20(A7)
     MOVEA.L A3,A1
     MOVE.L  20(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D5,D1
@@ -1911,7 +1911,7 @@ NEWGRID_DrawWrappedText:
 
     MOVEA.L A3,A1
     LEA     -74(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D5,D1
@@ -1932,7 +1932,7 @@ NEWGRID_DrawWrappedText:
 
     MOVEA.L A3,A1
     LEA     -74(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .return_ptr:
@@ -1963,7 +1963,7 @@ NEWGRID_DrawWrappedText:
     MOVEA.L A3,A1
     LEA     DATA_NEWGRID_SPACE_VALUE_200E,A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .draw_space:
@@ -1996,7 +1996,7 @@ NEWGRID_DrawWrappedText:
 ;   NEWGRID_DrawDateBanner, NEWGRID_DrawAwaitingListingsMessage, NEWGRID2_DispatchGridOperation, NEWGRID_MapSelectionToMode,
 ;   GCOMMAND_UpdatePresetEntryCache, _LVOPutMsg, NEWGRID_DrawGridTopBars
 ; READS:
-;   GLOB_UIBusyFlag, ESQPARS2_ReadModeFlags, NEWGRID_RefreshStateFlag, NEWGRID_MainModeState, NEWGRID_MainModeState/2010/2011/2012, ESQ_HighlightReplyPort
+;   Global_UIBusyFlag, ESQPARS2_ReadModeFlags, NEWGRID_RefreshStateFlag, NEWGRID_MainModeState, NEWGRID_MainModeState/2010/2011/2012, ESQ_HighlightReplyPort
 ; WRITES:
 ;   NEWGRID_MainModeState, NEWGRID_RefreshStateFlag, ESQPARS2_ReadModeFlags, NEWGRID_SelectedDaySlot-2012
 ; DESC:
@@ -2007,7 +2007,7 @@ NEWGRID_DrawWrappedText:
 ;------------------------------------------------------------------------------
 NEWGRID_ProcessGridMessages:
     LINK.W  A5,#-4
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BNE.W   .done
 
     MOVE.W  ESQPARS2_ReadModeFlags,D0

@@ -31,23 +31,23 @@ NEWGRID2_ProcessGridState:
     SUBA.L  A0,A0
     MOVE.L  A0,-6(A5)
     MOVE.L  A3,D0
-    BNE.S   .state_check
+    BNE.S   .state_check_current
 
     MOVEQ   #4,D0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
     BRA.W   .return_state
 
-.state_check:
+.state_check_current:
     MOVE.L  DATA_NEWGRID_CONST_LONG_203D,D0
     SUBQ.L  #4,D0
-    BEQ.S   .state_4
+    BEQ.S   .state4_draw_and_layout
 
     SUBQ.L  #1,D0
-    BEQ.W   .state_5
+    BEQ.W   .state5_frame_only
 
-    BRA.W   .force_state_4
+    BRA.W   .force_state4_reset
 
-.state_4:
+.state4_draw_and_layout:
     TST.L   (A2)
     BEQ.W   .return_state
 
@@ -63,13 +63,13 @@ NEWGRID2_ProcessGridState:
     MOVE.W  20(A2),D6
     MOVEQ   #48,D0
     CMP.W   D0,D6
-    BLE.S   .ascii_ok
+    BLE.S   .entry_index_ok
 
     SUBI.W  #$30,D6
 
-.ascii_ok:
+.entry_index_ok:
     TST.W   DATA_NEWGRID_CONST_WORD_2016
-    BEQ.S   .draw_alt
+    BEQ.S   .draw_alt_variant
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -79,7 +79,7 @@ NEWGRID2_ProcessGridState:
 
     ADDQ.W  #8,A7
     TST.W   D0
-    BNE.S   .draw_alt
+    BNE.S   .draw_alt_variant
 
     LEA     60(A3),A0
     MOVE.L  D6,D0
@@ -95,9 +95,9 @@ NEWGRID2_ProcessGridState:
     BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
-    BRA.S   .allocate_buffer
+    BRA.S   .allocate_text_buffer
 
-.draw_alt:
+.draw_alt_variant:
     LEA     60(A3),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -113,11 +113,11 @@ NEWGRID2_ProcessGridState:
 
     LEA     28(A7),A7
 
-.allocate_buffer:
+.allocate_text_buffer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     2000.W
     PEA     3947.W
-    PEA     GLOB_STR_NEWGRID2_C_1
+    PEA     Global_STR_NEWGRID2_C_1
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -141,7 +141,7 @@ NEWGRID2_ProcessGridState:
     PEA     2000.W
     MOVE.L  -6(A5),-(A7)
     PEA     3953.W
-    PEA     GLOB_STR_NEWGRID2_C_2
+    PEA     Global_STR_NEWGRID2_C_2
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A7),A7
@@ -152,15 +152,15 @@ NEWGRID2_ProcessGridState:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .set_state_5
+    BEQ.S   .set_state5_after_frame
 
     MOVEQ   #4,D0
-    BRA.S   .store_state
+    BRA.S   .store_state_and_count
 
-.set_state_5:
+.set_state5_after_frame:
     MOVEQ   #5,D0
 
-.store_state:
+.store_state_and_count:
     PEA     2.W
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
     JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
@@ -169,27 +169,27 @@ NEWGRID2_ProcessGridState:
     MOVE.L  D0,32(A3)
     BRA.S   .return_state
 
-.state_5:
+.state5_frame_only:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant4
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state5_set
+    BEQ.S   .state5_set_value
 
     MOVEQ   #4,D0
-    BRA.S   .state5_store
+    BRA.S   .state5_store_value
 
-.state5_set:
+.state5_set_value:
     MOVEQ   #5,D0
 
-.state5_store:
+.state5_store_value:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
     BRA.S   .return_state
 
-.force_state_4:
+.force_state4_reset:
     MOVEQ   #4,D0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
 
@@ -250,7 +250,7 @@ NEWGRID2_HandleGridState:
 .dispatch_state:
     MOVE.L  NEWGRID2_DispatchStateIndex,D0
     CMPI.L  #$6,D0
-    BCC.W   .done
+    BCC.W   .state_done
 
     ADD.W   D0,D0
     MOVE.W  .state_jumptable(PC,D0.W),D0
@@ -258,14 +258,14 @@ NEWGRID2_HandleGridState:
 
 ; switch/jumptable
 .state_jumptable:
-    DC.W    .case_state0-.state_jumptable-2
-    DC.W    .case_state1-.state_jumptable-2
-    DC.W    .case_state2-.state_jumptable-2
-    DC.W    .case_state3-.state_jumptable-2
-    DC.W    .case_state3-.state_jumptable-2
-    DC.W    .case_state5-.state_jumptable-2
+    DC.W    .state0_init_selection-.state_jumptable-2
+    DC.W    .state1_update_selection-.state_jumptable-2
+    DC.W    .state2_finish-.state_jumptable-2
+    DC.W    .state3_update_selection-.state_jumptable-2
+    DC.W    .state3_update_selection-.state_jumptable-2
+    DC.W    .state5_process_grid-.state_jumptable-2
 
-.case_state0:
+.state0_init_selection:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D6,-(A7)
@@ -275,7 +275,7 @@ NEWGRID2_HandleGridState:
 
     LEA     12(A7),A7
 
-.case_state1:
+.state1_update_selection:
     MOVE.L  D6,-(A7)
     PEA     DATA_WDISP_BSS_LONG_2332
     MOVE.L  NEWGRID2_DispatchStateIndex,-(A7)
@@ -283,7 +283,7 @@ NEWGRID2_HandleGridState:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .case_state1_no_data
+    BEQ.S   .state1_no_selection
 
     MOVE.L  D6,-(A7)
     MOVE.L  DATA_WDISP_BSS_LONG_2332,-(A7)
@@ -297,11 +297,11 @@ NEWGRID2_HandleGridState:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2040
     BRA.W   .return_state
 
-.case_state1_no_data:
+.state1_no_selection:
     CLR.L   NEWGRID2_DispatchStateIndex
     BRA.W   .return_state
 
-.case_state3:
+.state3_update_selection:
     MOVE.L  D6,-(A7)
     PEA     DATA_WDISP_BSS_LONG_2332
     MOVE.L  NEWGRID2_DispatchStateIndex,-(A7)
@@ -313,9 +313,9 @@ NEWGRID2_HandleGridState:
     LEA     12(A7),A7
     MOVE.L  D0,D5
 
-.case_state5:
+.state5_process_grid:
     TST.L   DATA_WDISP_BSS_LONG_2332
-    BEQ.S   .case_state5_no_data
+    BEQ.S   .state5_no_selection
 
     MOVE.L  D6,-(A7)
     PEA     DATA_WDISP_BSS_LONG_2332
@@ -331,10 +331,10 @@ NEWGRID2_HandleGridState:
     BEQ.S   .return_state
 
     TST.L   D5
-    BEQ.S   .case_state5_skip_hint
+    BEQ.S   .state5_skip_hint
 
     CMPI.L  #$1,DATA_NEWGRID2_BSS_LONG_2040
-    BGE.S   .case_state5_skip_hint
+    BGE.S   .state5_skip_hint
 
     PEA     50.W
     MOVE.L  A3,-(A7)
@@ -345,7 +345,7 @@ NEWGRID2_HandleGridState:
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2040
 
-.case_state5_skip_hint:
+.state5_skip_hint:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ComputeColumnIndex
 
@@ -353,13 +353,13 @@ NEWGRID2_HandleGridState:
     SUB.L   D0,DATA_NEWGRID2_BSS_LONG_2040
     BRA.S   .return_state
 
-.case_state5_no_data:
+.state5_no_selection:
     MOVEQ   #1,D0
     MOVE.L  D0,NEWGRID2_DispatchStateIndex
     BRA.S   .return_state
 
-.case_state2:
-.done:
+.state2_finish:
+.state_done:
     CLR.L   NEWGRID2_DispatchStateIndex
 
 .return_state:
@@ -439,15 +439,15 @@ NEWGRID2_DispatchGridOperation:
 
 ; switch/jumptable
 .operation_jumptable:
-    DC.W    .case_op1-.operation_jumptable-2
-    DC.W    .case_op2-.operation_jumptable-2
-    DC.W    .case_op3-.operation_jumptable-2
-    DC.W    .case_op4-.operation_jumptable-2
-    DC.W    .case_op5-.operation_jumptable-2
-    DC.W    .case_op6-.operation_jumptable-2
-    DC.W    .case_op7-.operation_jumptable-2
+    DC.W    .op1_handle_selection-.operation_jumptable-2
+    DC.W    .op2_process_alt_entry-.operation_jumptable-2
+    DC.W    .op3_handle_grid_state-.operation_jumptable-2
+    DC.W    .op4_handle_grid_state_alt-.operation_jumptable-2
+    DC.W    .op5_process_secondary_state-.operation_jumptable-2
+    DC.W    .op6_process_schedule_state-.operation_jumptable-2
+    DC.W    .op7_process_showtimes_workflow-.operation_jumptable-2
 
-.case_op1:
+.op1_handle_selection:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -458,7 +458,7 @@ NEWGRID2_DispatchGridOperation:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
     BRA.W   .return_bool
 
-.case_op2:
+.op2_process_alt_entry:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D5,D1
@@ -472,7 +472,7 @@ NEWGRID2_DispatchGridOperation:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
     BRA.W   .return_bool
 
-.case_op3:
+.op3_handle_grid_state:
     MOVE.L  D6,D0
     EXT.L   D0
     CLR.L   -(A7)
@@ -484,7 +484,7 @@ NEWGRID2_DispatchGridOperation:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
     BRA.S   .return_bool
 
-.case_op4:
+.op4_handle_grid_state_alt:
     MOVE.L  D6,D0
     EXT.L   D0
     PEA     1.W
@@ -496,7 +496,7 @@ NEWGRID2_DispatchGridOperation:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
     BRA.S   .return_bool
 
-.case_op5:
+.op5_process_secondary_state:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -507,7 +507,7 @@ NEWGRID2_DispatchGridOperation:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
     BRA.S   .return_bool
 
-.case_op6:
+.op6_process_schedule_state:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D5,D1
@@ -521,7 +521,7 @@ NEWGRID2_DispatchGridOperation:
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
     BRA.S   .return_bool
 
-.case_op7:
+.op7_process_showtimes_workflow:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVE.L  D5,D1
@@ -600,7 +600,7 @@ NEWGRID2_EnsureBuffersAllocated:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1208.W
     PEA     4153.W
-    PEA     GLOB_STR_NEWGRID2_C_3
+    PEA     Global_STR_NEWGRID2_C_3
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,NEWGRID_SecondaryIndexCachePtr
@@ -609,7 +609,7 @@ NEWGRID2_EnsureBuffersAllocated:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     1000.W
     PEA     4156.W
-    PEA     GLOB_STR_NEWGRID2_C_4
+    PEA     Global_STR_NEWGRID2_C_4
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
@@ -645,14 +645,14 @@ NEWGRID2_FreeBuffersIfAllocated:
     PEA     1000.W
     MOVE.L  NEWGRID_EntryTextScratchPtr,-(A7)
     PEA     4164.W
-    PEA     GLOB_STR_NEWGRID2_C_5
+    PEA     Global_STR_NEWGRID2_C_5
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     CLR.L   NEWGRID_EntryTextScratchPtr
     PEA     1208.W
     MOVE.L  NEWGRID_SecondaryIndexCachePtr,-(A7)
     PEA     4167.W
-    PEA     GLOB_STR_NEWGRID2_C_6
+    PEA     Global_STR_NEWGRID2_C_6
     JSR     SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7

@@ -32,7 +32,7 @@ HANDLE_CloseAllAndReturnWithCode:
     EXT.L   D0
     ASL.L   #3,D0
     LEA     Global_HandleTableBase(A4),A0
-    MOVE.L  0(A0,D0.L),D5
+    MOVE.L  Struct_HandleEntry__Flags(A0,D0.L),D5
     TST.B   D5
     BEQ.S   .next_entry
 
@@ -43,7 +43,7 @@ HANDLE_CloseAllAndReturnWithCode:
     EXT.L   D0
     ASL.L   #3,D0
     LEA     Global_HandleTableBase(A4),A0
-    MOVE.L  4(A0,D0.L),-(A7)
+    MOVE.L  Struct_HandleEntry__Ptr(A0,D0.L),-(A7)
     JSR     DOS_CloseWithSignalCheck(PC)
 
     ADDQ.W  #4,A7

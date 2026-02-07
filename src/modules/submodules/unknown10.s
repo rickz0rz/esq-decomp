@@ -394,7 +394,7 @@ HANDLE_OpenEntryWithFlags:
     MOVE.L  D5,D0
     ASL.L   #3,D0
     LEA     Global_HandleTableBase(A4),A0
-    TST.L   0(A0,D0.L)
+    TST.L   Struct_HandleEntry__Flags(A0,D0.L)
     BEQ.S   .have_slot_index
 
     ADDQ.L  #1,D5
@@ -405,6 +405,7 @@ HANDLE_OpenEntryWithFlags:
     CMP.L   D5,D0
     BNE.S   .init_slot
 
+    ; Set 24 in the AppErrorCode and return -1
     MOVEQ   #24,D0
     MOVE.L  D0,Global_AppErrorCode(A4)
     MOVEQ   #-1,D0

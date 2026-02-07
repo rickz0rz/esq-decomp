@@ -1,8 +1,8 @@
 ; ========== DISPLIB.c ==========
 
-GLOB_STR_DISPLIB_C_1:
+Global_STR_DISPLIB_C_1:
     NStr    "DISPLIB.c"
-GLOB_STR_DISPLIB_C_2:
+Global_STR_DISPLIB_C_2:
     NStr    "DISPLIB.c"
 ;------------------------------------------------------------------------------
 ; SYM: DISPTEXT_ControlMarkerXOffsetPx   (control-marker x offset)

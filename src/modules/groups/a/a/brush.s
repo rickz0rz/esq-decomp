@@ -22,7 +22,7 @@
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVORead
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, GLOB_STR_BRUSH_C_1, GLOB_STR_BRUSH_C_2, GLOB_STR_BRUSH_C_3, GLOB_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
+;   Global_REF_DOS_LIBRARY_2, Global_STR_BRUSH_C_1, Global_STR_BRUSH_C_2, Global_STR_BRUSH_C_3, Global_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -40,7 +40,7 @@ BRUSH_LoadColorTextFont:
     PEA     (MEMF_PUBLIC).W
     PEA     Struct_ColorTextFont_Size.W
     PEA     396.W
-    PEA     GLOB_STR_BRUSH_C_1
+    PEA     Global_STR_BRUSH_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -58,7 +58,7 @@ BRUSH_LoadColorTextFont:
     MOVE.L  D0,-(A7)
     MOVE.L  -14(A5),-(A7)
     PEA     416.W
-    PEA     GLOB_STR_BRUSH_C_2
+    PEA     Global_STR_BRUSH_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -68,7 +68,7 @@ BRUSH_LoadColorTextFont:
     MOVE.L  D7,D1
     MOVE.L  D6,D3
     MOVE.L  -14(A5),D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMP.L   D3,D0
@@ -77,7 +77,7 @@ BRUSH_LoadColorTextFont:
     PEA     Struct_ColorTextFont_Size.W
     MOVE.L  D2,-(A7)
     PEA     431.W
-    PEA     GLOB_STR_BRUSH_C_3
+    PEA     Global_STR_BRUSH_C_3
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -120,7 +120,7 @@ BRUSH_LoadColorTextFont:
     PEA     96.W
     MOVE.L  -14(A5),-(A7)
     PEA     445.W
-    PEA     GLOB_STR_BRUSH_C_4
+    PEA     Global_STR_BRUSH_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #1,D0
@@ -144,7 +144,7 @@ BRUSH_LoadColorTextFont:
 ; CALLS:
 ;   _LVORead
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2
+;   Global_REF_DOS_LIBRARY_2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -176,7 +176,7 @@ BRUSH_StreamFontChunk:
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  #2048,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMPI.L  #2048,D0
@@ -194,7 +194,7 @@ BRUSH_StreamFontChunk:
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  D6,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMP.L   D3,D0
@@ -227,7 +227,7 @@ BRUSH_StreamFontChunk:
 ; CALLS:
 ;   GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_STR_BRUSH_C_5, GLOB_STR_BRUSH_C_6, GLOB_STR_BRUSH_C_7, BRUSH_FreeBrushList_Return, branch, lab_0121
+;   Global_STR_BRUSH_C_5, Global_STR_BRUSH_C_6, Global_STR_BRUSH_C_7, BRUSH_FreeBrushList_Return, branch, lab_0121
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -277,7 +277,7 @@ BRUSH_FreeBrushList:
     ADDI.L  #$90,D3
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     549.W
-    PEA     GLOB_STR_BRUSH_C_5
+    PEA     Global_STR_BRUSH_C_5
     JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
@@ -297,7 +297,7 @@ BRUSH_FreeBrushList:
     PEA     12.W
     MOVE.L  A0,-(A7)
     PEA     561.W
-    PEA     GLOB_STR_BRUSH_C_6
+    PEA     Global_STR_BRUSH_C_6
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -308,7 +308,7 @@ BRUSH_FreeBrushList:
     PEA     372.W
     MOVE.L  -8(A5),-(A7)
     PEA     567.W
-    PEA     GLOB_STR_BRUSH_C_7
+    PEA     Global_STR_BRUSH_C_7
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -813,7 +813,7 @@ BRUSH_FindType3Brush:
 ; CALLS:
 ;   BRUSH_LoadBrushAsset, BRUSH_NormalizeBrushNames, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid, _LVOPermit
 ; READS:
-;   AbsExecBase, GLOB_STR_BRUSH_C_8
+;   AbsExecBase, Global_STR_BRUSH_C_8
 ; WRITES:
 ;   BRUSH_LoadInProgressFlag, PARSEINI_ParsedDescriptorListHead
 ; DESC:
@@ -850,7 +850,7 @@ BRUSH_PopulateBrushList:
     PEA     238.W
     MOVE.L  A3,-(A7)
     PEA     845.W
-    PEA     GLOB_STR_BRUSH_C_8
+    PEA     Global_STR_BRUSH_C_8
     MOVE.L  D0,-4(A5)
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
@@ -905,7 +905,7 @@ BRUSH_PopulateBrushList:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_STR_BRUSH_C_9
+;   Global_STR_BRUSH_C_9
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -930,7 +930,7 @@ BRUSH_FreeBrushResources:
     PEA     238.W
     MOVE.L  A0,-(A7)
     PEA     887.W
-    PEA     GLOB_STR_BRUSH_C_9
+    PEA     Global_STR_BRUSH_C_9
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1030,7 +1030,7 @@ BRUSH_NormalizeBrushNames:
 ; CALLS:
 ;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_10, GLOB_STR_BRUSH_C_11, GLOB_STR_BRUSH_C_12, GLOB_STR_BRUSH_C_13, GLOB_STR_BRUSH_C_14, GLOB_STR_BRUSH_C_15, GLOB_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   BRUSH_PendingAlertCode, BRUSH_SnapshotDepth, BRUSH_SnapshotWidth
 ; DESC:
@@ -1065,7 +1065,7 @@ BRUSH_LoadBrushAsset:
     LEA     -64(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #6,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     SUBQ.L  #6,D0
@@ -1081,7 +1081,7 @@ BRUSH_LoadBrushAsset:
     BEQ.S   .loadasset_form_header_ok
 
     MOVE.L  D7,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     BRA.S   .loadasset_after_file_stage
@@ -1091,14 +1091,14 @@ BRUSH_LoadBrushAsset:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #-1,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOSeek(A6)
 
     ; Allocate 130k of memory
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  #130000,-(A7)
     PEA     977.W
-    PEA     GLOB_STR_BRUSH_C_10
+    PEA     Global_STR_BRUSH_C_10
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1125,7 +1125,7 @@ BRUSH_LoadBrushAsset:
 
 .loadasset_after_ilbm_decode:
     MOVE.L  D7,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
 .loadasset_after_file_stage:
@@ -1189,7 +1189,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
     PEA     1064.W
-    PEA     GLOB_STR_BRUSH_C_11
+    PEA     Global_STR_BRUSH_C_11
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1227,7 +1227,7 @@ BRUSH_LoadBrushAsset:
     MOVEQ   #0,D2
     MOVE.W  178(A0),D2
     MOVEA.L A1,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEA.L -16(A5),A0
@@ -1316,7 +1316,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  D2,-(A7)                      ; Height
     MOVE.L  D1,-(A7)                      ; Width
     PEA     1134.W                        ; Line Number
-    PEA     GLOB_STR_BRUSH_C_12           ; Calling file
+    PEA     Global_STR_BRUSH_C_12           ; Calling file
     MOVE.L  D0,52(A7)
     MOVE.L  D0,48(A7)
     JSR     GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster(PC)
@@ -1367,7 +1367,7 @@ BRUSH_LoadBrushAsset:
     BNE.W   .loadasset_cleanup_partial_alloc
 
     LEA     36(A0),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L -16(A5),A0
@@ -1498,7 +1498,7 @@ BRUSH_LoadBrushAsset:
     ADDI.L  #$90,D3
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     1202.W
-    PEA     GLOB_STR_BRUSH_C_13
+    PEA     Global_STR_BRUSH_C_13
     JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
 
     LEA     20(A7),A7
@@ -1511,7 +1511,7 @@ BRUSH_LoadBrushAsset:
     PEA     372.W
     MOVE.L  -16(A5),-(A7)
     PEA     1205.W
-    PEA     GLOB_STR_BRUSH_C_14
+    PEA     Global_STR_BRUSH_C_14
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1525,7 +1525,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
     PEA     1220.W
-    PEA     GLOB_STR_BRUSH_C_15
+    PEA     Global_STR_BRUSH_C_15
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1565,7 +1565,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #130000,-(A7)
     MOVE.L  -50(A5),-(A7)
     PEA     1236.W
-    PEA     GLOB_STR_BRUSH_C_16
+    PEA     Global_STR_BRUSH_C_16
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1590,7 +1590,7 @@ BRUSH_LoadBrushAsset:
 ; CALLS:
 ;   GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
-;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_BRUSH_C_17, GLOB_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
+;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   BRUSH_PendingAlertCode
 ; DESC:
@@ -1607,7 +1607,7 @@ BRUSH_CloneBrushRecord:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
     PEA     1248.W
-    PEA     GLOB_STR_BRUSH_C_17
+    PEA     Global_STR_BRUSH_C_17
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1645,7 +1645,7 @@ BRUSH_CloneBrushRecord:
     MOVEQ   #0,D2
     MOVE.W  178(A0),D2
     MOVEA.L A1,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEA.L -8(A5),A0
@@ -1734,7 +1734,7 @@ BRUSH_CloneBrushRecord:
     MOVE.L  D2,-(A7)                      ; Height
     MOVE.L  D1,-(A7)                      ; Width
     PEA     1302.W                        ; Line Number
-    PEA     GLOB_STR_BRUSH_C_18           ; Calling file
+    PEA     Global_STR_BRUSH_C_18           ; Calling file
     MOVE.L  D0,32(A7)
     JSR     GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster(PC)
 
@@ -1782,7 +1782,7 @@ BRUSH_CloneBrushRecord:
     BNE.S   .return
 
     LEA     36(A0),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L -8(A5),A0
@@ -1823,7 +1823,7 @@ BRUSH_CloneBrushRecord:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   BRUSH_LastAllocatedNode, GLOB_STR_BRUSH_C_19, MEMF_CLEAR, MEMF_PUBLIC
+;   BRUSH_LastAllocatedNode, Global_STR_BRUSH_C_19, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   BRUSH_LastAllocatedNode
 ; DESC:
@@ -1839,7 +1839,7 @@ BRUSH_AllocBrushNode:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     238.W
     PEA     1352.W
-    PEA     GLOB_STR_BRUSH_C_19
+    PEA     Global_STR_BRUSH_C_19
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7

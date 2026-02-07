@@ -56,7 +56,7 @@ DISPTEXT_AppendToBuffer:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D7,-(A7)
     PEA     127.W
-    PEA     GLOB_STR_DISPTEXT_C_1
+    PEA     Global_STR_DISPTEXT_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -122,7 +122,7 @@ DISPTEXT_AppendToBuffer:
 ; READS:
 ;   DISPTEXT_STR_SINGLE_SPACE_MEASURE..DISPTEXT_STR_SINGLE_SPACE_DELIM, DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
 ; WRITES:
-;   output buffer, DATA_WDISP_BSS_WORD_21DC
+;   output buffer, DISPTEXT_ControlMarkersEnabledFlag
 ; DESC:
 ;   Builds a line from the source string, inserting separators and trimming to fit.
 ; NOTES:
@@ -137,7 +137,7 @@ DISPTEXT_BuildLineWithWidth:
     MOVEA.L A3,A1
     LEA     DISPTEXT_STR_SINGLE_SPACE_MEASURE,A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVEA.L 16(A5),A0
@@ -191,7 +191,7 @@ DISPTEXT_BuildLineWithWidth:
     MOVE.L  A1,D6
     MOVEA.L A3,A1
     MOVE.L  D6,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -239,7 +239,7 @@ DISPTEXT_BuildLineWithWidth:
     MOVEA.L A3,A1
     MOVE.L  D6,D0
     LEA     -73(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -283,10 +283,10 @@ DISPTEXT_BuildLineWithWidth:
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_21DC,D1
+    MOVE.W  DISPTEXT_ControlMarkersEnabledFlag,D1
     EXT.L   D1
     OR.L    D0,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_21DC
+    MOVE.W  D1,DISPTEXT_ControlMarkersEnabledFlag
     BRA.W   .line_loop
 
 .done:
@@ -441,7 +441,7 @@ DISPTEXT_FinalizeLineTable:
 ; READS:
 ;   DISPTEXT_InitBuffersPending
 ; WRITES:
-;   DISPTEXT_TextBufferPtr, DISPTEXT_InitBuffersPending, GLOB_REF_1000_BYTES_ALLOCATED_1/2
+;   DISPTEXT_TextBufferPtr, DISPTEXT_InitBuffersPending, Global_REF_1000_BYTES_ALLOCATED_1/2
 ; DESC:
 ;   Allocates working buffers for display text if initialization flag set.
 ; NOTES:
@@ -459,18 +459,18 @@ DISPTEXT_InitBuffers:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1000.W
     PEA     320.W
-    PEA     GLOB_STR_DISPTEXT_C_2
+    PEA     Global_STR_DISPTEXT_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     1000.W
     PEA     321.W
-    PEA     GLOB_STR_DISPTEXT_C_3
-    MOVE.L  D0,GLOB_REF_1000_BYTES_ALLOCATED_1
+    PEA     Global_STR_DISPTEXT_C_3
+    MOVE.L  D0,Global_REF_1000_BYTES_ALLOCATED_1
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
-    MOVE.L  D0,GLOB_REF_1000_BYTES_ALLOCATED_2
+    MOVE.L  D0,Global_REF_1000_BYTES_ALLOCATED_2
 
 .return:
     RTS
@@ -487,9 +487,9 @@ DISPTEXT_InitBuffers:
 ; CALLS:
 ;   DISPLIB_ResetTextBufferAndLineTables, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_REF_1000_BYTES_ALLOCATED_1/2
+;   Global_REF_1000_BYTES_ALLOCATED_1/2
 ; WRITES:
-;   GLOB_REF_1000_BYTES_ALLOCATED_1/2
+;   Global_REF_1000_BYTES_ALLOCATED_1/2
 ; DESC:
 ;   Releases the 1000-byte buffers used by display text.
 ; NOTES:
@@ -498,30 +498,30 @@ DISPTEXT_InitBuffers:
 DISPTEXT_FreeBuffers:
     BSR.W   DISPLIB_ResetTextBufferAndLineTables
 
-    TST.L   GLOB_REF_1000_BYTES_ALLOCATED_1
+    TST.L   Global_REF_1000_BYTES_ALLOCATED_1
     BEQ.S   .freeSecondBlock
 
     PEA     1000.W
-    MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_1,-(A7)
+    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_1,-(A7)
     PEA     338.W
-    PEA     GLOB_STR_DISPTEXT_C_4
+    PEA     Global_STR_DISPTEXT_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   GLOB_REF_1000_BYTES_ALLOCATED_1
+    CLR.L   Global_REF_1000_BYTES_ALLOCATED_1
 
 .freeSecondBlock:
-    TST.L   GLOB_REF_1000_BYTES_ALLOCATED_2
+    TST.L   Global_REF_1000_BYTES_ALLOCATED_2
     BEQ.S   .return
 
     PEA     1000.W
-    MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_2,-(A7)
+    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_2,-(A7)
     PEA     343.W
-    PEA     GLOB_STR_DISPTEXT_C_5
+    PEA     Global_STR_DISPTEXT_C_5
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   GLOB_REF_1000_BYTES_ALLOCATED_2
+    CLR.L   Global_REF_1000_BYTES_ALLOCATED_2
 
 .return:
     RTS
@@ -639,7 +639,7 @@ DISPTEXT_ComputeMarkerWidths:
     MOVEA.L A3,A1
     LEA     -1(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .check_prefix2
@@ -655,7 +655,7 @@ DISPTEXT_ComputeMarkerWidths:
     MOVEA.L A3,A1
     LEA     -3(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .store_combined
@@ -729,7 +729,7 @@ DISPTEXT_LayoutSourceToLines:
     MOVEA.L A3,A1
     MOVEA.L 28(A7),A0
     MOVEA.L (A0),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  DISPTEXT_LineWidthPx,D1
@@ -761,7 +761,7 @@ DISPTEXT_LayoutSourceToLines:
     MOVEA.L A3,A1
     LEA     DISPTEXT_STR_SINGLE_SPACE_PREFIX_1,A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -847,7 +847,7 @@ DISPTEXT_LayoutSourceToLines:
 ; READS:
 ;   DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
 ; WRITES:
-;   DISPTEXT_CurrentLineIndex, DISPTEXT_LineLengthTable, GLOB_REF_1000_BYTES_ALLOCATED_2
+;   DISPTEXT_CurrentLineIndex, DISPTEXT_LineLengthTable, Global_REF_1000_BYTES_ALLOCATED_2
 ; DESC:
 ;   Builds line segments into the scratch buffer and appends to global text.
 ; NOTES:
@@ -887,7 +887,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVEA.L A3,A1
     MOVEA.L 28(A7),A0
     MOVEA.L (A0),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  DISPTEXT_LineWidthPx,D1
@@ -908,7 +908,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     SUB.L   DATA_WDISP_BSS_LONG_21DA,D7
 
 .init_scratch:
-    MOVEA.L GLOB_REF_1000_BYTES_ALLOCATED_2,A0
+    MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A0
     CLR.B   (A0)
     MOVEQ   #0,D0
     MOVE.W  DISPTEXT_CurrentLineIndex,D0
@@ -921,7 +921,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVEA.L A3,A1
     LEA     DISPTEXT_STR_SINGLE_SPACE_PREFIX_2,A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D6
@@ -929,7 +929,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     BLE.S   .fallback_layout
 
     LEA     DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX,A0
-    MOVEA.L GLOB_REF_1000_BYTES_ALLOCATED_2,A1
+    MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A1
 
 .copy_prefix:
     MOVE.B  (A0)+,(A1)+
@@ -991,7 +991,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     SUBA.L  A0,A1
     MOVE.L  A1,D5
     MOVE.L  A0,(A7)
-    MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_2,-(A7)
+    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_2,-(A7)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
@@ -1029,7 +1029,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     BRA.W   .line_loop
 
 .flush_remaining:
-    MOVEA.L GLOB_REF_1000_BYTES_ALLOCATED_2,A0
+    MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A0
     TST.B   (A0)
     BEQ.S   .return_status
 
@@ -1065,9 +1065,9 @@ DISPTEXT_LayoutAndAppendToBuffer:
 ; CALLS:
 ;   GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2, DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
-;   DISPTEXT_LineTableLockFlag, GLOB_REF_1000_BYTES_ALLOCATED_1
+;   DISPTEXT_LineTableLockFlag, Global_REF_1000_BYTES_ALLOCATED_1
 ; WRITES:
-;   GLOB_REF_1000_BYTES_ALLOCATED_1 (via GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2)
+;   Global_REF_1000_BYTES_ALLOCATED_1 (via GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2)
 ; DESC:
 ;   Prepares output buffer and runs layout; returns success flag.
 ; NOTES:
@@ -1084,11 +1084,11 @@ DISPTEXT_BuildLayoutForSource:
     LEA     16(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  12(A5),-(A7)
-    MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_1,-(A7)
+    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_1,-(A7)
     MOVE.L  A0,-8(A5)
     JSR     GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(PC)
 
-    MOVE.L  GLOB_REF_1000_BYTES_ALLOCATED_1,(A7)
+    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_1,(A7)
     MOVE.L  A3,-(A7)
     BSR.W   DISPTEXT_LayoutAndAppendToBuffer
 
@@ -1163,7 +1163,7 @@ DISPTEXT_SetCurrentLineIndex:
 ; DESC:
 ;   Computes a derived line count with optional prefix adjustments.
 ; NOTES:
-;   Uses booleanize pattern on DATA_WDISP_BSS_WORD_21DC.
+;   Uses booleanize pattern on DISPTEXT_ControlMarkersEnabledFlag.
 ;------------------------------------------------------------------------------
 DISPTEXT_ComputeVisibleLineCount:
     LINK.W  A5,#-12
@@ -1210,7 +1210,7 @@ DISPTEXT_ComputeVisibleLineCount:
 
 .apply_leading:
     ADD.L   D0,D5
-    TST.W   DATA_WDISP_BSS_WORD_21DC
+    TST.W   DISPTEXT_ControlMarkersEnabledFlag
     BEQ.S   .return
 
     MOVE.W  DISPTEXT_TargetLineIndex,D0
@@ -1426,7 +1426,7 @@ DISPTEXT_MeasureCurrentLineLength:
     MOVE.W  (A1),D0
     MOVEA.L A3,A1
     MOVEA.L (A0),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVEA.L (A7)+,A3
@@ -1452,7 +1452,7 @@ DISPTEXT_MeasureCurrentLineLength:
 ; DESC:
 ;   Draws the current line at the given position, honoring highlight markers.
 ; NOTES:
-;   Uses 0x13/0x14 control markers when DATA_WDISP_BSS_WORD_21DC set.
+;   Uses 0x13/0x14 control markers when DISPTEXT_ControlMarkersEnabledFlag set.
 ;------------------------------------------------------------------------------
 DISPTEXT_RenderCurrentLine:
     LINK.W  A5,#-12
@@ -1501,7 +1501,7 @@ DISPTEXT_RenderCurrentLine:
     ADDA.L  D2,A0
     MOVEA.L A3,A1
     MOVE.L  (A0),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1
@@ -1511,7 +1511,7 @@ DISPTEXT_RenderCurrentLine:
     MOVEA.L -6(A5),A0
     MOVE.B  0(A0,D4.L),D5
     CLR.B   0(A0,D4.L)
-    TST.W   DATA_WDISP_BSS_WORD_21DC
+    TST.W   DISPTEXT_ControlMarkersEnabledFlag
     BEQ.S   .draw_plain
 
     PEA     19.W
@@ -1533,7 +1533,7 @@ DISPTEXT_RenderCurrentLine:
     MOVEQ   #0,D0
     MOVE.B  DATA_WDISP_BSS_BYTE_21B2,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B1,D1
+    MOVE.B  DISPTEXT_InsetNibblePrimary,D1
     MOVE.L  -6(A5),-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -1551,7 +1551,7 @@ DISPTEXT_RenderCurrentLine:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L A3,A1

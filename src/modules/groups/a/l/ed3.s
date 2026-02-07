@@ -191,7 +191,7 @@ ED_DrawESCMenuBottomHelp:
 ; CALLS:
 ;   _LVOSetDrMd, _LVOSetAPen, _LVOSetBPen
 ; READS:
-;   WDISP_DisplayContextBase, DATA_WDISP_BSS_LONG_226E, GLOB_REF_GRAPHICS_LIBRARY
+;   WDISP_DisplayContextBase, DATA_WDISP_BSS_LONG_226E, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -202,11 +202,11 @@ ED_DrawESCMenuBottomHelp:
 ED_InitRastport2Pens:
     LINK.W  A5,#-4
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.L  A0,-4(A5)
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L -4(A5),A1
@@ -242,7 +242,7 @@ ED_InitRastport2Pens:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -253,23 +253,23 @@ ED_InitRastport2Pens:
 ED_DrawBottomHelpBarBackground:
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #680,D2
     MOVE.L  #429,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
@@ -289,7 +289,7 @@ ED_DrawBottomHelpBarBackground:
 ; CALLS:
 ;   ED_DrawMenuSelectionHighlight, DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -301,56 +301,56 @@ ED_DrawEscMainMenuText:
     PEA     6.W
     BSR.W   ED_DrawMenuSelectionHighlight
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     GLOB_STR_EDIT_ADS
+    PEA     Global_STR_EDIT_ADS
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_EDIT_ATTRIBUTES
+    PEA     Global_STR_EDIT_ATTRIBUTES
     PEA     120.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_CHANGE_SCROLL_SPEED
+    PEA     Global_STR_CHANGE_SCROLL_SPEED
     PEA     150.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_DIAGNOSTIC_MODE
+    PEA     Global_STR_DIAGNOSTIC_MODE
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     68(A7),A7
-    PEA     GLOB_STR_SPECIAL_FUNCTIONS
+    PEA     Global_STR_SPECIAL_FUNCTIONS
     PEA     210.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_VERSIONS_SCREEN
+    PEA     Global_STR_VERSIONS_SCREEN
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     RTS
@@ -369,7 +369,7 @@ ED_DrawEscMainMenuText:
 ;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition, ED_DrawEscMainMenuText,
 ;   _LVOSetDrMd, _LVOSetAPen
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   ED_EditCursorOffset
 ; DESC:
@@ -381,36 +381,36 @@ ED_DrawESCMenuHelpText:
     PEA     6.W
     BSR.W   ED_DrawHelpPanels
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_PUSH_ESC_TO_RESUME
+    PEA     Global_STR_PUSH_ESC_TO_RESUME
     PEA     330.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
+    PEA     Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
     PEA     360.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_PUSH_ANY_KEY_TO_SELECT_1
+    PEA     Global_STR_PUSH_ANY_KEY_TO_SELECT_1
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     CLR.L   ED_EditCursorOffset
@@ -432,8 +432,8 @@ ED_DrawESCMenuHelpText:
 ; CALLS:
 ;   _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, DISPLIB_DisplayTextAtPosition
 ; READS:
-;   GLOB_REF_RASTPORT_1, ED_DiagTextModeChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagScrollSpeedChar,
-;   GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagScrollSpeedChar,
+;   Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -442,148 +442,148 @@ ED_DrawESCMenuHelpText:
 ;   Uses multiple short text fields for runtime values.
 ;------------------------------------------------------------------------------
 ED_DrawDiagnosticModeText:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
 
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     GLOB_STR_VIN_BCK_FWD_SSPD_AD_LINE
+    PEA     Global_STR_VIN_BCK_FWD_SSPD_AD_LINE
     PEA     300.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_TZ_DST_CONT_TXT_GRPH
+    PEA     Global_STR_TZ_DST_CONT_TXT_GRPH
     PEA     330.W
     PEA     90.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #100,D0
     MOVE.L  #300,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagVinModeChar,A0
     MOVEQ   #(LAB_1DC7_Length),D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #95,D0
     ADD.L   D0,D0
     MOVE.L  #300,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_B_1DC8,A0
     MOVEQ   #(LAB_1DC8_Length),D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #280,D0
     MOVE.L  #300,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_E_1DC9,A0
     MOVEQ   #(LAB_1DC9_Length),D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #385,D0
     MOVE.L  #300,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    LEA     GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,A0
-    MOVEQ   #(GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length),D0
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    LEA     Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,A0
+    MOVEQ   #(Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length),D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #475,D0
     MOVE.L  #300,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_TAG_36_1DCB,A0
     MOVEQ   #(LAB_1DCB_Length),D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #595,D0
     MOVE.L  #300,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagScrollSpeedChar,A0
     MOVEQ   #(LAB_1DCD_Length),D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #75,D0
     ADD.L   D0,D0
     MOVE.L  #330,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_6_1DD1,A0
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #120,D0
     ADD.L   D0,D0
     MOVE.L  #330,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_N_1DD2,A0
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #345,D0
     MOVE.L  #330,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_Y_1DD3,A0
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #450,D0
     MOVE.L  #330,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagTextModeChar,A0
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #555,D0
     MOVE.L  #330,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagGraphModeChar,A0
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
@@ -602,7 +602,7 @@ ED_DrawDiagnosticModeText:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -614,12 +614,12 @@ ED_DrawHelpPanels:
     MOVEM.L D2-D3/D7,-(A7)
     MOVE.L  16(A7),D7
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #640,D2
@@ -627,21 +627,21 @@ ED_DrawHelpPanels:
     JSR     _LVORectFill(A6)
 
     MOVE.L  D7,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #298,D1
     ; D2 is still 640
     MOVE.L  #429,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
@@ -661,7 +661,7 @@ ED_DrawHelpPanels:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
 ; READS:
-;   ED_EditCursorOffset, GLOB_REF_RASTPORT_1
+;   ED_EditCursorOffset, Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -673,9 +673,9 @@ ED_DrawMenuSelectionHighlight:
     MOVEM.L D2-D3/D7,-(A7)
 
     MOVE.L  16(A7),D7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
@@ -685,7 +685,7 @@ ED_DrawMenuSelectionHighlight:
     MOVEQ   #67,D1
     ADD.L   D1,D0
     MOVE.L  D0,D3
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #640,D2
@@ -694,7 +694,7 @@ ED_DrawMenuSelectionHighlight:
     CMPI.L  #$ffffffff,ED_EditCursorOffset
     BLE.S   .after_optional_marker
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
@@ -708,7 +708,7 @@ ED_DrawMenuSelectionHighlight:
     MOVEQ   #97,D2
     ADD.L   D2,D0
     MOVE.L  D0,D3
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     JSR     _LVORectFill(A6)
@@ -731,7 +731,7 @@ ED_DrawMenuSelectionHighlight:
 ; CALLS:
 ;   _LVOSetAPen, _LVOSetDrMd, _LVORectFill, DISPLIB_DisplayTextAtPosition
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -742,46 +742,46 @@ ED_DrawMenuSelectionHighlight:
 ED_DrawDiagnosticModeHelpText:
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #640,D2
     MOVE.L  #327,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #328,D1
     MOVE.L  #429,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_PUSH_RETURN_TO_ENTER_SELECTION_3
+    PEA     Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_PUSH_ANY_KEY_TO_SELECT_2
+    PEA     Global_STR_PUSH_ANY_KEY_TO_SELECT_2
     PEA     420.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
@@ -803,7 +803,7 @@ ED_DrawDiagnosticModeHelpText:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
 ;   _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+;   Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -814,82 +814,82 @@ ED_DrawDiagnosticModeHelpText:
 ED_DrawScrollSpeedMenuText:
     LINK.W  A5,#-80
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
     MOVEQ   #0,D0
-    MOVE.B  GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
+    MOVE.B  Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
     MOVE.L  D0,-(A7)
-    PEA     GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
+    PEA     Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
     PEA     -80(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -80(A5)
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SPEED_ZERO_NOT_AVAILABLE
+    PEA     Global_STR_SPEED_ZERO_NOT_AVAILABLE
     PEA     120.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SPEED_ONE_NOT_AVAILABLE
+    PEA     Global_STR_SPEED_ONE_NOT_AVAILABLE
     PEA     150.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SCROLL_SPEED_2
+    PEA     Global_STR_SCROLL_SPEED_2
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     76(A7),A7
 
-    PEA     GLOB_STR_SCROLL_SPEED_3
+    PEA     Global_STR_SCROLL_SPEED_3
     PEA     210.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SCROLL_SPEED_4
+    PEA     Global_STR_SCROLL_SPEED_4
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SCROLL_SPEED_5
+    PEA     Global_STR_SCROLL_SPEED_5
     PEA     270.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SCROLL_SPEED_6
+    PEA     Global_STR_SCROLL_SPEED_6
     PEA     300.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SCROLL_SPEED_7
+    PEA     Global_STR_SCROLL_SPEED_7
     PEA     330.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     UNLK    A5
@@ -908,7 +908,7 @@ ED_DrawScrollSpeedMenuText:
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -917,44 +917,44 @@ ED_DrawScrollSpeedMenuText:
 ;   Restores drawing mode afterward.
 ;------------------------------------------------------------------------------
 ED_DrawSpecialFunctionsMenu:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     GLOB_STR_SAVE_ALL_TO_DISK
+    PEA     Global_STR_SAVE_ALL_TO_DISK
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SAVE_DATA_TO_DISK
+    PEA     Global_STR_SAVE_DATA_TO_DISK
     PEA     120.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_LOAD_TEXT_ADS_FROM_DISK
+    PEA     Global_STR_LOAD_TEXT_ADS_FROM_DISK
     PEA     150.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_REBOOT_COMPUTER
+    PEA     Global_STR_REBOOT_COMPUTER
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     64(A7),A7
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     RTS
@@ -973,7 +973,7 @@ ED_DrawSpecialFunctionsMenu:
 ;   DISPLIB_DisplayTextAtPosition, GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   ED_TempCopyOffset, DATA_ESQ_BSS_BYTE_1DE0, DATA_ESQ_BSS_BYTE_1DE1, DATA_ESQ_CONST_BYTE_1DE2, GLOB_REF_RASTPORT_1
+;   ED_TempCopyOffset, DATA_ESQ_BSS_BYTE_1DE0, DATA_ESQ_BSS_BYTE_1DE1, DATA_ESQ_CONST_BYTE_1DE2, Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -982,19 +982,19 @@ ED_DrawSpecialFunctionsMenu:
 ;   Formats values into ED_EditBufferScratch before display.
 ;------------------------------------------------------------------------------
 ED_DrawDiagnosticRegisterValues:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_REGISTER
+    PEA     Global_STR_REGISTER
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     2.W
@@ -1005,13 +1005,13 @@ ED_DrawDiagnosticRegisterValues:
     PEA     ED_EditBufferScratch
     PEA     240.W
     PEA     190.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_R_EQUALS
+    PEA     Global_STR_R_EQUALS
     PEA     270.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  ED_TempCopyOffset,D0
@@ -1030,13 +1030,13 @@ ED_DrawDiagnosticRegisterValues:
     PEA     ED_EditBufferScratch
     PEA     270.W
     PEA     85.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_G_EQUALS
+    PEA     Global_STR_G_EQUALS
     PEA     270.W
     PEA     135.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  ED_TempCopyOffset,D0
@@ -1054,13 +1054,13 @@ ED_DrawDiagnosticRegisterValues:
     PEA     ED_EditBufferScratch
     PEA     270.W
     PEA     180.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_B_EQUALS
+    PEA     Global_STR_B_EQUALS
     PEA     270.W
     PEA     230.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     76(A7),A7
@@ -1079,7 +1079,7 @@ ED_DrawDiagnosticRegisterValues:
     PEA     ED_EditBufferScratch
     PEA     270.W
     PEA     275.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
@@ -1099,7 +1099,7 @@ ED_DrawDiagnosticRegisterValues:
 ;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition,
 ;   _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1111,25 +1111,25 @@ ED_DrawAreYouSurePrompt:
     PEA     6.W
     BSR.W   ED_DrawHelpPanels
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_ARE_YOU_SURE
+    PEA     Global_STR_ARE_YOU_SURE
     PEA     330.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     20(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     RTS
@@ -1149,7 +1149,7 @@ ED_DrawAreYouSurePrompt:
 ;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition, GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   DATA_WDISP_BSS_LONG_21FD, GLOB_REF_RASTPORT_1
+;   DATA_WDISP_BSS_LONG_21FD, Global_REF_RASTPORT_1
 ; WRITES:
 ;   ED_EditCursorOffset, DATA_WDISP_BSS_LONG_21F4
 ; DESC:
@@ -1164,19 +1164,19 @@ ED_DrawAdNumberPrompt:
     PEA     6.W
     BSR.W   ED_DrawHelpPanels
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_ENTER_AD_NUMBER_ONE_HYPHEN
+    PEA     Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN
     PEA     330.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     2.W
@@ -1187,62 +1187,62 @@ ED_DrawAdNumberPrompt:
     PEA     ED_EditBufferScratch
     PEA     330.W
     PEA     340.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_LEFT_PARENTHESIS_THEN
+    PEA     Global_STR_LEFT_PARENTHESIS_THEN
     PEA     330.W
     PEA     370.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_PUSH_RETURN_TO_ENTER_SELECTION_2
+    PEA     Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2
     PEA     360.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
-    PEA     GLOB_STR_SINGLE_SPACE_4
+    PEA     Global_STR_SINGLE_SPACE_4
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #640,D2
     MOVEQ   #98,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     GLOB_STR_AD_NUMBER_QUESTIONMARK
+    PEA     Global_STR_AD_NUMBER_QUESTIONMARK
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEQ   #12,D0
@@ -1291,7 +1291,7 @@ ED_DrawAdNumberPrompt:
 ; CALLS:
 ;   ED_DrawCursorChar, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1300,16 +1300,16 @@ ED_DrawAdNumberPrompt:
 ;   Sets draw mode to 5, draws, then restores draw mode to 1.
 ;------------------------------------------------------------------------------
 ED_RedrawCursorChar:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #5,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BSR.W   ED_DrawCursorChar
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     RTS
@@ -1328,7 +1328,7 @@ ED_RedrawCursorChar:
 ;   GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble, GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, ED_UpdateCursorPosFromIndex, ESQIFF_JMPTBL_MATH_Mulu32,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOMove, _LVOText
 ; READS:
-;   ED_EditCursorOffset, ED_ViewportOffset, DATA_WDISP_BSS_LONG_2200, ED_EditBufferScratch, ED_EditBufferLive, GLOB_REF_RASTPORT_1
+;   ED_EditCursorOffset, ED_ViewportOffset, DATA_WDISP_BSS_LONG_2200, ED_EditBufferScratch, ED_EditBufferLive, Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1348,8 +1348,8 @@ ED_DrawCursorChar:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     ED_EditBufferLive,A0
@@ -1362,8 +1362,8 @@ ED_DrawCursorChar:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
     MOVE.L  ED_EditCursorOffset,(A7)
@@ -1383,14 +1383,14 @@ ED_DrawCursorChar:
     MOVEQ   #90,D1
     ADD.L   D1,D0
     MOVE.L  D0,D1
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  0(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     LEA     ED_EditBufferScratch,A0
     ADDA.L  ED_EditCursorOffset,A0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOText(A6)
 
@@ -1462,7 +1462,7 @@ ED_UpdateCursorPosFromIndex:
 ;   GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble, GROUP_AM_JMPTBL_WDISP_SPrintf,
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVORectFill
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1483,11 +1483,11 @@ ED_DrawCurrentColorIndicator:
     MOVE.L  D0,D6
     MOVEQ   #0,D0
     MOVE.B  D6,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #102,D0
     ADD.L   D0,D0
     MOVEQ   #125,D1
@@ -1504,34 +1504,34 @@ ED_DrawCurrentColorIndicator:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
     MOVE.B  D6,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     JSR     _LVOSetBPen(A6)
 
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,(A7)
-    PEA     GLOB_STR_CURRENT_COLOR_FORMATTED
+    PEA     Global_STR_CURRENT_COLOR_FORMATTED
     PEA     -41(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -41(A5)
     PEA     272.W
     PEA     205.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
@@ -1552,7 +1552,7 @@ ED_DrawCurrentColorIndicator:
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1564,16 +1564,16 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
     MOVE.L  D7,-(A7)
 
     MOVE.L  8(A7),D7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetBPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
@@ -1581,26 +1581,26 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
     CMP.L   D0,D7
     BNE.S   .setTextToCursor
 
-    LEA     GLOB_STR_TEXT,A0
+    LEA     Global_STR_TEXT,A0
     BRA.S   .drawText
 
 .setTextToCursor:
-    LEA     GLOB_STR_CURSOR,A0
+    LEA     Global_STR_CURSOR,A0
 
 .drawText:
     MOVE.L  A0,-(A7)
     PEA     390.W
     PEA     296.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
@@ -1620,53 +1620,53 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   GLOB_REF_BOOL_IS_LINE_OR_PAGE, GLOB_REF_RASTPORT_1
+;   Global_REF_BOOL_IS_LINE_OR_PAGE, Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Draws either "LINE" or "PAGE" label with fixed pens.
 ; NOTES:
-;   Uses GLOB_REF_BOOL_IS_LINE_OR_PAGE as the selector.
+;   Uses Global_REF_BOOL_IS_LINE_OR_PAGE as the selector.
 ;------------------------------------------------------------------------------
 SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
     LINK.W  A5,#0
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
 
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetBPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    TST.L   GLOB_REF_BOOL_IS_LINE_OR_PAGE
+    TST.L   Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .setTextToPage
 
-    LEA     GLOB_STR_LINE,A0
+    LEA     Global_STR_LINE,A0
     BRA.S   .drawText
 
 .setTextToPage:
-    LEA     GLOB_STR_PAGE,A0
+    LEA     Global_STR_PAGE,A0
 
 .drawText:
     MOVE.L  A0,-(A7)
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
@@ -1686,22 +1686,22 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
 ; CALLS:
 ;   ED_ApplyActiveFlagToAdData, ED_UpdateAdNumberDisplay
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_21FD
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_21FD
 ; WRITES:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
 ;   Increments the current ad number if within bounds and refreshes display.
 ; NOTES:
 ;   Calls ED_ApplyActiveFlagToAdData before increment to commit current state.
 ;------------------------------------------------------------------------------
 ED_IncrementAdNumber:
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   DATA_WDISP_BSS_LONG_21FD,D0
     BGE.S   .return
 
     BSR.W   ED_ApplyActiveFlagToAdData
 
-    ADDQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    ADDQ.L  #1,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BSR.W   ED_UpdateAdNumberDisplay
 
 .return:
@@ -1720,21 +1720,21 @@ ED_IncrementAdNumber:
 ; CALLS:
 ;   ED_ApplyActiveFlagToAdData, ED_UpdateAdNumberDisplay
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; WRITES:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
 ;   Decrements the current ad number if above 1 and refreshes display.
 ; NOTES:
 ;   Calls ED_ApplyActiveFlagToAdData before decrement to commit current state.
 ;------------------------------------------------------------------------------
 ED_DecrementAdNumber:
-    CMPI.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    CMPI.L  #1,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BLE.S   .return
 
     BSR.W   ED_ApplyActiveFlagToAdData
 
-    SUBQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    SUBQ.L  #1,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BSR.W   ED_UpdateAdNumberDisplay
 
 .return:
@@ -1754,7 +1754,7 @@ ED_DecrementAdNumber:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
 ;   ED_UpdateActiveInactiveIndicator
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_2250
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_2250
 ; WRITES:
 ;   ED_AdActiveFlag, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, DATA_WDISP_BSS_LONG_2202, DATA_WDISP_BSS_LONG_2201, DATA_WDISP_BSS_LONG_21FF
 ; DESC:
@@ -1765,21 +1765,21 @@ ED_DecrementAdNumber:
 ED_UpdateAdNumberDisplay:
     LINK.W  A5,#-40
 
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,-(A7)
-    PEA     GLOB_STR_AD_NUMBER_FORMATTED
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,-(A7)
+    PEA     Global_STR_AD_NUMBER_FORMATTED
     PEA     -40(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -40(A5)
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D0
     MOVE.L  D0,ED_AdActiveFlag
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D1
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D1
     ASL.L   #2,D1
     LEA     DATA_WDISP_BSS_LONG_2250,A0
     ADDA.L  D1,A0
@@ -1817,7 +1817,7 @@ ED_UpdateAdNumberDisplay:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ED_AdActiveFlag, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_2250
+;   ED_AdActiveFlag, Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_2250
 ; WRITES:
 ;   Ad data (first word / word+2) via DATA_WDISP_BSS_LONG_2250
 ; DESC:
@@ -1831,7 +1831,7 @@ ED_ApplyActiveFlagToAdData:
     TST.L   ED_AdActiveFlag
     BNE.S   .set_active
 
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     MOVE.L  D0,D1
     ASL.L   #2,D1
     LEA     DATA_WDISP_BSS_LONG_2250,A0
@@ -1847,7 +1847,7 @@ ED_ApplyActiveFlagToAdData:
     BRA.S   .return
 
 .set_active:
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     ASL.L   #2,D0
     LEA     DATA_WDISP_BSS_LONG_2250,A0
     MOVEA.L A0,A1
@@ -1896,8 +1896,8 @@ ED_RedrawAllRows:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  ED_TextLimit,D0
@@ -1907,7 +1907,7 @@ ED_RedrawAllRows:
     MOVEQ   #68,D1
     ADD.L   D1,D0
     MOVE.L  D0,D3
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     JSR     _LVORectFill(A6)
@@ -1977,12 +1977,12 @@ ED_RedrawRow:
     BRA.S   .row_loop
 
 .row_done:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
@@ -2003,7 +2003,7 @@ ED_RedrawRow:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd, DISPLIB_DisplayTextAtPosition
 ; READS:
-;   ED_AdActiveFlag, DATA_WDISP_BSS_LONG_2201, GLOB_REF_RASTPORT_1
+;   ED_AdActiveFlag, DATA_WDISP_BSS_LONG_2201, Global_REF_RASTPORT_1
 ; WRITES:
 ;   DATA_WDISP_BSS_LONG_2201
 ; DESC:
@@ -2039,52 +2039,52 @@ ED_UpdateActiveInactiveIndicator:
     MOVE.L  #265,D4
 
 .draw_indicator:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
     MOVE.L  D6,D2
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #68,D1
     MOVEQ   #98,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D5,D0
     MOVE.L  D4,D2
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #68,D1
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_ACTIVE_INACTIVE
+    PEA     Global_STR_ACTIVE_INACTIVE
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
     MOVE.L  ED_AdActiveFlag,DATA_WDISP_BSS_LONG_2201
 
 .after_indicator_update:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
@@ -2108,8 +2108,8 @@ ED_UpdateActiveInactiveIndicator:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   ED_TextLimit, GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,
-;   GLOB_REF_BOOL_IS_LINE_OR_PAGE, GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
+;   ED_TextLimit, Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,
+;   Global_REF_BOOL_IS_LINE_OR_PAGE, Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -2126,42 +2126,42 @@ ED_DrawAdEditingScreen:
     PEA     6.W
     BSR.W   ED_DrawHelpPanels
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     GLOB_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION
+    PEA     Global_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION
     PEA     330.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS
+    PEA     Global_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS
     PEA     360.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_LINE_MODE_ON_TEXT_COLOR_MODE
+    PEA     Global_STR_LINE_MODE_ON_TEXT_COLOR_MODE
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.L  GLOB_REF_BOOL_IS_LINE_OR_PAGE,(A7)
+    MOVE.L  Global_REF_BOOL_IS_LINE_OR_PAGE,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
 
-    MOVE.L  GLOB_REF_BOOL_IS_TEXT_OR_CURSOR,(A7)
+    MOVE.L  Global_REF_BOOL_IS_TEXT_OR_CURSOR,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #8,D0
@@ -2171,38 +2171,38 @@ ED_DrawAdEditingScreen:
 
     MOVE.L  #302,D1
     SUB.L   D0,D1
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     MOVE.L  #308,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     JSR     _LVOSetBPen(A6)
 
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
-    PEA     GLOB_STR_EDITING_AD_NUMBER_FORMATTED_1
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
+    PEA     Global_STR_EDITING_AD_NUMBER_FORMATTED_1
     PEA     .printfResult(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     .printfResult(A5)
     PEA     300.W
     PEA     190.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     76(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
@@ -2852,10 +2852,10 @@ ED_TransformLineSpacing_Mode3:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
 ;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVORectFill
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_BlockOffset, ED_TextLimit
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_BlockOffset, ED_TextLimit
 ; WRITES:
-;   ED_EditCursorOffset, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, GLOB_REF_BOOL_IS_LINE_OR_PAGE,
-;   GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
+;   ED_EditCursorOffset, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, Global_REF_BOOL_IS_LINE_OR_PAGE,
+;   Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; DESC:
 ;   Loads the current ad into edit buffers and refreshes the screen.
 ; NOTES:
@@ -2864,7 +2864,7 @@ ED_TransformLineSpacing_Mode3:
 ED_LoadCurrentAdIntoBuffers:
     LINK.W  A5,#-48
     MOVEM.L D2-D3/D7,-(A7)
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     SUBQ.L  #1,D0
     PEA     ED_EditBufferLive
     PEA     ED_EditBufferScratch
@@ -2931,18 +2931,18 @@ ED_LoadCurrentAdIntoBuffers:
     MOVEQ   #0,D0
     MOVE.L  D0,ED_EditCursorOffset
     MOVE.L  D0,ED_ViewportOffset
-    MOVE.L  D0,GLOB_REF_BOOL_IS_LINE_OR_PAGE
+    MOVE.L  D0,Global_REF_BOOL_IS_LINE_OR_PAGE
     MOVE.L  D0,-(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
 
     MOVEQ   #1,D0
-    MOVE.L  D0,GLOB_REF_BOOL_IS_TEXT_OR_CURSOR
+    MOVE.L  D0,Global_REF_BOOL_IS_TEXT_OR_CURSOR
     MOVE.L  D0,(A7)
     BSR.W   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #8,D0
@@ -2952,7 +2952,7 @@ ED_LoadCurrentAdIntoBuffers:
 
     MOVE.L  #302,D1
     SUB.L   D0,D1
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #640,D2
     MOVE.L  #308,D3
@@ -2963,34 +2963,34 @@ ED_LoadCurrentAdIntoBuffers:
     MOVE.L  D0,(A7)
     BSR.W   ED_DrawCurrentColorIndicator
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
     JSR     _LVOSetBPen(A6)
 
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
-    PEA     GLOB_STR_EDITING_AD_NUMBER_FORMATTED_2
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
+    PEA     Global_STR_EDITING_AD_NUMBER_FORMATTED_2
     PEA     -44(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -44(A5)
     PEA     300.W
     PEA     190.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     ; Set drawing mode to 1
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     ; Set B pen to 2
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
@@ -3013,7 +3013,7 @@ ED_LoadCurrentAdIntoBuffers:
 ; CALLS:
 ;   GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -3022,7 +3022,7 @@ ED_LoadCurrentAdIntoBuffers:
 ;   Calls GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex with (adNumber-1).
 ;------------------------------------------------------------------------------
 ED_CommitCurrentAdEdits:
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     SUBQ.L  #1,D0
     PEA     ED_EditBufferLive
     PEA     ED_EditBufferScratch
@@ -3045,22 +3045,22 @@ ED_CommitCurrentAdEdits:
 ; CALLS:
 ;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_21FD
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_21FD
 ; WRITES:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
 ;   Commits current edits then advances to the next ad.
 ; NOTES:
 ;   No-op if already at DATA_WDISP_BSS_LONG_21FD.
 ;------------------------------------------------------------------------------
 ED_NextAdNumber:
-    MOVE.L  GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
+    MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     CMP.L   DATA_WDISP_BSS_LONG_21FD,D0
     BGE.S   .return
 
     BSR.S   ED_CommitCurrentAdEdits
 
-    ADDQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    ADDQ.L  #1,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BSR.W   ED_LoadCurrentAdIntoBuffers
 
 .return:
@@ -3080,21 +3080,21 @@ ED_NextAdNumber:
 ; CALLS:
 ;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
 ; READS:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; WRITES:
-;   GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
 ;   Commits current edits then moves to the previous ad.
 ; NOTES:
 ;   No-op when current ad number is 1.
 ;------------------------------------------------------------------------------
 ED_PrevAdNumber:
-    CMPI.L  #$1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    CMPI.L  #$1,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BLE.S   .return
 
     BSR.S   ED_CommitCurrentAdEdits
 
-    SUBQ.L  #1,GLOB_REF_LONG_CURRENT_EDITING_AD_NUMBER
+    SUBQ.L  #1,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     BSR.W   ED_LoadCurrentAdIntoBuffers
 
 .return:
@@ -3114,7 +3114,7 @@ ED_PrevAdNumber:
 ;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition,
 ;   _LVOSetAPen, _LVOSetDrMd, _LVORectFill
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -3127,102 +3127,102 @@ ED_DrawEditHelpText:
 
     BSR.W   ED_DrawBottomHelpBarBackground
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVEQ   #68,D1
     MOVE.L  #$280,D2
     MOVE.L  #$165,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #6,D0
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #40,D0
     MOVE.L  #$166,D1
     MOVE.L  #$1ad,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
     PEA     DATA_ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT_1DAC
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DATA_ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S_1DAD
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DATA_ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR_1DAE
     PEA     120.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DATA_ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL_1DAF
     PEA     150.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DATA_ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE_1DB0
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
     PEA     DATA_ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY_1DB1
     PEA     210.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DATA_ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS_1DB2
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR
+    PEA     Global_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR
     PEA     270.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE
+    PEA     Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE
     PEA     300.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     GLOB_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
+    PEA     Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
     PEA     330.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEM.L (A7)+,D2-D3

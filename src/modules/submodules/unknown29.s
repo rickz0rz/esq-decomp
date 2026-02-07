@@ -10,7 +10,7 @@
 ;   HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, BUFFER_FlushAllAndCloseWithCode,
 ;   UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
 ; READS:
-;   Global_ArgCount, Global_ArgvStorage, savedMsg, Global_DefaultHandleFlags
+;   Global_ArgCount, Global_ArgvStorage, Global_SavedMsg, Global_DefaultHandleFlags
 ; WRITES:
 ;   Global_ArgCount, Global_ArgvPtr, Global_HandleEntry* globals, Global_*_State*
 ; DESC:
@@ -127,7 +127,7 @@ ESQ_ParseCommandLineAndRun:
     TST.L   Global_ArgCount(A4)
     BNE.S   .argv_from_storage
 
-    MOVEA.L savedMsg(A4),A0
+    MOVEA.L Global_SavedMsg(A4),A0
     BRA.S   .set_argv_ptr
 
 .argv_from_storage:
@@ -145,7 +145,7 @@ ESQ_ParseCommandLineAndRun:
     MOVE.L  (A1)+,(A6)+
     MOVE.L  (A1)+,(A6)+
     MOVE.W  (A1),(A6)
-    MOVEA.L savedMsg(A4),A1
+    MOVEA.L Global_SavedMsg(A4),A1
     MOVEA.L 36(A1),A0
     PEA     40.W
     MOVE.L  4(A0),-(A7)

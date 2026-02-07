@@ -1,51 +1,51 @@
 ; ========== ESQ.c ==========
 
-GLOB_REF_GRAPHICS_LIBRARY:
+Global_REF_GRAPHICS_LIBRARY:
     DS.L    1
-GLOB_REF_INTUITION_LIBRARY:
+Global_REF_INTUITION_LIBRARY:
     DS.L    1
-GLOB_REF_UTILITY_LIBRARY:
+Global_REF_UTILITY_LIBRARY:
     DS.L    1
-GLOB_REF_BATTCLOCK_RESOURCE:
+Global_REF_BATTCLOCK_RESOURCE:
     DS.L    1
 
-GLOB_STR_PREVUEC_FONT:
+Global_STR_PREVUEC_FONT:
     NStr    "PrevueC.font"          ; 14 bytes
-GLOB_STRUCT_TEXTATTR_PREVUEC_FONT:
-    DC.L    GLOB_STR_PREVUEC_FONT
+Global_STRUCT_TEXTATTR_PREVUEC_FONT:
+    DC.L    Global_STR_PREVUEC_FONT
     DC.W    25      ; Size 25 font
     DC.B    $40
     DC.B    $20
 
-GLOB_STR_H26F_FONT:
+Global_STR_H26F_FONT:
     NStr    "h26f.font"             ; 10 bytes
-GLOB_STRUCT_TEXTATTR_H26F_FONT:
-    DC.L    GLOB_STR_H26F_FONT
+Global_STRUCT_TEXTATTR_H26F_FONT:
+    DC.L    Global_STR_H26F_FONT
     DC.W    26      ; Size 26 font
     DC.B    0       ; Style: 0
     DC.B    0       ; Flags: 0
 
-GLOB_STR_TOPAZ_FONT:
+Global_STR_TOPAZ_FONT:
     NStr    "topaz.font"            ; 12 bytes
-GLOB_STRUCT_TEXTATTR_TOPAZ_FONT:
-    DC.L    GLOB_STR_TOPAZ_FONT
+Global_STRUCT_TEXTATTR_TOPAZ_FONT:
+    DC.L    Global_STR_TOPAZ_FONT
     DC.W    8      ; Size 8 font
     DC.B    0      ; Style: 0
     DC.B    1      ; Flags: 1
 
-GLOB_STR_PREVUE_FONT:
+Global_STR_PREVUE_FONT:
     NStr    "Prevue.font"           ; 12 bytes
-GLOB_STRUCT_TEXTATTR_PREVUE_FONT:
-    DC.L    GLOB_STR_PREVUE_FONT
+Global_STRUCT_TEXTATTR_PREVUE_FONT:
+    DC.L    Global_STR_PREVUE_FONT
     DC.W    13      ; Size 13 font
     DC.B    $40     ;
     DC.B    $20     ;
 
-GLOB_HANDLE_PREVUE_FONT:
+Global_HANDLE_PREVUE_FONT:
     DS.L    1
-GLOB_REF_DISKFONT_LIBRARY:
+Global_REF_DISKFONT_LIBRARY:
     DS.L    1
-GLOB_REF_DOS_LIBRARY:
+Global_REF_DOS_LIBRARY:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_HighlightMsgPort/ESQ_HighlightReplyPort   (highlight message ports)
@@ -67,9 +67,9 @@ LAB_1DC8_Length = 1
 DATA_ESQ_STR_E_1DC9:
     DC.B    "E"
 LAB_1DC9_Length = 1
-GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
+Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
-GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length    = 1
+Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length    = 1
 DATA_ESQ_TAG_36_1DCB:
     DC.B    "36"
 LAB_1DCB_Length = 2
@@ -159,7 +159,7 @@ ESQIFF_PrimaryLineHeadPtr:
 ;------------------------------------------------------------------------------
 ESQIFF_PrimaryLineTailPtr:
     DS.L    1
-GLOB_REF_STR_CLOCK_FORMAT:
+Global_REF_STR_CLOCK_FORMAT:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_DeferredActionCountdown   (deferred action countdown)
@@ -195,11 +195,11 @@ DATA_ESQ_BSS_WORD_1DE4:
     DS.W    1
 DATA_ESQ_BSS_WORD_1DE5:
     DS.W    1
-GLOB_HANDLE_PREVUEC_FONT:
+Global_HANDLE_PREVUEC_FONT:
     DS.L    1
-GLOB_HANDLE_H26F_FONT:
+Global_HANDLE_H26F_FONT:
     DS.L    1
-GLOB_HANDLE_TOPAZ_FONT:
+Global_HANDLE_TOPAZ_FONT:
     DS.L    1
     DS.L    2
     DS.W    1
@@ -234,7 +234,7 @@ DATA_ESQ_STR_A_1DEB:
 ;------------------------------------------------------------------------------
 WDISP_WeatherStatusOverlayTextPtr:
     DS.L    1
-GLOB_LONG_ROM_VERSION_CHECK:
+Global_LONG_ROM_VERSION_CHECK:
     DC.L    1
 DATA_ESQ_BSS_BYTE_1DEE:
     DS.B    1
@@ -258,7 +258,7 @@ DATA_ESQ_BSS_WORD_1DF3:
     DS.W    1
 DATA_ESQ_BSS_WORD_1DF4:
     DS.W    1
-GLOB_WORD_SELECT_CODE_IS_RAVESC:
+Global_WORD_SELECT_CODE_IS_RAVESC:
     DS.W    1
 DATA_ESQ_BSS_WORD_1DF6:
     DS.W    1
@@ -266,59 +266,59 @@ HAS_REQUESTED_FAST_MEMORY:
     DS.W    1
 IS_COMPATIBLE_VIDEO_CHIP:
     DC.L    $00000001
-GLOB_STR_RAVESC:
+Global_STR_RAVESC:
     NStr    "RAVESC"
-GLOB_STR_COPY_NIL_ASSIGN_RAM:
+Global_STR_COPY_NIL_ASSIGN_RAM:
     NStr    "copy >NIL: C:assign ram:"
-GLOB_STR_GRAPHICS_LIBRARY:
+Global_STR_GRAPHICS_LIBRARY:
     NStr    "graphics.library"
-GLOB_STR_DISKFONT_LIBRARY:
+Global_STR_DISKFONT_LIBRARY:
     NStr    "diskfont.library"
-GLOB_STR_DOS_LIBRARY:
+Global_STR_DOS_LIBRARY:
     NStr    "dos.library"
-GLOB_STR_INTUITION_LIBRARY:
+Global_STR_INTUITION_LIBRARY:
     NStr    "intuition.library"
-GLOB_STR_UTILITY_LIBRARY:
+Global_STR_UTILITY_LIBRARY:
     NStr    "utility.library"
-GLOB_STR_BATTCLOCK_RESOURCE:
+Global_STR_BATTCLOCK_RESOURCE:
     NStr    "battclock.resource"
-GLOB_STR_ESQ_C_1:
+Global_STR_ESQ_C_1:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_2:
+Global_STR_ESQ_C_2:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_3:
+Global_STR_ESQ_C_3:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_4:
+Global_STR_ESQ_C_4:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_5:
+Global_STR_ESQ_C_5:
     NStr    "ESQ.c"
-GLOB_STR_CART:
+Global_STR_CART:
     NStr    "CART"
-GLOB_STR_ESQ_C_6:
+Global_STR_ESQ_C_6:
     NStr    "ESQ.c"
-GLOB_STR_SERIAL_READ:
+Global_STR_SERIAL_READ:
     NStr    "Serial.Read"
-GLOB_STR_SERIAL_DEVICE:
+Global_STR_SERIAL_DEVICE:
     NStr    "serial.device"
-GLOB_STR_ESQ_C_7:
+Global_STR_ESQ_C_7:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_8:
+Global_STR_ESQ_C_8:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_9:
+Global_STR_ESQ_C_9:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_10:
+Global_STR_ESQ_C_10:
     NStr    "ESQ.c"
-GLOB_STR_ESQ_C_11:
+Global_STR_ESQ_C_11:
     NStr    "ESQ.c"
 DATA_ESQ_STR_NO_DF1_PRESENT_1E0F:
     NStr    "no df1 present"
-GLOB_STR_GUIDE_START_VERSION_AND_BUILD:
+Global_STR_GUIDE_START_VERSION_AND_BUILD:
     NStr    "Ver %s.%ld Build %ld %s"
-GLOB_STR_MAJOR_MINOR_VERSION:
+Global_STR_MAJOR_MINOR_VERSION:
     NStr    "9.0"   ; Major/minor version string
 DATA_ESQ_38_Spaces:
     NStr    "                                       "
-GLOB_STR_DF0_GRADIENT_INI_2:
+Global_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
 DATA_ESQ_STR_SystemInitializing:
     NStr    "System Initializing"
@@ -330,24 +330,24 @@ DATA_ESQ_STR_ReportErrorCodeEr011ToTVGuide:
     NStr    "Report Error Code ER011 to TV Guide Technical Services."
 DATA_ESQ_STR_ReportErrorCodeER012ToTVGuide:
     NStr    "Report Error Code ER012 to TV Guide Technical Services."
-GLOB_STR_DF0_DEFAULT_INI_1:
+Global_STR_DF0_DEFAULT_INI_1:
     NStr    "df0:default.ini"
-GLOB_STR_DF0_BRUSH_INI_1:
+Global_STR_DF0_BRUSH_INI_1:
     NStr    "df0:brush.ini"
 DATA_ESQ_STR_DT:
     NStr    "DT"
 DATA_ESQ_STR_DITHER:
     NStr    "DITHER"
-GLOB_STR_DF0_BANNER_INI_1:
+Global_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
 DATA_ESQ_TAG_GRANADA:
     NStr    "GRANADA"
-GLOB_LONG_BUILD_NUMBER:
+Global_LONG_BUILD_NUMBER:
     DC.L    $00000015   ; 21
-GLOB_STR_BUILD_ID:
+Global_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
-GLOB_PTR_STR_BUILD_ID:
-    DC.L    GLOB_STR_BUILD_ID
+Global_PTR_STR_BUILD_ID:
+    DC.L    Global_STR_BUILD_ID
 DATA_ESQ_CONST_LONG_1E22:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -1180,5 +1180,5 @@ DATA_ESQ_CONST_LONG_1E7D:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-GLOB_PTR_AUD1_DMA:
+Global_PTR_AUD1_DMA:
     DC.L    76

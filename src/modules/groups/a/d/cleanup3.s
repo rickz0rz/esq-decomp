@@ -32,10 +32,10 @@
 ;   DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369, TEXTDISP_BannerCharFallback-DATA_WDISP_BSS_BYTE_2379, DATA_WDISP_BSS_LONG_237A,
 ;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
 ;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, DATA_WDISP_BSS_WORD_227C, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
-;   GLOB_REF_RASTPORT_2, GLOB_REF_GRAPHICS_LIBRARY,
-;   GLOB_STR_ALIGNED_NOW_SHOWING, GLOB_STR_ALIGNED_NEXT_SHOWING,
-;   GLOB_STR_ALIGNED_TODAY_AT, GLOB_STR_ALIGNED_TONIGHT_AT,
-;   GLOB_STR_ALIGNED_TOMORROW_AT
+;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
+;   Global_STR_ALIGNED_NOW_SHOWING, Global_STR_ALIGNED_NEXT_SHOWING,
+;   Global_STR_ALIGNED_TODAY_AT, Global_STR_ALIGNED_TONIGHT_AT,
+;   Global_STR_ALIGNED_TOMORROW_AT
 ; WRITES:
 ;   TEXTDISP_ChannelLabelBuffer, DATA_WDISP_BSS_WORD_2365, CLEANUP_AlignedStatusSuffixBuffer, DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369,
 ;   DATA_WDISP_BSS_WORD_236C, DATA_WDISP_BSS_WORD_236D, DATA_WDISP_BSS_WORD_236E, TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
@@ -126,13 +126,13 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   -38(A5),D0
     BNE.S   .dispatch_template_code
 
-    CLR.B   DATA_WDISP_BSS_LONG_21B0
+    CLR.B   CLEANUP_AlignedStatusAltTimeBuffer
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     EXT.L   D0
     MOVE.W  DATA_WDISP_BSS_WORD_2369,D1
     EXT.L   D1
     PEA     1.W
-    PEA     DATA_WDISP_BSS_LONG_21B0
+    PEA     CLEANUP_AlignedStatusAltTimeBuffer
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(PC)
@@ -337,11 +337,11 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDQ.W  #1,D0
     BEQ.W   .done
 
-    MOVE.B  DATA_WDISP_BSS_LONG_21B0,D0
+    MOVE.B  CLEANUP_AlignedStatusAltTimeBuffer,D0
     TST.B   D0
     BEQ.W   .done
 
-    LEA     DATA_WDISP_BSS_LONG_21B0,A0
+    LEA     CLEANUP_AlignedStatusAltTimeBuffer,A0
     LEA     -554(A5),A1
 
 .copy_alt_title_loop_o:
@@ -371,7 +371,7 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L WDISP_DisplayContextBase,A2
     MOVEA.L 14(A2),A1
     MOVEQ   #0,D0
@@ -382,7 +382,7 @@ CLEANUP_RenderAlignedStatusScreen:
     SUBQ.L  #1,D2
     MOVEA.L A0,A1
     MOVE.L  D2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     TST.W   D7
@@ -453,17 +453,17 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   D0,D5
     BNE.S   .maybe_clear_rastport_secondary
 
-    MOVEA.L GLOB_REF_RASTPORT_2,A1
+    MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
 .maybe_clear_rastport_secondary:
     JSR     ESQ_NoOp(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_2,A1
+    MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_WORD_236E
@@ -613,7 +613,7 @@ CLEANUP_RenderAlignedStatusScreen:
     TST.L   D0
     BEQ.S   .build_time_phrase
 
-    LEA     GLOB_STR_ALIGNED_NOW_SHOWING,A0
+    LEA     Global_STR_ALIGNED_NOW_SHOWING,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_now_showing_label_loop:
@@ -640,7 +640,7 @@ CLEANUP_RenderAlignedStatusScreen:
     PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
-    LEA     GLOB_STR_ALIGNED_NEXT_SHOWING,A0
+    LEA     Global_STR_ALIGNED_NEXT_SHOWING,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_next_showing_label_loop:
@@ -691,7 +691,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   D1,D0
     BEQ.S   .check_today_vs_tonight
 
-    LEA     GLOB_STR_ALIGNED_TOMORROW_AT,A0
+    LEA     Global_STR_ALIGNED_TOMORROW_AT,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_tomorrow_label_loop:
@@ -715,7 +715,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BGE.S   .copy_tonight_label
 
 .copy_today_label:
-    LEA     GLOB_STR_ALIGNED_TODAY_AT,A0
+    LEA     Global_STR_ALIGNED_TODAY_AT,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_today_label_loop:
@@ -725,7 +725,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BRA.S   .append_time_string
 
 .copy_tonight_label:
-    LEA     GLOB_STR_ALIGNED_TONIGHT_AT,A0
+    LEA     Global_STR_ALIGNED_TONIGHT_AT,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_tonight_label_loop:
@@ -875,9 +875,9 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.B  #$31,TEXTDISP_BannerCharFallback
     CLR.W   DATA_WDISP_BSS_WORD_236D
 
-    MOVEA.L GLOB_REF_RASTPORT_2,A1
+    MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVE.W  #1,DATA_WDISP_BSS_WORD_236C
@@ -892,9 +892,9 @@ CLEANUP_RenderAlignedStatusScreen:
     PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_2,A1
+    MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     PEA     2.W
@@ -904,7 +904,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
     MOVEA.L D0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     PEA     2.W
@@ -932,13 +932,13 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEQ   #0,D0
     MOVE.L  56(A7),D1
     MOVE.L  #703,D2
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
     JSR     ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEQ   #0,D0
     MOVEA.L WDISP_DisplayContextBase,A1
     MOVE.W  2(A1),D0
@@ -955,7 +955,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.L  A0,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
-    PEA     GLOB_REF_320_240_BITMAP
+    PEA     Global_REF_320_240_BITMAP
     JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
     JSR     GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)

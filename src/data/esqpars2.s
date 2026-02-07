@@ -1,41 +1,41 @@
 ; ========== ESQPARS2.c ==========
 
-GLOB_ESQPARS2_C_1:
+Global_ESQPARS2_C_1:
     NStr    "ESQPARS2.c"
-GLOB_ESQPARS2_C_2:
+Global_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
-GLOB_ESQPARS2_C_3:
+Global_ESQPARS2_C_3:
     NStr    "ESQPARS2.c"
-GLOB_ESQPARS2_C_4:
+Global_ESQPARS2_C_4:
     NStr    "ESQPARS2.c"
-GLOB_STR_CLOSED_CAPTIONED:
+Global_STR_CLOSED_CAPTIONED:
     NStr    "(CC)"
-GLOB_STR_IN_STEREO:
+Global_STR_IN_STEREO:
     NStr    "In Stereo"
 
-GLOB_STR_RATING_R:
+Global_STR_RATING_R:
     NStr    "(R)"
-GLOB_STR_RATING_ADULT:
+Global_STR_RATING_ADULT:
     NStr    "(Adult)"
-GLOB_STR_RATING_PG:
+Global_STR_RATING_PG:
     NStr    "(PG)"
-GLOB_STR_RATING_NR:
+Global_STR_RATING_NR:
     NStr    "(NR)"
-GLOB_STR_RATING_PG_13:
+Global_STR_RATING_PG_13:
     NStr    "(PG-13)"
-GLOB_STR_RATING_G:
+Global_STR_RATING_G:
     NStr    "(G)"
-GLOB_STR_RATING_NC_17:
+Global_STR_RATING_NC_17:
     NStr    "(NC-17)"
 
-GLOB_TBL_MOVIE_RATINGS:
-    DC.L    GLOB_STR_RATING_R
-    DC.L    GLOB_STR_RATING_ADULT
-    DC.L    GLOB_STR_RATING_PG
-    DC.L    GLOB_STR_RATING_NR
-    DC.L    GLOB_STR_RATING_PG_13
-    DC.L    GLOB_STR_RATING_G
-    DC.L    GLOB_STR_RATING_NC_17
+Global_TBL_MOVIE_RATINGS:
+    DC.L    Global_STR_RATING_R
+    DC.L    Global_STR_RATING_ADULT
+    DC.L    Global_STR_RATING_PG
+    DC.L    Global_STR_RATING_NR
+    DC.L    Global_STR_RATING_PG_13
+    DC.L    Global_STR_RATING_G
+    DC.L    Global_STR_RATING_NC_17
 
 ; Perhaps a table of the character codes that map
 ; to the ratings in the font?
@@ -49,29 +49,29 @@ DATA_ESQPARS2_CONST_BYTE_1F1E:
     DC.B    $8F
     DC.B    0       ; Table terminator
 
-GLOB_STR_TV_Y:
+Global_STR_TV_Y:
     NStr    "(TV-Y)"
-GLOB_STR_TV_Y7:
+Global_STR_TV_Y7:
     NStr    "(TV-Y7)"
-GLOB_STR_TV_PG:
+Global_STR_TV_PG:
     NStr    "(TV-PG)"
-GLOB_STR_TV_G:
+Global_STR_TV_G:
     NStr    "(TV-G)"
-GLOB_STR_TV_M:
+Global_STR_TV_M:
     NStr    "(TV-M)"
-GLOB_STR_TV_MA:
+Global_STR_TV_MA:
     NStr    "(TV-MA)"
-GLOB_STR_TV_14:
+Global_STR_TV_14:
     NStr    "(TV-14)"
 
-GLOB_TBL_TV_PROGRAM_RATINGS:
-    DC.L    GLOB_STR_TV_Y
-    DC.L    GLOB_STR_TV_Y7
-    DC.L    GLOB_STR_TV_PG
-    DC.L    GLOB_STR_TV_G
-    DC.L    GLOB_STR_TV_M
-    DC.L    GLOB_STR_TV_MA
-    DC.L    GLOB_STR_TV_14
+Global_TBL_TV_PROGRAM_RATINGS:
+    DC.L    Global_STR_TV_Y
+    DC.L    Global_STR_TV_Y7
+    DC.L    Global_STR_TV_PG
+    DC.L    Global_STR_TV_G
+    DC.L    Global_STR_TV_M
+    DC.L    Global_STR_TV_MA
+    DC.L    Global_STR_TV_14
 
 ; Perhaps a table of the character codes that map
 ; to the ratings in the font?
@@ -85,7 +85,7 @@ DATA_ESQPARS2_CONST_BYTE_1F27:
     DC.B    $9A
     DC.B    0       ; Table terminator
 
-GLOB_STR_ESQPARS2_C_1:
+Global_STR_ESQPARS2_C_1:
     NStr    "ESQPARS2.c"
 DATA_ESQPARS2_FMT_PCT_D_1F29:
     NStr    "%d "
@@ -95,10 +95,10 @@ DATA_ESQPARS2_FMT_PCT_D_1F2B:
     NStr    "(%d "
 DATA_ESQPARS2_STR_VALUE_1F2C:
     NStr    ")"
-GLOB_STR_ESQPARS2_C_2:
+Global_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
     DS.W    1
-GLOB_LONG_PATCH_VERSION_NUMBER:
+Global_LONG_PATCH_VERSION_NUMBER:
     DC.L    $00000004 ; Patch version number
 DATA_ESQPARS2_BSS_WORD_1F2F:
     DS.W    1

@@ -51,6 +51,7 @@ _LVOFindTask        = -294
 _LVOSetSignal       = -306
 _LVOAllocSignal     = -330
 _LVOFreeSignal      = -336
+_LVOFreeTrap        = -348
 _LVOAddPort         = -354
 _LVORemPort         = -360
 _LVOPutMsg          = -366
@@ -88,6 +89,7 @@ _LVOVBeamPos        = -384
 _LVOInitBitMap      = -390
 _LVOAllocRaster     = -492
 _LVOFreeRaster      = -498
+_LVOBltBitMapRastPort = -606
 
 ; intuition.library
 _LVODisplayAlert    = -90

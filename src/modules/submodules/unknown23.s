@@ -28,7 +28,7 @@ HANDLE_GetEntryByIndex:
     MOVE.L  D7,D0
     ASL.L   #3,D0
     LEA     Global_HandleTableBase(A4),A0
-    TST.L   0(A0,D0.L)
+    TST.L   Struct_HandleEntry__Flags(A0,D0.L)
     BEQ.S   .invalid_index
 
     MOVE.L  D7,D0

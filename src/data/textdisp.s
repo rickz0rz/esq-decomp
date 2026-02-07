@@ -1,16 +1,16 @@
 ; ========== TEXTDISP.c ==========
 
-GLOB_STR_TEXTDISP_C_1:
+Global_STR_TEXTDISP_C_1:
     NStr    "TEXTDISP.c"
 DATA_TEXTDISP_SPACE_VALUE_214E:
     NStr    " "
-GLOB_STR_TEXTDISP_C_2:
+Global_STR_TEXTDISP_C_2:
     NStr    "TEXTDISP.c"
-GLOB_STR_DF0_SOURCECFG_INI_2:
+Global_STR_DF0_SOURCECFG_INI_2:
     NStr    "df0:SourceCfg.ini"
-GLOB_STR_TEXTDISP_C_3:
+Global_STR_TEXTDISP_C_3:
     NStr    "TEXTDISP.c"
-GLOB_STR_TEXTDISP_C_4:
+Global_STR_TEXTDISP_C_4:
     NStr    "TEXTDISP.c"
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -48,11 +48,11 @@ DATA_TEXTDISP_TAG_SPORTS_215B:
     NStr    "SPORTS"
 DATA_TEXTDISP_TAG_SPT_215C:
     NStr    "SPT"
-GLOB_STR_ASTERISK_2:
+Global_STR_ASTERISK_2:
     NStr    "*"
 DATA_TEXTDISP_TAG_FIND1_215E:
     NStr    "FIND1"
-GLOB_STR_ASTERISK_3:
+Global_STR_ASTERISK_3:
     NStr    "*"
 DATA_TEXTDISP_TAG_SPT_2160:
     NStr    "SPT"

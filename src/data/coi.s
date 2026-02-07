@@ -1,10 +1,10 @@
 ; ========== COI.c ==========
 
-GLOB_STR_COI_C_3:
+Global_STR_COI_C_3:
     NStr    "COI.c"
-GLOB_STR_COI_C_4:
+Global_STR_COI_C_4:
     NStr    "COI.c"
-GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1:
+Global_STR_DF0_OI_PERCENT_2_LX_DAT_1:
     NStr    "df0:OI_%02lx.dat"
 ;------------------------------------------------------------------------------
 ; SYM: COI_FMT_LONG_DEC_A   (decimal formatting strings)
@@ -29,11 +29,11 @@ COI_STR_COLON_B:
     NStr    ":"
 COI_FMT_DEC_B:
     NStr    "%d"
-GLOB_STR_COI_C_5:
+Global_STR_COI_C_5:
     NStr    "COI.c"
-GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2:
+Global_STR_DF0_OI_PERCENT_2_LX_DAT_2:
     NStr    "df0:OI_%02lx.dat"
-GLOB_STR_COI_C_6:
+Global_STR_COI_C_6:
     NStr    "COI.c"
 COI_STR_LINEFEED_CR_1:
     NStr2   TextLineFeed,TextCarriageReturn
@@ -41,11 +41,11 @@ COI_STR_LINEFEED_CR_2:
     NStr2   TextLineFeed,TextCarriageReturn
 COI_STR_DEFAULT_TOKEN_TEMPLATE_A:
     NStr    "NNNNNNXX00"
-GLOB_STR_PERCENT_S_1:
+Global_STR_PERCENT_S_1:
     NStr    "%s"
-GLOB_STR_COI_C_1:
+Global_STR_COI_C_1:
     NStr    "COI.c"
-GLOB_STR_COI_C_2:
+Global_STR_COI_C_2:
     NStr    "COI.c"
 COI_STR_DEFAULT_TOKEN_TEMPLATE_B:
     NStr    "NNNNNNXX00"

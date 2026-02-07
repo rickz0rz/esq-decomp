@@ -98,10 +98,10 @@ ESQ_CheckCompatibleVideoChip:
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
 ;   GROUP_MAIN_B_JMPTBL_MATH_Mulu32, GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString, GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
 ; READS:
-;   GLOB_REF_INTUITION_LIBRARY, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TOPAZ_FONT,
+;   Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY, Global_STR_TOPAZ_FONT,
 ;   LAB_1DE9_B, LAB_1DD8_RASTPORT,
-;   GLB_STR_PLEASE_STANDBY_1, GLOB_STR_ATTENTION_SYSTEM_ENGINEER_1,
-;   GLOB_STR_REPORT_CODE_ER003
+;   GLB_STR_PLEASE_STANDBY_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_1,
+;   Global_STR_REPORT_CODE_ER003
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -122,17 +122,17 @@ ESQ_CheckTopazFontGuard:
 ; some trampolining to get to the desired end address.
 
 ;LAB_0018:  ; unreferenced
-    MOVEA.L GLOB_REF_INTUITION_LIBRARY,A0
-    MOVE.L  (GLOB_STR_TOPAZ_FONT-GLOB_REF_INTUITION_LIBRARY)+4(A0),.strTopazFont1(A5)
+    MOVEA.L Global_REF_INTUITION_LIBRARY,A0
+    MOVE.L  (Global_STR_TOPAZ_FONT-Global_REF_INTUITION_LIBRARY)+4(A0),.strTopazFont1(A5)
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DE9_B-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DE9_B-Global_STR_TOPAZ_FONT),A0
     MOVE.L  A0,.lab1DE9(A5)
     MOVEQ   #2,D0
     CMP.B   5(A0),D0
     BNE.W   .show_rerun_error
 
-    MOVEA.L GLOB_REF_INTUITION_LIBRARY,A0
-    MOVE.L  (GLOB_STR_TOPAZ_FONT-GLOB_REF_INTUITION_LIBRARY)(A0),.strTopazFont2(A5)
+    MOVEA.L Global_REF_INTUITION_LIBRARY,A0
+    MOVE.L  (Global_STR_TOPAZ_FONT-Global_REF_INTUITION_LIBRARY)(A0),.strTopazFont2(A5)
     MOVE.W  20(A0),D0                   ; 20 = Library__lib_Version
     MOVEQ   #33,D1
     CMP.W   D1,D0                       ; Sub 33 from the obtained version
@@ -146,17 +146,17 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Set the primary pen to 2
     MOVEA.L A0,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Draw a filled rect from 0,0 to 639,56
     MOVEA.L A0,A1
@@ -169,7 +169,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Set the primary pen to 1
     MOVEA.L A0,A1
@@ -178,7 +178,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Move the pen to 20,100
     MOVEA.L A0,A1
@@ -188,7 +188,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Draw "Please Standby..." text
     ; Draw_TEXT A0,GLB_STR_PLEASE_STANDBY_1,#17
@@ -199,7 +199,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Move the pen to 20,113
     MOVEA.L A0,A1
@@ -209,17 +209,17 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Draw "ATTENTION! SYSTEM ENGINEER" text
     MOVEA.L A0,A1
-    LEA     GLOB_STR_ATTENTION_SYSTEM_ENGINEER_1,A0
+    LEA     Global_STR_ATTENTION_SYSTEM_ENGINEER_1,A0
     MOVEQ   #26,D0
     JSR     _LVOText(A6)
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Move the pen to 20,126
     MOVEA.L A0,A1
@@ -229,11 +229,11 @@ ESQ_CheckTopazFontGuard:
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
-    ADDA.W  #(LAB_1DD8_RASTPORT-GLOB_STR_TOPAZ_FONT),A0
+    ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Draw "Report Code ER003 to TV Guide Technical Services." text
     MOVEA.L A0,A1
-    LEA     GLOB_STR_REPORT_CODE_ER003,A0
+    LEA     Global_STR_REPORT_CODE_ER003,A0
     MOVEQ   #47,D0
     JSR     _LVOText(A6)
 
@@ -251,7 +251,7 @@ ESQ_CheckTopazFontGuard:
     MOVEQ   #50,D1
     SUB.L   D0,D1       ; deltaY
     MOVEQ   #0,D0       ; deltaX
-    MOVEA.L GLOB_REF_INTUITION_LIBRARY,A6
+    MOVEA.L Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVOSizeWindow(A6)
 
     PEA     100.W
@@ -278,7 +278,7 @@ ESQ_CheckTopazFontGuard:
     ADD.L   D0,D1
     MOVE.L  D1,-32(A5)
 
-    MOVEA.L GLOB_REF_INTUITION_LIBRARY,A6
+    MOVEA.L Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVORemakeDisplay(A6)
 
     MOVEA.L D4,A0
@@ -292,7 +292,7 @@ ESQ_CheckTopazFontGuard:
     BRA.S   .done
 
 .show_rerun_error:
-    PEA     GLOB_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
+    PEA     Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
     JSR     GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(PC)
 
     CLR.L   (A7)
@@ -318,8 +318,8 @@ ESQ_CheckTopazFontGuard:
 ; CALLS:
 ;   DISKIO_QueryVolumeSoftErrorCount, DISKIO_QueryDiskUsagePercentAndSetBufferSize, GROUP_AE_JMPTBL_WDISP_SPrintf
 ; READS:
-;   DATA_COMMON_BSS_WORD_1AF4, DATA_COMMON_BSS_WORD_1AF6, GLOB_STR_DISK_ERRORS_FORMATTED,
-;   GLOB_STR_DISK_IS_FULL_FORMATTED, DISKIO_ErrorMessageScratch
+;   DATA_COMMON_BSS_WORD_1AF4, DATA_COMMON_BSS_WORD_1AF6, Global_STR_DISK_ERRORS_FORMATTED,
+;   Global_STR_DISK_IS_FULL_FORMATTED, DISKIO_ErrorMessageScratch
 ; WRITES:
 ;   DISKIO_ErrorMessageScratch (formatted text buffer)
 ; DESC:
@@ -341,7 +341,7 @@ ESQ_FormatDiskErrorMessage:
     BLE.S   .createDiskIsFullMessage
 
     MOVE.L  D6,-(A7)
-    PEA     GLOB_STR_DISK_ERRORS_FORMATTED
+    PEA     Global_STR_DISK_ERRORS_FORMATTED
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -354,7 +354,7 @@ ESQ_FormatDiskErrorMessage:
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
-    PEA     GLOB_STR_DISK_IS_FULL_FORMATTED
+    PEA     Global_STR_DISK_IS_FULL_FORMATTED
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 

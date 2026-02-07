@@ -10,8 +10,8 @@
 ;   PARSEINI_AdjustHoursTo24HrFormat, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
 ;   PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
-;   CLOCK_DaySlotIndex-E, DATA_WDISP_BSS_WORD_2243, GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE,
-;   GLOB_REF_CLOCKDATA_STRUCT
+;   CLOCK_DaySlotIndex-E, DATA_WDISP_BSS_WORD_2243, Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
+;   Global_REF_CLOCKDATA_STRUCT
 ; WRITES:
 ;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; DESC:
@@ -26,10 +26,10 @@ PARSEINI_WriteRtcFromGlobals:
 
 .clockDataStruct    = -18
 
-    TST.L   GLOB_REF_UTILITY_LIBRARY
+    TST.L   Global_REF_UTILITY_LIBRARY
     BEQ.W   .return
 
-    TST.L   GLOB_REF_BATTCLOCK_RESOURCE
+    TST.L   Global_REF_BATTCLOCK_RESOURCE
     BEQ.S   .return
 
     MOVE.W  CLOCK_DaySlotIndex,D0
@@ -52,7 +52,7 @@ PARSEINI_WriteRtcFromGlobals:
     MOVE.W  D0,-14(A5)
     MOVE.W  DATA_WDISP_BSS_WORD_223F,D0
     MOVE.W  D0,-16(A5)
-    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  D0,.clockDataStruct(A5)
     PEA     .clockDataStruct(A5)
     JSR     PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
@@ -90,7 +90,7 @@ PARSEINI_WriteRtcFromGlobals:
 ;   PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
 ;   PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
 ; READS:
-;   GLOB_REF_UTILITY_LIBRARY, GLOB_REF_BATTCLOCK_RESOURCE
+;   Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE
 ; WRITES:
 ;   CLOCK_DaySlotIndex (date/time fields via PARSEINI_NormalizeClockData)
 ; DESC:
@@ -112,10 +112,10 @@ PARSEINI_UpdateClockFromRtc:
 .localMonth = -38
 .localWDay  = -40
 
-    TST.L   GLOB_REF_UTILITY_LIBRARY
+    TST.L   Global_REF_UTILITY_LIBRARY
     BEQ.W   .return_status
 
-    TST.L   GLOB_REF_BATTCLOCK_RESOURCE
+    TST.L   Global_REF_BATTCLOCK_RESOURCE
     BEQ.W   .return_status
 
     JSR     PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)

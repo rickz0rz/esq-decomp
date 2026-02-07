@@ -18,7 +18,7 @@
     XDEF    GCOMMAND_LoadPPV3Template
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadDefaultTable   (Load the built-in gcommand table template into the working buffer (GLOB_PTR_WORK_BUFFER).)
+; FUNC: GCOMMAND_LoadDefaultTable   (Load the built-in gcommand table template into the working buffer (Global_PTR_WORK_BUFFER).)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -28,11 +28,11 @@
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, _LVOCopyMem, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F66, GLOB_PTR_WORK_BUFFER, GLOB_REF_LONG_FILE_SCRATCH, GCOMMAND_DigitalNicheEnabledFlag, AbsExecBase, GLOB_STR_GCOMMAND_C_1
+;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F66, Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH, GCOMMAND_DigitalNicheEnabledFlag, AbsExecBase, Global_STR_GCOMMAND_C_1
 ; WRITES:
-;   GLOB_PTR_WORK_BUFFER, GCOMMAND_DigitalNicheListingsTemplatePtr, -8(A5)
+;   Global_PTR_WORK_BUFFER, GCOMMAND_DigitalNicheListingsTemplatePtr, -8(A5)
 ; DESC:
-;   Load the built-in gcommand table template into the working buffer (GLOB_PTR_WORK_BUFFER).
+;   Load the built-in gcommand table template into the working buffer (Global_PTR_WORK_BUFFER).
 ; NOTES:
 ;   Copies a 32-byte template into the active table and frees the prior block.
 ;------------------------------------------------------------------------------
@@ -46,8 +46,8 @@ GCOMMAND_LoadDefaultTable:
     ADDQ.L  #1,D0
     BEQ.S   .return
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
     MOVE.L  A0,-8(A5)
     LEA     GCOMMAND_DigitalNicheEnabledFlag,A1
     MOVEQ   #32,D0
@@ -55,11 +55,11 @@ GCOMMAND_LoadDefaultTable:
     JSR     _LVOCopyMem(A6)
 
     MOVEQ   #32,D0
-    ADD.L   D0,GLOB_PTR_WORK_BUFFER
+    ADD.L   D0,Global_PTR_WORK_BUFFER
     SUBA.L  A0,A0
     MOVE.L  A0,GCOMMAND_DigitalNicheListingsTemplatePtr
     MOVE.L  A0,-(A7)
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-(A7)
+    MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,GCOMMAND_DigitalNicheListingsTemplatePtr
@@ -68,7 +68,7 @@ GCOMMAND_LoadDefaultTable:
     MOVE.L  D0,(A7)
     MOVE.L  -8(A5),-(A7)
     PEA     335.W
-    PEA     GLOB_STR_GCOMMAND_C_1
+    PEA     Global_STR_GCOMMAND_C_1
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
@@ -484,9 +484,9 @@ GCOMMAND_ParseCommandOptions:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem
 ; READS:
-;   AbsExecBase, GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_GCOMMAND_C_2, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6A, DATA_GCOMMAND_FMT_PCT_T_1F6C, GLOB_PTR_WORK_BUFFER, GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, return
+;   AbsExecBase, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_2, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6A, DATA_GCOMMAND_FMT_PCT_T_1F6C, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, return
 ; WRITES:
-;   GLOB_PTR_WORK_BUFFER, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
+;   Global_PTR_WORK_BUFFER, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; DESC:
 ;   Load the Digital_Mplex template and stage it in GCOMMAND_MplexListingsTemplatePtr/GCOMMAND_MplexAtTemplatePtr.
 ; NOTES:
@@ -502,8 +502,8 @@ GCOMMAND_LoadMplexTemplate:
     ADDQ.L  #1,D0
     BEQ.W   .return
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
     MOVE.L  A0,-4(A5)
     LEA     GCOMMAND_DigitalMplexEnabledFlag,A1
     MOVEQ   #52,D0
@@ -511,12 +511,12 @@ GCOMMAND_LoadMplexTemplate:
     JSR     _LVOCopyMem(A6)
 
     MOVEQ   #52,D0
-    ADD.L   D0,GLOB_PTR_WORK_BUFFER
+    ADD.L   D0,Global_PTR_WORK_BUFFER
     SUBA.L  A0,A0
     MOVE.L  A0,GCOMMAND_MplexListingsTemplatePtr
     MOVE.L  A0,GCOMMAND_MplexAtTemplatePtr
     PEA     18.W
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-(A7)
+    MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
     JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
@@ -534,7 +534,7 @@ GCOMMAND_LoadMplexTemplate:
 .template_merge:
     ; Merge template strings into workspace buffers.
     MOVE.L  GCOMMAND_MplexAtTemplatePtr,-(A7)
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-(A7)
+    MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,GCOMMAND_MplexAtTemplatePtr
@@ -548,7 +548,7 @@ GCOMMAND_LoadMplexTemplate:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     575.W
-    PEA     GLOB_STR_GCOMMAND_C_2
+    PEA     Global_STR_GCOMMAND_C_2
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
@@ -1319,9 +1319,9 @@ GCOMMAND_ParseCommandString:
 ; CALLS:
 ;   GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem, _LVODeleteFile
 ; READS:
-;   AbsExecBase, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_GCOMMAND_C_3, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F71, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F72, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F73, GLOB_PTR_WORK_BUFFER, GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
+;   AbsExecBase, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_3, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F71, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F72, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F73, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
-;   GLOB_PTR_WORK_BUFFER, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
+;   Global_PTR_WORK_BUFFER, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
 ; DESC:
 ;   Load the Digital_PPV3 template into the working buffer tables.
 ; NOTES:
@@ -1355,7 +1355,7 @@ GCOMMAND_LoadPPV3Template:
     MOVEQ   #52,D6
     LEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F73,A0
     MOVE.L  A0,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
 
     MOVEQ   #1,D5
@@ -1364,8 +1364,8 @@ GCOMMAND_LoadPPV3Template:
     TST.L   D6
     BEQ.W   .return
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
     MOVE.L  A0,-4(A5)
     MOVE.L  D6,D0
     LEA     GCOMMAND_DigitalPpvEnabledFlag,A1
@@ -1375,9 +1375,9 @@ GCOMMAND_LoadPPV3Template:
     SUBA.L  A0,A0
     MOVE.L  A0,GCOMMAND_PPVPeriodTemplatePtr
     MOVE.L  A0,GCOMMAND_PPVListingsTemplatePtr
-    ADD.L   D6,GLOB_PTR_WORK_BUFFER
+    ADD.L   D6,Global_PTR_WORK_BUFFER
     PEA     18.W
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-(A7)
+    MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
     JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7
@@ -1395,7 +1395,7 @@ GCOMMAND_LoadPPV3Template:
 
 .buffer_ready:
     MOVE.L  GCOMMAND_PPVPeriodTemplatePtr,-(A7)
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-(A7)
+    MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,GCOMMAND_PPVPeriodTemplatePtr
@@ -1409,7 +1409,7 @@ GCOMMAND_LoadPPV3Template:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     993.W
-    PEA     GLOB_STR_GCOMMAND_C_3
+    PEA     Global_STR_GCOMMAND_C_3
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7

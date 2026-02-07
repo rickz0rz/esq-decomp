@@ -42,7 +42,7 @@ TEXTDISP_ResetSelectionAndRefresh:
 ; CALLS:
 ;   WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
 ; READS:
-;   WDISP_PaletteTriplesRBase-2297, GLOB_REF_RASTPORT_2, GLOB_REF_GRAPHICS_LIBRARY
+;   WDISP_PaletteTriplesRBase-2297, Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase-2297, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -94,11 +94,11 @@ TEXTDISP_SetRastForMode:
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesBBase
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEA.L A0,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
 .return:
@@ -303,13 +303,13 @@ TEXTDISP_UpdateHighlightOrPreview:
 ;   TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan, SCRIPT_AssertCtrlLineIfEnabled, TEXTDISP_UpdateHighlightOrPreview,
 ;   TEXTDISP_ResetSelectionAndRefresh, TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DF4, GLOB_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, GLOB_RefreshTickCounter
+;   DATA_ESQ_BSS_WORD_1DF4, Global_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, Global_RefreshTickCounter
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, GLOB_RefreshTickCounter
+;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
 ; DESC:
 ;   Updates internal display/control counters and triggers refresh/preview steps.
 ; NOTES:
-;   Uses GLOB_RefreshTickCounter as a timer for periodic refresh.
+;   Uses Global_RefreshTickCounter as a timer for periodic refresh.
 ;------------------------------------------------------------------------------
 TEXTDISP_TickDisplayState:
     MOVE.L  D2,-(A7)
@@ -318,7 +318,7 @@ TEXTDISP_TickDisplayState:
     TST.W   DATA_ESQ_BSS_WORD_1DF4
     BNE.W   .return
 
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BNE.W   .tick_refresh_timer
 
     MOVE.W  SCRIPT_RuntimeMode,D1
@@ -367,21 +367,21 @@ TEXTDISP_TickDisplayState:
     MOVE.W  D0,TEXTDISP_DeferredActionCountdown
 
 .handle_refresh_timer:
-    MOVE.W  GLOB_RefreshTickCounter,D0
+    MOVE.W  Global_RefreshTickCounter,D0
     CMPI.W  #$b4,D0
     BLT.S   .dispatch_update
 
-    CLR.W   GLOB_RefreshTickCounter
+    CLR.W   Global_RefreshTickCounter
     BSR.W   TEXTDISP_ResetSelectionAndRefresh
 
     BRA.S   .dispatch_update
 
 .tick_refresh_timer:
-    MOVE.W  GLOB_RefreshTickCounter,D0
+    MOVE.W  Global_RefreshTickCounter,D0
     ADDQ.W  #1,D0
     BEQ.S   .dispatch_update
 
-    CLR.W   GLOB_RefreshTickCounter
+    CLR.W   Global_RefreshTickCounter
 
 .dispatch_update:
     JSR     TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations(PC)

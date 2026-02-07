@@ -102,7 +102,7 @@ DISPLIB_FindPreviousValidEntryIndex_Return:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, GLOB_STR_DISPLIB_C_1, GLOB_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, DATA_DISKIO2_SPACE_VALUE_1CE4, DATA_DISKIO2_SPACE_VALUE_1CE5, MEMF_PUBLIC
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_DISPLIB_C_1, Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, DATA_DISKIO2_SPACE_VALUE_1CE4, DATA_DISKIO2_SPACE_VALUE_1CE5, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -127,8 +127,8 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  A0,D5
     MOVEA.L A3,A0
     MOVE.L  D5,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  #624,D1
@@ -141,7 +141,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     CMP.B   D0,D7
     BNE.S   .lab_0555
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_DISKIO2_SPACE_VALUE_1CE4,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
@@ -166,7 +166,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     CMP.B   D0,D7
     BNE.S   .branch
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_DISKIO2_SPACE_VALUE_1CE5,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
@@ -191,7 +191,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D0,-(A7)
     PEA     194.W
-    PEA     GLOB_STR_DISPLIB_C_1
+    PEA     Global_STR_DISPLIB_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -232,7 +232,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     204.W
-    PEA     GLOB_STR_DISPLIB_C_2
+    PEA     Global_STR_DISPLIB_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
@@ -274,7 +274,7 @@ DISPLIB_ApplyInlineAlignmentPadding_Return:
 ; CALLS:
 ;   _LVOMove, _LVOText
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY
+;   Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -300,7 +300,7 @@ DISPLIB_DisplayTextAtPosition:
     MOVEA.L A3,A1   ; RastPort
     MOVE.L  D7,D0   ; X (short)
     MOVE.L  D6,D1   ; Y (short)
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L A2,A0
@@ -387,7 +387,7 @@ DISPLIB_NormalizeValueByStep:
 ; READS:
 ;   DISPTEXT_LinePtrTable, DISPTEXT_LineLengthTable, DISPTEXT_LinePenTable
 ; WRITES:
-;   DISPTEXT_TargetLineIndex, DISPTEXT_CurrentLineIndex, DISPTEXT_LineWidthPx, DATA_WDISP_BSS_LONG_21DA, DISPTEXT_LineTableLockFlag, DATA_WDISP_BSS_WORD_21DC
+;   DISPTEXT_TargetLineIndex, DISPTEXT_CurrentLineIndex, DISPTEXT_LineWidthPx, DATA_WDISP_BSS_LONG_21DA, DISPTEXT_LineTableLockFlag, DISPTEXT_ControlMarkersEnabledFlag
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -402,7 +402,7 @@ DISPLIB_ResetLineTables:
     MOVE.L  D1,DISPTEXT_LineWidthPx
     MOVE.L  D1,DATA_WDISP_BSS_LONG_21DA
     MOVE.L  D1,DISPTEXT_LineTableLockFlag
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_21DC
+    MOVE.W  D0,DISPTEXT_ControlMarkersEnabledFlag
     MOVE.L  D1,D7
 
 .lab_0564:

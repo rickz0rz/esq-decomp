@@ -54,7 +54,7 @@ DISKIO_OpenFileWithBuffer:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
     PEA     286.W
-    PEA     GLOB_STR_DISKIO_C_1
+    PEA     Global_STR_DISKIO_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -83,7 +83,7 @@ DISKIO_OpenFileWithBuffer:
 ; CALLS:
 ;   CTASKS_StartCloseTaskProcess, GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVODelay, _LVOWrite
 ; READS:
-;   DISKIO_BufferControl, DISKIO_BufferState, DISKIO_OpenCount, GLOB_REF_DOS_LIBRARY_2, GLOB_STR_DISKIO_C_2, DATA_CTASKS_CONST_WORD_1B8A, GLOB_UIBusyFlag, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining, Struct_DiskIoBufferState__SavedF45
+;   DISKIO_BufferControl, DISKIO_BufferState, DISKIO_OpenCount, Global_REF_DOS_LIBRARY_2, Global_STR_DISKIO_C_2, DATA_CTASKS_CONST_WORD_1B8A, Global_UIBusyFlag, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining, Struct_DiskIoBufferState__SavedF45
 ; WRITES:
 ;   DISKIO_BufferControl, DISKIO_OpenCount, ESQPARS2_ReadModeFlags, Struct_DiskIoBufferControl__ErrorFlag
 ; DESC:
@@ -112,7 +112,7 @@ DISKIO_CloseBufferedFileAndFlush:
     MOVE.L  D7,D1
     MOVE.L  D6,D3
     MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
     CMP.L   D3,D0
@@ -129,7 +129,7 @@ DISKIO_CloseBufferedFileAndFlush:
     JSR     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)
 
     MOVEQ   #5,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODelay(A6)
 
     JSR     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)
@@ -140,7 +140,7 @@ DISKIO_CloseBufferedFileAndFlush:
     MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
     MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,-(A7)
     PEA     353.W
-    PEA     GLOB_STR_DISKIO_C_2
+    PEA     Global_STR_DISKIO_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     JSR     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)
@@ -158,7 +158,7 @@ DISKIO_CloseBufferedFileAndFlush:
     TST.L   DISKIO_OpenCount
     BNE.S   DISKIO_CloseBufferedFileAndFlush_Return
 
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BNE.S   DISKIO_CloseBufferedFileAndFlush_Return
 
     MOVE.W  DISKIO_BufferState+Struct_DiskIoBufferState__SavedF45,ESQPARS2_ReadModeFlags
@@ -199,7 +199,7 @@ DISKIO_CloseBufferedFileAndFlush_Return:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, _LVOWrite
 ; READS:
-;   DISKIO_BufferControl, DISKIO_BufferState, GLOB_REF_DOS_LIBRARY_2, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferControl__ErrorFlag, Struct_DiskIoBufferState__BufferPtr, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining
+;   DISKIO_BufferControl, DISKIO_BufferState, Global_REF_DOS_LIBRARY_2, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferControl__ErrorFlag, Struct_DiskIoBufferState__BufferPtr, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining
 ; WRITES:
 ;   DISKIO_BufferControl, DISKIO_BufferState, Struct_DiskIoBufferControl__ErrorFlag, Struct_DiskIoBufferState__BufferPtr, Struct_DiskIoBufferState__Remaining
 ; DESC:
@@ -259,7 +259,7 @@ DISKIO_WriteBufferedBytes:
     MOVE.L  D7,D1
     MOVE.L  DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,D2
     MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
     MOVE.L  D0,D5
@@ -322,7 +322,7 @@ DISKIO_WriteBufferedBytes_Return:
 ; CALLS:
 ;   GROUP_AE_JMPTBL_WDISP_SPrintf, DISKIO_WriteBufferedBytes
 ; READS:
-;   GLOB_STR_PERCENT_LD
+;   Global_STR_PERCENT_LD
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -338,7 +338,7 @@ DISKIO_WriteDecimalField:
     MOVE.L  12(A5),D6
 
     MOVE.L  D6,-(A7)
-    PEA     GLOB_STR_PERCENT_LD
+    PEA     Global_STR_PERCENT_LD
     PEA     -10(A5)
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -375,7 +375,7 @@ DISKIO_WriteDecimalField:
 ; CALLS:
 ;   _LVOSeek
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, OFFSET_BEGINNING, OFFSET_END
+;   Global_REF_DOS_LIBRARY_2, OFFSET_BEGINNING, OFFSET_END
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -393,7 +393,7 @@ DISKIO_GetFilesizeFromHandle:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #(OFFSET_END),D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOSeek(A6)
 
     ; Seek to the current (end) of the file
@@ -428,9 +428,9 @@ DISKIO_GetFilesizeFromHandle:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVORead
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_DISKIO_C_3, GLOB_STR_DISKIO_C_4, GLOB_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
+;   Global_REF_DOS_LIBRARY_2, Global_REF_LONG_FILE_SCRATCH, Global_STR_DISKIO_C_3, Global_STR_DISKIO_C_4, Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
 ; WRITES:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_PTR_WORK_BUFFER
+;   Global_REF_LONG_FILE_SCRATCH, Global_PTR_WORK_BUFFER
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -461,33 +461,33 @@ DISKIO_LoadFileToWorkBuffer:
     BSR.S   DISKIO_GetFilesizeFromHandle
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,GLOB_REF_LONG_FILE_SCRATCH
+    MOVE.L  D0,Global_REF_LONG_FILE_SCRATCH
     TST.L   D0
     BGT.S   .lab_03AE
 
     MOVE.L  D7,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #-1,D0
     BRA.W   .return
 
 .lab_03AE:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
     ADDQ.L  #1,D0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     472.W
-    PEA     GLOB_STR_DISKIO_C_3
+    PEA     Global_STR_DISKIO_C_3
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,GLOB_PTR_WORK_BUFFER
+    MOVE.L  D0,Global_PTR_WORK_BUFFER
     TST.L   D0
     BNE.S   .lab_03AF
 
     MOVE.L  D7,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #-1,D0
@@ -495,25 +495,25 @@ DISKIO_LoadFileToWorkBuffer:
 
 .lab_03AF:
     MOVE.L  D7,D1
-    MOVE.L  GLOB_PTR_WORK_BUFFER,D2
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVE.L  Global_PTR_WORK_BUFFER,D2
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D3
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D1
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D1
     CMP.L   D1,D0
     BEQ.S   .lab_03B0
 
     ADDQ.L  #1,D1
     MOVE.L  D1,-(A7)
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-(A7)
+    MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
     PEA     492.W
-    PEA     GLOB_STR_DISKIO_C_4
+    PEA     Global_STR_DISKIO_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
     MOVE.L  D7,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #-1,D0
@@ -523,7 +523,7 @@ DISKIO_LoadFileToWorkBuffer:
     MOVE.L  D7,D1
     JSR     _LVOClose(A6)
 
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
 
 .return:
     MOVEM.L (A7)+,D2-D3/D7/A3
@@ -542,9 +542,9 @@ DISKIO_LoadFileToWorkBuffer:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_PTR_WORK_BUFFER, ffff
+;   Global_REF_LONG_FILE_SCRATCH, Global_PTR_WORK_BUFFER, ffff
 ; WRITES:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_PTR_WORK_BUFFER
+;   Global_REF_LONG_FILE_SCRATCH, Global_PTR_WORK_BUFFER
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -552,22 +552,22 @@ DISKIO_LoadFileToWorkBuffer:
 ;------------------------------------------------------------------------------
 DISKIO_ConsumeCStringFromWorkBuffer:
     LINK.W  A5,#-4
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-4(A5)
+    MOVE.L  Global_PTR_WORK_BUFFER,-4(A5)
 
 .lab_03B3:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
-    SUBQ.L  #1,GLOB_REF_LONG_FILE_SCRATCH
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
+    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
     TST.L   D0
     BLE.S   .lab_03B4
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVE.B  (A0)+,D0
-    MOVE.L  A0,GLOB_PTR_WORK_BUFFER
+    MOVE.L  A0,Global_PTR_WORK_BUFFER
     TST.B   D0
     BNE.S   .lab_03B3
 
 .lab_03B4:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
     TST.L   D0
     BPL.S   .lab_03B5
 
@@ -634,9 +634,9 @@ DISKIO_ParseLongFromWorkBuffer:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_PTR_WORK_BUFFER
+;   Global_REF_LONG_FILE_SCRATCH, Global_PTR_WORK_BUFFER
 ; WRITES:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_PTR_WORK_BUFFER
+;   Global_REF_LONG_FILE_SCRATCH, Global_PTR_WORK_BUFFER
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -644,15 +644,15 @@ DISKIO_ParseLongFromWorkBuffer:
 ;------------------------------------------------------------------------------
 DISKIO_ConsumeLineFromWorkBuffer:
     LINK.W  A5,#-4
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-4(A5)
+    MOVE.L  Global_PTR_WORK_BUFFER,-4(A5)
 
 .lab_03BA:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
-    SUBQ.L  #1,GLOB_REF_LONG_FILE_SCRATCH
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
+    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
     TST.L   D0
     BLE.S   .lab_03BB
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVE.B  (A0),D0
     MOVEQ   #13,D1
     CMP.B   D1,D0
@@ -662,14 +662,14 @@ DISKIO_ConsumeLineFromWorkBuffer:
     CMP.B   D1,D0
     BEQ.S   .lab_03BB
 
-    ADDQ.L  #1,GLOB_PTR_WORK_BUFFER
+    ADDQ.L  #1,Global_PTR_WORK_BUFFER
     BRA.S   .lab_03BA
 
 .lab_03BB:
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     CLR.B   (A0)+
-    MOVE.L  A0,GLOB_PTR_WORK_BUFFER
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  A0,Global_PTR_WORK_BUFFER
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
     TST.L   D0
     BPL.S   .lab_03BC
 
@@ -678,7 +678,7 @@ DISKIO_ConsumeLineFromWorkBuffer:
     BRA.S   .lab_03BF
 
 .lab_03BC:
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVE.B  (A0),D0
     MOVEQ   #13,D1
     CMP.B   D1,D0
@@ -689,8 +689,8 @@ DISKIO_ConsumeLineFromWorkBuffer:
     BNE.S   .lab_03BE
 
 .lab_03BD:
-    ADDQ.L  #1,GLOB_PTR_WORK_BUFFER
-    SUBQ.L  #1,GLOB_REF_LONG_FILE_SCRATCH
+    ADDQ.L  #1,Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
     BRA.S   .lab_03BC
 
 .lab_03BE:
@@ -713,7 +713,7 @@ DISKIO_ConsumeLineFromWorkBuffer:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOInfo, _LVOLock, _LVOUnLock
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, GLOB_STR_DISKIO_C_5, GLOB_STR_DISKIO_C_6, MEMF_CLEAR, Struct_InfoData_Size
+;   Global_REF_DOS_LIBRARY_2, Global_STR_DISKIO_C_5, Global_STR_DISKIO_C_6, MEMF_CLEAR, Struct_InfoData_Size
 ; WRITES:
 ;   DISKIO_BufferState, Struct_DiskIoBufferState__BufferSize
 ; DESC:
@@ -729,7 +729,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
     MOVEQ   #0,D7
     MOVE.L  A3,D1
     MOVEQ   #-2,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D6
@@ -739,7 +739,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
     MOVE.L  #(MEMF_CLEAR),-(A7)
     PEA     Struct_InfoData_Size.W
     PEA     567.W
-    PEA     GLOB_STR_DISKIO_C_5
+    PEA     Global_STR_DISKIO_C_5
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -749,7 +749,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
 
     MOVE.L  D6,D1
     MOVE.L  D0,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOInfo(A6)
 
     TST.L   D0
@@ -772,14 +772,14 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
     PEA     Struct_InfoData_Size.W
     MOVE.L  D2,-(A7)
     PEA     574.W
-    PEA     GLOB_STR_DISKIO_C_6
+    PEA     Global_STR_DISKIO_C_6
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .lab_03C2:
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
 
 .return:
@@ -801,7 +801,7 @@ DISKIO_QueryDiskUsagePercentAndSetBufferSize:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOInfo, _LVOLock, _LVOUnLock
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, GLOB_STR_DISKIO_C_7, GLOB_STR_DISKIO_C_8, MEMF_CLEAR, Struct_InfoData_Size
+;   Global_REF_DOS_LIBRARY_2, Global_STR_DISKIO_C_7, Global_STR_DISKIO_C_8, MEMF_CLEAR, Struct_InfoData_Size
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -817,7 +817,7 @@ DISKIO_QueryVolumeSoftErrorCount:
     MOVEQ   #0,D7
     MOVE.L  A3,D1
     MOVEQ   #-2,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D6
@@ -827,7 +827,7 @@ DISKIO_QueryVolumeSoftErrorCount:
     MOVE.L  #(MEMF_CLEAR),-(A7)
     PEA     Struct_InfoData_Size.W
     PEA     593.W
-    PEA     GLOB_STR_DISKIO_C_7
+    PEA     Global_STR_DISKIO_C_7
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -837,7 +837,7 @@ DISKIO_QueryVolumeSoftErrorCount:
 
     MOVE.L  D6,D1
     MOVE.L  D0,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOInfo(A6)
 
     TST.L   D0
@@ -850,14 +850,14 @@ DISKIO_QueryVolumeSoftErrorCount:
     PEA     Struct_InfoData_Size.W
     MOVE.L  D2,-(A7)
     PEA     599.W
-    PEA     GLOB_STR_DISKIO_C_8
+    PEA     Global_STR_DISKIO_C_8
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .lab_03C6:
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
 
 .return:
@@ -879,7 +879,7 @@ DISKIO_QueryVolumeSoftErrorCount:
 ; CALLS:
 ;   _LVOWrite
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, ESQPARS2_ReadModeFlags, DISKIO_WriteFileHandle, DISKIO_SavedReadModeFlags
+;   Global_REF_DOS_LIBRARY_2, ESQPARS2_ReadModeFlags, DISKIO_WriteFileHandle, DISKIO_SavedReadModeFlags
 ; WRITES:
 ;   ESQPARS2_ReadModeFlags, DISKIO_SavedReadModeFlags
 ; DESC:
@@ -899,7 +899,7 @@ DISKIO_WriteBytesToOutputHandleGuarded:
     MOVE.L  A3,D2
     MOVE.L  D0,D3
     MOVE.L  DISKIO_WriteFileHandle,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
     MOVE.L  D0,D6
@@ -931,20 +931,20 @@ DISKIO_WriteBytesToOutputHandleGuarded:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   GLOB_UIBusyFlag
+;   Global_UIBusyFlag
 ; WRITES:
-;   ESQPARS2_ReadModeFlags, GLOB_RefreshTickCounter
+;   ESQPARS2_ReadModeFlags, Global_RefreshTickCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO_ForceUiRefreshIfIdle:
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BNE.S   .return
 
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
-    MOVE.W  #(-1),GLOB_RefreshTickCounter
+    MOVE.W  #(-1),Global_RefreshTickCounter
     JSR     GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .return:
@@ -963,16 +963,16 @@ DISKIO_ForceUiRefreshIfIdle:
 ; CALLS:
 ;   _LVODisable, _LVOEnable
 ; READS:
-;   AbsExecBase, GLOB_UIBusyFlag
+;   AbsExecBase, Global_UIBusyFlag
 ; WRITES:
-;   CTRL_H, ESQPARS2_ReadModeFlags, CTRL_HPreviousSample, DATA_WDISP_BSS_WORD_2284, GLOB_RefreshTickCounter
+;   CTRL_H, ESQPARS2_ReadModeFlags, CTRL_HPreviousSample, DATA_WDISP_BSS_WORD_2284, Global_RefreshTickCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO_ResetCtrlInputStateIfIdle:
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BNE.S   .return
 
     MOVEA.L AbsExecBase,A6
@@ -985,7 +985,7 @@ DISKIO_ResetCtrlInputStateIfIdle:
     JSR     _LVOEnable(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  D0,GLOB_RefreshTickCounter
+    MOVE.W  D0,Global_RefreshTickCounter
     MOVE.W  D0,ESQPARS2_ReadModeFlags
 
 .return:
@@ -1004,7 +1004,7 @@ DISKIO_ResetCtrlInputStateIfIdle:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AG_JMPTBL_SCRIPT_CheckPathExists, GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AG_JMPTBL_STRUCT_AllocWithOwner, GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField, _LVOCloseDevice, _LVODoIO, _LVOExecute, _LVOOpenDevice
 ; READS:
-;   AbsExecBase, GLOB_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, DISKIO_STR_TRACKDISK_DEVICE, DISKIO_CMD_ASSIGN_FONTS_DH2, DISKIO_CMD_ASSIGN_ENV_DH2, DISKIO_CMD_ASSIGN_SYS_DH2, DISKIO_CMD_ASSIGN_S_DH2, DISKIO_CMD_ASSIGN_C_DH2, DISKIO_CMD_ASSIGN_L_DH2, DISKIO_CMD_ASSIGN_LIBS_DH2, DISKIO_CMD_ASSIGN_DEVS_DH2, DISKIO_PATH_DF1_G_ADS, DISKIO_CMD_ASSIGN_GFX_DF1, DISKIO_CMD_ASSIGN_GFX_PC1, DATA_ESQ_BSS_WORD_1DE5, ESQPARS2_ReadModeFlags, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, DATA_WDISP_BSS_LONG_231A, df, e2, return
+;   AbsExecBase, Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, DISKIO_STR_TRACKDISK_DEVICE, DISKIO_CMD_ASSIGN_FONTS_DH2, DISKIO_CMD_ASSIGN_ENV_DH2, DISKIO_CMD_ASSIGN_SYS_DH2, DISKIO_CMD_ASSIGN_S_DH2, DISKIO_CMD_ASSIGN_C_DH2, DISKIO_CMD_ASSIGN_L_DH2, DISKIO_CMD_ASSIGN_LIBS_DH2, DISKIO_CMD_ASSIGN_DEVS_DH2, DISKIO_PATH_DF1_G_ADS, DISKIO_CMD_ASSIGN_GFX_DF1, DISKIO_CMD_ASSIGN_GFX_PC1, DATA_ESQ_BSS_WORD_1DE5, ESQPARS2_ReadModeFlags, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, DATA_WDISP_BSS_LONG_231A, df, e2, return
 ; WRITES:
 ;   DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, ESQPARS2_ReadModeFlags, DATA_GCOMMAND_CONST_WORD_1FB0, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr
 ; DESC:
@@ -1168,7 +1168,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     MOVE.L  D2,D3
@@ -1227,7 +1227,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     BRA.S   .lab_03DC
@@ -1237,7 +1237,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
 .lab_03DC:
@@ -1260,7 +1260,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, CTASKS_STR_TERM_DL_TOO_LARGE_TAIL, ED_DiagnosticsScreenActive
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, CTASKS_STR_TERM_DL_TOO_LARGE_TAIL, ED_DiagnosticsScreenActive
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1274,9 +1274,9 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .return
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #4,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
@@ -1286,13 +1286,13 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
     MOVE.L  (A0),-(A7)
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .return:
@@ -1314,9 +1314,9 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
 ; CALLS:
 ;   BRUSH_SelectBrushByLabel, GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition, GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, DISKIO_EnsurePc1MountedAndGfxAssigned
 ; READS:
-;   GLOB_JMPTBL_HALF_HOURS_12_HR_FMT, GLOB_JMPTBL_HALF_HOURS_24_HR_FMT, GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_REF_WORD_HEX_CODE_8E, LAB_0409, DATA_CTASKS_CONST_BYTE_1BA2, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, DATA_DISKIO_TAG_NRLS_1BE3, DATA_DISKIO_TAG_LRBN_1BE4, DATA_DISKIO_TAG_MSN_1BE5, WDISP_CharClassTable, N
+;   Global_JMPTBL_HALF_HOURS_12_HR_FMT, Global_JMPTBL_HALF_HOURS_24_HR_FMT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, LAB_0409, DATA_CTASKS_CONST_BYTE_1BA2, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, DATA_DISKIO_TAG_NRLS_1BE3, DATA_DISKIO_TAG_LRBN_1BE4, DATA_DISKIO_TAG_MSN_1BE5, WDISP_CharClassTable, N
 ; WRITES:
-;   GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES, GLOB_REF_STR_CLOCK_FORMAT, GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_REF_WORD_HEX_CODE_8E, DATA_CTASKS_CONST_BYTE_1BA2, DATA_CTASKS_STR_C_1BA3, DATA_CTASKS_BSS_BYTE_1BA4, DATA_CTASKS_CONST_BYTE_1BA5, DATA_CTASKS_CONST_BYTE_1BA6, DATA_CTASKS_CONST_BYTE_1BA7, DATA_CTASKS_STR_G_1BA8, DATA_CTASKS_STR_N_1BA9, DATA_CTASKS_STR_A_1BAA, DATA_CTASKS_STR_E_1BAB, DATA_CTASKS_BSS_BYTE_1BAC, DATA_CTASKS_BSS_BYTE_1BAD, DATA_CTASKS_STR_Y_1BAE, DATA_CTASKS_STR_Y_1BAF, DATA_CTASKS_STR_N_1BB0, DATA_CTASKS_STR_N_1BB1, DATA_CTASKS_STR_Y_1BB2, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_L_1BB4, DATA_CTASKS_CONST_BYTE_1BB5, DATA_CTASKS_CONST_BYTE_1BB6, DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_STR_Y_1BB8, DATA_CTASKS_STR_N_1BB9, DATA_CTASKS_CONST_BYTE_1BBA, DATA_CTASKS_CONST_BYTE_1BBB, DATA_CTASKS_CONST_BYTE_1BBC, CONFIG_TimeWindowMinutes, DATA_CTASKS_CONST_LONG_1BBE, DATA_CTASKS_STR_Y_1BBF, DATA_CTASKS_STR_Y_1BC1, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_CTASKS_CONST_LONG_1BCA
+;   Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, Global_REF_STR_CLOCK_FORMAT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, DATA_CTASKS_CONST_BYTE_1BA2, DATA_CTASKS_STR_C_1BA3, DATA_CTASKS_BSS_BYTE_1BA4, DATA_CTASKS_CONST_BYTE_1BA5, DATA_CTASKS_CONST_BYTE_1BA6, DATA_CTASKS_CONST_BYTE_1BA7, DATA_CTASKS_STR_G_1BA8, DATA_CTASKS_STR_N_1BA9, DATA_CTASKS_STR_A_1BAA, DATA_CTASKS_STR_E_1BAB, DATA_CTASKS_BSS_BYTE_1BAC, DATA_CTASKS_BSS_BYTE_1BAD, DATA_CTASKS_STR_Y_1BAE, DATA_CTASKS_STR_Y_1BAF, DATA_CTASKS_STR_N_1BB0, DATA_CTASKS_STR_N_1BB1, DATA_CTASKS_STR_Y_1BB2, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_L_1BB4, DATA_CTASKS_CONST_BYTE_1BB5, DATA_CTASKS_CONST_BYTE_1BB6, DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_STR_Y_1BB8, DATA_CTASKS_STR_N_1BB9, DATA_CTASKS_CONST_BYTE_1BBA, DATA_CTASKS_CONST_BYTE_1BBB, DATA_CTASKS_CONST_BYTE_1BBC, CONFIG_TimeWindowMinutes, DATA_CTASKS_CONST_LONG_1BBE, DATA_CTASKS_STR_Y_1BBF, DATA_CTASKS_STR_Y_1BC1, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_CTASKS_CONST_LONG_1BCA
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1894,7 +1894,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,GLOB_REF_STR_USE_24_HR_CLOCK
+    MOVE.B  D1,Global_REF_STR_USE_24_HR_CLOCK
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03FD
@@ -1903,21 +1903,21 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03FD
 
-    MOVE.B  D2,GLOB_REF_STR_USE_24_HR_CLOCK
+    MOVE.B  D2,Global_REF_STR_USE_24_HR_CLOCK
 
 .lab_03FD:
-    MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D1
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D1
     CMP.B   D0,D1
     BNE.S   .lab_03FE
 
-    LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     BRA.S   .lab_03FF
 
 .lab_03FE:
-    LEA     GLOB_JMPTBL_HALF_HOURS_12_HR_FMT,A0
+    LEA     Global_JMPTBL_HALF_HOURS_12_HR_FMT,A0
 
 .lab_03FF:
-    MOVE.L  A0,GLOB_REF_STR_CLOCK_FORMAT
+    MOVE.L  A0,Global_REF_STR_CLOCK_FORMAT
 
 .lab_0400:
     MOVE.L  D7,D0
@@ -1986,7 +1986,7 @@ DISKIO_ParseConfigBuffer:
     BRA.S   .lab_0406
 
 .lab_0404:
-    MOVE.W  #128,GLOB_REF_WORD_HEX_CODE_8E
+    MOVE.W  #128,Global_REF_WORD_HEX_CODE_8E
     ADDQ.W  #1,D6
     BRA.S   .lab_0407
 
@@ -1995,15 +1995,15 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #1,D6
     MOVEQ   #0,D1
     MOVE.B  0(A3,D0.W),D1
-    MOVE.W  D1,GLOB_REF_WORD_HEX_CODE_8E
+    MOVE.W  D1,Global_REF_WORD_HEX_CODE_8E
     BRA.S   .lab_0407
 
 .lab_0406:
-    MOVE.W  #$8e,GLOB_REF_WORD_HEX_CODE_8E
+    MOVE.W  #$8e,Global_REF_WORD_HEX_CODE_8E
     ADDQ.W  #1,D6
 
 .lab_0407:
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     CMPI.W  #128,D0
     BCS.S   .lab_0408
 
@@ -2011,7 +2011,7 @@ DISKIO_ParseConfigBuffer:
     BLS.S   .lab_0409
 
 .lab_0408:
-    MOVE.W  #$8e,GLOB_REF_WORD_HEX_CODE_8E
+    MOVE.W  #$8e,Global_REF_WORD_HEX_CODE_8E
 
 .lab_0409:
     MOVE.L  D7,D0
@@ -2025,7 +2025,7 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #1,D6
     MOVEQ   #-48,D1
     ADD.B   0(A3,D0.W),D1
-    MOVE.B  D1,GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES
+    MOVE.B  D1,Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES
     MOVEQ   #8,D0
     CMP.B   D0,D1
     BLT.S   .lab_040A
@@ -2034,7 +2034,7 @@ DISKIO_ParseConfigBuffer:
     BLE.S   .lab_040B
 
 .lab_040A:
-    MOVE.B  D0,GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES
+    MOVE.B  D0,Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES
 
 .lab_040B:
     MOVE.L  D7,D0
@@ -2172,7 +2172,7 @@ DISKIO_ParseConfigBuffer:
     BEQ.S   .lab_0415
 
     MOVE.B  D0,CONFIG_LRBN_FlagChar
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
@@ -2259,7 +2259,7 @@ DISKIO_ParseConfigBuffer:
 ; CALLS:
 ;   _LVOExecute
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2, DATA_DISKIO_BSS_WORD_1BE6, DISKIO_CMD_MOUNT_PC1, DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
+;   Global_REF_DOS_LIBRARY_2, DATA_DISKIO_BSS_WORD_1BE6, DISKIO_CMD_MOUNT_PC1, DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
 ; WRITES:
 ;   DATA_DISKIO_BSS_WORD_1BE6
 ; DESC:
@@ -2277,7 +2277,7 @@ DISKIO_EnsurePc1MountedAndGfxAssigned:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     MOVE.L  D2,D3
@@ -2322,7 +2322,7 @@ DISKIO_EnsurePc1MountedAndGfxAssigned_Return:
 ; CALLS:
 ;   DISKIO_OpenFileWithBuffer, GROUP_AE_JMPTBL_WDISP_SPrintf, DISKIO_CloseBufferedFileAndFlush, DISKIO_WriteBufferedBytes
 ; READS:
-;   BRUSH_LabelScratch, GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES, GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_REF_WORD_HEX_CODE_8E, GLOB_STR_DEFAULT_CONFIG_FORMATTED, GLOB_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, DATA_CTASKS_CONST_BYTE_1BA2, DATA_CTASKS_STR_C_1BA3, DATA_CTASKS_BSS_BYTE_1BA4, DATA_CTASKS_CONST_BYTE_1BA5, DATA_CTASKS_CONST_BYTE_1BA6, DATA_CTASKS_CONST_BYTE_1BA7, DATA_CTASKS_STR_G_1BA8, DATA_CTASKS_STR_N_1BA9, DATA_CTASKS_STR_A_1BAA, DATA_CTASKS_STR_E_1BAB, DATA_CTASKS_BSS_BYTE_1BAC, DATA_CTASKS_BSS_BYTE_1BAD, DATA_CTASKS_STR_Y_1BAE, DATA_CTASKS_STR_Y_1BAF, DATA_CTASKS_STR_N_1BB0, DATA_CTASKS_STR_N_1BB1, DATA_CTASKS_STR_Y_1BB2, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_L_1BB4, DATA_CTASKS_CONST_BYTE_1BB5, DATA_CTASKS_CONST_BYTE_1BB6, DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_STR_Y_1BB8, DATA_CTASKS_STR_N_1BB9, DATA_CTASKS_CONST_BYTE_1BBA, DATA_CTASKS_CONST_BYTE_1BBB, DATA_CTASKS_CONST_BYTE_1BBC, CONFIG_TimeWindowMinutes, DATA_CTASKS_CONST_LONG_1BBE, DATA_CTASKS_STR_Y_1BBF, DATA_CTASKS_STR_Y_1BC1, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, MODE_NEWFILE
+;   BRUSH_LabelScratch, Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, Global_STR_DEFAULT_CONFIG_FORMATTED, Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, DATA_CTASKS_CONST_BYTE_1BA2, DATA_CTASKS_STR_C_1BA3, DATA_CTASKS_BSS_BYTE_1BA4, DATA_CTASKS_CONST_BYTE_1BA5, DATA_CTASKS_CONST_BYTE_1BA6, DATA_CTASKS_CONST_BYTE_1BA7, DATA_CTASKS_STR_G_1BA8, DATA_CTASKS_STR_N_1BA9, DATA_CTASKS_STR_A_1BAA, DATA_CTASKS_STR_E_1BAB, DATA_CTASKS_BSS_BYTE_1BAC, DATA_CTASKS_BSS_BYTE_1BAD, DATA_CTASKS_STR_Y_1BAE, DATA_CTASKS_STR_Y_1BAF, DATA_CTASKS_STR_N_1BB0, DATA_CTASKS_STR_N_1BB1, DATA_CTASKS_STR_Y_1BB2, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_L_1BB4, DATA_CTASKS_CONST_BYTE_1BB5, DATA_CTASKS_CONST_BYTE_1BB6, DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_STR_Y_1BB8, DATA_CTASKS_STR_N_1BB9, DATA_CTASKS_CONST_BYTE_1BBA, DATA_CTASKS_CONST_BYTE_1BBB, DATA_CTASKS_CONST_BYTE_1BBC, CONFIG_TimeWindowMinutes, DATA_CTASKS_CONST_LONG_1BBE, DATA_CTASKS_STR_Y_1BBF, DATA_CTASKS_STR_Y_1BC1, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, MODE_NEWFILE
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2334,7 +2334,7 @@ DISKIO_SaveConfigToFileHandle:
     LINK.W  A5,#-212
     MOVEM.L D2-D7,-(A7)
     PEA     MODE_NEWFILE.W
-    PEA     GLOB_STR_DF0_CONFIG_DAT_1
+    PEA     Global_STR_DF0_CONFIG_DAT_1
     BSR.W   DISKIO_OpenFileWithBuffer
 
     ADDQ.W  #8,A7
@@ -2348,7 +2348,7 @@ DISKIO_SaveConfigToFileHandle:
 .lab_041B:
     MOVEQ   #67,D6
     MOVEQ   #0,D0
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     MOVEQ   #0,D1
     NOT.B   D1
     AND.L   D1,D0
@@ -2461,7 +2461,7 @@ DISKIO_SaveConfigToFileHandle:
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,132(A7)
-    MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D4
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,136(A7)
@@ -2477,7 +2477,7 @@ DISKIO_SaveConfigToFileHandle:
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,148(A7)
-    MOVE.B  GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES,D4
+    MOVE.B  Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,152(A7)
@@ -2546,7 +2546,7 @@ DISKIO_SaveConfigToFileHandle:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     GLOB_STR_DEFAULT_CONFIG_FORMATTED
+    PEA     Global_STR_DEFAULT_CONFIG_FORMATTED
     PEA     -58(A5)
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -2597,7 +2597,7 @@ DISKIO_SaveConfigToFileHandle_Return:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DISKIO_LoadFileToWorkBuffer, DISKIO_ParseConfigBuffer
 ; READS:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_DF0_CONFIG_DAT_2, GLOB_STR_DISKIO_C_9, GLOB_PTR_WORK_BUFFER
+;   Global_REF_LONG_FILE_SCRATCH, Global_STR_DF0_CONFIG_DAT_2, Global_STR_DISKIO_C_9, Global_PTR_WORK_BUFFER
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2609,7 +2609,7 @@ DISKIO_LoadConfigFromDisk:
     LINK.W  A5,#-12
     MOVEM.L D6-D7,-(A7)
 
-    PEA     GLOB_STR_DF0_CONFIG_DAT_2
+    PEA     Global_STR_DF0_CONFIG_DAT_2
     BSR.W   DISKIO_LoadFileToWorkBuffer
 
     ADDQ.W  #4,A7
@@ -2620,9 +2620,9 @@ DISKIO_LoadConfigFromDisk:
     BRA.S   .return
 
 .lab_041E:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
@@ -2634,7 +2634,7 @@ DISKIO_LoadConfigFromDisk:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     1344.W
-    PEA     GLOB_STR_DISKIO_C_9
+    PEA     Global_STR_DISKIO_C_9
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7

@@ -22,7 +22,7 @@
 GCOMMAND_ProcessCtrlCommand:
     LINK.W  A5,#-4
     MOVEM.L D7/A3-A4,-(A7)
-    LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
+    LEA     Global_REF_LONG_FILE_SCRATCH,A4
     MOVEA.L 8(A5),A3
     MOVEQ   #1,D0
     CMP.B   4(A3),D0

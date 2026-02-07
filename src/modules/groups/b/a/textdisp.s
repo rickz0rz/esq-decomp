@@ -99,7 +99,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 
 .check_channel_enabled:
     EXT.L   D1
-    LEA     GLOB_STR_TEXTDISP_C_3,A0
+    LEA     Global_STR_TEXTDISP_C_3,A0
     ADDA.L  D1,A0
     MOVE.W  CLOCK_CurrentDayOfWeekIndex,D1
     EXT.L   D1
@@ -159,7 +159,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     SUBQ.L  #1,D0
     BNE.S   .build_entry_title
 
-    LEA     GLOB_STR_ALIGNED_NOW_SHOWING,A0
+    LEA     Global_STR_ALIGNED_NOW_SHOWING,A0
     LEA     -188(A5),A1
 
 .copy_now_showing:
@@ -730,7 +730,7 @@ TEXTDISP_ResetSelectionState:
 ; CALLS:
 ;   STRING_CopyPadNul
 ; READS:
-;   CONFIG_LRBN_FlagChar, DATA_TLIBA1_CONST_BYTE_2174, GLOB_REF_WORD_HEX_CODE_8E
+;   CONFIG_LRBN_FlagChar, DATA_TLIBA1_CONST_BYTE_2174, Global_REF_WORD_HEX_CODE_8E
 ; WRITES:
 ;   entry+0..9, entry+10..208, DATA_WDISP_BSS_LONG_2362
 ; DESC:
@@ -755,7 +755,7 @@ TEXTDISP_SetEntryTextFields:
 
 .use_hex_code:
     MOVEQ   #0,D0
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     MOVE.L  D0,DATA_WDISP_BSS_LONG_2362
 
 .after_hex_code:
@@ -1271,7 +1271,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.B   D1
     BEQ.S   .append_channel_word
 
-    PEA     GLOB_STR_ALIGNED_CHANNEL_2
+    PEA     Global_STR_ALIGNED_CHANNEL_2
     MOVE.L  -8(A5),-(A7)
     JSR     STRING_AppendAtNull(PC)
 
@@ -1834,7 +1834,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.L  D0,-18(A5)
     MOVE.L  D1,-22(A5)
     MOVE.L  A0,-4(A5)
@@ -1901,7 +1901,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVE.W  D0,-14(A5)
     MOVEA.L -4(A5),A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVE.W  #1,DATA_WDISP_BSS_WORD_236C
@@ -2088,7 +2088,7 @@ TEXTDISP_HandleScriptCommand:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     732.W
     PEA     1084.W
-    PEA     GLOB_STR_TEXTDISP_C_1
+    PEA     Global_STR_TEXTDISP_C_1
     JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -2152,7 +2152,7 @@ TEXTDISP_HandleScriptCommand:
     PEA     732.W
     MOVE.L  DATA_SCRIPT_BSS_LONG_214B,-(A7)
     PEA     1106.W
-    PEA     GLOB_STR_TEXTDISP_C_2
+    PEA     Global_STR_TEXTDISP_C_2
     JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -2176,7 +2176,7 @@ TEXTDISP_HandleScriptCommand:
 ; CALLS:
 ;   PARSEINI_ParseIniBufferAndDispatch
 ; READS:
-;   GLOB_STR_DF0_SOURCECFG_INI_2
+;   Global_STR_DF0_SOURCECFG_INI_2
 ; WRITES:
 ;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_BSS_WORD_2131
 ; DESC:
@@ -2203,7 +2203,7 @@ TEXTDISP_LoadSourceConfig:
 .return:
     CLR.L   DATA_WDISP_BSS_LONG_235F
     CLR.B   DATA_SCRIPT_BSS_WORD_2131
-    PEA     GLOB_STR_DF0_SOURCECFG_INI_2
+    PEA     Global_STR_DF0_SOURCECFG_INI_2
     JSR     PARSEINI_ParseIniBufferAndDispatch(PC)
 
     ADDQ.W  #4,A7
@@ -2267,7 +2267,7 @@ TEXTDISP_ClearSourceConfig:
     PEA     6.W
     MOVE.L  (A0),-(A7)
     PEA     1153.W
-    PEA     GLOB_STR_TEXTDISP_C_3
+    PEA     Global_STR_TEXTDISP_C_3
     JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
@@ -2468,7 +2468,7 @@ TEXTDISP_AddSourceConfigEntry:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     6.W
     PEA     1229.W
-    PEA     GLOB_STR_TEXTDISP_C_4
+    PEA     Global_STR_TEXTDISP_C_4
     MOVE.L  A0,24(A7)
     JSR     MEMORY_AllocateMemory(PC)
 

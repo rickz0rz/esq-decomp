@@ -2002,9 +2002,9 @@ ESQ_PackBitsDecode:
 ; CALLS:
 ;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_LONG_2325, GLOB_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_LONG_2325, GLOB_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
+;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
 ;   DATA_COMMON_BSS_WORD_1B11..DATA_COMMON_BSS_LONG_1B18
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
@@ -2038,11 +2038,11 @@ ESQ_TickGlobalCounters:
     MOVE.W  D0,DATA_WDISP_BSS_LONG_2325
 
 .after_decrement_2325:
-    MOVE.W  GLOB_RefreshTickCounter,D0
+    MOVE.W  Global_RefreshTickCounter,D0
     BMI.W   .after_increment_234A
 
     ADDQ.W  #1,D0
-    MOVE.W  D0,GLOB_RefreshTickCounter
+    MOVE.W  D0,Global_RefreshTickCounter
 
 .after_increment_234A:
     MOVE.W  DATA_WDISP_BSS_WORD_22A5,D0

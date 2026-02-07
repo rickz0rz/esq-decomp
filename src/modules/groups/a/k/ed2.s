@@ -56,16 +56,16 @@ ED2_DrawEntryDetailsPanel:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1000.W
     PEA     374.W
-    PEA     GLOB_STR_ED2_C_1
+    PEA     Global_STR_ED2_C_1
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.L  D0,-144(A5)
     MOVEA.L A0,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVE.W  ED2_SelectedFlagByteOffset,D0
@@ -93,12 +93,12 @@ ED2_DrawEntryDetailsPanel:
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     GLOB_STR_PI_CLU_POS1
+    PEA     Global_STR_PI_CLU_POS1
     PEA     -120(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     90.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -142,12 +142,12 @@ ED2_DrawEntryDetailsPanel:
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
-    PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS_1
+    PEA     Global_STR_CHAN_SOURCE_CALLLTRS_1
     PEA     -120(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -194,12 +194,12 @@ ED2_DrawEntryDetailsPanel:
     PEA     -140(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     GLOB_STR_TS_TITLE_TIME
+    PEA     Global_STR_TS_TITLE_TIME
     PEA     -120(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -304,7 +304,7 @@ ED2_DrawEntryDetailsPanel:
 
 .after_flag7:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     210.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -313,7 +313,7 @@ ED2_DrawEntryDetailsPanel:
     PEA     1000.W
     MOVE.L  -144(A5),-(A7)
     PEA     427.W
-    PEA     GLOB_STR_ED2_C_2
+    PEA     Global_STR_ED2_C_2
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7
@@ -385,10 +385,10 @@ ED2_DrawEntrySummaryPanel:
     BEQ.W   .return
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVE.W  ED2_SelectedEntryIndex,D0
@@ -397,12 +397,12 @@ ED2_DrawEntrySummaryPanel:
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     GLOB_STR_CLU_CLU_POS1
+    PEA     Global_STR_CLU_CLU_POS1
     PEA     -120(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -416,12 +416,12 @@ ED2_DrawEntrySummaryPanel:
     MOVE.L  A3,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
-    PEA     GLOB_STR_CHAN_SOURCE_CALLLTRS_2
+    PEA     Global_STR_CHAN_SOURCE_CALLLTRS_2
     PEA     -120(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -526,7 +526,7 @@ ED2_DrawEntrySummaryPanel:
 
 .after_flag7:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     180.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -595,7 +595,7 @@ ED2_DrawEntrySummaryPanel:
 
 .after_word_flag4:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     210.W
     PEA     -120(A5)
     MOVE.L  A0,-(A7)
@@ -870,7 +870,7 @@ ED2_HandleMenuActions:
     MOVEQ   #0,D6
     CLR.L   -118(A5)
     PEA     (MODE_OLDFILE).W
-    PEA     GLOB_STR_DF0_CLOCK_CMD
+    PEA     Global_STR_DF0_CLOCK_CMD
     JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
@@ -882,7 +882,7 @@ ED2_HandleMenuActions:
     LEA     -105(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #50,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     MOVE.L  D0,D4
@@ -957,7 +957,7 @@ ED2_HandleMenuActions:
 
 .close_file:
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     BRA.W   .restore_display_state
@@ -1000,13 +1000,13 @@ ED2_HandleMenuActions:
 
 .case_refresh_rastports:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.L  A0,-(A7)
     JSR     GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
-    MOVE.L  GLOB_REF_RASTPORT_1,(A7)
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVE.L  Global_REF_RASTPORT_1,(A7)
     JSR     GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(PC)
 
     ADDQ.W  #4,A7
@@ -1033,11 +1033,11 @@ ED2_HandleMenuActions:
     TST.B   TEXTDISP_PrimaryGroupPresentFlag
     BEQ.S   .select_bool_string
 
-    LEA     GLOB_STR_TRUE_1,A0
+    LEA     Global_STR_TRUE_1,A0
     BRA.S   .bool_string_ready
 
 .select_bool_string:
-    LEA     GLOB_STR_FALSE_1,A0
+    LEA     Global_STR_FALSE_1,A0
 
 .bool_string_ready:
     MOVEQ   #0,D1
@@ -1225,7 +1225,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_banner_char_code8e:
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
@@ -1249,9 +1249,9 @@ ED2_HandleMenuActions:
     MOVE.L  D0,WDISP_DisplayContextBase
     JSR     ED_InitRastport2Pens(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -1261,7 +1261,7 @@ ED2_HandleMenuActions:
     MOVE.W  4(A0),D1
     MOVE.L  D0,D2
     MOVE.L  D1,D3
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
     MOVEQ   #20,D1
     JSR     _LVORectFill(A6)
@@ -1328,8 +1328,8 @@ ED2_HandleMenuActions:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
@@ -1347,7 +1347,7 @@ ED2_HandleMenuActions:
     MOVEQ   #15,D0
     ADD.L   D0,D2
     MOVE.L  D1,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #120,D1
     MOVEQ   #100,D3
     ADD.L   D3,D3
@@ -1436,8 +1436,8 @@ ED2_HandleMenuActions:
     BRA.S   .restore_display_state
 
 .case_show_status_message:
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
     MOVE.L  DATA_WDISP_BSS_LONG_2267,-(A7)
     PEA     DATA_ED2_FMT_BITPLANE1_PCT_8LX_1D69
     PEA     -50(A5)
@@ -1446,7 +1446,7 @@ ED2_HandleMenuActions:
     PEA     -50(A5)
     PEA     232.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
@@ -1471,25 +1471,25 @@ ED2_HandleMenuActions:
     BRA.S   .restore_display_state
 
 .case_parse_gradient_ini:
-    PEA     GLOB_STR_DF0_GRADIENT_INI_1
+    PEA     Global_STR_DF0_GRADIENT_INI_1
     JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
     ADDQ.W  #4,A7
 
 .restore_display_state:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
     JSR     _LVOSetBPen(A6)
 
@@ -1518,9 +1518,9 @@ ED2_HandleMenuActions:
 ;   GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
-;   GLOB_REF_RASTPORT_1, ED_DiagTextModeChar, DATA_ED2_TAG_NRLS_1D6B, DATA_ED2_STR_NYYLLZ_1D6C, DATA_ED2_TAG_NYLRS_1D6D, DATA_ED2_STR_SILENCE_1D6E, DATA_ED2_STR_LEFT_1D6F, DATA_ED2_STR_RIGHT_1D70, DATA_ED2_STR_BACKGROUND_1D71, DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72, DATA_ED2_STR_COMPUTER_ONLY_1D73, DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74, DATA_ED2_STR_NEGATIVE_VIDEO_1D75, DATA_ED2_STR_VIDEO_SWITCH_1D76, DATA_ED2_STR_OPEN_1D77, DATA_ED2_STR_CLOSED_1D78, DATA_ED2_STR_START_TAPE_VIDEO_1D79, DATA_ED2_STR_STOP_1D7A, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
+;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, DATA_ED2_TAG_NRLS_1D6B, DATA_ED2_STR_NYYLLZ_1D6C, DATA_ED2_TAG_NYLRS_1D6D, DATA_ED2_STR_SILENCE_1D6E, DATA_ED2_STR_LEFT_1D6F, DATA_ED2_STR_RIGHT_1D70, DATA_ED2_STR_BACKGROUND_1D71, DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72, DATA_ED2_STR_COMPUTER_ONLY_1D73, DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74, DATA_ED2_STR_NEGATIVE_VIDEO_1D75, DATA_ED2_STR_VIDEO_SWITCH_1D76, DATA_ED2_STR_OPEN_1D77, DATA_ED2_STR_CLOSED_1D78, DATA_ED2_STR_START_TAPE_VIDEO_1D79, DATA_ED2_STR_STOP_1D7A, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
 ; WRITES:
-;   DATACErrs, GLOB_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, DATA_ESQ_BSS_BYTE_1DF1, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, DATA_WDISP_BSS_WORD_2347, DATA_WDISP_BSS_WORD_2348, DATA_WDISP_BSS_WORD_2349
+;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, DATA_ESQ_BSS_BYTE_1DF1, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, DATA_WDISP_BSS_WORD_2347, DATA_WDISP_BSS_WORD_2348, DATA_WDISP_BSS_WORD_2349
 ; DESC:
 ;   Handles diagnostic/special menu selections, toggling flags, counters, and
 ;   invoking test patterns or copper effects.
@@ -1636,7 +1636,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_refresh_rastport_1:
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(PC)
 
     ADDQ.W  #4,A7
@@ -1650,7 +1650,7 @@ ED2_HandleDiagnosticsMenuActions:
 
 .case_clear_error_counters:
     MOVEQ   #0,D0
-    MOVE.W  D0,GLOB_WORD_MAX_VALUE
+    MOVE.W  D0,Global_WORD_MAX_VALUE
     MOVE.W  D0,CTRL_HDeltaMax
     MOVE.W  D0,ESQIFF_LineErrorCount
     MOVE.W  D0,DATACErrs
@@ -1748,7 +1748,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_SILENCE_1D6E
     PEA     360.W
     PEA     175.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     CLR.L   (A7)
@@ -1761,7 +1761,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_LEFT_1D6F
     PEA     360.W
     PEA     175.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     1.W
@@ -1774,7 +1774,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_RIGHT_1D70
     PEA     360.W
     PEA     175.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     2.W
@@ -1787,7 +1787,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_BACKGROUND_1D71
     PEA     360.W
     PEA     175.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     3.W
@@ -1800,7 +1800,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn(PC)
@@ -1812,7 +1812,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_COMPUTER_ONLY_1D73
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
@@ -1824,7 +1824,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
@@ -1836,7 +1836,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_NEGATIVE_VIDEO_1D75
     PEA     390.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default(PC)
@@ -1848,7 +1848,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_VIDEO_SWITCH_1D76
     PEA     270.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
@@ -1860,7 +1860,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_OPEN_1D77
     PEA     270.W
     PEA     235.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
@@ -1870,7 +1870,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_CLOSED_1D78
     PEA     270.W
     PEA     235.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
@@ -1880,7 +1880,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_START_TAPE_VIDEO_1D79
     PEA     270.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow(PC)
@@ -1892,7 +1892,7 @@ ED2_HandleDiagnosticsMenuActions:
     PEA     DATA_ED2_STR_STOP_1D7A
     PEA     270.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     JSR     GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow(PC)
@@ -1921,9 +1921,9 @@ ED2_HandleDiagnosticsMenuActions:
 ; CALLS:
 ;   ED_DrawESCMenuBottomHelp, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
 ; READS:
-;   GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
+;   Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
 ; WRITES:
-;   ED_LastKeyCode, ED_LastMenuInputChar, DATA_WDISP_BSS_LONG_21E2, ESQPARS2_StateIndex, ED_EditCursorOffset
+;   ED_LastKeyCode, ED_LastMenuInputChar, ED_SavedScrollSpeedIndex, ESQPARS2_StateIndex, ED_EditCursorOffset
 ; DESC:
 ;   Updates scroll speed/selection state based on menu codes and redraws help.
 ; NOTES:
@@ -1955,12 +1955,12 @@ ED2_HandleScrollSpeedSelection:
 
 .case_sync_scroll_speed:
     MOVE.L  ED_EditCursorOffset,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21E2
+    MOVE.L  D0,ED_SavedScrollSpeedIndex
     TST.L   ED_EditCursorOffset
     BNE.S   .use_21e8_minus1
 
     MOVEQ   #0,D0
-    MOVE.B  GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
+    MOVE.B  Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.W  D0,ESQPARS2_StateIndex

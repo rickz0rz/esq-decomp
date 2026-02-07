@@ -1,36 +1,36 @@
 ; ========== CLEANUP.c ==========
 
-GLOB_STR_CLEANUP_C_1:
+Global_STR_CLEANUP_C_1:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_2:
+Global_STR_CLEANUP_C_2:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_3:
+Global_STR_CLEANUP_C_3:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_4:
+Global_STR_CLEANUP_C_4:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_5:
+Global_STR_CLEANUP_C_5:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_6:
+Global_STR_CLEANUP_C_6:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_7:
+Global_STR_CLEANUP_C_7:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_8:
+Global_STR_CLEANUP_C_8:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_9:
+Global_STR_CLEANUP_C_9:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_10:
+Global_STR_CLEANUP_C_10:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_11:
+Global_STR_CLEANUP_C_11:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_12:
+Global_STR_CLEANUP_C_12:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_13:
+Global_STR_CLEANUP_C_13:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_14:
+Global_STR_CLEANUP_C_14:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_15:
+Global_STR_CLEANUP_C_15:
     NStr    "CLEANUP.c"
-GLOB_STR_CLEANUP_C_16:
+Global_STR_CLEANUP_C_16:
     NStr    "CLEANUP.c"
 ; Frame countdown for alert retry attempts.
 CLEANUP_AlertCooldownTicks:

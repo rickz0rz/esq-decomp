@@ -11,7 +11,7 @@
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, COI_ClearAnimObjectStrings, COI_FreeSubEntryTableEntries
 ; READS:
-;   GLOB_STR_COI_C_3
+;   Global_STR_COI_C_3
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -39,7 +39,7 @@ COI_FreeEntryResources:
     PEA     42.W
     MOVE.L  A2,-(A7)
     PEA     815.W
-    PEA     GLOB_STR_COI_C_3
+    PEA     Global_STR_COI_C_3
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -187,7 +187,7 @@ COI_ClearAnimObjectStrings_Return:
 ; CALLS:
 ;   GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_STR_COI_C_4, COI_FreeSubEntryTableEntries_Return
+;   Global_STR_COI_C_4, COI_FreeSubEntryTableEntries_Return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -278,7 +278,7 @@ COI_FreeSubEntryTableEntries:
     MOVE.L  D0,(A7)
     MOVE.L  38(A3),-(A7)
     PEA     876.W
-    PEA     GLOB_STR_COI_C_4
+    PEA     Global_STR_COI_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
@@ -462,7 +462,7 @@ COI_WriteOiDataFile:
     MOVE.W  D1,-30(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_1
+    PEA     Global_STR_DF0_OI_PERCENT_2_LX_DAT_1
     PEA     -112(A5)
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1155,7 +1155,7 @@ COI_WriteOiDataFile:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
 ; READS:
-;   GLOB_STR_COI_C_5, MEMF_CLEAR, MEMF_PUBLIC
+;   Global_STR_COI_C_5, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   A0+38 (subentry table pointer)
 ; DESC:
@@ -1192,7 +1192,7 @@ COI_AllocSubEntryTable:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     1123.W
-    PEA     GLOB_STR_COI_C_5
+    PEA     Global_STR_COI_C_5
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVEA.L -4(A5),A0
@@ -1281,9 +1281,9 @@ COI_AllocSubEntryTable:
 ;   COI_AllocSubEntryTable
 ; READS:
 ;   TEXTDISP_SecondaryGroupCode/TEXTDISP_SecondaryGroupPresentFlag/TEXTDISP_SecondaryGroupEntryCount/TEXTDISP_PrimaryGroupCode/TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable/TEXTDISP_SecondaryEntryPtrTable,
-;   GLOB_PTR_WORK_BUFFER, GLOB_REF_LONG_FILE_SCRATCH
+;   Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH
 ; WRITES:
-;   GLOB_PTR_WORK_BUFFER, GLOB_REF_LONG_FILE_SCRATCH, structures referenced by TEXTDISP_PrimaryEntryPtrTable/
+;   Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH, structures referenced by TEXTDISP_PrimaryEntryPtrTable/
 ;   TEXTDISP_SecondaryEntryPtrTable (fields +0..+36), local scratch buffers/flags
 ; DESC:
 ;   Builds `df0:OI_%02lx.dat` from diskId parity, loads the file into memory,
@@ -1333,7 +1333,7 @@ COI_LoadOiDataFile:
     MOVE.W  D1,-334(A5)
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     GLOB_STR_DF0_OI_PERCENT_2_LX_DAT_2
+    PEA     Global_STR_DF0_OI_PERCENT_2_LX_DAT_2
     PEA     -566(A5)
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1348,8 +1348,8 @@ COI_LoadOiDataFile:
     BRA.W   .return_status
 
 .file_loaded:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVE.B  TEXTDISP_SecondaryGroupCode,D1
     MOVE.L  D0,-574(A5)
     MOVE.L  A0,-570(A5)
@@ -1379,7 +1379,7 @@ COI_LoadOiDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     PEA     1198.W
-    PEA     GLOB_STR_COI_C_6
+    PEA     Global_STR_COI_C_6
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -1391,7 +1391,7 @@ COI_LoadOiDataFile:
     MOVE.L  D0,-582(A5)
 
 .copy_header_line:
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     ADDA.L  -582(A5),A0
     MOVEQ   #0,D0
@@ -1407,7 +1407,7 @@ COI_LoadOiDataFile:
     LEA     -486(A5),A0
     MOVE.L  -582(A5),D0
     ADDA.L  D0,A0
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.L  D0,A1
     MOVE.B  (A1),(A0)
@@ -1455,7 +1455,7 @@ COI_LoadOiDataFile:
     BRA.W   .return_status
 
 .strip_line_terminators:
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     ADDA.L  -582(A5),A0
     MOVEQ   #0,D0
@@ -1468,7 +1468,7 @@ COI_LoadOiDataFile:
     TST.L   D0
     BEQ.S   .clear_seen_flags
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -582(A5),D0
     ADDA.L  D0,A0
@@ -1496,7 +1496,7 @@ COI_LoadOiDataFile:
     CMP.L   -644(A5),D0
     BNE.S   .parse_record_legacy
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -574(A5),D0
     EXT.L   D0
@@ -1520,7 +1520,7 @@ COI_LoadOiDataFile:
 .clear_record_fields:
     MOVE.B  D1,(A0)+
     DBF     D0,.clear_record_fields
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -574(A5),D0
     EXT.L   D0
@@ -1571,7 +1571,7 @@ COI_LoadOiDataFile:
 
 .match_entry_pattern:
     LEA     12(A1),A0
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A2
+    MOVEA.L Global_PTR_WORK_BUFFER,A2
     ADDA.L  -578(A5),A2
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
@@ -1589,7 +1589,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -4(A5),A0
     MOVE.L  48(A0),-8(A5)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     ADDA.W  -600(A5),A0
     MOVEA.L -8(A5),A1
@@ -1599,7 +1599,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,4(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     MOVEA.W -598(A5),A2
     MOVE.L  A2,D0
@@ -1614,7 +1614,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,12(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -594(A5),A1
     MOVE.L  16(A0),(A7)
@@ -1623,7 +1623,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,16(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -592(A5),A1
     MOVE.L  20(A0),(A7)
@@ -1632,7 +1632,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -8(A5),A0
     MOVE.L  D0,20(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -590(A5),A1
     MOVE.L  8(A0),(A7)
@@ -1646,7 +1646,7 @@ COI_LoadOiDataFile:
     BLE.S   .default_field24
 
     MOVE.L  -578(A5),D1
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     MOVEA.L A1,A2
     ADDA.L  D1,A2
     ADDA.W  D0,A2
@@ -1685,7 +1685,7 @@ COI_LoadOiDataFile:
     BEQ.S   .missing_field32
 
     MOVE.L  -578(A5),D1
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     ADDA.W  D0,A1
@@ -1708,11 +1708,11 @@ COI_LoadOiDataFile:
     MOVE.L  D0,32(A0)
 
 .store_field36:
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     ADDA.W  -588(A5),A0
     MOVE.L  A0,-(A7)
-    PEA     GLOB_STR_PERCENT_S_1
+    PEA     Global_STR_PERCENT_S_1
     PEA     -486(A5)
     JSR     GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1749,7 +1749,7 @@ COI_LoadOiDataFile:
     CMP.L   -644(A5),D0
     BNE.S   .parse_subentry_legacy
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -574(A5),D0
     EXT.L   D0
@@ -1773,7 +1773,7 @@ COI_LoadOiDataFile:
 .clear_subentry_fields:
     MOVE.B  D1,(A0)+
     DBF     D0,.clear_subentry_fields
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     MOVE.L  -574(A5),D0
     EXT.L   D0
@@ -1794,14 +1794,14 @@ COI_LoadOiDataFile:
     TST.B   (A0)
     BNE.W   .advance_subentry
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     ADDA.L  -578(A5),A0
     MOVE.L  A0,-(A7)
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVEA.L -12(A5),A0
     MOVE.W  D0,(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -628(A5),A1
     MOVE.L  6(A0),(A7)
@@ -1810,7 +1810,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,6(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -626(A5),A1
     MOVE.L  10(A0),(A7)
@@ -1819,7 +1819,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,10(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -624(A5),A1
     MOVE.L  14(A0),(A7)
@@ -1828,7 +1828,7 @@ COI_LoadOiDataFile:
 
     MOVEA.L -12(A5),A0
     MOVE.L  D0,14(A0)
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     ADDA.L  -578(A5),A1
     ADDA.W  -622(A5),A1
     MOVE.L  2(A0),(A7)
@@ -1842,7 +1842,7 @@ COI_LoadOiDataFile:
     BLE.S   .default_subentry_field18
 
     MOVE.L  -578(A5),D1
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A1
+    MOVEA.L Global_PTR_WORK_BUFFER,A1
     MOVEA.L A1,A2
     ADDA.L  D1,A2
     ADDA.W  D0,A2
@@ -1883,7 +1883,7 @@ COI_LoadOiDataFile:
     BLE.S   .inherit_subentry_field26
 
     MOVE.L  -578(A5),D1
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     ADDA.W  D0,A1
@@ -2128,7 +2128,7 @@ COI_LoadOiDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -570(A5),-(A7)
     PEA     1443.W
-    PEA     GLOB_STR_COI_C_1
+    PEA     Global_STR_COI_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
@@ -2151,7 +2151,7 @@ COI_LoadOiDataFile:
 ; CALLS:
 ;   GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   GLOB_STR_COI_C_2, COI_STR_DEFAULT_TOKEN_TEMPLATE_B, MEMF_CLEAR, MEMF_PUBLIC, Struct_AnimOb_Size
+;   Global_STR_COI_C_2, COI_STR_DEFAULT_TOKEN_TEMPLATE_B, MEMF_CLEAR, MEMF_PUBLIC, Struct_AnimOb_Size
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2173,7 +2173,7 @@ COI_EnsureAnimObjectAllocated:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     Struct_AnimOb_Size.W
     PEA     1458.W
-    PEA     GLOB_STR_COI_C_2
+    PEA     Global_STR_COI_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     MOVE.L  D0,48(A3)

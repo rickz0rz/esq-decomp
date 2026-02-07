@@ -12,7 +12,7 @@
 ; READS:
 ;   (none)
 ; WRITES:
-;   GLOB_MEM_BYTES_ALLOCATED, GLOB_MEM_ALLOC_COUNT
+;   Global_MEM_BYTES_ALLOCATED, Global_MEM_ALLOC_COUNT
 ; DESC:
 ;   Allocates a memory block via Exec AllocMem and updates global counters.
 ; NOTES:
@@ -30,8 +30,8 @@ MEMORY_AllocateMemory:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAllocMem(A6)
 
-    ADD.L   D7,GLOB_MEM_BYTES_ALLOCATED
-    ADDQ.L  #1,GLOB_MEM_ALLOC_COUNT
+    ADD.L   D7,Global_MEM_BYTES_ALLOCATED
+    ADDQ.L  #1,Global_MEM_ALLOC_COUNT
 
     MOVEM.L (A7)+,D6-D7
     UNLK    A5
@@ -52,7 +52,7 @@ MEMORY_AllocateMemory:
 ; READS:
 ;   (none)
 ; WRITES:
-;   GLOB_MEM_BYTES_ALLOCATED, GLOB_MEM_DEALLOC_COUNT
+;   Global_MEM_BYTES_ALLOCATED, Global_MEM_DEALLOC_COUNT
 ; DESC:
 ;   Frees a memory block via Exec FreeMem when ptr and size are non-zero.
 ; NOTES:
@@ -76,8 +76,8 @@ MEMORY_DeallocateMemory:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFreeMem(A6)
 
-    SUB.L   D7,GLOB_MEM_BYTES_ALLOCATED
-    ADDQ.L  #1,GLOB_MEM_DEALLOC_COUNT
+    SUB.L   D7,Global_MEM_BYTES_ALLOCATED
+    ADDQ.L  #1,Global_MEM_DEALLOC_COUNT
 
 .return:
     MOVEM.L (A7)+,D7/A3

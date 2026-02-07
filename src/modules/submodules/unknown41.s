@@ -15,7 +15,7 @@
 CLOCK_ConvertAmigaSecondsToClockData:
     MOVE.L  A6,-(A7)
 
-    MOVEA.L GLOB_REF_UTILITY_LIBRARY,A6
+    MOVEA.L Global_REF_UTILITY_LIBRARY,A6
     MOVEM.L 8(A7),D0/A0
     JSR     _LVOAmiga2Date(A6)
 

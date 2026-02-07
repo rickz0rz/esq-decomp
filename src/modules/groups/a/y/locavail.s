@@ -41,7 +41,7 @@ LOCAVAIL_FreeNodeRecord:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_STR_LOCAVAIL_C_1
+;   Global_STR_LOCAVAIL_C_1
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -66,7 +66,7 @@ LOCAVAIL_FreeNodeAtPointer:
     MOVE.L  D0,-(A7)
     MOVE.L  6(A3),-(A7)
     PEA     106.W
-    PEA     GLOB_STR_LOCAVAIL_C_1
+    PEA     Global_STR_LOCAVAIL_C_1
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -131,7 +131,7 @@ LOCAVAIL_ResetFilterStateStruct:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_MATH_Mulu32, LOCAVAIL_FreeNodeAtPointer, LOCAVAIL_ResetFilterStateStruct, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_STR_LOCAVAIL_C_2, GLOB_STR_LOCAVAIL_C_3, LAB_0F0C, LAB_0F0D
+;   Global_STR_LOCAVAIL_C_2, Global_STR_LOCAVAIL_C_3, LAB_0F0C, LAB_0F0D
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -170,7 +170,7 @@ LOCAVAIL_FreeResourceChain:
     PEA     4.W
     MOVE.L  A0,-(A7)
     PEA     159.W
-    PEA     GLOB_STR_LOCAVAIL_C_2
+    PEA     Global_STR_LOCAVAIL_C_2
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -201,7 +201,7 @@ LOCAVAIL_FreeResourceChain:
     MOVE.L  D0,-(A7)
     MOVE.L  20(A3),-(A7)
     PEA     164.W
-    PEA     GLOB_STR_LOCAVAIL_C_3
+    PEA     Global_STR_LOCAVAIL_C_3
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -270,7 +270,7 @@ LOCAVAIL_CopyFilterStateStructRetainRefs:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   GLOB_STR_LOCAVAIL_C_4, GLOB_STR_LOCAVAIL_C_5, MEMF_CLEAR, MEMF_PUBLIC
+;   Global_STR_LOCAVAIL_C_4, Global_STR_LOCAVAIL_C_5, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -293,7 +293,7 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4.W
     PEA     218.W
-    PEA     GLOB_STR_LOCAVAIL_C_4
+    PEA     Global_STR_LOCAVAIL_C_4
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -310,7 +310,7 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     229.W
-    PEA     GLOB_STR_LOCAVAIL_C_5
+    PEA     Global_STR_LOCAVAIL_C_5
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -421,7 +421,7 @@ LOCAVAIL_SetFilterModeAndResetState:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, LOCAVAIL_ResetFilterStateStruct, LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, LOCAVAIL_FreeResourceChain, NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   GLOB_STR_LOCAVAIL_C_6, DATA_LOCAVAIL_TAG_FV_1FF0, WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
+;   Global_STR_LOCAVAIL_C_6, DATA_LOCAVAIL_TAG_FV_1FF0, WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -610,7 +610,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     341.W
-    PEA     GLOB_STR_LOCAVAIL_C_6
+    PEA     Global_STR_LOCAVAIL_C_6
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1473,7 +1473,7 @@ LOCAVAIL_SaveAvailabilityDataFile_Return:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_STRING_CompareNoCaseN, LOCAVAIL_ResetFilterStateStruct, LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, LOCAVAIL_FreeResourceChain, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_LOCAVAIL_C_7, GLOB_STR_LOCAVAIL_C_8, DATA_LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_1FF7, DATA_LOCAVAIL_STR_LA_VER_1FF8, GLOB_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
+;   Global_REF_LONG_FILE_SCRATCH, Global_STR_LOCAVAIL_C_7, Global_STR_LOCAVAIL_C_8, DATA_LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_1FF7, DATA_LOCAVAIL_STR_LA_VER_1FF8, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1504,8 +1504,8 @@ LOCAVAIL_LoadAvailabilityDataFile:
     BSR.W   LOCAVAIL_FreeResourceChain
 
     MOVE.B  TEXTDISP_SecondaryGroupCode,(A2)
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D4
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-48(A5)
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D4
+    MOVE.L  Global_PTR_WORK_BUFFER,-48(A5)
     JSR     GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1607,7 +1607,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     786.W
-    PEA     GLOB_STR_LOCAVAIL_C_7
+    PEA     Global_STR_LOCAVAIL_C_7
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1785,7 +1785,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -48(A5),-(A7)
     PEA     897.W
-    PEA     GLOB_STR_LOCAVAIL_C_8
+    PEA     Global_STR_LOCAVAIL_C_8
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

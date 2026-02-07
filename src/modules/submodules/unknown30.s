@@ -7,7 +7,7 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A3/A6
 ; DESC:
-;   Loads A6 from stack and dispatches to Exec.library vector -348.
+;   Loads A6 from stack and dispatches to Exec.library -> _LVOFreeTrap.
 ; NOTES:
 ;   Vector identity is unknown; verify against call sites.
 ;------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ EXEC_CallVector_348:
     MOVE.L  44(A7),D1
     MOVE.L  48(A7),D2
     MOVE.L  52(A7),D3
-    JSR     -348(A6)                    ; Traced A6 to AbsExecBase here...? FreeTrap
+    JSR     _LVOFreeTrap(A6)
 
     MOVEM.L (A7)+,D2-D3/A2-A3/A6
     RTS

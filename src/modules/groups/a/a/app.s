@@ -10,9 +10,9 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_WORD_MAX_VALUE, ESQPARS2_ReadModeFlags
+;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE, ESQPARS2_ReadModeFlags
 ; WRITES:
-;   (A1+head), DATA_WDISP_BSS_WORD_228A, GLOB_WORD_H_VALUE, DATA_WDISP_BSS_WORD_228C, GLOB_WORD_MAX_VALUE,
+;   (A1+head), DATA_WDISP_BSS_WORD_228A, Global_WORD_H_VALUE, DATA_WDISP_BSS_WORD_228C, Global_WORD_MAX_VALUE,
 ;   ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_LONG_20AB, 156(A0)
 ; DESC:
 ;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
@@ -22,7 +22,7 @@
 ;------------------------------------------------------------------------------
 ESQ_HandleSerialRbfInterrupt:
     MOVEQ   #0,D0
-    MOVE.W  GLOB_WORD_H_VALUE,D0
+    MOVE.W  Global_WORD_H_VALUE,D0
     ADDA.L  D0,A1
     MOVE.W  24(A0),D1
     MOVE.B  D1,(A1)
@@ -41,8 +41,8 @@ ESQ_HandleSerialRbfInterrupt:
     MOVEQ   #0,D0
 
 .head_update_done:
-    MOVE.W  D0,GLOB_WORD_H_VALUE
-    MOVE.W  GLOB_WORD_T_VALUE,D1
+    MOVE.W  D0,Global_WORD_H_VALUE
+    MOVE.W  Global_WORD_T_VALUE,D1
     SUB.W   D1,D0
     BCC.W   .fill_count_ok
 
@@ -50,10 +50,10 @@ ESQ_HandleSerialRbfInterrupt:
 
 .fill_count_ok:
     MOVE.W  D0,DATA_WDISP_BSS_WORD_228C
-    CMP.W   GLOB_WORD_MAX_VALUE,D0
+    CMP.W   Global_WORD_MAX_VALUE,D0
     BCS.W   .skip_max_update
 
-    MOVE.W  D0,GLOB_WORD_MAX_VALUE
+    MOVE.W  D0,Global_WORD_MAX_VALUE
 
 .skip_max_update:
     CMPI.W  #$dac0,D0
@@ -82,9 +82,9 @@ ESQ_HandleSerialRbfInterrupt:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_WORD_T_VALUE, GLOB_WORD_H_VALUE, ESQPARS2_ReadModeFlags, GLOB_REF_INTB_RBF_64K_BUFFER
+;   Global_WORD_T_VALUE, Global_WORD_H_VALUE, ESQPARS2_ReadModeFlags, Global_REF_INTB_RBF_64K_BUFFER
 ; WRITES:
-;   GLOB_WORD_T_VALUE, ESQPARS2_ReadModeFlags
+;   Global_WORD_T_VALUE, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Reads one byte from the RBF ring buffer and advances the tail index.
 ; NOTES:
@@ -93,8 +93,8 @@ ESQ_HandleSerialRbfInterrupt:
 ESQ_ReadSerialRbfByte:
     MOVEQ   #0,D1
     MOVE.L  D1,D0
-    MOVE.W  GLOB_WORD_T_VALUE,D1
-    MOVEA.L GLOB_REF_INTB_RBF_64K_BUFFER,A0
+    MOVE.W  Global_WORD_T_VALUE,D1
+    MOVEA.L Global_REF_INTB_RBF_64K_BUFFER,A0
     ADDA.L  D1,A0
     MOVE.B  (A0),D0
     ADDQ.W  #1,D1
@@ -104,9 +104,9 @@ ESQ_ReadSerialRbfByte:
     MOVEQ   #0,D1
 
 .tail_update_done:
-    MOVE.W  D1,GLOB_WORD_T_VALUE
+    MOVE.W  D1,Global_WORD_T_VALUE
     MOVE.L  D0,-(A7)
-    MOVE.W  GLOB_WORD_H_VALUE,D0
+    MOVE.W  Global_WORD_H_VALUE,D0
     SUB.W   D1,D0
     BCC.W   .fill_count_ok
 
@@ -138,7 +138,7 @@ ESQ_ReadSerialRbfByte:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GLOB_PTR_AUD1_DMA
+;   Global_PTR_AUD1_DMA
 ; WRITES:
 ;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1B03
 ; DESC:
@@ -146,8 +146,8 @@ ESQ_ReadSerialRbfByte:
 ;------------------------------------------------------------------------------
 ESQ_InitAudio1Dma:
     MOVEA.L #BLTDDAT,A0
-    LEA     GLOB_PTR_AUD1_DMA,A1
-    MOVE.L  A1,(AUD1LCH-BLTDDAT)(A0)    ; Store DMA data in GLOB_PTR_AUD1_DMA
+    LEA     Global_PTR_AUD1_DMA,A1
+    MOVE.L  A1,(AUD1LCH-BLTDDAT)(A0)    ; Store DMA data in Global_PTR_AUD1_DMA
     MOVE.W  #1,(AUD1LEN-BLTDDAT)(A0)
     MOVE.W  #0,(AUD1VOL-BLTDDAT)(A0)
     MOVE.W  #$65b,(AUD1PER-BLTDDAT)(A0)

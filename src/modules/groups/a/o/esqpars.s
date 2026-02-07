@@ -11,7 +11,7 @@
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_ReplaceOwnedString
 ; READS:
-;   GLOB_STR_ESQPARS_C_1, TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable
+;   Global_STR_ESQPARS_C_1, TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -54,7 +54,7 @@ ESQPARS_ClearAliasStringPointers:
     PEA     8.W
     MOVE.L  A0,-(A7)
     PEA     945.W
-    PEA     GLOB_STR_ESQPARS_C_1
+    PEA     Global_STR_ESQPARS_C_1
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7
@@ -89,7 +89,7 @@ ESQPARS_ClearAliasStringPointers:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_JMPTBL_COI_FreeEntryResources, ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine, ESQIFF2_ClearLineHeadTailByMode
 ; READS:
-;   GLOB_STR_ESQPARS_C_2, GLOB_STR_ESQPARS_C_3, GLOB_STR_ESQPARS_C_4, ESQPARS_RemoveGroupEntryAndReleaseStrings_Return, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, lab_0B3A
+;   Global_STR_ESQPARS_C_2, Global_STR_ESQPARS_C_3, Global_STR_ESQPARS_C_4, ESQPARS_RemoveGroupEntryAndReleaseStrings_Return, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, lab_0B3A
 ; WRITES:
 ;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
@@ -204,7 +204,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     1025.W
-    PEA     GLOB_STR_ESQPARS_C_2
+    PEA     Global_STR_ESQPARS_C_2
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -225,7 +225,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     PEA     500.W
     MOVE.L  -8(A5),-(A7)
     PEA     1031.W
-    PEA     GLOB_STR_ESQPARS_C_3
+    PEA     Global_STR_ESQPARS_C_3
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -241,7 +241,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     PEA     52.W
     MOVE.L  -4(A5),-(A7)
     PEA     1040.W
-    PEA     GLOB_STR_ESQPARS_C_4
+    PEA     Global_STR_ESQPARS_C_4
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -287,7 +287,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _LVOAvailMem
 ; READS:
-;   AbsExecBase, GLOB_STR_ESQPARS_C_5, GLOB_STR_ESQPARS_C_6, MEMF_PUBLIC
+;   AbsExecBase, Global_STR_ESQPARS_C_5, Global_STR_ESQPARS_C_6, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -317,7 +317,7 @@ ESQPARS_ReplaceOwnedString:
     MOVE.L  D7,-(A7)
     MOVE.L  A2,-(A7)
     PEA     1081.W
-    PEA     GLOB_STR_ESQPARS_C_5
+    PEA     Global_STR_ESQPARS_C_5
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -360,7 +360,7 @@ ESQPARS_ReplaceOwnedString:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D6,-(A7)
     PEA     1100.W
-    PEA     GLOB_STR_ESQPARS_C_6
+    PEA     Global_STR_ESQPARS_C_6
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -519,7 +519,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal, ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadSerialBytesToBuffer, ESQIFF2_ReadSerialBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
-;   CTRL_BUFFER, CTRL_H, DATACErrs, GLOB_REF_696_400_BITMAP, GLOB_REF_RASTPORT_1, GLOB_STR_23, GLOB_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, DATA_WDISP_BSS_WORD_22A0, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
+;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, Global_STR_23, Global_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, DATA_WDISP_BSS_WORD_22A0, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
 ;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, DATA_WDISP_BSS_LONG_2363
 ; DESC:
@@ -1868,7 +1868,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -72(A5)
     PEA     262.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     CLR.W   ESQPARS_ResetArmedFlag
@@ -2223,11 +2223,11 @@ ESQPARS_ProcessSerialCommandByte:
     BNE.S   .cmd_r_finish
 
     MOVE.W  #21000,DATA_WDISP_BSS_LONG_2363
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
+    MOVEA.L Global_REF_RASTPORT_1,A0
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
 
 .cmd_r_reset_overlay_loop:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -2245,7 +2245,7 @@ ESQPARS_ProcessSerialCommandByte:
     ADD.L   D0,D1
     MOVEQ   #29,D0
     ADD.L   D0,D1
-    PEA     GLOB_STR_RESET_COMMAND_RECEIVED
+    PEA     Global_STR_RESET_COMMAND_RECEIVED
     MOVE.L  D1,-(A7)
     PEA     40.W
     MOVE.L  A1,-(A7)
@@ -2638,7 +2638,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
-    PEA     GLOB_STR_23
+    PEA     Global_STR_23
     JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
 
     ADDQ.W  #8,A7

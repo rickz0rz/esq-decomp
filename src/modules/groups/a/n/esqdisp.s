@@ -9,7 +9,7 @@
 ; CALLS:
 ;   ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster, _LVOBltClear, _LVOInitBitMap
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_ESQDISP_C, DATA_WDISP_BSS_WORD_222B
+;   Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQDISP_C, DATA_WDISP_BSS_WORD_222B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -27,7 +27,7 @@ ESQDISP_AllocateHighlightBitmaps:
     MOVE.L  D0,D2
     MOVEQ   #3,D0
     MOVE.L  #696,D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEQ   #0,D7
@@ -45,7 +45,7 @@ ESQDISP_AllocateHighlightBitmaps:
     MOVE.L  D1,-(A7)                    ; Height
     PEA     696.W                       ; Width
     PEA     79.W                        ; Line Number
-    PEA     GLOB_STR_ESQDISP_C          ; Calling File
+    PEA     Global_STR_ESQDISP_C          ; Calling File
     MOVE.L  D0,28(A7)
     JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
 
@@ -61,7 +61,7 @@ ESQDISP_AllocateHighlightBitmaps:
     MOVE.L  12(A7),D2
     MOVEA.L 8(A3,D2.L),A1
     MOVEQ   #0,D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
     ADDQ.L  #1,D7
@@ -165,7 +165,7 @@ ESQDISP_InitHighlightMessagePattern_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode, _LVOInitRastPort, _LVOPutMsg, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   AbsExecBase, GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, a0
+;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, a0
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -197,14 +197,14 @@ ESQDISP_QueueHighlightDrawMessage:
     ADDQ.W  #8,A7
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVE.L  A2,64(A3)
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     LEA     60(A3),A0
@@ -238,7 +238,7 @@ ESQDISP_QueueHighlightDrawMessage:
 ; CALLS:
 ;   ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DF2, DATA_WDISP_BSS_LONG_2260, GLOB_UIBusyFlag
+;   DATA_ESQ_BSS_WORD_1DF2, DATA_WDISP_BSS_LONG_2260, Global_UIBusyFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -250,7 +250,7 @@ ESQDISP_ProcessGridMessagesIfIdle:
     TST.W   DATA_ESQ_BSS_WORD_1DF2
     BNE.S   .lab_08C3
 
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BNE.S   .lab_08C3
 
     TST.L   DATA_WDISP_BSS_LONG_2260
@@ -276,7 +276,7 @@ ESQDISP_ProcessGridMessagesIfIdle:
 ; CALLS:
 ;   _LVOReadPixel, _LVORectFill, _LVOSetAPen
 ; READS:
-;   GLOB_REF_696_400_BITMAP, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, DATA_ESQ_BSS_BYTE_1DEE, DATA_ESQDISP_CONST_LONG_1E80, return
+;   Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_BSS_BYTE_1DEE, DATA_ESQDISP_CONST_LONG_1E80, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -354,12 +354,12 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  D0,-16(A5)
 
 .lab_08C9:
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
+    MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.B  25(A0),D5
     EXT.W   D5
     EXT.L   D5
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
     MOVEQ   #7,D0
     CMP.L   D0,D7
     BEQ.S   .readPixelAt655x55
@@ -369,18 +369,18 @@ ESQDISP_SetStatusIndicatorColorSlot:
     BNE.S   .lab_08CB
 
 .readPixelAt655x55:
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  #655,D0
     MOVEQ   #55,D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOReadPixel(A6)
 
     MOVE.L  D0,D7
 
 .lab_08CB:
     MOVE.L  D7,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D4,D0
@@ -391,15 +391,15 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  D0,24(A7)
     MOVE.L  D4,D0
     MOVE.L  D2,D3
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVE.L  24(A7),D2
     JSR     _LVORectFill(A6)
 
     MOVE.L  D5,D0
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
+    MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
 
 .return:
@@ -1888,7 +1888,7 @@ ESQDISP_GetEntryAuxPointerByMode:
 ; READS:
 ;   DATA_ESQDISP_CONST_BYTE_1E8B, bfd0ee
 ; WRITES:
-;   DATA_ESQDISP_CONST_BYTE_1E8B, DATA_ESQDISP_BSS_LONG_1E8C, GLOB_RefreshTickCounter
+;   DATA_ESQDISP_CONST_BYTE_1E8B, DATA_ESQDISP_BSS_LONG_1E8C, Global_RefreshTickCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1897,7 +1897,7 @@ ESQDISP_GetEntryAuxPointerByMode:
 ESQDISP_PollInputModeAndRefreshSelection:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
-    MOVE.W  #(-1),GLOB_RefreshTickCounter
+    MOVE.W  #(-1),Global_RefreshTickCounter
     MOVE.L  #$bfd0ee,-6(A5) ; uncertain, between PRA_CIAB and PRB_CIAB
     MOVEQ   #4,D7
     MOVEA.L -6(A5),A0
@@ -1951,7 +1951,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ; CALLS:
 ;   DST_RefreshBannerBuffer, DST_UpdateBannerQueue, ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner, ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData, ESQDISP_DrawStatusBanner_Impl
 ; READS:
-;   GLOB_REF_696_400_BITMAP, GLOB_REF_RASTPORT_1, DST_BannerWindowPrimary, CLOCK_DaySlotIndex
+;   Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, DST_BannerWindowPrimary, CLOCK_DaySlotIndex
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1977,12 +1977,12 @@ ESQDISP_NormalizeClockAndRedrawBanner:
     JSR     DST_RefreshBannerBuffer(PC)
 
 .lab_0932:
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
+    MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
-    MOVE.L  #GLOB_REF_696_400_BITMAP,4(A0)
+    MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
     JSR     ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(PC)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A0
+    MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
     PEA     1.W
     BSR.W   ESQDISP_DrawStatusBanner_Impl
@@ -2006,7 +2006,7 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, DATA_WDISP_BSS_WORD_223B, DATA_WDISP_BSS_WORD_223C, DATA_WDISP_BSS_WORD_223D, DST_PrimaryCountdown, DATA_WDISP_BSS_WORD_2242, CLOCK_HalfHourSlotIndex, DATA_WDISP_BSS_WORD_227C, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, DATA_WDISP_BSS_WORD_223B, DATA_WDISP_BSS_WORD_223C, DATA_WDISP_BSS_WORD_223D, DST_PrimaryCountdown, DATA_WDISP_BSS_WORD_2242, CLOCK_HalfHourSlotIndex, DATA_WDISP_BSS_WORD_227C, lab_0942, lab_0943, lab_0944
 ; WRITES:
 ;   DATA_COMMON_BSS_LONG_1B08, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, DATA_TLIBA1_CONST_LONG_219B, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
 ; DESC:
@@ -2019,9 +2019,9 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
     MOVE.W  38(A7),D7
     MOVEQ   #0,D5
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     PEA     CLOCK_DaySlotIndex

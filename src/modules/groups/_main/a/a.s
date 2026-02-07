@@ -13,7 +13,7 @@
 ; READS:
 ;   AbsExecBase, ESQ_STR_DosLibrary
 ; WRITES:
-;   savedStackPointer, savedExecBase, savedMsg, Global_DosLibrary
+;   Global_SavedStackPointer, Global_SavedExecBase, Global_SavedMsg, Global_DosLibrary
 ; DESC:
 ;   Entry/segment startup: clears temp buffers, opens dos.library, handles
 ;   Workbench/CLI startup message, invokes init routines, and returns exit code.
@@ -24,7 +24,7 @@
 
     MOVEA.L A0,A2                           ; A0 is a pointer to the command string at startup, copy to A2
     MOVE.L  D0,D2                           ; D0 is the length of the command string at startup, copy to D2
-    LEA     GLOB_REF_LONG_FILE_SCRATCH,A4   ; Copy address of GLOB_REF_LONG_FILE_SCRATCH into A4 (0x3BB24) - 00017118
+    LEA     Global_REF_LONG_FILE_SCRATCH,A4   ; Copy address of Global_REF_LONG_FILE_SCRATCH into A4 (0x3BB24) - 00017118
     MOVEA.L AbsExecBase.W,A6                ; 00000004 but this address is dynamically translated at runtime to 002007a0 (confirmed by checking exec.library when dumping libs in fs-uae)
     LEA     BUFFER_5929_LONGWORDS,A3        ; 00016e80
     MOVEQ   #0,D1
@@ -37,9 +37,9 @@
 .clear_5929_buffer_check:
     DBF     D0,.clear_5929_buffer_loop  ; If our counter (D1) is not zero then jump to .clear_5929_buffer_loop else continue
 
-    MOVE.L  A7,savedStackPointer(A4)        ; Save the current stack pointer from A7
-    MOVE.L  A6,savedExecBase(A4)            ; Save a pointer to AbsExecBase from A6
-    CLR.L   savedMsg(A4)                    ; Clear the long at -604(A4) (0x3B8C8, a value within LAB_21AA) - CLR.L (A4, -$025c) == $00016ebc
+    MOVE.L  A7,Global_SavedStackPointer(A4)        ; Save the current stack pointer from A7
+    MOVE.L  A6,Global_SavedExecBase(A4)            ; Save a pointer to AbsExecBase from A6
+    CLR.L   Global_SavedMsg(A4)                    ; Clear the long at -604(A4) (0x3B8C8, a value within LAB_21AA) - CLR.L (A4, -$025c) == $00016ebc
     MOVEQ   #0,D0                           ; Old signal, 0x00000000 into D0
     MOVE.L  #$3000,D1                       ; New signal mask: 0x00003000 into D1
     JSR     _LVOSetSignal(A6)
@@ -48,7 +48,7 @@
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)             ; Open dos.library version 0 (any) locally...
 
-    MOVE.L  D0,Global_DosLibrary(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or GLOB_REF_DOS_LIBRARY_2
+    MOVE.L  D0,Global_DosLibrary(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or Global_REF_DOS_LIBRARY_2
     BNE.S   .dos_opened_prepare_startup    ; Jump to .dos_opened_prepare_startup if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
 
     MOVEQ   #100,D0                         ; If it wasn't opened, set D0 to 100...
@@ -115,7 +115,7 @@
     LEA     92(A3),A0                                       ; A3+92 = Task/Proc message port uncertain
     JSR     _LVOGetMsg(A6)
 
-    MOVE.L  D0,savedMsg(A4)                                 ; A4-604 = saved WBStartup msg uncertain
+    MOVE.L  D0,Global_SavedMsg(A4)                                 ; A4-604 = saved WBStartup msg uncertain
     MOVE.L  D0,-(A7)
     MOVEA.L D0,A2
     MOVE.L  36(A2),D0                                       ; WBStartup+36 = sm_ArgList uncertain
@@ -142,7 +142,7 @@
     MOVE.L  8(A0),164(A3)
 
 .maybe_update_window_ptr:
-    MOVEA.L savedMsg(A4),A0                                 ; saved WBStartup msg uncertain
+    MOVEA.L Global_SavedMsg(A4),A0                                 ; saved WBStartup msg uncertain
     MOVE.L  A0,-(A7)
     PEA     Global_WBStartupCmdBuffer(A4)
     MOVEA.L 36(A0),A0                                       ; WBStartup+36 = sm_ArgList uncertain
@@ -189,7 +189,7 @@ ESQ_ReturnWithStackCode:
 ; CALLS:
 ;   GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, _LVOCloseLibrary, GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1, _LVOReplyMsg
 ; READS:
-;   savedMsg, savedStackPointer, savedExecBase, Global_DosLibrary
+;   Global_SavedMsg, Global_SavedStackPointer, Global_SavedExecBase, Global_DosLibrary
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -213,7 +213,7 @@ ESQ_ShutdownAndReturn:
 
     JSR     GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1(PC)
 
-    TST.L   savedMsg(A4)
+    TST.L   Global_SavedMsg(A4)
     BEQ.S   .restore_registers_and_return
 
     MOVE.L  Global_WBStartupWindowPtr(A4),D1
@@ -225,12 +225,12 @@ ESQ_ShutdownAndReturn:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    MOVEA.L savedMsg(A4),A1
+    MOVEA.L Global_SavedMsg(A4),A1
     JSR     _LVOReplyMsg(A6)
 
 .restore_registers_and_return:
     MOVE.L  (A7)+,D0
-    MOVEA.L savedStackPointer(A4),A7
+    MOVEA.L Global_SavedStackPointer(A4),A7
     MOVEM.L (A7)+,D1-D6/A0-A6
     RTS
 

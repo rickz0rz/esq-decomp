@@ -784,7 +784,7 @@ TEXTDISP_DrawInsetRectFrame:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  A3,-(A7)
-    MOVE.L  GLOB_REF_RASTPORT_2,-(A7)
+    MOVE.L  Global_REF_RASTPORT_2,-(A7)
     BSR.W   TLIBA1_DrawFormattedTextBlock
 
     LEA     24(A7),A7
@@ -989,14 +989,14 @@ TEXTDISP_BuildChannelLabel:
     TST.W   D7
     BEQ.S   .append_channel_prefix
 
-    PEA     GLOB_STR_ALIGNED_ON
+    PEA     Global_STR_ALIGNED_ON
     PEA     TEXTDISP_ChannelLabelBuffer
     JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_channel_prefix:
-    PEA     GLOB_STR_ALIGNED_CHANNEL_1
+    PEA     Global_STR_ALIGNED_CHANNEL_1
     PEA     TEXTDISP_ChannelLabelBuffer
     JSR     STRING_AppendAtNull(PC)
 
@@ -1092,19 +1092,19 @@ TEXTDISP_DrawChannelBanner:
     CMP.W   D0,D6
     BNE.S   .select_rast
 
-    MOVEA.L GLOB_REF_RASTPORT_2,A1
+    MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BRA.S   .init_rect
 
 .select_rast:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
 .init_rect:
@@ -1140,19 +1140,19 @@ TEXTDISP_DrawChannelBanner:
     CMP.W   D0,D6
     BNE.S   .set_drawmode_normal
 
-    MOVEA.L GLOB_REF_RASTPORT_2,A1
+    MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BRA.S   .return
 
 .set_drawmode_normal:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
 .return:
@@ -1174,7 +1174,7 @@ TEXTDISP_DrawChannelBanner:
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow, MATH_DivS32, MATH_Mulu32, TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
 ; READS:
-;   TEXTDISP_PrimaryTitlePtrTable/2237, TEXTDISP_CurrentMatchIndex, CLOCK_FormatVariantCode, GLOB_REF_STR_CLOCK_FORMAT
+;   TEXTDISP_PrimaryTitlePtrTable/2237, TEXTDISP_CurrentMatchIndex, CLOCK_FormatVariantCode, Global_REF_STR_CLOCK_FORMAT
 ; DESC:
 ;   Formats a time string for the current entry index into outPtr.
 ; NOTES:
@@ -1323,7 +1323,7 @@ TEXTDISP_FormatEntryTime:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    MOVEA.L GLOB_REF_STR_CLOCK_FORMAT,A0
+    MOVEA.L Global_REF_STR_CLOCK_FORMAT,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEA.L A3,A2
@@ -1384,7 +1384,7 @@ TEXTDISP_FormatEntryTime:
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow, MATH_DivS32, MATH_Mulu32, TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
 ; READS:
-;   entryTable+56, entryTable+498, CLOCK_FormatVariantCode, GLOB_REF_STR_CLOCK_FORMAT
+;   entryTable+56, entryTable+498, CLOCK_FormatVariantCode, Global_REF_STR_CLOCK_FORMAT
 ; DESC:
 ;   Formats a time string for a given entry index using the provided table.
 ; NOTES:
@@ -1500,7 +1500,7 @@ TEXTDISP_FormatEntryTimeForIndex:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    MOVEA.L GLOB_REF_STR_CLOCK_FORMAT,A0
+    MOVEA.L Global_REF_STR_CLOCK_FORMAT,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEA.L A3,A6
@@ -1626,12 +1626,12 @@ TEXTDISP_ComputeTimeOffset:
 
     ADD.L   -4(A5),D0
     MOVE.L  D0,D5
-    MOVE.W  GLOB_WORD_CURRENT_HOUR,D0
+    MOVE.W  Global_WORD_CURRENT_HOUR,D0
     EXT.L   D0
     MOVEQ   #12,D1
     JSR     MATH_DivS32(PC)
 
-    TST.W   GLOB_WORD_USE_24_HR_FMT
+    TST.W   Global_WORD_USE_24_HR_FMT
     BEQ.S   .use_zero_bias
 
     MOVEQ   #12,D0
@@ -1645,7 +1645,7 @@ TEXTDISP_ComputeTimeOffset:
     MOVEQ   #60,D0
     JSR     MATH_Mulu32(PC)
 
-    MOVE.W  GLOB_WORD_CURRENT_MINUTE,D1
+    MOVE.W  Global_WORD_CURRENT_MINUTE,D1
     EXT.L   D1
     ADD.L   D1,D0
     SUB.L   D0,D5
@@ -1884,7 +1884,7 @@ TEXTDISP_BuildMatchIndexList:
     TST.B   D0
     BNE.S   .ensure_filter_pattern
 
-    LEA     GLOB_STR_ASTERISK_2,A0
+    LEA     Global_STR_ASTERISK_2,A0
     MOVE.L  A0,8(A5)
 
 .ensure_filter_pattern:
@@ -1903,7 +1903,7 @@ TEXTDISP_BuildMatchIndexList:
 
     MOVEQ   #1,D0
     MOVE.W  D0,DATA_WDISP_BSS_WORD_2370
-    MOVE.L  #GLOB_STR_ASTERISK_3,8(A5)
+    MOVE.L  #Global_STR_ASTERISK_3,8(A5)
     BRA.S   .init_scan
 
 .set_find_mode_flag:
@@ -2105,7 +2105,7 @@ TEXTDISP_SelectBestMatchFromList:
 .channel_enabled:
     MOVE.L  D6,D0
     EXT.L   D0
-    LEA     GLOB_STR_TEXTDISP_C_3,A0
+    LEA     Global_STR_TEXTDISP_C_3,A0
     ADDA.L  D0,A0
     MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
@@ -2625,7 +2625,7 @@ TEXTDISP_UpdateChannelRangeFlags:
 .channel_enabled:
     MOVE.L  D7,D0
     EXT.L   D0
-    LEA     GLOB_STR_TEXTDISP_C_3,A0
+    LEA     Global_STR_TEXTDISP_C_3,A0
     ADDA.L  D0,A0
     MOVE.W  CLOCK_CurrentDayOfWeekIndex,D0
     EXT.L   D0
@@ -2686,7 +2686,7 @@ TEXTDISP_TrimTextToPixelWidth:
     CLR.L   -8(A5)
     MOVEQ   #0,D6
     MOVEA.L WDISP_DisplayContextBase,A1
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A1
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A1
     MOVEA.L A0,A2
 
 .measure_text_len:
@@ -2697,7 +2697,7 @@ TEXTDISP_TrimTextToPixelWidth:
     SUBA.L  A0,A2
     MOVE.L  A0,-4(A5)
     MOVE.L  A2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -2723,7 +2723,7 @@ TEXTDISP_TrimTextToPixelWidth:
     MOVE.L  D0,D4
     ADDQ.L  #1,-4(A5)
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L -4(A5),A1
 
 .measure_after_control:
@@ -2736,7 +2736,7 @@ TEXTDISP_TrimTextToPixelWidth:
     MOVEA.L A0,A1
     MOVEA.L -4(A5),A0
     MOVE.L  28(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -2746,11 +2746,11 @@ TEXTDISP_TrimTextToPixelWidth:
 
 .measure_char:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEA.L -4(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     ADD.L   D0,D6
@@ -2764,7 +2764,7 @@ TEXTDISP_TrimTextToPixelWidth:
     MOVE.B  D4,(A0)
     LEA     1(A0),A1
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A1,A2
 
 .measure_after_insert:
@@ -2777,7 +2777,7 @@ TEXTDISP_TrimTextToPixelWidth:
     MOVEA.L A0,A1
     MOVE.L  A2,D0
     MOVEA.L -4(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5

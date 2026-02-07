@@ -1,22 +1,22 @@
 ; ========== BRUSH.c ==========
 
-GLOB_STR_BRUSH_C_1:
+Global_STR_BRUSH_C_1:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_2:
+Global_STR_BRUSH_C_2:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_3:
+Global_STR_BRUSH_C_3:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_4:
+Global_STR_BRUSH_C_4:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_5:
+Global_STR_BRUSH_C_5:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_6:
+Global_STR_BRUSH_C_6:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_7:
+Global_STR_BRUSH_C_7:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_8:
+Global_STR_BRUSH_C_8:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_9:
+Global_STR_BRUSH_C_9:
     NStr    "BRUSH.c"
 ;------------------------------------------------------------------------------
 ; SYM: BRUSH_STR_IFF_FORM   (IFF FORM chunk tag)
@@ -27,25 +27,25 @@ GLOB_STR_BRUSH_C_9:
 ;------------------------------------------------------------------------------
 BRUSH_STR_IFF_FORM:
     NStr    "FORM"
-GLOB_STR_BRUSH_C_10:
+Global_STR_BRUSH_C_10:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_11:
+Global_STR_BRUSH_C_11:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_12:
+Global_STR_BRUSH_C_12:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_13:
+Global_STR_BRUSH_C_13:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_14:
+Global_STR_BRUSH_C_14:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_15:
+Global_STR_BRUSH_C_15:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_16:
+Global_STR_BRUSH_C_16:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_17:
+Global_STR_BRUSH_C_17:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_18:
+Global_STR_BRUSH_C_18:
     NStr    "BRUSH.c"
-GLOB_STR_BRUSH_C_19:
+Global_STR_BRUSH_C_19:
     NStr    "BRUSH.c"
 ;------------------------------------------------------------------------------
 ; SYM: BRUSH_STR_ALIAS_CODE_00   (legacy brush alias token)

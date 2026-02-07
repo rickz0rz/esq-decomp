@@ -82,10 +82,10 @@ CLEANUP_TestEntryFlagYAndBit1:
 ; READS:
 ;   WDISP_CharClassTable, CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
 ; WRITES:
-;   DATA_WDISP_BSS_BYTE_21B1, DATA_WDISP_BSS_BYTE_21B2
+;   DISPTEXT_InsetNibblePrimary, DATA_WDISP_BSS_BYTE_21B2
 ; DESC:
 ;   Loads two flag bytes from the entry data and writes derived values into
-;   DATA_WDISP_BSS_BYTE_21B1/DATA_WDISP_BSS_BYTE_21B2 using WDISP_CharClassTable attribute bits.
+;   DISPTEXT_InsetNibblePrimary/DATA_WDISP_BSS_BYTE_21B2 using WDISP_CharClassTable attribute bits.
 ; NOTES:
 ;   - Falls back to CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY when the entry record is missing.
 ;------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ CLEANUP_UpdateEntryFlagBytes:
     NOT.B   D1
 
 .store_flag6:
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_21B1
+    MOVE.B  D1,DISPTEXT_InsetNibblePrimary
     MOVEA.L -4(A5),A0
     MOVE.B  7(A0),D0
     EXT.W   D0
@@ -421,7 +421,7 @@ CLEANUP_DrawInsetRectFrame:
 
     MOVEA.L A3,A1
     MOVE.L  D2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.W  -10(A5),D0

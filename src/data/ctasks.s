@@ -1,22 +1,22 @@
 ; ========== CTASKS.c ==========
 
-GLOB_STR_CTASKS_C_1:
+Global_STR_CTASKS_C_1:
     NStr    "CTASKS.c"
-GLOB_STR_IFF_TASK_1:
+Global_STR_IFF_TASK_1:
     NStr    "iff_task"
-GLOB_STR_CTASKS_C_2:
+Global_STR_CTASKS_C_2:
     NStr    "CTASKS.c"
-GLOB_STR_IFF_TASK_2:
+Global_STR_IFF_TASK_2:
     NStr    "iff_task"
 DATA_CTASKS_CONST_WORD_1B8A:
     DC.W    1
 DATA_CTASKS_BSS_LONG_1B8B:
     DS.L    1
-GLOB_STR_CTASKS_C_3:
+Global_STR_CTASKS_C_3:
     NStr    "CTASKS.c"
-GLOB_STR_CTASKS_C_4:
+Global_STR_CTASKS_C_4:
     NStr    "CTASKS.c"
-GLOB_STR_CLOSE_TASK:
+Global_STR_CLOSE_TASK:
     NStr    "close_task"
 DATA_CTASKS_BSS_BYTE_1B8F:
     DS.B    1
@@ -71,7 +71,7 @@ CTASKS_PATH_QTABLE_INI:
     DC.B    "df0:qtable.ini",0
 CTASKS_PATH_OINFO_DAT:
     DC.B    "df0:oinfo.dat",0
-GLOB_STR_DF0_NXTDAY_DAT:
+Global_STR_DF0_NXTDAY_DAT:
     DC.B    "df0:nxtday.dat",0
 ;------------------------------------------------------------------------------
 ; SYM: DISKIO_SaveOperationReadyFlag   (save-operation gate flag)
@@ -156,14 +156,14 @@ DATA_CTASKS_CONST_LONG_1BBE:
     DC.L    $00000001
 DATA_CTASKS_STR_Y_1BBF:
     DC.B    "Y"
-GLOB_REF_STR_USE_24_HR_CLOCK:
+Global_REF_STR_USE_24_HR_CLOCK:
     DC.B    "N"
 DATA_CTASKS_STR_Y_1BC1:
     NStr    "Y"
-GLOB_REF_WORD_HEX_CODE_8E:
+Global_REF_WORD_HEX_CODE_8E:
     DC.B    0
     DC.B    142
-GLOB_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
+Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
     DC.B    8
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagTextModeChar   (diagnostic TXT mode selector char)

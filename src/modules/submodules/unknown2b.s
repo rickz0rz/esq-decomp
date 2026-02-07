@@ -11,7 +11,7 @@
 ; CALLS:
 ;   _LVOAllocRaster
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY
+;   Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -27,7 +27,7 @@ UNKNOWN2B_AllocRaster:
 
     MOVE.L  D7,D0       ; Width
     MOVE.L  D6,D1       ; Height
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOAllocRaster(A6)
 
     MOVEM.L (A7)+,D6-D7
@@ -48,7 +48,7 @@ UNKNOWN2B_AllocRaster:
 ; CALLS:
 ;   _LVOFreeRaster
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY
+;   Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -67,7 +67,7 @@ UNKNOWN2B_FreeRaster:
     MOVEA.L A3,A0
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOFreeRaster(A6)
 
     MOVEM.L (A7)+,D6-D7/A3
@@ -87,7 +87,7 @@ UNKNOWN2B_FreeRaster:
 ; CALLS:
 ;   _LVOOpen
 ; READS:
-;   GLOB_REF_DOS_LIBRARY_2
+;   Global_REF_DOS_LIBRARY_2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -105,7 +105,7 @@ UNKNOWN2B_OpenFileWithAccessMode:
 
     MOVE.L  A3,D1
     MOVE.L  D7,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOOpen(A6)
 
     MOVE.L  D0,D6

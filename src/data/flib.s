@@ -1,8 +1,8 @@
 ; ========== FLIB.c ==========
 
-GLOB_STR_FLIB_C_1:
+Global_STR_FLIB_C_1:
     NStr    "FLIB.c"
-GLOB_STR_FLIB_C_2:
+Global_STR_FLIB_C_2:
     NStr    "FLIB.c"
 DATA_FLIB_BSS_WORD_1F5F:
     DS.W    1
@@ -16,5 +16,5 @@ DATA_FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S_1F63:
     NStr    "Digital Multiplex at %s"
 DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64:
     NStr    "Digital PPV Listings"
-GLOB_STR_DIGITAL_PPV_PERIOD:
+Global_STR_DIGITAL_PPV_PERIOD:
     NStr    "Digital PPV."

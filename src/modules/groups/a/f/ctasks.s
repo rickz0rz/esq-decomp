@@ -11,7 +11,7 @@
 ;   GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult (GCOMMAND_SaveBrushResult), _LVOForbid, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   CTASKS_IffTaskState (state), CTASKS_PendingLogoBrushDescriptor/CTASKS_PendingGAdsBrushDescriptor/CTASKS_PendingIffBrushDescriptor (scratch ptrs), BRUSH_LoadInProgressFlag
-;   GLOB_REF_LIST_IFF_TASK_PROC, GLOB_STR_CTASKS_C_1
+;   Global_REF_LIST_IFF_TASK_PROC, Global_STR_CTASKS_C_1
 ; WRITES:
 ;   CTASKS_PendingLogoBrushDescriptor/CTASKS_PendingGAdsBrushDescriptor/CTASKS_PendingIffBrushDescriptor, CTASKS_IffTaskDoneFlag, CTASKS_IffTaskState
 ; DESC:
@@ -31,7 +31,7 @@
 ; CALLS:
 ;   GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid
 ; READS:
-;   AbsExecBase, BRUSH_LoadInProgressFlag, GLOB_REF_LIST_IFF_TASK_PROC, GLOB_REF_LONG_FILE_SCRATCH, GLOB_STR_CTASKS_C_1, CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, CTASKS_PendingIffBrushDescriptor, CTASKS_IffTaskState
+;   AbsExecBase, BRUSH_LoadInProgressFlag, Global_REF_LIST_IFF_TASK_PROC, Global_REF_LONG_FILE_SCRATCH, Global_STR_CTASKS_C_1, CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, CTASKS_PendingIffBrushDescriptor, CTASKS_IffTaskState
 ; WRITES:
 ;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, CTASKS_PendingIffBrushDescriptor, CTASKS_IffTaskDoneFlag, CTASKS_IffTaskState
 ; DESC:
@@ -42,7 +42,7 @@
 CTASKS_IFFTaskCleanup:
     LINK.W  A5,#-4
     MOVE.L  A4,-(A7)
-    LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
+    LEA     Global_REF_LONG_FILE_SCRATCH,A4
     MOVE.W  CTASKS_IffTaskState,D0                  ; pick scratch buffer based on current state
     SUBQ.W  #4,D0
     BNE.S   .check_state_5
@@ -110,9 +110,9 @@ CTASKS_IFFTaskCleanup:
     MOVE.W  #1,CTASKS_IffTaskDoneFlag
     CLR.W   CTASKS_IffTaskState
     PEA     14.W
-    MOVE.L  GLOB_REF_LIST_IFF_TASK_PROC,-(A7)
+    MOVE.L  Global_REF_LIST_IFF_TASK_PROC,-(A7)
     PEA     127.W
-    PEA     GLOB_STR_CTASKS_C_1
+    PEA     Global_STR_CTASKS_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEA.L -8(A5),A4
@@ -131,9 +131,9 @@ CTASKS_IFFTaskCleanup:
 ; CALLS:
 ;   _LVOForbid/_LVOPermit, _LVOFindTask, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOCreateProc
 ; READS:
-;   CTASKS_IffTaskState, ESQIFF_AssetSourceSelect, GLOB_STR_IFF_TASK_1/2, GLOB_REF_DOS_LIBRARY_2
+;   CTASKS_IffTaskState, ESQIFF_AssetSourceSelect, Global_STR_IFF_TASK_1/2, Global_REF_DOS_LIBRARY_2
 ; WRITES:
-;   CTASKS_IffTaskDoneFlag, CTASKS_IffTaskState, GLOB_REF_LIST_IFF_TASK_PROC, DATA_WDISP_BSS_LONG_21B6, DATA_WDISP_BSS_LONG_21B7
+;   CTASKS_IffTaskDoneFlag, CTASKS_IffTaskState, Global_REF_LIST_IFF_TASK_PROC, DATA_WDISP_BSS_LONG_21B6, DATA_WDISP_BSS_LONG_21B7
 ; DESC:
 ;   Waits until no existing IFF task is present, sets the startup state,
 ;   allocates a List struct, installs CTASKS_IFFTaskCleanup as its entry, and spawns the IFF task process.
@@ -148,7 +148,7 @@ CTASKS_StartIffTaskProcess:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
-    LEA     GLOB_STR_IFF_TASK_1,A1
+    LEA     Global_STR_IFF_TASK_1,A1
     JSR     _LVOFindTask(A6)
 
     MOVE.L  D0,-4(A5)                     ; keep result of FindTask
@@ -176,29 +176,29 @@ CTASKS_StartIffTaskProcess:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (Struct_List_Size).W
     PEA     159.W
-    PEA     GLOB_STR_CTASKS_C_2
+    PEA     Global_STR_CTASKS_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
-    MOVE.L  D0,GLOB_REF_LIST_IFF_TASK_PROC
+    MOVE.L  D0,Global_REF_LIST_IFF_TASK_PROC
     MOVEQ   #(Struct_List_Size),D1
     MOVEA.L D0,A0
     MOVE.L  D1,(A0)
     LEA     CTASKS_IFFTaskCleanup(PC),A0
-    MOVEA.L GLOB_REF_LIST_IFF_TASK_PROC,A1
+    MOVEA.L Global_REF_LIST_IFF_TASK_PROC,A1
     MOVE.L  A0,10(A1)
     MOVE.W  #20217,8(A1)
 
-    MOVEA.L GLOB_REF_LIST_IFF_TASK_PROC,A0
+    MOVEA.L Global_REF_LIST_IFF_TASK_PROC,A0
     ADDQ.L  #4,A0
     MOVE.L  A0,D0
     LSR.L   #2,D0
     MOVE.L  D0,DATA_WDISP_BSS_LONG_21B6
     MOVE.L  D0,D3
-    LEA     GLOB_STR_IFF_TASK_2,A0
+    LEA     Global_STR_IFF_TASK_2,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6    ; spawn IFF task process
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6    ; spawn IFF task process
     JSR     _LVOCreateProc(A6)
 
     MOVE.L  D0,DATA_WDISP_BSS_LONG_21B7
@@ -220,7 +220,7 @@ CTASKS_StartIffTaskProcess:
 ; CALLS:
 ;   _LVOClose, _LVOForbid, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   DATA_CTASKS_BSS_LONG_1B8B (file handle), GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LIST_CLOSE_TASK_PROC
+;   DATA_CTASKS_BSS_LONG_1B8B (file handle), Global_REF_DOS_LIBRARY_2, Global_REF_LIST_CLOSE_TASK_PROC
 ; WRITES:
 ;   DATA_CTASKS_BSS_LONG_1B8B, DATA_CTASKS_CONST_WORD_1B8A
 ; DESC:
@@ -231,12 +231,12 @@ CTASKS_StartIffTaskProcess:
 CTASKS_CloseTaskTeardown:
     MOVE.L  A4,-(A7)
 
-    LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
+    LEA     Global_REF_LONG_FILE_SCRATCH,A4
     TST.L   DATA_CTASKS_BSS_LONG_1B8B
     BEQ.S   .skip_close_handle
 
     MOVE.L  DATA_CTASKS_BSS_LONG_1B8B,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #0,D0
@@ -247,9 +247,9 @@ CTASKS_CloseTaskTeardown:
     JSR     _LVOForbid(A6)
 
     PEA     14.W
-    MOVE.L  GLOB_REF_LIST_CLOSE_TASK_PROC,-(A7)
+    MOVE.L  Global_REF_LIST_CLOSE_TASK_PROC,-(A7)
     PEA     194.W
-    PEA     GLOB_STR_CTASKS_C_3
+    PEA     Global_STR_CTASKS_C_3
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -272,9 +272,9 @@ CTASKS_CloseTaskTeardown:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOCreateProc
 ; READS:
-;   GLOB_STR_CLOSE_TASK, GLOB_REF_DOS_LIBRARY_2
+;   Global_STR_CLOSE_TASK, Global_REF_DOS_LIBRARY_2
 ; WRITES:
-;   DATA_CTASKS_CONST_WORD_1B8A, DATA_CTASKS_BSS_LONG_1B8B, GLOB_REF_LIST_CLOSE_TASK_PROC, DATA_WDISP_BSS_LONG_21B9, DATA_WDISP_BSS_LONG_21BA
+;   DATA_CTASKS_CONST_WORD_1B8A, DATA_CTASKS_BSS_LONG_1B8B, Global_REF_LIST_CLOSE_TASK_PROC, DATA_WDISP_BSS_LONG_21B9, DATA_WDISP_BSS_LONG_21BA
 ; DESC:
 ;   Stores the target handle, allocates a List struct, installs CTASKS_CloseTaskTeardown as its entry,
 ;   and spawns the CLOSE_TASK process.
@@ -293,31 +293,31 @@ CTASKS_StartCloseTaskProcess:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (Struct_List_Size).W
     PEA     203.W
-    PEA     GLOB_STR_CTASKS_C_4
+    PEA     Global_STR_CTASKS_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
-    MOVE.L  D0,GLOB_REF_LIST_CLOSE_TASK_PROC
+    MOVE.L  D0,Global_REF_LIST_CLOSE_TASK_PROC
     MOVEQ   #(Struct_List_Size),D1
     MOVEA.L D0,A0
     MOVE.L  D1,(A0)
     LEA     CTASKS_CloseTaskTeardown(PC),A0
-    MOVEA.L GLOB_REF_LIST_CLOSE_TASK_PROC,A1
+    MOVEA.L Global_REF_LIST_CLOSE_TASK_PROC,A1
     MOVE.L  A0,10(A1)
     MOVE.W  #20217,8(A1)
-    MOVEA.L GLOB_REF_LIST_CLOSE_TASK_PROC,A0
+    MOVEA.L Global_REF_LIST_CLOSE_TASK_PROC,A0
     ADDQ.L  #4,A0
     MOVE.L  A0,D0
     LSR.L   #2,D0
     MOVE.L  D0,DATA_WDISP_BSS_LONG_21B9
     MOVE.L  D0,D3
 
-    LEA     GLOB_STR_CLOSE_TASK,A0
+    LEA     Global_STR_CLOSE_TASK,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOCreateProc(A6)
 
     MOVE.L  D0,DATA_WDISP_BSS_LONG_21BA

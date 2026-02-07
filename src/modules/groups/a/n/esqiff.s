@@ -25,7 +25,7 @@
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQFUNC_TrimTextToPixelWidthWordBoundary, ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   GLOB_HANDLE_PREVUEC_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_ESQIFF_C_1, LAB_09F1, LAB_09F6, LAB_09F8, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_WeatherStatusBrushIndex
+;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQIFF_C_1, LAB_09F1, LAB_09F6, LAB_09F8, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_WeatherStatusBrushIndex
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -110,7 +110,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LEA     36(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     LEA     36(A3),A0
@@ -120,7 +120,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 
     LEA     36(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     LEA     36(A3),A0
@@ -149,7 +149,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 
     LEA     28(A7),A7
     MOVEQ   #0,D0
-    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  20(A0),D0
     MOVE.L  D5,D1
     ADDQ.L  #1,D1
@@ -211,7 +211,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 
     ADD.L   -44(A5),D0
     MOVEQ   #0,D1
-    MOVEA.L GLOB_HANDLE_PREVUEC_FONT,A0
+    MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     MOVE.W  26(A0),D1
     ADD.L   D1,D0
     MOVE.L  D0,D6
@@ -238,7 +238,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D0,-60(A5)
     MOVEA.L A0,A1
     MOVEA.L -8(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -56(A5),D1
@@ -292,7 +292,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D0,-60(A5)
     MOVEA.L A0,A1
     MOVEA.L -8(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -56(A5),D1
@@ -343,7 +343,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     672.W
-    PEA     GLOB_STR_ESQIFF_C_1
+    PEA     Global_STR_ESQIFF_C_1
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A3),A0
@@ -351,7 +351,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A0,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     LEA     36(A3),A0
@@ -378,7 +378,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
 ; READS:
-;   GLOB_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, DATA_ESQIFF_BSS_LONG_1EE9, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, lab_09FD, lab_09FE
+;   Global_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, DATA_ESQIFF_BSS_LONG_1EE9, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, lab_09FD, lab_09FE
 ; WRITES:
 ;   CTASKS_PendingIffBrushDescriptor, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskState, DATA_ESQIFF_BSS_LONG_1EE9
 ; DESC:
@@ -450,7 +450,7 @@ ESQIFF_QueueIffBrushLoad:
     PEA     238.W
     MOVE.L  CTASKS_PendingIffBrushDescriptor,-(A7)
     PEA     724.W
-    PEA     GLOB_STR_ESQIFF_C_2
+    PEA     Global_STR_ESQIFF_C_2
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
@@ -707,9 +707,9 @@ ESQIFF_RenderWeatherStatusBrushSlice_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
 ; READS:
-;   AbsExecBase, GLOB_PTR_STR_DF0_LOGO_LST, GLOB_PTR_STR_GFX_G_ADS, GLOB_REF_DOS_LIBRARY_2, GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, GLOB_STR_ESQIFF_C_3, GLOB_STR_ESQIFF_C_4, GLOB_STR_ESQIFF_C_5, GLOB_STR_ESQIFF_C_6, LAB_0A10, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE, return, stackLong1
+;   AbsExecBase, Global_PTR_STR_DF0_LOGO_LST, Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_3, Global_STR_ESQIFF_C_4, Global_STR_ESQIFF_C_5, Global_STR_ESQIFF_C_6, LAB_0A10, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE, return, stackLong1
 ; WRITES:
-;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_ExternalAssetFlags, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_ExternalAssetFlags, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -754,28 +754,28 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
+    TST.L   Global_REF_LONG_GFX_G_ADS_DATA
     BEQ.S   .loadGfxGAdsFile
 
-    TST.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+    TST.L   Global_REF_LONG_GFX_G_ADS_FILESIZE
     BEQ.S   .loadGfxGAdsFile
 
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D0
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-(A7)
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     882.W
-    PEA     GLOB_STR_ESQIFF_C_3
+    PEA     Global_STR_ESQIFF_C_3
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .loadGfxGAdsFile:
-    CLR.L   GLOB_REF_LONG_GFX_G_ADS_DATA
-    CLR.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+    CLR.L   Global_REF_LONG_GFX_G_ADS_DATA
+    CLR.L   Global_REF_LONG_GFX_G_ADS_FILESIZE
 
     PEA     MODE_OLDFILE
-    MOVE.L  GLOB_PTR_STR_GFX_G_ADS,-(A7)
+    MOVE.L  Global_PTR_STR_GFX_G_ADS,-(A7)
     JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
@@ -787,7 +787,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     JSR     ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+    MOVE.L  D0,Global_REF_LONG_GFX_G_ADS_FILESIZE
     TST.L   D0
     BLE.S   .gfxGAdsFileWithoutData
 
@@ -795,19 +795,19 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D0,-(A7)
     PEA     898.W
-    PEA     GLOB_STR_ESQIFF_C_4
+    PEA     Global_STR_ESQIFF_C_4
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
 
-    MOVE.L  D0,GLOB_REF_LONG_GFX_G_ADS_DATA
+    MOVE.L  D0,Global_REF_LONG_GFX_G_ADS_DATA
     MOVE.L  D6,D1
     MOVE.L  D0,D2
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D3
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
-    CMP.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D0
+    CMP.L   Global_REF_LONG_GFX_G_ADS_FILESIZE,D0
     BNE.S   .gfxGAdsFileWithoutData
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
@@ -816,7 +816,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 
 .gfxGAdsFileWithoutData:
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
 .lab_0A0E:
@@ -850,27 +850,27 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    TST.L   Global_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   .loadDf0LogoLstFile
 
-    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
+    TST.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     BEQ.S   .loadDf0LogoLstFile
 
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     963.W
-    PEA     GLOB_STR_ESQIFF_C_5
+    PEA     Global_STR_ESQIFF_C_5
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .loadDf0LogoLstFile:
-    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
-    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
+    CLR.L   Global_REF_LONG_DF0_LOGO_LST_DATA
+    CLR.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     PEA     MODE_OLDFILE
-    MOVE.L  GLOB_PTR_STR_DF0_LOGO_LST,-(A7)
+    MOVE.L  Global_PTR_STR_DF0_LOGO_LST,-(A7)
     JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
 
     ADDQ.W  #8,A7
@@ -882,7 +882,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     JSR     ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
+    MOVE.L  D0,Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     TST.L   D0
     BLE.S   .df0LogoLstFileWithoutData
 
@@ -891,18 +891,18 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D0,-(A7)
     PEA     979.W
-    PEA     GLOB_STR_ESQIFF_C_6
+    PEA     Global_STR_ESQIFF_C_6
     JSR     ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    MOVE.L  D0,Global_REF_LONG_DF0_LOGO_LST_DATA
     MOVE.L  D6,D1
     MOVE.L  D0,D2
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D3
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
-    CMP.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
+    CMP.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     BNE.S   .df0LogoLstFileWithoutData
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
@@ -911,7 +911,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 
 .df0LogoLstFileWithoutData:
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
 .return:
@@ -939,7 +939,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, GCOMMAND_FindPathSeparator, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
 ; READS:
-;   AbsExecBase, GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_GFX_G_ADS_DATA, LAB_0A1A, LAB_0A22, LAB_0A23, LAB_0A27, LAB_0A32, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_ESQIFF_PATH_DF0_COLON_1EF3, DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4, DATA_WDISP_BSS_WORD_22AC, ESQIFF_AssetSourceSelect, DATA_WDISP_BSS_LONG_22C3, TEXTDISP_CurrentMatchIndex, fa00, return
+;   AbsExecBase, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_0A1A, LAB_0A22, LAB_0A23, LAB_0A27, LAB_0A32, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_ESQIFF_PATH_DF0_COLON_1EF3, DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4, DATA_WDISP_BSS_WORD_22AC, ESQIFF_AssetSourceSelect, DATA_WDISP_BSS_LONG_22C3, TEXTDISP_CurrentMatchIndex, fa00, return
 ; WRITES:
 ;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_WDISP_BSS_LONG_22A8, DATA_WDISP_BSS_LONG_22C2, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -995,14 +995,14 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
     MOVEQ   #0,D1
     MOVE.W  D1,-128(A5)
-    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    TST.L   Global_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   .lab_0A18
 
     MOVE.W  ESQIFF_AssetSourceSelect,D2
     BNE.S   .lab_0A19
 
 .lab_0A18:
-    TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
+    TST.L   Global_REF_LONG_GFX_G_ADS_DATA
     BEQ.W   .lab_0A32
 
     MOVE.W  ESQIFF_AssetSourceSelect,D2
@@ -1258,7 +1258,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 ; CALLS:
 ;   ESQDISP_ProcessGridMessagesIfIdle
 ; READS:
-;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled, return
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled, return
 ; WRITES:
 ;   DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, DATA_WDISP_BSS_LONG_22C3
 ; DESC:
@@ -1275,8 +1275,8 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .lab_0A36
 
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
     MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_WDISP_BSS_LONG_22C3
@@ -1286,8 +1286,8 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     MOVE.W  ESQIFF_GAdsSourceEnabled,D0
     BEQ.S   .lab_0A37
 
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D4
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-14(A5)
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D4
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-14(A5)
     MOVE.W  DATA_WDISP_BSS_LONG_22AD,D6
     BRA.S   .lab_0A38
 
@@ -1325,13 +1325,13 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
     BEQ.S   .lab_0A3C
 
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
     BRA.S   .lab_0A3D
 
 .lab_0A3C:
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D4
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-14(A5)
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D4
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-14(A5)
 
 .lab_0A3D:
     MOVEQ   #1,D6
@@ -1501,7 +1501,7 @@ ESQIFF_RunCopperDropTransition:
 ; CALLS:
 ;   ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd, ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart
 ; READS:
-;   GLOB_REF_LONG_FILE_SCRATCH, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, DATA_WDISP_BSS_WORD_22B1, DATA_WDISP_BSS_BYTE_22B2, DATA_WDISP_BSS_BYTE_22B3, DATA_WDISP_BSS_WORD_22B5, DATA_WDISP_BSS_BYTE_22B6, DATA_WDISP_BSS_BYTE_22B7, DATA_WDISP_BSS_WORD_22B9, DATA_WDISP_BSS_BYTE_22BA, DATA_WDISP_BSS_BYTE_22BB, DATA_WDISP_BSS_WORD_22BD, DATA_WDISP_BSS_BYTE_22BE, DATA_WDISP_BSS_BYTE_22BF
+;   Global_REF_LONG_FILE_SCRATCH, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, WDISP_AccumulatorRow0_MoveFlags, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_MoveFlags, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_MoveFlags, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_MoveFlags, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18
 ; DESC:
@@ -1511,23 +1511,23 @@ ESQIFF_RunCopperDropTransition:
 ;------------------------------------------------------------------------------
 ESQIFF_ServicePendingCopperPaletteMoves:
     MOVE.L  A4,-(A7)
-    LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
+    LEA     Global_REF_LONG_FILE_SCRATCH,A4
     MOVE.W  DATA_COMMON_BSS_WORD_1B15,D0
     SUBQ.W  #1,D0
     BNE.S   .lab_0A4C
 
-    TST.W   DATA_WDISP_BSS_WORD_22B1
+    TST.W   WDISP_AccumulatorRow0_MoveFlags
     BEQ.S   .lab_0A4C
 
     CLR.W   DATA_COMMON_BSS_WORD_1B15
-    MOVE.W  DATA_WDISP_BSS_WORD_22B1,D0
+    MOVE.W  WDISP_AccumulatorRow0_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .lab_0A4B
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
+    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D1
+    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
@@ -1537,9 +1537,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
 .lab_0A4B:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
+    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D1
+    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
@@ -1551,18 +1551,18 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     SUBQ.W  #1,D0
     BNE.S   .lab_0A4E
 
-    TST.W   DATA_WDISP_BSS_WORD_22B5
+    TST.W   WDISP_AccumulatorRow1_MoveFlags
     BEQ.S   .lab_0A4E
 
     CLR.W   DATA_COMMON_BSS_WORD_1B16
-    MOVE.W  DATA_WDISP_BSS_WORD_22B5,D0
+    MOVE.W  WDISP_AccumulatorRow1_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .lab_0A4D
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D0
+    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D1
+    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
@@ -1572,9 +1572,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
 .lab_0A4D:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D0
+    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D1
+    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
@@ -1586,18 +1586,18 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     SUBQ.W  #1,D0
     BNE.S   .lab_0A50
 
-    TST.W   DATA_WDISP_BSS_WORD_22B9
+    TST.W   WDISP_AccumulatorRow2_MoveFlags
     BEQ.S   .lab_0A50
 
     CLR.W   DATA_COMMON_BSS_WORD_1B17
-    MOVE.W  DATA_WDISP_BSS_WORD_22B9,D0
+    MOVE.W  WDISP_AccumulatorRow2_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .lab_0A4F
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
+    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D1
+    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
@@ -1607,9 +1607,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
 .lab_0A4F:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
+    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D1
+    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
@@ -1621,18 +1621,18 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     SUBQ.W  #1,D0
     BNE.S   .lab_0A52
 
-    TST.W   DATA_WDISP_BSS_WORD_22BD
+    TST.W   WDISP_AccumulatorRow3_MoveFlags
     BEQ.S   .lab_0A52
 
     CLR.W   DATA_COMMON_BSS_LONG_1B18
-    MOVE.W  DATA_WDISP_BSS_WORD_22BD,D0
+    MOVE.W  WDISP_AccumulatorRow3_MoveFlags,D0
     BTST    #1,D0
     BEQ.S   .lab_0A51
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D0
+    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D1
+    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
@@ -1642,9 +1642,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
 .lab_0A51:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D0
+    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D1
+    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(PC)
@@ -1668,7 +1668,7 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 ; CALLS:
 ;   _LVOSetAPen
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_PaletteTriplesGBase, WDISP_PaletteTriplesBBase, DATA_WDISP_BSS_LONG_22AE
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_PaletteTriplesGBase, WDISP_PaletteTriplesBBase, DATA_WDISP_BSS_LONG_22AE
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1738,10 +1738,10 @@ ESQIFF_SetApenToBrightestPaletteIndex:
 
 .lab_0A56:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVE.L  -14(A5),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEM.L (A7)+,D2/D4-D7
@@ -1764,7 +1764,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
-;   AbsExecBase, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, DATA_WDISP_BSS_WORD_22AF, DATA_WDISP_BSS_WORD_22B0, DATA_WDISP_BSS_BYTE_22B2, DATA_WDISP_BSS_BYTE_22B3, DATA_WDISP_BSS_WORD_22B4, DATA_WDISP_BSS_BYTE_22B6, DATA_WDISP_BSS_BYTE_22B7, DATA_WDISP_BSS_WORD_22B8, DATA_WDISP_BSS_BYTE_22BA, DATA_WDISP_BSS_BYTE_22BB, DATA_WDISP_BSS_WORD_22BC, DATA_WDISP_BSS_BYTE_22BE, DATA_WDISP_BSS_BYTE_22BF, e8, lab_0A72
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, e8, lab_0A72
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, DATA_ESQFUNC_BSS_WORD_1EE4, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -1849,7 +1849,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVEA.L -22(A5),A0
     ADDA.L  D0,A0
     LEA     200(A0),A1
-    LEA     DATA_WDISP_BSS_WORD_22AF,A0
+    LEA     WDISP_AccumulatorRowTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,28(A7)
     MOVEA.L A1,A0
@@ -1932,14 +1932,14 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 
 .lab_0A63:
     MOVEA.L D0,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #7,D0
     JSR     _LVOSetAPen(A6)
@@ -2009,16 +2009,16 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     BRA.S   .branch
 
 .lab_0A66:
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B2,D0
+    MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
     BCC.S   .branch_1
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B3,D0
+    MOVE.B  WDISP_AccumulatorRow0_CopperIndexEnd,D0
     CMP.B   D1,D0
     BCC.S   .branch_1
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22B0,D0
+    MOVE.W  WDISP_AccumulatorRow0_Value,D0
     CMPI.W  #$4000,D0
     BGE.S   .branch_1
 
@@ -2030,15 +2030,15 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
 
 .branch_2:
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B6,D2
+    MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D2
     CMP.B   D1,D2
     BCC.S   .branch_3
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_22B7,D2
+    MOVE.B  WDISP_AccumulatorRow1_CopperIndexEnd,D2
     CMP.B   D1,D2
     BCC.S   .branch_3
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22B4,D2
+    MOVE.W  WDISP_AccumulatorRow1_Value,D2
     CMPI.W  #$4000,D2
     BGE.S   .branch_3
 
@@ -2050,15 +2050,15 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
 
 .branch_4:
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BA,D0
+    MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
     CMP.B   D1,D0
     BCC.S   .branch_5
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BB,D0
+    MOVE.B  WDISP_AccumulatorRow2_CopperIndexEnd,D0
     CMP.B   D1,D0
     BCC.S   .branch_5
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22B8,D0
+    MOVE.W  WDISP_AccumulatorRow2_Value,D0
     CMPI.W  #$4000,D0
     BGE.S   .branch_5
 
@@ -2070,15 +2070,15 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
 
 .branch_6:
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BE,D2
+    MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D2
     CMP.B   D1,D2
     BCC.S   .branch_7
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_22BF,D2
+    MOVE.B  WDISP_AccumulatorRow3_CopperIndexEnd,D2
     CMP.B   D1,D2
     BCC.S   .branch_7
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22BC,D1
+    MOVE.W  WDISP_AccumulatorRow3_Value,D1
     CMPI.W  #$4000,D1
     BGE.S   .branch_7
 
@@ -2174,7 +2174,7 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ; CALLS:
 ;   ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
 ; READS:
-;   GLOB_WORD_SELECT_CODE_IS_RAVESC, DATA_COI_BSS_WORD_1B85, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319
+;   Global_WORD_SELECT_CODE_IS_RAVESC, DATA_COI_BSS_WORD_1B85, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319
 ; WRITES:
 ;   ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
 ; DESC:
@@ -2185,7 +2185,7 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ESQIFF_ServiceExternalAssetSourceState:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
-    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .return
 
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
@@ -2256,7 +2256,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, GLOB_REF_GRAPHICS_LIBRARY, GLOB_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_22C2, DATA_WDISP_BSS_LONG_22C3, lab_0A87, lab_0A88
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_22C2, DATA_WDISP_BSS_LONG_22C3, lab_0A87, lab_0A88
 ; WRITES:
 ;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2315,10 +2315,10 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     MOVE.L  D0,WDISP_DisplayContextBase
     MOVEA.L D0,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
@@ -2366,10 +2366,10 @@ ESQIFF_PlayNextExternalAssetFrame:
     BNE.S   .lab_0A84
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BSR.W   ESQIFF_SetApenToBrightestPaletteIndex
@@ -2381,18 +2381,18 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     ADDQ.W  #8,A7
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
 .lab_0A84:
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L AbsExecBase,A6
@@ -2491,51 +2491,51 @@ ESQIFF_PlayNextExternalAssetFrame_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE, GLOB_STR_ESQIFF_C_7, GLOB_STR_ESQIFF_C_8
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_7, Global_STR_ESQIFF_C_8
 ; WRITES:
-;   GLOB_REF_LONG_DF0_LOGO_LST_DATA, GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE, GLOB_REF_LONG_GFX_G_ADS_DATA, GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 ESQIFF_DeallocateAdsAndLogoLstData:
-    TST.L   GLOB_REF_LONG_GFX_G_ADS_DATA
+    TST.L   Global_REF_LONG_GFX_G_ADS_DATA
     BEQ.S   .deallocLogoLstData
 
-    TST.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+    TST.L   Global_REF_LONG_GFX_G_ADS_FILESIZE
     BEQ.S   .deallocLogoLstData
 
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_FILESIZE,D0
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  GLOB_REF_LONG_GFX_G_ADS_DATA,-(A7)
+    MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-(A7)
     PEA     1988.W
-    PEA     GLOB_STR_ESQIFF_C_7
+    PEA     Global_STR_ESQIFF_C_7
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   GLOB_REF_LONG_GFX_G_ADS_DATA
-    CLR.L   GLOB_REF_LONG_GFX_G_ADS_FILESIZE
+    CLR.L   Global_REF_LONG_GFX_G_ADS_DATA
+    CLR.L   Global_REF_LONG_GFX_G_ADS_FILESIZE
 
 .deallocLogoLstData:
-    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
+    TST.L   Global_REF_LONG_DF0_LOGO_LST_DATA
     BEQ.S   .return
 
-    TST.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
+    TST.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     BEQ.S   .return
 
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
     ADDQ.L  #1,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  GLOB_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
+    MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-(A7)
     PEA     1994.W
-    PEA     GLOB_STR_ESQIFF_C_8
+    PEA     Global_STR_ESQIFF_C_8
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_DATA
-    CLR.L   GLOB_REF_LONG_DF0_LOGO_LST_FILESIZE
+    CLR.L   Global_REF_LONG_DF0_LOGO_LST_DATA
+    CLR.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
 
 .return:
     RTS
@@ -2629,7 +2629,7 @@ ESQIFF_RunPendingCopperAnimations:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_FindType3Brush, ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel, ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle, ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle, GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, GROUP_AU_JMPTBL_BRUSH_PopulateBrushList
 ; READS:
-;   BRUSH_SelectedNode, GLOB_STR_DF0_BRUSH_INI_2, PARSEINI_ParsedDescriptorListHead, ESQIFF_BrushIniListHead, DATA_ESQIFF_TAG_DT_1EF8, DATA_ESQIFF_TAG_DITHER_1EF9
+;   BRUSH_SelectedNode, Global_STR_DF0_BRUSH_INI_2, PARSEINI_ParsedDescriptorListHead, ESQIFF_BrushIniListHead, DATA_ESQIFF_TAG_DT_1EF8, DATA_ESQIFF_TAG_DITHER_1EF9
 ; WRITES:
 ;   BRUSH_SelectedNode, DATA_ESQFUNC_BSS_LONG_1ED0
 ; DESC:
@@ -2651,7 +2651,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
     PEA     ESQIFF_BrushIniListHead
     JSR     ESQIFF_JMPTBL_BRUSH_FreeBrushList(PC)
 
-    PEA     GLOB_STR_DF0_BRUSH_INI_2
+    PEA     Global_STR_DF0_BRUSH_INI_2
     JSR     GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(PC)
 
     PEA     ESQIFF_BrushIniListHead

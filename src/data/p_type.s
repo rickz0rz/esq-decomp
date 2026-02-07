@@ -1,14 +1,14 @@
 ; ========== P_TYPE.c ==========
 
-GLOB_STR_P_TYPE_C_1:
+Global_STR_P_TYPE_C_1:
     NStr    "P_TYPE.c"
-GLOB_STR_P_TYPE_C_2:
+Global_STR_P_TYPE_C_2:
     NStr    "P_TYPE.c"
-GLOB_STR_P_TYPE_C_3:
+Global_STR_P_TYPE_C_3:
     NStr    "P_TYPE.c"
-GLOB_STR_P_TYPE_C_4:
+Global_STR_P_TYPE_C_4:
     NStr    "P_TYPE.c"
-GLOB_STR_P_TYPE_C_5:
+Global_STR_P_TYPE_C_5:
     NStr    "P_TYPE.c"
 DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_204F:
     NStr    "df0:PromoId.Dat"
@@ -30,7 +30,7 @@ DATA_P_TYPE_STR_TYPES_COLON_2056:
     NStr    "TYPES: "
 DATA_P_TYPE_STR_NXTDAY_COLON_2057:
     NStr    "NXTDAY:"
-GLOB_STR_P_TYPE_C_6:
+Global_STR_P_TYPE_C_6:
     NStr    "P_TYPE.c"
     DS.W    1
 DATA_P_TYPE_BSS_LONG_2059:

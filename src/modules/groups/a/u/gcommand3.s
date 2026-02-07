@@ -13,7 +13,7 @@
 ; CALLS:
 ;   GCOMMAND_GetBannerChar
 ; READS:
-;   GLOB_REF_WORD_HEX_CODE_8E, DATA_CTASKS_CONST_LONG_1BCA, DATA_ESQPARS2_BSS_LONG_1F48, GCOMMAND_BannerQueueSlotPrevious
+;   Global_REF_WORD_HEX_CODE_8E, DATA_CTASKS_CONST_LONG_1BCA, DATA_ESQPARS2_BSS_LONG_1F48, GCOMMAND_BannerQueueSlotPrevious
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -45,7 +45,7 @@ GCOMMAND_MapKeycodeToPreset:
 
     BSR.W   GCOMMAND_GetBannerChar
 
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D1
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D1
     CMP.W   D0,D1
     BNE.S   .lab_0D69
 
@@ -1146,7 +1146,7 @@ GCOMMAND_TickPresetWorkEntries:
 ; CALLS:
 ;   GCOMMAND_ComputePresetIncrement, _LVODisable, _LVOEnable
 ; READS:
-;   GLOB_UIBusyFlag
+;   Global_UIBusyFlag
 ; WRITES:
 ;   GCOMMAND_BannerBoundLeft, GCOMMAND_BannerBoundTop, GCOMMAND_BannerBoundRight, GCOMMAND_BannerBoundBottom,
 ;   GCOMMAND_BannerStepLeft..GCOMMAND_BannerStepBottom, DATA_GCOMMAND_BSS_WORD_1FA4
@@ -1166,7 +1166,7 @@ GCOMMAND_UpdateBannerBounds:
     MOVE.L  D6,GCOMMAND_BannerBoundTop
     MOVE.L  D5,GCOMMAND_BannerBoundRight
     MOVE.L  D4,GCOMMAND_BannerBoundBottom
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BEQ.S   .use_zero
 
     MOVEQ   #0,D0
@@ -1219,7 +1219,7 @@ GCOMMAND_UpdateBannerBounds:
 ; CALLS:
 ;   GCOMMAND_InitPresetWorkEntry, GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3, GLOB_UIBusyFlag
+;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3, Global_UIBusyFlag
 ; WRITES:
 ;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, ESQ_CopperListBannerA, ESQ_CopperListBannerB
 ; DESC:
@@ -1238,7 +1238,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     ADDA.W  #$80,A1
     MOVE.L  A0,-12(A5)
     MOVE.L  A1,-16(A5)
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BEQ.S   .use_zero
 
     MOVEQ   #0,D0
@@ -1936,7 +1936,7 @@ GCOMMAND_RefreshBannerTables:
     PEA     98.W
     MOVE.L  DATA_GCOMMAND_BSS_LONG_1FA8,-(A7)
     PEA     ESQ_CopperListBannerA
-    PEA     GLOB_REF_696_400_BITMAP
+    PEA     Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_BuildBannerRow
 
     MOVEQ   #88,D0
@@ -1945,7 +1945,7 @@ GCOMMAND_RefreshBannerTables:
     PEA     98.W
     MOVE.L  DATA_GCOMMAND_BSS_LONG_1FA8,-(A7)
     PEA     ESQ_CopperListBannerB
-    PEA     GLOB_REF_696_400_BITMAP
+    PEA     Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_BuildBannerRow
 
     LEA     36(A7),A7
@@ -2112,7 +2112,7 @@ GCOMMAND_ServiceHighlightMessages:
 ;------------------------------------------------------------------------------
 GCOMMAND_TickHighlightState:
     MOVEM.L D2/A4,-(A7)
-    LEA     GLOB_REF_LONG_FILE_SCRATCH,A4
+    LEA     Global_REF_LONG_FILE_SCRATCH,A4
     TST.W   DATA_GCOMMAND_BSS_WORD_1FA4
     BEQ.S   .skip_rebuild
 
@@ -2248,13 +2248,13 @@ GCOMMAND_ResetHighlightMessages:
 ;   GCOMMAND_ComputePresetIncrement, GCOMMAND_InitPresetWorkEntry,
 ;   GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   GLOB_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3
+;   Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3
 ; WRITES:
 ;   [outPtr] (writes 32-byte entries)
 ; DESC:
 ;   Emits a block of banner/copper entries using preset tables and source bytes.
 ; NOTES:
-;   Entry count comes from stack +8; uses GLOB_UIBusyFlag to optionally force count=0.
+;   Entry count comes from stack +8; uses Global_UIBusyFlag to optionally force count=0.
 ;------------------------------------------------------------------------------
 GCOMMAND_BuildBannerBlock:
     LINK.W  A5,#-12
@@ -2266,7 +2266,7 @@ GCOMMAND_BuildBannerBlock:
     MOVE.W  26(A5),D5
     MOVE.B  31(A5),D4
     MOVE.L  A3,-4(A5)
-    TST.W   GLOB_UIBusyFlag
+    TST.W   Global_UIBusyFlag
     BEQ.S   .use_count
 
     MOVEQ   #0,D0
@@ -2820,7 +2820,7 @@ GCOMMAND_CopyImageDataToBitmap:
 ;   _LVODisable, _LVOEnable, GCOMMAND_ResetPresetWorkTables,
 ;   GCOMMAND_ClearBannerQueue, GCOMMAND_CopyImageDataToBitmap
 ; READS:
-;   DATA_GCOMMAND_CONST_LONG_1FA7, DATA_WDISP_BSS_LONG_2312, GLOB_REF_696_400_BITMAP
+;   DATA_GCOMMAND_CONST_LONG_1FA7, DATA_WDISP_BSS_LONG_2312, Global_REF_696_400_BITMAP
 ; WRITES:
 ;   DATA_GCOMMAND_BSS_LONG_1FA8, GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerQueueSlotPrevious..GCOMMAND_BannerRowIndexCurrent, DATA_WDISP_BSS_LONG_2311, DATA_ED2_BSS_WORD_1D31, ESQPARS2_ReadModeFlags
 ; DESC:
@@ -2864,7 +2864,7 @@ GCOMMAND_BuildBannerTables:
     MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
     PEA     2992.W
     PEA     ESQ_CopperListBannerA
-    PEA     GLOB_REF_696_400_BITMAP
+    PEA     Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_CopyImageDataToBitmap
 
     MOVE.B  D7,-1(A5)
@@ -2880,7 +2880,7 @@ GCOMMAND_BuildBannerTables:
     MOVE.L  D0,-(A7)
     PEA     3080.W
     PEA     ESQ_CopperListBannerB
-    PEA     GLOB_REF_696_400_BITMAP
+    PEA     Global_REF_696_400_BITMAP
     BSR.W   GCOMMAND_CopyImageDataToBitmap
 
     BSR.W   GCOMMAND_ClearBannerQueue
@@ -3164,13 +3164,13 @@ GCOMMAND_SeedBannerDefaults:
 ; CALLS:
 ;   GCOMMAND_BuildBannerTables
 ; READS:
-;   GLOB_REF_WORD_HEX_CODE_8E
+;   Global_REF_WORD_HEX_CODE_8E
 ; WRITES:
 ;   ESQ_CopperListBannerA, ESQ_CopperListBannerB
 ; DESC:
 ;   Seed banner buffers using values read from preferences.
 ; NOTES:
-;   Seeds the leading bytes from GLOB_REF_WORD_HEX_CODE_8E and applies defaults.
+;   Seeds the leading bytes from Global_REF_WORD_HEX_CODE_8E and applies defaults.
 ;------------------------------------------------------------------------------
 
 ; Seed banner buffers using values read from preferences.
@@ -3183,7 +3183,7 @@ GCOMMAND_SeedBannerFromPrefs:
     BSR.W   GCOMMAND_BuildBannerTables
 
     MOVE.L  #ESQ_CopperListBannerA,-4(A5)
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,(A0)
     MOVEQ   #-39,D0
@@ -3191,7 +3191,7 @@ GCOMMAND_SeedBannerFromPrefs:
     MOVEQ   #-2,D1
     MOVE.W  D1,2(A0)
     MOVE.L  #ESQ_CopperListBannerB,-4(A5)
-    MOVE.W  GLOB_REF_WORD_HEX_CODE_8E,D2
+    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D2
     MOVEA.L -4(A5),A0
     MOVE.B  D2,(A0)
     MOVE.B  D0,1(A0)

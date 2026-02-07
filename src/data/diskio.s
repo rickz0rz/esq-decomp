@@ -1,22 +1,22 @@
 ; ========== DISKIO.c ==========
 
-GLOB_STR_DISKIO_C_1:
+Global_STR_DISKIO_C_1:
     NStr    "DISKIO.c"
-GLOB_STR_DISKIO_C_2:
+Global_STR_DISKIO_C_2:
     NStr    "DISKIO.c"
-GLOB_STR_PERCENT_LD:
+Global_STR_PERCENT_LD:
     NStr    "%ld"
-GLOB_STR_DISKIO_C_3:
+Global_STR_DISKIO_C_3:
     NStr    "DISKIO.c"
-GLOB_STR_DISKIO_C_4:
+Global_STR_DISKIO_C_4:
     NStr    "DISKIO.c"
-GLOB_STR_DISKIO_C_5:
+Global_STR_DISKIO_C_5:
     NStr    "DISKIO.c"
-GLOB_STR_DISKIO_C_6:
+Global_STR_DISKIO_C_6:
     NStr    "DISKIO.c"
-GLOB_STR_DISKIO_C_7:
+Global_STR_DISKIO_C_7:
     NStr    "DISKIO.c"
-GLOB_STR_DISKIO_C_8:
+Global_STR_DISKIO_C_8:
     NStr    "DISKIO.c"
 DATA_DISKIO_CONST_LONG_1BD5:
     DC.L    1
@@ -65,16 +65,16 @@ DISKIO_CMD_MOUNT_PC1:
     NStr    "Mount PC1:"
 DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT:
     NStr    "Assign GFX: PC1:"
-GLOB_STR_DF0_CONFIG_DAT_1:
+Global_STR_DF0_CONFIG_DAT_1:
     NStr    "df0:config.dat"
-GLOB_STR_DEFAULT_CONFIG_FORMATTED:
+Global_STR_DEFAULT_CONFIG_FORMATTED:
     DC.B    "%01ld%01lc%01ld%01ld%02ld%02ld%01lc%01lc%01lc%01lc%01ld%01ld%"
     DC.B    "01lc%01lc%01lc%01lc%01lc%01lc%01lc%02ld%02ld%01lc%01lc%01lc%0"
     DC.B    "2ld%02ld%02ld%03ld%01ld%2.2s%01lc%01lc%01lc%01c%01c%01d%01c%0"
     NStr2   "1c%01c%01c%01c%01c",TextLineFeed
-GLOB_STR_DF0_CONFIG_DAT_2:
+Global_STR_DF0_CONFIG_DAT_2:
     NStr    "df0:config.dat"
-GLOB_STR_DISKIO_C_9:
+Global_STR_DISKIO_C_9:
     NStr    "DISKIO.c"
 DATA_DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD_1BED:
     NStr2   "Channel Line Up # %ld",TextLineFeed
@@ -110,7 +110,7 @@ DATA_DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX_1BFC:
     NStr    "tslt_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
 DATA_DISKIO_STR_NONE_1BFD:
     NStr2   "(NONE)",TextLineFeed
-GLOB_STR_OFF_AIR_2:
+Global_STR_OFF_AIR_2:
     NStr2   "(OFF AIR)",TextLineFeed
 DATA_DISKIO_STR_VALUE_1BFF:
     NStr    "("

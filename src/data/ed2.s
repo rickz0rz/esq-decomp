@@ -25,20 +25,20 @@ DATA_ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL_1D1D:
     NStr    "Text Ads will be loaded from DH2:"
 
 ; Strings for ESC -> Special Functions -> Reboot computer
-GLOB_STR_COMPUTER_WILL_RESET:
+Global_STR_COMPUTER_WILL_RESET:
     NStr    "Computer will reset!"
-GLOB_STR_GO_OFF_AIR_FOR_1_2_MINS:
+Global_STR_GO_OFF_AIR_FOR_1_2_MINS:
     NStr    "(go off-air for 1-2 mins)"
 
-GLOB_STR_SAVING_EVERYTHING_TO_DISK:
+Global_STR_SAVING_EVERYTHING_TO_DISK:
     NStr    "Saving ""EVERYTHING"" to disk"
-GLOB_STR_SAVING_PREVUE_DATA_TO_DISK:
+Global_STR_SAVING_PREVUE_DATA_TO_DISK:
     NStr    "Saving Prevue data to disk"
-GLOB_STR_LOADING_TEXT_ADS_FROM_DH2:
+Global_STR_LOADING_TEXT_ADS_FROM_DH2:
     NStr    "Loading Text Ads from DH2:"
 
 ; Strings for ESC -> Special Functions -> Reboot computer
-GLOB_STR_REBOOTING_COMPUTER:
+Global_STR_REBOOTING_COMPUTER:
     NStr    "Rebooting Computer........"
 
 ; Strings for ESC - Edit Attributes?
@@ -56,21 +56,21 @@ DATA_ED2_STR_LOCAL_EDIT_NOT_AVAILABLE_1D29:
     NStr    "Local Edit not available"
 
 ; Version strings shown at the top of the ESC menu
-GLOB_STR_VER_PERCENT_S_PERCENT_L_D:
+Global_STR_VER_PERCENT_S_PERCENT_L_D:
     NStr    "Ver %s.%ld"
-GLOB_STR_NINE_POINT_ZERO:
+Global_STR_NINE_POINT_ZERO:
     NStr    "9.0"   ; Major/minor version string
 
 ; Strings for ESC -> Diagnostic Mode
-GLOB_STR_BAUD_RATE_DIAGNOSTIC_MODE:
+Global_STR_BAUD_RATE_DIAGNOSTIC_MODE:
     NStr    "%ld baud"
-GLOB_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS:
+Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS:
     NStr    "Disk 0 is %2ld%% full with %2ld Errors"
 DATA_ED2_BSS_WORD_1D2E:
     DS.W    1
 DATA_ED2_BSS_WORD_1D2F:
     DS.W    1
-GLOB_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
+Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
     NStr    "Push any key to continue."
 DATA_ED2_BSS_WORD_1D31:
     DS.W    1
@@ -91,13 +91,13 @@ DATA_ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D_1D35:
     NStr    "MR=%d SBS=%d Sport=%d"
 DATA_ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR_1D36:
     NStr    "Cycle=%c CycleFreq=%d AftrOrdr=%d"
-GLOB_STR_CLOCKCMD_EQUALS_PCT_C:
+Global_STR_CLOCKCMD_EQUALS_PCT_C:
     NStr    "ClockCmd=%c"
-GLOB_STR_ED2_C_1:
+Global_STR_ED2_C_1:
     NStr    "ED2.c"
-GLOB_STR_PI_CLU_POS1:
+Global_STR_PI_CLU_POS1:
     NStr    "PI[%d] Clu_pos1=%d"
-GLOB_STR_CHAN_SOURCE_CALLLTRS_1:
+Global_STR_CHAN_SOURCE_CALLLTRS_1:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
 DATA_ED2_TAG_NULL_1D3B:
     NStr    "NULL"
@@ -105,7 +105,7 @@ DATA_ED2_TAG_NULL_1D3C:
     NStr    "NULL"
 DATA_ED2_TAG_NULL_1D3D:
     NStr    "NULL"
-GLOB_STR_TS_TITLE_TIME:
+Global_STR_TS_TITLE_TIME:
     NStr    "TS=%d Title='%s' Time=%s"
 DATA_ED2_TAG_NULL_1D3F:
     NStr    "NULL"
@@ -125,11 +125,11 @@ DATA_ED2_STR_REPEATPROG_1D46:
     NStr    "REPEATPROG "
 DATA_ED2_STR_PREVDAYSDATA_1D47:
     NStr    "PREVDAYSDATA "
-GLOB_STR_ED2_C_2:
+Global_STR_ED2_C_2:
     NStr    "ED2.c"
-GLOB_STR_CLU_CLU_POS1:
+Global_STR_CLU_CLU_POS1:
     NStr    "CLU[%d] Clu_pos1=%d"
-GLOB_STR_CHAN_SOURCE_CALLLTRS_2:
+Global_STR_CHAN_SOURCE_CALLLTRS_2:
     NStr    "Chan=%s Source=%s CallLtrs=%s"
 DATA_ED2_STR_NONE_1D4B:
     NStr    "None "
@@ -162,15 +162,15 @@ DATA_ED2_STR_CTIME_1D58:
     NStr    "CTime"
 DATA_ED2_STR_BTIME_1D59:
     NStr    "BTime"
-GLOB_STR_DF0_CLOCK_CMD:
+Global_STR_DF0_CLOCK_CMD:
     NStr    "df0:clock.cmd"
 DATA_ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU_1D5B:
     NStr3   TextLineFeed,"ED.C: Short DUMP OF CLU",TextLineFeed
 DATA_ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1__1D5C:
     NStr2   "    clu_pos1=%ld, curclu=%s, jdclu1=%ld, curjd=%ld",TextLineFeed
-GLOB_STR_TRUE_1:
+Global_STR_TRUE_1:
     NStr    "TRUE"
-GLOB_STR_FALSE_1:
+Global_STR_FALSE_1:
     NStr    "FALSE"
 DATA_ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU_1D5F:
     NStr3   "ED.C: END OF DUMP OF CLU",TextLineFeed,TextLineFeed
@@ -194,7 +194,7 @@ DATA_ED2_FMT_BANNER_FOR_WEATHER_PCT_D_1D68:
     NStr3   TextLineFeed,"banner_for_weather = %d",TextLineFeed
 DATA_ED2_FMT_BITPLANE1_PCT_8LX_1D69:
     NStr    "BitPlane1 =%8lx  "
-GLOB_STR_DF0_GRADIENT_INI_1:
+Global_STR_DF0_GRADIENT_INI_1:
     NStr    "df0:Gradient.ini"
 DATA_ED2_TAG_NRLS_1D6B:
     NStr    "NRLS"
@@ -229,113 +229,113 @@ DATA_ED2_STR_START_TAPE_VIDEO_1D79:
 DATA_ED2_STR_STOP_1D7A:
     NStr    "Stop  "
     DS.W    1
-GLOB_REF_BOOL_IS_TEXT_OR_CURSOR:
+Global_REF_BOOL_IS_TEXT_OR_CURSOR:
     DC.L    $00000001
 
 ; Strings for the ESC menu
-GLOB_STR_EDIT_ADS:
+Global_STR_EDIT_ADS:
     NStr    "Edit Ads"
-GLOB_STR_EDIT_ATTRIBUTES:
+Global_STR_EDIT_ATTRIBUTES:
     NStr    "Edit Attributes"
-GLOB_STR_CHANGE_SCROLL_SPEED:
+Global_STR_CHANGE_SCROLL_SPEED:
     NStr    "Change Scroll Speed"
-GLOB_STR_DIAGNOSTIC_MODE:
+Global_STR_DIAGNOSTIC_MODE:
     NStr    "Diagnostic Mode"
-GLOB_STR_SPECIAL_FUNCTIONS:
+Global_STR_SPECIAL_FUNCTIONS:
     NStr    "Special Functions"
-GLOB_STR_VERSIONS_SCREEN:
+Global_STR_VERSIONS_SCREEN:
     NStr    "Versions Screen"
-GLOB_STR_PUSH_ESC_TO_RESUME:
+Global_STR_PUSH_ESC_TO_RESUME:
     NStr    " Push ESC to resume"
-GLOB_STR_PUSH_RETURN_TO_ENTER_SELECTION_1:
+Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1:
     NStr    " Push RETURN to enter selection"
-GLOB_STR_PUSH_ANY_KEY_TO_SELECT_1:
+Global_STR_PUSH_ANY_KEY_TO_SELECT_1:
     NStr    " Push any key to select"
 
 ; Some strings for ESC -> Diagnostic Mode
-GLOB_STR_VIN_BCK_FWD_SSPD_AD_LINE:
+Global_STR_VIN_BCK_FWD_SSPD_AD_LINE:
     NStr    "VIN:  BCK:  FWD:  SSPD:  #AD:   LINE:"
-GLOB_STR_TZ_DST_CONT_TXT_GRPH:
+Global_STR_TZ_DST_CONT_TXT_GRPH:
     NStr    "TZ :  DST:  CONT:  TEXT:  GRPH:"
-GLOB_STR_PUSH_RETURN_TO_ENTER_SELECTION_3:
+Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3:
     NStr    " Push RETURN to enter selection"
-GLOB_STR_PUSH_ANY_KEY_TO_SELECT_2:
+Global_STR_PUSH_ANY_KEY_TO_SELECT_2:
     NStr    " Push any key to select"
 
 ; Strings for ESC -> Change Scroll Speed
-GLOB_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C:
+Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C:
     NStr    "Satellite Delivered scroll speed (%c)"
-GLOB_STR_SPEED_ZERO_NOT_AVAILABLE:
+Global_STR_SPEED_ZERO_NOT_AVAILABLE:
     NStr    "Speed 0 not available"
-GLOB_STR_SPEED_ONE_NOT_AVAILABLE:
+Global_STR_SPEED_ONE_NOT_AVAILABLE:
     NStr    "Speed 1 not available"
-GLOB_STR_SCROLL_SPEED_2:
+Global_STR_SCROLL_SPEED_2:
     NStr    "Scroll speed = 2 (fastest)"
-GLOB_STR_SCROLL_SPEED_3:
+Global_STR_SCROLL_SPEED_3:
     NStr    "Scroll speed = 3 (default)"
-GLOB_STR_SCROLL_SPEED_4:
+Global_STR_SCROLL_SPEED_4:
     NStr    "Scroll speed = 4"
-GLOB_STR_SCROLL_SPEED_5:
+Global_STR_SCROLL_SPEED_5:
     NStr    "Scroll speed = 5"
-GLOB_STR_SCROLL_SPEED_6:
+Global_STR_SCROLL_SPEED_6:
     NStr    "Scroll speed = 6"
-GLOB_STR_SCROLL_SPEED_7:
+Global_STR_SCROLL_SPEED_7:
     NStr    "Scroll speed = 7 (slowest)"
 
 ; Strings for ESC -> Special Functions
-GLOB_STR_SAVE_ALL_TO_DISK:
+Global_STR_SAVE_ALL_TO_DISK:
     NStr    "Save ALL to disk"
-GLOB_STR_SAVE_DATA_TO_DISK:
+Global_STR_SAVE_DATA_TO_DISK:
     NStr    "Save data to disk"
-GLOB_STR_LOAD_TEXT_ADS_FROM_DISK:
+Global_STR_LOAD_TEXT_ADS_FROM_DISK:
     NStr    "Load text ads from disk"
-GLOB_STR_REBOOT_COMPUTER:
+Global_STR_REBOOT_COMPUTER:
     NStr    "Reboot computer"
 
 ; Strings for ESC - Edit Ads?
-GLOB_STR_REGISTER:
+Global_STR_REGISTER:
     NStr    "register "
-GLOB_STR_R_EQUALS:
+Global_STR_R_EQUALS:
     NStr    "R= "
-GLOB_STR_G_EQUALS:
+Global_STR_G_EQUALS:
     NStr    "G= "
-GLOB_STR_B_EQUALS:
+Global_STR_B_EQUALS:
     NStr    "B= "
-GLOB_STR_ARE_YOU_SURE:
+Global_STR_ARE_YOU_SURE:
     NStr    " Are you sure? (Y/N)"
-GLOB_STR_ENTER_AD_NUMBER_ONE_HYPHEN:
+Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN:
     NStr    " Enter ad number (1-"
-GLOB_STR_LEFT_PARENTHESIS_THEN:
+Global_STR_LEFT_PARENTHESIS_THEN:
     NStr    ") then"
-GLOB_STR_PUSH_RETURN_TO_ENTER_SELECTION_2:
+Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2:
     NStr    " push RETURN to enter selection"
-GLOB_STR_SINGLE_SPACE_4:
+Global_STR_SINGLE_SPACE_4:
     NStr    " "
-GLOB_STR_AD_NUMBER_QUESTIONMARK:
+Global_STR_AD_NUMBER_QUESTIONMARK:
     NStr    "Ad Number? "
-GLOB_STR_CURRENT_COLOR_FORMATTED:
+Global_STR_CURRENT_COLOR_FORMATTED:
     NStr    " Current Color %02X "
-GLOB_STR_TEXT:
+Global_STR_TEXT:
     NStr    "   Text"
-GLOB_STR_CURSOR:
+Global_STR_CURSOR:
     NStr    " Cursor"
-GLOB_STR_LINE:
+Global_STR_LINE:
     NStr    " Line"
-GLOB_STR_PAGE:
+Global_STR_PAGE:
     NStr    " Page"
-GLOB_STR_AD_NUMBER_FORMATTED:
+Global_STR_AD_NUMBER_FORMATTED:
     NStr    "Ad Number %2ld"
-GLOB_STR_ACTIVE_INACTIVE:
+Global_STR_ACTIVE_INACTIVE:
     NStr    "Active Inactive"
-GLOB_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION:
+Global_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION:
     NStr    " Push ESC to make another selection."
-GLOB_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS:
+Global_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS:
     NStr    " Push HELP for other edit functions."
-GLOB_STR_LINE_MODE_ON_TEXT_COLOR_MODE:
+Global_STR_LINE_MODE_ON_TEXT_COLOR_MODE:
     NStr    " Line mode on       Text color mode "
-GLOB_STR_EDITING_AD_NUMBER_FORMATTED_1:
+Global_STR_EDITING_AD_NUMBER_FORMATTED_1:
     NStr    "Editing Ad Number %2ld"
-GLOB_STR_EDITING_AD_NUMBER_FORMATTED_2:
+Global_STR_EDITING_AD_NUMBER_FORMATTED_2:
     NStr    "Editing Ad Number %2ld"
 DATA_ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT_1DAC:
     NStr    "Push any key to continue."
@@ -351,9 +351,9 @@ DATA_ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY_1DB1:
     NStr    "F4: Left Justify       F9: Apply Color"
 DATA_ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS_1DB2:
     NStr    "F5: Right Justify     F10: Insert char"
-GLOB_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR:
+Global_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR:
     NStr    "Shift ->: next Ad     DEL: Delete char"
-GLOB_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE:
+Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE:
     NStr    "Shift <-: prev Ad   CTRLC: Color Mode"
-GLOB_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND:
+Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND:
     NStr    "CTRLF: Foreground   CTRLB: Background"

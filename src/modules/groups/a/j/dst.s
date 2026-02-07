@@ -30,7 +30,7 @@ DST_FreeBannerStruct:
     PEA     22.W
     MOVE.L  (A3),-(A7)
     PEA     773.W
-    PEA     GLOB_STR_DST_C_1
+    PEA     Global_STR_DST_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -43,7 +43,7 @@ DST_FreeBannerStruct:
     PEA     22.W
     MOVE.L  4(A3),-(A7)
     PEA     777.W
-    PEA     GLOB_STR_DST_C_2
+    PEA     Global_STR_DST_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -53,7 +53,7 @@ DST_FreeBannerStruct:
     PEA     18.W
     MOVE.L  A3,-(A7)
     PEA     779.W
-    PEA     GLOB_STR_DST_C_3
+    PEA     Global_STR_DST_C_3
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -112,7 +112,7 @@ DST_FreeBannerPair:
 ; CALLS:
 ;   DST_FreeBannerStruct, GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   GLOB_STR_DST_C_4, GLOB_STR_DST_C_5, GLOB_STR_DST_C_6, MEMF_CLEAR, MEMF_PUBLIC
+;   Global_STR_DST_C_4, Global_STR_DST_C_5, Global_STR_DST_C_6, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   A3+0/4/16 (buffer pointers, state)
 ; DESC:
@@ -131,7 +131,7 @@ DST_AllocateBannerStruct:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     18.W                            ; What's 18 bytes big?
     PEA     798.W
-    PEA     GLOB_STR_DST_C_4
+    PEA     Global_STR_DST_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -142,7 +142,7 @@ DST_AllocateBannerStruct:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     22.W                            ; What's 22 bytes big?
     PEA     803.W
-    PEA     GLOB_STR_DST_C_5
+    PEA     Global_STR_DST_C_5
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -153,7 +153,7 @@ DST_AllocateBannerStruct:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     22.W                            ; What's 22 bytes big?
     PEA     807.W
-    PEA     GLOB_STR_DST_C_6
+    PEA     Global_STR_DST_C_6
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -258,7 +258,7 @@ DST_RebuildBannerPair:
 ; CALLS:
 ;   DST_RebuildBannerPair, DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
 ; READS:
-;   DATA_DST_CONST_LONG_1CF7, GLOB_STR_G2, GLOB_STR_G3
+;   DATA_DST_CONST_LONG_1CF7, Global_STR_G2, Global_STR_G3
 ; WRITES:
 ;   (A3), 4(A3)
 ; DESC:
@@ -285,9 +285,9 @@ DST_LoadBannerPairFromFiles:
     BRA.W   .return
 
 .init_ok:
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D7
-    PEA     GLOB_STR_G2
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
+    PEA     Global_STR_G2
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-48(A5)
     JSR     GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
@@ -314,7 +314,7 @@ DST_LoadBannerPairFromFiles:
     LEA     36(A7),A7
 
 .skip_g2:
-    PEA     GLOB_STR_G3
+    PEA     Global_STR_G3
     MOVE.L  -48(A5),-(A7)
     JSR     GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
 
@@ -345,7 +345,7 @@ DST_LoadBannerPairFromFiles:
     MOVE.L  D0,-(A7)
     MOVE.L  -48(A5),-(A7)
     PEA     889.W
-    PEA     GLOB_STR_DST_C_7
+    PEA     Global_STR_DST_C_7
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVE.L  A3,(A7)

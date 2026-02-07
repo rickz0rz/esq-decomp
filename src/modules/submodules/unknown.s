@@ -10,7 +10,7 @@
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   ED_DiagnosticsScreenActive, DATA_WDISP_BSS_LONG_2245, WDISP_WeatherStatusOverlayTextPtr, GLOB_REF_RASTPORT_1
+;   ED_DiagnosticsScreenActive, DATA_WDISP_BSS_LONG_2245, WDISP_WeatherStatusOverlayTextPtr, Global_REF_RASTPORT_1
 ; WRITES:
 ;   WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusCountdown, DATA_WDISP_BSS_BYTE_229B, WDISP_WeatherStatusBrushIndex
 ; DESC:
@@ -86,7 +86,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
     PEA     172.W
     CLR.L   -(A7)
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
@@ -529,7 +529,7 @@ UNKNOWN_VerifyChecksumAndParseList:
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   WDISP_WeatherStatusTextPtr, ED_DiagnosticsScreenActive, GLOB_REF_RASTPORT_1
+;   WDISP_WeatherStatusTextPtr, ED_DiagnosticsScreenActive, Global_REF_RASTPORT_1
 ; WRITES:
 ;   WDISP_WeatherStatusDigitChar, WDISP_WeatherStatusTextPtr, DATA_WDISP_BSS_LONG_2245
 ; DESC:
@@ -594,7 +594,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
     MOVE.L  D0,-(A7)
     PEA     172.W
     CLR.L   -(A7)
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7

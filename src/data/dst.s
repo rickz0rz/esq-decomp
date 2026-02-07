@@ -25,23 +25,23 @@ DATA_DST_STR_G2_COLON_1D01:
     NStr    " g2:"
 DATA_DST_STR_G3_COLON_1D02:
     NStr    " g3:"
-GLOB_STR_DST_C_1:
+Global_STR_DST_C_1:
     NStr    "DST.c"
-GLOB_STR_DST_C_2:
+Global_STR_DST_C_2:
     NStr    "DST.c"
-GLOB_STR_DST_C_3:
+Global_STR_DST_C_3:
     NStr    "DST.c"
-GLOB_STR_DST_C_4:
+Global_STR_DST_C_4:
     NStr    "DST.c"
-GLOB_STR_DST_C_5:
+Global_STR_DST_C_5:
     NStr    "DST.c"
-GLOB_STR_DST_C_6:
+Global_STR_DST_C_6:
     NStr    "DST.c"
-GLOB_STR_G2:
+Global_STR_G2:
     NStr    "g2"
-GLOB_STR_G3:
+Global_STR_G3:
     NStr    "g3"
-GLOB_STR_DST_C_7:
+Global_STR_DST_C_7:
     NStr    "DST.c"
 DATA_DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT__1D0C:
     NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed

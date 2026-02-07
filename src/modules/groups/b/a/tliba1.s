@@ -17,7 +17,7 @@
 ; CALLS:
 ;   MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, UNKNOWN7_FindCharWrapper, _LVOMove, _LVOText
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TLIBA1_C_1, GLOB_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
+;   Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_1, Global_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -55,7 +55,7 @@ TLIBA1_DrawTextWithInsetSegments:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     1842.W
-    PEA     GLOB_STR_TLIBA1_C_1
+    PEA     Global_STR_TLIBA1_C_1
     JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -82,7 +82,7 @@ TLIBA1_DrawTextWithInsetSegments:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     TST.L   -8(A5)
@@ -130,7 +130,7 @@ TLIBA1_DrawTextWithInsetSegments:
     MOVEA.L A3,A1
     MOVE.L  A0,D0
     MOVEA.L -4(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .if_eq_1767:
@@ -171,14 +171,14 @@ TLIBA1_DrawTextWithInsetSegments:
     MOVEA.L A3,A1
     MOVE.L  A0,D0
     MOVEA.L -12(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .if_eq_176A:
     MOVE.L  -20(A5),-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     1885.W
-    PEA     GLOB_STR_TLIBA1_C_2
+    PEA     Global_STR_TLIBA1_C_2
     JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -262,7 +262,7 @@ TLIBA1_ParseStyleCodeChar:
 ;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, UNKNOWN7_FindCharWrapper,
 ;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
-;   GLOB_REF_GRAPHICS_LIBRARY, DATA_CLOCK_CONST_WORD_1B5D, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_BYTE_21B4, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
+;   Global_REF_GRAPHICS_LIBRARY, DATA_CLOCK_CONST_WORD_1B5D, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_BYTE_21B4, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
 ; WRITES:
 ;   DATA_CLOCK_CONST_WORD_1B5D
 ; DESC:
@@ -346,7 +346,7 @@ TLIBA1_DrawInlineStyledText:
     MOVEA.L A3,A1
     MOVEA.L -4(A5),A0
     MOVE.L  -22(A5),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     ADD.L   D0,-14(A5)
@@ -465,7 +465,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  -22(A5),D0
     SUBQ.L  #3,D0
     MOVEA.L A3,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     ADD.L   D0,-18(A5)
@@ -528,7 +528,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  A0,-4(A5)
     MOVEA.L A3,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
@@ -651,7 +651,7 @@ TLIBA1_DrawInlineStyledText:
 ;   TLIBA1_DrawInlineStyledText, MATH_DivS32, MATH_Mulu32, MEMORY_AllocateMemory,
 ;   MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   GLOB_HANDLE_PREVUE_FONT, GLOB_REF_GRAPHICS_LIBRARY, GLOB_STR_TLIBA1_C_3, DATA_CLOCK_CONST_WORD_1B5D, DATA_TLIBA1_STR_TLIBA1_DOT_C_2164, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_WORD_236C, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, DATA_CLOCK_CONST_WORD_1B5D, DATA_TLIBA1_STR_TLIBA1_DOT_C_2164, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_WORD_236C, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -737,7 +737,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     2115.W
-    PEA     GLOB_STR_TLIBA1_C_3
+    PEA     Global_STR_TLIBA1_C_3
     JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -900,7 +900,7 @@ TLIBA1_DrawFormattedTextBlock:
     ADDQ.W  #1,-28(A5)
     MOVEA.L -8(A5),A0
     CLR.B   (A0)
-    MOVEA.L GLOB_HANDLE_PREVUE_FONT,A0
+    MOVEA.L Global_HANDLE_PREVUE_FONT,A0
     MOVE.W  20(A0),D0
     ADD.W   D0,-30(A5)
     CLR.W   -40(A5)
@@ -959,7 +959,7 @@ TLIBA1_DrawFormattedTextBlock:
     EXT.L   D1
     MOVEA.L A3,A1
     MOVE.L  D1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .if_eq_179D:
@@ -970,8 +970,8 @@ TLIBA1_DrawFormattedTextBlock:
     BEQ.S   .if_eq_179E
 
     MOVEA.L A3,A1
-    MOVEA.L GLOB_HANDLE_PREVUE_FONT,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_HANDLE_PREVUE_FONT,A0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     BRA.S   .skip_179F
@@ -979,7 +979,7 @@ TLIBA1_DrawFormattedTextBlock:
 .if_eq_179E:
     MOVEA.L A3,A1
     MOVEA.L -26(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
 .skip_179F:
@@ -1080,7 +1080,7 @@ TLIBA1_DrawFormattedTextBlock:
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A3,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1

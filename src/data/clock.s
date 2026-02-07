@@ -1,16 +1,16 @@
 ; ========== CLOCK.c ========== probably
 
-GLOB_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
+Global_STR_EXTRA_TIME_FORMAT: ; not sure where this is used.
     NStr    "%2d:%02d:%02d"
-GLOB_STR_GRID_TIME_FORMAT:
+Global_STR_GRID_TIME_FORMAT:
     NStr    "%2d:%02d:%02d"
-GLOB_STR_GRID_TIME_FORMAT_DUPLICATE:
+Global_STR_GRID_TIME_FORMAT_DUPLICATE:
     NStr    "%2d:%02d:%02d "
-GLOB_STR_12_44_44_SINGLE_SPACE:
+Global_STR_12_44_44_SINGLE_SPACE:
     NStr    "12:44:44 "
-GLOB_STR_12_44_44_PM:
+Global_STR_12_44_44_PM:
     NStr    "12:44:44 PM"
-GLOB_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
+Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
     NStr    "%s%s%ld  "
     DS.L    1
 ;------------------------------------------------------------------------------

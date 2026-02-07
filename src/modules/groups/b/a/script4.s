@@ -124,7 +124,7 @@ SCRIPT_DrawInsetTextWithFrame:
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVE.L  24(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     EXT.L   D0
@@ -152,7 +152,7 @@ SCRIPT_DrawInsetTextWithFrame:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEA.L A3,A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .skip_set_pen:
@@ -168,7 +168,7 @@ SCRIPT_DrawInsetTextWithFrame:
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVE.L  20(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
     MOVEQ   #0,D0
@@ -287,7 +287,7 @@ SCRIPT_SetupHighlightEffect:
     BEQ.W   .return
 
     MOVEA.L WDISP_DisplayContextBase,A0
-    ADDA.W  #((GLOB_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     MOVEQ   #0,D0
@@ -342,7 +342,7 @@ SCRIPT_SetupHighlightEffect:
     ADDA.L  D0,A1
     CLR.B   (A1)
     MOVEA.L -4(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.B   DATA_CLOCK_CONST_WORD_1B5D
@@ -428,7 +428,7 @@ SCRIPT_SetupHighlightEffect:
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .mark_done:
@@ -443,7 +443,7 @@ SCRIPT_SetupHighlightEffect:
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .after_color_flush:
@@ -460,7 +460,7 @@ SCRIPT_SetupHighlightEffect:
 
 .apply_pen_change:
     MOVEA.L -4(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L -166(A5),A0
@@ -476,7 +476,7 @@ SCRIPT_SetupHighlightEffect:
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .after_skip_flush:

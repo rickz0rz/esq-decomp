@@ -28,7 +28,7 @@ PARSEINI_WriteErrorLogEntry:
 
 .logging_enabled:
     PEA     MODE_NEWFILE.W
-    PEA     GLOB_STR_DF0_ERR_LOG
+    PEA     Global_STR_DF0_ERR_LOG
     JSR     SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -74,9 +74,9 @@ PARSEINI_WriteErrorLogEntry:
 ; CALLS:
 ;   none
 ; READS:
-;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_WORD_MAX_VALUE
+;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE
 ; WRITES:
-;   GLOB_WORD_MAX_VALUE
+;   Global_WORD_MAX_VALUE
 ; DESC:
 ;   Computes (H - T) modulo 64000, updating the stored max when larger.
 ; NOTES:
@@ -86,9 +86,9 @@ PARSEINI_ComputeHTCMaxValues:
     MOVE.L  D7,-(A7)
 
     MOVEQ   #0,D0
-    MOVE.W  GLOB_WORD_H_VALUE,D0
+    MOVE.W  Global_WORD_H_VALUE,D0
     MOVEQ   #0,D1
-    MOVE.W  GLOB_WORD_T_VALUE,D1
+    MOVE.W  Global_WORD_T_VALUE,D1
     SUB.L   D1,D0
     MOVE.L  D0,D7
     TST.L   D7
@@ -98,12 +98,12 @@ PARSEINI_ComputeHTCMaxValues:
 
 .replaceMaxValue:
     MOVEQ   #0,D0
-    MOVE.W  GLOB_WORD_MAX_VALUE,D0
+    MOVE.W  Global_WORD_MAX_VALUE,D0
     CMP.L   D7,D0
     BGE.S   .return
 
     MOVE.L  D7,D0
-    MOVE.W  D0,GLOB_WORD_MAX_VALUE
+    MOVE.W  D0,Global_WORD_MAX_VALUE
 
 .return:
     MOVE.L  D7,D0
@@ -123,7 +123,7 @@ PARSEINI_ComputeHTCMaxValues:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
-;   GLOB_WORD_H_VALUE, GLOB_WORD_T_VALUE, GLOB_REF_CLOCKDATA_STRUCT,
+;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_REF_CLOCKDATA_STRUCT,
 ;   DATA_PARSEINI_BSS_WORD_20A3-20A8
 ; WRITES:
 ;   DATA_PARSEINI_BSS_WORD_20A3-20A8
@@ -137,8 +137,8 @@ PARSEINI_MonitorClockChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7       ; Prefill D7 with 0x00000000
-    MOVE.W  GLOB_WORD_H_VALUE,D0     ; Not sure what these two bytes are but they're stored into D0 and D1
-    MOVE.W  GLOB_WORD_T_VALUE,D1
+    MOVE.W  Global_WORD_H_VALUE,D0     ; Not sure what these two bytes are but they're stored into D0 and D1
+    MOVE.W  Global_WORD_T_VALUE,D1
     CMP.W   D1,D0       ; Compare D1 and D0 (D1 - D0)
     SNE     D2          ; If the zero flag is set (they're equal), D2 is 0xFF else 0x00
     NEG.B   D2          ; negate the above. now, zero flag is 0x00 else 0xFF
@@ -148,7 +148,7 @@ PARSEINI_MonitorClockChange:
     TST.W   D7          ; Test D7 against 0
     BEQ.S   .check_clockdata_update   ; If D7 is now 0, jump to .check_clockdata_update
 
-    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A3  ; Get the first word of the clockdata struct, which is seconds
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A3  ; Get the first word of the clockdata struct, which is seconds
     MOVEQ   #1,D0               ; Move 1 into D0
     CMP.W   DATA_PARSEINI_BSS_WORD_20A5,D0         ; Compare DATA_PARSEINI_BSS_WORD_20A5 - D0 (1)
     BEQ.S   .return             ; If DATA_PARSEINI_BSS_WORD_20A5 was 1, then return
@@ -166,7 +166,7 @@ PARSEINI_MonitorClockChange:
     TST.W   DATA_PARSEINI_BSS_WORD_20A5
     BEQ.S   .return
 
-    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  DATA_PARSEINI_BSS_WORD_20A3,D1
     CMP.W   D0,D1
     BEQ.S   .return
@@ -278,7 +278,7 @@ PARSEINI_CheckCtrlHChange:
     TST.W   DATA_WDISP_BSS_WORD_2266
     BEQ.S   .no_change_or_gate_closed
 
-    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A6
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A6
     CLR.W   DATA_PARSEINI_BSS_WORD_20A7
     MOVEQ   #1,D0
     CMP.W   DATA_PARSEINI_BSS_WORD_20A8,D0
@@ -296,7 +296,7 @@ PARSEINI_CheckCtrlHChange:
     TST.W   DATA_PARSEINI_BSS_WORD_20A8
     BEQ.S   .return
 
-    MOVE.W  GLOB_REF_CLOCKDATA_STRUCT,D0
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  DATA_PARSEINI_BSS_WORD_20A6,D1
     CMP.W   D0,D1
     BEQ.S   .return

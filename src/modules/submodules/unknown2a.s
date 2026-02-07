@@ -89,7 +89,7 @@ FORMAT_RawDoFmtWithScratchBuffer:
 ; CALLS:
 ;   HANDLE_OpenWithMode, FORMAT_FormatToBuffer2, FORMAT_FormatToCallbackBuffer, UNKNOWN36_FinalizeRequest
 ; READS:
-;   GLOB_STR_A_PLUS, GLOB_STR_DF1_DEBUG_LOG, FORMAT_ScratchBuffer
+;   Global_STR_A_PLUS, Global_STR_DF1_DEBUG_LOG, FORMAT_ScratchBuffer
 ; WRITES:
 ;   FORMAT_ScratchBuffer
 ; DESC:
@@ -100,8 +100,8 @@ FORMAT_RawDoFmtWithScratchBuffer:
     ; Dead code.
     LINK.W  A5,#-8
 
-    PEA     GLOB_STR_A_PLUS
-    PEA     GLOB_STR_DF1_DEBUG_LOG
+    PEA     Global_STR_A_PLUS
+    PEA     Global_STR_DF1_DEBUG_LOG
     JSR     HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7

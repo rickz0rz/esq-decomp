@@ -49,7 +49,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1000.W
     PEA     152.W
-    PEA     GLOB_STR_DISKIO2_C_1
+    PEA     Global_STR_DISKIO2_C_1
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -74,7 +74,7 @@ DISKIO2_WriteCurDayDataFile:
     PEA     1000.W
     MOVE.L  -22(A5),-(A7)
     PEA     176.W
-    PEA     GLOB_STR_DISKIO2_C_2
+    PEA     Global_STR_DISKIO2_C_2
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #1,D0
@@ -95,7 +95,7 @@ DISKIO2_WriteCurDayDataFile:
     JSR     DISKIO_WriteDecimalField(PC)
 
     PEA     7.W
-    PEA     GLOB_STR_DREV_5_1
+    PEA     Global_STR_DREV_5_1
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -341,7 +341,7 @@ DISKIO2_WriteCurDayDataFile:
     PEA     1000.W
     MOVE.L  -22(A5),-(A7)
     PEA     275.W
-    PEA     GLOB_STR_DISKIO2_C_3
+    PEA     Global_STR_DISKIO2_C_3
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
@@ -364,7 +364,7 @@ DISKIO2_WriteCurDayDataFile:
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition
 ; READS:
-;   GLOB_REF_RASTPORT_1
+;   Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -376,25 +376,25 @@ DISKIO2_DisplayStatusLine:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L GLOB_REF_RASTPORT_1,A1
+    MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     GLOB_STR_38_SPACES
+    PEA     Global_STR_38_SPACES
     PEA     120.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  A3,(A7)
     PEA     120.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     28(A7),A7
@@ -641,7 +641,7 @@ DISKIO2_RunDiskSyncWorkflow:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults,
 ;   COI_EnsureAnimObjectAllocated, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, ESQPARS_ReplaceOwnedString
 ; READS:
-;   CTASKS_PATH_CURDAY_DAT, GLOB_PTR_WORK_BUFFER, DATA_DISKIO_BSS_WORD_1C41, WDISP_WeatherStatusTextPtr, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryEntryPtrTable/2236
+;   CTASKS_PATH_CURDAY_DAT, Global_PTR_WORK_BUFFER, DATA_DISKIO_BSS_WORD_1C41, WDISP_WeatherStatusTextPtr, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryEntryPtrTable/2236
 ; WRITES:
 ;   TEXTDISP_PrimaryGroupCode/2231/2238, TEXTDISP_PrimaryGroupRecordChecksum/2248/224A-224C, TEXTDISP_AliasPtrTable tables, WDISP_WeatherStatusTextPtr
 ; DESC:
@@ -683,13 +683,13 @@ DISKIO2_LoadCurDayDataFile:
     BRA.W   .loc_04C0
 
 .loc_049A:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,-40(A5)
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-16(A5)
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,-40(A5)
+    MOVE.L  Global_PTR_WORK_BUFFER,-16(A5)
     MOVEQ   #0,D7
 
     ; Consume header bytes into a local buffer.
 .loc_049B:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D0
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D0
     TST.L   D0
     BLE.S   .loc_049C
 
@@ -697,10 +697,10 @@ DISKIO2_LoadCurDayDataFile:
     CMP.W   D1,D7
     BGE.S   .loc_049C
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVE.B  (A0)+,-65(A5,D7.W)
-    MOVE.L  A0,GLOB_PTR_WORK_BUFFER
-    SUBQ.L  #1,GLOB_REF_LONG_FILE_SCRATCH
+    MOVE.L  A0,Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
     ADDQ.W  #1,D7
     BRA.S   .loc_049B
 
@@ -724,7 +724,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     520.W
-    PEA     GLOB_STR_DISKIO2_C_4
+    PEA     Global_STR_DISKIO2_C_4
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -814,7 +814,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     561.W
-    PEA     GLOB_STR_DISKIO2_C_5
+    PEA     Global_STR_DISKIO2_C_5
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -833,7 +833,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     570.W
-    PEA     GLOB_STR_DISKIO2_C_6
+    PEA     Global_STR_DISKIO2_C_6
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -863,7 +863,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     588.W
-    PEA     GLOB_STR_DISKIO2_C_7
+    PEA     Global_STR_DISKIO2_C_7
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -915,7 +915,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     634.W
-    PEA     GLOB_STR_DISKIO2_C_8
+    PEA     Global_STR_DISKIO2_C_8
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -931,7 +931,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     500.W
     PEA     640.W
-    PEA     GLOB_STR_DISKIO2_C_9
+    PEA     Global_STR_DISKIO2_C_9
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -944,7 +944,7 @@ DISKIO2_LoadCurDayDataFile:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     644.W
-    PEA     GLOB_STR_DISKIO2_C_10
+    PEA     Global_STR_DISKIO2_C_10
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -968,11 +968,11 @@ DISKIO2_LoadCurDayDataFile:
     CMP.L   -32(A5),D0
     BGE.S   .loc_04AD
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVEA.L -20(A5),A1
     MOVE.B  (A0)+,(A1)+
-    MOVE.L  A0,GLOB_PTR_WORK_BUFFER
-    SUBQ.L  #1,GLOB_REF_LONG_FILE_SCRATCH
+    MOVE.L  A0,Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
     MOVE.L  A1,-20(A5)
     ADDQ.W  #1,D6
     BRA.S   .loc_04AC
@@ -1137,13 +1137,13 @@ DISKIO2_LoadCurDayDataFile:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     736.W
-    PEA     GLOB_STR_DISKIO2_C_11
+    PEA     Global_STR_DISKIO2_C_11
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     500.W
     MOVE.L  A2,-(A7)
     PEA     737.W
-    PEA     GLOB_STR_DISKIO2_C_12
+    PEA     Global_STR_DISKIO2_C_12
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
@@ -1175,7 +1175,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     764.W
-    PEA     GLOB_STR_DISKIO2_C_13
+    PEA     Global_STR_DISKIO2_C_13
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
@@ -1257,7 +1257,7 @@ DISKIO2_WriteNxtDayDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (.desiredMemory).W
     PEA     817.W
-    PEA     GLOB_STR_DISKIO2_C_14
+    PEA     Global_STR_DISKIO2_C_14
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1271,7 +1271,7 @@ DISKIO2_WriteNxtDayDataFile:
 
 .writenxt_open_output_file:
     PEA     (MODE_NEWFILE).W
-    PEA     GLOB_STR_DF0_NXTDAY_DAT
+    PEA     Global_STR_DF0_NXTDAY_DAT
     JSR     DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -1284,7 +1284,7 @@ DISKIO2_WriteNxtDayDataFile:
     PEA     (.desiredMemory).W
     MOVE.L  .offsetAllocatedMemory(A5),-(A7)
     PEA     839.W
-    PEA     GLOB_STR_DISKIO2_C_15
+    PEA     Global_STR_DISKIO2_C_15
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #-1,D0
@@ -1490,7 +1490,7 @@ DISKIO2_WriteNxtDayDataFile:
     PEA     (.desiredMemory).W
     MOVE.L  -22(A5),-(A7)
     PEA     901.W
-    PEA     GLOB_STR_DISKIO2_C_16
+    PEA     Global_STR_DISKIO2_C_16
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
@@ -1521,7 +1521,7 @@ DISKIO2_WriteNxtDayDataFile:
 ;   DISKIO_LoadFileToWorkBuffer/03B2/03B6, GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory,
 ;   GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, COI_EnsureAnimObjectAllocated, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, COI_LoadOiDataFile
 ; READS:
-;   GLOB_STR_DF0_NXTDAY_DAT, GLOB_PTR_WORK_BUFFER, DATA_DISKIO_BSS_WORD_1C41, TEXTDISP_SecondaryGroupCode
+;   Global_STR_DF0_NXTDAY_DAT, Global_PTR_WORK_BUFFER, DATA_DISKIO_BSS_WORD_1C41, TEXTDISP_SecondaryGroupCode
 ; WRITES:
 ;   TEXTDISP_SecondaryGroupCode/222F/222E, TEXTDISP_SecondaryGroupRecordChecksum/224E, TEXTDISP_SecondaryEntryPtrTable/2237, TEXTDISP_SecondaryGroupHeaderCode, DATA_CTASKS_BSS_BYTE_1B90/1B92
 ; DESC:
@@ -1533,7 +1533,7 @@ DISKIO2_LoadNxtDayDataFile:
     LINK.W  A5,#-48
     MOVEM.L D5-D7/A2-A3,-(A7)
 
-    PEA     GLOB_STR_DF0_NXTDAY_DAT
+    PEA     Global_STR_DF0_NXTDAY_DAT
     JSR     DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1544,8 +1544,8 @@ DISKIO2_LoadNxtDayDataFile:
     BRA.W   .loc_04E5
 
 .loc_04D1:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,-36(A5)
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-16(A5)
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,-36(A5)
+    MOVE.L  Global_PTR_WORK_BUFFER,-16(A5)
     JSR     DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEQ   #0,D1
@@ -1580,7 +1580,7 @@ DISKIO2_LoadNxtDayDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     948.W
-    PEA     GLOB_STR_DISKIO2_C_17
+    PEA     Global_STR_DISKIO2_C_17
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1596,7 +1596,7 @@ DISKIO2_LoadNxtDayDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     500.W
     PEA     954.W
-    PEA     GLOB_STR_DISKIO2_C_18
+    PEA     Global_STR_DISKIO2_C_18
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1609,7 +1609,7 @@ DISKIO2_LoadNxtDayDataFile:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     958.W
-    PEA     GLOB_STR_DISKIO2_C_19
+    PEA     Global_STR_DISKIO2_C_19
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1634,11 +1634,11 @@ DISKIO2_LoadNxtDayDataFile:
     CMP.L   D1,D0
     BCC.S   .loc_04D6
 
-    MOVEA.L GLOB_PTR_WORK_BUFFER,A0
+    MOVEA.L Global_PTR_WORK_BUFFER,A0
     MOVEA.L -20(A5),A1
     MOVE.B  (A0)+,(A1)+
-    MOVE.L  A0,GLOB_PTR_WORK_BUFFER
-    SUBQ.L  #1,GLOB_REF_LONG_FILE_SCRATCH
+    MOVE.L  A0,Global_PTR_WORK_BUFFER
+    SUBQ.L  #1,Global_REF_LONG_FILE_SCRATCH
     MOVE.L  A1,-20(A5)
     ADDQ.W  #1,D6
     BRA.S   .loc_04D5
@@ -1782,13 +1782,13 @@ DISKIO2_LoadNxtDayDataFile:
     PEA     52.W
     MOVE.L  A3,-(A7)
     PEA     1027.W
-    PEA     GLOB_STR_DISKIO2_C_20
+    PEA     Global_STR_DISKIO2_C_20
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     PEA     500.W
     MOVE.L  A2,-(A7)
     PEA     1028.W
-    PEA     GLOB_STR_DISKIO2_C_21
+    PEA     Global_STR_DISKIO2_C_21
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     32(A7),A7
@@ -1816,7 +1816,7 @@ DISKIO2_LoadNxtDayDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -16(A5),-(A7)
     PEA     1041.W
-    PEA     GLOB_STR_DISKIO2_C_22
+    PEA     Global_STR_DISKIO2_C_22
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
@@ -2171,8 +2171,8 @@ DISKIO2_LoadOinfoDataFile:
     BRA.W   .loc_04FE
 
 .loc_04FB:
-    MOVE.L  GLOB_REF_LONG_FILE_SCRATCH,D6
-    MOVE.L  GLOB_PTR_WORK_BUFFER,-12(A5)
+    MOVE.L  Global_REF_LONG_FILE_SCRATCH,D6
+    MOVE.L  Global_PTR_WORK_BUFFER,-12(A5)
     JSR     DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEQ   #0,D1
@@ -2220,7 +2220,7 @@ DISKIO2_LoadOinfoDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     1191.W
-    PEA     GLOB_STR_DISKIO2_C_23
+    PEA     Global_STR_DISKIO2_C_23
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVEQ   #0,D0
@@ -2334,10 +2334,10 @@ DISKIO2_HandleInteractiveFileTransfer:
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .xfer_prepare_target_paths
 
-    PEA     GLOB_STR_SPECIAL_NGAD
+    PEA     Global_STR_SPECIAL_NGAD
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
@@ -2351,7 +2351,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     BNE.S   .xfer_copy_filename_loop
 
     PEA     4.W
-    PEA     GLOB_STR_RAM
+    PEA     Global_STR_RAM
     PEA     -58(A5)
     JSR     GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
@@ -2359,16 +2359,16 @@ DISKIO2_HandleInteractiveFileTransfer:
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .xfer_optional_size_guard
 
-    PEA     GLOB_STR_FILENAME
+    PEA     Global_STR_FILENAME
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DISKIO2_TransferFilenameBuffer
     PEA     180.W
     PEA     205.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
@@ -2422,7 +2422,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     LEA     -68(A5),A0
     MOVE.L  A0,D1
     MOVEQ   #-2,D2
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,-76(A5)
@@ -2432,7 +2432,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  #(MEMF_CLEAR),-(A7)
     PEA     Struct_InfoData_Size.W
     PEA     1312.W
-    PEA     GLOB_STR_DISKIO2_C_24
+    PEA     Global_STR_DISKIO2_C_24
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -2442,7 +2442,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 
     MOVE.L  D0,D2
     MOVE.L  -76(A5),D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOInfo(A6)
 
     TST.L   D0
@@ -2460,14 +2460,14 @@ DISKIO2_HandleInteractiveFileTransfer:
     PEA     Struct_InfoData_Size.W
     MOVE.L  D2,-(A7)
     PEA     1318.W
-    PEA     GLOB_STR_DISKIO2_C_25
+    PEA     Global_STR_DISKIO2_C_25
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
 
 .xfer_unlock_target_dir:
     MOVE.L  -76(A5),D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
 
 .xfer_parse_requested_size:
@@ -2539,7 +2539,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4352.W
     PEA     1389.W
-    PEA     GLOB_STR_DISKIO2_C_26
+    PEA     Global_STR_DISKIO2_C_26
     JSR     GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -2656,13 +2656,13 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.W  ESQPARS2_ReadModeFlags,DISKIO_SavedReadModeFlags
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
     MOVE.L  DISKIO_WriteFileHandle,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     PEA     4352.W
     MOVE.L  DISKIO2_TransferBlockBufferPtr,-(A7)
     PEA     1499.W
-    PEA     GLOB_STR_DISKIO2_C_27
+    PEA     Global_STR_DISKIO2_C_27
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -2672,13 +2672,13 @@ DISKIO2_HandleInteractiveFileTransfer:
     PEA     DATA_DISKIO2_SPACE_VALUE_1C76
     PEA     210.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     DATA_DISKIO2_SPACE_VALUE_1C77
     PEA     240.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     32(A7),A7
@@ -2691,12 +2691,12 @@ DISKIO2_HandleInteractiveFileTransfer:
 
     LEA     DISKIO2_TransferFilenameBuffer,A0
     MOVE.L  A0,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
 
     JSR     DISKIO_ForceUiRefreshIfIdle(PC)
 
-    LEA     GLOB_STR_COPY_NIL,A0
+    LEA     Global_STR_COPY_NIL,A0
     LEA     -156(A5),A1
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
@@ -2717,7 +2717,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     LEA     -58(A5),A0
@@ -2730,10 +2730,10 @@ DISKIO2_HandleInteractiveFileTransfer:
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .xfer_restore_read_mode
 
-    PEA     GLOB_STR_STORED
+    PEA     Global_STR_STORED
     PEA     180.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
@@ -2746,7 +2746,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     ADDQ.W  #4,A7
     LEA     -58(A5),A0
     MOVE.L  A0,D1
-    MOVEA.L GLOB_REF_DOS_LIBRARY_2,A6
+    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
 
 .xfer_restore_read_mode:
@@ -2772,14 +2772,14 @@ DISKIO2_HandleInteractiveFileTransfer:
 
     MOVE.L  D0,(A7)
     MOVE.L  28(A7),-(A7)
-    PEA     GLOB_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED
+    PEA     Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED
     PEA     -58(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -58(A5)
     PEA     90.W
     PEA     40.W
-    MOVE.L  GLOB_REF_RASTPORT_1,-(A7)
+    MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     36(A7),A7

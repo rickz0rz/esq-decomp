@@ -1,6 +1,6 @@
 ; ========== DISPTEXT.c ==========
 
-GLOB_STR_DISPTEXT_C_1:
+Global_STR_DISPTEXT_C_1:
     NStr    "DISPTEXT.c"
 ;------------------------------------------------------------------------------
 ; SYM: DISPTEXT_STR_SINGLE_SPACE_MEASURE   (single-space literal)
@@ -19,13 +19,13 @@ DISPTEXT_STR_SINGLE_SPACE_DELIM:
 DISPTEXT_InitBuffersPending:
 DATA_DISPTEXT_CONST_LONG_1CED:
     DC.L    1
-GLOB_STR_DISPTEXT_C_2:
+Global_STR_DISPTEXT_C_2:
     NStr    "DISPTEXT.c"
-GLOB_STR_DISPTEXT_C_3:
+Global_STR_DISPTEXT_C_3:
     NStr    "DISPTEXT.c"
-GLOB_STR_DISPTEXT_C_4:
+Global_STR_DISPTEXT_C_4:
     NStr    "DISPTEXT.c"
-GLOB_STR_DISPTEXT_C_5:
+Global_STR_DISPTEXT_C_5:
     NStr    "DISPTEXT.c"
 DISPTEXT_STR_SINGLE_SPACE_PREFIX_1:
     NStr    " "

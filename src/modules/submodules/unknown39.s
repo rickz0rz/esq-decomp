@@ -7,9 +7,9 @@
 ; CLOBBERS:
 ;   D0-D6/A0-A1/A6
 ; DESC:
-;   Loads Graphics.library base and dispatches to LVO -606.
+;   Loads Graphics.library base and dispatches to _LVOBltBitMapRastPort.
 ; NOTES:
-;   LVO -606 is likely BltBitMapRastPort; verify with call sites.
+;   None
 ;------------------------------------------------------------------------------
 GRAPHICS_BltBitMapRastPort:
     MOVEM.L D2-D6/A6,-(A7)
@@ -19,7 +19,7 @@ GRAPHICS_BltBitMapRastPort:
     MOVEM.L 32(A7),D0-D1
     MOVEA.L 40(A7),A1
     MOVEM.L 44(A7),D2-D6
-    JSR     -606(A6)            ; I think this may be BltBitMapRastPort in Graphics.library
+    JSR     _LVOBltBitMapRastPort(A6)
 
     MOVEM.L (A7)+,D2-D6/A6
     RTS

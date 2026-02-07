@@ -369,7 +369,7 @@ NEWGRID_DrawGridCellText:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  20(A5),D7
-    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .compute_layout
 
     MOVEA.L 16(A5),A0
@@ -504,7 +504,7 @@ NEWGRID_DrawGridCellText:
 
     MOVEA.L A3,A1
     MOVE.L  GCOMMAND_NicheTextPen,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     BRA.S   .pen_set
@@ -512,7 +512,7 @@ NEWGRID_DrawGridCellText:
 .use_alt_pen:
     MOVEA.L A3,A1
     MOVEQ   #3,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .pen_set:
@@ -559,7 +559,7 @@ NEWGRID_DrawGridCellText:
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVE.L  D6,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
@@ -635,7 +635,7 @@ NEWGRID_DrawGridCellText:
     MOVEA.L A3,A1
     MOVE.L  D6,D0
     MOVEA.L 16(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
@@ -783,7 +783,7 @@ NEWGRID_DrawGridCell:
 ; CALLS:
 ;   PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
 ; READS:
-;   GLOB_REF_STR_USE_24_HR_CLOCK, GLOB_JMPTBL_HALF_HOURS_24_HR_FMT
+;   Global_REF_STR_USE_24_HR_CLOCK, Global_JMPTBL_HALF_HOURS_24_HR_FMT
 ; WRITES:
 ;   A3 string contents
 ; DESC:
@@ -797,7 +797,7 @@ NEWGRID_Apply24HourFormatting:
     MOVEA.L 8(A5),A3
     MOVE.W  14(A5),D7
     MOVE.B  19(A5),D6
-    MOVE.B  GLOB_REF_STR_USE_24_HR_CLOCK,D0
+    MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .done
@@ -830,7 +830,7 @@ NEWGRID_Apply24HourFormatting:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.B  (A1),D0
@@ -848,7 +848,7 @@ NEWGRID_Apply24HourFormatting:
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     GLOB_JMPTBL_HALF_HOURS_24_HR_FMT,A0
+    LEA     Global_JMPTBL_HALF_HOURS_24_HR_FMT,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     ADDQ.L  #1,A1
@@ -1836,7 +1836,7 @@ NEWGRID_DrawGridFrameAndRows:
     BSR.W   NEWGRID_SetRowColor
 
     MOVEA.L 40(A7),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -2711,7 +2711,7 @@ NEWGRID_DrawGridCellBackground:
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D4,D0
@@ -3051,7 +3051,7 @@ NEWGRID_DrawSelectionMarkers:
     MOVEA.L -4(A5),A1
     LEA     -33(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .store_primary_width
@@ -3067,7 +3067,7 @@ NEWGRID_DrawSelectionMarkers:
     MOVEA.L -4(A5),A1
     LEA     -35(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .store_secondary_width
@@ -3223,7 +3223,7 @@ NEWGRID_DrawSelectionMarkers:
     MOVEA.L -4(A5),A1
     MOVE.L  -8(A5),D0
     MOVE.L  -12(A5),D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L -4(A5),A1
@@ -3256,7 +3256,7 @@ NEWGRID_DrawSelectionMarkers:
     MOVE.L  D0,-8(A5)
     MOVEA.L -4(A5),A1
     MOVE.L  -12(A5),D1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L -4(A5),A1
@@ -5073,7 +5073,7 @@ NEWGRID_DrawEmptyGridMessage:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #3,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -5101,7 +5101,7 @@ NEWGRID_DrawEmptyGridMessage:
     MOVE.L  A0,20(A7)
     MOVEA.L A2,A0
     MOVE.L  A6,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  28(A7),D1
@@ -6252,7 +6252,7 @@ NEWGRID_DrawStatusMessage:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVE.L  GCOMMAND_MplexMessageTextPen,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -6276,7 +6276,7 @@ NEWGRID_DrawStatusMessage:
     MOVEA.L A0,A1
     MOVE.L  D6,D0
     LEA     -132(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  NEWGRID_ColumnWidthPx,D1
@@ -6301,7 +6301,7 @@ NEWGRID_DrawStatusMessage:
     MOVE.L  A0,16(A7)
     MOVE.L  D6,D0
     LEA     -132(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  24(A7),D1
@@ -6391,7 +6391,7 @@ NEWGRID_DrawGridFrameVariant2:
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -7791,7 +7791,7 @@ NEWGRID_DrawGridMessageAlt:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVE.L  GCOMMAND_PpvMessageTextPen,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -7814,7 +7814,7 @@ NEWGRID_DrawGridMessageAlt:
     MOVEA.L A0,A1
     MOVE.L  D7,D0
     MOVEA.L GCOMMAND_PPVPeriodTemplatePtr,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  NEWGRID_ColumnWidthPx,D1
@@ -7839,7 +7839,7 @@ NEWGRID_DrawGridMessageAlt:
     MOVE.L  A0,12(A7)
     MOVE.L  D7,D0
     MOVEA.L GCOMMAND_PPVPeriodTemplatePtr,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  20(A7),D1
@@ -7929,7 +7929,7 @@ NEWGRID_DrawGridFrameVariant3:
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -8562,13 +8562,13 @@ NEWGRID_BuildShowtimesText:
     SUBA.L  -62(A5),A0
     MOVE.L  A0,D0
     MOVEA.L -62(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     LEA     60(A3),A0
     MOVE.L  D0,24(A7)
     MOVEA.L A0,A1
-    LEA     GLOB_STR_SINGLE_SPACE_3,A0
+    LEA     Global_STR_SINGLE_SPACE_3,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
 
@@ -8579,9 +8579,9 @@ NEWGRID_BuildShowtimesText:
 .measure_comma_space:
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    LEA     GLOB_STR_COMMA_AND_SINGLE_SPACE_1,A0
+    LEA     Global_STR_COMMA_AND_SINGLE_SPACE_1,A0
     MOVEQ   #2,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,-20(A5)
@@ -8924,7 +8924,7 @@ NEWGRID_BuildShowtimesText:
     TST.B   (A0)
     BNE.S   .append_entry_text
 
-    LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
+    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 
 .copy_showtimes_prefix:
@@ -8943,7 +8943,7 @@ NEWGRID_BuildShowtimesText:
 
     ADDQ.W  #8,A7
     LEA     60(A3),A0
-    LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A1
+    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A1
     MOVEA.L A1,A6
 
 .measure_showtimes_prefix:
@@ -8954,8 +8954,8 @@ NEWGRID_BuildShowtimesText:
     SUBA.L  A1,A6
     MOVEA.L A0,A1
     MOVE.L  A6,D0
-    LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     SUB.L   D0,-16(A5)
@@ -9002,7 +9002,7 @@ NEWGRID_BuildShowtimesText:
     MOVEA.L A0,A1
     MOVEA.L D0,A0
     MOVE.L  28(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -20(A5),D1
@@ -9049,7 +9049,7 @@ NEWGRID_BuildShowtimesText:
     MOVEA.L A0,A1
     MOVEA.L -28(A5),A0
     MOVE.L  28(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -20(A5),D1
@@ -9069,7 +9069,7 @@ NEWGRID_BuildShowtimesText:
     TST.B   (A0)
     BNE.S   .append_showing_at
 
-    LEA     GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
+    LEA     Global_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 
 .copy_showing_at_prefix:
@@ -10664,7 +10664,7 @@ NEWGRID_AppendShowtimesForRow:
     TST.B   (A2)
     BNE.S   .append_showtime
 
-    LEA     GLOB_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
+    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 
 .copy_showtimes_prefix:
@@ -10714,7 +10714,7 @@ NEWGRID_AppendShowtimesForRow:
     TST.B   (A2)
     BNE.S   .return
 
-    LEA     GLOB_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
+    LEA     Global_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 
 .copy_showing_at_prefix:
@@ -10828,7 +10828,7 @@ NEWGRID_DrawShowtimesPrompt:
     JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    TST.W   GLOB_WORD_SELECT_CODE_IS_RAVESC
+    TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BEQ.S   .append_suffix
 
     MOVEA.L -8(A5),A0
@@ -10867,7 +10867,7 @@ NEWGRID_DrawShowtimesPrompt:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #6,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -10909,7 +10909,7 @@ NEWGRID_DrawShowtimesPrompt:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #3,D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -10938,7 +10938,7 @@ NEWGRID_DrawShowtimesPrompt:
     MOVE.L  A0,96(A7)
     MOVEA.L A6,A0
     MOVE.L  96(A7),D0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  88(A7),D1
@@ -10987,7 +10987,7 @@ NEWGRID_DrawShowtimesPrompt:
     MOVEA.L A0,A1
     MOVE.L  A6,D0
     LEA     -136(A5),A0
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
     MOVEQ   #17,D0
@@ -11041,7 +11041,7 @@ NEWGRID_DrawGridFrameVariant4:
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
-    MOVEA.L GLOB_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
