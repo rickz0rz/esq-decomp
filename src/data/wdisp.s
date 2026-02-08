@@ -2481,5 +2481,3 @@ Global_REF_DOS_LIBRARY_2:
 LAB_CTRLHTCMAX:
     NStr    "CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x"
     endif
-
-    END

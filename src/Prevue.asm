@@ -384,3 +384,5 @@ Global_TLIBA3_VmArrayPatternTable        = TLIBA3_VmArrayPatternTable - A4_Base 
     include "data/textdisp.s"
     include "data/tliba1.s"
     include "data/wdisp.s"
+
+    END
