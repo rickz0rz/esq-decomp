@@ -2002,18 +2002,18 @@ ESQ_PackBitsDecode:
 ; CALLS:
 ;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   ESQ_GlobalTickCounter, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
+;   ESQ_GlobalTickCounter, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
 ;   DATA_COMMON_BSS_WORD_1B11..DATA_COMMON_BSS_LONG_1B18
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
 ;   accumulator fields with saturation flags.
 ; NOTES:
-;   Triggers ESQ_ColdReboot when DATA_WDISP_BSS_LONG_2363 reaches $5460.
+;   Triggers ESQ_ColdReboot when ESQ_GlobalTickCounter reaches $5460.
 ;------------------------------------------------------------------------------
 ESQ_TickGlobalCounters:
-    MOVE.W  DATA_WDISP_BSS_LONG_2363,D0
+    MOVE.W  ESQ_GlobalTickCounter,D0
     ADDQ.W  #1,D0
     CMPI.W  #$5460,D0
     BNE.S   .after_reboot_check
@@ -2021,7 +2021,7 @@ ESQ_TickGlobalCounters:
     JSR     ESQ_ColdReboot
 
 .after_reboot_check:
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_2363
+    MOVE.W  D0,ESQ_GlobalTickCounter
     JSR     ESQSHARED4_TickCopperAndBannerTransitions
 
     MOVE.W  DATA_WDISP_BSS_WORD_2205,D0

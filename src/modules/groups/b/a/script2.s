@@ -292,7 +292,7 @@ SCRIPT_DeassertCtrlLineNow:
 ; READS:
 ;   DATA_WDISP_BSS_WORD_2294, CIAB_PRA
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2343, ESQIFF_ExternalAssetFlags, LADFUNC_EntryCount
+;   SCRIPT_CtrlLineAssertedTicks, ESQIFF_ExternalAssetFlags, LADFUNC_EntryCount
 ; DESC:
 ;   Polls the CTRL line and increments a counter while it stays asserted; once
 ;   a threshold is reached, resets related counters/flags.
@@ -308,10 +308,10 @@ SCRIPT_UpdateCtrlLineTimeout:
     TST.B   D0
     BEQ.S   .return_status
 
-    MOVE.W  DATA_WDISP_BSS_LONG_2343,D0
+    MOVE.W  SCRIPT_CtrlLineAssertedTicks,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_LONG_2343
+    MOVE.W  D1,SCRIPT_CtrlLineAssertedTicks
     MOVEQ   #20,D0
     CMP.W   D0,D1
     BCS.S   .return_status
@@ -319,7 +319,7 @@ SCRIPT_UpdateCtrlLineTimeout:
     MOVEQ   #0,D0
     MOVE.W  D0,ESQIFF_ExternalAssetFlags
     MOVE.W  #$24,LADFUNC_EntryCount
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_2343
+    MOVE.W  D0,SCRIPT_CtrlLineAssertedTicks
 
 .return_status:
     RTS

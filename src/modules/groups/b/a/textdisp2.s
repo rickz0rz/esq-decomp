@@ -305,7 +305,7 @@ TEXTDISP_UpdateHighlightOrPreview:
 ; READS:
 ;   DATA_ESQ_BSS_WORD_1DF4, Global_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, Global_RefreshTickCounter
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2363, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
+;   ESQ_GlobalTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
 ; DESC:
 ;   Updates internal display/control counters and triggers refresh/preview steps.
 ; NOTES:
@@ -314,7 +314,7 @@ TEXTDISP_UpdateHighlightOrPreview:
 TEXTDISP_TickDisplayState:
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_2363
+    MOVE.W  D0,ESQ_GlobalTickCounter
     TST.W   DATA_ESQ_BSS_WORD_1DF4
     BNE.W   .return
 

@@ -521,7 +521,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; READS:
 ;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, Global_STR_23, Global_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, DATA_WDISP_BSS_WORD_22A0, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
-;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, DATA_WDISP_BSS_LONG_2363
+;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -2222,7 +2222,7 @@ ESQPARS_ProcessSerialCommandByte:
     SUBQ.W  #1,D0
     BNE.S   .cmd_r_finish
 
-    MOVE.W  #21000,DATA_WDISP_BSS_LONG_2363
+    MOVE.W  #21000,ESQ_GlobalTickCounter
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
 

@@ -1063,7 +1063,7 @@ ED2_HandleMenuActions:
     CMP.L   D1,D0
     BGE.S   .after_dump_entries
 
-    CLR.W   DATA_WDISP_BSS_LONG_2363
+    CLR.W   ESQ_GlobalTickCounter
     MOVE.B  D7,D0
     EXT.W   D0
     MOVE.L  D0,D1

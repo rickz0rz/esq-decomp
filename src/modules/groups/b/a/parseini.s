@@ -118,7 +118,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BNE.S   .check_section_4
 
     MOVEQ   #3,D7
-    PEA     DATA_WDISP_BSS_LONG_233F
+    PEA     GCOMMAND_GradientPresetTable
     JSR     PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(PC)
 
     ADDQ.W  #4,A7
@@ -468,7 +468,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.W   .next_line
 
 .section3_parse_range:
-    PEA     DATA_WDISP_BSS_LONG_233F
+    PEA     GCOMMAND_GradientPresetTable
     MOVE.L  -8(A5),-(A7)
     BSR.W   PARSEINI_ParseRangeKeyValue
 
@@ -1549,9 +1549,9 @@ PARSEINI_ProcessWeatherBlocks:
 ; CALLS:
 ;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   PARSEINI_BannerBrushResourceHead, DATA_PARSEINI_TAG_FILENAME_208B, DATA_PARSEINI_TAG_WEATHER_208C, DATA_WDISP_BSS_LONG_233E, a
+;   PARSEINI_BannerBrushResourceHead, DATA_PARSEINI_TAG_FILENAME_208B, DATA_PARSEINI_TAG_WEATHER_208C, PARSEINI_WeatherBrushNodePtr, a
 ; WRITES:
-;   PARSEINI_BannerBrushResourceHead, DATA_P_TYPE_BSS_LONG_2059, DATA_WDISP_BSS_LONG_233E
+;   PARSEINI_BannerBrushResourceHead, DATA_P_TYPE_BSS_LONG_2059, PARSEINI_WeatherBrushNodePtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1564,7 +1564,7 @@ PARSEINI_LoadWeatherStrings:
     TST.L   PARSEINI_BannerBrushResourceHead
     BNE.S   .if_ne_1401
 
-    CLR.L   DATA_WDISP_BSS_LONG_233E
+    CLR.L   PARSEINI_WeatherBrushNodePtr
 
 .if_ne_1401:
     PEA     DATA_PARSEINI_TAG_FILENAME_208B
@@ -1575,14 +1575,14 @@ PARSEINI_LoadWeatherStrings:
     TST.L   D0
     BNE.S   .if_ne_1402
 
-    MOVE.L  DATA_WDISP_BSS_LONG_233E,-(A7)
+    MOVE.L  PARSEINI_WeatherBrushNodePtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #$a,190(A0)
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_233E
+    MOVE.L  D0,PARSEINI_WeatherBrushNodePtr
     TST.L   PARSEINI_BannerBrushResourceHead
     BNE.S   .return_1403
 
@@ -1604,14 +1604,14 @@ PARSEINI_LoadWeatherStrings:
 
     MOVEQ   #1,D0
     MOVE.L  D0,DATA_P_TYPE_BSS_LONG_2059
-    MOVE.L  DATA_WDISP_BSS_LONG_233E,-(A7)
+    MOVE.L  PARSEINI_WeatherBrushNodePtr,-(A7)
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #10,190(A0)
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_233E
+    MOVE.L  D0,PARSEINI_WeatherBrushNodePtr
     TST.L   PARSEINI_BannerBrushResourceHead
     BNE.S   .return_1403
 

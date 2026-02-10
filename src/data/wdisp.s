@@ -1810,25 +1810,18 @@ GCOMMAND_PresetValueTable:
 GCOMMAND_PresetWorkEntryTable:
     DS.L    2
 GCOMMAND_PresetWorkEntry0_ValueIndex:
-DATA_WDISP_BSS_LONG_22F7:
     DS.L    4
-GCOMMAND_PresetWorkEntry1:
-DATA_WDISP_BSS_LONG_22F8:
+GCOMMAND_PresetWorkEntry1:  
     DS.L    2
 GCOMMAND_PresetWorkEntry1_ValueIndex:
-DATA_WDISP_BSS_LONG_22F9:
     DS.L    4
 GCOMMAND_PresetWorkEntry2:
-DATA_WDISP_BSS_LONG_22FA:
     DS.L    2
 GCOMMAND_PresetWorkEntry2_ValueIndex:
-DATA_WDISP_BSS_LONG_22FB:
     DS.L    4
 GCOMMAND_PresetWorkEntry3:
-DATA_WDISP_BSS_LONG_22FC:
     DS.L    2
 GCOMMAND_PresetWorkEntry3_ValueIndex:
-DATA_WDISP_BSS_LONG_22FD:
     DS.L    4
 ; Tracks whether the digital banner highlight is enabled (0/1).
 GCOMMAND_HighlightFlag:
@@ -2117,7 +2110,6 @@ PARSEINI_CurrentWeatherBlockPtr:
 ; NOTES: Cleared when the banner brush resource list is empty.
 ;------------------------------------------------------------------------------
 PARSEINI_WeatherBrushNodePtr:
-DATA_WDISP_BSS_LONG_233E:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_GradientPresetTable   (gradient preset table)
@@ -2127,7 +2119,6 @@ DATA_WDISP_BSS_LONG_233E:
 ; NOTES: Table length is 520 longs (2080 bytes).
 ;------------------------------------------------------------------------------
 GCOMMAND_GradientPresetTable:
-DATA_WDISP_BSS_LONG_233F:
     DS.L    520
 CTRL_BUFFER:
     DS.L    125
@@ -2150,7 +2141,6 @@ SCRIPT_SerialInputLatch:
 ; NOTES: Reset to 0 after reaching the timeout threshold.
 ;------------------------------------------------------------------------------
 SCRIPT_CtrlLineAssertedTicks:
-DATA_WDISP_BSS_LONG_2343:
     DS.L    1
 Global_WORD_CLOCK_SECONDS:
     DS.W    1
@@ -2361,7 +2351,6 @@ DATA_WDISP_BSS_LONG_2362:
 ; NOTES: ESQ_ColdReboot is invoked when the counter reaches $5460.
 ;------------------------------------------------------------------------------
 ESQ_GlobalTickCounter:
-DATA_WDISP_BSS_LONG_2363:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_CurrentMatchIndex   (current selected/matched entry index)
