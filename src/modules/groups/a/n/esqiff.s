@@ -46,6 +46,8 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
+    ; Layout-coupled table anchor: this string label sits immediately before
+    ; an indexed pointer table used by weather-status brush lookup.
     LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead

@@ -172,6 +172,14 @@ DATA_ESQFUNC_STR_1EDC:
     Str     "pw"
 DATA_ESQFUNC_STR_I5_1EDD:
     NStr    "i5"
+;------------------------------------------------------------------------------
+; SYM: ESQFUNC_PwBrushNamePtrTable   (weather-status brush-name pointer table)
+; TYPE: array<u32 ptr>
+; PURPOSE: Maps normalized brush index to brush-name strings used by brush lookup.
+; USED BY: ESQIFF_DrawWeatherStatusOverlayIntoBrush, WDISP_DrawWeatherStatusOverlay
+; NOTES: Callers normalize index with -1 before scaling by 4.
+;------------------------------------------------------------------------------
+ESQFUNC_PwBrushNamePtrTable:
 DATA_ESQFUNC_CONST_LONG_1EDE:
     DC.L    DATA_ESQFUNC_STR_PWBRUSH_1ED7
 DATA_ESQFUNC_CONST_LONG_1EDF:

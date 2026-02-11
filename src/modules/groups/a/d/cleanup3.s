@@ -790,6 +790,8 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  -38(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
+    ; Layout-coupled table anchor: legacy code indexes longword pointers from
+    ; DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
     LEA     DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)

@@ -215,6 +215,14 @@ DATA_SCRIPT_STR_TUESDAYS_THURSDAYS_20FA:
     NStr    "Tuesdays & Thursdays"
 DATA_SCRIPT_STR_THIS_WEEK_20FB:
     NStr    "This Week"
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_ChannelLabelPtrTable   (channel label pointer table)
+; TYPE: array<u32 ptr>
+; PURPOSE: Maps channel/group selector values to label strings for append paths.
+; USED BY: CLEANUP3/Textdisp routines that index from DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
+; NOTES: Legacy callsites index relative to DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
+;------------------------------------------------------------------------------
+SCRIPT_ChannelLabelPtrTable:
     DC.L    DATA_SCRIPT_STR_MONDAY_20DE
     DC.L    DATA_SCRIPT_STR_TUESDAY_20DF
     DC.L    DATA_SCRIPT_STR_WEDNESDAY_20E0

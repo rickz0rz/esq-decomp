@@ -78,6 +78,7 @@ WDISP_DrawWeatherStatusOverlay:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
+    ; Layout-coupled table anchor (DATA_ESQFUNC_STR_I5_1EDD -> ptr table).
     LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead
@@ -720,6 +721,7 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_lookup_brush:
     MOVE.L  -88(A5),D0
     ASL.L   #2,D0
+    ; Layout-coupled table anchor (DATA_ESQFUNC_STR_I5_1EDD -> ptr table).
     LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead
@@ -1626,6 +1628,7 @@ WDISP_HandleWeatherStatusCommand:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
+    ; Layout-coupled table anchor (DATA_ESQFUNC_STR_I5_1EDD -> ptr table).
     LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead

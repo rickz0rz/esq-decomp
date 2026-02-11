@@ -47,6 +47,7 @@ CTASKS_STR_TERM_DL_TOO_LARGE_HEAD:
     DC.B    "Terminated: DL File Too La"
 CTASKS_STR_TERM_DL_TOO_LARGE_TAIL:
     NStr    "rge"   ; Clearly continuing from the line above
+CTASKS_TerminationReasonPtrTable:
     DC.L    CTASKS_STR_TERM_MISSED_RECORD
     DC.L    CTASKS_STR_TERM_WRITE_DISK1
     DC.L    CTASKS_STR_TERM_WRITE_DISK2

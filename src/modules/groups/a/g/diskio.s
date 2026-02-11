@@ -1281,6 +1281,8 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
+    ; Layout-coupled table anchor: CTASKS_STR_TERM_DL_TOO_LARGE_TAIL is
+    ; followed by a termination-reason pointer table.
     LEA     CTASKS_STR_TERM_DL_TOO_LARGE_TAIL,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
