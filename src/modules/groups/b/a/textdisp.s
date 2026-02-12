@@ -242,8 +242,8 @@ TEXTDISP_BuildNowShowingStatusLine:
     EXT.L   D1
     ASL.L   #2,D1
     ; Layout-coupled table anchor: legacy code indexes longword pointers from
-    ; DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
-    LEA     DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED,A0
+    ; SCRIPT_ChannelLabelLegacyIndexAnchor + 2.
+    LEA     (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     -137(A5)

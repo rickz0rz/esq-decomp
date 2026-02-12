@@ -8,11 +8,11 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 ## Anchor/Population Map
 
 ### 1) Channel label legacy anchor (`SCRIPT`)
-- Anchor label: `DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED` (`SCRIPT_ChannelLabelLegacyIndexAnchor`)
+- Anchor label: `SCRIPT_ChannelLabelLegacyIndexAnchor`
 - True table base: `SCRIPT_ChannelLabelPtrTable`
 - Consumers:
-  - `src/modules/groups/b/a/textdisp.s` (`LEA DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED,A0` index path)
-  - `src/modules/groups/a/d/cleanup3.s` (`LEA DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED,A0` index path)
+  - `src/modules/groups/b/a/textdisp.s` (`LEA (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0` index path)
+  - `src/modules/groups/a/d/cleanup3.s` (`LEA (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0` index path)
 - Population source:
   - Table is static in `src/data/script.s`.
   - Entries 19..22 point to zeroed placeholders (`SCRIPT_ChannelLabelEmptySlot0..3`).

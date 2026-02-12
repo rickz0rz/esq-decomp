@@ -914,7 +914,7 @@ CLEANUP_FormatEntryStringTokens:
 ;   CLEANUP_FormatEntryStringTokens, COI_AllocSubEntryTable, COI_ClearAnimObjectStrings, COI_FreeSubEntryTableEntries
 ; READS:
 ;   TEXTDISP_SecondaryGroupCode-TEXTDISP_SecondaryEntryPtrTable, ESQIFF_RecordLength, DATA_CTASKS_BSS_BYTE_1B8F-DATA_CTASKS_BSS_BYTE_1B92,
-;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED
+;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, SCRIPT_ChannelLabelLegacyIndexAnchor
 ; WRITES:
 ;   DATA_CTASKS_BSS_BYTE_1B8F-DATA_CTASKS_BSS_BYTE_1B92
 ; DESC:

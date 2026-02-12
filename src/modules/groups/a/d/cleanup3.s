@@ -30,7 +30,7 @@
 ; READS:
 ;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-DATA_WDISP_BSS_WORD_236E,
 ;   DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369, TEXTDISP_BannerCharFallback-DATA_WDISP_BSS_BYTE_2379, DATA_WDISP_BSS_LONG_237A,
-;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
+;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, SCRIPT_ChannelLabelLegacyIndexAnchor, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
 ;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, DATA_WDISP_BSS_WORD_227C, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
 ;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
 ;   Global_STR_ALIGNED_NOW_SHOWING, Global_STR_ALIGNED_NEXT_SHOWING,
@@ -791,8 +791,8 @@ CLEANUP_RenderAlignedStatusScreen:
     EXT.L   D0
     ASL.L   #2,D0
     ; Layout-coupled table anchor: legacy code indexes longword pointers from
-    ; DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
-    LEA     DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED,A0
+    ; SCRIPT_ChannelLabelLegacyIndexAnchor + 2.
+    LEA     (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     CLEANUP_AlignedStatusSuffixBuffer

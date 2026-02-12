@@ -41,7 +41,7 @@ Document and isolate places where apparent string labels are actually used as ta
 ## Confirmed High-Risk Anchor Patterns
 - `DATA_ESQFUNC_STR_I5_1EDD` used as base for indexed longword lookup (`index * 4`).
 - `CTASKS_STR_TERM_DL_TOO_LARGE_TAIL` used as base for indexed longword lookup.
-- `DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED` used as base for indexed longword lookup.
+- `SCRIPT_ChannelLabelLegacyIndexAnchor` used as base for indexed longword lookup.
 
 ## Important Decisions Made
 - Reverted earlier index-normalization runtime edits because they changed behavior/hash.

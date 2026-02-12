@@ -183,8 +183,6 @@ DATA_SCRIPT_STR_THIS_FALL_20EA:
     NStr    "This Fall"
 DATA_SCRIPT_STR_THIS_SUMMER_20EB:
     NStr    "This Summer"
-DATA_SCRIPT_CONST_WORD_20EC:
-    DC.W    "Tu"
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_ChannelLabelLegacyIndexAnchor   (legacy channel-label index anchor)
 ; TYPE: cstring
@@ -193,8 +191,7 @@ DATA_SCRIPT_CONST_WORD_20EC:
 ; NOTES: Anchor label only; pointer-table base is SCRIPT_ChannelLabelPtrTable.
 ;------------------------------------------------------------------------------
 SCRIPT_ChannelLabelLegacyIndexAnchor:
-DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED:
-    NStr    "esdays & Fridays"
+    NStr    "Tuesdays & Fridays"
 DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE:
     NStr    "Mondays & Saturdays"
 DATA_SCRIPT_STR_WEEKENDS_20EF:
@@ -240,9 +237,9 @@ DATA_SCRIPT_STR_THIS_WEEK_20FB:
 ; SYM: SCRIPT_ChannelLabelPtrTable   (channel label pointer table)
 ; TYPE: array<u32 ptr>
 ; PURPOSE: Maps channel/group selector values to label strings for append paths.
-; USED BY: CLEANUP3/Textdisp routines that index from DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
+; USED BY: CLEANUP3/Textdisp routines that index from SCRIPT_ChannelLabelLegacyIndexAnchor.
 ; NOTES:
-;   Legacy callsites index relative to DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
+;   Legacy callsites index relative to SCRIPT_ChannelLabelLegacyIndexAnchor.
 ;   Entries 19..22 intentionally point at zeroed empty-slot placeholders.
 ;------------------------------------------------------------------------------
 SCRIPT_ChannelLabelPtrTable:
@@ -260,7 +257,7 @@ SCRIPT_ChannelLabelPtrTable:
     DC.L    DATA_SCRIPT_STR_NEXT_MONTH_20E9
     DC.L    DATA_SCRIPT_STR_THIS_FALL_20EA
     DC.L    DATA_SCRIPT_STR_THIS_SUMMER_20EB
-    DC.L    DATA_SCRIPT_CONST_WORD_20EC
+    DC.L    SCRIPT_ChannelLabelLegacyIndexAnchor
     DC.L    DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE
     DC.L    DATA_SCRIPT_STR_WEEKENDS_20EF
     DC.L    DATA_SCRIPT_STR_EVERY_NIGHT_20F0
