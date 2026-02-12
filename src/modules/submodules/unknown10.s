@@ -71,10 +71,10 @@ PARSE_ReadSignedLong:
     MOVEQ   #0,D1
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
-    CMPI.B  #$2b,(A0)
+    CMPI.B  #'+',(A0)
     BEQ.S   .lab_PARSE_ReadSignedLong_SkipSign
 
-    CMPI.B  #$2d,(A0)
+    CMPI.B  #'-',(A0)
     BNE.S   PARSE_ReadSignedLong_ParseLoop
 
 .lab_PARSE_ReadSignedLong_SkipSign:
@@ -101,10 +101,13 @@ PARSE_ReadSignedLong:
 ;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_ParseLoop:
     MOVE.B  (A0)+,D0
-    SUBI.B  #$30,D0
+
+    ; Jump to PARSE_ReadSignedLong_ParseDone if value is below 0
+    SUBI.B  #'0',D0
     BLT.S   PARSE_ReadSignedLong_ParseDone
 
-    CMPI.B  #$9,D0
+    ; Jump to PARSE_ReadSignedLong_ParseDone if value is above 9
+    CMPI.B  #('9'-'0'),D0
     BGT.S   PARSE_ReadSignedLong_ParseDone
 
     MOVE.L  D1,D2
@@ -230,10 +233,10 @@ PARSE_ReadSignedLong_NoBranch:
     MOVEQ   #0,D1
     MOVEQ   #0,D0
     MOVE.L  D2,-(A7)
-    CMPI.B  #$2b,(A0)
+    CMPI.B  #'+',(A0)
     BEQ.S   .lab_PARSE_ReadSignedLong_NoBranch_SkipSign
 
-    CMPI.B  #$2d,(A0)
+    CMPI.B  #'-',(A0)
     BNE.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseLoop
 
 .lab_PARSE_ReadSignedLong_NoBranch_SkipSign:
@@ -241,10 +244,13 @@ PARSE_ReadSignedLong_NoBranch:
 
 .lab_PARSE_ReadSignedLong_NoBranch_ParseLoop:
     MOVE.B  (A0)+,D0
-    SUBI.B  #$30,D0
+
+    ; Jump to done if the value is below '0'
+    SUBI.B  #'0',D0
     BLT.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseDone
 
-    CMPI.B  #$9,D0
+    ; Jump to done if the value is above '9'
+    CMPI.B  #('9'-'0'),D0
     BGT.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseDone
 
     MOVE.L  D1,D2
@@ -255,7 +261,7 @@ PARSE_ReadSignedLong_NoBranch:
     BRA.S   .lab_PARSE_ReadSignedLong_NoBranch_ParseLoop
 
 .lab_PARSE_ReadSignedLong_NoBranch_ParseDone:
-    CMPI.B  #$2d,(A1)
+    CMPI.B  #'-',(A1)
     BNE.S   .lab_PARSE_ReadSignedLong_NoBranch_StoreResult
 
     NEG.L   D1
