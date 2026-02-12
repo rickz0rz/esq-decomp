@@ -1260,7 +1260,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 ; CALLS:
 ;   DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, CTASKS_STR_TERM_DL_TOO_LARGE_TAIL, ED_DiagnosticsScreenActive
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, CTASKS_TerminationReasonPtrTable, ED_DiagnosticsScreenActive
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1281,9 +1281,9 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    ; Layout-coupled table anchor: CTASKS_STR_TERM_DL_TOO_LARGE_TAIL is
+    ; Layout-coupled table anchor: CTASKS_TerminationReasonPtrTable is
     ; followed by a termination-reason pointer table.
-    LEA     CTASKS_STR_TERM_DL_TOO_LARGE_TAIL,A0
+    LEA     (CTASKS_TerminationReasonPtrTable-4),A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     240.W

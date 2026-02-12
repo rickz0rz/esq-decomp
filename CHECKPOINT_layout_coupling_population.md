@@ -28,7 +28,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - Static pointer table in `src/data/esqfunc.s` (no dynamic rewrite path identified in this pass).
 
 ### 3) Termination-reason legacy anchor (`CTASKS`)
-- Anchor label: `CTASKS_STR_TERM_DL_TOO_LARGE_TAIL`
+- Anchor label: `CTASKS_TerminationReasonPtrTable`
 - True table base: `CTASKS_TerminationReasonPtrTable`
 - Consumers:
   - `src/modules/groups/a/g/diskio.s`

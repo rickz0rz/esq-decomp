@@ -31,7 +31,7 @@ DATA_CTASKS_BSS_BYTE_1B92:
 ; TYPE: cstring
 ; PURPOSE: User-facing close-task termination reason strings.
 ; USED BY: DISKIO_DrawTransferErrorMessageIfDiagnostics
-; NOTES: CTASKS_STR_TERM_DL_TOO_LARGE_HEAD + CTASKS_STR_TERM_DL_TOO_LARGE_TAIL intentionally split "Too Large" text and pointer base.
+; NOTES: CTASKS_STR_TERM_DL_TOO_LARGE_HEAD + CTASKS_TerminationReasonPtrTable intentionally split "Too Large" text and pointer base.
 ;------------------------------------------------------------------------------
 CTASKS_STR_TERM_MISSED_RECORD:
     NStr    "Terminated: Missed Record"
@@ -44,9 +44,7 @@ CTASKS_STR_TERM_BATCH_OFF:
 CTASKS_STR_TERM_OPEN_FILE:
     NStr    "Terminated: Error Opening file"
 CTASKS_STR_TERM_DL_TOO_LARGE_HEAD:
-    DC.B    "Terminated: DL File Too La"
-CTASKS_STR_TERM_DL_TOO_LARGE_TAIL:
-    NStr    "rge"   ; Clearly continuing from the line above
+    NStr    "Terminated: DL File Too Large"
 CTASKS_TerminationReasonPtrTable:
     DC.L    CTASKS_STR_TERM_MISSED_RECORD
     DC.L    CTASKS_STR_TERM_WRITE_DISK1
