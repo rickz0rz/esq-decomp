@@ -1,20 +1,10 @@
 ;------------------------------------------------------------------------------
-; SYM: kHexDigitTable_Maybe   (Hex digit lookup bytesuncertain)
+; SYM: kHexDigitTable   (Hex digit lookup bytesuncertain)
 ; TYPE: array<u8>
 ; PURPOSE: Used by FORMAT_U32ToHexString to map nibbles to ASCII.
-; NOTES: The table likely extends into the following words which are
-;        disassembled as code; do not change without verifying layout.
 ;------------------------------------------------------------------------------
-kHexDigitTable_Maybe:
-    DC.W    $3031
-    DC.W    $3233
-    DC.W    $3435
-    MOVE.W  57(A7,D3.L),D3
-    BSR.S   PARSE_ReadSignedLong_ParseLoopEntry
-
-    BLS.S   PARSE_ReadSignedLong_ParseDone+2
-
-    BCS.S   PARSE_ReadSignedLong_NegateValue
+kHexDigitTable:
+    DC.B    "0123456789abcdef"
 
 ;------------------------------------------------------------------------------
 ; FUNC: FORMAT_U32ToHexString   (Format an unsigned value as hex ASCII.)
@@ -27,6 +17,12 @@ kHexDigitTable_Maybe:
 ;   D0-D1/A0-A1
 ; DESC:
 ;   Emits hex digits into a temp stack buffer, then reverses into A0.
+;   This is done by doing the following: Converts each byte to a hex code by copying
+;   D0 to D1, then doing a logical and by 15 which only keeps the bottom 4 bits of the
+;   byte. It then uses that (as a word) as a displacement against kHexDigitTable to get
+;   the correct value. That value is used as an index, and the resultant char is copied
+;   to A1's dest and A1 is incremented. The number is then left shifted by 4 bits, and
+;   the digit conversion runs again. This happens in a loop while D0 doesn't equal zero.
 ;------------------------------------------------------------------------------
 FORMAT_U32ToHexString:
     MOVE.L  8(A7),D0
@@ -36,7 +32,7 @@ FORMAT_U32ToHexString:
 .digit_loop:
     MOVE.W  D0,D1
     ANDI.W  #15,D1
-    MOVE.B  kHexDigitTable_Maybe(PC,D1.W),(A1)+
+    MOVE.B  kHexDigitTable(PC,D1.W),(A1)+
     LSR.L   #4,D0
     BNE.S   .digit_loop
 
@@ -159,7 +155,7 @@ PARSE_ReadSignedLong_ParseLoopEntry:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 PARSE_ReadSignedLong_ParseDone:
-    CMPI.B  #$2d,(A1)
+    CMPI.B  #'-',(A1)
     BNE.S   PARSE_ReadSignedLong_StoreResult
 
 ;------------------------------------------------------------------------------
