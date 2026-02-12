@@ -74,7 +74,7 @@ NEWGRID_InitGridResources:
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A0
-    MOVE.L  #DATA_WDISP_BSS_LONG_221F,4(A0)
+    MOVE.L  #WDISP_BannerGridBitmapStruct,4(A0)
     MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6

@@ -99,7 +99,7 @@ DISKIO2_WriteCurDayDataFile:
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
-    LEA     DATA_WDISP_BSS_LONG_2245,A0
+    LEA     WDISP_WeatherStatusLabelBuffer,A0
     MOVEA.L A0,A1
 
     ; Compute length of header string and write it.
@@ -841,7 +841,7 @@ DISKIO2_LoadCurDayDataFile:
 
 .loc_04A5:
     MOVEA.L D0,A0
-    LEA     DATA_WDISP_BSS_LONG_2245,A1
+    LEA     WDISP_WeatherStatusLabelBuffer,A1
 
 .loc_04A6:
     MOVE.B  (A0)+,(A1)+

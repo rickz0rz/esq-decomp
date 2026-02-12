@@ -84,7 +84,7 @@ CLEANUP_ClearAud1InterruptVector:
 ;   _LVOCloseDevice, GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField,
 ;   _LVOSetIntVector, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   LAB_2211_SERIAL_PORT_MAYBE, DATA_WDISP_BSS_LONG_2212, Global_REF_INTB_RBF_INTERRUPT,
+;   WDISP_SerialIoRequestPtr, WDISP_SerialMessagePortPtr, Global_REF_INTB_RBF_INTERRUPT,
 ;   Global_REF_INTB_RBF_64K_BUFFER, Global_REF_INTERRUPT_STRUCT_INTB_RBF,
 ;   AbsExecBase, Global_STR_CLEANUP_C_3, Global_STR_CLEANUP_C_4
 ; WRITES:
@@ -97,14 +97,14 @@ CLEANUP_ClearAud1InterruptVector:
 ;------------------------------------------------------------------------------
 CLEANUP_ClearRbfInterruptAndSerial:
     MOVE.W  #$800,INTENA
-    MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A1
+    MOVEA.L WDISP_SerialIoRequestPtr,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOCloseDevice(A6)
 
-    MOVE.L  DATA_WDISP_BSS_LONG_2212,-(A7)
+    MOVE.L  WDISP_SerialMessagePortPtr,-(A7)
     JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
-    MOVE.L  LAB_2211_SERIAL_PORT_MAYBE,(A7)
+    MOVE.L  WDISP_SerialIoRequestPtr,(A7)
     JSR     GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(PC)
 
     MOVEQ   #INTB_RBF,D0
@@ -227,8 +227,8 @@ CLEANUP_ShutdownInputDevices:
 ;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster,
 ;   _LVOCloseFont, _LVOCloseLibrary
 ; READS:
-;   Global_REF_96_BYTES_ALLOCATED, Global_REF_RASTPORT_1, DATA_WDISP_BSS_LONG_2220, DATA_WDISP_BSS_LONG_221A,
-;   DATA_WDISP_BSS_LONG_221C, DATA_WDISP_BSS_LONG_2224, WDISP_BannerWorkRasterPtr, Global_HANDLE_PREVUE_FONT,
+;   Global_REF_96_BYTES_ALLOCATED, Global_REF_RASTPORT_1, WDISP_LivePlaneRasterTable0, WDISP_352x240RasterPtrTable,
+;   WDISP_BannerRowScratchRasterTable0, WDISP_DisplayContextPlanePointer0, WDISP_BannerWorkRasterPtr, Global_HANDLE_PREVUE_FONT,
 ;   Global_HANDLE_TOPAZ_FONT, Global_HANDLE_H26F_FONT, Global_HANDLE_PREVUEC_FONT,
 ;   Global_REF_UTILITY_LIBRARY, Global_REF_DISKFONT_LIBRARY,
 ;   Global_REF_DOS_LIBRARY, Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY,
@@ -267,7 +267,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2220,A0
+    LEA     WDISP_LivePlaneRasterTable0,A0
     ADDA.L  D0,A0
     PEA     2.W
     PEA     696.W
@@ -290,7 +290,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D1
     ASL.L   #2,D1
-    LEA     DATA_WDISP_BSS_LONG_221A,A0
+    LEA     WDISP_352x240RasterPtrTable,A0
     ADDA.L  D1,A0
     PEA     240.W
     PEA     352.W
@@ -313,7 +313,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_221C,A0
+    LEA     WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
     PEA     509.W
     PEA     696.W
@@ -336,7 +336,7 @@ CLEANUP_ReleaseDisplayResources:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2224,A0
+    LEA     WDISP_DisplayContextPlanePointer0,A0
     ADDA.L  D0,A0
     PEA     241.W
     PEA     696.W
@@ -434,8 +434,8 @@ CLEANUP_ReleaseDisplayResources:
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
 ;   LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
-;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, DATA_WDISP_BSS_LONG_22A7, DATA_WDISP_BSS_WORD_222B, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, DATA_ESQ_BSS_LONG_1DC7,
-;   DATA_WDISP_BSS_LONG_222C, Global_REF_GRAPHICS_LIBRARY, Global_REF_INTUITION_LIBRARY,
+;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, DATA_WDISP_BSS_LONG_22A7, WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, DATA_ESQ_BSS_LONG_1DC7,
+;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, Global_REF_INTUITION_LIBRARY,
 ;   Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
 ;   Global_STR_CLEANUP_C_16
@@ -556,7 +556,7 @@ M
     ASL.L   #2,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_222B,D0
+    MOVE.W  WDISP_HighlightRasterHeightPx,D0
     MOVE.L  D0,-(A7)
     PEA     696.W
     MOVE.L  8(A0),-(A7)
@@ -611,7 +611,7 @@ M
     TST.L   DATA_ESQ_BSS_LONG_1DC7
     BEQ.S   .after_optional_restore
 
-    MOVEA.L DATA_WDISP_BSS_LONG_222C,A0
+    MOVEA.L WDISP_ExecBaseHookPtr,A0
     MOVE.L  DATA_ESQ_BSS_LONG_1DC7,184(A0)
 
 .after_optional_restore:

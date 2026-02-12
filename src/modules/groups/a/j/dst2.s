@@ -354,7 +354,7 @@ DST_NormalizeDayOfYear:
 ; CALLS:
 ;   DATETIME_IsLeapYear, DATETIME_BuildFromBaseDay, DATETIME_ClassifyValueInRange, DATETIME_SecondsToStruct, GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   CLOCK_DaySlotIndex, DATA_WDISP_BSS_WORD_2242, DATA_WDISP_BSS_WORD_223D, DATA_ESQ_STR_N_1DD2, DATA_ESQ_STR_6_1DD1, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
+;   CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, DATA_WDISP_BSS_WORD_223D, DATA_ESQ_STR_N_1DD2, DATA_ESQ_STR_6_1DD1, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -380,7 +380,7 @@ DST_BuildBannerTimeEntry:
     MOVE.W  (A0),(A1)
     MOVEQ   #0,D0
     MOVE.B  D6,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2242,D1
+    MOVE.W  WDISP_BannerSlotCursor,D1
     MOVE.W  D0,-30(A5)
     CMPI.W  #$ff,D1
     BLT.S   .after_wrap_flag
@@ -411,7 +411,7 @@ DST_BuildBannerTimeEntry:
     CMP.W   D1,D0
     BNE.S   .maybe_increment_year
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2242,D2
+    MOVE.W  WDISP_BannerSlotCursor,D2
     SUBQ.W  #1,D2
     BEQ.S   .maybe_increment_year
 
@@ -750,7 +750,7 @@ DST_ComputeBannerIndex:
 ; READS:
 ;   DATA_ESQ_STR_6_1DD1, DST_PrimaryCountdown, DST_SecondaryCountdown
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_225C
+;   WDISP_BannerCharPhaseShift
 ; DESC:
 ;   Updates banner counters based on timers and flags.
 ; NOTES:
@@ -760,23 +760,23 @@ DST_TickBannerCounters:
     MOVEQ   #0,D0
     MOVE.B  DATA_ESQ_STR_6_1DD1,D0
     SUBI.W  #$36,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_225C
+    MOVE.W  D0,WDISP_BannerCharPhaseShift
     MOVE.W  DST_PrimaryCountdown,D1
     SUBQ.W  #1,D1
     BNE.S   .after_primary_tick
 
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_225C
+    MOVE.W  D1,WDISP_BannerCharPhaseShift
 
 .after_primary_tick:
     MOVE.W  DST_SecondaryCountdown,D0
     SUBQ.W  #1,D0
     BNE.S   .return
 
-    MOVE.W  DATA_WDISP_BSS_WORD_225C,D0
+    MOVE.W  WDISP_BannerCharPhaseShift,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_225C
+    MOVE.W  D0,WDISP_BannerCharPhaseShift
 
 .return:
     RTS
@@ -941,7 +941,7 @@ DST_FormatBannerDateTime:
 ; CALLS:
 ;   DST_TickBannerCounters, DST_AddTimeOffset
 ; READS:
-;   CLOCK_DaySlotIndex, DST_SecondaryCountdown, DATA_WDISP_BSS_WORD_225C, CLOCK_FormatVariantCode
+;   CLOCK_DaySlotIndex, DST_SecondaryCountdown, WDISP_BannerCharPhaseShift, CLOCK_FormatVariantCode
 ; WRITES:
 ;   CLOCK_CurrentDayOfWeekIndex, DST_SecondaryCountdown
 ; DESC:
@@ -965,7 +965,7 @@ DST_RefreshBannerBuffer:
     DBF     D0,.copy_queue_state
     MOVE.W  (A0),(A1)
     MOVE.W  D7,DST_SecondaryCountdown
-    MOVE.W  DATA_WDISP_BSS_WORD_225C,D0
+    MOVE.W  WDISP_BannerCharPhaseShift,D0
     EXT.L   D0
     MOVEQ   #0,D1
     MOVE.B  CLOCK_FormatVariantCode,D1

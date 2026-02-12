@@ -18,8 +18,16 @@
 ;   Formats and draws details for the selected entry, including flags and titles.
 ; NOTES:
 ;   Builds a temporary 1000-byte text buffer and frees it before returning.
+;   Local panel-text buffer at -120(A5) has 120 bytes; it is shared by
+;   WDISP_SPrintf and STRING_AppendAtNull calls.
+;   `%s` arguments come from mixed sources (entry struct fields, title pointer
+;   tables, and sanitized slot text), so this is one of the higher-risk format
+;   paths when string content/lengths are modified.
 ;------------------------------------------------------------------------------
 ED2_DrawEntryDetailsPanel:
+
+.panelTextBuffer = -120
+
     LINK.W  A5,#-148
     MOVEM.L A2-A3,-(A7)
     MOVE.W  ED2_SelectedEntryIndex,D0
@@ -94,13 +102,13 @@ ED2_DrawEntryDetailsPanel:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_PI_CLU_POS1
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     90.W
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -111,7 +119,7 @@ ED2_DrawEntryDetailsPanel:
     MOVE.L  A1,D0
     BEQ.S   .use_default_name
 
-    LEA     1(A0),A1
+    LEA     1(A0),A1                      ; A0+1  = channel text ??
     BRA.S   .name_ptr_ready
 
 .use_default_name:
@@ -128,7 +136,7 @@ ED2_DrawEntryDetailsPanel:
     LEA     DATA_ED2_TAG_NULL_1D3C,A2
 
 .source_ptr_ready:
-    LEA     19(A0),A3
+    LEA     19(A0),A3                     ; A0+19 = call letters ?? (A0+27 is flags byte)
     MOVE.L  A3,D0
     BEQ.S   .use_default_call_letters
 
@@ -139,17 +147,23 @@ ED2_DrawEntryDetailsPanel:
     LEA     DATA_ED2_TAG_NULL_1D3D,A3
 
 .call_letters_ready:
+    ; Guard candidate (no behavior change in this pass): if Section 1 string
+    ; edits expand source/title text, pre-clamp each `%s` input before this
+    ; formatter so the 120-byte destination cannot be exceeded.
+    ; Budget note for .panelTextBuffer (120 bytes incl NUL):
+    ; "Chan=%s Source=%s CallLtrs=%s" => 24 + len(chan)+len(source)+len(callltrs).
+    ; Safe only while combined `%s` payload stays <= 96 bytes.
     MOVE.L  A3,-(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
     PEA     Global_STR_CHAN_SOURCE_CALLLTRS_1
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -191,29 +205,34 @@ ED2_DrawEntryDetailsPanel:
     LEA     DATA_ED2_TAG_NULL_1D3F,A0
 
 .title_ptr_ready:
+    ; Guard candidate: `%s` title text here originates from DISKIO2 sanitize
+    ; output / fallback pointer and can be much longer than inline entry fields.
+    ; Budget note for .panelTextBuffer (120 bytes incl NUL):
+    ; "TS=%d Title='%s' Time=%s" => 30 + len(title)+len(time) with conservative
+    ; signed `%d` width (11 chars). This is the top ED2 guard-priority row.
     PEA     -140(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_TS_TITLE_TIME
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     32(A7),A7
-    CLR.B   -120(A5)
+    CLR.B   .panelTextBuffer(A5)
     MOVEA.L ED2_SelectedEntryTitlePtr,A0
     ADDA.W  ED2_SelectedFlagByteOffset,A0
     BTST    #0,7(A0)
     BEQ.S   .after_flag0
 
     PEA     DATA_ED2_STR_NONE_1D40
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -225,7 +244,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag1
 
     PEA     DATA_ED2_STR_MOVIE_1D41
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -237,7 +256,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag2
 
     PEA     DATA_ED2_STR_ALTHILITEPROG_1D42
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -249,7 +268,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag3
 
     PEA     DATA_ED2_STR_TAGPROG_1D43
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -261,7 +280,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag4
 
     PEA     DATA_ED2_STR_SPORTSPROG_1D44
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -273,7 +292,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag5
 
     PEA     DATA_ED2_STR_DVIEW_USED_1D45
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -285,7 +304,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag6
 
     PEA     DATA_ED2_STR_REPEATPROG_1D46
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -297,7 +316,7 @@ ED2_DrawEntryDetailsPanel:
     BEQ.S   .after_flag7
 
     PEA     DATA_ED2_STR_PREVDAYSDATA_1D47
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -306,7 +325,7 @@ ED2_DrawEntryDetailsPanel:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     210.W
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -344,8 +363,15 @@ ED2_DrawEntryDetailsPanel:
 ;   Draws summary text and flag strings for the currently selected entry.
 ; NOTES:
 ;   Uses flag fields at offsets 27 and 46 in the entry data.
+;   Local panel-text buffer at -120(A5) has 120 bytes; %s fields come from
+;   entry pointers and rely on upstream data staying bounded.
+;   Entry-field `%s` sources are likely fixed-width struct slots (+1/+12/+19),
+;   but no explicit clamp occurs before WDISP_SPrintf.
 ;------------------------------------------------------------------------------
 ED2_DrawEntrySummaryPanel:
+
+.panelTextBuffer = -120
+
     LINK.W  A5,#-120
     MOVEM.L D2/A2-A3,-(A7)
 
@@ -398,44 +424,49 @@ ED2_DrawEntrySummaryPanel:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_CLU_CLU_POS1
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L ED2_SelectedEntryDataPtr,A0
     MOVEA.L A0,A1
-    ADDQ.L  #1,A1
-    LEA     12(A0),A2
-    LEA     19(A0),A3
+    ADDQ.L  #1,A1                         ; A0+1  = channel text ??
+    LEA     12(A0),A2                     ; A0+12 = source text ??
+    LEA     19(A0),A3                     ; A0+19 = call letters ?? (A0+27 flags)
+    ; Guard candidate: clamp these three `%s` fields (or replace with bounded
+    ; copy step) if entry layout/field sizes are changed in future data edits.
+    ; Budget note for .panelTextBuffer (120 bytes incl NUL):
+    ; "Chan=%s Source=%s CallLtrs=%s" => 24 + len(chan)+len(source)+len(callltrs),
+    ; so combined `%s` payload must stay <= 96 bytes.
     MOVE.L  A3,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  A1,-(A7)
     PEA     Global_STR_CHAN_SOURCE_CALLLTRS_2
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     56(A7),A7
-    CLR.B   -120(A5)
+    CLR.B   .panelTextBuffer(A5)
     MOVEA.L ED2_SelectedEntryDataPtr,A0
     MOVE.B  27(A0),D0
     BTST    #0,D0
     BEQ.S   .after_flag0
 
     PEA     DATA_ED2_STR_NONE_1D4B
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -447,7 +478,7 @@ ED2_DrawEntrySummaryPanel:
     BEQ.S   .after_flag1
 
     PEA     DATA_ED2_STR_HILITESRC_1D4C
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -459,7 +490,7 @@ ED2_DrawEntrySummaryPanel:
     BEQ.S   .after_flag2
 
     PEA     DATA_ED2_STR_SUMBYSRC_1D4D
-    PEA     -120(A5)
+    PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
@@ -634,13 +665,17 @@ ED2_DrawEntrySummaryPanel:
 ; WRITES:
 ;   ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, DATA_GCOMMAND_BSS_WORD_1FA5, ED_MenuStateId, DATA_ESQ_BSS_WORD_1DE4, DATA_ESQ_BSS_BYTE_1DEF,
 ;   DATA_COMMON_STR_VALUE_1B05, ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, SCRIPT_RuntimeMode,
-;   DATA_WDISP_BSS_WORD_2266
+;   PARSEINI_CtrlHChangeGateFlag
 ; DESC:
 ;   Dispatches ESC menu selections to a large set of diagnostic and UI actions.
 ; NOTES:
 ;   Switch-like chain on ED_StateRingTable-selected index; ends by restoring rastport state.
+;   case_show_status_message uses a 50-byte local printf target (-50(A5)).
 ;------------------------------------------------------------------------------
 ED2_HandleMenuActions:
+
+.statusLineBuffer = -50
+
     LINK.W  A5,#-120
     MOVEM.L D2-D7,-(A7)
 
@@ -1147,7 +1182,7 @@ ED2_HandleMenuActions:
     PEA     DATA_ED2_FMT_WCITY_PCT_S_1D65
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     DATA_WDISP_BSS_LONG_2245
+    PEA     WDISP_WeatherStatusLabelBuffer
     PEA     DATA_ED2_FMT_WEATHER_ID_PCT_S_1D66
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
@@ -1426,24 +1461,24 @@ ED2_HandleMenuActions:
 .case_adjust_2266:
     JSR     ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2266,D0
+    MOVE.W  PARSEINI_CtrlHChangeGateFlag,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     JSR     ESQDISP_TestWordIsZeroBooleanize(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2266
+    MOVE.W  D0,PARSEINI_CtrlHChangeGateFlag
     BRA.S   .restore_display_state
 
 .case_show_status_message:
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
-    MOVE.L  DATA_WDISP_BSS_LONG_2267,-(A7)
+    MOVE.L  ESQSHARED_BannerRowScratchRasterBase0,-(A7)
     PEA     DATA_ED2_FMT_BITPLANE1_PCT_8LX_1D69
-    PEA     -50(A5)
+    PEA     .statusLineBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    PEA     -50(A5)
+    PEA     .statusLineBuffer(A5)
     PEA     232.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)

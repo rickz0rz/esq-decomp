@@ -9,7 +9,7 @@
 ; CALLS:
 ;   ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster, _LVOBltClear, _LVOInitBitMap
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQDISP_C, DATA_WDISP_BSS_WORD_222B
+;   Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQDISP_C, WDISP_HighlightRasterHeightPx
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -22,7 +22,7 @@ ESQDISP_AllocateHighlightBitmaps:
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 24(A7),A3
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_222B,D0
+    MOVE.W  WDISP_HighlightRasterHeightPx,D0
     MOVEA.L A3,A0
     MOVE.L  D0,D2
     MOVEQ   #3,D0
@@ -41,7 +41,7 @@ ESQDISP_AllocateHighlightBitmaps:
     ASL.L   #2,D0
     MOVEQ   #0,D1
 
-    MOVE.W  DATA_WDISP_BSS_WORD_222B,D1
+    MOVE.W  WDISP_HighlightRasterHeightPx,D1
     MOVE.L  D1,-(A7)                    ; Height
     PEA     696.W                       ; Width
     PEA     79.W                        ; Line Number
@@ -54,7 +54,7 @@ ESQDISP_AllocateHighlightBitmaps:
     MOVE.L  D0,8(A3,D1.L)
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_222B,D1
+    MOVE.W  WDISP_HighlightRasterHeightPx,D1
     MULU    #$58,D1
     MOVE.L  D0,12(A7)
     MOVE.L  D1,D0
@@ -238,7 +238,7 @@ ESQDISP_QueueHighlightDrawMessage:
 ; CALLS:
 ;   ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DF2, DATA_WDISP_BSS_LONG_2260, Global_UIBusyFlag
+;   DATA_ESQ_BSS_WORD_1DF2, NEWGRID_MessagePumpSuspendFlag, Global_UIBusyFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -253,7 +253,7 @@ ESQDISP_ProcessGridMessagesIfIdle:
     TST.W   Global_UIBusyFlag
     BNE.S   .lab_08C3
 
-    TST.L   DATA_WDISP_BSS_LONG_2260
+    TST.L   NEWGRID_MessagePumpSuspendFlag
     BNE.S   .lab_08C3
 
     JSR     ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages(PC)
@@ -2006,7 +2006,7 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, DATA_WDISP_BSS_WORD_223B, DATA_WDISP_BSS_WORD_223C, DATA_WDISP_BSS_WORD_223D, DST_PrimaryCountdown, DATA_WDISP_BSS_WORD_2242, CLOCK_HalfHourSlotIndex, DATA_WDISP_BSS_WORD_227C, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, DATA_WDISP_BSS_WORD_223B, DATA_WDISP_BSS_WORD_223C, DATA_WDISP_BSS_WORD_223D, DST_PrimaryCountdown, WDISP_BannerSlotCursor, CLOCK_HalfHourSlotIndex, DATA_WDISP_BSS_WORD_227C, lab_0942, lab_0943, lab_0944
 ; WRITES:
 ;   DATA_COMMON_BSS_LONG_1B08, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, DATA_TLIBA1_CONST_LONG_219B, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
 ; DESC:
@@ -2064,7 +2064,7 @@ ESQDISP_DrawStatusBanner_Impl:
     CMP.W   D1,D0
     BCC.S   .lab_0937
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2242,D1
+    MOVE.W  WDISP_BannerSlotCursor,D1
     EXT.L   D1
     MOVEQ   #0,D2
     NOT.B   D2
@@ -2092,13 +2092,13 @@ ESQDISP_DrawStatusBanner_Impl:
     BRA.S   .lab_093A
 
 .lab_0937:
-    MOVE.W  DATA_WDISP_BSS_WORD_2242,D1
+    MOVE.W  WDISP_BannerSlotCursor,D1
     EXT.L   D1
     MOVEQ   #0,D2
     NOT.B   D2
     AND.L   D2,D1
     MOVE.B  D1,TEXTDISP_SecondaryGroupCode
-    MOVE.W  DATA_WDISP_BSS_WORD_2242,D0
+    MOVE.W  WDISP_BannerSlotCursor,D0
     SUBQ.W  #1,D0
     BNE.S   .lab_0939
 
@@ -2117,7 +2117,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BRA.S   .lab_093A
 
 .lab_0939:
-    MOVE.W  DATA_WDISP_BSS_WORD_2242,D0
+    MOVE.W  WDISP_BannerSlotCursor,D0
     EXT.L   D0
     SUBQ.L  #1,D0
     AND.L   D2,D0
@@ -2316,7 +2316,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ; CALLS:
 ;   ESQDISP_FillProgramInfoHeaderFields, ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, DATA_WDISP_BSS_LONG_2234, ff7f, lab_094B, lab_094C, lab_094D
+;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f, lab_094B, lab_094C, lab_094D
 ; WRITES:
 ;   DATA_ESQDISP_BSS_WORD_1E87
 ; DESC:
@@ -2364,7 +2364,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ASL.L   #2,D1
-    LEA     DATA_WDISP_BSS_LONG_2234,A0
+    LEA     TEXTDISP_SecondaryEntryPtrTablePreSlot,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVEQ   #0,D0

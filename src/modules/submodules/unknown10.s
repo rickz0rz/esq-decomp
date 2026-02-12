@@ -329,6 +329,10 @@ UNKNOWN10_PrintfPutcToBuffer:
 ;   Formats into the provided buffer using the local printf core and returns length.
 ; NOTES:
 ;   Zero-terminates the output.
+;   No local NULL guard is applied to `formatStr`; callers must pass a valid
+;   NUL-terminated format pointer.
+;   No destination-capacity argument is present; callers must ensure `outBuf`
+;   is large enough for worst-case formatted output.
 ;------------------------------------------------------------------------------
 WDISP_SPrintf:
     LINK.W  A5,#0

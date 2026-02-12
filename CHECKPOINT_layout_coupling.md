@@ -61,3 +61,6 @@ Document and isolate places where apparent string labels are actually used as ta
 
 ## Notes
 - There is an untracked `scripts/` path in working tree (`?? scripts/`) that was present during this session and left untouched.
+- Population/writer trace continuation is tracked in `CHECKPOINT_layout_coupling_population.md`.
+- `CHECKPOINT_layout_coupling_population.md` now includes `ESQFUNC_DrawDiagnosticsScreen` conservative budget/provenance detail in sections `5.10` and `5.11` (including `P0`/`P1`/`P2` guard priority and writer-map notes), plus `ED2`/`TEXTDISP` row-level `%s` budget/source mapping in section `5.12`, `wdisp.s` `220F+` pointer-state alias mapping in section `5.13`, `wdisp.s` `2242`-`226F` alias/status-state mapping in section `5.14`, and explicit `226D/226E` producer tracing (including `argv[1]` overflow path) in section `5.15`.
+- Follow-on annotation work after this checkpoint added non-behavioral editor/system aliases in `src/data/wdisp.s` (`21F1`-`220E` cluster) and propagated selected callsites in ED/ESQ modules.

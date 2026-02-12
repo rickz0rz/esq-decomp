@@ -185,6 +185,14 @@ DATA_SCRIPT_STR_THIS_SUMMER_20EB:
     NStr    "This Summer"
 DATA_SCRIPT_CONST_WORD_20EC:
     DC.W    "Tu"
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_ChannelLabelLegacyIndexAnchor   (legacy channel-label index anchor)
+; TYPE: cstring
+; PURPOSE: Historical anchor used by `index * 4` address math in legacy callsites.
+; USED BY: CLEANUP3/Textdisp channel-label lookups.
+; NOTES: Anchor label only; pointer-table base is SCRIPT_ChannelLabelPtrTable.
+;------------------------------------------------------------------------------
+SCRIPT_ChannelLabelLegacyIndexAnchor:
 DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED:
     NStr    "esdays & Fridays"
 DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE:
@@ -195,12 +203,25 @@ DATA_SCRIPT_STR_EVERY_NIGHT_20F0:
     NStr    "Every Night"
 DATA_SCRIPT_STR_EVERY_DAY_20F1:
     NStr    "Every Day"
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_ChannelLabelEmptySlot0/SCRIPT_ChannelLabelEmptySlot1/SCRIPT_ChannelLabelEmptySlot2/SCRIPT_ChannelLabelEmptySlot3   (channel label empty-string slots)
+; TYPE: char[2] x4
+; PURPOSE: Zero-initialized placeholders referenced by SCRIPT_ChannelLabelPtrTable.
+; USED BY: Legacy channel-label pointer lookups in TEXTDISP/CLEANUP3 flows.
+; NOTES:
+;   These currently act as empty-string targets (byte0 = NUL).
+;   No direct symbol-based writers are identified yet; preserve contiguous layout.
+;------------------------------------------------------------------------------
+SCRIPT_ChannelLabelEmptySlot0:
 DATA_SCRIPT_BSS_WORD_20F2:
     DS.W    1
+SCRIPT_ChannelLabelEmptySlot1:
 DATA_SCRIPT_BSS_WORD_20F3:
     DS.W    1
+SCRIPT_ChannelLabelEmptySlot2:
 DATA_SCRIPT_BSS_WORD_20F4:
     DS.W    1
+SCRIPT_ChannelLabelEmptySlot3:
 DATA_SCRIPT_BSS_WORD_20F5:
     DS.W    1
 DATA_SCRIPT_STR_MONDAYS_THRU_SATURDAYS_20F6:
@@ -220,7 +241,9 @@ DATA_SCRIPT_STR_THIS_WEEK_20FB:
 ; TYPE: array<u32 ptr>
 ; PURPOSE: Maps channel/group selector values to label strings for append paths.
 ; USED BY: CLEANUP3/Textdisp routines that index from DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
-; NOTES: Legacy callsites index relative to DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
+; NOTES:
+;   Legacy callsites index relative to DATA_SCRIPT_STR_ESDAYS_FRIDAYS_20ED.
+;   Entries 19..22 intentionally point at zeroed empty-slot placeholders.
 ;------------------------------------------------------------------------------
 SCRIPT_ChannelLabelPtrTable:
     DC.L    DATA_SCRIPT_STR_MONDAY_20DE
@@ -352,6 +375,15 @@ DATA_SCRIPT_BSS_BYTE_2127:
     DS.B    1
 DATA_SCRIPT_BSS_WORD_2128:
     DS.W    1
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_CommandTextPtr   (owned script command text pointer)
+; TYPE: pointer
+; PURPOSE: Stores heap-owned text payload used by TEXTDISP command dispatch (`cmd 'C'` path).
+; USED BY: SCRIPT_HandleBrushCommand, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, TEXTDISP_HandleScriptCommand
+; NOTES: Updated through ESQPARS_ReplaceOwnedString; source commonly comes from
+;   SCRIPT_CTRL_CMD_BUFFER tail (`LEA 3(A2),A0`) after parser NUL-termination.
+;------------------------------------------------------------------------------
+SCRIPT_CommandTextPtr:
 DATA_SCRIPT_BSS_LONG_2129:
     DS.L    1
 DATA_SCRIPT_BSS_WORD_212A:

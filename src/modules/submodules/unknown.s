@@ -10,7 +10,7 @@
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   ED_DiagnosticsScreenActive, DATA_WDISP_BSS_LONG_2245, WDISP_WeatherStatusOverlayTextPtr, Global_REF_RASTPORT_1
+;   ED_DiagnosticsScreenActive, WDISP_WeatherStatusLabelBuffer, WDISP_WeatherStatusOverlayTextPtr, Global_REF_RASTPORT_1
 ; WRITES:
 ;   WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusCountdown, DATA_WDISP_BSS_BYTE_229B, WDISP_WeatherStatusBrushIndex
 ; DESC:
@@ -64,7 +64,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     BEQ.S   .return
 
     PEA     -16(A5)
-    PEA     DATA_WDISP_BSS_LONG_2245
+    PEA     WDISP_WeatherStatusLabelBuffer
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -112,7 +112,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_DST_NormalizeDayOfYear, STRING_CopyPadNul, PARSE_ReadSignedLongSkipClass3_Alt, MATH_Mulu32
 ; READS:
-;   DATA_WDISP_BSS_BYTE_2246, DATA_WDISP_BSS_WORD_227C, CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
+;   WDISP_StatusListMatchPattern, DATA_WDISP_BSS_WORD_227C, CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
 ; WRITES:
 ;   DATA_TLIBA1_BSS_WORD_2196
 ; DESC:
@@ -150,7 +150,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     BEQ.W   .return
 
     PEA     -15(A5)
-    PEA     DATA_WDISP_BSS_BYTE_2246
+    PEA     WDISP_StatusListMatchPattern
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -531,7 +531,7 @@ UNKNOWN_VerifyChecksumAndParseList:
 ; READS:
 ;   WDISP_WeatherStatusTextPtr, ED_DiagnosticsScreenActive, Global_REF_RASTPORT_1
 ; WRITES:
-;   WDISP_WeatherStatusDigitChar, WDISP_WeatherStatusTextPtr, DATA_WDISP_BSS_LONG_2245
+;   WDISP_WeatherStatusDigitChar, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusLabelBuffer
 ; DESC:
 ;   Parses a digit plus a short label string, stores it, and optionally redraws text.
 ; NOTES:
@@ -576,7 +576,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 .copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
-    LEA     DATA_WDISP_BSS_LONG_2245,A1
+    LEA     WDISP_WeatherStatusLabelBuffer,A1
 
 .copy_label:
     MOVE.B  (A0)+,(A1)+
@@ -606,7 +606,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_CopyLabelToGlobal   (Copy short label into DATA_WDISP_BSS_BYTE_2246.)
+; FUNC: UNKNOWN_CopyLabelToGlobal   (Copy short label into WDISP_StatusListMatchPattern.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +9: arg_2 (via 13(A5))
@@ -619,9 +619,9 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_WDISP_BSS_BYTE_2246
+;   WDISP_StatusListMatchPattern
 ; DESC:
-;   Copies a short label string from the input buffer into DATA_WDISP_BSS_BYTE_2246.
+;   Copies a short label string from the input buffer into WDISP_StatusListMatchPattern.
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
@@ -648,7 +648,7 @@ UNKNOWN_CopyLabelToGlobal:
 .copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
-    LEA     DATA_WDISP_BSS_BYTE_2246,A1
+    LEA     WDISP_StatusListMatchPattern,A1
 
 .copy_label:
     MOVE.B  (A0)+,(A1)+

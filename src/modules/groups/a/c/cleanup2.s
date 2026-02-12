@@ -16,27 +16,27 @@
 ;   GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion, GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen,
 ;   _LVOSetAPen, GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
-;   DATA_WDISP_BSS_WORD_2264, CLEANUP_AlertProcessingFlag, DATA_ESQ_BSS_BYTE_1DEF, Global_UIBusyFlag,
+;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, DATA_ESQ_BSS_BYTE_1DEF, Global_UIBusyFlag,
 ;   CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep, DATA_WDISP_BSS_LONG_2325, CLOCK_DaySlotIndex, CLOCK_CurrentDayOfWeekIndex,
 ;   DATA_WDISP_BSS_WORD_22A5, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
 ;   DATA_TLIBA1_BSS_WORD_2196, DST_BannerWindowPrimary, DATA_ESQ_STR_N_1DD5, DATA_ESQ_STR_N_1DD4, ED_MenuStateId, CLOCK_HalfHourSlotIndex,
 ;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep,
-;   DATA_WDISP_BSS_LONG_2325, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_WORD_22A5, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
+;   DATA_WDISP_BSS_LONG_2325, CLEANUP_PendingAlertFlag, DATA_WDISP_BSS_WORD_22A5, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
 ;   CLEANUP_BannerTickCounter, DATA_TLIBA1_BSS_WORD_2196, DATA_ESQDISP_CONST_WORD_1E85, DATA_COMMON_BSS_LONG_1B08,
-;   DATA_WDISP_BSS_WORD_226F, DATA_WDISP_BSS_WORD_2280
+;   WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280
 ; DESC:
 ;   Processes pending alert state, advances the alert/badge state machine,
 ;   handles brush alerts, updates banner timers, and redraws the banner/clock.
 ; NOTES:
 ;   - Uses LOCAVAIL_FilterStep as a multi-step alert state (2 → 3 → 4).
-;   - Clears the one-shot pending flag (DATA_WDISP_BSS_WORD_2264) after processing.
+;   - Clears the one-shot pending flag (CLEANUP_PendingAlertFlag) after processing.
 ;------------------------------------------------------------------------------
 ; Process pending alert/notification state and update on-screen banners.
 CLEANUP_ProcessAlerts:
     MOVEM.L D2/D7,-(A7)
-    TST.W   DATA_WDISP_BSS_WORD_2264
+    TST.W   CLEANUP_PendingAlertFlag
     BEQ.W   .return_status
 
     TST.L   CLEANUP_AlertProcessingFlag
@@ -86,7 +86,7 @@ CLEANUP_ProcessAlerts:
     JSR     GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
 .after_state_update:
-    CLR.W   DATA_WDISP_BSS_WORD_2264
+    CLR.W   CLEANUP_PendingAlertFlag
     PEA     CLOCK_DaySlotIndex
     JSR     ESQ_TickClockAndFlagEvents(PC)
 
@@ -251,7 +251,7 @@ CLEANUP_ProcessAlerts:
     MOVE.L  D1,-(A7)
     JSR     DISPLIB_NormalizeValueByStep(PC)
 
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_226F
+    MOVE.W  D0,WDISP_BannerCharRangeStart
     MOVE.W  CLOCK_HalfHourSlotIndex,D0
     ADDQ.W  #2,D0
     EXT.L   D0
@@ -273,10 +273,10 @@ CLEANUP_ProcessAlerts:
     CMP.L   D0,D7
     BNE.S   .draw_banner
 
-    MOVE.W  DATA_WDISP_BSS_WORD_226F,D0
+    MOVE.W  WDISP_BannerCharRangeStart,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_226F
+    MOVE.W  D1,WDISP_BannerCharRangeStart
     EXT.L   D1
     PEA     48.W
     PEA     1.W
@@ -284,7 +284,7 @@ CLEANUP_ProcessAlerts:
     JSR     DISPLIB_NormalizeValueByStep(PC)
 
     LEA     12(A7),A7
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_226F
+    MOVE.W  D0,WDISP_BannerCharRangeStart
     MOVE.W  DATA_WDISP_BSS_WORD_2280,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
@@ -331,7 +331,7 @@ CLEANUP_ProcessAlerts:
     CLR.L   BRUSH_PendingAlertCode
 
 .maybe_clear_brush_alert:
-    MOVE.W  DATA_WDISP_BSS_WORD_226F,D0
+    MOVE.W  WDISP_BannerCharRangeStart,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     JSR     GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers(PC)

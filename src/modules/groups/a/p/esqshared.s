@@ -79,7 +79,7 @@ ESQSHARED_ParseCompactEntryRecord:
 ; CALLS:
 ;   ESQSHARED_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   Global_PTR_STR_SELECT_CODE, DATA_ESQ_STR_A_1DEB, DATA_WDISP_BSS_LONG_2298
+;   ESQ_SelectCodeBuffer, DATA_ESQ_STR_A_1DEB, DATA_WDISP_BSS_LONG_2298
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -185,7 +185,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
 
 .branch_7:
     MOVE.L  A0,-(A7)
-    PEA     Global_PTR_STR_SELECT_CODE
+    PEA     ESQ_SelectCodeBuffer
     JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7

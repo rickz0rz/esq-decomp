@@ -1923,7 +1923,7 @@ GCOMMAND_ConsumeBannerQueueEntry:
 ; CALLS:
 ;   GCOMMAND_BuildBannerRow
 ; READS:
-;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, DATA_GCOMMAND_BSS_LONG_1FA8, DATA_WDISP_BSS_LONG_221C..DATA_WDISP_BSS_LONG_221E, ESQ_CopperListBannerA, ESQ_CopperListBannerB
+;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, DATA_GCOMMAND_BSS_LONG_1FA8, WDISP_BannerRowScratchRasterTable0..WDISP_BannerRowScratchRasterTable2, ESQ_CopperListBannerA, ESQ_CopperListBannerB
 ; WRITES:
 ;   DATA_ESQPARS2_BSS_WORD_1F2F, DATA_ESQPARS2_BSS_WORD_1F31, DATA_ESQPARS2_BSS_WORD_1F33
 ; DESC:
@@ -1950,13 +1950,13 @@ GCOMMAND_RefreshBannerTables:
 
     LEA     36(A7),A7
     MOVE.L  GCOMMAND_BannerRowByteOffsetPrevious,D0
-    MOVEA.L DATA_WDISP_BSS_LONG_221C,A0
+    MOVEA.L WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
     MOVE.L  A0,DATA_ESQPARS2_BSS_WORD_1F2F
-    MOVEA.L DATA_WDISP_BSS_LONG_221D,A0
+    MOVEA.L WDISP_BannerRowScratchRasterTable1,A0
     ADDA.L  D0,A0
     MOVE.L  A0,DATA_ESQPARS2_BSS_WORD_1F31
-    MOVEA.L DATA_WDISP_BSS_LONG_221E,A0
+    MOVEA.L WDISP_BannerRowScratchRasterTable2,A0
     ADDA.L  D0,A0
     MOVE.L  A0,DATA_ESQPARS2_BSS_WORD_1F33
     RTS

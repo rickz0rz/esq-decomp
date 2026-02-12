@@ -720,6 +720,8 @@ SCRIPT_HandleSerialCtrlCmd:
 
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
+    ; Pass packet length into SCRIPT_HandleBrushCommand; command bytes live in
+    ; SCRIPT_CTRL_CMD_BUFFER (200-byte storage in data/wdisp.s).
     MOVE.L  D0,-(A7)
     PEA     SCRIPT_CTRL_CMD_BUFFER
     PEA     SCRIPT_CTRL_CONTEXT
@@ -745,6 +747,7 @@ SCRIPT_HandleSerialCtrlCmd:
 .ctrl_cmd_dispatch_brush_now:
     MOVE.W  SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
+    ; Same packet-length/path as above (SCRIPT_CTRL_CMD_BUFFER + read index).
     MOVE.L  D0,-(A7)
     PEA     SCRIPT_CTRL_CMD_BUFFER
     PEA     SCRIPT_CTRL_CONTEXT
@@ -1300,13 +1303,14 @@ SCRIPT_HandleBrushCommand:
     MOVE.L  D0,SCRIPT_PlaybackCursor
     MOVE.B  1(A2),DATA_SCRIPT_BSS_BYTE_2127
     MOVE.B  2(A2),DATA_SCRIPT_BSS_WORD_2128
-    LEA     3(A2),A0
-    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
+    LEA     3(A2),A0                        ; payload tail inside SCRIPT_CTRL_CMD_BUFFER packet
+    ; Source is NUL-terminated by caller at packet end (0(A2,D7)=0).
+    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  A0,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2129
+    MOVE.L  D0,SCRIPT_CommandTextPtr
     CLR.L   -8(A5)
     MOVE.W  #(-2),SCRIPT_PendingBannerTargetChar
     BRA.W   .brush_cmd_finalize
@@ -2692,7 +2696,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,D0
     MOVEQ   #0,D1
     MOVE.B  DATA_SCRIPT_BSS_WORD_2128,D1
-    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
+    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     TEXTDISP_HandleScriptCommand(PC)
@@ -2852,12 +2856,12 @@ SCRIPT_LoadCtrlContextSnapshot:
     MOVE.B  437(A3),DATA_SCRIPT_STR_X_2126
     MOVE.B  438(A3),DATA_SCRIPT_BSS_BYTE_2127
     MOVE.B  439(A3),DATA_SCRIPT_BSS_WORD_2128
-    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
+    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  440(A3),-(A7)
     JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2129
+    MOVE.L  D0,SCRIPT_CommandTextPtr
     MOVE.W  2(A3),SCRIPT_PrimarySearchFirstFlag
     MOVE.W  4(A3),TEXTDISP_PrimaryChannelCode
     MOVE.W  6(A3),TEXTDISP_SecondaryChannelCode
@@ -2956,7 +2960,7 @@ SCRIPT_SaveCtrlContextSnapshot:
     MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,438(A3)
     MOVE.B  DATA_SCRIPT_BSS_WORD_2128,439(A3)
     MOVE.L  440(A3),-(A7)
-    MOVE.L  DATA_SCRIPT_BSS_LONG_2129,-(A7)
+    MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7

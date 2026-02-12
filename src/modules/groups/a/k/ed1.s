@@ -237,14 +237,19 @@ ED1_UpdateEscMenuSelection:
 ; READS:
 ;   DATA_ESQ_TAG_36_1DCB, ED_DiagScrollSpeedChar, DATA_KYBD_BSS_BYTE_1FB8, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
 ; WRITES:
-;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, DATA_WDISP_BSS_LONG_21FD, ED_TextLimit, ED_BlockOffset,
+;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, ED_MaxAdNumber, ED_TextLimit, ED_BlockOffset,
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, WDISP_PaletteTriplesRBase
 ; DESC:
 ;   Prepares the ESC menu UI, computes layout values, and draws the version row.
 ; NOTES:
 ;   Copies 24 bytes from DATA_KYBD_BSS_BYTE_1FB8 into WDISP_PaletteTriplesRBase.
+;   Local version buffer is 41 bytes (-41(A5)..-1(A5)); WDISP_SPrintf has no
+;   destination-length parameter, so format/string edits must keep headroom.
 ;------------------------------------------------------------------------------
 ED1_EnterEscMenu:
+
+.versionBanner   = -41
+
     LINK.W  A5,#-48
     MOVEM.L D2/D7,-(A7)
 
@@ -320,7 +325,7 @@ ED1_EnterEscMenu:
     ADD.L   D1,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21FD
+    MOVE.L  D0,ED_MaxAdNumber
     MOVEQ   #0,D0
     MOVE.B  ED_DiagScrollSpeedChar,D0
     SUB.L   D1,D0
@@ -342,10 +347,11 @@ ED1_EnterEscMenu:
     MOVE.L  D0,Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
     JSR     ED_DrawESCMenuBottomHelp(PC)
 
+    ; 41-byte local buffer, reused for centered version row text.
     MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)
     PEA     Global_STR_NINE_POINT_ZERO
     PEA     Global_STR_VER_PERCENT_S_PERCENT_L_D
-    PEA     -41(A5)
+    PEA     .versionBanner(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     JSR     ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow(PC)
@@ -377,7 +383,7 @@ ED1_EnterEscMenu:
     ADD.L   D0,D1
     MOVEQ   #33,D0
     ADD.L   D0,D1
-    PEA     -41(A5)
+    PEA     .versionBanner(A5)
     MOVE.L  D1,-(A7)
     PEA     280.W
     MOVE.L  A1,-(A7)
@@ -479,8 +485,8 @@ ED1_ExitEscMenu:
 
     MOVEQ   #1,D0
     MOVE.L  D0,NEWGRID_RefreshStateFlag
-    MOVE.L  DATA_WDISP_BSS_LONG_2262,-(A7)
-    MOVE.L  DATA_WDISP_BSS_LONG_2260,-(A7)
+    MOVE.L  NEWGRID_LastRefreshRequest,-(A7)
+    MOVE.L  NEWGRID_MessagePumpSuspendFlag,-(A7)
     JSR     ESQFUNC_UpdateRefreshModeState(PC)
 
     JSR     ED1_JMPTBL_NEWGRID_DrawTopBorderLine(PC)
@@ -567,13 +573,14 @@ ED1_ExitEscMenu:
 ;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
 ;   DISKIO_QueryDiskUsagePercentAndSetBufferSize, DISKIO_QueryVolumeSoftErrorCount, ED_DrawDiagnosticModeText, _LVOSetAPen
 ; READS:
-;   Global_REF_BAUD_RATE, DATA_ED2_BSS_WORD_1D2E, DATA_ED2_BSS_WORD_1D2F, DATA_WDISP_BSS_LONG_2245
+;   Global_REF_BAUD_RATE, DATA_ED2_BSS_WORD_1D2E, DATA_ED2_BSS_WORD_1D2F, WDISP_WeatherStatusLabelBuffer
 ; WRITES:
 ;   ED_MenuStateId, ED_DiagnosticsScreenActive
 ; DESC:
 ;   Draws diagnostic-mode text blocks and prompts on the ESC menu screen.
 ; NOTES:
-;   Uses local printf buffer at -41(A5).
+;   Local printf buffer is 41 bytes (-41(A5)..-1(A5) and reused across two
+;   WDISP_SPrintf calls.
 ;------------------------------------------------------------------------------
 ED1_DrawDiagnosticsScreen:
 
@@ -586,13 +593,13 @@ ED1_DrawDiagnosticsScreen:
 
     JSR     ED_DrawBottomHelpBarBackground(PC)
 
-    PEA     Global_PTR_STR_SELECT_CODE
+    PEA     ESQ_SelectCodeBuffer
     PEA     360.W
     PEA     90.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_WDISP_BSS_LONG_2245    ; I have no idea what this text is...
+    PEA     WDISP_WeatherStatusLabelBuffer    ; Weather/status label token buffer used by diagnostics format path.
     PEA     360.W
     PEA     210.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -999,22 +1006,25 @@ ED1_JMPTBL_LADFUNC_PackNibblesToByte:
 ; DESC:
 ;   Formats and draws a status string in rastport 2.
 ; NOTES:
-;   Uses local printf buffer at -41(A5).
+;   Local printf buffer is 41 bytes (-41(A5)..-1(A5).
 ;------------------------------------------------------------------------------
 ED1_DrawStatusLine1:
+
+.statusLine   = -41
+
     LINK.W  A5,#-44
 
     MOVE.W  ESQPARS2_StateIndex,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     DATA_ED2_FMT_SCRSPD_PCT_D_1D34
-    PEA     -41(A5)
+    PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     210.W
-    PEA     -41(A5)
+    PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1040,9 +1050,13 @@ ED1_DrawStatusLine1:
 ; DESC:
 ;   Formats and draws a multi-line status block in rastport 2.
 ; NOTES:
-;   Uses local printf buffer at -51(A5).
+;   Local printf buffer is 51 bytes (-51(A5)..-1(A5), reused across three
+;   WDISP_SPrintf calls.
 ;------------------------------------------------------------------------------
 ED1_DrawStatusLine2:
+
+.statusLine   = -51
+
     LINK.W  A5,#-52
     MOVE.L  D2,-(A7)
     MOVEA.L WDISP_DisplayContextBase,A0
@@ -1065,13 +1079,13 @@ ED1_DrawStatusLine2:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     DATA_ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D_1D35
-    PEA     -51(A5)
+    PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
-    PEA     -51(A5)
+    PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1082,13 +1096,13 @@ ED1_DrawStatusLine2:
     MOVE.L  DATA_CTASKS_CONST_LONG_1BBE,-(A7)
     MOVE.L  D0,-(A7)
     PEA     DATA_ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR_1D36
-    PEA     -51(A5)
+    PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
-    PEA     -51(A5)
+    PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1097,14 +1111,14 @@ ED1_DrawStatusLine2:
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     Global_STR_CLOCKCMD_EQUALS_PCT_C
-    PEA     -51(A5)
+    PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     68(A7),A7
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     180.W
-    PEA     -51(A5)
+    PEA     .statusLine(A5)
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 

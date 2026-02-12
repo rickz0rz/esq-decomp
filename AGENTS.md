@@ -121,5 +121,10 @@ Update inline comments, `README.md`, and tables in `src/data/` when you rename l
 - [x] Add semantic aliases for Digital Niche/Mplex option-state globals in `src/data/wdisp.s` (`22D*`/`22E*` range) and propagate to callsites.
 - [x] Rename/clean local dispatch labels in `src/modules/groups/b/a/newgrid.s` and `src/modules/groups/b/a/newgrid1.s` (including duplicate local-label removals).
 - [x] Rename local control-flow labels in `src/modules/groups/a/a/bitmap.s` (`BITMAP_ProcessIlbmImage`) to descriptive names.
-- [ ] Continue naming remaining anonymous data blocks in `src/data/wdisp.s` outside the completed option-state ranges.
+- [x] Add conservative aliases for diagnostics clock/filter globals in `src/data/wdisp.s` (`223B`-`2243`, `2322`-`2325`) and propagate `ESQFUNC_DrawDiagnosticsScreen` callsites.
+- [x] Add row-level budget/provenance annotations for `ED2`/`TEXTDISP` high-risk `%s` formatter rows and track guard-priority order in `CHECKPOINT_layout_coupling_population.md` (`5.12`).
+- [x] Add conservative `wdisp.s` `220F+` pointer-state aliases (serial/raster/highlight/task-hook cluster) and propagate callsites in ESQ/CLEANUP/ESQDISP/GCOMMAND3/NEWGRID/TLIBA3.
+- [x] Add conservative `wdisp.s` `2242`-`226F` status/banner/refresh aliases and propagate callsites (`APP2`/`CLEANUP2`/`DST2`/`ESQ*`/`ED*`/`NEWGRID1`/`PARSEINI3`/`UNKNOWN`), while documenting unresolved holds.
+- [x] Trace producer paths for unresolved `226D/226E`; document direct-writer absence and indirect `ESQ_SelectCodeBuffer` overflow clobber path in checkpoint docs.
+- [ ] Continue naming remaining anonymous data blocks in `src/data/wdisp.s` outside the completed option-state ranges (`220F` and unresolved `2255/2256/225D/225E/226D/226E` still open).
 - [ ] Continue local-label clarity passes in remaining NEWGRID companion files (`newgrid2.s` and unresolved helpers).

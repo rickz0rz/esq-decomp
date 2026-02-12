@@ -835,9 +835,9 @@ DISPTEXT_LayoutSourceToLines:
 ;------------------------------------------------------------------------------
 ; FUNC: DISPTEXT_LayoutAndAppendToBuffer   (Layout and append into output buffer)
 ; ARGS:
-;   stack +4: arg_1 (via 8(A5))
-;   stack +8: arg_2 (via 12(A5))
-;   stack +264: arg_3 (via 268(A5))
+;   stack +4: A3 = target RastPort/context pointer
+;   stack +8: A2 = source text pointer
+;   stack +264: arg_3 ?? (frame-local forwarding)
 ; RET:
 ;   D0: boolean success (0/-1)
 ; CLOBBERS:
@@ -851,7 +851,7 @@ DISPTEXT_LayoutSourceToLines:
 ; DESC:
 ;   Builds line segments into the scratch buffer and appends to global text.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Returns early if source text pointer is NULL or points at an empty string.
 ;------------------------------------------------------------------------------
 DISPTEXT_LayoutAndAppendToBuffer:
     LINK.W  A5,#-276
@@ -962,9 +962,11 @@ DISPTEXT_LayoutAndAppendToBuffer:
     MOVE.L  DISPTEXT_LineWidthPx,D7
 
 .line_loop:
+    ; Guard source pointer before probing bytes.
     MOVE.L  A2,D0
     BEQ.W   .flush_remaining
 
+    ; Empty string also exits through flush path.
     TST.B   (A2)
     BEQ.W   .flush_remaining
 

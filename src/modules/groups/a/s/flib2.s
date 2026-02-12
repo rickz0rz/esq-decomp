@@ -13,9 +13,10 @@
 ; WRITES:
 ;   GCOMMAND_DigitalNicheEnabledFlag, GCOMMAND_NicheTextPen, GCOMMAND_NicheFramePen, GCOMMAND_NicheEditorLayoutPen, GCOMMAND_NicheEditorRowPen, GCOMMAND_NicheModeCycleCount, GCOMMAND_NicheForceMode5Flag, GCOMMAND_NicheWorkflowMode, GCOMMAND_DigitalNicheListingsTemplatePtr
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Seeds Digital Niche defaults, then replaces the owned listings-template
+;   pointer with the built-in fallback string.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Template ownership always flows through ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 FLIB2_LoadDigitalNicheDefaults:
     MOVE.B  #$4e,GCOMMAND_DigitalNicheEnabledFlag
@@ -54,9 +55,10 @@ FLIB2_LoadDigitalNicheDefaults:
 ; WRITES:
 ;   GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexModeCycleCount, GCOMMAND_MplexSearchRowLimit, GCOMMAND_MplexClockOffsetMinutes, GCOMMAND_MplexMessageTextPen, GCOMMAND_MplexMessageFramePen, GCOMMAND_MplexEditorLayoutPen, GCOMMAND_MplexEditorRowPen, GCOMMAND_MplexDetailLayoutPen, GCOMMAND_MplexDetailInitialLineIndex, GCOMMAND_MplexDetailRowPen, GCOMMAND_MplexWorkflowMode, GCOMMAND_MplexDetailLayoutFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Seeds Digital Mplex defaults and refreshes both owned template pointers
+;   (listings text and "at %s" format).
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Both template pointers are independently replaced via ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 FLIB2_LoadDigitalMplexDefaults:
     MOVEM.L D2-D3,-(A7)
@@ -111,9 +113,10 @@ FLIB2_LoadDigitalMplexDefaults:
 ; WRITES:
 ;   GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PpvModeCycleCount, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes, GCOMMAND_PpvMessageTextPen, GCOMMAND_PpvMessageFramePen, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PpvShowtimesLayoutPen, GCOMMAND_PpvShowtimesInitialLineIndex, GCOMMAND_PpvShowtimesRowPen, GCOMMAND_PpvShowtimesWorkflowMode, GCOMMAND_PpvDetailLayoutFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, GCOMMAND_PpvShowtimesRowSpan
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Seeds Digital PPV defaults and refreshes both owned PPV template pointers
+;   (listings text and period-format text).
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Pointer ownership remains centralized through ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 FLIB2_LoadDigitalPpvDefaults:
     MOVE.L  D2,-(A7)
@@ -169,9 +172,10 @@ FLIB2_LoadDigitalPpvDefaults:
 ; WRITES:
 ;   GCOMMAND_DigitalNicheListingsTemplatePtr, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Clears template pointers, loads fallback defaults, then loads disk-backed
+;   templates for Niche/Mplex/PPV.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   This is the top-level population entry point for listing-template globals.
 ;------------------------------------------------------------------------------
 FLIB2_ResetAndLoadListingTemplates:
     SUBA.L  A0,A0

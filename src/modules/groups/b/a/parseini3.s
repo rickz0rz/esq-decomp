@@ -251,14 +251,14 @@ PARSEINI_UpdateCtrlHDeltaMax:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
-;   CTRL_H, CTRL_HPreviousSample, DATA_WDISP_BSS_WORD_2266, DATA_PARSEINI_BSS_WORD_20A6-20A8, DATA_PARSEINI_BSS_WORD_20A5
+;   CTRL_H, CTRL_HPreviousSample, PARSEINI_CtrlHChangeGateFlag, DATA_PARSEINI_BSS_WORD_20A6-20A8, DATA_PARSEINI_BSS_WORD_20A5
 ; WRITES:
 ;   DATA_PARSEINI_BSS_WORD_20A6-20A8
 ; DESC:
 ;   Compares current CTRL_H to previous value, optionally triggers SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh when
 ;   changes are detected and control flags permit.
 ; NOTES:
-;   Uses DATA_WDISP_BSS_WORD_2266 as gate; resets DATA_PARSEINI_BSS_WORD_20A5 when no change.
+;   Uses PARSEINI_CtrlHChangeGateFlag as gate; resets DATA_PARSEINI_BSS_WORD_20A5 when no change.
 ;------------------------------------------------------------------------------
 PARSEINI_CheckCtrlHChange:
     MOVEM.L D2/D7,-(A7)
@@ -275,7 +275,7 @@ PARSEINI_CheckCtrlHChange:
     TST.W   D7
     BEQ.S   .no_change_or_gate_closed
 
-    TST.W   DATA_WDISP_BSS_WORD_2266
+    TST.W   PARSEINI_CtrlHChangeGateFlag
     BEQ.S   .no_change_or_gate_closed
 
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A6
@@ -302,7 +302,7 @@ PARSEINI_CheckCtrlHChange:
     BEQ.S   .return
 
     MOVE.W  D0,DATA_PARSEINI_BSS_WORD_20A6
-    TST.W   DATA_WDISP_BSS_WORD_2266
+    TST.W   PARSEINI_CtrlHChangeGateFlag
     BEQ.S   .clear_ctrlh_pending
 
     ADDQ.W  #1,DATA_PARSEINI_BSS_WORD_20A7

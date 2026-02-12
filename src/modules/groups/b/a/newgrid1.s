@@ -927,18 +927,18 @@ NEWGRID_ComputeColumnIndex:
 ; CALLS:
 ;   none
 ; READS:
-;   DATA_WDISP_BSS_LONG_2261
+;   NEWGRID_ModeSelectorState
 ; WRITES:
 ;   none
 ; DESC:
-;   Returns 1 when DATA_WDISP_BSS_LONG_2261==1, otherwise 6.
+;   Returns 1 when NEWGRID_ModeSelectorState==1, otherwise 6.
 ; NOTES:
 ;   Simple helper for mode selection.
 ;------------------------------------------------------------------------------
 NEWGRID_GetGridModeIndex:
     MOVE.L  D7,-(A7)
     MOVEQ   #1,D0
-    CMP.L   DATA_WDISP_BSS_LONG_2261,D0
+    CMP.L   NEWGRID_ModeSelectorState,D0
     BEQ.S   .done
 
     MOVEQ   #6,D0
@@ -4494,7 +4494,10 @@ NEWGRID_HandleGridSelection:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_HandleGridEditorState   (Handle editor state transitions)
 ; ARGS:
-;   (none observed)
+;   stack +4: A3 = target view/rastport context
+;   stack +8: D7 = layout pen/config value
+;   stack +12: D6 = row pen/config value
+;   stack +16: A2 = source text/template pointer
 ; RET:
 ;   D0: state (NEWGRID_GridEditorWorkflowState)
 ; CLOBBERS:
@@ -4507,6 +4510,9 @@ NEWGRID_HandleGridSelection:
 ;   NEWGRID_GridEditorWorkflowState, 32(A3)
 ; DESC:
 ;   Drives a small state machine for editor-related redraw paths.
+; NOTES:
+;   For state 4, source text (A2) is forwarded to
+;   DISPTEXT_LayoutAndAppendToBuffer, which tolerates NULL/empty strings.
 ;------------------------------------------------------------------------------
 NEWGRID_HandleGridEditorState:
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -4538,6 +4544,7 @@ NEWGRID_HandleGridEditorState:
     JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     60(A3),A0
+    ; A2 may be NULL; downstream layout helper performs NULL/empty checks.
     MOVE.L  A2,(A7)
     MOVE.L  A0,-(A7)
     JSR     NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
@@ -6177,12 +6184,8 @@ NEWGRID_FindNextEntryWithAltMarkers:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_DrawStatusMessage   (Draw status message banner)
 ; ARGS:
-;   stack +4: arg_1 (via 8(A5))
-;   stack +10: arg_2 (via 14(A5))
-;   stack +128: arg_3 (via 132(A5))
-;   stack +159: arg_4 (via 163(A5))
-;   stack +164: arg_5 (via 168(A5))
-;   stack +192: arg_6 (via 196(A5))
+;   stack +4: A3 = target view/rastport context
+;   stack +10: D7 = time/status value formatted into template
 ; RET:
 ;   D0: none
 ; CLOBBERS:
@@ -6195,6 +6198,9 @@ NEWGRID_FindNextEntryWithAltMarkers:
 ;   GCOMMAND_MplexMessageFramePen, GCOMMAND_MplexMessageTextPen, GCOMMAND_MplexAtTemplatePtr, NEWGRID_RowHeightPx, NEWGRID_ColumnStartXPx, NEWGRID_ColumnWidthPx
 ; DESC:
 ;   Formats and centers a status message within the grid.
+; NOTES:
+;   Uses GCOMMAND_MplexAtTemplatePtr as a printf-style format string.
+;   This callsite currently performs no local NULL guard on that pointer.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawStatusMessage:
     LINK.W  A5,#-180
@@ -6218,6 +6224,7 @@ NEWGRID_DrawStatusMessage:
     PEA     -163(A5)
     JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
 
+    ; Format string comes from GCOMMAND_MplexAtTemplatePtr.
     MOVE.L  D0,(A7)
     MOVE.L  GCOMMAND_MplexAtTemplatePtr,-(A7)
     PEA     -132(A5)
@@ -7750,6 +7757,9 @@ NEWGRID_UpdateSelectionFromInput:
 ;   GCOMMAND_PpvMessageTextPen, GCOMMAND_PpvMessageFramePen, GCOMMAND_PPVPeriodTemplatePtr, NEWGRID_ColumnStartXPx, NEWGRID_ColumnWidthPx
 ; DESC:
 ;   Centers a fixed message string inside the grid frame.
+; NOTES:
+;   Reads message text directly from GCOMMAND_PPVPeriodTemplatePtr.
+;   This routine currently assumes that pointer is non-NULL.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawGridMessageAlt:
     LINK.W  A5,#-12
@@ -7800,6 +7810,7 @@ NEWGRID_DrawGridMessageAlt:
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
+    ; Source message pointer: expected to be valid/NUL-terminated.
     MOVEA.L GCOMMAND_PPVPeriodTemplatePtr,A0
 
 .scan_message_end:

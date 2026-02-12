@@ -809,9 +809,13 @@ ED_DrawDiagnosticModeHelpText:
 ; DESC:
 ;   Draws the change-scroll-speed menu text and current speed.
 ; NOTES:
-;   Uses a stack buffer for formatted output.
+;   Uses an 80-byte local buffer (-80(A5)..-1(A5)); WDISP_SPrintf has no
+;   explicit destination-length parameter.
 ;------------------------------------------------------------------------------
 ED_DrawScrollSpeedMenuText:
+
+.statusLine = -80
+
     LINK.W  A5,#-80
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -827,10 +831,10 @@ ED_DrawScrollSpeedMenuText:
     MOVE.B  Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
     MOVE.L  D0,-(A7)
     PEA     Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
-    PEA     -80(A5)
+    PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    PEA     -80(A5)
+    PEA     .statusLine(A5)
     PEA     90.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1149,7 +1153,7 @@ ED_DrawAreYouSurePrompt:
 ;   ED_DrawHelpPanels, DISPLIB_DisplayTextAtPosition, GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   DATA_WDISP_BSS_LONG_21FD, Global_REF_RASTPORT_1
+;   ED_MaxAdNumber, Global_REF_RASTPORT_1
 ; WRITES:
 ;   ED_EditCursorOffset, DATA_WDISP_BSS_LONG_21F4
 ; DESC:
@@ -1180,7 +1184,7 @@ ED_DrawAdNumberPrompt:
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     PEA     2.W
-    MOVE.L  DATA_WDISP_BSS_LONG_21FD,-(A7)
+    MOVE.L  ED_MaxAdNumber,-(A7)
     PEA     ED_EditBufferScratch
     JSR     GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(PC)
 
@@ -1328,7 +1332,7 @@ ED_RedrawCursorChar:
 ;   GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble, GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, ED_UpdateCursorPosFromIndex, ESQIFF_JMPTBL_MATH_Mulu32,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOMove, _LVOText
 ; READS:
-;   ED_EditCursorOffset, ED_ViewportOffset, DATA_WDISP_BSS_LONG_2200, ED_EditBufferScratch, ED_EditBufferLive, Global_REF_RASTPORT_1
+;   ED_EditCursorOffset, ED_ViewportOffset, ED_CursorColumnIndex, ED_EditBufferScratch, ED_EditBufferLive, Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1370,9 +1374,9 @@ ED_DrawCursorChar:
     BSR.W   ED_UpdateCursorPosFromIndex
 
     ADDQ.W  #4,A7
-    MOVE.L  DATA_WDISP_BSS_LONG_2200,D0
+    MOVE.L  ED_CursorColumnIndex,D0
     LSL.L   #4,D0
-    SUB.L   DATA_WDISP_BSS_LONG_2200,D0
+    SUB.L   ED_CursorColumnIndex,D0
     MOVEQ   #40,D1
     ADD.L   D1,D0
     MOVE.L  D0,0(A7)
@@ -1412,7 +1416,7 @@ ED_DrawCursorChar:
 ; READS:
 ;   ED_TextLimit
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2200, ED_ViewportOffset, ED_EditCursorOffset
+;   ED_CursorColumnIndex, ED_ViewportOffset, ED_EditCursorOffset
 ; DESC:
 ;   Computes row/column indices from a linear cursor index.
 ; NOTES:
@@ -1425,7 +1429,7 @@ ED_UpdateCursorPosFromIndex:
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.L  D1,DATA_WDISP_BSS_LONG_2200
+    MOVE.L  D1,ED_CursorColumnIndex
     MOVE.L  D7,D0
     MOVEQ   #40,D1
     JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
@@ -1468,9 +1472,12 @@ ED_UpdateCursorPosFromIndex:
 ; DESC:
 ;   Draws the current color swatch and formatted label.
 ; NOTES:
-;   Uses a stack buffer for formatted output.
+;   Local color-label buffer is 41 bytes (-41(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
 ED_DrawCurrentColorIndicator:
+
+.colorLabel = -41
+
     LINK.W  A5,#-44
     MOVEM.L D2-D3/D6-D7,-(A7)
 
@@ -1517,10 +1524,10 @@ ED_DrawCurrentColorIndicator:
     MOVE.B  D7,D0
     MOVE.L  D0,(A7)
     PEA     Global_STR_CURRENT_COLOR_FORMATTED
-    PEA     -41(A5)
+    PEA     .colorLabel(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    PEA     -41(A5)
+    PEA     .colorLabel(A5)
     PEA     272.W
     PEA     205.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1686,7 +1693,7 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
 ; CALLS:
 ;   ED_ApplyActiveFlagToAdData, ED_UpdateAdNumberDisplay
 ; READS:
-;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_21FD
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_MaxAdNumber
 ; WRITES:
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
@@ -1696,7 +1703,7 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
 ;------------------------------------------------------------------------------
 ED_IncrementAdNumber:
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
-    CMP.L   DATA_WDISP_BSS_LONG_21FD,D0
+    CMP.L   ED_MaxAdNumber,D0
     BGE.S   .return
 
     BSR.W   ED_ApplyActiveFlagToAdData
@@ -1754,23 +1761,27 @@ ED_DecrementAdNumber:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
 ;   ED_UpdateActiveInactiveIndicator
 ; READS:
-;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_2250
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_AdRecordPtrTable
 ; WRITES:
-;   ED_AdActiveFlag, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, DATA_WDISP_BSS_LONG_2202, DATA_WDISP_BSS_LONG_2201, DATA_WDISP_BSS_LONG_21FF
+;   ED_AdActiveFlag, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, DATA_WDISP_BSS_LONG_2202, ED_ActiveIndicatorCachedState, DATA_WDISP_BSS_LONG_21FF
 ; DESC:
 ;   Displays the current ad number and resets editing state for the ad.
 ; NOTES:
 ;   Initializes ED_AdActiveFlag based on the ad's active flag.
+;   Local display buffer is 40 bytes (-40(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
 ED_UpdateAdNumberDisplay:
+
+.adLabel = -40
+
     LINK.W  A5,#-40
 
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,-(A7)
     PEA     Global_STR_AD_NUMBER_FORMATTED
-    PEA     -40(A5)
+    PEA     .adLabel(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    PEA     -40(A5)
+    PEA     .adLabel(A5)
     PEA     180.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1781,7 +1792,7 @@ ED_UpdateAdNumberDisplay:
     MOVE.L  D0,ED_AdActiveFlag
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D1
     ASL.L   #2,D1
-    LEA     DATA_WDISP_BSS_LONG_2250,A0
+    LEA     ED_AdRecordPtrTable,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVE.W  (A1),D1
@@ -1797,7 +1808,7 @@ ED_UpdateAdNumberDisplay:
     MOVE.L  D0,ED_ViewportOffset
     MOVEQ   #-1,D0
     MOVE.L  D0,DATA_WDISP_BSS_LONG_2202
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2201
+    MOVE.L  D0,ED_ActiveIndicatorCachedState
     MOVE.L  D0,DATA_WDISP_BSS_LONG_21FF
     BSR.W   ED_UpdateActiveInactiveIndicator
 
@@ -1817,9 +1828,9 @@ ED_UpdateAdNumberDisplay:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ED_AdActiveFlag, Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_2250
+;   ED_AdActiveFlag, Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_AdRecordPtrTable
 ; WRITES:
-;   Ad data (first word / word+2) via DATA_WDISP_BSS_LONG_2250
+;   Ad data (first word / word+2) via ED_AdRecordPtrTable
 ; DESC:
 ;   Writes the active/inactive flag for the current ad into its data record.
 ; NOTES:
@@ -1834,7 +1845,7 @@ ED_ApplyActiveFlagToAdData:
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     MOVE.L  D0,D1
     ASL.L   #2,D1
-    LEA     DATA_WDISP_BSS_LONG_2250,A0
+    LEA     ED_AdRecordPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     MOVEA.L (A1),A2
@@ -1849,7 +1860,7 @@ ED_ApplyActiveFlagToAdData:
 .set_active:
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2250,A0
+    LEA     ED_AdRecordPtrTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -2003,9 +2014,9 @@ ED_RedrawRow:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill, _LVOSetDrMd, DISPLIB_DisplayTextAtPosition
 ; READS:
-;   ED_AdActiveFlag, DATA_WDISP_BSS_LONG_2201, Global_REF_RASTPORT_1
+;   ED_AdActiveFlag, ED_ActiveIndicatorCachedState, Global_REF_RASTPORT_1
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2201
+;   ED_ActiveIndicatorCachedState
 ; DESC:
 ;   Updates the active/inactive indicator when the flag changes.
 ; NOTES:
@@ -2015,7 +2026,7 @@ ED_UpdateActiveInactiveIndicator:
     MOVEM.L D2-D7,-(A7)
 
     MOVE.L  ED_AdActiveFlag,D0
-    MOVE.L  DATA_WDISP_BSS_LONG_2201,D1
+    MOVE.L  ED_ActiveIndicatorCachedState,D1
     CMP.L   D0,D1
     BEQ.W   .after_indicator_update
 
@@ -2076,7 +2087,7 @@ ED_UpdateActiveInactiveIndicator:
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
-    MOVE.L  ED_AdActiveFlag,DATA_WDISP_BSS_LONG_2201
+    MOVE.L  ED_AdActiveFlag,ED_ActiveIndicatorCachedState
 
 .after_indicator_update:
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -2115,7 +2126,7 @@ ED_UpdateActiveInactiveIndicator:
 ; DESC:
 ;   Draws the ad editing screen header and status indicators.
 ; NOTES:
-;   Uses a stack buffer for formatted output.
+;   Uses a 41-byte local printf buffer (-41(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
 ED_DrawAdEditingScreen:
     LINK.W  A5,#-44
@@ -2860,8 +2871,12 @@ ED_TransformLineSpacing_Mode3:
 ;   Loads the current ad into edit buffers and refreshes the screen.
 ; NOTES:
 ;   Pads buffers to ED_BlockOffset and redraws the header/status areas.
+;   Uses a 44-byte local printf target (-44(A5)..-1(A5)).
 ;------------------------------------------------------------------------------
 ED_LoadCurrentAdIntoBuffers:
+
+.editingAdLabel = -44
+
     LINK.W  A5,#-48
     MOVEM.L D2-D3/D7,-(A7)
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
@@ -2974,10 +2989,10 @@ ED_LoadCurrentAdIntoBuffers:
 
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,(A7)
     PEA     Global_STR_EDITING_AD_NUMBER_FORMATTED_2
-    PEA     -44(A5)
+    PEA     .editingAdLabel(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    PEA     -44(A5)
+    PEA     .editingAdLabel(A5)
     PEA     300.W
     PEA     190.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -3045,17 +3060,17 @@ ED_CommitCurrentAdEdits:
 ; CALLS:
 ;   ED_CommitCurrentAdEdits, ED_LoadCurrentAdIntoBuffers
 ; READS:
-;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, DATA_WDISP_BSS_LONG_21FD
+;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_MaxAdNumber
 ; WRITES:
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
 ;   Commits current edits then advances to the next ad.
 ; NOTES:
-;   No-op if already at DATA_WDISP_BSS_LONG_21FD.
+;   No-op if already at ED_MaxAdNumber.
 ;------------------------------------------------------------------------------
 ED_NextAdNumber:
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
-    CMP.L   DATA_WDISP_BSS_LONG_21FD,D0
+    CMP.L   ED_MaxAdNumber,D0
     BGE.S   .return
 
     BSR.S   ED_CommitCurrentAdEdits

@@ -2124,7 +2124,7 @@ TLIBA3_FormatPatternRegisterDump:
 ; CALLS:
 ;   MATH_Mulu32, _LVOInitBitMap
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, LAB_1854, DATA_WDISP_BSS_LONG_2224, TLIBA3_VmArrayRuntimeTable
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, LAB_1854, WDISP_DisplayContextPlanePointer0, TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2205,7 +2205,7 @@ TLIBA3_InitRuntimeEntry:
     MOVE.L  -4(A5),D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
-    LEA     DATA_WDISP_BSS_LONG_2224,A1
+    LEA     WDISP_DisplayContextPlanePointer0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),118(A0)
     ADDQ.L  #1,-4(A5)

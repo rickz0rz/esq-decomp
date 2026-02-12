@@ -3,31 +3,32 @@
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_ClearAliasStringPointers   (Routine at ESQPARS_ClearAliasStringPointers)
 ; ARGS:
-;   (none observed)
+;   (none)
 ; RET:
-;   D0: result/status
+;   D0: none
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D7
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_ReplaceOwnedString
 ; READS:
-;   Global_STR_ESQPARS_C_1, TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable
+;   TEXTDISP_AliasCount, TEXTDISP_AliasPtrTable, Global_STR_ESQPARS_C_1
 ; WRITES:
-;   (none observed)
+;   TEXTDISP_AliasPtrTable entries, alias record string-pointer fields
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Walks alias pointer entries and releases both owned strings for each alias
+;   record, then frees the alias record and nulls its table slot.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Iterates alias indices 0..(TEXTDISP_AliasCount-1).
 ;------------------------------------------------------------------------------
 ESQPARS_ClearAliasStringPointers:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-.branch:
+.alias_loop:
     MOVE.W  TEXTDISP_AliasCount,D0
     CMP.W   D0,D7
-    BGE.S   .lab_0B37
+    BGE.S   .done
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -37,7 +38,7 @@ ESQPARS_ClearAliasStringPointers:
     MOVEA.L (A0),A1
     MOVE.L  A1,-6(A5)
     MOVE.L  A1,D0
-    BEQ.S   .branch_1
+    BEQ.S   .next_alias
 
     MOVE.L  (A1),-(A7)
     CLR.L   -(A7)
@@ -65,11 +66,11 @@ ESQPARS_ClearAliasStringPointers:
     ADDA.L  D0,A0
     CLR.L   (A0)
 
-.branch_1:
+.next_alias:
     ADDQ.W  #1,D7
-    BRA.S   .branch
+    BRA.S   .alias_loop
 
-.lab_0B37:
+.done:
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS
@@ -79,23 +80,24 @@ ESQPARS_ClearAliasStringPointers:
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at ESQPARS_RemoveGroupEntryAndReleaseStrings)
 ; ARGS:
-;   stack +4: arg_1 (via 8(A5))
-;   stack +6: arg_2 (via 10(A5))
-;   stack +8: arg_3 (via 12(A5))
+;   stack +6: group selector (2 = secondary group, otherwise primary) ??
 ; RET:
-;   D0: result/status
+;   D0: none
 ; CLOBBERS:
 ;   A0/A1/A2/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQPARS_JMPTBL_COI_FreeEntryResources, ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine, ESQIFF2_ClearLineHeadTailByMode
 ; READS:
-;   Global_STR_ESQPARS_C_2, Global_STR_ESQPARS_C_3, Global_STR_ESQPARS_C_4, ESQPARS_RemoveGroupEntryAndReleaseStrings_Return, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, lab_0B3A
+;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable,
+;   TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, Global_STR_ESQPARS_C_2, Global_STR_ESQPARS_C_3, Global_STR_ESQPARS_C_4
 ; WRITES:
-;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
+;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag,
+;   selected entry/title pointer-table slots
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Clears selected group entry slots from the end toward index 0, releasing
+;   per-title strings, title tables, and entry resources/records.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Performs the same cleanup flow for both primary/secondary groups.
 ;------------------------------------------------------------------------------
 ESQPARS_RemoveGroupEntryAndReleaseStrings:
     LINK.W  A5,#-16
@@ -111,7 +113,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     ADDQ.W  #4,A7
     MOVEQ   #2,D0
     CMP.W   D0,D7
-    BNE.S   .lab_0B39
+    BNE.S   .use_primary_group
 
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVE.L  D0,D5
@@ -120,22 +122,22 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
     MOVEQ   #0,D1
     MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
-    BRA.S   .lab_0B3A
+    BRA.S   .release_entry_loop
 
-.lab_0B39:
+.use_primary_group:
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.L  D0,D5
     SUBQ.W  #1,D5
     CLR.W   TEXTDISP_PrimaryGroupEntryCount
     CLR.B   TEXTDISP_PrimaryGroupPresentFlag
 
-.lab_0B3A:
+.release_entry_loop:
     TST.W   D5
     BMI.W   ESQPARS_RemoveGroupEntryAndReleaseStrings_Return
 
     MOVEQ   #2,D0
     CMP.W   D0,D7
-    BNE.S   .branch
+    BNE.S   .select_primary_tables
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -153,9 +155,9 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVE.L  (A2),-8(A5)
     ADDA.L  D0,A0
     MOVE.L  A1,(A0)
-    BRA.S   .branch_1
+    BRA.S   .init_title_slot_index
 
-.branch:
+.select_primary_tables:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -173,16 +175,16 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     ADDA.L  D0,A0
     MOVE.L  A1,(A0)
 
-.branch_1:
+.init_title_slot_index:
     MOVEQ   #0,D6
 
-.branch_2:
+.release_title_slot_loop:
     TST.L   -8(A5)
-    BEQ.S   .branch_5
+    BEQ.S   .free_title_table
 
     MOVEQ   #49,D0
     CMP.W   D0,D6
-    BGE.S   .branch_5
+    BGE.S   .free_title_table
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -191,11 +193,11 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVEA.L 56(A0,D0.L),A0
     MOVE.L  A0,-12(A5)
     MOVE.L  A0,D0
-    BEQ.S   .branch_4
+    BEQ.S   .next_title_slot
 
-.branch_3:
+.scan_title_len_loop:
     TST.B   (A0)+
-    BNE.S   .branch_3
+    BNE.S   .scan_title_len_loop
 
     SUBQ.L  #1,A0
     SUBA.L  -12(A5),A0
@@ -214,13 +216,13 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     MOVEA.L -8(A5),A0
     CLR.L   56(A0,D0.L)
 
-.branch_4:
+.next_title_slot:
     ADDQ.W  #1,D6
-    BRA.S   .branch_2
+    BRA.S   .release_title_slot_loop
 
-.branch_5:
+.free_title_table:
     TST.L   -8(A5)
-    BEQ.S   .branch_6
+    BEQ.S   .free_entry_record
 
     PEA     500.W
     MOVE.L  -8(A5),-(A7)
@@ -230,13 +232,13 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
 
     LEA     16(A7),A7
 
-.branch_6:
+.free_entry_record:
     MOVE.L  -4(A5),-(A7)
     JSR     ESQPARS_JMPTBL_COI_FreeEntryResources(PC)
 
     ADDQ.W  #4,A7
     TST.L   -4(A5)
-    BEQ.S   .branch_7
+    BEQ.S   .next_entry
 
     PEA     52.W
     MOVE.L  -4(A5),-(A7)
@@ -246,9 +248,9 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
 
     LEA     16(A7),A7
 
-.branch_7:
+.next_entry:
     SUBQ.W  #1,D5
-    BRA.W   .lab_0B3A
+    BRA.W   .release_entry_loop
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings_Return   (Routine at ESQPARS_RemoveGroupEntryAndReleaseStrings_Return)
@@ -279,9 +281,10 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_ReplaceOwnedString   (Routine at ESQPARS_ReplaceOwnedString)
 ; ARGS:
-;   (none observed)
+;   stack +4: A3 source string pointer (new text, NUL-terminated)
+;   stack +8: A2 owned string pointer (old text to release, may be NULL)
 ; RET:
-;   D0: result/status
+;   D0: newly allocated replacement pointer, or NULL
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A6/A7/D0/D1/D6/D7
 ; CALLS:
@@ -291,9 +294,13 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Replaces an owned heap string by freeing the prior pointer (if non-NULL),
+;   then allocating/copying the replacement source string.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Deallocates old text before attempting new allocation.
+;   If source is NULL or empty, returns NULL after release.
+;   Allocation only runs when AvailMem(MEMF_PUBLIC) > $2710.
+;   Callers must tolerate NULL on low-memory or empty-input paths.
 ;------------------------------------------------------------------------------
 ESQPARS_ReplaceOwnedString:
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -301,13 +308,13 @@ ESQPARS_ReplaceOwnedString:
     MOVEA.L 24(A7),A2
 
     MOVE.L  A2,D0
-    BEQ.S   .lab_0B46
+    BEQ.S   .check_new_source
 
     MOVEA.L A2,A0
 
-.lab_0B45:
+.measure_old_len_loop:
     TST.B   (A0)+
-    BNE.S   .lab_0B45
+    BNE.S   .measure_old_len_loop
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
@@ -322,19 +329,19 @@ ESQPARS_ReplaceOwnedString:
 
     LEA     16(A7),A7
 
-.lab_0B46:
+.check_new_source:
     MOVE.L  A3,D0
-    BNE.S   .lab_0B47
+    BNE.S   .measure_new_len
 
     MOVEQ   #0,D0
     BRA.S   ESQPARS_ReplaceOwnedString_Return
 
-.lab_0B47:
+.measure_new_len:
     MOVEA.L A3,A0
 
-.lab_0B48:
+.measure_new_len_loop:
     TST.B   (A0)+
-    BNE.S   .lab_0B48
+    BNE.S   .measure_new_len_loop
 
     SUBQ.L  #1,A0
     SUBA.L  A3,A0
@@ -343,19 +350,20 @@ ESQPARS_ReplaceOwnedString:
     ADDQ.L  #1,D6
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   .lab_0B49
+    BNE.S   .maybe_allocate_new
 
     MOVEQ   #0,D0
     BRA.S   ESQPARS_ReplaceOwnedString_Return
 
-.lab_0B49:
+.maybe_allocate_new:
+    ; Low-memory guard: skip allocation unless free public memory exceeds $2710.
     SUBA.L  A2,A2
     MOVEQ   #1,D1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOAvailMem(A6)
 
     CMPI.L  #$2710,D0
-    BLE.S   .lab_0B4A
+    BLE.S   .copy_new_text
 
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D6,-(A7)
@@ -366,18 +374,19 @@ ESQPARS_ReplaceOwnedString:
     LEA     16(A7),A7
     MOVEA.L D0,A2
 
-.lab_0B4A:
+.copy_new_text:
     MOVE.L  A2,D0
-    BEQ.S   .branch_1
+    BEQ.S   .return_ptr
 
+    ; Copy replacement string including NUL terminator.
     MOVEA.L A3,A0
     MOVEA.L A2,A1
 
-.branch:
+.copy_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .branch
+    BNE.S   .copy_loop
 
-.branch_1:
+.return_ptr:
     MOVE.L  A2,D0
 
 ;------------------------------------------------------------------------------
@@ -385,7 +394,7 @@ ESQPARS_ReplaceOwnedString:
 ; ARGS:
 ;   (none observed)
 ; RET:
-;   D0: none observed
+;   D0: replacement pointer (or NULL)
 ; CLOBBERS:
 ;   D6
 ; CALLS:

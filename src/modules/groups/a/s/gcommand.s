@@ -173,7 +173,8 @@ GCOMMAND_LoadCommandFile:
 ; DESC:
 ;   Parses a command/options string into global gcommand state.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Tail bytes after parsed options are appended to
+;   GCOMMAND_DigitalNicheListingsTemplatePtr via ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 GCOMMAND_ParseCommandOptions:
     LINK.W  A5,#-20
@@ -710,7 +711,8 @@ GCOMMAND_LoadMplexFile:
 ; DESC:
 ;   Parse a command line into token flags, returning indices for gcommand execution.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Uses byte $12 as a split marker and clamps appended tail text to 127 bytes
+;   before replacing/appending owned template pointers.
 ;------------------------------------------------------------------------------
 GCOMMAND_ParseCommandString:
     LINK.W  A5,#-28
@@ -1550,7 +1552,8 @@ GCOMMAND_LoadPPVTemplate:
 ; DESC:
 ;   Parse a PPV command string into tokens/indices for execution.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Uses byte $12 as a split marker and clamps appended tail text to 127 bytes
+;   before replacing/appending owned PPV template pointers.
 ;------------------------------------------------------------------------------
 GCOMMAND_ParsePPVCommand:
     LINK.W  A5,#-24

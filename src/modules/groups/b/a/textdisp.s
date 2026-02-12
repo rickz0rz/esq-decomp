@@ -22,7 +22,9 @@
 ;   Builds an aligned status string for the current channel/entry (\"Now Showing\"),
 ;   then hands it to the aligned status line renderer; falls back to external text.
 ; NOTES:
-;   Uses stack buffers for string assembly.
+;   Uses stack buffers for string assembly:
+;   - -137(A5): final aligned-line payload
+;   - -188(A5): temporary formatter scratch (51-byte non-overlap window before -137)
 ;------------------------------------------------------------------------------
 TEXTDISP_BuildNowShowingStatusLine:
     LINK.W  A5,#-216
@@ -332,6 +334,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
     PEA     DATA_SCRIPT_FMT_PCT_C_2139
+    ; Format here is "%c" (+ alignment token), so -188(A5) remains short.
     PEA     -188(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -977,6 +980,8 @@ TEXTDISP_SkipControlCodes:
 ;   sports delimiters (\"at\"/\"vs\"), and channel info, then appends alignment.
 ; NOTES:
 ;   Inserts 0x18 markers around matched delimiters.
+;   -524(A5) is the large text scratch buffer (~512 bytes before -12(A5) temp slots);
+;   WDISP_SPrintf("%s") depends on upstream trimming/selection to stay bounded.
 ;------------------------------------------------------------------------------
 TEXTDISP_BuildEntryDetailLine:
     LINK.W  A5,#-540
@@ -1120,6 +1125,9 @@ TEXTDISP_BuildEntryDetailLine:
 .mark_match_delimiters:
     MOVE.L  -12(A5),-(A7)
     PEA     DATA_SCRIPT_FMT_PCT_S_213F
+    ; Copies selected/trimmed entry substring into the 512-byte work buffer.
+    ; Budget note for -524(A5): format is align-prefix + `%s`; practical risk is
+    ; low with normal entry text, but formatter-side bounds are not enforced.
     PEA     -524(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -1966,8 +1974,12 @@ TEXTDISP_DrawHighlightFrame:
 ;   Handles a script opcode by updating text display state and SourceCfg data.
 ; NOTES:
 ;   Command cases inferred from constants (0x43/0x4A/0x52 etc).
+;   case 'C' uses -200(A5) as a command scratch buffer for "xx%s".
 ;------------------------------------------------------------------------------
 TEXTDISP_HandleScriptCommand:
+
+.commandScratchBuffer = -200
+
     LINK.W  A5,#-208
     MOVEM.L D2/D4-D7/A3,-(A7)
     MOVE.B  11(A5),D7
@@ -1994,7 +2006,13 @@ TEXTDISP_HandleScriptCommand:
 .handle_cmd_C:
     MOVE.L  A3,-(A7)
     PEA     DATA_SCRIPT_FMT_XX_PCT_S_214C
-    PEA     -200(A5)
+    ; 200-byte local target; source text comes from script argument pointer.
+    ; Provenance: A3 is typically SCRIPT_CommandTextPtr (legacy DATA_SCRIPT_BSS_LONG_2129), populated from
+    ; SCRIPT_CTRL_CMD_BUFFER payload bytes in SCRIPT_HandleBrushCommand.
+    ; Budget note for .commandScratchBuffer (200 bytes incl NUL):
+    ; "xx%s" => 3 + len(arg), so payload must stay <= 197 bytes.
+    ; CTRL packet path enforces SCRIPT_CTRL_READ_INDEX <= 198 before dispatch.
+    PEA     .commandScratchBuffer(A5)
     JSR     WDISP_SPrintf(PC)
 
     MOVE.W  TEXTDISP_PrimaryChannelCode,D0

@@ -1,8 +1,8 @@
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_MainInitAndRun   (MainInitAndRununcertain)
 ; ARGS:
-;   stack +4: arg_1 (via 8(A5))
-;   stack +8: arg_2 (via 12(A5))
+;   stack +4: argc (s32, via 8(A5))
+;   stack +8: argv (char**/pointer table, via 12(A5))
 ; RET:
 ;   D0: result/status
 ; CLOBBERS:
@@ -32,15 +32,15 @@
 ;   Global_STR_GUIDE_START_VERSION_AND_BUILD, Global_STR_MAJOR_MINOR_VERSION,
 ;   Global_PTR_STR_BUILD_ID, Global_LONG_BUILD_NUMBER, Global_LONG_PATCH_VERSION_NUMBER
 ; WRITES:
-;   Global_PTR_STR_SELECT_CODE, Global_WORD_SELECT_CODE_IS_RAVESC,
+;   ESQ_SelectCodeBuffer, Global_WORD_SELECT_CODE_IS_RAVESC,
 ;   Global_REF_GRAPHICS_LIBRARY, Global_REF_DISKFONT_LIBRARY, Global_REF_DOS_LIBRARY,
 ;   Global_REF_INTUITION_LIBRARY, Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
 ;   Global_HANDLE_TOPAZ_FONT, Global_HANDLE_PREVUEC_FONT, Global_HANDLE_H26F_FONT,
 ;   Global_HANDLE_PREVUE_FONT, Global_REF_RASTPORT_1, Global_REF_RASTPORT_2,
-;   Global_REF_STR_CLOCK_FORMAT, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, DATA_WDISP_BSS_WORD_222A, DATA_WDISP_BSS_WORD_222B,
-;   DATA_WDISP_BSS_LONG_221A/DATA_WDISP_BSS_LONG_221C/DATA_WDISP_BSS_LONG_2220/DATA_WDISP_BSS_LONG_2224 tables, WDISP_DisplayContextBase, WDISP_BannerWorkRasterPtr,
-;   DATA_WDISP_BSS_WORD_2294, ESQIFF_RecordBufferPtr, DATA_WDISP_BSS_LONG_2267-DATA_WDISP_BSS_LONG_2269, DATA_WDISP_BSS_LONG_2207-DATA_WDISP_BSS_LONG_220E,
-;   Global_REF_BAUD_RATE, LAB_2211_SERIAL_PORT_MAYBE, DATA_WDISP_BSS_LONG_2212,
+;   Global_REF_STR_CLOCK_FORMAT, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, WDISP_HighlightBufferMode, WDISP_HighlightRasterHeightPx,
+;   WDISP_352x240RasterPtrTable/WDISP_BannerRowScratchRasterTable0/WDISP_LivePlaneRasterTable0/WDISP_DisplayContextPlanePointer0 tables, WDISP_DisplayContextBase, WDISP_BannerWorkRasterPtr,
+;   DATA_WDISP_BSS_WORD_2294, ESQIFF_RecordBufferPtr, ESQSHARED_BannerRowScratchRasterBase0-ESQSHARED_BannerRowScratchRasterBase2, ESQSHARED_LivePlaneBase0-ESQSHARED_DisplayContextPlaneBase4,
+;   Global_REF_BAUD_RATE, WDISP_SerialIoRequestPtr, WDISP_SerialMessagePortPtr,
 ;   Global_REF_96_BYTES_ALLOCATED, numerous state globals cleared in .init_global_state
 ; DESC:
 ;   Main startup routine: loads libraries/resources, opens fonts, allocates
@@ -49,6 +49,13 @@
 ; NOTES:
 ;   - Treats argv[1] as a select code string; detects \"RAVESC\".
 ;   - Falls back to topaz for missing disk fonts.
+;   - Copies argv strings bytewise without explicit destination-length checks.
+;   - Startup banner text is composed into ESQ_StartupVersionBannerBuffer via
+;     RawDoFmt-style formatting; template/string edits can affect memory safety.
+;   - Current destination capacities:
+;       ESQ_SelectCodeBuffer = 10 bytes (including NUL)
+;       ESQ_StartupVersionBannerBuffer = 80 bytes (including NUL)
+;       DISKIO_ErrorMessageScratch = 41 bytes (including NUL)
 ;------------------------------------------------------------------------------
 ESQ_MainInitAndRun:
     LINK.W  A5,#-16
@@ -62,8 +69,15 @@ ESQ_MainInitAndRun:
     BLT.S   .clear_select_code
 
     MOVEA.L 4(A3),A0
-    LEA     Global_PTR_STR_SELECT_CODE,A1
+    LEA     ESQ_SelectCodeBuffer,A1
 
+; Copy argv[1] into ESQ_SelectCodeBuffer until NUL terminator.
+; ESQ_SelectCodeBuffer capacity is 10 bytes total (9 visible chars + NUL).
+; No explicit bounds check is visible here.
+; Layout-coupled spill risk:
+;   byte 10+ overwrites Global_REF_BAUD_RATE,
+;   byte 14+ overwrites DATA_WDISP_BSS_WORD_226D,
+;   byte 16+ overwrites DATA_WDISP_BSS_LONG_226E.
 .copy_select_code_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_select_code_loop
@@ -71,10 +85,10 @@ ESQ_MainInitAndRun:
     BRA.S   .select_code_ready
 
 .clear_select_code:
-    CLR.B   Global_PTR_STR_SELECT_CODE
+    CLR.B   ESQ_SelectCodeBuffer
 
 .select_code_ready:
-    LEA     Global_PTR_STR_SELECT_CODE,A0
+    LEA     ESQ_SelectCodeBuffer,A0
     LEA     Global_STR_RAVESC,A1
 
 .compare_select_code_loop:
@@ -105,7 +119,7 @@ ESQ_MainInitAndRun:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOFindTask(A6)
 
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_222C
+    MOVE.L  D0,WDISP_ExecBaseHookPtr
     MOVEA.L D0,A0
     MOVE.L  184(A0),DATA_ESQ_BSS_LONG_1DC7
     MOVEQ   #-1,D0
@@ -271,7 +285,7 @@ ESQ_MainInitAndRun:
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #68,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_222B
+    MOVE.W  D0,WDISP_HighlightRasterHeightPx
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,D0
@@ -281,9 +295,9 @@ ESQ_MainInitAndRun:
     TST.L   D1
     BEQ.S   .adjust_rastport_text_spacing
 
-    MOVE.W  DATA_WDISP_BSS_WORD_222B,D0
+    MOVE.W  WDISP_HighlightRasterHeightPx,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_222B
+    MOVE.W  D0,WDISP_HighlightRasterHeightPx
 
 .adjust_rastport_text_spacing:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -344,7 +358,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D1
     EXT.L   D1
     ASL.L   #2,D1
-    LEA     DATA_WDISP_BSS_LONG_221A,A0
+    LEA     WDISP_352x240RasterPtrTable,A0
     ADDA.L  D1,A0
 
     PEA     240.W                       ; Height
@@ -360,7 +374,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_221A,A0
+    LEA     WDISP_352x240RasterPtrTable,A0
     ADDA.L  D0,A0
 
     MOVEA.L (A0),A1         ; memBlock
@@ -462,14 +476,14 @@ ESQ_MainInitAndRun:
 .after_entry_tables:
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
-    CLR.W   DATA_WDISP_BSS_WORD_222A
+    CLR.W   WDISP_HighlightBufferMode
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  20(A0),D0
     MOVEQ   #34,D1
     CMP.W   D1,D0
     BCS.S   .check_graphics_version
 
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_222A
+    MOVE.W  #1,WDISP_HighlightBufferMode
 
 .check_graphics_version:
     MOVEQ   #4,D1
@@ -479,7 +493,7 @@ ESQ_MainInitAndRun:
     CMPI.L  #1750000,D0
     BLE.S   .check_available_mem
 
-    MOVE.W  #2,DATA_WDISP_BSS_WORD_222A
+    MOVE.W  #2,WDISP_HighlightBufferMode
 
 .check_available_mem:
     JSR     GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage(PC)
@@ -575,7 +589,7 @@ ESQ_MainInitAndRun:
     JSR     GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal(PC)
 
     LEA     20(A7),A7
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2212
+    MOVE.L  D0,WDISP_SerialMessagePortPtr
     BEQ.W   .return
 
     PEA     82.W
@@ -583,7 +597,7 @@ ESQ_MainInitAndRun:
     JSR     GROUP_AM_JMPTBL_STRUCT_AllocWithOwner(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,LAB_2211_SERIAL_PORT_MAYBE
+    MOVE.L  D0,WDISP_SerialIoRequestPtr
     TST.L   D0
     BEQ.W   .return
 
@@ -598,13 +612,13 @@ ESQ_MainInitAndRun:
     TST.L   D6                          ; Test D6 to see if it's 0 (failed)
     BNE.W   .return                     ; Branch if unable to open serial device
 
-    MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A0
+    MOVEA.L WDISP_SerialIoRequestPtr,A0
     MOVE.B  #16,79(A0)
-    MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A0
+    MOVEA.L WDISP_SerialIoRequestPtr,A0
     MOVE.L  Global_REF_BAUD_RATE,60(A0)
-    MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A0
+    MOVEA.L WDISP_SerialIoRequestPtr,A0
     MOVE.W  #11,28(A0)
-    MOVEA.L LAB_2211_SERIAL_PORT_MAYBE,A1
+    MOVEA.L WDISP_SerialIoRequestPtr,A1
     JSR     _LVODoIO(A6)
 
     JSR     SETUP_INTERRUPT_INTB_RBF(PC)
@@ -653,7 +667,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_221C,A0
+    LEA     WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
 
     PEA     509.W                       ; Height
@@ -669,7 +683,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_221C,A0
+    LEA     WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  #$aef8,D0
@@ -681,9 +695,10 @@ ESQ_MainInitAndRun:
     BRA.S   .UNKNOWN2B_AllocRasters_696x509_loop
 
 .seed_raster_aliases:
-    MOVE.L  DATA_WDISP_BSS_LONG_221C,DATA_WDISP_BSS_LONG_2267
-    MOVE.L  DATA_WDISP_BSS_LONG_221D,DATA_WDISP_BSS_LONG_2268
-    MOVE.L  DATA_WDISP_BSS_LONG_221E,DATA_WDISP_BSS_LONG_2269
+    ; Preserve original 696x509 raster bases for display/scratch reuse.
+    MOVE.L  WDISP_BannerRowScratchRasterTable0,ESQSHARED_BannerRowScratchRasterBase0
+    MOVE.L  WDISP_BannerRowScratchRasterTable1,ESQSHARED_BannerRowScratchRasterBase1
+    MOVE.L  WDISP_BannerRowScratchRasterTable2,ESQSHARED_BannerRowScratchRasterBase2
     MOVEQ   #0,D5
 
 .seed_raster_offsets_loop:
@@ -694,11 +709,12 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2224,A0
+    LEA     WDISP_DisplayContextPlanePointer0,A0
     ADDA.L  D0,A0
-    LEA     DATA_WDISP_BSS_LONG_221C,A1
+    LEA     WDISP_BannerRowScratchRasterTable0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
+    ; Derive plane base aliases by fixed +$5C20 offset from 696x509 rasters.
     ADDA.W  #$5c20,A2
     MOVE.L  A2,(A0)
     ADDQ.W  #1,D5
@@ -715,7 +731,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2224,A0
+    LEA     WDISP_DisplayContextPlanePointer0,A0
     ADDA.L  D0,A0
 
     PEA     241.W                       ; Height
@@ -731,7 +747,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2224,A0
+    LEA     WDISP_DisplayContextPlanePointer0,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.L  #$52d8,D0
@@ -743,11 +759,11 @@ ESQ_MainInitAndRun:
     BRA.S   .UNKNOWN2B_AllocRasters_696x241_loop
 
 .init_main_rastport:
-    MOVE.L  DATA_WDISP_BSS_LONG_2224,DATA_WDISP_BSS_LONG_220A
-    MOVE.L  DATA_WDISP_BSS_LONG_2225,DATA_WDISP_BSS_LONG_220B
-    MOVE.L  DATA_WDISP_BSS_LONG_2226,DATA_WDISP_BSS_LONG_220C
-    MOVE.L  DATA_WDISP_BSS_LONG_2227,DATA_WDISP_BSS_LONG_220D
-    MOVE.L  DATA_WDISP_BSS_LONG_2228,DATA_WDISP_BSS_LONG_220E
+    MOVE.L  WDISP_DisplayContextPlanePointer0,ESQSHARED_DisplayContextPlaneBase0
+    MOVE.L  WDISP_DisplayContextPlanePointer1,ESQSHARED_DisplayContextPlaneBase1
+    MOVE.L  WDISP_DisplayContextPlanePointer2,ESQSHARED_DisplayContextPlaneBase2
+    MOVE.L  WDISP_DisplayContextPlanePointer3,ESQSHARED_DisplayContextPlaneBase3
+    MOVE.L  WDISP_DisplayContextPlanePointer4,ESQSHARED_DisplayContextPlaneBase4
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  52(A0),-4(A5)
     MOVEA.L -4(A5),A0
@@ -760,7 +776,7 @@ ESQ_MainInitAndRun:
 
     LEA     12(A7),A7
     MOVE.L  D0,WDISP_DisplayContextBase
-    LEA     DATA_WDISP_BSS_LONG_221F,A0
+    LEA     WDISP_BannerGridBitmapStruct,A0
     MOVEQ   #3,D0
     MOVE.L  #696,D1
     MOVEQ   #2,D2
@@ -777,7 +793,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_2220,A0
+    LEA     WDISP_LivePlaneRasterTable0,A0
     ADDA.L  D0,A0
 
     PEA     2.W                         ; Height
@@ -794,7 +810,7 @@ ESQ_MainInitAndRun:
     EXT.L   D0
     ASL.L   #2,D0
 
-    LEA     DATA_WDISP_BSS_LONG_2220,A0
+    LEA     WDISP_LivePlaneRasterTable0,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVEQ   #88,D0
@@ -807,9 +823,10 @@ ESQ_MainInitAndRun:
     BRA.S   .UNKNOWN2B_AllocRasters_696x2_loop
 
 .after_raster_setup:
-    MOVE.L  DATA_WDISP_BSS_LONG_2220,DATA_WDISP_BSS_LONG_2207
-    MOVE.L  DATA_WDISP_BSS_LONG_2221,DATA_WDISP_BSS_LONG_2208
-    MOVE.L  DATA_WDISP_BSS_LONG_2222,DATA_WDISP_BSS_LONG_2209
+    ; Snapshot currently live 696x2 plane bases for ESQSHARED copy paths.
+    MOVE.L  WDISP_LivePlaneRasterTable0,ESQSHARED_LivePlaneBase0
+    MOVE.L  WDISP_LivePlaneRasterTable1,ESQSHARED_LivePlaneBase1
+    MOVE.L  WDISP_LivePlaneRasterTable2,ESQSHARED_LivePlaneBase2
 
     PEA     15.W                        ; Height
     PEA     696.W                       ; Width
@@ -821,7 +838,7 @@ ESQ_MainInitAndRun:
     CLR.W   WDISP_AccumulatorFlushPending
     CLR.L   NEWGRID_RefreshStateFlag
     MOVEQ   #-1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2260
+    MOVE.L  D0,NEWGRID_MessagePumpSuspendFlag
     JSR     GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk(PC)
 
     LEA     16(A7),A7
@@ -846,10 +863,10 @@ ESQ_MainInitAndRun:
     ; default value it uses.
     MOVEQ   #0,D0
     MOVE.W  D0,Global_UIBusyFlag
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2203
+    MOVE.W  D0,ESQ_StartupStateWord2203
     MOVE.W  D0,TEXTDISP_SecondaryGroupRecordLength
     MOVE.W  D0,TEXTDISP_PrimaryGroupRecordLength
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2205
+    MOVE.W  D0,ESQ_TickModulo60Counter
     MOVE.W  D0,DATA_WDISP_BSS_WORD_2271
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVE.W  D0,DATA_WDISP_BSS_WORD_2347
@@ -863,7 +880,7 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,Global_WORD_MAX_VALUE
     MOVE.W  D0,Global_WORD_T_VALUE
     MOVE.W  D0,Global_WORD_H_VALUE
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2264
+    MOVE.W  D0,CLEANUP_PendingAlertFlag
     MOVE.W  D0,DATA_WDISP_BSS_WORD_2284
     MOVE.W  D0,CTRL_HDeltaMax
     MOVE.W  D0,CTRL_HPreviousSample
@@ -875,11 +892,11 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,DATA_WDISP_BSS_WORD_2349
     MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag
     MOVE.W  D0,ESQPARS_Preamble55SeenFlag
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_225C
+    MOVE.W  D0,WDISP_BannerCharPhaseShift
     MOVE.W  D0,DATA_WDISP_BSS_WORD_22A0
     MOVE.W  D0,ESQPARS_ResetArmedFlag
     MOVEQ   #0,D1
-    MOVE.B  D1,DATA_WDISP_BSS_WORD_2206
+    MOVE.B  D1,ESQIFF_UseCachedChecksumFlag
     MOVE.B  D1,TEXTDISP_SecondaryGroupRecordChecksum
     MOVE.B  D1,TEXTDISP_PrimaryGroupRecordChecksum
     MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
@@ -888,7 +905,7 @@ ESQ_MainInitAndRun:
     MOVE.W  #7,DATA_WDISP_BSS_LONG_225E
     MOVE.W  #2,CLOCK_HalfHourSlotIndex
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2266
+    MOVE.W  D0,PARSEINI_CtrlHChangeGateFlag
     MOVE.W  #$ff,SCRIPT_CTRL_CHECKSUM
     JSR     ESQIFF_RestoreBasePaletteTriples(PC)
 
@@ -965,18 +982,30 @@ ESQ_MainInitAndRun:
 
 ; Fill out "Ver %s.%ld Build %ld %s"
 .format_version_banner:
+    ; Formatting depends on mutable build-id/version strings and destination size.
+    ; WDISP_SPrintf has no destination-length parameter.
+    ; Current format literal contributes 13 fixed chars; remaining budget is
+    ; shared across %s/%ld/%ld/%s substitutions.
+    ; Current configured render: "Ver 9.0.4 Build 21 JGT" (22 chars + NUL).
+    ; ESQ_StartupVersionBannerBuffer capacity is 80 bytes => current headroom 57.
+    ; With signed-32 worst-case %ld fields and current %s inputs, usage is
+    ; 41 chars + NUL (headroom 38). Under current major/minor width, final
+    ; build-id text above 41 chars would drop below a 16-byte safety margin.
     MOVE.L  Global_PTR_STR_BUILD_ID,-(A7)             ; JGT
     MOVE.L  Global_LONG_BUILD_NUMBER,-(A7)            ; 21
     MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 4
     PEA     Global_STR_MAJOR_MINOR_VERSION            ; 9.0
     PEA     Global_STR_GUIDE_START_VERSION_AND_BUILD
-    PEA     DATA_WDISP_BSS_LONG_2204
+    PEA     ESQ_StartupVersionBannerBuffer
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     DATA_ESQ_38_Spaces,A0
     LEA     DISKIO_ErrorMessageScratch,A1
     MOVEQ   #9,D0
 
+; Copy 40 bytes (10 longwords) from DATA_ESQ_38_Spaces into a 41-byte scratch.
+; Current DATA_ESQ_38_Spaces length is 39 chars + NUL = 40 bytes.
+; If that source string shrinks, this fixed-size copy can pull adjacent data.
 .copy_version_template_loop:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.copy_version_template_loop
@@ -993,14 +1022,15 @@ ESQ_MainInitAndRun:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     60.W
-    PEA     Global_PTR_STR_SELECT_CODE
+    ; Also displays select-code text copied from argv[1] earlier.
+    PEA     ESQ_SelectCodeBuffer
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     90.W
-    PEA     DATA_WDISP_BSS_LONG_2204
+    PEA     ESQ_StartupVersionBannerBuffer
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1131,7 +1161,7 @@ ESQ_MainInitAndRun:
     JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
     MOVE.W  #1,DATA_WDISP_BSS_LONG_2272
-    MOVE.W  DATA_WDISP_BSS_WORD_226F,DATA_WDISP_BSS_WORD_2257
+    MOVE.W  WDISP_BannerCharRangeStart,WDISP_BannerCharIndex
     CLR.L   (A7)
     PEA     4095.W
     JSR     ESQDISP_UpdateStatusMaskAndRefresh(PC)

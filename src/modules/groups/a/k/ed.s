@@ -429,7 +429,7 @@ ED_HandleEditorInput:
     CMP.L   D0,D1
     BGE.S   .delete_line_mode_update
 
-    LEA     DATA_WDISP_BSS_BYTE_21F1,A0
+    LEA     ED_EditBufferScratchShiftBase,A0
     ADDA.L  D1,A0
     LEA     ED_EditBufferScratch,A1
     ADDA.L  D1,A1
@@ -439,7 +439,7 @@ ED_HandleEditorInput:
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     DATA_WDISP_BSS_BYTE_21F8,A0
+    LEA     ED_EditBufferLiveShiftBase,A0
     MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
     LEA     ED_EditBufferLive,A1
@@ -474,7 +474,7 @@ ED_HandleEditorInput:
     MOVE.L  ED_BlockOffset,D0
     SUBQ.L  #1,D0
     MOVE.L  D0,ED_TempCopyOffset
-    LEA     DATA_WDISP_BSS_BYTE_21F1,A0
+    LEA     ED_EditBufferScratchShiftBase,A0
     MOVE.L  ED_EditCursorOffset,D1
     ADDA.L  D1,A0
     LEA     ED_EditBufferScratch,A1
@@ -485,7 +485,7 @@ ED_HandleEditorInput:
     MOVE.L  A0,-(A7)
     JSR     ED1_JMPTBL_MEM_Move(PC)
 
-    LEA     DATA_WDISP_BSS_BYTE_21F8,A0
+    LEA     ED_EditBufferLiveShiftBase,A0
     MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
     LEA     ED_EditBufferLive,A1
@@ -1119,7 +1119,7 @@ ED_HandleEditorInput:
 
     LEA     ED_EditBufferScratch,A0
     ADDA.L  D1,A0
-    LEA     DATA_WDISP_BSS_BYTE_21F1,A1
+    LEA     ED_EditBufferScratchShiftBase,A1
     ADDA.L  D1,A1
     SUB.L   D1,D0
     MOVE.L  D0,-(A7)
@@ -1130,7 +1130,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferLive,A0
     MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    LEA     DATA_WDISP_BSS_BYTE_21F8,A1
+    LEA     ED_EditBufferLiveShiftBase,A1
     ADDA.L  D0,A1
     MOVE.L  ED_TempCopyOffset,D1
     SUB.L   D0,D1
@@ -1162,7 +1162,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferScratch,A0
     MOVE.L  ED_EditCursorOffset,D1
     ADDA.L  D1,A0
-    LEA     DATA_WDISP_BSS_BYTE_21F1,A1
+    LEA     ED_EditBufferScratchShiftBase,A1
     ADDA.L  D1,A1
     SUB.L   D1,D0
     MOVE.L  D0,-(A7)
@@ -1173,7 +1173,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferLive,A0
     MOVE.L  ED_EditCursorOffset,D0
     ADDA.L  D0,A0
-    LEA     DATA_WDISP_BSS_BYTE_21F8,A1
+    LEA     ED_EditBufferLiveShiftBase,A1
     ADDA.L  D0,A1
     MOVE.L  ED_TempCopyOffset,D1
     SUB.L   D0,D1
@@ -2152,7 +2152,7 @@ ED_RebootComputer:
 ;   GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_MATH_DivS32,
 ;   _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   ED_LastKeyCode, ED_EditCursorOffset, DATA_WDISP_BSS_BYTE_21F2, DATA_WDISP_BSS_BYTE_21F3, DATA_WDISP_BSS_LONG_21FD, ED_MenuStateId
+;   ED_LastKeyCode, ED_EditCursorOffset, ED_AdNumberInputDigitTens, ED_AdNumberInputDigitOnes, ED_MaxAdNumber, ED_MenuStateId
 ; WRITES:
 ;   ED_EditCursorOffset, ED_EditBufferScratch, ED_MenuStateId, ED_SaveTextAdsOnExitFlag, Global_REF_LONG_CURRENT_EDITING_AD_NUMBER
 ; DESC:
@@ -2220,12 +2220,12 @@ ED_HandleEditAttributesMenu:
     BRA.W   .refresh_attribute_display
 
 .case_commit_ad_number:
-    MOVE.B  DATA_WDISP_BSS_BYTE_21F2,D0
+    MOVE.B  ED_AdNumberInputDigitTens,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
     BNE.S   .ad_second_blank
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_21F3,D2
+    MOVE.B  ED_AdNumberInputDigitOnes,D2
     CMP.B   D1,D2
     BEQ.S   .ad_both_blank
 
@@ -2242,7 +2242,7 @@ ED_HandleEditAttributesMenu:
     BRA.S   .ad_number_ready
 
 .ad_second_blank:
-    MOVE.B  DATA_WDISP_BSS_BYTE_21F3,D2
+    MOVE.B  ED_AdNumberInputDigitOnes,D2
     CMP.B   D1,D2
     BNE.S   .ad_two_digits
 
@@ -2270,7 +2270,7 @@ ED_HandleEditAttributesMenu:
 
 .ad_number_ready:
     MOVE.L  Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,D0
-    CMP.L   DATA_WDISP_BSS_LONG_21FD,D0
+    CMP.L   ED_MaxAdNumber,D0
     BLE.S   .ad_number_in_range
 
     MOVEA.L Global_REF_RASTPORT_1,A1

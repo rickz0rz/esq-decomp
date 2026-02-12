@@ -454,7 +454,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; CALLS:
 ;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
 ; READS:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, DATA_ESQDISP_BSS_LONG_1E84, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, DATA_GCOMMAND_BSS_WORD_1FA9, DATA_GCOMMAND_CONST_WORD_1FB0, Global_UIBusyFlag, DATA_WDISP_BSS_WORD_2264, ESQIFF_ExternalAssetFlags, fffd, fffe
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, DATA_ESQDISP_BSS_LONG_1E84, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, DATA_GCOMMAND_BSS_WORD_1FA9, DATA_GCOMMAND_CONST_WORD_1FB0, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
 ; WRITES:
 ;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, ESQIFF_ExternalAssetFlags
 ; DESC:
@@ -490,7 +490,7 @@ ESQFUNC_ProcessUiFrameTick:
     JSR     ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd(PC)
 
 .lab_0974:
-    TST.W   DATA_WDISP_BSS_WORD_2264
+    TST.W   CLEANUP_PendingAlertFlag
     BEQ.W   .lab_097C
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
@@ -624,7 +624,7 @@ ESQFUNC_ProcessUiFrameTick:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQFUNC_ProcessUiFrameTick
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DE5, DATA_WDISP_BSS_WORD_2264
+;   DATA_ESQ_BSS_WORD_1DE5, CLEANUP_PendingAlertFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -645,7 +645,7 @@ ESQFUNC_ServiceUiTickIfRunning:
 
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    TST.W   DATA_WDISP_BSS_WORD_2264
+    TST.W   CLEANUP_PendingAlertFlag
     BEQ.S   .lab_0980
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
@@ -770,9 +770,9 @@ ESQFUNC_FreeExtraTitleTextPointers:
 ; CALLS:
 ;   ESQSHARED4_ComputeBannerRowBlitGeometry
 ; READS:
-;   DATA_WDISP_BSS_LONG_2260, DATA_WDISP_BSS_LONG_2262
+;   NEWGRID_MessagePumpSuspendFlag, NEWGRID_LastRefreshRequest
 ; WRITES:
-;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQPARS2_CONST_WORD_1F53, DATA_ESQPARS2_CONST_WORD_1F54, NEWGRID_RefreshStateFlag, DATA_WDISP_BSS_LONG_2260, DATA_WDISP_BSS_LONG_2261, DATA_WDISP_BSS_LONG_2262
+;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQPARS2_CONST_WORD_1F53, DATA_ESQPARS2_CONST_WORD_1F54, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -784,12 +784,12 @@ ESQFUNC_UpdateRefreshModeState:
     MOVE.L  D7,-(A7)
     MOVE.L  12(A5),D7
     MOVE.W  #1,DATA_ESQFUNC_CONST_WORD_1ECD
-    TST.L   DATA_WDISP_BSS_LONG_2260
+    TST.L   NEWGRID_MessagePumpSuspendFlag
     BEQ.S   .lab_098B
 
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_RefreshStateFlag
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2260
+    MOVE.L  D0,NEWGRID_MessagePumpSuspendFlag
     MOVE.W  #$90,DATA_ESQPARS2_CONST_WORD_1F53
     MOVE.W  #$230,DATA_ESQPARS2_CONST_WORD_1F54
     JSR     ESQSHARED4_ComputeBannerRowBlitGeometry
@@ -799,19 +799,19 @@ ESQFUNC_UpdateRefreshModeState:
     BNE.S   .lab_098C
 
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2261
+    MOVE.L  D0,NEWGRID_ModeSelectorState
     BRA.S   .lab_098D
 
 .lab_098C:
     MOVEQ   #2,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2261
-    TST.L   DATA_WDISP_BSS_LONG_2262
+    MOVE.L  D0,NEWGRID_ModeSelectorState
+    TST.L   NEWGRID_LastRefreshRequest
     BNE.S   .lab_098D
 
     CLR.L   NEWGRID_RefreshStateFlag
 
 .lab_098D:
-    MOVE.L  D7,DATA_WDISP_BSS_LONG_2262
+    MOVE.L  D7,NEWGRID_LastRefreshRequest
     MOVE.L  (A7)+,D7
 
     UNLK    A5
@@ -835,11 +835,15 @@ ESQFUNC_UpdateRefreshModeState:
 ; WRITES:
 ;   ED_DiagnosticsScreenActive
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Draws ESC version/build lines and a continue prompt.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses a shared 81-byte local printf buffer at -81(A5) for both lines.
+;   WDISP_SPrintf has no destination-length parameter.
 ;------------------------------------------------------------------------------
 ESQFUNC_DrawEscMenuVersion:
+
+.versionLineBuffer = -81
+
     LINK.W  A5,#-84
 
     CLR.W   ED_DiagnosticsScreenActive
@@ -859,11 +863,11 @@ ESQFUNC_DrawEscMenuVersion:
     MOVE.L  Global_PTR_STR_BUILD_ID,-(A7)     ; parameter 2
     MOVE.L  Global_LONG_BUILD_NUMBER,-(A7)    ; parameter 1
     PEA     Global_STR_BUILD_NUMBER_FORMATTED ; format string
-    PEA     -81(A5)                         ; result string pointer
+    PEA     .versionLineBuffer(A5)          ; result string pointer
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
 
     ; Display string at position
-    PEA     -81(A5)                         ; string
+    PEA     .versionLineBuffer(A5)          ; string
     PEA     330.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
@@ -876,18 +880,18 @@ ESQFUNC_DrawEscMenuVersion:
     BNE.S   .setRomVersion2_04              ; If it's not equal, jump to LAB_098F
 
     LEA     Global_STR_ROM_VERSION_1_3,A0     ; Load the effective address of the 1.3 string to A0
-    BRA.S   .lab_0990                        ; and jump to .lab_0990
+    BRA.S   .format_rom_version_line
 
 .setRomVersion2_04:
     LEA     Global_STR_ROM_VERSION_2_04,A0    ; Load the effective address of the 2.04 string to A0
 
-.lab_0990:
+.format_rom_version_line:
     MOVE.L  A0,-(A7)                        ; parameter 1
     PEA     Global_STR_ROM_VERSION_FORMATTED  ; format string
-    PEA     -81(A5)                         ; result string pointer
+    PEA     .versionLineBuffer(A5)          ; result string pointer
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
 
-    PEA     -81(A5)                         ; string
+    PEA     .versionLineBuffer(A5)          ; string
     PEA     360.W                           ; y
     PEA     175.W                           ; x
     MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
@@ -940,6 +944,7 @@ ESQFUNC_DrawEscMenuVersion:
 ;   available memory totals, and various clock/calendar diagnostics.
 ; NOTES:
 ;   Uses ED_DiagAvailMemMask bitmask to select which memory types to show.
+;   Reuses a 72-byte local printf buffer at -72(A5) for all text lines.
 ;------------------------------------------------------------------------------
 ; draw the screen showing available memory
 ESQFUNC_DrawMemoryStatusScreen:
@@ -975,6 +980,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     Global_STR_DATA_CMDS_CERRS_LERRS
+    ; Shared 72-byte line buffer for all diagnostics rows in this function.
     PEA     -72(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1229,7 +1235,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     EXT.L   D0
     MOVE.W  DATA_WDISP_BSS_WORD_223B,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_2244,D2
+    MOVE.W  ESQFUNC_CListLinePointer,D2
     EXT.L   D2
     MOVE.W  DATA_WDISP_BSS_WORD_223D,D3
     EXT.L   D3
@@ -1274,7 +1280,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     EXT.L   D0
     MOVE.W  DST_SecondaryCountdown,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_225C,D2
+    MOVE.W  WDISP_BannerCharPhaseShift,D2
     EXT.L   D2
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
@@ -1344,6 +1350,9 @@ ESQFUNC_DrawMemoryStatusScreen:
 ;   based on multiple subsystem checks and a mode selector.
 ; NOTES:
 ;   Uses several helper probes (CIA bit/flag reads) to choose message text.
+;   Reuses a 132-byte local printf buffer at -132(A5) for every row.
+;   Most `%s` arguments in this routine come from fixed static literal tables
+;   (status tags, mode names, TRUE/FALSE, AM/PM) rather than mutable buffers.
 ;------------------------------------------------------------------------------
 ; Printing of more diagnostic data
 ESQFUNC_DrawDiagnosticsScreen:
@@ -1432,6 +1441,9 @@ ESQFUNC_DrawDiagnosticsScreen:
     LEA     DATA_ESQFUNC_STR_NO_DETECT_1EC0,A1
 
 .format_main_line:
+    ; `%s` args here are selected from static string literals above:
+    ; CartSW, CartREL, VidSW, and on_air tags.
+    ; Budget note for -132(A5): conservative max is 85 bytes incl NUL.
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  36(A7),-(A7)
@@ -1454,6 +1466,9 @@ ESQFUNC_DrawDiagnosticsScreen:
     ADDA.L  D0,A0
     MOVE.W  ESQPARS2_ReadModeFlags,D0
     EXT.L   D0
+    ; Entry-string source is from DATA_ESQFUNC_CONST_LONG_1EB6 (4 static labels).
+    ; Budget note for -132(A5): conservative max is 62 bytes incl NUL
+    ; (uses 8-digit worst-case for %04X-style hex expansion).
     MOVE.L  D0,(A7)
     MOVE.L  (A0),-(A7)
     PEA     DATA_ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X_1EC1
@@ -1468,16 +1483,22 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEQ   #0,D0
+    ; Deferred action countdown/armed are populated in SCRIPT3/ED2 and then
+    ; decremented in TEXTDISP_TickDisplayState while armed.
     MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     MOVEQ   #0,D1
     MOVE.W  TEXTDISP_DeferredActionArmed,D1
-    MOVE.L  DATA_WDISP_BSS_LONG_2323,(A7)
-    MOVE.L  DATA_WDISP_BSS_LONG_2322,-(A7)
+    ; Layout-coupled LOCAVAIL_PrimaryFilterState longs (+12 then +8).
+    MOVE.L  LOCAVAIL_PrimaryFilterState_Field0C,(A7)
+    MOVE.L  LOCAVAIL_PrimaryFilterState_Field08,-(A7)
+    ; Filter class/step/mode are state-machine outputs from LOCAVAIL_UpdateFilterStateMachine.
     MOVE.L  LOCAVAIL_FilterClassId,-(A7)
     MOVE.L  LOCAVAIL_FilterStep,-(A7)
     MOVE.L  LOCAVAIL_FilterModeFlag,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
+    ; Budget note for -132(A5): full signed-32 worst-case is 156 bytes incl NUL
+    ; (%ld/%d treated as up to 11 chars each), so this row is top guard priority.
     PEA     DATA_ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
@@ -1491,31 +1512,37 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
-    MOVE.W  DATA_WDISP_BSS_WORD_223B,D0
+    ; Clock globals are normalized by PARSEINI_NormalizeClockData.
+    ; Month/day are 0-based table indexes; month is +1 only when writing RTC.
+    MOVE.W  CLOCK_CacheMonthIndex0,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_223C,D1
+    MOVE.W  CLOCK_CacheDayIndex0,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D2
+    MOVE.W  CLOCK_CacheYear,D2
     EXT.L   D2
-    MOVE.W  DATA_WDISP_BSS_WORD_223E,D3
+    MOVE.W  CLOCK_CacheHour,D3
     EXT.L   D3
-    MOVE.W  DATA_WDISP_BSS_WORD_223F,D4
+    MOVE.W  CLOCK_CacheMinuteOrSecond,D4
     EXT.L   D4
+    ; Seconds snapshot used by PARSEINI/SCRIPT clock-change detection paths.
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,D5
     EXT.L   D5
-    TST.W   DATA_WDISP_BSS_WORD_2243
-    BEQ.S   .lab_09A3
+    ; AM/PM selector: 0 = AM, non-zero (typically -1) = PM.
+    TST.W   CLOCK_CacheAmPmFlag
+    BEQ.S   .use_am_suffix
 
     LEA     DATA_ESQFUNC_STR_PM_1EC4,A0
-    BRA.S   .lab_09A4
+    BRA.S   .format_clock_line
 
-.lab_09A3:
+.use_am_suffix:
     LEA     DATA_ESQFUNC_STR_AM_1EC5,A0
 
-.lab_09A4:
-    MOVE.W  DATA_WDISP_BSS_LONG_2325,D6
+.format_clock_line:
+    ; LOCAVAIL cooldown timer: seeded in LOCAVAIL and adjusted/decremented in CLEANUP/APP2 ticks.
+    MOVE.W  LOCAVAIL_FilterCooldownTicks,D6
     EXT.L   D6
     MOVE.L  D6,-(A7)
+    ; `%s` here is only "am"/"pm".
     MOVE.L  A0,-(A7)
     MOVE.L  D5,-(A7)
     MOVE.L  D4,-(A7)
@@ -1523,6 +1550,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
+    ; Budget note for -132(A5): full signed-32 worst-case is 146 bytes incl NUL.
     PEA     DATA_ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
@@ -1550,6 +1578,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  D0,(A7)
     MOVE.L  80(A7),-(A7)
     MOVE.L  80(A7),-(A7)
+    ; Budget note for -132(A5): conservative max is 56 bytes incl NUL.
     PEA     DATA_ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT_1EC6
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
@@ -1578,6 +1607,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
+    ; Budget note for -132(A5): full signed-32 worst-case is 109 bytes incl NUL.
     PEA     DATA_ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC7
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
@@ -1608,6 +1638,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  84(A7),-(A7)
     MOVE.L  84(A7),-(A7)
     MOVE.L  84(A7),-(A7)
+    ; Budget note for -132(A5): full signed-32 worst-case is 110 bytes incl NUL.
     PEA     DATA_ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC8
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
@@ -1621,29 +1652,35 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
+    ; Monotonic diagnostics row counter (increments once per draw).
     ADDQ.L  #1,DATA_ESQFUNC_BSS_LONG_1EB1
     MOVE.W  Global_RefreshTickCounter,D0
     EXT.L   D0
     TST.W   DATA_ESQDISP_BSS_WORD_1E87
-    BEQ.S   .branch
+    BEQ.S   .set_false_text
 
     LEA     Global_STR_TRUE_2,A0
-    BRA.S   .branch_1
+    BRA.S   .format_tick_line
 
-.branch:
+.set_false_text:
     LEA     Global_STR_FALSE_2,A0
 
-.branch_1:
+.format_tick_line:
+    ; SCRIPT playback-side command counter (incremented in SCRIPT3 dispatch path).
     MOVE.W  DATA_SCRIPT_BSS_WORD_211C,D1
     EXT.L   D1
+    ; ED finite-state id (byte enum set across ED menu handlers).
     MOVE.B  ED_MenuStateId,D2
     EXT.W   D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
+    ; `%s` here is only Global_STR_TRUE_2 / Global_STR_FALSE_2.
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  DATA_ESQFUNC_BSS_LONG_1EB1,-(A7)
+    ; Budget note for -132(A5): full signed-32 worst-case is 142 bytes incl NUL,
+    ; driven by four numeric fields plus "%s" TRUE/FALSE token.
     PEA     DATA_ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)

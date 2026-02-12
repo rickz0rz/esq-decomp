@@ -1233,7 +1233,7 @@ ESQ_GetHalfHourSlotIndex:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_226F, DATA_WDISP_BSS_WORD_2280
+;   WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280
 ; DESC:
 ;   Normalizes values into a bounded A..C/I range and writes two globals.
 ; NOTES:
@@ -1292,7 +1292,7 @@ ESQ_ClampBannerCharRange:
     SUB.W   D4,D3
 
 .return:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_226F
+    MOVE.W  D0,WDISP_BannerCharRangeStart
     MOVE.W  D3,DATA_WDISP_BSS_WORD_2280
     MOVEM.L (A7)+,D2-D4
     RTS
@@ -1310,17 +1310,17 @@ ESQ_ClampBannerCharRange:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_WDISP_BSS_WORD_2257, DATA_WDISP_BSS_WORD_225C, DATA_WDISP_BSS_WORD_226F, DATA_WDISP_BSS_WORD_2280, DATA_COMMON_BSS_LONG_1B08
+;   WDISP_BannerCharIndex, WDISP_BannerCharPhaseShift, WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280, DATA_COMMON_BSS_LONG_1B08
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2256, DATA_WDISP_BSS_WORD_2257, DATA_WDISP_BSS_WORD_2273, DATA_COMMON_BSS_LONG_1B08
+;   DATA_WDISP_BSS_WORD_2256, WDISP_BannerCharIndex, DATA_WDISP_BSS_WORD_2273, DATA_COMMON_BSS_LONG_1B08
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
 ;   If DATA_COMMON_BSS_LONG_1B08 is non-zero, forces a reset path and clears the flag.
-;   Also resets when the index matches DATA_WDISP_BSS_WORD_2280, using DATA_WDISP_BSS_WORD_226F as the base.
+;   Also resets when the index matches DATA_WDISP_BSS_WORD_2280, using WDISP_BannerCharRangeStart as the base.
 ;------------------------------------------------------------------------------
     MOVEM.L D2-D3,-(A7)
-    MOVE.W  DATA_WDISP_BSS_WORD_2257,D0
+    MOVE.W  WDISP_BannerCharIndex,D0
     MOVEQ   #1,D2
     ADD.W   D2,D0
     MOVEQ   #48,D3
@@ -1343,11 +1343,11 @@ ESQ_ClampBannerCharRange:
 
 .lab_00A3:
     MOVE.W  D2,DATA_WDISP_BSS_WORD_2256
-    MOVE.W  DATA_WDISP_BSS_WORD_226F,D0
+    MOVE.W  WDISP_BannerCharRangeStart,D0
 
 .lab_00A4:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2257
-    MOVE.W  DATA_WDISP_BSS_WORD_225C,D1
+    MOVE.W  D0,WDISP_BannerCharIndex
+    MOVE.W  WDISP_BannerCharPhaseShift,D1
     BEQ.S   ESQ_AdvanceBannerCharIndex_Return
 
     ADD.W   D1,D0
@@ -1644,18 +1644,18 @@ ESQ_ReverseBitsIn6Bytes:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQIFF_RecordChecksumByte, DATA_WDISP_BSS_WORD_2206
+;   ESQIFF_RecordChecksumByte, ESQIFF_UseCachedChecksumFlag
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Computes an XOR checksum over a buffer, seeded by an inverted byte.
 ; NOTES:
-;   If DATA_WDISP_BSS_WORD_2206 is non-zero, returns ESQIFF_RecordChecksumByte instead of computing.
+;   If ESQIFF_UseCachedChecksumFlag is non-zero, returns ESQIFF_RecordChecksumByte instead of computing.
 ;------------------------------------------------------------------------------
 ESQ_GenerateXorChecksumByte:
     MOVEQ   #0,D0
     MOVE.B  ESQIFF_RecordChecksumByte,D0
-    TST.B   DATA_WDISP_BSS_WORD_2206
+    TST.B   ESQIFF_UseCachedChecksumFlag
     BNE.S   .return
 
     MOVE.L  4(A7),D0
@@ -2002,9 +2002,9 @@ ESQ_PackBitsDecode:
 ; CALLS:
 ;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   ESQ_GlobalTickCounter, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; WRITES:
-;   ESQ_GlobalTickCounter, DATA_WDISP_BSS_WORD_2205, DATA_WDISP_BSS_WORD_2264, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
 ;   DATA_COMMON_BSS_WORD_1B11..DATA_COMMON_BSS_LONG_1B18
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
@@ -2024,13 +2024,13 @@ ESQ_TickGlobalCounters:
     MOVE.W  D0,ESQ_GlobalTickCounter
     JSR     ESQSHARED4_TickCopperAndBannerTransitions
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2205,D0
+    MOVE.W  ESQ_TickModulo60Counter,D0
     ADDQ.W  #1,D0
     MOVEQ   #60,D1
     CMP.W   D1,D0
     BNE.W   .store_tick_counter
 
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2264
+    MOVE.W  D0,CLEANUP_PendingAlertFlag
     MOVE.W  DATA_WDISP_BSS_LONG_2325,D0
     BMI.W   .after_decrement_2325
 
@@ -2070,7 +2070,7 @@ ESQ_TickGlobalCounters:
     MOVEQ   #0,D0
 
 .store_tick_counter:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2205
+    MOVE.W  D0,ESQ_TickModulo60Counter
     TST.W   WDISP_AccumulatorCaptureActive
     BEQ.W   .after_accumulators
 
