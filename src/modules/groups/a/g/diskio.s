@@ -1410,7 +1410,7 @@ DISKIO_ParseConfigBuffer:
     BRA.S   .lab_03E4
 
 .lab_03E3:
-    MOVE.B  #$41,DATA_CTASKS_STR_A_1BAA
+    MOVE.B  #'A',DATA_CTASKS_STR_A_1BAA
 
 .lab_03E4:
     MOVE.L  D6,D0
@@ -2181,7 +2181,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
-    MOVE.B  #$4e,CONFIG_LRBN_FlagChar
+    MOVE.B  #'N',CONFIG_LRBN_FlagChar
 
 .lab_0415:
     MOVE.L  D7,D0

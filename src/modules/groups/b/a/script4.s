@@ -516,7 +516,7 @@ SCRIPT_SetupHighlightEffect:
 
 .append_printable_char:
     MOVEA.L -166(A5),A0
-    CMPI.B  #$20,(A0)
+    CMPI.B  #' ',(A0)
     BCS.S   .advance_parse_ptr
 
     ADDQ.L  #1,-28(A5)

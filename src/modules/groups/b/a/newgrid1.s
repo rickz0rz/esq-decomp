@@ -887,7 +887,7 @@ NEWGRID_ComputeColumnIndex:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEQ   #0,D7
-    CMPI.B  #$40,54(A3)
+    CMPI.B  #'@',54(A3)
     BCC.S   .done
 
     MOVEQ   #0,D0
@@ -7704,7 +7704,7 @@ NEWGRID_UpdateSelectionFromInput:
     MOVE.L  -4(A5),(A3)
     MOVE.L  -8(A5),4(A3)
     MOVE.L  NEWGRID_SelectionScanEntryIndex,8(A3)
-    CMPI.W  #$30,NEWGRID_SelectionScanRow
+    CMPI.W  #'0',NEWGRID_SelectionScanRow
     BLE.S   .set_offset_flag
 
     MOVEQ   #49,D0
@@ -10205,7 +10205,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
     MOVE.L  -4(A5),(A3)
     MOVE.L  -8(A5),4(A3)
     MOVE.L  DATA_NEWGRID_BSS_LONG_2039,8(A3)
-    CMPI.W  #$30,DATA_NEWGRID_BSS_WORD_203A
+    CMPI.W  #'0',DATA_NEWGRID_BSS_WORD_203A
     BLE.S   .set_offset_flag
 
     MOVEQ   #49,D0

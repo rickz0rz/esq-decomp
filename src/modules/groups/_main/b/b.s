@@ -230,8 +230,8 @@ ESQ_CheckTopazFontGuard:
     ; Trampoline to LAB_1DD8_RASTPORT in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
-
     ; Draw "Report Code ER003 to TV Guide Technical Services." text
+    ; Fun fact: that string is 49 characters so it gets truncated...
     MOVEA.L A0,A1
     LEA     Global_STR_REPORT_CODE_ER003,A0
     MOVEQ   #47,D0

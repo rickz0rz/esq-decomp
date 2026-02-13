@@ -1,4 +1,7 @@
-;!======
+; =============
+; WDISP.S
+; =============
+; Subroutines for displaying weather information
 
 ; weather status rendering/control
 ;------------------------------------------------------------------------------

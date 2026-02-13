@@ -110,7 +110,7 @@ LOCAVAIL_ResetFilterStateStruct:
     SUBA.L  A0,A0
     MOVE.L  A0,16(A3)
     MOVE.L  A0,20(A3)
-    MOVE.B  #$46,6(A3)
+    MOVE.B  #'F',6(A3)
     MOVEQ   #-1,D0
     MOVE.L  D0,8(A3)
     MOVE.L  D0,12(A3)

@@ -1421,7 +1421,7 @@ ESQ_AdjustBracketedHourInString:
     MOVEQ   #0,D0
     MOVE.L  D0,D1
     MOVE.L  D0,D2
-    MOVEQ   #91,D3
+    MOVEQ   #'[',D3
 
 .find_left_bracket:
     MOVE.B  (A0)+,D2
@@ -1431,13 +1431,13 @@ ESQ_AdjustBracketedHourInString:
     BNE.S   .find_left_bracket
 
     SUBQ.W  #1,A0
-    MOVEQ   #40,D3
+    MOVEQ   #'(',D3
     MOVE.B  D3,(A0)+
     TST.B   D4
     BEQ.S   .scan_for_right_bracket
 
     MOVE.B  (A0)+,D1
-    CMPI.B  #$20,D1
+    CMPI.B  #' ',D1
     BEQ.S   .parse_second_digit
 
     MOVEQ   #10,D0
@@ -1472,12 +1472,12 @@ ESQ_AdjustBracketedHourInString:
     MOVEQ   #49,D2
 
 .write_hour_digits:
-    ADDI.B  #$30,D0
+    ADDI.B  #48,D0
     MOVE.B  D0,-(A1)
     MOVE.B  D2,-(A1)
 
 .scan_for_right_bracket:
-    MOVEQ   #93,D3
+    MOVEQ   #']',D3
 
 .find_right_bracket:
     MOVE.B  (A0)+,D2
@@ -1487,7 +1487,7 @@ ESQ_AdjustBracketedHourInString:
     BNE.S   .find_right_bracket
 
     SUBQ.W  #1,A0
-    MOVEQ   #41,D3
+    MOVEQ   #')',D3
     MOVE.B  D3,(A0)+
     BRA.S   .scan_for_left_bracket
 
@@ -1762,13 +1762,13 @@ ESQ_WildcardMatch:
 .match_loop:
     MOVE.B  (A0)+,D0
     MOVE.B  (A1)+,D1
-    CMPI.B  #$2a,D1
+    CMPI.B  #'*',D1
     BEQ.S   .match
 
     TST.B   D0
     BEQ.S   .check_end
 
-    CMPI.B  #$3f,D1
+    CMPI.B  #'?',D1
     BEQ.S   .match_loop
 
     SUB.B   D1,D0

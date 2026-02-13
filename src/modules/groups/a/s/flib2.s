@@ -19,7 +19,7 @@
 ;   Template ownership always flows through ESQPARS_ReplaceOwnedString.
 ;------------------------------------------------------------------------------
 FLIB2_LoadDigitalNicheDefaults:
-    MOVE.B  #$4e,GCOMMAND_DigitalNicheEnabledFlag
+    MOVE.B  #'N',GCOMMAND_DigitalNicheEnabledFlag
     MOVEQ   #1,D0
     MOVE.L  D0,GCOMMAND_NicheTextPen
     MOVEQ   #5,D1
@@ -29,7 +29,7 @@ FLIB2_LoadDigitalNicheDefaults:
     MOVEQ   #0,D0
     MOVE.L  D0,GCOMMAND_NicheModeCycleCount
     MOVE.L  D0,GCOMMAND_NicheForceMode5Flag
-    MOVE.B  #$42,GCOMMAND_NicheWorkflowMode
+    MOVE.B  #'B',GCOMMAND_NicheWorkflowMode
     MOVE.L  GCOMMAND_DigitalNicheListingsTemplatePtr,-(A7)
     PEA     DATA_FLIB_STR_DIGITAL_NICHE_LISTINGS_1F61
     JSR     ESQPARS_ReplaceOwnedString(PC)
@@ -80,7 +80,7 @@ FLIB2_LoadDigitalMplexDefaults:
     MOVE.L  D2,GCOMMAND_MplexDetailLayoutPen
     MOVE.L  D1,GCOMMAND_MplexDetailInitialLineIndex
     MOVE.L  D3,GCOMMAND_MplexDetailRowPen
-    MOVE.B  #$42,GCOMMAND_MplexWorkflowMode
+    MOVE.B  #'B',GCOMMAND_MplexWorkflowMode
     MOVE.B  D0,GCOMMAND_MplexDetailLayoutFlag
     MOVE.L  GCOMMAND_MplexListingsTemplatePtr,-(A7)
     PEA     DATA_FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS_1F62
@@ -120,7 +120,7 @@ FLIB2_LoadDigitalMplexDefaults:
 ;------------------------------------------------------------------------------
 FLIB2_LoadDigitalPpvDefaults:
     MOVE.L  D2,-(A7)
-    MOVE.B  #$4e,GCOMMAND_DigitalPpvEnabledFlag
+    MOVE.B  #'N',GCOMMAND_DigitalPpvEnabledFlag
     CLR.L   GCOMMAND_PpvModeCycleCount
     MOVEQ   #60,D0
     MOVE.L  D0,GCOMMAND_PpvSelectionWindowMinutes
@@ -139,7 +139,7 @@ FLIB2_LoadDigitalPpvDefaults:
     MOVE.L  D2,GCOMMAND_PpvShowtimesRowPen
     MOVEQ   #24,D0
     MOVE.L  D0,GCOMMAND_PpvShowtimesRowSpan
-    MOVE.B  #$42,GCOMMAND_PpvShowtimesWorkflowMode
+    MOVE.B  #'B',GCOMMAND_PpvShowtimesWorkflowMode
     MOVE.B  #$59,GCOMMAND_PpvDetailLayoutFlag
     MOVE.L  GCOMMAND_PPVListingsTemplatePtr,-(A7)
     PEA     DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64

@@ -294,19 +294,19 @@ STRING_CompareNoCase:
 .compare_loop:
     MOVE.B  (A0)+,D0
     MOVE.B  (A1)+,D1
-    CMPI.B  #$61,D0
+    CMPI.B  #'a',D0
     BLT.S   .toupper_a_done
 
-    CMPI.B  #$7a,D0
+    CMPI.B  #'z',D0
     BGT.S   .toupper_a_done
 
     SUBI.B  #$20,D0
 
 .toupper_a_done:
-    CMPI.B  #$61,D1
+    CMPI.B  #'a',D1
     BLT.S   .toupper_b_done
 
-    CMPI.B  #$7a,D1
+    CMPI.B  #'z',D1
     BGT.S   .toupper_b_done
 
     SUBI.B  #$20,D1
