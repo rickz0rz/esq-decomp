@@ -138,9 +138,9 @@ MEMLIST_FreeAll:
 ; CALLS:
 ;   _LVOAllocMem
 ; READS:
-;   Global_MemListHead, Global_MemListTail, Global_A4_1144_Ptr
+;   Global_MemListHead, Global_MemListTail, Global_MemListFirstAllocNode
 ; WRITES:
-;   Global_MemListHead, Global_MemListTail, Global_A4_1144_Ptr
+;   Global_MemListHead, Global_MemListTail, Global_MemListFirstAllocNode
 ; DESC:
 ;   Allocates a block (size+12), links it into the list, returns data ptr.
 ;------------------------------------------------------------------------------
@@ -183,10 +183,10 @@ MEMLIST_AllocTracked:
 
 .write_tail:
     MOVE.L  A3,4(A2)
-    TST.L   Global_A4_1144_Ptr(A4)
+    TST.L   Global_MemListFirstAllocNode(A4)
     BNE.S   .return_data
 
-    MOVE.L  A3,Global_A4_1144_Ptr(A4)
+    MOVE.L  A3,Global_MemListFirstAllocNode(A4)
 
 .return_data:
     LEA     12(A3),A0

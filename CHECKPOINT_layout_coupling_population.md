@@ -510,6 +510,108 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - Record the `argv[1]` overflow as the only high-confidence non-semantic
     producer currently identified.
 
+#### 5.16 A4 low-offset alias pass (`-1148..-748`, handle/memlist startup state)
+- Scope:
+  - Resume naming of unresolved A4-negative globals in startup/stream/memory
+    helpers, replacing placeholder `Global_A4_*` symbols with conservative
+    role-based aliases.
+  - Keep behavior unchanged (symbol/annotation-only changes).
+
+- Key mapping introduced:
+  - `Global_StreamBufferAllocSize` (`-748`)
+    - Used by `BUFFER_EnsureAllocated` as allocation size and stored in node
+      field `+20`.
+  - `Global_MemListFirstAllocNode` (`-1144`)
+    - Set once in `MEMLIST_AllocTracked` when first tracked alloc node is linked.
+  - Preallocated handle-node cluster:
+    - `Global_PreallocHandleNode0` (`-1120`)
+    - `Global_PreallocHandleNode1` (`-1086`)
+    - `Global_PreallocHandleNode2` (`-1052`)
+    - Derived fields:
+      - `*_OpenFlags` (`+24`)
+      - `*_HandleIndex` (`+28`)
+      - `Node1_BufferCursor` (`+4`)
+      - `Node1_WriteRemaining` (`+12`)
+    - Shared inferred stride:
+      - `Struct_PreallocHandleNode_Size = 34`
+
+- Evidence behind the node interpretation:
+  - `HANDLE_OpenWithMode` starts list traversal from `Global_PreallocHandleNode0`
+    and follows `(A3)` as a linked-next pointer while testing `24(A3)` for
+    occupancy.
+  - New dynamic nodes allocated by that path are exactly 34 bytes, matching the
+    inferred preallocated node stride.
+  - `ESQ_ParseCommandLineAndRun` seeds `Node0/1/2` flag+index pairs with
+    startup defaults (`0/1/2` indices and mode-flag variants), aligning with
+    bootstrap handle-state setup.
+  - `STREAM_BufferedWriteString` passes `Global_PreallocHandleNode1` by address
+    into `STREAM_BufferedPutcOrFlush`, and directly mutates node1 cursor/write-remaining
+    fields.
+
+- Propagation completed in:
+  - `src/Prevue.asm`
+  - `src/modules/submodules/unknown14.s`
+  - `src/modules/submodules/unknown16.s`
+  - `src/modules/submodules/unknown24.s`
+  - `src/modules/submodules/unknown29.s`
+  - `src/modules/submodules/unknown2b.s`
+  - `src/modules/submodules/unknown31.s`
+  - `src/modules/submodules/unknown35.s`
+
+- Deferred/unresolved within this cluster:
+  - Byte-flag bit semantics remain partially unresolved (`+26/+27`) and still
+    need per-bit naming confidence.
+  - `Node2` `$80` open-flag meaning remains unresolved.
+
+#### 5.17 Prealloc handle-node field/bit refinement (stream path)
+- Scope:
+  - Replace raw `A2/A3 + offset` accesses in `unknown14/16/2b/31/35` with
+    `Struct_PreallocHandleNode__*` symbols, and record the current confidence
+    level for field and flag-bit semantics.
+
+- Field naming now used in code:
+  - `+0`  `Struct_PreallocHandleNode__Next`
+  - `+4`  `Struct_PreallocHandleNode__BufferCursor`
+  - `+8`  `Struct_PreallocHandleNode__ReadRemaining`
+  - `+12` `Struct_PreallocHandleNode__WriteRemaining`
+  - `+16` `Struct_PreallocHandleNode__BufferBase`
+  - `+20` `Struct_PreallocHandleNode__BufferCapacity`
+  - `+24` `Struct_PreallocHandleNode__OpenFlags`
+  - `+26` `Struct_PreallocHandleNode__ModeFlags` (byte)
+  - `+27` `Struct_PreallocHandleNode__StateFlags` (byte)
+  - `+28` `Struct_PreallocHandleNode__HandleIndex`
+  - `+32` `Struct_PreallocHandleNode__InlineByte`
+
+- High-confidence behavior notes:
+  - `+0 next`: linked-list traversal in `HANDLE_OpenWithMode` and
+    `BUFFER_FlushAllAndCloseWithCode`.
+  - `+4/+16/+20`: active buffer cursor/base/capacity in read and write flows.
+  - `+8`: read-side remaining counter (decremented/checked in `STREAM_BufferedGetc`).
+  - `+12`: write-side remaining counter (decremented/checked in
+    `STREAM_BufferedPutcOrFlush` and startup write helper).
+  - `+28`: DOS handle index passed to `DOS_ReadByIndex` / `DOS_WriteByIndex`.
+  - `+32`: inline single-byte fallback buffer for unbuffered read mode.
+
+- Medium-confidence bit semantics (still marked conservative):
+  - `StateFlags bit1`: pending buffered-write activity (used by flush-all path).
+  - `StateFlags bit2`: unbuffered/direct mode gate.
+  - `StateFlags bit4`: EOF/short-write marker.
+  - `StateFlags bit5`: I/O error marker.
+  - `ModeFlags bit7`: text/line translation gate (CR/LF handling path).
+  - `ModeFlags bit6`: pre-write seek/scan behavior gate (Ctrl-Z scan path).
+
+- Constants now used at callsites for high-confidence state bits:
+  - `Struct_PreallocHandleNode_StateFlag_WritePending_Bit`
+  - `Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit`
+  - `Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit`
+  - `Struct_PreallocHandleNode_StateFlag_IoError_Bit`
+
+- Still unresolved:
+  - Exact semantic names for `StateFlags` bits `0/3/6/7`.
+  - Exact semantic names for `ModeFlags` bits other than inferred `6/7`.
+  - `OpenFlags` bitmask naming beyond current usage masks (`$31/$30/$32`) and
+    startup-seeded `$80` for `Node2`.
+
 ## Crash-Relevant Notes
 - Legacy anchor indexing (`LEA anchor + index*4`) is sensitive to nearby string-layout edits.
 - Mplex/PPV parse tails split on byte `$12`; malformed edits around that delimiter change template merge behavior.
@@ -521,6 +623,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 - Added explicit alias/docs for `SCRIPT_ChannelLabelEmptySlot0..3`.
 - Added conservative `wdisp.s` `220F+` pointer-state aliases and propagated key callsites (`ESQ`/`CLEANUP`/`ESQDISP`/`GCOMMAND3`/`NEWGRID`/`TLIBA3`).
 - Added conservative `wdisp.s` `2242`-`226F` aliases for status/banner/refresh state and propagated callsites (`APP2`/`CLEANUP2`/`DST2`/`ESQ*`/`ED*`/`NEWGRID1`/`PARSEINI3`/`UNKNOWN`).
+- Added conservative A4-low-offset aliases for startup preallocated handle nodes, stream buffer state, and first memlist allocation node (`src/Prevue.asm` + submodule callsites).
+- Replaced raw prealloc-handle node offset accesses with `Struct_PreallocHandleNode__*` symbols in `unknown14/16/2b/31/35`.
 - Tightened function docs for:
   - `ESQPARS_ReplaceOwnedString`
   - `FLIB2_*` template default/reset loaders
@@ -535,6 +639,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 5. Extend row-level budget/provenance mapping beyond `ESQFUNC` into remaining
    high-risk `%s` destinations (`ED2_*` and `TEXTDISP_*`) so guard-priority
    ordering is explicit in those paths too.
+6. Continue resolving `Struct_PreallocHandleNode` flag-bit semantics and
+   `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc`.
 
 ## Follow-up
 - The dereference audit requested in target (1) is now captured in `CHECKPOINT_templateptr_guard_audit.md`.

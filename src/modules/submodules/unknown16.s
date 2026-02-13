@@ -9,43 +9,45 @@
 ; CALLS:
 ;   DOS_WriteByIndex (write by handle index), HANDLE_CloseAllAndReturnWithCode (close handles/return)
 ; READS:
-;   Global_A4_1120_Base (buffered output list)
+;   Global_PreallocHandleNode0 (buffered output list head)
 ; DESC:
 ;   Walks a linked list of buffered outputs, flushing pending bytes,
 ;   then closes handles/returns with the provided status.
 ; NOTES:
-;   List node fields are still unknown; flush is gated by flags in offset 27.
+;   Flush is gated by state bits:
+;   Struct_PreallocHandleNode_StateFlag_WritePending_Bit /
+;   Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit.
 ;------------------------------------------------------------------------------
 BUFFER_FlushAllAndCloseWithCode:
     MOVEM.L D6-D7/A3,-(A7)
     MOVE.L  16(A7),D7
-    LEA     Global_A4_1120_Base(A4),A3
+    LEA     Global_PreallocHandleNode0(A4),A3
 
 .flush_loop:
     MOVE.L  A3,D0
     BEQ.S   .after_flush
 
-    BTST    #2,27(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .next_node
 
-    BTST    #1,27(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .next_node
 
-    MOVE.L  4(A3),D0
-    SUB.L   16(A3),D0
+    MOVE.L  Struct_PreallocHandleNode__BufferCursor(A3),D0
+    SUB.L   Struct_PreallocHandleNode__BufferBase(A3),D0
     MOVE.L  D0,D6
     TST.L   D6
     BEQ.S   .next_node
 
     MOVE.L  D6,-(A7)
-    MOVE.L  16(A3),-(A7)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__BufferBase(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     JSR     DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
 
 .next_node:
-    MOVEA.L (A3),A3
+    MOVEA.L Struct_PreallocHandleNode__Next(A3),A3
     BRA.S   .flush_loop
 
 .after_flush:

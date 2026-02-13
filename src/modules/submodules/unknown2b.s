@@ -172,13 +172,15 @@ UNKNOWN2B_Stub1:
 ; CALLS:
 ;   STREAM_BufferedPutcOrFlush
 ; READS:
-;   Global_A4_1074_Counter(A4), Global_A4_1082_Ptr(A4)
+;   Global_PreallocHandleNode1_WriteRemaining(A4), Global_PreallocHandleNode1_BufferCursor(A4)
 ; WRITES:
-;   Global_A4_1074_Counter(A4), Global_A4_1082_Ptr(A4), Global_A4_1086_Buffer(A4)
+;   Global_PreallocHandleNode1_WriteRemaining(A4),
+;   Global_PreallocHandleNode1_BufferCursor(A4),
+;   Global_PreallocHandleNode1(A4)
 ; DESC:
 ;   Writes a NUL-terminated string into a buffer, flushing via STREAM_BufferedPutcOrFlush on overflow.
 ; NOTES:
-;   Uses DBF-style loop over bytes until NUL.
+;   Uses a byte-at-a-time loop until NUL.
 ;------------------------------------------------------------------------------
 STREAM_BufferedWriteString:
     MOVEM.L D6-D7/A3,-(A7)
@@ -202,12 +204,12 @@ STREAM_BufferedWriteString:
     TST.L   D7
     BEQ.S   .done
 
-    SUBQ.L  #1,Global_A4_1074_Counter(A4)
+    SUBQ.L  #1,Global_PreallocHandleNode1_WriteRemaining(A4)
     BLT.S   .flush_and_retry
 
-    MOVEA.L Global_A4_1082_Ptr(A4),A0
+    MOVEA.L Global_PreallocHandleNode1_BufferCursor(A4),A0
     LEA     1(A0),A1
-    MOVE.L  A1,Global_A4_1082_Ptr(A4)
+    MOVE.L  A1,Global_PreallocHandleNode1_BufferCursor(A4)
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
     MOVEQ   #0,D1
@@ -218,7 +220,7 @@ STREAM_BufferedWriteString:
     MOVE.L  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    PEA     Global_A4_1086_Buffer(A4)
+    PEA     Global_PreallocHandleNode1(A4)
     MOVE.L  D1,-(A7)
     JSR     STREAM_BufferedPutcOrFlush(PC)
 
@@ -227,7 +229,7 @@ STREAM_BufferedWriteString:
     BRA.S   .write_loop
 
 .done:
-    PEA     Global_A4_1086_Buffer(A4)
+    PEA     Global_PreallocHandleNode1(A4)
     PEA     -1.W
     JSR     STREAM_BufferedPutcOrFlush(PC)
 
@@ -240,8 +242,8 @@ STREAM_BufferedWriteString:
 ;------------------------------------------------------------------------------
 ; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handleruncertain)
 ; ARGS:
-;   stack +12: arg_1 (via 16(A5))
-;   stack +16: arg_2 (via 20(A5))
+;   stack +12: D7 = byte to write, or -1 to flush
+;   stack +16: A3 = prealloc/dynamic handle node
 ; RET:
 ;   D0: result/status
 ; CLOBBERS:
@@ -249,11 +251,14 @@ STREAM_BufferedWriteString:
 ; CALLS:
 ;   BUFFER_EnsureAllocated, DOS_WriteByIndex, DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
 ; READS:
-;   A3+4/8/12/16/20/24/26/27/28, Global_HandleTableFlags(A4), Global_DosIoErr(A4)
+;   Struct_PreallocHandleNode__BufferCursor/WriteRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex,
+;   Global_DosIoErr(A4)
 ; WRITES:
-;   A3+4/8/12/27, Global_DosIoErr(A4)
+;   Struct_PreallocHandleNode__BufferCursor/ReadRemaining/WriteRemaining/StateFlags,
+;   Global_DosIoErr(A4)
 ; DESC:
-;   Handles buffered output, flushing or writing directly based on flags and mode.
+;   Writes one byte or flushes pending bytes for a handle node, handling
+;   buffered, unbuffered, and translated-CR/LF modes.
 ; NOTES:
 ;   Booleanize pattern: SNE/NEG/EXT. Uses 0x1A/0x0D handling.
 ;------------------------------------------------------------------------------
@@ -267,27 +272,27 @@ STREAM_BufferedPutcOrFlush:
     MOVEA.L .stackOffsetBytes+8(A7),A3
     MOVE.L  D7,D4
     MOVEQ   #49,D0
-    AND.L   24(A3),D0
+    AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .check_buffer_state
 
     MOVEQ   #-1,D0
     BRA.W   .return
 
 .check_buffer_state:
-    BTST    #7,26(A3)
+    BTST    #7,Struct_PreallocHandleNode__ModeFlags(A3)
     SNE     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D6
-    TST.L   20(A3)
+    TST.L   Struct_PreallocHandleNode__BufferCapacity(A3)
     BNE.W   .direct_or_unbuffered
 
-    BTST    #2,27(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .direct_or_unbuffered
 
     MOVEQ   #0,D0
-    MOVE.L  D0,12(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__WriteRemaining(A3)
     MOVEQ   #-1,D1
     CMP.L   D1,D7
     BEQ.W   .return
@@ -299,32 +304,32 @@ STREAM_BufferedPutcOrFlush:
     TST.L   D0
     BEQ.S   .buffer_ready
 
-    BSET    #5,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
 .buffer_ready:
-    BSET    #1,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     TST.B   D6
     BEQ.S   .set_count_positive
 
-    MOVE.L  20(A3),D0
+    MOVE.L  Struct_PreallocHandleNode__BufferCapacity(A3),D0
     MOVE.L  D0,D1
     NEG.L   D1
-    MOVE.L  D1,12(A3)
+    MOVE.L  D1,Struct_PreallocHandleNode__WriteRemaining(A3)
     BRA.S   .store_to_buffer
 
 .set_count_positive:
-    MOVE.L  20(A3),D0
-    MOVE.L  D0,12(A3)
+    MOVE.L  Struct_PreallocHandleNode__BufferCapacity(A3),D0
+    MOVE.L  D0,Struct_PreallocHandleNode__WriteRemaining(A3)
 
 .store_to_buffer:
-    SUBQ.L  #1,12(A3)
+    SUBQ.L  #1,Struct_PreallocHandleNode__WriteRemaining(A3)
     BLT.S   .flush_and_retry
 
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
     MOVEQ   #0,D1
@@ -347,7 +352,7 @@ STREAM_BufferedPutcOrFlush:
     BRA.W   .return
 
 .direct_or_unbuffered:
-    BTST    #2,27(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .buffered_path
 
     MOVEQ   #-1,D0
@@ -370,7 +375,7 @@ STREAM_BufferedPutcOrFlush:
     MOVEQ   #2,D1
     MOVE.L  D1,-(A7)
     PEA     UNKNOWN2B_MovepReadCallback(PC)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     MOVE.L  D1,-16(A5)
     JSR     DOS_WriteByIndex(PC)
 
@@ -382,7 +387,7 @@ STREAM_BufferedPutcOrFlush:
     MOVEQ   #1,D1
     MOVE.L  D1,-(A7)
     PEA     -1(A5)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     MOVE.L  D1,-16(A5)
     JSR     DOS_WriteByIndex(PC)
 
@@ -394,7 +399,7 @@ STREAM_BufferedPutcOrFlush:
     BRA.W   .post_write_status
 
 .buffered_path:
-    BSET    #1,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     TST.B   D6
     BEQ.S   .flush_buffer
 
@@ -402,16 +407,16 @@ STREAM_BufferedPutcOrFlush:
     CMP.L   D0,D7
     BEQ.S   .flush_buffer
 
-    ADDQ.L  #2,12(A3)
+    ADDQ.L  #2,Struct_PreallocHandleNode__WriteRemaining(A3)
     MOVEQ   #10,D1
     CMP.L   D1,D7
     BNE.S   .store_char
 
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVE.B  #$d,(A0)
-    MOVE.L  12(A3),D1
+    MOVE.L  Struct_PreallocHandleNode__WriteRemaining(A3),D1
     TST.L   D1
     BMI.S   .after_cr_flush
 
@@ -422,32 +427,32 @@ STREAM_BufferedPutcOrFlush:
     ADDQ.W  #8,A7
 
 .after_cr_flush:
-    ADDQ.L  #1,12(A3)
+    ADDQ.L  #1,Struct_PreallocHandleNode__WriteRemaining(A3)
 
 .store_char:
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
-    MOVE.L  12(A3),D1
+    MOVE.L  Struct_PreallocHandleNode__WriteRemaining(A3),D1
     TST.L   D1
     BMI.W   .return
 
     MOVEQ   #-1,D7
 
 .flush_buffer:
-    MOVE.L  4(A3),D0
-    SUB.L   16(A3),D0
+    MOVE.L  Struct_PreallocHandleNode__BufferCursor(A3),D0
+    SUB.L   Struct_PreallocHandleNode__BufferBase(A3),D0
     MOVE.L  D0,-16(A5)
     BEQ.S   .no_pending_write
 
-    BTST    #6,26(A3)
+    BTST    #6,Struct_PreallocHandleNode__ModeFlags(A3)
     BEQ.S   .write_buffer
 
     PEA     2.W
     CLR.L   -(A7)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     JSR     DOS_SeekByIndex(PC)
 
     LEA     12(A7),A7
@@ -461,12 +466,12 @@ STREAM_BufferedPutcOrFlush:
 
     CLR.L   -(A7)
     MOVE.L  -20(A5),-(A7)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     JSR     DOS_SeekByIndex(PC)
 
     PEA     1.W
     PEA     -3(A5)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     JSR     DOS_ReadByIndex(PC)
 
     LEA     24(A7),A7
@@ -480,8 +485,8 @@ STREAM_BufferedPutcOrFlush:
 
 .write_buffer:
     MOVE.L  -16(A5),-(A7)
-    MOVE.L  16(A3),-(A7)
-    MOVE.L  28(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__BufferBase(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     JSR     DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
@@ -496,49 +501,49 @@ STREAM_BufferedPutcOrFlush:
     CMP.L   D0,D5
     BNE.S   .check_short_write
 
-    BSET    #5,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BRA.S   .set_buffer_counters
 
 .check_short_write:
     CMP.L   -16(A5),D5
     BEQ.S   .set_buffer_counters
 
-    BSET    #4,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
 
 .set_buffer_counters:
     TST.B   D6
     BEQ.S   .set_count_linebuffered
 
-    MOVE.L  20(A3),D1
+    MOVE.L  Struct_PreallocHandleNode__BufferCapacity(A3),D1
     MOVE.L  D1,D2
     NEG.L   D2
-    MOVE.L  D2,12(A3)
+    MOVE.L  D2,Struct_PreallocHandleNode__WriteRemaining(A3)
     BRA.S   .reset_buffer_ptr
 
 .set_count_linebuffered:
-    BTST    #2,27(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .set_count_normal
 
     MOVEQ   #0,D1
-    MOVE.L  D1,12(A3)
+    MOVE.L  D1,Struct_PreallocHandleNode__WriteRemaining(A3)
     BRA.S   .reset_buffer_ptr
 
 .set_count_normal:
-    MOVE.L  20(A3),D1
-    MOVE.L  D1,12(A3)
+    MOVE.L  Struct_PreallocHandleNode__BufferCapacity(A3),D1
+    MOVE.L  D1,Struct_PreallocHandleNode__WriteRemaining(A3)
 
 .reset_buffer_ptr:
-    MOVEA.L 16(A3),A0
-    MOVE.L  A0,4(A3)
+    MOVEA.L Struct_PreallocHandleNode__BufferBase(A3),A0
+    MOVE.L  A0,Struct_PreallocHandleNode__BufferCursor(A3)
     CMP.L   D0,D7
     BEQ.S   .final_checks
 
-    SUBQ.L  #1,12(A3)
+    SUBQ.L  #1,Struct_PreallocHandleNode__WriteRemaining(A3)
     BLT.S   .retry_after_full
 
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
     MOVEQ   #0,D1
@@ -558,7 +563,7 @@ STREAM_BufferedPutcOrFlush:
 
 .final_checks:
     MOVEQ   #48,D0
-    AND.L   24(A3),D0
+    AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .check_flags_return
 
     MOVEQ   #-1,D0
@@ -616,9 +621,9 @@ UNKNOWN2B_MovepReadCallback:
 ; CALLS:
 ;   STREAM_BufferedPutcOrFlush, BUFFER_EnsureAllocated, DOS_ReadByIndex
 ; READS:
-;   A3+4/8/16/20/24/26/27/28
+;   Struct_PreallocHandleNode__BufferCursor/ReadRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex
 ; WRITES:
-;   A3+4/8/20/27
+;   Struct_PreallocHandleNode__BufferCursor/ReadRemaining/BufferBase/BufferCapacity/StateFlags
 ; DESC:
 ;   Ensures buffer is ready and returns next byte, refilling as needed.
 ; NOTES:
@@ -630,25 +635,25 @@ STREAM_BufferedGetc:
     SetOffsetForStack 4
 
     MOVEA.L .stackOffsetBytes+4(A7),A3
-    BTST    #7,26(A3)
+    BTST    #7,Struct_PreallocHandleNode__ModeFlags(A3)
     SNE     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D7
     MOVEQ   #48,D0
-    AND.L   24(A3),D0
+    AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .check_handle_flags
 
-    CLR.L   8(A3)
+    CLR.L   Struct_PreallocHandleNode__ReadRemaining(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
 .check_handle_flags:
-    BTST    #7,27(A3)
+    BTST    #7,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .maybe_flush_on_flags
 
-    BTST    #6,27(A3)
+    BTST    #6,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .maybe_flush_on_flags
 
     MOVE.L  A3,-(A7)
@@ -658,17 +663,17 @@ STREAM_BufferedGetc:
     ADDQ.W  #8,A7
 
 .maybe_flush_on_flags:
-    TST.L   20(A3)
+    TST.L   Struct_PreallocHandleNode__BufferCapacity(A3)
     BNE.S   .consume_buffered
 
-    CLR.L   8(A3)
-    BTST    #2,27(A3)
+    CLR.L   Struct_PreallocHandleNode__ReadRemaining(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .ensure_buffer
 
     MOVEQ   #1,D0
-    MOVE.L  D0,20(A3)
-    LEA     32(A3),A0
-    MOVE.L  A0,16(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__BufferCapacity(A3)
+    LEA     Struct_PreallocHandleNode__InlineByte(A3),A0
+    MOVE.L  A0,Struct_PreallocHandleNode__BufferBase(A3)
     BRA.W   .fill_buffer
 
 .ensure_buffer:
@@ -679,7 +684,7 @@ STREAM_BufferedGetc:
     TST.L   D0
     BEQ.S   .fill_buffer
 
-    BSET    #5,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
@@ -687,14 +692,14 @@ STREAM_BufferedGetc:
     TST.B   D7
     BEQ.S   .fill_buffer
 
-    ADDQ.L  #2,8(A3)
-    MOVE.L  8(A3),D0
+    ADDQ.L  #2,Struct_PreallocHandleNode__ReadRemaining(A3)
+    MOVE.L  Struct_PreallocHandleNode__ReadRemaining(A3),D0
     TST.L   D0
     BGT.S   .fill_buffer
 
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVEQ   #0,D6
     MOVE.B  (A0),D6
     MOVE.L  D6,D0
@@ -704,12 +709,12 @@ STREAM_BufferedGetc:
     CMPI.L  #$d,D0
     BNE.S   .return_char
 
-    SUBQ.L  #1,8(A3)
+    SUBQ.L  #1,Struct_PreallocHandleNode__ReadRemaining(A3)
     BLT.S   .retry_after_empty
 
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     BRA.W   .return
@@ -722,7 +727,7 @@ STREAM_BufferedGetc:
     BRA.W   .return
 
 .handle_ctrl_z:
-    BSET    #4,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
@@ -731,13 +736,13 @@ STREAM_BufferedGetc:
     BRA.W   .return
 
 .fill_buffer:
-    BTST    #1,27(A3)
+    BTST    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .post_fill_flags
 
-    BSET    #0,27(A3)
-    MOVE.L  20(A3),-(A7)
-    MOVE.L  16(A3),-(A7)
-    MOVE.L  28(A3),-(A7)
+    BSET    #0,Struct_PreallocHandleNode__StateFlags(A3)
+    MOVE.L  Struct_PreallocHandleNode__BufferCapacity(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__BufferBase(A3),-(A7)
+    MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     JSR     DOS_ReadByIndex(PC)
 
     LEA     12(A7),A7
@@ -745,13 +750,13 @@ STREAM_BufferedGetc:
     TST.L   D5
     BPL.S   .mark_error
 
-    BSET    #5,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
 
 .mark_error:
     TST.L   D5
     BNE.S   .mark_eof
 
-    BSET    #4,27(A3)
+    BSET    #Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
 
 .mark_eof:
     TST.L   D5
@@ -762,43 +767,43 @@ STREAM_BufferedGetc:
 
     MOVE.L  D5,D0
     NEG.L   D0
-    MOVE.L  D0,8(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__ReadRemaining(A3)
     BRA.S   .set_buffer_ptr
 
 .set_remaining_neg:
-    MOVE.L  D5,8(A3)
+    MOVE.L  D5,Struct_PreallocHandleNode__ReadRemaining(A3)
 
 .set_buffer_ptr:
-    MOVEA.L 16(A3),A0
-    MOVE.L  A0,4(A3)
+    MOVEA.L Struct_PreallocHandleNode__BufferBase(A3),A0
+    MOVE.L  A0,Struct_PreallocHandleNode__BufferCursor(A3)
 
 .post_fill_flags:
     MOVEQ   #50,D0
-    AND.L   24(A3),D0
+    AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .read_next_byte
 
     TST.B   D7
     BEQ.S   .set_remaining_eof
 
     MOVEQ   #-1,D0
-    MOVE.L  D0,8(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__ReadRemaining(A3)
     BRA.S   .return_eof
 
 .set_remaining_eof:
     MOVEQ   #0,D0
-    MOVE.L  D0,8(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__ReadRemaining(A3)
 
 .return_eof:
     MOVEQ   #-1,D0
     BRA.S   .return
 
 .read_next_byte:
-    SUBQ.L  #1,8(A3)
+    SUBQ.L  #1,Struct_PreallocHandleNode__ReadRemaining(A3)
     BLT.S   .recurse_for_next
 
-    MOVEA.L 4(A3),A0
+    MOVEA.L Struct_PreallocHandleNode__BufferCursor(A3),A0
     LEA     1(A0),A1
-    MOVE.L  A1,4(A3)
+    MOVE.L  A1,Struct_PreallocHandleNode__BufferCursor(A3)
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
     BRA.S   .return

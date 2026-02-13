@@ -126,5 +126,8 @@ Update inline comments, `README.md`, and tables in `src/data/` when you rename l
 - [x] Add conservative `wdisp.s` `220F+` pointer-state aliases (serial/raster/highlight/task-hook cluster) and propagate callsites in ESQ/CLEANUP/ESQDISP/GCOMMAND3/NEWGRID/TLIBA3.
 - [x] Add conservative `wdisp.s` `2242`-`226F` status/banner/refresh aliases and propagate callsites (`APP2`/`CLEANUP2`/`DST2`/`ESQ*`/`ED*`/`NEWGRID1`/`PARSEINI3`/`UNKNOWN`), while documenting unresolved holds.
 - [x] Trace producer paths for unresolved `226D/226E`; document direct-writer absence and indirect `ESQ_SelectCodeBuffer` overflow clobber path in checkpoint docs.
+- [x] Resume A4-negative startup/stream alias pass in `src/Prevue.asm` (`-1120..-1024`, `-1144`, `-748`) and propagate to `unknown16/24/29/2b/31/35`, documenting node-stride/field inference in `CHECKPOINT_layout_coupling_population.md` (`5.16`).
+- [x] Replace raw prealloc-handle node offsets in `unknown14/16/2b/31/35` with `Struct_PreallocHandleNode__*` symbols and document field/bit confidence notes (`CHECKPOINT_layout_coupling_population.md` `5.17`).
 - [ ] Continue naming remaining anonymous data blocks in `src/data/wdisp.s` outside the completed option-state ranges (`220F` and unresolved `2255/2256/225D/225E/226D/226E` still open).
 - [ ] Continue local-label clarity passes in remaining NEWGRID companion files (`newgrid2.s` and unresolved helpers).
+- [ ] Continue resolving unknown `Struct_PreallocHandleNode` flag-bit semantics (`ModeFlags`/`StateFlags`) and `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc` traces.

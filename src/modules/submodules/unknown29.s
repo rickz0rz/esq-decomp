@@ -12,7 +12,8 @@
 ; READS:
 ;   Global_ArgCount, Global_ArgvStorage, Global_SavedMsg, Global_DefaultHandleFlags
 ; WRITES:
-;   Global_ArgCount, Global_ArgvPtr, Global_HandleEntry* globals, Global_*_State*
+;   Global_ArgCount, Global_ArgvPtr, Global_HandleEntry* globals,
+;   Global_PreallocHandleNode0/1/2_* startup state fields
 ; DESC:
 ;   Tokenizes the command line into argv storage, sets up console/handles,
 ;   installs the abort requester callback, and enters the main loop.
@@ -213,20 +214,20 @@ ESQ_ParseCommandLineAndRun:
 
 .apply_default_flags:
     MOVE.L  D0,D7
-    CLR.L   Global_A4_1092_State4(A4)
+    CLR.L   Global_PreallocHandleNode0_HandleIndex(A4)  ; node0 uses handle index 0
     MOVE.L  D7,D0
     ORI.W   #1,D0
-    MOVE.L  D0,Global_A4_1096_State5(A4)
+    MOVE.L  D0,Global_PreallocHandleNode0_OpenFlags(A4) ; read-ish base mode
     MOVEQ   #1,D0
-    MOVE.L  D0,Global_A4_1058_State2(A4)
+    MOVE.L  D0,Global_PreallocHandleNode1_HandleIndex(A4) ; node1 uses handle index 1
     MOVE.L  D7,D0
     ORI.W   #2,D0
-    MOVE.L  D0,Global_A4_1062_State3(A4)
+    MOVE.L  D0,Global_PreallocHandleNode1_OpenFlags(A4) ; write-ish base mode
     MOVEQ   #2,D0
-    MOVE.L  D0,Global_A4_1024_State0(A4)
+    MOVE.L  D0,Global_PreallocHandleNode2_HandleIndex(A4) ; node2 uses handle index 2
     MOVE.L  D7,D0
     ORI.W   #$80,D0
-    MOVE.L  D0,Global_A4_1028_State1(A4)
+    MOVE.L  D0,Global_PreallocHandleNode2_OpenFlags(A4) ; special mode bit ($80) remains unresolved
     LEA     UNKNOWN36_ShowAbortRequester(PC),A0
     MOVE.L  A0,Global_SignalCallbackPtr(A4)
     MOVE.L  Global_ArgvPtr(A4),-(A7)

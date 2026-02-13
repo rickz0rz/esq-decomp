@@ -33,25 +33,54 @@ Global_UNKNOWN36_RequesterText2  = -684
 Global_UNKNOWN36_RequesterText1  = -704
 Global_UNKNOWN36_RequesterOutPtr = -712
 Global_UNKNOWN36_RequesterText0  = -724
-Global_A4_748_Ptr                = -748
+Global_StreamBufferAllocSize      = -748
 Global_CharClassTable            = -1007
 Global_AllocBlockSize            = -1012
 Global_DefaultHandleFlags        = Global_AllocBlockSize-Type_Long_Size          ; -1016
-Global_A4_1024_State0            = -1024
-Global_A4_1028_State1            = Global_A4_1024_State0-Type_Long_Size          ; -1028
-Global_A4_1058_State2            = -1058
-Global_A4_1062_State3            = Global_A4_1058_State2-Type_Long_Size          ; -1062
-Global_A4_1074_Counter           = -1074
-Global_A4_1082_Ptr               = -1082
-Global_A4_1086_Buffer            = Global_A4_1082_Ptr-Type_Long_Size             ; -1086
-Global_A4_1092_State4            = -1092
-Global_A4_1096_State5            = Global_A4_1092_State4-Type_Long_Size          ; -1096
-Global_A4_1120_Base              = -1120
-Global_HandleTableFlags          = Global_A4_1120_Base-Type_Long_Size            ; -1124
+;------------------------------------------------------------------------------
+; SYM: Global_PreallocHandleNode0/1/2   (startup preallocated handle nodes)
+; TYPE: struct array (34-byte node stride)
+; PURPOSE: Early handle-state nodes used before/alongside dynamic handle nodes.
+; USED BY: ESQ_ParseCommandLineAndRun, HANDLE_OpenWithMode,
+;          BUFFER_FlushAllAndCloseWithCode, STREAM_BufferedWriteString
+; NOTES: Field meanings are partial/inferred:
+;        +0 next, +4 cursor, +8 read remaining, +12 write remaining,
+;        +16 base ptr, +20 capacity, +24 open flags, +26 mode flags byte,
+;        +27 status flags byte, +28 handle index, +32 inline-byte scratch.
+;------------------------------------------------------------------------------
+Struct_PreallocHandleNode__Next          = 0
+Struct_PreallocHandleNode__BufferCursor  = 4
+Struct_PreallocHandleNode__ReadRemaining = 8
+Struct_PreallocHandleNode__WriteRemaining = 12
+Struct_PreallocHandleNode__BufferBase    = 16
+Struct_PreallocHandleNode__BufferCapacity = 20
+Struct_PreallocHandleNode__OpenFlags     = 24
+Struct_PreallocHandleNode__ModeFlags     = 26
+Struct_PreallocHandleNode__StateFlags    = 27
+Struct_PreallocHandleNode__HandleIndex   = 28
+Struct_PreallocHandleNode__InlineByte    = 32
+Struct_PreallocHandleNode_Size           = 34
+Struct_PreallocHandleNode_StateFlag_WritePending_Bit = 1
+Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit = 2
+Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit = 4
+Struct_PreallocHandleNode_StateFlag_IoError_Bit = 5
+Global_PreallocHandleNode0              = -1120
+Global_HandleTableFlags                 = Global_PreallocHandleNode0-Type_Long_Size ; -1124
 Global_AllocBytesTotal           = Global_HandleTableFlags-Type_Long_Size        ; -1128
 Global_AllocListHead             = Global_AllocBytesTotal-Type_Long_Size         ; -1132
-Global_A4_1144_Ptr               = -1144
-Global_HandleTableCount          = Global_A4_1144_Ptr-Type_Long_Size             ; -1148
+Global_MemListFirstAllocNode     = -1144
+Global_HandleTableCount          = Global_MemListFirstAllocNode-Type_Long_Size   ; -1148
+Global_PreallocHandleNode0_OpenFlags = Global_PreallocHandleNode0+Struct_PreallocHandleNode__OpenFlags ; -1096
+Global_PreallocHandleNode0_HandleIndex = Global_PreallocHandleNode0+Struct_PreallocHandleNode__HandleIndex ; -1092
+Global_PreallocHandleNode1       = Global_PreallocHandleNode0+Struct_PreallocHandleNode_Size ; -1086
+Global_PreallocHandleNode1_BufferCursor = Global_PreallocHandleNode1+Struct_PreallocHandleNode__BufferCursor ; -1082
+Global_PreallocHandleNode1_WriteRemaining = Global_PreallocHandleNode1+Struct_PreallocHandleNode__WriteRemaining ; -1074
+Global_PreallocHandleNode1_BufferBudget = Global_PreallocHandleNode1_WriteRemaining ; legacy alias
+Global_PreallocHandleNode1_OpenFlags = Global_PreallocHandleNode1+Struct_PreallocHandleNode__OpenFlags ; -1062
+Global_PreallocHandleNode1_HandleIndex = Global_PreallocHandleNode1+Struct_PreallocHandleNode__HandleIndex ; -1058
+Global_PreallocHandleNode2       = Global_PreallocHandleNode1+Struct_PreallocHandleNode_Size ; -1052
+Global_PreallocHandleNode2_OpenFlags = Global_PreallocHandleNode2+Struct_PreallocHandleNode__OpenFlags ; -1028
+Global_PreallocHandleNode2_HandleIndex = Global_PreallocHandleNode2+Struct_PreallocHandleNode__HandleIndex ; -1024
 Global_GraphicsLibraryBase_A4    = -22440
 Global_HandleTableBase           = 22492
 Global_HandleEntry0_Flags        = Global_HandleTableBase+Struct_HandleEntry__Flags

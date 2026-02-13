@@ -10,9 +10,11 @@
 ; CALLS:
 ;   UNKNOWN36_FinalizeRequest, HANDLE_OpenEntryWithFlags
 ; READS:
-;   Global_DefaultHandleFlags, init_handle_fields, mode_invalid, mode_write, return
+;   Global_DefaultHandleFlags, mode-string bytes via A3,
+;   Struct_PreallocHandleNode__OpenFlags(A2)
 ; WRITES:
-;   (none observed)
+;   Struct_PreallocHandleNode__BufferBase/BufferCursor/ReadRemaining/
+;   WriteRemaining/BufferCapacity/HandleIndex/OpenFlags(A2)
 ; DESC:
 ;   Parses a mode string (r/w/a with optional b/+), builds flags, calls HANDLE_OpenEntryWithFlags,
 ;   then initializes the handle/struct on success.
@@ -26,7 +28,7 @@ HANDLE_OpenFromModeString:
     MOVEA.L 52(A7),A3
     MOVEA.L 56(A7),A2
 
-    TST.L   24(A2)
+    TST.L   Struct_PreallocHandleNode__OpenFlags(A2)
     BEQ.S   .after_finalize
 
     MOVE.L  A2,-(A7)
@@ -193,13 +195,13 @@ HANDLE_OpenFromModeString:
 
 .init_handle_fields:
     SUBA.L  A0,A0
-    MOVE.L  A0,16(A2)
+    MOVE.L  A0,Struct_PreallocHandleNode__BufferBase(A2)
     MOVEQ   #0,D0
-    MOVE.L  D0,20(A2)
-    MOVE.L  D6,28(A2)
-    MOVE.L  16(A2),4(A2)
-    MOVE.L  D0,12(A2)
-    MOVE.L  D0,8(A2)
+    MOVE.L  D0,Struct_PreallocHandleNode__BufferCapacity(A2)
+    MOVE.L  D6,Struct_PreallocHandleNode__HandleIndex(A2)
+    MOVE.L  Struct_PreallocHandleNode__BufferBase(A2),Struct_PreallocHandleNode__BufferCursor(A2)
+    MOVE.L  D0,Struct_PreallocHandleNode__WriteRemaining(A2)
+    MOVE.L  D0,Struct_PreallocHandleNode__ReadRemaining(A2)
     TST.L   D5
     BNE.S   .have_default_flags
 
@@ -208,7 +210,7 @@ HANDLE_OpenFromModeString:
 .have_default_flags:
     MOVE.L  D7,D1
     OR.L    D0,D1
-    MOVE.L  D1,24(A2)
+    MOVE.L  D1,Struct_PreallocHandleNode__OpenFlags(A2)
     MOVE.L  A2,D0
 
 .return:

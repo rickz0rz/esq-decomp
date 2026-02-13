@@ -9,9 +9,10 @@
 ; CALLS:
 ;   ALLOC_AllocFromFreeList (allocator)
 ; READS:
-;   Global_A4_748_Ptr
+;   Global_StreamBufferAllocSize
 ; WRITES:
-;   Global_AppErrorCode, A3+4/8/12/16/20/24
+;   Global_AppErrorCode, Struct_PreallocHandleNode__BufferBase/BufferCursor/
+;   ReadRemaining/WriteRemaining/BufferCapacity/OpenFlags(A3)
 ; DESC:
 ;   Allocates and initializes buffer fields if needed.
 ; NOTES:
@@ -20,22 +21,22 @@
 BUFFER_EnsureAllocated:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
-    TST.L   20(A3)
+    TST.L   Struct_PreallocHandleNode__BufferCapacity(A3)
     BEQ.S   .alloc_buffer
 
-    BTST    #3,27(A3)
+    BTST    #3,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .alloc_buffer
 
     MOVEQ   #0,D0
     BRA.S   .return
 
 .alloc_buffer:
-    MOVE.L  Global_A4_748_Ptr(A4),-(A7)
+    MOVE.L  Global_StreamBufferAllocSize(A4),-(A7)
     JSR     ALLOC_AllocFromFreeList(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,4(A3)
-    MOVE.L  D0,16(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__BufferCursor(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__BufferBase(A3)
     TST.L   D0
     BNE.S   .alloc_ok
 
@@ -45,12 +46,12 @@ BUFFER_EnsureAllocated:
     BRA.S   .return
 
 .alloc_ok:
-    MOVE.L  Global_A4_748_Ptr(A4),20(A3)
+    MOVE.L  Global_StreamBufferAllocSize(A4),Struct_PreallocHandleNode__BufferCapacity(A3)
     MOVEQ   #-13,D0
-    AND.L   D0,24(A3)
+    AND.L   D0,Struct_PreallocHandleNode__OpenFlags(A3)
     MOVEQ   #0,D0
-    MOVE.L  D0,12(A3)
-    MOVE.L  D0,8(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__WriteRemaining(A3)
+    MOVE.L  D0,Struct_PreallocHandleNode__ReadRemaining(A3)
 
 .return:
     MOVEA.L (A7)+,A3

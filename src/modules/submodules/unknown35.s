@@ -11,27 +11,27 @@
 ; CALLS:
 ;   ALLOC_AllocFromFreeList (allocator), HANDLE_OpenFromModeString (parse mode/open)
 ; READS:
-;   Global_A4_1120_Base
+;   Global_PreallocHandleNode0
 ; DESC:
 ;   Finds a free handle struct or allocates a new one, then initializes it
 ;   via the mode/parser helper.
 ; NOTES:
-;   Uses a 34-byte handle struct; layout still unknown.
+;   Uses a 34-byte node; +0 links next node and +24 is open/in-use flags.
 ;------------------------------------------------------------------------------
 HANDLE_OpenWithMode:
     LINK.W  A5,#-8
     MOVEM.L A2-A3,-(A7)
-    LEA     Global_A4_1120_Base(A4),A3
+    LEA     Global_PreallocHandleNode0(A4),A3
 
 .scan_for_free:
     MOVE.L  A3,D0
     BEQ.S   .no_free
 
-    TST.L   24(A3)
+    TST.L   Struct_PreallocHandleNode__OpenFlags(A3)
     BEQ.S   .no_free
 
     MOVEA.L A3,A2
-    MOVEA.L (A3),A3
+    MOVEA.L Struct_PreallocHandleNode__Next(A3),A3
     BRA.S   .scan_for_free
 
 .no_free:
@@ -50,7 +50,7 @@ HANDLE_OpenWithMode:
     BRA.S   .return
 
 .alloc_ok:
-    MOVE.L  A3,(A2)
+    MOVE.L  A3,Struct_PreallocHandleNode__Next(A2)
     MOVEQ   #33,D0
     MOVEQ   #0,D1
     MOVEA.L A3,A0
