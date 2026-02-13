@@ -263,7 +263,7 @@ Global_STR_PUSH_ANY_KEY_TO_SELECT_2:
     NStr    " Push any key to select"
 
 ; Strings for ESC -> Change Scroll Speed
-Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C:
+ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C:
     NStr    "Satellite Delivered scroll speed (%c)"
 Global_STR_SPEED_ZERO_NOT_AVAILABLE:
     NStr    "Speed 0 not available"

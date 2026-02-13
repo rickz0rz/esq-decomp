@@ -433,7 +433,7 @@ ED_DrawESCMenuHelpText:
 ;   _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagScrollSpeedChar,
-;   Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -507,8 +507,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,A0
-    MOVEQ   #(Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length),D0
+    LEA     ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,A0
+    MOVEQ   #(ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -518,7 +518,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_TAG_36_1DCB,A0
-    MOVEQ   #(LAB_1DCB_Length),D0
+    MOVEQ   #(DATA_ESQ_TAG_36_1DCB_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -539,7 +539,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_6_1DD1,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(DATA_ESQ_STR_6_1DD1_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -550,7 +550,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_N_1DD2,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(DATA_ESQ_STR_N_1DD2_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -560,7 +560,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     DATA_ESQ_STR_Y_1DD3,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(DATA_ESQ_STR_Y_1DD3_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -570,7 +570,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagTextModeChar,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(ED_DiagTextModeChar_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -580,7 +580,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagGraphModeChar,A0
-    MOVEQ   #1,D0
+    MOVEQ   #(ED_DiagGraphModeChar_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -803,7 +803,7 @@ ED_DrawDiagnosticModeHelpText:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, DISPLIB_DisplayTextAtPosition,
 ;   _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -828,9 +828,9 @@ ED_DrawScrollSpeedMenuText:
     JSR     _LVOSetDrMd(A6)
 
     MOVEQ   #0,D0
-    MOVE.B  Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
+    MOVE.B  ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
     MOVE.L  D0,-(A7)
-    PEA     Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
+    PEA     ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
     PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 

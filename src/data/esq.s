@@ -61,18 +61,23 @@ ESQ_HighlightReplyPort:
 DATA_ESQ_BSS_LONG_1DC7:
     DS.L    1
 LAB_1DC7_Length = 1
+
 DATA_ESQ_STR_B_1DC8:
     DC.B    "B"
-LAB_1DC8_Length = 1
+LAB_1DC8_Length = DATA_ESQ_STR_E_1DC9-DATA_ESQ_STR_B_1DC8
+
 DATA_ESQ_STR_E_1DC9:
     DC.B    "E"
-LAB_1DC9_Length = 1
-Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
+LAB_1DC9_Length = ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-DATA_ESQ_STR_E_1DC9
+
+ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
-Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length    = 1
+ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length = DATA_ESQ_TAG_36_1DCB-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+
 DATA_ESQ_TAG_36_1DCB:
     DC.B    "36"
-LAB_1DCB_Length = 2
+DATA_ESQ_TAG_36_1DCB_Length = ED_DiagScrollSpeedChar-DATA_ESQ_TAG_36_1DCB
+
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagScrollSpeedChar   (diagnostic SSPD selector char)
 ; TYPE: u8 (ASCII digit)
@@ -82,7 +87,8 @@ LAB_1DCB_Length = 2
 ;------------------------------------------------------------------------------
 ED_DiagScrollSpeedChar:
     DC.B    "6"
-LAB_1DCD_Length = 1
+LAB_1DCD_Length = DATA_ESQ_STR_N_1DCE-ED_DiagScrollSpeedChar
+
 DATA_ESQ_STR_N_1DCE:
     DC.B    "N"
 DATA_ESQ_CONST_BYTE_1DCF:
@@ -91,10 +97,16 @@ DATA_ESQ_CONST_BYTE_1DD0:
     DC.B    1
 DATA_ESQ_STR_6_1DD1:
     DC.B    "6"
+DATA_ESQ_STR_6_1DD1_Length = DATA_ESQ_STR_N_1DD2-DATA_ESQ_STR_6_1DD1
+
 DATA_ESQ_STR_N_1DD2:
     DC.B    "N"
+DATA_ESQ_STR_N_1DD2_Length = DATA_ESQ_STR_Y_1DD3-DATA_ESQ_STR_N_1DD2
+
 DATA_ESQ_STR_Y_1DD3:
     DC.B    "Y"
+DATA_ESQ_STR_Y_1DD3_Length = DATA_ESQ_STR_N_1DD3-DATA_ESQ_STR_Y_1DD3
+DATA_ESQ_STR_N_1DD3:
     DC.B    "N"
 DATA_ESQ_STR_N_1DD4:
     DC.B    "N"
@@ -110,6 +122,7 @@ DATA_ESQ_STR_N_1DD5:
 ;------------------------------------------------------------------------------
 ED_DiagGraphModeChar:
     DC.B    "N"
+ED_DiagGraphModeChar_Length = ED_DiagVinModeChar-ED_DiagGraphModeChar
 ED_DiagVinModeChar:
     DC.B    "N"
 ;------------------------------------------------------------------------------

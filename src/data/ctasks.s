@@ -173,6 +173,7 @@ Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
 ;------------------------------------------------------------------------------
 ED_DiagTextModeChar:
     DC.B    "N"
+ED_DiagTextModeChar_Length = DATA_CTASKS_STR_N_1BC5-ED_DiagTextModeChar
 DATA_CTASKS_STR_N_1BC5:
     DC.B    "N"
 DATA_CTASKS_STR_N_1BC6:

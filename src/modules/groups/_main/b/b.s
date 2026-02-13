@@ -191,10 +191,10 @@ ESQ_CheckTopazFontGuard:
     ADDA.W  #(LAB_1DD8_RASTPORT-Global_STR_TOPAZ_FONT),A0
 
     ; Draw "Please Standby..." text
-    ; Draw_TEXT A0,Global_STR_PLEASE_STANDBY_1,#17
     MOVEA.L A0,A1
     LEA     Global_STR_PLEASE_STANDBY_1,A0
-    MOVEQ   #17,D0
+    MOVEQ   #(Global_STR_PLEASE_STANDBY_1_Length)-1,D0
+    ; -1 to remove null padding
     JSR     _LVOText(A6)
 
     ; Trampoline to LAB_1DD8_RASTPORT in A0

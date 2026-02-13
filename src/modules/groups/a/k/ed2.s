@@ -1956,7 +1956,7 @@ ED2_HandleDiagnosticsMenuActions:
 ; CALLS:
 ;   ED_DrawESCMenuBottomHelp, ED_DrawMenuSelectionHighlight, ED_DrawScrollSpeedMenuText
 ; READS:
-;   Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
+;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ED_EditCursorOffset, ED_LastKeyCode, ED_LastMenuInputChar, ED_StateRingIndex, ED_StateRingTable, case_adjust_selection_default, return
 ; WRITES:
 ;   ED_LastKeyCode, ED_LastMenuInputChar, ED_SavedScrollSpeedIndex, ESQPARS2_StateIndex, ED_EditCursorOffset
 ; DESC:
@@ -1995,7 +1995,7 @@ ED2_HandleScrollSpeedSelection:
     BNE.S   .use_21e8_minus1
 
     MOVEQ   #0,D0
-    MOVE.B  Global_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
+    MOVE.B  ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVE.W  D0,ESQPARS2_StateIndex
