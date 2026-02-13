@@ -242,8 +242,8 @@ TEXTDISP_BuildNowShowingStatusLine:
     EXT.L   D1
     ASL.L   #2,D1
     ; Layout-coupled table anchor: legacy code indexes longword pointers from
-    ; SCRIPT_ChannelLabelLegacyIndexAnchor + 2.
-    LEA     (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0
+    ; DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED + 2.
+    LEA     (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     -137(A5)
@@ -2007,7 +2007,7 @@ TEXTDISP_HandleScriptCommand:
     MOVE.L  A3,-(A7)
     PEA     DATA_SCRIPT_FMT_XX_PCT_S_214C
     ; 200-byte local target; source text comes from script argument pointer.
-    ; Provenance: A3 is typically SCRIPT_CommandTextPtr (legacy DATA_SCRIPT_BSS_LONG_2129), populated from
+    ; Provenance: A3 is typically SCRIPT_CommandTextPtr (legacy SCRIPT_CommandTextPtr), populated from
     ; SCRIPT_CTRL_CMD_BUFFER payload bytes in SCRIPT_HandleBrushCommand.
     ; Budget note for .commandScratchBuffer (200 bytes incl NUL):
     ; "xx%s" => 3 + len(arg), so payload must stay <= 197 bytes.

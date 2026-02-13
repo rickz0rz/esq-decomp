@@ -8,11 +8,11 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 ## Anchor/Population Map
 
 ### 1) Channel label legacy anchor (`SCRIPT`)
-- Anchor label: `SCRIPT_ChannelLabelLegacyIndexAnchor`
+- Anchor label: `DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`
 - True table base: `SCRIPT_ChannelLabelPtrTable`
 - Consumers:
-  - `src/modules/groups/b/a/textdisp.s` (`LEA (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0` index path)
-  - `src/modules/groups/a/d/cleanup3.s` (`LEA (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0` index path)
+  - `src/modules/groups/b/a/textdisp.s` (`LEA (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0` index path)
+  - `src/modules/groups/a/d/cleanup3.s` (`LEA (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0` index path)
 - Population source:
   - Table is static in `src/data/script.s`.
   - Entries 19..22 point to zeroed placeholders (`SCRIPT_ChannelLabelEmptySlot0..3`).
@@ -219,8 +219,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 
 - `TEXTDISP_HandleScriptCommand` (`case 'C'`)
   - `%s` provenance:
-    - `A3` commonly points to `DATA_SCRIPT_BSS_LONG_2129`.
-    - `DATA_SCRIPT_BSS_LONG_2129` is populated via `ESQPARS_ReplaceOwnedString`
+    - `A3` commonly points to `SCRIPT_CommandTextPtr`.
+    - `SCRIPT_CommandTextPtr` is populated via `ESQPARS_ReplaceOwnedString`
       from `SCRIPT_CTRL_CMD_BUFFER` packet tail (`LEA 3(A2),A0` path).
   - Evidence:
     - `SCRIPT_CTRL_CMD_BUFFER` is 200 bytes (`DS.L 50`).
@@ -374,7 +374,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
     - `time` `%s` comes from `TEXTDISP_FormatEntryTimeForIndex` local output.
   - `TEXTDISP` cmd C (`"xx%s"`):
     - Arg pointer is usually `SCRIPT_CommandTextPtr`
-      (legacy `DATA_SCRIPT_BSS_LONG_2129`), replaced via `ESQPARS_ReplaceOwnedString`.
+      (legacy `SCRIPT_CommandTextPtr`), replaced via `ESQPARS_ReplaceOwnedString`.
     - Common producer path is `SCRIPT_HandleBrushCommand` tail (`LEA 3(A2),A0`)
       after parser NUL-termination.
     - CTRL parser enforces `SCRIPT_CTRL_READ_INDEX <= 198` before dispatch in
@@ -619,7 +619,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 - `ESQ_MainInitAndRun` performs several startup string copy/format operations with fixed destinations and no obvious explicit bounds checks at the callsite level.
 
 ## Behavior-Preserving Hardening Added In This Batch
-- Added explicit alias/docs for `SCRIPT_ChannelLabelLegacyIndexAnchor`.
+- Added explicit alias/docs for `DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`.
 - Added explicit alias/docs for `SCRIPT_ChannelLabelEmptySlot0..3`.
 - Added conservative `wdisp.s` `220F+` pointer-state aliases and propagated key callsites (`ESQ`/`CLEANUP`/`ESQDISP`/`GCOMMAND3`/`NEWGRID`/`TLIBA3`).
 - Added conservative `wdisp.s` `2242`-`226F` aliases for status/banner/refresh state and propagated callsites (`APP2`/`CLEANUP2`/`DST2`/`ESQ*`/`ED*`/`NEWGRID1`/`PARSEINI3`/`UNKNOWN`).

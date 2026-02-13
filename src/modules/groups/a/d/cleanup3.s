@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_RenderAlignedStatusScreen   (RenderAlignedStatusScreenuncertain)
+; FUNC: CLEANUP_BuildAndRenderAlignedStatusBanner   (BuildAndRenderAlignedStatusBanner)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -30,7 +30,7 @@
 ; READS:
 ;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-DATA_WDISP_BSS_WORD_236E,
 ;   DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369, TEXTDISP_BannerCharFallback-DATA_WDISP_BSS_BYTE_2379, DATA_WDISP_BSS_LONG_237A,
-;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, SCRIPT_ChannelLabelLegacyIndexAnchor, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
+;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
 ;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, DATA_WDISP_BSS_WORD_227C, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
 ;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
 ;   Global_STR_ALIGNED_NOW_SHOWING, Global_STR_ALIGNED_NEXT_SHOWING,
@@ -46,6 +46,7 @@
 ;   - Uses several template buffers and tables to choose which status line
 ;     to render based on a code derived from TEXTDISP_PrimaryChannelCode/E.
 ;------------------------------------------------------------------------------
+CLEANUP_BuildAndRenderAlignedStatusBanner:
 CLEANUP_RenderAlignedStatusScreen:
     LINK.W  A5,#-840
     MOVEM.L D2-D7/A2,-(A7)
@@ -594,7 +595,7 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
     CMP.W   -40(A5),D0
-    BNE.W   .check_template_fallback
+    BNE.W   .maybe_append_centered_schedule_label
 
     MOVE.B  TEXTDISP_BannerCharSelected,D0
     MOVEQ   #100,D1
@@ -754,45 +755,49 @@ CLEANUP_RenderAlignedStatusScreen:
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .maybe_submit_record
+    BRA.S   .maybe_rebuild_output_record
 
-.check_template_fallback:
+.maybe_append_centered_schedule_label:
     MOVEQ   #2,D0
     CMP.W   -40(A5),D0
-    BEQ.S   .maybe_submit_record
+    BEQ.S   .maybe_rebuild_output_record
 
     MOVE.W  -38(A5),D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BLE.S   .check_template_range
+    BLE.S   .check_upper_fallback_schedule_range
 
     MOVEQ   #67,D1
     CMP.W   D1,D0
-    BLE.S   .copy_template_label
+    BLE.S   .prepend_center_align_and_schedule_suffix
 
-.check_template_range:
+.check_upper_fallback_schedule_range:
     MOVEQ   #72,D1
     CMP.W   D1,D0
-    BLT.S   .maybe_submit_record
+    BLT.S   .maybe_rebuild_output_record
 
     MOVEQ   #77,D1
     CMP.W   D1,D0
-    BGT.S   .maybe_submit_record
+    BGT.S   .maybe_rebuild_output_record
 
-.copy_template_label:
+.prepend_center_align_and_schedule_suffix:
     LEA     DATA_TEXTDISP_CONST_BYTE_2157,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
-.copy_template_label_loop:
+.copy_center_align_control_bytes_loop:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .copy_template_label_loop
+    BNE.S   .copy_center_align_control_bytes_loop
+
+    ; Compiler-style indexed lookup: template code at -38(A5) is scaled by 4 and
+    ; read as a pointer entry via the legacy DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2
+    ; anchor (see SCRIPT_ChannelLabelPtrTable notes in src/data/script.s).
+    ; This branch prepends center-align control bytes and appends the selected
+    ; schedule/day label text when code falls in the accepted fallback ranges.
 
     MOVE.W  -38(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
-    ; Layout-coupled table anchor: legacy code indexes longword pointers from
-    ; SCRIPT_ChannelLabelLegacyIndexAnchor + 2.
-    LEA     (SCRIPT_ChannelLabelLegacyIndexAnchor+2),A0
+    LEA     (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     CLEANUP_AlignedStatusSuffixBuffer
@@ -804,29 +809,29 @@ CLEANUP_RenderAlignedStatusScreen:
 
     LEA     16(A7),A7
 
-.maybe_submit_record:
+.maybe_rebuild_output_record:
     MOVEQ   #2,D0
     CMP.W   -40(A5),D0
-    BNE.S   .prepare_output_record
+    BNE.S   .rebuild_output_record
 
     MOVE.W  -38(A5),D0
     MOVEQ   #70,D1
     CMP.W   D1,D0
-    BEQ.S   .prepare_output_record
+    BEQ.S   .rebuild_output_record
 
     MOVEQ   #71,D1
     CMP.W   D1,D0
-    BEQ.S   .prepare_output_record
+    BEQ.S   .rebuild_output_record
 
     MOVEQ   #78,D1
     CMP.W   D1,D0
-    BEQ.S   .prepare_output_record
+    BEQ.S   .rebuild_output_record
 
     MOVEQ   #79,D1
     CMP.W   D1,D0
     BNE.S   .render_output_text
 
-.prepare_output_record:
+.rebuild_output_record:
     CLR.L   -(A7)
     JSR     GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(PC)
 

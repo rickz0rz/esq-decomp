@@ -14,8 +14,8 @@ Global_STR_PREVUEC_FONT:
 Global_STRUCT_TEXTATTR_PREVUEC_FONT:
     DC.L    Global_STR_PREVUEC_FONT
     DC.W    25      ; Size 25 font
-    DC.B    $40
-    DC.B    $20
+    DC.B    $40     ; Style
+    DC.B    $20     ; Flags
 
 Global_STR_H26F_FONT:
     NStr    "h26f.font"             ; 10 bytes
@@ -38,8 +38,8 @@ Global_STR_PREVUE_FONT:
 Global_STRUCT_TEXTATTR_PREVUE_FONT:
     DC.L    Global_STR_PREVUE_FONT
     DC.W    13      ; Size 13 font
-    DC.B    $40     ;
-    DC.B    $20     ;
+    DC.B    $40     ; Style
+    DC.B    $20     ; Flags
 
 Global_HANDLE_PREVUE_FONT:
     DS.L    1

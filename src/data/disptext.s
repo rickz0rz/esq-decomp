@@ -17,7 +17,6 @@ DISPTEXT_STR_SINGLE_SPACE_DELIM:
     NStr    " "
 ; One-shot init guard for buffer allocation path.
 DISPTEXT_InitBuffersPending:
-DATA_DISPTEXT_CONST_LONG_1CED:
     DC.L    1
 Global_STR_DISPTEXT_C_2:
     NStr    "DISPTEXT.c"

@@ -63,11 +63,11 @@ NEWGRID2_ProcessGridState:
     MOVE.W  20(A2),D6
     MOVEQ   #48,D0
     CMP.W   D0,D6
-    BLE.S   .entry_index_ok
+    BLE.S   .entry_index_normalized
 
     SUBI.W  #$30,D6
 
-.entry_index_ok:
+.entry_index_normalized:
     TST.W   DATA_NEWGRID_CONST_WORD_2016
     BEQ.S   .draw_alt_variant
 
@@ -122,7 +122,7 @@ NEWGRID2_ProcessGridState:
 
     LEA     16(A7),A7
     MOVE.L  D0,-6(A5)
-    BEQ.S   .post_alloc
+    BEQ.S   .after_optional_showtimes_buffer
 
     PEA     3.W
     JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
@@ -146,7 +146,7 @@ NEWGRID2_ProcessGridState:
 
     LEA     36(A7),A7
 
-.post_alloc:
+.after_optional_showtimes_buffer:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant4
 
@@ -175,15 +175,15 @@ NEWGRID2_ProcessGridState:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state5_set_value
+    BEQ.S   .state5_use_frame_only_state
 
     MOVEQ   #4,D0
-    BRA.S   .state5_store_value
+    BRA.S   .state5_store_frame_state
 
-.state5_set_value:
+.state5_use_frame_only_state:
     MOVEQ   #5,D0
 
-.state5_store_value:
+.state5_store_frame_state:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
@@ -251,7 +251,7 @@ NEWGRID2_HandleGridState:
 .dispatch_state:
     MOVE.L  NEWGRID2_DispatchStateIndex,D0
     CMPI.L  #$6,D0
-    BCC.W   .state_done
+    BCC.W   .reset_dispatch_state
 
     ADD.W   D0,D0
     MOVE.W  .state_jumptable(PC,D0.W),D0
@@ -362,7 +362,7 @@ NEWGRID2_HandleGridState:
     BRA.S   .return_state
 
 .state2_finish:
-.state_done:
+.reset_dispatch_state:
     CLR.L   NEWGRID2_DispatchStateIndex
 
 .return_state:
@@ -606,7 +606,7 @@ NEWGRID2_DispatchOperationDefault:
 ;------------------------------------------------------------------------------
 NEWGRID2_EnsureBuffersAllocated:
     TST.L   DATA_NEWGRID2_CONST_LONG_2044
-    BEQ.S   .done
+    BEQ.S   .buffers_already_ready
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     1208.W
@@ -628,7 +628,7 @@ NEWGRID2_EnsureBuffersAllocated:
     CLR.L   DATA_NEWGRID2_CONST_LONG_2044
     MOVE.L  D0,NEWGRID_EntryTextScratchPtr
 
-.done:
+.buffers_already_ready:
     RTS
 
 ;!======
@@ -654,7 +654,7 @@ NEWGRID2_EnsureBuffersAllocated:
 ;------------------------------------------------------------------------------
 NEWGRID2_FreeBuffersIfAllocated:
     TST.L   NEWGRID_EntryTextScratchPtr
-    BEQ.S   .done
+    BEQ.S   .buffers_already_freed
 
     PEA     1000.W
     MOVE.L  NEWGRID_EntryTextScratchPtr,-(A7)
@@ -672,7 +672,7 @@ NEWGRID2_FreeBuffersIfAllocated:
     LEA     32(A7),A7
     CLR.L   NEWGRID_SecondaryIndexCachePtr
 
-.done:
+.buffers_already_freed:
     RTS
 
 ;!======

@@ -184,13 +184,13 @@ DATA_SCRIPT_STR_THIS_FALL_20EA:
 DATA_SCRIPT_STR_THIS_SUMMER_20EB:
     NStr    "This Summer"
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_ChannelLabelLegacyIndexAnchor   (legacy channel-label index anchor)
+; SYM: DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED   (legacy channel-label index anchor)
 ; TYPE: cstring
 ; PURPOSE: Historical anchor used by `index * 4` address math in legacy callsites.
 ; USED BY: CLEANUP3/Textdisp channel-label lookups.
 ; NOTES: Anchor label only; pointer-table base is SCRIPT_ChannelLabelPtrTable.
 ;------------------------------------------------------------------------------
-SCRIPT_ChannelLabelLegacyIndexAnchor:
+DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED:
     NStr    "Tuesdays & Fridays"
 DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE:
     NStr    "Mondays & Saturdays"
@@ -237,9 +237,9 @@ DATA_SCRIPT_STR_THIS_WEEK_20FB:
 ; SYM: SCRIPT_ChannelLabelPtrTable   (channel label pointer table)
 ; TYPE: array<u32 ptr>
 ; PURPOSE: Maps channel/group selector values to label strings for append paths.
-; USED BY: CLEANUP3/Textdisp routines that index from SCRIPT_ChannelLabelLegacyIndexAnchor.
+; USED BY: CLEANUP3/Textdisp routines that index from DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED.
 ; NOTES:
-;   Legacy callsites index relative to SCRIPT_ChannelLabelLegacyIndexAnchor.
+;   Legacy callsites index relative to DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED.
 ;   Entries 19..22 intentionally point at zeroed empty-slot placeholders.
 ;------------------------------------------------------------------------------
 SCRIPT_ChannelLabelPtrTable:
@@ -257,7 +257,7 @@ SCRIPT_ChannelLabelPtrTable:
     DC.L    DATA_SCRIPT_STR_NEXT_MONTH_20E9
     DC.L    DATA_SCRIPT_STR_THIS_FALL_20EA
     DC.L    DATA_SCRIPT_STR_THIS_SUMMER_20EB
-    DC.L    SCRIPT_ChannelLabelLegacyIndexAnchor
+    DC.L    DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED
     DC.L    DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE
     DC.L    DATA_SCRIPT_STR_WEEKENDS_20EF
     DC.L    DATA_SCRIPT_STR_EVERY_NIGHT_20F0
@@ -381,7 +381,6 @@ DATA_SCRIPT_BSS_WORD_2128:
 ;   SCRIPT_CTRL_CMD_BUFFER tail (`LEA 3(A2),A0`) after parser NUL-termination.
 ;------------------------------------------------------------------------------
 SCRIPT_CommandTextPtr:
-DATA_SCRIPT_BSS_LONG_2129:
     DS.L    1
 DATA_SCRIPT_BSS_WORD_212A:
     DS.W    1
