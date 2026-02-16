@@ -902,7 +902,7 @@ CLEANUP_FormatEntryStringTokens:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_ParseAlignedListingBlock   (ParseAlignedListingBlockuncertain)
+; FUNC: CLEANUP_ParseAlignedListingBlock   (Parse aligned listing block into entry tables)
 ; ARGS:
 ;   stack +4: dataPtr (char*)
 ; RET:

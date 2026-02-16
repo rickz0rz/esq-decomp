@@ -491,7 +491,7 @@ CLEANUP_ShutdownSystem:
     BSR.W   CLEANUP_ShutdownInputDevices
 
     BSR.W   CLEANUP_ReleaseDisplayResources
-M
+
     JSR     GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(PC)
 
     JSR     GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)

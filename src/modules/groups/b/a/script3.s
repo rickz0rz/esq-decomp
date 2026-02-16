@@ -245,7 +245,7 @@ SCRIPT_UpdateBannerCharTransition:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_BeginBannerCharTransition   (BeginBannerCharTransitionuncertain)
+; FUNC: SCRIPT_BeginBannerCharTransition   (Configure and start banner-char transition)
 ; ARGS:
 ;   stack +6: arg_1 (via 10(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -485,7 +485,7 @@ SCRIPT_PrimeBannerTransitionFromHexCode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_InitCtrlContext   (InitCtrlContextuncertain)
+; FUNC: SCRIPT_InitCtrlContext   (InitCtrlContext)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -822,7 +822,7 @@ SCRIPT_HandleSerialCtrlCmd:
 
 ; Dispatch helper for brush-control script commands (handles primary/secondary selection requests).
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_HandleBrushCommand   (Routine at SCRIPT_HandleBrushCommand)
+; FUNC: SCRIPT_HandleBrushCommand   (Parse CTRL brush command payload)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -848,9 +848,11 @@ SCRIPT_HandleSerialCtrlCmd:
 ; WRITES:
 ;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, DATA_COMMON_STR_VALUE_1B05, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Parses one CTRL packet payload via a 22-way switch/jumptable and updates
+;   brush selection, playback cursor/runtime mode, channel filters, search text,
+;   and pending banner-target state before optional script-command dispatch.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Saves and restores control-context snapshots around command handling.
 ;------------------------------------------------------------------------------
 SCRIPT_HandleBrushCommand:
     LINK.W  A5,#-36
@@ -1806,7 +1808,7 @@ SCRIPT_HandleBrushCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_SelectPlaybackCursorFromSearchText   (SelectPlaybackCursorFromSearchText)
+; FUNC: SCRIPT_SelectPlaybackCursorFromSearchText   (Resolve cursor from split search windows)
 ; ARGS:
 ;   stack +8: matchCountOrIndex (long) ??
 ;   stack +12: parseBuffer (char *)
@@ -2400,7 +2402,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateCtrlStateMachine   (UpdateCtrlStateMachineuncertain)
+; FUNC: SCRIPT_UpdateCtrlStateMachine   (Update ctrl-line runtime state machine)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2726,7 +2728,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_SetCtrlContextMode   (SetCtrlContextModeuncertain)
+; FUNC: SCRIPT_SetCtrlContextMode   (Set ctrl context mode + reset snapshot)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2760,7 +2762,7 @@ SCRIPT_SetCtrlContextMode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ResetCtrlContext   (ResetCtrlContextuncertain)
+; FUNC: SCRIPT_ResetCtrlContext   (Reset ctrl context snapshot fields)
 ; ARGS:
 ;   stack +12: ctxPtr (A3)
 ; RET:

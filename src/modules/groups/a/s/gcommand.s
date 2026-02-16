@@ -155,7 +155,7 @@ GCOMMAND_LoadCommandFile:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ParseCommandOptions   (ParseCommandOptionsuncertain)
+; FUNC: GCOMMAND_ParseCommandOptions   (Parse digital-niche command options string)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_MainInitAndRun   (MainInitAndRununcertain)
+; FUNC: ESQ_MainInitAndRun   (MainInitAndRun)
 ; ARGS:
 ;   stack +4: argc (s32, via 8(A5))
 ;   stack +8: argv (char**/pointer table, via 12(A5))

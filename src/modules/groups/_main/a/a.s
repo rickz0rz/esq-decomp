@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_StartupEntry   (StartupEntryuncertain)
+; FUNC: ESQ_StartupEntry   (StartupEntry)
 ; ARGS:
 ;   (none observed)
 ; RET:

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_FreeNodeRecord   (Routine at LOCAVAIL_FreeNodeRecord)
+; FUNC: LOCAVAIL_FreeNodeRecord   (Clear one availability-node record in place)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -11,11 +11,11 @@
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   (none observed)
+;   node record bytes at A3 (+0,+2,+4,+6)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Zeroes flag/count/length/pointer fields for a single node record.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Does not free external buffers; call `LOCAVAIL_FreeNodeAtPointer` for owned data.
 ;------------------------------------------------------------------------------
 LOCAVAIL_FreeNodeRecord:
     MOVE.L  A3,-(A7)
@@ -31,7 +31,7 @@ LOCAVAIL_FreeNodeRecord:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_FreeNodeAtPointer   (Routine at LOCAVAIL_FreeNodeAtPointer)
+; FUNC: LOCAVAIL_FreeNodeAtPointer   (Free node payload buffer then clear node record)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -45,22 +45,23 @@ LOCAVAIL_FreeNodeRecord:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Releases node-owned payload at +6 when present and length (+4) is positive,
+;   then clears the node fields via `LOCAVAIL_FreeNodeRecord`.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No-op for NULL node pointers.
 ;------------------------------------------------------------------------------
 LOCAVAIL_FreeNodeAtPointer:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,D0
-    BEQ.S   .lab_0F06
+    BEQ.S   .return
 
     TST.L   6(A3)
-    BEQ.S   .lab_0F05
+    BEQ.S   .clear_node_record
 
     MOVE.W  4(A3),D0
     TST.W   D0
-    BLE.S   .lab_0F05
+    BLE.S   .clear_node_record
 
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -71,20 +72,20 @@ LOCAVAIL_FreeNodeAtPointer:
 
     LEA     16(A7),A7
 
-.lab_0F05:
+.clear_node_record:
     MOVE.L  A3,-(A7)
     BSR.S   LOCAVAIL_FreeNodeRecord
 
     ADDQ.W  #4,A7
 
-.lab_0F06:
+.return:
     MOVEA.L (A7)+,A3
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_ResetFilterStateStruct   (Routine at LOCAVAIL_ResetFilterStateStruct)
+; FUNC: LOCAVAIL_ResetFilterStateStruct   (Reset filter-state struct to defaults)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -96,11 +97,12 @@ LOCAVAIL_FreeNodeAtPointer:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   (none observed)
+;   filter-state fields at A3 (+0,+2,+6,+8,+12,+16,+20)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Clears transient state, nulls shared refs/arrays, sets default mode marker (`'F'`),
+;   and initializes cursor-related longs to `-1`.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Does not free prior allocations; intended for fresh/init path or post-free reset.
 ;------------------------------------------------------------------------------
 LOCAVAIL_ResetFilterStateStruct:
     MOVE.L  A3,-(A7)
@@ -121,7 +123,7 @@ LOCAVAIL_ResetFilterStateStruct:
 
 ; Release a LOCAVAIL structure (free node array/bitmap and associated memory).
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_FreeResourceChain   (Routine at LOCAVAIL_FreeResourceChain)
+; FUNC: LOCAVAIL_FreeResourceChain   (Release shared refs, free node array/payloads, reset state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -131,41 +133,42 @@ LOCAVAIL_ResetFilterStateStruct:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_MATH_Mulu32, LOCAVAIL_FreeNodeAtPointer, LOCAVAIL_ResetFilterStateStruct, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_2, Global_STR_LOCAVAIL_C_3, LAB_0F0C, LAB_0F0D
+;   Global_STR_LOCAVAIL_C_2, Global_STR_LOCAVAIL_C_3
 ; WRITES:
-;   (none observed)
+;   shared refcount at *(A3+16), released node payload/array ownership
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Decrements shared refcount for retained header, frees node payloads/array when
+;   the shared count reaches zero, then resets the owning filter-state struct.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Safe to call with NULL state pointer.
 ;------------------------------------------------------------------------------
 LOCAVAIL_FreeResourceChain:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
-    BEQ.W   .lab_0F0D
+    BEQ.W   .return
 
     TST.L   16(A3)
-    BEQ.W   .lab_0F0C
+    BEQ.W   .reset_state_struct
 
     MOVEA.L 16(A3),A0
     MOVE.L  (A0),D0
     TST.L   D0
-    BLE.S   .lab_0F09
+    BLE.S   .decrement_shared_refcount
 
     SUBQ.L  #1,(A0)
 
-.lab_0F09:
+.decrement_shared_refcount:
     TST.L   20(A3)
-    BEQ.S   .lab_0F0C
+    BEQ.S   .reset_state_struct
 
     MOVE.L  2(A3),D0
     TST.L   D0
-    BLE.S   .lab_0F0C
+    BLE.S   .reset_state_struct
 
     MOVEA.L 16(A3),A0
     TST.L   (A0)
-    BNE.S   .lab_0F0C
+    BNE.S   .reset_state_struct
 
     PEA     4.W
     MOVE.L  A0,-(A7)
@@ -176,9 +179,9 @@ LOCAVAIL_FreeResourceChain:
     LEA     16(A7),A7
     MOVEQ   #0,D7
 
-.lab_0F0A:
+.free_each_node_loop:
     CMP.L   2(A3),D7
-    BGE.S   .lab_0F0B
+    BGE.S   .free_node_array
 
     MOVE.L  D7,D0
     MOVEQ   #10,D1
@@ -191,9 +194,9 @@ LOCAVAIL_FreeResourceChain:
 
     ADDQ.W  #4,A7
     ADDQ.L  #1,D7
-    BRA.S   .lab_0F0A
+    BRA.S   .free_each_node_loop
 
-.lab_0F0B:
+.free_node_array:
     MOVE.L  2(A3),D0
     MOVEQ   #10,D1
     JSR     GROUP_AY_JMPTBL_MATH_Mulu32(PC)
@@ -206,20 +209,20 @@ LOCAVAIL_FreeResourceChain:
 
     LEA     16(A7),A7
 
-.lab_0F0C:
+.reset_state_struct:
     MOVE.L  A3,-(A7)
     BSR.W   LOCAVAIL_ResetFilterStateStruct
 
     ADDQ.W  #4,A7
 
-.lab_0F0D:
+.return:
     MOVEM.L (A7)+,D7/A3
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_CopyFilterStateStructRetainRefs   (Routine at LOCAVAIL_CopyFilterStateStructRetainRefs)
+; FUNC: LOCAVAIL_CopyFilterStateStructRetainRefs   (Copy filter state while retaining shared refs)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -231,11 +234,12 @@ LOCAVAIL_FreeResourceChain:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   (none observed)
+;   destination state fields at A3; increments shared refcount when present
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Copies scalar state plus shared-header/node-array pointers from source to
+;   destination and bumps shared refcount for retained shared resources.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shallow copy by design for retained arrays.
 ;------------------------------------------------------------------------------
 LOCAVAIL_CopyFilterStateStructRetainRefs:
     MOVEM.L A2-A3,-(A7)
@@ -248,19 +252,19 @@ LOCAVAIL_CopyFilterStateStructRetainRefs:
     MOVE.L  A0,16(A3)
     MOVE.L  20(A2),20(A3)
     TST.L   16(A3)
-    BEQ.S   .lab_0F0F
+    BEQ.S   .return
 
     MOVEA.L 16(A3),A0
     ADDQ.L  #1,(A0)
 
-.lab_0F0F:
+.return:
     MOVEM.L (A7)+,A2-A3
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_AllocNodeArraysForState   (Routine at LOCAVAIL_AllocNodeArraysForState)
+; FUNC: LOCAVAIL_AllocNodeArraysForState   (Allocate shared header and node array for filter state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -272,11 +276,12 @@ LOCAVAIL_CopyFilterStateStructRetainRefs:
 ; READS:
 ;   Global_STR_LOCAVAIL_C_4, Global_STR_LOCAVAIL_C_5, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
-;   (none observed)
+;   A3+16 shared header ptr, A3+20 node array ptr
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Allocates shared header and contiguous node array when node count is within
+;   valid bounds (1..99), returning success flag in D0.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Initializes shared header refcount to zero before array allocation.
 ;------------------------------------------------------------------------------
 LOCAVAIL_AllocNodeArraysForState:
     MOVEM.L D7/A3,-(A7)
@@ -284,11 +289,11 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVEQ   #0,D7
     MOVE.L  2(A3),D0
     TST.L   D0
-    BLE.S   .lab_0F11
+    BLE.S   .return
 
     MOVEQ   #100,D1
     CMP.L   D1,D0
-    BGE.S   .lab_0F11
+    BGE.S   .return
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4.W
@@ -299,7 +304,7 @@ LOCAVAIL_AllocNodeArraysForState:
     LEA     16(A7),A7
     MOVE.L  D0,16(A3)
     TST.L   D0
-    BEQ.S   .lab_0F11
+    BEQ.S   .return
 
     MOVEA.L D0,A0
     CLR.L   (A0)
@@ -315,11 +320,11 @@ LOCAVAIL_AllocNodeArraysForState:
 
     LEA     16(A7),A7
     MOVE.L  D0,20(A3)
-    BEQ.S   .lab_0F11
+    BEQ.S   .return
 
     MOVEQ   #1,D7
 
-.lab_0F11:
+.return:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     RTS
@@ -327,7 +332,7 @@ LOCAVAIL_AllocNodeArraysForState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_ResetFilterCursorState   (Routine at LOCAVAIL_ResetFilterCursorState)
+; FUNC: LOCAVAIL_ResetFilterCursorState   (Reset active filter cursor/class trackers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -341,9 +346,9 @@ LOCAVAIL_AllocNodeArraysForState:
 ; WRITES:
 ;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Clears global filter step and sets cursor/class fields to `-1` sentinels.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Leaves mode and allocation pointers unchanged.
 ;------------------------------------------------------------------------------
 LOCAVAIL_ResetFilterCursorState:
     MOVE.L  A3,-(A7)
@@ -359,7 +364,7 @@ LOCAVAIL_ResetFilterCursorState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_SetFilterModeAndResetState   (Routine at LOCAVAIL_SetFilterModeAndResetState)
+; FUNC: LOCAVAIL_SetFilterModeAndResetState   (Apply filter mode change and reset cursors)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -373,39 +378,40 @@ LOCAVAIL_ResetFilterCursorState:
 ; WRITES:
 ;   LOCAVAIL_FilterModeFlag
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Updates `LOCAVAIL_FilterModeFlag` only for supported mode values (0/1) and
+;   resets primary filter cursor state when mode actually changes.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Ignores unsupported mode values and no-op transitions.
 ;------------------------------------------------------------------------------
 LOCAVAIL_SetFilterModeAndResetState:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     MOVE.L  LOCAVAIL_FilterModeFlag,D0
     CMP.L   D7,D0
-    BEQ.S   .lab_0F15
+    BEQ.S   .return
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BEQ.S   .lab_0F14
+    BEQ.S   .set_mode_and_reset
 
     TST.L   D7
-    BNE.S   .lab_0F15
+    BNE.S   .return
 
-.lab_0F14:
+.set_mode_and_reset:
     MOVE.L  D7,LOCAVAIL_FilterModeFlag
     PEA     LOCAVAIL_PrimaryFilterState
     BSR.S   LOCAVAIL_ResetFilterCursorState
 
     ADDQ.W  #4,A7
 
-.lab_0F15:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_ParseFilterStateFromBuffer   (Routine at LOCAVAIL_ParseFilterStateFromBuffer)
+; FUNC: LOCAVAIL_ParseFilterStateFromBuffer   (Parse serialized filter-state buffer)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -425,9 +431,10 @@ LOCAVAIL_SetFilterModeAndResetState:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Parses filter-state header/tags and node payloads from a serialized buffer,
+;   allocating/resetting state arrays as needed and restoring filter resources.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses FV-tag gating and per-node numeric parsing via ReadSignedLong helper.
 ;------------------------------------------------------------------------------
 LOCAVAIL_ParseFilterStateFromBuffer:
     LINK.W  A5,#-52
@@ -774,7 +781,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     ADDQ.W  #4,A7
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_ParseFilterStateFromBuffer_Return   (Routine at LOCAVAIL_ParseFilterStateFromBuffer_Return)
+; FUNC: LOCAVAIL_ParseFilterStateFromBuffer_Return   (Return parse success/failure and unwind frame)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -788,9 +795,9 @@ LOCAVAIL_ParseFilterStateFromBuffer:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns parser success flag (D5) and restores saved registers/frame.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return target for both success and cleanup-failure paths.
 ;------------------------------------------------------------------------------
 LOCAVAIL_ParseFilterStateFromBuffer_Return:
     MOVE.L  D5,D0
@@ -801,7 +808,7 @@ LOCAVAIL_ParseFilterStateFromBuffer_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_MapFilterTokenCharToClass   (Routine at LOCAVAIL_MapFilterTokenCharToClass)
+; FUNC: LOCAVAIL_MapFilterTokenCharToClass   (Map token character to filter-class index)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -815,9 +822,10 @@ LOCAVAIL_ParseFilterStateFromBuffer_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Converts numeric/alphabetic token chars into compact class indices used by
+;   filter parsing logic; returns 0 for unsupported characters.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Digits map via `'0'` base; alphabetic classes map via `'7'`-relative base.
 ;------------------------------------------------------------------------------
 LOCAVAIL_MapFilterTokenCharToClass:
     MOVEM.L D6-D7,-(A7)
@@ -829,7 +837,7 @@ LOCAVAIL_MapFilterTokenCharToClass:
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     BTST    #2,(A1)
-    BEQ.S   .lab_0F37
+    BEQ.S   .class_is_not_digit
 
     MOVE.L  D7,D0
     EXT.W   D0
@@ -839,7 +847,7 @@ LOCAVAIL_MapFilterTokenCharToClass:
     SUB.L   D1,D6
     BRA.S   LOCAVAIL_MapFilterTokenCharToClass_Return
 
-.lab_0F37:
+.class_is_not_digit:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
@@ -848,38 +856,38 @@ LOCAVAIL_MapFilterTokenCharToClass:
     MOVEQ   #3,D0
     AND.B   (A1),D0
     TST.B   D0
-    BEQ.S   .lab_0F3A
+    BEQ.S   .class_unknown
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     ADDA.L  D0,A0
     BTST    #1,(A0)
-    BEQ.S   .lab_0F38
+    BEQ.S   .skip_uppercase_fold
 
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #32,D1
     SUB.L   D1,D0
-    BRA.S   .lab_0F39
+    BRA.S   .class_alpha_ready
 
-.lab_0F38:
+.skip_uppercase_fold:
     MOVE.L  D7,D0
     EXT.W   D0
     EXT.L   D0
 
-.lab_0F39:
+.class_alpha_ready:
     MOVE.L  D0,D6
     MOVEQ   #55,D1
     SUB.L   D1,D6
     BRA.S   LOCAVAIL_MapFilterTokenCharToClass_Return
 
-.lab_0F3A:
+.class_unknown:
     MOVEQ   #0,D6
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_MapFilterTokenCharToClass_Return   (Routine at LOCAVAIL_MapFilterTokenCharToClass_Return)
+; FUNC: LOCAVAIL_MapFilterTokenCharToClass_Return   (Return token character class index)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -893,9 +901,9 @@ LOCAVAIL_MapFilterTokenCharToClass:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns computed class index from D6.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Class 0 indicates unrecognized token character.
 ;------------------------------------------------------------------------------
 LOCAVAIL_MapFilterTokenCharToClass_Return:
     MOVE.L  D6,D0
@@ -926,7 +934,7 @@ LOCAVAIL_MapFilterTokenCharToClass_Return:
     MOVE.W  2(A0),D6
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_GetNodeDurationByIndex   (Routine at LOCAVAIL_GetNodeDurationByIndex)
+; FUNC: LOCAVAIL_GetNodeDurationByIndex   (Return node duration by index with bounds checks)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -940,9 +948,9 @@ LOCAVAIL_MapFilterTokenCharToClass_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns node duration word (+2) for valid index, else returns 0.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Handles NULL state pointer and out-of-range indices as empty result.
 ;------------------------------------------------------------------------------
 LOCAVAIL_GetNodeDurationByIndex:
     MOVE.L  D6,D0
@@ -1166,7 +1174,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
     MOVE.L  -20(A5),12(A2)
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_ComputeFilterOffsetForEntry_Return   (Routine at LOCAVAIL_ComputeFilterOffsetForEntry_Return)
+; FUNC: LOCAVAIL_ComputeFilterOffsetForEntry_Return   (Return tail for filter-offset computation)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1180,9 +1188,9 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers/frame and returns to caller.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared exit for early-reject and computed-offset paths.
 ;------------------------------------------------------------------------------
 LOCAVAIL_ComputeFilterOffsetForEntry_Return:
     MOVEM.L (A7)+,D4-D7/A2-A3

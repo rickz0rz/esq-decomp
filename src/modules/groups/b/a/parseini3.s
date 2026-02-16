@@ -113,7 +113,7 @@ PARSEINI_ComputeHTCMaxValues:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_MonitorClockChange   (Track clock delta / debounceuncertain)
+; FUNC: PARSEINI_MonitorClockChange   (Monitor clock-change edge and status mask)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -128,10 +128,10 @@ PARSEINI_ComputeHTCMaxValues:
 ; WRITES:
 ;   DATA_PARSEINI_BSS_WORD_20A3-20A8
 ; DESC:
-;   Detects changes between H and T values, compares to stored clockdata seconds,
-;   and updates counters/flags, occasionally queuing an action via SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh.
+;   Tracks transitions between H/T mismatch and stable states, latches RTC second
+;   samples, and toggles a status-mask bit via ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
-;   Uses a 3-count threshold before clearing DATA_PARSEINI_BSS_WORD_20A5.
+;   Uses a 3-sample threshold before clearing DATA_PARSEINI_BSS_WORD_20A5.
 ;------------------------------------------------------------------------------
 PARSEINI_MonitorClockChange:
     MOVEM.L D2/D7,-(A7)

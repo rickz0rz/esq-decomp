@@ -65,7 +65,7 @@ ESQSHARED4_ResetBannerColorSweepState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED4_InitializeBannerCopperSystem   (Routine at ESQSHARED4_InitializeBannerCopperSystem)
+; FUNC: ESQSHARED4_InitializeBannerCopperSystem   (InitializeBannerCopperSystem)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -79,9 +79,10 @@ ESQSHARED4_ResetBannerColorSweepState:
 ; WRITES:
 ;   ESQ_CopperListBannerA, ESQ_CopperListBannerB, DATA_ESQPARS2_BSS_WORD_1F3B, DATA_ESQPARS2_BSS_WORD_1F3F, ESQPARS2_StateIndex, DATA_ESQPARS2_BSS_WORD_1F43, DATA_ESQPARS2_BSS_WORD_1F44, ESQPARS2_ReadModeFlags
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Initializes banner copper-state globals, snapshots display buffer bases,
+;   seeds banner plane pointer words, and enables CIAB PRA control bits.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Sets baseline read/state flags used by subsequent banner color/plane updates.
 ;------------------------------------------------------------------------------
 ESQSHARED4_InitializeBannerCopperSystem:
     MOVEM.L D0-D1/A0-A4,-(A7)

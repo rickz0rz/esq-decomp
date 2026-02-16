@@ -1,7 +1,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_DrawWeatherStatusOverlayIntoBrush   (Routine at ESQIFF_DrawWeatherStatusOverlayIntoBrush)
+; FUNC: ESQIFF_DrawWeatherStatusOverlayIntoBrush   (Draw split weather-status text into selected brush)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +20: arg_2 (via 24(A5))
@@ -25,13 +25,15 @@
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQFUNC_TrimTextToPixelWidthWordBoundary, ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQIFF_C_1, LAB_09F1, LAB_09F6, LAB_09F8, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_WeatherStatusBrushIndex
+;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQIFF_C_1, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_WeatherStatusBrushIndex
 ; WRITES:
-;   (none observed)
+;   weather-overlay working copy buffer, selected brush flags (+356/+360) ??
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Duplicates current weather overlay text, splits delimiter byte `$18` into NUL
+;   separators, and draws up to 10 segments into brush raster text columns.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses caller brush/rastport at A3 and restores original APen/DrMd on exit.
+;   Segment width is trimmed via ESQFUNC_TrimTextToPixelWidthWordBoundary.
 ;------------------------------------------------------------------------------
 ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LINK.W  A5,#-68
@@ -62,9 +64,9 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LEA     12(A7),A7
     MOVEA.L D0,A0
 
-.lab_09E9:
+.scan_text_end:
     TST.B   (A0)+
-    BNE.S   .lab_09E9
+    BNE.S   .scan_text_end
 
     SUBQ.L  #1,A0
     SUBA.L  D0,A0
@@ -74,39 +76,39 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D0,-4(A5)
     MOVE.L  D1,-28(A5)
 
-.lab_09EA:
+.replace_delimiter_with_nul_loop:
     MOVEA.L -8(A5),A0
     TST.B   (A0)
-    BEQ.S   .lab_09EC
+    BEQ.S   .prepare_first_segment_ptr
 
     MOVEQ   #24,D0
     CMP.B   (A0),D0
-    BNE.S   .lab_09EB
+    BNE.S   .advance_scan_ptr
 
     CLR.B   (A0)
     ADDQ.L  #1,D5
 
-.lab_09EB:
+.advance_scan_ptr:
     ADDQ.L  #1,-8(A5)
-    BRA.S   .lab_09EA
+    BRA.S   .replace_delimiter_with_nul_loop
 
-.lab_09EC:
+.prepare_first_segment_ptr:
     MOVEA.L -4(A5),A0
     MOVE.L  A0,-8(A5)
     TST.B   (A0)
-    BNE.S   .lab_09ED
+    BNE.S   .clamp_segment_count
 
     ADDQ.L  #1,-8(A5)
     SUBQ.L  #1,D5
 
-.lab_09ED:
+.clamp_segment_count:
     MOVEQ   #10,D0
     CMP.L   D0,D5
-    BLE.S   .lab_09EE
+    BLE.S   .setup_rastport_state
 
     MOVE.L  D0,D5
 
-.lab_09EE:
+.setup_rastport_state:
     MOVE.B  64(A3),-65(A5)
     MOVE.B  61(A3),-66(A5)
     LEA     36(A3),A0
@@ -156,11 +158,11 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D5,D1
     ADDQ.L  #1,D1
     TST.L   D1
-    BPL.S   .lab_09EF
+    BPL.S   .half_line_count_ready
 
     ADDQ.L  #1,D1
 
-.lab_09EF:
+.half_line_count_ready:
     ASR.L   #1,D1
     MOVE.L  D0,-48(A5)
     MOVE.L  D1,-32(A5)
@@ -184,26 +186,26 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.W  176(A0),D2
     SUB.L   D2,D1
     TST.L   D1
-    BPL.S   .lab_09F0
+    BPL.S   .half_brush_width_delta_ready
 
     ADDQ.L  #1,D1
 
-.lab_09F0:
+.half_brush_width_delta_ready:
     ASR.L   #1,D1
     MOVE.L  D0,-44(A5)
     MOVE.L  D1,-56(A5)
 
-.lab_09F1:
+.render_segment_loop:
     MOVE.L  -24(A5),D0
     CMP.L   D5,D0
-    BGE.W   .lab_09F8
+    BGE.W   .restore_rastport_and_free_text
 
     TST.L   D0
-    BPL.S   .lab_09F2
+    BPL.S   .half_segment_index_ready
 
     ADDQ.L  #1,D0
 
-.lab_09F2:
+.half_segment_index_ready:
     ASR.L   #1,D0
     MOVE.L  -44(A5),D1
     MOVE.L  -48(A5),D2
@@ -227,7 +229,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVEQ   #80,D0
     ADD.L   D0,D0
     CMP.L   D0,D2
-    BGE.W   .lab_09F8
+    BGE.W   .restore_rastport_and_free_text
 
     LEA     36(A3),A0
     MOVE.L  -8(A5),-(A7)
@@ -247,11 +249,11 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     SUB.L   D0,D1
     SUBQ.L  #1,D1
     TST.L   D1
-    BPL.S   .lab_09F3
+    BPL.S   .center_left_segment_x_offset_ready
 
     ADDQ.L  #1,D1
 
-.lab_09F3:
+.center_left_segment_x_offset_ready:
     ASR.L   #1,D1
     MOVE.L  D1,D7
     LEA     36(A3),A0
@@ -270,13 +272,13 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     ADDQ.L  #1,-24(A5)
     MOVE.L  -24(A5),D0
     CMP.L   D5,D0
-    BGE.W   .lab_09F6
+    BGE.W   .advance_to_next_segment
 
     MOVEA.L -8(A5),A0
 
-.lab_09F4:
+.scan_segment_end_left:
     TST.B   (A0)+
-    BNE.S   .lab_09F4
+    BNE.S   .scan_segment_end_left
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -300,11 +302,11 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -56(A5),D1
     ADD.L   D0,D1
     TST.L   D1
-    BPL.S   .lab_09F5
+    BPL.S   .center_right_segment_x_offset_ready
 
     ADDQ.L  #1,D1
 
-.lab_09F5:
+.center_right_segment_x_offset_ready:
     ASR.L   #1,D1
     MOVEQ   #0,D2
     MOVE.W  176(A3),D2
@@ -326,12 +328,12 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 
     ADDQ.L  #1,-24(A5)
 
-.lab_09F6:
+.advance_to_next_segment:
     MOVEA.L -8(A5),A0
 
-.lab_09F7:
+.scan_segment_end_generic:
     TST.B   (A0)+
-    BNE.S   .lab_09F7
+    BNE.S   .scan_segment_end_generic
 
     SUBQ.L  #1,A0
     SUBA.L  -8(A5),A0
@@ -339,9 +341,9 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     ADDQ.L  #1,D0
     ADD.L   D0,-8(A5)
 
-    BRA.W   .lab_09F1
+    BRA.W   .render_segment_loop
 
-.lab_09F8:
+.restore_rastport_and_free_text:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     672.W
@@ -370,7 +372,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_QueueIffBrushLoad   (Routine at ESQIFF_QueueIffBrushLoad)
+; FUNC: ESQIFF_QueueIffBrushLoad   (Queue weather-status brush load or render path)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -380,31 +382,32 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
 ; READS:
-;   Global_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, DATA_ESQIFF_BSS_LONG_1EE9, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, lab_09FD, lab_09FE
+;   Global_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, DATA_ESQIFF_BSS_LONG_1EE9, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar
 ; WRITES:
 ;   CTASKS_PendingIffBrushDescriptor, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskState, DATA_ESQIFF_BSS_LONG_1EE9
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Resolves next banner brush resource and either queues an async IFF brush load,
+;   or allocates/clones a brush and renders weather-status overlay text immediately.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Mode arg `2` keeps current resource cursor; other modes advance linked cursor.
 ;------------------------------------------------------------------------------
 ESQIFF_QueueIffBrushLoad:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     TST.L   DATA_ESQIFF_BSS_LONG_1EE9
-    BEQ.S   .lab_09FA
+    BEQ.S   .seed_resource_cursor
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   .lab_09FB
+    BNE.S   .skip_resource_seed
 
-.lab_09FA:
+.seed_resource_cursor:
     MOVE.L  PARSEINI_BannerBrushResourceHead,DATA_ESQIFF_BSS_LONG_1EE9
 
-.lab_09FB:
+.skip_resource_seed:
     MOVEQ   #0,D0
     TST.L   D0
-    BEQ.W   .lab_09FD
+    BEQ.W   .queue_standard_iff_task
 
     PEA     DATA_ESQIFF_STR_WEATHER_1EEA
     MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
@@ -412,22 +415,22 @@ ESQIFF_QueueIffBrushLoad:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   .lab_09FC
+    BEQ.S   .render_weather_overlay_now
 
     MOVEQ   #2,D0
     CMP.L   D0,D7
-    BNE.W   .lab_09FD
+    BNE.W   .queue_standard_iff_task
 
-.lab_09FC:
+.render_weather_overlay_now:
     MOVE.B  WDISP_WeatherStatusCountdown,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
-    BLS.W   .lab_09FE
+    BLS.W   .finalize_and_advance_resource_cursor
 
     MOVE.W  WDISP_WeatherStatusDigitChar,D0
     MOVEQ   #48,D1
     CMP.W   D1,D0
-    BEQ.W   .lab_09FE
+    BEQ.W   .finalize_and_advance_resource_cursor
 
     CLR.L   -(A7)
     MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
@@ -456,14 +459,14 @@ ESQIFF_QueueIffBrushLoad:
     JSR     ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7
-    BRA.S   .lab_09FE
+    BRA.S   .finalize_and_advance_resource_cursor
 
-.lab_09FD:
+.queue_standard_iff_task:
     TST.L   DATA_ESQIFF_BSS_LONG_1EE9
-    BEQ.S   .lab_09FE
+    BEQ.S   .finalize_and_advance_resource_cursor
 
     TST.L   DATA_ESQIFF_BSS_LONG_1EE9
-    BEQ.S   .lab_09FE
+    BEQ.S   .finalize_and_advance_resource_cursor
 
     CLR.L   -(A7)
     MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
@@ -477,7 +480,7 @@ ESQIFF_QueueIffBrushLoad:
 
     ADDQ.W  #8,A7
 
-.lab_09FE:
+.finalize_and_advance_resource_cursor:
     MOVEQ   #2,D0
     CMP.L   D0,D7
     BEQ.S   .return
@@ -498,7 +501,7 @@ ESQIFF_QueueIffBrushLoad:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RenderWeatherStatusBrushSlice   (Routine at ESQIFF_RenderWeatherStatusBrushSlice)
+; FUNC: ESQIFF_RenderWeatherStatusBrushSlice   (Render one weather-status brush slice and update counters)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -512,9 +515,10 @@ ESQIFF_QueueIffBrushLoad:
 ; WRITES:
 ;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQIFF_BSS_WORD_1EEC, DATA_ESQIFF_BSS_WORD_1EED, DATA_ESQIFF_CONST_WORD_1EEE
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Initializes/continues weather-slice progress state, blits one or two brush
+;   slices depending on mode byte, and updates remaining/consumed pixel counters.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Triggers NEWGRID selection validation once when mode=11 and one-shot flag is set.
 ;------------------------------------------------------------------------------
 ESQIFF_RenderWeatherStatusBrushSlice:
     MOVEM.L D2/D6-D7/A2-A3,-(A7)
@@ -524,21 +528,21 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     UseStackLong    MOVEA.L,2,A2
 
     MOVE.L  A2,D0
-    BNE.S   .lab_0A01
+    BNE.S   .ensure_slice_state_initialized
 
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_ESQIFF_BSS_WORD_1EEC
     BRA.W   ESQIFF_RenderWeatherStatusBrushSlice_Return
 
-.lab_0A01:
+.ensure_slice_state_initialized:
     MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
     TST.W   D0
-    BLE.S   .lab_0A02
+    BLE.S   .reset_slice_state
 
     TST.W   DATA_ESQFUNC_CONST_WORD_1ECD
-    BEQ.S   .lab_0A03
+    BEQ.S   .clamp_slice_width
 
-.lab_0A02:
+.reset_slice_state:
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_ESQFUNC_CONST_WORD_1ECD
     MOVE.W  178(A2),D1
@@ -546,22 +550,22 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     MOVE.W  D0,DATA_ESQIFF_BSS_WORD_1EED
     MOVE.W  D1,DATA_ESQIFF_BSS_WORD_1EEC
 
-.lab_0A03:
+.clamp_slice_width:
     MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
     MOVEQ   #30,D1
     CMP.W   D1,D0
-    BGE.S   .lab_0A04
+    BGE.S   .use_max_slice_width
 
     MOVE.L  D0,D7
-    BRA.S   .lab_0A05
+    BRA.S   .dispatch_slice_blit_by_mode
 
-.lab_0A04:
+.use_max_slice_width:
     MOVE.L  D1,D7
 
-.lab_0A05:
+.dispatch_slice_blit_by_mode:
     MOVEQ   #9,D0
     CMP.B   32(A2),D0
-    BNE.S   .lab_0A06
+    BNE.S   .blit_centered_slice
 
     MOVEQ   #42,D6
     MOVEQ   #0,D0
@@ -605,19 +609,19 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     52(A7),A7
-    BRA.S   .branch_1
+    BRA.S   .update_slice_progress_and_return
 
-.lab_0A06:
+.blit_centered_slice:
     MOVEQ   #0,D0
     MOVE.W  176(A2),D0
     MOVE.L  #696,D1
     SUB.L   D0,D1
     TST.L   D1
-    BPL.S   .branch
+    BPL.S   .half_centered_offset_ready
 
     ADDQ.L  #1,D1
 
-.branch:
+.half_centered_offset_ready:
     ASR.L   #1,D1
     MOVE.L  D1,D6
     SUBQ.L  #1,D6
@@ -641,16 +645,16 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     LEA     28(A7),A7
     MOVEQ   #11,D0
     CMP.B   32(A2),D0
-    BNE.S   .branch_1
+    BNE.S   .update_slice_progress_and_return
 
     MOVEQ   #1,D0
     CMP.B   DATA_ESQIFF_CONST_WORD_1EEE,D0
-    BNE.S   .branch_1
+    BNE.S   .update_slice_progress_and_return
 
     MOVE.B  DATA_CTASKS_STR_Y_1BBF,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .branch_1
+    BNE.S   .update_slice_progress_and_return
 
     PEA     16.W
     MOVE.L  A3,-(A7)
@@ -659,22 +663,22 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     ADDQ.W  #8,A7
     CLR.B   DATA_ESQIFF_CONST_WORD_1EEE
 
-.branch_1:
+.update_slice_progress_and_return:
     SUB.W   D7,DATA_ESQIFF_BSS_WORD_1EEC
     ADD.W   D7,DATA_ESQIFF_BSS_WORD_1EED
     MOVE.L  D7,D0
     TST.W   D0
-    BPL.S   .branch_2
+    BPL.S   .store_half_slice_width
 
     ADDQ.W  #1,D0
 
-.branch_2:
+.store_half_slice_width:
     ASR.W   #1,D0
     MOVE.W  D0,52(A3)
     MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RenderWeatherStatusBrushSlice_Return   (Routine at ESQIFF_RenderWeatherStatusBrushSlice_Return)
+; FUNC: ESQIFF_RenderWeatherStatusBrushSlice_Return   (Return tail for weather-slice renderer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -688,9 +692,9 @@ ESQIFF_RenderWeatherStatusBrushSlice:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers and returns residual slice width in D0.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return for null-brush and normal slice-render paths.
 ;------------------------------------------------------------------------------
 ESQIFF_RenderWeatherStatusBrushSlice_Return:
     MOVEM.L (A7)+,D2/D6-D7/A2-A3
@@ -699,7 +703,7 @@ ESQIFF_RenderWeatherStatusBrushSlice_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ReloadExternalAssetCatalogBuffers   (Routine at ESQIFF_ReloadExternalAssetCatalogBuffers)
+; FUNC: ESQIFF_ReloadExternalAssetCatalogBuffers   (Reload external asset catalog blobs and reset brush lists)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -709,13 +713,14 @@ ESQIFF_RenderWeatherStatusBrushSlice_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
 ; READS:
-;   AbsExecBase, Global_PTR_STR_DF0_LOGO_LST, Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_3, Global_STR_ESQIFF_C_4, Global_STR_ESQIFF_C_5, Global_STR_ESQIFF_C_6, LAB_0A10, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE, return, stackLong1
+;   AbsExecBase, Global_PTR_STR_DF0_LOGO_LST, Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_3, Global_STR_ESQIFF_C_4, Global_STR_ESQIFF_C_5, Global_STR_ESQIFF_C_6, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_ExternalAssetFlags, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_ExternalAssetFlags, ESQIFF_LogoListLineIndex, ESQIFF_GAdsListLineIndex
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Frees current external brush lists/catalog buffers, reloads `gfx/g_ads.data`
+;   and optionally `df0:logo.lst`, and sets availability bits on successful reads.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Logo-list reload is skipped when the caller mode is non-zero or drive is write-protected.
 ;------------------------------------------------------------------------------
 ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVEM.L D2-D3/D6-D7,-(A7)
@@ -730,15 +735,15 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.W   .lab_0A10
+    BNE.W   .maybe_reload_logo_catalog
 
     MOVE.B  ED_DiagGraphModeChar,D0
     MOVEQ   #78,D1
     CMP.B   D1,D0
-    BEQ.W   .lab_0A10
+    BEQ.W   .maybe_reload_logo_catalog
 
     TST.L   DATA_WDISP_BSS_LONG_2319
-    BNE.W   .lab_0A10
+    BNE.W   .maybe_reload_logo_catalog
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
@@ -752,7 +757,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 
     MOVEQ   #0,D0
     MOVE.L  D0,ESQIFF_GAdsBrushListCount
-    CLR.W   DATA_WDISP_BSS_LONG_22AD
+    CLR.W   ESQIFF_GAdsListLineIndex
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
@@ -783,7 +788,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
     TST.L   D6
-    BLE.S   .lab_0A0E
+    BLE.S   .update_gads_line_cursor_shadow
 
     MOVE.L  D6,-(A7)
     JSR     ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(PC)
@@ -821,17 +826,17 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
-.lab_0A0E:
+.update_gads_line_cursor_shadow:
     TST.W   DATA_WDISP_BSS_WORD_2294
-    BEQ.S   .lab_0A0F
+    BEQ.S   .clear_gads_line_cursor_shadow
 
-    MOVE.W  #1,DATA_WDISP_BSS_LONG_22AD
-    BRA.S   .lab_0A10
+    MOVE.W  #1,ESQIFF_GAdsListLineIndex
+    BRA.S   .maybe_reload_logo_catalog
 
-.lab_0A0F:
-    CLR.W   DATA_WDISP_BSS_LONG_22AD
+.clear_gads_line_cursor_shadow:
+    CLR.W   ESQIFF_GAdsListLineIndex
 
-.lab_0A10:
+.maybe_reload_logo_catalog:
     TST.L   D7
     BNE.W   .return
 
@@ -848,7 +853,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
     MOVE.L  D0,ESQIFF_LogoBrushListCount
-    CLR.W   DATA_WDISP_BSS_WORD_22AC
+    CLR.W   ESQIFF_LogoListLineIndex
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
@@ -923,7 +928,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_QueueNextExternalAssetIffJob   (Routine at ESQIFF_QueueNextExternalAssetIffJob)
+; FUNC: ESQIFF_QueueNextExternalAssetIffJob   (Queue next external-asset IFF decode job)
 ; ARGS:
 ;   stack +36: arg_1 (via 40(A5))
 ;   stack +37: arg_2 (via 41(A5))
@@ -941,13 +946,14 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, GCOMMAND_FindPathSeparator, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
 ; READS:
-;   AbsExecBase, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_0A1A, LAB_0A22, LAB_0A23, LAB_0A27, LAB_0A32, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_ESQIFF_PATH_DF0_COLON_1EF3, DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4, DATA_WDISP_BSS_WORD_22AC, ESQIFF_AssetSourceSelect, DATA_WDISP_BSS_LONG_22C3, TEXTDISP_CurrentMatchIndex, fa00, return
+;   AbsExecBase, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_ESQIFF_PATH_DF0_COLON_1EF3, DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4, ESQIFF_LogoListLineIndex, ESQIFF_AssetSourceSelect, ESQIFF_ExternalAssetPathCommaFlag, TEXTDISP_CurrentMatchIndex, fa00
 ; WRITES:
 ;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_WDISP_BSS_LONG_22A8, DATA_WDISP_BSS_LONG_22C2, TEXTDISP_CurrentMatchIndex
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Chooses the next external asset path from active catalog data, filters/skips
+;   disallowed entries, allocates a descriptor, and starts IFF decode task when needed.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses `TEXTDISP_CurrentMatchIndex` snapshot/restore while probing wildcard matches.
 ;------------------------------------------------------------------------------
 ESQIFF_QueueNextExternalAssetIffJob:
     LINK.W  A5,#-144
@@ -958,63 +964,63 @@ ESQIFF_QueueNextExternalAssetIffJob:
     JSR     _LVOForbid(A6)
 
     TST.W   CTASKS_IffTaskDoneFlag
-    BNE.S   .lab_0A15
+    BNE.S   .permit_and_return_no_job
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.lab_0A15:
+.permit_and_return_no_job:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A16
+    BEQ.S   .check_gads_quota
 
     CMPI.L  #$1,ESQIFF_LogoBrushListCount
-    BLT.S   .lab_0A16
+    BLT.S   .check_gads_quota
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.lab_0A16:
+.check_gads_quota:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BNE.S   .lab_0A17
+    BNE.S   .begin_path_selection
 
     CMPI.L  #$2,ESQIFF_GAdsBrushListCount
-    BLT.S   .lab_0A17
+    BLT.S   .begin_path_selection
 
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     BRA.W   .return
 
-.lab_0A17:
+.begin_path_selection:
     JSR     _LVOPermit(A6)
 
     MOVEQ   #0,D0
     MOVE.B  D0,-40(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
+    MOVE.W  ESQIFF_LogoListLineIndex,D6
     MOVEQ   #0,D1
     MOVE.W  D1,-128(A5)
     TST.L   Global_REF_LONG_DF0_LOGO_LST_DATA
-    BEQ.S   .lab_0A18
+    BEQ.S   .check_gads_blob_for_source0
 
     MOVE.W  ESQIFF_AssetSourceSelect,D2
-    BNE.S   .lab_0A19
+    BNE.S   .scan_candidate_paths
 
-.lab_0A18:
+.check_gads_blob_for_source0:
     TST.L   Global_REF_LONG_GFX_G_ADS_DATA
-    BEQ.W   .lab_0A32
+    BEQ.W   .finalize_no_candidate
 
     MOVE.W  ESQIFF_AssetSourceSelect,D2
-    BNE.W   .lab_0A32
+    BNE.W   .finalize_no_candidate
 
-.lab_0A19:
+.scan_candidate_paths:
     MOVE.B  D0,-41(A5)
     MOVE.W  TEXTDISP_CurrentMatchIndex,D5
 
-.lab_0A1A:
+.loop_read_candidate_path:
     PEA     -40(A5)
     BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
 
@@ -1022,51 +1028,51 @@ ESQIFF_QueueNextExternalAssetIffJob:
     LEA     -40(A5),A0
     MOVEA.L A0,A1
 
-.lab_0A1B:
+.loop_measure_candidate_len:
     TST.B   (A1)+
-    BNE.S   .lab_0A1B
+    BNE.S   .loop_measure_candidate_len
 
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    BEQ.W   .lab_0A22
+    BEQ.W   .check_scan_progress_or_retry
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A20
+    BEQ.S   .validate_source0_path_prefixes
 
-    TST.W   DATA_WDISP_BSS_LONG_22C3
-    BEQ.S   .lab_0A1C
+    TST.W   ESQIFF_ExternalAssetPathCommaFlag
+    BEQ.S   .build_wildcard_probe_path
 
     MOVE.W  #1,-128(A5)
-    BRA.W   .lab_0A23
+    BRA.W   .finalize_candidate_filter
 
-.lab_0A1C:
+.build_wildcard_probe_path:
     MOVEQ   #0,D7
 
-.lab_0A1D:
+.loop_rewrite_bang_to_wildcard:
     MOVEQ   #40,D0
     CMP.W   D0,D7
-    BGE.S   .lab_0A1F
+    BGE.S   .probe_match_index_by_wildcard
 
     MOVE.B  -40(A5,D7.W),-80(A5,D7.W)
     TST.B   -80(A5,D7.W)
-    BEQ.S   .lab_0A1F
+    BEQ.S   .probe_match_index_by_wildcard
 
     MOVEQ   #33,D0
     CMP.B   -80(A5,D7.W),D0
-    BNE.S   .lab_0A1E
+    BNE.S   .advance_probe_char
 
     MOVE.B  #$2a,-80(A5,D7.W)
     MOVE.L  D7,D0
     EXT.L   D0
     CLR.B   -79(A5,D0.L)
-    BRA.S   .lab_0A1F
+    BRA.S   .probe_match_index_by_wildcard
 
-.lab_0A1E:
+.advance_probe_char:
     ADDQ.W  #1,D7
-    BRA.S   .lab_0A1D
+    BRA.S   .loop_rewrite_bang_to_wildcard
 
-.lab_0A1F:
+.probe_match_index_by_wildcard:
     PEA     -80(A5)
     JSR     GCOMMAND_FindPathSeparator(PC)
 
@@ -1075,13 +1081,13 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
-    BNE.S   .lab_0A21
+    BNE.S   .yield_grid_while_scanning
 
     MOVE.W  #1,-128(A5)
     MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_LONG_22C2
-    BRA.S   .lab_0A23
+    BRA.S   .finalize_candidate_filter
 
-.lab_0A20:
+.validate_source0_path_prefixes:
     MOVEQ   #4,D0
     MOVE.L  D0,-(A7)
     PEA     -40(A5)
@@ -1090,7 +1096,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .lab_0A23
+    BEQ.S   .finalize_candidate_filter
 
     MOVEQ   #11,D0
     MOVE.L  D0,-(A7)
@@ -1100,82 +1106,82 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .lab_0A23
+    BEQ.S   .finalize_candidate_filter
 
     MOVE.W  #1,-128(A5)
-    BRA.S   .lab_0A23
+    BRA.S   .finalize_candidate_filter
 
-.lab_0A21:
+.yield_grid_while_scanning:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-.lab_0A22:
-    MOVE.W  DATA_WDISP_BSS_WORD_22AC,D0
+.check_scan_progress_or_retry:
+    MOVE.W  ESQIFF_LogoListLineIndex,D0
     CMP.W   D0,D6
-    BNE.W   .lab_0A1A
+    BNE.W   .loop_read_candidate_path
 
-.lab_0A23:
+.finalize_candidate_filter:
     MOVE.W  D5,TEXTDISP_CurrentMatchIndex
     TST.W   -128(A5)
-    BEQ.W   .lab_0A32
+    BEQ.W   .finalize_no_candidate
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A24
+    BEQ.S   .set_logo_poll_limit
 
     MOVE.L  #$fa00,-134(A5)
-    BRA.S   .lab_0A25
+    BRA.S   .snapshot_candidate_path
 
-.lab_0A24:
+.set_logo_poll_limit:
     MOVE.L  #$13880,-134(A5)
 
-.lab_0A25:
+.snapshot_candidate_path:
     LEA     -40(A5),A0
     LEA     -120(A5),A1
 
-.lab_0A26:
+.loop_copy_candidate_snapshot:
     MOVE.B  (A0)+,(A1)+
-    BNE.S   .lab_0A26
+    BNE.S   .loop_copy_candidate_snapshot
 
-.lab_0A27:
+.loop_queue_until_path_changes:
     MOVE.W  #1,-130(A5)
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A28
+    BEQ.S   .select_gads_list_head
 
     MOVEA.L ESQIFF_LogoBrushListHead,A0
     MOVE.L  A0,-142(A5)
-    BRA.S   .lab_0A29
+    BRA.S   .test_duplicate_head_path
 
-.lab_0A28:
+.select_gads_list_head:
     MOVEA.L ESQIFF_GAdsBrushListHead,A0
     MOVE.L  A0,-142(A5)
 
-.lab_0A29:
+.test_duplicate_head_path:
     MOVE.L  A0,D0
-    BEQ.S   .lab_0A2B
+    BEQ.S   .allocate_descriptor_if_needed
 
     CMPA.L  ESQIFF_LogoBrushListHead,A0
-    BNE.S   .lab_0A2B
+    BNE.S   .allocate_descriptor_if_needed
 
     LEA     -40(A5),A0
     MOVEA.L -142(A5),A1
 
-.lab_0A2A:
+.loop_compare_candidate_with_head:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .lab_0A2B
+    BNE.S   .allocate_descriptor_if_needed
 
     TST.B   D0
-    BNE.S   .lab_0A2A
+    BNE.S   .loop_compare_candidate_with_head
 
-    BNE.S   .lab_0A2B
+    BNE.S   .allocate_descriptor_if_needed
 
     MOVEQ   #1,D0
     MOVE.L  D0,-138(A5)
 
-.lab_0A2B:
+.allocate_descriptor_if_needed:
     TST.L   -138(A5)
-    BNE.S   .lab_0A2E
+    BNE.S   .poll_until_path_change_or_timeout
 
     CLR.L   -(A7)
     PEA     -40(A5)
@@ -1185,60 +1191,60 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVE.W  ESQIFF_AssetSourceSelect,D1
     MOVE.L  D0,DATA_WDISP_BSS_LONG_22A8
     TST.W   D1
-    BEQ.S   .lab_0A2C
+    BEQ.S   .init_gads_pending_descriptor
 
     MOVEA.L D0,A0
     MOVE.B  #$4,190(A0)
     MOVE.L  D0,CTASKS_PendingLogoBrushDescriptor
-    BRA.S   .lab_0A2D
+    BRA.S   .start_iff_task_for_pending_descriptor
 
-.lab_0A2C:
+.init_gads_pending_descriptor:
     MOVEA.L D0,A0
     MOVE.B  #$5,190(A0)
     MOVE.L  D0,CTASKS_PendingGAdsBrushDescriptor
 
-.lab_0A2D:
+.start_iff_task_for_pending_descriptor:
     JSR     ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
 
-.lab_0A2E:
+.poll_until_path_change_or_timeout:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVEQ   #-1,D0
     CMP.W   -130(A5),D0
-    BNE.S   .lab_0A2F
+    BNE.S   .compare_snapshot_with_current_path
 
     PEA     -40(A5)
     BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
 
     ADDQ.W  #4,A7
 
-.lab_0A2F:
+.compare_snapshot_with_current_path:
     LEA     -120(A5),A0
     LEA     -40(A5),A1
 
-.lab_0A30:
+.loop_compare_paths:
     MOVE.B  (A0)+,D0
     CMP.B   (A1)+,D0
-    BNE.S   .lab_0A31
+    BNE.S   .retry_queue_loop_if_timeout
 
     TST.B   D0
-    BNE.S   .lab_0A30
+    BNE.S   .loop_compare_paths
 
-    BEQ.S   .lab_0A32
+    BEQ.S   .finalize_no_candidate
 
-.lab_0A31:
+.retry_queue_loop_if_timeout:
     MOVEQ   #-1,D0
     CMP.W   -130(A5),D0
-    BEQ.W   .lab_0A27
+    BEQ.W   .loop_queue_until_path_changes
 
-.lab_0A32:
+.finalize_no_candidate:
     TST.W   -128(A5)
-    BNE.S   .lab_0A33
+    BNE.S   .return_current_timeout_state
 
     MOVEQ   #-1,D0
     MOVE.W  D0,-130(A5)
 
-.lab_0A33:
+.return_current_timeout_state:
     MOVE.W  -130(A5),D0
 
 .return:
@@ -1249,7 +1255,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ReadNextExternalAssetPathEntry   (Routine at ESQIFF_ReadNextExternalAssetPathEntry)
+; FUNC: ESQIFF_ReadNextExternalAssetPathEntry   (Read next newline-delimited external asset path entry)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +10: arg_2 (via 14(A5))
@@ -1260,13 +1266,14 @@ ESQIFF_QueueNextExternalAssetIffJob:
 ; CALLS:
 ;   ESQDISP_ProcessGridMessagesIfIdle
 ; READS:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled, return
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_LogoListLineIndex, ESQIFF_GAdsListLineIndex, ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_22AC, DATA_WDISP_BSS_LONG_22AD, DATA_WDISP_BSS_LONG_22C3
+;   ESQIFF_LogoListLineIndex, ESQIFF_GAdsListLineIndex, ESQIFF_ExternalAssetPathCommaFlag
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Selects active catalog stream, advances to current line index, then copies one
+;   path entry into output buffer stopping on CR/LF/space or comma delimiters.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Comma delimiter sets ESQIFF_ExternalAssetPathCommaFlag and returns empty string.
 ;------------------------------------------------------------------------------
 ESQIFF_ReadNextExternalAssetPathEntry:
     LINK.W  A5,#-16
@@ -1275,117 +1282,117 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A36
+    BEQ.S   .select_gads_catalog
 
     MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
     MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_22AC,D6
+    MOVE.W  ESQIFF_LogoListLineIndex,D6
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_22C3
-    BRA.S   .lab_0A38
+    MOVE.W  D0,ESQIFF_ExternalAssetPathCommaFlag
+    BRA.S   .begin_line_seek
 
-.lab_0A36:
+.select_gads_catalog:
     MOVE.W  ESQIFF_GAdsSourceEnabled,D0
-    BEQ.S   .lab_0A37
+    BEQ.S   .return_no_catalog_enabled
 
     MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D4
     MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-14(A5)
-    MOVE.W  DATA_WDISP_BSS_LONG_22AD,D6
-    BRA.S   .lab_0A38
+    MOVE.W  ESQIFF_GAdsListLineIndex,D6
+    BRA.S   .begin_line_seek
 
-.lab_0A37:
+.return_no_catalog_enabled:
     MOVEQ   #0,D0
     BRA.W   .return
 
-.lab_0A38:
+.begin_line_seek:
     MOVEQ   #0,D7
 
-.lab_0A39:
+.loop_seek_to_target_line:
     CMP.W   D6,D7
-    BGE.S   .lab_0A3B
+    BGE.S   .begin_entry_copy
 
     TST.L   D4
-    BLE.S   .lab_0A3B
+    BLE.S   .begin_entry_copy
 
     MOVEA.L -14(A5),A0
     MOVE.B  (A0)+,D5
     MOVE.L  A0,-14(A5)
     MOVEQ   #10,D0
     CMP.B   D0,D5
-    BNE.S   .lab_0A3A
+    BNE.S   .consume_seek_char
 
     ADDQ.W  #1,D7
 
-.lab_0A3A:
+.consume_seek_char:
     SUBQ.L  #1,D4
-    BRA.S   .lab_0A39
+    BRA.S   .loop_seek_to_target_line
 
-.lab_0A3B:
+.begin_entry_copy:
     TST.L   D4
-    BNE.S   .lab_0A3E
+    BNE.S   .advance_line_index_counter
 
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A3C
+    BEQ.S   .reload_gads_catalog_start
 
     MOVE.L  Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D4
     MOVE.L  Global_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
-    BRA.S   .lab_0A3D
+    BRA.S   .reset_line_index_to_one
 
-.lab_0A3C:
+.reload_gads_catalog_start:
     MOVE.L  Global_REF_LONG_GFX_G_ADS_FILESIZE,D4
     MOVE.L  Global_REF_LONG_GFX_G_ADS_DATA,-14(A5)
 
-.lab_0A3D:
+.reset_line_index_to_one:
     MOVEQ   #1,D6
-    BRA.S   .lab_0A3F
+    BRA.S   .store_updated_line_index
 
-.lab_0A3E:
+.advance_line_index_counter:
     ADDQ.W  #1,D6
 
-.lab_0A3F:
+.store_updated_line_index:
     MOVE.W  ESQIFF_AssetSourceSelect,D0
-    BEQ.S   .lab_0A40
+    BEQ.S   .store_gads_line_index
 
-    MOVE.W  D6,DATA_WDISP_BSS_WORD_22AC
-    BRA.S   .lab_0A41
+    MOVE.W  D6,ESQIFF_LogoListLineIndex
+    BRA.S   .loop_copy_entry_chars
 
-.lab_0A40:
-    MOVE.W  D6,DATA_WDISP_BSS_LONG_22AD
+.store_gads_line_index:
+    MOVE.W  D6,ESQIFF_GAdsListLineIndex
 
-.lab_0A41:
+.loop_copy_entry_chars:
     MOVEA.L -14(A5),A0
     MOVE.B  (A0)+,D5
     MOVE.L  A0,-14(A5)
     MOVEQ   #10,D0
     CMP.B   D0,D5
-    BEQ.S   .lab_0A43
+    BEQ.S   .terminate_and_return_entry
 
     MOVEQ   #13,D0
     CMP.B   D0,D5
-    BEQ.S   .lab_0A43
+    BEQ.S   .terminate_and_return_entry
 
     MOVEQ   #32,D0
     CMP.B   D0,D5
-    BEQ.S   .lab_0A43
+    BEQ.S   .terminate_and_return_entry
 
     MOVE.L  D4,D0
     SUBQ.L  #1,D4
     TST.L   D0
-    BLE.S   .lab_0A43
+    BLE.S   .terminate_and_return_entry
 
     MOVEQ   #44,D0
     CMP.B   D0,D5
-    BNE.S   .lab_0A42
+    BNE.S   .append_entry_char
 
     CLR.B   (A3)
-    MOVE.W  #1,DATA_WDISP_BSS_LONG_22C3
-    BRA.S   .lab_0A43
+    MOVE.W  #1,ESQIFF_ExternalAssetPathCommaFlag
+    BRA.S   .terminate_and_return_entry
 
-.lab_0A42:
+.append_entry_char:
     MOVE.B  D5,(A3)+
-    BRA.S   .lab_0A41
+    BRA.S   .loop_copy_entry_chars
 
-.lab_0A43:
+.terminate_and_return_entry:
     CLR.B   (A3)
     MOVEQ   #1,D0
 
@@ -1397,7 +1404,7 @@ ESQIFF_ReadNextExternalAssetPathEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RestoreBasePaletteTriples   (Routine at ESQIFF_RestoreBasePaletteTriples)
+; FUNC: ESQIFF_RestoreBasePaletteTriples   (RestoreBasePaletteTriples)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1411,9 +1418,10 @@ ESQIFF_ReadNextExternalAssetPathEntry:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores 24 palette bytes from DATA_ESQFUNC_CONST_LONG_1ECC into
+;   WDISP_PaletteTriplesRBase.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Fixed-length byte copy loop; used before startup/status render transitions.
 ;------------------------------------------------------------------------------
 ESQIFF_RestoreBasePaletteTriples:
     MOVE.L  D7,-(A7)
@@ -1439,7 +1447,7 @@ ESQIFF_RestoreBasePaletteTriples:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RunCopperRiseTransition   (Routine at ESQIFF_RunCopperRiseTransition)
+; FUNC: ESQIFF_RunCopperRiseTransition   (RunCopperRiseTransition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1453,9 +1461,10 @@ ESQIFF_RestoreBasePaletteTriples:
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B1C
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Arms copper rise-transition countdown state and runs pending copper animation
+;   servicing immediately.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Writes DATA_COMMON_BSS_WORD_1B1C = 15 before invoking ESQIFF_RunPendingCopperAnimations.
 ;------------------------------------------------------------------------------
 ESQIFF_RunCopperRiseTransition:
     MOVE.W  #15,DATA_COMMON_BSS_WORD_1B1C
@@ -1466,7 +1475,7 @@ ESQIFF_RunCopperRiseTransition:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RunCopperDropTransition   (Routine at ESQIFF_RunCopperDropTransition)
+; FUNC: ESQIFF_RunCopperDropTransition   (RunCopperDropTransition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1480,9 +1489,10 @@ ESQIFF_RunCopperRiseTransition:
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B1B
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Arms copper drop-transition countdown state and runs pending copper animation
+;   servicing immediately.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Writes DATA_COMMON_BSS_WORD_1B1B = 15 before invoking ESQIFF_RunPendingCopperAnimations.
 ;------------------------------------------------------------------------------
 ESQIFF_RunCopperDropTransition:
     MOVE.W  #15,DATA_COMMON_BSS_WORD_1B1B
@@ -1493,7 +1503,7 @@ ESQIFF_RunCopperDropTransition:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ServicePendingCopperPaletteMoves   (Routine at ESQIFF_ServicePendingCopperPaletteMoves)
+; FUNC: ESQIFF_ServicePendingCopperPaletteMoves   (Service pending copper index moves for four accumulator rows)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1507,24 +1517,25 @@ ESQIFF_RunCopperDropTransition:
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Checks per-row move countdown words and, when armed, steps the configured
+;   copper index range toward start or end for rows 0..3.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses move-flag bit1 as direction: set=toward end, clear=toward start.
 ;------------------------------------------------------------------------------
 ESQIFF_ServicePendingCopperPaletteMoves:
     MOVE.L  A4,-(A7)
     LEA     Global_REF_LONG_FILE_SCRATCH,A4
     MOVE.W  DATA_COMMON_BSS_WORD_1B15,D0
     SUBQ.W  #1,D0
-    BNE.S   .lab_0A4C
+    BNE.S   .service_row1_pending_move
 
     TST.W   WDISP_AccumulatorRow0_MoveFlags
-    BEQ.S   .lab_0A4C
+    BEQ.S   .service_row1_pending_move
 
     CLR.W   DATA_COMMON_BSS_WORD_1B15
     MOVE.W  WDISP_AccumulatorRow0_MoveFlags,D0
     BTST    #1,D0
-    BEQ.S   .lab_0A4B
+    BEQ.S   .move_row0_toward_start
 
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
@@ -1535,9 +1546,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_0A4C
+    BRA.S   .service_row1_pending_move
 
-.lab_0A4B:
+.move_row0_toward_start:
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #0,D1
@@ -1548,18 +1559,18 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
     ADDQ.W  #8,A7
 
-.lab_0A4C:
+.service_row1_pending_move:
     MOVE.W  DATA_COMMON_BSS_WORD_1B16,D0
     SUBQ.W  #1,D0
-    BNE.S   .lab_0A4E
+    BNE.S   .service_row2_pending_move
 
     TST.W   WDISP_AccumulatorRow1_MoveFlags
-    BEQ.S   .lab_0A4E
+    BEQ.S   .service_row2_pending_move
 
     CLR.W   DATA_COMMON_BSS_WORD_1B16
     MOVE.W  WDISP_AccumulatorRow1_MoveFlags,D0
     BTST    #1,D0
-    BEQ.S   .lab_0A4D
+    BEQ.S   .move_row1_toward_start
 
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D0
@@ -1570,9 +1581,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_0A4E
+    BRA.S   .service_row2_pending_move
 
-.lab_0A4D:
+.move_row1_toward_start:
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D0
     MOVEQ   #0,D1
@@ -1583,18 +1594,18 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
     ADDQ.W  #8,A7
 
-.lab_0A4E:
+.service_row2_pending_move:
     MOVE.W  DATA_COMMON_BSS_WORD_1B17,D0
     SUBQ.W  #1,D0
-    BNE.S   .lab_0A50
+    BNE.S   .service_row3_pending_move
 
     TST.W   WDISP_AccumulatorRow2_MoveFlags
-    BEQ.S   .lab_0A50
+    BEQ.S   .service_row3_pending_move
 
     CLR.W   DATA_COMMON_BSS_WORD_1B17
     MOVE.W  WDISP_AccumulatorRow2_MoveFlags,D0
     BTST    #1,D0
-    BEQ.S   .lab_0A4F
+    BEQ.S   .move_row2_toward_start
 
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
@@ -1605,9 +1616,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_0A50
+    BRA.S   .service_row3_pending_move
 
-.lab_0A4F:
+.move_row2_toward_start:
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
     MOVEQ   #0,D1
@@ -1618,18 +1629,18 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
     ADDQ.W  #8,A7
 
-.lab_0A50:
+.service_row3_pending_move:
     MOVE.W  DATA_COMMON_BSS_LONG_1B18,D0
     SUBQ.W  #1,D0
-    BNE.S   .lab_0A52
+    BNE.S   .return_service_pending_copper_moves
 
     TST.W   WDISP_AccumulatorRow3_MoveFlags
-    BEQ.S   .lab_0A52
+    BEQ.S   .return_service_pending_copper_moves
 
     CLR.W   DATA_COMMON_BSS_LONG_1B18
     MOVE.W  WDISP_AccumulatorRow3_MoveFlags,D0
     BTST    #1,D0
-    BEQ.S   .lab_0A51
+    BEQ.S   .move_row3_toward_start
 
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D0
@@ -1640,9 +1651,9 @@ ESQIFF_ServicePendingCopperPaletteMoves:
     JSR     ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(PC)
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_0A52
+    BRA.S   .return_service_pending_copper_moves
 
-.lab_0A51:
+.move_row3_toward_start:
     MOVEQ   #0,D0
     MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D0
     MOVEQ   #0,D1
@@ -1653,14 +1664,14 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 
     ADDQ.W  #8,A7
 
-.lab_0A52:
+.return_service_pending_copper_moves:
     MOVEA.L (A7)+,A4
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_SetApenToBrightestPaletteIndex   (Routine at ESQIFF_SetApenToBrightestPaletteIndex)
+; FUNC: ESQIFF_SetApenToBrightestPaletteIndex   (Set APen to brightest palette triple within active depth)
 ; ARGS:
 ;   stack +10: arg_1 (via 14(A5))
 ; RET:
@@ -1674,9 +1685,10 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Scans active palette entries, picks the index with highest summed RGB
+;   intensity, and applies it to the display-context rastport APen.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Palette scan upper bound is derived from active depth bit (`22AE`).
 ;------------------------------------------------------------------------------
 ESQIFF_SetApenToBrightestPaletteIndex:
     LINK.W  A5,#-16
@@ -1698,11 +1710,11 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     CLR.L   -14(A5)
     MOVEQ   #1,D7
 
-.lab_0A54:
+.loop_palette_entries:
     MOVE.L  D7,D0
     EXT.L   D0
     CMP.L   D4,D0
-    BGE.S   .lab_0A56
+    BGE.S   .apply_best_palette_index
 
     MOVE.L  D7,D0
     MOVEQ   #3,D1
@@ -1727,18 +1739,18 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     ADD.L   D1,D0
     MOVE.L  D0,D5
     CMP.W   D5,D6
-    BGE.S   .lab_0A55
+    BGE.S   .next_palette_entry
 
     MOVE.L  D5,D6
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-14(A5)
 
-.lab_0A55:
+.next_palette_entry:
     ADDQ.W  #1,D7
-    BRA.S   .lab_0A54
+    BRA.S   .loop_palette_entries
 
-.lab_0A56:
+.apply_best_palette_index:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
@@ -1753,7 +1765,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ShowExternalAssetWithCopperFx   (Routine at ESQIFF_ShowExternalAssetWithCopperFx)
+; FUNC: ESQIFF_ShowExternalAssetWithCopperFx   (Blit external asset with copper transition effects)
 ; ARGS:
 ;   stack +6: arg_1 (via 10(A5))
 ;   stack +10: arg_2 (via 14(A5))
@@ -1766,33 +1778,35 @@ ESQIFF_SetApenToBrightestPaletteIndex:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, e8, lab_0A72
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_BannerTransitionActive, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, e8
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, DATA_ESQFUNC_BSS_WORD_1EE4, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Selects source brush list by mode, performs drop/rise copper transitions, builds
+;   a display context, blits the external asset, and captures accumulator thresholds
+;   used by subsequent copper palette motion.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Missing-asset path sets DATA_ESQFUNC_BSS_WORD_1EE4 bits to request deferred retries.
 ;------------------------------------------------------------------------------
 ESQIFF_ShowExternalAssetWithCopperFx:
     LINK.W  A5,#-36
     MOVEM.L D2/D4-D7,-(A7)
     MOVE.W  10(A5),D7
     TST.W   D7
-    BEQ.S   .lab_0A58
+    BEQ.S   .select_primary_or_secondary_brush_head
 
     MOVE.L  ESQIFF_GAdsBrushListHead,-22(A5)
 
-.lab_0A58:
+.select_primary_or_secondary_brush_head:
     TST.W   D7
-    BNE.S   .lab_0A59
+    BNE.S   .ensure_brush_head_available
 
     MOVEA.L ESQIFF_LogoBrushListHead,A0
     MOVE.L  A0,-22(A5)
 
-.lab_0A59:
+.ensure_brush_head_available:
     TST.L   -22(A5)
-    BEQ.W   .lab_0A72
+    BEQ.W   .set_missing_asset_pending_flags
 
     BSR.W   ESQIFF_RunCopperDropTransition
 
@@ -1800,15 +1814,15 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVEA.L -22(A5),A0
     ADD.W   178(A0),D6
     BTST    #2,199(A0)
-    BEQ.S   .lab_0A5A
+    BEQ.S   .set_transition_divisor_two
 
     MOVEQ   #2,D0
-    BRA.S   .lab_0A5B
+    BRA.S   .compute_transition_steps
 
-.lab_0A5A:
+.set_transition_divisor_two:
     MOVEQ   #1,D0
 
-.lab_0A5B:
+.compute_transition_steps:
     MOVE.L  D6,D1
     EXT.L   D1
     MOVE.L  D0,20(A7)
@@ -1819,11 +1833,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,D6
     MOVEQ   #120,D0
     CMP.W   D0,D6
-    BLE.S   .lab_0A5C
+    BLE.S   .clamp_transition_steps
 
     MOVE.L  D0,D6
 
-.lab_0A5C:
+.clamp_transition_steps:
     ADDI.W  #22,D6
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1833,18 +1847,18 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 
     ADDQ.W  #8,A7
 
-.lab_0A5D:
+.wait_banner_transition_idle:
     TST.W   SCRIPT_BannerTransitionActive
-    BNE.S   .lab_0A5D
+    BNE.S   .wait_banner_transition_idle
 
     MOVE.W  #1,WDISP_AccumulatorCaptureActive
     CLR.W   WDISP_AccumulatorFlushPending
     MOVEQ   #0,D5
 
-.lab_0A5E:
+.loop_copy_accumulator_rows:
     MOVEQ   #4,D0
     CMP.L   D0,D5
-    BGE.S   .lab_0A5F
+    BGE.S   .select_display_context_mode
 
     MOVE.L  D5,D0
     ASL.L   #3,D0
@@ -1861,16 +1875,16 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     JSR     _LVOCopyMem(A6)
 
     ADDQ.L  #1,D5
-    BRA.S   .lab_0A5E
+    BRA.S   .loop_copy_accumulator_rows
 
-.lab_0A5F:
+.select_display_context_mode:
     CLR.W   WDISP_AccumulatorCaptureActive
     MOVE.W  #1,WDISP_AccumulatorFlushPending
     MOVE.L  #$8004,D0
     MOVEA.L -22(A5),A0
     AND.L   196(A0),D0
     CMPI.L  #$8004,D0
-    BNE.S   .lab_0A60
+    BNE.S   .select_mode_flag198_bit7
 
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
@@ -1883,11 +1897,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     LEA     12(A7),A7
     MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #20,D4
-    BRA.S   .lab_0A63
+    BRA.S   .clear_rast_and_blit_asset
 
-.lab_0A60:
+.select_mode_flag198_bit7:
     BTST    #7,198(A0)
-    BEQ.S   .lab_0A61
+    BEQ.S   .select_mode_flag199_bit2
 
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
@@ -1900,11 +1914,11 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     LEA     12(A7),A7
     MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #10,D4
-    BRA.S   .lab_0A63
+    BRA.S   .clear_rast_and_blit_asset
 
-.lab_0A61:
+.select_mode_flag199_bit2:
     BTST    #2,199(A0)
-    BEQ.S   .lab_0A62
+    BEQ.S   .select_mode_fallback
 
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
@@ -1917,9 +1931,9 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     LEA     12(A7),A7
     MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #20,D4
-    BRA.S   .lab_0A63
+    BRA.S   .clear_rast_and_blit_asset
 
-.lab_0A62:
+.select_mode_fallback:
     MOVEQ   #0,D0
     MOVE.B  184(A0),D0
     EXT.L   D0
@@ -1932,7 +1946,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,WDISP_DisplayContextBase
     MOVEQ   #10,D4
 
-.lab_0A63:
+.clear_rast_and_blit_asset:
     MOVEA.L D0,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
@@ -1967,13 +1981,13 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     LEA     28(A7),A7
     MOVEA.L -22(A5),A0
     TST.L   328(A0)
-    BEQ.S   .lab_0A64
+    BEQ.S   .refresh_palette_triples_from_asset
 
     MOVEQ   #1,D0
     CMP.L   328(A0),D0
-    BNE.S   .lab_0A66
+    BNE.S   .capture_accumulator_thresholds
 
-.lab_0A64:
+.refresh_palette_triples_from_asset:
     PEA     5.W
     JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
@@ -1996,10 +2010,10 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 
 .branch:
     CMP.L   -18(A5),D5
-    BGE.S   .lab_0A66
+    BGE.S   .capture_accumulator_thresholds
 
     CMP.L   -14(A5),D5
-    BGE.S   .lab_0A66
+    BGE.S   .capture_accumulator_thresholds
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D5,A0
@@ -2010,7 +2024,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     ADDQ.L  #1,D5
     BRA.S   .branch
 
-.lab_0A66:
+.capture_accumulator_thresholds:
     MOVE.B  WDISP_AccumulatorRow0_CopperIndexStart,D0
     MOVEQ   #32,D1
     CMP.B   D1,D0
@@ -2126,7 +2140,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 
     BRA.S   ESQIFF_ShowExternalAssetWithCopperFx_Return
 
-.lab_0A72:
+.set_missing_asset_pending_flags:
     TST.W   D7
     BEQ.S   .branch_12
 
@@ -2140,7 +2154,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     OR.L    D0,DATA_ESQFUNC_BSS_WORD_1EE4
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ShowExternalAssetWithCopperFx_Return   (Routine at ESQIFF_ShowExternalAssetWithCopperFx_Return)
+; FUNC: ESQIFF_ShowExternalAssetWithCopperFx_Return   (Return tail for external-asset copper blit)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2154,9 +2168,9 @@ ESQIFF_ShowExternalAssetWithCopperFx:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores registers/frame and returns from external-asset copper blit helper.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return for successful blit and missing-asset fallback paths.
 ;------------------------------------------------------------------------------
 ESQIFF_ShowExternalAssetWithCopperFx_Return:
     MOVEM.L (A7)+,D2/D4-D7
@@ -2166,7 +2180,7 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ServiceExternalAssetSourceState   (Routine at ESQIFF_ServiceExternalAssetSourceState)
+; FUNC: ESQIFF_ServiceExternalAssetSourceState   (Service external-asset source select and queue state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2180,9 +2194,10 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ; WRITES:
 ;   ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Sets source-selection flags by mode, conditionally reloads external catalogs,
+;   then queues the next external asset IFF job.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Skips reload/queue work during RAVESC select mode or COI busy gate.
 ;------------------------------------------------------------------------------
 ESQIFF_ServiceExternalAssetSourceState:
     MOVE.L  D7,-(A7)
@@ -2196,47 +2211,47 @@ ESQIFF_ServiceExternalAssetSourceState:
     BNE.S   .return
 
     TST.W   D7
-    BEQ.S   .lab_0A77
+    BEQ.S   .configure_source_for_secondary_mode
 
     MOVEQ   #0,D0
     MOVE.W  D0,ESQIFF_AssetSourceSelect
     MOVEQ   #-1,D1
     MOVE.W  D1,ESQIFF_GAdsSourceEnabled
-    BRA.S   .lab_0A78
+    BRA.S   .reload_logo_catalog_if_needed
 
-.lab_0A77:
+.configure_source_for_secondary_mode:
     CLR.W   ESQIFF_GAdsSourceEnabled
     MOVE.W  #(-1),ESQIFF_AssetSourceSelect
 
-.lab_0A78:
+.reload_logo_catalog_if_needed:
     TST.L   DISKIO_Drive0WriteProtectedCode
-    BNE.S   .lab_0A79
+    BNE.S   .reload_gads_catalog_if_needed
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #2,D0
     SUBQ.W  #2,D0
-    BEQ.S   .lab_0A79
+    BEQ.S   .reload_gads_catalog_if_needed
 
     CLR.L   -(A7)
     BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
-.lab_0A79:
+.reload_gads_catalog_if_needed:
     TST.L   DATA_WDISP_BSS_LONG_2319
-    BNE.S   .lab_0A7A
+    BNE.S   .queue_next_asset_after_reload_checks
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
     ANDI.W  #1,D0
     SUBQ.W  #1,D0
-    BEQ.S   .lab_0A7A
+    BEQ.S   .queue_next_asset_after_reload_checks
 
     PEA     1.W
     BSR.W   ESQIFF_ReloadExternalAssetCatalogBuffers
 
     ADDQ.W  #4,A7
 
-.lab_0A7A:
+.queue_next_asset_after_reload_checks:
     JSR     ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     BSR.W   ESQIFF_QueueNextExternalAssetIffJob
@@ -2248,7 +2263,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_PlayNextExternalAssetFrame   (Routine at ESQIFF_PlayNextExternalAssetFrame)
+; FUNC: ESQIFF_PlayNextExternalAssetFrame   (Render and retire next external asset frame)
 ; ARGS:
 ;   stack +6: arg_1 (via 10(A5))
 ; RET:
@@ -2258,13 +2273,14 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_22C2, DATA_WDISP_BSS_LONG_22C3, lab_0A87, lab_0A88
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_22C2, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
 ;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, TEXTDISP_CurrentMatchIndex
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Chooses source brush head, renders one frame with copper/display setup, pops the
+;   consumed brush node from the active list, then services source-state queueing.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Mode 0 path may redraw channel banner using stored match index snapshot.
 ;------------------------------------------------------------------------------
 ESQIFF_PlayNextExternalAssetFrame:
     LINK.W  A5,#-8
@@ -2273,29 +2289,29 @@ ESQIFF_PlayNextExternalAssetFrame:
     BSR.W   ESQIFF_RunCopperDropTransition
 
     TST.W   D7
-    BEQ.S   .lab_0A7D
+    BEQ.S   .check_logo_head_fallback
 
     TST.L   ESQIFF_GAdsBrushListHead
-    BNE.S   .lab_0A7E
+    BNE.S   .validate_asset_list_and_match_index
 
-.lab_0A7D:
+.check_logo_head_fallback:
     TST.W   D7
-    BNE.W   .lab_0A87
+    BNE.W   .fallback_restore_base_palette
 
     TST.L   ESQIFF_LogoBrushListHead
-    BEQ.W   .lab_0A87
+    BEQ.W   .fallback_restore_base_palette
 
-.lab_0A7E:
+.validate_asset_list_and_match_index:
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.W  DATA_WDISP_BSS_LONG_22C2,D1
     CMP.W   D1,D0
-    BCC.S   .lab_0A7F
+    BCC.S   .prepare_display_context_for_asset_blit
 
     TST.W   D7
-    BNE.S   .lab_0A7F
+    BNE.S   .prepare_display_context_for_asset_blit
 
     TST.W   DATA_WDISP_BSS_LONG_22C3
-    BNE.S   .lab_0A7F
+    BNE.S   .prepare_display_context_for_asset_blit
 
     BSR.W   ESQIFF_RestoreBasePaletteTriples
 
@@ -2305,9 +2321,9 @@ ESQIFF_PlayNextExternalAssetFrame:
     JSR     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
-    BRA.W   .lab_0A88
+    BRA.W   .run_rise_transition_and_service_source
 
-.lab_0A7F:
+.prepare_display_context_for_asset_blit:
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     PEA     1.W
@@ -2327,34 +2343,34 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     LEA     12(A7),A7
     TST.W   D7
-    BEQ.S   .lab_0A80
+    BEQ.S   .select_logo_head_for_blit
 
     MOVEA.L ESQIFF_GAdsBrushListHead,A0
-    BRA.S   .lab_0A81
+    BRA.S   .run_asset_frame_side_effects
 
-.lab_0A80:
+.select_logo_head_for_blit:
     MOVEA.L ESQIFF_LogoBrushListHead,A0
 
-.lab_0A81:
+.run_asset_frame_side_effects:
     MOVE.L  A0,-6(A5)
     JSR     ESQIFF_JMPTBL_ESQ_NoOp(PC)
 
     MOVEQ   #1,D0
     CMP.W   D0,D7
-    BNE.S   .lab_0A83
+    BNE.S   .render_selected_asset_frame
 
     MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #2,D0
-    BEQ.S   .lab_0A82
+    BEQ.S   .assert_ctrl_line_for_deferred_tick
 
     MOVE.W  TEXTDISP_DeferredActionCountdown,D0
     SUBQ.W  #3,D0
-    BNE.S   .lab_0A83
+    BNE.S   .render_selected_asset_frame
 
-.lab_0A82:
+.assert_ctrl_line_for_deferred_tick:
     JSR     ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled(PC)
 
-.lab_0A83:
+.render_selected_asset_frame:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2362,10 +2378,10 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     ADDQ.W  #4,A7
     TST.W   D7
-    BNE.S   .lab_0A84
+    BNE.S   .pop_rendered_asset_head
 
     TST.W   DATA_WDISP_BSS_LONG_22C3
-    BNE.S   .lab_0A84
+    BNE.S   .pop_rendered_asset_head
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
@@ -2389,7 +2405,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-.lab_0A84:
+.pop_rendered_asset_head:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     MOVEA.L A0,A1
@@ -2401,7 +2417,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     JSR     _LVOForbid(A6)
 
     TST.W   D7
-    BEQ.S   .lab_0A85
+    BEQ.S   .pop_logo_brush_head
 
     SUBQ.L  #1,ESQIFF_GAdsBrushListCount
     MOVE.L  ESQIFF_GAdsBrushListHead,-(A7)
@@ -2409,9 +2425,9 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,ESQIFF_GAdsBrushListHead
-    BRA.S   .lab_0A86
+    BRA.S   .permit_after_pop
 
-.lab_0A85:
+.pop_logo_brush_head:
     SUBQ.L  #1,ESQIFF_LogoBrushListCount
     MOVE.L  ESQIFF_LogoBrushListHead,-(A7)
     JSR     ESQIFF_JMPTBL_BRUSH_PopBrushHead(PC)
@@ -2419,13 +2435,13 @@ ESQIFF_PlayNextExternalAssetFrame:
     ADDQ.W  #4,A7
     MOVE.L  D0,ESQIFF_LogoBrushListHead
 
-.lab_0A86:
+.permit_after_pop:
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)
 
-    BRA.S   .lab_0A88
+    BRA.S   .run_rise_transition_and_service_source
 
-.lab_0A87:
+.fallback_restore_base_palette:
     BSR.W   ESQIFF_RestoreBasePaletteTriples
 
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
@@ -2435,14 +2451,14 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     ADDQ.W  #4,A7
 
-.lab_0A88:
+.run_rise_transition_and_service_source:
     MOVE.W  WDISP_AccumulatorCaptureActive,D6
     CLR.W   WDISP_AccumulatorCaptureActive
     BSR.W   ESQIFF_RunCopperRiseTransition
 
     MOVE.W  D6,WDISP_AccumulatorCaptureActive
     TST.W   D7
-    BEQ.S   .lab_0A89
+    BEQ.S   .service_source_mode_zero
 
     PEA     1.W
     BSR.W   ESQIFF_ServiceExternalAssetSourceState
@@ -2450,14 +2466,14 @@ ESQIFF_PlayNextExternalAssetFrame:
     ADDQ.W  #4,A7
     BRA.S   ESQIFF_PlayNextExternalAssetFrame_Return
 
-.lab_0A89:
+.service_source_mode_zero:
     CLR.L   -(A7)
     BSR.W   ESQIFF_ServiceExternalAssetSourceState
 
     ADDQ.W  #4,A7
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_PlayNextExternalAssetFrame_Return   (Routine at ESQIFF_PlayNextExternalAssetFrame_Return)
+; FUNC: ESQIFF_PlayNextExternalAssetFrame_Return   (Return tail for external asset frame player)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2471,9 +2487,9 @@ ESQIFF_PlayNextExternalAssetFrame:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers/frame and returns from frame-player helper.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return for both render and fallback/no-asset paths.
 ;------------------------------------------------------------------------------
 ESQIFF_PlayNextExternalAssetFrame_Return:
     MOVEM.L (A7)+,D6-D7
@@ -2483,7 +2499,7 @@ ESQIFF_PlayNextExternalAssetFrame_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_DeallocateAdsAndLogoLstData   (Routine at ESQIFF_DeallocateAdsAndLogoLstData)
+; FUNC: ESQIFF_DeallocateAdsAndLogoLstData   (Free loaded external catalog blobs)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2497,9 +2513,10 @@ ESQIFF_PlayNextExternalAssetFrame_Return:
 ; WRITES:
 ;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Frees loaded `gfx/g_ads.data` and `df0:logo.lst` memory buffers when both
+;   pointer and filesize are non-zero, then clears their globals.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Passes `(size+1)` to deallocator, matching allocation strategy.
 ;------------------------------------------------------------------------------
 ESQIFF_DeallocateAdsAndLogoLstData:
     TST.L   Global_REF_LONG_GFX_G_ADS_DATA
@@ -2545,7 +2562,7 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_RunPendingCopperAnimations   (Routine at ESQIFF_RunPendingCopperAnimations)
+; FUNC: ESQIFF_RunPendingCopperAnimations   (Service all active copper animation countdown lanes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2559,15 +2576,16 @@ ESQIFF_DeallocateAdsAndLogoLstData:
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1B19, DATA_COMMON_BSS_WORD_1B1A, DATA_COMMON_BSS_WORD_1B1B, DATA_COMMON_BSS_WORD_1B1C
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Services four countdown lanes in sequence, invoking the corresponding copper
+;   helper while each lane is non-zero and decrementing per step.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Loops until all lanes (`1B19..1B1C`) reach zero.
 ;------------------------------------------------------------------------------
 ESQIFF_RunPendingCopperAnimations:
     MOVE.W  DATA_COMMON_BSS_WORD_1B19,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .lab_0A8F
+    BLS.S   .service_lane_1b1a
 
     JSR     ESQIFF_JMPTBL_ESQ_NoOp_006A(PC)
 
@@ -2576,52 +2594,52 @@ ESQIFF_RunPendingCopperAnimations:
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B19
     BRA.S   ESQIFF_RunPendingCopperAnimations
 
-.lab_0A8F:
+.service_lane_1b1a:
     MOVE.W  DATA_COMMON_BSS_WORD_1B1A,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .lab_0A90
+    BLS.S   .service_lane_1b1b
 
     JSR     ESQIFF_JMPTBL_ESQ_NoOp_0074(PC)
 
     MOVE.W  DATA_COMMON_BSS_WORD_1B1A,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B1A
-    BRA.S   .lab_0A8F
+    BRA.S   .service_lane_1b1a
 
-.lab_0A90:
+.service_lane_1b1b:
     MOVE.W  DATA_COMMON_BSS_WORD_1B1B,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .lab_0A91
+    BLS.S   .service_lane_1b1c
 
     JSR     ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary(PC)
 
     MOVE.W  DATA_COMMON_BSS_WORD_1B1B,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B1B
-    BRA.S   .lab_0A90
+    BRA.S   .service_lane_1b1b
 
-.lab_0A91:
+.service_lane_1b1c:
     MOVE.W  DATA_COMMON_BSS_WORD_1B1C,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .lab_0A92
+    BLS.S   .return_run_pending_copper_animations
 
     JSR     ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets(PC)
 
     MOVE.W  DATA_COMMON_BSS_WORD_1B1C,D0
     SUBQ.W  #1,D0
     MOVE.W  D0,DATA_COMMON_BSS_WORD_1B1C
-    BRA.S   .lab_0A91
+    BRA.S   .service_lane_1b1c
 
-.lab_0A92:
+.return_run_pending_copper_animations:
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_HandleBrushIniReloadHotkey   (Routine at ESQIFF_HandleBrushIniReloadHotkey)
+; FUNC: ESQIFF_HandleBrushIniReloadHotkey   (Handle brush.ini reload hotkey and refresh brush lists)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2635,9 +2653,10 @@ ESQIFF_RunPendingCopperAnimations:
 ; WRITES:
 ;   BRUSH_SelectedNode, DATA_ESQFUNC_BSS_LONG_1ED0
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   On hotkey `'a'`, refreshes brush.ini data, rebuilds brush lists, selects
+;   preferred brush tags, and updates cached type-3 brush pointer.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Calls disk refresh/reset helpers before and after parse/rebuild sequence.
 ;------------------------------------------------------------------------------
 ESQIFF_HandleBrushIniReloadHotkey:
     MOVE.L  D7,-(A7)
@@ -2665,7 +2684,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
 
     LEA     24(A7),A7
     TST.L   BRUSH_SelectedNode
-    BNE.S   .lab_0A94
+    BNE.S   .ensure_type3_brush_cache
 
     PEA     ESQIFF_BrushIniListHead
     PEA     DATA_ESQIFF_TAG_DITHER_1EF9
@@ -2674,7 +2693,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
     ADDQ.W  #8,A7
     MOVE.L  D0,BRUSH_SelectedNode
 
-.lab_0A94:
+.ensure_type3_brush_cache:
     PEA     ESQIFF_BrushIniListHead
     JSR     ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
 
@@ -2695,7 +2714,7 @@ ESQIFF_HandleBrushIniReloadHotkey:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCase   (Routine at ESQIFF_JMPTBL_STRING_CompareNoCase)
+; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCase   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2709,15 +2728,15 @@ ESQIFF_HandleBrushIniReloadHotkey:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_STRING_CompareNoCase:
     JMP     STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Routine at ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode)
+; FUNC: ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2731,15 +2750,15 @@ ESQIFF_JMPTBL_STRING_CompareNoCase:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
     JMP     TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle   (Routine at ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle)
+; FUNC: ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2753,15 +2772,15 @@ ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
     JMP     DISKIO_GetFilesizeFromHandle
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MATH_DivS32   (Routine at ESQIFF_JMPTBL_MATH_DivS32)
+; FUNC: ESQIFF_JMPTBL_MATH_DivS32   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2775,15 +2794,15 @@ ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_MATH_DivS32:
     JMP     MATH_DivS32
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard   (Routine at ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard)
+; FUNC: ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2797,15 +2816,15 @@ ESQIFF_JMPTBL_MATH_DivS32:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
     JMP     TEXTDISP_FindEntryIndexByWildcard
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_STRING_CompareN   (Routine at ESQIFF_JMPTBL_STRING_CompareN)
+; FUNC: ESQIFF_JMPTBL_STRING_CompareN   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2819,15 +2838,15 @@ ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_STRING_CompareN:
     JMP     STRING_CompareN
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_NoOp   (Routine at ESQIFF_JMPTBL_ESQ_NoOp)
+; FUNC: ESQIFF_JMPTBL_ESQ_NoOp   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2841,15 +2860,15 @@ ESQIFF_JMPTBL_STRING_CompareN:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_NoOp:
     JMP     ESQ_NoOp
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner   (Routine at ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner)
+; FUNC: ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2863,15 +2882,15 @@ ESQIFF_JMPTBL_ESQ_NoOp:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner:
     JMP     TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart   (Routine at ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart)
+; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2885,15 +2904,15 @@ ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
     JMP     ESQ_MoveCopperEntryTowardStart
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MEMORY_DeallocateMemory   (Routine at ESQIFF_JMPTBL_MEMORY_DeallocateMemory)
+; FUNC: ESQIFF_JMPTBL_MEMORY_DeallocateMemory   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2907,15 +2926,15 @@ ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
     JMP     MEMORY_DeallocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle   (Routine at ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle)
+; FUNC: ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2929,15 +2948,15 @@ ESQIFF_JMPTBL_MEMORY_DeallocateMemory:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle:
     JMP     DISKIO_ForceUiRefreshIfIdle
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_CloneBrushRecord   (Routine at ESQIFF_JMPTBL_BRUSH_CloneBrushRecord)
+; FUNC: ESQIFF_JMPTBL_BRUSH_CloneBrushRecord   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2951,15 +2970,15 @@ ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_CloneBrushRecord:
     JMP     BRUSH_CloneBrushRecord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd   (Routine at ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd)
+; FUNC: ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2973,15 +2992,15 @@ ESQIFF_JMPTBL_BRUSH_CloneBrushRecord:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd:
     JMP     ESQ_MoveCopperEntryTowardEnd
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate   (Routine at ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate)
+; FUNC: ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2995,15 +3014,15 @@ ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
     JMP     BRUSH_FindBrushByPredicate
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_FreeBrushList   (Routine at ESQIFF_JMPTBL_BRUSH_FreeBrushList)
+; FUNC: ESQIFF_JMPTBL_BRUSH_FreeBrushList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3017,15 +3036,15 @@ ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_FreeBrushList:
     JMP     BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_FindType3Brush   (Routine at ESQIFF_JMPTBL_BRUSH_FindType3Brush)
+; FUNC: ESQIFF_JMPTBL_BRUSH_FindType3Brush   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3039,15 +3058,15 @@ ESQIFF_JMPTBL_BRUSH_FreeBrushList:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_FindType3Brush:
     JMP     BRUSH_FindType3Brush
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_PopBrushHead   (Routine at ESQIFF_JMPTBL_BRUSH_PopBrushHead)
+; FUNC: ESQIFF_JMPTBL_BRUSH_PopBrushHead   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3061,15 +3080,15 @@ ESQIFF_JMPTBL_BRUSH_FindType3Brush:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_PopBrushHead:
     JMP     BRUSH_PopBrushHead
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_AllocBrushNode   (Routine at ESQIFF_JMPTBL_BRUSH_AllocBrushNode)
+; FUNC: ESQIFF_JMPTBL_BRUSH_AllocBrushNode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3083,15 +3102,15 @@ ESQIFF_JMPTBL_BRUSH_PopBrushHead:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_AllocBrushNode:
     JMP     BRUSH_AllocBrushNode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_006A   (Routine at ESQIFF_JMPTBL_ESQ_NoOp_006A)
+; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_006A   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3105,15 +3124,15 @@ ESQIFF_JMPTBL_BRUSH_AllocBrushNode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_NoOp_006A:
     JMP     ESQ_NoOp_006A
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode   (Routine at ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode)
+; FUNC: ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3127,15 +3146,15 @@ ESQIFF_JMPTBL_ESQ_NoOp_006A:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
     JMP     NEWGRID_ValidateSelectionCode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_PopulateBrushList   (Routine at ESQIFF_JMPTBL_BRUSH_PopulateBrushList)
+; FUNC: ESQIFF_JMPTBL_BRUSH_PopulateBrushList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3149,15 +3168,15 @@ ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
     JMP     BRUSH_PopulateBrushList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_0074   (Routine at ESQIFF_JMPTBL_ESQ_NoOp_0074)
+; FUNC: ESQIFF_JMPTBL_ESQ_NoOp_0074   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3171,15 +3190,15 @@ ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_NoOp_0074:
     JMP     ESQ_NoOp_0074
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCaseN   (Routine at ESQIFF_JMPTBL_STRING_CompareNoCaseN)
+; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCaseN   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3193,15 +3212,15 @@ ESQIFF_JMPTBL_ESQ_NoOp_0074:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_STRING_CompareNoCaseN:
     JMP     STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled   (Routine at ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled)
+; FUNC: ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3215,15 +3234,15 @@ ESQIFF_JMPTBL_STRING_CompareNoCaseN:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
     JMP     SCRIPT_AssertCtrlLineIfEnabled
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition   (Routine at ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition)
+; FUNC: ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3237,15 +3256,15 @@ ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     SCRIPT_BeginBannerCharTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MEMORY_AllocateMemory   (Routine at ESQIFF_JMPTBL_MEMORY_AllocateMemory)
+; FUNC: ESQIFF_JMPTBL_MEMORY_AllocateMemory   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3259,15 +3278,15 @@ ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess   (Routine at ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess)
+; FUNC: ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3281,15 +3300,15 @@ ESQIFF_JMPTBL_MEMORY_AllocateMemory:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
     JMP     CTASKS_StartIffTaskProcess
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode   (Routine at ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode)
+; FUNC: ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3303,15 +3322,15 @@ ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
     JMP     UNKNOWN2B_OpenFileWithAccessMode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Routine at ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets)
+; FUNC: ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3325,15 +3344,15 @@ ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets:
     JMP     ESQ_IncCopperListsTowardsTargets
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary   (Routine at ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary)
+; FUNC: ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3347,15 +3366,15 @@ ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
     JMP     ESQ_DecCopperListsPrimary
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushSlot   (Routine at ESQIFF_JMPTBL_BRUSH_SelectBrushSlot)
+; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushSlot   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3369,15 +3388,15 @@ ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
     JMP     BRUSH_SelectBrushSlot
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel   (Routine at ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel)
+; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3391,15 +3410,15 @@ ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
     JMP     BRUSH_SelectBrushByLabel
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MATH_Mulu32   (Routine at ESQIFF_JMPTBL_MATH_Mulu32)
+; FUNC: ESQIFF_JMPTBL_MATH_Mulu32   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3413,15 +3432,15 @@ ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_MATH_Mulu32:
     JMP     MATH_Mulu32
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle   (Routine at ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle)
+; FUNC: ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3435,9 +3454,9 @@ ESQIFF_JMPTBL_MATH_Mulu32:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle:
     JMP     DISKIO_ResetCtrlInputStateIfIdle

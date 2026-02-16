@@ -1,6 +1,6 @@
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ParseCompactEntryRecord   (Routine at ESQSHARED_ParseCompactEntryRecord)
+; FUNC: ESQSHARED_ParseCompactEntryRecord   (Parse compact entry record and apply by title)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +11: arg_2 (via 15(A5))
@@ -16,9 +16,10 @@
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Parses compact record fields (group/type/title/key byte) and forwards update
+;   payload to ESQSHARED_UpdateMatchingEntriesByTitle.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Title field is read up to delimiter 0x12 (or 8 bytes max) before dispatch.
 ;------------------------------------------------------------------------------
 ESQSHARED_ParseCompactEntryRecord:
     LINK.W  A5,#-16
@@ -65,7 +66,7 @@ ESQSHARED_ParseCompactEntryRecord:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_MatchSelectionCodeWithOptionalSuffix   (Routine at ESQSHARED_MatchSelectionCodeWithOptionalSuffix)
+; FUNC: ESQSHARED_MatchSelectionCodeWithOptionalSuffix   (Match selection code with optional suffix wildcard)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +5: arg_2 (via 9(A5))
@@ -83,9 +84,11 @@ ESQSHARED_ParseCompactEntryRecord:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Parses a selection token with optional '.' suffix split, wildcard-matches the
+;   base code against ESQ_SelectCodeBuffer, and optionally matches suffix text
+;   against DATA_WDISP_BSS_LONG_2298 before returning boolean success.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Requires fallback marker char (-9(A5)) to remain default for success.
 ;------------------------------------------------------------------------------
 ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     LINK.W  A5,#-32
@@ -225,7 +228,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     MOVEQ   #0,D0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return   (Routine at ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return)
+; FUNC: ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return   (Return tail for selection-code matcher)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -239,9 +242,9 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQSHARED_MatchSelectionCodeWithOptionalSuffix.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D4-D7/A3 and frame state.
 ;------------------------------------------------------------------------------
 ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
     MOVEM.L (A7)+,D4-D7/A3
@@ -251,7 +254,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_InitEntryDefaults   (Routine at ESQSHARED_InitEntryDefaults)
+; FUNC: ESQSHARED_InitEntryDefaults   (Initialize new entry default header fields)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -265,9 +268,10 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Seeds default entry header bytes: status at +40, flags at +41/+42, two-byte
+;   code string at +43..+44, and default word value 3 at +46.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses Global_STR_00 as the default code-string source.
 ;------------------------------------------------------------------------------
 ESQSHARED_InitEntryDefaults:
     MOVE.L  A3,-(A7)
@@ -290,7 +294,7 @@ ESQSHARED_InitEntryDefaults:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_CreateGroupEntryAndTitle   (Routine at ESQSHARED_CreateGroupEntryAndTitle)
+; FUNC: ESQSHARED_CreateGroupEntryAndTitle   (Allocate and register group entry/title pair)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +7: arg_2 (via 11(A5))
@@ -311,9 +315,10 @@ ESQSHARED_InitEntryDefaults:
 ; WRITES:
 ;   TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_MaxEntryTitleLength
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Allocates one entry record and one title table for the target group, seeds
+;   defaults/flags/text fields, and appends the new pointers to group tables.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Initializes all 49 title-slot flags to present and clears slot string pointers.
 ;------------------------------------------------------------------------------
 ESQSHARED_CreateGroupEntryAndTitle:
     LINK.W  A5,#-24
@@ -574,7 +579,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.W  #2,TEXTDISP_GroupMutationState
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_CreateGroupEntryAndTitle_Return   (Routine at ESQSHARED_CreateGroupEntryAndTitle_Return)
+; FUNC: ESQSHARED_CreateGroupEntryAndTitle_Return   (Return tail for group entry/title allocator)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -588,9 +593,9 @@ ESQSHARED_CreateGroupEntryAndTitle:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQSHARED_CreateGroupEntryAndTitle.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D5-D7/A2-A3/A6 and frame state.
 ;------------------------------------------------------------------------------
 ESQSHARED_CreateGroupEntryAndTitle_Return:
     MOVEM.L (A7)+,D5-D7/A2-A3/A6
@@ -600,7 +605,7 @@ ESQSHARED_CreateGroupEntryAndTitle_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ApplyProgramTitleTextFilters   (Routine at ESQSHARED_ApplyProgramTitleTextFilters)
+; FUNC: ESQSHARED_ApplyProgramTitleTextFilters   (Apply chained program-title token filters)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -614,9 +619,10 @@ ESQSHARED_CreateGroupEntryAndTitle_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Runs closed-caption, stereo-tag, movie-rating, and TV-rating normalization
+;   passes over a program title buffer.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Delegates to four focused helper transforms in fixed order.
 ;------------------------------------------------------------------------------
 ESQSHARED_ApplyProgramTitleTextFilters:
     MOVEM.L D7/A3,-(A7)
@@ -642,7 +648,7 @@ ESQSHARED_ApplyProgramTitleTextFilters:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_CompressClosedCaptionedTag   (Routine at ESQSHARED_CompressClosedCaptionedTag)
+; FUNC: ESQSHARED_CompressClosedCaptionedTag   (Compress "Closed Captioned" token)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -656,9 +662,10 @@ ESQSHARED_ApplyProgramTitleTextFilters:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Finds "Closed Captioned" in-place and compresses it to a single marker byte,
+;   shifting the remaining tail text left.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses marker byte 0x7C at token start.
 ;------------------------------------------------------------------------------
 ESQSHARED_CompressClosedCaptionedTag:
     LINK.W  A5,#-4
@@ -701,7 +708,7 @@ ESQSHARED_CompressClosedCaptionedTag:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_NormalizeInStereoTag   (Routine at ESQSHARED_NormalizeInStereoTag)
+; FUNC: ESQSHARED_NormalizeInStereoTag   (Normalize "In Stereo" token placement)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -716,9 +723,10 @@ ESQSHARED_CompressClosedCaptionedTag:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Replaces "In Stereo" with marker byte 0x91 and either trims trailing spacing
+;   or compacts neighboring class-3 separators depending on mode flags.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Behavior branches on bit7 of arg_2.
 ;------------------------------------------------------------------------------
 ESQSHARED_NormalizeInStereoTag:
     LINK.W  A5,#-8
@@ -801,7 +809,7 @@ ESQSHARED_NormalizeInStereoTag:
     JSR     _LVOCopyMem(A6)
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_NormalizeInStereoTag_Return   (Routine at ESQSHARED_NormalizeInStereoTag_Return)
+; FUNC: ESQSHARED_NormalizeInStereoTag_Return   (Return tail for stereo-tag normalizer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -815,9 +823,9 @@ ESQSHARED_NormalizeInStereoTag:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQSHARED_NormalizeInStereoTag.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D7/A3 and frame state.
 ;------------------------------------------------------------------------------
 ESQSHARED_NormalizeInStereoTag_Return:
     MOVEM.L (A7)+,D7/A3
@@ -829,7 +837,7 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; Possibly the code that replaces the strings of TV ratings like (TV-G) into
 ; a corresponding character in the font
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ReplaceMovieRatingToken   (Routine at ESQSHARED_ReplaceMovieRatingToken)
+; FUNC: ESQSHARED_ReplaceMovieRatingToken   (Replace movie-rating token with glyph marker)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -843,9 +851,10 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Scans movie-rating token table, replaces first match with a one-byte glyph
+;   code, and compacts the string tail over the consumed token text.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Stops after first successful replacement.
 ;------------------------------------------------------------------------------
 ESQSHARED_ReplaceMovieRatingToken:
     LINK.W  A5,#-16
@@ -930,7 +939,7 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; Possibly the code that replaces the strings of movie ratings like (R) into
 ; a corresponding character in the font
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ReplaceTvRatingToken   (Routine at ESQSHARED_ReplaceTvRatingToken)
+; FUNC: ESQSHARED_ReplaceTvRatingToken   (Replace TV-rating token with glyph marker)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -944,9 +953,10 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Scans TV-rating token table, replaces first match with a one-byte glyph code,
+;   and compacts trailing text over the consumed token.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Stops after first successful replacement.
 ;------------------------------------------------------------------------------
 ESQSHARED_ReplaceTvRatingToken:
     LINK.W  A5,#-16
@@ -1027,7 +1037,7 @@ ESQSHARED_ReplaceTvRatingToken:
     RTS
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle   (Routine at ESQSHARED_UpdateMatchingEntriesByTitle)
+; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle   (Apply compact payload to title-matched entries)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -1060,9 +1070,11 @@ ESQSHARED_ReplaceTvRatingToken:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Finds entries whose title matches the incoming wildcard key, applies slot
+;   flags/bitfields, replaces the targeted title slot string, and normalizes
+;   embedded time text/flags in-place.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Slot index D6 is validated to 1..48, with bit6 selecting set-bit behavior.
 ;------------------------------------------------------------------------------
 ESQSHARED_UpdateMatchingEntriesByTitle:
     LINK.W  A5,#-76
@@ -1653,7 +1665,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     BRA.W   .branch
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle_Return   (Routine at ESQSHARED_UpdateMatchingEntriesByTitle_Return)
+; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle_Return   (Return tail for title-matched updater)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1667,9 +1679,9 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQSHARED_UpdateMatchingEntriesByTitle.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D2-D7/A2-A3/A6 and frame state.
 ;------------------------------------------------------------------------------
 ESQSHARED_UpdateMatchingEntriesByTitle_Return:
     MOVEM.L (A7)+,D2-D7/A2-A3/A6

@@ -1,7 +1,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ClearAliasStringPointers   (Routine at ESQPARS_ClearAliasStringPointers)
+; FUNC: ESQPARS_ClearAliasStringPointers   (Free alias records and clear pointer table)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -78,7 +78,7 @@ ESQPARS_ClearAliasStringPointers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at ESQPARS_RemoveGroupEntryAndReleaseStrings)
+; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings   (Release all group entry/title allocations)
 ; ARGS:
 ;   stack +6: group selector (2 = secondary group, otherwise primary) ??
 ; RET:
@@ -253,7 +253,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
     BRA.W   .release_entry_loop
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings_Return   (Routine at ESQPARS_RemoveGroupEntryAndReleaseStrings_Return)
+; FUNC: ESQPARS_RemoveGroupEntryAndReleaseStrings_Return   (Return tail for group-entry release helper)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -267,9 +267,9 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers/frame and returns from group-entry release helper.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return for all release-loop completion paths.
 ;------------------------------------------------------------------------------
 ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
     MOVEM.L (A7)+,D5-D7/A2
@@ -279,7 +279,7 @@ ESQPARS_RemoveGroupEntryAndReleaseStrings_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ReplaceOwnedString   (Routine at ESQPARS_ReplaceOwnedString)
+; FUNC: ESQPARS_ReplaceOwnedString   (Replace owned heap string)
 ; ARGS:
 ;   stack +4: A3 source string pointer (new text, NUL-terminated)
 ;   stack +8: A2 owned string pointer (old text to release, may be NULL)
@@ -390,7 +390,7 @@ ESQPARS_ReplaceOwnedString:
     MOVE.L  A2,D0
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ReplaceOwnedString_Return   (Routine at ESQPARS_ReplaceOwnedString_Return)
+; FUNC: ESQPARS_ReplaceOwnedString_Return   (Shared epilogue for owned-string replacement)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -404,9 +404,9 @@ ESQPARS_ReplaceOwnedString:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers and returns replacement pointer in D0.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return for empty-source, low-memory, and successful-copy paths.
 ;------------------------------------------------------------------------------
 ESQPARS_ReplaceOwnedString_Return:
     MOVEM.L (A7)+,D6-D7/A2-A3
@@ -415,7 +415,7 @@ ESQPARS_ReplaceOwnedString_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ApplyRtcBytesAndPersist   (Routine at ESQPARS_ApplyRtcBytesAndPersist)
+; FUNC: ESQPARS_ApplyRtcBytesAndPersist   (Apply incoming RTC bytes and persist globals)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -438,9 +438,10 @@ ESQPARS_ReplaceOwnedString_Return:
 ; WRITES:
 ;   ESQPARS2_ReadModeFlags
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Loads RTC bytes from the incoming command payload into stack temporaries,
+;   persists them through PARSEINI, then normalizes/redraws clock display state.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   year byte is converted to full year by adding 1900 before persisting.
 ;------------------------------------------------------------------------------
 ESQPARS_ApplyRtcBytesAndPersist:
     LINK.W  A5,#-24
@@ -490,7 +491,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 
 ; This whole sub-routine appears to be for processing control data
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ProcessSerialCommandByte   (Routine at ESQPARS_ProcessSerialCommandByte)
+; FUNC: ESQPARS_ProcessSerialCommandByte   (Parse one serial command byte stream)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +5: arg_2 (via 9(A5))
@@ -532,9 +533,10 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; WRITES:
 ;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Consumes one RBF byte, advances preamble state, and when armed dispatches
+;   command handlers for listing, status, config, banner/filter, and control paths.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses 0x55/0xAA preamble sync and clears preamble flags on command completion.
 ;------------------------------------------------------------------------------
 ESQPARS_ProcessSerialCommandByte:
     LINK.W  A5,#-232
@@ -2892,7 +2894,7 @@ ESQPARS_ProcessSerialCommandByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ReadLengthWordWithChecksumXor   (Routine at ESQPARS_ReadLengthWordWithChecksumXor)
+; FUNC: ESQPARS_ReadLengthWordWithChecksumXor   (Read 2-byte length with rolling XOR)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2906,9 +2908,10 @@ ESQPARS_ProcessSerialCommandByte:
 ; WRITES:
 ;   ESQIFF_RecordLength
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Reads two serial bytes, left-shifts/accumulates into ESQIFF_RecordLength,
+;   and updates caller-supplied XOR accumulator byte.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Waits for UI/clock servicing before each byte read to avoid parser stalls.
 ;------------------------------------------------------------------------------
 ESQPARS_ReadLengthWordWithChecksumXor:
     MOVEM.L D5-D7,-(A7)
@@ -2917,7 +2920,7 @@ ESQPARS_ReadLengthWordWithChecksumXor:
     MOVE.W  D0,ESQIFF_RecordLength
     MOVE.L  D0,D5
 
-.lab_0BE7:
+.length_byte_loop:
     MOVEQ   #2,D0
     CMP.W   D0,D5
     BGE.S   ESQPARS_ReadLengthWordWithChecksumXor_Return
@@ -2936,10 +2939,10 @@ ESQPARS_ReadLengthWordWithChecksumXor:
     ADD.L   D1,D0
     MOVE.W  D0,ESQIFF_RecordLength
     ADDQ.W  #1,D5
-    BRA.S   .lab_0BE7
+    BRA.S   .length_byte_loop
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ReadLengthWordWithChecksumXor_Return   (Routine at ESQPARS_ReadLengthWordWithChecksumXor_Return)
+; FUNC: ESQPARS_ReadLengthWordWithChecksumXor_Return   (Return XOR accumulator for length bytes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2953,9 +2956,9 @@ ESQPARS_ReadLengthWordWithChecksumXor:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns final checksum XOR accumulator in D0 and restores D5-D7.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return target from both normal exit and read-loop bound check.
 ;------------------------------------------------------------------------------
 ESQPARS_ReadLengthWordWithChecksumXor_Return:
     MOVE.L  D7,D0
@@ -2965,7 +2968,7 @@ ESQPARS_ReadLengthWordWithChecksumXor_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_PersistStateDataAfterCommand   (Routine at ESQPARS_PersistStateDataAfterCommand)
+; FUNC: ESQPARS_PersistStateDataAfterCommand   (Flush and persist runtime state files)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2979,9 +2982,10 @@ ESQPARS_ReadLengthWordWithChecksumXor_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Flushes pending data and persists text ads, banner pair, availability state,
+;   and promo-id data after control commands that mutate persistent state.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Writes both primary/secondary availability states in one call.
 ;------------------------------------------------------------------------------
 ESQPARS_PersistStateDataAfterCommand:
     JSR     ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
@@ -3003,7 +3007,7 @@ ESQPARS_PersistStateDataAfterCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded   (Routine at ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded)
+; FUNC: ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3017,15 +3021,15 @@ ESQPARS_PersistStateDataAfterCommand:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
     JMP     DISKIO2_FlushDataFilesIfNeeded
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Routine at ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache)
+; FUNC: ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3039,15 +3043,15 @@ ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
     JMP     NEWGRID_RebuildIndexCache
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Routine at ESQPARS_JMPTBL_DATETIME_SavePairToFile)
+; FUNC: ESQPARS_JMPTBL_DATETIME_SavePairToFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3061,15 +3065,15 @@ ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DATETIME_SavePairToFile:
     JMP     DATETIME_SavePairToFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList   (Routine at ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList)
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3083,15 +3087,15 @@ ESQPARS_JMPTBL_DATETIME_SavePairToFile:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList:
     JMP     UNKNOWN_VerifyChecksumAndParseList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord   (Routine at ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord)
+; FUNC: ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3105,15 +3109,15 @@ ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
     JMP     P_TYPE_ParseAndStoreTypeRecord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal   (Routine at ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal)
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3127,15 +3131,15 @@ ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal:
     JMP     UNKNOWN_CopyLabelToGlobal
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DST_HandleBannerCommand32_33   (Routine at ESQPARS_JMPTBL_DST_HandleBannerCommand32_33)
+; FUNC: ESQPARS_JMPTBL_DST_HandleBannerCommand32_33   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3149,15 +3153,15 @@ ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DST_HandleBannerCommand32_33:
     JMP     DST_HandleBannerCommand32_33
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds   (Routine at ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds)
+; FUNC: ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3171,15 +3175,15 @@ ESQPARS_JMPTBL_DST_HandleBannerCommand32_33:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds:
     JMP     ESQ_SeedMinuteEventThresholds
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSEINI_HandleFontCommand   (Routine at ESQPARS_JMPTBL_PARSEINI_HandleFontCommand)
+; FUNC: ESQPARS_JMPTBL_PARSEINI_HandleFontCommand   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3193,15 +3197,15 @@ ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
     JMP     PARSEINI_HandleFontCommand
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries   (Routine at ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries)
+; FUNC: ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3215,9 +3219,9 @@ ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
     JMP     TEXTDISP_ApplySourceConfigAllEntries
@@ -3231,7 +3235,7 @@ ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex   (Routine at ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex)
+; FUNC: ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3245,15 +3249,15 @@ ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
     JMP     BRUSH_PlaneMaskForIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine   (JumpStub_SCRIPT_ResetCtrlContextAndClearStatusLine)
+; FUNC: ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3267,13 +3271,15 @@ ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to SCRIPT_ResetCtrlContextAndClearStatusLine.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
+; NOTES:
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine:
     JMP     SCRIPT_ResetCtrlContextAndClearStatusLine
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Routine at ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals)
+; FUNC: ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3287,15 +3293,15 @@ ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
     JMP     PARSEINI_WriteRtcFromGlobals
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Routine at ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile)
+; FUNC: ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3309,15 +3315,15 @@ ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
     JMP     LOCAVAIL_SaveAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Routine at ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition)
+; FUNC: ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3331,15 +3337,15 @@ ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
     JMP     DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Routine at ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile)
+; FUNC: ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3353,15 +3359,15 @@ ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
     JMP     LADFUNC_SaveTextAdsToFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Routine at ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt)
+; FUNC: ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3375,15 +3381,15 @@ ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     JMP     PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer   (Routine at ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer)
+; FUNC: ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3397,9 +3403,9 @@ ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
     JMP     DISKIO2_HandleInteractiveFileTransfer
@@ -3415,7 +3421,7 @@ ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile   (Routine at ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile)
+; FUNC: ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3429,15 +3435,15 @@ ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
     JMP     P_TYPE_WritePromoIdDataFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_COI_FreeEntryResources   (Routine at ESQPARS_JMPTBL_COI_FreeEntryResources)
+; FUNC: ESQPARS_JMPTBL_COI_FreeEntryResources   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3451,15 +3457,15 @@ ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_COI_FreeEntryResources:
     JMP     COI_FreeEntryResources
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DST_UpdateBannerQueue   (Routine at ESQPARS_JMPTBL_DST_UpdateBannerQueue)
+; FUNC: ESQPARS_JMPTBL_DST_UpdateBannerQueue   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3473,15 +3479,15 @@ ESQPARS_JMPTBL_COI_FreeEntryResources:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DST_UpdateBannerQueue:
     JMP     DST_UpdateBannerQueue
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord   (Routine at ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord)
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3495,15 +3501,15 @@ ESQPARS_JMPTBL_DST_UpdateBannerQueue:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord:
     JMP     UNKNOWN_VerifyChecksumAndParseRecord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay   (Routine at ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay)
+; FUNC: ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3517,15 +3523,15 @@ ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay:
     JMP     UNKNOWN_ParseDigitLabelAndDisplay
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer   (Routine at ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer)
+; FUNC: ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3539,15 +3545,15 @@ ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
     JMP     DISKIO_ParseConfigBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock   (Routine at ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock)
+; FUNC: ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3561,15 +3567,15 @@ ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
     JMP     CLEANUP_ParseAlignedListingBlock
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Routine at ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte)
+; FUNC: ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3583,15 +3589,15 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
     JMP     SCRIPT_ReadSerialRbfByte
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte   (Routine at ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte)
+; FUNC: ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3605,9 +3611,9 @@ ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte:
     JMP     ESQ_GenerateXorChecksumByte
@@ -3621,7 +3627,7 @@ ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DST_RefreshBannerBuffer   (Routine at ESQPARS_JMPTBL_DST_RefreshBannerBuffer)
+; FUNC: ESQPARS_JMPTBL_DST_RefreshBannerBuffer   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3635,15 +3641,15 @@ ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DST_RefreshBannerBuffer:
     JMP     DST_RefreshBannerBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle   (Routine at ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle)
+; FUNC: ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3657,9 +3663,9 @@ ESQPARS_JMPTBL_DST_RefreshBannerBuffer:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle:
     JMP     DISKIO_SaveConfigToFileHandle

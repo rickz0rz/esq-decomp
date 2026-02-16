@@ -49,7 +49,7 @@ ESQ_StoreCtrlSampleEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_Default   (SetCopperEffectDefaultuncertain)
+; FUNC: ESQ_SetCopperEffect_Default   (SetCopperEffectDefault)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -77,7 +77,7 @@ ESQ_SetCopperEffect_Default:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_Custom   (SetCopperEffectCustomuncertain)
+; FUNC: ESQ_SetCopperEffect_Custom   (SetCopperEffectCustom)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -111,7 +111,7 @@ ESQ_SetCopperEffect_Custom:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOnuncertain)
+; FUNC: ESQ_SetCopperEffect_AllOn   (SetCopperEffectAllOn)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -145,7 +145,7 @@ ESQ_SetCopperEffect_AllOn:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_OffDisableHighlight   (SetCopperEffectOffDisableHighlightuncertain)
+; FUNC: ESQ_SetCopperEffect_OffDisableHighlight   (SetCopperEffectOffDisableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -181,7 +181,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffect_OnEnableHighlight   (SetCopperEffectOnEnableHighlightuncertain)
+; FUNC: ESQ_SetCopperEffect_OnEnableHighlight   (SetCopperEffectOnEnableHighlight)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -217,7 +217,7 @@ ESQ_SetCopperEffect_OnEnableHighlight:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_SetCopperEffectParams   (SetCopperEffectParamsuncertain)
+; FUNC: ESQ_SetCopperEffectParams   (SetCopperEffectParams)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -246,7 +246,7 @@ ESQ_SetCopperEffectParams:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_UpdateCopperListsFromParams   (UpdateCopperListsFromParamsuncertain)
+; FUNC: ESQ_UpdateCopperListsFromParams   (UpdateCopperListsFromParams)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -840,7 +840,7 @@ ESQ_BumpColorTowardTargets:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_TickClockAndFlagEvents   (TickClockAndFlagEventsuncertain)
+; FUNC: ESQ_TickClockAndFlagEvents   (Tick clock and emit boundary event code)
 ; ARGS:
 ;   stack +4: timePtr (struct with date/time fields)
 ; RET:

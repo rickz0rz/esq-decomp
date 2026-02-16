@@ -22,10 +22,10 @@ NEWGRID_ResetRowTable:
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
 
-.loop_rows:
+.init_row_slots_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
-    BGE.S   .done
+    BGE.S   .return_row_table
 
     MOVE.L  D7,D1
     ADDQ.L  #4,D1
@@ -34,9 +34,9 @@ NEWGRID_ResetRowTable:
     ASL.L   #2,D1
     CLR.L   36(A3,D1.L)
     ADDQ.L  #1,D7
-    BRA.S   .loop_rows
+    BRA.S   .init_row_slots_loop
 
-.done:
+.return_row_table:
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -81,46 +81,46 @@ NEWGRID_SetRowColor:
     SUBQ.W  #1,D0
     BEQ.S   .case_pen6
 
-    BRA.S   .state_default
+    BRA.S   .use_default_pen
 
 .case_pen7:
     MOVEQ   #7,D5
-    BRA.S   .apply
+    BRA.S   .apply_pen_and_slot_index
 
 .case_pen4:
     MOVEQ   #4,D5
-    BRA.S   .apply
+    BRA.S   .apply_pen_and_slot_index
 
 .case_pen5:
     MOVEQ   #5,D5
-    BRA.S   .apply
+    BRA.S   .apply_pen_and_slot_index
 
 .case_pen6:
     MOVEQ   #6,D5
-    BRA.S   .apply
+    BRA.S   .apply_pen_and_slot_index
 
-.state_default:
+.use_default_pen:
     MOVEQ   #4,D5
 
-.apply:
+.apply_pen_and_slot_index:
     MOVE.L  D5,D0
     SUBQ.L  #4,D0
     MOVE.L  D0,D7
     TST.L   D6
-    BMI.S   .set_default
+    BMI.S   .set_default_color_value
 
     MOVEQ   #16,D0
     CMP.L   D0,D6
-    BGT.S   .set_default
+    BGT.S   .set_default_color_value
 
     MOVE.L  D6,D0
     MOVE.B  D0,55(A3,D7.W)
-    BRA.S   .done
+    BRA.S   .return_pen
 
-.set_default:
+.set_default_color_value:
     MOVE.B  #$7,55(A3,D7.W)
 
-.done:
+.return_pen:
     MOVE.L  D5,D0
     MOVEM.L (A7)+,D5-D7/A3
     RTS
@@ -155,7 +155,7 @@ NEWGRID_ValidateSelectionCode:
     MOVEQ   #0,D0
     MOVE.B  54(A3),D0
     CMP.L   D7,D0
-    BGE.W   .maybe_clear_on_zero
+    BGE.W   .maybe_keep_or_clear_zero
 
     MOVE.L  D7,D0
     MOVEQ   #16,D1
@@ -216,61 +216,61 @@ NEWGRID_ValidateSelectionCode:
     SUBQ.L  #1,D0
     BEQ.W   .case_64
 
-    BRA.W   .clear_selection
+    BRA.W   .clear_active_selection
 
 .case_16:
     MOVE.B  DATA_CTASKS_STR_Y_1BBF,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   .done
+    BNE.W   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   .done
+    BRA.W   .return_selection_validation
 
 .case_32:
     MOVE.B  DATA_CTASKS_STR_Y_1BB2,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   .done
+    BNE.W   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   .done
+    BRA.W   .return_selection_validation
 
 .case_48:
     MOVE.B  DATA_CTASKS_STR_N_1BB9,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   .done
+    BNE.W   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   .done
+    BRA.W   .return_selection_validation
 
 .case_33:
     MOVE.B  GCOMMAND_DigitalNicheEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   .done
+    BNE.W   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.W   .done
+    BRA.W   .return_selection_validation
 
 .case_49:
     MOVE.B  DATA_CTASKS_STR_N_1BB9,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   .done
+    BNE.W   .return_selection_validation
 
     MOVE.B  GCOMMAND_DigitalNicheEnabledFlag,D0
     CMP.B   D1,D0
-    BNE.S   .done
+    BNE.S   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
 .case_34:
     MOVE.B  DATA_CTASKS_STR_Y_1BAE,D0
@@ -280,60 +280,60 @@ NEWGRID_ValidateSelectionCode:
 
     MOVE.B  DATA_CTASKS_STR_N_1BB1,D0
     CMP.B   D1,D0
-    BNE.S   .done
+    BNE.S   .return_selection_validation
 
 .case_34_alt:
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
 .case_35:
     MOVE.B  DATA_CTASKS_STR_Y_1BAF,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .done
+    BNE.S   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
 .case_36:
     MOVE.B  GCOMMAND_DigitalMplexEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .done
+    BNE.S   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
 .case_37:
     MOVE.B  GCOMMAND_DigitalPpvEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .done
+    BNE.S   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
 .case_64:
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
-.clear_selection:
+.clear_active_selection:
     CLR.B   54(A3)
-    BRA.S   .done
+    BRA.S   .return_selection_validation
 
-.maybe_clear_on_zero:
+.maybe_keep_or_clear_zero:
     TST.L   D7
-    BNE.S   .done
+    BNE.S   .return_selection_validation
 
     MOVE.L  D7,D0
     MOVE.B  D0,54(A3)
 
-.done:
+.return_selection_validation:
     MOVEM.L (A7)+,D7/A3
     RTS
 
@@ -531,13 +531,13 @@ NEWGRID_DrawGridCellText:
     SUBA.L  A2,A0
     MOVE.L  A0,D0
     TST.L   D0
-    BLE.S   .secondary_start
+    BLE.S   .begin_secondary_text_pass
 
     MOVEA.L A2,A0
 
-.scan_primary_end2:
+.scan_primary_end_for_trim:
     TST.B   (A0)+
-    BNE.S   .scan_primary_end2
+    BNE.S   .scan_primary_end_for_trim
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
@@ -574,12 +574,12 @@ NEWGRID_DrawGridCellText:
     MOVE.B  DATA_CTASKS_STR_C_1BA3,D0
     MOVEQ   #83,D2
     CMP.B   D2,D0
-    BNE.S   .primary_use_alt_x
+    BNE.S   .primary_use_cell_center_x
 
     MOVE.L  D4,D0
     BRA.S   .primary_draw
 
-.primary_use_alt_x:
+.primary_use_cell_center_x:
     MOVE.L  -16(A5),D0
 
 .primary_draw:
@@ -594,7 +594,7 @@ NEWGRID_DrawGridCellText:
     MOVE.L  D6,D0
     JSR     _LVOText(A6)
 
-.secondary_start:
+.begin_secondary_text_pass:
     MOVEA.L 16(A5),A0
 
 .scan_secondary_end:
@@ -606,13 +606,13 @@ NEWGRID_DrawGridCellText:
     SUBA.L  16(A5),A0
     MOVE.L  A0,D0
     TST.L   D0
-    BLE.S   .done
+    BLE.S   .return_cell_text
 
     MOVEA.L 16(A5),A0
 
-.scan_secondary_end2:
+.scan_secondary_end_for_trim:
     TST.B   (A0)+
-    BNE.S   .scan_secondary_end2
+    BNE.S   .scan_secondary_end_for_trim
 
     SUBQ.L  #1,A0
     SUBA.L  16(A5),A0
@@ -650,12 +650,12 @@ NEWGRID_DrawGridCellText:
     MOVE.B  DATA_CTASKS_STR_C_1BA3,D0
     MOVEQ   #83,D2
     CMP.B   D2,D0
-    BNE.S   .secondary_use_alt_x
+    BNE.S   .secondary_use_cell_center_x
 
     MOVE.L  -16(A5),D0
     BRA.S   .secondary_draw
 
-.secondary_use_alt_x:
+.secondary_use_cell_center_x:
     MOVE.L  D4,D0
 
 .secondary_draw:
@@ -670,7 +670,7 @@ NEWGRID_DrawGridCellText:
     MOVEA.L 16(A5),A0
     JSR     _LVOText(A6)
 
-.done:
+.return_cell_text:
     MOVEM.L (A7)+,D2-D7/A2-A3
     UNLK    A5
     RTS

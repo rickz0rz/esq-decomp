@@ -1,7 +1,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SETUP_INTERRUPT_INTB_VERTB   (Routine at SETUP_INTERRUPT_INTB_VERTB)
+; FUNC: SETUP_INTERRUPT_INTB_VERTB   (InstallVerticalBlankInterruptVector)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -15,9 +15,10 @@
 ; WRITES:
 ;   Global_REF_INTERRUPT_STRUCT_INTB_VERTB
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Allocates and initializes an Interrupt struct for VBLANK and installs it on
+;   INTB_VERTB, targeting ESQFUNC_JMPTBL_ESQ_TickGlobalCounters.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Stores the allocated Interrupt pointer in Global_REF_INTERRUPT_STRUCT_INTB_VERTB.
 ;------------------------------------------------------------------------------
 SETUP_INTERRUPT_INTB_VERTB:
     ; Allocate 22 bytes to memory for interrupt struct
@@ -54,7 +55,7 @@ SETUP_INTERRUPT_INTB_VERTB:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SETUP_INTERRUPT_INTB_AUD1   (Routine at SETUP_INTERRUPT_INTB_AUD1)
+; FUNC: SETUP_INTERRUPT_INTB_AUD1   (InstallAud1InterruptVector)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -68,9 +69,10 @@ SETUP_INTERRUPT_INTB_VERTB:
 ; WRITES:
 ;   Global_REF_INTB_AUD1_INTERRUPT, Global_REF_INTERRUPT_STRUCT_INTB_AUD1
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Allocates and initializes an Interrupt struct for AUD1 and installs it on
+;   INTB_AUD1, targeting ESQFUNC_JMPTBL_ESQ_PollCtrlInput.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Saves the previous vector returned by SetIntVector in Global_REF_INTB_AUD1_INTERRUPT.
 ;------------------------------------------------------------------------------
 SETUP_INTERRUPT_INTB_AUD1:
     ; Allocate 22 bytes to memory for interrupt struct
@@ -108,7 +110,7 @@ SETUP_INTERRUPT_INTB_AUD1:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SETUP_INTERRUPT_INTB_RBF   (Routine at SETUP_INTERRUPT_INTB_RBF)
+; FUNC: SETUP_INTERRUPT_INTB_RBF   (InstallSerialRbfInterruptVector)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -122,9 +124,10 @@ SETUP_INTERRUPT_INTB_AUD1:
 ; WRITES:
 ;   Global_REF_INTB_RBF_64K_BUFFER, Global_REF_INTB_RBF_INTERRUPT, Global_REF_INTERRUPT_STRUCT_INTB_RBF
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Allocates an Interrupt struct plus a 64k receive buffer and installs the
+;   serial receive-full handler vector on INTB_RBF.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Vector target is ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt.
 ;------------------------------------------------------------------------------
 SETUP_INTERRUPT_INTB_RBF:
     ; Allocate 22 bytes to memory for interrupt struct
@@ -174,7 +177,7 @@ SETUP_INTERRUPT_INTB_RBF:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_AllocateLineTextBuffers   (Routine at ESQFUNC_AllocateLineTextBuffers)
+; FUNC: ESQFUNC_AllocateLineTextBuffers   (AllocateLineTextBuffers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -188,9 +191,10 @@ SETUP_INTERRUPT_INTB_RBF:
 ; WRITES:
 ;   LADFUNC_LineSlotWriteIndex, DATA_WDISP_BSS_WORD_225D
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Allocates 20 line text buffers (60 bytes each), stores pointers in
+;   LADFUNC_LineTextBufferPtrs, and resets line-slot indices.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Companion free path is ESQFUNC_FreeLineTextBuffers.
 ;------------------------------------------------------------------------------
 ESQFUNC_AllocateLineTextBuffers:
     LINK.W  A5,#-4
@@ -232,7 +236,7 @@ ESQFUNC_AllocateLineTextBuffers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_FreeLineTextBuffers   (Routine at ESQFUNC_FreeLineTextBuffers)
+; FUNC: ESQFUNC_FreeLineTextBuffers   (Free and clear LADFUNC line text buffers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -246,18 +250,19 @@ ESQFUNC_AllocateLineTextBuffers:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Iterates 20 line-text buffer pointers, deallocates each 60-byte buffer, and
+;   clears the pointer slot.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses Global_STR_ESQFUNC_C_6 as deallocation callsite tag.
 ;------------------------------------------------------------------------------
 ESQFUNC_FreeLineTextBuffers:
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
 
-.lab_0967:
+.loop_free_line_text_buffers:
     MOVEQ   #20,D0
     CMP.W   D0,D7
-    BGE.S   .lab_0968
+    BGE.S   .return_free_line_text_buffers
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -280,16 +285,16 @@ ESQFUNC_FreeLineTextBuffers:
     ADDA.L  D0,A0
     CLR.L   (A0)
     ADDQ.W  #1,D7
-    BRA.S   .lab_0967
+    BRA.S   .loop_free_line_text_buffers
 
-.lab_0968:
+.return_free_line_text_buffers:
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_UpdateDiskWarningAndRefreshTick   (Routine at ESQFUNC_UpdateDiskWarningAndRefreshTick)
+; FUNC: ESQFUNC_UpdateDiskWarningAndRefreshTick   (UpdateDiskWarningAndRefreshTick)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -303,9 +308,10 @@ ESQFUNC_FreeLineTextBuffers:
 ; WRITES:
 ;   Global_RefreshTickCounter
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Re-probes drive assignment state and updates the startup warning text path
+;   plus Global_RefreshTickCounter based on disk write-protect conditions.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Draws one of two centered warning strings when protected/reinsert states are active.
 ;------------------------------------------------------------------------------
 ESQFUNC_UpdateDiskWarningAndRefreshTick:
     JSR     ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
@@ -352,7 +358,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_WaitForClockChangeAndServiceUi   (Routine at ESQFUNC_WaitForClockChangeAndServiceUi)
+; FUNC: ESQFUNC_WaitForClockChangeAndServiceUi   (Poll clock change while servicing UI tick)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -366,9 +372,10 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Repeatedly polls clock-change monitor and services one UI tick until a
+;   clock-change event is reported.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Blocks caller until ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange returns non-zero.
 ;------------------------------------------------------------------------------
 ESQFUNC_WaitForClockChangeAndServiceUi:
     JSR     ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(PC)
@@ -386,7 +393,7 @@ ESQFUNC_WaitForClockChangeAndServiceUi:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_CommitSecondaryStateAndPersist   (Routine at ESQFUNC_CommitSecondaryStateAndPersist)
+; FUNC: ESQFUNC_CommitSecondaryStateAndPersist   (Commit promoted state and persist secondary-derived data)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -400,9 +407,10 @@ ESQFUNC_WaitForClockChangeAndServiceUi:
 ; WRITES:
 ;   DATA_ESQDISP_BSS_WORD_1E86, ESQPARS2_ReadModeFlags
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Temporarily switches parser read mode, promotes/normalizes secondary state into
+;   primary structures, persists dependent files, then restores previous read flags.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Performs disk warning refresh after persist operations.
 ;------------------------------------------------------------------------------
 ESQFUNC_CommitSecondaryStateAndPersist:
     MOVE.L  D7,-(A7)
@@ -444,7 +452,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_ProcessUiFrameTick   (Routine at ESQFUNC_ProcessUiFrameTick)
+; FUNC: ESQFUNC_ProcessUiFrameTick   (Process one UI frame tick)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -458,9 +466,11 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; WRITES:
 ;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, ESQIFF_ExternalAssetFlags
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Runs one UI service slice: optional drive probe, input-mode polling,
+;   grid/message pumping, alert processing, serial ctrl handling, brush/source
+;   maintenance, and final display/status refresh checks.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Includes multiple gating checks on UI busy flags and pending-alert/task flags.
 ;------------------------------------------------------------------------------
 ESQFUNC_ProcessUiFrameTick:
     TST.W   DATA_GCOMMAND_CONST_WORD_1FB0
@@ -614,7 +624,7 @@ ESQFUNC_ProcessUiFrameTick:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_ServiceUiTickIfRunning   (Routine at ESQFUNC_ServiceUiTickIfRunning)
+; FUNC: ESQFUNC_ServiceUiTickIfRunning   (Gate UI frame service by run flag)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -628,9 +638,9 @@ ESQFUNC_ProcessUiFrameTick:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Calls ESQFUNC_ProcessUiFrameTick only while the main run flag is enabled.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   This is the main idle-loop UI tick gate used by ESQ_MainInitAndRun.
 ;------------------------------------------------------------------------------
 ESQFUNC_ServiceUiTickIfRunning:
     TST.W   DATA_ESQ_BSS_WORD_1DE5
@@ -760,7 +770,7 @@ ESQFUNC_FreeExtraTitleTextPointers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_UpdateRefreshModeState   (Routine at ESQFUNC_UpdateRefreshModeState)
+; FUNC: ESQFUNC_UpdateRefreshModeState   (UpdateRefreshModeState)
 ; ARGS:
 ;   stack +8: arg_1 (via 12(A5))
 ; RET:
@@ -774,9 +784,10 @@ ESQFUNC_FreeExtraTitleTextPointers:
 ; WRITES:
 ;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQPARS2_CONST_WORD_1F53, DATA_ESQPARS2_CONST_WORD_1F54, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Updates NEWGRID refresh/mode selector state from the incoming request flag
+;   and recomputes banner blit geometry when message-pump suspension is cleared.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Writes NEWGRID_LastRefreshRequest every call; uses mode 0 vs 2 selector states.
 ;------------------------------------------------------------------------------
 ESQFUNC_UpdateRefreshModeState:
     LINK.W  A5,#0
@@ -785,7 +796,7 @@ ESQFUNC_UpdateRefreshModeState:
     MOVE.L  12(A5),D7
     MOVE.W  #1,DATA_ESQFUNC_CONST_WORD_1ECD
     TST.L   NEWGRID_MessagePumpSuspendFlag
-    BEQ.S   .lab_098B
+    BEQ.S   .apply_mode_selector_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_RefreshStateFlag
@@ -794,23 +805,23 @@ ESQFUNC_UpdateRefreshModeState:
     MOVE.W  #$230,DATA_ESQPARS2_CONST_WORD_1F54
     JSR     ESQSHARED4_ComputeBannerRowBlitGeometry
 
-.lab_098B:
+.apply_mode_selector_state:
     TST.L   D7
-    BNE.S   .lab_098C
+    BNE.S   .set_mode_selector_two
 
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_ModeSelectorState
-    BRA.S   .lab_098D
+    BRA.S   .store_last_refresh_request
 
-.lab_098C:
+.set_mode_selector_two:
     MOVEQ   #2,D0
     MOVE.L  D0,NEWGRID_ModeSelectorState
     TST.L   NEWGRID_LastRefreshRequest
-    BNE.S   .lab_098D
+    BNE.S   .store_last_refresh_request
 
     CLR.L   NEWGRID_RefreshStateFlag
 
-.lab_098D:
+.store_last_refresh_request:
     MOVE.L  D7,NEWGRID_LastRefreshRequest
     MOVE.L  (A7)+,D7
 
@@ -821,7 +832,7 @@ ESQFUNC_UpdateRefreshModeState:
 
 ; Draw the contents of the ESC -> Version screen
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_DrawEscMenuVersion   (Routine at ESQFUNC_DrawEscMenuVersion)
+; FUNC: ESQFUNC_DrawEscMenuVersion   (Draw ESC->Version screen text and prompt)
 ; ARGS:
 ;   stack +77: arg_1 (via 81(A5))
 ; RET:
@@ -835,7 +846,8 @@ ESQFUNC_UpdateRefreshModeState:
 ; WRITES:
 ;   ED_DiagnosticsScreenActive
 ; DESC:
-;   Draws ESC version/build lines and a continue prompt.
+;   Renders build-number and ROM-version lines using sprintf scratch text, then
+;   draws the “push any key” prompt and restores normal APen state.
 ; NOTES:
 ;   Uses a shared 81-byte local printf buffer at -81(A5) for both lines.
 ;   WDISP_SPrintf has no destination-length parameter.
@@ -1706,7 +1718,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode   (Routine at ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode)
+; FUNC: ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1720,15 +1732,15 @@ ESQFUNC_DrawDiagnosticsScreen:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
     JMP     TEXTDISP_SetRastForMode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList   (Routine at ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList)
+; FUNC: ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1742,15 +1754,15 @@ ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
     JMP     P_TYPE_PromoteSecondaryList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Routine at ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths)
+; FUNC: ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1764,15 +1776,15 @@ ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
     JMP     DISKIO_ProbeDrivesAndAssignPaths
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax   (Routine at ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax)
+; FUNC: ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1786,15 +1798,15 @@ ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax:
     JMP     PARSEINI_UpdateCtrlHDeltaMax
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange   (Routine at ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange)
+; FUNC: ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1808,15 +1820,15 @@ ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange:
     JMP     ESQ_ClampBannerCharRange
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag   (Routine at ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag)
+; FUNC: ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1830,15 +1842,15 @@ ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag:
     JMP     SCRIPT_ReadCiaBBit3Flag
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines   (Routine at ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines)
+; FUNC: ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1852,15 +1864,15 @@ ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines:
     JMP     TLIBA3_DrawCenteredWrappedTextLines
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag   (Routine at ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag)
+; FUNC: ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1874,15 +1886,15 @@ ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag:
     JMP     SCRIPT_GetCtrlLineFlag
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup   (Routine at ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup)
+; FUNC: ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1896,15 +1908,15 @@ ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
     JMP     LOCAVAIL_SyncSecondaryFilterForCurrentGroup
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Routine at ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh)
+; FUNC: ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1918,15 +1930,15 @@ ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
     JMP     TEXTDISP_ResetSelectionAndRefresh
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange   (Routine at ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange)
+; FUNC: ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1940,15 +1952,15 @@ ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange:
     JMP     PARSEINI_MonitorClockChange
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit   (Routine at ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit)
+; FUNC: ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1962,15 +1974,15 @@ ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
     JMP     LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts   (Routine at ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts)
+; FUNC: ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1984,16 +1996,16 @@ ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts:
     ; Update on-screen alerts and pending timers (cleanup module owns the UI state).
     JMP     CLEANUP_ProcessAlerts
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex   (Routine at ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex)
+; FUNC: ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2007,15 +2019,15 @@ ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex:
     JMP     ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner   (Routine at ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner)
+; FUNC: ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2029,15 +2041,15 @@ ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner:
     JMP     CLEANUP_DrawClockBanner
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues   (Routine at ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues)
+; FUNC: ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2051,15 +2063,15 @@ ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues:
     JMP     PARSEINI_ComputeHTCMaxValues
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState   (Routine at ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState)
+; FUNC: ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2073,15 +2085,15 @@ ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState:
     JMP     LADFUNC_UpdateHighlightState
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList   (Routine at ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList)
+; FUNC: ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2095,15 +2107,15 @@ ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
     JMP     P_TYPE_EnsureSecondaryList
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask   (Routine at ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask)
+; FUNC: ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2117,15 +2129,15 @@ ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
     JMP     SCRIPT_ReadCiaBBit5Mask
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData   (Routine at ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData)
+; FUNC: ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2139,15 +2151,15 @@ ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData:
     JMP     PARSEINI_NormalizeClockData
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_TickGlobalCounters   (Routine at ESQFUNC_JMPTBL_ESQ_TickGlobalCounters)
+; FUNC: ESQFUNC_JMPTBL_ESQ_TickGlobalCounters   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2161,15 +2173,15 @@ ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_ESQ_TickGlobalCounters:
     JMP     ESQ_TickGlobalCounters
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd   (Routine at ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd)
+; FUNC: ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2183,15 +2195,15 @@ ESQFUNC_JMPTBL_ESQ_TickGlobalCounters:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd:
     JMP     SCRIPT_HandleSerialCtrlCmd
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt   (Routine at ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt)
+; FUNC: ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2205,15 +2217,15 @@ ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt:
     JMP     ESQ_HandleSerialRbfInterrupt
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState   (Routine at ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState)
+; FUNC: ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2227,15 +2239,15 @@ ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState:
     JMP     TEXTDISP_TickDisplayState
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_ESQ_PollCtrlInput   (Routine at ESQFUNC_JMPTBL_ESQ_PollCtrlInput)
+; FUNC: ESQFUNC_JMPTBL_ESQ_PollCtrlInput   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2249,15 +2261,15 @@ ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
     JMP     ESQ_PollCtrlInput
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup   (Routine at ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup)
+; FUNC: ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2271,15 +2283,15 @@ ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
     JMP     LOCAVAIL_RebuildFilterStateFromCurrentGroup
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_STRING_CopyPadNul   (Routine at ESQFUNC_JMPTBL_STRING_CopyPadNul)
+; FUNC: ESQFUNC_JMPTBL_STRING_CopyPadNul   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2293,9 +2305,9 @@ ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_STRING_CopyPadNul:
     JMP     STRING_CopyPadNul
@@ -2307,7 +2319,7 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_SelectAndApplyBrushForCurrentEntry   (Routine at ESQFUNC_SelectAndApplyBrushForCurrentEntry)
+; FUNC: ESQFUNC_SelectAndApplyBrushForCurrentEntry   (Select and blit brush for current entry context)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -2321,13 +2333,14 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQSHARED_JMPTBL_ESQ_WildcardMatch, ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, LAB_09CF, LAB_09D0, LAB_09D9, DATA_ESQFUNC_CONST_LONG_1ECC, DATA_ESQFUNC_BSS_LONG_1ED0, ESQIFF_BrushIniListHead, DATA_ESQFUNC_TAG_00_1EE6, DATA_ESQFUNC_TAG_11_1EE7, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, TEXTDISP_CurrentMatchIndex, e8
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_ESQFUNC_CONST_LONG_1ECC, DATA_ESQFUNC_BSS_LONG_1ED0, ESQIFF_BrushIniListHead, DATA_ESQFUNC_TAG_00_1EE6, DATA_ESQFUNC_TAG_11_1EE7, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Chooses a brush from script selection or brush.ini metadata for the current
+;   entry, clears target rastports, blits the brush, and applies palette-copy rules.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Entry tag bytes at `entry+0x2B` steer tag/wildcard lookup paths.
 ;------------------------------------------------------------------------------
 ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     LINK.W  A5,#-32
@@ -2336,22 +2349,22 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVE.L  ESQIFF_BrushIniListHead,-4(A5)
     MOVEQ   #0,D5
     TST.W   D7
-    BNE.S   .lab_09C3
+    BNE.S   .load_secondary_script_selection
 
     MOVE.L  BRUSH_ScriptPrimarySelection,-24(A5) ; prefer script-selected brush if present
-    BRA.S   .lab_09C4
+    BRA.S   .resolve_selection_source
 
-.lab_09C3:
+.load_secondary_script_selection:
     MOVEA.L BRUSH_ScriptSecondarySelection,A0 ; fall back to secondary slot when requested
     MOVE.L  A0,-24(A5)
 
-.lab_09C4:
+.resolve_selection_source:
     TST.L   -24(A5)
-    BNE.W   .lab_09CF
+    BNE.W   .use_script_selected_brush
 
     MOVE.W  TEXTDISP_ActiveGroupId,D0
     SUBQ.W  #1,D0
-    BNE.S   .lab_09C5
+    BNE.S   .load_secondary_current_entry_ptr
 
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
@@ -2359,9 +2372,9 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
-    BRA.S   .lab_09C6
+    BRA.S   .compare_entry_tag_00
 
-.lab_09C5:
+.load_secondary_current_entry_ptr:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ASL.L   #2,D0
@@ -2369,7 +2382,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDA.L  D0,A0
     MOVE.L  (A0),-8(A5)
 
-.lab_09C6:
+.compare_entry_tag_00:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
@@ -2379,13 +2392,13 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .lab_09C7
+    BNE.S   .compare_entry_tag_11
 
     MOVE.L  BRUSH_SelectedNode,-4(A5)
     MOVEQ   #1,D5
-    BRA.W   .lab_09D0
+    BRA.W   .ensure_fallback_selected_brush
 
-.lab_09C7:
+.compare_entry_tag_11:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
@@ -2395,24 +2408,24 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .lab_09CD
+    BNE.S   .scan_brush_nodes_by_2char_tag
 
-.lab_09C8:
+.scan_brush_nodes_by_wildcard_chain:
     TST.L   -4(A5)
-    BEQ.S   .lab_09CC
+    BEQ.S   .fallback_to_type3_or_selected
 
     TST.L   D5
-    BNE.S   .lab_09CC
+    BNE.S   .fallback_to_type3_or_selected
 
     MOVEA.L -4(A5),A0
     MOVE.L  364(A0),-20(A5)
 
-.lab_09C9:
+.loop_match_wildcard_list:
     TST.L   -20(A5)
-    BEQ.S   .lab_09CB
+    BEQ.S   .advance_brush_node_chain
 
     TST.L   D5
-    BNE.S   .lab_09CB
+    BNE.S   .advance_brush_node_chain
 
     MOVEA.L -8(A5),A0
     ADDA.W  #12,A0
@@ -2422,44 +2435,44 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.S   .lab_09CA
+    BNE.S   .advance_wildcard_node
 
     MOVEQ   #1,D5
 
-.lab_09CA:
+.advance_wildcard_node:
     MOVEA.L -20(A5),A0
     MOVE.L  8(A0),-20(A5)
-    BRA.S   .lab_09C9
+    BRA.S   .loop_match_wildcard_list
 
-.lab_09CB:
+.advance_brush_node_chain:
     TST.L   D5
-    BNE.S   .lab_09C8
+    BNE.S   .scan_brush_nodes_by_wildcard_chain
 
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .lab_09C8
+    BRA.S   .scan_brush_nodes_by_wildcard_chain
 
-.lab_09CC:
+.fallback_to_type3_or_selected:
     TST.L   D5
-    BNE.S   .lab_09D0
+    BNE.S   .ensure_fallback_selected_brush
 
     MOVEA.L -8(A5),A0
     BTST    #4,27(A0)
-    BEQ.S   .lab_09D0
+    BEQ.S   .ensure_fallback_selected_brush
 
     TST.L   DATA_ESQFUNC_BSS_LONG_1ED0
-    BEQ.S   .lab_09D0
+    BEQ.S   .ensure_fallback_selected_brush
 
     MOVEQ   #1,D5
     MOVE.L  DATA_ESQFUNC_BSS_LONG_1ED0,-4(A5)
-    BRA.S   .lab_09D0
+    BRA.S   .ensure_fallback_selected_brush
 
-.lab_09CD:
+.scan_brush_nodes_by_2char_tag:
     TST.L   -4(A5)
-    BEQ.S   .lab_09D0
+    BEQ.S   .ensure_fallback_selected_brush
 
     TST.L   D5
-    BNE.S   .lab_09D0
+    BNE.S   .ensure_fallback_selected_brush
 
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
@@ -2472,29 +2485,29 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     12(A7),A7
     TST.L   D0
-    BNE.S   .lab_09CE
+    BNE.S   .advance_tag_match_node
 
     MOVEQ   #1,D5
 
-.lab_09CE:
+.advance_tag_match_node:
     TST.L   D5
-    BNE.S   .lab_09CD
+    BNE.S   .scan_brush_nodes_by_2char_tag
 
     MOVEA.L -4(A5),A0
     MOVE.L  368(A0),-4(A5)
-    BRA.S   .lab_09CD
+    BRA.S   .scan_brush_nodes_by_2char_tag
 
-.lab_09CF:
+.use_script_selected_brush:
     MOVEQ   #1,D5
     MOVE.L  -24(A5),-4(A5)
 
-.lab_09D0:
+.ensure_fallback_selected_brush:
     TST.L   D5
-    BNE.S   .lab_09D1
+    BNE.S   .clear_rastports_before_brush_blit
 
     MOVE.L  BRUSH_SelectedNode,-4(A5)
 
-.lab_09D1:
+.clear_rastports_before_brush_blit:
     MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #31,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -2507,15 +2520,15 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     JSR     _LVOSetRast(A6)
 
     TST.L   -4(A5)
-    BEQ.S   .lab_09D3
+    BEQ.S   .maybe_copy_brush_palette_segment
 
     TST.L   BRUSH_SelectedNode
-    BNE.S   .lab_09D2
+    BNE.S   .blit_selected_brush_to_rast
 
     TST.L   D5
-    BEQ.S   .lab_09D3
+    BEQ.S   .maybe_copy_brush_palette_segment
 
-.lab_09D2:
+.blit_selected_brush_to_rast:
     MOVEQ   #0,D0
     MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0
@@ -2535,23 +2548,23 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 
     LEA     28(A7),A7
 
-.lab_09D3:
+.maybe_copy_brush_palette_segment:
     TST.L   -4(A5)
-    BEQ.W   .lab_09D9
+    BEQ.W   .restore_base_palette_when_no_brush
 
     MOVEA.L -4(A5),A0
     TST.L   328(A0)
-    BEQ.S   .lab_09D4
+    BEQ.S   .prepare_plane_mask_bounds
 
     MOVE.L  328(A0),D0
     MOVEQ   #1,D1
     CMP.L   D1,D0
-    BEQ.S   .lab_09D4
+    BEQ.S   .prepare_plane_mask_bounds
 
     SUBQ.L  #3,D0
-    BNE.S   .lab_09D6
+    BNE.S   .apply_brush_palette_mode_postprocess
 
-.lab_09D4:
+.prepare_plane_mask_bounds:
     PEA     5.W
     JSR     ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(PC)
 
@@ -2572,12 +2585,12 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEQ   #0,D6
     MOVE.L  D1,-32(A5)
 
-.lab_09D5:
+.loop_copy_palette_bytes_from_brush:
     CMP.L   -32(A5),D6
-    BGE.S   .lab_09D6
+    BGE.S   .apply_brush_palette_mode_postprocess
 
     CMP.L   D4,D6
-    BGE.S   .lab_09D6
+    BGE.S   .apply_brush_palette_mode_postprocess
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D6,A0
@@ -2586,26 +2599,26 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDI.L  #$e8,D0
     MOVE.B  0(A1,D0.L),(A0)
     ADDQ.L  #1,D6
-    BRA.S   .lab_09D5
+    BRA.S   .loop_copy_palette_bytes_from_brush
 
-.lab_09D6:
+.apply_brush_palette_mode_postprocess:
     MOVEQ   #1,D0
     MOVEA.L -4(A5),A0
     CMP.L   328(A0),D0
-    BNE.S   .lab_09D7
+    BNE.S   .check_palette_mode_three
 
     BSR.W   ESQIFF_RestoreBasePaletteTriples
 
     BRA.S   .return
 
-.lab_09D7:
+.check_palette_mode_three:
     MOVEQ   #3,D0
     CMP.L   328(A0),D0
     BNE.S   .return
 
     MOVEQ   #0,D6
 
-.lab_09D8:
+.loop_restore_first_12_palette_bytes:
     MOVEQ   #12,D0
     CMP.L   D0,D6
     BGE.S   .return
@@ -2616,9 +2629,9 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     ADDA.L  D6,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D6
-    BRA.S   .lab_09D8
+    BRA.S   .loop_restore_first_12_palette_bytes
 
-.lab_09D9:
+.restore_base_palette_when_no_brush:
     BSR.W   ESQIFF_RestoreBasePaletteTriples
 
 .return:
@@ -2630,7 +2643,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_RebuildPwBrushListFromTagTable   (Routine at ESQFUNC_RebuildPwBrushListFromTagTable)
+; FUNC: ESQFUNC_RebuildPwBrushListFromTagTable   (Rebuild PW brush descriptor/list chain from tag table)
 ; ARGS:
 ;   stack +8: arg_1 (via 12(A5))
 ; RET:
@@ -2640,13 +2653,14 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_BRUSH_PopulateBrushList
 ; READS:
-;   LAB_09DC, LAB_09DD, LAB_09DD_000A, LAB_09DD_0016, LAB_09DD_0022, LAB_09DD_002E, LAB_09DD_003A, LAB_09DD_0046, ESQFUNC_PwBrushDescriptorHead, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_CONST_LONG_1EDE, return
+;   ESQFUNC_PwBrushDescriptorHead, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_CONST_LONG_1EDE
 ; WRITES:
 ;   ESQFUNC_PwBrushDescriptorHead
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Frees existing PW brush list, allocates descriptor nodes from a 6-entry tag
+;   table, assigns descriptor type bytes, and repopulates runtime brush list.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses PC-relative jump-table switch on descriptor index.
 ;------------------------------------------------------------------------------
 ESQFUNC_RebuildPwBrushListFromTagTable:
     LINK.W  A5,#-8
@@ -2659,7 +2673,7 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
     ADDQ.W  #8,A7
     MOVEQ   #0,D7
 
-.lab_09DC:
+.loop_build_pw_brush_descriptors:
     MOVEQ   #6,D0
     CMP.L   D0,D7
     BGE.W   .return
@@ -2676,59 +2690,59 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
     MOVE.L  D0,-4(A5)
     MOVE.L  D7,D0
     CMPI.L  #$6,D0
-    BCC.S   .lab_09DF
+    BCC.S   .link_pw_descriptor_or_advance
 
     ADD.W   D0,D0
-    MOVE.W  .lab_09DD(PC,D0.W),D0
-    JMP     .lab_09DD+2(PC,D0.W)
+    MOVE.W  .switch_pw_descriptor_type_case(PC,D0.W),D0
+    JMP     .switch_pw_descriptor_type_case+2(PC,D0.W)
 
 ; switch/jumptable
-.lab_09DD:
-    DC.W    .lab_09DD_000A-.lab_09DD-2
-	DC.W    .lab_09DD_0016-.lab_09DD-2
-    DC.W    .lab_09DD_0022-.lab_09DD-2
-	DC.W    .lab_09DD_002E-.lab_09DD-2
-    DC.W    .lab_09DD_003A-.lab_09DD-2
-    DC.W    .lab_09DD_0046-.lab_09DD-2
+.switch_pw_descriptor_type_case:
+    DC.W    .set_pw_descriptor_type_08-.switch_pw_descriptor_type_case-2
+	DC.W    .set_pw_descriptor_type_09_case1-.switch_pw_descriptor_type_case-2
+    DC.W    .set_pw_descriptor_type_09_case2-.switch_pw_descriptor_type_case-2
+	DC.W    .set_pw_descriptor_type_09_case3-.switch_pw_descriptor_type_case-2
+    DC.W    .set_pw_descriptor_type_09_case4-.switch_pw_descriptor_type_case-2
+    DC.W    .set_pw_descriptor_type_09_case5-.switch_pw_descriptor_type_case-2
 
-.lab_09DD_000A:
+.set_pw_descriptor_type_08:
     MOVEA.L -4(A5),A0
     MOVE.B  #$8,190(A0)
-    BRA.S   .lab_09DF
+    BRA.S   .link_pw_descriptor_or_advance
 
-.lab_09DD_0016:
+.set_pw_descriptor_type_09_case1:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .lab_09DF
+    BRA.S   .link_pw_descriptor_or_advance
 
-.lab_09DD_0022:
+.set_pw_descriptor_type_09_case2:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .lab_09DF
+    BRA.S   .link_pw_descriptor_or_advance
 
-.lab_09DD_002E:
+.set_pw_descriptor_type_09_case3:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .lab_09DF
+    BRA.S   .link_pw_descriptor_or_advance
 
-.lab_09DD_003A:
+.set_pw_descriptor_type_09_case4:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
-    BRA.S   .lab_09DF
+    BRA.S   .link_pw_descriptor_or_advance
 
-.lab_09DD_0046:
+.set_pw_descriptor_type_09_case5:
     MOVEA.L -4(A5),A0
     MOVE.B  #$9,190(A0)
 
-.lab_09DF:
+.link_pw_descriptor_or_advance:
     TST.L   ESQFUNC_PwBrushDescriptorHead
-    BNE.S   .lab_09E0
+    BNE.S   .advance_pw_descriptor_index
 
     MOVE.L  -4(A5),ESQFUNC_PwBrushDescriptorHead
 
-.lab_09E0:
+.advance_pw_descriptor_index:
     ADDQ.L  #1,D7
-    BRA.W   .lab_09DC
+    BRA.W   .loop_build_pw_brush_descriptors
 
 .return:
     PEA     ESQFUNC_PwBrushListHead
@@ -2743,7 +2757,7 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_TrimTextToPixelWidthWordBoundary   (Routine at ESQFUNC_TrimTextToPixelWidthWordBoundary)
+; FUNC: ESQFUNC_TrimTextToPixelWidthWordBoundary   (Trim text length to fit pixel width at word boundary)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2757,9 +2771,10 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Measures text width and repeatedly shrinks candidate length to a class-3
+;   boundary until TextLength(text[0..len]) fits within max pixel width.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses WDISP_CharClassTable bit3 as boundary classifier.
 ;------------------------------------------------------------------------------
 ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVEM.L D6-D7/A2-A3,-(A7)
@@ -2768,15 +2783,15 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVEA.L 28(A7),A2
     MOVEA.L A2,A0
 
-.lab_09E3:
+.loop_find_text_nul:
     TST.B   (A0)+
-    BNE.S   .lab_09E3
+    BNE.S   .loop_find_text_nul
 
     SUBQ.L  #1,A0
     SUBA.L  A2,A0
     MOVE.L  A0,D6
 
-.lab_09E4:
+.loop_fit_text_to_pixel_width:
     TST.L   D6
     BLE.S   ESQFUNC_TrimTextToPixelWidthWordBoundary_Return
 
@@ -2789,10 +2804,10 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
     CMP.L   D7,D0
     BLE.S   ESQFUNC_TrimTextToPixelWidthWordBoundary_Return
 
-.lab_09E5:
+.scan_backward_to_word_boundary:
     SUBQ.L  #1,D6
     TST.L   D6
-    BLE.S   .lab_09E6
+    BLE.S   .rewind_over_trailing_class3_chars
 
     MOVE.B  -1(A2,D6.L),D0
     EXT.W   D0
@@ -2800,11 +2815,11 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
     LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BEQ.S   .lab_09E5
+    BEQ.S   .scan_backward_to_word_boundary
 
-.lab_09E6:
+.rewind_over_trailing_class3_chars:
     TST.L   D6
-    BLE.S   .lab_09E4
+    BLE.S   .loop_fit_text_to_pixel_width
 
     MOVE.B  -1(A2,D6.L),D0
     EXT.W   D0
@@ -2812,13 +2827,13 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
     LEA     WDISP_CharClassTable,A0
     ADDA.L  D0,A0
     BTST    #3,(A0)
-    BEQ.S   .lab_09E4
+    BEQ.S   .loop_fit_text_to_pixel_width
 
     SUBQ.L  #1,D6
-    BRA.S   .lab_09E6
+    BRA.S   .rewind_over_trailing_class3_chars
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_TrimTextToPixelWidthWordBoundary_Return   (Routine at ESQFUNC_TrimTextToPixelWidthWordBoundary_Return)
+; FUNC: ESQFUNC_TrimTextToPixelWidthWordBoundary_Return   (Return tail for pixel-width text trim helper)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2832,9 +2847,9 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns selected text length in D0 and restores saved registers.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return from fit success and lower-bound exits.
 ;------------------------------------------------------------------------------
 ESQFUNC_TrimTextToPixelWidthWordBoundary_Return:
     MOVE.L  D6,D0

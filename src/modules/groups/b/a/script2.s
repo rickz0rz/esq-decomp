@@ -232,7 +232,7 @@ SCRIPT_ClearCtrlLineIfEnabled:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLineNow   (AssertCtrlLineNowuncertain)
+; FUNC: SCRIPT_AssertCtrlLineNow   (Assert CTRL line immediately)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -256,7 +256,7 @@ SCRIPT_AssertCtrlLineNow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DeassertCtrlLineNow   (DeassertCtrlLineNowuncertain)
+; FUNC: SCRIPT_DeassertCtrlLineNow   (Deassert CTRL line immediately)
 ; ARGS:
 ;   (none)
 ; RET:

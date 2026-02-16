@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_ProcessAlerts   (ProcessAlertsuncertain)
+; FUNC: CLEANUP_ProcessAlerts   (Process alert/timer/banner state machine)
 ; ARGS:
 ;   (none)
 ; RET:

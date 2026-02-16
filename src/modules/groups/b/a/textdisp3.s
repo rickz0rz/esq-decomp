@@ -1662,7 +1662,7 @@ TEXTDISP_ComputeTimeOffset:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_SelectGroupAndEntry   (Resolve selection from filter)
+; FUNC: TEXTDISP_SelectGroupAndEntry   (Try primary/secondary group selection)
 ; ARGS:
 ;   stack +24: filterStrPtr (A3)
 ;   stack +28: outPtr (A2)
@@ -2019,7 +2019,7 @@ TEXTDISP_BuildMatchIndexList:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_SelectBestMatchFromList   (Evaluate candidate list)
+; FUNC: TEXTDISP_SelectBestMatchFromList   (Score candidates and select banner entry)
 ; ARGS:
 ;   stack +8: filterPtr (A3)
 ;   stack +14: matchCount (word)

@@ -1,5 +1,5 @@
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_AllocateHighlightBitmaps   (Routine at ESQDISP_AllocateHighlightBitmaps)
+; FUNC: ESQDISP_AllocateHighlightBitmaps   (Initialize 3-plane bitmap and allocate plane rasters)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -11,11 +11,12 @@
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQDISP_C, WDISP_HighlightRasterHeightPx
 ; WRITES:
-;   (none observed)
+;   A3+8/A3+12/A3+16 raster plane pointers
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Initializes a 696-wide, 3-plane highlight bitmap descriptor and allocates one
+;   raster per plane using configured highlight height.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Clears each allocated plane with BltClear before returning.
 ;------------------------------------------------------------------------------
 ESQDISP_AllocateHighlightBitmaps:
     LINK.W  A5,#-4
@@ -32,7 +33,7 @@ ESQDISP_AllocateHighlightBitmaps:
 
     MOVEQ   #0,D7
 
-.branch:
+.alloc_plane_loop:
     MOVEQ   #3,D0
     CMP.L   D0,D7
     BGE.S   ESQDISP_AllocateHighlightBitmaps_Return
@@ -65,10 +66,10 @@ ESQDISP_AllocateHighlightBitmaps:
     JSR     _LVOBltClear(A6)
 
     ADDQ.L  #1,D7
-    BRA.S   .branch
+    BRA.S   .alloc_plane_loop
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_AllocateHighlightBitmaps_Return   (Routine at ESQDISP_AllocateHighlightBitmaps_Return)
+; FUNC: ESQDISP_AllocateHighlightBitmaps_Return   (Return tail for highlight bitmap allocator)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -82,9 +83,9 @@ ESQDISP_AllocateHighlightBitmaps:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers/frame state and returns to caller.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared exit for allocation loop bound check.
 ;------------------------------------------------------------------------------
 ESQDISP_AllocateHighlightBitmaps_Return:
     MOVEM.L (A7)+,D2/D7/A3
@@ -94,7 +95,7 @@ ESQDISP_AllocateHighlightBitmaps_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_InitHighlightMessagePattern   (Routine at ESQDISP_InitHighlightMessagePattern)
+; FUNC: ESQDISP_InitHighlightMessagePattern   (Seed highlight message pattern bytes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -106,18 +107,18 @@ ESQDISP_AllocateHighlightBitmaps_Return:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   (none observed)
+;   A3+55..A3+58
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Writes ascending pattern bytes 4..7 into message structure offsets 55..58.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses a fixed 4-byte loop.
 ;------------------------------------------------------------------------------
 ESQDISP_InitHighlightMessagePattern:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
 
-.lab_08BF:
+.init_pattern_loop:
     MOVEQ   #4,D0
     CMP.L   D0,D7
     BGE.S   ESQDISP_InitHighlightMessagePattern_Return
@@ -126,10 +127,10 @@ ESQDISP_InitHighlightMessagePattern:
     ADDQ.L  #4,D0
     MOVE.B  D0,55(A3,D7.L)
     ADDQ.L  #1,D7
-    BRA.S   .lab_08BF
+    BRA.S   .init_pattern_loop
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_InitHighlightMessagePattern_Return   (Routine at ESQDISP_InitHighlightMessagePattern_Return)
+; FUNC: ESQDISP_InitHighlightMessagePattern_Return   (Return tail for message-pattern initializer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -143,9 +144,9 @@ ESQDISP_InitHighlightMessagePattern:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores D7/A3 and returns.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared exit from 4-iteration seed loop.
 ;------------------------------------------------------------------------------
 ESQDISP_InitHighlightMessagePattern_Return:
     MOVEM.L (A7)+,D7/A3
@@ -154,7 +155,7 @@ ESQDISP_InitHighlightMessagePattern_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_QueueHighlightDrawMessage   (Routine at ESQDISP_QueueHighlightDrawMessage)
+; FUNC: ESQDISP_QueueHighlightDrawMessage   (Prepare highlight-draw message and enqueue to port)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -165,13 +166,14 @@ ESQDISP_InitHighlightMessagePattern_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode, _LVOInitRastPort, _LVOPutMsg, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, a0
+;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort
 ; WRITES:
-;   (none observed)
+;   highlight message header/rastport fields at A3, message flags via A3+112 target
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Populates message metadata and embedded RastPort state, validates selection
+;   parameters, then posts the message to ESQ_HighlightMsgPort.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses ESQ_HighlightReplyPort as reply target for async highlight processing.
 ;------------------------------------------------------------------------------
 ESQDISP_QueueHighlightDrawMessage:
     LINK.W  A5,#-4
@@ -228,7 +230,7 @@ ESQDISP_QueueHighlightDrawMessage:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_ProcessGridMessagesIfIdle   (Routine at ESQDISP_ProcessGridMessagesIfIdle)
+; FUNC: ESQDISP_ProcessGridMessagesIfIdle   (Pump grid messages when UI is idle)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -242,9 +244,9 @@ ESQDISP_QueueHighlightDrawMessage:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Forwards to NEWGRID message processing only when no modal/input-busy gate is set.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Gated by DATA_ESQ_BSS_WORD_1DF2, Global_UIBusyFlag, and NEWGRID_MessagePumpSuspendFlag.
 ;------------------------------------------------------------------------------
 ESQDISP_ProcessGridMessagesIfIdle:
     TST.W   DATA_ESQ_BSS_WORD_1DF2
@@ -264,7 +266,7 @@ ESQDISP_ProcessGridMessagesIfIdle:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_SetStatusIndicatorColorSlot   (Routine at ESQDISP_SetStatusIndicatorColorSlot)
+; FUNC: ESQDISP_SetStatusIndicatorColorSlot   (Cache/apply color and paint one status-indicator box)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -276,13 +278,15 @@ ESQDISP_ProcessGridMessagesIfIdle:
 ; CALLS:
 ;   _LVOReadPixel, _LVORectFill, _LVOSetAPen
 ; READS:
-;   Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_BSS_BYTE_1DEE, DATA_ESQDISP_CONST_LONG_1E80, return
+;   Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_BSS_BYTE_1DEE, DATA_ESQDISP_CONST_LONG_1E80
 ; WRITES:
-;   (none observed)
+;   DATA_ESQDISP_CONST_LONG_1E80, status-indicator rectangle in Global_REF_RASTPORT_1
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Updates cached color for indicator slot and, when UI is drawable, repaints the
+;   slot rectangle at x=655..661 using either supplied color or sampled fallback.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Busy mode stores pending color only; `D7==-1` requests use of cached color.
+;   Slot selector `D6` maps to y=40 (slot 1) or y=57 (slot 0).
 ;------------------------------------------------------------------------------
 ESQDISP_SetStatusIndicatorColorSlot:
     LINK.W  A5,#-20
@@ -291,15 +295,15 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  12(A5),D6
 
     TST.L   D6
-    BEQ.S   .lab_08C5
+    BEQ.S   .validate_slot_index
 
     MOVEQ   #1,D0
     CMP.L   D0,D6
     BNE.W   .return
 
-.lab_08C5:
+.validate_slot_index:
     TST.B   DATA_ESQ_BSS_BYTE_1DEE
-    BEQ.S   .lab_08C6
+    BEQ.S   .resolve_cached_color_or_direct_apply
 
     MOVEQ   #-1,D0
     CMP.L   D0,D7
@@ -313,10 +317,10 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  D7,(A1)
     BRA.W   .return
 
-.lab_08C6:
+.resolve_cached_color_or_direct_apply:
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BNE.S   .lab_08C7
+    BNE.S   .apply_if_slot_color_changed
 
     MOVE.L  D6,D1
     ASL.L   #2,D1
@@ -328,7 +332,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
     ADDA.L  D1,A1
     MOVE.L  D0,(A1)
 
-.lab_08C7:
+.apply_if_slot_color_changed:
     MOVE.L  D6,D0
     ASL.L   #2,D0
     LEA     DATA_ESQDISP_CONST_LONG_1E80,A0
@@ -343,17 +347,17 @@ ESQDISP_SetStatusIndicatorColorSlot:
     MOVE.L  #$28f,D4
     MOVEQ   #1,D0
     CMP.L   D0,D6
-    BNE.S   .lab_08C8
+    BNE.S   .use_slot0_y
 
     MOVEQ   #40,D0
     MOVE.L  D0,-16(A5)
-    BRA.S   .lab_08C9
+    BRA.S   .setup_indicator_rastport
 
-.lab_08C8:
+.use_slot0_y:
     MOVEQ   #57,D0
     MOVE.L  D0,-16(A5)
 
-.lab_08C9:
+.setup_indicator_rastport:
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.B  25(A0),D5
     EXT.W   D5
@@ -366,7 +370,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
     MOVEQ   #6,D0
     CMP.L   D0,D7
-    BNE.S   .lab_08CB
+    BNE.S   .set_pen_and_fill_indicator
 
 .readPixelAt655x55:
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -377,7 +381,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
     MOVE.L  D0,D7
 
-.lab_08CB:
+.set_pen_and_fill_indicator:
     MOVE.L  D7,D0
     MOVEA.L Global_REF_RASTPORT_1,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -410,7 +414,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_ApplyStatusMaskToIndicators   (Routine at ESQDISP_ApplyStatusMaskToIndicators)
+; FUNC: ESQDISP_ApplyStatusMaskToIndicators   (Map status-bit mask to two indicator color slots)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -420,150 +424,151 @@ ESQDISP_SetStatusIndicatorColorSlot:
 ; CALLS:
 ;   ESQDISP_SetStatusIndicatorColorSlot
 ; READS:
-;   lab_08D9
+;   status mask argument (D7 bits)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Decodes grouped status bits and updates two indicator slots (mode 1 + mode 0)
+;   by forwarding selected color IDs to ESQDISP_SetStatusIndicatorColorSlot.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   `D7==-1` forces default reset behavior for both indicator groups.
 ;------------------------------------------------------------------------------
 ESQDISP_ApplyStatusMaskToIndicators:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BNE.S   .lab_08CE
+    BNE.S   .evaluate_primary_indicator_group
 
     PEA     1.W
     MOVE.L  D0,-(A7)
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D1
+    BRA.S   .evaluate_secondary_indicator_group
 
-.lab_08CE:
+.evaluate_primary_indicator_group:
     BTST    #4,D7
-    BEQ.S   .lab_08D0
+    BEQ.S   .primary_no_bit4
 
     BTST    #5,D7
-    BEQ.S   .lab_08CF
+    BEQ.S   .primary_bit4_only
 
     PEA     1.W
     PEA     4.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D1
+    BRA.S   .evaluate_secondary_indicator_group
 
-.lab_08CF:
+.primary_bit4_only:
     PEA     1.W
     PEA     2.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D1
+    BRA.S   .evaluate_secondary_indicator_group
 
-.lab_08D0:
+.primary_no_bit4:
     PEA     1.W
     PEA     7.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
 
-.lab_08D1:
+.evaluate_secondary_indicator_group:
     MOVEQ   #-1,D0
     CMP.L   D0,D7
-    BNE.S   .lab_08D2
+    BNE.S   .secondary_eval_bit8
 
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.W   .lab_08D9
+    BRA.W   .return
 
-.lab_08D2:
+.secondary_eval_bit8:
     BTST    #8,D7
-    BEQ.S   .lab_08D3
+    BEQ.S   .secondary_eval_bit0
 
     CLR.L   -(A7)
     PEA     4.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D9
+    BRA.S   .return
 
-.lab_08D3:
+.secondary_eval_bit0:
     BTST    #0,D7
-    BEQ.S   .lab_08D6
+    BEQ.S   .secondary_no_bit0
 
     BTST    #2,D7
-    BEQ.S   .lab_08D4
+    BEQ.S   .secondary_bit0_without_bit2
 
     CLR.L   -(A7)
     PEA     4.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D9
+    BRA.S   .return
 
-.lab_08D4:
+.secondary_bit0_without_bit2:
     BTST    #1,D7
-    BEQ.S   .lab_08D5
+    BEQ.S   .secondary_bit0_fallback
 
     CLR.L   -(A7)
     PEA     2.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D9
+    BRA.S   .return
 
-.lab_08D5:
+.secondary_bit0_fallback:
     CLR.L   -(A7)
     PEA     1.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D9
+    BRA.S   .return
 
-.lab_08D6:
+.secondary_no_bit0:
     BTST    #2,D7
-    BEQ.S   .lab_08D7
+    BEQ.S   .secondary_no_bit0_no_bit2
 
     CLR.L   -(A7)
     PEA     3.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D9
+    BRA.S   .return
 
-.lab_08D7:
+.secondary_no_bit0_no_bit2:
     BTST    #1,D7
-    BEQ.S   .lab_08D8
+    BEQ.S   .secondary_no_bits_1_2
 
     CLR.L   -(A7)
     PEA     3.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
-    BRA.S   .lab_08D9
+    BRA.S   .return
 
-.lab_08D8:
+.secondary_no_bits_1_2:
     CLR.L   -(A7)
     PEA     7.W
     BSR.W   ESQDISP_SetStatusIndicatorColorSlot
 
     ADDQ.W  #8,A7
 
-.lab_08D9:
+.return:
     MOVE.L  (A7)+,D7
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_UpdateStatusMaskAndRefresh   (Routine at ESQDISP_UpdateStatusMaskAndRefresh)
+; FUNC: ESQDISP_UpdateStatusMaskAndRefresh   (UpdateStatusMaskAndRefresh)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -577,9 +582,10 @@ ESQDISP_ApplyStatusMaskToIndicators:
 ; WRITES:
 ;   DATA_ESQDISP_BSS_LONG_1E81
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Sets or clears bits in the global status mask, clamps to 12 bits, and only
+;   refreshes status indicators when the effective mask changed.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   D6 controls operation mode: non-zero = OR-in mask, zero = clear mask bits.
 ;------------------------------------------------------------------------------
 ESQDISP_UpdateStatusMaskAndRefresh:
     MOVEM.L D5-D7,-(A7)
@@ -610,7 +616,7 @@ ESQDISP_UpdateStatusMaskAndRefresh:
     ADDQ.W  #4,A7
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_UpdateStatusMaskAndRefresh_Return   (Routine at ESQDISP_UpdateStatusMaskAndRefresh_Return)
+; FUNC: ESQDISP_UpdateStatusMaskAndRefresh_Return   (UpdateStatusMaskAndRefresh_Return)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -624,9 +630,9 @@ ESQDISP_UpdateStatusMaskAndRefresh:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D5-D7 and returns.
 ;------------------------------------------------------------------------------
 ESQDISP_UpdateStatusMaskAndRefresh_Return:
     MOVEM.L (A7)+,D5-D7
@@ -635,7 +641,7 @@ ESQDISP_UpdateStatusMaskAndRefresh_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_RefreshStatusIndicatorsFromCurrentMask   (Routine at ESQDISP_RefreshStatusIndicatorsFromCurrentMask)
+; FUNC: ESQDISP_RefreshStatusIndicatorsFromCurrentMask   (Reapply current status mask to indicators)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -649,9 +655,9 @@ ESQDISP_UpdateStatusMaskAndRefresh_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Re-runs status-indicator coloring from the already stored global mask value.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Calls ESQDISP_ApplyStatusMaskToIndicators with sentinel mask `-1`.
 ;------------------------------------------------------------------------------
 ESQDISP_RefreshStatusIndicatorsFromCurrentMask:
     PEA     -1.W
@@ -677,11 +683,12 @@ ESQDISP_RefreshStatusIndicatorsFromCurrentMask:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Builds a time/row-derived schedule offset and normalizes it for display-grid
+;   stepping.
 ; NOTES:
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_ComputeScheduleOffsetForRow   (Routine at ESQDISP_ComputeScheduleOffsetForRow)
+; FUNC: ESQDISP_ComputeScheduleOffsetForRow   (Compute schedule offset for row/time)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -695,9 +702,10 @@ ESQDISP_RefreshStatusIndicatorsFromCurrentMask:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Builds a packed time word from (row, slot), folds it with row index, then
+;   normalizes via DISPLIB_NormalizeValueByStep(value, 1, 48).
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Returns normalized offset in D0.
 ;------------------------------------------------------------------------------
 ESQDISP_ComputeScheduleOffsetForRow:
     MOVEM.L D5-D7,-(A7)
@@ -739,7 +747,7 @@ ESQDISP_ComputeScheduleOffsetForRow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages   (Routine at ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages)
+; FUNC: ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -753,15 +761,15 @@ ESQDISP_ComputeScheduleOffsetForRow:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
     JMP     NEWGRID_ProcessGridMessages
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster   (Routine at ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster)
+; FUNC: ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -775,9 +783,9 @@ ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Thin jump-table forwarder; execution immediately transfers to CALLS target.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster:
     JMP     UNKNOWN2B_AllocRaster
@@ -785,7 +793,7 @@ ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_FillProgramInfoHeaderFields   (Routine at ESQDISP_FillProgramInfoHeaderFields)
+; FUNC: ESQDISP_FillProgramInfoHeaderFields   (Populate program-info header fields)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -799,9 +807,10 @@ ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Writes status/time/flag bytes into the program-info header and copies a
+;   2-byte code string into header offset 43, then zero-terminates offset 45.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Returns early if destination pointer is NULL.
 ;------------------------------------------------------------------------------
 ESQDISP_FillProgramInfoHeaderFields:
     MOVEM.L D4-D7/A2-A3,-(A7)
@@ -828,7 +837,7 @@ ESQDISP_FillProgramInfoHeaderFields:
     CLR.B   45(A3)
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_FillProgramInfoHeaderFields_Return   (Routine at ESQDISP_FillProgramInfoHeaderFields_Return)
+; FUNC: ESQDISP_FillProgramInfoHeaderFields_Return   (Return tail for program-info header fill)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -842,9 +851,9 @@ ESQDISP_FillProgramInfoHeaderFields:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQDISP_FillProgramInfoHeaderFields.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D4-D7/A2-A3 and returns.
 ;------------------------------------------------------------------------------
 ESQDISP_FillProgramInfoHeaderFields_Return:
     MOVEM.L (A7)+,D4-D7/A2-A3
@@ -853,7 +862,7 @@ ESQDISP_FillProgramInfoHeaderFields_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_ParseProgramInfoCommandRecord   (Routine at ESQDISP_ParseProgramInfoCommandRecord)
+; FUNC: ESQDISP_ParseProgramInfoCommandRecord   (Parse program-info command record)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -879,9 +888,10 @@ ESQDISP_FillProgramInfoHeaderFields_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Parses group/slot identifiers plus digit fields, resolves target entry tables,
+;   and writes program-info header fields for matching entries.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses WDISP_CharClassTable digit checks before numeric accumulation.
 ;------------------------------------------------------------------------------
 ESQDISP_ParseProgramInfoCommandRecord:
     LINK.W  A5,#-40
@@ -1432,7 +1442,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     BRA.W   .branch
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_ParseProgramInfoCommandRecord_Return   (Routine at ESQDISP_ParseProgramInfoCommandRecord_Return)
+; FUNC: ESQDISP_ParseProgramInfoCommandRecord_Return   (Return tail for program-info parser)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1446,9 +1456,9 @@ ESQDISP_ParseProgramInfoCommandRecord:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQDISP_ParseProgramInfoCommandRecord.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Restores D2-D3/D5-D7/A2-A3 and frame state.
 ;------------------------------------------------------------------------------
 ESQDISP_ParseProgramInfoCommandRecord_Return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
@@ -1458,7 +1468,7 @@ ESQDISP_ParseProgramInfoCommandRecord_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_TestEntryGridEligibility   (Routine at ESQDISP_TestEntryGridEligibility)
+; FUNC: ESQDISP_TestEntryGridEligibility   (Test per-slot grid eligibility)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1472,9 +1482,10 @@ ESQDISP_ParseProgramInfoCommandRecord_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns 1 when the requested slot index is valid and either entry slot bit4
+;   is set or the slot value byte (base+0xFC+idx) lies in range 5..10.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Valid slot range is 1..48; otherwise returns 0.
 ;------------------------------------------------------------------------------
 ESQDISP_TestEntryGridEligibility:
     MOVEM.L D6-D7/A3,-(A7)
@@ -1516,7 +1527,7 @@ ESQDISP_TestEntryGridEligibility:
     MOVE.L  D0,D6
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_TestEntryGridEligibility_Return   (Routine at ESQDISP_TestEntryGridEligibility_Return)
+; FUNC: ESQDISP_TestEntryGridEligibility_Return   (Return tail for grid eligibility test)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1530,9 +1541,9 @@ ESQDISP_TestEntryGridEligibility:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Shared return tail for ESQDISP_TestEntryGridEligibility.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Returns D6 in D0.
 ;------------------------------------------------------------------------------
 ESQDISP_TestEntryGridEligibility_Return:
     MOVE.L  D6,D0
@@ -1556,12 +1567,13 @@ ESQDISP_TestEntryGridEligibility_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Alias entry that immediately falls through to `_Core` implementation below.
 ; NOTES:
+;   Kept as exported compatibility label for existing callsites.
 ;------------------------------------------------------------------------------
 ESQDISP_TestEntryBits0And2:
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_TestEntryBits0And2_Core   (Routine at ESQDISP_TestEntryBits0And2_Core)
+; FUNC: ESQDISP_TestEntryBits0And2_Core   (Test entry flags bit0 and bit2)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1575,9 +1587,9 @@ ESQDISP_TestEntryBits0And2:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns 1 only when both bit0 and bit2 are set in entry status byte +40.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Returns 0 for NULL entry pointers.
 ;------------------------------------------------------------------------------
 ESQDISP_TestEntryBits0And2_Core:
     MOVEM.L D7/A3,-(A7)
@@ -1588,18 +1600,18 @@ ESQDISP_TestEntryBits0And2_Core:
     BEQ.S   .return
 
     BTST    #0,40(A3)
-    BEQ.S   .lab_0920
+    BEQ.S   .bits_not_set
 
     BTST    #2,40(A3)
-    BEQ.S   .lab_0920
+    BEQ.S   .bits_not_set
 
     MOVEQ   #1,D0
-    BRA.S   .lab_0921
+    BRA.S   .store_result
 
-.lab_0920:
+.bits_not_set:
     MOVEQ   #0,D0
 
-.lab_0921:
+.store_result:
     MOVE.L  D0,D7
 
 .return:
@@ -1624,11 +1636,13 @@ ESQDISP_TestEntryBits0And2_Core:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Alias documentation header; full behavior contract is defined in the
+;   immediately following detailed header block.
 ; NOTES:
+;   Preserved as entry marker before expanded ARGS/READS section.
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_GetEntryPointerByMode   (Routine at ESQDISP_GetEntryPointerByMode)
+; FUNC: ESQDISP_GetEntryPointerByMode   (Get entry pointer by mode/index)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -1643,9 +1657,10 @@ ESQDISP_TestEntryBits0And2_Core:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns entry pointer for index in primary mode (1) or secondary mode (2),
+;   with bounds checks against each group's entry count.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Returns NULL for out-of-range index or unsupported mode.
 ;------------------------------------------------------------------------------
 ESQDISP_GetEntryPointerByMode:
     LINK.W  A5,#-4
@@ -1716,11 +1731,11 @@ ESQDISP_GetEntryPointerByMode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Wrapper/prototype header for mode/index title-table lookup.
 ; NOTES:
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_GetEntryAuxPointerByMode   (Routine at ESQDISP_GetEntryAuxPointerByMode)
+; FUNC: ESQDISP_GetEntryAuxPointerByMode   (Get title-table pointer by mode/index)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -1735,9 +1750,10 @@ ESQDISP_GetEntryPointerByMode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Returns title-table pointer for index in primary mode (1) or secondary mode
+;   (2), with bounds checks against each group's entry count.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Returns NULL for out-of-range index or unsupported mode.
 ;------------------------------------------------------------------------------
 ESQDISP_GetEntryAuxPointerByMode:
     LINK.W  A5,#-4
@@ -1876,7 +1892,7 @@ ESQDISP_GetEntryAuxPointerByMode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_PollInputModeAndRefreshSelection   (Routine at ESQDISP_PollInputModeAndRefreshSelection)
+; FUNC: ESQDISP_PollInputModeAndRefreshSelection   (Debounce input mode and refresh selection)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1890,9 +1906,10 @@ ESQDISP_GetEntryAuxPointerByMode:
 ; WRITES:
 ;   DATA_ESQDISP_CONST_BYTE_1E8B, DATA_ESQDISP_BSS_LONG_1E8C, Global_RefreshTickCounter
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Polls CIAB input mode bits with debounce; when stable change is detected,
+;   updates mode state and either resets selection or redraws rast mode.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Requires >5 consecutive polls before committing mode change.
 ;------------------------------------------------------------------------------
 ESQDISP_PollInputModeAndRefreshSelection:
     LINK.W  A5,#-8
@@ -1941,7 +1958,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_NormalizeClockAndRedrawBanner   (Routine at ESQDISP_NormalizeClockAndRedrawBanner)
+; FUNC: ESQDISP_NormalizeClockAndRedrawBanner   (Normalize clock and redraw banner/status)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -1955,9 +1972,10 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Normalizes clock data, updates banner queue/buffer, draws clock banner on
+;   the 696x400 bitmap, then redraws status banner with highlight enabled.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Temporarily swaps rastport bitmap pointer during clock banner draw.
 ;------------------------------------------------------------------------------
 ESQDISP_NormalizeClockAndRedrawBanner:
     LINK.W  A5,#-4
@@ -1996,7 +2014,7 @@ ESQDISP_NormalizeClockAndRedrawBanner:
 ; Draw the status banner into rastport 1 (with optional highlight).
 ESQDISP_DrawStatusBanner:
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_DrawStatusBanner_Impl   (Routine at ESQDISP_DrawStatusBanner_Impl)
+; FUNC: ESQDISP_DrawStatusBanner_Impl   (Render status banner rows and sync slot state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2010,9 +2028,11 @@ ESQDISP_DrawStatusBanner:
 ; WRITES:
 ;   DATA_COMMON_BSS_LONG_1B08, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, DATA_TLIBA1_CONST_LONG_219B, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Computes the current half-hour banner slot, applies optional range clamp,
+;   updates highlight/banner state, and renders status text for active day entries.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   May trigger one-time secondary metadata/list propagation when threshold
+;   conditions are met near function tail.
 ;------------------------------------------------------------------------------
 ESQDISP_DrawStatusBanner_Impl:
     LINK.W  A5,#-4
@@ -2280,7 +2300,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.W  #1,DATA_ESQDISP_CONST_WORD_1E8F
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_DrawStatusBanner_Impl_Return   (Routine at ESQDISP_DrawStatusBanner_Impl_Return)
+; FUNC: ESQDISP_DrawStatusBanner_Impl_Return   (Return tail for status-banner renderer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2294,9 +2314,9 @@ ESQDISP_DrawStatusBanner_Impl:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers/frame and returns to caller.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared exit for all draw/early-return paths.
 ;------------------------------------------------------------------------------
 ESQDISP_DrawStatusBanner_Impl_Return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2
@@ -2306,37 +2326,39 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty   (Routine at ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty)
+; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty   (Mirror primary entries into secondary group when empty)
 ; ARGS:
-;   stack +4: arg_1 (via 8(A5))
+;   (none observed)
 ; RET:
-;   D0: result/status
+;   D0: none observed
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
 ;   ESQDISP_FillProgramInfoHeaderFields, ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f, lab_094B, lab_094C, lab_094D
+;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
 ; WRITES:
 ;   DATA_ESQDISP_BSS_WORD_1E87
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   If secondary group has no entries, clones each primary entry into a newly created
+;   secondary entry/title record and copies the per-slot program-info header fields.
+;   Sets a flag when mirroring was performed, clears it when secondary was already populated.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Loop walks primary indices from 0 to (PrimaryGroupEntryCount-1).
 ;------------------------------------------------------------------------------
 ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     LINK.W  A5,#-12
     MOVEM.L D2-D3/D7/A2-A3/A6,-(A7)
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
-    BNE.W   .lab_094D
+    BNE.W   .mark_no_mirror_needed
 
     MOVEQ   #0,D7
 
-.lab_094B:
+.loop_primary_entries_for_mirror:
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D7
-    BGE.W   .lab_094C
+    BGE.W   .set_mirror_performed_flag
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -2391,17 +2413,17 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
 
     LEA     44(A7),A7
     ADDQ.L  #1,D7
-    BRA.W   .lab_094B
+    BRA.W   .loop_primary_entries_for_mirror
 
-.lab_094C:
+.set_mirror_performed_flag:
     MOVE.W  #1,DATA_ESQDISP_BSS_WORD_1E87
     BRA.S   ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return
 
-.lab_094D:
+.mark_no_mirror_needed:
     CLR.W   DATA_ESQDISP_BSS_WORD_1E87
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return   (Routine at ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return)
+; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return   (Return tail for secondary mirror helper)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2415,9 +2437,9 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers and returns from secondary-mirror helper.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Shared return tail for both "mirrored" and "already populated" paths.
 ;------------------------------------------------------------------------------
 ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
     MOVEM.L (A7)+,D2-D3/D7/A2-A3/A6
@@ -2427,23 +2449,25 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_PropagatePrimaryTitleMetadataToSecondary   (Routine at ESQDISP_PropagatePrimaryTitleMetadataToSecondary)
+; FUNC: ESQDISP_PropagatePrimaryTitleMetadataToSecondary   (Propagate primary title metadata to matching secondary entries)
 ; ARGS:
-;   stack +16: arg_1 (via 20(A5))
+;   (none observed)
 ; RET:
-;   D0: result/status
+;   D0: none observed
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
 ;   ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQSHARED_JMPTBL_ESQ_WildcardMatch, ESQPARS_ReplaceOwnedString
 ; READS:
-;   ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, lab_0950, lab_0951, lab_0954, lab_0955, lab_0956, lab_0957
+;   TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   For each secondary entry lacking an owned title string and with the slot bit clear,
+;   finds wildcard-matching primary titles and copies slot metadata/string ownership from
+;   primary to secondary. Marks secondary title/entry flags when propagation succeeds.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Slot scan is descending and bounded by entry class (0..47 or 44..47 window).
 ;------------------------------------------------------------------------------
 ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LINK.W  A5,#-40
@@ -2459,7 +2483,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     MOVEQ   #0,D7
 
-.lab_0950:
+.loop_secondary_entries:
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.L   D0,D7
@@ -2471,7 +2495,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     TST.L   60(A1)
-    BNE.W   .lab_0957
+    BNE.W   .next_secondary_entry
 
     LEA     TEXTDISP_SecondaryEntryPtrTable,A0
     ADDA.L  D0,A0
@@ -2483,19 +2507,19 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.W   .lab_0957
+    BNE.W   .next_secondary_entry
 
     MOVEQ   #0,D4
     MOVEQ   #0,D6
 
-.lab_0951:
+.loop_primary_candidates:
     MOVEQ   #0,D0
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     CMP.L   D0,D6
-    BGE.W   .lab_0957
+    BGE.W   .next_secondary_entry
 
     TST.L   D4
-    BNE.W   .lab_0957
+    BNE.W   .next_secondary_entry
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -2513,7 +2537,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     ADDQ.W  #8,A7
     TST.B   D0
-    BNE.W   .lab_0956
+    BNE.W   .next_primary_candidate
 
     MOVEQ   #48,D5
     MOVE.L  D6,D0
@@ -2522,23 +2546,23 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     BTST    #5,27(A1)
-    BEQ.S   .lab_0952
+    BEQ.S   .set_slot_scan_floor_low
 
     MOVEQ   #0,D0
-    BRA.S   .lab_0953
+    BRA.S   .store_slot_scan_floor
 
-.lab_0952:
+.set_slot_scan_floor_low:
     MOVEQ   #44,D0
 
-.lab_0953:
+.store_slot_scan_floor:
     MOVE.L  D0,-20(A5)
 
-.lab_0954:
+.loop_slots_descending:
     CMP.L   -20(A5),D5
-    BLE.W   .lab_0956
+    BLE.W   .next_primary_candidate
 
     TST.L   D4
-    BNE.W   .lab_0956
+    BNE.W   .next_primary_candidate
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -2552,7 +2576,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
-    BNE.W   .lab_0955
+    BNE.W   .next_slot_descending
 
     MOVE.L  D6,D0
     ASL.L   #2,D0
@@ -2564,7 +2588,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     ASL.L   #2,D1
     ADDA.L  D1,A2
     TST.L   56(A2)
-    BEQ.W   .lab_0955
+    BEQ.W   .next_slot_descending
 
     MOVE.L  D7,D2
     ASL.L   #2,D2
@@ -2634,20 +2658,20 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     MOVE.B  D1,40(A1)
     MOVEQ   #1,D4
 
-.lab_0955:
+.next_slot_descending:
     SUBQ.L  #1,D5
-    BRA.W   .lab_0954
+    BRA.W   .loop_slots_descending
 
-.lab_0956:
+.next_primary_candidate:
     ADDQ.L  #1,D6
-    BRA.W   .lab_0951
+    BRA.W   .loop_primary_candidates
 
-.lab_0957:
+.next_secondary_entry:
     ADDQ.L  #1,D7
-    BRA.W   .lab_0950
+    BRA.W   .loop_secondary_entries
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return   (Routine at ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return)
+; FUNC: ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return   (Return tail for title-metadata propagation)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2661,9 +2685,9 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Restores saved registers and returns from title-metadata propagation helper.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Early exits branch here when primary/secondary counts are zero.
 ;------------------------------------------------------------------------------
 ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return:
     MOVEM.L (A7)+,D2-D7/A2-A3/A6
@@ -2673,23 +2697,25 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_PromoteSecondaryGroupToPrimary   (Routine at ESQDISP_PromoteSecondaryGroupToPrimary)
+; FUNC: ESQDISP_PromoteSecondaryGroupToPrimary   (Promote secondary group entries/titles into primary tables)
 ; ARGS:
 ;   (none observed)
 ; RET:
-;   D0: result/status
+;   D0: none observed
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A7/D0/D1/D7
 ; CALLS:
 ;   ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_RemoveGroupEntryAndReleaseStrings
 ; READS:
-;   DATA_CTASKS_BSS_BYTE_1B90, DATA_CTASKS_BSS_BYTE_1B92, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, ff, lab_095C
+;   DATA_CTASKS_BSS_BYTE_1B90, DATA_CTASKS_BSS_BYTE_1B92, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, ff
 ; WRITES:
 ;   DATA_CTASKS_BSS_BYTE_1B8F, DATA_CTASKS_BSS_BYTE_1B90, DATA_CTASKS_BSS_BYTE_1B91, DATA_CTASKS_BSS_BYTE_1B92, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_PrimaryGroupRecordChecksum, TEXTDISP_PrimaryGroupRecordLength, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, NEWGRID_RefreshStateFlag
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Clears existing mode-1 group via parser helper, then when a secondary group is
+;   present moves all secondary entry/title pointers into primary tables, copies group
+;   header metadata, clears secondary state, and rebuilds the NEWGRID index cache.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Pointer arrays are moved by index and secondary table slots are nulled after transfer.
 ;------------------------------------------------------------------------------
 ESQDISP_PromoteSecondaryGroupToPrimary:
     MOVEM.L D7/A2-A3,-(A7)
@@ -2705,14 +2731,14 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
     MOVE.W  D0,TEXTDISP_PrimaryGroupRecordLength
     MOVE.B  TEXTDISP_SecondaryGroupPresentFlag,D1
     SUBQ.B  #1,D1
-    BNE.W   .lab_095C
+    BNE.W   .sync_task_state_and_reindex
 
     MOVE.L  D0,D7
 
-.lab_095A:
+.loop_move_secondary_slots:
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     CMP.W   D0,D7
-    BGE.S   .lab_095B
+    BGE.S   .copy_secondary_group_metadata
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -2735,9 +2761,9 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
     ADDA.L  D0,A2
     MOVE.L  A0,(A2)
     ADDQ.W  #1,D7
-    BRA.S   .lab_095A
+    BRA.S   .loop_move_secondary_slots
 
-.lab_095B:
+.copy_secondary_group_metadata:
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,TEXTDISP_PrimaryGroupEntryCount
     MOVE.B  TEXTDISP_SecondaryGroupRecordChecksum,TEXTDISP_PrimaryGroupRecordChecksum
     MOVE.B  TEXTDISP_SecondaryGroupHeaderCode,TEXTDISP_PrimaryGroupHeaderCode
@@ -2751,7 +2777,7 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
     MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
     MOVE.W  #3,TEXTDISP_GroupMutationState
 
-.lab_095C:
+.sync_task_state_and_reindex:
     MOVE.B  DATA_CTASKS_BSS_BYTE_1B92,DATA_CTASKS_BSS_BYTE_1B91
     MOVE.B  DATA_CTASKS_BSS_BYTE_1B90,DATA_CTASKS_BSS_BYTE_1B8F
     MOVE.B  #$ff,DATA_CTASKS_BSS_BYTE_1B92
@@ -2764,7 +2790,7 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_PromoteSecondaryLineHeadTailIfMarked   (Routine at ESQDISP_PromoteSecondaryLineHeadTailIfMarked)
+; FUNC: ESQDISP_PromoteSecondaryLineHeadTailIfMarked   (Promote secondary line head/tail pointers when flagged)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2778,13 +2804,14 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
 ; WRITES:
 ;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, DATA_WDISP_BSS_WORD_228F
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   If the secondary line chain is marked pending, clears primary line chain for mode 1,
+;   moves secondary head/tail pointers into primary, then clears secondary pointers.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Always clears DATA_WDISP_BSS_WORD_228F before return.
 ;------------------------------------------------------------------------------
 ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
     TST.W   DATA_WDISP_BSS_WORD_228F
-    BEQ.S   .lab_095E
+    BEQ.S   .clear_pending_line_promote_flag
 
     PEA     1.W
     JSR     ESQIFF2_ClearLineHeadTailByMode(PC)
@@ -2796,14 +2823,14 @@ ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
     MOVE.L  A0,ESQIFF_SecondaryLineHeadPtr
     MOVE.L  A0,ESQIFF_SecondaryLineTailPtr
 
-.lab_095E:
+.clear_pending_line_promote_flag:
     CLR.W   DATA_WDISP_BSS_WORD_228F
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_TestWordIsZeroBooleanize   (Routine at ESQDISP_TestWordIsZeroBooleanize)
+; FUNC: ESQDISP_TestWordIsZeroBooleanize   (Booleanize word==0 into long 0 or -1)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2817,9 +2844,9 @@ ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Entry-point routine; static scan captures calls and symbol accesses.
+;   Tests a stack-passed word and returns `-1` when it is zero, else returns `0`.
 ; NOTES:
-;   Auto-refined from instruction scan; verify semantics during deeper analysis.
+;   Uses `SEQ` + `NEG` + sign-extension idiom to normalize boolean result.
 ;------------------------------------------------------------------------------
 ESQDISP_TestWordIsZeroBooleanize:
     MOVE.L  D7,-(A7)

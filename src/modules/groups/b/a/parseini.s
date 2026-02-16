@@ -1916,7 +1916,7 @@ PARSEINI_TestMemoryAndOpenTopazFont:
 
 ; we're doing a bunch of font stuff in here!
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_HandleFontCommand   (Parse font command sequenceuncertain)
+; FUNC: PARSEINI_HandleFontCommand   (Parse font/control command dispatcher)
 ; ARGS:
 ;   stack +8: A3 = command string pointer
 ; RET:
@@ -2237,7 +2237,7 @@ PARSEINI_HandleFontCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ScanLogoDirectory   (Scan logo directory, build listsuncertain)
+; FUNC: PARSEINI_ScanLogoDirectory   (Scan logo directory and build name/path lists)
 ; ARGS:
 ;   (none)
 ; RET:
