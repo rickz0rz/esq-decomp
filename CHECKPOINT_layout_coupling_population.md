@@ -612,11 +612,55 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - `OpenFlags` bitmask naming beyond current usage masks (`$31/$30/$32`) and
     startup-seeded `$80` for `Node2`.
 
+#### 5.18 Confirmed SECTION `S_1` length-coupled crash path (`2026-02-17`)
+- Trigger observed:
+  - In-place edit of `Global_STR_MAJOR_MINOR_VERSION_1` (`"9.0"` -> `"10.0"`)
+    in `src/data/esqiff.s` can crash with Guru / Software Failure.
+  - Appending a new string and referencing that new label does not crash.
+
+- Root cause confirmed:
+  - `NStr` includes NUL + word alignment (`CNOP 0,2`), so this edit shifts
+    downstream `S_1` symbols by `+2` bytes.
+  - `GRAPHICS_BltBitMapRastPort` in `src/modules/submodules/unknown39.s`
+    loaded Graphics.library via a hardcoded A4-relative displacement
+    (`Global_GraphicsLibraryBase_A4(A4)`), with legacy constant
+    `-22440` from `src/Prevue.asm`.
+  - After the `S_1` shift, that hardcoded displacement can point at the wrong
+    longword; the following `_LVOBltBitMapRastPort(A6)` call then jumps through
+    an invalid library base, matching the observed invalid-PC crash behavior.
+
+- Evidence summary:
+  - `Global_REF_LONG_FILE_SCRATCH` addend changed by `+2` after the in-place
+    version-string expansion.
+  - `Global_REF_GRAPHICS_LIBRARY` addend did not change.
+  - Therefore the hardcoded delta between those symbols changed by `-2`
+    (legacy constant became stale).
+
+- Current mitigation in tree:
+  - Build switch `patchA4OffsetForData` in `src/Prevue.asm` controls a patched
+    path in `src/modules/submodules/unknown39.s` that uses direct
+    `MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6` instead of the stale A4-displacement.
+
+- Next options:
+  1. Keep switch-based mitigation for controlled repro work:
+     build with `patchA4OffsetForData = 1` when changing `S_1` string lengths.
+  2. Make permanent behavior-preserving fix:
+     remove conditional path and always load `Global_REF_GRAPHICS_LIBRARY`
+     directly in `unknown39.s`; retire `Global_GraphicsLibraryBase_A4`.
+  3. Add guardrail documentation:
+     keep note that in-place `NStr` length edits can move aligned data by more
+     than one byte due to `CNOP 0,2`.
+  4. Run a focused follow-up audit:
+     search for any remaining hardcoded layout-coupled base displacements and
+     replace with symbol-based references.
+
 ## Crash-Relevant Notes
 - Legacy anchor indexing (`LEA anchor + index*4`) is sensitive to nearby string-layout edits.
 - Mplex/PPV parse tails split on byte `$12`; malformed edits around that delimiter change template merge behavior.
 - `ESQPARS_ReplaceOwnedString` can return NULL; callers that assume non-NULL are potential crash sites under memory pressure or empty-tail inputs.
 - `ESQ_MainInitAndRun` performs several startup string copy/format operations with fixed destinations and no obvious explicit bounds checks at the callsite level.
+- A confirmed crash path exists when hardcoded A4 displacements are tied to `S_1`
+  layout and an in-place `NStr` edit shifts aligned symbol offsets.
 
 ## Behavior-Preserving Hardening Added In This Batch
 - Added explicit alias/docs for `DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`.
@@ -641,6 +685,10 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
    ordering is explicit in those paths too.
 6. Continue resolving `Struct_PreallocHandleNode` flag-bit semantics and
    `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc`.
+7. Promote the `patchA4OffsetForData` mitigation to a permanent symbol-based fix
+   path (remove switch + stale offset constant) after runtime validation.
+8. Add a one-shot audit checklist item for hardcoded A4/base displacements that
+   can drift when `SECTION S_1` string lengths change.
 
 ## Follow-up
 - The dereference audit requested in target (1) is now captured in `CHECKPOINT_templateptr_guard_audit.md`.
