@@ -1,3 +1,20 @@
+    XDEF    SCRIPT_AssertCtrlLine
+    XDEF    SCRIPT_AssertCtrlLineIfEnabled
+    XDEF    SCRIPT_AssertCtrlLineNow
+    XDEF    SCRIPT_ClearCtrlLineIfEnabled
+    XDEF    SCRIPT_DeassertCtrlLine
+    XDEF    SCRIPT_DeassertCtrlLineNow
+    XDEF    SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte
+    XDEF    SCRIPT_GetCtrlLineFlag
+    XDEF    SCRIPT_ReadCiaBBit3Flag
+    XDEF    SCRIPT_ReadCiaBBit5Mask
+    XDEF    SCRIPT_ReadSerialRbfByte
+    XDEF    SCRIPT_UpdateCtrlLineTimeout
+    XDEF    SCRIPT_UpdateSerialShadowFromCtrlByte
+    XDEF    SCRIPT_WriteSerialDataWord
+    XDEF    SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte
+    XDEF    SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte
+
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT_ReadSerialRbfByte   (ReadSerialRbfByteuncertain)
 ; ARGS:

@@ -1,3 +1,6 @@
+    XDEF    GCOMMAND_CopyGfxToWorkIfAvailable
+    XDEF    GCOMMAND_FindPathSeparator
+
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_FindPathSeparator   (Return a pointer to the final path separator (':' or '/') in the buffer.)
 ; ARGS:

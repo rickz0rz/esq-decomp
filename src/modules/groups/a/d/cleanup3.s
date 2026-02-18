@@ -1,3 +1,5 @@
+    XDEF    CLEANUP_BuildAndRenderAlignedStatusBanner
+
 ;------------------------------------------------------------------------------
 ; FUNC: CLEANUP_BuildAndRenderAlignedStatusBanner   (BuildAndRenderAlignedStatusBanner)
 ; ARGS:

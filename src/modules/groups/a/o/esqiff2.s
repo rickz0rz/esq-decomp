@@ -1,3 +1,30 @@
+    XDEF    ESQIFF2_ApplyIncomingStatusPacket
+    XDEF    ESQIFF2_ClearLineHeadTailByMode
+    XDEF    ESQIFF2_ClearPrimaryEntryFlags34To39
+    XDEF    ESQIFF2_PadEntriesToMaxTitleWidth
+    XDEF    ESQIFF2_ParseGroupRecordAndRefresh
+    XDEF    ESQIFF2_ParseLineHeadTailRecord
+    XDEF    ESQIFF2_ReadSerialBytesToBuffer
+    XDEF    ESQIFF2_ReadSerialBytesWithXor
+    XDEF    ESQIFF2_ReadSerialRecordIntoBuffer
+    XDEF    ESQIFF2_ReadSerialSizedTextRecord
+    XDEF    ESQIFF2_ShowAttentionOverlay
+    XDEF    ESQIFF2_ShowVersionMismatchOverlay
+    XDEF    ESQIFF2_ValidateAsciiNumericByte
+    XDEF    ESQIFF2_ValidateFieldIndexAndLength
+    XDEF    ESQIFF2_ApplyIncomingStatusPacket_Return
+    XDEF    ESQIFF2_ClearPrimaryEntryFlags34To39_Return
+    XDEF    ESQIFF2_PadEntriesToMaxTitleWidth_Return
+    XDEF    ESQIFF2_ParseGroupRecordAndRefresh_Return
+    XDEF    ESQIFF2_ParseLineHeadTailRecord_Return
+    XDEF    ESQIFF2_ReadSerialBytesToBuffer_Return
+    XDEF    ESQIFF2_ReadSerialBytesWithXor_Return
+    XDEF    ESQIFF2_ReadSerialRecordIntoBuffer_Return
+    XDEF    ESQIFF2_ReadSerialSizedTextRecord_Return
+    XDEF    ESQIFF2_ShowAttentionOverlay_Return
+    XDEF    ESQIFF2_ShowVersionMismatchOverlay_Return
+    XDEF    ESQIFF2_ValidateFieldIndexAndLength_Return
+
 ; Rename this file to its proper purpose.
 
 ;------------------------------------------------------------------------------

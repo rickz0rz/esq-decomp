@@ -1,3 +1,5 @@
+    XDEF    DOS_ReadWithErrorState
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_ReadWithErrorState   (Read wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:

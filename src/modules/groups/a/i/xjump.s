@@ -1,3 +1,11 @@
+    XDEF    GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2
+    XDEF    GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers
+    XDEF    GROUP_AI_JMPTBL_STRING_AppendAtNull
+    XDEF    GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
+    XDEF    GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter
+    XDEF    GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper
+    XDEF    GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers   (JumpStub)

@@ -1,3 +1,9 @@
+    XDEF    BATTCLOCK_GetSecondsFromBatteryBackedClock
+    XDEF    BATTCLOCK_WriteSecondsToBatteryBackedClock
+    XDEF    DOS_Delay
+    XDEF    DOS_SystemTagList
+    XDEF    EXEC_CallVector_48
+
 ;------------------------------------------------------------------------------
 ; FUNC: BATTCLOCK_GetSecondsFromBatteryBackedClock   (Read seconds from the battery-backed clock.)
 ; ARGS:

@@ -1,3 +1,28 @@
+    XDEF    DISKIO_CloseBufferedFileAndFlush
+    XDEF    DISKIO_ConsumeCStringFromWorkBuffer
+    XDEF    DISKIO_ConsumeLineFromWorkBuffer
+    XDEF    DISKIO_DrawTransferErrorMessageIfDiagnostics
+    XDEF    DISKIO_EnsurePc1MountedAndGfxAssigned
+    XDEF    DISKIO_ForceUiRefreshIfIdle
+    XDEF    DISKIO_GetFilesizeFromHandle
+    XDEF    DISKIO_LoadConfigFromDisk
+    XDEF    DISKIO_LoadFileToWorkBuffer
+    XDEF    DISKIO_OpenFileWithBuffer
+    XDEF    DISKIO_ParseConfigBuffer
+    XDEF    DISKIO_ParseLongFromWorkBuffer
+    XDEF    DISKIO_ProbeDrivesAndAssignPaths
+    XDEF    DISKIO_QueryDiskUsagePercentAndSetBufferSize
+    XDEF    DISKIO_QueryVolumeSoftErrorCount
+    XDEF    DISKIO_ResetCtrlInputStateIfIdle
+    XDEF    DISKIO_SaveConfigToFileHandle
+    XDEF    DISKIO_WriteBufferedBytes
+    XDEF    DISKIO_WriteBytesToOutputHandleGuarded
+    XDEF    DISKIO_WriteDecimalField
+    XDEF    DISKIO_CloseBufferedFileAndFlush_Return
+    XDEF    DISKIO_EnsurePc1MountedAndGfxAssigned_Return
+    XDEF    DISKIO_SaveConfigToFileHandle_Return
+    XDEF    DISKIO_WriteBufferedBytes_Return
+
 ;------------------------------------------------------------------------------
 ; FUNC: DISKIO_OpenFileWithBuffer   (Open file and initialize I/O bufferuncertain)
 ; ARGS:

@@ -1,3 +1,16 @@
+    XDEF    P_TYPE_AllocateEntry
+    XDEF    P_TYPE_CloneEntry
+    XDEF    P_TYPE_ConsumePrimaryTypeIfPresent
+    XDEF    P_TYPE_EnsureSecondaryList
+    XDEF    P_TYPE_FreeEntry
+    XDEF    P_TYPE_GetSubtypeIfType20
+    XDEF    P_TYPE_LoadPromoIdDataFile
+    XDEF    P_TYPE_ParseAndStoreTypeRecord
+    XDEF    P_TYPE_PromoteSecondaryList
+    XDEF    P_TYPE_ResetListsAndLoadPromoIds
+    XDEF    P_TYPE_WritePromoIdDataFile
+    XDEF    P_TYPE_JMPTBL_STRING_FindSubstring
+
 ;------------------------------------------------------------------------------
 ; FUNC: P_TYPE_AllocateEntry   (AllocateEntryuncertain)
 ; ARGS:

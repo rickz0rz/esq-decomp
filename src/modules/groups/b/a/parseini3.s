@@ -1,3 +1,9 @@
+    XDEF    PARSEINI_CheckCtrlHChange
+    XDEF    PARSEINI_ComputeHTCMaxValues
+    XDEF    PARSEINI_MonitorClockChange
+    XDEF    PARSEINI_UpdateCtrlHDeltaMax
+    XDEF    PARSEINI_WriteErrorLogEntry
+
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_WriteErrorLogEntry   (Write error log entryuncertain)
 ; ARGS:

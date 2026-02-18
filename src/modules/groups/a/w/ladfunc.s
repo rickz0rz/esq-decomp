@@ -1,3 +1,28 @@
+    XDEF    LADFUNC_AllocBannerRectEntries
+    XDEF    LADFUNC_BuildEntryBuffersOrDefault
+    XDEF    LADFUNC_BuildHighlightLinesFromText
+    XDEF    LADFUNC_ClearBannerRectEntries
+    XDEF    LADFUNC_ComposePackedPenByte
+    XDEF    LADFUNC_DisplayTextPackedPens
+    XDEF    LADFUNC_DrawEntryLineWithAttrs
+    XDEF    LADFUNC_DrawEntryPreview
+    XDEF    LADFUNC_FreeBannerRectEntries
+    XDEF    LADFUNC_GetPackedPenHighNibble
+    XDEF    LADFUNC_GetPackedPenLowNibble
+    XDEF    LADFUNC_LoadTextAdsFromFile
+    XDEF    LADFUNC_ParseBannerEntryData
+    XDEF    LADFUNC_ParseHexDigit
+    XDEF    LADFUNC_ReflowEntryBuffers
+    XDEF    LADFUNC_RepackEntryTextAndAttrBuffers
+    XDEF    LADFUNC_ResetEntryTextBuffers
+    XDEF    LADFUNC_SaveTextAdsToFile
+    XDEF    LADFUNC_SetPackedPenHighNibble
+    XDEF    LADFUNC_SetPackedPenLowNibble
+    XDEF    LADFUNC_UpdateEntryFromTextAndAttrBuffers
+    XDEF    LADFUNC_UpdateHighlightState
+    XDEF    LADFUNC_RepackEntryTextAndAttrBuffers_Return
+    XDEF    LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return
+
 ;------------------------------------------------------------------------------
 ; FUNC: LADFUNC_UpdateHighlightState   (UpdateHighlightState)
 ; ARGS:

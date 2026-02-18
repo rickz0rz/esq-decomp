@@ -1,3 +1,13 @@
+    XDEF    ESQ_CaptureCtrlBit3Stream
+    XDEF    ESQ_CaptureCtrlBit4Stream
+    XDEF    ESQ_CaptureCtrlBit4StreamBufferByte
+    XDEF    ESQ_HandleSerialRbfInterrupt
+    XDEF    ESQ_InitAudio1Dma
+    XDEF    ESQ_PollCtrlInput
+    XDEF    ESQ_ReadSerialRbfByte
+    XDEF    GET_BIT_3_OF_CIAB_PRA_INTO_D1
+    XDEF    GET_BIT_4_OF_CIAB_PRA_INTO_D1
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_HandleSerialRbfInterrupt
 ; ARGS:

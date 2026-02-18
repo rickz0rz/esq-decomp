@@ -1,3 +1,42 @@
+    XDEF    ED_ApplyActiveFlagToAdData
+    XDEF    ED_CommitCurrentAdEdits
+    XDEF    ED_DecrementAdNumber
+    XDEF    ED_DrawAdEditingScreen
+    XDEF    ED_DrawAdNumberPrompt
+    XDEF    ED_DrawAreYouSurePrompt
+    XDEF    ED_DrawBottomHelpBarBackground
+    XDEF    ED_DrawCurrentColorIndicator
+    XDEF    ED_DrawCursorChar
+    XDEF    ED_DrawDiagnosticModeHelpText
+    XDEF    ED_DrawDiagnosticModeText
+    XDEF    ED_DrawDiagnosticRegisterValues
+    XDEF    ED_DrawESCMenuBottomHelp
+    XDEF    ED_DrawESCMenuHelpText
+    XDEF    ED_DrawEditHelpText
+    XDEF    ED_DrawEscMainMenuText
+    XDEF    ED_DrawHelpPanels
+    XDEF    ED_DrawMenuSelectionHighlight
+    XDEF    ED_DrawScrollSpeedMenuText
+    XDEF    ED_DrawSpecialFunctionsMenu
+    XDEF    ED_GetEscMenuActionCode
+    XDEF    ED_IncrementAdNumber
+    XDEF    ED_InitRastport2Pens
+    XDEF    ED_IsConfirmKey
+    XDEF    ED_LoadCurrentAdIntoBuffers
+    XDEF    ED_NextAdNumber
+    XDEF    ED_PrevAdNumber
+    XDEF    ED_RedrawAllRows
+    XDEF    ED_RedrawCursorChar
+    XDEF    ED_RedrawRow
+    XDEF    ED_TransformLineSpacing_Mode1
+    XDEF    ED_TransformLineSpacing_Mode2
+    XDEF    ED_TransformLineSpacing_Mode3
+    XDEF    ED_UpdateActiveInactiveIndicator
+    XDEF    ED_UpdateAdNumberDisplay
+    XDEF    ED_UpdateCursorPosFromIndex
+    XDEF    SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE
+    XDEF    SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR
+
 ;------------------------------------------------------------------------------
 ; FUNC: ED_GetEscMenuActionCode   (Get ESC menu action codeuncertain)
 ; ARGS:

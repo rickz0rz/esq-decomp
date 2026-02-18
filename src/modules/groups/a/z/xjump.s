@@ -1,3 +1,5 @@
+    XDEF    GROUP_AZ_JMPTBL_ESQ_ColdReboot
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AZ_JMPTBL_ESQ_ColdReboot   (Routine at GROUP_AZ_JMPTBL_ESQ_ColdReboot)
 ; ARGS:

@@ -1,3 +1,17 @@
+    XDEF    ED_CaptureKeySequence
+    XDEF    ED_DispatchEscMenuState
+    XDEF    ED_EnterTextEditMode
+    XDEF    ED_FindNextCharInTable
+    XDEF    ED_HandleDiagnosticNibbleEdit
+    XDEF    ED_HandleEditAttributesInput
+    XDEF    ED_HandleEditAttributesMenu
+    XDEF    ED_HandleEditorInput
+    XDEF    ED_HandleSpecialFunctionsMenu
+    XDEF    ED_LoadTextAdsFromDh2
+    XDEF    ED_RebootComputer
+    XDEF    ED_SaveEverythingToDisk
+    XDEF    ED_SavePrevueDataToDisk
+
 ;------------------------------------------------------------------------------
 ; FUNC: ED_DispatchEscMenuState   (Dispatch ESC menu stateuncertain)
 ; ARGS:

@@ -1,3 +1,5 @@
+    XDEF    GCOMMAND_ProcessCtrlCommand
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_ProcessCtrlCommand   (ProcessCtrlCommanduncertain)

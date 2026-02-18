@@ -1,3 +1,8 @@
+    XDEF    DOS_DeleteAndRecreateFile
+    XDEF    DOS_OpenNewFileIfMissing
+    XDEF    IOSTDREQ_CleanupSignalAndMsgport
+    XDEF    IOSTDREQ_Free
+
 ;------------------------------------------------------------------------------
 ; FUNC: IOSTDREQ_Free   (Free IOStdReq-like struct.)
 ; ARGS:

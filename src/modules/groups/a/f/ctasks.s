@@ -1,3 +1,8 @@
+    XDEF    CTASKS_CloseTaskTeardown
+    XDEF    CTASKS_IFFTaskCleanup
+    XDEF    CTASKS_StartCloseTaskProcess
+    XDEF    CTASKS_StartIffTaskProcess
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: LAB_0386   (IFF task cleanup / SaveBrushResultuncertain)

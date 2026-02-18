@@ -1,3 +1,14 @@
+    XDEF    GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers
+    XDEF    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode
+    XDEF    GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData
+    XDEF    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings
+    XDEF    GROUP_AB_JMPTBL_IOSTDREQ_Free
+    XDEF    GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries
+    XDEF    GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain
+    XDEF    GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources
+    XDEF    GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
+    XDEF    GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings)
 ; ARGS:

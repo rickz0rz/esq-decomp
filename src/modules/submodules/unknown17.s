@@ -1,3 +1,5 @@
+    XDEF    DOS_WriteWithErrorState
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_WriteWithErrorState   (Write wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:

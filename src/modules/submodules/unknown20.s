@@ -1,3 +1,5 @@
+    XDEF    DOS_OpenWithErrorState
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_OpenWithErrorState   (Open wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:

@@ -1,3 +1,8 @@
+    XDEF    GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
+    XDEF    GROUP_MAIN_B_JMPTBL_DOS_Delay
+    XDEF    GROUP_MAIN_B_JMPTBL_MATH_Mulu32
+    XDEF    GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_MAIN_B_JMPTBL_DOS_Delay   (Routine at GROUP_MAIN_B_JMPTBL_DOS_Delay)
 ; ARGS:

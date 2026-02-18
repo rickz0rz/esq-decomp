@@ -1,3 +1,6 @@
+    XDEF    ESQ_ParseCommandLineAndRun
+    XDEF    UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_ParseCommandLineAndRun   (Parse command line, init handles, run main.)
 ; ARGS:

@@ -1,3 +1,16 @@
+    XDEF    GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen
+    XDEF    GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist
+    XDEF    GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom
+    XDEF    GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default
+    XDEF    GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar
+    XDEF    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch
+    XDEF    GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory
+    XDEF    GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry
+    XDEF    GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow
+    XDEF    GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
+    XDEF    GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex
+    XDEF    GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte   (JumpStub)
 ; ARGS:

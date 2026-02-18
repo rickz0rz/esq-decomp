@@ -1,3 +1,27 @@
+    XDEF    ESQSHARED4_ApplyBannerColorStep
+    XDEF    ESQSHARED4_BindAndClearBannerWorkRaster
+    XDEF    ESQSHARED4_BlitBannerRowsForActiveField
+    XDEF    ESQSHARED4_ClearBannerWorkRasterWithOnes
+    XDEF    ESQSHARED4_ComputeBannerRowBlitGeometry
+    XDEF    ESQSHARED4_CopyBannerRowsWithByteOffset
+    XDEF    ESQSHARED4_CopyInterleavedRowWordsFromOffset
+    XDEF    ESQSHARED4_CopyLivePlanesToSnapshot
+    XDEF    ESQSHARED4_CopyLongwordBlockDbfLoop
+    XDEF    ESQSHARED4_CopyPlanesFromContextToSnapshot
+    XDEF    ESQSHARED4_DecodeRgbNibbleTriplet
+    XDEF    ESQSHARED4_InitializeBannerCopperSystem
+    XDEF    ESQSHARED4_LoadCopperColorWordsFromNibbleTable
+    XDEF    ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
+    XDEF    ESQSHARED4_ProgramDisplayWindowAndCopper
+    XDEF    ESQSHARED4_ResetBannerColorSweepState
+    XDEF    ESQSHARED4_ResetBannerColorToStart
+    XDEF    ESQSHARED4_SetBannerColorBaseAndLimit
+    XDEF    ESQSHARED4_SetBannerCopperColorAndThreshold
+    XDEF    ESQSHARED4_SetupBannerPlanePointerWords
+    XDEF    ESQSHARED4_SnapshotDisplayBufferBases
+    XDEF    ESQSHARED4_TickCopperAndBannerTransitions
+    XDEF    ESQSHARED4_ApplyBannerColorStep_Return
+
     ; Dead code
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  DATA_WDISP_BSS_WORD_226D,D0

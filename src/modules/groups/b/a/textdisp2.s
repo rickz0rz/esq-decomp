@@ -1,3 +1,13 @@
+    XDEF    TEXTDISP_DrawNextEntryPreview
+    XDEF    TEXTDISP_ResetSelectionAndRefresh
+    XDEF    TEXTDISP_SetRastForMode
+    XDEF    TEXTDISP_TickDisplayState
+    XDEF    TEXTDISP_UpdateHighlightOrPreview
+    XDEF    TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame
+    XDEF    TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
+    XDEF    TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
+    XDEF    TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan
+
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP_ResetSelectionAndRefresh   (Reset selection + refresh)
 ; ARGS:

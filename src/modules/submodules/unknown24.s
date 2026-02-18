@@ -1,3 +1,8 @@
+    XDEF    MEMLIST_AllocTracked
+    XDEF    MEMLIST_FreeAll
+    XDEF    PARSE_ReadSignedLongSkipClass3
+    XDEF    PARSE_ReadSignedLongSkipClass3_Alt
+
 ;------------------------------------------------------------------------------
 ; FUNC: PARSE_ReadSignedLongSkipClass3   (Parse signed long after skipping class3.)
 ; ARGS:

@@ -1,3 +1,5 @@
+    XDEF    HANDLE_GetEntryByIndex
+
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_GetEntryByIndex   (Validate handle index and return entry pointer.)
 ; ARGS:

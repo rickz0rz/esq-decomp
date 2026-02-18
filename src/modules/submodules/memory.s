@@ -1,3 +1,6 @@
+    XDEF    MEMORY_AllocateMemory
+    XDEF    MEMORY_DeallocateMemory
+
 ;------------------------------------------------------------------------------
 ; FUNC: MEMORY_AllocateMemory   (AllocateMemoryuncertain)
 ; ARGS:

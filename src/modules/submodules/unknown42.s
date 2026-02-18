@@ -1,3 +1,15 @@
+    XDEF    CLOCK_CheckDateOrSecondsFromEpoch
+    XDEF    CLOCK_SecondsFromEpoch
+    XDEF    PARALLEL_CheckReady
+    XDEF    PARALLEL_CheckReadyStub
+    XDEF    PARALLEL_RawDoFmt
+    XDEF    PARALLEL_RawDoFmtCommon
+    XDEF    PARALLEL_RawDoFmtStackArgs
+    XDEF    PARALLEL_WaitReady
+    XDEF    PARALLEL_WriteCharD0
+    XDEF    PARALLEL_WriteCharHw
+    XDEF    PARALLEL_WriteStringLoop
+
 ;------------------------------------------------------------------------------
 ; FUNC: CLOCK_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpochuncertain)
 ; ARGS:

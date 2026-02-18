@@ -1,3 +1,5 @@
+    XDEF    GCOMMAND_SaveBrushResult
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_SaveBrushResult   (Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.)

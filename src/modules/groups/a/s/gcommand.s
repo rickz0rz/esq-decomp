@@ -1,21 +1,12 @@
-    XDEF    GCOMMAND_LoadDefaultTable
     XDEF    GCOMMAND_LoadCommandFile
-    XDEF    GCOMMAND_LoadMplexTemplate
+    XDEF    GCOMMAND_LoadDefaultTable
     XDEF    GCOMMAND_LoadMplexFile
-    XDEF    GCOMMAND_SaveBrushResult
-    XDEF    GCOMMAND_LoadPPVTemplate
-    XDEF    GCOMMAND_ParsePPVCommand
-    XDEF    GCOMMAND_SeedBannerDefaults
-    XDEF    GCOMMAND_SeedBannerFromPrefs
-    XDEF    GCOMMAND_FindPathSeparator
-    XDEF    GCOMMAND_ApplyHighlightFlag
-    XDEF    GCOMMAND_EnableHighlight
-    XDEF    GCOMMAND_DisableHighlight
-    XDEF    GCOMMAND_SetPresetEntry
-    XDEF    GCOMMAND_ExpandPresetBlock
-    XDEF    GCOMMAND_MapKeycodeToPreset
-    XDEF    GCOMMAND_GetBannerChar
+    XDEF    GCOMMAND_LoadMplexTemplate
     XDEF    GCOMMAND_LoadPPV3Template
+    XDEF    GCOMMAND_LoadPPVTemplate
+    XDEF    GCOMMAND_ParseCommandOptions
+    XDEF    GCOMMAND_ParseCommandString
+    XDEF    GCOMMAND_ParsePPVCommand
 
 ;------------------------------------------------------------------------------
 ; FUNC: GCOMMAND_LoadDefaultTable   (Load the built-in gcommand table template into the working buffer (Global_PTR_WORK_BUFFER).)

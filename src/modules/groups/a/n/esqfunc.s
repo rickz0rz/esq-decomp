@@ -1,3 +1,50 @@
+    XDEF    ESQFUNC_AllocateLineTextBuffers
+    XDEF    ESQFUNC_CommitSecondaryStateAndPersist
+    XDEF    ESQFUNC_DrawDiagnosticsScreen
+    XDEF    ESQFUNC_DrawEscMenuVersion
+    XDEF    ESQFUNC_DrawMemoryStatusScreen
+    XDEF    ESQFUNC_FreeExtraTitleTextPointers
+    XDEF    ESQFUNC_FreeLineTextBuffers
+    XDEF    ESQFUNC_ProcessUiFrameTick
+    XDEF    ESQFUNC_RebuildPwBrushListFromTagTable
+    XDEF    ESQFUNC_SelectAndApplyBrushForCurrentEntry
+    XDEF    ESQFUNC_ServiceUiTickIfRunning
+    XDEF    ESQFUNC_TrimTextToPixelWidthWordBoundary
+    XDEF    ESQFUNC_UpdateDiskWarningAndRefreshTick
+    XDEF    ESQFUNC_UpdateRefreshModeState
+    XDEF    ESQFUNC_WaitForClockChangeAndServiceUi
+    XDEF    SETUP_INTERRUPT_INTB_AUD1
+    XDEF    SETUP_INTERRUPT_INTB_RBF
+    XDEF    SETUP_INTERRUPT_INTB_VERTB
+    XDEF    ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner
+    XDEF    ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts
+    XDEF    ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
+    XDEF    ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange
+    XDEF    ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex
+    XDEF    ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt
+    XDEF    ESQFUNC_JMPTBL_ESQ_PollCtrlInput
+    XDEF    ESQFUNC_JMPTBL_ESQ_TickGlobalCounters
+    XDEF    ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit
+    XDEF    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState
+    XDEF    ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup
+    XDEF    ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup
+    XDEF    ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues
+    XDEF    ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange
+    XDEF    ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData
+    XDEF    ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
+    XDEF    ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList
+    XDEF    ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList
+    XDEF    ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag
+    XDEF    ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd
+    XDEF    ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag
+    XDEF    ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask
+    XDEF    ESQFUNC_JMPTBL_STRING_CopyPadNul
+    XDEF    ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
+    XDEF    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
+    XDEF    ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState
+    XDEF    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
+    XDEF    ESQFUNC_TrimTextToPixelWidthWordBoundary_Return
+
 ;!======
 
 ;------------------------------------------------------------------------------

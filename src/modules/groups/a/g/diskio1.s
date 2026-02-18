@@ -1,3 +1,32 @@
+    XDEF    DISKIO1_AccumulateBlackoutMaskSum
+    XDEF    DISKIO1_AccumulateTimeSlotMaskSum
+    XDEF    DISKIO1_AdvanceBlackoutBitIndex
+    XDEF    DISKIO1_AdvanceTimeSlotBitIndex
+    XDEF    DISKIO1_AppendAttrFlagAltHiliteSrc
+    XDEF    DISKIO1_AppendAttrFlagBit7
+    XDEF    DISKIO1_AppendAttrFlagDitto
+    XDEF    DISKIO1_AppendAttrFlagHiliteSrc
+    XDEF    DISKIO1_AppendAttrFlagPpvSrc
+    XDEF    DISKIO1_AppendAttrFlagSummarySrc
+    XDEF    DISKIO1_AppendAttrFlagVideoTagDisable
+    XDEF    DISKIO1_AppendBlackoutMaskAllIfAllBitsSet
+    XDEF    DISKIO1_AppendBlackoutMaskNoneIfEmpty
+    XDEF    DISKIO1_AppendBlackoutMaskSelectedTimes
+    XDEF    DISKIO1_AppendBlackoutMaskValueHeader
+    XDEF    DISKIO1_AppendBlackoutMaskValueTerminator
+    XDEF    DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet
+    XDEF    DISKIO1_AppendTimeSlotMaskOffAirIfEmpty
+    XDEF    DISKIO1_AppendTimeSlotMaskSelectedTimes
+    XDEF    DISKIO1_AppendTimeSlotMaskValueHeader
+    XDEF    DISKIO1_AppendTimeSlotMaskValueTerminator
+    XDEF    DISKIO1_DumpDefaultCoiInfoBlock
+    XDEF    DISKIO1_DumpProgramSourceRecordVerbose
+    XDEF    DISKIO1_FormatBlackoutMaskFlags
+    XDEF    DISKIO1_FormatTimeSlotMaskFlags
+    XDEF    DISKIO1_DumpDefaultCoiInfoBlock_Return
+    XDEF    DISKIO1_DumpProgramInfoAttrTable_Return
+    XDEF    DISKIO1_DumpProgramSourceRecordVerbose_Return
+
 ; Unreachable Code?
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A3,-(A7)

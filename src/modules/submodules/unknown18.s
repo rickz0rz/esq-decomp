@@ -1,3 +1,5 @@
+    XDEF    DOS_SeekWithErrorState
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_SeekWithErrorState   (Seek wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:

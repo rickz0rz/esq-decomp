@@ -1,3 +1,7 @@
+    XDEF    LOCAVAIL2_AutoRequestNoOp
+    XDEF    LOCAVAIL2_DisplayAlertDelayAndReboot
+    XDEF    OVERRIDE_INTUITION_FUNCS
+
 ;------------------------------------------------------------------------------
 ; FUNC: OVERRIDE_INTUITION_FUNCS   (Routine at OVERRIDE_INTUITION_FUNCS)
 ; ARGS:

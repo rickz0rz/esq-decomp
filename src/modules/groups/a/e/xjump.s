@@ -1,3 +1,14 @@
+    XDEF    GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
+    XDEF    GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
+    XDEF    GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
+    XDEF    GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap
+    XDEF    GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray
+    XDEF    GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset
+    XDEF    GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
+    XDEF    GROUP_AE_JMPTBL_WDISP_SPrintf
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex   (Routine at GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex)
 ; ARGS:

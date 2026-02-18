@@ -1,3 +1,5 @@
+    XDEF    GRAPHICS_BltBitMapRastPort
+
 ;------------------------------------------------------------------------------
 ; FUNC: GRAPHICS_BltBitMapRastPort   (Wrapper around Graphics.library blituncertain)
 ; ARGS:

@@ -1,3 +1,8 @@
+    XDEF    ESQ_CheckAvailableFastMemory
+    XDEF    ESQ_CheckCompatibleVideoChip
+    XDEF    ESQ_CheckTopazFontGuard
+    XDEF    ESQ_FormatDiskErrorMessage
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_CheckAvailableFastMemory
 ; ARGS:

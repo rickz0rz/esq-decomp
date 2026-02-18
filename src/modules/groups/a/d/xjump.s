@@ -1,3 +1,22 @@
+    XDEF    GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex
+    XDEF    GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange
+    XDEF    GROUP_AD_JMPTBL_DST_ComputeBannerIndex
+    XDEF    GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry
+    XDEF    GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
+    XDEF    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
+    XDEF    GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte
+    XDEF    GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel
+    XDEF    GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName
+    XDEF    GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner
+    XDEF    GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame
+    XDEF    GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime
+    XDEF    GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth
+    XDEF    GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible
+    XDEF    GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
+    XDEF    GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight
+    XDEF    GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (JumpStub)
 ; ARGS:

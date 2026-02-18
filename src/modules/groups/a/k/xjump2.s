@@ -1,3 +1,8 @@
+    XDEF    GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn
+    XDEF    GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable
+    XDEF    GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow
+    XDEF    GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn   (Routine at GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn)
 ; ARGS:

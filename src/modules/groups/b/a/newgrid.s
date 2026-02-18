@@ -1,3 +1,38 @@
+    XDEF    NEWGRID_AdjustClockStringBySlot
+    XDEF    NEWGRID_AdjustClockStringBySlotWithOffset
+    XDEF    NEWGRID_ClearHighlightArea
+    XDEF    NEWGRID_ComputeDaySlotFromClock
+    XDEF    NEWGRID_ComputeDaySlotFromClockWithOffset
+    XDEF    NEWGRID_DrawAwaitingListingsMessage
+    XDEF    NEWGRID_DrawClockFormatHeader
+    XDEF    NEWGRID_DrawDateBanner
+    XDEF    NEWGRID_DrawGridFrame
+    XDEF    NEWGRID_DrawGridTopBars
+    XDEF    NEWGRID_DrawTopBorderLine
+    XDEF    NEWGRID_DrawWrappedText
+    XDEF    NEWGRID_FillGridRects
+    XDEF    NEWGRID_InitGridResources
+    XDEF    NEWGRID_IsGridReadyForInput
+    XDEF    NEWGRID_MapSelectionToMode
+    XDEF    NEWGRID_ProcessGridMessages
+    XDEF    NEWGRID_SelectNextMode
+    XDEF    NEWGRID_ShouldOpenEditor
+    XDEF    NEWGRID_ShutdownGridResources
+    XDEF    NEWGRID_JMPTBL_CLEANUP_DrawClockBanner
+    XDEF    NEWGRID_JMPTBL_CLEANUP_DrawClockFormatFrame
+    XDEF    NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList
+    XDEF    NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds
+    XDEF    NEWGRID_JMPTBL_DATETIME_SecondsToStruct
+    XDEF    NEWGRID_JMPTBL_DISPTEXT_FreeBuffers
+    XDEF    NEWGRID_JMPTBL_DISPTEXT_InitBuffers
+    XDEF    NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING
+    XDEF    NEWGRID_JMPTBL_MATH_DivS32
+    XDEF    NEWGRID_JMPTBL_MATH_Mulu32
+    XDEF    NEWGRID_JMPTBL_MEMORY_AllocateMemory
+    XDEF    NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+    XDEF    NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter
+    XDEF    NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_InitGridResources   (Initialize grid rastports and layout)

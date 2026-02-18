@@ -1,3 +1,5 @@
+    XDEF    SIGNAL_PollAndDispatch
+
 ;------------------------------------------------------------------------------
 ; FUNC: SIGNAL_PollAndDispatch   (Poll Ctrl-C/D break signals and invoke callback.)
 ; ARGS:

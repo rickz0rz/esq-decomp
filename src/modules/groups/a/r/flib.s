@@ -1,3 +1,6 @@
+    XDEF    FLIB_AppendClockStampedLogEntry
+    XDEF    FLIB_AppendClockStampedLogEntry_Return
+
 ;------------------------------------------------------------------------------
 ; FUNC: FLIB_AppendClockStampedLogEntry   (Routine at FLIB_AppendClockStampedLogEntry)
 ; ARGS:

@@ -1,3 +1,5 @@
+    XDEF    STREAM_ReadLineWithLimit
+
 ;------------------------------------------------------------------------------
 ; FUNC: STREAM_ReadLineWithLimit   (Read a line into a buffer, NUL-terminate.)
 ; ARGS:

@@ -1,3 +1,13 @@
+    XDEF    GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding
+    XDEF    GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition
+    XDEF    GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
+    XDEF    GROUP_AW_JMPTBL_MEM_Move
+    XDEF    GROUP_AW_JMPTBL_STRING_CopyPadNul
+    XDEF    GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
+    XDEF    GROUP_AW_JMPTBL_WDISP_SPrintf
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Routine at GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode)
 ; ARGS:

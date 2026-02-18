@@ -1,3 +1,28 @@
+    XDEF    LOCAVAIL_AllocNodeArraysForState
+    XDEF    LOCAVAIL_ComputeFilterOffsetForEntry
+    XDEF    LOCAVAIL_CopyFilterStateStructRetainRefs
+    XDEF    LOCAVAIL_FreeNodeAtPointer
+    XDEF    LOCAVAIL_FreeNodeRecord
+    XDEF    LOCAVAIL_FreeResourceChain
+    XDEF    LOCAVAIL_GetFilterWindowHalfSpan
+    XDEF    LOCAVAIL_GetNodeDurationByIndex
+    XDEF    LOCAVAIL_LoadAvailabilityDataFile
+    XDEF    LOCAVAIL_MapFilterTokenCharToClass
+    XDEF    LOCAVAIL_ParseFilterStateFromBuffer
+    XDEF    LOCAVAIL_RebuildFilterStateFromCurrentGroup
+    XDEF    LOCAVAIL_ResetFilterCursorState
+    XDEF    LOCAVAIL_ResetFilterStateStruct
+    XDEF    LOCAVAIL_SaveAvailabilityDataFile
+    XDEF    LOCAVAIL_SetFilterModeAndResetState
+    XDEF    LOCAVAIL_SyncSecondaryFilterForCurrentGroup
+    XDEF    LOCAVAIL_UpdateFilterStateMachine
+    XDEF    LOCAVAIL_ComputeFilterOffsetForEntry_Return
+    XDEF    LOCAVAIL_LoadAvailabilityDataFile_Return
+    XDEF    LOCAVAIL_MapFilterTokenCharToClass_Return
+    XDEF    LOCAVAIL_ParseFilterStateFromBuffer_Return
+    XDEF    LOCAVAIL_SaveAvailabilityDataFile_Return
+    XDEF    LOCAVAIL_UpdateFilterStateMachine_Return
+
 ;------------------------------------------------------------------------------
 ; FUNC: LOCAVAIL_FreeNodeRecord   (Clear one availability-node record in place)
 ; ARGS:

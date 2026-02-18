@@ -1,3 +1,7 @@
+    XDEF    ESQ_InvokeGcommandInit
+    XDEF    ESQ_SupervisorColdReboot
+    XDEF    ESQ_TryRomWriteTest
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_SupervisorColdReboot   (SupervisorColdRebootuncertain)
 ; ARGS:

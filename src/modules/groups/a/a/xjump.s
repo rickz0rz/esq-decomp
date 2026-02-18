@@ -1,3 +1,8 @@
+    XDEF    GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
+    XDEF    GROUP_AA_JMPTBL_STRING_CompareN
+    XDEF    GROUP_AA_JMPTBL_STRING_CompareNoCase
+    XDEF    GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AA_JMPTBL_STRING_CompareNoCase   (Routine at GROUP_AA_JMPTBL_STRING_CompareNoCase)
 ; ARGS:

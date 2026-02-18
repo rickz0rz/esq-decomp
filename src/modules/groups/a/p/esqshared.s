@@ -1,3 +1,26 @@
+    XDEF    ESQSHARED_ApplyProgramTitleTextFilters
+    XDEF    ESQSHARED_CompressClosedCaptionedTag
+    XDEF    ESQSHARED_CreateGroupEntryAndTitle
+    XDEF    ESQSHARED_InitEntryDefaults
+    XDEF    ESQSHARED_MatchSelectionCodeWithOptionalSuffix
+    XDEF    ESQSHARED_NormalizeInStereoTag
+    XDEF    ESQSHARED_ParseCompactEntryRecord
+    XDEF    ESQSHARED_ReplaceMovieRatingToken
+    XDEF    ESQSHARED_ReplaceTvRatingToken
+    XDEF    ESQSHARED_UpdateMatchingEntriesByTitle
+    XDEF    ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated
+    XDEF    ESQSHARED_JMPTBL_DST_BuildBannerTimeWord
+    XDEF    ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString
+    XDEF    ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes
+    XDEF    ESQSHARED_JMPTBL_ESQ_SetBit1Based
+    XDEF    ESQSHARED_JMPTBL_ESQ_TestBit1Based
+    XDEF    ESQSHARED_JMPTBL_ESQ_WildcardMatch
+    XDEF    ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3
+    XDEF    ESQSHARED_CreateGroupEntryAndTitle_Return
+    XDEF    ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return
+    XDEF    ESQSHARED_NormalizeInStereoTag_Return
+    XDEF    ESQSHARED_UpdateMatchingEntriesByTitle_Return
+
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED_ParseCompactEntryRecord   (Parse compact entry record and apply by title)

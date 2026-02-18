@@ -1,3 +1,21 @@
+    XDEF    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning
+    XDEF    GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState
+    XDEF    GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport
+    XDEF    GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch
+    XDEF    GROUP_AG_JMPTBL_MATH_DivS32
+    XDEF    GROUP_AG_JMPTBL_MATH_Mulu32
+    XDEF    GROUP_AG_JMPTBL_MEMORY_AllocateMemory
+    XDEF    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+    XDEF    GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition
+    XDEF    GROUP_AG_JMPTBL_SCRIPT_CheckPathExists
+    XDEF    GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal
+    XDEF    GROUP_AG_JMPTBL_STRING_CopyPadNul
+    XDEF    GROUP_AG_JMPTBL_STRUCT_AllocWithOwner
+    XDEF    GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField
+    XDEF    GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
+    XDEF    GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode
+
 ;!======
 
 ;------------------------------------------------------------------------------

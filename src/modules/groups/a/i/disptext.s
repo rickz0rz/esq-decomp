@@ -1,3 +1,23 @@
+    XDEF    DISPTEXT_AppendToBuffer
+    XDEF    DISPTEXT_BuildLayoutForSource
+    XDEF    DISPTEXT_BuildLinePointerTable
+    XDEF    DISPTEXT_BuildLineWithWidth
+    XDEF    DISPTEXT_ComputeMarkerWidths
+    XDEF    DISPTEXT_ComputeVisibleLineCount
+    XDEF    DISPTEXT_FinalizeLineTable
+    XDEF    DISPTEXT_FreeBuffers
+    XDEF    DISPTEXT_GetTotalLineCount
+    XDEF    DISPTEXT_HasMultipleLines
+    XDEF    DISPTEXT_InitBuffers
+    XDEF    DISPTEXT_IsCurrentLineLast
+    XDEF    DISPTEXT_IsLastLineSelected
+    XDEF    DISPTEXT_LayoutAndAppendToBuffer
+    XDEF    DISPTEXT_LayoutSourceToLines
+    XDEF    DISPTEXT_MeasureCurrentLineLength
+    XDEF    DISPTEXT_RenderCurrentLine
+    XDEF    DISPTEXT_SetCurrentLineIndex
+    XDEF    DISPTEXT_SetLayoutParams
+
 ;------------------------------------------------------------------------------
 ; FUNC: DISPTEXT_AppendToBuffer   (Append to display text bufferuncertain)
 ; ARGS:

@@ -1,3 +1,9 @@
+    XDEF    ED2_DrawEntryDetailsPanel
+    XDEF    ED2_DrawEntrySummaryPanel
+    XDEF    ED2_HandleDiagnosticsMenuActions
+    XDEF    ED2_HandleMenuActions
+    XDEF    ED2_HandleScrollSpeedSelection
+
 ;------------------------------------------------------------------------------
 ; FUNC: ED2_DrawEntryDetailsPanel   (Draw entry details paneluncertain)
 ; ARGS:

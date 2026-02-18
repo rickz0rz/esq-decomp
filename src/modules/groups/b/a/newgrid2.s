@@ -1,3 +1,46 @@
+    XDEF    NEWGRID2_DispatchGridOperation
+    XDEF    NEWGRID2_DispatchOperationDefault
+    XDEF    NEWGRID2_EnsureBuffersAllocated
+    XDEF    NEWGRID2_FreeBuffersIfAllocated
+    XDEF    NEWGRID2_HandleGridState
+    XDEF    NEWGRID2_ProcessGridState
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel
+    XDEF    NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair
+    XDEF    NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry
+    XDEF    NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1
+    XDEF    NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes
+    XDEF    NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
+    XDEF    NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant
+    XDEF    NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer
+    XDEF    NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex
+    XDEF    NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
+    XDEF    NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+    XDEF    NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
+    XDEF    NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
+    XDEF    NEWGRID2_JMPTBL_ESQ_TestBit1Based
+    XDEF    NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    NEWGRID2_JMPTBL_STRING_AppendN
+    XDEF    NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
+    XDEF    NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3
+
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_ProcessGridState   (Process grid state machine)
 ; ARGS:

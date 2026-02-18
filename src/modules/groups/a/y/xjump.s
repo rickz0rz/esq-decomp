@@ -1,3 +1,14 @@
+    XDEF    GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush
+    XDEF    GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer
+    XDEF    GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer
+    XDEF    GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer
+    XDEF    GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer
+    XDEF    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
+    XDEF    GROUP_AY_JMPTBL_DISKIO_WriteDecimalField
+    XDEF    GROUP_AY_JMPTBL_MATH_Mulu32
+    XDEF    GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask
+    XDEF    GROUP_AY_JMPTBL_STRING_CompareNoCaseN
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer   (Routine at GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer)
 ; ARGS:

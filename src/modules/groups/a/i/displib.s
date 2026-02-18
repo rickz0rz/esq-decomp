@@ -1,3 +1,13 @@
+    XDEF    DISPLIB_ApplyInlineAlignmentPadding
+    XDEF    DISPLIB_CommitCurrentLinePenAndAdvance
+    XDEF    DISPLIB_DisplayTextAtPosition
+    XDEF    DISPLIB_FindPreviousValidEntryIndex
+    XDEF    DISPLIB_NormalizeValueByStep
+    XDEF    DISPLIB_ResetLineTables
+    XDEF    DISPLIB_ResetTextBufferAndLineTables
+    XDEF    DISPLIB_ApplyInlineAlignmentPadding_Return
+    XDEF    DISPLIB_FindPreviousValidEntryIndex_Return
+
 ;------------------------------------------------------------------------------
 ; FUNC: DISPLIB_FindPreviousValidEntryIndex   (Routine at DISPLIB_FindPreviousValidEntryIndex)
 ; ARGS:

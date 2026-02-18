@@ -1,3 +1,6 @@
+    XDEF    FORMAT_CallbackWriteChar
+    XDEF    FORMAT_FormatToCallbackBuffer
+
 ;------------------------------------------------------------------------------
 ; FUNC: FORMAT_CallbackWriteChar   (Callback writer for formatter.)
 ; ARGS:

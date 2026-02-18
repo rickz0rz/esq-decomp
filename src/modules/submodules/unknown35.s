@@ -1,3 +1,5 @@
+    XDEF    HANDLE_OpenWithMode
+
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_OpenWithMode   (Allocate/locate handle struct and open by mode.)
 ; ARGS:

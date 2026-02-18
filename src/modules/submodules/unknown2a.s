@@ -1,3 +1,6 @@
+    XDEF    FORMAT_RawDoFmtWithScratchBuffer
+    XDEF    UNKNOWN2A_Stub0
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: uncertain   (Dead code: FORMAT_FormatToBuffer2/PARALLEL_RawDoFmtStackArgs wrapperuncertain)

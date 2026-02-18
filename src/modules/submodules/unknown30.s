@@ -1,3 +1,5 @@
+    XDEF    EXEC_CallVector_348
+
 ;------------------------------------------------------------------------------
 ; FUNC: EXEC_CallVector_348   (Exec.library call wrapper at LVO -348.)
 ; ARGS:

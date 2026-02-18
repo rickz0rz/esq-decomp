@@ -1,3 +1,9 @@
+    XDEF    DST_AllocateBannerStruct
+    XDEF    DST_FreeBannerPair
+    XDEF    DST_FreeBannerStruct
+    XDEF    DST_LoadBannerPairFromFiles
+    XDEF    DST_RebuildBannerPair
+
 ;------------------------------------------------------------------------------
 ; FUNC: DST_FreeBannerStruct   (Free banner struct and its two buffers)
 ; ARGS:

@@ -1,3 +1,5 @@
+    XDEF    HANDLE_OpenFromModeString
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_OpenFromModeString   (Parse mode string, open/prepare handle.)

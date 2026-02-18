@@ -1,3 +1,42 @@
+    XDEF    ESQ_AdjustBracketedHourInString
+    XDEF    ESQ_BumpColorTowardTargets
+    XDEF    ESQ_CalcDayOfYearFromMonthDay
+    XDEF    ESQ_ClampBannerCharRange
+    XDEF    ESQ_ColdReboot
+    XDEF    ESQ_ColdRebootViaSupervisor
+    XDEF    ESQ_DecColorStep
+    XDEF    ESQ_DecCopperListsPrimary
+    XDEF    ESQ_FindSubstringCaseFold
+    XDEF    ESQ_FormatTimeStamp
+    XDEF    ESQ_GenerateXorChecksumByte
+    XDEF    ESQ_GetHalfHourSlotIndex
+    XDEF    ESQ_IncCopperListsTowardsTargets
+    XDEF    ESQ_MoveCopperEntryTowardEnd
+    XDEF    ESQ_MoveCopperEntryTowardStart
+    XDEF    ESQ_NoOp
+    XDEF    ESQ_NoOp_006A
+    XDEF    ESQ_NoOp_0074
+    XDEF    ESQ_PackBitsDecode
+    XDEF    ESQ_ReverseBitsIn6Bytes
+    XDEF    ESQ_SeedMinuteEventThresholds
+    XDEF    ESQ_SetBit1Based
+    XDEF    ESQ_SetCopperEffectParams
+    XDEF    ESQ_SetCopperEffect_AllOn
+    XDEF    ESQ_SetCopperEffect_Custom
+    XDEF    ESQ_SetCopperEffect_Default
+    XDEF    ESQ_SetCopperEffect_OffDisableHighlight
+    XDEF    ESQ_SetCopperEffect_OnEnableHighlight
+    XDEF    ESQ_StoreCtrlSampleEntry
+    XDEF    ESQ_TerminateAfterSecondQuote
+    XDEF    ESQ_TestBit1Based
+    XDEF    ESQ_TickClockAndFlagEvents
+    XDEF    ESQ_TickGlobalCounters
+    XDEF    ESQ_UpdateCopperListsFromParams
+    XDEF    ESQ_UpdateMonthDayFromDayOfYear
+    XDEF    ESQ_WildcardMatch
+    XDEF    ESQ_WriteDecFixedWidth
+    XDEF    ESQ_AdvanceBannerCharIndex_Return
+
 ; Rename this file to its proper purpose.
 
 ;------------------------------------------------------------------------------

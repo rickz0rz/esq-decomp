@@ -1,3 +1,13 @@
+    XDEF    STREAM_BufferedGetc
+    XDEF    STREAM_BufferedPutcOrFlush
+    XDEF    STREAM_BufferedWriteString
+    XDEF    UNKNOWN2B_AllocRaster
+    XDEF    UNKNOWN2B_FreeRaster
+    XDEF    UNKNOWN2B_MovepReadCallback
+    XDEF    UNKNOWN2B_OpenFileWithAccessMode
+    XDEF    UNKNOWN2B_Stub0
+    XDEF    UNKNOWN2B_Stub1
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN2B_AllocRaster   (AllocRaster wrapper)

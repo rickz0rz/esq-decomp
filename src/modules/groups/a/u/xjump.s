@@ -1,3 +1,6 @@
+    XDEF    GROUP_AU_JMPTBL_BRUSH_AppendBrushNode
+    XDEF    GROUP_AU_JMPTBL_BRUSH_PopulateBrushList
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AU_JMPTBL_BRUSH_AppendBrushNode   (JumpStub_BRUSH_AppendBrushNode)
 ; ARGS:

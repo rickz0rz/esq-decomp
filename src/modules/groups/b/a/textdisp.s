@@ -1,3 +1,26 @@
+    XDEF    TEXTDISP_AddSourceConfigEntry
+    XDEF    TEXTDISP_ApplySourceConfigAllEntries
+    XDEF    TEXTDISP_ApplySourceConfigToEntry
+    XDEF    TEXTDISP_BuildEntryDetailLine
+    XDEF    TEXTDISP_BuildEntryPairStatusLine
+    XDEF    TEXTDISP_BuildNowShowingStatusLine
+    XDEF    TEXTDISP_ClearSourceConfig
+    XDEF    TEXTDISP_DrawHighlightFrame
+    XDEF    TEXTDISP_FilterAndSelectEntry
+    XDEF    TEXTDISP_GetGroupEntryCount
+    XDEF    TEXTDISP_HandleScriptCommand
+    XDEF    TEXTDISP_LoadSourceConfig
+    XDEF    TEXTDISP_ResetSelectionState
+    XDEF    TEXTDISP_SetEntryTextFields
+    XDEF    TEXTDISP_SetSelectionFields
+    XDEF    TEXTDISP_ShouldOpenEditorForEntry
+    XDEF    TEXTDISP_SkipControlCodes
+    XDEF    TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine
+    XDEF    TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame
+    XDEF    TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
+    XDEF    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
+    XDEF    TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor
+
 ;!======
 
 ;------------------------------------------------------------------------------

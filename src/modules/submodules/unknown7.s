@@ -1,3 +1,10 @@
+    XDEF    UNKNOWN7_CopyUntilDelimiter
+    XDEF    UNKNOWN7_FindAnyChar
+    XDEF    UNKNOWN7_FindAnyCharWrapper
+    XDEF    UNKNOWN7_FindChar
+    XDEF    UNKNOWN7_FindCharWrapper
+    XDEF    UNKNOWN7_SkipCharClass3
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN7_CopyUntilDelimiter   (Copy until delimiter or length)

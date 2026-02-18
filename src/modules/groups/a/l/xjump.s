@@ -1,3 +1,10 @@
+    XDEF    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth
+    XDEF    GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault
+    XDEF    GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble
+    XDEF    GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble
+    XDEF    GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte
+    XDEF    GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex
+
 ;!======
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte   (Jump stub)

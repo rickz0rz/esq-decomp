@@ -1,3 +1,17 @@
+    XDEF    GROUP_AC_JMPTBL_DST_RefreshBannerBuffer
+    XDEF    GROUP_AC_JMPTBL_DST_UpdateBannerQueue
+    XDEF    GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner
+    XDEF    GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen
+    XDEF    GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion
+    XDEF    GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen
+    XDEF    GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers
+    XDEF    GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds
+    XDEF    GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat
+    XDEF    GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc
+    XDEF    GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled
+    XDEF    GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout
+    XDEF    GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc   (JumpStub_PARSEINI_UpdateClockFromRtc)
 ; ARGS:

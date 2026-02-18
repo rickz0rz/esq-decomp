@@ -1,3 +1,39 @@
+    XDEF    ESQDISP_AllocateHighlightBitmaps
+    XDEF    ESQDISP_ApplyStatusMaskToIndicators
+    XDEF    ESQDISP_ComputeScheduleOffsetForRow
+    XDEF    ESQDISP_DrawStatusBanner_Impl
+    XDEF    ESQDISP_FillProgramInfoHeaderFields
+    XDEF    ESQDISP_GetEntryAuxPointerByMode
+    XDEF    ESQDISP_GetEntryPointerByMode
+    XDEF    ESQDISP_InitHighlightMessagePattern
+    XDEF    ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
+    XDEF    ESQDISP_NormalizeClockAndRedrawBanner
+    XDEF    ESQDISP_ParseProgramInfoCommandRecord
+    XDEF    ESQDISP_PollInputModeAndRefreshSelection
+    XDEF    ESQDISP_ProcessGridMessagesIfIdle
+    XDEF    ESQDISP_PromoteSecondaryGroupToPrimary
+    XDEF    ESQDISP_PromoteSecondaryLineHeadTailIfMarked
+    XDEF    ESQDISP_PropagatePrimaryTitleMetadataToSecondary
+    XDEF    ESQDISP_QueueHighlightDrawMessage
+    XDEF    ESQDISP_RefreshStatusIndicatorsFromCurrentMask
+    XDEF    ESQDISP_SetStatusIndicatorColorSlot
+    XDEF    ESQDISP_TestEntryBits0And2
+    XDEF    ESQDISP_TestEntryBits0And2_Core
+    XDEF    ESQDISP_TestEntryGridEligibility
+    XDEF    ESQDISP_TestWordIsZeroBooleanize
+    XDEF    ESQDISP_UpdateStatusMaskAndRefresh
+    XDEF    ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
+    XDEF    ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster
+    XDEF    ESQDISP_AllocateHighlightBitmaps_Return
+    XDEF    ESQDISP_DrawStatusBanner_Impl_Return
+    XDEF    ESQDISP_FillProgramInfoHeaderFields_Return
+    XDEF    ESQDISP_InitHighlightMessagePattern_Return
+    XDEF    ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return
+    XDEF    ESQDISP_ParseProgramInfoCommandRecord_Return
+    XDEF    ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return
+    XDEF    ESQDISP_TestEntryGridEligibility_Return
+    XDEF    ESQDISP_UpdateStatusMaskAndRefresh_Return
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQDISP_AllocateHighlightBitmaps   (Initialize 3-plane bitmap and allocate plane rasters)
 ; ARGS:

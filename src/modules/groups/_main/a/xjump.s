@@ -1,3 +1,8 @@
+    XDEF    GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun
+    XDEF    GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll
+    XDEF    GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0
+    XDEF    GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1   (JumpStub_UNKNOWN2B_Stub1)
 ; ARGS:

@@ -1,3 +1,22 @@
+    XDEF    WDISP_DrawWeatherStatusDayEntry
+    XDEF    WDISP_DrawWeatherStatusOverlay
+    XDEF    WDISP_DrawWeatherStatusSummary
+    XDEF    WDISP_HandleWeatherStatusCommand
+    XDEF    WDISP_UpdateSelectionPreviewPanel
+    XDEF    WDISP_JMPTBL_BRUSH_FindBrushByPredicate
+    XDEF    WDISP_JMPTBL_BRUSH_FreeBrushList
+    XDEF    WDISP_JMPTBL_BRUSH_PlaneMaskForIndex
+    XDEF    WDISP_JMPTBL_BRUSH_SelectBrushSlot
+    XDEF    WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary
+    XDEF    WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad
+    XDEF    WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice
+    XDEF    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples
+    XDEF    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+    XDEF    WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock
+    XDEF    WDISP_JMPTBL_NEWGRID_DrawWrappedText
+    XDEF    WDISP_JMPTBL_NEWGRID_ResetRowTable
+
 ; =============
 ; WDISP.S
 ; =============

@@ -1,3 +1,22 @@
+    XDEF    TLIBA3_BuildDisplayContextForViewMode
+    XDEF    TLIBA3_ClearViewModeRastPort
+    XDEF    TLIBA3_DrawCenteredWrappedTextLines
+    XDEF    TLIBA3_DrawHorizontalScaleTicks
+    XDEF    TLIBA3_DrawInnerFrameBorder
+    XDEF    TLIBA3_DrawOuterFrameBorder
+    XDEF    TLIBA3_DrawVerticalScaleTicks
+    XDEF    TLIBA3_DrawViewModeGuides
+    XDEF    TLIBA3_DrawViewModeOverlay
+    XDEF    TLIBA3_FormatPatternRegisterDump
+    XDEF    TLIBA3_GetViewModeHeight
+    XDEF    TLIBA3_GetViewModeRastPort
+    XDEF    TLIBA3_InitPatternTable
+    XDEF    TLIBA3_InitRuntimeEntries
+    XDEF    TLIBA3_InitRuntimeEntry
+    XDEF    TLIBA3_SelectNextViewMode
+    XDEF    TLIBA3_SetFontForAllViewModes
+    XDEF    TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
+
 ;------------------------------------------------------------------------------
 ; FUNC: TLIBA3_InitPatternTable   (InitPatternTableuncertain)
 ; ARGS:

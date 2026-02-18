@@ -1,3 +1,5 @@
+    XDEF    ALLOC_AllocFromFreeList
+
 ;------------------------------------------------------------------------------
 ; FUNC: ALLOC_AllocFromFreeList   (Allocate a block from the internal free list.)
 ; ARGS:

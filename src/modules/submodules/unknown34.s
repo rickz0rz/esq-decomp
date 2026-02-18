@@ -1,3 +1,7 @@
+    XDEF    DOS_ReadByIndex
+    XDEF    LIST_InitHeader
+    XDEF    MEM_Move
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_ReadByIndex   (Read using a handle index.)
 ; ARGS:

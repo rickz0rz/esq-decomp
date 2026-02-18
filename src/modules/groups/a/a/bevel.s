@@ -1,3 +1,10 @@
+    XDEF    BEVEL_DrawBevelFrameWithTop
+    XDEF    BEVEL_DrawBevelFrameWithTopRight
+    XDEF    BEVEL_DrawBeveledFrame
+    XDEF    BEVEL_DrawHorizontalBevel
+    XDEF    BEVEL_DrawVerticalBevel
+    XDEF    BEVEL_DrawVerticalBevelPair
+
 ;------------------------------------------------------------------------------
 ; FUNC: BEVEL_DrawVerticalBevel   (DrawVerticalBeveluncertain)
 ; ARGS:

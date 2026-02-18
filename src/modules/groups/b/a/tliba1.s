@@ -1,3 +1,20 @@
+    XDEF    TLIBA1_BuildClockFormatEntryIfVisible
+    XDEF    TLIBA1_DrawFormattedTextBlock
+    XDEF    TLIBA1_DrawInlineStyledText
+    XDEF    TLIBA1_DrawTextWithInsetSegments
+    XDEF    TLIBA1_FormatClockFormatEntry
+    XDEF    TLIBA1_ParseStyleCodeChar
+    XDEF    TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
+    XDEF    TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode
+    XDEF    TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow
+    XDEF    TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
+    XDEF    TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+    XDEF    TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+    XDEF    TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode
+    XDEF    TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
+    XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble
+    XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble
+
 ;!======
 
 ;------------------------------------------------------------------------------

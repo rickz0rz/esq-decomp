@@ -1,3 +1,9 @@
+    XDEF    STRING_AppendN
+    XDEF    STRING_CompareN
+    XDEF    STRING_CompareNoCase
+    XDEF    STRING_CompareNoCaseN
+    XDEF    STRING_CopyPadNul
+
 ;------------------------------------------------------------------------------
 ; FUNC: STRING_CompareNoCaseN   (Case-insensitive compare up to length.)
 ; ARGS:

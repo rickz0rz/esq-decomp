@@ -1,3 +1,5 @@
+    XDEF    WDISP_FormatWithCallback
+
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_FormatWithCallback   (FormatWithCallbackuncertain)
 ; ARGS:

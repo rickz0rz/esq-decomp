@@ -1,3 +1,44 @@
+    XDEF    GCOMMAND_AddBannerTableByteDelta
+    XDEF    GCOMMAND_AdjustBannerCopperOffset
+    XDEF    GCOMMAND_ApplyHighlightFlag
+    XDEF    GCOMMAND_BuildBannerBlock
+    XDEF    GCOMMAND_BuildBannerRow
+    XDEF    GCOMMAND_BuildBannerTables
+    XDEF    GCOMMAND_ClearBannerQueue
+    XDEF    GCOMMAND_ComputePresetIncrement
+    XDEF    GCOMMAND_ConsumeBannerQueueEntry
+    XDEF    GCOMMAND_CopyImageDataToBitmap
+    XDEF    GCOMMAND_DisableHighlight
+    XDEF    GCOMMAND_EnableHighlight
+    XDEF    GCOMMAND_ExpandPresetBlock
+    XDEF    GCOMMAND_GetBannerChar
+    XDEF    GCOMMAND_InitPresetDefaults
+    XDEF    GCOMMAND_InitPresetTableFromPalette
+    XDEF    GCOMMAND_InitPresetWorkEntry
+    XDEF    GCOMMAND_LoadPresetWorkEntries
+    XDEF    GCOMMAND_MapKeycodeToPreset
+    XDEF    GCOMMAND_RebuildBannerTablesFromBounds
+    XDEF    GCOMMAND_RefreshBannerTables
+    XDEF    GCOMMAND_ResetBannerFadeState
+    XDEF    GCOMMAND_ResetHighlightMessages
+    XDEF    GCOMMAND_ResetPresetWorkTables
+    XDEF    GCOMMAND_SeedBannerDefaults
+    XDEF    GCOMMAND_SeedBannerFromPrefs
+    XDEF    GCOMMAND_ServiceHighlightMessages
+    XDEF    GCOMMAND_SetPresetEntry
+    XDEF    GCOMMAND_TickHighlightState
+    XDEF    GCOMMAND_TickPresetWorkEntries
+    XDEF    GCOMMAND_UpdateBannerBounds
+    XDEF    GCOMMAND_UpdateBannerOffset
+    XDEF    GCOMMAND_UpdateBannerRowPointers
+    XDEF    GCOMMAND_UpdatePresetEntryCache
+    XDEF    GCOMMAND_ValidatePresetTable
+    XDEF    GCOMMAND_ExpandPresetBlock_Return
+    XDEF    GCOMMAND_InitPresetTableFromPalette_Return
+    XDEF    GCOMMAND_SetPresetEntry_Return
+    XDEF    GCOMMAND_UpdatePresetEntryCache_Return
+    XDEF    GCOMMAND_ValidatePresetTable_Return
+
 ;!======
 ; The content above or below belongs in its own file... need to determine which
 ;!======

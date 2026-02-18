@@ -1,3 +1,5 @@
+    XDEF    BUFFER_EnsureAllocated
+
 ;------------------------------------------------------------------------------
 ; FUNC: BUFFER_EnsureAllocated   (Ensure buffer memory exists for a stream.)
 ; ARGS:

@@ -1,3 +1,35 @@
+    XDEF    GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode
+    XDEF    GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem
+    XDEF    GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk
+    XDEF    GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk
+    XDEF    GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory
+    XDEF    GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip
+    XDEF    GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard
+    XDEF    GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage
+    XDEF    GROUP_AM_JMPTBL_ESQ_InitAudio1Dma
+    XDEF    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
+    XDEF    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+    XDEF    GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates
+    XDEF    GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults
+    XDEF    GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
+    XDEF    GROUP_AM_JMPTBL_KYBD_InitializeInputDevices
+    XDEF    GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries
+    XDEF    GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries
+    XDEF    GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile
+    XDEF    GROUP_AM_JMPTBL_LIST_InitHeader
+    XDEF    GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile
+    XDEF    GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct
+    XDEF    GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS
+    XDEF    GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc
+    XDEF    GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds
+    XDEF    GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext
+    XDEF    GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode
+    XDEF    GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal
+    XDEF    GROUP_AM_JMPTBL_STRUCT_AllocWithOwner
+    XDEF    GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig
+    XDEF    GROUP_AM_JMPTBL_TLIBA3_InitPatternTable
+    XDEF    GROUP_AM_JMPTBL_WDISP_SPrintf
+
 ;!======
 
 ;------------------------------------------------------------------------------

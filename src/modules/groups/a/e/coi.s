@@ -1,3 +1,27 @@
+    XDEF    COI_AllocSubEntryTable
+    XDEF    COI_ClearAnimObjectStrings
+    XDEF    COI_ComputeEntryTimeDeltaMinutes
+    XDEF    COI_CountEscape14BeforeNull
+    XDEF    COI_EnsureAnimObjectAllocated
+    XDEF    COI_FormatEntryDisplayText
+    XDEF    COI_FreeEntryResources
+    XDEF    COI_FreeSubEntryTableEntries
+    XDEF    COI_GetAnimFieldPointerByMode
+    XDEF    COI_LoadOiDataFile
+    XDEF    COI_ProcessEntrySelectionState
+    XDEF    COI_RenderClockFormatEntryVariant
+    XDEF    COI_SelectAnimFieldPointer
+    XDEF    COI_TestEntryWithinTimeWindow
+    XDEF    COI_WriteOiDataFile
+    XDEF    COI_AppendAnimFieldWithTrailingSpace_Return
+    XDEF    COI_ClearAnimObjectStrings_Return
+    XDEF    COI_ComputeEntryTimeDeltaMinutes_Return
+    XDEF    COI_FormatEntryDisplayText_Return
+    XDEF    COI_FreeEntryResources_Return
+    XDEF    COI_FreeSubEntryTableEntries_Return
+    XDEF    COI_GetAnimFieldPointerByMode_Return
+    XDEF    COI_TestEntryWithinTimeWindow_Return
+
 ;!======
 
 ;------------------------------------------------------------------------------

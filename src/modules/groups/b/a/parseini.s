@@ -1,3 +1,42 @@
+    XDEF    PARSEINI_HandleFontCommand
+    XDEF    PARSEINI_LoadWeatherMessageStrings
+    XDEF    PARSEINI_LoadWeatherStrings
+    XDEF    PARSEINI_ParseColorTable
+    XDEF    PARSEINI_ParseHexValueFromString
+    XDEF    PARSEINI_ParseIniBufferAndDispatch
+    XDEF    PARSEINI_ParseRangeKeyValue
+    XDEF    PARSEINI_ProcessWeatherBlocks
+    XDEF    PARSEINI_ScanLogoDirectory
+    XDEF    PARSEINI_TestMemoryAndOpenTopazFont
+    XDEF    PARSEINI_JMPTBL_BRUSH_AllocBrushNode
+    XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushList
+    XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushResources
+    XDEF    PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk
+    XDEF    PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer
+    XDEF    PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer
+    XDEF    PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen
+    XDEF    PARSEINI_JMPTBL_ED1_EnterEscMenu
+    XDEF    PARSEINI_JMPTBL_ED1_ExitEscMenu
+    XDEF    PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0
+    XDEF    PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1
+    XDEF    PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion
+    XDEF    PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable
+    XDEF    PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey
+    XDEF    PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad
+    XDEF    PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+    XDEF    PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator
+    XDEF    PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette
+    XDEF    PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable
+    XDEF    PARSEINI_JMPTBL_HANDLE_OpenWithMode
+    XDEF    PARSEINI_JMPTBL_STREAM_ReadLineWithLimit
+    XDEF    PARSEINI_JMPTBL_STRING_AppendAtNull
+    XDEF    PARSEINI_JMPTBL_STRING_CompareNoCase
+    XDEF    PARSEINI_JMPTBL_STRING_CompareNoCaseN
+    XDEF    PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
+    XDEF    PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper
+    XDEF    PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper
+    XDEF    PARSEINI_JMPTBL_WDISP_SPrintf
+
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_ParseIniBufferAndDispatch   (Parse INI-like buffer; dispatch by sectionuncertain)
 ; ARGS:

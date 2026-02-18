@@ -1,3 +1,15 @@
+    XDEF    CLEANUP_DrawBannerSpacerSegment
+    XDEF    CLEANUP_DrawClockBanner
+    XDEF    CLEANUP_DrawClockFormatFrame
+    XDEF    CLEANUP_DrawClockFormatList
+    XDEF    CLEANUP_DrawDateBannerSegment
+    XDEF    CLEANUP_DrawDateTimeBannerRow
+    XDEF    CLEANUP_DrawGridTimeBanner
+    XDEF    CLEANUP_DrawTimeBannerSegment
+    XDEF    CLEANUP_FormatClockFormatEntry
+    XDEF    CLEANUP_ProcessAlerts
+    XDEF    RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
+
 ;------------------------------------------------------------------------------
 ; FUNC: CLEANUP_ProcessAlerts   (Process alert/timer/banner state machine)
 ; ARGS:

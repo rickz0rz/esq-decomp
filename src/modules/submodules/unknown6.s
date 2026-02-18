@@ -1,3 +1,5 @@
+    XDEF    STRING_AppendAtNull
+
 ;------------------------------------------------------------------------------
 ; FUNC: STRING_AppendAtNull   (Append a NUL-terminated string to another.)
 ; ARGS:

@@ -1,3 +1,14 @@
+    XDEF    DATETIME_BuildFromBaseDay
+    XDEF    DATETIME_BuildFromGlobals
+    XDEF    DATETIME_ClassifyValueInRange
+    XDEF    DATETIME_CopyPairAndRecalc
+    XDEF    DATETIME_FormatPairToStream
+    XDEF    DATETIME_NormalizeStructToSeconds
+    XDEF    DATETIME_ParseString
+    XDEF    DATETIME_SavePairToFile
+    XDEF    DATETIME_SecondsToStruct
+    XDEF    DATETIME_UpdateSelectionField
+
 
 ;------------------------------------------------------------------------------
 ; FUNC: DATETIME_SecondsToStruct   (Convert seconds to time structuncertain)

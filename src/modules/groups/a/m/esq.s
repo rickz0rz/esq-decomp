@@ -1,3 +1,5 @@
+    XDEF    ESQ_MainInitAndRun
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_MainInitAndRun   (MainInitAndRun)
 ; ARGS:

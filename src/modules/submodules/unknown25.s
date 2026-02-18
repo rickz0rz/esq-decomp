@@ -1,3 +1,6 @@
+    XDEF    STRUCT_AllocWithOwner
+    XDEF    STRUCT_FreeWithSizeField
+
 ;------------------------------------------------------------------------------
 ; FUNC: STRUCT_FreeWithSizeField   (Free struct using size field at +18.)
 ; ARGS:

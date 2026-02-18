@@ -1,3 +1,7 @@
+    XDEF    FORMAT_Buffer2WriteChar
+    XDEF    FORMAT_FormatToBuffer2
+    XDEF    FORMAT_ParseFormatSpec
+
 ;------------------------------------------------------------------------------
 ; FUNC: FORMAT_Buffer2WriteChar   (Append a byte to format buffer #2.)
 ; ARGS:

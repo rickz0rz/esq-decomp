@@ -1,3 +1,9 @@
+    XDEF    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
+    XDEF    GROUP_AJ_JMPTBL_MATH_DivU32
+    XDEF    GROUP_AJ_JMPTBL_MATH_Mulu32
+    XDEF    GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals
+    XDEF    GROUP_AJ_JMPTBL_STRING_FindSubstring
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AJ_JMPTBL_STRING_FindSubstring   (Jump stub)
 ; ARGS:

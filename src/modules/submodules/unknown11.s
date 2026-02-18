@@ -1,3 +1,5 @@
+    XDEF    DOS_SeekByIndex
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_SeekByIndex   (Seek using a handle index.)
 ; ARGS:

@@ -1,3 +1,8 @@
+    XDEF    FLIB2_LoadDigitalMplexDefaults
+    XDEF    FLIB2_LoadDigitalNicheDefaults
+    XDEF    FLIB2_LoadDigitalPpvDefaults
+    XDEF    FLIB2_ResetAndLoadListingTemplates
+
 ;------------------------------------------------------------------------------
 ; FUNC: FLIB2_LoadDigitalNicheDefaults   (Routine at FLIB2_LoadDigitalNicheDefaults)
 ; ARGS:

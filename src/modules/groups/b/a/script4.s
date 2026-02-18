@@ -1,3 +1,8 @@
+    XDEF    SCRIPT_DrawInsetTextWithFrame
+    XDEF    SCRIPT_GetBannerCharOrFallback
+    XDEF    SCRIPT_ResetBannerCharDefaults
+    XDEF    SCRIPT_SetupHighlightEffect
+
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT_ResetBannerCharDefaults   (ResetBannerCharDefaultsuncertain)
 ; ARGS:

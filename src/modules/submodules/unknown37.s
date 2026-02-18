@@ -1,3 +1,5 @@
+    XDEF    HANDLE_CloseByIndex
+
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_CloseByIndex   (Close and clear handle entry by index.)
 ; ARGS:

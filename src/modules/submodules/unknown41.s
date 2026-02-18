@@ -1,3 +1,5 @@
+    XDEF    CLOCK_ConvertAmigaSecondsToClockData
+
 ;------------------------------------------------------------------------------
 ; FUNC: CLOCK_ConvertAmigaSecondsToClockData
 ; ARGS:

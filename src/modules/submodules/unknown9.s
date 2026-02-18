@@ -1,3 +1,5 @@
+    XDEF    FORMAT_U32ToOctalString
+
 ;------------------------------------------------------------------------------
 ; FUNC: FORMAT_U32ToOctalString   (Format an unsigned value as octal ASCII.)
 ; ARGS:

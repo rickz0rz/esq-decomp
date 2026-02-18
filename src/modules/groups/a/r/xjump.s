@@ -1,3 +1,6 @@
+    XDEF    GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry
+    XDEF    GROUP_AR_JMPTBL_STRING_AppendAtNull
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry   (Routine at GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry)
 ; ARGS:

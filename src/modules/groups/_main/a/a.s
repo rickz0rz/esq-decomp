@@ -1,3 +1,6 @@
+    XDEF    ESQ_ReturnWithStackCode
+    XDEF    ESQ_ShutdownAndReturn
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_StartupEntry   (StartupEntry)
 ; ARGS:

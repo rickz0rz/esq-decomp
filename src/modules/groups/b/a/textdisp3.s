@@ -1,3 +1,21 @@
+    XDEF    TEXTDISP_BuildChannelLabel
+    XDEF    TEXTDISP_BuildEntryShortName
+    XDEF    TEXTDISP_BuildMatchIndexList
+    XDEF    TEXTDISP_ComputeTimeOffset
+    XDEF    TEXTDISP_DrawChannelBanner
+    XDEF    TEXTDISP_DrawInsetRectFrame
+    XDEF    TEXTDISP_FindAliasIndexByName
+    XDEF    TEXTDISP_FindControlToken
+    XDEF    TEXTDISP_FindEntryIndexByWildcard
+    XDEF    TEXTDISP_FindEntryMatchIndex
+    XDEF    TEXTDISP_FindQuotedSpan
+    XDEF    TEXTDISP_FormatEntryTime
+    XDEF    TEXTDISP_FormatEntryTimeForIndex
+    XDEF    TEXTDISP_SelectBestMatchFromList
+    XDEF    TEXTDISP_SelectGroupAndEntry
+    XDEF    TEXTDISP_TrimTextToPixelWidth
+    XDEF    TEXTDISP_UpdateChannelRangeFlags
+
 ;------------------------------------------------------------------------------
 ; FUNC: TEXTDISP_FindEntryIndexByWildcard   (Find entry index by pattern)
 ; ARGS:

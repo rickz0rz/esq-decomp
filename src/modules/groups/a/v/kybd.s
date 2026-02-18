@@ -1,3 +1,5 @@
+    XDEF    KYBD_InitializeInputDevices
+
 ;------------------------------------------------------------------------------
 ; FUNC: KYBD_InitializeInputDevices   (InitializeInputDevices)
 ; ARGS:

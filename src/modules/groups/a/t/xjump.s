@@ -1,3 +1,7 @@
+    XDEF    GROUP_AT_JMPTBL_DOS_SystemTagList
+    XDEF    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0
+    XDEF    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
 ; ARGS:

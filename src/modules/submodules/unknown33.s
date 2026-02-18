@@ -1,3 +1,6 @@
+    XDEF    ALLOC_InsertFreeBlock
+    XDEF    STRING_FindSubstring
+
 ;------------------------------------------------------------------------------
 ; FUNC: STRING_FindSubstring   (Find a substring within a string.)
 ; ARGS:

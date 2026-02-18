@@ -1,3 +1,9 @@
+    XDEF    GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq
+    XDEF    GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
+    XDEF    GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit
+    XDEF    GROUP_AV_JMPTBL_EXEC_CallVector_48
+    XDEF    GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq   (Routine at GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq)
 ; ARGS:

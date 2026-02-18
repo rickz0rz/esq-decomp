@@ -1,3 +1,5 @@
+    XDEF    FORMAT_U32ToDecimalString
+
 ;------------------------------------------------------------------------------
 ; FUNC: FORMAT_U32ToDecimalString   (Format an unsigned value as decimal ASCII.)
 ; ARGS:

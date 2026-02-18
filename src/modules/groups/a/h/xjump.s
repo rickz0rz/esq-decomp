@@ -1,3 +1,22 @@
+    XDEF    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
+    XDEF    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi
+    XDEF    GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket
+    XDEF    GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay
+    XDEF    GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers
+    XDEF    GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
+    XDEF    GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults
+    XDEF    GROUP_AH_JMPTBL_ESQ_TestBit1Based
+    XDEF    GROUP_AH_JMPTBL_ESQ_WildcardMatch
+    XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile
+    XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile
+    XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate
+    XDEF    GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
+    XDEF    GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache
+    XDEF    GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
+    XDEF    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
+    XDEF    GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
+    XDEF    GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket   (Routine at GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket)
 ; ARGS:

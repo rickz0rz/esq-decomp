@@ -1,3 +1,12 @@
+    XDEF    SCRIPT_AllocateBufferArray
+    XDEF    SCRIPT_BuildTokenIndexMap
+    XDEF    SCRIPT_DeallocateBufferArray
+    XDEF    SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
+    XDEF    SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer
+    XDEF    SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes
+    XDEF    SCRIPT_JMPTBL_MEMORY_AllocateMemory
+    XDEF    SCRIPT_JMPTBL_MEMORY_DeallocateMemory
+
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT_AllocateBufferArray   (AllocateBufferArrayuncertain)
 ; ARGS:

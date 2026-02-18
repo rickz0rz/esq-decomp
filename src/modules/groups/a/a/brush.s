@@ -1,3 +1,22 @@
+    XDEF    BRUSH_AllocBrushNode
+    XDEF    BRUSH_AppendBrushNode
+    XDEF    BRUSH_CloneBrushRecord
+    XDEF    BRUSH_FindBrushByPredicate
+    XDEF    BRUSH_FindType3Brush
+    XDEF    BRUSH_FreeBrushList
+    XDEF    BRUSH_FreeBrushResources
+    XDEF    BRUSH_LoadBrushAsset
+    XDEF    BRUSH_LoadColorTextFont
+    XDEF    BRUSH_NormalizeBrushNames
+    XDEF    BRUSH_PlaneMaskForIndex
+    XDEF    BRUSH_PopBrushHead
+    XDEF    BRUSH_PopulateBrushList
+    XDEF    BRUSH_SelectBrushByLabel
+    XDEF    BRUSH_SelectBrushSlot
+    XDEF    BRUSH_StreamFontChunk
+    XDEF    BRUSH_FreeBrushList_Return
+    XDEF    BRUSH_SelectBrushSlot_Return
+
 ; -----------------------------------------------------------------------------
 ; Brush.c routines
 ; -----------------------------------------------------------------------------

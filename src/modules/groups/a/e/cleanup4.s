@@ -1,3 +1,10 @@
+    XDEF    CLEANUP_BuildAlignedStatusLine
+    XDEF    CLEANUP_DrawInsetRectFrame
+    XDEF    CLEANUP_FormatEntryStringTokens
+    XDEF    CLEANUP_ParseAlignedListingBlock
+    XDEF    CLEANUP_TestEntryFlagYAndBit1
+    XDEF    CLEANUP_UpdateEntryFlagBytes
+
 ;------------------------------------------------------------------------------
 ; FUNC: CLEANUP_TestEntryFlagYAndBit1   (TestEntryFlagYAndBit1uncertain)
 ; ARGS:

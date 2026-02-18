@@ -1,3 +1,10 @@
+    XDEF    CLEANUP_ClearAud1InterruptVector
+    XDEF    CLEANUP_ClearRbfInterruptAndSerial
+    XDEF    CLEANUP_ClearVertbInterruptServer
+    XDEF    CLEANUP_ReleaseDisplayResources
+    XDEF    CLEANUP_ShutdownInputDevices
+    XDEF    CLEANUP_ShutdownSystem
+
 ;------------------------------------------------------------------------------
 ; FUNC: CLEANUP_ClearVertbInterruptServer
 ; ARGS:

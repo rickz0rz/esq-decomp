@@ -1,3 +1,6 @@
+    XDEF    HANDLE_CloseAllAndReturnWithCode
+    XDEF    UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode
+
 ;------------------------------------------------------------------------------
 ; FUNC: HANDLE_CloseAllAndReturnWithCode   (Close all handles, then return w/ code.)
 ; ARGS:

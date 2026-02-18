@@ -1,3 +1,5 @@
+    XDEF    GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult   (JumpStub_GCOMMAND_SaveBrushResult)
 ; ARGS:

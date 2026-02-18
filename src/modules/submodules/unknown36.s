@@ -1,3 +1,6 @@
+    XDEF    UNKNOWN36_FinalizeRequest
+    XDEF    UNKNOWN36_ShowAbortRequester
+
 ;------------------------------------------------------------------------------
 ; Struct offsets (UNKNOWN36 request struct)
 Struct_UNKNOWN36_Request__Arg16     = 16

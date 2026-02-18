@@ -1,3 +1,41 @@
+    XDEF    GENERATE_GRID_DATE_STRING
+    XDEF    SCRIPT_ApplyPendingBannerTarget
+    XDEF    SCRIPT_BeginBannerCharTransition
+    XDEF    SCRIPT_CheckPathExists
+    XDEF    SCRIPT_ClearSearchTextsAndChannels
+    XDEF    SCRIPT_DispatchPlaybackCursorCommand
+    XDEF    SCRIPT_HandleBrushCommand
+    XDEF    SCRIPT_HandleSerialCtrlCmd
+    XDEF    SCRIPT_InitCtrlContext
+    XDEF    SCRIPT_LoadCtrlContextSnapshot
+    XDEF    SCRIPT_PrimeBannerTransitionFromHexCode
+    XDEF    SCRIPT_ProcessCtrlContextPlaybackTick
+    XDEF    SCRIPT_ResetCtrlContext
+    XDEF    SCRIPT_ResetCtrlContextAndClearStatusLine
+    XDEF    SCRIPT_SaveCtrlContextSnapshot
+    XDEF    SCRIPT_SelectPlaybackCursorFromSearchText
+    XDEF    SCRIPT_SetCtrlContextMode
+    XDEF    SCRIPT_SplitAndNormalizeSearchBuffer
+    XDEF    SCRIPT_UpdateBannerCharTransition
+    XDEF    SCRIPT_UpdateCtrlStateMachine
+    XDEF    SCRIPT_UpdateRuntimeModeForPlaybackCursor
+    XDEF    SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen
+    XDEF    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
+    XDEF    SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist
+    XDEF    SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters
+    XDEF    SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom
+    XDEF    SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
+    XDEF    SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
+    XDEF    SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
+    XDEF    SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry
+    XDEF    SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState
+    XDEF    SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
+    XDEF    SCRIPT3_JMPTBL_MATH_DivS32
+    XDEF    SCRIPT3_JMPTBL_MATH_Mulu32
+    XDEF    SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    SCRIPT3_JMPTBL_STRING_CompareN
+    XDEF    SCRIPT3_JMPTBL_STRING_CopyPadNul
+
 
 ;!======
 

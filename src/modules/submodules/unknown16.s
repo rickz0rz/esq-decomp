@@ -1,3 +1,5 @@
+    XDEF    BUFFER_FlushAllAndCloseWithCode
+
 ;------------------------------------------------------------------------------
 ; FUNC: BUFFER_FlushAllAndCloseWithCode   (Flush buffered outputs, then close.)
 ; ARGS:

@@ -1,3 +1,10 @@
+    XDEF    ALLOCATE_AllocAndInitializeIOStdReq
+    XDEF    DOS_CloseWithSignalCheck
+    XDEF    MATH_DivS32
+    XDEF    MATH_DivU32
+    XDEF    MATH_Mulu32
+    XDEF    SIGNAL_CreateMsgPortWithSignal
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_CloseWithSignalCheck   (Close a DOS handle, with signal callback.)
 ; ARGS:

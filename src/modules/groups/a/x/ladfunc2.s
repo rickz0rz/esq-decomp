@@ -1,3 +1,9 @@
+    XDEF    LADFUNC2_EmitEscapedCharToScratch
+    XDEF    LADFUNC2_EmitEscapedStringToScratch
+    XDEF    LADFUNC2_EmitEscapedStringWithLimit
+    XDEF    LADFUNC2_EmitEscapedStringChunked_Return
+    XDEF    LADFUNC2_EmitEscapedStringWithLimit_Return
+
     ; uncertain
     MOVEQ   #97,D0
     RTS

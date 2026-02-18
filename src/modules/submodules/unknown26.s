@@ -1,3 +1,5 @@
+    XDEF    DOS_WriteByIndex
+
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_WriteByIndex   (Write using a handle index.)
 ; ARGS:

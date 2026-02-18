@@ -1,3 +1,19 @@
+    XDEF    DISKIO2_CopyAndSanitizeSlotString
+    XDEF    DISKIO2_DisplayStatusLine
+    XDEF    DISKIO2_FlushDataFilesIfNeeded
+    XDEF    DISKIO2_HandleInteractiveFileTransfer
+    XDEF    DISKIO2_LoadCurDayDataFile
+    XDEF    DISKIO2_LoadNxtDayDataFile
+    XDEF    DISKIO2_LoadOinfoDataFile
+    XDEF    DISKIO2_ParseIniFileFromDisk
+    XDEF    DISKIO2_ReceiveTransferBlocksToFile
+    XDEF    DISKIO2_ReloadDataFilesAndRebuildIndex
+    XDEF    DISKIO2_RunDiskSyncWorkflow
+    XDEF    DISKIO2_WriteCurDayDataFile
+    XDEF    DISKIO2_WriteNxtDayDataFile
+    XDEF    DISKIO2_WriteOinfoDataFile
+    XDEF    DISKIO2_WriteQTableIniFile
+
 ;!======
 
 ;------------------------------------------------------------------------------

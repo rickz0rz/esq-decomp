@@ -1,3 +1,18 @@
+    XDEF    DATETIME_AdjustMonthIndex
+    XDEF    DATETIME_IsLeapYear
+    XDEF    DATETIME_NormalizeMonthRange
+    XDEF    DST_AddTimeOffset
+    XDEF    DST_BuildBannerTimeEntry
+    XDEF    DST_BuildBannerTimeWord
+    XDEF    DST_CallJump_066F
+    XDEF    DST_ComputeBannerIndex
+    XDEF    DST_FormatBannerDateTime
+    XDEF    DST_HandleBannerCommand32_33
+    XDEF    DST_NormalizeDayOfYear
+    XDEF    DST_RefreshBannerBuffer
+    XDEF    DST_TickBannerCounters
+    XDEF    DST_UpdateBannerQueue
+
 ;------------------------------------------------------------------------------
 ; FUNC: DST_HandleBannerCommand32_33   (Handle banner command $32/$33 and enqueue text)
 ; ARGS:

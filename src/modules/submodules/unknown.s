@@ -1,3 +1,16 @@
+    XDEF    UNKNOWN_CopyLabelToGlobal
+    XDEF    UNKNOWN_ParseDigitLabelAndDisplay
+    XDEF    UNKNOWN_ParseListAndUpdateEntries
+    XDEF    UNKNOWN_ParseRecordAndUpdateDisplay
+    XDEF    UNKNOWN_VerifyChecksumAndParseList
+    XDEF    UNKNOWN_VerifyChecksumAndParseRecord
+    XDEF    UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    UNKNOWN_JMPTBL_DST_NormalizeDayOfYear
+    XDEF    UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer
+    XDEF    UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+    XDEF    UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte
+    XDEF    UNKNOWN_JMPTBL_ESQ_WildcardMatch
+
 ;------------------------------------------------------------------------------
 ; FUNC: UNKNOWN_ParseRecordAndUpdateDisplay   (Parse record, update globals, and display.)
 ; ARGS:

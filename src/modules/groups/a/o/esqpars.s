@@ -1,3 +1,43 @@
+    XDEF    ESQPARS_ApplyRtcBytesAndPersist
+    XDEF    ESQPARS_ClearAliasStringPointers
+    XDEF    ESQPARS_PersistStateDataAfterCommand
+    XDEF    ESQPARS_ProcessSerialCommandByte
+    XDEF    ESQPARS_ReadLengthWordWithChecksumXor
+    XDEF    ESQPARS_RemoveGroupEntryAndReleaseStrings
+    XDEF    ESQPARS_ReplaceOwnedString
+    XDEF    ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex
+    XDEF    ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock
+    XDEF    ESQPARS_JMPTBL_COI_FreeEntryResources
+    XDEF    ESQPARS_JMPTBL_DATETIME_SavePairToFile
+    XDEF    ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded
+    XDEF    ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer
+    XDEF    ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer
+    XDEF    ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle
+    XDEF    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    ESQPARS_JMPTBL_DST_HandleBannerCommand32_33
+    XDEF    ESQPARS_JMPTBL_DST_RefreshBannerBuffer
+    XDEF    ESQPARS_JMPTBL_DST_UpdateBannerQueue
+    XDEF    ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte
+    XDEF    ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
+    XDEF    ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile
+    XDEF    ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
+    XDEF    ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache
+    XDEF    ESQPARS_JMPTBL_PARSEINI_HandleFontCommand
+    XDEF    ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals
+    XDEF    ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord
+    XDEF    ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile
+    XDEF    ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
+    XDEF    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine
+    XDEF    ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries
+    XDEF    ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal
+    XDEF    ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay
+    XDEF    ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList
+    XDEF    ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord
+    XDEF    ESQPARS_ReadLengthWordWithChecksumXor_Return
+    XDEF    ESQPARS_RemoveGroupEntryAndReleaseStrings_Return
+    XDEF    ESQPARS_ReplaceOwnedString_Return
+
 ;!======
 
 ;------------------------------------------------------------------------------

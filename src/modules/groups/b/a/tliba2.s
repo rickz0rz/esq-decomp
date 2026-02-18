@@ -1,3 +1,12 @@
+    XDEF    TLIBA2_ComputeBroadcastTimeWindow
+    XDEF    TLIBA2_FindLastCharInString
+    XDEF    TLIBA2_ParseEntryTimeWindow
+    XDEF    TLIBA2_ResolveEntryWindowAndSlotCount
+    XDEF    TLIBA2_ResolveEntryWindowWithDefaultRange
+    XDEF    TLIBA_FindFirstWildcardMatchIndex
+    XDEF    TLIBA2_JMPTBL_DST_AddTimeOffset
+    XDEF    TLIBA2_JMPTBL_ESQ_TestBit1Based
+
 ;------------------------------------------------------------------------------
 ; FUNC: TLIBA2_FindLastCharInString   (FindLastCharInStringuncertain)
 ; ARGS:

@@ -1,3 +1,5 @@
+    XDEF    STRING_ToUpperInPlace
+
 ;------------------------------------------------------------------------------
 ; FUNC: STRING_ToUpperInPlace   (Convert ASCII string to uppercase in place.)
 ; ARGS:

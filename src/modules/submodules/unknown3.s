@@ -1,3 +1,5 @@
+    XDEF    STRING_ToUpperChar
+
 ;------------------------------------------------------------------------------
 ; FUNC: STRING_ToUpperChar   (Convert lowercase ASCII to uppercase.)
 ; ARGS:

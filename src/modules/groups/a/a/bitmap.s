@@ -1,3 +1,5 @@
+    XDEF    BITMAP_ProcessIlbmImage
+
 ;------------------------------------------------------------------------------
 ; FUNC: BITMAP_ProcessIlbmImage
 ; ARGS:

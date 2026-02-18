@@ -1,3 +1,15 @@
+    XDEF    FORMAT_U32ToHexString
+    XDEF    HANDLE_OpenEntryWithFlags
+    XDEF    PARSE_ReadSignedLong
+    XDEF    PARSE_ReadSignedLong_NegateValue
+    XDEF    PARSE_ReadSignedLong_NoBranch
+    XDEF    PARSE_ReadSignedLong_ParseDone
+    XDEF    PARSE_ReadSignedLong_ParseLoop
+    XDEF    PARSE_ReadSignedLong_ParseLoopEntry
+    XDEF    PARSE_ReadSignedLong_StoreResult
+    XDEF    UNKNOWN10_PrintfPutcToBuffer
+    XDEF    WDISP_SPrintf
+
 ;------------------------------------------------------------------------------
 ; SYM: kHexDigitTable   (Hex digit lookup bytesuncertain)
 ; TYPE: array<u8>

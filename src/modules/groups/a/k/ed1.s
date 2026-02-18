@@ -1,3 +1,27 @@
+    XDEF    ED1_ClearEscMenuMode
+    XDEF    ED1_DrawDiagnosticsScreen
+    XDEF    ED1_DrawStatusLine1
+    XDEF    ED1_DrawStatusLine2
+    XDEF    ED1_EnterEscMenu
+    XDEF    ED1_EnterEscMenu_AfterVersionText
+    XDEF    ED1_ExitEscMenu
+    XDEF    ED1_HandleEscMenuInput
+    XDEF    ED1_UpdateEscMenuSelection
+    XDEF    ED1_WaitForFlagAndClearBit0
+    XDEF    ED1_WaitForFlagAndClearBit1
+    XDEF    ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow
+    XDEF    ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
+    XDEF    ED1_JMPTBL_ESQ_ColdReboot
+    XDEF    ED1_JMPTBL_GCOMMAND_ResetHighlightMessages
+    XDEF    ED1_JMPTBL_GCOMMAND_SeedBannerDefaults
+    XDEF    ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs
+    XDEF    ED1_JMPTBL_LADFUNC_MergeHighLowNibbles
+    XDEF    ED1_JMPTBL_LADFUNC_PackNibblesToByte
+    XDEF    ED1_JMPTBL_LADFUNC_SaveTextAdsToFile
+    XDEF    ED1_JMPTBL_LOCAVAIL_ResetFilterCursorState
+    XDEF    ED1_JMPTBL_MEM_Move
+    XDEF    ED1_JMPTBL_NEWGRID_DrawTopBorderLine
+
 ;------------------------------------------------------------------------------
 ; FUNC: ED1_HandleEscMenuInput   (Handle ESC menu command selectionuncertain)
 ; ARGS:

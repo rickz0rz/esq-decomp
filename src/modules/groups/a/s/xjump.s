@@ -1,3 +1,6 @@
+    XDEF    GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold
+    XDEF    GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper
+
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
 ; ARGS:

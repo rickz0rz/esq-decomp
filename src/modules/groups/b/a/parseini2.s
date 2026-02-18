@@ -1,3 +1,15 @@
+    XDEF    PARSEINI_AdjustHoursTo24HrFormat
+    XDEF    PARSEINI_NormalizeClockData
+    XDEF    PARSEINI_UpdateClockFromRtc
+    XDEF    PARSEINI_WriteRtcFromGlobals
+    XDEF    PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock
+    XDEF    PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
+    XDEF    PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch
+    XDEF    PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData
+    XDEF    PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch
+    XDEF    PARSEINI2_JMPTBL_DATETIME_IsLeapYear
+    XDEF    PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay
+
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_WriteRtcFromGlobals   (Write globals to RTC chip)
 ; ARGS:
