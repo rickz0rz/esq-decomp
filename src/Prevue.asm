@@ -4,10 +4,6 @@
 
 ; Set this to 1 to include Ari's custom assembly for dumping debug output.
 includeCustomAriAssembly = 0
-; Set this to 1 to patch the address being calculated for A4 offsets.
-; If you have this to 0 and you try to modify anything in the S_1 section, you
-; might encounter a crash.
-patchA4OffsetForData = 0
 
     include "lvo-offsets.s"
     include "hardware-addresses.s"
@@ -86,13 +82,7 @@ Global_PreallocHandleNode1_HandleIndex = Global_PreallocHandleNode1+Struct_Preal
 Global_PreallocHandleNode2       = Global_PreallocHandleNode1+Struct_PreallocHandleNode_Size ; -1052
 Global_PreallocHandleNode2_OpenFlags = Global_PreallocHandleNode2+Struct_PreallocHandleNode__OpenFlags ; -1028
 Global_PreallocHandleNode2_HandleIndex = Global_PreallocHandleNode2+Struct_PreallocHandleNode__HandleIndex ; -1024
-
-    if patchA4OffsetForData
-Global_GraphicsLibraryBase_A4    = Global_REF_GRAPHICS_LIBRARY - A4_Base
-    else
-Global_GraphicsLibraryBase_A4    = -22440
-    endif
-
+Global_GraphicsLibraryBase_A4    = Global_REF_GRAPHICS_LIBRARY-A4_Base           ; -22440
 Global_HandleTableBase           = 22492
 Global_HandleEntry0_Flags        = Global_HandleTableBase+Struct_HandleEntry__Flags
 Global_HandleEntry0_Ptr          = Global_HandleTableBase+Struct_HandleEntry__Ptr

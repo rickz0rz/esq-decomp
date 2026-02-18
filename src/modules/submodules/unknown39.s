@@ -16,11 +16,7 @@
 GRAPHICS_BltBitMapRastPort:
     MOVEM.L D2-D6/A6,-(A7)
 
-    if patchA4OffsetForData
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
-    else
     MOVEA.L Global_GraphicsLibraryBase_A4(A4),A6
-    endif
     MOVEA.L 28(A7),A0
     MOVEM.L 32(A7),D0-D1
     MOVEA.L 40(A7),A1
