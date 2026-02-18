@@ -59,7 +59,7 @@ DATA_ED2_STR_LOCAL_EDIT_NOT_AVAILABLE_1D29:
 Global_STR_VER_PERCENT_S_PERCENT_L_D:
     NStr    "Ver %s.%ld"
 Global_STR_NINE_POINT_ZERO:
-    NStr    "9.0"   ; Major/minor version string
+    NStr    "10.0"   ; Major/minor version string
 
 ; Strings for ESC -> Diagnostic Mode
 Global_STR_BAUD_RATE_DIAGNOSTIC_MODE:

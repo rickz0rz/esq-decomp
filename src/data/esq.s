@@ -326,13 +326,15 @@ Global_STR_ESQ_C_11:
 DATA_ESQ_STR_NO_DF1_PRESENT_1E0F:
     NStr    "no df1 present"
 Global_STR_GUIDE_START_VERSION_AND_BUILD:
-    NStr    "Ver %s.%ld Build %ld %s"
+    NStr    "Ver %s.%ld Build %ld %s - Commit: %s"
 Global_STR_MAJOR_MINOR_VERSION:
-    NStr    "9.0"   ; Major/minor version string
+    NStr    "10.0"   ; Major/minor version string
 DATA_ESQ_38_Spaces:
     NStr    "                                       "
 Global_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
+DATA_ESQ_STR_CommunityPatchEdition:
+    NStr    "Community Patch Edition"
 DATA_ESQ_STR_SystemInitializing:
     NStr    "System Initializing"
 DATA_ESQ_STR_PleaseStandByEllipsis:
@@ -356,7 +358,9 @@ Global_STR_DF0_BANNER_INI_1:
 DATA_ESQ_TAG_GRANADA:
     NStr    "GRANADA"
 Global_LONG_BUILD_NUMBER:
-    DC.L    $00000015   ; 21
+    DC.L    0
+Global_STR_GitCommitHash:
+    NStr    "e633117"
 Global_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
 Global_PTR_STR_BUILD_ID:

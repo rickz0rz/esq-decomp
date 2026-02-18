@@ -41,13 +41,13 @@ DATA_ESQIFF_TAG_DITHER_1EF9:
 DATA_ESQIFF_FMT_PCT_S_DOT_PCT_LD_1EFA:
     NStr    "%s.%ld"
 Global_STR_MAJOR_MINOR_VERSION_1:
-    NStr    "9.0"   ; major/minor version
+    NStr    "10.0"   ; major/minor version
 DATA_ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA_1EFC:
     NStr    "Incorrect Version! Please correct ASAP!"
 DATA_ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD_1EFD:
     NStr    "Your version is    '%s.%ld'"
 Global_STR_MAJOR_MINOR_VERSION_2:
-    NStr    "9.0"   ; major/minor version
+    NStr    "10.0"   ; major/minor version
 DATA_ESQIFF_STR_CORRECT_VERSION_IS_1EFF:
     NStr    "Correct version is '"
 Global_STR_APOSTROPHE:

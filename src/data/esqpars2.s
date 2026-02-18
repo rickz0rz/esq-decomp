@@ -99,7 +99,7 @@ Global_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
     DS.W    1
 Global_LONG_PATCH_VERSION_NUMBER:
-    DC.L    $00000004 ; Patch version number
+    DC.L    0 ; Patch version number
 DATA_ESQPARS2_BSS_WORD_1F2F:
     DS.W    1
 DATA_ESQPARS2_BSS_WORD_1F30:
