@@ -994,10 +994,8 @@ ESQ_MainInitAndRun:
     ; 41 chars + NUL (headroom 38). Under current major/minor width, final
     ; build-id text above 41 chars would drop below a 16-byte safety margin.
     PEA     Global_STR_GitCommitHash                  ; Commit Hash
-    MOVE.L  Global_PTR_STR_BUILD_ID,-(A7)             ; JGT
-    MOVE.L  Global_LONG_BUILD_NUMBER,-(A7)            ; 21
-    MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 4
-    PEA     Global_STR_MAJOR_MINOR_VERSION            ; 9.0
+    MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 0
+    PEA     Global_STR_MAJOR_MINOR_VERSION            ; 10.0
     
     PEA     Global_STR_GUIDE_START_VERSION_AND_BUILD
     PEA     ESQ_StartupVersionBannerBuffer

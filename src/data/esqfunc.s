@@ -25,7 +25,7 @@ Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0:
 
 ; Strings for: ESC -> Version Screen
 Global_STR_BUILD_NUMBER_FORMATTED:
-    NStr    "Build Number: '%ld%s'"
+    NStr    "Commit: '%s'"
 Global_STR_ROM_VERSION_FORMATTED:
     NStr    " ROM Version: '%s'"
 Global_STR_ROM_VERSION_1_3:
