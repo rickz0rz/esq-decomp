@@ -83,8 +83,11 @@ Global_PreallocHandleNode2       = Global_PreallocHandleNode1+Struct_PreallocHan
 Global_PreallocHandleNode2_OpenFlags = Global_PreallocHandleNode2+Struct_PreallocHandleNode__OpenFlags ; -1028
 Global_PreallocHandleNode2_HandleIndex = Global_PreallocHandleNode2+Struct_PreallocHandleNode__HandleIndex ; -1024
 Global_GraphicsLibraryBase_A4    = Global_REF_GRAPHICS_LIBRARY-A4_Base           ; -22440
+<<<<<<< HEAD
 ; Keep canonical literal, but verify provenance at assemble time.
 
+=======
+>>>>>>> a45d874 (Add warning.)
     ; These values should be equal.
     PRINTV 22492
     PRINTV Global_PTR_DATA_ESQFUNC_STR_VIDEO_INSERTION_STOP_1EB5
