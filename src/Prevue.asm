@@ -83,7 +83,13 @@ Global_PreallocHandleNode2       = Global_PreallocHandleNode1+Struct_PreallocHan
 Global_PreallocHandleNode2_OpenFlags = Global_PreallocHandleNode2+Struct_PreallocHandleNode__OpenFlags ; -1028
 Global_PreallocHandleNode2_HandleIndex = Global_PreallocHandleNode2+Struct_PreallocHandleNode__HandleIndex ; -1024
 Global_GraphicsLibraryBase_A4    = Global_REF_GRAPHICS_LIBRARY-A4_Base           ; -22440
+; Keep canonical literal, but verify provenance at assemble time.
+
+    ; These values should be equal.
+    PRINTV 22492
+    PRINTV Global_PTR_DATA_ESQFUNC_STR_VIDEO_INSERTION_STOP_1EB5
 Global_HandleTableBase           = 22492
+
 Global_HandleEntry0_Flags        = Global_HandleTableBase+Struct_HandleEntry__Flags
 Global_HandleEntry0_Ptr          = Global_HandleTableBase+Struct_HandleEntry__Ptr
 Global_HandleEntry1_Flags        = Global_HandleTableBase+Struct_HandleEntry_Size+Struct_HandleEntry__Flags
@@ -106,7 +112,7 @@ Global_ArgvPtr                   = Global_ArgCount+Type_Long_Size               
 Global_ArgvStorage               = Global_ArgvPtr+Type_Long_Size                 ; 22922
 
 ; A4-based globals (WDISP/TEXTDISP/SCRIPT/ESQIFF offsets).
-A4_Base = Global_REF_LONG_FILE_SCRATCH
+A4_Base = Global_REF_LONG_FILE_SCRATCH   ; 32768
 ; BEGIN A4_GLOBALS_AUTOGEN
 Global_DISPTEXT_InsetNibbleSecondary     = DISPTEXT_InsetNibbleSecondary - A4_Base ; suffix $21B2
 Global_CLEANUP_AlignedInsetNibblePrimary = CLEANUP_AlignedInsetNibblePrimary - A4_Base ; suffix $21B3
@@ -215,6 +221,175 @@ Global_TEXTDISP_BannerCharSelected       = TEXTDISP_BannerCharSelected - A4_Base
 Global_TLIBA3_VmArrayPatternTable        = TLIBA3_VmArrayPatternTable - A4_Base ; suffix $2380
 
 ; END A4_GLOBALS_AUTOGEN
+
+; BEGIN A4_DEBUG_ALIASES_AUTOGEN
+; Debugger-friendly duplicate aliases with explicit `_A4` suffix.
+; These mirror existing A4-relative globals for watch/window workflows.
+Global_ScratchPtr_592_A4                     = Global_ScratchPtr_592
+Global_UNKNOWN36_MessagePtr_A4               = Global_UNKNOWN36_MessagePtr
+Global_WBStartupWindowPtr_A4                 = Global_WBStartupWindowPtr
+Global_SavedStackPointer_A4                  = Global_SavedStackPointer
+Global_SavedMsg_A4                           = Global_SavedMsg
+Global_SavedExecBase_A4                      = Global_SavedExecBase
+Global_SavedDirLock_A4                       = Global_SavedDirLock
+Global_SignalCallbackPtr_A4                  = Global_SignalCallbackPtr
+Global_ExitHookPtr_A4                        = Global_ExitHookPtr
+Global_DosIoErr_A4                           = Global_DosIoErr
+Global_CommandLineSize_A4                    = Global_CommandLineSize
+Global_WBStartupCmdBuffer_A4                 = Global_WBStartupCmdBuffer
+Global_UNKNOWN36_RequesterText2_A4           = Global_UNKNOWN36_RequesterText2
+Global_UNKNOWN36_RequesterText1_A4           = Global_UNKNOWN36_RequesterText1
+Global_UNKNOWN36_RequesterOutPtr_A4          = Global_UNKNOWN36_RequesterOutPtr
+Global_UNKNOWN36_RequesterText0_A4           = Global_UNKNOWN36_RequesterText0
+Global_StreamBufferAllocSize_A4              = Global_StreamBufferAllocSize
+Global_CharClassTable_A4                     = Global_CharClassTable
+Global_AllocBlockSize_A4                     = Global_AllocBlockSize
+Global_DefaultHandleFlags_A4                 = Global_DefaultHandleFlags
+Global_PreallocHandleNode0_A4                = Global_PreallocHandleNode0
+Global_HandleTableFlags_A4                   = Global_HandleTableFlags
+Global_AllocBytesTotal_A4                    = Global_AllocBytesTotal
+Global_AllocListHead_A4                      = Global_AllocListHead
+Global_MemListFirstAllocNode_A4              = Global_MemListFirstAllocNode
+Global_HandleTableCount_A4                   = Global_HandleTableCount
+Global_PreallocHandleNode0_OpenFlags_A4      = Global_PreallocHandleNode0_OpenFlags
+Global_PreallocHandleNode0_HandleIndex_A4    = Global_PreallocHandleNode0_HandleIndex
+Global_PreallocHandleNode1_A4                = Global_PreallocHandleNode1
+Global_PreallocHandleNode1_BufferCursor_A4   = Global_PreallocHandleNode1_BufferCursor
+Global_PreallocHandleNode1_WriteRemaining_A4 = Global_PreallocHandleNode1_WriteRemaining
+Global_PreallocHandleNode1_BufferBudget_A4   = Global_PreallocHandleNode1_BufferBudget
+Global_PreallocHandleNode1_OpenFlags_A4      = Global_PreallocHandleNode1_OpenFlags
+Global_PreallocHandleNode1_HandleIndex_A4    = Global_PreallocHandleNode1_HandleIndex
+Global_PreallocHandleNode2_A4                = Global_PreallocHandleNode2
+Global_PreallocHandleNode2_OpenFlags_A4      = Global_PreallocHandleNode2_OpenFlags
+Global_PreallocHandleNode2_HandleIndex_A4    = Global_PreallocHandleNode2_HandleIndex
+Global_HandleTableBase_A4                    = Global_HandleTableBase
+Global_HandleEntry0_Flags_A4                 = Global_HandleEntry0_Flags
+Global_HandleEntry0_Ptr_A4                   = Global_HandleEntry0_Ptr
+Global_HandleEntry1_Flags_A4                 = Global_HandleEntry1_Flags
+Global_HandleEntry1_Ptr_A4                   = Global_HandleEntry1_Ptr
+Global_HandleEntry2_Flags_A4                 = Global_HandleEntry2_Flags
+Global_HandleEntry2_Ptr_A4                   = Global_HandleEntry2_Ptr
+Global_PrintfBufferPtr_A4                    = Global_PrintfBufferPtr
+Global_PrintfByteCount_A4                    = Global_PrintfByteCount
+Global_FormatCallbackBufferPtr_A4            = Global_FormatCallbackBufferPtr
+Global_FormatCallbackByteCount_A4            = Global_FormatCallbackByteCount
+Global_AppErrorCode_A4                       = Global_AppErrorCode
+Global_DosLibrary_A4                         = Global_DosLibrary
+Global_MemListHead_A4                        = Global_MemListHead
+Global_MemListTail_A4                        = Global_MemListTail
+Global_FormatBufferPtr2_A4                   = Global_FormatBufferPtr2
+Global_FormatByteCount2_A4                   = Global_FormatByteCount2
+Global_ConsoleNameBuffer_A4                  = Global_ConsoleNameBuffer
+Global_ArgCount_A4                           = Global_ArgCount
+Global_ArgvPtr_A4                            = Global_ArgvPtr
+Global_ArgvStorage_A4                        = Global_ArgvStorage
+Global_DISPTEXT_InsetNibbleSecondary_A4      = Global_DISPTEXT_InsetNibbleSecondary
+Global_CLEANUP_AlignedInsetNibblePrimary_A4  = Global_CLEANUP_AlignedInsetNibblePrimary
+Global_CLEANUP_AlignedInsetNibbleSecondary_A4 = Global_CLEANUP_AlignedInsetNibbleSecondary
+Global_CTASKS_IffTaskSegListBPTR_A4          = Global_CTASKS_IffTaskSegListBPTR
+Global_CTASKS_IffTaskProcPtr_A4              = Global_CTASKS_IffTaskProcPtr
+Global_CTASKS_CloseTaskSegListBPTR_A4        = Global_CTASKS_CloseTaskSegListBPTR
+Global_CTASKS_CloseTaskProcPtr_A4            = Global_CTASKS_CloseTaskProcPtr
+Global_DISKIO2_InteractiveTransferArmedFlag_A4 = Global_DISKIO2_InteractiveTransferArmedFlag
+Global_DISKIO2_TransferFilenameExtPtr_A4     = Global_DISKIO2_TransferFilenameExtPtr
+Global_DISKIO2_TransferSizeTokenBuffer_A4    = Global_DISKIO2_TransferSizeTokenBuffer
+Global_DISPTEXT_ControlMarkerWidthPx_A4      = Global_DISPTEXT_ControlMarkerWidthPx
+Global_ED_SavedCtasksIntervalByte_A4         = Global_ED_SavedCtasksIntervalByte
+Global_ED_TempCopyOffset_A4                  = Global_ED_TempCopyOffset
+Global_ED_EditBufferScratch_A4               = Global_ED_EditBufferScratch
+Global_ED_EditBufferLive_A4                  = Global_ED_EditBufferLive
+Global_WDISP_BannerWorkRasterPtr_A4          = Global_WDISP_BannerWorkRasterPtr
+Global_TEXTDISP_PrimaryEntryPtrTable_A4      = Global_TEXTDISP_PrimaryEntryPtrTable
+Global_CLOCK_DaySlotIndex_A4                 = Global_CLOCK_DaySlotIndex
+Global_DST_PrimaryCountdown_A4               = Global_DST_PrimaryCountdown
+Global_TEXTDISP_AliasPtrTable_A4             = Global_TEXTDISP_AliasPtrTable
+Global_LADFUNC_LineSlotWriteIndex_A4         = Global_LADFUNC_LineSlotWriteIndex
+Global_LADFUNC_LineControlCodeTable_A4       = Global_LADFUNC_LineControlCodeTable
+Global_NEWGRID_RefreshStateFlag_A4           = Global_NEWGRID_RefreshStateFlag
+Global_LADFUNC_EntryCount_A4                 = Global_LADFUNC_EntryCount
+Global_CLOCK_HalfHourSlotIndex_A4            = Global_CLOCK_HalfHourSlotIndex
+Global_DST_SecondaryCountdown_A4             = Global_DST_SecondaryCountdown
+Global_WDISP_WeatherStatusCountdown_A4       = Global_WDISP_WeatherStatusCountdown
+Global_CTRL_BufferedByteCount_A4             = Global_CTRL_BufferedByteCount
+Global_ESQPARS_SelectionSuffixBuffer_A4      = Global_ESQPARS_SelectionSuffixBuffer
+Global_ESQIFF_StatusPacketReadyFlag_A4       = Global_ESQIFF_StatusPacketReadyFlag
+Global_ESQIFF_RecordBufferPtr_A4             = Global_ESQIFF_RecordBufferPtr
+Global_ESQPARS_SelectionMatchCode_A4         = Global_ESQPARS_SelectionMatchCode
+Global_TEXTDISP_DeferredActionDelayTicks_A4  = Global_TEXTDISP_DeferredActionDelayTicks
+Global_GCOMMAND_HighlightMessageSlotTable_A4 = Global_GCOMMAND_HighlightMessageSlotTable
+Global_ESQDISP_HighlightBitmapTable_A4       = Global_ESQDISP_HighlightBitmapTable
+Global_ESQIFF_PendingExternalBrushNode_A4    = Global_ESQIFF_PendingExternalBrushNode
+Global_ESQIFF_LogoListLineIndex_A4           = Global_ESQIFF_LogoListLineIndex
+Global_ESQIFF_GAdsListLineIndex_A4           = Global_ESQIFF_GAdsListLineIndex
+Global_WDISP_PaletteDepthLog2_A4             = Global_WDISP_PaletteDepthLog2
+Global_ESQIFF_ExternalAssetStateTable_A4     = Global_ESQIFF_ExternalAssetStateTable
+Global_ESQIFF_ExternalAssetPathCommaFlag_A4  = Global_ESQIFF_ExternalAssetPathCommaFlag
+Global_GCOMMAND_NicheTextPen_A4              = Global_GCOMMAND_NicheTextPen
+Global_GCOMMAND_NicheFramePen_A4             = Global_GCOMMAND_NicheFramePen
+Global_GCOMMAND_NicheEditorLayoutPen_A4      = Global_GCOMMAND_NicheEditorLayoutPen
+Global_GCOMMAND_NicheEditorRowPen_A4         = Global_GCOMMAND_NicheEditorRowPen
+Global_GCOMMAND_NicheModeCycleCount_A4       = Global_GCOMMAND_NicheModeCycleCount
+Global_GCOMMAND_NicheForceMode5Flag_A4       = Global_GCOMMAND_NicheForceMode5Flag
+Global_GCOMMAND_NicheWorkflowMode_A4         = Global_GCOMMAND_NicheWorkflowMode
+Global_GCOMMAND_MplexModeCycleCount_A4       = Global_GCOMMAND_MplexModeCycleCount
+Global_GCOMMAND_MplexSearchRowLimit_A4       = Global_GCOMMAND_MplexSearchRowLimit
+Global_GCOMMAND_MplexClockOffsetMinutes_A4   = Global_GCOMMAND_MplexClockOffsetMinutes
+Global_GCOMMAND_MplexMessageTextPen_A4       = Global_GCOMMAND_MplexMessageTextPen
+Global_GCOMMAND_MplexMessageFramePen_A4      = Global_GCOMMAND_MplexMessageFramePen
+Global_GCOMMAND_MplexEditorLayoutPen_A4      = Global_GCOMMAND_MplexEditorLayoutPen
+Global_GCOMMAND_MplexEditorRowPen_A4         = Global_GCOMMAND_MplexEditorRowPen
+Global_GCOMMAND_MplexDetailLayoutPen_A4      = Global_GCOMMAND_MplexDetailLayoutPen
+Global_GCOMMAND_MplexDetailInitialLineIndex_A4 = Global_GCOMMAND_MplexDetailInitialLineIndex
+Global_GCOMMAND_MplexDetailRowPen_A4         = Global_GCOMMAND_MplexDetailRowPen
+Global_GCOMMAND_MplexWorkflowMode_A4         = Global_GCOMMAND_MplexWorkflowMode
+Global_GCOMMAND_MplexDetailLayoutFlag_A4     = Global_GCOMMAND_MplexDetailLayoutFlag
+Global_GCOMMAND_PpvModeCycleCount_A4         = Global_GCOMMAND_PpvModeCycleCount
+Global_GCOMMAND_PpvMessageTextPen_A4         = Global_GCOMMAND_PpvMessageTextPen
+Global_GCOMMAND_PpvMessageFramePen_A4        = Global_GCOMMAND_PpvMessageFramePen
+Global_GCOMMAND_PpvShowtimesWorkflowMode_A4  = Global_GCOMMAND_PpvShowtimesWorkflowMode
+Global_GCOMMAND_PpvDetailLayoutFlag_A4       = Global_GCOMMAND_PpvDetailLayoutFlag
+Global_GCOMMAND_PpvShowtimesRowSpan_A4       = Global_GCOMMAND_PpvShowtimesRowSpan
+Global_GCOMMAND_BannerRowIndexCurrent_A4     = Global_GCOMMAND_BannerRowIndexCurrent
+Global_DISKIO_Drive0WriteProtectedCode_A4    = Global_DISKIO_Drive0WriteProtectedCode
+Global_ED_StateRingTable_A4                  = Global_ED_StateRingTable
+Global_LOCAVAIL_PrimaryFilterState_A4        = Global_LOCAVAIL_PrimaryFilterState
+Global_LOCAVAIL_SecondaryFilterState_A4      = Global_LOCAVAIL_SecondaryFilterState
+Global_NEWGRID_ColumnWidthPx_A4              = Global_NEWGRID_ColumnWidthPx
+Global_NEWGRID_ShowtimeBucketEntryTable_A4   = Global_NEWGRID_ShowtimeBucketEntryTable
+Global_NEWGRID_ShowtimeBucketCount_A4        = Global_NEWGRID_ShowtimeBucketCount
+Global_PARSEINI_WeatherBrushNodePtr_A4       = Global_PARSEINI_WeatherBrushNodePtr
+Global_GCOMMAND_GradientPresetTable_A4       = Global_GCOMMAND_GradientPresetTable
+Global_SCRIPT_CtrlLineAssertedTicks_A4       = Global_SCRIPT_CtrlLineAssertedTicks
+Global_SCRIPT_CtrlCmdCount_A4                = Global_SCRIPT_CtrlCmdCount
+Global_SCRIPT_CtrlCmdChecksumErrorCount_A4   = Global_SCRIPT_CtrlCmdChecksumErrorCount
+Global_SCRIPT_CtrlCmdLengthErrorCount_A4     = Global_SCRIPT_CtrlCmdLengthErrorCount
+Global_SCRIPT_ChannelRangeDigitChar_A4       = Global_SCRIPT_ChannelRangeDigitChar
+Global_SCRIPT_SearchMatchCountOrIndex_A4     = Global_SCRIPT_SearchMatchCountOrIndex
+Global_SCRIPT_BannerTransitionTargetChar_A4  = Global_SCRIPT_BannerTransitionTargetChar
+Global_SCRIPT_BannerTransitionStepDelta_A4   = Global_SCRIPT_BannerTransitionStepDelta
+Global_SCRIPT_BannerTransitionStepSign_A4    = Global_SCRIPT_BannerTransitionStepSign
+Global_SCRIPT_ChannelRangeArmedFlag_A4       = Global_SCRIPT_ChannelRangeArmedFlag
+Global_TEXTDISP_FilterCandidateCursor_A4     = Global_TEXTDISP_FilterCandidateCursor
+Global_TEXTDISP_FilterChannelSlotIndex_A4    = Global_TEXTDISP_FilterChannelSlotIndex
+Global_TEXTDISP_FilterMatchCount_A4          = Global_TEXTDISP_FilterMatchCount
+Global_TEXTDISP_FilterPpvSbeMatchFlag_A4     = Global_TEXTDISP_FilterPpvSbeMatchFlag
+Global_TEXTDISP_FilterSportsMatchFlag_A4     = Global_TEXTDISP_FilterSportsMatchFlag
+Global_TEXTDISP_StatusGroupId_A4             = Global_TEXTDISP_StatusGroupId
+Global_TEXTDISP_SourceConfigEntryTable_A4    = Global_TEXTDISP_SourceConfigEntryTable
+Global_TEXTDISP_SourceConfigEntryCount_A4    = Global_TEXTDISP_SourceConfigEntryCount
+Global_TEXTDISP_PrimaryFirstMatchIndex_A4    = Global_TEXTDISP_PrimaryFirstMatchIndex
+Global_TEXTDISP_SecondaryFirstMatchIndex_A4  = Global_TEXTDISP_SecondaryFirstMatchIndex
+Global_TEXTDISP_EntryTextBaseWidthPx_A4      = Global_TEXTDISP_EntryTextBaseWidthPx
+Global_ESQ_GlobalTickCounter_A4              = Global_ESQ_GlobalTickCounter
+Global_TEXTDISP_CurrentMatchIndex_A4         = Global_TEXTDISP_CurrentMatchIndex
+Global_CLEANUP_AlignedStatusSuffixBuffer_A4  = Global_CLEANUP_AlignedStatusSuffixBuffer
+Global_CLEANUP_AlignedStatusMatchIndex_A4    = Global_CLEANUP_AlignedStatusMatchIndex
+Global_TEXTDISP_CandidateIndexList_A4        = Global_TEXTDISP_CandidateIndexList
+Global_TEXTDISP_BannerCharFallback_A4        = Global_TEXTDISP_BannerCharFallback
+Global_TEXTDISP_BannerCharSelected_A4        = Global_TEXTDISP_BannerCharSelected
+Global_TLIBA3_VmArrayPatternTable_A4         = Global_TLIBA3_VmArrayPatternTable
+; END A4_DEBUG_ALIASES_AUTOGEN
+
 
     include "modules/groups/_main/a/a.s"
     include "modules/groups/_main/a/xjump.s"
