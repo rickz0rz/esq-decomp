@@ -931,7 +931,7 @@ ESQFUNC_DrawEscMenuVersion:
     MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    LEA     32(A7),A7
+    LEA     28(A7),A7
 
     MOVEQ   #1,D0                           ; Set D0 to 1
     CMP.L   Global_LONG_ROM_VERSION_CHECK,D0  ; And compare Global_LONG_ROM_VERSION_CHECK with it.
