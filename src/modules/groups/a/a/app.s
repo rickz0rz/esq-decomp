@@ -8,6 +8,8 @@
     XDEF    GET_BIT_3_OF_CIAB_PRA_INTO_D1
     XDEF    GET_BIT_4_OF_CIAB_PRA_INTO_D1
 
+ESQ_StatusPacket__Bit3CaptureGateChar = 18
+
 ;------------------------------------------------------------------------------
 ; FUNC: ESQ_HandleSerialRbfInterrupt
 ; ARGS:
@@ -378,7 +380,7 @@ GET_BIT_4_OF_CIAB_PRA_INTO_D1:
 ; DESC:
 ;   Updates CTRL sampling state and acknowledges the audio channel 1 interrupt.
 ; NOTES:
-;   Only captures the bit-3 stream when DATA_ESQ_STR_B_1DC8+18 holds 'N'.
+;   Only captures the bit-3 stream when DATA_ESQ_STR_B_1DC8+ESQ_StatusPacket__Bit3CaptureGateChar holds 'N'.
 ;------------------------------------------------------------------------------
 ESQ_PollCtrlInput:
     MOVE.L  A5,-(A7)
@@ -387,7 +389,7 @@ ESQ_PollCtrlInput:
     JSR     ESQ_CaptureCtrlBit4Stream
 
     LEA     DATA_ESQ_STR_B_1DC8,A4
-    MOVE.B  18(A4),D1
+    MOVE.B  ESQ_StatusPacket__Bit3CaptureGateChar(A4),D1 ; A4+18 = status byte gate for CTRL bit-3 capture
     CMPI.B  #"N",D1
     BNE.S   .lab_0040
 

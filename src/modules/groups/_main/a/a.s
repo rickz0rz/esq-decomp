@@ -42,7 +42,7 @@
 
     MOVE.L  A7,Global_SavedStackPointer(A4)        ; Save the current stack pointer from A7
     MOVE.L  A6,Global_SavedExecBase(A4)            ; Save a pointer to AbsExecBase from A6
-    CLR.L   Global_SavedMsg(A4)                    ; Clear the long at -604(A4) (0x3B8C8, a value within LAB_21AA) - CLR.L (A4, -$025c) == $00016ebc
+    CLR.L   Global_SavedMsg(A4)                    ; Clear saved WBStartup message pointer/state slot
     MOVEQ   #0,D0                           ; Old signal, 0x00000000 into D0
     MOVE.L  #$3000,D1                       ; New signal mask: 0x00003000 into D1
     JSR     _LVOSetSignal(A6)
