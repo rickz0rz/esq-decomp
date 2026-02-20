@@ -24,7 +24,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2/A6
 ; CALLS:
-;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, DISPLIB_NormalizeValueByStep, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
+;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible, DISPLIB_NormalizeValueByStep, ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetRast,
 ;   GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth , GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, _LVOSetAPen, GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner, ESQ_SetCopperEffect_OnEnableHighlight,
 ;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange, GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime,
 ;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame, GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort, GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight,
@@ -104,7 +104,7 @@ CLEANUP_RenderAlignedStatusScreen:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     CLOCK_STR_TEMPLATE_CODE_SET_FGN
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

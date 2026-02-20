@@ -474,7 +474,7 @@ GCOMMAND_ParseCommandOptions:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D7
 ; CALLS:
-;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem
+;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem
 ; READS:
 ;   AbsExecBase, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_2, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6A, DATA_GCOMMAND_FMT_PCT_T_1F6C, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, return
 ; WRITES:
@@ -509,7 +509,7 @@ GCOMMAND_LoadMplexTemplate:
     MOVE.L  A0,GCOMMAND_MplexAtTemplatePtr
     PEA     18.W
     MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -694,7 +694,7 @@ GCOMMAND_LoadMplexFile:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadMplexFile, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalMplexDefaults, LADFUNC_ParseHexDigit
+;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadMplexFile, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalMplexDefaults, LADFUNC_ParseHexDigit
 ; READS:
 ;   DATA_GCOMMAND_BSS_WORD_1F6F, DATA_GCOMMAND_FMT_PCT_T_1F70, WDISP_CharClassTable, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
 ; WRITES:
@@ -1185,7 +1185,7 @@ GCOMMAND_ParseCommandString:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-24(A5)
@@ -1310,7 +1310,7 @@ GCOMMAND_ParseCommandString:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem, _LVODeleteFile
+;   GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem, _LVODeleteFile
 ; READS:
 ;   AbsExecBase, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_3, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F71, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F72, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F73, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
@@ -1371,7 +1371,7 @@ GCOMMAND_LoadPPV3Template:
     ADD.L   D6,Global_PTR_WORK_BUFFER
     PEA     18.W
     MOVE.L  Global_PTR_WORK_BUFFER,-(A7)
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1535,7 +1535,7 @@ GCOMMAND_LoadPPVTemplate:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalPpvDefaults, LADFUNC_ParseHexDigit
+;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalPpvDefaults, LADFUNC_ParseHexDigit
 ; READS:
 ;   DATA_GCOMMAND_BSS_LONG_1F77, WDISP_CharClassTable, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
@@ -2071,7 +2071,7 @@ GCOMMAND_ParsePPVCommand:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-24(A5)

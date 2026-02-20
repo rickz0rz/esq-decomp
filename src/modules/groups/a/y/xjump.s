@@ -194,7 +194,7 @@ GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadCiaBBit5Mask
+;   SCRIPT_ReadHandshakeBit5Mask
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -205,7 +205,7 @@ GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
-    JMP     SCRIPT_ReadCiaBBit5Mask
+    JMP     SCRIPT_ReadHandshakeBit5Mask
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer   (Routine at GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer)

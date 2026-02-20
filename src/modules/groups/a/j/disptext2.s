@@ -769,7 +769,7 @@ DATETIME_CopyPairAndRecalc:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AG_JMPTBL_STRING_CopyPadNul, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_MATH_DivS32, DATETIME_IsLeapYear, DATETIME_NormalizeMonthRange, DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
+;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AG_JMPTBL_STRING_CopyPadNul, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_MATH_DivS32, DATETIME_IsLeapYear, DATETIME_NormalizeMonthRange, DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
 ; READS:
 ;   DATA_WDISP_BSS_WORD_223D
 ; WRITES:
@@ -791,7 +791,7 @@ DATETIME_ParseString:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)

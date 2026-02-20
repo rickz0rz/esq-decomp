@@ -1339,7 +1339,7 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   BRUSH_SelectBrushByLabel, GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition, GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, DISKIO_EnsurePc1MountedAndGfxAssigned
+;   BRUSH_SelectBrushByLabel, GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition, GROUP_AI_JMPTBL_STR_FindCharPtr, DISKIO_EnsurePc1MountedAndGfxAssigned
 ; READS:
 ;   Global_JMPTBL_HALF_HOURS_12_HR_FMT, Global_JMPTBL_HALF_HOURS_24_HR_FMT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, LAB_0409, DATA_CTASKS_CONST_BYTE_1BA2, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, DATA_DISKIO_TAG_NRLS_1BE3, DATA_DISKIO_TAG_LRBN_1BE4, DATA_DISKIO_TAG_MSN_1BE5, WDISP_CharClassTable, N
 ; WRITES:
@@ -2097,7 +2097,7 @@ DISKIO_ParseConfigBuffer:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     DATA_DISKIO_TAG_NRLS_1BE3
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2157,7 +2157,7 @@ DISKIO_ParseConfigBuffer:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     PEA     DATA_DISKIO_TAG_LRBN_1BE4
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -2224,7 +2224,7 @@ DISKIO_ParseConfigBuffer:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     PEA     DATA_DISKIO_TAG_MSN_1BE5
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

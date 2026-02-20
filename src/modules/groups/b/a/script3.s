@@ -880,7 +880,7 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadCiaBBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_CommandTextPtr, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, DATA_WDISP_BSS_LONG_2357, DATA_WDISP_BSS_WORD_2365, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
 ; WRITES:
@@ -1347,7 +1347,7 @@ SCRIPT_HandleBrushCommand:
     ; Source is NUL-terminated by caller at packet end (0(A2,D7)=0).
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,SCRIPT_CommandTextPtr
@@ -1794,7 +1794,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_case_fail
 
 .brush_cmd_case_try_cursor_10:
-    JSR     SCRIPT_ReadCiaBBit5Mask(PC)
+    JSR     SCRIPT_ReadHandshakeBit5Mask(PC)
 
     TST.B   D0
     BEQ.S   .brush_cmd_case_fail
@@ -2448,7 +2448,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh, UNKNOWN7_FindCharWrapper, SCRIPT_ReadCiaBBit3Flag
+;   SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh, STR_FindCharPtr, SCRIPT_ReadHandshakeBit3Flag
 ; READS:
 ;   SCRIPT_RuntimeMode, DATA_SCRIPT_BSS_WORD_2118, DATA_SCRIPT_BSS_WORD_2119, ED_DiagVinModeChar, Global_UIBusyFlag
 ; WRITES:
@@ -2457,7 +2457,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ;   Advances a small control state machine and triggers follow-up actions when
 ;   counters hit thresholds.
 ; NOTES:
-;   Uses ED_DiagVinModeChar via UNKNOWN7_FindCharWrapper to probe a control flag string.
+;   Uses ED_DiagVinModeChar via STR_FindCharPtr to probe a control flag string.
 ;------------------------------------------------------------------------------
 SCRIPT_UpdateCtrlStateMachine:
     BSR.W   .refresh_ctrl_state
@@ -2515,13 +2515,14 @@ SCRIPT_UpdateCtrlStateMachine:
     MOVE.B  ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
     PEA     DATA_SCRIPT_STR_YL_2130
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    ; strchr-style membership test against "YL" mode-gate chars.
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BEQ.S   .clear_state
 
-    JSR     SCRIPT_ReadCiaBBit3Flag(PC)
+    JSR     SCRIPT_ReadHandshakeBit3Flag(PC)
 
     TST.B   D0
     BEQ.S   .set_state_one
@@ -2808,7 +2809,7 @@ SCRIPT_SetCtrlContextMode:
 ; CLOBBERS:
 ;   D0/D1/D7/A3
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2829,7 +2830,7 @@ SCRIPT_ResetCtrlContext:
     MOVE.B  D0,439(A3)
     MOVE.L  440(A3),-(A7)
     CLR.L   -(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,440(A3)
@@ -2879,7 +2880,7 @@ SCRIPT_ResetCtrlContext:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D1/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, DATA_WDISP_BSS_BYTE_2372, DATA_WDISP_BSS_BYTE_2376
 ; WRITES:
@@ -2898,7 +2899,7 @@ SCRIPT_LoadCtrlContextSnapshot:
     MOVE.B  439(A3),DATA_SCRIPT_BSS_WORD_2128
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  440(A3),-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,SCRIPT_CommandTextPtr
@@ -2983,7 +2984,7 @@ SCRIPT_LoadCtrlContextSnapshot:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365, DATA_WDISP_BSS_BYTE_2372, DATA_WDISP_BSS_BYTE_2376
 ; WRITES:
@@ -3001,7 +3002,7 @@ SCRIPT_SaveCtrlContextSnapshot:
     MOVE.B  DATA_SCRIPT_BSS_WORD_2128,439(A3)
     MOVE.L  440(A3),-(A7)
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,440(A3)

@@ -254,7 +254,7 @@ TEXTDISP_FindControlToken:
 ; CLOBBERS:
 ;   D0/D7/A0-A3
 ; CALLS:
-;   UNKNOWN7_FindCharWrapper
+;   STR_FindCharPtr
 ; READS:
 ;   WDISP_CharClassTable
 ; WRITES:
@@ -275,7 +275,7 @@ TEXTDISP_FindQuotedSpan:
     CLR.L   (A0)
     PEA     34.W
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -286,7 +286,7 @@ TEXTDISP_FindQuotedSpan:
     ADDQ.L  #1,A0
     PEA     34.W
     MOVE.L  A0,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)

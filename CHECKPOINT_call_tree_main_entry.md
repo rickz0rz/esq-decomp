@@ -273,7 +273,7 @@ ESQ_MainInitAndRun
   -> main idle loop
        -> ESQFUNC_ServiceUiTickIfRunning
        -> ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange
-       -> ESQPARS_ProcessSerialCommandByte (gated)
+       -> ESQPARS_ConsumeRbfByteAndDispatchCommand (gated)
   -> GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem
        -> CLEANUP_ShutdownSystem
 ```
@@ -326,12 +326,12 @@ ESQ_MainInitAndRun
        -> ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange
             -> PARSEINI_MonitorClockChange
                  -> SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh (state-change toggles)
-       -> (if clock changed and exit flag clear) ESQPARS_ProcessSerialCommandByte
+       -> (if clock changed and exit flag clear) ESQPARS_ConsumeRbfByteAndDispatchCommand
             -> ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
             -> preamble state machine ('U', 0xAA sync -> command-armed)
             -> command dispatch table (selected families):
                  -> '!'  : title/slot update path
-                      -> ESQIFF2_ReadSerialBytesWithXor / ESQIFF2_ReadSerialBytesToBuffer
+                      -> ESQIFF2_ReadRbfBytesWithXor / ESQIFF2_ReadRbfBytesToBuffer
                       -> ESQDISP_GetEntryPointerByMode / ESQDISP_GetEntryAuxPointerByMode
                       -> ESQPARS_ReplaceOwnedString
                  -> 'P'/'p': compact/sparse listing payload decode
@@ -450,15 +450,15 @@ SCRIPT_HandleBrushCommand
   -> (if cursor active) TEXTDISP_HandleScriptCommand
 ```
 
-#### Phase 8D Expanded (`ESQPARS_ProcessSerialCommandByte` dispatch matrix)
+#### Phase 8D Expanded (`ESQPARS_ConsumeRbfByteAndDispatchCommand` dispatch matrix)
 
 ```text
-ESQPARS_ProcessSerialCommandByte
+ESQPARS_ConsumeRbfByteAndDispatchCommand
   -> preamble sync:
        -> 0x55 arm stage-1, 0xAA promotes to command-armed
   -> command dispatch (armed + select-code gate):
        -> '!'  title-slot update stream
-            -> ESQIFF2_ReadSerialBytesWithXor / ReadSerialBytesToBuffer
+            -> ESQIFF2_ReadRbfBytesWithXor / ReadSerialBytesToBuffer
             -> ESQDISP_GetEntryPointerByMode / GetEntryAuxPointerByMode
             -> ESQPARS_ReplaceOwnedString
        -> 'P'  compact-entry record
@@ -558,7 +558,7 @@ CLEANUP_ProcessAlerts
        -> ESQ_TickClockAndFlagEvents(&CLOCK_DaySlotIndex)      ; returns D7 event
        -> ESQ_TickClockAndFlagEvents(&CLOCK_CurrentDayOfWeekIndex)
   -> control-line/banner queue maintenance:
-       -> SCRIPT_ClearCtrlLineIfEnabled / SCRIPT_UpdateCtrlLineTimeout
+       -> SCRIPT_ClearCtrlLineIfEnabled / SCRIPT_PollHandshakeAndApplyTimeout
        -> DST_UpdateBannerQueue + ESQDISP_DrawStatusBanner
   -> brush alert overlays:
        -> BRUSH_PendingAlertCode 1/2/3 -> attention overlays 3/4/5
@@ -619,7 +619,7 @@ TEXTDISP_FilterAndSelectEntry
 #### Phase 8I Expanded (serial command family leaf handlers)
 
 ```text
-ESQPARS_ProcessSerialCommandByte
+ESQPARS_ConsumeRbfByteAndDispatchCommand
   -> 'C' family leaves:
        -> ESQIFF2_ParseGroupRecordAndRefresh
             -> ESQIFF2_ValidateFieldIndexAndLength
@@ -654,7 +654,7 @@ ESQPARS_ProcessSerialCommandByte
             -> defaults loaders (FLIB2_*), numeric option parsing, template pointer updates
   -> shared serial read helpers:
        -> ESQIFF2_ReadSerialRecordIntoBuffer
-       -> ESQIFF2_ReadSerialBytesWithXor
+       -> ESQIFF2_ReadRbfBytesWithXor
 ```
 
 #### Phase 8J Expanded (`GCOMMAND_Parse*` option parser leaf maps)
@@ -838,7 +838,7 @@ SCRIPT_HandleBrushCommand
        -> `'8'` when filter-mode already active: disable filter mode
        -> otherwise runtime gate:
             -> normalized ED_DiagVinModeChar + command digit checks (`Y0`, `L2`, `Y1`, `L3`)
-            -> requires SCRIPT_ReadCiaBBit5Mask pass to set cursor=10
+            -> requires SCRIPT_ReadHandshakeBit5Mask pass to set cursor=10
             -> failing gates sets D6=0
 ```
 
@@ -1052,7 +1052,7 @@ SCRIPT_DispatchPlaybackCursorCommand (cursor 1..15)
 SCRIPT_UpdateCtrlStateMachine
   -> refresh substate (`.refresh_ctrl_state`):
        -> checks ED_DiagVinModeChar membership in "YL"
-       -> if matched, probes SCRIPT_ReadCiaBBit3Flag:
+       -> if matched, probes SCRIPT_ReadHandshakeBit3Flag:
             -> set DATA_SCRIPT_BSS_WORD_2118 = 1 or 2
        -> else clear DATA_SCRIPT_BSS_WORD_2118
   -> runtime-mode handling:
@@ -1069,20 +1069,20 @@ SCRIPT_UpdateCtrlStateMachine
        -> clear DATA_SCRIPT_BSS_WORD_2119
 ```
 
-#### Phase 8X Expanded (`ESQPARS_ProcessSerialCommandByte` preamble + command families)
+#### Phase 8X Expanded (`ESQPARS_ConsumeRbfByteAndDispatchCommand` preamble + command families)
 
 ```text
-ESQPARS_ProcessSerialCommandByte
+ESQPARS_ConsumeRbfByteAndDispatchCommand
   -> byte ingest:
-       -> SCRIPT_ReadSerialRbfByte -> current byte cached at -5(A5)
+       -> SCRIPT_ReadNextRbfByte -> current byte cached at -5(A5)
   -> preamble sync state:
        -> expects `0x55` then `0xAA` to arm command dispatch
        -> any mismatch resets ESQPARS_Preamble55SeenFlag / ESQPARS_CommandPreambleArmedFlag
   -> first-stage armed gate (when CommandPreambleArmedFlag==1 and no active code):
        -> `'A'`: read record + xor verify + ESQSHARED_MatchSelectionCodeWithOptionalSuffix
             -> may arm reset/status flags and increment parse attempts
-       -> `'W'`: UNKNOWN_VerifyChecksumAndParseRecord
-       -> `'w'`: UNKNOWN_VerifyChecksumAndParseList
+       -> `'W'`: ESQPROTO_VerifyChecksumAndParseRecord
+       -> `'w'`: ESQPROTO_VerifyChecksumAndParseList
        -> clears preamble flags after handling
   -> DATA command table (requires armed + DATA_WDISP_BSS_WORD_22A0==1):
        -> `'!'`: title-slot replacement flow (group/key lookup + per-slot ESQPARS_ReplaceOwnedString)
@@ -1090,9 +1090,9 @@ ESQPARS_ProcessSerialCommandByte
        -> `'='`/`'H'`/`'h'`: DATA binary path
        -> `'C'`: ESQIFF2_ParseGroupRecordAndRefresh
        -> `'D'`: diagnostics command family
-       -> `'E'` / `'i'`: copy-label flows (`UNKNOWN_CopyLabelToGlobal`)
+       -> `'E'` / `'i'`: copy-label flows (`ESQPROTO_CopyLabelToGlobal`)
        -> `'F'`: ESQIFF2_ApplyIncomingStatusPacket
-       -> `'I'`: UNKNOWN_ParseDigitLabelAndDisplay
+       -> `'I'`: ESQPROTO_ParseDigitLabelAndDisplay
        -> `'K'`: clock/rtc flow (ESQPARS_ApplyRtcBytesAndPersist family)
        -> `'L'`/`'t'`: LADFUNC_ParseBannerEntryData
        -> `'M'`: ack fast-path
@@ -1123,7 +1123,7 @@ ESQPARS_ProcessSerialCommandByte
 #### Phase 8Y Expanded (`ESQPARS` `'!'` title-slot replacement flow)
 
 ```text
-ESQPARS_ProcessSerialCommandByte :: cmd '!'
+ESQPARS_ConsumeRbfByteAndDispatchCommand :: cmd '!'
   -> framing:
        -> increments parse-attempt counter
        -> initializes running XOR seed (0xDE) and reads:
@@ -1159,7 +1159,7 @@ ESQPARS_ProcessSerialCommandByte :: cmd '!'
 #### Phase 8Z Expanded (`ESQPARS` `'p'` bitmap row payload update flow)
 
 ```text
-ESQPARS_ProcessSerialCommandByte :: cmd 'p'
+ESQPARS_ConsumeRbfByteAndDispatchCommand :: cmd 'p'
   -> setup:
        -> parse-attempt counter++
        -> initialize XOR seed 0x8F
@@ -1195,7 +1195,7 @@ ESQPARS_ProcessSerialCommandByte :: cmd 'p'
 #### Phase 8AA Expanded (`ESQPARS` checksum/length-gated handler templates)
 
 ```text
-ESQPARS_ProcessSerialCommandByte
+ESQPARS_ConsumeRbfByteAndDispatchCommand
   -> shared pattern A (record handlers):
        -> ESQIFF2_ReadSerialRecordIntoBuffer(...)
        -> ESQ_GenerateXorChecksumByte(cmdByte, buffer, len)
@@ -1205,15 +1205,15 @@ ESQPARS_ProcessSerialCommandByte
        -> clear ESQPARS_ResetArmedFlag
   -> pattern A examples:
        -> `'j'` -> ESQIFF2_ParseLineHeadTailRecord, len <= 0x1F4
-       -> `'i'` -> UNKNOWN_ParseDigitLabelAndDisplay, len <= 39
-       -> `'i'` lower -> UNKNOWN_CopyLabelToGlobal, len <= 39
+       -> `'i'` -> ESQPROTO_ParseDigitLabelAndDisplay, len <= 39
+       -> `'i'` lower -> ESQPROTO_CopyLabelToGlobal, len <= 39
        -> `'V'` -> ESQIFF2_ShowVersionMismatchOverlay, len <= 0x8B
        -> `'x'` -> PARSEINI_HandleFontCommand, len <= 80
        -> `'L'/'t'` -> LADFUNC_ParseBannerEntryData, len <= 0x130
        -> `'c'` -> ESQDISP_ParseProgramInfoCommandRecord, len > 0 and checksum-valid
   -> shared pattern B (fixed-byte packet + trailer checksum):
-       -> read fixed payload bytes with ESQIFF2_ReadSerialBytesToBuffer
-       -> read checksum byte via SCRIPT_ReadSerialRbfByte
+       -> read fixed payload bytes with ESQIFF2_ReadRbfBytesToBuffer
+       -> read checksum byte via SCRIPT_ReadNextRbfByte
        -> xor compare; mismatch => DATACErrs++
        -> typed validation and apply
   -> pattern B examples:
@@ -1259,7 +1259,7 @@ ESQPARS_PersistStateDataAfterCommand
 #### Phase 8AC Expanded (`ESQPARS` `'g'` multiplexed subtype dispatcher)
 
 ```text
-ESQPARS_ProcessSerialCommandByte :: cmd 'g'
+ESQPARS_ConsumeRbfByteAndDispatchCommand :: cmd 'g'
   -> pre-step:
        -> read subtype byte D6 with wait-for-clock pacing
        -> fold subtype into rolling checksum seed (-6(A5))
@@ -1294,7 +1294,7 @@ ESQPARS_ProcessSerialCommandByte :: cmd 'g'
 #### Phase 8AD Expanded (`ESQPARS` reset + box-off control paths)
 
 ```text
-ESQPARS_ProcessSerialCommandByte :: cmd 0xBB (box-off)
+ESQPARS_ConsumeRbfByteAndDispatchCommand :: cmd 0xBB (box-off)
   -> reads control bytes with UI pacing and verifies complements:
        -> first byte must equal `~'D'` (0xBB)
        -> checksum byte must equal `0xFF`
@@ -1306,7 +1306,7 @@ ESQPARS_ProcessSerialCommandByte :: cmd 0xBB (box-off)
        -> ESQDISP_UpdateStatusMaskAndRefresh(2,0)
        -> clear ESQPARS_ResetArmedFlag + preamble flags
 
-ESQPARS_ProcessSerialCommandByte :: cmd 'R'
+ESQPARS_ConsumeRbfByteAndDispatchCommand :: cmd 'R'
   -> verifies checksum byte equals `~'R'`
   -> requires ESQPARS_ResetArmedFlag == 1
   -> on pass:
@@ -1769,14 +1769,14 @@ ESQIFF2_PadEntriesToMaxTitleWidth(groupCode)
 #### Phase 8AW Expanded (`ESQIFF2` serial record byte readers)
 
 ```text
-ESQIFF2_ReadSerialBytesToBuffer(dst, count)
+ESQIFF2_ReadRbfBytesToBuffer(dst, count)
   -> repeats `count` times:
        -> wait/service UI tick
        -> read one serial RBF byte
        -> store to `*dst++`
   -> returns end pointer
 
-ESQIFF2_ReadSerialBytesWithXor(dst, count, checksumPtr)
+ESQIFF2_ReadRbfBytesWithXor(dst, count, checksumPtr)
   -> repeats `count` times:
        -> wait/service UI tick
        -> read one serial byte
@@ -2278,8 +2278,8 @@ Coverage markers:
 [done] ESQIFF2_ParseGroupRecordAndRefresh                       (Phase 8AU)
 [done] ESQIFF2_ValidateFieldIndexAndLength                      (Phase 8AV)
 [done] ESQIFF2_PadEntriesToMaxTitleWidth                        (Phase 8AV)
-[done] ESQIFF2_ReadSerialBytesToBuffer                          (Phase 8AW)
-[done] ESQIFF2_ReadSerialBytesWithXor                           (Phase 8AW)
+[done] ESQIFF2_ReadRbfBytesToBuffer                          (Phase 8AW)
+[done] ESQIFF2_ReadRbfBytesWithXor                           (Phase 8AW)
 [done] ESQIFF2_ReadSerialRecordIntoBuffer                       (Phase 8AW)
 [done] ESQIFF2_ReadSerialSizedTextRecord                        (Phase 8AX)
 [done] ESQIFF_QueueIffBrushLoad                                 (Phase 8AY)
@@ -2348,7 +2348,7 @@ Coverage markers:
   - `ESQFUNC_ServiceUiTickIfRunning`
   - `ESQFUNC_ProcessUiFrameTick`
   - `PARSEINI_MonitorClockChange`
-  - `ESQPARS_ProcessSerialCommandByte`
+  - `ESQPARS_ConsumeRbfByteAndDispatchCommand`
   - `SCRIPT_HandleSerialCtrlCmd`
   - `SCRIPT_HandleBrushCommand`
   - `SCRIPT_DispatchPlaybackCursorCommand`
@@ -2366,7 +2366,7 @@ Coverage markers:
   - `ESQIFF2_ParseGroupRecordAndRefresh`
   - `SCRIPT_HandleBrushCommand`
 - Medium:
-  - command-family grouping labels under `ESQPARS_ProcessSerialCommandByte`
+  - command-family grouping labels under `ESQPARS_ConsumeRbfByteAndDispatchCommand`
     - family behavior is clear, but full byte-to-handler semantics still need per-command validation.
 
 ## Naming/Documentation Confidence Pass

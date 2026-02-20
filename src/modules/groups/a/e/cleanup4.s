@@ -628,7 +628,7 @@ CLEANUP_DrawInsetRectFrame:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
+;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   CLOCK_STR_TOKEN_PAIR_DEFAULTS, DATA_CLOCK_BSS_WORD_1B66, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, WDISP_CharClassTable
 ; WRITES:
@@ -653,7 +653,7 @@ CLEANUP_FormatEntryStringTokens:
 
     PEA     58.W
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-26(A5)
@@ -743,7 +743,7 @@ CLEANUP_FormatEntryStringTokens:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     CLOCK_STR_BOOL_CHARS_YyNn
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

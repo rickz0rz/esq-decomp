@@ -32,7 +32,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, UNKNOWN7_FindCharWrapper, _LVOMove, _LVOText
+;   MEMORY_AllocateMemory, MEMORY_DeallocateMemory, SCRIPT_DrawInsetTextWithFrame, STR_FindCharPtr, _LVOMove, _LVOText
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_1, Global_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
 ; WRITES:
@@ -92,7 +92,7 @@ TLIBA1_DrawTextWithInsetSegments:
     PEA     19.W
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-12(A5)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -110,7 +110,7 @@ TLIBA1_DrawTextWithInsetSegments:
     PEA     20.W
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -164,7 +164,7 @@ TLIBA1_DrawTextWithInsetSegments:
     LEA     16(A7),A7
     PEA     19.W
     MOVE.L  -12(A5),-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -276,7 +276,7 @@ TLIBA1_ParseStyleCodeChar:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
 ;   TLIBA1_DrawTextWithInsetSegments, TLIBA1_ParseStyleCodeChar, MEM_Move,
-;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, UNKNOWN7_FindCharWrapper,
+;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, STR_FindCharPtr,
 ;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, DATA_CLOCK_CONST_WORD_1B5D, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_BYTE_21B4, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
@@ -303,7 +303,7 @@ TLIBA1_DrawInlineStyledText:
 
     PEA     19.W
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -311,7 +311,7 @@ TLIBA1_DrawInlineStyledText:
 
     PEA     20.W
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -336,7 +336,7 @@ TLIBA1_DrawInlineStyledText:
 .if_eq_1772:
     PEA     30.W
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -498,7 +498,7 @@ TLIBA1_DrawInlineStyledText:
 .skip_177E:
     PEA     30.W
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -533,7 +533,7 @@ TLIBA1_DrawInlineStyledText:
 .if_eq_1780:
     PEA     23.W
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)

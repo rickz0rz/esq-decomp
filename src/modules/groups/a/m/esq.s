@@ -552,6 +552,10 @@ ESQ_MainInitAndRun:
     BRA.S   .scan_cart_args_loop
 
 .select_baud_rate:
+    ; Serial device speed gate for the standard ingest path.
+    ; Accepted runtime values here are 2400/4800/9600; other values clamp to 2400.
+    ; The downstream parser/record handlers are shared regardless of which accepted
+    ; baud is selected (see ESQPARS_ConsumeRbfByteAndDispatchCommand and ESQIFF2_ReadRbfBytes*).
     MOVEQ   #2,D0
     CMP.L   D0,D7
 
@@ -579,6 +583,9 @@ ESQ_MainInitAndRun:
     MOVE.L  #2400,Global_REF_BAUD_RATE
 
 .after_baud_rate:
+    ; Startup then opens serial.device and enables RBF/AUD1 interrupt service.
+    ; Custom protocol experiments that still want the normal 2400 command/data
+    ; decode path should continue feeding bytes into this same serial/RBF chain.
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)     ; flags
     PEA     9000.W                              ; 9000 bytes
     PEA     854.W                               ; line number?
@@ -1282,7 +1289,7 @@ ESQ_MainInitAndRun:
     TST.W   DATA_ESQ_BSS_WORD_1DE4
     BNE.S   .check_exit_condition
 
-    JSR     ESQPARS_ProcessSerialCommandByte(PC)
+    JSR     ESQPARS_ConsumeRbfByteAndDispatchCommand(PC)
 
 .check_exit_condition:
     TST.W   DATA_ESQ_BSS_WORD_1DE4

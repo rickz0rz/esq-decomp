@@ -828,7 +828,7 @@ LADFUNC_ParseHexDigit:
 ; CALLS:
 ;   LADFUNC_ParseHexDigit, LADFUNC_ComposePackedPenByte, LADFUNC_SetPackedPenHighNibble, LADFUNC_SetPackedPenLowNibble, ESQIFF2_ValidateAsciiNumericByte, ESQPARS_ReplaceOwnedString,
 ;   NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
-;   GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, LADFUNC_UpdateHighlightState
+;   GROUP_AS_JMPTBL_STR_FindCharPtr, LADFUNC_UpdateHighlightState
 ; READS:
 ;   ED_DiagTextModeChar, DATA_LADFUNC_TAG_RS_1FBF, DATA_LADFUNC_TAG_RS_1FC0, LADFUNC_EntryPtrTable, DATA_WDISP_BSS_WORD_2293, DATA_WDISP_BSS_WORD_2299
 ; WRITES:
@@ -875,7 +875,7 @@ LADFUNC_ParseBannerEntryData:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     DATA_LADFUNC_TAG_RS_1FBF
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -902,7 +902,7 @@ LADFUNC_ParseBannerEntryData:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     DATA_LADFUNC_TAG_RS_1FC0
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

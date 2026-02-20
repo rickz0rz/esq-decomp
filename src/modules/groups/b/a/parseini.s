@@ -34,7 +34,7 @@
     XDEF    PARSEINI_JMPTBL_STRING_CompareNoCaseN
     XDEF    PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
     XDEF    PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper
-    XDEF    PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper
+    XDEF    PARSEINI_JMPTBL_STR_FindCharPtr
     XDEF    PARSEINI_JMPTBL_WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer, PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette, PARSEINI_JMPTBL_STRING_CompareNoCase, TEXTDISP_ClearSourceConfig, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString,
+;   PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette, PARSEINI_JMPTBL_STRING_CompareNoCase, TEXTDISP_ClearSourceConfig, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString,
 ;   PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad, PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey, PARSEINI_ProcessWeatherBlocks/PARSEINI_LoadWeatherStrings/PARSEINI_LoadWeatherMessageStrings/PARSEINI_ParseColorTable helpers
 ; READS:
 ;   Global_PTR_WORK_BUFFER, WDISP_CharClassTable (char class table), many LAB_205* globals, PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
@@ -109,7 +109,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     LEA     1(A0),A1
     PEA     93.W
     MOVE.L  A1,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-28(A5)
@@ -282,7 +282,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section1_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -380,7 +380,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.L  D0,(A2)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     LEA     28(A7),A7
     MOVE.L  D0,-40(A5)
@@ -397,7 +397,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     MOVE.L  A0,-32(A5)
     PEA     34.W
     MOVE.L  -32(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-40(A5)
@@ -430,7 +430,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section2_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -517,7 +517,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section4_5_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -599,7 +599,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section6_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -678,7 +678,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section7_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -757,7 +757,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section8_parse_line:
     PEA     61.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-32(A5)
@@ -914,7 +914,7 @@ PARSEINI_ParseHexValueFromString:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper, PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   PARSEINI_CurrentRangeTableIndex, DATA_PARSEINI_SPACE_VALUE_206E, DATA_PARSEINI_STR_VALUE_206F, DATA_PARSEINI_TAG_TABLE_2070, DATA_PARSEINI_TAG_DONE_2071, DATA_PARSEINI_TAG_COLOR_2072, handle_range_assign, return
 ; WRITES:
@@ -935,7 +935,7 @@ PARSEINI_ParseRangeKeyValue:
 
     PEA     61.W
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
@@ -2753,7 +2753,7 @@ PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
     JMP     DISKIO2_ParseIniFileFromDisk
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
+; FUNC: PARSEINI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2761,14 +2761,14 @@ PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_FindCharWrapper
+;   STR_FindCharPtr
 ; DESC:
-;   Jump stub to UNKNOWN7_FindCharWrapper.
+;   Jump stub to STR_FindCharPtr.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper:
-    JMP     UNKNOWN7_FindCharWrapper
+PARSEINI_JMPTBL_STR_FindCharPtr:
+    JMP     STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)

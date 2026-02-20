@@ -3098,7 +3098,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper
+;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper
 ; READS:
 ;   7(A0,D7), 27(A2)
 ; WRITES:
@@ -3157,7 +3157,7 @@ DISKIO2_CopyAndSanitizeSlotString:
 
     PEA     34.W
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -3166,7 +3166,7 @@ DISKIO2_CopyAndSanitizeSlotString:
     ADDQ.L  #1,-4(A5)
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)

@@ -1883,7 +1883,7 @@ ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadCiaBBit3Flag
+;   SCRIPT_ReadHandshakeBit3Flag
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1894,7 +1894,7 @@ ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag:
-    JMP     SCRIPT_ReadCiaBBit3Flag
+    JMP     SCRIPT_ReadHandshakeBit3Flag
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines   (Jump-table forwarder)
@@ -2170,7 +2170,7 @@ ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadCiaBBit5Mask
+;   SCRIPT_ReadHandshakeBit5Mask
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -2181,7 +2181,7 @@ ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
-    JMP     SCRIPT_ReadCiaBBit5Mask
+    JMP     SCRIPT_ReadHandshakeBit5Mask
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData   (Jump-table forwarder)

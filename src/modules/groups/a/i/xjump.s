@@ -3,7 +3,7 @@
     XDEF    GROUP_AI_JMPTBL_STRING_AppendAtNull
     XDEF    GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
     XDEF    GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter
-    XDEF    GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper
+    XDEF    GROUP_AI_JMPTBL_STR_FindCharPtr
     XDEF    GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3
 
 ;!======
@@ -30,7 +30,7 @@ GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
     JMP     NEWGRID_SetSelectionMarkers
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
+; FUNC: GROUP_AI_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -38,18 +38,18 @@ GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_FindCharWrapper
+;   STR_FindCharPtr
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to UNKNOWN7_FindCharWrapper.
+;   Jump stub to STR_FindCharPtr.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper:
-    JMP     UNKNOWN7_FindCharWrapper
+GROUP_AI_JMPTBL_STR_FindCharPtr:
+    JMP     STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments   (JumpStub)

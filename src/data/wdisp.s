@@ -1128,7 +1128,7 @@ DATA_WDISP_BSS_WORD_2244:
 ; SYM: WDISP_WeatherStatusLabelBuffer   (weather/status label buffer)
 ; TYPE: char[13]
 ; PURPOSE: Stores a short label used for wildcard match tests and serialized status text.
-; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, UNKNOWN_ParseDigitLabelAndDisplay, DISKIO2_*
+; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, ESQPROTO_ParseDigitLabelAndDisplay, DISKIO2_*
 ; NOTES: Backed by `DS.L 2` + `DS.W 1` + `DS.B 1`; copied as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
 WDISP_WeatherStatusLabelBuffer:
@@ -1140,7 +1140,7 @@ DATA_WDISP_BSS_LONG_2245:
 ; SYM: WDISP_StatusListMatchPattern   (status list wildcard pattern buffer)
 ; TYPE: char[11]
 ; PURPOSE: Stores a short wildcard/match pattern for status-list record parsing.
-; USED BY: UNKNOWN_ParseListAndUpdateEntries, UNKNOWN_CopyLabelToGlobal
+; USED BY: UNKNOWN_ParseListAndUpdateEntries, ESQPROTO_CopyLabelToGlobal
 ; NOTES: Backed by `DS.B 1` + `DS.L 2` + `DS.W 1`; written as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
 WDISP_StatusListMatchPattern:
@@ -1581,7 +1581,7 @@ DATA_WDISP_BSS_WORD_2284:
 ; SYM: ESQIFF_ParseAttemptCount   (record parse attempt counter)
 ; TYPE: u16
 ; PURPOSE: Counts checksum/parse attempts on incoming ESQIFF records.
-; USED BY: UNKNOWN_VerifyChecksumAndParseRecord, UNKNOWN_VerifyChecksumAndParseList
+; USED BY: ESQPROTO_VerifyChecksumAndParseRecord, ESQPROTO_VerifyChecksumAndParseList
 ; NOTES: Incremented before checksum verification.
 ;------------------------------------------------------------------------------
 ESQIFF_ParseAttemptCount:
@@ -1674,7 +1674,7 @@ DATA_WDISP_BSS_BYTE_229B:
 ; SYM: WDISP_WeatherStatusBrushIndex/WDISP_WeatherStatusDigitChar   (weather status style fields)
 ; TYPE: u8/u16
 ; PURPOSE: Brush/style selector plus leading digit character used by weather-status banner rendering.
-; USED BY: UNKNOWN_ParseDigitLabelAndDisplay, WDISP weather drawing routines, ED2 setup paths
+; USED BY: ESQPROTO_ParseDigitLabelAndDisplay, WDISP weather drawing routines, ED2 setup paths
 ; NOTES: Digit char is clamped to ASCII `'0'..'9'`; `'0'` is treated as a suppress/idle value in some paths.
 ;------------------------------------------------------------------------------
 WDISP_WeatherStatusBrushIndex:
@@ -1685,7 +1685,7 @@ WDISP_WeatherStatusDigitChar:
 ; SYM: ESQPARS_Preamble55SeenFlag/ESQPARS_CommandPreambleArmedFlag   (serial preamble parser flags)
 ; TYPE: u16/u16
 ; PURPOSE: Tracks 0x55/0xAA preamble recognition before command payload dispatch.
-; USED BY: ESQPARS serial command parser state machine (ESQPARS_ProcessSerialCommandByte)
+; USED BY: ESQPARS serial command parser state machine (ESQPARS_ConsumeRbfByteAndDispatchCommand)
 ; NOTES: Cleared on parse errors and after command handling.
 ;------------------------------------------------------------------------------
 ESQPARS_Preamble55SeenFlag:
@@ -2490,7 +2490,7 @@ CTRL_BUFFER:
 ; SYM: SCRIPT_SerialShadowWord/SCRIPT_SerialInputLatch   (serial control shadow)
 ; TYPE: u16/u16
 ; PURPOSE: Shadow copy of serial control word plus most recent latched input bits.
-; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, SCRIPT_WriteSerialDataWord
+; USED BY: SCRIPT_AssertCtrlLine*, SCRIPT_DeassertCtrlLine*, SCRIPT_WriteCtrlShadowToSerdat
 ; NOTES: CTRL-line assert/deassert toggles bit 5 in SCRIPT_SerialShadowWord before writing SERDAT.
 ;------------------------------------------------------------------------------
 SCRIPT_SerialShadowWord:
@@ -2501,7 +2501,7 @@ SCRIPT_SerialInputLatch:
 ; SYM: SCRIPT_CtrlLineAssertedTicks   (ctrl-line asserted tick counter)
 ; TYPE: s16 (stored in long slot)
 ; PURPOSE: Counts ticks while the CTRL line remains asserted.
-; USED BY: SCRIPT_UpdateCtrlLineTimeout
+; USED BY: SCRIPT_PollHandshakeAndApplyTimeout
 ; NOTES: Reset to 0 after reaching the timeout threshold.
 ;------------------------------------------------------------------------------
 SCRIPT_CtrlLineAssertedTicks:

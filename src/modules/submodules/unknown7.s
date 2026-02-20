@@ -1,8 +1,8 @@
     XDEF    UNKNOWN7_CopyUntilDelimiter
     XDEF    UNKNOWN7_FindAnyChar
     XDEF    UNKNOWN7_FindAnyCharWrapper
-    XDEF    UNKNOWN7_FindChar
-    XDEF    UNKNOWN7_FindCharWrapper
+    XDEF    STR_FindChar
+    XDEF    STR_FindCharPtr
     XDEF    UNKNOWN7_SkipCharClass3
 
 ;!======
@@ -82,7 +82,7 @@ UNKNOWN7_CopyUntilDelimiter:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN7_FindChar   (Find first occurrence of byte)
+; FUNC: STR_FindChar   (Find first occurrence of byte)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: D7 = byte to find
@@ -101,7 +101,7 @@ UNKNOWN7_CopyUntilDelimiter:
 ; NOTES:
 ;   Returns 0 if NUL terminator is reached with no match.
 ;------------------------------------------------------------------------------
-UNKNOWN7_FindChar:
+STR_FindChar:
     MOVEM.L D7/A3,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -129,7 +129,7 @@ UNKNOWN7_FindChar:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN7_FindCharWrapper   (Wrapper around UNKNOWN7_FindChar)
+; FUNC: STR_FindCharPtr   (Wrapper around STR_FindChar)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: D7 = byte to find
@@ -138,31 +138,36 @@ UNKNOWN7_FindChar:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   UNKNOWN7_FindChar (UNKNOWN7_FindChar)
+;   STR_FindChar (STR_FindChar)
 ; READS:
 ;   A3
 ; WRITES:
 ;   none
 ; DESC:
-;   Convenience wrapper around UNKNOWN7_FindChar.
+;   Convenience wrapper around STR_FindChar.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Equivalent behavior to a `strchr` helper with this ABI:
+;     D0 = STR_FindCharPtr(stringPtr, targetByte)
+;   Commonly used both for delimiter search and "is byte in set-string" tests
+;   by checking whether D0 is non-zero.
 ;------------------------------------------------------------------------------
-UNKNOWN7_FindCharWrapper:
+STR_FindCharPtr:
     MOVEM.L D7/A3,-(A7)
 
     MOVEA.L 12(A7),A3
     MOVE.L  16(A7),D7
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.S   UNKNOWN7_FindChar
+    BSR.S   STR_FindChar
 
     ADDQ.W  #8,A7
 
     MOVEM.L (A7)+,D7/A3
     RTS
 
-    ; Dead code?
+    ; Unreachable block: starts after RTS and has no in-file branch target.
+    ; Behavior appears to track the last match while scanning (strrchr-like),
+    ; but this block is currently not callable in the linked control flow.
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7

@@ -6,17 +6,17 @@
     XDEF    SCRIPT_DeassertCtrlLineNow
     XDEF    SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte
     XDEF    SCRIPT_GetCtrlLineFlag
-    XDEF    SCRIPT_ReadCiaBBit3Flag
-    XDEF    SCRIPT_ReadCiaBBit5Mask
-    XDEF    SCRIPT_ReadSerialRbfByte
-    XDEF    SCRIPT_UpdateCtrlLineTimeout
+    XDEF    SCRIPT_ReadHandshakeBit3Flag
+    XDEF    SCRIPT_ReadHandshakeBit5Mask
+    XDEF    SCRIPT_ReadNextRbfByte
+    XDEF    SCRIPT_PollHandshakeAndApplyTimeout
     XDEF    SCRIPT_UpdateSerialShadowFromCtrlByte
-    XDEF    SCRIPT_WriteSerialDataWord
+    XDEF    SCRIPT_WriteCtrlShadowToSerdat
     XDEF    SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte
     XDEF    SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadSerialRbfByte   (ReadSerialRbfByteuncertain)
+; FUNC: SCRIPT_ReadNextRbfByte   (ReadNextRbfByte)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -34,7 +34,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-SCRIPT_ReadSerialRbfByte:
+SCRIPT_ReadNextRbfByte:
     JSR     SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte(PC)
 
     RTS
@@ -76,7 +76,7 @@ SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   SCRIPT_WriteSerialDataWord
+;   SCRIPT_WriteCtrlShadowToSerdat
 ; READS:
 ;   SCRIPT_SerialShadowWord
 ; WRITES:
@@ -107,7 +107,7 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVE.L  D1,-(A7)
-    BSR.W   SCRIPT_WriteSerialDataWord
+    BSR.W   SCRIPT_WriteCtrlShadowToSerdat
 
     ADDQ.W  #4,A7
 
@@ -117,7 +117,7 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLine   (AssertCtrlLineuncertain)
+; FUNC: SCRIPT_AssertCtrlLine   (AssertCtrlLine)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -125,7 +125,7 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_WriteSerialDataWord
+;   SCRIPT_WriteCtrlShadowToSerdat
 ; READS:
 ;   SCRIPT_SerialShadowWord
 ; WRITES:
@@ -135,6 +135,8 @@ SCRIPT_UpdateSerialShadowFromCtrlByte:
 ;   the serial data register.
 ; NOTES:
 ;   SCRIPT_CtrlLineAssertedFlag appears to mirror the asserted/deasserted state.
+;   Bit 5 ($20) is treated as the CTRL/handshake output bit in the serial shadow word;
+;   physical line mapping (e.g., RTS on attached hardware) is board/cable dependent ??.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLine:
     MOVE.W  #1,SCRIPT_CtrlLineAssertedFlag
@@ -145,7 +147,7 @@ SCRIPT_AssertCtrlLine:
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_WriteSerialDataWord
+    BSR.W   SCRIPT_WriteCtrlShadowToSerdat
 
     ADDQ.W  #4,A7
     RTS
@@ -153,7 +155,7 @@ SCRIPT_AssertCtrlLine:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AssertCtrlLineIfEnabled   (AssertCtrlLineIfEnableduncertain)
+; FUNC: SCRIPT_AssertCtrlLineIfEnabled   (AssertCtrlLineIfEnabled)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -183,7 +185,7 @@ SCRIPT_AssertCtrlLineIfEnabled:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_DeassertCtrlLine   (DeassertCtrlLineuncertain)
+; FUNC: SCRIPT_DeassertCtrlLine   (DeassertCtrlLine)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -191,7 +193,7 @@ SCRIPT_AssertCtrlLineIfEnabled:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_WriteSerialDataWord
+;   SCRIPT_WriteCtrlShadowToSerdat
 ; READS:
 ;   SCRIPT_SerialShadowWord
 ; WRITES:
@@ -211,7 +213,7 @@ SCRIPT_DeassertCtrlLine:
     MOVEQ   #0,D0
     MOVE.W  D1,D0
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_WriteSerialDataWord
+    BSR.W   SCRIPT_WriteCtrlShadowToSerdat
 
     ADDQ.W  #4,A7
     RTS
@@ -219,7 +221,7 @@ SCRIPT_DeassertCtrlLine:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ClearCtrlLineIfEnabled   (ClearCtrlLineIfEnableduncertain)
+; FUNC: SCRIPT_ClearCtrlLineIfEnabled   (ClearCtrlLineIfEnabled)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -297,7 +299,7 @@ SCRIPT_DeassertCtrlLineNow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateCtrlLineTimeout   (UpdateCtrlLineTimeoutuncertain)
+; FUNC: SCRIPT_PollHandshakeAndApplyTimeout   (PollHandshakeAndApplyTimeout)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -305,7 +307,7 @@ SCRIPT_DeassertCtrlLineNow:
 ; CLOBBERS:
 ;   D0-D1
 ; CALLS:
-;   SCRIPT_ReadCiaBBit5Mask
+;   SCRIPT_ReadHandshakeBit5Mask
 ; READS:
 ;   DATA_WDISP_BSS_WORD_2294, CIAB_PRA
 ; WRITES:
@@ -314,13 +316,15 @@ SCRIPT_DeassertCtrlLineNow:
 ;   Polls the CTRL line and increments a counter while it stays asserted; once
 ;   a threshold is reached, resets related counters/flags.
 ; NOTES:
-;   Uses CIAB_PRA bitmask (via SCRIPT_ReadCiaBBit5Mask).
+;   Uses CIAB_PRA bitmask (via SCRIPT_ReadHandshakeBit5Mask).
+;   This is the handshake-input poll path used by control-timeout logic, separate
+;   from the byte-stream parser that consumes serial payload bytes.
 ;------------------------------------------------------------------------------
-SCRIPT_UpdateCtrlLineTimeout:
+SCRIPT_PollHandshakeAndApplyTimeout:
     TST.W   DATA_WDISP_BSS_WORD_2294
     BEQ.S   .return_status
 
-    BSR.W   SCRIPT_ReadCiaBBit5Mask
+    BSR.W   SCRIPT_ReadHandshakeBit5Mask
 
     TST.B   D0
     BEQ.S   .return_status
@@ -344,7 +348,7 @@ SCRIPT_UpdateCtrlLineTimeout:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadCiaBBit3Flag   (ReadCiaBBit3Flaguncertain)
+; FUNC: SCRIPT_ReadHandshakeBit3Flag   (ReadHandshakeBit3Flag)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -361,8 +365,9 @@ SCRIPT_UpdateCtrlLineTimeout:
 ;   Reads CIAB port A bit 3 and returns it as a boolean.
 ; NOTES:
 ;   Bit meaning is hardware-defined (handshake/status line).
+;   Often treated as a sideband/status line in custom transfer setups ??.
 ;------------------------------------------------------------------------------
-SCRIPT_ReadCiaBBit3Flag:
+SCRIPT_ReadHandshakeBit3Flag:
     MOVEM.L D6-D7,-(A7)
 
     MOVEQ   #0,D7
@@ -384,7 +389,7 @@ SCRIPT_ReadCiaBBit3Flag:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ReadCiaBBit5Mask   (ReadCiaBBit5Maskuncertain)
+; FUNC: SCRIPT_ReadHandshakeBit5Mask   (ReadHandshakeBit5Mask)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -401,8 +406,10 @@ SCRIPT_ReadCiaBBit3Flag:
 ;   Returns CIAB port A bit 5 masked into D0.
 ; NOTES:
 ;   Bit meaning is hardware-defined (handshake/status line).
+;   This mask is used by CTRL timeout/presence logic and is a practical hook point
+;   when experimenting with alternate handshake semantics.
 ;------------------------------------------------------------------------------
-SCRIPT_ReadCiaBBit5Mask:
+SCRIPT_ReadHandshakeBit5Mask:
     MOVEM.L D6-D7,-(A7)
 
     MOVEQ   #0,D7
@@ -420,7 +427,7 @@ SCRIPT_ReadCiaBBit5Mask:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_GetCtrlLineFlag   (GetCtrlLineFlaguncertain)
+; FUNC: SCRIPT_GetCtrlLineFlag   (GetCtrlLineFlag)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -446,7 +453,7 @@ SCRIPT_GetCtrlLineFlag:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_WriteSerialDataWord   (WriteSerialDataWorduncertain)
+; FUNC: SCRIPT_WriteCtrlShadowToSerdat   (WriteCtrlShadowToSerdat)
 ; ARGS:
 ;   stack +10: dataWord (low byte used)
 ; RET:
@@ -464,7 +471,7 @@ SCRIPT_GetCtrlLineFlag:
 ; NOTES:
 ;   Uses only the low byte of the provided word.
 ;------------------------------------------------------------------------------
-SCRIPT_WriteSerialDataWord:
+SCRIPT_WriteCtrlShadowToSerdat:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
     ANDI.W  #$ff,D7

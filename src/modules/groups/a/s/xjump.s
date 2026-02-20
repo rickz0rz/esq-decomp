@@ -1,8 +1,8 @@
     XDEF    GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold
-    XDEF    GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper
+    XDEF    GROUP_AS_JMPTBL_STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper   (JumpStub_UNKNOWN7_FindCharWrapper)
+; FUNC: GROUP_AS_JMPTBL_STR_FindCharPtr   (JumpStub_STR_FindCharPtr)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -10,16 +10,16 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   UNKNOWN7_FindCharWrapper
+;   STR_FindCharPtr
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to UNKNOWN7_FindCharWrapper.
+;   Jump stub to STR_FindCharPtr.
 ;------------------------------------------------------------------------------
-GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper:
-    JMP     UNKNOWN7_FindCharWrapper
+GROUP_AS_JMPTBL_STR_FindCharPtr:
+    JMP     STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold   (JumpStub_ESQ_FindSubstringCaseFold)

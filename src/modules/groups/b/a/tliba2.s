@@ -425,7 +425,7 @@ TLIBA_FindFirstWildcardMatchIndex:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D6/D7
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3_Alt, UNKNOWN7_FindCharWrapper
+;   PARSE_ReadSignedLongSkipClass3_Alt, STR_FindCharPtr
 ; READS:
 ;   branch_17F0
 ; WRITES:
@@ -460,7 +460,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     40.W
     MOVE.L  A0,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -469,7 +469,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     58.W
     MOVE.L  D0,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-16(A5)
@@ -478,7 +478,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     41.W
     MOVE.L  D0,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -487,7 +487,7 @@ TLIBA2_ParseEntryTimeWindow:
 
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-20(A5)

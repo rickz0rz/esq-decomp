@@ -111,14 +111,14 @@ GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_UpdateCtrlLineTimeout
+;   SCRIPT_PollHandshakeAndApplyTimeout
 ; DESC:
-;   Jump stub to SCRIPT_UpdateCtrlLineTimeout.
+;   Jump stub to SCRIPT_PollHandshakeAndApplyTimeout.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout:
-    JMP     SCRIPT_UpdateCtrlLineTimeout
+    JMP     SCRIPT_PollHandshakeAndApplyTimeout
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled   (JumpStub_SCRIPT_ClearCtrlLineIfEnabled)

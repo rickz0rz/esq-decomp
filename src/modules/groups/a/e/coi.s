@@ -1300,7 +1300,7 @@ COI_AllocSubEntryTable:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AE_JMPTBL_WDISP_SPrintf, DISKIO_LoadFileToWorkBuffer, GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt,
+;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AE_JMPTBL_WDISP_SPrintf, DISKIO_LoadFileToWorkBuffer, GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt,
 ;   GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, CLEANUP_FormatEntryStringTokens, ESQ_WildcardMatch, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
 ;   COI_AllocSubEntryTable
 ; READS:
@@ -1422,7 +1422,7 @@ COI_LoadOiDataFile:
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
     PEA     COI_STR_LINEFEED_CR_1
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1445,7 +1445,7 @@ COI_LoadOiDataFile:
     CLR.B   (A1)
     PEA     9.W
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-648(A5)
@@ -1486,7 +1486,7 @@ COI_LoadOiDataFile:
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
     PEA     COI_STR_LINEFEED_CR_2
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

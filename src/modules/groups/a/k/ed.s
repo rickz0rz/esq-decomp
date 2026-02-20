@@ -1461,7 +1461,7 @@ ED_CaptureKeySequence:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper
+;   GROUP_AI_JMPTBL_STR_FindCharPtr
 ; READS:
 ;   (none)
 ; WRITES:
@@ -1480,7 +1480,7 @@ ED_FindNextCharInTable:
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)

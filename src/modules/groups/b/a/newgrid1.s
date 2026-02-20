@@ -841,7 +841,7 @@ NEWGRID_DrawGridCell:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
+;   PARSEINI_JMPTBL_STR_FindCharPtr, NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
 ; READS:
 ;   Global_REF_STR_USE_24_HR_CLOCK, Global_JMPTBL_HALF_HOURS_24_HR_FMT
 ; WRITES:
@@ -867,7 +867,7 @@ NEWGRID_Apply24HourFormatting:
 
     PEA     40.W
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1400,7 +1400,7 @@ NEWGRID_DrawGridEntry:
     ; split primary line on delimiter (offset 34)
     PEA     34.W
     MOVE.L  NEWGRID_EntryTextScratchPtr,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1409,7 +1409,7 @@ NEWGRID_DrawGridEntry:
     ADDQ.L  #1,-4(A5)
     PEA     34.W
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1471,7 +1471,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     40.W
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1539,7 +1539,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     44.W
     MOVE.L  D0,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -1547,7 +1547,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     46.W
     MOVE.L  D0,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -1562,7 +1562,7 @@ NEWGRID_DrawGridEntry:
 .fallback_subtitle:
     PEA     46.W
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -8307,7 +8307,7 @@ NEWGRID_ResetShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
+;   PARSEINI_JMPTBL_STR_FindCharPtr, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   NEWGRID_ShowtimeBucketEntryTable, NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount
 ; WRITES:
@@ -8325,7 +8325,7 @@ NEWGRID_AddShowtimeBucketEntry:
     CLR.L   -20(A5)
     PEA     58.W
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindCharPtr(PC)
 
     MOVEA.L D0,A0
     LEA     1(A0),A1

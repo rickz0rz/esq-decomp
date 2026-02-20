@@ -1,7 +1,7 @@
     XDEF    ESQPARS_ApplyRtcBytesAndPersist
     XDEF    ESQPARS_ClearAliasStringPointers
     XDEF    ESQPARS_PersistStateDataAfterCommand
-    XDEF    ESQPARS_ProcessSerialCommandByte
+    XDEF    ESQPARS_ConsumeRbfByteAndDispatchCommand
     XDEF    ESQPARS_ReadLengthWordWithChecksumXor
     XDEF    ESQPARS_RemoveGroupEntryAndReleaseStrings
     XDEF    ESQPARS_ReplaceOwnedString
@@ -30,10 +30,10 @@
     XDEF    ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
     XDEF    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine
     XDEF    ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries
-    XDEF    ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal
-    XDEF    ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay
-    XDEF    ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList
-    XDEF    ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord
+    XDEF    ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal
+    XDEF    ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay
+    XDEF    ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList
+    XDEF    ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord
     XDEF    ESQPARS_ReadLengthWordWithChecksumXor_Return
     XDEF    ESQPARS_RemoveGroupEntryAndReleaseStrings_Return
     XDEF    ESQPARS_ReplaceOwnedString_Return
@@ -531,7 +531,30 @@ ESQPARS_ApplyRtcBytesAndPersist:
 
 ; This whole sub-routine appears to be for processing control data
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_ProcessSerialCommandByte   (Parse one serial command byte stream)
+; Protocol Path Map (handshake/control -> serial byte stream -> command decode)
+; 1) Startup serial init/config:
+;      ESQ startup opens serial.device, sets baud, and enables RBF/AUD1 IRQ paths
+;      (src/modules/groups/a/m/esq.s: .select_baud_rate/.after_baud_rate).
+; 2) Handshake/control sideband handling:
+;      SCRIPT_Assert/DeassertCtrlLine* and SCRIPT_ReadCiaBBit{3,5}* manage
+;      CTRL/handshake state via SERDAT shadow + CIAB reads
+;      (src/modules/groups/b/a/script2.s).
+; 3) Byte ingress source:
+;      Incoming serial bytes are consumed through SCRIPT_ReadNextRbfByte
+;      (RBF-backed producer/consumer path).
+; 4) Command framing:
+;      ESQPARS_ConsumeRbfByteAndDispatchCommand applies 0x55/0xAA preamble sync and
+;      command-byte dispatch.
+; 5) Payload readers:
+;      ESQIFF2_ReadRbfBytesToBuffer / ESQIFF2_ReadRbfBytesWithXor /
+;      ESQIFF2_ReadSerialRecordIntoBuffer read payload blocks from the same byte
+;      stream and feed command handlers.
+; 6) Custom-build hook guidance:
+;      To reuse the standard 2400 protocol decode path, keep steps 4/5 intact and
+;      adapt only step 2/3 so equivalent byte sequences reach SCRIPT_ReadNextRbfByte.
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+; FUNC: ESQPARS_ConsumeRbfByteAndDispatchCommand   (Parse one serial command byte stream)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +5: arg_2 (via 9(A5))
@@ -567,7 +590,7 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal, ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList, ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadSerialBytesToBuffer, ESQIFF2_ReadSerialBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
+;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
 ;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, Global_STR_23, Global_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, DATA_WDISP_BSS_WORD_22A0, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
@@ -577,8 +600,11 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ;   command handlers for listing, status, config, banner/filter, and control paths.
 ; NOTES:
 ;   Uses 0x55/0xAA preamble sync and clears preamble flags on command completion.
+;   This is the shared command/data ingest path for serial bytes once they are in
+;   the RBF-backed stream. Custom transports/handshakes can reuse this by feeding
+;   equivalent byte sequences to SCRIPT_ReadNextRbfByte / CTRL_BUFFER producers.
 ;------------------------------------------------------------------------------
-ESQPARS_ProcessSerialCommandByte:
+ESQPARS_ConsumeRbfByteAndDispatchCommand:
     LINK.W  A5,#-232
     MOVEM.L D2/D5-D7/A2,-(A7)
 
@@ -707,7 +733,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1
     MOVE.B  D0,D1
     MOVE.L  D1,-(A7)
-    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord(PC)
+    JSR     ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .clearValues
@@ -720,7 +746,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D1           ; Move 0 into D1 to clear out all the bits
     MOVE.B  D0,D1           ; Then move a byte from D0 into D1
     MOVE.L  D1,-(A7)        ; Push D1 to the stack
-    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)    ; Jump to ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)
+    JSR     ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(PC)    ; Jump to ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(PC)
 
     ADDQ.W  #4,A7           ; Add 4 to the stack (nuking the last value in it)
 
@@ -841,7 +867,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     MOVEQ   #0,D0
     MOVE.B  -61(A5),D0
@@ -849,13 +875,13 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     1.W
     PEA     -61(A5)
     MOVE.L  D0,-14(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     MOVE.B  -61(A5),-7(A5)
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     36(A7),A7
     MOVE.B  -61(A5),D0
@@ -894,7 +920,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     12(A7),A7
 
@@ -921,7 +947,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     12(A7),A7
     BRA.S   .cmd_bang_collect_title_loop
@@ -937,7 +963,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -71(A5)
     PEA     1.W
     PEA     -61(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     12(A7),A7
     BRA.S   .cmd_bang_skip_to_nul_loop
@@ -945,7 +971,7 @@ ESQPARS_ProcessSerialCommandByte:
 .cmd_bang_verify_xor:
     PEA     1.W
     PEA     -31(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     ADDQ.W  #8,A7
     MOVE.B  -71(A5),D0
@@ -1157,7 +1183,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -227(A5)
     PEA     1.W
     PEA     -62(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     MOVEQ   #0,D0
     MOVE.B  -62(A5),D0
@@ -1165,7 +1191,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     1.W
     PEA     -62(A5)
     MOVE.L  D0,-10(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     24(A7),A7
     CLR.L   -18(A5)
@@ -1185,7 +1211,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -227(A5)
     PEA     1.W
     PEA     -62(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     12(A7),A7
     ADDQ.L  #1,-18(A5)
@@ -1223,7 +1249,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -227(A5)
     PEA     6.W
     PEA     -62(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     12(A7),A7
     CLR.L   -18(A5)
@@ -1309,7 +1335,7 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -227(A5)
     PEA     1.W
     PEA     -223(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     12(A7),A7
     MOVE.B  -223(A5),D0
@@ -1338,12 +1364,12 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -227(A5)
     MOVE.L  D1,-(A7)
     PEA     -212(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     PEA     -227(A5)
     PEA     1.W
     PEA     -226(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     24(A7),A7
     MOVE.B  -226(A5),D0
@@ -1355,7 +1381,7 @@ ESQPARS_ProcessSerialCommandByte:
 .cmd_p_lower_after_payload_trailer:
     PEA     1.W
     PEA     -225(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     ADDQ.W  #8,A7
     MOVE.B  -227(A5),D0
@@ -1471,12 +1497,12 @@ ESQPARS_ProcessSerialCommandByte:
     PEA     -227(A5)
     MOVE.L  D0,-(A7)
     PEA     -212(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     PEA     -227(A5)
     PEA     1.W
     PEA     -226(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesWithXor
+    BSR.W   ESQIFF2_ReadRbfBytesWithXor
 
     LEA     24(A7),A7
     MOVE.B  -226(A5),D0
@@ -1488,7 +1514,7 @@ ESQPARS_ProcessSerialCommandByte:
 .cmd_p_lower_after_sparse_trailer:
     PEA     1.W
     PEA     -225(A5)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     ADDQ.W  #8,A7
     MOVE.B  -227(A5),D0
@@ -1932,7 +1958,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     21.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -1996,7 +2022,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     8.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2145,7 +2171,7 @@ ESQPARS_ProcessSerialCommandByte:
     BHI.S   .cmd_i_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    JSR     ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay(PC)
+    JSR     ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .cmd_i_finish
@@ -2197,7 +2223,7 @@ ESQPARS_ProcessSerialCommandByte:
     BHI.S   .cmd_i_lower_record_too_long
 
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    JSR     ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal(PC)
+    JSR     ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .cmd_i_lower_finish
@@ -2384,7 +2410,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     PEA     256.W
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2416,7 +2442,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  D0,-(A7)
-    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord(PC)
+    JSR     ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .cmdbyte_clear_preamble_and_finish
@@ -2425,7 +2451,7 @@ ESQPARS_ProcessSerialCommandByte:
     MOVEQ   #0,D0
     MOVE.B  -5(A5),D0
     MOVE.L  D0,-(A7)
-    JSR     ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList(PC)
+    JSR     ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .cmdbyte_clear_preamble_and_finish
@@ -2559,7 +2585,7 @@ ESQPARS_ProcessSerialCommandByte:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   ESQIFF2_ReadSerialBytesToBuffer
+    BSR.W   ESQIFF2_ReadRbfBytesToBuffer
 
     JSR     ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
@@ -2690,7 +2716,8 @@ ESQPARS_ProcessSerialCommandByte:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     PEA     Global_STR_23
-    JSR     GROUP_AS_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    ; strchr-style membership test: command byte must be in "23".
+    JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -3113,7 +3140,7 @@ ESQPARS_JMPTBL_DATETIME_SavePairToFile:
     JMP     DATETIME_SavePairToFile
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList   (Jump-table forwarder)
+; FUNC: ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3121,7 +3148,7 @@ ESQPARS_JMPTBL_DATETIME_SavePairToFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN_VerifyChecksumAndParseList
+;   ESQPROTO_VerifyChecksumAndParseList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3131,8 +3158,8 @@ ESQPARS_JMPTBL_DATETIME_SavePairToFile:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseList:
-    JMP     UNKNOWN_VerifyChecksumAndParseList
+ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList:
+    JMP     ESQPROTO_VerifyChecksumAndParseList
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord   (Jump-table forwarder)
@@ -3157,7 +3184,7 @@ ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
     JMP     P_TYPE_ParseAndStoreTypeRecord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal   (Jump-table forwarder)
+; FUNC: ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3165,7 +3192,7 @@ ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN_CopyLabelToGlobal
+;   ESQPROTO_CopyLabelToGlobal
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3175,8 +3202,8 @@ ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_UNKNOWN_CopyLabelToGlobal:
-    JMP     UNKNOWN_CopyLabelToGlobal
+ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal:
+    JMP     ESQPROTO_CopyLabelToGlobal
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_DST_HandleBannerCommand32_33   (Jump-table forwarder)
@@ -3527,7 +3554,7 @@ ESQPARS_JMPTBL_DST_UpdateBannerQueue:
     JMP     DST_UpdateBannerQueue
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord   (Jump-table forwarder)
+; FUNC: ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3535,7 +3562,7 @@ ESQPARS_JMPTBL_DST_UpdateBannerQueue:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN_VerifyChecksumAndParseRecord
+;   ESQPROTO_VerifyChecksumAndParseRecord
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3545,11 +3572,11 @@ ESQPARS_JMPTBL_DST_UpdateBannerQueue:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord:
-    JMP     UNKNOWN_VerifyChecksumAndParseRecord
+ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord:
+    JMP     ESQPROTO_VerifyChecksumAndParseRecord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay   (Jump-table forwarder)
+; FUNC: ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3557,7 +3584,7 @@ ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN_ParseDigitLabelAndDisplay
+;   ESQPROTO_ParseDigitLabelAndDisplay
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3567,8 +3594,8 @@ ESQPARS_JMPTBL_UNKNOWN_VerifyChecksumAndParseRecord:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_UNKNOWN_ParseDigitLabelAndDisplay:
-    JMP     UNKNOWN_ParseDigitLabelAndDisplay
+ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay:
+    JMP     ESQPROTO_ParseDigitLabelAndDisplay
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer   (Jump-table forwarder)
@@ -3623,7 +3650,7 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadSerialRbfByte
+;   SCRIPT_ReadNextRbfByte
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3634,7 +3661,7 @@ ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte:
-    JMP     SCRIPT_ReadSerialRbfByte
+    JMP     SCRIPT_ReadNextRbfByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte   (Jump-table forwarder)

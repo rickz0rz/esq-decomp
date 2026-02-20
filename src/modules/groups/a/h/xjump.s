@@ -356,7 +356,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_ReadSerialRbfByte
+;   SCRIPT_ReadNextRbfByte
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -367,7 +367,7 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
-    JMP     SCRIPT_ReadSerialRbfByte
+    JMP     SCRIPT_ReadNextRbfByte
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers   (Routine at GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers)

@@ -995,7 +995,7 @@ TEXTDISP_SkipControlCodes:
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, TEXTDISP_FormatEntryTimeForIndex,
 ;   STRING_AppendAtNull, WDISP_SPrintf, TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
-;   UNKNOWN7_FindCharWrapper, TEXTDISP_SkipControlCodes, TEXTDISP_TrimTextToPixelWidth
+;   STR_FindCharPtr, TEXTDISP_SkipControlCodes, TEXTDISP_TrimTextToPixelWidth
 ; READS:
 ;   entry+210/214/218, WDISP_CharClassTable
 ; DESC:
@@ -1209,7 +1209,7 @@ TEXTDISP_BuildEntryDetailLine:
 .truncate_at_control:
     PEA     40.W
     MOVE.L  A0,-(A7)
-    JSR     UNKNOWN7_FindCharWrapper(PC)
+    JSR     STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -2264,7 +2264,7 @@ TEXTDISP_LoadSourceConfig:
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, MEMORY_DeallocateMemory
+;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, MEMORY_DeallocateMemory
 ; READS:
 ;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F
 ; WRITES:
@@ -2299,7 +2299,7 @@ TEXTDISP_ClearSourceConfig:
     MOVE.L  (A1),-(A7)
     CLR.L   -(A7)
     MOVE.L  A2,20(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L 20(A7),A0
     MOVE.L  D0,(A0)
@@ -2489,7 +2489,7 @@ TEXTDISP_ApplySourceConfigAllEntries:
 ; CLOBBERS:
 ;   D0/A0-A3
 ; CALLS:
-;   MEMORY_AllocateMemory, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, STRING_CompareNoCase
+;   MEMORY_AllocateMemory, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, STRING_CompareNoCase
 ; READS:
 ;   DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_CONST_LONG_2133, DATA_SCRIPT_BSS_WORD_2131
 ; WRITES:
@@ -2526,7 +2526,7 @@ TEXTDISP_AddSourceConfigEntry:
     MOVEA.L D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     MOVEA.L -4(A5),A0
     MOVE.L  D0,(A0)

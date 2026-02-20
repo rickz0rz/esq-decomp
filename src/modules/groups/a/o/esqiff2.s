@@ -4,8 +4,8 @@
     XDEF    ESQIFF2_PadEntriesToMaxTitleWidth
     XDEF    ESQIFF2_ParseGroupRecordAndRefresh
     XDEF    ESQIFF2_ParseLineHeadTailRecord
-    XDEF    ESQIFF2_ReadSerialBytesToBuffer
-    XDEF    ESQIFF2_ReadSerialBytesWithXor
+    XDEF    ESQIFF2_ReadRbfBytesToBuffer
+    XDEF    ESQIFF2_ReadRbfBytesWithXor
     XDEF    ESQIFF2_ReadSerialRecordIntoBuffer
     XDEF    ESQIFF2_ReadSerialSizedTextRecord
     XDEF    ESQIFF2_ShowAttentionOverlay
@@ -1191,7 +1191,7 @@ ESQIFF2_PadEntriesToMaxTitleWidth_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ReadSerialBytesToBuffer   (Read N serial bytes into buffer)
+; FUNC: ESQIFF2_ReadRbfBytesToBuffer   (Read N serial bytes into buffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1210,7 +1210,7 @@ ESQIFF2_PadEntriesToMaxTitleWidth_Return:
 ; NOTES:
 ;   Returns end pointer (one past last written byte) in D0.
 ;------------------------------------------------------------------------------
-ESQIFF2_ReadSerialBytesToBuffer:
+ESQIFF2_ReadRbfBytesToBuffer:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -1261,7 +1261,7 @@ ESQIFF2_ReadSerialBytesToBuffer_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ReadSerialBytesWithXor   (Read serial bytes and fold XOR checksum)
+; FUNC: ESQIFF2_ReadRbfBytesWithXor   (Read serial bytes and fold XOR checksum)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1280,7 +1280,7 @@ ESQIFF2_ReadSerialBytesToBuffer_Return:
 ; NOTES:
 ;   Waits for clock/UI service between each byte read.
 ;------------------------------------------------------------------------------
-ESQIFF2_ReadSerialBytesWithXor:
+ESQIFF2_ReadRbfBytesWithXor:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7

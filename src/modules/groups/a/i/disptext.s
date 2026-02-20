@@ -1177,7 +1177,7 @@ DISPTEXT_SetCurrentLineIndex:
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper
+;   DISPTEXT_FinalizeLineTable, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AI_JMPTBL_STR_FindCharPtr
 ; READS:
 ;   DISPTEXT_TargetLineIndex/21D6/21DC/21D3, NEWGRID_RowHeightPx
 ; WRITES:
@@ -1247,7 +1247,7 @@ DISPTEXT_ComputeVisibleLineCount:
 
     PEA     19.W
     MOVE.L  A1,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1255,7 +1255,7 @@ DISPTEXT_ComputeVisibleLineCount:
 
     PEA     20.W
     MOVE.L  -12(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1466,7 +1466,7 @@ DISPTEXT_MeasureCurrentLineLength:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   DISPTEXT_FinalizeLineTable, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper, GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
+;   DISPTEXT_FinalizeLineTable, _LVOSetAPen, _LVOSetDrMd, _LVOMove, _LVOText, GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
 ; READS:
 ;   DISPTEXT_LinePtrTable/21D6/21D7/21D9/21DC/21B1/21B2/21D8
 ; WRITES:
@@ -1538,7 +1538,7 @@ DISPTEXT_RenderCurrentLine:
 
     PEA     19.W
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1546,7 +1546,7 @@ DISPTEXT_RenderCurrentLine:
 
     PEA     20.W
     MOVE.L  -6(A5),-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_FindCharWrapper(PC)
+    JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0

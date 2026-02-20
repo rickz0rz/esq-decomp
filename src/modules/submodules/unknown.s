@@ -1,13 +1,13 @@
-    XDEF    UNKNOWN_CopyLabelToGlobal
-    XDEF    UNKNOWN_ParseDigitLabelAndDisplay
+    XDEF    ESQPROTO_CopyLabelToGlobal
+    XDEF    ESQPROTO_ParseDigitLabelAndDisplay
     XDEF    UNKNOWN_ParseListAndUpdateEntries
     XDEF    UNKNOWN_ParseRecordAndUpdateDisplay
-    XDEF    UNKNOWN_VerifyChecksumAndParseList
-    XDEF    UNKNOWN_VerifyChecksumAndParseRecord
+    XDEF    ESQPROTO_VerifyChecksumAndParseList
+    XDEF    ESQPROTO_VerifyChecksumAndParseRecord
     XDEF    UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
     XDEF    UNKNOWN_JMPTBL_DST_NormalizeDayOfYear
     XDEF    UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer
-    XDEF    UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString
+    XDEF    ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
     XDEF    UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte
     XDEF    UNKNOWN_JMPTBL_ESQ_WildcardMatch
 
@@ -21,7 +21,7 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
+;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   ED_DiagnosticsScreenActive, WDISP_WeatherStatusLabelBuffer, WDISP_WeatherStatusOverlayTextPtr, Global_REF_RASTPORT_1
 ; WRITES:
@@ -86,7 +86,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 
     MOVE.L  WDISP_WeatherStatusOverlayTextPtr,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
@@ -403,7 +403,7 @@ UNKNOWN_ParseListAndUpdateEntries:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_VerifyChecksumAndParseRecord   (Validate checksum and dispatch to record parser.)
+; FUNC: ESQPROTO_VerifyChecksumAndParseRecord   (Validate checksum and dispatch to record parser.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -421,7 +421,7 @@ UNKNOWN_ParseListAndUpdateEntries:
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
-UNKNOWN_VerifyChecksumAndParseRecord:
+ESQPROTO_VerifyChecksumAndParseRecord:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -467,7 +467,7 @@ UNKNOWN_VerifyChecksumAndParseRecord:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_VerifyChecksumAndParseList   (Validate checksum and dispatch to list parser.)
+; FUNC: ESQPROTO_VerifyChecksumAndParseList   (Validate checksum and dispatch to list parser.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -485,7 +485,7 @@ UNKNOWN_VerifyChecksumAndParseRecord:
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
-UNKNOWN_VerifyChecksumAndParseList:
+ESQPROTO_VerifyChecksumAndParseList:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -531,7 +531,7 @@ UNKNOWN_VerifyChecksumAndParseList:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_ParseDigitLabelAndDisplay   (Parse digit + label, update globals, and display.)
+; FUNC: ESQPROTO_ParseDigitLabelAndDisplay   (Parse digit + label, update globals, and display.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +9: arg_2 (via 13(A5))
@@ -540,7 +540,7 @@ UNKNOWN_VerifyChecksumAndParseList:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D1/D2/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
+;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   WDISP_WeatherStatusTextPtr, ED_DiagnosticsScreenActive, Global_REF_RASTPORT_1
 ; WRITES:
@@ -550,7 +550,7 @@ UNKNOWN_VerifyChecksumAndParseList:
 ; NOTES:
 ;   Clamps digit to '0'..'9'; uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
-UNKNOWN_ParseDigitLabelAndDisplay:
+ESQPROTO_ParseDigitLabelAndDisplay:
     LINK.W  A5,#-16
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -597,7 +597,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 
     MOVE.L  WDISP_WeatherStatusTextPtr,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
+    JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,WDISP_WeatherStatusTextPtr
@@ -619,7 +619,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_CopyLabelToGlobal   (Copy short label into WDISP_StatusListMatchPattern.)
+; FUNC: ESQPROTO_CopyLabelToGlobal   (Copy short label into WDISP_StatusListMatchPattern.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +9: arg_2 (via 13(A5))
@@ -638,7 +638,7 @@ UNKNOWN_ParseDigitLabelAndDisplay:
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
-UNKNOWN_CopyLabelToGlobal:
+ESQPROTO_CopyLabelToGlobal:
     LINK.W  A5,#-16
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -783,7 +783,7 @@ UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte:
     JMP     ESQ_GenerateXorChecksumByte
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)
+; FUNC: ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -801,7 +801,7 @@ UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-UNKNOWN_JMPTBL_ESQPARS_ReplaceOwnedString:
+ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString:
     JMP     ESQPARS_ReplaceOwnedString
 
 ;!======

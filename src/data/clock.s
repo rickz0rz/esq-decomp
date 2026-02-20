@@ -18,7 +18,7 @@ Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
 ; TYPE: cstring
 ; PURPOSE: Character set checked when selecting aligned status/time templates.
 ; USED BY: CLEANUP_RenderAlignedStatusScreen
-; NOTES: Membership test performed via UNKNOWN7_FindCharWrapper.
+; NOTES: Membership test performed via STR_FindCharPtr.
 ;------------------------------------------------------------------------------
 CLOCK_STR_TEMPLATE_CODE_SET_FGN:
     NStr    "FGN"
