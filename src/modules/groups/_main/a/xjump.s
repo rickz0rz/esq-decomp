@@ -1,10 +1,10 @@
     XDEF    GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun
     XDEF    GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll
-    XDEF    GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0
-    XDEF    GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1
+    XDEF    GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook
+    XDEF    GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1   (JumpStub_UNKNOWN2B_Stub1)
+; FUNC: GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook   (JumpStub_ESQ_MainExitNoOpHook)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -12,19 +12,19 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   UNKNOWN2B_Stub1
+;   ESQ_MainExitNoOpHook
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to UNKNOWN2B_Stub1.
+;   Jump stub to ESQ_MainExitNoOpHook.
 ;------------------------------------------------------------------------------
-GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1:
-    JMP     UNKNOWN2B_Stub1
+GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook:
+    JMP     ESQ_MainExitNoOpHook
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0   (JumpStub_UNKNOWN2B_Stub0)
+; FUNC: GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook   (JumpStub_ESQ_MainEntryNoOpHook)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -32,16 +32,16 @@ GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   UNKNOWN2B_Stub0
+;   ESQ_MainEntryNoOpHook
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to UNKNOWN2B_Stub0.
+;   Jump stub to ESQ_MainEntryNoOpHook.
 ;------------------------------------------------------------------------------
-GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0:
-    JMP     UNKNOWN2B_Stub0
+GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook:
+    JMP     ESQ_MainEntryNoOpHook
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll   (JumpStub_MEMLIST_FreeAll)

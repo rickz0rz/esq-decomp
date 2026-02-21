@@ -48,7 +48,7 @@
     XDEF    ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner
     XDEF    ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard
     XDEF    ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
-    XDEF    ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode
+    XDEF    ESQIFF_JMPTBL_DOS_OpenFileWithMode
     XDEF    ESQIFF_PlayNextExternalAssetFrame_Return
     XDEF    ESQIFF_RenderWeatherStatusBrushSlice_Return
     XDEF    ESQIFF_ShowExternalAssetWithCopperFx_Return
@@ -766,7 +766,7 @@ ESQIFF_RenderWeatherStatusBrushSlice_Return:
 ; CLOBBERS:
 ;   A6/A7/D0/D1/D2/D3/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
+;   ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
 ; READS:
 ;   AbsExecBase, Global_PTR_STR_DF0_LOGO_LST, Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_3, Global_STR_ESQIFF_C_4, Global_STR_ESQIFF_C_5, Global_STR_ESQIFF_C_6, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
@@ -838,7 +838,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 
     PEA     MODE_OLDFILE
     MOVE.L  Global_PTR_STR_GFX_G_ADS,-(A7)
-    JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     ESQIFF_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -933,7 +933,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     CLR.L   Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     PEA     MODE_OLDFILE
     MOVE.L  Global_PTR_STR_DF0_LOGO_LST,-(A7)
-    JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     ESQIFF_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -3363,7 +3363,7 @@ ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
     JMP     CTASKS_StartIffTaskProcess
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode   (Jump-table forwarder)
+; FUNC: ESQIFF_JMPTBL_DOS_OpenFileWithMode   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3371,7 +3371,7 @@ ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN2B_OpenFileWithAccessMode
+;   DOS_OpenFileWithMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -3381,8 +3381,8 @@ ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
-    JMP     UNKNOWN2B_OpenFileWithAccessMode
+ESQIFF_JMPTBL_DOS_OpenFileWithMode:
+    JMP     DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Jump-table forwarder)

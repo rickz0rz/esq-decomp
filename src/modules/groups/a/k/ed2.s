@@ -658,7 +658,7 @@ ED2_DrawEntrySummaryPanel:
 ; CALLS:
 ;   ED1_DrawStatusLine1, ED1_DrawStatusLine2, ED2_DrawEntrySummaryPanel,
 ;   ED2_DrawEntryDetailsPanel, DST_FormatBannerDateTime, GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer,
-;   ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVORead, _LVOClose,
+;   ESQIFF_JMPTBL_DOS_OpenFileWithMode, _LVORead, _LVOClose,
 ;   GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar, ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition,
 ;   GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode,
 ;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode,
@@ -912,7 +912,7 @@ ED2_HandleMenuActions:
     CLR.L   -118(A5)
     PEA     (MODE_OLDFILE).W
     PEA     Global_STR_DF0_CLOCK_CMD
-    JSR     ESQIFF_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     ESQIFF_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6

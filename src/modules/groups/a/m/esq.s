@@ -13,7 +13,7 @@
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
 ;   GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode, GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS,
 ;   _LVOOpenFont, _LVOOpenDiskFont, ESQIFF_JMPTBL_MEMORY_AllocateMemory,
-;   _LVOInitRastPort, _LVOSetFont, ESQIFF_JMPTBL_MATH_DivS32, ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster,
+;   _LVOInitRastPort, _LVOSetFont, ESQIFF_JMPTBL_MATH_DivS32, ESQDISP_JMPTBL_GRAPHICS_AllocRaster,
 ;   _LVOBltClear, _LVOInitBitMap, GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory,
 ;   GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip, ESQDISP_AllocateHighlightBitmaps, GROUP_AM_JMPTBL_LIST_InitHeader, ESQDISP_QueueHighlightDrawMessage,
 ;   GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage, GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard, GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc, DST_RefreshBannerBuffer,
@@ -78,8 +78,8 @@ ESQ_MainInitAndRun:
 ; No explicit bounds check is visible here.
 ; Layout-coupled spill risk:
 ;   byte 10+ overwrites Global_REF_BAUD_RATE,
-;   byte 14+ overwrites DATA_WDISP_BSS_WORD_226D,
-;   byte 16+ overwrites DATA_WDISP_BSS_LONG_226E.
+;   byte 14+ overwrites ESQSHARED_BannerColorModeWord,
+;   byte 16+ overwrites ED_Rastport2PenModeSelector.
 .copy_select_code_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_select_code_loop
@@ -352,7 +352,7 @@ ESQ_MainInitAndRun:
 
     MOVEQ   #0,D5
 
-.UNKNOWN2B_AllocRasters_352x240_loop:
+.GRAPHICS_AllocRasters_352x240_loop:
     MOVEQ   #4,D0
     CMP.W   D0,D5
     BGE.S   .select_clock_format_table
@@ -368,7 +368,7 @@ ESQ_MainInitAndRun:
     PEA     668.W                       ; Line Number
     PEA     Global_STR_ESQ_C_3            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -386,7 +386,7 @@ ESQ_MainInitAndRun:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .UNKNOWN2B_AllocRasters_352x240_loop
+    BRA.S   .GRAPHICS_AllocRasters_352x240_loop
 
 .select_clock_format_table:
     MOVE.B  Global_REF_STR_USE_24_HR_CLOCK,D0
@@ -668,7 +668,7 @@ ESQ_MainInitAndRun:
 
     MOVEQ   #0,D5
 
-.UNKNOWN2B_AllocRasters_696x509_loop:
+.GRAPHICS_AllocRasters_696x509_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
     BGE.S   .seed_raster_aliases
@@ -684,7 +684,7 @@ ESQ_MainInitAndRun:
     PEA     991.W                       ; Line Number
     PEA     Global_STR_ESQ_C_8            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -701,7 +701,7 @@ ESQ_MainInitAndRun:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .UNKNOWN2B_AllocRasters_696x509_loop
+    BRA.S   .GRAPHICS_AllocRasters_696x509_loop
 
 .seed_raster_aliases:
     ; Preserve original 696x509 raster bases for display/scratch reuse.
@@ -713,7 +713,7 @@ ESQ_MainInitAndRun:
 .seed_raster_offsets_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
-    BGE.S   .begin_UNKNOWN2B_AllocRasters_696x241
+    BGE.S   .begin_GRAPHICS_AllocRasters_696x241
 
     MOVE.L  D5,D0
     EXT.L   D0
@@ -729,10 +729,10 @@ ESQ_MainInitAndRun:
     ADDQ.W  #1,D5
     BRA.S   .seed_raster_offsets_loop
 
-.begin_UNKNOWN2B_AllocRasters_696x241:
+.begin_GRAPHICS_AllocRasters_696x241:
     MOVEQ   #3,D5
 
-.UNKNOWN2B_AllocRasters_696x241_loop:
+.GRAPHICS_AllocRasters_696x241_loop:
     MOVEQ   #5,D0
     CMP.W   D0,D5
     BGE.S   .init_main_rastport
@@ -748,7 +748,7 @@ ESQ_MainInitAndRun:
     PEA     1008.W                      ; Line Number
     PEA     Global_STR_ESQ_C_9            ; Calling File
     MOVE.L  A0,44(A7)
-    JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -765,7 +765,7 @@ ESQ_MainInitAndRun:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .UNKNOWN2B_AllocRasters_696x241_loop
+    BRA.S   .GRAPHICS_AllocRasters_696x241_loop
 
 .init_main_rastport:
     MOVE.L  WDISP_DisplayContextPlanePointer0,ESQSHARED_DisplayContextPlaneBase0
@@ -794,7 +794,7 @@ ESQ_MainInitAndRun:
 
     MOVEQ   #0,D5
 
-.UNKNOWN2B_AllocRasters_696x2_loop:
+.GRAPHICS_AllocRasters_696x2_loop:
     MOVEQ   #3,D0
     CMP.W   D0,D5
     BGE.S   .after_raster_setup
@@ -810,7 +810,7 @@ ESQ_MainInitAndRun:
     PEA     1027.W                      ; Line Number
     PEA     Global_STR_ESQ_C_10           ; Calling file
     MOVE.L  A0,44(A7)
-    JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L 28(A7),A0
@@ -829,7 +829,7 @@ ESQ_MainInitAndRun:
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
-    BRA.S   .UNKNOWN2B_AllocRasters_696x2_loop
+    BRA.S   .GRAPHICS_AllocRasters_696x2_loop
 
 .after_raster_setup:
     ; Snapshot currently live 696x2 plane bases for ESQSHARED copy paths.
@@ -841,7 +841,7 @@ ESQ_MainInitAndRun:
     PEA     696.W                       ; Width
     PEA     1038.W                      ; Line Number
     PEA     Global_STR_ESQ_C_11           ; Calling file
-    JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     MOVE.L  D0,WDISP_BannerWorkRasterPtr
     CLR.W   WDISP_AccumulatorFlushPending

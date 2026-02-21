@@ -138,7 +138,7 @@ DISPTEXT_AppendToBuffer:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _LVOTextLength, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3, GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter
+;   _LVOTextLength, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AI_JMPTBL_STR_SkipClass3Chars, GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
 ; READS:
 ;   DISPTEXT_STR_SINGLE_SPACE_MEASURE..DISPTEXT_STR_SINGLE_SPACE_DELIM, DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
 ; WRITES:
@@ -187,7 +187,7 @@ DISPTEXT_BuildLineWithWidth:
 
 .append_separator:
     MOVE.L  A2,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     GROUP_AI_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVEA.L D0,A2
     MOVE.L  A2,-20(A5)
@@ -195,7 +195,7 @@ DISPTEXT_BuildLineWithWidth:
     PEA     50.W
     PEA     -73(A5)
     MOVE.L  A2,-(A7)
-    JSR     GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter(PC)
+    JSR     GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(PC)
 
     LEA     20(A7),A7
     MOVEA.L D0,A2

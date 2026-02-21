@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0/A0/A3
 ; CALLS:
-;   UNKNOWN7_SkipCharClass3 (skip class3), PARSE_ReadSignedLong (parse signed decimal)
+;   STR_SkipClass3Chars (skip class3), PARSE_ReadSignedLong (parse signed decimal)
 ; DESC:
 ;   Skips class-3 characters, parses a signed decimal, returns the value.
 ;------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ PARSE_ReadSignedLongSkipClass3:
 
 .have_input:
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN7_SkipCharClass3(PC)
+    JSR     STR_SkipClass3Chars(PC)
 
     MOVEA.L D0,A3
     PEA     -4(A5)
@@ -54,7 +54,7 @@ PARSE_ReadSignedLongSkipClass3:
 ; CLOBBERS:
 ;   D0/A0/A3
 ; CALLS:
-;   UNKNOWN7_SkipCharClass3 (skip class3), PARSE_ReadSignedLong_NoBranch (parse signed decimal)
+;   STR_SkipClass3Chars (skip class3), PARSE_ReadSignedLong_NoBranch (parse signed decimal)
 ; DESC:
 ;   Skips class-3 characters, parses a signed decimal, returns the value.
 ; NOTES:
@@ -73,7 +73,7 @@ PARSE_ReadSignedLongSkipClass3_Alt:
 
 .have_input:
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN7_SkipCharClass3(PC)
+    JSR     STR_SkipClass3Chars(PC)
 
     MOVEA.L D0,A3
     PEA     -4(A5)

@@ -24,7 +24,7 @@
 
     ; Dead code
     MOVEM.L D0-D1/A0-A4,-(A7)
-    MOVE.W  DATA_WDISP_BSS_WORD_226D,D0
+    MOVE.W  ESQSHARED_BannerColorModeWord,D0
     JSR     ESQSHARED4_ResetBannerColorSweepState
 
     MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46
@@ -41,7 +41,7 @@
 
     ; Dead code.
     MOVEM.L D0-D1/A0-A4,-(A7)
-    MOVE.W  DATA_WDISP_BSS_WORD_226D,D0
+    MOVE.W  ESQSHARED_BannerColorModeWord,D0
     JSR     ESQSHARED4_ResetBannerColorSweepState
 
     MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46

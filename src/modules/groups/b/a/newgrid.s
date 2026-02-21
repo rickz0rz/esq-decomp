@@ -30,7 +30,7 @@
     XDEF    NEWGRID_JMPTBL_MATH_Mulu32
     XDEF    NEWGRID_JMPTBL_MEMORY_AllocateMemory
     XDEF    NEWGRID_JMPTBL_MEMORY_DeallocateMemory
-    XDEF    NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter
+    XDEF    NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN
     XDEF    NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel
 
 ;!======
@@ -58,7 +58,7 @@
 ;------------------------------------------------------------------------------
 NEWGRID_InitGridResources:
     TST.W   DATA_LOCAVAIL_BSS_WORD_1FFE
-    BNE.W   .return
+    BNE.W   .return_init_status
 
     MOVE.W  #1,DATA_LOCAVAIL_BSS_WORD_1FFE
     JSR     NEWGRID2_EnsureBuffersAllocated(PC)
@@ -76,7 +76,7 @@ NEWGRID_InitGridResources:
     LEA     16(A7),A7
     MOVE.L  D0,Global_REF_GRID_RASTPORT_MAYBE_1
     TST.L   D0
-    BEQ.W   .return
+    BEQ.W   .return_init_status
 
     MOVEA.L D0,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -102,7 +102,7 @@ NEWGRID_InitGridResources:
     LEA     16(A7),A7
     MOVE.L  D0,Global_REF_GRID_RASTPORT_MAYBE_2
     TST.L   D0
-    BEQ.W   .return
+    BEQ.W   .return_init_status
 
     MOVEA.L D0,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
@@ -162,7 +162,7 @@ NEWGRID_InitGridResources:
 .align_even:
     BSR.W   NEWGRID_DrawTopBorderLine
 
-.return:
+.return_init_status:
     RTS
 
 ;!======
@@ -263,7 +263,7 @@ NEWGRID_ClearHighlightArea:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_IsGridReadyForInput   (Check gating flags)
+; FUNC: NEWGRID_IsGridReadyForInput   (Check input gating flags)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -287,32 +287,32 @@ NEWGRID_IsGridReadyForInput:
 
     MOVEQ   #1,D0
     CMP.L   D0,D7
-    BNE.S   .check_second_gate
+    BNE.S   .check_primary_gate
 
     TST.B   TEXTDISP_SecondaryGroupPresentFlag
-    BEQ.S   .allow
+    BEQ.S   .allow_input
 
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .allow
+    BLS.S   .allow_input
 
-.check_second_gate:
+.check_primary_gate:
     TST.B   TEXTDISP_PrimaryGroupPresentFlag
-    BEQ.S   .allow
+    BEQ.S   .allow_input
 
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVEQ   #0,D1
     CMP.W   D1,D0
-    BLS.S   .allow
+    BLS.S   .allow_input
 
     MOVEQ   #0,D0
-    BRA.S   .return
+    BRA.S   .return_ready_flag
 
-.allow:
+.allow_input:
     MOVEQ   #1,D0
 
-.return:
+.return_ready_flag:
     MOVE.L  D0,D6
     MOVE.L  D6,D0
 
@@ -321,7 +321,7 @@ NEWGRID_IsGridReadyForInput:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_SelectNextMode   (Advance grid mode selectionuncertain)
+; FUNC: NEWGRID_SelectNextMode   (Advance grid mode selection)
 ; ARGS:
 ;   stack +34: arg_1 (via 38(A5))
 ; RET:
@@ -355,7 +355,7 @@ NEWGRID_SelectNextMode:
     MOVE.B  DATA_CTASKS_STR_Y_1BB7,D0
     MOVEQ   #'Y',D1
     CMP.B   D1,D0
-    BNE.S   .select_next_slot
+    BNE.S   .evaluate_next_candidate
 
     MOVE.L  DATA_CTASKS_CONST_LONG_1BBE,D0
     TST.L   D0
@@ -367,21 +367,21 @@ NEWGRID_SelectNextMode:
 
     MOVE.L  DATA_NEWGRID_BSS_LONG_200A,D7
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_2003
-    BRA.S   .select_next_slot
+    BRA.S   .evaluate_next_candidate
 
 .decrement_cycle_counter:
     SUBQ.L  #1,DATA_NEWGRID_BSS_LONG_2003
     MOVEQ   #12,D6
     MOVEQ   #1,D5
-    BRA.S   .select_next_slot
+    BRA.S   .evaluate_next_candidate
 
 .force_select_current:
     MOVEQ   #12,D6
     MOVEQ   #1,D5
 
-.select_next_slot:
+.evaluate_next_candidate:
     TST.W   D5
-    BNE.W   .return
+    BNE.W   .return_selected_mode
 
     MOVE.L  DATA_NEWGRID_BSS_LONG_200A,D0
     ASL.L   #2,D0
@@ -392,23 +392,23 @@ NEWGRID_SelectNextMode:
 
     MOVEQ   #0,D0
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_200A
-    BRA.S   .check_mode_group
+    BRA.S   .dispatch_mode_family
 
 .advance_slot_index:
     ADDQ.L  #1,DATA_NEWGRID_BSS_LONG_200A
 
-.check_mode_group:
+.dispatch_mode_family:
     MOVE.B  DATA_CTASKS_STR_Y_1BB7,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.W   .switch_group2_entry
+    BNE.W   .dispatch_non_y_mode_group2
 
     MOVE.L  D6,D0
     SUBQ.L  #5,D0
-    BLT.W   .check_cycle_match
+    BLT.W   .validate_cycle_gate
 
     CMPI.L  #$8,D0
-    BGE.W   .check_cycle_match
+    BGE.W   .validate_cycle_gate
 
     ADD.W   D0,D0
     MOVE.W  .switch_group1_jumptable(PC,D0.W),D0
@@ -422,8 +422,8 @@ NEWGRID_SelectNextMode:
     DC.W    .case_group1_3-.switch_group1_jumptable-2
     DC.W    .case_group1_4-.switch_group1_jumptable-2
     DC.W    .case_group1_5-.switch_group1_jumptable-2
-    DC.W    .check_cycle_match-.switch_group1_jumptable-2
-    DC.W    .check_cycle_match-.switch_group1_jumptable-2
+    DC.W    .validate_cycle_gate-.switch_group1_jumptable-2
+    DC.W    .validate_cycle_gate-.switch_group1_jumptable-2
 
 .case_group1_1:
     MOVE.B  DATA_CTASKS_BSS_BYTE_1BA4,D0
@@ -432,7 +432,7 @@ NEWGRID_SelectNextMode:
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,D5
-    BRA.S   .check_cycle_match
+    BRA.S   .validate_cycle_gate
 
 .case_group1_2:
     MOVE.B  DATA_CTASKS_CONST_BYTE_1BA5,D0
@@ -441,7 +441,7 @@ NEWGRID_SelectNextMode:
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,D5
-    BRA.S   .check_cycle_match
+    BRA.S   .validate_cycle_gate
 
 .case_group1_3:
     MOVE.B  DATA_CTASKS_BSS_BYTE_1BAD,D0
@@ -450,7 +450,7 @@ NEWGRID_SelectNextMode:
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,D5
-    BRA.S   .check_cycle_match
+    BRA.S   .validate_cycle_gate
 
 .case_group1_0:
     TST.L   GCOMMAND_NicheModeCycleCount
@@ -459,7 +459,7 @@ NEWGRID_SelectNextMode:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D5
-    BRA.S   .check_cycle_match
+    BRA.S   .validate_cycle_gate
 
 .case_group1_4:
     TST.L   GCOMMAND_MplexModeCycleCount
@@ -468,7 +468,7 @@ NEWGRID_SelectNextMode:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D5
-    BRA.S   .check_cycle_match
+    BRA.S   .validate_cycle_gate
 
 .case_group1_5:
     TST.L   GCOMMAND_PpvModeCycleCount
@@ -478,25 +478,25 @@ NEWGRID_SelectNextMode:
     EXT.L   D0
     MOVE.L  D0,D5
 
-.check_cycle_match:
+.validate_cycle_gate:
     TST.W   D5
-    BNE.W   .select_next_slot
+    BNE.W   .evaluate_next_candidate
 
     MOVE.L  DATA_NEWGRID_BSS_LONG_200A,D0
     CMP.L   D7,D0
-    BNE.W   .select_next_slot
+    BNE.W   .evaluate_next_candidate
 
     MOVEQ   #12,D6
     MOVEQ   #1,D5
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
-.switch_group2_entry:
+.dispatch_non_y_mode_group2:
     MOVE.L  D6,D0
     SUBQ.L  #5,D0
-    BLT.W   .select_next_slot
+    BLT.W   .evaluate_next_candidate
 
     CMPI.L  #$8,D0
-    BGE.W   .select_next_slot
+    BGE.W   .evaluate_next_candidate
 
     ADD.W   D0,D0
     MOVE.W  .switch_group2_jumptable(PC,D0.W),D0
@@ -510,146 +510,146 @@ NEWGRID_SelectNextMode:
     DC.W    .case_group2_3-.switch_group2_jumptable-2
     DC.W    .case_group2_4-.switch_group2_jumptable-2
     DC.W    .case_group2_5-.switch_group2_jumptable-2
-    DC.W    .select_next_slot-.switch_group2_jumptable-2
+    DC.W    .evaluate_next_candidate-.switch_group2_jumptable-2
     DC.W    .case_group2_7-.switch_group2_jumptable-2
 
 .case_group2_1:
     MOVE.B  (DATA_CTASKS_BSS_BYTE_1BA4).L,D0
     TST.B   D0
-    BLE.S   .case_group2_1_done
+    BLE.S   .case_group2_1_gate_false
 
     SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2005
-    BGT.S   .case_group2_1_done
+    BGT.S   .case_group2_1_gate_false
 
     MOVEQ   #1,D1
-    BRA.S   .case_group2_1_commit
+    BRA.S   .case_group2_1_store_gate
 
-.case_group2_1_done:
+.case_group2_1_gate_false:
     MOVEQ   #0,D1
 
-.case_group2_1_commit:
+.case_group2_1_store_gate:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   .select_next_slot
+    BEQ.W   .evaluate_next_candidate
 
     MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2005
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
 .case_group2_2:
     MOVE.B  DATA_CTASKS_CONST_BYTE_1BA5,D0
     TST.B   D0
-    BLE.S   .case_group2_2_done
+    BLE.S   .case_group2_2_gate_false
 
     SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2004
-    BGT.S   .case_group2_2_done
+    BGT.S   .case_group2_2_gate_false
 
     MOVEQ   #1,D1
-    BRA.S   .case_group2_2_commit
+    BRA.S   .case_group2_2_store_gate
 
-.case_group2_2_done:
+.case_group2_2_gate_false:
     MOVEQ   #0,D1
 
-.case_group2_2_commit:
+.case_group2_2_store_gate:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   .select_next_slot
+    BEQ.W   .evaluate_next_candidate
 
     MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2004
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
 .case_group2_3:
     MOVE.B  DATA_CTASKS_BSS_BYTE_1BAD,D0
     TST.B   D0
-    BLE.S   .case_group2_3_done
+    BLE.S   .case_group2_3_gate_false
 
     SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2006
-    BGT.S   .case_group2_3_done
+    BGT.S   .case_group2_3_gate_false
 
     MOVEQ   #1,D1
-    BRA.S   .case_group2_3_commit
+    BRA.S   .case_group2_3_store_gate
 
-.case_group2_3_done:
+.case_group2_3_gate_false:
     MOVEQ   #0,D1
 
-.case_group2_3_commit:
+.case_group2_3_store_gate:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   .select_next_slot
+    BEQ.W   .evaluate_next_candidate
 
     MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2006
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
 .case_group2_0:
     MOVE.L  GCOMMAND_NicheModeCycleCount,D0
     TST.L   D0
-    BLE.S   .case_group2_0_done
+    BLE.S   .case_group2_0_gate_false
 
     SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2007
-    BGT.S   .case_group2_0_done
+    BGT.S   .case_group2_0_gate_false
 
     MOVEQ   #1,D1
-    BRA.S   .case_group2_0_commit
+    BRA.S   .case_group2_0_store_gate
 
-.case_group2_0_done:
+.case_group2_0_gate_false:
     MOVEQ   #0,D1
 
-.case_group2_0_commit:
+.case_group2_0_store_gate:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   .select_next_slot
+    BEQ.W   .evaluate_next_candidate
 
     MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2007
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
 .case_group2_4:
     MOVE.L  GCOMMAND_MplexModeCycleCount,D0
     TST.L   D0
-    BLE.S   .case_group2_4_done
+    BLE.S   .case_group2_4_gate_false
 
     SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2008
-    BGT.S   .case_group2_4_done
+    BGT.S   .case_group2_4_gate_false
 
     MOVEQ   #1,D1
-    BRA.S   .case_group2_4_commit
+    BRA.S   .case_group2_4_store_gate
 
-.case_group2_4_done:
+.case_group2_4_gate_false:
     MOVEQ   #0,D1
 
-.case_group2_4_commit:
+.case_group2_4_store_gate:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   .select_next_slot
+    BEQ.W   .evaluate_next_candidate
 
     MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2008
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
 .case_group2_5:
     MOVE.L  GCOMMAND_PpvModeCycleCount,D0
     TST.L   D0
-    BLE.S   .case_group2_5_done
+    BLE.S   .case_group2_5_gate_false
 
     SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2009
-    BGT.S   .case_group2_5_done
+    BGT.S   .case_group2_5_gate_false
 
     MOVEQ   #1,D1
-    BRA.S   .case_group2_5_commit
+    BRA.S   .case_group2_5_store_gate
 
-.case_group2_5_done:
+.case_group2_5_gate_false:
     MOVEQ   #0,D1
 
-.case_group2_5_commit:
+.case_group2_5_store_gate:
     MOVE.L  D1,D5
     TST.W   D5
-    BEQ.W   .select_next_slot
+    BEQ.W   .evaluate_next_candidate
 
     MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2009
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
 .case_group2_7:
     MOVEQ   #1,D5
-    BRA.W   .select_next_slot
+    BRA.W   .evaluate_next_candidate
 
-.return:
+.return_selected_mode:
     MOVE.L  D6,D0
     MOVEM.L (A7)+,D5-D7
     UNLK    A5
@@ -684,7 +684,7 @@ NEWGRID_MapSelectionToMode:
     MOVE.W  18(A7),D6
     MOVE.L  D7,D0
     CMPI.L  #$d,D0
-    BCC.S   .out_of_range
+    BCC.S   .selection_out_of_range
 
     ADD.W   D0,D0
     MOVE.W  .switch_selection_jumptable(PC,D0.W),D0
@@ -708,15 +708,15 @@ NEWGRID_MapSelectionToMode:
 
 .case_sel_0:
     MOVEQ   #1,D7
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
 .case_sel_1:
     MOVEQ   #2,D7
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
 .case_sel_2:
     MOVEQ   #3,D7
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
 .case_sel_3:
     MOVE.L  D6,D0
@@ -726,17 +726,17 @@ NEWGRID_MapSelectionToMode:
 
     ADDQ.W  #4,A7
     TST.W   D0
-    BEQ.S   .case_sel_3_not_ready
+    BEQ.S   .case_sel_3_fallback_mode4
 
     MOVEQ   #11,D0
-    BRA.S   .case_sel_3_set
+    BRA.S   .case_sel_3_store_mode
 
-.case_sel_3_not_ready:
+.case_sel_3_fallback_mode4:
     MOVEQ   #4,D0
 
-.case_sel_3_set:
+.case_sel_3_store_mode:
     MOVE.L  D0,D7
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
 .case_sel_4:
     TST.L   GCOMMAND_NicheForceMode5Flag
@@ -744,22 +744,22 @@ NEWGRID_MapSelectionToMode:
 
     MOVEQ   #5,D7
     CLR.L   GCOMMAND_NicheModeCycleCount
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
 .case_sel_5:
     BSR.W   NEWGRID_SelectNextMode
 
     MOVE.L  D0,D7
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
 .case_sel_6:
     MOVEQ   #1,D7
-    BRA.S   .done
+    BRA.S   .return_mapped_mode
 
-.out_of_range:
+.selection_out_of_range:
     MOVEQ   #0,D7
 
-.done:
+.return_mapped_mode:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D6-D7
     RTS
@@ -836,22 +836,22 @@ NEWGRID_DrawClockFormatHeader:
 .loop_columns:
     MOVEQ   #3,D0
     CMP.L   D0,D6
-    BGE.W   .done_columns
+    BGE.W   .finish_columns
 
     MOVE.L  D7,D0
     ADD.L   D6,D0
     MOVEQ   #48,D1
     CMP.L   D1,D0
-    BLE.S   .wrap_index
+    BLE.S   .use_wrapped_slot_index
 
     SUB.L   D1,D0
-    BRA.S   .use_index
+    BRA.S   .use_current_slot_index
 
-.wrap_index:
+.use_wrapped_slot_index:
     MOVE.L  D7,D0
     ADD.L   D6,D0
 
-.use_index:
+.use_current_slot_index:
     MOVE.L  D0,D5
     PEA     -97(A5)
     MOVE.L  D5,-(A7)
@@ -873,18 +873,18 @@ NEWGRID_DrawClockFormatHeader:
     ADD.L   D0,D4
     MOVEQ   #2,D0
     CMP.L   D0,D6
-    BNE.S   .calc_column_edge
+    BNE.S   .compute_column_right_edge
 
     MOVE.L  #695,D0
-    BRA.S   .draw_column_bg
+    BRA.S   .draw_column_frame_bg
 
-.calc_column_edge:
+.compute_column_right_edge:
     MOVEQ   #0,D0
     MOVE.W  NEWGRID_ColumnWidthPx,D0
     ADD.L   D4,D0
     SUBQ.L  #1,D0
 
-.draw_column_bg:
+.draw_column_frame_bg:
     PEA     33.W
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
@@ -961,7 +961,7 @@ NEWGRID_DrawClockFormatHeader:
     ADDQ.L  #1,D6
     BRA.W   .loop_columns
 
-.done_columns:
+.finish_columns:
     MOVE.W  #17,52(A3)
     PEA     64.W
     MOVE.L  A3,-(A7)
@@ -1300,25 +1300,25 @@ NEWGRID_ComputeDaySlotFromClock:
     MOVE.W  -16(A5),D0
     MOVEQ   #50,D1
     CMP.W   D1,D0
-    BGE.S   .range_ok
+    BGE.S   .slot_in_supported_range
 
     MOVEQ   #20,D1
     CMP.W   D1,D0
-    BLT.S   .return
+    BLT.S   .return_slot_index
 
     MOVEQ   #29,D1
     CMP.W   D1,D0
-    BGT.S   .return
+    BGT.S   .return_slot_index
 
-.range_ok:
+.slot_in_supported_range:
     ADDQ.L  #1,D7
     MOVEQ   #48,D0
     CMP.L   D0,D7
-    BLE.S   .return
+    BLE.S   .return_slot_index
 
     MOVEQ   #1,D7
 
-.return:
+.return_slot_index:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
@@ -1371,29 +1371,29 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
     MOVE.W  -16(A5),D2
     EXT.L   D2
     CMP.L   D0,D2
-    BGE.S   .range_ok
+    BGE.S   .slot_in_supported_range
 
     MOVEQ   #30,D0
     SUB.L   D1,D0
     MOVE.W  -16(A5),D1
     EXT.L   D1
     CMP.L   D0,D1
-    BLT.S   .return
+    BLT.S   .return_slot_index
 
     MOVE.W  -16(A5),D0
     MOVEQ   #29,D1
     CMP.W   D1,D0
-    BGT.S   .return
+    BGT.S   .return_slot_index
 
-.range_ok:
+.slot_in_supported_range:
     ADDQ.L  #1,D7
     MOVEQ   #48,D0
     CMP.L   D0,D7
-    BLE.S   .return
+    BLE.S   .return_slot_index
 
     MOVEQ   #1,D7
 
-.return:
+.return_slot_index:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D2/D7/A3
     UNLK    A5
@@ -1710,7 +1710,7 @@ NEWGRID_DrawGridFrame:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ShouldOpenEditor   (Check if entry is editableuncertain)
+; FUNC: NEWGRID_ShouldOpenEditor   (Check if entry can open editor)
 ; ARGS:
 ;   stack +8: A3 = entry pointer
 ; RET:
@@ -1718,7 +1718,7 @@ NEWGRID_DrawGridFrame:
 ; CLOBBERS:
 ;   D0/D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3
+;   NEWGRID2_JMPTBL_STR_SkipClass3Chars
 ; READS:
 ;   entry fields at 1(A3)/19(A3), bit 5 at 27(A3)
 ; WRITES:
@@ -1734,50 +1734,50 @@ NEWGRID_ShouldOpenEditor:
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D7
     MOVE.L  A3,D0
-    BEQ.S   .return_zero
+    BEQ.S   .return_open_flag
 
     LEA     19(A3),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-12(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
     MOVE.L  D0,-12(A5)
     MOVE.L  A0,-8(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
     TST.L   -12(A5)
-    BEQ.S   .check_second
+    BEQ.S   .check_primary_text
 
     MOVEA.L -12(A5),A0
     TST.B   (A0)
-    BNE.S   .has_text
+    BNE.S   .reject_open
 
-.check_second:
+.check_primary_text:
     TST.L   D0
-    BEQ.S   .check_flag
+    BEQ.S   .check_editor_flag
 
     MOVEA.L D0,A0
     TST.B   (A0)
-    BNE.S   .has_text
+    BNE.S   .reject_open
 
-.check_flag:
+.check_editor_flag:
     BTST    #5,27(A3)
-    BEQ.S   .has_text
+    BEQ.S   .reject_open
 
     MOVEQ   #1,D0
-    BRA.S   .store_result
+    BRA.S   .store_open_decision
 
-.has_text:
+.reject_open:
     MOVEQ   #0,D0
 
-.store_result:
+.store_open_decision:
     MOVE.L  D0,D7
 
-.return_zero:
+.return_open_flag:
     MOVE.L  D7,D0
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
@@ -1800,7 +1800,7 @@ NEWGRID_ShouldOpenEditor:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter, _LVOTextLength, _LVOMove, _LVOText
+;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
 ;   Global_STR_SINGLE_SPACE, DATA_NEWGRID_SPACE_VALUE_200D, DATA_NEWGRID_SPACE_VALUE_200E
 ; WRITES:
@@ -1825,20 +1825,20 @@ NEWGRID_DrawWrappedText:
     MOVE.L  D0,-16(A5)
     MOVE.L  D0,-12(A5)
     MOVE.L  A2,D0
-    BEQ.S   .init_input
+    BEQ.S   .init_empty_input
 
     MOVE.L  A2,-(A7)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-20(A5)
-    BRA.S   .setup_word_ptr
+    BRA.S   .begin_word_scan
 
-.init_input:
+.init_empty_input:
     SUBA.L  A0,A0
     MOVE.L  A0,-20(A5)
 
-.setup_word_ptr:
+.begin_word_scan:
     MOVE.L  -20(A5),-24(A5)
     MOVEA.L A3,A1
 
@@ -1856,28 +1856,28 @@ NEWGRID_DrawWrappedText:
 
 .process_words:
     TST.L   -20(A5)
-    BEQ.W   .return
+    BEQ.W   .return_next_ptr_or_current
 
     PEA     DATA_NEWGRID_SPACE_VALUE_200D
     PEA     50.W
     PEA     -74(A5)
     MOVE.L  -20(A5),-(A7)
-    JSR     NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter(PC)
+    JSR     NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-20(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     16(A7),A7
     MOVE.B  -74(A5),D1
     MOVE.L  D0,-20(A5)
     TST.B   D1
-    BNE.S   .word_found
+    BNE.S   .measure_current_word
 
     MOVEQ   #0,D0
-    BRA.W   .return
+    BRA.W   .return_next_ptr_or_current
 
-.word_found:
+.measure_current_word:
     LEA     -74(A5),A0
     MOVEA.L A0,A1
 
@@ -1897,10 +1897,10 @@ NEWGRID_DrawWrappedText:
     SUB.L   -12(A5),D1
     MOVE.L  D0,-4(A5)
     CMP.L   D1,D0
-    BGT.S   .word_too_long
+    BGT.S   .handle_word_overflow
 
     TST.L   28(A5)
-    BEQ.S   .advance_word
+    BEQ.S   .advance_after_word
 
     LEA     -74(A5),A0
     MOVEA.L A0,A1
@@ -1916,15 +1916,15 @@ NEWGRID_DrawWrappedText:
     MOVE.L  20(A7),D0
     JSR     _LVOText(A6)
 
-.advance_word:
+.advance_after_word:
     MOVE.L  -4(A5),D0
     ADD.L   D0,-12(A5)
     MOVE.L  -20(A5),-24(A5)
-    BRA.S   .check_next_word
+    BRA.S   .check_following_word
 
-.word_too_long:
+.handle_word_overflow:
     CMP.L   D5,D0
-    BLE.S   .return_last_ptr
+    BLE.S   .return_previous_word_ptr
 
     LEA     -74(A5),A0
     MOVEA.L A0,A1
@@ -1942,7 +1942,7 @@ NEWGRID_DrawWrappedText:
 .shrink_word:
     MOVE.L  -16(A5),D0
     TST.L   D0
-    BLE.S   .draw_trimmed_word
+    BLE.S   .draw_trimmed_fragment
 
     MOVEA.L A3,A1
     LEA     -74(A5),A0
@@ -1952,36 +1952,36 @@ NEWGRID_DrawWrappedText:
     MOVE.L  D5,D1
     SUB.L   -12(A5),D1
     CMP.L   D1,D0
-    BLE.S   .draw_trimmed_word
+    BLE.S   .draw_trimmed_fragment
 
     SUBQ.L  #1,-16(A5)
     BRA.S   .shrink_word
 
-.draw_trimmed_word:
+.draw_trimmed_fragment:
     MOVE.L  -16(A5),D0
     TST.L   D0
-    BLE.S   .return_ptr
+    BLE.S   .return_trimmed_ptr
 
     TST.L   28(A5)
-    BEQ.S   .return_ptr
+    BEQ.S   .return_trimmed_ptr
 
     MOVEA.L A3,A1
     LEA     -74(A5),A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
-.return_ptr:
+.return_trimmed_ptr:
     MOVEA.L -24(A5),A0
     MOVEA.L A0,A1
     ADDA.L  -16(A5),A1
     MOVE.L  A1,D0
-    BRA.S   .return
+    BRA.S   .return_next_ptr_or_current
 
-.return_last_ptr:
+.return_previous_word_ptr:
     MOVE.L  -24(A5),D0
-    BRA.S   .return
+    BRA.S   .return_next_ptr_or_current
 
-.check_next_word:
+.check_following_word:
     MOVEA.L -20(A5),A0
     TST.B   (A0)
     BEQ.W   .process_words
@@ -1989,7 +1989,7 @@ NEWGRID_DrawWrappedText:
     MOVE.L  -8(A5),D0
     ADD.L   -12(A5),D0
     CMP.L   D5,D0
-    BGT.S   .return_next_ptr
+    BGT.S   .return_word_boundary_ptr
 
     TST.L   28(A5)
     BEQ.S   .draw_space
@@ -2006,10 +2006,10 @@ NEWGRID_DrawWrappedText:
     ADD.L   D0,-12(A5)
     BRA.W   .process_words
 
-.return_next_ptr:
+.return_word_boundary_ptr:
     MOVE.L  -24(A5),D0
 
-.return:
+.return_next_ptr_or_current:
     MOVEM.L (A7)+,D5-D7/A2-A3
     UNLK    A5
     RTS
@@ -2043,14 +2043,14 @@ NEWGRID_DrawWrappedText:
 NEWGRID_ProcessGridMessages:
     LINK.W  A5,#-4
     TST.W   Global_UIBusyFlag
-    BNE.W   .done
+    BNE.W   .return_from_loop
 
     MOVE.W  ESQPARS2_ReadModeFlags,D0
     CMPI.W  #$101,D0
     BNE.S   .check_reinit
 
     CLR.W   ESQPARS2_ReadModeFlags
-    BRA.W   .done
+    BRA.W   .return_from_loop
 
 .check_reinit:
     TST.L   NEWGRID_RefreshStateFlag
@@ -2066,7 +2066,7 @@ NEWGRID_ProcessGridMessages:
 
 .maybe_init_ui:
     TST.L   NEWGRID_MainModeState
-    BNE.S   .get_msg
+    BNE.S   .poll_highlight_message
 
     BSR.W   NEWGRID_InitGridResources
 
@@ -2094,14 +2094,14 @@ NEWGRID_ProcessGridMessages:
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
 
-.get_msg:
+.poll_highlight_message:
     MOVEA.L ESQ_HighlightReplyPort,A0
     MOVEA.L AbsExecBase,A6
     JSR     _LVOGetMsg(A6)
 
     MOVE.L  D0,-4(A5)
     TST.L   D0
-    BEQ.W   .done
+    BEQ.W   .return_from_loop
 
     MOVEA.L D0,A0
     CLR.W   52(A0)
@@ -2113,13 +2113,13 @@ NEWGRID_ProcessGridMessages:
     MOVEA.L -4(A5),A0
     CLR.L   32(A0)
 
-.dispatch_mode:
+.dispatch_main_mode:
     MOVE.L  NEWGRID_MainModeState,D0
     SUBQ.L  #1,D0
-    BLT.W   .finish_message
+    BLT.W   .finalize_and_reply_message
 
     CMPI.L  #12,D0
-    BGE.W   .finish_message
+    BGE.W   .finalize_and_reply_message
 
     ADD.W   D0,D0
     MOVE.W  .mode_jumptable(PC,D0.W),D0
@@ -2149,7 +2149,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     TST.W   D0
-    BNE.W   .finish_message
+    BNE.W   .finalize_and_reply_message
 
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
@@ -2159,7 +2159,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_1:
     PEA     CLOCK_DaySlotIndex
@@ -2183,7 +2183,7 @@ NEWGRID_ProcessGridMessages:
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_2:
     MOVE.L  -4(A5),-(A7)
@@ -2197,7 +2197,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_10:
     MOVE.L  -4(A5),-(A7)
@@ -2211,7 +2211,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_3:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
@@ -2226,7 +2226,7 @@ NEWGRID_ProcessGridMessages:
 
     LEA     16(A7),A7
     TST.L   D0
-    BNE.W   .finish_message
+    BNE.W   .finalize_and_reply_message
 
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
@@ -2236,7 +2236,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_4:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
@@ -2251,7 +2251,7 @@ NEWGRID_ProcessGridMessages:
 
     LEA     16(A7),A7
     TST.L   D0
-    BNE.W   .finish_message
+    BNE.W   .finalize_and_reply_message
 
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
@@ -2261,7 +2261,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_5:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
@@ -2276,12 +2276,12 @@ NEWGRID_ProcessGridMessages:
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.S   .case_mode5_continue
+    BEQ.S   .case_mode5_map_and_advance
 
     MOVE.W  #1,NEWGRID_HeaderRedrawPending
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
-.case_mode5_continue:
+.case_mode5_map_and_advance:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2290,7 +2290,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_6:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
@@ -2305,12 +2305,12 @@ NEWGRID_ProcessGridMessages:
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.S   .case_mode6_continue
+    BEQ.S   .case_mode6_map_and_advance
 
     MOVE.W  #1,NEWGRID_HeaderRedrawPending
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
-.case_mode6_continue:
+.case_mode6_map_and_advance:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2319,7 +2319,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_7:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
@@ -2334,12 +2334,12 @@ NEWGRID_ProcessGridMessages:
 
     LEA     16(A7),A7
     TST.L   D0
-    BEQ.S   .case_mode7_continue
+    BEQ.S   .case_mode7_map_and_advance
 
     MOVE.W  #1,NEWGRID_HeaderRedrawPending
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
-.case_mode7_continue:
+.case_mode7_map_and_advance:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2348,7 +2348,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_8:
     PEA     CLOCK_DaySlotIndex
@@ -2370,12 +2370,12 @@ NEWGRID_ProcessGridMessages:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.S   .case_mode8_continue
+    BEQ.S   .case_mode8_map_and_advance
 
     MOVE.W  #1,NEWGRID_HeaderRedrawPending
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
-.case_mode8_continue:
+.case_mode8_map_and_advance:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2384,7 +2384,7 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.W   .finish_message
+    BRA.W   .finalize_and_reply_message
 
 .case_mode_9:
     PEA     CLOCK_DaySlotIndex
@@ -2406,12 +2406,12 @@ NEWGRID_ProcessGridMessages:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.S   .case_mode9_continue
+    BEQ.S   .case_mode9_map_and_advance
 
     MOVE.W  #1,NEWGRID_HeaderRedrawPending
-    BRA.S   .finish_message
+    BRA.S   .finalize_and_reply_message
 
-.case_mode9_continue:
+.case_mode9_map_and_advance:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2420,11 +2420,11 @@ NEWGRID_ProcessGridMessages:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
-    BRA.S   .finish_message
+    BRA.S   .finalize_and_reply_message
 
 .case_mode_11:
     TST.W   NEWGRID_HeaderRedrawPending
-    BEQ.S   .case_mode11_continue
+    BEQ.S   .case_mode11_map_and_advance
 
     MOVE.W  NEWGRID_RenderDaySlot,D0
     EXT.L   D0
@@ -2435,7 +2435,7 @@ NEWGRID_ProcessGridMessages:
     ADDQ.W  #8,A7
     CLR.W   NEWGRID_HeaderRedrawPending
 
-.case_mode11_continue:
+.case_mode11_map_and_advance:
     MOVE.W  NEWGRID_SelectedDaySlot,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -2445,10 +2445,10 @@ NEWGRID_ProcessGridMessages:
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_MainModeState
 
-.finish_message:
+.finalize_and_reply_message:
     MOVEA.L -4(A5),A0
     CMPI.W  #0,52(A0)
-    BLS.W   .dispatch_mode
+    BLS.W   .dispatch_main_mode
 
     MOVE.L  -4(A5),-(A7)
     JSR     GCOMMAND_UpdatePresetEntryCache(PC)
@@ -2464,12 +2464,12 @@ NEWGRID_ProcessGridMessages:
 
     BSR.W   NEWGRID_DrawGridTopBars
 
-    BRA.S   .done
+    BRA.S   .return_from_loop
 
 .draw_top_border_line:
     BSR.W   NEWGRID_DrawTopBorderLine
 
-.done:
+.return_from_loop:
     UNLK    A5
     RTS
 
@@ -2658,7 +2658,7 @@ NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds:
     JMP     DATETIME_NormalizeStructToSeconds
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter   (Jump stub)
+; FUNC: NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -2666,12 +2666,12 @@ NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_CopyUntilDelimiter
+;   STR_CopyUntilAnyDelimN
 ; DESC:
-;   Jump table entry that forwards to UNKNOWN7_CopyUntilDelimiter.
+;   Jump table entry that forwards to STR_CopyUntilAnyDelimN.
 ;------------------------------------------------------------------------------
-NEWGRID_JMPTBL_UNKNOWN7_CopyUntilDelimiter:
-    JMP     UNKNOWN7_CopyUntilDelimiter
+NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN:
+    JMP     STR_CopyUntilAnyDelimN
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel   (Jump stub)

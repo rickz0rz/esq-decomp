@@ -324,7 +324,7 @@ ED1_EnterEscMenu:
     JSR     _LVODisable(A6)
 
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
-    CLR.W   DATA_WDISP_BSS_WORD_226D
+    CLR.W   ESQSHARED_BannerColorModeWord
     PEA     3.W
     JSR     GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(PC)
 

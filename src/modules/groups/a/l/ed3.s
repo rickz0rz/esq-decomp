@@ -230,13 +230,13 @@ ED_DrawESCMenuBottomHelp:
 ; CALLS:
 ;   _LVOSetDrMd, _LVOSetAPen, _LVOSetBPen
 ; READS:
-;   WDISP_DisplayContextBase, DATA_WDISP_BSS_LONG_226E, Global_REF_GRAPHICS_LIBRARY
+;   WDISP_DisplayContextBase, ED_Rastport2PenModeSelector, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none)
 ; DESC:
 ;   Sets drawing mode and pen defaults for the secondary rastport.
 ; NOTES:
-;   Uses DATA_WDISP_BSS_LONG_226E to select alternate pen setup.
+;   Uses ED_Rastport2PenModeSelector to select alternate pen setup.
 ;------------------------------------------------------------------------------
 ED_InitRastport2Pens:
     LINK.W  A5,#-4
@@ -253,7 +253,7 @@ ED_InitRastport2Pens:
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #14,D0
-    CMP.L   DATA_WDISP_BSS_LONG_226E,D0
+    CMP.L   ED_Rastport2PenModeSelector,D0
     BNE.S   .after_alt_pens
 
     MOVEA.L -4(A5),A1

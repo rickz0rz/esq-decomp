@@ -1,7 +1,7 @@
     XDEF    GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
     XDEF    GROUP_AA_JMPTBL_STRING_CompareN
     XDEF    GROUP_AA_JMPTBL_STRING_CompareNoCase
-    XDEF    GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster
+    XDEF    GROUP_AA_JMPTBL_GRAPHICS_AllocRaster
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AA_JMPTBL_STRING_CompareNoCase   (Routine at GROUP_AA_JMPTBL_STRING_CompareNoCase)
@@ -70,7 +70,7 @@ GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster   (Routine at GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster)
+; FUNC: GROUP_AA_JMPTBL_GRAPHICS_AllocRaster   (Routine at GROUP_AA_JMPTBL_GRAPHICS_AllocRaster)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -78,7 +78,7 @@ GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN2B_AllocRaster
+;   GRAPHICS_AllocRaster
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -88,5 +88,5 @@ GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster:
-    JMP     UNKNOWN2B_AllocRaster
+GROUP_AA_JMPTBL_GRAPHICS_AllocRaster:
+    JMP     GRAPHICS_AllocRaster

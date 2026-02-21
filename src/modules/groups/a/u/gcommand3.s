@@ -60,7 +60,8 @@
 ; DESC:
 ;   Interpret a keyboard scan code and map it to a preset palette index.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Uses bit masks `$30/$20/$40` on keycode byte and enqueues into
+;   `DATA_ESQPARS2_BSS_LONG_1F48` at `GCOMMAND_BannerQueueSlotPrevious`.
 ;------------------------------------------------------------------------------
 
 ; Interpret a keyboard scan code and map it to a preset palette index.
@@ -127,7 +128,8 @@ GCOMMAND_MapKeycodeToPreset:
 ; DESC:
 ;   Update all banner layout rows to reflect the current highlight flag.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Chooses value 2 when highlight is on, otherwise 0, and writes it into both
+;   banner table row records.
 ;------------------------------------------------------------------------------
 
 ; Update all banner layout rows to reflect the current highlight flag.
@@ -347,7 +349,7 @@ GCOMMAND_DisableHighlight:
 ; DESC:
 ;   Update the preset table entry for row D7 with the supplied value D6.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Guarded to rows `1..15` and values `0..$0FFF`.
 ;------------------------------------------------------------------------------
 
 ; Update the preset table entry for row D7 with the supplied value D6.
@@ -416,7 +418,7 @@ GCOMMAND_SetPresetEntry_Return:
 ; DESC:
 ;   Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Treats high/low nibbles as decimal digits per byte to build row values.
 ;------------------------------------------------------------------------------
 GCOMMAND_ExpandPresetBlock:
     MOVEM.L D2/D5-D7/A3,-(A7)
@@ -492,7 +494,7 @@ GCOMMAND_ExpandPresetBlock_Return:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ValidatePresetTable   (ValidatePresetTableuncertain)
+; FUNC: GCOMMAND_ValidatePresetTable   (Validate preset table and repair from defaults)
 ; ARGS:
 ;   stack +4: presetTable (base pointer)
 ; RET:
@@ -634,7 +636,7 @@ GCOMMAND_ValidatePresetTable_Return:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_InitPresetTableFromPalette   (InitPresetTableFromPaletteuncertain)
+; FUNC: GCOMMAND_InitPresetTableFromPalette   (InitPresetTableFromPalette)
 ; ARGS:
 ;   stack +4: presetTable (base pointer)
 ; RET:
@@ -650,7 +652,11 @@ GCOMMAND_ValidatePresetTable_Return:
 ; DESC:
 ;   Fills preset table entries using palette data in DATA_GCOMMAND_CONST_LONG_1FA2.
 ; NOTES:
-;   Uses a helper at MATH_Mulu32 to compute palette index; layout inferred.
+;   Table layout used here is:
+;     presetTable + (row*2)                      = rowCount (initialized to 16)
+;     presetTable + 32 + (row*128) + (col*2)     = value word
+;   with row in 0..15 and col in 0..15 for this initializer pass.
+;   Source lookup uses DATA_GCOMMAND_CONST_LONG_1FA2 with base index (row*62)+col.
 ;------------------------------------------------------------------------------
 GCOMMAND_InitPresetTableFromPalette:
     LINK.W  A5,#-8
@@ -726,7 +732,7 @@ GCOMMAND_InitPresetTableFromPalette_Return:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_InitPresetDefaults   (InitPresetDefaultsuncertain)
+; FUNC: GCOMMAND_InitPresetDefaults   (Initialize default preset table from palette constants)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -753,7 +759,7 @@ GCOMMAND_InitPresetDefaults:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ComputePresetIncrement   (ComputePresetIncrementuncertain)
+; FUNC: GCOMMAND_ComputePresetIncrement   (Compute per-tick preset delta from span and index)
 ; ARGS:
 ;   stack +4: presetIndex (0..15)
 ;   stack +8: span (value > 4 to enable scaling)
@@ -824,7 +830,7 @@ GCOMMAND_ComputePresetIncrement:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_UpdatePresetEntryCache   (UpdatePresetEntryCacheuncertain)
+; FUNC: GCOMMAND_UpdatePresetEntryCache   (Populate cached preset deltas for one preset record)
 ; ARGS:
 ;   stack +4: presetRecord (struct pointer)
 ; RET:
@@ -902,7 +908,7 @@ GCOMMAND_UpdatePresetEntryCache_Return:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ResetPresetWorkTables   (ResetPresetWorkTablesuncertain)
+; FUNC: GCOMMAND_ResetPresetWorkTables   (Clear preset work-entry table and pending flag)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -953,7 +959,7 @@ GCOMMAND_ResetPresetWorkTables:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_InitPresetWorkEntry   (InitPresetWorkEntryuncertain)
+; FUNC: GCOMMAND_InitPresetWorkEntry   (Initialize one preset work-entry state block)
 ; ARGS:
 ;   stack +4: entryPtr (work entry)
 ;   stack +8: presetIndex
@@ -1040,7 +1046,7 @@ GCOMMAND_InitPresetWorkEntry:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadPresetWorkEntries   (LoadPresetWorkEntriesuncertain)
+; FUNC: GCOMMAND_LoadPresetWorkEntries   (Seed all preset work entries from message/record payload)
 ; ARGS:
 ;   stack +4: presetRecord
 ; RET:
@@ -1094,7 +1100,7 @@ GCOMMAND_LoadPresetWorkEntries:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_TickPresetWorkEntries   (TickPresetWorkEntriesuncertain)
+; FUNC: GCOMMAND_TickPresetWorkEntries   (Advance and clamp preset work-entry accumulators)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1250,7 +1256,7 @@ GCOMMAND_UpdateBannerBounds:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_RebuildBannerTablesFromBounds   (RebuildBannerTablesFromBoundsuncertain)
+; FUNC: GCOMMAND_RebuildBannerTablesFromBounds   (RebuildBannerTablesFromBounds)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1267,6 +1273,9 @@ GCOMMAND_UpdateBannerBounds:
 ;   Rebuilds banner tables from the cached bounds and preset definitions.
 ; NOTES:
 ;   Uses DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3 as fallback values when preset tables are negative.
+;   Writes both ESQ_CopperListBannerA and ESQ_CopperListBannerB from +$80 onward.
+;   The row loop runs 17 iterations (D7 = 0..16), using 32-byte row stride.
+;   Per-row gradient words land at offsets +6/+10/+14/+18 in each 32-byte entry.
 ;------------------------------------------------------------------------------
 GCOMMAND_RebuildBannerTablesFromBounds:
     LINK.W  A5,#-24
@@ -1453,7 +1462,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
 ; DESC:
 ;   Return the current banner character stored at ESQ_CopperListBannerA.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Reads byte 0 from `ESQ_CopperListBannerA` and returns it zero-extended.
 ;------------------------------------------------------------------------------
 
 ; Return the current banner character stored at ESQ_CopperListBannerA.
@@ -1468,7 +1477,7 @@ GCOMMAND_GetBannerChar:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_UpdateBannerRowPointers   (UpdateBannerRowPointersuncertain)
+; FUNC: GCOMMAND_UpdateBannerRowPointers   (Refresh per-row linked pointer words in banner copper table)
 ; ARGS:
 ;   stack +4: tablePtr (banner table base)
 ; RET:
@@ -1485,6 +1494,7 @@ GCOMMAND_GetBannerChar:
 ;   Updates pointer words in the banner table based on current/previous indices.
 ; NOTES:
 ;   Special-cases GCOMMAND_BannerRowIndexPrevious == 97 to use the tail entry at offset 3876.
+;   Row stride is 32 bytes (`ASL.L #5`); writes pointer words at `+$2FA`/`+$2FE`.
 ;------------------------------------------------------------------------------
 GCOMMAND_UpdateBannerRowPointers:
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
@@ -1559,7 +1569,7 @@ GCOMMAND_UpdateBannerRowPointers:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_BuildBannerRow   (BuildBannerRowuncertain)
+; FUNC: GCOMMAND_BuildBannerRow   (Emit one banner copper row from bitmap/preset state)
 ; ARGS:
 ;   stack +4: bitmapPtr
 ;   stack +8: tablePtr (banner table base)
@@ -1580,6 +1590,7 @@ GCOMMAND_UpdateBannerRowPointers:
 ;   Writes banner row pointer fields and color values into the table.
 ; NOTES:
 ;   Uses rowIndex when > 0, otherwise fallbackIndex. Row stride is 32 bytes.
+;   Color words land at row-local offsets `+$2EA/+2EE/+2F2/+2F6`.
 ;------------------------------------------------------------------------------
 GCOMMAND_BuildBannerRow:
     LINK.W  A5,#-12
@@ -1731,7 +1742,7 @@ GCOMMAND_BuildBannerRow:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ClearBannerQueue   (ClearBannerQueueuncertain)
+; FUNC: GCOMMAND_ClearBannerQueue   (Clear queued banner control bytes)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1868,7 +1879,7 @@ GCOMMAND_ClearBannerQueue:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ConsumeBannerQueueEntry   (ConsumeBannerQueueEntryuncertain)
+; FUNC: GCOMMAND_ConsumeBannerQueueEntry   (Consume one queued banner control byte and apply mode changes)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1885,6 +1896,7 @@ GCOMMAND_ClearBannerQueue:
 ;   Consumes the current banner queue entry and updates highlight flags.
 ; NOTES:
 ;   Recognizes 0xFF and 0xFE as control bytes with special handling.
+;   0xFF arms countdown/attention path; 0xFE forces read mode `$0101`.
 ;------------------------------------------------------------------------------
 GCOMMAND_ConsumeBannerQueueEntry:
     MOVE.L  D2,-(A7)
@@ -1954,7 +1966,7 @@ GCOMMAND_ConsumeBannerQueueEntry:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_RefreshBannerTables   (RefreshBannerTablesuncertain)
+; FUNC: GCOMMAND_RefreshBannerTables   (Rebuild active rows in both banner copper tables)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2004,7 +2016,7 @@ GCOMMAND_RefreshBannerTables:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ServiceHighlightMessages   (ServiceHighlightMessagesuncertain)
+; FUNC: GCOMMAND_ServiceHighlightMessages   (Poll/process highlight messages and drive banner updates)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2025,6 +2037,8 @@ GCOMMAND_RefreshBannerTables:
 ;   banner/preset state each tick.
 ; NOTES:
 ;   Replies to messages when their countdown at 52(A0) reaches zero.
+;   Message layout (inferred): +20/+24/+28 saved longs, +32 preset record ptr,
+;   +52 countdown, +54 keycode/preset trigger byte.
 ;------------------------------------------------------------------------------
 GCOMMAND_ServiceHighlightMessages:
     TST.L   GCOMMAND_ActiveHighlightMsgPtr
@@ -2039,7 +2053,7 @@ GCOMMAND_ServiceHighlightMessages:
     BEQ.S   .update_tables
 
     MOVEA.L D0,A0
-    MOVE.L  32(A0),D1
+    MOVE.L  32(A0),D1                     ; A0+32 = preset record ptr (or -1)
     TST.L   D1
     BMI.S   .maybe_store_msg
 
@@ -2050,10 +2064,10 @@ GCOMMAND_ServiceHighlightMessages:
 
 .maybe_store_msg:
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.L  20(A0),DATA_WDISP_BSS_LONG_230D
-    MOVE.L  24(A0),DATA_WDISP_BSS_LONG_230E
-    MOVE.L  28(A0),DATA_WDISP_BSS_LONG_230F
-    MOVE.B  54(A0),D0
+    MOVE.L  20(A0),DATA_WDISP_BSS_LONG_230D ; A0+20 = saved field 0
+    MOVE.L  24(A0),DATA_WDISP_BSS_LONG_230E ; A0+24 = saved field 1
+    MOVE.L  28(A0),DATA_WDISP_BSS_LONG_230F ; A0+28 = saved field 2
+    MOVE.B  54(A0),D0                       ; A0+54 = keycode/preset trigger
     TST.B   D0
     BEQ.S   .update_tables
 
@@ -2075,7 +2089,7 @@ GCOMMAND_ServiceHighlightMessages:
     BEQ.W   .no_active_msg
 
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.W  52(A0),D0
+    MOVE.W  52(A0),D0                       ; A0+52 = countdown ticks
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BHI.S   .handle_active_msg
@@ -2097,15 +2111,15 @@ GCOMMAND_ServiceHighlightMessages:
     JSR     ESQSHARED4_CopyPlanesFromContextToSnapshot(PC)
 
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.W  52(A0),D0
+    MOVE.W  52(A0),D0                       ; A0+52 = countdown ticks
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.W  D1,52(A0)
+    MOVE.W  D1,52(A0)                       ; A0+52 = countdown ticks
 
 .check_countdown:
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.W  52(A0),D0
+    MOVE.W  52(A0),D0                       ; A0+52 = countdown ticks
     MOVEQ   #0,D1
     CMP.W   D1,D0
     BHI.S   .return
@@ -2116,8 +2130,8 @@ GCOMMAND_ServiceHighlightMessages:
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
     MOVE.L  DATA_WDISP_BSS_LONG_230F,28(A0)
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A0
-    MOVE.W  D1,52(A0)
-    CLR.L   32(A0)
+    MOVE.W  D1,52(A0)                       ; A0+52 = countdown reset to 0
+    CLR.L   32(A0)                          ; A0+32 = clear preset record ptr
     MOVEA.L GCOMMAND_ActiveHighlightMsgPtr,A1
     MOVEA.L AbsExecBase,A6
     JSR     _LVOReplyMsg(A6)
@@ -2133,7 +2147,7 @@ GCOMMAND_ServiceHighlightMessages:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_TickHighlightState   (TickHighlightStateuncertain)
+; FUNC: GCOMMAND_TickHighlightState   (Advance banner/highlight ring counters for one tick)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2150,6 +2164,7 @@ GCOMMAND_ServiceHighlightMessages:
 ;   Advances highlight/cycle counters and updates related globals.
 ; NOTES:
 ;   Counter wrap thresholds inferred from constants (98, 88, 32).
+;   98 = queue/table ring length, 88 = second-table byte offset delta.
 ;------------------------------------------------------------------------------
 GCOMMAND_TickHighlightState:
     MOVEM.L D2/A4,-(A7)
@@ -2208,7 +2223,7 @@ GCOMMAND_TickHighlightState:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ResetHighlightMessages   (ResetHighlightMessagesuncertain)
+; FUNC: GCOMMAND_ResetHighlightMessages   (Clear active/highlight message slots and restore saved fields)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2273,7 +2288,7 @@ GCOMMAND_ResetHighlightMessages:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_BuildBannerBlock   (BuildBannerBlockuncertain)
+; FUNC: GCOMMAND_BuildBannerBlock   (BuildBannerBlock)
 ; ARGS:
 ;   stack +4: outPtr
 ;   stack +8: count
@@ -2296,6 +2311,19 @@ GCOMMAND_ResetHighlightMessages:
 ;   Emits a block of banner/copper entries using preset tables and source bytes.
 ; NOTES:
 ;   Entry count comes from stack +8; uses Global_UIBusyFlag to optionally force count=0.
+;   Emitted entry format is 32 bytes/row (offsets from A0 row base):
+;     +0  u8  source byte (from *srcPtr, incremented each row by argByte1)
+;     +1  u8  argByte0
+;     +2  u16 argWord0
+;     +4  u16 $0188, +6  u16 color0
+;     +8  u16 $018A, +10 u16 color1
+;     +12 u16 $018C, +14 u16 color2
+;     +16 u16 $018E, +18 u16 color3
+;     +20 u16 $0084, +22 u16 nextPtr_hi
+;     +24 u16 $0086, +26 u16 nextPtr_lo
+;     +28 u16 $008A, +30 u16 0
+;   colorN words come from preset work entries, or DATA_ESQ_* fallback bytes when
+;   the corresponding value index is negative.
 ;------------------------------------------------------------------------------
 GCOMMAND_BuildBannerBlock:
     LINK.W  A5,#-12
@@ -2490,7 +2518,7 @@ GCOMMAND_BuildBannerBlock:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_CopyImageDataToBitmap   (CopyImageDataToBitmapuncertain)
+; FUNC: GCOMMAND_CopyImageDataToBitmap   (Emit banner copper template and row block into target table)
 ; ARGS:
 ;   stack +4: bitmapPtr
 ;   stack +8: tablePtr
@@ -2511,7 +2539,8 @@ GCOMMAND_BuildBannerBlock:
 ; DESC:
 ;   Emits a banner copper-list block into tablePtr using source offsets.
 ; NOTES:
-;   Argument layout inferred from call sites; exact semantics still TBD.
+;   Seeds a fixed copper prologue, then appends per-row words via
+;   GCOMMAND_BuildBannerBlock.
 ;------------------------------------------------------------------------------
 GCOMMAND_CopyImageDataToBitmap:
     LINK.W  A5,#-4
@@ -2848,7 +2877,7 @@ GCOMMAND_CopyImageDataToBitmap:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_BuildBannerTables   (BuildBannerTablesuncertain)
+; FUNC: GCOMMAND_BuildBannerTables   (Reset counters and rebuild both banner copper tables)
 ; ARGS:
 ;   stack +8: arg0 (byte, low byte used)
 ;   stack +12: arg1 (word, low word used)
@@ -2868,6 +2897,7 @@ GCOMMAND_CopyImageDataToBitmap:
 ;   Resets banner-related globals and rebuilds the banner tables into the bitmap.
 ; NOTES:
 ;   Argument bytes/words are forwarded into GCOMMAND_CopyImageDataToBitmap calls.
+;   Seeds queue slots to 97/96 and row indices to 84/85 before first tick.
 ;------------------------------------------------------------------------------
 GCOMMAND_BuildBannerTables:
     LINK.W  A5,#-4
@@ -2937,7 +2967,7 @@ GCOMMAND_BuildBannerTables:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ResetBannerFadeState   (ResetBannerFadeStateuncertain)
+; FUNC: GCOMMAND_ResetBannerFadeState   (One-shot banner fade-state reset and rebuild gate)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -2978,7 +3008,7 @@ GCOMMAND_ResetBannerFadeState:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_AddBannerTableByteDelta   (AddBannerTableByteDeltauncertain)
+; FUNC: GCOMMAND_AddBannerTableByteDelta   (Add signed byte delta to banner table head byte)
 ; ARGS:
 ;   stack +4: tablePtr
 ;   stack +8: delta (byte)
@@ -3007,7 +3037,7 @@ GCOMMAND_AddBannerTableByteDelta:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_UpdateBannerOffset   (UpdateBannerOffsetuncertain)
+; FUNC: GCOMMAND_UpdateBannerOffset   (Apply signed row-index delta with ring wrap and pointer refresh)
 ; ARGS:
 ;   stack +8: delta (byte)
 ; RET:
@@ -3073,7 +3103,7 @@ GCOMMAND_UpdateBannerOffset:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_AdjustBannerCopperOffset   (AdjustBannerCopperOffsetuncertain)
+; FUNC: GCOMMAND_AdjustBannerCopperOffset   (Range-check and apply banner copper offset adjustment)
 ; ARGS:
 ;   stack +4: delta (byte)
 ; RET:

@@ -33,7 +33,7 @@
     XDEF    PARSEINI_JMPTBL_STRING_CompareNoCase
     XDEF    PARSEINI_JMPTBL_STRING_CompareNoCaseN
     XDEF    PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
-    XDEF    PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper
+    XDEF    PARSEINI_JMPTBL_STR_FindAnyCharPtr
     XDEF    PARSEINI_JMPTBL_STR_FindCharPtr
     XDEF    PARSEINI_JMPTBL_WDISP_SPrintf
 
@@ -308,7 +308,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section1_cut_marker:
     PEA     DATA_P_TYPE_SPACE_VALUE_2065
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -456,7 +456,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section2_cut_marker:
     PEA     DATA_PARSEINI_SPACE_VALUE_2067
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -543,7 +543,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section4_5_cut_marker:
     PEA     DATA_PARSEINI_SPACE_VALUE_2068
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -625,7 +625,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section6_cut_marker:
     PEA     DATA_PARSEINI_SPACE_VALUE_2069
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -704,7 +704,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section7_cut_marker:
     PEA     DATA_PARSEINI_SPACE_VALUE_206A
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -783,7 +783,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .section8_cut_marker:
     PEA     DATA_PARSEINI_SPACE_VALUE_206B
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-36(A5)
@@ -914,7 +914,7 @@ PARSEINI_ParseHexValueFromString:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D6/D7
 ; CALLS:
-;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_STR_FindAnyCharPtr, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
 ;   PARSEINI_CurrentRangeTableIndex, DATA_PARSEINI_SPACE_VALUE_206E, DATA_PARSEINI_STR_VALUE_206F, DATA_PARSEINI_TAG_TABLE_2070, DATA_PARSEINI_TAG_DONE_2071, DATA_PARSEINI_TAG_COLOR_2072, handle_range_assign, return
 ; WRITES:
@@ -953,12 +953,12 @@ PARSEINI_ParseRangeKeyValue:
     BEQ.S   .term_value_token
 
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     PEA     DATA_PARSEINI_SPACE_VALUE_206E
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -973,12 +973,12 @@ PARSEINI_ParseRangeKeyValue:
     CLR.B   (A0)+
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-8(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     PEA     DATA_PARSEINI_STR_VALUE_206F
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-8(A5)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     LEA     12(A7),A7
     MOVEA.L D0,A3
@@ -3113,7 +3113,7 @@ PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
     JMP     STREAM_ReadLineWithLimit
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper   (JumpStub_UNKNOWN7_FindAnyCharWrapper)
+; FUNC: PARSEINI_JMPTBL_STR_FindAnyCharPtr   (JumpStub_STR_FindAnyCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -3121,14 +3121,14 @@ PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_FindAnyCharWrapper
+;   STR_FindAnyCharPtr
 ; DESC:
-;   Jump stub to UNKNOWN7_FindAnyCharWrapper.
+;   Jump stub to STR_FindAnyCharPtr.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper:
-    JMP     UNKNOWN7_FindAnyCharWrapper
+PARSEINI_JMPTBL_STR_FindAnyCharPtr:
+    JMP     STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: PARSEINI_JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)

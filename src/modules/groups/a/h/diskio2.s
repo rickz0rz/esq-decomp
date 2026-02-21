@@ -2270,7 +2270,7 @@ DISKIO2_LoadOinfoDataFile:
 ; CALLS:
 ;   GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, DISPLIB_DisplayTextAtPosition, GROUP_AG_JMPTBL_STRING_CopyPadNul,
 ;   _LVOLock/_LVOUnLock/_LVOOpen/_LVOClose/_LVORead/_LVOWrite/_LVODeleteFile,
-;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper, DISKIO2_ReceiveTransferBlocksToFile
+;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, GROUP_AH_JMPTBL_STR_FindAnyCharPtr, DISKIO2_ReceiveTransferBlocksToFile
 ; READS:
 ;   DISKIO2_TransferFilenameBuffer..DISKIO_SavedReadModeFlags, ED_DiagnosticsScreenActive, DISKIO2_TransferXorChecksumByte, CTASKS_EXT_GRF
 ; WRITES:
@@ -2530,7 +2530,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 
     PEA     (MODE_NEWFILE).W
     PEA     -58(A5)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,DISKIO_WriteFileHandle
@@ -3098,7 +3098,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper
+;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AH_JMPTBL_STR_FindAnyCharPtr
 ; READS:
 ;   7(A0,D7), 27(A2)
 ; WRITES:
@@ -3177,7 +3177,7 @@ DISKIO2_CopyAndSanitizeSlotString:
 
     PEA     DATA_NEWGRID_CONST_LONG_2018
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     GROUP_AH_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)

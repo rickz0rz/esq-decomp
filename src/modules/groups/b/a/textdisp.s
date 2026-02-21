@@ -35,7 +35,7 @@
 ;   D0-D3/A0-A1
 ; CALLS:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow,
-;   TEXTDISP_FormatEntryTimeForIndex, UNKNOWN7_SkipCharClass3, STRING_AppendAtNull, TEXTDISP_FindControlToken,
+;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, STRING_AppendAtNull, TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
 ;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, DATA_WDISP_BSS_BYTE_2374/TEXTDISP_BannerCharSelected/DATA_WDISP_BSS_BYTE_2378, DATA_P_TYPE_BSS_LONG_205C
@@ -204,7 +204,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -188(A5)
-    JSR     UNKNOWN7_SkipCharClass3(PC)
+    JSR     STR_SkipClass3Chars(PC)
 
     LEA     16(A7),A7
     MOVE.L  D0,-192(A5)

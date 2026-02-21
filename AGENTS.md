@@ -129,6 +129,7 @@ Update inline comments, `README.md`, and tables in `src/data/` when you rename l
 - [x] Resume A4-negative startup/stream alias pass in `src/Prevue.asm` (`-1120..-1024`, `-1144`, `-748`) and propagate to `unknown16/24/29/2b/31/35`, documenting node-stride/field inference in `CHECKPOINT_layout_coupling_population.md` (`5.16`).
 - [x] Replace raw prealloc-handle node offsets in `unknown14/16/2b/31/35` with `Struct_PreallocHandleNode__*` symbols and document field/bit confidence notes (`CHECKPOINT_layout_coupling_population.md` `5.17`).
 - [x] Document confirmed `SECTION S_1` in-place string-length crash root cause (`Global_GraphicsLibraryBase_A4` stale displacement into `GRAPHICS_BltBitMapRastPort`) and mitigation options in `CHECKPOINT_layout_coupling_population.md` (`5.18`).
-- [ ] Continue naming remaining anonymous data blocks in `src/data/wdisp.s` outside the completed option-state ranges (`220F` and unresolved `2255/2256/225D/225E/226D/226E` still open).
-- [ ] Continue local-label clarity passes in remaining NEWGRID companion files (`newgrid2.s` and unresolved helpers).
+- [x] Add persistent pass-coverage tracker in `CHECKPOINT_doc_coverage_matrix.md` so doc/rename sweeps do not re-process completed scopes.
+- [ ] Continue naming remaining anonymous data blocks in `src/data/wdisp.s` outside the completed option-state ranges (`220F` cluster and unresolved `225E` still open).
+- [ ] Continue NEWGRID documentation passes using `CHECKPOINT_doc_coverage_matrix.md` scope gates (`newgrid2.s` naming pass complete; `newgrid1.s` mostly complete; remaining `newgrid.s` non-message-loop functions still open).
 - [ ] Continue resolving unknown `Struct_PreallocHandleNode` flag-bit semantics (`ModeFlags`/`StateFlags`) and `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc` traces.

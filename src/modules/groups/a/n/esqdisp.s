@@ -23,7 +23,7 @@
     XDEF    ESQDISP_TestWordIsZeroBooleanize
     XDEF    ESQDISP_UpdateStatusMaskAndRefresh
     XDEF    ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
-    XDEF    ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster
+    XDEF    ESQDISP_JMPTBL_GRAPHICS_AllocRaster
     XDEF    ESQDISP_AllocateHighlightBitmaps_Return
     XDEF    ESQDISP_DrawStatusBanner_Impl_Return
     XDEF    ESQDISP_FillProgramInfoHeaderFields_Return
@@ -43,7 +43,7 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0/D1/D2/D7
 ; CALLS:
-;   ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster, _LVOBltClear, _LVOInitBitMap
+;   ESQDISP_JMPTBL_GRAPHICS_AllocRaster, _LVOBltClear, _LVOInitBitMap
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQDISP_C, WDISP_HighlightRasterHeightPx
 ; WRITES:
@@ -84,7 +84,7 @@ ESQDISP_AllocateHighlightBitmaps:
     PEA     79.W                        ; Line Number
     PEA     Global_STR_ESQDISP_C          ; Calling File
     MOVE.L  D0,28(A7)
-    JSR     ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     ESQDISP_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVE.L  12(A7),D1
@@ -805,7 +805,7 @@ ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
     JMP     NEWGRID_ProcessGridMessages
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster   (Jump-table forwarder)
+; FUNC: ESQDISP_JMPTBL_GRAPHICS_AllocRaster   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -813,7 +813,7 @@ ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN2B_AllocRaster
+;   GRAPHICS_AllocRaster
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -823,8 +823,8 @@ ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQDISP_JMPTBL_UNKNOWN2B_AllocRaster:
-    JMP     UNKNOWN2B_AllocRaster
+ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
+    JMP     GRAPHICS_AllocRaster
 
 ;!======
 

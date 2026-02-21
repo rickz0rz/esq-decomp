@@ -869,7 +869,7 @@ Global_REF_320_240_BITMAP:
 ; TYPE: pointer[4]
 ; PURPOSE: Stores four 352x240 raster allocations used by display setup/teardown.
 ; USED BY: ESQ_MainInitAndRun, CLEANUP_ReleaseDisplayResources
-; NOTES: Each entry is allocated via UNKNOWN2B_AllocRaster and zero-cleared.
+; NOTES: Each entry is allocated via GRAPHICS_AllocRaster and zero-cleared.
 ;------------------------------------------------------------------------------
 WDISP_352x240RasterPtrTable:
 DATA_WDISP_BSS_LONG_221A:
@@ -1278,21 +1278,24 @@ ESQIFF_RecordChecksumByte:
 LADFUNC_LineSlotWriteIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_WORD_2255   (displib previous-index boundary flag??)
+; SYM: DISPLIB_PreviousSearchWrappedFlag   (displib previous-search wrapped flag)
 ; TYPE: u16
-; PURPOSE: Tracks a boundary condition while searching for previous valid entries.
+; PURPOSE: Latches whether previous-index scan hit the lower-bound clamp path.
 ; USED BY: DISPLIB_FindPreviousValidEntryIndex
-; NOTES: Set/cleared only inside DISPLIB_FindPreviousValidEntryIndex; no external readers found yet.
+; NOTES: Set when non-wide scans keep decrementing and clear when clamped to index 0.
+;   No external readers found yet; likely a legacy/debug side-channel.
 ;------------------------------------------------------------------------------
+DISPLIB_PreviousSearchWrappedFlag:
 DATA_WDISP_BSS_WORD_2255:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_WORD_2256   (banner char reset pulse??)
+; SYM: ESQ_BannerCharResetPulse   (banner-char reset pulse latch)
 ; TYPE: u16
-; PURPOSE: One-shot pulse written when banner-char index reset path is taken.
+; PURPOSE: Set to 1 whenever banner-char index is forced back to range start.
 ; USED BY: ESQ_AdvanceBannerCharIndex
-; NOTES: No external readers found in current module scan.
+; NOTES: No direct readers found in current scan; likely legacy telemetry/state.
 ;------------------------------------------------------------------------------
+ESQ_BannerCharResetPulse:
 DATA_WDISP_BSS_WORD_2256:
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -1340,12 +1343,13 @@ WDISP_BannerCharPhaseShift:
 DATA_WDISP_BSS_WORD_225C:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_WORD_225D   (line-buffer secondary index??)
+; SYM: LADFUNC_LineSlotSecondaryIndex   (line-slot secondary index)
 ; TYPE: u16
-; PURPOSE: Secondary line-buffer index/reset slot paired with LADFUNC line-text init.
+; PURPOSE: Companion line-slot index reset alongside LADFUNC_LineSlotWriteIndex.
 ; USED BY: ESQFUNC_AllocateLineTextBuffers
-; NOTES: Cleared during line-buffer allocation; consumers are not yet identified.
+; NOTES: Cleared during line-buffer allocation; no reader confirmed yet.
 ;------------------------------------------------------------------------------
+LADFUNC_LineSlotSecondaryIndex:
 DATA_WDISP_BSS_WORD_225D:
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -1463,23 +1467,25 @@ Global_PTR_STR_SELECT_CODE:
 Global_REF_BAUD_RATE:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_WORD_226D   (banner effect mode word??)
+; SYM: ESQSHARED_BannerColorModeWord   (banner color mode word)
 ; TYPE: u16
-; PURPOSE: Reserved banner-effect selector consumed by ESQSHARED4 helpers.
+; PURPOSE: Mode/selector word passed into legacy ESQSHARED4 banner-color setup stubs.
 ; USED BY: ED1_ExitEscMenu, ESQSHARED4 stubs
 ; NOTES: Cleared on ESC-menu exit; no direct non-zero writer identified yet.
 ;   Can be clobbered indirectly by ESQ argv[1] copy overflow from ESQ_SelectCodeBuffer.
 ;------------------------------------------------------------------------------
+ESQSHARED_BannerColorModeWord:
 DATA_WDISP_BSS_WORD_226D:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_LONG_226E   (pen override state long??)
+; SYM: ED_Rastport2PenModeSelector   (rastport2 pen-mode selector)
 ; TYPE: u32
-; PURPOSE: Optional pen-setup selector tested by ED pen initialization.
+; PURPOSE: Optional selector controlling alternate pen setup in ED_InitRastport2Pens.
 ; USED BY: ED_InitRastport2Pens
 ; NOTES: Compared against literal 14; no direct producer identified in current scan.
 ;   Can be clobbered indirectly by ESQ argv[1] copy overflow from ESQ_SelectCodeBuffer.
 ;------------------------------------------------------------------------------
+ED_Rastport2PenModeSelector:
 DATA_WDISP_BSS_LONG_226E:
     DS.L    1
 ;------------------------------------------------------------------------------

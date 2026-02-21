@@ -236,7 +236,7 @@ SETUP_INTERRUPT_INTB_RBF:
 ; READS:
 ;   Global_STR_ESQFUNC_C_5, LADFUNC_LineTextBufferPtrs, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
-;   LADFUNC_LineSlotWriteIndex, DATA_WDISP_BSS_WORD_225D
+;   LADFUNC_LineSlotWriteIndex, LADFUNC_LineSlotSecondaryIndex
 ; DESC:
 ;   Allocates 20 line text buffers (60 bytes each), stores pointers in
 ;   LADFUNC_LineTextBufferPtrs, and resets line-slot indices.
@@ -275,7 +275,7 @@ ESQFUNC_AllocateLineTextBuffers:
 .return:
     MOVEQ   #0,D0
     MOVE.W  D0,LADFUNC_LineSlotWriteIndex
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_225D
+    MOVE.W  D0,LADFUNC_LineSlotSecondaryIndex
     MOVE.L  (A7)+,D7
     UNLK    A5
     RTS

@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _LVOSetSignal, _LVOOpenLibrary, _LVOWaitPort, _LVOGetMsg, _LVOCurrentDir,
 ;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
-;   GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0, GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun, GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1
+;   GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook, GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun, GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook
 ; READS:
 ;   AbsExecBase, ESQ_STR_DosLibrary
 ; WRITES:
@@ -152,7 +152,7 @@
     MOVE.L  4(A0),Global_ScratchPtr_592(A4)                 ; WBArg[0].wa_Name uncertain
 
 .run_main_init:
-    JSR     GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub0(PC)
+    JSR     GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook(PC)
 
     JSR     GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun(PC)
 
@@ -190,7 +190,7 @@ ESQ_ReturnWithStackCode:
 ; CLOBBERS:
 ;   D0/A0-A6
 ; CALLS:
-;   GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, _LVOCloseLibrary, GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1, _LVOReplyMsg
+;   GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, _LVOCloseLibrary, GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook, _LVOReplyMsg
 ; READS:
 ;   Global_SavedMsg, Global_SavedStackPointer, Global_SavedExecBase, Global_DosLibrary
 ; WRITES:
@@ -214,7 +214,7 @@ ESQ_ShutdownAndReturn:
     MOVEA.L Global_DosLibrary(A4),A1
     JSR     _LVOCloseLibrary(A6)
 
-    JSR     GROUP_MAIN_A_JMPTBL_UNKNOWN2B_Stub1(PC)
+    JSR     GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook(PC)
 
     TST.L   Global_SavedMsg(A4)
     BEQ.S   .restore_registers_and_return

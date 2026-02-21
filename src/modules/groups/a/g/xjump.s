@@ -14,7 +14,7 @@
     XDEF    GROUP_AG_JMPTBL_STRUCT_AllocWithOwner
     XDEF    GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField
     XDEF    GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
-    XDEF    GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode
+    XDEF    GROUP_AG_JMPTBL_DOS_OpenFileWithMode
 
 ;!======
 
@@ -283,7 +283,7 @@ GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
     JMP     MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode   (Routine at GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode)
+; FUNC: GROUP_AG_JMPTBL_DOS_OpenFileWithMode   (Routine at GROUP_AG_JMPTBL_DOS_OpenFileWithMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -291,7 +291,7 @@ GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN2B_OpenFileWithAccessMode
+;   DOS_OpenFileWithMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -301,8 +301,8 @@ GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode:
-    JMP     UNKNOWN2B_OpenFileWithAccessMode
+GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
+    JMP     DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AG_JMPTBL_SCRIPT_CheckPathExists   (Routine at GROUP_AG_JMPTBL_SCRIPT_CheckPathExists)

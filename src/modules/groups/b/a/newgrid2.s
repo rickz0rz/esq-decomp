@@ -39,7 +39,7 @@
     XDEF    NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    NEWGRID2_JMPTBL_STRING_AppendN
     XDEF    NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
-    XDEF    NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3
+    XDEF    NEWGRID2_JMPTBL_STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_ProcessGridState   (Process grid state machine)
@@ -64,6 +64,8 @@
 ;   advance to the next UI state.
 ; NOTES:
 ;   Uses DATA_NEWGRID_CONST_LONG_203D to track state 4/5 transitions.
+;   `A2+0/A2+4` are required entry payload pointers and `A2+20` carries
+;   row-relative selection/slot index used for draw/layout.
 ;------------------------------------------------------------------------------
 NEWGRID2_ProcessGridState:
     LINK.W  A5,#-8
@@ -74,23 +76,23 @@ NEWGRID2_ProcessGridState:
     SUBA.L  A0,A0
     MOVE.L  A0,-6(A5)
     MOVE.L  A3,D0
-    BNE.S   .state_check_current
+    BNE.S   .dispatch_render_state
 
     MOVEQ   #4,D0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
     BRA.W   .return_state
 
-.state_check_current:
+.dispatch_render_state:
     MOVE.L  DATA_NEWGRID_CONST_LONG_203D,D0
     SUBQ.L  #4,D0
-    BEQ.S   .state4_draw_and_layout
+    BEQ.S   .state4_full_draw_and_layout
 
     SUBQ.L  #1,D0
-    BEQ.W   .state5_frame_only
+    BEQ.W   .state5_redraw_frame_only
 
-    BRA.W   .force_state4_reset
+    BRA.W   .force_state4_recovery
 
-.state4_draw_and_layout:
+.state4_full_draw_and_layout:
     TST.L   (A2)
     BEQ.W   .return_state
 
@@ -103,16 +105,16 @@ NEWGRID2_ProcessGridState:
     JSR     NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     12(A7),A7
-    MOVE.W  20(A2),D6
+    MOVE.W  20(A2),D6                      ; A2+20 = row/slot index
     MOVEQ   #48,D0
     CMP.W   D0,D6
-    BLE.S   .entry_index_normalized
+    BLE.S   .row_slot_index_ready
 
     SUBI.W  #$30,D6
 
-.entry_index_normalized:
+.row_slot_index_ready:
     TST.W   DATA_NEWGRID_CONST_WORD_2016
-    BEQ.S   .draw_alt_variant
+    BEQ.S   .draw_grid_entry_alt_variant
 
     MOVE.L  D6,D0
     EXT.L   D0
@@ -122,7 +124,7 @@ NEWGRID2_ProcessGridState:
 
     ADDQ.W  #8,A7
     TST.W   D0
-    BNE.S   .draw_alt_variant
+    BNE.S   .draw_grid_entry_alt_variant
 
     LEA     60(A3),A0
     MOVE.L  D6,D0
@@ -138,9 +140,9 @@ NEWGRID2_ProcessGridState:
     BSR.W   NEWGRID_DrawGridEntry
 
     LEA     28(A7),A7
-    BRA.S   .allocate_text_buffer
+    BRA.S   .allocate_showtimes_buffer
 
-.draw_alt_variant:
+.draw_grid_entry_alt_variant:
     LEA     60(A3),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -156,7 +158,7 @@ NEWGRID2_ProcessGridState:
 
     LEA     28(A7),A7
 
-.allocate_text_buffer:
+.allocate_showtimes_buffer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     2000.W
     PEA     3947.W
@@ -165,7 +167,7 @@ NEWGRID2_ProcessGridState:
 
     LEA     16(A7),A7
     MOVE.L  D0,-6(A5)
-    BEQ.S   .after_optional_showtimes_buffer
+    BEQ.S   .draw_frame_after_showtimes
 
     PEA     3.W
     JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
@@ -189,50 +191,50 @@ NEWGRID2_ProcessGridState:
 
     LEA     36(A7),A7
 
-.after_optional_showtimes_buffer:
+.draw_frame_after_showtimes:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant4
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .set_state5_after_frame
+    BEQ.S   .set_state5_for_frame_only_followup
 
-    MOVEQ   #4,D0
-    BRA.S   .store_state_and_count
+    MOVEQ   #4,D0                           ; state 4 = full draw/layout pass
+    BRA.S   .store_next_state_and_visible_count
 
-.set_state5_after_frame:
-    MOVEQ   #5,D0
+.set_state5_for_frame_only_followup:
+    MOVEQ   #5,D0                           ; state 5 = frame-only follow-up
 
-.store_state_and_count:
+.store_next_state_and_visible_count:
     PEA     2.W
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
     JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,32(A3)
+    MOVE.L  D0,32(A3)                      ; A3+32 = visible-line count cache
     BRA.S   .return_state
 
-.state5_frame_only:
+.state5_redraw_frame_only:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant4
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state5_use_frame_only_state
+    BEQ.S   .state5_keep_frame_only_mode
 
     MOVEQ   #4,D0
-    BRA.S   .state5_store_frame_state
+    BRA.S   .state5_store_next_mode
 
-.state5_use_frame_only_state:
+.state5_keep_frame_only_mode:
     MOVEQ   #5,D0
 
-.state5_store_frame_state:
+.state5_store_next_mode:
     MOVEQ   #-1,D1
-    MOVE.L  D1,32(A3)
+    MOVE.L  D1,32(A3)                      ; A3+32 = no line-count refresh in state5
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
     BRA.S   .return_state
 
-.force_state4_reset:
+.force_state4_recovery:
     MOVEQ   #4,D0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
 
@@ -265,6 +267,7 @@ NEWGRID2_ProcessGridState:
 ; NOTES:
 ;   Uses NEWGRID2_DispatchStateIndex as a 0..5 state index.
 ;   State 5 performs the main per-row processing via NEWGRID2_ProcessGridState.
+;   Jump table maps states `3` and `4` to the same update-selection handler.
 ;------------------------------------------------------------------------------
 NEWGRID2_HandleGridState:
     MOVEM.L D5-D7/A3,-(A7)
@@ -273,9 +276,9 @@ NEWGRID2_HandleGridState:
     MOVE.L  28(A7),D6
     MOVEQ   #0,D5
     MOVE.L  A3,D0
-    BNE.S   .dispatch_state
+    BNE.S   .dispatch_by_state_index
 
-    MOVEQ   #5,D0
+    MOVEQ   #5,D0                           ; state 5 = active per-row grid processing
     CMP.L   NEWGRID2_DispatchStateIndex,D0
     BNE.S   .reset_state
 
@@ -291,10 +294,10 @@ NEWGRID2_HandleGridState:
     MOVE.L  D0,NEWGRID2_DispatchStateIndex
     BRA.W   .return_state
 
-.dispatch_state:
+.dispatch_by_state_index:
     MOVE.L  NEWGRID2_DispatchStateIndex,D0
     CMPI.L  #$6,D0
-    BCC.W   .reset_dispatch_state
+    BCC.W   .clear_dispatch_state
 
     ADD.W   D0,D0
     MOVE.W  .state_jumptable(PC,D0.W),D0
@@ -327,7 +330,7 @@ NEWGRID2_HandleGridState:
 
     LEA     12(A7),A7
     TST.L   D0
-    BEQ.S   .state1_no_selection
+    BEQ.S   .state1_abort_and_reset
 
     ; Selection became valid: show prompt, then move into state 3.
     MOVE.L  D6,-(A7)
@@ -337,12 +340,12 @@ NEWGRID2_HandleGridState:
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
-    MOVEQ   #3,D1
+    MOVEQ   #3,D1                           ; advance into state3/state4 shared path
     MOVE.L  D1,NEWGRID2_DispatchStateIndex
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2040
     BRA.W   .return_state
 
-.state1_no_selection:
+.state1_abort_and_reset:
     CLR.L   NEWGRID2_DispatchStateIndex
     BRA.W   .return_state
 
@@ -360,7 +363,7 @@ NEWGRID2_HandleGridState:
 
 .state5_process_grid:
     TST.L   DATA_WDISP_BSS_LONG_2332
-    BEQ.S   .state5_no_selection
+    BEQ.S   .state5_restart_selection_update
 
     MOVE.L  D6,-(A7)
     PEA     DATA_WDISP_BSS_LONG_2332
@@ -376,11 +379,11 @@ NEWGRID2_HandleGridState:
     BEQ.S   .return_state
 
     TST.L   D5
-    BEQ.S   .state5_skip_hint
+    BEQ.S   .state5_apply_column_delta_only
 
     ; First-entry hint: cache mode index once, then offset by column delta.
     CMPI.L  #$1,DATA_NEWGRID2_BSS_LONG_2040
-    BGE.S   .state5_skip_hint
+    BGE.S   .state5_apply_column_delta_only
 
     PEA     50.W
     MOVE.L  A3,-(A7)
@@ -391,7 +394,7 @@ NEWGRID2_HandleGridState:
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2040
 
-.state5_skip_hint:
+.state5_apply_column_delta_only:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ComputeColumnIndex
 
@@ -399,18 +402,18 @@ NEWGRID2_HandleGridState:
     SUB.L   D0,DATA_NEWGRID2_BSS_LONG_2040
     BRA.S   .return_state
 
-.state5_no_selection:
-    MOVEQ   #1,D0
+.state5_restart_selection_update:
+    MOVEQ   #1,D0                           ; restart from "update selection" state
     MOVE.L  D0,NEWGRID2_DispatchStateIndex
     BRA.S   .return_state
 
 .state2_finish:
-.reset_dispatch_state:
+.clear_dispatch_state:
     CLR.L   NEWGRID2_DispatchStateIndex
 
 .return_state:
     TST.L   NEWGRID2_DispatchStateIndex
-    BNE.S   .skip_state_reset
+    BNE.S   .skip_marker_clear
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -420,7 +423,7 @@ NEWGRID2_HandleGridState:
 
     ADDQ.W  #8,A7
 
-.skip_state_reset:
+.skip_marker_clear:
     MOVE.L  NEWGRID2_DispatchStateIndex,D0
     MOVEM.L (A7)+,D5-D7/A3
     RTS
@@ -449,6 +452,9 @@ NEWGRID2_HandleGridState:
 ; NOTES:
 ;   Booleanizes the return value via SNE/NEG/EXT.
 ;   If operation id is zero, reuses the pending id in DATA_NEWGRID2_BSS_LONG_2042.
+;   Operation ids map as:
+;   `1=selection`, `2=alt-entry`, `3/4=grid-state`, `5=secondary`,
+;   `6=schedule`, `7=showtimes`.
 ;------------------------------------------------------------------------------
 NEWGRID2_DispatchGridOperation:
     MOVEM.L D5-D7/A3,-(A7)
@@ -457,31 +463,31 @@ NEWGRID2_DispatchGridOperation:
     MOVE.W  30(A7),D6
     MOVE.W  34(A7),D5
     TST.L   D7
-    BNE.S   .store_pending_index
+    BNE.S   .remember_requested_operation
 
     SUBA.L  A3,A3
     MOVE.L  DATA_NEWGRID2_BSS_LONG_2042,D7
     CLR.L   DATA_NEWGRID2_BSS_LONG_2042
-    BRA.S   .prepare_index
+    BRA.S   .prepare_operation_context
 
-.store_pending_index:
+.remember_requested_operation:
     MOVE.L  D7,DATA_NEWGRID2_BSS_LONG_2042
 
-.prepare_index:
+.prepare_operation_context:
     TST.W   DATA_ESQDISP_BSS_WORD_1E86
-    BEQ.S   .after_reset_check
+    BEQ.S   .dispatch_operation
 
     CLR.W   DATA_ESQDISP_BSS_WORD_1E86
     SUBA.L  A3,A3
 
-.after_reset_check:
-    MOVE.L  D7,NEWGRID_GridOperationId
+.dispatch_operation:
+    MOVE.L  D7,NEWGRID_GridOperationId      ; current operation id (1..7)
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
-    BLT.W   .out_of_range
+    BLT.W   .operation_out_of_range
 
     CMPI.L  #$7,D0
-    BGE.W   .out_of_range
+    BGE.W   .operation_out_of_range
 
     ADD.W   D0,D0
     MOVE.W  .operation_jumptable(PC,D0.W),D0
@@ -507,7 +513,7 @@ NEWGRID2_DispatchGridOperation:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.W   .return_bool
+    BRA.W   .return_success_bool
 
 .op2_process_alt_entry:
     MOVE.L  D6,D0
@@ -521,7 +527,7 @@ NEWGRID2_DispatchGridOperation:
 
     LEA     12(A7),A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.W   .return_bool
+    BRA.W   .return_success_bool
 
 .op3_handle_grid_state:
     MOVE.L  D6,D0
@@ -533,7 +539,7 @@ NEWGRID2_DispatchGridOperation:
 
     LEA     12(A7),A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.S   .return_bool
+    BRA.S   .return_success_bool
 
 .op4_handle_grid_state_alt:
     MOVE.L  D6,D0
@@ -545,7 +551,7 @@ NEWGRID2_DispatchGridOperation:
 
     LEA     12(A7),A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.S   .return_bool
+    BRA.S   .return_success_bool
 
 .op5_process_secondary_state:
     MOVE.L  D6,D0
@@ -556,7 +562,7 @@ NEWGRID2_DispatchGridOperation:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.S   .return_bool
+    BRA.S   .return_success_bool
 
 .op6_process_schedule_state:
     MOVE.L  D6,D0
@@ -570,7 +576,7 @@ NEWGRID2_DispatchGridOperation:
 
     LEA     12(A7),A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.S   .return_bool
+    BRA.S   .return_success_bool
 
 .op7_process_showtimes_workflow:
     MOVE.L  D6,D0
@@ -584,12 +590,12 @@ NEWGRID2_DispatchGridOperation:
 
     LEA     12(A7),A7
     MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
-    BRA.S   .return_bool
+    BRA.S   .return_success_bool
 
-.out_of_range:
+.operation_out_of_range:
     CLR.L   NEWGRID_GridOperationId
 
-.return_bool:
+.return_success_bool:
     TST.L   DATA_NEWGRID2_BSS_LONG_2043
     ; booleanize to 0/-1
     SNE     D0
@@ -1061,7 +1067,7 @@ NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
     JMP     ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3   (Jump stub)
+; FUNC: NEWGRID2_JMPTBL_STR_SkipClass3Chars   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -1069,12 +1075,12 @@ NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   UNKNOWN7_SkipCharClass3
+;   STR_SkipClass3Chars
 ; DESC:
-;   Jump table entry that forwards to UNKNOWN7_SkipCharClass3.
+;   Jump table entry that forwards to STR_SkipClass3Chars.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3:
-    JMP     UNKNOWN7_SkipCharClass3
+NEWGRID2_JMPTBL_STR_SkipClass3Chars:
+    JMP     STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID2_JMPTBL_STRING_AppendN   (Jump stub)

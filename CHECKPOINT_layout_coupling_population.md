@@ -654,6 +654,165 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
      search for any remaining hardcoded layout-coupled base displacements and
      replace with symbol-based references.
 
+#### 5.19 `wdisp` unresolved state naming follow-up (`2026-02-21`)
+- Resolved conservative naming/docs for prior unresolved globals in
+  `src/data/wdisp.s`:
+  - `DATA_WDISP_BSS_WORD_2255` -> `DISPLIB_PreviousSearchWrappedFlag`
+  - `DATA_WDISP_BSS_WORD_2256` -> `ESQ_BannerCharResetPulse`
+  - `DATA_WDISP_BSS_WORD_225D` -> `LADFUNC_LineSlotSecondaryIndex`
+  - `DATA_WDISP_BSS_WORD_226D` -> `ESQSHARED_BannerColorModeWord`
+  - `DATA_WDISP_BSS_LONG_226E` -> `ED_Rastport2PenModeSelector`
+
+- Producer/consumer confidence summary:
+  - `DISPLIB_PreviousSearchWrappedFlag`: set/cleared only by
+    `DISPLIB_FindPreviousValidEntryIndex`; no reader confirmed.
+  - `ESQ_BannerCharResetPulse`: written when banner index is forced to range
+    start in `ESQ_AdvanceBannerCharIndex`; no reader confirmed.
+  - `LADFUNC_LineSlotSecondaryIndex`: reset with
+    `LADFUNC_LineSlotWriteIndex` in `ESQFUNC_AllocateLineTextBuffers`; reader
+    still unresolved.
+  - `ESQSHARED_BannerColorModeWord`: consumed by legacy/dead ESQSHARED4 banner
+    color stubs and cleared on ESC-menu exit; no non-zero writer confirmed.
+  - `ED_Rastport2PenModeSelector`: compared against literal `14` in
+    `ED_InitRastport2Pens` to enable alternate B-pen setup.
+
+- Cross-path coupling note retained:
+  - Oversized startup select-code copy in `ESQ_MainInitAndRun` can still
+    clobber `ESQSHARED_BannerColorModeWord` and
+    `ED_Rastport2PenModeSelector` due to contiguous layout.
+
+#### 5.20 `UNKNOWN7` string-helper rename pass (`2026-02-21`)
+- Completed full in-code migration away from `UNKNOWN7_*` helper names:
+  - `UNKNOWN7_CopyUntilDelimiter` -> `STR_CopyUntilAnyDelimN`
+  - `UNKNOWN7_FindAnyChar` -> `STR_FindAnyCharInSet`
+  - `UNKNOWN7_FindAnyCharWrapper` -> `STR_FindAnyCharPtr`
+  - `UNKNOWN7_SkipCharClass3` -> `STR_SkipClass3Chars`
+
+- Propagated through jump-table exports/callsites:
+  - `GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN`
+  - `GROUP_AI_JMPTBL_STR_SkipClass3Chars`
+  - `GROUP_AH_JMPTBL_STR_FindAnyCharPtr`
+  - `PARSEINI_JMPTBL_STR_FindAnyCharPtr`
+  - `NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN`
+  - `NEWGRID2_JMPTBL_STR_SkipClass3Chars`
+  - `ESQSHARED_JMPTBL_STR_SkipClass3Chars`
+
+- Behavior note:
+  - No instruction-semantic changes were made; this is a naming/context pass
+    only, with hash-preserving build verification.
+
+#### 5.21 `UNKNOWN2B` stream/raster/open rename pass (`2026-02-21`)
+- Completed full in-code migration away from `UNKNOWN2B_*` labels:
+  - `UNKNOWN2B_AllocRaster` -> `GRAPHICS_AllocRaster`
+  - `UNKNOWN2B_FreeRaster` -> `GRAPHICS_FreeRaster`
+  - `UNKNOWN2B_OpenFileWithAccessMode` -> `DOS_OpenFileWithMode`
+  - `UNKNOWN2B_MovepReadCallback` -> `DOS_MovepWordReadCallback`
+  - `UNKNOWN2B_Stub0` -> `ESQ_MainEntryNoOpHook`
+  - `UNKNOWN2B_Stub1` -> `ESQ_MainExitNoOpHook`
+
+- Propagated through jump-table exports/callsites:
+  - `GROUP_AA_JMPTBL_GRAPHICS_AllocRaster`
+  - `GROUP_AB_JMPTBL_GRAPHICS_FreeRaster`
+  - `GROUP_AG_JMPTBL_DOS_OpenFileWithMode`
+  - `ESQDISP_JMPTBL_GRAPHICS_AllocRaster`
+  - `ESQIFF_JMPTBL_DOS_OpenFileWithMode`
+  - `GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook`
+  - `GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook`
+
+- Added conservative constants for stream mode/open checks (`src/Prevue.asm`):
+  - `Struct_PreallocHandleNode_ModeFlag_TextTranslate_Bit = 7`
+  - `Struct_PreallocHandleNode_ModeFlag_PreWriteScan_Bit = 6`
+  - `Struct_PreallocHandleNode_OpenMask_WriteReject = $31`
+  - `Struct_PreallocHandleNode_OpenMask_FlushReject = $30`
+  - `Struct_PreallocHandleNode_OpenMask_ReadReject = $32`
+
+- Behavior note:
+  - No instruction-semantic changes were made; this is naming/context only and
+    remains hash-preserving.
+
+#### 5.22 `gcommand3` banner/highlight context pass (`2026-02-21`)
+- Performed targeted documentation cleanup in
+  `src/modules/groups/a/u/gcommand3.s` for high-density banner/highlight flows:
+  - Replaced remaining `(...uncertain)` header names with role-based titles.
+  - Added explicit notes for key ring sizes/offset semantics (`98` queue length,
+    `88` second-table row delta, row stride `32`).
+  - Added inline struct-offset comments for active highlight message payload
+    fields used in `GCOMMAND_ServiceHighlightMessages` (`+20/+24/+28/+32/+52/+54`).
+  - Clarified queue control-byte behavior in `GCOMMAND_ConsumeBannerQueueEntry`
+    (`0xFF` countdown/attention path, `0xFE` read-mode force to `$0101`).
+
+- Behavior note:
+  - No instruction-semantic changes were made; this pass is documentation/context
+    only and remains hash-preserving.
+
+#### 5.23 `newgrid2` state-machine clarity pass (`2026-02-21`)
+- Added targeted context/annotation updates in
+  `src/modules/groups/b/a/newgrid2.s`:
+  - Clarified `NEWGRID2_ProcessGridState` state meanings (`4 = full draw/layout`,
+    `5 = frame-only follow-up`) and key struct offsets (`A2+20`, `A3+32`).
+  - Clarified `NEWGRID2_HandleGridState` jump-table behavior, including shared
+    state3/state4 handler mapping.
+  - Documented `NEWGRID2_DispatchGridOperation` operation-id mapping
+    (`1..7`) inline with the dispatch table.
+
+- Behavior note:
+  - No instruction-semantic changes were made; this pass is comments/context
+    only and remains hash-preserving.
+
+#### 5.24 `newgrid1` helper-header clarity pass (`2026-02-21`)
+- Removed remaining `uncertain` header captions from core NEWGRID helper tails in
+  `src/modules/groups/b/a/newgrid1.s`, including:
+  - selection helpers (`NEWGRID_InitSelectionWindow`,
+    `NEWGRID_UpdateSelectionFromInput`,
+    `NEWGRID_UpdateSelectionFromInputAlt`,
+    `NEWGRID_TestEntrySelectable`)
+  - showtimes helpers (`NEWGRID_InitShowtimeBuckets`,
+    `NEWGRID_BuildShowtimesText`,
+    `NEWGRID_HandleShowtimesState`,
+    `NEWGRID_ProcessShowtimesWorkflow`,
+    `NEWGRID_AppendShowtimesForRow`,
+    `NEWGRID_DrawShowtimesPrompt`)
+  - mode/window gates (`NEWGRID_TestModeFlagActive`,
+    `NEWGRID_TestPrimeTimeWindow`)
+  - marker-reset helper (`NEWGRID_ClearEntryMarkerBits`)
+
+- Behavior note:
+  - No instruction-semantic changes were made; this pass is naming/context only
+    and remains hash-preserving.
+
+- Follow-up in same path:
+  - Renamed ambiguous local branch tails in
+  `NEWGRID_ProcessShowtimesWorkflow` (`state_clear*`, `state_reset`,
+  `state_dispatch`, `case2_default`, `case6_clear`, `adjust_offset`) to
+  intent-based labels (null-context legacy path, workflow dispatch/clear,
+  column-adjust path).
+  - Renamed `NEWGRID_UpdateSelectionFromInput` local
+  `.state_unknown` to `.state_unhandled_sets_stopflag`.
+
+#### 5.25 `newgrid1` deeper branch-tail naming sweep (`2026-02-21`)
+- Continued intent-based local-label cleanup in major NEWGRID state machines:
+  - `NEWGRID_ProcessSecondaryState`
+    - renamed null-context path labels (`state_reset/check_entry/process_entries/clear`)
+      and workflow tails (`case_state2_default`, `case_state5_adjust`,
+      `case_state7_default`) to role-based names.
+  - `NEWGRID_ProcessAltEntryState`
+    - renamed dispatch/reset/clear tails and offset-adjust label to role-based names.
+  - `NEWGRID_HandleDetailGridState`
+    - renamed dispatch and state5 tail labels to clarify frame-only vs
+      line-count refresh paths.
+
+- Stability note:
+  - A transient local-label mismatch was corrected in adjacent NEWGRID handlers;
+    final tree is build/hash clean.
+
+- Incremental follow-up:
+  - Applied additional in-function local-label cleanup for:
+    - `NEWGRID_HandleGridSelection`
+    - `NEWGRID_HandleGridEditorState`
+  - Renamed remaining generic tails (`state_dispatch/reset/init/find/process`,
+    `adjust_offset`, `clear_state`, and state5 store/done labels) to
+    role-oriented names inside those two handlers.
+
 ## Crash-Relevant Notes
 - Legacy anchor indexing (`LEA anchor + index*4`) is sensitive to nearby string-layout edits.
 - Mplex/PPV parse tails split on byte `$12`; malformed edits around that delimiter change template merge behavior.

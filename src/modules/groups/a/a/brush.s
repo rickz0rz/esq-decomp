@@ -244,7 +244,7 @@ BRUSH_StreamFontChunk:
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D1/D2/D3/D6/D7
 ; CALLS:
-;   GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
+;   GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
 ;   Global_STR_BRUSH_C_5, Global_STR_BRUSH_C_6, Global_STR_BRUSH_C_7, BRUSH_FreeBrushList_Return, branch, lab_0121
 ; WRITES:
@@ -297,7 +297,7 @@ BRUSH_FreeBrushList:
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     549.W
     PEA     Global_STR_BRUSH_C_5
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D6
@@ -1047,7 +1047,7 @@ BRUSH_NormalizeBrushNames:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster, GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
+;   BITMAP_ProcessIlbmImage, ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
 ;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
@@ -1073,7 +1073,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  A0,-50(A5)
     MOVE.L  A0,-46(A5)
     MOVE.L  A0,-16(A5)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -1338,7 +1338,7 @@ BRUSH_LoadBrushAsset:
     PEA     Global_STR_BRUSH_C_12           ; Calling file
     MOVE.L  D0,52(A7)
     MOVE.L  D0,48(A7)
-    JSR     GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVE.L  36(A7),D1
@@ -1518,7 +1518,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     1202.W
     PEA     Global_STR_BRUSH_C_13
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
 
@@ -1607,7 +1607,7 @@ BRUSH_LoadBrushAsset:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D7
 ; CALLS:
-;   GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
+;   GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
 ;   AbsExecBase, BRUSH_PendingAlertCode, BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
@@ -1755,7 +1755,7 @@ BRUSH_CloneBrushRecord:
     PEA     1302.W                        ; Line Number
     PEA     Global_STR_BRUSH_C_18           ; Calling file
     MOVE.L  D0,32(A7)
-    JSR     GROUP_AA_JMPTBL_UNKNOWN2B_AllocRaster(PC)
+    JSR     GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L -8(A5),A0

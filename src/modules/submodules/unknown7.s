@@ -1,13 +1,13 @@
-    XDEF    UNKNOWN7_CopyUntilDelimiter
-    XDEF    UNKNOWN7_FindAnyChar
-    XDEF    UNKNOWN7_FindAnyCharWrapper
+    XDEF    STR_CopyUntilAnyDelimN
+    XDEF    STR_FindAnyCharInSet
+    XDEF    STR_FindAnyCharPtr
     XDEF    STR_FindChar
     XDEF    STR_FindCharPtr
-    XDEF    UNKNOWN7_SkipCharClass3
+    XDEF    STR_SkipClass3Chars
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN7_CopyUntilDelimiter   (Copy until delimiter or length)
+; FUNC: STR_CopyUntilAnyDelimN   (Copy until delimiter or length)
 ; ARGS:
 ;   stack +8: A3 = source string
 ;   stack +12: A0 = destination buffer
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   Stops before D7-1; always writes a trailing NUL.
 ;------------------------------------------------------------------------------
-UNKNOWN7_CopyUntilDelimiter:
+STR_CopyUntilAnyDelimN:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -195,7 +195,7 @@ STR_FindCharPtr:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN7_FindAnyChar   (Find first occurrence of any byte in set)
+; FUNC: STR_FindAnyCharInSet   (Find first occurrence of any byte in set)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: A2 = charset (NUL-terminated)
@@ -214,7 +214,7 @@ STR_FindCharPtr:
 ; NOTES:
 ;   Equivalent to strpbrk.
 ;------------------------------------------------------------------------------
-UNKNOWN7_FindAnyChar:
+STR_FindAnyCharInSet:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -256,7 +256,7 @@ UNKNOWN7_FindAnyChar:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN7_FindAnyCharWrapper   (Wrapper around UNKNOWN7_FindAnyChar)
+; FUNC: STR_FindAnyCharPtr   (Wrapper around STR_FindAnyCharInSet)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: A2 = charset
@@ -265,24 +265,24 @@ UNKNOWN7_FindAnyChar:
 ; CLOBBERS:
 ;   D0/A2-A3
 ; CALLS:
-;   UNKNOWN7_FindAnyChar (UNKNOWN7_FindAnyChar)
+;   STR_FindAnyCharInSet (STR_FindAnyCharInSet)
 ; READS:
 ;   A3, A2
 ; WRITES:
 ;   none
 ; DESC:
-;   Convenience wrapper around UNKNOWN7_FindAnyChar.
+;   Convenience wrapper around STR_FindAnyCharInSet.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   ABI-preserving shim used by older jump tables and callsites.
 ;------------------------------------------------------------------------------
-UNKNOWN7_FindAnyCharWrapper:
+STR_FindAnyCharPtr:
     MOVEM.L A2-A3,-(A7)
 
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.S   UNKNOWN7_FindAnyChar
+    BSR.S   STR_FindAnyCharInSet
 
     ADDQ.W  #8,A7
 
@@ -291,7 +291,7 @@ UNKNOWN7_FindAnyCharWrapper:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN7_SkipCharClass3   (Skip chars with class bit 3 set)
+; FUNC: STR_SkipClass3Chars   (Skip chars with class bit 3 set)
 ; ARGS:
 ;   stack +8: A3 = string
 ; RET:
@@ -308,9 +308,9 @@ UNKNOWN7_FindAnyCharWrapper:
 ;   Advances A3 while the current character is marked with bit 3 in the
 ;   global character-class table.
 ; NOTES:
-;   Likely skips whitespace/control chars.
+;   In observed parser paths this behaves as a "skip whitespace class" helper.
 ;------------------------------------------------------------------------------
-UNKNOWN7_SkipCharClass3:
+STR_SkipClass3Chars:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
 

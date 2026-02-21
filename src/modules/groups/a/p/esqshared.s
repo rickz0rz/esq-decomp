@@ -15,7 +15,7 @@
     XDEF    ESQSHARED_JMPTBL_ESQ_SetBit1Based
     XDEF    ESQSHARED_JMPTBL_ESQ_TestBit1Based
     XDEF    ESQSHARED_JMPTBL_ESQ_WildcardMatch
-    XDEF    ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3
+    XDEF    ESQSHARED_JMPTBL_STR_SkipClass3Chars
     XDEF    ESQSHARED_CreateGroupEntryAndTitle_Return
     XDEF    ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return
     XDEF    ESQSHARED_NormalizeInStereoTag_Return
@@ -740,7 +740,7 @@ ESQSHARED_CompressClosedCaptionedTag:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D7
 ; CALLS:
-;   ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
+;   ESQSHARED_JMPTBL_STR_SkipClass3Chars, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
 ;   AbsExecBase, Global_STR_IN_STEREO, ESQSHARED_NormalizeInStereoTag_Return, WDISP_CharClassTable
 ; WRITES:
@@ -792,7 +792,7 @@ ESQSHARED_NormalizeInStereoTag:
 
 .lab_0C37:
     MOVE.L  -8(A5),-(A7)
-    JSR     ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     ESQSHARED_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A0
@@ -1851,7 +1851,7 @@ ESQSHARED_JMPTBL_ESQ_WildcardMatch:
     JMP     ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3   (Routine at ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3)
+; FUNC: ESQSHARED_JMPTBL_STR_SkipClass3Chars   (Routine at ESQSHARED_JMPTBL_STR_SkipClass3Chars)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1859,7 +1859,7 @@ ESQSHARED_JMPTBL_ESQ_WildcardMatch:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_SkipCharClass3
+;   STR_SkipClass3Chars
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -1869,8 +1869,8 @@ ESQSHARED_JMPTBL_ESQ_WildcardMatch:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_UNKNOWN7_SkipCharClass3:
-    JMP     UNKNOWN7_SkipCharClass3
+ESQSHARED_JMPTBL_STR_SkipClass3Chars:
+    JMP     STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED_JMPTBL_ESQ_TestBit1Based   (Routine at ESQSHARED_JMPTBL_ESQ_TestBit1Based)

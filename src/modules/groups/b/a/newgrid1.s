@@ -748,7 +748,7 @@ NEWGRID_DrawGridCellText:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
+;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
 ; READS:
 ;   NEWGRID_ColumnStartXPx, NEWGRID_RowHeightPx
 ; WRITES:
@@ -769,11 +769,11 @@ NEWGRID_DrawGridCell:
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
     MOVE.L  A1,-8(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  -8(A5),(A7)
     MOVE.L  D0,-4(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -1420,7 +1420,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     DATA_NEWGRID_CONST_LONG_2018
     MOVE.L  D0,-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1531,7 +1531,7 @@ NEWGRID_DrawGridEntry:
     BEQ.W   .post_draw
 
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -1625,7 +1625,7 @@ NEWGRID_DrawGridEntry:
     CLR.B   1(A0)
     LEA     2(A0),A1
     MOVE.L  A1,-(A7)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  -8(A5),(A7)
     MOVE.L  A3,-(A7)
@@ -1664,7 +1664,7 @@ NEWGRID_DrawGridEntry:
 
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -1675,7 +1675,7 @@ NEWGRID_DrawGridEntry:
     PEA     -19(A5)
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -1689,7 +1689,7 @@ NEWGRID_DrawGridEntry:
     MOVE.L  A0,-4(A5)
     PEA     -19(A5)
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN7_FindAnyCharWrapper(PC)
+    JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-12(A5)
@@ -3612,13 +3612,13 @@ NEWGRID_ProcessGridEntries:
     MOVEQ   #1,D0
     MOVE.L  D0,-46(A5)
     MOVE.L  A3,D0
-    BNE.S   .state_check
+    BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
     BRA.W   .return_state
 
-.state_check:
+.state_dispatch_check:
     MOVE.L  NEWGRID_GridEntriesWorkflowState,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_begin
@@ -4377,11 +4377,11 @@ NEWGRID_HandleGridSelection:
     MOVE.W  22(A7),D7
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BNE.S   .state_dispatch
+    BNE.S   .dispatch_workflow_state
 
     MOVEQ   #5,D0
     CMP.L   NEWGRID_GridSelectionWorkflowState,D0
-    BNE.S   .reset_state
+    BNE.S   .reset_workflow_state
 
     MOVE.L  NEWGRID_GridSelectionEntryIndex,D0
     ASL.L   #2,D0
@@ -4401,7 +4401,7 @@ NEWGRID_HandleGridSelection:
     BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    BRA.S   .reset_state
+    BRA.S   .reset_workflow_state
 
 .process_entries:
     MOVEQ   #0,D0
@@ -4412,34 +4412,34 @@ NEWGRID_HandleGridSelection:
 
     LEA     12(A7),A7
 
-.reset_state:
+.reset_workflow_state:
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_GridSelectionWorkflowState
     MOVE.L  D0,NEWGRID_GridSelectionEntryIndex
     BRA.W   .return_state
 
-.state_dispatch:
+.dispatch_workflow_state:
     MOVE.L  NEWGRID_GridSelectionWorkflowState,D0
     TST.L   D0
-    BEQ.S   .state_init
+    BEQ.S   .state0_init
 
     SUBQ.L  #3,D0
-    BEQ.S   .state_find_next
+    BEQ.S   .state3or4_find_next
 
     SUBQ.L  #1,D0
-    BEQ.S   .state_find_next
+    BEQ.S   .state3or4_find_next
 
     SUBQ.L  #1,D0
-    BEQ.S   .state_process_entry
+    BEQ.S   .state5_process_entry
 
-    BRA.W   .clear_state
+    BRA.W   .clear_workflow_state
 
-.state_init:
+.state0_init:
     CLR.L   NEWGRID_GridSelectionColumnAdjust
     MOVEQ   #3,D0
     MOVE.L  D0,NEWGRID_GridSelectionWorkflowState
 
-.state_find_next:
+.state3or4_find_next:
     MOVE.L  NEWGRID_GridSelectionEntryIndex,-(A7)
     MOVE.L  NEWGRID_GridSelectionWorkflowState,-(A7)
     BSR.W   NEWGRID_FindNextFlaggedEntry
@@ -4448,11 +4448,11 @@ NEWGRID_HandleGridSelection:
     MOVEQ   #1,D6
     MOVE.L  D0,NEWGRID_GridSelectionEntryIndex
 
-.state_process_entry:
+.state5_process_entry:
     MOVE.L  NEWGRID_GridSelectionEntryIndex,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BEQ.W   .clear_state
+    BEQ.W   .clear_workflow_state
 
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
@@ -4462,7 +4462,7 @@ NEWGRID_HandleGridSelection:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state_process_entries
+    BEQ.S   .state5_process_entries
 
     MOVE.L  D7,D0
     EXT.L   D0
@@ -4475,7 +4475,7 @@ NEWGRID_HandleGridSelection:
     MOVE.L  D0,NEWGRID_GridSelectionWorkflowState
     BRA.S   .post_process
 
-.state_process_entries:
+.state5_process_entries:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -4512,13 +4512,13 @@ NEWGRID_HandleGridSelection:
     MOVE.B  DATA_CTASKS_STR_Y_1BB2,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .adjust_offset
+    BNE.S   .update_column_adjust
 
     TST.L   D6
-    BEQ.S   .adjust_offset
+    BEQ.S   .update_column_adjust
 
     CMPI.L  #$1,NEWGRID_GridSelectionColumnAdjust
-    BGE.S   .adjust_offset
+    BGE.S   .update_column_adjust
 
     PEA     32.W
     MOVE.L  A3,-(A7)
@@ -4529,7 +4529,7 @@ NEWGRID_HandleGridSelection:
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_GridSelectionColumnAdjust
 
-.adjust_offset:
+.update_column_adjust:
     MOVE.L  NEWGRID_GridSelectionColumnAdjust,D0
     TST.L   D0
     BLE.S   .return_state
@@ -4541,7 +4541,7 @@ NEWGRID_HandleGridSelection:
     SUB.L   D0,NEWGRID_GridSelectionColumnAdjust
     BRA.S   .return_state
 
-.clear_state:
+.clear_workflow_state:
     CLR.L   NEWGRID_GridSelectionWorkflowState
 
 .return_state:
@@ -4581,19 +4581,19 @@ NEWGRID_HandleGridEditorState:
     MOVE.L  28(A7),D6
     MOVEA.L 32(A7),A2
     MOVE.L  A3,D0
-    BNE.S   .state_check
+    BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,NEWGRID_GridEditorWorkflowState
     BRA.S   .return_state
 
-.state_check:
+.state_dispatch_check:
     MOVE.L  NEWGRID_GridEditorWorkflowState,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_draw
 
     SUBQ.L  #1,D0
-    BEQ.S   .state5_draw
+    BEQ.S   .state5_frame_only
 
     BRA.S   .force_state4
 
@@ -4619,19 +4619,19 @@ NEWGRID_HandleGridEditorState:
 
     LEA     20(A7),A7
     TST.L   D0
-    BEQ.S   .state4_done
+    BEQ.S   .state4_set_state5
 
     MOVEQ   #4,D0
-    BRA.S   .store_state
+    BRA.S   .state4_store_state
 
-.state4_done:
+.state4_set_state5:
     MOVEQ   #5,D0
 
-.store_state:
+.state4_store_state:
     MOVE.L  D0,NEWGRID_GridEditorWorkflowState
     BRA.S   .return_state
 
-.state5_draw:
+.state5_frame_only:
     MOVEQ   #-1,D0
     MOVE.L  D0,32(A3)
     MOVE.L  D6,-(A7)
@@ -4640,15 +4640,15 @@ NEWGRID_HandleGridEditorState:
 
     ADDQ.W  #8,A7
     TST.L   D0
-    BEQ.S   .state5_done
+    BEQ.S   .state5_keep_state5
 
     MOVEQ   #4,D0
-    BRA.S   .store_state2
+    BRA.S   .state5_store_state
 
-.state5_done:
+.state5_keep_state5:
     MOVEQ   #5,D0
 
-.store_state2:
+.state5_store_state:
     MOVE.L  D0,NEWGRID_GridEditorWorkflowState
     BRA.S   .return_state
 
@@ -4786,19 +4786,19 @@ NEWGRID_ProcessSecondaryState:
     MOVE.W  22(A7),D7
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BNE.S   .state_dispatch
+    BNE.S   .dispatch_workflow_state
 
     MOVE.L  NEWGRID_SecondaryWorkflowState,D0
     SUBQ.L  #2,D0
-    BEQ.S   .state_reset
+    BEQ.S   .legacy_nullctx_editor_reset
 
     SUBQ.L  #3,D0
-    BEQ.S   .state_check_entry
+    BEQ.S   .legacy_nullctx_route_by_editor_gate
 
     SUBQ.L  #2,D0
-    BNE.S   .state_clear
+    BNE.S   .legacy_nullctx_clear_selection_and_state
 
-.state_reset:
+.legacy_nullctx_editor_reset:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -4807,9 +4807,9 @@ NEWGRID_ProcessSecondaryState:
     BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    BRA.S   .state_clear
+    BRA.S   .legacy_nullctx_clear_selection_and_state
 
-.state_check_entry:
+.legacy_nullctx_route_by_editor_gate:
     MOVE.L  NEWGRID_SecondarySelectedEntryIndex,D0
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
@@ -4819,7 +4819,7 @@ NEWGRID_ProcessSecondaryState:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state_process_entries
+    BEQ.S   .legacy_nullctx_run_grid_entries
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -4828,9 +4828,9 @@ NEWGRID_ProcessSecondaryState:
     BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    BRA.S   .state_clear
+    BRA.S   .legacy_nullctx_clear_selection_and_state
 
-.state_process_entries:
+.legacy_nullctx_run_grid_entries:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -4839,13 +4839,13 @@ NEWGRID_ProcessSecondaryState:
 
     LEA     12(A7),A7
 
-.state_clear:
+.legacy_nullctx_clear_selection_and_state:
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
     MOVE.L  D0,NEWGRID_SecondarySelectedEntryIndex
     BRA.W   .return_state
 
-.state_dispatch:
+.dispatch_workflow_state:
     MOVE.L  NEWGRID_SecondaryWorkflowState,D0
     CMPI.L  #$8,D0
     BCC.W   .return_state
@@ -4887,7 +4887,7 @@ NEWGRID_ProcessSecondaryState:
 
     MOVEQ   #70,D1
     CMP.B   D1,D0
-    BNE.S   .case_state2_default
+    BNE.S   .case_state2_force_state3
 
 .case_state2_handle:
     MOVE.L  GCOMMAND_DigitalNicheListingsTemplatePtr,-(A7)
@@ -4910,7 +4910,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
     BRA.W   .return_state
 
-.case_state2_default:
+.case_state2_force_state3:
     MOVEQ   #3,D0
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
 
@@ -4987,13 +4987,13 @@ NEWGRID_ProcessSecondaryState:
     MOVE.B  GCOMMAND_DigitalNicheEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
-    BNE.S   .case_state5_adjust
+    BNE.S   .update_column_adjust
 
     TST.L   D6
-    BEQ.S   .case_state5_adjust
+    BEQ.S   .update_column_adjust
 
     CMPI.L  #$1,DATA_NEWGRID_BSS_LONG_2023
-    BGE.S   .case_state5_adjust
+    BGE.S   .update_column_adjust
 
     PEA     33.W
     MOVE.L  A3,-(A7)
@@ -5004,7 +5004,7 @@ NEWGRID_ProcessSecondaryState:
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_2023
 
-.case_state5_adjust:
+.update_column_adjust:
     MOVE.L  DATA_NEWGRID_BSS_LONG_2023,D0
     TST.L   D0
     BLE.S   .return_state
@@ -5028,7 +5028,7 @@ NEWGRID_ProcessSecondaryState:
 
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   .case_state7_default
+    BNE.S   .case_state7_clear_state
 
 .case_state7_handle:
     MOVE.L  GCOMMAND_DigitalNicheListingsTemplatePtr,-(A7)
@@ -5051,7 +5051,7 @@ NEWGRID_ProcessSecondaryState:
     MOVE.L  D0,NEWGRID_SecondaryWorkflowState
     BRA.S   .return_state
 
-.case_state7_default:
+.case_state7_clear_state:
     CLR.L   NEWGRID_SecondaryWorkflowState
 
 .return_state:
@@ -5600,19 +5600,19 @@ NEWGRID_HandleAltGridState:
     MOVE.L  12(A5),D7
     MOVE.W  18(A5),D6
     MOVE.L  A3,D0
-    BNE.S   .state_check
+    BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_2024
     BRA.W   .return_state
 
-.state_check:
+.state_dispatch_check:
     MOVE.L  DATA_NEWGRID_CONST_LONG_2024,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_begin
 
     SUBQ.L  #1,D0
-    BEQ.W   .state5_reset
+    BEQ.W   .state5_frame_only
 
     BRA.W   .force_state4
 
@@ -5733,15 +5733,15 @@ NEWGRID_HandleAltGridState:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state5_draw
+    BEQ.S   .set_state5_after_draw
 
     MOVEQ   #4,D0
-    BRA.S   .store_state
+    BRA.S   .store_state_and_linecount
 
-.state5_draw:
+.set_state5_after_draw:
     MOVEQ   #5,D0
 
-.store_state:
+.store_state_and_linecount:
     LEA     60(A3),A0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_2024
     SUBQ.L  #4,D0
@@ -5762,7 +5762,7 @@ NEWGRID_HandleAltGridState:
     LEA     12(A7),A7
     BRA.S   .return_state
 
-.state5_reset:
+.state5_frame_only:
     MOVEQ   #-1,D0
     MOVE.L  D0,32(A3)
     MOVE.L  A3,-(A7)
@@ -5770,15 +5770,15 @@ NEWGRID_HandleAltGridState:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state5_done
+    BEQ.S   .state5_keep_state5
 
     MOVEQ   #4,D0
-    BRA.S   .store_state2
+    BRA.S   .state5_store_state_and_reset_linecount
 
-.state5_done:
+.state5_keep_state5:
     MOVEQ   #5,D0
 
-.store_state2:
+.state5_store_state_and_reset_linecount:
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_2024
     BRA.S   .return_state
 
@@ -5973,11 +5973,11 @@ NEWGRID_ProcessAltEntryState:
     MOVE.W  30(A7),D6
     MOVEQ   #0,D5
     MOVE.L  A3,D0
-    BNE.S   .state_dispatch
+    BNE.S   .dispatch_workflow_state
 
     MOVEQ   #5,D0
     CMP.L   NEWGRID_AltEntryWorkflowState,D0
-    BNE.S   .reset_state
+    BNE.S   .legacy_nullctx_reset_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -5987,16 +5987,16 @@ NEWGRID_ProcessAltEntryState:
 
     LEA     12(A7),A7
 
-.reset_state:
+.legacy_nullctx_reset_state:
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_AltEntryWorkflowState
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_2026
     BRA.W   .return_state
 
-.state_dispatch:
+.dispatch_workflow_state:
     MOVE.L  NEWGRID_AltEntryWorkflowState,D0
     CMPI.L  #$6,D0
-    BCC.W   .clear_state
+    BCC.W   .clear_workflow_state
 
     ADD.W   D0,D0
     MOVE.W  .state_jumptable(PC,D0.W),D0
@@ -6006,7 +6006,7 @@ NEWGRID_ProcessAltEntryState:
 .state_jumptable:
     DC.W    .case_state0-.state_jumptable-2
     DC.W    .case_state1_draw_empty-.state_jumptable-2
-    DC.W    .clear_state-.state_jumptable-2
+    DC.W    .clear_workflow_state-.state_jumptable-2
     DC.W    .case_state3_or4-.state_jumptable-2
     DC.W    .case_state3_or4-.state_jumptable-2
     DC.W    .case_state5-.state_jumptable-2
@@ -6059,7 +6059,7 @@ NEWGRID_ProcessAltEntryState:
     MOVE.L  DATA_NEWGRID_BSS_LONG_2026,D0
     MOVEQ   #-1,D1
     CMP.L   D1,D0
-    BEQ.S   .clear_state
+    BEQ.S   .clear_workflow_state
 
     MOVE.L  D7,D1
     EXT.L   D1
@@ -6076,10 +6076,10 @@ NEWGRID_ProcessAltEntryState:
     BNE.S   .return_state
 
     TST.L   D5
-    BEQ.S   .adjust_offset
+    BEQ.S   .update_column_adjust
 
     CMPI.L  #$1,DATA_NEWGRID_BSS_LONG_2025
-    BGE.S   .adjust_offset
+    BGE.S   .update_column_adjust
 
     PEA     51.W
     MOVE.L  A3,-(A7)
@@ -6090,7 +6090,7 @@ NEWGRID_ProcessAltEntryState:
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_2025
 
-.adjust_offset:
+.update_column_adjust:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ComputeColumnIndex
 
@@ -6098,7 +6098,7 @@ NEWGRID_ProcessAltEntryState:
     SUB.L   D0,DATA_NEWGRID_BSS_LONG_2025
     BRA.S   .return_state
 
-.clear_state:
+.clear_workflow_state:
     CLR.L   NEWGRID_AltEntryWorkflowState
 
 .return_state:
@@ -6251,7 +6251,7 @@ NEWGRID_FindNextEntryWithAltMarkers:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, PARSEINI_JMPTBL_WDISP_SPrintf,
+;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry, NEWGRID2_JMPTBL_STR_SkipClass3Chars, PARSEINI_JMPTBL_WDISP_SPrintf,
 ;   NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   NEWGRID_ValidateSelectionCode
 ; READS:
@@ -6282,7 +6282,7 @@ NEWGRID_DrawStatusMessage:
     JSR     NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(PC)
 
     PEA     -163(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ; Format string comes from GCOMMAND_MplexAtTemplatePtr.
     MOVE.L  D0,(A7)
@@ -6683,19 +6683,19 @@ NEWGRID_HandleDetailGridState:
     MOVE.L  A0,-4(A5)
     MOVE.L  A0,-8(A5)
     MOVE.L  A3,D0
-    BNE.S   .state_check
+    BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_2028
     BRA.W   .return_state
 
-.state_check:
+.state_dispatch_check:
     MOVE.L  DATA_NEWGRID_CONST_LONG_2028,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_begin
 
     SUBQ.L  #1,D0
-    BEQ.W   .state5_reset
+    BEQ.W   .state5_frame_only
 
     BRA.W   .force_state4
 
@@ -6781,15 +6781,15 @@ NEWGRID_HandleDetailGridState:
 
     LEA     24(A7),A7
     TST.L   D0
-    BEQ.S   .state5_draw
+    BEQ.S   .set_state5_after_draw
 
     MOVEQ   #4,D0
-    BRA.S   .store_state
+    BRA.S   .store_state_and_linecount
 
-.state5_draw:
+.set_state5_after_draw:
     MOVEQ   #5,D0
 
-.store_state:
+.store_state_and_linecount:
     PEA     2.W
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_2028
     JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
@@ -6798,21 +6798,21 @@ NEWGRID_HandleDetailGridState:
     MOVE.L  D0,32(A3)
     BRA.S   .return_state
 
-.state5_reset:
+.state5_frame_only:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_DrawGridFrameVariant2
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state5_done
+    BEQ.S   .state5_keep_state5
 
     MOVEQ   #4,D0
-    BRA.S   .store_state2
+    BRA.S   .state5_store_state_and_reset_linecount
 
-.state5_done:
+.state5_keep_state5:
     MOVEQ   #5,D0
 
-.store_state2:
+.state5_store_state_and_reset_linecount:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
     MOVE.L  D0,DATA_NEWGRID_CONST_LONG_2028
@@ -6861,19 +6861,19 @@ NEWGRID_ProcessScheduleState:
     MOVE.W  34(A7),D6
     MOVEQ   #0,D5
     MOVE.L  A3,D0
-    BNE.S   .state_dispatch
+    BNE.S   .dispatch_workflow_state
 
     MOVE.L  NEWGRID_ScheduleWorkflowState,D0
     SUBQ.L  #2,D0
-    BEQ.S   .state_reset
+    BEQ.S   .legacy_nullctx_editor_reset
 
     SUBQ.L  #3,D0
-    BEQ.S   .state_check_entry
+    BEQ.S   .legacy_nullctx_route_by_editor_gate
 
     SUBQ.L  #2,D0
-    BNE.S   .state_clear
+    BNE.S   .legacy_nullctx_clear_selection_and_state
 
-.state_reset:
+.legacy_nullctx_editor_reset:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -6882,9 +6882,9 @@ NEWGRID_ProcessScheduleState:
     BSR.W   NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    BRA.S   .state_clear
+    BRA.S   .legacy_nullctx_clear_selection_and_state
 
-.state_check_entry:
+.legacy_nullctx_route_by_editor_gate:
     MOVE.L  NEWGRID_SelectedPrimaryEntryIndex,D0
     ASL.L   #2,D0
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
@@ -6894,7 +6894,7 @@ NEWGRID_ProcessScheduleState:
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state_process_detail
+    BEQ.S   .legacy_nullctx_run_detail_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -6903,9 +6903,9 @@ NEWGRID_ProcessScheduleState:
     BSR.W   NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    BRA.S   .state_clear
+    BRA.S   .legacy_nullctx_clear_selection_and_state
 
-.state_process_detail:
+.legacy_nullctx_run_detail_state:
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
@@ -6914,16 +6914,16 @@ NEWGRID_ProcessScheduleState:
 
     LEA     12(A7),A7
 
-.state_clear:
+.legacy_nullctx_clear_selection_and_state:
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_ScheduleWorkflowState
     MOVE.L  D0,NEWGRID_SelectedPrimaryEntryIndex
     BRA.W   .return_state
 
-.state_dispatch:
+.dispatch_workflow_state:
     MOVE.L  NEWGRID_ScheduleWorkflowState,D0
     CMPI.L  #$8,D0
-    BCC.W   .state_clear2
+    BCC.W   .clear_workflow_state
 
     ADD.W   D0,D0
     MOVE.W  .state_jumptable(PC,D0.W),D0
@@ -7041,7 +7041,7 @@ NEWGRID_ProcessScheduleState:
 
 .case_state2:
     TST.L   DATA_NEWGRID_BSS_LONG_202B
-    BEQ.S   .case_state2_default
+    BEQ.S   .case_state2_force_state3
 
     MOVE.L  GCOMMAND_MplexListingsTemplatePtr,-(A7)
     MOVE.L  GCOMMAND_MplexEditorRowPen,-(A7)
@@ -7064,7 +7064,7 @@ NEWGRID_ProcessScheduleState:
     MOVE.L  D0,NEWGRID_ScheduleWorkflowState
     BRA.W   .return_state
 
-.case_state2_default:
+.case_state2_force_state3:
     MOVEQ   #3,D0
     MOVE.L  D0,NEWGRID_ScheduleWorkflowState
 
@@ -7128,10 +7128,10 @@ NEWGRID_ProcessScheduleState:
     BNE.W   .return_state
 
     TST.L   D5
-    BEQ.S   .adjust_offset
+    BEQ.S   .update_column_adjust
 
     CMPI.L  #$1,DATA_NEWGRID_BSS_LONG_202A
-    BGE.S   .adjust_offset
+    BGE.S   .update_column_adjust
 
     MOVE.B  GCOMMAND_MplexDetailLayoutFlag,D0
     MOVEQ   #78,D1
@@ -7154,7 +7154,7 @@ NEWGRID_ProcessScheduleState:
     ADDQ.W  #8,A7
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_202A
 
-.adjust_offset:
+.update_column_adjust:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ComputeColumnIndex
 
@@ -7206,7 +7206,7 @@ NEWGRID_ProcessScheduleState:
 
 .case_state7:
     TST.L   DATA_NEWGRID_BSS_LONG_202C
-    BEQ.S   .case_state7_clear
+    BEQ.S   .case_state7_clear_state
 
     MOVE.L  GCOMMAND_MplexListingsTemplatePtr,-(A7)
     MOVE.L  GCOMMAND_MplexEditorRowPen,-(A7)
@@ -7229,11 +7229,11 @@ NEWGRID_ProcessScheduleState:
     MOVE.L  D0,DATA_NEWGRID_BSS_LONG_202C
     BRA.S   .return_state
 
-.case_state7_clear:
+.case_state7_clear_state:
     CLR.L   NEWGRID_ScheduleWorkflowState
     BRA.S   .return_state
 
-.state_clear2:
+.clear_workflow_state:
     CLR.L   NEWGRID_ScheduleWorkflowState
 
 .return_state:
@@ -7244,7 +7244,7 @@ NEWGRID_ProcessScheduleState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ClearEntryMarkerBits   (Clear entry marker bits uncertain)
+; FUNC: NEWGRID_ClearEntryMarkerBits   (Clear bit-5 marker flags across eligible entries)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -7364,7 +7364,7 @@ NEWGRID_ClearEntryMarkerBits:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_InitSelectionWindow   (Init selection window uncertain)
+; FUNC: NEWGRID_InitSelectionWindow   (Initialize selection bounds and active row window)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +10: arg_2 (via 14(A5))
@@ -7506,7 +7506,7 @@ NEWGRID_InitSelectionWindow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_UpdateSelectionFromInput   (Update selection from input uncertain)
+; FUNC: NEWGRID_UpdateSelectionFromInput   (Advance primary selection scan and resolve next match)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -7539,7 +7539,7 @@ NEWGRID_UpdateSelectionFromInput:
     SUBQ.L  #4,D0
     BEQ.S   .state4_advance
 
-    BRA.S   .state_unknown
+    BRA.S   .state_unhandled_sets_stopflag
 
 .state0_init:
     MOVE.L  12(A3),NEWGRID_SelectionScanEntryIndex
@@ -7556,7 +7556,7 @@ NEWGRID_UpdateSelectionFromInput:
     ADDQ.L  #1,NEWGRID_SelectionScanEntryIndex
     BRA.S   .post_state
 
-.state_unknown:
+.state_unhandled_sets_stopflag:
     MOVEQ   #1,D6
 
 .post_state:
@@ -8194,7 +8194,7 @@ NEWGRID_DrawGridFrameVariant3:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_InitShowtimeBuckets   (Init showtime buckets uncertain)
+; FUNC: NEWGRID_InitShowtimeBuckets   (Initialize showtime bucket pointer/index tables)
 ; ARGS:
 ;   none
 ; RET:
@@ -8486,7 +8486,7 @@ NEWGRID_AppendShowtimeBuckets:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_BuildShowtimesText   (Build showtimes text uncertain)
+; FUNC: NEWGRID_BuildShowtimesText   (Build formatted showtimes text for current selection)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: A2 = entry state
@@ -8496,7 +8496,7 @@ NEWGRID_AppendShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3,
+;   NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, NEWGRID2_JMPTBL_STR_SkipClass3Chars,
 ;   NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
 ;   NEWGRID_AppendShowtimeBuckets, PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
@@ -9004,7 +9004,7 @@ NEWGRID_BuildShowtimesText:
     BNE.S   .copy_showtimes_prefix
 
     PEA     -49(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D5,D1
     EXT.L   D1
@@ -9057,7 +9057,7 @@ NEWGRID_BuildShowtimesText:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -49(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     16(A7),A7
     LEA     60(A3),A0
@@ -9149,7 +9149,7 @@ NEWGRID_BuildShowtimesText:
     BNE.S   .copy_showing_at_prefix
 
     PEA     -49(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  16(A5),-(A7)
@@ -9191,7 +9191,7 @@ NEWGRID_BuildShowtimesText:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_HandleShowtimesState   (Handle showtimes grid state uncertain)
+; FUNC: NEWGRID_HandleShowtimesState   (Execute one step of showtimes/detail grid state machine)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: A2 = entry state
@@ -9356,7 +9356,7 @@ NEWGRID_HandleShowtimesState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ProcessShowtimesWorkflow   (Process showtimes workflow uncertain)
+; FUNC: NEWGRID_ProcessShowtimesWorkflow   (Top-level showtimes workflow dispatcher)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +14: D7 = row index
@@ -9386,19 +9386,19 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.W  14(A5),D7
     MOVEQ   #0,D6
     MOVE.L  A3,D0
-    BNE.W   .state_dispatch
+    BNE.W   .dispatch_workflow_state
 
     MOVE.L  NEWGRID_ShowtimesWorkflowState,D0
     SUBQ.L  #2,D0
-    BEQ.S   .state_reset
+    BEQ.S   .legacy_nullctx_editor_reset
 
     SUBQ.L  #3,D0
-    BEQ.S   .state_check_entry
+    BEQ.S   .legacy_nullctx_route_by_editor_gate
 
     SUBQ.L  #2,D0
-    BNE.S   .state_clear
+    BNE.S   .legacy_nullctx_reinit_selection_and_clear
 
-.state_reset:
+.legacy_nullctx_editor_reset:
     CLR.L   -(A7)
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -9408,15 +9408,15 @@ NEWGRID_ProcessShowtimesWorkflow:
 
     LEA     16(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
-    BRA.S   .state_clear
+    BRA.S   .legacy_nullctx_reinit_selection_and_clear
 
-.state_check_entry:
+.legacy_nullctx_route_by_editor_gate:
     MOVE.L  DATA_WDISP_BSS_LONG_232F,-(A7)
     JSR     NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
-    BEQ.S   .state_process_detail
+    BEQ.S   .legacy_nullctx_run_showtimes_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,-(A7)
@@ -9426,9 +9426,9 @@ NEWGRID_ProcessShowtimesWorkflow:
 
     LEA     12(A7),A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
-    BRA.S   .state_clear
+    BRA.S   .legacy_nullctx_reinit_selection_and_clear
 
-.state_process_detail:
+.legacy_nullctx_run_showtimes_state:
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_HandleShowtimesState
@@ -9436,7 +9436,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
 
-.state_clear:
+.legacy_nullctx_reinit_selection_and_clear:
     CLR.L   -(A7)
     PEA     DATA_WDISP_BSS_LONG_232F
     BSR.W   NEWGRID_InitSelectionWindow
@@ -9446,10 +9446,10 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
     BRA.W   .return_state
 
-.state_dispatch:
+.dispatch_workflow_state:
     MOVE.L  NEWGRID_ShowtimesWorkflowState,D0
     CMPI.L  #$8,D0
-    BCC.W   .state_clear2
+    BCC.W   .clear_workflow_state
 
     ADD.W   D0,D0
     MOVE.W  .state_jumptable(PC,D0.W),D0
@@ -9463,7 +9463,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     DC.W    .case_state3_or4-.state_jumptable-2
     DC.W    .case_state3_or4-.state_jumptable-2
     DC.W    .case_state5-.state_jumptable-2
-    DC.W    .state_clear2-.state_jumptable-2
+    DC.W    .clear_workflow_state-.state_jumptable-2
     DC.W    .case_state6-.state_jumptable-2
 
 .case_state0:
@@ -9502,7 +9502,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 
     MOVEQ   #70,D1
     CMP.B   D1,D0
-    BNE.S   .case2_default
+    BNE.S   .case2_force_state3
 
 .case2_handle:
     MOVE.L  GCOMMAND_PPVListingsTemplatePtr,-(A7)
@@ -9525,7 +9525,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
     BRA.W   .return_state
 
-.case2_default:
+.case2_force_state3:
     MOVEQ   #3,D0
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
 
@@ -9574,10 +9574,10 @@ NEWGRID_ProcessShowtimesWorkflow:
     BNE.W   .return_state
 
     TST.L   D6
-    BEQ.S   .adjust_offset
+    BEQ.S   .update_column_adjust
 
     CMPI.L  #$1,NEWGRID_ShowtimesColumnAdjust
-    BGE.S   .adjust_offset
+    BGE.S   .update_column_adjust
 
     PEA     53.W
     MOVE.L  A3,-(A7)
@@ -9588,7 +9588,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     ADDQ.W  #8,A7
     MOVE.L  D0,NEWGRID_ShowtimesColumnAdjust
 
-.adjust_offset:
+.update_column_adjust:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ComputeColumnIndex
 
@@ -9608,7 +9608,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 
     MOVEQ   #76,D1
     CMP.B   D1,D0
-    BNE.S   .case6_clear
+    BNE.S   .case6_clear_state
 
 .case6_handle:
     MOVE.L  GCOMMAND_PPVListingsTemplatePtr,-(A7)
@@ -9631,11 +9631,11 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
     BRA.S   .return_state
 
-.case6_clear:
+.case6_clear_state:
     CLR.L   NEWGRID_ShowtimesWorkflowState
     BRA.S   .return_state
 
-.state_clear2:
+.clear_workflow_state:
     CLR.L   NEWGRID_ShowtimesWorkflowState
 
 .return_state:
@@ -9658,7 +9658,7 @@ NEWGRID_ProcessShowtimesWorkflow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_TestModeFlagActive   (Test mode flag active uncertain)
+; FUNC: NEWGRID_TestModeFlagActive   (Test mode-specific gate flag)
 ; ARGS:
 ;   stack +8: D7 = mode selector (0/1)
 ; RET:
@@ -9707,7 +9707,7 @@ NEWGRID_TestModeFlagActive:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_TestEntrySelectable   (Test entry selectable uncertain)
+; FUNC: NEWGRID_TestEntrySelectable   (Test whether entry is selectable under current mode)
 ; ARGS:
 ;   stack +8: A3 = entry header
 ;   stack +12: A2 = entry data
@@ -9994,7 +9994,7 @@ NEWGRID_InitSelectionWindowAlt:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_UpdateSelectionFromInputAlt   (Update selection alt uncertain)
+; FUNC: NEWGRID_UpdateSelectionFromInputAlt   (Alternate selection scan with eligibility checks)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -10304,7 +10304,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_AppendShowtimesForRow   (Append showtimes for row uncertain)
+; FUNC: NEWGRID_AppendShowtimesForRow   (Append deduplicated showtimes for active row)
 ; ARGS:
 ;   stack +12: A3 = selection state
 ;   stack +16: A2 = output buffer
@@ -10314,7 +10314,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3,
+;   NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_STR_SkipClass3Chars,
 ;   PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
 ;   CONFIG_TimeWindowMinutes, DATA_NEWGRID_STR_VALUE_203B
@@ -10744,7 +10744,7 @@ NEWGRID_AppendShowtimesForRow:
     BNE.S   .copy_showtimes_prefix
 
     PEA     -31(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
@@ -10762,7 +10762,7 @@ NEWGRID_AppendShowtimesForRow:
     JSR     TEXTDISP_FormatEntryTimeForIndex(PC)
 
     PEA     -31(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     PEA     DATA_NEWGRID_STR_VALUE_203B
     MOVE.L  A2,-(A7)
@@ -10794,7 +10794,7 @@ NEWGRID_AppendShowtimesForRow:
     BNE.S   .copy_showing_at_prefix
 
     PEA     -31(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
@@ -10811,7 +10811,7 @@ NEWGRID_AppendShowtimesForRow:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawShowtimesPrompt   (Draw showtimes prompt uncertain)
+; FUNC: NEWGRID_DrawShowtimesPrompt   (Build and render centered showtimes prompt text)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: A2 = output buffer
@@ -10821,7 +10821,7 @@ NEWGRID_AppendShowtimesForRow:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3, NEWGRID2_JMPTBL_STRING_AppendN, PARSEINI_JMPTBL_STRING_AppendAtNull,
+;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_STRING_AppendN, PARSEINI_JMPTBL_STRING_AppendAtNull,
 ;   NEWGRID_DrawGridFrame, NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd,
 ;   _LVOTextLength, _LVOMove, _LVOText, NEWGRID_ValidateSelectionCode
 ; READS:
@@ -10843,13 +10843,13 @@ NEWGRID_DrawShowtimesPrompt:
     LEA     19(A2),A0
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-4(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     LEA     1(A2),A0
     MOVE.L  A0,(A7)
     MOVE.L  D0,-4(A5)
     MOVE.L  A0,-8(A5)
-    JSR     NEWGRID2_JMPTBL_UNKNOWN7_SkipCharClass3(PC)
+    JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-8(A5)
@@ -11306,7 +11306,7 @@ NEWGRID_DrawGridFrameVariant4:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_TestPrimeTimeWindow   (Test primetime window uncertain)
+; FUNC: NEWGRID_TestPrimeTimeWindow   (Test primetime-window gate for row/index)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))

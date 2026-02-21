@@ -231,7 +231,7 @@ CLEANUP_ShutdownInputDevices:
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A1/A6
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster,
+;   GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AB_JMPTBL_GRAPHICS_FreeRaster,
 ;   _LVOCloseFont, _LVOCloseLibrary
 ; READS:
 ;   Global_REF_96_BYTES_ALLOCATED, Global_REF_RASTPORT_1, WDISP_LivePlaneRasterTable0, WDISP_352x240RasterPtrTable,
@@ -281,7 +281,7 @@ CLEANUP_ReleaseDisplayResources:
     MOVE.L  (A0),-(A7)
     PEA     160.W
     PEA     Global_STR_CLEANUP_C_8
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -304,7 +304,7 @@ CLEANUP_ReleaseDisplayResources:
     MOVE.L  (A0),-(A7)
     PEA     169.W
     PEA     Global_STR_CLEANUP_C_9
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -327,7 +327,7 @@ CLEANUP_ReleaseDisplayResources:
     MOVE.L  (A0),-(A7)
     PEA     178.W
     PEA     Global_STR_CLEANUP_C_10
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -350,7 +350,7 @@ CLEANUP_ReleaseDisplayResources:
     MOVE.L  (A0),-(A7)
     PEA     187.W
     PEA     Global_STR_CLEANUP_C_11
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7
@@ -362,7 +362,7 @@ CLEANUP_ReleaseDisplayResources:
     MOVE.L  WDISP_BannerWorkRasterPtr,-(A7)
     PEA     200.W
     PEA     Global_STR_CLEANUP_C_12
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
 
@@ -569,7 +569,7 @@ CLEANUP_ShutdownSystem:
     MOVE.L  8(A0),-(A7)
     PEA     329.W
     PEA     Global_STR_CLEANUP_C_16
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster(PC)
+    JSR     GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
     ADDQ.L  #1,D7

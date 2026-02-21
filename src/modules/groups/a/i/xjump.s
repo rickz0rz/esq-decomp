@@ -2,9 +2,9 @@
     XDEF    GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers
     XDEF    GROUP_AI_JMPTBL_STRING_AppendAtNull
     XDEF    GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
-    XDEF    GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter
+    XDEF    GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
     XDEF    GROUP_AI_JMPTBL_STR_FindCharPtr
-    XDEF    GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3
+    XDEF    GROUP_AI_JMPTBL_STR_SkipClass3Chars
 
 ;!======
 ;------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
     JMP     FORMAT_FormatToBuffer2
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3   (JumpStub_UNKNOWN7_SkipCharClass3)
+; FUNC: GROUP_AI_JMPTBL_STR_SkipClass3Chars   (JumpStub_STR_SkipClass3Chars)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -104,18 +104,18 @@ GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_SkipCharClass3
+;   STR_SkipClass3Chars
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to UNKNOWN7_SkipCharClass3.
+;   Jump stub to STR_SkipClass3Chars.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_UNKNOWN7_SkipCharClass3:
-    JMP     UNKNOWN7_SkipCharClass3
+GROUP_AI_JMPTBL_STR_SkipClass3Chars:
+    JMP     STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
@@ -140,7 +140,7 @@ GROUP_AI_JMPTBL_STRING_AppendAtNull:
     JMP     STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter   (JumpStub_UNKNOWN7_CopyUntilDelimiter)
+; FUNC: GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN   (JumpStub_STR_CopyUntilAnyDelimN)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -148,18 +148,18 @@ GROUP_AI_JMPTBL_STRING_AppendAtNull:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   UNKNOWN7_CopyUntilDelimiter
+;   STR_CopyUntilAnyDelimN
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to UNKNOWN7_CopyUntilDelimiter.
+;   Jump stub to STR_CopyUntilAnyDelimN.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_UNKNOWN7_CopyUntilDelimiter:
-    JMP     UNKNOWN7_CopyUntilDelimiter
+GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN:
+    JMP     STR_CopyUntilAnyDelimN
 
     ; Alignment?
     MOVEQ   #97,D0

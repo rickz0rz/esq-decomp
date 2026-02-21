@@ -1,16 +1,16 @@
     XDEF    STREAM_BufferedGetc
     XDEF    STREAM_BufferedPutcOrFlush
     XDEF    STREAM_BufferedWriteString
-    XDEF    UNKNOWN2B_AllocRaster
-    XDEF    UNKNOWN2B_FreeRaster
-    XDEF    UNKNOWN2B_MovepReadCallback
-    XDEF    UNKNOWN2B_OpenFileWithAccessMode
-    XDEF    UNKNOWN2B_Stub0
-    XDEF    UNKNOWN2B_Stub1
+    XDEF    GRAPHICS_AllocRaster
+    XDEF    GRAPHICS_FreeRaster
+    XDEF    DOS_MovepWordReadCallback
+    XDEF    DOS_OpenFileWithMode
+    XDEF    ESQ_MainEntryNoOpHook
+    XDEF    ESQ_MainExitNoOpHook
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2B_AllocRaster   (AllocRaster wrapper)
+; FUNC: GRAPHICS_AllocRaster   (AllocRaster wrapper)
 ; ARGS:
 ;   stack +16: D7 = width
 ;   stack +20: D6 = height
@@ -27,9 +27,9 @@
 ; DESC:
 ;   Allocates a raster via graphics.library.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Thin wrapper used by brush/display setup code.
 ;------------------------------------------------------------------------------
-UNKNOWN2B_AllocRaster:
+GRAPHICS_AllocRaster:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
     MOVE.L  16(A5),D7   ; Width
@@ -46,7 +46,7 @@ UNKNOWN2B_AllocRaster:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2B_FreeRaster   (FreeRaster wrapper)
+; FUNC: GRAPHICS_FreeRaster   (FreeRaster wrapper)
 ; ARGS:
 ;   stack +16: A3 = raster pointer
 ;   stack +20: D7 = width
@@ -64,9 +64,9 @@ UNKNOWN2B_AllocRaster:
 ; DESC:
 ;   Frees a raster via graphics.library.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Thin wrapper paired with GRAPHICS_AllocRaster.
 ;------------------------------------------------------------------------------
-UNKNOWN2B_FreeRaster:
+GRAPHICS_FreeRaster:
     LINK.W  A5,#0
     MOVEM.L D6-D7/A3,-(A7)
 
@@ -86,7 +86,7 @@ UNKNOWN2B_FreeRaster:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2B_OpenFileWithAccessMode   (Open wrapper)
+; FUNC: DOS_OpenFileWithMode   (DOS Open wrapper)
 ; ARGS:
 ;   stack +8: A3 = filename pointer
 ;   stack +12: D7 = access mode
@@ -103,9 +103,9 @@ UNKNOWN2B_FreeRaster:
 ; DESC:
 ;   Opens a file via dos.library using the provided access mode.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Direct pass-through to dos.library Open(name, mode).
 ;------------------------------------------------------------------------------
-UNKNOWN2B_OpenFileWithAccessMode:
+DOS_OpenFileWithMode:
     MOVEM.L D2/D6-D7/A3,-(A7)
 
     SetOffsetForStack 4
@@ -126,7 +126,7 @@ UNKNOWN2B_OpenFileWithAccessMode:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2B_Stub0   (Stub)
+; FUNC: ESQ_MainEntryNoOpHook   (Main pre-run no-op hook)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -140,16 +140,16 @@ UNKNOWN2B_OpenFileWithAccessMode:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Empty stub.
+;   Reserved pre-run hook; currently no-op.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Called immediately before ESQ_ParseCommandLineAndRun.
 ;------------------------------------------------------------------------------
-UNKNOWN2B_Stub0:
+ESQ_MainEntryNoOpHook:
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2B_Stub1   (Stub)
+; FUNC: ESQ_MainExitNoOpHook   (Main shutdown no-op hook)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -163,11 +163,11 @@ UNKNOWN2B_Stub0:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Empty stub.
+;   Reserved shutdown hook; currently no-op.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Called after cleanup and dos.library close.
 ;------------------------------------------------------------------------------
-UNKNOWN2B_Stub1:
+ESQ_MainExitNoOpHook:
     RTS
 
 ;!======
@@ -250,7 +250,7 @@ STREAM_BufferedWriteString:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handleruncertain)
+; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handler)
 ; ARGS:
 ;   stack +12: D7 = byte to write, or -1 to flush
 ;   stack +16: A3 = prealloc/dynamic handle node
@@ -271,6 +271,8 @@ STREAM_BufferedWriteString:
 ;   buffered, unbuffered, and translated-CR/LF modes.
 ; NOTES:
 ;   Booleanize pattern: SNE/NEG/EXT. Uses 0x1A/0x0D handling.
+;   `ModeFlags bit7` toggles translated CR/LF mode; `ModeFlags bit6` gates
+;   pre-write backward scan around Ctrl-Z.
 ;------------------------------------------------------------------------------
 STREAM_BufferedPutcOrFlush:
     LINK.W  A5,#-20
@@ -281,7 +283,7 @@ STREAM_BufferedPutcOrFlush:
     MOVE.L  .stackOffsetBytes+4(A7),D7
     MOVEA.L .stackOffsetBytes+8(A7),A3
     MOVE.L  D7,D4
-    MOVEQ   #49,D0
+    MOVEQ   #Struct_PreallocHandleNode_OpenMask_WriteReject,D0
     AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .check_buffer_state
 
@@ -289,7 +291,7 @@ STREAM_BufferedPutcOrFlush:
     BRA.W   .return
 
 .check_buffer_state:
-    BTST    #7,Struct_PreallocHandleNode__ModeFlags(A3)
+    BTST    #Struct_PreallocHandleNode_ModeFlag_TextTranslate_Bit,Struct_PreallocHandleNode__ModeFlags(A3)
     SNE     D0
     NEG.B   D0
     EXT.W   D0
@@ -384,7 +386,7 @@ STREAM_BufferedPutcOrFlush:
 
     MOVEQ   #2,D1
     MOVE.L  D1,-(A7)
-    PEA     UNKNOWN2B_MovepReadCallback(PC)
+    PEA     DOS_MovepWordReadCallback(PC)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     MOVE.L  D1,-16(A5)
     JSR     DOS_WriteByIndex(PC)
@@ -457,7 +459,7 @@ STREAM_BufferedPutcOrFlush:
     MOVE.L  D0,-16(A5)
     BEQ.S   .no_pending_write
 
-    BTST    #6,Struct_PreallocHandleNode__ModeFlags(A3)
+    BTST    #Struct_PreallocHandleNode_ModeFlag_PreWriteScan_Bit,Struct_PreallocHandleNode__ModeFlags(A3)
     BEQ.S   .write_buffer
 
     PEA     2.W
@@ -572,7 +574,7 @@ STREAM_BufferedPutcOrFlush:
     MOVE.L  D0,D1
 
 .final_checks:
-    MOVEQ   #48,D0
+    MOVEQ   #Struct_PreallocHandleNode_OpenMask_FlushReject,D0
     AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .check_flags_return
 
@@ -597,7 +599,7 @@ STREAM_BufferedPutcOrFlush:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2B_MovepReadCallback   (Callback: MOVEP.W 0(A2)->D6)
+; FUNC: DOS_MovepWordReadCallback   (Callback: MOVEP.W 0(A2)->D6)
 ; ARGS:
 ;   A2 = source pointeruncertain
 ; RET:
@@ -613,15 +615,16 @@ STREAM_BufferedPutcOrFlush:
 ; DESC:
 ;   Tiny helper used as a callback to read a word via MOVEP.
 ; NOTES:
+;   Used by translated newline path so DOS_WriteByIndex can fetch a 2-byte word.
 ;   Followed by padding word.
 ;------------------------------------------------------------------------------
-UNKNOWN2B_MovepReadCallback:
+DOS_MovepWordReadCallback:
     MOVEP.W 0(A2),D6
     DC.W    $0000
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedGetc   (Buffered read/getc handleruncertain)
+; FUNC: STREAM_BufferedGetc   (Buffered read/getc handler)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -638,6 +641,7 @@ UNKNOWN2B_MovepReadCallback:
 ;   Ensures buffer is ready and returns next byte, refilling as needed.
 ; NOTES:
 ;   Handles 0x1A and 0x0D specially; uses SNE/NEG/EXT booleanization.
+;   `ModeFlags bit7` enables translated read behavior (CR/LF folding path).
 ;------------------------------------------------------------------------------
 STREAM_BufferedGetc:
     MOVEM.L D5-D7/A3,-(A7)
@@ -645,13 +649,13 @@ STREAM_BufferedGetc:
     SetOffsetForStack 4
 
     MOVEA.L .stackOffsetBytes+4(A7),A3
-    BTST    #7,Struct_PreallocHandleNode__ModeFlags(A3)
+    BTST    #Struct_PreallocHandleNode_ModeFlag_TextTranslate_Bit,Struct_PreallocHandleNode__ModeFlags(A3)
     SNE     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,D7
-    MOVEQ   #48,D0
+    MOVEQ   #Struct_PreallocHandleNode_OpenMask_FlushReject,D0
     AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .check_handle_flags
 
@@ -788,7 +792,7 @@ STREAM_BufferedGetc:
     MOVE.L  A0,Struct_PreallocHandleNode__BufferCursor(A3)
 
 .post_fill_flags:
-    MOVEQ   #50,D0
+    MOVEQ   #Struct_PreallocHandleNode_OpenMask_ReadReject,D0
     AND.L   Struct_PreallocHandleNode__OpenFlags(A3),D0
     BEQ.S   .read_next_byte
 

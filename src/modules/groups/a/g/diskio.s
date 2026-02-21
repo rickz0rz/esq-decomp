@@ -33,7 +33,7 @@
 ; CLOBBERS:
 ;   D0/D6-D7/A3
 ; CALLS:
-;   GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, UNKNOWN2B_OpenFileWithAccessMode, MEMORY_AllocateMemory
+;   GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, DOS_OpenFileWithMode, MEMORY_AllocateMemory
 ; READS:
 ;   DISKIO_OpenCount, ESQPARS2_ReadModeFlags, DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize
 ; WRITES:
@@ -60,7 +60,7 @@ DISKIO_OpenFileWithBuffer:
     CLR.L   DISKIO_BufferControl+Struct_DiskIoBufferControl__ErrorFlag
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D6
@@ -451,7 +451,7 @@ DISKIO_GetFilesizeFromHandle:
 ; CLOBBERS:
 ;   A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode, _LVOClose, _LVORead
+;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVORead
 ; READS:
 ;   Global_REF_DOS_LIBRARY_2, Global_REF_LONG_FILE_SCRATCH, Global_STR_DISKIO_C_3, Global_STR_DISKIO_C_4, Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
 ; WRITES:
@@ -470,7 +470,7 @@ DISKIO_LoadFileToWorkBuffer:
     ; Open the filename in A3
     PEA     (MODE_OLDFILE).W
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AG_JMPTBL_UNKNOWN2B_OpenFileWithAccessMode(PC)
+    JSR     GROUP_AG_JMPTBL_DOS_OpenFileWithMode(PC)
 
     ADDQ.W  #8,A7
 

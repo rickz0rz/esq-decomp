@@ -1351,7 +1351,7 @@ ESQ_ClampBannerCharRange:
 ; READS:
 ;   WDISP_BannerCharIndex, WDISP_BannerCharPhaseShift, WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280, DATA_COMMON_BSS_LONG_1B08
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2256, WDISP_BannerCharIndex, DATA_WDISP_BSS_WORD_2273, DATA_COMMON_BSS_LONG_1B08
+;   ESQ_BannerCharResetPulse, WDISP_BannerCharIndex, DATA_WDISP_BSS_WORD_2273, DATA_COMMON_BSS_LONG_1B08
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
@@ -1381,7 +1381,7 @@ ESQ_ClampBannerCharRange:
     BNE.S   .lab_00A4
 
 .lab_00A3:
-    MOVE.W  D2,DATA_WDISP_BSS_WORD_2256
+    MOVE.W  D2,ESQ_BannerCharResetPulse
     MOVE.W  WDISP_BannerCharRangeStart,D0
 
 .lab_00A4:

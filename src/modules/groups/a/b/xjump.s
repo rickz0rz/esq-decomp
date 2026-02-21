@@ -7,7 +7,7 @@
     XDEF    GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain
     XDEF    GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources
     XDEF    GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
-    XDEF    GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster
+    XDEF    GROUP_AB_JMPTBL_GRAPHICS_FreeRaster
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings)
@@ -164,7 +164,7 @@ GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
     JMP     LOCAVAIL_FreeResourceChain
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster   (Routine at GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster)
+; FUNC: GROUP_AB_JMPTBL_GRAPHICS_FreeRaster   (Routine at GROUP_AB_JMPTBL_GRAPHICS_FreeRaster)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -172,7 +172,7 @@ GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN2B_FreeRaster
+;   GRAPHICS_FreeRaster
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -182,8 +182,8 @@ GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_UNKNOWN2B_FreeRaster:
-    JMP     UNKNOWN2B_FreeRaster
+GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
+    JMP     GRAPHICS_FreeRaster
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AB_JMPTBL_IOSTDREQ_Free   (Routine at GROUP_AB_JMPTBL_IOSTDREQ_Free)

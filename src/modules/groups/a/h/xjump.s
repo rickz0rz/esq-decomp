@@ -15,7 +15,7 @@
     XDEF    GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
     XDEF    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
     XDEF    GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
-    XDEF    GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper
+    XDEF    GROUP_AH_JMPTBL_STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket   (Routine at GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket)
@@ -304,7 +304,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
     JMP     ESQIFF2_ShowAttentionOverlay
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper   (Routine at GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper)
+; FUNC: GROUP_AH_JMPTBL_STR_FindAnyCharPtr   (Routine at GROUP_AH_JMPTBL_STR_FindAnyCharPtr)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -312,7 +312,7 @@ GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN7_FindAnyCharWrapper
+;   STR_FindAnyCharPtr
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -322,8 +322,8 @@ GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_UNKNOWN7_FindAnyCharWrapper:
-    JMP     UNKNOWN7_FindAnyCharWrapper
+GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
+    JMP     STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile   (Routine at GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile)
