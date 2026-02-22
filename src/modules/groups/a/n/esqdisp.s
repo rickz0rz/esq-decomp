@@ -2581,7 +2581,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
-    BTST    #5,27(A1)
+    BTST    #5,Struct_PrimaryEntry__EditorFlagsByte(A1)
     BEQ.S   .set_slot_scan_floor_low
 
     MOVEQ   #0,D0
@@ -2605,7 +2605,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LEA     TEXTDISP_PrimaryEntryPtrTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
-    LEA     28(A1),A0
+    LEA     Struct_PrimaryEntry__SelectionBitsetBase(A1),A0
     MOVE.L  D5,-(A7)
     MOVE.L  A0,-(A7)
     JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
@@ -2623,7 +2623,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     MOVE.L  D5,D1
     ASL.L   #2,D1
     ADDA.L  D1,A2
-    TST.L   56(A2)
+    TST.L   Struct_TitleAuxRecord__SelectorTextPtrBase(A2)
     BEQ.W   .next_slot_descending
 
     MOVE.L  D7,D2
@@ -2637,7 +2637,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     MOVEA.L (A2),A6
     ADDA.L  D5,A6
     MOVEQ   #0,D3
-    MOVE.B  7(A6),D3
+    MOVE.B  Struct_TitleAuxRecord__SelectorFlagsByteBase(A6),D3
     ORI.W   #$80,D3
     MOVE.B  D3,8(A3)
     MOVEA.L A1,A2
@@ -2648,14 +2648,14 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     ADDA.L  D1,A2
     ADDA.L  D2,A1
     MOVEA.L (A1),A0
-    MOVE.L  60(A0),-(A7)
-    MOVE.L  56(A2),-(A7)
+    MOVE.L  Struct_TitleAuxRecord__OwnedStringPtr(A0),-(A7)      ; dst owned-string slot (secondary title record)
+    MOVE.L  Struct_TitleAuxRecord__SelectorTextPtrBase(A2),-(A7) ; src selector text pointer slot (+56 + selector*4)
     MOVE.L  A3,60(A7)
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L 52(A7),A0
-    MOVE.L  D0,60(A0)
+    MOVE.L  D0,Struct_TitleAuxRecord__OwnedStringPtr(A0)
     MOVE.L  D7,D0
     ASL.L   #2,D0
     LEA     TEXTDISP_SecondaryTitlePtrTable,A0

@@ -4666,8 +4666,8 @@ NEWGRID_HandleGridEditorState:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_FindNextEntryWithFlags   (Find entry with bit2/bit7 set)
 ; ARGS:
-;   stack +8: D7 = mode selector
-;   stack +12: D6 = start index
+;   stack +8: D7 = scan mode selector (`0=reset`, `4=start+1`; others invalid)
+;   stack +12: D6 = start index (entry scan cursor)
 ; RET:
 ;   D0: entry index or -1
 ; CLOBBERS:
@@ -4677,7 +4677,12 @@ NEWGRID_HandleGridEditorState:
 ; READS:
 ;   TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
-;   Scans forward for entries with required flag bits set.
+;   Scans primary entries and returns the first entry index whose direct entry
+;   flags satisfy both bit tests used by the secondary workflow prefilter.
+;   Returns `-1` when no eligible entry exists.
+; NOTES:
+;   This helper does not inspect selector metadata tables; it only evaluates
+;   the fetched entry record itself.
 ;------------------------------------------------------------------------------
 NEWGRID_FindNextEntryWithFlags:
     LINK.W  A5,#-8
@@ -4731,10 +4736,10 @@ NEWGRID_FindNextEntryWithFlags:
     BEQ.S   .advance_index
 
     MOVEA.L D0,A0
-    BTST    #2,47(A0)
+    BTST    #2,47(A0)                     ; A0+47 = entry flags byte (bit2 required)
     BEQ.S   .advance_index
 
-    BTST    #7,40(A0)
+    BTST    #7,40(A0)                     ; A0+40 = entry marker/status byte (bit7 required)
     BEQ.S   .advance_index
 
     MOVEQ   #1,D5
@@ -5797,9 +5802,9 @@ NEWGRID_HandleAltGridState:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_FindNextEntryWithMarkers   (Find next entry meeting marker criteria)
 ; ARGS:
-;   stack +8: D7 = mode selector
-;   stack +12: D6 = start index
-;   stack +18: D5 = selector value
+;   stack +8: D7 = scan mode selector (`0=reset`, `4=start+1`; others invalid)
+;   stack +12: D6 = start index (entry scan cursor)
+;   stack +18: D5 = selector/column offset used in metadata lookups
 ; RET:
 ;   D0: entry index or -1
 ; CLOBBERS:
@@ -5809,9 +5814,17 @@ NEWGRID_HandleAltGridState:
 ; READS:
 ;   TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
-;   Scans entries to find the next candidate with required marker/flag bits set.
+;   Scans forward and returns the first entry that passes a stricter compound
+;   eligibility gate than `NEWGRID_FindNextEntryWithFlags`: entry flag bits,
+;   marker-bitset test, editor-open veto, selector metadata bits, and payload ptr.
 ; NOTES:
-;   Uses entry flags in 46(A0) and 40(A0).
+;   Uses both entry record and selector metadata table pointers produced by
+;   `NEWGRID_UpdatePresetEntry`.
+;   The aux pointer is treated as a selector-indexed record where
+;   `56 + (selector*4)` stores a text/source pointer used by downstream
+;   rendering/selection routines.
+;   Returns `-1` when no entry satisfies all gates.
+;   Uses entry fields in `A0+46`, `A0+40`, `A0+27`, `A0+56` (names unknown).
 ;------------------------------------------------------------------------------
 NEWGRID_FindNextEntryWithMarkers:
     LINK.W  A5,#-12
@@ -5865,22 +5878,22 @@ NEWGRID_FindNextEntryWithMarkers:
     BSR.W   NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
-    TST.L   -4(A5)
+    TST.L   -4(A5)                        ; local ptr A: entry record ptr (from NEWGRID_UpdatePresetEntry out0)
     BEQ.W   .advance_index
 
-    TST.L   -8(A5)
+    TST.L   -8(A5)                        ; local ptr B: entry aux/selector-metadata ptr (from NEWGRID_UpdatePresetEntry out1)
     BEQ.S   .advance_index
 
     MOVEA.L -4(A5),A0
-    MOVE.W  46(A0),D0
+    MOVE.W  Struct_PrimaryEntry__StateFlagsWord(A0),D0           ; A0+46 = entry state flags word
     BTST    #1,D0
     BEQ.S   .advance_index
 
-    MOVE.B  40(A0),D0
+    MOVE.B  Struct_PrimaryEntry__MarkerStatusByte(A0),D0         ; A0+40 = entry marker/status byte
     BTST    #7,D0
     BEQ.S   .advance_index
 
-    LEA     28(A0),A1
+    LEA     Struct_PrimaryEntry__SelectionBitsetBase(A0),A1      ; A0+28 = marker bitset base for ESQ_TestBit1Based
     MOVE.L  D5,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -5900,26 +5913,26 @@ NEWGRID_FindNextEntryWithMarkers:
 
     MOVEA.L -8(A5),A0
     MOVEA.L A0,A1
-    ADDA.W  D5,A1
-    BTST    #1,7(A1)
+    ADDA.W  D5,A1                         ; selector-specific metadata offset
+    BTST    #1,Struct_TitleAuxRecord__SelectorFlagsByteBase(A1)  ; A1+7 = selector flags byte (bit1 alters alt-flag gate)
     BNE.S   .check_alt_flags
 
     MOVEA.L -4(A5),A1
-    MOVE.B  27(A1),D0
+    MOVE.B  Struct_PrimaryEntry__EditorFlagsByte(A1),D0          ; A1+27 = entry flags byte (bit4 required when selector bit1 clear)
     BTST    #4,D0
     BEQ.S   .advance_index
 
 .check_alt_flags:
     MOVEA.L A0,A1
-    ADDA.W  D5,A1
-    BTST    #7,7(A1)
+    ADDA.W  D5,A1                         ; selector-specific metadata offset
+    BTST    #7,Struct_TitleAuxRecord__SelectorFlagsByteBase(A1)  ; A1+7 = selector flags byte (bit7 blocks candidate)
     BNE.S   .advance_index
 
     MOVE.L  D5,D0
     EXT.L   D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
-    TST.L   56(A0)
+    TST.L   Struct_TitleAuxRecord__SelectorTextPtrBase(A0)       ; A0+56 = selector text/source pointer slot must be non-null
     BEQ.S   .advance_index
 
     MOVEQ   #1,D4
@@ -6111,9 +6124,9 @@ NEWGRID_ProcessAltEntryState:
 ;------------------------------------------------------------------------------
 ; FUNC: NEWGRID_FindNextEntryWithAltMarkers   (Find next entry with alt markers)
 ; ARGS:
-;   stack +8: D7 = mode selector
-;   stack +12: D6 = start index
-;   stack +18: D5 = selector value
+;   stack +8: D7 = scan mode selector (`0=reset`, `4=start+1`, `6=keep start`; others invalid)
+;   stack +12: D6 = start index (entry scan cursor)
+;   stack +18: D5 = preset/column selector offset added into per-entry metadata
 ; RET:
 ;   D0: entry index or -1
 ; CLOBBERS:
@@ -6123,9 +6136,17 @@ NEWGRID_ProcessAltEntryState:
 ; READS:
 ;   TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
-;   Scans entries for a different marker/flag combination.
+;   Scans forward through primary entries and returns the first row whose entry
+;   passes a compound eligibility gate: entry flags, marker-bit test result,
+;   per-selector metadata bit test, and non-null row payload pointer.
 ; NOTES:
-;   Uses entry flags in 46(A0) and 40(A0).
+;   `NEWGRID_UpdatePresetEntry` materializes two pointers used for validation:
+;   one to entry data and one to per-entry selector metadata.
+;   The aux pointer is treated as a selector-indexed record where
+;   `56 + (selector*4)` stores a text/source pointer required by consumers.
+;   Scan ends when count/presence gates fail or when a qualifying entry is found.
+;   If no entry matches, returns `-1`.
+;   Uses entry fields `A0+46` (flags word) and `A0+40` (marker/status byte).
 ;------------------------------------------------------------------------------
 NEWGRID_FindNextEntryWithAltMarkers:
     LINK.W  A5,#-16
@@ -6180,23 +6201,23 @@ NEWGRID_FindNextEntryWithAltMarkers:
     BSR.W   NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
-    MOVE.W  D0,-6(A5)
-    TST.L   -10(A5)
+    MOVE.W  D0,-6(A5)                     ; local cached entry index from NEWGRID_UpdatePresetEntry
+    TST.L   -10(A5)                       ; local ptr A: entry record ptr (from NEWGRID_UpdatePresetEntry out0)
     BEQ.S   .advance_index
 
-    TST.L   -14(A5)
+    TST.L   -14(A5)                       ; local ptr B: entry aux/selector-metadata ptr (from NEWGRID_UpdatePresetEntry out1)
     BEQ.S   .advance_index
 
     MOVEA.L -10(A5),A0
-    MOVE.W  46(A0),D0
+    MOVE.W  Struct_PrimaryEntry__StateFlagsWord(A0),D0           ; A0+46 = entry state flags word
     BTST    #3,D0
     BEQ.S   .advance_index
 
-    MOVE.B  40(A0),D0
+    MOVE.B  Struct_PrimaryEntry__MarkerStatusByte(A0),D0         ; A0+40 = entry marker/status byte
     BTST    #7,D0
     BEQ.S   .advance_index
 
-    LEA     28(A0),A1
+    LEA     Struct_PrimaryEntry__SelectionBitsetBase(A0),A1      ; A0+28 = marker bitset base used by ESQ_TestBit1Based
     MOVE.W  -6(A5),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -6209,15 +6230,15 @@ NEWGRID_FindNextEntryWithAltMarkers:
 
     MOVEA.L -14(A5),A0
     MOVEA.L A0,A1
-    ADDA.W  D5,A1
-    BTST    #7,7(A1)
+    ADDA.W  D5,A1                         ; selector-specific metadata byte offset
+    BTST    #7,Struct_TitleAuxRecord__SelectorFlagsByteBase(A1)  ; A1+7 = selector flag byte (bit7 blocks candidate)
     BNE.S   .advance_index
 
     MOVE.W  -6(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
     ADDA.L  D0,A0
-    TST.L   56(A0)
+    TST.L   Struct_TitleAuxRecord__SelectorTextPtrBase(A0)       ; A0+56 = selector text/source pointer slot must be non-null
     BEQ.S   .advance_index
 
     MOVEQ   #1,D4

@@ -129,9 +129,15 @@ Global_STR_TRUE_2:
     NStr    "TRUE"
 Global_STR_FALSE_2:
     NStr    "FALSE"
-DATA_ESQFUNC_CONST_LONG_1ECC:
-    DC.L    $0000030c,$0c0c0000,$000c0c00,$05010201
-    DC.L    $060a0505,$05000003
+ESQFUNC_BasePaletteRgbTriples:
+    DC.B    0,0,3       ; Dark Blue
+    DC.B    12,12,12    ; Light Gray
+    DC.B    0,0,0       ; Black
+    DC.B    12,12,0     ; Yellow
+    DC.B    5,1,2       ; Dark Red/Brown
+    DC.B    1,6,10      ; Cyan/Blue
+    DC.B    5,5,5       ; Medium Gray
+    DC.B    0,0,3       ; Dark Blue (Repeat of pen 0)
 DATA_ESQFUNC_CONST_WORD_1ECD:
     DC.W    1
 Global_STR_DF0_LOGO_LST:

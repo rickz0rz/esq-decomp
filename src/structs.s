@@ -93,3 +93,15 @@ Struct_RastPort__Flags          = 32
 Struct_SoftIntList_Size         = 16
 Struct_SoftIntList__sh_List     = 0
 Struct_SoftIntList__sh_Pad      = 14
+
+; Primary entry record fields (ESQDISP/NEWGRID paths; conservative names)
+Struct_PrimaryEntry__EditorFlagsByte        = 27
+Struct_PrimaryEntry__SelectionBitsetBase    = 28
+Struct_PrimaryEntry__MarkerStatusByte       = 40
+Struct_PrimaryEntry__StateFlagsWord         = 46
+Struct_PrimaryEntry__EntryFlagsByte         = 47
+
+; Title auxiliary record fields (selector-indexed metadata/pointers)
+Struct_TitleAuxRecord__SelectorFlagsByteBase = 7
+Struct_TitleAuxRecord__SelectorTextPtrBase   = 56
+Struct_TitleAuxRecord__OwnedStringPtr        = 60

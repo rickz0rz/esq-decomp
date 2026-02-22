@@ -1755,7 +1755,7 @@ PARSEINI_LoadWeatherMessageStrings:
 ; CALLS:
 ;   PARSEINI_JMPTBL_STRING_CompareNoCase, PARSEINI_JMPTBL_WDISP_SPrintf, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   Global_STR_COLOR_PERCENT_D, DATA_ESQFUNC_CONST_LONG_1ECC, DATA_KYBD_BSS_BYTE_1FB8
+;   Global_STR_COLOR_PERCENT_D, ESQFUNC_BasePaletteRgbTriples, DATA_KYBD_BSS_BYTE_1FB8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1786,7 +1786,7 @@ PARSEINI_ParseColorTable:
     BRA.S   .init_color_index
 
 .mode5_select_table:
-    MOVE.L  #DATA_ESQFUNC_CONST_LONG_1ECC,-116(A5)
+    MOVE.L  #ESQFUNC_BasePaletteRgbTriples,-116(A5)
     MOVEQ   #8,D4
 
 .init_color_index:

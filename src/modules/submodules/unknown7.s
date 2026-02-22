@@ -150,6 +150,9 @@ STR_FindChar:
 ;     D0 = STR_FindCharPtr(stringPtr, targetByte)
 ;   Commonly used both for delimiter search and "is byte in set-string" tests
 ;   by checking whether D0 is non-zero.
+;   This symbol is the canonical target behind multiple jump-table aliases
+;   (`GROUP_AS_JMPTBL_STR_FindCharPtr`, `GROUP_AI_JMPTBL_STR_FindCharPtr`,
+;   `PARSEINI_JMPTBL_STR_FindCharPtr`) used across parser/grid/disk paths.
 ;------------------------------------------------------------------------------
 STR_FindCharPtr:
     MOVEM.L D7/A3,-(A7)
@@ -165,9 +168,16 @@ STR_FindCharPtr:
     MOVEM.L (A7)+,D7/A3
     RTS
 
-    ; Unreachable block: starts after RTS and has no in-file branch target.
-    ; Behavior appears to track the last match while scanning (strrchr-like),
-    ; but this block is currently not callable in the linked control flow.
+;------------------------------------------------------------------------------
+; SYM: STR_FindCharPtr_UnreachableLastMatchStub   (post-RTS legacy scan stub)
+; TYPE: code block (unreachable in current control flow)
+; PURPOSE: Legacy/stranded implementation that tracks the last matching byte.
+; USED BY: none confirmed (no branch/call sites in current linked paths)
+; NOTES: Starts immediately after STR_FindCharPtr returns; behaves like
+;   a `strrchr`-style scan (`A2 = last match`) but is not entered by current
+;   callers or in-file branches.
+;------------------------------------------------------------------------------
+STR_FindCharPtr_UnreachableLastMatchStub:
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7

@@ -911,7 +911,7 @@ ESQ_MainInitAndRun:
     MOVE.B  D1,TEXTDISP_SecondaryGroupPresentFlag
     MOVE.B  D1,TEXTDISP_PrimaryGroupCode
     MOVE.B  #$1,TEXTDISP_SecondaryGroupCode
-    MOVE.W  #7,DATA_WDISP_BSS_LONG_225E
+    MOVE.W  #7,ESQ_StartupPhaseSeed225E
     MOVE.W  #2,CLOCK_HalfHourSlotIndex
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
     MOVE.W  D0,PARSEINI_CtrlHChangeGateFlag

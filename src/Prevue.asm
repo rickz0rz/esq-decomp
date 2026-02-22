@@ -48,6 +48,11 @@ Global_DefaultHandleFlags        = Global_AllocBlockSize-Type_Long_Size         
 ;        +0 next, +4 cursor, +8 read remaining, +12 write remaining,
 ;        +16 base ptr, +20 capacity, +24 open flags, +26 mode flags byte,
 ;        +27 status flags byte, +28 handle index, +32 inline-byte scratch.
+;        Confidence:
+;        - Confirmed by direct multi-caller usage: +0/+4/+8/+12/+16/+20/+24/+28.
+;        - Provisional naming: +26 ModeFlags and +27 StateFlags bit semantics.
+;        Open-mask constants below are behavior-derived from STREAM paths and
+;        should stay conservative until additional traces validate intent.
 ;------------------------------------------------------------------------------
 Struct_PreallocHandleNode__Next          = 0
 Struct_PreallocHandleNode__BufferCursor  = 4

@@ -1469,11 +1469,11 @@ ESQIFF_ReadNextExternalAssetPathEntry:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_ESQFUNC_CONST_LONG_1ECC, WDISP_PaletteTriplesRBase
+;   ESQFUNC_BasePaletteRgbTriples, WDISP_PaletteTriplesRBase
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Restores 24 palette bytes from DATA_ESQFUNC_CONST_LONG_1ECC into
+;   Restores 24 palette bytes from ESQFUNC_BasePaletteRgbTriples into
 ;   WDISP_PaletteTriplesRBase.
 ; NOTES:
 ;   Fixed-length byte copy loop; used before startup/status render transitions.
@@ -1489,7 +1489,7 @@ ESQIFF_RestoreBasePaletteTriples:
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.W  D7,A0
-    LEA     DATA_ESQFUNC_CONST_LONG_1ECC,A1
+    LEA     ESQFUNC_BasePaletteRgbTriples,A1
     ADDA.W  D7,A1
     MOVE.B  (A1),(A0)
     ADDQ.W  #1,D7

@@ -1294,6 +1294,7 @@ DATA_WDISP_BSS_WORD_2255:
 ; PURPOSE: Set to 1 whenever banner-char index is forced back to range start.
 ; USED BY: ESQ_AdvanceBannerCharIndex
 ; NOTES: No direct readers found in current scan; likely legacy telemetry/state.
+;   Current writer sets literal `1` on reset paths and does not locally clear it.
 ;------------------------------------------------------------------------------
 ESQ_BannerCharResetPulse:
 DATA_WDISP_BSS_WORD_2256:
@@ -1353,12 +1354,15 @@ LADFUNC_LineSlotSecondaryIndex:
 DATA_WDISP_BSS_WORD_225D:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_LONG_225E   (reserved state long @225E)
-; TYPE: u32
-; PURPOSE: Reserved state slot; currently only initialized during startup.
+; SYM: ESQ_StartupPhaseSeed225E   (startup phase seed slot @225E)
+; TYPE: u32 (written as u16 in current paths)
+; PURPOSE: Startup-initialized state seed set during ESQ global-state reset.
 ; USED BY: ESQ startup init
-; NOTES: Set to 7 in ESQ init; no read sites identified yet.
+; NOTES: Current code writes literal `7` via `MOVE.W`; no direct read sites are
+;   currently identified. Treat as reserved/legacy startup state until a reader
+;   path is confirmed.
 ;------------------------------------------------------------------------------
+ESQ_StartupPhaseSeed225E:
 DATA_WDISP_BSS_LONG_225E:
     DS.L    1
 ;------------------------------------------------------------------------------
@@ -1470,8 +1474,9 @@ Global_REF_BAUD_RATE:
 ; SYM: ESQSHARED_BannerColorModeWord   (banner color mode word)
 ; TYPE: u16
 ; PURPOSE: Mode/selector word passed into legacy ESQSHARED4 banner-color setup stubs.
-; USED BY: ED1_ExitEscMenu, ESQSHARED4 stubs
-; NOTES: Cleared on ESC-menu exit; no direct non-zero writer identified yet.
+; USED BY: ED1_ExitEscMenu, ESQSHARED4 legacy/dead stubs
+; NOTES: Cleared on ESC-menu exit (`CLR.W`); no direct non-zero writer identified.
+;   Current ESQSHARED4 readers are in dead/unreachable blocks in this build.
 ;   Can be clobbered indirectly by ESQ argv[1] copy overflow from ESQ_SelectCodeBuffer.
 ;------------------------------------------------------------------------------
 ESQSHARED_BannerColorModeWord:
@@ -1482,7 +1487,8 @@ DATA_WDISP_BSS_WORD_226D:
 ; TYPE: u32
 ; PURPOSE: Optional selector controlling alternate pen setup in ED_InitRastport2Pens.
 ; USED BY: ED_InitRastport2Pens
-; NOTES: Compared against literal 14; no direct producer identified in current scan.
+; NOTES: Compared against literal `14` to enable alternate `BPen=2` setup in
+;   ED_InitRastport2Pens; no direct producer identified in current scan.
 ;   Can be clobbered indirectly by ESQ argv[1] copy overflow from ESQ_SelectCodeBuffer.
 ;------------------------------------------------------------------------------
 ED_Rastport2PenModeSelector:

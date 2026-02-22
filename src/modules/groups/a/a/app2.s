@@ -1339,7 +1339,7 @@ ESQ_ClampBannerCharRange:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_AdvanceBannerCharIndex   (AdvanceBannerCharIndexuncertain)
+; FUNC: ESQ_AdvanceBannerCharIndex   (Advance banner char index)
 ; ARGS:
 ;   (none)
 ; RET:
