@@ -990,7 +990,7 @@ DISKIO_ForceUiRefreshIfIdle:
 ; READS:
 ;   AbsExecBase, Global_UIBusyFlag
 ; WRITES:
-;   CTRL_H, ESQPARS2_ReadModeFlags, CTRL_HPreviousSample, DATA_WDISP_BSS_WORD_2284, Global_RefreshTickCounter
+;   CTRL_H, ESQPARS2_ReadModeFlags, CTRL_HPreviousSample, CTRL_BufferedByteCount, Global_RefreshTickCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1004,7 +1004,7 @@ DISKIO_ResetCtrlInputStateIfIdle:
     JSR     _LVODisable(A6)
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2284
+    MOVE.W  D0,CTRL_BufferedByteCount
     MOVE.W  D0,CTRL_HPreviousSample
     MOVE.W  D0,CTRL_H
     JSR     _LVOEnable(A6)
@@ -1029,9 +1029,9 @@ DISKIO_ResetCtrlInputStateIfIdle:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AG_JMPTBL_SCRIPT_CheckPathExists, GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AG_JMPTBL_STRUCT_AllocWithOwner, GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField, _LVOCloseDevice, _LVODoIO, _LVOExecute, _LVOOpenDevice
 ; READS:
-;   AbsExecBase, Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, DISKIO_STR_TRACKDISK_DEVICE, DISKIO_CMD_ASSIGN_FONTS_DH2, DISKIO_CMD_ASSIGN_ENV_DH2, DISKIO_CMD_ASSIGN_SYS_DH2, DISKIO_CMD_ASSIGN_S_DH2, DISKIO_CMD_ASSIGN_C_DH2, DISKIO_CMD_ASSIGN_L_DH2, DISKIO_CMD_ASSIGN_LIBS_DH2, DISKIO_CMD_ASSIGN_DEVS_DH2, DISKIO_PATH_DF1_G_ADS, DISKIO_CMD_ASSIGN_GFX_DF1, DISKIO_CMD_ASSIGN_GFX_PC1, DATA_ESQ_BSS_WORD_1DE5, ESQPARS2_ReadModeFlags, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, DATA_WDISP_BSS_LONG_231A, df, e2, return
+;   AbsExecBase, Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, DISKIO_STR_TRACKDISK_DEVICE, DISKIO_CMD_ASSIGN_FONTS_DH2, DISKIO_CMD_ASSIGN_ENV_DH2, DISKIO_CMD_ASSIGN_SYS_DH2, DISKIO_CMD_ASSIGN_S_DH2, DISKIO_CMD_ASSIGN_C_DH2, DISKIO_CMD_ASSIGN_L_DH2, DISKIO_CMD_ASSIGN_LIBS_DH2, DISKIO_CMD_ASSIGN_DEVS_DH2, DISKIO_PATH_DF1_G_ADS, DISKIO_CMD_ASSIGN_GFX_DF1, DISKIO_CMD_ASSIGN_GFX_PC1, DATA_ESQ_BSS_WORD_1DE5, ESQPARS2_ReadModeFlags, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveWriteProtectStatusCodeDrive1, DISKIO_DriveMediaStatusCodeTable, df, e2, return
 ; WRITES:
-;   DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, ESQPARS2_ReadModeFlags, DATA_GCOMMAND_CONST_WORD_1FB0, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr
+;   DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, ESQPARS2_ReadModeFlags, GCOMMAND_DriveProbeRequestedFlag, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1063,7 +1063,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     ADDA.L  D1,A0
     MOVEQ   #0,D0
     MOVE.L  D0,(A0)
-    LEA     DATA_WDISP_BSS_LONG_231A,A0
+    LEA     DISKIO_DriveMediaStatusCodeTable,A0
     ADDA.L  D1,A0
     MOVE.L  D0,(A0)
     MOVE.L  D7,D0
@@ -1082,7 +1082,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     LEA     DISKIO_Drive0WriteProtectedCode,A0
     ADDA.L  D0,A0
     MOVE.L  #218,(A0)
-    LEA     DATA_WDISP_BSS_LONG_231A,A0
+    LEA     DISKIO_DriveMediaStatusCodeTable,A0
     ADDA.L  D0,A0
     MOVE.L  #223,(A0)
     BRA.W   .lab_03D6
@@ -1129,7 +1129,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_231A,A0
+    LEA     DISKIO_DriveMediaStatusCodeTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEQ   #32,D0
@@ -1143,7 +1143,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_231A,A0
+    LEA     DISKIO_DriveMediaStatusCodeTable,A0
     ADDA.L  D0,A0
     MOVE.L  #$df,(A0)
 
@@ -1166,7 +1166,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     TST.W   DATA_ESQ_BSS_WORD_1DE5
     BEQ.W   .return
 
-    CLR.W   DATA_GCOMMAND_CONST_WORD_1FB0
+    CLR.W   GCOMMAND_DriveProbeRequestedFlag
     TST.L   DISKIO_Drive0WriteProtectedCode
     BEQ.S   .lab_03D8
 
@@ -1174,7 +1174,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  D0,DATA_DISKIO_CONST_LONG_1BD5
 
 .lab_03D8:
-    TST.L   DATA_WDISP_BSS_LONG_2319
+    TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
     BEQ.S   .lab_03D9
 
     MOVEQ   #1,D0
@@ -1238,7 +1238,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     TST.L   DATA_DISKIO_CONST_LONG_1BD6
     BEQ.S   .return
 
-    TST.L   DATA_WDISP_BSS_LONG_2319
+    TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
     BNE.S   .return
 
     PEA     DISKIO_PATH_DF1_G_ADS

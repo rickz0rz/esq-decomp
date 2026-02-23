@@ -441,7 +441,7 @@ CLEANUP_ReleaseDisplayResources:
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
 ;   LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
-;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, DATA_WDISP_BSS_LONG_22A7, WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, DATA_ESQ_BSS_LONG_1DC7,
+;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, DATA_ESQ_BSS_LONG_1DC7,
 ;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, Global_REF_INTUITION_LIBRARY,
 ;   Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
@@ -452,7 +452,7 @@ CLEANUP_ReleaseDisplayResources:
 ;   Global shutdown: forbids task switches, releases resources, restores patched
 ;   system vectors, and re-enables multitasking.
 ; NOTES:
-;   - Frees raster tables via nested loops over DATA_WDISP_BSS_LONG_22A7 entries.
+;   - Frees raster tables via nested loops over ESQDISP_HighlightBitmapTable entries.
 ;------------------------------------------------------------------------------
 ; Global shutdown sequence: stop interrupts, free rsrcs, reset display.
 CLEANUP_ShutdownSystem:
@@ -557,7 +557,7 @@ CLEANUP_ShutdownSystem:
     MOVEQ   #40,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     DATA_WDISP_BSS_LONG_22A7,A0
+    LEA     ESQDISP_HighlightBitmapTable,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     ASL.L   #2,D0

@@ -38,7 +38,7 @@
 ;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, STRING_AppendAtNull, TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
-;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, DATA_WDISP_BSS_BYTE_2374/TEXTDISP_BannerCharSelected/DATA_WDISP_BSS_BYTE_2378, DATA_P_TYPE_BSS_LONG_205C
+;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, DATA_P_TYPE_BSS_LONG_205C
 ; WRITES:
 ;   TEXTDISP_PrimaryChannelCode
 ; DESC:
@@ -172,12 +172,12 @@ TEXTDISP_BuildNowShowingStatusLine:
     BEQ.S   .use_channel_digit
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2378,D0
+    MOVE.B  TEXTDISP_BannerSelectedIsSpecialFlag,D0
     BRA.S   .store_channel_char
 
 .use_channel_digit:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2374,D0
+    MOVE.B  TEXTDISP_BannerFallbackIsSpecialFlag,D0
 
 .store_channel_char:
     MOVE.L  D0,-200(A5)
@@ -760,11 +760,11 @@ TEXTDISP_ResetSelectionState:
 ; READS:
 ;   CONFIG_LRBN_FlagChar, DATA_TLIBA1_CONST_BYTE_2174, Global_REF_WORD_HEX_CODE_8E
 ; WRITES:
-;   entry+0..9, entry+10..208, DATA_WDISP_BSS_LONG_2362
+;   entry+0..9, entry+10..208, TEXTDISP_EntryTextBaseWidthPx
 ; DESC:
 ;   Copies short and long names into the entry struct, padding with NULs.
 ; NOTES:
-;   Selects a base width (DATA_WDISP_BSS_LONG_2362) depending on region/flag.
+;   Selects a base width (TEXTDISP_EntryTextBaseWidthPx) depending on region/flag.
 ;------------------------------------------------------------------------------
 TEXTDISP_SetEntryTextFields:
     LINK.W  A5,#-4
@@ -778,13 +778,13 @@ TEXTDISP_SetEntryTextFields:
 
     MOVEQ   #0,D0
     MOVE.W  DATA_TLIBA1_CONST_BYTE_2174,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2362
+    MOVE.L  D0,TEXTDISP_EntryTextBaseWidthPx
     BRA.S   .after_hex_code
 
 .use_hex_code:
     MOVEQ   #0,D0
     MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2362
+    MOVE.L  D0,TEXTDISP_EntryTextBaseWidthPx
 
 .after_hex_code:
     MOVE.L  A3,D0
@@ -1342,9 +1342,9 @@ TEXTDISP_BuildEntryDetailLine:
 ;   TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, TEXTDISP_ShouldOpenEditorForEntry,
 ;   TEXTDISP_SetSelectionFields, TEXTDISP_BuildEntryDetailLine, TEXTDISP_ResetSelectionState
 ; READS:
-;   TEXTDISP_FilterModeId/DATA_WDISP_BSS_WORD_2358-235C, TEXTDISP_CandidateIndexList
+;   TEXTDISP_FilterModeId/TEXTDISP_FilterCandidateCursor-235C, TEXTDISP_CandidateIndexList
 ; WRITES:
-;   TEXTDISP_FilterModeId, DATA_WDISP_BSS_WORD_2358-235C, TEXTDISP_CandidateIndexList
+;   TEXTDISP_FilterModeId, TEXTDISP_FilterCandidateCursor-235C, TEXTDISP_CandidateIndexList
 ; DESC:
 ;   Applies PPV/SBE/SPORTS filters, walks entries for matches, and updates
 ;   selection state when a match is found.
@@ -1392,7 +1392,7 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.W   .default_mode_3
 
 .handle_mode_F:
-    CLR.W   DATA_WDISP_BSS_WORD_2359
+    CLR.W   TEXTDISP_FilterChannelSlotIndex
     MOVE.B  #$1,TEXTDISP_FilterModeId
     MOVE.L  -30(A5),-(A7)
     PEA     DATA_SCRIPT_TAG_PPV_2146
@@ -1419,7 +1419,7 @@ TEXTDISP_FilterAndSelectEntry:
 .after_match_flags:
     MOVE.L  -30(A5),-(A7)
     PEA     DATA_SCRIPT_TAG_SPORTS_2148
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_235B
+    MOVE.W  D0,TEXTDISP_FilterPpvSbeMatchFlag
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -1428,7 +1428,7 @@ TEXTDISP_FilterAndSelectEntry:
     NEG.B   D1
     EXT.W   D1
     EXT.L   D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_235C
+    MOVE.W  D1,TEXTDISP_FilterSportsMatchFlag
 
 .ensure_filter_ready:
     TST.L   -20(A5)
@@ -1439,7 +1439,7 @@ TEXTDISP_FilterAndSelectEntry:
     CMP.B   D1,D0
     BEQ.W   .after_dispatch
 
-    TST.W   DATA_WDISP_BSS_WORD_2359
+    TST.W   TEXTDISP_FilterChannelSlotIndex
     BNE.W   .advance_cursor_set
 
     EXT.W   D0
@@ -1452,7 +1452,7 @@ TEXTDISP_FilterAndSelectEntry:
     MOVE.W  D0,D5
     MOVEQ   #0,D6
     MOVE.L  D6,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_235A
+    MOVE.W  D0,TEXTDISP_FilterMatchCount
 
 .scan_entries_loop:
     CMP.L   D5,D6
@@ -1471,14 +1471,14 @@ TEXTDISP_FilterAndSelectEntry:
     BTST    #3,27(A0)
     BNE.S   .next_entry
 
-    TST.W   DATA_WDISP_BSS_WORD_235B
+    TST.W   TEXTDISP_FilterPpvSbeMatchFlag
     BEQ.S   .check_flag_match
 
     BTST    #4,27(A0)
     BNE.S   .record_match
 
 .check_flag_match:
-    TST.W   DATA_WDISP_BSS_WORD_235C
+    TST.W   TEXTDISP_FilterSportsMatchFlag
     BEQ.S   .check_editor_allowed
 
     MOVE.L  D0,-(A7)
@@ -1500,8 +1500,8 @@ TEXTDISP_FilterAndSelectEntry:
     BNE.S   .next_entry
 
 .record_match:
-    MOVE.W  DATA_WDISP_BSS_WORD_235A,D0
-    ADDQ.W  #1,DATA_WDISP_BSS_WORD_235A
+    MOVE.W  TEXTDISP_FilterMatchCount,D0
+    ADDQ.W  #1,TEXTDISP_FilterMatchCount
     LEA     TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -1514,10 +1514,10 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.W   .scan_entries_loop
 
 .finish_match_scan:
-    CMPI.W  #0,DATA_WDISP_BSS_WORD_235A
+    CMPI.W  #0,TEXTDISP_FilterMatchCount
     BLS.S   .no_matches
 
-    CLR.W   DATA_WDISP_BSS_WORD_2358
+    CLR.W   TEXTDISP_FilterCandidateCursor
     MOVEQ   #1,D0
     CMP.B   TEXTDISP_FilterModeId,D0
     BNE.S   .set_default_cursor
@@ -1530,25 +1530,25 @@ TEXTDISP_FilterAndSelectEntry:
     MOVEQ   #1,D0
 
 .store_cursor_base:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2359
+    MOVE.W  D0,TEXTDISP_FilterChannelSlotIndex
     BRA.S   .advance_cursor_set
 
 .no_matches:
-    MOVE.W  #$31,DATA_WDISP_BSS_WORD_2359
+    MOVE.W  #$31,TEXTDISP_FilterChannelSlotIndex
 
 .advance_cursor_set:
     TST.L   -20(A5)
     BNE.W   .advance_mode
 
-    CMPI.W  #$31,DATA_WDISP_BSS_WORD_2359
+    CMPI.W  #$31,TEXTDISP_FilterChannelSlotIndex
     BCC.W   .advance_mode
 
 .cursor_loop:
     TST.L   -20(A5)
     BNE.W   .advance_channel_index
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2358,D0
-    CMP.W   DATA_WDISP_BSS_WORD_235A,D0
+    MOVE.W  TEXTDISP_FilterCandidateCursor,D0
+    CMP.W   TEXTDISP_FilterMatchCount,D0
     BCC.W   .advance_channel_index
 
     LEA     TEXTDISP_CandidateIndexList,A0
@@ -1574,7 +1574,7 @@ TEXTDISP_FilterAndSelectEntry:
     BNE.W   .load_entry_for_cursor
 
     MOVE.W  CLOCK_HalfHourSlotIndex,D1
-    MOVE.W  DATA_WDISP_BSS_WORD_2359,D2
+    MOVE.W  TEXTDISP_FilterChannelSlotIndex,D2
     CMP.W   D2,D1
     BNE.W   .load_entry_for_cursor
 
@@ -1607,7 +1607,7 @@ TEXTDISP_FilterAndSelectEntry:
 
     LEA     TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2358,D0
+    MOVE.W  TEXTDISP_FilterCandidateCursor,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -1636,7 +1636,7 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.S   .validate_entry
 
 .load_entry_for_cursor:
-    MOVE.W  DATA_WDISP_BSS_WORD_2359,D0
+    MOVE.W  TEXTDISP_FilterChannelSlotIndex,D0
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -1654,7 +1654,7 @@ TEXTDISP_FilterAndSelectEntry:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-26(A5)
-    TST.W   DATA_WDISP_BSS_WORD_235C
+    TST.W   TEXTDISP_FilterSportsMatchFlag
     BEQ.S   .check_entry_name_match
 
     MOVE.W  -22(A5),D0
@@ -1687,7 +1687,7 @@ TEXTDISP_FilterAndSelectEntry:
 
     LEA     TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2358,D0
+    MOVE.W  TEXTDISP_FilterCandidateCursor,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -1718,7 +1718,7 @@ TEXTDISP_FilterAndSelectEntry:
     EXT.L   D0
     LEA     TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D1
-    MOVE.W  DATA_WDISP_BSS_WORD_2358,D1
+    MOVE.W  TEXTDISP_FilterCandidateCursor,D1
     ADDA.L  D1,A0
     MOVEQ   #0,D1
     MOVE.B  (A0),D1
@@ -1736,22 +1736,22 @@ TEXTDISP_FilterAndSelectEntry:
     LEA     16(A7),A7
 
 .next_cursor_entry:
-    ADDQ.W  #1,DATA_WDISP_BSS_WORD_2358
+    ADDQ.W  #1,TEXTDISP_FilterCandidateCursor
     BRA.W   .cursor_loop
 
 .advance_channel_index:
     TST.L   -20(A5)
     BNE.W   .advance_cursor_set
 
-    ADDQ.W  #1,DATA_WDISP_BSS_WORD_2359
-    CLR.W   DATA_WDISP_BSS_WORD_2358
+    ADDQ.W  #1,TEXTDISP_FilterChannelSlotIndex
+    CLR.W   TEXTDISP_FilterCandidateCursor
     BRA.W   .advance_cursor_set
 
 .advance_mode:
-    CMPI.W  #$30,DATA_WDISP_BSS_WORD_2359
+    CMPI.W  #$30,TEXTDISP_FilterChannelSlotIndex
     BLS.W   .ensure_filter_ready
 
-    CLR.W   DATA_WDISP_BSS_WORD_2359
+    CLR.W   TEXTDISP_FilterChannelSlotIndex
     MOVE.B  TEXTDISP_FilterModeId,D0
     EXT.W   D0
     SUBQ.W  #1,D0
@@ -1803,9 +1803,9 @@ TEXTDISP_FilterAndSelectEntry:
 ;   WDISP_JMPTBL_ESQIFF_RunCopperDropTransition/0A45, MATH_Mulu32, MATH_DivS32,
 ;   SCRIPT_BeginBannerCharTransition, TLIBA1_DrawFormattedTextBlock, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, TEXTDISP_ResetSelectionState
 ; READS:
-;   entry+220, CONFIG_LRBN_FlagChar, DATA_WDISP_BSS_LONG_2362
+;   entry+220, CONFIG_LRBN_FlagChar, TEXTDISP_EntryTextBaseWidthPx
 ; WRITES:
-;   WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive/WDISP_AccumulatorFlushPending, DATA_WDISP_BSS_WORD_236C
+;   WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive/WDISP_AccumulatorFlushPending, TEXTDISP_LinePenOverrideEnabledFlag
 ; DESC:
 ;   Enables the highlight copper effect, computes bounds, and draws the frame.
 ; NOTES:
@@ -1838,7 +1838,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  4(A0),D0
     MOVEQ   #-22,D1
-    ADD.L   DATA_WDISP_BSS_LONG_2362,D1
+    ADD.L   TEXTDISP_EntryTextBaseWidthPx,D1
     MOVE.W  (A0),D2
     MOVE.L  D0,-22(A5)
     MOVE.L  D1,-26(A5)
@@ -1937,7 +1937,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_236C
+    MOVE.W  #1,TEXTDISP_LinePenOverrideEnabledFlag
     LEA     220(A3),A0
     MOVE.L  D6,D0
     EXT.L   D0
@@ -1990,7 +1990,7 @@ TEXTDISP_DrawHighlightFrame:
 ;   TEXTDISP_SetEntryTextFields, TEXTDISP_FilterAndSelectEntry,
 ;   TEXTDISP_DrawHighlightFrame, MEMORY_AllocateMemory, MEMORY_DeallocateMemory
 ; READS:
-;   DATA_SCRIPT_BSS_LONG_214B, DATA_WDISP_BSS_WORD_2360/2361/2364
+;   DATA_SCRIPT_BSS_LONG_214B, TEXTDISP_PrimaryFirstMatchIndex/2361/2364
 ; WRITES:
 ;   DATA_SCRIPT_CONST_WORD_2149/214A/214B/235D
 ; DESC:
@@ -2049,7 +2049,7 @@ TEXTDISP_HandleScriptCommand:
     SUBQ.W  #1,D0
     BNE.S   .handle_cmd_C_success
 
-    MOVE.W  TEXTDISP_ActiveGroupId,DATA_WDISP_BSS_WORD_235D
+    MOVE.W  TEXTDISP_ActiveGroupId,TEXTDISP_StatusGroupId
     MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_SCRIPT_CONST_WORD_2149
     BSR.W   SCRIPT_GetBannerCharOrFallback
 
@@ -2059,23 +2059,23 @@ TEXTDISP_HandleScriptCommand:
     BRA.S   .dispatch_update
 
 .handle_cmd_C_success:
-    MOVE.W  DATA_WDISP_BSS_WORD_2360,D0
+    MOVE.W  TEXTDISP_PrimaryFirstMatchIndex,D0
     ADDQ.W  #1,D0
     BEQ.S   .handle_cmd_C_try_alt1
 
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_235D
-    MOVE.W  DATA_WDISP_BSS_WORD_2360,DATA_SCRIPT_CONST_WORD_2149
+    MOVE.W  #1,TEXTDISP_StatusGroupId
+    MOVE.W  TEXTDISP_PrimaryFirstMatchIndex,DATA_SCRIPT_CONST_WORD_2149
     MOVEQ   #-1,D0
     MOVE.W  D0,DATA_SCRIPT_CONST_BYTE_214A
     BRA.S   .dispatch_update
 
 .handle_cmd_C_try_alt1:
-    MOVE.W  DATA_WDISP_BSS_WORD_2361,D0
+    MOVE.W  TEXTDISP_SecondaryFirstMatchIndex,D0
     ADDQ.W  #1,D0
     BEQ.S   .handle_cmd_C_try_alt2
 
-    CLR.W   DATA_WDISP_BSS_WORD_235D
-    MOVE.W  DATA_WDISP_BSS_WORD_2361,DATA_SCRIPT_CONST_WORD_2149
+    CLR.W   TEXTDISP_StatusGroupId
+    MOVE.W  TEXTDISP_SecondaryFirstMatchIndex,DATA_SCRIPT_CONST_WORD_2149
     MOVEQ   #-1,D0
     MOVE.W  D0,DATA_SCRIPT_CONST_BYTE_214A
     BRA.S   .dispatch_update
@@ -2084,10 +2084,10 @@ TEXTDISP_HandleScriptCommand:
     MOVEQ   #-1,D0
     MOVE.W  D0,DATA_SCRIPT_CONST_BYTE_214A
     MOVE.W  D0,DATA_SCRIPT_CONST_WORD_2149
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_235D
+    MOVE.W  D0,TEXTDISP_StatusGroupId
 
 .dispatch_update:
-    MOVE.W  DATA_WDISP_BSS_WORD_235D,D0
+    MOVE.W  TEXTDISP_StatusGroupId,D0
     EXT.L   D0
     MOVE.W  DATA_SCRIPT_CONST_WORD_2149,D1
     EXT.L   D1
@@ -2105,7 +2105,7 @@ TEXTDISP_HandleScriptCommand:
     BRA.W   .finalize
 
 .handle_cmd_J:
-    MOVE.W  DATA_WDISP_BSS_WORD_235D,D0
+    MOVE.W  TEXTDISP_StatusGroupId,D0
     EXT.L   D0
     MOVE.W  DATA_SCRIPT_CONST_WORD_2149,D1
     EXT.L   D1
@@ -2221,7 +2221,7 @@ TEXTDISP_HandleScriptCommand:
 ; READS:
 ;   Global_STR_DF0_SOURCECFG_INI_2
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
 ; DESC:
 ;   Clears the SourceCfg table and parses df0:SourceCfg.ini.
 ; NOTES:
@@ -2237,14 +2237,14 @@ TEXTDISP_LoadSourceConfig:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     ADDA.L  D0,A0
     CLR.L   (A0)
     ADDQ.L  #1,D7
     BRA.S   .clear_table_loop
 
 .return:
-    CLR.L   DATA_WDISP_BSS_LONG_235F
+    CLR.L   TEXTDISP_SourceConfigEntryCount
     CLR.B   DATA_SCRIPT_BSS_WORD_2131
     PEA     Global_STR_DF0_SOURCECFG_INI_2
     JSR     PARSEINI_ParseIniBufferAndDispatch(PC)
@@ -2266,9 +2266,9 @@ TEXTDISP_LoadSourceConfig:
 ; CALLS:
 ;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, MEMORY_DeallocateMemory
 ; READS:
-;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
 ; DESC:
 ;   Frees all SourceCfg entries and resets the table/state.
 ; NOTES:
@@ -2280,12 +2280,12 @@ TEXTDISP_ClearSourceConfig:
     MOVEQ   #0,D7
 
 .loop_entries:
-    CMP.L   DATA_WDISP_BSS_LONG_235F,D7
+    CMP.L   TEXTDISP_SourceConfigEntryCount,D7
     BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     TST.L   (A1)
@@ -2305,7 +2305,7 @@ TEXTDISP_ClearSourceConfig:
     MOVE.L  D0,(A0)
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     ADDA.L  D0,A0
     PEA     6.W
     MOVE.L  (A0),-(A7)
@@ -2316,7 +2316,7 @@ TEXTDISP_ClearSourceConfig:
     LEA     24(A7),A7
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     ADDA.L  D0,A0
     CLR.L   (A0)
 
@@ -2325,7 +2325,7 @@ TEXTDISP_ClearSourceConfig:
     BRA.S   .loop_entries
 
 .return:
-    CLR.L   DATA_WDISP_BSS_LONG_235F
+    CLR.L   TEXTDISP_SourceConfigEntryCount
     CLR.B   DATA_SCRIPT_BSS_WORD_2131
     MOVEM.L (A7)+,D7/A2
     UNLK    A5
@@ -2344,7 +2344,7 @@ TEXTDISP_ClearSourceConfig:
 ; CALLS:
 ;   STRING_CompareNoCaseN
 ; READS:
-;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
 ; WRITES:
 ;   entry+40
 ; DESC:
@@ -2364,12 +2364,12 @@ TEXTDISP_ApplySourceConfigToEntry:
     MOVEQ   #0,D7
 
 .loop_entries:
-    CMP.L   DATA_WDISP_BSS_LONG_235F,D7
+    CMP.L   TEXTDISP_SourceConfigEntryCount,D7
     BGE.S   .return
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L (A1),A2
@@ -2395,7 +2395,7 @@ TEXTDISP_ApplySourceConfigToEntry:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     MOVE.B  4(A1),D0
@@ -2491,9 +2491,9 @@ TEXTDISP_ApplySourceConfigAllEntries:
 ; CALLS:
 ;   MEMORY_AllocateMemory, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, STRING_CompareNoCase
 ; READS:
-;   DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_CONST_LONG_2133, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_CONST_LONG_2133, DATA_SCRIPT_BSS_WORD_2131
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_235E, DATA_WDISP_BSS_LONG_235F, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
 ; DESC:
 ;   Allocates a 6-byte SourceCfg entry, stores name/type, and updates flags.
 ; NOTES:
@@ -2504,9 +2504,9 @@ TEXTDISP_AddSourceConfigEntry:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
-    MOVE.L  DATA_WDISP_BSS_LONG_235F,D0
+    MOVE.L  TEXTDISP_SourceConfigEntryCount,D0
     ASL.L   #2,D0
-    LEA     DATA_WDISP_BSS_LONG_235E,A0
+    LEA     TEXTDISP_SourceConfigEntryTable,A0
     ADDA.L  D0,A0
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     6.W
@@ -2522,7 +2522,7 @@ TEXTDISP_AddSourceConfigEntry:
     TST.L   D0
     BEQ.S   .return
 
-    ADDQ.L  #1,DATA_WDISP_BSS_LONG_235F
+    ADDQ.L  #1,TEXTDISP_SourceConfigEntryCount
     MOVEA.L D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)

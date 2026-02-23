@@ -259,14 +259,14 @@ ED1_UpdateEscMenuSelection:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow,
 ;   DISPLIB_DisplayTextAtPosition, ESQIFF_RunCopperDropTransition, ESQIFF_RunCopperRiseTransition
 ; READS:
-;   DATA_ESQ_TAG_36_1DCB, ED_DiagScrollSpeedChar, DATA_KYBD_BSS_BYTE_1FB8, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
+;   DATA_ESQ_TAG_36_1DCB, ED_DiagScrollSpeedChar, KYBD_CustomPaletteTriplesRBase, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
 ; WRITES:
 ;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, ED_MaxAdNumber, ED_TextLimit, ED_BlockOffset,
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, WDISP_PaletteTriplesRBase
 ; DESC:
 ;   Prepares the ESC menu UI, computes layout values, and draws the version row.
 ; NOTES:
-;   Copies 24 bytes from DATA_KYBD_BSS_BYTE_1FB8 into WDISP_PaletteTriplesRBase.
+;   Copies 24 bytes from KYBD_CustomPaletteTriplesRBase into WDISP_PaletteTriplesRBase.
 ;   Local version buffer is 41 bytes (-41(A5)..-1(A5)); WDISP_SPrintf has no
 ;   destination-length parameter, so format/string edits must keep headroom.
 ;------------------------------------------------------------------------------
@@ -313,7 +313,7 @@ ED1_EnterEscMenu:
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D7,A0
-    LEA     DATA_KYBD_BSS_BYTE_1FB8,A1
+    LEA     KYBD_CustomPaletteTriplesRBase,A1
     ADDA.L  D7,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D7
@@ -471,7 +471,7 @@ ED1_EnterEscMenu_AfterVersionText:
 ;   ED_SaveTextAdsOnExitFlag, ED_SavedDiagGraphModeChar, ED_DiagGraphModeChar, SCRIPT_RuntimeMode
 ; WRITES:
 ;   ED_DiagnosticsScreenActive, DATA_ESQ_BSS_WORD_1DF3, DATA_ESQPARS2_BSS_WORD_1F3C, LOCAVAIL_FilterPrevClassId, ESQIFF_GAdsBrushListCount, SCRIPT_RuntimeMode,
-;   DATA_WDISP_BSS_WORD_2284, CTRL_HPreviousSample, CTRL_H, Global_UIBusyFlag, ESQPARS2_ReadModeFlags
+;   CTRL_BufferedByteCount, CTRL_HPreviousSample, CTRL_H, Global_UIBusyFlag, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets display state, refreshes banner data, and restores main screen state.
 ; NOTES:
@@ -564,7 +564,7 @@ ED1_ExitEscMenu:
 
 .after_pending_flag:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2284
+    MOVE.W  D0,CTRL_BufferedByteCount
     MOVE.W  D0,CTRL_HPreviousSample
     MOVE.W  D0,CTRL_H
     MOVE.W  D0,Global_UIBusyFlag

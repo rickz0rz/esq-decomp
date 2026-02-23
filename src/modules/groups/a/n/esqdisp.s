@@ -2060,7 +2060,7 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, DATA_WDISP_BSS_WORD_223B, DATA_WDISP_BSS_WORD_223C, DATA_WDISP_BSS_WORD_223D, DST_PrimaryCountdown, WDISP_BannerSlotCursor, CLOCK_HalfHourSlotIndex, DATA_WDISP_BSS_WORD_227C, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, CLOCK_CacheYear, DST_PrimaryCountdown, WDISP_BannerSlotCursor, CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
 ;   DATA_COMMON_BSS_LONG_1B08, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, DATA_TLIBA1_CONST_LONG_219B, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
 ; DESC:
@@ -2126,12 +2126,12 @@ ESQDISP_DrawStatusBanner_Impl:
     NOT.B   D2
     AND.L   D2,D1
     MOVE.B  D1,TEXTDISP_PrimaryGroupCode
-    MOVE.W  DATA_WDISP_BSS_WORD_223C,D0
+    MOVE.W  CLOCK_CacheDayIndex0,D0
     MOVEQ   #31,D3
     CMP.W   D3,D0
     BNE.S   .lab_0936
 
-    MOVE.W  DATA_WDISP_BSS_WORD_223B,D0
+    MOVE.W  CLOCK_CacheMonthIndex0,D0
     MOVEQ   #11,D3
     CMP.W   D3,D0
     BNE.S   .lab_0936
@@ -2158,7 +2158,7 @@ ESQDISP_DrawStatusBanner_Impl:
     SUBQ.W  #1,D0
     BNE.S   .lab_0939
 
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D0
+    MOVE.W  CLOCK_CacheYear,D0
     EXT.L   D0
     SUBQ.L  #1,D0
     MOVEQ   #3,D1
@@ -2226,7 +2226,7 @@ ESQDISP_DrawStatusBanner_Impl:
     TST.L   16(A1)
     BNE.S   .lab_093E
 
-    MOVE.W  DATA_WDISP_BSS_WORD_227C,D1
+    MOVE.W  CLOCK_CurrentDayOfYear,D1
     EXT.L   D1
     ADD.L   D6,D1
     MOVEA.L A0,A1
@@ -2235,7 +2235,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BEQ.S   .lab_093F
 
 .lab_093E:
-    MOVE.W  DATA_WDISP_BSS_WORD_227C,D0
+    MOVE.W  CLOCK_CurrentDayOfYear,D0
     EXT.L   D0
     ADD.L   D6,D0
     MOVE.L  D0,24(A7)
@@ -2836,17 +2836,17 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
 ; CALLS:
 ;   ESQIFF2_ClearLineHeadTailByMode
 ; READS:
-;   ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, DATA_WDISP_BSS_WORD_228F
+;   ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, ESQDISP_SecondaryLinePromotePendingFlag
 ; WRITES:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, DATA_WDISP_BSS_WORD_228F
+;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
 ;   If the secondary line chain is marked pending, clears primary line chain for mode 1,
 ;   moves secondary head/tail pointers into primary, then clears secondary pointers.
 ; NOTES:
-;   Always clears DATA_WDISP_BSS_WORD_228F before return.
+;   Always clears ESQDISP_SecondaryLinePromotePendingFlag before return.
 ;------------------------------------------------------------------------------
 ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
-    TST.W   DATA_WDISP_BSS_WORD_228F
+    TST.W   ESQDISP_SecondaryLinePromotePendingFlag
     BEQ.S   .clear_pending_line_promote_flag
 
     PEA     1.W
@@ -2860,7 +2860,7 @@ ESQDISP_PromoteSecondaryLineHeadTailIfMarked:
     MOVE.L  A0,ESQIFF_SecondaryLineTailPtr
 
 .clear_pending_line_promote_flag:
-    CLR.W   DATA_WDISP_BSS_WORD_228F
+    CLR.W   ESQDISP_SecondaryLinePromotePendingFlag
     RTS
 
 ;!======

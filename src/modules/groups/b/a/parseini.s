@@ -157,6 +157,8 @@ PARSEINI_ParseIniBufferAndDispatch:
     BNE.S   .check_section_4
 
     MOVEQ   #3,D7
+    ; [gradient] seeds/edits the dedicated gradient staging table.
+    ; This path does not directly target GCOMMAND_PresetValueTable.
     PEA     GCOMMAND_GradientPresetTable
     JSR     PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(PC)
 
@@ -507,6 +509,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.W   .next_line
 
 .section3_parse_range:
+    ; Parse "COLORx"/"TABLE"/range assignments into GCOMMAND_GradientPresetTable.
     PEA     GCOMMAND_GradientPresetTable
     MOVE.L  -8(A5),-(A7)
     BSR.W   PARSEINI_ParseRangeKeyValue
@@ -1755,7 +1758,7 @@ PARSEINI_LoadWeatherMessageStrings:
 ; CALLS:
 ;   PARSEINI_JMPTBL_STRING_CompareNoCase, PARSEINI_JMPTBL_WDISP_SPrintf, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   Global_STR_COLOR_PERCENT_D, ESQFUNC_BasePaletteRgbTriples, DATA_KYBD_BSS_BYTE_1FB8
+;   Global_STR_COLOR_PERCENT_D, ESQFUNC_BasePaletteRgbTriples, KYBD_CustomPaletteTriplesRBase
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1781,7 +1784,7 @@ PARSEINI_ParseColorTable:
     BRA.S   .init_color_index
 
 .mode4_select_table:
-    MOVE.L  #DATA_KYBD_BSS_BYTE_1FB8,-116(A5)
+    MOVE.L  #KYBD_CustomPaletteTriplesRBase,-116(A5)
     MOVEQ   #8,D4
     BRA.S   .init_color_index
 
@@ -2143,7 +2146,7 @@ PARSEINI_HandleFontCommand:
     ADD.L   D1,D1
     JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     DATA_WDISP_BSS_LONG_22A6,A0
+    LEA     GCOMMAND_HighlightMessageSlotTable,A0
     ADDA.L  D0,A0
     LEA     60(A0),A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
@@ -2182,6 +2185,8 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_parse_gradient_ini:
+    ; Loads/parses gradient.ini into GCOMMAND_GradientPresetTable staging data.
+    ; No direct runtime consumer of this table is confirmed in named-symbol paths yet.
     PEA     Global_STR_DF0_GRADIENT_INI_3
     BSR.W   PARSEINI_ParseIniBufferAndDispatch
 

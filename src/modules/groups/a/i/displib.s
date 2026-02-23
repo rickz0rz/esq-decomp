@@ -397,7 +397,7 @@ DISPLIB_NormalizeValueByStep:
 ; READS:
 ;   DISPTEXT_LinePtrTable, DISPTEXT_LineLengthTable, DISPTEXT_LinePenTable
 ; WRITES:
-;   DISPTEXT_TargetLineIndex, DISPTEXT_CurrentLineIndex, DISPTEXT_LineWidthPx, DATA_WDISP_BSS_LONG_21DA, DISPTEXT_LineTableLockFlag, DISPTEXT_ControlMarkersEnabledFlag
+;   DISPTEXT_TargetLineIndex, DISPTEXT_CurrentLineIndex, DISPTEXT_LineWidthPx, DISPTEXT_ControlMarkerWidthPx, DISPTEXT_LineTableLockFlag, DISPTEXT_ControlMarkersEnabledFlag
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -410,7 +410,7 @@ DISPLIB_ResetLineTables:
     MOVE.W  D0,DISPTEXT_CurrentLineIndex
     MOVEQ   #0,D1
     MOVE.L  D1,DISPTEXT_LineWidthPx
-    MOVE.L  D1,DATA_WDISP_BSS_LONG_21DA
+    MOVE.L  D1,DISPTEXT_ControlMarkerWidthPx
     MOVE.L  D1,DISPTEXT_LineTableLockFlag
     MOVE.W  D0,DISPTEXT_ControlMarkersEnabledFlag
     MOVE.L  D1,D7

@@ -475,7 +475,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferLive,A0
     MOVE.L  ED_TempCopyOffset,D0
     ADDA.L  D0,A0
-    LEA     DATA_WDISP_BSS_BYTE_21F6,A1
+    LEA     ED_EditBufferLiveIndexBaseMinus1,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),(A0)
     MOVE.L  ED_ViewportOffset,-(A7)
@@ -519,7 +519,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferLive,A1
     MOVE.L  ED_TempCopyOffset,D0
     ADDA.L  D0,A1
-    LEA     DATA_WDISP_BSS_BYTE_21F6,A2
+    LEA     ED_EditBufferLiveIndexBaseMinus1,A2
     ADDA.L  D0,A2
     MOVE.B  (A2),(A1)
     ADDA.L  ED_BlockOffset,A0
@@ -530,7 +530,7 @@ ED_HandleEditorInput:
     BRA.W   .finalize_update
 
 .delete_eol_refresh:
-    LEA     DATA_WDISP_BSS_BYTE_21EF,A0
+    LEA     ED_EditBufferScratchIndexBaseMinus1,A0
     ADDA.L  ED_BlockOffset,A0
     MOVE.B  #$20,(A0)
     JSR     ED_DrawCursorChar(PC)
@@ -1212,7 +1212,7 @@ ED_HandleEditorInput:
     BRA.S   .finalize_update
 
 .insert_char_eol:
-    LEA     DATA_WDISP_BSS_BYTE_21EF,A0
+    LEA     ED_EditBufferScratchIndexBaseMinus1,A0
     ADDA.L  ED_BlockOffset,A0
     MOVE.B  #$20,(A0)
     JSR     ED_DrawCursorChar(PC)
@@ -1338,9 +1338,9 @@ ED_EnterTextEditMode:
 ; READS:
 ;   ED_StateRingIndex, ED_StateRingTable, WDISP_CharClassTable, DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19
 ; WRITES:
-;   DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19, DATA_KYBD_BSS_BYTE_1FB7, DATA_KYBD_BSS_BYTE_1FB8, ED_MenuStateId
+;   DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19, KYBD_CustomPaletteCaptureScratchBase, KYBD_CustomPaletteTriplesRBase, ED_MenuStateId
 ; DESC:
-;   Captures an input sequence and writes it into the DATA_KYBD_BSS_BYTE_1FB7/DATA_KYBD_BSS_BYTE_1FB8 buffers.
+;   Captures an input sequence and writes it into the KYBD_CustomPaletteCaptureScratchBase/KYBD_CustomPaletteTriplesRBase buffers.
 ; NOTES:
 ;   Copies a 24-byte template from DATA_ED2_CONST_LONG_1D1A into the output buffer on completion.
 ;------------------------------------------------------------------------------
@@ -1400,7 +1400,7 @@ ED_CaptureKeySequence:
     SUB.L   DATA_ED2_BSS_LONG_1D19,D0
     MOVE.L  DATA_ED2_BSS_LONG_1D18,D1
     ADD.L   D1,D0
-    LEA     DATA_KYBD_BSS_BYTE_1FB7,A0
+    LEA     KYBD_CustomPaletteCaptureScratchBase,A0
     ADDA.L  D0,A0
     MOVE.B  D7,(A0)
     BRA.S   .advance_capture_slot
@@ -1435,7 +1435,7 @@ ED_CaptureKeySequence:
     CMP.L   D1,D0
     BGE.S   .finish_capture
 
-    LEA     DATA_KYBD_BSS_BYTE_1FB8,A0
+    LEA     KYBD_CustomPaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVE.B  -25(A5,D0.L),(A0)
     ADDQ.L  #1,DATA_ED2_BSS_LONG_1D19

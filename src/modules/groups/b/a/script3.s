@@ -181,7 +181,7 @@ SCRIPT_CheckPathExists:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
 ; READS:
-;   DATA_SCRIPT_BSS_WORD_2120/SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, DATA_WDISP_BSS_WORD_2352/2353/2354
+;   DATA_SCRIPT_BSS_WORD_2120/SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, SCRIPT_BannerTransitionTargetChar/2353/2354
 ; WRITES:
 ;   SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, banner character (via SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
 ; DESC:
@@ -200,7 +200,7 @@ SCRIPT_UpdateBannerCharTransition:
 
     MOVE.L  D0,D6
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_WORD_2352,D0
+    MOVE.B  SCRIPT_BannerTransitionTargetChar,D0
     MOVE.L  D6,D1
     EXT.L   D1
     CMP.L   D1,D0
@@ -212,7 +212,7 @@ SCRIPT_UpdateBannerCharTransition:
     BRA.W   .done
 
 .advance_step:
-    MOVE.W  DATA_WDISP_BSS_WORD_2353,D5
+    MOVE.W  SCRIPT_BannerTransitionStepDelta,D5
     MOVE.W  DATA_SCRIPT_BSS_WORD_2120,D1
     MOVEQ   #0,D2
     CMP.W   D2,D1
@@ -223,14 +223,14 @@ SCRIPT_UpdateBannerCharTransition:
     CMP.W   D1,D3
     BLT.S   .calc_candidate
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2354,D3
+    MOVE.W  SCRIPT_BannerTransitionStepSign,D3
     ADD.W   D3,D5
     MOVE.W  D2,DATA_SCRIPT_BSS_WORD_212A
 
 .calc_candidate:
     MOVE.L  D5,D7
     ADD.W   D6,D7
-    MOVE.W  DATA_WDISP_BSS_WORD_2354,D3
+    MOVE.W  SCRIPT_BannerTransitionStepSign,D3
     TST.W   D3
     BPL.S   .check_positive_step
 
@@ -253,7 +253,7 @@ SCRIPT_UpdateBannerCharTransition:
     BGT.S   .snap_to_target
 
 .check_zero_step:
-    TST.W   DATA_WDISP_BSS_WORD_2353
+    TST.W   SCRIPT_BannerTransitionStepDelta
     BNE.S   .apply_step
 
     TST.W   DATA_SCRIPT_BSS_WORD_2120
@@ -297,7 +297,7 @@ SCRIPT_UpdateBannerCharTransition:
 ; READS:
 ;   CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, SCRIPT_BannerTransitionActive
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2352/2353/2354, DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, DATA_SCRIPT_BSS_WORD_211F
+;   SCRIPT_BannerTransitionTargetChar/2353/2354, DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, DATA_SCRIPT_BSS_WORD_211F
 ; DESC:
 ;   Prepares parameters for a banner-char transition toward a target value.
 ; NOTES:
@@ -359,7 +359,7 @@ SCRIPT_BeginBannerCharTransition:
     EXT.L   D0
     SUB.L   D0,D2
     MOVE.L  D2,D4
-    MOVE.B  D1,DATA_WDISP_BSS_WORD_2352
+    MOVE.B  D1,SCRIPT_BannerTransitionTargetChar
     TST.W   Global_WORD_SELECT_CODE_IS_RAVESC
     BNE.S   .selectCodeIsNotRAVSEC
 
@@ -391,7 +391,7 @@ SCRIPT_BeginBannerCharTransition:
     BGT.S   .begin_banner_compute_step
 
     MOVE.L  D4,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2353
+    MOVE.W  D1,SCRIPT_BannerTransitionStepDelta
     BRA.S   .begin_banner_activate
 
 .begin_banner_compute_step:
@@ -405,7 +405,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVEQ   #1,D1
 
 .begin_banner_direction_selected:
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2354
+    MOVE.W  D1,SCRIPT_BannerTransitionStepSign
     TST.L   D4
     BPL.S   .begin_banner_abs_delta_positive
 
@@ -422,7 +422,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  -10(A5),D1
     JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2353
+    MOVE.W  D0,SCRIPT_BannerTransitionStepDelta
     EXT.L   D0
     MOVE.L  -10(A5),D1
     JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
@@ -441,9 +441,9 @@ SCRIPT_BeginBannerCharTransition:
     CLR.W   DATA_SCRIPT_BSS_WORD_2120
 
 .begin_banner_finalize_step_sign:
-    MOVE.W  DATA_WDISP_BSS_WORD_2353,D0
-    MULS    DATA_WDISP_BSS_WORD_2354,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2353
+    MOVE.W  SCRIPT_BannerTransitionStepDelta,D0
+    MULS    SCRIPT_BannerTransitionStepSign,D0
+    MOVE.W  D0,SCRIPT_BannerTransitionStepDelta
 
 .begin_banner_activate:
     MOVE.L  D6,D0
@@ -472,7 +472,7 @@ SCRIPT_BeginBannerCharTransition:
 ; READS:
 ;   Global_REF_WORD_HEX_CODE_8E (target banner char)
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, DATA_WDISP_BSS_WORD_2352, DATA_WDISP_BSS_WORD_2353, DATA_WDISP_BSS_WORD_2354
+;   DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, SCRIPT_BannerTransitionTargetChar, SCRIPT_BannerTransitionStepDelta, SCRIPT_BannerTransitionStepSign
 ; DESC:
 ;   Initializes transition-step globals to move the current banner character
 ;   directly toward Global_REF_WORD_HEX_CODE_8E.
@@ -494,8 +494,8 @@ SCRIPT_PrimeBannerTransitionFromHexCode:
     MOVE.L  D7,D3
     EXT.L   D3
     SUB.L   D3,D2
-    MOVE.B  D1,DATA_WDISP_BSS_WORD_2352
-    MOVE.W  D2,DATA_WDISP_BSS_WORD_2353
+    MOVE.B  D1,SCRIPT_BannerTransitionTargetChar
+    MOVE.W  D2,SCRIPT_BannerTransitionStepDelta
     BGE.S   .step_positive_or_zero
 
     MOVEQ   #-1,D1
@@ -506,7 +506,7 @@ SCRIPT_PrimeBannerTransitionFromHexCode:
 
 .store_step_sign:
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2120
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2354
+    MOVE.W  D1,SCRIPT_BannerTransitionStepSign
     TST.W   D2
     BEQ.S   .set_transition_inactive
 
@@ -570,7 +570,7 @@ SCRIPT_InitCtrlContext:
 ; WRITES:
 ;   Global_RefreshTickCounter, DATA_SCRIPT_BSS_WORD_212B, Global_WORD_CLOCK_SECONDS,
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   SCRIPT_CTRL_CMD_BUFFER, DATA_WDISP_BSS_WORD_2347/2348/2349
+;   SCRIPT_CTRL_CMD_BUFFER, SCRIPT_CtrlCmdCount/2348/2349
 ; DESC:
 ;   Polls the CTRL input buffer and advances a small state machine to parse
 ;   serial control commands; dispatches actions via a jump table.
@@ -715,9 +715,9 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVEQ   #0,D1
     MOVE.B  D7,D1
     MOVE.W  D1,SCRIPT_CTRL_CHECKSUM
-    MOVE.W  DATA_WDISP_BSS_WORD_2347,D1
+    MOVE.W  SCRIPT_CtrlCmdCount,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2347
+    MOVE.W  D1,SCRIPT_CtrlCmdCount
     MOVE.W  D0,SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA
 
@@ -811,9 +811,9 @@ SCRIPT_HandleSerialCtrlCmd:
     ADDQ.W  #8,A7
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,Global_WORD_CLOCK_SECONDS
     MOVEQ   #1,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2348,D1
+    MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2348
+    MOVE.W  D1,SCRIPT_CtrlCmdChecksumErrorCount
     MOVE.W  D0,DATA_SCRIPT_BSS_WORD_212B
 
 .ctrl_cmd_reset_parser:
@@ -839,9 +839,9 @@ SCRIPT_HandleSerialCtrlCmd:
     CMPI.W  #198,D0
     BLE.S   .return
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2349,D0
+    MOVE.W  SCRIPT_CtrlCmdLengthErrorCount,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2349
+    MOVE.W  D0,SCRIPT_CtrlCmdLengthErrorCount
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,SCRIPT_CTRL_READ_INDEX
@@ -882,9 +882,9 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CALLS:
 ;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_CommandTextPtr, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, DATA_WDISP_BSS_LONG_2357, DATA_WDISP_BSS_WORD_2365, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
+;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_CommandTextPtr, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_ChannelSourceMode, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
 ; WRITES:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, DATA_COMMON_STR_VALUE_1B05, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, DATA_COMMON_STR_VALUE_1B05, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Parses one CTRL packet payload via a 22-way switch/jumptable and updates
 ;   brush selection, playback cursor/runtime mode, channel filters, search text,
@@ -1287,7 +1287,7 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_set_playback_cursor_4:
     MOVEQ   #4,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    CLR.W   DATA_WDISP_BSS_LONG_2357
+    CLR.W   SCRIPT_ChannelRangeArmedFlag
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_dispatch_subcommand:
@@ -1362,14 +1362,14 @@ SCRIPT_HandleBrushCommand:
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_channel_range_gate:
-    TST.W   DATA_WDISP_BSS_LONG_2357
+    TST.W   SCRIPT_ChannelRangeArmedFlag
     BNE.S   .brush_cmd_case_channel_range_read_digit
 
     MOVEQ   #0,D6
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_channel_range_read_digit:
-    MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
+    MOVE.W  TEXTDISP_ChannelSourceMode,D0
     SUBQ.W  #1,D0
     BNE.S   .brush_cmd_case_channel_offset_secondary
 
@@ -1382,7 +1382,7 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_case_channel_offset_selected:
     MOVEQ   #0,D1
     MOVE.B  0(A2,D0.L),D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_234F
+    MOVE.W  D1,SCRIPT_ChannelRangeDigitChar
     MOVEQ   #48,D0
     CMP.W   D0,D1
     BNE.S   .brush_cmd_case_require_match_index
@@ -1859,13 +1859,13 @@ SCRIPT_HandleBrushCommand:
 ; READS:
 ;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_PrimarySearchFirstFlag
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, DATA_WDISP_BSS_LONG_2357
+;   SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_ChannelRangeArmedFlag
 ; DESC:
 ;   Splits the incoming parse buffer into primary/secondary lookup windows and
 ;   tries entry selection in preferred order based on SCRIPT_PrimarySearchFirstFlag.
 ; NOTES:
 ;   Sets SCRIPT_PlaybackCursor to 6/7 on successful primary/secondary matches,
-;   otherwise forces cursor 1 and clears DATA_WDISP_BSS_LONG_2357.
+;   otherwise forces cursor 1 and clears SCRIPT_ChannelRangeArmedFlag.
 ;------------------------------------------------------------------------------
 SCRIPT_SelectPlaybackCursorFromSearchText:
     LINK.W  A5,#-4
@@ -1873,8 +1873,8 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
     MOVE.L  8(A5),D7
     MOVEA.L 12(A5),A3
     MOVEQ   #1,D6
-    MOVE.L  D7,DATA_WDISP_BSS_LONG_2350
-    MOVE.W  #1,DATA_WDISP_BSS_LONG_2357
+    MOVE.L  D7,SCRIPT_SearchMatchCountOrIndex
+    MOVE.W  #1,SCRIPT_ChannelRangeArmedFlag
     MOVEQ   #3,D5
 
 .loop_1546:
@@ -1957,7 +1957,7 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
 
 .branch_154A:
     MOVEQ   #0,D6
-    CLR.W   DATA_WDISP_BSS_LONG_2357
+    CLR.W   SCRIPT_ChannelRangeArmedFlag
     MOVEQ   #1,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
 
@@ -1982,7 +1982,7 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
 ; READS:
 ;   CONFIG_MSN_FlagChar, DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, DATA_WDISP_BSS_WORD_236E
+;   DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
 ; DESC:
 ;   Loads context state, applies mode/cursor gating, runs playback-command
 ;   dispatch, then saves the updated state back into the context snapshot.
@@ -2069,7 +2069,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     CLR.W   DATA_SCRIPT_BSS_WORD_211A
 
 .return:
-    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_WORD_236E
+    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
     MOVE.L  A3,-(A7)
     BSR.W   SCRIPT_SaveCtrlContextSnapshot
 
@@ -2553,7 +2553,7 @@ SCRIPT_UpdateCtrlStateMachine:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, DATA_SCRIPT_BSS_WORD_211C, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, DATA_WDISP_BSS_WORD_2365
+;   Global_REF_WORD_HEX_CODE_8E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, DATA_SCRIPT_BSS_WORD_211C, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, TEXTDISP_ChannelSourceMode
 ; WRITES:
 ;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_WORD_211C, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_BSS_WORD_2122, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2687,9 +2687,9 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BRA.W   .return
 
 .playback_cmd_case_render_aligned_current:
-    MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
+    MOVE.W  TEXTDISP_ChannelSourceMode,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_234F,D1
+    MOVE.W  SCRIPT_ChannelRangeDigitChar,D1
     EXT.L   D1
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
@@ -2700,7 +2700,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BRA.W   .return
 
 .playback_cmd_case_render_aligned_primary:
-    MOVE.L  DATA_WDISP_BSS_LONG_2350,D0
+    MOVE.L  SCRIPT_SearchMatchCountOrIndex,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     53.W
@@ -2711,7 +2711,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
     BRA.W   .return
 
 .playback_cmd_case_render_aligned_secondary:
-    MOVE.L  DATA_WDISP_BSS_LONG_2350,D0
+    MOVE.L  SCRIPT_SearchMatchCountOrIndex,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     PEA     53.W
@@ -2882,9 +2882,9 @@ SCRIPT_ResetCtrlContext:
 ; CALLS:
 ;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, DATA_WDISP_BSS_BYTE_2372, DATA_WDISP_BSS_BYTE_2376
+;   SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365
+;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode
 ; DESC:
 ;   Loads saved CTRL context fields into live script/text-display globals.
 ; NOTES:
@@ -2921,10 +2921,10 @@ SCRIPT_LoadCtrlContextSnapshot:
     BNE.S   .ctrl_context_load_copy_secondary_search
 
     MOVE.W  8(A3),TEXTDISP_CurrentMatchIndex
-    MOVE.W  10(A3),DATA_WDISP_BSS_LONG_2357
-    MOVE.W  12(A3),DATA_WDISP_BSS_WORD_2365
-    MOVE.W  14(A3),DATA_WDISP_BSS_WORD_234F
-    MOVE.L  16(A3),DATA_WDISP_BSS_LONG_2350
+    MOVE.W  10(A3),SCRIPT_ChannelRangeArmedFlag
+    MOVE.W  12(A3),TEXTDISP_ChannelSourceMode
+    MOVE.W  14(A3),SCRIPT_ChannelRangeDigitChar
+    MOVE.L  16(A3),SCRIPT_SearchMatchCountOrIndex
     MOVE.L  20(A3),SCRIPT_PlaybackCursor
     MOVE.W  SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0
@@ -2956,12 +2956,12 @@ SCRIPT_LoadCtrlContextSnapshot:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     DATA_WDISP_BSS_BYTE_2372,A0
+    LEA     TEXTDISP_BannerFallbackEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1ac,D0
     MOVE.B  0(A3,D0.L),(A0)
-    LEA     DATA_WDISP_BSS_BYTE_2376,A0
+    LEA     TEXTDISP_BannerSelectedEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1b0,D0
@@ -2986,7 +2986,7 @@ SCRIPT_LoadCtrlContextSnapshot:
 ; CALLS:
 ;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, DATA_WDISP_BSS_WORD_234F, DATA_WDISP_BSS_LONG_2350, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, DATA_WDISP_BSS_LONG_2357, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_2365, DATA_WDISP_BSS_BYTE_2372, DATA_WDISP_BSS_BYTE_2376
+;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
 ; WRITES:
 ;   Context fields at A3+2/+4/+6/+8/+10/+12/+14/+16/+20/+24/+26/+226/+426/+436..+440 and A3+0x1AC..0x1B3
 ; DESC:
@@ -3024,10 +3024,10 @@ SCRIPT_SaveCtrlContextSnapshot:
     BNE.S   .ctrl_context_save_copy_secondary_search
 
     MOVE.W  TEXTDISP_CurrentMatchIndex,8(A3)
-    MOVE.W  DATA_WDISP_BSS_LONG_2357,10(A3)
-    MOVE.W  DATA_WDISP_BSS_WORD_2365,12(A3)
-    MOVE.W  DATA_WDISP_BSS_WORD_234F,14(A3)
-    MOVE.L  DATA_WDISP_BSS_LONG_2350,16(A3)
+    MOVE.W  SCRIPT_ChannelRangeArmedFlag,10(A3)
+    MOVE.W  TEXTDISP_ChannelSourceMode,12(A3)
+    MOVE.W  SCRIPT_ChannelRangeDigitChar,14(A3)
+    MOVE.L  SCRIPT_SearchMatchCountOrIndex,16(A3)
     MOVE.L  SCRIPT_PlaybackCursor,20(A3)
     MOVE.W  SCRIPT_RuntimeMode,24(A3)
     MOVE.W  TEXTDISP_ActiveGroupId,426(A3)
@@ -3038,12 +3038,12 @@ SCRIPT_SaveCtrlContextSnapshot:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     DATA_WDISP_BSS_BYTE_2372,A0
+    LEA     TEXTDISP_BannerFallbackEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1ac,D0
     MOVE.B  (A0),0(A3,D0.L)
-    LEA     DATA_WDISP_BSS_BYTE_2376,A0
+    LEA     TEXTDISP_BannerSelectedEntryIndex,A0
     ADDA.L  D7,A0
     MOVE.L  D7,D0
     ADDI.L  #$1b0,D0

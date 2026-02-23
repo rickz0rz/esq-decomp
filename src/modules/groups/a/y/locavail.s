@@ -1942,7 +1942,7 @@ LOCAVAIL_GetFilterWindowHalfSpan:
 ; READS:
 ;   LOCAVAIL_UpdateFilterStateMachine_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, DATA_LOCAVAIL_STR_YYLLZ_1FFB, WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
 ; WRITES:
-;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, DATA_LADFUNC_CONST_WORD_1FEA, DATA_WDISP_BSS_LONG_2325
+;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, DATA_LADFUNC_CONST_WORD_1FEA, LOCAVAIL_FilterCooldownTicks
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -2163,7 +2163,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVE.W  2(A0),D0
     MOVE.L  D0,D1
     SUBQ.W  #5,D1
-    MOVE.W  D1,DATA_WDISP_BSS_LONG_2325
+    MOVE.W  D1,LOCAVAIL_FilterCooldownTicks
     MOVE.W  2(A0),DATA_LADFUNC_CONST_WORD_1FEA
     MOVEQ   #-1,D0
     MOVE.L  D0,8(A2)

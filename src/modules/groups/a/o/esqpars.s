@@ -592,9 +592,9 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
-;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, Global_STR_23, Global_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, DATA_WDISP_BSS_LONG_2298, DATA_WDISP_BSS_WORD_2299, DATA_WDISP_BSS_WORD_22A0, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
+;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, Global_STR_23, Global_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DISKIO2_InteractiveTransferArmedFlag, ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
-;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DATA_WDISP_BSS_LONG_21BD, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, DATA_WDISP_BSS_WORD_22A0, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
+;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DISKIO2_InteractiveTransferArmedFlag, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_SelectionMatchCode, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
 ; DESC:
 ;   Consumes one RBF byte, advances preamble state, and when armed dispatches
 ;   command handlers for listing, status, config, banner/filter, and control paths.
@@ -653,7 +653,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     SUBQ.W  #1,D1
     BNE.W   .cmdTableDATA
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22A0,D1
+    MOVE.W  ESQPARS_SelectionMatchCode,D1
     BNE.W   .cmdTableDATA
 
     MOVEQ   #65,D1
@@ -693,7 +693,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_22A0
+    MOVE.W  D1,ESQPARS_SelectionMatchCode
     SUBQ.W  #1,D1
     BNE.S   .clearValues
 
@@ -704,7 +704,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21BD
+    MOVE.L  D0,DISKIO2_InteractiveTransferArmedFlag
     MOVE.W  ESQIFF_ParseAttemptCount,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,ESQIFF_ParseAttemptCount
@@ -762,7 +762,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     SUBQ.W  #1,D0
     BNE.W   .cmdbyte_return
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22A0,D0
+    MOVE.W  ESQPARS_SelectionMatchCode,D0
     SUBQ.W  #1,D0
     BNE.W   .cmdbyte_return
 
@@ -1707,7 +1707,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
 
 .cmd_boxoff_apply:
-    CLR.W   DATA_WDISP_BSS_WORD_22A0
+    CLR.W   ESQPARS_SelectionMatchCode
     CLR.L   -(A7)
     PEA     2.W
     JSR     ESQDISP_UpdateStatusMaskAndRefresh(PC)
@@ -1753,7 +1753,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.L   D1,D0
     BNE.S   .cmd_c_checksum_error
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2299,D0
+    MOVE.W  ESQIFF_StatusPacketReadyFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .cmd_c_finish
 
@@ -1894,7 +1894,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BNE.S   .cmd_e_checksum_error
 
     MOVEA.L ESQIFF_RecordBufferPtr,A0
-    LEA     DATA_WDISP_BSS_LONG_2298,A1
+    LEA     ESQPARS_SelectionSuffixBuffer,A1
 
 .cmd_e_copy_loop:
     MOVE.B  (A0)+,(A1)+
@@ -2387,7 +2387,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.W  D0,ESQPARS_ResetArmedFlag
     MOVE.L  D0,D5
     MOVEQ   #1,D0
-    CMP.L   DATA_WDISP_BSS_LONG_21BD,D0
+    CMP.L   DISKIO2_InteractiveTransferArmedFlag,D0
     BNE.W   .cmdbyte_clear_preamble_and_finish
 
     MOVEQ   #61,D1

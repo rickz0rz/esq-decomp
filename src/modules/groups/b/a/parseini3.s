@@ -15,7 +15,7 @@
 ; CALLS:
 ;   SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer, SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes, SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   DATA_NEWGRID2_BSS_LONG_2049, DATA_WDISP_BSS_LONG_233A, DATA_CLOCK_CONST_BYTE_1B5E
+;   DATA_NEWGRID2_BSS_LONG_2049, DATA_WDISP_BSS_LONG_233A, CLOCK_FileEofMarkerCtrlZ
 ; WRITES:
 ;   Err log file on disk
 ; DESC:
@@ -54,7 +54,7 @@ PARSEINI_WriteErrorLogEntry:
     JSR     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DATA_CLOCK_CONST_BYTE_1B5E
+    PEA     CLOCK_FileEofMarkerCtrlZ
     MOVE.L  D7,-(A7)
     JSR     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 

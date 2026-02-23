@@ -89,10 +89,10 @@ CLEANUP_TestEntryFlagYAndBit1:
 ; READS:
 ;   WDISP_CharClassTable, CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
 ; WRITES:
-;   DISPTEXT_InsetNibblePrimary, DATA_WDISP_BSS_BYTE_21B2
+;   DISPTEXT_InsetNibblePrimary, DISPTEXT_InsetNibbleSecondary
 ; DESC:
 ;   Loads two flag bytes from the entry data and writes derived values into
-;   DISPTEXT_InsetNibblePrimary/DATA_WDISP_BSS_BYTE_21B2 using WDISP_CharClassTable attribute bits.
+;   DISPTEXT_InsetNibblePrimary/DISPTEXT_InsetNibbleSecondary using WDISP_CharClassTable attribute bits.
 ; NOTES:
 ;   - Falls back to CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY when the entry record is missing.
 ;------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ CLEANUP_UpdateEntryFlagBytes:
     NOT.B   D1
 
 .store_flag7:
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_21B2
+    MOVE.B  D1,DISPTEXT_InsetNibbleSecondary
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
     RTS
@@ -204,7 +204,7 @@ CLEANUP_UpdateEntryFlagBytes:
 ; READS:
 ;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, WDISP_CharClassTable, DATA_TEXTDISP_CONST_BYTE_2157
 ; WRITES:
-;   DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_BYTE_21B4, DATA_CLOCK_CONST_WORD_1B5D
+;   CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
 ;   Builds an aligned status string into outText, optionally using entry data
 ;   and setting flag bytes for later rendering.
@@ -339,7 +339,7 @@ CLEANUP_BuildAlignedStatusLine:
     NOT.B   D1
 
 .store_entry2_flag6:
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_21B3
+    MOVE.B  D1,CLEANUP_AlignedInsetNibblePrimary
     MOVEA.L -32(A5),A0
     MOVE.B  7(A0),D0
     EXT.W   D0
@@ -365,12 +365,12 @@ CLEANUP_BuildAlignedStatusLine:
     NOT.B   D1
 
 .store_entry2_flag7:
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_21B4
-    MOVE.B  #$1,DATA_CLOCK_CONST_WORD_1B5D
+    MOVE.B  D1,CLEANUP_AlignedInsetNibbleSecondary
+    MOVE.B  #$1,CLOCK_AlignedInsetRenderGateFlag
     BRA.S   .done
 
 .clear_status_flag:
-    CLR.B   DATA_CLOCK_CONST_WORD_1B5D
+    CLR.B   CLOCK_AlignedInsetRenderGateFlag
 
 .done:
     MOVEM.L (A7)+,D5-D7/A3

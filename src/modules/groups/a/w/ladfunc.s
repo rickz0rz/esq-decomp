@@ -279,7 +279,7 @@ LADFUNC_FreeBannerRectEntries:
 ; READS:
 ;   LADFUNC_EntryPtrTable, ED_DiagScrollSpeedChar
 ; WRITES:
-;   LADFUNC_EntryPtrTable entry fields, ED_TextLimit, DATA_WDISP_BSS_WORD_2291, LADFUNC_EntryCount, DATA_WDISP_BSS_WORD_2293,
+;   LADFUNC_EntryPtrTable entry fields, ED_TextLimit, LADFUNC_HighlightCycleCountdown, LADFUNC_EntryCount, LADFUNC_ParsedEntryCount,
 ;   WDISP_HighlightActive, WDISP_HighlightIndex
 ; DESC:
 ;   Clears entry fields and resets highlight/row-count globals.
@@ -313,9 +313,9 @@ LADFUNC_ClearBannerRectEntries:
 
 .after_loop:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2291
+    MOVE.W  D0,LADFUNC_HighlightCycleCountdown
     MOVE.W  D0,LADFUNC_EntryCount
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2293
+    MOVE.W  D0,LADFUNC_ParsedEntryCount
     MOVE.W  D0,WDISP_HighlightActive
     MOVE.W  D0,WDISP_HighlightIndex
     MOVEQ   #0,D0
@@ -452,19 +452,19 @@ LADFUNC_ResetEntryTextBuffers:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MATH_DivS32, LADFUNC_BuildHighlightLinesFromText
 ; READS:
-;   WDISP_HighlightActive, DATA_WDISP_BSS_WORD_2291, DATA_WDISP_BSS_WORD_2292, LADFUNC_EntryCount, LADFUNC_EntryPtrTable
+;   WDISP_HighlightActive, LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, LADFUNC_EntryCount, LADFUNC_EntryPtrTable
 ; WRITES:
-;   LADFUNC_EntryCount, DATA_WDISP_BSS_WORD_2291
+;   LADFUNC_EntryCount, LADFUNC_HighlightCycleCountdown
 ; DESC:
 ;   Advances the highlighted entry when active and refreshes the display.
 ; NOTES:
-;   Resets DATA_WDISP_BSS_WORD_2291 from DATA_WDISP_BSS_WORD_2292 when the countdown underflows.
+;   Resets LADFUNC_HighlightCycleCountdown from LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
 ;------------------------------------------------------------------------------
     MOVE.W  WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .maybe_reset
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2291,D0
+    MOVE.W  LADFUNC_HighlightCycleCountdown,D0
     BLE.S   .maybe_reset
 
 .find_next_highlight:
@@ -495,22 +495,22 @@ LADFUNC_ResetEntryTextBuffers:
     BSR.W   LADFUNC_BuildHighlightLinesFromText
 
     ADDQ.W  #4,A7
-    MOVE.W  DATA_WDISP_BSS_WORD_2291,D0
+    MOVE.W  LADFUNC_HighlightCycleCountdown,D0
     MOVE.L  D0,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2291
+    MOVE.W  D1,LADFUNC_HighlightCycleCountdown
 
 .maybe_reset:
     MOVE.W  WDISP_HighlightActive,D0
     SUBQ.W  #1,D0
     BNE.S   .return
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2291,D0
+    MOVE.W  LADFUNC_HighlightCycleCountdown,D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
     BGE.S   .return
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2292,DATA_WDISP_BSS_WORD_2291
+    MOVE.W  LADFUNC_HighlightCycleCountdownReload,LADFUNC_HighlightCycleCountdown
 
 .return:
     RTS
@@ -830,9 +830,9 @@ LADFUNC_ParseHexDigit:
 ;   NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
 ;   GROUP_AS_JMPTBL_STR_FindCharPtr, LADFUNC_UpdateHighlightState
 ; READS:
-;   ED_DiagTextModeChar, DATA_LADFUNC_TAG_RS_1FBF, DATA_LADFUNC_TAG_RS_1FC0, LADFUNC_EntryPtrTable, DATA_WDISP_BSS_WORD_2293, DATA_WDISP_BSS_WORD_2299
+;   ED_DiagTextModeChar, DATA_LADFUNC_TAG_RS_1FBF, DATA_LADFUNC_TAG_RS_1FC0, LADFUNC_EntryPtrTable, LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2293, LADFUNC_EntryPtrTable entry buffers, WDISP_HighlightActive
+;   LADFUNC_ParsedEntryCount, LADFUNC_EntryPtrTable entry buffers, WDISP_HighlightActive
 ; DESC:
 ;   Parses an encoded entry record and updates entry buffers and metadata.
 ; NOTES:
@@ -866,7 +866,7 @@ LADFUNC_ParseBannerEntryData:
     BNE.S   .return_zero
 
 .maybe_refresh:
-    MOVE.W  DATA_WDISP_BSS_WORD_2299,D0
+    MOVE.W  ESQIFF_StatusPacketReadyFlag,D0
     SUBQ.W  #1,D0
     BNE.S   .return_zero
 
@@ -912,10 +912,10 @@ LADFUNC_ParseBannerEntryData:
     CMP.B   D0,D5
     BCC.S   .return_zero_local
 
-    MOVE.W  DATA_WDISP_BSS_WORD_2293,D0
+    MOVE.W  LADFUNC_ParsedEntryCount,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2293
+    MOVE.W  D1,LADFUNC_ParsedEntryCount
     MOVEQ   #46,D0
     CMP.W   D0,D1
     BLT.S   .setup_entry
@@ -2040,7 +2040,7 @@ LADFUNC_DrawEntryLineWithAttrs:
 ;   GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition, GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition,
 ;   LADFUNC_GetPackedPenHighNibble, LADFUNC_DrawEntryLineWithAttrs
 ; READS:
-;   LADFUNC_EntryPtrTable, DATA_KYBD_BSS_BYTE_1FB8..DATA_KYBD_CONST_LONG_1FBA, ED_TextLimit, Global_HANDLE_H26F_FONT,
+;   LADFUNC_EntryPtrTable, KYBD_CustomPaletteTriplesRBase..KYBD_CustomPaletteTriplesBBase, ED_TextLimit, Global_HANDLE_H26F_FONT,
 ;   Global_HANDLE_PREVUEC_FONT
 ; WRITES:
 ;   WDISP_PaletteTriplesRBase..WDISP_PaletteTriplesBBase, WDISP_AccumulatorFlushPending, WDISP_DisplayContextBase
@@ -2133,7 +2133,7 @@ LADFUNC_DrawEntryPreview:
 
     LEA     WDISP_PaletteTriplesRBase,A0
     ADDA.L  D4,A0
-    LEA     DATA_KYBD_BSS_BYTE_1FB8,A1
+    LEA     KYBD_CustomPaletteTriplesRBase,A1
     ADDA.L  D4,A1
     MOVE.B  (A1),(A0)
     ADDQ.L  #1,D4
@@ -2161,13 +2161,13 @@ LADFUNC_DrawEntryPreview:
     MOVE.L  D4,D0
     LSL.L   #2,D0
     SUB.L   D4,D0
-    LEA     DATA_KYBD_BSS_BYTE_1FB8,A0
+    LEA     KYBD_CustomPaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesRBase
-    LEA     DATA_KYBD_BSS_BYTE_1FB9,A0
+    LEA     KYBD_CustomPaletteTriplesGBase,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesGBase
-    LEA     DATA_KYBD_CONST_LONG_1FBA,A0
+    LEA     KYBD_CustomPaletteTriplesBBase,A0
     ADDA.L  D0,A0
     MOVE.B  (A0),WDISP_PaletteTriplesBBase
     MOVEA.L WDISP_DisplayContextBase,A0

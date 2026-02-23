@@ -279,14 +279,14 @@ TLIBA1_ParseStyleCodeChar:
 ;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, STR_FindCharPtr,
 ;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, DATA_CLOCK_CONST_WORD_1B5D, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_BYTE_21B4, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
+;   Global_REF_GRAPHICS_LIBRARY, CLOCK_AlignedInsetRenderGateFlag, CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
 ; WRITES:
-;   DATA_CLOCK_CONST_WORD_1B5D
+;   CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
 ;   Parses inline marker sequences and chooses framed/plain drawing paths for a
 ;   single rendered text row.
 ; NOTES:
-;   Updates DATA_CLOCK_CONST_WORD_1B5D gating flag after framed draw path.
+;   Updates CLOCK_AlignedInsetRenderGateFlag gating flag after framed draw path.
 ;------------------------------------------------------------------------------
 TLIBA1_DrawInlineStyledText:
     LINK.W  A5,#-24
@@ -298,7 +298,7 @@ TLIBA1_DrawInlineStyledText:
     MOVEQ   #0,D0
     MOVE.L  D0,-18(A5)
     MOVE.L  D0,-14(A5)
-    TST.B   DATA_CLOCK_CONST_WORD_1B5D
+    TST.B   CLOCK_AlignedInsetRenderGateFlag
     BEQ.S   .if_eq_1772
 
     PEA     19.W
@@ -318,9 +318,9 @@ TLIBA1_DrawInlineStyledText:
     BEQ.S   .if_eq_1772
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B4,D0
+    MOVE.B  CLEANUP_AlignedInsetNibbleSecondary,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
+    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
     MOVE.L  A2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -330,7 +330,7 @@ TLIBA1_DrawInlineStyledText:
     BSR.W   TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
-    CLR.B   DATA_CLOCK_CONST_WORD_1B5D
+    CLR.B   CLOCK_AlignedInsetRenderGateFlag
     BRA.W   .return_1788
 
 .if_eq_1772:
@@ -668,7 +668,7 @@ TLIBA1_DrawInlineStyledText:
 ;   TLIBA1_DrawInlineStyledText, MATH_DivS32, MATH_Mulu32, MEMORY_AllocateMemory,
 ;   MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, DATA_CLOCK_CONST_WORD_1B5D, DATA_TLIBA1_STR_TLIBA1_DOT_C_2164, DATA_WDISP_BSS_BYTE_21B3, DATA_WDISP_BSS_WORD_236C, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, DATA_TLIBA1_STR_TLIBA1_DOT_C_2164, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -967,7 +967,7 @@ TLIBA1_DrawFormattedTextBlock:
     CMP.W   -18(A5),D0
     BGE.W   .if_ge_17A6
 
-    TST.W   DATA_WDISP_BSS_WORD_236C
+    TST.W   TEXTDISP_LinePenOverrideEnabledFlag
     BEQ.S   .if_eq_179D
 
     MULS    #10,D0
@@ -1018,11 +1018,11 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  36(A7),D0
     JSR     _LVOTextLength(A6)
 
-    TST.B   DATA_CLOCK_CONST_WORD_1B5D
+    TST.B   CLOCK_AlignedInsetRenderGateFlag
     BEQ.S   .if_eq_17A1
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
+    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1

@@ -29,15 +29,15 @@
 ;   _LVOSetAPen, GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
 ;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, DATA_ESQ_BSS_BYTE_1DEF, Global_UIBusyFlag,
-;   CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep, DATA_WDISP_BSS_LONG_2325, CLOCK_DaySlotIndex, CLOCK_CurrentDayOfWeekIndex,
-;   DATA_WDISP_BSS_WORD_22A5, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
+;   CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep, LOCAVAIL_FilterCooldownTicks, CLOCK_DaySlotIndex, CLOCK_CurrentDayOfWeekIndex,
+;   TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
 ;   DATA_TLIBA1_BSS_WORD_2196, DST_BannerWindowPrimary, DATA_ESQ_STR_N_1DD5, DATA_ESQ_STR_N_1DD4, ED_MenuStateId, CLOCK_HalfHourSlotIndex,
 ;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep,
-;   DATA_WDISP_BSS_LONG_2325, CLEANUP_PendingAlertFlag, DATA_WDISP_BSS_WORD_22A5, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
+;   LOCAVAIL_FilterCooldownTicks, CLEANUP_PendingAlertFlag, TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
 ;   CLEANUP_BannerTickCounter, DATA_TLIBA1_BSS_WORD_2196, DATA_ESQDISP_CONST_WORD_1E85, DATA_COMMON_BSS_LONG_1B08,
-;   WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280
+;   WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd
 ; DESC:
 ;   Processes pending alert state, advances the alert/badge state machine,
 ;   handles brush alerts, updates banner timers, and redraws the banner/clock.
@@ -75,12 +75,12 @@ CLEANUP_ProcessAlerts:
     CMP.L   LOCAVAIL_FilterStep,D0
     BNE.S   .check_state_three
 
-    MOVE.W  DATA_WDISP_BSS_LONG_2325,D0
+    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
     BGT.S   .after_state_update
 
     MOVE.L  D0,D1
     ADDI.W  #10,D1
-    MOVE.W  D1,DATA_WDISP_BSS_LONG_2325
+    MOVE.W  D1,LOCAVAIL_FilterCooldownTicks
     MOVEQ   #3,D0
     MOVE.L  D0,LOCAVAIL_FilterStep
     BRA.S   .after_state_update
@@ -90,7 +90,7 @@ CLEANUP_ProcessAlerts:
     CMP.L   LOCAVAIL_FilterStep,D0
     BNE.S   .after_state_update
 
-    MOVE.W  DATA_WDISP_BSS_LONG_2325,D0
+    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
     BGT.S   .after_state_update
 
     MOVEQ   #4,D0
@@ -108,7 +108,7 @@ CLEANUP_ProcessAlerts:
     JSR     ESQ_TickClockAndFlagEvents(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  DATA_WDISP_BSS_WORD_22A5,D0
+    MOVE.W  TEXTDISP_DeferredActionDelayTicks,D0
     BLT.S   .update_banner_queue
 
     MOVEQ   #11,D1
@@ -117,10 +117,10 @@ CLEANUP_ProcessAlerts:
 
     JSR     GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled(PC)
 
-    MOVE.W  DATA_WDISP_BSS_WORD_22A5,D0
+    MOVE.W  TEXTDISP_DeferredActionDelayTicks,D0
     BNE.S   .update_banner_queue
 
-    MOVE.W  #(-1),DATA_WDISP_BSS_WORD_22A5
+    MOVE.W  #(-1),TEXTDISP_DeferredActionDelayTicks
 
 .update_banner_queue:
     JSR     GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout(PC)
@@ -273,7 +273,7 @@ CLEANUP_ProcessAlerts:
     JSR     DISPLIB_NormalizeValueByStep(PC)
 
     LEA     24(A7),A7
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2280
+    MOVE.W  D0,WDISP_BannerCharRangeEnd
 
 .advance_alert_counters:
     MOVE.B  DATA_ESQ_STR_N_1DD4,D0
@@ -297,10 +297,10 @@ CLEANUP_ProcessAlerts:
 
     LEA     12(A7),A7
     MOVE.W  D0,WDISP_BannerCharRangeStart
-    MOVE.W  DATA_WDISP_BSS_WORD_2280,D0
+    MOVE.W  WDISP_BannerCharRangeEnd,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2280
+    MOVE.W  D1,WDISP_BannerCharRangeEnd
     EXT.L   D1
     PEA     48.W
     PEA     1.W
@@ -308,7 +308,7 @@ CLEANUP_ProcessAlerts:
     JSR     DISPLIB_NormalizeValueByStep(PC)
 
     LEA     12(A7),A7
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2280
+    MOVE.W  D0,WDISP_BannerCharRangeEnd
 
 .draw_banner:
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -390,7 +390,7 @@ CLEANUP_ProcessAlerts:
 ;   _LVORectFill, _LVOMove, _LVOText, BEVEL_DrawBevelFrameWithTopRight, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
 ; READS:
 ;   Global_UIBusyFlag, Global_REF_STR_USE_24_HR_CLOCK, Global_WORD_CURRENT_HOUR,
-;   Global_WORD_USE_24_HR_FMT, Global_WORD_CURRENT_MINUTE, Global_WORD_CURRENT_SECOND,
+;   CLOCK_CurrentAmPmFlag, Global_WORD_CURRENT_MINUTE, Global_WORD_CURRENT_SECOND,
 ;   Global_STR_EXTRA_TIME_FORMAT, Global_STR_GRID_TIME_FORMAT,
 ;   Global_REF_GRID_RASTPORT_MAYBE_1, NEWGRID_ColumnStartXPx, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
@@ -414,7 +414,7 @@ CLEANUP_DrawClockBanner:
 
     MOVE.W  Global_WORD_CURRENT_HOUR,D0
     EXT.L   D0
-    MOVE.W  Global_WORD_USE_24_HR_FMT,D1
+    MOVE.W  CLOCK_CurrentAmPmFlag,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -1024,7 +1024,7 @@ CLEANUP_DrawClockFormatFrame:
 ;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
 ; READS:
 ;   CLOCK_CurrentDayOfWeekIndex, Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY,
-;   Global_REF_STR_USE_24_HR_CLOCK, Global_WORD_CURRENT_HOUR, Global_WORD_USE_24_HR_FMT,
+;   Global_REF_STR_USE_24_HR_CLOCK, Global_WORD_CURRENT_HOUR, CLOCK_CurrentAmPmFlag,
 ;   Global_WORD_CURRENT_MINUTE, Global_WORD_CURRENT_SECOND,
 ;   Global_STR_GRID_TIME_FORMAT_DUPLICATE, Global_STR_12_44_44_SINGLE_SPACE,
 ;   Global_STR_12_44_44_PM
@@ -1085,7 +1085,7 @@ CLEANUP_DrawGridTimeBanner:
 
     MOVE.W  Global_WORD_CURRENT_HOUR,D0
     EXT.L   D0
-    MOVE.W  Global_WORD_USE_24_HR_FMT,D1
+    MOVE.W  CLOCK_CurrentAmPmFlag,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)

@@ -22,7 +22,7 @@
 ;   PARSEINI_AdjustHoursTo24HrFormat, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
 ;   PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
-;   CLOCK_DaySlotIndex-E, DATA_WDISP_BSS_WORD_2243, Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
+;   CLOCK_DaySlotIndex-E, CLOCK_CacheAmPmFlag, Global_REF_UTILITY_LIBRARY, Global_REF_BATTCLOCK_RESOURCE,
 ;   Global_REF_CLOCKDATA_STRUCT
 ; WRITES:
 ;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
@@ -46,23 +46,23 @@ PARSEINI_WriteRtcFromGlobals:
 
     MOVE.W  CLOCK_DaySlotIndex,D0
     MOVE.W  D0,-6(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_223B,D0
+    MOVE.W  CLOCK_CacheMonthIndex0,D0
     ADDQ.W  #1,D0
     MOVE.W  D0,-10(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_223C,D0
+    MOVE.W  CLOCK_CacheDayIndex0,D0
     MOVE.W  D0,-12(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D0
+    MOVE.W  CLOCK_CacheYear,D0
     MOVE.W  D0,-8(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_223E,D0
+    MOVE.W  CLOCK_CacheHour,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2243,D1
+    MOVE.W  CLOCK_CacheAmPmFlag,D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     BSR.W   PARSEINI_AdjustHoursTo24HrFormat
 
     MOVE.W  D0,-14(A5)
-    MOVE.W  DATA_WDISP_BSS_WORD_223F,D0
+    MOVE.W  CLOCK_CacheMinuteOrSecond,D0
     MOVE.W  D0,-16(A5)
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  D0,.clockDataStruct(A5)

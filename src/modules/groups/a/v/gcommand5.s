@@ -14,12 +14,12 @@
 ; READS:
 ;   4(A3), ED_StateRingWriteIndex, ED_StateRingTable
 ; WRITES:
-;   ED_StateRingWriteIndex, DATA_GCOMMAND_CONST_WORD_1FB0
+;   ED_StateRingWriteIndex, GCOMMAND_DriveProbeRequestedFlag
 ; DESC:
 ;   Handles control commands, updating the circular ctrl buffer index.
 ; NOTES:
 ;   When command type is 1, compares against ED_StateRingTable entry via GROUP_AV_JMPTBL_EXEC_CallVector_48.
-;   Command types 15/16 set DATA_GCOMMAND_CONST_WORD_1FB0.
+;   Command types 15/16 set GCOMMAND_DriveProbeRequestedFlag.
 ;------------------------------------------------------------------------------
 GCOMMAND_ProcessCtrlCommand:
     LINK.W  A5,#-4
@@ -64,7 +64,7 @@ GCOMMAND_ProcessCtrlCommand:
     BNE.S   .check_type_15
 
     MOVEQ   #1,D1
-    MOVE.W  D1,DATA_GCOMMAND_CONST_WORD_1FB0
+    MOVE.W  D1,GCOMMAND_DriveProbeRequestedFlag
     BRA.S   .return
 
 .check_type_15:
@@ -72,7 +72,7 @@ GCOMMAND_ProcessCtrlCommand:
     CMP.B   D1,D0
     BNE.S   .return
 
-    MOVE.W  #1,DATA_GCOMMAND_CONST_WORD_1FB0
+    MOVE.W  #1,GCOMMAND_DriveProbeRequestedFlag
 
 .return:
     MOVEQ   #0,D0

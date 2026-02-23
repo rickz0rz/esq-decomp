@@ -2,17 +2,50 @@
 
 Global_STR_ESQIFF_C_1:
     NStr    "ESQIFF.c"
-DATA_ESQIFF_BSS_LONG_1EE9:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_BannerBrushResourceCursor   (banner brush resource cursor)
+; TYPE: pointer (brush resource node)
+; PURPOSE: Tracks current node while queuing/weather-rendering banner brush work.
+; USED BY: ESQIFF_QueueIffBrushLoad
+; NOTES:
+;   Seeded from PARSEINI_BannerBrushResourceHead and advanced via node +234
+;   next-link field when mode does not request cursor hold.
+;------------------------------------------------------------------------------
+ESQIFF_BannerBrushResourceCursor:
     DS.L    1
 DATA_ESQIFF_STR_WEATHER_1EEA:
     NStr    "weather"
 Global_STR_ESQIFF_C_2:
     NStr    "ESQIFF.c"
-DATA_ESQIFF_BSS_WORD_1EEC:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_WeatherSliceRemainingWidth   (weather slice remaining width)
+; TYPE: u16
+; PURPOSE: Remaining pixel width left to blit for current weather brush slice.
+; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
+; NOTES:
+;   Initialized from brush width (A2+178), decremented by per-tick slice width.
+;------------------------------------------------------------------------------
+ESQIFF_WeatherSliceRemainingWidth:
     DS.W    1
-DATA_ESQIFF_BSS_WORD_1EED:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_WeatherSliceSourceOffset   (weather slice source offset)
+; TYPE: u16
+; PURPOSE: Running source-X offset into the weather brush for incremental blits.
+; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
+; NOTES:
+;   Reset to 0 on slice init; increased by emitted slice width each update.
+;------------------------------------------------------------------------------
+ESQIFF_WeatherSliceSourceOffset:
     DS.W    1
-DATA_ESQIFF_CONST_WORD_1EEE:
+;------------------------------------------------------------------------------
+; SYM: ESQIFF_WeatherSliceValidateGateFlag   (weather-slice one-shot validation gate)
+; TYPE: u8 flag in word storage
+; PURPOSE: One-shot guard for NEWGRID_ValidateSelectionCode trigger in mode 11.
+; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
+; NOTES:
+;   Accessed with byte operations (set to 1, tested, then cleared once fired).
+;------------------------------------------------------------------------------
+ESQIFF_WeatherSliceValidateGateFlag:
     DC.W    $0100
 Global_STR_ESQIFF_C_3:
     NStr    "ESQIFF.c"

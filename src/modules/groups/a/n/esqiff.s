@@ -437,9 +437,9 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
 ; READS:
-;   Global_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, DATA_ESQIFF_BSS_LONG_1EE9, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar
+;   Global_STR_ESQIFF_C_2, PARSEINI_BannerBrushResourceHead, CTASKS_PendingIffBrushDescriptor, ESQIFF_BannerBrushResourceCursor, DATA_ESQIFF_STR_WEATHER_1EEA, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar
 ; WRITES:
-;   CTASKS_PendingIffBrushDescriptor, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskState, DATA_ESQIFF_BSS_LONG_1EE9
+;   CTASKS_PendingIffBrushDescriptor, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskState, ESQIFF_BannerBrushResourceCursor
 ; DESC:
 ;   Resolves next banner brush resource and either queues an async IFF brush load,
 ;   or allocates/clones a brush and renders weather-status overlay text immediately.
@@ -449,7 +449,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ESQIFF_QueueIffBrushLoad:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
-    TST.L   DATA_ESQIFF_BSS_LONG_1EE9
+    TST.L   ESQIFF_BannerBrushResourceCursor
     BEQ.S   .seed_resource_cursor
 
     MOVEQ   #1,D0
@@ -457,7 +457,7 @@ ESQIFF_QueueIffBrushLoad:
     BNE.S   .skip_resource_seed
 
 .seed_resource_cursor:
-    MOVE.L  PARSEINI_BannerBrushResourceHead,DATA_ESQIFF_BSS_LONG_1EE9
+    MOVE.L  PARSEINI_BannerBrushResourceHead,ESQIFF_BannerBrushResourceCursor
 
 .skip_resource_seed:
     MOVEQ   #0,D0
@@ -465,7 +465,7 @@ ESQIFF_QueueIffBrushLoad:
     BEQ.W   .queue_standard_iff_task
 
     PEA     DATA_ESQIFF_STR_WEATHER_1EEA
-    MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
+    MOVE.L  ESQIFF_BannerBrushResourceCursor,-(A7)
     JSR     ESQIFF_JMPTBL_STRING_CompareNoCase(PC)
 
     ADDQ.W  #8,A7
@@ -488,7 +488,7 @@ ESQIFF_QueueIffBrushLoad:
     BEQ.W   .finalize_and_advance_resource_cursor
 
     CLR.L   -(A7)
-    MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
+    MOVE.L  ESQIFF_BannerBrushResourceCursor,-(A7)
     JSR     ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     MOVE.L  D0,CTASKS_PendingIffBrushDescriptor
@@ -517,14 +517,14 @@ ESQIFF_QueueIffBrushLoad:
     BRA.S   .finalize_and_advance_resource_cursor
 
 .queue_standard_iff_task:
-    TST.L   DATA_ESQIFF_BSS_LONG_1EE9
+    TST.L   ESQIFF_BannerBrushResourceCursor
     BEQ.S   .finalize_and_advance_resource_cursor
 
-    TST.L   DATA_ESQIFF_BSS_LONG_1EE9
+    TST.L   ESQIFF_BannerBrushResourceCursor
     BEQ.S   .finalize_and_advance_resource_cursor
 
     CLR.L   -(A7)
-    MOVE.L  DATA_ESQIFF_BSS_LONG_1EE9,-(A7)
+    MOVE.L  ESQIFF_BannerBrushResourceCursor,-(A7)
     JSR     ESQIFF_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     MOVE.L  D0,CTASKS_PendingIffBrushDescriptor
@@ -540,8 +540,8 @@ ESQIFF_QueueIffBrushLoad:
     CMP.L   D0,D7
     BEQ.S   .return
 
-    MOVEA.L DATA_ESQIFF_BSS_LONG_1EE9,A0
-    MOVE.L  234(A0),DATA_ESQIFF_BSS_LONG_1EE9
+    MOVEA.L ESQIFF_BannerBrushResourceCursor,A0
+    MOVE.L  234(A0),ESQIFF_BannerBrushResourceCursor
 
 .return:
     MOVE.L  (A7)+,D7
@@ -566,9 +566,9 @@ ESQIFF_QueueIffBrushLoad:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
 ; READS:
-;   ESQIFF_RenderWeatherStatusBrushSlice_Return, DATA_CTASKS_STR_Y_1BBF, DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQIFF_BSS_WORD_1EEC, DATA_ESQIFF_BSS_WORD_1EED, DATA_ESQIFF_CONST_WORD_1EEE
+;   ESQIFF_RenderWeatherStatusBrushSlice_Return, DATA_CTASKS_STR_Y_1BBF, DATA_ESQFUNC_CONST_WORD_1ECD, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
 ; WRITES:
-;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQIFF_BSS_WORD_1EEC, DATA_ESQIFF_BSS_WORD_1EED, DATA_ESQIFF_CONST_WORD_1EEE
+;   DATA_ESQFUNC_CONST_WORD_1ECD, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
 ; DESC:
 ;   Initializes/continues weather-slice progress state, blits one or two brush
 ;   slices depending on mode byte, and updates remaining/consumed pixel counters.
@@ -586,11 +586,11 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     BNE.S   .ensure_slice_state_initialized
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_ESQIFF_BSS_WORD_1EEC
+    MOVE.W  D0,ESQIFF_WeatherSliceRemainingWidth
     BRA.W   ESQIFF_RenderWeatherStatusBrushSlice_Return
 
 .ensure_slice_state_initialized:
-    MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
+    MOVE.W  ESQIFF_WeatherSliceRemainingWidth,D0
     TST.W   D0
     BLE.S   .reset_slice_state
 
@@ -601,12 +601,12 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     MOVEQ   #0,D0
     MOVE.W  D0,DATA_ESQFUNC_CONST_WORD_1ECD
     MOVE.W  178(A2),D1
-    MOVE.B  #$1,DATA_ESQIFF_CONST_WORD_1EEE
-    MOVE.W  D0,DATA_ESQIFF_BSS_WORD_1EED
-    MOVE.W  D1,DATA_ESQIFF_BSS_WORD_1EEC
+    MOVE.B  #$1,ESQIFF_WeatherSliceValidateGateFlag
+    MOVE.W  D0,ESQIFF_WeatherSliceSourceOffset
+    MOVE.W  D1,ESQIFF_WeatherSliceRemainingWidth
 
 .clamp_slice_width:
-    MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
+    MOVE.W  ESQIFF_WeatherSliceRemainingWidth,D0
     MOVEQ   #30,D1
     CMP.W   D1,D0
     BGE.S   .use_max_slice_width
@@ -629,7 +629,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     MOVE.L  D7,D1
     EXT.L   D1
     LEA     60(A3),A0
-    MOVE.W  DATA_ESQIFF_BSS_WORD_1EED,D2
+    MOVE.W  ESQIFF_WeatherSliceSourceOffset,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
@@ -652,7 +652,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     MOVE.L  D7,D0
     EXT.L   D0
     LEA     60(A3),A0
-    MOVE.W  DATA_ESQIFF_BSS_WORD_1EED,D2
+    MOVE.W  ESQIFF_WeatherSliceSourceOffset,D2
     EXT.L   D2
     MOVE.L  D2,(A7)
     MOVE.L  A0,-(A7)
@@ -686,7 +686,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     MOVE.L  D7,D0
     EXT.L   D0
     LEA     60(A3),A0
-    MOVE.W  DATA_ESQIFF_BSS_WORD_1EED,D2
+    MOVE.W  ESQIFF_WeatherSliceSourceOffset,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
@@ -703,7 +703,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     BNE.S   .update_slice_progress_and_return
 
     MOVEQ   #1,D0
-    CMP.B   DATA_ESQIFF_CONST_WORD_1EEE,D0
+    CMP.B   ESQIFF_WeatherSliceValidateGateFlag,D0
     BNE.S   .update_slice_progress_and_return
 
     MOVE.B  DATA_CTASKS_STR_Y_1BBF,D0
@@ -716,11 +716,11 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     JSR     ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(PC)
 
     ADDQ.W  #8,A7
-    CLR.B   DATA_ESQIFF_CONST_WORD_1EEE
+    CLR.B   ESQIFF_WeatherSliceValidateGateFlag
 
 .update_slice_progress_and_return:
-    SUB.W   D7,DATA_ESQIFF_BSS_WORD_1EEC
-    ADD.W   D7,DATA_ESQIFF_BSS_WORD_1EED
+    SUB.W   D7,ESQIFF_WeatherSliceRemainingWidth
+    ADD.W   D7,ESQIFF_WeatherSliceSourceOffset
     MOVE.L  D7,D0
     TST.W   D0
     BPL.S   .store_half_slice_width
@@ -730,7 +730,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
 .store_half_slice_width:
     ASR.W   #1,D0
     MOVE.W  D0,52(A3)
-    MOVE.W  DATA_ESQIFF_BSS_WORD_1EEC,D0
+    MOVE.W  ESQIFF_WeatherSliceRemainingWidth,D0
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_RenderWeatherStatusBrushSlice_Return   (Return tail for weather-slice renderer)
@@ -768,7 +768,7 @@ ESQIFF_RenderWeatherStatusBrushSlice_Return:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
 ; READS:
-;   AbsExecBase, Global_PTR_STR_DF0_LOGO_LST, Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_3, Global_STR_ESQIFF_C_4, Global_STR_ESQIFF_C_5, Global_STR_ESQIFF_C_6, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_WDISP_BSS_WORD_2294, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, Global_PTR_STR_DF0_LOGO_LST, Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, Global_STR_ESQIFF_C_3, Global_STR_ESQIFF_C_4, Global_STR_ESQIFF_C_5, Global_STR_ESQIFF_C_6, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, SCRIPT_CtrlInterfaceEnabledFlag, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveWriteProtectStatusCodeDrive1, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_DF0_LOGO_LST_FILESIZE, Global_REF_LONG_GFX_G_ADS_DATA, Global_REF_LONG_GFX_G_ADS_FILESIZE, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_ExternalAssetFlags, ESQIFF_LogoListLineIndex, ESQIFF_GAdsListLineIndex
 ; DESC:
@@ -797,7 +797,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     CMP.B   D1,D0
     BEQ.W   .maybe_reload_logo_catalog
 
-    TST.L   DATA_WDISP_BSS_LONG_2319
+    TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
     BNE.W   .maybe_reload_logo_catalog
 
     MOVEA.L AbsExecBase,A6
@@ -882,7 +882,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
     JSR     _LVOClose(A6)
 
 .update_gads_line_cursor_shadow:
-    TST.W   DATA_WDISP_BSS_WORD_2294
+    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .clear_gads_line_cursor_shadow
 
     MOVE.W  #1,ESQIFF_GAdsListLineIndex
@@ -1003,7 +1003,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers:
 ; READS:
 ;   AbsExecBase, Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, CTASKS_IffTaskDoneFlag, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, DATA_ESQIFF_PATH_DF0_COLON_1EF3, DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4, ESQIFF_LogoListLineIndex, ESQIFF_AssetSourceSelect, ESQIFF_ExternalAssetPathCommaFlag, TEXTDISP_CurrentMatchIndex, fa00
 ; WRITES:
-;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_WDISP_BSS_LONG_22A8, DATA_WDISP_BSS_LONG_22C2, TEXTDISP_CurrentMatchIndex
+;   CTASKS_PendingLogoBrushDescriptor, CTASKS_PendingGAdsBrushDescriptor, ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_PendingExternalBrushNode, ESQIFF_ExternalAssetStateTable, TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Chooses the next external asset path from active catalog data, filters/skips
 ;   disallowed entries, allocates a descriptor, and starts IFF decode task when needed.
@@ -1139,7 +1139,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
     BNE.S   .yield_grid_while_scanning
 
     MOVE.W  #1,-128(A5)
-    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_LONG_22C2
+    MOVE.W  TEXTDISP_CurrentMatchIndex,ESQIFF_ExternalAssetStateTable
     BRA.S   .finalize_candidate_filter
 
 .validate_source0_path_prefixes:
@@ -1244,7 +1244,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     ADDQ.W  #8,A7
     MOVE.W  ESQIFF_AssetSourceSelect,D1
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_22A8
+    MOVE.L  D0,ESQIFF_PendingExternalBrushNode
     TST.W   D1
     BEQ.S   .init_gads_pending_descriptor
 
@@ -1736,7 +1736,7 @@ ESQIFF_ServicePendingCopperPaletteMoves:
 ; CALLS:
 ;   _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_PaletteTriplesGBase, WDISP_PaletteTriplesBBase, DATA_WDISP_BSS_LONG_22AE
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, WDISP_DisplayContextBase, WDISP_PaletteTriplesRBase, WDISP_PaletteTriplesGBase, WDISP_PaletteTriplesBBase, WDISP_PaletteDepthLog2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1749,7 +1749,7 @@ ESQIFF_SetApenToBrightestPaletteIndex:
     LINK.W  A5,#-16
     MOVEM.L D2/D4-D7,-(A7)
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_LONG_22AE,D0
+    MOVE.B  WDISP_PaletteDepthLog2,D0
     MOVEQ   #1,D1
     ASL.L   D0,D1
     MOVE.L  D1,D4
@@ -2245,7 +2245,7 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ; CALLS:
 ;   ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
 ; READS:
-;   Global_WORD_SELECT_CODE_IS_RAVESC, DATA_COI_BSS_WORD_1B85, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_2319
+;   Global_WORD_SELECT_CODE_IS_RAVESC, DATA_COI_BSS_WORD_1B85, ESQIFF_ExternalAssetFlags, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveWriteProtectStatusCodeDrive1
 ; WRITES:
 ;   ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
 ; DESC:
@@ -2293,7 +2293,7 @@ ESQIFF_ServiceExternalAssetSourceState:
     ADDQ.W  #4,A7
 
 .reload_gads_catalog_if_needed:
-    TST.L   DATA_WDISP_BSS_LONG_2319
+    TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
     BNE.S   .queue_next_asset_after_reload_checks
 
     MOVE.W  ESQIFF_ExternalAssetFlags,D0
@@ -2328,7 +2328,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_RestoreBasePaletteTriples, ESQIFF_RunCopperRiseTransition, ESQIFF_RunCopperDropTransition, ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_22C2, ESQIFF_ExternalAssetPathCommaFlag
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, TEXTDISP_DeferredActionCountdown, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, TEXTDISP_PrimaryGroupEntryCount, WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
 ;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2358,14 +2358,14 @@ ESQIFF_PlayNextExternalAssetFrame:
 
 .validate_asset_list_and_match_index:
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
-    MOVE.W  DATA_WDISP_BSS_LONG_22C2,D1
+    MOVE.W  ESQIFF_ExternalAssetStateTable,D1
     CMP.W   D1,D0
     BCC.S   .prepare_display_context_for_asset_blit
 
     TST.W   D7
     BNE.S   .prepare_display_context_for_asset_blit
 
-    TST.W   DATA_WDISP_BSS_LONG_22C3
+    TST.W   ESQIFF_ExternalAssetPathCommaFlag
     BNE.S   .prepare_display_context_for_asset_blit
 
     BSR.W   ESQIFF_RestoreBasePaletteTriples
@@ -2435,7 +2435,7 @@ ESQIFF_PlayNextExternalAssetFrame:
     TST.W   D7
     BNE.S   .pop_rendered_asset_head
 
-    TST.W   DATA_WDISP_BSS_LONG_22C3
+    TST.W   ESQIFF_ExternalAssetPathCommaFlag
     BNE.S   .pop_rendered_asset_head
 
     MOVEA.L WDISP_DisplayContextBase,A0
@@ -2447,7 +2447,7 @@ ESQIFF_PlayNextExternalAssetFrame:
 
     BSR.W   ESQIFF_SetApenToBrightestPaletteIndex
 
-    MOVE.W  DATA_WDISP_BSS_LONG_22C2,TEXTDISP_CurrentMatchIndex
+    MOVE.W  ESQIFF_ExternalAssetStateTable,TEXTDISP_CurrentMatchIndex
     PEA     2.W
     PEA     1.W
     JSR     ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(PC)

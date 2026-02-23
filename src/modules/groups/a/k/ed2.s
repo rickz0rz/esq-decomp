@@ -667,9 +667,9 @@ ED2_DrawEntrySummaryPanel:
 ; READS:
 ;   ED_StateRingIndex, ED_StateRingTable, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, ED2_SelectedEntryDataPtr, ED2_SelectedEntryTitlePtr, TEXTDISP_PrimaryGroupEntryCount,
 ;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_PrimaryGroupPresentFlag, WDISP_WeatherStatusCountdown, DATA_WDISP_BSS_BYTE_229B, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar,
-;   DATA_WDISP_BSS_LONG_2380, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, DATA_P_TYPE_BSS_LONG_2059
+;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, DATA_P_TYPE_BSS_LONG_2059
 ; WRITES:
-;   ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, DATA_GCOMMAND_BSS_WORD_1FA5, ED_MenuStateId, DATA_ESQ_BSS_WORD_1DE4, DATA_ESQ_BSS_BYTE_1DEF,
+;   ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, ED_MenuStateId, DATA_ESQ_BSS_WORD_1DE4, DATA_ESQ_BSS_BYTE_1DEF,
 ;   DATA_COMMON_STR_VALUE_1B05, ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, SCRIPT_RuntimeMode,
 ;   PARSEINI_CtrlHChangeGateFlag
 ; DESC:
@@ -850,12 +850,12 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_toggle_1fa5:
-    TST.W   DATA_GCOMMAND_BSS_WORD_1FA5
+    TST.W   GCOMMAND_BannerRowFallbackOnFirstRowFlag
     SEQ     D0
     NEG.B   D0
     EXT.W   D0
     EXT.L   D0
-    MOVE.W  D0,DATA_GCOMMAND_BSS_WORD_1FA5
+    MOVE.W  D0,GCOMMAND_BannerRowFallbackOnFirstRowFlag
     BRA.W   .restore_display_state
 
 .case_format_banner_datetime:
@@ -1171,9 +1171,9 @@ ED2_HandleMenuActions:
     PEA     DATA_ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD_1D62
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    MOVE.W  DATA_WDISP_BSS_LONG_2380,D0
+    MOVE.W  WDISP_WeatherCycleOffsetCount,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_LONG_2380,D1
+    MOVE.W  WDISP_WeatherCycleOffsetCount,D1
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
@@ -1210,7 +1210,7 @@ ED2_HandleMenuActions:
     MOVE.B  #$1,DATA_WDISP_BSS_BYTE_229B
     MOVE.B  #$2,WDISP_WeatherStatusBrushIndex
     MOVE.W  #$32,WDISP_WeatherStatusDigitChar
-    CLR.W   DATA_WDISP_BSS_LONG_2380
+    CLR.W   WDISP_WeatherCycleOffsetCount
     BRA.W   .restore_display_state
 
 .case_toggle_1ba2:
@@ -1218,12 +1218,12 @@ ED2_HandleMenuActions:
     TST.B   D0
     BEQ.S   .toggle_1ba2_restore
 
-    MOVE.B  D0,DATA_WDISP_BSS_LONG_21E7
+    MOVE.B  D0,ED_SavedCtasksIntervalByte
     CLR.B   DATA_CTASKS_CONST_BYTE_1BA2
     BRA.S   .toggle_1ba2_done
 
 .toggle_1ba2_restore:
-    MOVE.B  DATA_WDISP_BSS_LONG_21E7,D1
+    MOVE.B  ED_SavedCtasksIntervalByte,D1
     MOVE.B  D1,DATA_CTASKS_CONST_BYTE_1BA2
 
 .toggle_1ba2_done:
@@ -1561,7 +1561,7 @@ ED2_HandleMenuActions:
 ; READS:
 ;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, DATA_ED2_TAG_NRLS_1D6B, DATA_ED2_STR_NYYLLZ_1D6C, DATA_ED2_TAG_NYLRS_1D6D, DATA_ED2_STR_SILENCE_1D6E, DATA_ED2_STR_LEFT_1D6F, DATA_ED2_STR_RIGHT_1D70, DATA_ED2_STR_BACKGROUND_1D71, DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72, DATA_ED2_STR_COMPUTER_ONLY_1D73, DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74, DATA_ED2_STR_NEGATIVE_VIDEO_1D75, DATA_ED2_STR_VIDEO_SWITCH_1D76, DATA_ED2_STR_OPEN_1D77, DATA_ED2_STR_CLOSED_1D78, DATA_ED2_STR_START_TAPE_VIDEO_1D79, DATA_ED2_STR_STOP_1D7A, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
 ; WRITES:
-;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, DATA_ESQ_BSS_BYTE_1DF1, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, DATA_WDISP_BSS_WORD_2347, DATA_WDISP_BSS_WORD_2348, DATA_WDISP_BSS_WORD_2349
+;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, DATA_ESQ_BSS_BYTE_1DF1, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, SCRIPT_CtrlCmdCount, SCRIPT_CtrlCmdChecksumErrorCount, SCRIPT_CtrlCmdLengthErrorCount
 ; DESC:
 ;   Handles diagnostic/special menu selections, toggling flags, counters, and
 ;   invoking test patterns or copper effects.
@@ -1696,9 +1696,9 @@ ED2_HandleDiagnosticsMenuActions:
     MOVE.W  D0,ESQIFF_LineErrorCount
     MOVE.W  D0,DATACErrs
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2349
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2348
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2347
+    MOVE.W  D0,SCRIPT_CtrlCmdLengthErrorCount
+    MOVE.W  D0,SCRIPT_CtrlCmdChecksumErrorCount
+    MOVE.W  D0,SCRIPT_CtrlCmdCount
     BRA.W   .return
 
 .case_adjust_1bc4:

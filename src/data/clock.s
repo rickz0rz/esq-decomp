@@ -22,10 +22,26 @@ Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
 ;------------------------------------------------------------------------------
 CLOCK_STR_TEMPLATE_CODE_SET_FGN:
     NStr    "FGN"
-DATA_CLOCK_CONST_WORD_1B5D:
+;------------------------------------------------------------------------------
+; SYM: CLOCK_AlignedInsetRenderGateFlag   (aligned inset render gate flag)
+; TYPE: u8 flag in packed word storage
+; PURPOSE: Enables framed/inset rendering path for inline styled text draw calls.
+; USED BY: CLEANUP_UpdateEntryFlagBytes, TLIBA1_DrawInlineStyledText, SCRIPT_DrawCenteredStyledTextLine
+; NOTES:
+;   Accessed with byte ops (TST.B/MOVE.B/CLR.B). Remaining bytes are packed
+;   adjacent constants; keep layout intact.
+;------------------------------------------------------------------------------
+CLOCK_AlignedInsetRenderGateFlag:
     DC.W    $0004
     DC.B    $0c
-DATA_CLOCK_CONST_BYTE_1B5E:
+;------------------------------------------------------------------------------
+; SYM: CLOCK_FileEofMarkerCtrlZ   (file EOF marker byte)
+; TYPE: u8
+; PURPOSE: Control-Z marker appended to serialized/log output files.
+; USED BY: PARSEINI_WriteErrorLogEntry, COI export writer
+; NOTES: Value is $1A.
+;------------------------------------------------------------------------------
+CLOCK_FileEofMarkerCtrlZ:
     DC.B    $1a
 ;------------------------------------------------------------------------------
 ; SYM: COI_FieldDelimiterTab   (COI export field delimiter)

@@ -315,7 +315,7 @@ TEXTDISP_UpdateHighlightOrPreview:
 ; READS:
 ;   DATA_ESQ_BSS_WORD_1DF4, Global_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, Global_RefreshTickCounter
 ; WRITES:
-;   ESQ_GlobalTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
+;   ESQ_GlobalTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
 ; DESC:
 ;   Updates internal display/control counters and triggers refresh/preview steps.
 ; NOTES:
@@ -353,7 +353,7 @@ TEXTDISP_TickDisplayState:
 .assert_ctrl_and_refresh:
     JSR     TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan(PC)
 
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_22A5
+    MOVE.W  D0,TEXTDISP_DeferredActionDelayTicks
     JSR     SCRIPT_AssertCtrlLineIfEnabled(PC)
 
     BSR.W   TEXTDISP_UpdateHighlightOrPreview

@@ -568,7 +568,7 @@ TLIBA2_ParseEntryTimeWindow:
 ; CALLS:
 ;   TLIBA2_ParseEntryTimeWindow, TLIBA2_JMPTBL_DST_AddTimeOffset
 ; READS:
-;   TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfWeekIndex, DATA_WDISP_BSS_LONG_237B, DATA_WDISP_BSS_LONG_237C, DATA_WDISP_BSS_LONG_237D, copy_months_loop, copy_time_fields, ffe2
+;   TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfWeekIndex, TLIBA2_BroadcastWindowClockSnapshotA, TLIBA2_BroadcastWindowClockSnapshotB, TLIBA2_BroadcastWindowClockSnapshotC, copy_months_loop, copy_time_fields, ffe2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -586,7 +586,7 @@ TLIBA2_ComputeBroadcastTimeWindow:
     MOVE.L  20(A5),D5
     MOVEA.L 24(A5),A2
     LEA     CLOCK_CurrentDayOfWeekIndex,A0
-    LEA     DATA_WDISP_BSS_LONG_237B,A1
+    LEA     TLIBA2_BroadcastWindowClockSnapshotA,A1
     MOVEA.L A1,A6
     MOVEQ   #4,D0
 
@@ -594,12 +594,12 @@ TLIBA2_ComputeBroadcastTimeWindow:
     MOVE.L  (A0)+,(A6)+
     DBF     D0,.copy_months_loop
     MOVE.W  (A0),(A6)
-    MOVE.W  DATA_WDISP_BSS_LONG_237C,D0
+    MOVE.W  TLIBA2_BroadcastWindowClockSnapshotB,D0
     MOVEQ   #12,D1
     CMP.W   D1,D0
     BNE.S   .if_ne_17F3
 
-    MOVE.W  DATA_WDISP_BSS_LONG_237D,D2
+    MOVE.W  TLIBA2_BroadcastWindowClockSnapshotC,D2
     BEQ.S   .if_eq_17F4
 
 .if_ne_17F3:
@@ -607,7 +607,7 @@ TLIBA2_ComputeBroadcastTimeWindow:
     CMP.W   D2,D0
     BGE.S   .branch_17FD
 
-    MOVE.W  DATA_WDISP_BSS_LONG_237D,D0
+    MOVE.W  TLIBA2_BroadcastWindowClockSnapshotC,D0
     BNE.S   .branch_17FD
 
 .if_eq_17F4:

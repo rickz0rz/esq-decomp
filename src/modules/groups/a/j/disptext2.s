@@ -771,7 +771,7 @@ DATETIME_CopyPairAndRecalc:
 ; CALLS:
 ;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AG_JMPTBL_STRING_CopyPadNul, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_MATH_DivS32, DATETIME_IsLeapYear, DATETIME_NormalizeMonthRange, DATETIME_NormalizeStructToSeconds, DATETIME_SecondsToStruct
 ; READS:
-;   DATA_WDISP_BSS_WORD_223D
+;   CLOCK_CacheYear
 ; WRITES:
 ;   A3 fields
 ; DESC:
@@ -832,14 +832,14 @@ DATETIME_ParseString:
     MOVE.W  D1,16(A3)
     MOVE.W  6(A3),D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D2
+    MOVE.W  CLOCK_CacheYear,D2
     EXT.L   D2
     SUB.L   D2,D0
     BGE.S   .year_offset_nonnegative
 
     MOVE.W  6(A3),D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D2
+    MOVE.W  CLOCK_CacheYear,D2
     EXT.L   D2
     SUB.L   D2,D0
     NEG.L   D0
@@ -848,7 +848,7 @@ DATETIME_ParseString:
 .year_offset_nonnegative:
     MOVE.W  6(A3),D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D2
+    MOVE.W  CLOCK_CacheYear,D2
     EXT.L   D2
     SUB.L   D2,D0
 

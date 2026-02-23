@@ -361,7 +361,16 @@ Global_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
 Global_PTR_STR_BUILD_ID:
     DC.L    Global_STR_BUILD_ID
-DATA_ESQ_CONST_LONG_1E22:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperEffectListA/ESQ_CopperEffectListB   (paired copper effect lists)
+; TYPE: u32[]/u32[]
+; PURPOSE: Paired copperlists used for effect/status-band rendering and selected by VPOSR field state.
+; USED BY: ESQ_UpdateCopperListsFromParams, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_TickCopperAndBannerTransitions
+; NOTES:
+;   ESQ_UpdateCopperListsFromParams writes synchronized effect words into both lists.
+;   Selector polarity differs across some call paths; keep neutral A/B naming.
+;------------------------------------------------------------------------------
+ESQ_CopperEffectListA:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -517,12 +526,30 @@ DATA_ESQ_BSS_WORD_1E4C:
     DS.W    1
 DATA_ESQ_CONST_LONG_1E4D:
     DC.L    $009c8010
-DATA_ESQ_CONST_LONG_1E4E:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperBannerTailListA/ESQ_CopperBannerTailListB   (banner copper tail lists)
+; TYPE: u32[]/u32[]
+; PURPOSE: Short tail command lists appended into each banner copper program.
+; USED BY: ESQSHARED4_ResetBannerColorSweepState
+; NOTES:
+;   First byte is patched at runtime to retarget the leading wait row during
+;   banner color-sweep reset.
+;------------------------------------------------------------------------------
+ESQ_CopperBannerTailListA:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
 DATA_ESQ_CONST_LONG_1E4F:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E50:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperBannerRasterPointerListA/ESQ_CopperBannerRasterPointerListB   (banner raster pointer lists)
+; TYPE: u32[]/u32[]
+; PURPOSE: Copper wait/pointer payload lists whose base pointer words are
+;   rebound to the banner work raster.
+; USED BY: ESQSHARED4_BindAndClearBannerWorkRaster
+; NOTES:
+;   Bind step writes the work-raster low/high words into the first long entry.
+;------------------------------------------------------------------------------
+ESQ_CopperBannerRasterPointerListA:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
@@ -781,7 +808,7 @@ DATA_ESQ_CONST_LONG_1E50:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-DATA_ESQ_CONST_LONG_1E51:
+ESQ_CopperEffectListB:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -929,12 +956,12 @@ DATA_ESQ_BSS_WORD_1E79:
     DS.W    1
 DATA_ESQ_CONST_LONG_1E7A:
     DC.L    $009c8010
-DATA_ESQ_CONST_LONG_1E7B:
+ESQ_CopperBannerTailListB:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
 DATA_ESQ_CONST_LONG_1E7C:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E7D:
+ESQ_CopperBannerRasterPointerListB:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff

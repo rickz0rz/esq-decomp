@@ -125,7 +125,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_DST_NormalizeDayOfYear, STRING_CopyPadNul, PARSE_ReadSignedLongSkipClass3_Alt, MATH_Mulu32
 ; READS:
-;   WDISP_StatusListMatchPattern, DATA_WDISP_BSS_WORD_227C, CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
+;   WDISP_StatusListMatchPattern, CLOCK_CurrentDayOfYear, CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
 ; WRITES:
 ;   DATA_TLIBA1_BSS_WORD_2196
 ; DESC:
@@ -184,7 +184,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     ADDA.L  D0,A1
     MOVEQ   #1,D1
     MOVE.L  D1,16(A1)
-    MOVE.W  DATA_WDISP_BSS_WORD_227C,D1
+    MOVE.W  CLOCK_CurrentDayOfYear,D1
     ADD.W   D7,D1
     MOVE.L  D1,D6
     ADDQ.W  #1,D6

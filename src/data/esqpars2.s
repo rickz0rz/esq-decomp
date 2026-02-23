@@ -37,9 +37,8 @@ Global_TBL_MOVIE_RATINGS:
     DC.L    Global_STR_RATING_G
     DC.L    Global_STR_RATING_NC_17
 
-; Perhaps a table of the character codes that map
-; to the ratings in the font?
-DATA_ESQPARS2_CONST_BYTE_1F1E:
+; A table of the character codes that map to the movie ratings in the font
+ESQPARS2_MovieRatingTokenGlyphMap:
     DC.B    $84
     DC.B    $86
     DC.B    $85
@@ -73,9 +72,8 @@ Global_TBL_TV_PROGRAM_RATINGS:
     DC.L    Global_STR_TV_MA
     DC.L    Global_STR_TV_14
 
-; Perhaps a table of the character codes that map
-; to the ratings in the font?
-DATA_ESQPARS2_CONST_BYTE_1F27:
+; A table of the character codes that map to the TV ratings in the font
+ESQPARS2_TvRatingTokenGlyphMap:
     DC.B    $90
     DC.B    $93
     DC.B    $9b
@@ -100,17 +98,29 @@ Global_STR_ESQPARS2_C_2:
     DS.W    1
 Global_LONG_PATCH_VERSION_NUMBER:
     DC.L    $00000004 ; Patch version number
-DATA_ESQPARS2_BSS_WORD_1F2F:
+;------------------------------------------------------------------------------
+; SYM: ESQPARS2_BannerSnapshotPlane0DstPtr..ESQPARS2_BannerSnapshotPlane2DstPtrLo
+; TYPE: pointer array storage (3 x u32 split into hi/lo words)
+; PURPOSE: Destination pointers for banner-plane snapshot copy routines.
+; USED BY: ESQSHARED4_SetupBannerPlanePointerWords, ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, GCOMMAND_RefreshBannerTables
+; NOTES:
+;   Layout is contiguous longwords:
+;     plane0 ptr = ESQPARS2_BannerSnapshotPlane0DstPtr/ESQPARS2_BannerSnapshotPlane0DstPtrLo
+;     plane1 ptr = ESQPARS2_BannerSnapshotPlane1DstPtr/ESQPARS2_BannerSnapshotPlane1DstPtrLo
+;     plane2 ptr = ESQPARS2_BannerSnapshotPlane2DstPtr/ESQPARS2_BannerSnapshotPlane2DstPtrLo
+;   Code often accesses this block as a u32[] via post-increment addressing.
+;------------------------------------------------------------------------------
+ESQPARS2_BannerSnapshotPlane0DstPtr:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F30:
+ESQPARS2_BannerSnapshotPlane0DstPtrLo:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F31:
+ESQPARS2_BannerSnapshotPlane1DstPtr:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F32:
+ESQPARS2_BannerSnapshotPlane1DstPtrLo:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F33:
+ESQPARS2_BannerSnapshotPlane2DstPtr:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F34:
+ESQPARS2_BannerSnapshotPlane2DstPtrLo:
     DS.W    1
 DATA_ESQPARS2_BSS_LONG_1F35:
     DS.L    1

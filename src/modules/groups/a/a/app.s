@@ -24,7 +24,7 @@ ESQ_StatusPacket__Bit3CaptureGateChar = 18
 ; READS:
 ;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE, ESQPARS2_ReadModeFlags
 ; WRITES:
-;   (A1+head), DATA_WDISP_BSS_WORD_228A, Global_WORD_H_VALUE, DATA_WDISP_BSS_WORD_228C, Global_WORD_MAX_VALUE,
+;   (A1+head), ESQ_SerialRbfErrorCount, Global_WORD_H_VALUE, ESQ_SerialRbfFillLevel, Global_WORD_MAX_VALUE,
 ;   ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_LONG_20AB, 156(A0)
 ; DESC:
 ;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
@@ -41,9 +41,9 @@ ESQ_HandleSerialRbfInterrupt:
     BTST    #15,D1
     BEQ.S   .skip_error_count
 
-    MOVE.W  DATA_WDISP_BSS_WORD_228A,D1
+    MOVE.W  ESQ_SerialRbfErrorCount,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_228A
+    MOVE.W  D1,ESQ_SerialRbfErrorCount
 
 .skip_error_count:
     ADDQ.W  #1,D0
@@ -61,7 +61,7 @@ ESQ_HandleSerialRbfInterrupt:
     ADDI.W  #$fa00,D0
 
 .fill_count_ok:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_228C
+    MOVE.W  D0,ESQ_SerialRbfFillLevel
     CMP.W   Global_WORD_MAX_VALUE,D0
     BCS.W   .skip_max_update
 
@@ -421,7 +421,7 @@ ESQ_PollCtrlInput:
 ;   DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFB
 ; WRITES:
 ;   DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFB, DATA_COMMON_BSS_LONG_1AFE, CTRL_BUFFER, CTRL_H, CTRL_HPreviousSample,
-;   CTRL_HDeltaMax, DATA_WDISP_BSS_WORD_2284
+;   CTRL_HDeltaMax, CTRL_BufferedByteCount
 ; DESC:
 ;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
 ;   CTRL_BUFFER.
@@ -535,7 +535,7 @@ ESQ_CaptureCtrlBit4Stream:
     ADDI.W  #$1f4,D0
 
 .fill_count_ok:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2284
+    MOVE.W  D0,CTRL_BufferedByteCount
     CMP.W   CTRL_HDeltaMax,D0
     BCS.W   .reset_state_and_exit
 

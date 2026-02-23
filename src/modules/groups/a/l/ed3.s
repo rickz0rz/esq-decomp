@@ -2396,7 +2396,7 @@ ED_TransformLineSpacing_Mode1:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
-    LEA     DATA_WDISP_BSS_LONG_21F5,A0
+    LEA     ED_LineTransformSuffixScratchBuffer,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -49(A5),A1
@@ -2414,7 +2414,7 @@ ED_TransformLineSpacing_Mode1:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
-    LEA     DATA_WDISP_BSS_LONG_21F9,A0
+    LEA     ED_LineTransformTailScratchBuffer,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -90(A5),A1
@@ -2848,7 +2848,7 @@ ED_TransformLineSpacing_Mode3:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
-    LEA     DATA_WDISP_BSS_LONG_21F5,A0
+    LEA     ED_LineTransformSuffixScratchBuffer,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -49(A5),A1
@@ -2866,7 +2866,7 @@ ED_TransformLineSpacing_Mode3:
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
-    LEA     DATA_WDISP_BSS_LONG_21F9,A0
+    LEA     ED_LineTransformTailScratchBuffer,A0
     ADDA.L  D0,A0
     MOVE.L  D7,D0
     LEA     -90(A5),A1

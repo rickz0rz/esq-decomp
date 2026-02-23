@@ -30,17 +30,17 @@
 ;   GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel, CLEANUP_BuildAlignedStatusLine, GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth, GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame, GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort, GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight,
 ;   _LVORectFill, GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort, GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition
 ; READS:
-;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-DATA_WDISP_BSS_WORD_236E,
-;   DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369, TEXTDISP_BannerCharFallback-DATA_WDISP_BSS_BYTE_2379, DATA_WDISP_BSS_LONG_237A,
-;   TEXTDISP_PrimaryTitlePtrTable, DATA_WDISP_BSS_LONG_236A, DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
-;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, DATA_WDISP_BSS_WORD_227C, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
+;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-TEXTDISP_CurrentMatchIndexSaved,
+;   CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex, TEXTDISP_BannerCharFallback-TEXTDISP_BannerSelectedValidFlag, TEXTDISP_ChannelLabelReadyFlag,
+;   TEXTDISP_PrimaryTitlePtrTable, CLEANUP_AlignedStatusEntryCycleTable, DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
+;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfYear, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
 ;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
 ;   Global_STR_ALIGNED_NOW_SHOWING, Global_STR_ALIGNED_NEXT_SHOWING,
 ;   Global_STR_ALIGNED_TODAY_AT, Global_STR_ALIGNED_TONIGHT_AT,
 ;   Global_STR_ALIGNED_TOMORROW_AT
 ; WRITES:
-;   TEXTDISP_ChannelLabelBuffer, DATA_WDISP_BSS_WORD_2365, CLEANUP_AlignedStatusSuffixBuffer, DATA_WDISP_BSS_BYTE_2367, CLEANUP_AlignedStatusMatchIndex, DATA_WDISP_BSS_WORD_2369,
-;   DATA_WDISP_BSS_WORD_236C, DATA_WDISP_BSS_WORD_236D, DATA_WDISP_BSS_WORD_236E, TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
+;   TEXTDISP_ChannelLabelBuffer, TEXTDISP_ChannelSourceMode, CLEANUP_AlignedStatusSuffixBuffer, CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex,
+;   TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord, TEXTDISP_CurrentMatchIndexSaved, TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Builds and renders the aligned status banner text (now/next and time
 ;   phrases), updates alignment globals, and draws into rastport 2.
@@ -56,7 +56,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  10(A5),D7
     MOVE.W  14(A5),D6
     MOVE.W  18(A5),D5
-    MOVE.W  D7,DATA_WDISP_BSS_WORD_2365
+    MOVE.W  D7,TEXTDISP_ChannelSourceMode
     CLR.B   -554(A5)
     MOVEQ   #0,D0
     MOVE.W  D0,WDISP_AccumulatorFlushPending
@@ -110,13 +110,13 @@ CLEANUP_RenderAlignedStatusScreen:
     TST.L   D0
     BEQ.S   .maybe_format_alt_time_text
 
-    CLR.B   DATA_WDISP_BSS_BYTE_2367
+    CLR.B   CLEANUP_AlignedStatusClockEntryBuffer
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2369,D1
+    MOVE.W  CLEANUP_AlignedStatusClockEntryIndex,D1
     EXT.L   D1
     CLR.L   -(A7)
-    PEA     DATA_WDISP_BSS_BYTE_2367
+    PEA     CLEANUP_AlignedStatusClockEntryBuffer
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(PC)
@@ -132,7 +132,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CLR.B   CLEANUP_AlignedStatusAltTimeBuffer
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2369,D1
+    MOVE.W  CLEANUP_AlignedStatusClockEntryIndex,D1
     EXT.L   D1
     PEA     1.W
     PEA     CLEANUP_AlignedStatusAltTimeBuffer
@@ -156,7 +156,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ADD.L   D0,D0
-    LEA     DATA_WDISP_BSS_LONG_236A,A0
+    LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
     ADDA.L  D0,A0
     MOVE.W  (A0),-42(A5)
     CLR.W   -36(A5)
@@ -174,7 +174,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D1
     EXT.L   D1
     ADD.L   D1,D1
-    LEA     DATA_WDISP_BSS_LONG_236A,A0
+    LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
     ADDA.L  D1,A0
     MOVE.W  D0,-42(A5)
     CMP.W   (A0),D0
@@ -199,7 +199,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D0
     EXT.L   D0
     ADD.L   D0,D0
-    LEA     DATA_WDISP_BSS_LONG_236A,A0
+    LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.W  -42(A5),D0
@@ -207,7 +207,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CMP.W   D0,D1
     BNE.S   .store_entry_selection
 
-    MOVE.W  DATA_WDISP_BSS_WORD_236E,D1
+    MOVE.W  TEXTDISP_CurrentMatchIndexSaved,D1
     MOVE.W  TEXTDISP_CurrentMatchIndex,D2
     CMP.W   D2,D1
     BEQ.W   .done
@@ -243,11 +243,11 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDQ.W  #1,D0
     BEQ.S   .fallback_title_buffer
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_2367,D0
+    MOVE.B  CLEANUP_AlignedStatusClockEntryBuffer,D0
     TST.B   D0
     BEQ.S   .fallback_title_buffer
 
-    LEA     DATA_WDISP_BSS_BYTE_2367,A0
+    LEA     CLEANUP_AlignedStatusClockEntryBuffer,A0
     LEA     -554(A5),A1
 
 .copy_buffer_title_loop:
@@ -280,11 +280,11 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDQ.W  #1,D0
     BEQ.S   .fallback_title_buffer_g
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_2367,D0
+    MOVE.B  CLEANUP_AlignedStatusClockEntryBuffer,D0
     TST.B   D0
     BEQ.S   .fallback_title_buffer_g
 
-    LEA     DATA_WDISP_BSS_BYTE_2367,A0
+    LEA     CLEANUP_AlignedStatusClockEntryBuffer,A0
     LEA     -554(A5),A1
 
 .copy_buffer_title_loop_g:
@@ -317,11 +317,11 @@ CLEANUP_RenderAlignedStatusScreen:
     ADDQ.W  #1,D0
     BEQ.W   .done
 
-    MOVE.B  DATA_WDISP_BSS_BYTE_2367,D0
+    MOVE.B  CLEANUP_AlignedStatusClockEntryBuffer,D0
     TST.B   D0
     BEQ.W   .done
 
-    LEA     DATA_WDISP_BSS_BYTE_2367,A0
+    LEA     CLEANUP_AlignedStatusClockEntryBuffer,A0
     LEA     -554(A5),A1
 
 .copy_buffer_title_loop_n:
@@ -361,7 +361,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
     MOVEQ   #-1,D0
     MOVE.W  D0,CLEANUP_AlignedStatusMatchIndex
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2369
+    MOVE.W  D0,CLEANUP_AlignedStatusClockEntryIndex
 
 .sync_time_defaults:
     MOVEQ   #53,D0
@@ -469,7 +469,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_WORD_236E
+    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
     MOVEQ   #48,D0
     CMP.W   -38(A5),D0
     BNE.S   .handle_empty_template
@@ -491,7 +491,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  TEXTDISP_CurrentMatchIndex,D1
     MOVE.W  D1,CLEANUP_AlignedStatusMatchIndex
     MOVEQ   #-1,D1
-    MOVE.W  D1,DATA_WDISP_BSS_WORD_2369
+    MOVE.W  D1,CLEANUP_AlignedStatusClockEntryIndex
     BRA.W   .done
 
 .handle_empty_template:
@@ -523,7 +523,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEQ   #1,D1
     MOVE.W  TEXTDISP_CurrentMatchIndex,D2
     MOVE.W  D2,CLEANUP_AlignedStatusMatchIndex
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2369
+    MOVE.W  D0,CLEANUP_AlignedStatusClockEntryIndex
     MOVE.W  D1,-40(A5)
     BRA.S   .prepare_channel_line
 
@@ -536,7 +536,7 @@ CLEANUP_RenderAlignedStatusScreen:
     CLR.B   CLEANUP_AlignedStatusSuffixBuffer
     MOVE.W  TEXTDISP_CurrentMatchIndex,D2
     MOVE.W  D2,CLEANUP_AlignedStatusMatchIndex
-    MOVE.W  #(-1),DATA_WDISP_BSS_WORD_2369
+    MOVE.W  #(-1),CLEANUP_AlignedStatusClockEntryIndex
 
 .prepare_channel_line:
     MOVEQ   #2,D0
@@ -559,13 +559,13 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.L  D0,-(A7)
     JSR     GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
-    PEA     DATA_WDISP_BSS_LONG_236B
+    PEA     TEXTDISP_EntryShortNameScratch
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-12(A5)
     JSR     GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName(PC)
 
     LEA     16(A7),A7
-    LEA     DATA_WDISP_BSS_LONG_236B,A0
+    LEA     TEXTDISP_EntryShortNameScratch,A0
     LEA     TEXTDISP_ChannelLabelBuffer,A1
 
 .copy_channel_string_loop:
@@ -605,12 +605,12 @@ CLEANUP_RenderAlignedStatusScreen:
     BNE.S   .select_now_showing_index
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2374,D0
+    MOVE.B  TEXTDISP_BannerFallbackIsSpecialFlag,D0
     BRA.S   .after_now_showing_index
 
 .select_now_showing_index:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2378,D0
+    MOVE.B  TEXTDISP_BannerSelectedIsSpecialFlag,D0
 
 .after_now_showing_index:
     TST.L   D0
@@ -628,12 +628,12 @@ CLEANUP_RenderAlignedStatusScreen:
     BNE.S   .select_next_showing_index
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2375,D0
+    MOVE.B  TEXTDISP_BannerFallbackValidFlag,D0
     BRA.S   .after_next_showing_index
 
 .select_next_showing_index:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2379,D0
+    MOVE.B  TEXTDISP_BannerSelectedValidFlag,D0
 
 .after_next_showing_index:
     TST.L   D0
@@ -690,7 +690,7 @@ CLEANUP_RenderAlignedStatusScreen:
 
     LEA     16(A7),A7
     MOVE.W  -18(A5),D0
-    MOVE.W  DATA_WDISP_BSS_WORD_227C,D1
+    MOVE.W  CLOCK_CurrentDayOfYear,D1
     CMP.W   D1,D0
     BEQ.S   .check_today_vs_tonight
 
@@ -842,7 +842,7 @@ CLEANUP_RenderAlignedStatusScreen:
     EXT.L   D0
     MOVE.W  CLEANUP_AlignedStatusMatchIndex,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_2369,D2
+    MOVE.W  CLEANUP_AlignedStatusClockEntryIndex,D2
     EXT.L   D2
     MOVEQ   #2,D3
     CMP.W   -40(A5),D3
@@ -855,7 +855,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVEQ   #0,D3
 
 .submit_output_record:
-    TST.L   DATA_WDISP_BSS_LONG_237A
+    TST.L   TEXTDISP_ChannelLabelReadyFlag
     SEQ     D4
     NEG.B   D4
     EXT.W   D4
@@ -882,14 +882,14 @@ CLEANUP_RenderAlignedStatusScreen:
 .render_output_text:
     MOVE.B  #$64,TEXTDISP_BannerCharSelected
     MOVE.B  #$31,TEXTDISP_BannerCharFallback
-    CLR.W   DATA_WDISP_BSS_WORD_236D
+    CLR.W   TEXTDISP_LinePenOverrideStateWord
 
     MOVEA.L Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_236C
+    MOVE.W  #1,TEXTDISP_LinePenOverrideEnabledFlag
     MOVEQ   #0,D0
     MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D0

@@ -1371,9 +1371,9 @@ WDISP_DrawWeatherStatusSummary:
 ; CALLS:
 ;   TEXTDISP_ResetSelectionAndRefresh, TLIBA3_ClearViewModeRastPort, TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, DATA_WDISP_BSS_LONG_2380
+;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, DATA_WDISP_BSS_LONG_2380, localRastport
+;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_WeatherCycleOffsetCount, localRastport
 ; DESC:
 ;   Dispatches weather-status commands (notably 48 and 51), renders status
 ;   content, and updates accumulator capture flags.
@@ -1613,14 +1613,14 @@ WDISP_HandleWeatherStatusCommand:
     TST.B   D2
     BEQ.S   .return
 
-    MOVE.W  DATA_WDISP_BSS_LONG_2380,D2
+    MOVE.W  WDISP_WeatherCycleOffsetCount,D2
     MOVE.L  D2,D3
     SUBQ.W  #1,D3
-    MOVE.W  D3,DATA_WDISP_BSS_LONG_2380
+    MOVE.W  D3,WDISP_WeatherCycleOffsetCount
     BGT.S   .return
 
     SUBI.W  #$30,D0
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_2380
+    MOVE.W  D0,WDISP_WeatherCycleOffsetCount
 
 .return:
     MOVEM.L (A7)+,D2-D3
@@ -1684,7 +1684,7 @@ WDISP_HandleWeatherStatusCommand:
 ; CALLS:
 ;   WDISP_JMPTBL_BRUSH_FreeBrushList, WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock, WDISP_JMPTBL_NEWGRID_ResetRowTable, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, WDISP_WeatherStatusBrushListHead, DATA_P_TYPE_BSS_LONG_2059, DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, DATA_WDISP_BSS_LONG_2380
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, WDISP_WeatherStatusBrushListHead, DATA_P_TYPE_BSS_LONG_2059, DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, WDISP_WeatherCycleOffsetCount
 ; WRITES:
 ;   DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195
 ; DESC:
@@ -1786,7 +1786,7 @@ WDISP_UpdateSelectionPreviewPanel:
     TST.B   D1
     BEQ.S   .preview_mark_reload_pending
 
-    MOVE.W  DATA_WDISP_BSS_LONG_2380,D1
+    MOVE.W  WDISP_WeatherCycleOffsetCount,D1
     MOVEQ   #1,D2
     CMP.W   D2,D1
     BGT.S   .preview_mark_reload_pending

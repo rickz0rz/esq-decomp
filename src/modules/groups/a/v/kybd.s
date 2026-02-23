@@ -16,7 +16,7 @@
 ; WRITES:
 ;   Global_REF_INPUTDEVICE_MSGPORT, Global_REF_CONSOLEDEVICE_MSGPORT
 ;   Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE
-;   Global_REF_DATA_INPUT_BUFFER, DATA_WDISP_BSS_LONG_231E, ED_StateRingWriteIndex, ED_StateRingIndex
+;   Global_REF_DATA_INPUT_BUFFER, INPUTDEVICE_LibraryBaseFromConsoleIo, ED_StateRingWriteIndex, ED_StateRingIndex
 ; DESC:
 ;   Allocates message ports and IOStdReqs, opens input/console devices,
 ;   and initializes the input event buffer for keyboard handling.
@@ -64,7 +64,7 @@ KYBD_InitializeInputDevices:
     JSR     _LVOOpenDevice(A6)
 
     MOVEA.L Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE,A0
-    MOVE.L  20(A0),DATA_WDISP_BSS_LONG_231E
+    MOVE.L  20(A0),INPUTDEVICE_LibraryBaseFromConsoleIo
 
     ; 22 bytes
     PEA     (MEMF_PUBLIC).W
@@ -77,7 +77,7 @@ KYBD_InitializeInputDevices:
     MOVE.L  D0,Global_REF_DATA_INPUT_BUFFER
 
     MOVEA.L D0,A0
-    MOVE.L  #DATA_WDISP_BSS_LONG_231F,14(A0)
+    MOVE.L  #INPUTDEVICE_HandlerUserDataLong,14(A0)
     LEA     GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(PC),A0
     MOVEA.L Global_REF_DATA_INPUT_BUFFER,A1
     MOVE.L  A0,18(A1)

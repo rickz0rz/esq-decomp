@@ -58,7 +58,7 @@
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOAddIntVector
 ; READS:
-;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_TickGlobalCounters, Global_REF_INTERRUPT_STRUCT_INTB_VERTB, Global_STR_ESQFUNC_C_1, Global_STR_VERTICAL_BLANK_INT, INTB_VERTB, DATA_WDISP_BSS_LONG_2290, MEMF_PUBLIC
+;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_TickGlobalCounters, Global_REF_INTERRUPT_STRUCT_INTB_VERTB, Global_STR_ESQFUNC_C_1, Global_STR_VERTICAL_BLANK_INT, INTB_VERTB, ESQ_VerticalBlankInterruptUserData, MEMF_PUBLIC
 ; WRITES:
 ;   Global_REF_INTERRUPT_STRUCT_INTB_VERTB
 ; DESC:
@@ -88,7 +88,7 @@ SETUP_INTERRUPT_INTB_VERTB:
     MOVE.L  #Global_STR_VERTICAL_BLANK_INT,10(A0)
 
     MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A0
-    MOVE.L  #DATA_WDISP_BSS_LONG_2290,14(A0)
+    MOVE.L  #ESQ_VerticalBlankInterruptUserData,14(A0)
     LEA     ESQFUNC_JMPTBL_ESQ_TickGlobalCounters(PC),A0
 
     MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_VERTB,A1
@@ -351,7 +351,7 @@ ESQFUNC_FreeLineTextBuffers:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines
 ; READS:
-;   Global_REF_RASTPORT_2, Global_STR_DISK_0_IS_WRITE_PROTECTED, Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, WDISP_DisplayContextBase, DISKIO_Drive0WriteProtectedCode, DATA_WDISP_BSS_LONG_231A, Global_RefreshTickCounter
+;   Global_REF_RASTPORT_2, Global_STR_DISK_0_IS_WRITE_PROTECTED, Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, WDISP_DisplayContextBase, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveMediaStatusCodeTable, Global_RefreshTickCounter
 ; WRITES:
 ;   Global_RefreshTickCounter
 ; DESC:
@@ -366,7 +366,7 @@ ESQFUNC_UpdateDiskWarningAndRefreshTick:
     TST.L   DISKIO_Drive0WriteProtectedCode
     BNE.S   .lab_096B
 
-    TST.L   DATA_WDISP_BSS_LONG_231A
+    TST.L   DISKIO_DriveMediaStatusCodeTable
     BNE.S   .lab_096A
 
     MOVE.W  Global_RefreshTickCounter,D0
@@ -509,7 +509,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; CALLS:
 ;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
 ; READS:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, DATA_ESQDISP_BSS_LONG_1E84, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, DATA_GCOMMAND_BSS_WORD_1FA9, DATA_GCOMMAND_CONST_WORD_1FB0, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, DATA_ESQDISP_BSS_LONG_1E84, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, GCOMMAND_HighlightHoldoffTickCount, GCOMMAND_DriveProbeRequestedFlag, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
 ; WRITES:
 ;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, ESQIFF_ExternalAssetFlags
 ; DESC:
@@ -520,7 +520,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ;   Includes multiple gating checks on UI busy flags and pending-alert/task flags.
 ;------------------------------------------------------------------------------
 ESQFUNC_ProcessUiFrameTick:
-    TST.W   DATA_GCOMMAND_CONST_WORD_1FB0
+    TST.W   GCOMMAND_DriveProbeRequestedFlag
     BEQ.S   .lab_0971
 
     JSR     ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(PC)
@@ -659,7 +659,7 @@ ESQFUNC_ProcessUiFrameTick:
     TST.B   DATA_ESQDISP_BSS_WORD_1E89
     BEQ.S   .return
 
-    TST.B   DATA_GCOMMAND_BSS_WORD_1FA9
+    TST.B   GCOMMAND_HighlightHoldoffTickCount
     BNE.S   .return
 
     CLR.B   DATA_ESQDISP_BSS_WORD_1E89
@@ -991,10 +991,10 @@ ESQFUNC_DrawEscMenuVersion:
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, ED_DiagAvailMemMask, ESQIFF_ParseAttemptCount, DATACErrs, ESQIFF_LineErrorCount,
-;   DATA_WDISP_BSS_WORD_2347/2348/2349, DATA_WDISP_BSS_WORD_228A, Global_WORD_H_VALUE, Global_WORD_T_VALUE,
+;   SCRIPT_CtrlCmdCount/2348/2349, ESQ_SerialRbfErrorCount, Global_WORD_H_VALUE, Global_WORD_T_VALUE,
 ;   Global_WORD_MAX_VALUE, CTRL_H, CTRL_HPreviousSample, CTRL_HDeltaMax, TEXTDISP_PrimaryGroupCode/TEXTDISP_SecondaryGroupCode,
-;   TEXTDISP_PrimaryGroupHeaderCode/TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag/TEXTDISP_SecondaryGroupPresentFlag, DATA_WDISP_BSS_WORD_223C/223B/2244/223D,
-;   CLOCK_CurrentDayOfMonth/2275/227E/2277, DST_PrimaryCountdown/227B/225C, DATA_WDISP_BSS_WORD_223E,
+;   TEXTDISP_PrimaryGroupHeaderCode/TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_PrimaryGroupPresentFlag/TEXTDISP_SecondaryGroupPresentFlag, CLOCK_CacheDayIndex0/223B/2244/223D,
+;   CLOCK_CurrentDayOfMonth/2275/227E/2277, DST_PrimaryCountdown/227B/225C, CLOCK_CacheHour,
 ;   Global_WORD_CURRENT_HOUR, CLOCK_HalfHourSlotIndex
 ; WRITES:
 ;   ED_DiagnosticsScreenActive (early return gate), temporary text buffer on stack
@@ -1050,10 +1050,10 @@ ESQFUNC_DrawMemoryStatusScreen:
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2347,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2348,D1
+    MOVE.W  SCRIPT_CtrlCmdCount,D0
+    MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_2349,D2
+    MOVE.W  SCRIPT_CtrlCmdLengthErrorCount,D2
     EXT.L   D2
 
     MOVE.L  D2,(A7)
@@ -1175,7 +1175,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_228A,D0
+    MOVE.W  ESQ_SerialRbfErrorCount,D0
     MOVE.L  D0,(A7)
     PEA     Global_STR_DATA_OVERRUNS_FORMATTED
     PEA     -72(A5)
@@ -1290,13 +1290,13 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.W  DATA_WDISP_BSS_WORD_223C,D0
+    MOVE.W  CLOCK_CacheDayIndex0,D0
     EXT.L   D0
-    MOVE.W  DATA_WDISP_BSS_WORD_223B,D1
+    MOVE.W  CLOCK_CacheMonthIndex0,D1
     EXT.L   D1
     MOVE.W  ESQFUNC_CListLinePointer,D2
     EXT.L   D2
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D3
+    MOVE.W  CLOCK_CacheYear,D3
     EXT.L   D3
     MOVE.L  D3,(A7)
     MOVE.L  D2,-(A7)
@@ -1316,7 +1316,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     EXT.L   D0
     MOVE.W  CLOCK_CurrentMonthIndex,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_227E,D2
+    MOVE.W  CLOCK_CurrentLeapYearFlag,D2
     EXT.L   D2
     MOVE.W  CLOCK_CurrentYearValue,D3
     EXT.L   D3
@@ -1354,7 +1354,7 @@ ESQFUNC_DrawMemoryStatusScreen:
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    MOVE.W  DATA_WDISP_BSS_WORD_223E,D0
+    MOVE.W  CLOCK_CacheHour,D0
     EXT.L   D0
     MOVE.W  Global_WORD_CURRENT_HOUR,D1
     EXT.L   D1
@@ -1679,10 +1679,10 @@ ESQFUNC_DrawDiagnosticsScreen:
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2347,D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2348,D1
+    MOVE.W  SCRIPT_CtrlCmdCount,D0
+    MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
     EXT.L   D1
-    MOVE.W  DATA_WDISP_BSS_WORD_2349,D2
+    MOVE.W  SCRIPT_CtrlCmdLengthErrorCount,D2
     EXT.L   D2
     MOVEQ   #0,D3
     MOVE.W  CTRL_HDeltaMax,D3

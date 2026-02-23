@@ -38,7 +38,7 @@
 TEXTDISP_FindEntryIndexByWildcard:
     LINK.W  A5,#-12
     MOVEM.L D7/A2-A3,-(A7)
-    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_WDISP_BSS_WORD_236E
+    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
     MOVEQ   #0,D7
 
 .loop_entries:
@@ -939,9 +939,9 @@ TEXTDISP_BuildEntryShortName:
 ; READS:
 ;   TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId
 ; WRITES:
-;   DATA_WDISP_BSS_BYTE_2258, TEXTDISP_ChannelLabelBuffer, DATA_WDISP_BSS_LONG_237A
+;   TEXTDISP_ChannelLabelBufferTerminatorByte, TEXTDISP_ChannelLabelBuffer, TEXTDISP_ChannelLabelReadyFlag
 ; DESC:
-;   Builds TEXTDISP_ChannelLabelBuffer as \"On Channel <name>\" and sets DATA_WDISP_BSS_LONG_237A when valid.
+;   Builds TEXTDISP_ChannelLabelBuffer as \"On Channel <name>\" and sets TEXTDISP_ChannelLabelReadyFlag when valid.
 ; NOTES:
 ;   Uses group 1/2 based on TEXTDISP_ActiveGroupId.
 ;------------------------------------------------------------------------------
@@ -993,7 +993,7 @@ TEXTDISP_BuildChannelLabel:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D6
-    CLR.L   DATA_WDISP_BSS_LONG_237A
+    CLR.L   TEXTDISP_ChannelLabelReadyFlag
     MOVEQ   #1,D0
     CMP.W   D0,D6
     BLE.S   .return
@@ -1034,11 +1034,11 @@ TEXTDISP_BuildChannelLabel:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    LEA     DATA_WDISP_BSS_BYTE_2258,A0
+    LEA     TEXTDISP_ChannelLabelBufferTerminatorByte,A0
     ADDA.L  D0,A0
     CLR.B   (A0)
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_237A
+    MOVE.L  D0,TEXTDISP_ChannelLabelReadyFlag
 
 .return:
     MOVEM.L (A7)+,D6-D7/A3
@@ -1062,7 +1062,7 @@ TEXTDISP_BuildChannelLabel:
 ; READS:
 ;   TEXTDISP_CurrentMatchIndex, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_236B, DATA_WDISP_BSS_WORD_236C, DATA_WDISP_BSS_WORD_236D
+;   TEXTDISP_EntryShortNameScratch, TEXTDISP_LinePenOverrideEnabledFlag, TEXTDISP_LinePenOverrideStateWord
 ; DESC:
 ;   Builds banner text and draws it in the selected rastport.
 ; NOTES:
@@ -1089,12 +1089,12 @@ TEXTDISP_DrawChannelBanner:
     MOVE.L  D0,-(A7)
     JSR     TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(PC)
 
-    PEA     DATA_WDISP_BSS_LONG_236B
+    PEA     TEXTDISP_EntryShortNameScratch
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
     BSR.W   TEXTDISP_BuildEntryShortName
 
-    LEA     DATA_WDISP_BSS_LONG_236B,A0
+    LEA     TEXTDISP_EntryShortNameScratch,A0
     LEA     TEXTDISP_ChannelLabelBuffer,A1
 
 .copy_short_name:
@@ -1105,7 +1105,7 @@ TEXTDISP_DrawChannelBanner:
     BSR.W   TEXTDISP_BuildChannelLabel
 
     LEA     20(A7),A7
-    CLR.W   DATA_WDISP_BSS_WORD_236D
+    CLR.W   TEXTDISP_LinePenOverrideStateWord
     MOVEQ   #3,D0
     CMP.W   D0,D6
     BNE.S   .select_rast
@@ -1126,7 +1126,7 @@ TEXTDISP_DrawChannelBanner:
     JSR     _LVOSetDrMd(A6)
 
 .init_rect:
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_236C
+    MOVE.W  #1,TEXTDISP_LinePenOverrideEnabledFlag
     MOVEQ   #0,D5
     MOVEA.L WDISP_DisplayContextBase,A0
     MOVE.W  2(A0),D5
@@ -1649,7 +1649,7 @@ TEXTDISP_ComputeTimeOffset:
     MOVEQ   #12,D1
     JSR     MATH_DivS32(PC)
 
-    TST.W   Global_WORD_USE_24_HR_FMT
+    TST.W   CLOCK_CurrentAmPmFlag
     BEQ.S   .use_zero_bias
 
     MOVEQ   #12,D0
@@ -1694,7 +1694,7 @@ TEXTDISP_ComputeTimeOffset:
 ; READS:
 ;   TEXTDISP_SecondaryGroupRecordLength, TEXTDISP_CandidateIndexList/2376/2377/2372
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2360, DATA_WDISP_BSS_WORD_2361, TEXTDISP_CurrentMatchIndex, DATA_WDISP_BSS_WORD_236F, TEXTDISP_ActiveGroupId
+;   TEXTDISP_PrimaryFirstMatchIndex, TEXTDISP_SecondaryFirstMatchIndex, TEXTDISP_CurrentMatchIndex, TEXTDISP_SbeFilterActiveFlag, TEXTDISP_ActiveGroupId
 ; DESC:
 ;   Attempts to resolve a filter across groups and updates selection globals.
 ; NOTES:
@@ -1706,9 +1706,9 @@ TEXTDISP_SelectGroupAndEntry:
     MOVEA.L 28(A7),A2
     MOVE.W  34(A7),D7
     MOVEQ   #-1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2360
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2361
-    CLR.W   DATA_WDISP_BSS_WORD_236F
+    MOVE.W  D0,TEXTDISP_PrimaryFirstMatchIndex
+    MOVE.W  D0,TEXTDISP_SecondaryFirstMatchIndex
+    CLR.W   TEXTDISP_SbeFilterActiveFlag
     MOVE.W  #1,TEXTDISP_ActiveGroupId
     MOVE.L  D7,D0
     EXT.L   D0
@@ -1735,7 +1735,7 @@ TEXTDISP_SelectGroupAndEntry:
     MOVE.L  D0,D5
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_CandidateIndexList,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2360
+    MOVE.W  D0,TEXTDISP_PrimaryFirstMatchIndex
 
 .check_group1_result:
     TST.W   D6
@@ -1776,7 +1776,7 @@ TEXTDISP_SelectGroupAndEntry:
     MOVE.L  D0,D5
     MOVEQ   #0,D0
     MOVE.B  TEXTDISP_CandidateIndexList,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2361
+    MOVE.W  D0,TEXTDISP_SecondaryFirstMatchIndex
 
 .after_group2:
     TST.W   D6
@@ -1802,12 +1802,12 @@ TEXTDISP_SelectGroupAndEntry:
     BNE.S   .use_alt_index
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2372,D0
+    MOVE.B  TEXTDISP_BannerFallbackEntryIndex,D0
     BRA.S   .store_selected_index
 
 .use_alt_index:
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_2376,D0
+    MOVE.B  TEXTDISP_BannerSelectedEntryIndex,D0
 
 .store_selected_index:
     MOVE.W  D0,TEXTDISP_CurrentMatchIndex
@@ -1841,7 +1841,7 @@ TEXTDISP_SelectGroupAndEntry:
 ; READS:
 ;   TEXTDISP_ActiveGroupId, TEXTDISP_PrimaryGroupEntryCount/222F, TEXTDISP_PrimaryEntryPtrTable/2235/2236/2237, DATA_TEXTDISP_TAG_PPV_2159/215A/215B/215C
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_236F, DATA_WDISP_BSS_WORD_2370, TEXTDISP_CandidateIndexList
+;   TEXTDISP_SbeFilterActiveFlag, TEXTDISP_FindModeActiveFlag, TEXTDISP_CandidateIndexList
 ; DESC:
 ;   Filters entries by wildcard pattern and flags, storing matches in TEXTDISP_CandidateIndexList.
 ; NOTES:
@@ -1876,7 +1876,7 @@ TEXTDISP_BuildMatchIndexList:
     BNE.S   .set_pattern_flag
 
     MOVEQ   #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_236F
+    MOVE.W  D0,TEXTDISP_SbeFilterActiveFlag
     MOVE.L  D0,D4
     BRA.S   .check_sports_pattern
 
@@ -1920,13 +1920,13 @@ TEXTDISP_BuildMatchIndexList:
     BNE.S   .set_find_mode_flag
 
     MOVEQ   #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2370
+    MOVE.W  D0,TEXTDISP_FindModeActiveFlag
     MOVE.L  #Global_STR_ASTERISK_3,8(A5)
     BRA.S   .init_scan
 
 .set_find_mode_flag:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2370
+    MOVE.W  D0,TEXTDISP_FindModeActiveFlag
 
 .init_scan:
     MOVEQ   #0,D5
@@ -2052,7 +2052,7 @@ TEXTDISP_BuildMatchIndexList:
 ; READS:
 ;   TEXTDISP_ActiveGroupId, TEXTDISP_PrimaryTitlePtrTable/2237, TEXTDISP_PrimaryGroupCode/222D, CLOCK_HalfHourSlotIndex, TEXTDISP_CurrentMatchIndex, TEXTDISP_CandidateIndexList
 ; WRITES:
-;   DATA_WDISP_BSS_BYTE_2372-2379, TEXTDISP_BannerCharFallback, DATA_WDISP_BSS_BYTE_2375, TEXTDISP_BannerCharSelected
+;   TEXTDISP_BannerFallbackEntryIndex-2379, TEXTDISP_BannerCharFallback, TEXTDISP_BannerFallbackValidFlag, TEXTDISP_BannerCharSelected
 ; DESC:
 ;   Walks candidate indices, evaluates timing/channel constraints, and updates
 ;   global selection state for text display.
@@ -2070,8 +2070,8 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.W  #$5a1,-20(A5)
     MOVE.W  #$fa5f,-22(A5)
     MOVEQ   #0,D0
-    MOVE.B  D0,DATA_WDISP_BSS_BYTE_2375
-    MOVE.B  D0,DATA_WDISP_BSS_BYTE_2379
+    MOVE.B  D0,TEXTDISP_BannerFallbackValidFlag
+    MOVE.B  D0,TEXTDISP_BannerSelectedValidFlag
     MOVE.B  #$64,TEXTDISP_BannerCharSelected
     LEA     DATA_TEXTDISP_TAG_SPT_2160,A0
     MOVEA.L A2,A1
@@ -2258,7 +2258,7 @@ TEXTDISP_SelectBestMatchFromList:
     CMP.W   D1,D0
     BGE.S   .mark_found_primary
 
-    MOVE.B  #$1,DATA_WDISP_BSS_BYTE_2375
+    MOVE.B  #$1,TEXTDISP_BannerFallbackValidFlag
     BRA.S   .compute_time_secondary
 
 .mark_found_primary:
@@ -2369,13 +2369,13 @@ TEXTDISP_SelectBestMatchFromList:
     BLS.S   .check_best_match
 
     MOVEQ   #1,D1
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_2379
+    MOVE.B  D1,TEXTDISP_BannerSelectedValidFlag
     MOVE.W  -16(A5),D3
     MOVE.B  D3,TEXTDISP_BannerCharSelected
     MOVE.W  TEXTDISP_CurrentMatchIndex,D4
-    MOVE.B  D4,DATA_WDISP_BSS_BYTE_2376
+    MOVE.B  D4,TEXTDISP_BannerSelectedEntryIndex
     MOVE.B  -23(A5),D2
-    MOVE.B  D2,DATA_WDISP_BSS_BYTE_2378
+    MOVE.B  D2,TEXTDISP_BannerSelectedIsSpecialFlag
 
 .check_best_match:
     TST.W   D0
@@ -2385,18 +2385,18 @@ TEXTDISP_SelectBestMatchFromList:
     BGE.S   .check_alt_match
 
     MOVEQ   #1,D1
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_2375
+    MOVE.B  D1,TEXTDISP_BannerFallbackValidFlag
     MOVE.W  -16(A5),D1
     MOVE.B  D1,TEXTDISP_BannerCharFallback
     MOVE.W  TEXTDISP_CurrentMatchIndex,D2
-    MOVE.B  D2,DATA_WDISP_BSS_BYTE_2372
+    MOVE.B  D2,TEXTDISP_BannerFallbackEntryIndex
     MOVE.B  -23(A5),D3
-    MOVE.B  D3,DATA_WDISP_BSS_BYTE_2374
+    MOVE.B  D3,TEXTDISP_BannerFallbackIsSpecialFlag
     MOVE.W  D0,-20(A5)
     BRA.W   .update_last_seen
 
 .check_alt_match:
-    TST.B   DATA_WDISP_BSS_BYTE_2379
+    TST.B   TEXTDISP_BannerSelectedValidFlag
     BNE.S   .check_fallback_match
 
     TST.W   D0
@@ -2419,12 +2419,12 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.W  -16(A5),D2
     MOVE.B  D2,TEXTDISP_BannerCharSelected
     MOVE.W  TEXTDISP_CurrentMatchIndex,D3
-    MOVE.B  D3,DATA_WDISP_BSS_BYTE_2376
+    MOVE.B  D3,TEXTDISP_BannerSelectedEntryIndex
     MOVE.B  -23(A5),D4
-    MOVE.B  D4,DATA_WDISP_BSS_BYTE_2378
+    MOVE.B  D4,TEXTDISP_BannerSelectedIsSpecialFlag
 
 .check_fallback_match:
-    TST.B   DATA_WDISP_BSS_BYTE_2375
+    TST.B   TEXTDISP_BannerFallbackValidFlag
     BNE.S   .update_last_seen
 
     TST.W   D0
@@ -2436,8 +2436,8 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.W  -16(A5),D1
     MOVE.B  D1,TEXTDISP_BannerCharFallback
     MOVE.W  TEXTDISP_CurrentMatchIndex,D2
-    MOVE.B  D2,DATA_WDISP_BSS_BYTE_2372
-    MOVE.B  -23(A5),DATA_WDISP_BSS_BYTE_2374
+    MOVE.B  D2,TEXTDISP_BannerFallbackEntryIndex
+    MOVE.B  -23(A5),TEXTDISP_BannerFallbackIsSpecialFlag
     MOVE.W  D0,-22(A5)
 
 .update_last_seen:
@@ -2449,7 +2449,7 @@ TEXTDISP_SelectBestMatchFromList:
     ADDI.L  #400,D1
     MOVE.W  0(A0,D1.L),-12(A5)
     MOVE.W  -4(A5),D0
-    MOVE.W  DATA_WDISP_BSS_WORD_2370,D1
+    MOVE.W  TEXTDISP_FindModeActiveFlag,D1
     MOVE.W  D0,-6(A5)
     SUBQ.W  #1,D1
     BNE.S   .ensure_entry_index
@@ -2462,7 +2462,7 @@ TEXTDISP_SelectBestMatchFromList:
     CMP.W   -6(A5),D0
     BNE.S   .next_candidate
 
-    TST.W   DATA_WDISP_BSS_WORD_236F
+    TST.W   TEXTDISP_SbeFilterActiveFlag
     BNE.S   .next_candidate
 
     MOVEQ   #0,D0
@@ -2474,7 +2474,7 @@ TEXTDISP_SelectBestMatchFromList:
 
     LEA     12(A7),A7
     MOVE.W  TEXTDISP_CurrentMatchIndex,D1
-    MOVE.B  D1,DATA_WDISP_BSS_BYTE_2372
+    MOVE.B  D1,TEXTDISP_BannerFallbackEntryIndex
     MOVE.W  D0,-6(A5)
 
 .next_candidate:
@@ -2501,7 +2501,7 @@ TEXTDISP_SelectBestMatchFromList:
     BEQ.S   .load_group2_table_for_usage
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_2376,D1
+    MOVE.B  TEXTDISP_BannerSelectedEntryIndex,D1
     MOVE.L  D1,D2
     EXT.L   D2
     ASL.L   #2,D2
@@ -2512,7 +2512,7 @@ TEXTDISP_SelectBestMatchFromList:
 
 .load_group2_table_for_usage:
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_2376,D1
+    MOVE.B  TEXTDISP_BannerSelectedEntryIndex,D1
     MOVE.L  D1,D2
     EXT.L   D2
     ASL.L   #2,D2
@@ -2592,7 +2592,7 @@ TEXTDISP_SelectBestMatchFromList:
 ; CALLS:
 ;   TEXTDISP_FindEntryMatchIndex
 ; READS:
-;   DATA_WDISP_BSS_WORD_2365, TEXTDISP_PrimaryChannelCode/234E, CLOCK_CurrentDayOfWeekIndex
+;   TEXTDISP_ChannelSourceMode, TEXTDISP_PrimaryChannelCode/234E, CLOCK_CurrentDayOfWeekIndex
 ; WRITES:
 ;   TEXTDISP_BannerCharFallback, TEXTDISP_BannerCharSelected
 ; DESC:
@@ -2603,7 +2603,7 @@ TEXTDISP_SelectBestMatchFromList:
 TEXTDISP_UpdateChannelRangeFlags:
     LINK.W  A5,#-8
     MOVEM.L D2/D7,-(A7)
-    MOVE.W  DATA_WDISP_BSS_WORD_2365,D0
+    MOVE.W  TEXTDISP_ChannelSourceMode,D0
     SUBQ.W  #1,D0
     BNE.S   .use_alt_channel_source
 

@@ -41,7 +41,7 @@
 ;   Global_HANDLE_PREVUE_FONT, Global_REF_RASTPORT_1, Global_REF_RASTPORT_2,
 ;   Global_REF_STR_CLOCK_FORMAT, ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, WDISP_HighlightBufferMode, WDISP_HighlightRasterHeightPx,
 ;   WDISP_352x240RasterPtrTable/WDISP_BannerRowScratchRasterTable0/WDISP_LivePlaneRasterTable0/WDISP_DisplayContextPlanePointer0 tables, WDISP_DisplayContextBase, WDISP_BannerWorkRasterPtr,
-;   DATA_WDISP_BSS_WORD_2294, ESQIFF_RecordBufferPtr, ESQSHARED_BannerRowScratchRasterBase0-ESQSHARED_BannerRowScratchRasterBase2, ESQSHARED_LivePlaneBase0-ESQSHARED_DisplayContextPlaneBase4,
+;   SCRIPT_CtrlInterfaceEnabledFlag, ESQIFF_RecordBufferPtr, ESQSHARED_BannerRowScratchRasterBase0-ESQSHARED_BannerRowScratchRasterBase2, ESQSHARED_LivePlaneBase0-ESQSHARED_DisplayContextPlaneBase4,
 ;   Global_REF_BAUD_RATE, WDISP_SerialIoRequestPtr, WDISP_SerialMessagePortPtr,
 ;   Global_REF_96_BYTES_ALLOCATED, numerous state globals cleared in .init_global_state
 ; DESC:
@@ -80,6 +80,8 @@ ESQ_MainInitAndRun:
 ;   byte 10+ overwrites Global_REF_BAUD_RATE,
 ;   byte 14+ overwrites ESQSHARED_BannerColorModeWord,
 ;   byte 16+ overwrites ED_Rastport2PenModeSelector.
+; Trace-backed note: no active direct non-overflow writers for the latter two
+; fields were found in current symbolized paths.
 .copy_select_code_loop:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_select_code_loop
@@ -332,7 +334,7 @@ ESQ_MainInitAndRun:
 
     MOVE.L  D5,D0
     MULS    #40,D0
-    LEA     DATA_WDISP_BSS_LONG_22A7,A0
+    LEA     ESQDISP_HighlightBitmapTable,A0
     ADDA.L  D0,A0
     MOVE.L  A0,-(A7)
     JSR     ESQDISP_AllocateHighlightBitmaps(PC)
@@ -461,11 +463,11 @@ ESQ_MainInitAndRun:
 
     MOVE.L  D5,D0
     MULS    #$a0,D0
-    LEA     DATA_WDISP_BSS_LONG_22A6,A0
+    LEA     GCOMMAND_HighlightMessageSlotTable,A0
     ADDA.L  D0,A0
     MOVE.L  D5,D0
     MULS    #$28,D0
-    LEA     DATA_WDISP_BSS_LONG_22A7,A1
+    LEA     ESQDISP_HighlightBitmapTable,A1
     ADDA.L  D0,A1
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
@@ -518,7 +520,7 @@ ESQ_MainInitAndRun:
 
     JSR     DST_RefreshBannerBuffer(PC)
 
-    CLR.W   DATA_WDISP_BSS_WORD_2294
+    CLR.W   SCRIPT_CtrlInterfaceEnabledFlag
     MOVEQ   #1,D5
 
 .scan_cart_args_loop:
@@ -543,7 +545,7 @@ ESQ_MainInitAndRun:
 
     BNE.S   .next_cart_arg
 
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_2294
+    MOVE.W  #1,SCRIPT_CtrlInterfaceEnabledFlag
 
 ; it looks like this tests a value to determine if we can spin up
 ; to a specific baud rate or if we should just jump down to 2400.
@@ -876,33 +878,33 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,TEXTDISP_SecondaryGroupRecordLength
     MOVE.W  D0,TEXTDISP_PrimaryGroupRecordLength
     MOVE.W  D0,ESQ_TickModulo60Counter
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2271
+    MOVE.W  D0,ESQ_StartupReservedWord2271
     MOVE.W  D0,ESQIFF_ParseAttemptCount
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2347
+    MOVE.W  D0,SCRIPT_CtrlCmdCount
     MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
     MOVE.W  D0,TEXTDISP_PrimaryGroupEntryCount
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_22AD
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_22AC
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2299
+    MOVE.W  D0,ESQIFF_GAdsListLineIndex
+    MOVE.W  D0,ESQIFF_LogoListLineIndex
+    MOVE.W  D0,ESQIFF_StatusPacketReadyFlag
     MOVE.W  D0,TEXTDISP_GroupMutationState
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_228C
+    MOVE.W  D0,ESQ_SerialRbfFillLevel
     MOVE.W  D0,Global_WORD_MAX_VALUE
     MOVE.W  D0,Global_WORD_T_VALUE
     MOVE.W  D0,Global_WORD_H_VALUE
     MOVE.W  D0,CLEANUP_PendingAlertFlag
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2284
+    MOVE.W  D0,CTRL_BufferedByteCount
     MOVE.W  D0,CTRL_HDeltaMax
     MOVE.W  D0,CTRL_HPreviousSample
     MOVE.W  D0,CTRL_H
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_228A
+    MOVE.W  D0,ESQ_SerialRbfErrorCount
     MOVE.W  D0,DATACErrs
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2348
+    MOVE.W  D0,SCRIPT_CtrlCmdChecksumErrorCount
     MOVE.W  D0,ESQIFF_LineErrorCount
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2349
+    MOVE.W  D0,SCRIPT_CtrlCmdLengthErrorCount
     MOVE.W  D0,ESQPARS_CommandPreambleArmedFlag
     MOVE.W  D0,ESQPARS_Preamble55SeenFlag
     MOVE.W  D0,WDISP_BannerCharPhaseShift
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_22A0
+    MOVE.W  D0,ESQPARS_SelectionMatchCode
     MOVE.W  D0,ESQPARS_ResetArmedFlag
     MOVEQ   #0,D1
     MOVE.B  D1,ESQIFF_UseCachedChecksumFlag
@@ -977,7 +979,7 @@ ESQ_MainInitAndRun:
     LEA     12(A7),A7
     MOVEQ   #109,D0
     ADD.L   D0,D0
-    CMP.L   DATA_WDISP_BSS_LONG_2319,D0
+    CMP.L   DISKIO_DriveWriteProtectStatusCodeDrive1,D0
     BNE.S   .format_version_banner
 
     MOVEA.L WDISP_DisplayContextBase,A0
@@ -1169,7 +1171,7 @@ ESQ_MainInitAndRun:
 
     JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
-    MOVE.W  #1,DATA_WDISP_BSS_LONG_2272
+    MOVE.W  #1,ESQ_StartupReservedLong2272
     MOVE.W  WDISP_BannerCharRangeStart,WDISP_BannerCharIndex
     CLR.L   (A7)
     PEA     4095.W
@@ -1236,7 +1238,7 @@ ESQ_MainInitAndRun:
 
     ; Clear out these values
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_228C
+    MOVE.W  D0,ESQ_SerialRbfFillLevel
     MOVE.W  D0,Global_WORD_MAX_VALUE
     MOVE.W  D0,Global_WORD_T_VALUE
     MOVE.W  D0,Global_WORD_H_VALUE
@@ -1258,7 +1260,7 @@ ESQ_MainInitAndRun:
     MOVE.L  D5,D0
     EXT.L   D0
     ADD.L   D0,D0
-    LEA     DATA_WDISP_BSS_LONG_236A,A0
+    LEA     CLEANUP_AlignedStatusEntryCycleTable,A0
     ADDA.L  D0,A0
     CLR.W   (A0)
     ADDQ.W  #1,D5

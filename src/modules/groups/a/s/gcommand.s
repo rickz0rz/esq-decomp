@@ -158,7 +158,7 @@ GCOMMAND_LoadCommandFile:
 ; CALLS:
 ;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadCommandFile, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalNicheDefaults, LADFUNC_ParseHexDigit
 ; READS:
-;   DATA_GCOMMAND_BSS_WORD_1F69, WDISP_CharClassTable, GCOMMAND_DigitalNicheListingsTemplatePtr, return
+;   GCOMMAND_NicheParseScratchSeedWord, WDISP_CharClassTable, GCOMMAND_DigitalNicheListingsTemplatePtr, return
 ; WRITES:
 ;   GCOMMAND_DigitalNicheEnabledFlag, GCOMMAND_NicheTextPen, GCOMMAND_NicheFramePen, GCOMMAND_NicheEditorLayoutPen, GCOMMAND_NicheEditorRowPen, GCOMMAND_NicheModeCycleCount, GCOMMAND_NicheForceMode5Flag, GCOMMAND_NicheWorkflowMode, GCOMMAND_DigitalNicheListingsTemplatePtr
 ; DESC:
@@ -172,7 +172,7 @@ GCOMMAND_ParseCommandOptions:
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D6
-    LEA     DATA_GCOMMAND_BSS_WORD_1F69,A0
+    LEA     GCOMMAND_NicheParseScratchSeedWord,A0
     LEA     -12(A5),A1
     MOVE.B  (A0)+,(A1)+
     MOVE.B  (A0)+,(A1)+
@@ -592,7 +592,7 @@ GCOMMAND_LoadMplexTemplate:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
 ; READS:
-;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6D, DATA_GCOMMAND_CONST_LONG_1F6E, GCOMMAND_DigitalMplexEnabledFlag, MODE_NEWFILE, copy_template_loop, return
+;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6D, GCOMMAND_MplexTemplateFieldSeparatorByteStorage, GCOMMAND_DigitalMplexEnabledFlag, MODE_NEWFILE, copy_template_loop, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -648,7 +648,7 @@ GCOMMAND_LoadMplexFile:
 
     MOVEQ   #1,D0
     MOVE.L  D0,(A7)
-    PEA     DATA_GCOMMAND_CONST_LONG_1F6E
+    PEA     GCOMMAND_MplexTemplateFieldSeparatorByteStorage
     MOVE.L  D7,-(A7)
     JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
@@ -696,7 +696,7 @@ GCOMMAND_LoadMplexFile:
 ; CALLS:
 ;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadMplexFile, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalMplexDefaults, LADFUNC_ParseHexDigit
 ; READS:
-;   DATA_GCOMMAND_BSS_WORD_1F6F, DATA_GCOMMAND_FMT_PCT_T_1F70, WDISP_CharClassTable, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
+;   GCOMMAND_MplexParseScratchSeedWord, DATA_GCOMMAND_FMT_PCT_T_1F70, WDISP_CharClassTable, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
 ; WRITES:
 ;   GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexModeCycleCount, GCOMMAND_MplexSearchRowLimit, GCOMMAND_MplexClockOffsetMinutes, GCOMMAND_MplexMessageTextPen, GCOMMAND_MplexMessageFramePen, GCOMMAND_MplexEditorLayoutPen, GCOMMAND_MplexEditorRowPen, GCOMMAND_MplexDetailLayoutPen, GCOMMAND_MplexDetailInitialLineIndex, GCOMMAND_MplexDetailRowPen, GCOMMAND_MplexWorkflowMode, GCOMMAND_MplexDetailLayoutFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; DESC:
@@ -710,7 +710,7 @@ GCOMMAND_ParseCommandString:
     MOVEM.L D2/D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D6
-    LEA     DATA_GCOMMAND_BSS_WORD_1F6F,A0
+    LEA     GCOMMAND_MplexParseScratchSeedWord,A0
     LEA     -12(A5),A1
     MOVE.B  (A0)+,(A1)+
     MOVE.B  (A0)+,(A1)+
@@ -1433,7 +1433,7 @@ GCOMMAND_LoadPPV3Template:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
 ; READS:
-;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F75, DATA_GCOMMAND_CONST_LONG_1F76, GCOMMAND_DigitalPpvEnabledFlag, MODE_NEWFILE, copy_template_loop, return
+;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F75, GCOMMAND_PpvTemplateFieldSeparatorByteStorage, GCOMMAND_DigitalPpvEnabledFlag, MODE_NEWFILE, copy_template_loop, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1489,7 +1489,7 @@ GCOMMAND_LoadPPVTemplate:
 
     MOVEQ   #1,D0
     MOVE.L  D0,(A7)
-    PEA     DATA_GCOMMAND_CONST_LONG_1F76
+    PEA     GCOMMAND_PpvTemplateFieldSeparatorByteStorage
     MOVE.L  D7,-(A7)
     JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
@@ -1537,7 +1537,7 @@ GCOMMAND_LoadPPVTemplate:
 ; CALLS:
 ;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalPpvDefaults, LADFUNC_ParseHexDigit
 ; READS:
-;   DATA_GCOMMAND_BSS_LONG_1F77, WDISP_CharClassTable, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
+;   GCOMMAND_PpvParseScratchSeedLong, WDISP_CharClassTable, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
 ;   GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PpvModeCycleCount, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes, GCOMMAND_PpvMessageTextPen, GCOMMAND_PpvMessageFramePen, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PpvShowtimesLayoutPen, GCOMMAND_PpvShowtimesInitialLineIndex, GCOMMAND_PpvShowtimesRowPen, GCOMMAND_PpvShowtimesWorkflowMode, GCOMMAND_PpvDetailLayoutFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, GCOMMAND_PpvShowtimesRowSpan
 ; DESC:
@@ -1551,7 +1551,7 @@ GCOMMAND_ParsePPVCommand:
     MOVEM.L D2/D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D6
-    LEA     DATA_GCOMMAND_BSS_LONG_1F77,A0
+    LEA     GCOMMAND_PpvParseScratchSeedLong,A0
     LEA     -12(A5),A1
     MOVE.B  (A0)+,(A1)+
     MOVE.B  (A0)+,(A1)+

@@ -100,7 +100,7 @@ ESQ_StoreCtrlSampleEntry:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Loads a default effect parameter pair (0/$3F) and updates copper tables.
 ; NOTES:
@@ -128,7 +128,7 @@ ESQ_SetCopperEffect_Default:
 ; READS:
 ;   DATA_COMMON_STR_VALUE_1B05, CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Forces CIAB_PRA bits 6/7 high, uses DATA_COMMON_STR_VALUE_1B05 as a parameter, and updates
 ;   the copper tables.
@@ -162,7 +162,7 @@ ESQ_SetCopperEffect_Custom:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Clears CIAB_PRA bits 6/7, sets both parameters to $3F, and updates the
 ;   copper tables.
@@ -196,7 +196,7 @@ ESQ_SetCopperEffect_AllOn:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Sets CIAB_PRA bits to 01, clears both parameters, updates copper tables,
 ;   and disables UI highlight.
@@ -232,7 +232,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Sets CIAB_PRA bits to 11, loads parameters ($3F/0), updates copper tables,
 ;   and enables UI highlight.
@@ -268,7 +268,7 @@ ESQ_SetCopperEffect_OnEnableHighlight:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Stores the effect parameters and regenerates the copper tables.
 ; NOTES:
@@ -297,7 +297,7 @@ ESQ_SetCopperEffectParams:
 ; READS:
 ;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_BSS_LONG_1E25
 ; WRITES:
-;   DATA_ESQ_CONST_LONG_1E22, DATA_ESQ_CONST_LONG_1E51
+;   ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Expands packed effect parameters into copper list words for two tables.
 ; NOTES:
@@ -307,8 +307,8 @@ ESQ_UpdateCopperListsFromParams:
     LEA     DATA_ESQ_BSS_LONG_1E25,A0
     MOVE.W  26(A0),D1
     MOVE.L  DATA_COMMON_BSS_WORD_1B00,D0
-    LEA     DATA_ESQ_CONST_LONG_1E22,A0
-    LEA     DATA_ESQ_CONST_LONG_1E51,A1
+    LEA     ESQ_CopperEffectListA,A0
+    LEA     ESQ_CopperEffectListB,A1
     ADDQ.L  #6,A0
     ADDQ.L  #6,A1
     ADD.B   D0,D0
@@ -1272,7 +1272,7 @@ ESQ_GetHalfHourSlotIndex:
 ; READS:
 ;   (none)
 ; WRITES:
-;   WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280
+;   WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd
 ; DESC:
 ;   Normalizes values into a bounded A..C/I range and writes two globals.
 ; NOTES:
@@ -1332,7 +1332,7 @@ ESQ_ClampBannerCharRange:
 
 .return:
     MOVE.W  D0,WDISP_BannerCharRangeStart
-    MOVE.W  D3,DATA_WDISP_BSS_WORD_2280
+    MOVE.W  D3,WDISP_BannerCharRangeEnd
     MOVEM.L (A7)+,D2-D4
     RTS
 
@@ -1349,14 +1349,14 @@ ESQ_ClampBannerCharRange:
 ; CALLS:
 ;   (none)
 ; READS:
-;   WDISP_BannerCharIndex, WDISP_BannerCharPhaseShift, WDISP_BannerCharRangeStart, DATA_WDISP_BSS_WORD_2280, DATA_COMMON_BSS_LONG_1B08
+;   WDISP_BannerCharIndex, WDISP_BannerCharPhaseShift, WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd, DATA_COMMON_BSS_LONG_1B08
 ; WRITES:
-;   ESQ_BannerCharResetPulse, WDISP_BannerCharIndex, DATA_WDISP_BSS_WORD_2273, DATA_COMMON_BSS_LONG_1B08
+;   ESQ_BannerCharResetPulse, WDISP_BannerCharIndex, ESQ_BannerCharIndexShadow2273, DATA_COMMON_BSS_LONG_1B08
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
 ;   If DATA_COMMON_BSS_LONG_1B08 is non-zero, forces a reset path and clears the flag.
-;   Also resets when the index matches DATA_WDISP_BSS_WORD_2280, using WDISP_BannerCharRangeStart as the base.
+;   Also resets when the index matches WDISP_BannerCharRangeEnd, using WDISP_BannerCharRangeStart as the base.
 ;------------------------------------------------------------------------------
     MOVEM.L D2-D3,-(A7)
     MOVE.W  WDISP_BannerCharIndex,D0
@@ -1376,7 +1376,7 @@ ESQ_ClampBannerCharRange:
     BRA.S   .lab_00A3
 
 .lab_00A2:
-    MOVE.W  DATA_WDISP_BSS_WORD_2280,D1
+    MOVE.W  WDISP_BannerCharRangeEnd,D1
     CMP.W   D1,D0
     BNE.S   .lab_00A4
 
@@ -1416,14 +1416,14 @@ ESQ_ClampBannerCharRange:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2273
+;   ESQ_BannerCharIndexShadow2273
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 ESQ_AdvanceBannerCharIndex_Return:
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_2273
+    MOVE.W  D0,ESQ_BannerCharIndexShadow2273
     MOVEM.L (A7)+,D2-D3
     RTS
 
@@ -2041,9 +2041,9 @@ ESQ_PackBitsDecode:
 ; CALLS:
 ;   ESQ_ColdReboot, ESQSHARED4_TickCopperAndBannerTransitions, ESQIFF_ServicePendingCopperPaletteMoves
 ; READS:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, LOCAVAIL_FilterCooldownTicks, Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; WRITES:
-;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, DATA_WDISP_BSS_LONG_2325, Global_RefreshTickCounter, DATA_WDISP_BSS_WORD_22A5, TEXTDISP_DeferredActionArmed,
+;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, LOCAVAIL_FilterCooldownTicks, Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed,
 ;   DATA_COMMON_BSS_WORD_1B11..DATA_COMMON_BSS_LONG_1B18
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
@@ -2070,11 +2070,11 @@ ESQ_TickGlobalCounters:
     BNE.W   .store_tick_counter
 
     MOVE.W  D0,CLEANUP_PendingAlertFlag
-    MOVE.W  DATA_WDISP_BSS_LONG_2325,D0
+    MOVE.W  LOCAVAIL_FilterCooldownTicks,D0
     BMI.W   .after_decrement_2325
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_LONG_2325
+    MOVE.W  D0,LOCAVAIL_FilterCooldownTicks
 
 .after_decrement_2325:
     MOVE.W  Global_RefreshTickCounter,D0
@@ -2084,13 +2084,13 @@ ESQ_TickGlobalCounters:
     MOVE.W  D0,Global_RefreshTickCounter
 
 .after_increment_234A:
-    MOVE.W  DATA_WDISP_BSS_WORD_22A5,D0
+    MOVE.W  TEXTDISP_DeferredActionDelayTicks,D0
     BMI.W   .after_decay_22A5
 
     BEQ.W   .after_decay_22A5
 
     SUBQ.W  #1,D0
-    MOVE.W  D0,DATA_WDISP_BSS_WORD_22A5
+    MOVE.W  D0,TEXTDISP_DeferredActionDelayTicks
     BNE.W   .after_decay_22A5
 
     MOVE.W  #1,TEXTDISP_DeferredActionArmed

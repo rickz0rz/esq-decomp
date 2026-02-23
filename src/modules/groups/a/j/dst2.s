@@ -369,7 +369,7 @@ DST_NormalizeDayOfYear:
 ; CALLS:
 ;   DATETIME_IsLeapYear, DATETIME_BuildFromBaseDay, DATETIME_ClassifyValueInRange, DATETIME_SecondsToStruct, GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, DATA_WDISP_BSS_WORD_223D, DATA_ESQ_STR_N_1DD2, DATA_ESQ_STR_6_1DD1, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
+;   CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, CLOCK_CacheYear, DATA_ESQ_STR_N_1DD2, DATA_ESQ_STR_6_1DD1, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -442,7 +442,7 @@ DST_BuildBannerTimeEntry:
     ADDQ.W  #1,-30(A5)
 
 .adjust_for_threshold:
-    MOVE.W  DATA_WDISP_BSS_WORD_223D,D0
+    MOVE.W  CLOCK_CacheYear,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     BSR.W   DATETIME_IsLeapYear

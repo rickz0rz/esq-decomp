@@ -2274,7 +2274,7 @@ DISKIO2_LoadOinfoDataFile:
 ; READS:
 ;   DISKIO2_TransferFilenameBuffer..DISKIO_SavedReadModeFlags, ED_DiagnosticsScreenActive, DISKIO2_TransferXorChecksumByte, CTASKS_EXT_GRF
 ; WRITES:
-;   DISKIO2_TransferFilenameBuffer..DISKIO2_TransferCrcErrorCount, DATA_WDISP_BSS_LONG_21BD/21CB, ESQPARS2_ReadModeFlags
+;   DISKIO2_TransferFilenameBuffer..DISKIO2_TransferCrcErrorCount, DISKIO2_InteractiveTransferArmedFlag/21CB, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Reads a filename and payload, validates/locks the target, and writes the data.
 ; NOTES:
@@ -2339,7 +2339,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     BNE.S   .xfer_prepare_target_paths
 
     PEA     CTASKS_EXT_GRF
-    PEA     DATA_WDISP_BSS_BYTE_21C3
+    PEA     DISKIO2_TransferFilenameExtPtr
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -2404,7 +2404,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     MOVE.B  D0,-17(A5)
     JSR     GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(PC)
 
-    ; Read secondary token into DATA_WDISP_BSS_LONG_21C4 with checksum.
+    ; Read secondary token into DISKIO2_TransferSizeTokenBuffer with checksum.
 .xfer_read_secondary_token_loop:
     CMPI.B  #$8,-17(A5)
     BCC.S   .xfer_finalize_secondary_token
@@ -2419,7 +2419,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     ADDQ.B  #1,-17(A5)
     MOVEQ   #0,D2
     MOVE.B  D1,D2
-    LEA     DATA_WDISP_BSS_LONG_21C4,A0
+    LEA     DISKIO2_TransferSizeTokenBuffer,A0
     ADDA.W  D2,A0
     MOVE.B  D0,(A0)
     MOVE.B  DISKIO2_TransferXorChecksumByte,D1
@@ -2432,7 +2432,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 .xfer_finalize_secondary_token:
     MOVEQ   #0,D0
     MOVE.B  -17(A5),D0
-    LEA     DATA_WDISP_BSS_LONG_21C4,A0
+    LEA     DISKIO2_TransferSizeTokenBuffer,A0
     ADDA.W  D0,A0
     CLR.B   (A0)
     LEA     -68(A5),A0
@@ -2487,7 +2487,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     _LVOUnLock(A6)
 
 .xfer_parse_requested_size:
-    PEA     DATA_WDISP_BSS_LONG_21C4
+    PEA     DISKIO2_TransferSizeTokenBuffer
     JSR     GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(PC)
 
     ADDQ.W  #4,A7
@@ -2506,7 +2506,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     JSR     GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(PC)
 
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21BD
+    MOVE.L  D0,DISKIO2_InteractiveTransferArmedFlag
     MOVE.L  D0,(A7)
     PEA     4.W
     JSR     GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
@@ -2770,7 +2770,7 @@ DISKIO2_HandleInteractiveFileTransfer:
 
 .xfer_clear_overlay_and_maybe_report_disk:
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21BD
+    MOVE.L  D0,DISKIO2_InteractiveTransferArmedFlag
     MOVE.L  D0,-(A7)
     PEA     4.W
     JSR     GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)

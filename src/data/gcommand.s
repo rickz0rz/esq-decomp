@@ -6,7 +6,17 @@ Global_STR_GCOMMAND_C_1:
     NStr    "GCOMMAND.c"
 DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F68:
     NStr    "DF0:Digital_Niche.dat"
-DATA_GCOMMAND_BSS_WORD_1F69:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_NicheParseScratchSeedWord   (niche option-parse scratch seed word)
+; TYPE: u16 (used as first half of a 4-byte seed copy)
+; PURPOSE: Seed word copied into local parse scratch before reading niche option flags.
+; USED BY: GCOMMAND_ParseCommandOptions
+; NOTES:
+;   Callsite copies 4 bytes starting at this symbol into `-12(A5)..-9(A5)` before
+;   parsing (`MOVE.B (A0)+` x4). Bytes 2..3 are layout-coupled with immediately
+;   following data and should be treated as legacy parse seeding behavior.
+;------------------------------------------------------------------------------
+GCOMMAND_NicheParseScratchSeedWord:
     DS.W    1
 DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6A:
     NStr    "DF0:Digital_Mplex.dat"
@@ -16,9 +26,28 @@ DATA_GCOMMAND_FMT_PCT_T_1F6C:
     NStr    "%T"
 DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6D:
     NStr    "DF0:Digital_Mplex.dat"
-DATA_GCOMMAND_CONST_LONG_1F6E:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_MplexTemplateFieldSeparatorByteStorage/GCOMMAND_PpvTemplateFieldSeparatorByteStorage   (template field separator byte storage)
+; TYPE: u32/u32 (first byte used)
+; PURPOSE: Backing storage for one-byte separator written between two serialized template strings.
+; USED BY: GCOMMAND_LoadMplexFile, GCOMMAND_LoadPPVTemplate
+; NOTES:
+;   Callers pass `count=1` to WriteBufferedBytes, so only the first byte (`0x12`)
+;   is emitted; remaining bytes are padding/legacy storage.
+;------------------------------------------------------------------------------
+GCOMMAND_MplexTemplateFieldSeparatorByteStorage:
     DC.L    $12001200
-DATA_GCOMMAND_BSS_WORD_1F6F:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_MplexParseScratchSeedWord   (mplex option-parse scratch seed word)
+; TYPE: u16 (used as first half of a 4-byte seed copy)
+; PURPOSE: Seed word copied into local parse scratch before reading mplex option flags.
+; USED BY: GCOMMAND_ParseCommandString
+; NOTES:
+;   Callsite copies 4 bytes starting at this symbol into `-12(A5)..-9(A5)` before
+;   parsing (`MOVE.B (A0)+` x4). Bytes 2..3 are layout-coupled with immediately
+;   following data and should be treated as legacy parse seeding behavior.
+;------------------------------------------------------------------------------
+GCOMMAND_MplexParseScratchSeedWord:
     DS.W    1
 DATA_GCOMMAND_FMT_PCT_T_1F70:
     NStr    "%T"
@@ -32,9 +61,20 @@ Global_STR_GCOMMAND_C_3:
     NStr    "GCOMMAND.c"
 DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F75:
     NStr    "DF0:Digital_PPV3.dat"
-DATA_GCOMMAND_CONST_LONG_1F76:
+GCOMMAND_PpvTemplateFieldSeparatorByteStorage:
     DC.L    $12001200
-DATA_GCOMMAND_BSS_LONG_1F77:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_PpvParseScratchSeedLong   (ppv option-parse scratch seed long)
+; TYPE: u32 seed + trailing u32 list (legacy/unresolved)
+; PURPOSE: 4-byte seed copied into local parse scratch before PPV option parsing.
+; USED BY: GCOMMAND_ParsePPVCommand
+; NOTES:
+;   Callsite copies 4 bytes starting at this symbol into `-12(A5)..-9(A5)` before
+;   parsing (`MOVE.B (A0)+` x4).
+;   The following longword list is contiguous legacy data with no direct symbolic
+;   references yet; keep together until a confirmed reader is traced.
+;------------------------------------------------------------------------------
+GCOMMAND_PpvParseScratchSeedLong:
     DS.L    1
     DC.L    $00000067,$00000069,$00000072,$00000073
     DC.L    $00000074,$00000075,$00000076,$00000077
@@ -170,7 +210,20 @@ DATA_GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS_1FA0:
     NStr    "COPY >NIL: GFX:LOGO.LST DH2: CLONE"
 DATA_GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON__1FA1:
     NStr    "COPY >NIL: GFX:#? WORK: CLONE ALL"
-DATA_GCOMMAND_CONST_LONG_1FA2:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_PresetSeedPackedWordTable   (preset seed packed-word table)
+; TYPE: u16 stream (packed in mixed DC.L/DS.* form)
+; PURPOSE: Seed data for GCOMMAND_InitPresetTableFromPalette.
+; USED BY: GCOMMAND_InitPresetTableFromPalette
+; NOTES:
+;   Access pattern is word-based, using source offset `(row * 62) + (col * 2)`.
+;   Initializer currently consumes rows 0..15 and cols 0..15 (first 16 words/row).
+;   Total size is 992 bytes (`16 * 62`), i.e. 496 words / 248 longs.
+;------------------------------------------------------------------------------
+GCOMMAND_PresetSeedPackedWordTable_RowCount        = 16
+GCOMMAND_PresetSeedPackedWordTable_RowStrideBytes  = 62
+GCOMMAND_PresetSeedPackedWordTable_Size            = 992
+GCOMMAND_PresetSeedPackedWordTable:
     DC.L    $00030000
     DS.L    14
     DC.L    $00000aaa
@@ -231,11 +284,36 @@ DATA_GCOMMAND_CONST_LONG_1FA2:
     DC.L    $069607a7,$08b809b9,$0aca0f0f,$0f1f0f2f
     DC.L    $0f3f0f4f,$0f5f0f6f,$0f7f0f8f,$0f9f0faf
     DC.L    $0fbf0fcf,$0fdf0fff
-DATA_GCOMMAND_BSS_WORD_1FA3:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_PresetWorkResetPendingFlag   (preset-work reset pending flag)
+; TYPE: u16 flag
+; PURPOSE: Requests one-time reset of preset work entries before active highlight message tick.
+; USED BY: GCOMMAND_ValidatePresetTable, GCOMMAND_ResetPresetWorkTables, GCOMMAND_ServiceHighlightMessages
+; NOTES:
+;   Set when preset defaults are copied/validated and cleared by GCOMMAND_ResetPresetWorkTables.
+;------------------------------------------------------------------------------
+GCOMMAND_PresetWorkResetPendingFlag:
     DS.W    1
-DATA_GCOMMAND_BSS_WORD_1FA4:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_BannerRebuildPendingFlag   (banner rebuild pending flag)
+; TYPE: u16 flag
+; PURPOSE: Defers banner-table rebuild until the next highlight tick.
+; USED BY: GCOMMAND_UpdateBannerBounds, GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_TickHighlightState
+; NOTES:
+;   Set after bounds/step updates, consumed then cleared by rebuild path.
+;------------------------------------------------------------------------------
+GCOMMAND_BannerRebuildPendingFlag:
     DS.W    1
-DATA_GCOMMAND_BSS_WORD_1FA5:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_BannerRowFallbackOnFirstRowFlag   (first-row fallback toggle)
+; TYPE: u16 flag
+; PURPOSE: Toggles alternate row-0 write behavior in banner-row builder.
+; USED BY: GCOMMAND_BuildBannerRow, ED2 command toggle path
+; NOTES:
+;   When set and computed row index <= 0, builder follows `.write_defaults` path.
+;   Exact visual intent remains uncertain (`??`) but behavior is trace-confirmed.
+;------------------------------------------------------------------------------
+GCOMMAND_BannerRowFallbackOnFirstRowFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_ActiveHighlightMsgPtr   (active highlight message node)
@@ -246,11 +324,39 @@ DATA_GCOMMAND_BSS_WORD_1FA5:
 ;------------------------------------------------------------------------------
 GCOMMAND_ActiveHighlightMsgPtr:
     DS.L    1
-DATA_GCOMMAND_CONST_LONG_1FA7:
-    DC.L    $00001760
-DATA_GCOMMAND_BSS_LONG_1FA8:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_BannerRowByteOffsetResetValue   (banner row-byte offset reset seed)
+; TYPE: u32 scalar
+; PURPOSE: Initial/reset byte offset for banner row fetches.
+; USED BY: GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState
+; NOTES:
+;   Value is $00001760 (5984 decimal), loaded whenever the 98-step banner ring wraps.
+;   Not a table; this is a single longword constant.
+;------------------------------------------------------------------------------
+GCOMMAND_BannerRowByteOffsetResetValueDefault = 5984
+GCOMMAND_BannerRowByteOffsetResetValue:
+    DC.L    GCOMMAND_BannerRowByteOffsetResetValueDefault
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_BannerPhaseIndexCurrent   (banner phase/ring index)
+; TYPE: u32 scalar
+; PURPOSE: Tracks the current phase index for banner row generation.
+; USED BY: GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, GCOMMAND_RefreshBannerTables, GCOMMAND_BuildBannerRow
+; NOTES:
+;   Increments once per highlight tick and wraps at 98 (`0..97`).
+;   Passed as the `baseRowIndex` argument into GCOMMAND_BuildBannerRow.
+;------------------------------------------------------------------------------
+GCOMMAND_BannerPhaseIndexCurrent:
     DS.L    1
-DATA_GCOMMAND_BSS_WORD_1FA9:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_HighlightHoldoffTickCount   (highlight holdoff countdown)
+; TYPE: u16 scalar (byte access in hot paths)
+; PURPOSE: Short countdown that delays status/read-mode transitions during highlight updates.
+; USED BY: GCOMMAND_ConsumeBannerQueueEntry, ESQSHARED4_TickCopperAndBannerTransitions, ESQFUNC_ProcessUiFrameTick
+; NOTES:
+;   Seeded to 2 when a banner queue control step is consumed, then decremented once per frame.
+;   Non-zero blocks ESQDISP status-indicator refresh and keeps the banner blit path in holdoff mode.
+;------------------------------------------------------------------------------
+GCOMMAND_HighlightHoldoffTickCount:
     DS.W    1
 DATA_GCOMMAND_FMT_PCT_S_COLON_1FAA:
     NStr2   "%s:",TextLineFeed
@@ -260,12 +366,39 @@ DATA_GCOMMAND_FMT_COLOR_PCT_D_PCT_D_1FAC:
     NStr3   TextLineFeed,"COLOR%d = %d",TextLineFeed
 DATA_GCOMMAND_FMT_PCT_D_PCT_03X_1FAD:
     NStr2   "   %d = %03X",TextLineFeed
-DATA_GCOMMAND_CONST_BYTE_1FAE:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE   (gradient table dump footer)
+; TYPE: cstr
+; PURPOSE: Footer text emitted after gradient/preset table debug dump output.
+; USED BY: GCOMMAND_DisableHighlight debug formatter path
+; NOTES:
+;   Begins with byte value 10 (LF), so output starts with a blank line before
+;   "TABLE = DONE".
+;------------------------------------------------------------------------------
+GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE:
     DC.B    10
     NStr3   "TABLE = DONE",TextLineFeed,TextLineFeed
-DATA_GCOMMAND_CONST_LONG_1FAF:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_BannerFadeResetPendingFlag   (banner fade reset pending)
+; TYPE: u16 gate (stored in long slot)
+; PURPOSE: One-shot startup/runtime gate that triggers GCOMMAND banner fade-state rebuild.
+; USED BY: GCOMMAND_ResetBannerFadeState
+; NOTES:
+;   Tested and immediately cleared by GCOMMAND_ResetBannerFadeState.
+;   Initialized with low word = 1 so first reset path runs once after startup.
+;------------------------------------------------------------------------------
+GCOMMAND_BannerFadeResetPendingFlag:
     DC.L    $00010000
-DATA_GCOMMAND_CONST_WORD_1FB0:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_DriveProbeRequestedFlag   (drive probe request latch)
+; TYPE: u16 (boolean)
+; PURPOSE: Requests a disk-drive probe/assignment refresh on the next UI frame tick.
+; USED BY: GCOMMAND_ProcessCtrlCommand, ESQFUNC_ProcessUiFrameTick, DISKIO_ProbeDrivesAndAssignPaths
+; NOTES:
+;   Set when ctrl command type 15 or 16 is received.
+;   Cleared inside DISKIO_ProbeDrivesAndAssignPaths after probe cycle setup.
+;------------------------------------------------------------------------------
+GCOMMAND_DriveProbeRequestedFlag:
     DC.W    $0001
 Global_STR_INPUTDEVICE:
     NStr    "inputdevice"

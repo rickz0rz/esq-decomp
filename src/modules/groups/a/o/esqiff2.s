@@ -184,14 +184,14 @@ ESQIFF2_ApplyIncomingStatusPacket:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   DATA_WDISP_BSS_WORD_2299
+;   ESQIFF_StatusPacketReadyFlag
 ; DESC:
 ;   Marks banner/status dirty flag, restores registers, and returns.
 ; NOTES:
 ;   Shared tail for all post-update state/index clamp paths.
 ;------------------------------------------------------------------------------
 ESQIFF2_ApplyIncomingStatusPacket_Return:
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_2299
+    MOVE.W  #1,ESQIFF_StatusPacketReadyFlag
     MOVEM.L (A7)+,D2/D6-D7/A3
     RTS
 
@@ -308,7 +308,7 @@ ESQIFF2_ClearLineHeadTailByMode:
 ; READS:
 ;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, ESQIFF_RecordLength
 ; WRITES:
-;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, DATA_WDISP_BSS_WORD_228F
+;   ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr, ESQIFF_SecondaryLineHeadPtr, ESQIFF_SecondaryLineTailPtr, ESQDISP_SecondaryLinePromotePendingFlag
 ; DESC:
 ;   Splits a line-head/tail record on delimiter 0x12 and updates primary or
 ;   secondary line-head/line-tail owned strings based on group code.
@@ -421,7 +421,7 @@ ESQIFF2_ParseLineHeadTailRecord:
     BSR.W   ESQIFF2_ClearLineHeadTailByMode
 
     ADDQ.W  #4,A7
-    MOVE.W  #1,DATA_WDISP_BSS_WORD_228F
+    MOVE.W  #1,ESQDISP_SecondaryLinePromotePendingFlag
     MOVEQ   #18,D0
     CMP.B   1(A3),D0
     BNE.S   .secondary_split_or_head_only

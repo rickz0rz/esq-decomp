@@ -37,11 +37,9 @@ DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
 ; TYPE: byte/long lookup tables
 ; PURPOSE: Month-length sequence and cumulative day offsets used by datetime conversion.
 ; USED BY: DATETIME_SecondsToStruct
-; NOTES: First bytes encode month lengths; later longs appear to be cumulative offsets.
+; NOTES: First bytes encode month lengths; later longs appear to be cumulative
+;        offsets from the beginning of the year for each month.
 ;------------------------------------------------------------------------------
 DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES:
-    DC.L    $1f1c1f1e,$1f1e1f1f,$1e1f1e1f
-    DS.L    1
-    DC.L    $0000001f,$0000003b,$0000005a,$00000078
-    DC.L    $00000097,$000000b5,$000000d4,$000000f3
-    DC.L    $00000111,$00000130,$0000014e
+    DC.B    31,28,31,30,31,30,31,31,30,31,30,31
+    DC.L    0,31,59,90,120,151,181,212,243,273,304,334

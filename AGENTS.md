@@ -130,6 +130,12 @@ Update inline comments, `README.md`, and tables in `src/data/` when you rename l
 - [x] Replace raw prealloc-handle node offsets in `unknown14/16/2b/31/35` with `Struct_PreallocHandleNode__*` symbols and document field/bit confidence notes (`CHECKPOINT_layout_coupling_population.md` `5.17`).
 - [x] Document confirmed `SECTION S_1` in-place string-length crash root cause (`Global_GraphicsLibraryBase_A4` stale displacement into `GRAPHICS_BltBitMapRastPort`) and mitigation options in `CHECKPOINT_layout_coupling_population.md` (`5.18`).
 - [x] Add persistent pass-coverage tracker in `CHECKPOINT_doc_coverage_matrix.md` so doc/rename sweeps do not re-process completed scopes.
-- [ ] Continue tightening unresolved `src/data/wdisp.s` state semantics outside completed option-state ranges (`220F` cluster complete; `2256`/`226D`/`226E` confidence still trace-dependent).
+- [x] Rename/document `src/data/wdisp.s` anonymous banner/interrupt globals (`2258`/`2280`/`228F`/`2290`) and propagate callsites (`TEXTDISP`/`APP2`/`CLEANUP2`/`ESQDISP`/`ESQIFF2`/`ESQFUNC`).
+- [x] Confirm and rename secondary live-clock trailing fields in `src/data/wdisp.s` (`227D`/`227F` region) to `CLOCK_CurrentDayOfYear`/`CLOCK_CurrentAmPmFlag`/`CLOCK_CurrentLeapYearFlag`, with trace-backed producer notes from `ESQ_TickClockAndFlagEvents`.
+- [x] Rename/document active `src/data/wdisp.s` ED transform/index helper symbols in the `21EF`/`21F5`/`21F6`/`21F9` cluster and propagate callsites in `ed.s`/`ed3.s`.
+- [x] Add provisional `SYM` context for unresolved ED latch blocks in `src/data/wdisp.s` (`21FE`/`21FF`/`2202`) with observed writer paths and explicit confidence notes.
+- [x] Rename/document `src/data/wdisp.s` highlight-message save slots and interleave-copy offsets (`230D`-`2312`) and propagate callsites in `gcommand3.s`/`esqshared4.s`.
+- [x] Rename/document `src/data/wdisp.s` drive/input runtime globals (`2319`/`231A`/`231E`/`231F`) and propagate callsites in `diskio.s`/`esq*.s`/`kybd.s`/`unknown40.s`.
+- [ ] Continue tightening unresolved `src/data/wdisp.s` state semantics outside completed option-state ranges (`220F` cluster complete; `226D`/`226E` currently confirmed as overflow-driven in active paths).
 - [ ] Continue NEWGRID documentation passes using `CHECKPOINT_doc_coverage_matrix.md` scope gates (`newgrid2.s` naming pass complete; `newgrid1.s` mostly complete; remaining `newgrid.s` non-message-loop functions still open).
 - [ ] Continue resolving unknown `Struct_PreallocHandleNode` flag-bit semantics (`ModeFlags`/`StateFlags`) and `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc` traces.

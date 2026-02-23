@@ -1152,7 +1152,7 @@ COI_WriteOiDataFile:
 
 .write_eof:
     PEA     1.W
-    PEA     DATA_CLOCK_CONST_BYTE_1B5E
+    PEA     CLOCK_FileEofMarkerCtrlZ
     MOVE.L  D5,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 

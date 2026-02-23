@@ -130,7 +130,7 @@ CTASKS_IFFTaskCleanup:
 ; ARGS:
 ;   (none)
 ; RET:
-;   D0: created task pointer (DATA_WDISP_BSS_LONG_21B7)
+;   D0: created task pointer (CTASKS_IffTaskProcPtr)
 ; CLOBBERS:
 ;   D0-D4/A0-A1/A6
 ; CALLS:
@@ -138,7 +138,7 @@ CTASKS_IFFTaskCleanup:
 ; READS:
 ;   CTASKS_IffTaskState, ESQIFF_AssetSourceSelect, Global_STR_IFF_TASK_1/2, Global_REF_DOS_LIBRARY_2
 ; WRITES:
-;   CTASKS_IffTaskDoneFlag, CTASKS_IffTaskState, Global_REF_LIST_IFF_TASK_PROC, DATA_WDISP_BSS_LONG_21B6, DATA_WDISP_BSS_LONG_21B7
+;   CTASKS_IffTaskDoneFlag, CTASKS_IffTaskState, Global_REF_LIST_IFF_TASK_PROC, CTASKS_IffTaskSegListBPTR, CTASKS_IffTaskProcPtr
 ; DESC:
 ;   Waits until no existing IFF task is present, sets the startup state,
 ;   allocates a List struct, installs CTASKS_IFFTaskCleanup as its entry, and spawns the IFF task process.
@@ -197,7 +197,7 @@ CTASKS_StartIffTaskProcess:
     ADDQ.L  #4,A0
     MOVE.L  A0,D0
     LSR.L   #2,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21B6
+    MOVE.L  D0,CTASKS_IffTaskSegListBPTR
     MOVE.L  D0,D3
     LEA     Global_STR_IFF_TASK_2,A0
     MOVE.L  A0,D1
@@ -206,7 +206,7 @@ CTASKS_StartIffTaskProcess:
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6    ; spawn IFF task process
     JSR     _LVOCreateProc(A6)
 
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21B7
+    MOVE.L  D0,CTASKS_IffTaskProcPtr
     MOVEM.L -16(A5),D2-D4
     UNLK    A5
     RTS
@@ -271,7 +271,7 @@ CTASKS_CloseTaskTeardown:
 ; ARGS:
 ;   (none observed)
 ; RET:
-;   D0: created task pointer (DATA_WDISP_BSS_LONG_21BA)
+;   D0: created task pointer (CTASKS_CloseTaskProcPtr)
 ; CLOBBERS:
 ;   D0-D4/D7/A0-A1/A6
 ; CALLS:
@@ -279,7 +279,7 @@ CTASKS_CloseTaskTeardown:
 ; READS:
 ;   Global_STR_CLOSE_TASK, Global_REF_DOS_LIBRARY_2
 ; WRITES:
-;   DATA_CTASKS_CONST_WORD_1B8A, DATA_CTASKS_BSS_LONG_1B8B, Global_REF_LIST_CLOSE_TASK_PROC, DATA_WDISP_BSS_LONG_21B9, DATA_WDISP_BSS_LONG_21BA
+;   DATA_CTASKS_CONST_WORD_1B8A, DATA_CTASKS_BSS_LONG_1B8B, Global_REF_LIST_CLOSE_TASK_PROC, CTASKS_CloseTaskSegListBPTR, CTASKS_CloseTaskProcPtr
 ; DESC:
 ;   Stores the target handle, allocates a List struct, installs CTASKS_CloseTaskTeardown as its entry,
 ;   and spawns the CLOSE_TASK process.
@@ -315,7 +315,7 @@ CTASKS_StartCloseTaskProcess:
     ADDQ.L  #4,A0
     MOVE.L  A0,D0
     LSR.L   #2,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21B9
+    MOVE.L  D0,CTASKS_CloseTaskSegListBPTR
     MOVE.L  D0,D3
 
     LEA     Global_STR_CLOSE_TASK,A0
@@ -325,7 +325,7 @@ CTASKS_StartCloseTaskProcess:
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOCreateProc(A6)
 
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21BA
+    MOVE.L  D0,CTASKS_CloseTaskProcPtr
     MOVEM.L (A7)+,D2-D4/D7
     RTS
 

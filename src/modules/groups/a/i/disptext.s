@@ -232,7 +232,7 @@ DISPTEXT_BuildLineWithWidth:
     CMP.W   D3,D2
     BCC.S   .set_separator_width
 
-    MOVE.L  DATA_WDISP_BSS_LONG_21DA,D2
+    MOVE.L  DISPTEXT_ControlMarkerWidthPx,D2
     BRA.S   .compute_remaining_width
 
 .set_separator_width:
@@ -630,11 +630,11 @@ DISPTEXT_SetLayoutParams:
 ; CALLS:
 ;   GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers, _LVOTextLength
 ; READS:
-;   DATA_WDISP_BSS_LONG_21DA
+;   DISPTEXT_ControlMarkerWidthPx
 ; WRITES:
-;   DATA_WDISP_BSS_LONG_21DA
+;   DISPTEXT_ControlMarkerWidthPx
 ; DESC:
-;   Computes combined text lengths for two optional markers and stores in DATA_WDISP_BSS_LONG_21DA.
+;   Computes combined text lengths for two optional markers and stores in DISPTEXT_ControlMarkerWidthPx.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
@@ -687,7 +687,7 @@ DISPTEXT_ComputeMarkerWidths:
     MOVE.L  D0,D4
     MOVE.L  D5,D0
     ADD.L   D4,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21DA
+    MOVE.L  D0,DISPTEXT_ControlMarkerWidthPx
     MOVEM.L (A7)+,D4-D7/A3
     UNLK    A5
     RTS
@@ -767,7 +767,7 @@ DISPTEXT_LayoutSourceToLines:
     CMP.W   D1,D0
     BCC.S   .maybe_subtract_markers
 
-    SUB.L   DATA_WDISP_BSS_LONG_21DA,D6
+    SUB.L   DISPTEXT_ControlMarkerWidthPx,D6
 
 .maybe_subtract_markers:
     MOVEQ   #0,D2
@@ -832,7 +832,7 @@ DISPTEXT_LayoutSourceToLines:
     CMP.W   D1,D0
     BCC.S   .after_build_line
 
-    SUB.L   DATA_WDISP_BSS_LONG_21DA,D6
+    SUB.L   DISPTEXT_ControlMarkerWidthPx,D6
 
 .after_build_line:
     MOVE.L  A2,D0
@@ -925,7 +925,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     CMP.W   D1,D0
     BCC.S   .init_scratch
 
-    SUB.L   DATA_WDISP_BSS_LONG_21DA,D7
+    SUB.L   DISPTEXT_ControlMarkerWidthPx,D7
 
 .init_scratch:
     MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A0
@@ -1033,7 +1033,7 @@ DISPTEXT_LayoutAndAppendToBuffer:
     CMP.W   D1,D0
     BCC.S   .after_append
 
-    SUB.L   DATA_WDISP_BSS_LONG_21DA,D7
+    SUB.L   DISPTEXT_ControlMarkerWidthPx,D7
 
 .after_append:
     MOVE.L  A2,D1
@@ -1553,7 +1553,7 @@ DISPTEXT_RenderCurrentLine:
     BEQ.S   .draw_plain
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B2,D0
+    MOVE.B  DISPTEXT_InsetNibbleSecondary,D0
     MOVEQ   #0,D1
     MOVE.B  DISPTEXT_InsetNibblePrimary,D1
     MOVE.L  -6(A5),-(A7)

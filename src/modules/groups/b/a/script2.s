@@ -165,16 +165,16 @@ SCRIPT_AssertCtrlLine:
 ; CALLS:
 ;   SCRIPT_AssertCtrlLine
 ; READS:
-;   DATA_WDISP_BSS_WORD_2294
+;   SCRIPT_CtrlInterfaceEnabledFlag
 ; WRITES:
 ;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord, SERDAT
 ; DESC:
 ;   Asserts the CTRL/serial output bit when the control interface is enabled.
 ; NOTES:
-;   DATA_WDISP_BSS_WORD_2294 acts as an enable gate.
+;   SCRIPT_CtrlInterfaceEnabledFlag acts as an enable gate.
 ;------------------------------------------------------------------------------
 SCRIPT_AssertCtrlLineIfEnabled:
-    TST.W   DATA_WDISP_BSS_WORD_2294
+    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .return_status
 
     BSR.S   SCRIPT_AssertCtrlLine
@@ -231,7 +231,7 @@ SCRIPT_DeassertCtrlLine:
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLine
 ; READS:
-;   DATA_WDISP_BSS_WORD_2294
+;   SCRIPT_CtrlInterfaceEnabledFlag
 ; WRITES:
 ;   SCRIPT_CtrlLineAssertedFlag, SCRIPT_SerialShadowWord (via SCRIPT_DeassertCtrlLine)
 ; DESC:
@@ -240,7 +240,7 @@ SCRIPT_DeassertCtrlLine:
 ;   SCRIPT_DeassertCtrlLine updates SCRIPT_SerialShadowWord and sends SERDAT.
 ;------------------------------------------------------------------------------
 SCRIPT_ClearCtrlLineIfEnabled:
-    TST.W   DATA_WDISP_BSS_WORD_2294
+    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .return_status
 
     BSR.S   SCRIPT_DeassertCtrlLine
@@ -309,7 +309,7 @@ SCRIPT_DeassertCtrlLineNow:
 ; CALLS:
 ;   SCRIPT_ReadHandshakeBit5Mask
 ; READS:
-;   DATA_WDISP_BSS_WORD_2294, CIAB_PRA
+;   SCRIPT_CtrlInterfaceEnabledFlag, CIAB_PRA
 ; WRITES:
 ;   SCRIPT_CtrlLineAssertedTicks, ESQIFF_ExternalAssetFlags, LADFUNC_EntryCount
 ; DESC:
@@ -321,7 +321,7 @@ SCRIPT_DeassertCtrlLineNow:
 ;   from the byte-stream parser that consumes serial payload bytes.
 ;------------------------------------------------------------------------------
 SCRIPT_PollHandshakeAndApplyTimeout:
-    TST.W   DATA_WDISP_BSS_WORD_2294
+    TST.W   SCRIPT_CtrlInterfaceEnabledFlag
     BEQ.S   .return_status
 
     BSR.W   SCRIPT_ReadHandshakeBit5Mask

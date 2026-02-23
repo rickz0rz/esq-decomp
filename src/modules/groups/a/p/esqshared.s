@@ -103,13 +103,13 @@ ESQSHARED_ParseCompactEntryRecord:
 ; CALLS:
 ;   ESQSHARED_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   ESQ_SelectCodeBuffer, DATA_ESQ_STR_A_1DEB, DATA_WDISP_BSS_LONG_2298
+;   ESQ_SelectCodeBuffer, DATA_ESQ_STR_A_1DEB, ESQPARS_SelectionSuffixBuffer
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Parses a selection token with optional '.' suffix split, wildcard-matches the
 ;   base code against ESQ_SelectCodeBuffer, and optionally matches suffix text
-;   against DATA_WDISP_BSS_LONG_2298 before returning boolean success.
+;   against ESQPARS_SelectionSuffixBuffer before returning boolean success.
 ; NOTES:
 ;   Requires fallback marker char (-9(A5)) to remain default for success.
 ;------------------------------------------------------------------------------
@@ -225,7 +225,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     BNE.S   .branch_9
 
     PEA     -30(A5)
-    PEA     DATA_WDISP_BSS_LONG_2298
+    PEA     ESQPARS_SelectionSuffixBuffer
     JSR     ESQSHARED_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -870,7 +870,7 @@ ESQSHARED_NormalizeInStereoTag_Return:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_TBL_MOVIE_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F1E
+;   AbsExecBase, Global_TBL_MOVIE_RATINGS, ESQPARS2_MovieRatingTokenGlyphMap
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -909,7 +909,7 @@ ESQSHARED_ReplaceMovieRatingToken:
     TST.L   D0
     BEQ.S   .lab_0C40
 
-    LEA     DATA_ESQPARS2_CONST_BYTE_1F1E,A0
+    LEA     ESQPARS2_MovieRatingTokenGlyphMap,A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVEA.L -4(A5),A1
@@ -972,7 +972,7 @@ ESQSHARED_ReplaceMovieRatingToken:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_TBL_TV_PROGRAM_RATINGS, DATA_ESQPARS2_CONST_BYTE_1F27
+;   AbsExecBase, Global_TBL_TV_PROGRAM_RATINGS, ESQPARS2_TvRatingTokenGlyphMap
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1011,7 +1011,7 @@ ESQSHARED_ReplaceTvRatingToken:
     TST.L   D0
     BEQ.S   .lab_0C46
 
-    LEA     DATA_ESQPARS2_CONST_BYTE_1F27,A0
+    LEA     ESQPARS2_TvRatingTokenGlyphMap,A0
     ADDA.L  D7,A0
     MOVE.B  (A0),D0
     MOVEA.L -4(A5),A1

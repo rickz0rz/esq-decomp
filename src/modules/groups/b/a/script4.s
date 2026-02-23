@@ -350,11 +350,11 @@ SCRIPT_SetupHighlightEffect:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    TST.B   DATA_CLOCK_CONST_WORD_1B5D
+    TST.B   CLOCK_AlignedInsetRenderGateFlag
     BEQ.S   .no_extra_pad
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
+    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
@@ -502,9 +502,9 @@ SCRIPT_SetupHighlightEffect:
     ADDA.L  -28(A5),A1
     CLR.B   (A1)
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B4,D0
+    MOVE.B  CLEANUP_AlignedInsetNibbleSecondary,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_WDISP_BSS_BYTE_21B3,D1
+    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
     MOVE.L  A0,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -515,7 +515,7 @@ SCRIPT_SetupHighlightEffect:
     MOVEA.L -166(A5),A0
     ADDQ.L  #1,A0
     CLR.L   -28(A5)
-    CLR.B   DATA_CLOCK_CONST_WORD_1B5D
+    CLR.B   CLOCK_AlignedInsetRenderGateFlag
     MOVE.L  A0,-170(A5)
     BRA.S   .advance_parse_ptr
 

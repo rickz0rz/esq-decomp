@@ -58,14 +58,14 @@ BATTCLOCK_WriteSecondsToBatteryBackedClock:
 ; CLOBBERS:
 ;   D0/A0-A2/A6
 ; DESC:
-;   Dispatches to _LVOexecPrivate3 using DATA_WDISP_BSS_LONG_231E as library base.
+;   Dispatches to _LVOexecPrivate3 using INPUTDEVICE_LibraryBaseFromConsoleIo as library base.
 ; NOTES:
 ;   Vector identity unknown; verify against call sites.
 ;------------------------------------------------------------------------------
 EXEC_CallVector_48:
     MOVEM.L A2/A6,-(A7)
 
-    MOVEA.L DATA_WDISP_BSS_LONG_231E,A6
+    MOVEA.L INPUTDEVICE_LibraryBaseFromConsoleIo,A6
     MOVEM.L 12(A7),A0-A1
     MOVEM.L 20(A7),D1/A2
     JSR     _LVOexecPrivate3(A6)
