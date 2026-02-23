@@ -919,11 +919,10 @@ ESQFUNC_DrawEscMenuVersion:
     JSR     _LVOSetDrMd(A6)
 
     ; Build "Build Number: '%ld%s'" string
-    MOVE.L  Global_PTR_STR_BUILD_ID,-(A7)     ; parameter 2
-    MOVE.L  Global_LONG_BUILD_NUMBER,-(A7)    ; parameter 1
+    PEA     Global_STR_GitCommitHash          ; parameter 1
     PEA     Global_STR_BUILD_NUMBER_FORMATTED ; format string
-    PEA     .versionLineBuffer(A5)          ; result string pointer
-    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)            ; call printf
+    PEA     .versionLineBuffer(A5)            ; result string pointer
+    JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC) ; call printf
 
     ; Display string at position
     PEA     .versionLineBuffer(A5)          ; string
@@ -932,7 +931,7 @@ ESQFUNC_DrawEscMenuVersion:
     MOVE.L  Global_REF_RASTPORT_1,-(A7)                  ; rastport
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    LEA     32(A7),A7
+    LEA     28(A7),A7
 
     MOVEQ   #1,D0                           ; Set D0 to 1
     CMP.L   Global_LONG_ROM_VERSION_CHECK,D0  ; And compare Global_LONG_ROM_VERSION_CHECK with it.

@@ -382,13 +382,15 @@ Global_STR_ESQ_C_11:
 ESQ_STR_NO_DF1_PRESENT:
     NStr    "no df1 present"
 Global_STR_GUIDE_START_VERSION_AND_BUILD:
-    NStr    "Ver %s.%ld Build %ld %s"
+    NStr    "Ver %s.%ld Build %s"
 Global_STR_MAJOR_MINOR_VERSION:
-    NStr    "9.0"   ; Major/minor version string
+    NStr    "10.0"   ; Major/minor version string
 ESQ_STR_38_Spaces:
     NStr    "                                       "
 Global_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
+ESQ_STR_CommunityPatchEdition:
+    NStr    "Community Patch Edition"
 ESQ_STR_SystemInitializing:
     NStr    "System Initializing"
 ESQ_STR_PleaseStandByEllipsis:
@@ -411,12 +413,8 @@ Global_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
 ESQ_TAG_GRANADA:
     NStr    "GRANADA"
-Global_LONG_BUILD_NUMBER:
-    DC.L    21
-Global_STR_BUILD_ID:
-    NStr    "JGT"   ; build id string
-Global_PTR_STR_BUILD_ID:
-    DC.L    Global_STR_BUILD_ID
+Global_STR_GitCommitHash:
+    NStr    "675c407"
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperEffectListA/ESQ_CopperEffectListB   (paired copper effect lists)
 ; TYPE: u32[]/u32[]

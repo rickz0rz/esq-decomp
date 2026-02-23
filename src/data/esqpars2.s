@@ -97,7 +97,7 @@ Global_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
     DS.W    1
 Global_LONG_PATCH_VERSION_NUMBER:
-    DC.L    $00000004 ; Patch version number
+    DC.L    0 ; Patch version number
 ;------------------------------------------------------------------------------
 ; SYM: ESQPARS2_BannerSnapshotPlane0DstPtr..ESQPARS2_BannerSnapshotPlane2DstPtrLo
 ; TYPE: pointer array storage (3 x u32 split into hi/lo words)

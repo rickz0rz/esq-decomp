@@ -40,6 +40,6 @@ DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
 ; NOTES: First bytes encode month lengths; later longs appear to be cumulative
 ;        offsets from the beginning of the year for each month in days.
 ;------------------------------------------------------------------------------
-DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES:
+DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES:    
     DC.B    31,28,31,30,31,30,31,31,30,31,30,31
     DC.L    0,31,59,90,120,151,181,212,243,273,304,334

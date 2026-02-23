@@ -1002,10 +1002,9 @@ ESQ_MainInitAndRun:
     ; With signed-32 worst-case %ld fields and current %s inputs, usage is
     ; 41 chars + NUL (headroom 38). Under current major/minor width, final
     ; build-id text above 41 chars would drop below a 16-byte safety margin.
-    MOVE.L  Global_PTR_STR_BUILD_ID,-(A7)             ; JGT
-    MOVE.L  Global_LONG_BUILD_NUMBER,-(A7)            ; 21
-    MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 4
-    PEA     Global_STR_MAJOR_MINOR_VERSION            ; 9.0
+    PEA     Global_STR_GitCommitHash                  ; Commit Hash
+    MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)    ; 0
+    PEA     Global_STR_MAJOR_MINOR_VERSION            ; 10.0
     PEA     Global_STR_GUIDE_START_VERSION_AND_BUILD
     PEA     ESQ_StartupVersionBannerBuffer
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
@@ -1048,13 +1047,20 @@ ESQ_MainInitAndRun:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
-    PEA     ESQ_STR_SystemInitializing
+    PEA     ESQ_STR_CommunityPatchEdition
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
+    PEA     ESQ_STR_SystemInitializing
+    MOVE.L  A0,-(A7)
+    JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
+
+    MOVEA.L WDISP_DisplayContextBase,A0
+    ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
+    PEA     180.W
     PEA     ESQ_STR_PleaseStandByEllipsis
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)

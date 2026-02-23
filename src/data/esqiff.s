@@ -74,7 +74,7 @@ ESQIFF_TAG_DITHER:
 ESQIFF_FMT_PCT_S_DOT_PCT_LD:
     NStr    "%s.%ld"
 Global_STR_MAJOR_MINOR_VERSION_1:
-    NStr    "9.0"   ; major/minor version
+    NStr    "10.0"   ; major/minor version
 ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA:
     NStr    "Incorrect Version! Please correct ASAP!"
 ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD:

@@ -335,7 +335,7 @@ Global_STR_OFF_AIR_1:
 SCRIPT_PtrOffAirPlaceholder:
     DC.L    Global_STR_OFF_AIR_1
 Global_STR_GRID_DATE_FORMAT_STRING:
-    NStr    "%s %s %ld %04ld"
+    NStr    "%s, %s %ld, %04ld"
 Global_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
 ;------------------------------------------------------------------------------
