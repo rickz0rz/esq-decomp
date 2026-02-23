@@ -202,7 +202,7 @@ CLEANUP_UpdateEntryFlagBytes:
 ;   GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, CLEANUP_TestEntryFlagYAndBit1, COI_GetAnimFieldPointerByMode,
 ;   GROUP_AE_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, WDISP_CharClassTable, DATA_TEXTDISP_CONST_BYTE_2157
+;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, WDISP_CharClassTable, TEXTDISP_CenterAlignToken
 ; WRITES:
 ;   CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
@@ -272,7 +272,7 @@ CLEANUP_BuildAlignedStatusLine:
     TST.L   28(A5)
     BEQ.S   .append_default_prefix
 
-    PEA     DATA_TEXTDISP_CONST_BYTE_2157
+    PEA     TEXTDISP_CenterAlignToken
     MOVE.L  A3,-(A7)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -630,7 +630,7 @@ CLEANUP_DrawInsetRectFrame:
 ; CALLS:
 ;   GROUP_AI_JMPTBL_STR_FindCharPtr, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   CLOCK_STR_TOKEN_PAIR_DEFAULTS, DATA_CLOCK_BSS_WORD_1B66, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, WDISP_CharClassTable
+;   CLOCK_STR_TOKEN_PAIR_DEFAULTS, CLEANUP_TokenPairScratch, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, WDISP_CharClassTable
 ; WRITES:
 ;   outPtr1/outPtr2 contents
 ; DESC:
@@ -666,7 +666,7 @@ CLEANUP_FormatEntryStringTokens:
     MOVE.L  (A0)+,(A1)+
     MOVE.W  (A0),(A1)+
     CLR.B   (A1)
-    LEA     DATA_CLOCK_BSS_WORD_1B66,A0
+    LEA     CLEANUP_TokenPairScratch,A0
     LEA     -11(A5),A1
 
 .copy_prefix_loop:
@@ -920,10 +920,10 @@ CLEANUP_FormatEntryStringTokens:
 ;   COI_CountEscape14BeforeNull, GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap, ESQ_WildcardMatch, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString,
 ;   CLEANUP_FormatEntryStringTokens, COI_AllocSubEntryTable, COI_ClearAnimObjectStrings, COI_FreeSubEntryTableEntries
 ; READS:
-;   TEXTDISP_SecondaryGroupCode-TEXTDISP_SecondaryEntryPtrTable, ESQIFF_RecordLength, DATA_CTASKS_BSS_BYTE_1B8F-DATA_CTASKS_BSS_BYTE_1B92,
-;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED
+;   TEXTDISP_SecondaryGroupCode-TEXTDISP_SecondaryEntryPtrTable, ESQIFF_RecordLength, CTASKS_PrimaryOiWritePendingFlag-CTASKS_PendingSecondaryOiDiskId,
+;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, SCRIPT_StrChannelLabel_TuesdaysFridays
 ; WRITES:
-;   DATA_CTASKS_BSS_BYTE_1B8F-DATA_CTASKS_BSS_BYTE_1B92
+;   CTASKS_PrimaryOiWritePendingFlag-CTASKS_PendingSecondaryOiDiskId
 ; DESC:
 ;   Parses an aligned listing block from dataPtr, selecting candidate entries,
 ;   building entry structs, and allocating subentry tables.
@@ -994,9 +994,9 @@ CLEANUP_ParseAlignedListingBlock:
     BNE.S   .check_service_type_b
 
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D5
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B92
+    MOVE.B  D0,CTASKS_PendingSecondaryOiDiskId
     MOVEQ   #1,D1
-    MOVE.B  D1,DATA_CTASKS_BSS_BYTE_1B90
+    MOVE.B  D1,CTASKS_SecondaryOiWritePendingFlag
     BRA.S   .skip_separator
 
 .check_service_type_b:
@@ -1005,8 +1005,8 @@ CLEANUP_ParseAlignedListingBlock:
     BNE.S   .invalid_service_type
 
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D5
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B91
-    MOVE.B  #$1,DATA_CTASKS_BSS_BYTE_1B8F
+    MOVE.B  D0,CTASKS_PendingPrimaryOiDiskId
+    MOVE.B  #$1,CTASKS_PrimaryOiWritePendingFlag
     BRA.S   .skip_separator
 
 .invalid_service_type:

@@ -592,9 +592,9 @@ ESQPARS_ApplyRtcBytesAndPersist:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQPARS_JMPTBL_DST_HandleBannerCommand32_33, ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte, ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer, ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle, ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer, ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord, ESQPARS_JMPTBL_PARSEINI_HandleFontCommand, ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte, ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal, ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList, ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQ_PollCtrlInput, GCOMMAND_ParseCommandOptions, GCOMMAND_ParseCommandString, GCOMMAND_ParsePPVCommand, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQDISP_UpdateStatusMaskAndRefresh, ESQDISP_ParseProgramInfoCommandRecord, ESQDISP_GetEntryPointerByMode, ESQDISP_GetEntryAuxPointerByMode, ESQFUNC_WaitForClockChangeAndServiceUi, ESQIFF2_ApplyIncomingStatusPacket, ESQIFF2_ParseLineHeadTailRecord, ESQIFF2_ParseGroupRecordAndRefresh, ESQIFF2_ReadRbfBytesToBuffer, ESQIFF2_ReadRbfBytesWithXor, ESQIFF2_ReadSerialRecordIntoBuffer, ESQIFF2_ReadSerialSizedTextRecord, ESQIFF2_ShowVersionMismatchOverlay, ESQIFF2_ClearPrimaryEntryFlags34To39, ESQPARS_ReplaceOwnedString, ESQPARS_ApplyRtcBytesAndPersist, ESQPARS_ReadLengthWordWithChecksumXor, ESQPARS_PersistStateDataAfterCommand, ESQSHARED_ParseCompactEntryRecord, ESQSHARED_MatchSelectionCodeWithOptionalSuffix, LOCAVAIL_ParseFilterStateFromBuffer, LADFUNC_ParseBannerEntryData
 ; READS:
-;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, Global_STR_23, Global_STR_RESET_COMMAND_RECEIVED, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_BSS_WORD_1DF6, DISKIO2_InteractiveTransferArmedFlag, ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
+;   CTRL_BUFFER, CTRL_H, DATACErrs, Global_REF_696_400_BITMAP, Global_REF_RASTPORT_1, ESQPARS_BannerSubcommandSet, Global_STR_RESET_COMMAND_RECEIVED, CTASKS_STR_1, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, ESQPARS_SelectionSuffixBuffer, ESQIFF_StatusPacketReadyFlag, ESQPARS_SelectionMatchCode, ED_DiagnosticsViewMode, ESQIFF_RecordBufferPtr, ESQIFF_RecordChecksumByte, ESQIFF_RecordLength, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_ResetArmedFlag, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_STATE, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
-;   DATACErrs, DATA_ESQ_BSS_WORD_1DF6, DISKIO2_InteractiveTransferArmedFlag, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_SelectionMatchCode, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
+;   DATACErrs, ESQPARS_PersistOnNextBoxOffFlag, DISKIO2_InteractiveTransferArmedFlag, ESQIFF_RecordLength, ESQIFF_RecordChecksumByte, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, ESQPARS_Preamble55SeenFlag, ESQPARS_CommandPreambleArmedFlag, ESQPARS_SelectionMatchCode, ESQPARS_ResetArmedFlag, ESQ_GlobalTickCounter
 ; DESC:
 ;   Consumes one RBF byte, advances preamble state, and when armed dispatches
 ;   command handlers for listing, status, config, banner/filter, and control paths.
@@ -1698,13 +1698,13 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.L   D0,D1
     BNE.S   .cmd_boxoff_checksum_error
 
-    TST.W   DATA_ESQ_BSS_WORD_1DF6
+    TST.W   ESQPARS_PersistOnNextBoxOffFlag
     BEQ.S   .cmd_boxoff_apply
 
     BSR.W   ESQPARS_PersistStateDataAfterCommand
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
+    MOVE.W  D0,ESQPARS_PersistOnNextBoxOffFlag
 
 .cmd_boxoff_apply:
     CLR.W   ESQPARS_SelectionMatchCode
@@ -1939,7 +1939,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVE.L  D3,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     LAB_CTRLHTCMAX
+    PEA     WDISP_FMT_CTRLH_STATUS_MAX
     PEA     -72(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
     PEA     -72(A5)
@@ -2069,7 +2069,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     CMP.B   D1,D0
     BCC.S   .command_K_Increment_Data_CErrs
 
-    MOVE.B  DATA_CTASKS_STR_1_1BC9,D0
+    MOVE.B  CTASKS_STR_1,D0
     MOVEQ   #50,D1
     CMP.B   D1,D0
     BNE.S   .command_K_Increment_Data_CErrs
@@ -2264,7 +2264,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     BNE.S   .cmd_percent_checksum_error
 
     MOVEQ   #1,D0
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF6
+    MOVE.W  D0,ESQPARS_PersistOnNextBoxOffFlag
     BRA.S   .cmd_percent_finish
 
 .cmd_percent_checksum_error:
@@ -2715,7 +2715,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
-    PEA     Global_STR_23
+    PEA     ESQPARS_BannerSubcommandSet
     ; strchr-style membership test: command byte must be in "23".
     JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 

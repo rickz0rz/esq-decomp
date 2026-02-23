@@ -28,15 +28,15 @@
 ;   GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion, GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen,
 ;   _LVOSetAPen, GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
-;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, DATA_ESQ_BSS_BYTE_1DEF, Global_UIBusyFlag,
+;   CLEANUP_PendingAlertFlag, CLEANUP_AlertProcessingFlag, CLEANUP_DiagOverlayAutoRefreshFlag, Global_UIBusyFlag,
 ;   CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep, LOCAVAIL_FilterCooldownTicks, CLOCK_DaySlotIndex, CLOCK_CurrentDayOfWeekIndex,
 ;   TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown, CLEANUP_BannerTickCounter,
-;   DATA_TLIBA1_BSS_WORD_2196, DST_BannerWindowPrimary, DATA_ESQ_STR_N_1DD5, DATA_ESQ_STR_N_1DD4, ED_MenuStateId, CLOCK_HalfHourSlotIndex,
+;   TLIBA1_DayEntryModeCounter, DST_BannerWindowPrimary, ESQ_AlertType235ModeFlagChar, ESQ_AlertType4ModeFlagChar, ED_MenuStateId, CLOCK_HalfHourSlotIndex,
 ;   Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   CLEANUP_AlertProcessingFlag, CLEANUP_AlertCooldownTicks, LOCAVAIL_FilterStep,
 ;   LOCAVAIL_FilterCooldownTicks, CLEANUP_PendingAlertFlag, TEXTDISP_DeferredActionDelayTicks, BRUSH_PendingAlertCode, WDISP_WeatherStatusCountdown,
-;   CLEANUP_BannerTickCounter, DATA_TLIBA1_BSS_WORD_2196, DATA_ESQDISP_CONST_WORD_1E85, DATA_COMMON_BSS_LONG_1B08,
+;   CLEANUP_BannerTickCounter, TLIBA1_DayEntryModeCounter, ESQDISP_StatusBannerClampGateFlag, BANNER_ResetPendingFlag,
 ;   WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd
 ; DESC:
 ;   Processes pending alert state, advances the alert/badge state machine,
@@ -56,7 +56,7 @@ CLEANUP_ProcessAlerts:
 
     MOVEQ   #1,D0
     MOVE.L  D0,CLEANUP_AlertProcessingFlag
-    TST.B   DATA_ESQ_BSS_BYTE_1DEF
+    TST.B   CLEANUP_DiagOverlayAutoRefreshFlag
     BEQ.S   .update_alert_state
 
     TST.W   Global_UIBusyFlag
@@ -178,12 +178,12 @@ CLEANUP_ProcessAlerts:
 
     MOVEQ   #60,D0
     MOVE.L  D0,CLEANUP_BannerTickCounter
-    MOVE.B  DATA_TLIBA1_BSS_WORD_2196,D0
+    MOVE.B  TLIBA1_DayEntryModeCounter,D0
     CMP.B   D1,D0
     BLS.S   .poll_banner_event
 
     SUBQ.B  #1,D0
-    MOVE.B  D0,DATA_TLIBA1_BSS_WORD_2196
+    MOVE.B  D0,TLIBA1_DayEntryModeCounter
 
 .poll_banner_event:
     PEA     DST_BannerWindowPrimary
@@ -199,7 +199,7 @@ CLEANUP_ProcessAlerts:
     ADDQ.W  #4,A7
 
 .after_banner_poll:
-    MOVE.B  DATA_ESQ_STR_N_1DD5,D0
+    MOVE.B  ESQ_AlertType235ModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .handle_alert_type2
@@ -208,15 +208,15 @@ CLEANUP_ProcessAlerts:
     CMP.L   D0,D7
     BNE.S   .handle_alert_type2
 
-    CLR.W   DATA_ESQDISP_CONST_WORD_1E85
+    CLR.W   ESQDISP_StatusBannerClampGateFlag
     CLR.L   -(A7)
     JSR     GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  #1,DATA_ESQDISP_CONST_WORD_1E85
+    MOVE.W  #1,ESQDISP_StatusBannerClampGateFlag
 
 .handle_alert_type2:
-    MOVE.B  DATA_ESQ_STR_N_1DD5,D0
+    MOVE.B  ESQ_AlertType235ModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .check_alert_type5_or_type2
@@ -244,7 +244,7 @@ CLEANUP_ProcessAlerts:
     ADDQ.W  #4,A7
 
 .init_alert_counters:
-    MOVE.B  DATA_ESQ_STR_N_1DD5,D0
+    MOVE.B  ESQ_AlertType235ModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .advance_alert_counters
@@ -254,7 +254,7 @@ CLEANUP_ProcessAlerts:
     BNE.S   .advance_alert_counters
 
     MOVEQ   #1,D0
-    MOVE.W  D0,DATA_COMMON_BSS_LONG_1B08
+    MOVE.W  D0,BANNER_ResetPendingFlag
     MOVE.W  CLOCK_HalfHourSlotIndex,D1
     ADDQ.W  #1,D1
     EXT.L   D1
@@ -276,7 +276,7 @@ CLEANUP_ProcessAlerts:
     MOVE.W  D0,WDISP_BannerCharRangeEnd
 
 .advance_alert_counters:
-    MOVE.B  DATA_ESQ_STR_N_1DD4,D0
+    MOVE.B  ESQ_AlertType4ModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .draw_banner
@@ -392,7 +392,7 @@ CLEANUP_ProcessAlerts:
 ;   Global_UIBusyFlag, Global_REF_STR_USE_24_HR_CLOCK, Global_WORD_CURRENT_HOUR,
 ;   CLOCK_CurrentAmPmFlag, Global_WORD_CURRENT_MINUTE, Global_WORD_CURRENT_SECOND,
 ;   Global_STR_EXTRA_TIME_FORMAT, Global_STR_GRID_TIME_FORMAT,
-;   Global_REF_GRID_RASTPORT_MAYBE_1, NEWGRID_ColumnStartXPx, Global_REF_GRAPHICS_LIBRARY
+;   NEWGRID_MainRastPortPtr, NEWGRID_ColumnStartXPx, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   Stack buffer at -10(A5)
 ; DESC:
@@ -451,19 +451,19 @@ CLEANUP_DrawClockBanner:
     LEA     20(A7),A7
 
 .draw_banner:
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D0
     MOVE.L  D0,D1
     MOVEQ   #35,D2
     MOVEQ   #33,D3
     JSR     _LVORectFill(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
     JSR     _LVOSetAPen(A6)
 
@@ -471,7 +471,7 @@ CLEANUP_DrawClockBanner:
     MOVE.W  NEWGRID_ColumnStartXPx,D0
     ADD.L   D2,D0
     MOVE.L  D0,D2
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #36,D0
     MOVEQ   #0,D1
     JSR     _LVORectFill(A6)
@@ -485,10 +485,10 @@ CLEANUP_DrawClockBanner:
     MOVEQ   #0,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D1,-(A7)
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
     JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
     MOVE.W  26(A0),D0
@@ -509,7 +509,7 @@ CLEANUP_DrawClockBanner:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
@@ -524,7 +524,7 @@ CLEANUP_DrawClockBanner:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     JSR     _LVOText(A6)
 
     MOVEQ   #0,D0
@@ -538,10 +538,10 @@ CLEANUP_DrawClockBanner:
     MOVE.L  D1,-(A7)
     MOVEQ   #0,D2
     MOVE.L  D2,-(A7)
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A0
+    MOVEA.L NEWGRID_MainRastPortPtr,A0
     MOVE.L  4(A0),-(A7)
     JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 
@@ -650,7 +650,7 @@ CLEANUP_FormatClockFormatEntry:
 ;   GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds, _LVOSetAPen, _LVORectFill, GROUP_AG_JMPTBL_MATH_Mulu32, BEVEL_DrawBevelFrameWithTopRight,
 ;   CLEANUP_FormatClockFormatEntry, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
-;   NEWGRID_ColumnStartXPx, NEWGRID_ColumnWidthPx, Global_REF_GRID_RASTPORT_MAYBE_1, Global_REF_GRAPHICS_LIBRARY
+;   NEWGRID_ColumnStartXPx, NEWGRID_ColumnWidthPx, NEWGRID_MainRastPortPtr, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   Stack text buffer at -89(A5)
 ; DESC:
@@ -672,7 +672,7 @@ CLEANUP_DrawClockFormatList:
 
     LEA     16(A7),A7
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
@@ -682,7 +682,7 @@ CLEANUP_DrawClockFormatList:
     MOVEQ   #36,D1
 
     ADD.L   D1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D1
     MOVE.L  #695,D2
     MOVEQ   #33,D3
@@ -743,7 +743,7 @@ CLEANUP_DrawClockFormatList:
     MOVE.L  D1,-(A7)
     CLR.L   -(A7)
     MOVE.L  32(A7),-(A7)
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
     JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
 
     PEA     -89(A5)
@@ -775,7 +775,7 @@ CLEANUP_DrawClockFormatList:
     MOVE.L  D0,24(A7)
     MOVE.L  D1,20(A7)
     MOVE.L  A1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
@@ -793,7 +793,7 @@ CLEANUP_DrawClockFormatList:
     ADD.L   D1,D0
     MOVEQ   #42,D1
     ADD.L   D1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -813,7 +813,7 @@ CLEANUP_DrawClockFormatList:
     MOVE.L  D2,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
 
@@ -827,7 +827,7 @@ CLEANUP_DrawClockFormatList:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     JSR     _LVOText(A6)
 
     ADDQ.L  #1,D6
@@ -866,7 +866,7 @@ CLEANUP_DrawClockFormatList:
     PEA     695.W
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
     JSR     BEVEL_DrawBevelFrameWithTopRight(PC)
 
     PEA     -89(A5)
@@ -897,7 +897,7 @@ CLEANUP_DrawClockFormatList:
     MOVE.L  D0,52(A7)
     MOVE.L  D1,48(A7)
     MOVE.L  A1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
@@ -915,7 +915,7 @@ CLEANUP_DrawClockFormatList:
     ADD.L   D1,D0
     MOVEQ   #42,D1
     ADD.L   D1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D1
     MOVE.W  26(A0),D1
@@ -935,7 +935,7 @@ CLEANUP_DrawClockFormatList:
     MOVE.L  D2,D1
     JSR     _LVOMove(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
 
@@ -949,7 +949,7 @@ CLEANUP_DrawClockFormatList:
     SUBQ.L  #1,A1
     SUBA.L  A0,A1
     MOVE.L  A1,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     JSR     _LVOText(A6)
 
     MOVEM.L -120(A5),D2-D3/D5-D7
@@ -969,7 +969,7 @@ CLEANUP_DrawClockFormatList:
 ; CALLS:
 ;   GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
 ; READS:
-;   NEWGRID_ColumnStartXPx, Global_REF_GRID_RASTPORT_MAYBE_1
+;   NEWGRID_ColumnStartXPx, NEWGRID_MainRastPortPtr
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -997,10 +997,10 @@ CLEANUP_DrawClockFormatFrame:
     MOVE.L  D0,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  D3,-(A7)
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
     CLR.L   -(A7)
     MOVE.L  D1,-(A7)
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A0
+    MOVEA.L NEWGRID_MainRastPortPtr,A0
     MOVE.L  4(A0),-(A7)
     JSR     GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(PC)
 

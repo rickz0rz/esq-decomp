@@ -47,20 +47,20 @@
 ;   _LVOSetDrMd, _LVOSetFont, NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   DATA_LOCAVAIL_BSS_WORD_1FFE, Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
+;   NEWGRID_GridResourcesInitializedFlag, Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
 ; WRITES:
-;   DATA_LOCAVAIL_BSS_WORD_1FFE, Global_REF_GRID_RASTPORT_MAYBE_1/2, NEWGRID_RowHeightPx-232B
+;   NEWGRID_GridResourcesInitializedFlag, NEWGRID_MainRastPortPtr/2, NEWGRID_RowHeightPx-232B
 ; DESC:
 ;   Allocates two RastPorts, attaches bitmaps/fonts, and computes layout metrics
 ;   for the grid header/banner area.
 ; NOTES:
-;   Early-outs if already initialized (DATA_LOCAVAIL_BSS_WORD_1FFE != 0) or allocation fails.
+;   Early-outs if already initialized (NEWGRID_GridResourcesInitializedFlag != 0) or allocation fails.
 ;------------------------------------------------------------------------------
 NEWGRID_InitGridResources:
-    TST.W   DATA_LOCAVAIL_BSS_WORD_1FFE
+    TST.W   NEWGRID_GridResourcesInitializedFlag
     BNE.W   .return_init_status
 
-    MOVE.W  #1,DATA_LOCAVAIL_BSS_WORD_1FFE
+    MOVE.W  #1,NEWGRID_GridResourcesInitializedFlag
     JSR     NEWGRID2_EnsureBuffersAllocated(PC)
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
@@ -74,7 +74,7 @@ NEWGRID_InitGridResources:
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,Global_REF_GRID_RASTPORT_MAYBE_1
+    MOVE.L  D0,NEWGRID_MainRastPortPtr
     TST.L   D0
     BEQ.W   .return_init_status
 
@@ -82,14 +82,14 @@ NEWGRID_InitGridResources:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A0
+    MOVEA.L NEWGRID_MainRastPortPtr,A0
     MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
@@ -100,7 +100,7 @@ NEWGRID_InitGridResources:
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,Global_REF_GRID_RASTPORT_MAYBE_2
+    MOVE.L  D0,NEWGRID_HeaderRastPortPtr
     TST.L   D0
     BEQ.W   .return_init_status
 
@@ -108,21 +108,21 @@ NEWGRID_InitGridResources:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A0
+    MOVEA.L NEWGRID_HeaderRastPortPtr,A0
     MOVE.L  #WDISP_BannerGridBitmapStruct,4(A0)
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
     BSR.W   NEWGRID_DrawTopBorderLine
 
     MOVEQ   #8,D0
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     LEA     Global_STR_44_44_44,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
@@ -138,7 +138,7 @@ NEWGRID_InitGridResources:
     JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,NEWGRID_ColumnWidthPx
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L 52(A1),A0
     MOVEQ   #0,D0
     MOVE.W  20(A0),D0
@@ -178,20 +178,20 @@ NEWGRID_InitGridResources:
 ; CALLS:
 ;   NEWGRID_JMPTBL_MEMORY_DeallocateMemory, NEWGRID2_FreeBuffersIfAllocated, NEWGRID_JMPTBL_DISPTEXT_FreeBuffers, NEWGRID_ResetShowtimeBuckets
 ; READS:
-;   Global_REF_GRID_RASTPORT_MAYBE_1
+;   NEWGRID_MainRastPortPtr
 ; WRITES:
-;   Global_REF_GRID_RASTPORT_MAYBE_1, DATA_LOCAVAIL_BSS_WORD_1FFE
+;   NEWGRID_MainRastPortPtr, NEWGRID_GridResourcesInitializedFlag
 ; DESC:
 ;   Frees the grid rastport allocation and resets grid state flags.
 ; NOTES:
-;   Always clears DATA_LOCAVAIL_BSS_WORD_1FFE and triggers dependent cleanup routines.
+;   Always clears NEWGRID_GridResourcesInitializedFlag and triggers dependent cleanup routines.
 ;------------------------------------------------------------------------------
 NEWGRID_ShutdownGridResources:
-    TST.L   Global_REF_GRID_RASTPORT_MAYBE_1
+    TST.L   NEWGRID_MainRastPortPtr
     BEQ.S   .skip_free
 
     PEA     100.W
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_1,-(A7)
+    MOVE.L  NEWGRID_MainRastPortPtr,-(A7)
     PEA     148.W
     PEA     Global_STR_NEWGRID_C_3
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
@@ -203,7 +203,7 @@ NEWGRID_ShutdownGridResources:
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_FreeBuffers(PC)
 
-    CLR.W   DATA_LOCAVAIL_BSS_WORD_1FFE
+    CLR.W   NEWGRID_GridResourcesInitializedFlag
     JSR     NEWGRID_ResetShowtimeBuckets(PC)
 
     RTS
@@ -243,13 +243,13 @@ NEWGRID_ClearHighlightArea:
     TST.L   NEWGRID_RefreshStateFlag
     BNE.S   .return
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,68 to 695,267
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D0
     MOVEQ   #68,D1
     MOVE.L  #695,D2
@@ -331,10 +331,10 @@ NEWGRID_IsGridReadyForInput:
 ; CALLS:
 ;   NEWGRID_IsGridReadyForInput (NEWGRID_IsGridReadyForInput)
 ; READS:
-;   DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_CONST_LONG_1BBE, DATA_NEWGRID_BSS_LONG_2003-200A, DATA_CTASKS_BSS_BYTE_1BA4/1BA5/1BAD,
+;   CONFIG_ModeCycleEnabledFlag, CONFIG_ModeCycleGateDuration, NEWGRID_ModeCycleCountdown-200A, CONFIG_NicheModeCycleBudget_Y/1BA5/1BAD,
 ;   GCOMMAND_NicheModeCycleCount/GCOMMAND_NicheForceMode5Flag/GCOMMAND_MplexModeCycleCount, GCOMMAND_PpvModeCycleCount, TEXTDISP_PrimaryGroupPresentFlag/2231/222E/222F
 ; WRITES:
-;   DATA_NEWGRID_BSS_LONG_2003-200A
+;   NEWGRID_ModeCycleCountdown-200A
 ; DESC:
 ;   Cycles through candidate grid modes based on current day/state and
 ;   gating flags, returning the next valid mode.
@@ -345,32 +345,32 @@ NEWGRID_SelectNextMode:
     LINK.W  A5,#-40
     MOVEM.L D5-D7,-(A7)
     MOVEQ   #0,D5
-    LEA     DATA_NEWGRID_CONST_LONG_200B,A0
+    LEA     NEWGRID_ModeSelectionTable,A0
     LEA     -38(A5),A1
     MOVEQ   #6,D0
 
 .copy_mode_table:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.copy_mode_table
-    MOVE.B  DATA_CTASKS_STR_Y_1BB7,D0
+    MOVE.B  CONFIG_ModeCycleEnabledFlag,D0
     MOVEQ   #'Y',D1
     CMP.B   D1,D0
     BNE.S   .evaluate_next_candidate
 
-    MOVE.L  DATA_CTASKS_CONST_LONG_1BBE,D0
+    MOVE.L  CONFIG_ModeCycleGateDuration,D0
     TST.L   D0
     BLE.S   .force_select_current
 
-    MOVE.L  DATA_NEWGRID_BSS_LONG_2003,D1
+    MOVE.L  NEWGRID_ModeCycleCountdown,D1
     TST.L   D1
     BGT.S   .decrement_cycle_counter
 
-    MOVE.L  DATA_NEWGRID_BSS_LONG_200A,D7
-    MOVE.L  D0,DATA_NEWGRID_BSS_LONG_2003
+    MOVE.L  NEWGRID_ModeCandidateIndex,D7
+    MOVE.L  D0,NEWGRID_ModeCycleCountdown
     BRA.S   .evaluate_next_candidate
 
 .decrement_cycle_counter:
-    SUBQ.L  #1,DATA_NEWGRID_BSS_LONG_2003
+    SUBQ.L  #1,NEWGRID_ModeCycleCountdown
     MOVEQ   #12,D6
     MOVEQ   #1,D5
     BRA.S   .evaluate_next_candidate
@@ -383,7 +383,7 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BNE.W   .return_selected_mode
 
-    MOVE.L  DATA_NEWGRID_BSS_LONG_200A,D0
+    MOVE.L  NEWGRID_ModeCandidateIndex,D0
     ASL.L   #2,D0
     MOVE.L  -38(A5,D0.L),D6
     MOVEQ   #12,D0
@@ -391,14 +391,14 @@ NEWGRID_SelectNextMode:
     BNE.S   .advance_slot_index
 
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_NEWGRID_BSS_LONG_200A
+    MOVE.L  D0,NEWGRID_ModeCandidateIndex
     BRA.S   .dispatch_mode_family
 
 .advance_slot_index:
-    ADDQ.L  #1,DATA_NEWGRID_BSS_LONG_200A
+    ADDQ.L  #1,NEWGRID_ModeCandidateIndex
 
 .dispatch_mode_family:
-    MOVE.B  DATA_CTASKS_STR_Y_1BB7,D0
+    MOVE.B  CONFIG_ModeCycleEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.W   .dispatch_non_y_mode_group2
@@ -426,7 +426,7 @@ NEWGRID_SelectNextMode:
     DC.W    .validate_cycle_gate-.switch_group1_jumptable-2
 
 .case_group1_1:
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BA4,D0
+    MOVE.B  CONFIG_NicheModeCycleBudget_Y,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
@@ -435,7 +435,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_2:
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA5,D0
+    MOVE.B  CONFIG_NicheModeCycleBudget_Static,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
@@ -444,7 +444,7 @@ NEWGRID_SelectNextMode:
     BRA.S   .validate_cycle_gate
 
 .case_group1_3:
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BAD,D0
+    MOVE.B  CONFIG_NicheModeCycleBudget_Custom,D0
     SNE     D1
     NEG.B   D1
     EXT.W   D1
@@ -482,7 +482,7 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BNE.W   .evaluate_next_candidate
 
-    MOVE.L  DATA_NEWGRID_BSS_LONG_200A,D0
+    MOVE.L  NEWGRID_ModeCandidateIndex,D0
     CMP.L   D7,D0
     BNE.W   .evaluate_next_candidate
 
@@ -514,11 +514,11 @@ NEWGRID_SelectNextMode:
     DC.W    .case_group2_7-.switch_group2_jumptable-2
 
 .case_group2_1:
-    MOVE.B  (DATA_CTASKS_BSS_BYTE_1BA4).L,D0
+    MOVE.B  (CONFIG_NicheModeCycleBudget_Y).L,D0
     TST.B   D0
     BLE.S   .case_group2_1_gate_false
 
-    SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2005
+    SUBQ.B  #1,NEWGRID_NicheModeCycleBudget_Y
     BGT.S   .case_group2_1_gate_false
 
     MOVEQ   #1,D1
@@ -532,15 +532,15 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BEQ.W   .evaluate_next_candidate
 
-    MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2005
+    MOVE.B  D0,NEWGRID_NicheModeCycleBudget_Y
     BRA.W   .evaluate_next_candidate
 
 .case_group2_2:
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA5,D0
+    MOVE.B  CONFIG_NicheModeCycleBudget_Static,D0
     TST.B   D0
     BLE.S   .case_group2_2_gate_false
 
-    SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2004
+    SUBQ.B  #1,NEWGRID_NicheModeCycleBudget_Static
     BGT.S   .case_group2_2_gate_false
 
     MOVEQ   #1,D1
@@ -554,15 +554,15 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BEQ.W   .evaluate_next_candidate
 
-    MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2004
+    MOVE.B  D0,NEWGRID_NicheModeCycleBudget_Static
     BRA.W   .evaluate_next_candidate
 
 .case_group2_3:
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BAD,D0
+    MOVE.B  CONFIG_NicheModeCycleBudget_Custom,D0
     TST.B   D0
     BLE.S   .case_group2_3_gate_false
 
-    SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2006
+    SUBQ.B  #1,NEWGRID_NicheModeCycleBudget_Custom
     BGT.S   .case_group2_3_gate_false
 
     MOVEQ   #1,D1
@@ -576,7 +576,7 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BEQ.W   .evaluate_next_candidate
 
-    MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2006
+    MOVE.B  D0,NEWGRID_NicheModeCycleBudget_Custom
     BRA.W   .evaluate_next_candidate
 
 .case_group2_0:
@@ -584,7 +584,7 @@ NEWGRID_SelectNextMode:
     TST.L   D0
     BLE.S   .case_group2_0_gate_false
 
-    SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2007
+    SUBQ.B  #1,NEWGRID_NicheModeCycleBudget_Global
     BGT.S   .case_group2_0_gate_false
 
     MOVEQ   #1,D1
@@ -598,7 +598,7 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BEQ.W   .evaluate_next_candidate
 
-    MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2007
+    MOVE.B  D0,NEWGRID_NicheModeCycleBudget_Global
     BRA.W   .evaluate_next_candidate
 
 .case_group2_4:
@@ -606,7 +606,7 @@ NEWGRID_SelectNextMode:
     TST.L   D0
     BLE.S   .case_group2_4_gate_false
 
-    SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2008
+    SUBQ.B  #1,NEWGRID_MplexModeCycleBudget
     BGT.S   .case_group2_4_gate_false
 
     MOVEQ   #1,D1
@@ -620,7 +620,7 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BEQ.W   .evaluate_next_candidate
 
-    MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2008
+    MOVE.B  D0,NEWGRID_MplexModeCycleBudget
     BRA.W   .evaluate_next_candidate
 
 .case_group2_5:
@@ -628,7 +628,7 @@ NEWGRID_SelectNextMode:
     TST.L   D0
     BLE.S   .case_group2_5_gate_false
 
-    SUBQ.B  #1,DATA_NEWGRID_BSS_BYTE_2009
+    SUBQ.B  #1,NEWGRID_PpvModeCycleBudget
     BGT.S   .case_group2_5_gate_false
 
     MOVEQ   #1,D1
@@ -642,7 +642,7 @@ NEWGRID_SelectNextMode:
     TST.W   D5
     BEQ.W   .evaluate_next_candidate
 
-    MOVE.B  D0,DATA_NEWGRID_BSS_BYTE_2009
+    MOVE.B  D0,NEWGRID_PpvModeCycleBudget
     BRA.W   .evaluate_next_candidate
 
 .case_group2_7:
@@ -1269,7 +1269,7 @@ NEWGRID_DrawAwaitingListingsMessage:
 ; CALLS:
 ;   NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
 ; READS:
-;   DATA_CTASKS_STR_Y_1BB7, DATA_NEWGRID_BSS_LONG_2003
+;   CONFIG_ModeCycleEnabledFlag, NEWGRID_ModeCycleCountdown
 ; WRITES:
 ;   none
 ; DESC:
@@ -1527,7 +1527,7 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 ; CALLS:
 ;   _LVOSetAPen, _LVORectFill
 ; READS:
-;   Global_REF_GRID_RASTPORT_MAYBE_2
+;   NEWGRID_HeaderRastPortPtr
 ; WRITES:
 ;   none
 ; DESC:
@@ -1538,13 +1538,13 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
 NEWGRID_DrawTopBorderLine:
     MOVEM.L D2-D3,-(A7)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #7,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,0 to 695,1
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #0,D0               ; x.min = 0
     MOVE.L  D0,D1               ; y.min = 0
     MOVE.L  #695,D2             ; x.max = 695
@@ -1633,7 +1633,7 @@ NEWGRID_FillGridRects:
 ; CALLS:
 ;   NEWGRID_FillGridRects (NEWGRID_FillGridRects)
 ; READS:
-;   Global_REF_GRID_RASTPORT_MAYBE_2
+;   NEWGRID_HeaderRastPortPtr
 ; WRITES:
 ;   none
 ; DESC:
@@ -1646,7 +1646,7 @@ NEWGRID_DrawGridTopBars:
     MOVEQ   #6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  Global_REF_GRID_RASTPORT_MAYBE_2,-(A7)
+    MOVE.L  NEWGRID_HeaderRastPortPtr,-(A7)
     BSR.S   NEWGRID_FillGridRects
 
     LEA     16(A7),A7
@@ -1802,7 +1802,7 @@ NEWGRID_ShouldOpenEditor:
 ; CALLS:
 ;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
-;   Global_STR_SINGLE_SPACE, DATA_NEWGRID_SPACE_VALUE_200D, DATA_NEWGRID_SPACE_VALUE_200E
+;   Global_STR_SINGLE_SPACE, NEWGRID_WrapWordSpacer, NEWGRID_WrapReturnSpacer
 ; WRITES:
 ;   local buffers -74(A5)
 ; DESC:
@@ -1858,7 +1858,7 @@ NEWGRID_DrawWrappedText:
     TST.L   -20(A5)
     BEQ.W   .return_next_ptr_or_current
 
-    PEA     DATA_NEWGRID_SPACE_VALUE_200D
+    PEA     NEWGRID_WrapWordSpacer
     PEA     50.W
     PEA     -74(A5)
     MOVE.L  -20(A5),-(A7)
@@ -1996,7 +1996,7 @@ NEWGRID_DrawWrappedText:
 
     ; Draw a single space
     MOVEA.L A3,A1
-    LEA     DATA_NEWGRID_SPACE_VALUE_200E,A0
+    LEA     NEWGRID_WrapReturnSpacer,A0
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)

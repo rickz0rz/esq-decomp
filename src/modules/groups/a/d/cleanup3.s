@@ -32,7 +32,7 @@
 ; READS:
 ;   TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, TEXTDISP_CurrentMatchIndex-TEXTDISP_CurrentMatchIndexSaved,
 ;   CLEANUP_AlignedStatusClockEntryBuffer, CLEANUP_AlignedStatusMatchIndex, CLEANUP_AlignedStatusClockEntryIndex, TEXTDISP_BannerCharFallback-TEXTDISP_BannerSelectedValidFlag, TEXTDISP_ChannelLabelReadyFlag,
-;   TEXTDISP_PrimaryTitlePtrTable, CLEANUP_AlignedStatusEntryCycleTable, DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED, TEXTDISP_ActiveGroupId, DATA_TEXTDISP_CONST_BYTE_2157, DATA_TEXTDISP_CONST_BYTE_2158,
+;   TEXTDISP_PrimaryTitlePtrTable, CLEANUP_AlignedStatusEntryCycleTable, SCRIPT_StrChannelLabel_TuesdaysFridays, TEXTDISP_ActiveGroupId, TEXTDISP_CenterAlignToken, TEXTDISP_LeftAlignToken,
 ;   TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_CurrentDayOfYear, ESQIFF_PrimaryLineHeadPtr, ESQIFF_PrimaryLineTailPtr,
 ;   Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
 ;   Global_STR_ALIGNED_NOW_SHOWING, Global_STR_ALIGNED_NEXT_SHOWING,
@@ -583,7 +583,7 @@ CLEANUP_RenderAlignedStatusScreen:
     TST.B   D0
     BEQ.S   .append_template_text
 
-    PEA     DATA_TEXTDISP_CONST_BYTE_2158
+    PEA     TEXTDISP_LeftAlignToken
     PEA     TEXTDISP_ChannelLabelBuffer
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -783,7 +783,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BGT.S   .maybe_rebuild_output_record
 
 .prepend_center_align_and_schedule_suffix:
-    LEA     DATA_TEXTDISP_CONST_BYTE_2157,A0
+    LEA     TEXTDISP_CenterAlignToken,A0
     LEA     CLEANUP_AlignedStatusSuffixBuffer,A1
 
 .copy_center_align_control_bytes_loop:
@@ -791,7 +791,7 @@ CLEANUP_RenderAlignedStatusScreen:
     BNE.S   .copy_center_align_control_bytes_loop
 
     ; Compiler-style indexed lookup: template code at -38(A5) is scaled by 4 and
-    ; read as a pointer entry via the legacy DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2
+    ; read as a pointer entry via the legacy SCRIPT_StrChannelLabel_TuesdaysFridays+2
     ; anchor (see SCRIPT_ChannelLabelPtrTable notes in src/data/script.s).
     ; This branch prepends center-align control bytes and appends the selected
     ; schedule/day label text when code falls in the accepted fallback ranges.
@@ -799,7 +799,7 @@ CLEANUP_RenderAlignedStatusScreen:
     MOVE.W  -38(A5),D0
     EXT.L   D0
     ASL.L   #2,D0
-    LEA     (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0
+    LEA     (SCRIPT_StrChannelLabel_TuesdaysFridays+2),A0
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     CLEANUP_AlignedStatusSuffixBuffer

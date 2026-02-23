@@ -516,7 +516,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagVinModeChar,A0
-    MOVEQ   #(LAB_1DC7_Length),D0
+    MOVEQ   #(ED_DiagVinModeChar_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -526,8 +526,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_ESQ_STR_B_1DC8,A0
-    MOVEQ   #(LAB_1DC8_Length),D0
+    LEA     ESQ_STR_B,A0
+    MOVEQ   #(ESQ_STR_B_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -536,8 +536,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_ESQ_STR_E_1DC9,A0
-    MOVEQ   #(LAB_1DC9_Length),D0
+    LEA     ESQ_STR_E,A0
+    MOVEQ   #(ESQ_STR_E_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -556,8 +556,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_ESQ_TAG_36_1DCB,A0
-    MOVEQ   #(DATA_ESQ_TAG_36_1DCB_Length),D0
+    LEA     ESQ_TAG_36,A0
+    MOVEQ   #(ESQ_TAG_36_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -567,7 +567,7 @@ ED_DrawDiagnosticModeText:
 
     MOVEA.L Global_REF_RASTPORT_1,A1
     LEA     ED_DiagScrollSpeedChar,A0
-    MOVEQ   #(LAB_1DCD_Length),D0
+    MOVEQ   #(ED_DiagScrollSpeedChar_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -577,8 +577,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_ESQ_STR_6_1DD1,A0
-    MOVEQ   #(DATA_ESQ_STR_6_1DD1_Length),D0
+    LEA     ESQ_STR_6,A0
+    MOVEQ   #(ESQ_STR_6_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -588,8 +588,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_ESQ_STR_N_1DD2,A0
-    MOVEQ   #(DATA_ESQ_STR_N_1DD2_Length),D0
+    LEA     ESQ_SecondarySlotModeFlagChar,A0
+    MOVEQ   #(ESQ_SecondarySlotModeFlagChar_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -598,8 +598,8 @@ ED_DrawDiagnosticModeText:
     JSR     _LVOMove(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_ESQ_STR_Y_1DD3,A0
-    MOVEQ   #(DATA_ESQ_STR_Y_1DD3_Length),D0
+    LEA     ESQ_STR_Y,A0
+    MOVEQ   #(ESQ_STR_Y_Length),D0
     JSR     _LVOText(A6)
 
     MOVEA.L Global_REF_RASTPORT_1,A1
@@ -1016,7 +1016,7 @@ ED_DrawSpecialFunctionsMenu:
 ;   DISPLIB_DisplayTextAtPosition, GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   ED_TempCopyOffset, DATA_ESQ_BSS_BYTE_1DE0, DATA_ESQ_BSS_BYTE_1DE1, DATA_ESQ_CONST_BYTE_1DE2, Global_REF_RASTPORT_1
+;   ED_TempCopyOffset, GCOMMAND_PresetFallbackValue0, GCOMMAND_PresetFallbackValue1, GCOMMAND_PresetFallbackValue2, Global_REF_RASTPORT_1
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1060,7 +1060,7 @@ ED_DrawDiagnosticRegisterValues:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_BSS_BYTE_1DE0,A0
+    LEA     GCOMMAND_PresetFallbackValue0,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -1085,7 +1085,7 @@ ED_DrawDiagnosticRegisterValues:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_BSS_BYTE_1DE1,A0
+    LEA     GCOMMAND_PresetFallbackValue1,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -1110,7 +1110,7 @@ ED_DrawDiagnosticRegisterValues:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_CONST_BYTE_1DE2,A0
+    LEA     GCOMMAND_PresetFallbackValue2,A0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
@@ -1194,7 +1194,7 @@ ED_DrawAreYouSurePrompt:
 ; READS:
 ;   ED_MaxAdNumber, Global_REF_RASTPORT_1
 ; WRITES:
-;   ED_EditCursorOffset, DATA_WDISP_BSS_LONG_21F4
+;   ED_EditCursorOffset, ED_AdNumberPromptStateBlock
 ; DESC:
 ;   Draws the "enter ad number" prompt and initializes the entry buffer.
 ; NOTES:
@@ -1314,7 +1314,7 @@ ED_DrawAdNumberPrompt:
     BRA.S   .init_entry_loop
 
 .init_entry_done:
-    CLR.B   DATA_WDISP_BSS_LONG_21F4
+    CLR.B   ED_AdNumberPromptStateBlock
     BSR.W   ED_RedrawCursorChar
 
     MOVEM.L (A7)+,D2-D3/D7
@@ -1802,7 +1802,7 @@ ED_DecrementAdNumber:
 ; READS:
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_AdRecordPtrTable
 ; WRITES:
-;   ED_AdActiveFlag, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, DATA_WDISP_BSS_LONG_2202, ED_ActiveIndicatorCachedState, DATA_WDISP_BSS_LONG_21FF
+;   ED_AdActiveFlag, ED_ViewportOffset, ED_AdDisplayResetFlag, ED_AdDisplayStateLatchBlockB, ED_ActiveIndicatorCachedState, ED_AdDisplayStateLatchA
 ; DESC:
 ;   Displays the current ad number and resets editing state for the ad.
 ; NOTES:
@@ -1843,12 +1843,12 @@ ED_UpdateAdNumberDisplay:
 
 .after_active_check:
     MOVEQ   #1,D1
-    MOVE.L  D1,DATA_WDISP_BSS_LONG_21FE
+    MOVE.L  D1,ED_AdDisplayResetFlag
     MOVE.L  D0,ED_ViewportOffset
     MOVEQ   #-1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_2202
+    MOVE.L  D0,ED_AdDisplayStateLatchBlockB
     MOVE.L  D0,ED_ActiveIndicatorCachedState
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21FF
+    MOVE.L  D0,ED_AdDisplayStateLatchA
     BSR.W   ED_UpdateActiveInactiveIndicator
 
     UNLK    A5
@@ -2904,7 +2904,7 @@ ED_TransformLineSpacing_Mode3:
 ; READS:
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, ED_BlockOffset, ED_TextLimit
 ; WRITES:
-;   ED_EditCursorOffset, ED_ViewportOffset, DATA_WDISP_BSS_LONG_21FE, Global_REF_BOOL_IS_LINE_OR_PAGE,
+;   ED_EditCursorOffset, ED_ViewportOffset, ED_AdDisplayResetFlag, Global_REF_BOOL_IS_LINE_OR_PAGE,
 ;   Global_REF_BOOL_IS_TEXT_OR_CURSOR
 ; DESC:
 ;   Loads the current ad into edit buffers and refreshes the screen.
@@ -2979,7 +2979,7 @@ ED_LoadCurrentAdIntoBuffers:
     ADDA.L  ED_BlockOffset,A0
     CLR.B   (A0)
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21FE
+    MOVE.L  D0,ED_AdDisplayResetFlag
     BSR.W   ED_RedrawAllRows
 
     MOVEQ   #0,D0
@@ -3211,44 +3211,44 @@ ED_DrawEditHelpText:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     DATA_ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT_1DAC
+    PEA     ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT
     PEA     390.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S_1DAD
+    PEA     ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S
     PEA     90.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR_1DAE
+    PEA     ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR
     PEA     120.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL_1DAF
+    PEA     ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL
     PEA     150.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE_1DB0
+    PEA     ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE
     PEA     180.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
-    PEA     DATA_ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY_1DB1
+    PEA     ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY
     PEA     210.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS_1DB2
+    PEA     ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS
     PEA     240.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)

@@ -13,9 +13,9 @@
 ; CALLS:
 ;   GROUP_AR_JMPTBL_STRING_AppendAtNull, GROUP_AW_JMPTBL_WDISP_SPrintf, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MATH_DivS32, NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_CLOCKDATA_STRUCT, Global_STR_FLIB_C_1, Global_STR_FLIB_C_2, FLIB_AppendClockStampedLogEntry_Return, DATA_ESQPARS2_BSS_LONG_1F57, DATA_ESQPARS2_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02_1F58, DATA_ESQPARS2_TAG_PM_1F59, DATA_ESQPARS2_TAG_AM_1F5A, DATA_ESQPARS2_CONST_WORD_1F5B, DATA_ESQPARS2_CONST_LONG_1F5C, DATA_NEWGRID2_BSS_LONG_2049, CLOCK_CacheHour, CLOCK_CacheMinuteOrSecond, CLOCK_CacheAmPmFlag, DATA_WDISP_BSS_LONG_233A, MEMF_PUBLIC
+;   Global_REF_CLOCKDATA_STRUCT, Global_STR_FLIB_C_1, Global_STR_FLIB_C_2, FLIB_AppendClockStampedLogEntry_Return, ESQPARS2_LogAppendSpinlock, ESQPARS2_LogTimestampFmt, ESQPARS2_LogTagPm, ESQPARS2_LogTagAm, ESQPARS2_LogFieldTab, ESQPARS2_LogLineTerminator, NEWGRID2_ErrorLogEntryPtr, CLOCK_CacheHour, CLOCK_CacheMinuteOrSecond, CLOCK_CacheAmPmFlag, FLIB_LogEntryByteCount, MEMF_PUBLIC
 ; WRITES:
-;   DATA_ESQPARS2_BSS_LONG_1F57, DATA_NEWGRID2_BSS_LONG_2049, DATA_WDISP_BSS_LONG_233A
+;   ESQPARS2_LogAppendSpinlock, NEWGRID2_ErrorLogEntryPtr, FLIB_LogEntryByteCount
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -27,16 +27,16 @@ FLIB_AppendClockStampedLogEntry:
     MOVEA.L 8(A5),A3
 
 .lab_0CB6:
-    TST.L   DATA_ESQPARS2_BSS_LONG_1F57
+    TST.L   ESQPARS2_LogAppendSpinlock
     BNE.S   .lab_0CB6
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_ESQPARS2_BSS_LONG_1F57
-    MOVE.W  DATA_WDISP_BSS_LONG_233A,D0
+    MOVE.L  D0,ESQPARS2_LogAppendSpinlock
+    MOVE.W  FLIB_LogEntryByteCount,D0
     CMPI.W  #$2710,D0
     BLE.S   .lab_0CB7
 
-    CLR.L   DATA_ESQPARS2_BSS_LONG_1F57
+    CLR.L   ESQPARS2_LogAppendSpinlock
     MOVEQ   #0,D0
     BRA.W   FLIB_AppendClockStampedLogEntry_Return
 
@@ -78,24 +78,24 @@ FLIB_AppendClockStampedLogEntry:
     TST.W   CLOCK_CacheAmPmFlag
     BEQ.S   .branch_2
 
-    LEA     DATA_ESQPARS2_TAG_PM_1F59,A0
+    LEA     ESQPARS2_LogTagPm,A0
     BRA.S   .branch_3
 
 .branch_2:
-    LEA     DATA_ESQPARS2_TAG_AM_1F5A,A0
+    LEA     ESQPARS2_LogTagAm,A0
 
 .branch_3:
     MOVE.L  A0,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  20(A7),-(A7)
     MOVE.L  20(A7),-(A7)
-    PEA     DATA_ESQPARS2_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02_1F58
+    PEA     ESQPARS2_LogTimestampFmt
     PEA     -119(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     24(A7),A7
     ADDI.W  #14,D7
-    PEA     DATA_ESQPARS2_CONST_WORD_1F5B
+    PEA     ESQPARS2_LogFieldTab
     PEA     -119(A5)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -103,15 +103,15 @@ FLIB_AppendClockStampedLogEntry:
     PEA     -119(A5)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     DATA_ESQPARS2_CONST_LONG_1F5C
+    PEA     ESQPARS2_LogLineTerminator
     PEA     -119(A5)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
-    MOVE.W  DATA_WDISP_BSS_LONG_233A,D0
+    MOVE.W  FLIB_LogEntryByteCount,D0
     MOVE.L  D0,D1
     ADD.W   D7,D1
-    MOVE.W  D1,DATA_WDISP_BSS_LONG_233A
+    MOVE.W  D1,FLIB_LogEntryByteCount
     EXT.L   D1
     ADDQ.L  #1,D1
     PEA     (MEMF_PUBLIC).W
@@ -121,12 +121,12 @@ FLIB_AppendClockStampedLogEntry:
     JSR     NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.W  DATA_WDISP_BSS_LONG_233A,D1
+    MOVE.W  FLIB_LogEntryByteCount,D1
     MOVE.L  D0,-4(A5)
     CMP.W   D7,D1
     BEQ.S   .branch_5
 
-    MOVEA.L DATA_NEWGRID2_BSS_LONG_2049,A0
+    MOVEA.L NEWGRID2_ErrorLogEntryPtr,A0
     MOVEA.L D0,A1
 
 .branch_4:
@@ -144,12 +144,12 @@ FLIB_AppendClockStampedLogEntry:
     MOVE.L  -4(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    MOVE.L  DATA_NEWGRID2_BSS_LONG_2049,(A7)
+    MOVE.L  NEWGRID2_ErrorLogEntryPtr,(A7)
     MOVE.L  -4(A5),-(A7)
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2049
-    MOVE.W  DATA_WDISP_BSS_LONG_233A,D0
+    MOVE.L  D0,NEWGRID2_ErrorLogEntryPtr
+    MOVE.W  FLIB_LogEntryByteCount,D0
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVE.L  D0,(A7)
@@ -158,7 +158,7 @@ FLIB_AppendClockStampedLogEntry:
     PEA     Global_STR_FLIB_C_2
     JSR     NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
-    CLR.L   DATA_ESQPARS2_BSS_LONG_1F57
+    CLR.L   ESQPARS2_LogAppendSpinlock
 
 ;------------------------------------------------------------------------------
 ; FUNC: FLIB_AppendClockStampedLogEntry_Return   (Routine at FLIB_AppendClockStampedLogEntry_Return)
@@ -171,9 +171,9 @@ FLIB_AppendClockStampedLogEntry:
 ; CALLS:
 ;   GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry, GROUP_AW_JMPTBL_WDISP_SPrintf, ESQPARS_ReplaceOwnedString, FLIB_AppendClockStampedLogEntry
 ; READS:
-;   FLIB_EmptyLogReplacementString, DATA_FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02_1F60, DATA_NEWGRID2_BSS_LONG_2049, CLOCK_DaySlotIndex, CLOCK_CacheDayIndex0, CLOCK_CacheHour, FLIB_LogEntryScratchBuffer
+;   FLIB_EmptyLogReplacementString, FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02, NEWGRID2_ErrorLogEntryPtr, CLOCK_DaySlotIndex, CLOCK_CacheDayIndex0, CLOCK_CacheHour, FLIB_LogEntryScratchBuffer
 ; WRITES:
-;   DATA_NEWGRID2_BSS_LONG_2049, DATA_WDISP_BSS_LONG_233A
+;   NEWGRID2_ErrorLogEntryPtr, FLIB_LogEntryByteCount
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -212,13 +212,13 @@ FLIB_AppendClockStampedLogEntry_Return:
     TST.W   D6
     BEQ.S   .lab_0CC2
 
-    MOVE.L  DATA_NEWGRID2_BSS_LONG_2049,-(A7)
+    MOVE.L  NEWGRID2_ErrorLogEntryPtr,-(A7)
     PEA     FLIB_EmptyLogReplacementString
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2049
-    CLR.W   DATA_WDISP_BSS_LONG_233A
+    MOVE.L  D0,NEWGRID2_ErrorLogEntryPtr
+    CLR.W   FLIB_LogEntryByteCount
 
 .lab_0CC2:
     PEA     FLIB_LogEntryScratchBuffer
@@ -252,7 +252,7 @@ FLIB_AppendClockStampedLogEntry_Return:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02_1F60
+    PEA     FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02
     MOVE.L  A2,-(A7)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 

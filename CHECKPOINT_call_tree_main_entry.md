@@ -243,7 +243,7 @@ ESQ_MainInitAndRun
 ```text
 ESQ_MainInitAndRun
   -> ESQIFF_RestoreBasePaletteTriples
-       -> (byte copy loop from DATA_ESQFUNC_CONST_LONG_1ECC into WDISP_PaletteTriplesRBase)
+       -> (byte copy loop from ESQFUNC_CONST_LONG_1ECC into WDISP_PaletteTriplesRBase)
   -> ESQIFF_RunCopperDropTransition
        -> ESQIFF_RunPendingCopperAnimations
   -> _LVOSetAPen / _LVORectFill / _LVOSetBPen / _LVOSetDrMd
@@ -299,7 +299,7 @@ ESQ_MainInitAndRun
 ESQ_MainInitAndRun
   -> main_idle_loop
        -> ESQFUNC_ServiceUiTickIfRunning
-            -> (if DATA_ESQ_BSS_WORD_1DE5 != 0) ESQFUNC_ProcessUiFrameTick
+            -> (if ESQ_BSS_WORD_1DE5 != 0) ESQFUNC_ProcessUiFrameTick
                  -> (optional) ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
                  -> (optional) ESQDISP_PollInputModeAndRefreshSelection
                  -> (if not UI busy) ESQDISP_ProcessGridMessagesIfIdle
@@ -366,9 +366,9 @@ ESQ_MainInitAndRun
 
 ```text
 ESQFUNC_ProcessUiFrameTick
-  -> (if DATA_GCOMMAND_CONST_WORD_1FB0 != 0) ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
+  -> (if GCOMMAND_CONST_WORD_1FB0 != 0) ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
        -> DISKIO_ProbeDrivesAndAssignPaths
-  -> (if DATA_ESQDISP_BSS_LONG_1E84 == 1) ESQDISP_PollInputModeAndRefreshSelection
+  -> (if ESQDISP_BSS_LONG_1E84 == 1) ESQDISP_PollInputModeAndRefreshSelection
   -> (if not Global_UIBusyFlag) ESQDISP_ProcessGridMessagesIfIdle
        -> ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
             -> NEWGRID_ProcessGridMessages
@@ -377,7 +377,7 @@ ESQFUNC_ProcessUiFrameTick
        -> SCRIPT_HandleSerialCtrlCmd
   -> (if CLEANUP_PendingAlertFlag) ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts
        -> CLEANUP_ProcessAlerts
-  -> (if DATA_ESQDISP_BSS_LONG_1E88 != 0) ESQFUNC_CommitSecondaryStateAndPersist
+  -> (if ESQDISP_BSS_LONG_1E88 != 0) ESQFUNC_CommitSecondaryStateAndPersist
   -> (if CTASKS_IffTaskDoneFlag and bit gates pass)
        -> ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
             -> TEXTDISP_ResetSelectionAndRefresh
@@ -387,7 +387,7 @@ ESQFUNC_ProcessUiFrameTick
        -> ESQIFF_ServiceExternalAssetSourceState (mode 0/1 variant)
   -> ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState
        -> TEXTDISP_TickDisplayState
-  -> (if DATA_ESQDISP_BSS_WORD_1E89 and !DATA_GCOMMAND_BSS_WORD_1FA9)
+  -> (if ESQDISP_BSS_WORD_1E89 and !GCOMMAND_BSS_WORD_1FA9)
        -> ESQDISP_RefreshStatusIndicatorsFromCurrentMask
 ```
 
@@ -510,15 +510,15 @@ SCRIPT_DispatchPlaybackCursorCommand (cursor 1..15 switch)
   -> 5: CLEANUP_RenderAlignedStatusScreen(current)
   -> 6: CLEANUP_RenderAlignedStatusScreen(primary)
   -> 7: CLEANUP_RenderAlignedStatusScreen(secondary)
-  -> 8: WDISP_HandleWeatherStatusCommand(DATA_SCRIPT_STR_X_2126)
-  -> 9: TEXTDISP_HandleScriptCommand(DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr)
+  -> 8: WDISP_HandleWeatherStatusCommand(SCRIPT_STR_X_2126)
+  -> 9: TEXTDISP_HandleScriptCommand(SCRIPT_BSS_BYTE_2127, SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr)
   -> 10: SCRIPT_AssertCtrlLineNow + SCRIPT_RuntimeMode := 1
   -> 11: enable highlight/rast and queue banner target (hex+28)
   -> 12: queue banner target (current hex)
   -> 13: ESQ_SetCopperEffect_Custom
   -> 14: set ESQPARS2_ReadModeFlags=256 (read-mode on)
   -> 15: clear read-mode flags
-  -> default: increment fallback counter DATA_SCRIPT_BSS_WORD_211C
+  -> default: increment fallback counter SCRIPT_BSS_WORD_211C
   -> common tail: SCRIPT_ClearSearchTextsAndChannels + clear cursor slot
 ```
 
@@ -540,8 +540,8 @@ TEXTDISP_HandleScriptCommand
             -> TEXTDISP_DrawHighlightFrame
             -> cleanup free path (MEMORY_DeallocateMemory)
   -> finalize defaults:
-       -> DATA_SCRIPT_CONST_WORD_2149 := -1
-       -> DATA_SCRIPT_CONST_BYTE_214A := 0x31
+       -> SCRIPT_CONST_WORD_2149 := -1
+       -> SCRIPT_CONST_BYTE_214A := 0x31
 ```
 
 #### Phase 8G Expanded (`CLEANUP_ProcessAlerts` + clock event map)
@@ -577,9 +577,9 @@ ESQ_TickClockAndFlagEvents (event code summary)
   -> 0: no boundary event
   -> 1: second->minute carry path entered
   -> 2: half-hour / minute==30 or hour rollover event
-  -> 3: configured minute trigger set A (DATA_COMMON_BSS_WORD_1B09/1B0A)
+  -> 3: configured minute trigger set A (COMMON_BSS_WORD_1B09/1B0A)
   -> 4: minute==20 or minute==50
-  -> 5: configured minute trigger set B (DATA_COMMON_BSS_WORD_1B0B/1B0C)
+  -> 5: configured minute trigger set B (COMMON_BSS_WORD_1B0B/1B0C)
 ```
 
 #### Phase 8H Expanded (`TEXTDISP_FilterAndSelectEntry` leaf walk)
@@ -590,7 +590,7 @@ TEXTDISP_FilterAndSelectEntry
        -> 'F' path:
             -> set TEXTDISP_FilterModeId := 1
             -> wildcard probes for PPV/SBE/SPORTS tags
-            -> populate DATA_WDISP_BSS_WORD_235B/235C feature gates
+            -> populate WDISP_BSS_WORD_235B/235C feature gates
        -> default path:
             -> TEXTDISP_FilterModeId := 3
   -> candidate discovery (per mode):
@@ -611,7 +611,7 @@ TEXTDISP_FilterAndSelectEntry
        -> TEXTDISP_SetSelectionFields
        -> TEXTDISP_BuildEntryDetailLine
   -> on miss:
-       -> rotate DATA_WDISP_BSS_WORD_2359 (channel cursor)
+       -> rotate WDISP_BSS_WORD_2359 (channel cursor)
        -> cycle TEXTDISP_FilterModeId 1->2->3
        -> fallback TEXTDISP_ResetSelectionState
 ```
@@ -785,7 +785,7 @@ SCRIPT_HandleBrushCommand
             -> cursor 1/2/3/4/5/6/7/8/9/10/13/14/15 outcomes
             -> wildcard/select helpers via SCRIPT_SelectPlaybackCursorFromSearchText
        -> banner-target family:
-            -> parse hex target + optional speed into SCRIPT_PendingBannerTargetChar and DATA_SCRIPT_BSS_WORD_211F
+            -> parse hex target + optional speed into SCRIPT_PendingBannerTargetChar and SCRIPT_BSS_WORD_211F
        -> filter/runtime family:
             -> LOCAVAIL_SetFilterModeAndResetState / ComputeFilterOffsetForEntry
             -> runtime mode gating with ED_DiagVinModeChar normalization and CIA bit tests
@@ -805,19 +805,19 @@ SCRIPT_HandleBrushCommand
             -> SCRIPT_SelectPlaybackCursorFromSearchText(primary path flag=0)
        -> `'3'`:
             -> reset TEXTDISP_CurrentMatchIndex=-1
-            -> if DATA_ESQ_STR_N_1DCE == 'Y': cursor=1 else cursor=2
+            -> if ESQ_DefaultNoFlagChar == 'Y': cursor=1 else cursor=2
        -> `'4'` or `'6'`:
             -> TEXTDISP_FindEntryIndexByWildcard(2+ payload)
             -> found => cursor=3, not found => cursor=1 and return status D6=0
        -> `'5'`:
             -> parse 2 hex digits into SCRIPT_PendingBannerTargetChar
-            -> optional 2 decimal speed digits -> DATA_SCRIPT_BSS_WORD_211F (default 1000)
+            -> optional 2 decimal speed digits -> SCRIPT_BSS_WORD_211F (default 1000)
             -> trailing filter text empty => cursor=2
             -> trailing text present:
                  -> if RAVESC mode / MSN override / wildcard hit => cursor=3
                  -> else cursor=1 + clear pending banner target
        -> `'7'`:
-            -> requires DATA_WDISP_BSS_LONG_2357 active and non-'0' digit
+            -> requires WDISP_BSS_LONG_2357 active and non-'0' digit
             -> resolves current match index fallback from CLEANUP_AlignedStatusMatchIndex
             -> TEXTDISP_UpdateChannelRangeFlags(), cursor=5
        -> `'8'`:
@@ -825,10 +825,10 @@ SCRIPT_HandleBrushCommand
        -> `'D'`:
             -> reset match index and force cursor=1
        -> `'F'`:
-            -> cursor=9, capture byte pair into DATA_SCRIPT_BSS_BYTE_2127/WORD_2128
+            -> cursor=9, capture byte pair into SCRIPT_BSS_BYTE_2127/WORD_2128
             -> replace owned command tail string, set pending banner target=-2
        -> `'W'`:
-            -> cursor=8, store payload byte in DATA_SCRIPT_STR_X_2126
+            -> cursor=8, store payload byte in SCRIPT_STR_X_2126
        -> `'X'`:
             -> same cursor=9/banner-text setup as `'F'`
        -> default:
@@ -854,7 +854,7 @@ TEXTDISP_BuildEntryDetailLine
        -> TEXTDISP_BuildEntryShortName(entryPtr, scratch512)
   -> title prefix normalization:
        -> skip control bytes and 0x18/0x19 markers
-       -> if visible text exists, prepend DATA_SCRIPT_STR_213E and append trimmed source text
+       -> if visible text exists, prepend SCRIPT_STR_213E and append trimmed source text
   -> entry-string segment:
        -> select table slot 56(entryAux,index*4), skip control codes
        -> length-align against existing title width before copying
@@ -864,7 +864,7 @@ TEXTDISP_BuildEntryDetailLine
        -> append built segment onto destination buffer
   -> channel/time suffix:
        -> TEXTDISP_FormatEntryTimeForIndex(scratch, index, auxTable)
-       -> skip control codes; if non-empty add DATA_SCRIPT_STR_2143 separator + suffix text
+       -> skip control codes; if non-empty add SCRIPT_STR_2143 separator + suffix text
   -> program token extraction:
        -> copy non-space bytes from entry pointer +1 into scratch
        -> if non-empty append Global_STR_ALIGNED_CHANNEL_2 + token text
@@ -882,17 +882,17 @@ TEXTDISP_SelectGroupAndEntry
   -> pass 1 (group 1):
        -> TEXTDISP_BuildMatchIndexList(filter, entryIndex)
        -> if matches: TEXTDISP_SelectBestMatchFromList(...)
-       -> store first candidate byte into DATA_WDISP_BSS_WORD_2360
+       -> store first candidate byte into WDISP_BSS_WORD_2360
   -> pass 2 (group 2 fallback):
        -> only when group1 had no usable selection and secondary group has records
        -> set TEXTDISP_ActiveGroupId=0
        -> repeat BuildMatchIndexList/SelectBestMatchFromList
-       -> store first candidate byte into DATA_WDISP_BSS_WORD_2361
+       -> store first candidate byte into WDISP_BSS_WORD_2361
   -> final select:
        -> if no matches: restore ActiveGroupId=1 and return 0
        -> if selector returns mode=2:
-            -> choose DATA_WDISP_BSS_BYTE_2372 when banner char == 'd'
-            -> else choose DATA_WDISP_BSS_BYTE_2376
+            -> choose WDISP_BSS_BYTE_2372 when banner char == 'd'
+            -> else choose WDISP_BSS_BYTE_2376
        -> else choose TEXTDISP_CandidateIndexList[0]
        -> write TEXTDISP_CurrentMatchIndex and return 1
 ```
@@ -902,9 +902,9 @@ TEXTDISP_SelectGroupAndEntry
 ```text
 TEXTDISP_BuildMatchIndexList
   -> prefilter mode flags:
-       -> pattern `PPV*` / `SBE*` toggles DATA_WDISP_BSS_WORD_236F and include-mask behavior
+       -> pattern `PPV*` / `SBE*` toggles WDISP_BSS_WORD_236F and include-mask behavior
        -> `SPORTS*` / `SPT*` mismatch forces wildcard `"*"`
-       -> `FIND1` prefix sets DATA_WDISP_BSS_WORD_2370 and rewrites pattern to `"*"`
+       -> `FIND1` prefix sets WDISP_BSS_WORD_2370 and rewrites pattern to `"*"`
   -> group scan setup:
        -> selects primary vs secondary entry/title tables from TEXTDISP_ActiveGroupId
        -> loop count from group-specific entry count global
@@ -942,8 +942,8 @@ TEXTDISP_SelectBestMatchFromList
 ```text
 SCRIPT_SelectPlaybackCursorFromSearchText
   -> setup:
-       -> stores incoming match/index arg into DATA_WDISP_BSS_LONG_2350
-       -> enables search-active latch DATA_WDISP_BSS_LONG_2357=1
+       -> stores incoming match/index arg into WDISP_BSS_LONG_2350
+       -> enables search-active latch WDISP_BSS_LONG_2357=1
        -> scans parse buffer for delimiter 0x12 up to offset 30, then NUL-splits
   -> selection order:
        -> if SCRIPT_PrimarySearchFirstFlag == 0:
@@ -956,7 +956,7 @@ SCRIPT_SelectPlaybackCursorFromSearchText
             -> success => cursor=7
   -> fail path:
        -> clear status D6=0
-       -> clear DATA_WDISP_BSS_LONG_2357
+       -> clear WDISP_BSS_LONG_2357
        -> force cursor=1
   -> return:
        -> D0 reflects D6 (1 success / 0 miss)
@@ -965,17 +965,17 @@ SCRIPT_ProcessCtrlContextPlaybackTick
   -> per-tick prologue:
        -> LOCAVAIL_UpdateFilterStateMachine(PrimaryFilterState)
        -> load/sync ctrl context snapshot
-       -> apply deferred runtime latch DATA_SCRIPT_BSS_LONG_2125 -> runtime mode 3
+       -> apply deferred runtime latch SCRIPT_BSS_LONG_2125 -> runtime mode 3
   -> runtime/cursor gating:
        -> `MSN='M'` constrains low cursors (<10) to cursor=2
-       -> runtime mode 2 + DATA_SCRIPT_BSS_WORD_211A latch suppresses high-cursor dispatch
+       -> runtime mode 2 + SCRIPT_BSS_WORD_211A latch suppresses high-cursor dispatch
        -> only cursors 1..15 are dispatchable
   -> dispatch path:
        -> SCRIPT_UpdateRuntimeModeForPlaybackCursor
        -> for cursor !=1, apply SCRIPT_ApplyPendingBannerTarget
        -> SCRIPT_DispatchPlaybackCursorCommand(&SCRIPT_PlaybackCursor)
   -> epilogue:
-       -> mirror TEXTDISP_CurrentMatchIndex -> DATA_WDISP_BSS_WORD_236E
+       -> mirror TEXTDISP_CurrentMatchIndex -> WDISP_BSS_WORD_236E
        -> save ctrl context snapshot
 ```
 
@@ -1002,7 +1002,7 @@ SCRIPT_ApplyPendingBannerTarget
             -> if current != default target (Global_REF_WORD_HEX_CODE_8E), transition to default
             -> clear pending after transition
   -> read-mode cleanup:
-       -> when DATA_SCRIPT_BSS_WORD_2122 set, clear ESQPARS2_ReadModeFlags and latch 2122
+       -> when SCRIPT_BSS_WORD_2122 set, clear ESQPARS2_ReadModeFlags and latch 2122
 ```
 
 #### Phase 8V Expanded (`SCRIPT_UpdateRuntimeModeForPlaybackCursor` / dispatch map)
@@ -1010,17 +1010,17 @@ SCRIPT_ApplyPendingBannerTarget
 ```text
 SCRIPT_UpdateRuntimeModeForPlaybackCursor
   -> if SCRIPT_RuntimeMode == 1:
-       -> optional banner transition to (default banner + 28) when CTASKS flag `1BB3` == 'Y'
+       -> optional banner transition to (default banner + 28) when `CONFIG_RuntimeMode12BannerJumpEnabledFlag` == 'Y'
        -> enter mode2:
-            -> DATA_SCRIPT_BSS_WORD_2119=0, TEXTDISP_CurrentMatchIndex=-1
-            -> SCRIPT_RuntimeMode=2, DATA_SCRIPT_BSS_WORD_211A=1
+            -> SCRIPT_CtrlHandshakeRetryCount=0, TEXTDISP_CurrentMatchIndex=-1
+            -> SCRIPT_RuntimeMode=2, SCRIPT_RuntimeModeDispatchLatch=1
             -> enable highlight copper + TEXTDISP_SetRastForMode(0)
        -> choose serial shadow ctrl byte:
             -> default 0
-            -> when `MSN` in {'M','S'}, decode DATA_CTASKS_STR_N_1BC6 into 0/1/2/3 bucket
+            -> when `MSN` in {'M','S'}, decode CONFIG_MsnRuntimeModeSelectorChar_LRBN into 0/1/2/3 bucket
        -> SCRIPT_UpdateSerialShadowFromCtrlByte(bucket), clear search texts/channels, return 1
   -> else path:
-       -> if runtime mode == 3: SCRIPT_DeassertCtrlLineNow(), clear latch DATA_SCRIPT_BSS_WORD_211A
+       -> if runtime mode == 3: SCRIPT_DeassertCtrlLineNow(), clear latch SCRIPT_BSS_WORD_211A
        -> set SCRIPT_RuntimeMode=0, return 0
 
 SCRIPT_DispatchPlaybackCursorCommand (cursor 1..15)
@@ -1029,18 +1029,18 @@ SCRIPT_DispatchPlaybackCursorCommand (cursor 1..15)
   -> 3: enter mode2 + highlight + rast + serial shadow 1
   -> 4: if no deferred countdown, serial shadow 3 and arm deferred countdown=3
   -> 5: render aligned status using current channel/match globals
-  -> 6: render aligned primary using DATA_WDISP_BSS_LONG_2350
-  -> 7: render aligned secondary using DATA_WDISP_BSS_LONG_2350
-  -> 8: weather status command from DATA_SCRIPT_STR_X_2126
+  -> 6: render aligned primary using WDISP_BSS_LONG_2350
+  -> 7: render aligned secondary using WDISP_BSS_LONG_2350
+  -> 8: weather status command from SCRIPT_STR_X_2126
   -> 9: textdisp command from (byte2127, word2128, SCRIPT_CommandTextPtr)
   -> 10: assert ctrl line and set runtime mode 1
   -> 11: enable highlight+rast and set pending banner (default+28, speed=1000)
   -> 12: set pending banner to current default, speed=1000
   -> 13: custom copper effect
-  -> 14: set read mode on (DATA_SCRIPT_BSS_WORD_2122=1, ESQPARS2_ReadModeFlags=256)
+  -> 14: set read mode on (SCRIPT_BSS_WORD_2122=1, ESQPARS2_ReadModeFlags=256)
   -> 15: set read mode off (clear 2122/read flags)
   -> default/out-of-range:
-       -> TEXTDISP_CurrentMatchIndex=-1, increment DATA_SCRIPT_BSS_WORD_211C
+       -> TEXTDISP_CurrentMatchIndex=-1, increment SCRIPT_BSS_WORD_211C
   -> unified epilogue:
        -> SCRIPT_ClearSearchTextsAndChannels
        -> clear *playbackCursorPtr slot to 0
@@ -1053,20 +1053,20 @@ SCRIPT_UpdateCtrlStateMachine
   -> refresh substate (`.refresh_ctrl_state`):
        -> checks ED_DiagVinModeChar membership in "YL"
        -> if matched, probes SCRIPT_ReadHandshakeBit3Flag:
-            -> set DATA_SCRIPT_BSS_WORD_2118 = 1 or 2
-       -> else clear DATA_SCRIPT_BSS_WORD_2118
+            -> set SCRIPT_BSS_WORD_2118 = 1 or 2
+       -> else clear SCRIPT_BSS_WORD_2118
   -> runtime-mode handling:
        -> only active when SCRIPT_RuntimeMode == 2
        -> substate 1:
-            -> increment DATA_SCRIPT_BSS_WORD_2119
+            -> increment SCRIPT_BSS_WORD_2119
             -> after 3 ticks: clear counter, set runtime mode 3,
                SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh
        -> substate 2:
-            -> clear DATA_SCRIPT_BSS_WORD_2119
+            -> clear SCRIPT_BSS_WORD_2119
        -> other substates:
             -> if Global_UIBusyFlag set, force runtime mode 3
   -> non-mode2 path:
-       -> clear DATA_SCRIPT_BSS_WORD_2119
+       -> clear SCRIPT_BSS_WORD_2119
 ```
 
 #### Phase 8X Expanded (`ESQPARS_ConsumeRbfByteAndDispatchCommand` preamble + command families)
@@ -1084,7 +1084,7 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand
        -> `'W'`: ESQPROTO_VerifyChecksumAndParseRecord
        -> `'w'`: ESQPROTO_VerifyChecksumAndParseList
        -> clears preamble flags after handling
-  -> DATA command table (requires armed + DATA_WDISP_BSS_WORD_22A0==1):
+  -> DATA command table (requires armed + WDISP_BSS_WORD_22A0==1):
        -> `'!'`: title-slot replacement flow (group/key lookup + per-slot ESQPARS_ReplaceOwnedString)
        -> `'%'`: DISKIO2_HandleInteractiveFileTransfer
        -> `'='`/`'H'`/`'h'`: DATA binary path
@@ -1218,10 +1218,10 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand
        -> typed validation and apply
   -> pattern B examples:
        -> `'F'` status packet: header byte in {'A','B'} and field1 in [65,73], then ESQIFF2_ApplyIncomingStatusPacket
-       -> `'K'` clock packet: day<7, month<12, second<60, mode guard `DATA_CTASKS_STR_1_1BC9=='2'`, then ESQPARS_ApplyRtcBytesAndPersist
+       -> `'K'` clock packet: day<7, month<12, second<60, mode guard `CTASKS_STR_1_1BC9=='2'`, then ESQPARS_ApplyRtcBytesAndPersist
        -> `'D'` diagnostics buffer: 256-byte read + checksum gate
   -> shared pattern C (single-byte control checksum):
-       -> `'%'`: expects 0xDA and sets DATA_ESQ_BSS_WORD_1DF6=1
+       -> `'%'`: expects 0xDA and sets ESQ_BSS_WORD_1DF6=1
        -> `'O'`: expects 0xB0 then ESQIFF2_ClearPrimaryEntryFlags34To39
        -> `'R'`: expects complement of 'R'; on armed-reset path, enters reset overlay loop
   -> config-stream special (`'f'` lower):
@@ -1298,11 +1298,11 @@ ESQPARS_ConsumeRbfByteAndDispatchCommand :: cmd 0xBB (box-off)
   -> reads control bytes with UI pacing and verifies complements:
        -> first byte must equal `~'D'` (0xBB)
        -> checksum byte must equal `0xFF`
-  -> if DATA_ESQ_BSS_WORD_1DF6 set:
+  -> if ESQ_BSS_WORD_1DF6 set:
        -> ESQPARS_PersistStateDataAfterCommand()
-       -> clear DATA_ESQ_BSS_WORD_1DF6 latch
+       -> clear ESQ_BSS_WORD_1DF6 latch
   -> apply:
-       -> clear DATA_WDISP_BSS_WORD_22A0
+       -> clear WDISP_BSS_WORD_22A0
        -> ESQDISP_UpdateStatusMaskAndRefresh(2,0)
        -> clear ESQPARS_ResetArmedFlag + preamble flags
 
@@ -1347,7 +1347,7 @@ ESQIFF2_ShowVersionMismatchOverlay
 
 ```text
 ESQDISP_UpdateStatusMaskAndRefresh(maskBits, setMode)
-  -> snapshot current mask (oldMask = DATA_ESQDISP_BSS_LONG_1E81)
+  -> snapshot current mask (oldMask = ESQDISP_BSS_LONG_1E81)
   -> if setMode != 0:
        -> newMask = oldMask OR maskBits
     else:
@@ -1533,7 +1533,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix(inputToken)
        -> wildcard-match parsed base token against ESQ_SelectCodeBuffer
        -> empty base token forces immediate failure state
   -> optional suffix match:
-       -> if suffix present, wildcard-match suffix against DATA_WDISP_BSS_LONG_2298
+       -> if suffix present, wildcard-match suffix against WDISP_BSS_LONG_2298
   -> success rule:
        -> base match success AND suffix (if any) success
        -> plus fallback delimiter marker must remain default
@@ -1591,7 +1591,7 @@ ESQDISP_NormalizeClockAndRedrawBanner
 ```text
 ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
   -> guard: if SecondaryGroupEntryCount != 0:
-       -> DATA_ESQDISP_BSS_WORD_1E87 = 0
+       -> ESQDISP_BSS_WORD_1E87 = 0
        -> return
   -> for each primary entry index i in [0, PrimaryGroupEntryCount):
        -> srcEntry = PrimaryEntryPtrTable[i]
@@ -1606,7 +1606,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
        -> derive header args from srcEntry fields around +40..+46 (with 0xFF7F mask)
        -> ESQDISP_FillProgramInfoHeaderFields(dstEntry, ...)
   -> after full clone:
-       -> DATA_ESQDISP_BSS_WORD_1E87 = 1
+       -> ESQDISP_BSS_WORD_1E87 = 1
        -> return
 ```
 
@@ -1656,10 +1656,10 @@ ESQDISP_PromoteSecondaryGroupToPrimary
        -> clear secondary metadata/present flag
        -> GroupMutationState = 3
   -> sync task bytes:
-       -> DATA_CTASKS_BSS_BYTE_1B91 <- DATA_CTASKS_BSS_BYTE_1B92
-       -> DATA_CTASKS_BSS_BYTE_1B8F <- DATA_CTASKS_BSS_BYTE_1B90
-       -> DATA_CTASKS_BSS_BYTE_1B92 <- 0xFF
-       -> DATA_CTASKS_BSS_BYTE_1B90 <- 0
+       -> CTASKS_BSS_BYTE_1B91 <- CTASKS_BSS_BYTE_1B92
+       -> CTASKS_BSS_BYTE_1B8F <- CTASKS_BSS_BYTE_1B90
+       -> CTASKS_BSS_BYTE_1B92 <- 0xFF
+       -> CTASKS_BSS_BYTE_1B90 <- 0
   -> ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache
 ```
 
@@ -1667,11 +1667,11 @@ ESQDISP_PromoteSecondaryGroupToPrimary
 
 ```text
 ESQDISP_PromoteSecondaryLineHeadTailIfMarked
-  -> if DATA_WDISP_BSS_WORD_228F != 0:
+  -> if WDISP_BSS_WORD_228F != 0:
        -> ESQIFF2_ClearLineHeadTailByMode(1)
        -> PrimaryLineHead/Tail <- SecondaryLineHead/Tail
        -> SecondaryLineHead/Tail <- NULL
-  -> DATA_WDISP_BSS_WORD_228F = 0
+  -> WDISP_BSS_WORD_228F = 0
 
 ESQDISP_TestWordIsZeroBooleanize
   -> input: stack word argument
@@ -1703,7 +1703,7 @@ ESQIFF2_ParseLineHeadTailRecord(recordPtr)
             -> internal delimiter => split head/tail and ReplaceOwnedString both
   -> else if code == SecondaryGroupCode:
        -> ESQIFF2_ClearLineHeadTailByMode(2)
-       -> DATA_WDISP_BSS_WORD_228F = 1 (pending secondary line-chain promotion)
+       -> WDISP_BSS_WORD_228F = 1 (pending secondary line-chain promotion)
        -> apply same delimiter split logic using secondary head/tail globals
   -> else:
        -> ignore record and return
@@ -1840,7 +1840,7 @@ ESQIFF_QueueIffBrushLoad(mode)
             -> mark descriptor class/state and set CTASKS_IffTaskState=6
             -> start IFF task process
   -> cursor advance:
-       -> if mode != 2, advance DATA_ESQIFF_BSS_LONG_1EE9 via node->next (+234)
+       -> if mode != 2, advance ESQIFF_BSS_LONG_1EE9 via node->next (+234)
 
 ESQIFF_RenderWeatherStatusBrushSlice(dstRast, brush)
   -> null-brush guard: clear remaining counter and return
@@ -1866,7 +1866,7 @@ ESQIFF_RenderWeatherStatusBrushSlice(dstRast, brush)
 
 ```text
 ESQIFF_ServicePendingCopperPaletteMoves
-  -> row 0 gate (`DATA_COMMON_BSS_WORD_1B15`):
+  -> row 0 gate (`COMMON_BSS_WORD_1B15`):
        -> if countdown reaches trigger state and move flags are set:
             -> direction bit1 set: MoveCopperEntryTowardEnd(startIdx, endIdx)
             -> else: MoveCopperEntryTowardStart(startIdx, endIdx)
@@ -1877,7 +1877,7 @@ ESQIFF_ServicePendingCopperPaletteMoves
        -> row3: `1B18` + `WDISP_AccumulatorRow3_*`
 
 ESQIFF_SetApenToBrightestPaletteIndex
-  -> derive active palette count from depth bit (`DATA_WDISP_BSS_LONG_22AE`)
+  -> derive active palette count from depth bit (`WDISP_BSS_LONG_22AE`)
   -> initialize best score from palette index 0 RGB sum
   -> scan remaining palette entries:
        -> intensity = R + G + B
@@ -1899,7 +1899,7 @@ ESQIFF_ReloadExternalAssetCatalogBuffers(mode)
        -> open `gfx/g_ads.data`, get filesize, allocate `size+1`, read blob
        -> on full read: set ESQIFF_ExternalAssetFlags bit0
        -> close handle
-       -> sync g_ads line index shadow to 0/1 from DATA_WDISP_BSS_WORD_2294 gate
+       -> sync g_ads line index shadow to 0/1 from WDISP_BSS_WORD_2294 gate
   -> logo.lst reload branch (only when mode==0 and drive writable):
        -> Forbid/Permit around brush-list free/reset
        -> clear ESQIFF_LogoBrushListCount + ESQIFF_LogoListLineIndex
@@ -1947,7 +1947,7 @@ ESQIFF_ShowExternalAssetWithCopperFx(sourceMode)
   -> select brush head by source:
        -> sourceMode!=0 => g_ads head
        -> sourceMode==0 => logo head
-       -> if no head: set retry bit in DATA_ESQFUNC_BSS_WORD_1EE4 and return
+       -> if no head: set retry bit in ESQFUNC_BSS_WORD_1EE4 and return
   -> run drop transition, compute banner-transition duration from brush width/flags
   -> wait for SCRIPT_BannerTransitionActive to clear
   -> capture 4 accumulator rows from brush offsets +200.. into WDISP_AccumulatorRowTable
@@ -1976,7 +1976,7 @@ ESQIFF_ServiceExternalAssetSourceState(modeFlag)
   -> set ESQIFF_AssetSourceSelect / ESQIFF_GAdsSourceEnabled based on modeFlag
   -> conditionally reload catalogs:
        -> logo reload if drive writable and logo flag missing
-       -> g_ads reload if DATA_WDISP_BSS_LONG_2319 clear and g_ads flag missing
+       -> g_ads reload if WDISP_BSS_LONG_2319 clear and g_ads flag missing
   -> queue next asset job
 ```
 
@@ -2006,7 +2006,7 @@ ESQIFF_HandleBrushIniReloadHotkey(key)
   -> repopulate brush list from parsed descriptors
   -> select preferred `DT` brush by label
   -> fallback to `DITHER` brush predicate if no selected node
-  -> cache type-3 brush pointer in DATA_ESQFUNC_BSS_LONG_1ED0
+  -> cache type-3 brush pointer in ESQFUNC_BSS_LONG_1ED0
   -> reset ctrl input state idle-safe
 ```
 
@@ -2027,7 +2027,7 @@ ESQFUNC_WaitForClockChangeAndServiceUi
 
 ESQFUNC_CommitSecondaryStateAndPersist
   -> save ESQPARS2_ReadModeFlags; force mode to 0x100
-  -> set DATA_ESQDISP_BSS_WORD_1E86 = 1
+  -> set ESQDISP_BSS_WORD_1E86 = 1
   -> propagate/promote/mirror secondary state:
        -> ESQDISP_PropagatePrimaryTitleMetadataToSecondary
        -> LOCAVAIL_RebuildFilterStateFromCurrentGroup
@@ -2056,13 +2056,13 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry(modeFlag, ...)
        -> tag `00`: use BRUSH_SelectedNode directly
        -> tag `11`: wildcard scan through brush descriptor chains
        -> fallback: 2-char tag compare against brush nodes
-       -> optional type-3 fallback via DATA_ESQFUNC_BSS_LONG_1ED0 when entry flag bit4 set
+       -> optional type-3 fallback via ESQFUNC_BSS_LONG_1ED0 when entry flag bit4 set
   -> clear global/display rastports to pen 31
   -> if brush resolved, blit with BRUSH_SelectBrushSlot into display context
   -> palette handling from brush mode (field +328):
        -> mode 0/1: copy brush palette bytes (offset +0xE8) into live palette triples
        -> mode 1: immediately restore base palette
-       -> mode 3: restore first 12 bytes from DATA_ESQFUNC_CONST_LONG_1ECC
+       -> mode 3: restore first 12 bytes from ESQFUNC_CONST_LONG_1ECC
        -> no brush: restore base palette
   -> returns success flag 1
 
@@ -2087,7 +2087,7 @@ ESQFUNC_TrimTextToPixelWidthWordBoundary(rastport, maxPx, textPtr)
 
 ```text
 ESQFUNC_UpdateRefreshModeState(requestFlag)
-  -> always sets DATA_ESQFUNC_CONST_WORD_1ECD = 1
+  -> always sets ESQFUNC_CONST_WORD_1ECD = 1
   -> if NEWGRID_MessagePumpSuspendFlag set:
        -> clear NEWGRID_RefreshStateFlag + suspend flag
        -> reset blit geometry words (1F53/1F54)

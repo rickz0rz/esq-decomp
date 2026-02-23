@@ -668,7 +668,7 @@ TLIBA1_DrawInlineStyledText:
 ;   TLIBA1_DrawInlineStyledText, MATH_DivS32, MATH_Mulu32, MEMORY_AllocateMemory,
 ;   MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, DATA_TLIBA1_STR_TLIBA1_DOT_C_2164, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1115,7 +1115,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     2385.W
-    PEA     DATA_TLIBA1_STR_TLIBA1_DOT_C_2164
+    PEA     TLIBA1_STR_TLIBA1_DOT_C
     JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1338,7 +1338,7 @@ TLIBA1_BuildClockFormatEntryIfVisible:
 ; CALLS:
 ;   FORMAT_RawDoFmtWithScratchBuffer, STRING_AppendAtNull, WDISP_SPrintf
 ; READS:
-;   DATA_TEXTDISP_CONST_LONG_2156, DATA_TLIBA1_BSS_BYTE_2165, DATA_TLIBA1_BSS_WORD_2166, DATA_TLIBA1_BSS_WORD_2167, DATA_TLIBA1_BSS_WORD_2168, DATA_TLIBA1_BSS_WORD_2169, DATA_TLIBA1_FMT_PCT_C_PCT_S_216A, DATA_TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X_216B, DATA_TLIBA1_STR_VALUE_216C, DATA_TLIBA1_FMT_TLF_COLOR_PCT_D_216D, DATA_TLIBA1_FMT_TLF_OFFSET_PCT_D_216E, DATA_TLIBA1_FMT_TLF_FONTSEL_PCT_D_216F, DATA_TLIBA1_FMT_TLF_ALIGN_PCT_D_2170, DATA_TLIBA1_FMT_TLF_PREGAP_PCT_D_2171, DATA_TLIBA1_STR_VALUE_2172, WDISP_CharClassTable, copy_loop
+;   TEXTDISP_FormatEntryFallbackTable, TLIBA1_FormatFallbackBuffer, TLIBA1_FormatFallbackFieldPtr0, TLIBA1_FormatFallbackFieldPtr1, TLIBA1_FormatFallbackFieldPtr2, TLIBA1_FormatFallbackFieldPtr3, TLIBA1_FMT_PCT_C_PCT_S, TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X, TLIBA1_STR_TLFormatStructOpenBraceLine, TLIBA1_FMT_TLF_COLOR_PCT_D, TLIBA1_FMT_TLF_OFFSET_PCT_D, TLIBA1_FMT_TLF_FONTSEL_PCT_D, TLIBA1_FMT_TLF_ALIGN_PCT_D, TLIBA1_FMT_TLF_PREGAP_PCT_D, TLIBA1_STR_TLFormatStructCloseBraceLine, WDISP_CharClassTable, copy_loop
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1353,7 +1353,7 @@ TLIBA1_FormatClockFormatEntry:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.W  34(A5),D7
-    LEA     DATA_TLIBA1_BSS_BYTE_2165,A0
+    LEA     TLIBA1_FormatFallbackBuffer,A0
     LEA     -532(A5),A1
     MOVE.W  #$1ff,D0
 ; This is weird, it's purposefully one byte back
@@ -1426,13 +1426,13 @@ TLIBA1_FormatClockFormatEntry:
     MOVE.L  D1,D2
     EXT.L   D2
     ASL.L   #2,D2
-    LEA     DATA_TEXTDISP_CONST_LONG_2156,A0
+    LEA     TEXTDISP_FormatEntryFallbackTable,A0
     ADDA.L  D2,A0
     MOVE.L  (A0),-4(A5)
     BRA.S   .skip_17BB
 
 .branch_17BA:
-    MOVE.L  DATA_TEXTDISP_CONST_LONG_2156,-4(A5)
+    MOVE.L  TEXTDISP_FormatEntryFallbackTable,-4(A5)
 
 .skip_17BB:
     TST.L   28(A5)
@@ -1442,7 +1442,7 @@ TLIBA1_FormatClockFormatEntry:
     BRA.S   .skip_17BD
 
 .if_eq_17BC:
-    LEA     DATA_TLIBA1_BSS_WORD_2166,A0
+    LEA     TLIBA1_FormatFallbackFieldPtr0,A0
 
 .skip_17BD:
     MOVE.L  A0,-20(A5)
@@ -1453,7 +1453,7 @@ TLIBA1_FormatClockFormatEntry:
     BRA.S   .skip_17BF
 
 .if_eq_17BE:
-    LEA     DATA_TLIBA1_BSS_WORD_2167,A0
+    LEA     TLIBA1_FormatFallbackFieldPtr1,A0
 
 .skip_17BF:
     MOVE.L  A0,-16(A5)
@@ -1464,7 +1464,7 @@ TLIBA1_FormatClockFormatEntry:
     BRA.S   .skip_17C1
 
 .if_eq_17C0:
-    LEA     DATA_TLIBA1_BSS_WORD_2168,A0
+    LEA     TLIBA1_FormatFallbackFieldPtr2,A0
 
 .skip_17C1:
     MOVE.L  A0,-12(A5)
@@ -1475,7 +1475,7 @@ TLIBA1_FormatClockFormatEntry:
     BRA.S   .skip_17C3
 
 .if_eq_17C2:
-    LEA     DATA_TLIBA1_BSS_WORD_2169,A0
+    LEA     TLIBA1_FormatFallbackFieldPtr3,A0
 
 .skip_17C3:
     MOVE.L  A0,-8(A5)
@@ -1525,7 +1525,7 @@ TLIBA1_FormatClockFormatEntry:
     ASL.L   #2,D1
     MOVE.L  -20(A5,D1.L),-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_TLIBA1_FMT_PCT_C_PCT_S_216A
+    PEA     TLIBA1_FMT_PCT_C_PCT_S
     PEA     -532(A5)
     JSR     WDISP_SPrintf(PC)
 
@@ -1549,43 +1549,43 @@ TLIBA1_FormatClockFormatEntry:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     MOVE.L  A3,-(A7)
-    PEA     DATA_TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X_216B
+    PEA     TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     DATA_TLIBA1_STR_VALUE_216C
+    PEA     TLIBA1_STR_TLFormatStructOpenBraceLine
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  (A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     DATA_TLIBA1_FMT_TLF_COLOR_PCT_D_216D
+    PEA     TLIBA1_FMT_TLF_COLOR_PCT_D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  2(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     DATA_TLIBA1_FMT_TLF_OFFSET_PCT_D_216E
+    PEA     TLIBA1_FMT_TLF_OFFSET_PCT_D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  4(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     DATA_TLIBA1_FMT_TLF_FONTSEL_PCT_D_216F
+    PEA     TLIBA1_FMT_TLF_FONTSEL_PCT_D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  6(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     DATA_TLIBA1_FMT_TLF_ALIGN_PCT_D_2170
+    PEA     TLIBA1_FMT_TLF_ALIGN_PCT_D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  8(A3),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     DATA_TLIBA1_FMT_TLF_PREGAP_PCT_D_2171
+    PEA     TLIBA1_FMT_TLF_PREGAP_PCT_D
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     DATA_TLIBA1_STR_VALUE_2172
+    PEA     TLIBA1_STR_TLFormatStructCloseBraceLine
     JSR     FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     36(A7),A7

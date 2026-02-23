@@ -181,9 +181,9 @@ SCRIPT_CheckPathExists:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset
 ; READS:
-;   DATA_SCRIPT_BSS_WORD_2120/SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, SCRIPT_BannerTransitionTargetChar/2353/2354
+;   SCRIPT_BannerTransitionStepBudget/SCRIPT_BannerTransitionActive/SCRIPT_BannerTransitionStepCursor, SCRIPT_BannerTransitionTargetChar/2353/2354
 ; WRITES:
-;   SCRIPT_BannerTransitionActive/DATA_SCRIPT_BSS_WORD_212A, banner character (via SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
+;   SCRIPT_BannerTransitionActive/SCRIPT_BannerTransitionStepCursor, banner character (via SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset)
 ; DESC:
 ;   Advances an in-progress banner character transition toward its target.
 ; NOTES:
@@ -208,24 +208,24 @@ SCRIPT_UpdateBannerCharTransition:
 
     MOVEQ   #0,D1
     MOVE.W  D1,SCRIPT_BannerTransitionActive
-    MOVE.W  D1,DATA_SCRIPT_BSS_WORD_212A
+    MOVE.W  D1,SCRIPT_BannerTransitionStepCursor
     BRA.W   .done
 
 .advance_step:
     MOVE.W  SCRIPT_BannerTransitionStepDelta,D5
-    MOVE.W  DATA_SCRIPT_BSS_WORD_2120,D1
+    MOVE.W  SCRIPT_BannerTransitionStepBudget,D1
     MOVEQ   #0,D2
     CMP.W   D2,D1
     BLS.S   .calc_candidate
 
-    ADDQ.W  #1,DATA_SCRIPT_BSS_WORD_212A
-    MOVE.W  DATA_SCRIPT_BSS_WORD_212A,D3
+    ADDQ.W  #1,SCRIPT_BannerTransitionStepCursor
+    MOVE.W  SCRIPT_BannerTransitionStepCursor,D3
     CMP.W   D1,D3
     BLT.S   .calc_candidate
 
     MOVE.W  SCRIPT_BannerTransitionStepSign,D3
     ADD.W   D3,D5
-    MOVE.W  D2,DATA_SCRIPT_BSS_WORD_212A
+    MOVE.W  D2,SCRIPT_BannerTransitionStepCursor
 
 .calc_candidate:
     MOVE.L  D5,D7
@@ -256,7 +256,7 @@ SCRIPT_UpdateBannerCharTransition:
     TST.W   SCRIPT_BannerTransitionStepDelta
     BNE.S   .apply_step
 
-    TST.W   DATA_SCRIPT_BSS_WORD_2120
+    TST.W   SCRIPT_BannerTransitionStepBudget
     BNE.S   .apply_step
 
 .snap_to_target:
@@ -297,7 +297,7 @@ SCRIPT_UpdateBannerCharTransition:
 ; READS:
 ;   CONFIG_LRBN_FlagChar/CONFIG_MSN_FlagChar, Global_WORD_SELECT_CODE_IS_RAVESC, SCRIPT_BannerTransitionActive
 ; WRITES:
-;   SCRIPT_BannerTransitionTargetChar/2353/2354, DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, DATA_SCRIPT_BSS_WORD_211F
+;   SCRIPT_BannerTransitionTargetChar/2353/2354, SCRIPT_BannerTransitionStepBudget, SCRIPT_BannerTransitionActive, SCRIPT_PendingBannerSpeedMs
 ; DESC:
 ;   Prepares parameters for a banner-char transition toward a target value.
 ; NOTES:
@@ -434,11 +434,11 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D4,D1
     JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2120
+    MOVE.W  D0,SCRIPT_BannerTransitionStepBudget
     BRA.S   .begin_banner_finalize_step_sign
 
 .begin_banner_no_remainder:
-    CLR.W   DATA_SCRIPT_BSS_WORD_2120
+    CLR.W   SCRIPT_BannerTransitionStepBudget
 
 .begin_banner_finalize_step_sign:
     MOVE.W  SCRIPT_BannerTransitionStepDelta,D0
@@ -449,7 +449,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.L  D6,D0
     MOVEQ   #1,D5
     MOVE.W  D5,SCRIPT_BannerTransitionActive
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  D0,SCRIPT_PendingBannerSpeedMs
 
 .return:
     MOVE.L  D5,D0
@@ -472,12 +472,12 @@ SCRIPT_BeginBannerCharTransition:
 ; READS:
 ;   Global_REF_WORD_HEX_CODE_8E (target banner char)
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_2120, SCRIPT_BannerTransitionActive, SCRIPT_BannerTransitionTargetChar, SCRIPT_BannerTransitionStepDelta, SCRIPT_BannerTransitionStepSign
+;   SCRIPT_BannerTransitionStepBudget, SCRIPT_BannerTransitionActive, SCRIPT_BannerTransitionTargetChar, SCRIPT_BannerTransitionStepDelta, SCRIPT_BannerTransitionStepSign
 ; DESC:
 ;   Initializes transition-step globals to move the current banner character
 ;   directly toward Global_REF_WORD_HEX_CODE_8E.
 ; NOTES:
-;   DATA_SCRIPT_BSS_WORD_2120 is reset to 0; transition is enabled only when
+;   SCRIPT_BannerTransitionStepBudget is reset to 0; transition is enabled only when
 ;   current and target characters differ.
 ;------------------------------------------------------------------------------
 SCRIPT_PrimeBannerTransitionFromHexCode:
@@ -505,7 +505,7 @@ SCRIPT_PrimeBannerTransitionFromHexCode:
     MOVEQ   #1,D1
 
 .store_step_sign:
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2120
+    MOVE.W  D0,SCRIPT_BannerTransitionStepBudget
     MOVE.W  D1,SCRIPT_BannerTransitionStepSign
     TST.W   D2
     BEQ.S   .set_transition_inactive
@@ -563,12 +563,12 @@ SCRIPT_InitCtrlContext:
 ;   SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, PARSEINI_CheckCtrlHChange, SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
 ;   WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   Global_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, DATA_ESQ_BSS_WORD_1DF3, DATA_ESQDISP_BSS_LONG_1E84, DATA_SCRIPT_BSS_WORD_212B
+;   Global_WORD_SELECT_CODE_IS_RAVESC, CONFIG_MSN_FlagChar, SCRIPT_StatusRefreshHoldFlag, ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
 ;   Global_REF_CLOCKDATA_STRUCT, Global_WORD_CLOCK_SECONDS
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
 ;   SCRIPT_RuntimeMode/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
 ; WRITES:
-;   Global_RefreshTickCounter, DATA_SCRIPT_BSS_WORD_212B, Global_WORD_CLOCK_SECONDS,
+;   Global_RefreshTickCounter, SCRIPT_StatusMaskRefreshPending, Global_WORD_CLOCK_SECONDS,
 ;   SCRIPT_CTRL_READ_INDEX, SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
 ;   SCRIPT_CTRL_CMD_BUFFER, SCRIPT_CtrlCmdCount/2348/2349
 ; DESC:
@@ -594,7 +594,7 @@ SCRIPT_HandleSerialCtrlCmd:
     BRA.S   .ctrl_cmd_handle_status_timeout
 
 .ctrl_cmd_gate_refresh_disabled:
-    TST.W   DATA_ESQ_BSS_WORD_1DF3
+    TST.W   SCRIPT_StatusRefreshHoldFlag
     BEQ.S   .ctrl_cmd_check_display_state
 
     MOVEQ   #0,D0
@@ -603,11 +603,11 @@ SCRIPT_HandleSerialCtrlCmd:
 
 .ctrl_cmd_check_display_state:
     MOVEQ   #1,D0
-    CMP.L   DATA_ESQDISP_BSS_LONG_1E84,D0
+    CMP.L   ESQDISP_DisplayActiveFlag,D0
     BEQ.W   .return
 
 .ctrl_cmd_handle_status_timeout:
-    TST.W   DATA_SCRIPT_BSS_WORD_212B
+    TST.W   SCRIPT_StatusMaskRefreshPending
     BEQ.S   .ctrl_cmd_poll_input
 
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
@@ -619,7 +619,7 @@ SCRIPT_HandleSerialCtrlCmd:
     CMPI.W  #3,Global_WORD_CLOCK_SECONDS
     BLT.S   .ctrl_cmd_poll_input
 
-    CLR.W   DATA_SCRIPT_BSS_WORD_212B
+    CLR.W   SCRIPT_StatusMaskRefreshPending
     CLR.L   -(A7)
     PEA     32.W
     JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
@@ -798,9 +798,9 @@ SCRIPT_HandleSerialCtrlCmd:
     BRA.S   .ctrl_cmd_reset_parser
 
 .ctrl_cmd_defer_dispatch:
-    MOVE.W  DATA_SCRIPT_BSS_WORD_211B,D0
+    MOVE.W  SCRIPT_CtrlCmdDeferCounter,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211B
+    MOVE.W  D0,SCRIPT_CtrlCmdDeferCounter
     BRA.S   .ctrl_cmd_reset_parser
 
 .ctrl_cmd_checksum_mismatch:
@@ -814,7 +814,7 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  SCRIPT_CtrlCmdChecksumErrorCount,D1
     ADDQ.W  #1,D1
     MOVE.W  D1,SCRIPT_CtrlCmdChecksumErrorCount
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_212B
+    MOVE.W  D0,SCRIPT_StatusMaskRefreshPending
 
 .ctrl_cmd_reset_parser:
     MOVEQ   #0,D0
@@ -882,9 +882,9 @@ SCRIPT_HandleSerialCtrlCmd:
 ; CALLS:
 ;   P_TYPE_GetSubtypeIfType20, P_TYPE_ConsumePrimaryTypeIfPresent, SCRIPT_SelectPlaybackCursorFromSearchText, SCRIPT_SplitAndNormalizeSearchBuffer, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CompareN, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_ReadHandshakeBit5Mask, TEXTDISP_FindEntryIndexByWildcard, TEXTDISP_HandleScriptCommand, TEXTDISP_UpdateChannelRangeFlags, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_ESQ_STR_N_1DCE, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_CommandTextPtr, DATA_SCRIPT_TAG_00_212C, DATA_SCRIPT_TAG_00_212D, DATA_SCRIPT_TAG_11_212E, DATA_SCRIPT_TAG_11_212F, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_ChannelSourceMode, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
+;   BRUSH_SelectedNode, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, CTASKS_STR_1, ESQ_DefaultNoFlagChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListCount, Global_WORD_SELECT_CODE_IS_RAVESC, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_PrimaryFilterState, SCRIPT_Type20SubtypeCache, SCRIPT_CommandTextPtr, SCRIPT_BrushTag_Default00_Primary, SCRIPT_BrushTag_Default00_Secondary, SCRIPT_BrushTag_Clear11_Primary, SCRIPT_BrushTag_Clear11_Secondary, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_ChannelSourceMode, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, TEXTDISP_CurrentMatchIndex, CLEANUP_AlignedStatusMatchIndex, WDISP_CharClassTable, WDISP_HighlightActive
 ; WRITES:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, DATA_COMMON_STR_VALUE_1B05, DATA_SCRIPT_BSS_WORD_211D, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, HIGHLIGHT_CustomValue, SCRIPT_Type20SubtypeCache, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Parses one CTRL packet payload via a 22-way switch/jumptable and updates
 ;   brush selection, playback cursor/runtime mode, channel filters, search text,
@@ -952,7 +952,7 @@ SCRIPT_HandleBrushCommand:
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     DATA_SCRIPT_TAG_00_212C
+    PEA     SCRIPT_BrushTag_Default00_Primary
     MOVE.L  D0,-20(A5)
     MOVE.L  D0,-16(A5)
     JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
@@ -969,7 +969,7 @@ SCRIPT_HandleBrushCommand:
     LEA     1(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     DATA_SCRIPT_TAG_00_212D
+    PEA     SCRIPT_BrushTag_Default00_Secondary
     JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
@@ -984,7 +984,7 @@ SCRIPT_HandleBrushCommand:
     LEA     3(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     DATA_SCRIPT_TAG_11_212E
+    PEA     SCRIPT_BrushTag_Clear11_Primary
     JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
@@ -1002,7 +1002,7 @@ SCRIPT_HandleBrushCommand:
     LEA     1(A2),A0
     PEA     2.W
     MOVE.L  A0,-(A7)
-    PEA     DATA_SCRIPT_TAG_11_212F
+    PEA     SCRIPT_BrushTag_Clear11_Secondary
     JSR     SCRIPT3_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
@@ -1103,7 +1103,7 @@ SCRIPT_HandleBrushCommand:
     JSR     P_TYPE_GetSubtypeIfType20(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_SCRIPT_BSS_WORD_211D
+    MOVE.B  D0,SCRIPT_Type20SubtypeCache
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_set_channel_codes:
@@ -1148,7 +1148,7 @@ SCRIPT_HandleBrushCommand:
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_apply_rtc_yyyymmddhhmm:
-    MOVE.B  DATA_CTASKS_STR_1_1BC9,D0
+    MOVE.B  CTASKS_STR_1,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
     BNE.W   .brush_cmd_finalize
@@ -1249,7 +1249,7 @@ SCRIPT_HandleBrushCommand:
     BNE.S   .brush_cmd_set_playback_cursor_4
 
 .brush_cmd_try_consume_primary_type:
-    PEA     DATA_SCRIPT_BSS_WORD_211D
+    PEA     SCRIPT_Type20SubtypeCache
     JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
@@ -1291,7 +1291,7 @@ SCRIPT_HandleBrushCommand:
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_dispatch_subcommand:
-    PEA     DATA_SCRIPT_BSS_WORD_211D
+    PEA     SCRIPT_Type20SubtypeCache
     JSR     P_TYPE_ConsumePrimaryTypeIfPresent(PC)
 
     ADDQ.W  #4,A7
@@ -1341,8 +1341,8 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_case_set_cursor_9_and_banner_text:
     MOVEQ   #9,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    MOVE.B  1(A2),DATA_SCRIPT_BSS_BYTE_2127
-    MOVE.B  2(A2),DATA_SCRIPT_BSS_WORD_2128
+    MOVE.B  1(A2),SCRIPT_PendingTextdispCmdChar
+    MOVE.B  2(A2),SCRIPT_PendingTextdispCmdArg
     LEA     3(A2),A0                        ; payload tail inside SCRIPT_CTRL_CMD_BUFFER packet
     ; Source is NUL-terminated by caller at packet end (0(A2,D7)=0).
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
@@ -1358,7 +1358,7 @@ SCRIPT_HandleBrushCommand:
 .brush_cmd_case_set_cursor_8_and_byte:
     MOVEQ   #8,D0
     MOVE.L  D0,SCRIPT_PlaybackCursor
-    MOVE.B  2(A2),DATA_SCRIPT_STR_X_2126
+    MOVE.B  2(A2),SCRIPT_PendingWeatherCommandChar
     BRA.W   .brush_cmd_finalize
 
 .brush_cmd_case_channel_range_gate:
@@ -1495,11 +1495,11 @@ SCRIPT_HandleBrushCommand:
 
     MOVE.L  32(A7),D1
     ADD.L   D0,D1
-    MOVE.W  D1,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  D1,SCRIPT_PendingBannerSpeedMs
     BRA.S   .brush_cmd_case_after_banner_speed
 
 .brush_cmd_case_default_banner_speed:
-    MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
 
 .brush_cmd_case_after_banner_speed:
     TST.B   6(A2)
@@ -1547,7 +1547,7 @@ SCRIPT_HandleBrushCommand:
 
 .brush_cmd_case_reset_match_and_pick_cursor:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
-    MOVE.B  DATA_ESQ_STR_N_1DCE,D0
+    MOVE.B  ESQ_DefaultNoFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .brush_cmd_case_set_cursor_2
@@ -1614,7 +1614,7 @@ SCRIPT_HandleBrushCommand:
     ADDQ.W  #4,A7
     MOVEQ   #63,D1
     SUB.L   D0,D1
-    MOVE.B  D1,DATA_COMMON_STR_VALUE_1B05
+    MOVE.B  D1,HIGHLIGHT_CustomValue
     MOVEQ   #63,D0
     CMP.B   D0,D1
 
@@ -1624,7 +1624,7 @@ SCRIPT_HandleBrushCommand:
     BPL.S   .brush_cmd_case_set_cursor_13
 
 .brush_cmd_case_clamp_common_str_value:
-    MOVE.B  D0,DATA_COMMON_STR_VALUE_1B05
+    MOVE.B  D0,HIGHLIGHT_CustomValue
 
 .brush_cmd_case_set_cursor_13:
     MOVEQ   #13,D0
@@ -1980,9 +1980,9 @@ SCRIPT_SelectPlaybackCursorFromSearchText:
 ; CALLS:
 ;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, SCRIPT_DispatchPlaybackCursorCommand, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
 ; READS:
-;   CONFIG_MSN_FlagChar, DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndex
+;   CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, LOCAVAIL_PrimaryFilterState, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_211A, DATA_SCRIPT_BSS_LONG_2125, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
+;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, SCRIPT_RuntimeMode, SCRIPT_PlaybackCursor, TEXTDISP_CurrentMatchIndexSaved
 ; DESC:
 ;   Loads context state, applies mode/cursor gating, runs playback-command
 ;   dispatch, then saves the updated state back into the context snapshot.
@@ -2000,13 +2000,13 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     BSR.W   SCRIPT_LoadCtrlContextSnapshot
 
     ADDQ.W  #8,A7
-    TST.L   DATA_SCRIPT_BSS_LONG_2125
+    TST.L   SCRIPT_RuntimeModeDeferredFlag
     BEQ.S   .playback_tick_apply_pending_mode_change
 
     MOVEQ   #3,D0
     MOVE.W  D0,SCRIPT_RuntimeMode
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2125
+    MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
 
 .playback_tick_apply_pending_mode_change:
     MOVE.B  CONFIG_MSN_FlagChar,D0
@@ -2030,7 +2030,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     SUBQ.W  #2,D0
     BNE.S   .playback_tick_maybe_dispatch_cursor
 
-    TST.W   DATA_SCRIPT_BSS_WORD_211A
+    TST.W   SCRIPT_RuntimeModeDispatchLatch
     BEQ.S   .playback_tick_clear_runtime_latch
 
     MOVE.L  SCRIPT_PlaybackCursor,D0
@@ -2066,7 +2066,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     BRA.S   .return
 
 .playback_tick_clear_runtime_latch:
-    CLR.W   DATA_SCRIPT_BSS_WORD_211A
+    CLR.W   SCRIPT_RuntimeModeDispatchLatch
 
 .return:
     MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_CurrentMatchIndexSaved
@@ -2241,9 +2241,9 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_BeginBannerCharTransition
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_BSS_WORD_2122
+;   Global_REF_WORD_HEX_CODE_8E, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch
 ; WRITES:
-;   ESQPARS2_ReadModeFlags, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_2122
+;   ESQPARS2_ReadModeFlags, SCRIPT_PendingBannerTargetChar, SCRIPT_ReadModeActiveLatch
 ; DESC:
 ;   Applies any pending banner target request and kicks a transition if needed.
 ; NOTES:
@@ -2269,7 +2269,7 @@ SCRIPT_ApplyPendingBannerTarget:
     BEQ.S   .compare_against_default_target
 
     EXT.L   D0
-    MOVE.W  DATA_SCRIPT_BSS_WORD_211F,D1
+    MOVE.W  SCRIPT_PendingBannerSpeedMs,D1
     MOVEQ   #0,D2
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
@@ -2286,7 +2286,7 @@ SCRIPT_ApplyPendingBannerTarget:
     BEQ.S   .maybe_clear_readmode_flags
 
     EXT.L   D0
-    MOVE.W  DATA_SCRIPT_BSS_WORD_211F,D1
+    MOVE.W  SCRIPT_PendingBannerSpeedMs,D1
     MOVEQ   #0,D2
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
@@ -2297,12 +2297,12 @@ SCRIPT_ApplyPendingBannerTarget:
     MOVE.W  #(-1),SCRIPT_PendingBannerTargetChar
 
 .maybe_clear_readmode_flags:
-    TST.W   DATA_SCRIPT_BSS_WORD_2122
+    TST.W   SCRIPT_ReadModeActiveLatch
     BEQ.S   .return
 
     MOVEQ   #0,D0
     MOVE.W  D0,ESQPARS2_ReadModeFlags
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2122
+    MOVE.W  D0,SCRIPT_ReadModeActiveLatch
 
 .return:
     MOVEM.L (A7)+,D2/D7
@@ -2321,9 +2321,9 @@ SCRIPT_ApplyPendingBannerTarget:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_N_1BC6, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
+;   Global_REF_WORD_HEX_CODE_8E, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_2119, DATA_SCRIPT_BSS_WORD_211A, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
+;   SCRIPT_CtrlHandshakeRetryCount, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Handles runtime-mode transitions around playback cursor commands and
 ;   updates the serial shadow byte according to current mode/flags.
@@ -2337,7 +2337,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     SUBQ.W  #1,D0
     BNE.W   .runtime_mode_else_paths
 
-    MOVE.B  DATA_CTASKS_STR_N_1BB3,D0
+    MOVE.B  CONFIG_RuntimeMode12BannerJumpEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .runtime_mode_enter_mode2
@@ -2352,10 +2352,10 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     ADDQ.W  #8,A7
 
 .runtime_mode_enter_mode2:
-    CLR.W   DATA_SCRIPT_BSS_WORD_2119
+    CLR.W   SCRIPT_CtrlHandshakeRetryCount
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVE.W  #2,SCRIPT_RuntimeMode
-    MOVE.W  #1,DATA_SCRIPT_BSS_WORD_211A
+    MOVE.W  #1,SCRIPT_RuntimeModeDispatchLatch
     JSR     WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
@@ -2372,7 +2372,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     BNE.S   .runtime_mode_shadow_default
 
 .runtime_mode_pick_shadow_byte:
-    MOVE.B  DATA_CTASKS_STR_N_1BC6,D0
+    MOVE.B  CONFIG_MsnRuntimeModeSelectorChar_LRBN,D0
     EXT.W   D0
     SUBI.W  #$42,D0
     BEQ.S   .runtime_mode_shadow_case_3
@@ -2427,7 +2427,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211A
+    MOVE.W  D0,SCRIPT_RuntimeModeDispatchLatch
 
 .runtime_mode_clear_to_zero:
     MOVEQ   #0,D0
@@ -2450,9 +2450,9 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ; CALLS:
 ;   SCRIPT_DeassertCtrlLineNow, TEXTDISP_ResetSelectionAndRefresh, STR_FindCharPtr, SCRIPT_ReadHandshakeBit3Flag
 ; READS:
-;   SCRIPT_RuntimeMode, DATA_SCRIPT_BSS_WORD_2118, DATA_SCRIPT_BSS_WORD_2119, ED_DiagVinModeChar, Global_UIBusyFlag
+;   SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, ED_DiagVinModeChar, Global_UIBusyFlag
 ; WRITES:
-;   SCRIPT_RuntimeMode, DATA_SCRIPT_BSS_WORD_2118, DATA_SCRIPT_BSS_WORD_2119
+;   SCRIPT_RuntimeMode, SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount
 ; DESC:
 ;   Advances a small control state machine and triggers follow-up actions when
 ;   counters hit thresholds.
@@ -2466,19 +2466,19 @@ SCRIPT_UpdateCtrlStateMachine:
     SUBQ.W  #2,D0
     BNE.S   .reset_state
 
-    MOVE.W  DATA_SCRIPT_BSS_WORD_2118,D0
+    MOVE.W  SCRIPT_CtrlHandshakeStage,D0
     SUBQ.W  #1,D0
     BNE.S   .check_state_two
 
-    MOVE.W  DATA_SCRIPT_BSS_WORD_2119,D0
+    MOVE.W  SCRIPT_CtrlHandshakeRetryCount,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,DATA_SCRIPT_BSS_WORD_2119
+    MOVE.W  D1,SCRIPT_CtrlHandshakeRetryCount
     MOVEQ   #3,D0
     CMP.W   D0,D1
     BLT.S   .return_status
 
-    CLR.W   DATA_SCRIPT_BSS_WORD_2119
+    CLR.W   SCRIPT_CtrlHandshakeRetryCount
     MOVE.W  D0,SCRIPT_RuntimeMode
     JSR     SCRIPT_DeassertCtrlLineNow(PC)
 
@@ -2487,12 +2487,12 @@ SCRIPT_UpdateCtrlStateMachine:
     BRA.S   .return_status
 
 .check_state_two:
-    MOVE.W  DATA_SCRIPT_BSS_WORD_2118,D0
+    MOVE.W  SCRIPT_CtrlHandshakeStage,D0
     SUBQ.W  #2,D0
     BNE.S   .check_banner_active
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2119
+    MOVE.W  D0,SCRIPT_CtrlHandshakeRetryCount
     BRA.S   .return_status
 
 .check_banner_active:
@@ -2503,7 +2503,7 @@ SCRIPT_UpdateCtrlStateMachine:
     BRA.S   .return_status
 
 .reset_state:
-    CLR.W   DATA_SCRIPT_BSS_WORD_2119
+    CLR.W   SCRIPT_CtrlHandshakeRetryCount
 
 .return_status:
     RTS
@@ -2514,7 +2514,7 @@ SCRIPT_UpdateCtrlStateMachine:
     MOVEQ   #0,D0
     MOVE.B  ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_SCRIPT_STR_YL_2130
+    PEA     SCRIPT_Tag_YL
     ; strchr-style membership test against "YL" mode-gate chars.
     JSR     STR_FindCharPtr(PC)
 
@@ -2527,15 +2527,15 @@ SCRIPT_UpdateCtrlStateMachine:
     TST.B   D0
     BEQ.S   .set_state_one
 
-    MOVE.W  #2,DATA_SCRIPT_BSS_WORD_2118
+    MOVE.W  #2,SCRIPT_CtrlHandshakeStage
     BRA.S   .refresh_done
 
 .set_state_one:
-    MOVE.W  #1,DATA_SCRIPT_BSS_WORD_2118
+    MOVE.W  #1,SCRIPT_CtrlHandshakeStage
     BRA.S   .refresh_done
 
 .clear_state:
-    CLR.W   DATA_SCRIPT_BSS_WORD_2118
+    CLR.W   SCRIPT_CtrlHandshakeStage
 
 .refresh_done:
     RTS
@@ -2553,9 +2553,9 @@ SCRIPT_UpdateCtrlStateMachine:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, DATA_SCRIPT_BSS_WORD_211C, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, TEXTDISP_ChannelSourceMode
+;   Global_REF_WORD_HEX_CODE_8E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, TEXTDISP_ChannelSourceMode
 ; WRITES:
-;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_WORD_211C, SCRIPT_PendingBannerTargetChar, DATA_SCRIPT_BSS_WORD_211F, DATA_SCRIPT_BSS_WORD_2122, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
+;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Dispatches command behavior from *playbackCursorPtr using a compiler
 ;   switch/jumptable and clears the command slot afterward.
@@ -2595,13 +2595,13 @@ SCRIPT_DispatchPlaybackCursorCommand:
     DC.W    .playback_cmd_case_set_read_mode_off-.playback_cmd_jmptbl-2
 
 .playback_cmd_case_set_read_mode_on:
-    MOVE.W  #1,DATA_SCRIPT_BSS_WORD_2122
+    MOVE.W  #1,SCRIPT_ReadModeActiveLatch
     MOVE.W  #256,ESQPARS2_ReadModeFlags
     BRA.W   .return
 
 .playback_cmd_case_set_read_mode_off:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_2122
+    MOVE.W  D0,SCRIPT_ReadModeActiveLatch
     MOVE.W  D0,ESQPARS2_ReadModeFlags
     BRA.W   .return
 
@@ -2614,13 +2614,13 @@ SCRIPT_DispatchPlaybackCursorCommand:
     ADDQ.W  #4,A7
     MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     ADDI.W  #28,D0
-    MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
 .playback_cmd_case_banner_current:
     MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
-    MOVE.W  #1000,DATA_SCRIPT_BSS_WORD_211F
+    MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
@@ -2724,7 +2724,7 @@ SCRIPT_DispatchPlaybackCursorCommand:
 .playback_cmd_case_weather_status:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
-    MOVE.B  DATA_SCRIPT_STR_X_2126,D0
+    MOVE.B  SCRIPT_PendingWeatherCommandChar,D0
     MOVE.L  D0,-(A7)
     JSR     WDISP_HandleWeatherStatusCommand(PC)
 
@@ -2734,9 +2734,9 @@ SCRIPT_DispatchPlaybackCursorCommand:
 .playback_cmd_case_textdisp_command:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
     MOVEQ   #0,D0
-    MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,D0
+    MOVE.B  SCRIPT_PendingTextdispCmdChar,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_SCRIPT_BSS_WORD_2128,D1
+    MOVE.B  SCRIPT_PendingTextdispCmdArg,D1
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -2753,9 +2753,9 @@ SCRIPT_DispatchPlaybackCursorCommand:
 
 .playback_cmd_case_default_increment:
     MOVE.W  #(-1),TEXTDISP_CurrentMatchIndex
-    MOVE.W  DATA_SCRIPT_BSS_WORD_211C,D0
+    MOVE.W  SCRIPT_PlaybackFallbackCounter,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATA_SCRIPT_BSS_WORD_211C
+    MOVE.W  D0,SCRIPT_PlaybackFallbackCounter
 
 .return:
     BSR.W   SCRIPT_ClearSearchTextsAndChannels
@@ -2884,7 +2884,7 @@ SCRIPT_ResetCtrlContext:
 ; READS:
 ;   SCRIPT_CommandTextPtr, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
 ; WRITES:
-;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode
+;   SCRIPT_Type20SubtypeCache, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode
 ; DESC:
 ;   Loads saved CTRL context fields into live script/text-display globals.
 ; NOTES:
@@ -2893,10 +2893,10 @@ SCRIPT_ResetCtrlContext:
 SCRIPT_LoadCtrlContextSnapshot:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
-    MOVE.B  436(A3),DATA_SCRIPT_BSS_WORD_211D
-    MOVE.B  437(A3),DATA_SCRIPT_STR_X_2126
-    MOVE.B  438(A3),DATA_SCRIPT_BSS_BYTE_2127
-    MOVE.B  439(A3),DATA_SCRIPT_BSS_WORD_2128
+    MOVE.B  436(A3),SCRIPT_Type20SubtypeCache
+    MOVE.B  437(A3),SCRIPT_PendingWeatherCommandChar
+    MOVE.B  438(A3),SCRIPT_PendingTextdispCmdChar
+    MOVE.B  439(A3),SCRIPT_PendingTextdispCmdArg
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  440(A3),-(A7)
     JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
@@ -2986,7 +2986,7 @@ SCRIPT_LoadCtrlContextSnapshot:
 ; CALLS:
 ;   ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   DATA_SCRIPT_BSS_WORD_211D, DATA_SCRIPT_STR_X_2126, DATA_SCRIPT_BSS_BYTE_2127, DATA_SCRIPT_BSS_WORD_2128, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
+;   SCRIPT_Type20SubtypeCache, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, TEXTDISP_ActiveGroupId, SCRIPT_RuntimeMode, TEXTDISP_PrimarySearchText, TEXTDISP_SecondarySearchText, TEXTDISP_PrimaryChannelCode, TEXTDISP_SecondaryChannelCode, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, SCRIPT_PlaybackCursor, SCRIPT_PrimarySearchFirstFlag, SCRIPT_ChannelRangeArmedFlag, TEXTDISP_CurrentMatchIndex, TEXTDISP_ChannelSourceMode, TEXTDISP_BannerFallbackEntryIndex, TEXTDISP_BannerSelectedEntryIndex
 ; WRITES:
 ;   Context fields at A3+2/+4/+6/+8/+10/+12/+14/+16/+20/+24/+26/+226/+426/+436..+440 and A3+0x1AC..0x1B3
 ; DESC:
@@ -2996,10 +2996,10 @@ SCRIPT_SaveCtrlContextSnapshot:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
 
-    MOVE.B  DATA_SCRIPT_BSS_WORD_211D,436(A3)
-    MOVE.B  DATA_SCRIPT_STR_X_2126,437(A3)
-    MOVE.B  DATA_SCRIPT_BSS_BYTE_2127,438(A3)
-    MOVE.B  DATA_SCRIPT_BSS_WORD_2128,439(A3)
+    MOVE.B  SCRIPT_Type20SubtypeCache,436(A3)
+    MOVE.B  SCRIPT_PendingWeatherCommandChar,437(A3)
+    MOVE.B  SCRIPT_PendingTextdispCmdChar,438(A3)
+    MOVE.B  SCRIPT_PendingTextdispCmdArg,439(A3)
     MOVE.L  440(A3),-(A7)
     MOVE.L  SCRIPT_CommandTextPtr,-(A7)
     JSR     ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(PC)

@@ -3,7 +3,7 @@
 Global_STR_KYBD_C:
     NStr    "KYBD.c"
     DS.W    1
-DATA_KYBD_PATH_DF0_COLON_LOCAL_DOT_ADS_1FB6:
+KYBD_PATH_DF0_LOCAL_ADS:
     DC.B    "df0:local.ads"
 ;------------------------------------------------------------------------------
 ; SYM: KYBD_CustomPaletteCaptureScratchBase   (ED palette-capture scratch base)

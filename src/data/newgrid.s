@@ -9,30 +9,53 @@ Global_STR_44_44_44:
     NStr    "44:44:44"
 Global_STR_NEWGRID_C_3:
     NStr    "NEWGRID.c"
-DATA_NEWGRID_BSS_LONG_2003:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_ModeCycleCountdown/NEWGRID_NicheModeCycleBudget_*/NEWGRID_ModeCandidateIndex   (mode-cycle budget cluster)
+; TYPE: u32 + u8 flags + u32
+; PURPOSE: Tracks rotating mode-candidate selection and per-family retry budgets.
+; USED BY: NEWGRID_SelectNextMode
+; NOTES:
+;   Budget bytes are decremented/reloaded from GCOMMAND niche/mplex/ppv cycle counts.
+;   NEWGRID_ModeCandidateIndex rotates through NEWGRID_ModeSelectionTable entries.
+;------------------------------------------------------------------------------
+NEWGRID_ModeCycleCountdown:
     DS.L    1
-DATA_NEWGRID_BSS_BYTE_2004:
+NEWGRID_NicheModeCycleBudget_Static:
     DS.B    1
-DATA_NEWGRID_BSS_BYTE_2005:
+NEWGRID_NicheModeCycleBudget_Y:
     DS.B    1
-DATA_NEWGRID_BSS_BYTE_2006:
+NEWGRID_NicheModeCycleBudget_Custom:
     DS.B    1
-DATA_NEWGRID_BSS_BYTE_2007:
+NEWGRID_NicheModeCycleBudget_Global:
     DS.B    1
-DATA_NEWGRID_BSS_BYTE_2008:
+NEWGRID_MplexModeCycleBudget:
     DS.B    1
-DATA_NEWGRID_BSS_BYTE_2009:
+NEWGRID_PpvModeCycleBudget:
     DS.B    1
-DATA_NEWGRID_BSS_LONG_200A:
+NEWGRID_ModeCandidateIndex:
     DS.L    1
-DATA_NEWGRID_CONST_LONG_200B:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_ModeSelectionTable   (mode selection candidates)
+; TYPE: u32[7]
+; PURPOSE: Candidate NEWGRID mode IDs sampled by NEWGRID_SelectNextMode.
+; USED BY: NEWGRID_SelectNextMode
+; NOTES: Copied into stack scratch before randomized/rotating selection.
+;------------------------------------------------------------------------------
+NEWGRID_ModeSelectionTable:
     DC.L    $00000005,$00000006,$00000007,$00000008
     DC.L    $00000009,$0000000a,$0000000c
 Global_STR_SINGLE_SPACE:
     NStr    " "
-DATA_NEWGRID_SPACE_VALUE_200D:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_WrapWordSpacer/NEWGRID_WrapReturnSpacer   (word-wrap spacers)
+; TYPE: cstring/cstring
+; PURPOSE: Single-space tokens appended during wrapped text reconstruction.
+; USED BY: NEWGRID_DrawWrappedText
+; NOTES: Separate symbols are retained to preserve original callsite intent.
+;------------------------------------------------------------------------------
+NEWGRID_WrapWordSpacer:
     NStr    " "
-DATA_NEWGRID_SPACE_VALUE_200E:
+NEWGRID_WrapReturnSpacer:
     NStr    " "
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_MainModeState   (main NEWGRID mode/state id)
@@ -88,21 +111,49 @@ NEWGRID_SecondaryIndexCachePtr:
 ;------------------------------------------------------------------------------
 NEWGRID_GridOperationId:
     DS.L    1
-DATA_NEWGRID_CONST_WORD_2015:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_EntryPlaceholderModeFlag/NEWGRID_PrimeTimeLayoutEnable/NEWGRID_ShowtimeEntryVariantFlag   (entry layout gate flags)
+; TYPE: u16/u16/u16
+; PURPOSE: Gate placeholder/layout variants across NEWGRID1/NEWGRID2 entry draw flows.
+; USED BY: NEWGRID1_*, NEWGRID2_ProcessGridState
+; NOTES: Flag semantics are inferred from branch gates and may be refined later.
+;------------------------------------------------------------------------------
+NEWGRID_EntryPlaceholderModeFlag:
     DC.W    $0001
-DATA_NEWGRID_CONST_WORD_2016:
+NEWGRID_PrimeTimeLayoutEnable:
     DC.W    $0001
-DATA_NEWGRID_BSS_WORD_2017:
+NEWGRID_ShowtimeEntryVariantFlag:
     DS.W    1
-DATA_NEWGRID_CONST_LONG_2018:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_EntrySplitDelimiterMask   (entry split delimiter mask??)
+; TYPE: packed bytes/words ??
+; PURPOSE: Delimiter-class mask blob consumed by parse/split helper calls.
+; USED BY: NEWGRID1 split/token parsing paths
+; NOTES: Field-level meaning of packed constants is still unresolved.
+;------------------------------------------------------------------------------
+NEWGRID_EntrySplitDelimiterMask:
     DC.L    $90939b99,$a3a39a84,$86858c87
     DC.W    $8d8f
     DS.B    1
-DATA_NEWGRID_STR_VALUE_2019:
+NEWGRID_GridEntryDelimiterBar:
     NStr2   145,"|"
-DATA_NEWGRID_FMT_PCT_C_PCT_S_PCT_C_PCT_S_201A:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_EntryDetailFmtStr   (entry detail format)
+; TYPE: cstring format
+; PURPOSE: Formats detail lines with marker chars and text payload segments.
+; USED BY: NEWGRID1 detail-line builders
+; NOTES: Format currently `%c%s%c %s`.
+;------------------------------------------------------------------------------
+NEWGRID_EntryDetailFmtStr:
     NStr    "%c%s%c %s"
-DATA_NEWGRID_CONST_LONG_201B:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_GridStateFrameLatch   (grid state frame latch)
+; TYPE: s32
+; PURPOSE: Tracks frame/full redraw phase in grid-state handlers (4/5 pattern).
+; USED BY: NEWGRID1 grid state machine
+; NOTES: Compiler-style switch state latch.
+;------------------------------------------------------------------------------
+NEWGRID_GridStateFrameLatch:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_GridEntriesWorkflowState   (grid entries workflow state id)
@@ -160,13 +211,20 @@ NEWGRID_SecondarySelectedEntryIndex:
 ;------------------------------------------------------------------------------
 NEWGRID_SecondaryWorkflowState:
     DS.L    1
-DATA_NEWGRID_BSS_LONG_2023:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_SecondarySelectionHintCounter/NEWGRID_AltGridStateLatch/NEWGRID_AltEntryAttemptCounter/NEWGRID_AltEntryCursor   (secondary+alt workflow scratch)
+; TYPE: s32/s32/s32/s32
+; PURPOSE: Maintains counters/cursors used while probing secondary/alternate entry workflows.
+; USED BY: NEWGRID_ProcessSecondaryState, NEWGRID_HandleAltGridState
+; NOTES: Values are transitional and frequently reset on state changes.
+;------------------------------------------------------------------------------
+NEWGRID_SecondarySelectionHintCounter:
     DS.L    1
-DATA_NEWGRID_CONST_LONG_2024:
+NEWGRID_AltGridStateLatch:
     DC.L    $00000004
-DATA_NEWGRID_BSS_LONG_2025:
+NEWGRID_AltEntryAttemptCounter:
     DS.L    1
-DATA_NEWGRID_BSS_LONG_2026:
+NEWGRID_AltEntryCursor:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_AltEntryWorkflowState   (alternate entry workflow state id)
@@ -177,15 +235,22 @@ DATA_NEWGRID_BSS_LONG_2026:
 ;------------------------------------------------------------------------------
 NEWGRID_AltEntryWorkflowState:
     DS.L    1
-DATA_NEWGRID_CONST_LONG_2028:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_DetailGridStateLatch/NEWGRID_ChannelRowFmt/NEWGRID_ScheduleSelectionCodeCache/NEWGRID_ScheduleEditorGateFlag/NEWGRID_ScheduleAltSelectorFlag   (detail/schedule helpers)
+; TYPE: s32/cstring/s32/s32/s32
+; PURPOSE: Drives detail/schedule-state transitions, formatting, and selection gate checks.
+; USED BY: NEWGRID1 detail/schedule state machines
+; NOTES: Latches follow repeated 4/5 state idiom used by compiler-generated switches.
+;------------------------------------------------------------------------------
+NEWGRID_DetailGridStateLatch:
     DC.L    $00000004
-DATA_NEWGRID_FMT_PCT_S_CH_DOT_PCT_S_2029:
+NEWGRID_ChannelRowFmt:
     NStr    "%s Ch. %s"
-DATA_NEWGRID_BSS_LONG_202A:
+NEWGRID_ScheduleSelectionCodeCache:
     DS.L    1
-DATA_NEWGRID_BSS_LONG_202B:
+NEWGRID_ScheduleEditorGateFlag:
     DS.L    1
-DATA_NEWGRID_BSS_LONG_202C:
+NEWGRID_ScheduleAltSelectorFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_ScheduleRowOffset   (schedule row offset accumulator)
@@ -225,15 +290,22 @@ NEWGRID_SelectionScanEntryIndex:
     DS.L    1
 NEWGRID_SelectionScanRow:
     DS.W    1
-DATA_NEWGRID_STR_VALUE_2032:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_ShowtimeBucketSeparator/NEWGRID_ShowtimeGenreSpacer/NEWGRID_ShowtimesWorkflowStateLatch   (showtime formatting controls)
+; TYPE: cstring/cstring/s32
+; PURPOSE: Separators and phase latch used while assembling showtime strings.
+; USED BY: NEWGRID1 showtime workflow
+; NOTES: State latch follows 4/5 state-phase pattern.
+;------------------------------------------------------------------------------
+NEWGRID_ShowtimeBucketSeparator:
     NStr    ", "
 Global_STR_SINGLE_SPACE_3:
     NStr    " "
 Global_STR_COMMA_AND_SINGLE_SPACE_1:
     NStr    ", "
-DATA_NEWGRID_SPACE_VALUE_2035:
+NEWGRID_ShowtimeGenreSpacer:
     NStr    " "
-DATA_NEWGRID_CONST_LONG_2036:
+NEWGRID_ShowtimesWorkflowStateLatch:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_ShowtimesWorkflowState   (showtimes workflow state id)
@@ -253,13 +325,20 @@ NEWGRID_ShowtimesWorkflowState:
 ;------------------------------------------------------------------------------
 NEWGRID_ShowtimesColumnAdjust:
     DS.L    1
-DATA_NEWGRID_BSS_LONG_2039:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_AltSelectionRowCursor/NEWGRID_AltSelectionEntryCursor/NEWGRID_ShowtimeListSeparator/NEWGRID_ShowtimeRangeDash/NEWGRID_RenderStateLatch   (selection/showtime render scratch)
+; TYPE: s32/u16/cstring/cstring/s32
+; PURPOSE: Cursors, separators, and render latch used by alternate-selection/showtime render passes.
+; USED BY: NEWGRID1_*, NEWGRID2_ProcessGridState
+; NOTES: NEWGRID_RenderStateLatch participates in NEWGRID2 4/5 render-state transitions.
+;------------------------------------------------------------------------------
+NEWGRID_AltSelectionRowCursor:
     DS.L    1
-DATA_NEWGRID_BSS_WORD_203A:
+NEWGRID_AltSelectionEntryCursor:
     DS.W    1
-DATA_NEWGRID_STR_VALUE_203B:
+NEWGRID_ShowtimeListSeparator:
     NStr    ", "
-DATA_NEWGRID_STR_DASH_203C:
+NEWGRID_ShowtimeRangeDash:
     NStr    "-"
-DATA_NEWGRID_CONST_LONG_203D:
+NEWGRID_RenderStateLatch:
     DC.L    $00000004

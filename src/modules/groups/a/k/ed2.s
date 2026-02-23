@@ -129,7 +129,7 @@ ED2_DrawEntryDetailsPanel:
     BRA.S   .name_ptr_ready
 
 .use_default_name:
-    LEA     DATA_ED2_TAG_NULL_1D3B,A1
+    LEA     ED2_STR_NullFallbackChannel,A1
 
 .name_ptr_ready:
     TST.L   ED2_SelectedEntryTitlePtr
@@ -139,7 +139,7 @@ ED2_DrawEntryDetailsPanel:
     BRA.S   .source_ptr_ready
 
 .use_default_source:
-    LEA     DATA_ED2_TAG_NULL_1D3C,A2
+    LEA     ED2_STR_NullFallbackSource,A2
 
 .source_ptr_ready:
     LEA     19(A0),A3                     ; A0+19 = call letters ?? (A0+27 is flags byte)
@@ -150,7 +150,7 @@ ED2_DrawEntryDetailsPanel:
     BRA.S   .call_letters_ready
 
 .use_default_call_letters:
-    LEA     DATA_ED2_TAG_NULL_1D3D,A3
+    LEA     ED2_STR_NullFallbackCallLetters,A3
 
 .call_letters_ready:
     ; Guard candidate (no behavior change in this pass): if Section 1 string
@@ -208,7 +208,7 @@ ED2_DrawEntryDetailsPanel:
     BRA.S   .title_ptr_ready
 
 .use_default_title:
-    LEA     DATA_ED2_TAG_NULL_1D3F,A0
+    LEA     ED2_STR_NullFallbackTitle,A0
 
 .title_ptr_ready:
     ; Guard candidate: `%s` title text here originates from DISKIO2 sanitize
@@ -237,7 +237,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #0,7(A0)
     BEQ.S   .after_flag0
 
-    PEA     DATA_ED2_STR_NONE_1D40
+    PEA     ED2_STR_NONE_ProgramFlagSummary
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -249,7 +249,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #1,7(A0)
     BEQ.S   .after_flag1
 
-    PEA     DATA_ED2_STR_MOVIE_1D41
+    PEA     ED2_STR_MOVIE
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -261,7 +261,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #2,7(A0)
     BEQ.S   .after_flag2
 
-    PEA     DATA_ED2_STR_ALTHILITEPROG_1D42
+    PEA     ED2_STR_ALTHILITEPROG
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -273,7 +273,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #3,7(A0)
     BEQ.S   .after_flag3
 
-    PEA     DATA_ED2_STR_TAGPROG_1D43
+    PEA     ED2_STR_TAGPROG
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -285,7 +285,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #4,7(A0)
     BEQ.S   .after_flag4
 
-    PEA     DATA_ED2_STR_SPORTSPROG_1D44
+    PEA     ED2_STR_SPORTSPROG
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -297,7 +297,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #5,7(A0)
     BEQ.S   .after_flag5
 
-    PEA     DATA_ED2_STR_DVIEW_USED_1D45
+    PEA     ED2_STR_DVIEW_USED
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -309,7 +309,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #6,7(A0)
     BEQ.S   .after_flag6
 
-    PEA     DATA_ED2_STR_REPEATPROG_1D46
+    PEA     ED2_STR_REPEATPROG
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -321,7 +321,7 @@ ED2_DrawEntryDetailsPanel:
     BTST    #7,7(A0)
     BEQ.S   .after_flag7
 
-    PEA     DATA_ED2_STR_PREVDAYSDATA_1D47
+    PEA     ED2_STR_PREVDAYSDATA
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -471,7 +471,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #0,D0
     BEQ.S   .after_flag0
 
-    PEA     DATA_ED2_STR_NONE_1D4B
+    PEA     ED2_STR_NONE_SourceFlagSummary
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -483,7 +483,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #1,D0
     BEQ.S   .after_flag1
 
-    PEA     DATA_ED2_STR_HILITESRC_1D4C
+    PEA     ED2_STR_HILITESRC
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -495,7 +495,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #2,D0
     BEQ.S   .after_flag2
 
-    PEA     DATA_ED2_STR_SUMBYSRC_1D4D
+    PEA     ED2_STR_SUMBYSRC
     PEA     .panelTextBuffer(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -507,7 +507,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #3,D0
     BEQ.S   .after_flag3
 
-    PEA     DATA_ED2_STR_VIDEO_TAG_DISABLE_1D4E
+    PEA     ED2_STR_VIDEO_TAG_DISABLE
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -519,7 +519,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #4,D0
     BEQ.S   .after_flag4
 
-    PEA     DATA_ED2_STR_CAF_PPVSRC_1D4F
+    PEA     ED2_STR_CAF_PPVSRC
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -531,7 +531,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #5,D0
     BEQ.S   .after_flag5
 
-    PEA     DATA_ED2_STR_DITTO_1D50
+    PEA     ED2_STR_DITTO
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -543,7 +543,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #6,D0
     BEQ.S   .after_flag6
 
-    PEA     DATA_ED2_STR_ALTHILITESRC_1D51
+    PEA     ED2_STR_ALTHILITESRC
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -555,7 +555,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #7,D0
     BEQ.S   .after_flag7
 
-    PEA     DATA_ED2_STR_STEREO_1D52
+    PEA     ED2_STR_STEREO
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -576,7 +576,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #0,D0
     BEQ.S   .after_word_flag0
 
-    PEA     DATA_ED2_STR_GRID_1D53
+    PEA     ED2_STR_GRID
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -588,7 +588,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #1,D0
     BEQ.S   .after_word_flag1
 
-    PEA     DATA_ED2_STR_MR_1D54
+    PEA     ED2_STR_MR
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -600,7 +600,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #2,D0
     BEQ.S   .after_word_flag2
 
-    PEA     DATA_ED2_STR_DNICHE_1D55
+    PEA     ED2_STR_DNICHE
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -612,7 +612,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #3,D0
     BEQ.S   .after_word_flag3
 
-    PEA     DATA_ED2_STR_DMPLEX_1D56
+    PEA     ED2_STR_DMPLEX
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -624,7 +624,7 @@ ED2_DrawEntrySummaryPanel:
     BTST    #4,D0
     BEQ.S   .after_word_flag4
 
-    PEA     DATA_ED2_STR_CF2_DPPV_1D57
+    PEA     ED2_STR_CF2_DPPV
     PEA     -120(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -666,11 +666,11 @@ ED2_DrawEntrySummaryPanel:
 ;   GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch
 ; READS:
 ;   ED_StateRingIndex, ED_StateRingTable, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, ED2_SelectedEntryDataPtr, ED2_SelectedEntryTitlePtr, TEXTDISP_PrimaryGroupEntryCount,
-;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_PrimaryGroupPresentFlag, WDISP_WeatherStatusCountdown, DATA_WDISP_BSS_BYTE_229B, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar,
-;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, DATA_P_TYPE_BSS_LONG_2059
+;   TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_PrimaryGroupPresentFlag, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar,
+;   WDISP_WeatherCycleOffsetCount, WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusTextPtr, P_TYPE_WeatherBrushRefreshPendingFlag
 ; WRITES:
-;   ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, ED_MenuStateId, DATA_ESQ_BSS_WORD_1DE4, DATA_ESQ_BSS_BYTE_1DEF,
-;   DATA_COMMON_STR_VALUE_1B05, ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, SCRIPT_RuntimeMode,
+;   ED_LastKeyCode, ED2_SelectedEntryIndex, ED2_SelectedFlagByteOffset, GCOMMAND_BannerRowFallbackOnFirstRowFlag, ED_MenuStateId, ESQ_ShutdownRequestedFlag, CLEANUP_DiagOverlayAutoRefreshFlag,
+;   HIGHLIGHT_CustomValue, ESQPARS2_ReadModeFlags, LOCAVAIL_FilterPrevClassId, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, WDISP_AccumulatorCaptureActive, SCRIPT_RuntimeMode,
 ;   PARSEINI_CtrlHChangeGateFlag
 ; DESC:
 ;   Dispatches ESC menu selections to a large set of diagnostic and UI actions.
@@ -860,11 +860,11 @@ ED2_HandleMenuActions:
 
 .case_format_banner_datetime:
     PEA     CLOCK_DaySlotIndex
-    PEA     DATA_ED2_STR_CTIME_1D58
+    PEA     ED2_STR_CTIME
     JSR     DST_FormatBannerDateTime(PC)
 
     PEA     CLOCK_CurrentDayOfWeekIndex
-    PEA     DATA_ED2_STR_BTIME_1D59
+    PEA     ED2_STR_BTIME
     JSR     DST_FormatBannerDateTime(PC)
 
     LEA     16(A7),A7
@@ -1061,11 +1061,11 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_set_1de4:
-    MOVE.W  #1,DATA_ESQ_BSS_WORD_1DE4
+    MOVE.W  #1,ESQ_ShutdownRequestedFlag
     BRA.W   .restore_display_state
 
 .case_format_debug_strings:
-    PEA     DATA_ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU_1D5B
+    PEA     ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1089,7 +1089,7 @@ ED2_HandleMenuActions:
     MOVE.L  D1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1__1D5C
+    PEA     ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1_
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     20(A7),A7
@@ -1135,29 +1135,29 @@ ED2_HandleMenuActions:
     BRA.S   .dump_entry_loop
 
 .after_dump_entries:
-    PEA     DATA_ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU_1D5F
+    PEA     ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .restore_display_state
 
 .case_toggle_1def:
-    MOVE.B  DATA_ESQ_BSS_BYTE_1DEF,D0
+    MOVE.B  CLEANUP_DiagOverlayAutoRefreshFlag,D0
     NOT.B   D0
-    MOVE.B  D0,DATA_ESQ_BSS_BYTE_1DEF
+    MOVE.B  D0,CLEANUP_DiagOverlayAutoRefreshFlag
     BRA.W   .restore_display_state
 
 .case_dump_runtime_vars:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_WICON_PCT_LD_1D60
+    PEA     ED2_FMT_WICON_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusCountdown,D0
     MOVE.L  D0,(A7)
-    PEA     DATA_ED2_FMT_W_MIN_PCT_LD_MINUTES_1D61
+    PEA     ED2_FMT_W_MIN_PCT_LD_MINUTES
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  WDISP_WeatherStatusDigitChar,D0
@@ -1168,7 +1168,7 @@ ED2_HandleMenuActions:
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD_1D62
+    PEA     ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.W  WDISP_WeatherCycleOffsetCount,D0
@@ -1177,29 +1177,29 @@ ED2_HandleMenuActions:
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD_1D63
+    PEA     ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.L  WDISP_WeatherStatusOverlayTextPtr,(A7)
-    PEA     DATA_ED2_FMT_WDATA_PCT_08LX_1D64
+    PEA     ED2_FMT_WDATA_PCT_08LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.L  WDISP_WeatherStatusTextPtr,(A7)
-    PEA     DATA_ED2_FMT_WCITY_PCT_S_1D65
+    PEA     ED2_FMT_WCITY_PCT_S
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     PEA     WDISP_WeatherStatusLabelBuffer
-    PEA     DATA_ED2_FMT_WEATHER_ID_PCT_S_1D66
+    PEA     ED2_FMT_WEATHER_ID_PCT_S
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_WDISP_BSS_BYTE_229B,D0
+    MOVE.B  WDISP_WeatherStatusColorCode,D0
     MOVE.L  D0,(A7)
-    PEA     DATA_ED2_FMT_CWCOLOR_PCT_LD_1D67
+    PEA     ED2_FMT_CWCOLOR_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_2059,(A7)
-    PEA     DATA_ED2_FMT_BANNER_FOR_WEATHER_PCT_D_1D68
+    MOVE.L  P_TYPE_WeatherBrushRefreshPendingFlag,(A7)
+    PEA     ED2_FMT_BANNER_FOR_WEATHER_PCT_D
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     52(A7),A7
@@ -1207,33 +1207,33 @@ ED2_HandleMenuActions:
 
 .case_reset_defaults:
     MOVE.B  #$3c,WDISP_WeatherStatusCountdown
-    MOVE.B  #$1,DATA_WDISP_BSS_BYTE_229B
+    MOVE.B  #$1,WDISP_WeatherStatusColorCode
     MOVE.B  #$2,WDISP_WeatherStatusBrushIndex
     MOVE.W  #$32,WDISP_WeatherStatusDigitChar
     CLR.W   WDISP_WeatherCycleOffsetCount
     BRA.W   .restore_display_state
 
 .case_toggle_1ba2:
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA2,D0
+    MOVE.B  CONFIG_RefreshIntervalMinutes,D0
     TST.B   D0
     BEQ.S   .toggle_1ba2_restore
 
     MOVE.B  D0,ED_SavedCtasksIntervalByte
-    CLR.B   DATA_CTASKS_CONST_BYTE_1BA2
+    CLR.B   CONFIG_RefreshIntervalMinutes
     BRA.S   .toggle_1ba2_done
 
 .toggle_1ba2_restore:
     MOVE.B  ED_SavedCtasksIntervalByte,D1
-    MOVE.B  D1,DATA_CTASKS_CONST_BYTE_1BA2
+    MOVE.B  D1,CONFIG_RefreshIntervalMinutes
 
 .toggle_1ba2_done:
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA2,D0
+    MOVE.B  CONFIG_RefreshIntervalMinutes,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  D0,DATA_CTASKS_CONST_LONG_1BCA
+    MOVE.L  D0,CONFIG_RefreshIntervalSeconds
     BRA.W   .restore_display_state
 
 .case_enter_esc_menu:
@@ -1276,7 +1276,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_set_copper_custom:
-    MOVE.B  #$1f,DATA_COMMON_STR_VALUE_1B05
+    MOVE.B  #$1f,HIGHLIGHT_CustomValue
     JSR     GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom(PC)
 
     BRA.W   .restore_display_state
@@ -1310,7 +1310,7 @@ ED2_HandleMenuActions:
     JSR     GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     LEA     12(A7),A7
-    MOVE.W  #1,DATA_ESQ_BSS_WORD_1DF3
+    MOVE.W  #1,SCRIPT_StatusRefreshHoldFlag
     BRA.W   .restore_display_state
 
 .case_start_transition_2:
@@ -1480,7 +1480,7 @@ ED2_HandleMenuActions:
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  #Global_REF_696_400_BITMAP,4(A0)
     MOVE.L  ESQSHARED_BannerRowScratchRasterBase0,-(A7)
-    PEA     DATA_ED2_FMT_BITPLANE1_PCT_8LX_1D69
+    PEA     ED2_FMT_BITPLANE1_PCT_8LX
     PEA     .statusLineBuffer(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1559,9 +1559,9 @@ ED2_HandleMenuActions:
 ;   GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow,
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
-;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, DATA_ED2_TAG_NRLS_1D6B, DATA_ED2_STR_NYYLLZ_1D6C, DATA_ED2_TAG_NYLRS_1D6D, DATA_ED2_STR_SILENCE_1D6E, DATA_ED2_STR_LEFT_1D6F, DATA_ED2_STR_RIGHT_1D70, DATA_ED2_STR_BACKGROUND_1D71, DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72, DATA_ED2_STR_COMPUTER_ONLY_1D73, DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74, DATA_ED2_STR_NEGATIVE_VIDEO_1D75, DATA_ED2_STR_VIDEO_SWITCH_1D76, DATA_ED2_STR_OPEN_1D77, DATA_ED2_STR_CLOSED_1D78, DATA_ED2_STR_START_TAPE_VIDEO_1D79, DATA_ED2_STR_STOP_1D7A, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
+;   Global_REF_RASTPORT_1, ED_DiagTextModeChar, ED2_TAG_NRLS, ED2_STR_NYYLLZ, ED2_TAG_NYLRS, ED2_STR_SILENCE, ED2_STR_LEFT, ED2_STR_RIGHT, ED2_STR_BACKGROUND, ED2_STR_EXT_DOT_VIDEO_ONLY, ED2_STR_COMPUTER_ONLY, ED2_STR_OVERLAY_EXT_DOT_VIDEO, ED2_STR_NEGATIVE_VIDEO, ED2_STR_VIDEO_SWITCH, ED2_STR_OPEN, ED2_STR_CLOSED, ED2_STR_START_TAPE_VIDEO, ED2_STR_STOP, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagnosticsViewMode, ED_StateRingIndex, ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
 ; WRITES:
-;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, DATA_ESQ_BSS_BYTE_1DF1, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, SCRIPT_CtrlCmdCount, SCRIPT_CtrlCmdChecksumErrorCount, SCRIPT_CtrlCmdLengthErrorCount
+;   DATACErrs, Global_WORD_MAX_VALUE, ED_DiagTextModeChar, ED_DiagScrollSpeedChar, ED_DiagGraphModeChar, ED_DiagVinModeChar, ED_DiagAvailMemMask, ED_DiagAvailMemPresetBits, ED_BlockOffset, ED_LastKeyCode, ED_TextLimit, ED_DiagnosticsScreenActive, ED_DiagnosticsViewMode, CTRL_HDeltaMax, ESQIFF_ParseAttemptCount, ESQIFF_LineErrorCount, SCRIPT_CtrlCmdCount, SCRIPT_CtrlCmdChecksumErrorCount, SCRIPT_CtrlCmdLengthErrorCount
 ; DESC:
 ;   Handles diagnostic/special menu selections, toggling flags, counters, and
 ;   invoking test patterns or copper effects.
@@ -1667,13 +1667,13 @@ ED2_HandleDiagnosticsMenuActions:
 .case_set_1df1_bit0:
     MOVEQ   #-8,D0
     AND.L   D0,ED_DiagAvailMemMask
-    BSET    #0,DATA_ESQ_BSS_BYTE_1DF1
+    BSET    #0,ED_DiagAvailMemPresetBits
     BRA.W   .return
 
 .case_set_1df1_bit1:
     MOVEQ   #-8,D0
     AND.L   D0,ED_DiagAvailMemMask
-    BSET    #1,DATA_ESQ_BSS_BYTE_1DF1
+    BSET    #1,ED_DiagAvailMemPresetBits
     BRA.W   .return
 
 .case_refresh_rastport_1:
@@ -1686,7 +1686,7 @@ ED2_HandleDiagnosticsMenuActions:
 .case_set_1df1_bit2:
     MOVEQ   #-8,D0
     AND.L   D0,ED_DiagAvailMemMask
-    BSET    #2,DATA_ESQ_BSS_BYTE_1DF1
+    BSET    #2,ED_DiagAvailMemPresetBits
     BRA.W   .return
 
 .case_clear_error_counters:
@@ -1705,7 +1705,7 @@ ED2_HandleDiagnosticsMenuActions:
     MOVE.B  ED_DiagTextModeChar,D0
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    PEA     DATA_ED2_TAG_NRLS_1D6B
+    PEA     ED2_TAG_NRLS
     MOVE.L  D1,-(A7)
     JSR     ED_FindNextCharInTable(PC)
 
@@ -1718,7 +1718,7 @@ ED2_HandleDiagnosticsMenuActions:
 .case_adjust_1dd7:
     MOVEQ   #0,D0
     MOVE.B  ED_DiagVinModeChar,D0
-    PEA     DATA_ED2_STR_NYYLLZ_1D6C
+    PEA     ED2_STR_NYYLLZ
     MOVE.L  D0,-(A7)
     JSR     ED_FindNextCharInTable(PC)
 
@@ -1757,7 +1757,7 @@ ED2_HandleDiagnosticsMenuActions:
 .case_adjust_1dd6:
     MOVEQ   #0,D0
     MOVE.B  ED_DiagGraphModeChar,D0
-    PEA     DATA_ED2_TAG_NYLRS_1D6D
+    PEA     ED2_TAG_NYLRS
     MOVE.L  D0,-(A7)
     JSR     ED_FindNextCharInTable(PC)
 
@@ -1786,7 +1786,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_transition_0:
-    PEA     DATA_ED2_STR_SILENCE_1D6E
+    PEA     ED2_STR_SILENCE
     PEA     360.W
     PEA     175.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1799,7 +1799,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_transition_1:
-    PEA     DATA_ED2_STR_LEFT_1D6F
+    PEA     ED2_STR_LEFT
     PEA     360.W
     PEA     175.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1812,7 +1812,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_transition_2:
-    PEA     DATA_ED2_STR_RIGHT_1D70
+    PEA     ED2_STR_RIGHT
     PEA     360.W
     PEA     175.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1825,7 +1825,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_transition_3:
-    PEA     DATA_ED2_STR_BACKGROUND_1D71
+    PEA     ED2_STR_BACKGROUND
     PEA     360.W
     PEA     175.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1838,7 +1838,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_copper_all_on:
-    PEA     DATA_ED2_STR_EXT_DOT_VIDEO_ONLY_1D72
+    PEA     ED2_STR_EXT_DOT_VIDEO_ONLY
     PEA     390.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1850,7 +1850,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_copper_all_off:
-    PEA     DATA_ED2_STR_COMPUTER_ONLY_1D73
+    PEA     ED2_STR_COMPUTER_ONLY
     PEA     390.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1862,7 +1862,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_copper_on_highlight:
-    PEA     DATA_ED2_STR_OVERLAY_EXT_DOT_VIDEO_1D74
+    PEA     ED2_STR_OVERLAY_EXT_DOT_VIDEO
     PEA     390.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1874,7 +1874,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_copper_default:
-    PEA     DATA_ED2_STR_NEGATIVE_VIDEO_1D75
+    PEA     ED2_STR_NEGATIVE_VIDEO
     PEA     390.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1886,7 +1886,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.W   .return
 
 .case_show_ciab_bit5:
-    PEA     DATA_ED2_STR_VIDEO_SWITCH_1D76
+    PEA     ED2_STR_VIDEO_SWITCH
     PEA     270.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1898,7 +1898,7 @@ ED2_HandleDiagnosticsMenuActions:
     TST.B   D0
     BNE.S   .show_ciab_bit5_set
 
-    PEA     DATA_ED2_STR_OPEN_1D77
+    PEA     ED2_STR_OPEN
     PEA     270.W
     PEA     235.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1908,7 +1908,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.S   .return
 
 .show_ciab_bit5_set:
-    PEA     DATA_ED2_STR_CLOSED_1D78
+    PEA     ED2_STR_CLOSED
     PEA     270.W
     PEA     235.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1918,7 +1918,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.S   .return
 
 .case_assert_ctrl_line:
-    PEA     DATA_ED2_STR_START_TAPE_VIDEO_1D79
+    PEA     ED2_STR_START_TAPE_VIDEO
     PEA     270.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1930,7 +1930,7 @@ ED2_HandleDiagnosticsMenuActions:
     BRA.S   .return
 
 .case_deassert_ctrl_line:
-    PEA     DATA_ED2_STR_STOP_1D7A
+    PEA     ED2_STR_STOP
     PEA     270.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)

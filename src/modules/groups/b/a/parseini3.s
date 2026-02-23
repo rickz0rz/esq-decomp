@@ -15,7 +15,7 @@
 ; CALLS:
 ;   SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer, SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes, SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   DATA_NEWGRID2_BSS_LONG_2049, DATA_WDISP_BSS_LONG_233A, CLOCK_FileEofMarkerCtrlZ
+;   NEWGRID2_ErrorLogEntryPtr, FLIB_LogEntryByteCount, CLOCK_FileEofMarkerCtrlZ
 ; WRITES:
 ;   Err log file on disk
 ; DESC:
@@ -26,7 +26,7 @@
 PARSEINI_WriteErrorLogEntry:
     MOVE.L  D7,-(A7)
 
-    TST.L   DATA_NEWGRID2_BSS_LONG_2049
+    TST.L   NEWGRID2_ErrorLogEntryPtr
     BNE.S   .logging_enabled
 
     MOVEQ   #-1,D0
@@ -46,10 +46,10 @@ PARSEINI_WriteErrorLogEntry:
     BRA.S   .return
 
 .log_opened:
-    MOVE.W  DATA_WDISP_BSS_LONG_233A,D0
+    MOVE.W  FLIB_LogEntryByteCount,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    MOVE.L  DATA_NEWGRID2_BSS_LONG_2049,-(A7)
+    MOVE.L  NEWGRID2_ErrorLogEntryPtr,-(A7)
     MOVE.L  D7,-(A7)
     JSR     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
@@ -130,14 +130,14 @@ PARSEINI_ComputeHTCMaxValues:
 ;   SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
 ;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_REF_CLOCKDATA_STRUCT,
-;   DATA_PARSEINI_BSS_WORD_20A3-20A8
+;   PARSEINI_ClockSecondsSnapshot-20A8
 ; WRITES:
-;   DATA_PARSEINI_BSS_WORD_20A3-20A8
+;   PARSEINI_ClockSecondsSnapshot-20A8
 ; DESC:
 ;   Tracks transitions between H/T mismatch and stable states, latches RTC second
 ;   samples, and toggles a status-mask bit via ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
-;   Uses a 3-sample threshold before clearing DATA_PARSEINI_BSS_WORD_20A5.
+;   Uses a 3-sample threshold before clearing PARSEINI_ClockChangeActiveFlag.
 ;------------------------------------------------------------------------------
 PARSEINI_MonitorClockChange:
     MOVEM.L D2/D7,-(A7)
@@ -154,35 +154,35 @@ PARSEINI_MonitorClockChange:
     TST.W   D7          ; Test D7 against 0
     BEQ.S   .check_clockdata_update   ; If D7 is now 0, jump to .check_clockdata_update
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A3  ; Get the first word of the clockdata struct, which is seconds
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,PARSEINI_ClockSecondsSnapshot  ; Get the first word of the clockdata struct, which is seconds
     MOVEQ   #1,D0               ; Move 1 into D0
-    CMP.W   DATA_PARSEINI_BSS_WORD_20A5,D0         ; Compare DATA_PARSEINI_BSS_WORD_20A5 - D0 (1)
-    BEQ.S   .return             ; If DATA_PARSEINI_BSS_WORD_20A5 was 1, then return
+    CMP.W   PARSEINI_ClockChangeActiveFlag,D0         ; Compare PARSEINI_ClockChangeActiveFlag - D0 (1)
+    BEQ.S   .return             ; If PARSEINI_ClockChangeActiveFlag was 1, then return
 
     MOVEQ   #1,D1           ; Push 1 into D1
     MOVE.L  D1,-(A7)        ; Push D1 onto the stack
     MOVE.L  D1,-(A7)        ; Push it again onto the stack
-    MOVE.W  D0,DATA_PARSEINI_BSS_WORD_20A5     ; Push the least 2 sig bytes in D0 into DATA_PARSEINI_BSS_WORD_20A5
+    MOVE.W  D0,PARSEINI_ClockChangeActiveFlag     ; Push the least 2 sig bytes in D0 into PARSEINI_ClockChangeActiveFlag
     JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)    ; JSR
 
     ADDQ.W  #8,A7           ; Add 8 to whatever value is in the stack (the stack pointer) clearing the last two values in the stack (D1 x2).
     BRA.S   .return
 
 .check_clockdata_update:
-    TST.W   DATA_PARSEINI_BSS_WORD_20A5
+    TST.W   PARSEINI_ClockChangeActiveFlag
     BEQ.S   .return
 
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
-    MOVE.W  DATA_PARSEINI_BSS_WORD_20A3,D1
+    MOVE.W  PARSEINI_ClockSecondsSnapshot,D1
     CMP.W   D0,D1
     BEQ.S   .return
 
-    ADDQ.W  #1,DATA_PARSEINI_BSS_WORD_20A4
-    MOVE.W  D0,DATA_PARSEINI_BSS_WORD_20A3
-    CMPI.W  #3,DATA_PARSEINI_BSS_WORD_20A4
+    ADDQ.W  #1,PARSEINI_ClockChangeSampleCounter
+    MOVE.W  D0,PARSEINI_ClockSecondsSnapshot
+    CMPI.W  #3,PARSEINI_ClockChangeSampleCounter
     BLT.S   .return
 
-    CLR.W   DATA_PARSEINI_BSS_WORD_20A5
+    CLR.W   PARSEINI_ClockChangeActiveFlag
     CLR.L   -(A7)
     PEA     1.W
     JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
@@ -257,14 +257,14 @@ PARSEINI_UpdateCtrlHDeltaMax:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
-;   CTRL_H, CTRL_HPreviousSample, PARSEINI_CtrlHChangeGateFlag, DATA_PARSEINI_BSS_WORD_20A6-20A8, DATA_PARSEINI_BSS_WORD_20A5
+;   CTRL_H, CTRL_HPreviousSample, PARSEINI_CtrlHChangeGateFlag, PARSEINI_CtrlHClockSnapshot-20A8, PARSEINI_ClockChangeActiveFlag
 ; WRITES:
-;   DATA_PARSEINI_BSS_WORD_20A6-20A8
+;   PARSEINI_CtrlHClockSnapshot-20A8
 ; DESC:
 ;   Compares current CTRL_H to previous value, optionally triggers SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh when
 ;   changes are detected and control flags permit.
 ; NOTES:
-;   Uses PARSEINI_CtrlHChangeGateFlag as gate; resets DATA_PARSEINI_BSS_WORD_20A5 when no change.
+;   Uses PARSEINI_CtrlHChangeGateFlag as gate; resets PARSEINI_ClockChangeActiveFlag when no change.
 ;------------------------------------------------------------------------------
 PARSEINI_CheckCtrlHChange:
     MOVEM.L D2/D7,-(A7)
@@ -284,39 +284,39 @@ PARSEINI_CheckCtrlHChange:
     TST.W   PARSEINI_CtrlHChangeGateFlag
     BEQ.S   .no_change_or_gate_closed
 
-    MOVE.W  Global_REF_CLOCKDATA_STRUCT,DATA_PARSEINI_BSS_WORD_20A6
-    CLR.W   DATA_PARSEINI_BSS_WORD_20A7
+    MOVE.W  Global_REF_CLOCKDATA_STRUCT,PARSEINI_CtrlHClockSnapshot
+    CLR.W   PARSEINI_CtrlHChangeGateCounter
     MOVEQ   #1,D0
-    CMP.W   DATA_PARSEINI_BSS_WORD_20A8,D0
+    CMP.W   PARSEINI_CtrlHChangePendingFlag,D0
     BEQ.S   .return
 
     PEA     1.W
     PEA     16.W
-    MOVE.W  D0,DATA_PARSEINI_BSS_WORD_20A8
+    MOVE.W  D0,PARSEINI_CtrlHChangePendingFlag
     JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .return
 
 .no_change_or_gate_closed:
-    TST.W   DATA_PARSEINI_BSS_WORD_20A8
+    TST.W   PARSEINI_CtrlHChangePendingFlag
     BEQ.S   .return
 
     MOVE.W  Global_REF_CLOCKDATA_STRUCT,D0
-    MOVE.W  DATA_PARSEINI_BSS_WORD_20A6,D1
+    MOVE.W  PARSEINI_CtrlHClockSnapshot,D1
     CMP.W   D0,D1
     BEQ.S   .return
 
-    MOVE.W  D0,DATA_PARSEINI_BSS_WORD_20A6
+    MOVE.W  D0,PARSEINI_CtrlHClockSnapshot
     TST.W   PARSEINI_CtrlHChangeGateFlag
     BEQ.S   .clear_ctrlh_pending
 
-    ADDQ.W  #1,DATA_PARSEINI_BSS_WORD_20A7
-    CMPI.W  #3,DATA_PARSEINI_BSS_WORD_20A7
+    ADDQ.W  #1,PARSEINI_CtrlHChangeGateCounter
+    CMPI.W  #3,PARSEINI_CtrlHChangeGateCounter
     BLT.S   .return
 
 .clear_ctrlh_pending:
-    CLR.W   DATA_PARSEINI_BSS_WORD_20A8
+    CLR.W   PARSEINI_CtrlHChangePendingFlag
     CLR.L   -(A7)
     PEA     16.W
     JSR     SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)

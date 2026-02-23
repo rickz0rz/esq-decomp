@@ -19,7 +19,7 @@
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, _LVOCopyMem, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F66, Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH, GCOMMAND_DigitalNicheEnabledFlag, AbsExecBase, Global_STR_GCOMMAND_C_1
+;   GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable, Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH, GCOMMAND_DigitalNicheEnabledFlag, AbsExecBase, Global_STR_GCOMMAND_C_1
 ; WRITES:
 ;   Global_PTR_WORK_BUFFER, GCOMMAND_DigitalNicheListingsTemplatePtr, -8(A5)
 ; DESC:
@@ -30,7 +30,7 @@
 GCOMMAND_LoadDefaultTable:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F66
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
     JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -72,7 +72,7 @@ GCOMMAND_LoadDefaultTable:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadCommandFile   (Load a command definition from disk (DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F68) and copy it into the workspace.)
+; FUNC: GCOMMAND_LoadCommandFile   (Load a command definition from disk (GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile) and copy it into the workspace.)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -82,11 +82,11 @@ GCOMMAND_LoadDefaultTable:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   MODE_NEWFILE, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F68, GCOMMAND_DigitalNicheEnabledFlag
+;   MODE_NEWFILE, GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile, GCOMMAND_DigitalNicheEnabledFlag
 ; WRITES:
 ;   -40(A5)..-8(A5) request buffer locals
 ; DESC:
-;   Load a command definition from disk (DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F68) and copy it into the workspace.
+;   Load a command definition from disk (GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile) and copy it into the workspace.
 ; NOTES:
 ;   Builds a 32-byte request block from GCOMMAND_DigitalNicheEnabledFlag and performs two read-style helper calls.
 ;------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ GCOMMAND_LoadCommandFile:
     LINK.W  A5,#-40
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_1F68
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
     JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -476,7 +476,7 @@ GCOMMAND_ParseCommandOptions:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_2, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6A, DATA_GCOMMAND_FMT_PCT_T_1F6C, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, return
+;   AbsExecBase, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_2, GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad, GCOMMAND_FMT_PCT_T_MplexTemplateLoad, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, return
 ; WRITES:
 ;   Global_PTR_WORK_BUFFER, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; DESC:
@@ -487,7 +487,7 @@ GCOMMAND_ParseCommandOptions:
 GCOMMAND_LoadMplexTemplate:
     LINK.W  A5,#-16
     MOVE.L  D7,-(A7)
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6A
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad
     JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -552,7 +552,7 @@ GCOMMAND_LoadMplexTemplate:
     TST.B   (A0)
     BEQ.S   .check_suffix_slot
 
-    PEA     DATA_GCOMMAND_FMT_PCT_T_1F6C
+    PEA     GCOMMAND_FMT_PCT_T_MplexTemplateLoad
     MOVE.L  A0,-(A7)
     JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -592,7 +592,7 @@ GCOMMAND_LoadMplexTemplate:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
 ; READS:
-;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6D, GCOMMAND_MplexTemplateFieldSeparatorByteStorage, GCOMMAND_DigitalMplexEnabledFlag, MODE_NEWFILE, copy_template_loop, return
+;   GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave, GCOMMAND_MplexTemplateFieldSeparatorByteStorage, GCOMMAND_DigitalMplexEnabledFlag, MODE_NEWFILE, copy_template_loop, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -604,7 +604,7 @@ GCOMMAND_LoadMplexFile:
     LINK.W  A5,#-64
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_1F6D
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave
     JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -696,7 +696,7 @@ GCOMMAND_LoadMplexFile:
 ; CALLS:
 ;   ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadMplexFile, GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, ESQPARS_ReplaceOwnedString, FLIB2_LoadDigitalMplexDefaults, LADFUNC_ParseHexDigit
 ; READS:
-;   GCOMMAND_MplexParseScratchSeedWord, DATA_GCOMMAND_FMT_PCT_T_1F70, WDISP_CharClassTable, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
+;   GCOMMAND_MplexParseScratchSeedWord, GCOMMAND_FMT_PCT_T_MplexTemplateParse, WDISP_CharClassTable, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
 ; WRITES:
 ;   GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexModeCycleCount, GCOMMAND_MplexSearchRowLimit, GCOMMAND_MplexClockOffsetMinutes, GCOMMAND_MplexMessageTextPen, GCOMMAND_MplexMessageFramePen, GCOMMAND_MplexEditorLayoutPen, GCOMMAND_MplexEditorRowPen, GCOMMAND_MplexDetailLayoutPen, GCOMMAND_MplexDetailInitialLineIndex, GCOMMAND_MplexDetailRowPen, GCOMMAND_MplexWorkflowMode, GCOMMAND_MplexDetailLayoutFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; DESC:
@@ -1270,7 +1270,7 @@ GCOMMAND_ParseCommandString:
     TST.B   (A0)
     BEQ.S   .check_suffix_slot
 
-    PEA     DATA_GCOMMAND_FMT_PCT_T_1F70
+    PEA     GCOMMAND_FMT_PCT_T_MplexTemplateParse
     MOVE.L  A0,-(A7)
     JSR     GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -1312,7 +1312,7 @@ GCOMMAND_ParseCommandString:
 ; CALLS:
 ;   GCOMMAND_LoadPPVTemplate, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, ESQPARS_ReplaceOwnedString, NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem, _LVODeleteFile
 ; READS:
-;   AbsExecBase, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_3, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F71, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F72, DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F73, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
+;   AbsExecBase, Global_REF_DOS_LIBRARY_2, Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_3, GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad, GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad, GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete, Global_PTR_WORK_BUFFER, GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
 ;   Global_PTR_WORK_BUFFER, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
 ; DESC:
@@ -1325,7 +1325,7 @@ GCOMMAND_LoadPPV3Template:
     MOVEM.L D5-D7,-(A7)
     MOVEQ   #0,D6
     MOVEQ   #0,D5
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F71
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad
     JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1338,7 +1338,7 @@ GCOMMAND_LoadPPV3Template:
 
 .try_fallback_template:
     ; Fall back to alternate template (Digital_PPV).
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F72
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad
     JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1346,7 +1346,7 @@ GCOMMAND_LoadPPV3Template:
     BEQ.S   .template_ready
 
     MOVEQ   #52,D6
-    LEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_1F73,A0
+    LEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete,A0
     MOVE.L  A0,D1
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
@@ -1433,7 +1433,7 @@ GCOMMAND_LoadPPV3Template:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
 ; READS:
-;   DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F75, GCOMMAND_PpvTemplateFieldSeparatorByteStorage, GCOMMAND_DigitalPpvEnabledFlag, MODE_NEWFILE, copy_template_loop, return
+;   GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave, GCOMMAND_PpvTemplateFieldSeparatorByteStorage, GCOMMAND_DigitalPpvEnabledFlag, MODE_NEWFILE, copy_template_loop, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1445,7 +1445,7 @@ GCOMMAND_LoadPPVTemplate:
     LINK.W  A5,#-68
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
-    PEA     DATA_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_1F75
+    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave
     JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7

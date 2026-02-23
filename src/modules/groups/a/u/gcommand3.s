@@ -54,14 +54,14 @@
 ; CALLS:
 ;   GCOMMAND_GetBannerChar
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, DATA_CTASKS_CONST_LONG_1BCA, DATA_ESQPARS2_BSS_LONG_1F48, GCOMMAND_BannerQueueSlotPrevious
+;   Global_REF_WORD_HEX_CODE_8E, CONFIG_RefreshIntervalSeconds, ESQPARS2_BannerQueueBuffer, GCOMMAND_BannerQueueSlotPrevious
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Interpret a keyboard scan code and map it to a preset palette index.
 ; NOTES:
 ;   Uses bit masks `$30/$20/$40` on keycode byte and enqueues into
-;   `DATA_ESQPARS2_BSS_LONG_1F48` at `GCOMMAND_BannerQueueSlotPrevious`.
+;   `ESQPARS2_BannerQueueBuffer` at `GCOMMAND_BannerQueueSlotPrevious`.
 ;------------------------------------------------------------------------------
 
 ; Interpret a keyboard scan code and map it to a preset palette index.
@@ -75,7 +75,7 @@ GCOMMAND_MapKeycodeToPreset:
     CMP.B   D1,D0
     BNE.S   .lab_0D67
 
-    MOVE.L  DATA_CTASKS_CONST_LONG_1BCA,D6
+    MOVE.L  CONFIG_RefreshIntervalSeconds,D6
     BRA.S   .lab_0D69
 
 .lab_0D67:
@@ -91,7 +91,7 @@ GCOMMAND_MapKeycodeToPreset:
     CMP.W   D0,D1
     BNE.S   .lab_0D69
 
-    MOVE.L  DATA_CTASKS_CONST_LONG_1BCA,D6
+    MOVE.L  CONFIG_RefreshIntervalSeconds,D6
     BRA.S   .lab_0D69
 
 .branch:
@@ -104,7 +104,7 @@ GCOMMAND_MapKeycodeToPreset:
     MOVEQ   #-1,D6
 
 .lab_0D69:
-    LEA     DATA_ESQPARS2_BSS_LONG_1F48,A0
+    LEA     ESQPARS2_BannerQueueBuffer,A0
     ADDA.W  GCOMMAND_BannerQueueSlotPrevious,A0
     MOVE.B  D6,(A0)
     MOVEM.L (A7)+,D6-D7
@@ -122,7 +122,7 @@ GCOMMAND_MapKeycodeToPreset:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GCOMMAND_HighlightFlag, DATA_ESQ_BSS_LONG_1E25, ESQ_CopperListBannerA, DATA_ESQ_BSS_LONG_1E54, ESQ_CopperListBannerB
+;   GCOMMAND_HighlightFlag, ESQ_CopperEffectTemplateRowsSet0, ESQ_CopperListBannerA, ESQ_CopperEffectTemplateRowsSet1, ESQ_CopperListBannerB
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -147,13 +147,13 @@ GCOMMAND_ApplyHighlightFlag:
 
 .lab_0D6C:
     MOVE.L  D0,D7
-    MOVE.L  #DATA_ESQ_BSS_LONG_1E25,-4(A5)
+    MOVE.L  #ESQ_CopperEffectTemplateRowsSet0,-4(A5)
     MOVEQ   #-3,D0
     MOVEA.L -4(A5),A0
     AND.W   26(A0),D0
     OR.W    D7,D0
     MOVE.W  D0,26(A0)
-    MOVE.L  #DATA_ESQ_BSS_LONG_1E54,-4(A5)
+    MOVE.L  #ESQ_CopperEffectTemplateRowsSet1,-4(A5)
     MOVEQ   #-3,D0
     MOVEA.L -4(A5),A0
     AND.W   26(A0),D0
@@ -247,7 +247,7 @@ GCOMMAND_EnableHighlight:
 ; CALLS:
 ;   GCOMMAND_ApplyHighlightFlag, GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_GCOMMAND_FMT_PCT_S_COLON_1FAA, DATA_GCOMMAND_STR_GRADIENT_1FAB, DATA_GCOMMAND_FMT_COLOR_PCT_D_PCT_D_1FAC, DATA_GCOMMAND_FMT_PCT_D_PCT_03X_1FAD, GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
+;   GCOMMAND_FMT_PCT_S_COLON, GCOMMAND_STR_GRADIENT, GCOMMAND_FMT_COLOR_PCT_D_PCT_D, GCOMMAND_FMT_PCT_D_PCT_03X, GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
 ; WRITES:
 ;   GCOMMAND_HighlightFlag
 ; DESC:
@@ -267,10 +267,10 @@ GCOMMAND_DisableHighlight:
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
     MOVE.L  A3,-(A7)
-    PEA     DATA_GCOMMAND_FMT_PCT_S_COLON_1FAA
+    PEA     GCOMMAND_FMT_PCT_S_COLON
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     DATA_GCOMMAND_STR_GRADIENT_1FAB
+    PEA     GCOMMAND_STR_GRADIENT
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -287,7 +287,7 @@ GCOMMAND_DisableHighlight:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D7,-(A7)
-    PEA     DATA_GCOMMAND_FMT_COLOR_PCT_D_PCT_D_1FAC
+    PEA     GCOMMAND_FMT_COLOR_PCT_D_PCT_D
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -312,7 +312,7 @@ GCOMMAND_DisableHighlight:
     MOVE.W  32(A0),D0
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
-    PEA     DATA_GCOMMAND_FMT_PCT_D_PCT_03X_1FAD
+    PEA     GCOMMAND_FMT_PCT_D_PCT_03X
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -1268,13 +1268,13 @@ GCOMMAND_UpdateBannerBounds:
 ; CALLS:
 ;   GCOMMAND_InitPresetWorkEntry, GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3, Global_UIBusyFlag
+;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3, Global_UIBusyFlag
 ; WRITES:
 ;   GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, ESQ_CopperListBannerA, ESQ_CopperListBannerB
 ; DESC:
 ;   Rebuilds banner tables from the cached bounds and preset definitions.
 ; NOTES:
-;   Uses DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3 as fallback values when preset tables are negative.
+;   Uses GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3 as fallback values when preset tables are negative.
 ;   Writes both ESQ_CopperListBannerA and ESQ_CopperListBannerB from +$80 onward.
 ;   The row loop runs 17 iterations (D7 = 0..16), using 32-byte row stride.
 ;   Per-row gradient words land at offsets +6/+10/+14/+18 in each 32-byte entry.
@@ -1340,7 +1340,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset0
 
     MOVEQ   #0,D2
-    MOVE.B  DATA_ESQ_BSS_BYTE_1DE0,D2
+    MOVE.B  GCOMMAND_PresetFallbackValue0,D2
     BRA.S   .store_entry0
 
 .use_preset0:
@@ -1367,7 +1367,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset1
 
     MOVEQ   #0,D2
-    MOVE.B  DATA_ESQ_BSS_BYTE_1DE1,D2
+    MOVE.B  GCOMMAND_PresetFallbackValue1,D2
     BRA.S   .store_entry1
 
 .use_preset1:
@@ -1392,7 +1392,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset2
 
     MOVEQ   #0,D2
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DE2,D2
+    MOVE.B  GCOMMAND_PresetFallbackValue2,D2
     BRA.S   .store_entry2
 
 .use_preset2:
@@ -1417,7 +1417,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BPL.S   .use_preset3
 
     MOVEQ   #0,D2
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DE3,D2
+    MOVE.B  GCOMMAND_PresetFallbackValue3,D2
     BRA.S   .store_entry3
 
 .use_preset3:
@@ -1756,15 +1756,15 @@ GCOMMAND_BuildBannerRow:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_ESQPARS2_BSS_WORD_1F41, DATA_ESQPARS2_BSS_LONG_1F48
+;   ESQPARS2_BannerQueueAttentionCountdown, ESQPARS2_BannerQueueBuffer
 ; DESC:
 ;   Clears the banner queue buffer and resets the queue state.
 ; NOTES:
-;   Zeros 98 bytes in DATA_ESQPARS2_BSS_LONG_1F48 and sets DATA_ESQPARS2_BSS_WORD_1F41 to -1.
+;   Zeros 98 bytes in ESQPARS2_BannerQueueBuffer and sets ESQPARS2_BannerQueueAttentionCountdown to -1.
 ;------------------------------------------------------------------------------
 GCOMMAND_ClearBannerQueue:
     MOVE.L  D7,-(A7)
-    MOVE.W  #(-1),DATA_ESQPARS2_BSS_WORD_1F41
+    MOVE.W  #(-1),ESQPARS2_BannerQueueAttentionCountdown
     MOVEQ   #0,D7
 
 .clear_loop:
@@ -1772,7 +1772,7 @@ GCOMMAND_ClearBannerQueue:
     CMP.L   D0,D7
     BGE.S   .return
 
-    LEA     DATA_ESQPARS2_BSS_LONG_1F48,A0
+    LEA     ESQPARS2_BannerQueueBuffer,A0
     ADDA.L  D7,A0
     CLR.B   (A0)
     ADDQ.L  #1,D7
@@ -1891,9 +1891,9 @@ GCOMMAND_ClearBannerQueue:
 ; CALLS:
 ;   (none)
 ; READS:
-;   GCOMMAND_BannerQueueSlotCurrent, DATA_ESQPARS2_BSS_LONG_1F48, DATA_ESQPARS2_CONST_LONG_1F56
+;   GCOMMAND_BannerQueueSlotCurrent, ESQPARS2_BannerQueueBuffer, ESQPARS2_BannerQueueAttentionDelayTicks
 ; WRITES:
-;   DATA_ESQPARS2_BSS_WORD_1F41, ESQPARS2_ReadModeFlags, DATA_ESQ_BSS_BYTE_1DEE, GCOMMAND_HighlightHoldoffTickCount, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQPARS2_BSS_LONG_1F48
+;   ESQPARS2_BannerQueueAttentionCountdown, ESQPARS2_ReadModeFlags, ESQDISP_StatusIndicatorDeferredApplyFlag, GCOMMAND_HighlightHoldoffTickCount, ESQDISP_StatusRefreshPendingFlag, ESQPARS2_BannerQueueBuffer
 ; DESC:
 ;   Consumes the current banner queue entry and updates highlight flags.
 ; NOTES:
@@ -1902,7 +1902,7 @@ GCOMMAND_ClearBannerQueue:
 ;------------------------------------------------------------------------------
 GCOMMAND_ConsumeBannerQueueEntry:
     MOVE.L  D2,-(A7)
-    LEA     DATA_ESQPARS2_BSS_LONG_1F48,A0
+    LEA     ESQPARS2_BannerQueueBuffer,A0
     MOVE.W  GCOMMAND_BannerQueueSlotCurrent,D0
     MOVEA.L A0,A1
     ADDA.W  D0,A1
@@ -1918,11 +1918,11 @@ GCOMMAND_ConsumeBannerQueueEntry:
     CMP.L   D2,D1
     BNE.S   .check_0xfe
 
-    MOVE.W  DATA_ESQPARS2_CONST_LONG_1F56,D1
+    MOVE.W  ESQPARS2_BannerQueueAttentionDelayTicks,D1
     SUBQ.W  #1,D1
-    MOVE.W  D1,DATA_ESQPARS2_BSS_WORD_1F41
+    MOVE.W  D1,ESQPARS2_BannerQueueAttentionCountdown
     MOVEQ   #1,D2
-    MOVE.B  D2,DATA_ESQ_BSS_BYTE_1DEE
+    MOVE.B  D2,ESQDISP_StatusIndicatorDeferredApplyFlag
     BRA.S   .clear_entry
 
 .check_0xfe:
@@ -1949,18 +1949,18 @@ GCOMMAND_ConsumeBannerQueueEntry:
     ADDA.W  D0,A0
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
-    MOVE.W  DATA_ESQPARS2_BSS_WORD_1F41,D1
+    MOVE.W  ESQPARS2_BannerQueueAttentionCountdown,D1
     BLT.S   .return
 
     MOVE.L  D1,D2
     SUBQ.W  #1,D2
-    MOVE.W  D2,DATA_ESQPARS2_BSS_WORD_1F41
+    MOVE.W  D2,ESQPARS2_BannerQueueAttentionCountdown
     MOVE.B  #$2,GCOMMAND_HighlightHoldoffTickCount
     TST.W   D2
     BPL.S   .return
 
-    MOVE.B  D0,DATA_ESQ_BSS_BYTE_1DEE
-    MOVE.B  #$1,DATA_ESQDISP_BSS_WORD_1E89
+    MOVE.B  D0,ESQDISP_StatusIndicatorDeferredApplyFlag
+    MOVE.B  #$1,ESQDISP_StatusRefreshPendingFlag
 
 .return:
     MOVE.L  (A7)+,D2
@@ -2278,7 +2278,7 @@ GCOMMAND_ResetHighlightMessages:
 .clear_queue:
     MOVEQ   #98,D0
     MOVEQ   #0,D1
-    LEA     DATA_ESQPARS2_BSS_LONG_1F48,A0
+    LEA     ESQPARS2_BannerQueueBuffer,A0
 
 .queue_loop:
     MOVE.B  D1,(A0)+
@@ -2306,7 +2306,7 @@ GCOMMAND_ResetHighlightMessages:
 ;   GCOMMAND_ComputePresetIncrement, GCOMMAND_InitPresetWorkEntry,
 ;   GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, DATA_ESQ_BSS_BYTE_1DE0..DATA_ESQ_CONST_BYTE_1DE3
+;   Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3
 ; WRITES:
 ;   [outPtr] (writes 32-byte entries)
 ; DESC:
@@ -2324,7 +2324,7 @@ GCOMMAND_ResetHighlightMessages:
 ;     +20 u16 $0084, +22 u16 nextPtr_hi
 ;     +24 u16 $0086, +26 u16 nextPtr_lo
 ;     +28 u16 $008A, +30 u16 0
-;   colorN words come from preset work entries, or DATA_ESQ_* fallback bytes when
+;   colorN words come from preset work entries, or ESQ_* fallback bytes when
 ;   the corresponding value index is negative.
 ;------------------------------------------------------------------------------
 GCOMMAND_BuildBannerBlock:
@@ -2408,7 +2408,7 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset0
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_BSS_BYTE_1DE0,D1
+    MOVE.B  GCOMMAND_PresetFallbackValue0,D1
     BRA.S   .store_preset0
 
 .use_preset0:
@@ -2431,7 +2431,7 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset1
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_BSS_BYTE_1DE1,D1
+    MOVE.B  GCOMMAND_PresetFallbackValue1,D1
     BRA.S   .store_preset1
 
 .use_preset1:
@@ -2454,7 +2454,7 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset2
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DE2,D1
+    MOVE.B  GCOMMAND_PresetFallbackValue2,D1
     BRA.S   .store_preset2
 
 .use_preset2:
@@ -2477,7 +2477,7 @@ GCOMMAND_BuildBannerBlock:
     BPL.S   .use_preset3
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DE3,D1
+    MOVE.B  GCOMMAND_PresetFallbackValue3,D1
     BRA.S   .store_preset3
 
 .use_preset3:
@@ -2894,7 +2894,7 @@ GCOMMAND_CopyImageDataToBitmap:
 ; READS:
 ;   GCOMMAND_BannerRowByteOffsetResetValue, ESQSHARED4_InterleaveCopyTailOffsetReset, Global_REF_696_400_BITMAP
 ; WRITES:
-;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerQueueSlotPrevious..GCOMMAND_BannerRowIndexCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, DATA_ED2_BSS_WORD_1D31, ESQPARS2_ReadModeFlags
+;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerQueueSlotPrevious..GCOMMAND_BannerRowIndexCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, ED2_HighlightTickEnabledFlag, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets banner-related globals and rebuilds the banner tables into the bitmap.
 ; NOTES:
@@ -2958,7 +2958,7 @@ GCOMMAND_BuildBannerTables:
 
     BSR.W   GCOMMAND_ClearBannerQueue
 
-    MOVE.W  #1,DATA_ED2_BSS_WORD_1D31
+    MOVE.W  #1,ED2_HighlightTickEnabledFlag
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)

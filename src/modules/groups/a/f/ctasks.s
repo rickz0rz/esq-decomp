@@ -225,9 +225,9 @@ CTASKS_StartIffTaskProcess:
 ; CALLS:
 ;   _LVOClose, _LVOForbid, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   DATA_CTASKS_BSS_LONG_1B8B (file handle), Global_REF_DOS_LIBRARY_2, Global_REF_LIST_CLOSE_TASK_PROC
+;   CTASKS_CloseTaskFileHandle (file handle), Global_REF_DOS_LIBRARY_2, Global_REF_LIST_CLOSE_TASK_PROC
 ; WRITES:
-;   DATA_CTASKS_BSS_LONG_1B8B, DATA_CTASKS_CONST_WORD_1B8A
+;   CTASKS_CloseTaskFileHandle, CTASKS_CloseTaskCompletionFlag
 ; DESC:
 ;   Closes the stored file handle (if any), frees the CLOSE_TASK list, and marks the task done.
 ; NOTES:
@@ -237,15 +237,15 @@ CTASKS_CloseTaskTeardown:
     MOVE.L  A4,-(A7)
 
     LEA     Global_REF_LONG_FILE_SCRATCH,A4
-    TST.L   DATA_CTASKS_BSS_LONG_1B8B
+    TST.L   CTASKS_CloseTaskFileHandle
     BEQ.S   .skip_close_handle
 
-    MOVE.L  DATA_CTASKS_BSS_LONG_1B8B,D1
+    MOVE.L  CTASKS_CloseTaskFileHandle,D1
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_CTASKS_BSS_LONG_1B8B                  ; clear stored handle
+    MOVE.L  D0,CTASKS_CloseTaskFileHandle                  ; clear stored handle
 
 .skip_close_handle:
     MOVEA.L AbsExecBase,A6
@@ -258,7 +258,7 @@ CTASKS_CloseTaskTeardown:
     JSR     GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.W  #1,DATA_CTASKS_CONST_WORD_1B8A
+    MOVE.W  #1,CTASKS_CloseTaskCompletionFlag
 
     MOVEA.L (A7)+,A4
     RTS
@@ -279,12 +279,12 @@ CTASKS_CloseTaskTeardown:
 ; READS:
 ;   Global_STR_CLOSE_TASK, Global_REF_DOS_LIBRARY_2
 ; WRITES:
-;   DATA_CTASKS_CONST_WORD_1B8A, DATA_CTASKS_BSS_LONG_1B8B, Global_REF_LIST_CLOSE_TASK_PROC, CTASKS_CloseTaskSegListBPTR, CTASKS_CloseTaskProcPtr
+;   CTASKS_CloseTaskCompletionFlag, CTASKS_CloseTaskFileHandle, Global_REF_LIST_CLOSE_TASK_PROC, CTASKS_CloseTaskSegListBPTR, CTASKS_CloseTaskProcPtr
 ; DESC:
 ;   Stores the target handle, allocates a List struct, installs CTASKS_CloseTaskTeardown as its entry,
 ;   and spawns the CLOSE_TASK process.
 ; NOTES:
-;   Clears DATA_CTASKS_CONST_WORD_1B8A before launch.
+;   Clears CTASKS_CloseTaskCompletionFlag before launch.
 ;------------------------------------------------------------------------------
 CTASKS_StartCloseTaskProcess:
     MOVEM.L D2-D4/D7,-(A7)
@@ -292,8 +292,8 @@ CTASKS_StartCloseTaskProcess:
     SetOffsetForStack 4
     UseStackLong    MOVE.L,1,D7
 
-    CLR.W   DATA_CTASKS_CONST_WORD_1B8A                     ; mark task as running
-    MOVE.L  D7,DATA_CTASKS_BSS_LONG_1B8B
+    CLR.W   CTASKS_CloseTaskCompletionFlag                     ; mark task as running
+    MOVE.L  D7,CTASKS_CloseTaskFileHandle
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     (Struct_List_Size).W

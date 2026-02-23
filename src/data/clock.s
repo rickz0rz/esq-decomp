@@ -52,7 +52,7 @@ CLOCK_FileEofMarkerCtrlZ:
 ;------------------------------------------------------------------------------
 COI_FieldDelimiterTab:
     DC.B    $09
-DATA_CLOCK_CONST_BYTE_1B60:
+COI_RecordTerminatorCrLf:
     DC.B    $0d
     DC.W    $0a00
 ;------------------------------------------------------------------------------
@@ -73,13 +73,13 @@ CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY:
 ; Default pair bytes used by CLEANUP_FormatEntryStringTokens replacement logic.
 CLOCK_STR_TOKEN_PAIR_DEFAULTS:
     NStr    "NYYYYYXX00"
-DATA_CLOCK_BSS_WORD_1B66:
+CLEANUP_TokenPairScratch:
     DS.W    1
 ; Output template loaded before token/jumptable substitutions.
 CLOCK_STR_TOKEN_OUTPUT_TEMPLATE:
     NStr    "NYYYYYXX00"
 CLOCK_STR_BOOL_CHARS_YyNn:
-DATA_CLOCK_STR_YYNN_1B68:
+CLOCK_STR_BOOL_CHARS_YyNnAlias:
     NStr    "YyNn"
 CLOCK_STR_EMPTY_TOKEN_TEMPLATE:
     NStr    "NNNNNNXX00"

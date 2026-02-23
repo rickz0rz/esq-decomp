@@ -229,7 +229,7 @@ PARSEINI_UpdateClockFromRtc:
     BRA.S   .return_status
 
 .fallback_default_date:
-    PEA     DATA_PARSEINI_CONST_LONG_20A1
+    PEA     PARSEINI_FallbackClockDataRecord
     PEA     CLOCK_DaySlotIndex
     BSR.W   PARSEINI_NormalizeClockData
 

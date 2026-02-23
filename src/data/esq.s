@@ -58,25 +58,32 @@ ESQ_HighlightMsgPort:
     DS.L    1
 ESQ_HighlightReplyPort:
     DS.L    1
-DATA_ESQ_BSS_LONG_1DC7:
+;------------------------------------------------------------------------------
+; SYM: ESQ_ProcessWindowPtrBackup   (startup/restored process window pointer)
+; TYPE: pointer
+; PURPOSE: Saves current process `pr_WindowPtr` before ESQ sets it to `-1`.
+; USED BY: ESQ startup task init, CLEANUP shutdown restore
+; NOTES: Restored only when non-null.
+;------------------------------------------------------------------------------
+ESQ_ProcessWindowPtrBackup:
     DS.L    1
-LAB_1DC7_Length = 1
+ED_DiagVinModeChar_Length = 1
 
-DATA_ESQ_STR_B_1DC8:
+ESQ_STR_B:
     DC.B    "B"
-LAB_1DC8_Length = DATA_ESQ_STR_E_1DC9-DATA_ESQ_STR_B_1DC8
+ESQ_STR_B_Length = ESQ_STR_E-ESQ_STR_B
 
-DATA_ESQ_STR_E_1DC9:
+ESQ_STR_E:
     DC.B    "E"
-LAB_1DC9_Length = ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-DATA_ESQ_STR_E_1DC9
+ESQ_STR_E_Length = ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED-ESQ_STR_E
 
 ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED:
     DC.B    "3"
-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length = DATA_ESQ_TAG_36_1DCB-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
+ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_Length = ESQ_TAG_36-ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED
 
-DATA_ESQ_TAG_36_1DCB:
+ESQ_TAG_36:
     DC.B    "36"
-DATA_ESQ_TAG_36_1DCB_Length = ED_DiagScrollSpeedChar-DATA_ESQ_TAG_36_1DCB
+ESQ_TAG_36_Length = ED_DiagScrollSpeedChar-ESQ_TAG_36
 
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagScrollSpeedChar   (diagnostic SSPD selector char)
@@ -87,30 +94,37 @@ DATA_ESQ_TAG_36_1DCB_Length = ED_DiagScrollSpeedChar-DATA_ESQ_TAG_36_1DCB
 ;------------------------------------------------------------------------------
 ED_DiagScrollSpeedChar:
     DC.B    "6"
-LAB_1DCD_Length = DATA_ESQ_STR_N_1DCE-ED_DiagScrollSpeedChar
+ED_DiagScrollSpeedChar_Length = ESQ_DefaultNoFlagChar-ED_DiagScrollSpeedChar
 
-DATA_ESQ_STR_N_1DCE:
+ESQ_DefaultNoFlagChar:
     DC.B    "N"
-DATA_ESQ_CONST_BYTE_1DCF:
+;------------------------------------------------------------------------------
+; SYM: CLOCK_MinuteEventBaseMinute/CLOCK_MinuteEventBaseOffset   (minute trigger seeds)
+; TYPE: u8/u8
+; PURPOSE: Base values passed into ESQ_SeedMinuteEventThresholds.
+; USED BY: ESQIFF2_ApplyIncomingStatusPacket
+; NOTES: Clamped to the 1..9 range before use.
+;------------------------------------------------------------------------------
+CLOCK_MinuteEventBaseMinute:
     DC.B    1
-DATA_ESQ_CONST_BYTE_1DD0:
+CLOCK_MinuteEventBaseOffset:
     DC.B    1
-DATA_ESQ_STR_6_1DD1:
+ESQ_STR_6:
     DC.B    "6"
-DATA_ESQ_STR_6_1DD1_Length = DATA_ESQ_STR_N_1DD2-DATA_ESQ_STR_6_1DD1
+ESQ_STR_6_Length = ESQ_SecondarySlotModeFlagChar-ESQ_STR_6
 
-DATA_ESQ_STR_N_1DD2:
+ESQ_SecondarySlotModeFlagChar:
     DC.B    "N"
-DATA_ESQ_STR_N_1DD2_Length = DATA_ESQ_STR_Y_1DD3-DATA_ESQ_STR_N_1DD2
+ESQ_SecondarySlotModeFlagChar_Length = ESQ_STR_Y-ESQ_SecondarySlotModeFlagChar
 
-DATA_ESQ_STR_Y_1DD3:
+ESQ_STR_Y:
     DC.B    "Y"
-DATA_ESQ_STR_Y_1DD3_Length = DATA_ESQ_STR_N_1DD3-DATA_ESQ_STR_Y_1DD3
-DATA_ESQ_STR_N_1DD3:
+ESQ_STR_Y_Length = ESQ_ReservedFlagChar0-ESQ_STR_Y
+ESQ_ReservedFlagChar0:
     DC.B    "N"
-DATA_ESQ_STR_N_1DD4:
+ESQ_AlertType4ModeFlagChar:
     DC.B    "N"
-DATA_ESQ_STR_N_1DD5:
+ESQ_AlertType235ModeFlagChar:
     DC.B    "N"
     DC.B    "YA"
 ;------------------------------------------------------------------------------
@@ -134,7 +148,7 @@ ED_DiagVinModeChar:
 ;------------------------------------------------------------------------------
 CLOCK_FormatVariantCode:
     DS.B    1
-LAB_1DD8_RASTPORT:
+ESQ_TopazGuardRastPortAnchor:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_WeatherStatusTextPtr   (weather/status text pointer)
@@ -192,21 +206,36 @@ TEXTDISP_DeferredActionCountdown:
 ;------------------------------------------------------------------------------
 TEXTDISP_DeferredActionArmed:
     DS.W    1
-DATA_ESQ_BSS_BYTE_1DE0:
+;------------------------------------------------------------------------------
+; SYM: GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
+; TYPE: u8/u8/u8/u8
+; PURPOSE: Per-lane fallback values used when preset work entries are negative.
+; USED BY: GCOMMAND_RebuildBannerTablesFromBounds, ED diagnostic nibble editor/drawer
+; NOTES: Followed by packed template bytes consumed by nearby table-style logic.
+;------------------------------------------------------------------------------
+GCOMMAND_PresetFallbackValue0:
     DS.B    1
-DATA_ESQ_BSS_BYTE_1DE1:
+GCOMMAND_PresetFallbackValue1:
     DS.B    1
-DATA_ESQ_CONST_BYTE_1DE2:
+GCOMMAND_PresetFallbackValue2:
     DC.B    $03
-DATA_ESQ_CONST_BYTE_1DE3:
-    ; Could be a bunch of carriage returns in a row...
+GCOMMAND_PresetFallbackValue3:
+    ; First byte doubles as fallback value #3 for banner rebuild.
     DC.B    $0c
+GCOMMAND_PresetFallbackTemplateTable:
     DC.L    $0c0c0000,$000c0c00,$05010201,$060a0505
     DC.L    $05000003,$00080007,$00070007,$07000c00
     DC.L    $0c000c00,$0c0c0c00,$0000000c
-DATA_ESQ_BSS_WORD_1DE4:
+;------------------------------------------------------------------------------
+; SYM: ESQ_ShutdownRequestedFlag/ESQ_MainLoopUiTickEnabledFlag   (main-loop runtime gates)
+; TYPE: u16/u16
+; PURPOSE: Shutdown request latch and UI-tick enable gate for the main loop.
+; USED BY: ESQ_MainInitAndRun, ESQFUNC_ServiceUiTickIfRunning, ED menu handlers
+; NOTES: Shutdown flag exits the main idle loop when non-zero.
+;------------------------------------------------------------------------------
+ESQ_ShutdownRequestedFlag:
     DS.W    1
-DATA_ESQ_BSS_WORD_1DE5:
+ESQ_MainLoopUiTickEnabledFlag:
     DS.W    1
 Global_HANDLE_PREVUEC_FONT:
     DS.L    1
@@ -225,7 +254,7 @@ Global_HANDLE_TOPAZ_FONT:
 ;------------------------------------------------------------------------------
 ESQIFF_SecondaryLineHeadPtr:
     DS.W    1
-LAB_1DE9_B:
+ESQIFF_SecondaryLineHeadPtr_HiWord:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_SecondaryLineTailPtr   (secondary line tail text pointer)
@@ -236,7 +265,7 @@ LAB_1DE9_B:
 ;------------------------------------------------------------------------------
 ESQIFF_SecondaryLineTailPtr:
     DS.L    1
-DATA_ESQ_STR_A_1DEB:
+ESQ_STR_A:
     NStr    "A"
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_WeatherStatusOverlayTextPtr   (weather overlay text pointer)
@@ -249,9 +278,23 @@ WDISP_WeatherStatusOverlayTextPtr:
     DS.L    1
 Global_LONG_ROM_VERSION_CHECK:
     DC.L    1
-DATA_ESQ_BSS_BYTE_1DEE:
+;------------------------------------------------------------------------------
+; SYM: ESQDISP_StatusIndicatorDeferredApplyFlag   (status-indicator deferred paint gate)
+; TYPE: u8
+; PURPOSE: Defers indicator repaint and caches color while attention countdown is active.
+; USED BY: GCOMMAND_ConsumeBannerQueueEntry, ESQDISP_SetStatusIndicatorColorSlot
+; NOTES: Set on queue control byte `0xFF`, cleared when countdown expires.
+;------------------------------------------------------------------------------
+ESQDISP_StatusIndicatorDeferredApplyFlag:
     DS.B    1
-DATA_ESQ_BSS_BYTE_1DEF:
+;------------------------------------------------------------------------------
+; SYM: CLEANUP_DiagOverlayAutoRefreshFlag   (diagnostic overlay auto-refresh enable)
+; TYPE: u8
+; PURPOSE: Enables periodic diagnostics redraw from alert-processing tick paths.
+; USED BY: ED2 diagnostic menu action, CLEANUP_ProcessAlerts
+; NOTES: Toggled by diagnostics menu command.
+;------------------------------------------------------------------------------
+CLEANUP_DiagOverlayAutoRefreshFlag:
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagAvailMemMask   (diagnostics available-memory mask)
@@ -263,17 +306,31 @@ DATA_ESQ_BSS_BYTE_1DEF:
 ED_DiagAvailMemMask:
     DS.W    1
     DS.B    1
-DATA_ESQ_BSS_BYTE_1DF1:
+;------------------------------------------------------------------------------
+; SYM: ED_DiagAvailMemPresetBits   (diagnostics memory-view preset selector bits)
+; TYPE: u8 (bitfield)
+; PURPOSE: Stores menu-selected preset bits for diagnostics memory display mode.
+; USED BY: ED2 diagnostics menu handlers
+; NOTES: Bits 0..2 are set by dedicated menu cases.
+;------------------------------------------------------------------------------
+ED_DiagAvailMemPresetBits:
     DS.B    1
-DATA_ESQ_BSS_WORD_1DF2:
+;------------------------------------------------------------------------------
+; SYM: ESQDISP_GridMessagePumpBlockFlag/SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
+; TYPE: u16/u16/u16/u16
+; PURPOSE: Misc runtime gates for grid message pump, script refresh hold, text tick suspend, and deferred boxoff persist.
+; USED BY: ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
+; NOTES: `ESQPARS_PersistOnNextBoxOffFlag` is set by `%` command and consumed by boxoff path.
+;------------------------------------------------------------------------------
+ESQDISP_GridMessagePumpBlockFlag:
     DS.W    1
-DATA_ESQ_BSS_WORD_1DF3:
+SCRIPT_StatusRefreshHoldFlag:
     DS.W    1
-DATA_ESQ_BSS_WORD_1DF4:
+TEXTDISP_TickSuspendFlag:
     DS.W    1
 Global_WORD_SELECT_CODE_IS_RAVESC:
     DS.W    1
-DATA_ESQ_BSS_WORD_1DF6:
+ESQPARS_PersistOnNextBoxOffFlag:
     DS.W    1
 HAS_REQUESTED_FAST_MEMORY:
     DS.W    1
@@ -323,37 +380,37 @@ Global_STR_ESQ_C_10:
     NStr    "ESQ.c"
 Global_STR_ESQ_C_11:
     NStr    "ESQ.c"
-DATA_ESQ_STR_NO_DF1_PRESENT_1E0F:
+ESQ_STR_NO_DF1_PRESENT:
     NStr    "no df1 present"
 Global_STR_GUIDE_START_VERSION_AND_BUILD:
     NStr    "Ver %s.%ld Build %ld %s"
 Global_STR_MAJOR_MINOR_VERSION:
     NStr    "9.0"   ; Major/minor version string
-DATA_ESQ_38_Spaces:
+ESQ_STR_38_Spaces:
     NStr    "                                       "
 Global_STR_DF0_GRADIENT_INI_2:
     NStr    "df0:Gradient.ini"
-DATA_ESQ_STR_SystemInitializing:
+ESQ_STR_SystemInitializing:
     NStr    "System Initializing"
-DATA_ESQ_STR_PleaseStandByEllipsis:
+ESQ_STR_PleaseStandByEllipsis:
     NStr    "Please Stand By..."
-DATA_ESQ_STR_AttentionSystemEngineer:
+ESQ_STR_AttentionSystemEngineer:
     NStr    "ATTENTION SYSTEM ENGINEER!"
-DATA_ESQ_STR_ReportErrorCodeEr011ToTVGuide:
+ESQ_STR_ReportErrorCodeEr011ToTVGuide:
     NStr    "Report Error Code ER011 to TV Guide Technical Services."
-DATA_ESQ_STR_ReportErrorCodeER012ToTVGuide:
+ESQ_STR_ReportErrorCodeER012ToTVGuide:
     NStr    "Report Error Code ER012 to TV Guide Technical Services."
 Global_STR_DF0_DEFAULT_INI_1:
     NStr    "df0:default.ini"
 Global_STR_DF0_BRUSH_INI_1:
     NStr    "df0:brush.ini"
-DATA_ESQ_STR_DT:
+ESQ_STR_DT:
     NStr    "DT"
-DATA_ESQ_STR_DITHER:
+ESQ_STR_DITHER:
     NStr    "DITHER"
 Global_STR_DF0_BANNER_INI_1:
     NStr    "df0:banner.ini"
-DATA_ESQ_TAG_GRANADA:
+ESQ_TAG_GRANADA:
     NStr    "GRANADA"
 Global_LONG_BUILD_NUMBER:
     DC.L    $00000015   ; 21
@@ -390,11 +447,20 @@ ESQ_CopperEffectListA:
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $03d9fffe
     DC.W    $0080
-DATA_ESQ_CONST_LONG_1E23:
+ESQ_CopperEffectListB_PtrHiWord:
     DC.L    $00000082
-DATA_ESQ_BSS_WORD_1E24:
+ESQ_CopperEffectListB_PtrLoWord:
     DS.W    1
-DATA_ESQ_BSS_LONG_1E25:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperEffectTemplateRowsSet0   (copper effect list B body template ??)
+; TYPE: u32[] + tail word
+; PURPOSE: Backing storage for effect-list B command payload words.
+; USED BY: ESQSHARED4 banner/copper setup and update paths
+; NOTES:
+;   Pointer high/low words above are rebound at runtime; per-entry color/wait
+;   semantics in this block are not fully resolved yet.
+;------------------------------------------------------------------------------
+ESQ_CopperEffectTemplateRowsSet0:
     DS.L    19
     DC.W    $0180
 ;------------------------------------------------------------------------------
@@ -406,18 +472,18 @@ DATA_ESQ_BSS_LONG_1E25:
 ;------------------------------------------------------------------------------
 ESQ_CopperStatusDigitsA:
     DC.L    $00030182
-DATA_ESQ_CONST_LONG_1E27:
+ESQ_CopperStatusDigitsA_ColorRegistersA:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
     DC.L    $016a018c,$0cc0018e
-DATA_ESQ_CONST_LONG_1E28:
+ESQ_CopperStatusDigitsA_ColorRegistersB:
     DC.L    $00030190,$00030192,$00030194,$00030196
     DC.L    $00030198,$0003019a,$0003019c,$0003019e
-DATA_ESQ_CONST_LONG_1E29:
+ESQ_CopperStatusDigitsA_ColorRegistersC:
     DC.L    $000301a0,$000301a2,$000301a4,$000301a6
     DC.L    $000301a8,$000301aa,$000301ac,$000301ae
     DC.L    $000301b0,$000301b2,$000301b4,$000301b6
     DC.L    $000301b8,$000301ba,$000301bc,$000301be
-DATA_ESQ_CONST_WORD_1E2A:
+ESQ_CopperStatusDigitsA_TailColorWord:
     DC.W    $0003
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperListBannerA   (banner copper list A)
@@ -431,30 +497,40 @@ ESQ_CopperListBannerA:
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E2C:
+ESQ_BannerWorkRasterPtrA_HiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E2D:
+ESQ_BannerWorkRasterPtrA_LoWord:
     DC.L    $00000180
-DATA_ESQ_CONST_LONG_1E2E:
+ESQ_BannerPaletteWordsA:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003
-DATA_ESQ_CONST_LONG_1E2F:
+ESQ_BannerSweepWaitRowA:
     DC.L    $00dffffe
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E30:
+ESQ_BannerPlane0SnapshotScratchPtrHiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E31:
+ESQ_BannerPlane0SnapshotScratchPtrLoWord:
     DC.L    $000000e4
-DATA_ESQ_CONST_LONG_1E32:
+ESQ_BannerPlane1SnapshotScratchPtrHiWord:
     DC.L    $000000e6
-DATA_ESQ_CONST_LONG_1E33:
+ESQ_BannerPlane1SnapshotScratchPtrLoWord:
     DC.L    $000000e8
-DATA_ESQ_CONST_LONG_1E34:
+ESQ_BannerPlane2SnapshotScratchPtrHiWord:
     DC.L    $000000ea
-DATA_ESQ_CONST_LONG_1E35:
+ESQ_BannerPlane2SnapshotScratchPtrLoWord:
     DC.L    $00000182
-DATA_ESQ_CONST_LONG_1E36:
+;------------------------------------------------------------------------------
+; SYM: ESQ_BannerColorSweepProgramA..ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
+; TYPE: u32/u16 mixed command templates
+; PURPOSE: Runtime-patched copper command words used by banner color sweep (A path).
+; USED BY: ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
+; NOTES:
+;   Includes wait rows, color register writes, and pointer-word placeholders.
+;   Individual entries remain intentionally anonymous until per-word behavior is
+;   confirmed from deeper trace work.
+;------------------------------------------------------------------------------
+ESQ_BannerColorSweepProgramA:
     DC.L    $0aaa0100,$b30680d5,$80fe0188,$0100018a
     DC.L    $0000018c,$0000018e,$000180d5,$80fe0188
     DC.L    $0200018a,$0011018c,$0111018e,$000280d5
@@ -477,54 +553,54 @@ DATA_ESQ_CONST_LONG_1E36:
     DC.L    $000f80d5,$80fe0188,$0512018a,$016a018c
     DC.L    $0555018e
     DC.W    $0003
-DATA_ESQ_CONST_LONG_1E37:
+ESQ_BannerSweepWaitStartProgramA:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E38:
+ESQ_BannerWorkRasterPtrMirrorA_HiWord:
     DC.L    $000000e2
-DATA_ESQ_BSS_WORD_1E39:
+ESQ_BannerWorkRasterPtrMirrorA_LoWord:
     DS.W    1
-DATA_ESQ_CONST_LONG_1E3A:
+ESQ_BannerSweepWaitEndProgramA:
     DC.L    $00dffffe
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E3B:
+ESQ_BannerSnapshotPlane0DstPtrHiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E3C:
+ESQ_BannerSnapshotPlane0DstPtrLoWord:
     DC.L    $000000e4
-DATA_ESQ_CONST_LONG_1E3D:
+ESQ_BannerSnapshotPlane1DstPtrHiWord:
     DC.L    $000000e6
-DATA_ESQ_CONST_LONG_1E3E:
+ESQ_BannerSnapshotPlane1DstPtrLoWord:
     DC.L    $000000e8
-DATA_ESQ_CONST_LONG_1E3F:
+ESQ_BannerSnapshotPlane2DstPtrHiWord:
     DC.L    $000000ea
-DATA_ESQ_CONST_LONG_1E40:
+ESQ_BannerSnapshotPlane2DstPtrLoWord:
     DC.L    $00000100,$b3060084
-DATA_ESQ_CONST_LONG_1E41:
+ESQ_CopperEffectJumpTargetA_HiWord:
     DC.L    $00000086
-DATA_ESQ_CONST_LONG_1E42:
+ESQ_CopperEffectJumpTargetA_LoWord:
     DC.L    $00000182
-DATA_ESQ_CONST_LONG_1E43:
+ESQ_BannerColorSweepProgramA_AnchorColorWord:
     DC.L    $0aaa018e
-DATA_ESQ_CONST_WORD_1E44:
+ESQ_BannerColorSweepProgramA_TailColorWord:
     DC.W    $0003
-DATA_ESQ_BSS_BYTE_1E45:
+ESQ_BannerColorClampValueA:
     DS.B    1
-DATA_ESQ_CONST_BYTE_1E46:
+ESQ_BannerColorClampWaitRowA:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
-DATA_ESQ_CONST_LONG_1E47:
+ESQ_BannerPlane0DstPtrReset_HiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E48:
+ESQ_BannerPlane0DstPtrReset_LoWord:
     DC.L    $000000e4
-DATA_ESQ_CONST_LONG_1E49:
+ESQ_BannerPlane1DstPtrReset_HiWord:
     DC.L    $000000e6
-DATA_ESQ_CONST_LONG_1E4A:
+ESQ_BannerPlane1DstPtrReset_LoWord:
     DC.L    $000000e8
-DATA_ESQ_CONST_LONG_1E4B:
+ESQ_BannerPlane2DstPtrReset_HiWord:
     DC.L    $000000ea
-DATA_ESQ_BSS_WORD_1E4C:
+ESQ_BannerPlane2DstPtrReset_LoWord:
     DS.W    1
-DATA_ESQ_CONST_LONG_1E4D:
+ESQ_CopperEffectSwitchWaitWordA:
     DC.L    $009c8010
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperBannerTailListA/ESQ_CopperBannerTailListB   (banner copper tail lists)
@@ -538,7 +614,7 @@ DATA_ESQ_CONST_LONG_1E4D:
 ESQ_CopperBannerTailListA:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E4F:
+ESQ_BannerWorkRasterPtrTailA_HiWord:
     DC.L    $000000e2
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperBannerRasterPointerListA/ESQ_CopperBannerRasterPointerListB   (banner raster pointer lists)
@@ -828,11 +904,19 @@ ESQ_CopperEffectListB:
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $03d9fffe
     DC.W    $0080
-DATA_ESQ_CONST_LONG_1E52:
+ESQ_CopperEffectListA_PtrHiWord:
     DC.L    $00000082
-DATA_ESQ_BSS_WORD_1E53:
+ESQ_CopperEffectListA_PtrLoWord:
     DS.W    1
-DATA_ESQ_BSS_LONG_1E54:
+;------------------------------------------------------------------------------
+; SYM: ESQ_CopperEffectTemplateRowsSet1   (copper effect list A body template ??)
+; TYPE: u32[] + tail word
+; PURPOSE: Backing storage for effect-list A command payload words.
+; USED BY: ESQSHARED4 banner/copper setup and update paths
+; NOTES:
+;   Mirrors ESQ_CopperEffectTemplateRowsSet0 for the alternate effect list.
+;------------------------------------------------------------------------------
+ESQ_CopperEffectTemplateRowsSet1:
     DS.L    19
     DC.W    $0180
 ;------------------------------------------------------------------------------
@@ -844,10 +928,10 @@ DATA_ESQ_BSS_LONG_1E54:
 ;------------------------------------------------------------------------------
 ESQ_CopperStatusDigitsB:
     DC.L    $00030182
-DATA_ESQ_CONST_LONG_1E56:
+ESQ_CopperStatusDigitsB_ColorRegistersA:
     DC.L    $0aaa0184,$03330186,$05550188,$0512018a
     DC.L    $016a018c,$0cc0018e
-DATA_ESQ_CONST_WORD_1E57:
+ESQ_CopperStatusDigitsB_TailColorWord:
     DC.W    $0003
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperListBannerB   (banner copper list B)
@@ -861,30 +945,39 @@ ESQ_CopperListBannerB:
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E59:
+;------------------------------------------------------------------------------
+; SYM: ESQ_BannerWorkRasterPtrB_HiWord..ESQ_BannerWorkRasterPtrTailB_HiWord   (banner copper color-sweep cluster B ??)
+; TYPE: u32/u16 mixed command templates
+; PURPOSE: Runtime-patched copper command words used by banner color sweep (B path).
+; USED BY: ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
+; NOTES:
+;   Companion set to cluster A above; many entries are structural mirrors.
+;   Retain anonymous per-entry labels until row/register mapping is fully traced.
+;------------------------------------------------------------------------------
+ESQ_BannerWorkRasterPtrB_HiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E5A:
+ESQ_BannerWorkRasterPtrB_LoWord:
     DC.L    $00000180
-DATA_ESQ_CONST_LONG_1E5B:
+ESQ_BannerPaletteWordsB:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003
-DATA_ESQ_CONST_LONG_1E5C:
+ESQ_BannerSweepWaitRowB:
     DC.L    $00dffffe
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E5D:
+ESQ_BannerPlane0ScratchPtrAlt_HiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E5E:
+ESQ_BannerPlane0ScratchPtrAlt_LoWord:
     DC.L    $000000e4
-DATA_ESQ_CONST_LONG_1E5F:
+ESQ_BannerPlane1ScratchPtrAlt_HiWord:
     DC.L    $000000e6
-DATA_ESQ_CONST_LONG_1E60:
+ESQ_BannerPlane1ScratchPtrAlt_LoWord:
     DC.L    $000000e8
-DATA_ESQ_CONST_LONG_1E61:
+ESQ_BannerPlane2ScratchPtrAlt_HiWord:
     DC.L    $000000ea
-DATA_ESQ_CONST_LONG_1E62:
+ESQ_BannerPlane2ScratchPtrAlt_LoWord:
     DC.L    $00000182
-DATA_ESQ_CONST_LONG_1E63:
+ESQ_BannerColorSweepProgramB:
     DC.L    $0aaa018e,$03330100,$b30680d5,$80fe0188
     DC.L    $0100018a,$0000018c,$0000018e,$000180d5
     DC.L    $80fe0188,$0200018a,$0011018c,$0111018e
@@ -907,59 +1000,59 @@ DATA_ESQ_CONST_LONG_1E63:
     DC.L    $0eee018e,$000f80d5,$80fe0188,$0512018a
     DC.L    $016a018c,$0555018e
     DC.W    $0003
-DATA_ESQ_CONST_LONG_1E64:
+ESQ_BannerSweepWaitStartProgramB:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E65:
+ESQ_BannerWorkRasterPtrMirrorB_HiWord:
     DC.L    $000000e2
-DATA_ESQ_BSS_WORD_1E66:
+ESQ_BannerWorkRasterPtrMirrorB_LoWord:
     DS.W    1
-DATA_ESQ_CONST_LONG_1E67:
+ESQ_BannerSweepWaitEndProgramB:
     DC.L    $00dffffe
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E68:
+ESQ_BannerSweepSrcPlane0Ptr_HiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E69:
+ESQ_BannerSweepSrcPlane0Ptr_LoWord:
     DC.L    $000000e4
-DATA_ESQ_CONST_LONG_1E6A:
+ESQ_BannerSweepSrcPlane1Ptr_HiWord:
     DC.L    $000000e6
-DATA_ESQ_CONST_LONG_1E6B:
+ESQ_BannerSweepSrcPlane1Ptr_LoWord:
     DC.L    $000000e8
-DATA_ESQ_CONST_LONG_1E6C:
+ESQ_BannerSweepSrcPlane2Ptr_HiWord:
     DC.L    $000000ea
-DATA_ESQ_CONST_LONG_1E6D:
+ESQ_BannerSweepSrcPlane2Ptr_LoWord:
     DC.L    $00000100,$b3060084
-DATA_ESQ_CONST_LONG_1E6E:
+ESQ_CopperEffectJumpTargetB_HiWord:
     DC.L    $00000086
-DATA_ESQ_CONST_LONG_1E6F:
+ESQ_CopperEffectJumpTargetB_LoWord:
     DC.L    $00000182
-DATA_ESQ_CONST_LONG_1E70:
+ESQ_BannerColorSweepProgramB_AnchorColorWord:
     DC.L    $0aaa018e
-DATA_ESQ_CONST_WORD_1E71:
+ESQ_BannerColorSweepProgramB_TailColorWord:
     DC.W    $0003
-DATA_ESQ_BSS_BYTE_1E72:
+ESQ_BannerColorClampValueB:
     DS.B    1
-DATA_ESQ_CONST_BYTE_1E73:
+ESQ_BannerColorClampWaitRowB:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
-DATA_ESQ_CONST_LONG_1E74:
+ESQ_BannerSweepSrcPlane0PtrReset_HiWord:
     DC.L    $000000e2
-DATA_ESQ_CONST_LONG_1E75:
+ESQ_BannerSweepSrcPlane0PtrReset_LoWord:
     DC.L    $000000e4
-DATA_ESQ_CONST_LONG_1E76:
+ESQ_BannerSweepSrcPlane1PtrReset_HiWord:
     DC.L    $000000e6
-DATA_ESQ_CONST_LONG_1E77:
+ESQ_BannerSweepSrcPlane1PtrReset_LoWord:
     DC.L    $000000e8
-DATA_ESQ_CONST_LONG_1E78:
+ESQ_BannerSweepSrcPlane2PtrReset_HiWord:
     DC.L    $000000ea
-DATA_ESQ_BSS_WORD_1E79:
+ESQ_BannerSweepSrcPlane2PtrReset_LoWord:
     DS.W    1
-DATA_ESQ_CONST_LONG_1E7A:
+ESQ_CopperEffectSwitchWaitWordB:
     DC.L    $009c8010
 ESQ_CopperBannerTailListB:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
-DATA_ESQ_CONST_LONG_1E7C:
+ESQ_BannerWorkRasterPtrTailB_HiWord:
     DC.L    $000000e2
 ESQ_CopperBannerRasterPointerListB:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff

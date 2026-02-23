@@ -14,7 +14,7 @@
 ; CALLS:
 ;   ESQPARS_ReplaceOwnedString
 ; READS:
-;   DATA_FLIB_STR_DIGITAL_NICHE_LISTINGS_1F61, GCOMMAND_DigitalNicheListingsTemplatePtr
+;   FLIB_STR_DIGITAL_NICHE_LISTINGS, GCOMMAND_DigitalNicheListingsTemplatePtr
 ; WRITES:
 ;   GCOMMAND_DigitalNicheEnabledFlag, GCOMMAND_NicheTextPen, GCOMMAND_NicheFramePen, GCOMMAND_NicheEditorLayoutPen, GCOMMAND_NicheEditorRowPen, GCOMMAND_NicheModeCycleCount, GCOMMAND_NicheForceMode5Flag, GCOMMAND_NicheWorkflowMode, GCOMMAND_DigitalNicheListingsTemplatePtr
 ; DESC:
@@ -36,7 +36,7 @@ FLIB2_LoadDigitalNicheDefaults:
     MOVE.L  D0,GCOMMAND_NicheForceMode5Flag
     MOVE.B  #'B',GCOMMAND_NicheWorkflowMode
     MOVE.L  GCOMMAND_DigitalNicheListingsTemplatePtr,-(A7)
-    PEA     DATA_FLIB_STR_DIGITAL_NICHE_LISTINGS_1F61
+    PEA     FLIB_STR_DIGITAL_NICHE_LISTINGS
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
@@ -56,7 +56,7 @@ FLIB2_LoadDigitalNicheDefaults:
 ; CALLS:
 ;   ESQPARS_ReplaceOwnedString
 ; READS:
-;   DATA_FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS_1F62, DATA_FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S_1F63, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
+;   FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS, FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; WRITES:
 ;   GCOMMAND_DigitalMplexEnabledFlag, GCOMMAND_MplexModeCycleCount, GCOMMAND_MplexSearchRowLimit, GCOMMAND_MplexClockOffsetMinutes, GCOMMAND_MplexMessageTextPen, GCOMMAND_MplexMessageFramePen, GCOMMAND_MplexEditorLayoutPen, GCOMMAND_MplexEditorRowPen, GCOMMAND_MplexDetailLayoutPen, GCOMMAND_MplexDetailInitialLineIndex, GCOMMAND_MplexDetailRowPen, GCOMMAND_MplexWorkflowMode, GCOMMAND_MplexDetailLayoutFlag, GCOMMAND_MplexListingsTemplatePtr, GCOMMAND_MplexAtTemplatePtr
 ; DESC:
@@ -88,12 +88,12 @@ FLIB2_LoadDigitalMplexDefaults:
     MOVE.B  #'B',GCOMMAND_MplexWorkflowMode
     MOVE.B  D0,GCOMMAND_MplexDetailLayoutFlag
     MOVE.L  GCOMMAND_MplexListingsTemplatePtr,-(A7)
-    PEA     DATA_FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS_1F62
+    PEA     FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,GCOMMAND_MplexListingsTemplatePtr
     MOVE.L  GCOMMAND_MplexAtTemplatePtr,(A7)
-    PEA     DATA_FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S_1F63
+    PEA     FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7
@@ -114,7 +114,7 @@ FLIB2_LoadDigitalMplexDefaults:
 ; CALLS:
 ;   ESQPARS_ReplaceOwnedString
 ; READS:
-;   Global_STR_DIGITAL_PPV_PERIOD, DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
+;   Global_STR_DIGITAL_PPV_PERIOD, FLIB_STR_DIGITAL_PPV_LISTINGS, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr
 ; WRITES:
 ;   GCOMMAND_DigitalPpvEnabledFlag, GCOMMAND_PpvModeCycleCount, GCOMMAND_PpvSelectionWindowMinutes, GCOMMAND_PpvSelectionToleranceMinutes, GCOMMAND_PpvMessageTextPen, GCOMMAND_PpvMessageFramePen, GCOMMAND_PpvEditorLayoutPen, GCOMMAND_PpvEditorRowPen, GCOMMAND_PpvShowtimesLayoutPen, GCOMMAND_PpvShowtimesInitialLineIndex, GCOMMAND_PpvShowtimesRowPen, GCOMMAND_PpvShowtimesWorkflowMode, GCOMMAND_PpvDetailLayoutFlag, GCOMMAND_PPVListingsTemplatePtr, GCOMMAND_PPVPeriodTemplatePtr, GCOMMAND_PpvShowtimesRowSpan
 ; DESC:
@@ -147,7 +147,7 @@ FLIB2_LoadDigitalPpvDefaults:
     MOVE.B  #'B',GCOMMAND_PpvShowtimesWorkflowMode
     MOVE.B  #$59,GCOMMAND_PpvDetailLayoutFlag
     MOVE.L  GCOMMAND_PPVListingsTemplatePtr,-(A7)
-    PEA     DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64
+    PEA     FLIB_STR_DIGITAL_PPV_LISTINGS
     JSR     ESQPARS_ReplaceOwnedString(PC)
 
     MOVE.L  D0,GCOMMAND_PPVListingsTemplatePtr

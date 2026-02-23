@@ -8,18 +8,18 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 ## Anchor/Population Map
 
 ### 1) Channel label legacy anchor (`SCRIPT`)
-- Anchor label: `DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`
+- Anchor label: `SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`
 - True table base: `SCRIPT_ChannelLabelPtrTable`
 - Consumers:
-  - `src/modules/groups/b/a/textdisp.s` (`LEA (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0` index path)
-  - `src/modules/groups/a/d/cleanup3.s` (`LEA (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0` index path)
+  - `src/modules/groups/b/a/textdisp.s` (`LEA (SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0` index path)
+  - `src/modules/groups/a/d/cleanup3.s` (`LEA (SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0` index path)
 - Population source:
   - Table is static in `src/data/script.s`.
   - Entries 19..22 point to zeroed placeholders (`SCRIPT_ChannelLabelEmptySlot0..3`).
   - No direct symbol-based writers to those placeholders identified yet.
 
 ### 2) Weather brush-name legacy anchor (`ESQFUNC`)
-- Anchor label: `DATA_ESQFUNC_STR_I5_1EDD`
+- Anchor label: `ESQFUNC_STR_I5_1EDD`
 - True table base: `ESQFUNC_PwBrushNamePtrTable`
 - Consumers:
   - `src/modules/groups/b/a/wdisp.s`
@@ -78,9 +78,9 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - If format/template components are expanded significantly, formatted output may exceed historical size expectations (buffer is fixed-size BSS).
 
 #### 5.3 Raster-plane alias population (layout-coupled pointer state)
-- 696x509 raster set allocated into `DATA_WDISP_BSS_LONG_221C..221E`.
+- 696x509 raster set allocated into `WDISP_BSS_LONG_221C..221E`.
 - Secondary aliases seeded by fixed offset:
-  - `DATA_WDISP_BSS_LONG_2224..` entries are seeded from `221C..` plus `+$5C20`.
+  - `WDISP_BSS_LONG_2224..` entries are seeded from `221C..` plus `+$5C20`.
 - Later assignments copy into named runtime aliases:
   - `ESQSHARED_DisplayContextPlaneBase0..4`
   - `ESQSHARED_LivePlaneBase0..2`
@@ -99,7 +99,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 #### 5.5 Immediate startup string renders
 - Before full startup completion, `DrawCenteredWrappedTextLines` displays:
   - `DISKIO_ErrorMessageScratch`
-  - `DATA_ESQ_STR_NO_DF1_PRESENT_1E0F` (conditional)
+  - `ESQ_STR_NO_DF1_PRESENT_1E0F` (conditional)
   - `Global_PTR_STR_SELECT_CODE`
   - `ESQ_StartupVersionBannerBuffer`
   - `DATA_ESQ_STR_SystemInitializing`
@@ -253,14 +253,14 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 
 | Callsite format | Conservative max bytes incl NUL | Margin vs 132 | Priority |
 |---|---:|---:|---|
-| `DATA_ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2` | 156 | -24 | `P0` |
-| `DATA_ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3` | 146 | -14 | `P1` |
-| `DATA_ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9` | 142 | -10 | `P2` |
-| `DATA_ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC8` | 110 | +22 | monitor |
-| `DATA_ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC7` | 109 | +23 | monitor |
-| `DATA_ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT_1EC6` | 56 | +76 | low |
-| `DATA_ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X_1EC1` | 62 | +70 | low |
-| `DATA_ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT_1EB7` | 85 | +47 | low |
+| `ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2` | 156 | -24 | `P0` |
+| `ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3` | 146 | -14 | `P1` |
+| `ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9` | 142 | -10 | `P2` |
+| `ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC8` | 110 | +22 | monitor |
+| `ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC7` | 109 | +23 | monitor |
+| `ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT_1EC6` | 56 | +76 | low |
+| `ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X_1EC1` | 62 | +70 | low |
+| `ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT_1EB7` | 85 | +47 | low |
 
 - Practical interpretation:
   - The top three rows (`P0`..`P2`) are the only ones that cross the 132-byte
@@ -268,9 +268,9 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - `%s` in this function is mostly static-literal sourced; ranking is dominated
     by numeric-field expansion, not mutable string pointers.
 - Guard-first order (if behavior changes later become acceptable):
-  1. `DATA_ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2`
-  2. `DATA_ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3`
-  3. `DATA_ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9`
+  1. `ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2`
+  2. `ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3`
+  3. `ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9`
 
 #### 5.11 `ESQFUNC_DrawDiagnosticsScreen` (`P0`..`P2`) source-population map
 - Scope:
@@ -278,7 +278,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
     so a future guard can be placed where fan-in is highest.
   - All findings are behavior-preserving annotations only (no runtime guard inserted yet).
 
-- `P0` row: `DATA_ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2`
+- `P0` row: `ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2`
   - Destination: `-132(A5)` (132 bytes total).
   - Arguments at callsite:
     - `TEXTDISP_DeferredActionCountdown`
@@ -286,8 +286,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
     - `LOCAVAIL_FilterModeFlag`
     - `LOCAVAIL_FilterStep`
     - `LOCAVAIL_FilterClassId`
-    - `LOCAVAIL_PrimaryFilterState_Field08` (legacy `DATA_WDISP_BSS_LONG_2322`)
-    - `LOCAVAIL_PrimaryFilterState_Field0C` (legacy `DATA_WDISP_BSS_LONG_2323`)
+    - `LOCAVAIL_PrimaryFilterState_Field08` (legacy `WDISP_BSS_LONG_2322`)
+    - `LOCAVAIL_PrimaryFilterState_Field0C` (legacy `WDISP_BSS_LONG_2323`)
   - Primary population paths:
     - Deferred-action pair is armed to `(3,1)` in:
       - `src/modules/groups/b/a/script3.s` (`playback_cmd_case_enter_mode2_defer`)
@@ -302,14 +302,14 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
     - Capture `WDISP_SPrintf` return length at this callsite first (`P0`) and compare
       against `131` before draw call (analysis-only hook first).
 
-- `P1` row: `DATA_ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3`
+- `P1` row: `ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3`
   - Destination: `-132(A5)` (132 bytes total).
   - Arguments at callsite:
     - `CLOCK_CacheMonthIndex0` / `CLOCK_CacheDayIndex0` / `CLOCK_CacheYear`
     - `CLOCK_CacheHour` / `CLOCK_CacheMinuteOrSecond`
     - `Global_REF_CLOCKDATA_STRUCT`
     - `CLOCK_CacheAmPmFlag` (`am`/`pm` suffix selector)
-    - `LOCAVAIL_FilterCooldownTicks` (legacy `DATA_WDISP_BSS_LONG_2325`)
+    - `LOCAVAIL_FilterCooldownTicks` (legacy `WDISP_BSS_LONG_2325`)
   - Primary population paths:
     - Clock cache fields are normalized by:
       - `src/modules/groups/b/a/parseini2.s` (`PARSEINI_NormalizeClockData` via RTC read/update path)
@@ -324,17 +324,17 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - Guard probe candidate:
     - Same return-length probe pattern at this callsite (`P1`) after `P0`.
 
-- `P2` row: `DATA_ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9`
+- `P2` row: `ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9`
   - Destination: `-132(A5)` (132 bytes total).
   - Arguments at callsite:
-    - `DATA_ESQFUNC_BSS_LONG_1EB1` (local diagnostics counter)
+    - `ESQFUNC_BSS_LONG_1EB1` (local diagnostics counter)
     - `Global_RefreshTickCounter`
     - `Global_STR_TRUE_2`/`Global_STR_FALSE_2` (`%s`)
-    - `DATA_SCRIPT_BSS_WORD_211C`
+    - `SCRIPT_BSS_WORD_211C`
     - `ED_MenuStateId`
   - Primary population paths:
-    - `DATA_ESQFUNC_BSS_LONG_1EB1` increments once per diagnostics draw.
-    - `DATA_SCRIPT_BSS_WORD_211C` increments in script playback dispatch path
+    - `ESQFUNC_BSS_LONG_1EB1` increments once per diagnostics draw.
+    - `SCRIPT_BSS_WORD_211C` increments in script playback dispatch path
       (`src/modules/groups/b/a/script3.s` default increment branch).
     - `ED_MenuStateId` is a byte state id assigned across `ED*` handlers.
   - Guard probe candidate:
@@ -360,8 +360,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 |---|---:|---:|---|---|
 | `ED2` details/summary: `"Chan=%s Source=%s CallLtrs=%s"` (`Global_STR_CHAN_SOURCE_CALLLTRS_1/_2`) | `24 + len(chan)+len(source)+len(callltrs)` | 120 | payload safe iff combined `%s` <= 96 | `E1` |
 | `ED2` details: `"TS=%d Title='%s' Time=%s"` (`Global_STR_TS_TITLE_TIME`) | `30 + len(title)+len(time)` (conservative `%d` = 11 chars) | 120 | payload safe iff `len(title)+len(time) <= 90` | `E0` |
-| `TEXTDISP` cmd C: `"xx%s"` (`DATA_SCRIPT_FMT_XX_PCT_S_214C`) | `3 + len(arg)` | 200 | payload safe iff `len(arg) <= 197` | `T0` |
-| `TEXTDISP` detail build: align-prefix + `%s` (`DATA_SCRIPT_FMT_PCT_S_213F`) | small prefix + `len(entry_substring)` | ~512 | monitor; source must stay well below ~510 | monitor |
+| `TEXTDISP` cmd C: `"xx%s"` (`SCRIPT_FMT_XX_PCT_S_214C`) | `3 + len(arg)` | 200 | payload safe iff `len(arg) <= 197` | `T0` |
+| `TEXTDISP` detail build: align-prefix + `%s` (`SCRIPT_FMT_PCT_S_213F`) | small prefix + `len(entry_substring)` | ~512 | monitor; source must stay well below ~510 | monitor |
 
 - Primary source-population paths:
   - `ED2` `Chan/Source/CallLtrs` rows:
@@ -386,8 +386,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 - Guard-first order (if behavior changes later become acceptable):
   1. `E0`: `Global_STR_TS_TITLE_TIME` (`ED2_DrawEntryDetailsPanel`)
   2. `E1`: `Global_STR_CHAN_SOURCE_CALLLTRS_1/_2` (`ED2` details + summary)
-  3. `T0`: `DATA_SCRIPT_FMT_XX_PCT_S_214C` (`TEXTDISP_HandleScriptCommand`)
-  4. monitor: `DATA_SCRIPT_FMT_PCT_S_213F` (`TEXTDISP_BuildEntryDetailLine`)
+  3. `T0`: `SCRIPT_FMT_XX_PCT_S_214C` (`TEXTDISP_HandleScriptCommand`)
+  4. monitor: `SCRIPT_FMT_PCT_S_213F` (`TEXTDISP_BuildEntryDetailLine`)
 
 #### 5.13 `WDISP` `220F+` alias pass (layout-coupled pointer state)
 - Scope:
@@ -398,8 +398,8 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 
 - Aliases added (high-confidence):
   - Serial startup/teardown:
-    - `WDISP_SerialIoRequestPtr` (legacy `LAB_2211_SERIAL_PORT_MAYBE`)
-    - `WDISP_SerialMessagePortPtr` (legacy `DATA_WDISP_BSS_LONG_2212`)
+    - `WDISP_SerialIoRequestPtr` (legacy `WDISP_SerialIoRequestPtr_CompatAlias`)
+    - `WDISP_SerialMessagePortPtr` (legacy `WDISP_BSS_LONG_2212`)
   - Raster pointer tables / bitmap-linked plane pointers:
     - `WDISP_352x240RasterPtrTable` (`221A` cluster)
     - `WDISP_BannerRowScratchRasterTable0..2` (`221C..221E`)
@@ -422,7 +422,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - `src/modules/groups/b/a/tliba3.s`
 
 - Deferred/unresolved:
-  - `WDISP_ReservedLong220F` remains explicitly unresolved/reserved (`??`).
+  - `WDISP_UnusedPaddingLong220F` remains explicitly unresolved/reserved (`??`).
 
 #### 5.14 `WDISP` `2242`-`226F` alias pass (status/banner/refresh state)
 - Scope:
@@ -453,12 +453,12 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
     - `ESQSHARED_BannerRowScratchRasterBase0..2` (`2267`-`2269`)
 
 - Explicitly kept unresolved (documented in-place with `??` notes):
-  - `DATA_WDISP_BSS_WORD_2255`
-  - `DATA_WDISP_BSS_WORD_2256`
-  - `DATA_WDISP_BSS_WORD_225D`
-  - `DATA_WDISP_BSS_LONG_225E`
-  - `DATA_WDISP_BSS_WORD_226D`
-  - `DATA_WDISP_BSS_LONG_226E`
+  - `WDISP_BSS_WORD_2255`
+  - `WDISP_BSS_WORD_2256`
+  - `WDISP_BSS_WORD_225D`
+  - `WDISP_BSS_LONG_225E`
+  - `WDISP_BSS_WORD_226D`
+  - `WDISP_BSS_LONG_226E`
 
 - Callsite propagation completed in:
   - `src/modules/groups/a/a/app2.s`
@@ -478,14 +478,14 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 
 #### 5.15 Producer trace: `226D` / `226E` unresolved fields
 - Scope:
-  - Trace concrete writer paths for `DATA_WDISP_BSS_WORD_226D` and
-    `DATA_WDISP_BSS_LONG_226E` before attempting further naming.
+  - Trace concrete writer paths for `WDISP_BSS_WORD_226D` and
+    `WDISP_BSS_LONG_226E` before attempting further naming.
 
 - Direct writers (confirmed):
-  - `DATA_WDISP_BSS_WORD_226D`
-    - Only direct writer found: `CLR.W DATA_WDISP_BSS_WORD_226D` in
+  - `WDISP_BSS_WORD_226D`
+    - Only direct writer found: `CLR.W WDISP_BSS_WORD_226D` in
       `src/modules/groups/a/k/ed1.s` (`ED1_ExitEscMenu` path).
-  - `DATA_WDISP_BSS_LONG_226E`
+  - `WDISP_BSS_LONG_226E`
     - No direct writers found in current tree.
     - Only observed use is read/compare in `ED_InitRastport2Pens`
       (`src/modules/groups/a/l/ed3.s`), where it is compared to literal `14`.
@@ -497,12 +497,12 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - `src/data/wdisp.s` layout adjacency:
     - `ESQ_SelectCodeBuffer` (10 bytes)
     - immediately followed by `Global_REF_BAUD_RATE` (4 bytes)
-    - then `DATA_WDISP_BSS_WORD_226D` (2 bytes)
-    - then `DATA_WDISP_BSS_LONG_226E` (4 bytes)
+    - then `WDISP_BSS_WORD_226D` (2 bytes)
+    - then `WDISP_BSS_LONG_226E` (4 bytes)
   - Spill thresholds from start of copied payload:
     - byte `10+` clobbers `Global_REF_BAUD_RATE`
-    - byte `14+` clobbers `DATA_WDISP_BSS_WORD_226D`
-    - byte `16+` clobbers `DATA_WDISP_BSS_LONG_226E`
+    - byte `14+` clobbers `WDISP_BSS_WORD_226D`
+    - byte `16+` clobbers `WDISP_BSS_LONG_226E`
 
 - Decision:
   - Keep both `226D` and `226E` unresolved for now (`??`) because intended
@@ -657,11 +657,11 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 #### 5.19 `wdisp` unresolved state naming follow-up (`2026-02-21`)
 - Resolved conservative naming/docs for prior unresolved globals in
   `src/data/wdisp.s`:
-  - `DATA_WDISP_BSS_WORD_2255` -> `DISPLIB_PreviousSearchWrappedFlag`
-  - `DATA_WDISP_BSS_WORD_2256` -> `ESQ_BannerCharResetPulse`
-  - `DATA_WDISP_BSS_WORD_225D` -> `LADFUNC_LineSlotSecondaryIndex`
-  - `DATA_WDISP_BSS_WORD_226D` -> `ESQSHARED_BannerColorModeWord`
-  - `DATA_WDISP_BSS_LONG_226E` -> `ED_Rastport2PenModeSelector`
+  - `WDISP_BSS_WORD_2255` -> `DISPLIB_PreviousSearchWrappedFlag`
+  - `WDISP_BSS_WORD_2256` -> `ESQ_BannerCharResetPulse`
+  - `WDISP_BSS_WORD_225D` -> `LADFUNC_LineSlotSecondaryIndex`
+  - `WDISP_BSS_WORD_226D` -> `ESQSHARED_BannerColorModeWord`
+  - `WDISP_BSS_LONG_226E` -> `ED_Rastport2PenModeSelector`
 
 - Producer/consumer confidence summary:
   - `DISPLIB_PreviousSearchWrappedFlag`: set/cleared only by
@@ -822,7 +822,7 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   layout and an in-place `NStr` edit shifts aligned symbol offsets.
 
 ## Behavior-Preserving Hardening Added In This Batch
-- Added explicit alias/docs for `DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`.
+- Added explicit alias/docs for `SCRIPT_STR_TUESDAYS_FRIDAYS_20ED`.
 - Added explicit alias/docs for `SCRIPT_ChannelLabelEmptySlot0..3`.
 - Added conservative `wdisp.s` `220F+` pointer-state aliases and propagated key callsites (`ESQ`/`CLEANUP`/`ESQDISP`/`GCOMMAND3`/`NEWGRID`/`TLIBA3`).
 - Added conservative `wdisp.s` `2242`-`226F` aliases for status/banner/refresh state and propagated callsites (`APP2`/`CLEANUP2`/`DST2`/`ESQ*`/`ED*`/`NEWGRID1`/`PARSEINI3`/`UNKNOWN`).

@@ -313,7 +313,7 @@ TEXTDISP_UpdateHighlightOrPreview:
 ;   TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan, SCRIPT_AssertCtrlLineIfEnabled, TEXTDISP_UpdateHighlightOrPreview,
 ;   TEXTDISP_ResetSelectionAndRefresh, TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DF4, Global_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, Global_RefreshTickCounter
+;   TEXTDISP_TickSuspendFlag, Global_UIBusyFlag, SCRIPT_RuntimeMode, TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, LOCAVAIL_FilterPrevClassId, Global_RefreshTickCounter
 ; WRITES:
 ;   ESQ_GlobalTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed, TEXTDISP_DeferredActionCountdown, Global_RefreshTickCounter
 ; DESC:
@@ -325,7 +325,7 @@ TEXTDISP_TickDisplayState:
     MOVE.L  D2,-(A7)
     MOVEQ   #0,D0
     MOVE.W  D0,ESQ_GlobalTickCounter
-    TST.W   DATA_ESQ_BSS_WORD_1DF4
+    TST.W   TEXTDISP_TickSuspendFlag
     BNE.W   .return
 
     TST.W   Global_UIBusyFlag

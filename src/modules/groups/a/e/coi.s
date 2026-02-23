@@ -427,7 +427,7 @@ COI_CountEscape14BeforeNull:
 ; READS:
 ;   TEXTDISP_SecondaryGroupCode/TEXTDISP_SecondaryGroupPresentFlag/TEXTDISP_SecondaryGroupEntryCount/TEXTDISP_PrimaryGroupCode/TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable/TEXTDISP_SecondaryEntryPtrTable
 ; WRITES:
-;   DATA_CTASKS_BSS_BYTE_1B8F/DATA_CTASKS_BSS_BYTE_1B90/DATA_CTASKS_BSS_BYTE_1B91/DATA_CTASKS_BSS_BYTE_1B92 (flags), output file contents
+;   CTASKS_PrimaryOiWritePendingFlag/CTASKS_SecondaryOiWritePendingFlag/CTASKS_PendingPrimaryOiDiskId/CTASKS_PendingSecondaryOiDiskId (flags), output file contents
 ; DESC:
 ;   Writes `df0:OI_%02lx.dat` for the selected diskId, emitting a tab-delimited
 ;   header plus per-entry and per-subentry records with CR/LF separators.
@@ -456,8 +456,8 @@ COI_WriteOiDataFile:
     BNE.S   .check_secondary_header
 
     MOVEQ   #1,D0
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B90
-    MOVE.B  D7,DATA_CTASKS_BSS_BYTE_1B92
+    MOVE.B  D0,CTASKS_SecondaryOiWritePendingFlag
+    MOVE.B  D7,CTASKS_PendingSecondaryOiDiskId
     MOVE.W  TEXTDISP_SecondaryGroupEntryCount,D1
     MOVE.W  D1,-32(A5)
     BRA.S   .format_filename
@@ -467,8 +467,8 @@ COI_WriteOiDataFile:
     CMP.B   D7,D0
     BNE.S   .invalid_disk_id
 
-    MOVE.B  #$1,DATA_CTASKS_BSS_BYTE_1B8F
-    MOVE.B  D7,DATA_CTASKS_BSS_BYTE_1B91
+    MOVE.B  #$1,CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  D7,CTASKS_PendingPrimaryOiDiskId
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     MOVE.W  D0,-32(A5)
     BRA.S   .format_filename
@@ -549,7 +549,7 @@ COI_WriteOiDataFile:
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     DATA_CLOCK_CONST_BYTE_1B60
+    PEA     COI_RecordTerminatorCrLf
     MOVE.L  D5,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -911,7 +911,7 @@ COI_WriteOiDataFile:
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     DATA_CLOCK_CONST_BYTE_1B60
+    PEA     COI_RecordTerminatorCrLf
     MOVE.L  D5,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -1138,7 +1138,7 @@ COI_WriteOiDataFile:
 
 .next_subentry:
     PEA     2.W
-    PEA     DATA_CLOCK_CONST_BYTE_1B60
+    PEA     COI_RecordTerminatorCrLf
     MOVE.L  D5,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 

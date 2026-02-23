@@ -38,9 +38,9 @@
 ; CALLS:
 ;   ED_DrawDiagnosticModeText, ESQDISP_DrawStatusBanner, ESQPARS_JMPTBL_DST_RefreshBannerBuffer, ESQPARS_JMPTBL_DST_UpdateBannerQueue, ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
 ; READS:
-;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, DATA_ESQ_STR_B_1DC8, DATA_ESQ_CONST_BYTE_1DCF, DATA_ESQ_CONST_BYTE_1DD0, DATA_ESQ_STR_6_1DD1, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, DST_BannerWindowPrimary, ED_SavedScrollSpeedIndex, ED_DiagnosticsScreenActive, SCRIPT_RuntimeMode
+;   ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, ESQ_STR_B, CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, ESQ_STR_6, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, DST_BannerWindowPrimary, ED_SavedScrollSpeedIndex, ED_DiagnosticsScreenActive, SCRIPT_RuntimeMode
 ; WRITES:
-;   DATA_ESQ_CONST_BYTE_1DCF, DATA_ESQ_CONST_BYTE_1DD0, DATA_ESQ_STR_6_1DD1, ESQPARS2_StateIndex, DATA_SCRIPT_BSS_LONG_2125
+;   CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, ESQ_STR_6, ESQPARS2_StateIndex, SCRIPT_RuntimeModeDeferredFlag
 ; DESC:
 ;   Copies status payload bytes into globals, refreshes banner/status UI paths,
 ;   reseeds minute-event thresholds, and updates scroll-speed state/index.
@@ -59,7 +59,7 @@ ESQIFF2_ApplyIncomingStatusPacket:
     CMP.W   D0,D7
     BGE.S   .lab_0ABA
 
-    LEA     DATA_ESQ_STR_B_1DC8,A0
+    LEA     ESQ_STR_B,A0
     ADDA.W  D7,A0
     MOVE.B  0(A3,D7.W),(A0)
     ADDQ.W  #1,D7
@@ -77,10 +77,10 @@ ESQIFF2_ApplyIncomingStatusPacket:
     BEQ.S   .branch
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_2125
+    MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
 
 .branch:
-    MOVE.B  DATA_ESQ_STR_6_1DD1,D0
+    MOVE.B  ESQ_STR_6,D0
     MOVEQ   #49,D1
     CMP.B   D1,D0
     BCS.S   .branch_1
@@ -90,7 +90,7 @@ ESQIFF2_ApplyIncomingStatusPacket:
     BLS.S   .branch_2
 
 .branch_1:
-    MOVE.B  #$36,DATA_ESQ_STR_6_1DD1
+    MOVE.B  #$36,ESQ_STR_6
 
 .branch_2:
     PEA     DST_BannerWindowPrimary
@@ -107,7 +107,7 @@ ESQIFF2_ApplyIncomingStatusPacket:
     JSR     ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DCF,D0
+    MOVE.B  CLOCK_MinuteEventBaseMinute,D0
     MOVEQ   #9,D1
     CMP.B   D1,D0
     BHI.S   .branch_4
@@ -118,10 +118,10 @@ ESQIFF2_ApplyIncomingStatusPacket:
 
 .branch_4:
     MOVEQ   #1,D2
-    MOVE.B  D2,DATA_ESQ_CONST_BYTE_1DCF
+    MOVE.B  D2,CLOCK_MinuteEventBaseMinute
 
 .branch_5:
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DD0,D0
+    MOVE.B  CLOCK_MinuteEventBaseOffset,D0
     CMP.B   D1,D0
     BHI.S   .branch_6
 
@@ -131,13 +131,13 @@ ESQIFF2_ApplyIncomingStatusPacket:
 
 .branch_6:
     MOVEQ   #1,D1
-    MOVE.B  D1,DATA_ESQ_CONST_BYTE_1DD0
+    MOVE.B  D1,CLOCK_MinuteEventBaseOffset
 
 .branch_7:
     MOVEQ   #0,D0
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DCF,D0
+    MOVE.B  CLOCK_MinuteEventBaseMinute,D0
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_CONST_BYTE_1DD0,D1
+    MOVE.B  CLOCK_MinuteEventBaseOffset,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     JSR     ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(PC)
@@ -1644,7 +1644,7 @@ ESQIFF2_ReadSerialSizedTextRecord_Return:
 ; CALLS:
 ;   ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, ESQSHARED_JMPTBL_ESQ_WildcardMatch, GCOMMAND_SeedBannerFromPrefs, GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AR_JMPTBL_STRING_AppendAtNull, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen
 ; READS:
-;   AbsExecBase, Global_LONG_PATCH_VERSION_NUMBER, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, DATA_ESQIFF_FMT_PCT_S_DOT_PCT_LD_1EFA, DATA_ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA_1EFC, DATA_ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD_1EFD, DATA_ESQIFF_STR_CORRECT_VERSION_IS_1EFF, ED_DiagnosticsScreenActive, Global_UIBusyFlag, ESQIFF_RecordBufferPtr, lab_0B24
+;   AbsExecBase, Global_LONG_PATCH_VERSION_NUMBER, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, ESQIFF_FMT_PCT_S_DOT_PCT_LD, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, ESQIFF_STR_CORRECT_VERSION_IS, ED_DiagnosticsScreenActive, Global_UIBusyFlag, ESQIFF_RecordBufferPtr, lab_0B24
 ; WRITES:
 ;   ESQPARS2_ReadModeFlags, ED_DiagnosticsScreenActive
 ; DESC:
@@ -1661,7 +1661,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     CLR.B   20(A0)
     MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,-(A7)
     PEA     Global_STR_MAJOR_MINOR_VERSION_1
-    PEA     DATA_ESQIFF_FMT_PCT_S_DOT_PCT_LD_1EFA
+    PEA     ESQIFF_FMT_PCT_S_DOT_PCT_LD
     PEA     -40(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1711,7 +1711,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     DATA_ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA_1EFC
+    PEA     ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
     PEA     90.W
     PEA     30.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1719,7 +1719,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
 
     MOVE.L  Global_LONG_PATCH_VERSION_NUMBER,(A7)
     PEA     Global_STR_MAJOR_MINOR_VERSION_2
-    PEA     DATA_ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD_1EFD
+    PEA     ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD
     PEA     -40(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1729,7 +1729,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    LEA     DATA_ESQIFF_STR_CORRECT_VERSION_IS_1EFF,A0
+    LEA     ESQIFF_STR_CORRECT_VERSION_IS,A0
     LEA     -40(A5),A1
     MOVEQ   #4,D0
 
@@ -1799,7 +1799,7 @@ ESQIFF2_ShowVersionMismatchOverlay_Return:
 ; READS:
 ;   AbsExecBase, BRUSH_SnapshotDepth, BRUSH_SnapshotHeader, BRUSH_SnapshotWidth, Global_STR_PLEASE_STANDBY_2, Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_2, Global_STR_FILE_PERCENT_S, Global_STR_FILE_WIDTH_COLORS_FORMATTED, Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, ED_DiagnosticsScreenActive, Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
 ; WRITES:
-;   DATA_COI_BSS_WORD_1B85, ESQPARS2_ReadModeFlags, ED_DiagnosticsScreenActive
+;   COI_AttentionOverlayBusyFlag, ESQPARS2_ReadModeFlags, ED_DiagnosticsScreenActive
 ; DESC:
 ;   Draws a modal attention overlay with an error code and file context, then
 ;   restores raster draw mode/bitmap state before returning.
@@ -1941,7 +1941,7 @@ ESQIFF2_ShowAttentionOverlay:
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     20(A7),A7
-    MOVE.W  #1,DATA_COI_BSS_WORD_1B85
+    MOVE.W  #1,COI_AttentionOverlayBusyFlag
     BRA.S   .lab_0B2D
 
 .lab_0B2C:

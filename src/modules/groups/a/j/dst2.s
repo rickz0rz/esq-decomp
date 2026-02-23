@@ -137,7 +137,7 @@ DST_CallJump_066F:
 ; CALLS:
 ;   DATETIME_UpdateSelectionField, DST_AddTimeOffset, DST_AllocateBannerStruct, DST_RefreshBannerBuffer, DST_CallJump_066F
 ; READS:
-;   DST_PrimaryCountdown, DST_SecondaryCountdown, DATA_ESQ_STR_N_1DD2
+;   DST_PrimaryCountdown, DST_SecondaryCountdown, ESQ_SecondarySlotModeFlagChar
 ; WRITES:
 ;   DST_PrimaryCountdown, DST_SecondaryCountdown
 ; DESC:
@@ -209,8 +209,8 @@ DST_UpdateBannerQueue:
     MOVEQ   #1,D6
 
 .slot0_done:
-    ; Slot 1 update depends on DATA_ESQ_STR_N_1DD2 mode.
-    MOVE.B  DATA_ESQ_STR_N_1DD2,D0
+    ; Slot 1 update depends on ESQ_SecondarySlotModeFlagChar mode.
+    MOVE.B  ESQ_SecondarySlotModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .slot1_mode_off
@@ -369,7 +369,7 @@ DST_NormalizeDayOfYear:
 ; CALLS:
 ;   DATETIME_IsLeapYear, DATETIME_BuildFromBaseDay, DATETIME_ClassifyValueInRange, DATETIME_SecondsToStruct, GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, CLOCK_CacheYear, DATA_ESQ_STR_N_1DD2, DATA_ESQ_STR_6_1DD1, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
+;   CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, CLOCK_CacheYear, ESQ_SecondarySlotModeFlagChar, ESQ_STR_6, CLOCK_FormatVariantCode, DST_BannerWindowSecondary, DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -541,7 +541,7 @@ DST_BuildBannerTimeEntry:
 
     LEA     16(A7),A7
     MOVE.L  D0,D5
-    MOVE.B  DATA_ESQ_STR_N_1DD2,D0
+    MOVE.B  ESQ_SecondarySlotModeFlagChar,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .skip_alt_buffer
@@ -566,7 +566,7 @@ DST_BuildBannerTimeEntry:
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_STR_6_1DD1,D1
+    MOVE.B  ESQ_STR_6,D1
     MOVEQ   #54,D2
     SUB.L   D2,D1
     MOVE.W  D0,-34(A5)
@@ -763,7 +763,7 @@ DST_ComputeBannerIndex:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_ESQ_STR_6_1DD1, DST_PrimaryCountdown, DST_SecondaryCountdown
+;   ESQ_STR_6, DST_PrimaryCountdown, DST_SecondaryCountdown
 ; WRITES:
 ;   WDISP_BannerCharPhaseShift
 ; DESC:
@@ -773,7 +773,7 @@ DST_ComputeBannerIndex:
 ;------------------------------------------------------------------------------
 DST_TickBannerCounters:
     MOVEQ   #0,D0
-    MOVE.B  DATA_ESQ_STR_6_1DD1,D0
+    MOVE.B  ESQ_STR_6,D0
     SUBI.W  #$36,D0
     MOVE.W  D0,WDISP_BannerCharPhaseShift
     MOVE.W  DST_PrimaryCountdown,D1
@@ -854,7 +854,7 @@ DST_AddTimeOffset:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   Global_JMPTBL_SHORT_DAYS_OF_WEEK, Global_JMPTBL_SHORT_MONTHS, DATA_DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT__1D0C..DATA_DST_STR_NORM_YEAR_1D12
+;   Global_JMPTBL_SHORT_DAYS_OF_WEEK, Global_JMPTBL_SHORT_MONTHS, DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_..DST_STR_NORM_YEAR
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -915,15 +915,15 @@ DST_FormatBannerDateTime:
     TST.W   18(A2)
     BEQ.S   .use_pm_string
 
-    LEA     DATA_DST_TAG_PM_1D0D,A6
+    LEA     DST_TAG_PM,A6
     BRA.S   .ampm_string_ready
 
 .use_pm_string:
-    LEA     DATA_DST_TAG_AM_1D0E,A6
+    LEA     DST_TAG_AM,A6
 
 .ampm_string_ready:
     ; Copy A6 into 64(A7), then 1 into D6. Compare 14(A2) to D6 and if it's not equal,
-    ; branch to use_day_suffix_1 -- otherwise, load the address for DATA_DST_TAG_DST_1D0F
+    ; branch to use_day_suffix_1 -- otherwise, load the address for DST_TAG_DST
     ; ("DST") into A6 and branch to .day_suffix_ready
     MOVE.L  A6,64(A7)
     MOVEQ   #1,D6
@@ -931,12 +931,12 @@ DST_FormatBannerDateTime:
     BNE.S   .use_day_suffix_1
 
     ; A6 points to "DST"
-    LEA     DATA_DST_TAG_DST_1D0F,A6
+    LEA     DST_TAG_DST,A6
     BRA.S   .day_suffix_ready
 
 .use_day_suffix_1:
     ; A6 points to "STD"
-    LEA     DATA_DST_TAG_STD_1D10,A6
+    LEA     DST_TAG_STD,A6
 
 .day_suffix_ready:
     MOVE.L  A6,68(A7)
@@ -944,12 +944,12 @@ DST_FormatBannerDateTime:
     BEQ.S   .use_dst_on_string
 
     ; A6 points to "Leap year"
-    LEA     DATA_DST_STR_LEAP_YEAR_1D11,A6
+    LEA     DST_STR_LEAP_YEAR,A6
     BRA.S   .dst_string_ready
 
 .use_dst_on_string:
     ; A6 points to "Norm year"
-    LEA     DATA_DST_STR_NORM_YEAR_1D12,A6
+    LEA     DST_STR_NORM_YEAR,A6
 
 .dst_string_ready:
     ; Setup the stack and call a printf function with the string
@@ -966,7 +966,7 @@ DST_FormatBannerDateTime:
     MOVE.L  (A1),-(A7)
     MOVE.L  (A0),-(A7)
     MOVE.L  A3,-(A7)
-    PEA     DATA_DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT__1D0C
+    PEA     DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEM.L -72(A5),D2-D6/A2-A3/A6

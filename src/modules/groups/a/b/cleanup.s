@@ -441,7 +441,7 @@ CLEANUP_ReleaseDisplayResources:
 ;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
 ;   LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState, ESQIFF_BrushIniListHead, ESQIFF_GAdsBrushListHead, ESQIFF_LogoBrushListHead, ESQFUNC_PwBrushListHead, ESQIFF_RecordBufferPtr,
-;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, DATA_ESQ_BSS_LONG_1DC7,
+;   ESQ_HighlightMsgPort, ESQ_HighlightReplyPort, ESQDISP_HighlightBitmapTable, WDISP_HighlightRasterHeightPx, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQ_ProcessWindowPtrBackup,
 ;   WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, Global_REF_INTUITION_LIBRARY,
 ;   Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
@@ -615,11 +615,11 @@ CLEANUP_ShutdownSystem:
     MOVEA.L Global_REF_INTUITION_LIBRARY,A6
     JSR     _LVOVBeamPos(A6)
 
-    TST.L   DATA_ESQ_BSS_LONG_1DC7
+    TST.L   ESQ_ProcessWindowPtrBackup
     BEQ.S   .after_optional_restore
 
     MOVEA.L WDISP_ExecBaseHookPtr,A0
-    MOVE.L  DATA_ESQ_BSS_LONG_1DC7,184(A0)
+    MOVE.L  ESQ_ProcessWindowPtrBackup,184(A0)
 
 .after_optional_restore:
     JSR     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(PC)

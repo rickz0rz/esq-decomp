@@ -38,7 +38,7 @@ DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
 ; PURPOSE: Month-length sequence and cumulative day offsets used by datetime conversion.
 ; USED BY: DATETIME_SecondsToStruct
 ; NOTES: First bytes encode month lengths; later longs appear to be cumulative
-;        offsets from the beginning of the year for each month.
+;        offsets from the beginning of the year for each month in days.
 ;------------------------------------------------------------------------------
 DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES:
     DC.B    31,28,31,30,31,30,31,31,30,31,30,31

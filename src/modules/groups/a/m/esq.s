@@ -125,7 +125,7 @@ ESQ_MainInitAndRun:
 
     MOVE.L  D0,WDISP_ExecBaseHookPtr
     MOVEA.L D0,A0
-    MOVE.L  184(A0),DATA_ESQ_BSS_LONG_1DC7
+    MOVE.L  184(A0),ESQ_ProcessWindowPtrBackup
     MOVEQ   #-1,D0
     MOVE.L  D0,184(A0)
     MOVE.L  D2,D0
@@ -511,8 +511,8 @@ ESQ_MainInitAndRun:
 
     JSR     GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard(PC)
 
-    MOVE.L  #CLOCK_DaySlotIndex,DATA_COMMON_BSS_LONG_1B06
-    MOVE.L  #CLOCK_CurrentDayOfWeekIndex,DATA_COMMON_BSS_LONG_1B07
+    MOVE.L  #CLOCK_DaySlotIndex,CLOCK_DaySlotIndexPtr
+    MOVE.L  #CLOCK_CurrentDayOfWeekIndex,CLOCK_CurrentDayOfWeekIndexPtr
     MOVEQ   #0,D0
     MOVE.W  D0,DST_PrimaryCountdown
     MOVE.W  D0,DST_SecondaryCountdown
@@ -878,7 +878,7 @@ ESQ_MainInitAndRun:
     MOVE.W  D0,TEXTDISP_SecondaryGroupRecordLength
     MOVE.W  D0,TEXTDISP_PrimaryGroupRecordLength
     MOVE.W  D0,ESQ_TickModulo60Counter
-    MOVE.W  D0,ESQ_StartupReservedWord2271
+    MOVE.W  D0,ESQ_StartupWriteOnlyWord2271
     MOVE.W  D0,ESQIFF_ParseAttemptCount
     MOVE.W  D0,SCRIPT_CtrlCmdCount
     MOVE.W  D0,TEXTDISP_SecondaryGroupEntryCount
@@ -985,7 +985,7 @@ ESQ_MainInitAndRun:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
-    PEA     DATA_ESQ_STR_NO_DF1_PRESENT_1E0F
+    PEA     ESQ_STR_NO_DF1_PRESENT
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1010,12 +1010,12 @@ ESQ_MainInitAndRun:
     PEA     ESQ_StartupVersionBannerBuffer
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
-    LEA     DATA_ESQ_38_Spaces,A0
+    LEA     ESQ_STR_38_Spaces,A0
     LEA     DISKIO_ErrorMessageScratch,A1
     MOVEQ   #9,D0
 
-; Copy 40 bytes (10 longwords) from DATA_ESQ_38_Spaces into a 41-byte scratch.
-; Current DATA_ESQ_38_Spaces length is 39 chars + NUL = 40 bytes.
+; Copy 40 bytes (10 longwords) from ESQ_STR_38_Spaces into a 41-byte scratch.
+; Current ESQ_STR_38_Spaces length is 39 chars + NUL = 40 bytes.
 ; If that source string shrinks, this fixed-size copy can pull adjacent data.
 .copy_version_template_loop:
     MOVE.L  (A0)+,(A1)+
@@ -1048,14 +1048,14 @@ ESQ_MainInitAndRun:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     120.W
-    PEA     DATA_ESQ_STR_SystemInitializing
+    PEA     ESQ_STR_SystemInitializing
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     150.W
-    PEA     DATA_ESQ_STR_PleaseStandByEllipsis
+    PEA     ESQ_STR_PleaseStandByEllipsis
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1070,7 +1070,7 @@ ESQ_MainInitAndRun:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     180.W
-    PEA     DATA_ESQ_STR_AttentionSystemEngineer
+    PEA     ESQ_STR_AttentionSystemEngineer
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1081,7 +1081,7 @@ ESQ_MainInitAndRun:
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
     PEA     210.W
-    PEA     DATA_ESQ_STR_ReportErrorCodeEr011ToTVGuide
+    PEA     ESQ_STR_ReportErrorCodeEr011ToTVGuide
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1106,7 +1106,7 @@ ESQ_MainInitAndRun:
 
 .draw_compat_note:
     MOVE.L  D0,-(A7)
-    PEA     DATA_ESQ_STR_ReportErrorCodeER012ToTVGuide
+    PEA     ESQ_STR_ReportErrorCodeER012ToTVGuide
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
@@ -1141,7 +1141,7 @@ ESQ_MainInitAndRun:
     MOVE.L  PARSEINI_ParsedDescriptorListHead,-(A7)
     JSR     ESQIFF_JMPTBL_BRUSH_PopulateBrushList(PC)
 
-    PEA     DATA_ESQ_STR_DT
+    PEA     ESQ_STR_DT
     JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(PC)
 
     LEA     20(A7),A7
@@ -1149,7 +1149,7 @@ ESQ_MainInitAndRun:
     BNE.S   .ensure_brush_selected
 
     PEA     ESQIFF_BrushIniListHead
-    PEA     DATA_ESQ_STR_DITHER
+    PEA     ESQ_STR_DITHER
     JSR     ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
@@ -1159,7 +1159,7 @@ ESQ_MainInitAndRun:
     PEA     ESQIFF_BrushIniListHead
     JSR     ESQIFF_JMPTBL_BRUSH_FindType3Brush(PC)
 
-    MOVE.L  D0,DATA_ESQFUNC_BSS_LONG_1ED0
+    MOVE.L  D0,ESQFUNC_FallbackType3BrushNode
     JSR     ESQFUNC_RebuildPwBrushListFromTagTable(PC)
 
     PEA     Global_STR_DF0_BANNER_INI_1
@@ -1171,7 +1171,7 @@ ESQ_MainInitAndRun:
 
     JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
-    MOVE.W  #1,ESQ_StartupReservedLong2272
+    MOVE.W  #1,ESQ_StartupWriteOnlyLong2272
     MOVE.W  WDISP_BannerCharRangeStart,WDISP_BannerCharIndex
     CLR.L   (A7)
     PEA     4095.W
@@ -1200,7 +1200,7 @@ ESQ_MainInitAndRun:
     JSR     ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
 
     LEA     32(A7),A7
-    CLR.L   DATA_ESQDISP_BSS_LONG_1E84
+    CLR.L   ESQDISP_DisplayActiveFlag
     MOVEQ   #1,D5
 
 .scan_startup_flags_loop:
@@ -1213,7 +1213,7 @@ ESQ_MainInitAndRun:
     EXT.L   D0
     ASL.L   #2,D0
     MOVEA.L 0(A3,D0.L),A0
-    LEA     DATA_ESQ_TAG_GRANADA,A1
+    LEA     ESQ_TAG_GRANADA,A1
 
 .compare_startup_flag_loop:
     MOVE.B  (A0)+,D1
@@ -1226,7 +1226,7 @@ ESQ_MainInitAndRun:
     BNE.S   .next_startup_flag
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_ESQDISP_BSS_LONG_1E84
+    MOVE.L  D0,ESQDISP_DisplayActiveFlag
 
 .next_startup_flag:
     ADDQ.W  #1,D5
@@ -1278,7 +1278,7 @@ ESQ_MainInitAndRun:
     ADDQ.W  #4,A7
 
 .after_ravesc_banner:
-    MOVE.W  #1,DATA_ESQ_BSS_WORD_1DE5
+    MOVE.W  #1,ESQ_MainLoopUiTickEnabledFlag
 
 .main_idle_loop:
     JSR     ESQFUNC_ServiceUiTickIfRunning(PC)
@@ -1288,13 +1288,13 @@ ESQ_MainInitAndRun:
     TST.W   D0
     BEQ.S   .check_exit_condition
 
-    TST.W   DATA_ESQ_BSS_WORD_1DE4
+    TST.W   ESQ_ShutdownRequestedFlag
     BNE.S   .check_exit_condition
 
     JSR     ESQPARS_ConsumeRbfByteAndDispatchCommand(PC)
 
 .check_exit_condition:
-    TST.W   DATA_ESQ_BSS_WORD_1DE4
+    TST.W   ESQ_ShutdownRequestedFlag
     BEQ.S   .main_idle_loop
 
 .return:

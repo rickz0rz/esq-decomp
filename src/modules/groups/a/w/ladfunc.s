@@ -830,7 +830,7 @@ LADFUNC_ParseHexDigit:
 ;   NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory,
 ;   GROUP_AS_JMPTBL_STR_FindCharPtr, LADFUNC_UpdateHighlightState
 ; READS:
-;   ED_DiagTextModeChar, DATA_LADFUNC_TAG_RS_1FBF, DATA_LADFUNC_TAG_RS_1FC0, LADFUNC_EntryPtrTable, LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
+;   ED_DiagTextModeChar, LADFUNC_TAG_RS_ResetTriggerSet, LADFUNC_TAG_RS_ParseAllowedSet, LADFUNC_EntryPtrTable, LADFUNC_ParsedEntryCount, ESQIFF_StatusPacketReadyFlag
 ; WRITES:
 ;   LADFUNC_ParsedEntryCount, LADFUNC_EntryPtrTable entry buffers, WDISP_HighlightActive
 ; DESC:
@@ -874,7 +874,7 @@ LADFUNC_ParseBannerEntryData:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_TAG_RS_1FBF
+    PEA     LADFUNC_TAG_RS_ResetTriggerSet
     JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -901,7 +901,7 @@ LADFUNC_ParseBannerEntryData:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_TAG_RS_1FC0
+    PEA     LADFUNC_TAG_RS_ParseAllowedSet
     JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -1151,13 +1151,13 @@ LADFUNC_ParseBannerEntryData:
 ;   LADFUNC_ComposePackedPenByte, GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer,
 ;   GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AW_JMPTBL_WDISP_SPrintf
 ; READS:
-;   DISKIO_SaveOperationReadyFlag, DATA_KYBD_PATH_DF0_COLON_LOCAL_DOT_ADS_1FB6, DATA_LADFUNC_FMT_PCT_C_PCT_02X_1FC5, DATA_LADFUNC_BSS_WORD_1FC6, LADFUNC_EntryPtrTable, LADFUNC_SaveAdsFileHandle
+;   DISKIO_SaveOperationReadyFlag, KYBD_PATH_DF0_LOCAL_ADS, LADFUNC_FMT_AttrEscapePrefixCharHex, LADFUNC_TextAdLineBreakBuffer, LADFUNC_EntryPtrTable, LADFUNC_SaveAdsFileHandle
 ; WRITES:
 ;   DISKIO_SaveOperationReadyFlag, LADFUNC_SaveAdsFileHandle
 ; DESC:
 ;   Encodes entry text/attribute data and writes it to a file.
 ; NOTES:
-;   Emits attribute changes using DATA_LADFUNC_FMT_PCT_C_PCT_02X_1FC5 and terminates entries with DATA_LADFUNC_BSS_WORD_1FC6.
+;   Emits attribute changes using LADFUNC_FMT_AttrEscapePrefixCharHex and terminates entries with LADFUNC_TextAdLineBreakBuffer.
 ;------------------------------------------------------------------------------
 LADFUNC_SaveTextAdsToFile:
     LINK.W  A5,#-36
@@ -1178,7 +1178,7 @@ LADFUNC_SaveTextAdsToFile:
     CLR.L   DISKIO_SaveOperationReadyFlag
     CLR.B   -15(A5)
     PEA     MODE_NEWFILE.W
-    PEA     DATA_KYBD_PATH_DF0_COLON_LOCAL_DOT_ADS_1FB6
+    PEA     KYBD_PATH_DF0_LOCAL_ADS
     JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -1268,7 +1268,7 @@ LADFUNC_SaveTextAdsToFile:
     MOVE.B  -25(A5),D0
     MOVE.L  D0,-(A7)
     PEA     3.W
-    PEA     DATA_LADFUNC_FMT_PCT_C_PCT_02X_1FC5
+    PEA     LADFUNC_FMT_AttrEscapePrefixCharHex
     PEA     -35(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1313,7 +1313,7 @@ LADFUNC_SaveTextAdsToFile:
 
 .write_linebreak:
     PEA     1.W
-    PEA     DATA_LADFUNC_BSS_WORD_1FC6
+    PEA     LADFUNC_TextAdLineBreakBuffer
     MOVE.L  LADFUNC_SaveAdsFileHandle,-(A7)
     JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
@@ -1364,7 +1364,7 @@ LADFUNC_LoadTextAdsFromFile:
     PEA     2.W
     BSR.W   LADFUNC_ComposePackedPenByte
 
-    PEA     DATA_KYBD_PATH_DF0_COLON_LOCAL_DOT_ADS_1FB6
+    PEA     KYBD_PATH_DF0_LOCAL_ADS
     MOVE.B  D0,-29(A5)
     JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 

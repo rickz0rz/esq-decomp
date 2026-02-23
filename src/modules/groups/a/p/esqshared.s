@@ -103,7 +103,7 @@ ESQSHARED_ParseCompactEntryRecord:
 ; CALLS:
 ;   ESQSHARED_JMPTBL_ESQ_WildcardMatch
 ; READS:
-;   ESQ_SelectCodeBuffer, DATA_ESQ_STR_A_1DEB, ESQPARS_SelectionSuffixBuffer
+;   ESQ_SelectCodeBuffer, ESQ_STR_A, ESQPARS_SelectionSuffixBuffer
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -120,7 +120,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     MOVEA.L 8(A5),A3
 
     CLR.B   -10(A5)
-    MOVE.B  DATA_ESQ_STR_A_1DEB,D0
+    MOVE.B  ESQ_STR_A,D0
     MOVEQ   #0,D6
     MOVE.B  D0,-8(A5)
     MOVE.B  D0,-9(A5)
@@ -151,7 +151,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     BNE.S   .lab_0C0D
 
 .lab_0C0C:
-    MOVE.B  DATA_ESQ_STR_A_1DEB,-9(A5)
+    MOVE.B  ESQ_STR_A,-9(A5)
     BRA.S   .branch_1
 
 .lab_0C0D:
@@ -239,7 +239,7 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix:
     TST.W   D5
     BNE.S   .branch_10
 
-    MOVE.B  DATA_ESQ_STR_A_1DEB,D0
+    MOVE.B  ESQ_STR_A,D0
     MOVE.B  -9(A5),D1
     CMP.B   D0,D1
     BNE.S   .branch_10
@@ -287,14 +287,14 @@ ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   Global_STR_00
+;   ESQPARS_DefaultEntryCodeString
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Seeds default entry header bytes: status at +40, flags at +41/+42, two-byte
 ;   code string at +43..+44, and default word value 3 at +46.
 ; NOTES:
-;   Uses Global_STR_00 as the default code-string source.
+;   Uses ESQPARS_DefaultEntryCodeString as the default code-string source.
 ;------------------------------------------------------------------------------
 ESQSHARED_InitEntryDefaults:
     MOVE.L  A3,-(A7)
@@ -304,7 +304,7 @@ ESQSHARED_InitEntryDefaults:
     MOVE.B  D0,41(A3)
     MOVE.B  D0,42(A3)
     LEA     43(A3),A0
-    LEA     Global_STR_00,A1
+    LEA     ESQPARS_DefaultEntryCodeString,A1
 
 .lab_0C1D:
     MOVE.B  (A1)+,(A0)+
@@ -1089,7 +1089,7 @@ ESQSHARED_ReplaceTvRatingToken:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MATH_Mulu32, ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, ESQSHARED_JMPTBL_ESQ_SetBit1Based, ESQSHARED_JMPTBL_ESQ_TestBit1Based, ESQSHARED_JMPTBL_ESQ_WildcardMatch, GROUP_AR_JMPTBL_STRING_AppendAtNull, GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_WDISP_SPrintf, ESQPARS_ReplaceOwnedString, ESQSHARED_ApplyProgramTitleTextFilters, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   Global_STR_ESQPARS2_C_1, Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, CLOCK_FormatVariantCode, DATA_ESQPARS2_FMT_PCT_D_1F29, DATA_ESQPARS2_FMT_PCT_D_1F2A, DATA_ESQPARS2_FMT_PCT_D_1F2B, DATA_ESQPARS2_STR_VALUE_1F2C, DATA_SCRIPT_STR_HRS_2102, DATA_SCRIPT_STR_HR_2103, DATA_SCRIPT_STR_MIN_2104, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
+;   Global_STR_ESQPARS2_C_1, Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, CLOCK_FormatVariantCode, ESQPARS2_DurationFmt_DecimalWithSpace, ESQPARS2_DurationFmt_OpenParenHours, ESQPARS2_DurationFmt_OpenParenMinutes, ESQPARS2_DurationFmt_CloseParen, SCRIPT_StrHoursPluralSuffix, SCRIPT_StrHourSingularSuffix, SCRIPT_StrMinutesSuffix, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1346,12 +1346,12 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     BLE.S   .branch_2
 
     MOVE.L  D0,-(A7)
-    PEA     DATA_ESQPARS2_FMT_PCT_D_1F29
+    PEA     ESQPARS2_DurationFmt_DecimalWithSpace
     PEA     -52(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     MOVE.L  -38(A5),(A7)
-    PEA     DATA_ESQPARS2_FMT_PCT_D_1F2A
+    PEA     ESQPARS2_DurationFmt_OpenParenHours
     PEA     -62(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1364,7 +1364,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     CMP.L   -38(A5),D0
     BNE.S   .branch_1
 
-    PEA     DATA_SCRIPT_STR_HR_2103
+    PEA     SCRIPT_StrHourSingularSuffix
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -1372,7 +1372,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     BRA.S   .branch_3
 
 .branch_1:
-    PEA     DATA_SCRIPT_STR_HRS_2102
+    PEA     SCRIPT_StrHoursPluralSuffix
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -1381,7 +1381,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 
 .branch_2:
     MOVE.L  D0,-(A7)
-    PEA     DATA_ESQPARS2_FMT_PCT_D_1F2B
+    PEA     ESQPARS2_DurationFmt_OpenParenMinutes
     PEA     -52(A5)
     JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1396,7 +1396,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     DATA_SCRIPT_STR_MIN_2104
+    PEA     SCRIPT_StrMinutesSuffix
     MOVE.L  -66(A5),-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -1415,7 +1415,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVEA.L -66(A5),A1
     MOVE.L  A0,D0
     CLR.B   -1(A1,D0.L)
-    PEA     DATA_ESQPARS2_STR_VALUE_1F2C
+    PEA     ESQPARS2_DurationFmt_CloseParen
     MOVE.L  A1,-(A7)
     JSR     GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 

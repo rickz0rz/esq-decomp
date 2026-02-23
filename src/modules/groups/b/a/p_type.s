@@ -568,7 +568,7 @@ P_TYPE_ParseAndStoreTypeRecord:
 ; CALLS:
 ;   PARSEINI_JMPTBL_WDISP_SPrintf, SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer, SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush, SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes
 ; READS:
-;   DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_204F, DATA_P_TYPE_STR_CURDAY_COLON_2050, DATA_P_TYPE_FMT_PCT_03D_PCT_02D_2051, DATA_P_TYPE_STR_NO_DATA_2052, DATA_P_TYPE_STR_NXTDAY_COLON_2053, P_TYPE_PrimaryGroupListPtr, branch_1380, if_eq_1385, loop_137A, return_1386
+;   P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write, P_TYPE_STR_CURDAY_COLON_WriteSection, P_TYPE_FMT_PCT_03D_PCT_02D, P_TYPE_STR_NO_DATA, P_TYPE_STR_NXTDAY_COLON_WriteSection, P_TYPE_PrimaryGroupListPtr, branch_1380, if_eq_1385, loop_137A, return_1386
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -581,7 +581,7 @@ P_TYPE_WritePromoIdDataFile:
     LINK.W  A5,#-120
     MOVEM.L D5-D7,-(A7)
     PEA     1006.W
-    PEA     DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_204F
+    PEA     P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write
     JSR     SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -589,7 +589,7 @@ P_TYPE_WritePromoIdDataFile:
     TST.L   D7
     BEQ.W   .return_1386
 
-    LEA     DATA_P_TYPE_STR_CURDAY_COLON_2050,A0
+    LEA     P_TYPE_STR_CURDAY_COLON_WriteSection,A0
     LEA     -109(A5),A1
 
 .if_ne_1379:
@@ -635,7 +635,7 @@ P_TYPE_WritePromoIdDataFile:
     MOVE.B  (A0),D1
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
-    PEA     DATA_P_TYPE_FMT_PCT_03D_PCT_02D_2051
+    PEA     P_TYPE_FMT_PCT_03D_PCT_02D
     PEA     -109(A5)
     JSR     PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
@@ -694,7 +694,7 @@ P_TYPE_WritePromoIdDataFile:
 
 .branch_1380:
     PEA     9.W
-    PEA     DATA_P_TYPE_STR_NO_DATA_2052
+    PEA     P_TYPE_STR_NO_DATA
     MOVE.L  D7,-(A7)
     JSR     SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
@@ -712,7 +712,7 @@ P_TYPE_WritePromoIdDataFile:
 
 .if_eq_1382:
     MOVEQ   #1,D5
-    LEA     DATA_P_TYPE_STR_NXTDAY_COLON_2053,A0
+    LEA     P_TYPE_STR_NXTDAY_COLON_WriteSection,A0
     LEA     -109(A5),A1
 
 .if_ne_1383:
@@ -751,7 +751,7 @@ P_TYPE_WritePromoIdDataFile:
 ; CALLS:
 ;   P_TYPE_FreeEntry, PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, P_TYPE_AllocateEntry, P_TYPE_JMPTBL_STRING_FindSubstring, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_LONG_FILE_SCRATCH, Global_STR_P_TYPE_C_6, DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_2054, DATA_P_TYPE_STR_CURDAY_COLON_2055, DATA_P_TYPE_STR_TYPES_COLON_2056, DATA_P_TYPE_STR_NXTDAY_COLON_2057, WDISP_CharClassTable, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, P_TYPE_PrimaryGroupListPtr, if_eq_1394, if_eq_1398, if_eq_1399, loop_1389
+;   Global_REF_LONG_FILE_SCRATCH, Global_STR_P_TYPE_C_6, P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load, P_TYPE_STR_CURDAY_COLON_LoadSection, P_TYPE_STR_TYPES_COLON, P_TYPE_STR_NXTDAY_COLON_LoadSection, WDISP_CharClassTable, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, P_TYPE_PrimaryGroupListPtr, if_eq_1394, if_eq_1398, if_eq_1399, loop_1389
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -763,7 +763,7 @@ P_TYPE_WritePromoIdDataFile:
 P_TYPE_LoadPromoIdDataFile:
     LINK.W  A5,#-52
     MOVEM.L D4-D7,-(A7)
-    PEA     DATA_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_2054
+    PEA     P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load
     JSR     PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -773,7 +773,7 @@ P_TYPE_LoadPromoIdDataFile:
     MOVE.L  Global_PTR_WORK_BUFFER,-4(A5)
     MOVE.L  Global_REF_LONG_FILE_SCRATCH,D7
     CLR.L   -48(A5)
-    LEA     DATA_P_TYPE_STR_CURDAY_COLON_2055,A0
+    LEA     P_TYPE_STR_CURDAY_COLON_LoadSection,A0
     LEA     -39(A5),A1
 
 .if_ne_1388:
@@ -883,7 +883,7 @@ P_TYPE_LoadPromoIdDataFile:
     MOVE.L  D0,-52(A5)
     BLE.S   .branch_1393
 
-    PEA     DATA_P_TYPE_STR_TYPES_COLON_2056
+    PEA     P_TYPE_STR_TYPES_COLON
     MOVE.L  -8(A5),-(A7)
     JSR     P_TYPE_JMPTBL_STRING_FindSubstring(PC)
 
@@ -938,7 +938,7 @@ P_TYPE_LoadPromoIdDataFile:
 .if_eq_1395:
     MOVEQ   #1,D0
     MOVE.L  D0,-48(A5)
-    LEA     DATA_P_TYPE_STR_NXTDAY_COLON_2057,A0
+    LEA     P_TYPE_STR_NXTDAY_COLON_LoadSection,A0
     LEA     -39(A5),A1
 
 .if_ne_1396:

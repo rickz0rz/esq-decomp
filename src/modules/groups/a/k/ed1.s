@@ -37,7 +37,7 @@
 ; READS:
 ;   ED_DiagTextModeChar, ED_SavedScrollSpeedIndex, ED_EditCursorOffset
 ; WRITES:
-;   ED_MenuStateId, ED_EditCursorOffset, DATA_ESQ_BSS_WORD_1DE4
+;   ED_MenuStateId, ED_EditCursorOffset, ESQ_ShutdownRequestedFlag
 ; DESC:
 ;   Dispatches ESC-menu commands, updates selection state, and shows errors.
 ; NOTES:
@@ -145,7 +145,7 @@ ED1_HandleEscMenuInput:
     BRA.S   .done
 
 .case_set_flag:
-    MOVE.W  #1,DATA_ESQ_BSS_WORD_1DE4
+    MOVE.W  #1,ESQ_ShutdownRequestedFlag
     BRA.S   .done
 
 .case_adjust_selection:
@@ -183,7 +183,7 @@ ED1_HandleEscMenuInput:
     SUBQ.W  #1,D0
     BNE.S   .draw_error
 
-    PEA     DATA_ED2_STR_LOCAL_EDIT_NOT_AVAILABLE_1D29
+    PEA     ED2_STR_LOCAL_EDIT_NOT_AVAILABLE
     PEA     270.W
     PEA     145.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -259,7 +259,7 @@ ED1_UpdateEscMenuSelection:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow,
 ;   DISPLIB_DisplayTextAtPosition, ESQIFF_RunCopperDropTransition, ESQIFF_RunCopperRiseTransition
 ; READS:
-;   DATA_ESQ_TAG_36_1DCB, ED_DiagScrollSpeedChar, KYBD_CustomPaletteTriplesRBase, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
+;   ESQ_TAG_36, ED_DiagScrollSpeedChar, KYBD_CustomPaletteTriplesRBase, ED_DiagGraphModeChar, ED_SaveTextAdsOnExitFlag
 ; WRITES:
 ;   Global_UIBusyFlag, ED_SavedDiagGraphModeChar, ED_SaveTextAdsOnExitFlag, ED_MaxAdNumber, ED_TextLimit, ED_BlockOffset,
 ;   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, WDISP_PaletteTriplesRBase
@@ -338,14 +338,14 @@ ED1_EnterEscMenu:
     JSR     _LVOEnable(A6)
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_ESQ_TAG_36_1DCB,D0
+    MOVE.B  ESQ_TAG_36,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
     JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
-    MOVE.B  DATA_ESQ_TAG_36_1DCB+1,D1
+    MOVE.B  ESQ_TAG_36+1,D1
     ADD.L   D1,D0
     MOVEQ   #48,D1
     SUB.L   D1,D0
@@ -470,7 +470,7 @@ ED1_EnterEscMenu_AfterVersionText:
 ; READS:
 ;   ED_SaveTextAdsOnExitFlag, ED_SavedDiagGraphModeChar, ED_DiagGraphModeChar, SCRIPT_RuntimeMode
 ; WRITES:
-;   ED_DiagnosticsScreenActive, DATA_ESQ_BSS_WORD_1DF3, DATA_ESQPARS2_BSS_WORD_1F3C, LOCAVAIL_FilterPrevClassId, ESQIFF_GAdsBrushListCount, SCRIPT_RuntimeMode,
+;   ED_DiagnosticsScreenActive, SCRIPT_StatusRefreshHoldFlag, ESQPARS2_EdDiagResetScratchFlag, LOCAVAIL_FilterPrevClassId, ESQIFF_GAdsBrushListCount, SCRIPT_RuntimeMode,
 ;   CTRL_BufferedByteCount, CTRL_HPreviousSample, CTRL_H, Global_UIBusyFlag, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets display state, refreshes banner data, and restores main screen state.
@@ -480,7 +480,7 @@ ED1_EnterEscMenu_AfterVersionText:
 ED1_ExitEscMenu:
     MOVE.L  D2,-(A7)
 
-    CLR.W   DATA_COI_BSS_WORD_1B85
+    CLR.W   COI_AttentionOverlayBusyFlag
 
     LEA     Global_REF_696_400_BITMAP,A0
     MOVEQ   #3,D0
@@ -497,10 +497,10 @@ ED1_ExitEscMenu:
 
     MOVEQ   #0,D0
     MOVE.W  D0,ED_DiagnosticsScreenActive
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1DF3
+    MOVE.W  D0,SCRIPT_StatusRefreshHoldFlag
     JSR     GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(PC)
 
-    CLR.W   DATA_ESQPARS2_BSS_WORD_1F3C
+    CLR.W   ESQPARS2_EdDiagResetScratchFlag
     JSR     ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(PC)
 
     JSR     ESQFUNC_UpdateDiskWarningAndRefreshTick(PC)
@@ -597,7 +597,7 @@ ED1_ExitEscMenu:
 ;   ED_DrawBottomHelpBarBackground, DISPLIB_DisplayTextAtPosition, GROUP_AM_JMPTBL_WDISP_SPrintf,
 ;   DISKIO_QueryDiskUsagePercentAndSetBufferSize, DISKIO_QueryVolumeSoftErrorCount, ED_DrawDiagnosticModeText, _LVOSetAPen
 ; READS:
-;   Global_REF_BAUD_RATE, DATA_ED2_BSS_WORD_1D2E, DATA_ED2_BSS_WORD_1D2F, WDISP_WeatherStatusLabelBuffer
+;   Global_REF_BAUD_RATE, ED2_DiagnosticDiskUsagePercent, ED2_DiagnosticDiskSoftErrorCount, WDISP_WeatherStatusLabelBuffer
 ; WRITES:
 ;   ED_MenuStateId, ED_DiagnosticsScreenActive
 ; DESC:
@@ -640,10 +640,10 @@ ED1_DrawDiagnosticsScreen:
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_BSS_WORD_1D2E
+    PEA     ED2_DiagnosticDiskUsagePercent
     JSR     DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
 
-    PEA     DATA_ED2_BSS_WORD_1D2F
+    PEA     ED2_DiagnosticDiskSoftErrorCount
     MOVE.L  D0,64(A7)
     JSR     DISKIO_QueryVolumeSoftErrorCount(PC)
 
@@ -1041,7 +1041,7 @@ ED1_DrawStatusLine1:
     MOVE.W  ESQPARS2_StateIndex,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_SCRSPD_PCT_D_1D34
+    PEA     ED2_FMT_SCRSPD_PCT_D
     PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1068,7 +1068,7 @@ ED1_DrawStatusLine1:
 ; CALLS:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines, _LVOSetRast
 ; READS:
-;   WDISP_DisplayContextBase, DATA_CTASKS_BSS_BYTE_1BA4/1BA5/1BAD/1BB7/1BBD/1BBE/1BC9
+;   WDISP_DisplayContextBase, CONFIG_NicheModeCycleBudget_Y/1BA5/1BAD/1BB7/1BBD/1BBE/1BC9
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1090,19 +1090,19 @@ ED1_DrawStatusLine2:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BA4,D0
+    MOVE.B  CONFIG_NicheModeCycleBudget_Y,D0
     EXT.W   D0
     EXT.L   D0
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA5,D1
+    MOVE.B  CONFIG_NicheModeCycleBudget_Static,D1
     EXT.W   D1
     EXT.L   D1
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BAD,D2
+    MOVE.B  CONFIG_NicheModeCycleBudget_Custom,D2
     EXT.W   D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D_1D35
+    PEA     ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D
     PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1113,13 +1113,13 @@ ED1_DrawStatusLine2:
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
-    MOVE.B  DATA_CTASKS_STR_Y_1BB7,D0
+    MOVE.B  CONFIG_ModeCycleEnabledFlag,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  CONFIG_TimeWindowMinutes,(A7)
-    MOVE.L  DATA_CTASKS_CONST_LONG_1BBE,-(A7)
+    MOVE.L  CONFIG_ModeCycleGateDuration,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR_1D36
+    PEA     ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR
     PEA     .statusLine(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1130,7 +1130,7 @@ ED1_DrawStatusLine2:
     MOVE.L  A0,-(A7)
     JSR     ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
-    MOVE.B  DATA_CTASKS_STR_1_1BC9,D0
+    MOVE.B  CTASKS_STR_1,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,(A7)

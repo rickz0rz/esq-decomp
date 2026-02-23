@@ -108,7 +108,7 @@ DISKIO_OpenFileWithBuffer:
 ; CALLS:
 ;   CTASKS_StartCloseTaskProcess, GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVODelay, _LVOWrite
 ; READS:
-;   DISKIO_BufferControl, DISKIO_BufferState, DISKIO_OpenCount, Global_REF_DOS_LIBRARY_2, Global_STR_DISKIO_C_2, DATA_CTASKS_CONST_WORD_1B8A, Global_UIBusyFlag, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining, Struct_DiskIoBufferState__SavedF45
+;   DISKIO_BufferControl, DISKIO_BufferState, DISKIO_OpenCount, Global_REF_DOS_LIBRARY_2, Global_STR_DISKIO_C_2, CTASKS_CloseTaskCompletionFlag, Global_UIBusyFlag, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining, Struct_DiskIoBufferState__SavedF45
 ; WRITES:
 ;   DISKIO_BufferControl, DISKIO_OpenCount, ESQPARS2_ReadModeFlags, Struct_DiskIoBufferControl__ErrorFlag
 ; DESC:
@@ -159,7 +159,7 @@ DISKIO_CloseBufferedFileAndFlush:
 
     JSR     GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)
 
-    TST.W   DATA_CTASKS_CONST_WORD_1B8A
+    TST.W   CTASKS_CloseTaskCompletionFlag
     BEQ.S   .branch
 
     MOVE.L  DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
@@ -237,7 +237,7 @@ DISKIO_WriteBufferedBytes:
 
     SetOffsetForStack 7
     UseStackLong    MOVE.L,1,D7     ; Value DISKIO2_OutputFileHandle
-    UseStackLong    MOVEA.L,2,A3    ; Address DATA_ESQ_STR_B_1DC8
+    UseStackLong    MOVEA.L,2,A3    ; Address ESQ_STR_B
     UseStackLong    MOVE.L,3,D6     ; 21
 
     MOVE.L  D6,D5
@@ -1029,9 +1029,9 @@ DISKIO_ResetCtrlInputStateIfIdle:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, GROUP_AG_JMPTBL_SCRIPT_CheckPathExists, GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal, GROUP_AG_JMPTBL_STRUCT_AllocWithOwner, GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField, _LVOCloseDevice, _LVODoIO, _LVOExecute, _LVOOpenDevice
 ; READS:
-;   AbsExecBase, Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, DISKIO_STR_TRACKDISK_DEVICE, DISKIO_CMD_ASSIGN_FONTS_DH2, DISKIO_CMD_ASSIGN_ENV_DH2, DISKIO_CMD_ASSIGN_SYS_DH2, DISKIO_CMD_ASSIGN_S_DH2, DISKIO_CMD_ASSIGN_C_DH2, DISKIO_CMD_ASSIGN_L_DH2, DISKIO_CMD_ASSIGN_LIBS_DH2, DISKIO_CMD_ASSIGN_DEVS_DH2, DISKIO_PATH_DF1_G_ADS, DISKIO_CMD_ASSIGN_GFX_DF1, DISKIO_CMD_ASSIGN_GFX_PC1, DATA_ESQ_BSS_WORD_1DE5, ESQPARS2_ReadModeFlags, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveWriteProtectStatusCodeDrive1, DISKIO_DriveMediaStatusCodeTable, df, e2, return
+;   AbsExecBase, Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, DISKIO_Drive0Dh2AssignDoneFlag, DISKIO_Drive1GfxAssignDoneFlag, DISKIO_STR_TRACKDISK_DEVICE, DISKIO_CMD_ASSIGN_FONTS_DH2, DISKIO_CMD_ASSIGN_ENV_DH2, DISKIO_CMD_ASSIGN_SYS_DH2, DISKIO_CMD_ASSIGN_S_DH2, DISKIO_CMD_ASSIGN_C_DH2, DISKIO_CMD_ASSIGN_L_DH2, DISKIO_CMD_ASSIGN_LIBS_DH2, DISKIO_CMD_ASSIGN_DEVS_DH2, DISKIO_PATH_DF1_G_ADS, DISKIO_CMD_ASSIGN_GFX_DF1, DISKIO_CMD_ASSIGN_GFX_PC1, ESQ_MainLoopUiTickEnabledFlag, ESQPARS2_ReadModeFlags, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr, DISKIO_Drive0WriteProtectedCode, DISKIO_DriveWriteProtectStatusCodeDrive1, DISKIO_DriveMediaStatusCodeTable, df, e2, return
 ; WRITES:
-;   DATA_DISKIO_CONST_LONG_1BD5, DATA_DISKIO_CONST_LONG_1BD6, ESQPARS2_ReadModeFlags, GCOMMAND_DriveProbeRequestedFlag, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr
+;   DISKIO_Drive0Dh2AssignDoneFlag, DISKIO_Drive1GfxAssignDoneFlag, ESQPARS2_ReadModeFlags, GCOMMAND_DriveProbeRequestedFlag, DISKIO_TrackdiskMsgPortPtr, DISKIO_TrackdiskIoReqPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1163,7 +1163,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     JSR     GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(PC)
 
     ADDQ.W  #4,A7
-    TST.W   DATA_ESQ_BSS_WORD_1DE5
+    TST.W   ESQ_MainLoopUiTickEnabledFlag
     BEQ.W   .return
 
     CLR.W   GCOMMAND_DriveProbeRequestedFlag
@@ -1171,17 +1171,17 @@ DISKIO_ProbeDrivesAndAssignPaths:
     BEQ.S   .lab_03D8
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_DISKIO_CONST_LONG_1BD5
+    MOVE.L  D0,DISKIO_Drive0Dh2AssignDoneFlag
 
 .lab_03D8:
     TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
     BEQ.S   .lab_03D9
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_DISKIO_CONST_LONG_1BD6
+    MOVE.L  D0,DISKIO_Drive1GfxAssignDoneFlag
 
 .lab_03D9:
-    TST.L   DATA_DISKIO_CONST_LONG_1BD5
+    TST.L   DISKIO_Drive0Dh2AssignDoneFlag
     BEQ.W   .lab_03DA
 
     TST.L   DISKIO_Drive0WriteProtectedCode
@@ -1232,10 +1232,10 @@ DISKIO_ProbeDrivesAndAssignPaths:
     JSR     _LVOExecute(A6)
 
     MOVE.W  D5,ESQPARS2_ReadModeFlags
-    MOVE.L  D2,DATA_DISKIO_CONST_LONG_1BD5
+    MOVE.L  D2,DISKIO_Drive0Dh2AssignDoneFlag
 
 .lab_03DA:
-    TST.L   DATA_DISKIO_CONST_LONG_1BD6
+    TST.L   DISKIO_Drive1GfxAssignDoneFlag
     BEQ.S   .return
 
     TST.L   DISKIO_DriveWriteProtectStatusCodeDrive1
@@ -1266,7 +1266,7 @@ DISKIO_ProbeDrivesAndAssignPaths:
     JSR     _LVOExecute(A6)
 
 .lab_03DC:
-    MOVE.L  D2,DATA_DISKIO_CONST_LONG_1BD6
+    MOVE.L  D2,DISKIO_Drive1GfxAssignDoneFlag
 
 .return:
     MOVEM.L (A7)+,D2-D3/D5-D7/A2
@@ -1341,9 +1341,9 @@ DISKIO_DrawTransferErrorMessageIfDiagnostics:
 ; CALLS:
 ;   BRUSH_SelectBrushByLabel, GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState, GROUP_AG_JMPTBL_MATH_Mulu32, GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition, GROUP_AI_JMPTBL_STR_FindCharPtr, DISKIO_EnsurePc1MountedAndGfxAssigned
 ; READS:
-;   Global_JMPTBL_HALF_HOURS_12_HR_FMT, Global_JMPTBL_HALF_HOURS_24_HR_FMT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, LAB_0409, DATA_CTASKS_CONST_BYTE_1BA2, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, DATA_DISKIO_TAG_NRLS_1BE3, DATA_DISKIO_TAG_LRBN_1BE4, DATA_DISKIO_TAG_MSN_1BE5, WDISP_CharClassTable, N
+;   Global_JMPTBL_HALF_HOURS_12_HR_FMT, Global_JMPTBL_HALF_HOURS_24_HR_FMT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, LAB_0409, CONFIG_RefreshIntervalMinutes, ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_LRBN_FlagChar, DISKIO_TAG_NRLS, DISKIO_TAG_LRBN, DISKIO_TAG_MSN, WDISP_CharClassTable, N
 ; WRITES:
-;   Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, Global_REF_STR_CLOCK_FORMAT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, DATA_CTASKS_CONST_BYTE_1BA2, DATA_CTASKS_STR_C_1BA3, DATA_CTASKS_BSS_BYTE_1BA4, DATA_CTASKS_CONST_BYTE_1BA5, DATA_CTASKS_CONST_BYTE_1BA6, DATA_CTASKS_CONST_BYTE_1BA7, DATA_CTASKS_STR_G_1BA8, DATA_CTASKS_STR_N_1BA9, DATA_CTASKS_STR_A_1BAA, DATA_CTASKS_STR_E_1BAB, DATA_CTASKS_BSS_BYTE_1BAC, DATA_CTASKS_BSS_BYTE_1BAD, DATA_CTASKS_STR_Y_1BAE, DATA_CTASKS_STR_Y_1BAF, DATA_CTASKS_STR_N_1BB0, DATA_CTASKS_STR_N_1BB1, DATA_CTASKS_STR_Y_1BB2, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_L_1BB4, DATA_CTASKS_CONST_BYTE_1BB5, DATA_CTASKS_CONST_BYTE_1BB6, DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_STR_Y_1BB8, DATA_CTASKS_STR_N_1BB9, DATA_CTASKS_CONST_BYTE_1BBA, DATA_CTASKS_CONST_BYTE_1BBB, DATA_CTASKS_CONST_BYTE_1BBC, CONFIG_TimeWindowMinutes, DATA_CTASKS_CONST_LONG_1BBE, DATA_CTASKS_STR_Y_1BBF, DATA_CTASKS_STR_Y_1BC1, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, DATA_CTASKS_CONST_LONG_1BCA
+;   Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, Global_REF_STR_CLOCK_FORMAT, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, CONFIG_RefreshIntervalMinutes, CTASKS_STR_C, CONFIG_NicheModeCycleBudget_Y, CONFIG_NicheModeCycleBudget_Static, CONFIG_SerializedNumericSlot05, CONFIG_NewgridWindowSpanHalfHoursPrimary, CTASKS_STR_G, CONFIG_SerializedFlagSlot08_DefaultN, CTASKS_STR_A, CTASKS_STR_E, CONFIG_SerializedNumericSlot10, CONFIG_NicheModeCycleBudget_Custom, CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_SerializedFlagSlot15_DefaultN, CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CTASKS_STR_L, CONFIG_SerializedNumericSlot19, CONFIG_SerializedNumericSlot20, CONFIG_ModeCycleEnabledFlag, CONFIG_NewgridPlaceholderBevelFlag, CONFIG_NewgridSelectionCode48_49EnabledFlag, CONFIG_SerializedNumericSlot25, CONFIG_SerializedNumericSlot26, CONFIG_NewgridWindowSpanHalfHoursAlt, CONFIG_TimeWindowMinutes, CONFIG_ModeCycleGateDuration, CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_ParseiniLogoScanEnabledFlag, ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, CTASKS_STR_1, CONFIG_RefreshIntervalSeconds
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1360,21 +1360,21 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #1,D6
     MOVEQ   #-48,D1
     ADD.B   0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_CONST_BYTE_1BA2
+    MOVE.B  D1,CONFIG_RefreshIntervalMinutes
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_C_1BA3
+    MOVE.B  D1,CTASKS_STR_C
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVEQ   #-48,D1
     ADD.B   0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_BSS_BYTE_1BA4
+    MOVE.B  D1,CONFIG_NicheModeCycleBudget_Y
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVEQ   #-48,D1
     ADD.B   0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_CONST_BYTE_1BA5
+    MOVE.B  D1,CONFIG_NicheModeCycleBudget_Static
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),-7(A5)
@@ -1386,7 +1386,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BA6
+    MOVE.B  D0,CONFIG_SerializedNumericSlot05
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),-7(A5)
@@ -1398,11 +1398,11 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BA7
+    MOVE.B  D0,CONFIG_NewgridWindowSpanHalfHoursPrimary
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_G_1BA8
+    MOVE.B  D1,CTASKS_STR_G
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
@@ -1413,12 +1413,12 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BA9
+    MOVE.B  D1,CONFIG_SerializedFlagSlot08_DefaultN
     BRA.S   .lab_03E2
 
 .lab_03E1:
     MOVEQ   #78,D0
-    MOVE.B  D0,DATA_CTASKS_STR_N_1BA9
+    MOVE.B  D0,CONFIG_SerializedFlagSlot08_DefaultN
 
 .lab_03E2:
     MOVE.L  D7,D0
@@ -1431,17 +1431,17 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_A_1BAA
+    MOVE.B  D1,CTASKS_STR_A
     BRA.S   .lab_03E4
 
 .lab_03E3:
-    MOVE.B  #'A',DATA_CTASKS_STR_A_1BAA
+    MOVE.B  #'A',CTASKS_STR_A
 
 .lab_03E4:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_E_1BAB
+    MOVE.B  D1,CTASKS_STR_E
     MOVE.L  D7,D0
     SUBQ.L  #1,D0
     MOVE.L  D6,D1
@@ -1453,7 +1453,7 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #1,D6
     MOVEQ   #-48,D1
     ADD.B   0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_BSS_BYTE_1BAC
+    MOVE.B  D1,CONFIG_SerializedNumericSlot10
     TST.B   D1
     BMI.S   .lab_03E5
 
@@ -1463,7 +1463,7 @@ DISKIO_ParseConfigBuffer:
 
 .lab_03E5:
     MOVEQ   #0,D0
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1BAC
+    MOVE.B  D0,CONFIG_SerializedNumericSlot10
 
 .lab_03E6:
     MOVE.L  D7,D0
@@ -1477,7 +1477,7 @@ DISKIO_ParseConfigBuffer:
     ADDQ.W  #1,D6
     MOVEQ   #-48,D1
     ADD.B   0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_BSS_BYTE_1BAD
+    MOVE.B  D1,CONFIG_NicheModeCycleBudget_Custom
     TST.B   D1
     BMI.S   .lab_03E7
 
@@ -1487,7 +1487,7 @@ DISKIO_ParseConfigBuffer:
 
 .lab_03E7:
     MOVEQ   #0,D0
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1BAD
+    MOVE.B  D0,CONFIG_NicheModeCycleBudget_Custom
 
 .lab_03E8:
     MOVE.L  D7,D0
@@ -1500,7 +1500,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BAE
+    MOVE.B  D1,CONFIG_NewgridSelectionCode34PrimaryEnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03E9
@@ -1509,7 +1509,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03E9
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BAE
+    MOVE.B  D0,CONFIG_NewgridSelectionCode34PrimaryEnabledFlag
 
 .lab_03E9:
     MOVE.L  D7,D0
@@ -1522,7 +1522,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BAF
+    MOVE.B  D1,CONFIG_NewgridSelectionCode35EnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03EA
@@ -1531,7 +1531,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03EA
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BAF
+    MOVE.B  D0,CONFIG_NewgridSelectionCode35EnabledFlag
 
 .lab_03EA:
     MOVE.L  D7,D0
@@ -1544,7 +1544,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BB0
+    MOVE.B  D1,CONFIG_SerializedFlagSlot15_DefaultN
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03EB
@@ -1553,7 +1553,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03EB
 
-    MOVE.B  D2,DATA_CTASKS_STR_N_1BB0
+    MOVE.B  D2,CONFIG_SerializedFlagSlot15_DefaultN
 
 .lab_03EB:
     MOVE.L  D7,D0
@@ -1566,7 +1566,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BB1
+    MOVE.B  D1,CONFIG_NewgridSelectionCode34AltEnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03EC
@@ -1575,7 +1575,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03EC
 
-    MOVE.B  D2,DATA_CTASKS_STR_N_1BB1
+    MOVE.B  D2,CONFIG_NewgridSelectionCode34AltEnabledFlag
 
 .lab_03EC:
     MOVE.L  D7,D0
@@ -1588,7 +1588,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BB2
+    MOVE.B  D1,CONFIG_NewgridSelectionCode32EnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03ED
@@ -1597,7 +1597,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03ED
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BB2
+    MOVE.B  D0,CONFIG_NewgridSelectionCode32EnabledFlag
 
 .lab_03ED:
     MOVE.L  D7,D0
@@ -1610,7 +1610,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BB3
+    MOVE.B  D1,CONFIG_RuntimeMode12BannerJumpEnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03EE
@@ -1619,7 +1619,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D0,D1
     BEQ.S   .lab_03EE
 
-    MOVE.B  D0,DATA_CTASKS_STR_N_1BB3
+    MOVE.B  D0,CONFIG_RuntimeMode12BannerJumpEnabledFlag
 
 .lab_03EE:
     MOVE.L  D7,D0
@@ -1632,7 +1632,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_L_1BB4
+    MOVE.B  D1,CTASKS_STR_L
     MOVEQ   #76,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03EF
@@ -1645,7 +1645,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03EF
 
-    MOVE.B  D0,DATA_CTASKS_STR_L_1BB4
+    MOVE.B  D0,CTASKS_STR_L
 
 .lab_03EF:
     MOVE.L  D7,D0
@@ -1666,7 +1666,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BB5
+    MOVE.B  D0,CONFIG_SerializedNumericSlot19
 
 .lab_03F0:
     MOVE.L  D7,D0
@@ -1687,7 +1687,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BB6
+    MOVE.B  D0,CONFIG_SerializedNumericSlot20
 
 .lab_03F1:
     MOVE.L  D7,D0
@@ -1700,7 +1700,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BB7
+    MOVE.B  D1,CONFIG_ModeCycleEnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03F2
@@ -1709,7 +1709,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03F2
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BB7
+    MOVE.B  D0,CONFIG_ModeCycleEnabledFlag
 
 .lab_03F2:
     MOVE.L  D7,D0
@@ -1722,7 +1722,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BB8
+    MOVE.B  D1,CONFIG_NewgridPlaceholderBevelFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03F3
@@ -1731,7 +1731,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03F3
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BB8
+    MOVE.B  D0,CONFIG_NewgridPlaceholderBevelFlag
 
 .lab_03F3:
     MOVE.L  D7,D0
@@ -1744,7 +1744,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BB9
+    MOVE.B  D1,CONFIG_NewgridSelectionCode48_49EnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03F4
@@ -1753,7 +1753,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D0,D1
     BEQ.S   .lab_03F4
 
-    MOVE.B  D0,DATA_CTASKS_STR_N_1BB9
+    MOVE.B  D0,CONFIG_NewgridSelectionCode48_49EnabledFlag
 
 .lab_03F4:
     MOVE.L  D7,D0
@@ -1774,7 +1774,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BBA
+    MOVE.B  D0,CONFIG_SerializedNumericSlot25
 
 .lab_03F5:
     MOVE.L  D7,D0
@@ -1795,7 +1795,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BBB
+    MOVE.B  D0,CONFIG_SerializedNumericSlot26
 
 .lab_03F6:
     MOVE.L  D7,D0
@@ -1816,7 +1816,7 @@ DISKIO_ParseConfigBuffer:
     JSR     GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  D0,DATA_CTASKS_CONST_BYTE_1BBC
+    MOVE.B  D0,CONFIG_NewgridWindowSpanHalfHoursAlt
 
 .lab_03F7:
     MOVE.L  D7,D0
@@ -1856,7 +1856,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.B  0(A3,D0.W),D1
     MOVEQ   #48,D0
     SUB.L   D0,D1
-    MOVE.L  D1,DATA_CTASKS_CONST_LONG_1BBE
+    MOVE.L  D1,CONFIG_ModeCycleGateDuration
     MOVEQ   #1,D0
     CMP.L   D0,D1
     BLT.S   .lab_03F9
@@ -1866,7 +1866,7 @@ DISKIO_ParseConfigBuffer:
     BLE.S   .lab_03FA
 
 .lab_03F9:
-    MOVE.L  D0,DATA_CTASKS_CONST_LONG_1BBE
+    MOVE.L  D0,CONFIG_ModeCycleGateDuration
 
 .lab_03FA:
     MOVE.L  D7,D0
@@ -1899,7 +1899,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BBF
+    MOVE.B  D1,CONFIG_NewgridSelectionCode16EnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_03FC
@@ -1908,7 +1908,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_03FC
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BBF
+    MOVE.B  D0,CONFIG_NewgridSelectionCode16EnabledFlag
 
 .lab_03FC:
     MOVE.L  D7,D0
@@ -1957,7 +1957,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_Y_1BC1
+    MOVE.B  D1,CONFIG_ParseiniLogoScanEnabledFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_0401
@@ -1966,7 +1966,7 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_0401
 
-    MOVE.B  D0,DATA_CTASKS_STR_Y_1BC1
+    MOVE.B  D0,CONFIG_ParseiniLogoScanEnabledFlag
 
 .lab_0401:
     MOVE.L  D7,D0
@@ -2096,7 +2096,7 @@ DISKIO_ParseConfigBuffer:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_TAG_NRLS_1BE3
+    PEA     DISKIO_TAG_NRLS
     JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -2122,7 +2122,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BC5
+    MOVE.B  D1,CONFIG_EnsurePc1GfxAssignedFlag
     MOVEQ   #89,D0
     CMP.B   D0,D1
     BEQ.S   .lab_0410
@@ -2131,10 +2131,10 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .lab_0410
 
-    MOVE.B  D2,DATA_CTASKS_STR_N_1BC5
+    MOVE.B  D2,CONFIG_EnsurePc1GfxAssignedFlag
 
 .lab_0410:
-    MOVE.B  DATA_CTASKS_STR_N_1BC5,D0
+    MOVE.B  CONFIG_EnsurePc1GfxAssignedFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .lab_0411
@@ -2152,24 +2152,24 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_N_1BC6
+    MOVE.B  D1,CONFIG_MsnRuntimeModeSelectorChar_LRBN
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     DATA_DISKIO_TAG_LRBN_1BE4
+    PEA     DISKIO_TAG_LRBN
     JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BEQ.S   .lab_0412
 
-    MOVE.B  DATA_CTASKS_STR_N_1BC6,D0
+    MOVE.B  CONFIG_MsnRuntimeModeSelectorChar_LRBN,D0
     TST.B   D0
     BNE.S   .lab_0413
 
 .lab_0412:
     MOVEQ   #78,D0
-    MOVE.B  D0,DATA_CTASKS_STR_N_1BC6
+    MOVE.B  D0,CONFIG_MsnRuntimeModeSelectorChar_LRBN
 
 .lab_0413:
     MOVE.L  D7,D0
@@ -2223,7 +2223,7 @@ DISKIO_ParseConfigBuffer:
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
-    PEA     DATA_DISKIO_TAG_MSN_1BE5
+    PEA     DISKIO_TAG_MSN
     JSR     GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -2243,7 +2243,7 @@ DISKIO_ParseConfigBuffer:
     MOVE.L  D6,D0
     ADDQ.W  #1,D6
     MOVE.B  0(A3,D0.W),D1
-    MOVE.B  D1,DATA_CTASKS_STR_1_1BC9
+    MOVE.B  D1,CTASKS_STR_1
     MOVEQ   #49,D0
     CMP.B   D0,D1
     BEQ.S   .return
@@ -2252,23 +2252,23 @@ DISKIO_ParseConfigBuffer:
     CMP.B   D2,D1
     BEQ.S   .return
 
-    MOVE.B  D0,DATA_CTASKS_STR_1_1BC9
+    MOVE.B  D0,CTASKS_STR_1
 
 .return:
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA2,D0
+    MOVE.B  CONFIG_RefreshIntervalMinutes,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     CLR.L   -(A7)
     JSR     GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState(PC)
 
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA2,D0
+    MOVE.B  CONFIG_RefreshIntervalMinutes,D0
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
     JSR     GROUP_AG_JMPTBL_MATH_Mulu32(PC)
 
-    MOVE.L  D0,DATA_CTASKS_CONST_LONG_1BCA
+    MOVE.L  D0,CONFIG_RefreshIntervalSeconds
     MOVEM.L -28(A5),D2/D5-D7/A3
     UNLK    A5
     RTS
@@ -2286,9 +2286,9 @@ DISKIO_ParseConfigBuffer:
 ; CALLS:
 ;   _LVOExecute
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, DATA_DISKIO_BSS_WORD_1BE6, DISKIO_CMD_MOUNT_PC1, DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
+;   Global_REF_DOS_LIBRARY_2, DISKIO_Pc1MountAssignFlag, DISKIO_CMD_MOUNT_PC1, DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
 ; WRITES:
-;   DATA_DISKIO_BSS_WORD_1BE6
+;   DISKIO_Pc1MountAssignFlag
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -2296,10 +2296,10 @@ DISKIO_ParseConfigBuffer:
 ;------------------------------------------------------------------------------
 DISKIO_EnsurePc1MountedAndGfxAssigned:
     MOVEM.L D2-D3,-(A7)
-    TST.W   DATA_DISKIO_BSS_WORD_1BE6
+    TST.W   DISKIO_Pc1MountAssignFlag
     BNE.S   DISKIO_EnsurePc1MountedAndGfxAssigned_Return
 
-    MOVE.W  #1,DATA_DISKIO_BSS_WORD_1BE6
+    MOVE.W  #1,DISKIO_Pc1MountAssignFlag
     LEA     DISKIO_CMD_MOUNT_PC1,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
@@ -2349,7 +2349,7 @@ DISKIO_EnsurePc1MountedAndGfxAssigned_Return:
 ; CALLS:
 ;   DISKIO_OpenFileWithBuffer, GROUP_AE_JMPTBL_WDISP_SPrintf, DISKIO_CloseBufferedFileAndFlush, DISKIO_WriteBufferedBytes
 ; READS:
-;   BRUSH_LabelScratch, Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, Global_STR_DEFAULT_CONFIG_FORMATTED, Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, DATA_CTASKS_CONST_BYTE_1BA2, DATA_CTASKS_STR_C_1BA3, DATA_CTASKS_BSS_BYTE_1BA4, DATA_CTASKS_CONST_BYTE_1BA5, DATA_CTASKS_CONST_BYTE_1BA6, DATA_CTASKS_CONST_BYTE_1BA7, DATA_CTASKS_STR_G_1BA8, DATA_CTASKS_STR_N_1BA9, DATA_CTASKS_STR_A_1BAA, DATA_CTASKS_STR_E_1BAB, DATA_CTASKS_BSS_BYTE_1BAC, DATA_CTASKS_BSS_BYTE_1BAD, DATA_CTASKS_STR_Y_1BAE, DATA_CTASKS_STR_Y_1BAF, DATA_CTASKS_STR_N_1BB0, DATA_CTASKS_STR_N_1BB1, DATA_CTASKS_STR_Y_1BB2, DATA_CTASKS_STR_N_1BB3, DATA_CTASKS_STR_L_1BB4, DATA_CTASKS_CONST_BYTE_1BB5, DATA_CTASKS_CONST_BYTE_1BB6, DATA_CTASKS_STR_Y_1BB7, DATA_CTASKS_STR_Y_1BB8, DATA_CTASKS_STR_N_1BB9, DATA_CTASKS_CONST_BYTE_1BBA, DATA_CTASKS_CONST_BYTE_1BBB, DATA_CTASKS_CONST_BYTE_1BBC, CONFIG_TimeWindowMinutes, DATA_CTASKS_CONST_LONG_1BBE, DATA_CTASKS_STR_Y_1BBF, DATA_CTASKS_STR_Y_1BC1, ED_DiagTextModeChar, DATA_CTASKS_STR_N_1BC5, DATA_CTASKS_STR_N_1BC6, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, DATA_CTASKS_STR_1_1BC9, MODE_NEWFILE
+;   BRUSH_LabelScratch, Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, Global_REF_STR_USE_24_HR_CLOCK, Global_REF_WORD_HEX_CODE_8E, Global_STR_DEFAULT_CONFIG_FORMATTED, Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, CONFIG_RefreshIntervalMinutes, CTASKS_STR_C, CONFIG_NicheModeCycleBudget_Y, CONFIG_NicheModeCycleBudget_Static, CONFIG_SerializedNumericSlot05, CONFIG_NewgridWindowSpanHalfHoursPrimary, CTASKS_STR_G, CONFIG_SerializedFlagSlot08_DefaultN, CTASKS_STR_A, CTASKS_STR_E, CONFIG_SerializedNumericSlot10, CONFIG_NicheModeCycleBudget_Custom, CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, CONFIG_NewgridSelectionCode35EnabledFlag, CONFIG_SerializedFlagSlot15_DefaultN, CONFIG_NewgridSelectionCode34AltEnabledFlag, CONFIG_NewgridSelectionCode32EnabledFlag, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CTASKS_STR_L, CONFIG_SerializedNumericSlot19, CONFIG_SerializedNumericSlot20, CONFIG_ModeCycleEnabledFlag, CONFIG_NewgridPlaceholderBevelFlag, CONFIG_NewgridSelectionCode48_49EnabledFlag, CONFIG_SerializedNumericSlot25, CONFIG_SerializedNumericSlot26, CONFIG_NewgridWindowSpanHalfHoursAlt, CONFIG_TimeWindowMinutes, CONFIG_ModeCycleGateDuration, CONFIG_NewgridSelectionCode16EnabledFlag, CONFIG_ParseiniLogoScanEnabledFlag, ED_DiagTextModeChar, CONFIG_EnsurePc1GfxAssignedFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_LRBN_FlagChar, CONFIG_MSN_FlagChar, CTASKS_STR_1, MODE_NEWFILE
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2380,111 +2380,111 @@ DISKIO_SaveConfigToFileHandle:
     NOT.B   D1
     AND.L   D1,D0
     MOVE.L  D0,D5
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA2,D0
+    MOVE.B  CONFIG_RefreshIntervalMinutes,D0
     EXT.W   D0
     EXT.L   D0
-    MOVE.B  DATA_CTASKS_STR_C_1BA3,D1
+    MOVE.B  CTASKS_STR_C,D1
     EXT.W   D1
     EXT.L   D1
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BA4,D2
+    MOVE.B  CONFIG_NicheModeCycleBudget_Y,D2
     EXT.W   D2
     EXT.L   D2
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA5,D3
+    MOVE.B  CONFIG_NicheModeCycleBudget_Static,D3
     EXT.W   D3
     EXT.L   D3
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA6,D4
+    MOVE.B  CONFIG_SerializedNumericSlot05,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,40(A7)
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BA7,D4
+    MOVE.B  CONFIG_NewgridWindowSpanHalfHoursPrimary,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,44(A7)
-    MOVE.B  DATA_CTASKS_STR_G_1BA8,D4
+    MOVE.B  CTASKS_STR_G,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,48(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BA9,D4
+    MOVE.B  CONFIG_SerializedFlagSlot08_DefaultN,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,52(A7)
-    MOVE.B  DATA_CTASKS_STR_A_1BAA,D4
+    MOVE.B  CTASKS_STR_A,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,56(A7)
-    MOVE.B  DATA_CTASKS_STR_E_1BAB,D4
+    MOVE.B  CTASKS_STR_E,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,60(A7)
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BAC,D4
+    MOVE.B  CONFIG_SerializedNumericSlot10,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,64(A7)
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1BAD,D4
+    MOVE.B  CONFIG_NicheModeCycleBudget_Custom,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,68(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BAE,D4
+    MOVE.B  CONFIG_NewgridSelectionCode34PrimaryEnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,72(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BAF,D4
+    MOVE.B  CONFIG_NewgridSelectionCode35EnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,76(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BB0,D4
+    MOVE.B  CONFIG_SerializedFlagSlot15_DefaultN,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,80(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BB1,D4
+    MOVE.B  CONFIG_NewgridSelectionCode34AltEnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,84(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BB2,D4
+    MOVE.B  CONFIG_NewgridSelectionCode32EnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,88(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BB3,D4
+    MOVE.B  CONFIG_RuntimeMode12BannerJumpEnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,92(A7)
-    MOVE.B  DATA_CTASKS_STR_L_1BB4,D4
+    MOVE.B  CTASKS_STR_L,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,96(A7)
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BB5,D4
+    MOVE.B  CONFIG_SerializedNumericSlot19,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,100(A7)
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BB6,D4
+    MOVE.B  CONFIG_SerializedNumericSlot20,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,104(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BB7,D4
+    MOVE.B  CONFIG_ModeCycleEnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,108(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BB8,D4
+    MOVE.B  CONFIG_NewgridPlaceholderBevelFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,112(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BB9,D4
+    MOVE.B  CONFIG_NewgridSelectionCode48_49EnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,116(A7)
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BBA,D4
+    MOVE.B  CONFIG_SerializedNumericSlot25,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,120(A7)
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BBB,D4
+    MOVE.B  CONFIG_SerializedNumericSlot26,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,124(A7)
-    MOVE.B  DATA_CTASKS_CONST_BYTE_1BBC,D4
+    MOVE.B  CONFIG_NewgridWindowSpanHalfHoursAlt,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,128(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BBF,D4
+    MOVE.B  CONFIG_NewgridSelectionCode16EnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,132(A7)
@@ -2492,7 +2492,7 @@ DISKIO_SaveConfigToFileHandle:
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,136(A7)
-    MOVE.B  DATA_CTASKS_STR_Y_1BC1,D4
+    MOVE.B  CONFIG_ParseiniLogoScanEnabledFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,140(A7)
@@ -2512,11 +2512,11 @@ DISKIO_SaveConfigToFileHandle:
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,156(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BC5,D4
+    MOVE.B  CONFIG_EnsurePc1GfxAssignedFlag,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,160(A7)
-    MOVE.B  DATA_CTASKS_STR_N_1BC6,D4
+    MOVE.B  CONFIG_MsnRuntimeModeSelectorChar_LRBN,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,164(A7)
@@ -2528,7 +2528,7 @@ DISKIO_SaveConfigToFileHandle:
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,172(A7)
-    MOVE.B  DATA_CTASKS_STR_1_1BC9,D4
+    MOVE.B  CTASKS_STR_1,D4
     EXT.W   D4
     EXT.L   D4
     MOVE.L  D4,-(A7)
@@ -2544,7 +2544,7 @@ DISKIO_SaveConfigToFileHandle:
     MOVE.L  176(A7),-(A7)
     MOVE.L  176(A7),-(A7)
     PEA     BRUSH_LabelScratch
-    MOVE.L  DATA_CTASKS_CONST_LONG_1BBE,-(A7)
+    MOVE.L  CONFIG_ModeCycleGateDuration,-(A7)
     MOVE.L  CONFIG_TimeWindowMinutes,-(A7)
     MOVE.L  188(A7),-(A7)
     MOVE.L  188(A7),-(A7)

@@ -85,13 +85,13 @@ ESQPARS2_TvRatingTokenGlyphMap:
 
 Global_STR_ESQPARS2_C_1:
     NStr    "ESQPARS2.c"
-DATA_ESQPARS2_FMT_PCT_D_1F29:
+ESQPARS2_DurationFmt_DecimalWithSpace:
     NStr    "%d "
-DATA_ESQPARS2_FMT_PCT_D_1F2A:
+ESQPARS2_DurationFmt_OpenParenHours:
     NStr    "(%d "
-DATA_ESQPARS2_FMT_PCT_D_1F2B:
+ESQPARS2_DurationFmt_OpenParenMinutes:
     NStr    "(%d "
-DATA_ESQPARS2_STR_VALUE_1F2C:
+ESQPARS2_DurationFmt_CloseParen:
     NStr    ")"
 Global_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
@@ -122,27 +122,27 @@ ESQPARS2_BannerSnapshotPlane2DstPtr:
     DS.W    1
 ESQPARS2_BannerSnapshotPlane2DstPtrLo:
     DS.W    1
-DATA_ESQPARS2_BSS_LONG_1F35:
+ESQPARS2_SnapshotLivePlane0Base:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F36:
+ESQPARS2_SnapshotLivePlane1Base:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F37:
+ESQPARS2_SnapshotLivePlane2Base:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F38:
+ESQPARS2_BannerRowOffsetResetPtrPlane0:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F39:
+ESQPARS2_BannerRowOffsetResetPtrPlane1:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F3A:
+ESQPARS2_BannerRowOffsetResetPtrPlane2Table:
     DS.L    9
-DATA_ESQPARS2_BSS_WORD_1F3B:
+ESQPARS2_CopperProgramPendingFlag:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F3C:
+ESQPARS2_EdDiagResetScratchFlag:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F3D:
+ESQPARS2_BannerSweepEntryGuardCounter:
     DS.W    1
-DATA_ESQPARS2_BSS_LONG_1F3E:
+ESQPARS2_BannerSweepDelayCounter:
     DS.L    1
-DATA_ESQPARS2_BSS_WORD_1F3F:
+ESQPARS2_HighlightTickCountdown:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQPARS2_StateIndex   (ESQPARS2 runtime state index)
@@ -153,13 +153,13 @@ DATA_ESQPARS2_BSS_WORD_1F3F:
 ;------------------------------------------------------------------------------
 ESQPARS2_StateIndex:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F41:
+ESQPARS2_BannerQueueAttentionCountdown:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F42:
+ESQPARS2_BannerTailBiasValue:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F43:
+ESQPARS2_BannerSweepBaseColor:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F44:
+ESQPARS2_BannerSweepOffsetColor:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQPARS2_ReadModeFlags   (input/read mode flags)
@@ -170,25 +170,25 @@ DATA_ESQPARS2_BSS_WORD_1F44:
 ;------------------------------------------------------------------------------
 ESQPARS2_ReadModeFlags:
     DS.W    1
-DATA_ESQPARS2_BSS_LONG_1F46:
+ESQPARS2_BannerColorStepCounter:
     DS.L    1
-DATA_ESQPARS2_BSS_WORD_1F47:
+ESQPARS2_BannerColorClampThreshold:
     DS.W    1
-DATA_ESQPARS2_BSS_LONG_1F48:
+ESQPARS2_BannerQueueBuffer:
     DS.L    25
-DATA_ESQPARS2_BSS_LONG_1F49:
+ESQPARS2_BannerColorThreshold:
     DS.L    1
-DATA_ESQPARS2_BSS_WORD_1F4A:
+ESQPARS2_BannerColorBaseValue:
     DS.W    1
-DATA_ESQPARS2_BSS_WORD_1F4B:
+ESQPARS2_BannerRowCopyWordCount:
     DS.W    1
-DATA_ESQPARS2_BSS_LONG_1F4C:
+ESQPARS2_BannerRowCopySpanBytes:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F4D:
+ESQPARS2_BannerRowCopyStrideBytes:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F4E:
+ESQPARS2_BannerCopySourceOffset:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F4F:
+ESQPARS2_BannerCopyTailOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ESQSHARED_BlitAddressOffset   (shared blit address offset)
@@ -199,28 +199,28 @@ DATA_ESQPARS2_BSS_LONG_1F4F:
 ;------------------------------------------------------------------------------
 ESQSHARED_BlitAddressOffset:
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F51:
+ESQPARS2_ActiveCopperListSelectFlag:
     DS.L    1
-DATA_ESQPARS2_CONST_LONG_1F52:
+ESQPARS2_BannerRowCount:
     DC.L    $00000022
-DATA_ESQPARS2_CONST_WORD_1F53:
+ESQPARS2_BannerRowWidthBytes:
     DC.W    $0100
-DATA_ESQPARS2_CONST_WORD_1F54:
+ESQPARS2_BannerCopyBlockSpanBytes:
     DC.W    $00c0
-DATA_ESQPARS2_CONST_WORD_1F55:
+ESQPARS2_BannerCopyBlockWordLimit:
     DC.W    $0010
-DATA_ESQPARS2_CONST_LONG_1F56:
+ESQPARS2_BannerQueueAttentionDelayTicks:
     DC.L    $00110000
     DS.L    1
-DATA_ESQPARS2_BSS_LONG_1F57:
+ESQPARS2_LogAppendSpinlock:
     DS.L    1
-DATA_ESQPARS2_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02_1F58:
+ESQPARS2_LogTimestampFmt:
     NStr    "%02ld:%02ld:%02ld %2.2s"
-DATA_ESQPARS2_TAG_PM_1F59:
+ESQPARS2_LogTagPm:
     NStr    "PM"
-DATA_ESQPARS2_TAG_AM_1F5A:
+ESQPARS2_LogTagAm:
     NStr    "AM"
-DATA_ESQPARS2_CONST_WORD_1F5B:
+ESQPARS2_LogFieldTab:
     DC.W    $0900
-DATA_ESQPARS2_CONST_LONG_1F5C:
+ESQPARS2_LogLineTerminator:
     DC.L    $0d0a0000

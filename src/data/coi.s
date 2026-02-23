@@ -67,5 +67,5 @@ CTASKS_IffTaskDoneFlag:
     DC.W    $0001
 CTASKS_IffTaskState:
     DC.W    $0004
-DATA_COI_BSS_WORD_1B85:
+COI_AttentionOverlayBusyFlag:
     DS.W    1

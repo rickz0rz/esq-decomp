@@ -112,7 +112,7 @@ SETUP_INTERRUPT_INTB_VERTB:
 ; CALLS:
 ;   ESQIFF_JMPTBL_MEMORY_AllocateMemory, _LVOSetIntVector
 ; READS:
-;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_PollCtrlInput, Global_REF_INTERRUPT_STRUCT_INTB_AUD1, Global_STR_ESQFUNC_C_2, Global_STR_JOYSTICK_INT, INTB_AUD1, DATA_COMMON_BSS_LONG_1B04, MEMF_CHIP
+;   AbsExecBase, ESQFUNC_JMPTBL_ESQ_PollCtrlInput, Global_REF_INTERRUPT_STRUCT_INTB_AUD1, Global_STR_ESQFUNC_C_2, Global_STR_JOYSTICK_INT, INTB_AUD1, CTRL_SampleEntryScratch, MEMF_CHIP
 ; WRITES:
 ;   Global_REF_INTB_AUD1_INTERRUPT, Global_REF_INTERRUPT_STRUCT_INTB_AUD1
 ; DESC:
@@ -142,7 +142,7 @@ SETUP_INTERRUPT_INTB_AUD1:
     MOVE.L  #Global_STR_JOYSTICK_INT,10(A0)
 
     MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A0
-    MOVE.L  #DATA_COMMON_BSS_LONG_1B04,14(A0)
+    MOVE.L  #CTRL_SampleEntryScratch,14(A0)
     LEA     ESQFUNC_JMPTBL_ESQ_PollCtrlInput(PC),A0
 
     MOVEA.L Global_REF_INTERRUPT_STRUCT_INTB_AUD1,A1
@@ -452,7 +452,7 @@ ESQFUNC_WaitForClockChangeAndServiceUi:
 ; READS:
 ;   ESQPARS2_ReadModeFlags, DST_BannerWindowPrimary, LOCAVAIL_PrimaryFilterState, LOCAVAIL_SecondaryFilterState
 ; WRITES:
-;   DATA_ESQDISP_BSS_WORD_1E86, ESQPARS2_ReadModeFlags
+;   ESQDISP_PendingGridReinitFlag, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Temporarily switches parser read mode, promotes/normalizes secondary state into
 ;   primary structures, persists dependent files, then restores previous read flags.
@@ -463,7 +463,7 @@ ESQFUNC_CommitSecondaryStateAndPersist:
     MOVE.L  D7,-(A7)
     MOVE.W  ESQPARS2_ReadModeFlags,D7
     MOVE.W  #$100,ESQPARS2_ReadModeFlags
-    MOVE.W  #1,DATA_ESQDISP_BSS_WORD_1E86
+    MOVE.W  #1,ESQDISP_PendingGridReinitFlag
     BSR.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary
 
     JSR     ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(PC)
@@ -509,9 +509,9 @@ ESQFUNC_CommitSecondaryStateAndPersist:
 ; CALLS:
 ;   ED_DispatchEscMenuState, ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths, ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQDISP_RefreshStatusIndicatorsFromCurrentMask, ESQDISP_PollInputModeAndRefreshSelection, ESQFUNC_CommitSecondaryStateAndPersist, ESQIFF_QueueIffBrushLoad, ESQIFF_ServiceExternalAssetSourceState, ESQIFF_PlayNextExternalAssetFrame
 ; READS:
-;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, DATA_ESQDISP_BSS_LONG_1E84, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, GCOMMAND_HighlightHoldoffTickCount, GCOMMAND_DriveProbeRequestedFlag, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
+;   Global_REF_LONG_DF0_LOGO_LST_DATA, Global_REF_LONG_GFX_G_ADS_DATA, LAB_097C, PARSEINI_BannerBrushResourceHead, WDISP_WeatherStatusBrushListHead, CTASKS_IffTaskDoneFlag, ED_DiagGraphModeChar, ESQDISP_DisplayActiveFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, GCOMMAND_HighlightHoldoffTickCount, GCOMMAND_DriveProbeRequestedFlag, Global_UIBusyFlag, CLEANUP_PendingAlertFlag, ESQIFF_ExternalAssetFlags, fffd, fffe
 ; WRITES:
-;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E89, DATA_ESQFUNC_BSS_BYTE_1EE5, ESQIFF_ExternalAssetFlags
+;   ESQIFF_GAdsBrushListCount, ESQIFF_LogoBrushListCount, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_StatusRefreshPendingFlag, ESQFUNC_IffTaskGateFlags, ESQIFF_ExternalAssetFlags
 ; DESC:
 ;   Runs one UI service slice: optional drive probe, input-mode polling,
 ;   grid/message pumping, alert processing, serial ctrl handling, brush/source
@@ -527,7 +527,7 @@ ESQFUNC_ProcessUiFrameTick:
 
 .lab_0971:
     MOVEQ   #1,D0
-    CMP.L   DATA_ESQDISP_BSS_LONG_1E84,D0
+    CMP.L   ESQDISP_DisplayActiveFlag,D0
     BNE.S   .lab_0972
 
     BSR.W   ESQDISP_PollInputModeAndRefreshSelection
@@ -552,35 +552,35 @@ ESQFUNC_ProcessUiFrameTick:
 
     JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
 
-    TST.L   DATA_ESQDISP_BSS_LONG_1E88
+    TST.L   ESQDISP_SecondaryPersistRequestFlag
     BEQ.S   .lab_0975
 
-    CLR.L   DATA_ESQDISP_BSS_LONG_1E88
+    CLR.L   ESQDISP_SecondaryPersistRequestFlag
     BSR.W   ESQFUNC_CommitSecondaryStateAndPersist
 
 .lab_0975:
     TST.W   CTASKS_IffTaskDoneFlag
     BEQ.W   .lab_097C
 
-    BTST    #1,DATA_ESQFUNC_BSS_BYTE_1EE5
+    BTST    #1,ESQFUNC_IffTaskGateFlags
     BEQ.S   .lab_0976
 
     TST.W   Global_UIBusyFlag
     BNE.S   .lab_0976
 
-    BCLR    #1,DATA_ESQFUNC_BSS_BYTE_1EE5
+    BCLR    #1,ESQFUNC_IffTaskGateFlags
     JSR     ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(PC)
 
     BRA.S   .lab_0977
 
 .lab_0976:
-    BTST    #0,DATA_ESQFUNC_BSS_BYTE_1EE5
+    BTST    #0,ESQFUNC_IffTaskGateFlags
     BEQ.S   .lab_0977
 
     TST.W   Global_UIBusyFlag
     BNE.S   .lab_0977
 
-    BCLR    #0,DATA_ESQFUNC_BSS_BYTE_1EE5
+    BCLR    #0,ESQFUNC_IffTaskGateFlags
     PEA     1.W
     JSR     ESQIFF_PlayNextExternalAssetFrame(PC)
 
@@ -656,13 +656,13 @@ ESQFUNC_ProcessUiFrameTick:
 .lab_097C:
     JSR     ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(PC)
 
-    TST.B   DATA_ESQDISP_BSS_WORD_1E89
+    TST.B   ESQDISP_StatusRefreshPendingFlag
     BEQ.S   .return
 
     TST.B   GCOMMAND_HighlightHoldoffTickCount
     BNE.S   .return
 
-    CLR.B   DATA_ESQDISP_BSS_WORD_1E89
+    CLR.B   ESQDISP_StatusRefreshPendingFlag
     JSR     ESQDISP_RefreshStatusIndicatorsFromCurrentMask(PC)
 
 .return:
@@ -681,7 +681,7 @@ ESQFUNC_ProcessUiFrameTick:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, ESQDISP_ProcessGridMessagesIfIdle, ESQFUNC_ProcessUiFrameTick
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DE5, CLEANUP_PendingAlertFlag
+;   ESQ_MainLoopUiTickEnabledFlag, CLEANUP_PendingAlertFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -690,7 +690,7 @@ ESQFUNC_ProcessUiFrameTick:
 ;   This is the main idle-loop UI tick gate used by ESQ_MainInitAndRun.
 ;------------------------------------------------------------------------------
 ESQFUNC_ServiceUiTickIfRunning:
-    TST.W   DATA_ESQ_BSS_WORD_1DE5
+    TST.W   ESQ_MainLoopUiTickEnabledFlag
     BEQ.S   .return
 
     BSR.W   ESQFUNC_ProcessUiFrameTick
@@ -829,7 +829,7 @@ ESQFUNC_FreeExtraTitleTextPointers:
 ; READS:
 ;   NEWGRID_MessagePumpSuspendFlag, NEWGRID_LastRefreshRequest
 ; WRITES:
-;   DATA_ESQFUNC_CONST_WORD_1ECD, DATA_ESQPARS2_CONST_WORD_1F53, DATA_ESQPARS2_CONST_WORD_1F54, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
+;   ESQFUNC_WeatherSliceWidthInitGate, ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes, NEWGRID_RefreshStateFlag, NEWGRID_MessagePumpSuspendFlag, NEWGRID_ModeSelectorState, NEWGRID_LastRefreshRequest
 ; DESC:
 ;   Updates NEWGRID refresh/mode selector state from the incoming request flag
 ;   and recomputes banner blit geometry when message-pump suspension is cleared.
@@ -841,15 +841,15 @@ ESQFUNC_UpdateRefreshModeState:
 
     MOVE.L  D7,-(A7)
     MOVE.L  12(A5),D7
-    MOVE.W  #1,DATA_ESQFUNC_CONST_WORD_1ECD
+    MOVE.W  #1,ESQFUNC_WeatherSliceWidthInitGate
     TST.L   NEWGRID_MessagePumpSuspendFlag
     BEQ.S   .apply_mode_selector_state
 
     MOVEQ   #0,D0
     MOVE.L  D0,NEWGRID_RefreshStateFlag
     MOVE.L  D0,NEWGRID_MessagePumpSuspendFlag
-    MOVE.W  #$90,DATA_ESQPARS2_CONST_WORD_1F53
-    MOVE.W  #$230,DATA_ESQPARS2_CONST_WORD_1F54
+    MOVE.W  #$90,ESQPARS2_BannerRowWidthBytes
+    MOVE.W  #$230,ESQPARS2_BannerCopyBlockSpanBytes
     JSR     ESQSHARED4_ComputeBannerRowBlitGeometry
 
 .apply_mode_selector_state:
@@ -1399,7 +1399,7 @@ ESQFUNC_DrawMemoryStatusScreen:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition,
 ;   ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
-;   DATA_ESQFUNC_CONST_LONG_1EB6, DATA_SCRIPT_BSS_WORD_2118, DATA_ESQFUNC_STR_CLOSED_ENABLED_1EB8/1EB9, DATA_ESQFUNC_TAG_CLOSED_1EBA/1EBB, DATA_ESQFUNC_STR_CLOSED_ON_AIR_1EBC/1EBD,
+;   ESQFUNC_VideoInsertionStateStrings, SCRIPT_CtrlHandshakeStage, ESQFUNC_STR_CLOSED_ENABLED/1EB9, ESQFUNC_TAG_CLOSED/1EBB, ESQFUNC_STR_CLOSED_ON_AIR/1EBD,
 ;   Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY, WDISP_DisplayContextBase
 ; WRITES:
 ;   ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A, ESQ_CopperStatusDigitsB/1E56/1E57 (status fields),
@@ -1418,22 +1418,22 @@ ESQFUNC_DrawDiagnosticsScreen:
     LINK.W  A5,#-164
     MOVEM.L D2-D7,-(A7)
 
-    LEA     DATA_ESQFUNC_CONST_LONG_1EB6,A0
+    LEA     ESQFUNC_VideoInsertionStateStrings,A0
     LEA     -148(A5),A1
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
     MOVE.W  #$fff,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E27
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E56
+    MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersA
+    MOVE.W  D0,ESQ_CopperStatusDigitsB_ColorRegistersA
     MOVEQ   #0,D0
     MOVE.W  D0,ESQ_CopperStatusDigitsA
     MOVE.W  D0,ESQ_CopperStatusDigitsB
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E28
-    MOVE.W  D0,DATA_ESQ_CONST_WORD_1E57
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E29
-    MOVE.W  D0,DATA_ESQ_CONST_WORD_1E2A
+    MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersB
+    MOVE.W  D0,ESQ_CopperStatusDigitsB_TailColorWord
+    MOVE.W  D0,ESQ_CopperStatusDigitsA_ColorRegistersC
+    MOVE.W  D0,ESQ_CopperStatusDigitsA_TailColorWord
 
     MOVEA.L WDISP_DisplayContextBase,A0
     ADDA.W  #((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2),A0
@@ -1447,12 +1447,12 @@ ESQFUNC_DrawDiagnosticsScreen:
     TST.B   D0
     BEQ.S   .status_a_false
 
-    LEA     DATA_ESQFUNC_STR_CLOSED_ENABLED_1EB8,A0
+    LEA     ESQFUNC_STR_CLOSED_ENABLED,A0
 
     BRA.S   .status_a_selected
 
 .status_a_false:
-    LEA     DATA_ESQFUNC_STR_OPEN_DISABLED_1EB9,A0
+    LEA     ESQFUNC_STR_OPEN_DISABLED,A0
 
 .status_a_selected:
     MOVE.L  A0,24(A7)
@@ -1461,11 +1461,11 @@ ESQFUNC_DrawDiagnosticsScreen:
     TST.B   D0
     BEQ.S   .status_b_false
 
-    LEA     DATA_ESQFUNC_TAG_CLOSED_1EBA,A0
+    LEA     ESQFUNC_TAG_CLOSED,A0
     BRA.S   .status_b_selected
 
 .status_b_false:
-    LEA     DATA_ESQFUNC_TAG_OPEN_1EBB,A0
+    LEA     ESQFUNC_TAG_OPEN,A0
 
 .status_b_selected:
     MOVE.L  A0,28(A7)
@@ -1474,30 +1474,30 @@ ESQFUNC_DrawDiagnosticsScreen:
     TST.B   D0
     BEQ.S   .status_c_false
 
-    LEA     DATA_ESQFUNC_STR_CLOSED_ON_AIR_1EBC,A0
+    LEA     ESQFUNC_STR_CLOSED_ON_AIR,A0
     BRA.S   .status_c_selected
 
 .status_c_false:
-    LEA     DATA_ESQFUNC_STR_OPEN_OFF_AIR_1EBD,A0
+    LEA     ESQFUNC_STR_OPEN_OFF_AIR,A0
 
 .status_c_selected:
-    MOVE.W  DATA_SCRIPT_BSS_WORD_2118,D0
+    MOVE.W  SCRIPT_CtrlHandshakeStage,D0
     SUBQ.W  #2,D0
     BNE.S   .select_mode_two
 
-    LEA     DATA_ESQFUNC_STR_ON_AIR_1EBE,A1
+    LEA     ESQFUNC_STR_ON_AIR,A1
     BRA.S   .format_main_line
 
 .select_mode_two:
-    MOVE.W  DATA_SCRIPT_BSS_WORD_2118,D0
+    MOVE.W  SCRIPT_CtrlHandshakeStage,D0
     SUBQ.W  #1,D0
     BNE.S   .select_mode_one
 
-    LEA     DATA_ESQFUNC_STR_OFF_AIR_1EBF,A1
+    LEA     ESQFUNC_STR_OFF_AIR,A1
     BRA.S   .format_main_line
 
 .select_mode_one:
-    LEA     DATA_ESQFUNC_STR_NO_DETECT_1EC0,A1
+    LEA     ESQFUNC_STR_NO_DETECT,A1
 
 .format_main_line:
     ; `%s` args here are selected from static string literals above:
@@ -1507,7 +1507,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  A0,-(A7)
     MOVE.L  36(A7),-(A7)
     MOVE.L  36(A7),-(A7)
-    PEA     DATA_ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT_1EB7
+    PEA     ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1525,12 +1525,12 @@ ESQFUNC_DrawDiagnosticsScreen:
     ADDA.L  D0,A0
     MOVE.W  ESQPARS2_ReadModeFlags,D0
     EXT.L   D0
-    ; Entry-string source is from DATA_ESQFUNC_CONST_LONG_1EB6 (4 static labels).
+    ; Entry-string source is from ESQFUNC_VideoInsertionStateStrings (4 static labels).
     ; Budget note for -132(A5): conservative max is 62 bytes incl NUL
     ; (uses 8-digit worst-case for %04X-style hex expansion).
     MOVE.L  D0,(A7)
     MOVE.L  (A0),-(A7)
-    PEA     DATA_ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X_1EC1
+    PEA     ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1558,7 +1558,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  D0,-(A7)
     ; Budget note for -132(A5): full signed-32 worst-case is 156 bytes incl NUL
     ; (%ld/%d treated as up to 11 chars each), so this row is top guard priority.
-    PEA     DATA_ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L_1EC2
+    PEA     ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1590,11 +1590,11 @@ ESQFUNC_DrawDiagnosticsScreen:
     TST.W   CLOCK_CacheAmPmFlag
     BEQ.S   .use_am_suffix
 
-    LEA     DATA_ESQFUNC_STR_PM_1EC4,A0
+    LEA     ESQFUNC_STR_PM,A0
     BRA.S   .format_clock_line
 
 .use_am_suffix:
-    LEA     DATA_ESQFUNC_STR_AM_1EC5,A0
+    LEA     ESQFUNC_STR_AM,A0
 
 .format_clock_line:
     ; LOCAVAIL cooldown timer: seeded in LOCAVAIL and adjusted/decremented in CLEANUP/APP2 ticks.
@@ -1610,7 +1610,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     ; Budget note for -132(A5): full signed-32 worst-case is 146 bytes incl NUL.
-    PEA     DATA_ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC_1EC3
+    PEA     ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1638,7 +1638,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  80(A7),-(A7)
     MOVE.L  80(A7),-(A7)
     ; Budget note for -132(A5): conservative max is 56 bytes incl NUL.
-    PEA     DATA_ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT_1EC6
+    PEA     ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1667,7 +1667,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     ; Budget note for -132(A5): full signed-32 worst-case is 109 bytes incl NUL.
-    PEA     DATA_ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC7
+    PEA     ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1698,7 +1698,7 @@ ESQFUNC_DrawDiagnosticsScreen:
     MOVE.L  84(A7),-(A7)
     MOVE.L  84(A7),-(A7)
     ; Budget note for -132(A5): full signed-32 worst-case is 110 bytes incl NUL.
-    PEA     DATA_ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR_1EC8
+    PEA     ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1712,10 +1712,10 @@ ESQFUNC_DrawDiagnosticsScreen:
 
     LEA     12(A7),A7
     ; Monotonic diagnostics row counter (increments once per draw).
-    ADDQ.L  #1,DATA_ESQFUNC_BSS_LONG_1EB1
+    ADDQ.L  #1,ESQFUNC_DiagRowCounter
     MOVE.W  Global_RefreshTickCounter,D0
     EXT.L   D0
-    TST.W   DATA_ESQDISP_BSS_WORD_1E87
+    TST.W   ESQDISP_PrimarySecondaryMirrorFlag
     BEQ.S   .set_false_text
 
     LEA     Global_STR_TRUE_2,A0
@@ -1726,7 +1726,7 @@ ESQFUNC_DrawDiagnosticsScreen:
 
 .format_tick_line:
     ; SCRIPT playback-side command counter (incremented in SCRIPT3 dispatch path).
-    MOVE.W  DATA_SCRIPT_BSS_WORD_211C,D1
+    MOVE.W  SCRIPT_PlaybackFallbackCounter,D1
     EXT.L   D1
     ; ED finite-state id (byte enum set across ED menu handlers).
     MOVE.B  ED_MenuStateId,D2
@@ -1737,10 +1737,10 @@ ESQFUNC_DrawDiagnosticsScreen:
     ; `%s` here is only Global_STR_TRUE_2 / Global_STR_FALSE_2.
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
-    MOVE.L  DATA_ESQFUNC_BSS_LONG_1EB1,-(A7)
+    MOVE.L  ESQFUNC_DiagRowCounter,-(A7)
     ; Budget note for -132(A5): full signed-32 worst-case is 142 bytes incl NUL,
     ; driven by four numeric fields plus "%s" TRUE/FALSE token.
-    PEA     DATA_ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS_1EC9
+    PEA     ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS
     PEA     -132(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -2380,7 +2380,7 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, ESQSHARED_JMPTBL_ESQ_WildcardMatch, ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ESQFUNC_BasePaletteRgbTriples, DATA_ESQFUNC_BSS_LONG_1ED0, ESQIFF_BrushIniListHead, DATA_ESQFUNC_TAG_00_1EE6, DATA_ESQFUNC_TAG_11_1EE7, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, TEXTDISP_CurrentMatchIndex, e8
+;   BRUSH_ScriptPrimarySelection, BRUSH_ScriptSecondarySelection, BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ESQFUNC_BasePaletteRgbTriples, ESQFUNC_FallbackType3BrushNode, ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, TEXTDISP_ActiveGroupId, WDISP_DisplayContextBase, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, WDISP_PaletteTriplesRBase, TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -2433,7 +2433,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
-    PEA     DATA_ESQFUNC_TAG_00_1EE6
+    PEA     ESQFUNC_TAG_00
     MOVE.L  A0,-(A7)
     JSR     ESQIFF_JMPTBL_STRING_CompareN(PC)
 
@@ -2449,7 +2449,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
-    PEA     DATA_ESQFUNC_TAG_11_1EE7
+    PEA     ESQFUNC_TAG_11
     MOVE.L  A0,-(A7)
     JSR     ESQIFF_JMPTBL_STRING_CompareN(PC)
 
@@ -2507,11 +2507,11 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     BTST    #4,27(A0)
     BEQ.S   .ensure_fallback_selected_brush
 
-    TST.L   DATA_ESQFUNC_BSS_LONG_1ED0
+    TST.L   ESQFUNC_FallbackType3BrushNode
     BEQ.S   .ensure_fallback_selected_brush
 
     MOVEQ   #1,D5
-    MOVE.L  DATA_ESQFUNC_BSS_LONG_1ED0,-4(A5)
+    MOVE.L  ESQFUNC_FallbackType3BrushNode,-4(A5)
     BRA.S   .ensure_fallback_selected_brush
 
 .scan_brush_nodes_by_2char_tag:
@@ -2700,7 +2700,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
 ; CALLS:
 ;   ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_FreeBrushList, ESQIFF_JMPTBL_BRUSH_PopulateBrushList
 ; READS:
-;   ESQFUNC_PwBrushDescriptorHead, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_CONST_LONG_1EDE
+;   ESQFUNC_PwBrushDescriptorHead, ESQFUNC_PwBrushListHead, ESQFUNC_BrushDescriptorTagStrings
 ; WRITES:
 ;   ESQFUNC_PwBrushDescriptorHead
 ; DESC:
@@ -2727,7 +2727,7 @@ ESQFUNC_RebuildPwBrushListFromTagTable:
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
-    LEA     DATA_ESQFUNC_CONST_LONG_1EDE,A0
+    LEA     ESQFUNC_BrushDescriptorTagStrings,A0
     ADDA.L  D0,A0
     MOVE.L  -4(A5),-(A7)
     MOVE.L  (A0),-(A7)

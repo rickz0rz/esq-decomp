@@ -552,7 +552,7 @@ ED2_SelectedFlagByteOffset:
 ;------------------------------------------------------------------------------
 ; SYM: ED_SavedCtasksIntervalByte   (saved CTASKS interval byte)
 ; TYPE: u8 (stored in long slot)
-; PURPOSE: Temporarily stores DATA_CTASKS_CONST_BYTE_1BA2 while toggling.
+; PURPOSE: Temporarily stores CONFIG_RefreshIntervalMinutes while toggling.
 ; USED BY: ED2 diagnostic toggle handler
 ; NOTES: Restored when the toggle is released.
 ;------------------------------------------------------------------------------
@@ -662,7 +662,15 @@ ED_AdNumberInputDigitTens:
 ;------------------------------------------------------------------------------
 ED_AdNumberInputDigitOnes:
     DS.B    1
-DATA_WDISP_BSS_LONG_21F4:
+;------------------------------------------------------------------------------
+; SYM: ED_AdNumberPromptStateBlock   (ED transition scratch block ??)
+; TYPE: s32[6] + u16
+; PURPOSE: Editor transition/reset scratch storage near ad-number input state.
+; USED BY: ED3_* ad-load and display update paths
+; NOTES:
+;   Writes are observed during ad-context transitions; per-slot semantics unresolved.
+;------------------------------------------------------------------------------
+ED_AdNumberPromptStateBlock:
     DS.L    6
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -744,7 +752,7 @@ Global_REF_LONG_CURRENT_EDITING_AD_NUMBER:
 ED_MaxAdNumber:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_LONG_21FE   (ED reset/refresh block ??)
+; SYM: ED_AdDisplayResetFlag   (ED reset/refresh block ??)
 ; TYPE: u32[16]
 ; PURPOSE: Editor state block touched during ad-load/ad-toggle transitions.
 ; USED BY: ED_HandleEscMenuActions, ED_UpdateAdNumberDisplay, ED_LoadCurrentAdIntoBuffers
@@ -752,16 +760,16 @@ ED_MaxAdNumber:
 ;   Observed symbolic writes target slot 0 (`MOVE.L #1,...`) as a one-shot reset marker.
 ;   Remaining slots are not yet traced to named readers/writers.
 ;------------------------------------------------------------------------------
-DATA_WDISP_BSS_LONG_21FE:
+ED_AdDisplayResetFlag:
     DS.L    16
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_LONG_21FF   (ED state latch ??)
+; SYM: ED_AdDisplayStateLatchA   (ED state latch ??)
 ; TYPE: s32
 ; PURPOSE: Editor transition latch reset during ad-number display init.
 ; USED BY: ED_UpdateAdNumberDisplay
 ; NOTES: Currently observed write is `-1`; no confirmed symbolic reader yet.
 ;------------------------------------------------------------------------------
-DATA_WDISP_BSS_LONG_21FF:
+ED_AdDisplayStateLatchA:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: ED_CursorColumnIndex   (cursor column within current 40-char row)
@@ -782,7 +790,7 @@ ED_CursorColumnIndex:
 ED_ActiveIndicatorCachedState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: DATA_WDISP_BSS_LONG_2202   (ED state latch pair ??)
+; SYM: ED_AdDisplayStateLatchBlockB   (ED state latch pair ??)
 ; TYPE: s32[2] (+ trailing u16)
 ; PURPOSE: Adjacent editor transition latches reset when ad context changes.
 ; USED BY: ED_UpdateAdNumberDisplay
@@ -790,7 +798,7 @@ ED_ActiveIndicatorCachedState:
 ;   First long is set to `-1` on ad switch; second long/trailing word unresolved.
 ;   Likely companion state for indicator/cursor redraw gating.
 ;------------------------------------------------------------------------------
-DATA_WDISP_BSS_LONG_2202:
+ED_AdDisplayStateLatchBlockB:
     DS.L    2
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -863,13 +871,13 @@ ESQSHARED_DisplayContextPlaneBase3:
 ESQSHARED_DisplayContextPlaneBase4:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_ReservedLong220F   (reserved long slot near interrupt state)
+; SYM: WDISP_UnusedPaddingLong220F   (unused padding long near interrupt state)
 ; TYPE: u32
 ; PURPOSE: Unresolved/reserved storage between display-context plane pointers and interrupt globals.
 ; USED BY: ?? (no direct callsite reads/writes identified yet)
 ; NOTES: Keep layout unchanged; treat as reserved until a concrete usage is confirmed.
 ;------------------------------------------------------------------------------
-WDISP_ReservedLong220F:
+WDISP_UnusedPaddingLong220F:
     DS.L    1
 Global_REF_INTERRUPT_STRUCT_INTB_VERTB:
     DS.L    1
@@ -883,7 +891,7 @@ Global_REF_INTERRUPT_STRUCT_INTB_AUD1:
 ; NOTES: Serial IORequest is configured via _LVOOpenDevice/_LVODoIO and freed during cleanup.
 ;------------------------------------------------------------------------------
 WDISP_SerialIoRequestPtr:
-LAB_2211_SERIAL_PORT_MAYBE:
+WDISP_SerialIoRequestPtr_CompatAlias:
     DS.L    1
 WDISP_SerialMessagePortPtr:
     DS.L    1
@@ -1524,19 +1532,19 @@ WDISP_BannerCharRangeStart:
 CLOCK_HalfHourSlotIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQ_StartupReservedWord2271/ESQ_StartupReservedLong2272/ESQ_BannerCharIndexShadow2273   (startup-reserved + banner shadow)
+; SYM: ESQ_StartupWriteOnlyWord2271/ESQ_StartupWriteOnlyLong2272/ESQ_BannerCharIndexShadow2273   (startup-reserved + banner shadow)
 ; TYPE: u16/u32/u16
 ; PURPOSE:
-;   `ESQ_StartupReservedWord2271` and `ESQ_StartupReservedLong2272` are startup-written placeholders with no confirmed readers.
+;   `ESQ_StartupWriteOnlyWord2271` and `ESQ_StartupWriteOnlyLong2272` are startup-written placeholders with no confirmed readers.
 ;   `ESQ_BannerCharIndexShadow2273` mirrors banner-char index writes from APP2 banner-advance flow.
 ; USED BY: ESQ_InitializeState, ESQ_AdvanceBannerCharIndex_Return
 ; NOTES:
 ;   Keep as reserved placeholders until a reader path is confirmed by trace.
 ;   `ESQ_BannerCharIndexShadow2273` currently appears write-only.
 ;------------------------------------------------------------------------------
-ESQ_StartupReservedWord2271:
+ESQ_StartupWriteOnlyWord2271:
     DS.W    1
-ESQ_StartupReservedLong2272:
+ESQ_StartupWriteOnlyLong2272:
     DS.L    1
 ESQ_BannerCharIndexShadow2273:
     DS.W    1
@@ -1566,7 +1574,7 @@ Global_WORD_CURRENT_SECOND:
 ; TYPE: u16
 ; PURPOSE: Companion countdown for DST queue slot 1 / alternate banner window flow.
 ; USED BY: DST_UpdateBannerQueue, DST_TickBannerCounters, DATETIME_BuildFromGlobals
-; NOTES: Used only when secondary-slot mode is enabled (e.g., `DATA_ESQ_STR_N_1DD2 == 'Y'` paths).
+; NOTES: Used only when secondary-slot mode is enabled (e.g., `ESQ_SecondarySlotModeFlagChar == 'Y'` paths).
 ;------------------------------------------------------------------------------
 DST_SecondaryCountdown:
     DS.W    1
@@ -1758,7 +1766,7 @@ ESQIFF_StatusPacketReadyFlag:
 ;------------------------------------------------------------------------------
 ESQIFF_RecordBufferPtr:
     DS.L    1
-DATA_WDISP_BSS_BYTE_229B:
+WDISP_WeatherStatusColorCode:
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_WeatherStatusBrushIndex/WDISP_WeatherStatusDigitChar   (weather status style fields)
@@ -1906,9 +1914,10 @@ WDISP_PaletteDepthLog2:
 ; USED BY: WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusDayEntry, ESQIFF_ShowExternalAssetWithCopperFx
 ; NOTES:
 ;   Row layout (8 bytes each, 4 rows):
-;   rowN: word0 (unknown), word1 (value), word2 (move flags), byte3/byte4 (copper indices).
+;   rowN: word0 (metadata), word1 (value), word2 (move flags), byte3/byte4 (copper indices).
 ;------------------------------------------------------------------------------
 WDISP_AccumulatorRowTable:
+WDISP_AccumulatorRow0_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow0_Value:
     DS.W    1
@@ -1918,7 +1927,7 @@ WDISP_AccumulatorRow0_CopperIndexStart:
     DS.B    1
 WDISP_AccumulatorRow0_CopperIndexEnd:
     DS.B    1
-WDISP_AccumulatorRow1_UnknownWord:
+WDISP_AccumulatorRow1_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow1_Value:
     DS.W    1
@@ -1928,7 +1937,7 @@ WDISP_AccumulatorRow1_CopperIndexStart:
     DS.B    1
 WDISP_AccumulatorRow1_CopperIndexEnd:
     DS.B    1
-WDISP_AccumulatorRow2_UnknownWord:
+WDISP_AccumulatorRow2_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow2_Value:
     DS.W    1
@@ -1938,7 +1947,7 @@ WDISP_AccumulatorRow2_CopperIndexStart:
     DS.B    1
 WDISP_AccumulatorRow2_CopperIndexEnd:
     DS.B    1
-WDISP_AccumulatorRow3_UnknownWord:
+WDISP_AccumulatorRow3_MetadataWord:
     DS.W    1
 WDISP_AccumulatorRow3_Value:
     DS.W    1
@@ -2282,7 +2291,7 @@ GCOMMAND_BannerRowByteOffsetPrevious:
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_BannerQueueSlotPrevious/GCOMMAND_BannerQueueSlotCurrent   (banner queue slot indices)
 ; TYPE: u16/u16
-; PURPOSE: Tracks previous/current byte slot indices into DATA_ESQPARS2_BSS_LONG_1F48 banner queue storage.
+; PURPOSE: Tracks previous/current byte slot indices into ESQPARS2_BannerQueueBuffer banner queue storage.
 ; USED BY: GCOMMAND_MapKeycodeToPreset, GCOMMAND_ConsumeBannerQueueEntry, GCOMMAND_TickHighlightState
 ; NOTES: Decrements each tick with wrap at 97 (`$61`).
 ;------------------------------------------------------------------------------
@@ -2470,23 +2479,31 @@ NEWGRID_ColumnStartXPx:
 ;------------------------------------------------------------------------------
 NEWGRID_ColumnWidthPx:
     DS.W    1
-DATA_WDISP_BSS_LONG_232C:
+NEWGRID_RowLayoutCommitPenId:
     DS.L    1
-DATA_WDISP_BSS_LONG_232D:
+NEWGRID_SelectionMarkerPenState:
     DS.L    1
-DATA_WDISP_BSS_LONG_232E:
+NEWGRID_HeaderFramePenId:
     DS.L    1
-DATA_WDISP_BSS_LONG_232F:
+NEWGRID_ShowtimesSelectionContextPtr:
     DS.L    2
-DATA_WDISP_BSS_LONG_2330:
+;------------------------------------------------------------------------------
+; SYM: NEWGRID_ShowtimesWorkflowArgLong/NEWGRID_ShowtimesWorkflowArgWord   (showtimes state latch cluster ??)
+; TYPE: s32[4] + s32 + u16
+; PURPOSE: Auxiliary showtimes workflow state passed through NEWGRID state transitions.
+; USED BY: NEWGRID_ProcessShowtimesWorkflow, NEWGRID_UpdateGridState
+; NOTES:
+;   Callers pass these slots as workflow arguments; producer semantics still unresolved.
+;------------------------------------------------------------------------------
+NEWGRID_ShowtimesWorkflowArgLong:
     DS.L    3
-DATA_WDISP_BSS_LONG_2331:
+NEWGRID_ShowtimesWorkflowArgWord:
     DS.L    1
     DS.W    1
-DATA_WDISP_BSS_LONG_2332:
+NEWGRID2_ShowtimesSelectionContextPtr:
     DS.L    6
     DS.W    1
-DATA_WDISP_BSS_LONG_2333:
+NEWGRID_SelectedGridEntryPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_OverridePenIndex   (newgrid override pen index)
@@ -2507,7 +2524,7 @@ NEWGRID_OverridePenIndex:
 NEWGRID_EntryTextScratchPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ShowtimeBucketEntryTable/NEWGRID_ShowtimeBucketPtrTable   (showtime bucket storage)
+; SYM: NEWGRID_ShowtimeBucketEntryTable/NEWGRID_ShowtimeBucketEntryTablePadLong/NEWGRID_ShowtimeBucketPtrTable   (showtime bucket storage)
 ; TYPE: struct[10]/pointer[10]
 ; PURPOSE: Stores normalized showtime bucket records and a sortable pointer index table.
 ; USED BY: NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry, NEWGRID_AppendShowtimeBuckets
@@ -2515,7 +2532,7 @@ NEWGRID_EntryTextScratchPtr:
 ;------------------------------------------------------------------------------
 NEWGRID_ShowtimeBucketEntryTable:
     DS.L    19
-DATA_WDISP_BSS_LONG_2337:
+NEWGRID_ShowtimeBucketEntryTablePadLong:
     DS.L    1
 NEWGRID_ShowtimeBucketPtrTable:
     DS.L    10
@@ -2528,7 +2545,7 @@ NEWGRID_ShowtimeBucketPtrTable:
 ;------------------------------------------------------------------------------
 NEWGRID_ShowtimeBucketCount:
     DS.L    1
-DATA_WDISP_BSS_LONG_233A:
+FLIB_LogEntryByteCount:
     DS.L    2
 ;------------------------------------------------------------------------------
 ; SYM: P_TYPE_PrimaryGroupListPtr/P_TYPE_SecondaryGroupListPtr   (p_type group list pointers)
@@ -2982,6 +2999,6 @@ Global_REF_DOS_LIBRARY_2:
     DS.L    55
 
     if includeCustomAriAssembly
-LAB_CTRLHTCMAX:
+WDISP_FMT_CTRLH_STATUS_MAX:
     NStr    "CTRL H:%04ld Cnt:%ld CRC:%02x State:%ld Byte:%02x"
     endif

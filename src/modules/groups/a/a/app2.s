@@ -50,11 +50,11 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_COMMON_BSS_LONG_1B04, ED_StateRingWriteIndex
+;   CTRL_SampleEntryScratch, ED_StateRingWriteIndex
 ; WRITES:
 ;   ED_StateRingTable, ED_StateRingWriteIndex
 ; DESC:
-;   Copies a null-terminated byte sequence from DATA_COMMON_BSS_LONG_1B04 into the current
+;   Copies a null-terminated byte sequence from CTRL_SampleEntryScratch into the current
 ;   5-byte slot of ED_StateRingTable, then advances the slot index.
 ; NOTES:
 ;   Slot index wraps at 20 entries. Entry size includes the terminator.
@@ -67,7 +67,7 @@ ESQ_StoreCtrlSampleEntry:
     MOVE.W  D0,D1
     MULS    #5,D1
     ADDA.W  D1,A0
-    LEA     DATA_COMMON_BSS_LONG_1B04,A1
+    LEA     CTRL_SampleEntryScratch,A1
 
 .lab_0051:
     MOVE.B  (A1)+,(A0)+
@@ -100,7 +100,7 @@ ESQ_StoreCtrlSampleEntry:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Loads a default effect parameter pair (0/$3F) and updates copper tables.
 ; NOTES:
@@ -126,11 +126,11 @@ ESQ_SetCopperEffect_Default:
 ; CALLS:
 ;   ESQ_SetCopperEffectParams
 ; READS:
-;   DATA_COMMON_STR_VALUE_1B05, CIAB_PRA
+;   HIGHLIGHT_CustomValue, CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   CIAB_PRA, HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
-;   Forces CIAB_PRA bits 6/7 high, uses DATA_COMMON_STR_VALUE_1B05 as a parameter, and updates
+;   Forces CIAB_PRA bits 6/7 high, uses HIGHLIGHT_CustomValue as a parameter, and updates
 ;   the copper tables.
 ; NOTES:
 ;   Exact meaning of the parameters is unknown.
@@ -142,7 +142,7 @@ ESQ_SetCopperEffect_Custom:
     BSET    #7,D1
     MOVE.B  D1,(A1)
     MOVE.B  #$3f,D0
-    MOVE.B  DATA_COMMON_STR_VALUE_1B05,D1
+    MOVE.B  HIGHLIGHT_CustomValue,D1
     JSR     ESQ_SetCopperEffectParams
 
     RTS
@@ -162,7 +162,7 @@ ESQ_SetCopperEffect_Custom:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   CIAB_PRA, HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Clears CIAB_PRA bits 6/7, sets both parameters to $3F, and updates the
 ;   copper tables.
@@ -196,7 +196,7 @@ ESQ_SetCopperEffect_AllOn:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   CIAB_PRA, HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Sets CIAB_PRA bits to 01, clears both parameters, updates copper tables,
 ;   and disables UI highlight.
@@ -232,7 +232,7 @@ ESQ_SetCopperEffect_OffDisableHighlight:
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   CIAB_PRA, HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Sets CIAB_PRA bits to 11, loads parameters ($3F/0), updates copper tables,
 ;   and enables UI highlight.
@@ -268,16 +268,16 @@ ESQ_SetCopperEffect_OnEnableHighlight:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
 ;   Stores the effect parameters and regenerates the copper tables.
 ; NOTES:
-;   Parameters are packed into DATA_COMMON_BSS_WORD_1B00..DATA_COMMON_BSS_BYTE_1B02 for ESQ_UpdateCopperListsFromParams.
+;   Parameters are packed into HIGHLIGHT_CopperEffectSeed..HIGHLIGHT_CopperEffectParamB for ESQ_UpdateCopperListsFromParams.
 ;------------------------------------------------------------------------------
 ESQ_SetCopperEffectParams:
-    MOVE.B  D0,DATA_COMMON_BSS_BYTE_1B01
-    MOVE.B  D1,DATA_COMMON_BSS_BYTE_1B02
-    MOVE.W  #5,DATA_COMMON_BSS_WORD_1B00
+    MOVE.B  D0,HIGHLIGHT_CopperEffectParamA
+    MOVE.B  D1,HIGHLIGHT_CopperEffectParamB
+    MOVE.W  #5,HIGHLIGHT_CopperEffectSeed
     JSR     ESQ_UpdateCopperListsFromParams
 
     RTS
@@ -295,7 +295,7 @@ ESQ_SetCopperEffectParams:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_COMMON_BSS_WORD_1B00, DATA_COMMON_BSS_BYTE_1B01, DATA_COMMON_BSS_BYTE_1B02, DATA_ESQ_BSS_LONG_1E25
+;   HIGHLIGHT_CopperEffectSeed, HIGHLIGHT_CopperEffectParamA, HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectTemplateRowsSet0
 ; WRITES:
 ;   ESQ_CopperEffectListA, ESQ_CopperEffectListB
 ; DESC:
@@ -304,9 +304,9 @@ ESQ_SetCopperEffectParams:
 ;   Writes 16 entries (DBF runs D4+1 iterations). Exact effect semantics unknown.
 ;------------------------------------------------------------------------------
 ESQ_UpdateCopperListsFromParams:
-    LEA     DATA_ESQ_BSS_LONG_1E25,A0
+    LEA     ESQ_CopperEffectTemplateRowsSet0,A0
     MOVE.W  26(A0),D1
-    MOVE.L  DATA_COMMON_BSS_WORD_1B00,D0
+    MOVE.L  HIGHLIGHT_CopperEffectSeed,D0
     LEA     ESQ_CopperEffectListA,A0
     LEA     ESQ_CopperEffectListB,A1
     ADDQ.L  #6,A0
@@ -622,9 +622,9 @@ ESQ_NoOp_006A:
 ; CALLS:
 ;   ESQ_DecColorStep
 ; READS:
-;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
+;   ESQ_BannerPaletteWordsA, ESQ_BannerPaletteWordsB
 ; WRITES:
-;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
+;   ESQ_BannerPaletteWordsA, ESQ_BannerPaletteWordsB
 ; DESC:
 ;   Decrements color components for entries in the alternate copper lists,
 ;   skipping the entry at byte offset 4.
@@ -632,8 +632,8 @@ ESQ_NoOp_006A:
 ;   Skips when D5 == 4.
 ;------------------------------------------------------------------------------
     MOVEM.L D2-D5/A2-A3,-(A7)
-    LEA     DATA_ESQ_CONST_LONG_1E2E,A2
-    LEA     DATA_ESQ_CONST_LONG_1E5B,A3
+    LEA     ESQ_BannerPaletteWordsA,A2
+    LEA     ESQ_BannerPaletteWordsB,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
@@ -787,9 +787,9 @@ ESQ_NoOp_0074:
 ; CALLS:
 ;   ESQ_BumpColorTowardTargets
 ; READS:
-;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
+;   ESQ_BannerPaletteWordsA, ESQ_BannerPaletteWordsB
 ; WRITES:
-;   DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
+;   ESQ_BannerPaletteWordsA, ESQ_BannerPaletteWordsB
 ; DESC:
 ;   Adjusts alternate copper list colors based on the target stream,
 ;   skipping the entry at byte offset 4.
@@ -797,8 +797,8 @@ ESQ_NoOp_0074:
 ;   This block is currently marked unreachable.
 ;------------------------------------------------------------------------------
     MOVEM.L D2-D5/A2-A3,-(A7)
-    LEA     DATA_ESQ_CONST_LONG_1E2E,A2
-    LEA     DATA_ESQ_CONST_LONG_1E5B,A3
+    LEA     ESQ_BannerPaletteWordsA,A2
+    LEA     ESQ_BannerPaletteWordsB,A3
     MOVE.W  #0,D5
     MOVEQ   #7,D4
 
@@ -889,7 +889,7 @@ ESQ_BumpColorTowardTargets:
 ; CALLS:
 ;   ESQ_UpdateMonthDayFromDayOfYear
 ; READS:
-;   DATA_COMMON_BSS_WORD_1B09, DATA_COMMON_BSS_WORD_1B0A, DATA_COMMON_BSS_WORD_1B0B, DATA_COMMON_BSS_WORD_1B0C
+;   CLOCK_MinuteTrigger30MinusBase, CLOCK_MinuteTrigger60MinusBase, CLOCK_MinuteTriggerBaseOffsetPlus30, CLOCK_MinuteTriggerBaseOffset
 ; WRITES:
 ;   [timePtr] fields (0,2,4,6,8,10,12,16,18,20)
 ; DESC:
@@ -925,10 +925,10 @@ ESQ_TickClockAndFlagEvents:
     CMP.W   D3,D0
     BGE.W   .hour_rollover
 
-    CMP.W   DATA_COMMON_BSS_WORD_1B0C,D0
+    CMP.W   CLOCK_MinuteTriggerBaseOffset,D0
     BEQ.W   .minute_trigger_5
 
-    CMP.W   DATA_COMMON_BSS_WORD_1B0B,D0
+    CMP.W   CLOCK_MinuteTriggerBaseOffsetPlus30,D0
     BNE.W   .check_minute_20_or_50
 
 .minute_trigger_5:
@@ -947,10 +947,10 @@ ESQ_TickClockAndFlagEvents:
     BRA.W   .return
 
 .check_minute_special_3:
-    CMP.W   DATA_COMMON_BSS_WORD_1B09,D0
+    CMP.W   CLOCK_MinuteTrigger30MinusBase,D0
     BEQ.W   .minute_trigger_3
 
-    CMP.W   DATA_COMMON_BSS_WORD_1B0A,D0
+    CMP.W   CLOCK_MinuteTrigger60MinusBase,D0
     BNE.W   .return
 
 .minute_trigger_3:
@@ -1036,7 +1036,7 @@ ESQ_TickClockAndFlagEvents:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_COMMON_CONST_LONG_1B1D
+;   CLOCK_MonthLengths
 ; WRITES:
 ;   2(A0), 4(A0)
 ; DESC:
@@ -1048,7 +1048,7 @@ ESQ_UpdateMonthDayFromDayOfYear:
     MOVE.L  D2,-(A7)
     MOVE.W  16(A0),D0
     MOVEQ   #0,D2
-    LEA     DATA_COMMON_CONST_LONG_1B1D,A1
+    LEA     CLOCK_MonthLengths,A1
     TST.W   20(A0)
     BEQ.S   .scan_months
 
@@ -1082,7 +1082,7 @@ ESQ_UpdateMonthDayFromDayOfYear:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_COMMON_CONST_LONG_1B1D
+;   CLOCK_MonthLengths
 ; WRITES:
 ;   16(A0)
 ; DESC:
@@ -1094,7 +1094,7 @@ ESQ_CalcDayOfYearFromMonthDay:
     MOVEA.L 4(A7),A0
     MOVE.W  2(A0),D1
     MOVEQ   #0,D0
-    LEA     DATA_COMMON_CONST_LONG_1B1D,A1
+    LEA     CLOCK_MonthLengths,A1
     DBF     D1,.month_loop
 
     BRA.S   .return
@@ -1202,13 +1202,13 @@ ESQ_FormatTimeStamp:
 ; ARGS:
 ;   stack +4: timePtr (struct with time fields)
 ; RET:
-;   D0: slot index (mapped through DATA_COMMON_CONST_LONG_1B1E)
+;   D0: slot index (mapped through CLOCK_HalfHourSlotLookup)
 ; CLOBBERS:
 ;   D0-D2, A1
 ; CALLS:
 ;   (none)
 ; READS:
-;   8(A0), 10(A0), 18(A0), DATA_COMMON_CONST_LONG_1B1E
+;   8(A0), 10(A0), 18(A0), CLOCK_HalfHourSlotLookup
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -1250,7 +1250,7 @@ ESQ_GetHalfHourSlotIndex:
     ADDQ.W  #1,D0
 
 .return:
-    LEA     DATA_COMMON_CONST_LONG_1B1E,A1
+    LEA     CLOCK_HalfHourSlotLookup,A1
     MOVE.B  0(A1,D0.W),D0
     MOVE.L  (A7)+,D2
     RTS
@@ -1349,13 +1349,13 @@ ESQ_ClampBannerCharRange:
 ; CALLS:
 ;   (none)
 ; READS:
-;   WDISP_BannerCharIndex, WDISP_BannerCharPhaseShift, WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd, DATA_COMMON_BSS_LONG_1B08
+;   WDISP_BannerCharIndex, WDISP_BannerCharPhaseShift, WDISP_BannerCharRangeStart, WDISP_BannerCharRangeEnd, BANNER_ResetPendingFlag
 ; WRITES:
-;   ESQ_BannerCharResetPulse, WDISP_BannerCharIndex, ESQ_BannerCharIndexShadow2273, DATA_COMMON_BSS_LONG_1B08
+;   ESQ_BannerCharResetPulse, WDISP_BannerCharIndex, ESQ_BannerCharIndexShadow2273, BANNER_ResetPendingFlag
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
-;   If DATA_COMMON_BSS_LONG_1B08 is non-zero, forces a reset path and clears the flag.
+;   If BANNER_ResetPendingFlag is non-zero, forces a reset path and clears the flag.
 ;   Also resets when the index matches WDISP_BannerCharRangeEnd, using WDISP_BannerCharRangeStart as the base.
 ;------------------------------------------------------------------------------
     MOVEM.L D2-D3,-(A7)
@@ -1369,10 +1369,10 @@ ESQ_ClampBannerCharRange:
     MOVE.W  D2,D0
 
 .lab_00A1:
-    TST.W   DATA_COMMON_BSS_LONG_1B08
+    TST.W   BANNER_ResetPendingFlag
     BEQ.S   .lab_00A2
 
-    MOVE.W  #0,DATA_COMMON_BSS_LONG_1B08
+    MOVE.W  #0,BANNER_ResetPendingFlag
     BRA.S   .lab_00A3
 
 .lab_00A2:
@@ -2044,7 +2044,7 @@ ESQ_PackBitsDecode:
 ;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, LOCAVAIL_FilterCooldownTicks, Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; WRITES:
 ;   ESQ_GlobalTickCounter, ESQ_TickModulo60Counter, CLEANUP_PendingAlertFlag, LOCAVAIL_FilterCooldownTicks, Global_RefreshTickCounter, TEXTDISP_DeferredActionDelayTicks, TEXTDISP_DeferredActionArmed,
-;   DATA_COMMON_BSS_WORD_1B11..DATA_COMMON_BSS_LONG_1B18
+;   ACCUMULATOR_Row0_Sum..ACCUMULATOR_Row3_SaturateFlag
 ; DESC:
 ;   Increments global timing counters, performs periodic resets, and updates
 ;   accumulator fields with saturation flags.
@@ -2096,12 +2096,12 @@ ESQ_TickGlobalCounters:
     MOVE.W  #1,TEXTDISP_DeferredActionArmed
 
 .after_decay_22A5:
-    LEA     DATA_COMMON_BSS_LONG_1B06,A0
+    LEA     CLOCK_DaySlotIndexPtr,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
     ADDQ.W  #1,D1
     MOVE.W  D1,12(A1)
-    LEA     DATA_COMMON_BSS_LONG_1B07,A0
+    LEA     CLOCK_CurrentDayOfWeekIndexPtr,A0
     MOVEA.L (A0),A1
     MOVE.W  12(A1),D1
     ADDQ.W  #1,D1
@@ -2113,64 +2113,64 @@ ESQ_TickGlobalCounters:
     TST.W   WDISP_AccumulatorCaptureActive
     BEQ.W   .after_accumulators
 
-    MOVE.W  DATA_COMMON_BSS_WORD_1B0D,D0
+    MOVE.W  ACCUMULATOR_Row0_CaptureValue,D0
     BEQ.S   .after_accum_1b11
 
-    MOVE.W  DATA_COMMON_BSS_WORD_1B11,D1
+    MOVE.W  ACCUMULATOR_Row0_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b11_saturate
 
-    MOVE.W  #1,DATA_COMMON_BSS_WORD_1B15
+    MOVE.W  #1,ACCUMULATOR_Row0_SaturateFlag
     MOVEQ   #0,D1
 
 .after_accum_1b11_saturate:
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B11
+    MOVE.W  D1,ACCUMULATOR_Row0_Sum
 
 .after_accum_1b11:
-    MOVE.W  DATA_COMMON_BSS_WORD_1B0E,D0
+    MOVE.W  ACCUMULATOR_Row1_CaptureValue,D0
     BEQ.S   .after_accum_1b12
 
-    MOVE.W  DATA_COMMON_BSS_WORD_1B12,D1
+    MOVE.W  ACCUMULATOR_Row1_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b12_saturate
 
-    MOVE.W  #1,DATA_COMMON_BSS_WORD_1B16
+    MOVE.W  #1,ACCUMULATOR_Row1_SaturateFlag
     MOVEQ   #0,D1
 
 .after_accum_1b12_saturate:
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B12
+    MOVE.W  D1,ACCUMULATOR_Row1_Sum
 
 .after_accum_1b12:
-    MOVE.W  DATA_COMMON_BSS_WORD_1B0F,D0
+    MOVE.W  ACCUMULATOR_Row2_CaptureValue,D0
     BEQ.S   .after_accum_1b13
 
-    MOVE.W  DATA_COMMON_BSS_WORD_1B13,D1
+    MOVE.W  ACCUMULATOR_Row2_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b13_saturate
 
-    MOVE.W  #1,DATA_COMMON_BSS_WORD_1B17
+    MOVE.W  #1,ACCUMULATOR_Row2_SaturateFlag
     MOVEQ   #0,D1
 
 .after_accum_1b13_saturate:
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B13
+    MOVE.W  D1,ACCUMULATOR_Row2_Sum
 
 .after_accum_1b13:
-    MOVE.W  DATA_COMMON_BSS_WORD_1B10,D0
+    MOVE.W  ACCUMULATOR_Row3_CaptureValue,D0
     BEQ.S   .after_accumulators
 
-    MOVE.W  DATA_COMMON_BSS_WORD_1B14,D1
+    MOVE.W  ACCUMULATOR_Row3_Sum,D1
     ADD.W   D0,D1
     CMPI.W  #$4000,D1
     BLT.S   .after_accum_1b14_saturate
 
-    MOVE.W  #1,DATA_COMMON_BSS_LONG_1B18
+    MOVE.W  #1,ACCUMULATOR_Row3_SaturateFlag
     MOVEQ   #0,D1
 
 .after_accum_1b14_saturate:
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B14
+    MOVE.W  D1,ACCUMULATOR_Row3_Sum
 
 .after_accumulators:
     TST.W   WDISP_AccumulatorFlushPending
@@ -2198,7 +2198,7 @@ ESQ_TickGlobalCounters:
 ; READS:
 ;   (none)
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B09, DATA_COMMON_BSS_WORD_1B0A, DATA_COMMON_BSS_WORD_1B0B, DATA_COMMON_BSS_WORD_1B0C
+;   CLOCK_MinuteTrigger30MinusBase, CLOCK_MinuteTrigger60MinusBase, CLOCK_MinuteTriggerBaseOffsetPlus30, CLOCK_MinuteTriggerBaseOffset
 ; DESC:
 ;   Computes minute thresholds based on two base values.
 ; NOTES:
@@ -2209,16 +2209,16 @@ ESQ_SeedMinuteEventThresholds:
     MOVE.L  8(A7),D1
     MOVEQ   #60,D2
     SUB.W   D0,D2
-    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0A
+    MOVE.W  D2,CLOCK_MinuteTrigger60MinusBase
     MOVEQ   #30,D2
     SUB.W   D0,D2
-    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B09
+    MOVE.W  D2,CLOCK_MinuteTrigger30MinusBase
     MOVEQ   #0,D2
     ADD.W   D1,D2
-    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0C
+    MOVE.W  D2,CLOCK_MinuteTriggerBaseOffset
     MOVEQ   #30,D2
     ADD.W   D1,D2
-    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0B
+    MOVE.W  D2,CLOCK_MinuteTriggerBaseOffsetPlus30
     RTS
 
 ;!======

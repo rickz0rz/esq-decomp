@@ -1,29 +1,29 @@
 ; ========== DST.c ==========
-DATA_DST_PATH_DF0_COLON_DST_DOT_DAT_1CF6:
+DST_PATH_DF0_COLON_DST_DOT_DAT:
     NStr    "df0:dst.dat"
-DATA_DST_CONST_LONG_1CF7:
-    DC.L    DATA_DST_PATH_DF0_COLON_DST_DOT_DAT_1CF6
-DATA_DST_FMT_PCT_C_1CF8:
+DST_DefaultDatPathPtr:
+    DC.L    DST_PATH_DF0_COLON_DST_DOT_DAT
+DST_FMT_PCT_C_InTimePrefixChar:
     NStr    "%c"
-DATA_DST_FMT_PCT_04D_PCT_03D_1CF9:
+DST_FMT_PCT_04D_PCT_03D_InTimeDateCode:
     NStr    "%04d%03d"
-DATA_DST_FMT_PCT_02D_COLON_PCT_02D_1CFA:
+DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock:
     NStr    "%02d:%02d"
-DATA_DST_STR_NO_IN_TIME_1CFB:
+DST_STR_NO_IN_TIME:
     NStr    " NO IN TIME "
-DATA_DST_FMT_PCT_C_1CFC:
+DST_FMT_PCT_C_OutTimePrefixChar:
     NStr    "%c"
-DATA_DST_FMT_PCT_04D_PCT_03D_1CFD:
+DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode:
     NStr    "%04d%03d"
-DATA_DST_FMT_PCT_02D_COLON_PCT_02D_1CFE:
+DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock:
     NStr    "%02d:%02d"
-DATA_DST_STR_NO_OUT_TIME_1CFF:
+DST_STR_NO_OUT_TIME:
     NStr    " NO OUT TIME "
-DATA_DST_STR_NO_DST_DATA_1D00:
+DST_STR_NO_DST_DATA:
     NStr    " NO DST DATA "
-DATA_DST_STR_G2_COLON_1D01:
+DST_STR_G2_COLON:
     NStr    " g2:"
-DATA_DST_STR_G3_COLON_1D02:
+DST_STR_G3_COLON:
     NStr    " g3:"
 Global_STR_DST_C_1:
     NStr    "DST.c"
@@ -43,19 +43,19 @@ Global_STR_G3:
     NStr    "g3"
 Global_STR_DST_C_7:
     NStr    "DST.c"
-DATA_DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT__1D0C:
+DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_:
     NStr2   "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s",TextLineFeed
-DATA_DST_TAG_PM_1D0D:
+DST_TAG_PM:
     NStr    "PM"
-DATA_DST_TAG_AM_1D0E:
+DST_TAG_AM:
     NStr    "AM"
-DATA_DST_TAG_DST_1D0F:
+DST_TAG_DST:
     NStr    "DST"
-DATA_DST_TAG_STD_1D10:
+DST_TAG_STD:
     NStr    "STD"
-DATA_DST_STR_LEAP_YEAR_1D11:
+DST_STR_LEAP_YEAR:
     NStr    "Leap Year"
-DATA_DST_STR_NORM_YEAR_1D12:
+DST_STR_NORM_YEAR:
     NStr    "Norm Year"
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -67,7 +67,21 @@ DATA_DST_STR_NORM_YEAR_1D12:
 ;------------------------------------------------------------------------------
 ED_MenuStateId:
     DS.W    1
-DATA_DST_CONST_LONG_1D14:
+;------------------------------------------------------------------------------
+; SYM: ED_MenuDispatchReentryGuard   (ED dispatch reentry gate)
+; TYPE: u32 flag
+; PURPOSE: Prevents nested/reentrant ED_DispatchEscMenuState execution.
+; USED BY: ED_DispatchEscMenuState
+; NOTES: Cleared while dispatch is active and restored to 1 on exit.
+;------------------------------------------------------------------------------
+ED_MenuDispatchReentryGuard:
     DC.L    1
-DATA_DST_CONST_LONG_1D15:
+;------------------------------------------------------------------------------
+; SYM: ED_TextModeReinitPendingFlag   (text-mode reinit pending)
+; TYPE: u32 flag
+; PURPOSE: Marks one-shot editor text/cursor reinitialization after text-mode force path.
+; USED BY: ED_HandleEditorInput
+; NOTES: Set in force-text-mode case and consumed/cleared on next handler entry.
+;------------------------------------------------------------------------------
+ED_TextModeReinitPendingFlag:
     DC.L    1

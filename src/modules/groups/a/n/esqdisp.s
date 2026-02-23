@@ -276,16 +276,16 @@ ESQDISP_QueueHighlightDrawMessage:
 ; CALLS:
 ;   ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
 ; READS:
-;   DATA_ESQ_BSS_WORD_1DF2, NEWGRID_MessagePumpSuspendFlag, Global_UIBusyFlag
+;   ESQDISP_GridMessagePumpBlockFlag, NEWGRID_MessagePumpSuspendFlag, Global_UIBusyFlag
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Forwards to NEWGRID message processing only when no modal/input-busy gate is set.
 ; NOTES:
-;   Gated by DATA_ESQ_BSS_WORD_1DF2, Global_UIBusyFlag, and NEWGRID_MessagePumpSuspendFlag.
+;   Gated by ESQDISP_GridMessagePumpBlockFlag, Global_UIBusyFlag, and NEWGRID_MessagePumpSuspendFlag.
 ;------------------------------------------------------------------------------
 ESQDISP_ProcessGridMessagesIfIdle:
-    TST.W   DATA_ESQ_BSS_WORD_1DF2
+    TST.W   ESQDISP_GridMessagePumpBlockFlag
     BNE.S   .lab_08C3
 
     TST.W   Global_UIBusyFlag
@@ -314,9 +314,9 @@ ESQDISP_ProcessGridMessagesIfIdle:
 ; CALLS:
 ;   _LVOReadPixel, _LVORectFill, _LVOSetAPen
 ; READS:
-;   Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_BSS_BYTE_1DEE, DATA_ESQDISP_CONST_LONG_1E80
+;   Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQDISP_StatusIndicatorDeferredApplyFlag, ESQDISP_StatusIndicatorColorCache
 ; WRITES:
-;   DATA_ESQDISP_CONST_LONG_1E80, status-indicator rectangle in Global_REF_RASTPORT_1
+;   ESQDISP_StatusIndicatorColorCache, status-indicator rectangle in Global_REF_RASTPORT_1
 ; DESC:
 ;   Updates cached color for indicator slot and, when UI is drawable, repaints the
 ;   slot rectangle at x=655..661 using either supplied color or sampled fallback.
@@ -338,7 +338,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
     BNE.W   .return
 
 .validate_slot_index:
-    TST.B   DATA_ESQ_BSS_BYTE_1DEE
+    TST.B   ESQDISP_StatusIndicatorDeferredApplyFlag
     BEQ.S   .resolve_cached_color_or_direct_apply
 
     MOVEQ   #-1,D0
@@ -347,7 +347,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
     MOVE.L  D6,D1
     ASL.L   #2,D1
-    LEA     DATA_ESQDISP_CONST_LONG_1E80,A0
+    LEA     ESQDISP_StatusIndicatorColorCache,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     MOVE.L  D7,(A1)
@@ -360,7 +360,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 
     MOVE.L  D6,D1
     ASL.L   #2,D1
-    LEA     DATA_ESQDISP_CONST_LONG_1E80,A0
+    LEA     ESQDISP_StatusIndicatorColorCache,A0
     MOVEA.L A0,A1
     ADDA.L  D1,A1
     MOVE.L  (A1),D7
@@ -371,7 +371,7 @@ ESQDISP_SetStatusIndicatorColorSlot:
 .apply_if_slot_color_changed:
     MOVE.L  D6,D0
     ASL.L   #2,D0
-    LEA     DATA_ESQDISP_CONST_LONG_1E80,A0
+    LEA     ESQDISP_StatusIndicatorColorCache,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),D1
@@ -614,9 +614,9 @@ ESQDISP_ApplyStatusMaskToIndicators:
 ; CALLS:
 ;   ESQDISP_ApplyStatusMaskToIndicators
 ; READS:
-;   DATA_ESQDISP_BSS_LONG_1E81, fff
+;   ESQDISP_StatusIndicatorMask, fff
 ; WRITES:
-;   DATA_ESQDISP_BSS_LONG_1E81
+;   ESQDISP_StatusIndicatorMask
 ; DESC:
 ;   Sets or clears bits in the global status mask, clamps to 12 bits, and only
 ;   refreshes status indicators when the effective mask changed.
@@ -628,21 +628,21 @@ ESQDISP_UpdateStatusMaskAndRefresh:
     MOVE.L  16(A7),D7
     MOVE.L  20(A7),D6
     MOVEQ   #-1,D5
-    MOVE.L  DATA_ESQDISP_BSS_LONG_1E81,D5
+    MOVE.L  ESQDISP_StatusIndicatorMask,D5
     TST.L   D6
     BEQ.S   .lab_08DB
 
-    OR.L    D7,DATA_ESQDISP_BSS_LONG_1E81
+    OR.L    D7,ESQDISP_StatusIndicatorMask
     BRA.S   .lab_08DC
 
 .lab_08DB:
     MOVE.L  D7,D0
     NOT.L   D0
-    AND.L   D0,DATA_ESQDISP_BSS_LONG_1E81
+    AND.L   D0,ESQDISP_StatusIndicatorMask
 
 .lab_08DC:
-    ANDI.L  #$fff,DATA_ESQDISP_BSS_LONG_1E81
-    MOVE.L  DATA_ESQDISP_BSS_LONG_1E81,D0
+    ANDI.L  #$fff,ESQDISP_StatusIndicatorMask
+    MOVE.L  ESQDISP_StatusIndicatorMask,D0
     CMP.L   D0,D5
     BEQ.S   ESQDISP_UpdateStatusMaskAndRefresh_Return
 
@@ -920,7 +920,7 @@ ESQDISP_FillProgramInfoHeaderFields_Return:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, ESQFUNC_JMPTBL_STRING_CopyPadNul, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_FillProgramInfoHeaderFields
 ; READS:
-;   ESQDISP_ParseProgramInfoCommandRecord_Return, DATA_ESQDISP_TAG_00_1E8A, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, branch, ff, lab_0918
+;   ESQDISP_ParseProgramInfoCommandRecord_Return, ESQDISP_ProgramInfoZeroTag, WDISP_CharClassTable, TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, branch, ff, lab_0918
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1258,7 +1258,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     BRA.S   .branch_4
 
 .branch_2:
-    LEA     DATA_ESQDISP_TAG_00_1E8A,A0
+    LEA     ESQDISP_ProgramInfoZeroTag,A0
     LEA     -27(A5),A1
 
 .branch_3:
@@ -1938,9 +1938,9 @@ ESQDISP_GetEntryAuxPointerByMode:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh, ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
 ; READS:
-;   DATA_ESQDISP_CONST_BYTE_1E8B, bfd0ee
+;   ESQDISP_LatchedInputModeBit, bfd0ee
 ; WRITES:
-;   DATA_ESQDISP_CONST_BYTE_1E8B, DATA_ESQDISP_BSS_LONG_1E8C, Global_RefreshTickCounter
+;   ESQDISP_LatchedInputModeBit, ESQDISP_InputModeDebounceCount, Global_RefreshTickCounter
 ; DESC:
 ;   Polls CIAB input mode bits with debounce; when stable change is detected,
 ;   updates mode state and either resets selection or redraws rast mode.
@@ -1955,25 +1955,25 @@ ESQDISP_PollInputModeAndRefreshSelection:
     MOVEQ   #4,D7
     MOVEA.L -6(A5),A0
     AND.B   (A0),D7
-    MOVE.B  DATA_ESQDISP_CONST_BYTE_1E8B,D0
+    MOVE.B  ESQDISP_LatchedInputModeBit,D0
     CMP.B   D7,D0
     BEQ.S   .lab_092D
 
-    ADDQ.L  #1,DATA_ESQDISP_BSS_LONG_1E8C
+    ADDQ.L  #1,ESQDISP_InputModeDebounceCount
     BRA.S   .lab_092E
 
 .lab_092D:
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_ESQDISP_BSS_LONG_1E8C
+    MOVE.L  D0,ESQDISP_InputModeDebounceCount
 
 .lab_092E:
-    CMPI.L  #$5,DATA_ESQDISP_BSS_LONG_1E8C
+    CMPI.L  #$5,ESQDISP_InputModeDebounceCount
     BLE.S   .return
 
     MOVE.L  D7,D0
-    MOVE.B  D0,DATA_ESQDISP_CONST_BYTE_1E8B
+    MOVE.B  D0,ESQDISP_LatchedInputModeBit
     MOVEQ   #0,D1
-    MOVE.L  D1,DATA_ESQDISP_BSS_LONG_1E8C
+    MOVE.L  D1,ESQDISP_InputModeDebounceCount
     TST.B   D0
     BNE.S   .lab_092F
 
@@ -2060,9 +2060,9 @@ ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DATA_ESQ_STR_B_1DC8, DATA_ESQ_STR_E_1DC9, DATA_ESQDISP_CONST_WORD_1E85, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, CLOCK_CacheYear, DST_PrimaryCountdown, WDISP_BannerSlotCursor, CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, ESQ_STR_B, ESQ_STR_E, ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, CLOCK_DaySlotIndex, CLOCK_CacheMonthIndex0, CLOCK_CacheDayIndex0, CLOCK_CacheYear, DST_PrimaryCountdown, WDISP_BannerSlotCursor, CLOCK_HalfHourSlotIndex, CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
-;   DATA_COMMON_BSS_LONG_1B08, DATA_ESQDISP_BSS_LONG_1E88, DATA_ESQDISP_BSS_WORD_1E8D, DATA_ESQDISP_CONST_WORD_1E8E, DATA_ESQDISP_CONST_WORD_1E8F, DATA_TLIBA1_CONST_LONG_219B, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
+;   BANNER_ResetPendingFlag, ESQDISP_SecondaryPersistRequestFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, TLIBA1_StatusBannerPropagateGuard, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, CLOCK_HalfHourSlotIndex
 ; DESC:
 ;   Computes the current half-hour banner slot, applies optional range clamp,
 ;   updates highlight/banner state, and renders status text for active day entries.
@@ -2085,15 +2085,15 @@ ESQDISP_DrawStatusBanner_Impl:
 
     ADDQ.W  #4,A7
     MOVE.W  D0,CLOCK_HalfHourSlotIndex
-    TST.W   DATA_ESQDISP_CONST_WORD_1E85
+    TST.W   ESQDISP_StatusBannerClampGateFlag
     BEQ.S   .lab_0934
 
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     MOVEQ   #0,D0
-    MOVE.B  DATA_ESQ_STR_B_1DC8,D0
+    MOVE.B  ESQ_STR_B,D0
     MOVEQ   #0,D2
-    MOVE.B  DATA_ESQ_STR_E_1DC9,D2
+    MOVE.B  ESQ_STR_E,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D1,-(A7)
@@ -2108,7 +2108,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BEQ.S   .lab_0935
 
     MOVEQ   #1,D0
-    MOVE.W  D0,DATA_COMMON_BSS_LONG_1B08
+    MOVE.W  D0,BANNER_ResetPendingFlag
 
 .lab_0935:
     MOVE.W  CLOCK_HalfHourSlotIndex,D0
@@ -2181,11 +2181,11 @@ ESQDISP_DrawStatusBanner_Impl:
 
 .lab_093A:
     MOVE.W  DST_PrimaryCountdown,D0
-    MOVE.W  DATA_ESQDISP_BSS_WORD_1E8D,D1
+    MOVE.W  ESQDISP_LastPrimaryCountdownValue,D1
     CMP.W   D0,D1
     BEQ.S   .lab_093C
 
-    MOVE.W  D0,DATA_ESQDISP_BSS_WORD_1E8D
+    MOVE.W  D0,ESQDISP_LastPrimaryCountdownValue
     SUBQ.W  #1,D0
     BNE.S   .lab_093C
 
@@ -2194,7 +2194,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BNE.S   .lab_093B
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_ESQDISP_CONST_WORD_1E8E
+    MOVE.W  D0,ESQDISP_SecondaryPersistArmGateFlag
     BRA.S   .lab_093C
 
 .lab_093B:
@@ -2203,7 +2203,7 @@ ESQDISP_DrawStatusBanner_Impl:
     CMP.W   D1,D0
     BNE.S   .lab_093C
 
-    CLR.W   DATA_ESQDISP_CONST_WORD_1E8F
+    CLR.W   ESQDISP_SecondaryPropagationDoneFlag
 
 .lab_093C:
     MOVEQ   #0,D6
@@ -2288,7 +2288,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.L  (A0)+,(A1)+
     DBF     D0,.lab_0944
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_TLIBA1_CONST_LONG_219B
+    MOVE.L  D0,TLIBA1_StatusBannerPropagateGuard
 
 .lab_0945:
     MOVE.W  CLOCK_HalfHourSlotIndex,D0
@@ -2296,7 +2296,7 @@ ESQDISP_DrawStatusBanner_Impl:
     BNE.S   .lab_0946
 
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_ESQDISP_CONST_WORD_1E8E
+    MOVE.W  D0,ESQDISP_SecondaryPersistArmGateFlag
 
 .lab_0946:
     MOVE.W  CLOCK_HalfHourSlotIndex,D0
@@ -2304,12 +2304,12 @@ ESQDISP_DrawStatusBanner_Impl:
     CMP.W   D1,D0
     BCS.S   .lab_0947
 
-    TST.W   DATA_ESQDISP_CONST_WORD_1E8E
+    TST.W   ESQDISP_SecondaryPersistArmGateFlag
     BNE.S   .lab_0947
 
     MOVEQ   #1,D1
-    MOVE.L  D1,DATA_ESQDISP_BSS_LONG_1E88
-    MOVE.W  #1,DATA_ESQDISP_CONST_WORD_1E8E
+    MOVE.L  D1,ESQDISP_SecondaryPersistRequestFlag
+    MOVE.W  #1,ESQDISP_SecondaryPersistArmGateFlag
 
 .lab_0947:
     MOVEQ   #44,D1
@@ -2317,14 +2317,14 @@ ESQDISP_DrawStatusBanner_Impl:
     BNE.S   .lab_0948
 
     MOVEQ   #0,D1
-    MOVE.W  D1,DATA_ESQDISP_CONST_WORD_1E8F
+    MOVE.W  D1,ESQDISP_SecondaryPropagationDoneFlag
 
 .lab_0948:
     MOVEQ   #45,D1
     CMP.W   D1,D0
     BCS.S   ESQDISP_DrawStatusBanner_Impl_Return
 
-    TST.W   DATA_ESQDISP_CONST_WORD_1E8F
+    TST.W   ESQDISP_SecondaryPropagationDoneFlag
     BNE.S   ESQDISP_DrawStatusBanner_Impl_Return
 
     BSR.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary
@@ -2333,7 +2333,7 @@ ESQDISP_DrawStatusBanner_Impl:
 
     JSR     ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList(PC)
 
-    MOVE.W  #1,DATA_ESQDISP_CONST_WORD_1E8F
+    MOVE.W  #1,ESQDISP_SecondaryPropagationDoneFlag
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQDISP_DrawStatusBanner_Impl_Return   (Return tail for status-banner renderer)
@@ -2374,7 +2374,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ; READS:
 ;   TEXTDISP_SecondaryGroupCode, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
 ; WRITES:
-;   DATA_ESQDISP_BSS_WORD_1E87
+;   ESQDISP_PrimarySecondaryMirrorFlag
 ; DESC:
 ;   If secondary group has no entries, clones each primary entry into a newly created
 ;   secondary entry/title record and copies the per-slot program-info header fields.
@@ -2452,11 +2452,11 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     BRA.W   .loop_primary_entries_for_mirror
 
 .set_mirror_performed_flag:
-    MOVE.W  #1,DATA_ESQDISP_BSS_WORD_1E87
+    MOVE.W  #1,ESQDISP_PrimarySecondaryMirrorFlag
     BRA.S   ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return
 
 .mark_no_mirror_needed:
-    CLR.W   DATA_ESQDISP_BSS_WORD_1E87
+    CLR.W   ESQDISP_PrimarySecondaryMirrorFlag
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return   (Return tail for secondary mirror helper)
@@ -2743,9 +2743,9 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return:
 ; CALLS:
 ;   ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_RemoveGroupEntryAndReleaseStrings
 ; READS:
-;   DATA_CTASKS_BSS_BYTE_1B90, DATA_CTASKS_BSS_BYTE_1B92, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, ff
+;   CTASKS_SecondaryOiWritePendingFlag, CTASKS_PendingSecondaryOiDiskId, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTable, TEXTDISP_PrimaryTitlePtrTable, TEXTDISP_SecondaryTitlePtrTable, TEXTDISP_SecondaryGroupHeaderCode, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, ff
 ; WRITES:
-;   DATA_CTASKS_BSS_BYTE_1B8F, DATA_CTASKS_BSS_BYTE_1B90, DATA_CTASKS_BSS_BYTE_1B91, DATA_CTASKS_BSS_BYTE_1B92, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_PrimaryGroupRecordChecksum, TEXTDISP_PrimaryGroupRecordLength, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, NEWGRID_RefreshStateFlag
+;   CTASKS_PrimaryOiWritePendingFlag, CTASKS_SecondaryOiWritePendingFlag, CTASKS_PendingPrimaryOiDiskId, CTASKS_PendingSecondaryOiDiskId, TEXTDISP_SecondaryGroupPresentFlag, TEXTDISP_SecondaryGroupEntryCount, TEXTDISP_PrimaryGroupEntryCount, TEXTDISP_PrimaryGroupHeaderCode, TEXTDISP_PrimaryGroupRecordChecksum, TEXTDISP_PrimaryGroupRecordLength, TEXTDISP_PrimaryGroupPresentFlag, TEXTDISP_GroupMutationState, TEXTDISP_SecondaryGroupRecordChecksum, TEXTDISP_SecondaryGroupRecordLength, NEWGRID_RefreshStateFlag
 ; DESC:
 ;   Clears existing mode-1 group via parser helper, then when a secondary group is
 ;   present moves all secondary entry/title pointers into primary tables, copies group
@@ -2814,10 +2814,10 @@ ESQDISP_PromoteSecondaryGroupToPrimary:
     MOVE.W  #3,TEXTDISP_GroupMutationState
 
 .sync_task_state_and_reindex:
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1B92,DATA_CTASKS_BSS_BYTE_1B91
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1B90,DATA_CTASKS_BSS_BYTE_1B8F
-    MOVE.B  #$ff,DATA_CTASKS_BSS_BYTE_1B92
-    CLR.B   DATA_CTASKS_BSS_BYTE_1B90
+    MOVE.B  CTASKS_PendingSecondaryOiDiskId,CTASKS_PendingPrimaryOiDiskId
+    MOVE.B  CTASKS_SecondaryOiWritePendingFlag,CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  #$ff,CTASKS_PendingSecondaryOiDiskId
+    CLR.B   CTASKS_SecondaryOiWritePendingFlag
     JSR     ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(PC)
 
     MOVEM.L (A7)+,D7/A2-A3

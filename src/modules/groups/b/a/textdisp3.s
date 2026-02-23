@@ -847,7 +847,7 @@ TEXTDISP_DrawInsetRectFrame:
 ; CALLS:
 ;   TEXTDISP_FindAliasIndexByName, STRING_AppendAtNull
 ; READS:
-;   TEXTDISP_AliasPtrTable, DATA_TEXTDISP_CONST_BYTE_2157
+;   TEXTDISP_AliasPtrTable, TEXTDISP_CenterAlignToken
 ; DESC:
 ;   Writes a short display name to outPtr, using alias table when available.
 ; NOTES:
@@ -905,7 +905,7 @@ TEXTDISP_BuildEntryShortName:
     TST.L   D6
     BEQ.S   .return
 
-    LEA     DATA_TEXTDISP_CONST_BYTE_2157,A0
+    LEA     TEXTDISP_CenterAlignToken,A0
     MOVEA.L A2,A1
 
 .prepend_align:
@@ -1839,7 +1839,7 @@ TEXTDISP_SelectGroupAndEntry:
 ; CALLS:
 ;   UNKNOWN_JMPTBL_ESQ_WildcardMatch, TEXTDISP_ShouldOpenEditorForEntry
 ; READS:
-;   TEXTDISP_ActiveGroupId, TEXTDISP_PrimaryGroupEntryCount/222F, TEXTDISP_PrimaryEntryPtrTable/2235/2236/2237, DATA_TEXTDISP_TAG_PPV_2159/215A/215B/215C
+;   TEXTDISP_ActiveGroupId, TEXTDISP_PrimaryGroupEntryCount/222F, TEXTDISP_PrimaryEntryPtrTable/2235/2236/2237, TEXTDISP_Tag_PPV, TEXTDISP_Tag_SBE, TEXTDISP_Tag_SPORTS, TEXTDISP_Tag_SPT_Filter
 ; WRITES:
 ;   TEXTDISP_SbeFilterActiveFlag, TEXTDISP_FindModeActiveFlag, TEXTDISP_CandidateIndexList
 ; DESC:
@@ -1856,7 +1856,7 @@ TEXTDISP_BuildMatchIndexList:
     BEQ.W   .return
 
     MOVE.L  8(A5),-(A7)
-    PEA     DATA_TEXTDISP_TAG_PPV_2159
+    PEA     TEXTDISP_Tag_PPV
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -1868,7 +1868,7 @@ TEXTDISP_BuildMatchIndexList:
 
 .check_sbe_pattern:
     MOVE.L  8(A5),-(A7)
-    PEA     DATA_TEXTDISP_TAG_SBE_215A
+    PEA     TEXTDISP_Tag_SBE
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -1885,7 +1885,7 @@ TEXTDISP_BuildMatchIndexList:
 
 .check_sports_pattern:
     MOVE.L  8(A5),-(A7)
-    PEA     DATA_TEXTDISP_TAG_SPORTS_215B
+    PEA     TEXTDISP_Tag_SPORTS
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     TST.B   D0
@@ -1894,7 +1894,7 @@ TEXTDISP_BuildMatchIndexList:
     EXT.W   D1
     EXT.L   D1
     MOVE.L  8(A5),(A7)
-    PEA     DATA_TEXTDISP_TAG_SPT_215C
+    PEA     TEXTDISP_Tag_SPT_Filter
     MOVE.W  D1,-16(A5)
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -1906,7 +1906,7 @@ TEXTDISP_BuildMatchIndexList:
     MOVE.L  A0,8(A5)
 
 .ensure_filter_pattern:
-    LEA     DATA_TEXTDISP_TAG_FIND1_215E,A0
+    LEA     TEXTDISP_Tag_FIND1,A0
     MOVEA.L 8(A5),A1
 
 .compare_find_prefix:
@@ -2073,7 +2073,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.B  D0,TEXTDISP_BannerFallbackValidFlag
     MOVE.B  D0,TEXTDISP_BannerSelectedValidFlag
     MOVE.B  #$64,TEXTDISP_BannerCharSelected
-    LEA     DATA_TEXTDISP_TAG_SPT_2160,A0
+    LEA     TEXTDISP_Tag_SPT_Select,A0
     MOVEA.L A2,A1
     MOVE.B  D0,-23(A5)
 

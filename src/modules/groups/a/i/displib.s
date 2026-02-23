@@ -112,7 +112,7 @@ DISPLIB_FindPreviousValidEntryIndex_Return:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_MATH_DivS32, GROUP_AG_JMPTBL_MEMORY_AllocateMemory, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_DISPLIB_C_1, Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, DATA_DISKIO2_SPACE_VALUE_1CE4, DATA_DISKIO2_SPACE_VALUE_1CE5, MEMF_PUBLIC
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, Global_STR_DISPLIB_C_1, Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, DISPLIB_STR_InlineAlignPadCharCenter, DISPLIB_STR_InlineAlignPadCharRight, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -152,7 +152,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     BNE.S   .lab_0555
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_DISKIO2_SPACE_VALUE_1CE4,A0
+    LEA     DISPLIB_STR_InlineAlignPadCharCenter,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
 
@@ -177,7 +177,7 @@ DISPLIB_ApplyInlineAlignmentPadding:
     BNE.S   .branch
 
     MOVEA.L Global_REF_RASTPORT_1,A1
-    LEA     DATA_DISKIO2_SPACE_VALUE_1CE5,A0
+    LEA     DISPLIB_STR_InlineAlignPadCharRight,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
 

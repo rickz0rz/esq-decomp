@@ -33,7 +33,7 @@
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
     MOVE.L  D7,-(A7)
-    PEA     DATA_DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD_1BED
+    PEA     DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -42,28 +42,28 @@
     MOVE.B  D0,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_FMT_ETID_PCT_LD_PCT_02LX_1BEE
+    PEA     DISKIO_FMT_ETID_PCT_LD_PCT_02LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     1(A3),A0
     MOVE.L  A0,(A7)
-    PEA     DATA_DISKIO_FMT_CHAN_NUM_PCT_S_1BEF
+    PEA     DISKIO_FMT_CHAN_NUM_PCT_S
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A3),A0
     MOVE.L  A0,(A7)
-    PEA     DATA_DISKIO_FMT_SOURCE_PCT_S_1BF0
+    PEA     DISKIO_FMT_SOURCE_PCT_S
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     19(A3),A0
     MOVE.L  A0,(A7)
-    PEA     DATA_DISKIO_FMT_CALL_LET_PCT_S_1BF1
+    PEA     DISKIO_FMT_CALL_LET_PCT_S
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
     MOVE.B  27(A3),D0
     MOVE.L  D0,(A7)
-    PEA     DATA_DISKIO_FMT_ATTR_PCT_02LX_1BF2
+    PEA     DISKIO_FMT_ATTR_PCT_02LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     32(A7),A7
@@ -71,7 +71,7 @@
     CMP.B   27(A3),D0
     BNE.S   DISKIO1_AppendAttrFlagHiliteSrc
 
-    PEA     DATA_DISKIO_STR_NONE_1BF3
+    PEA     DISKIO_STR_NONE_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -87,7 +87,7 @@
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_HILITE_SRC_1BF4
+;   DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -99,7 +99,7 @@ DISKIO1_AppendAttrFlagHiliteSrc:
     BTST    #1,27(A3)
     BEQ.S   DISKIO1_AppendAttrFlagSummarySrc
 
-    PEA     DATA_DISKIO_STR_HILITE_SRC_1BF4
+    PEA     DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -115,7 +115,7 @@ DISKIO1_AppendAttrFlagHiliteSrc:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_SUM_SRC_1BF5
+;   DISKIO_STR_SUM_SRC_CompactSourceAttrFlags
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -127,7 +127,7 @@ DISKIO1_AppendAttrFlagSummarySrc:
     BTST    #2,27(A3)
     BEQ.S   DISKIO1_AppendAttrFlagVideoTagDisable
 
-    PEA     DATA_DISKIO_STR_SUM_SRC_1BF5
+    PEA     DISKIO_STR_SUM_SRC_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -143,7 +143,7 @@ DISKIO1_AppendAttrFlagSummarySrc:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_VIDEO_TAG_DISABLE_1BF6
+;   DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -155,7 +155,7 @@ DISKIO1_AppendAttrFlagVideoTagDisable:
     BTST    #3,27(A3)
     BEQ.S   DISKIO1_AppendAttrFlagPpvSrc
 
-    PEA     DATA_DISKIO_STR_VIDEO_TAG_DISABLE_1BF6
+    PEA     DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -171,7 +171,7 @@ DISKIO1_AppendAttrFlagVideoTagDisable:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_PPV_SRC_1BF7
+;   DISKIO_STR_PPV_SRC_CompactSourceAttrFlags
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -183,7 +183,7 @@ DISKIO1_AppendAttrFlagPpvSrc:
     BTST    #4,27(A3)
     BEQ.S   DISKIO1_AppendAttrFlagDitto
 
-    PEA     DATA_DISKIO_STR_PPV_SRC_1BF7
+    PEA     DISKIO_STR_PPV_SRC_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -199,7 +199,7 @@ DISKIO1_AppendAttrFlagPpvSrc:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_DITTO_1BF8
+;   DISKIO_STR_DITTO_CompactSourceAttrFlags
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -211,7 +211,7 @@ DISKIO1_AppendAttrFlagDitto:
     BTST    #5,27(A3)
     BEQ.S   DISKIO1_AppendAttrFlagAltHiliteSrc
 
-    PEA     DATA_DISKIO_STR_DITTO_1BF8
+    PEA     DISKIO_STR_DITTO_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -227,7 +227,7 @@ DISKIO1_AppendAttrFlagDitto:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_ALTHILITESRC_1BF9
+;   DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -239,7 +239,7 @@ DISKIO1_AppendAttrFlagAltHiliteSrc:
     BTST    #6,27(A3)
     BEQ.S   DISKIO1_AppendAttrFlagBit7
 
-    PEA     DATA_DISKIO_STR_ALTHILITESRC_1BF9
+    PEA     DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -255,7 +255,7 @@ DISKIO1_AppendAttrFlagAltHiliteSrc:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_0X80_1BFA
+;   DISKIO_STR_0X80
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -267,7 +267,7 @@ DISKIO1_AppendAttrFlagBit7:
     BTST    #7,27(A3)
     BEQ.S   DISKIO1_FormatTimeSlotMaskFlags
 
-    PEA     DATA_DISKIO_STR_0X80_1BFA
+    PEA     DISKIO_STR_0X80
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -283,7 +283,7 @@ DISKIO1_AppendAttrFlagBit7:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_VALUE_1BFB, DATA_DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX_1BFC
+;   DISKIO_STR_AttrFlagsCloseParenNewline_A, DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -292,7 +292,7 @@ DISKIO1_AppendAttrFlagBit7:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO1_FormatTimeSlotMaskFlags:
-    PEA     DATA_DISKIO_STR_VALUE_1BFB
+    PEA     DISKIO_STR_AttrFlagsCloseParenNewline_A
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -315,7 +315,7 @@ DISKIO1_FormatTimeSlotMaskFlags:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  48(A7),-(A7)
-    PEA     DATA_DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX_1BFC
+    PEA     DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
@@ -363,7 +363,7 @@ DISKIO1_AccumulateTimeSlotMaskSum:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_NONE_1BFD
+;   DISKIO_STR_NONE_TimeSlotMaskAllSet
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -375,7 +375,7 @@ DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet:
     CMPI.L  #$5fa,D5
     BNE.S   DISKIO1_AppendTimeSlotMaskOffAirIfEmpty
 
-    PEA     DATA_DISKIO_STR_NONE_1BFD
+    PEA     DISKIO_STR_NONE_TimeSlotMaskAllSet
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -421,7 +421,7 @@ DISKIO1_AppendTimeSlotMaskOffAirIfEmpty:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_VALUE_1BFF
+;   DISKIO_STR_TimeSlotListOpenParen
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -430,7 +430,7 @@ DISKIO1_AppendTimeSlotMaskOffAirIfEmpty:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO1_AppendTimeSlotMaskValueHeader:
-    PEA     DATA_DISKIO_STR_VALUE_1BFF
+    PEA     DISKIO_STR_TimeSlotListOpenParen
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -447,7 +447,7 @@ DISKIO1_AppendTimeSlotMaskValueHeader:
 ; CALLS:
 ;   ESQ_TestBit1Based, GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   Global_REF_STR_CLOCK_FORMAT, DATA_DISKIO_FMT_PCT_S_1C00
+;   Global_REF_STR_CLOCK_FORMAT, DISKIO_FMT_PCT_S_TimeSlotMaskEntry
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -479,7 +479,7 @@ DISKIO1_AppendTimeSlotMaskSelectedTimes:
     MOVEA.L Global_REF_STR_CLOCK_FORMAT,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
-    PEA     DATA_DISKIO_FMT_PCT_S_1C00
+    PEA     DISKIO_FMT_PCT_S_TimeSlotMaskEntry
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -518,7 +518,7 @@ DISKIO1_AdvanceTimeSlotBitIndex:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_VALUE_1C01
+;   DISKIO_STR_TimeSlotListCloseParenNewline
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -527,7 +527,7 @@ DISKIO1_AdvanceTimeSlotBitIndex:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO1_AppendTimeSlotMaskValueTerminator:
-    PEA     DATA_DISKIO_STR_VALUE_1C01
+    PEA     DISKIO_STR_TimeSlotListCloseParenNewline
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -543,7 +543,7 @@ DISKIO1_AppendTimeSlotMaskValueTerminator:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02_1C02
+;   DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -572,7 +572,7 @@ DISKIO1_FormatBlackoutMaskFlags:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  48(A7),-(A7)
-    PEA     DATA_DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02_1C02
+    PEA     DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
@@ -620,7 +620,7 @@ DISKIO1_AccumulateBlackoutMaskSum:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_NONE_1C03
+;   DISKIO_STR_NONE_BlackoutMaskEmpty
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -632,7 +632,7 @@ DISKIO1_AppendBlackoutMaskNoneIfEmpty:
     TST.L   D5
     BNE.S   DISKIO1_AppendBlackoutMaskAllIfAllBitsSet
 
-    PEA     DATA_DISKIO_STR_NONE_1C03
+    PEA     DISKIO_STR_NONE_BlackoutMaskEmpty
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -649,7 +649,7 @@ DISKIO1_AppendBlackoutMaskNoneIfEmpty:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_BLACKED_OUT_1C04
+;   DISKIO_STR_BLACKED_OUT
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -661,7 +661,7 @@ DISKIO1_AppendBlackoutMaskAllIfAllBitsSet:
     CMPI.L  #$5fa,D5
     BNE.S   DISKIO1_AppendBlackoutMaskValueHeader
 
-    PEA     DATA_DISKIO_STR_BLACKED_OUT_1C04
+    PEA     DISKIO_STR_BLACKED_OUT
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -678,7 +678,7 @@ DISKIO1_AppendBlackoutMaskAllIfAllBitsSet:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_VALUE_1C05
+;   DISKIO_STR_BlackoutListOpenParen
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -687,7 +687,7 @@ DISKIO1_AppendBlackoutMaskAllIfAllBitsSet:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO1_AppendBlackoutMaskValueHeader:
-    PEA     DATA_DISKIO_STR_VALUE_1C05
+    PEA     DISKIO_STR_BlackoutListOpenParen
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -704,7 +704,7 @@ DISKIO1_AppendBlackoutMaskValueHeader:
 ; CALLS:
 ;   ESQ_TestBit1Based, GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   Global_REF_STR_CLOCK_FORMAT, DATA_DISKIO_FMT_PCT_S_1C06
+;   Global_REF_STR_CLOCK_FORMAT, DISKIO_FMT_PCT_S_BlackoutMaskEntry
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -736,7 +736,7 @@ DISKIO1_AppendBlackoutMaskSelectedTimes:
     MOVEA.L Global_REF_STR_CLOCK_FORMAT,A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
-    PEA     DATA_DISKIO_FMT_PCT_S_1C06
+    PEA     DISKIO_FMT_PCT_S_BlackoutMaskEntry
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -775,7 +775,7 @@ DISKIO1_AdvanceBlackoutBitIndex:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_DISKIO_STR_VALUE_1C07
+;   DISKIO_STR_BlackoutListCloseParenNewline
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -784,7 +784,7 @@ DISKIO1_AdvanceBlackoutBitIndex:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 DISKIO1_AppendBlackoutMaskValueTerminator:
-    PEA     DATA_DISKIO_STR_VALUE_1C07
+    PEA     DISKIO_STR_BlackoutListCloseParenNewline
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -800,7 +800,7 @@ DISKIO1_AppendBlackoutMaskValueTerminator:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DISKIO1_DumpDefaultCoiInfoBlock_Return, DATA_DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_1C08, DATA_DISKIO_FMT_COI_DASH_PTR_PCT_08LX_1C09, DATA_DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON_1C0A, DATA_DISKIO_STR_DEF_DEFAULT_1C0B, DATA_DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY_1C0C, DATA_DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER_1C0D, DATA_DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE_1C0E, DATA_DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE_1C0F, DATA_DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT_1C10, DATA_DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD_1C11, DATA_DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX_1C12
+;   DISKIO1_DumpDefaultCoiInfoBlock_Return, DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump, DISKIO_FMT_COI_DASH_PTR_PCT_08LX, DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON, DISKIO_STR_DEF_DEFAULT, DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY, DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER, DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE, DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE, DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT, DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD, DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -823,12 +823,12 @@ DISKIO1_DumpDefaultCoiInfoBlock:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_1C08
+    PEA     DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.L  48(A3),D0
     MOVE.L  D0,(A7)
-    PEA     DATA_DISKIO_FMT_COI_DASH_PTR_PCT_08LX_1C09
+    PEA     DISKIO_FMT_COI_DASH_PTR_PCT_08LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
@@ -836,58 +836,58 @@ DISKIO1_DumpDefaultCoiInfoBlock:
     BEQ.W   DISKIO1_DumpDefaultCoiInfoBlock_Return
 
     MOVE.L  48(A3),-14(A5)
-    PEA     DATA_DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON_1C0A
+    PEA     DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.L  -14(A5),(A7)
-    PEA     DATA_DISKIO_STR_DEF_DEFAULT_1C0B
+    PEA     DISKIO_STR_DEF_DEFAULT
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 4(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
-    PEA     DATA_DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY_1C0C
+    PEA     DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 8(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
-    PEA     DATA_DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER_1C0D
+    PEA     DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 12(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
-    PEA     DATA_DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE_1C0E
+    PEA     DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 16(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
-    PEA     DATA_DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE_1C0F
+    PEA     DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A1
     MOVEA.L 20(A1),A0
     MOVE.L  A0,(A7)
     MOVE.L  A0,-(A7)
-    PEA     DATA_DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT_1C10
+    PEA     DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A0
     MOVE.W  36(A0),D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    PEA     DATA_DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD_1C11
+    PEA     DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEA.L -14(A5),A0
     MOVE.L  38(A0),(A7)
-    PEA     DATA_DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX_1C12
+    PEA     DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     56(A7),A7
@@ -929,7 +929,7 @@ DISKIO1_DumpDefaultCoiInfoBlock_Return:
 ; CALLS:
 ;   GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramSourceRecordVerbose_Return, DATA_DISKIO_FMT_CHANNEL_LINE_UP_PCT_D_1C13, DATA_DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT_1C14, DATA_DISKIO_STR_ATTR_1C15, DATA_DISKIO_STR_NONE_1C16, DATA_DISKIO_STR_HILITE_SRC_1C17, DATA_DISKIO_STR_SUM_SRC_1C18, DATA_DISKIO_STR_VIDEO_TAG_DISABLE_1C19, DATA_DISKIO_STR_PPV_SRC_1C1A, DATA_DISKIO_STR_DITTO_1C1B, DATA_DISKIO_STR_ALTHILITESRC_1C1C, DATA_DISKIO_STR_STEREO_1C1D, DATA_DISKIO_STR_VALUE_1C1E, DATA_DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC_1C1F, DATA_DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X__1C20, DATA_DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_1C21, DATA_DISKIO_FMT_PROGRAM_INFO_PCT_LD_1C22, DATA_DISKIO_FMT_PROG_SRCE_PCT_S_1C23, DATA_DISKIO_STR_1C24, DATA_DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX_1C25, DATA_DISKIO_STR_NONE_1C26, DATA_DISKIO_STR_MOVIE_1C27, DATA_DISKIO_STR_ALTHILITE_PROG_1C28, DATA_DISKIO_STR_TAG_PROG_1C29, DATA_DISKIO_STR_0X10_1C2A, DATA_DISKIO_STR_0X20_1C2B, DATA_DISKIO_STR_0X40_1C2C, DATA_DISKIO_STR_PREV_DAYS_DATA_1C2D, DATA_DISKIO_STR_VALUE_1C2E, DATA_DISKIO_FMT_PCT_S_1C2F, DATA_DISKIO_TAG_NULL_1C30, DATA_DISKIO_STR_1C31, branch_18, branch_7
+;   Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramSourceRecordVerbose_Return, DISKIO_FMT_CHANNEL_LINE_UP_PCT_D, DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT, DISKIO_STR_ATTR, DISKIO_STR_NONE_VerboseSourceAttrFlags, DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags, DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags, DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags, DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags, DISKIO_STR_DITTO_VerboseSourceAttrFlags, DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags, DISKIO_STR_STEREO, DISKIO_STR_ProgramAttrCloseParenNewline, DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC, DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_, DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord, DISKIO_FMT_PROGRAM_INFO_PCT_LD, DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo, DISKIO_STR_NewlineOnly_A, DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX, DISKIO_STR_NONE_VerboseProgramAttrFlags, DISKIO_STR_MOVIE_VerboseProgramAttrFlags, DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags, DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags, DISKIO_STR_0X10, DISKIO_STR_0X20_VerboseProgramAttrFlags, DISKIO_STR_0X40, DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags, DISKIO_STR_ProgramAttrCloseAndProgPrefix, DISKIO_FMT_PCT_S_VerboseProgramStringLine, DISKIO_STR_NullLine, DISKIO_STR_NewlineOnly_B, branch_18, branch_7
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -942,7 +942,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVEA.L 32(A7),A3
     MOVE.L  36(A7),D7
     MOVE.L  D7,-(A7)
-    PEA     DATA_DISKIO_FMT_CHANNEL_LINE_UP_PCT_D_1C13
+    PEA     DISKIO_FMT_CHANNEL_LINE_UP_PCT_D
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -954,10 +954,10 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT_1C14
+    PEA     DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     DATA_DISKIO_STR_ATTR_1C15
+    PEA     DISKIO_STR_ATTR
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
@@ -965,7 +965,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     CMP.B   27(A3),D0
     BNE.S   .lab_043A
 
-    PEA     DATA_DISKIO_STR_NONE_1C16
+    PEA     DISKIO_STR_NONE_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -974,7 +974,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #1,27(A3)
     BEQ.S   .lab_043B
 
-    PEA     DATA_DISKIO_STR_HILITE_SRC_1C17
+    PEA     DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -983,7 +983,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #2,27(A3)
     BEQ.S   .branch
 
-    PEA     DATA_DISKIO_STR_SUM_SRC_1C18
+    PEA     DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -992,7 +992,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #3,27(A3)
     BEQ.S   .branch_1
 
-    PEA     DATA_DISKIO_STR_VIDEO_TAG_DISABLE_1C19
+    PEA     DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1001,7 +1001,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #4,27(A3)
     BEQ.S   .branch_2
 
-    PEA     DATA_DISKIO_STR_PPV_SRC_1C1A
+    PEA     DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1010,7 +1010,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #5,27(A3)
     BEQ.S   .branch_3
 
-    PEA     DATA_DISKIO_STR_DITTO_1C1B
+    PEA     DISKIO_STR_DITTO_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1019,7 +1019,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #6,27(A3)
     BEQ.S   .branch_4
 
-    PEA     DATA_DISKIO_STR_ALTHILITESRC_1C1C
+    PEA     DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1028,13 +1028,13 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #7,27(A3)
     BEQ.S   .branch_5
 
-    PEA     DATA_DISKIO_STR_STEREO_1C1D
+    PEA     DISKIO_STR_STEREO
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
 
 .branch_5:
-    PEA     DATA_DISKIO_STR_VALUE_1C1E
+    PEA     DISKIO_STR_ProgramAttrCloseParenNewline
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1055,7 +1055,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC_1C1F
+    PEA     DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1076,7 +1076,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X__1C20
+    PEA     DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1093,7 +1093,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_1C21
+    PEA     DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     72(A7),A7
@@ -1106,18 +1106,18 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7
     MOVE.L  D7,-(A7)
-    PEA     DATA_DISKIO_FMT_PROGRAM_INFO_PCT_LD_1C22
+    PEA     DISKIO_FMT_PROGRAM_INFO_PCT_LD
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVE.L  A3,(A7)
-    PEA     DATA_DISKIO_FMT_PROG_SRCE_PCT_S_1C23
+    PEA     DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
     MOVE.L  A3,D0
     BNE.S   .branch_6
 
-    PEA     DATA_DISKIO_STR_1C24
+    PEA     DISKIO_STR_NewlineOnly_A
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1140,7 +1140,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D0,-(A7)
     MOVE.L  (A0),-(A7)
     MOVE.L  D6,-(A7)
-    PEA     DATA_DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX_1C25
+    PEA     DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     16(A7),A7
@@ -1148,7 +1148,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     CMP.B   7(A3,D6.L),D0
     BNE.S   .branch_8
 
-    PEA     DATA_DISKIO_STR_NONE_1C26
+    PEA     DISKIO_STR_NONE_VerboseProgramAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1157,7 +1157,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #1,7(A3,D6.L)
     BEQ.S   .branch_9
 
-    PEA     DATA_DISKIO_STR_MOVIE_1C27
+    PEA     DISKIO_STR_MOVIE_VerboseProgramAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1166,7 +1166,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #2,7(A3,D6.L)
     BEQ.S   .branch_10
 
-    PEA     DATA_DISKIO_STR_ALTHILITE_PROG_1C28
+    PEA     DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1175,7 +1175,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #3,7(A3,D6.L)
     BEQ.S   .branch_11
 
-    PEA     DATA_DISKIO_STR_TAG_PROG_1C29
+    PEA     DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1184,7 +1184,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #4,7(A3,D6.L)
     BEQ.S   .branch_12
 
-    PEA     DATA_DISKIO_STR_0X10_1C2A
+    PEA     DISKIO_STR_0X10
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1193,7 +1193,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #5,7(A3,D6.L)
     BEQ.S   .branch_13
 
-    PEA     DATA_DISKIO_STR_0X20_1C2B
+    PEA     DISKIO_STR_0X20_VerboseProgramAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1202,7 +1202,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #6,7(A3,D6.L)
     BEQ.S   .branch_14
 
-    PEA     DATA_DISKIO_STR_0X40_1C2C
+    PEA     DISKIO_STR_0X40
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1211,13 +1211,13 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #7,7(A3,D6.L)
     BEQ.S   .branch_15
 
-    PEA     DATA_DISKIO_STR_PREV_DAYS_DATA_1C2D
+    PEA     DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
 
 .branch_15:
-    PEA     DATA_DISKIO_STR_VALUE_1C2E
+    PEA     DISKIO_STR_ProgramAttrCloseAndProgPrefix
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1227,14 +1227,14 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BEQ.S   .branch_16
 
     MOVE.L  56(A3,D0.L),-(A7)
-    PEA     DATA_DISKIO_FMT_PCT_S_1C2F
+    PEA     DISKIO_FMT_PCT_S_VerboseProgramStringLine
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .branch_17
 
 .branch_16:
-    PEA     DATA_DISKIO_TAG_NULL_1C30
+    PEA     DISKIO_STR_NullLine
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1244,7 +1244,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
     BRA.W   .branch_7
 
 .branch_18:
-    PEA     DATA_DISKIO_STR_1C31
+    PEA     DISKIO_STR_NewlineOnly_B
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1262,7 +1262,7 @@ DISKIO1_DumpProgramSourceRecordVerbose:
 ; CALLS:
 ;   GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch, GROUP_AG_JMPTBL_STRING_CopyPadNul, GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramInfoAttrTable_Return, DATA_DISKIO_FMT_PROGRAM_INFO_PCT_D_1C32, DATA_DISKIO_STR_1C33, DATA_DISKIO_FMT_PROG_SRCE_PCT_S_1C34, DATA_DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR_1C35, DATA_DISKIO_STR_NONE_1C36, DATA_DISKIO_STR_MOVIE_1C37, DATA_DISKIO_STR_ALTHILITE_PROG_1C38, DATA_DISKIO_STR_TAG_PROG_1C39, DATA_DISKIO_STR_SPORTSPROG_1C3A, DATA_DISKIO_STR_0X20_1C3B, DATA_DISKIO_STR_REPEATPROG_1C3C, DATA_DISKIO_STR_PREV_DAYS_DATA_1C3D, DATA_DISKIO_STR_VALUE_1C3E, DATA_DISKIO_TAG_NONE_1C3F, DATA_DISKIO_STR_VALUE_1C40, branch, fc, lab_045E
+;   Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramInfoAttrTable_Return, DISKIO_FMT_PROGRAM_INFO_PCT_D, DISKIO_STR_NewlineOnly_C, DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable, DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR, DISKIO_STR_NONE_ProgramInfoAttrTable, DISKIO_STR_MOVIE_ProgramInfoAttrTable, DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable, DISKIO_STR_TAG_PROG_ProgramInfoAttrTable, DISKIO_STR_SPORTSPROG, DISKIO_STR_0X20_ProgramInfoAttrTable, DISKIO_STR_REPEATPROG, DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable, DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix, DISKIO_TAG_NONE, DISKIO_FMT_ProgramStringSuffixWithTypeFields, branch, fc, lab_045E
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1281,21 +1281,21 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     MOVEA.L 8(A5),A3
     MOVE.L  12(A5),D7
     MOVE.L  D7,-(A7)
-    PEA     DATA_DISKIO_FMT_PROGRAM_INFO_PCT_D_1C32
+    PEA     DISKIO_FMT_PROGRAM_INFO_PCT_D
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  A3,D0
     BNE.S   .lab_0450
 
-    PEA     DATA_DISKIO_STR_1C33
+    PEA     DISKIO_STR_NewlineOnly_C
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     BRA.W   DISKIO1_DumpProgramInfoAttrTable_Return
 
 .lab_0450:
     MOVE.L  A3,-(A7)
-    PEA     DATA_DISKIO_FMT_PROG_SRCE_PCT_S_1C34
+    PEA     DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -1323,7 +1323,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     MOVE.L  D6,-(A7)
-    PEA     DATA_DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR_1C35
+    PEA     DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -1331,7 +1331,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     CMP.B   7(A3,D6.L),D0
     BNE.S   .branch_1
 
-    PEA     DATA_DISKIO_STR_NONE_1C36
+    PEA     DISKIO_STR_NONE_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1340,7 +1340,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #1,7(A3,D6.L)
     BEQ.S   .branch_2
 
-    PEA     DATA_DISKIO_STR_MOVIE_1C37
+    PEA     DISKIO_STR_MOVIE_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1349,7 +1349,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #2,7(A3,D6.L)
     BEQ.S   .branch_3
 
-    PEA     DATA_DISKIO_STR_ALTHILITE_PROG_1C38
+    PEA     DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1358,7 +1358,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #3,7(A3,D6.L)
     BEQ.S   .branch_4
 
-    PEA     DATA_DISKIO_STR_TAG_PROG_1C39
+    PEA     DISKIO_STR_TAG_PROG_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1367,7 +1367,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #4,7(A3,D6.L)
     BEQ.S   .branch_5
 
-    PEA     DATA_DISKIO_STR_SPORTSPROG_1C3A
+    PEA     DISKIO_STR_SPORTSPROG
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1376,7 +1376,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #5,7(A3,D6.L)
     BEQ.S   .branch_6
 
-    PEA     DATA_DISKIO_STR_0X20_1C3B
+    PEA     DISKIO_STR_0X20_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1385,7 +1385,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #6,7(A3,D6.L)
     BEQ.S   .branch_7
 
-    PEA     DATA_DISKIO_STR_REPEATPROG_1C3C
+    PEA     DISKIO_STR_REPEATPROG
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1394,13 +1394,13 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BTST    #7,7(A3,D6.L)
     BEQ.S   .branch_8
 
-    PEA     DATA_DISKIO_STR_PREV_DAYS_DATA_1C3D
+    PEA     DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
 
 .branch_8:
-    PEA     DATA_DISKIO_STR_VALUE_1C3E
+    PEA     DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1418,7 +1418,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     BRA.S   .branch_11
 
 .branch_9:
-    LEA     DATA_DISKIO_TAG_NONE_1C3F,A0
+    LEA     DISKIO_TAG_NONE,A0
     LEA     -45(A5),A1
 
 .branch_10:
@@ -1444,7 +1444,7 @@ DISKIO1_DumpProgramSourceRecordVerbose_Return:
     MOVE.L  D2,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DISKIO_STR_VALUE_1C40
+    PEA     DISKIO_FMT_ProgramStringSuffixWithTypeFields
     JSR     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     16(A7),A7

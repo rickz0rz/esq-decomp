@@ -51,7 +51,7 @@
 ; READS:
 ;   Global_PTR_WORK_BUFFER, WDISP_CharClassTable (char class table), many LAB_205* globals, PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
 ; WRITES:
-;   DATA_P_TYPE_BSS_LONG_2059-2064/206A..., TEXTDISP_AliasCount, DATA_PARSEINI_BSS_LONG_2073, PARSEINI_CurrentWeatherBlockPtr, PARSEINI_CurrentRangeTableIndex, DATA_P_TYPE_BSS_LONG_205A-C, etc.
+;   P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, PARSEINI_CurrentRangeTableIndex, P_TYPE_WeatherCurrentMsgPtr-C, etc.
 ; DESC:
 ;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
 ;   section headers and key/value pairs, and dispatches to per-section handlers.
@@ -120,7 +120,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     CLR.B   (A0)
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_STR_QTABLE_205D
+    PEA     P_TYPE_STR_QTABLE
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -134,7 +134,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .check_section_2:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_TAG_BACKDROP_205E
+    PEA     P_TYPE_TAG_BACKDROP
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -148,7 +148,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .check_section_3:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_TAG_GRADIENT_205F
+    PEA     P_TYPE_TAG_GRADIENT
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -168,7 +168,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .check_section_4:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_TAG_TEXTADS_2060
+    PEA     P_TYPE_TAG_TEXTADS
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -182,7 +182,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .check_section_5:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_TAG_BRUSH_2061
+    PEA     P_TYPE_TAG_BRUSH
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -196,7 +196,7 @@ PARSEINI_ParseIniBufferAndDispatch:
 .check_section_6:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_TAG_BANNER_2062
+    PEA     P_TYPE_TAG_BANNER
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -205,13 +205,13 @@ PARSEINI_ParseIniBufferAndDispatch:
     BNE.S   .check_section_7
 
     MOVEQ   #6,D7
-    CLR.L   DATA_P_TYPE_BSS_LONG_2059
+    CLR.L   P_TYPE_WeatherBrushRefreshPendingFlag
     BRA.W   .next_line
 
 .check_section_7:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_STR_DEFAULT_TEXT_2063
+    PEA     P_TYPE_STR_DEFAULT_TEXT
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -220,28 +220,28 @@ PARSEINI_ParseIniBufferAndDispatch:
     BNE.S   .check_section_8
 
     MOVEQ   #7,D7
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205A,-(A7)
+    MOVE.L  P_TYPE_WeatherCurrentMsgPtr,-(A7)
     MOVE.L  Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205A
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205B,(A7)
-    MOVE.L  DATA_SCRIPT_CONST_LONG_20B0,-(A7)
+    MOVE.L  D0,P_TYPE_WeatherCurrentMsgPtr
+    MOVE.L  P_TYPE_WeatherForecastMsgPtr,(A7)
+    MOVE.L  SCRIPT_PtrNoForecastWeatherData,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205B
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205C,(A7)
-    MOVE.L  DATA_SCRIPT_CONST_LONG_20B2,-(A7)
+    MOVE.L  D0,P_TYPE_WeatherForecastMsgPtr
+    MOVE.L  P_TYPE_WeatherBottomLineMsgPtr,(A7)
+    MOVE.L  SCRIPT_PtrWeatherDataAvailabilityDisclaimer,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205C
+    MOVE.L  D0,P_TYPE_WeatherBottomLineMsgPtr
     BRA.W   .next_line
 
 .check_section_8:
     MOVEA.L -8(A5),A0
     ADDQ.L  #1,A0
-    PEA     DATA_P_TYPE_STR_SOURCE_CONFIG_2064
+    PEA     P_TYPE_STR_SOURCE_CONFIG
     MOVE.L  A0,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -308,7 +308,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.S   .section1_skip_value_ws
 
 .section1_cut_marker:
-    PEA     DATA_P_TYPE_SPACE_VALUE_2065
+    PEA     PARSEINI_DelimSpaceTab_Section1
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -456,7 +456,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.S   .section2_skip_value_ws
 
 .section2_cut_marker:
-    PEA     DATA_PARSEINI_SPACE_VALUE_2067
+    PEA     PARSEINI_DelimSpaceTab_Section2
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -544,7 +544,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.S   .section4_5_skip_value_ws
 
 .section4_5_cut_marker:
-    PEA     DATA_PARSEINI_SPACE_VALUE_2068
+    PEA     PARSEINI_DelimSpaceTab_Section4_5
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -626,7 +626,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.S   .section6_skip_value_ws
 
 .section6_cut_marker:
-    PEA     DATA_PARSEINI_SPACE_VALUE_2069
+    PEA     PARSEINI_DelimSpaceTab_Section6
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -705,7 +705,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.S   .section7_skip_value_ws
 
 .section7_cut_marker:
-    PEA     DATA_PARSEINI_SPACE_VALUE_206A
+    PEA     PARSEINI_DelimSpaceTab_Section7
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -784,7 +784,7 @@ PARSEINI_ParseIniBufferAndDispatch:
     BRA.S   .section8_skip_value_ws
 
 .section8_cut_marker:
-    PEA     DATA_PARSEINI_SPACE_VALUE_206B
+    PEA     PARSEINI_DelimSpaceTab_Section8
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -919,7 +919,7 @@ PARSEINI_ParseHexValueFromString:
 ; CALLS:
 ;   NEWGRID2_JMPTBL_STR_SkipClass3Chars, PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable, PARSEINI_JMPTBL_STRING_CompareNoCaseN, PARSEINI_JMPTBL_STR_FindAnyCharPtr, PARSEINI_JMPTBL_STR_FindCharPtr, PARSEINI_ParseHexValueFromString, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
 ; READS:
-;   PARSEINI_CurrentRangeTableIndex, DATA_PARSEINI_SPACE_VALUE_206E, DATA_PARSEINI_STR_VALUE_206F, DATA_PARSEINI_TAG_TABLE_2070, DATA_PARSEINI_TAG_DONE_2071, DATA_PARSEINI_TAG_COLOR_2072, handle_range_assign, return
+;   PARSEINI_CurrentRangeTableIndex, PARSEINI_DelimSpaceTab_RangeKey, PARSEINI_DelimSpaceSemicolonTab_RangeValue, PARSEINI_TAG_TABLE, PARSEINI_TAG_DONE, PARSEINI_TAG_COLOR, handle_range_assign, return
 ; WRITES:
 ;   PARSEINI_CurrentRangeTableIndex
 ; DESC:
@@ -958,7 +958,7 @@ PARSEINI_ParseRangeKeyValue:
     MOVE.L  -4(A5),-(A7)
     JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
-    PEA     DATA_PARSEINI_SPACE_VALUE_206E
+    PEA     PARSEINI_DelimSpaceTab_RangeKey
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
@@ -978,7 +978,7 @@ PARSEINI_ParseRangeKeyValue:
     MOVE.L  A0,-8(A5)
     JSR     NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
-    PEA     DATA_PARSEINI_STR_VALUE_206F
+    PEA     PARSEINI_DelimSpaceSemicolonTab_RangeValue
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-8(A5)
     JSR     PARSEINI_JMPTBL_STR_FindAnyCharPtr(PC)
@@ -998,7 +998,7 @@ PARSEINI_ParseRangeKeyValue:
     BEQ.W   .return
 
     PEA     5.W
-    PEA     DATA_PARSEINI_TAG_TABLE_2070
+    PEA     PARSEINI_TAG_TABLE
     MOVE.L  -4(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCaseN(PC)
 
@@ -1007,7 +1007,7 @@ PARSEINI_ParseRangeKeyValue:
     BNE.S   .handle_non_preset_keys
 
     PEA     4.W
-    PEA     DATA_PARSEINI_TAG_DONE_2071
+    PEA     PARSEINI_TAG_DONE
     MOVE.L  -8(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCaseN(PC)
 
@@ -1025,7 +1025,7 @@ PARSEINI_ParseRangeKeyValue:
 
 .handle_non_preset_keys:
     PEA     5.W
-    PEA     DATA_PARSEINI_TAG_COLOR_2072
+    PEA     PARSEINI_TAG_COLOR
     MOVE.L  -4(A5),-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCaseN(PC)
 
@@ -1172,9 +1172,9 @@ PARSEINI_ParseRangeKeyValue:
 ; CALLS:
 ;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase, SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, SCRIPT3_JMPTBL_STRING_CopyPadNul, SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_PARSEINI_C_3, PARSEINI_ParsedDescriptorListHead, DATA_PARSEINI_BSS_LONG_2073, DATA_PARSEINI_TAG_FILENAME_2074, DATA_PARSEINI_STR_LOADCOLOR_2075, DATA_PARSEINI_TAG_ALL_2076, DATA_PARSEINI_TAG_NONE_2077, DATA_PARSEINI_TAG_TEXT_2078, DATA_PARSEINI_TAG_XPOS_2079, DATA_PARSEINI_TAG_TYPE_207A, DATA_PARSEINI_TAG_DITHER_207B, DATA_PARSEINI_TAG_YPOS_207C, DATA_PARSEINI_TAG_XSOURCE_207D, DATA_PARSEINI_TAG_YSOURCE_207E, DATA_PARSEINI_TAG_SIZEX_207F, DATA_PARSEINI_TAG_SIZEY_2080, DATA_PARSEINI_TAG_SOURCE_2081, DATA_PARSEINI_TAG_PPV_2082, DATA_PARSEINI_STR_HORIZONTAL_2084, DATA_PARSEINI_TAG_RIGHT_2085, DATA_PARSEINI_TAG_CENTER_2086, DATA_PARSEINI_TAG_VERTICAL_2087, DATA_PARSEINI_TAG_BOTTOM_2088, DATA_PARSEINI_TAG_CENTER_2089, DATA_PARSEINI_TAG_ID_208A, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
+;   Global_STR_PARSEINI_C_3, PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_TAG_FILENAME_WeatherBlock, PARSEINI_STR_LOADCOLOR, PARSEINI_TAG_ALL, PARSEINI_TAG_NONE, PARSEINI_TAG_TEXT, PARSEINI_TAG_XPOS, PARSEINI_TAG_TYPE, PARSEINI_TAG_DITHER, PARSEINI_TAG_YPOS, PARSEINI_TAG_XSOURCE, PARSEINI_TAG_YSOURCE, PARSEINI_TAG_SIZEX, PARSEINI_TAG_SIZEY, PARSEINI_TAG_SOURCE, PARSEINI_TAG_PPV, PARSEINI_STR_HORIZONTAL, PARSEINI_TAG_RIGHT, PARSEINI_TAG_CENTER_HorizontalAlign, PARSEINI_TAG_VERTICAL, PARSEINI_TAG_BOTTOM, PARSEINI_TAG_CENTER_VerticalAlign, PARSEINI_TAG_ID, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
 ; WRITES:
-;   PARSEINI_ParsedDescriptorListHead, DATA_PARSEINI_BSS_LONG_2073, PARSEINI_CurrentWeatherBlockPtr
+;   PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1190,11 +1190,11 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   PARSEINI_ParsedDescriptorListHead
     BNE.S   .after_init_state
 
-    MOVE.L  A0,DATA_PARSEINI_BSS_LONG_2073
+    MOVE.L  A0,PARSEINI_CurrentWeatherBlockTempPtr
     MOVE.L  A0,PARSEINI_CurrentWeatherBlockPtr
 
 .after_init_state:
-    PEA     DATA_PARSEINI_TAG_FILENAME_2074
+    PEA     PARSEINI_TAG_FILENAME_WeatherBlock
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1202,7 +1202,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_2075
 
-    CLR.L   DATA_PARSEINI_BSS_LONG_2073
+    CLR.L   PARSEINI_CurrentWeatherBlockTempPtr
     MOVE.L  PARSEINI_CurrentWeatherBlockPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
@@ -1220,7 +1220,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   PARSEINI_CurrentWeatherBlockPtr
     BEQ.W   .return
 
-    PEA     DATA_PARSEINI_STR_LOADCOLOR_2075
+    PEA     PARSEINI_STR_LOADCOLOR
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1228,7 +1228,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_2079
 
-    PEA     DATA_PARSEINI_TAG_ALL_2076
+    PEA     PARSEINI_TAG_ALL
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1241,7 +1241,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_mode_2077:
-    PEA     DATA_PARSEINI_TAG_NONE_2077
+    PEA     PARSEINI_TAG_NONE
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1255,7 +1255,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_mode_2078:
-    PEA     DATA_PARSEINI_TAG_TEXT_2078
+    PEA     PARSEINI_TAG_TEXT
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1275,7 +1275,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_2079:
-    PEA     DATA_PARSEINI_TAG_XPOS_2079
+    PEA     PARSEINI_TAG_XPOS
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1293,7 +1293,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_207A:
-    PEA     DATA_PARSEINI_TAG_TYPE_207A
+    PEA     PARSEINI_TAG_TYPE
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1301,7 +1301,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_207C
 
-    PEA     DATA_PARSEINI_TAG_DITHER_207B
+    PEA     PARSEINI_TAG_DITHER
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1314,7 +1314,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_207C:
-    PEA     DATA_PARSEINI_TAG_YPOS_207C
+    PEA     PARSEINI_TAG_YPOS
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1332,7 +1332,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_207D:
-    PEA     DATA_PARSEINI_TAG_XSOURCE_207D
+    PEA     PARSEINI_TAG_XSOURCE
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1350,7 +1350,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_207E:
-    PEA     DATA_PARSEINI_TAG_YSOURCE_207E
+    PEA     PARSEINI_TAG_YSOURCE
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1368,7 +1368,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_207F:
-    PEA     DATA_PARSEINI_TAG_SIZEX_207F
+    PEA     PARSEINI_TAG_SIZEX
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1386,7 +1386,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_2080:
-    PEA     DATA_PARSEINI_TAG_SIZEY_2080
+    PEA     PARSEINI_TAG_SIZEY
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1404,7 +1404,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_2081:
-    PEA     DATA_PARSEINI_TAG_SOURCE_2081
+    PEA     PARSEINI_TAG_SOURCE
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1424,7 +1424,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BLE.W   .check_key_2084
 
-    PEA     DATA_PARSEINI_TAG_PPV_2082
+    PEA     PARSEINI_TAG_PPV
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1437,7 +1437,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .alloc_weather_node:
-    MOVE.L  DATA_PARSEINI_BSS_LONG_2073,-8(A5)
+    MOVE.L  PARSEINI_CurrentWeatherBlockTempPtr,-8(A5)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     12.W
     PEA     670.W
@@ -1445,7 +1445,7 @@ PARSEINI_ProcessWeatherBlocks:
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,DATA_PARSEINI_BSS_LONG_2073
+    MOVE.L  D0,PARSEINI_CurrentWeatherBlockTempPtr
     TST.L   D0
     BEQ.W   .return
 
@@ -1462,17 +1462,17 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   230(A0)
     BNE.S   .append_node_link
 
-    MOVEA.L DATA_PARSEINI_BSS_LONG_2073,A1
+    MOVEA.L PARSEINI_CurrentWeatherBlockTempPtr,A1
     MOVE.L  A1,230(A0)
     BRA.W   .return
 
 .append_node_link:
     MOVEA.L -8(A5),A1
-    MOVE.L  DATA_PARSEINI_BSS_LONG_2073,8(A1)
+    MOVE.L  PARSEINI_CurrentWeatherBlockTempPtr,8(A1)
     BRA.W   .return
 
 .check_key_2084:
-    PEA     DATA_PARSEINI_STR_HORIZONTAL_2084
+    PEA     PARSEINI_STR_HORIZONTAL
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1480,7 +1480,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_2087
 
-    PEA     DATA_PARSEINI_TAG_RIGHT_2085
+    PEA     PARSEINI_TAG_RIGHT
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1494,7 +1494,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_mode_2086:
-    PEA     DATA_PARSEINI_TAG_CENTER_2086
+    PEA     PARSEINI_TAG_CENTER_HorizontalAlign
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1513,7 +1513,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.W   .return
 
 .check_key_2087:
-    PEA     DATA_PARSEINI_TAG_VERTICAL_2087
+    PEA     PARSEINI_TAG_VERTICAL
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1521,7 +1521,7 @@ PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_208A
 
-    PEA     DATA_PARSEINI_TAG_BOTTOM_2088
+    PEA     PARSEINI_TAG_BOTTOM
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1535,7 +1535,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.S   .return
 
 .check_mode_2089:
-    PEA     DATA_PARSEINI_TAG_CENTER_2089
+    PEA     PARSEINI_TAG_CENTER_VerticalAlign
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1554,7 +1554,7 @@ PARSEINI_ProcessWeatherBlocks:
     BRA.S   .return
 
 .check_key_208A:
-    PEA     DATA_PARSEINI_TAG_ID_208A
+    PEA     PARSEINI_TAG_ID
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1591,9 +1591,9 @@ PARSEINI_ProcessWeatherBlocks:
 ; CALLS:
 ;   PARSEINI_JMPTBL_BRUSH_AllocBrushNode, PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   PARSEINI_BannerBrushResourceHead, DATA_PARSEINI_TAG_FILENAME_208B, DATA_PARSEINI_TAG_WEATHER_208C, PARSEINI_WeatherBrushNodePtr, a
+;   PARSEINI_BannerBrushResourceHead, PARSEINI_TAG_FILENAME_WeatherString, PARSEINI_TAG_WEATHER, PARSEINI_WeatherBrushNodePtr, a
 ; WRITES:
-;   PARSEINI_BannerBrushResourceHead, DATA_P_TYPE_BSS_LONG_2059, PARSEINI_WeatherBrushNodePtr
+;   PARSEINI_BannerBrushResourceHead, P_TYPE_WeatherBrushRefreshPendingFlag, PARSEINI_WeatherBrushNodePtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1609,7 +1609,7 @@ PARSEINI_LoadWeatherStrings:
     CLR.L   PARSEINI_WeatherBrushNodePtr
 
 .if_ne_1401:
-    PEA     DATA_PARSEINI_TAG_FILENAME_208B
+    PEA     PARSEINI_TAG_FILENAME_WeatherString
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1636,7 +1636,7 @@ PARSEINI_LoadWeatherStrings:
     TST.L   D0
     BEQ.S   .return_1403
 
-    PEA     DATA_PARSEINI_TAG_WEATHER_208C
+    PEA     PARSEINI_TAG_WEATHER
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1645,7 +1645,7 @@ PARSEINI_LoadWeatherStrings:
     BNE.S   .return_1403
 
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_2059
+    MOVE.L  D0,P_TYPE_WeatherBrushRefreshPendingFlag
     MOVE.L  PARSEINI_WeatherBrushNodePtr,-(A7)
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
@@ -1676,9 +1676,9 @@ PARSEINI_LoadWeatherStrings:
 ; CALLS:
 ;   PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   DATA_P_TYPE_BSS_LONG_205A, DATA_P_TYPE_BSS_LONG_205B, DATA_P_TYPE_BSS_LONG_205C, DATA_PARSEINI_STR_WEATHERCURRENT_208D, DATA_PARSEINI_STR_WEATHERFORECAST_208E, DATA_PARSEINI_STR_BOTTOMLINETAG_208F
+;   P_TYPE_WeatherCurrentMsgPtr, P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr, PARSEINI_STR_WEATHERCURRENT, PARSEINI_STR_WEATHERFORECAST, PARSEINI_STR_BOTTOMLINETAG
 ; WRITES:
-;   DATA_P_TYPE_BSS_LONG_205A, DATA_P_TYPE_BSS_LONG_205B, DATA_P_TYPE_BSS_LONG_205C
+;   P_TYPE_WeatherCurrentMsgPtr, P_TYPE_WeatherForecastMsgPtr, P_TYPE_WeatherBottomLineMsgPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1688,7 +1688,7 @@ PARSEINI_LoadWeatherMessageStrings:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
-    PEA     DATA_PARSEINI_STR_WEATHERCURRENT_208D
+    PEA     PARSEINI_STR_WEATHERCURRENT
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1696,16 +1696,16 @@ PARSEINI_LoadWeatherMessageStrings:
     TST.L   D0
     BNE.S   .if_ne_1405
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205A,-(A7)
+    MOVE.L  P_TYPE_WeatherCurrentMsgPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205A
+    MOVE.L  D0,P_TYPE_WeatherCurrentMsgPtr
     BRA.S   .return_1407
 
 .if_ne_1405:
-    PEA     DATA_PARSEINI_STR_WEATHERFORECAST_208E
+    PEA     PARSEINI_STR_WEATHERFORECAST
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1713,16 +1713,16 @@ PARSEINI_LoadWeatherMessageStrings:
     TST.L   D0
     BNE.S   .if_ne_1406
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205B,-(A7)
+    MOVE.L  P_TYPE_WeatherForecastMsgPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205B
+    MOVE.L  D0,P_TYPE_WeatherForecastMsgPtr
     BRA.S   .return_1407
 
 .if_ne_1406:
-    PEA     DATA_PARSEINI_STR_BOTTOMLINETAG_208F
+    PEA     PARSEINI_STR_BOTTOMLINETAG
     MOVE.L  A3,-(A7)
     JSR     PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -1730,12 +1730,12 @@ PARSEINI_LoadWeatherMessageStrings:
     TST.L   D0
     BNE.S   .return_1407
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205C,-(A7)
+    MOVE.L  P_TYPE_WeatherBottomLineMsgPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_P_TYPE_BSS_LONG_205C
+    MOVE.L  D0,P_TYPE_WeatherBottomLineMsgPtr
 
 .return_1407:
     MOVEM.L (A7)+,A2-A3
@@ -2065,7 +2065,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_scan_logos_and_clear_flag1:
-    MOVE.B  DATA_CTASKS_STR_Y_1BC1,D0
+    MOVE.B  CONFIG_ParseiniLogoScanEnabledFlag,D0
     MOVEQ   #89,D1
     CMP.B   D1,D0
     BNE.S   .after_optional_logo_scan
@@ -2126,11 +2126,11 @@ PARSEINI_HandleFontCommand:
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_1,A1
+    MOVEA.L NEWGRID_MainRastPortPtr,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
-    MOVEA.L Global_REF_GRID_RASTPORT_MAYBE_2,A1
+    MOVEA.L NEWGRID_HeaderRastPortPtr,A1
     MOVEA.L Global_HANDLE_PREVUEC_FONT,A0
     JSR     _LVOSetFont(A6)
 
@@ -2291,7 +2291,7 @@ PARSEINI_HandleFontCommand:
 ; CALLS:
 ;   _LVOExecute, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_STREAM_ReadLineWithLimit, PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, DATA_PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST_2098/2099/209A/209B strings
+;   Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST/2099/209A/209B strings
 ; WRITES:
 ;   local temp buffers and allocated lists at -500/-900(A5)
 ; DESC:
@@ -2334,8 +2334,8 @@ PARSEINI_ScanLogoDirectory:
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
-    PEA     DATA_PARSEINI_STR_RB_2099
-    PEA     DATA_PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST_2098
+    PEA     PARSEINI_STR_RB_LogoListPrimary
+    PEA     PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST
     JSR     PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
@@ -2345,8 +2345,8 @@ PARSEINI_ScanLogoDirectory:
     CLR.L   -96(A5)
 
 .after_open_primary:
-    PEA     DATA_PARSEINI_STR_RB_209B
-    PEA     DATA_PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT_209A
+    PEA     PARSEINI_STR_RB_LogoListSecondary
+    PEA     PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT
     JSR     PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7

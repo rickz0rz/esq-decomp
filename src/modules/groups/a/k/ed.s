@@ -29,9 +29,9 @@
 ;   ED_HandleEditAttributesInput, ED_HandleEditorInput,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   ED_StateRingIndex, ED_StateRingWriteIndex, DATA_DST_CONST_LONG_1D14, ED_MenuStateId, Global_UIBusyFlag
+;   ED_StateRingIndex, ED_StateRingWriteIndex, ED_MenuDispatchReentryGuard, ED_MenuStateId, Global_UIBusyFlag
 ; WRITES:
-;   DATA_DST_CONST_LONG_1D14, ED_LastKeyCode, ED_StateRingIndex
+;   ED_MenuDispatchReentryGuard, ED_LastKeyCode, ED_StateRingIndex
 ; DESC:
 ;   Dispatches ESC-menu state handlers based on ED_MenuStateId using a jumptable.
 ; NOTES:
@@ -43,10 +43,10 @@ ED_DispatchEscMenuState:
     CMP.L   D0,D1
     BEQ.W   .lab_0677
 
-    TST.L   DATA_DST_CONST_LONG_1D14
+    TST.L   ED_MenuDispatchReentryGuard
     BEQ.W   .lab_0677
 
-    CLR.L   DATA_DST_CONST_LONG_1D14
+    CLR.L   ED_MenuDispatchReentryGuard
     LSL.L   #2,D0
     ADD.L   ED_StateRingIndex,D0
     LEA     ED_StateRingTable,A0
@@ -194,7 +194,7 @@ ED_DispatchEscMenuState:
 
 .after_wrap_index:
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_DST_CONST_LONG_1D14
+    MOVE.L  D0,ED_MenuDispatchReentryGuard
 
 .lab_0677:
     RTS
@@ -218,9 +218,9 @@ ED_DispatchEscMenuState:
 ;   ED_DrawESCMenuBottomHelp
 ; READS:
 ;   ED_LastKeyCode, ED_LastMenuInputChar, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_BlockOffset, ED_TextLimit,
-;   DATA_DST_CONST_LONG_1D15, Global_REF_BOOL_IS_TEXT_OR_CURSOR, Global_REF_BOOL_IS_LINE_OR_PAGE
+;   ED_TextModeReinitPendingFlag, Global_REF_BOOL_IS_TEXT_OR_CURSOR, Global_REF_BOOL_IS_LINE_OR_PAGE
 ; WRITES:
-;   DATA_DST_CONST_LONG_1D15, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_AdActiveFlag, ED_TempCopyOffset,
+;   ED_TextModeReinitPendingFlag, ED_CurrentChar, ED_EditCursorOffset, ED_ViewportOffset, ED_AdActiveFlag, ED_TempCopyOffset,
 ;   Global_REF_BOOL_IS_TEXT_OR_CURSOR, Global_REF_BOOL_IS_LINE_OR_PAGE
 ; DESC:
 ;   Handles editor input commands: character changes, cursor movement, and
@@ -231,7 +231,7 @@ ED_DispatchEscMenuState:
 ED_HandleEditorInput:
     LINK.W  A5,#-4
     MOVEM.L D2/D7/A2,-(A7)
-    TST.L   DATA_DST_CONST_LONG_1D15
+    TST.L   ED_TextModeReinitPendingFlag
     BEQ.S   .after_pending_init
 
     MOVEQ   #1,D0
@@ -239,7 +239,7 @@ ED_HandleEditorInput:
     LEA     ED_EditBufferLive,A0
     ADDA.L  ED_EditCursorOffset,A0
     MOVE.B  (A0),ED_CurrentChar
-    CLR.L   DATA_DST_CONST_LONG_1D15
+    CLR.L   ED_TextModeReinitPendingFlag
 
 .after_pending_init:
     JSR     ED_DrawCursorChar(PC)
@@ -284,7 +284,7 @@ ED_HandleEditorInput:
 .case_force_text_mode:
     MOVEQ   #1,D0
     MOVE.L  D0,Global_REF_BOOL_IS_TEXT_OR_CURSOR
-    MOVE.L  D0,DATA_DST_CONST_LONG_1D15
+    MOVE.L  D0,ED_TextModeReinitPendingFlag
     JSR     ED_CommitCurrentAdEdits(PC)
 
     JSR     ED_DrawESCMenuBottomHelp(PC)
@@ -703,11 +703,11 @@ ED_HandleEditorInput:
     MOVE.L  D1,Global_REF_BOOL_IS_LINE_OR_PAGE
     BEQ.S   .select_line_page_label
 
-    LEA     DATA_ED2_STR_PAGE_1D16,A0
+    LEA     ED2_STR_PAGE,A0
     BRA.S   .draw_line_page_label
 
 .select_line_page_label:
-    LEA     DATA_ED2_STR_LINE_1D17,A0
+    LEA     ED2_STR_LINE,A0
 
 .draw_line_page_label:
     MOVE.L  A0,-(A7)
@@ -1336,18 +1336,18 @@ ED_EnterTextEditMode:
 ; CALLS:
 ;   ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, GROUP_AG_JMPTBL_MATH_DivS32
 ; READS:
-;   ED_StateRingIndex, ED_StateRingTable, WDISP_CharClassTable, DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19
+;   ED_StateRingIndex, ED_StateRingTable, WDISP_CharClassTable, ED_CustomPaletteCapturePhaseMod4, ED_CustomPaletteCaptureIndexOrSentinel
 ; WRITES:
-;   DATA_ED2_BSS_LONG_1D18, DATA_ED2_BSS_LONG_1D19, KYBD_CustomPaletteCaptureScratchBase, KYBD_CustomPaletteTriplesRBase, ED_MenuStateId
+;   ED_CustomPaletteCapturePhaseMod4, ED_CustomPaletteCaptureIndexOrSentinel, KYBD_CustomPaletteCaptureScratchBase, KYBD_CustomPaletteTriplesRBase, ED_MenuStateId
 ; DESC:
 ;   Captures an input sequence and writes it into the KYBD_CustomPaletteCaptureScratchBase/KYBD_CustomPaletteTriplesRBase buffers.
 ; NOTES:
-;   Copies a 24-byte template from DATA_ED2_CONST_LONG_1D1A into the output buffer on completion.
+;   Copies a 24-byte template from ED_CustomPaletteTriplesDefaultTemplate24B into the output buffer on completion.
 ;------------------------------------------------------------------------------
 ED_CaptureKeySequence:
     LINK.W  A5,#-28
     MOVE.L  D7,-(A7)
-    LEA     DATA_ED2_CONST_LONG_1D1A,A0
+    LEA     ED_CustomPaletteTriplesDefaultTemplate24B,A0
     LEA     -25(A5),A1
     MOVEQ   #23,D0
 
@@ -1375,16 +1375,16 @@ ED_CaptureKeySequence:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    TST.L   DATA_ED2_BSS_LONG_1D18
+    TST.L   ED_CustomPaletteCapturePhaseMod4
     BNE.S   .have_pending_capture
 
     MOVEQ   #0,D0
     MOVE.B  D7,D0
-    MOVE.L  D0,DATA_ED2_BSS_LONG_1D19
+    MOVE.L  D0,ED_CustomPaletteCaptureIndexOrSentinel
     BRA.S   .advance_capture_slot
 
 .have_pending_capture:
-    MOVE.L  DATA_ED2_BSS_LONG_1D19,D0
+    MOVE.L  ED_CustomPaletteCaptureIndexOrSentinel,D0
     TST.L   D0
     BMI.S   .invalidate_capture
 
@@ -1397,8 +1397,8 @@ ED_CaptureKeySequence:
     BCC.S   .invalidate_capture
 
     LSL.L   #2,D0
-    SUB.L   DATA_ED2_BSS_LONG_1D19,D0
-    MOVE.L  DATA_ED2_BSS_LONG_1D18,D1
+    SUB.L   ED_CustomPaletteCaptureIndexOrSentinel,D0
+    MOVE.L  ED_CustomPaletteCapturePhaseMod4,D1
     ADD.L   D1,D0
     LEA     KYBD_CustomPaletteCaptureScratchBase,A0
     ADDA.L  D0,A0
@@ -1407,30 +1407,30 @@ ED_CaptureKeySequence:
 
 .invalidate_capture:
     MOVEQ   #-1,D0
-    MOVE.L  D0,DATA_ED2_BSS_LONG_1D19
+    MOVE.L  D0,ED_CustomPaletteCaptureIndexOrSentinel
     BRA.S   .advance_capture_slot
 
 .no_capture_flag:
     MOVEQ   #-1,D0
-    MOVE.L  D0,DATA_ED2_BSS_LONG_1D19
+    MOVE.L  D0,ED_CustomPaletteCaptureIndexOrSentinel
 
 .advance_capture_slot:
-    MOVE.L  DATA_ED2_BSS_LONG_1D18,D0
+    MOVE.L  ED_CustomPaletteCapturePhaseMod4,D0
     ADDQ.L  #1,D0
     MOVEQ   #4,D1
     JSR     GROUP_AG_JMPTBL_MATH_DivS32(PC)
 
-    MOVE.L  D1,DATA_ED2_BSS_LONG_1D18
+    MOVE.L  D1,ED_CustomPaletteCapturePhaseMod4
     BNE.S   .return
 
-    MOVE.L  DATA_ED2_BSS_LONG_1D19,D0
+    MOVE.L  ED_CustomPaletteCaptureIndexOrSentinel,D0
     TST.L   D0
     BPL.S   .finish_capture
 
-    CLR.L   DATA_ED2_BSS_LONG_1D19
+    CLR.L   ED_CustomPaletteCaptureIndexOrSentinel
 
 .copy_buffer_loop:
-    MOVE.L  DATA_ED2_BSS_LONG_1D19,D0
+    MOVE.L  ED_CustomPaletteCaptureIndexOrSentinel,D0
     MOVEQ   #24,D1
     CMP.L   D1,D0
     BGE.S   .finish_capture
@@ -1438,7 +1438,7 @@ ED_CaptureKeySequence:
     LEA     KYBD_CustomPaletteTriplesRBase,A0
     ADDA.L  D0,A0
     MOVE.B  -25(A5,D0.L),(A0)
-    ADDQ.L  #1,DATA_ED2_BSS_LONG_1D19
+    ADDQ.L  #1,ED_CustomPaletteCaptureIndexOrSentinel
     BRA.S   .copy_buffer_loop
 
 .finish_capture:
@@ -1522,7 +1522,7 @@ ED_FindNextCharInTable:
 ; READS:
 ;   ED_LastKeyCode, ED_TempCopyOffset, ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
-;   ED_TempCopyOffset, ED_LastMenuInputChar, DATA_ESQ_BSS_BYTE_1DE0, DATA_ESQ_BSS_BYTE_1DE1, DATA_ESQ_CONST_BYTE_1DE2
+;   ED_TempCopyOffset, ED_LastMenuInputChar, GCOMMAND_PresetFallbackValue0, GCOMMAND_PresetFallbackValue1, GCOMMAND_PresetFallbackValue2
 ; DESC:
 ;   Adjusts per-entry nibble values and selection index, then refreshes display.
 ; NOTES:
@@ -1570,7 +1570,7 @@ ED_HandleDiagnosticNibbleEdit:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_BSS_BYTE_1DE0,A0
+    LEA     GCOMMAND_PresetFallbackValue0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
@@ -1587,7 +1587,7 @@ ED_HandleDiagnosticNibbleEdit:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_BSS_BYTE_1DE0,A0
+    LEA     GCOMMAND_PresetFallbackValue0,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     SUBQ.B  #1,(A1)
@@ -1602,7 +1602,7 @@ ED_HandleDiagnosticNibbleEdit:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_BSS_BYTE_1DE1,A0
+    LEA     GCOMMAND_PresetFallbackValue1,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
@@ -1619,7 +1619,7 @@ ED_HandleDiagnosticNibbleEdit:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_BSS_BYTE_1DE1,A0
+    LEA     GCOMMAND_PresetFallbackValue1,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     SUBQ.B  #1,(A1)
@@ -1634,7 +1634,7 @@ ED_HandleDiagnosticNibbleEdit:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_CONST_BYTE_1DE2,A0
+    LEA     GCOMMAND_PresetFallbackValue2,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVE.B  (A1),D1
@@ -1651,7 +1651,7 @@ ED_HandleDiagnosticNibbleEdit:
     MOVE.L  ED_TempCopyOffset,D0
     LSL.L   #2,D0
     SUB.L   ED_TempCopyOffset,D0
-    LEA     DATA_ESQ_CONST_BYTE_1DE2,A0
+    LEA     GCOMMAND_PresetFallbackValue2,A0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     SUBQ.B  #1,(A1)
@@ -1764,7 +1764,7 @@ ED_HandleSpecialFunctionsMenu:
 .case_show_label_1d1b:
     JSR     ED_DrawAreYouSurePrompt(PC)
 
-    PEA     DATA_ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT_1D1B
+    PEA     ED2_STR_ALL_DATA_IS_TO_BE_SAVED_DOT
     PEA     90.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1778,7 +1778,7 @@ ED_HandleSpecialFunctionsMenu:
 .case_show_label_1d1c:
     JSR     ED_DrawAreYouSurePrompt(PC)
 
-    PEA     DATA_ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT_1D1C
+    PEA     ED2_STR_TV_GUIDE_DATA_IS_TO_BE_SAVED_DOT
     PEA     90.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -1791,7 +1791,7 @@ ED_HandleSpecialFunctionsMenu:
 .case_show_label_1d1d:
     JSR     ED_DrawAreYouSurePrompt(PC)
 
-    PEA     DATA_ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL_1D1D
+    PEA     ED2_STR_TEXT_ADS_WILL_BE_LOADED_FROM_DH2_COL
     PEA     90.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -2292,7 +2292,7 @@ ED_HandleEditAttributesMenu:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    PEA     DATA_ED2_STR_NUMBER_TOO_BIG_1D24
+    PEA     ED2_STR_NUMBER_TOO_BIG
     PEA     150.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -2315,7 +2315,7 @@ ED_HandleEditAttributesMenu:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    PEA     DATA_ED2_STR_NUMBER_TOO_SMALL_1D25
+    PEA     ED2_STR_NUMBER_TOO_SMALL
     PEA     150.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -2359,19 +2359,19 @@ ED_HandleEditAttributesMenu:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     DATA_ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT_1D26
+    PEA     ED2_STR_PUSH_ESC_TO_EXIT_ATTRIBUTE_EDIT_DOT
     PEA     330.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION_1D27
+    PEA     ED2_STR_PUSH_RETURN_TO_ENTER_SELECTION
     PEA     360.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_ED2_STR_PUSH_ANY_KEY_TO_SELECT_1D28
+    PEA     ED2_STR_PUSH_ANY_KEY_TO_SELECT
     PEA     390.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -2434,7 +2434,7 @@ ED_HandleEditAttributesMenu:
 ; READS:
 ;   ED_LastKeyCode, ED_AdActiveFlag, ED_StateRingIndex, ED_StateRingTable
 ; WRITES:
-;   ED_AdActiveFlag, ED_SaveTextAdsOnExitFlag, DATA_WDISP_BSS_LONG_21FE
+;   ED_AdActiveFlag, ED_SaveTextAdsOnExitFlag, ED_AdDisplayResetFlag
 ; DESC:
 ;   Processes edit-attribute key codes and commits changes to state variables.
 ; NOTES:
@@ -2504,7 +2504,7 @@ ED_HandleEditAttributesInput:
     EXT.L   D0
     MOVE.L  D0,ED_AdActiveFlag
     MOVEQ   #1,D0
-    MOVE.L  D0,DATA_WDISP_BSS_LONG_21FE
+    MOVE.L  D0,ED_AdDisplayResetFlag
 
 .return:
     JSR     ED_UpdateActiveInactiveIndicator(PC)

@@ -48,7 +48,7 @@
 ;   stack +12: A2 = entry struct
 ;   stack +16: D7 = key/index
 ; RET:
-;   D0: current state (DATA_NEWGRID_CONST_LONG_203D)
+;   D0: current state (NEWGRID_RenderStateLatch)
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
@@ -56,14 +56,14 @@
 ;   NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, NEWGRID_AppendShowtimesForRow, NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer,
 ;   SCRIPT_JMPTBL_MEMORY_DeallocateMemory, NEWGRID_DrawGridFrameVariant4, NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
-;   DATA_NEWGRID_CONST_LONG_203D, DATA_NEWGRID_CONST_WORD_2016
+;   NEWGRID_RenderStateLatch, NEWGRID_PrimeTimeLayoutEnable
 ; WRITES:
-;   DATA_NEWGRID_CONST_LONG_203D, 32(A3)
+;   NEWGRID_RenderStateLatch, 32(A3)
 ; DESC:
 ;   Executes a state machine to render/update the grid, allocate buffers, and
 ;   advance to the next UI state.
 ; NOTES:
-;   Uses DATA_NEWGRID_CONST_LONG_203D to track state 4/5 transitions.
+;   Uses NEWGRID_RenderStateLatch to track state 4/5 transitions.
 ;   `A2+0/A2+4` are required entry payload pointers and `A2+20` carries
 ;   row-relative selection/slot index used for draw/layout.
 ;------------------------------------------------------------------------------
@@ -79,11 +79,11 @@ NEWGRID2_ProcessGridState:
     BNE.S   .dispatch_render_state
 
     MOVEQ   #4,D0
-    MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
+    MOVE.L  D0,NEWGRID_RenderStateLatch
     BRA.W   .return_state
 
 .dispatch_render_state:
-    MOVE.L  DATA_NEWGRID_CONST_LONG_203D,D0
+    MOVE.L  NEWGRID_RenderStateLatch,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_full_draw_and_layout
 
@@ -113,7 +113,7 @@ NEWGRID2_ProcessGridState:
     SUBI.W  #$30,D6
 
 .row_slot_index_ready:
-    TST.W   DATA_NEWGRID_CONST_WORD_2016
+    TST.W   NEWGRID_PrimeTimeLayoutEnable
     BEQ.S   .draw_grid_entry_alt_variant
 
     MOVE.L  D6,D0
@@ -207,7 +207,7 @@ NEWGRID2_ProcessGridState:
 
 .store_next_state_and_visible_count:
     PEA     2.W
-    MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
+    MOVE.L  D0,NEWGRID_RenderStateLatch
     JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
@@ -231,15 +231,15 @@ NEWGRID2_ProcessGridState:
 .state5_store_next_mode:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)                      ; A3+32 = no line-count refresh in state5
-    MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
+    MOVE.L  D0,NEWGRID_RenderStateLatch
     BRA.S   .return_state
 
 .force_state4_recovery:
     MOVEQ   #4,D0
-    MOVE.L  D0,DATA_NEWGRID_CONST_LONG_203D
+    MOVE.L  D0,NEWGRID_RenderStateLatch
 
 .return_state:
-    MOVE.L  DATA_NEWGRID_CONST_LONG_203D,D0
+    MOVE.L  NEWGRID_RenderStateLatch,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
     RTS
@@ -283,7 +283,7 @@ NEWGRID2_HandleGridState:
     BNE.S   .reset_state
 
     MOVE.L  D6,-(A7)
-    PEA     DATA_WDISP_BSS_LONG_2332
+    PEA     NEWGRID2_ShowtimesSelectionContextPtr
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID2_ProcessGridState
 
@@ -317,14 +317,14 @@ NEWGRID2_HandleGridState:
     EXT.L   D0
     MOVE.L  D6,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_WDISP_BSS_LONG_2332
+    PEA     NEWGRID2_ShowtimesSelectionContextPtr
     BSR.W   NEWGRID_InitSelectionWindowAlt
 
     LEA     12(A7),A7
 
 .state1_update_selection:
     MOVE.L  D6,-(A7)
-    PEA     DATA_WDISP_BSS_LONG_2332
+    PEA     NEWGRID2_ShowtimesSelectionContextPtr
     MOVE.L  NEWGRID2_DispatchStateIndex,-(A7)
     BSR.W   NEWGRID_UpdateSelectionFromInputAlt
 
@@ -334,7 +334,7 @@ NEWGRID2_HandleGridState:
 
     ; Selection became valid: show prompt, then move into state 3.
     MOVE.L  D6,-(A7)
-    MOVE.L  DATA_WDISP_BSS_LONG_2332,-(A7)
+    MOVE.L  NEWGRID2_ShowtimesSelectionContextPtr,-(A7)
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_DrawShowtimesPrompt
 
@@ -342,7 +342,7 @@ NEWGRID2_HandleGridState:
     MOVEQ   #0,D0
     MOVEQ   #3,D1                           ; advance into state3/state4 shared path
     MOVE.L  D1,NEWGRID2_DispatchStateIndex
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2040
+    MOVE.L  D0,NEWGRID2_CachedModeIndex
     BRA.W   .return_state
 
 .state1_abort_and_reset:
@@ -351,7 +351,7 @@ NEWGRID2_HandleGridState:
 
 .state3_update_selection:
     MOVE.L  D6,-(A7)
-    PEA     DATA_WDISP_BSS_LONG_2332
+    PEA     NEWGRID2_ShowtimesSelectionContextPtr
     MOVE.L  NEWGRID2_DispatchStateIndex,-(A7)
     BSR.W   NEWGRID_UpdateSelectionFromInputAlt
 
@@ -362,11 +362,11 @@ NEWGRID2_HandleGridState:
     MOVE.L  D0,D5
 
 .state5_process_grid:
-    TST.L   DATA_WDISP_BSS_LONG_2332
+    TST.L   NEWGRID2_ShowtimesSelectionContextPtr
     BEQ.S   .state5_restart_selection_update
 
     MOVE.L  D6,-(A7)
-    PEA     DATA_WDISP_BSS_LONG_2332
+    PEA     NEWGRID2_ShowtimesSelectionContextPtr
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID2_ProcessGridState
 
@@ -382,7 +382,7 @@ NEWGRID2_HandleGridState:
     BEQ.S   .state5_apply_column_delta_only
 
     ; First-entry hint: cache mode index once, then offset by column delta.
-    CMPI.L  #$1,DATA_NEWGRID2_BSS_LONG_2040
+    CMPI.L  #$1,NEWGRID2_CachedModeIndex
     BGE.S   .state5_apply_column_delta_only
 
     PEA     50.W
@@ -392,14 +392,14 @@ NEWGRID2_HandleGridState:
     BSR.W   NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2040
+    MOVE.L  D0,NEWGRID2_CachedModeIndex
 
 .state5_apply_column_delta_only:
     MOVE.L  A3,-(A7)
     BSR.W   NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
-    SUB.L   D0,DATA_NEWGRID2_BSS_LONG_2040
+    SUB.L   D0,NEWGRID2_CachedModeIndex
     BRA.S   .return_state
 
 .state5_restart_selection_update:
@@ -444,14 +444,14 @@ NEWGRID2_HandleGridState:
 ; CALLS:
 ;   NEWGRID2_HandleGridState, NEWGRID_HandleGridSelection, NEWGRID_ProcessAltEntryState, NEWGRID_ProcessSecondaryState, NEWGRID_ProcessScheduleState, NEWGRID_ProcessShowtimesWorkflow
 ; READS:
-;   DATA_ESQDISP_BSS_WORD_1E86, DATA_NEWGRID2_BSS_LONG_2042
+;   ESQDISP_PendingGridReinitFlag, NEWGRID2_PendingOperationId
 ; WRITES:
-;   NEWGRID_GridOperationId, DATA_NEWGRID2_BSS_LONG_2042, DATA_NEWGRID2_BSS_LONG_2043
+;   NEWGRID_GridOperationId, NEWGRID2_PendingOperationId, NEWGRID2_LastDispatchResult
 ; DESC:
 ;   Dispatches a grid operation by index using a switch/jumptable.
 ; NOTES:
 ;   Booleanizes the return value via SNE/NEG/EXT.
-;   If operation id is zero, reuses the pending id in DATA_NEWGRID2_BSS_LONG_2042.
+;   If operation id is zero, reuses the pending id in NEWGRID2_PendingOperationId.
 ;   Operation ids map as:
 ;   `1=selection`, `2=alt-entry`, `3/4=grid-state`, `5=secondary`,
 ;   `6=schedule`, `7=showtimes`.
@@ -466,18 +466,18 @@ NEWGRID2_DispatchGridOperation:
     BNE.S   .remember_requested_operation
 
     SUBA.L  A3,A3
-    MOVE.L  DATA_NEWGRID2_BSS_LONG_2042,D7
-    CLR.L   DATA_NEWGRID2_BSS_LONG_2042
+    MOVE.L  NEWGRID2_PendingOperationId,D7
+    CLR.L   NEWGRID2_PendingOperationId
     BRA.S   .prepare_operation_context
 
 .remember_requested_operation:
-    MOVE.L  D7,DATA_NEWGRID2_BSS_LONG_2042
+    MOVE.L  D7,NEWGRID2_PendingOperationId
 
 .prepare_operation_context:
-    TST.W   DATA_ESQDISP_BSS_WORD_1E86
+    TST.W   ESQDISP_PendingGridReinitFlag
     BEQ.S   .dispatch_operation
 
-    CLR.W   DATA_ESQDISP_BSS_WORD_1E86
+    CLR.W   ESQDISP_PendingGridReinitFlag
     SUBA.L  A3,A3
 
 .dispatch_operation:
@@ -512,7 +512,7 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID_HandleGridSelection
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.W   .return_success_bool
 
 .op2_process_alt_entry:
@@ -526,7 +526,7 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID_ProcessAltEntryState
 
     LEA     12(A7),A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.W   .return_success_bool
 
 .op3_handle_grid_state:
@@ -538,7 +538,7 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID2_HandleGridState
 
     LEA     12(A7),A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.S   .return_success_bool
 
 .op4_handle_grid_state_alt:
@@ -550,7 +550,7 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID2_HandleGridState
 
     LEA     12(A7),A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.S   .return_success_bool
 
 .op5_process_secondary_state:
@@ -561,7 +561,7 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID_ProcessSecondaryState
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.S   .return_success_bool
 
 .op6_process_schedule_state:
@@ -575,7 +575,7 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID_ProcessScheduleState
 
     LEA     12(A7),A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.S   .return_success_bool
 
 .op7_process_showtimes_workflow:
@@ -589,14 +589,14 @@ NEWGRID2_DispatchGridOperation:
     BSR.W   NEWGRID_ProcessShowtimesWorkflow
 
     LEA     12(A7),A7
-    MOVE.L  D0,DATA_NEWGRID2_BSS_LONG_2043
+    MOVE.L  D0,NEWGRID2_LastDispatchResult
     BRA.S   .return_success_bool
 
 .operation_out_of_range:
     CLR.L   NEWGRID_GridOperationId
 
 .return_success_bool:
-    TST.L   DATA_NEWGRID2_BSS_LONG_2043
+    TST.L   NEWGRID2_LastDispatchResult
     ; booleanize to 0/-1
     SNE     D0
     NEG.B   D0
@@ -644,17 +644,17 @@ NEWGRID2_DispatchOperationDefault:
 ; CALLS:
 ;   SCRIPT_JMPTBL_MEMORY_AllocateMemory, NEWGRID_RebuildIndexCache
 ; READS:
-;   DATA_NEWGRID2_CONST_LONG_2044
+;   NEWGRID2_BufferAllocationFlag
 ; WRITES:
-;   NEWGRID_SecondaryIndexCachePtr, NEWGRID_EntryTextScratchPtr, DATA_NEWGRID2_CONST_LONG_2044
+;   NEWGRID_SecondaryIndexCachePtr, NEWGRID_EntryTextScratchPtr, NEWGRID2_BufferAllocationFlag
 ; DESC:
 ;   Allocates the grid backing buffers when the request flag is set.
 ; NOTES:
 ;   Allocates 1208-byte index cache plus 1000-byte text scratch, then clears
-;   DATA_NEWGRID2_CONST_LONG_2044 to mark allocation complete.
+;   NEWGRID2_BufferAllocationFlag to mark allocation complete.
 ;------------------------------------------------------------------------------
 NEWGRID2_EnsureBuffersAllocated:
-    TST.L   DATA_NEWGRID2_CONST_LONG_2044
+    TST.L   NEWGRID2_BufferAllocationFlag
     BEQ.S   .buffers_already_ready
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -674,7 +674,7 @@ NEWGRID2_EnsureBuffersAllocated:
     JSR     SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     28(A7),A7
-    CLR.L   DATA_NEWGRID2_CONST_LONG_2044
+    CLR.L   NEWGRID2_BufferAllocationFlag
     MOVE.L  D0,NEWGRID_EntryTextScratchPtr
 
 .buffers_already_ready:

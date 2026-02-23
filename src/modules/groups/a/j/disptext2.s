@@ -958,7 +958,7 @@ DATETIME_ParseString:
 ; CALLS:
 ;   GROUP_AM_JMPTBL_WDISP_SPrintf, GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AG_JMPTBL_MATH_DivS32, DISKIO_WriteBufferedBytes
 ; READS:
-;   DATA_DST_FMT_PCT_C_1CF8..DATA_DST_STR_NO_DST_DATA_1D00
+;   DST_FMT_PCT_C_InTimePrefixChar..DST_STR_NO_DST_DATA
 ; WRITES:
 ;   local buffer -87(A5)
 ; DESC:
@@ -981,7 +981,7 @@ DATETIME_FormatPairToStream:
     BEQ.W   .first_missing
 
     PEA     4.W
-    PEA     DATA_DST_FMT_PCT_C_1CF8
+    PEA     DST_FMT_PCT_C_InTimePrefixChar
     PEA     -138(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -996,7 +996,7 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DST_FMT_PCT_04D_PCT_03D_1CF9
+    PEA     DST_FMT_PCT_04D_PCT_03D_InTimeDateCode
     PEA     -138(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1029,7 +1029,7 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DST_FMT_PCT_02D_COLON_PCT_02D_1CFA
+    PEA     DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock
     PEA     -138(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1041,7 +1041,7 @@ DATETIME_FormatPairToStream:
     BRA.S   .after_first
 
 .first_missing:
-    PEA     DATA_DST_STR_NO_IN_TIME_1CFB
+    PEA     DST_STR_NO_IN_TIME
     PEA     -87(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -1054,7 +1054,7 @@ DATETIME_FormatPairToStream:
     BEQ.W   .second_missing
 
     PEA     19.W
-    PEA     DATA_DST_FMT_PCT_C_1CFC
+    PEA     DST_FMT_PCT_C_OutTimePrefixChar
     PEA     -138(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1069,7 +1069,7 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DST_FMT_PCT_04D_PCT_03D_1CFD
+    PEA     DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode
     PEA     -138(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1102,7 +1102,7 @@ DATETIME_FormatPairToStream:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DATA_DST_FMT_PCT_02D_COLON_PCT_02D_1CFE
+    PEA     DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock
     PEA     -138(A5)
     JSR     GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -1114,7 +1114,7 @@ DATETIME_FormatPairToStream:
     BRA.S   .emit_buffer
 
 .second_missing:
-    PEA     DATA_DST_STR_NO_OUT_TIME_1CFF
+    PEA     DST_STR_NO_OUT_TIME
     PEA     -87(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -1122,7 +1122,7 @@ DATETIME_FormatPairToStream:
     BRA.S   .emit_buffer
 
 .structs_missing:
-    PEA     DATA_DST_STR_NO_DST_DATA_1D00
+    PEA     DST_STR_NO_DST_DATA
     PEA     -87(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -1159,7 +1159,7 @@ DATETIME_FormatPairToStream:
 ; CALLS:
 ;   DISKIO_OpenFileWithBuffer, DISKIO_WriteBufferedBytes, DATETIME_FormatPairToStream, DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   DATA_DST_CONST_LONG_1CF7, DATA_DST_STR_G2_COLON_1D01, DATA_DST_STR_G3_COLON_1D02
+;   DST_DefaultDatPathPtr, DST_STR_G2_COLON, DST_STR_G3_COLON
 ; WRITES:
 ;   file
 ; DESC:
@@ -1180,7 +1180,7 @@ DATETIME_SavePairToFile:
     BEQ.S   .return_false
 
     PEA     MODE_NEWFILE.W
-    MOVE.L  DATA_DST_CONST_LONG_1CF7,-(A7)
+    MOVE.L  DST_DefaultDatPathPtr,-(A7)
     JSR     DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -1189,7 +1189,7 @@ DATETIME_SavePairToFile:
     BEQ.S   .return_false
 
     PEA     4.W
-    PEA     DATA_DST_STR_G2_COLON_1D01
+    PEA     DST_STR_G2_COLON
     MOVE.L  D7,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -1198,7 +1198,7 @@ DATETIME_SavePairToFile:
     BSR.W   DATETIME_FormatPairToStream
 
     PEA     4.W
-    PEA     DATA_DST_STR_G3_COLON_1D02
+    PEA     DST_STR_G3_COLON
     MOVE.L  D7,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 

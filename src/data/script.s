@@ -4,7 +4,14 @@ Global_STR_SCRIPT_C_1:
     NStr    "SCRIPT.c"
 Global_STR_SCRIPT_C_2:
     NStr    "SCRIPT.c"
-DATA_SCRIPT_BSS_LONG_20AB:
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_SerialReadModeOverflowCount   (serial read-mode overflow counter)
+; TYPE: u32
+; PURPOSE: Counts serial read-mode overflow/threshold events seen by APP interrupt path.
+; USED BY: ESQ_HandleSerialRbfInterrupt
+; NOTES: Incremented when ESQPARS2 read-mode flags hit overflow handling branch.
+;------------------------------------------------------------------------------
+SCRIPT_SerialReadModeOverflowCount:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_CtrlLineAssertedFlag   (CTRL-line asserted mirror)
@@ -19,17 +26,18 @@ Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     NStr    "No Current Weather Data Available"
 Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     DC.L    Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
-DATA_SCRIPT_STR_NO_FORECAST_WEATHER_DATA_AVAILABLE_20AF:
+SCRIPT_StrNoForecastWeatherData:
     NStr    "No Forecast Weather Data Available"
-DATA_SCRIPT_CONST_LONG_20B0:
-    DC.L    DATA_SCRIPT_STR_NO_FORECAST_WEATHER_DATA_AVAILABLE_20AF
-DATA_SCRIPT_STR_MAY_NOT_BE_AVAILABLE_IN_ALL_AREAS_DO_20B1:
+SCRIPT_PtrNoForecastWeatherData:
+    DC.L    SCRIPT_StrNoForecastWeatherData
+SCRIPT_StrWeatherDataAvailabilityDisclaimer:
     NStr    "May not be available in all areas."
-DATA_SCRIPT_CONST_LONG_20B2:
-    DC.L    DATA_SCRIPT_STR_MAY_NOT_BE_AVAILABLE_IN_ALL_AREAS_DO_20B1
-DATA_SCRIPT_STR_CONTINUED_20B3:
+SCRIPT_PtrWeatherDataAvailabilityDisclaimer:
+    DC.L    SCRIPT_StrWeatherDataAvailabilityDisclaimer
+SCRIPT_StrContinued:
     NStr    "Continued"
-    DC.L    DATA_SCRIPT_STR_CONTINUED_20B3
+SCRIPT_PtrContinued:
+    DC.L    SCRIPT_StrContinued
 
 Global_STR_JANUARY:
     NStr    "January"
@@ -70,44 +78,44 @@ Global_JMPTBL_MONTHS:
     DC.L    Global_STR_NOVEMBER
     DC.L    Global_STR_DECEMBER
 
-DATA_SCRIPT_STR_JAN_20C1:
+SCRIPT_StrMonthShort_Jan:
     NStr    "Jan "
-DATA_SCRIPT_STR_FEB_20C2:
+SCRIPT_StrMonthShort_Feb:
     NStr    "Feb "
-DATA_SCRIPT_STR_MAR_20C3:
+SCRIPT_StrMonthShort_Mar:
     NStr    "Mar "
-DATA_SCRIPT_STR_APR_20C4:
+SCRIPT_StrMonthShort_Apr:
     NStr    "Apr "
-DATA_SCRIPT_STR_MAY_20C5:
+SCRIPT_StrMonthShort_May:
     NStr    "May "
-DATA_SCRIPT_STR_JUN_20C6:
+SCRIPT_StrMonthShort_Jun:
     NStr    "Jun "
-DATA_SCRIPT_STR_JUL_20C7:
+SCRIPT_StrMonthShort_Jul:
     NStr    "Jul "
-DATA_SCRIPT_STR_AUG_20C8:
+SCRIPT_StrMonthShort_Aug:
     NStr    "Aug "
-DATA_SCRIPT_STR_SEP_20C9:
+SCRIPT_StrMonthShort_Sep:
     NStr    "Sep "
-DATA_SCRIPT_STR_OCT_20CA:
+SCRIPT_StrMonthShort_Oct:
     NStr    "Oct "
-DATA_SCRIPT_STR_NOV_20CB:
+SCRIPT_StrMonthShort_Nov:
     NStr    "Nov "
-DATA_SCRIPT_STR_DEC_20CC:
+SCRIPT_StrMonthShort_Dec:
     NStr    "Dec "
 
 Global_JMPTBL_SHORT_MONTHS:
-    DC.L    DATA_SCRIPT_STR_JAN_20C1
-    DC.L    DATA_SCRIPT_STR_FEB_20C2
-    DC.L    DATA_SCRIPT_STR_MAR_20C3
-    DC.L    DATA_SCRIPT_STR_APR_20C4
-    DC.L    DATA_SCRIPT_STR_MAY_20C5
-    DC.L    DATA_SCRIPT_STR_JUN_20C6
-    DC.L    DATA_SCRIPT_STR_JUL_20C7
-    DC.L    DATA_SCRIPT_STR_AUG_20C8
-    DC.L    DATA_SCRIPT_STR_SEP_20C9
-    DC.L    DATA_SCRIPT_STR_OCT_20CA
-    DC.L    DATA_SCRIPT_STR_NOV_20CB
-    DC.L    DATA_SCRIPT_STR_DEC_20CC
+    DC.L    SCRIPT_StrMonthShort_Jan
+    DC.L    SCRIPT_StrMonthShort_Feb
+    DC.L    SCRIPT_StrMonthShort_Mar
+    DC.L    SCRIPT_StrMonthShort_Apr
+    DC.L    SCRIPT_StrMonthShort_May
+    DC.L    SCRIPT_StrMonthShort_Jun
+    DC.L    SCRIPT_StrMonthShort_Jul
+    DC.L    SCRIPT_StrMonthShort_Aug
+    DC.L    SCRIPT_StrMonthShort_Sep
+    DC.L    SCRIPT_StrMonthShort_Oct
+    DC.L    SCRIPT_StrMonthShort_Nov
+    DC.L    SCRIPT_StrMonthShort_Dec
 
 Global_STR_SUNDAY_1:
     NStr    "Sunday"
@@ -133,72 +141,72 @@ Global_JMPTBL_DAYS_OF_WEEK:
     DC.L    Global_STR_FRIDAY_1
     DC.L    Global_STR_SATURDAY_1
 
-DATA_SCRIPT_STR_SUN_20D6:
+SCRIPT_StrDayShort_Sun:
     NStr    "Sun "
-DATA_SCRIPT_STR_MON_20D7:
+SCRIPT_StrDayShort_Mon:
     NStr    "Mon "
-DATA_SCRIPT_STR_TUE_20D8:
+SCRIPT_StrDayShort_Tue:
     NStr    "Tue "
-DATA_SCRIPT_STR_WED_20D9:
+SCRIPT_StrDayShort_Wed:
     NStr    "Wed "
-DATA_SCRIPT_STR_THU_20DA:
+SCRIPT_StrDayShort_Thu:
     NStr    "Thu "
-DATA_SCRIPT_STR_FRI_20DB:
+SCRIPT_StrDayShort_Fri:
     NStr    "Fri "
-DATA_SCRIPT_STR_SAT_20DC:
+SCRIPT_StrDayShort_Sat:
     NStr    "Sat "
 Global_JMPTBL_SHORT_DAYS_OF_WEEK:
-    DC.L    DATA_SCRIPT_STR_SUN_20D6
-    DC.L    DATA_SCRIPT_STR_MON_20D7
-    DC.L    DATA_SCRIPT_STR_TUE_20D8
-    DC.L    DATA_SCRIPT_STR_WED_20D9
-    DC.L    DATA_SCRIPT_STR_THU_20DA
-    DC.L    DATA_SCRIPT_STR_FRI_20DB
-    DC.L    DATA_SCRIPT_STR_SAT_20DC
-DATA_SCRIPT_STR_MONDAY_20DE:
+    DC.L    SCRIPT_StrDayShort_Sun
+    DC.L    SCRIPT_StrDayShort_Mon
+    DC.L    SCRIPT_StrDayShort_Tue
+    DC.L    SCRIPT_StrDayShort_Wed
+    DC.L    SCRIPT_StrDayShort_Thu
+    DC.L    SCRIPT_StrDayShort_Fri
+    DC.L    SCRIPT_StrDayShort_Sat
+SCRIPT_StrChannelLabel_Monday:
     NStr    "Monday"
-DATA_SCRIPT_STR_TUESDAY_20DF:
+SCRIPT_StrChannelLabel_Tuesday:
     NStr    "Tuesday"
-DATA_SCRIPT_STR_WEDNESDAY_20E0:
+SCRIPT_StrChannelLabel_Wednesday:
     NStr    "Wednesday"
-DATA_SCRIPT_STR_THURSDAY_20E1:
+SCRIPT_StrChannelLabel_Thursday:
     NStr    "Thursday"
-DATA_SCRIPT_STR_FRIDAY_20E2:
+SCRIPT_StrChannelLabel_Friday:
     NStr    "Friday"
-DATA_SCRIPT_STR_SATURDAY_20E3:
+SCRIPT_StrChannelLabel_Saturday:
     NStr    "Saturday"
-DATA_SCRIPT_STR_SUNDAY_20E4:
+SCRIPT_StrChannelLabel_Sunday:
     NStr    "Sunday"
-DATA_SCRIPT_STR_WEEKDAYS_20E5:
+SCRIPT_StrChannelLabel_Weekdays:
     NStr    "Weekdays"
-DATA_SCRIPT_STR_WEEKNIGHTS_20E6:
+SCRIPT_StrChannelLabel_Weeknights:
     NStr    "Weeknights"
-DATA_SCRIPT_STR_COMING_SOON_20E7:
+SCRIPT_StrChannelLabel_ComingSoon:
     NStr    "Coming Soon"
-DATA_SCRIPT_STR_THIS_MONTH_20E8:
+SCRIPT_StrChannelLabel_ThisMonth:
     NStr    "This Month"
-DATA_SCRIPT_STR_NEXT_MONTH_20E9:
+SCRIPT_StrChannelLabel_NextMonth:
     NStr    "Next Month"
-DATA_SCRIPT_STR_THIS_FALL_20EA:
+SCRIPT_StrChannelLabel_ThisFall:
     NStr    "This Fall"
-DATA_SCRIPT_STR_THIS_SUMMER_20EB:
+SCRIPT_StrChannelLabel_ThisSummer:
     NStr    "This Summer"
 ;------------------------------------------------------------------------------
-; SYM: DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED   (legacy channel-label index anchor)
+; SYM: SCRIPT_StrChannelLabel_TuesdaysFridays   (legacy channel-label index anchor)
 ; TYPE: cstring
 ; PURPOSE: Historical anchor used by `index * 4` address math in legacy callsites.
 ; USED BY: CLEANUP3/Textdisp channel-label lookups.
 ; NOTES: Anchor label only; pointer-table base is SCRIPT_ChannelLabelPtrTable.
 ;------------------------------------------------------------------------------
-DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED:
+SCRIPT_StrChannelLabel_TuesdaysFridays:
     NStr    "Tuesdays & Fridays"
-DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE:
+SCRIPT_StrChannelLabel_MondaysSaturdays:
     NStr    "Mondays & Saturdays"
-DATA_SCRIPT_STR_WEEKENDS_20EF:
+SCRIPT_StrChannelLabel_Weekends:
     NStr    "Weekends"
-DATA_SCRIPT_STR_EVERY_NIGHT_20F0:
+SCRIPT_StrChannelLabel_EveryNight:
     NStr    "Every Night"
-DATA_SCRIPT_STR_EVERY_DAY_20F1:
+SCRIPT_StrChannelLabel_EveryDay:
     NStr    "Every Day"
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_ChannelLabelEmptySlot0/SCRIPT_ChannelLabelEmptySlot1/SCRIPT_ChannelLabelEmptySlot2/SCRIPT_ChannelLabelEmptySlot3   (channel label empty-string slots)
@@ -210,68 +218,68 @@ DATA_SCRIPT_STR_EVERY_DAY_20F1:
 ;   No direct symbol-based writers are identified yet; preserve contiguous layout.
 ;------------------------------------------------------------------------------
 SCRIPT_ChannelLabelEmptySlot0:
-DATA_SCRIPT_BSS_WORD_20F2:
+SCRIPT_ChannelLabelEmptySlot0_BackingWord:
     DS.W    1
 SCRIPT_ChannelLabelEmptySlot1:
-DATA_SCRIPT_BSS_WORD_20F3:
+SCRIPT_ChannelLabelEmptySlot1_BackingWord:
     DS.W    1
 SCRIPT_ChannelLabelEmptySlot2:
-DATA_SCRIPT_BSS_WORD_20F4:
+SCRIPT_ChannelLabelEmptySlot2_BackingWord:
     DS.W    1
 SCRIPT_ChannelLabelEmptySlot3:
-DATA_SCRIPT_BSS_WORD_20F5:
+SCRIPT_ChannelLabelEmptySlot3_BackingWord:
     DS.W    1
-DATA_SCRIPT_STR_MONDAYS_THRU_SATURDAYS_20F6:
+SCRIPT_StrChannelLabel_MondaysThruSaturdays:
     NStr    "Mondays thru Saturdays"
-DATA_SCRIPT_STR_MONDAYS_THRU_THURSDAYS_20F7:
+SCRIPT_StrChannelLabel_MondaysThruThursdays:
     NStr    "Mondays thru Thursdays"
-DATA_SCRIPT_STR_WEEKDAY_MORNINGS_20F8:
+SCRIPT_StrChannelLabel_WeekdayMornings:
     NStr    "Weekday Mornings"
-DATA_SCRIPT_STR_WEEKDAY_AFTERNOONS_20F9:
+SCRIPT_StrChannelLabel_WeekdayAfternoons:
     NStr    "Weekday Afternoons"
-DATA_SCRIPT_STR_TUESDAYS_THURSDAYS_20FA:
+SCRIPT_StrChannelLabel_TuesdaysThursdays:
     NStr    "Tuesdays & Thursdays"
-DATA_SCRIPT_STR_THIS_WEEK_20FB:
+SCRIPT_StrChannelLabel_ThisWeek:
     NStr    "This Week"
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_ChannelLabelPtrTable   (channel label pointer table)
 ; TYPE: array<u32 ptr>
 ; PURPOSE: Maps channel/group selector values to label strings for append paths.
-; USED BY: CLEANUP3/Textdisp routines that index from DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED.
+; USED BY: CLEANUP3/Textdisp routines that index from SCRIPT_StrChannelLabel_TuesdaysFridays.
 ; NOTES:
-;   Legacy callsites index relative to DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED.
+;   Legacy callsites index relative to SCRIPT_StrChannelLabel_TuesdaysFridays.
 ;   Entries 19..22 intentionally point at zeroed empty-slot placeholders.
 ;------------------------------------------------------------------------------
 SCRIPT_ChannelLabelPtrTable:
-    DC.L    DATA_SCRIPT_STR_MONDAY_20DE
-    DC.L    DATA_SCRIPT_STR_TUESDAY_20DF
-    DC.L    DATA_SCRIPT_STR_WEDNESDAY_20E0
-    DC.L    DATA_SCRIPT_STR_THURSDAY_20E1
-    DC.L    DATA_SCRIPT_STR_FRIDAY_20E2
-    DC.L    DATA_SCRIPT_STR_SATURDAY_20E3
-    DC.L    DATA_SCRIPT_STR_SUNDAY_20E4
-    DC.L    DATA_SCRIPT_STR_WEEKDAYS_20E5
-    DC.L    DATA_SCRIPT_STR_WEEKNIGHTS_20E6
-    DC.L    DATA_SCRIPT_STR_COMING_SOON_20E7
-    DC.L    DATA_SCRIPT_STR_THIS_MONTH_20E8
-    DC.L    DATA_SCRIPT_STR_NEXT_MONTH_20E9
-    DC.L    DATA_SCRIPT_STR_THIS_FALL_20EA
-    DC.L    DATA_SCRIPT_STR_THIS_SUMMER_20EB
-    DC.L    DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED
-    DC.L    DATA_SCRIPT_STR_MONDAYS_SATURDAYS_20EE
-    DC.L    DATA_SCRIPT_STR_WEEKENDS_20EF
-    DC.L    DATA_SCRIPT_STR_EVERY_NIGHT_20F0
-    DC.L    DATA_SCRIPT_STR_EVERY_DAY_20F1
-    DC.L    DATA_SCRIPT_BSS_WORD_20F2
-    DC.L    DATA_SCRIPT_BSS_WORD_20F3
-    DC.L    DATA_SCRIPT_BSS_WORD_20F4
-    DC.L    DATA_SCRIPT_BSS_WORD_20F5
-    DC.L    DATA_SCRIPT_STR_MONDAYS_THRU_SATURDAYS_20F6
-    DC.L    DATA_SCRIPT_STR_MONDAYS_THRU_THURSDAYS_20F7
-    DC.L    DATA_SCRIPT_STR_WEEKDAY_MORNINGS_20F8
-    DC.L    DATA_SCRIPT_STR_WEEKDAY_AFTERNOONS_20F9
-    DC.L    DATA_SCRIPT_STR_TUESDAYS_THURSDAYS_20FA
-    DC.L    DATA_SCRIPT_STR_THIS_WEEK_20FB
+    DC.L    SCRIPT_StrChannelLabel_Monday
+    DC.L    SCRIPT_StrChannelLabel_Tuesday
+    DC.L    SCRIPT_StrChannelLabel_Wednesday
+    DC.L    SCRIPT_StrChannelLabel_Thursday
+    DC.L    SCRIPT_StrChannelLabel_Friday
+    DC.L    SCRIPT_StrChannelLabel_Saturday
+    DC.L    SCRIPT_StrChannelLabel_Sunday
+    DC.L    SCRIPT_StrChannelLabel_Weekdays
+    DC.L    SCRIPT_StrChannelLabel_Weeknights
+    DC.L    SCRIPT_StrChannelLabel_ComingSoon
+    DC.L    SCRIPT_StrChannelLabel_ThisMonth
+    DC.L    SCRIPT_StrChannelLabel_NextMonth
+    DC.L    SCRIPT_StrChannelLabel_ThisFall
+    DC.L    SCRIPT_StrChannelLabel_ThisSummer
+    DC.L    SCRIPT_StrChannelLabel_TuesdaysFridays
+    DC.L    SCRIPT_StrChannelLabel_MondaysSaturdays
+    DC.L    SCRIPT_StrChannelLabel_Weekends
+    DC.L    SCRIPT_StrChannelLabel_EveryNight
+    DC.L    SCRIPT_StrChannelLabel_EveryDay
+    DC.L    SCRIPT_ChannelLabelEmptySlot0
+    DC.L    SCRIPT_ChannelLabelEmptySlot1
+    DC.L    SCRIPT_ChannelLabelEmptySlot2
+    DC.L    SCRIPT_ChannelLabelEmptySlot3
+    DC.L    SCRIPT_StrChannelLabel_MondaysThruSaturdays
+    DC.L    SCRIPT_StrChannelLabel_MondaysThruThursdays
+    DC.L    SCRIPT_StrChannelLabel_WeekdayMornings
+    DC.L    SCRIPT_StrChannelLabel_WeekdayAfternoons
+    DC.L    SCRIPT_StrChannelLabel_TuesdaysThursdays
+    DC.L    SCRIPT_StrChannelLabel_ThisWeek
 
 ; Another struct?
 Global_STR_ALIGNED_NOW_SHOWING:
@@ -286,11 +294,11 @@ Global_STR_SHOWTIMES_AND_SINGLE_SPACE:
     NStr    "Showtimes "
 Global_STR_SHOWING_AT_AND_SINGLE_SPACE:
     NStr    "Showing at "
-DATA_SCRIPT_STR_HRS_2102:
+SCRIPT_StrHoursPluralSuffix:
     DC.B    "hrs ",0
-DATA_SCRIPT_STR_HR_2103:
+SCRIPT_StrHourSingularSuffix:
     DC.B    "hr ",0
-DATA_SCRIPT_STR_MIN_2104:
+SCRIPT_StrMinutesSuffix:
     DC.B    "min)",0
 Global_STR_ALIGNED_TONIGHT_AT:
     DC.B    TextAlignCenter,"Tonight at ",0
@@ -298,49 +306,57 @@ Global_STR_ALIGNED_ON:
     DC.B    TextAlignCenter,"on",0
 Global_STR_ALIGNED_CHANNEL_1:
     NStr2   TextAlignCenter,"Channel "
-DATA_SCRIPT_STR_SPORTS_ON_2108:
+SCRIPT_StrSportsOnPrefix:
     NStr    "Sports on "
-DATA_SCRIPT_CONST_LONG_2109:
-    DC.L    DATA_SCRIPT_STR_SPORTS_ON_2108
-DATA_SCRIPT_STR_MOVIE_SUMMARY_FOR_210A:
+SCRIPT_PtrSportsOnPrefix:
+    DC.L    SCRIPT_StrSportsOnPrefix
+SCRIPT_StrMovieSummaryForPrefix:
     NStr    "Movie Summary for "
-DATA_SCRIPT_CONST_LONG_210B:
-    DC.L    DATA_SCRIPT_STR_MOVIE_SUMMARY_FOR_210A
-DATA_SCRIPT_STR_SUMMARY_OF_210C:
+SCRIPT_PtrMovieSummaryForPrefix:
+    DC.L    SCRIPT_StrMovieSummaryForPrefix
+SCRIPT_StrSummaryOfPrefix:
     NStr    "Summary of "
-DATA_SCRIPT_CONST_LONG_210D:
-    DC.L    DATA_SCRIPT_STR_SUMMARY_OF_210C
-DATA_SCRIPT_STR_CHANNEL_210E:
+SCRIPT_PtrSummaryOfPrefix:
+    DC.L    SCRIPT_StrSummaryOfPrefix
+SCRIPT_StrChannelSuffix:
     NStr    " channel "
-DATA_SCRIPT_CONST_LONG_210F:
-    DC.L    DATA_SCRIPT_STR_CHANNEL_210E
-DATA_SCRIPT_STR_NO_DATA_DOT_2110:
+SCRIPT_PtrChannelSuffix:
+    DC.L    SCRIPT_StrChannelSuffix
+SCRIPT_StrNoDataPlaceholder:
     NStr    "No Data."
-DATA_SCRIPT_CONST_LONG_2111:
-    DC.L    DATA_SCRIPT_STR_NO_DATA_DOT_2110
+SCRIPT_PtrNoDataPlaceholder:
+    DC.L    SCRIPT_StrNoDataPlaceholder
 Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr    "Please Stand By for your Local Listings.  ER007"
 Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     DC.L    Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 Global_STR_OFF_AIR_1:
     NStr    "Off Air."
-DATA_SCRIPT_CONST_LONG_2115:
+SCRIPT_PtrOffAirPlaceholder:
     DC.L    Global_STR_OFF_AIR_1
 Global_STR_GRID_DATE_FORMAT_STRING:
     NStr    "%s %s %ld %04ld"
 Global_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
-DATA_SCRIPT_BSS_WORD_2118:
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_CtrlHandshakeStage/SCRIPT_CtrlHandshakeRetryCount/SCRIPT_RuntimeModeDispatchLatch/SCRIPT_CtrlCmdDeferCounter/SCRIPT_PlaybackFallbackCounter/SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
+; TYPE: u16/u16/u16/u16/u16/u16
+; PURPOSE: Tracks CTRL handshake/retry/dispatch state and cached subtype in runtime command processing.
+; USED BY: SCRIPT_UpdateCtrlStateMachine, SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, ESQFUNC_DrawDiagnosticsScreen
+; NOTES:
+;   `SCRIPT_Type20SubtypeCache` semantics are still partially inferred from P_TYPE type-20 helper flows.
+;------------------------------------------------------------------------------
+SCRIPT_CtrlHandshakeStage:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_2119:
+SCRIPT_CtrlHandshakeRetryCount:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_211A:
+SCRIPT_RuntimeModeDispatchLatch:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_211B:
+SCRIPT_CtrlCmdDeferCounter:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_211C:
+SCRIPT_PlaybackFallbackCounter:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_211D:
+SCRIPT_Type20SubtypeCache:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_PendingBannerTargetChar/SCRIPT_BannerTransitionActive   (banner transition control)
@@ -351,26 +367,33 @@ DATA_SCRIPT_BSS_WORD_211D:
 ;------------------------------------------------------------------------------
 SCRIPT_PendingBannerTargetChar:
     DC.W    $ffff
-DATA_SCRIPT_BSS_WORD_211F:
+SCRIPT_PendingBannerSpeedMs:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_2120:
+SCRIPT_BannerTransitionStepBudget:
     DS.W    1
 SCRIPT_BannerTransitionActive:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_2122:
+SCRIPT_ReadModeActiveLatch:
     DS.W    1
 ; Brush pointers exposed to scripting (primary/secondary selections).
 BRUSH_ScriptPrimarySelection:
     DS.L    1
 BRUSH_ScriptSecondarySelection:
     DS.L    1
-DATA_SCRIPT_BSS_LONG_2125:
+;------------------------------------------------------------------------------
+; SYM: SCRIPT_RuntimeModeDeferredFlag/SCRIPT_PendingWeatherCommandChar/SCRIPT_PendingTextdispCmdChar/SCRIPT_PendingTextdispCmdArg   (deferred command payload cluster)
+; TYPE: u32/u8/u8/u16
+; PURPOSE: Holds deferred runtime-mode and pending command bytes consumed by weather/TEXTDISP dispatch paths.
+; USED BY: SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, SCRIPT_LoadCtrlContextSnapshot, SCRIPT_SaveCtrlContextSnapshot, ESQIFF2_ApplyIncomingStatusPacket
+; NOTES: Command chars/arg are serialized into CTRL context at offsets +437..+439.
+;------------------------------------------------------------------------------
+SCRIPT_RuntimeModeDeferredFlag:
     DS.L    1
-DATA_SCRIPT_STR_X_2126:
+SCRIPT_PendingWeatherCommandChar:
     DC.B    "x"
-DATA_SCRIPT_BSS_BYTE_2127:
+SCRIPT_PendingTextdispCmdChar:
     DS.B    1
-DATA_SCRIPT_BSS_WORD_2128:
+SCRIPT_PendingTextdispCmdArg:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: SCRIPT_CommandTextPtr   (owned script command text pointer)
@@ -382,58 +405,65 @@ DATA_SCRIPT_BSS_WORD_2128:
 ;------------------------------------------------------------------------------
 SCRIPT_CommandTextPtr:
     DS.L    1
-DATA_SCRIPT_BSS_WORD_212A:
+SCRIPT_BannerTransitionStepCursor:
     DS.W    1
-DATA_SCRIPT_BSS_WORD_212B:
+SCRIPT_StatusMaskRefreshPending:
     DS.W    1
-DATA_SCRIPT_TAG_00_212C:
+SCRIPT_BrushTag_Default00_Primary:
     NStr    "00"
-DATA_SCRIPT_TAG_00_212D:
+SCRIPT_BrushTag_Default00_Secondary:
     NStr    "00"
-DATA_SCRIPT_TAG_11_212E:
+SCRIPT_BrushTag_Clear11_Primary:
     NStr    "11"
-DATA_SCRIPT_TAG_11_212F:
+SCRIPT_BrushTag_Clear11_Secondary:
     NStr    "11"
-DATA_SCRIPT_STR_YL_2130:
+SCRIPT_Tag_YL:
     NStr    "yl"
     DS.W    1
-DATA_SCRIPT_BSS_WORD_2131:
+;------------------------------------------------------------------------------
+; SYM: TEXTDISP_SourceConfigFlagMask   (source-config aggregate flag mask)
+; TYPE: u16
+; PURPOSE: Accumulates SourceCfg feature flags while loading/applying source config entries.
+; USED BY: TEXTDISP_LoadSourceConfig, TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry, TEXTDISP_AddSourceConfigEntry
+; NOTES: Updated by OR-ing per-entry flags.
+;------------------------------------------------------------------------------
+TEXTDISP_SourceConfigFlagMask:
     DS.W    1
 Global_STR_PREVUESPORTS:
     NStr    "PrevueSports"
-DATA_SCRIPT_CONST_LONG_2133:
+TEXTDISP_PtrPrevueSportsTag:
     DC.L    Global_STR_PREVUESPORTS
-DATA_SCRIPT_STR_2134:
+SCRIPT_AlignedPrefixEmptyA:
     NStr    TextAlignCenter
-DATA_SCRIPT_STR_2135:
+SCRIPT_AlignedPrefixEmptyB:
     NStr    TextAlignCenter
-DATA_SCRIPT_SPACE_VALUE_2136:
+SCRIPT_SpacerTripleA:
     NStr    "   "
-DATA_SCRIPT_STR_CH_DOT_2137:
+SCRIPT_AlignedChannelAbbrevPrefix:
     NStr2   TextAlignCenter,"Ch. "
-DATA_SCRIPT_SPACE_VALUE_2138:
+SCRIPT_SpacerTripleB:
     NStr    "   "
-DATA_SCRIPT_FMT_PCT_C_2139:
+SCRIPT_AlignedCharFormat:
     NStr2   TextAlignCenter,"%c"
-DATA_SCRIPT_STR_213A:
+SCRIPT_AlignedPrefixEmptyC:
     NStr    TextAlignCenter
-DATA_SCRIPT_STR_213B:
+SCRIPT_AlignedPrefixEmptyD:
     NStr    TextAlignCenter
-DATA_SCRIPT_SPACE_VALUE_213C:
+SCRIPT_SpacerTripleC:
     NStr    "   "
-DATA_SCRIPT_STR_213D:
+SCRIPT_AlignedPrefixEmptyE:
     NStr    TextAlignCenter
-DATA_SCRIPT_STR_213E:
+SCRIPT_AlignedPrefixEmptyF:
     NStr    TextAlignCenter
-DATA_SCRIPT_FMT_PCT_S_213F:
+SCRIPT_AlignedStringFormat:
     NStr2   TextAlignCenter,"%s"
-DATA_SCRIPT_STR_AT_2140:
+SCRIPT_StrAtSeparator:
     NStr    " at "
-DATA_SCRIPT_STR_VS_DOT_2141:
+SCRIPT_StrVsDotSeparator:
     NStr    " vs. "
-DATA_SCRIPT_STR_VS_2142:
+SCRIPT_StrVsSeparator:
     NStr    " vs "
-DATA_SCRIPT_STR_2143:
+SCRIPT_AlignedPrefixEmptyG:
     NStr    TextAlignCenter
 Global_STR_ALIGNED_CHANNEL_2:
     NStr2   TextAlignCenter,"Channel "
@@ -446,17 +476,24 @@ Global_STR_ALIGNED_CHANNEL_2:
 ;------------------------------------------------------------------------------
 TEXTDISP_FilterModeId:
     DC.W    $0300
-DATA_SCRIPT_TAG_PPV_2146:
+SCRIPT_FilterTag_PPV:
     NStr    "PPV"
-DATA_SCRIPT_TAG_SBE_2147:
+SCRIPT_FilterTag_SBE:
     NStr    "SBE"
-DATA_SCRIPT_TAG_SPORTS_2148:
+SCRIPT_FilterTag_SPORTS:
     NStr    "SPORTS"
-DATA_SCRIPT_CONST_WORD_2149:
+;------------------------------------------------------------------------------
+; SYM: TEXTDISP_LastDispatchMatchIndex/TEXTDISP_LastDispatchGroupId/TEXTDISP_CommandBufferPtr/TEXTDISP_CommandPrefixFormat   (textdisp dispatch scratch cluster)
+; TYPE: s16/u8/pointer/cstring
+; PURPOSE: Stores last dispatch selection/group and temporary command-buffer state for TEXTDISP command handling.
+; USED BY: TEXTDISP_HandleScriptCommand
+; NOTES: Command prefix format currently emits `xx%s` into local scratch before lookup/dispatch.
+;------------------------------------------------------------------------------
+TEXTDISP_LastDispatchMatchIndex:
     DC.W    $ffff
-DATA_SCRIPT_CONST_BYTE_214A:
+TEXTDISP_LastDispatchGroupId:
     DC.B    0,"1"
-DATA_SCRIPT_BSS_LONG_214B:
+TEXTDISP_CommandBufferPtr:
     DS.L    1
-DATA_SCRIPT_FMT_XX_PCT_S_214C:
+TEXTDISP_CommandPrefixFormat:
     NStr3   "xx%s",18,"TEMPO"

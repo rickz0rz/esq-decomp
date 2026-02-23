@@ -38,7 +38,7 @@
 ;   TEXTDISP_FormatEntryTimeForIndex, STR_SkipClass3Chars, STRING_AppendAtNull, TEXTDISP_FindControlToken,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
-;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, DATA_P_TYPE_BSS_LONG_205C
+;   TEXTDISP_PrimaryChannelCode, CLOCK_CurrentDayOfWeekIndex, TEXTDISP_BannerFallbackIsSpecialFlag/TEXTDISP_BannerCharSelected/TEXTDISP_BannerSelectedIsSpecialFlag, P_TYPE_WeatherBottomLineMsgPtr
 ; WRITES:
 ;   TEXTDISP_PrimaryChannelCode
 ; DESC:
@@ -210,7 +210,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     MOVE.L  D0,-192(A5)
 
 .append_center_prefix:
-    LEA     DATA_SCRIPT_STR_2134,A0
+    LEA     SCRIPT_AlignedPrefixEmptyA,A0
     LEA     -137(A5),A1
 
 .copy_center_prefix:
@@ -253,7 +253,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     BGT.S   .build_program_title
 
 .append_channel_name:
-    LEA     DATA_SCRIPT_STR_2135,A0
+    LEA     SCRIPT_AlignedPrefixEmptyB,A0
     LEA     -137(A5),A1
 
 .copy_channel_prefix:
@@ -265,8 +265,8 @@ TEXTDISP_BuildNowShowingStatusLine:
     EXT.L   D1
     ASL.L   #2,D1
     ; Layout-coupled table anchor: legacy code indexes longword pointers from
-    ; DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED + 2.
-    LEA     (DATA_SCRIPT_STR_TUESDAYS_FRIDAYS_20ED+2),A0
+    ; SCRIPT_StrChannelLabel_TuesdaysFridays + 2.
+    LEA     (SCRIPT_StrChannelLabel_TuesdaysFridays+2),A0
     ADDA.L  D1,A0
     MOVE.L  (A0),-(A7)
     PEA     -137(A5)
@@ -320,14 +320,14 @@ TEXTDISP_BuildNowShowingStatusLine:
     TST.B   D1
     BEQ.S   .append_channel_label
 
-    PEA     DATA_SCRIPT_SPACE_VALUE_2136
+    PEA     SCRIPT_SpacerTripleA
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_channel_label:
-    PEA     DATA_SCRIPT_STR_CH_DOT_2137
+    PEA     SCRIPT_AlignedChannelAbbrevPrefix
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
@@ -345,7 +345,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     TST.B   D0
     BEQ.S   .append_time_prefix
 
-    PEA     DATA_SCRIPT_SPACE_VALUE_2138
+    PEA     SCRIPT_SpacerTripleB
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
@@ -356,7 +356,7 @@ TEXTDISP_BuildNowShowingStatusLine:
     MOVEA.L -196(A5),A0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_SCRIPT_FMT_PCT_C_2139
+    PEA     SCRIPT_AlignedCharFormat
     ; Format here is "%c" (+ alignment token), so -188(A5) remains short.
     PEA     -188(A5)
     JSR     WDISP_SPrintf(PC)
@@ -387,21 +387,21 @@ TEXTDISP_BuildNowShowingStatusLine:
     BRA.S   .render_output
 
 .append_external_line:
-    TST.L   DATA_P_TYPE_BSS_LONG_205C
+    TST.L   P_TYPE_WeatherBottomLineMsgPtr
     BEQ.S   .clear_output
 
-    MOVEA.L DATA_P_TYPE_BSS_LONG_205C,A0
+    MOVEA.L P_TYPE_WeatherBottomLineMsgPtr,A0
     TST.B   (A0)
     BEQ.S   .clear_output
 
-    LEA     DATA_SCRIPT_STR_213A,A0
+    LEA     SCRIPT_AlignedPrefixEmptyC,A0
     LEA     -137(A5),A1
 
 .copy_external_prefix:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_external_prefix
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205C,-(A7)
+    MOVE.L  P_TYPE_WeatherBottomLineMsgPtr,-(A7)
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
@@ -436,7 +436,7 @@ TEXTDISP_BuildNowShowingStatusLine:
 ;   TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode, STRING_AppendAtNull,
 ;   TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine, SCRIPT_SetupHighlightEffect
 ; READS:
-;   DATA_SCRIPT_STR_213B/DATA_SCRIPT_SPACE_VALUE_213C/DATA_SCRIPT_STR_213D
+;   SCRIPT_AlignedPrefixEmptyD/SCRIPT_SpacerTripleC/SCRIPT_AlignedPrefixEmptyE
 ; DESC:
 ;   Builds a two-part aligned status string for a given entry and renders it.
 ; NOTES:
@@ -535,7 +535,7 @@ TEXTDISP_BuildEntryPairStatusLine:
     TST.L   -142(A5)
     BEQ.S   .clear_prefix
 
-    LEA     DATA_SCRIPT_STR_213B,A0
+    LEA     SCRIPT_AlignedPrefixEmptyD,A0
     LEA     -137(A5),A1
 
 .copy_align_prefix:
@@ -561,14 +561,14 @@ TEXTDISP_BuildEntryPairStatusLine:
     TST.B   D0
     BEQ.S   .append_separator
 
-    PEA     DATA_SCRIPT_SPACE_VALUE_213C
+    PEA     SCRIPT_SpacerTripleC
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
 .append_separator:
-    PEA     DATA_SCRIPT_STR_213D
+    PEA     SCRIPT_AlignedPrefixEmptyE
     PEA     -137(A5)
     JSR     STRING_AppendAtNull(PC)
 
@@ -758,7 +758,7 @@ TEXTDISP_ResetSelectionState:
 ; CALLS:
 ;   STRING_CopyPadNul
 ; READS:
-;   CONFIG_LRBN_FlagChar, DATA_TLIBA1_CONST_BYTE_2174, Global_REF_WORD_HEX_CODE_8E
+;   CONFIG_LRBN_FlagChar, TEXTDISP_LrbnEntryWidthPx, Global_REF_WORD_HEX_CODE_8E
 ; WRITES:
 ;   entry+0..9, entry+10..208, TEXTDISP_EntryTextBaseWidthPx
 ; DESC:
@@ -777,7 +777,7 @@ TEXTDISP_SetEntryTextFields:
     BNE.S   .use_hex_code
 
     MOVEQ   #0,D0
-    MOVE.W  DATA_TLIBA1_CONST_BYTE_2174,D0
+    MOVE.W  TEXTDISP_LrbnEntryWidthPx,D0
     MOVE.L  D0,TEXTDISP_EntryTextBaseWidthPx
     BRA.S   .after_hex_code
 
@@ -1082,7 +1082,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.B   (A0)
     BEQ.S   .select_entry_string
 
-    LEA     DATA_SCRIPT_STR_213E,A1
+    LEA     SCRIPT_AlignedPrefixEmptyF,A1
     MOVEA.L -8(A5),A2
 
 .copy_prefix:
@@ -1147,14 +1147,14 @@ TEXTDISP_BuildEntryDetailLine:
 
 .mark_match_delimiters:
     MOVE.L  -12(A5),-(A7)
-    PEA     DATA_SCRIPT_FMT_PCT_S_213F
+    PEA     SCRIPT_AlignedStringFormat
     ; Copies selected/trimmed entry substring into the 512-byte work buffer.
     ; Budget note for -524(A5): format is align-prefix + `%s`; practical risk is
     ; low with normal entry text, but formatter-side bounds are not enforced.
     PEA     -524(A5)
     JSR     WDISP_SPrintf(PC)
 
-    PEA     DATA_SCRIPT_STR_AT_2140
+    PEA     SCRIPT_StrAtSeparator
     PEA     -524(A5)
     JSR     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -1163,7 +1163,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.L   D0
     BNE.S   .try_match_vs_dot
 
-    PEA     DATA_SCRIPT_STR_VS_DOT_2141
+    PEA     SCRIPT_StrVsDotSeparator
     PEA     -524(A5)
     JSR     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -1174,7 +1174,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.L   D0
     BNE.S   .try_match_vs
 
-    PEA     DATA_SCRIPT_STR_VS_2142
+    PEA     SCRIPT_StrVsSeparator
     PEA     -524(A5)
     JSR     TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -1263,7 +1263,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.B   (A0)
     BEQ.S   .copy_program_init
 
-    PEA     DATA_SCRIPT_STR_2143
+    PEA     SCRIPT_AlignedPrefixEmptyG
     MOVE.L  -8(A5),-(A7)
     JSR     STRING_AppendAtNull(PC)
 
@@ -1395,7 +1395,7 @@ TEXTDISP_FilterAndSelectEntry:
     CLR.W   TEXTDISP_FilterChannelSlotIndex
     MOVE.B  #$1,TEXTDISP_FilterModeId
     MOVE.L  -30(A5),-(A7)
-    PEA     DATA_SCRIPT_TAG_PPV_2146
+    PEA     SCRIPT_FilterTag_PPV
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -1403,7 +1403,7 @@ TEXTDISP_FilterAndSelectEntry:
     BEQ.S   .set_match_flags
 
     MOVE.L  -30(A5),-(A7)
-    PEA     DATA_SCRIPT_TAG_SBE_2147
+    PEA     SCRIPT_FilterTag_SBE
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -1418,7 +1418,7 @@ TEXTDISP_FilterAndSelectEntry:
 
 .after_match_flags:
     MOVE.L  -30(A5),-(A7)
-    PEA     DATA_SCRIPT_TAG_SPORTS_2148
+    PEA     SCRIPT_FilterTag_SPORTS
     MOVE.W  D0,TEXTDISP_FilterPpvSbeMatchFlag
     JSR     UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -1990,9 +1990,9 @@ TEXTDISP_DrawHighlightFrame:
 ;   TEXTDISP_SetEntryTextFields, TEXTDISP_FilterAndSelectEntry,
 ;   TEXTDISP_DrawHighlightFrame, MEMORY_AllocateMemory, MEMORY_DeallocateMemory
 ; READS:
-;   DATA_SCRIPT_BSS_LONG_214B, TEXTDISP_PrimaryFirstMatchIndex/2361/2364
+;   TEXTDISP_CommandBufferPtr, TEXTDISP_PrimaryFirstMatchIndex/2361/2364
 ; WRITES:
-;   DATA_SCRIPT_CONST_WORD_2149/214A/214B/235D
+;   TEXTDISP_LastDispatchMatchIndex/214A/214B/235D
 ; DESC:
 ;   Handles a script opcode by updating text display state and SourceCfg data.
 ; NOTES:
@@ -2028,7 +2028,7 @@ TEXTDISP_HandleScriptCommand:
 
 .handle_cmd_C:
     MOVE.L  A3,-(A7)
-    PEA     DATA_SCRIPT_FMT_XX_PCT_S_214C
+    PEA     TEXTDISP_CommandPrefixFormat
     ; 200-byte local target; source text comes from script argument pointer.
     ; Provenance: A3 is typically SCRIPT_CommandTextPtr (legacy SCRIPT_CommandTextPtr), populated from
     ; SCRIPT_CTRL_CMD_BUFFER payload bytes in SCRIPT_HandleBrushCommand.
@@ -2050,12 +2050,12 @@ TEXTDISP_HandleScriptCommand:
     BNE.S   .handle_cmd_C_success
 
     MOVE.W  TEXTDISP_ActiveGroupId,TEXTDISP_StatusGroupId
-    MOVE.W  TEXTDISP_CurrentMatchIndex,DATA_SCRIPT_CONST_WORD_2149
+    MOVE.W  TEXTDISP_CurrentMatchIndex,TEXTDISP_LastDispatchMatchIndex
     BSR.W   SCRIPT_GetBannerCharOrFallback
 
     MOVEQ   #0,D1
     MOVE.B  D0,D1
-    MOVE.W  D1,DATA_SCRIPT_CONST_BYTE_214A
+    MOVE.W  D1,TEXTDISP_LastDispatchGroupId
     BRA.S   .dispatch_update
 
 .handle_cmd_C_success:
@@ -2064,9 +2064,9 @@ TEXTDISP_HandleScriptCommand:
     BEQ.S   .handle_cmd_C_try_alt1
 
     MOVE.W  #1,TEXTDISP_StatusGroupId
-    MOVE.W  TEXTDISP_PrimaryFirstMatchIndex,DATA_SCRIPT_CONST_WORD_2149
+    MOVE.W  TEXTDISP_PrimaryFirstMatchIndex,TEXTDISP_LastDispatchMatchIndex
     MOVEQ   #-1,D0
-    MOVE.W  D0,DATA_SCRIPT_CONST_BYTE_214A
+    MOVE.W  D0,TEXTDISP_LastDispatchGroupId
     BRA.S   .dispatch_update
 
 .handle_cmd_C_try_alt1:
@@ -2075,23 +2075,23 @@ TEXTDISP_HandleScriptCommand:
     BEQ.S   .handle_cmd_C_try_alt2
 
     CLR.W   TEXTDISP_StatusGroupId
-    MOVE.W  TEXTDISP_SecondaryFirstMatchIndex,DATA_SCRIPT_CONST_WORD_2149
+    MOVE.W  TEXTDISP_SecondaryFirstMatchIndex,TEXTDISP_LastDispatchMatchIndex
     MOVEQ   #-1,D0
-    MOVE.W  D0,DATA_SCRIPT_CONST_BYTE_214A
+    MOVE.W  D0,TEXTDISP_LastDispatchGroupId
     BRA.S   .dispatch_update
 
 .handle_cmd_C_try_alt2:
     MOVEQ   #-1,D0
-    MOVE.W  D0,DATA_SCRIPT_CONST_BYTE_214A
-    MOVE.W  D0,DATA_SCRIPT_CONST_WORD_2149
+    MOVE.W  D0,TEXTDISP_LastDispatchGroupId
+    MOVE.W  D0,TEXTDISP_LastDispatchMatchIndex
     MOVE.W  D0,TEXTDISP_StatusGroupId
 
 .dispatch_update:
     MOVE.W  TEXTDISP_StatusGroupId,D0
     EXT.L   D0
-    MOVE.W  DATA_SCRIPT_CONST_WORD_2149,D1
+    MOVE.W  TEXTDISP_LastDispatchMatchIndex,D1
     EXT.L   D1
-    MOVE.W  DATA_SCRIPT_CONST_BYTE_214A,D2
+    MOVE.W  TEXTDISP_LastDispatchGroupId,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
@@ -2107,9 +2107,9 @@ TEXTDISP_HandleScriptCommand:
 .handle_cmd_J:
     MOVE.W  TEXTDISP_StatusGroupId,D0
     EXT.L   D0
-    MOVE.W  DATA_SCRIPT_CONST_WORD_2149,D1
+    MOVE.W  TEXTDISP_LastDispatchMatchIndex,D1
     EXT.L   D1
-    MOVE.W  DATA_SCRIPT_CONST_BYTE_214A,D2
+    MOVE.W  TEXTDISP_LastDispatchGroupId,D2
     EXT.L   D2
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
@@ -2125,7 +2125,7 @@ TEXTDISP_HandleScriptCommand:
     CMP.B   D0,D7
     BNE.S   .apply_source_cfg
 
-    TST.L   DATA_SCRIPT_BSS_LONG_214B
+    TST.L   TEXTDISP_CommandBufferPtr
     BNE.S   .init_source_cfg
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
@@ -2135,39 +2135,39 @@ TEXTDISP_HandleScriptCommand:
     JSR     MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,DATA_SCRIPT_BSS_LONG_214B
+    MOVE.L  D0,TEXTDISP_CommandBufferPtr
 
 .init_source_cfg:
     PEA     TEXTDISP_PrimarySearchText
     MOVE.L  A3,-(A7)
-    MOVE.L  DATA_SCRIPT_BSS_LONG_214B,-(A7)
+    MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     BSR.W   TEXTDISP_SetEntryTextFields
 
     PEA     70.W
-    MOVE.L  DATA_SCRIPT_BSS_LONG_214B,-(A7)
+    MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     BSR.W   TEXTDISP_FilterAndSelectEntry
 
     LEA     20(A7),A7
     TST.L   D0
     BNE.S   .apply_source_cfg
 
-    TST.L   DATA_SCRIPT_BSS_LONG_214B
+    TST.L   TEXTDISP_CommandBufferPtr
     BEQ.S   .apply_source_cfg
 
-    MOVEA.L DATA_SCRIPT_BSS_LONG_214B,A0
+    MOVEA.L TEXTDISP_CommandBufferPtr,A0
     ADDA.W  #$dc,A0
-    LEA     DATA_TEXTDISP_SPACE_VALUE_214E,A1
+    LEA     TEXTDISP_DefaultSpacePad,A1
 
 .copy_default_cfg:
     MOVE.B  (A1)+,(A0)+
     BNE.S   .copy_default_cfg
 
 .apply_source_cfg:
-    MOVE.L  DATA_SCRIPT_BSS_LONG_214B,-(A7)
+    MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     BSR.W   TEXTDISP_DrawHighlightFrame
 
     PEA     88.W
-    MOVE.L  DATA_SCRIPT_BSS_LONG_214B,-(A7)
+    MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     BSR.W   TEXTDISP_FilterAndSelectEntry
 
     LEA     12(A7),A7
@@ -2177,8 +2177,8 @@ TEXTDISP_HandleScriptCommand:
     TST.L   D5
     BEQ.S   .cleanup_if_needed
 
-    MOVE.W  #(-1),DATA_SCRIPT_CONST_WORD_2149
-    MOVE.W  #$31,DATA_SCRIPT_CONST_BYTE_214A
+    MOVE.W  #(-1),TEXTDISP_LastDispatchMatchIndex
+    MOVE.W  #$31,TEXTDISP_LastDispatchGroupId
 
 .cleanup_if_needed:
     TST.L   D4
@@ -2189,17 +2189,17 @@ TEXTDISP_HandleScriptCommand:
     BSR.W   TEXTDISP_FilterAndSelectEntry
 
     ADDQ.W  #8,A7
-    TST.L   DATA_SCRIPT_BSS_LONG_214B
+    TST.L   TEXTDISP_CommandBufferPtr
     BEQ.S   .return
 
     PEA     732.W
-    MOVE.L  DATA_SCRIPT_BSS_LONG_214B,-(A7)
+    MOVE.L  TEXTDISP_CommandBufferPtr,-(A7)
     PEA     1106.W
     PEA     Global_STR_TEXTDISP_C_2
     JSR     MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
-    CLR.L   DATA_SCRIPT_BSS_LONG_214B
+    CLR.L   TEXTDISP_CommandBufferPtr
 
 .return:
     MOVEM.L (A7)+,D2/D4-D7/A3
@@ -2221,7 +2221,7 @@ TEXTDISP_HandleScriptCommand:
 ; READS:
 ;   Global_STR_DF0_SOURCECFG_INI_2
 ; WRITES:
-;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, TEXTDISP_SourceConfigFlagMask
 ; DESC:
 ;   Clears the SourceCfg table and parses df0:SourceCfg.ini.
 ; NOTES:
@@ -2245,7 +2245,7 @@ TEXTDISP_LoadSourceConfig:
 
 .return:
     CLR.L   TEXTDISP_SourceConfigEntryCount
-    CLR.B   DATA_SCRIPT_BSS_WORD_2131
+    CLR.B   TEXTDISP_SourceConfigFlagMask
     PEA     Global_STR_DF0_SOURCECFG_INI_2
     JSR     PARSEINI_ParseIniBufferAndDispatch(PC)
 
@@ -2268,7 +2268,7 @@ TEXTDISP_LoadSourceConfig:
 ; READS:
 ;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount
 ; WRITES:
-;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, TEXTDISP_SourceConfigFlagMask
 ; DESC:
 ;   Frees all SourceCfg entries and resets the table/state.
 ; NOTES:
@@ -2326,7 +2326,7 @@ TEXTDISP_ClearSourceConfig:
 
 .return:
     CLR.L   TEXTDISP_SourceConfigEntryCount
-    CLR.B   DATA_SCRIPT_BSS_WORD_2131
+    CLR.B   TEXTDISP_SourceConfigFlagMask
     MOVEM.L (A7)+,D7/A2
     UNLK    A5
     RTS
@@ -2344,7 +2344,7 @@ TEXTDISP_ClearSourceConfig:
 ; CALLS:
 ;   STRING_CompareNoCaseN
 ; READS:
-;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, TEXTDISP_SourceConfigFlagMask
 ; WRITES:
 ;   entry+40
 ; DESC:
@@ -2358,7 +2358,7 @@ TEXTDISP_ApplySourceConfigToEntry:
     MOVE.L  A3,D0
     BEQ.S   .return
 
-    MOVE.B  DATA_SCRIPT_BSS_WORD_2131,D0
+    MOVE.B  TEXTDISP_SourceConfigFlagMask,D0
     NOT.B   D0
     AND.B   D0,40(A3)
     MOVEQ   #0,D7
@@ -2491,9 +2491,9 @@ TEXTDISP_ApplySourceConfigAllEntries:
 ; CALLS:
 ;   MEMORY_AllocateMemory, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, STRING_CompareNoCase
 ; READS:
-;   TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_CONST_LONG_2133, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryCount, TEXTDISP_PtrPrevueSportsTag, TEXTDISP_SourceConfigFlagMask
 ; WRITES:
-;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, DATA_SCRIPT_BSS_WORD_2131
+;   TEXTDISP_SourceConfigEntryTable, TEXTDISP_SourceConfigEntryCount, TEXTDISP_SourceConfigFlagMask
 ; DESC:
 ;   Allocates a 6-byte SourceCfg entry, stores name/type, and updates flags.
 ; NOTES:
@@ -2530,7 +2530,7 @@ TEXTDISP_AddSourceConfigEntry:
 
     MOVEA.L -4(A5),A0
     MOVE.L  D0,(A0)
-    MOVE.L  DATA_SCRIPT_CONST_LONG_2133,(A7)
+    MOVE.L  TEXTDISP_PtrPrevueSportsTag,(A7)
     MOVE.L  A2,-(A7)
     JSR     STRING_CompareNoCase(PC)
 
@@ -2543,10 +2543,10 @@ TEXTDISP_AddSourceConfigEntry:
     MOVE.B  D0,4(A0)
 
 .set_entry_flag:
-    MOVE.B  DATA_SCRIPT_BSS_WORD_2131,D0
+    MOVE.B  TEXTDISP_SourceConfigFlagMask,D0
     MOVEA.L -4(A5),A0
     OR.B    4(A0),D0
-    MOVE.B  D0,DATA_SCRIPT_BSS_WORD_2131
+    MOVE.B  D0,TEXTDISP_SourceConfigFlagMask
 
 .return:
     MOVEM.L (A7)+,A2-A3

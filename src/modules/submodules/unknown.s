@@ -25,7 +25,7 @@
 ; READS:
 ;   ED_DiagnosticsScreenActive, WDISP_WeatherStatusLabelBuffer, WDISP_WeatherStatusOverlayTextPtr, Global_REF_RASTPORT_1
 ; WRITES:
-;   WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusCountdown, DATA_WDISP_BSS_BYTE_229B, WDISP_WeatherStatusBrushIndex
+;   WDISP_WeatherStatusOverlayTextPtr, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusColorCode, WDISP_WeatherStatusBrushIndex
 ; DESC:
 ;   Parses a small record from the input buffer, validates via wildcard match,
 ;   updates globals, and optionally redraws text.
@@ -91,7 +91,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     ADDQ.W  #8,A7
     MOVE.L  D0,WDISP_WeatherStatusOverlayTextPtr
     MOVE.B  D6,WDISP_WeatherStatusCountdown
-    MOVE.B  D5,DATA_WDISP_BSS_BYTE_229B
+    MOVE.B  D5,WDISP_WeatherStatusColorCode
     MOVE.B  D4,WDISP_WeatherStatusBrushIndex
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .return
@@ -127,7 +127,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; READS:
 ;   WDISP_StatusListMatchPattern, CLOCK_CurrentDayOfYear, CLOCK_CurrentYearValue, WDISP_StatusDayEntry0
 ; WRITES:
-;   DATA_TLIBA1_BSS_WORD_2196
+;   TLIBA1_DayEntryModeCounter
 ; DESC:
 ;   Parses a list of records from the input buffer and updates WDISP_StatusDayEntry0
 ;   table entries, including optional numeric fields and flags.
@@ -206,7 +206,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     BRA.S   .init_entries_loop
 
 .after_init_entries:
-    MOVE.B  (A3)+,DATA_TLIBA1_BSS_WORD_2196
+    MOVE.B  (A3)+,TLIBA1_DayEntryModeCounter
     MOVE.B  (A3)+,D5
 
 .parse_entries_loop:

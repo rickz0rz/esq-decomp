@@ -8,9 +8,9 @@ Global_STR_LADFUNC_C_3:
     NStr    "LADFUNC.c"
 Global_STR_LADFUNC_C_4:
     NStr    "LADFUNC.c"
-DATA_LADFUNC_TAG_RS_1FBF:
+LADFUNC_TAG_RS_ResetTriggerSet:
     NStr    "RS"
-DATA_LADFUNC_TAG_RS_1FC0:
+LADFUNC_TAG_RS_ParseAllowedSet:
     NStr    "RS"
 Global_STR_LADFUNC_C_5:
     NStr    "LADFUNC.c"
@@ -20,9 +20,9 @@ Global_STR_LADFUNC_C_7:
     NStr    "LADFUNC.c"
 Global_STR_LADFUNC_C_8:
     NStr    "LADFUNC.c"
-DATA_LADFUNC_FMT_PCT_C_PCT_02X_1FC5:
+LADFUNC_FMT_AttrEscapePrefixCharHex:
     NStr    "%c%02X"
-DATA_LADFUNC_BSS_WORD_1FC6:
+LADFUNC_TextAdLineBreakBuffer:
     DS.W    1
 Global_STR_LADFUNC_C_9:
     NStr    "LADFUNC.c"
@@ -72,19 +72,19 @@ Global_STR_LADFUNC_C_29:
     NStr    "LADFUNC.c"
 Global_STR_LADFUNC_C_30:
     NStr    "LADFUNC.c"
-DATA_LADFUNC_STR_VALUE_1FDF:
+LADFUNC_STR_QuoteAndNewline:
     NStr2   """",TextLineFeed
-DATA_LADFUNC_STR_VALUE_1FE0:
+LADFUNC_STR_Quote:
     NStr    """"
-DATA_LADFUNC_FMT_PCT_LC_1FE1:
+LADFUNC_FMT_ControlCharCaretEscape:
     NStr    "^%lc"
-DATA_LADFUNC_FMT_PCT_LC_1FE2:
+LADFUNC_FMT_ReplacementQuoteChar:
     NStr    "%lc"
-DATA_LADFUNC_FMT_PCT_LC_1FE3:
+LADFUNC_FMT_ReplacementCommaChar:
     NStr    "%lc"
-DATA_LADFUNC_FMT_PCT_02LX_1FE4:
+LADFUNC_FMT_HexEscapeByte:
     NStr    "$%02lx"
-DATA_LADFUNC_FMT_PCT_LC_1FE5:
+LADFUNC_FMT_LiteralChar:
     NStr    "%lc"
 ;------------------------------------------------------------------------------
 ; SYM: LOCAVAIL_FilterModeFlag/LOCAVAIL_FilterStep/LOCAVAIL_FilterClassId/LOCAVAIL_FilterPrevClassId   (locavail filter state)
@@ -101,5 +101,5 @@ LOCAVAIL_FilterClassId:
     DC.L    $ffffffff
 LOCAVAIL_FilterPrevClassId:
     DC.L    $ffffffff
-DATA_LADFUNC_CONST_WORD_1FEA:
+LOCAVAIL_FilterWindowHalfSpan:
     DC.W    $ffff

@@ -27,9 +27,9 @@
     MOVE.W  ESQSHARED_BannerColorModeWord,D0
     JSR     ESQSHARED4_ResetBannerColorSweepState
 
-    MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46
-    MOVE.W  #0,DATA_ESQPARS2_BSS_WORD_1F3D
-    MOVE.W  #0,DATA_ESQPARS2_BSS_LONG_1F3E
+    MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
+    MOVE.W  #0,ESQPARS2_BannerSweepEntryGuardCounter
+    MOVE.W  #0,ESQPARS2_BannerSweepDelayCounter
     LEA     ESQ_CopperListBannerA,A4
     MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     JSR     ESQSHARED4_ApplyBannerColorStep
@@ -44,8 +44,8 @@
     MOVE.W  ESQSHARED_BannerColorModeWord,D0
     JSR     ESQSHARED4_ResetBannerColorSweepState
 
-    MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46
-    MOVE.W  #1,DATA_ESQPARS2_BSS_WORD_1F3D
+    MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
+    MOVE.W  #1,ESQPARS2_BannerSweepEntryGuardCounter
     JSR     ESQSHARED4_ResetBannerColorToStart
 
     MOVEM.L (A7)+,D0-D1/A0-A4
@@ -66,7 +66,7 @@
 ; READS:
 ;   Global_REF_WORD_HEX_CODE_8E, f5, f6
 ; WRITES:
-;   ESQ_CopperBannerTailListA, ESQ_CopperBannerTailListB, DATA_ESQPARS2_BSS_WORD_1F3D, DATA_ESQPARS2_BSS_WORD_1F42, DATA_ESQPARS2_BSS_LONG_1F46
+;   ESQ_CopperBannerTailListA, ESQ_CopperBannerTailListB, ESQPARS2_BannerSweepEntryGuardCounter, ESQPARS2_BannerTailBiasValue, ESQPARS2_BannerColorStepCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -79,9 +79,9 @@ ESQSHARED4_ResetBannerColorSweepState:
     MOVE.W  #$f5,D0
     ADD.W   Global_REF_WORD_HEX_CODE_8E,D0
     SUBI.W  #$80,D0
-    MOVE.W  D0,DATA_ESQPARS2_BSS_WORD_1F42
-    MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46
-    MOVE.W  #1,DATA_ESQPARS2_BSS_WORD_1F3D
+    MOVE.W  D0,ESQPARS2_BannerTailBiasValue
+    MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
+    MOVE.W  #1,ESQPARS2_BannerSweepEntryGuardCounter
     JSR     ESQSHARED4_ResetBannerColorToStart
 
     RTS
@@ -101,7 +101,7 @@ ESQSHARED4_ResetBannerColorSweepState:
 ; READS:
 ;   CIAB_PRA, Global_REF_WORD_HEX_CODE_8E
 ; WRITES:
-;   ESQ_CopperListBannerA, ESQ_CopperListBannerB, DATA_ESQPARS2_BSS_WORD_1F3B, DATA_ESQPARS2_BSS_WORD_1F3F, ESQPARS2_StateIndex, DATA_ESQPARS2_BSS_WORD_1F43, DATA_ESQPARS2_BSS_WORD_1F44, ESQPARS2_ReadModeFlags
+;   ESQ_CopperListBannerA, ESQ_CopperListBannerB, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_HighlightTickCountdown, ESQPARS2_StateIndex, ESQPARS2_BannerSweepBaseColor, ESQPARS2_BannerSweepOffsetColor, ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Initializes banner copper-state globals, snapshots display buffer bases,
 ;   seeds banner plane pointer words, and enables CIAB PRA control bits.
@@ -111,12 +111,12 @@ ESQSHARED4_ResetBannerColorSweepState:
 ESQSHARED4_InitializeBannerCopperSystem:
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  #$62,D0
-    MOVE.W  D0,DATA_ESQPARS2_BSS_WORD_1F43
+    MOVE.W  D0,ESQPARS2_BannerSweepBaseColor
     SUBQ.W  #2,D0
-    MOVE.W  D0,DATA_ESQPARS2_BSS_WORD_1F44
+    MOVE.W  D0,ESQPARS2_BannerSweepOffsetColor
     MOVE.W  #5,ESQPARS2_ReadModeFlags
     MOVE.W  #2,ESQPARS2_StateIndex
-    MOVE.W  #10,DATA_ESQPARS2_BSS_WORD_1F3F
+    MOVE.W  #10,ESQPARS2_HighlightTickCountdown
     JSR     ESQSHARED4_SnapshotDisplayBufferBases
 
     JSR     ESQSHARED4_ResetBannerColorSweepState(PC)
@@ -134,7 +134,7 @@ ESQSHARED4_InitializeBannerCopperSystem:
     MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
     MOVE.B  D0,ESQ_CopperListBannerA
     MOVE.B  D0,ESQ_CopperListBannerB
-    MOVE.W  #1,DATA_ESQPARS2_BSS_WORD_1F3B
+    MOVE.W  #1,ESQPARS2_CopperProgramPendingFlag
     MOVEM.L (A7)+,D0-D1/A0-A4
     RTS
 
@@ -151,9 +151,9 @@ ESQSHARED4_InitializeBannerCopperSystem:
 ; CALLS:
 ;   ESQSHARED4_SetBannerColorBaseAndLimit
 ; READS:
-;   ESQPARS2_BannerSnapshotPlane0DstPtr, DATA_ESQPARS2_BSS_LONG_1F38, DATA_ESQPARS2_BSS_LONG_1F49, DATA_ESQPARS2_BSS_WORD_1F4A, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
+;   ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerRowOffsetResetPtrPlane0, ESQPARS2_BannerColorThreshold, ESQPARS2_BannerColorBaseValue, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
 ; WRITES:
-;   DATA_ESQ_CONST_LONG_1E30, DATA_ESQ_CONST_LONG_1E31, DATA_ESQ_CONST_LONG_1E32, DATA_ESQ_CONST_LONG_1E33, DATA_ESQ_CONST_LONG_1E34, DATA_ESQ_CONST_LONG_1E35, DATA_ESQ_CONST_LONG_1E3B, DATA_ESQ_CONST_LONG_1E3C, DATA_ESQ_CONST_LONG_1E3D, DATA_ESQ_CONST_LONG_1E3E, DATA_ESQ_CONST_LONG_1E3F, DATA_ESQ_CONST_LONG_1E40, DATA_ESQ_CONST_LONG_1E47, DATA_ESQ_CONST_LONG_1E48, DATA_ESQ_CONST_LONG_1E49, DATA_ESQ_CONST_LONG_1E4A, DATA_ESQ_CONST_LONG_1E4B, DATA_ESQ_BSS_WORD_1E4C, DATA_ESQ_CONST_LONG_1E5D, DATA_ESQ_CONST_LONG_1E5E, DATA_ESQ_CONST_LONG_1E5F, DATA_ESQ_CONST_LONG_1E60, DATA_ESQ_CONST_LONG_1E61, DATA_ESQ_CONST_LONG_1E62, DATA_ESQ_CONST_LONG_1E68, DATA_ESQ_CONST_LONG_1E69, DATA_ESQ_CONST_LONG_1E6A, DATA_ESQ_CONST_LONG_1E6B, DATA_ESQ_CONST_LONG_1E6C, DATA_ESQ_CONST_LONG_1E6D, DATA_ESQ_CONST_LONG_1E74, DATA_ESQ_CONST_LONG_1E75, DATA_ESQ_CONST_LONG_1E76, DATA_ESQ_CONST_LONG_1E77, DATA_ESQ_CONST_LONG_1E78, DATA_ESQ_BSS_WORD_1E79, DATA_ESQPARS2_BSS_LONG_1F39, DATA_ESQPARS2_BSS_LONG_1F3A
+;   ESQ_BannerPlane0SnapshotScratchPtrHiWord, ESQ_BannerPlane0SnapshotScratchPtrLoWord, ESQ_BannerPlane1SnapshotScratchPtrHiWord, ESQ_BannerPlane1SnapshotScratchPtrLoWord, ESQ_BannerPlane2SnapshotScratchPtrHiWord, ESQ_BannerPlane2SnapshotScratchPtrLoWord, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_HiWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerPlane1DstPtrReset_HiWord, ESQ_BannerPlane1DstPtrReset_LoWord, ESQ_BannerPlane2DstPtrReset_HiWord, ESQ_BannerPlane2DstPtrReset_LoWord, ESQ_BannerPlane0ScratchPtrAlt_HiWord, ESQ_BannerPlane0ScratchPtrAlt_LoWord, ESQ_BannerPlane1ScratchPtrAlt_HiWord, ESQ_BannerPlane1ScratchPtrAlt_LoWord, ESQ_BannerPlane2ScratchPtrAlt_HiWord, ESQ_BannerPlane2ScratchPtrAlt_LoWord, ESQ_BannerSweepSrcPlane0Ptr_HiWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane1Ptr_HiWord, ESQ_BannerSweepSrcPlane1Ptr_LoWord, ESQ_BannerSweepSrcPlane2Ptr_HiWord, ESQ_BannerSweepSrcPlane2Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_HiWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQ_BannerSweepSrcPlane1PtrReset_HiWord, ESQ_BannerSweepSrcPlane1PtrReset_LoWord, ESQ_BannerSweepSrcPlane2PtrReset_HiWord, ESQ_BannerSweepSrcPlane2PtrReset_LoWord, ESQPARS2_BannerRowOffsetResetPtrPlane1, ESQPARS2_BannerRowOffsetResetPtrPlane2Table
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -166,98 +166,98 @@ ESQSHARED4_SetupBannerPlanePointerWords:
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E31
+    MOVE.W  D0,ESQ_BannerPlane0SnapshotScratchPtrLoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E30
+    MOVE.W  D0,ESQ_BannerPlane0SnapshotScratchPtrHiWord
     MOVEA.L (A3),A2
     LEA     3080(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E5E
+    MOVE.W  D0,ESQ_BannerPlane0ScratchPtrAlt_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E5D
-    LEA     DATA_ESQPARS2_BSS_LONG_1F38,A4
+    MOVE.W  D0,ESQ_BannerPlane0ScratchPtrAlt_HiWord
+    LEA     ESQPARS2_BannerRowOffsetResetPtrPlane0,A4
     LEA     ESQPARS2_BannerSnapshotPlane0DstPtr,A1
     MOVEA.L (A3),A2
     LEA     GCOMMAND_BannerRowByteOffsetResetValueDefault(A2),A2
     MOVE.L  A2,(A1)+
     MOVE.L  A2,(A4)+
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E3C
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E48
+    MOVE.W  D0,ESQ_BannerSnapshotPlane0DstPtrLoWord
+    MOVE.W  D0,ESQ_BannerPlane0DstPtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E3B
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E47
+    MOVE.W  D0,ESQ_BannerSnapshotPlane0DstPtrHiWord
+    MOVE.W  D0,ESQ_BannerPlane0DstPtrReset_HiWord
     MOVEA.L (A3),A2
     LEA     6072(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E69
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E75
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane0Ptr_LoWord
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane0PtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E68
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E74
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane0Ptr_HiWord
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane0PtrReset_HiWord
     LEA     ESQSHARED_BannerRowScratchRasterBase1,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E33
+    MOVE.W  D0,ESQ_BannerPlane1SnapshotScratchPtrLoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E32
+    MOVE.W  D0,ESQ_BannerPlane1SnapshotScratchPtrHiWord
     MOVEA.L (A3),A2
     LEA     3080(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E60
+    MOVE.W  D0,ESQ_BannerPlane1ScratchPtrAlt_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E5F
+    MOVE.W  D0,ESQ_BannerPlane1ScratchPtrAlt_HiWord
     MOVEA.L (A3),A2
     LEA     GCOMMAND_BannerRowByteOffsetResetValueDefault(A2),A2
     MOVE.L  A2,(A1)+
-    MOVE.L  A2,DATA_ESQPARS2_BSS_LONG_1F39
+    MOVE.L  A2,ESQPARS2_BannerRowOffsetResetPtrPlane1
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E3E
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E4A
+    MOVE.W  D0,ESQ_BannerSnapshotPlane1DstPtrLoWord
+    MOVE.W  D0,ESQ_BannerPlane1DstPtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E3D
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E49
+    MOVE.W  D0,ESQ_BannerSnapshotPlane1DstPtrHiWord
+    MOVE.W  D0,ESQ_BannerPlane1DstPtrReset_HiWord
     MOVEA.L (A3),A2
     LEA     6072(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E6B
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E77
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane1Ptr_LoWord
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane1PtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E6A
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E76
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane1Ptr_HiWord
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane1PtrReset_HiWord
     LEA     ESQSHARED_BannerRowScratchRasterBase2,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E35
+    MOVE.W  D0,ESQ_BannerPlane2SnapshotScratchPtrLoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E34
+    MOVE.W  D0,ESQ_BannerPlane2SnapshotScratchPtrHiWord
     MOVEA.L (A3),A2
     LEA     3080(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E62
+    MOVE.W  D0,ESQ_BannerPlane2ScratchPtrAlt_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E61
+    MOVE.W  D0,ESQ_BannerPlane2ScratchPtrAlt_HiWord
     MOVEA.L (A3),A2
     LEA     GCOMMAND_BannerRowByteOffsetResetValueDefault(A2),A2
     MOVE.L  A2,(A1)
-    MOVE.L  A2,DATA_ESQPARS2_BSS_LONG_1F3A
+    MOVE.L  A2,ESQPARS2_BannerRowOffsetResetPtrPlane2Table
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E40
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1E4C
+    MOVE.W  D0,ESQ_BannerSnapshotPlane2DstPtrLoWord
+    MOVE.W  D0,ESQ_BannerPlane2DstPtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E3F
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E4B
+    MOVE.W  D0,ESQ_BannerSnapshotPlane2DstPtrHiWord
+    MOVE.W  D0,ESQ_BannerPlane2DstPtrReset_HiWord
     MOVEA.L (A3),A2
     LEA     6072(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E6D
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1E79
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane2Ptr_LoWord
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane2PtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E6C
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E78
-    MOVE.W  DATA_ESQPARS2_BSS_LONG_1F49,D0
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane2Ptr_HiWord
+    MOVE.W  D0,ESQ_BannerSweepSrcPlane2PtrReset_HiWord
+    MOVE.W  ESQPARS2_BannerColorThreshold,D0
     BSR.W   ESQSHARED4_SetBannerColorBaseAndLimit
 
     MOVEM.L (A7)+,D0-D1/A0-A4
@@ -267,7 +267,7 @@ ESQSHARED4_SetupBannerPlanePointerWords:
 
     MOVEM.L D2-D7/A2-A6,-(A7)
     MOVEQ   #0,D0
-    MOVE.W  DATA_ESQPARS2_BSS_WORD_1F4A,D0
+    MOVE.W  ESQPARS2_BannerColorBaseValue,D0
     BSR.W   ESQSHARED4_SetBannerColorBaseAndLimit
 
     MOVEM.L (A7)+,D2-D7/A2-A6
@@ -288,19 +288,19 @@ ESQSHARED4_SetupBannerPlanePointerWords:
 ; READS:
 ;   d9
 ; WRITES:
-;   DATA_ESQ_BSS_BYTE_1E45, DATA_ESQ_CONST_BYTE_1E46, DATA_ESQ_BSS_BYTE_1E72, DATA_ESQ_CONST_BYTE_1E73, DATA_ESQPARS2_BSS_WORD_1F4A
+;   ESQ_BannerColorClampValueA, ESQ_BannerColorClampWaitRowA, ESQ_BannerColorClampValueB, ESQ_BannerColorClampWaitRowB, ESQPARS2_BannerColorBaseValue
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 ESQSHARED4_SetBannerColorBaseAndLimit:
-    MOVE.W  D0,DATA_ESQPARS2_BSS_WORD_1F4A
+    MOVE.W  D0,ESQPARS2_BannerColorBaseValue
     MOVE.W  #$d9,D1
-    MOVE.B  D0,DATA_ESQ_BSS_BYTE_1E45
-    MOVE.B  D0,DATA_ESQ_BSS_BYTE_1E72
-    MOVE.B  D1,DATA_ESQ_CONST_BYTE_1E46
-    MOVE.B  D1,DATA_ESQ_CONST_BYTE_1E73
+    MOVE.B  D0,ESQ_BannerColorClampValueA
+    MOVE.B  D0,ESQ_BannerColorClampValueB
+    MOVE.B  D1,ESQ_BannerColorClampWaitRowA
+    MOVE.B  D1,ESQ_BannerColorClampWaitRowB
     RTS
 
 ;!======
@@ -318,7 +318,7 @@ ESQSHARED4_SetBannerColorBaseAndLimit:
 ; READS:
 ;   WDISP_BannerWorkRasterPtr
 ; WRITES:
-;   DATA_ESQ_CONST_LONG_1E2C, DATA_ESQ_CONST_LONG_1E2D, DATA_ESQ_CONST_LONG_1E38, DATA_ESQ_BSS_WORD_1E39, DATA_ESQ_CONST_LONG_1E4F, ESQ_CopperBannerRasterPointerListA, DATA_ESQ_CONST_LONG_1E59, DATA_ESQ_CONST_LONG_1E5A, DATA_ESQ_CONST_LONG_1E65, DATA_ESQ_BSS_WORD_1E66, DATA_ESQ_CONST_LONG_1E7C, ESQ_CopperBannerRasterPointerListB
+;   ESQ_BannerWorkRasterPtrA_HiWord, ESQ_BannerWorkRasterPtrA_LoWord, ESQ_BannerWorkRasterPtrMirrorA_HiWord, ESQ_BannerWorkRasterPtrMirrorA_LoWord, ESQ_BannerWorkRasterPtrTailA_HiWord, ESQ_CopperBannerRasterPointerListA, ESQ_BannerWorkRasterPtrB_HiWord, ESQ_BannerWorkRasterPtrB_LoWord, ESQ_BannerWorkRasterPtrMirrorB_HiWord, ESQ_BannerWorkRasterPtrMirrorB_LoWord, ESQ_BannerWorkRasterPtrTailB_HiWord, ESQ_CopperBannerRasterPointerListB
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -331,19 +331,19 @@ ESQSHARED4_BindAndClearBannerWorkRaster:
     MOVEA.L (A0),A1
     LEA (A1),A1
     MOVE.L  A1,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E2D
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1E39
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrA_LoWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrMirrorA_LoWord
     MOVE.W  D0,ESQ_CopperBannerRasterPointerListA
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E5A
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1E66
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrB_LoWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrMirrorB_LoWord
     MOVE.W  D0,ESQ_CopperBannerRasterPointerListB
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E2C
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E38
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E4F
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E59
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E65
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E7C
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrA_HiWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrMirrorA_HiWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrTailA_HiWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrB_HiWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrMirrorB_HiWord
+    MOVE.W  D0,ESQ_BannerWorkRasterPtrTailB_HiWord
     JSR     ESQSHARED4_ClearBannerWorkRasterWithOnes
 
     MOVEM.L (A7)+,D0/A0-A1
@@ -394,9 +394,9 @@ ESQSHARED4_ClearBannerWorkRasterWithOnes:
 ; CALLS:
 ;   ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
 ; READS:
-;   BLTDDAT, COPJMP1, DDFSTOP_WIDE, DDFSTRT_WIDE, ESQ_CopperEffectListA, DATA_ESQ_CONST_LONG_1E4D, ESQ_CopperEffectListB, DATA_ESQ_CONST_LONG_1E7A, VPOSR, ffc5
+;   BLTDDAT, COPJMP1, DDFSTOP_WIDE, DDFSTRT_WIDE, ESQ_CopperEffectListA, ESQ_CopperEffectSwitchWaitWordA, ESQ_CopperEffectListB, ESQ_CopperEffectSwitchWaitWordB, VPOSR, ffc5
 ; WRITES:
-;   BLTDDAT, BPL1MOD, BPL2MOD, COP1LCH, DDFSTOP, DDFSTRT, DIWSTOP, DIWSTRT, DMACON, DATA_ESQ_CONST_LONG_1E23, DATA_ESQ_BSS_WORD_1E24, DATA_ESQ_CONST_LONG_1E41, DATA_ESQ_CONST_LONG_1E42, DATA_ESQ_CONST_LONG_1E52, DATA_ESQ_BSS_WORD_1E53, DATA_ESQ_CONST_LONG_1E6E, DATA_ESQ_CONST_LONG_1E6F
+;   BLTDDAT, BPL1MOD, BPL2MOD, COP1LCH, DDFSTOP, DDFSTRT, DIWSTOP, DIWSTRT, DMACON, ESQ_CopperEffectListB_PtrHiWord, ESQ_CopperEffectListB_PtrLoWord, ESQ_CopperEffectJumpTargetA_HiWord, ESQ_CopperEffectJumpTargetA_LoWord, ESQ_CopperEffectListA_PtrHiWord, ESQ_CopperEffectListA_PtrLoWord, ESQ_CopperEffectJumpTargetB_HiWord, ESQ_CopperEffectJumpTargetB_LoWord
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -420,24 +420,24 @@ ESQSHARED4_ProgramDisplayWindowAndCopper:
 
     LEA     ESQ_CopperEffectListB,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1E24
+    MOVE.W  D0,ESQ_CopperEffectListB_PtrLoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E23
+    MOVE.W  D0,ESQ_CopperEffectListB_PtrHiWord
     LEA     ESQ_CopperEffectListA,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_BSS_WORD_1E53
+    MOVE.W  D0,ESQ_CopperEffectListA_PtrLoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E52
-    LEA     DATA_ESQ_CONST_LONG_1E4D,A2
+    MOVE.W  D0,ESQ_CopperEffectListA_PtrHiWord
+    LEA     ESQ_CopperEffectSwitchWaitWordA,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E42
+    MOVE.W  D0,ESQ_CopperEffectJumpTargetA_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E41
-    LEA     DATA_ESQ_CONST_LONG_1E7A,A2
+    MOVE.W  D0,ESQ_CopperEffectJumpTargetA_HiWord
+    LEA     ESQ_CopperEffectSwitchWaitWordB,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E6F
+    MOVE.W  D0,ESQ_CopperEffectJumpTargetB_LoWord
     SWAP    D0
-    MOVE.W  D0,DATA_ESQ_CONST_LONG_1E6E
+    MOVE.W  D0,ESQ_CopperEffectJumpTargetB_HiWord
     LEA     ESQ_CopperEffectListB,A2
     MOVE.W  (VPOSR-BLTDDAT)(A0),D0
     BPL.S   .lab_0C81
@@ -464,9 +464,9 @@ ESQSHARED4_ProgramDisplayWindowAndCopper:
 ; CALLS:
 ;   GCOMMAND_TickHighlightState, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_BlitBannerRowsForActiveField, SCRIPT_UpdateBannerCharTransition
 ; READS:
-;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, DATA_ED2_BSS_WORD_1D31, ESQ_CopperEffectListA, DATA_ESQ_CONST_LONG_1E3B, DATA_ESQ_CONST_LONG_1E3C, DATA_ESQ_CONST_LONG_1E3D, DATA_ESQ_CONST_LONG_1E3E, DATA_ESQ_CONST_LONG_1E3F, DATA_ESQ_CONST_LONG_1E40, ESQ_CopperEffectListB, DATA_ESQPARS2_BSS_WORD_1F3B, ESQPARS2_StateIndex, ESQPARS2_ReadModeFlags, GCOMMAND_HighlightHoldoffTickCount, SCRIPT_BannerTransitionActive, VPOSR, b0
+;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, ED2_HighlightTickEnabledFlag, ESQ_CopperEffectListA, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_CopperEffectListB, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_StateIndex, ESQPARS2_ReadModeFlags, GCOMMAND_HighlightHoldoffTickCount, SCRIPT_BannerTransitionActive, VPOSR, b0
 ; WRITES:
-;   BLTDDAT, COP1LCH, DATA_ESQ_CONST_LONG_1E3B, DATA_ESQ_CONST_LONG_1E3C, DATA_ESQ_CONST_LONG_1E3D, DATA_ESQ_CONST_LONG_1E3E, DATA_ESQ_CONST_LONG_1E3F, DATA_ESQ_CONST_LONG_1E40, DATA_ESQ_CONST_LONG_1E68, DATA_ESQ_CONST_LONG_1E69, DATA_ESQ_CONST_LONG_1E6A, DATA_ESQ_CONST_LONG_1E6B, DATA_ESQ_CONST_LONG_1E6C, DATA_ESQ_CONST_LONG_1E6D, ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane0DstPtrLo, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtrLo, ESQPARS2_BannerSnapshotPlane2DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtrLo, DATA_ESQPARS2_BSS_WORD_1F3B, DATA_ESQPARS2_BSS_WORD_1F3F, ESQPARS2_ReadModeFlags, DATA_ESQPARS2_BSS_LONG_1F51, GCOMMAND_HighlightHoldoffTickCount
+;   BLTDDAT, COP1LCH, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_BannerSweepSrcPlane0Ptr_HiWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane1Ptr_HiWord, ESQ_BannerSweepSrcPlane1Ptr_LoWord, ESQ_BannerSweepSrcPlane2Ptr_HiWord, ESQ_BannerSweepSrcPlane2Ptr_LoWord, ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane0DstPtrLo, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtrLo, ESQPARS2_BannerSnapshotPlane2DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtrLo, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_HighlightTickCountdown, ESQPARS2_ReadModeFlags, ESQPARS2_ActiveCopperListSelectFlag, GCOMMAND_HighlightHoldoffTickCount
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -486,13 +486,13 @@ ESQSHARED4_TickCopperAndBannerTransitions:
 
 .lab_0C83:
     MOVE.L  A2,(COP1LCH-BLTDDAT)(A0)
-    MOVE.L  D1,DATA_ESQPARS2_BSS_LONG_1F51
-    TST.W   DATA_ESQPARS2_BSS_WORD_1F3B
+    MOVE.L  D1,ESQPARS2_ActiveCopperListSelectFlag
+    TST.W   ESQPARS2_CopperProgramPendingFlag
     BEQ.S   .lab_0C84
 
     JSR     ESQSHARED4_ProgramDisplayWindowAndCopper(PC)
 
-    MOVE.W  #0,DATA_ESQPARS2_BSS_WORD_1F3B
+    MOVE.W  #0,ESQPARS2_CopperProgramPendingFlag
     BRA.W   .lab_0C8B
 
 .lab_0C84:
@@ -534,12 +534,12 @@ ESQSHARED4_TickCopperAndBannerTransitions:
     BRA.W   .lab_0C8B
 
 .lab_0C88:
-    SUBQ.W  #1,DATA_ESQPARS2_BSS_WORD_1F3F
+    SUBQ.W  #1,ESQPARS2_HighlightTickCountdown
     BPL.S   .lab_0C8B
 
 .lab_0C89:
-    MOVE.W  ESQPARS2_StateIndex,DATA_ESQPARS2_BSS_WORD_1F3F
-    TST.W   DATA_ED2_BSS_WORD_1D31
+    MOVE.W  ESQPARS2_StateIndex,ESQPARS2_HighlightTickCountdown
+    TST.W   ED2_HighlightTickEnabledFlag
     BEQ.S   .lab_0C8B
 
     JSR     GCOMMAND_TickHighlightState
@@ -548,7 +548,7 @@ ESQSHARED4_TickCopperAndBannerTransitions:
 
 .lab_0C8A:
     SUBQ.B  #1,GCOMMAND_HighlightHoldoffTickCount
-    SUBQ.W  #1,DATA_ESQPARS2_BSS_WORD_1F3F
+    SUBQ.W  #1,ESQPARS2_HighlightTickCountdown
     JSR     ESQSHARED4_BlitBannerRowsForActiveField
 
 .lab_0C8B:
@@ -557,52 +557,52 @@ ESQSHARED4_TickCopperAndBannerTransitions:
 
 ;!======
 
-    MOVE.W  DATA_ESQ_CONST_LONG_1E3C,ESQPARS2_BannerSnapshotPlane0DstPtrLo
-    MOVE.W  DATA_ESQ_CONST_LONG_1E3B,ESQPARS2_BannerSnapshotPlane0DstPtr
-    MOVE.W  DATA_ESQ_CONST_LONG_1E3E,ESQPARS2_BannerSnapshotPlane1DstPtrLo
-    MOVE.W  DATA_ESQ_CONST_LONG_1E3D,ESQPARS2_BannerSnapshotPlane1DstPtr
-    MOVE.W  DATA_ESQ_CONST_LONG_1E40,ESQPARS2_BannerSnapshotPlane2DstPtrLo
-    MOVE.W  DATA_ESQ_CONST_LONG_1E3F,ESQPARS2_BannerSnapshotPlane2DstPtr
+    MOVE.W  ESQ_BannerSnapshotPlane0DstPtrLoWord,ESQPARS2_BannerSnapshotPlane0DstPtrLo
+    MOVE.W  ESQ_BannerSnapshotPlane0DstPtrHiWord,ESQPARS2_BannerSnapshotPlane0DstPtr
+    MOVE.W  ESQ_BannerSnapshotPlane1DstPtrLoWord,ESQPARS2_BannerSnapshotPlane1DstPtrLo
+    MOVE.W  ESQ_BannerSnapshotPlane1DstPtrHiWord,ESQPARS2_BannerSnapshotPlane1DstPtr
+    MOVE.W  ESQ_BannerSnapshotPlane2DstPtrLoWord,ESQPARS2_BannerSnapshotPlane2DstPtrLo
+    MOVE.W  ESQ_BannerSnapshotPlane2DstPtrHiWord,ESQPARS2_BannerSnapshotPlane2DstPtr
     RTS
 
 ;!======
 
     MOVE.L  #$b0,D1
     MOVEQ   #1,D0
-    ADD.W   D1,DATA_ESQ_CONST_LONG_1E3C
+    ADD.W   D1,ESQ_BannerSnapshotPlane0DstPtrLoWord
     BCC.S   .lab_0C8C
 
-    ADD.W   D0,DATA_ESQ_CONST_LONG_1E3B
+    ADD.W   D0,ESQ_BannerSnapshotPlane0DstPtrHiWord
 
 .lab_0C8C:
-    ADD.W   D1,DATA_ESQ_CONST_LONG_1E3E
+    ADD.W   D1,ESQ_BannerSnapshotPlane1DstPtrLoWord
     BCC.S   .lab_0C8D
 
-    ADD.W   D0,DATA_ESQ_CONST_LONG_1E3D
+    ADD.W   D0,ESQ_BannerSnapshotPlane1DstPtrHiWord
 
 .lab_0C8D:
-    ADD.W   D1,DATA_ESQ_CONST_LONG_1E40
+    ADD.W   D1,ESQ_BannerSnapshotPlane2DstPtrLoWord
     BCC.S   .lab_0C8E
 
-    ADD.W   D0,DATA_ESQ_CONST_LONG_1E3F
+    ADD.W   D0,ESQ_BannerSnapshotPlane2DstPtrHiWord
 
 .lab_0C8E:
-    ADD.W   D1,DATA_ESQ_CONST_LONG_1E69
+    ADD.W   D1,ESQ_BannerSweepSrcPlane0Ptr_LoWord
     BCC.S   .lab_0C8F
 
-    ADD.W   D0,DATA_ESQ_CONST_LONG_1E68
+    ADD.W   D0,ESQ_BannerSweepSrcPlane0Ptr_HiWord
 
 .lab_0C8F:
-    ADD.W   D1,DATA_ESQ_CONST_LONG_1E6B
+    ADD.W   D1,ESQ_BannerSweepSrcPlane1Ptr_LoWord
     BCC.S   .lab_0C90
 
-    ADD.W   D0,DATA_ESQ_CONST_LONG_1E6A
+    ADD.W   D0,ESQ_BannerSweepSrcPlane1Ptr_HiWord
 
 .lab_0C90:
-    ADD.W   D1,DATA_ESQ_CONST_LONG_1E6D
+    ADD.W   D1,ESQ_BannerSweepSrcPlane2Ptr_LoWord
     BCC.S   .lab_0C91
 
-    ADD.W   D0,DATA_ESQ_CONST_LONG_1E6C
+    ADD.W   D0,ESQ_BannerSweepSrcPlane2Ptr_HiWord
 
 .lab_0C91:
     RTS
@@ -622,7 +622,7 @@ ESQSHARED4_TickCopperAndBannerTransitions:
 ; READS:
 ;   ESQSHARED_LivePlaneBase0, ESQSHARED_LivePlaneBase1, ESQSHARED_LivePlaneBase2
 ; WRITES:
-;   DATA_ESQPARS2_BSS_LONG_1F35, DATA_ESQPARS2_BSS_LONG_1F36, DATA_ESQPARS2_BSS_LONG_1F37
+;   ESQPARS2_SnapshotLivePlane0Base, ESQPARS2_SnapshotLivePlane1Base, ESQPARS2_SnapshotLivePlane2Base
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -631,11 +631,11 @@ ESQSHARED4_TickCopperAndBannerTransitions:
 ESQSHARED4_SnapshotDisplayBufferBases:
     MOVE.L  A1,-(A7)
     LEA     ESQSHARED_LivePlaneBase0,A1
-    MOVE.L  (A1),DATA_ESQPARS2_BSS_LONG_1F35
+    MOVE.L  (A1),ESQPARS2_SnapshotLivePlane0Base
     LEA     ESQSHARED_LivePlaneBase1,A1
-    MOVE.L  (A1),DATA_ESQPARS2_BSS_LONG_1F36
+    MOVE.L  (A1),ESQPARS2_SnapshotLivePlane1Base
     LEA     ESQSHARED_LivePlaneBase2,A1
-    MOVE.L  (A1),DATA_ESQPARS2_BSS_LONG_1F37
+    MOVE.L  (A1),ESQPARS2_SnapshotLivePlane2Base
     MOVEA.L (A7)+,A1
     RTS
 
@@ -774,32 +774,32 @@ ESQSHARED4_CopyLongwordBlockDbfLoop:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_ESQPARS2_CONST_LONG_1F52, DATA_ESQPARS2_CONST_WORD_1F53, DATA_ESQPARS2_CONST_WORD_1F54
+;   ESQPARS2_BannerRowCount, ESQPARS2_BannerRowWidthBytes, ESQPARS2_BannerCopyBlockSpanBytes
 ; WRITES:
-;   DATA_ESQPARS2_BSS_WORD_1F4B, DATA_ESQPARS2_BSS_LONG_1F4C, DATA_ESQPARS2_BSS_LONG_1F4D, ESQSHARED_BlitAddressOffset, DATA_ESQPARS2_CONST_WORD_1F55
+;   ESQPARS2_BannerRowCopyWordCount, ESQPARS2_BannerRowCopySpanBytes, ESQPARS2_BannerRowCopyStrideBytes, ESQSHARED_BlitAddressOffset, ESQPARS2_BannerCopyBlockWordLimit
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 ESQSHARED4_ComputeBannerRowBlitGeometry:
-    MOVE.L  DATA_ESQPARS2_CONST_LONG_1F52,D0
+    MOVE.L  ESQPARS2_BannerRowCount,D0
     MULU    #$58,D0
-    MOVE.L  D0,DATA_ESQPARS2_BSS_LONG_1F4C
+    MOVE.L  D0,ESQPARS2_BannerRowCopySpanBytes
     CLR.L   D0
-    MOVE.W  DATA_ESQPARS2_CONST_WORD_1F53,D0
+    MOVE.W  ESQPARS2_BannerRowWidthBytes,D0
     LSR.W   #3,D0
-    MOVE.L  D0,DATA_ESQPARS2_BSS_LONG_1F4D
+    MOVE.L  D0,ESQPARS2_BannerRowCopyStrideBytes
     ADDI.L  #$58,D0
     MOVE.L  D0,ESQSHARED_BlitAddressOffset
-    MOVE.W  DATA_ESQPARS2_CONST_WORD_1F54,D0
+    MOVE.W  ESQPARS2_BannerCopyBlockSpanBytes,D0
     LSR.W   #5,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,DATA_ESQPARS2_BSS_WORD_1F4B
+    MOVE.W  D0,ESQPARS2_BannerRowCopyWordCount
     MOVE.W  #$22,D0
     LSR.W   #1,D0
     SUBQ.W  #1,D0
-    MOVE.W  D0,DATA_ESQPARS2_CONST_WORD_1F55
+    MOVE.W  D0,ESQPARS2_BannerCopyBlockWordLimit
     RTS
 
 ;!======
@@ -929,7 +929,7 @@ ESQSHARED4_CopyInterleavedRowWordsFromOffset:
 ; CALLS:
 ;   (none)
 ; READS:
-;   DATA_ESQPARS2_BSS_LONG_1F4E, DATA_ESQPARS2_BSS_LONG_1F4F, ESQSHARED_BlitAddressOffset, GCOMMAND_BannerRowByteOffsetCurrent, b0
+;   ESQPARS2_BannerCopySourceOffset, ESQPARS2_BannerCopyTailOffset, ESQSHARED_BlitAddressOffset, GCOMMAND_BannerRowByteOffsetCurrent, b0
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -939,7 +939,7 @@ ESQSHARED4_CopyInterleavedRowWordsFromOffset:
 ;------------------------------------------------------------------------------
 ESQSHARED4_CopyBannerRowsWithByteOffset:
     MOVEM.L D0-D1/A0-A2,-(A7)
-    MOVE.L  DATA_ESQPARS2_BSS_LONG_1F4E,D0
+    MOVE.L  ESQPARS2_BannerCopySourceOffset,D0
     MOVEA.L A0,A1
     ADDA.L  D0,A1
     MOVEA.L A1,A2
@@ -1264,7 +1264,7 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
     MOVE.L  (A2)+,(A1)+
     ADDA.L  ESQSHARED_BlitAddressOffset,A1
     MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,D1
-    ADD.L   DATA_ESQPARS2_BSS_LONG_1F4F,D1
+    ADD.L   ESQPARS2_BannerCopyTailOffset,D1
     MOVEA.L A0,A2
     ADDA.L  D1,A2
     MOVE.W  (A2)+,(A1)+
@@ -1301,9 +1301,9 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
 ; CALLS:
 ;   ESQSHARED4_CopyInterleavedRowWordsFromOffset, ESQSHARED4_CopyBannerRowsWithByteOffset
 ; READS:
-;   ESQ_CopperListBannerA, ESQ_CopperListBannerB, DATA_ESQPARS2_BSS_LONG_1F4C, DATA_ESQPARS2_BSS_LONG_1F4D, DATA_ESQPARS2_BSS_LONG_1F51, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
+;   ESQ_CopperListBannerA, ESQ_CopperListBannerB, ESQPARS2_BannerRowCopySpanBytes, ESQPARS2_BannerRowCopyStrideBytes, ESQPARS2_ActiveCopperListSelectFlag, ESQSHARED_BannerRowScratchRasterBase0, ESQSHARED_BannerRowScratchRasterBase1, ESQSHARED_BannerRowScratchRasterBase2
 ; WRITES:
-;   DATA_ESQPARS2_BSS_LONG_1F4E, DATA_ESQPARS2_BSS_LONG_1F4F
+;   ESQPARS2_BannerCopySourceOffset, ESQPARS2_BannerCopyTailOffset
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1311,9 +1311,9 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
 ;------------------------------------------------------------------------------
 ESQSHARED4_BlitBannerRowsForActiveField:
     MOVEM.L D0/A0-A1,-(A7)
-    MOVE.L  DATA_ESQPARS2_BSS_LONG_1F4C,D1
-    MOVE.L  DATA_ESQPARS2_BSS_LONG_1F4D,D0
-    TST.L   DATA_ESQPARS2_BSS_LONG_1F51
+    MOVE.L  ESQPARS2_BannerRowCopySpanBytes,D1
+    MOVE.L  ESQPARS2_BannerRowCopyStrideBytes,D0
+    TST.L   ESQPARS2_ActiveCopperListSelectFlag
     BNE.S   .lab_0C9F
 
     ADDI.L  #$58,D0
@@ -1324,9 +1324,9 @@ ESQSHARED4_BlitBannerRowsForActiveField:
     LEA     ESQ_CopperListBannerB,A0
 
 .lab_0CA0:
-    MOVE.L  D0,DATA_ESQPARS2_BSS_LONG_1F4F
+    MOVE.L  D0,ESQPARS2_BannerCopyTailOffset
     ADD.L   D0,D1
-    MOVE.L  D1,DATA_ESQPARS2_BSS_LONG_1F4E
+    MOVE.L  D1,ESQPARS2_BannerCopySourceOffset
     JSR     ESQSHARED4_CopyInterleavedRowWordsFromOffset(PC)
 
     LEA     ESQSHARED_BannerRowScratchRasterBase0,A1
@@ -1357,7 +1357,7 @@ ESQSHARED4_BlitBannerRowsForActiveField:
 ; CALLS:
 ;   ESQSHARED4_DecodeRgbNibbleTriplet
 ; READS:
-;   DATA_ESQ_CONST_LONG_1E36, DATA_ESQ_CONST_LONG_1E43, DATA_ESQ_CONST_WORD_1E44, DATA_ESQ_CONST_LONG_1E63, DATA_ESQ_CONST_LONG_1E70, DATA_ESQ_CONST_WORD_1E71, lab_0CA2, lab_0CA3, lab_0CA4, lab_0CA5
+;   ESQ_BannerColorSweepProgramA, ESQ_BannerColorSweepProgramA_AnchorColorWord, ESQ_BannerColorSweepProgramA_TailColorWord, ESQ_BannerColorSweepProgramB, ESQ_BannerColorSweepProgramB_AnchorColorWord, ESQ_BannerColorSweepProgramB_TailColorWord, lab_0CA2, lab_0CA3, lab_0CA4, lab_0CA5
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1382,20 +1382,20 @@ ESQSHARED4_LoadCopperColorWordsFromNibbleTable:
     BRA.W   .lab_0CA5
 
 .lab_0CA3:
-    LEA     DATA_ESQ_CONST_LONG_1E36,A4
+    LEA     ESQ_BannerColorSweepProgramA,A4
     MOVE.W  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E63,A4
+    LEA     ESQ_BannerColorSweepProgramB,A4
     MOVE.W  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E43,A4
+    LEA     ESQ_BannerColorSweepProgramA_AnchorColorWord,A4
     MOVE.W  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E70,A4
+    LEA     ESQ_BannerColorSweepProgramB_AnchorColorWord,A4
     MOVE.W  D0,(A4)
     BRA.W   .lab_0CA5
 
 .lab_0CA4:
-    LEA     DATA_ESQ_CONST_WORD_1E44,A4
+    LEA     ESQ_BannerColorSweepProgramA_TailColorWord,A4
     MOVE.W  D0,(A4)
-    LEA     DATA_ESQ_CONST_WORD_1E71,A4
+    LEA     ESQ_BannerColorSweepProgramB_TailColorWord,A4
     MOVE.W  D0,(A4)
 
 .lab_0CA5:
@@ -1450,7 +1450,7 @@ ESQSHARED4_DecodeRgbNibbleTriplet:
 ; CALLS:
 ;   ESQSHARED4_LoadCopperColorWordsFromNibbleTable
 ; READS:
-;   DATA_ESQ_BSS_BYTE_1DE0, DATA_ESQ_CONST_LONG_1E2E, DATA_ESQ_CONST_LONG_1E5B
+;   GCOMMAND_PresetFallbackValue0, ESQ_BannerPaletteWordsA, ESQ_BannerPaletteWordsB
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1464,10 +1464,10 @@ ESQSHARED4_LoadDefaultPaletteToCopper_NoOp:
 ;!======
 
     MOVEM.L D0-D4/A0-A4,-(A7)
-    LEA     DATA_ESQ_CONST_LONG_1E2E,A2
-    LEA     DATA_ESQ_CONST_LONG_1E5B,A3
+    LEA     ESQ_BannerPaletteWordsA,A2
+    LEA     ESQ_BannerPaletteWordsB,A3
     MOVE.W  #0,D3
-    LEA     DATA_ESQ_BSS_BYTE_1DE0,A1
+    LEA     GCOMMAND_PresetFallbackValue0,A1
     JSR     ESQSHARED4_LoadCopperColorWordsFromNibbleTable(PC)
 
     MOVEM.L (A7)+,D0-D4/A0-A4
@@ -1486,9 +1486,9 @@ ESQSHARED4_LoadDefaultPaletteToCopper_NoOp:
 ; CALLS:
 ;   ESQ_NoOp
 ; READS:
-;   ESQSHARED4_ApplyBannerColorStep, ESQ_CopperListBannerA, DATA_ESQ_CONST_LONG_1E2F, DATA_ESQ_CONST_LONG_1E37, DATA_ESQ_CONST_LONG_1E3A, ESQ_CopperListBannerB, DATA_ESQ_CONST_LONG_1E5C, DATA_ESQ_CONST_LONG_1E64, DATA_ESQ_CONST_LONG_1E67, DATA_ESQPARS2_BSS_LONG_1F49, DATA_ESQPARS2_BSS_WORD_1F4A, f6, ff, lab_0CA9, lab_0CAA, lab_0CAB
+;   ESQSHARED4_ApplyBannerColorStep, ESQ_CopperListBannerA, ESQ_BannerSweepWaitRowA, ESQ_BannerSweepWaitStartProgramA, ESQ_BannerSweepWaitEndProgramA, ESQ_CopperListBannerB, ESQ_BannerSweepWaitRowB, ESQ_BannerSweepWaitStartProgramB, ESQ_BannerSweepWaitEndProgramB, ESQPARS2_BannerColorThreshold, ESQPARS2_BannerColorBaseValue, f6, ff, lab_0CA9, lab_0CAA, lab_0CAB
 ; WRITES:
-;   DATA_ESQPARS2_BSS_WORD_1F3D, DATA_ESQPARS2_BSS_LONG_1F46, DATA_ESQPARS2_BSS_LONG_1F49
+;   ESQPARS2_BannerSweepEntryGuardCounter, ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorThreshold
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1498,32 +1498,32 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
     MOVE.B  D0,(A4)
     LEA     ESQ_CopperListBannerB,A4
     MOVE.B  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E2F,A4
+    LEA     ESQ_BannerSweepWaitRowA,A4
     ADDI.B  #$1,D0
     MOVE.B  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E5C,A4
+    LEA     ESQ_BannerSweepWaitRowB,A4
     MOVE.B  D0,(A4)
     ADDI.B  #$11,D0
-    LEA     DATA_ESQ_CONST_LONG_1E37,A4
+    LEA     ESQ_BannerSweepWaitStartProgramA,A4
     MOVE.B  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E64,A4
+    LEA     ESQ_BannerSweepWaitStartProgramB,A4
     MOVE.B  D0,(A4)
     ADDQ.W  #1,D0
-    LEA     DATA_ESQ_CONST_LONG_1E3A,A4
+    LEA     ESQ_BannerSweepWaitEndProgramA,A4
     MOVE.B  D0,(A4)
-    LEA     DATA_ESQ_CONST_LONG_1E67,A4
+    LEA     ESQ_BannerSweepWaitEndProgramB,A4
     MOVE.B  D0,(A4)
     ANDI.W  #$ff,D0
-    MOVE.W  D0,DATA_ESQPARS2_BSS_LONG_1F49
+    MOVE.W  D0,ESQPARS2_BannerColorThreshold
     RTS
 
 ;!======
 
-    LEA     DATA_ESQPARS2_BSS_WORD_1F4A,A4
+    LEA     ESQPARS2_BannerColorBaseValue,A4
     MOVEQ   #0,D0
     MOVE.W  (A4),D0
     SUBQ.W  #2,D0
-    CMP.W   DATA_ESQPARS2_BSS_LONG_1F49,D0
+    CMP.W   ESQPARS2_BannerColorThreshold,D0
     BPL.W   .lab_0CA9
 
     RTS
@@ -1531,7 +1531,7 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
 ;!======
 
 .lab_0CA9:
-    SUBI.W  #1,DATA_ESQPARS2_BSS_WORD_1F3D
+    SUBI.W  #1,ESQPARS2_BannerSweepEntryGuardCounter
     BNE.W   .lab_0CAA
 
     BRA.W   .lab_0CAB
@@ -1539,11 +1539,11 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
 .lab_0CAA:
     BPL.W   .lab_0CAB
 
-    MOVE.W  #0,DATA_ESQPARS2_BSS_WORD_1F3D
+    MOVE.W  #0,ESQPARS2_BannerSweepEntryGuardCounter
     JSR     ESQ_NoOp
 
 .lab_0CAB:
-    SUBI.W  #1,DATA_ESQPARS2_BSS_LONG_1F46
+    SUBI.W  #1,ESQPARS2_BannerColorStepCounter
     LEA     ESQ_CopperListBannerA,A4
     MOVEQ   #0,D0
     MOVE.B  (A4),D0
@@ -1564,7 +1564,7 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
 ; READS:
 ;   ESQ_CopperListBannerA
 ; WRITES:
-;   DATA_ESQPARS2_BSS_LONG_1F46
+;   ESQPARS2_BannerColorStepCounter
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1572,7 +1572,7 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
 ;------------------------------------------------------------------------------
 ESQSHARED4_ResetBannerColorToStart:
     LEA     ESQ_CopperListBannerA,A4
-    MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46
+    MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
     MOVE.W  #$19,D0
 
 ;------------------------------------------------------------------------------
@@ -1586,9 +1586,9 @@ ESQSHARED4_ResetBannerColorToStart:
 ; CALLS:
 ;   ESQ_NoOp, ESQSHARED4_BindAndClearBannerWorkRaster, ESQSHARED4_SetBannerCopperColorAndThreshold
 ; READS:
-;   ESQ_CopperListBannerA, DATA_ESQ_CONST_LONG_1E3C, DATA_ESQ_CONST_LONG_1E48, DATA_ESQ_CONST_LONG_1E69, DATA_ESQ_CONST_LONG_1E75, DATA_ESQPARS2_BSS_LONG_1F49, DATA_ESQPARS2_BSS_WORD_1F4A, f6, lab_0CAE, lab_0CAF, lab_0CB0
+;   ESQ_CopperListBannerA, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQPARS2_BannerColorThreshold, ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
 ; WRITES:
-;   DATA_ESQ_BSS_BYTE_1E45, DATA_ESQ_BSS_BYTE_1E72, DATA_ESQPARS2_BSS_LONG_1F3E, DATA_ESQPARS2_BSS_LONG_1F46, DATA_ESQPARS2_BSS_WORD_1F47
+;   ESQ_BannerColorClampValueA, ESQ_BannerColorClampValueB, ESQPARS2_BannerSweepDelayCounter, ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorClampThreshold
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -1615,11 +1615,11 @@ ESQSHARED4_ApplyBannerColorStep:
 
 ;!======
 
-    LEA     DATA_ESQPARS2_BSS_WORD_1F4A,A4
+    LEA     ESQPARS2_BannerColorBaseValue,A4
     MOVEQ   #0,D0
     MOVE.W  (A4),D0
     SUBQ.W  #2,D0
-    CMP.W   DATA_ESQPARS2_BSS_LONG_1F49,D0
+    CMP.W   ESQPARS2_BannerColorThreshold,D0
     BPL.W   .lab_0CAE
 
     RTS
@@ -1627,7 +1627,7 @@ ESQSHARED4_ApplyBannerColorStep:
 ;!======
 
 .lab_0CAE:
-    SUBI.W  #1,DATA_ESQPARS2_BSS_LONG_1F3E
+    SUBI.W  #1,ESQPARS2_BannerSweepDelayCounter
     BNE.W   .lab_0CAF
 
     BRA.W   .lab_0CB0
@@ -1635,11 +1635,11 @@ ESQSHARED4_ApplyBannerColorStep:
 .lab_0CAF:
     BPL.W   .lab_0CB0
 
-    MOVE.W  #0,DATA_ESQPARS2_BSS_LONG_1F3E
+    MOVE.W  #0,ESQPARS2_BannerSweepDelayCounter
     JSR     ESQ_NoOp
 
 .lab_0CB0:
-    ADDI.W  #1,DATA_ESQPARS2_BSS_LONG_1F46
+    ADDI.W  #1,ESQPARS2_BannerColorStepCounter
     LEA     ESQ_CopperListBannerA,A4
     MOVEQ   #0,D0
     MOVE.B  (A4),D0
@@ -1647,7 +1647,7 @@ ESQSHARED4_ApplyBannerColorStep:
     BRA.S   ESQSHARED4_ApplyBannerColorStep
 
     LEA     ESQ_CopperListBannerA,A4
-    MOVE.W  #$62,DATA_ESQPARS2_BSS_LONG_1F46
+    MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
     MOVE.W  #$19,D0
     BRA.W   ESQSHARED4_ApplyBannerColorStep
 
@@ -1656,32 +1656,32 @@ ESQSHARED4_ApplyBannerColorStep:
 ;!======
 
     MOVEM.L D0-D1/A2,-(A7)
-    MOVE.W  DATA_ESQ_CONST_LONG_1E48,D0
-    MOVE.W  DATA_ESQ_CONST_LONG_1E3C,D1
+    MOVE.W  ESQ_BannerPlane0DstPtrReset_LoWord,D0
+    MOVE.W  ESQ_BannerSnapshotPlane0DstPtrLoWord,D1
     CMP.W   D0,D1
     BEQ.S   .lab_0CB1
 
-    MOVE.W  DATA_ESQPARS2_BSS_WORD_1F4A,D0
+    MOVE.W  ESQPARS2_BannerColorBaseValue,D0
     CMPI.W  #$f6,D0
     BLT.S   .lab_0CB2
 
 .lab_0CB1:
-    MOVE.W  #$8a,DATA_ESQ_BSS_BYTE_1E45
-    MOVE.W  #$8a,DATA_ESQPARS2_BSS_WORD_1F47
+    MOVE.W  #$8a,ESQ_BannerColorClampValueA
+    MOVE.W  #$8a,ESQPARS2_BannerColorClampThreshold
 
 .lab_0CB2:
-    MOVE.W  DATA_ESQ_CONST_LONG_1E75,D0
-    MOVE.W  DATA_ESQ_CONST_LONG_1E69,D1
+    MOVE.W  ESQ_BannerSweepSrcPlane0PtrReset_LoWord,D0
+    MOVE.W  ESQ_BannerSweepSrcPlane0Ptr_LoWord,D1
     CMP.W   D0,D1
     BEQ.S   .lab_0CB3
 
-    MOVE.W  DATA_ESQPARS2_BSS_WORD_1F4A,D0
+    MOVE.W  ESQPARS2_BannerColorBaseValue,D0
     CMPI.W  #$f6,D0
     BLT.S   ESQSHARED4_ApplyBannerColorStep_Return
 
 .lab_0CB3:
-    MOVE.W  #$8a,DATA_ESQ_BSS_BYTE_1E72
-    MOVE.W  #$8a,DATA_ESQPARS2_BSS_WORD_1F47
+    MOVE.W  #$8a,ESQ_BannerColorClampValueB
+    MOVE.W  #$8a,ESQPARS2_BannerColorClampThreshold
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED4_ApplyBannerColorStep_Return   (Routine at ESQSHARED4_ApplyBannerColorStep_Return)

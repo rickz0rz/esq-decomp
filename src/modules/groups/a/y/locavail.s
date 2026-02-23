@@ -452,7 +452,7 @@ LOCAVAIL_SetFilterModeAndResetState:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_STR_FindCharPtr, LOCAVAIL_ResetFilterStateStruct, LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, LOCAVAIL_FreeResourceChain, NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_6, DATA_LOCAVAIL_TAG_FV_1FF0, WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
+;   Global_STR_LOCAVAIL_C_6, LOCAVAIL_TAG_FV, WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -499,7 +499,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LOCAVAIL_TAG_FV_1FF0
+    PEA     LOCAVAIL_TAG_FV
     JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -999,7 +999,7 @@ LOCAVAIL_GetNodeDurationByIndex:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_MapFilterTokenCharToClass, NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterStep, LOCAVAIL_FilterPrevClassId, DATA_LOCAVAIL_STR_YYLLZ_1FF2, WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
+;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterStep, LOCAVAIL_FilterPrevClassId, LOCAVAIL_STR_YYLLZ_FilterGateCheck, WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1141,7 +1141,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
     MOVEQ   #0,D0
     MOVE.B  ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LOCAVAIL_STR_YYLLZ_1FF2
+    PEA     LOCAVAIL_STR_YYLLZ_FilterGateCheck
     JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -1239,7 +1239,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry_Return:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   DATA_LOCAVAIL_TAG_UVGTI_1FF3, DATA_LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_1FF4, DATA_LOCAVAIL_STR_LA_VER_1_COLON_CURDAY_1FF5, DATA_LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY_1FF6, MODE_NEWFILE, lab_0F4E, lab_0F4F, lab_0F52, lab_0F54, lab_0F54_0008, lab_0F5A, lab_0F5B
+;   LOCAVAIL_TAG_UVGTI, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save, LOCAVAIL_STR_LA_VER_1_COLON_CURDAY, LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY, MODE_NEWFILE, lab_0F4E, lab_0F4F, lab_0F52, lab_0F54, lab_0F54_0008, lab_0F5A, lab_0F5B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1253,7 +1253,7 @@ LOCAVAIL_SaveAvailabilityDataFile:
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVEQ   #1,D5
-    LEA     DATA_LOCAVAIL_TAG_UVGTI_1FF3,A0
+    LEA     LOCAVAIL_TAG_UVGTI,A0
     LEA     -154(A5),A1
     MOVEQ   #5,D0
 
@@ -1261,7 +1261,7 @@ LOCAVAIL_SaveAvailabilityDataFile:
     MOVE.B  (A0)+,(A1)+
     DBF     D0,.lab_0F4E
     PEA     MODE_NEWFILE.W
-    PEA     DATA_LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_1FF4
+    PEA     LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save
     JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -1270,7 +1270,7 @@ LOCAVAIL_SaveAvailabilityDataFile:
     BEQ.W   .lab_0F5B
 
     MOVE.L  A3,-4(A5)
-    LEA     DATA_LOCAVAIL_STR_LA_VER_1_COLON_CURDAY_1FF5,A0
+    LEA     LOCAVAIL_STR_LA_VER_1_COLON_CURDAY,A0
     LEA     -148(A5),A1
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
@@ -1442,7 +1442,7 @@ LOCAVAIL_SaveAvailabilityDataFile:
 .lab_0F5A:
     MOVE.L  A2,-4(A5)
     SUBA.L  A2,A2
-    LEA     DATA_LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY_1FF6,A0
+    LEA     LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY,A0
     LEA     -148(A5),A1
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
@@ -1506,7 +1506,7 @@ LOCAVAIL_SaveAvailabilityDataFile_Return:
 ; CALLS:
 ;   GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_STRING_CompareNoCaseN, LOCAVAIL_ResetFilterStateStruct, LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, LOCAVAIL_FreeResourceChain, NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MEMORY_AllocateMemory, NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_REF_LONG_FILE_SCRATCH, Global_STR_LOCAVAIL_C_7, Global_STR_LOCAVAIL_C_8, DATA_LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_1FF7, DATA_LOCAVAIL_STR_LA_VER_1FF8, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
+;   Global_REF_LONG_FILE_SCRATCH, Global_STR_LOCAVAIL_C_7, Global_STR_LOCAVAIL_C_8, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load, LOCAVAIL_STR_LA_VER, Global_PTR_WORK_BUFFER, TEXTDISP_SecondaryGroupCode, TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1522,7 +1522,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVEQ   #1,D5
     CLR.L   -48(A5)
     MOVEQ   #0,D4
-    PEA     DATA_LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_1FF7
+    PEA     LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load
     JSR     GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1557,7 +1557,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     BEQ.W   .lab_0F73
 
     PEA     6.W
-    PEA     DATA_LOCAVAIL_STR_LA_VER_1FF8
+    PEA     LOCAVAIL_STR_LA_VER
     MOVE.L  -44(A5),-(A7)
     JSR     GROUP_AY_JMPTBL_STRING_CompareNoCaseN(PC)
 
@@ -1889,7 +1889,7 @@ LOCAVAIL_LoadAvailabilityDataFile_Return:
 ; CALLS:
 ;   (none)
 ; READS:
-;   LOCAVAIL_FilterModeFlag, DATA_LADFUNC_CONST_WORD_1FEA
+;   LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterWindowHalfSpan
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -1903,7 +1903,7 @@ LOCAVAIL_GetFilterWindowHalfSpan:
     CMP.L   LOCAVAIL_FilterModeFlag,D0
     BNE.S   .lab_0F7B
 
-    MOVE.W  DATA_LADFUNC_CONST_WORD_1FEA,D0
+    MOVE.W  LOCAVAIL_FilterWindowHalfSpan,D0
     BLE.S   .lab_0F79
 
     EXT.L   D0
@@ -1940,9 +1940,9 @@ LOCAVAIL_GetFilterWindowHalfSpan:
 ; CALLS:
 ;   GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_ResetFilterCursorState, NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_UpdateFilterStateMachine_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, DATA_LOCAVAIL_STR_YYLLZ_1FFB, WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
+;   LOCAVAIL_UpdateFilterStateMachine_Return, ESQIFF_GAdsBrushListCount, ED_DiagGraphModeChar, ED_DiagVinModeChar, LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
 ; WRITES:
-;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, DATA_LADFUNC_CONST_WORD_1FEA, LOCAVAIL_FilterCooldownTicks
+;   LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId, LOCAVAIL_FilterPrevClassId, LOCAVAIL_FilterWindowHalfSpan, LOCAVAIL_FilterCooldownTicks
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -2030,7 +2030,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVEQ   #0,D0
     MOVE.B  ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LOCAVAIL_STR_YYLLZ_1FFB
+    PEA     LOCAVAIL_STR_YYLLZ_FilterStateUpdate
     JSR     GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -2164,7 +2164,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVE.L  D0,D1
     SUBQ.W  #5,D1
     MOVE.W  D1,LOCAVAIL_FilterCooldownTicks
-    MOVE.W  2(A0),DATA_LADFUNC_CONST_WORD_1FEA
+    MOVE.W  2(A0),LOCAVAIL_FilterWindowHalfSpan
     MOVEQ   #-1,D0
     MOVE.L  D0,8(A2)
     MOVE.L  D0,12(A2)
@@ -2267,7 +2267,7 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVEQ   #-1,D0
     MOVE.L  D0,LOCAVAIL_FilterClassId
     CLR.L   LOCAVAIL_FilterStep
-    MOVE.W  #(-1),DATA_LADFUNC_CONST_WORD_1FEA
+    MOVE.W  #(-1),LOCAVAIL_FilterWindowHalfSpan
     BRA.S   LOCAVAIL_UpdateFilterStateMachine_Return
 
 .lab_0F8C_0046:

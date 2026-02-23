@@ -65,7 +65,7 @@ LADFUNC2_EmitEscapedStringWithLimit:
 ; CALLS:
 ;   GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer, LADFUNC2_EmitEscapedCharToScratch, NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   DATA_LADFUNC_STR_VALUE_1FDF, DATA_LADFUNC_STR_VALUE_1FE0
+;   LADFUNC_STR_QuoteAndNewline, LADFUNC_STR_Quote
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -101,13 +101,13 @@ LADFUNC2_EmitEscapedStringWithLimit_Return:
     TST.L   D6
     BLE.S   .branch_1
 
-    PEA     DATA_LADFUNC_STR_VALUE_1FDF
+    PEA     LADFUNC_STR_QuoteAndNewline
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
 
 .branch_1:
-    PEA     DATA_LADFUNC_STR_VALUE_1FE0
+    PEA     LADFUNC_STR_Quote
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -203,7 +203,7 @@ LADFUNC2_EmitEscapedStringToScratch:
 ; CALLS:
 ;   GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   DATA_LADFUNC_FMT_PCT_LC_1FE1, DATA_LADFUNC_FMT_PCT_LC_1FE2, DATA_LADFUNC_FMT_PCT_LC_1FE3, DATA_LADFUNC_FMT_PCT_02LX_1FE4, DATA_LADFUNC_FMT_PCT_LC_1FE5
+;   LADFUNC_FMT_ControlCharCaretEscape, LADFUNC_FMT_ReplacementQuoteChar, LADFUNC_FMT_ReplacementCommaChar, LADFUNC_FMT_HexEscapeByte, LADFUNC_FMT_LiteralChar
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -223,7 +223,7 @@ LADFUNC2_EmitEscapedCharToScratch:
     MOVEQ   #64,D1
     ADD.L   D1,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_FMT_PCT_LC_1FE1
+    PEA     LADFUNC_FMT_ControlCharCaretEscape
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -241,7 +241,7 @@ LADFUNC2_EmitEscapedCharToScratch:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_FMT_PCT_LC_1FE2
+    PEA     LADFUNC_FMT_ReplacementQuoteChar
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -259,7 +259,7 @@ LADFUNC2_EmitEscapedCharToScratch:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_FMT_PCT_LC_1FE3
+    PEA     LADFUNC_FMT_ReplacementCommaChar
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -273,7 +273,7 @@ LADFUNC2_EmitEscapedCharToScratch:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_FMT_PCT_02LX_1FE4
+    PEA     LADFUNC_FMT_HexEscapeByte
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -283,7 +283,7 @@ LADFUNC2_EmitEscapedCharToScratch:
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,-(A7)
-    PEA     DATA_LADFUNC_FMT_PCT_LC_1FE5
+    PEA     LADFUNC_FMT_LiteralChar
     JSR     GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #8,A7

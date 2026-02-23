@@ -25,7 +25,7 @@ ESQ_StatusPacket__Bit3CaptureGateChar = 18
 ;   Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE, ESQPARS2_ReadModeFlags
 ; WRITES:
 ;   (A1+head), ESQ_SerialRbfErrorCount, Global_WORD_H_VALUE, ESQ_SerialRbfFillLevel, Global_WORD_MAX_VALUE,
-;   ESQPARS2_ReadModeFlags, DATA_SCRIPT_BSS_LONG_20AB, 156(A0)
+;   ESQPARS2_ReadModeFlags, SCRIPT_SerialReadModeOverflowCount, 156(A0)
 ; DESC:
 ;   Stores a received byte into the RBF ring buffer, updates head/fill counts,
 ;   and tracks max fill and overflow threshold.
@@ -75,7 +75,7 @@ ESQ_HandleSerialRbfInterrupt:
     BEQ.W   .return
 
     MOVE.W  #$102,ESQPARS2_ReadModeFlags
-    ADDI.L  #$1,DATA_SCRIPT_BSS_LONG_20AB
+    ADDI.L  #$1,SCRIPT_SerialReadModeOverflowCount
 
 .return:
     MOVE.W  #$800,156(A0)
@@ -152,7 +152,7 @@ ESQ_ReadSerialRbfByte:
 ; READS:
 ;   Global_PTR_AUD1_DMA
 ; WRITES:
-;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1B03
+;   AUD1LCH, AUD1LEN, AUD1VOL, AUD1PER, DMACON, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4CapturePhase, CTRL_SampleEntryCount
 ; DESC:
 ;   Initializes audio channel 1 DMA and clears related CTRL capture state.
 ;------------------------------------------------------------------------------
@@ -165,9 +165,9 @@ ESQ_InitAudio1Dma:
     MOVE.W  #$65b,(AUD1PER-BLTDDAT)(A0)
     MOVE.W  #$8202,(DMACON-BLTDDAT)(A0)
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF8
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B03
+    MOVE.W  D0,CTRL_Bit4CaptureDelayCounter
+    MOVE.W  D0,CTRL_Bit4CapturePhase
+    MOVE.W  D0,CTRL_SampleEntryCount
     RTS
 
 ;!======
@@ -183,17 +183,17 @@ ESQ_InitAudio1Dma:
 ; CALLS:
 ;   GET_BIT_3_OF_CIAB_PRA_INTO_D1, ESQ_StoreCtrlSampleEntry
 ; READS:
-;   DATA_COMMON_BSS_WORD_1AFC, DATA_COMMON_BSS_WORD_1AF9, DATA_COMMON_BSS_WORD_1AFD, DATA_COMMON_BSS_WORD_1B03
+;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, CTRL_SampleEntryCount
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1AFC, DATA_COMMON_BSS_WORD_1AF9, DATA_COMMON_BSS_WORD_1AFD, DATA_COMMON_BSS_LONG_1AFF, DATA_COMMON_BSS_WORD_1B03, DATA_COMMON_BSS_LONG_1B04
+;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, CTRL_Bit3SampleScratch, CTRL_SampleEntryCount, CTRL_SampleEntryScratch
 ; DESC:
 ;   Samples CIAB PRA bit 3 over time, builds bytes from samples, and stores
-;   them into the DATA_COMMON_BSS_LONG_1B04 ring buffer.
+;   them into the CTRL_SampleEntryScratch ring buffer.
 ; NOTES:
-;   Uses DATA_COMMON_BSS_WORD_1AFC/1AF9/1AFD as sampling state. Sample buffer is DATA_COMMON_BSS_LONG_1AFF.
+;   Uses CTRL_Bit3CapturePhase/1AF9/1AFD as sampling state. Sample buffer is CTRL_Bit3SampleScratch.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit3Stream:
-    TST.W   DATA_COMMON_BSS_WORD_1AFC
+    TST.W   CTRL_Bit3CapturePhase
     BNE.S   .advance_state
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
@@ -201,16 +201,16 @@ ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BPL.W   .return
 
-    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFC
-    MOVE.W  #4,DATA_COMMON_BSS_WORD_1AF9
-    MOVE.W  #0,DATA_COMMON_BSS_WORD_1AFD
+    ADDQ.W  #1,CTRL_Bit3CapturePhase
+    MOVE.W  #4,CTRL_Bit3CaptureDelayCounter
+    MOVE.W  #0,CTRL_Bit3SampleSlotIndex
     RTS
 
 .advance_state:
-    MOVE.W  DATA_COMMON_BSS_WORD_1AFC,D0
+    MOVE.W  CTRL_Bit3CapturePhase,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFC
-    MOVE.W  DATA_COMMON_BSS_WORD_1AF9,D1
+    MOVE.W  D0,CTRL_Bit3CapturePhase
+    MOVE.W  CTRL_Bit3CaptureDelayCounter,D1
     CMP.W   D0,D1
     BGT.W   .return
 
@@ -223,9 +223,9 @@ ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BPL.S   .reset_state
 
-    MOVE.W  #14,DATA_COMMON_BSS_WORD_1AF9
+    MOVE.W  #14,CTRL_Bit3CaptureDelayCounter
     MOVEQ   #7,D0
-    LEA     DATA_COMMON_BSS_LONG_1AFF,A5
+    LEA     CTRL_Bit3SampleScratch,A5
     MOVEQ   #0,D1
 
 .clear_sample_buffer_loop:
@@ -235,9 +235,9 @@ ESQ_CaptureCtrlBit3Stream:
 
 .reset_state:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF9
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFD
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFC
+    MOVE.W  D0,CTRL_Bit3CaptureDelayCounter
+    MOVE.W  D0,CTRL_Bit3SampleSlotIndex
+    MOVE.W  D0,CTRL_Bit3CapturePhase
     RTS
 
 .collect_samples:
@@ -247,11 +247,11 @@ ESQ_CaptureCtrlBit3Stream:
 
     JSR     GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
-    LEA     DATA_COMMON_BSS_LONG_1AFF,A5
-    ADDA.W  DATA_COMMON_BSS_WORD_1AFD,A5
+    LEA     CTRL_Bit3SampleScratch,A5
+    ADDA.W  CTRL_Bit3SampleSlotIndex,A5
     MOVE.B  D1,(A5)
-    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFD
-    ADDI.W  #10,DATA_COMMON_BSS_WORD_1AF9
+    ADDQ.W  #1,CTRL_Bit3SampleSlotIndex
+    ADDI.W  #10,CTRL_Bit3CaptureDelayCounter
     RTS
 
 .assemble_and_store:
@@ -260,9 +260,9 @@ ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BMI.S   .reset_state_and_exit
 
-    LEA     DATA_COMMON_BSS_LONG_1AFF,A5
-    ADDA.W  DATA_COMMON_BSS_WORD_1AFD,A5
-    MOVE.W  DATA_COMMON_BSS_WORD_1AFD,D1
+    LEA     CTRL_Bit3SampleScratch,A5
+    ADDA.W  CTRL_Bit3SampleSlotIndex,A5
+    MOVE.W  CTRL_Bit3SampleSlotIndex,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
@@ -278,8 +278,8 @@ ESQ_CaptureCtrlBit3Stream:
 
 .next_bit:
     DBF     D1,.build_byte_loop
-    LEA     DATA_COMMON_BSS_LONG_1B04,A1
-    MOVE.W  DATA_COMMON_BSS_WORD_1B03,D1
+    LEA     CTRL_SampleEntryScratch,A1
+    MOVE.W  CTRL_SampleEntryCount,D1
     ADDA.W  D1,A1
     MOVE.B  D0,(A1)
     BEQ.S   .flush_on_zero
@@ -296,13 +296,13 @@ ESQ_CaptureCtrlBit3Stream:
     MOVEQ   #0,D1
 
 .store_index:
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B03
+    MOVE.W  D1,CTRL_SampleEntryCount
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF9
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFD
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFC
+    MOVE.W  D0,CTRL_Bit3CaptureDelayCounter
+    MOVE.W  D0,CTRL_Bit3SampleSlotIndex
+    MOVE.W  D0,CTRL_Bit3CapturePhase
 
 .return:
     RTS
@@ -374,13 +374,13 @@ GET_BIT_4_OF_CIAB_PRA_INTO_D1:
 ; CALLS:
 ;   ESQ_CaptureCtrlBit4Stream, ESQ_CaptureCtrlBit3Stream
 ; READS:
-;   DATA_ESQ_STR_B_1DC8
+;   ESQ_STR_B
 ; WRITES:
 ;   INTREQ
 ; DESC:
 ;   Updates CTRL sampling state and acknowledges the audio channel 1 interrupt.
 ; NOTES:
-;   Only captures the bit-3 stream when DATA_ESQ_STR_B_1DC8+ESQ_StatusPacket__Bit3CaptureGateChar holds 'N'.
+;   Only captures the bit-3 stream when ESQ_STR_B+ESQ_StatusPacket__Bit3CaptureGateChar holds 'N'.
 ;------------------------------------------------------------------------------
 ESQ_PollCtrlInput:
     MOVE.L  A5,-(A7)
@@ -388,7 +388,7 @@ ESQ_PollCtrlInput:
 
     JSR     ESQ_CaptureCtrlBit4Stream
 
-    LEA     DATA_ESQ_STR_B_1DC8,A4
+    LEA     ESQ_STR_B,A4
     MOVE.B  ESQ_StatusPacket__Bit3CaptureGateChar(A4),D1 ; A4+18 = status byte gate for CTRL bit-3 capture
     CMPI.B  #"N",D1
     BNE.S   .lab_0040
@@ -418,18 +418,18 @@ ESQ_PollCtrlInput:
 ; CALLS:
 ;   GET_BIT_4_OF_CIAB_PRA_INTO_D1
 ; READS:
-;   DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFB
+;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1AFA, DATA_COMMON_BSS_WORD_1AF8, DATA_COMMON_BSS_WORD_1AFB, DATA_COMMON_BSS_LONG_1AFE, CTRL_BUFFER, CTRL_H, CTRL_HPreviousSample,
+;   CTRL_Bit4CapturePhase, CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex, CTRL_Bit4SampleScratch, CTRL_BUFFER, CTRL_H, CTRL_HPreviousSample,
 ;   CTRL_HDeltaMax, CTRL_BufferedByteCount
 ; DESC:
 ;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
 ;   CTRL_BUFFER.
 ; NOTES:
-;   Uses DATA_COMMON_BSS_WORD_1AFA/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
+;   Uses CTRL_Bit4CapturePhase/1AF8/1AFB as sampling state. Buffer wraps at $01F4.
 ;------------------------------------------------------------------------------
 ESQ_CaptureCtrlBit4Stream:
-    TST.W   DATA_COMMON_BSS_WORD_1AFA            ; Test DATA_COMMON_BSS_WORD_1AFA...
+    TST.W   CTRL_Bit4CapturePhase            ; Test CTRL_Bit4CapturePhase...
     BNE.S   .advance_state       ; and if it's not equal to zero, jump to LAB_0042
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)        ; Read the bit from CIAB_PRA and store bit 4's value in D1
@@ -437,16 +437,16 @@ ESQ_CaptureCtrlBit4Stream:
     TST.B   D1                  ; Test the value (this cheaply is seeing if it's 1 or 0)
     BPL.W   .return              ; If it's 1, jump to LAB_004D (which is just RTS) so exit this subroutine.
 
-    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFA
-    MOVE.W  #4,DATA_COMMON_BSS_WORD_1AF8
-    MOVE.W  #0,DATA_COMMON_BSS_WORD_1AFB
+    ADDQ.W  #1,CTRL_Bit4CapturePhase
+    MOVE.W  #4,CTRL_Bit4CaptureDelayCounter
+    MOVE.W  #0,CTRL_Bit4SampleSlotIndex
     RTS
 
 .advance_state:
-    MOVE.W  DATA_COMMON_BSS_WORD_1AFA,D0
+    MOVE.W  CTRL_Bit4CapturePhase,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA
-    MOVE.W  DATA_COMMON_BSS_WORD_1AF8,D1
+    MOVE.W  D0,CTRL_Bit4CapturePhase
+    MOVE.W  CTRL_Bit4CaptureDelayCounter,D1
     CMP.W   D0,D1
     BGT.W   .return
 
@@ -459,9 +459,9 @@ ESQ_CaptureCtrlBit4Stream:
     TST.B   D1
     BPL.S   .reset_state
 
-    MOVE.W  #14,DATA_COMMON_BSS_WORD_1AF8
+    MOVE.W  #14,CTRL_Bit4CaptureDelayCounter
     MOVEQ   #7,D0
-    LEA     DATA_COMMON_BSS_LONG_1AFE,A5
+    LEA     CTRL_Bit4SampleScratch,A5
     MOVEQ   #0,D1
 
 .clear_sample_buffer_loop:
@@ -472,9 +472,9 @@ ESQ_CaptureCtrlBit4Stream:
 
 .reset_state:
     MOVEQ   #0,D0           ; Set D0 to 0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF8     ; Set DATA_COMMON_BSS_WORD_1AF8 to D0 (0)
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFB     ; Set DATA_COMMON_BSS_WORD_1AFB to D0 (0)
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA     ; Set DATA_COMMON_BSS_WORD_1AFA to D0 (0)
+    MOVE.W  D0,CTRL_Bit4CaptureDelayCounter     ; Set CTRL_Bit4CaptureDelayCounter to D0 (0)
+    MOVE.W  D0,CTRL_Bit4SampleSlotIndex     ; Set CTRL_Bit4SampleSlotIndex to D0 (0)
+    MOVE.W  D0,CTRL_Bit4CapturePhase     ; Set CTRL_Bit4CapturePhase to D0 (0)
     RTS
 
 .collect_samples:
@@ -484,11 +484,11 @@ ESQ_CaptureCtrlBit4Stream:
 
     JSR     GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
 
-    LEA     DATA_COMMON_BSS_LONG_1AFE,A5
-    ADDA.W  DATA_COMMON_BSS_WORD_1AFB,A5
+    LEA     CTRL_Bit4SampleScratch,A5
+    ADDA.W  CTRL_Bit4SampleSlotIndex,A5
     MOVE.B  D1,(A5)
-    ADDQ.W  #1,DATA_COMMON_BSS_WORD_1AFB
-    ADDI.W  #10,DATA_COMMON_BSS_WORD_1AF8
+    ADDQ.W  #1,CTRL_Bit4SampleSlotIndex
+    ADDI.W  #10,CTRL_Bit4CaptureDelayCounter
     RTS
 
 .assemble_and_store:
@@ -497,9 +497,9 @@ ESQ_CaptureCtrlBit4Stream:
     TST.B   D1
     BMI.S   .reset_state_and_exit
 
-    LEA     DATA_COMMON_BSS_LONG_1AFE,A5
-    ADDA.W  DATA_COMMON_BSS_WORD_1AFB,A5
-    MOVE.W  DATA_COMMON_BSS_WORD_1AFB,D1
+    LEA     CTRL_Bit4SampleScratch,A5
+    ADDA.W  CTRL_Bit4SampleSlotIndex,A5
+    MOVE.W  CTRL_Bit4SampleSlotIndex,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
@@ -543,9 +543,9 @@ ESQ_CaptureCtrlBit4Stream:
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AF8
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFB
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1AFA
+    MOVE.W  D0,CTRL_Bit4CaptureDelayCounter
+    MOVE.W  D0,CTRL_Bit4SampleSlotIndex
+    MOVE.W  D0,CTRL_Bit4CapturePhase
 
 .return:
     RTS

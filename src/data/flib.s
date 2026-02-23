@@ -15,15 +15,15 @@ Global_STR_FLIB_C_2:
 ;------------------------------------------------------------------------------
 FLIB_EmptyLogReplacementString:
     DC.B    0,0
-DATA_FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02_1F60:
+FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02:
     NStr    "%02ld:%02ld:%02ld:%02ld"
-DATA_FLIB_STR_DIGITAL_NICHE_LISTINGS_1F61:
+FLIB_STR_DIGITAL_NICHE_LISTINGS:
     NStr    "Digital Niche Listings"
-DATA_FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS_1F62:
+FLIB_STR_DIGITAL_MULTIPLEX_LISTINGS:
     NStr    "Digital Multiplex Listings"
-DATA_FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S_1F63:
+FLIB_FMT_DIGITAL_MULTIPLEX_AT_PCT_S:
     NStr    "Digital Multiplex at %s"
-DATA_FLIB_STR_DIGITAL_PPV_LISTINGS_1F64:
+FLIB_STR_DIGITAL_PPV_LISTINGS:
     NStr    "Digital PPV Listings"
 Global_STR_DIGITAL_PPV_PERIOD:
     NStr    "Digital PPV."

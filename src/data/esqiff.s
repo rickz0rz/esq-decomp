@@ -13,7 +13,7 @@ Global_STR_ESQIFF_C_1:
 ;------------------------------------------------------------------------------
 ESQIFF_BannerBrushResourceCursor:
     DS.L    1
-DATA_ESQIFF_STR_WEATHER_1EEA:
+ESQIFF_STR_WEATHER:
     NStr    "weather"
 Global_STR_ESQIFF_C_2:
     NStr    "ESQIFF.c"
@@ -55,10 +55,10 @@ Global_STR_ESQIFF_C_5:
     NStr    "ESQIFF.c"
 Global_STR_ESQIFF_C_6:
     NStr    "ESQIFF.c"
-DATA_ESQIFF_PATH_DF0_COLON_1EF3:
+ESQIFF_PATH_DF0_COLON:
     NStr    "df0:"
     NStr    "df0:"
-DATA_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH_1EF4:
+ESQIFF_PATH_RAM_COLON_LOGOS_SLASH:
     NStr    "ram:logos/ "
     NStr    "ram:logos/ "
 Global_STR_ESQIFF_C_7:
@@ -67,21 +67,21 @@ Global_STR_ESQIFF_C_8:
     NStr    "ESQIFF.c"
 Global_STR_DF0_BRUSH_INI_2:
     NStr    "df0:brush.ini"
-DATA_ESQIFF_TAG_DT_1EF8:
+ESQIFF_TAG_DT:
     NStr    "DT"
-DATA_ESQIFF_TAG_DITHER_1EF9:
+ESQIFF_TAG_DITHER:
     NStr    "DITHER"
-DATA_ESQIFF_FMT_PCT_S_DOT_PCT_LD_1EFA:
+ESQIFF_FMT_PCT_S_DOT_PCT_LD:
     NStr    "%s.%ld"
 Global_STR_MAJOR_MINOR_VERSION_1:
     NStr    "9.0"   ; major/minor version
-DATA_ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA_1EFC:
+ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA:
     NStr    "Incorrect Version! Please correct ASAP!"
-DATA_ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD_1EFD:
+ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD:
     NStr    "Your version is    '%s.%ld'"
 Global_STR_MAJOR_MINOR_VERSION_2:
     NStr    "9.0"   ; major/minor version
-DATA_ESQIFF_STR_CORRECT_VERSION_IS_1EFF:
+ESQIFF_STR_CORRECT_VERSION_IS:
     NStr    "Correct version is '"
 Global_STR_APOSTROPHE:
     NStr    "'"

@@ -264,7 +264,7 @@ DST_RebuildBannerPair:
 ; CALLS:
 ;   DST_RebuildBannerPair, DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, DATETIME_ParseString, DATETIME_CopyPairAndRecalc, GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
 ; READS:
-;   DATA_DST_CONST_LONG_1CF7, Global_STR_G2, Global_STR_G3
+;   DST_DefaultDatPathPtr, Global_STR_G2, Global_STR_G3
 ; WRITES:
 ;   (A3), 4(A3)
 ; DESC:
@@ -280,7 +280,7 @@ DST_LoadBannerPairFromFiles:
     MOVE.L  A3,-(A7)
     BSR.S   DST_RebuildBannerPair
 
-    MOVE.L  DATA_DST_CONST_LONG_1CF7,(A7)
+    MOVE.L  DST_DefaultDatPathPtr,(A7)
     JSR     DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7

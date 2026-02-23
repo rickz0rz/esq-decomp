@@ -100,7 +100,7 @@ DISKIO2_WriteCurDayDataFile:
 
 .writecur_write_header:
     PEA     21.W
-    PEA     DATA_ESQ_STR_B_1DC8
+    PEA     ESQ_STR_B
     MOVE.L  DISKIO2_OutputFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -434,7 +434,7 @@ DISKIO2_DisplayStatusLine:
 ;   GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry, DATETIME_SavePairToFile, GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile, GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile, GCOMMAND_LoadMplexFile,
 ;   GCOMMAND_LoadPPVTemplate
 ; READS:
-;   DATA_DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT_1C47..DATA_DISKIO2_STR_SAVING_DATA_VIEW_CONFIG_1C4F text tables
+;   DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT..DISKIO2_STR_SAVING_DATA_VIEW_CONFIG text tables
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -452,7 +452,7 @@ DISKIO2_RunDiskSyncWorkflow:
     JSR     GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
-    LEA     DATA_DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT_1C47,A0
+    LEA     DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -471,7 +471,7 @@ DISKIO2_RunDiskSyncWorkflow:
 .loc_0486:
     BSR.W   DISKIO2_FlushDataFilesIfNeeded
 
-    LEA     DATA_DISKIO2_STR_SAVING_TEXT_ADS_DOT_1C48,A0
+    LEA     DISKIO2_STR_SAVING_TEXT_ADS_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -489,7 +489,7 @@ DISKIO2_RunDiskSyncWorkflow:
 .loc_0488:
     JSR     ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(PC)
 
-    LEA     DATA_DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT_1C49,A0
+    LEA     DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -507,7 +507,7 @@ DISKIO2_RunDiskSyncWorkflow:
 .loc_048A:
     JSR     DISKIO_SaveConfigToFileHandle(PC)
 
-    LEA     DATA_DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT_1C4A,A0
+    LEA     DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -528,7 +528,7 @@ DISKIO2_RunDiskSyncWorkflow:
     JSR     GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
 
     ADDQ.W  #8,A7
-    LEA     DATA_DISKIO2_STR_SAVING_QTABLE_DOT_1C4B,A0
+    LEA     DISKIO2_STR_SAVING_QTABLE_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -546,7 +546,7 @@ DISKIO2_RunDiskSyncWorkflow:
 .loc_048E:
     BSR.W   DISKIO2_WriteQTableIniFile
 
-    LEA     DATA_DISKIO2_STR_SAVING_ERROR_LOG_DOT_1C4C,A0
+    LEA     DISKIO2_STR_SAVING_ERROR_LOG_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -564,7 +564,7 @@ DISKIO2_RunDiskSyncWorkflow:
 .loc_0490:
     JSR     GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry(PC)
 
-    LEA     DATA_DISKIO2_STR_SAVING_DST_DATA_DOT_1C4D,A0
+    LEA     DISKIO2_STR_SAVING_DST_DATA_DOT,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -584,7 +584,7 @@ DISKIO2_RunDiskSyncWorkflow:
     JSR     DATETIME_SavePairToFile(PC)
 
     ADDQ.W  #4,A7
-    LEA     DATA_DISKIO2_STR_SAVING_PROMO_TYPES_1C4E,A0
+    LEA     DISKIO2_STR_SAVING_PROMO_TYPES,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -602,7 +602,7 @@ DISKIO2_RunDiskSyncWorkflow:
 .loc_0494:
     JSR     GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
 
-    LEA     DATA_DISKIO2_STR_SAVING_DATA_VIEW_CONFIG_1C4F,A0
+    LEA     DISKIO2_STR_SAVING_DATA_VIEW_CONFIG,A0
     LEA     -100(A5),A1
     MOVEQ   #8,D0
 
@@ -657,7 +657,7 @@ DISKIO2_RunDiskSyncWorkflow:
 ;   GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory, GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults,
 ;   COI_EnsureAnimObjectAllocated, PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, ESQPARS_ReplaceOwnedString
 ; READS:
-;   CTASKS_PATH_CURDAY_DAT, Global_PTR_WORK_BUFFER, DATA_DISKIO_BSS_WORD_1C41, WDISP_WeatherStatusTextPtr, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryEntryPtrTable/2236
+;   CTASKS_PATH_CURDAY_DAT, Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, WDISP_WeatherStatusTextPtr, TEXTDISP_PrimaryGroupCode, TEXTDISP_PrimaryEntryPtrTable/2236
 ; WRITES:
 ;   TEXTDISP_PrimaryGroupCode/2231/2238, TEXTDISP_PrimaryGroupRecordChecksum/2248/224A-224C, TEXTDISP_AliasPtrTable tables, WDISP_WeatherStatusTextPtr
 ; DESC:
@@ -677,7 +677,7 @@ DISKIO2_LoadCurDayDataFile:
     CMP.W   D0,D7
     BGE.S   .loc_0499
 
-    LEA     DATA_ESQ_STR_B_1DC8,A0
+    LEA     ESQ_STR_B,A0
     ADDA.W  D7,A0
     MOVE.B  (A0),-65(A5,D7.W)
     ADDQ.W  #1,D7
@@ -755,7 +755,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .loc_049E
 
-    PEA     DATA_DISKIO2_STR_DREV_1_1C51
+    PEA     DISKIO2_STR_DREV_1
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -763,13 +763,13 @@ DISKIO2_LoadCurDayDataFile:
     TST.B   D0
     BNE.S   .loc_049F
 
-    MOVE.W  #1,DATA_DISKIO_BSS_WORD_1C41
+    MOVE.W  #1,DISKIO_CurrentDriveRevisionIndex
     MOVEQ   #40,D0
     MOVE.L  D0,-32(A5)
     BRA.W   .loc_04A4
 
 .loc_049F:
-    PEA     DATA_DISKIO2_STR_DREV_2_1C52
+    PEA     DISKIO2_STR_DREV_2
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -777,13 +777,13 @@ DISKIO2_LoadCurDayDataFile:
     TST.B   D0
     BNE.S   .loc_04A0
 
-    MOVE.W  #2,DATA_DISKIO_BSS_WORD_1C41
+    MOVE.W  #2,DISKIO_CurrentDriveRevisionIndex
     MOVEQ   #41,D0
     MOVE.L  D0,-32(A5)
     BRA.W   .loc_04A4
 
 .loc_04A0:
-    PEA     DATA_DISKIO2_STR_DREV_3_1C53
+    PEA     DISKIO2_STR_DREV_3
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -791,13 +791,13 @@ DISKIO2_LoadCurDayDataFile:
     TST.B   D0
     BNE.S   .loc_04A1
 
-    MOVE.W  #3,DATA_DISKIO_BSS_WORD_1C41
+    MOVE.W  #3,DISKIO_CurrentDriveRevisionIndex
     MOVEQ   #46,D0
     MOVE.L  D0,-32(A5)
     BRA.S   .loc_04A4
 
 .loc_04A1:
-    PEA     DATA_DISKIO2_STR_DREV_4_1C54
+    PEA     DISKIO2_STR_DREV_4
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -805,13 +805,13 @@ DISKIO2_LoadCurDayDataFile:
     TST.B   D0
     BNE.S   .loc_04A2
 
-    MOVE.W  #4,DATA_DISKIO_BSS_WORD_1C41
+    MOVE.W  #4,DISKIO_CurrentDriveRevisionIndex
     MOVEQ   #48,D0
     MOVE.L  D0,-32(A5)
     BRA.S   .loc_04A4
 
 .loc_04A2:
-    PEA     DATA_DISKIO2_STR_DREV_5_1C55
+    PEA     DISKIO2_STR_DREV_5
     PEA     DISKIO_ErrorMessageScratch
     JSR     GROUP_AH_JMPTBL_ESQ_WildcardMatch(PC)
 
@@ -819,7 +819,7 @@ DISKIO2_LoadCurDayDataFile:
     TST.B   D0
     BNE.S   .loc_04A3
 
-    MOVE.W  #5,DATA_DISKIO_BSS_WORD_1C41
+    MOVE.W  #5,DISKIO_CurrentDriveRevisionIndex
     MOVEQ   #48,D0
     MOVE.L  D0,-32(A5)
     BRA.S   .loc_04A4
@@ -863,7 +863,7 @@ DISKIO2_LoadCurDayDataFile:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .loc_04A6
 
-    MOVE.W  DATA_DISKIO_BSS_WORD_1C41,D0
+    MOVE.W  DISKIO_CurrentDriveRevisionIndex,D0
     TST.W   D0
     BLE.S   .loc_04A8
 
@@ -1046,7 +1046,7 @@ DISKIO2_LoadCurDayDataFile:
     EXT.L   D0
     ASL.L   #2,D0
     CLR.L   56(A2,D0.L)
-    CMPI.W  #4,DATA_DISKIO_BSS_WORD_1C41
+    CMPI.W  #4,DISKIO_CurrentDriveRevisionIndex
     BLE.S   .loc_04B5
 
     MOVE.W  -28(A5),D0
@@ -1070,7 +1070,7 @@ DISKIO2_LoadCurDayDataFile:
     JSR     DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.B  D0,7(A2,D5.W)
-    CMPI.W  #1,DATA_DISKIO_BSS_WORD_1C41
+    CMPI.W  #1,DISKIO_CurrentDriveRevisionIndex
     BLE.S   .loc_04B6
 
     JSR     DISKIO_ParseLongFromWorkBuffer(PC)
@@ -1134,7 +1134,7 @@ DISKIO2_LoadCurDayDataFile:
     BRA.W   .loc_04B2
 
 .loc_04B9:
-    CMPI.W  #4,DATA_DISKIO_BSS_WORD_1C41
+    CMPI.W  #4,DISKIO_CurrentDriveRevisionIndex
     BLE.S   .loc_04BA
 
     MOVEQ   #-1,D0
@@ -1203,14 +1203,14 @@ DISKIO2_LoadCurDayDataFile:
     ADDQ.L  #1,D0
     BEQ.S   .loc_04BE
 
-    MOVE.B  #$1,DATA_CTASKS_BSS_BYTE_1B8F
-    MOVE.B  -41(A5),DATA_CTASKS_BSS_BYTE_1B91
+    MOVE.B  #$1,CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  -41(A5),CTASKS_PendingPrimaryOiDiskId
     BRA.S   .loc_04BF
 
 .loc_04BE:
     MOVEQ   #0,D0
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B8F
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B91
+    MOVE.B  D0,CTASKS_PrimaryOiWritePendingFlag
+    MOVE.B  D0,CTASKS_PendingPrimaryOiDiskId
 
 .loc_04BF:
     MOVE.L  -36(A5),D0
@@ -1537,9 +1537,9 @@ DISKIO2_WriteNxtDayDataFile:
 ;   DISKIO_LoadFileToWorkBuffer/03B2/03B6, GROUP_AG_JMPTBL_MEMORY_AllocateMemory/DeallocateMemory,
 ;   GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults, COI_EnsureAnimObjectAllocated, GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters, GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString, COI_LoadOiDataFile
 ; READS:
-;   Global_STR_DF0_NXTDAY_DAT, Global_PTR_WORK_BUFFER, DATA_DISKIO_BSS_WORD_1C41, TEXTDISP_SecondaryGroupCode
+;   Global_STR_DF0_NXTDAY_DAT, Global_PTR_WORK_BUFFER, DISKIO_CurrentDriveRevisionIndex, TEXTDISP_SecondaryGroupCode
 ; WRITES:
-;   TEXTDISP_SecondaryGroupCode/222F/222E, TEXTDISP_SecondaryGroupRecordChecksum/224E, TEXTDISP_SecondaryEntryPtrTable/2237, TEXTDISP_SecondaryGroupHeaderCode, DATA_CTASKS_BSS_BYTE_1B90/1B92
+;   TEXTDISP_SecondaryGroupCode/222F/222E, TEXTDISP_SecondaryGroupRecordChecksum/224E, TEXTDISP_SecondaryEntryPtrTable/2237, TEXTDISP_SecondaryGroupHeaderCode, CTASKS_SecondaryOiWritePendingFlag/1B92
 ; DESC:
 ;   Parses NXTDAY.DAT, allocates per-entry records, and fills in-memory tables.
 ; NOTES:
@@ -1696,7 +1696,7 @@ DISKIO2_LoadNxtDayDataFile:
     EXT.L   D0
     ASL.L   #2,D0
     CLR.L   56(A2,D0.L)
-    CMPI.W  #4,DATA_DISKIO_BSS_WORD_1C41
+    CMPI.W  #4,DISKIO_CurrentDriveRevisionIndex
     BLE.S   .loc_04DC
 
     MOVE.W  -28(A5),D0
@@ -1779,7 +1779,7 @@ DISKIO2_LoadNxtDayDataFile:
     BRA.W   .loc_04D9
 
 .loc_04DF:
-    CMPI.W  #4,DATA_DISKIO_BSS_WORD_1C41
+    CMPI.W  #4,DISKIO_CurrentDriveRevisionIndex
     BLE.S   .loc_04E0
 
     MOVEQ   #-1,D0
@@ -1844,14 +1844,14 @@ DISKIO2_LoadNxtDayDataFile:
     ADDQ.L  #1,D0
     BEQ.S   .loc_04E3
 
-    MOVE.B  #$1,DATA_CTASKS_BSS_BYTE_1B90
-    MOVE.B  -37(A5),DATA_CTASKS_BSS_BYTE_1B92
+    MOVE.B  #$1,CTASKS_SecondaryOiWritePendingFlag
+    MOVE.B  -37(A5),CTASKS_PendingSecondaryOiDiskId
     BRA.S   .loc_04E4
 
 .loc_04E3:
     MOVEQ   #0,D0
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B90
-    MOVE.B  D0,DATA_CTASKS_BSS_BYTE_1B92
+    MOVE.B  D0,CTASKS_SecondaryOiWritePendingFlag
+    MOVE.B  D0,CTASKS_PendingSecondaryOiDiskId
 
 .loc_04E4:
     MOVE.L  -32(A5),D0
@@ -1886,7 +1886,7 @@ DISKIO2_LoadNxtDayDataFile:
 DISKIO2_WriteQTableIniFile:
     LINK.W  A5,#-12
     MOVE.L  D7,-(A7)
-    MOVE.L  #DATA_DISKIO2_STR_QTABLE_1C68,-4(A5)
+    MOVE.L  #DISKIO2_STR_QTABLE,-4(A5)
     MOVE.W  TEXTDISP_AliasCount,D0
     MOVEQ   #1,D1
     CMP.W   D1,D0
@@ -1927,7 +1927,7 @@ DISKIO2_WriteQTableIniFile:
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     DATA_DISKIO2_STR_1C69
+    PEA     DISKIO2_STR_QTableLineBreakAfterHeader
     MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -1962,12 +1962,12 @@ DISKIO2_WriteQTableIniFile:
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DATA_DISKIO2_STR_VALUE_1C6A
+    PEA     DISKIO2_STR_QTableEquals
     MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DATA_DISKIO2_STR_VALUE_1C6B
+    PEA     DISKIO2_STR_QTableValueQuoteOpen
     MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -1987,12 +1987,12 @@ DISKIO2_WriteQTableIniFile:
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     1.W
-    PEA     DATA_DISKIO2_STR_VALUE_1C6C
+    PEA     DISKIO2_STR_QTableValueQuoteClose
     MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
     PEA     2.W
-    PEA     DATA_DISKIO2_STR_1C6D
+    PEA     DISKIO2_STR_QTableLineBreakAfterEntry
     MOVE.L  DISKIO2_QTableIniFileHandle,-(A7)
     JSR     DISKIO_WriteBufferedBytes(PC)
 
@@ -2685,13 +2685,13 @@ DISKIO2_HandleInteractiveFileTransfer:
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .xfer_post_transfer_status
 
-    PEA     DATA_DISKIO2_SPACE_VALUE_1C76
+    PEA     DISKIO2_STR_DiagTransferStatusClearLine210
     PEA     210.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
     JSR     DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     DATA_DISKIO2_SPACE_VALUE_1C77
+    PEA     DISKIO2_STR_DiagTransferStatusClearLine240
     PEA     240.W
     PEA     40.W
     MOVE.L  Global_REF_RASTPORT_1,-(A7)
@@ -2721,7 +2721,7 @@ DISKIO2_HandleInteractiveFileTransfer:
     PEA     -156(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     DATA_DISKIO2_SPACE_VALUE_1C79
+    PEA     DISKIO2_STR_ShellCommandArgSeparator
     PEA     -156(A5)
     JSR     GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -2779,10 +2779,10 @@ DISKIO2_HandleInteractiveFileTransfer:
     TST.W   ED_DiagnosticsScreenActive
     BEQ.S   .xfer_return
 
-    PEA     DATA_DISKIO2_BSS_WORD_1C7C
+    PEA     DISKIO2_DiagnosticsDiskUsagePercentBuffer
     JSR     DISKIO_QueryDiskUsagePercentAndSetBufferSize(PC)
 
-    PEA     DATA_DISKIO2_BSS_WORD_1C7D
+    PEA     DISKIO2_DiagnosticsSoftErrorCountBuffer
     MOVE.L  D0,28(A7)
     JSR     DISKIO_QueryVolumeSoftErrorCount(PC)
 
@@ -2841,7 +2841,7 @@ DISKIO2_ReceiveTransferBlocksToFile:
     MOVE.L  D0,-10(A5)
     CLR.L   -14(A5)
     CLR.B   -16(A5)
-    LEA     DATA_DISKIO2_BSS_LONG_1C7E,A0
+    LEA     DISKIO2_TransferCrc32Table,A0
     LEA     -1040(A5),A1
     MOVE.W  #$ff,D0
 
@@ -3175,7 +3175,7 @@ DISKIO2_CopyAndSanitizeSlotString:
     TST.L   D0
     BEQ.S   .sanitize_set_return_ptr
 
-    PEA     DATA_NEWGRID_CONST_LONG_2018
+    PEA     NEWGRID_EntrySplitDelimiterMask
     MOVE.L  D0,-(A7)
     JSR     GROUP_AH_JMPTBL_STR_FindAnyCharPtr(PC)
 
@@ -3225,19 +3225,19 @@ DISKIO2_CopyAndSanitizeSlotString:
 ; CALLS:
 ;   DISKIO2_WriteCurDayDataFile, DISKIO2_WriteNxtDayDataFile, DISKIO2_WriteOinfoDataFile, COI_WriteOiDataFile
 ; READS:
-;   DATA_DISKIO2_BSS_WORD_1C7F, TEXTDISP_PrimaryGroupEntryCount, DATA_CTASKS_BSS_BYTE_1B8F/1B90
+;   DISKIO2_FlushDataFilesGuardFlag, TEXTDISP_PrimaryGroupEntryCount, CTASKS_PrimaryOiWritePendingFlag/1B90
 ; WRITES:
-;   DATA_DISKIO2_BSS_WORD_1C7F
+;   DISKIO2_FlushDataFilesGuardFlag
 ; DESC:
 ;   Guards against reentry and writes disk-related data files when eligible.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 DISKIO2_FlushDataFilesIfNeeded:
-    TST.W   DATA_DISKIO2_BSS_WORD_1C7F
+    TST.W   DISKIO2_FlushDataFilesGuardFlag
     BNE.S   .loc_0538
 
-    MOVE.W  #1,DATA_DISKIO2_BSS_WORD_1C7F
+    MOVE.W  #1,DISKIO2_FlushDataFilesGuardFlag
     MOVE.W  TEXTDISP_PrimaryGroupEntryCount,D0
     CMPI.W  #$c9,D0
     BCC.S   .loc_0537
@@ -3248,29 +3248,29 @@ DISKIO2_FlushDataFilesIfNeeded:
 
     BSR.W   DISKIO2_WriteOinfoDataFile
 
-    TST.B   DATA_CTASKS_BSS_BYTE_1B8F
+    TST.B   CTASKS_PrimaryOiWritePendingFlag
     BEQ.S   .loc_0536
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1B91,D0
+    MOVE.B  CTASKS_PendingPrimaryOiDiskId,D0
     MOVE.L  D0,-(A7)
     JSR     COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 
 .loc_0536:
-    TST.B   DATA_CTASKS_BSS_BYTE_1B90
+    TST.B   CTASKS_SecondaryOiWritePendingFlag
     BEQ.S   .loc_0537
 
     MOVEQ   #0,D0
-    MOVE.B  DATA_CTASKS_BSS_BYTE_1B92,D0
+    MOVE.B  CTASKS_PendingSecondaryOiDiskId,D0
     MOVE.L  D0,-(A7)
     JSR     COI_WriteOiDataFile(PC)
 
     ADDQ.W  #4,A7
 
 .loc_0537:
-    CLR.W   DATA_DISKIO2_BSS_WORD_1C7F
+    CLR.W   DISKIO2_FlushDataFilesGuardFlag
 
 .loc_0538:
     RTS

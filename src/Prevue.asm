@@ -97,7 +97,7 @@ Global_GraphicsLibraryBase_A4    = Global_REF_GRAPHICS_LIBRARY-A4_Base          
 
     ; These values should be equal.
     PRINTV 22492
-    PRINTV Global_PTR_DATA_ESQFUNC_STR_VIDEO_INSERTION_STOP_1EB5
+    PRINTV ESQFUNC_VideoInsertionStateString_StopPtr
 Global_HandleTableBase           = 22492
 
 Global_HandleEntry0_Flags        = Global_HandleTableBase+Struct_HandleEntry__Flags

@@ -55,7 +55,7 @@
 ; CALLS:
 ;   MATH_DivS32, MATH_Mulu32, MEMORY_DeallocateMemory, ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, Global_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, DATA_ESQFUNC_CONST_LONG_1EDF, DATA_P_TYPE_BSS_LONG_205A, WDISP_WeatherStatusCountdown, WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRowTable
+;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, Global_STR_WDISP_C, WDISP_WeatherStatusTextPtr, WDISP_WeatherStatusOverlayTextPtr, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, ESQFUNC_WeatherBrushPredicateNames, P_TYPE_WeatherCurrentMsgPtr, WDISP_WeatherStatusCountdown, WDISP_PaletteTriplesRBase, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRowTable
 ; WRITES:
 ;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -89,7 +89,7 @@ WDISP_DrawWeatherStatusOverlay:
     BNE.S   .overlay_lookup_brush_by_index
 
     PEA     ESQFUNC_PwBrushListHead
-    MOVE.L  DATA_ESQFUNC_CONST_LONG_1EDF,-(A7)
+    MOVE.L  ESQFUNC_WeatherBrushPredicateNames,-(A7)
     JSR     WDISP_JMPTBL_BRUSH_FindBrushByPredicate(PC)
 
     ADDQ.W  #8,A7
@@ -100,8 +100,8 @@ WDISP_DrawWeatherStatusOverlay:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
-    ; Layout-coupled table anchor (DATA_ESQFUNC_STR_I5_1EDD -> ptr table).
-    LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
+    ; Layout-coupled table anchor (ESQFUNC_STR_I5 -> ptr table).
+    LEA     ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
@@ -569,10 +569,10 @@ WDISP_DrawWeatherStatusOverlay:
     BRA.W   .return
 
 .overlay_draw_fallback_text:
-    TST.L   DATA_P_TYPE_BSS_LONG_205A
+    TST.L   P_TYPE_WeatherCurrentMsgPtr
     BEQ.S   .overlay_use_no_data_string
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205A,-12(A5)
+    MOVE.L  P_TYPE_WeatherCurrentMsgPtr,-12(A5)
     BRA.S   .overlay_measure_fallback_text
 
 .overlay_use_no_data_string:
@@ -675,7 +675,7 @@ WDISP_DrawWeatherStatusOverlay:
 ; CALLS:
 ;   MATH_DivS32, MATH_Mulu32, STRING_AppendAtNull, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, WDISP_JMPTBL_BRUSH_SelectBrushSlot, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_NEWGRID_DrawWrappedText, WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, DATA_P_TYPE_BSS_LONG_205B, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
+;   AbsExecBase, Global_HANDLE_PREVUEC_FONT, Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, Global_STR_PERCENT_D, Global_STR_PERCENT_D_SLASH, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, P_TYPE_WeatherForecastMsgPtr, WDISP_StatusDayEntry0, WDISP_STR_UNKNOWN_NUM_WITH_SLASH, WDISP_STR_UNKNOWN_NUM, WDISP_CharClassTable, CLOCK_CurrentDayOfWeekIndex, WDISP_PaletteTriplesRBase, WDISP_AccumulatorRowTable
 ; WRITES:
 ;   WDISP_AccumulatorCaptureActive, WDISP_AccumulatorFlushPending
 ; DESC:
@@ -743,8 +743,8 @@ WDISP_DrawWeatherStatusDayEntry:
 .dayentry_lookup_brush:
     MOVE.L  -88(A5),D0
     ASL.L   #2,D0
-    ; Layout-coupled table anchor (DATA_ESQFUNC_STR_I5_1EDD -> ptr table).
-    LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
+    ; Layout-coupled table anchor (ESQFUNC_STR_I5 -> ptr table).
+    LEA     ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
@@ -1004,7 +1004,7 @@ WDISP_DrawWeatherStatusDayEntry:
     BRA.W   .dayentry_draw_weekday_label
 
 .dayentry_draw_multiline_forecast:
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205B,-54(A5)
+    MOVE.L  P_TYPE_WeatherForecastMsgPtr,-54(A5)
     MOVEQ   #20,D0
     SUB.L   D0,-4(A5)
     CLR.L   -68(A5)
@@ -1242,14 +1242,14 @@ WDISP_DrawWeatherStatusDayEntry:
 ; CALLS:
 ;   WDISP_DrawWeatherStatusDayEntry, _LVOMove, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, DATA_P_TYPE_BSS_LONG_205B, DATA_SCRIPT_CONST_LONG_20B0, DATA_TLIBA1_BSS_WORD_2196, WDISP_WeatherStatusDigitChar, return
+;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, P_TYPE_WeatherForecastMsgPtr, SCRIPT_PtrNoForecastWeatherData, TLIBA1_DayEntryModeCounter, WDISP_WeatherStatusDigitChar, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Clears the status area and draws either day-entry panels or centered
 ;   fallback summary text.
 ; NOTES:
-;   Day-entry mode is enabled only when DATA_TLIBA1_BSS_WORD_2196 > 0 and the
+;   Day-entry mode is enabled only when TLIBA1_DayEntryModeCounter > 0 and the
 ;   weather digit char is not '0'.
 ;------------------------------------------------------------------------------
 WDISP_DrawWeatherStatusSummary:
@@ -1264,7 +1264,7 @@ WDISP_DrawWeatherStatusSummary:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
-    MOVE.B  DATA_TLIBA1_BSS_WORD_2196,D0
+    MOVE.B  TLIBA1_DayEntryModeCounter,D0
     MOVEQ   #0,D1
     CMP.B   D1,D0
     BLS.S   .summary_draw_fallback_text
@@ -1292,14 +1292,14 @@ WDISP_DrawWeatherStatusSummary:
     BRA.S   .summary_draw_day_panels_loop
 
 .summary_draw_fallback_text:
-    TST.L   DATA_P_TYPE_BSS_LONG_205B
+    TST.L   P_TYPE_WeatherForecastMsgPtr
     BEQ.S   .summary_use_default_fallback_text
 
-    MOVE.L  DATA_P_TYPE_BSS_LONG_205B,-4(A5)
+    MOVE.L  P_TYPE_WeatherForecastMsgPtr,-4(A5)
     BRA.S   .summary_measure_fallback_text
 
 .summary_use_default_fallback_text:
-    MOVEA.L DATA_SCRIPT_CONST_LONG_20B0,A0
+    MOVEA.L SCRIPT_PtrNoForecastWeatherData,A0
     MOVE.L  A0,-4(A5)
 
 .summary_measure_fallback_text:
@@ -1371,9 +1371,9 @@ WDISP_DrawWeatherStatusSummary:
 ; CALLS:
 ;   TEXTDISP_ResetSelectionAndRefresh, TLIBA3_ClearViewModeRastPort, TLIBA3_BuildDisplayContextForViewMode, WDISP_DrawWeatherStatusOverlay, WDISP_DrawWeatherStatusSummary, TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, WDISP_JMPTBL_BRUSH_FindBrushByPredicate, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, ESQFUNC_PwBrushListHead, DATA_ESQFUNC_STR_I5_1EDD, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
+;   Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_2, ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ESQFUNC_PwBrushListHead, ESQFUNC_STR_I5, WDISP_DisplayContextBase, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusBrushIndex, WDISP_WeatherStatusDigitChar, WDISP_AccumulatorRow0_Value, WDISP_AccumulatorRow0_CopperIndexStart, WDISP_AccumulatorRow0_CopperIndexEnd, WDISP_AccumulatorRow1_Value, WDISP_AccumulatorRow1_CopperIndexStart, WDISP_AccumulatorRow1_CopperIndexEnd, WDISP_AccumulatorRow2_Value, WDISP_AccumulatorRow2_CopperIndexStart, WDISP_AccumulatorRow2_CopperIndexEnd, WDISP_AccumulatorRow3_Value, WDISP_AccumulatorRow3_CopperIndexStart, WDISP_AccumulatorRow3_CopperIndexEnd, WDISP_WeatherCycleOffsetCount
 ; WRITES:
-;   DATA_COMMON_BSS_WORD_1B0D, DATA_COMMON_BSS_WORD_1B0E, DATA_COMMON_BSS_WORD_1B0F, DATA_COMMON_BSS_WORD_1B10, DATA_COMMON_BSS_WORD_1B11, DATA_COMMON_BSS_WORD_1B12, DATA_COMMON_BSS_WORD_1B13, DATA_COMMON_BSS_WORD_1B14, DATA_COMMON_BSS_WORD_1B15, DATA_COMMON_BSS_WORD_1B16, DATA_COMMON_BSS_WORD_1B17, DATA_COMMON_BSS_LONG_1B18, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_WeatherCycleOffsetCount, localRastport
+;   ACCUMULATOR_Row0_CaptureValue, ACCUMULATOR_Row1_CaptureValue, ACCUMULATOR_Row2_CaptureValue, ACCUMULATOR_Row3_CaptureValue, ACCUMULATOR_Row0_Sum, ACCUMULATOR_Row1_Sum, ACCUMULATOR_Row2_Sum, ACCUMULATOR_Row3_Sum, ACCUMULATOR_Row0_SaturateFlag, ACCUMULATOR_Row1_SaturateFlag, ACCUMULATOR_Row2_SaturateFlag, ACCUMULATOR_Row3_SaturateFlag, WDISP_DisplayContextBase, WDISP_AccumulatorCaptureActive, WDISP_WeatherCycleOffsetCount, localRastport
 ; DESC:
 ;   Dispatches weather-status commands (notably 48 and 51), renders status
 ;   content, and updates accumulator capture flags.
@@ -1489,12 +1489,12 @@ WDISP_HandleWeatherStatusCommand:
     CMPI.W  #$4000,D0
     BGE.S   .handle_status_cmd_clear_slot_1b0d
 
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
+    MOVE.W  D0,ACCUMULATOR_Row0_CaptureValue
     BRA.S   .handle_status_cmd_validate_slot_1b0e
 
 .handle_status_cmd_clear_slot_1b0d:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0D
+    MOVE.W  D0,ACCUMULATOR_Row0_CaptureValue
 
 .handle_status_cmd_validate_slot_1b0e:
     MOVE.B  WDISP_AccumulatorRow1_CopperIndexStart,D2
@@ -1509,12 +1509,12 @@ WDISP_HandleWeatherStatusCommand:
     CMPI.W  #$4000,D2
     BGE.S   .handle_status_cmd_clear_slot_1b0e
 
-    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
+    MOVE.W  D2,ACCUMULATOR_Row1_CaptureValue
     BRA.S   .handle_status_cmd_validate_slot_1b0f
 
 .handle_status_cmd_clear_slot_1b0e:
     MOVEQ   #0,D2
-    MOVE.W  D2,DATA_COMMON_BSS_WORD_1B0E
+    MOVE.W  D2,ACCUMULATOR_Row1_CaptureValue
 
 .handle_status_cmd_validate_slot_1b0f:
     MOVE.B  WDISP_AccumulatorRow2_CopperIndexStart,D0
@@ -1529,12 +1529,12 @@ WDISP_HandleWeatherStatusCommand:
     CMPI.W  #16384,D0
     BGE.S   .handle_status_cmd_clear_slot_1b0f
 
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
+    MOVE.W  D0,ACCUMULATOR_Row2_CaptureValue
     BRA.S   .handle_status_cmd_validate_slot_1b10
 
 .handle_status_cmd_clear_slot_1b0f:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B0F
+    MOVE.W  D0,ACCUMULATOR_Row2_CaptureValue
 
 .handle_status_cmd_validate_slot_1b10:
     MOVE.B  WDISP_AccumulatorRow3_CopperIndexStart,D2
@@ -1549,21 +1549,21 @@ WDISP_HandleWeatherStatusCommand:
     CMPI.W  #16384,D1
     BGE.S   .handle_status_cmd_clear_slot_1b10
 
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B10
+    MOVE.W  D1,ACCUMULATOR_Row3_CaptureValue
     BRA.S   .handle_status_cmd_apply_capture_flag
 
 .handle_status_cmd_clear_slot_1b10:
     MOVEQ   #0,D1
-    MOVE.W  D1,DATA_COMMON_BSS_WORD_1B10
+    MOVE.W  D1,ACCUMULATOR_Row3_CaptureValue
 
 .handle_status_cmd_apply_capture_flag:
-    TST.W   DATA_COMMON_BSS_WORD_1B0D
+    TST.W   ACCUMULATOR_Row0_CaptureValue
     BNE.S   .handle_status_cmd_enable_capture
 
-    TST.W   DATA_COMMON_BSS_WORD_1B0E
+    TST.W   ACCUMULATOR_Row1_CaptureValue
     BNE.S   .handle_status_cmd_enable_capture
 
-    TST.W   DATA_COMMON_BSS_WORD_1B0F
+    TST.W   ACCUMULATOR_Row2_CaptureValue
     BNE.S   .handle_status_cmd_enable_capture
 
     TST.W   D1
@@ -1579,14 +1579,14 @@ WDISP_HandleWeatherStatusCommand:
 
 .handle_status_cmd_finalize_state:
     MOVEQ   #0,D0
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B11
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B15
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B12
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B16
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B13
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B17
-    MOVE.W  D0,DATA_COMMON_BSS_WORD_1B14
-    MOVE.W  D0,DATA_COMMON_BSS_LONG_1B18
+    MOVE.W  D0,ACCUMULATOR_Row0_Sum
+    MOVE.W  D0,ACCUMULATOR_Row0_SaturateFlag
+    MOVE.W  D0,ACCUMULATOR_Row1_Sum
+    MOVE.W  D0,ACCUMULATOR_Row1_SaturateFlag
+    MOVE.W  D0,ACCUMULATOR_Row2_Sum
+    MOVE.W  D0,ACCUMULATOR_Row2_SaturateFlag
+    MOVE.W  D0,ACCUMULATOR_Row3_Sum
+    MOVE.W  D0,ACCUMULATOR_Row3_SaturateFlag
     JSR     TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(PC)
 
     BRA.S   .handle_status_cmd_return
@@ -1650,8 +1650,8 @@ WDISP_HandleWeatherStatusCommand:
     MOVEQ   #0,D0
     MOVE.B  WDISP_WeatherStatusBrushIndex,D0
     ASL.L   #2,D0
-    ; Layout-coupled table anchor (DATA_ESQFUNC_STR_I5_1EDD -> ptr table).
-    LEA     DATA_ESQFUNC_STR_I5_1EDD,A0
+    ; Layout-coupled table anchor (ESQFUNC_STR_I5 -> ptr table).
+    LEA     ESQFUNC_STR_I5,A0
     ADDA.L  D0,A0
     PEA     ESQFUNC_PwBrushListHead
     MOVE.L  (A0),-(A7)
@@ -1684,14 +1684,14 @@ WDISP_HandleWeatherStatusCommand:
 ; CALLS:
 ;   WDISP_JMPTBL_BRUSH_FreeBrushList, WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad, WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock, WDISP_JMPTBL_NEWGRID_ResetRowTable, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, WDISP_WeatherStatusBrushListHead, DATA_P_TYPE_BSS_LONG_2059, DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, WDISP_WeatherCycleOffsetCount
+;   Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, WDISP_WeatherStatusBrushListHead, P_TYPE_WeatherBrushRefreshPendingFlag, TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult, WDISP_WeatherStatusCountdown, WDISP_WeatherStatusDigitChar, WDISP_WeatherCycleOffsetCount
 ; WRITES:
-;   DATA_TLIBA1_BSS_LONG_2194, DATA_TLIBA1_BSS_LONG_2195
+;   TLIBA1_PreviewSlotRefreshState, TLIBA1_PreviewSlotRenderResult
 ; DESC:
 ;   Updates/refreshes the selection preview panel brush resources and row table,
 ;   then returns boolean success as 0/-1 in D0.
 ; NOTES:
-;   Uses SNE/NEG/EXT booleanization pattern on DATA_TLIBA1_BSS_LONG_2195.
+;   Uses SNE/NEG/EXT booleanization pattern on TLIBA1_PreviewSlotRenderResult.
 ;------------------------------------------------------------------------------
 WDISP_UpdateSelectionPreviewPanel:
     LINK.W  A5,#-4
@@ -1700,12 +1700,12 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVEA.L 12(A5),A2
 
     MOVEQ   #8,D0
-    CMP.L   DATA_TLIBA1_BSS_LONG_2194,D0
+    CMP.L   TLIBA1_PreviewSlotRefreshState,D0
     BNE.S   .preview_refresh_panel
 
     MOVEQ   #0,D0
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2194
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
+    MOVE.L  D0,TLIBA1_PreviewSlotRefreshState
+    MOVE.L  D0,TLIBA1_PreviewSlotRenderResult
     BRA.W   .preview_return_boolean
 
 .preview_refresh_panel:
@@ -1718,7 +1718,7 @@ WDISP_UpdateSelectionPreviewPanel:
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  4(A3),4(A0)
-    TST.L   DATA_TLIBA1_BSS_LONG_2194
+    TST.L   TLIBA1_PreviewSlotRefreshState
     BNE.S   .preview_refresh_existing_slot
 
     MOVE.L  WDISP_WeatherStatusBrushListHead,-(A7)
@@ -1727,12 +1727,12 @@ WDISP_UpdateSelectionPreviewPanel:
 
     ADDQ.W  #8,A7
     EXT.L   D0
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
+    MOVE.L  D0,TLIBA1_PreviewSlotRenderResult
     TST.L   D0
     BEQ.S   .preview_after_initial_render
 
     MOVEQ   #7,D0
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2194
+    MOVE.L  D0,TLIBA1_PreviewSlotRefreshState
 
 .preview_after_initial_render:
     TST.L   WDISP_WeatherStatusBrushListHead
@@ -1751,7 +1751,7 @@ WDISP_UpdateSelectionPreviewPanel:
 
 .preview_refresh_existing_slot:
     MOVEQ   #7,D0
-    CMP.L   DATA_TLIBA1_BSS_LONG_2194,D0
+    CMP.L   TLIBA1_PreviewSlotRefreshState,D0
     BNE.S   .preview_after_render_paths
 
     MOVE.L  WDISP_WeatherStatusBrushListHead,-(A7)
@@ -1760,12 +1760,12 @@ WDISP_UpdateSelectionPreviewPanel:
 
     ADDQ.W  #8,A7
     EXT.L   D0
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
+    MOVE.L  D0,TLIBA1_PreviewSlotRenderResult
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A2)
 
 .preview_after_render_paths:
-    TST.L   DATA_TLIBA1_BSS_LONG_2195
+    TST.L   TLIBA1_PreviewSlotRenderResult
     BNE.S   .preview_restore_rastport_bitmap
 
     CLR.L   -(A7)
@@ -1791,7 +1791,7 @@ WDISP_UpdateSelectionPreviewPanel:
     CMP.W   D2,D1
     BGT.S   .preview_mark_reload_pending
 
-    TST.L   DATA_P_TYPE_BSS_LONG_2059
+    TST.L   P_TYPE_WeatherBrushRefreshPendingFlag
     BNE.S   .preview_mark_reload_pending
 
     PEA     2.W
@@ -1801,16 +1801,16 @@ WDISP_UpdateSelectionPreviewPanel:
 
 .preview_mark_reload_pending:
     MOVEQ   #8,D0
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2194
+    MOVE.L  D0,TLIBA1_PreviewSlotRefreshState
     MOVEQ   #-1,D0
-    MOVE.L  D0,DATA_TLIBA1_BSS_LONG_2195
+    MOVE.L  D0,TLIBA1_PreviewSlotRenderResult
 
 .preview_restore_rastport_bitmap:
     MOVEA.L Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
 
 .preview_return_boolean:
-    TST.L   DATA_TLIBA1_BSS_LONG_2195
+    TST.L   TLIBA1_PreviewSlotRenderResult
     SNE     D0
     NEG.B   D0
     EXT.W   D0
