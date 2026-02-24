@@ -1,0 +1,19 @@
+# LocAvail.dat sample (escaped representation)
+# Token boundaries are NUL bytes (\0).
+
+LA_VER_1:  curday\0
+1\0
+2\0
+F\0
+1\0
+1800\0
+6\0
+UVGTIU\0
+2\0
+900\0
+4\0
+GGTT\0
+LA_VER_1:  nxtday\0
+2\0
+0\0
+F\0

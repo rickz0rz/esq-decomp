@@ -1493,10 +1493,11 @@ Global_REF_BAUD_RATE:
 ; PURPOSE: Mode/selector word passed into legacy ESQSHARED4 banner-color setup stubs.
 ; USED BY: ED1_ExitEscMenu, ESQSHARED4 legacy/dead stubs
 ; NOTES:
+;   A4 suffix: $226D.
 ;   Confirmed direct writer in active code is `CLR.W` from ED1 ESC-exit path.
 ;   Current ESQSHARED4 reads are in dead/unreachable blocks in this build.
-;   No direct non-zero writer identified; trace-backed non-zero source remains
-;   ESQ argv[1] overrun spill from `ESQ_SelectCodeBuffer` copy path.
+;   No direct non-zero writer is present in active paths; observed non-zero values
+;   are trace-backed to ESQ argv[1] overrun spill from `ESQ_SelectCodeBuffer`.
 ;------------------------------------------------------------------------------
 ESQSHARED_BannerColorModeWord:
     DS.W    1
@@ -1506,10 +1507,11 @@ ESQSHARED_BannerColorModeWord:
 ; PURPOSE: Optional selector controlling alternate pen setup in ED_InitRastport2Pens.
 ; USED BY: ED_InitRastport2Pens
 ; NOTES:
+;   A4 suffix: $226E.
 ;   Compared against literal `14` to enable alternate `BPen=2` setup in
 ;   ED_InitRastport2Pens.
-;   No direct producer identified in active paths; trace-backed producer remains
-;   indirect ESQ argv[1] overrun spill from `ESQ_SelectCodeBuffer`.
+;   No direct producer exists in active paths; observed non-zero producer is
+;   trace-backed indirect ESQ argv[1] overrun spill from `ESQ_SelectCodeBuffer`.
 ;------------------------------------------------------------------------------
 ED_Rastport2PenModeSelector:
     DS.L    1

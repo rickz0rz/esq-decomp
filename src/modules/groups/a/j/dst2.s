@@ -4,7 +4,7 @@
     XDEF    DST_AddTimeOffset
     XDEF    DST_BuildBannerTimeEntry
     XDEF    DST_BuildBannerTimeWord
-    XDEF    DST_CallJump_066F
+    XDEF    DST_WriteRtcFromGlobals
     XDEF    DST_ComputeBannerIndex
     XDEF    DST_FormatBannerDateTime
     XDEF    DST_HandleBannerCommand32_33
@@ -101,7 +101,7 @@ DST_HandleBannerCommand32_33:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_CallJump_066F   (Jump stub to GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals.)
+; FUNC: DST_WriteRtcFromGlobals   (Jump stub to PARSEINI RTC write helper)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -115,11 +115,11 @@ DST_HandleBannerCommand32_33:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Small jump stub used by banner update paths.
+;   Thin wrapper that dispatches GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals.
 ; NOTES:
-;   Requires deeper reverse-engineering.
+;   Kept as a local stub so DST queue code can call a stable in-module symbol.
 ;------------------------------------------------------------------------------
-DST_CallJump_066F:
+DST_WriteRtcFromGlobals:
     JSR     GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals(PC)
 
     RTS
@@ -135,7 +135,7 @@ DST_CallJump_066F:
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   DATETIME_UpdateSelectionField, DST_AddTimeOffset, DST_AllocateBannerStruct, DST_RefreshBannerBuffer, DST_CallJump_066F
+;   DATETIME_UpdateSelectionField, DST_AddTimeOffset, DST_AllocateBannerStruct, DST_RefreshBannerBuffer, DST_WriteRtcFromGlobals
 ; READS:
 ;   DST_PrimaryCountdown, DST_SecondaryCountdown, ESQ_SecondarySlotModeFlagChar
 ; WRITES:
@@ -187,7 +187,7 @@ DST_UpdateBannerQueue:
 
     MOVEA.L (A3),A0
     MOVE.W  16(A0),DST_PrimaryCountdown
-    BSR.S   DST_CallJump_066F
+    BSR.S   DST_WriteRtcFromGlobals
 
     LEA     12(A7),A7
     MOVEQ   #1,D6

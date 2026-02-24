@@ -136,6 +136,6 @@ Update inline comments, `README.md`, and tables in `src/data/` when you rename l
 - [x] Add provisional `SYM` context for unresolved ED latch blocks in `src/data/wdisp.s` (`21FE`/`21FF`/`2202`) with observed writer paths and explicit confidence notes.
 - [x] Rename/document `src/data/wdisp.s` highlight-message save slots and interleave-copy offsets (`230D`-`2312`) and propagate callsites in `gcommand3.s`/`esqshared4.s`.
 - [x] Rename/document `src/data/wdisp.s` drive/input runtime globals (`2319`/`231A`/`231E`/`231F`) and propagate callsites in `diskio.s`/`esq*.s`/`kybd.s`/`unknown40.s`.
-- [ ] Continue tightening unresolved `src/data/wdisp.s` state semantics outside completed option-state ranges (`220F` cluster complete; `226D`/`226E` currently confirmed as overflow-driven in active paths).
+- [ ] Continue tightening unresolved `src/data/wdisp.s` state semantics outside completed option-state ranges (`220F` cluster complete; `226D`/`226E` overflow provenance now documented inline + in checkpoint notes).
 - [ ] Continue NEWGRID documentation passes using `CHECKPOINT_doc_coverage_matrix.md` scope gates (`newgrid2.s` naming pass complete; `newgrid1.s` mostly complete; remaining `newgrid.s` non-message-loop functions still open).
 - [ ] Continue resolving unknown `Struct_PreallocHandleNode` flag-bit semantics (`ModeFlags`/`StateFlags`) and `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc` traces.

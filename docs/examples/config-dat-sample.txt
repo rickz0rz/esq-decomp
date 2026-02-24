@@ -1,0 +1,12 @@
+# config.dat sample (escaped representation)
+# Total logical length: 52 bytes
+# Field 35 is shown as \x8E (raw copper payload byte).
+
+2C332424GNAE00YYNNYNL2906YYN2336120151ABYNYC\x8E8NNNNN1
+
+# Parsed field sketch:
+# 01=2 02=C 03=3 04=3 05=24 06=24 07=G 08=N 09=A 10=E
+# 11=0 12=0 13=Y 14=Y 15=N 16=N 17=Y 18=N 19=L
+# 20=29 21=06 22=Y 23=Y 24=N 25=23 26=36 27=12 28=015 29=1
+# 30=AB 31=Y 32=N 33=C 34=<mode C> 35=<0x8E> 36=8
+# 37=N 38=N 39=N 40=N 41=N 42=1
