@@ -1153,9 +1153,9 @@ NEWGRID_DrawDateBanner:
 ; WRITES:
 ;   52(A3), 32(A3)
 ; DESC:
-;   Draws the “Awaiting Listings Data” banner centered in the grid area.
+;   Draws the “Awaiting Listings Data” banner centered in the grid area on a single line.
 ; NOTES:
-;   Uses text length to center the string within the 624px region.
+;   Uses text length to center the string within the 624px region. Seemingly truncates text if it's longer than 624px.
 ;------------------------------------------------------------------------------
 NEWGRID_DrawAwaitingListingsMessage:
     LINK.W  A5,#-4
