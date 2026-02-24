@@ -48,6 +48,8 @@ Global_DefaultHandleFlags        = Global_AllocBlockSize-Type_Long_Size         
 ;        +0 next, +4 cursor, +8 read remaining, +12 write remaining,
 ;        +16 base ptr, +20 capacity, +24 open flags, +26 mode flags byte,
 ;        +27 status flags byte, +28 handle index, +32 inline-byte scratch.
+;        IMPORTANT: +26/+27 are byte overlays inside +24 (open-flags long),
+;        not independent storage.
 ;        Confidence:
 ;        - Confirmed by direct multi-caller usage: +0/+4/+8/+12/+16/+20/+24/+28.
 ;        - Provisional naming: +26 ModeFlags and +27 StateFlags bit semantics.
@@ -60,16 +62,20 @@ Struct_PreallocHandleNode__ReadRemaining = 8
 Struct_PreallocHandleNode__WriteRemaining = 12
 Struct_PreallocHandleNode__BufferBase    = 16
 Struct_PreallocHandleNode__BufferCapacity = 20
-Struct_PreallocHandleNode__OpenFlags     = 24
-Struct_PreallocHandleNode__ModeFlags     = 26
-Struct_PreallocHandleNode__StateFlags    = 27
+Struct_PreallocHandleNode__OpenFlags     = 24 ; longword flags; low bytes are aliased below
+Struct_PreallocHandleNode__ModeFlags     = 26 ; OpenFlags byte at +2 (bits 15..8)
+Struct_PreallocHandleNode__StateFlags    = 27 ; OpenFlags byte at +3 (bits 7..0)
 Struct_PreallocHandleNode__HandleIndex   = 28
 Struct_PreallocHandleNode__InlineByte    = 32
 Struct_PreallocHandleNode_Size           = 34
-Struct_PreallocHandleNode_StateFlag_WritePending_Bit = 1
-Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit = 2
-Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit = 4
-Struct_PreallocHandleNode_StateFlag_IoError_Bit = 5
+Struct_PreallocHandleNode_OpenFlagsLowBit0_ReadRefillIssued_Bit = 0
+Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit = 1
+Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit = 2
+Struct_PreallocHandleNode_OpenFlagsLowBit3_ForceRealloc_Bit = 3 ; reserved/dead in stock image (no in-tree producer found)
+Struct_PreallocHandleNode_OpenFlagsLowBit4_EofOrShort_Bit = 4
+Struct_PreallocHandleNode_OpenFlagsLowBit5_IoError_Bit = 5
+Struct_PreallocHandleNode_OpenFlagsLowBit6_PreReadFlushGateLo_Bit = 6 ; reserved/dead in stock image (no in-tree producer found)
+Struct_PreallocHandleNode_OpenFlagsLowBit7_PreReadFlushGateHi_Bit = 7
 Struct_PreallocHandleNode_ModeFlag_TextTranslate_Bit = 7
 Struct_PreallocHandleNode_ModeFlag_PreWriteScan_Bit = 6
 Struct_PreallocHandleNode_OpenMask_WriteReject = $31

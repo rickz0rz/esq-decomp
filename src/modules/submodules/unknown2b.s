@@ -300,7 +300,7 @@ STREAM_BufferedPutcOrFlush:
     TST.L   Struct_PreallocHandleNode__BufferCapacity(A3)
     BNE.W   .direct_or_unbuffered
 
-    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .direct_or_unbuffered
 
     MOVEQ   #0,D0
@@ -316,12 +316,12 @@ STREAM_BufferedPutcOrFlush:
     TST.L   D0
     BEQ.S   .buffer_ready
 
-    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit5_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
 .buffer_ready:
-    BSET    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     TST.B   D6
     BEQ.S   .set_count_positive
 
@@ -364,7 +364,7 @@ STREAM_BufferedPutcOrFlush:
     BRA.W   .return
 
 .direct_or_unbuffered:
-    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .buffered_path
 
     MOVEQ   #-1,D0
@@ -411,7 +411,7 @@ STREAM_BufferedPutcOrFlush:
     BRA.W   .post_write_status
 
 .buffered_path:
-    BSET    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     TST.B   D6
     BEQ.S   .flush_buffer
 
@@ -513,14 +513,14 @@ STREAM_BufferedPutcOrFlush:
     CMP.L   D0,D5
     BNE.S   .check_short_write
 
-    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit5_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BRA.S   .set_buffer_counters
 
 .check_short_write:
     CMP.L   -16(A5),D5
     BEQ.S   .set_buffer_counters
 
-    BSET    #Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit4_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
 
 .set_buffer_counters:
     TST.B   D6
@@ -533,7 +533,7 @@ STREAM_BufferedPutcOrFlush:
     BRA.S   .reset_buffer_ptr
 
 .set_count_linebuffered:
-    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .set_count_normal
 
     MOVEQ   #0,D1
@@ -642,6 +642,7 @@ DOS_MovepWordReadCallback:
 ; NOTES:
 ;   Handles 0x1A and 0x0D specially; uses SNE/NEG/EXT booleanization.
 ;   `ModeFlags bit7` enables translated read behavior (CR/LF folding path).
+;   `StateFlags bits6/7` are a paired pre-read flush gate (provisional names).
 ;------------------------------------------------------------------------------
 STREAM_BufferedGetc:
     MOVEM.L D5-D7/A3,-(A7)
@@ -664,10 +665,10 @@ STREAM_BufferedGetc:
     BRA.W   .return
 
 .check_handle_flags:
-    BTST    #7,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit7_PreReadFlushGateHi_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .maybe_flush_on_flags
 
-    BTST    #6,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit6_PreReadFlushGateLo_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .maybe_flush_on_flags
 
     MOVE.L  A3,-(A7)
@@ -681,7 +682,7 @@ STREAM_BufferedGetc:
     BNE.S   .consume_buffered
 
     CLR.L   Struct_PreallocHandleNode__ReadRemaining(A3)
-    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .ensure_buffer
 
     MOVEQ   #1,D0
@@ -698,7 +699,7 @@ STREAM_BufferedGetc:
     TST.L   D0
     BEQ.S   .fill_buffer
 
-    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit5_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
@@ -741,7 +742,7 @@ STREAM_BufferedGetc:
     BRA.W   .return
 
 .handle_ctrl_z:
-    BSET    #Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit4_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVEQ   #-1,D0
     BRA.W   .return
 
@@ -750,10 +751,10 @@ STREAM_BufferedGetc:
     BRA.W   .return
 
 .fill_buffer:
-    BTST    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .post_fill_flags
 
-    BSET    #0,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit0_ReadRefillIssued_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     MOVE.L  Struct_PreallocHandleNode__BufferCapacity(A3),-(A7)
     MOVE.L  Struct_PreallocHandleNode__BufferBase(A3),-(A7)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
@@ -764,13 +765,13 @@ STREAM_BufferedGetc:
     TST.L   D5
     BPL.S   .mark_error
 
-    BSET    #Struct_PreallocHandleNode_StateFlag_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit5_IoError_Bit,Struct_PreallocHandleNode__StateFlags(A3)
 
 .mark_error:
     TST.L   D5
     BNE.S   .mark_eof
 
-    BSET    #Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BSET    #Struct_PreallocHandleNode_OpenFlagsLowBit4_EofOrShort_Bit,Struct_PreallocHandleNode__StateFlags(A3)
 
 .mark_eof:
     TST.L   D5

@@ -601,13 +601,63 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
   - `ModeFlags bit6`: pre-write seek/scan behavior gate (Ctrl-Z scan path).
 
 - Constants now used at callsites for high-confidence state bits:
-  - `Struct_PreallocHandleNode_StateFlag_WritePending_Bit`
-  - `Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit`
-  - `Struct_PreallocHandleNode_StateFlag_EofOrShort_Bit`
-  - `Struct_PreallocHandleNode_StateFlag_IoError_Bit`
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit`
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit`
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit4_EofOrShort_Bit`
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit5_IoError_Bit`
+
+- Provisional constants now used for formerly raw state bits:
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit0_ReadRefillIssued_Bit`:
+    set immediately before `DOS_ReadByIndex` refill in `STREAM_BufferedGetc`.
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit3_ForceRealloc_Bit`:
+    `BUFFER_EnsureAllocated` bypasses the fast-return path when this bit is set.
+  - `Struct_PreallocHandleNode_OpenFlagsLowBit7_PreReadFlushGateHi_Bit` and
+    `Struct_PreallocHandleNode_OpenFlagsLowBit6_PreReadFlushGateLo_Bit`:
+    both bits must be set for the pre-read `STREAM_BufferedPutcOrFlush(-1)` path.
+
+- Producer/clearer trace update (`2026-02-24`):
+  - Layout confirmation:
+    `Struct_PreallocHandleNode__OpenFlags` (`+24`, long) overlays
+    `Struct_PreallocHandleNode__ModeFlags` (`+26`) and
+    `Struct_PreallocHandleNode__StateFlags` (`+27`) bytes.
+  - Static seed confirmation (from `src/data/wdisp.s` image):
+    `PREALLOC_DefaultHandleFlagsSeed = $00008000` (maps to
+    `Global_DefaultHandleFlags`, A4-1016) and
+    `PREALLOC_AllocBlockSizeSeed = $00000400`
+    (maps to `Global_AllocBlockSize`, A4-1012).
+  - Bit `0` (`OpenFlagsLowBit0_ReadRefillIssued_Bit`) producers:
+    open assignment with low-bit set (`unknown14` read-no-plus path;
+    `unknown29` startup node0) and explicit `BSET` before refill
+    (`STREAM_BufferedGetc`).
+  - Bit `0` clearers:
+    `UNKNOWN36_FinalizeRequest` `CLR.L +24`, dynamic-node zero-init in
+    `HANDLE_OpenWithMode`, or any open-flags overwrite without bit0.
+  - Bit `3` (`OpenFlagsLowBit3_ForceRealloc_Bit`) producers:
+    none found in current tree (no explicit set of low-byte bit3 observed;
+    default seed low byte is zero).
+  - Bit `3` clearers:
+    `BUFFER_EnsureAllocated` `AND.L #-13` (clears low bits 2/3),
+    plus full clear/overwrite paths above.
+  - Bit `3` stock-image status:
+    treat as reserved/dead override bit unless an external/out-of-tree writer is introduced.
+  - Bit `6` (`OpenFlagsLowBit6_PreReadFlushGateLo_Bit`) producers:
+    none found in current tree (default seed low byte is zero).
+  - Bit `6` clearers:
+    full clear/overwrite paths above.
+  - Bit `6` stock-image status:
+    treat as reserved/dead gate-half; paired pre-read flush path stays inactive in stock image.
+  - Bit `7` (`OpenFlagsLowBit7_PreReadFlushGateHi_Bit`) producers:
+    startup node2 `ORI.W #$80` (`unknown29`) and `+` open mode assignment
+    (`unknown14` read/write/append-plus path => low byte `$80`).
+  - Bit `7` clearers:
+    full clear/overwrite paths above.
+  - `OpenFlags $80` status:
+    produced by startup node2 and `+` open modes; no dedicated bit-clear op,
+    only clear/overwrite on close/reopen paths.
 
 - Still unresolved:
-  - Exact semantic names for `StateFlags` bits `0/3/6/7`.
+  - Intended original semantic meaning of the bit6+bit7 pre-read flush gate pairing
+    (stock behavior is inactive because bit6 has no in-tree producer).
   - Exact semantic names for `ModeFlags` bits other than inferred `6/7`.
   - `OpenFlags` bitmask naming beyond current usage masks (`$31/$30/$32`) and
     startup-seeded `$80` for `Node2`.
@@ -842,8 +892,9 @@ Track where layout-coupled string/template data is populated so Section 1 hardco
 5. Extend row-level budget/provenance mapping beyond `ESQFUNC` into remaining
    high-risk `%s` destinations (`ED2_*` and `TEXTDISP_*`) so guard-priority
    ordering is explicit in those paths too.
-6. Continue resolving `Struct_PreallocHandleNode` flag-bit semantics and
-   `OpenFlags` mask naming from `STREAM_BufferedPutcOrFlush`/`STREAM_BufferedGetc`.
+6. Optional for non-stock builds: instrument runtime/open paths to detect any
+   external writer that sets `OpenFlags` low bits `3/6`; stock image analysis
+   currently treats both bits as reserved/dead.
 7. Promote the `patchA4OffsetForData` mitigation to a permanent symbol-based fix
    path (remove switch + stale offset constant) after runtime validation.
 8. Add a one-shot audit checklist item for hardcoded A4/base displacements that

@@ -22,6 +22,8 @@
 ;   then initializes the handle/struct on success.
 ; NOTES:
 ;   Booleanize pattern: SEQ/NEG/EXT. Returns 0 on failure.
+;   OpenFlags(+24) long carries overlaid mode/state bytes at +26/+27.
+;   Global_DefaultHandleFlags static seed is `$00008000` in current image.
 ;------------------------------------------------------------------------------
 HANDLE_OpenFromModeString:
     LINK.W  A5,#-16

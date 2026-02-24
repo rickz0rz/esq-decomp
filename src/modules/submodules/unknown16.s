@@ -17,8 +17,8 @@
 ;   then closes handles/returns with the provided status.
 ; NOTES:
 ;   Flush is gated by state bits:
-;   Struct_PreallocHandleNode_StateFlag_WritePending_Bit /
-;   Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit.
+;   Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit /
+;   Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit.
 ;------------------------------------------------------------------------------
 BUFFER_FlushAllAndCloseWithCode:
     MOVEM.L D6-D7/A3,-(A7)
@@ -29,10 +29,10 @@ BUFFER_FlushAllAndCloseWithCode:
     MOVE.L  A3,D0
     BEQ.S   .after_flush
 
-    BTST    #Struct_PreallocHandleNode_StateFlag_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .next_node
 
-    BTST    #Struct_PreallocHandleNode_StateFlag_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BEQ.S   .next_node
 
     MOVE.L  Struct_PreallocHandleNode__BufferCursor(A3),D0

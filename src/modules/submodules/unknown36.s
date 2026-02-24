@@ -5,9 +5,11 @@
 ; Struct offsets (UNKNOWN36 request struct)
 Struct_UNKNOWN36_Request__Arg16     = 16
 Struct_UNKNOWN36_Request__Arg20     = 20
-Struct_UNKNOWN36_Request__Flags     = 24
-Struct_UNKNOWN36_Request__FlagByte  = 27
-Struct_UNKNOWN36_Request__Handler   = 28
+Struct_UNKNOWN36_Request__Flags     = Struct_PreallocHandleNode__OpenFlags
+Struct_UNKNOWN36_Request__FlagByte  = Struct_PreallocHandleNode__StateFlags
+Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
+; NOTE: When this helper is used with handle nodes, clearing +24 clears the
+;       overlaid OpenFlags/ModeFlags/StateFlags bytes in one write.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
@@ -63,7 +65,7 @@ UNKNOWN36_FinalizeRequest:
     ADDQ.W  #8,A7
 
 .after_optional_cleanup:
-    CLR.L   Struct_UNKNOWN36_Request__Flags(A3)
+    CLR.L   Struct_UNKNOWN36_Request__Flags(A3) ; clears overlaid open/mode/state bytes too
     ; Invoke handler at 28(A3).
     MOVE.L  Struct_UNKNOWN36_Request__Handler(A3),-(A7)
     JSR     HANDLE_CloseByIndex(PC)

@@ -39,32 +39,49 @@ Global_STR_A_PLUS:
     DC.L    $00280000
     DS.L    5
     DC.W    $8000
-    DC.L    WDISP_CharClassRuntimeBlockPtr
+    DC.L    PREALLOC_HandleNode1_InitRecord
     DS.L    7
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_CharClassRuntimeBlockPtr   (char-class runtime block pointer)
-; TYPE: pointer (u32)
-; PURPOSE: Anchor pointer to the runtime block immediately preceding WDISP_CharClassTable.
-; USED BY: startup/runtime data block (indirect)
+; SYM: PREALLOC_HandleNode1_InitRecord   (startup prealloc handle node1 image)
+; TYPE: struct-like blob (matches Struct_PreallocHandleNode layout)
+; PURPOSE: Static image for the second startup prealloc handle node (+34 bytes from node0).
+; USED BY: Global_PreallocHandleNode1 (A4-1086) runtime stream/open paths
 ; NOTES:
-;   Appears to be compiler/runtime metadata that points at WDISP_CharClassRuntimeBlock (`??`).
+;   First longword links to PREALLOC_HandleNode2_InitRecord (node2).
 ;------------------------------------------------------------------------------
-WDISP_CharClassRuntimeBlockPtr:
-    DC.L    WDISP_CharClassRuntimeBlock
+PREALLOC_HandleNode1_InitRecord:
+    DC.L    PREALLOC_HandleNode2_InitRecord
     DS.L    7
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: WDISP_CharClassRuntimeBlock   (char-class runtime block)
-; TYPE: struct-like blob (`??`)
-; PURPOSE: Runtime metadata adjacent to WDISP_CharClassTable.
-; USED BY: startup/runtime data block (indirect)
+; SYM: PREALLOC_HandleNode2_InitRecord   (startup prealloc handle node2 image)
+; TYPE: struct-like blob (matches Struct_PreallocHandleNode layout)
+; PURPOSE: Static image for the third startup prealloc handle node (+68 bytes from node0).
+; USED BY: Global_PreallocHandleNode2 (A4-1052) runtime stream/open paths
 ; NOTES:
-;   Contains reserved words/longs and constants `$00008000/$00000400`; semantics still unresolved.
+;   Followed by the default handle/open and allocator seed constants.
 ;------------------------------------------------------------------------------
-WDISP_CharClassRuntimeBlock:
+PREALLOC_HandleNode2_InitRecord:
     DS.L    9
-    DC.L    $00008000,$00000400
+;------------------------------------------------------------------------------
+; SYM: PREALLOC_DefaultHandleFlagsSeed   (startup default handle flags)
+; TYPE: u32
+; PURPOSE: Initial value read through Global_DefaultHandleFlags (A4-1016).
+; USED BY: ESQ_ParseCommandLineAndRun, HANDLE_OpenFromModeString
+; NOTES: Seed is `$00008000` in the shipped image (low-byte bits 0..7 clear).
+;------------------------------------------------------------------------------
+PREALLOC_DefaultHandleFlagsSeed:
+    DC.L    $00008000
+;------------------------------------------------------------------------------
+; SYM: PREALLOC_AllocBlockSizeSeed   (startup allocator block-size seed)
+; TYPE: u32
+; PURPOSE: Initial value read through Global_AllocBlockSize (A4-1012).
+; USED BY: ALLOC_AllocFromFreeList
+; NOTES: Seed is `$00000400` (1024-byte allocator growth quantum).
+;------------------------------------------------------------------------------
+PREALLOC_AllocBlockSizeSeed:
+    DC.L    $00000400
     DS.B    1
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_CharClassTable   (character classification lookup table)

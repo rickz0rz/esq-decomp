@@ -26,7 +26,7 @@ BUFFER_EnsureAllocated:
     TST.L   Struct_PreallocHandleNode__BufferCapacity(A3)
     BEQ.S   .alloc_buffer
 
-    BTST    #3,Struct_PreallocHandleNode__StateFlags(A3)
+    BTST    #Struct_PreallocHandleNode_OpenFlagsLowBit3_ForceRealloc_Bit,Struct_PreallocHandleNode__StateFlags(A3)
     BNE.S   .alloc_buffer
 
     MOVEQ   #0,D0
@@ -50,7 +50,7 @@ BUFFER_EnsureAllocated:
 .alloc_ok:
     MOVE.L  Global_StreamBufferAllocSize(A4),Struct_PreallocHandleNode__BufferCapacity(A3)
     MOVEQ   #-13,D0
-    AND.L   D0,Struct_PreallocHandleNode__OpenFlags(A3)
+    AND.L   D0,Struct_PreallocHandleNode__OpenFlags(A3) ; clear low-byte bits 2/3 in open/state overlay
     MOVEQ   #0,D0
     MOVE.L  D0,Struct_PreallocHandleNode__WriteRemaining(A3)
     MOVE.L  D0,Struct_PreallocHandleNode__ReadRemaining(A3)
