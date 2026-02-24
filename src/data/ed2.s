@@ -278,7 +278,7 @@ ED2_STR_STOP:
     NStr    "Stop  "
     DS.W    1
 Global_REF_BOOL_IS_TEXT_OR_CURSOR:
-    DC.L    $00000001
+    DC.L    1
 
 ; Strings for the ESC menu
 Global_STR_EDIT_ADS:

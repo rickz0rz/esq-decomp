@@ -1266,7 +1266,7 @@ ED2_HandleMenuActions:
     BRA.W   .restore_display_state
 
 .case_banner_char_code8e:
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     EXT.L   D0
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)

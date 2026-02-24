@@ -125,23 +125,12 @@ TLIBA1_DayEntryModeCounter:
 ; NOTES: Per-entry layout is likely: +0 day code, +4/+8/+12 numeric fields, +16 active/pending flag.
 ;------------------------------------------------------------------------------
 WDISP_StatusDayEntry0:
-    DS.L    1
-    DC.L    $00000001
-    DS.L    2
-    DC.L    $00000001
+    DC.L    0,1,0,0,1
 WDISP_StatusDayEntry1:
-    DS.L    1
-    DC.L    $00000001
-    DS.L    2
-    DC.L    $00000001
+    DC.L    0,1,0,0,1
 WDISP_StatusDayEntry2:
-    DS.L    1
-    DC.L    $00000001
-    DS.L    2
-    DC.L    $00000001
+    DC.L    0,1,0,0,1
 WDISP_StatusDayEntry3:
-    DS.L    1
-    DC.L    $00000001
-    DS.L    2
+    DC.L    0,1,0,0
 TLIBA1_StatusBannerPropagateGuard:
-    DC.L    $00000001
+    DC.L    1

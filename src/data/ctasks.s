@@ -80,7 +80,7 @@ Global_STR_DF0_NXTDAY_DAT:
 ; NOTES: Initialized to 1; routines clear while active and restore to 1 on completion/error.
 ;------------------------------------------------------------------------------
 DISKIO_SaveOperationReadyFlag:
-    DC.L    $00000001
+    DC.L    1
 DISKIO_BufferControl:
     DS.L    1
     DS.L    1
@@ -166,16 +166,27 @@ CONFIG_NewgridWindowSpanHalfHoursAlt:
 ; NOTES: Initialized to 15 and persisted in `config.dat` as a 3-digit numeric field.
 ;------------------------------------------------------------------------------
 CONFIG_TimeWindowMinutes:
-    DC.L    $0000000f
+    DC.L    15
 CONFIG_ModeCycleGateDuration:
-    DC.L    $00000001
+    DC.L    1
 CONFIG_NewgridSelectionCode16EnabledFlag:
     DC.B    "Y"
 Global_REF_STR_USE_24_HR_CLOCK:
     DC.B    "N"
 CONFIG_ParseiniLogoScanEnabledFlag:
     NStr    "Y"
-Global_REF_WORD_HEX_CODE_8E:
+;------------------------------------------------------------------------------
+; SYM: CONFIG_BannerCopperHeadByte   (banner copper head byte config)
+; TYPE: u16 (packed storage, low byte consumed)
+; PURPOSE: Config-backed default byte written into banner copper list head words.
+; USED BY: DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle,
+;   ESQSHARED4_InitializeBannerCopperSystem, GCOMMAND_SeedBannerFromPrefs,
+;   SCRIPT banner-transition target selection.
+; NOTES:
+;   Parse path clamps to 128..220 and falls back to $8E (142) when invalid.
+;   Save path masks to low byte before formatting into config.dat.
+;------------------------------------------------------------------------------
+CONFIG_BannerCopperHeadByte:
     DC.B    0
     DC.B    142
 Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:

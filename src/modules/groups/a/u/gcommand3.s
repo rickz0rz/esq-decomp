@@ -54,7 +54,7 @@
 ; CALLS:
 ;   GCOMMAND_GetBannerChar
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, CONFIG_RefreshIntervalSeconds, ESQPARS2_BannerQueueBuffer, GCOMMAND_BannerQueueSlotPrevious
+;   CONFIG_BannerCopperHeadByte, CONFIG_RefreshIntervalSeconds, ESQPARS2_BannerQueueBuffer, GCOMMAND_BannerQueueSlotPrevious
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -87,7 +87,7 @@ GCOMMAND_MapKeycodeToPreset:
 
     BSR.W   GCOMMAND_GetBannerChar
 
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D1
+    MOVE.W  CONFIG_BannerCopperHeadByte,D1
     CMP.W   D0,D1
     BNE.S   .lab_0D69
 
@@ -3237,13 +3237,13 @@ GCOMMAND_SeedBannerDefaults:
 ; CALLS:
 ;   GCOMMAND_BuildBannerTables
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E
+;   CONFIG_BannerCopperHeadByte
 ; WRITES:
 ;   ESQ_CopperListBannerA, ESQ_CopperListBannerB
 ; DESC:
 ;   Seed banner buffers using values read from preferences.
 ; NOTES:
-;   Seeds the leading bytes from Global_REF_WORD_HEX_CODE_8E and applies defaults.
+;   Seeds the leading bytes from CONFIG_BannerCopperHeadByte and applies defaults.
 ;------------------------------------------------------------------------------
 
 ; Seed banner buffers using values read from preferences.
@@ -3256,7 +3256,7 @@ GCOMMAND_SeedBannerFromPrefs:
     BSR.W   GCOMMAND_BuildBannerTables
 
     MOVE.L  #ESQ_CopperListBannerA,-4(A5)
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     MOVEA.L -4(A5),A0
     MOVE.B  D0,(A0)
     MOVEQ   #-39,D0
@@ -3264,7 +3264,7 @@ GCOMMAND_SeedBannerFromPrefs:
     MOVEQ   #-2,D1
     MOVE.W  D1,2(A0)
     MOVE.L  #ESQ_CopperListBannerB,-4(A5)
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D2
+    MOVE.W  CONFIG_BannerCopperHeadByte,D2
     MOVEA.L -4(A5),A0
     MOVE.B  D2,(A0)
     MOVE.B  D0,1(A0)

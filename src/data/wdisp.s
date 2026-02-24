@@ -91,7 +91,7 @@ WDISP_CharClassTable:
     DC.L    $01010101,$01010101,$01011010,$10101010
     DC.L    $82828282,$82820202,$02020202,$02020202
     DC.L    $02020202,$02020202,$02021010,$10102000
-    DS.L    1
+    DC.L    $00000000
     DC.W    $0200
 ;------------------------------------------------------------------------------
 ; SYM: DEBUG_AbortRequesterTagChain   (debug abort requester tag chain)
@@ -2788,7 +2788,7 @@ TEXTDISP_SecondaryFirstMatchIndex:
 ; TYPE: s32
 ; PURPOSE: Base pixel width used when populating entry short/long name fields.
 ; USED BY: TEXTDISP_SetEntryTextFields
-; NOTES: Derived from CONFIG_LRBN_FlagChar and Global_REF_WORD_HEX_CODE_8E.
+; NOTES: Derived from CONFIG_LRBN_FlagChar and CONFIG_BannerCopperHeadByte.
 ;------------------------------------------------------------------------------
 TEXTDISP_EntryTextBaseWidthPx:
     DS.L    1

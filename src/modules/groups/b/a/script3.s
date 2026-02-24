@@ -470,12 +470,12 @@ SCRIPT_BeginBannerCharTransition:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E (target banner char)
+;   CONFIG_BannerCopperHeadByte (target banner char)
 ; WRITES:
 ;   SCRIPT_BannerTransitionStepBudget, SCRIPT_BannerTransitionActive, SCRIPT_BannerTransitionTargetChar, SCRIPT_BannerTransitionStepDelta, SCRIPT_BannerTransitionStepSign
 ; DESC:
 ;   Initializes transition-step globals to move the current banner character
-;   directly toward Global_REF_WORD_HEX_CODE_8E.
+;   directly toward CONFIG_BannerCopperHeadByte.
 ; NOTES:
 ;   SCRIPT_BannerTransitionStepBudget is reset to 0; transition is enabled only when
 ;   current and target characters differ.
@@ -488,7 +488,7 @@ SCRIPT_PrimeBannerTransitionFromHexCode:
     MOVE.L  D0,D7
     MOVEQ   #0,D0
     MOVE.W  D0,SCRIPT_BannerTransitionActive
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D1
+    MOVE.W  CONFIG_BannerCopperHeadByte,D1
     MOVEQ   #0,D2
     MOVE.B  D1,D2
     MOVE.L  D7,D3
@@ -2241,7 +2241,7 @@ SCRIPT_SplitAndNormalizeSearchBuffer:
 ; CALLS:
 ;   SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_BeginBannerCharTransition
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch
+;   CONFIG_BannerCopperHeadByte, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch
 ; WRITES:
 ;   ESQPARS2_ReadModeFlags, SCRIPT_PendingBannerTargetChar, SCRIPT_ReadModeActiveLatch
 ; DESC:
@@ -2281,7 +2281,7 @@ SCRIPT_ApplyPendingBannerTarget:
     BRA.S   .maybe_clear_readmode_flags
 
 .compare_against_default_target:
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     CMP.W   D0,D7
     BEQ.S   .maybe_clear_readmode_flags
 
@@ -2321,7 +2321,7 @@ SCRIPT_ApplyPendingBannerTarget:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, SCRIPT_DeassertCtrlLineNow, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
+;   CONFIG_BannerCopperHeadByte, CONFIG_RuntimeMode12BannerJumpEnabledFlag, CONFIG_MsnRuntimeModeSelectorChar_LRBN, CONFIG_MSN_FlagChar, SCRIPT_RuntimeMode
 ; WRITES:
 ;   SCRIPT_CtrlHandshakeRetryCount, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2342,7 +2342,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     CMP.B   D1,D0
     BNE.S   .runtime_mode_enter_mode2
 
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     ADDI.W  #28,D0
     EXT.L   D0
     PEA     1000.W
@@ -2553,7 +2553,7 @@ SCRIPT_UpdateCtrlStateMachine:
 ; CALLS:
 ;   SCRIPT_UpdateSerialShadowFromCtrlByte, SCRIPT_ClearSearchTextsAndChannels, TEXTDISP_ResetSelectionAndRefresh, WDISP_HandleWeatherStatusCommand, SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen, SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom, SCRIPT_AssertCtrlLineNow, TEXTDISP_HandleScriptCommand, TEXTDISP_SetRastForMode, WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, TEXTDISP_ChannelSourceMode
+;   CONFIG_BannerCopperHeadByte, CONFIG_MSN_FlagChar, TEXTDISP_DeferredActionCountdown, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingWeatherCommandChar, SCRIPT_PendingTextdispCmdChar, SCRIPT_PendingTextdispCmdArg, SCRIPT_CommandTextPtr, SCRIPT_ChannelRangeDigitChar, SCRIPT_SearchMatchCountOrIndex, TEXTDISP_ChannelSourceMode
 ; WRITES:
 ;   TEXTDISP_DeferredActionCountdown, TEXTDISP_DeferredActionArmed, ESQPARS2_ReadModeFlags, SCRIPT_PlaybackFallbackCounter, SCRIPT_PendingBannerTargetChar, SCRIPT_PendingBannerSpeedMs, SCRIPT_ReadModeActiveLatch, SCRIPT_RuntimeMode, TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -2612,14 +2612,14 @@ SCRIPT_DispatchPlaybackCursorCommand:
     JSR     TEXTDISP_SetRastForMode(PC)
 
     ADDQ.W  #4,A7
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     ADDI.W  #28,D0
     MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return
 
 .playback_cmd_case_banner_current:
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     MOVE.W  #1000,SCRIPT_PendingBannerSpeedMs
     MOVE.W  D0,SCRIPT_PendingBannerTargetChar
     BRA.W   .return

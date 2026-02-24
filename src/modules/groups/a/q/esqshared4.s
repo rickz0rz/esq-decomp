@@ -31,7 +31,7 @@
     MOVE.W  #0,ESQPARS2_BannerSweepEntryGuardCounter
     MOVE.W  #0,ESQPARS2_BannerSweepDelayCounter
     LEA     ESQ_CopperListBannerA,A4
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     JSR     ESQSHARED4_ApplyBannerColorStep
 
     MOVEM.L (A7)+,D0-D1/A0-A4
@@ -64,7 +64,7 @@
 ; CALLS:
 ;   ESQSHARED4_ResetBannerColorToStart
 ; READS:
-;   Global_REF_WORD_HEX_CODE_8E, f5, f6
+;   CONFIG_BannerCopperHeadByte, f5, f6
 ; WRITES:
 ;   ESQ_CopperBannerTailListA, ESQ_CopperBannerTailListB, ESQPARS2_BannerSweepEntryGuardCounter, ESQPARS2_BannerTailBiasValue, ESQPARS2_BannerColorStepCounter
 ; DESC:
@@ -77,7 +77,7 @@ ESQSHARED4_ResetBannerColorSweepState:
     MOVE.B  #$f6,ESQ_CopperBannerTailListA
     MOVE.B  #$f6,ESQ_CopperBannerTailListB
     MOVE.W  #$f5,D0
-    ADD.W   Global_REF_WORD_HEX_CODE_8E,D0
+    ADD.W   CONFIG_BannerCopperHeadByte,D0
     SUBI.W  #$80,D0
     MOVE.W  D0,ESQPARS2_BannerTailBiasValue
     MOVE.W  #$62,ESQPARS2_BannerColorStepCounter
@@ -99,7 +99,7 @@ ESQSHARED4_ResetBannerColorSweepState:
 ; CALLS:
 ;   ESQSHARED4_ResetBannerColorSweepState, ESQSHARED4_SetupBannerPlanePointerWords, ESQSHARED4_SnapshotDisplayBufferBases
 ; READS:
-;   CIAB_PRA, Global_REF_WORD_HEX_CODE_8E
+;   CIAB_PRA, CONFIG_BannerCopperHeadByte
 ; WRITES:
 ;   ESQ_CopperListBannerA, ESQ_CopperListBannerB, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_HighlightTickCountdown, ESQPARS2_StateIndex, ESQPARS2_BannerSweepBaseColor, ESQPARS2_BannerSweepOffsetColor, ESQPARS2_ReadModeFlags
 ; DESC:
@@ -131,7 +131,7 @@ ESQSHARED4_InitializeBannerCopperSystem:
     MOVE.B  (A1),D1
     BSET    #6,D1
     MOVE.B  D1,(A1)
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     MOVE.B  D0,ESQ_CopperListBannerA
     MOVE.B  D0,ESQ_CopperListBannerB
     MOVE.W  #1,ESQPARS2_CopperProgramPendingFlag

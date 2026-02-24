@@ -1,13 +1,13 @@
 ; ========== ESQ.c ==========
 
 Global_REF_GRAPHICS_LIBRARY:
-    DS.L    1
+    DC.L    0
 Global_REF_INTUITION_LIBRARY:
-    DS.L    1
+    DC.L    0
 Global_REF_UTILITY_LIBRARY:
-    DS.L    1
+    DC.L    0
 Global_REF_BATTCLOCK_RESOURCE:
-    DS.L    1
+    DC.L    0
 
 Global_STR_PREVUEC_FONT:
     NStr    "PrevueC.font"          ; 14 bytes
@@ -42,11 +42,11 @@ Global_STRUCT_TEXTATTR_PREVUE_FONT:
     DC.B    $20     ; Flags
 
 Global_HANDLE_PREVUE_FONT:
-    DS.L    1
+    DC.L    0
 Global_REF_DISKFONT_LIBRARY:
-    DS.L    1
+    DC.L    0
 Global_REF_DOS_LIBRARY:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_HighlightMsgPort/ESQ_HighlightReplyPort   (highlight message ports)
 ; TYPE: pointer/pointer (Exec MsgPort)
@@ -55,9 +55,9 @@ Global_REF_DOS_LIBRARY:
 ; NOTES: Allocated as MsgPort-sized blocks during ESQ startup.
 ;------------------------------------------------------------------------------
 ESQ_HighlightMsgPort:
-    DS.L    1
+    DC.L    0
 ESQ_HighlightReplyPort:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_ProcessWindowPtrBackup   (startup/restored process window pointer)
 ; TYPE: pointer
@@ -66,7 +66,7 @@ ESQ_HighlightReplyPort:
 ; NOTES: Restored only when non-null.
 ;------------------------------------------------------------------------------
 ESQ_ProcessWindowPtrBackup:
-    DS.L    1
+    DC.L    0
 ED_DiagVinModeChar_Length = 1
 
 ESQ_STR_B:
@@ -147,9 +147,9 @@ ED_DiagVinModeChar:
 ; NOTES: Consumed by routines that format hour/minute display variants.
 ;------------------------------------------------------------------------------
 CLOCK_FormatVariantCode:
-    DS.B    1
+    DC.B    0
 ESQ_TopazGuardRastPortAnchor:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: WDISP_WeatherStatusTextPtr   (weather/status text pointer)
 ; TYPE: pointer
@@ -158,7 +158,7 @@ ESQ_TopazGuardRastPortAnchor:
 ; NOTES: Null when no status text is available.
 ;------------------------------------------------------------------------------
 WDISP_WeatherStatusTextPtr:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_AliasCount   (alias table entry count)
 ; TYPE: u16
@@ -167,7 +167,7 @@ WDISP_WeatherStatusTextPtr:
 ; NOTES: Used as loop bound for alias-pointer table scans.
 ;------------------------------------------------------------------------------
 TEXTDISP_AliasCount:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_PrimaryLineHeadPtr   (primary line head text pointer)
 ; TYPE: pointer
@@ -176,7 +176,7 @@ TEXTDISP_AliasCount:
 ; NOTES: Paired with ESQIFF_PrimaryLineTailPtr.
 ;------------------------------------------------------------------------------
 ESQIFF_PrimaryLineHeadPtr:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_PrimaryLineTailPtr   (primary line tail text pointer)
 ; TYPE: pointer
@@ -185,9 +185,9 @@ ESQIFF_PrimaryLineHeadPtr:
 ; NOTES: Paired with ESQIFF_PrimaryLineHeadPtr.
 ;------------------------------------------------------------------------------
 ESQIFF_PrimaryLineTailPtr:
-    DS.L    1
+    DC.L    0
 Global_REF_STR_CLOCK_FORMAT:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_DeferredActionCountdown   (deferred action countdown)
 ; TYPE: u16
@@ -196,7 +196,7 @@ Global_REF_STR_CLOCK_FORMAT:
 ; NOTES: Decremented each tick while TEXTDISP_DeferredActionArmed is set.
 ;------------------------------------------------------------------------------
 TEXTDISP_DeferredActionCountdown:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_DeferredActionArmed   (deferred action armed flag)
 ; TYPE: u16
@@ -205,7 +205,7 @@ TEXTDISP_DeferredActionCountdown:
 ; NOTES: Treated as boolean/non-zero guard for countdown handling.
 ;------------------------------------------------------------------------------
 TEXTDISP_DeferredActionArmed:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
 ; TYPE: u8/u8/u8/u8
@@ -214,9 +214,9 @@ TEXTDISP_DeferredActionArmed:
 ; NOTES: Followed by packed template bytes consumed by nearby table-style logic.
 ;------------------------------------------------------------------------------
 GCOMMAND_PresetFallbackValue0:
-    DS.B    1
+    DC.B    0
 GCOMMAND_PresetFallbackValue1:
-    DS.B    1
+    DC.B    0
 GCOMMAND_PresetFallbackValue2:
     DC.B    $03
 GCOMMAND_PresetFallbackValue3:
@@ -234,17 +234,16 @@ GCOMMAND_PresetFallbackTemplateTable:
 ; NOTES: Shutdown flag exits the main idle loop when non-zero.
 ;------------------------------------------------------------------------------
 ESQ_ShutdownRequestedFlag:
-    DS.W    1
+    DC.W    0
 ESQ_MainLoopUiTickEnabledFlag:
-    DS.W    1
+    DC.W    0
 Global_HANDLE_PREVUEC_FONT:
-    DS.L    1
+    DC.L    0
 Global_HANDLE_H26F_FONT:
-    DS.L    1
+    DC.L    0
 Global_HANDLE_TOPAZ_FONT:
-    DS.L    1
-    DS.L    2
-    DS.W    1
+    DC.L    0,0,0
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_SecondaryLineHeadPtr   (secondary line head text pointer)
 ; TYPE: pointer (stored as two words)
@@ -253,9 +252,9 @@ Global_HANDLE_TOPAZ_FONT:
 ; NOTES: Declared as two words to preserve original layout/alignment.
 ;------------------------------------------------------------------------------
 ESQIFF_SecondaryLineHeadPtr:
-    DS.W    1
+    DC.W    0
 ESQIFF_SecondaryLineHeadPtr_HiWord:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_SecondaryLineTailPtr   (secondary line tail text pointer)
 ; TYPE: pointer
@@ -264,7 +263,7 @@ ESQIFF_SecondaryLineHeadPtr_HiWord:
 ; NOTES: Paired with ESQIFF_SecondaryLineHeadPtr.
 ;------------------------------------------------------------------------------
 ESQIFF_SecondaryLineTailPtr:
-    DS.L    1
+    DC.L    0
 ESQ_STR_A:
     NStr    "A"
 ;------------------------------------------------------------------------------
@@ -275,7 +274,7 @@ ESQ_STR_A:
 ; NOTES: Updated through ESQPARS_ReplaceOwnedString-style realloc/copy helper flows.
 ;------------------------------------------------------------------------------
 WDISP_WeatherStatusOverlayTextPtr:
-    DS.L    1
+    DC.L    0
 Global_LONG_ROM_VERSION_CHECK:
     DC.L    1
 ;------------------------------------------------------------------------------
@@ -286,7 +285,7 @@ Global_LONG_ROM_VERSION_CHECK:
 ; NOTES: Set on queue control byte `0xFF`, cleared when countdown expires.
 ;------------------------------------------------------------------------------
 ESQDISP_StatusIndicatorDeferredApplyFlag:
-    DS.B    1
+    DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: CLEANUP_DiagOverlayAutoRefreshFlag   (diagnostic overlay auto-refresh enable)
 ; TYPE: u8
@@ -295,7 +294,7 @@ ESQDISP_StatusIndicatorDeferredApplyFlag:
 ; NOTES: Toggled by diagnostics menu command.
 ;------------------------------------------------------------------------------
 CLEANUP_DiagOverlayAutoRefreshFlag:
-    DS.B    1
+    DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagAvailMemMask   (diagnostics available-memory mask)
 ; TYPE: u32 (stored in word slot + alignment)
@@ -304,8 +303,8 @@ CLEANUP_DiagOverlayAutoRefreshFlag:
 ; NOTES: Low three bits are toggled by diagnostics actions.
 ;------------------------------------------------------------------------------
 ED_DiagAvailMemMask:
-    DS.W    1
-    DS.B    1
+    DC.W    0
+    DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: ED_DiagAvailMemPresetBits   (diagnostics memory-view preset selector bits)
 ; TYPE: u8 (bitfield)
@@ -314,7 +313,7 @@ ED_DiagAvailMemMask:
 ; NOTES: Bits 0..2 are set by dedicated menu cases.
 ;------------------------------------------------------------------------------
 ED_DiagAvailMemPresetBits:
-    DS.B    1
+    DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQDISP_GridMessagePumpBlockFlag/SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
 ; TYPE: u16/u16/u16/u16
@@ -323,19 +322,19 @@ ED_DiagAvailMemPresetBits:
 ; NOTES: `ESQPARS_PersistOnNextBoxOffFlag` is set by `%` command and consumed by boxoff path.
 ;------------------------------------------------------------------------------
 ESQDISP_GridMessagePumpBlockFlag:
-    DS.W    1
+    DC.W    0
 SCRIPT_StatusRefreshHoldFlag:
-    DS.W    1
+    DC.W    0
 TEXTDISP_TickSuspendFlag:
-    DS.W    1
+    DC.W    0
 Global_WORD_SELECT_CODE_IS_RAVESC:
-    DS.W    1
+    DC.W    0
 ESQPARS_PersistOnNextBoxOffFlag:
-    DS.W    1
+    DC.W    0
 HAS_REQUESTED_FAST_MEMORY:
-    DS.W    1
+    DC.W    0
 IS_COMPATIBLE_VIDEO_CHIP:
-    DC.L    $00000001
+    DC.L    1
 Global_STR_RAVESC:
     NStr    "RAVESC"
 Global_STR_COPY_NIL_ASSIGN_RAM:
@@ -413,7 +412,7 @@ Global_STR_DF0_BANNER_INI_1:
 ESQ_TAG_GRANADA:
     NStr    "GRANADA"
 Global_LONG_BUILD_NUMBER:
-    DC.L    $00000015   ; 21
+    DC.L    21
 Global_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
 Global_PTR_STR_BUILD_ID:
@@ -450,7 +449,7 @@ ESQ_CopperEffectListA:
 ESQ_CopperEffectListB_PtrHiWord:
     DC.L    $00000082
 ESQ_CopperEffectListB_PtrLoWord:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperEffectTemplateRowsSet0   (copper effect list B body template ??)
 ; TYPE: u32[] + tail word
@@ -559,7 +558,7 @@ ESQ_BannerSweepWaitStartProgramA:
 ESQ_BannerWorkRasterPtrMirrorA_HiWord:
     DC.L    $000000e2
 ESQ_BannerWorkRasterPtrMirrorA_LoWord:
-    DS.W    1
+    DC.W    0
 ESQ_BannerSweepWaitEndProgramA:
     DC.L    $00dffffe
     DC.W    $00e0
@@ -584,7 +583,7 @@ ESQ_BannerColorSweepProgramA_AnchorColorWord:
 ESQ_BannerColorSweepProgramA_TailColorWord:
     DC.W    $0003
 ESQ_BannerColorClampValueA:
-    DS.B    1
+    DC.B    0
 ESQ_BannerColorClampWaitRowA:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
@@ -599,7 +598,7 @@ ESQ_BannerPlane1DstPtrReset_LoWord:
 ESQ_BannerPlane2DstPtrReset_HiWord:
     DC.L    $000000ea
 ESQ_BannerPlane2DstPtrReset_LoWord:
-    DS.W    1
+    DC.W    0
 ESQ_CopperEffectSwitchWaitWordA:
     DC.L    $009c8010
 ;------------------------------------------------------------------------------
@@ -907,7 +906,7 @@ ESQ_CopperEffectListB:
 ESQ_CopperEffectListA_PtrHiWord:
     DC.L    $00000082
 ESQ_CopperEffectListA_PtrLoWord:
-    DS.W    1
+    DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: ESQ_CopperEffectTemplateRowsSet1   (copper effect list A body template ??)
 ; TYPE: u32[] + tail word
@@ -1006,7 +1005,7 @@ ESQ_BannerSweepWaitStartProgramB:
 ESQ_BannerWorkRasterPtrMirrorB_HiWord:
     DC.L    $000000e2
 ESQ_BannerWorkRasterPtrMirrorB_LoWord:
-    DS.W    1
+    DC.W    0
 ESQ_BannerSweepWaitEndProgramB:
     DC.L    $00dffffe
     DC.W    $00e0
@@ -1031,7 +1030,7 @@ ESQ_BannerColorSweepProgramB_AnchorColorWord:
 ESQ_BannerColorSweepProgramB_TailColorWord:
     DC.W    $0003
 ESQ_BannerColorClampValueB:
-    DS.B    1
+    DC.B    0
 ESQ_BannerColorClampWaitRowB:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
@@ -1046,7 +1045,7 @@ ESQ_BannerSweepSrcPlane1PtrReset_LoWord:
 ESQ_BannerSweepSrcPlane2PtrReset_HiWord:
     DC.L    $000000ea
 ESQ_BannerSweepSrcPlane2PtrReset_LoWord:
-    DS.W    1
+    DC.W    0
 ESQ_CopperEffectSwitchWaitWordB:
     DC.L    $009c8010
 ESQ_CopperBannerTailListB:

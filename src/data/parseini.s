@@ -126,19 +126,19 @@ Global_STR_PARSEINI_C_6:
 Global_STR_PARSEINI_C_7:
     NStr    "PARSEINI.c"
 PARSEINI_FallbackClockDataRecord:
-    DC.L    $00040000,$000007c2
-    DS.L    5
+    DC.L    262144,1986     ; 182 days (262144 / 60 / 24) into 1986?
+    DC.L    0,0,0,0,0
 Global_STR_DF0_ERR_LOG:
     NStr    "df0:err.log"
 PARSEINI_ClockSecondsSnapshot:
-    DS.W    1
+    DC.W    0
 PARSEINI_ClockChangeSampleCounter:
-    DS.W    1
+    DC.W    0
 PARSEINI_ClockChangeActiveFlag:
-    DS.W    1
+    DC.W    0
 PARSEINI_CtrlHClockSnapshot:
-    DS.W    1
+    DC.W    0
 PARSEINI_CtrlHChangeGateCounter:
-    DS.W    1
+    DC.W    0
 PARSEINI_CtrlHChangePendingFlag:
-    DS.W    1
+    DC.W    0

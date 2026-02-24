@@ -758,7 +758,7 @@ TEXTDISP_ResetSelectionState:
 ; CALLS:
 ;   STRING_CopyPadNul
 ; READS:
-;   CONFIG_LRBN_FlagChar, TEXTDISP_LrbnEntryWidthPx, Global_REF_WORD_HEX_CODE_8E
+;   CONFIG_LRBN_FlagChar, TEXTDISP_LrbnEntryWidthPx, CONFIG_BannerCopperHeadByte
 ; WRITES:
 ;   entry+0..9, entry+10..208, TEXTDISP_EntryTextBaseWidthPx
 ; DESC:
@@ -783,7 +783,7 @@ TEXTDISP_SetEntryTextFields:
 
 .use_hex_code:
     MOVEQ   #0,D0
-    MOVE.W  Global_REF_WORD_HEX_CODE_8E,D0
+    MOVE.W  CONFIG_BannerCopperHeadByte,D0
     MOVE.L  D0,TEXTDISP_EntryTextBaseWidthPx
 
 .after_hex_code:

@@ -40,4 +40,4 @@ CLEANUP_AlertProcessingFlag:
     DS.L    1
 ; Counts down frames before cycling banner palette.
 CLEANUP_BannerTickCounter:
-    DC.L    $0000003c
+    DC.L    60

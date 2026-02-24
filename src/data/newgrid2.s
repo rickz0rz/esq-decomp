@@ -12,7 +12,7 @@ Global_STR_NEWGRID2_C_2:
 ; NOTES: Initialized on first pass then adjusted by computed offsets.
 ;------------------------------------------------------------------------------
 NEWGRID2_CachedModeIndex:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID2_DispatchStateIndex   (newgrid2 dispatch state index)
 ; TYPE: s32
@@ -21,7 +21,7 @@ NEWGRID2_CachedModeIndex:
 ; NOTES: Operates as a bounded 0..5 state index in NEWGRID2 control flow.
 ;------------------------------------------------------------------------------
 NEWGRID2_DispatchStateIndex:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID2_PendingOperationId/NEWGRID2_LastDispatchResult   (dispatch staging/result)
 ; TYPE: s32/s32
@@ -32,9 +32,9 @@ NEWGRID2_DispatchStateIndex:
 ;   LastDispatchResult is booleanized before return.
 ;------------------------------------------------------------------------------
 NEWGRID2_PendingOperationId:
-    DS.L    1
+    DC.L    0
 NEWGRID2_LastDispatchResult:
-    DS.L    1
+    DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID2_BufferAllocationFlag   (buffer allocation gate)
 ; TYPE: s32 flag
@@ -43,7 +43,7 @@ NEWGRID2_LastDispatchResult:
 ; NOTES: Cleared when buffers are released/deinitialized.
 ;------------------------------------------------------------------------------
 NEWGRID2_BufferAllocationFlag:
-    DC.L    $00000001
+    DC.L    1
 Global_STR_NEWGRID2_C_3:
     NStr    "NEWGRID2.c"
 Global_STR_NEWGRID2_C_4:
@@ -60,4 +60,4 @@ Global_STR_NEWGRID2_C_6:
 ; NOTES: Updated by logging paths that prepend NEWGRID2 source tags.
 ;------------------------------------------------------------------------------
 NEWGRID2_ErrorLogEntryPtr:
-    DS.L    1
+    DC.L    0
