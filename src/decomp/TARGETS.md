@@ -1010,3 +1010,26 @@ Current notes:
 - GCC may fold sign tests and negations into alternate branch orderings, but still preserve the same divide-core call and sign-fix semantics.
 - Semantic gate validates sign tests, dividend/divisor negations, `MATH_DivU32` call presence, possible result negation, and function return.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 044: `modules/submodules/unknown21.s` (`DOS_OpenNewFileIfMissing`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-small DOS helper with clear behavior: fail-fast if file exists, otherwise open new file.
+- Extends promoted filesystem-open flows before tackling larger delete/recreate and mode-routing paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_open_new_file_if_missing_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_open_new_file_if_missing_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_open_new_file_if_missing.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_open_new_file_if_missing_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_open_new_file_if_missing_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_open_new_file_if_missing_target_gcc.sh`
+
+Current notes:
+- GCC may express lock/open checks with reordered branch labels, but semantics remain: signal callback, ioerr clear, lock test, unlock-on-exists, open-newfile path, ioerr capture, `AppErrorCode=2`, and `-1` error return.
+- Semantic gate validates all behavior-critical calls and state writes independent of register allocation differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
