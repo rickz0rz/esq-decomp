@@ -1,0 +1,14 @@
+# src/decomp/replacements.map
+#
+# Format:
+#   <original-include-path> <replacement-include-path>
+#
+# Paths are interpreted relative to `src/` because they replace `include "..."`
+# directives in `src/Prevue.asm`.
+#
+# Example:
+# modules/groups/a/a/bitmap.s decomp/replacements/modules/groups/a/a/bitmap.s
+modules/groups/_main/a/xjump.s decomp/replacements/modules/groups/_main/a/xjump.s
+modules/submodules/memory.s decomp/replacements/modules/submodules/memory.s
+modules/submodules/unknown3.s decomp/replacements/modules/submodules/unknown3.s
+modules/submodules/unknown41.s decomp/replacements/modules/submodules/unknown41.s
