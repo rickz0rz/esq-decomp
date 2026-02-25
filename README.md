@@ -19,6 +19,7 @@ This repository contains a living disassembly and annotation of the Esquire 9.04
 - Download and extract the [Esquire 9.04 HDD image](https://park-city.club/~frix/prevue/Prevue.zip) into `assets/disks/prevue/`.
 - Install [vasm](https://sun.hasenbraten.de/vasm/) (m68k, `mot` syntax) and update any hard-coded paths in the scripts to match your setup.
   - I've used [vbcc_installer](https://github.com/robertkist/vbcc_installer) to get vasm, vlink, and vbcc installed. Clone the repository, run `make download` and then `make setup` with all default options to build those binaries.
+- Install [m68k-amigaos-gcc](https://github.com/AmigaPorts/m68k-amigaos-gcc) if you intend to do any decompilation work.
 - Optional: Install the [Amiga Assembly](https://marketplace.visualstudio.com/items?itemName=prb28.amiga-assembly) VS Code extension for improved syntax support.
 
 ## Build & Verify
