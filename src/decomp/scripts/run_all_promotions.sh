@@ -22,6 +22,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh"
     "src/decomp/scripts/promote_dos_open_new_file_if_missing_target_gcc.sh"
+    "src/decomp/scripts/promote_dos_delete_and_recreate_file_target_gcc.sh"
     "src/decomp/scripts/promote_dos_read_with_error_state_target_gcc.sh"
     "src/decomp/scripts/promote_dos_seek_with_error_state_target_gcc.sh"
     "src/decomp/scripts/promote_dos_write_with_error_state_target_gcc.sh"

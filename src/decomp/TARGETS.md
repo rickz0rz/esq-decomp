@@ -1033,3 +1033,26 @@ Current notes:
 - GCC may express lock/open checks with reordered branch labels, but semantics remain: signal callback, ioerr clear, lock test, unlock-on-exists, open-newfile path, ioerr capture, `AppErrorCode=2`, and `-1` error return.
 - Semantic gate validates all behavior-critical calls and state writes independent of register allocation differences.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 045: `modules/submodules/unknown21.s` (`DOS_DeleteAndRecreateFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct companion to Target 044 in the same module and call-family.
+- Adds delete-on-exists behavior before new-file open while keeping the same ioerr/error-code mapping.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_delete_and_recreate_file_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_delete_and_recreate_file_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_delete_and_recreate_file.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_delete_and_recreate_file_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_delete_and_recreate_file_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_delete_and_recreate_file_target_gcc.sh`
+
+Current notes:
+- GCC may reorder lock-check branches but preserves the key sequence: lock, unlock/delete when present, open MODE_NEWFILE, ioerr capture, and `AppErrorCode=2` on open failure.
+- Semantic gate validates signal callback path, lock/unlock/delete/open/ioerr call presence, ioerr store, `-1` mapping, and error-code write behavior.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
