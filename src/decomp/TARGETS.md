@@ -1056,3 +1056,877 @@ Current notes:
 - GCC may reorder lock-check branches but preserves the key sequence: lock, unlock/delete when present, open MODE_NEWFILE, ioerr capture, and `AppErrorCode=2` on open failure.
 - Semantic gate validates signal callback path, lock/unlock/delete/open/ioerr call presence, ioerr store, `-1` mapping, and error-code write behavior.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 046: `modules/submodules/unknown22.s` (`SIGNAL_CreateMsgPortWithSignal`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact Exec utility with one allocation-failure unwind and deterministic MsgPort initialization writes.
+- Complements already-promoted `ALLOCATE_AllocAndInitializeIOStdReq` and `IOSTDREQ_CleanupSignalAndMsgport` by covering MsgPort creation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/signal_create_msgport_with_signal_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_signal_create_msgport_with_signal_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_signal_create_msgport_with_signal.awk`
+- Promotion gate: `src/decomp/scripts/promote_signal_create_msgport_with_signal_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_signal_create_msgport_with_signal_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_signal_create_msgport_with_signal_target_gcc.sh`
+
+Current notes:
+- GCC may vary branch shape around name-null `AddPort` vs local-list initialization, but semantic behavior remains equivalent.
+- Semantic gate validates alloc-signal/alloc-mem/free-signal paths, MsgPort field stores, task binding (`FindTask`), optional `AddPort`, local-list initialization, and return mode.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 047: `modules/submodules/unknown40.s` (`DOS_Delay`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very small DOS wrapper with a single LVO call and one argument move, ideal for fast incremental coverage.
+- Starts promotion coverage for `unknown40.s` runtime wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_delay_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_delay_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_delay.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_delay_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_delay_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_delay_target_gcc.sh`
+
+Current notes:
+- GCC may choose different stack/register setup around the argument load, but still routes the tick count through `D1` and dispatches `_LVODelay` with the DOS base.
+- Semantic gate validates DOS library base usage, `D1` argument flow, delay call presence, and function return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 048: `modules/submodules/unknown40.s` (`BATTCLOCK_GetSecondsFromBatteryBackedClock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal read-wrapper with no branching, useful for quickly expanding promoted call-wrapper coverage.
+- Pairs naturally with existing clock/time promotion work while staying low-risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/battclock_get_seconds_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_battclock_get_seconds_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_battclock_get_seconds.awk`
+- Promotion gate: `src/decomp/scripts/promote_battclock_get_seconds_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_battclock_get_seconds_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_battclock_get_seconds_target_gcc.sh`
+
+Current notes:
+- GCC may choose different save/restore placement for `A6`, but still loads the battclock resource base and dispatches `_LVOReadBattClock`.
+- Semantic gate validates resource-base usage, battclock read call presence, and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 049: `modules/submodules/unknown40.s` (`BATTCLOCK_WriteSecondsToBatteryBackedClock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct write companion to Target 048, with similarly low control-flow complexity.
+- Expands coverage of battery clock wrappers and validates D0 argument-through-call behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/battclock_write_seconds_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_battclock_write_seconds_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_battclock_write_seconds.awk`
+- Promotion gate: `src/decomp/scripts/promote_battclock_write_seconds_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_battclock_write_seconds_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_battclock_write_seconds_target_gcc.sh`
+
+Current notes:
+- GCC may vary prologue shape, but still loads `Global_REF_BATTCLOCK_RESOURCE` into `A6`, routes the input seconds in `D0`, and calls `_LVOWriteBattClock`.
+- Semantic gate validates resource-base usage, D0 argument flow, write call presence, and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 050: `modules/submodules/unknown40.s` (`DOS_SystemTagList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small DOS wrapper with two register arguments and one LVO call.
+- Complements Target 047 (`DOS_Delay`) and rounds out simple `unknown40.s` DOS call wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_system_taglist_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_system_taglist_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_system_taglist.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_system_taglist_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_system_taglist_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_system_taglist_target_gcc.sh`
+
+Current notes:
+- GCC may choose different register-save ordering, but still loads DOS base, routes arguments through `D1/D2`, and calls `_LVOSystemTagList`.
+- Semantic gate validates DOS base usage, `D1`/`D2` flow, system-tag call presence, and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 051: `modules/submodules/unknown40.s` (`EXEC_CallVector_48`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final small wrapper in `unknown40.s`, with a single library-vector dispatch.
+- Extends coverage of register-heavy wrapper patterns (`A0/A1/D1/A2` argument forwarding).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/exec_call_vector_48_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_exec_call_vector_48_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_exec_call_vector_48.awk`
+- Promotion gate: `src/decomp/scripts/promote_exec_call_vector_48_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_exec_call_vector_48_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_exec_call_vector_48_target_gcc.sh`
+
+Current notes:
+- GCC may reorder prologue register saves, but still loads `INPUTDEVICE_LibraryBaseFromConsoleIo`, forwards `A0/A1/D1/A2`, and calls `_LVOexecPrivate3`.
+- Semantic gate validates input-device base usage, register flow (`A0/A1/D1/A2`), vector call presence, and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 052: `modules/submodules/unknown42.s` (`PARALLEL_CheckReadyStub`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal deterministic stub with a single `MOVEQ #-1,D0; RTS` sequence.
+- Good low-risk bridge into `unknown42.s` before larger parallel formatting routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_check_ready_stub_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_check_ready_stub_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_check_ready_stub.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_check_ready_stub_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_check_ready_stub_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_check_ready_stub_target_gcc.sh`
+
+Current notes:
+- GCC may emit equivalent constant-load forms for `-1`, but behavior remains fixed: return negative ready-state sentinel.
+- Semantic gate validates `-1` return constant path and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 053: `modules/submodules/unknown2a.s` (`UNKNOWN2A_Stub0`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Smallest standalone XDEF in the set (pure `RTS`) and trivial to lock down.
+- Expands promoted coverage into `unknown2a.s` with near-zero risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown2a_stub0_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown2a_stub0_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown2a_stub0.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown2a_stub0_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown2a_stub0_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown2a_stub0_target_gcc.sh`
+
+Current notes:
+- GCC may add/remove no-op prologue details depending on profile, but function semantics remain empty-return.
+- Semantic gate validates `RTS` presence.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 054: `modules/submodules/unknown42.s` (`PARALLEL_CheckReady`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Thin wrapper directly above Target 052 with one call + return.
+- Confirms simple local-call wrappers in `unknown42.s` before deeper parallel routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_check_ready_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_check_ready_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_check_ready.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_check_ready_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_check_ready_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_check_ready_target_gcc.sh`
+
+Current notes:
+- GCC may vary call syntax (`BSR`/`JSR`) but preserves single dispatch to `PARALLEL_CheckReadyStub` and immediate return.
+- Semantic gate validates stub-call presence and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 055: `modules/submodules/unknown42.s` (`PARALLEL_WriteCharD0`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Another single-call wrapper (`PARALLEL_WriteCharHw`) with no branching.
+- Establishes parity for D0-based parallel output wrapper behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_write_char_d0_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_write_char_d0_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_write_char_d0.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_write_char_d0_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_write_char_d0_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_write_char_d0_target_gcc.sh`
+
+Current notes:
+- GCC may model the call as external symbol dispatch with minor prologue differences, but still forwards the character and returns immediately.
+- Semantic gate validates `PARALLEL_WriteCharHw` call presence and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 056: `modules/submodules/unknown42.s` (`CLOCK_SecondsFromEpoch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact utility-library wrapper with one pointer argument and one LVO call.
+- Extends promoted coverage for `unknown42.s` clock conversion wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/clock_seconds_from_epoch_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_clock_seconds_from_epoch_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_clock_seconds_from_epoch.awk`
+- Promotion gate: `src/decomp/scripts/promote_clock_seconds_from_epoch_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_clock_seconds_from_epoch_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_clock_seconds_from_epoch_target_gcc.sh`
+
+Current notes:
+- GCC may vary stack/register shuffling but still loads `Global_REF_UTILITY_LIBRARY`, forwards the input pointer via `A0`, and calls `_LVODate2Amiga`.
+- Semantic gate validates utility base usage, `A0` argument flow, call presence, and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 057: `modules/submodules/unknown42.s` (`CLOCK_CheckDateOrSecondsFromEpoch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion wrapper to Target 056 with same call pattern but different utility LVO (`CheckDate`).
+- Increases confidence in utility wrapper lowering consistency.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/clock_check_date_or_seconds_from_epoch_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_clock_check_date_or_seconds_from_epoch_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_clock_check_date_or_seconds_from_epoch.awk`
+- Promotion gate: `src/decomp/scripts/promote_clock_check_date_or_seconds_from_epoch_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_clock_check_date_or_seconds_from_epoch_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_clock_check_date_or_seconds_from_epoch_target_gcc.sh`
+
+Current notes:
+- GCC may choose alternate register-save order, but behavior remains utility-base load + `A0` arg + `_LVOCheckDate` dispatch + return.
+- Semantic gate validates utility base usage, `A0` flow, call presence, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 058: `modules/submodules/unknown42.s` (`PARALLEL_WaitReady`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small control-flow step up from wrappers: single polling loop with no side-effects besides repeated readiness checks.
+- Builds confidence in loop-shape preservation in the same module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_wait_ready_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_wait_ready_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_wait_ready.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_wait_ready_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_wait_ready_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_wait_ready_target_gcc.sh`
+
+Current notes:
+- GCC may use different branch mnemonics around the negative test, but preserves repeated `PARALLEL_CheckReady` calls until non-negative.
+- Semantic gate validates readiness-check call presence, loop branch presence, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 059: `modules/submodules/unknown42.s` (`PARALLEL_WriteStringLoop`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Simple byte-stream loop that repeatedly dispatches to already-promoted `PARALLEL_WriteCharD0`.
+- Keeps momentum in `unknown42.s` while adding first string-output loop primitive.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_write_string_loop_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_write_string_loop_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_write_string_loop.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_write_string_loop_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_write_string_loop_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_write_string_loop_target_gcc.sh`
+
+Current notes:
+- GCC may vary compare/branch mnemonics around the NUL terminator test, but preserves byte load, zero-test, per-byte `PARALLEL_WriteCharD0` dispatch, and loop backedge.
+- Semantic gate validates byte-load, termination test, write-call presence, loop branch, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 060: `modules/submodules/unknown42.s` (`PARALLEL_RawDoFmt`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Self-contained exec-library wrapper for `RawDoFmt` in the same module family.
+- Establishes first promoted target that wires callback register `A2` to `PARALLEL_WriteCharHw`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_raw_dofmt_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_raw_dofmt_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_raw_dofmt.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_raw_dofmt_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_raw_dofmt_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_raw_dofmt_target_gcc.sh`
+
+Current notes:
+- GCC may omit the original explicit `MOVEM` save/restore pair, but preserves callback pointer setup (`PARALLEL_WriteCharHw` via `A2`), exec base load, `_LVORawDoFmt` dispatch, and return.
+- Semantic gate validates callback-pointer setup, exec-base usage, RawDoFmt call presence, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 061: `modules/submodules/unknown42.s` (`PARALLEL_WriteCharHw`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core low-level parallel output primitive used by promoted wrappers.
+- Introduces first promoted hardware polling loop (`CIAB_PRA bit0`) plus LF-to-CR/LF behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_write_char_hw_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_write_char_hw_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_write_char_hw.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_write_char_hw_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_write_char_hw_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_write_char_hw_target_gcc.sh`
+
+Current notes:
+- GCC reorders loop blocks versus original but preserves LF check, ready-bit polling loop, and writes to `CIAA_DDRB`/`CIAA_PRB`.
+- Semantic gate validates LF check presence, wait-loop pattern, hardware register writes, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 062: `modules/submodules/unknown42.s` (`PARALLEL_RawDoFmtStackArgs`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact wrapper that prepares stack-based vararg stream and forwards into `PARALLEL_RawDoFmtCommon`.
+- Extends promoted coverage across the `PARALLEL_RawDoFmt*` wrapper family.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_raw_dofmt_stack_args_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_raw_dofmt_stack_args_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_raw_dofmt_stack_args.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_raw_dofmt_stack_args_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_raw_dofmt_stack_args_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_raw_dofmt_stack_args_target_gcc.sh`
+
+Current notes:
+- Original uses fallthrough into `PARALLEL_RawDoFmtCommon` while GCC emits explicit stack setup + call; both preserve format/arg-stream forwarding semantics.
+- Semantic gate validates format-setup, arg-stream setup, common-dispatch presence, and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 063: `modules/submodules/unknown42.s` (`PARALLEL_RawDoFmtCommon`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Central dispatch helper for the parallel RawDoFmt wrappers.
+- Bridges promoted stack-wrapper behavior (`Target 062`) to promoted RawDoFmt core (`Target 060`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parallel_raw_dofmt_common_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parallel_raw_dofmt_common_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parallel_raw_dofmt_common.awk`
+- Promotion gate: `src/decomp/scripts/promote_parallel_raw_dofmt_common_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parallel_raw_dofmt_common_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parallel_raw_dofmt_common_target_gcc.sh`
+
+Current notes:
+- Original includes callback-save/setup details around the call path, while GCC collapses to a compact forwarding wrapper; both preserve dispatch to `PARALLEL_RawDoFmt` and return.
+- Semantic gate validates RawDoFmt reference presence and return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 064: `modules/submodules/unknown25.s` (`STRUCT_FreeWithSizeField`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, isolated lifecycle helper with one Exec call and clear field-side effects.
+- Opens follow-on promotion path for companion allocator `STRUCT_AllocWithOwner`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/struct_free_with_size_field_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_struct_free_with_size_field_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_struct_free_with_size_field.awk`
+- Promotion gate: `src/decomp/scripts/promote_struct_free_with_size_field_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_struct_free_with_size_field_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_struct_free_with_size_field_target_gcc.sh`
+
+Current notes:
+- GCC uses equivalent idioms (`ST` for `0xFF`, register `-1` stores) while preserving size-load-from-`+18`, `FreeMem` dispatch, and return.
+- Semantic gate validates invalidation store, `-1` field stores, size load, `FreeMem` call presence, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 065: `modules/submodules/unknown25.s` (`STRUCT_AllocWithOwner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion allocator for Target 064 with straightforward owner guard, `AllocMem`, and fixed field initialization.
+- Extends coverage for struct lifecycle helpers in `unknown25.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/struct_alloc_with_owner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_struct_alloc_with_owner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_struct_alloc_with_owner.awk`
+- Promotion gate: `src/decomp/scripts/promote_struct_alloc_with_owner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_struct_alloc_with_owner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_struct_alloc_with_owner_target_gcc.sh`
+
+Current notes:
+- GCC may reorder guard/initialization blocks but preserves owner-null check, `AllocMem` dispatch, and struct field writes (`+8/+9/+14/+18`).
+- Semantic gate validates owner check presence, alloc call, field initialization, size store, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 066: `modules/submodules/unknown20.s` (`DOS_OpenWithErrorState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Completes parity with existing error-state wrappers (`DOS_Read/Seek/WriteWithErrorState`).
+- Compact control-flow shape with clear side effects (`Global_DosIoErr`, `Global_AppErrorCode`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_open_with_error_state_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_open_with_error_state_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_open_with_error_state.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_open_with_error_state_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_open_with_error_state_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_open_with_error_state_target_gcc.sh`
+
+Current notes:
+- GCC may vary zero-check idioms around handle failure, but preserves signal callback check, `DOS_Open` call, `DOS_IoErr` path, app error code set to `2`, and `-1` failure return.
+- Semantic gate validates callback test/call, ioerr clear+store, open/ioerr calls, failure code path, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 067: `modules/submodules/unknown37.s` (`HANDLE_CloseByIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural follow-on after `HANDLE_GetEntryByIndex` and `DOS_CloseWithSignalCheck` promotions.
+- Consolidates handle lifecycle behavior (entry lookup, optional close, clear, IoErr-driven status).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/handle_close_by_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_handle_close_by_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_handle_close_by_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_handle_close_by_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_handle_close_by_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_handle_close_by_index_target_gcc.sh`
+
+Current notes:
+- GCC may emit different branch/register idioms for null/flag checks, but preserves entry lookup, non-closable fast-clear path, close path, entry clear, and IoErr-based `-1` status.
+- Semantic gate validates get-entry call, null/flag checks, close call, entry clear, ioerr test, return shapes, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 068: `modules/submodules/unknown35.s` (`HANDLE_OpenWithMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural next step in handle lifecycle after `HANDLE_CloseByIndex` and earlier handle-table targets.
+- Captures scan-for-free + fallback-allocate flow and dispatch into mode-string open helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/handle_open_with_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_handle_open_with_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_handle_open_with_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_handle_open_with_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_handle_open_with_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_handle_open_with_mode_target_gcc.sh`
+
+Current notes:
+- GCC may rearrange loop/branch structure, but preserves prealloc scan, `ALLOC_AllocFromFreeList(34)` fallback, zero-init on fresh alloc, and `HANDLE_OpenFromModeString` dispatch.
+- Semantic gate validates scan symbols, alloc call + size, zero-init behavior, open-mode call, null-return path, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 069: `modules/submodules/unknown33.s` (`STRING_FindSubstring`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, self-contained string-search routine with no external helper calls.
+- Good next step after the `STR_Find*` family to cover direct two-pointer compare loops.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/string_find_substring_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_string_find_substring_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_string_find_substring.awk`
+- Promotion gate: `src/decomp/scripts/promote_string_find_substring_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_string_find_substring_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_string_find_substring_target_gcc.sh`
+
+Current notes:
+- GCC may choose different mismatch/advance block ordering versus source, but preserves byte-compare loop behavior, early null-fail paths, successful match pointer return, and `RTS`.
+- Semantic gate validates needle-end tests, byte-compare presence, start-advance progression, null/success return forms, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 070: `modules/submodules/unknown38.s` (`SIGNAL_PollAndDispatch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small control-flow helper with one Exec call plus optional callback dispatch path.
+- Natural follow-on after existing signal and close-wrapper promotions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/signal_poll_and_dispatch_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_signal_poll_and_dispatch_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_signal_poll_and_dispatch.awk`
+- Promotion gate: `src/decomp/scripts/promote_signal_poll_and_dispatch_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_signal_poll_and_dispatch_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_signal_poll_and_dispatch_target_gcc.sh`
+
+Current notes:
+- GCC may alter callback branch layout and register assignment, but preserves `_LVOSetSignal` poll, `0x3000` mask check, callback test/call, callback clear on non-zero result, close-with-code dispatch, and return path.
+- Semantic gate validates those invariants directly.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 071: `modules/submodules/unknown24.s` (`PARSE_ReadSignedLongSkipClass3`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small parse wrapper with null guard and two helper calls.
+- Good bridge target in `unknown24.s` before larger MEMLIST routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parse_read_signed_long_skip_class3_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parse_read_signed_long_skip_class3_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parse_read_signed_long_skip_class3.awk`
+- Promotion gate: `src/decomp/scripts/promote_parse_read_signed_long_skip_class3_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parse_read_signed_long_skip_class3_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parse_read_signed_long_skip_class3_target_gcc.sh`
+
+Current notes:
+- GCC may simplify frame/save handling versus original A3-preserving wrapper, but preserves null-input early return, class3 skip call, signed-long parse call, and parsed value return.
+- Semantic gate validates null-guard, zero-return path, skip call, parse call, value-return form, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 072: `modules/submodules/unknown24.s` (`PARSE_ReadSignedLongSkipClass3_Alt`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion wrapper to Target 071 with the same shape but alternate parse helper call.
+- Efficient incremental promotion inside `unknown24.s` with minimal new risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parse_read_signed_long_skip_class3_alt_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parse_read_signed_long_skip_class3_alt_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parse_read_signed_long_skip_class3_alt.awk`
+- Promotion gate: `src/decomp/scripts/promote_parse_read_signed_long_skip_class3_alt_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parse_read_signed_long_skip_class3_alt_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parse_read_signed_long_skip_class3_alt_target_gcc.sh`
+
+Current notes:
+- GCC uses the same compact wrapper style as Target 071; key behavior is preserved: null guard, class3 skip call, `PARSE_ReadSignedLong_NoBranch` dispatch, parsed-value return.
+- Semantic gate validates those invariants explicitly.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 073: `modules/submodules/unknown24.s` (`MEMLIST_FreeAll`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First non-wrapper stateful routine in `unknown24.s` with a short list-walk loop.
+- Good entry point before larger allocator routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/memlist_free_all_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_memlist_free_all_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_memlist_free_all.awk`
+- Promotion gate: `src/decomp/scripts/promote_memlist_free_all_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_memlist_free_all_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_memlist_free_all_target_gcc.sh`
+
+Current notes:
+- GCC may vary register and loop-block layout, but behavior remains: load memlist head, iterate nodes, free each block with its size, then clear both head/tail globals.
+- Semantic gate validates load/next/size/call/loop/clear invariants and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 074: `modules/submodules/unknown32.s` (`UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny jump-table stub with single-target dispatch.
+- Low-risk promotion that extends `unknown32.s` coverage before the larger handle-close routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown32_jmptbl_esq_return_with_stack_code_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown32_jmptbl_esq_return_with_stack_code_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown32_jmptbl_esq_return_with_stack_code.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown32_jmptbl_esq_return_with_stack_code_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown32_jmptbl_esq_return_with_stack_code_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown32_jmptbl_esq_return_with_stack_code_target_gcc.sh`
+
+Current notes:
+- Original uses direct `JMP ESQ_ReturnWithStackCode`; GCC may emit call/return form instead. Both preserve single-target forward dispatch semantics.
+- Semantic gate validates target dispatch presence and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 075: `modules/submodules/unknown32.s` (`HANDLE_CloseAllAndReturnWithCode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core loop helper in `unknown32.s` with concrete handle-table semantics.
+- Builds naturally on promoted `DOS_CloseWithSignalCheck` and Target 074 jump-stub dispatch.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/handle_close_all_and_return_with_code_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_handle_close_all_and_return_with_code_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_handle_close_all_and_return_with_code.awk`
+- Promotion gate: `src/decomp/scripts/promote_handle_close_all_and_return_with_code_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_handle_close_all_and_return_with_code_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_handle_close_all_and_return_with_code_target_gcc.sh`
+
+Current notes:
+- GCC may alter loop/index register layout, but preserves count-based descending iteration, handle-entry flag read, bit-4 skip behavior, close-call dispatch for eligible entries, and final return-code dispatch via `UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode`.
+- Semantic gate validates those loop/call invariants and terminal return path.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 076: `modules/submodules/unknown24.s` (`MEMLIST_AllocTracked`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining non-trivial routine in `unknown24.s` after Targets 071-073.
+- Extends MEMLIST coverage from free-path into allocate/link path with concrete global-state updates.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/memlist_alloc_tracked_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_memlist_alloc_tracked_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_memlist_alloc_tracked.awk`
+- Promotion gate: `src/decomp/scripts/promote_memlist_alloc_tracked_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_memlist_alloc_tracked_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_memlist_alloc_tracked_target_gcc.sh`
+
+Current notes:
+- GCC may collapse A4-relative head/tail addressing into absolute-symbol loads/stores and may route `AllocMem` through a local helper, while preserving `size+12` allocation, null-return fast path, node link updates (head/tail/next/prev), first-node latch, and `node+12` return pointer.
+- Semantic gate validates those invariants directly.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 077: `modules/submodules/unknown2a.s` (`FORMAT_RawDoFmtWithScratchBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small wrapper in `unknown2a.s` with straightforward argument forwarding.
+- Extends coverage from prior `PARALLEL_RawDoFmtStackArgs` and formatter helper targets to this call-composition entrypoint.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/format_raw_dofmt_with_scratch_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_format_raw_dofmt_with_scratch_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_format_raw_dofmt_with_scratch_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_format_raw_dofmt_with_scratch_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_format_raw_dofmt_with_scratch_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_format_raw_dofmt_with_scratch_buffer_target_gcc.sh`
+
+Current notes:
+- GCC may omit the small local spill slot and use direct stack argument addressing, while preserving scratch-buffer reference, `FORMAT_FormatToBuffer2` call, `PARALLEL_RawDoFmtStackArgs` call, and return path.
+- Semantic gate validates those invariants directly.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 078: `modules/submodules/unknown2b.s` (`ESQ_MainEntryNoOpHook`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Trivial single-instruction no-op hook with stable semantics.
+- Fast confidence target in `unknown2b.s` before larger stream and DOS helper routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_main_entry_noop_hook_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_main_entry_noop_hook_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_main_entry_noop_hook.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_main_entry_noop_hook_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh`
+
+Current notes:
+- Original and GCC outputs reduce to `RTS` with minimal wrapper text differences.
+- Semantic gate validates terminal `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 079: `modules/submodules/unknown2b.s` (`ESQ_MainExitNoOpHook`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion no-op hook to Target 078 with identical low-risk shape.
+- Quickly increases `unknown2b.s` callable coverage while preserving strict binary gates.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_main_exit_noop_hook_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_main_exit_noop_hook_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_main_exit_noop_hook.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_main_exit_noop_hook_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh`
+
+Current notes:
+- Original and GCC outputs reduce to `RTS` with minimal wrapper text differences.
+- Semantic gate validates terminal `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 080: `modules/submodules/unknown2b.s` (`DOS_OpenFileWithMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small DOS wrapper with concrete call semantics and no extra state side effects.
+- Good bridge from no-op hooks into substantive `unknown2b.s` runtime helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_open_file_with_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_open_file_with_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_open_file_with_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_open_file_with_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh`
+
+Current notes:
+- GCC may route argument setup through a local helper wrapper while preserving pass-through DOS Open semantics (`name`, `mode`, open-call, return code).
+- Semantic gate validates argument forwarding/call/return invariants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 081: `modules/submodules/unknown2b.s` (`GRAPHICS_AllocRaster`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small graphics.library wrapper with stable two-argument call semantics.
+- Natural next step in `unknown2b.s` before the paired free wrapper and larger stream code.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/graphics_alloc_raster_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_graphics_alloc_raster_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_graphics_alloc_raster.awk`
+- Promotion gate: `src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_graphics_alloc_raster_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh`
+
+Current notes:
+- GCC may use a helper-call forwarding shape, while preserving width/height argument flow, graphics-library call path, and returned raster pointer.
+- Semantic gate validates argument forwarding, alloc call presence, and terminal return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 082: `modules/submodules/unknown2b.s` (`GRAPHICS_FreeRaster`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct companion wrapper to Target 081 in the same module.
+- Keeps `unknown2b.s` graphics wrapper pair aligned in C while preserving simple call semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/graphics_free_raster_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_graphics_free_raster_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_graphics_free_raster.awk`
+- Promotion gate: `src/decomp/scripts/promote_graphics_free_raster_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_graphics_free_raster_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_graphics_free_raster_target_gcc.sh`
+
+Current notes:
+- GCC may choose a compact register-forwarding form, while preserving raster pointer + width/height argument flow, graphics-library call path, and terminal return form.
+- Semantic gate validates argument forwarding, free call presence, and `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 083: `modules/submodules/unknown2b.s` (`DOS_MovepWordReadCallback`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny exported callback/code-label body used by translated write path.
+- High-confidence low-risk step before larger buffered stream routines in the same module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dos_movep_word_read_callback_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dos_movep_word_read_callback_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dos_movep_word_read_callback.awk`
+- Promotion gate: `src/decomp/scripts/promote_dos_movep_word_read_callback_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dos_movep_word_read_callback_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dos_movep_word_read_callback_target_gcc.sh`
+
+Current notes:
+- This symbol is emitted as a raw asm label body (not a normal C ABI wrapper), preserving the `MOVEP.W 0(A2),D6` + pad-word shape used by callback-pointer callsites.
+- Semantic gate validates `MOVEP` callback body plus trailing pad word.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

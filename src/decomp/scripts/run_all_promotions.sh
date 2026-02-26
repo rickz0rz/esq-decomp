@@ -15,13 +15,41 @@ SCRIPTS=(
     "src/decomp/scripts/promote_dos_seek_by_index_target_gcc.sh"
     "src/decomp/scripts/promote_dos_write_by_index_target_gcc.sh"
     "src/decomp/scripts/promote_handle_get_entry_by_index_target_gcc.sh"
+    "src/decomp/scripts/promote_handle_close_by_index_target_gcc.sh"
+    "src/decomp/scripts/promote_handle_open_with_mode_target_gcc.sh"
     "src/decomp/scripts/promote_dos_close_with_signal_check_target_gcc.sh"
     "src/decomp/scripts/promote_iostdreq_free_target_gcc.sh"
     "src/decomp/scripts/promote_iostdreq_cleanup_signal_and_msgport_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh"
+    "src/decomp/scripts/promote_signal_create_msgport_with_signal_target_gcc.sh"
+    "src/decomp/scripts/promote_dos_delay_target_gcc.sh"
+    "src/decomp/scripts/promote_battclock_get_seconds_target_gcc.sh"
+    "src/decomp/scripts/promote_battclock_write_seconds_target_gcc.sh"
+    "src/decomp/scripts/promote_dos_system_taglist_target_gcc.sh"
+    "src/decomp/scripts/promote_exec_call_vector_48_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_check_ready_stub_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_check_ready_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_wait_ready_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_write_string_loop_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_raw_dofmt_common_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_raw_dofmt_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_raw_dofmt_stack_args_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_write_char_hw_target_gcc.sh"
+    "src/decomp/scripts/promote_parallel_write_char_d0_target_gcc.sh"
+    "src/decomp/scripts/promote_clock_seconds_from_epoch_target_gcc.sh"
+    "src/decomp/scripts/promote_clock_check_date_or_seconds_from_epoch_target_gcc.sh"
+    "src/decomp/scripts/promote_unknown2a_stub0_target_gcc.sh"
+    "src/decomp/scripts/promote_format_raw_dofmt_with_scratch_buffer_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh"
+    "src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh"
+    "src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh"
+    "src/decomp/scripts/promote_graphics_free_raster_target_gcc.sh"
+    "src/decomp/scripts/promote_dos_movep_word_read_callback_target_gcc.sh"
     "src/decomp/scripts/promote_dos_open_new_file_if_missing_target_gcc.sh"
+    "src/decomp/scripts/promote_dos_open_with_error_state_target_gcc.sh"
     "src/decomp/scripts/promote_dos_delete_and_recreate_file_target_gcc.sh"
     "src/decomp/scripts/promote_dos_read_with_error_state_target_gcc.sh"
     "src/decomp/scripts/promote_dos_seek_with_error_state_target_gcc.sh"
@@ -49,6 +77,16 @@ SCRIPTS=(
     "src/decomp/scripts/promote_wdisp_sprintf_target_gcc.sh"
     "src/decomp/scripts/promote_parse_read_signed_long_nobranch_target_gcc.sh"
     "src/decomp/scripts/promote_parse_read_signed_long_target_gcc.sh"
+    "src/decomp/scripts/promote_struct_free_with_size_field_target_gcc.sh"
+    "src/decomp/scripts/promote_struct_alloc_with_owner_target_gcc.sh"
+    "src/decomp/scripts/promote_string_find_substring_target_gcc.sh"
+    "src/decomp/scripts/promote_signal_poll_and_dispatch_target_gcc.sh"
+    "src/decomp/scripts/promote_parse_read_signed_long_skip_class3_target_gcc.sh"
+    "src/decomp/scripts/promote_parse_read_signed_long_skip_class3_alt_target_gcc.sh"
+    "src/decomp/scripts/promote_memlist_free_all_target_gcc.sh"
+    "src/decomp/scripts/promote_memlist_alloc_tracked_target_gcc.sh"
+    "src/decomp/scripts/promote_unknown32_jmptbl_esq_return_with_stack_code_target_gcc.sh"
+    "src/decomp/scripts/promote_handle_close_all_and_return_with_code_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
@@ -61,3 +99,15 @@ done
 
 echo
 echo "all promotion gates passed"
+
+if [ "${RUN_FULL_C_TRIAL:-1}" = "1" ]; then
+    echo
+    echo "==> src/decomp/scripts/full_compile_all_c_trial.sh"
+    if ! bash "src/decomp/scripts/full_compile_all_c_trial.sh"; then
+        if [ "${STRICT_FULL_C_TRIAL:-0}" = "1" ]; then
+            echo "full C trial failed (STRICT_FULL_C_TRIAL=1)" >&2
+            exit 1
+        fi
+        echo "warning: full C trial failed (non-blocking); set STRICT_FULL_C_TRIAL=1 to gate on it" >&2
+    fi
+fi
