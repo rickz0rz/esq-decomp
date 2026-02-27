@@ -2414,6 +2414,190 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 120: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Low-risk companion to other `DISKIO` stubs already promoted in the same `ESQIFF` table.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_diskio_get_filesize_from_handle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_diskio_get_filesize_from_handle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_diskio_get_filesize_from_handle.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_diskio_get_filesize_from_handle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_diskio_get_filesize_from_handle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_diskio_get_filesize_from_handle_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_GetFilesizeFromHandle`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 121: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- No-arg UI-refresh forwarder with stable call signature and side effects delegated entirely to the callee.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_diskio_force_ui_refresh_if_idle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_diskio_force_ui_refresh_if_idle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_diskio_force_ui_refresh_if_idle.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_diskio_force_ui_refresh_if_idle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_diskio_force_ui_refresh_if_idle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_diskio_force_ui_refresh_if_idle_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_ForceUiRefreshIfIdle`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 122: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- High-frequency no-arg copper-update forwarder with no local control flow in the stub itself.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_inc_copper_lists_towards_targets_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_inc_copper_lists_towards_targets_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_inc_copper_lists_towards_targets.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_inc_copper_lists_towards_targets_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_inc_copper_lists_towards_targets_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_inc_copper_lists_towards_targets_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_IncCopperListsTowardsTargets`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 123: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Target 122 completing the copper-list increment/decrement stub pair.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_dec_copper_lists_primary_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_dec_copper_lists_primary_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_dec_copper_lists_primary.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_dec_copper_lists_primary_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_dec_copper_lists_primary_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_dec_copper_lists_primary_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_DecCopperListsPrimary`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 124: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- No-argument task-start forwarder with documented callee signature in `ctasks.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_ctasks_start_iff_task_process_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_ctasks_start_iff_task_process_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_ctasks_start_iff_task_process.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_ctasks_start_iff_task_process_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_ctasks_start_iff_task_process_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_ctasks_start_iff_task_process_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP CTASKS_StartIffTaskProcess`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 125: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- No-argument script-control helper with simple enable-gated side effects in callee.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_script_assert_ctrl_line_if_enabled_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_script_assert_ctrl_line_if_enabled_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_script_assert_ctrl_line_if_enabled.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_script_assert_ctrl_line_if_enabled_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_script_assert_ctrl_line_if_enabled_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_script_assert_ctrl_line_if_enabled_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP SCRIPT_AssertCtrlLineIfEnabled`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 126: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Two-argument copper-entry helper stub with call signature recovered from `app2.s` header annotations.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_move_copper_entry_toward_start_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_move_copper_entry_toward_start_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_move_copper_entry_toward_start.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_move_copper_entry_toward_start_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_move_copper_entry_toward_start_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_move_copper_entry_toward_start_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_MoveCopperEntryTowardStart`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 127: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Target 126 covering the reverse-direction copper-entry movement helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_move_copper_entry_toward_end_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_move_copper_entry_toward_end_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_move_copper_entry_toward_end.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_move_copper_entry_toward_end_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_move_copper_entry_toward_end_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_move_copper_entry_toward_end_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_MoveCopperEntryTowardEnd`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
 
 Status: promoted (GCC gate)
