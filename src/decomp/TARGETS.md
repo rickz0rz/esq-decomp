@@ -2482,3 +2482,95 @@ Current notes:
 - Original assembly is a direct `JMP PARSE_ReadSignedLongSkipClass3_Alt`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 108: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_STRING_CompareNoCase`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Low-risk first step into the `ESQIFF` jump table using an already-promoted string helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_string_compare_nocase_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_nocase.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareNoCase`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 109: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_STRING_CompareN`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Target 108 that extends `ESQIFF` string-stub coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_string_compare_n_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_n_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_n.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_n_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_string_compare_n_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_n_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareN`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 110: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_STRING_CompareNoCaseN`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Targets 108/109 completing the three-string-compare stub set.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_string_compare_nocase_n_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_n_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_nocase_n.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_n_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_n_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_n_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareNoCaseN`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 111: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_MATH_DivS32`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Adds arithmetic-stub coverage in the same `ESQIFF` jump-table cluster.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_math_divs32_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_math_divs32_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_math_divs32.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_math_divs32_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_math_divs32_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_math_divs32_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MATH_DivS32`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
