@@ -2690,6 +2690,98 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 132: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Two-argument brush lookup helper with conservative stack-arg signature from `brush.s` headers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_brush_find_brush_by_predicate_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_brush_find_brush_by_predicate_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_brush_find_brush_by_predicate.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_brush_find_brush_by_predicate_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_brush_find_brush_by_predicate_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_brush_find_brush_by_predicate_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_FindBrushByPredicate`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 133: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_BRUSH_FreeBrushList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Multi-argument brush cleanup helper wrapper using conservative stack-arg pass-through.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_brush_free_brush_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_brush_free_brush_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_brush_free_brush_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_brush_free_brush_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_brush_free_brush_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_brush_free_brush_list_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_FreeBrushList`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 134: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- One-argument label-selection wrapper with straightforward dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_brush_select_brush_by_label_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_brush_select_brush_by_label_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_brush_select_brush_by_label.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_brush_select_brush_by_label_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_brush_select_brush_by_label_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_brush_select_brush_by_label_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_SelectBrushByLabel`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 135: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- One-argument text-match lookup wrapper with stable pointer-arg call shape.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_textdisp_find_entry_index_by_wildcard_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_textdisp_find_entry_index_by_wildcard_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_textdisp_find_entry_index_by_wildcard.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_textdisp_find_entry_index_by_wildcard_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_textdisp_find_entry_index_by_wildcard_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_textdisp_find_entry_index_by_wildcard_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP TEXTDISP_FindEntryIndexByWildcard`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
 
 Status: promoted (GCC gate)
