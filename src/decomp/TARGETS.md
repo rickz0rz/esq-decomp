@@ -1999,3 +1999,26 @@ Current notes:
 - C candidate preserves byte-at-a-time write loop, `WriteRemaining` decrement and overflow fallback via `STREAM_BufferedPutcOrFlush`, trailing `-1` flush call, and length return behavior.
 - Semantic gate validates length-scan/load flow, required `Global_PreallocHandleNode1_*` references, flush sentinel path, and terminal return invariants.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 087: `modules/submodules/unknown29.s` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny exported jump-stub companion to Target 085 in the same module.
+- Low-risk coverage step that keeps startup-path exports fully represented in the GCC promotion set.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown29_jmptbl_esq_main_init_and_run_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_MainInitAndRun`; GCC may emit jump/call-return form, both accepted as equivalent stub dispatch in the semantic gate.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
