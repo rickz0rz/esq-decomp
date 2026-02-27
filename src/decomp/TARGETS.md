@@ -2114,3 +2114,95 @@ Current notes:
 - Original assembly is a direct `JMP BUFFER_FlushAllAndCloseWithCode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 092: `modules/groups/a/r/xjump.s` (`GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/r/xjump.s` with direct forward-dispatch semantics.
+- Low-risk expansion into a new group-level jump-stub file.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ar_jmptbl_parseini_write_error_log_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ar_jmptbl_parseini_write_error_log_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ar_jmptbl_parseini_write_error_log_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ar_jmptbl_parseini_write_error_log_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ar_jmptbl_parseini_write_error_log_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ar_jmptbl_parseini_write_error_log_entry_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP PARSEINI_WriteErrorLogEntry`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 093: `modules/groups/a/r/xjump.s` (`GROUP_AR_JMPTBL_STRING_AppendAtNull`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/r/xjump.s` with direct forward-dispatch semantics.
+- Companion to Target 092 that completes coverage of exports in this stub file.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ar_jmptbl_string_append_at_null_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ar_jmptbl_string_append_at_null_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ar_jmptbl_string_append_at_null.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ar_jmptbl_string_append_at_null_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ar_jmptbl_string_append_at_null_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ar_jmptbl_string_append_at_null_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_AppendAtNull`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 094: `modules/groups/a/a/xjump.s` (`GROUP_AA_JMPTBL_STRING_CompareN`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/a/xjump.s` with direct forward-dispatch semantics.
+- Low-risk bridge into the `GROUP_AA` stub cluster while reusing an already-promoted callee.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aa_jmptbl_string_compare_n_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aa_jmptbl_string_compare_n_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aa_jmptbl_string_compare_n.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aa_jmptbl_string_compare_n_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aa_jmptbl_string_compare_n_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aa_jmptbl_string_compare_n_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareN`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 095: `modules/groups/a/a/xjump.s` (`GROUP_AA_JMPTBL_STRING_CompareNoCase`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/a/xjump.s` with direct forward-dispatch semantics.
+- Companion to Target 094 that increments `GROUP_AA` coverage with another string helper stub.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aa_jmptbl_string_compare_nocase_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aa_jmptbl_string_compare_nocase_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aa_jmptbl_string_compare_nocase.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aa_jmptbl_string_compare_nocase_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aa_jmptbl_string_compare_nocase_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aa_jmptbl_string_compare_nocase_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareNoCase`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

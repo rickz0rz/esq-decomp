@@ -46,6 +46,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
+- `src/decomp/scripts/compare_group_aa_jmptbl_string_compare_nocase_trial_gcc.sh`: GCC-specific compare lane for `Target 095` (`GROUP_AA_JMPTBL_STRING_CompareNoCase`).
+- `src/decomp/scripts/compare_group_aa_jmptbl_string_compare_n_trial_gcc.sh`: GCC-specific compare lane for `Target 094` (`GROUP_AA_JMPTBL_STRING_CompareN`).
+- `src/decomp/scripts/compare_group_ar_jmptbl_parseini_write_error_log_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 092` (`GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry`).
+- `src/decomp/scripts/compare_group_ar_jmptbl_string_append_at_null_trial_gcc.sh`: GCC-specific compare lane for `Target 093` (`GROUP_AR_JMPTBL_STRING_AppendAtNull`).
 - `src/decomp/scripts/compare_group_main_b_jmptbl_dos_delay_trial_gcc.sh`: GCC-specific compare lane for `Target 090` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`).
 - `src/decomp/scripts/compare_group_main_b_jmptbl_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 088` (`GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_group_main_b_jmptbl_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 089` (`GROUP_MAIN_B_JMPTBL_MATH_Mulu32`).
@@ -135,6 +139,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
+- `src/decomp/scripts/semantic_filter_group_aa_jmptbl_string_compare_nocase.awk`: semantic post-filter for `GROUP_AA_JMPTBL_STRING_CompareNoCase` compare lane.
+- `src/decomp/scripts/semantic_filter_group_aa_jmptbl_string_compare_n.awk`: semantic post-filter for `GROUP_AA_JMPTBL_STRING_CompareN` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ar_jmptbl_parseini_write_error_log_entry.awk`: semantic post-filter for `GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ar_jmptbl_string_append_at_null.awk`: semantic post-filter for `GROUP_AR_JMPTBL_STRING_AppendAtNull` compare lane.
 - `src/decomp/scripts/semantic_filter_group_main_b_jmptbl_dos_delay.awk`: semantic post-filter for `GROUP_MAIN_B_JMPTBL_DOS_Delay` compare lane.
 - `src/decomp/scripts/semantic_filter_group_main_b_jmptbl_stream_buffered_write_string.awk`: semantic post-filter for `GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_group_main_b_jmptbl_math_mulu32.awk`: semantic post-filter for `GROUP_MAIN_B_JMPTBL_MATH_Mulu32` compare lane.
@@ -223,6 +231,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_aa_jmptbl_string_compare_nocase_target_gcc.sh`: promotion gate for Target 095 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_aa_jmptbl_string_compare_n_target_gcc.sh`: promotion gate for Target 094 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ar_jmptbl_parseini_write_error_log_entry_target_gcc.sh`: promotion gate for Target 092 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ar_jmptbl_string_append_at_null_target_gcc.sh`: promotion gate for Target 093 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_main_b_jmptbl_dos_delay_target_gcc.sh`: promotion gate for Target 090 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_main_b_jmptbl_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 088 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_main_b_jmptbl_math_mulu32_target_gcc.sh`: promotion gate for Target 089 GCC lane (semantic + build/hash gates).
@@ -316,7 +328,7 @@ A practical next step is to add one small module replacement where behavior is t
 
 ## Current Snapshot
 - Promoted GCC targets: `001` (`xjump`), `002` (`memory`), `003` (`clock wrapper`), `004` (`STRING_ToUpperChar`), `005` (`MEM_Move`), `006` (`FORMAT_U32ToDecimalString`), `007` (`LIST_InitHeader`), `008` (`DOS_ReadByIndex`), `009` (`DOS_SeekByIndex`), `010` (`STRING_AppendAtNull`), `011` (`STRING_AppendN`), `012` (`STRING_CopyPadNul`), `013` (`STRING_CompareN`), `014` (`STRING_CompareNoCase`), `015` (`STRING_CompareNoCaseN`), `016` (`STRING_ToUpperInPlace`), `017` (`STR_FindChar`), `018` (`STR_FindCharPtr`), `019` (`STR_FindAnyCharInSet`), `020` (`STR_FindAnyCharPtr`), `021` (`STR_SkipClass3Chars`), `022` (`FORMAT_CallbackWriteChar`), `023` (`FORMAT_FormatToCallbackBuffer`), `024` (`FORMAT_U32ToOctalString`), `025` (`FORMAT_U32ToHexString`), `026` (`UNKNOWN10_PrintfPutcToBuffer`), `027` (`WDISP_SPrintf`), `028` (`PARSE_ReadSignedLong_NoBranch`), `029` (`PARSE_ReadSignedLong`), `030` (`STR_CopyUntilAnyDelimN`), `031` (`STREAM_ReadLineWithLimit`), `032` (`DOS_WriteWithErrorState`), `033` (`DOS_ReadWithErrorState`), `034` (`DOS_SeekWithErrorState`), `035` (`EXEC_CallVector_348`), `036` (`HANDLE_GetEntryByIndex`), `037` (`DOS_CloseWithSignalCheck`), `038` (`IOSTDREQ_Free`), `039` (`IOSTDREQ_CleanupSignalAndMsgport`), `040` (`MATH_Mulu32`), `041` (`DOS_WriteByIndex`), `042` (`ALLOCATE_AllocAndInitializeIOStdReq`), `043` (`MATH_DivS32`), `044` (`DOS_OpenNewFileIfMissing`), `045` (`DOS_DeleteAndRecreateFile`), `046` (`SIGNAL_CreateMsgPortWithSignal`), `047` (`DOS_Delay`), `048` (`BATTCLOCK_GetSecondsFromBatteryBackedClock`), `049` (`BATTCLOCK_WriteSecondsToBatteryBackedClock`), `050` (`DOS_SystemTagList`), `051` (`EXEC_CallVector_48`), `052` (`PARALLEL_CheckReadyStub`), `053` (`UNKNOWN2A_Stub0`), `054` (`PARALLEL_CheckReady`), `055` (`PARALLEL_WriteCharD0`), `056` (`CLOCK_SecondsFromEpoch`), `057` (`CLOCK_CheckDateOrSecondsFromEpoch`), `058` (`PARALLEL_WaitReady`), `059` (`PARALLEL_WriteStringLoop`), `060` (`PARALLEL_RawDoFmt`), `061` (`PARALLEL_WriteCharHw`), `062` (`PARALLEL_RawDoFmtStackArgs`), `063` (`PARALLEL_RawDoFmtCommon`), `064` (`STRUCT_FreeWithSizeField`), `065` (`STRUCT_AllocWithOwner`), `066` (`DOS_OpenWithErrorState`), `067` (`HANDLE_CloseByIndex`), `068` (`HANDLE_OpenWithMode`), `069` (`STRING_FindSubstring`), `070` (`SIGNAL_PollAndDispatch`), `071` (`PARSE_ReadSignedLongSkipClass3`), `072` (`PARSE_ReadSignedLongSkipClass3_Alt`), `073` (`MEMLIST_FreeAll`), `074` (`UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode`), `075` (`HANDLE_CloseAllAndReturnWithCode`), `076` (`MEMLIST_AllocTracked`), `077` (`FORMAT_RawDoFmtWithScratchBuffer`), `078` (`ESQ_MainEntryNoOpHook`), `079` (`ESQ_MainExitNoOpHook`), `080` (`DOS_OpenFileWithMode`), `081` (`GRAPHICS_AllocRaster`), `082` (`GRAPHICS_FreeRaster`), `083` (`DOS_MovepWordReadCallback`), `084` (`UNKNOWN_ParseListAndUpdateEntries`).
-- Additional promoted GCC targets: `085` (`ESQ_ParseCommandLineAndRun`), `086` (`STREAM_BufferedWriteString`), `087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`), `088` (`GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString`), `089` (`GROUP_MAIN_B_JMPTBL_MATH_Mulu32`), `090` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`), `091` (`GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode`).
+- Additional promoted GCC targets: `085` (`ESQ_ParseCommandLineAndRun`), `086` (`STREAM_BufferedWriteString`), `087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`), `088` (`GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString`), `089` (`GROUP_MAIN_B_JMPTBL_MATH_Mulu32`), `090` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`), `091` (`GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode`), `092` (`GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry`), `093` (`GROUP_AR_JMPTBL_STRING_AppendAtNull`), `094` (`GROUP_AA_JMPTBL_STRING_CompareN`), `095` (`GROUP_AA_JMPTBL_STRING_CompareNoCase`).
 - Canonical build/hash status remains unchanged (`./test-hash.sh` should still match `6bd4760d...e7c2fa2`).
 - Current approach is still hybrid: promote small equivalence-proven functions first, then expand to module-level GCC replacement.
 
@@ -351,6 +363,10 @@ bash src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh
+bash src/decomp/scripts/promote_group_aa_jmptbl_string_compare_nocase_target_gcc.sh
+bash src/decomp/scripts/promote_group_aa_jmptbl_string_compare_n_target_gcc.sh
+bash src/decomp/scripts/promote_group_ar_jmptbl_parseini_write_error_log_entry_target_gcc.sh
+bash src/decomp/scripts/promote_group_ar_jmptbl_string_append_at_null_target_gcc.sh
 bash src/decomp/scripts/promote_group_main_b_jmptbl_dos_delay_target_gcc.sh
 bash src/decomp/scripts/promote_group_main_b_jmptbl_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_group_main_b_jmptbl_math_mulu32_target_gcc.sh
@@ -427,7 +443,7 @@ bash src/decomp/scripts/full_compile_all_c_trial.sh
 Known good GCC profiles by target:
 - Target 002: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fno-omit-frame-pointer`
 - Target 003: `-O0 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
-- Targets 004/005/006/007/008/009/010/011/012/013/014/015/016/017/018/019/020/021/022/023/024/025/026/027/028/029/030/031/032/033/034/035/036/037/038/039/040/041/042/043/044/045/046/047/048/049/050/051/052/053/054/055/056/057/058/059/060/061/062/063/064/065/066/067/068/069/070/071/072/073/074/075/076/077/078/079/080/081/082/083/084/085/086/087/088/089/090/091: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
+- Targets 004/005/006/007/008/009/010/011/012/013/014/015/016/017/018/019/020/021/022/023/024/025/026/027/028/029/030/031/032/033/034/035/036/037/038/039/040/041/042/043/044/045/046/047/048/049/050/051/052/053/054/055/056/057/058/059/060/061/062/063/064/065/066/067/068/069/070/071/072/073/074/075/076/077/078/079/080/081/082/083/084/085/086/087/088/089/090/091/092/093/094/095: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
