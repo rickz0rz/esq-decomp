@@ -111,6 +111,26 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_group_au_jmptbl_brush_populate_brush_list_trial_gcc.sh`: GCC-specific compare lane for `Target 195` (`GROUP_AU_JMPTBL_BRUSH_PopulateBrushList`).
 - `src/decomp/scripts/compare_group_ax_jmptbl_format_raw_dofmt_with_scratch_buffer_trial_gcc.sh`: GCC-specific compare lane for `Target 196` (`GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer`).
 - `src/decomp/scripts/compare_group_az_jmptbl_esq_cold_reboot_trial_gcc.sh`: GCC-specific compare lane for `Target 197` (`GROUP_AZ_JMPTBL_ESQ_ColdReboot`).
+- `src/decomp/scripts/compare_group_aa_jmptbl_gcommand_find_path_separator_trial_gcc.sh`: GCC-specific compare lane for `Target 198` (`GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator`).
+- `src/decomp/scripts/compare_group_aa_jmptbl_graphics_alloc_raster_trial_gcc.sh`: GCC-specific compare lane for `Target 199` (`GROUP_AA_JMPTBL_GRAPHICS_AllocRaster`).
+- `src/decomp/scripts/compare_group_af_jmptbl_gcommand_save_brush_result_trial_gcc.sh`: GCC-specific compare lane for `Target 200` (`GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_newgrid_set_selection_markers_trial_gcc.sh`: GCC-specific compare lane for `Target 201` (`GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_str_find_char_ptr_trial_gcc.sh`: GCC-specific compare lane for `Target 202` (`GROUP_AI_JMPTBL_STR_FindCharPtr`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_tliba1_draw_text_with_inset_segments_trial_gcc.sh`: GCC-specific compare lane for `Target 203` (`GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_format_format_to_buffer2_trial_gcc.sh`: GCC-specific compare lane for `Target 204` (`GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_str_skip_class3_chars_trial_gcc.sh`: GCC-specific compare lane for `Target 205` (`GROUP_AI_JMPTBL_STR_SkipClass3Chars`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_string_append_at_null_trial_gcc.sh`: GCC-specific compare lane for `Target 206` (`GROUP_AI_JMPTBL_STRING_AppendAtNull`).
+- `src/decomp/scripts/compare_group_ai_jmptbl_str_copy_until_any_delim_n_trial_gcc.sh`: GCC-specific compare lane for `Target 207` (`GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_esqpars_remove_group_entry_and_release_strings_trial_gcc.sh`: GCC-specific compare lane for `Target 208` (`GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_esqfunc_free_line_text_buffers_trial_gcc.sh`: GCC-specific compare lane for `Target 209` (`GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_esqiff_deallocate_ads_and_logo_lst_data_trial_gcc.sh`: GCC-specific compare lane for `Target 210` (`GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_ladfunc_free_banner_rect_entries_trial_gcc.sh`: GCC-specific compare lane for `Target 211` (`GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_unknown2_a_stub0_trial_gcc.sh`: GCC-specific compare lane for `Target 212` (`GROUP_AB_JMPTBL_UNKNOWN2A_Stub0`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_newgrid_shutdown_grid_resources_trial_gcc.sh`: GCC-specific compare lane for `Target 213` (`GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_locavail_free_resource_chain_trial_gcc.sh`: GCC-specific compare lane for `Target 214` (`GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_graphics_free_raster_trial_gcc.sh`: GCC-specific compare lane for `Target 215` (`GROUP_AB_JMPTBL_GRAPHICS_FreeRaster`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_iostdreq_free_trial_gcc.sh`: GCC-specific compare lane for `Target 216` (`GROUP_AB_JMPTBL_IOSTDREQ_Free`).
+- `src/decomp/scripts/compare_group_ab_jmptbl_esqiff2_clear_line_head_tail_by_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 217` (`GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_textdisp_draw_channel_banner_trial_gcc.sh`: GCC-specific compare lane for `Target 146` (`GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_textdisp_format_entry_time_trial_gcc.sh`: GCC-specific compare lane for `Target 147` (`GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_tliba3_get_view_mode_height_trial_gcc.sh`: GCC-specific compare lane for `Target 148` (`GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight`).
@@ -306,6 +326,26 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_group_au_jmptbl_brush_populate_brush_list.awk`: semantic post-filter for `GROUP_AU_JMPTBL_BRUSH_PopulateBrushList` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ax_jmptbl_format_raw_dofmt_with_scratch_buffer.awk`: semantic post-filter for `GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer` compare lane.
 - `src/decomp/scripts/semantic_filter_group_az_jmptbl_esq_cold_reboot.awk`: semantic post-filter for `GROUP_AZ_JMPTBL_ESQ_ColdReboot` compare lane.
+- `src/decomp/scripts/semantic_filter_group_aa_jmptbl_gcommand_find_path_separator.awk`: semantic post-filter for `GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator` compare lane.
+- `src/decomp/scripts/semantic_filter_group_aa_jmptbl_graphics_alloc_raster.awk`: semantic post-filter for `GROUP_AA_JMPTBL_GRAPHICS_AllocRaster` compare lane.
+- `src/decomp/scripts/semantic_filter_group_af_jmptbl_gcommand_save_brush_result.awk`: semantic post-filter for `GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_newgrid_set_selection_markers.awk`: semantic post-filter for `GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_str_find_char_ptr.awk`: semantic post-filter for `GROUP_AI_JMPTBL_STR_FindCharPtr` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_tliba1_draw_text_with_inset_segments.awk`: semantic post-filter for `GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_format_format_to_buffer2.awk`: semantic post-filter for `GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_str_skip_class3_chars.awk`: semantic post-filter for `GROUP_AI_JMPTBL_STR_SkipClass3Chars` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_string_append_at_null.awk`: semantic post-filter for `GROUP_AI_JMPTBL_STRING_AppendAtNull` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ai_jmptbl_str_copy_until_any_delim_n.awk`: semantic post-filter for `GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_esqpars_remove_group_entry_and_release_strings.awk`: semantic post-filter for `GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_esqfunc_free_line_text_buffers.awk`: semantic post-filter for `GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_esqiff_deallocate_ads_and_logo_lst_data.awk`: semantic post-filter for `GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_ladfunc_free_banner_rect_entries.awk`: semantic post-filter for `GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_unknown2_a_stub0.awk`: semantic post-filter for `GROUP_AB_JMPTBL_UNKNOWN2A_Stub0` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_newgrid_shutdown_grid_resources.awk`: semantic post-filter for `GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_locavail_free_resource_chain.awk`: semantic post-filter for `GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_graphics_free_raster.awk`: semantic post-filter for `GROUP_AB_JMPTBL_GRAPHICS_FreeRaster` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_iostdreq_free.awk`: semantic post-filter for `GROUP_AB_JMPTBL_IOSTDREQ_Free` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ab_jmptbl_esqiff2_clear_line_head_tail_by_mode.awk`: semantic post-filter for `GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_textdisp_draw_channel_banner.awk`: semantic post-filter for `GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_textdisp_format_entry_time.awk`: semantic post-filter for `GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_tliba3_get_view_mode_height.awk`: semantic post-filter for `GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight` compare lane.
@@ -500,6 +540,26 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_group_au_jmptbl_brush_populate_brush_list_target_gcc.sh`: promotion gate for Target 195 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ax_jmptbl_format_raw_dofmt_with_scratch_buffer_target_gcc.sh`: promotion gate for Target 196 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_az_jmptbl_esq_cold_reboot_target_gcc.sh`: promotion gate for Target 197 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_aa_jmptbl_gcommand_find_path_separator_target_gcc.sh`: promotion gate for Target 198 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_aa_jmptbl_graphics_alloc_raster_target_gcc.sh`: promotion gate for Target 199 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_af_jmptbl_gcommand_save_brush_result_target_gcc.sh`: promotion gate for Target 200 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_newgrid_set_selection_markers_target_gcc.sh`: promotion gate for Target 201 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_str_find_char_ptr_target_gcc.sh`: promotion gate for Target 202 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_tliba1_draw_text_with_inset_segments_target_gcc.sh`: promotion gate for Target 203 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_format_format_to_buffer2_target_gcc.sh`: promotion gate for Target 204 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_str_skip_class3_chars_target_gcc.sh`: promotion gate for Target 205 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_string_append_at_null_target_gcc.sh`: promotion gate for Target 206 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ai_jmptbl_str_copy_until_any_delim_n_target_gcc.sh`: promotion gate for Target 207 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_esqpars_remove_group_entry_and_release_strings_target_gcc.sh`: promotion gate for Target 208 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_esqfunc_free_line_text_buffers_target_gcc.sh`: promotion gate for Target 209 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_esqiff_deallocate_ads_and_logo_lst_data_target_gcc.sh`: promotion gate for Target 210 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_ladfunc_free_banner_rect_entries_target_gcc.sh`: promotion gate for Target 211 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_unknown2_a_stub0_target_gcc.sh`: promotion gate for Target 212 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_newgrid_shutdown_grid_resources_target_gcc.sh`: promotion gate for Target 213 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_locavail_free_resource_chain_target_gcc.sh`: promotion gate for Target 214 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_graphics_free_raster_target_gcc.sh`: promotion gate for Target 215 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_iostdreq_free_target_gcc.sh`: promotion gate for Target 216 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ab_jmptbl_esqiff2_clear_line_head_tail_by_mode_target_gcc.sh`: promotion gate for Target 217 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_textdisp_draw_channel_banner_target_gcc.sh`: promotion gate for Target 146 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_textdisp_format_entry_time_target_gcc.sh`: promotion gate for Target 147 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_tliba3_get_view_mode_height_target_gcc.sh`: promotion gate for Target 148 GCC lane (semantic + build/hash gates).
@@ -735,6 +795,26 @@ bash src/decomp/scripts/promote_group_au_jmptbl_brush_append_brush_node_target_g
 bash src/decomp/scripts/promote_group_au_jmptbl_brush_populate_brush_list_target_gcc.sh
 bash src/decomp/scripts/promote_group_ax_jmptbl_format_raw_dofmt_with_scratch_buffer_target_gcc.sh
 bash src/decomp/scripts/promote_group_az_jmptbl_esq_cold_reboot_target_gcc.sh
+bash src/decomp/scripts/promote_group_aa_jmptbl_gcommand_find_path_separator_target_gcc.sh
+bash src/decomp/scripts/promote_group_aa_jmptbl_graphics_alloc_raster_target_gcc.sh
+bash src/decomp/scripts/promote_group_af_jmptbl_gcommand_save_brush_result_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_newgrid_set_selection_markers_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_str_find_char_ptr_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_tliba1_draw_text_with_inset_segments_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_format_format_to_buffer2_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_str_skip_class3_chars_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_string_append_at_null_target_gcc.sh
+bash src/decomp/scripts/promote_group_ai_jmptbl_str_copy_until_any_delim_n_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_esqpars_remove_group_entry_and_release_strings_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_esqfunc_free_line_text_buffers_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_esqiff_deallocate_ads_and_logo_lst_data_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_ladfunc_free_banner_rect_entries_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_unknown2_a_stub0_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_newgrid_shutdown_grid_resources_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_locavail_free_resource_chain_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_graphics_free_raster_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_iostdreq_free_target_gcc.sh
+bash src/decomp/scripts/promote_group_ab_jmptbl_esqiff2_clear_line_head_tail_by_mode_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_textdisp_draw_channel_banner_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_textdisp_format_entry_time_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_tliba3_get_view_mode_height_target_gcc.sh
@@ -853,7 +933,7 @@ Known good GCC profiles by target:
 - Target 002: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fno-omit-frame-pointer`
 - Target 003: `-O0 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
 - Targets 004/005/006/007/008/009/010/011/012/013/014/015/016/017/018/019/020/021/022/023/024/025/026/027/028/029/030/031/032/033/034/035/036/037/038/039/040/041/042/043/044/045/046/047/048/049/050/051/052/053/054/055/056/057/058/059/060/061/062/063/064/065/066/067/068/069/070/071/072/073/074/075/076/077/078/079/080/081/082/083/084/085/086/087/088/089/090/091/092/093/094/095/096/097/098/099/100/101/102/103/104/105/106/107/108/109/110/111/112/113/114/115/116/117/118/119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
-- Targets 148/149/150/151/152/153/154/155/156/157/158/159/160/161/162/163/164/165/166/167/168/169/170/171/172/173/174/175/176/177/178/179/180/181/182/183/184/185/186/187/188/189/190/191/192/193/194/195/196/197: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
+- Targets 148/149/150/151/152/153/154/155/156/157/158/159/160/161/162/163/164/165/166/167/168/169/170/171/172/173/174/175/176/177/178/179/180/181/182/183/184/185/186/187/188/189/190/191/192/193/194/195/196/197/198/199/200/201/202/203/204/205/206/207/208/209/210/211/212/213/214/215/216/217: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
