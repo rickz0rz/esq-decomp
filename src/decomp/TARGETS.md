@@ -3495,6 +3495,144 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 167: `modules/groups/a/l/xjump.s` (`GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/l/xjump.s` with direct forward-dispatch semantics.
+- Low-risk bridge to `LADFUNC_ComposePackedPenByte`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_al_jmptbl_ladfunc_pack_nibbles_to_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_al_jmptbl_ladfunc_pack_nibbles_to_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_al_jmptbl_ladfunc_pack_nibbles_to_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_al_jmptbl_ladfunc_pack_nibbles_to_byte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_al_jmptbl_ladfunc_pack_nibbles_to_byte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_al_jmptbl_ladfunc_pack_nibbles_to_byte_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_ComposePackedPenByte`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 168: `modules/groups/a/l/xjump.s` (`GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/l/xjump.s` with direct forward-dispatch semantics.
+- Companion helper bridge to `LADFUNC_GetPackedPenLowNibble`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_al_jmptbl_ladfunc_extract_low_nibble_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_al_jmptbl_ladfunc_extract_low_nibble_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_al_jmptbl_ladfunc_extract_low_nibble.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_al_jmptbl_ladfunc_extract_low_nibble_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_al_jmptbl_ladfunc_extract_low_nibble_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_al_jmptbl_ladfunc_extract_low_nibble_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_GetPackedPenLowNibble`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 169: `modules/groups/a/l/xjump.s` (`GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/l/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to `LADFUNC_UpdateEntryFromTextAndAttrBuffers`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_UpdateEntryFromTextAndAttrBuffers`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 170: `modules/groups/a/l/xjump.s` (`GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/l/xjump.s` with direct forward-dispatch semantics.
+- Low-risk bridge to already-promoted decimal formatting helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_al_jmptbl_esq_write_dec_fixed_width_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_al_jmptbl_esq_write_dec_fixed_width_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_al_jmptbl_esq_write_dec_fixed_width.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_al_jmptbl_esq_write_dec_fixed_width_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_al_jmptbl_esq_write_dec_fixed_width_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_al_jmptbl_esq_write_dec_fixed_width_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_WriteDecFixedWidth`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 171: `modules/groups/a/l/xjump.s` (`GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/l/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to `LADFUNC_BuildEntryBuffersOrDefault`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_al_jmptbl_ladfunc_build_entry_buffers_or_default_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_al_jmptbl_ladfunc_build_entry_buffers_or_default_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_al_jmptbl_ladfunc_build_entry_buffers_or_default.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_al_jmptbl_ladfunc_build_entry_buffers_or_default_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_al_jmptbl_ladfunc_build_entry_buffers_or_default_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_al_jmptbl_ladfunc_build_entry_buffers_or_default_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_BuildEntryBuffersOrDefault`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 172: `modules/groups/a/l/xjump.s` (`GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/l/xjump.s` with direct forward-dispatch semantics.
+- Companion helper bridge to `LADFUNC_GetPackedPenHighNibble`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_al_jmptbl_ladfunc_extract_high_nibble_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_al_jmptbl_ladfunc_extract_high_nibble_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_al_jmptbl_ladfunc_extract_high_nibble.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_al_jmptbl_ladfunc_extract_high_nibble_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_al_jmptbl_ladfunc_extract_high_nibble_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_al_jmptbl_ladfunc_extract_high_nibble_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_GetPackedPenHighNibble`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
 
 Status: promoted (GCC gate)
