@@ -50,6 +50,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_dos_movep_word_read_callback_target_gcc.sh"
     "src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc.sh"
     "src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh"
+    "src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh"
     "src/decomp/scripts/promote_dos_open_new_file_if_missing_target_gcc.sh"
     "src/decomp/scripts/promote_dos_open_with_error_state_target_gcc.sh"
     "src/decomp/scripts/promote_dos_delete_and_recreate_file_target_gcc.sh"

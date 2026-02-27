@@ -1953,3 +1953,49 @@ Current notes:
 - C candidate preserves the 0x12-terminated list-name parse, wildcard guard, fixed row initialization (`4x`, stride `20`), and `+`-record field update semantics including `?` and `-999` sentinels.
 - Semantic gate validates wildcard/normalize/copy/parse/multiply call presence plus required global/state references and terminal `RTS`.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 085: `modules/submodules/unknown29.s` (`ESQ_ParseCommandLineAndRun`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Major startup control-path routine that stitches together argument parsing, handle setup, and handoff into main init/run.
+- Extends promotion coverage from helper wrappers into a high-leverage orchestration function.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_parse_command_line_and_run_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`
+
+Current notes:
+- C candidate preserves quoted/unquoted argv tokenization, zero-arg console-name fallback setup, DOS input/output/open handle wiring, default open-flag propagation, and final dispatch into `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` followed by `BUFFER_FlushAllAndCloseWithCode`.
+- Semantic gate validates required global/state references, parser constants (`space/tab/newline/quote`, length `40`), DOS/Exec call paths, and terminal return path invariants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 086: `modules/submodules/unknown2b.s` (`STREAM_BufferedWriteString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First stream-write routine in `unknown2b.s` promoted beyond wrapper/callback-level targets.
+- Captures buffer-cursor/update flow and flush fallback behavior in a compact loop-based routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/stream_buffered_write_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`
+
+Current notes:
+- C candidate preserves byte-at-a-time write loop, `WriteRemaining` decrement and overflow fallback via `STREAM_BufferedPutcOrFlush`, trailing `-1` flush call, and length return behavior.
+- Semantic gate validates length-scan/load flow, required `Global_PreallocHandleNode1_*` references, flush sentinel path, and terminal return invariants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
