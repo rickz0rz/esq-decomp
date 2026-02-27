@@ -3633,6 +3633,236 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 173: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Low-risk wrapper forwarding to DISKIO text-buffer parsing helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_consume_cstring_from_work_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_consume_cstring_from_work_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_consume_cstring_from_work_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_consume_cstring_from_work_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_consume_cstring_from_work_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_consume_cstring_from_work_buffer_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_ConsumeCStringFromWorkBuffer`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 174: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to numeric parse helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_parse_long_from_work_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_parse_long_from_work_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_parse_long_from_work_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_parse_long_from_work_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_parse_long_from_work_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_parse_long_from_work_buffer_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_ParseLongFromWorkBuffer`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 175: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_WriteDecimalField`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to buffered decimal writer.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_write_decimal_field_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_write_decimal_field_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_write_decimal_field.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_write_decimal_field_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_write_decimal_field_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_write_decimal_field_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_WriteDecimalField`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 176: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to buffered write helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_write_buffered_bytes_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_write_buffered_bytes_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_write_buffered_bytes.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_write_buffered_bytes_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_write_buffered_bytes_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_write_buffered_bytes_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_WriteBufferedBytes`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 177: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to file close/flush helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_close_buffered_file_and_flush_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_close_buffered_file_and_flush_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_close_buffered_file_and_flush.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_close_buffered_file_and_flush_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_close_buffered_file_and_flush_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_close_buffered_file_and_flush_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_CloseBufferedFileAndFlush`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 178: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_STRING_CompareNoCaseN`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Low-risk wrapper forwarding to already-promoted string helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_string_compare_nocase_n_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_string_compare_nocase_n_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_string_compare_nocase_n.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_string_compare_nocase_n_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_string_compare_nocase_n_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_string_compare_nocase_n_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareNoCaseN`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 179: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_MATH_Mulu32`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Low-risk arithmetic helper wrapper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_math_mulu32_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_math_mulu32_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_math_mulu32.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_math_mulu32_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_math_mulu32_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_math_mulu32_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MATH_Mulu32`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 180: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to buffered file-load helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_load_file_to_work_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_load_file_to_work_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_load_file_to_work_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_load_file_to_work_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_load_file_to_work_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_load_file_to_work_buffer_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_LoadFileToWorkBuffer`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 181: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Wrapper bridges callsite alias (`ReadCiaBBit5Mask`) to underlying helper (`SCRIPT_ReadHandshakeBit5Mask`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_script_read_ciab_bit5_mask_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_script_read_ciab_bit5_mask_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_script_read_ciab_bit5_mask.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_script_read_ciab_bit5_mask_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_script_read_ciab_bit5_mask_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_script_read_ciab_bit5_mask_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP SCRIPT_ReadHandshakeBit5Mask`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 182: `modules/groups/a/y/xjump.s` (`GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/y/xjump.s` with direct forward-dispatch semantics.
+- Final wrapper in file; compare lane trims trailing file-level `RTS` sentinel from source slice.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ay_jmptbl_diskio_open_file_with_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ay_jmptbl_diskio_open_file_with_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ay_jmptbl_diskio_open_file_with_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ay_jmptbl_diskio_open_file_with_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ay_jmptbl_diskio_open_file_with_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ay_jmptbl_diskio_open_file_with_buffer_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_OpenFileWithBuffer`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
 
 Status: promoted (GCC gate)
