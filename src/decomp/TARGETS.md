@@ -1930,3 +1930,26 @@ Current notes:
 - This symbol is emitted as a raw asm label body (not a normal C ABI wrapper), preserving the `MOVEP.W 0(A2),D6` + pad-word shape used by callback-pointer callsites.
 - Semantic gate validates `MOVEP` callback body plus trailing pad word.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 084: `modules/submodules/unknown.s` (`UNKNOWN_ParseListAndUpdateEntries`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First non-trivial parse/update routine promoted from `unknown.s`, expanding coverage beyond wrapper-style helpers.
+- Exercises wildcard match, day normalization, parsed numeric fields, and row update semantics through a single exported function.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_parse_list_and_update_entries_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_parse_list_and_update_entries_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_parse_list_and_update_entries.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_parse_list_and_update_entries_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc.sh`
+
+Current notes:
+- C candidate preserves the 0x12-terminated list-name parse, wildcard guard, fixed row initialization (`4x`, stride `20`), and `+`-record field update semantics including `?` and `-999` sentinels.
+- Semantic gate validates wildcard/normalize/copy/parse/multiply call presence plus required global/state references and terminal `RTS`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
