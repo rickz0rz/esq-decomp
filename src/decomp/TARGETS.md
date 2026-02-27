@@ -2322,6 +2322,98 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Low-risk no-op stub in the same `ESQIFF` jump-table cluster.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_noop_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_noop.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_NoOp`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 113: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_MEMORY_DeallocateMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to an already-promoted memory helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_memory_deallocate_memory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_memory_deallocate_memory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_memory_deallocate_memory.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_memory_deallocate_memory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_memory_deallocate_memory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_memory_deallocate_memory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MEMORY_DeallocateMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 114: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp_006A`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Additional no-op wrapper that extends `ESQIFF` coverage without introducing control-flow complexity.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_noop_006a_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_006a_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_noop_006a.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_006a_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_006a_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_006a_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_NoOp_006A`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 115: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp_0074`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Target 114 completing this no-op stub pair.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_esq_noop_0074_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_0074_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_noop_0074.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_0074_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_0074_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_0074_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_NoOp_0074`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 101: `modules/groups/a/g/xjump.s` (`GROUP_AG_JMPTBL_MATH_Mulu32`)
 
 Status: promoted (GCC gate)

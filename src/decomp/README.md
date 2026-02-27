@@ -62,6 +62,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_n_trial_gcc.sh`: GCC-specific compare lane for `Target 109` (`ESQIFF_JMPTBL_STRING_CompareN`).
 - `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_n_trial_gcc.sh`: GCC-specific compare lane for `Target 110` (`ESQIFF_JMPTBL_STRING_CompareNoCaseN`).
 - `src/decomp/scripts/compare_esqiff_jmptbl_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 111` (`ESQIFF_JMPTBL_MATH_DivS32`).
+- `src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_trial_gcc.sh`: GCC-specific compare lane for `Target 112` (`ESQIFF_JMPTBL_ESQ_NoOp`).
+- `src/decomp/scripts/compare_esqiff_jmptbl_memory_deallocate_memory_trial_gcc.sh`: GCC-specific compare lane for `Target 113` (`ESQIFF_JMPTBL_MEMORY_DeallocateMemory`).
+- `src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_006a_trial_gcc.sh`: GCC-specific compare lane for `Target 114` (`ESQIFF_JMPTBL_ESQ_NoOp_006A`).
+- `src/decomp/scripts/compare_esqiff_jmptbl_esq_noop_0074_trial_gcc.sh`: GCC-specific compare lane for `Target 115` (`ESQIFF_JMPTBL_ESQ_NoOp_0074`).
 - `src/decomp/scripts/compare_group_aa_jmptbl_string_compare_nocase_trial_gcc.sh`: GCC-specific compare lane for `Target 095` (`GROUP_AA_JMPTBL_STRING_CompareNoCase`).
 - `src/decomp/scripts/compare_group_aa_jmptbl_string_compare_n_trial_gcc.sh`: GCC-specific compare lane for `Target 094` (`GROUP_AA_JMPTBL_STRING_CompareN`).
 - `src/decomp/scripts/compare_group_ar_jmptbl_parseini_write_error_log_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 092` (`GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry`).
@@ -171,6 +175,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_n.awk`: semantic post-filter for `ESQIFF_JMPTBL_STRING_CompareN` compare lane.
 - `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_nocase_n.awk`: semantic post-filter for `ESQIFF_JMPTBL_STRING_CompareNoCaseN` compare lane.
 - `src/decomp/scripts/semantic_filter_esqiff_jmptbl_math_divs32.awk`: semantic post-filter for `ESQIFF_JMPTBL_MATH_DivS32` compare lane.
+- `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_noop.awk`: semantic post-filter for `ESQIFF_JMPTBL_ESQ_NoOp` compare lane.
+- `src/decomp/scripts/semantic_filter_esqiff_jmptbl_memory_deallocate_memory.awk`: semantic post-filter for `ESQIFF_JMPTBL_MEMORY_DeallocateMemory` compare lane.
+- `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_noop_006a.awk`: semantic post-filter for `ESQIFF_JMPTBL_ESQ_NoOp_006A` compare lane.
+- `src/decomp/scripts/semantic_filter_esqiff_jmptbl_esq_noop_0074.awk`: semantic post-filter for `ESQIFF_JMPTBL_ESQ_NoOp_0074` compare lane.
 - `src/decomp/scripts/semantic_filter_group_aa_jmptbl_string_compare_nocase.awk`: semantic post-filter for `GROUP_AA_JMPTBL_STRING_CompareNoCase` compare lane.
 - `src/decomp/scripts/semantic_filter_group_aa_jmptbl_string_compare_n.awk`: semantic post-filter for `GROUP_AA_JMPTBL_STRING_CompareN` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ar_jmptbl_parseini_write_error_log_entry.awk`: semantic post-filter for `GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry` compare lane.
@@ -279,6 +287,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_n_target_gcc.sh`: promotion gate for Target 109 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_n_target_gcc.sh`: promotion gate for Target 110 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqiff_jmptbl_math_divs32_target_gcc.sh`: promotion gate for Target 111 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_target_gcc.sh`: promotion gate for Target 112 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqiff_jmptbl_memory_deallocate_memory_target_gcc.sh`: promotion gate for Target 113 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_006a_target_gcc.sh`: promotion gate for Target 114 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_0074_target_gcc.sh`: promotion gate for Target 115 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_aa_jmptbl_string_compare_nocase_target_gcc.sh`: promotion gate for Target 095 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_aa_jmptbl_string_compare_n_target_gcc.sh`: promotion gate for Target 094 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ar_jmptbl_parseini_write_error_log_entry_target_gcc.sh`: promotion gate for Target 092 GCC lane (semantic + build/hash gates).
@@ -427,6 +439,10 @@ bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_target_gcc.s
 bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_n_target_gcc.sh
 bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_n_target_gcc.sh
 bash src/decomp/scripts/promote_esqiff_jmptbl_math_divs32_target_gcc.sh
+bash src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_target_gcc.sh
+bash src/decomp/scripts/promote_esqiff_jmptbl_memory_deallocate_memory_target_gcc.sh
+bash src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_006a_target_gcc.sh
+bash src/decomp/scripts/promote_esqiff_jmptbl_esq_noop_0074_target_gcc.sh
 bash src/decomp/scripts/promote_group_aa_jmptbl_string_compare_nocase_target_gcc.sh
 bash src/decomp/scripts/promote_group_aa_jmptbl_string_compare_n_target_gcc.sh
 bash src/decomp/scripts/promote_group_ar_jmptbl_parseini_write_error_log_entry_target_gcc.sh
@@ -507,7 +523,7 @@ bash src/decomp/scripts/full_compile_all_c_trial.sh
 Known good GCC profiles by target:
 - Target 002: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fno-omit-frame-pointer`
 - Target 003: `-O0 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
-- Targets 004/005/006/007/008/009/010/011/012/013/014/015/016/017/018/019/020/021/022/023/024/025/026/027/028/029/030/031/032/033/034/035/036/037/038/039/040/041/042/043/044/045/046/047/048/049/050/051/052/053/054/055/056/057/058/059/060/061/062/063/064/065/066/067/068/069/070/071/072/073/074/075/076/077/078/079/080/081/082/083/084/085/086/087/088/089/090/091/092/093/094/095/096/097/098/099/100/101/102/103/104/105/106/107/108/109/110/111: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
+- Targets 004/005/006/007/008/009/010/011/012/013/014/015/016/017/018/019/020/021/022/023/024/025/026/027/028/029/030/031/032/033/034/035/036/037/038/039/040/041/042/043/044/045/046/047/048/049/050/051/052/053/054/055/056/057/058/059/060/061/062/063/064/065/066/067/068/069/070/071/072/073/074/075/076/077/078/079/080/081/082/083/084/085/086/087/088/089/090/091/092/093/094/095/096/097/098/099/100/101/102/103/104/105/106/107/108/109/110/111/112/113/114/115: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
