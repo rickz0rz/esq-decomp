@@ -2206,3 +2206,95 @@ Current notes:
 - Original assembly is a direct `JMP STRING_CompareNoCase`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 096: `modules/groups/a/g/xjump.s` (`GROUP_AG_JMPTBL_MEMORY_DeallocateMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/g/xjump.s` with direct forward-dispatch semantics.
+- Low-risk bridge into `GROUP_AG` stubs using an already-promoted memory helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ag_jmptbl_memory_deallocate_memory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ag_jmptbl_memory_deallocate_memory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ag_jmptbl_memory_deallocate_memory.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ag_jmptbl_memory_deallocate_memory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ag_jmptbl_memory_deallocate_memory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ag_jmptbl_memory_deallocate_memory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MEMORY_DeallocateMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 097: `modules/groups/a/g/xjump.s` (`GROUP_AG_JMPTBL_MEMORY_AllocateMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/g/xjump.s` with direct forward-dispatch semantics.
+- Companion to Target 096 that extends `GROUP_AG` memory-stub coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ag_jmptbl_memory_allocate_memory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ag_jmptbl_memory_allocate_memory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ag_jmptbl_memory_allocate_memory.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ag_jmptbl_memory_allocate_memory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ag_jmptbl_memory_allocate_memory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ag_jmptbl_memory_allocate_memory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MEMORY_AllocateMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 098: `modules/groups/a/g/xjump.s` (`GROUP_AG_JMPTBL_STRUCT_AllocWithOwner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/g/xjump.s` with direct forward-dispatch semantics.
+- Low-risk companion in the same `GROUP_AG` cluster using an already-promoted struct helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ag_jmptbl_struct_alloc_with_owner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ag_jmptbl_struct_alloc_with_owner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ag_jmptbl_struct_alloc_with_owner.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ag_jmptbl_struct_alloc_with_owner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ag_jmptbl_struct_alloc_with_owner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ag_jmptbl_struct_alloc_with_owner_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRUCT_AllocWithOwner`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 099: `modules/groups/a/g/xjump.s` (`GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/g/xjump.s` with direct forward-dispatch semantics.
+- Companion to Target 098 that extends `GROUP_AG` struct-stub coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ag_jmptbl_struct_free_with_size_field_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ag_jmptbl_struct_free_with_size_field_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ag_jmptbl_struct_free_with_size_field.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ag_jmptbl_struct_free_with_size_field_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ag_jmptbl_struct_free_with_size_field_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ag_jmptbl_struct_free_with_size_field_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRUCT_FreeWithSizeField`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
