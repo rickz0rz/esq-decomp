@@ -3863,6 +3863,144 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 183: `modules/groups/a/w/xjump.s` (`GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/w/xjump.s` with direct forward-dispatch semantics.
+- Low-risk wrapper forwarding to inline text-alignment helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aw_jmptbl_displib_apply_inline_alignment_padding_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aw_jmptbl_displib_apply_inline_alignment_padding_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aw_jmptbl_displib_apply_inline_alignment_padding.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aw_jmptbl_displib_apply_inline_alignment_padding_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aw_jmptbl_displib_apply_inline_alignment_padding_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aw_jmptbl_displib_apply_inline_alignment_padding_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPLIB_ApplyInlineAlignmentPadding`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 184: `modules/groups/a/w/xjump.s` (`GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/w/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to copper-rise transition helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aw_jmptbl_esqiff_run_copper_rise_transition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aw_jmptbl_esqiff_run_copper_rise_transition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aw_jmptbl_esqiff_run_copper_rise_transition.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aw_jmptbl_esqiff_run_copper_rise_transition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aw_jmptbl_esqiff_run_copper_rise_transition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aw_jmptbl_esqiff_run_copper_rise_transition_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_RunCopperRiseTransition`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 185: `modules/groups/a/w/xjump.s` (`GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/w/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to copper-drop transition helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aw_jmptbl_esqiff_run_copper_drop_transition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aw_jmptbl_esqiff_run_copper_drop_transition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aw_jmptbl_esqiff_run_copper_drop_transition.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aw_jmptbl_esqiff_run_copper_drop_transition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aw_jmptbl_esqiff_run_copper_drop_transition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aw_jmptbl_esqiff_run_copper_drop_transition_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_RunCopperDropTransition`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 186: `modules/groups/a/w/xjump.s` (`GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/w/xjump.s` with direct forward-dispatch semantics.
+- Companion wrapper forwarding to positioned text renderer.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aw_jmptbl_displib_display_text_at_position_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aw_jmptbl_displib_display_text_at_position_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aw_jmptbl_displib_display_text_at_position.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aw_jmptbl_displib_display_text_at_position_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aw_jmptbl_displib_display_text_at_position_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aw_jmptbl_displib_display_text_at_position_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPLIB_DisplayTextAtPosition`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 187: `modules/groups/a/w/xjump.s` (`GROUP_AW_JMPTBL_WDISP_SPrintf`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/w/xjump.s` with direct forward-dispatch semantics.
+- Wrapper forwards into shared display formatter used elsewhere in promoted set.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aw_jmptbl_wdisp_sprintf_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aw_jmptbl_wdisp_sprintf_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aw_jmptbl_wdisp_sprintf.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aw_jmptbl_wdisp_sprintf_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aw_jmptbl_wdisp_sprintf_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aw_jmptbl_wdisp_sprintf_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP WDISP_SPrintf`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 188: `modules/groups/a/w/xjump.s` (`GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/w/xjump.s` with direct forward-dispatch semantics.
+- Last unresolved wrapper in this file before the existing `GROUP_AW_JMPTBL_STRING_CopyPadNul` bridge.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SetCopperEffect_OffDisableHighlight`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
 
 Status: promoted (GCC gate)
