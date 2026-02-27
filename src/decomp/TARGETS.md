@@ -2322,6 +2322,98 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 116: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_MEMORY_AllocateMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Target 113 using an already-promoted memory helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_memory_allocate_memory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_memory_allocate_memory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_memory_allocate_memory.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_memory_allocate_memory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_memory_allocate_memory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_memory_allocate_memory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MEMORY_AllocateMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 117: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_DOS_OpenFileWithMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Low-risk DOS wrapper-stub promotion using an already-promoted open helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_dos_open_file_with_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_dos_open_file_with_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_dos_open_file_with_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_dos_open_file_with_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_dos_open_file_with_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_dos_open_file_with_mode_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DOS_OpenFileWithMode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 118: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_MATH_Mulu32`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Companion to Target 111 that extends `ESQIFF` arithmetic-stub coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_math_mulu32_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_math_mulu32_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_math_mulu32.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_math_mulu32_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_math_mulu32_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_math_mulu32_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MATH_Mulu32`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 119: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/n/esqiff.s` with direct forward-dispatch semantics.
+- Low-risk runtime-state helper stub that is frequently called from `esqiff.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_jmptbl_diskio_reset_ctrl_input_state_if_idle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_jmptbl_diskio_reset_ctrl_input_state_if_idle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_jmptbl_diskio_reset_ctrl_input_state_if_idle.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_jmptbl_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_jmptbl_diskio_reset_ctrl_input_state_if_idle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_jmptbl_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_ResetCtrlInputStateIfIdle`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 112: `modules/groups/a/n/esqiff.s` (`ESQIFF_JMPTBL_ESQ_NoOp`)
 
 Status: promoted (GCC gate)
