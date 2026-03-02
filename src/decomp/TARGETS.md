@@ -3610,6 +3610,98 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 427: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_esq_get_half_hour_slot_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_esq_get_half_hour_slot_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esq_get_half_hour_slot_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_esq_get_half_hour_slot_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_esq_get_half_hour_slot_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_esq_get_half_hour_slot_index_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_GetHalfHourSlotIndex`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 428: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_STR_SkipClass3Chars`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_str_skip_class3_chars_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_str_skip_class3_chars_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_str_skip_class3_chars.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_str_skip_class3_chars_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_str_skip_class3_chars_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_str_skip_class3_chars_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STR_SkipClass3Chars`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 429: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_STRING_AppendN`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_string_append_n_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_string_append_n_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_string_append_n.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_string_append_n_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_string_append_n_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_string_append_n_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_AppendN`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 430: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQDISP_ComputeScheduleOffsetForRow`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 399: `modules/groups/a/n/esqdisp.s` (`ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages`)
 
 Status: promoted (GCC gate)
