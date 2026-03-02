@@ -3311,6 +3311,29 @@ Current notes:
 - Includes the currently unreachable secondary branch to mirror present assembly control-flow shape.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 555: `modules/groups/b/a/parseini.s` (`PARSEINI_ParseColorTable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium routine with bounded loops and explicit mode-based table selection.
+- Continues parseini progression while still relying on already-promoted helper calls.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_parse_color_table_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_parse_color_table_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_parse_color_table.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_parse_color_table_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_parse_color_table_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_parse_color_table_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode 4/5 table routing, per-color key formatting/compare, 3-channel hex-digit conversion writes into palette triples, and mode-4 copper-rise transition call.
+- Semantic gate validates table symbols, helper calls, loop-shape constants, and transition invocation while allowing compiler control-flow differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
