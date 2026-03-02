@@ -3407,6 +3407,30 @@ Current notes:
 - Semantic gate checks key call/symbol coverage plus loop constants (`100` entry cap, `99` line limit).
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 559: `modules/groups/b/a/parseini.s` (`PARSEINI_ParseIniBufferAndDispatch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final major non-stub export in `parseini.s`, and key integration point that dispatches into section handlers.
+- Closing this target completes first-pass GCC replacement coverage for the primary parseini runtime exports.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_parse_ini_buffer_and_dispatch_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_parse_ini_buffer_and_dispatch_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_parse_ini_buffer_and_dispatch.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_parse_ini_buffer_and_dispatch_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_parse_ini_buffer_and_dispatch_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_parse_ini_buffer_and_dispatch_target_gcc.sh`
+
+Current notes:
+- Candidate preserves section-header detection and dispatch fan-out into promoted helpers (`ProcessWeatherBlocks`, `ParseRangeKeyValue`, `ParseColorTable`, weather string loaders).
+- Includes section side-effects for gradient table init, source-config reset, default weather message seed, and weather refresh pending clear.
+- Semantic gate focuses on call topology and section symbol coverage rather than brittle instruction-level immediates.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

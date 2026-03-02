@@ -476,6 +476,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_parseini_handle_font_command_trial_gcc.sh`: GCC-specific compare lane for `Target 556` (`PARSEINI_HandleFontCommand`).
 - `src/decomp/scripts/compare_parseini_process_weather_blocks_trial_gcc.sh`: GCC-specific compare lane for `Target 557` (`PARSEINI_ProcessWeatherBlocks`).
 - `src/decomp/scripts/compare_parseini_scan_logo_directory_trial_gcc.sh`: GCC-specific compare lane for `Target 558` (`PARSEINI_ScanLogoDirectory`).
+- `src/decomp/scripts/compare_parseini_parse_ini_buffer_and_dispatch_trial_gcc.sh`: GCC-specific compare lane for `Target 559` (`PARSEINI_ParseIniBufferAndDispatch`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -1584,6 +1585,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_parseini_handle_font_command_target_gcc.sh`: promotion gate for Target 556 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_process_weather_blocks_target_gcc.sh`: promotion gate for Target 557 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_scan_logo_directory_target_gcc.sh`: promotion gate for Target 558 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini_parse_ini_buffer_and_dispatch_target_gcc.sh`: promotion gate for Target 559 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -2180,6 +2182,7 @@ bash src/decomp/scripts/promote_parseini_parse_color_table_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_handle_font_command_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_process_weather_blocks_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_scan_logo_directory_target_gcc.sh
+bash src/decomp/scripts/promote_parseini_parse_ini_buffer_and_dispatch_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
