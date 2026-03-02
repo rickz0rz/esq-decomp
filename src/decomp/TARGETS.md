@@ -6829,3 +6829,1153 @@ Current notes:
 - Original assembly is a direct `JMP DISKIO_LoadConfigFromDisk`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 297: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_textdisp_load_source_config_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_textdisp_load_source_config_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_textdisp_load_source_config.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_textdisp_load_source_config_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_textdisp_load_source_config_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_textdisp_load_source_config_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP TEXTDISP_LoadSourceConfig`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 298: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_KYBD_InitializeInputDevices`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_kybd_initialize_input_devices_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_kybd_initialize_input_devices_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_kybd_initialize_input_devices.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_kybd_initialize_input_devices_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_kybd_initialize_input_devices_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_kybd_initialize_input_devices_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP KYBD_InitializeInputDevices`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 299: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_esq_check_compatible_video_chip_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_esq_check_compatible_video_chip_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_check_compatible_video_chip.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_esq_check_compatible_video_chip_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_esq_check_compatible_video_chip_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_esq_check_compatible_video_chip_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_CheckCompatibleVideoChip`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 300: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_esq_check_available_fast_memory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_esq_check_available_fast_memory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_check_available_fast_memory.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_esq_check_available_fast_memory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_esq_check_available_fast_memory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_esq_check_available_fast_memory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_CheckAvailableFastMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 301: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_gcommand_reset_banner_fade_state_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_gcommand_reset_banner_fade_state_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_gcommand_reset_banner_fade_state.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_gcommand_reset_banner_fade_state_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_gcommand_reset_banner_fade_state_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_gcommand_reset_banner_fade_state_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP GCOMMAND_ResetBannerFadeState`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 302: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_TLIBA3_InitPatternTable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_tliba3_init_pattern_table_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_tliba3_init_pattern_table_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_tliba3_init_pattern_table.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_tliba3_init_pattern_table_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_tliba3_init_pattern_table_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_tliba3_init_pattern_table_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP TLIBA3_InitPatternTable`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 303: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_esq_format_disk_error_message_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_esq_format_disk_error_message_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_format_disk_error_message.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_esq_format_disk_error_message_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_esq_format_disk_error_message_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_esq_format_disk_error_message_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_FormatDiskErrorMessage`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 304: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_script_prime_banner_transition_from_hex_code_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_script_prime_banner_transition_from_hex_code_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_script_prime_banner_transition_from_hex_code.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_script_prime_banner_transition_from_hex_code_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_script_prime_banner_transition_from_hex_code_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_script_prime_banner_transition_from_hex_code_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP SCRIPT_PrimeBannerTransitionFromHexCode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 305: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_locavail_reset_filter_state_struct_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_locavail_reset_filter_state_struct_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_locavail_reset_filter_state_struct.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_locavail_reset_filter_state_struct_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_locavail_reset_filter_state_struct_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_locavail_reset_filter_state_struct_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LOCAVAIL_ResetFilterStateStruct`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 306: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_ESQ_InitAudio1Dma`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_esq_init_audio1_dma_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_esq_init_audio1_dma_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_init_audio1_dma.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_esq_init_audio1_dma_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_esq_init_audio1_dma_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_esq_init_audio1_dma_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_InitAudio1Dma`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 307: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SetCopperEffect_OnEnableHighlight`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 308: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_locavail_load_availability_data_file_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_locavail_load_availability_data_file_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_locavail_load_availability_data_file.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_locavail_load_availability_data_file_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_locavail_load_availability_data_file_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_locavail_load_availability_data_file_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LOCAVAIL_LoadAvailabilityDataFile`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 309: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_gcommand_init_preset_defaults_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_gcommand_init_preset_defaults_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_gcommand_init_preset_defaults.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_gcommand_init_preset_defaults_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_gcommand_init_preset_defaults_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_gcommand_init_preset_defaults_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP GCOMMAND_InitPresetDefaults`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 310: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_override_intuition_funcs_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_override_intuition_funcs_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_override_intuition_funcs.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_override_intuition_funcs_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_override_intuition_funcs_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_override_intuition_funcs_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP OVERRIDE_INTUITION_FUNCS`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 311: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_buffer_flush_all_and_close_with_code_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_buffer_flush_all_and_close_with_code_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_buffer_flush_all_and_close_with_code.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_buffer_flush_all_and_close_with_code_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_buffer_flush_all_and_close_with_code_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_buffer_flush_all_and_close_with_code_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BUFFER_FlushAllAndCloseWithCode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 312: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_flib2_reset_and_load_listing_templates_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_flib2_reset_and_load_listing_templates_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_flib2_reset_and_load_listing_templates.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_flib2_reset_and_load_listing_templates_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_flib2_reset_and_load_listing_templates_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_flib2_reset_and_load_listing_templates_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP FLIB2_ResetAndLoadListingTemplates`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 313: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_WDISP_SPrintf`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_wdisp_s_printf_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_wdisp_s_printf_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_wdisp_s_printf.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_wdisp_s_printf_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_wdisp_s_printf_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_wdisp_s_printf_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP WDISP_SPrintf`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 314: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SetCopperEffect_OffDisableHighlight`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 315: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_cleanup_shutdown_system_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_cleanup_shutdown_system_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_cleanup_shutdown_system.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_cleanup_shutdown_system_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_cleanup_shutdown_system_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_cleanup_shutdown_system_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP CLEANUP_ShutdownSystem`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 316: `modules/groups/a/m/xjump.s` (`GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/m/xjump.s` with direct forward-dispatch semantics.
+- Extends `GROUP_AM` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_am_jmptbl_ladfunc_alloc_banner_rect_entries_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_am_jmptbl_ladfunc_alloc_banner_rect_entries.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_AllocBannerRectEntries`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 317: `modules/submodules/unknown.s` (`UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `submodules/unknown.s` with direct forward-dispatch semantics.
+- Extends non-group jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_jmptbl_esqiff2_read_serial_record_into_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_jmptbl_esqiff2_read_serial_record_into_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF2_ReadSerialRecordIntoBuffer`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 318: `modules/submodules/unknown.s` (`UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `submodules/unknown.s` with direct forward-dispatch semantics.
+- Extends non-group jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_jmptbl_displib_display_text_at_position_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_jmptbl_displib_display_text_at_position_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_jmptbl_displib_display_text_at_position.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_jmptbl_displib_display_text_at_position_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_jmptbl_displib_display_text_at_position_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_jmptbl_displib_display_text_at_position_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPLIB_DisplayTextAtPosition`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 319: `modules/submodules/unknown.s` (`UNKNOWN_JMPTBL_ESQ_WildcardMatch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `submodules/unknown.s` with direct forward-dispatch semantics.
+- Extends non-group jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_jmptbl_esq_wildcard_match_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_jmptbl_esq_wildcard_match_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_jmptbl_esq_wildcard_match.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_jmptbl_esq_wildcard_match_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_jmptbl_esq_wildcard_match_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_jmptbl_esq_wildcard_match_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_WildcardMatch`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 320: `modules/submodules/unknown.s` (`UNKNOWN_JMPTBL_DST_NormalizeDayOfYear`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `submodules/unknown.s` with direct forward-dispatch semantics.
+- Extends non-group jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_jmptbl_dst_normalize_day_of_year_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_jmptbl_dst_normalize_day_of_year_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_jmptbl_dst_normalize_day_of_year.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_jmptbl_dst_normalize_day_of_year_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_jmptbl_dst_normalize_day_of_year_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_jmptbl_dst_normalize_day_of_year_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DST_NormalizeDayOfYear`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 321: `modules/submodules/unknown.s` (`UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `submodules/unknown.s` with direct forward-dispatch semantics.
+- Extends non-group jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_jmptbl_esq_generate_xor_checksum_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_jmptbl_esq_generate_xor_checksum_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_jmptbl_esq_generate_xor_checksum_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_jmptbl_esq_generate_xor_checksum_byte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_jmptbl_esq_generate_xor_checksum_byte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_jmptbl_esq_generate_xor_checksum_byte_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_GenerateXorChecksumByte`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 322: `modules/submodules/unknown.s` (`ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `submodules/unknown.s` with direct forward-dispatch semantics.
+- Extends non-group jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqproto_jmptbl_esqpars_replace_owned_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqproto_jmptbl_esqpars_replace_owned_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqproto_jmptbl_esqpars_replace_owned_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqproto_jmptbl_esqpars_replace_owned_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqproto_jmptbl_esqpars_replace_owned_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqproto_jmptbl_esqpars_replace_owned_string_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQPARS_ReplaceOwnedString`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 323: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_DST_BuildBannerTimeWord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_dst_build_banner_time_word_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_dst_build_banner_time_word_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_dst_build_banner_time_word.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_dst_build_banner_time_word_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_dst_build_banner_time_word_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_dst_build_banner_time_word_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DST_BuildBannerTimeWord`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 324: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_esq_reverse_bits_in6_bytes_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_esq_reverse_bits_in6_bytes_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_reverse_bits_in6_bytes.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_esq_reverse_bits_in6_bytes_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_esq_reverse_bits_in6_bytes_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_esq_reverse_bits_in6_bytes_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_ReverseBitsIn6Bytes`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 325: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_ESQ_SetBit1Based`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_esq_set_bit1_based_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_esq_set_bit1_based_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_set_bit1_based.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_esq_set_bit1_based_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_esq_set_bit1_based_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_esq_set_bit1_based_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SetBit1Based`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 326: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_AdjustBracketedHourInString`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 327: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_coi_ensure_anim_object_allocated_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_coi_ensure_anim_object_allocated_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_coi_ensure_anim_object_allocated.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_coi_ensure_anim_object_allocated_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_coi_ensure_anim_object_allocated_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_coi_ensure_anim_object_allocated_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP COI_EnsureAnimObjectAllocated`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 328: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_ESQ_WildcardMatch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_esq_wildcard_match_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_esq_wildcard_match_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_wildcard_match.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_esq_wildcard_match_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_esq_wildcard_match_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_esq_wildcard_match_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_WildcardMatch`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 329: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_STR_SkipClass3Chars`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_str_skip_class3_chars_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_str_skip_class3_chars_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_str_skip_class3_chars.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_str_skip_class3_chars_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_str_skip_class3_chars_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_str_skip_class3_chars_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STR_SkipClass3Chars`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 330: `modules/groups/a/p/esqshared.s` (`ESQSHARED_JMPTBL_ESQ_TestBit1Based`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/p/esqshared.s` with direct forward-dispatch semantics.
+- Extends `ESQSHARED` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_jmptbl_esq_test_bit1_based_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_jmptbl_esq_test_bit1_based_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_test_bit1_based.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_jmptbl_esq_test_bit1_based_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_jmptbl_esq_test_bit1_based_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_jmptbl_esq_test_bit1_based_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_TestBit1Based`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 331: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_diskio2_flushdatafilesifneeded_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_diskio2_flushdatafilesifneeded_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_diskio2_flushdatafilesifneeded.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_diskio2_flushdatafilesifneeded_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_diskio2_flushdatafilesifneeded_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_diskio2_flushdatafilesifneeded_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO2_FlushDataFilesIfNeeded`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 332: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_newgrid_rebuildindexcache_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_newgrid_rebuildindexcache_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_newgrid_rebuildindexcache.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_newgrid_rebuildindexcache_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_newgrid_rebuildindexcache_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_newgrid_rebuildindexcache_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP NEWGRID_RebuildIndexCache`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 333: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_DATETIME_SavePairToFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_datetime_savepairtofile_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_datetime_savepairtofile_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_datetime_savepairtofile.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_datetime_savepairtofile_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_datetime_savepairtofile_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_datetime_savepairtofile_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DATETIME_SavePairToFile`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 334: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_esqproto_verifychecksumandparselist_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_esqproto_verifychecksumandparselist_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_esqproto_verifychecksumandparselist.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_esqproto_verifychecksumandparselist_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_esqproto_verifychecksumandparselist_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_esqproto_verifychecksumandparselist_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQPROTO_VerifyChecksumAndParseList`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 335: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_p_type_parseandstoretyperecord_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_p_type_parseandstoretyperecord_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_p_type_parseandstoretyperecord.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_p_type_parseandstoretyperecord_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_p_type_parseandstoretyperecord_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_p_type_parseandstoretyperecord_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP P_TYPE_ParseAndStoreTypeRecord`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 336: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_esqproto_copylabeltoglobal_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_esqproto_copylabeltoglobal_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_esqproto_copylabeltoglobal.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_esqproto_copylabeltoglobal_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_esqproto_copylabeltoglobal_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_esqproto_copylabeltoglobal_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQPROTO_CopyLabelToGlobal`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 337: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_DST_HandleBannerCommand32_33`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_dst_handlebannercommand32_33_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_dst_handlebannercommand32_33_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_dst_handlebannercommand32_33.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_dst_handlebannercommand32_33_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_dst_handlebannercommand32_33_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_dst_handlebannercommand32_33_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DST_HandleBannerCommand32_33`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 338: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_esq_seedminuteeventthresholds_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_esq_seedminuteeventthresholds_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_esq_seedminuteeventthresholds.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_esq_seedminuteeventthresholds_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_esq_seedminuteeventthresholds_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_esq_seedminuteeventthresholds_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SeedMinuteEventThresholds`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 339: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_PARSEINI_HandleFontCommand`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_parseini_handlefontcommand_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_parseini_handlefontcommand_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_parseini_handlefontcommand.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_parseini_handlefontcommand_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_parseini_handlefontcommand_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_parseini_handlefontcommand_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP PARSEINI_HandleFontCommand`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 340: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_textdisp_applysourceconfigallentries_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_textdisp_applysourceconfigallentries_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_textdisp_applysourceconfigallentries.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_textdisp_applysourceconfigallentries_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_textdisp_applysourceconfigallentries_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_textdisp_applysourceconfigallentries_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP TEXTDISP_ApplySourceConfigAllEntries`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 341: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_brush_planemaskforindex_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_brush_planemaskforindex_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_brush_planemaskforindex.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_brush_planemaskforindex_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_brush_planemaskforindex_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_brush_planemaskforindex_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_PlaneMaskForIndex`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 342: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_script_resetctrlcontextandclearstatusline_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_script_resetctrlcontextandclearstatusline.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP SCRIPT_ResetCtrlContextAndClearStatusLine`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 343: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_parseini_writertcfromglobals_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_parseini_writertcfromglobals_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_parseini_writertcfromglobals.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_parseini_writertcfromglobals_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_parseini_writertcfromglobals_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_parseini_writertcfromglobals_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP PARSEINI_WriteRtcFromGlobals`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 344: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_locavail_saveavailabilitydatafile_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_locavail_saveavailabilitydatafile_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_locavail_saveavailabilitydatafile.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_locavail_saveavailabilitydatafile_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_locavail_saveavailabilitydatafile_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_locavail_saveavailabilitydatafile_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LOCAVAIL_SaveAvailabilityDataFile`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 345: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_displib_displaytextatposition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_displib_displaytextatposition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_displib_displaytextatposition.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_displib_displaytextatposition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_displib_displaytextatposition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_displib_displaytextatposition_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPLIB_DisplayTextAtPosition`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 346: `modules/groups/a/o/esqpars.s` (`ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/o/esqpars.s` with direct forward-dispatch semantics.
+- Extends `ESQPARS` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_jmptbl_ladfunc_savetextadstofile_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_jmptbl_ladfunc_savetextadstofile_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_jmptbl_ladfunc_savetextadstofile.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_jmptbl_ladfunc_savetextadstofile_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_jmptbl_ladfunc_savetextadstofile_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_jmptbl_ladfunc_savetextadstofile_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_SaveTextAdsToFile`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

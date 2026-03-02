@@ -46,6 +46,36 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
+- `src/decomp/scripts/compare_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_trial_gcc.sh`: GCC-specific compare lane for `Target 317` (`UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer`).
+- `src/decomp/scripts/compare_unknown_jmptbl_displib_display_text_at_position_trial_gcc.sh`: GCC-specific compare lane for `Target 318` (`UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition`).
+- `src/decomp/scripts/compare_unknown_jmptbl_esq_wildcard_match_trial_gcc.sh`: GCC-specific compare lane for `Target 319` (`UNKNOWN_JMPTBL_ESQ_WildcardMatch`).
+- `src/decomp/scripts/compare_unknown_jmptbl_dst_normalize_day_of_year_trial_gcc.sh`: GCC-specific compare lane for `Target 320` (`UNKNOWN_JMPTBL_DST_NormalizeDayOfYear`).
+- `src/decomp/scripts/compare_unknown_jmptbl_esq_generate_xor_checksum_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 321` (`UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte`).
+- `src/decomp/scripts/compare_esqproto_jmptbl_esqpars_replace_owned_string_trial_gcc.sh`: GCC-specific compare lane for `Target 322` (`ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_dst_build_banner_time_word_trial_gcc.sh`: GCC-specific compare lane for `Target 323` (`ESQSHARED_JMPTBL_DST_BuildBannerTimeWord`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_esq_reverse_bits_in6_bytes_trial_gcc.sh`: GCC-specific compare lane for `Target 324` (`ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_esq_set_bit1_based_trial_gcc.sh`: GCC-specific compare lane for `Target 325` (`ESQSHARED_JMPTBL_ESQ_SetBit1Based`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_trial_gcc.sh`: GCC-specific compare lane for `Target 326` (`ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_coi_ensure_anim_object_allocated_trial_gcc.sh`: GCC-specific compare lane for `Target 327` (`ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_esq_wildcard_match_trial_gcc.sh`: GCC-specific compare lane for `Target 328` (`ESQSHARED_JMPTBL_ESQ_WildcardMatch`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_str_skip_class3_chars_trial_gcc.sh`: GCC-specific compare lane for `Target 329` (`ESQSHARED_JMPTBL_STR_SkipClass3Chars`).
+- `src/decomp/scripts/compare_esqshared_jmptbl_esq_test_bit1_based_trial_gcc.sh`: GCC-specific compare lane for `Target 330` (`ESQSHARED_JMPTBL_ESQ_TestBit1Based`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_diskio2_flushdatafilesifneeded_trial_gcc.sh`: GCC-specific compare lane for `Target 331` (`ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_newgrid_rebuildindexcache_trial_gcc.sh`: GCC-specific compare lane for `Target 332` (`ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_datetime_savepairtofile_trial_gcc.sh`: GCC-specific compare lane for `Target 333` (`ESQPARS_JMPTBL_DATETIME_SavePairToFile`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_esqproto_verifychecksumandparselist_trial_gcc.sh`: GCC-specific compare lane for `Target 334` (`ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_p_type_parseandstoretyperecord_trial_gcc.sh`: GCC-specific compare lane for `Target 335` (`ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_esqproto_copylabeltoglobal_trial_gcc.sh`: GCC-specific compare lane for `Target 336` (`ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_dst_handlebannercommand32_33_trial_gcc.sh`: GCC-specific compare lane for `Target 337` (`ESQPARS_JMPTBL_DST_HandleBannerCommand32_33`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_esq_seedminuteeventthresholds_trial_gcc.sh`: GCC-specific compare lane for `Target 338` (`ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_parseini_handlefontcommand_trial_gcc.sh`: GCC-specific compare lane for `Target 339` (`ESQPARS_JMPTBL_PARSEINI_HandleFontCommand`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_textdisp_applysourceconfigallentries_trial_gcc.sh`: GCC-specific compare lane for `Target 340` (`ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_brush_planemaskforindex_trial_gcc.sh`: GCC-specific compare lane for `Target 341` (`ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_trial_gcc.sh`: GCC-specific compare lane for `Target 342` (`ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_parseini_writertcfromglobals_trial_gcc.sh`: GCC-specific compare lane for `Target 343` (`ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_locavail_saveavailabilitydatafile_trial_gcc.sh`: GCC-specific compare lane for `Target 344` (`ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_displib_displaytextatposition_trial_gcc.sh`: GCC-specific compare lane for `Target 345` (`ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition`).
+- `src/decomp/scripts/compare_esqpars_jmptbl_ladfunc_savetextadstofile_trial_gcc.sh`: GCC-specific compare lane for `Target 346` (`ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile`).
 - `src/decomp/scripts/compare_group_ag_jmptbl_memory_deallocate_memory_trial_gcc.sh`: GCC-specific compare lane for `Target 096` (`GROUP_AG_JMPTBL_MEMORY_DeallocateMemory`).
 - `src/decomp/scripts/compare_group_ag_jmptbl_memory_allocate_memory_trial_gcc.sh`: GCC-specific compare lane for `Target 097` (`GROUP_AG_JMPTBL_MEMORY_AllocateMemory`).
 - `src/decomp/scripts/compare_group_ag_jmptbl_struct_alloc_with_owner_trial_gcc.sh`: GCC-specific compare lane for `Target 098` (`GROUP_AG_JMPTBL_STRUCT_AllocWithOwner`).
@@ -74,6 +104,26 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_group_am_jmptbl_p_type_reset_lists_and_load_promo_ids_trial_gcc.sh`: GCC-specific compare lane for `Target 294` (`GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds`).
 - `src/decomp/scripts/compare_group_am_jmptbl_ladfunc_load_text_ads_from_file_trial_gcc.sh`: GCC-specific compare lane for `Target 295` (`GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile`).
 - `src/decomp/scripts/compare_group_am_jmptbl_diskio_load_config_from_disk_trial_gcc.sh`: GCC-specific compare lane for `Target 296` (`GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk`).
+- `src/decomp/scripts/compare_group_am_jmptbl_textdisp_load_source_config_trial_gcc.sh`: GCC-specific compare lane for `Target 297` (`GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig`).
+- `src/decomp/scripts/compare_group_am_jmptbl_kybd_initialize_input_devices_trial_gcc.sh`: GCC-specific compare lane for `Target 298` (`GROUP_AM_JMPTBL_KYBD_InitializeInputDevices`).
+- `src/decomp/scripts/compare_group_am_jmptbl_esq_check_compatible_video_chip_trial_gcc.sh`: GCC-specific compare lane for `Target 299` (`GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip`).
+- `src/decomp/scripts/compare_group_am_jmptbl_esq_check_available_fast_memory_trial_gcc.sh`: GCC-specific compare lane for `Target 300` (`GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory`).
+- `src/decomp/scripts/compare_group_am_jmptbl_gcommand_reset_banner_fade_state_trial_gcc.sh`: GCC-specific compare lane for `Target 301` (`GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState`).
+- `src/decomp/scripts/compare_group_am_jmptbl_tliba3_init_pattern_table_trial_gcc.sh`: GCC-specific compare lane for `Target 302` (`GROUP_AM_JMPTBL_TLIBA3_InitPatternTable`).
+- `src/decomp/scripts/compare_group_am_jmptbl_esq_format_disk_error_message_trial_gcc.sh`: GCC-specific compare lane for `Target 303` (`GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage`).
+- `src/decomp/scripts/compare_group_am_jmptbl_script_prime_banner_transition_from_hex_code_trial_gcc.sh`: GCC-specific compare lane for `Target 304` (`GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode`).
+- `src/decomp/scripts/compare_group_am_jmptbl_locavail_reset_filter_state_struct_trial_gcc.sh`: GCC-specific compare lane for `Target 305` (`GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct`).
+- `src/decomp/scripts/compare_group_am_jmptbl_esq_init_audio1_dma_trial_gcc.sh`: GCC-specific compare lane for `Target 306` (`GROUP_AM_JMPTBL_ESQ_InitAudio1Dma`).
+- `src/decomp/scripts/compare_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_trial_gcc.sh`: GCC-specific compare lane for `Target 307` (`GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight`).
+- `src/decomp/scripts/compare_group_am_jmptbl_locavail_load_availability_data_file_trial_gcc.sh`: GCC-specific compare lane for `Target 308` (`GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile`).
+- `src/decomp/scripts/compare_group_am_jmptbl_gcommand_init_preset_defaults_trial_gcc.sh`: GCC-specific compare lane for `Target 309` (`GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults`).
+- `src/decomp/scripts/compare_group_am_jmptbl_override_intuition_funcs_trial_gcc.sh`: GCC-specific compare lane for `Target 310` (`GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS`).
+- `src/decomp/scripts/compare_group_am_jmptbl_buffer_flush_all_and_close_with_code_trial_gcc.sh`: GCC-specific compare lane for `Target 311` (`GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode`).
+- `src/decomp/scripts/compare_group_am_jmptbl_flib2_reset_and_load_listing_templates_trial_gcc.sh`: GCC-specific compare lane for `Target 312` (`GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates`).
+- `src/decomp/scripts/compare_group_am_jmptbl_wdisp_s_printf_trial_gcc.sh`: GCC-specific compare lane for `Target 313` (`GROUP_AM_JMPTBL_WDISP_SPrintf`).
+- `src/decomp/scripts/compare_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_trial_gcc.sh`: GCC-specific compare lane for `Target 314` (`GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight`).
+- `src/decomp/scripts/compare_group_am_jmptbl_cleanup_shutdown_system_trial_gcc.sh`: GCC-specific compare lane for `Target 315` (`GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem`).
+- `src/decomp/scripts/compare_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_trial_gcc.sh`: GCC-specific compare lane for `Target 316` (`GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries`).
 - `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_trial_gcc.sh`: GCC-specific compare lane for `Target 108` (`ESQIFF_JMPTBL_STRING_CompareNoCase`).
 - `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_n_trial_gcc.sh`: GCC-specific compare lane for `Target 109` (`ESQIFF_JMPTBL_STRING_CompareN`).
 - `src/decomp/scripts/compare_esqiff_jmptbl_string_compare_nocase_n_trial_gcc.sh`: GCC-specific compare lane for `Target 110` (`ESQIFF_JMPTBL_STRING_CompareNoCaseN`).
@@ -340,6 +390,36 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown_jmptbl_esqiff2_read_serial_record_into_buffer.awk`: semantic post-filter for `UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown_jmptbl_displib_display_text_at_position.awk`: semantic post-filter for `UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown_jmptbl_esq_wildcard_match.awk`: semantic post-filter for `UNKNOWN_JMPTBL_ESQ_WildcardMatch` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown_jmptbl_dst_normalize_day_of_year.awk`: semantic post-filter for `UNKNOWN_JMPTBL_DST_NormalizeDayOfYear` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown_jmptbl_esq_generate_xor_checksum_byte.awk`: semantic post-filter for `UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte` compare lane.
+- `src/decomp/scripts/semantic_filter_esqproto_jmptbl_esqpars_replace_owned_string.awk`: semantic post-filter for `ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_dst_build_banner_time_word.awk`: semantic post-filter for `ESQSHARED_JMPTBL_DST_BuildBannerTimeWord` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_reverse_bits_in6_bytes.awk`: semantic post-filter for `ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_set_bit1_based.awk`: semantic post-filter for `ESQSHARED_JMPTBL_ESQ_SetBit1Based` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string.awk`: semantic post-filter for `ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_coi_ensure_anim_object_allocated.awk`: semantic post-filter for `ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_wildcard_match.awk`: semantic post-filter for `ESQSHARED_JMPTBL_ESQ_WildcardMatch` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_str_skip_class3_chars.awk`: semantic post-filter for `ESQSHARED_JMPTBL_STR_SkipClass3Chars` compare lane.
+- `src/decomp/scripts/semantic_filter_esqshared_jmptbl_esq_test_bit1_based.awk`: semantic post-filter for `ESQSHARED_JMPTBL_ESQ_TestBit1Based` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_diskio2_flushdatafilesifneeded.awk`: semantic post-filter for `ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_newgrid_rebuildindexcache.awk`: semantic post-filter for `ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_datetime_savepairtofile.awk`: semantic post-filter for `ESQPARS_JMPTBL_DATETIME_SavePairToFile` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_esqproto_verifychecksumandparselist.awk`: semantic post-filter for `ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_p_type_parseandstoretyperecord.awk`: semantic post-filter for `ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_esqproto_copylabeltoglobal.awk`: semantic post-filter for `ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_dst_handlebannercommand32_33.awk`: semantic post-filter for `ESQPARS_JMPTBL_DST_HandleBannerCommand32_33` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_esq_seedminuteeventthresholds.awk`: semantic post-filter for `ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_parseini_handlefontcommand.awk`: semantic post-filter for `ESQPARS_JMPTBL_PARSEINI_HandleFontCommand` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_textdisp_applysourceconfigallentries.awk`: semantic post-filter for `ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_brush_planemaskforindex.awk`: semantic post-filter for `ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_script_resetctrlcontextandclearstatusline.awk`: semantic post-filter for `ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_parseini_writertcfromglobals.awk`: semantic post-filter for `ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_locavail_saveavailabilitydatafile.awk`: semantic post-filter for `ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_displib_displaytextatposition.awk`: semantic post-filter for `ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition` compare lane.
+- `src/decomp/scripts/semantic_filter_esqpars_jmptbl_ladfunc_savetextadstofile.awk`: semantic post-filter for `ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ag_jmptbl_memory_deallocate_memory.awk`: semantic post-filter for `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ag_jmptbl_memory_allocate_memory.awk`: semantic post-filter for `GROUP_AG_JMPTBL_MEMORY_AllocateMemory` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ag_jmptbl_struct_alloc_with_owner.awk`: semantic post-filter for `GROUP_AG_JMPTBL_STRUCT_AllocWithOwner` compare lane.
@@ -368,6 +448,26 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_group_am_jmptbl_p_type_reset_lists_and_load_promo_ids.awk`: semantic post-filter for `GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds` compare lane.
 - `src/decomp/scripts/semantic_filter_group_am_jmptbl_ladfunc_load_text_ads_from_file.awk`: semantic post-filter for `GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile` compare lane.
 - `src/decomp/scripts/semantic_filter_group_am_jmptbl_diskio_load_config_from_disk.awk`: semantic post-filter for `GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_textdisp_load_source_config.awk`: semantic post-filter for `GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_kybd_initialize_input_devices.awk`: semantic post-filter for `GROUP_AM_JMPTBL_KYBD_InitializeInputDevices` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_check_compatible_video_chip.awk`: semantic post-filter for `GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_check_available_fast_memory.awk`: semantic post-filter for `GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_gcommand_reset_banner_fade_state.awk`: semantic post-filter for `GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_tliba3_init_pattern_table.awk`: semantic post-filter for `GROUP_AM_JMPTBL_TLIBA3_InitPatternTable` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_format_disk_error_message.awk`: semantic post-filter for `GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_script_prime_banner_transition_from_hex_code.awk`: semantic post-filter for `GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_locavail_reset_filter_state_struct.awk`: semantic post-filter for `GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_init_audio1_dma.awk`: semantic post-filter for `GROUP_AM_JMPTBL_ESQ_InitAudio1Dma` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight.awk`: semantic post-filter for `GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_locavail_load_availability_data_file.awk`: semantic post-filter for `GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_gcommand_init_preset_defaults.awk`: semantic post-filter for `GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_override_intuition_funcs.awk`: semantic post-filter for `GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_buffer_flush_all_and_close_with_code.awk`: semantic post-filter for `GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_flib2_reset_and_load_listing_templates.awk`: semantic post-filter for `GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_wdisp_s_printf.awk`: semantic post-filter for `GROUP_AM_JMPTBL_WDISP_SPrintf` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight.awk`: semantic post-filter for `GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_cleanup_shutdown_system.awk`: semantic post-filter for `GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem` compare lane.
+- `src/decomp/scripts/semantic_filter_group_am_jmptbl_ladfunc_alloc_banner_rect_entries.awk`: semantic post-filter for `GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries` compare lane.
 - `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_nocase.awk`: semantic post-filter for `ESQIFF_JMPTBL_STRING_CompareNoCase` compare lane.
 - `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_n.awk`: semantic post-filter for `ESQIFF_JMPTBL_STRING_CompareN` compare lane.
 - `src/decomp/scripts/semantic_filter_esqiff_jmptbl_string_compare_nocase_n.awk`: semantic post-filter for `ESQIFF_JMPTBL_STRING_CompareNoCaseN` compare lane.
@@ -633,6 +733,36 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_target_gcc.sh`: promotion gate for Target 317 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown_jmptbl_displib_display_text_at_position_target_gcc.sh`: promotion gate for Target 318 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown_jmptbl_esq_wildcard_match_target_gcc.sh`: promotion gate for Target 319 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown_jmptbl_dst_normalize_day_of_year_target_gcc.sh`: promotion gate for Target 320 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown_jmptbl_esq_generate_xor_checksum_byte_target_gcc.sh`: promotion gate for Target 321 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqproto_jmptbl_esqpars_replace_owned_string_target_gcc.sh`: promotion gate for Target 322 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_dst_build_banner_time_word_target_gcc.sh`: promotion gate for Target 323 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_esq_reverse_bits_in6_bytes_target_gcc.sh`: promotion gate for Target 324 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_esq_set_bit1_based_target_gcc.sh`: promotion gate for Target 325 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_target_gcc.sh`: promotion gate for Target 326 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_coi_ensure_anim_object_allocated_target_gcc.sh`: promotion gate for Target 327 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_esq_wildcard_match_target_gcc.sh`: promotion gate for Target 328 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_str_skip_class3_chars_target_gcc.sh`: promotion gate for Target 329 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqshared_jmptbl_esq_test_bit1_based_target_gcc.sh`: promotion gate for Target 330 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_diskio2_flushdatafilesifneeded_target_gcc.sh`: promotion gate for Target 331 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_newgrid_rebuildindexcache_target_gcc.sh`: promotion gate for Target 332 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_datetime_savepairtofile_target_gcc.sh`: promotion gate for Target 333 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_esqproto_verifychecksumandparselist_target_gcc.sh`: promotion gate for Target 334 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_p_type_parseandstoretyperecord_target_gcc.sh`: promotion gate for Target 335 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_esqproto_copylabeltoglobal_target_gcc.sh`: promotion gate for Target 336 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_dst_handlebannercommand32_33_target_gcc.sh`: promotion gate for Target 337 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_esq_seedminuteeventthresholds_target_gcc.sh`: promotion gate for Target 338 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_parseini_handlefontcommand_target_gcc.sh`: promotion gate for Target 339 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_textdisp_applysourceconfigallentries_target_gcc.sh`: promotion gate for Target 340 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_brush_planemaskforindex_target_gcc.sh`: promotion gate for Target 341 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_target_gcc.sh`: promotion gate for Target 342 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_parseini_writertcfromglobals_target_gcc.sh`: promotion gate for Target 343 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_locavail_saveavailabilitydatafile_target_gcc.sh`: promotion gate for Target 344 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_displib_displaytextatposition_target_gcc.sh`: promotion gate for Target 345 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqpars_jmptbl_ladfunc_savetextadstofile_target_gcc.sh`: promotion gate for Target 346 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ag_jmptbl_memory_deallocate_memory_target_gcc.sh`: promotion gate for Target 096 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ag_jmptbl_memory_allocate_memory_target_gcc.sh`: promotion gate for Target 097 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ag_jmptbl_struct_alloc_with_owner_target_gcc.sh`: promotion gate for Target 098 GCC lane (semantic + build/hash gates).
@@ -661,6 +791,26 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_group_am_jmptbl_p_type_reset_lists_and_load_promo_ids_target_gcc.sh`: promotion gate for Target 294 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_am_jmptbl_ladfunc_load_text_ads_from_file_target_gcc.sh`: promotion gate for Target 295 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_am_jmptbl_diskio_load_config_from_disk_target_gcc.sh`: promotion gate for Target 296 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_textdisp_load_source_config_target_gcc.sh`: promotion gate for Target 297 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_kybd_initialize_input_devices_target_gcc.sh`: promotion gate for Target 298 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_esq_check_compatible_video_chip_target_gcc.sh`: promotion gate for Target 299 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_esq_check_available_fast_memory_target_gcc.sh`: promotion gate for Target 300 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_gcommand_reset_banner_fade_state_target_gcc.sh`: promotion gate for Target 301 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_tliba3_init_pattern_table_target_gcc.sh`: promotion gate for Target 302 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_esq_format_disk_error_message_target_gcc.sh`: promotion gate for Target 303 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_script_prime_banner_transition_from_hex_code_target_gcc.sh`: promotion gate for Target 304 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_locavail_reset_filter_state_struct_target_gcc.sh`: promotion gate for Target 305 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_esq_init_audio1_dma_target_gcc.sh`: promotion gate for Target 306 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_target_gcc.sh`: promotion gate for Target 307 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_locavail_load_availability_data_file_target_gcc.sh`: promotion gate for Target 308 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_gcommand_init_preset_defaults_target_gcc.sh`: promotion gate for Target 309 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_override_intuition_funcs_target_gcc.sh`: promotion gate for Target 310 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_buffer_flush_all_and_close_with_code_target_gcc.sh`: promotion gate for Target 311 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_flib2_reset_and_load_listing_templates_target_gcc.sh`: promotion gate for Target 312 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_wdisp_s_printf_target_gcc.sh`: promotion gate for Target 313 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_target_gcc.sh`: promotion gate for Target 314 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_cleanup_shutdown_system_target_gcc.sh`: promotion gate for Target 315 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_target_gcc.sh`: promotion gate for Target 316 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_target_gcc.sh`: promotion gate for Target 108 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_n_target_gcc.sh`: promotion gate for Target 109 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_n_target_gcc.sh`: promotion gate for Target 110 GCC lane (semantic + build/hash gates).
@@ -967,6 +1117,36 @@ bash src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh
+bash src/decomp/scripts/promote_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_target_gcc.sh
+bash src/decomp/scripts/promote_unknown_jmptbl_displib_display_text_at_position_target_gcc.sh
+bash src/decomp/scripts/promote_unknown_jmptbl_esq_wildcard_match_target_gcc.sh
+bash src/decomp/scripts/promote_unknown_jmptbl_dst_normalize_day_of_year_target_gcc.sh
+bash src/decomp/scripts/promote_unknown_jmptbl_esq_generate_xor_checksum_byte_target_gcc.sh
+bash src/decomp/scripts/promote_esqproto_jmptbl_esqpars_replace_owned_string_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_dst_build_banner_time_word_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_esq_reverse_bits_in6_bytes_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_esq_set_bit1_based_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_esq_adjust_bracketed_hour_in_string_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_coi_ensure_anim_object_allocated_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_esq_wildcard_match_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_str_skip_class3_chars_target_gcc.sh
+bash src/decomp/scripts/promote_esqshared_jmptbl_esq_test_bit1_based_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_diskio2_flushdatafilesifneeded_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_newgrid_rebuildindexcache_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_datetime_savepairtofile_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_esqproto_verifychecksumandparselist_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_p_type_parseandstoretyperecord_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_esqproto_copylabeltoglobal_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_dst_handlebannercommand32_33_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_esq_seedminuteeventthresholds_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_parseini_handlefontcommand_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_textdisp_applysourceconfigallentries_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_brush_planemaskforindex_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_parseini_writertcfromglobals_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_locavail_saveavailabilitydatafile_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_displib_displaytextatposition_target_gcc.sh
+bash src/decomp/scripts/promote_esqpars_jmptbl_ladfunc_savetextadstofile_target_gcc.sh
 bash src/decomp/scripts/promote_group_ag_jmptbl_memory_deallocate_memory_target_gcc.sh
 bash src/decomp/scripts/promote_group_ag_jmptbl_memory_allocate_memory_target_gcc.sh
 bash src/decomp/scripts/promote_group_ag_jmptbl_struct_alloc_with_owner_target_gcc.sh
@@ -995,6 +1175,26 @@ bash src/decomp/scripts/promote_group_am_jmptbl_esq_check_topaz_font_guard_targe
 bash src/decomp/scripts/promote_group_am_jmptbl_p_type_reset_lists_and_load_promo_ids_target_gcc.sh
 bash src/decomp/scripts/promote_group_am_jmptbl_ladfunc_load_text_ads_from_file_target_gcc.sh
 bash src/decomp/scripts/promote_group_am_jmptbl_diskio_load_config_from_disk_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_textdisp_load_source_config_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_kybd_initialize_input_devices_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_esq_check_compatible_video_chip_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_esq_check_available_fast_memory_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_gcommand_reset_banner_fade_state_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_tliba3_init_pattern_table_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_esq_format_disk_error_message_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_script_prime_banner_transition_from_hex_code_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_locavail_reset_filter_state_struct_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_esq_init_audio1_dma_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_on_enable_highlight_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_locavail_load_availability_data_file_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_gcommand_init_preset_defaults_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_override_intuition_funcs_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_buffer_flush_all_and_close_with_code_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_flib2_reset_and_load_listing_templates_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_wdisp_s_printf_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_esq_set_copper_effect_off_disable_highlight_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_cleanup_shutdown_system_target_gcc.sh
+bash src/decomp/scripts/promote_group_am_jmptbl_ladfunc_alloc_banner_rect_entries_target_gcc.sh
 bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_target_gcc.sh
 bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_n_target_gcc.sh
 bash src/decomp/scripts/promote_esqiff_jmptbl_string_compare_nocase_n_target_gcc.sh
@@ -1249,7 +1449,7 @@ Known good GCC profiles by target:
 - Target 002: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fno-omit-frame-pointer`
 - Target 003: `-O0 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
 - Targets 004/005/006/007/008/009/010/011/012/013/014/015/016/017/018/019/020/021/022/023/024/025/026/027/028/029/030/031/032/033/034/035/036/037/038/039/040/041/042/043/044/045/046/047/048/049/050/051/052/053/054/055/056/057/058/059/060/061/062/063/064/065/066/067/068/069/070/071/072/073/074/075/076/077/078/079/080/081/082/083/084/085/086/087/088/089/090/091/092/093/094/095/096/097/098/099/100/101/102/103/104/105/106/107/108/109/110/111/112/113/114/115/116/117/118/119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
-- Targets 148/149/150/151/152/153/154/155/156/157/158/159/160/161/162/163/164/165/166/167/168/169/170/171/172/173/174/175/176/177/178/179/180/181/182/183/184/185/186/187/188/189/190/191/192/193/194/195/196/197/198/199/200/201/202/203/204/205/206/207/208/209/210/211/212/213/214/215/216/217/218/219/220/221/222/223/224/225/226/227/228/229/230/231/232/233/234/235/236/237/238/239/240/241/242/243/244/245/246/247/248/249/250/251/252/253/254/255/256/257/258/259/260/261/262/263/264/265/266/267/268/269/270/271/272/273/274/275/276/277/278/279/280/281/282/283/284/285/286/287/288/289/290/291/292/293/294/295/296: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
+- Targets 148/149/150/151/152/153/154/155/156/157/158/159/160/161/162/163/164/165/166/167/168/169/170/171/172/173/174/175/176/177/178/179/180/181/182/183/184/185/186/187/188/189/190/191/192/193/194/195/196/197/198/199/200/201/202/203/204/205/206/207/208/209/210/211/212/213/214/215/216/217/218/219/220/221/222/223/224/225/226/227/228/229/230/231/232/233/234/235/236/237/238/239/240/241/242/243/244/245/246/247/248/249/250/251/252/253/254/255/256/257/258/259/260/261/262/263/264/265/266/267/268/269/270/271/272/273/274/275/276/277/278/279/280/281/282/283/284/285/286/287/288/289/290/291/292/293/294/295/296/297/298/299/300/301/302/303/304/305/306/307/308/309/310/311/312/313/314/315/316/317/318/319/320/321/322/323/324/325/326/327/328/329/330/331/332/333/334/335/336/337/338/339/340/341/342/343/344/345/346: `-O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
