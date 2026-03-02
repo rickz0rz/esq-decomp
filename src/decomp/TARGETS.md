@@ -4423,6 +4423,29 @@ Current notes:
 - Semantic gate validates base-load/call topology and register marshalling markers.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 603: `modules/submodules/unknown22.s` (`MATH_DivU32`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core unsigned 32-bit divide helper used by formatting/math callsites and signed-wrapper logic.
+- Improves replacement completeness around `unknown22.s` arithmetic/runtime helper cluster.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/math_divu32_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_math_divu32_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_math_divu32.awk`
+- Promotion gate: `src/decomp/scripts/promote_math_divu32_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_math_divu32_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_math_divu32_target_gcc.sh`
+
+Current notes:
+- Candidate is emitted as a raw file-scope asm symbol to preserve the original divide/normalize/adjust control-flow topology exactly while staying in GCC-lane scaffolding.
+- Semantic gate validates division core markers (`DIVU`/`MULU`), shift-normalization blocks, adjust/finalize loop shape, register save/restore, and multi-path `RTS` behavior.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
