@@ -349,6 +349,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_measure_current_line_length_trial_gcc.sh`: GCC-specific compare lane for `Target 438` (`NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_set_layout_params_trial_gcc.sh`: GCC-specific compare lane for `Target 439` (`NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_has_multiple_lines_trial_gcc.sh`: GCC-specific compare lane for `Target 440` (`NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_horizontal_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 441` (`NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel`).
 - `src/decomp/scripts/compare_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 276` (`GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq`).
 - `src/decomp/scripts/compare_group_av_jmptbl_signal_create_msgport_with_signal_trial_gcc.sh`: GCC-specific compare lane for `Target 277` (`GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal`).
 - `src/decomp/scripts/compare_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial_gcc.sh`: GCC-specific compare lane for `Target 278` (`GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths`).
@@ -358,6 +359,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_group_ad_jmptbl_textdisp_format_entry_time_trial_gcc.sh`: GCC-specific compare lane for `Target 147` (`GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_tliba3_get_view_mode_height_trial_gcc.sh`: GCC-specific compare lane for `Target 148` (`GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_tliba3_get_view_mode_rast_port_trial_gcc.sh`: GCC-specific compare lane for `Target 149` (`GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort`).
+- `src/decomp/scripts/compare_tliba3_jmptbl_gcommand_applyhighlightflag_trial_gcc.sh`: GCC-specific compare lane for `Target 442` (`TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag`).
+- `src/decomp/scripts/compare_tliba2_jmptbl_dst_addtimeoffset_trial_gcc.sh`: GCC-specific compare lane for `Target 443` (`TLIBA2_JMPTBL_DST_AddTimeOffset`).
+- `src/decomp/scripts/compare_tliba2_jmptbl_esq_testbit1based_trial_gcc.sh`: GCC-specific compare lane for `Target 444` (`TLIBA2_JMPTBL_ESQ_TestBit1Based`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -787,6 +791,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_measure_current_line_length.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_set_layout_params.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_has_multiple_lines.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_horizontal_bevel.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_signal_create_msgport_with_signal.awk`: semantic post-filter for `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_diskio_probe_drives_and_assign_paths.awk`: semantic post-filter for `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` compare lane.
@@ -796,6 +801,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_textdisp_format_entry_time.awk`: semantic post-filter for `GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_tliba3_get_view_mode_height.awk`: semantic post-filter for `GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_tliba3_get_view_mode_rast_port.awk`: semantic post-filter for `GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort` compare lane.
+- `src/decomp/scripts/semantic_filter_tliba3_jmptbl_gcommand_applyhighlightflag.awk`: semantic post-filter for `TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag` compare lane.
+- `src/decomp/scripts/semantic_filter_tliba2_jmptbl_dst_addtimeoffset.awk`: semantic post-filter for `TLIBA2_JMPTBL_DST_AddTimeOffset` compare lane.
+- `src/decomp/scripts/semantic_filter_tliba2_jmptbl_esq_testbit1based.awk`: semantic post-filter for `TLIBA2_JMPTBL_ESQ_TestBit1Based` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1224,6 +1232,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_measure_current_line_length_target_gcc.sh`: promotion gate for Target 438 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_set_layout_params_target_gcc.sh`: promotion gate for Target 439 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_has_multiple_lines_target_gcc.sh`: promotion gate for Target 440 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh`: promotion gate for Target 441 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 276 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh`: promotion gate for Target 277 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh`: promotion gate for Target 278 GCC lane (semantic + build/hash gates).
@@ -1233,6 +1242,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_group_ad_jmptbl_textdisp_format_entry_time_target_gcc.sh`: promotion gate for Target 147 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_tliba3_get_view_mode_height_target_gcc.sh`: promotion gate for Target 148 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_tliba3_get_view_mode_rast_port_target_gcc.sh`: promotion gate for Target 149 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba3_jmptbl_gcommand_applyhighlightflag_target_gcc.sh`: promotion gate for Target 442 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba2_jmptbl_dst_addtimeoffset_target_gcc.sh`: promotion gate for Target 443 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh`: promotion gate for Target 444 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1702,6 +1714,7 @@ bash src/decomp/scripts/promote_newgrid2_jmptbl_esq_test_bit1_based_target_gcc.s
 bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_measure_current_line_length_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_set_layout_params_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_has_multiple_lines_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh
@@ -1711,6 +1724,9 @@ bash src/decomp/scripts/promote_group_ad_jmptbl_textdisp_draw_channel_banner_tar
 bash src/decomp/scripts/promote_group_ad_jmptbl_textdisp_format_entry_time_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_tliba3_get_view_mode_height_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_tliba3_get_view_mode_rast_port_target_gcc.sh
+bash src/decomp/scripts/promote_tliba3_jmptbl_gcommand_applyhighlightflag_target_gcc.sh
+bash src/decomp/scripts/promote_tliba2_jmptbl_dst_addtimeoffset_target_gcc.sh
+bash src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh

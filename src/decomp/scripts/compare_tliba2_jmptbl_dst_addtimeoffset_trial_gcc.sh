@@ -1,16 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 
-SRC_C="src/decomp/c/replacements/newgrid2_jmptbl_bevel_draw_horizontal_bevel_gcc.c"
-ORIG_ASM="src/modules/groups/b/a/newgrid2.s"
+SRC_C="src/decomp/c/replacements/tliba2_jmptbl_dst_addtimeoffset_gcc.c"
+ORIG_ASM="src/modules/groups/b/a/tliba2.s"
 OUT_DIR="build/decomp/c_trial_gcc"
-GEN_ASM="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.generated.gcc.s"
-ORIG_SLICE="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.original_slice.s"
-GEN_SLICE="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.generated_slice.s"
-ORIG_NORM="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.original_slice.norm.s"
-GEN_NORM="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.generated_slice.norm.s"
-ORIG_SEM="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.original_slice.semantic.txt"
-GEN_SEM="${OUT_DIR}/newgrid2_jmptbl_bevel_draw_horizontal_bevel.generated_slice.semantic.txt"
+GEN_ASM="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.generated.gcc.s"
+ORIG_SLICE="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.original_slice.s"
+GEN_SLICE="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.generated_slice.s"
+ORIG_NORM="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.original_slice.norm.s"
+GEN_NORM="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.generated_slice.norm.s"
+ORIG_SEM="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.original_slice.semantic.txt"
+GEN_SEM="${OUT_DIR}/tliba2_jmptbl_dst_addtimeoffset.generated_slice.semantic.txt"
 
 CC_BIN="${CROSS_CC:-/opt/amiga/bin/m68k-amigaos-gcc}"
 GCC_CFLAGS="${GCC_CFLAGS:--O1 -m68000 -ffreestanding -fno-builtin -fno-inline -fomit-frame-pointer}"
@@ -28,15 +28,15 @@ fi
 mkdir -p "$OUT_DIR"
 "$CC_BIN" -S $GCC_CFLAGS -Isrc/decomp/c/include "$SRC_C" -o "$GEN_ASM"
 
-awk -v start_label="NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel" '
+awk -v start_label="TLIBA2_JMPTBL_DST_AddTimeOffset" -v next_label="TLIBA2_JMPTBL_ESQ_TestBit1Based" '
 $0 ~ ("^" start_label ":?$") {in_func=1}
 in_func {
-    if ($0 ~ /^;!======/) exit
+    if (next_label != "" && $0 ~ ("^" next_label ":?$")) exit
     print
 }
 ' "$ORIG_ASM" > "$ORIG_SLICE"
 
-awk '$0 ~ /^_?NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel:?$/ {in_func=1} in_func { print }' "$GEN_ASM" > "$GEN_SLICE"
+awk '$0 ~ /^_?TLIBA2_JMPTBL_DST_AddTimeOffset:?$/ {in_func=1} in_func { print }' "$GEN_ASM" > "$GEN_SLICE"
 
 echo "compiler: $CC_BIN"
 echo "generated: $GEN_ASM"
@@ -51,8 +51,8 @@ echo "normalized original: $ORIG_NORM"
 echo "normalized generated: $GEN_NORM"
 diff -u "$ORIG_NORM" "$GEN_NORM" || true
 
-awk -f "src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_horizontal_bevel.awk" "$ORIG_NORM" > "$ORIG_SEM"
-awk -f "src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_horizontal_bevel.awk" "$GEN_NORM" > "$GEN_SEM"
+awk -f "src/decomp/scripts/semantic_filter_tliba2_jmptbl_dst_addtimeoffset.awk" "$ORIG_NORM" > "$ORIG_SEM"
+awk -f "src/decomp/scripts/semantic_filter_tliba2_jmptbl_dst_addtimeoffset.awk" "$GEN_NORM" > "$GEN_SEM"
 
 echo "semantic original: $ORIG_SEM"
 echo "semantic generated: $GEN_SEM"

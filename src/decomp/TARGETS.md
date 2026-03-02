@@ -10141,3 +10141,95 @@ Current notes:
 - Original assembly is a direct `JMP DISPTEXT_HasMultipleLines`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 441: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends NEWGRID2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_bevel_draw_horizontal_bevel_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_horizontal_bevel_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_horizontal_bevel.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_horizontal_bevel_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BEVEL_DrawHorizontalBevel`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 442: `modules/groups/b/a/tliba3.s` (`TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/tliba3.s` with direct forward-dispatch semantics.
+- Extends TLIBA3 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba3_jmptbl_gcommand_applyhighlightflag_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba3_jmptbl_gcommand_applyhighlightflag_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba3_jmptbl_gcommand_applyhighlightflag.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba3_jmptbl_gcommand_applyhighlightflag_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba3_jmptbl_gcommand_applyhighlightflag_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba3_jmptbl_gcommand_applyhighlightflag_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP GCOMMAND_ApplyHighlightFlag`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 443: `modules/groups/b/a/tliba2.s` (`TLIBA2_JMPTBL_DST_AddTimeOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/tliba2.s` with direct forward-dispatch semantics.
+- Extends TLIBA2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_jmptbl_dst_addtimeoffset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_jmptbl_dst_addtimeoffset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_jmptbl_dst_addtimeoffset.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_jmptbl_dst_addtimeoffset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_jmptbl_dst_addtimeoffset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_jmptbl_dst_addtimeoffset_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DST_AddTimeOffset`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 444: `modules/groups/b/a/tliba2.s` (`TLIBA2_JMPTBL_ESQ_TestBit1Based`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/tliba2.s` with direct forward-dispatch semantics.
+- Extends TLIBA2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_jmptbl_esq_testbit1based_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_jmptbl_esq_testbit1based_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_jmptbl_esq_testbit1based.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_jmptbl_esq_testbit1based_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_TestBit1Based`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
