@@ -459,6 +459,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script3_jmptbl_locavail_setfiltermodeandresetstate_target_gcc.sh"
     "src/decomp/scripts/promote_script3_jmptbl_string_copypadnul_target_gcc.sh"
     "src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh"
+    "src/decomp/scripts/promote_script3_jmptbl_esqdisp_updatestatusmaskandrefresh_target_gcc.sh"
+    "src/decomp/scripts/promote_script3_jmptbl_gcommand_getbannerchar_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
