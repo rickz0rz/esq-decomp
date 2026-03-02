@@ -401,6 +401,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_wdisp_jmptbl_brush_planemaskforindex_trial_gcc.sh`: GCC-specific compare lane for `Target 481` (`WDISP_JMPTBL_BRUSH_PlaneMaskForIndex`).
 - `src/decomp/scripts/compare_wdisp_jmptbl_esq_setcoppereffect_onenablehighlight_trial_gcc.sh`: GCC-specific compare lane for `Target 482` (`WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight`).
 - `src/decomp/scripts/compare_wdisp_jmptbl_esqiff_renderweatherstatusbrushslice_trial_gcc.sh`: GCC-specific compare lane for `Target 483` (`WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice`).
+- `src/decomp/scripts/compare_wdisp_jmptbl_brush_selectbrushslot_trial_gcc.sh`: GCC-specific compare lane for `Target 484` (`WDISP_JMPTBL_BRUSH_SelectBrushSlot`).
+- `src/decomp/scripts/compare_wdisp_jmptbl_newgrid_drawwrappedtext_trial_gcc.sh`: GCC-specific compare lane for `Target 485` (`WDISP_JMPTBL_NEWGRID_DrawWrappedText`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -882,6 +884,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_planemaskforindex.awk`: semantic post-filter for `WDISP_JMPTBL_BRUSH_PlaneMaskForIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esq_setcoppereffect_onenablehighlight.awk`: semantic post-filter for `WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight` compare lane.
 - `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqiff_renderweatherstatusbrushslice.awk`: semantic post-filter for `WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice` compare lane.
+- `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_selectbrushslot.awk`: semantic post-filter for `WDISP_JMPTBL_BRUSH_SelectBrushSlot` compare lane.
+- `src/decomp/scripts/semantic_filter_wdisp_jmptbl_newgrid_drawwrappedtext.awk`: semantic post-filter for `WDISP_JMPTBL_NEWGRID_DrawWrappedText` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1362,6 +1366,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_wdisp_jmptbl_brush_planemaskforindex_target_gcc.sh`: promotion gate for Target 481 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_wdisp_jmptbl_esq_setcoppereffect_onenablehighlight_target_gcc.sh`: promotion gate for Target 482 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_wdisp_jmptbl_esqiff_renderweatherstatusbrushslice_target_gcc.sh`: promotion gate for Target 483 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_wdisp_jmptbl_brush_selectbrushslot_target_gcc.sh`: promotion gate for Target 484 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_wdisp_jmptbl_newgrid_drawwrappedtext_target_gcc.sh`: promotion gate for Target 485 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1883,6 +1889,8 @@ bash src/decomp/scripts/promote_wdisp_jmptbl_brush_freebrushlist_target_gcc.sh
 bash src/decomp/scripts/promote_wdisp_jmptbl_brush_planemaskforindex_target_gcc.sh
 bash src/decomp/scripts/promote_wdisp_jmptbl_esq_setcoppereffect_onenablehighlight_target_gcc.sh
 bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_renderweatherstatusbrushslice_target_gcc.sh
+bash src/decomp/scripts/promote_wdisp_jmptbl_brush_selectbrushslot_target_gcc.sh
+bash src/decomp/scripts/promote_wdisp_jmptbl_newgrid_drawwrappedtext_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
