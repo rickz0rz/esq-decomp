@@ -438,6 +438,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_parseini_jmptbl_ed1_waitforflagandclearbit0_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_ed1_waitforflagandclearbit1_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_esqfunc_drawescmenuversion_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_jmptbl_esqiff_queueiffbrushload_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
