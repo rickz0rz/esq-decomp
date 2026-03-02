@@ -339,6 +339,11 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid2_jmptbl_str_skip_class3_chars_trial_gcc.sh`: GCC-specific compare lane for `Target 428` (`NEWGRID2_JMPTBL_STR_SkipClass3Chars`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_string_append_n_trial_gcc.sh`: GCC-specific compare lane for `Target 429` (`NEWGRID2_JMPTBL_STRING_AppendN`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_trial_gcc.sh`: GCC-specific compare lane for `Target 430` (`NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_parse_read_signed_long_skip_class3_alt_trial_gcc.sh`: GCC-specific compare lane for `Target 431` (`NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_cleanup_test_entry_flag_y_and_bit1_trial_gcc.sh`: GCC-specific compare lane for `Target 432` (`NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_is_current_line_last_trial_gcc.sh`: GCC-specific compare lane for `Target 433` (`NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_is_last_line_selected_trial_gcc.sh`: GCC-specific compare lane for `Target 434` (`NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_displib_find_previous_valid_entry_index_trial_gcc.sh`: GCC-specific compare lane for `Target 435` (`NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex`).
 - `src/decomp/scripts/compare_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 276` (`GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq`).
 - `src/decomp/scripts/compare_group_av_jmptbl_signal_create_msgport_with_signal_trial_gcc.sh`: GCC-specific compare lane for `Target 277` (`GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal`).
 - `src/decomp/scripts/compare_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial_gcc.sh`: GCC-specific compare lane for `Target 278` (`GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths`).
@@ -767,6 +772,11 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_str_skip_class3_chars.awk`: semantic post-filter for `NEWGRID2_JMPTBL_STR_SkipClass3Chars` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_string_append_n.awk`: semantic post-filter for `NEWGRID2_JMPTBL_STRING_AppendN` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row.awk`: semantic post-filter for `NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_parse_read_signed_long_skip_class3_alt.awk`: semantic post-filter for `NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_cleanup_test_entry_flag_y_and_bit1.awk`: semantic post-filter for `NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_is_current_line_last.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_is_last_line_selected.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_displib_find_previous_valid_entry_index.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_signal_create_msgport_with_signal.awk`: semantic post-filter for `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_diskio_probe_drives_and_assign_paths.awk`: semantic post-filter for `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` compare lane.
@@ -1194,6 +1204,11 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid2_jmptbl_str_skip_class3_chars_target_gcc.sh`: promotion gate for Target 428 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_string_append_n_target_gcc.sh`: promotion gate for Target 429 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_target_gcc.sh`: promotion gate for Target 430 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_parse_read_signed_long_skip_class3_alt_target_gcc.sh`: promotion gate for Target 431 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_cleanup_test_entry_flag_y_and_bit1_target_gcc.sh`: promotion gate for Target 432 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_is_current_line_last_target_gcc.sh`: promotion gate for Target 433 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_is_last_line_selected_target_gcc.sh`: promotion gate for Target 434 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_displib_find_previous_valid_entry_index_target_gcc.sh`: promotion gate for Target 435 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 276 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh`: promotion gate for Target 277 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh`: promotion gate for Target 278 GCC lane (semantic + build/hash gates).
@@ -1662,6 +1677,11 @@ bash src/decomp/scripts/promote_newgrid2_jmptbl_esq_get_half_hour_slot_index_tar
 bash src/decomp/scripts/promote_newgrid2_jmptbl_str_skip_class3_chars_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_string_append_n_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_compute_schedule_offset_for_row_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_parse_read_signed_long_skip_class3_alt_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_cleanup_test_entry_flag_y_and_bit1_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_is_current_line_last_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_is_last_line_selected_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_displib_find_previous_valid_entry_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh
