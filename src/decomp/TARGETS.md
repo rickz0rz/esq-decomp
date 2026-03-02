@@ -10833,3 +10833,119 @@ Current notes:
 - Original assembly is a direct `JMP DISKIO_WriteBufferedBytes`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 471: `modules/groups/b/a/script.s` (`SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script.s` with direct forward-dispatch semantics.
+- Continues SCRIPT jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_jmptbl_diskio_closebufferedfileandflush_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_jmptbl_diskio_closebufferedfileandflush_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_jmptbl_diskio_closebufferedfileandflush.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_jmptbl_diskio_closebufferedfileandflush_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_jmptbl_diskio_closebufferedfileandflush_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_jmptbl_diskio_closebufferedfileandflush_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_CloseBufferedFileAndFlush`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 472: `modules/groups/b/a/script.s` (`SCRIPT_JMPTBL_MEMORY_AllocateMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script.s` with direct forward-dispatch semantics.
+- Continues SCRIPT jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_jmptbl_memory_allocatememory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_jmptbl_memory_allocatememory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_jmptbl_memory_allocatememory.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_jmptbl_memory_allocatememory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_jmptbl_memory_allocatememory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_jmptbl_memory_allocatememory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MEMORY_AllocateMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 473: `modules/groups/b/a/script.s` (`SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script.s` with direct forward-dispatch semantics.
+- Completes the SCRIPT jump-stub bridge set while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_jmptbl_diskio_openfilewithbuffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_jmptbl_diskio_openfilewithbuffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_jmptbl_diskio_openfilewithbuffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_jmptbl_diskio_openfilewithbuffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_jmptbl_diskio_openfilewithbuffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_jmptbl_diskio_openfilewithbuffer_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_OpenFileWithBuffer`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Compare slice ends before the `;======` alignment marker.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 474: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Starts WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_esqiff_restorebasepalettetriples_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_esqiff_restorebasepalettetriples_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqiff_restorebasepalettetriples.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_esqiff_restorebasepalettetriples_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_esqiff_restorebasepalettetriples_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_restorebasepalettetriples_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_RestoreBasePaletteTriples`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 475: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQFUNC_TrimTextToPixelWidthWordBoundary`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
