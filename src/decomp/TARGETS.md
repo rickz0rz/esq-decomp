@@ -3359,6 +3359,54 @@ Current notes:
 - Semantic gate intentionally avoids brittle immediate-value matching and instead validates helper-call/callsite shape across the command branches.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 557: `modules/groups/b/a/parseini.s` (`PARSEINI_ProcessWeatherBlocks`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next remaining non-stub parser helper in `parseini.s`, directly referenced by the top-level INI dispatcher.
+- Bounded key/value branch fan-out with known field-offset writes, making it a practical step before `PARSEINI_ParseIniBufferAndDispatch`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_process_weather_blocks_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_process_weather_blocks_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_process_weather_blocks.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_process_weather_blocks_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_process_weather_blocks_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_process_weather_blocks_target_gcc.sh`
+
+Current notes:
+- Candidate preserves weather block creation (`FILENAME`), load-color mode mapping (`ALL/NONE/TEXT/default`), numeric field parse writes (`XPOS/YPOS/XSOURCE/YSOURCE/SIZEX/SIZEY`), and source-node append flow.
+- Includes horizontal/vertical alignment mapping and ID copy path using `SCRIPT3_JMPTBL_STRING_CopyPadNul`.
+- Semantic gate checks helper-call presence, key/tag symbol coverage, key structure offsets (`190/194/222/226/230`), and allocation constants (`670/12`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 558: `modules/groups/b/a/parseini.s` (`PARSEINI_ScanLogoDirectory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining non-stub parser helper that handles logo list synchronization and cleanup.
+- Provides direct progress toward closing the remaining `parseini.s` exports before the top-level parser conversion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_scan_logo_directory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_scan_logo_directory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_scan_logo_directory.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_scan_logo_directory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_scan_logo_directory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_scan_logo_directory_target_gcc.sh`
+
+Current notes:
+- Candidate preserves dual-list open/read/sanitize loops, secondary-vs-primary compare/delete behavior, and per-entry alloc/free lifecycle.
+- Keeps key helper call shape: `_LVOExecute`, `PARSEINI_JMPTBL_HANDLE_OpenWithMode`, `PARSEINI_JMPTBL_STREAM_ReadLineWithLimit`, `PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator`, `PARSEINI_JMPTBL_STRING_AppendAtNull`, and request finalization.
+- Semantic gate checks key call/symbol coverage plus loop constants (`100` entry cap, `99` line limit).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
