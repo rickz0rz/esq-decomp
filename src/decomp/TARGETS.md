@@ -4680,6 +4680,29 @@ Current notes:
 - Semantic gate accepts both explicit `MULS` and GCC strength-reduced shift/add multiplication forms for the `0xE10` and `0x3C` factors.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 614: `modules/groups/a/j/dst.s` (`DST_FreeBannerStruct`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` memory-lifecycle helper with real conditional behavior.
+- Good bridge into the remaining `DST_*` allocation/free flows in `dst.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_free_banner_struct_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_free_banner_struct_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_free_banner_struct.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_free_banner_struct_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_free_banner_struct_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_free_banner_struct_target_gcc.sh`
+
+Current notes:
+- Candidate preserves null guard, conditional free of slot0/slot1 child buffers, and unconditional free of the container struct when non-null.
+- Semantic gate validates deallocation call topology, expected free-size constants (`22`, `18`), and destination tag strings.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
