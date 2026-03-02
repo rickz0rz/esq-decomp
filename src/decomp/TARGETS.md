@@ -4633,6 +4633,30 @@ Current notes:
 - Semantic gate validates label/call/zero-arg/out-word-return/RTS markers while tolerating GCC frame-shape differences.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 612: `modules/groups/a/j/dst2.s` (`DST_ComputeBannerIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First heavier non-wrapper in the current DST pass, with real arithmetic/control-flow composition.
+- High leverage for downstream banner/date behavior reconstruction.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_compute_banner_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_compute_banner_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_compute_banner_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_compute_banner_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_compute_banner_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_compute_banner_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the original topology: `DST_BuildBannerTimeEntry` pre-call, month modulo/div helper path, conditional month-offset add, doubling, day `> 29` adjustment, nonzero flag fold, `+0x26`, divide/remainder fold by `0x30`, and final `+1` return shaping.
+- Uses small inline-asm helpers to keep key divide/remainder operations tied to m68k patterns and avoid runtime helper drift.
+- Semantic gate validates all key constants/call sites (`12`, `0x1d`, `0x26`, `0x30`) and final-return shaping marker.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
