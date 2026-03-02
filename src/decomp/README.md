@@ -319,6 +319,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_beveled_frame_trial_gcc.sh`: GCC-specific compare lane for `Target 408` (`NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair_trial_gcc.sh`: GCC-specific compare lane for `Target 409` (`NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_horizontal_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 410` (`NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_coi_select_anim_field_pointer_trial_gcc.sh`: GCC-specific compare lane for `Target 411` (`NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_set_current_line_index_trial_gcc.sh`: GCC-specific compare lane for `Target 412` (`NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_layout_and_append_to_buffer_trial_gcc.sh`: GCC-specific compare lane for `Target 413` (`NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_get_total_line_count_trial_gcc.sh`: GCC-specific compare lane for `Target 414` (`NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount`).
 - `src/decomp/scripts/compare_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 276` (`GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq`).
 - `src/decomp/scripts/compare_group_av_jmptbl_signal_create_msgport_with_signal_trial_gcc.sh`: GCC-specific compare lane for `Target 277` (`GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal`).
 - `src/decomp/scripts/compare_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial_gcc.sh`: GCC-specific compare lane for `Target 278` (`GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths`).
@@ -727,6 +731,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_beveled_frame.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_horizontal_bevel.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_coi_select_anim_field_pointer.awk`: semantic post-filter for `NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_set_current_line_index.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_layout_and_append_to_buffer.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_get_total_line_count.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_signal_create_msgport_with_signal.awk`: semantic post-filter for `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_diskio_probe_drives_and_assign_paths.awk`: semantic post-filter for `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` compare lane.
@@ -1134,6 +1142,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_beveled_frame_target_gcc.sh`: promotion gate for Target 408 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair_target_gcc.sh`: promotion gate for Target 409 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh`: promotion gate for Target 410 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_coi_select_anim_field_pointer_target_gcc.sh`: promotion gate for Target 411 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_set_current_line_index_target_gcc.sh`: promotion gate for Target 412 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_layout_and_append_to_buffer_target_gcc.sh`: promotion gate for Target 413 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_get_total_line_count_target_gcc.sh`: promotion gate for Target 414 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 276 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh`: promotion gate for Target 277 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh`: promotion gate for Target 278 GCC lane (semantic + build/hash gates).
@@ -1582,6 +1594,10 @@ bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_
 bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_beveled_frame_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_coi_select_anim_field_pointer_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_set_current_line_index_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_layout_and_append_to_buffer_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_get_total_line_count_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh
