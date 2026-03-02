@@ -575,6 +575,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid_draw_clock_format_header_trial_gcc.sh`: GCC-specific compare lane for `Target 651` (`NEWGRID_DrawClockFormatHeader`).
 - `src/decomp/scripts/compare_newgrid_map_selection_to_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 652` (`NEWGRID_MapSelectionToMode`).
 - `src/decomp/scripts/compare_newgrid_init_grid_resources_trial_gcc.sh`: GCC-specific compare lane for `Target 653` (`NEWGRID_InitGridResources`).
+- `src/decomp/scripts/compare_newgrid_select_next_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 654` (`NEWGRID_SelectNextMode`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1818,6 +1819,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid_draw_clock_format_header_target_gcc.sh`: promotion gate for Target 651 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid_map_selection_to_mode_target_gcc.sh`: promotion gate for Target 652 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid_init_grid_resources_target_gcc.sh`: promotion gate for Target 653 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid_select_next_mode_target_gcc.sh`: promotion gate for Target 654 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).

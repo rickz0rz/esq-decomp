@@ -658,6 +658,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_newgrid_draw_clock_format_header_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_map_selection_to_mode_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_init_grid_resources_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_select_next_mode_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

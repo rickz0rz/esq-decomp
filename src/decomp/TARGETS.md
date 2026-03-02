@@ -5615,6 +5615,30 @@ Current notes:
 - Preserves metric derivations for sample text width, column start/width (`624` with `/3`), and row height pipeline; includes parity normalization path before final top-border redraw.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 654: `modules/groups/b/a/newgrid.s` (`NEWGRID_SelectNextMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- High-impact non-`JMPTBL` NEWGRID selector with dual cycle-gating families (`'Y'` vs non-`'Y'`) and multiple runtime budget counters.
+- Complements Target 652 by decompiling the underlying mode-candidate engine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_select_next_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_select_next_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_select_next_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_select_next_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_select_next_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_select_next_mode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode-table staging, `'Y'` gate-duration/countdown behavior, candidate-index advancement/reset around mode `12`, and both dispatch groups keyed by `(mode-5)`.
+- Non-`'Y'` path keeps signed-byte budget decrement/reload semantics for niche/static/custom/global/mplex/ppv budgets and selects on threshold-crossing or case `7`.
+- `'Y'` path preserves immediate selection behavior from config/counter presence and wrap-to-`12` fallback when no candidate qualifies across a full candidate cycle.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
