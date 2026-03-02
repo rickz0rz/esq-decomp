@@ -3779,6 +3779,98 @@ Current notes:
 - Semantic gate validates replace-owned-string call topology, runtime-mode compare constants, active-group restore, and fallback/selected shadow-array writes.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 575: `modules/groups/b/a/script3.s` (`SCRIPT_SaveCtrlContextSnapshot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural counterpart to Target 574, persisting the same control/text state back into the context block.
+- High leverage for correctness of snapshot round-trip behavior with manageable surface area.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_save_ctrl_context_snapshot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_save_ctrl_context_snapshot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_save_ctrl_context_snapshot.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_save_ctrl_context_snapshot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_save_ctrl_context_snapshot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_save_ctrl_context_snapshot_target_gcc.sh`
+
+Current notes:
+- Candidate preserves context header/scalar stores, owned command-text replacement into `ctx+440`, both NUL-terminated search-buffer copies, runtime/group stores, and 4-byte fallback/selected shadow-byte save loops.
+- Semantic gate validates replace-owned-string call topology plus search/runtime/group/shadow symbol coverage and terminal shape.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 576: `modules/groups/b/a/script3.s` (`SCRIPT_ResetCtrlContext`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core initializer used by multiple already-promoted control-context wrappers.
+- Compact looped clear pattern with explicit field defaults, suitable for semantic-gated conversion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_reset_ctrl_context_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_reset_ctrl_context_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_reset_ctrl_context.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_reset_ctrl_context_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_reset_ctrl_context_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_reset_ctrl_context_target_gcc.sh`
+
+Current notes:
+- Candidate preserves default header bytes (`+437 = 120`), owned-string reset via `ReplaceOwnedString(0, old)`, scalar zeroing, `+426 = 1`, and dual 4-byte clear spans at `+428..+431` and `+0x1B0..+0x1B3`.
+- Semantic gate validates replace call, key constants/offsets, looped span markers, and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 577: `modules/groups/b/a/script3.s` (`SCRIPT_ClearSearchTextsAndChannels`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very small state-clear helper used in playback-control paths.
+- Low-risk promotion that removes another direct runtime export from assembly.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_clear_search_texts_and_channels_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_clear_search_texts_and_channels_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_clear_search_texts_and_channels.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_clear_search_texts_and_channels_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_clear_search_texts_and_channels_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_clear_search_texts_and_channels_target_gcc.sh`
+
+Current notes:
+- Candidate preserves zeroing of both search-text first bytes and both channel-code words.
+- Semantic gate validates touched search/channel symbols and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 578: `modules/groups/b/a/script3.s` (`SCRIPT_UpdateRuntimeModeForPlaybackCursor`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Central runtime-mode transition helper in playback cursor processing.
+- Expands non-trivial control-flow coverage while staying bounded to one routine with known callee topology.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_update_runtime_mode_for_playback_cursor_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_update_runtime_mode_for_playback_cursor_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_update_runtime_mode_for_playback_cursor.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_update_runtime_mode_for_playback_cursor_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_update_runtime_mode_for_playback_cursor_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_update_runtime_mode_for_playback_cursor_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode-1 transition path (optional banner jump, latch/match updates, copper/raster setup, serial shadow update, search clear, returns `1`) plus mode-3 deassert path and default mode-clear return `0`.
+- Semantic gate validates key callee topology (`BeginBanner`, `SetCopperEffect`, `SetRastForMode`, `UpdateSerialShadow`, `ClearSearch`, `DeassertCtrlLine`) and runtime-mode state symbol coverage.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
