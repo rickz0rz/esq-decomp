@@ -370,6 +370,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_tliba1_jmptbl_cleanup_formatclockformatentry_trial_gcc.sh`: GCC-specific compare lane for `Target 450` (`TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry`).
 - `src/decomp/scripts/compare_tliba1_jmptbl_esqdisp_computescheduleoffsetforrow_trial_gcc.sh`: GCC-specific compare lane for `Target 451` (`TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow`).
 - `src/decomp/scripts/compare_tliba1_jmptbl_esq_findsubstringcasefold_trial_gcc.sh`: GCC-specific compare lane for `Target 452` (`TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold`).
+- `src/decomp/scripts/compare_tliba1_jmptbl_displib_findpreviousvalidentryindex_trial_gcc.sh`: GCC-specific compare lane for `Target 453` (`TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -820,6 +821,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_cleanup_formatclockformatentry.awk`: semantic post-filter for `TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry` compare lane.
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_esqdisp_computescheduleoffsetforrow.awk`: semantic post-filter for `TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow` compare lane.
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_esq_findsubstringcasefold.awk`: semantic post-filter for `TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold` compare lane.
+- `src/decomp/scripts/semantic_filter_tliba1_jmptbl_displib_findpreviousvalidentryindex.awk`: semantic post-filter for `TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1269,6 +1271,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_tliba1_jmptbl_cleanup_formatclockformatentry_target_gcc.sh`: promotion gate for Target 450 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_computescheduleoffsetforrow_target_gcc.sh`: promotion gate for Target 451 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba1_jmptbl_esq_findsubstringcasefold_target_gcc.sh`: promotion gate for Target 452 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba1_jmptbl_displib_findpreviousvalidentryindex_target_gcc.sh`: promotion gate for Target 453 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1759,6 +1762,7 @@ bash src/decomp/scripts/promote_tliba1_jmptbl_coi_testentrywithintimewindow_targ
 bash src/decomp/scripts/promote_tliba1_jmptbl_cleanup_formatclockformatentry_target_gcc.sh
 bash src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_computescheduleoffsetforrow_target_gcc.sh
 bash src/decomp/scripts/promote_tliba1_jmptbl_esq_findsubstringcasefold_target_gcc.sh
+bash src/decomp/scripts/promote_tliba1_jmptbl_displib_findpreviousvalidentryindex_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
