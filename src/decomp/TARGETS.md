@@ -3894,6 +3894,75 @@ Current notes:
 - Semantic gate validates selector call presence, primary/secondary text+channel symbols, split constant, cursor constants, and state symbols (`SCRIPT_SearchMatchCountOrIndex`, `SCRIPT_ChannelRangeArmedFlag`, `SCRIPT_PlaybackCursor`).
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 580: `modules/groups/b/a/script3.s` (`GENERATE_GRID_DATE_STRING`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small formatting helper with straightforward table-index + formatted-output behavior.
+- Good low-risk addition that removes another direct runtime export from assembly.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/generate_grid_date_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_generate_grid_date_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_generate_grid_date_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_generate_grid_date_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_generate_grid_date_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_generate_grid_date_string_target_gcc.sh`
+
+Current notes:
+- Candidate preserves day-of-week/month table lookups and calls `PARSEINI_JMPTBL_WDISP_SPrintf` with format string + day/month/day-of-month/year arguments.
+- Semantic gate validates lookup symbols, date fields, format symbol, output call topology, and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 581: `modules/groups/b/a/script3.s` (`SCRIPT_ApplyPendingBannerTarget`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact state-transition helper with clear banner-target/update semantics.
+- Good bounded follow-up after banner transition helpers already promoted in this module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_apply_pending_banner_target_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_apply_pending_banner_target_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_apply_pending_banner_target.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_apply_pending_banner_target_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_apply_pending_banner_target_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_apply_pending_banner_target_target_gcc.sh`
+
+Current notes:
+- Candidate preserves pending-target normalization (`-2 -> -1`), explicit-target transition path, default-target transition against current banner char, and read-mode latch clear (`ESQPARS2_ReadModeFlags` + `SCRIPT_ReadModeActiveLatch`).
+- Semantic gate validates get-banner and begin-transition call topology, key banner/read-mode symbols, sentinel constants (`-2`, `-1`), and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 582: `modules/groups/b/a/script3.s` (`SCRIPT_SplitAndNormalizeSearchBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Self-contained text-splitting helper with explicit delimiter and bounded loop semantics.
+- Key preprocessing routine feeding playback cursor selection; good coverage expansion in active script3 runtime flow.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_split_and_normalize_search_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_split_and_normalize_search_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_split_and_normalize_search_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_split_and_normalize_search_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_split_and_normalize_search_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_split_and_normalize_search_buffer_target_gcc.sh`
+
+Current notes:
+- Candidate preserves split handling for leading/trailing/mid delimiter byte `18`, delimiter-search cap at `0xC8`, primary/secondary buffer copy order, and conditional post-copy text filtering at max length `128`.
+- Semantic gate validates filter call topology plus text buffer symbols, delimiter/cap constants, and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
