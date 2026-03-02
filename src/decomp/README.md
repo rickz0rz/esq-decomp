@@ -395,6 +395,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_trial_gcc.sh`: GCC-specific compare lane for `Target 475` (`WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary`).
 - `src/decomp/scripts/compare_wdisp_jmptbl_gcommand_expandpresetblock_trial_gcc.sh`: GCC-specific compare lane for `Target 476` (`WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock`).
 - `src/decomp/scripts/compare_wdisp_jmptbl_esqiff_queueiffbrushload_trial_gcc.sh`: GCC-specific compare lane for `Target 477` (`WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad`).
+- `src/decomp/scripts/compare_wdisp_jmptbl_esqiff_runcopperdroptransition_trial_gcc.sh`: GCC-specific compare lane for `Target 478` (`WDISP_JMPTBL_ESQIFF_RunCopperDropTransition`).
+- `src/decomp/scripts/compare_wdisp_jmptbl_brush_findbrushbypredicate_trial_gcc.sh`: GCC-specific compare lane for `Target 479` (`WDISP_JMPTBL_BRUSH_FindBrushByPredicate`).
+- `src/decomp/scripts/compare_wdisp_jmptbl_brush_freebrushlist_trial_gcc.sh`: GCC-specific compare lane for `Target 480` (`WDISP_JMPTBL_BRUSH_FreeBrushList`).
+- `src/decomp/scripts/compare_wdisp_jmptbl_brush_planemaskforindex_trial_gcc.sh`: GCC-specific compare lane for `Target 481` (`WDISP_JMPTBL_BRUSH_PlaneMaskForIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -870,6 +874,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary.awk`: semantic post-filter for `WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary` compare lane.
 - `src/decomp/scripts/semantic_filter_wdisp_jmptbl_gcommand_expandpresetblock.awk`: semantic post-filter for `WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock` compare lane.
 - `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqiff_queueiffbrushload.awk`: semantic post-filter for `WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad` compare lane.
+- `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqiff_runcopperdroptransition.awk`: semantic post-filter for `WDISP_JMPTBL_ESQIFF_RunCopperDropTransition` compare lane.
+- `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_findbrushbypredicate.awk`: semantic post-filter for `WDISP_JMPTBL_BRUSH_FindBrushByPredicate` compare lane.
+- `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_freebrushlist.awk`: semantic post-filter for `WDISP_JMPTBL_BRUSH_FreeBrushList` compare lane.
+- `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_planemaskforindex.awk`: semantic post-filter for `WDISP_JMPTBL_BRUSH_PlaneMaskForIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1344,6 +1352,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_target_gcc.sh`: promotion gate for Target 475 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_wdisp_jmptbl_gcommand_expandpresetblock_target_gcc.sh`: promotion gate for Target 476 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_wdisp_jmptbl_esqiff_queueiffbrushload_target_gcc.sh`: promotion gate for Target 477 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_wdisp_jmptbl_esqiff_runcopperdroptransition_target_gcc.sh`: promotion gate for Target 478 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_wdisp_jmptbl_brush_findbrushbypredicate_target_gcc.sh`: promotion gate for Target 479 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_wdisp_jmptbl_brush_freebrushlist_target_gcc.sh`: promotion gate for Target 480 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_wdisp_jmptbl_brush_planemaskforindex_target_gcc.sh`: promotion gate for Target 481 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1859,6 +1871,10 @@ bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_restorebasepalettetriples_ta
 bash src/decomp/scripts/promote_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_target_gcc.sh
 bash src/decomp/scripts/promote_wdisp_jmptbl_gcommand_expandpresetblock_target_gcc.sh
 bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_queueiffbrushload_target_gcc.sh
+bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_runcopperdroptransition_target_gcc.sh
+bash src/decomp/scripts/promote_wdisp_jmptbl_brush_findbrushbypredicate_target_gcc.sh
+bash src/decomp/scripts/promote_wdisp_jmptbl_brush_freebrushlist_target_gcc.sh
+bash src/decomp/scripts/promote_wdisp_jmptbl_brush_planemaskforindex_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh

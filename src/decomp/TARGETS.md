@@ -10995,3 +10995,95 @@ Current notes:
 - Original assembly is a direct `JMP ESQIFF_QueueIffBrushLoad`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 478: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_ESQIFF_RunCopperDropTransition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_esqiff_runcopperdroptransition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_esqiff_runcopperdroptransition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqiff_runcopperdroptransition.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_esqiff_runcopperdroptransition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_esqiff_runcopperdroptransition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_runcopperdroptransition_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_RunCopperDropTransition`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 479: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_BRUSH_FindBrushByPredicate`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_brush_findbrushbypredicate_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_brush_findbrushbypredicate_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_findbrushbypredicate.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_brush_findbrushbypredicate_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_brush_findbrushbypredicate_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_brush_findbrushbypredicate_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_FindBrushByPredicate`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 480: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_BRUSH_FreeBrushList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_brush_freebrushlist_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_brush_freebrushlist_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_freebrushlist.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_brush_freebrushlist_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_brush_freebrushlist_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_brush_freebrushlist_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_FreeBrushList`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 481: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_BRUSH_PlaneMaskForIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_brush_planemaskforindex_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_brush_planemaskforindex_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_brush_planemaskforindex.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_brush_planemaskforindex_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_brush_planemaskforindex_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_brush_planemaskforindex_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_PlaneMaskForIndex`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
