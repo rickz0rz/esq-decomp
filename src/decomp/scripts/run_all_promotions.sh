@@ -642,6 +642,12 @@ SCRIPTS=(
     "src/decomp/scripts/promote_tliba1_draw_inline_styled_text_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_draw_formatted_text_block_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_draw_grid_top_bars_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_draw_top_border_line_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_shutdown_grid_resources_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_clear_highlight_area_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_is_grid_ready_for_input_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_fill_grid_rects_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_draw_grid_frame_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

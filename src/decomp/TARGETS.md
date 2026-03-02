@@ -5233,6 +5233,148 @@ Current notes:
 - GCC emits immediate `pea` pushes for both `6` arguments instead of `MOVEQ/MOVE.L` reuse; semantic gate accepts equivalent constant/call pattern.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 638: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawTopBorderLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID drawing helper with fixed pen/rect constants.
+- Companion to Target 637 that expands NEWGRID header-draw coverage with low risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_top_border_line_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_top_border_line_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_top_border_line.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_top_border_line_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_top_border_line_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_top_border_line_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `SetAPen(7)` then `RectFill(0,0,695,1)` on `NEWGRID_HeaderRastPortPtr`.
+- GCC may emit direct stack-argument pushes to lib vector stubs instead of explicit D-register staging; semantic gate validates call topology and constants (`7`, `695`, `1`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 639: `modules/groups/b/a/newgrid.s` (`NEWGRID_ShutdownGridResources`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID cleanup helper with straightforward call sequence and state reset.
+- Continues low-risk NEWGRID promotion cadence after Targets 637/638.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_shutdown_grid_resources_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_shutdown_grid_resources_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_shutdown_grid_resources.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_shutdown_grid_resources_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_shutdown_grid_resources_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_shutdown_grid_resources_target_gcc.sh`
+
+Current notes:
+- Candidate preserves guarded deallocation of `NEWGRID_MainRastPortPtr` with constants (`100`, `148`), followed by buffer-free calls, init-flag clear, and bucket reset.
+- GCC emits a direct pointer test and early branch label layout; semantic gate confirms required call topology and constants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 640: `modules/groups/b/a/newgrid.s` (`NEWGRID_ClearHighlightArea`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID helper with deterministic call/constant sequence.
+- Continues low-risk NEWGRID rendering cleanup path coverage after Targets 637/638/639.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_clear_highlight_area_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_clear_highlight_area_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_clear_highlight_area.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_clear_highlight_area_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_clear_highlight_area_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_clear_highlight_area_target_gcc.sh`
+
+Current notes:
+- Candidate preserves interrupt guard sequence (`Disable` -> `GCOMMAND_ResetHighlightMessages` -> `Enable`) and refresh-flag early return.
+- Drawing branch keeps constant pen/fill parameters (`SetAPen(7)`, `RectFill(0,68,695,267)`) over `NEWGRID_MainRastPortPtr`.
+- GCC emits stack-pushed libcall arguments instead of register staging; semantic gate validates equivalent call topology/constants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 641: `modules/groups/b/a/newgrid.s` (`NEWGRID_IsGridReadyForInput`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID gating helper with two flag/count checks and deterministic return values.
+- Extends NEWGRID control-flow coverage beyond draw/cleanup helpers while remaining low-risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_is_grid_ready_for_input_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_is_grid_ready_for_input_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_is_grid_ready_for_input.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_is_grid_ready_for_input_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_is_grid_ready_for_input_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_is_grid_ready_for_input_target_gcc.sh`
+
+Current notes:
+- Candidate preserves optional secondary-group gate when selector equals `1`, followed by unconditional primary-group gate check.
+- Blocking condition remains "flag set and count > 0" for both groups; returns `0` when blocked, `1` otherwise.
+- GCC emits `SEQ/EXT/NEG` booleanization for one return path; semantic gate treats this as equivalent 0/1 result shaping.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 642: `modules/groups/b/a/newgrid.s` (`NEWGRID_FillGridRects`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` NEWGRID drawing helper with two raster fill calls and fixed constants.
+- Provides stronger argument/stack-shape coverage than wrapper-only draw helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_fill_grid_rects_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_fill_grid_rects_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_fill_grid_rects.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_fill_grid_rects_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_fill_grid_rects_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_fill_grid_rects_target_gcc.sh`
+
+Current notes:
+- Candidate preserves two-stage `SetAPen` + `RectFill` sequence using `NEWGRID_ColumnStartXPx` split points (`+35` and `+36`) and fixed right bound (`695`).
+- Shared `y_max` flow is preserved for both rectangles (matches original `D3` reuse across rect fills).
+- GCC emits stack-push libcall forms with indexed `PEA` constants; semantic gate now explicitly accepts those equivalent forms.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 643: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawGridFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID frame helper that chains two row-color calls into one fill helper call.
+- Increases coverage of value-threading flow between NEWGRID helper calls while still bounded in scope.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_grid_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_grid_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_grid_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_grid_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_grid_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_grid_frame_target_gcc.sh`
+
+Current notes:
+- Candidate preserves first `NEWGRID_SetRowColor` call with `(grid_ctx + 60)` and `-1` mode, then feeds the returned value into second `NEWGRID_SetRowColor`/`NEWGRID_FillGridRects` sequence.
+- GCC emits packed stack-argument choreography but retains the same call topology and constants (offset `60`, mode `-1`, mode `0`).
+- Semantic gate validates call chain/constant features without over-constraining register/stack layout.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
