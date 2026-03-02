@@ -611,6 +611,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh"
+    "src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

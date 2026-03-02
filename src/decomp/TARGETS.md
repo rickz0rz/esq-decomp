@@ -4517,6 +4517,30 @@ Current notes:
 - Semantic gate validates div-call presence, constant-12 handling, flag test, optional `+12`, month-field writeback, and return flow.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 607: `modules/groups/a/j/dst2.s` (`DATETIME_NormalizeMonthRange`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` date helper with deterministic field updates.
+- Completes the adjacent datetime helper trio with Targets 605/606.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/datetime_normalize_month_range_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_datetime_normalize_month_range_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_datetime_normalize_month_range.awk`
+- Promotion gate: `src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_datetime_normalize_month_range_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh`
+
+Current notes:
+- Candidate preserves behavior: set overflow flag at `ctx+18` based on `month > 11`, compute signed remainder by 12, store remainder to `ctx+8`, and substitute `12` when remainder is zero.
+- Uses local inline-asm divide helper (`DIVS` + `SWAP`) to avoid compiler runtime modulo helpers.
+- Semantic gate validates compare-to-11, flag write, divide-by-12 path, remainder handling, conditional write-12, and return flow.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
