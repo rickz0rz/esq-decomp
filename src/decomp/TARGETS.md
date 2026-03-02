@@ -10741,3 +10741,95 @@ Current notes:
 - Original assembly is a direct `JMP LADFUNC_DrawEntryPreview`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 467: `modules/groups/b/a/textdisp2.s` (`TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/textdisp2.s` with direct forward-dispatch semantics.
+- Continues TEXTDISP2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp2_jmptbl_esqiff_runpendingcopperanimations_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_esqiff_runpendingcopperanimations.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_runpendingcopperanimations_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_runpendingcopperanimations_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_RunPendingCopperAnimations`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 468: `modules/groups/b/a/textdisp2.s` (`TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/textdisp2.s` with direct forward-dispatch semantics.
+- Completes the TEXTDISP2 jump-stub bridge set while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp2_jmptbl_esqiff_playnextexternalassetframe_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp2_jmptbl_esqiff_playnextexternalassetframe_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_esqiff_playnextexternalassetframe.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_playnextexternalassetframe_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp2_jmptbl_esqiff_playnextexternalassetframe_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_playnextexternalassetframe_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_PlayNextExternalAssetFrame`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 469: `modules/groups/b/a/script.s` (`SCRIPT_JMPTBL_MEMORY_DeallocateMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script.s` with direct forward-dispatch semantics.
+- Starts SCRIPT jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_jmptbl_memory_deallocatememory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_jmptbl_memory_deallocatememory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_jmptbl_memory_deallocatememory.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_jmptbl_memory_deallocatememory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_jmptbl_memory_deallocatememory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_jmptbl_memory_deallocatememory_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MEMORY_DeallocateMemory`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 470: `modules/groups/b/a/script.s` (`SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script.s` with direct forward-dispatch semantics.
+- Continues SCRIPT jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_jmptbl_diskio_writebufferedbytes_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_jmptbl_diskio_writebufferedbytes_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_jmptbl_diskio_writebufferedbytes.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_jmptbl_diskio_writebufferedbytes_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_jmptbl_diskio_writebufferedbytes_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_jmptbl_diskio_writebufferedbytes_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISKIO_WriteBufferedBytes`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

@@ -384,6 +384,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_p_type_jmptbl_string_findsubstring_trial_gcc.sh`: GCC-specific compare lane for `Target 464` (`P_TYPE_JMPTBL_STRING_FindSubstring`).
 - `src/decomp/scripts/compare_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_trial_gcc.sh`: GCC-specific compare lane for `Target 465` (`TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan`).
 - `src/decomp/scripts/compare_textdisp2_jmptbl_ladfunc_drawentrypreview_trial_gcc.sh`: GCC-specific compare lane for `Target 466` (`TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview`).
+- `src/decomp/scripts/compare_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial_gcc.sh`: GCC-specific compare lane for `Target 467` (`TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations`).
+- `src/decomp/scripts/compare_textdisp2_jmptbl_esqiff_playnextexternalassetframe_trial_gcc.sh`: GCC-specific compare lane for `Target 468` (`TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame`).
+- `src/decomp/scripts/compare_script_jmptbl_memory_deallocatememory_trial_gcc.sh`: GCC-specific compare lane for `Target 469` (`SCRIPT_JMPTBL_MEMORY_DeallocateMemory`).
+- `src/decomp/scripts/compare_script_jmptbl_diskio_writebufferedbytes_trial_gcc.sh`: GCC-specific compare lane for `Target 470` (`SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -848,6 +852,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_p_type_jmptbl_string_findsubstring.awk`: semantic post-filter for `P_TYPE_JMPTBL_STRING_FindSubstring` compare lane.
 - `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_locavail_getfilterwindowhalfspan.awk`: semantic post-filter for `TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan` compare lane.
 - `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_ladfunc_drawentrypreview.awk`: semantic post-filter for `TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview` compare lane.
+- `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_esqiff_runpendingcopperanimations.awk`: semantic post-filter for `TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations` compare lane.
+- `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_esqiff_playnextexternalassetframe.awk`: semantic post-filter for `TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame` compare lane.
+- `src/decomp/scripts/semantic_filter_script_jmptbl_memory_deallocatememory.awk`: semantic post-filter for `SCRIPT_JMPTBL_MEMORY_DeallocateMemory` compare lane.
+- `src/decomp/scripts/semantic_filter_script_jmptbl_diskio_writebufferedbytes.awk`: semantic post-filter for `SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1311,6 +1319,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_p_type_jmptbl_string_findsubstring_target_gcc.sh`: promotion gate for Target 464 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_target_gcc.sh`: promotion gate for Target 465 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_textdisp2_jmptbl_ladfunc_drawentrypreview_target_gcc.sh`: promotion gate for Target 466 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_runpendingcopperanimations_target_gcc.sh`: promotion gate for Target 467 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_playnextexternalassetframe_target_gcc.sh`: promotion gate for Target 468 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_jmptbl_memory_deallocatememory_target_gcc.sh`: promotion gate for Target 469 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_jmptbl_diskio_writebufferedbytes_target_gcc.sh`: promotion gate for Target 470 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1815,6 +1827,10 @@ bash src/decomp/scripts/promote_script2_jmptbl_esq_readserialrbfbyte_target_gcc.
 bash src/decomp/scripts/promote_p_type_jmptbl_string_findsubstring_target_gcc.sh
 bash src/decomp/scripts/promote_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_target_gcc.sh
 bash src/decomp/scripts/promote_textdisp2_jmptbl_ladfunc_drawentrypreview_target_gcc.sh
+bash src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_runpendingcopperanimations_target_gcc.sh
+bash src/decomp/scripts/promote_textdisp2_jmptbl_esqiff_playnextexternalassetframe_target_gcc.sh
+bash src/decomp/scripts/promote_script_jmptbl_memory_deallocatememory_target_gcc.sh
+bash src/decomp/scripts/promote_script_jmptbl_diskio_writebufferedbytes_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
