@@ -651,6 +651,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_newgrid_should_open_editor_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_with_offset_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_adjust_clock_string_by_slot_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_adjust_clock_string_by_slot_with_offset_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_draw_awaiting_listings_message_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

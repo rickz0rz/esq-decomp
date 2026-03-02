@@ -5447,6 +5447,78 @@ Current notes:
 - GCC generated alternative branch direction/order but maintained equivalent predicate structure and constants.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 647: `modules/groups/b/a/newgrid.s` (`NEWGRID_AdjustClockStringBySlot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` NEWGRID clock helper with deterministic copy/normalize/adjust/rebuild flow.
+- Natural follow-on after slot-index helpers (Targets 645/646) to keep clock-path coverage contiguous.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_adjust_clock_string_by_slot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_adjust_clock_string_by_slot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_adjust_clock_string_by_slot.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_adjust_clock_string_by_slot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_adjust_clock_string_by_slot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_adjust_clock_string_by_slot_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 22-byte scratch copy, normalize-to-seconds call, `CLOCK_FormatVariantCode/30` division, `*60` multiply, subtraction from seconds, and struct rebuild call.
+- Final return path remains delegated to `NEWGRID_ComputeDaySlotFromClock` on scratch state.
+- GCC emits stack-pushed argument forms for math/datetime helpers; semantic gate validates equivalent call topology/constants (`21`, `30`, `60`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 648: `modules/groups/b/a/newgrid.s` (`NEWGRID_AdjustClockStringBySlotWithOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion helper to Target 647 with identical clock adjust pipeline but offset-aware slot resolver.
+- Completes this paired clock-adjust subsection before moving to larger NEWGRID draw/message routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_adjust_clock_string_by_slot_with_offset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_adjust_clock_string_by_slot_with_offset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_adjust_clock_string_by_slot_with_offset.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_adjust_clock_string_by_slot_with_offset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_adjust_clock_string_by_slot_with_offset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_adjust_clock_string_by_slot_with_offset_target_gcc.sh`
+
+Current notes:
+- Candidate preserves same copy/normalize/div/mul/seconds-rebuild sequence as Target 647.
+- Final slot resolution call correctly targets `NEWGRID_ComputeDaySlotFromClockWithOffset`.
+- Semantic gate checks call chain and constants while allowing GCC stack/register allocation differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 649: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawAwaitingListingsMessage`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-sized non-`JMPTBL` NEWGRID display helper with clear high-level flow (frame, measure text, center text, draw bevel, update selection).
+- Builds functional confidence in UI text/layout helpers while staying structurally simpler than message-loop logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_awaiting_listings_message_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_awaiting_listings_message_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_awaiting_listings_message.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_awaiting_listings_message_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_awaiting_listings_message_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_awaiting_listings_message_target_gcc.sh`
+
+Current notes:
+- Candidate preserves top-level call order: `NEWGRID_DrawGridFrame` -> `_LVOSetAPen` -> `_LVOTextLength` -> `NEWGRID_DrawWrappedText` -> `NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight`.
+- Uses original constants for centering/draw bounds (`624`, `612`, `695`, `36`) and frame pens (`7`, `4`, `1`), with negative-center compensation retained.
+- Updates selection fields from `NEWGRID_RowHeightPx >> 1` into both `+52` word and `+32` long fields.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
