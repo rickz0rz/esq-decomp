@@ -487,6 +487,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_parseini_normalize_clock_data_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_write_rtc_from_globals_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_update_clock_from_rtc_target_gcc.sh"
+    "src/decomp/scripts/promote_script_reset_banner_char_defaults_target_gcc.sh"
+    "src/decomp/scripts/promote_script_get_banner_char_or_fallback_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"

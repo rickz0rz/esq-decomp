@@ -3524,6 +3524,53 @@ Current notes:
 - Semantic gate validates helper call topology, fallback symbol usage, countdown shadow read, and range constants.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 564: `modules/groups/b/a/script4.s` (`SCRIPT_ResetBannerCharDefaults`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small state-reset helper with fixed immediate writes and no call dependencies.
+- Fast low-risk entry point into remaining non-stub `script4.s` exports.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_reset_banner_char_defaults_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_reset_banner_char_defaults_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_reset_banner_char_defaults.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_reset_banner_char_defaults_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_reset_banner_char_defaults_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_reset_banner_char_defaults_target_gcc.sh`
+
+Current notes:
+- Candidate preserves constant writes: selected char `0x64`, fallback char `0x31`, and match index `-1`.
+- Semantic gate checks all three target symbols and immediate values.
+- Semantic gate intentionally avoids strict literal checks for selected/fallback values because GCC may materialize those via non-immediate forms.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 565: `modules/groups/b/a/script4.s` (`SCRIPT_GetBannerCharOrFallback`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small branch helper adjacent to Target 564.
+- Continues low-risk conversion of remaining `script4.s` core exports before the larger drawing/effect routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_get_banner_char_or_fallback_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_get_banner_char_or_fallback_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_get_banner_char_or_fallback.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_get_banner_char_or_fallback_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_get_banner_char_or_fallback_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_get_banner_char_or_fallback_target_gcc.sh`
+
+Current notes:
+- Candidate preserves sentinel check (`selected == 100`) and fallback selection semantics.
+- Semantic gate verifies selected/fallback symbol usage, sentinel constant coverage, and branch/terminal shape.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

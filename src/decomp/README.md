@@ -481,6 +481,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_parseini_normalize_clock_data_trial_gcc.sh`: GCC-specific compare lane for `Target 561` (`PARSEINI_NormalizeClockData`).
 - `src/decomp/scripts/compare_parseini_write_rtc_from_globals_trial_gcc.sh`: GCC-specific compare lane for `Target 562` (`PARSEINI_WriteRtcFromGlobals`).
 - `src/decomp/scripts/compare_parseini_update_clock_from_rtc_trial_gcc.sh`: GCC-specific compare lane for `Target 563` (`PARSEINI_UpdateClockFromRtc`).
+- `src/decomp/scripts/compare_script_reset_banner_char_defaults_trial_gcc.sh`: GCC-specific compare lane for `Target 564` (`SCRIPT_ResetBannerCharDefaults`).
+- `src/decomp/scripts/compare_script_get_banner_char_or_fallback_trial_gcc.sh`: GCC-specific compare lane for `Target 565` (`SCRIPT_GetBannerCharOrFallback`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -1594,6 +1596,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_parseini_normalize_clock_data_target_gcc.sh`: promotion gate for Target 561 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_write_rtc_from_globals_target_gcc.sh`: promotion gate for Target 562 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_update_clock_from_rtc_target_gcc.sh`: promotion gate for Target 563 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_reset_banner_char_defaults_target_gcc.sh`: promotion gate for Target 564 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_get_banner_char_or_fallback_target_gcc.sh`: promotion gate for Target 565 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -2195,6 +2199,8 @@ bash src/decomp/scripts/promote_parseini_adjust_hours_to24_hr_format_target_gcc.
 bash src/decomp/scripts/promote_parseini_normalize_clock_data_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_write_rtc_from_globals_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_update_clock_from_rtc_target_gcc.sh
+bash src/decomp/scripts/promote_script_reset_banner_char_defaults_target_gcc.sh
+bash src/decomp/scripts/promote_script_get_banner_char_or_fallback_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
