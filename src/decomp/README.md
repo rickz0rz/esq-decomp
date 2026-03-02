@@ -331,6 +331,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid2_jmptbl_coi_render_clock_format_entry_variant_trial_gcc.sh`: GCC-specific compare lane for `Target 420` (`NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_test_entry_bits0_and2_trial_gcc.sh`: GCC-specific compare lane for `Target 421` (`NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_compute_visible_line_count_trial_gcc.sh`: GCC-specific compare lane for `Target 422` (`NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_get_entry_pointer_by_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 423` (`NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_render_current_line_trial_gcc.sh`: GCC-specific compare lane for `Target 424` (`NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_coi_process_entry_selection_state_trial_gcc.sh`: GCC-specific compare lane for `Target 425` (`NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_cleanup_format_clock_format_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 426` (`NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry`).
 - `src/decomp/scripts/compare_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 276` (`GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq`).
 - `src/decomp/scripts/compare_group_av_jmptbl_signal_create_msgport_with_signal_trial_gcc.sh`: GCC-specific compare lane for `Target 277` (`GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal`).
 - `src/decomp/scripts/compare_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial_gcc.sh`: GCC-specific compare lane for `Target 278` (`GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths`).
@@ -751,6 +755,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_coi_render_clock_format_entry_variant.awk`: semantic post-filter for `NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esqdisp_test_entry_bits0_and2.awk`: semantic post-filter for `NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_compute_visible_line_count.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esqdisp_get_entry_pointer_by_mode.awk`: semantic post-filter for `NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_render_current_line.awk`: semantic post-filter for `NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_coi_process_entry_selection_state.awk`: semantic post-filter for `NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_cleanup_format_clock_format_entry.awk`: semantic post-filter for `NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_signal_create_msgport_with_signal.awk`: semantic post-filter for `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_diskio_probe_drives_and_assign_paths.awk`: semantic post-filter for `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` compare lane.
@@ -1170,6 +1178,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid2_jmptbl_coi_render_clock_format_entry_variant_target_gcc.sh`: promotion gate for Target 420 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_test_entry_bits0_and2_target_gcc.sh`: promotion gate for Target 421 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_compute_visible_line_count_target_gcc.sh`: promotion gate for Target 422 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_get_entry_pointer_by_mode_target_gcc.sh`: promotion gate for Target 423 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_render_current_line_target_gcc.sh`: promotion gate for Target 424 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_coi_process_entry_selection_state_target_gcc.sh`: promotion gate for Target 425 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_cleanup_format_clock_format_entry_target_gcc.sh`: promotion gate for Target 426 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 276 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh`: promotion gate for Target 277 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh`: promotion gate for Target 278 GCC lane (semantic + build/hash gates).
@@ -1630,6 +1642,10 @@ bash src/decomp/scripts/promote_newgrid2_jmptbl_cleanup_update_entry_flag_bytes_
 bash src/decomp/scripts/promote_newgrid2_jmptbl_coi_render_clock_format_entry_variant_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_test_entry_bits0_and2_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_compute_visible_line_count_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_get_entry_pointer_by_mode_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_render_current_line_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_coi_process_entry_selection_state_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_cleanup_format_clock_format_entry_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh
