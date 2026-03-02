@@ -469,6 +469,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script3_jmptbl_esqshared_applyprogramtitletextfilters_target_gcc.sh"
     "src/decomp/scripts/promote_script3_jmptbl_locavail_updatefilterstatemachine_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_compute_htc_max_values_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_update_ctrl_h_delta_max_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_check_ctrl_h_change_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
