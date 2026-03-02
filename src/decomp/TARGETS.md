@@ -5003,6 +5003,52 @@ Current notes:
 - GCC emits slightly different pointer/carry-branch forms (`JCS/JCC`) but semantics match the original loop boundaries.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 628: `modules/groups/b/a/tliba2.s` (`TLIBA2_ResolveEntryWindowWithDefaultRange`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` wrapper adjacent to other `tliba2` time-window helpers.
+- Low-risk promotion that increases coverage while deferring heavier resolver logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_resolve_entry_window_with_default_range_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_resolve_entry_window_with_default_range_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_resolve_entry_window_with_default_range.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_resolve_entry_window_with_default_range_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_resolve_entry_window_with_default_range_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_resolve_entry_window_with_default_range_target_gcc.sh`
+
+Current notes:
+- Candidate preserves wrapper semantics: forwards `(entry, out_pair, mode)` to `TLIBA2_ResolveEntryWindowAndSlotCount` with two trailing zero defaults.
+- GCC uses stack-relative argument forwarding rather than explicit callee-saved register moves; semantic gate validates call + zero-default markers.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 629: `modules/groups/b/a/tliba2.s` (`TLIBA_FindFirstWildcardMatchIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` helper in `tliba2.s` with clear loop/table behavior.
+- Advances `tliba2` core coverage before larger broadcast-window parsers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba_find_first_wildcard_match_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba_find_first_wildcard_match_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba_find_first_wildcard_match_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba_find_first_wildcard_match_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba_find_first_wildcard_match_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba_find_first_wildcard_match_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves default `-1` return, count-bounded index loop over `TEXTDISP_SecondaryTitlePtrTable`, wildcard call topology, and first-match short-circuit when wildcard helper returns `0`.
+- GCC emits a `jle` fast-exit for empty count and a direct function-pointer call form (`jsr (a3)`), both accepted as equivalent.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
