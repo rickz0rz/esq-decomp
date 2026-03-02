@@ -5049,6 +5049,52 @@ Current notes:
 - GCC emits a `jle` fast-exit for empty count and a direct function-pointer call form (`jsr (a3)`), both accepted as equivalent.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 630: `modules/groups/b/a/tliba2.s` (`TLIBA2_ParseEntryTimeWindow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` time-window parser in `tliba2.s` used by resolver helpers.
+- Expands conversion depth from wrappers into concrete string-parse behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_parse_entry_time_window_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_parse_entry_time_window_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_parse_entry_time_window.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_parse_entry_time_window_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_parse_entry_time_window_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_parse_entry_time_window_target_gcc.sh`
+
+Current notes:
+- Candidate preserves delimiter discovery sequence (`'('`, `':'`, `')'`, optional `'"'` guard), temporary NUL insertion/restoration, and dual signed-long parse writes to `out_pair[0..1]`.
+- GCC emits register allocation and early-return forms that differ from the original frame layout but retain call topology and constants (`40/58/41/34/32`) validated by semantic gate.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 631: `modules/groups/b/a/tliba2.s` (`TLIBA2_ComputeBroadcastTimeWindow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` broadcast-window routine in `tliba2.s` with DST-offset and parse-override behavior.
+- Extends coverage from helper parsers into schedule/window normalization logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_compute_broadcast_time_window_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_compute_broadcast_time_window_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_compute_broadcast_time_window.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_compute_broadcast_time_window_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_compute_broadcast_time_window_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_compute_broadcast_time_window_target_gcc.sh`
+
+Current notes:
+- Candidate preserves slot-to-offset branch families (`39/38/5` split), primary-group `+24` adjustment, `DST_AddTimeOffset` call topology, output field writes, and post-parse upper-bound clamp semantics.
+- GCC emits different frame/register allocation and branch labels than original assembly; semantic gate validates required constants, call markers, output writes, and terminal return behavior.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
