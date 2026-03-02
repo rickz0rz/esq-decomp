@@ -631,6 +631,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh"
     "src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh"
     "src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba2_find_last_char_in_string_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

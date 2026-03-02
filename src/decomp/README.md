@@ -548,6 +548,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_check_available_fast_memory_trial_gcc.sh`: GCC-specific compare lane for `Target 624` (`ESQ_CheckAvailableFastMemory`).
 - `src/decomp/scripts/compare_esq_check_compatible_video_chip_trial_gcc.sh`: GCC-specific compare lane for `Target 625` (`ESQ_CheckCompatibleVideoChip`).
 - `src/decomp/scripts/compare_esq_format_disk_error_message_trial_gcc.sh`: GCC-specific compare lane for `Target 626` (`ESQ_FormatDiskErrorMessage`).
+- `src/decomp/scripts/compare_tliba2_find_last_char_in_string_trial_gcc.sh`: GCC-specific compare lane for `Target 627` (`TLIBA2_FindLastCharInString`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1182,6 +1183,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_check_available_fast_memory.awk`: semantic post-filter for `ESQ_CheckAvailableFastMemory` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_check_compatible_video_chip.awk`: semantic post-filter for `ESQ_CheckCompatibleVideoChip` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_format_disk_error_message.awk`: semantic post-filter for `ESQ_FormatDiskErrorMessage` compare lane.
+- `src/decomp/scripts/semantic_filter_tliba2_find_last_char_in_string.awk`: semantic post-filter for `TLIBA2_FindLastCharInString` compare lane.
 - `src/decomp/scripts/semantic_filter_handle_close_all_and_return_with_code.awk`: semantic post-filter for `HANDLE_CloseAllAndReturnWithCode` compare lane.
 - `src/decomp/scripts/semantic_filter_dos_close_with_signal_check.awk`: semantic post-filter for `DOS_CloseWithSignalCheck` compare lane.
 - `src/decomp/scripts/semantic_filter_iostdreq_free.awk`: semantic post-filter for `IOSTDREQ_Free` compare lane.
@@ -1761,6 +1763,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh`: promotion gate for Target 624 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh`: promotion gate for Target 625 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh`: promotion gate for Target 626 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba2_find_last_char_in_string_target_gcc.sh`: promotion gate for Target 627 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
@@ -2425,6 +2428,7 @@ bash src/decomp/scripts/promote_esq_shutdown_and_return_target_gcc.sh
 bash src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh
 bash src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh
 bash src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh
+bash src/decomp/scripts/promote_tliba2_find_last_char_in_string_target_gcc.sh
 bash src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh
 bash src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh

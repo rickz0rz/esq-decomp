@@ -4980,6 +4980,29 @@ Current notes:
 - GCC emits early-return branch layout versus shared tail; semantic gate treats both as equivalent.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 627: `modules/groups/b/a/tliba2.s` (`TLIBA2_FindLastCharInString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` string helper with deterministic control flow.
+- Good incremental coverage in `tliba2.s` before larger time-window routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_find_last_char_in_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_find_last_char_in_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_find_last_char_in_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_find_last_char_in_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_find_last_char_in_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_find_last_char_in_string_target_gcc.sh`
+
+Current notes:
+- Candidate preserves forward NUL scan, backward pointer walk, per-byte compare, base-bound stop condition, and null-on-not-found return.
+- GCC emits slightly different pointer/carry-branch forms (`JCS/JCC`) but semantics match the original loop boundaries.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
