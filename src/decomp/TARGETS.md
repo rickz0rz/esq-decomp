@@ -3571,6 +3571,76 @@ Current notes:
 - Semantic gate verifies selected/fallback symbol usage, sentinel constant coverage, and branch/terminal shape.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 566: `modules/groups/b/a/script4.s` (`SCRIPT_DrawInsetTextWithFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next core `script4.s` export with explicit draw/frame behavior.
+- Advances conversion beyond tiny state helpers into rendering-path logic while still bounded to a single routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_draw_inset_text_with_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_draw_inset_text_with_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_draw_inset_text_with_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_draw_inset_text_with_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_draw_inset_text_with_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_draw_inset_text_with_frame_target_gcc.sh`
+
+Current notes:
+- Candidate preserves null/empty-text early exits, frame-draw branch (`frame_pen != -1`), optional pen override/restore (`text_pen != -1`), text-length evaluation, and trailing rastport coordinate adjustments.
+- Semantic gate validates graphics-call topology (`TextLength`, `Text`, `SetAPen`, inset-frame helper), key rastport offsets (`25/36/38/58`), and sentinel-path presence.
+- Semantic gate intentionally avoids brittle checks on explicit `-1` and graphics-base symbol materialization because GCC lowering may encode those differently while preserving behavior.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 567: `modules/groups/b/a/script4.s` (`SCRIPT_SetupHighlightEffect`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final remaining non-stub export in `script4.s`, coordinating highlight/copper setup and inline control-code rendering.
+- Closes the `script4.s` runtime set after Targets 564–566.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_setup_highlight_effect_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_setup_highlight_effect_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_setup_highlight_effect.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_setup_highlight_effect_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_setup_highlight_effect_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_setup_highlight_effect_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the setup sequence (view-mode clear/build, copper-effect toggles, drop/rise transitions), banner-transition seed math, and a control-code aware text rendering loop.
+- Semantic gate validates the complete helper-call topology and key effect-state globals (`WDISP_DisplayContextBase`, accumulator flags, aligned-inset gate/nibbles).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 568: `modules/groups/b/a/script3.s` (`SCRIPT_CheckPathExists`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small standalone helper with clear success/failure contract.
+- Good low-risk entry into non-stub `script3.s` runtime exports.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_check_path_exists_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_check_path_exists_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_check_path_exists.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_check_path_exists_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_check_path_exists_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_check_path_exists_target_gcc.sh`
+
+Current notes:
+- Candidate preserves lock-mode `-2` open attempt, unlock-on-success path, and boolean return semantics (`0` on failure, `1` on success).
+- Semantic gate validates lock/unlock call topology and return-shape constants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
