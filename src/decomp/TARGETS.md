@@ -2713,6 +2713,29 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 529: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Starts conversion of currently uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_cleanup_renderalignedstatusscreen_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_cleanup_renderalignedstatusscreen_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_cleanup_renderalignedstatusscreen.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_cleanup_renderalignedstatusscreen_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_cleanup_renderalignedstatusscreen_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_cleanup_renderalignedstatusscreen_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP CLEANUP_RenderAlignedStatusScreen`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
