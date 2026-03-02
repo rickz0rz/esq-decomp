@@ -613,6 +613,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_dst_normalize_day_of_year_target_gcc.sh"
+    "src/decomp/scripts/promote_dst_write_rtc_from_globals_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
