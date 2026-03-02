@@ -52,6 +52,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_unknown36_show_abort_requester_trial_gcc.sh`: GCC-specific compare lane for `Target 596` (`UNKNOWN36_ShowAbortRequester`).
 - `src/decomp/scripts/compare_handle_open_from_mode_string_trial_gcc.sh`: GCC-specific compare lane for `Target 597` (`HANDLE_OpenFromModeString`).
 - `src/decomp/scripts/compare_wdisp_format_with_callback_trial_gcc.sh`: GCC-specific compare lane for `Target 598` (`WDISP_FormatWithCallback`).
+- `src/decomp/scripts/compare_handle_open_entry_with_flags_trial_gcc.sh`: GCC-specific compare lane for `Target 599` (`HANDLE_OpenEntryWithFlags`).
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
@@ -648,6 +649,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_unknown36_show_abort_requester.awk`: semantic post-filter for `UNKNOWN36_ShowAbortRequester` compare lane.
 - `src/decomp/scripts/semantic_filter_handle_open_from_mode_string.awk`: semantic post-filter for `HANDLE_OpenFromModeString` compare lane.
 - `src/decomp/scripts/semantic_filter_wdisp_format_with_callback.awk`: semantic post-filter for `WDISP_FormatWithCallback` compare lane.
+- `src/decomp/scripts/semantic_filter_handle_open_entry_with_flags.awk`: semantic post-filter for `HANDLE_OpenEntryWithFlags` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
@@ -1209,6 +1211,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_unknown36_show_abort_requester_target_gcc.sh`: promotion gate for Target 596 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_handle_open_from_mode_string_target_gcc.sh`: promotion gate for Target 597 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_wdisp_format_with_callback_target_gcc.sh`: promotion gate for Target 598 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_handle_open_entry_with_flags_target_gcc.sh`: promotion gate for Target 599 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
@@ -1845,6 +1848,7 @@ bash src/decomp/scripts/promote_unknown36_finalize_request_target_gcc.sh
 bash src/decomp/scripts/promote_unknown36_show_abort_requester_target_gcc.sh
 bash src/decomp/scripts/promote_handle_open_from_mode_string_target_gcc.sh
 bash src/decomp/scripts/promote_wdisp_format_with_callback_target_gcc.sh
+bash src/decomp/scripts/promote_handle_open_entry_with_flags_target_gcc.sh
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh

@@ -4331,6 +4331,29 @@ Current notes:
 - Semantic gate validates parse call, callback dispatch, percent-marker check, and terminal return.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 599: `modules/submodules/unknown10.s` (`HANDLE_OpenEntryWithFlags`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Central handle-table allocator/open routine invoked by mode-string opener and other file-init paths.
+- High leverage runtime primitive with explicit table scan and DOS open/create/delete fallback behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/handle_open_entry_with_flags_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_handle_open_entry_with_flags_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_handle_open_entry_with_flags.awk`
+- Promotion gate: `src/decomp/scripts/promote_handle_open_entry_with_flags_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_handle_open_entry_with_flags_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_handle_open_entry_with_flags_target_gcc.sh`
+
+Current notes:
+- Candidate preserves free-slot scan from index 3, no-slot `Global_AppErrorCode=24` failure, flag normalization and access-mode validation, mode-dependent open path (`DOS_OpenWithErrorState` / `DOS_OpenNewFileIfMissing` / `DOS_DeleteAndRecreateFile`) plus optional reopen-after-close sequence, `Global_DosIoErr` gate, and final table writeback of mode/handle fields.
+- Semantic gate validates handle-table/global coverage and all key DOS helper callsites.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
