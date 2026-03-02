@@ -3687,6 +3687,29 @@ Current notes:
 - Semantic gate validates transition-symbol and helper-call coverage plus sign/compare structure.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 571: `modules/groups/b/a/script3.s` (`SCRIPT_InitCtrlContext`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal wrapper routine around `SCRIPT_SetCtrlContextMode`.
+- Fast low-risk promotion that expands direct runtime coverage in `script3.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_init_ctrl_context_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_init_ctrl_context_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_init_ctrl_context.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_init_ctrl_context_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_init_ctrl_context_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_init_ctrl_context_target_gcc.sh`
+
+Current notes:
+- Candidate preserves argument order (`SCRIPT_CTRL_CONTEXT`, mode `1`) into `SCRIPT_SetCtrlContextMode`.
+- Semantic gate validates context symbol, callee presence, mode constant, and terminal shape.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
