@@ -3963,6 +3963,75 @@ Current notes:
 - Semantic gate validates filter call topology plus text buffer symbols, delimiter/cap constants, and terminal form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 583: `modules/groups/b/a/script3.s` (`SCRIPT_DispatchPlaybackCursorCommand`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core dispatch routine for playback-cursor command execution with bounded jump-table fanout.
+- High-impact runtime coverage and strong dependency hub for remaining script3 control flow.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_dispatch_playback_cursor_command_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_dispatch_playback_cursor_command_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_dispatch_playback_cursor_command.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_dispatch_playback_cursor_command_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_dispatch_playback_cursor_command_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_dispatch_playback_cursor_command_target_gcc.sh`
+
+Current notes:
+- Candidate preserves jump-table case behavior for cursor commands 1..15 and shared epilogue (clear search + clear cursor pointer), including read-mode latch toggles, copper/raster effects, serial-shadow writes, aligned-screen renders, weather/text command dispatch, and fallback counter path.
+- Semantic gate validates key callee topology and state-symbol coverage across dispatch paths.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 584: `modules/groups/b/a/script3.s` (`SCRIPT_ProcessCtrlContextPlaybackTick`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Top-level per-tick orchestration routine that binds together filter, mode, cursor, and context-save paths.
+- High-value runtime coverage now that key callees in this chain are already promoted.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_process_ctrl_context_playback_tick_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_process_ctrl_context_playback_tick_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_process_ctrl_context_playback_tick.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_process_ctrl_context_playback_tick_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_process_ctrl_context_playback_tick_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_process_ctrl_context_playback_tick_target_gcc.sh`
+
+Current notes:
+- Candidate preserves filter-update + snapshot-load front half, deferred-runtime-mode promotion logic, `'M'` mode cursor gate to `2`, runtime-dispatch-latch clear behavior, guarded cursor dispatch flow (`UpdateRuntimeMode` / optional `ApplyPendingBannerTarget` / `DispatchPlaybackCursorCommand`), and trailing `CurrentMatchIndexSaved` + snapshot-save.
+- Semantic gate validates orchestration call topology and key runtime/cursor state symbol coverage.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 585: `modules/groups/b/a/script3.s` (`SCRIPT_HandleBrushCommand`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Largest remaining script3 export and central command parser/dispatcher.
+- Unblocks module-level completion by moving the top-level brush command entry point into C for iterative tightening.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_handle_brush_command_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_handle_brush_command_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_handle_brush_command.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_handle_brush_command_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_handle_brush_command_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_handle_brush_command_target_gcc.sh`
+
+Current notes:
+- Current C candidate is a first-pass structural translation preserving outer flow (load snapshot, parse command id, selected subcommand handling, save snapshot, runtime restore, return status) with representative command-case behavior and key state updates.
+- Semantic gate validates control-flow anchor calls/symbols (`Load/SaveCtrlContextSnapshot`, `SelectPlaybackCursorFromSearchText`, `SplitAndNormalizeSearchBuffer`, `ReplaceOwnedString`, playback/runtime/pending-banner symbols, script command dispatch).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
