@@ -3641,6 +3641,29 @@ Current notes:
 - Semantic gate validates lock/unlock call topology and return-shape constants.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 569: `modules/groups/b/a/script3.s` (`SCRIPT_UpdateBannerCharTransition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact transition-state helper with bounded arithmetic/branch behavior.
+- Good follow-up in `script3.s` before larger control-context routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_update_banner_char_transition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_update_banner_char_transition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_update_banner_char_transition.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_update_banner_char_transition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_update_banner_char_transition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_update_banner_char_transition_target_gcc.sh`
+
+Current notes:
+- Candidate preserves active-gate early return, target-reached shutdown path, budget/cursor stepped-delta update, sign-aware overshoot snap-to-target, and final copper-offset adjust call.
+- Semantic gate validates transition-state symbol use plus get/adjust helper call topology.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
