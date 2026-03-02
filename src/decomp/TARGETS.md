@@ -2989,6 +2989,75 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 541: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_gcommand_adjustbannercopperoffset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_gcommand_adjustbannercopperoffset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_gcommand_adjustbannercopperoffset.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_gcommand_adjustbannercopperoffset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_gcommand_adjustbannercopperoffset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_gcommand_adjustbannercopperoffset_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP GCOMMAND_AdjustBannerCopperOffset`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 542: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_esq_setcoppereffect_custom_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_esq_setcoppereffect_custom_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_esq_setcoppereffect_custom.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_esq_setcoppereffect_custom_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_esq_setcoppereffect_custom_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_esq_setcoppereffect_custom_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SetCopperEffect_Custom`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 543: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_esqshared_applyprogramtitletextfilters_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_esqshared_applyprogramtitletextfilters.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_esqshared_applyprogramtitletextfilters_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_esqshared_applyprogramtitletextfilters_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQSHARED_ApplyProgramTitleTextFilters`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
