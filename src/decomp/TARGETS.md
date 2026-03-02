@@ -4493,6 +4493,30 @@ Current notes:
 - Semantic gate validates normalization constants, 4/100/400 tests, both return values, and terminal return flow.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 606: `modules/groups/a/j/dst2.s` (`DATETIME_AdjustMonthIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` date-struct helper with explicit field update behavior.
+- Pairs naturally with Target 605 in the same `dst2.s` datetime helper cluster.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/datetime_adjust_month_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_datetime_adjust_month_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_datetime_adjust_month_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_datetime_adjust_month_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves control flow: compute month remainder via `GROUP_AG_JMPTBL_MATH_DivS32`, conditionally add `12` when `ctx+18` flag is set, then write result back to `ctx+8` and return it.
+- Uses inline-asm helper call path to avoid compiler runtime division/modulo helpers.
+- Semantic gate validates div-call presence, constant-12 handling, flag test, optional `+12`, month-field writeback, and return flow.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
