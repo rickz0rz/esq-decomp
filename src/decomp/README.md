@@ -422,6 +422,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_parseini_jmptbl_brush_freebrushlist_trial_gcc.sh`: GCC-specific compare lane for `Target 502` (`PARSEINI_JMPTBL_BRUSH_FreeBrushList`).
 - `src/decomp/scripts/compare_parseini_jmptbl_brush_freebrushresources_trial_gcc.sh`: GCC-specific compare lane for `Target 503` (`PARSEINI_JMPTBL_BRUSH_FreeBrushResources`).
 - `src/decomp/scripts/compare_parseini_jmptbl_esqfunc_rebuildpwbrushlistfromtagtablefromtagtable_trial_gcc.sh`: GCC-specific compare lane for `Target 504` (`PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable`).
+- `src/decomp/scripts/compare_parseini_jmptbl_gcommand_findpathseparator_trial_gcc.sh`: GCC-specific compare lane for `Target 505` (`PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -924,6 +925,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_brush_freebrushlist.awk`: semantic post-filter for `PARSEINI_JMPTBL_BRUSH_FreeBrushList` compare lane.
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_brush_freebrushresources.awk`: semantic post-filter for `PARSEINI_JMPTBL_BRUSH_FreeBrushResources` compare lane.
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_esqfunc_rebuildpwbrushlistfromtagtablefromtagtable.awk`: semantic post-filter for `PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini_jmptbl_gcommand_findpathseparator.awk`: semantic post-filter for `PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1425,6 +1427,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_parseini_jmptbl_brush_freebrushlist_target_gcc.sh`: promotion gate for Target 502 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_jmptbl_brush_freebrushresources_target_gcc.sh`: promotion gate for Target 503 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_jmptbl_esqfunc_rebuildpwbrushlistfromtagtablefromtagtable_target_gcc.sh`: promotion gate for Target 504 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini_jmptbl_gcommand_findpathseparator_target_gcc.sh`: promotion gate for Target 505 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1967,6 +1970,7 @@ bash src/decomp/scripts/promote_parseini_jmptbl_brush_allocbrushnode_target_gcc.
 bash src/decomp/scripts/promote_parseini_jmptbl_brush_freebrushlist_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_jmptbl_brush_freebrushresources_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_jmptbl_esqfunc_rebuildpwbrushlistfromtagtablefromtagtable_target_gcc.sh
+bash src/decomp/scripts/promote_parseini_jmptbl_gcommand_findpathseparator_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
