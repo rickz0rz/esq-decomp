@@ -442,6 +442,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_parseini_jmptbl_esqiff_handlebrushinireloadhotkey_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_esqpars_replaceownedstring_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_gcommand_initpresettablefrompalette_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_jmptbl_gcommand_validatepresettable_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
