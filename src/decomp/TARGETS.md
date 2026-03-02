@@ -3265,6 +3265,29 @@ Current notes:
 - Semantic gate validates key tags/delimiters, helper calls, and structural constants (`16`, `63`, `0x1000`, `32`, `shift by 7`) while allowing opcode variation.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 553: `modules/groups/b/a/parseini.s` (`PARSEINI_LoadWeatherMessageStrings`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact branch chain routine with simple side effects and no deep pointer arithmetic.
+- Good low-risk continuation in `parseini.s` while preserving momentum.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_load_weather_message_strings_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_load_weather_message_strings_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_load_weather_message_strings.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_load_weather_message_strings_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_load_weather_message_strings_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_load_weather_message_strings_target_gcc.sh`
+
+Current notes:
+- Candidate preserves case-insensitive key dispatch for current/forecast/bottom-line tags and uses `PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString` to update owned string pointers.
+- Semantic gate validates tag symbols, pointer targets, and required helper calls while tolerating compiler control-flow shape differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
