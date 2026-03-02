@@ -5829,6 +5829,54 @@ Current notes:
 - Semantic filter widened to accept GCC `(2,a0)`/`(6,a0)` addressing while retaining len/payload access checks.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 663: `modules/groups/b/a/p_type.s` (`P_TYPE_CloneEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium non-`JMPTBL` helper that bridges `P_TYPE_FreeEntry` and `P_TYPE_AllocateEntry` with payload copy staging.
+- Important dependency for secondary-list creation and upcoming parse/list promotion routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_clone_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_clone_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_clone_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_clone_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_clone_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_clone_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves destination free-first behavior, null-source fast return, payload byte copy loop, temporary NUL termination, and reallocation via `P_TYPE_AllocateEntry`.
+- Local scratch behavior remains modeled as fixed 100-byte stack buffer to match observed stack-local staging in assembly.
+- Semantic filter adjusted to accept lowercase register addressing forms in generated assembly when detecting type-byte read.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 664: `modules/groups/b/a/p_type.s` (`P_TYPE_ParseAndStoreTypeRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` parser/writer path that maps parsed group code + length into primary/secondary list slot replacement.
+- Unlocks the remaining large P_TYPE file routines by stabilizing the central record-ingest primitive.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_parse_and_store_type_record_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_parse_and_store_type_record_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_parse_and_store_type_record.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_parse_and_store_type_record_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_parse_and_store_type_record_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_parse_and_store_type_record_target_gcc.sh`
+
+Current notes:
+- Candidate preserves two-stage fixed-field parse flow (`3` then `2` chars) via `CopyPadNul` + `ReadSignedLongSkipClass3_Alt`.
+- Group-code dispatch remains aligned with assembly semantics: primary slot, secondary slot, or reject path (`return 0`).
+- Valid slot path preserves free-and-replace behavior with allocation from payload tail pointer and success return (`1`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
