@@ -3196,6 +3196,29 @@ Current notes:
 - Semantic gate validates key globals/literals (`MODE_NEWFILE`/`1006`, Ctrl-Z marker, byte-count, log pointer) plus call-site symbols.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 550: `modules/groups/b/a/parseini.s` (`PARSEINI_TestMemoryAndOpenTopazFont`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-sized routine with clear branch structure and no deep data-layout ambiguity.
+- Extends parseini conversion beyond jump stubs into library-call orchestration paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_test_memory_and_open_topaz_font_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_test_memory_and_open_topaz_font_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_test_memory_and_open_topaz_font.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_test_memory_and_open_topaz_font_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_test_memory_and_open_topaz_font_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_test_memory_and_open_topaz_font_target_gcc.sh`
+
+Current notes:
+- Candidate preserves close-if-not-topaz behavior, `Forbid/AllocMem/FreeMem/Permit` memory probe sequence, and open-diskfont fallback to `Global_HANDLE_TOPAZ_FONT`.
+- Semantic gate validates required call symbols and globals (`DesiredMemoryAvailability`, topaz handle) while allowing instruction-shape variance.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

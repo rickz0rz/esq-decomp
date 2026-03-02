@@ -473,6 +473,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_parseini_check_ctrl_h_change_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_monitor_clock_change_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_write_error_log_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_test_memory_and_open_topaz_font_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
