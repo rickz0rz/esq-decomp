@@ -4610,6 +4610,29 @@ Current notes:
 - Semantic gate accepts equivalent decrement idioms (`SUB* #1`, or folded immediate adds such as `-54/-55`) and direct memory increment form for phase update.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 611: `modules/groups/a/j/dst2.s` (`DST_BuildBannerTimeWord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` wrapper with stack-local output flow.
+- Useful stepping stone before decompiling `DST_ComputeBannerIndex`, which shares call/argument shaping with this helper.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_build_banner_time_word_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_build_banner_time_word_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_build_banner_time_word.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_build_banner_time_word_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_build_banner_time_word_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_build_banner_time_word_target_gcc.sh`
+
+Current notes:
+- Candidate preserves local out-word initialization, call to `DST_BuildBannerTimeEntry` with explicit zero argument lane, and return of the produced word value.
+- Semantic gate validates label/call/zero-arg/out-word-return/RTS markers while tolerating GCC frame-shape differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
