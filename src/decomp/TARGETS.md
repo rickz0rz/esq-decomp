@@ -4541,6 +4541,29 @@ Current notes:
 - Semantic gate validates compare-to-11, flag write, divide-by-12 path, remainder handling, conditional write-12, and return flow.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 608: `modules/groups/a/j/dst2.s` (`DST_NormalizeDayOfYear`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Non-`JMPTBL` core DST/date normalization helper with looped year-rollover logic.
+- High-value behavior node reused by banner/date formatting flows.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_normalize_day_of_year_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_normalize_day_of_year_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_normalize_day_of_year.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_normalize_day_of_year_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_normalize_day_of_year_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_normalize_day_of_year_target_gcc.sh`
+
+Current notes:
+- Candidate preserves repeated `DATETIME_IsLeapYear` checks, dynamic days-per-year selection (365/366), compare/subtract loop while day exceeds current year length, and final normalized day return.
+- Semantic gate accepts both branch-explicit and GCC booleanized (`SEQ/EXT` + `+366`) day-count materialization idioms.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
