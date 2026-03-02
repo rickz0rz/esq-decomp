@@ -565,6 +565,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid_is_grid_ready_for_input_trial_gcc.sh`: GCC-specific compare lane for `Target 641` (`NEWGRID_IsGridReadyForInput`).
 - `src/decomp/scripts/compare_newgrid_fill_grid_rects_trial_gcc.sh`: GCC-specific compare lane for `Target 642` (`NEWGRID_FillGridRects`).
 - `src/decomp/scripts/compare_newgrid_draw_grid_frame_trial_gcc.sh`: GCC-specific compare lane for `Target 643` (`NEWGRID_DrawGridFrame`).
+- `src/decomp/scripts/compare_newgrid_should_open_editor_trial_gcc.sh`: GCC-specific compare lane for `Target 644` (`NEWGRID_ShouldOpenEditor`).
+- `src/decomp/scripts/compare_newgrid_compute_day_slot_from_clock_trial_gcc.sh`: GCC-specific compare lane for `Target 645` (`NEWGRID_ComputeDaySlotFromClock`).
+- `src/decomp/scripts/compare_newgrid_compute_day_slot_from_clock_with_offset_trial_gcc.sh`: GCC-specific compare lane for `Target 646` (`NEWGRID_ComputeDaySlotFromClockWithOffset`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1798,6 +1801,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid_is_grid_ready_for_input_target_gcc.sh`: promotion gate for Target 641 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid_fill_grid_rects_target_gcc.sh`: promotion gate for Target 642 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid_draw_grid_frame_target_gcc.sh`: promotion gate for Target 643 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid_should_open_editor_target_gcc.sh`: promotion gate for Target 644 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_target_gcc.sh`: promotion gate for Target 645 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_with_offset_target_gcc.sh`: promotion gate for Target 646 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).

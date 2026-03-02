@@ -5375,6 +5375,78 @@ Current notes:
 - Semantic gate validates call chain/constant features without over-constraining register/stack layout.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 644: `modules/groups/b/a/newgrid.s` (`NEWGRID_ShouldOpenEditor`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID decision helper with bounded control flow and explicit byte/bit checks.
+- Adds useful parser/flag gate coverage before moving into larger NEWGRID message-processing functions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_should_open_editor_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_should_open_editor_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_should_open_editor.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_should_open_editor_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_should_open_editor_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_should_open_editor_target_gcc.sh`
+
+Current notes:
+- Candidate preserves two `NEWGRID2_JMPTBL_STR_SkipClass3Chars` scans on offsets `+19` and `+1`, rejects on first non-NUL byte, then requires bit 5 at offset `+27`.
+- GCC emitted a `LSR #5` + `AND #1` bit-extract idiom instead of `BTST #5`; semantic gate accepts both forms.
+- Gate keeps conservative behavior: null input returns `0`; success path returns `1` only when both scanned strings are empty and editor-enable bit is set.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 645: `modules/groups/b/a/newgrid.s` (`NEWGRID_ComputeDaySlotFromClock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID clock-slot helper with straightforward copy-call-adjust logic.
+- Advances time-slot math coverage ahead of larger grid message-loop functions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_compute_day_slot_from_clock_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_compute_day_slot_from_clock_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_compute_day_slot_from_clock.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_compute_day_slot_from_clock_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_target_gcc.sh`
+
+Current notes:
+- Candidate preserves local 22-byte clock copy, `NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex` call, and conditional wrap increment of slot index.
+- Original threshold checks (`>=50` or `20..29`) were compiled by GCC into equivalent folded form (`cmp #49` / `add #-20` / `cmp #9`); semantic gate accepts either representation.
+- Slot wrap behavior remains identical: increment then clamp from `49` to `1`, otherwise keep value.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 646: `modules/groups/b/a/newgrid.s` (`NEWGRID_ComputeDaySlotFromClockWithOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion to Target 645 that includes mplex offset compensation and the same slot-wrap behavior.
+- Keeps momentum on small non-`JMPTBL` NEWGRID clock helpers before larger control/data paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_compute_day_slot_from_clock_with_offset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_compute_day_slot_from_clock_with_offset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_compute_day_slot_from_clock_with_offset.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_with_offset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_compute_day_slot_from_clock_with_offset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_with_offset_target_gcc.sh`
+
+Current notes:
+- Candidate preserves local clock copy and half-hour index call, then applies both offset-adjusted thresholds (`60-offset`, `30-offset`) with `minute<=29` guard.
+- Uses `GCOMMAND_MplexClockOffsetMinutes` global and preserves the same slot increment/wrap semantics (`>48` wraps to `1`).
+- GCC generated alternative branch direction/order but maintained equivalent predicate structure and constants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

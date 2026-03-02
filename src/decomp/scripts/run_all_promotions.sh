@@ -648,6 +648,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_newgrid_is_grid_ready_for_input_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_fill_grid_rects_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_draw_grid_frame_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_should_open_editor_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_compute_day_slot_from_clock_with_offset_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
