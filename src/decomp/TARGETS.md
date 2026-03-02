@@ -3710,6 +3710,75 @@ Current notes:
 - Semantic gate validates context symbol, callee presence, mode constant, and terminal shape.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 572: `modules/groups/b/a/script3.s` (`SCRIPT_SetCtrlContextMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small state-header helper with direct follow-on call into `SCRIPT_ResetCtrlContext`.
+- Keeps contiguous `script3.s` control-context promotion momentum with minimal risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_set_ctrl_context_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_set_ctrl_context_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_set_ctrl_context_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_set_ctrl_context_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_set_ctrl_context_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_set_ctrl_context_mode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `(ctx+0)=mode`, `(ctx+2)=1`, then invokes `SCRIPT_ResetCtrlContext(ctx)` with no extra side effects.
+- Semantic gate validates reset-callee reference, mode constant, context-head offset store shape, and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 573: `modules/groups/b/a/script3.s` (`SCRIPT_ResetCtrlContextAndClearStatusLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Short two-call helper adjacent to Target 572 with clear side-effect intent.
+- Expands direct non-stub `script3.s` runtime coverage while keeping semantics simple.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_reset_ctrl_context_and_clear_status_line_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_reset_ctrl_context_and_clear_status_line_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_reset_ctrl_context_and_clear_status_line.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_reset_ctrl_context_and_clear_status_line_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_reset_ctrl_context_and_clear_status_line_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_reset_ctrl_context_and_clear_status_line_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `TEXTDISP_HandleScriptCommand(-1, -1, 0)` followed by `SCRIPT_ResetCtrlContext(SCRIPT_CTRL_CONTEXT)`.
+- Semantic gate validates both callee references, context symbol usage, `-1`/`0` argument-shape constants, and terminal form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 574: `modules/groups/b/a/script3.s` (`SCRIPT_LoadCtrlContextSnapshot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First substantial non-stub `script3.s` state-load routine after the control-context wrappers.
+- High-value runtime behavior with bounded complexity (field restores + two text copies + mode gate).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_load_ctrl_context_snapshot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_load_ctrl_context_snapshot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_load_ctrl_context_snapshot.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_load_ctrl_context_snapshot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_load_ctrl_context_snapshot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_load_ctrl_context_snapshot_target_gcc.sh`
+
+Current notes:
+- Candidate restores saved context scalars, replaces owned command-text pointer, copies both NUL-terminated search buffers, applies runtime-mode gate (`2->3` and `0->1` paths), and restores banner-shadow bytes.
+- Semantic gate validates replace-owned-string call topology, runtime-mode compare constants, active-group restore, and fallback/selected shadow-array writes.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
