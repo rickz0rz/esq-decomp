@@ -48,6 +48,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_unknown_parse_record_and_update_display_trial_gcc.sh`: GCC-specific compare lane for `Target 592` (`UNKNOWN_ParseRecordAndUpdateDisplay`).
 - `src/decomp/scripts/compare_esqproto_verify_checksum_and_parse_record_trial_gcc.sh`: GCC-specific compare lane for `Target 593` (`ESQPROTO_VerifyChecksumAndParseRecord`).
 - `src/decomp/scripts/compare_esqproto_verify_checksum_and_parse_list_trial_gcc.sh`: GCC-specific compare lane for `Target 594` (`ESQPROTO_VerifyChecksumAndParseList`).
+- `src/decomp/scripts/compare_unknown36_finalize_request_trial_gcc.sh`: GCC-specific compare lane for `Target 595` (`UNKNOWN36_FinalizeRequest`).
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
@@ -640,6 +641,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_unknown_parse_record_and_update_display.awk`: semantic post-filter for `UNKNOWN_ParseRecordAndUpdateDisplay` compare lane.
 - `src/decomp/scripts/semantic_filter_esqproto_verify_checksum_and_parse_record.awk`: semantic post-filter for `ESQPROTO_VerifyChecksumAndParseRecord` compare lane.
 - `src/decomp/scripts/semantic_filter_esqproto_verify_checksum_and_parse_list.awk`: semantic post-filter for `ESQPROTO_VerifyChecksumAndParseList` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown36_finalize_request.awk`: semantic post-filter for `UNKNOWN36_FinalizeRequest` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
@@ -1197,6 +1199,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh`: promotion gate for Target 592 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_record_target_gcc.sh`: promotion gate for Target 593 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_list_target_gcc.sh`: promotion gate for Target 594 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown36_finalize_request_target_gcc.sh`: promotion gate for Target 595 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
@@ -1829,6 +1832,7 @@ bash src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gc
 bash src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh
 bash src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_record_target_gcc.sh
 bash src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_list_target_gcc.sh
+bash src/decomp/scripts/promote_unknown36_finalize_request_target_gcc.sh
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh

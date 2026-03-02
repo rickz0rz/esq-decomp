@@ -4239,6 +4239,29 @@ Current notes:
 - Semantic gate validates read/xor/parse calls plus error-counter symbol coverage.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 595: `modules/submodules/unknown36.s` (`UNKNOWN36_FinalizeRequest`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Standalone runtime helper with explicit cleanup and close-result gating.
+- Adds first direct C coverage of `unknown36.s` non-stub logic (beyond jump-table wrappers).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown36_finalize_request_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown36_finalize_request_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown36_finalize_request.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown36_finalize_request_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown36_finalize_request_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown36_finalize_request_target_gcc.sh`
+
+Current notes:
+- Candidate preserves optional abort callback path (`STREAM_BufferedPutcOrFlush(-1, req)`), masked-flag/arg-based optional free-list insertion (`ALLOC_InsertFreeBlock`), flag clear, handler close dispatch (`HANDLE_CloseByIndex`), and final `-1/0` return rule from abort/close outcomes.
+- Semantic gate validates all three call sites plus flag-mask and negative-return markers.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
