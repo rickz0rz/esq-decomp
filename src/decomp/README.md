@@ -433,6 +433,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_parseini_jmptbl_ed1_waitforflagandclearbit1_trial_gcc.sh`: GCC-specific compare lane for `Target 513` (`PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1`).
 - `src/decomp/scripts/compare_parseini_jmptbl_esqfunc_drawescmenuversion_trial_gcc.sh`: GCC-specific compare lane for `Target 514` (`PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion`).
 - `src/decomp/scripts/compare_parseini_jmptbl_esqiff_queueiffbrushload_trial_gcc.sh`: GCC-specific compare lane for `Target 515` (`PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad`).
+- `src/decomp/scripts/compare_parseini_jmptbl_esqiff_handlebrushinireloadhotkey_trial_gcc.sh`: GCC-specific compare lane for `Target 516` (`PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -946,6 +947,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_ed1_waitforflagandclearbit1.awk`: semantic post-filter for `PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1` compare lane.
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_esqfunc_drawescmenuversion.awk`: semantic post-filter for `PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion` compare lane.
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_esqiff_queueiffbrushload.awk`: semantic post-filter for `PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini_jmptbl_esqiff_handlebrushinireloadhotkey.awk`: semantic post-filter for `PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1458,6 +1460,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_parseini_jmptbl_ed1_waitforflagandclearbit1_target_gcc.sh`: promotion gate for Target 513 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_jmptbl_esqfunc_drawescmenuversion_target_gcc.sh`: promotion gate for Target 514 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_jmptbl_esqiff_queueiffbrushload_target_gcc.sh`: promotion gate for Target 515 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini_jmptbl_esqiff_handlebrushinireloadhotkey_target_gcc.sh`: promotion gate for Target 516 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -2011,6 +2014,7 @@ bash src/decomp/scripts/promote_parseini_jmptbl_ed1_waitforflagandclearbit0_targ
 bash src/decomp/scripts/promote_parseini_jmptbl_ed1_waitforflagandclearbit1_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_jmptbl_esqfunc_drawescmenuversion_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_jmptbl_esqiff_queueiffbrushload_target_gcc.sh
+bash src/decomp/scripts/promote_parseini_jmptbl_esqiff_handlebrushinireloadhotkey_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
