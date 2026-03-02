@@ -4587,6 +4587,29 @@ Current notes:
 - Semantic gate validates wrapper label, required call target, and terminal return.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 610: `modules/groups/a/j/dst2.s` (`DST_TickBannerCounters`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` state-update helper with real branching behavior.
+- Useful groundwork for later `DST_UpdateBannerQueue` decomp because it shares countdown/phase globals.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_tick_banner_counters_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_tick_banner_counters_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_tick_banner_counters.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_tick_banner_counters_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_tick_banner_counters_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_tick_banner_counters_target_gcc.sh`
+
+Current notes:
+- Candidate preserves behavior: initialize phase from `ESQ_STR_6 - 0x36`, adjust phase by `-1` when primary countdown reaches `1`, and increment phase when secondary countdown reaches `1`.
+- Semantic gate accepts equivalent decrement idioms (`SUB* #1`, or folded immediate adds such as `-54/-55`) and direct memory increment form for phase update.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
