@@ -375,6 +375,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_tliba1_jmptbl_coi_testentrywithintimewindow_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_jmptbl_cleanup_formatclockformatentry_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_computescheduleoffsetforrow_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba1_jmptbl_esq_findsubstringcasefold_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
