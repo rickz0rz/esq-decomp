@@ -370,6 +370,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_jmptbl_coi_getanimfieldpointerbymode_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extractlownibble_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"

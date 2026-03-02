@@ -364,6 +364,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_tliba2_jmptbl_esq_testbit1based_trial_gcc.sh`: GCC-specific compare lane for `Target 444` (`TLIBA2_JMPTBL_ESQ_TestBit1Based`).
 - `src/decomp/scripts/compare_tliba1_jmptbl_coi_getanimfieldpointerbymode_trial_gcc.sh`: GCC-specific compare lane for `Target 445` (`TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode`).
 - `src/decomp/scripts/compare_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_trial_gcc.sh`: GCC-specific compare lane for `Target 446` (`TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode`).
+- `src/decomp/scripts/compare_tliba1_jmptbl_ladfunc_extractlownibble_trial_gcc.sh`: GCC-specific compare lane for `Target 447` (`TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -808,6 +809,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_tliba2_jmptbl_esq_testbit1based.awk`: semantic post-filter for `TLIBA2_JMPTBL_ESQ_TestBit1Based` compare lane.
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_coi_getanimfieldpointerbymode.awk`: semantic post-filter for `TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode` compare lane.
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_esqdisp_getentryauxpointerbymode.awk`: semantic post-filter for `TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode` compare lane.
+- `src/decomp/scripts/semantic_filter_tliba1_jmptbl_ladfunc_extractlownibble.awk`: semantic post-filter for `TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1251,6 +1253,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh`: promotion gate for Target 444 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba1_jmptbl_coi_getanimfieldpointerbymode_target_gcc.sh`: promotion gate for Target 445 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_target_gcc.sh`: promotion gate for Target 446 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extractlownibble_target_gcc.sh`: promotion gate for Target 447 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1735,6 +1738,7 @@ bash src/decomp/scripts/promote_tliba2_jmptbl_dst_addtimeoffset_target_gcc.sh
 bash src/decomp/scripts/promote_tliba2_jmptbl_esq_testbit1based_target_gcc.sh
 bash src/decomp/scripts/promote_tliba1_jmptbl_coi_getanimfieldpointerbymode_target_gcc.sh
 bash src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_target_gcc.sh
+bash src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extractlownibble_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
