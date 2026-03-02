@@ -5543,6 +5543,30 @@ Current notes:
 - GCC uses indexed `PEA` forms for some constants and folded arithmetic labels; semantic gate explicitly accepts these equivalent forms.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 651: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawClockFormatHeader`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Larger non-`JMPTBL` NEWGRID header renderer that exercises looped column formatting/layout logic.
+- Good bridge target between small helpers and higher-complexity NEWGRID message routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_clock_format_header_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_clock_format_header_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_clock_format_header.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_clock_format_header_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_clock_format_header_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_clock_format_header_target_gcc.sh`
+
+Current notes:
+- Candidate preserves top-level flow: draw mode/pen setup, top header fill + bevel, 3-column loop with slot wrap at `48`, per-column label format + width centering, text draw, and final selection validation.
+- Maintains core constants and controls (`33`, `35`, `36`, `48`, `64`, `695`, `17`) and column globals (`NEWGRID_ColumnStartXPx`, `NEWGRID_ColumnWidthPx`).
+- GCC emits different register allocation and branch shape but semantic gate confirms required call topology and constant features.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
