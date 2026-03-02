@@ -4400,6 +4400,29 @@ Current notes:
 - Semantic gate validates write/close call topology and list/state/pending markers.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 602: `modules/submodules/unknown39.s` (`GRAPHICS_BltBitMapRastPort`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Thin calling-convention bridge into `graphics.library` blit LVO.
+- High-callsite utility wrapper and low-risk addition to runtime helper coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/graphics_bltbitmaprastport_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_graphics_bltbitmaprastport_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_graphics_bltbitmaprastport.awk`
+- Promotion gate: `src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_graphics_bltbitmaprastport_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh`
+
+Current notes:
+- Candidate preserves wrapper semantics: save/restore register set, load graphics base (`Global_GraphicsLibraryBase_A4`) into `A6`, marshal arg registers (`A0/A1`, `D0-D6`) from call frame, and dispatch via `_LVOBltBitMapRastPort(A6)`.
+- Semantic gate validates base-load/call topology and register marshalling markers.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
