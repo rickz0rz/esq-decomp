@@ -4726,6 +4726,53 @@ Current notes:
 - Semantic gate accepts GCC addressing variants including post-increment slot-clear form (`CLR.L (aX)+`) and indirect call form (`JSR (aX)`).
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 616: `modules/groups/a/j/dst.s` (`DST_AllocateBannerStruct`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next non-`JMPTBL` lifecycle routine in `dst.s`, directly upstream of banner rebuild/load logic.
+- Establishes the allocation/rollback behavior needed before lifting heavier DST file-load flows.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_allocate_banner_struct_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_allocate_banner_struct_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_allocate_banner_struct.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_allocate_banner_struct_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_allocate_banner_struct_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_allocate_banner_struct_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the original sequence: free-existing, allocate struct (`18` bytes @ line `798`), allocate slot0 (`22` @ `803`), allocate slot1 (`22` @ `807`), clear state word at `+16`, and rollback free on any failure.
+- Semantic gate validates free/allocate topology, expected owner-line constants, allocation sizes, flag constant (`0x10001`), slot stores, state-word clear, and return marker.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 617: `modules/groups/a/j/dst.s` (`DST_RebuildBannerPair`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Continues non-`JMPTBL` DST lifecycle coverage immediately after Targets 614-616.
+- Captures pair-level rebuild control flow used by banner load/update routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_rebuild_banner_pair_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_rebuild_banner_pair_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_rebuild_banner_pair.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_rebuild_banner_pair_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_rebuild_banner_pair_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_rebuild_banner_pair_target_gcc.sh`
+
+Current notes:
+- Candidate preserves free-first rebuild flow, two `DST_AllocateBannerStruct` calls, slot write-backs, and fail-path rollback via `DST_FreeBannerPair`.
+- Preserves the original success-flag behavior where the second gate re-tests slot0 after second allocation.
+- Semantic gate tolerates GCC booleanization (`SNE/EXT/NEG`) while requiring two free calls, two allocate calls, slot0/slot1 access, and return marker.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
