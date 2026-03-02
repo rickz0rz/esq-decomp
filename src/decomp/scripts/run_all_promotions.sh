@@ -399,6 +399,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_jmptbl_diskio_openfilewithbuffer_target_gcc.sh"
     "src/decomp/scripts/promote_wdisp_jmptbl_esqiff_restorebasepalettetriples_target_gcc.sh"
     "src/decomp/scripts/promote_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_target_gcc.sh"
+    "src/decomp/scripts/promote_wdisp_jmptbl_gcommand_expandpresetblock_target_gcc.sh"
+    "src/decomp/scripts/promote_wdisp_jmptbl_esqiff_queueiffbrushload_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"

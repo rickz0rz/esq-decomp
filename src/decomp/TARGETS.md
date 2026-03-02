@@ -10949,3 +10949,49 @@ Current notes:
 - Original assembly is a direct `JMP ESQFUNC_TrimTextToPixelWidthWordBoundary`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 476: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_gcommand_expandpresetblock_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_gcommand_expandpresetblock_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_gcommand_expandpresetblock.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_gcommand_expandpresetblock_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_gcommand_expandpresetblock_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_gcommand_expandpresetblock_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP GCOMMAND_ExpandPresetBlock`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 477: `modules/groups/b/a/wdisp.s` (`WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/wdisp.s` with direct forward-dispatch semantics.
+- Continues WDISP bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_jmptbl_esqiff_queueiffbrushload_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_jmptbl_esqiff_queueiffbrushload_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_jmptbl_esqiff_queueiffbrushload.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_jmptbl_esqiff_queueiffbrushload_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_jmptbl_esqiff_queueiffbrushload_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_jmptbl_esqiff_queueiffbrushload_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQIFF_QueueIffBrushLoad`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
