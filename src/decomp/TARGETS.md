@@ -3334,6 +3334,98 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 415: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_tliba_find_first_wildcard_match_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_tliba_find_first_wildcard_match_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_tliba_find_first_wildcard_match_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_tliba_find_first_wildcard_match_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_tliba_find_first_wildcard_match_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_tliba_find_first_wildcard_match_index_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP TLIBA_FindFirstWildcardMatchIndex`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 416: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_disptext_build_layout_for_source_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_build_layout_for_source_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_build_layout_for_source.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_build_layout_for_source_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_disptext_build_layout_for_source_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_build_layout_for_source_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPTEXT_BuildLayoutForSource`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 417: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_esqdisp_get_entry_aux_pointer_by_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_get_entry_aux_pointer_by_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esqdisp_get_entry_aux_pointer_by_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_get_entry_aux_pointer_by_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_esqdisp_get_entry_aux_pointer_by_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_esqdisp_get_entry_aux_pointer_by_mode_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQDISP_GetEntryAuxPointerByMode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 418: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_disptext_layout_source_to_lines_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_layout_source_to_lines_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_layout_source_to_lines.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_layout_source_to_lines_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_disptext_layout_source_to_lines_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_layout_source_to_lines_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPTEXT_LayoutSourceToLines`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 399: `modules/groups/a/n/esqdisp.s` (`ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages`)
 
 Status: promoted (GCC gate)
