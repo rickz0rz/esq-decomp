@@ -448,6 +448,11 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_parseini_jmptbl_wdisp_sprintf_trial_gcc.sh`: GCC-specific compare lane for `Target 528` (`PARSEINI_JMPTBL_WDISP_SPrintf`).
 - `src/decomp/scripts/compare_script3_jmptbl_cleanup_renderalignedstatusscreen_trial_gcc.sh`: GCC-specific compare lane for `Target 529` (`SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen`).
 - `src/decomp/scripts/compare_script3_jmptbl_locavail_computefilteroffsetforentry_trial_gcc.sh`: GCC-specific compare lane for `Target 530` (`SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry`).
+- `src/decomp/scripts/compare_script3_jmptbl_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 531` (`SCRIPT3_JMPTBL_MATH_Mulu32`).
+- `src/decomp/scripts/compare_script3_jmptbl_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 532` (`SCRIPT3_JMPTBL_MATH_DivS32`).
+- `src/decomp/scripts/compare_script3_jmptbl_locavail_setfiltermodeandresetstate_trial_gcc.sh`: GCC-specific compare lane for `Target 533` (`SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState`).
+- `src/decomp/scripts/compare_script3_jmptbl_string_copypadnul_trial_gcc.sh`: GCC-specific compare lane for `Target 534` (`SCRIPT3_JMPTBL_STRING_CopyPadNul`).
+- `src/decomp/scripts/compare_script3_jmptbl_string_comparen_trial_gcc.sh`: GCC-specific compare lane for `Target 535` (`SCRIPT3_JMPTBL_STRING_CompareN`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -976,6 +981,11 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_wdisp_sprintf.awk`: semantic post-filter for `PARSEINI_JMPTBL_WDISP_SPrintf` compare lane.
 - `src/decomp/scripts/semantic_filter_script3_jmptbl_cleanup_renderalignedstatusscreen.awk`: semantic post-filter for `SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen` compare lane.
 - `src/decomp/scripts/semantic_filter_script3_jmptbl_locavail_computefilteroffsetforentry.awk`: semantic post-filter for `SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_math_mulu32.awk`: semantic post-filter for `SCRIPT3_JMPTBL_MATH_Mulu32` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_math_divs32.awk`: semantic post-filter for `SCRIPT3_JMPTBL_MATH_DivS32` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_locavail_setfiltermodeandresetstate.awk`: semantic post-filter for `SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_string_copypadnul.awk`: semantic post-filter for `SCRIPT3_JMPTBL_STRING_CopyPadNul` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_string_comparen.awk`: semantic post-filter for `SCRIPT3_JMPTBL_STRING_CompareN` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1503,6 +1513,11 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_parseini_jmptbl_wdisp_sprintf_target_gcc.sh`: promotion gate for Target 528 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script3_jmptbl_cleanup_renderalignedstatusscreen_target_gcc.sh`: promotion gate for Target 529 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script3_jmptbl_locavail_computefilteroffsetforentry_target_gcc.sh`: promotion gate for Target 530 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_math_mulu32_target_gcc.sh`: promotion gate for Target 531 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_math_divs32_target_gcc.sh`: promotion gate for Target 532 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_locavail_setfiltermodeandresetstate_target_gcc.sh`: promotion gate for Target 533 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_string_copypadnul_target_gcc.sh`: promotion gate for Target 534 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh`: promotion gate for Target 535 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -2071,6 +2086,11 @@ bash src/decomp/scripts/promote_parseini_jmptbl_unknown36_finalizerequest_target
 bash src/decomp/scripts/promote_parseini_jmptbl_wdisp_sprintf_target_gcc.sh
 bash src/decomp/scripts/promote_script3_jmptbl_cleanup_renderalignedstatusscreen_target_gcc.sh
 bash src/decomp/scripts/promote_script3_jmptbl_locavail_computefilteroffsetforentry_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_math_mulu32_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_math_divs32_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_locavail_setfiltermodeandresetstate_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_string_copypadnul_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh

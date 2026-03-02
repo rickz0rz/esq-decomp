@@ -2759,6 +2759,121 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 531: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_MATH_Mulu32`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_math_mulu32_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_math_mulu32_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_math_mulu32.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_math_mulu32_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_math_mulu32_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_math_mulu32_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MATH_Mulu32`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 532: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_MATH_DivS32`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_math_divs32_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_math_divs32_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_math_divs32.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_math_divs32_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_math_divs32_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_math_divs32_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP MATH_DivS32`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 533: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_locavail_setfiltermodeandresetstate_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_locavail_setfiltermodeandresetstate_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_locavail_setfiltermodeandresetstate.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_locavail_setfiltermodeandresetstate_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_locavail_setfiltermodeandresetstate_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_locavail_setfiltermodeandresetstate_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LOCAVAIL_SetFilterModeAndResetState`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 534: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_STRING_CopyPadNul`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_string_copypadnul_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_string_copypadnul_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_string_copypadnul.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_string_copypadnul_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_string_copypadnul_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_string_copypadnul_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CopyPadNul`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 535: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_STRING_CompareN`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_string_comparen_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_string_comparen_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_string_comparen.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_string_comparen_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_CompareN`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
