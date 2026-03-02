@@ -4354,6 +4354,29 @@ Current notes:
 - Semantic gate validates handle-table/global coverage and all key DOS helper callsites.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 600: `modules/submodules/unknown31.s` (`BUFFER_EnsureAllocated`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact allocator helper used by stream/handle buffered I/O paths.
+- Good phase-2 target from uncovered export inventory with clear state transitions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/buffer_ensure_allocated_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_buffer_ensure_allocated_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_buffer_ensure_allocated.awk`
+- Promotion gate: `src/decomp/scripts/promote_buffer_ensure_allocated_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_buffer_ensure_allocated_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_buffer_ensure_allocated_target_gcc.sh`
+
+Current notes:
+- Candidate preserves early return when buffer already allocated and no force-realloc flag, allocation path via `ALLOC_AllocFromFreeList(Global_StreamBufferAllocSize)`, `Global_AppErrorCode=12` on null allocation, buffer field initialization, open-flags low-bit clear mask (`~12`), and read/write remaining reset.
+- Semantic gate validates allocator/global usage and key field/mask effects.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

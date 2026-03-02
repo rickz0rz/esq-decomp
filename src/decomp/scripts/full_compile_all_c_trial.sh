@@ -22,6 +22,7 @@ fi
 
 mkdir -p "$OBJ_DIR"
 : > "$LOG_FILE"
+rm -f "${OBJ_DIR}"/*.o
 
 SRC_FILES=()
 while IFS= read -r src; do

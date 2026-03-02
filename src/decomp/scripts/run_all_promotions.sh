@@ -603,6 +603,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_handle_open_from_mode_string_target_gcc.sh"
     "src/decomp/scripts/promote_wdisp_format_with_callback_target_gcc.sh"
     "src/decomp/scripts/promote_handle_open_entry_with_flags_target_gcc.sh"
+    "src/decomp/scripts/promote_buffer_ensure_allocated_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
