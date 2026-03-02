@@ -4657,6 +4657,29 @@ Current notes:
 - Semantic gate validates all key constants/call sites (`12`, `0x1d`, `0x26`, `0x30`) and final-return shaping marker.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 613: `modules/groups/a/j/dst2.s` (`DST_AddTimeOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Non-`JMPTBL` arithmetic helper used by multiple DST/banner update paths.
+- Extends decomp coverage from indexing helpers into time-normalization mutation paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_add_time_offset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_add_time_offset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_add_time_offset.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_add_time_offset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_add_time_offset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_add_time_offset_target_gcc.sh`
+
+Current notes:
+- Candidate preserves core flow: `DATETIME_NormalizeStructToSeconds` call, add `hours*0xE10` and `minutes*0x3C`, then `DATETIME_SecondsToStruct`.
+- Semantic gate accepts both explicit `MULS` and GCC strength-reduced shift/add multiplication forms for the `0xE10` and `0x3C` factors.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
