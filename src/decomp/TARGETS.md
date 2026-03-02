@@ -5567,6 +5567,30 @@ Current notes:
 - GCC emits different register allocation and branch shape but semantic gate confirms required call topology and constant features.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 652: `modules/groups/b/a/newgrid.s` (`NEWGRID_MapSelectionToMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-sized non-`JMPTBL` NEWGRID control helper with clear jump-table/switch semantics.
+- Good next step after display helpers: improves state/mode dispatch coverage without entering the large message loop yet.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_map_selection_to_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_map_selection_to_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_map_selection_to_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_map_selection_to_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_map_selection_to_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_map_selection_to_mode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `selection < 13` guard and case mapping (`0/12->1`, `1->2`, `2->3`, `11->1`, out-of-range->0).
+- Case `3` gate remains identical: `NEWGRID_IsGridReadyForInput(gate_selector)` picks mode `11` vs `4`.
+- Case `4` niche-force override and mode-cycle reset behavior are preserved before fallback to `NEWGRID_SelectNextMode` path (`4..10` lane).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
