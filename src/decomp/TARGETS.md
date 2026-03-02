@@ -10463,3 +10463,165 @@ Current notes:
 - Original assembly is a direct `JMP LADFUNC_GetPackedPenHighNibble`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 455: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Starts PARSEINI2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BATTCLOCK_GetSecondsFromBatteryBackedClock`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 456: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Continues PARSEINI2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_battclock_writesecondstobatterybackedclock_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_battclock_writesecondstobatterybackedclock.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BATTCLOCK_WriteSecondsToBatteryBackedClock`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 457: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_DATETIME_IsLeapYear`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Continues PARSEINI2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_datetime_isleapyear_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_datetime_isleapyear_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_datetime_isleapyear.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_datetime_isleapyear_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_datetime_isleapyear_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_datetime_isleapyear_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DATETIME_IsLeapYear`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 458: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Continues PARSEINI2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_clock_secondsfromepoch_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_clock_secondsfromepoch_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_clock_secondsfromepoch.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_clock_secondsfromepoch_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_clock_secondsfromepoch_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_clock_secondsfromepoch_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP CLOCK_SecondsFromEpoch`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Compare slice stops at `;!======` end marker to avoid pulling post-function alignment bytes.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 459: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Continues PARSEINI2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_clock_checkdateorsecondsfromepoch_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_clock_checkdateorsecondsfromepoch.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP CLOCK_CheckDateOrSecondsFromEpoch`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 460: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Continues PARSEINI2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_clock_convertamigasecondstoclockdata_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_clock_convertamigasecondstoclockdata_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_clock_convertamigasecondstoclockdata.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_clock_convertamigasecondstoclockdata_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_clock_convertamigasecondstoclockdata_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_clock_convertamigasecondstoclockdata_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP CLOCK_ConvertAmigaSecondsToClockData`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 461: `modules/groups/b/a/parseini2.s` (`PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini2.s` with direct forward-dispatch semantics.
+- Completes this PARSEINI2 jump-stub bridge cluster while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini2_jmptbl_esq_calcdayofyearfrommonthday_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini2_jmptbl_esq_calcdayofyearfrommonthday_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini2_jmptbl_esq_calcdayofyearfrommonthday.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini2_jmptbl_esq_calcdayofyearfrommonthday_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini2_jmptbl_esq_calcdayofyearfrommonthday_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini2_jmptbl_esq_calcdayofyearfrommonthday_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_CalcDayOfYearFromMonthDay`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

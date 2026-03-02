@@ -372,6 +372,13 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_tliba1_jmptbl_esq_findsubstringcasefold_trial_gcc.sh`: GCC-specific compare lane for `Target 452` (`TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold`).
 - `src/decomp/scripts/compare_tliba1_jmptbl_displib_findpreviousvalidentryindex_trial_gcc.sh`: GCC-specific compare lane for `Target 453` (`TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex`).
 - `src/decomp/scripts/compare_tliba1_jmptbl_ladfunc_extracthighnibble_trial_gcc.sh`: GCC-specific compare lane for `Target 454` (`TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_trial_gcc.sh`: GCC-specific compare lane for `Target 455` (`PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial_gcc.sh`: GCC-specific compare lane for `Target 456` (`PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_datetime_isleapyear_trial_gcc.sh`: GCC-specific compare lane for `Target 457` (`PARSEINI2_JMPTBL_DATETIME_IsLeapYear`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_clock_secondsfromepoch_trial_gcc.sh`: GCC-specific compare lane for `Target 458` (`PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_trial_gcc.sh`: GCC-specific compare lane for `Target 459` (`PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_clock_convertamigasecondstoclockdata_trial_gcc.sh`: GCC-specific compare lane for `Target 460` (`PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData`).
+- `src/decomp/scripts/compare_parseini2_jmptbl_esq_calcdayofyearfrommonthday_trial_gcc.sh`: GCC-specific compare lane for `Target 461` (`PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -824,6 +831,13 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_esq_findsubstringcasefold.awk`: semantic post-filter for `TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold` compare lane.
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_displib_findpreviousvalidentryindex.awk`: semantic post-filter for `TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_tliba1_jmptbl_ladfunc_extracthighnibble.awk`: semantic post-filter for `TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock.awk`: semantic post-filter for `PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_battclock_writesecondstobatterybackedclock.awk`: semantic post-filter for `PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_datetime_isleapyear.awk`: semantic post-filter for `PARSEINI2_JMPTBL_DATETIME_IsLeapYear` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_clock_secondsfromepoch.awk`: semantic post-filter for `PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_clock_checkdateorsecondsfromepoch.awk`: semantic post-filter for `PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_clock_convertamigasecondstoclockdata.awk`: semantic post-filter for `PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini2_jmptbl_esq_calcdayofyearfrommonthday.awk`: semantic post-filter for `PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1275,6 +1289,13 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_tliba1_jmptbl_esq_findsubstringcasefold_target_gcc.sh`: promotion gate for Target 452 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba1_jmptbl_displib_findpreviousvalidentryindex_target_gcc.sh`: promotion gate for Target 453 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extracthighnibble_target_gcc.sh`: promotion gate for Target 454 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_target_gcc.sh`: promotion gate for Target 455 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_target_gcc.sh`: promotion gate for Target 456 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_datetime_isleapyear_target_gcc.sh`: promotion gate for Target 457 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_clock_secondsfromepoch_target_gcc.sh`: promotion gate for Target 458 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_target_gcc.sh`: promotion gate for Target 459 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_clock_convertamigasecondstoclockdata_target_gcc.sh`: promotion gate for Target 460 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini2_jmptbl_esq_calcdayofyearfrommonthday_target_gcc.sh`: promotion gate for Target 461 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1767,6 +1788,13 @@ bash src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_computescheduleoffsetforro
 bash src/decomp/scripts/promote_tliba1_jmptbl_esq_findsubstringcasefold_target_gcc.sh
 bash src/decomp/scripts/promote_tliba1_jmptbl_displib_findpreviousvalidentryindex_target_gcc.sh
 bash src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extracthighnibble_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_datetime_isleapyear_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_clock_secondsfromepoch_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_clock_convertamigasecondstoclockdata_target_gcc.sh
+bash src/decomp/scripts/promote_parseini2_jmptbl_esq_calcdayofyearfrommonthday_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
