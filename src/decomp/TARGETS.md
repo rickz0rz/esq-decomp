@@ -2920,6 +2920,75 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 538: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_ladfunc_parsehexdigit_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_ladfunc_parsehexdigit_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_ladfunc_parsehexdigit.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_ladfunc_parsehexdigit_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_ladfunc_parsehexdigit_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_ladfunc_parsehexdigit_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_ParseHexDigit`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 539: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_esqpars_applyrtcbytesandpersist_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_esqpars_applyrtcbytesandpersist_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_esqpars_applyrtcbytesandpersist.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_esqpars_applyrtcbytesandpersist_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_esqpars_applyrtcbytesandpersist_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_esqpars_applyrtcbytesandpersist_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQPARS_ApplyRtcBytesAndPersist`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 540: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_parse_readsignedlongskipclass3_alt_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_parse_readsignedlongskipclass3_alt.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_parse_readsignedlongskipclass3_alt_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_parse_readsignedlongskipclass3_alt_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP PARSE_ReadSignedLongSkipClass3_Alt`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

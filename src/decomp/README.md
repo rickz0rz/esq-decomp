@@ -455,6 +455,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_script3_jmptbl_string_comparen_trial_gcc.sh`: GCC-specific compare lane for `Target 535` (`SCRIPT3_JMPTBL_STRING_CompareN`).
 - `src/decomp/scripts/compare_script3_jmptbl_esqdisp_updatestatusmaskandrefresh_trial_gcc.sh`: GCC-specific compare lane for `Target 536` (`SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh`).
 - `src/decomp/scripts/compare_script3_jmptbl_gcommand_getbannerchar_trial_gcc.sh`: GCC-specific compare lane for `Target 537` (`SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar`).
+- `src/decomp/scripts/compare_script3_jmptbl_ladfunc_parsehexdigit_trial_gcc.sh`: GCC-specific compare lane for `Target 538` (`SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit`).
+- `src/decomp/scripts/compare_script3_jmptbl_esqpars_applyrtcbytesandpersist_trial_gcc.sh`: GCC-specific compare lane for `Target 539` (`SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist`).
+- `src/decomp/scripts/compare_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial_gcc.sh`: GCC-specific compare lane for `Target 540` (`SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -990,6 +993,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_script3_jmptbl_string_comparen.awk`: semantic post-filter for `SCRIPT3_JMPTBL_STRING_CompareN` compare lane.
 - `src/decomp/scripts/semantic_filter_script3_jmptbl_esqdisp_updatestatusmaskandrefresh.awk`: semantic post-filter for `SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh` compare lane.
 - `src/decomp/scripts/semantic_filter_script3_jmptbl_gcommand_getbannerchar.awk`: semantic post-filter for `SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_ladfunc_parsehexdigit.awk`: semantic post-filter for `SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_esqpars_applyrtcbytesandpersist.awk`: semantic post-filter for `SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist` compare lane.
+- `src/decomp/scripts/semantic_filter_script3_jmptbl_parse_readsignedlongskipclass3_alt.awk`: semantic post-filter for `SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1524,6 +1530,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh`: promotion gate for Target 535 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script3_jmptbl_esqdisp_updatestatusmaskandrefresh_target_gcc.sh`: promotion gate for Target 536 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script3_jmptbl_gcommand_getbannerchar_target_gcc.sh`: promotion gate for Target 537 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_ladfunc_parsehexdigit_target_gcc.sh`: promotion gate for Target 538 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_esqpars_applyrtcbytesandpersist_target_gcc.sh`: promotion gate for Target 539 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script3_jmptbl_parse_readsignedlongskipclass3_alt_target_gcc.sh`: promotion gate for Target 540 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -2099,6 +2108,9 @@ bash src/decomp/scripts/promote_script3_jmptbl_string_copypadnul_target_gcc.sh
 bash src/decomp/scripts/promote_script3_jmptbl_string_comparen_target_gcc.sh
 bash src/decomp/scripts/promote_script3_jmptbl_esqdisp_updatestatusmaskandrefresh_target_gcc.sh
 bash src/decomp/scripts/promote_script3_jmptbl_gcommand_getbannerchar_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_ladfunc_parsehexdigit_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_esqpars_applyrtcbytesandpersist_target_gcc.sh
+bash src/decomp/scripts/promote_script3_jmptbl_parse_readsignedlongskipclass3_alt_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
