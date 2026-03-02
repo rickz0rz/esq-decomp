@@ -3242,6 +3242,29 @@ Current notes:
 - Semantic gate validates char-class table usage, bit-7 test, 4-bit left shift, and parse-hex helper call while tolerating compiler opcode variation.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 552: `modules/groups/b/a/parseini.s` (`PARSEINI_ParseRangeKeyValue`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-sized parser routine with structured branch families (`table/done`, `color`, assignment path).
+- Natural next step after Target 551 because it directly consumes `PARSEINI_ParseHexValueFromString`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_parse_range_key_value_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_parse_range_key_value_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_parse_range_key_value.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_parse_range_key_value_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_parse_range_key_value_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_parse_range_key_value_target_gcc.sh`
+
+Current notes:
+- Candidate preserves token split/trim flow, `table=done` finalization path, `color` index/value handling, and indexed assignment into the `A2`-backed structure with `(idx<<7)`, `(entry<<1)`, `+32` offset.
+- Semantic gate validates key tags/delimiters, helper calls, and structural constants (`16`, `63`, `0x1000`, `32`, `shift by 7`) while allowing opcode variation.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
