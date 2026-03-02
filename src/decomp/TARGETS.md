@@ -3664,6 +3664,29 @@ Current notes:
 - Semantic gate validates transition-state symbol use plus get/adjust helper call topology.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 570: `modules/groups/b/a/script3.s` (`SCRIPT_PrimeBannerTransitionFromHexCode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Short transition-state initializer adjacent to Target 569.
+- Keeps momentum in `script3.s` while reusing already-promoted banner helper call paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_prime_banner_transition_from_hex_code_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_prime_banner_transition_from_hex_code_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_prime_banner_transition_from_hex_code.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_prime_banner_transition_from_hex_code_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_prime_banner_transition_from_hex_code_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_prime_banner_transition_from_hex_code_target_gcc.sh`
+
+Current notes:
+- Candidate preserves target-char capture from `CONFIG_BannerCopperHeadByte`, current-char delta derivation, sign selection (`-1`/`1`), budget reset to zero, and active-flag enable only when delta is nonzero.
+- Semantic gate validates transition-symbol and helper-call coverage plus sign/compare structure.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

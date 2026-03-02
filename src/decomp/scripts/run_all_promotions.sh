@@ -493,6 +493,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_setup_highlight_effect_target_gcc.sh"
     "src/decomp/scripts/promote_script_check_path_exists_target_gcc.sh"
     "src/decomp/scripts/promote_script_update_banner_char_transition_target_gcc.sh"
+    "src/decomp/scripts/promote_script_prime_banner_transition_from_hex_code_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
