@@ -10440,3 +10440,26 @@ Current notes:
 - Original assembly is a direct `JMP DISPLIB_FindPreviousValidEntryIndex`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 454: `modules/groups/b/a/tliba1.s` (`TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/tliba1.s` with direct forward-dispatch semantics.
+- Extends TLIBA1 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_jmptbl_ladfunc_extracthighnibble_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_jmptbl_ladfunc_extracthighnibble_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_jmptbl_ladfunc_extracthighnibble.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extracthighnibble_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_jmptbl_ladfunc_extracthighnibble_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_jmptbl_ladfunc_extracthighnibble_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_GetPackedPenHighNibble`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
