@@ -628,6 +628,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_dst_refresh_banner_buffer_target_gcc.sh"
     "src/decomp/scripts/promote_dst_update_banner_queue_target_gcc.sh"
     "src/decomp/scripts/promote_dst_build_banner_time_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

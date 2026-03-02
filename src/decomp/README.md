@@ -545,6 +545,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_script_handle_brush_command_trial_gcc.sh`: GCC-specific compare lane for `Target 585` (`SCRIPT_HandleBrushCommand`).
 - `src/decomp/scripts/compare_esq_return_with_stack_code_trial_gcc.sh`: GCC-specific compare lane for `Target 586` (`ESQ_ReturnWithStackCode`).
 - `src/decomp/scripts/compare_esq_shutdown_and_return_trial_gcc.sh`: GCC-specific compare lane for `Target 587` (`ESQ_ShutdownAndReturn`).
+- `src/decomp/scripts/compare_esq_check_available_fast_memory_trial_gcc.sh`: GCC-specific compare lane for `Target 624` (`ESQ_CheckAvailableFastMemory`).
+- `src/decomp/scripts/compare_esq_check_compatible_video_chip_trial_gcc.sh`: GCC-specific compare lane for `Target 625` (`ESQ_CheckCompatibleVideoChip`).
+- `src/decomp/scripts/compare_esq_format_disk_error_message_trial_gcc.sh`: GCC-specific compare lane for `Target 626` (`ESQ_FormatDiskErrorMessage`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1176,6 +1179,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_group_main_b_jmptbl_math_mulu32.awk`: semantic post-filter for `GROUP_MAIN_B_JMPTBL_MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_group_main_b_jmptbl_buffer_flush_all_and_close_with_code.awk`: semantic post-filter for `GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown32_jmptbl_esq_return_with_stack_code.awk`: semantic post-filter for `UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_check_available_fast_memory.awk`: semantic post-filter for `ESQ_CheckAvailableFastMemory` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_check_compatible_video_chip.awk`: semantic post-filter for `ESQ_CheckCompatibleVideoChip` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_format_disk_error_message.awk`: semantic post-filter for `ESQ_FormatDiskErrorMessage` compare lane.
 - `src/decomp/scripts/semantic_filter_handle_close_all_and_return_with_code.awk`: semantic post-filter for `HANDLE_CloseAllAndReturnWithCode` compare lane.
 - `src/decomp/scripts/semantic_filter_dos_close_with_signal_check.awk`: semantic post-filter for `DOS_CloseWithSignalCheck` compare lane.
 - `src/decomp/scripts/semantic_filter_iostdreq_free.awk`: semantic post-filter for `IOSTDREQ_Free` compare lane.
@@ -1752,6 +1758,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_script_handle_brush_command_target_gcc.sh`: promotion gate for Target 585 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_return_with_stack_code_target_gcc.sh`: promotion gate for Target 586 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_shutdown_and_return_target_gcc.sh`: promotion gate for Target 587 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh`: promotion gate for Target 624 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh`: promotion gate for Target 625 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh`: promotion gate for Target 626 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
@@ -2413,6 +2422,9 @@ bash src/decomp/scripts/promote_script_process_ctrl_context_playback_tick_target
 bash src/decomp/scripts/promote_script_handle_brush_command_target_gcc.sh
 bash src/decomp/scripts/promote_esq_return_with_stack_code_target_gcc.sh
 bash src/decomp/scripts/promote_esq_shutdown_and_return_target_gcc.sh
+bash src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh
+bash src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh
+bash src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh
 bash src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh
 bash src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh

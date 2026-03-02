@@ -4911,6 +4911,75 @@ Current notes:
 - Semantic gate is tuned to those stable behavioral markers while tolerating significant GCC control-flow reshaping.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 624: `modules/groups/_main/b/b.s` (`ESQ_CheckAvailableFastMemory`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small core non-`JMPTBL` system capability check with clear threshold behavior.
+- Good entry point into `_main/b` core functions before larger guard/report routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_check_available_fast_memory_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_check_available_fast_memory_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_check_available_fast_memory.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_check_available_fast_memory_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_check_available_fast_memory_target_gcc.sh`
+
+Current notes:
+- Candidate preserves fast-memory query via `_LVOAvailMem` with attribute `2`, threshold compare against `600000`, and low-memory guard write to `HAS_REQUESTED_FAST_MEMORY`.
+- GCC emits equivalent compare form (`> 599999`) and prologue/epilogue save/restore around `A6`; semantic gate treats these as equivalent.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 625: `modules/groups/_main/b/b.s` (`ESQ_CheckCompatibleVideoChip`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` hardware capability probe adjacent to Target 624.
+- Extends `_main/b` core startup checks with minimal risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_check_compatible_video_chip_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_check_compatible_video_chip_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_check_compatible_video_chip.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_check_compatible_video_chip_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_check_compatible_video_chip_target_gcc.sh`
+
+Current notes:
+- Candidate preserves VPOSR-based chip-id masking and whitelist checks for `$30/$20/$33` families, with fallback set of `IS_COMPATIBLE_VIDEO_CHIP`.
+- GCC reshapes compare logic (`0x6f00` pre-mask + follow-up `0x7f00` compare) but remains semantically equivalent for accepted IDs.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 626: `modules/groups/_main/b/b.s` (`ESQ_FormatDiskErrorMessage`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` formatter routine with straightforward branch/call topology.
+- Completes a third `_main/b` core export after memory/chip capability checks.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_format_disk_error_message_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_format_disk_error_message_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_format_disk_error_message.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_format_disk_error_message_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_format_disk_error_message_target_gcc.sh`
+
+Current notes:
+- Candidate preserves soft-error query path (`>0` branch), usage-percent fallback path, and both formatted writes into `DISKIO_ErrorMessageScratch` through `GROUP_AE_JMPTBL_WDISP_SPrintf`.
+- GCC emits early-return branch layout versus shared tail; semantic gate treats both as equivalent.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
