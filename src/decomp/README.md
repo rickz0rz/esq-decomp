@@ -315,6 +315,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_trial_gcc.sh`: GCC-specific compare lane for `Target 404` (`GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`: GCC-specific compare lane for `Target 405` (`NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight`).
 - `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_vertical_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 406` (`NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_trial_gcc.sh`: GCC-specific compare lane for `Target 407` (`NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_beveled_frame_trial_gcc.sh`: GCC-specific compare lane for `Target 408` (`NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair_trial_gcc.sh`: GCC-specific compare lane for `Target 409` (`NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_horizontal_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 410` (`NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel`).
 - `src/decomp/scripts/compare_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 276` (`GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq`).
 - `src/decomp/scripts/compare_group_av_jmptbl_signal_create_msgport_with_signal_trial_gcc.sh`: GCC-specific compare lane for `Target 277` (`GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal`).
 - `src/decomp/scripts/compare_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial_gcc.sh`: GCC-specific compare lane for `Target 278` (`GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths`).
@@ -719,6 +723,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available.awk`: semantic post-filter for `GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_vertical_bevel.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_beveled_frame.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_horizontal_bevel.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_signal_create_msgport_with_signal.awk`: semantic post-filter for `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_diskio_probe_drives_and_assign_paths.awk`: semantic post-filter for `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` compare lane.
@@ -1122,6 +1130,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_target_gcc.sh`: promotion gate for Target 404 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`: promotion gate for Target 405 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_target_gcc.sh`: promotion gate for Target 406 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_target_gcc.sh`: promotion gate for Target 407 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_beveled_frame_target_gcc.sh`: promotion gate for Target 408 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair_target_gcc.sh`: promotion gate for Target 409 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh`: promotion gate for Target 410 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 276 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh`: promotion gate for Target 277 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh`: promotion gate for Target 278 GCC lane (semantic + build/hash gates).
@@ -1566,6 +1578,10 @@ bash src/decomp/scripts/promote_group_ak_jmptbl_tliba3_draw_view_mode_guides_tar
 bash src/decomp/scripts/promote_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_beveled_frame_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_pair_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_horizontal_bevel_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh
