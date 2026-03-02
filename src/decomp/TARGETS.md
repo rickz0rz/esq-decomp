@@ -4865,6 +4865,52 @@ Current notes:
 - GCC optimizes away the redundant save/restore touch on `DST_SecondaryCountdown`; semantic gate intentionally treats that as non-essential for this target lane.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 622: `modules/groups/a/j/dst2.s` (`DST_UpdateBannerQueue`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` queue lifecycle routine that coordinates slot updates and staging refresh.
+- High-leverage anchor before deeper DST2 behavioral cleanup.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_update_banner_queue_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_update_banner_queue_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_update_banner_queue.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_update_banner_queue_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_update_banner_queue_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_update_banner_queue_target_gcc.sh`
+
+Current notes:
+- Candidate preserves both slot branches, mode test against `89`, primary/secondary countdown update paths, `DST_AddTimeOffset` calls (including `-1` step path), conditional slot1 reallocation, and refresh-on-change return flag semantics.
+- Semantic gate validates call/topology/global references and key constants while allowing GCC booleanization and block layout differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 623: `modules/groups/a/j/dst2.s` (`DST_BuildBannerTimeEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Largest remaining non-`JMPTBL` constructor in current DST2 focus area.
+- Covers the high-value helper graph for time-entry synthesis (`IsLeapYear`, `BuildFromBaseDay`, classification, seconds conversion, math helpers).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_build_banner_time_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_build_banner_time_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_build_banner_time_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_build_banner_time_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_build_banner_time_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_build_banner_time_entry_target_gcc.sh`
+
+Current notes:
+- Candidate intentionally prioritizes preserved call topology and key constant flow over exact block-shape parity: queue snapshot use, leap-year/day-base path, classify-primary/secondary path under mode `89`, row synthesis, seconds adjustment (`0xE10`, `60`), and optional `DATETIME_SecondsToStruct`.
+- Semantic gate is tuned to those stable behavioral markers while tolerating significant GCC control-flow reshaping.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
