@@ -4032,6 +4032,98 @@ Current notes:
 - Semantic gate validates control-flow anchor calls/symbols (`Load/SaveCtrlContextSnapshot`, `SelectPlaybackCursorFromSearchText`, `SplitAndNormalizeSearchBuffer`, `ReplaceOwnedString`, playback/runtime/pending-banner symbols, script command dispatch).
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 586: `modules/groups/_main/a/a.s` (`ESQ_ReturnWithStackCode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal wrapper routine at process-shutdown boundary.
+- Fast low-risk promotion that advances `_main/a` runtime entry/exit coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_return_with_stack_code_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_return_with_stack_code_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_return_with_stack_code.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_return_with_stack_code_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_return_with_stack_code_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_return_with_stack_code_target_gcc.sh`
+
+Current notes:
+- Original routine loads `exitCode` from stack then falls through to `ESQ_ShutdownAndReturn`; C wrapper dispatches directly to `ESQ_ShutdownAndReturn(exitCode)`.
+- Semantic gate validates shutdown callee reference, stack-argument shape marker, and terminal jump/call form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 587: `modules/groups/_main/a/a.s` (`ESQ_ShutdownAndReturn`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Main shutdown/return funnel in `_main/a` startup module.
+- Captures key termination side effects (exit hook, memlist cleanup, library close, Workbench reply path).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_shutdown_and_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_shutdown_and_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_shutdown_and_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_shutdown_and_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_shutdown_and_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_shutdown_and_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves optional exit-hook call, `MEMLIST_FreeAll`, dos.library close, main-exit no-op hook, and Workbench message reply sequence (`execPrivate1` optional, `Forbid`, `ReplyMsg`) before returning exit code.
+- Semantic gate validates shutdown-path symbol and callee coverage.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 588: `modules/submodules/unknown12.s` (`ALLOC_AllocFromFreeList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Standalone allocator routine with explicit free-list scan and pool-growth fallback.
+- Useful non-stub primitive reused by higher-level runtime paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/alloc_alloc_from_free_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_alloc_alloc_from_free_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves size guard/clamp/alignment, free-list scan (exact-match and split-block paths), `Global_AllocBytesTotal` accounting, growth path using `MATH_DivS32`/`MATH_Mulu32` + `MEMLIST_AllocTracked`, insertion via `ALLOC_InsertFreeBlock`, and recursive retry.
+- Semantic gate validates allocator/global symbols and key helper call topology.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 589: `modules/submodules/unknown33.s` (`ALLOC_InsertFreeBlock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural companion to Target 588 in the allocator subsystem.
+- Encapsulates free-list insertion/merge invariants and global accounting behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/alloc_insert_free_block_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_alloc_insert_free_block.awk`
+- Promotion gate: `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`
+
+Current notes:
+- Candidate preserves size guard/clamp/alignment, insertion before tail, adjacent-merge behavior, overlap/error rejection with `Global_AllocBytesTotal` rollback, and append-tail insertion path.
+- Semantic gate validates free-list/global symbols plus merge and return-shape markers.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
