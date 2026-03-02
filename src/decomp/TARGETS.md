@@ -4193,6 +4193,52 @@ Current notes:
 - Semantic gate validates wildcard/replace/display call coverage and key weather-status global writes.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 593: `modules/submodules/unknown.s` (`ESQPROTO_VerifyChecksumAndParseRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact checksum/dispatch routine with explicit success/failure split and global counters.
+- Natural continuation after promoting `UNKNOWN_ParseRecordAndUpdateDisplay`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqproto_verify_checksum_and_parse_record_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqproto_verify_checksum_and_parse_record_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqproto_verify_checksum_and_parse_record.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_record_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqproto_verify_checksum_and_parse_record_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_record_target_gcc.sh`
+
+Current notes:
+- Candidate preserves parse-attempt increment, serial read into `ESQIFF_RecordBufferPtr`, XOR checksum generation/compare, DATACErrs increment on mismatch, and success dispatch to `UNKNOWN_ParseRecordAndUpdateDisplay`.
+- Semantic gate validates read/xor/parse calls plus error-counter symbol coverage.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 594: `modules/submodules/unknown.s` (`ESQPROTO_VerifyChecksumAndParseList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Sister routine to Target 593 sharing same verification/control-flow shape.
+- Extends checksum-verified parser coverage to list payload path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqproto_verify_checksum_and_parse_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqproto_verify_checksum_and_parse_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqproto_verify_checksum_and_parse_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqproto_verify_checksum_and_parse_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves parse-attempt increment, serial read into `ESQIFF_RecordBufferPtr`, XOR checksum generation/compare, DATACErrs increment on mismatch, and success dispatch to `UNKNOWN_ParseListAndUpdateEntries`.
+- Semantic gate validates read/xor/parse calls plus error-counter symbol coverage.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

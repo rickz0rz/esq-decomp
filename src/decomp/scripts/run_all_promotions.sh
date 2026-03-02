@@ -596,6 +596,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqproto_copy_label_to_global_target_gcc.sh"
     "src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gcc.sh"
     "src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh"
+    "src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_record_target_gcc.sh"
+    "src/decomp/scripts/promote_esqproto_verify_checksum_and_parse_list_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
