@@ -639,6 +639,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_tliba2_resolve_entry_window_and_slot_count_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_parse_style_code_char_target_gcc.sh"
     "src/decomp/scripts/promote_tliba1_format_clock_format_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba1_draw_inline_styled_text_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba1_draw_formatted_text_block_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_draw_grid_top_bars_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

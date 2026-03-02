@@ -5164,6 +5164,75 @@ Current notes:
 - GCC emits different frame layout and loop scheduling (including `511/510` bound idioms) versus source assembly; semantic gate validates key call topology and constant families.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 635: `modules/groups/b/a/tliba1.s` (`TLIBA1_DrawInlineStyledText`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` inline-style renderer in `tliba1.s` with marker transforms, width accounting, and multi-path draw dispatch.
+- High-value bridge into the remaining `tliba1` rendering flow before the final block formatter.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_draw_inline_styled_text_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_draw_inline_styled_text_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_draw_inline_styled_text.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_draw_inline_styled_text_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_draw_inline_styled_text_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_draw_inline_styled_text_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the three-way dispatch: gated aligned-inset pass (`19/20`), inline marker rewrite pass (`30` + style parse + `MEM_Move` transforms), fallback nibble pass (`23` + hi/lo nibble extract), and final plain display fallback.
+- GCC emits different stack layout/loop structures and range-check idioms (`cmp #6` after subtract) while retaining call topology and key constants validated by semantic gate.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 636: `modules/groups/b/a/tliba1.s` (`TLIBA1_DrawFormattedTextBlock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large non-`JMPTBL` text-layout/render orchestrator in `tliba1.s` that drives per-line draw calls.
+- Closes the remaining exported `tliba1` non-stub conversion set in the current lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_draw_formatted_text_block_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_draw_formatted_text_block_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_draw_formatted_text_block.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_draw_formatted_text_block_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_draw_formatted_text_block_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_draw_formatted_text_block_target_gcc.sh`
+
+Current notes:
+- Candidate preserves key topology: marker-scan run counting (`24/25/6`), `MATH_Mulu32` allocation sizing, memory allocate/free with source-line tags (`2115`/`2385`), pen/font setup, text-width measurement, and dispatch to `TLIBA1_DrawInlineStyledText`.
+- GCC output is structurally smaller than source assembly but semantic gate confirms required call families/constants and return structure.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 637: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawGridTopBars`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` NEWGRID wrapper with fixed-argument draw behavior.
+- Low-risk bridge into unresolved NEWGRID non-stub exports after completing the recent TLIBA1 pass.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_grid_top_bars_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_grid_top_bars_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_grid_top_bars.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_grid_top_bars_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_grid_top_bars_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_grid_top_bars_target_gcc.sh`
+
+Current notes:
+- Candidate preserves fixed wrapper call to `NEWGRID_FillGridRects(NEWGRID_HeaderRastPortPtr, 6, 6, 1)`.
+- GCC emits immediate `pea` pushes for both `6` arguments instead of `MOVEQ/MOVE.L` reuse; semantic gate accepts equivalent constant/call pattern.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
