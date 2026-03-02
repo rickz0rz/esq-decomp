@@ -3150,6 +3150,29 @@ Current notes:
 - Semantic gate validates key globals, call-site symbol, and control constants (`16`, `3`) while allowing instruction-shape variance.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 548: `modules/groups/b/a/parseini3.s` (`PARSEINI_MonitorClockChange`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Adjacent `parseini3.s` state-monitor routine sharing the same status-mask call pattern as Target 547.
+- Expands non-jump routine coverage for clock-change edge handling.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_monitor_clock_change_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_monitor_clock_change_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_monitor_clock_change.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_monitor_clock_change_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_monitor_clock_change_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_monitor_clock_change_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `changed` as `0/-1`, active-flag latching, sample-counter threshold at `3`, and `ESQDISP_UpdateStatusMaskAndRefresh` calls with mask constant `1`.
+- Semantic gate validates key globals, call-site symbol, and control constants (`1`, `3`) while allowing instruction-shape variance.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
