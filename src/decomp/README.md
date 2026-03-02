@@ -553,6 +553,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_tliba_find_first_wildcard_match_index_trial_gcc.sh`: GCC-specific compare lane for `Target 629` (`TLIBA_FindFirstWildcardMatchIndex`).
 - `src/decomp/scripts/compare_tliba2_parse_entry_time_window_trial_gcc.sh`: GCC-specific compare lane for `Target 630` (`TLIBA2_ParseEntryTimeWindow`).
 - `src/decomp/scripts/compare_tliba2_compute_broadcast_time_window_trial_gcc.sh`: GCC-specific compare lane for `Target 631` (`TLIBA2_ComputeBroadcastTimeWindow`).
+- `src/decomp/scripts/compare_tliba2_resolve_entry_window_and_slot_count_trial_gcc.sh`: GCC-specific compare lane for `Target 632` (`TLIBA2_ResolveEntryWindowAndSlotCount`).
+- `src/decomp/scripts/compare_tliba1_parse_style_code_char_trial_gcc.sh`: GCC-specific compare lane for `Target 633` (`TLIBA1_ParseStyleCodeChar`).
+- `src/decomp/scripts/compare_tliba1_format_clock_format_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 634` (`TLIBA1_FormatClockFormatEntry`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1774,6 +1777,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_tliba_find_first_wildcard_match_index_target_gcc.sh`: promotion gate for Target 629 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba2_parse_entry_time_window_target_gcc.sh`: promotion gate for Target 630 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_tliba2_compute_broadcast_time_window_target_gcc.sh`: promotion gate for Target 631 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba2_resolve_entry_window_and_slot_count_target_gcc.sh`: promotion gate for Target 632 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba1_parse_style_code_char_target_gcc.sh`: promotion gate for Target 633 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_tliba1_format_clock_format_entry_target_gcc.sh`: promotion gate for Target 634 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).

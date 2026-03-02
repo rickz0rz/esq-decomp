@@ -636,6 +636,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_tliba_find_first_wildcard_match_index_target_gcc.sh"
     "src/decomp/scripts/promote_tliba2_parse_entry_time_window_target_gcc.sh"
     "src/decomp/scripts/promote_tliba2_compute_broadcast_time_window_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba2_resolve_entry_window_and_slot_count_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba1_parse_style_code_char_target_gcc.sh"
+    "src/decomp/scripts/promote_tliba1_format_clock_format_entry_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

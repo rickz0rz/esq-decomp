@@ -5095,6 +5095,75 @@ Current notes:
 - GCC emits different frame/register allocation and branch labels than original assembly; semantic gate validates required constants, call markers, output writes, and terminal return behavior.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 632: `modules/groups/b/a/tliba2.s` (`TLIBA2_ResolveEntryWindowAndSlotCount`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` resolver in `tliba2.s` that drives explicit range parsing and fallback slot-count logic.
+- High-value consolidation target: multiple helper-call topologies plus bit-test and wildcard fallback paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba2_resolve_entry_window_and_slot_count_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba2_resolve_entry_window_and_slot_count_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba2_resolve_entry_window_and_slot_count.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba2_resolve_entry_window_and_slot_count_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba2_resolve_entry_window_and_slot_count_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba2_resolve_entry_window_and_slot_count_target_gcc.sh`
+
+Current notes:
+- Candidate preserves explicit `"(HH:MM)"` parse lane (last-char scans + temporary delimiter rewrites), primary bitset walk, wildcard fallback walk, and optional half-hour output derivation via `MATH_DivS32`/`MATH_Mulu32`.
+- GCC emits stack/register scheduling and loop-shape changes relative to source assembly; semantic gate validates helper call topology and key constants (`34/40/41/58/49/30/2`) plus terminal return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 633: `modules/groups/b/a/tliba1.s` (`TLIBA1_ParseStyleCodeChar`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` leaf routine with deterministic branch behavior and no external state.
+- Low-risk expansion from `tliba2` into `tliba1` core utility logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_parse_style_code_char_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_parse_style_code_char_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_parse_style_code_char.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_parse_style_code_char_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_parse_style_code_char_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_parse_style_code_char_target_gcc.sh`
+
+Current notes:
+- Candidate preserves style-token mapping semantics: `'X' -> -1`, `'1'..'7' -> 1..7`, everything else -> 0.
+- GCC uses range-rewrite idiom (`add #-49`, `cmp #6`) instead of explicit high-bound compare; semantic gate accepts this equivalent form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 634: `modules/groups/b/a/tliba1.s` (`TLIBA1_FormatClockFormatEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Mid-sized non-`JMPTBL` formatter core in `tliba1.s` with fallback-table selection and bounded append logic.
+- Extends `tliba1` coverage beyond leaf helpers into string-build/control-flow-heavy behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_format_clock_format_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_format_clock_format_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_format_clock_format_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_format_clock_format_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_format_clock_format_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_format_clock_format_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves fallback buffer copy, char-class normalization, fallback field pointer substitution, four-field bounded concatenation, and `WDISP_SPrintf` + `STRING_AppendAtNull` append topology.
+- GCC emits different frame layout and loop scheduling (including `511/510` bound idioms) versus source assembly; semantic gate validates key call topology and constant families.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
