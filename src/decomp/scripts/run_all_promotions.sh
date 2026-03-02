@@ -414,6 +414,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_newgrid_jmptbl_datetime_secondstostruct_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_jmptbl_generate_grid_date_string_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_jmptbl_memory_deallocatememory_target_gcc.sh"
+    "src/decomp/scripts/promote_newgrid_jmptbl_cleanup_drawclockformatlist_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
