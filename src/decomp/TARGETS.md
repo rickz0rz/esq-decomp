@@ -3219,6 +3219,29 @@ Current notes:
 - Semantic gate validates required call symbols and globals (`DesiredMemoryAvailability`, topaz handle) while allowing instruction-shape variance.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 551: `modules/groups/b/a/parseini.s` (`PARSEINI_ParseHexValueFromString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small isolated helper with a tight loop and one outbound helper call.
+- Good low-risk follow-up in `parseini.s` after Target 550.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_parse_hex_value_from_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_parse_hex_value_from_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_parse_hex_value_from_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_parse_hex_value_from_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_parse_hex_value_from_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_parse_hex_value_from_string_target_gcc.sh`
+
+Current notes:
+- Candidate keeps the null-pointer guard, class-table bit-7 hex predicate, nibble shift/add accumulation, and `SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit` dispatch.
+- Semantic gate validates char-class table usage, bit-7 test, 4-bit left shift, and parse-hex helper call while tolerating compiler opcode variation.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
