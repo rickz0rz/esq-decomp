@@ -10625,3 +10625,119 @@ Current notes:
 - Original assembly is a direct `JMP ESQ_CalcDayOfYearFromMonthDay`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 462: `modules/groups/b/a/script2.s` (`SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script2.s` with direct forward-dispatch semantics.
+- Starts SCRIPT2 jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script2_jmptbl_esq_capturectrlbit4streambufferbyte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script2_jmptbl_esq_capturectrlbit4streambufferbyte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script2_jmptbl_esq_capturectrlbit4streambufferbyte.awk`
+- Promotion gate: `src/decomp/scripts/promote_script2_jmptbl_esq_capturectrlbit4streambufferbyte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script2_jmptbl_esq_capturectrlbit4streambufferbyte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script2_jmptbl_esq_capturectrlbit4streambufferbyte_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_CaptureCtrlBit4StreamBufferByte`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 463: `modules/groups/b/a/script2.s` (`SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script2.s` with direct forward-dispatch semantics.
+- Continues SCRIPT2 jump-stub bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script2_jmptbl_esq_readserialrbfbyte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script2_jmptbl_esq_readserialrbfbyte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script2_jmptbl_esq_readserialrbfbyte.awk`
+- Promotion gate: `src/decomp/scripts/promote_script2_jmptbl_esq_readserialrbfbyte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script2_jmptbl_esq_readserialrbfbyte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script2_jmptbl_esq_readserialrbfbyte_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_ReadSerialRbfByte`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 464: `modules/groups/b/a/p_type.s` (`P_TYPE_JMPTBL_STRING_FindSubstring`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/p_type.s` with direct forward-dispatch semantics.
+- Adds P_TYPE bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_jmptbl_string_findsubstring_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_jmptbl_string_findsubstring_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_jmptbl_string_findsubstring.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_jmptbl_string_findsubstring_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_jmptbl_string_findsubstring_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_jmptbl_string_findsubstring_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP STRING_FindSubstring`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Compare slice stops at `;!======` end marker to avoid pulling post-function alignment bytes.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 465: `modules/groups/b/a/textdisp2.s` (`TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/textdisp2.s` with direct forward-dispatch semantics.
+- Starts TEXTDISP2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp2_jmptbl_locavail_getfilterwindowhalfspan_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_locavail_getfilterwindowhalfspan.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LOCAVAIL_GetFilterWindowHalfSpan`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 466: `modules/groups/b/a/textdisp2.s` (`TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/textdisp2.s` with direct forward-dispatch semantics.
+- Continues TEXTDISP2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp2_jmptbl_ladfunc_drawentrypreview_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp2_jmptbl_ladfunc_drawentrypreview_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp2_jmptbl_ladfunc_drawentrypreview.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp2_jmptbl_ladfunc_drawentrypreview_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp2_jmptbl_ladfunc_drawentrypreview_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp2_jmptbl_ladfunc_drawentrypreview_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LADFUNC_DrawEntryPreview`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
