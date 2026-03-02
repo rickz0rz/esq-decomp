@@ -5663,6 +5663,101 @@ Current notes:
 - Space handling path preserves optional drawing of `NEWGRID_WrapReturnSpacer` and boundary-return behavior when adding space would exceed line width.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 656: `modules/groups/b/a/p_type.s` (`P_TYPE_AllocateEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` P_TYPE allocator that validates input length, allocates entry/payload blocks, and copies payload bytes.
+- High-value primitive used by P_TYPE parse/clone paths, so stabilizing it reduces risk for follow-on decomp targets in this module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_allocate_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_allocate_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_allocate_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_allocate_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_allocate_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_allocate_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves guard `len <= 0 -> return 0`, entry alloc at site tag/line `47` with size `10`, and payload alloc at site tag/line `58` gated by exact source-length equality.
+- Failure path is preserved: if payload allocation is absent, deallocates entry using site tag/line `77` then returns `0`.
+- Copy loop semantics are retained as bytewise `for (i = 0; i < len; ++i)` into payload.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 657: `modules/groups/b/a/p_type.s` (`P_TYPE_FreeEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` memory-lifecycle helper with null guard and two tagged deallocation paths.
+- High-confidence follow-on from Target 656 that keeps `P_TYPE` entry ownership semantics explicit in C.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_free_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_free_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_free_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_free_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_free_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_free_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves null-entry fast return.
+- If `entry->payload` is non-null, deallocates payload first using tag/line `92` and payload size `entry->len`.
+- Always deallocates the 10-byte entry struct with tag/line `95`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 658: `modules/groups/b/a/p_type.s` (`P_TYPE_ResetListsAndLoadPromoIds`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` state-reset helper that clears P_TYPE list heads before reloading PROMOID data.
+- Useful dependency anchor for later list-parse/consume targets in this module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_reset_lists_and_load_promo_ids_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_reset_lists_and_load_promo_ids_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_reset_lists_and_load_promo_ids.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_reset_lists_and_load_promo_ids_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_reset_lists_and_load_promo_ids_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_reset_lists_and_load_promo_ids_target_gcc.sh`
+
+Current notes:
+- Candidate preserves zeroing both `P_TYPE_SecondaryGroupListPtr` and `P_TYPE_PrimaryGroupListPtr`.
+- Call to `P_TYPE_LoadPromoIdDataFile` remains best-effort with ignored return value, matching assembly behavior.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 659: `modules/groups/b/a/p_type.s` (`P_TYPE_GetSubtypeIfType20`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` selector helper that gates subtype extraction behind entry-null and type-byte checks.
+- Useful prerequisite for higher-level P_TYPE parse/consume routines that branch on type/subtype state.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_get_subtype_if_type20_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_get_subtype_if_type20_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_get_subtype_if_type20.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_get_subtype_if_type20_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_get_subtype_if_type20_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_get_subtype_if_type20_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `null -> 0` behavior and strict type guard `entry->type_byte == 20`.
+- Subtype result is only returned when byte `+1` is non-zero; otherwise function returns `0`.
+- Semantic filter was relaxed to allow equivalent GCC addressing (`(a0)+` then `(a0)`) versus explicit `1(A3)` access in source assembly.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

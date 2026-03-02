@@ -660,6 +660,10 @@ SCRIPTS=(
     "src/decomp/scripts/promote_newgrid_init_grid_resources_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_select_next_mode_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_draw_wrapped_text_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_allocate_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_free_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_reset_lists_and_load_promo_ids_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_get_subtype_if_type20_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
