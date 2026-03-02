@@ -5639,6 +5639,30 @@ Current notes:
 - `'Y'` path preserves immediate selection behavior from config/counter presence and wrap-to-`12` fallback when no candidate qualifies across a full candidate cycle.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 655: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawWrappedText`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` text-layout helper used by NEWGRID banner and status renderers.
+- Important for semantic parity because it returns word-boundary pointers used by callers for continuation/wrapping.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_wrapped_text_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_wrapped_text_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_wrapped_text.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_wrapped_text_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_wrapped_text_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_wrapped_text_target_gcc.sh`
+
+Current notes:
+- Candidate preserves skip-class scan, per-word copy via `CopyUntilAnyDelimN(..., 50, NEWGRID_WrapWordSpacer)`, width checks with `_LVOTextLength`, and `_LVOMove` initialization.
+- Retains overflow split behavior: return previous-word pointer when full word does not fit but could fit line-start; otherwise trim current word to fit and return internal pointer.
+- Space handling path preserves optional drawing of `NEWGRID_WrapReturnSpacer` and boundary-return behavior when adding space would exceed line width.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
