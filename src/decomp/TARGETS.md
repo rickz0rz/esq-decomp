@@ -4703,6 +4703,29 @@ Current notes:
 - Semantic gate validates deallocation call topology, expected free-size constants (`22`, `18`), and destination tag strings.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 615: `modules/groups/a/j/dst.s` (`DST_FreeBannerPair`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` lifecycle helper directly adjacent to Target 614.
+- Clears two top-level banner pointers and reuses `DST_FreeBannerStruct`, reducing unresolved state-management exports in `dst.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_free_banner_pair_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_free_banner_pair_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_free_banner_pair.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_free_banner_pair_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_free_banner_pair_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_free_banner_pair_target_gcc.sh`
+
+Current notes:
+- Candidate preserves two `DST_FreeBannerStruct` calls, access/clear of slot0 and slot1 pointers, and final return.
+- Semantic gate accepts GCC addressing variants including post-increment slot-clear form (`CLR.L (aX)+`) and indirect call form (`JSR (aX)`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

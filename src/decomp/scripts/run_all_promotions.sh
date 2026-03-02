@@ -619,6 +619,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_dst_compute_banner_index_target_gcc.sh"
     "src/decomp/scripts/promote_dst_add_time_offset_target_gcc.sh"
     "src/decomp/scripts/promote_dst_free_banner_struct_target_gcc.sh"
+    "src/decomp/scripts/promote_dst_free_banner_pair_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
