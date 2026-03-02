@@ -427,6 +427,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_parseini_jmptbl_diskio2_parseinifilefromdisk_trial_gcc.sh`: GCC-specific compare lane for `Target 507` (`PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk`).
 - `src/decomp/scripts/compare_parseini_jmptbl_diskio_loadfiletoworkbuffer_trial_gcc.sh`: GCC-specific compare lane for `Target 508` (`PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer`).
 - `src/decomp/scripts/compare_parseini_jmptbl_ed1_drawdiagnosticsscreen_trial_gcc.sh`: GCC-specific compare lane for `Target 509` (`PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen`).
+- `src/decomp/scripts/compare_parseini_jmptbl_ed1_enterescmenu_trial_gcc.sh`: GCC-specific compare lane for `Target 510` (`PARSEINI_JMPTBL_ED1_EnterEscMenu`).
+- `src/decomp/scripts/compare_parseini_jmptbl_ed1_exitescmenu_trial_gcc.sh`: GCC-specific compare lane for `Target 511` (`PARSEINI_JMPTBL_ED1_ExitEscMenu`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -934,6 +936,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_diskio2_parseinifilefromdisk.awk`: semantic post-filter for `PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk` compare lane.
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_diskio_loadfiletoworkbuffer.awk`: semantic post-filter for `PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer` compare lane.
 - `src/decomp/scripts/semantic_filter_parseini_jmptbl_ed1_drawdiagnosticsscreen.awk`: semantic post-filter for `PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini_jmptbl_ed1_enterescmenu.awk`: semantic post-filter for `PARSEINI_JMPTBL_ED1_EnterEscMenu` compare lane.
+- `src/decomp/scripts/semantic_filter_parseini_jmptbl_ed1_exitescmenu.awk`: semantic post-filter for `PARSEINI_JMPTBL_ED1_ExitEscMenu` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1440,6 +1444,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_parseini_jmptbl_diskio2_parseinifilefromdisk_target_gcc.sh`: promotion gate for Target 507 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_jmptbl_diskio_loadfiletoworkbuffer_target_gcc.sh`: promotion gate for Target 508 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_parseini_jmptbl_ed1_drawdiagnosticsscreen_target_gcc.sh`: promotion gate for Target 509 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini_jmptbl_ed1_enterescmenu_target_gcc.sh`: promotion gate for Target 510 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_parseini_jmptbl_ed1_exitescmenu_target_gcc.sh`: promotion gate for Target 511 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1987,6 +1993,8 @@ bash src/decomp/scripts/promote_parseini_jmptbl_diskio_consumelinefromworkbuffer
 bash src/decomp/scripts/promote_parseini_jmptbl_diskio2_parseinifilefromdisk_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_jmptbl_diskio_loadfiletoworkbuffer_target_gcc.sh
 bash src/decomp/scripts/promote_parseini_jmptbl_ed1_drawdiagnosticsscreen_target_gcc.sh
+bash src/decomp/scripts/promote_parseini_jmptbl_ed1_enterescmenu_target_gcc.sh
+bash src/decomp/scripts/promote_parseini_jmptbl_ed1_exitescmenu_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh

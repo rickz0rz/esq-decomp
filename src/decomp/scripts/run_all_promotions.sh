@@ -433,6 +433,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_parseini_jmptbl_diskio2_parseinifilefromdisk_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_diskio_loadfiletoworkbuffer_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_ed1_drawdiagnosticsscreen_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_jmptbl_ed1_enterescmenu_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_jmptbl_ed1_exitescmenu_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
