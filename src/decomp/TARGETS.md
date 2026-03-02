@@ -3173,6 +3173,29 @@ Current notes:
 - Semantic gate validates key globals, call-site symbol, and control constants (`1`, `3`) while allowing instruction-shape variance.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 549: `modules/groups/b/a/parseini3.s` (`PARSEINI_WriteErrorLogEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Standalone I/O routine at the top of `parseini3.s` with clear fail/open/write/close control flow.
+- Extends non-jump coverage into file-write helper flows with existing promoted DISKIO jump-table helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_write_error_log_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_write_error_log_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_write_error_log_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_write_error_log_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_write_error_log_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_write_error_log_entry_target_gcc.sh`
+
+Current notes:
+- Candidate keeps both early fail paths returning `-1`, then issues open/write/write/close with existing DISKIO helper symbols and returns final close result in `D0`.
+- Semantic gate validates key globals/literals (`MODE_NEWFILE`/`1006`, Ctrl-Z marker, byte-count, log pointer) plus call-site symbols.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
