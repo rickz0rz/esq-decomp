@@ -607,6 +607,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_buffer_ensure_allocated_target_gcc.sh"
     "src/decomp/scripts/promote_buffer_flush_all_and_close_with_code_target_gcc.sh"
     "src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh"
+    "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
+    "src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh"
+    "src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

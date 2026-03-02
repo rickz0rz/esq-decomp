@@ -7,6 +7,12 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - Allow module-by-module replacement experiments in a separate build output.
 - Make hash divergence explicit while conversions are in progress.
 
+## Execution Cadence
+- Prioritize non-`*JMPTBL*` exports for primary decomp progress; these carry actual behavior.
+- Treat `*JMPTBL*` exports as parallel/backfill work items (useful for coverage, lower reverse-engineering value).
+- For each target change, run only its local compare/promote gate first.
+- Run `src/decomp/scripts/run_all_promotions.sh` periodically as a regression sweep (not required after every single target).
+
 ## Files
 - `src/decomp/replacements.map`: module substitution map.
 - `src/decomp/replacements/`: replacement module copies and edits.
@@ -57,6 +63,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_buffer_flush_all_and_close_with_code_trial_gcc.sh`: GCC-specific compare lane for `Target 601` (`BUFFER_FlushAllAndCloseWithCode`).
 - `src/decomp/scripts/compare_graphics_bltbitmaprastport_trial_gcc.sh`: GCC-specific compare lane for `Target 602` (`GRAPHICS_BltBitMapRastPort`).
 - `src/decomp/scripts/compare_math_divu32_trial_gcc.sh`: GCC-specific compare lane for `Target 603` (`MATH_DivU32`).
+- `src/decomp/scripts/compare_brush_planemaskforindex_trial_gcc.sh`: GCC-specific compare lane for `Target 604` (`BRUSH_PlaneMaskForIndex`).
+- `src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`: GCC-specific compare lane for `Target 605` (`DATETIME_IsLeapYear`).
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
@@ -658,6 +666,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_buffer_flush_all_and_close_with_code.awk`: semantic post-filter for `BUFFER_FlushAllAndCloseWithCode` compare lane.
 - `src/decomp/scripts/semantic_filter_graphics_bltbitmaprastport.awk`: semantic post-filter for `GRAPHICS_BltBitMapRastPort` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divu32.awk`: semantic post-filter for `MATH_DivU32` compare lane.
+- `src/decomp/scripts/semantic_filter_brush_planemaskforindex.awk`: semantic post-filter for `BRUSH_PlaneMaskForIndex` compare lane.
+- `src/decomp/scripts/semantic_filter_datetime_isleapyear.awk`: semantic post-filter for `DATETIME_IsLeapYear` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
@@ -1224,6 +1234,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_buffer_flush_all_and_close_with_code_target_gcc.sh`: promotion gate for Target 601 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh`: promotion gate for Target 602 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divu32_target_gcc.sh`: promotion gate for Target 603 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh`: promotion gate for Target 604 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`: promotion gate for Target 605 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
@@ -1865,6 +1877,8 @@ bash src/decomp/scripts/promote_buffer_ensure_allocated_target_gcc.sh
 bash src/decomp/scripts/promote_buffer_flush_all_and_close_with_code_target_gcc.sh
 bash src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh
 bash src/decomp/scripts/promote_math_divu32_target_gcc.sh
+bash src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh
+bash src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh

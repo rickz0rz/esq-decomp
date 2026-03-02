@@ -4446,6 +4446,53 @@ Current notes:
 - Semantic gate validates division core markers (`DIVU`/`MULU`), shift-normalization blocks, adjust/finalize loop shape, register save/restore, and multi-path `RTS` behavior.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 604: `modules/groups/a/a/brush.s` (`BRUSH_PlaneMaskForIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` helper with clear bounded-control-flow semantics.
+- Useful bridge from jump-stub coverage to real behavior in brush runtime logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_planemaskforindex_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_planemaskforindex_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_planemaskforindex.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_planemaskforindex_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh`
+
+Current notes:
+- Candidate preserves range-check behavior (`index <= 0` or `index >= 9` returns `0`) and in-range path (`1 << index`).
+- Semantic gate validates lower/upper bound tests, one-seed + shift-to-mask path, invalid/zero-return path, and terminal return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 605: `modules/groups/a/j/dst2.s` (`DATETIME_IsLeapYear`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` calendar helper with stable branching semantics.
+- High fan-in utility used by clock/date normalization paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/datetime_isleapyear_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_datetime_isleapyear.awk`
+- Promotion gate: `src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`
+
+Current notes:
+- Candidate preserves year normalization (`<1900` gets `+1900`) and leap-year decision tree (divisible by 4, century exception for 100, re-allow at 400).
+- Uses an inline-asm helper call path to `GROUP_AG_JMPTBL_MATH_DivS32` so modulo checks do not introduce compiler runtime helper dependencies.
+- Semantic gate validates normalization constants, 4/100/400 tests, both return values, and terminal return flow.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
