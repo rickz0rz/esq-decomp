@@ -23,7 +23,10 @@ fi
 mkdir -p "$OBJ_DIR"
 : > "$LOG_FILE"
 
-mapfile -t SRC_FILES < <(find src/decomp/c/replacements -maxdepth 1 -type f -name '*_gcc.c' | sort)
+SRC_FILES=()
+while IFS= read -r src; do
+    SRC_FILES+=("$src")
+done < <(find src/decomp/c/replacements -maxdepth 1 -type f -name '*_gcc.c' | sort)
 
 if [ "${#SRC_FILES[@]}" -eq 0 ]; then
     echo "error: no *_gcc.c sources found under src/decomp/c/replacements" >&2
