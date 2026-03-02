@@ -3334,6 +3334,31 @@ Current notes:
 - Semantic gate validates table symbols, helper calls, loop-shape constants, and transition invocation while allowing compiler control-flow differences.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 556: `modules/groups/b/a/parseini.s` (`PARSEINI_HandleFontCommand`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining non-stub export in `parseini.s` with command-dispatch behavior that fans out into already-promoted helper routines.
+- Good bridge toward the larger remaining parser targets (`PARSEINI_ParseIniBufferAndDispatch`, `PARSEINI_ProcessWeatherBlocks`, `PARSEINI_ScanLogoDirectory`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_handle_font_command_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_handle_font_command_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_handle_font_command.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_handle_font_command_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_handle_font_command_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_handle_font_command_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `'3'` prefix dispatch split (`'2'`, `'3'`, `'4'`) and subcommand fan-out for INI parse/brush/font/diagnostics paths.
+- Includes the `CONFIG_ParseiniLogoScanEnabledFlag == 'Y'` conditional logo scan and the banner-refresh wait loop before brush reload queueing.
+- Keeps the four-entry highlight-slot font update loop using `SCRIPT3_JMPTBL_MATH_Mulu32` stride math prior to `TLIBA3_SetFontForAllViewModes`.
+- Semantic gate intentionally avoids brittle immediate-value matching and instead validates helper-call/callsite shape across the command branches.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
