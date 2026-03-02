@@ -496,6 +496,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_script_reset_ctrl_context_trial_gcc.sh`: GCC-specific compare lane for `Target 576` (`SCRIPT_ResetCtrlContext`).
 - `src/decomp/scripts/compare_script_clear_search_texts_and_channels_trial_gcc.sh`: GCC-specific compare lane for `Target 577` (`SCRIPT_ClearSearchTextsAndChannels`).
 - `src/decomp/scripts/compare_script_update_runtime_mode_for_playback_cursor_trial_gcc.sh`: GCC-specific compare lane for `Target 578` (`SCRIPT_UpdateRuntimeModeForPlaybackCursor`).
+- `src/decomp/scripts/compare_script_select_playback_cursor_from_search_text_trial_gcc.sh`: GCC-specific compare lane for `Target 579` (`SCRIPT_SelectPlaybackCursorFromSearchText`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -1624,6 +1625,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_script_reset_ctrl_context_target_gcc.sh`: promotion gate for Target 576 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_clear_search_texts_and_channels_target_gcc.sh`: promotion gate for Target 577 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_update_runtime_mode_for_playback_cursor_target_gcc.sh`: promotion gate for Target 578 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_select_playback_cursor_from_search_text_target_gcc.sh`: promotion gate for Target 579 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -2240,6 +2242,7 @@ bash src/decomp/scripts/promote_script_save_ctrl_context_snapshot_target_gcc.sh
 bash src/decomp/scripts/promote_script_reset_ctrl_context_target_gcc.sh
 bash src/decomp/scripts/promote_script_clear_search_texts_and_channels_target_gcc.sh
 bash src/decomp/scripts/promote_script_update_runtime_mode_for_playback_cursor_target_gcc.sh
+bash src/decomp/scripts/promote_script_select_playback_cursor_from_search_text_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh

@@ -3871,6 +3871,29 @@ Current notes:
 - Semantic gate validates key callee topology (`BeginBanner`, `SetCopperEffect`, `SetRastForMode`, `UpdateSerialShadow`, `ClearSearch`, `DeassertCtrlLine`) and runtime-mode state symbol coverage.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 579: `modules/groups/b/a/script3.s` (`SCRIPT_SelectPlaybackCursorFromSearchText`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core parser/selector helper feeding playback cursor state.
+- Clear behavioral contract with bounded external calls (`TEXTDISP_SelectGroupAndEntry`) and explicit cursor outcomes.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_select_playback_cursor_from_search_text_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_select_playback_cursor_from_search_text_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_select_playback_cursor_from_search_text.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_select_playback_cursor_from_search_text_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_select_playback_cursor_from_search_text_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_select_playback_cursor_from_search_text_target_gcc.sh`
+
+Current notes:
+- Candidate preserves delimiter scan for byte `18`, split-at-index NUL write, primary/secondary search ordering based on `SCRIPT_PrimarySearchFirstFlag`, and cursor outputs (`7`, `6`, fallback `1`) with range-arm clear on miss.
+- Semantic gate validates selector call presence, primary/secondary text+channel symbols, split constant, cursor constants, and state symbols (`SCRIPT_SearchMatchCountOrIndex`, `SCRIPT_ChannelRangeArmedFlag`, `SCRIPT_PlaybackCursor`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

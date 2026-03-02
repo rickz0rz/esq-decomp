@@ -502,6 +502,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_reset_ctrl_context_target_gcc.sh"
     "src/decomp/scripts/promote_script_clear_search_texts_and_channels_target_gcc.sh"
     "src/decomp/scripts/promote_script_update_runtime_mode_for_playback_cursor_target_gcc.sh"
+    "src/decomp/scripts/promote_script_select_playback_cursor_from_search_text_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
