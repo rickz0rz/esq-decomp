@@ -4308,6 +4308,29 @@ Current notes:
 - Semantic gate validates finalize/open call presence, default-flag seed use, plus-check markers, init-field writes, and openflag-build markers.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 598: `modules/submodules/unknown28.s` (`WDISP_FormatWithCallback`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small formatter core with callback emission loop and delegated format-spec parsing.
+- Directly supports previously promoted `WDISP_SPrintf` flow and reduces dependence on assembly in printf-path internals.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/wdisp_format_with_callback_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_wdisp_format_with_callback_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_wdisp_format_with_callback.awk`
+- Promotion gate: `src/decomp/scripts/promote_wdisp_format_with_callback_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_wdisp_format_with_callback_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_wdisp_format_with_callback_target_gcc.sh`
+
+Current notes:
+- Candidate preserves per-byte loop, `%` handling (`%%` literal escape), delegated `FORMAT_ParseFormatSpec` call with varargs-pointer-by-reference, callback-based literal emission, and NUL-termination return behavior (`D0 = 0`).
+- Semantic gate validates parse call, callback dispatch, percent-marker check, and terminal return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
