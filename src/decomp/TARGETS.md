@@ -3058,6 +3058,52 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 544: `modules/groups/b/a/script3.s` (`SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/script3.s` with direct forward-dispatch semantics.
+- Continues conversion of uncovered `SCRIPT3_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script3_jmptbl_locavail_updatefilterstatemachine_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script3_jmptbl_locavail_updatefilterstatemachine_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script3_jmptbl_locavail_updatefilterstatemachine.awk`
+- Promotion gate: `src/decomp/scripts/promote_script3_jmptbl_locavail_updatefilterstatemachine_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script3_jmptbl_locavail_updatefilterstatemachine_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script3_jmptbl_locavail_updatefilterstatemachine_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP LOCAVAIL_UpdateFilterStateMachine`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 545: `modules/groups/b/a/parseini3.s` (`PARSEINI_ComputeHTCMaxValues`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small arithmetic routine with straightforward control flow and no external calls.
+- First non-jump-stub target in this pass, extending beyond bridge wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_compute_htc_max_values_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_compute_htc_max_values_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_compute_htc_max_values.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_compute_htc_max_values_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_compute_htc_max_values_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_compute_htc_max_values_target_gcc.sh`
+
+Current notes:
+- Function computes `H - T` with wrap add `64000` for negative deltas and updates `Global_WORD_MAX_VALUE` on larger observed delta.
+- Semantic gate checks read/write symbols plus wrap constant presence to allow compiler instruction-form variance.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
