@@ -3288,6 +3288,29 @@ Current notes:
 - Semantic gate validates tag symbols, pointer targets, and required helper calls while tolerating compiler control-flow shape differences.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 554: `modules/groups/b/a/parseini.s` (`PARSEINI_LoadWeatherStrings`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion weather routine adjacent to Target 553 with mostly straightforward branch flow and limited side effects.
+- Continues parseini progression while keeping control-flow complexity moderate.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_load_weather_strings_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_load_weather_strings_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_load_weather_strings.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_load_weather_strings_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_load_weather_strings_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_load_weather_strings_target_gcc.sh`
+
+Current notes:
+- Candidate preserves banner-head initialization behavior, weather filename key path, brush-node allocation/type tagging (`offset 190 = 10`), and resource-head first-node latch.
+- Includes the currently unreachable secondary branch to mirror present assembly control-flow shape.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
