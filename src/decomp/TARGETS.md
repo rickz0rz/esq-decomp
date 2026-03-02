@@ -3012,6 +3012,144 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 401: `modules/groups/a/k/xjump2.s` (`GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/k/xjump2.s` with direct forward-dispatch semantics.
+- Continues `GROUP_AK` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ak_jmptbl_esq_set_copper_effect_all_on_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ak_jmptbl_esq_set_copper_effect_all_on_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ak_jmptbl_esq_set_copper_effect_all_on.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_all_on_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ak_jmptbl_esq_set_copper_effect_all_on_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_all_on_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_SetCopperEffect_AllOn`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 402: `modules/groups/a/k/xjump2.s` (`GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/k/xjump2.s` with direct forward-dispatch semantics.
+- Continues `GROUP_AK` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ak_jmptbl_script_assert_ctrl_line_now_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ak_jmptbl_script_assert_ctrl_line_now_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ak_jmptbl_script_assert_ctrl_line_now.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ak_jmptbl_script_assert_ctrl_line_now_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ak_jmptbl_script_assert_ctrl_line_now_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ak_jmptbl_script_assert_ctrl_line_now_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP SCRIPT_AssertCtrlLineNow`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 403: `modules/groups/a/k/xjump2.s` (`GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/k/xjump2.s` with direct forward-dispatch semantics.
+- Continues `GROUP_AK` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ak_jmptbl_tliba3_draw_view_mode_guides_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ak_jmptbl_tliba3_draw_view_mode_guides_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ak_jmptbl_tliba3_draw_view_mode_guides.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ak_jmptbl_tliba3_draw_view_mode_guides_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ak_jmptbl_tliba3_draw_view_mode_guides_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ak_jmptbl_tliba3_draw_view_mode_guides_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP TLIBA3_DrawViewModeGuides`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 404: `modules/groups/a/k/xjump2.s` (`GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/a/k/xjump2.s` with direct forward-dispatch semantics.
+- Continues `GROUP_AK` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available.awk`
+- Promotion gate: `src/decomp/scripts/promote_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP GCOMMAND_CopyGfxToWorkIfAvailable`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 405: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Starts `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BEVEL_DrawBevelFrameWithTopRight`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 406: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends `NEWGRID2` bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_bevel_draw_vertical_bevel_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_vertical_bevel_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_vertical_bevel.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_vertical_bevel_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BEVEL_DrawVerticalBevel`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 399: `modules/groups/a/n/esqdisp.s` (`ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages`)
 
 Status: promoted (GCC gate)

@@ -309,6 +309,12 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_group_ak_jmptbl_esq_set_copper_effect_default_trial_gcc.sh`: GCC-specific compare lane for `Target 273` (`GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default`).
 - `src/decomp/scripts/compare_group_ak_jmptbl_esq_set_copper_effect_custom_trial_gcc.sh`: GCC-specific compare lane for `Target 274` (`GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom`).
 - `src/decomp/scripts/compare_group_ak_jmptbl_cleanup_render_aligned_status_screen_trial_gcc.sh`: GCC-specific compare lane for `Target 275` (`GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen`).
+- `src/decomp/scripts/compare_group_ak_jmptbl_esq_set_copper_effect_all_on_trial_gcc.sh`: GCC-specific compare lane for `Target 401` (`GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn`).
+- `src/decomp/scripts/compare_group_ak_jmptbl_script_assert_ctrl_line_now_trial_gcc.sh`: GCC-specific compare lane for `Target 402` (`GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow`).
+- `src/decomp/scripts/compare_group_ak_jmptbl_tliba3_draw_view_mode_guides_trial_gcc.sh`: GCC-specific compare lane for `Target 403` (`GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides`).
+- `src/decomp/scripts/compare_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_trial_gcc.sh`: GCC-specific compare lane for `Target 404` (`GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`: GCC-specific compare lane for `Target 405` (`NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight`).
+- `src/decomp/scripts/compare_newgrid2_jmptbl_bevel_draw_vertical_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 406` (`NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel`).
 - `src/decomp/scripts/compare_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 276` (`GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq`).
 - `src/decomp/scripts/compare_group_av_jmptbl_signal_create_msgport_with_signal_trial_gcc.sh`: GCC-specific compare lane for `Target 277` (`GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal`).
 - `src/decomp/scripts/compare_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial_gcc.sh`: GCC-specific compare lane for `Target 278` (`GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths`).
@@ -707,6 +713,12 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_group_ak_jmptbl_esq_set_copper_effect_default.awk`: semantic post-filter for `GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ak_jmptbl_esq_set_copper_effect_custom.awk`: semantic post-filter for `GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ak_jmptbl_cleanup_render_aligned_status_screen.awk`: semantic post-filter for `GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ak_jmptbl_esq_set_copper_effect_all_on.awk`: semantic post-filter for `GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ak_jmptbl_script_assert_ctrl_line_now.awk`: semantic post-filter for `GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ak_jmptbl_tliba3_draw_view_mode_guides.awk`: semantic post-filter for `GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides` compare lane.
+- `src/decomp/scripts/semantic_filter_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available.awk`: semantic post-filter for `GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_bevel_draw_vertical_bevel.awk`: semantic post-filter for `NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_signal_create_msgport_with_signal.awk`: semantic post-filter for `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` compare lane.
 - `src/decomp/scripts/semantic_filter_group_av_jmptbl_diskio_probe_drives_and_assign_paths.awk`: semantic post-filter for `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` compare lane.
@@ -1104,6 +1116,12 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_default_target_gcc.sh`: promotion gate for Target 273 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_custom_target_gcc.sh`: promotion gate for Target 274 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ak_jmptbl_cleanup_render_aligned_status_screen_target_gcc.sh`: promotion gate for Target 275 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_all_on_target_gcc.sh`: promotion gate for Target 401 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ak_jmptbl_script_assert_ctrl_line_now_target_gcc.sh`: promotion gate for Target 402 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ak_jmptbl_tliba3_draw_view_mode_guides_target_gcc.sh`: promotion gate for Target 403 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_target_gcc.sh`: promotion gate for Target 404 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`: promotion gate for Target 405 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_target_gcc.sh`: promotion gate for Target 406 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 276 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh`: promotion gate for Target 277 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh`: promotion gate for Target 278 GCC lane (semantic + build/hash gates).
@@ -1542,6 +1560,12 @@ bash src/decomp/scripts/promote_group_ak_jmptbl_script_deassert_ctrl_line_now_ta
 bash src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_default_target_gcc.sh
 bash src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_custom_target_gcc.sh
 bash src/decomp/scripts/promote_group_ak_jmptbl_cleanup_render_aligned_status_screen_target_gcc.sh
+bash src/decomp/scripts/promote_group_ak_jmptbl_esq_set_copper_effect_all_on_target_gcc.sh
+bash src/decomp/scripts/promote_group_ak_jmptbl_script_assert_ctrl_line_now_target_gcc.sh
+bash src/decomp/scripts/promote_group_ak_jmptbl_tliba3_draw_view_mode_guides_target_gcc.sh
+bash src/decomp/scripts/promote_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_bevel_frame_with_top_right_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid2_jmptbl_bevel_draw_vertical_bevel_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_signal_create_msgport_with_signal_target_gcc.sh
 bash src/decomp/scripts/promote_group_av_jmptbl_diskio_probe_drives_and_assign_paths_target_gcc.sh
