@@ -10233,3 +10233,49 @@ Current notes:
 - Original assembly is a direct `JMP ESQ_TestBit1Based`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 445: `modules/groups/b/a/tliba1.s` (`TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/tliba1.s` with direct forward-dispatch semantics.
+- Starts TLIBA1 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_jmptbl_coi_getanimfieldpointerbymode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_jmptbl_coi_getanimfieldpointerbymode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_jmptbl_coi_getanimfieldpointerbymode.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_jmptbl_coi_getanimfieldpointerbymode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_jmptbl_coi_getanimfieldpointerbymode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_jmptbl_coi_getanimfieldpointerbymode_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP COI_GetAnimFieldPointerByMode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 446: `modules/groups/b/a/tliba1.s` (`TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/tliba1.s` with direct forward-dispatch semantics.
+- Extends TLIBA1 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/tliba1_jmptbl_esqdisp_getentryauxpointerbymode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_tliba1_jmptbl_esqdisp_getentryauxpointerbymode.awk`
+- Promotion gate: `src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQDISP_GetEntryAuxPointerByMode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
