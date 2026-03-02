@@ -409,6 +409,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_wdisp_jmptbl_esqiff_renderweatherstatusbrushslice_target_gcc.sh"
     "src/decomp/scripts/promote_wdisp_jmptbl_brush_selectbrushslot_target_gcc.sh"
     "src/decomp/scripts/promote_wdisp_jmptbl_newgrid_drawwrappedtext_target_gcc.sh"
+    "src/decomp/scripts/promote_wdisp_jmptbl_newgrid_resetrowtable_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
