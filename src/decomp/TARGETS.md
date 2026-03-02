@@ -4262,6 +4262,52 @@ Current notes:
 - Semantic gate validates all three call sites plus flag-mask and negative-return markers.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 596: `modules/submodules/unknown36.s` (`UNKNOWN36_ShowAbortRequester`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion runtime routine to Target 595 with CLI-output and requester fallback branches.
+- Captures an important user-visible abort/report path and exercises mixed DOS/Exec callback behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown36_show_abort_requester_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown36_show_abort_requester_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown36_show_abort_requester.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown36_show_abort_requester_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown36_show_abort_requester_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown36_show_abort_requester_target_gcc.sh`
+
+Current notes:
+- Candidate preserves message-length clamp from leading byte, local copy buffer staging, FindTask/CLI console detection path with `Write` of break prefix + message newline, fallback `OpenLibrary(\"intuition.library\")`, requester-out pointer publish, and `EXEC_CallVector_348` dispatch with the 9-arg stack shape (including trailing intuition base arg).
+- Semantic gate validates FindTask/Write/OpenLibrary/Exec348 presence and key global symbols.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 597: `modules/submodules/unknown14.s` (`HANDLE_OpenFromModeString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core file-handle setup routine that bridges mode-string parsing to `HANDLE_OpenEntryWithFlags`.
+- High-value non-stub export with explicit initialization side effects on handle-node state.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/handle_open_from_mode_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_handle_open_from_mode_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_handle_open_from_mode_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_handle_open_from_mode_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_handle_open_from_mode_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_handle_open_from_mode_string_target_gcc.sh`
+
+Current notes:
+- Candidate preserves pre-open finalize-on-active-node behavior, mode parsing (`r/w/a` with optional `b`/`+` modifiers), per-mode open-flag selection for `HANDLE_OpenEntryWithFlags`, failure-on-`-1` short-circuit to `0`, and handle-node field initialization/open-flag synthesis before returning node pointer.
+- Semantic gate validates finalize/open call presence, default-flag seed use, plus-check markers, init-field writes, and openflag-build markers.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
