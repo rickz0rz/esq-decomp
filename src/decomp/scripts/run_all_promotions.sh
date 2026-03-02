@@ -664,6 +664,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_p_type_free_entry_target_gcc.sh"
     "src/decomp/scripts/promote_p_type_reset_lists_and_load_promo_ids_target_gcc.sh"
     "src/decomp/scripts/promote_p_type_get_subtype_if_type20_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_promote_secondary_list_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_ensure_secondary_list_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_consume_primary_type_if_present_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

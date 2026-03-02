@@ -5758,6 +5758,77 @@ Current notes:
 - Semantic filter was relaxed to allow equivalent GCC addressing (`(a0)+` then `(a0)`) versus explicit `1(A3)` access in source assembly.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 660: `modules/groups/b/a/p_type.s` (`P_TYPE_PromoteSecondaryList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` list-state transition helper used to replace active primary state with staged secondary state.
+- Keeps ownership/cleanup flow explicit before tackling larger list parse/consume routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_promote_secondary_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_promote_secondary_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_promote_secondary_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_promote_secondary_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_promote_secondary_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_promote_secondary_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves call order: `P_TYPE_FreeEntry(P_TYPE_PrimaryGroupListPtr)` before pointer promotion.
+- Assignment/clear sequence remains intact: `Primary = Secondary`, then `Secondary = 0`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 661: `modules/groups/b/a/p_type.s` (`P_TYPE_EnsureSecondaryList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` state helper that lazily clones primary list into secondary list.
+- Continues the P_TYPE list-management chain with explicit guard/clone behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_ensure_secondary_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_ensure_secondary_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_ensure_secondary_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_ensure_secondary_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_ensure_secondary_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_ensure_secondary_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves both guards: no-op when primary is null or secondary already exists.
+- Clone call retains source/destination argument order from assembly (`CloneEntry(secondary_ptr, primary_ptr)` with null destination).
+- After clone, first byte is updated from `TEXTDISP_SecondaryGroupCode`, matching the post-clone type-byte patch in assembly.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 662: `modules/groups/b/a/p_type.s` (`P_TYPE_ConsumePrimaryTypeIfPresent`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` predicate helper that scans primary payload for a byte and consumes input state.
+- Good bridge target before larger parse/write P_TYPE routines because it exercises list length/payload traversal.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_consume_primary_type_if_present_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_consume_primary_type_if_present_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_consume_primary_type_if_present.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_consume_primary_type_if_present_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_consume_primary_type_if_present_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_consume_primary_type_if_present_target_gcc.sh`
+
+Current notes:
+- Candidate preserves guards for missing/empty primary list, then performs byte-scan loop over primary payload with early hit exit.
+- Input byte is cleared unconditionally at function end, matching assembly side-effect.
+- Semantic filter widened to accept GCC `(2,a0)`/`(6,a0)` addressing while retaining len/payload access checks.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

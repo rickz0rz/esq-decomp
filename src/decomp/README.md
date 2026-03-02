@@ -581,6 +581,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_p_type_free_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 657` (`P_TYPE_FreeEntry`).
 - `src/decomp/scripts/compare_p_type_reset_lists_and_load_promo_ids_trial_gcc.sh`: GCC-specific compare lane for `Target 658` (`P_TYPE_ResetListsAndLoadPromoIds`).
 - `src/decomp/scripts/compare_p_type_get_subtype_if_type20_trial_gcc.sh`: GCC-specific compare lane for `Target 659` (`P_TYPE_GetSubtypeIfType20`).
+- `src/decomp/scripts/compare_p_type_promote_secondary_list_trial_gcc.sh`: GCC-specific compare lane for `Target 660` (`P_TYPE_PromoteSecondaryList`).
+- `src/decomp/scripts/compare_p_type_ensure_secondary_list_trial_gcc.sh`: GCC-specific compare lane for `Target 661` (`P_TYPE_EnsureSecondaryList`).
+- `src/decomp/scripts/compare_p_type_consume_primary_type_if_present_trial_gcc.sh`: GCC-specific compare lane for `Target 662` (`P_TYPE_ConsumePrimaryTypeIfPresent`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1830,6 +1833,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_p_type_free_entry_target_gcc.sh`: promotion gate for Target 657 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_p_type_reset_lists_and_load_promo_ids_target_gcc.sh`: promotion gate for Target 658 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_p_type_get_subtype_if_type20_target_gcc.sh`: promotion gate for Target 659 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_p_type_promote_secondary_list_target_gcc.sh`: promotion gate for Target 660 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_p_type_ensure_secondary_list_target_gcc.sh`: promotion gate for Target 661 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_p_type_consume_primary_type_if_present_target_gcc.sh`: promotion gate for Target 662 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
