@@ -2069,6 +2069,29 @@ Current notes:
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 501: `modules/groups/b/a/parseini.s` (`PARSEINI_JMPTBL_BRUSH_AllocBrushNode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/parseini.s` with direct forward-dispatch semantics.
+- Starts conversion of currently uncovered `PARSEINI_JMPTBL_*` bridge stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_jmptbl_brush_allocbrushnode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_jmptbl_brush_allocbrushnode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_jmptbl_brush_allocbrushnode.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_jmptbl_brush_allocbrushnode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_jmptbl_brush_allocbrushnode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_jmptbl_brush_allocbrushnode_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP BRUSH_AllocBrushNode`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
