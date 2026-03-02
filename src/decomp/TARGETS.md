@@ -4124,6 +4124,75 @@ Current notes:
 - Semantic gate validates free-list/global symbols plus merge and return-shape markers.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 590: `modules/submodules/unknown.s` (`ESQPROTO_CopyLabelToGlobal`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small self-contained parser/copy helper in `unknown.s` with no external call dependencies.
+- Adds direct C coverage for a non-stub ESQPROTO routine used by parser entry points.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqproto_copy_label_to_global_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqproto_copy_label_to_global_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqproto_copy_label_to_global.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqproto_copy_label_to_global_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqproto_copy_label_to_global_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqproto_copy_label_to_global_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 0x12-sentinel short-label copy with max-length guard, forced NUL termination, and byte-copy propagation into `WDISP_StatusListMatchPattern`.
+- Semantic gate validates function label, destination-global reference, sentinel/limit compare markers, and return marker.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 591: `modules/submodules/unknown.s` (`ESQPROTO_ParseDigitLabelAndDisplay`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Nearby ESQPROTO helper with bounded label parsing and explicit diagnostics redraw path.
+- Increases non-stub parser coverage while reusing already-promoted callee primitives.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqproto_parse_digit_label_and_display_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqproto_parse_digit_label_and_display_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqproto_parse_digit_label_and_display.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqproto_parse_digit_label_and_display_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gcc.sh`
+
+Current notes:
+- Candidate preserves leading digit clamp (`'0'..'9'`), bounded/sentinel label copy into `WDISP_WeatherStatusLabelBuffer`, replace-owned-string update of `WDISP_WeatherStatusTextPtr`, and diagnostics-conditional display dispatch.
+- Semantic gate validates key globals and both external call symbols (`ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString`, `UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 592: `modules/submodules/unknown.s` (`UNKNOWN_ParseRecordAndUpdateDisplay`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium parser routine with clear update side effects and optional diagnostics redraw.
+- Extends non-stub coverage in `unknown.s` beyond helper wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/unknown_parse_record_and_update_display_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_unknown_parse_record_and_update_display_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_unknown_parse_record_and_update_display.awk`
+- Promotion gate: `src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_unknown_parse_record_and_update_display_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh`
+
+Current notes:
+- Candidate preserves leading header-byte parse (`countdown/color/brush`), brush-range clamp, bounded 0x12-sentinel text copy, wildcard early-exit guard, replace-owned-string path, global field writes, and diagnostics-conditional display dispatch.
+- Semantic gate validates wildcard/replace/display call coverage and key weather-status global writes.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

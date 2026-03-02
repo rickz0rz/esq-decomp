@@ -43,6 +43,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_graphics_free_raster_trial_gcc.sh`: GCC-specific compare lane for `Target 082` (`GRAPHICS_FreeRaster`).
 - `src/decomp/scripts/compare_dos_movep_word_read_callback_trial_gcc.sh`: GCC-specific compare lane for `Target 083` (`DOS_MovepWordReadCallback`).
 - `src/decomp/scripts/compare_unknown_parse_list_and_update_entries_trial_gcc.sh`: GCC-specific compare lane for `Target 084` (`UNKNOWN_ParseListAndUpdateEntries`).
+- `src/decomp/scripts/compare_esqproto_copy_label_to_global_trial_gcc.sh`: GCC-specific compare lane for `Target 590` (`ESQPROTO_CopyLabelToGlobal`).
+- `src/decomp/scripts/compare_esqproto_parse_digit_label_and_display_trial_gcc.sh`: GCC-specific compare lane for `Target 591` (`ESQPROTO_ParseDigitLabelAndDisplay`).
+- `src/decomp/scripts/compare_unknown_parse_record_and_update_display_trial_gcc.sh`: GCC-specific compare lane for `Target 592` (`UNKNOWN_ParseRecordAndUpdateDisplay`).
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
@@ -630,6 +633,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_graphics_free_raster.awk`: semantic post-filter for `GRAPHICS_FreeRaster` compare lane.
 - `src/decomp/scripts/semantic_filter_dos_movep_word_read_callback.awk`: semantic post-filter for `DOS_MovepWordReadCallback` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown_parse_list_and_update_entries.awk`: semantic post-filter for `UNKNOWN_ParseListAndUpdateEntries` compare lane.
+- `src/decomp/scripts/semantic_filter_esqproto_copy_label_to_global.awk`: semantic post-filter for `ESQPROTO_CopyLabelToGlobal` compare lane.
+- `src/decomp/scripts/semantic_filter_esqproto_parse_digit_label_and_display.awk`: semantic post-filter for `ESQPROTO_ParseDigitLabelAndDisplay` compare lane.
+- `src/decomp/scripts/semantic_filter_unknown_parse_record_and_update_display.awk`: semantic post-filter for `UNKNOWN_ParseRecordAndUpdateDisplay` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
@@ -1182,6 +1188,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_graphics_free_raster_target_gcc.sh`: promotion gate for Target 082 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_dos_movep_word_read_callback_target_gcc.sh`: promotion gate for Target 083 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc.sh`: promotion gate for Target 084 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqproto_copy_label_to_global_target_gcc.sh`: promotion gate for Target 590 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gcc.sh`: promotion gate for Target 591 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh`: promotion gate for Target 592 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
@@ -1809,6 +1818,9 @@ bash src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh
 bash src/decomp/scripts/promote_graphics_free_raster_target_gcc.sh
 bash src/decomp/scripts/promote_dos_movep_word_read_callback_target_gcc.sh
 bash src/decomp/scripts/promote_unknown_parse_list_and_update_entries_target_gcc.sh
+bash src/decomp/scripts/promote_esqproto_copy_label_to_global_target_gcc.sh
+bash src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gcc.sh
+bash src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh

@@ -593,6 +593,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_memlist_alloc_tracked_target_gcc.sh"
     "src/decomp/scripts/promote_unknown32_jmptbl_esq_return_with_stack_code_target_gcc.sh"
     "src/decomp/scripts/promote_handle_close_all_and_return_with_code_target_gcc.sh"
+    "src/decomp/scripts/promote_esqproto_copy_label_to_global_target_gcc.sh"
+    "src/decomp/scripts/promote_esqproto_parse_digit_label_and_display_target_gcc.sh"
+    "src/decomp/scripts/promote_unknown_parse_record_and_update_display_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
