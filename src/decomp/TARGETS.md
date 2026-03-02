@@ -10026,3 +10026,72 @@ Current notes:
 - Original assembly is a direct `JMP DISPLIB_FindPreviousValidEntryIndex`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 436: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends NEWGRID2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_disptext_compute_marker_widths_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_compute_marker_widths_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_compute_marker_widths.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_compute_marker_widths_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_disptext_compute_marker_widths_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_compute_marker_widths_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPTEXT_ComputeMarkerWidths`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 437: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_ESQ_TestBit1Based`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends NEWGRID2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_esq_test_bit1_based_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_esq_test_bit1_based_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_esq_test_bit1_based.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_esq_test_bit1_based_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_esq_test_bit1_based_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_esq_test_bit1_based_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP ESQ_TestBit1Based`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 438: `modules/groups/b/a/newgrid2.s` (`NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small jump-table export in `groups/b/a/newgrid2.s` with direct forward-dispatch semantics.
+- Extends NEWGRID2 bridge coverage while preserving one-hop dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid2_jmptbl_disptext_measure_current_line_length_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid2_jmptbl_disptext_measure_current_line_length_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid2_jmptbl_disptext_measure_current_line_length.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid2_jmptbl_disptext_measure_current_line_length_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid2_jmptbl_disptext_measure_current_line_length_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid2_jmptbl_disptext_measure_current_line_length_target_gcc.sh`
+
+Current notes:
+- Original assembly is a direct `JMP DISPTEXT_MeasureCurrentLineLength`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
+- Semantic gate validates target dispatch reference and terminal jump/return form.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
