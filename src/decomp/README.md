@@ -417,6 +417,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_newgrid_jmptbl_datetime_normalizestructtoseconds_trial_gcc.sh`: GCC-specific compare lane for `Target 497` (`NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds`).
 - `src/decomp/scripts/compare_newgrid_jmptbl_str_copyuntilanydelimn_trial_gcc.sh`: GCC-specific compare lane for `Target 498` (`NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN`).
 - `src/decomp/scripts/compare_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_trial_gcc.sh`: GCC-specific compare lane for `Target 499` (`NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel`).
+- `src/decomp/scripts/compare_newgrid_jmptbl_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 500` (`NEWGRID_JMPTBL_MATH_Mulu32`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 151` (`GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 152` (`GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte`).
@@ -914,6 +915,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_newgrid_jmptbl_datetime_normalizestructtoseconds.awk`: semantic post-filter for `NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid_jmptbl_str_copyuntilanydelimn.awk`: semantic post-filter for `NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN` compare lane.
 - `src/decomp/scripts/semantic_filter_newgrid_jmptbl_wdisp_updateselectionpreviewpanel.awk`: semantic post-filter for `NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel` compare lane.
+- `src/decomp/scripts/semantic_filter_newgrid_jmptbl_math_mulu32.awk`: semantic post-filter for `NEWGRID_JMPTBL_MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_normalize_month_range.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_datetime_adjust_month_index.awk`: semantic post-filter for `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte.awk`: semantic post-filter for `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` compare lane.
@@ -1410,6 +1412,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_newgrid_jmptbl_datetime_normalizestructtoseconds_target_gcc.sh`: promotion gate for Target 497 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid_jmptbl_str_copyuntilanydelimn_target_gcc.sh`: promotion gate for Target 498 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_target_gcc.sh`: promotion gate for Target 499 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_newgrid_jmptbl_math_mulu32_target_gcc.sh`: promotion gate for Target 500 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 151 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 152 GCC lane (semantic + build/hash gates).
@@ -1947,6 +1950,7 @@ bash src/decomp/scripts/promote_newgrid_jmptbl_cleanup_drawclockformatframe_targ
 bash src/decomp/scripts/promote_newgrid_jmptbl_datetime_normalizestructtoseconds_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid_jmptbl_str_copyuntilanydelimn_target_gcc.sh
 bash src/decomp/scripts/promote_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_target_gcc.sh
+bash src/decomp/scripts/promote_newgrid_jmptbl_math_mulu32_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh
