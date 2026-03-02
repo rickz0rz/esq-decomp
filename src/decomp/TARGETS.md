@@ -3431,6 +3431,99 @@ Current notes:
 - Semantic gate focuses on call topology and section symbol coverage rather than brittle instruction-level immediates.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 560: `modules/groups/b/a/parseini2.s` (`PARSEINI_AdjustHoursTo24HrFormat`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small pure helper with simple branch behavior and no external side effects.
+- First direct real-function conversion in `parseini2.s`, setting up the lane for the remaining RTC/clock routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_adjust_hours_to24_hr_format_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_adjust_hours_to24_hr_format_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_adjust_hours_to24_hr_format.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_adjust_hours_to24_hr_format_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_adjust_hours_to24_hr_format_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_adjust_hours_to24_hr_format_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 12AM collapse (`12` + AM flag `0` -> `0`) and PM conversion (`hour < 12` + flag `-1` -> `hour + 12`).
+- Semantic gate tracks expected constants/operation shape (`12`, `-1`, add-12 path) and terminal return.
+- Semantic gate intentionally avoids strict instruction-form checks for the add-12 path because GCC may lower that branch in equivalent non-`ADD` forms.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 561: `modules/groups/b/a/parseini2.s` (`PARSEINI_NormalizeClockData`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small/medium clock-structure normalization helper with bounded logic and explicit field updates.
+- Natural follow-up to Target 560 and a prerequisite behavioral unit for `PARSEINI_UpdateClockFromRtc`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_normalize_clock_data_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_normalize_clock_data_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_normalize_clock_data.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_normalize_clock_data_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_normalize_clock_data_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_normalize_clock_data_target_gcc.sh`
+
+Current notes:
+- Candidate preserves source→dest struct copy, `<1900` year adjustment, month validity flagging/wrap behavior, day increment, leap-year flag write, and day-of-year callback.
+- Semantic gate verifies clock normalization constants/offsets plus required helper calls (`DATETIME_IsLeapYear`, `ESQ_CalcDayOfYearFromMonthDay`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 562: `modules/groups/b/a/parseini2.s` (`PARSEINI_WriteRtcFromGlobals`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Moderate RTC write path that composes date/time globals into a clock struct and emits battclock seconds.
+- Builds on Targets 560/561 and reduces remaining uncovered core exports in `parseini2.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_write_rtc_from_globals_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_write_rtc_from_globals_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_write_rtc_from_globals.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_write_rtc_from_globals_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_write_rtc_from_globals_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_write_rtc_from_globals_target_gcc.sh`
+
+Current notes:
+- Candidate preserves utility/battclock availability guards, cached clock-field packing (including month `+1` and hour conversion through `PARSEINI_AdjustHoursTo24HrFormat`), validation call, seconds conversion, and final battclock write.
+- Semantic gate validates guard paths, helper-call chain, and key clock-source symbols.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 563: `modules/groups/b/a/parseini2.s` (`PARSEINI_UpdateClockFromRtc`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core RTC read-and-normalize path feeding global clock state.
+- Complements Targets 560/561/562 and closes another major `parseini2.s` runtime routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parseini_update_clock_from_rtc_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parseini_update_clock_from_rtc_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parseini_update_clock_from_rtc.awk`
+- Promotion gate: `src/decomp/scripts/promote_parseini_update_clock_from_rtc_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parseini_update_clock_from_rtc_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parseini_update_clock_from_rtc_target_gcc.sh`
+
+Current notes:
+- Candidate preserves utility/battclock guards, battclock-seconds read + conversion + validation pipeline, fallback normalize path, and range-check normalization path with key thresholds (`6/11/31/9999/23/59`).
+- Semantic gate validates helper call topology, fallback symbol usage, countdown shadow read, and range constants.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
