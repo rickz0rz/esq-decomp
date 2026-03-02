@@ -425,6 +425,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_target_gcc.sh"
     "src/decomp/scripts/promote_newgrid_jmptbl_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_parseini_jmptbl_brush_allocbrushnode_target_gcc.sh"
+    "src/decomp/scripts/promote_parseini_jmptbl_brush_freebrushlist_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
