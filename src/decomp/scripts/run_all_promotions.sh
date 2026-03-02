@@ -622,6 +622,10 @@ SCRIPTS=(
     "src/decomp/scripts/promote_dst_free_banner_pair_target_gcc.sh"
     "src/decomp/scripts/promote_dst_allocate_banner_struct_target_gcc.sh"
     "src/decomp/scripts/promote_dst_rebuild_banner_pair_target_gcc.sh"
+    "src/decomp/scripts/promote_dst_load_banner_pair_from_files_target_gcc.sh"
+    "src/decomp/scripts/promote_dst_handle_banner_command32_33_target_gcc.sh"
+    "src/decomp/scripts/promote_dst_format_banner_datetime_target_gcc.sh"
+    "src/decomp/scripts/promote_dst_refresh_banner_buffer_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

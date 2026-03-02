@@ -77,6 +77,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_dst_free_banner_pair_trial_gcc.sh`: GCC-specific compare lane for `Target 615` (`DST_FreeBannerPair`).
 - `src/decomp/scripts/compare_dst_allocate_banner_struct_trial_gcc.sh`: GCC-specific compare lane for `Target 616` (`DST_AllocateBannerStruct`).
 - `src/decomp/scripts/compare_dst_rebuild_banner_pair_trial_gcc.sh`: GCC-specific compare lane for `Target 617` (`DST_RebuildBannerPair`).
+- `src/decomp/scripts/compare_dst_load_banner_pair_from_files_trial_gcc.sh`: GCC-specific compare lane for `Target 618` (`DST_LoadBannerPairFromFiles`).
+- `src/decomp/scripts/compare_dst_handle_banner_command32_33_trial_gcc.sh`: GCC-specific compare lane for `Target 619` (`DST_HandleBannerCommand32_33`).
+- `src/decomp/scripts/compare_dst_format_banner_datetime_trial_gcc.sh`: GCC-specific compare lane for `Target 620` (`DST_FormatBannerDateTime`).
+- `src/decomp/scripts/compare_dst_refresh_banner_buffer_trial_gcc.sh`: GCC-specific compare lane for `Target 621` (`DST_RefreshBannerBuffer`).
 - `src/decomp/scripts/compare_esq_parse_command_line_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 085` (`ESQ_ParseCommandLineAndRun`).
 - `src/decomp/scripts/compare_stream_buffered_write_string_trial_gcc.sh`: GCC-specific compare lane for `Target 086` (`STREAM_BufferedWriteString`).
 - `src/decomp/scripts/compare_unknown29_jmptbl_esq_main_init_and_run_trial_gcc.sh`: GCC-specific compare lane for `Target 087` (`UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`).
@@ -692,6 +696,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_dst_free_banner_pair.awk`: semantic post-filter for `DST_FreeBannerPair` compare lane.
 - `src/decomp/scripts/semantic_filter_dst_allocate_banner_struct.awk`: semantic post-filter for `DST_AllocateBannerStruct` compare lane.
 - `src/decomp/scripts/semantic_filter_dst_rebuild_banner_pair.awk`: semantic post-filter for `DST_RebuildBannerPair` compare lane.
+- `src/decomp/scripts/semantic_filter_dst_load_banner_pair_from_files.awk`: semantic post-filter for `DST_LoadBannerPairFromFiles` compare lane.
+- `src/decomp/scripts/semantic_filter_dst_handle_banner_command32_33.awk`: semantic post-filter for `DST_HandleBannerCommand32_33` compare lane.
+- `src/decomp/scripts/semantic_filter_dst_format_banner_datetime.awk`: semantic post-filter for `DST_FormatBannerDateTime` compare lane.
+- `src/decomp/scripts/semantic_filter_dst_refresh_banner_buffer.awk`: semantic post-filter for `DST_RefreshBannerBuffer` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_parse_command_line_and_run.awk`: semantic post-filter for `ESQ_ParseCommandLineAndRun` compare lane.
 - `src/decomp/scripts/semantic_filter_stream_buffered_write_string.awk`: semantic post-filter for `STREAM_BufferedWriteString` compare lane.
 - `src/decomp/scripts/semantic_filter_unknown29_jmptbl_esq_main_init_and_run.awk`: semantic post-filter for `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` compare lane.
@@ -1272,6 +1280,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_dst_free_banner_pair_target_gcc.sh`: promotion gate for Target 615 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_dst_allocate_banner_struct_target_gcc.sh`: promotion gate for Target 616 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_dst_rebuild_banner_pair_target_gcc.sh`: promotion gate for Target 617 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_dst_load_banner_pair_from_files_target_gcc.sh`: promotion gate for Target 618 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_dst_handle_banner_command32_33_target_gcc.sh`: promotion gate for Target 619 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_dst_format_banner_datetime_target_gcc.sh`: promotion gate for Target 620 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_dst_refresh_banner_buffer_target_gcc.sh`: promotion gate for Target 621 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh`: promotion gate for Target 085 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh`: promotion gate for Target 086 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh`: promotion gate for Target 087 GCC lane (semantic + build/hash gates).
@@ -1927,6 +1939,10 @@ bash src/decomp/scripts/promote_dst_free_banner_struct_target_gcc.sh
 bash src/decomp/scripts/promote_dst_free_banner_pair_target_gcc.sh
 bash src/decomp/scripts/promote_dst_allocate_banner_struct_target_gcc.sh
 bash src/decomp/scripts/promote_dst_rebuild_banner_pair_target_gcc.sh
+bash src/decomp/scripts/promote_dst_load_banner_pair_from_files_target_gcc.sh
+bash src/decomp/scripts/promote_dst_handle_banner_command32_33_target_gcc.sh
+bash src/decomp/scripts/promote_dst_format_banner_datetime_target_gcc.sh
+bash src/decomp/scripts/promote_dst_refresh_banner_buffer_target_gcc.sh
 bash src/decomp/scripts/promote_esq_parse_command_line_and_run_target_gcc.sh
 bash src/decomp/scripts/promote_stream_buffered_write_string_target_gcc.sh
 bash src/decomp/scripts/promote_unknown29_jmptbl_esq_main_init_and_run_target_gcc.sh

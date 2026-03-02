@@ -4773,6 +4773,98 @@ Current notes:
 - Semantic gate tolerates GCC booleanization (`SNE/EXT/NEG`) while requiring two free calls, two allocate calls, slot0/slot1 access, and return marker.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 618: `modules/groups/a/j/dst.s` (`DST_LoadBannerPairFromFiles`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next non-`JMPTBL` DST routine after pair lifecycle setup; first larger control-flow function in this file.
+- High leverage for banner data ingest path (`G2`/`G3`) and queue refresh behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_load_banner_pair_from_files_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_load_banner_pair_from_files_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_load_banner_pair_from_files.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_load_banner_pair_from_files_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_load_banner_pair_from_files_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_load_banner_pair_from_files_target_gcc.sh`
+
+Current notes:
+- Candidate preserves: rebuild call, load-from-default-path gate (`-1` fail), two substring scans (`G2`/`G3`), paired parse/copy lanes, work-buffer deallocate (`line 889`, `scratch+1`), queue update, and final success return.
+- Semantic gate validates these call-topology and constant markers while tolerating GCC frame/control-flow shaping differences.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 619: `modules/groups/a/j/dst2.s` (`DST_HandleBannerCommand32_33`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small-to-medium non-`JMPTBL` dispatcher with clear command-split behavior.
+- Good bridge from DST lifecycle work into the remaining DST2 banner queue routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_handle_banner_command32_33_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_handle_banner_command32_33_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_handle_banner_command32_33.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_handle_banner_command32_33_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_handle_banner_command32_33_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_handle_banner_command32_33_target_gcc.sh`
+
+Current notes:
+- Candidate preserves command decode for `$32/$33`, dual parse-width calls (`4`, `19`), per-branch copy target selection (secondary vs primary), and unconditional queue update call on `DST_BannerWindowPrimary`.
+- Semantic gate accepts both original two-step command decode (`SUBI #$32` then `SUBQ #1`) and GCC direct compare style (`CMP #50/#51`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 620: `modules/groups/a/j/dst2.s` (`DST_FormatBannerDateTime`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium non-`JMPTBL` formatter with stable table/index and tag-selection flow.
+- Useful to lock display-string semantics before tackling the larger queue refresh/update functions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_format_banner_datetime_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_format_banner_datetime_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_format_banner_datetime.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_format_banner_datetime_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_format_banner_datetime_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_format_banner_datetime_target_gcc.sh`
+
+Current notes:
+- Candidate preserves day/month table indexing, AM/PM and DST/STD and leap/norm tag selection, and final variadic format-dispatch call through `GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer`.
+- Semantic gate validates table/tag/literal references and format-call topology while tolerating GCC register allocation and control-flow reshaping.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 621: `modules/groups/a/j/dst2.s` (`DST_RefreshBannerBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` helper adjacent to the queue-update core.
+- Locks queue->staging copy and offset-apply behavior before lifting `DST_UpdateBannerQueue`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/dst_refresh_banner_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_dst_refresh_banner_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_dst_refresh_banner_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_dst_refresh_banner_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_dst_refresh_banner_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_dst_refresh_banner_buffer_target_gcc.sh`
+
+Current notes:
+- Candidate preserves call topology (`DST_TickBannerCounters`, `DST_AddTimeOffset`) and queue/staging state references (`CLOCK_DaySlotIndex`, `CLOCK_CurrentDayOfWeekIndex`, phase/format globals).
+- GCC optimizes away the redundant save/restore touch on `DST_SecondaryCountdown`; semantic gate intentionally treats that as non-essential for this target lane.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
