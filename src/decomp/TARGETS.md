@@ -5591,6 +5591,30 @@ Current notes:
 - Case `4` niche-force override and mode-cycle reset behavior are preserved before fallback to `NEWGRID_SelectNextMode` path (`4..10` lane).
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 653: `modules/groups/b/a/newgrid.s` (`NEWGRID_InitGridResources`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` NEWGRID initialization routine with allocation, rastport/font setup, and layout metric derivation.
+- High-leverage target that stabilizes early NEWGRID state before mode/message handlers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_init_grid_resources_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_init_grid_resources_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_init_grid_resources.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_init_grid_resources_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_init_grid_resources_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_init_grid_resources_target_gcc.sh`
+
+Current notes:
+- Candidate preserves init-flag early-exit, buffer/showtime init calls, two rastport allocations (`99x100`, `112x100`), and both `NEWGRID_DrawTopBorderLine` calls.
+- Maintains rastport setup sequence: `InitRastPort`, bitmap assignment at `+4`, `SetDrMd(0)`, `SetFont(Global_HANDLE_PREVUEC_FONT)` for both main/header ports.
+- Preserves metric derivations for sample text width, column start/width (`624` with `/3`), and row height pipeline; includes parity normalization path before final top-border redraw.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
