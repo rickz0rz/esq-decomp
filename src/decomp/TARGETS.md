@@ -5519,6 +5519,30 @@ Current notes:
 - Updates selection fields from `NEWGRID_RowHeightPx >> 1` into both `+52` word and `+32` long fields.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 650: `modules/groups/b/a/newgrid.s` (`NEWGRID_DrawDateBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Mid-sized non-`JMPTBL` NEWGRID banner renderer with deterministic drawing and centering path.
+- Continues NEWGRID display-lane coverage after Target 649 while still avoiding large message-loop complexity.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/newgrid_draw_date_banner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_newgrid_draw_date_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_newgrid_draw_date_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_newgrid_draw_date_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_newgrid_draw_date_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_newgrid_draw_date_banner_target_gcc.sh`
+
+Current notes:
+- Candidate preserves call chain: generate date string, set draw mode, resolve pen via `NEWGRID_SetRowColor`, background rect fill, dual bevel frames, text measure/center, move, and text draw.
+- Keeps key constants and geometry wiring (`33`, `35`, `36`, `695`, `17`) plus `NEWGRID_ColumnStartXPx`/`NEWGRID_ColumnWidthPx` centering inputs.
+- GCC uses indexed `PEA` forms for some constants and folded arithmetic labels; semantic gate explicitly accepts these equivalent forms.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
