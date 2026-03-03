@@ -16160,3 +16160,49 @@ Current notes:
 - Guards invalid input (`byte_count > max_bytes`) with `-1` early return and persists requested byte count into state offset `+186`.
 - Reads full `2048`-byte chunks first, then a tail read for remainder.
 - Any short read returns `-1`; success returns `1`.
+
+## Target 703: `modules/groups/a/a/brush.s` (`BRUSH_LoadColorTextFont`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Important non-jump-table font decode helper with bounded internal loops and clear fail/success returns.
+- Natural follow-on after `BRUSH_StreamFontChunk` because it shares the same DOS read + unpack flow family.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_load_color_text_font_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_load_color_text_font_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_load_color_text_font.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_load_color_text_font_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh`
+
+Current notes:
+- Function allocates a temporary `Struct_ColorTextFont_Size` (`96`) buffer, validates requested read size, and reads `byte_count` bytes from handle.
+- On read success, it decodes high nibbles (`>> 4 & 0x0F`) into output buffer in 3-byte stride blocks.
+- Temporary buffer is always deallocated along success/failure branches; return is `1` on success, `-1` on failure.
+
+## Target 704: `modules/groups/a/a/brush.s` (`BRUSH_CloneBrushRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core brush-record duplication path that unblocks deeper asset loading flows.
+- High-leverage non-jump-table export with structured side effects (bitmap/rastport init and plane allocation).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_clone_brush_record_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_clone_brush_record_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_clone_brush_record.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_clone_brush_record_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh`
+
+Current notes:
+- Allocates `372`-byte clone record, copies key header/label blocks, and initializes bitmap/rastport structures.
+- Copies width/height and fallback limit fields; allocates up to five planes from base offset `0x90`.
+- Allocation failure path raises `BRUSH_PendingAlertCode` (if clear) and snapshots header bytes into `BRUSH_SnapshotHeader`.

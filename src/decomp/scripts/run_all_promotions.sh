@@ -628,6 +628,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_brush_free_brush_resources_target_gcc.sh"
     "src/decomp/scripts/promote_brush_populate_brush_list_target_gcc.sh"
     "src/decomp/scripts/promote_brush_stream_font_chunk_target_gcc.sh"
+    "src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh"
+    "src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh"

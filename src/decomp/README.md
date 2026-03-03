@@ -77,6 +77,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_brush_free_brush_resources_trial_gcc.sh`: GCC-specific compare lane for `Target 700` (`BRUSH_FreeBrushResources`).
 - `src/decomp/scripts/compare_brush_populate_brush_list_trial_gcc.sh`: GCC-specific compare lane for `Target 701` (`BRUSH_PopulateBrushList`).
 - `src/decomp/scripts/compare_brush_stream_font_chunk_trial_gcc.sh`: GCC-specific compare lane for `Target 702` (`BRUSH_StreamFontChunk`).
+- `src/decomp/scripts/compare_brush_load_color_text_font_trial_gcc.sh`: GCC-specific compare lane for `Target 703` (`BRUSH_LoadColorTextFont`).
+- `src/decomp/scripts/compare_brush_clone_brush_record_trial_gcc.sh`: GCC-specific compare lane for `Target 704` (`BRUSH_CloneBrushRecord`).
 - `src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`: GCC-specific compare lane for `Target 605` (`DATETIME_IsLeapYear`).
 - `src/decomp/scripts/compare_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 606` (`DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 607` (`DATETIME_NormalizeMonthRange`).
@@ -771,6 +773,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_brush_free_brush_resources.awk`: semantic post-filter for `BRUSH_FreeBrushResources` compare lane.
 - `src/decomp/scripts/semantic_filter_brush_populate_brush_list.awk`: semantic post-filter for `BRUSH_PopulateBrushList` compare lane.
 - `src/decomp/scripts/semantic_filter_brush_stream_font_chunk.awk`: semantic post-filter for `BRUSH_StreamFontChunk` compare lane.
+- `src/decomp/scripts/semantic_filter_brush_load_color_text_font.awk`: semantic post-filter for `BRUSH_LoadColorTextFont` compare lane.
+- `src/decomp/scripts/semantic_filter_brush_clone_brush_record.awk`: semantic post-filter for `BRUSH_CloneBrushRecord` compare lane.
 - `src/decomp/scripts/semantic_filter_datetime_isleapyear.awk`: semantic post-filter for `DATETIME_IsLeapYear` compare lane.
 - `src/decomp/scripts/semantic_filter_datetime_adjust_month_index.awk`: semantic post-filter for `DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_datetime_normalize_month_range.awk`: semantic post-filter for `DATETIME_NormalizeMonthRange` compare lane.
@@ -1376,6 +1380,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_brush_free_brush_resources_target_gcc.sh`: promotion gate for Target 700 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_populate_brush_list_target_gcc.sh`: promotion gate for Target 701 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_stream_font_chunk_target_gcc.sh`: promotion gate for Target 702 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh`: promotion gate for Target 703 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh`: promotion gate for Target 704 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`: promotion gate for Target 605 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 606 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 607 GCC lane (semantic + build/hash gates).
@@ -2116,6 +2122,8 @@ bash src/decomp/scripts/promote_brush_select_brush_by_label_target_gcc.sh
 bash src/decomp/scripts/promote_brush_free_brush_resources_target_gcc.sh
 bash src/decomp/scripts/promote_brush_populate_brush_list_target_gcc.sh
 bash src/decomp/scripts/promote_brush_stream_font_chunk_target_gcc.sh
+bash src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh
+bash src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh
