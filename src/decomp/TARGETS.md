@@ -22850,3 +22850,135 @@ Run:
 Current notes:
 - Candidate preserves exact tail sequence: `MOVE.L D6,D0`, `MOVEM.L (A7)+,D6-D7`, `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1017: `modules/groups/a/w/ladfunc.s` (`LADFUNC_RepackEntryTextAndAttrBuffers_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `ladfunc` text/attr repack workflow.
+- Low-risk conversion preserving exact register/frame unwind semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ladfunc_repack_entry_text_and_attr_buffers_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ladfunc_repack_entry_text_and_attr_buffers_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ladfunc_repack_entry_text_and_attr_buffers_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_ladfunc_repack_entry_text_and_attr_buffers_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ladfunc_repack_entry_text_and_attr_buffers_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ladfunc_repack_entry_text_and_attr_buffers_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1018: `modules/groups/a/w/ladfunc.s` (`LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to Target 1017 in the same module.
+- Continues low-risk promotion cadence while preserving exact restore/frame-teardown behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ladfunc_update_entry_from_text_and_attr_buffers_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ladfunc_update_entry_from_text_and_attr_buffers_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ladfunc_update_entry_from_text_and_attr_buffers_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_ladfunc_update_entry_from_text_and_attr_buffers_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ladfunc_update_entry_from_text_and_attr_buffers_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ladfunc_update_entry_from_text_and_attr_buffers_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D6-D7/A2-A3/A6`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1019: `modules/groups/a/y/locavail.s` (`LOCAVAIL_ComputeFilterOffsetForEntry_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `locavail` offset computation path.
+- Low-risk conversion preserving exact restore/frame teardown behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail_compute_filter_offset_for_entry_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail_compute_filter_offset_for_entry_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail_compute_filter_offset_for_entry_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail_compute_filter_offset_for_entry_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail_compute_filter_offset_for_entry_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail_compute_filter_offset_for_entry_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D4-D7/A2-A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1020: `modules/groups/a/y/locavail.s` (`LOCAVAIL_SaveAvailabilityDataFile_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper for availability save flow.
+- Low-risk conversion preserving success-code move and exact unwind semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail_save_availability_data_file_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail_save_availability_data_file_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail_save_availability_data_file_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail_save_availability_data_file_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail_save_availability_data_file_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail_save_availability_data_file_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVE.L D5,D0`, `MOVEM.L (A7)+,D4-D7/A2-A3/A6`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1021: `modules/groups/a/y/locavail.s` (`LOCAVAIL_LoadAvailabilityDataFile_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper for availability load flow.
+- Low-risk conversion preserving status return and exact unwind sequence.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail_load_availability_data_file_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail_load_availability_data_file_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail_load_availability_data_file_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail_load_availability_data_file_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail_load_availability_data_file_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail_load_availability_data_file_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVE.L D5,D0`, `MOVEM.L (A7)+,D4-D7/A2-A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1022: `modules/groups/a/y/locavail.s` (`LOCAVAIL_UpdateFilterStateMachine_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in filter-state machine update flow.
+- Low-risk conversion preserving exact restore/frame teardown behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail_update_filter_state_machine_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail_update_filter_state_machine_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail_update_filter_state_machine_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail_update_filter_state_machine_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail_update_filter_state_machine_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail_update_filter_state_machine_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D2-D5/A2-A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.

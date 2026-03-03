@@ -3832,7 +3832,31 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_locavail_map_filter_token_char_to_class_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_locavail_map_filter_token_char_to_class_return.awk`
 - promote: `src/decomp/scripts/promote_locavail_map_filter_token_char_to_class_return_target_gcc.sh`
-- latest full C trial: `compiled 1014 / 1014`, `export count 1025`, `status: ok`
+- Target 1017 (`LADFUNC_RepackEntryTextAndAttrBuffers_Return`):
+- compare: `src/decomp/scripts/compare_ladfunc_repack_entry_text_and_attr_buffers_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_ladfunc_repack_entry_text_and_attr_buffers_return.awk`
+- promote: `src/decomp/scripts/promote_ladfunc_repack_entry_text_and_attr_buffers_return_target_gcc.sh`
+- Target 1018 (`LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return`):
+- compare: `src/decomp/scripts/compare_ladfunc_update_entry_from_text_and_attr_buffers_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_ladfunc_update_entry_from_text_and_attr_buffers_return.awk`
+- promote: `src/decomp/scripts/promote_ladfunc_update_entry_from_text_and_attr_buffers_return_target_gcc.sh`
+- Target 1019 (`LOCAVAIL_ComputeFilterOffsetForEntry_Return`):
+- compare: `src/decomp/scripts/compare_locavail_compute_filter_offset_for_entry_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail_compute_filter_offset_for_entry_return.awk`
+- promote: `src/decomp/scripts/promote_locavail_compute_filter_offset_for_entry_return_target_gcc.sh`
+- Target 1020 (`LOCAVAIL_SaveAvailabilityDataFile_Return`):
+- compare: `src/decomp/scripts/compare_locavail_save_availability_data_file_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail_save_availability_data_file_return.awk`
+- promote: `src/decomp/scripts/promote_locavail_save_availability_data_file_return_target_gcc.sh`
+- Target 1021 (`LOCAVAIL_LoadAvailabilityDataFile_Return`):
+- compare: `src/decomp/scripts/compare_locavail_load_availability_data_file_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail_load_availability_data_file_return.awk`
+- promote: `src/decomp/scripts/promote_locavail_load_availability_data_file_return_target_gcc.sh`
+- Target 1022 (`LOCAVAIL_UpdateFilterStateMachine_Return`):
+- compare: `src/decomp/scripts/compare_locavail_update_filter_state_machine_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail_update_filter_state_machine_return.awk`
+- promote: `src/decomp/scripts/promote_locavail_update_filter_state_machine_return_target_gcc.sh`
+- latest full C trial: `compiled 1020 / 1020`, `export count 1031`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
