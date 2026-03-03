@@ -3524,7 +3524,23 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_show_attention_overlay_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_show_attention_overlay.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_show_attention_overlay_target_gcc.sh`
-- latest full C trial: `compiled 937 / 937`, `export count 948`, `status: ok`
+- Target 940 (`PARSE_ReadSignedLong_ParseLoopEntry`):
+- compare: `src/decomp/scripts/compare_parse_readsignedlong_parse_loop_entry_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_parse_readsignedlong_parse_loop_entry.awk`
+- promote: `src/decomp/scripts/promote_parse_readsignedlong_parse_loop_entry_target_gcc.sh`
+- Target 941 (`PARSE_ReadSignedLong_NegateValue`):
+- compare: `src/decomp/scripts/compare_parse_readsignedlong_negate_value_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_parse_readsignedlong_negate_value.awk`
+- promote: `src/decomp/scripts/promote_parse_readsignedlong_negate_value_target_gcc.sh`
+- Target 942 (`PARSE_ReadSignedLong_ParseDone`):
+- compare: `src/decomp/scripts/compare_parse_readsignedlong_parse_done_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_parse_readsignedlong_parse_done.awk`
+- promote: `src/decomp/scripts/promote_parse_readsignedlong_parse_done_target_gcc.sh`
+- Target 943 (`PARSE_ReadSignedLong_StoreResult`):
+- compare: `src/decomp/scripts/compare_parse_readsignedlong_store_result_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_parse_readsignedlong_store_result.awk`
+- promote: `src/decomp/scripts/promote_parse_readsignedlong_store_result_target_gcc.sh`
+- latest full C trial: `compiled 941 / 941`, `export count 952`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

@@ -21156,3 +21156,91 @@ Run:
 
 Current notes:
 - Candidate preserves UI-busy/diagnostics early gate, error-code jump-table mapping, overlay draw setup (Disable/Enable, APen/RectFill/DrMd), formatted error/file text branches, busy-flag update for width/colors path, and raster state restore before shared return tail.
+
+## Target 940: `modules/submodules/unknown10.s` (`PARSE_ReadSignedLong_ParseLoopEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Low-risk direct exported parser entry label used as a callable branch-in point.
+- Keeps parse helper exports moving while larger unresolved modules remain.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parse_readsignedlong_parse_loop_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parse_readsignedlong_parse_loop_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parse_readsignedlong_parse_loop_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_parse_readsignedlong_parse_loop_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parse_readsignedlong_parse_loop_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parse_readsignedlong_parse_loop_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exported entry label and direct control transfer into `PARSE_ReadSignedLong_ParseLoop`.
+- Replacement uses `JMP` for range-safe standalone GCC TU output.
+
+## Target 941: `modules/submodules/unknown10.s` (`PARSE_ReadSignedLong_NegateValue`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported parser helper with stable arithmetic behavior.
+- Extends direct parse helper coverage from entry-bridge into arithmetic stage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parse_readsignedlong_negate_value_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parse_readsignedlong_negate_value_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parse_readsignedlong_negate_value.awk`
+- Promotion gate: `src/decomp/scripts/promote_parse_readsignedlong_negate_value_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parse_readsignedlong_negate_value_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parse_readsignedlong_negate_value_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exported negate stage (`NEG.L D1`) and transfers into `PARSE_ReadSignedLong_StoreResult`.
+- Promotion gate and canonical hash checks both pass with this replacement active.
+
+## Target 942: `modules/submodules/unknown10.s` (`PARSE_ReadSignedLong_ParseDone`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Completes the next exported parser stage immediately before negate/store handoff.
+- Keeps related `PARSE_ReadSignedLong_*` entry labels consolidated in one promotion lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parse_readsignedlong_parse_done_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parse_readsignedlong_parse_done_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parse_readsignedlong_parse_done.awk`
+- Promotion gate: `src/decomp/scripts/promote_parse_readsignedlong_parse_done_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parse_readsignedlong_parse_done_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parse_readsignedlong_parse_done_target_gcc.sh`
+
+Current notes:
+- Candidate preserves sign-byte test and conditional branch to `PARSE_ReadSignedLong_StoreResult`.
+- Uses explicit long-form transfer to `PARSE_ReadSignedLong_NegateValue` in standalone GCC output to model original fallthrough behavior safely.
+
+## Target 943: `modules/submodules/unknown10.s` (`PARSE_ReadSignedLong_StoreResult`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final exported label in this `PARSE_ReadSignedLong_*` helper cluster.
+- Completes the parse-done/negate/store handoff chain in GCC replacements.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/parse_readsignedlong_store_result_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_parse_readsignedlong_store_result_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_parse_readsignedlong_store_result.awk`
+- Promotion gate: `src/decomp/scripts/promote_parse_readsignedlong_store_result_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_parse_readsignedlong_store_result_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_parse_readsignedlong_store_result_target_gcc.sh`
+
+Current notes:
+- Candidate preserves stack pop, output pointer store, consumed-length computation, and `RTS`.
+- Promotion gate passed with hash-verified hybrid build.

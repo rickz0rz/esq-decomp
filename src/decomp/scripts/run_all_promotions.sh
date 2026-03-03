@@ -944,6 +944,10 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_read_next_rbf_byte_target_gcc.sh"
     "src/decomp/scripts/promote_script_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh"
     "src/decomp/scripts/promote_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
+    "src/decomp/scripts/promote_parse_readsignedlong_parse_loop_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_parse_readsignedlong_negate_value_target_gcc.sh"
+    "src/decomp/scripts/promote_parse_readsignedlong_parse_done_target_gcc.sh"
+    "src/decomp/scripts/promote_parse_readsignedlong_store_result_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
