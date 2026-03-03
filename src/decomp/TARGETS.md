@@ -16985,3 +16985,24 @@ Run:
 
 Current notes:
 - Candidate preserves day-of-year scan/subtract loop against `CLOCK_MonthLengths`, alternate leap table select (`+24` bytes) when flag `+20` is set, and writes month/day back to offsets `+2` and `+4`.
+
+## Target 742: `modules/groups/a/a/app2.s` (`ESQ_WriteDecFixedWidth`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small numeric formatter with tight local loop and no external dependencies.
+- Useful direct-export follow-on while surrounding calendar/time helpers are already promoted.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_write_dec_fixed_width_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_write_dec_fixed_width_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_write_dec_fixed_width.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_write_dec_fixed_width_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_write_dec_fixed_width_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_write_dec_fixed_width_target_gcc.sh`
+
+Current notes:
+- Candidate preserves right-to-left fixed-width decimal emission, null terminator at `out_buf + digits`, per-digit signed divide-by-10 extraction path, and looped digit write count semantics.
