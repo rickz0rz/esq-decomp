@@ -19673,3 +19673,24 @@ Run:
 
 Current notes:
 - Candidate preserves original semantics: increment by step until reaching lower bound, then decrement by step until within final range, returning normalized value in `D0` with original register save/restore shape.
+
+## Target 870: `modules/groups/a/i/displib.s` (`DISPLIB_ResetLineTables`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small/medium exported DISPLIB state-reset helper with deterministic table loop.
+- Builds on Target 869 and supports upcoming `DISPLIB_ResetTextBufferAndLineTables` and display-path work.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_reset_line_tables_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_reset_line_tables_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_reset_line_tables.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_reset_line_tables_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_reset_line_tables_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_reset_line_tables_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPLIB_ResetLineTables` slice, preserving line-state zeroing (`Target/CurrentLineIndex`, width/lock fields), fixed 20-entry loop over pointer/length/pen tables, pen default write (`1`), and register/return shape.
