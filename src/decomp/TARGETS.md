@@ -17699,3 +17699,24 @@ Run:
 
 Current notes:
 - Candidate preserves `COI_GetAnimFieldPointerByMode` lookup, fallback copy from `CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY`, per-byte `WDISP_CharClassTable` bit7 checks, optional `LADFUNC_ParseHexDigit` conversion for bytes 6/7, and writes to `DISPTEXT_InsetNibblePrimary`/`DISPTEXT_InsetNibbleSecondary`.
+
+## Target 776: `modules/groups/a/e/cleanup4.s` (`CLEANUP_DrawInsetRectFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Mid-sized direct draw helper with deterministic geometry math and no complex external state machine coupling.
+- Good follow-up in `cleanup4.s` after Targets 774/775, extending direct export coverage in the same module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_inset_rect_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_inset_rect_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_inset_rect_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_inset_rect_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_inset_rect_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_inset_rect_frame_target_gcc.sh`
+
+Current notes:
+- Candidate preserves inset-bound calculations from rastport fields, pen-switch sequence (`SetAPen`), body fill (`RectFill`), border `Move/Draw` strokes, and pen restore before register/frame unwind.
