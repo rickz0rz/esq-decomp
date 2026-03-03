@@ -3368,7 +3368,11 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_set_apen_to_brightest_palette_index_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_set_apen_to_brightest_palette_index.awk`
 - promote: `src/decomp/scripts/promote_esqiff_set_apen_to_brightest_palette_index_target_gcc.sh`
-- latest full C trial: `compiled 898 / 898`, `export count 908`, `status: ok`
+- Target 901 (`ESQIFF_HandleBrushIniReloadHotkey`):
+- compare: `src/decomp/scripts/compare_esqiff_handle_brush_ini_reload_hotkey_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_handle_brush_ini_reload_hotkey.awk`
+- promote: `src/decomp/scripts/promote_esqiff_handle_brush_ini_reload_hotkey_target_gcc.sh`
+- latest full C trial: `compiled 899 / 899`, `export count 909`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

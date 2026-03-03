@@ -164,6 +164,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqiff_restore_base_palette_triples_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff_service_pending_copper_palette_moves_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff_set_apen_to_brightest_palette_index_target_gcc.sh"
+    "src/decomp/scripts/promote_esqiff_handle_brush_ini_reload_hotkey_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

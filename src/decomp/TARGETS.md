@@ -20324,3 +20324,24 @@ Run:
 
 Current notes:
 - Candidate preserves depth-derived palette bound scan, RGB intensity compare/update flow, and final `_LVOSetAPen` call; `Global_REF_RASTPORT_2` setup uses `LEA ...+2,A0` for assembler compatibility.
+
+## Target 901: `modules/groups/a/n/esqiff.s` (`ESQIFF_HandleBrushIniReloadHotkey`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next direct non-`JMPTBL` ESQIFF routine with meaningful state orchestration.
+- Medium control-flow bridge across parse/rebuild/select brush helper paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_handle_brush_ini_reload_hotkey_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_handle_brush_ini_reload_hotkey_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_handle_brush_ini_reload_hotkey.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_handle_brush_ini_reload_hotkey_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_handle_brush_ini_reload_hotkey_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_handle_brush_ini_reload_hotkey_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `'a'` hotkey gating, brush list free/parse/repopulate pipeline, fallback brush selection path, type3 cache update, and ctrl-input reset ordering.
