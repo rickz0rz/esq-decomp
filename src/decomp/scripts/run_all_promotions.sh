@@ -948,6 +948,12 @@ SCRIPTS=(
     "src/decomp/scripts/promote_parse_readsignedlong_negate_value_target_gcc.sh"
     "src/decomp/scripts/promote_parse_readsignedlong_parse_done_target_gcc.sh"
     "src/decomp/scripts/promote_parse_readsignedlong_store_result_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_advance_time_slot_bit_index_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_advance_blackout_bit_index_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_terminator_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_blackout_mask_value_terminator_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_header_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_blackout_mask_value_header_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

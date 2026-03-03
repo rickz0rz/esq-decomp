@@ -21244,3 +21244,135 @@ Run:
 Current notes:
 - Candidate preserves stack pop, output pointer store, consumed-length computation, and `RTS`.
 - Promotion gate passed with hash-verified hybrid build.
+
+## Target 944: `modules/groups/a/g/diskio1.s` (`DISKIO1_AdvanceTimeSlotBitIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved `DISKIO1` control-flow helper with stable loop-index behavior.
+- Good bridge into remaining `DISKIO1` mask formatter helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_advance_time_slot_bit_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_advance_time_slot_bit_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_advance_time_slot_bit_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_advance_time_slot_bit_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_advance_time_slot_bit_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_advance_time_slot_bit_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `D4` increment and transfer back to `DISKIO1_AppendTimeSlotMaskSelectedTimes`.
+- Uses explicit long-form jump in standalone TU output for range safety.
+
+## Target 945: `modules/groups/a/g/diskio1.s` (`DISKIO1_AdvanceBlackoutBitIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Twin helper to Target 944 with equivalent structure and low-risk semantics.
+- Extends contiguous `DISKIO1` coverage with matched branch-index routine conversion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_advance_blackout_bit_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_advance_blackout_bit_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_advance_blackout_bit_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_advance_blackout_bit_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_advance_blackout_bit_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_advance_blackout_bit_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `D4` increment and transfer back to `DISKIO1_AppendBlackoutMaskSelectedTimes`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 946: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendTimeSlotMaskValueTerminator`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved formatter helper adjacent to recently promoted time-slot index helper.
+- Continues low-risk `DISKIO1` sweep through append/terminator blocks.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_time_slot_mask_value_terminator_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_value_terminator_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_value_terminator.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_terminator_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_time_slot_mask_value_terminator_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_terminator_target_gcc.sh`
+
+Current notes:
+- Candidate preserves string push, formatter call, stack unwind, and transfer into `DISKIO1_FormatBlackoutMaskFlags`.
+- Semantic filter was widened to accept both direct and `(PC)` `JSR` spellings.
+
+## Target 947: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendBlackoutMaskValueTerminator`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Sister helper to Target 946 with matching control-flow structure.
+- Keeps `DISKIO1` conversion lane coherent by promoting paired terminator blocks together.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_blackout_mask_value_terminator_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_blackout_mask_value_terminator_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_value_terminator.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_blackout_mask_value_terminator_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_blackout_mask_value_terminator_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_blackout_mask_value_terminator_target_gcc.sh`
+
+Current notes:
+- Candidate preserves string push, formatter call, stack unwind, and transfer into `DISKIO1_DumpDefaultCoiInfoBlock`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 948: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendTimeSlotMaskValueHeader`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved header helper that directly precedes the already-promoted time-slot loop helpers.
+- Continues contiguous `DISKIO1` formatter coverage with low risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_time_slot_mask_value_header_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_value_header_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_value_header.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_header_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_time_slot_mask_value_header_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_header_target_gcc.sh`
+
+Current notes:
+- Candidate preserves header string push, formatter call, stack unwind, `MOVEQ #1,D4`, and transfer to `DISKIO1_AppendTimeSlotMaskSelectedTimes`.
+- Semantic filter accepts both direct and `(PC)` `JSR` spellings from normalized slices.
+
+## Target 949: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendBlackoutMaskValueHeader`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Sister helper to Target 948 with identical structure and control intent.
+- Keeps blackout/time-slot formatter paths promoted in lockstep.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_blackout_mask_value_header_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_blackout_mask_value_header_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_value_header.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_blackout_mask_value_header_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_blackout_mask_value_header_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_blackout_mask_value_header_target_gcc.sh`
+
+Current notes:
+- Candidate preserves header string push, formatter call, stack unwind, `MOVEQ #1,D4`, and transfer to `DISKIO1_AppendBlackoutMaskSelectedTimes`.
+- Promotion gate and hash checks pass with this replacement active.

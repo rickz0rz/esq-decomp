@@ -3540,7 +3540,31 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_parse_readsignedlong_store_result_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_parse_readsignedlong_store_result.awk`
 - promote: `src/decomp/scripts/promote_parse_readsignedlong_store_result_target_gcc.sh`
-- latest full C trial: `compiled 941 / 941`, `export count 952`, `status: ok`
+- Target 944 (`DISKIO1_AdvanceTimeSlotBitIndex`):
+- compare: `src/decomp/scripts/compare_diskio1_advance_time_slot_bit_index_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_advance_time_slot_bit_index.awk`
+- promote: `src/decomp/scripts/promote_diskio1_advance_time_slot_bit_index_target_gcc.sh`
+- Target 945 (`DISKIO1_AdvanceBlackoutBitIndex`):
+- compare: `src/decomp/scripts/compare_diskio1_advance_blackout_bit_index_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_advance_blackout_bit_index.awk`
+- promote: `src/decomp/scripts/promote_diskio1_advance_blackout_bit_index_target_gcc.sh`
+- Target 946 (`DISKIO1_AppendTimeSlotMaskValueTerminator`):
+- compare: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_value_terminator_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_value_terminator.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_terminator_target_gcc.sh`
+- Target 947 (`DISKIO1_AppendBlackoutMaskValueTerminator`):
+- compare: `src/decomp/scripts/compare_diskio1_append_blackout_mask_value_terminator_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_value_terminator.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_blackout_mask_value_terminator_target_gcc.sh`
+- Target 948 (`DISKIO1_AppendTimeSlotMaskValueHeader`):
+- compare: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_value_header_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_value_header.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_header_target_gcc.sh`
+- Target 949 (`DISKIO1_AppendBlackoutMaskValueHeader`):
+- compare: `src/decomp/scripts/compare_diskio1_append_blackout_mask_value_header_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_value_header.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_blackout_mask_value_header_target_gcc.sh`
+- latest full C trial: `compiled 947 / 947`, `export count 958`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
