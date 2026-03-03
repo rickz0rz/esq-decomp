@@ -17846,3 +17846,24 @@ Run:
 
 Current notes:
 - Candidate preserves local name-copy loop from `entry+12`, alias-table walk via `TEXTDISP_AliasPtrTable`, measured alias length call into `STRING_CompareNoCaseN`, first-match return of alias index, and `-1` return when no alias matches.
+
+## Target 783: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_FindQuotedSpan`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl parsing helper used by entry-match workflows, with deterministic quote/end-pointer handling.
+- Good progression in `textdisp3.s` after control-token and alias lookup helpers, while still compact enough for stable gating.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_find_quoted_span_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_find_quoted_span_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_find_quoted_span.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_find_quoted_span_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_find_quoted_span_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_find_quoted_span_target_gcc.sh`
+
+Current notes:
+- Candidate preserves first/second quote detection via `STR_FindCharPtr`, fallback path using caller end pointer or scanned string end, `WDISP_CharClassTable` bit-3 trimming on both span ends, and returned inclusive length (`end - start + 1`) with out-start/out-has-quotes stores.
