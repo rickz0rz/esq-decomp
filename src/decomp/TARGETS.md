@@ -20072,3 +20072,24 @@ Run:
 
 Current notes:
 - Candidate preserves suspension-clear path, banner geometry recompute call, and final mode/last-request update ordering.
+
+## Target 889: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_DrawEscMenuVersion`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous core ESQFUNC routine after Target 888.
+- Compact diagnostics/version renderer with straightforward formatting and display calls.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_draw_esc_menu_version_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_draw_esc_menu_version_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_draw_esc_menu_version.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_draw_esc_menu_version_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_draw_esc_menu_version_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_draw_esc_menu_version_target_gcc.sh`
+
+Current notes:
+- Candidate preserves build/ROM text formatting flow, three display calls, and pen/draw-mode transitions around prompt rendering.
