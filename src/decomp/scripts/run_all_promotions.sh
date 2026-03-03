@@ -25,6 +25,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_cleanup_clear_rbf_interrupt_and_serial_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_shutdown_input_devices_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_shutdown_system_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_release_display_resources_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

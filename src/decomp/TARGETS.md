@@ -17405,3 +17405,24 @@ Run:
 
 Current notes:
 - Candidate preserves the global-forbid/permit bracket, brush/filter cleanup calls, interrupt/vector teardown chain (`ClearVertb`/`ClearAud1`/`ClearRbf`), input/display shutdown calls, highlight/message deallocation, nested raster free loops, and final restoration hooks.
+
+## Target 762: `modules/groups/a/b/cleanup.s` (`CLEANUP_ReleaseDisplayResources`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining direct cleanup export with deterministic deallocation loops and handle-close sequence.
+- High-value coverage for raster/font/library teardown paths touched by many startup allocations.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_release_display_resources_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_release_display_resources_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_release_display_resources.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_release_display_resources_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_release_display_resources_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_release_display_resources_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the top-level memory frees, four raster-table traversal loops with `Graphics_FreeRaster`, conditional font closes, and final utility/diskfont/dos/intuition/graphics library close ordering.
