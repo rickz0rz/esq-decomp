@@ -975,6 +975,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_locavail2_auto_request_no_op_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_set_banner_color_base_and_limit_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_clear_banner_work_raster_with_ones_target_gcc.sh"
+    "src/decomp/scripts/promote_gcommand_get_banner_char_target_gcc.sh"
+    "src/decomp/scripts/promote_gcommand_add_banner_table_byte_delta_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

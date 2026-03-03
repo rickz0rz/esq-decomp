@@ -3648,7 +3648,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_clear_banner_work_raster_with_ones_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_clear_banner_work_raster_with_ones.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_clear_banner_work_raster_with_ones_target_gcc.sh`
-- latest full C trial: `compiled 968 / 968`, `export count 979`, `status: ok`
+- Target 971 (`GCOMMAND_GetBannerChar`):
+- compare: `src/decomp/scripts/compare_gcommand_get_banner_char_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_get_banner_char.awk`
+- promote: `src/decomp/scripts/promote_gcommand_get_banner_char_target_gcc.sh`
+- Target 972 (`GCOMMAND_AddBannerTableByteDelta`):
+- compare: `src/decomp/scripts/compare_gcommand_add_banner_table_byte_delta_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_add_banner_table_byte_delta.awk`
+- promote: `src/decomp/scripts/promote_gcommand_add_banner_table_byte_delta_target_gcc.sh`
+- latest full C trial: `compiled 970 / 970`, `export count 981`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

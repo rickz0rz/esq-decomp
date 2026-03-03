@@ -21837,3 +21837,47 @@ Run:
 Current notes:
 - Candidate preserves banner-work raster base load, loop count seed (`0x149`), longword fill with `0xFFFFFFFF`, `DBF` loop, and `RTS`.
 - Semantic filter accepts original local-label `DBF` target and replacement numeric local-label form.
+
+## Target 971: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_GetBannerChar`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved getter routine with local stack-frame pattern.
+- Low-risk promotion that advances `gcommand3` helper coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_get_banner_char_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_get_banner_char_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_get_banner_char.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_get_banner_char_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_get_banner_char_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_get_banner_char_target_gcc.sh`
+
+Current notes:
+- Candidate preserves stack frame setup/teardown (`LINK/UNLK`), local storage of `ESQ_CopperListBannerA`, zero-extended byte load into `D0`, and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 972: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_AddBannerTableByteDelta`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved in-place byte-adjust helper used by banner offset logic.
+- Deterministic register-save/update/restore pattern suitable for fast promotion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_add_banner_table_byte_delta_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_add_banner_table_byte_delta_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_add_banner_table_byte_delta.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_add_banner_table_byte_delta_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_add_banner_table_byte_delta_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_add_banner_table_byte_delta_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `D7/A3` save/restore, argument loads from stack frame, byte add into `(A3)`, and `RTS`.
+- Promotion gate and hash checks pass with this replacement active.
