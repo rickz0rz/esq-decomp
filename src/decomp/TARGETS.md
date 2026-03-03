@@ -17951,3 +17951,24 @@ Run:
 
 Current notes:
 - Candidate preserves alias index lookup via `TEXTDISP_FindAliasIndexByName`, alias-table copy path when found, fallback to `entry+19` length check, optional `TEXTDISP_CenterAlignToken` prefix for short names, and final append via `STRING_AppendAtNull`.
+
+## Target 788: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_BuildChannelLabel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl label builder used by banner rendering paths.
+- Good incremental step after Target 787 because it composes already-promoted helpers and string globals in a contained routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_build_channel_label_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_build_channel_label_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_build_channel_label.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_build_channel_label_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_build_channel_label_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_build_channel_label_target_gcc.sh`
+
+Current notes:
+- Candidate preserves group-dependent entry pointer fetch, entry-name copy into local scratch, readiness guards (length and trailing-space checks), optional `Global_STR_ALIGNED_ON` prefix, fixed `Global_STR_ALIGNED_CHANNEL_1` append, and terminator/ready-flag updates for `TEXTDISP_ChannelLabelBuffer`.
