@@ -190,6 +190,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqiff2_show_attention_overlay_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_return_target_gcc.sh"
+    "src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_validate_ascii_numeric_byte_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_target_gcc.sh"

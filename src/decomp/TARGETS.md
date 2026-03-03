@@ -21006,3 +21006,24 @@ Run:
 Current notes:
 - Candidate preserves payload-copy loop, filter/deferred-mode guard, banner queue/refresh/draw path, minute-event clamp+seed sequence, diagnostics redraw gate, and scroll-speed/state-index clamp logic.
 - Full-C compile required replacing short branches to external return symbol with long-form control transfer (`JMP ESQIFF2_ApplyIncomingStatusPacket_Return`) to avoid branch-range overflow in standalone TU assembly.
+
+## Target 933: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_PadEntriesToMaxTitleWidth`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-sized bounded loop helper with stable table/pointer/copy behavior.
+- Expands ESQIFF2 full-body coverage around entry/title formatting path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_pad_entries_to_max_title_width_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_pad_entries_to_max_title_width_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_pad_entries_to_max_title_width.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_pad_entries_to_max_title_width_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_target_gcc.sh`
+
+Current notes:
+- Candidate preserves group-selection guard, entry-table selection (primary/secondary), title-length scan, space-buffer fill, append-at-null call, and copy-back loop, while branching to shared return tail (`ESQIFF2_PadEntriesToMaxTitleWidth_Return`) for unmatched/loop-complete paths.
