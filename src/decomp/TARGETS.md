@@ -18161,3 +18161,24 @@ Run:
 
 Current notes:
 - Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,A2-A3` + `RTS`) with matching callable symbol.
+
+## Target 798: `modules/groups/a/e/coi.s` (`COI_FreeSubEntryTableEntries_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal direct non-jmptbl COI return export with simple frame unwind.
+- Continues quick COI helper consolidation before heavier body-function conversions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_free_sub_entry_table_entries_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_free_sub_entry_table_entries_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_free_sub_entry_table_entries_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_free_sub_entry_table_entries_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_free_sub_entry_table_entries_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_free_sub_entry_table_entries_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,D7/A2-A3`, `UNLK A5`, `RTS`) with matching callable symbol.
