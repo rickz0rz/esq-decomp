@@ -18182,3 +18182,24 @@ Run:
 
 Current notes:
 - Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,D7/A2-A3`, `UNLK A5`, `RTS`) with matching callable symbol.
+
+## Target 799: `modules/groups/a/e/coi.s` (`COI_GetAnimFieldPointerByMode_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal direct non-jmptbl COI return export with straightforward unwind semantics.
+- Continues low-risk COI return-helper conversion cadence before larger COI bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_get_anim_field_pointer_by_mode_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_get_anim_field_pointer_by_mode_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_get_anim_field_pointer_by_mode_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_get_anim_field_pointer_by_mode_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,D4-D7/A3`, `UNLK A5`, `RTS`) with matching callable symbol.

@@ -62,6 +62,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_coi_free_entry_resources_return_target_gcc.sh"
     "src/decomp/scripts/promote_coi_clear_anim_object_strings_return_target_gcc.sh"
     "src/decomp/scripts/promote_coi_free_sub_entry_table_entries_return_target_gcc.sh"
+    "src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_return_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
