@@ -616,6 +616,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
     "src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh"
     "src/decomp/scripts/promote_brush_append_brush_node_target_gcc.sh"
+    "src/decomp/scripts/promote_brush_pop_brush_head_target_gcc.sh"
+    "src/decomp/scripts/promote_brush_find_type3_brush_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh"

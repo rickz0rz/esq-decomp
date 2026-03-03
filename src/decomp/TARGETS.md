@@ -15884,3 +15884,49 @@ Current notes:
 - Original routine appends `node` to the tail using next-pointer offset `+368`, returning original head (or `node` when head is null).
 - GCC output uses a different prologue/loop shape while preserving null-guard, tail traversal, and final link-store semantics under semantic gating.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 691: `modules/groups/a/a/brush.s` (`BRUSH_PopBrushHead`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact list-helper directly adjacent to Target 690 with simple null-check + single helper call.
+- Keeps momentum in `brush.s` while avoiding high-complexity asset-loading paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_pop_brush_head_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_pop_brush_head_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_pop_brush_head.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_pop_brush_head_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_pop_brush_head_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_pop_brush_head_target_gcc.sh`
+
+Current notes:
+- Original routine returns null for empty input; otherwise returns `head->next` (`+368`) after calling `BRUSH_FreeBrushList(&head, 1)`.
+- GCC output uses a shorter branch/prologue form while preserving null-path, `+368` extraction, and free-call semantics under compare filtering.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 692: `modules/groups/a/a/brush.s` (`BRUSH_FindType3Brush`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact list-scan routine with no external calls, ideal for low-risk incremental promotion.
+- Continues direct `BRUSH_*` core coverage immediately after Targets 690/691.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_find_type3_brush_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_find_type3_brush_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_find_type3_brush.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_find_type3_brush_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_find_type3_brush_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_find_type3_brush_target_gcc.sh`
+
+Current notes:
+- Original routine scans nodes via next pointer (`+368`) and returns first entry with type byte (`+32`) equal to `3`, otherwise null.
+- GCC output differs in control-flow shape while preserving type-check and traversal semantics under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
