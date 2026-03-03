@@ -18077,3 +18077,24 @@ Run:
 
 Current notes:
 - Candidate preserves PPV/SBE/SPORTS wildcard tag checks, find-mode prefix handling, per-group table selection and entry-count limits, filter gates on entry flag bits/editor predicate, wildcard text match fallback, candidate-index byte writes, and final match-count return.
+
+## Target 794: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_FindEntryMatchIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core direct non-jmptbl matcher used by selection/channel-range flows.
+- High-impact conversion that reduces remaining non-jmptbl control logic in `textdisp3.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_find_entry_match_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_find_entry_match_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_find_entry_match_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_find_entry_match_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_find_entry_match_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_find_entry_match_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode-dependent start index handling, control-token and quoted-span pre-processing, per-entry validity/bitmask checks, control-token gating and exact/substring comparison paths (`STRING_CompareNoCase` / `ESQ_FindSubstringCaseFold`), transient null-termination restore logic, and final match index or `49` fallback return behavior.
