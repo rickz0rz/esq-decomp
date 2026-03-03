@@ -18497,3 +18497,24 @@ Run:
 
 Current notes:
 - Candidate preserves object/null guard exits, sub-entry key scan (`D5` loop), mode switch dispatch via embedded PC-relative jumptable (`.lab_034D`), per-mode source selection logic (`D4` gated subentry/main entry fields), default clear path, and branch to existing `COI_GetAnimFieldPointerByMode_Return`.
+
+## Target 814: `modules/groups/a/e/coi.s` (`COI_TestEntryWithinTimeWindow` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-jmptbl COI decision routine driving time-window eligibility checks for entry formatting/selection.
+- High leverage because it combines offset computation, half-hour clock math path, per-entry flag-gated delta mode, and final threshold comparison.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_test_entry_within_time_window_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_test_entry_within_time_window_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_test_entry_within_time_window.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_test_entry_within_time_window_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_test_entry_within_time_window_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_test_entry_within_time_window_target_gcc.sh`
+
+Current notes:
+- Candidate preserves setup/guard exits, `TEXTDISP_ComputeTimeOffset` fast path, `MATH_Mulu32` fallback path, bit-4 mode branch, optional call to `COI_ComputeEntryTimeDeltaMinutes`, final signed comparison logic, and explicit wide branches to existing `COI_TestEntryWithinTimeWindow_Return` for standalone-trial safety.
