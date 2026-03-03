@@ -17720,3 +17720,24 @@ Run:
 
 Current notes:
 - Candidate preserves inset-bound calculations from rastport fields, pen-switch sequence (`SetAPen`), body fill (`RectFill`), border `Move/Draw` strokes, and pen restore before register/frame unwind.
+
+## Target 777: `modules/groups/a/e/cleanup4.s` (`CLEANUP_FormatEntryStringTokens`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct export with meaningful token-parsing/string-rewrite behavior used by status rendering paths.
+- Natural follow-up in `cleanup4.s` after draw/flag helpers, improving non-jmptbl business-logic coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_format_entry_string_tokens_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_format_entry_string_tokens_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_format_entry_string_tokens.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_format_entry_string_tokens_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_format_entry_string_tokens_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_format_entry_string_tokens_target_gcc.sh`
+
+Current notes:
+- Candidate preserves empty-input guards, `STR_FindCharPtr` colon split path, default token-pair scratch setup/copy loops, per-token scan/dispatch loop, repeated `ESQPARS_ReplaceOwnedString` rewrites for output pointers, and final empty-template fallback path.
