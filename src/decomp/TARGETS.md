@@ -18833,3 +18833,45 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_ComputeVisibleLineCount` assembly slice, preserving prologue/epilogue, `TargetLineIndex` clamp vs requested max, `MATH_Mulu32` row-height scaling, signed adjust + `ASR #2`, optional control-marker checks via two `STR_FindCharPtr` probes (19/20), plus marker bonus add and final return in `D5`.
+
+## Target 830: `modules/groups/a/i/disptext.s` (`DISPTEXT_InitBuffers`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-size exported non-jmptbl allocator helper with straightforward flag gate and dual allocation flow.
+- Core native `DISPTEXT` initialization routine referenced by existing promoted jump-table wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_init_buffers_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_init_buffers_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_init_buffers.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_init_buffers_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_init_buffers_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_init_buffers_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_InitBuffers` assembly slice, preserving pending-flag gate, line-table reset, pending clear, two `MEMORY_AllocateMemory` calls (site ids `320`/`321`), stored handles (`Global_REF_1000_BYTES_ALLOCATED_1/2`), stack adjustment, and return path.
+
+## Target 831: `modules/groups/a/i/disptext.s` (`DISPTEXT_FreeBuffers`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-size exported non-jmptbl teardown helper, complementing Target 830 initialization.
+- Central buffer lifetime routine with two guarded deallocation branches.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_free_buffers_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_free_buffers_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_free_buffers.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_free_buffers_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_free_buffers_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_free_buffers_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_FreeBuffers` assembly slice, preserving initial reset call, guarded deallocation of both 1000-byte buffers (site ids `338`/`343`), per-branch stack fixups, global clears, and final return.
