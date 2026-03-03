@@ -20282,3 +20282,24 @@ Run:
 
 Current notes:
 - Candidate preserves 24-byte copy loop from `ESQFUNC_BasePaletteRgbTriples` into `WDISP_PaletteTriplesRBase` with original `D7` save/restore framing.
+
+## Target 899: `modules/groups/a/n/esqiff.s` (`ESQIFF_ServicePendingCopperPaletteMoves`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous direct ESQIFF routine after Target 898.
+- Medium control-flow function with per-row branch fanout and directional dispatch behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_service_pending_copper_palette_moves_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_service_pending_copper_palette_moves_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_service_pending_copper_palette_moves.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_service_pending_copper_palette_moves_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_service_pending_copper_palette_moves_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_service_pending_copper_palette_moves_target_gcc.sh`
+
+Current notes:
+- Candidate preserves all four row countdown gates (`ACCUMULATOR_Row{0..3}_SaturateFlag`) and both direction call paths (`...TowardEnd`/`...TowardStart`) with A4 save/restore framing.
