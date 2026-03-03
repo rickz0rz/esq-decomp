@@ -17804,3 +17804,24 @@ Run:
 
 Current notes:
 - Candidate preserves primary/secondary template selection and backup copy, template-code dispatch using `STR_FindCharPtr`, aligned status detail assembly helpers, entry/status rendering branches, and tail `Graphics_BltBitMapRastPort` plus `ESQIFF_RunCopperRiseTransition` sequence before function epilogue.
+
+## Target 781: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_FindControlToken`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct non-jmptbl export with self-contained byte-scan logic.
+- Good low-risk step into `textdisp3.s` direct exports before larger parsing/render routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_find_control_token_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_find_control_token_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_find_control_token.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_find_control_token_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_find_control_token_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_find_control_token_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the token scan over high-bit bytes, the exact subtract-chain for accepted control codes (`0x84` base with stepped deltas), pointer return on match, and null return on end-of-string.
