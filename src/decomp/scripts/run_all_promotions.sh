@@ -37,6 +37,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_cleanup_draw_clock_banner_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_draw_clock_format_list_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_process_alerts_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_test_entry_flag_y_and_bit1_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

@@ -743,6 +743,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_cleanup_draw_clock_banner_trial_gcc.sh`: GCC-specific compare lane for `Target 771` (`CLEANUP_DrawClockBanner`).
 - `src/decomp/scripts/compare_cleanup_draw_clock_format_list_trial_gcc.sh`: GCC-specific compare lane for `Target 772` (`CLEANUP_DrawClockFormatList`).
 - `src/decomp/scripts/compare_cleanup_process_alerts_trial_gcc.sh`: GCC-specific compare lane for `Target 773` (`CLEANUP_ProcessAlerts`).
+- `src/decomp/scripts/compare_cleanup_test_entry_flag_y_and_bit1_trial_gcc.sh`: GCC-specific compare lane for `Target 774` (`CLEANUP_TestEntryFlagYAndBit1`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1414,6 +1415,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_cleanup_draw_clock_banner.awk`: semantic post-filter for `CLEANUP_DrawClockBanner` compare lane.
 - `src/decomp/scripts/semantic_filter_cleanup_draw_clock_format_list.awk`: semantic post-filter for `CLEANUP_DrawClockFormatList` compare lane.
 - `src/decomp/scripts/semantic_filter_cleanup_process_alerts.awk`: semantic post-filter for `CLEANUP_ProcessAlerts` compare lane.
+- `src/decomp/scripts/semantic_filter_cleanup_test_entry_flag_y_and_bit1.awk`: semantic post-filter for `CLEANUP_TestEntryFlagYAndBit1` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2184,6 +2186,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_cleanup_draw_clock_banner_target_gcc.sh`: promotion gate for Target 771 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_cleanup_draw_clock_format_list_target_gcc.sh`: promotion gate for Target 772 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_cleanup_process_alerts_target_gcc.sh`: promotion gate for Target 773 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_cleanup_test_entry_flag_y_and_bit1_target_gcc.sh`: promotion gate for Target 774 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

@@ -17657,3 +17657,24 @@ Run:
 
 Current notes:
 - Candidate preserves pending-alert/processing guards, diagnostics refresh branch, state-step transitions, dual `ESQ_TickClockAndFlagEvents` updates, banner queue/status refresh path, RTC/update clock branches, banner redraw calls (`CLEANUP_DrawGridTimeBanner`/`CLEANUP_DrawClockBanner`), and final processing-flag clear/restore epilogue.
+
+## Target 774: `modules/groups/a/e/cleanup4.s` (`CLEANUP_TestEntryFlagYAndBit1`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, isolated direct export with clear boolean-return behavior and bounded branching.
+- Good first non-jmptbl promotion in `cleanup4.s`, reusing already-promoted helper coverage around related flag-processing paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_test_entry_flag_y_and_bit1_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_test_entry_flag_y_and_bit1_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_test_entry_flag_y_and_bit1.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_test_entry_flag_y_and_bit1_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_test_entry_flag_y_and_bit1_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_test_entry_flag_y_and_bit1_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `COI_GetAnimFieldPointerByMode` lookup, null/range guards on entry pointer and field index, `'Y'` byte compare (`#89`) against selected field offset, bit test at `40(A3)` bit1, and `0/1` return normalization via `.return_false`/`.done` path.
