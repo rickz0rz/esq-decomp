@@ -3512,7 +3512,11 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_parse_line_head_tail_record_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_parse_line_head_tail_record.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_target_gcc.sh`
-- latest full C trial: `compiled 934 / 934`, `export count 945`, `status: ok`
+- Target 937 (`ESQIFF2_ParseGroupRecordAndRefresh`):
+- compare: `src/decomp/scripts/compare_esqiff2_parse_group_record_and_refresh_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_parse_group_record_and_refresh.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_parse_group_record_and_refresh_target_gcc.sh`
+- latest full C trial: `compiled 935 / 935`, `export count 946`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
