@@ -1,0 +1,15 @@
+__asm__(
+    ".globl _CLEANUP_ClearAud1InterruptVector\n"
+    "_CLEANUP_ClearAud1InterruptVector:\n"
+    "    move.w  #0x100,_INTENA\n"
+    "    moveq   #7,%d0\n"
+    "    movea.l _Global_REF_INTB_AUD1_INTERRUPT,%a1\n"
+    "    movea.l _AbsExecBase,%a6\n"
+    "    jsr     _LVOSetIntVector(%a6)\n"
+    "    pea     22.w\n"
+    "    move.l  _Global_REF_INTERRUPT_STRUCT_INTB_AUD1,-(%sp)\n"
+    "    pea     74.w\n"
+    "    pea     _Global_STR_CLEANUP_C_2\n"
+    "    jsr     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory\n"
+    "    lea     16(%sp),%sp\n"
+    "    rts\n");

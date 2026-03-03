@@ -17321,3 +17321,24 @@ Run:
 
 Current notes:
 - Candidate preserves `INTB_VERTB` removal via `_LVORemIntServer`, then deallocates `Global_REF_INTERRUPT_STRUCT_INTB_VERTB` through `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` using the original size/tag arguments and stack cleanup.
+
+## Target 758: `modules/groups/a/b/cleanup.s` (`CLEANUP_ClearAud1InterruptVector`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, direct cleanup export with a fixed interrupt/vector restore sequence.
+- Natural follow-up to Target 757 to keep reducing assembly-only shutdown routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_clear_aud1_interrupt_vector_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_clear_aud1_interrupt_vector_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_clear_aud1_interrupt_vector.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_clear_aud1_interrupt_vector_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_clear_aud1_interrupt_vector_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_clear_aud1_interrupt_vector_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `INTENA` disable write (`#$100`), `INTB_AUD1` vector restore via `_LVOSetIntVector`, and interrupt-struct free through `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` with original `22/74` arguments and stack cleanup.
