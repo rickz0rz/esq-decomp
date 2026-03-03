@@ -19169,3 +19169,45 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_GetEntryAuxPointerByMode` slice, preserving stack-local default-null result, mode switch (`1` primary / `2` secondary), negative and upper-bound guards, title-table pointer fetch, and shared return epilogue.
+
+## Target 846: `modules/groups/a/n/esqdisp.s` (`ESQDISP_ComputeScheduleOffsetForRow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl arithmetic helper with deterministic call chain and simple register flow.
+- Good native follow-on after the ESQDISP pointer/accessor conversions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_compute_schedule_offset_for_row_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_compute_schedule_offset_for_row_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_compute_schedule_offset_for_row.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_compute_schedule_offset_for_row_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_compute_schedule_offset_for_row_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_compute_schedule_offset_for_row_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_ComputeScheduleOffsetForRow` slice, preserving D5-D7 save/restore, `DST_BuildBannerTimeWord` input marshalling, scaled offset build (`timeword*2 + row`), and normalization through `DISPLIB_NormalizeValueByStep(value,1,48)`.
+
+## Target 847: `modules/groups/a/n/esqdisp.s` (`ESQDISP_TestEntryGridEligibility`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl eligibility predicate with clear bounds/bit-test logic.
+- Converts both exported entry labels in one pass (`ESQDISP_TestEntryGridEligibility` and `_Return`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_test_entry_grid_eligibility_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_test_entry_grid_eligibility_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_test_entry_grid_eligibility.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_test_entry_grid_eligibility_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_test_entry_grid_eligibility_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_test_entry_grid_eligibility_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_TestEntryGridEligibility` slice, preserving slot range checks (`1..48`), null-entry guard, bit4 fast-path test, fallback byte-range check at `A3 + 0xFC + slot` (`5..10`), and shared return tail that restores `D6-D7/A3`.

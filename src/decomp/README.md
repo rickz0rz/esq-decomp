@@ -815,6 +815,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esqdisp_test_entry_bits0_and2_trial_gcc.sh`: GCC-specific compare lane for `Target 843` (`ESQDISP_TestEntryBits0And2`).
 - `src/decomp/scripts/compare_esqdisp_get_entry_pointer_by_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 844` (`ESQDISP_GetEntryPointerByMode`).
 - `src/decomp/scripts/compare_esqdisp_get_entry_aux_pointer_by_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 845` (`ESQDISP_GetEntryAuxPointerByMode`).
+- `src/decomp/scripts/compare_esqdisp_compute_schedule_offset_for_row_trial_gcc.sh`: GCC-specific compare lane for `Target 846` (`ESQDISP_ComputeScheduleOffsetForRow`).
+- `src/decomp/scripts/compare_esqdisp_test_entry_grid_eligibility_trial_gcc.sh`: GCC-specific compare lane for `Target 847` (`ESQDISP_TestEntryGridEligibility`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1558,6 +1560,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esqdisp_test_entry_bits0_and2.awk`: semantic post-filter for `ESQDISP_TestEntryBits0And2` compare lane.
 - `src/decomp/scripts/semantic_filter_esqdisp_get_entry_pointer_by_mode.awk`: semantic post-filter for `ESQDISP_GetEntryPointerByMode` compare lane.
 - `src/decomp/scripts/semantic_filter_esqdisp_get_entry_aux_pointer_by_mode.awk`: semantic post-filter for `ESQDISP_GetEntryAuxPointerByMode` compare lane.
+- `src/decomp/scripts/semantic_filter_esqdisp_compute_schedule_offset_for_row.awk`: semantic post-filter for `ESQDISP_ComputeScheduleOffsetForRow` compare lane.
+- `src/decomp/scripts/semantic_filter_esqdisp_test_entry_grid_eligibility.awk`: semantic post-filter for `ESQDISP_TestEntryGridEligibility` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2400,6 +2404,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esqdisp_test_entry_bits0_and2_target_gcc.sh`: promotion gate for Target 843 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqdisp_get_entry_pointer_by_mode_target_gcc.sh`: promotion gate for Target 844 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqdisp_get_entry_aux_pointer_by_mode_target_gcc.sh`: promotion gate for Target 845 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqdisp_compute_schedule_offset_for_row_target_gcc.sh`: promotion gate for Target 846 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqdisp_test_entry_grid_eligibility_target_gcc.sh`: promotion gate for Target 847 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

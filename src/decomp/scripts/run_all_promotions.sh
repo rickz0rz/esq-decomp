@@ -109,6 +109,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqdisp_test_entry_bits0_and2_target_gcc.sh"
     "src/decomp/scripts/promote_esqdisp_get_entry_pointer_by_mode_target_gcc.sh"
     "src/decomp/scripts/promote_esqdisp_get_entry_aux_pointer_by_mode_target_gcc.sh"
+    "src/decomp/scripts/promote_esqdisp_compute_schedule_offset_for_row_target_gcc.sh"
+    "src/decomp/scripts/promote_esqdisp_test_entry_grid_eligibility_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
