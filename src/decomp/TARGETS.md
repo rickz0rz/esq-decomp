@@ -17468,3 +17468,24 @@ Run:
 
 Current notes:
 - Candidate preserves bitmap swap/restore, fill rectangle (`448,34 -> 663,67`), `CLEANUP_DrawGridTimeBanner` call, and `BEVEL_DrawBevelFrameWithTopRight` frame draw.
+
+## Target 765: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawDateBannerSegment`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact partner to Target 764 with same draw-frame scaffold but date rendering path.
+- Raises cleanup2 direct-export coverage while keeping promotion risk low.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_date_banner_segment_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_date_banner_segment_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_date_banner_segment.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_date_banner_segment_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_date_banner_segment_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_date_banner_segment_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bitmap swap/restore, left-segment clear rectangle (`40,34 -> 255,67`), `RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY` call, and `BEVEL_DrawBevelFrameWithTopRight` frame draw.
