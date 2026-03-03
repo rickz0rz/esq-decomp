@@ -17279,3 +17279,24 @@ Run:
 
 Current notes:
 - Candidate preserves bit-4 capture phase machine, sample scratch buffering, assembled-byte write into `CTRL_BUFFER`, wrap at `$1F4`, buffered-count update against `CTRL_HPreviousSample`, `CTRL_HDeltaMax` tracking, and full state reset epilogue.
+
+## Target 756: `modules/groups/_main/b/b.s` (`ESQ_CheckTopazFontGuard`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- High-impact startup guard routine with distinct warning-lock and rerun-error paths.
+- Removes a large direct `ESQ_*` export from raw assembly while preserving exact control flow through a file-scope asm body.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_check_topaz_font_guard_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_check_topaz_font_guard_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_check_topaz_font_guard.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_check_topaz_font_guard_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_check_topaz_font_guard_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_check_topaz_font_guard_target_gcc.sh`
+
+Current notes:
+- Candidate keeps the original stack frame/register-save protocol, topaz guard rerun branch, engineer warning draw-and-lock loop, bypass path (`_LVOSizeWindow`, delayed remap, `_LVORemakeDisplay`, `_LVOFreeMem`), and rerun-error stream/flush termination path.

@@ -88,6 +88,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_advance_banner_char_index_return_target_gcc.sh"
     "src/decomp/scripts/promote_esq_capture_ctrl_bit3_stream_target_gcc.sh"
     "src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_check_topaz_font_guard_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"

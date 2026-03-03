@@ -50,6 +50,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_read_serial_rbf_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 713` (`ESQ_ReadSerialRbfByte`).
 - `src/decomp/scripts/compare_esq_handle_serial_rbf_interrupt_trial_gcc.sh`: GCC-specific compare lane for `Target 714` (`ESQ_HandleSerialRbfInterrupt`).
 - `src/decomp/scripts/compare_esq_capture_ctrl_bit4_stream_buffer_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 715` (`ESQ_CaptureCtrlBit4StreamBufferByte`).
+- `src/decomp/scripts/compare_esq_check_topaz_font_guard_trial_gcc.sh`: GCC-specific compare lane for `Target 756` (`ESQ_CheckTopazFontGuard`).
 - `src/decomp/scripts/compare_esq_poll_ctrl_input_trial_gcc.sh`: GCC-specific compare lane for `Target 716` (`ESQ_PollCtrlInput`).
 - `src/decomp/scripts/compare_esq_set_copper_effect_default_trial_gcc.sh`: GCC-specific compare lane for `Target 717` (`ESQ_SetCopperEffect_Default`).
 - `src/decomp/scripts/compare_esq_set_copper_effect_all_on_trial_gcc.sh`: GCC-specific compare lane for `Target 718` (`ESQ_SetCopperEffect_AllOn`).
@@ -803,6 +804,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_read_serial_rbf_byte.awk`: semantic post-filter for `ESQ_ReadSerialRbfByte` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_handle_serial_rbf_interrupt.awk`: semantic post-filter for `ESQ_HandleSerialRbfInterrupt` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_capture_ctrl_bit4_stream_buffer_byte.awk`: semantic post-filter for `ESQ_CaptureCtrlBit4StreamBufferByte` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_check_topaz_font_guard.awk`: semantic post-filter for `ESQ_CheckTopazFontGuard` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_poll_ctrl_input.awk`: semantic post-filter for `ESQ_PollCtrlInput` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_set_copper_effect_default.awk`: semantic post-filter for `ESQ_SetCopperEffect_Default` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_set_copper_effect_all_on.awk`: semantic post-filter for `ESQ_SetCopperEffect_AllOn` compare lane.
@@ -1455,6 +1457,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh`: promotion gate for Target 713 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_handle_serial_rbf_interrupt_target_gcc.sh`: promotion gate for Target 714 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh`: promotion gate for Target 715 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_check_topaz_font_guard_target_gcc.sh`: promotion gate for Target 756 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_poll_ctrl_input_target_gcc.sh`: promotion gate for Target 716 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_set_copper_effect_default_target_gcc.sh`: promotion gate for Target 717 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_set_copper_effect_all_on_target_gcc.sh`: promotion gate for Target 718 GCC lane (semantic + build/hash gates).
