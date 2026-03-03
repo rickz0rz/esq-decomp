@@ -16091,3 +16091,72 @@ Current notes:
 - Input label is mirrored to `BRUSH_LabelScratch`, then two-byte alias handling maps `"00"`/`"11"` to `"DT"` before list scan.
 - Candidate matching compares node label fragment at `+0x21`; matching node updates `BRUSH_SelectedNode`.
 - Fallback path uses `BRUSH_FindBrushByPredicate(BRUSH_STR_FALLBACK_DITHER, &ESQIFF_BrushIniListHead)` and mirrors final node into both script selection globals.
+
+## Target 700: `modules/groups/a/a/brush.s` (`BRUSH_FreeBrushResources`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact list teardown routine with a single deallocator call-site and clear terminal side effect (`*head_ptr = 0`).
+- Low-risk continuation of brush export cleanup before larger asset-loader targets.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_free_brush_resources_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_free_brush_resources_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_free_brush_resources.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_free_brush_resources_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_free_brush_resources_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_free_brush_resources_target_gcc.sh`
+
+Current notes:
+- Routine walks descriptor chain via offset `+234`, deallocating each node with tag `Global_STR_BRUSH_C_9` and size `238`.
+- Loop terminates on null link and clears list head pointer before return.
+- Semantic gate tracks link-offset traversal, dealloc-size signature, head-clear writeback, and loop/return structure.
+
+## Target 701: `modules/groups/a/a/brush.s` (`BRUSH_PopulateBrushList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core constructor pass that bridges descriptor parsing and loaded-brush runtime list setup.
+- Moderate complexity but bounded side effects with already-promoted helper dependencies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_populate_brush_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_populate_brush_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_populate_brush_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_populate_brush_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_populate_brush_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_populate_brush_list_target_gcc.sh`
+
+Current notes:
+- Function brackets population with `_LVOForbid/_LVOPermit` and toggles `BRUSH_LoadInProgressFlag` (`1` at start, `0` at end).
+- Each descriptor is passed to `BRUSH_LoadBrushAsset`, deallocated (`Global_STR_BRUSH_C_8`, line `845`, size `238`), and successful loads are appended through `+368`.
+- Finalization clears `PARSEINI_ParsedDescriptorListHead` and runs `BRUSH_NormalizeBrushNames` on output list head.
+
+## Target 702: `modules/groups/a/a/brush.s` (`BRUSH_StreamFontChunk`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Isolated IO helper with deterministic chunk loop and straightforward status returns.
+- Good incremental bridge toward larger font loader (`BRUSH_LoadColorTextFont`) without taking on allocation/unpack complexity yet.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_stream_font_chunk_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_stream_font_chunk_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_stream_font_chunk.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_stream_font_chunk_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_stream_font_chunk_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_stream_font_chunk_target_gcc.sh`
+
+Current notes:
+- Guards invalid input (`byte_count > max_bytes`) with `-1` early return and persists requested byte count into state offset `+186`.
+- Reads full `2048`-byte chunks first, then a tail read for remainder.
+- Any short read returns `-1`; success returns `1`.
