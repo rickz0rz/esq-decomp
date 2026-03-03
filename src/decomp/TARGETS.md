@@ -5925,6 +5925,76 @@ Current notes:
 - End-of-routine cleanup deallocates work buffer with site marker constant `406` and `Global_REF_LONG_FILE_SCRATCH + 1` size.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 667: `modules/groups/b/a/script.s` (`SCRIPT_AllocateBufferArray`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` allocator helper used by script/runtime setup paths.
+- Provides direct coverage of tagged per-slot memory allocation loop semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_allocate_buffer_array_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_allocate_buffer_array_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_allocate_buffer_array.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_allocate_buffer_array_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_allocate_buffer_array_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_allocate_buffer_array_target_gcc.sh`
+
+Current notes:
+- Candidate preserves slot loop over `count` and alloc call site constants (`394`, `MEMF_PUBLIC|MEMF_CLEAR`) with per-index pointer writeback.
+- Semantic filter intentionally avoids requiring the literal `0x10001` marker because original assembly uses symbolic flags.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 668: `modules/groups/b/a/script.s` (`SCRIPT_DeallocateBufferArray`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` paired deallocator for script buffer arrays.
+- Completes allocation lifecycle coverage for script buffer slots (free + clear).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_deallocate_buffer_array_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_deallocate_buffer_array_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_deallocate_buffer_array.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_deallocate_buffer_array_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_deallocate_buffer_array_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_deallocate_buffer_array_target_gcc.sh`
+
+Current notes:
+- Candidate preserves per-slot deallocate call site constant (`405`) and post-free pointer clear behavior.
+- Loop/count semantics remain bounded by `count` and indexed by 4-byte pointer slots.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 669: `modules/groups/b/a/script.s` (`SCRIPT_BuildTokenIndexMap`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` token scan/index routine with sentinel fill and in-place input mutation.
+- Useful parser primitive that multiple script/control paths depend on.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_build_token_index_map_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_build_token_index_map_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_build_token_index_map.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_build_token_index_map_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_build_token_index_map_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_build_token_index_map_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `-1` table initialization, bounded input scan, token-table match from moving lower bound, input-byte clear-on-match, and early exit when last token is assigned.
+- Return value semantics remain `scan_pos` (current input index), with optional missing-entry fill using `last_match_index` fallback.
+- Semantic filter relaxed to avoid false negatives on compiler-specific stack-argument shape for `fillMissingFlag`; core sentinel/match/clear/loop markers remain gated.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
