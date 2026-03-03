@@ -48,6 +48,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_textdisp_find_alias_index_by_name_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_find_quoted_span_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_format_entry_time_for_index_target_gcc.sh"
+    "src/decomp/scripts/promote_textdisp_compute_time_offset_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

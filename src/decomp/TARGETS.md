@@ -17888,3 +17888,24 @@ Run:
 
 Current notes:
 - Candidate preserves entry row pointer lookup, schedule-offset computation, fallback clock-format rendering for non-`(hh:mm)` text, hh:mm parse-and-round path using `CLOCK_FormatVariantCode`, clock-template copy via `Global_REF_STR_CLOCK_FORMAT`, and clear-output guard when source text is missing.
+
+## Target 785: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_ComputeTimeOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl timing helper used by downstream entry-selection/format flows.
+- Good adjacent follow-up after Target 784, covering offset arithmetic against current clock globals.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_compute_time_offset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_compute_time_offset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_compute_time_offset.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_compute_time_offset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_compute_time_offset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_compute_time_offset_target_gcc.sh`
+
+Current notes:
+- Candidate preserves schedule offset + broadcast window calls, year/month/day fallback delta selection, baseline minute accumulation, AM/PM-adjusted current time subtraction, day delta scaling by `0x5A0`, and final offset return in `D0`.

@@ -754,6 +754,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_textdisp_find_alias_index_by_name_trial_gcc.sh`: GCC-specific compare lane for `Target 782` (`TEXTDISP_FindAliasIndexByName`).
 - `src/decomp/scripts/compare_textdisp_find_quoted_span_trial_gcc.sh`: GCC-specific compare lane for `Target 783` (`TEXTDISP_FindQuotedSpan`).
 - `src/decomp/scripts/compare_textdisp_format_entry_time_for_index_trial_gcc.sh`: GCC-specific compare lane for `Target 784` (`TEXTDISP_FormatEntryTimeForIndex`).
+- `src/decomp/scripts/compare_textdisp_compute_time_offset_trial_gcc.sh`: GCC-specific compare lane for `Target 785` (`TEXTDISP_ComputeTimeOffset`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1436,6 +1437,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_textdisp_find_alias_index_by_name.awk`: semantic post-filter for `TEXTDISP_FindAliasIndexByName` compare lane.
 - `src/decomp/scripts/semantic_filter_textdisp_find_quoted_span.awk`: semantic post-filter for `TEXTDISP_FindQuotedSpan` compare lane.
 - `src/decomp/scripts/semantic_filter_textdisp_format_entry_time_for_index.awk`: semantic post-filter for `TEXTDISP_FormatEntryTimeForIndex` compare lane.
+- `src/decomp/scripts/semantic_filter_textdisp_compute_time_offset.awk`: semantic post-filter for `TEXTDISP_ComputeTimeOffset` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2217,6 +2219,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_textdisp_find_alias_index_by_name_target_gcc.sh`: promotion gate for Target 782 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_textdisp_find_quoted_span_target_gcc.sh`: promotion gate for Target 783 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_textdisp_format_entry_time_for_index_target_gcc.sh`: promotion gate for Target 784 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_textdisp_compute_time_offset_target_gcc.sh`: promotion gate for Target 785 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).
