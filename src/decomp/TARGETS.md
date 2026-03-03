@@ -18476,3 +18476,24 @@ Run:
 
 Current notes:
 - Candidate preserves object/null guards, per-entry cleanup loop over `36(A3)`/`38(A3)`, repeated `ESQPARS_ReplaceOwnedString` calls across subentry fields, optional `SCRIPT_DeallocateBufferArray` + `MEMORY_DeallocateMemory` path, and final zeroing of `36(A3)` and `38(A3)` before branch to existing return symbol.
+
+## Target 813: `modules/groups/a/e/coi.s` (`COI_GetAnimFieldPointerByMode` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-jmptbl COI selector with internal scan plus switch/jumptable dispatch across mode variants.
+- High leverage dependency for downstream display/time formatting logic that repeatedly queries mode-specific field pointers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_get_anim_field_pointer_by_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_get_anim_field_pointer_by_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_get_anim_field_pointer_by_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_get_anim_field_pointer_by_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves object/null guard exits, sub-entry key scan (`D5` loop), mode switch dispatch via embedded PC-relative jumptable (`.lab_034D`), per-mode source selection logic (`D4` gated subentry/main entry fields), default clear path, and branch to existing `COI_GetAnimFieldPointerByMode_Return`.
