@@ -6040,6 +6040,51 @@ Current notes:
 - Semantic filter relaxed on explicit bit-set opcode shape to avoid false negatives across equivalent compiler forms.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 672: `modules/groups/b/a/script2.s` (`SCRIPT_AssertCtrlLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` control-line assertion path that updates shadow state and emits serial write.
+- Direct dependency for conditional/immediate wrapper routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_assert_ctrl_line_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_assert_ctrl_line_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_assert_ctrl_line.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_assert_ctrl_line_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_assert_ctrl_line_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_assert_ctrl_line_target_gcc.sh`
+
+Current notes:
+- Candidate preserves asserted-flag set, serial shadow OR with bit `0x20`, and write-through via `SCRIPT_WriteCtrlShadowToSerdat`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 673: `modules/groups/b/a/script2.s` (`SCRIPT_DeassertCtrlLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` inverse control-line path clearing asserted state and serial shadow bit.
+- Pairs with Target 672 to complete the base CTRL-line toggle primitives.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_deassert_ctrl_line_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_deassert_ctrl_line_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_deassert_ctrl_line.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_deassert_ctrl_line_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_deassert_ctrl_line_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_deassert_ctrl_line_target_gcc.sh`
+
+Current notes:
+- Candidate preserves asserted-flag clear, serial shadow mask with `0xFFDF`, and write-through via `SCRIPT_WriteCtrlShadowToSerdat`.
+- Semantic filter relaxed on exact mask-opcode shape to avoid false negatives across equivalent compiler lowering.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

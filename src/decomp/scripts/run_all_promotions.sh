@@ -676,6 +676,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_build_token_index_map_target_gcc.sh"
     "src/decomp/scripts/promote_script_get_ctrl_line_flag_target_gcc.sh"
     "src/decomp/scripts/promote_script_write_ctrl_shadow_to_serdat_target_gcc.sh"
+    "src/decomp/scripts/promote_script_assert_ctrl_line_target_gcc.sh"
+    "src/decomp/scripts/promote_script_deassert_ctrl_line_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
