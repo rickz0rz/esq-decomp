@@ -16229,3 +16229,68 @@ Current notes:
 - Computes source/destination offsets using clip limits (`348/352`) and alignment modes (`356/360`), including signed half-with-bias behavior.
 - Applies width/height clipping against brush limits and optional forced destination Y override (`arg7 > 0`).
 - Issues final blit via `GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort` with source bitmap at `brush+136` and minterm `192`.
+
+## Target 706: `modules/groups/a/a/brush.s` (`BRUSH_LoadBrushAsset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Last remaining direct `BRUSH_*` export in `brush.s`; high leverage for end-to-end brush pipeline coverage.
+- Large routine, so this pass uses conservative semantic-gate-first strategy centered on stable call graph and resource lifecycle.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_load_brush_asset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_load_brush_asset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_load_brush_asset.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_load_brush_asset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_load_brush_asset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_load_brush_asset_target_gcc.sh`
+
+Current notes:
+- Semantic gate keys on stable behavior families: file open/read/seek/close, FORM header compare, 130k decode buffer lifecycle, ILBM + PackBits decode path, node/raster alloc+cleanup, and alert snapshot path.
+- This lane is intentionally conservative and is expected to be tightened as offsets/loop invariants are refined in later passes.
+
+## Target 707: `modules/groups/a/a/app3.s` (`ESQ_InvokeGcommandInit`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct export wrapper with deterministic call shape and no dataflow side effects.
+- Converts a direct callback-style symbol that previously had only a jump-table promotion lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_invoke_gcommand_init_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_invoke_gcommand_init_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_invoke_gcommand_init.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_invoke_gcommand_init_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh`
+
+Current notes:
+- Semantic gate checks only stable behavior anchors: call to `GCOMMAND_ProcessCtrlCommand` and terminal `RTS`.
+- Lane is intentionally minimal and can be tightened later if we choose to lock register-preservation shape.
+
+## Target 708: `modules/groups/a/a/app3.s` (`ESQ_TryRomWriteTest`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal direct export with deterministic constant-return behavior.
+- Converts another direct symbol from `app3.s` while keeping risk low between larger runtime targets.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_try_rom_write_test_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_try_rom_write_test_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_try_rom_write_test.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_try_rom_write_test_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh`
+
+Current notes:
+- Semantic gate checks stable intent only: loads constant `1` into return register and exits via `RTS`.

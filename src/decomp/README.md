@@ -43,6 +43,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_memlist_alloc_tracked_trial_gcc.sh`: GCC-specific compare lane for `Target 076` (`MEMLIST_AllocTracked`).
 - `src/decomp/scripts/compare_format_raw_dofmt_with_scratch_buffer_trial_gcc.sh`: GCC-specific compare lane for `Target 077` (`FORMAT_RawDoFmtWithScratchBuffer`).
 - `src/decomp/scripts/compare_esq_main_entry_noop_hook_trial_gcc.sh`: GCC-specific compare lane for `Target 078` (`ESQ_MainEntryNoOpHook`).
+- `src/decomp/scripts/compare_esq_invoke_gcommand_init_trial_gcc.sh`: GCC-specific compare lane for `Target 707` (`ESQ_InvokeGcommandInit`).
+- `src/decomp/scripts/compare_esq_try_rom_write_test_trial_gcc.sh`: GCC-specific compare lane for `Target 708` (`ESQ_TryRomWriteTest`).
 - `src/decomp/scripts/compare_esq_main_exit_noop_hook_trial_gcc.sh`: GCC-specific compare lane for `Target 079` (`ESQ_MainExitNoOpHook`).
 - `src/decomp/scripts/compare_dos_open_file_with_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 080` (`DOS_OpenFileWithMode`).
 - `src/decomp/scripts/compare_graphics_alloc_raster_trial_gcc.sh`: GCC-specific compare lane for `Target 081` (`GRAPHICS_AllocRaster`).
@@ -80,6 +82,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_brush_load_color_text_font_trial_gcc.sh`: GCC-specific compare lane for `Target 703` (`BRUSH_LoadColorTextFont`).
 - `src/decomp/scripts/compare_brush_clone_brush_record_trial_gcc.sh`: GCC-specific compare lane for `Target 704` (`BRUSH_CloneBrushRecord`).
 - `src/decomp/scripts/compare_brush_select_brush_slot_trial_gcc.sh`: GCC-specific compare lane for `Target 705` (`BRUSH_SelectBrushSlot`).
+- `src/decomp/scripts/compare_brush_load_brush_asset_trial_gcc.sh`: GCC-specific compare lane for `Target 706` (`BRUSH_LoadBrushAsset`).
 - `src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`: GCC-specific compare lane for `Target 605` (`DATETIME_IsLeapYear`).
 - `src/decomp/scripts/compare_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 606` (`DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 607` (`DATETIME_NormalizeMonthRange`).
@@ -746,6 +749,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_memlist_alloc_tracked.awk`: semantic post-filter for `MEMLIST_AllocTracked` compare lane.
 - `src/decomp/scripts/semantic_filter_format_raw_dofmt_with_scratch_buffer.awk`: semantic post-filter for `FORMAT_RawDoFmtWithScratchBuffer` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_main_entry_noop_hook.awk`: semantic post-filter for `ESQ_MainEntryNoOpHook` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_invoke_gcommand_init.awk`: semantic post-filter for `ESQ_InvokeGcommandInit` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_try_rom_write_test.awk`: semantic post-filter for `ESQ_TryRomWriteTest` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_main_exit_noop_hook.awk`: semantic post-filter for `ESQ_MainExitNoOpHook` compare lane.
 - `src/decomp/scripts/semantic_filter_dos_open_file_with_mode.awk`: semantic post-filter for `DOS_OpenFileWithMode` compare lane.
 - `src/decomp/scripts/semantic_filter_graphics_alloc_raster.awk`: semantic post-filter for `GRAPHICS_AllocRaster` compare lane.
@@ -777,6 +782,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_brush_load_color_text_font.awk`: semantic post-filter for `BRUSH_LoadColorTextFont` compare lane.
 - `src/decomp/scripts/semantic_filter_brush_clone_brush_record.awk`: semantic post-filter for `BRUSH_CloneBrushRecord` compare lane.
 - `src/decomp/scripts/semantic_filter_brush_select_brush_slot.awk`: semantic post-filter for `BRUSH_SelectBrushSlot` compare lane.
+- `src/decomp/scripts/semantic_filter_brush_load_brush_asset.awk`: semantic post-filter for `BRUSH_LoadBrushAsset` compare lane.
 - `src/decomp/scripts/semantic_filter_datetime_isleapyear.awk`: semantic post-filter for `DATETIME_IsLeapYear` compare lane.
 - `src/decomp/scripts/semantic_filter_datetime_adjust_month_index.awk`: semantic post-filter for `DATETIME_AdjustMonthIndex` compare lane.
 - `src/decomp/scripts/semantic_filter_datetime_normalize_month_range.awk`: semantic post-filter for `DATETIME_NormalizeMonthRange` compare lane.
@@ -1348,6 +1354,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_memlist_alloc_tracked_target_gcc.sh`: promotion gate for Target 076 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_format_raw_dofmt_with_scratch_buffer_target_gcc.sh`: promotion gate for Target 077 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh`: promotion gate for Target 078 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh`: promotion gate for Target 707 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh`: promotion gate for Target 708 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh`: promotion gate for Target 079 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh`: promotion gate for Target 080 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh`: promotion gate for Target 081 GCC lane (semantic + build/hash gates).
@@ -1385,6 +1393,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh`: promotion gate for Target 703 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh`: promotion gate for Target 704 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_select_brush_slot_target_gcc.sh`: promotion gate for Target 705 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_brush_load_brush_asset_target_gcc.sh`: promotion gate for Target 706 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`: promotion gate for Target 605 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 606 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 607 GCC lane (semantic + build/hash gates).
@@ -2091,6 +2100,8 @@ bash src/decomp/scripts/promote_memlist_free_all_target_gcc.sh
 bash src/decomp/scripts/promote_memlist_alloc_tracked_target_gcc.sh
 bash src/decomp/scripts/promote_format_raw_dofmt_with_scratch_buffer_target_gcc.sh
 bash src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh
+bash src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh
+bash src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh
 bash src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh
 bash src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh
 bash src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh
@@ -2128,6 +2139,7 @@ bash src/decomp/scripts/promote_brush_stream_font_chunk_target_gcc.sh
 bash src/decomp/scripts/promote_brush_load_color_text_font_target_gcc.sh
 bash src/decomp/scripts/promote_brush_clone_brush_record_target_gcc.sh
 bash src/decomp/scripts/promote_brush_select_brush_slot_target_gcc.sh
+bash src/decomp/scripts/promote_brush_load_brush_asset_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh
