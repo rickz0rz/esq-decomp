@@ -17384,3 +17384,24 @@ Run:
 
 Current notes:
 - Candidate preserves `DoIO` flush path for input IO request, input-buffer deallocation (`tag 127`), both `_LVOCloseDevice` calls, msg-port cleanup for input/console ports, paired `IOSTDREQ_Free` calls, and final stack unwind `LEA 16(A7),A7`.
+
+## Target 761: `modules/groups/a/b/cleanup.s` (`CLEANUP_ShutdownSystem`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Consolidated shutdown coordinator with explicit sequencing over all major cleanup domains.
+- High leverage non-jmptbl promotion that captures system-level teardown ordering.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_shutdown_system_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_shutdown_system_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_shutdown_system.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_shutdown_system_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_shutdown_system_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_shutdown_system_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the global-forbid/permit bracket, brush/filter cleanup calls, interrupt/vector teardown chain (`ClearVertb`/`ClearAud1`/`ClearRbf`), input/display shutdown calls, highlight/message deallocation, nested raster free loops, and final restoration hooks.
