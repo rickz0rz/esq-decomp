@@ -21552,3 +21552,112 @@ Run:
 Current notes:
 - Candidate preserves bit-test on `#2,27(A3)`, optional formatter call for `DISKIO_STR_SUM_SRC_CompactSourceAttrFlags`, and transfer into `DISKIO1_AppendAttrFlagVideoTagDisable`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 958: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagVideoTagDisable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next unresolved helper in the attr-flag chain after Target 957.
+- Same low-risk conditional formatter pattern as neighboring promoted targets.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_video_tag_disable_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_video_tag_disable_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_video_tag_disable.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_video_tag_disable_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_video_tag_disable_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_video_tag_disable_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#3,27(A3)`, optional formatter call for `DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags`, and transfer to `DISKIO1_AppendAttrFlagPpvSrc`.
+- Tail `JMP` keeps original fallthrough semantics when split into standalone replacement TU.
+
+## Target 959: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagPpvSrc`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Continues contiguous attr-flag chain conversion with identical control idiom.
+- Small branch/call block with stable side effects.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_ppv_src_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_ppv_src_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_ppv_src.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_ppv_src_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_ppv_src_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_ppv_src_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#4,27(A3)`, optional formatter call for `DISKIO_STR_PPV_SRC_CompactSourceAttrFlags`, and transfer to `DISKIO1_AppendAttrFlagDitto`.
+
+## Target 960: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagDitto`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Extends attr-flag chain promotion through the next unresolved link.
+- Keeps this module’s micro-helper sequence moving in source order.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_ditto_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_ditto_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_ditto.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_ditto_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_ditto_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_ditto_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#5,27(A3)`, optional formatter call for `DISKIO_STR_DITTO_CompactSourceAttrFlags`, and transfer to `DISKIO1_AppendAttrFlagAltHiliteSrc`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 961: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagAltHiliteSrc`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Penultimate unresolved helper in the attr-flag chain.
+- Same proven conditional formatter + fallthrough pattern as prior converted links.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_alt_hilite_src_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_alt_hilite_src_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_alt_hilite_src.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_alt_hilite_src_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_alt_hilite_src_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_alt_hilite_src_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#6,27(A3)`, optional formatter call for `DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags`, and transfer to `DISKIO1_AppendAttrFlagBit7`.
+- Tail `JMP` keeps original fallthrough behavior across replacement TU boundaries.
+
+## Target 962: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagBit7`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final unresolved helper in the compact attr-flag append chain.
+- Completes end-to-end conversion of this micro-sequence into GCC replacements.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_bit7_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_bit7_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_bit7.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_bit7_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#7,27(A3)`, optional formatter call for `DISKIO_STR_0X80`, and transfer to `DISKIO1_FormatTimeSlotMaskFlags`.
+- Promotion gate and canonical hash checks pass with this replacement active.

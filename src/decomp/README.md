@@ -3596,7 +3596,27 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_summary_src_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_summary_src.awk`
 - promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_summary_src_target_gcc.sh`
-- latest full C trial: `compiled 955 / 955`, `export count 966`, `status: ok`
+- Target 958 (`DISKIO1_AppendAttrFlagVideoTagDisable`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_video_tag_disable_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_video_tag_disable.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_video_tag_disable_target_gcc.sh`
+- Target 959 (`DISKIO1_AppendAttrFlagPpvSrc`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_ppv_src_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_ppv_src.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_ppv_src_target_gcc.sh`
+- Target 960 (`DISKIO1_AppendAttrFlagDitto`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_ditto_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_ditto.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_ditto_target_gcc.sh`
+- Target 961 (`DISKIO1_AppendAttrFlagAltHiliteSrc`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_alt_hilite_src_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_alt_hilite_src.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_alt_hilite_src_target_gcc.sh`
+- Target 962 (`DISKIO1_AppendAttrFlagBit7`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_bit7_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_bit7.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh`
+- latest full C trial: `compiled 960 / 960`, `export count 971`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

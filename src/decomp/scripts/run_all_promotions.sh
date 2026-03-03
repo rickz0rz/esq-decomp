@@ -962,6 +962,11 @@ SCRIPTS=(
     "src/decomp/scripts/promote_diskio1_append_blackout_mask_all_if_all_bits_set_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_attr_flag_hilite_src_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_attr_flag_summary_src_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_video_tag_disable_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_ppv_src_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_ditto_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_alt_hilite_src_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
