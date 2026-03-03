@@ -18959,3 +18959,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_BuildLineWithWidth` assembly slice, preserving frame/regs save, initial single-space width measurement, source loop guards, delimiter/class3 token extraction, per-word width measurement + shrink path, append/skip flow, control-marker booleanization update, and final null-or-next-source return in `D0`.
+
+## Target 836: `modules/groups/a/i/disptext.s` (`DISPTEXT_BuildLinePointerTable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl pointer-table maintenance helper used by line-layout/finalization flow.
+- Important native routine that gates table rebuilds via lock flag and emits per-line pointer offsets.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_build_line_pointer_table_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_build_line_pointer_table_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_build_line_pointer_table.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_build_line_pointer_table_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_build_line_pointer_table_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_build_line_pointer_table_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_BuildLinePointerTable` assembly slice, preserving D5-D7/A2-A3 save/restore, lock-flag early return, base pointer init from `DISPTEXT_TextBufferPtr`, header-line probe through `DISPTEXT_LineLengthTable`, per-line pointer construction loop, and final lock assignment from input argument (`24(A7)` -> `DISPTEXT_LineTableLockFlag`).
