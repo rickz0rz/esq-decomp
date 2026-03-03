@@ -20429,3 +20429,90 @@ Run:
 
 Current notes:
 - Candidate preserves GADS/logo free+reload order, availability flag bit updates (`|=1`, `|=2`), and write-protect/caller-mode gated logo reload behavior.
+
+## Target 906: `modules/groups/a/n/esqiff.s` (`ESQIFF_RenderWeatherStatusBrushSlice`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Mid-size direct ESQIFF renderer with mode-dependent blit and progress-state behavior.
+- Bridges weather-overlay rendering flow before larger external-asset dispatch routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_render_weather_status_brush_slice_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_render_weather_status_brush_slice_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_render_weather_status_brush_slice.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_render_weather_status_brush_slice_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_render_weather_status_brush_slice_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_render_weather_status_brush_slice_target_gcc.sh`
+
+Current notes:
+- Candidate preserves width init/clamp logic, mode-9 dual-slot vs centered-slot blit pathing, one-shot validate gate, and shared return-label tail (`ESQIFF_RenderWeatherStatusBrushSlice_Return`).
+
+## Target 907: `modules/groups/a/n/esqiff.s` (`ESQIFF_DrawWeatherStatusOverlayIntoBrush`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core direct ESQIFF weather-overlay renderer used by brush-load fast path.
+- Good high-value bridge target before external-asset playback/show routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_draw_weather_status_overlay_into_brush_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_draw_weather_status_overlay_into_brush_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_draw_weather_status_overlay_into_brush.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_draw_weather_status_overlay_into_brush_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_draw_weather_status_overlay_into_brush_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_draw_weather_status_overlay_into_brush_target_gcc.sh`
+
+Current notes:
+- Candidate mirrors delimiter split (`$18` -> `NUL`), segment clamp, centered text placement, brush select/trim/draw loop, and rastport restore/deallocation tail.
+- GCC inline-asm copy strips source comment-only lines for GAS compatibility; opcode flow/labels remain preserved.
+
+## Target 908: `modules/groups/a/n/esqiff.s` (`ESQIFF_QueueNextExternalAssetIffJob`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next direct ESQIFF external-asset scheduler routine after catalog reload/path parsing.
+- Captures forbid/permit + path-filter + descriptor-queue orchestration in one unit.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_queue_next_external_asset_iff_job_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_queue_next_external_asset_iff_job_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_queue_next_external_asset_iff_job.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_queue_next_external_asset_iff_job_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_queue_next_external_asset_iff_job_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_queue_next_external_asset_iff_job_target_gcc.sh`
+
+Current notes:
+- Candidate preserves path-scan looping, wildcard probe/match behavior, duplicate-head suppression, pending-descriptor initialization, and retry/timeout return state handling.
+- GCC inline-asm copy strips source comment-only lines for GAS compatibility; opcode flow/labels remain preserved.
+
+## Target 909: `modules/groups/a/n/esqiff.s` (`ESQIFF_ServiceExternalAssetSourceState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact direct ESQIFF state router immediately upstream of frame-playback path.
+- Captures source-select + conditional reload + queue orchestration logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_service_external_asset_source_state_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_service_external_asset_source_state_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_service_external_asset_source_state.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_service_external_asset_source_state_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_service_external_asset_source_state_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_service_external_asset_source_state_target_gcc.sh`
+
+Current notes:
+- Candidate preserves RAVESC/overlay busy guards, source-select toggles, per-drive write-protect reload checks, and tail queue of `ESQIFF_QueueNextExternalAssetIffJob`.
+- GCC inline-asm copy strips source comment-only lines for GAS compatibility; opcode flow/labels remain preserved.

@@ -3388,7 +3388,23 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_reload_external_asset_catalog_buffers_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_reload_external_asset_catalog_buffers.awk`
 - promote: `src/decomp/scripts/promote_esqiff_reload_external_asset_catalog_buffers_target_gcc.sh`
-- latest full C trial: `compiled 903 / 903`, `export count 913`, `status: ok`
+- Target 906 (`ESQIFF_RenderWeatherStatusBrushSlice`):
+- compare: `src/decomp/scripts/compare_esqiff_render_weather_status_brush_slice_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_render_weather_status_brush_slice.awk`
+- promote: `src/decomp/scripts/promote_esqiff_render_weather_status_brush_slice_target_gcc.sh`
+- Target 907 (`ESQIFF_DrawWeatherStatusOverlayIntoBrush`):
+- compare: `src/decomp/scripts/compare_esqiff_draw_weather_status_overlay_into_brush_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_draw_weather_status_overlay_into_brush.awk`
+- promote: `src/decomp/scripts/promote_esqiff_draw_weather_status_overlay_into_brush_target_gcc.sh`
+- Target 908 (`ESQIFF_QueueNextExternalAssetIffJob`):
+- compare: `src/decomp/scripts/compare_esqiff_queue_next_external_asset_iff_job_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_queue_next_external_asset_iff_job.awk`
+- promote: `src/decomp/scripts/promote_esqiff_queue_next_external_asset_iff_job_target_gcc.sh`
+- Target 909 (`ESQIFF_ServiceExternalAssetSourceState`):
+- compare: `src/decomp/scripts/compare_esqiff_service_external_asset_source_state_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_service_external_asset_source_state.awk`
+- promote: `src/decomp/scripts/promote_esqiff_service_external_asset_source_state_target_gcc.sh`
+- latest full C trial: `compiled 907 / 907`, `export count 918`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
