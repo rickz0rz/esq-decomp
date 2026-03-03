@@ -139,6 +139,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_displib_display_text_at_position_target_gcc.sh"
     "src/decomp/scripts/promote_displib_apply_inline_alignment_padding_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_jmptbl_esq_tick_global_counters_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_jmptbl_esq_poll_ctrl_input_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

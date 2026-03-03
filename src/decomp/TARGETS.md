@@ -19799,3 +19799,45 @@ Run:
 
 Current notes:
 - Candidate preserves exact forwarder behavior: `JMP ESQ_HandleSerialRbfInterrupt`.
+
+## Target 876: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_JMPTBL_ESQ_TickGlobalCounters`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported jmptbl forwarder adjacent to Target 875 in the same `esqfunc.s` stub cluster.
+- Continues low-risk symbol-coverage expansion for interrupt tick wiring paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_jmptbl_esq_tick_global_counters_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_jmptbl_esq_tick_global_counters_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_esq_tick_global_counters.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_jmptbl_esq_tick_global_counters_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_jmptbl_esq_tick_global_counters_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_jmptbl_esq_tick_global_counters_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact forwarder behavior: `JMP ESQ_TickGlobalCounters`.
+
+## Target 877: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_JMPTBL_ESQ_PollCtrlInput`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported jmptbl forwarder adjacent to Targets 875/876 in the same stub cluster.
+- Keeps uninterrupted promotion momentum in ESQFUNC interrupt/control-input wrapper coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_jmptbl_esq_poll_ctrl_input_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_jmptbl_esq_poll_ctrl_input_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_esq_poll_ctrl_input.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_jmptbl_esq_poll_ctrl_input_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_jmptbl_esq_poll_ctrl_input_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_jmptbl_esq_poll_ctrl_input_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact forwarder behavior: `JMP ESQ_PollCtrlInput`.
