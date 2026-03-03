@@ -18770,3 +18770,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_IsLastLineSelected` assembly slice, preserving D2 save/restore, finalize-call order, `DISPTEXT_TargetLineIndex - 1` compare against `DISPTEXT_CurrentLineIndex`, `SEQ/NEG/EXT` booleanize sequence, and final `RTS`.
+
+## Target 827: `modules/groups/a/i/disptext.s` (`DISPTEXT_SetCurrentLineIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl state update helper with bounded-index guards and a single local call.
+- Good continuation of native `disptext.s` coverage after predicate/count helpers (Targets 823-826).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_set_current_line_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_set_current_line_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_set_current_line_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_set_current_line_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_set_current_line_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_set_current_line_index_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_SetCurrentLineIndex` assembly slice, preserving D7 save/restore, line-table lock guard, min/max range checks (`1..3`), `DISPLIB_CommitCurrentLinePenAndAdvance` call, stack fixup, and final `RTS`.
