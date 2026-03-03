@@ -17531,3 +17531,45 @@ Run:
 
 Current notes:
 - Candidate preserves short day/month lookup indexing, `WDISP_SPrintf` formatting into stack scratch, text-length centering math, `Move`/`Text` draw sequence, and tail `Graphics_BltBitMapRastPort` copy.
+
+## Target 768: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawGridTimeBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core time-banner renderer called by `CLEANUP_DrawTimeBannerSegment`, with formatting, centering, optional AM/PM suffix, and final blit.
+- High-value direct export in `cleanup2.s` that materially reduces inline assembly in the banner draw chain.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_grid_time_banner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_grid_time_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_grid_time_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_grid_time_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_grid_time_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_grid_time_banner_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `ESQ_FormatTimeStamp` seed into stack scratch, 12/24-hour adjust path via `GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat`, `WDISP_SPrintf` time rebuild, text-length-based centering with optional AM/PM branch, `Move`/`Text` draws, and tail `Graphics_BltBitMapRastPort` copy into the banner segment.
+
+## Target 769: `modules/groups/a/c/cleanup2.s` (`CLEANUP_FormatClockFormatEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct-export formatter helper with bounded control flow and no graphics side effects.
+- Unlocks cleaner decomp progress for clock-format list rendering by isolating slot-wrap and digit-adjust semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_format_clock_format_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_format_clock_format_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_format_clock_format_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_format_clock_format_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_format_clock_format_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_format_clock_format_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves slot wrap (`-48` loop), format-variant quotient/remainder path (`DivS32 #30`), format-string copy loop from `Global_REF_STR_CLOCK_FORMAT`, optional digit recompute via `Mulu32`/`DivS32` and ASCII writes at offsets `3/4`, and original register-save/restore frame.

@@ -31,6 +31,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_cleanup_draw_date_banner_segment_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_draw_datetime_banner_row_target_gcc.sh"
     "src/decomp/scripts/promote_render_short_month_short_day_of_week_day_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_draw_grid_time_banner_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_format_clock_format_entry_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
