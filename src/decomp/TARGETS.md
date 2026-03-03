@@ -16463,3 +16463,24 @@ Run:
 
 Current notes:
 - Candidate preserves unconditional call to `ESQ_CaptureCtrlBit4Stream`, gate-character check (`ESQ_STR_B[18] == 'N'`) for optional `ESQ_CaptureCtrlBit3Stream`, and INTREQ write of `0x0100`.
+
+## Target 717: `modules/groups/a/a/app2.s` (`ESQ_SetCopperEffect_Default`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very small direct wrapper with fixed argument setup and one internal call.
+- Low-risk progress in `app2.s` without jumping straight into larger copper/clock routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_set_copper_effect_default_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_set_copper_effect_default_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_set_copper_effect_default.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_set_copper_effect_default_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_set_copper_effect_default_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_set_copper_effect_default_target_gcc.sh`
+
+Current notes:
+- Candidate preserves constant argument pair (`0`, `$3F`) and call dispatch to `ESQ_SetCopperEffectParams`.
