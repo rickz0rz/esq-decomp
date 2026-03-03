@@ -19379,3 +19379,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_SetStatusIndicatorColorSlot` slice, preserving deferred-apply/cache behavior, slot-to-Y mapping, optional pixel sampling (`_LVOReadPixel`), paint path (`_LVOSetAPen` + `_LVORectFill`), and RastPort bitmap-pointer restore.
+
+## Target 856: `modules/groups/a/n/esqdisp.s` (`ESQDISP_QueueHighlightDrawMessage`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl message setup routine bridging selection validation and async highlight queueing.
+- High impact path that ties together recent ESQDISP helper conversions (message pattern init, status/UI update flow).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_queue_highlight_draw_message_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_queue_highlight_draw_message_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_queue_highlight_draw_message.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_queue_highlight_draw_message_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_queue_highlight_draw_message_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_queue_highlight_draw_message_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_QueueHighlightDrawMessage` slice, preserving header/rastport field setup, `ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode` gate, `ESQDISP_InitHighlightMessagePattern` call, graphics init/font/draw mode calls, and final `PutMsg` enqueue to `ESQ_HighlightMsgPort`.
