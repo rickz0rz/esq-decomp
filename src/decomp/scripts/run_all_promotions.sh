@@ -167,6 +167,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqiff_handle_brush_ini_reload_hotkey_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff_deallocate_ads_and_logo_lst_data_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff_queue_iff_brush_load_target_gcc.sh"
+    "src/decomp/scripts/promote_esqiff_read_next_external_asset_path_entry_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

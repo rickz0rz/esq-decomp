@@ -20387,3 +20387,24 @@ Run:
 
 Current notes:
 - Candidate preserves resource-cursor seed/advance behavior, standard IFF task queue path, weather-overlay fast path guards, and descriptor/task-state update semantics.
+
+## Target 904: `modules/groups/a/n/esqiff.s` (`ESQIFF_ReadNextExternalAssetPathEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous direct ESQIFF routine with stream parsing behavior.
+- Good non-render target covering line-seek and delimiter parsing semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_read_next_external_asset_path_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_read_next_external_asset_path_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_read_next_external_asset_path_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_read_next_external_asset_path_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_read_next_external_asset_path_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_read_next_external_asset_path_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves catalog source selection, line-index update/store behavior, delimiter handling (LF/CR/space/comma), comma-flag write, and output NUL termination flow.
