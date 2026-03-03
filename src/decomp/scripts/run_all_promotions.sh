@@ -43,6 +43,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_cleanup_format_entry_string_tokens_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_build_aligned_status_line_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_parse_aligned_listing_block_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_build_and_render_aligned_status_banner_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

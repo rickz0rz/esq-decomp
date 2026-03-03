@@ -17783,3 +17783,24 @@ Run:
 
 Current notes:
 - Candidate preserves slot-table initialization, service/type dispatch and separator handling, parse/token loops, owned-string replacement paths, aligned status build/draw chain (`CLEANUP_TestEntryFlagYAndBit1`, `CLEANUP_UpdateEntryFlagBytes`, `CLEANUP_BuildAlignedStatusLine`, `CLEANUP_FormatEntryStringTokens`, `CLEANUP_DrawInsetRectFrame`), subentry merge/update flow, and explicit success/error return branches.
+
+## Target 780: `modules/groups/a/d/cleanup3.s` (`CLEANUP_BuildAndRenderAlignedStatusBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large direct rendering coordinator that drives aligned status-screen template expansion and final blit/transition path.
+- High-impact non-jmptbl conversion that composes multiple already-promoted cleanup helpers into one end-to-end path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_build_and_render_aligned_status_banner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_build_and_render_aligned_status_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_build_and_render_aligned_status_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_build_and_render_aligned_status_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_build_and_render_aligned_status_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_build_and_render_aligned_status_banner_target_gcc.sh`
+
+Current notes:
+- Candidate preserves primary/secondary template selection and backup copy, template-code dispatch using `STR_FindCharPtr`, aligned status detail assembly helpers, entry/status rendering branches, and tail `Graphics_BltBitMapRastPort` plus `ESQIFF_RunCopperRiseTransition` sequence before function epilogue.
