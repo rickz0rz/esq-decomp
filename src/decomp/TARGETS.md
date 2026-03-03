@@ -19043,3 +19043,87 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_LayoutSourceToLines` assembly slice, preserving lock/index guards, prefix-width/text-length adjustments, iterative `DISPTEXT_BuildLineWithWidth` loop, marker-width subtraction for early lines, and booleanized success return (`SEQ/NEG/EXT`) keyed off remaining source pointer.
+
+## Target 840: `modules/groups/a/i/disptext.s` (`DISPTEXT_LayoutAndAppendToBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large exported non-jmptbl layout+append orchestrator with prefix-marker handling and per-line flush flow.
+- High-value native path that bridges layout generation and buffer append, called by `DISPTEXT_BuildLayoutForSource`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_layout_and_append_to_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_layout_and_append_to_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_layout_and_append_to_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_layout_and_append_to_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_layout_and_append_to_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_layout_and_append_to_buffer_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_LayoutAndAppendToBuffer` assembly slice, preserving saved-register frame, reset call ordering, per-line loop with marker/prefix copy paths, width fallback logic, flush-on-break path, and final status return in `D5->D0`.
+
+## Target 841: `modules/groups/a/i/disptext.s` (`DISPTEXT_RenderCurrentLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium/large exported non-jmptbl draw routine handling both plain and inset-marker render paths.
+- Completes the core native `DISPTEXT` render pipeline after `Build/Layout/Append` coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_render_current_line_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_render_current_line_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_render_current_line.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_render_current_line_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_render_current_line_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_render_current_line_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_RenderCurrentLine` assembly slice, preserving finalize call ordering, width/index/line guards, pen+draw-mode setup, marker search + inset draw fallback, plain `_LVOMove/_LVOText` path, restored trailing byte at end-of-line, and index increment before epilogue.
+
+## Target 842: `modules/groups/a/i/displib.s` (`DISPLIB_FindPreviousValidEntryIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small/medium exported non-jmptbl search helper with deterministic loop/control flow.
+- High leverage because this conversion also carries exported label `DISPLIB_FindPreviousValidEntryIndex_Return`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_find_previous_valid_entry_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_find_previous_valid_entry_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_find_previous_valid_entry_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_find_previous_valid_entry_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_find_previous_valid_entry_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_find_previous_valid_entry_index_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPLIB_FindPreviousValidEntryIndex` assembly slice, preserving D5-D7/A2-A3 save/restore, BTST-driven step-size select (`48` vs `7`), minimum lower-bound clamp, table slot probe loop, wrapped-flag clear/set behavior, and exported return tail (`DISPLIB_FindPreviousValidEntryIndex_Return`).
+
+## Target 843: `modules/groups/a/n/esqdisp.s` (`ESQDISP_TestEntryBits0And2`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl predicate helper with direct bit-tests and clear return behavior.
+- Converts both compatibility entry labels in one unit: `ESQDISP_TestEntryBits0And2` and `ESQDISP_TestEntryBits0And2_Core`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_test_entry_bits0_and2_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_test_entry_bits0_and2_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_test_entry_bits0_and2.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_test_entry_bits0_and2_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_test_entry_bits0_and2_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_test_entry_bits0_and2_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_TestEntryBits0And2` slice, preserving D7/A3 save/restore, null-entry early return, dual bit tests on `40(A3)` (bit0 and bit2), explicit `0/1` result assignment, and shared return path.
