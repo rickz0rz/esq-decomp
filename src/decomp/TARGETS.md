@@ -20030,3 +20030,24 @@ Run:
 
 Current notes:
 - Candidate preserves exact run-flag gate and branch-to-return behavior before `ESQFUNC_ProcessUiFrameTick`.
+
+## Target 887: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_FreeExtraTitleTextPointers`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous core ESQFUNC routine after Target 886.
+- Focused pointer-pruning helper with bounded nested loops and explicit free/clear behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_free_extra_title_text_pointers_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_free_extra_title_text_pointers_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_free_extra_title_text_pointers.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_free_extra_title_text_pointers_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_free_extra_title_text_pointers_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_free_extra_title_text_pointers_target_gcc.sh`
+
+Current notes:
+- Candidate preserves capped slot index logic (`min(maxIndex,34)`), first-hit retention, and subsequent `ESQPARS_ReplaceOwnedString` + slot-clear semantics.

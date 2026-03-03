@@ -150,6 +150,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqfunc_commit_secondary_state_and_persist_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_process_ui_frame_tick_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_service_ui_tick_if_running_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_free_extra_title_text_pointers_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
