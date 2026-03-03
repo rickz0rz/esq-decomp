@@ -16838,3 +16838,45 @@ Run:
 
 Current notes:
 - Candidate preserves 1-based index adjust (`-1`), low-3-bit extraction (`&7`), 16-bit byte-index shift (`LSR.W #3` semantics), and byte-wise set-bit store back into the target bitset.
+
+## Target 735: `modules/groups/a/a/app2.s` (`ESQ_ReverseBitsIn6Bytes`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small fixed-size transform helper with no external call dependencies.
+- Direct implementation was still pending while several jmptbl forwarders were already promoted.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_reverse_bits_in6_bytes_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_reverse_bits_in6_bytes_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_reverse_bits_in6_bytes.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_reverse_bits_in6_bytes_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_reverse_bits_in6_bytes_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_reverse_bits_in6_bytes_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 6-byte iteration count, fast-path passthrough for `0x00/0xFF`, per-byte bit-reversal loop across 8 bit positions, and sequential destination writes.
+
+## Target 736: `modules/groups/a/a/app2.s` (`ESQ_GetHalfHourSlotIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact time-index helper used by banner/clock-related call paths.
+- Clear arithmetic/lookup behavior and no external-library dependencies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_get_half_hour_slot_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_get_half_hour_slot_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_get_half_hour_slot_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_get_half_hour_slot_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_get_half_hour_slot_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_get_half_hour_slot_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves AM/PM normalization (`+12` for PM-flag path, `12->0` midnight normalization), slot doubling, `>=30` minute half-slot increment, and final `CLOCK_HalfHourSlotLookup` byte mapping.
