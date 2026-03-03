@@ -17678,3 +17678,24 @@ Run:
 
 Current notes:
 - Candidate preserves `COI_GetAnimFieldPointerByMode` lookup, null/range guards on entry pointer and field index, `'Y'` byte compare (`#89`) against selected field offset, bit test at `40(A3)` bit1, and `0/1` return normalization via `.return_false`/`.done` path.
+
+## Target 775: `modules/groups/a/e/cleanup4.s` (`CLEANUP_UpdateEntryFlagBytes`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact direct export adjacent to Target 774, sharing entry-pointer acquisition and flag-byte handling.
+- Useful behavioral coverage for entry flag decoding and nibble-state writes into display globals.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_update_entry_flag_bytes_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_update_entry_flag_bytes_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_update_entry_flag_bytes.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_update_entry_flag_bytes_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_update_entry_flag_bytes_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_update_entry_flag_bytes_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `COI_GetAnimFieldPointerByMode` lookup, fallback copy from `CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY`, per-byte `WDISP_CharClassTable` bit7 checks, optional `LADFUNC_ParseHexDigit` conversion for bytes 6/7, and writes to `DISPTEXT_InsetNibblePrimary`/`DISPTEXT_InsetNibbleSecondary`.
