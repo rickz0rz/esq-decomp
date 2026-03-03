@@ -17195,3 +17195,24 @@ Run:
 
 Current notes:
 - Candidate keeps inline-assembly control flow for both exports: `AbsExecBase` load, Exec version compare (`#$24` at `20(A6)`), branch to supervisor fallback, `JMP _LVOColdReboot(A6)`, and fallback `LEA ESQ_SupervisorColdReboot(PC),A5` + `JSR _LVOSupervisor(A6)`.
+
+## Target 752: `modules/groups/a/a/app2.s` (`ESQ_TickGlobalCounters`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining direct export in the `app2.s` timing cluster with high runtime impact.
+- Consolidates reboot guard, minute/second tick cadence, deferred action arming, and accumulator saturation behavior into a single promoted C unit.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_tick_global_counters_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_tick_global_counters_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_tick_global_counters.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_tick_global_counters_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_tick_global_counters_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_tick_global_counters_target_gcc.sh`
+
+Current notes:
+- Candidate preserves global tick increment and cold-reboot threshold check (`$5460`), modulo-60 tick rollover work, cooldown/refresh/deferred counters, `CLOCK_*Ptr + 12` increments, accumulator capture saturation at `$4000` across rows `0..3`, and conditional `ESQIFF_ServicePendingCopperPaletteMoves` flush call.
