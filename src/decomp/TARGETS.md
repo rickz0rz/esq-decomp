@@ -19274,3 +19274,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_RefreshStatusIndicatorsFromCurrentMask` slice, preserving sentinel push (`PEA -1.W`), local branch-subroutine call to `ESQDISP_ApplyStatusMaskToIndicators`, stack fixup (`ADDQ.W #4,A7`), and `RTS`.
+
+## Target 851: `modules/groups/a/n/esqdisp.s` (`ESQDISP_InitHighlightMessagePattern`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl helper with a short fixed-count loop and simple memory writes.
+- Good low-risk progression before larger ESQDISP stateful/message-queue routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_init_highlight_message_pattern_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_init_highlight_message_pattern_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_init_highlight_message_pattern.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_init_highlight_message_pattern_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_init_highlight_message_pattern_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_init_highlight_message_pattern_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_InitHighlightMessagePattern` slice, preserving `D7/A3` save/restore, four-iteration loop bound, `+4` byte pattern generation, and writes into message offsets `55..58`.
