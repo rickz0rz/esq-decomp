@@ -147,6 +147,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqfunc_free_line_text_buffers_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_update_disk_warning_and_refresh_tick_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_wait_for_clock_change_and_service_ui_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_commit_secondary_state_and_persist_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

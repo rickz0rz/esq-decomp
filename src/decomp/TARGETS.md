@@ -19967,3 +19967,24 @@ Run:
 
 Current notes:
 - Candidate preserves poll-until-nonzero loop (`MonitorClockChange` + `ServiceUiTickIfRunning`) with original branch structure.
+
+## Target 884: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_CommitSecondaryStateAndPersist`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous core ESQFUNC routine after Targets 881-883.
+- Central persistence bridge that fans into LOCAVAIL/P_TYPE/LADFUNC/DATETIME save paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_commit_secondary_state_and_persist_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_commit_secondary_state_and_persist_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_commit_secondary_state_and_persist.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_commit_secondary_state_and_persist_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_commit_secondary_state_and_persist_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_commit_secondary_state_and_persist_target_gcc.sh`
+
+Current notes:
+- Candidate preserves temporary read-mode override/restore, persist-call ordering, and final stack fixup (`LEA 12(A7),A7`) behavior.
