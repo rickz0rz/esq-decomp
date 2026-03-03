@@ -185,6 +185,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqiff2_read_serial_bytes_with_xor_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_parse_group_record_and_refresh_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_return_target_gcc.sh"
+    "src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_return_target_gcc.sh"

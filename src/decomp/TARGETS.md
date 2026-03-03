@@ -21070,3 +21070,25 @@ Run:
 Current notes:
 - Candidate preserves main record-read loop, NUL terminator/short-record guard, 0x14 extension copy loop, 0x12 delimiter handling with limit counter, checksum-byte read/write, and final length handoff to shared return tail.
 - Full-C compile required replacing one short external return branch with `JMP ESQIFF2_ReadSerialRecordIntoBuffer_Return` to avoid standalone TU branch-range overflow.
+
+## Target 936: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ParseLineHeadTailRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core line-head/tail parser with both primary and secondary update paths.
+- Advances ESQIFF2 state/parser conversion while preserving owned-string replacement flow.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_parse_line_head_tail_record_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_parse_line_head_tail_record_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_parse_line_head_tail_record.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_parse_line_head_tail_record_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode decode, primary/secondary group dispatch, clear-line-head-tail call, delimiter scans/splits, owned-string replacement calls, secondary promote-pending flag set, and pointer write-backs for head/tail slots.
+- Replacement uses `JMP ESQIFF2_ParseLineHeadTailRecord_Return` for one external short-return branch site to keep standalone TU assembly range-safe.
