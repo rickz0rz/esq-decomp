@@ -20156,3 +20156,24 @@ Run:
 
 Current notes:
 - Candidate was generated from source slice to preserve branch/flow fidelity; semantic gate tracks selection tags, fallback path, label-based brush select, and final blit/palette interactions.
+
+## Target 893: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_DrawMemoryStatusScreen`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large direct ESQFUNC renderer with broad diagnostics/state formatting coverage.
+- Prior direct coverage did not exist (jmptbl wrappers only).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_draw_memory_status_screen_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_draw_memory_status_screen_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_draw_memory_status_screen.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_draw_memory_status_screen_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_draw_memory_status_screen_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_draw_memory_status_screen_target_gcc.sh`
+
+Current notes:
+- Candidate is source-slice generated with inline comment stripping for GCC asm compatibility; semantic gate tracks key rendering/memory-probe call patterns and epilogue bitmap restore.

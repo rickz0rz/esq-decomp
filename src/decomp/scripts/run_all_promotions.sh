@@ -156,6 +156,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqfunc_trim_text_to_pixel_width_word_boundary_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_rebuild_pw_brush_list_from_tag_table_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_select_and_apply_brush_for_current_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_draw_memory_status_screen_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
