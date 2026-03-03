@@ -830,6 +830,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esqdisp_poll_input_mode_and_refresh_selection_trial_gcc.sh`: GCC-specific compare lane for `Target 858` (`ESQDISP_PollInputModeAndRefreshSelection`).
 - `src/decomp/scripts/compare_esqdisp_normalize_clock_and_redraw_banner_trial_gcc.sh`: GCC-specific compare lane for `Target 859` (`ESQDISP_NormalizeClockAndRedrawBanner`).
 - `src/decomp/scripts/compare_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial_gcc.sh`: GCC-specific compare lane for `Target 860` (`ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty`).
+- `src/decomp/scripts/compare_esqdisp_promote_secondary_line_head_tail_if_marked_trial_gcc.sh`: GCC-specific compare lane for `Target 861` (`ESQDISP_PromoteSecondaryLineHeadTailIfMarked`).
+- `src/decomp/scripts/compare_esqdisp_promote_secondary_group_to_primary_trial_gcc.sh`: GCC-specific compare lane for `Target 862` (`ESQDISP_PromoteSecondaryGroupToPrimary`).
+- `src/decomp/scripts/compare_esqdisp_propagate_primary_title_metadata_to_secondary_trial_gcc.sh`: GCC-specific compare lane for `Target 863` (`ESQDISP_PropagatePrimaryTitleMetadataToSecondary`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1588,6 +1591,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esqdisp_poll_input_mode_and_refresh_selection.awk`: semantic post-filter for `ESQDISP_PollInputModeAndRefreshSelection` compare lane.
 - `src/decomp/scripts/semantic_filter_esqdisp_normalize_clock_and_redraw_banner.awk`: semantic post-filter for `ESQDISP_NormalizeClockAndRedrawBanner` compare lane.
 - `src/decomp/scripts/semantic_filter_esqdisp_mirror_primary_entries_to_secondary_if_empty.awk`: semantic post-filter for `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` compare lane.
+- `src/decomp/scripts/semantic_filter_esqdisp_promote_secondary_line_head_tail_if_marked.awk`: semantic post-filter for `ESQDISP_PromoteSecondaryLineHeadTailIfMarked` compare lane.
+- `src/decomp/scripts/semantic_filter_esqdisp_promote_secondary_group_to_primary.awk`: semantic post-filter for `ESQDISP_PromoteSecondaryGroupToPrimary` compare lane.
+- `src/decomp/scripts/semantic_filter_esqdisp_propagate_primary_title_metadata_to_secondary.awk`: semantic post-filter for `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2445,6 +2451,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esqdisp_poll_input_mode_and_refresh_selection_target_gcc.sh`: promotion gate for Target 858 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqdisp_normalize_clock_and_redraw_banner_target_gcc.sh`: promotion gate for Target 859 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqdisp_mirror_primary_entries_to_secondary_if_empty_target_gcc.sh`: promotion gate for Target 860 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqdisp_promote_secondary_line_head_tail_if_marked_target_gcc.sh`: promotion gate for Target 861 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqdisp_promote_secondary_group_to_primary_target_gcc.sh`: promotion gate for Target 862 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqdisp_propagate_primary_title_metadata_to_secondary_target_gcc.sh`: promotion gate for Target 863 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

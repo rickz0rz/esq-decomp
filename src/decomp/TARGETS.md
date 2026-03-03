@@ -19484,3 +19484,66 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` slice, preserving secondary-count empty guard, per-primary-entry clone path via `ESQSHARED_CreateGroupEntryAndTitle`, downstream header copy through `ESQDISP_FillProgramInfoHeaderFields`, and mirror flag set/clear behavior.
+
+## Target 861: `modules/groups/a/n/esqdisp.s` (`ESQDISP_PromoteSecondaryLineHeadTailIfMarked`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl state transfer helper with a simple gated branch and pointer moves.
+- Good follow-on to Target 860, covering adjacent secondary-to-primary promotion behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_promote_secondary_line_head_tail_if_marked_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_promote_secondary_line_head_tail_if_marked_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_promote_secondary_line_head_tail_if_marked.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_promote_secondary_line_head_tail_if_marked_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_promote_secondary_line_head_tail_if_marked_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_promote_secondary_line_head_tail_if_marked_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_PromoteSecondaryLineHeadTailIfMarked` slice, preserving pending-flag guard, `ESQIFF2_ClearLineHeadTailByMode(1)` call, secondary-to-primary head/tail pointer transfer, secondary pointer clears, and unconditional pending-flag clear before return.
+
+## Target 862: `modules/groups/a/n/esqdisp.s` (`ESQDISP_PromoteSecondaryGroupToPrimary`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl promotion routine adjacent to Targets 860/861 with explicit primary/secondary table transfer semantics.
+- High leverage because it consolidates secondary group records into primary state and triggers index-cache rebuild.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_promote_secondary_group_to_primary_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_promote_secondary_group_to_primary_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_promote_secondary_group_to_primary.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_promote_secondary_group_to_primary_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_promote_secondary_group_to_primary_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_promote_secondary_group_to_primary_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_PromoteSecondaryGroupToPrimary` slice, preserving mode-1 clear call, secondary->primary entry/title pointer move loop with source-slot nulling, secondary metadata copy/reset behavior, task-state sync, and final `ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache` call.
+
+## Target 863: `modules/groups/a/n/esqdisp.s` (`ESQDISP_PropagatePrimaryTitleMetadataToSecondary`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large exported non-jmptbl propagation routine directly adjacent to Target 862 and on the same secondary/primary table path.
+- High behavioral coverage for wildcard-match propagation of owned title strings and selector metadata from primary to secondary.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_propagate_primary_title_metadata_to_secondary_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_propagate_primary_title_metadata_to_secondary_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_propagate_primary_title_metadata_to_secondary.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_propagate_primary_title_metadata_to_secondary_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_propagate_primary_title_metadata_to_secondary_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_propagate_primary_title_metadata_to_secondary_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` slice, preserving primary/secondary entry-count guards, secondary-entry and primary-candidate loop nests, wildcard-match gate, descending selector slot scan, owned-string replacement via `ESQPARS_ReplaceOwnedString`, secondary title/entry flag updates, and shared return tail.
