@@ -18644,3 +18644,45 @@ Run:
 
 Current notes:
 - Candidate preserves completion-flag reset, file-handle staging, list allocation + callback install (`CTASKS_CloseTaskTeardown`), seglist BPTR derivation, `_LVOCreateProc` launch, and final `CTASKS_CloseTaskProcPtr` store. Stack macro read is expanded as `MOVE.L 20(A7),D7`.
+
+## Target 821: `modules/groups/a/f/ctasks.s` (`CTASKS_IFFTaskCleanup`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Exported non-jmptbl cleanup routine for IFF task lifecycle, paired with pending brush descriptor state.
+- Moderate-size routine with clear branch structure and high behavioral value (wait/spin, save result, forbid, teardown).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ctasks_iff_task_cleanup_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ctasks_iff_task_cleanup_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ctasks_iff_task_cleanup.awk`
+- Promotion gate: `src/decomp/scripts/promote_ctasks_iff_task_cleanup_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ctasks_iff_task_cleanup_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ctasks_iff_task_cleanup_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `CTASKS_IFFTaskCleanup` slice, preserving state-based pending-pointer selection, `BRUSH_LoadInProgressFlag` wait loop, `SaveBrushResult` call, state/pointer clears, `_LVOForbid` ordering, and list deallocation + done-flag completion.
+
+## Target 822: `modules/groups/a/f/ctasks.s` (`CTASKS_StartIffTaskProcess`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining exported non-jmptbl routine in `ctasks.s`, completing the IFF-task lifecycle set (`start/cleanup`).
+- Moderate-size process-launch routine with a distinct wait loop and startup state selection.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ctasks_start_iff_task_process_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ctasks_start_iff_task_process_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ctasks_start_iff_task_process.awk`
+- Promotion gate: `src/decomp/scripts/promote_ctasks_start_iff_task_process_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ctasks_start_iff_task_process_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ctasks_start_iff_task_process_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the `CTASKS_StartIffTaskProcess` assembly slice, preserving the `FindTask` wait loop, done-flag clear, startup-state branch (`#4/#5` or preseeded `#6`), list-allocation callback install (`CTASKS_IFFTaskCleanup`), seglist BPTR derivation, `_LVOCreateProc` launch, and final proc-pointer store.
