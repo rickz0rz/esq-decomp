@@ -1,6 +1,9 @@
 __asm__(
+    ".globl _ESQDISP_DrawStatusBanner\n"
     ".globl _ESQDISP_DrawStatusBanner_Impl\n"
     ".globl _ESQDISP_DrawStatusBanner_Impl_Return\n"
+    "_ESQDISP_DrawStatusBanner:\n"
+    "ESQDISP_DrawStatusBanner:\n"
     "_ESQDISP_DrawStatusBanner_Impl:\n"
     "ESQDISP_DrawStatusBanner_Impl:\n"
     "    LINK.W  A5,#-4\n"

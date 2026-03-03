@@ -19589,3 +19589,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_ParseProgramInfoCommandRecord` slice, preserving group-table selection, class-table digit parsing, record marker scan, entry-name match loop, flag/hex decode paths, optional `CopyPadNul` vs zero-tag fallback behavior, and final `ESQDISP_FillProgramInfoHeaderFields` call through the shared return tail.
+
+## Target 866: `modules/groups/a/n/esqdisp.s` (`ESQDISP_DrawStatusBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Exported non-jmptbl alias entry used by jmptbl callers and falls through directly into `ESQDISP_DrawStatusBanner_Impl`.
+- Important symbol-completeness step for full-C linking as additional asm providers are replaced.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_draw_status_banner_impl_gcc.c` (updated to export alias)
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_draw_status_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_draw_status_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_draw_status_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_draw_status_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_draw_status_banner_target_gcc.sh`
+
+Current notes:
+- `ESQDISP_DrawStatusBanner` is emitted as a label alias at the same address as `ESQDISP_DrawStatusBanner_Impl`, preserving original fallthrough entry behavior while retaining the full promoted impl body and return tail.
