@@ -18875,3 +18875,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_FreeBuffers` assembly slice, preserving initial reset call, guarded deallocation of both 1000-byte buffers (site ids `338`/`343`), per-branch stack fixups, global clears, and final return.
+
+## Target 832: `modules/groups/a/i/disptext.s` (`DISPTEXT_FinalizeLineTable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small/medium exported non-jmptbl state-maintenance helper, central to native `DISPTEXT` line-table consistency.
+- High leverage because many promoted native helpers call this routine before reading line indices.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_finalize_line_table_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_finalize_line_table_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_finalize_line_table.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_finalize_line_table_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_finalize_line_table_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_finalize_line_table_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_FinalizeLineTable` assembly slice, preserving line-table-lock early return, current-index mirroring into target index, line-length-table probe + optional increment path, `DISPTEXT_BuildLinePointerTable` call with `PEA 1.W`, post-call stack fixup, current-index clear, and final `RTS`.

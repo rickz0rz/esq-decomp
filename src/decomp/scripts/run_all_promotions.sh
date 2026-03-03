@@ -95,6 +95,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_disptext_compute_visible_line_count_target_gcc.sh"
     "src/decomp/scripts/promote_disptext_init_buffers_target_gcc.sh"
     "src/decomp/scripts/promote_disptext_free_buffers_target_gcc.sh"
+    "src/decomp/scripts/promote_disptext_finalize_line_table_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
