@@ -16505,3 +16505,24 @@ Run:
 
 Current notes:
 - Candidate preserves CIAB_PRA read/modify/write clearing bits 6/7, then dispatches `ESQ_SetCopperEffectParams(0x3F, 0x3F)`.
+
+## Target 719: `modules/groups/a/a/app2.s` (`ESQ_SetCopperEffect_Custom`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct wrapper with a single CIAB bit-set side effect plus fixed/custom argument call.
+- Continues the copper-effect wrapper cluster after Targets 717/718.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_set_copper_effect_custom_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_set_copper_effect_custom_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_set_copper_effect_custom.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_set_copper_effect_custom_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_set_copper_effect_custom_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_set_copper_effect_custom_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB_PRA read/modify/write setting bits 6/7 and call dispatch to `ESQ_SetCopperEffectParams(0x3F, HIGHLIGHT_CustomValue)`.
