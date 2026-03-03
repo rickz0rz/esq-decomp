@@ -17972,3 +17972,24 @@ Run:
 
 Current notes:
 - Candidate preserves group-dependent entry pointer fetch, entry-name copy into local scratch, readiness guards (length and trailing-space checks), optional `Global_STR_ALIGNED_ON` prefix, fixed `Global_STR_ALIGNED_CHANNEL_1` append, and terminator/ready-flag updates for `TEXTDISP_ChannelLabelBuffer`.
+
+## Target 789: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_DrawChannelBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl render helper that composes multiple promoted textdisp helpers and graphics mode setup.
+- High-leverage step in `textdisp3.s` before larger selection/match-control routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_draw_channel_banner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_draw_channel_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_draw_channel_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_draw_channel_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_draw_channel_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_draw_channel_banner_target_gcc.sh`
+
+Current notes:
+- Candidate preserves active-group entry fetch, short-name build/copy, channel-label build, draw-mode toggles via `_LVOSetDrMd`, optional half-width trim path (`mode==2`), text trim + inset draw calls, and final draw-mode restore path.
