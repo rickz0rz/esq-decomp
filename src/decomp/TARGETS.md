@@ -18581,3 +18581,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `COI_LoadOiDataFile` assembly slice to preserve instruction flow and label topology, including parse loops, wildcard/header checks, `COI_AllocSubEntryTable` path, and terminal cleanup/deallocation sequence.
+
+## Target 818: `modules/groups/a/e/coi.s` (`COI_WriteOiDataFile` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large non-jmptbl COI serializer/export body that writes OI records to disk.
+- High leverage counterpart to `COI_LoadOiDataFile`; central for record formatting, wildcard/subentry emission, and buffered file lifecycle.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_write_oi_data_file_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_write_oi_data_file_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_write_oi_data_file.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_write_oi_data_file_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_write_oi_data_file_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_write_oi_data_file_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `COI_WriteOiDataFile` assembly slice to preserve instruction flow and labels, including header/disk-id validation, filename formatting/open, buffered record writes, wildcard/subentry loops, EOF marker write, and close/return sequence.
