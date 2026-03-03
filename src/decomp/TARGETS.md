@@ -18140,3 +18140,24 @@ Run:
 
 Current notes:
 - Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,A2-A3` + `RTS`) with matching callable symbol.
+
+## Target 797: `modules/groups/a/e/coi.s` (`COI_ClearAnimObjectStrings_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Another minimal direct non-jmptbl COI return export, quick to validate and low risk.
+- Continues collapsing the COI return-helper surface before larger COI body functions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_clear_anim_object_strings_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_clear_anim_object_strings_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_clear_anim_object_strings_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_clear_anim_object_strings_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_clear_anim_object_strings_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_clear_anim_object_strings_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,A2-A3` + `RTS`) with matching callable symbol.

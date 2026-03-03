@@ -60,6 +60,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_textdisp_find_entry_match_index_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_select_best_match_from_list_target_gcc.sh"
     "src/decomp/scripts/promote_coi_free_entry_resources_return_target_gcc.sh"
+    "src/decomp/scripts/promote_coi_clear_anim_object_strings_return_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
