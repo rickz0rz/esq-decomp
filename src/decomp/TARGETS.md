@@ -5995,6 +5995,51 @@ Current notes:
 - Semantic filter relaxed to avoid false negatives on compiler-specific stack-argument shape for `fillMissingFlag`; core sentinel/match/clear/loop markers remain gated.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 670: `modules/groups/b/a/script2.s` (`SCRIPT_GetCtrlLineFlag`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` leaf returning cached CTRL-line state.
+- Low-risk foundation for the neighboring CTRL-line control helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_get_ctrl_line_flag_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_get_ctrl_line_flag_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_get_ctrl_line_flag.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_get_ctrl_line_flag_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_get_ctrl_line_flag_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_get_ctrl_line_flag_target_gcc.sh`
+
+Current notes:
+- Candidate preserves direct read/return of `SCRIPT_CtrlLineAssertedFlag`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 671: `modules/groups/b/a/script2.s` (`SCRIPT_WriteCtrlShadowToSerdat`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` hardware-write helper used by CTRL-line assert/deassert routines.
+- Captures SERDAT write semantics with mirrored shadow update.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_write_ctrl_shadow_to_serdat_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_write_ctrl_shadow_to_serdat_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_write_ctrl_shadow_to_serdat.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_write_ctrl_shadow_to_serdat_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_script_write_ctrl_shadow_to_serdat_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_script_write_ctrl_shadow_to_serdat_target_gcc.sh`
+
+Current notes:
+- Candidate preserves low-byte mask (`& 0xFF`), serial control bit assertion (`bit 8`), write to `SERDAT`, and mirror into `SCRIPT_SerialShadowWord`.
+- Semantic filter relaxed on explicit bit-set opcode shape to avoid false negatives across equivalent compiler forms.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
