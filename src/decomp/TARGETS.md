@@ -19841,3 +19841,45 @@ Run:
 
 Current notes:
 - Candidate preserves exact forwarder behavior: `JMP ESQ_PollCtrlInput`.
+
+## Target 878: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported jmptbl forwarder adjacent to the ESQFUNC stub sequence already promoted (Targets 875-877).
+- Continues steady low-risk export coverage in `esqfunc.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_jmptbl_script_handle_serial_ctrl_cmd_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_script_handle_serial_ctrl_cmd.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact forwarder behavior: `JMP SCRIPT_HandleSerialCtrlCmd`.
+
+## Target 879: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported jmptbl forwarder adjacent to Targets 875-878 in `esqfunc.s`.
+- Continues fast, low-risk export coverage while keeping this stub cluster contiguous.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_jmptbl_textdisp_tick_display_state_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_jmptbl_textdisp_tick_display_state_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_textdisp_tick_display_state.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_jmptbl_textdisp_tick_display_state_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_jmptbl_textdisp_tick_display_state_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_jmptbl_textdisp_tick_display_state_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact forwarder behavior: `JMP TEXTDISP_TickDisplayState`.

@@ -847,6 +847,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_trial_gcc.sh`: GCC-specific compare lane for `Target 875` (`ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt`).
 - `src/decomp/scripts/compare_esqfunc_jmptbl_esq_tick_global_counters_trial_gcc.sh`: GCC-specific compare lane for `Target 876` (`ESQFUNC_JMPTBL_ESQ_TickGlobalCounters`).
 - `src/decomp/scripts/compare_esqfunc_jmptbl_esq_poll_ctrl_input_trial_gcc.sh`: GCC-specific compare lane for `Target 877` (`ESQFUNC_JMPTBL_ESQ_PollCtrlInput`).
+- `src/decomp/scripts/compare_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_trial_gcc.sh`: GCC-specific compare lane for `Target 878` (`ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd`).
+- `src/decomp/scripts/compare_esqfunc_jmptbl_textdisp_tick_display_state_trial_gcc.sh`: GCC-specific compare lane for `Target 879` (`ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1622,6 +1624,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt.awk`: semantic post-filter for `ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt` compare lane.
 - `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_esq_tick_global_counters.awk`: semantic post-filter for `ESQFUNC_JMPTBL_ESQ_TickGlobalCounters` compare lane.
 - `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_esq_poll_ctrl_input.awk`: semantic post-filter for `ESQFUNC_JMPTBL_ESQ_PollCtrlInput` compare lane.
+- `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_script_handle_serial_ctrl_cmd.awk`: semantic post-filter for `ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd` compare lane.
+- `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_textdisp_tick_display_state.awk`: semantic post-filter for `ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2496,6 +2500,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_target_gcc.sh`: promotion gate for Target 875 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqfunc_jmptbl_esq_tick_global_counters_target_gcc.sh`: promotion gate for Target 876 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqfunc_jmptbl_esq_poll_ctrl_input_target_gcc.sh`: promotion gate for Target 877 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_target_gcc.sh`: promotion gate for Target 878 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqfunc_jmptbl_textdisp_tick_display_state_target_gcc.sh`: promotion gate for Target 879 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).
