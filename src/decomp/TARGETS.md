@@ -17615,3 +17615,45 @@ Run:
 
 Current notes:
 - Candidate preserves UI-busy early return, 12/24-hour format branch with optional `AdjustHoursTo24HrFormat`, shared `WDISP_SPrintf` paths, banner clear/bevel draw sequence, centered text draw to `NEWGRID_MainRastPortPtr`, and final `Graphics_BltBitMapRastPort` copy.
+
+## Target 772: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawClockFormatList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Primary clock-format list renderer that drives multi-row frame/text composition using `CLEANUP_FormatClockFormatEntry`.
+- High-value direct export that captures row loop/final-row rendering behavior and layout math in one routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_clock_format_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_clock_format_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_clock_format_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_clock_format_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_clock_format_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_clock_format_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves setup via `GCOMMAND_UpdateBannerBounds`, dual-phase rendering (`.row_loop` then `.final_row`), repeated width/offset math via `Mulu32`, bevel frame draws, per-row `CLEANUP_FormatClockFormatEntry` calls, text-length centering and text draw loops, and original save/restore frame.
+
+## Target 773: `modules/groups/a/c/cleanup2.s` (`CLEANUP_ProcessAlerts`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core alert/timer state-machine entry point coordinating diagnostics, banner queue updates, and clock/banner redraw behavior.
+- High-impact direct export in `cleanup2.s` that captures control-flow-heavy logic rather than simple draw helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_process_alerts_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_process_alerts_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_process_alerts.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_process_alerts_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_process_alerts_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_process_alerts_target_gcc.sh`
+
+Current notes:
+- Candidate preserves pending-alert/processing guards, diagnostics refresh branch, state-step transitions, dual `ESQ_TickClockAndFlagEvents` updates, banner queue/status refresh path, RTC/update clock branches, banner redraw calls (`CLEANUP_DrawGridTimeBanner`/`CLEANUP_DrawClockBanner`), and final processing-flag clear/restore epilogue.
