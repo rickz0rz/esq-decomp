@@ -16901,3 +16901,24 @@ Run:
 
 Current notes:
 - Candidate preserves 65/67 and 65/73-range normalization behavior (including default to `'E'`), 1..48 wrap arithmetic, and writes to `WDISP_BannerCharRangeStart` / `WDISP_BannerCharRangeEnd`.
+
+## Target 738: `modules/groups/a/a/app2.s` (`ESQ_StoreCtrlSampleEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small staging helper with linear copy/wrap logic and no external library dependencies.
+- Good low-risk direct-export progression while larger parser/time routines remain.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_store_ctrl_sample_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_store_ctrl_sample_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_store_ctrl_sample_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_store_ctrl_sample_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_store_ctrl_sample_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_store_ctrl_sample_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 5-byte slot stride (`index*5`), null-terminated copy from `CTRL_SampleEntryScratch` into `ED_StateRingTable`, and modulo-20 producer index update in `ED_StateRingWriteIndex`.
