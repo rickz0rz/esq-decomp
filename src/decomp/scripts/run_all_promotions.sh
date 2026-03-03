@@ -54,6 +54,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_textdisp_build_channel_label_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_draw_channel_banner_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_format_entry_time_target_gcc.sh"
+    "src/decomp/scripts/promote_textdisp_update_channel_range_flags_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

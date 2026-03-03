@@ -18014,3 +18014,24 @@ Run:
 
 Current notes:
 - Candidate preserves active-group table selection (`PrimaryTitlePtrTable` vs `SecondaryTitlePtrTable`), schedule offset lookup, numeric-minutes fallback formatting, hh:mm parse/round path using `CLOCK_FormatVariantCode`, clock-format template copy from `Global_REF_STR_CLOCK_FORMAT`, and clear-output guard when source text is absent.
+
+## Target 791: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_UpdateChannelRangeFlags`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct non-jmptbl helper with deterministic channel-range and weekday-mask gating.
+- Efficient follow-up after textdisp banner/time helpers; updates banner-char state consumed by display paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_update_channel_range_flags_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_update_channel_range_flags_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_update_channel_range_flags.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_update_channel_range_flags_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_update_channel_range_flags_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_update_channel_range_flags_target_gcc.sh`
+
+Current notes:
+- Candidate preserves primary/secondary source selection, default channel normalization to `'0'` (`48`), allowed-range checks (`48..67` and `72..77`), weekday mask test using `Global_STR_TEXTDISP_C_3`, `TEXTDISP_FindEntryMatchIndex` call path for enabled channels, and fallback banner char defaults (`0x64`/`0x31`).
