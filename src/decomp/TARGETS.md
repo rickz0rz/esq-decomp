@@ -19904,3 +19904,66 @@ Run:
 
 Current notes:
 - Candidate preserves the original allocator loop structure (`D7` index 0..19), callsite tag/line metadata, and post-loop index resets.
+
+## Target 881: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_FreeLineTextBuffers`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural companion to Target 880 allocator path, keeping pair coverage contiguous in `esqfunc.s`.
+- Small bounded deallocator loop (20 iterations) with explicit per-slot clear behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_free_line_text_buffers_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_free_line_text_buffers_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_free_line_text_buffers.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_free_line_text_buffers_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_free_line_text_buffers_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_free_line_text_buffers_target_gcc.sh`
+
+Current notes:
+- Candidate preserves loop bounds (`D7` 0..19), deallocation call metadata (`line 1235`, `Global_STR_ESQFUNC_C_6`), and slot nulling semantics.
+
+## Target 882: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_UpdateDiskWarningAndRefreshTick`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next compact non-jmptbl ESQFUNC control helper after allocator/free pair.
+- Keeps warning-refresh path covered before moving into larger frame-service routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_update_disk_warning_and_refresh_tick_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_update_disk_warning_and_refresh_tick_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_update_disk_warning_and_refresh_tick.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_update_disk_warning_and_refresh_tick_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_update_disk_warning_and_refresh_tick_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_update_disk_warning_and_refresh_tick_target_gcc.sh`
+
+Current notes:
+- Standalone GCC inline asm uses `LEA Global_REF_RASTPORT_2+2,A0` to avoid undefined-symbol subtraction in isolated C-unit assembly while preserving effective address intent.
+
+## Target 883: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_WaitForClockChangeAndServiceUi`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small control-loop helper directly adjacent to Target 882 in `esqfunc.s`.
+- Keeps promotion progress contiguous before larger persistence/frame routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_wait_for_clock_change_and_service_ui_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_wait_for_clock_change_and_service_ui_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_wait_for_clock_change_and_service_ui.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_wait_for_clock_change_and_service_ui_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_wait_for_clock_change_and_service_ui_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_wait_for_clock_change_and_service_ui_target_gcc.sh`
+
+Current notes:
+- Candidate preserves poll-until-nonzero loop (`MonitorClockChange` + `ServiceUiTickIfRunning`) with original branch structure.

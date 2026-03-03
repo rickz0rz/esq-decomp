@@ -1,0 +1,16 @@
+__asm__(
+    ".globl _ESQFUNC_WaitForClockChangeAndServiceUi\n"
+    "_ESQFUNC_WaitForClockChangeAndServiceUi:\n"
+    "ESQFUNC_WaitForClockChangeAndServiceUi:\n"
+    "    JSR     ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(PC)\n"
+    "\n"
+    "    TST.W   D0\n"
+    "    BNE.S   .return\n"
+    "\n"
+    "    BSR.W   ESQFUNC_ServiceUiTickIfRunning\n"
+    "\n"
+    "    BRA.S   ESQFUNC_WaitForClockChangeAndServiceUi\n"
+    "\n"
+    ".return:\n"
+    "    RTS\n"
+);
