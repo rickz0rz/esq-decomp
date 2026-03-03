@@ -29,6 +29,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_cleanup_draw_banner_spacer_segment_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_draw_time_banner_segment_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_draw_date_banner_segment_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_draw_datetime_banner_row_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

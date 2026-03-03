@@ -17489,3 +17489,24 @@ Run:
 
 Current notes:
 - Candidate preserves bitmap swap/restore, left-segment clear rectangle (`40,34 -> 255,67`), `RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY` call, and `BEVEL_DrawBevelFrameWithTopRight` frame draw.
+
+## Target 766: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawDateTimeBannerRow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Coordinator helper that composes the full banner row from the three promoted segment helpers.
+- Good aggregation milestone for cleanup2 because it validates inter-helper call ordering in one unit.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_datetime_banner_row_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_datetime_banner_row_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_datetime_banner_row.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_datetime_banner_row_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_datetime_banner_row_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_datetime_banner_row_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bitmap swap/restore and row clear rectangle (`0,34 -> 695,67`), then calls `CLEANUP_DrawDateBannerSegment`, `CLEANUP_DrawBannerSpacerSegment`, and `CLEANUP_DrawTimeBannerSegment` in the original sequence.
