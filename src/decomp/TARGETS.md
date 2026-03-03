@@ -19022,3 +19022,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_BuildLayoutForSource` assembly slice, preserving D7/A3 save/restore, lock-flag early return, `FormatToBuffer2` argument setup, handoff to `DISPTEXT_LayoutAndAppendToBuffer`, stack unwind, and status propagation through D7->D0.
+
+## Target 839: `modules/groups/a/i/disptext.s` (`DISPTEXT_LayoutSourceToLines`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large exported non-jmptbl layout routine that iterates source text into line segments.
+- Core native path exercising line-width math, marker adjustments, and repeated `DISPTEXT_BuildLineWithWidth` calls.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_layout_source_to_lines_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_layout_source_to_lines_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_layout_source_to_lines.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_layout_source_to_lines_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_layout_source_to_lines_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_layout_source_to_lines_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_LayoutSourceToLines` assembly slice, preserving lock/index guards, prefix-width/text-length adjustments, iterative `DISPTEXT_BuildLineWithWidth` loop, marker-width subtraction for early lines, and booleanized success return (`SEQ/NEG/EXT`) keyed off remaining source pointer.
