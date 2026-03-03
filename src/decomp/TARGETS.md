@@ -17069,3 +17069,24 @@ Run:
 
 Current notes:
 - Candidate preserves bracket scanning/replacement (`[`→`(` and `]`→`)`), optional hour-offset path when offset byte is nonzero, hour wrap into `1..12`, and two-character hour re-emit with leading space/`'1'`.
+
+## Target 746: `modules/groups/a/a/app2.s` (`ESQ_WildcardMatch`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact direct helper with no external dependencies and clear control flow.
+- High callsite leverage across wildcard-filter paths that currently route through already-promoted jmptbl stubs.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_wildcard_match_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_wildcard_match_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_wildcard_match.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_wildcard_match_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_wildcard_match_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_wildcard_match_target_gcc.sh`
+
+Current notes:
+- Candidate preserves null-pointer mismatch path, single-character progression over `str/pattern`, wildcard checks for `'*'` and `'?'`, end-of-string termination behavior, and return convention (`0` match, `1` mismatch).
