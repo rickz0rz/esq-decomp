@@ -20942,3 +20942,45 @@ Run:
 
 Current notes:
 - Candidate preserves compare/exit, UI-service and serial-byte reads, destination store + checksum XOR, and branch to shared tail (`ESQIFF2_ReadSerialBytesWithXor_Return`).
+
+## Target 930: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ValidateFieldIndexAndLength`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-calling validation body with stable, explicit branch structure.
+- Converts an additional ESQIFF2 helper body while reusing an already-promoted return tail.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_validate_field_index_and_length_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_validate_field_index_and_length_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_validate_field_index_and_length.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_validate_field_index_and_length_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_target_gcc.sh`
+
+Current notes:
+- Candidate preserves original bound checks (`field<=3`, field `1 => len<=10`, others `<=7`) and branches to shared tail (`ESQIFF2_ValidateFieldIndexAndLength_Return`) on all reject paths.
+
+## Target 931: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ClearLineHeadTailByMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact two-path helper with stable call and stack patterns.
+- Increases ESQIFF2 non-tail function coverage while preserving ownership-replace call ordering.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_clear_line_head_tail_by_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_clear_line_head_tail_by_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_clear_line_head_tail_by_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_clear_line_head_tail_by_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_clear_line_head_tail_by_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_clear_line_head_tail_by_mode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode test (`mode==2` secondary else primary), both paired `ESQPARS_ReplaceOwnedString` call sites, pointer write-backs, and saved-`D7` restore path.

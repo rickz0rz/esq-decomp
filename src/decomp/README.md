@@ -3484,7 +3484,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_read_rbf_bytes_with_xor_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_rbf_bytes_with_xor.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_read_rbf_bytes_with_xor_target_gcc.sh`
-- latest full C trial: `compiled 927 / 927`, `export count 938`, `status: ok`
+- Target 930 (`ESQIFF2_ValidateFieldIndexAndLength`):
+- compare: `src/decomp/scripts/compare_esqiff2_validate_field_index_and_length_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_validate_field_index_and_length.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_target_gcc.sh`
+- Target 931 (`ESQIFF2_ClearLineHeadTailByMode`):
+- compare: `src/decomp/scripts/compare_esqiff2_clear_line_head_tail_by_mode_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_clear_line_head_tail_by_mode.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_clear_line_head_tail_by_mode_target_gcc.sh`
+- latest full C trial: `compiled 929 / 929`, `export count 940`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
