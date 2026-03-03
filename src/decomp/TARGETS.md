@@ -19757,3 +19757,45 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPLIB_DisplayTextAtPosition` slice, preserving null-string guard, `Move` call setup, explicit NUL-scan length loop, length computation by pointer subtraction, final `Text` call, and original frame/register epilogue.
+
+## Target 874: `modules/groups/a/i/displib.s` (`DISPLIB_ApplyInlineAlignmentPadding`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported DISPLIB formatter with clear control-flow branches for center/right inline alignment.
+- High leverage for display formatting paths that depend on dynamic pad width and in-place string rebuild behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_apply_inline_alignment_padding_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_apply_inline_alignment_padding_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_apply_inline_alignment_padding.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_apply_inline_alignment_padding_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_apply_inline_alignment_padding_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_apply_inline_alignment_padding_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPLIB_ApplyInlineAlignmentPadding` slice, preserving source text-length calculation, free-space computation (`624 - textWidth`), mode branches (`24` center / `26` right), `DivS32` pad-count computation, temporary buffer allocate/copy/space-fill/append sequence, deallocation path, and exported shared return tail.
+
+## Target 875: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported jmptbl forwarder with deterministic one-instruction behavior.
+- Useful incremental symbol coverage in `esqfunc.s` while preparing broader jmptbl batching.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact forwarder behavior: `JMP ESQ_HandleSerialRbfInterrupt`.

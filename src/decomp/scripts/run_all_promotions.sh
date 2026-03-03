@@ -137,6 +137,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_displib_reset_text_buffer_and_line_tables_target_gcc.sh"
     "src/decomp/scripts/promote_displib_commit_current_line_pen_and_advance_target_gcc.sh"
     "src/decomp/scripts/promote_displib_display_text_at_position_target_gcc.sh"
+    "src/decomp/scripts/promote_displib_apply_inline_alignment_padding_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_jmptbl_esq_handle_serial_rbf_interrupt_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
