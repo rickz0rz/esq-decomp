@@ -17258,3 +17258,24 @@ Run:
 
 Current notes:
 - Candidate uses a direct asm symbol body to preserve original control flow and state transitions: phase/delay progression, sample scratch collection, bit assembly loop with `BSET/BCLR`, and flush path via `ESQ_StoreCtrlSampleEntry`.
+
+## Target 755: `modules/groups/a/a/app.s` (`ESQ_CaptureCtrlBit4Stream`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural companion to Target 754 with near-identical state-machine structure and known call/consumer paths.
+- Good low-risk coverage gain because behavior is preserved through direct asm-body translation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_capture_ctrl_bit4_stream_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_capture_ctrl_bit4_stream_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_capture_ctrl_bit4_stream.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_capture_ctrl_bit4_stream_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-4 capture phase machine, sample scratch buffering, assembled-byte write into `CTRL_BUFFER`, wrap at `$1F4`, buffered-count update against `CTRL_HPreviousSample`, `CTRL_HDeltaMax` tracking, and full state reset epilogue.
