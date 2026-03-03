@@ -16649,3 +16649,87 @@ Run:
 
 Current notes:
 - Semantic gate checks only presence of terminal `RTS`.
+
+## Target 726: `modules/groups/a/a/app2.s` (`ESQ_DecColorStep`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small pure-arithmetic helper used by copper color fade/update paths.
+- Good stepping stone before deeper list-iteration color animation routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_dec_color_step_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_dec_color_step_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_dec_color_step.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_dec_color_step_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_dec_color_step_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_dec_color_step_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 0RGB nibble masking (`$0F00/$00F0/$000F`), per-component non-zero decrement by one step (`$0100/$0010/$0001`), and recombination into return value.
+
+## Target 727: `modules/groups/a/a/app2.s` (`ESQ_BumpColorTowardTargets`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact arithmetic helper paired with Target 726, used for per-component color movement.
+- Contains straightforward target-byte compare/update behavior before large clock/calendar routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_bump_color_toward_targets_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_bump_color_toward_targets_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_bump_color_toward_targets.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_bump_color_toward_targets_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_bump_color_toward_targets_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_bump_color_toward_targets_target_gcc.sh`
+
+Current notes:
+- Candidate preserves packed nibble extraction (`$0F00/$00F0/$000F`), target-byte expansion (`<<8`, `<<4`, raw low nibble), conditional per-component increment (`$0100/$0010/$0001`), and final recombine.
+
+## Target 728: `modules/groups/a/a/app2.s` (`ESQ_MoveCopperEntryTowardStart`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-small table-shift helper with no external library calls.
+- Complements existing jmptbl forwarder target by decompiling the direct implementation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_move_copper_entry_toward_start_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_move_copper_entry_toward_start_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_move_copper_entry_toward_start.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_move_copper_entry_toward_start_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_move_copper_entry_toward_start_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_move_copper_entry_toward_start_target_gcc.sh`
+
+Current notes:
+- Candidate preserves masked index handling (`&0x1F`, `<<2`), descending shift-by-4 loop, primary/secondary copper table writes, and guarded reinsertion of the saved entry.
+
+## Target 729: `modules/groups/a/a/app2.s` (`ESQ_MoveCopperEntryTowardEnd`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Natural counterpart to Target 728 with mirrored shift direction.
+- Keeps progress on copper-entry movement logic before larger color/clock loops.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_move_copper_entry_toward_end_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_move_copper_entry_toward_end_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_move_copper_entry_toward_end.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_move_copper_entry_toward_end_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_move_copper_entry_toward_end_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_move_copper_entry_toward_end_target_gcc.sh`
+
+Current notes:
+- Candidate preserves masked index handling (`&0x1F`, `<<2`), ascending shift-by-4 loop, primary/secondary copper table writes, and guarded reinsertion of the saved entry.
