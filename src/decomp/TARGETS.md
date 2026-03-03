@@ -20345,3 +20345,45 @@ Run:
 
 Current notes:
 - Candidate preserves `'a'` hotkey gating, brush list free/parse/repopulate pipeline, fallback brush selection path, type3 cache update, and ctrl-input reset ordering.
+
+## Target 902: `modules/groups/a/n/esqiff.s` (`ESQIFF_DeallocateAdsAndLogoLstData`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct cleanup helper with deterministic guard+free+clear behavior.
+- High-confidence promotion candidate to extend direct ESQIFF coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_deallocate_ads_and_logo_lst_data_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_deallocate_ads_and_logo_lst_data_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_deallocate_ads_and_logo_lst_data.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_deallocate_ads_and_logo_lst_data_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_deallocate_ads_and_logo_lst_data_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_deallocate_ads_and_logo_lst_data_target_gcc.sh`
+
+Current notes:
+- Candidate preserves dual guarded deallocation paths (`gfx/g_ads.data`, `df0:logo.lst`), `(size+1)` parameter behavior, and post-free global clears.
+
+## Target 903: `modules/groups/a/n/esqiff.s` (`ESQIFF_QueueIffBrushLoad`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium direct ESQIFF dispatcher with meaningful async-task vs immediate-render pathing.
+- Builds confidence on multi-helper orchestration and cursor-advance behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_queue_iff_brush_load_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_queue_iff_brush_load_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_queue_iff_brush_load.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_queue_iff_brush_load_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_queue_iff_brush_load_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_queue_iff_brush_load_target_gcc.sh`
+
+Current notes:
+- Candidate preserves resource-cursor seed/advance behavior, standard IFF task queue path, weather-overlay fast path guards, and descriptor/task-state update semantics.

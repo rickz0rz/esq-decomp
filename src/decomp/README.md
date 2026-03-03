@@ -3372,7 +3372,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_handle_brush_ini_reload_hotkey_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_handle_brush_ini_reload_hotkey.awk`
 - promote: `src/decomp/scripts/promote_esqiff_handle_brush_ini_reload_hotkey_target_gcc.sh`
-- latest full C trial: `compiled 899 / 899`, `export count 909`, `status: ok`
+- Target 902 (`ESQIFF_DeallocateAdsAndLogoLstData`):
+- compare: `src/decomp/scripts/compare_esqiff_deallocate_ads_and_logo_lst_data_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_deallocate_ads_and_logo_lst_data.awk`
+- promote: `src/decomp/scripts/promote_esqiff_deallocate_ads_and_logo_lst_data_target_gcc.sh`
+- Target 903 (`ESQIFF_QueueIffBrushLoad`):
+- compare: `src/decomp/scripts/compare_esqiff_queue_iff_brush_load_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_queue_iff_brush_load.awk`
+- promote: `src/decomp/scripts/promote_esqiff_queue_iff_brush_load_target_gcc.sh`
+- latest full C trial: `compiled 901 / 901`, `export count 911`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
