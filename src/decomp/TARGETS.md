@@ -16880,3 +16880,24 @@ Run:
 
 Current notes:
 - Candidate preserves AM/PM normalization (`+12` for PM-flag path, `12->0` midnight normalization), slot doubling, `>=30` minute half-slot increment, and final `CLOCK_HalfHourSlotLookup` byte mapping.
+
+## Target 737: `modules/groups/a/a/app2.s` (`ESQ_ClampBannerCharRange`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-small pure arithmetic/range-normalization helper with no external calls.
+- Supports banner index/range flow and was still open while multiple jmptbl forwarders already targeted it.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_clamp_banner_char_range_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_clamp_banner_char_range_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_clamp_banner_char_range.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_clamp_banner_char_range_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_clamp_banner_char_range_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_clamp_banner_char_range_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 65/67 and 65/73-range normalization behavior (including default to `'E'`), 1..48 wrap arithmetic, and writes to `WDISP_BannerCharRangeStart` / `WDISP_BannerCharRangeEnd`.

@@ -68,6 +68,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_set_bit1_based_trial_gcc.sh`: GCC-specific compare lane for `Target 734` (`ESQ_SetBit1Based`).
 - `src/decomp/scripts/compare_esq_reverse_bits_in6_bytes_trial_gcc.sh`: GCC-specific compare lane for `Target 735` (`ESQ_ReverseBitsIn6Bytes`).
 - `src/decomp/scripts/compare_esq_get_half_hour_slot_index_trial_gcc.sh`: GCC-specific compare lane for `Target 736` (`ESQ_GetHalfHourSlotIndex`).
+- `src/decomp/scripts/compare_esq_clamp_banner_char_range_trial_gcc.sh`: GCC-specific compare lane for `Target 737` (`ESQ_ClampBannerCharRange`).
 - `src/decomp/scripts/compare_esq_noop_trial_gcc.sh`: GCC-specific compare lane for `Target 722` (`ESQ_NoOp`).
 - `src/decomp/scripts/compare_esq_noop_006a_trial_gcc.sh`: GCC-specific compare lane for `Target 723` (`ESQ_NoOp_006A`).
 - `src/decomp/scripts/compare_esq_noop_0074_trial_gcc.sh`: GCC-specific compare lane for `Target 724` (`ESQ_NoOp_0074`).
@@ -802,6 +803,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_set_bit1_based.awk`: semantic post-filter for `ESQ_SetBit1Based` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_reverse_bits_in6_bytes.awk`: semantic post-filter for `ESQ_ReverseBitsIn6Bytes` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_get_half_hour_slot_index.awk`: semantic post-filter for `ESQ_GetHalfHourSlotIndex` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_clamp_banner_char_range.awk`: semantic post-filter for `ESQ_ClampBannerCharRange` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop.awk`: semantic post-filter for `ESQ_NoOp` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_006a.awk`: semantic post-filter for `ESQ_NoOp_006A` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_0074.awk`: semantic post-filter for `ESQ_NoOp_0074` compare lane.
@@ -1435,6 +1437,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_set_bit1_based_target_gcc.sh`: promotion gate for Target 734 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_reverse_bits_in6_bytes_target_gcc.sh`: promotion gate for Target 735 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_get_half_hour_slot_index_target_gcc.sh`: promotion gate for Target 736 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_clamp_banner_char_range_target_gcc.sh`: promotion gate for Target 737 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_target_gcc.sh`: promotion gate for Target 722 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh`: promotion gate for Target 723 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh`: promotion gate for Target 724 GCC lane (semantic + build/hash gates).
@@ -2209,6 +2212,7 @@ bash src/decomp/scripts/promote_esq_test_bit1_based_target_gcc.sh
 bash src/decomp/scripts/promote_esq_set_bit1_based_target_gcc.sh
 bash src/decomp/scripts/promote_esq_reverse_bits_in6_bytes_target_gcc.sh
 bash src/decomp/scripts/promote_esq_get_half_hour_slot_index_target_gcc.sh
+bash src/decomp/scripts/promote_esq_clamp_banner_char_range_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh
