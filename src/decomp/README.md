@@ -3884,7 +3884,23 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_diskio_reset_ctrl_input_state_if_idle_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio_reset_ctrl_input_state_if_idle.awk`
 - promote: `src/decomp/scripts/promote_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
-- latest full C trial: `compiled 1027 / 1027`, `export count 1035`, `status: ok`
+- Target 1030 (`DISKIO_EnsurePc1MountedAndGfxAssigned`):
+- compare: `src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_ensure_pc1_mounted_and_gfx_assigned.awk`
+- promote: `src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_target_gcc.sh`
+- Target 1031 (`DISKIO_GetFilesizeFromHandle`):
+- compare: `src/decomp/scripts/compare_diskio_get_filesize_from_handle_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_get_filesize_from_handle.awk`
+- promote: `src/decomp/scripts/promote_diskio_get_filesize_from_handle_target_gcc.sh`
+- Target 1032 (`DISKIO_WriteDecimalField`):
+- compare: `src/decomp/scripts/compare_diskio_write_decimal_field_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_write_decimal_field.awk`
+- promote: `src/decomp/scripts/promote_diskio_write_decimal_field_target_gcc.sh`
+- Target 1033 (`DISKIO_QueryVolumeSoftErrorCount`):
+- compare: `src/decomp/scripts/compare_diskio_query_volume_soft_error_count_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_query_volume_soft_error_count.awk`
+- promote: `src/decomp/scripts/promote_diskio_query_volume_soft_error_count_target_gcc.sh`
+- latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

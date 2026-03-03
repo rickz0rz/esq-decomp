@@ -23136,3 +23136,91 @@ Run:
 Current notes:
 - Candidate preserves idle guard, `_LVODisable/_LVOEnable` critical section, control-state clears, and final mode/tick reset stores.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1030: `modules/groups/a/g/diskio.s` (`DISKIO_EnsurePc1MountedAndGfxAssigned`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` mount/assign helper with a simple first-run guard.
+- Low-risk conversion preserving one-shot DOS `Execute` sequence and register-save shape.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_ensure_pc1_mounted_and_gfx_assigned_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_ensure_pc1_mounted_and_gfx_assigned.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_target_gcc.sh`
+
+Current notes:
+- Candidate preserves guard test/set of `DISKIO_Pc1MountAssignFlag`, executes mount then assign commands in order via `_LVOExecute`, and restores `D2-D3` before return.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1031: `modules/groups/a/g/diskio.s` (`DISKIO_GetFilesizeFromHandle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` file-size helper with deterministic `_LVOSeek` call sequence.
+- Low-risk conversion preserving save/restore set and size-return behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_get_filesize_from_handle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_get_filesize_from_handle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_get_filesize_from_handle.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_get_filesize_from_handle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_get_filesize_from_handle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_get_filesize_from_handle_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the three `_LVOSeek` calls (end, current, beginning), captures end position in `D6`, and returns it in `D0`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1032: `modules/groups/a/g/diskio.s` (`DISKIO_WriteDecimalField`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` decimal formatting helper with local stack buffer usage.
+- Low-risk conversion preserving `SPrintf` + scan-length + buffered-write call chain.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_write_decimal_field_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_write_decimal_field_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_write_decimal_field.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_write_decimal_field_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_write_decimal_field_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_write_decimal_field_target_gcc.sh`
+
+Current notes:
+- Candidate preserves local decimal-buffer fill through `GROUP_AE_JMPTBL_WDISP_SPrintf(PC)`, byte-scan loop for emitted length, and final `BSR.W DISKIO_WriteBufferedBytes` call.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1033: `modules/groups/a/g/diskio.s` (`DISKIO_QueryVolumeSoftErrorCount`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Mid-size non-`JMPTBL` info-query routine with clear lock/alloc/info/free/unlock lifecycle.
+- Useful coverage for structured resource-management control flow in `diskio`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_query_volume_soft_error_count_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_query_volume_soft_error_count_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_query_volume_soft_error_count.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_query_volume_soft_error_count_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_query_volume_soft_error_count_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_query_volume_soft_error_count_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `_LVOLock` guard, InfoData allocate/query/free sequence, `_LVOUnLock` cleanup path, and `D7` return-value transfer.
+- Promotion gate and canonical hash checks pass with this replacement active.
