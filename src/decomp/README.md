@@ -3700,7 +3700,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_copy_planes_from_context_to_snapshot_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_copy_planes_from_context_to_snapshot.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_copy_planes_from_context_to_snapshot_target_gcc.sh`
-- latest full C trial: `compiled 981 / 981`, `export count 992`, `status: ok`
+- Target 984 (`ESQSHARED4_SetBannerCopperColorAndThreshold`):
+- compare: `src/decomp/scripts/compare_esqshared4_set_banner_copper_color_and_threshold_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_set_banner_copper_color_and_threshold.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_set_banner_copper_color_and_threshold_target_gcc.sh`
+- Target 985 (`ESQSHARED4_ApplyBannerColorStep_Return`):
+- compare: `src/decomp/scripts/compare_esqshared4_apply_banner_color_step_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_apply_banner_color_step_return.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_apply_banner_color_step_return_target_gcc.sh`
+- latest full C trial: `compiled 983 / 983`, `export count 994`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

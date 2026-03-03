@@ -22123,3 +22123,47 @@ Run:
 Current notes:
 - Candidate keeps original register-save/restore, `A1+20` context base, three `DBF`-counted (`0x2B`) longword copy loops, and per-plane source pointer write-back to context fields.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 984: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_SetBannerCopperColorAndThreshold`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact register-coupled helper in active banner color-step flow.
+- Good fit for exact asm-backed replacement preserving `D0`/`A4` calling convention.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_set_banner_copper_color_and_threshold_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_set_banner_copper_color_and_threshold_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_set_banner_copper_color_and_threshold.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_set_banner_copper_color_and_threshold_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_set_banner_copper_color_and_threshold_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_set_banner_copper_color_and_threshold_target_gcc.sh`
+
+Current notes:
+- Candidate preserves direct initial store through caller-provided `A4`, wait-row/start/end color program writes, and masked threshold commit to `ESQPARS2_BannerColorThreshold`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 985: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ApplyBannerColorStep_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny exported helper with stable stack/register-restore semantics.
+- Low-risk promotion that removes another standalone asm-only export in active `esqshared4` lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_apply_banner_color_step_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_apply_banner_color_step_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_apply_banner_color_step_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_apply_banner_color_step_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_apply_banner_color_step_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_apply_banner_color_step_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact `MOVEM.L (A7)+,D0-D1/A2` restore and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
