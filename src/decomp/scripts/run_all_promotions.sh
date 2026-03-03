@@ -101,6 +101,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_disptext_build_line_with_width_target_gcc.sh"
     "src/decomp/scripts/promote_disptext_build_line_pointer_table_target_gcc.sh"
     "src/decomp/scripts/promote_disptext_append_to_buffer_target_gcc.sh"
+    "src/decomp/scripts/promote_disptext_build_layout_for_source_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

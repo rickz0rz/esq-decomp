@@ -19001,3 +19001,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_AppendToBuffer` assembly slice, preserving existing-buffer end scans, `AvailMem`/threshold gate, optional allocate+copy+append+replace flow, null-buffer replace path, and booleanized success return (`SNE/NEG/EXT`).
+
+## Target 838: `modules/groups/a/i/disptext.s` (`DISPTEXT_BuildLayoutForSource`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl orchestration helper linking format-stage and layout-stage routines.
+- High-value native path that checks lock state and then drives `FormatToBuffer2` + `LayoutAndAppendToBuffer`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_build_layout_for_source_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_build_layout_for_source_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_build_layout_for_source.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_build_layout_for_source_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_build_layout_for_source_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_build_layout_for_source_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_BuildLayoutForSource` assembly slice, preserving D7/A3 save/restore, lock-flag early return, `FormatToBuffer2` argument setup, handoff to `DISPTEXT_LayoutAndAppendToBuffer`, stack unwind, and status propagation through D7->D0.
