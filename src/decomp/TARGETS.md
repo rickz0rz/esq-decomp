@@ -17342,3 +17342,24 @@ Run:
 
 Current notes:
 - Candidate preserves `INTENA` disable write (`#$100`), `INTB_AUD1` vector restore via `_LVOSetIntVector`, and interrupt-struct free through `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` with original `22/74` arguments and stack cleanup.
+
+## Target 759: `modules/groups/a/b/cleanup.s` (`CLEANUP_ClearRbfInterruptAndSerial`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact cleanup routine with serial-device close, vector restore, and paired deallocation calls.
+- Completes another direct non-jmptbl shutdown export and improves cleanup-path C coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_clear_rbf_interrupt_and_serial_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_clear_rbf_interrupt_and_serial_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_clear_rbf_interrupt_and_serial.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_clear_rbf_interrupt_and_serial_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_clear_rbf_interrupt_and_serial_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_clear_rbf_interrupt_and_serial_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `INTENA` write (`#$800`), `_LVOCloseDevice`, cleanup of serial msg port/IO request, `INTB_RBF` vector restore via `_LVOSetIntVector`, deallocation of `Global_REF_INTB_RBF_64K_BUFFER` and `Global_REF_INTERRUPT_STRUCT_INTB_RBF` with original tag values (`113`/`118`), and final `LEA 32(A7),A7` stack unwind.
