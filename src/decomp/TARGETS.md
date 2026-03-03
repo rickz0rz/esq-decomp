@@ -15976,3 +15976,72 @@ Current notes:
 - Original symbol is an epilogue entry (`MOVEM/UNLK/RTS`) shared by internal branch flow; GCC emits a direct return-form body for standalone C symbol emission.
 - Semantic gating accepts either explicit epilogue sequence or terminal return behavior for this return-label target.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 695: `modules/groups/a/a/brush.s` (`BRUSH_SelectBrushSlot_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny exported return-label companion adjacent to `BRUSH_SelectBrushSlot` hot path.
+- Low-risk cleanup target that reduces unresolved return-label exports in `brush.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_select_brush_slot_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_select_brush_slot_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_select_brush_slot_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_select_brush_slot_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_select_brush_slot_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_select_brush_slot_return_target_gcc.sh`
+
+Current notes:
+- Original symbol is an epilogue branch target (`MOVEM -56(A5),... ; UNLK A5 ; RTS`) shared by parent routine exit flow; GCC emits a direct return body for exported symbol emission.
+- Semantic gating accepts epilogue-bearing or direct-return forms for this return-label target.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 696: `modules/groups/a/a/brush.s` (`BRUSH_AllocBrushNode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Moderate-risk allocator in `brush.s` with clear field-write behavior and no UI/IO side effects.
+- High leverage: this symbol is a core constructor used by brush-list population paths and removes a non-jump-table export.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_alloc_brush_node_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_alloc_brush_node_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_alloc_brush_node.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_alloc_brush_node_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_alloc_brush_node_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_alloc_brush_node_target_gcc.sh`
+
+Current notes:
+- Function allocates `238` bytes with `MEMF_PUBLIC|MEMF_CLEAR`, stores result in `BRUSH_LastAllocatedNode`, and returns it whether allocation succeeds or fails.
+- On success, it copies the incoming label string into node base, seeds fields at offsets `190/194/222/226`, and conditionally links previous tail via `+234`.
+- Semantic gating focuses on allocation call presence, node-linking offsets, string-copy loop behavior, and terminal return semantics.
+
+## Target 697: `modules/groups/a/a/brush.s` (`BRUSH_FreeBrushList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core list-cleanup routine with deterministic control-flow and explicit struct offsets.
+- High-value non-jump-table export that unblocks more `brush.s` callsite conversions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_free_brush_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_free_brush_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_free_brush_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_free_brush_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_free_brush_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_free_brush_list_target_gcc.sh`
+
+Current notes:
+- Routine walks `*head_ptr` through `node->next` at offset `+368`; each node frees raster planes from base `+0x90` with count byte at `+184`.
+- Auxiliary chain at `+364` is released via fixed-size (`12`) deallocs before freeing the main node (`372` bytes).
+- `free_all` gate preserves original behavior: when not `1`, function frees only first node and stores updated head back through `head_ptr`.
