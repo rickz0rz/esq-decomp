@@ -16964,3 +16964,24 @@ Run:
 
 Current notes:
 - Candidate preserves month-table summation from `CLOCK_MonthLengths`, alternate table selection when leap flag (`+20`) is set (`+24` bytes), plus day-of-month add and writeback to day-of-year (`+16`).
+
+## Target 741: `modules/groups/a/a/app2.s` (`ESQ_UpdateMonthDayFromDayOfYear`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct inverse helper to Target 740, compact and table-driven.
+- High-value for calendar normalization paths and has no library-call coupling.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_update_month_day_from_day_of_year_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_update_month_day_from_day_of_year_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_update_month_day_from_day_of_year.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_update_month_day_from_day_of_year_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_update_month_day_from_day_of_year_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_update_month_day_from_day_of_year_target_gcc.sh`
+
+Current notes:
+- Candidate preserves day-of-year scan/subtract loop against `CLOCK_MonthLengths`, alternate leap table select (`+24` bytes) when flag `+20` is set, and writes month/day back to offsets `+2` and `+4`.

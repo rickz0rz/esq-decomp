@@ -72,6 +72,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_store_ctrl_sample_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 738` (`ESQ_StoreCtrlSampleEntry`).
 - `src/decomp/scripts/compare_esq_format_time_stamp_trial_gcc.sh`: GCC-specific compare lane for `Target 739` (`ESQ_FormatTimeStamp`).
 - `src/decomp/scripts/compare_esq_calc_day_of_year_from_month_day_trial_gcc.sh`: GCC-specific compare lane for `Target 740` (`ESQ_CalcDayOfYearFromMonthDay`).
+- `src/decomp/scripts/compare_esq_update_month_day_from_day_of_year_trial_gcc.sh`: GCC-specific compare lane for `Target 741` (`ESQ_UpdateMonthDayFromDayOfYear`).
 - `src/decomp/scripts/compare_esq_noop_trial_gcc.sh`: GCC-specific compare lane for `Target 722` (`ESQ_NoOp`).
 - `src/decomp/scripts/compare_esq_noop_006a_trial_gcc.sh`: GCC-specific compare lane for `Target 723` (`ESQ_NoOp_006A`).
 - `src/decomp/scripts/compare_esq_noop_0074_trial_gcc.sh`: GCC-specific compare lane for `Target 724` (`ESQ_NoOp_0074`).
@@ -810,6 +811,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_store_ctrl_sample_entry.awk`: semantic post-filter for `ESQ_StoreCtrlSampleEntry` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_format_time_stamp.awk`: semantic post-filter for `ESQ_FormatTimeStamp` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_calc_day_of_year_from_month_day.awk`: semantic post-filter for `ESQ_CalcDayOfYearFromMonthDay` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_update_month_day_from_day_of_year.awk`: semantic post-filter for `ESQ_UpdateMonthDayFromDayOfYear` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop.awk`: semantic post-filter for `ESQ_NoOp` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_006a.awk`: semantic post-filter for `ESQ_NoOp_006A` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_0074.awk`: semantic post-filter for `ESQ_NoOp_0074` compare lane.
@@ -1447,6 +1449,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_store_ctrl_sample_entry_target_gcc.sh`: promotion gate for Target 738 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_format_time_stamp_target_gcc.sh`: promotion gate for Target 739 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_calc_day_of_year_from_month_day_target_gcc.sh`: promotion gate for Target 740 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_update_month_day_from_day_of_year_target_gcc.sh`: promotion gate for Target 741 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_target_gcc.sh`: promotion gate for Target 722 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh`: promotion gate for Target 723 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh`: promotion gate for Target 724 GCC lane (semantic + build/hash gates).
@@ -2225,6 +2228,7 @@ bash src/decomp/scripts/promote_esq_clamp_banner_char_range_target_gcc.sh
 bash src/decomp/scripts/promote_esq_store_ctrl_sample_entry_target_gcc.sh
 bash src/decomp/scripts/promote_esq_format_time_stamp_target_gcc.sh
 bash src/decomp/scripts/promote_esq_calc_day_of_year_from_month_day_target_gcc.sh
+bash src/decomp/scripts/promote_esq_update_month_day_from_day_of_year_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh

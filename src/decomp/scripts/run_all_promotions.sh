@@ -73,6 +73,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_store_ctrl_sample_entry_target_gcc.sh"
     "src/decomp/scripts/promote_esq_format_time_stamp_target_gcc.sh"
     "src/decomp/scripts/promote_esq_calc_day_of_year_from_month_day_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_update_month_day_from_day_of_year_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"
