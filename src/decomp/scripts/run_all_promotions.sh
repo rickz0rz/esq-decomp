@@ -53,6 +53,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh"
     "src/decomp/scripts/promote_esq_poll_ctrl_input_target_gcc.sh"
     "src/decomp/scripts/promote_esq_set_copper_effect_default_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_set_copper_effect_all_on_target_gcc.sh"
     "src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh"
     "src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh"
     "src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh"

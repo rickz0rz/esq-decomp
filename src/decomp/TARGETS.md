@@ -16484,3 +16484,24 @@ Run:
 
 Current notes:
 - Candidate preserves constant argument pair (`0`, `$3F`) and call dispatch to `ESQ_SetCopperEffectParams`.
+
+## Target 718: `modules/groups/a/a/app2.s` (`ESQ_SetCopperEffect_AllOn`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct wrapper with simple CIAB side-effect and fixed call arguments.
+- Keeps low-risk velocity in `app2.s` while larger copper/clock logic remains for later.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_set_copper_effect_all_on_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_set_copper_effect_all_on_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_set_copper_effect_all_on.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_set_copper_effect_all_on_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_set_copper_effect_all_on_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_set_copper_effect_all_on_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB_PRA read/modify/write clearing bits 6/7, then dispatches `ESQ_SetCopperEffectParams(0x3F, 0x3F)`.
