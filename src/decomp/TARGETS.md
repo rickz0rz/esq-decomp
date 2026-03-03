@@ -18119,3 +18119,24 @@ Run:
 
 Current notes:
 - Candidate preserves tag/pattern setup (`PPV`/`SBE`/`SPORTS`/`FIND1`), candidate iteration and entry matching calls, dual-group time-offset computations, selected/fallback validity and index-state updates, find-mode early return branch, usage-counter bump path, and final channel normalization/error return branches.
+
+## Target 796: `modules/groups/a/e/coi.s` (`COI_FreeEntryResources_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very small direct non-jmptbl export in `coi.s` that is low risk and quick to validate.
+- Useful starter conversion in the COI cluster before promoting larger resource-management routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_free_entry_resources_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_free_entry_resources_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_free_entry_resources_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_free_entry_resources_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_free_entry_resources_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_free_entry_resources_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,A2-A3` + `RTS`) with matching callable symbol.
