@@ -19127,3 +19127,45 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_TestEntryBits0And2` slice, preserving D7/A3 save/restore, null-entry early return, dual bit tests on `40(A3)` (bit0 and bit2), explicit `0/1` result assignment, and shared return path.
+
+## Target 844: `modules/groups/a/n/esqdisp.s` (`ESQDISP_GetEntryPointerByMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small/medium exported non-jmptbl mode/index table lookup with straightforward bounds checks.
+- High-value native accessor currently used widely through promoted jump-table wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_get_entry_pointer_by_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_get_entry_pointer_by_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_get_entry_pointer_by_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_get_entry_pointer_by_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_get_entry_pointer_by_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_get_entry_pointer_by_mode_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_GetEntryPointerByMode` slice, preserving stack-local default-null result, mode switch (`1` primary / `2` secondary), negative and upper-bound guards, per-table pointer fetch, and shared return epilogue.
+
+## Target 845: `modules/groups/a/n/esqdisp.s` (`ESQDISP_GetEntryAuxPointerByMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small/medium exported non-jmptbl sibling accessor to Target 844, targeting title-pointer tables.
+- Efficient paired conversion due near-identical control flow and existing jmptbl stabilization.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_get_entry_aux_pointer_by_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_get_entry_aux_pointer_by_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_get_entry_aux_pointer_by_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_get_entry_aux_pointer_by_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_get_entry_aux_pointer_by_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_get_entry_aux_pointer_by_mode_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_GetEntryAuxPointerByMode` slice, preserving stack-local default-null result, mode switch (`1` primary / `2` secondary), negative and upper-bound guards, title-table pointer fetch, and shared return epilogue.
