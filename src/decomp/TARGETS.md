@@ -18938,3 +18938,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_ComputeMarkerWidths` assembly slice, preserving local-byte setup via `NEWGRID_SetSelectionMarkers`, optional prefix checks on `-1(A5)` and `-3(A5)`, `_LVOTextLength` calls for present prefixes, width summation (`D5 + D4`) into `DISPTEXT_ControlMarkerWidthPx`, and full frame/register restore.
+
+## Target 835: `modules/groups/a/i/disptext.s` (`DISPTEXT_BuildLineWithWidth`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large exported non-jmptbl line-builder core routine driving tokenization/fit behavior.
+- High-impact native function that underpins `DISPTEXT_LayoutAndAppendToBuffer` and rendering pipeline behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_build_line_with_width_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_build_line_with_width_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_build_line_with_width.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_build_line_with_width_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_build_line_with_width_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_build_line_with_width_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_BuildLineWithWidth` assembly slice, preserving frame/regs save, initial single-space width measurement, source loop guards, delimiter/class3 token extraction, per-word width measurement + shrink path, append/skip flow, control-marker booleanization update, and final null-or-next-source return in `D0`.
