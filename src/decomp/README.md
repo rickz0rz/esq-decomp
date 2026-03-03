@@ -3464,7 +3464,27 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_show_version_mismatch_overlay_return.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_return_target_gcc.sh`
-- latest full C trial: `compiled 922 / 922`, `export count 933`, `status: ok`
+- Target 925 (`ESQIFF2_ShowAttentionOverlay_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_show_attention_overlay_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_show_attention_overlay_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_show_attention_overlay_return_target_gcc.sh`
+- Target 926 (`ESQIFF2_ClearPrimaryEntryFlags34To39_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_clear_primary_entry_flags34_to39_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_clear_primary_entry_flags34_to39_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_return_target_gcc.sh`
+- Target 927 (`ESQIFF2_ClearPrimaryEntryFlags34To39`):
+- compare: `src/decomp/scripts/compare_esqiff2_clear_primary_entry_flags34_to39_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_clear_primary_entry_flags34_to39.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_target_gcc.sh`
+- Target 928 (`ESQIFF2_ReadRbfBytesToBuffer`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_rbf_bytes_to_buffer_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_rbf_bytes_to_buffer.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_rbf_bytes_to_buffer_target_gcc.sh`
+- Target 929 (`ESQIFF2_ReadRbfBytesWithXor`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_rbf_bytes_with_xor_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_rbf_bytes_with_xor.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_rbf_bytes_with_xor_target_gcc.sh`
+- latest full C trial: `compiled 927 / 927`, `export count 938`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

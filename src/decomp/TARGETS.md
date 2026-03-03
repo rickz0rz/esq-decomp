@@ -20837,3 +20837,108 @@ Run:
 
 Current notes:
 - Candidate preserves exact mismatch-overlay return tail (`MOVEM.L (A7)+,D2-D3`, `UNLK A5`, `RTS`).
+
+## Target 925: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ShowAttentionOverlay_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for attention overlay helper.
+- Continues low-risk ESQIFF2 return-helper conversion throughput.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_show_attention_overlay_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_show_attention_overlay_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_show_attention_overlay_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_show_attention_overlay_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_show_attention_overlay_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_show_attention_overlay_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact attention-overlay return tail (`MOVEM.L (A7)+,D2-D3`, `UNLK A5`, `RTS`).
+
+## Target 926: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ClearPrimaryEntryFlags34To39_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for primary-entry flag clear helper.
+- Continues low-risk ESQIFF2 return-tail conversion cadence.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_clear_primary_entry_flags34_to39_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_clear_primary_entry_flags34_to39_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_clear_primary_entry_flags34_to39_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_clear_primary_entry_flags34_to39_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact return tail (`MOVEM.L (A7)+,D6-D7`, `UNLK A5`, `RTS`) used after loop completion.
+
+## Target 927: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ClearPrimaryEntryFlags34To39`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small bounded loop helper with no external calls and a stable control-flow shape.
+- Keeps ESQIFF2 promotion momentum while moving from pure tails into full function bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_clear_primary_entry_flags34_to39_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_clear_primary_entry_flags34_to39_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_clear_primary_entry_flags34_to39.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_clear_primary_entry_flags34_to39_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_target_gcc.sh`
+
+Current notes:
+- Candidate preserves original loop layout and branch to shared return tail (`ESQIFF2_ClearPrimaryEntryFlags34To39_Return`) while keeping the return helper separately promoted.
+
+## Target 928: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadRbfBytesToBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact serial-read loop body with a previously promoted shared return tail.
+- Adds another full-function ESQIFF2 conversion while preserving the original control-flow shape.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_rbf_bytes_to_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_rbf_bytes_to_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_rbf_bytes_to_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_rbf_bytes_to_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_rbf_bytes_to_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_rbf_bytes_to_buffer_target_gcc.sh`
+
+Current notes:
+- Candidate preserves loop compare/exit, UI-service/read-byte call order, byte store, and branch to shared tail (`ESQIFF2_ReadSerialBytesToBuffer_Return`).
+
+## Target 929: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadRbfBytesWithXor`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact XOR-folded serial-read loop with a previously promoted shared return tail.
+- Extends ESQIFF2 full-function coverage with low structural risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_rbf_bytes_with_xor_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_rbf_bytes_with_xor_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_rbf_bytes_with_xor.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_rbf_bytes_with_xor_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_rbf_bytes_with_xor_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_rbf_bytes_with_xor_target_gcc.sh`
+
+Current notes:
+- Candidate preserves compare/exit, UI-service and serial-byte reads, destination store + checksum XOR, and branch to shared tail (`ESQIFF2_ReadSerialBytesWithXor_Return`).
