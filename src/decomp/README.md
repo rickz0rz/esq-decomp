@@ -769,6 +769,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_coi_clear_anim_object_strings_return_trial_gcc.sh`: GCC-specific compare lane for `Target 797` (`COI_ClearAnimObjectStrings_Return`).
 - `src/decomp/scripts/compare_coi_free_sub_entry_table_entries_return_trial_gcc.sh`: GCC-specific compare lane for `Target 798` (`COI_FreeSubEntryTableEntries_Return`).
 - `src/decomp/scripts/compare_coi_get_anim_field_pointer_by_mode_return_trial_gcc.sh`: GCC-specific compare lane for `Target 799` (`COI_GetAnimFieldPointerByMode_Return`).
+- `src/decomp/scripts/compare_coi_test_entry_within_time_window_return_trial_gcc.sh`: GCC-specific compare lane for `Target 800` (`COI_TestEntryWithinTimeWindow_Return`).
+- `src/decomp/scripts/compare_coi_append_anim_field_with_trailing_space_return_trial_gcc.sh`: GCC-specific compare lane for `Target 801` (`COI_AppendAnimFieldWithTrailingSpace_Return`).
+- `src/decomp/scripts/compare_coi_compute_entry_time_delta_minutes_return_trial_gcc.sh`: GCC-specific compare lane for `Target 802` (`COI_ComputeEntryTimeDeltaMinutes_Return`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1466,6 +1469,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_coi_clear_anim_object_strings_return.awk`: semantic post-filter for `COI_ClearAnimObjectStrings_Return` compare lane.
 - `src/decomp/scripts/semantic_filter_coi_free_sub_entry_table_entries_return.awk`: semantic post-filter for `COI_FreeSubEntryTableEntries_Return` compare lane.
 - `src/decomp/scripts/semantic_filter_coi_get_anim_field_pointer_by_mode_return.awk`: semantic post-filter for `COI_GetAnimFieldPointerByMode_Return` compare lane.
+- `src/decomp/scripts/semantic_filter_coi_test_entry_within_time_window_return.awk`: semantic post-filter for `COI_TestEntryWithinTimeWindow_Return` compare lane.
+- `src/decomp/scripts/semantic_filter_coi_append_anim_field_with_trailing_space_return.awk`: semantic post-filter for `COI_AppendAnimFieldWithTrailingSpace_Return` compare lane.
+- `src/decomp/scripts/semantic_filter_coi_compute_entry_time_delta_minutes_return.awk`: semantic post-filter for `COI_ComputeEntryTimeDeltaMinutes_Return` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2262,6 +2268,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_coi_clear_anim_object_strings_return_target_gcc.sh`: promotion gate for Target 797 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_coi_free_sub_entry_table_entries_return_target_gcc.sh`: promotion gate for Target 798 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_return_target_gcc.sh`: promotion gate for Target 799 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_coi_test_entry_within_time_window_return_target_gcc.sh`: promotion gate for Target 800 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_coi_append_anim_field_with_trailing_space_return_target_gcc.sh`: promotion gate for Target 801 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_return_target_gcc.sh`: promotion gate for Target 802 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

@@ -18203,3 +18203,66 @@ Run:
 
 Current notes:
 - Candidate preserves the exact epilogue behavior for this export (`MOVEM.L (A7)+,D4-D7/A3`, `UNLK A5`, `RTS`) with matching callable symbol.
+
+## Target 800: `modules/groups/a/e/coi.s` (`COI_TestEntryWithinTimeWindow_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal direct non-jmptbl COI return export that includes a return-value move plus standard unwind.
+- Continues low-risk COI return-helper promotions to incrementally reduce remaining direct export surface.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_test_entry_within_time_window_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_test_entry_within_time_window_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_test_entry_within_time_window_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_test_entry_within_time_window_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_test_entry_within_time_window_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_test_entry_within_time_window_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVE.L -4(A5),D0`, `MOVEM.L (A7)+,D5-D7/A2-A3`, `UNLK A5`, `RTS`) with matching callable symbol.
+
+## Target 801: `modules/groups/a/e/coi.s` (`COI_AppendAnimFieldWithTrailingSpace_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal direct non-jmptbl COI return export with a simple pointer return plus standard unwind.
+- Continues low-risk COI return-helper promotions before tackling larger COI body routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_append_anim_field_with_trailing_space_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_append_anim_field_with_trailing_space_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_append_anim_field_with_trailing_space_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_append_anim_field_with_trailing_space_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_append_anim_field_with_trailing_space_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_append_anim_field_with_trailing_space_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVE.L A2,D0`, `MOVEM.L (A7)+,D7/A2-A3`, `UNLK A5`, `RTS`) with matching callable symbol.
+
+## Target 802: `modules/groups/a/e/coi.s` (`COI_ComputeEntryTimeDeltaMinutes_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal direct non-jmptbl COI return export with a register return move and simple restore+return.
+- Continues low-risk COI return-helper cleanup before converting larger COI routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_compute_entry_time_delta_minutes_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_compute_entry_time_delta_minutes_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_compute_entry_time_delta_minutes_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_compute_entry_time_delta_minutes_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact epilogue behavior for this export (`MOVE.L D5,D0`, `MOVEM.L (A7)+,D5-D7/A3`, `RTS`) with matching callable symbol.
