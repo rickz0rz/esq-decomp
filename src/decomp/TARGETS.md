@@ -16568,3 +16568,63 @@ Run:
 
 Current notes:
 - Candidate preserves CIAB_PRA read/modify/write setting bits 6/7, parameter dispatch `ESQ_SetCopperEffectParams(0x3F, 0)`, and trailing `GCOMMAND_EnableHighlight` call.
+
+## Target 722: `modules/groups/a/a/app2.s` (`ESQ_NoOp`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny direct `RTS` stub, trivial low-risk coverage gain.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_noop_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_noop_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_noop.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_noop_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_noop_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_noop_target_gcc.sh`
+
+Current notes:
+- Semantic gate checks only presence of terminal `RTS`.
+
+## Target 723: `modules/groups/a/a/app2.s` (`ESQ_NoOp_006A`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny direct `RTS` stub, parallel to Target 722.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_noop_006a_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_noop_006a_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_noop_006a.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_noop_006a_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh`
+
+Current notes:
+- Semantic gate checks only presence of terminal `RTS`.
+
+## Target 724: `modules/groups/a/a/app2.s` (`ESQ_NoOp_0074`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny direct `RTS` stub, parallel to Targets 722/723.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_noop_0074_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_noop_0074_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_noop_0074.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_noop_0074_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh`
+
+Current notes:
+- Semantic gate checks only presence of terminal `RTS`.
