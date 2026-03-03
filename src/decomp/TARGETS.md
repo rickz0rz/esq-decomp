@@ -17363,3 +17363,24 @@ Run:
 
 Current notes:
 - Candidate preserves `INTENA` write (`#$800`), `_LVOCloseDevice`, cleanup of serial msg port/IO request, `INTB_RBF` vector restore via `_LVOSetIntVector`, deallocation of `Global_REF_INTB_RBF_64K_BUFFER` and `Global_REF_INTERRUPT_STRUCT_INTB_RBF` with original tag values (`113`/`118`), and final `LEA 32(A7),A7` stack unwind.
+
+## Target 760: `modules/groups/a/b/cleanup.s` (`CLEANUP_ShutdownInputDevices`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-size but linear cleanup export with straightforward call sequencing.
+- Extends shutdown-path promotion coverage beyond interrupt teardown into device and msg-port lifecycle cleanup.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_shutdown_input_devices_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_shutdown_input_devices_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_shutdown_input_devices.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_shutdown_input_devices_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_shutdown_input_devices_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_shutdown_input_devices_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `DoIO` flush path for input IO request, input-buffer deallocation (`tag 127`), both `_LVOCloseDevice` calls, msg-port cleanup for input/console ports, paired `IOSTDREQ_Free` calls, and final stack unwind `LEA 16(A7),A7`.
