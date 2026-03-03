@@ -18098,3 +18098,24 @@ Run:
 
 Current notes:
 - Candidate preserves mode-dependent start index handling, control-token and quoted-span pre-processing, per-entry validity/bitmask checks, control-token gating and exact/substring comparison paths (`STRING_CompareNoCase` / `ESQ_FindSubstringCaseFold`), transient null-termination restore logic, and final match index or `49` fallback return behavior.
+
+## Target 795: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_SelectBestMatchFromList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Largest remaining direct non-jmptbl selector in `textdisp3.s`; converting it substantially closes this module’s core selection logic.
+- High-leverage routine that ties together candidate filtering, time-offset scoring, banner selected/fallback state, and channel normalization.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_select_best_match_from_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_select_best_match_from_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_select_best_match_from_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_select_best_match_from_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_select_best_match_from_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_select_best_match_from_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves tag/pattern setup (`PPV`/`SBE`/`SPORTS`/`FIND1`), candidate iteration and entry matching calls, dual-group time-offset computations, selected/fallback validity and index-state updates, find-mode early return branch, usage-counter bump path, and final channel normalization/error return branches.
