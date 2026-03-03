@@ -3404,7 +3404,23 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_service_external_asset_source_state_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_service_external_asset_source_state.awk`
 - promote: `src/decomp/scripts/promote_esqiff_service_external_asset_source_state_target_gcc.sh`
-- latest full C trial: `compiled 907 / 907`, `export count 918`, `status: ok`
+- Target 910 (`ESQIFF_PlayNextExternalAssetFrame_Return`):
+- compare: `src/decomp/scripts/compare_esqiff_play_next_external_asset_frame_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_play_next_external_asset_frame_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff_play_next_external_asset_frame_return_target_gcc.sh`
+- Target 911 (`ESQIFF_ShowExternalAssetWithCopperFx_Return`):
+- compare: `src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_show_external_asset_with_copper_fx_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_return_target_gcc.sh`
+- Target 912 (`ESQIFF_PlayNextExternalAssetFrame`):
+- compare: `src/decomp/scripts/compare_esqiff_play_next_external_asset_frame_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_play_next_external_asset_frame.awk`
+- promote: `src/decomp/scripts/promote_esqiff_play_next_external_asset_frame_target_gcc.sh`
+- Target 913 (`ESQIFF_ShowExternalAssetWithCopperFx`):
+- compare: `src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_show_external_asset_with_copper_fx.awk`
+- promote: `src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_target_gcc.sh`
+- latest full C trial: `compiled 911 / 911`, `export count 922`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

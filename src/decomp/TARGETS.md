@@ -20516,3 +20516,93 @@ Run:
 Current notes:
 - Candidate preserves RAVESC/overlay busy guards, source-select toggles, per-drive write-protect reload checks, and tail queue of `ESQIFF_QueueNextExternalAssetIffJob`.
 - GCC inline-asm copy strips source comment-only lines for GAS compatibility; opcode flow/labels remain preserved.
+
+## Target 910: `modules/groups/a/n/esqiff.s` (`ESQIFF_PlayNextExternalAssetFrame_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail symbol used by the external-asset frame player.
+- Fast promotion that reduces remaining direct ESQIFF symbol count before larger frame/render bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_play_next_external_asset_frame_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_play_next_external_asset_frame_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_play_next_external_asset_frame_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_play_next_external_asset_frame_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_play_next_external_asset_frame_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_play_next_external_asset_frame_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact tail sequence (`MOVEM.L (A7)+,D6-D7`, `UNLK A5`, `RTS`) with symbol-compatible entry labels.
+
+## Target 911: `modules/groups/a/n/esqiff.s` (`ESQIFF_ShowExternalAssetWithCopperFx_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail symbol for the external-asset copper blit helper.
+- Fast promotion that removes another direct ESQIFF symbol before larger frame/blit bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_show_external_asset_with_copper_fx_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_show_external_asset_with_copper_fx_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the exact tail sequence (`MOVEM.L (A7)+,D2/D4-D7`, `UNLK A5`, `RTS`) with symbol-compatible entry labels.
+
+## Target 912: `modules/groups/a/n/esqiff.s` (`ESQIFF_PlayNextExternalAssetFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large direct ESQIFF frame-player body that drives render/pop/service flow.
+- High leverage function for external asset playback behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_play_next_external_asset_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_play_next_external_asset_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_play_next_external_asset_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_play_next_external_asset_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_play_next_external_asset_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_play_next_external_asset_frame_target_gcc.sh`
+
+Current notes:
+- Candidate preserves copper drop/rise sequencing, brush-head pop pathing, fallback palette restore, and service-source tail dispatch.
+- Full-C compile compatibility adjustments applied:
+  - Replaced unresolved symbol-difference immediate `#((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2)` with literal `#-458`.
+  - Replaced short external branch to `ESQIFF_PlayNextExternalAssetFrame_Return` with `JMP` to avoid out-of-range `.S` assembly in isolated object mode.
+
+## Target 913: `modules/groups/a/n/esqiff.s` (`ESQIFF_ShowExternalAssetWithCopperFx`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large direct ESQIFF external-asset copper blit body and accumulator capture path.
+- Completes core direct blit/render path pair with Target 912 frame-player body.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_show_external_asset_with_copper_fx_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_show_external_asset_with_copper_fx.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_target_gcc.sh`
+
+Current notes:
+- Candidate preserves brush-source select, display-context build, palette/copper sequencing, copy/pen setup, and missing-asset retry mask updates.
+- Full-C compile compatibility adjustments applied:
+  - Replaced unresolved symbol-difference immediates `#((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2)` with literal `#-458`.
+  - Replaced short external branch to `ESQIFF_ShowExternalAssetWithCopperFx_Return` with `JMP` to avoid out-of-range `.S` assembly in isolated object mode.
