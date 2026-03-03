@@ -17993,3 +17993,24 @@ Run:
 
 Current notes:
 - Candidate preserves active-group entry fetch, short-name build/copy, channel-label build, draw-mode toggles via `_LVOSetDrMd`, optional half-width trim path (`mode==2`), text trim + inset draw calls, and final draw-mode restore path.
+
+## Target 790: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_FormatEntryTime`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl formatter helper adjacent to already-promoted `FormatEntryTimeForIndex` and time-offset helpers.
+- Extends conversion of core time-render paths used by channel/entry display routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_format_entry_time_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_format_entry_time_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_format_entry_time.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_format_entry_time_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_format_entry_time_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_format_entry_time_target_gcc.sh`
+
+Current notes:
+- Candidate preserves active-group table selection (`PrimaryTitlePtrTable` vs `SecondaryTitlePtrTable`), schedule offset lookup, numeric-minutes fallback formatting, hh:mm parse/round path using `CLOCK_FormatVariantCode`, clock-format template copy from `Global_REF_STR_CLOCK_FORMAT`, and clear-output guard when source text is absent.
