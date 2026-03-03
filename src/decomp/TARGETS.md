@@ -18980,3 +18980,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_BuildLinePointerTable` assembly slice, preserving D5-D7/A2-A3 save/restore, lock-flag early return, base pointer init from `DISPTEXT_TextBufferPtr`, header-line probe through `DISPTEXT_LineLengthTable`, per-line pointer construction loop, and final lock assignment from input argument (`24(A7)` -> `DISPTEXT_LineTableLockFlag`).
+
+## Target 837: `modules/groups/a/i/disptext.s` (`DISPTEXT_AppendToBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl buffer-growth helper, central write-path for display text layout.
+- High-leverage native routine: append/reallocate/replace ownership path used by layout and flush flows.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_append_to_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_append_to_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_append_to_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_append_to_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_append_to_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_append_to_buffer_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_AppendToBuffer` assembly slice, preserving existing-buffer end scans, `AvailMem`/threshold gate, optional allocate+copy+append+replace flow, null-buffer replace path, and booleanized success return (`SNE/NEG/EXT`).

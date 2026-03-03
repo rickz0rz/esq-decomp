@@ -806,6 +806,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_disptext_compute_marker_widths_trial_gcc.sh`: GCC-specific compare lane for `Target 834` (`DISPTEXT_ComputeMarkerWidths`).
 - `src/decomp/scripts/compare_disptext_build_line_with_width_trial_gcc.sh`: GCC-specific compare lane for `Target 835` (`DISPTEXT_BuildLineWithWidth`).
 - `src/decomp/scripts/compare_disptext_build_line_pointer_table_trial_gcc.sh`: GCC-specific compare lane for `Target 836` (`DISPTEXT_BuildLinePointerTable`).
+- `src/decomp/scripts/compare_disptext_append_to_buffer_trial_gcc.sh`: GCC-specific compare lane for `Target 837` (`DISPTEXT_AppendToBuffer`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1540,6 +1541,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_disptext_compute_marker_widths.awk`: semantic post-filter for `DISPTEXT_ComputeMarkerWidths` compare lane.
 - `src/decomp/scripts/semantic_filter_disptext_build_line_with_width.awk`: semantic post-filter for `DISPTEXT_BuildLineWithWidth` compare lane.
 - `src/decomp/scripts/semantic_filter_disptext_build_line_pointer_table.awk`: semantic post-filter for `DISPTEXT_BuildLinePointerTable` compare lane.
+- `src/decomp/scripts/semantic_filter_disptext_append_to_buffer.awk`: semantic post-filter for `DISPTEXT_AppendToBuffer` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2373,6 +2375,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_disptext_compute_marker_widths_target_gcc.sh`: promotion gate for Target 834 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_disptext_build_line_with_width_target_gcc.sh`: promotion gate for Target 835 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_disptext_build_line_pointer_table_target_gcc.sh`: promotion gate for Target 836 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_disptext_append_to_buffer_target_gcc.sh`: promotion gate for Target 837 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).
