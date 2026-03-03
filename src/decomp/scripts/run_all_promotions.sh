@@ -74,6 +74,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_coi_process_entry_selection_state_target_gcc.sh"
     "src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_target_gcc.sh"
     "src/decomp/scripts/promote_coi_free_entry_resources_target_gcc.sh"
+    "src/decomp/scripts/promote_coi_clear_anim_object_strings_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

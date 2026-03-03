@@ -18434,3 +18434,24 @@ Run:
 
 Current notes:
 - Candidate preserves null guard, calls to `COI_FreeSubEntryTableEntries` and `COI_ClearAnimObjectStrings`, conditional `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` path, and final clear of `48(A3)` before tail branch to existing `COI_FreeEntryResources_Return`.
+
+## Target 811: `modules/groups/a/e/coi.s` (`COI_ClearAnimObjectStrings` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-jmptbl COI cleanup body with repeated owned-string release pattern.
+- High leverage for memory-lifecycle parity because multiple anim-object pointer fields are normalized through `ESQPARS_ReplaceOwnedString`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_clear_anim_object_strings_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_clear_anim_object_strings_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_clear_anim_object_strings.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_clear_anim_object_strings_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_clear_anim_object_strings_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_clear_anim_object_strings_target_gcc.sh`
+
+Current notes:
+- Candidate preserves object/null guards, zeroing of first four bytes, full repeated replace-owned-string chain over offsets `4..28`, final clear of `32(A2)`, and explicit branch to existing `COI_ClearAnimObjectStrings_Return` symbol for standalone-trial safety.

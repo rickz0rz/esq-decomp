@@ -780,6 +780,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_coi_process_entry_selection_state_trial_gcc.sh`: GCC-specific compare lane for `Target 808` (`COI_ProcessEntrySelectionState`).
 - `src/decomp/scripts/compare_coi_compute_entry_time_delta_minutes_trial_gcc.sh`: GCC-specific compare lane for `Target 809` (`COI_ComputeEntryTimeDeltaMinutes` entry body).
 - `src/decomp/scripts/compare_coi_free_entry_resources_trial_gcc.sh`: GCC-specific compare lane for `Target 810` (`COI_FreeEntryResources` entry body).
+- `src/decomp/scripts/compare_coi_clear_anim_object_strings_trial_gcc.sh`: GCC-specific compare lane for `Target 811` (`COI_ClearAnimObjectStrings` entry body).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1488,6 +1489,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_coi_process_entry_selection_state.awk`: semantic post-filter for `COI_ProcessEntrySelectionState` compare lane.
 - `src/decomp/scripts/semantic_filter_coi_compute_entry_time_delta_minutes.awk`: semantic post-filter for `COI_ComputeEntryTimeDeltaMinutes` compare lane.
 - `src/decomp/scripts/semantic_filter_coi_free_entry_resources.awk`: semantic post-filter for `COI_FreeEntryResources` compare lane.
+- `src/decomp/scripts/semantic_filter_coi_clear_anim_object_strings.awk`: semantic post-filter for `COI_ClearAnimObjectStrings` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2295,6 +2297,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_coi_process_entry_selection_state_target_gcc.sh`: promotion gate for Target 808 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_target_gcc.sh`: promotion gate for Target 809 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_coi_free_entry_resources_target_gcc.sh`: promotion gate for Target 810 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_coi_clear_anim_object_strings_target_gcc.sh`: promotion gate for Target 811 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).
