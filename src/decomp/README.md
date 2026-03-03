@@ -50,6 +50,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_read_serial_rbf_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 713` (`ESQ_ReadSerialRbfByte`).
 - `src/decomp/scripts/compare_esq_handle_serial_rbf_interrupt_trial_gcc.sh`: GCC-specific compare lane for `Target 714` (`ESQ_HandleSerialRbfInterrupt`).
 - `src/decomp/scripts/compare_esq_capture_ctrl_bit4_stream_buffer_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 715` (`ESQ_CaptureCtrlBit4StreamBufferByte`).
+- `src/decomp/scripts/compare_esq_poll_ctrl_input_trial_gcc.sh`: GCC-specific compare lane for `Target 716` (`ESQ_PollCtrlInput`).
 - `src/decomp/scripts/compare_get_bit_3_of_ciab_pra_into_d1_trial_gcc.sh`: GCC-specific compare lane for `Target 710` (`GET_BIT_3_OF_CIAB_PRA_INTO_D1`).
 - `src/decomp/scripts/compare_get_bit_4_of_ciab_pra_into_d1_trial_gcc.sh`: GCC-specific compare lane for `Target 711` (`GET_BIT_4_OF_CIAB_PRA_INTO_D1`).
 - `src/decomp/scripts/compare_esq_main_exit_noop_hook_trial_gcc.sh`: GCC-specific compare lane for `Target 079` (`ESQ_MainExitNoOpHook`).
@@ -763,6 +764,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_read_serial_rbf_byte.awk`: semantic post-filter for `ESQ_ReadSerialRbfByte` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_handle_serial_rbf_interrupt.awk`: semantic post-filter for `ESQ_HandleSerialRbfInterrupt` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_capture_ctrl_bit4_stream_buffer_byte.awk`: semantic post-filter for `ESQ_CaptureCtrlBit4StreamBufferByte` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_poll_ctrl_input.awk`: semantic post-filter for `ESQ_PollCtrlInput` compare lane.
 - `src/decomp/scripts/semantic_filter_get_bit_3_of_ciab_pra_into_d1.awk`: semantic post-filter for `GET_BIT_3_OF_CIAB_PRA_INTO_D1` compare lane.
 - `src/decomp/scripts/semantic_filter_get_bit_4_of_ciab_pra_into_d1.awk`: semantic post-filter for `GET_BIT_4_OF_CIAB_PRA_INTO_D1` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_main_exit_noop_hook.awk`: semantic post-filter for `ESQ_MainExitNoOpHook` compare lane.
@@ -1375,6 +1377,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh`: promotion gate for Target 713 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_handle_serial_rbf_interrupt_target_gcc.sh`: promotion gate for Target 714 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh`: promotion gate for Target 715 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_poll_ctrl_input_target_gcc.sh`: promotion gate for Target 716 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh`: promotion gate for Target 710 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh`: promotion gate for Target 711 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh`: promotion gate for Target 079 GCC lane (semantic + build/hash gates).
@@ -2128,6 +2131,7 @@ bash src/decomp/scripts/promote_esq_init_audio1_dma_target_gcc.sh
 bash src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh
 bash src/decomp/scripts/promote_esq_handle_serial_rbf_interrupt_target_gcc.sh
 bash src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh
+bash src/decomp/scripts/promote_esq_poll_ctrl_input_target_gcc.sh
 bash src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh
 bash src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh
 bash src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh

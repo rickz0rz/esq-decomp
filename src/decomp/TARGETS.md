@@ -16442,3 +16442,24 @@ Run:
 
 Current notes:
 - Candidate preserves index load from `CTRL_HPreviousSample`, byte read from `CTRL_BUFFER`, increment + wrap at `0x01F4`, and index storeback.
+
+## Target 716: `modules/groups/a/a/app.s` (`ESQ_PollCtrlInput`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact direct control-input wrapper coordinating bit-4 sampling, optional bit-3 sampling, and hardware INTREQ acknowledge.
+- Good leverage point before tackling larger capture state machines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_poll_ctrl_input_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_poll_ctrl_input_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_poll_ctrl_input.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_poll_ctrl_input_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_poll_ctrl_input_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_poll_ctrl_input_target_gcc.sh`
+
+Current notes:
+- Candidate preserves unconditional call to `ESQ_CaptureCtrlBit4Stream`, gate-character check (`ESQ_STR_B[18] == 'N'`) for optional `ESQ_CaptureCtrlBit3Stream`, and INTREQ write of `0x0100`.
