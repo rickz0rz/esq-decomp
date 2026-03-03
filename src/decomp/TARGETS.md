@@ -17573,3 +17573,45 @@ Run:
 
 Current notes:
 - Candidate preserves slot wrap (`-48` loop), format-variant quotient/remainder path (`DivS32 #30`), format-string copy loop from `Global_REF_STR_CLOCK_FORMAT`, optional digit recompute via `Mulu32`/`DivS32` and ASCII writes at offsets `3/4`, and original register-save/restore frame.
+
+## Target 770: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawClockFormatFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very compact direct export that only computes frame bounds and performs one blit call.
+- Low-risk promotion that increases cleanup2 non-jmptbl coverage while keeping gate turnaround fast.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_clock_format_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_clock_format_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_clock_format_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_clock_format_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_clock_format_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_clock_format_frame_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `NEWGRID_ColumnStartXPx`-based x/width math (`36` offset and `660 - x` span), push order for `GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort`, and original `MOVEM` save/restore plus `LEA 36(A7),A7` stack unwind.
+
+## Target 771: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawClockBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core direct-export renderer for the top clock banner used by alert/update paths.
+- Adds real behavior coverage (time-format branching, draw, and blit) beyond helper-only targets.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_clock_banner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_clock_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_clock_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_clock_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_clock_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_clock_banner_target_gcc.sh`
+
+Current notes:
+- Candidate preserves UI-busy early return, 12/24-hour format branch with optional `AdjustHoursTo24HrFormat`, shared `WDISP_SPrintf` paths, banner clear/bevel draw sequence, centered text draw to `NEWGRID_MainRastPortPtr`, and final `Graphics_BltBitMapRastPort` copy.

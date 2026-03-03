@@ -739,6 +739,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_render_short_month_short_day_of_week_day_trial_gcc.sh`: GCC-specific compare lane for `Target 767` (`RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY`).
 - `src/decomp/scripts/compare_cleanup_draw_grid_time_banner_trial_gcc.sh`: GCC-specific compare lane for `Target 768` (`CLEANUP_DrawGridTimeBanner`).
 - `src/decomp/scripts/compare_cleanup_format_clock_format_entry_trial_gcc.sh`: GCC-specific compare lane for `Target 769` (`CLEANUP_FormatClockFormatEntry`).
+- `src/decomp/scripts/compare_cleanup_draw_clock_format_frame_trial_gcc.sh`: GCC-specific compare lane for `Target 770` (`CLEANUP_DrawClockFormatFrame`).
+- `src/decomp/scripts/compare_cleanup_draw_clock_banner_trial_gcc.sh`: GCC-specific compare lane for `Target 771` (`CLEANUP_DrawClockBanner`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1406,6 +1408,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_render_short_month_short_day_of_week_day.awk`: semantic post-filter for `RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY` compare lane.
 - `src/decomp/scripts/semantic_filter_cleanup_draw_grid_time_banner.awk`: semantic post-filter for `CLEANUP_DrawGridTimeBanner` compare lane.
 - `src/decomp/scripts/semantic_filter_cleanup_format_clock_format_entry.awk`: semantic post-filter for `CLEANUP_FormatClockFormatEntry` compare lane.
+- `src/decomp/scripts/semantic_filter_cleanup_draw_clock_format_frame.awk`: semantic post-filter for `CLEANUP_DrawClockFormatFrame` compare lane.
+- `src/decomp/scripts/semantic_filter_cleanup_draw_clock_banner.awk`: semantic post-filter for `CLEANUP_DrawClockBanner` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2172,6 +2176,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_render_short_month_short_day_of_week_day_target_gcc.sh`: promotion gate for Target 767 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_cleanup_draw_grid_time_banner_target_gcc.sh`: promotion gate for Target 768 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_cleanup_format_clock_format_entry_target_gcc.sh`: promotion gate for Target 769 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_cleanup_draw_clock_format_frame_target_gcc.sh`: promotion gate for Target 770 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_cleanup_draw_clock_banner_target_gcc.sh`: promotion gate for Target 771 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).
