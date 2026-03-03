@@ -792,6 +792,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_ctasks_start_close_task_process_trial_gcc.sh`: GCC-specific compare lane for `Target 820` (`CTASKS_StartCloseTaskProcess`).
 - `src/decomp/scripts/compare_ctasks_iff_task_cleanup_trial_gcc.sh`: GCC-specific compare lane for `Target 821` (`CTASKS_IFFTaskCleanup`).
 - `src/decomp/scripts/compare_ctasks_start_iff_task_process_trial_gcc.sh`: GCC-specific compare lane for `Target 822` (`CTASKS_StartIffTaskProcess`).
+- `src/decomp/scripts/compare_disptext_has_multiple_lines_trial_gcc.sh`: GCC-specific compare lane for `Target 823` (`DISPTEXT_HasMultipleLines`).
+- `src/decomp/scripts/compare_disptext_is_current_line_last_trial_gcc.sh`: GCC-specific compare lane for `Target 824` (`DISPTEXT_IsCurrentLineLast`).
+- `src/decomp/scripts/compare_disptext_get_total_line_count_trial_gcc.sh`: GCC-specific compare lane for `Target 825` (`DISPTEXT_GetTotalLineCount`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1512,6 +1515,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_ctasks_start_close_task_process.awk`: semantic post-filter for `CTASKS_StartCloseTaskProcess` compare lane.
 - `src/decomp/scripts/semantic_filter_ctasks_iff_task_cleanup.awk`: semantic post-filter for `CTASKS_IFFTaskCleanup` compare lane.
 - `src/decomp/scripts/semantic_filter_ctasks_start_iff_task_process.awk`: semantic post-filter for `CTASKS_StartIffTaskProcess` compare lane.
+- `src/decomp/scripts/semantic_filter_disptext_has_multiple_lines.awk`: semantic post-filter for `DISPTEXT_HasMultipleLines` compare lane.
+- `src/decomp/scripts/semantic_filter_disptext_is_current_line_last.awk`: semantic post-filter for `DISPTEXT_IsCurrentLineLast` compare lane.
+- `src/decomp/scripts/semantic_filter_disptext_get_total_line_count.awk`: semantic post-filter for `DISPTEXT_GetTotalLineCount` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2331,6 +2337,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_ctasks_start_close_task_process_target_gcc.sh`: promotion gate for Target 820 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_ctasks_iff_task_cleanup_target_gcc.sh`: promotion gate for Target 821 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_ctasks_start_iff_task_process_target_gcc.sh`: promotion gate for Target 822 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_disptext_has_multiple_lines_target_gcc.sh`: promotion gate for Target 823 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_disptext_is_current_line_last_target_gcc.sh`: promotion gate for Target 824 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_disptext_get_total_line_count_target_gcc.sh`: promotion gate for Target 825 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

@@ -1,0 +1,18 @@
+__asm__(
+    ".globl _DISPTEXT_IsCurrentLineLast\n"
+    "_DISPTEXT_IsCurrentLineLast:\n"
+    "DISPTEXT_IsCurrentLineLast:\n"
+    "    MOVE.L  D2,-(A7)\n"
+    "    BSR.W   DISPTEXT_FinalizeLineTable\n"
+    "\n"
+    "    MOVE.W  DISPTEXT_CurrentLineIndex,D0\n"
+    "    MOVE.W  DISPTEXT_TargetLineIndex,D1\n"
+    "    CMP.W   D1,D0\n"
+    "    SEQ     D2\n"
+    "    NEG.B   D2\n"
+    "    EXT.W   D2\n"
+    "    EXT.L   D2\n"
+    "    MOVE.L  D2,D0\n"
+    "    MOVE.L  (A7)+,D2\n"
+    "    RTS\n"
+);

@@ -18686,3 +18686,66 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the `CTASKS_StartIffTaskProcess` assembly slice, preserving the `FindTask` wait loop, done-flag clear, startup-state branch (`#4/#5` or preseeded `#6`), list-allocation callback install (`CTASKS_IFFTaskCleanup`), seglist BPTR derivation, `_LVOCreateProc` launch, and final proc-pointer store.
+
+## Target 823: `modules/groups/a/i/disptext.s` (`DISPTEXT_HasMultipleLines`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl predicate routine with clear control flow and no stack-macro indirection.
+- Useful base routine already referenced by promoted jump-table forwarders.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_has_multiple_lines_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_has_multiple_lines_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_has_multiple_lines.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_has_multiple_lines_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_has_multiple_lines_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_has_multiple_lines_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_HasMultipleLines` assembly slice, preserving finalize-call ordering, current-line guard, target-line compare (`CMP.W D1,D0` + `BLS`), true/false return shaping, and terminal `RTS`.
+
+## Target 824: `modules/groups/a/i/disptext.s` (`DISPTEXT_IsCurrentLineLast`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl predicate routine adjacent to Target 823 in the same module.
+- Preserves a characteristic compiler booleanization pattern (`SEQ/NEG/EXT`) and is easy to validate semantically.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_is_current_line_last_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_is_current_line_last_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_is_current_line_last.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_is_current_line_last_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_is_current_line_last_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_is_current_line_last_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_IsCurrentLineLast` assembly slice, preserving `DISPTEXT_FinalizeLineTable` call order, current-vs-target compare, `SEQ/NEG/EXT` booleanize sequence, D2 save/restore, and final `RTS`.
+
+## Target 825: `modules/groups/a/i/disptext.s` (`DISPTEXT_GetTotalLineCount`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny exported non-jmptbl helper routine with linear control flow.
+- High-confidence promotion that reinforces the `disptext.s` native export coverage after adjacent Targets 823/824.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_get_total_line_count_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_get_total_line_count_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_get_total_line_count.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_get_total_line_count_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_get_total_line_count_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_get_total_line_count_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_GetTotalLineCount` assembly slice, preserving finalize-call order, `MOVEQ #0,D0` clear, `DISPTEXT_TargetLineIndex` read into D0, and final `RTS`.
