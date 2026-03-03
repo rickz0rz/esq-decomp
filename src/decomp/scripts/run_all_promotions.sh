@@ -81,6 +81,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_wildcard_match_target_gcc.sh"
     "src/decomp/scripts/promote_esq_find_substring_case_fold_target_gcc.sh"
     "src/decomp/scripts/promote_esq_dec_copper_lists_primary_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_inc_copper_lists_towards_targets_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"

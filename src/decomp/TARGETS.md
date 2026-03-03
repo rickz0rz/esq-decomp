@@ -17132,3 +17132,24 @@ Run:
 
 Current notes:
 - Candidate preserves dual-list update for first 8 entries (`A` and `B` lists), primary-only update for next 24 entries (`A` list), 4-byte stride stepping, and per-entry transform through `ESQ_DecColorStep`.
+
+## Target 749: `modules/groups/a/a/app2.s` (`ESQ_IncCopperListsTowardsTargets`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion routine to Target 748 with very similar loop structure and deterministic dataflow.
+- Useful for matching the copper-ramp pair (`inc` and `dec`) as a coherent decomp milestone.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_inc_copper_lists_towards_targets_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_inc_copper_lists_towards_targets_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_inc_copper_lists_towards_targets.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_inc_copper_lists_towards_targets_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_inc_copper_lists_towards_targets_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_inc_copper_lists_towards_targets_target_gcc.sh`
+
+Current notes:
+- Candidate preserves palette-target stream base (`WDISP_PaletteTriplesRBase`) and 3-byte target advancement per entry, dual-list update for first 8 entries, primary-only update for next 24 entries, and per-entry transform through `ESQ_BumpColorTowardTargets`.
