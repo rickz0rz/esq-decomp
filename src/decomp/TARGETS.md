@@ -17153,3 +17153,24 @@ Run:
 
 Current notes:
 - Candidate preserves palette-target stream base (`WDISP_PaletteTriplesRBase`) and 3-byte target advancement per entry, dual-list update for first 8 entries, primary-only update for next 24 entries, and per-entry transform through `ESQ_BumpColorTowardTargets`.
+
+## Target 750: `modules/groups/a/a/app2.s` (`ESQ_TickClockAndFlagEvents`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core clock/event state machine with no external library calls and clear integration with already-promoted date helpers.
+- High behavioral impact for minute/hour/day boundary signaling and clock rollover correctness.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_tick_clock_and_flag_events_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_tick_clock_and_flag_events_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_tick_clock_and_flag_events.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_tick_clock_and_flag_events_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_tick_clock_and_flag_events_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_tick_clock_and_flag_events_target_gcc.sh`
+
+Current notes:
+- Candidate preserves second/minute/hour rollover order, event-code precedence (`2` for half-hour/hour rollover, `5` then `4` then `3` minute triggers), AM/PM toggle semantics, day/week/year/leap updates, and end-path call to `ESQ_UpdateMonthDayFromDayOfYear`.
