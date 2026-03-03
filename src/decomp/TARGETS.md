@@ -16775,3 +16775,66 @@ Run:
 
 Current notes:
 - Candidate preserves cached-checksum fast path via `ESQIFF_UseCachedChecksumFlag`, checksum-byte source `ESQIFF_RecordChecksumByte`, bytewise XOR loop with 16-bit DBF-style count semantics, and low-byte return in `D0`.
+
+## Target 732: `modules/groups/a/a/app2.s` (`ESQ_TerminateAfterSecondQuote`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct string helper with self-contained pointer/byte scan logic.
+- Good low-risk progression between checksum utility and larger string-pattern routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_terminate_after_second_quote_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_terminate_after_second_quote_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_terminate_after_second_quote.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_terminate_after_second_quote_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_terminate_after_second_quote_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_terminate_after_second_quote_target_gcc.sh`
+
+Current notes:
+- Candidate preserves first-quote then second-quote scan passes, early return on NUL in either pass, and terminator write immediately after the second quote.
+
+## Target 733: `modules/groups/a/a/app2.s` (`ESQ_TestBit1Based`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact bitset helper with deterministic arithmetic and booleanization pattern.
+- Unblocks many existing jmptbl-forwarder callsites by promoting the direct implementation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_test_bit1_based_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_test_bit1_based_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_test_bit1_based.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_test_bit1_based_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_test_bit1_based_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_test_bit1_based_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 1-based index adjust (`-1`), low-3-bit extraction (`&7`), 16-bit byte-index shift (`LSR.W #3` semantics), bit-test behavior, and `-1/0` return contract.
+
+## Target 734: `modules/groups/a/a/app2.s` (`ESQ_SetBit1Based`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion write helper to Target 733 with matching indexing semantics.
+- High reuse potential because many promoted jmptbl stubs dispatch through this routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_set_bit1_based_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_set_bit1_based_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_set_bit1_based.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_set_bit1_based_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_set_bit1_based_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_set_bit1_based_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 1-based index adjust (`-1`), low-3-bit extraction (`&7`), 16-bit byte-index shift (`LSR.W #3` semantics), and byte-wise set-bit store back into the target bitset.
