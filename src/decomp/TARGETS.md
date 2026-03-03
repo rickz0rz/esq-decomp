@@ -18413,3 +18413,24 @@ Run:
 
 Current notes:
 - Candidate preserves stack-arg macro expansion (`A3 <- 20(A7)`, `D7 <- 26(A7)`), guard exits, sparse-slot scan loops, wildcard fallback path, half-hour clock delta path, and branches to existing `COI_ComputeEntryTimeDeltaMinutes_Return` epilogue symbol.
+
+## Target 810: `modules/groups/a/e/coi.s` (`COI_FreeEntryResources` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-jmptbl resource-teardown routine in COI path, now promoted beyond return-only shim.
+- High leverage for lifecycle correctness: drives sub-entry release, anim-string cleanup, and anim-object deallocation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_free_entry_resources_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_free_entry_resources_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_free_entry_resources.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_free_entry_resources_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_free_entry_resources_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_free_entry_resources_target_gcc.sh`
+
+Current notes:
+- Candidate preserves null guard, calls to `COI_FreeSubEntryTableEntries` and `COI_ClearAnimObjectStrings`, conditional `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` path, and final clear of `48(A3)` before tail branch to existing `COI_FreeEntryResources_Return`.
