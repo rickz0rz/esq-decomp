@@ -18917,3 +18917,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_SetLayoutParams` assembly slice, preserving D5-D7 save/restore, reset call ordering, width clamp (`0..624`) and line clamp (`1..20`) semantics, commit call with D5, post-apply match checks against requested width/line values, and `D0` boolean return (`1` match, `0` mismatch).
+
+## Target 834: `modules/groups/a/i/disptext.s` (`DISPTEXT_ComputeMarkerWidths`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl helper with bounded stack-local marker chars and two optional `TextLength` probes.
+- Central native routine for precomputing control-marker width used by line rendering/layout.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_compute_marker_widths_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_compute_marker_widths_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_compute_marker_widths.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_compute_marker_widths_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_compute_marker_widths_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_compute_marker_widths_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_ComputeMarkerWidths` assembly slice, preserving local-byte setup via `NEWGRID_SetSelectionMarkers`, optional prefix checks on `-1(A5)` and `-3(A5)`, `_LVOTextLength` calls for present prefixes, width summation (`D5 + D4`) into `DISPTEXT_ControlMarkerWidthPx`, and full frame/register restore.
