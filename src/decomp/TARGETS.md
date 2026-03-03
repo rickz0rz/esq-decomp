@@ -20009,3 +20009,24 @@ Run:
 
 Current notes:
 - Candidate preserves gate ordering and side-effect structure for alert handling, secondary persist commit, IFF task flags, external asset queue/service, and final status-refresh gating.
+
+## Target 886: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_ServiceUiTickIfRunning`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous ESQFUNC core gate after Target 885.
+- Small main-loop helper that gates frame processing by run flag.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_service_ui_tick_if_running_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_service_ui_tick_if_running_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_service_ui_tick_if_running.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_service_ui_tick_if_running_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_service_ui_tick_if_running_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_service_ui_tick_if_running_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact run-flag gate and branch-to-return behavior before `ESQFUNC_ProcessUiFrameTick`.
