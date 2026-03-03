@@ -20093,3 +20093,24 @@ Run:
 
 Current notes:
 - Candidate preserves build/ROM text formatting flow, three display calls, and pen/draw-mode transitions around prompt rendering.
+
+## Target 890: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_TrimTextToPixelWidthWordBoundary`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct ESQFUNC helper with bounded loops and clear classifier behavior.
+- Includes exported shared return label used by the function body.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_trim_text_to_pixel_width_word_boundary_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_trim_text_to_pixel_width_word_boundary_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_trim_text_to_pixel_width_word_boundary.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_trim_text_to_pixel_width_word_boundary_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_trim_text_to_pixel_width_word_boundary_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_trim_text_to_pixel_width_word_boundary_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `_Return` export, `TextLength` width checks, class-3 boundary scan/rewind loop, and register restore tail.

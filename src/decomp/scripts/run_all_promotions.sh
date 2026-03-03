@@ -153,6 +153,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqfunc_free_extra_title_text_pointers_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_update_refresh_mode_state_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_draw_esc_menu_version_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_trim_text_to_pixel_width_word_boundary_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
