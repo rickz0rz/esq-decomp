@@ -3756,7 +3756,35 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_diskio_close_buffered_file_and_flush_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio_close_buffered_file_and_flush_return.awk`
 - promote: `src/decomp/scripts/promote_diskio_close_buffered_file_and_flush_return_target_gcc.sh`
-- latest full C trial: `compiled 995 / 995`, `export count 1006`, `status: ok`
+- Target 998 (`DISKIO_WriteBufferedBytes_Return`):
+- compare: `src/decomp/scripts/compare_diskio_write_buffered_bytes_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_write_buffered_bytes_return.awk`
+- promote: `src/decomp/scripts/promote_diskio_write_buffered_bytes_return_target_gcc.sh`
+- Target 999 (`DISKIO_EnsurePc1MountedAndGfxAssigned_Return`):
+- compare: `src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_ensure_pc1_mounted_and_gfx_assigned_return.awk`
+- promote: `src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_return_target_gcc.sh`
+- Target 1000 (`DISKIO_SaveConfigToFileHandle_Return`):
+- compare: `src/decomp/scripts/compare_diskio_save_config_to_file_handle_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_save_config_to_file_handle_return.awk`
+- promote: `src/decomp/scripts/promote_diskio_save_config_to_file_handle_return_target_gcc.sh`
+- Target 1001 (`ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return`):
+- compare: `src/decomp/scripts/compare_esqshared_match_selection_code_with_optional_suffix_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared_match_selection_code_with_optional_suffix_return.awk`
+- promote: `src/decomp/scripts/promote_esqshared_match_selection_code_with_optional_suffix_return_target_gcc.sh`
+- Target 1002 (`ESQSHARED_CreateGroupEntryAndTitle_Return`):
+- compare: `src/decomp/scripts/compare_esqshared_create_group_entry_and_title_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared_create_group_entry_and_title_return.awk`
+- promote: `src/decomp/scripts/promote_esqshared_create_group_entry_and_title_return_target_gcc.sh`
+- Target 1003 (`ESQSHARED_NormalizeInStereoTag_Return`):
+- compare: `src/decomp/scripts/compare_esqshared_normalize_in_stereo_tag_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared_normalize_in_stereo_tag_return.awk`
+- promote: `src/decomp/scripts/promote_esqshared_normalize_in_stereo_tag_return_target_gcc.sh`
+- Target 1004 (`ESQSHARED_UpdateMatchingEntriesByTitle_Return`):
+- compare: `src/decomp/scripts/compare_esqshared_update_matching_entries_by_title_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared_update_matching_entries_by_title_return.awk`
+- promote: `src/decomp/scripts/promote_esqshared_update_matching_entries_by_title_return_target_gcc.sh`
+- latest full C trial: `compiled 1002 / 1002`, `export count 1013`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

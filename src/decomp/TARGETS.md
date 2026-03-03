@@ -22432,3 +22432,157 @@ Run:
 Current notes:
 - Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D3/D6-D7`, `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 998: `modules/groups/a/g/diskio.s` (`DISKIO_WriteBufferedBytes_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to current `diskio.s` promotions.
+- Low-risk conversion that keeps stack/register unwind sequence unchanged.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_write_buffered_bytes_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_write_buffered_bytes_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_write_buffered_bytes_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_write_buffered_bytes_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_write_buffered_bytes_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_write_buffered_bytes_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D7/A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 999: `modules/groups/a/g/diskio.s` (`DISKIO_EnsurePc1MountedAndGfxAssigned_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in the same disk I/O lane.
+- Continues low-risk cleanup of return stubs while preserving exact register restore behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_ensure_pc1_mounted_and_gfx_assigned_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_ensure_pc1_mounted_and_gfx_assigned_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1000: `modules/groups/a/g/diskio.s` (`DISKIO_SaveConfigToFileHandle_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported return helper that closes the remaining `diskio.s` return-epilogue trio in this pass.
+- Low-risk milestone at round-number target count while preserving exact frame teardown behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_save_config_to_file_handle_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_save_config_to_file_handle_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_save_config_to_file_handle_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_save_config_to_file_handle_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_save_config_to_file_handle_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_save_config_to_file_handle_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L -236(A5),D2-D7`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1001: `modules/groups/a/p/esqshared.s` (`ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `esqshared.s`.
+- Low-risk conversion preserving exact frame/register unwind for a frequently reused matcher tail.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_match_selection_code_with_optional_suffix_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_match_selection_code_with_optional_suffix_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_match_selection_code_with_optional_suffix_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_match_selection_code_with_optional_suffix_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_match_selection_code_with_optional_suffix_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_match_selection_code_with_optional_suffix_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D4-D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1002: `modules/groups/a/p/esqshared.s` (`ESQSHARED_CreateGroupEntryAndTitle_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to Target 1001 in the same module.
+- Continues low-risk reduction of asm-only entry surface while preserving exact unwinds.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_create_group_entry_and_title_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_create_group_entry_and_title_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_create_group_entry_and_title_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_create_group_entry_and_title_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_create_group_entry_and_title_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_create_group_entry_and_title_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D5-D7/A2-A3/A6`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1003: `modules/groups/a/p/esqshared.s` (`ESQSHARED_NormalizeInStereoTag_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in the same `esqshared.s` lane.
+- Low-risk conversion preserving exact frame/register unwind semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_normalize_in_stereo_tag_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_normalize_in_stereo_tag_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_normalize_in_stereo_tag_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_normalize_in_stereo_tag_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_normalize_in_stereo_tag_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_normalize_in_stereo_tag_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1004: `modules/groups/a/p/esqshared.s` (`ESQSHARED_UpdateMatchingEntriesByTitle_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper and shared tail for title-matched update flow.
+- Continues low-risk reduction of asm-only entrypoints in `esqshared.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared_update_matching_entries_by_title_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared_update_matching_entries_by_title_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared_update_matching_entries_by_title_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared_update_matching_entries_by_title_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared_update_matching_entries_by_title_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared_update_matching_entries_by_title_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D7/A2-A3/A6`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
