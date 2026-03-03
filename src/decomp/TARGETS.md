@@ -17930,3 +17930,24 @@ Run:
 
 Current notes:
 - Candidate preserves mode-2 half-width adjustment, mode-3 path using `Global_REF_RASTPORT_2`, default path using `WDISP_DisplayContextBase+10` rastport, and both `TLIBA1_DrawFormattedTextBlock` call frames with unchanged register restore/epilogue.
+
+## Target 787: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_BuildEntryShortName`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl helper with compact alias/fallback text-selection behavior.
+- Good next step after Target 786 because it supports channel-banner build flow and has straightforward control branches.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_build_entry_short_name_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_build_entry_short_name_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_build_entry_short_name.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_build_entry_short_name_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_build_entry_short_name_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_build_entry_short_name_target_gcc.sh`
+
+Current notes:
+- Candidate preserves alias index lookup via `TEXTDISP_FindAliasIndexByName`, alias-table copy path when found, fallback to `entry+19` length check, optional `TEXTDISP_CenterAlignToken` prefix for short names, and final append via `STRING_AppendAtNull`.
