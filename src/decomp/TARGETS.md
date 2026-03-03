@@ -18392,3 +18392,24 @@ Run:
 
 Current notes:
 - Candidate preserves callable export semantics by forwarding the alias entry to `COI_TestEntryWithinTimeWindow`.
+
+## Target 809: `modules/groups/a/e/coi.s` (`COI_ComputeEntryTimeDeltaMinutes` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First substantial post-alias COI control-flow body after recent entry/return promotions.
+- High-leverage helper used by `COI_TestEntryWithinTimeWindow` and downstream selection timing decisions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_compute_entry_time_delta_minutes_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_compute_entry_time_delta_minutes_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_compute_entry_time_delta_minutes.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_compute_entry_time_delta_minutes_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_target_gcc.sh`
+
+Current notes:
+- Candidate preserves stack-arg macro expansion (`A3 <- 20(A7)`, `D7 <- 26(A7)`), guard exits, sparse-slot scan loops, wildcard fallback path, half-hour clock delta path, and branches to existing `COI_ComputeEntryTimeDeltaMinutes_Return` epilogue symbol.
