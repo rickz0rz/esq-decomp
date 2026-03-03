@@ -19715,3 +19715,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPLIB_ResetTextBufferAndLineTables` slice, preserving text-buffer pointer replacement through `GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString`, immediate store-back to `DISPTEXT_TextBufferPtr`, in-function call to `DISPLIB_ResetLineTables`, and stack-fixup/return shape.
+
+## Target 872: `modules/groups/a/i/displib.s` (`DISPLIB_CommitCurrentLinePenAndAdvance`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported DISPLIB state-update helper directly adjacent to Targets 870/871.
+- Keeps table-update sequence coverage contiguous across line reset and line pen commit paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_commit_current_line_pen_and_advance_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_commit_current_line_pen_and_advance_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_commit_current_line_pen_and_advance.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_commit_current_line_pen_and_advance_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_commit_current_line_pen_and_advance_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_commit_current_line_pen_and_advance_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPLIB_CommitCurrentLinePenAndAdvance` slice, preserving current-line length probe, conditional index increment, target-line bound compare, conditional pen-table write for current line, and register save/restore return shape.
