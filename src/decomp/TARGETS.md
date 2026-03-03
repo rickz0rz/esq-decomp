@@ -19442,3 +19442,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_PollInputModeAndRefreshSelection` slice, preserving CIAB bit poll/debounce updates, latch commit threshold (`>5`), and branch to either `TEXTDISP_SetRastForMode` (mode 0) or `TEXTDISP_ResetSelectionAndRefresh` (non-zero mode).
+
+## Target 859: `modules/groups/a/n/esqdisp.s` (`ESQDISP_NormalizeClockAndRedrawBanner`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl banner refresh orchestrator with a clear call sequence and bounded local state.
+- Bridges input/clock normalization flow into status banner redraw behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_normalize_clock_and_redraw_banner_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_normalize_clock_and_redraw_banner_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_normalize_clock_and_redraw_banner.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_normalize_clock_and_redraw_banner_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_normalize_clock_and_redraw_banner_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_normalize_clock_and_redraw_banner_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_NormalizeClockAndRedrawBanner` slice, preserving clock normalization call, banner queue update + conditional buffer refresh, temporary rastport bitmap swap for `DrawClockBanner`, and final `ESQDISP_DrawStatusBanner_Impl` invocation.
