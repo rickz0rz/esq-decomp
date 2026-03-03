@@ -3696,7 +3696,11 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_initialize_banner_copper_system_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_initialize_banner_copper_system.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_initialize_banner_copper_system_target_gcc.sh`
-- latest full C trial: `compiled 980 / 980`, `export count 991`, `status: ok`
+- Target 983 (`ESQSHARED4_CopyPlanesFromContextToSnapshot`):
+- compare: `src/decomp/scripts/compare_esqshared4_copy_planes_from_context_to_snapshot_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_copy_planes_from_context_to_snapshot.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_copy_planes_from_context_to_snapshot_target_gcc.sh`
+- latest full C trial: `compiled 981 / 981`, `export count 992`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

@@ -987,6 +987,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqshared4_copy_live_planes_to_snapshot_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_program_display_window_and_copper_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_initialize_banner_copper_system_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_copy_planes_from_context_to_snapshot_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

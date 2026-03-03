@@ -22101,3 +22101,25 @@ Run:
 Current notes:
 - Candidate preserves sweep-state seeds, read/state tick defaults, helper call order (`Snapshot` → `Reset` → `Setup`), CIAB PRA bit enables (bits 7 and 6), banner head byte writes, and copper-program pending flag set.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 983: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_CopyPlanesFromContextToSnapshot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- High-value snapshot helper used in active message/banner update flow.
+- Register-coupled entry (`A1` input) was preserved safely with direct asm-backed replacement.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_copy_planes_from_context_to_snapshot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_copy_planes_from_context_to_snapshot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_copy_planes_from_context_to_snapshot.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_copy_planes_from_context_to_snapshot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_copy_planes_from_context_to_snapshot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_copy_planes_from_context_to_snapshot_target_gcc.sh`
+
+Current notes:
+- Candidate keeps original register-save/restore, `A1+20` context base, three `DBF`-counted (`0x2B`) longword copy loops, and per-plane source pointer write-back to context fields.
+- Promotion gate and canonical hash checks pass with this replacement active.
