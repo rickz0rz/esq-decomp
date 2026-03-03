@@ -18035,3 +18035,24 @@ Run:
 
 Current notes:
 - Candidate preserves primary/secondary source selection, default channel normalization to `'0'` (`48`), allowed-range checks (`48..67` and `72..77`), weekday mask test using `Global_STR_TEXTDISP_C_3`, `TEXTDISP_FindEntryMatchIndex` call path for enabled channels, and fallback banner char defaults (`0x64`/`0x31`).
+
+## Target 792: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_SelectGroupAndEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Smallest remaining direct non-jmptbl selector among the unresolved `textdisp3.s` core routines.
+- High leverage as orchestration glue between `BuildMatchIndexList` and `SelectBestMatchFromList` across primary/secondary groups.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_select_group_and_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_select_group_and_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_select_group_and_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_select_group_and_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_select_group_and_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_select_group_and_entry_target_gcc.sh`
+
+Current notes:
+- Candidate preserves first-match reset/init, group-1 list build + best-match selection, optional group-2 fallback when group-1 misses or returns non-selection, selected-index resolution using banner-selected/fallback indices for mode `2`, primary candidate fallback path otherwise, and final success/failure return semantics.
