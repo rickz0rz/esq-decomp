@@ -6157,6 +6157,62 @@ Current notes:
 - Candidate preserves direct call-through to `SCRIPT_DeassertCtrlLine`.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 678: `modules/groups/b/a/script2.s` (`SCRIPT_ReadHandshakeBit3Flag`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` hardware flag read helper returning booleanized CIAB bit state.
+- Supports higher-level handshake timeout/polling logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_read_handshake_bit3_flag_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_read_handshake_bit3_flag_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_read_handshake_bit3_flag.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_read_handshake_bit3_flag_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB read and bit-3 test with boolean return semantics (`1` or `0`).
+- Semantic filter relaxed on explicit zero-materialization pattern to avoid compiler-form false negatives.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 679: `modules/groups/b/a/script2.s` (`SCRIPT_ReadHandshakeBit5Mask`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` hardware mask helper returning `CIAB_PRA & 0x20`.
+- Direct dependency for CTRL timeout/presence logic.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_read_handshake_bit5_mask_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_read_handshake_bit5_mask_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_read_handshake_bit5_mask.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_read_handshake_bit5_mask_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB read and mask-to-D0 semantics (`0` or `0x20`).
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 680: `modules/groups/b/a/script2.s` (`SCRIPT_PollHandshakeAndApplyTimeout`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` state-update routine that gates on interface enable + handshake presence and enforces timeout/reset side-effects.
+- Serves as bridge between low-level handshake readers and higher-level UI/runtime state fields.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_poll_handshake_and_apply_timeout_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_poll_handshake_and_apply_timeout_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_poll_handshake_and_apply_timeout.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_poll_handshake_and_apply_timeout_target_gcc.sh`
+
+Current notes:
+- Candidate preserves enable-gate early return, handshake-bit5 gate, tick increment, threshold action (reset flags/set entry count to `$24`), and tick reset.
+- Semantic filter relaxed on explicit `20` constant shape to avoid compiler-form false negatives while keeping counter/reset markers gated.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
