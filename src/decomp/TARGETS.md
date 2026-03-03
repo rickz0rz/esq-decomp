@@ -18455,3 +18455,24 @@ Run:
 
 Current notes:
 - Candidate preserves object/null guards, zeroing of first four bytes, full repeated replace-owned-string chain over offsets `4..28`, final clear of `32(A2)`, and explicit branch to existing `COI_ClearAnimObjectStrings_Return` symbol for standalone-trial safety.
+
+## Target 812: `modules/groups/a/e/coi.s` (`COI_FreeSubEntryTableEntries` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-jmptbl COI teardown body with per-subentry cleanup loop and table deallocation path.
+- High leverage for lifecycle parity because it releases owned strings, buffer-array nodes, and pointer-table allocations.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_free_sub_entry_table_entries_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_free_sub_entry_table_entries_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_free_sub_entry_table_entries.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_free_sub_entry_table_entries_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_free_sub_entry_table_entries_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_free_sub_entry_table_entries_target_gcc.sh`
+
+Current notes:
+- Candidate preserves object/null guards, per-entry cleanup loop over `36(A3)`/`38(A3)`, repeated `ESQPARS_ReplaceOwnedString` calls across subentry fields, optional `SCRIPT_DeallocateBufferArray` + `MEMORY_DeallocateMemory` path, and final zeroing of `36(A3)` and `38(A3)` before branch to existing return symbol.
