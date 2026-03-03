@@ -45,6 +45,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_main_entry_noop_hook_trial_gcc.sh`: GCC-specific compare lane for `Target 078` (`ESQ_MainEntryNoOpHook`).
 - `src/decomp/scripts/compare_esq_invoke_gcommand_init_trial_gcc.sh`: GCC-specific compare lane for `Target 707` (`ESQ_InvokeGcommandInit`).
 - `src/decomp/scripts/compare_esq_try_rom_write_test_trial_gcc.sh`: GCC-specific compare lane for `Target 708` (`ESQ_TryRomWriteTest`).
+- `src/decomp/scripts/compare_esq_supervisor_cold_reboot_trial_gcc.sh`: GCC-specific compare lane for `Target 709` (`ESQ_SupervisorColdReboot`).
+- `src/decomp/scripts/compare_get_bit_3_of_ciab_pra_into_d1_trial_gcc.sh`: GCC-specific compare lane for `Target 710` (`GET_BIT_3_OF_CIAB_PRA_INTO_D1`).
+- `src/decomp/scripts/compare_get_bit_4_of_ciab_pra_into_d1_trial_gcc.sh`: GCC-specific compare lane for `Target 711` (`GET_BIT_4_OF_CIAB_PRA_INTO_D1`).
 - `src/decomp/scripts/compare_esq_main_exit_noop_hook_trial_gcc.sh`: GCC-specific compare lane for `Target 079` (`ESQ_MainExitNoOpHook`).
 - `src/decomp/scripts/compare_dos_open_file_with_mode_trial_gcc.sh`: GCC-specific compare lane for `Target 080` (`DOS_OpenFileWithMode`).
 - `src/decomp/scripts/compare_graphics_alloc_raster_trial_gcc.sh`: GCC-specific compare lane for `Target 081` (`GRAPHICS_AllocRaster`).
@@ -751,6 +754,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_main_entry_noop_hook.awk`: semantic post-filter for `ESQ_MainEntryNoOpHook` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_invoke_gcommand_init.awk`: semantic post-filter for `ESQ_InvokeGcommandInit` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_try_rom_write_test.awk`: semantic post-filter for `ESQ_TryRomWriteTest` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_supervisor_cold_reboot.awk`: semantic post-filter for `ESQ_SupervisorColdReboot` compare lane.
+- `src/decomp/scripts/semantic_filter_get_bit_3_of_ciab_pra_into_d1.awk`: semantic post-filter for `GET_BIT_3_OF_CIAB_PRA_INTO_D1` compare lane.
+- `src/decomp/scripts/semantic_filter_get_bit_4_of_ciab_pra_into_d1.awk`: semantic post-filter for `GET_BIT_4_OF_CIAB_PRA_INTO_D1` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_main_exit_noop_hook.awk`: semantic post-filter for `ESQ_MainExitNoOpHook` compare lane.
 - `src/decomp/scripts/semantic_filter_dos_open_file_with_mode.awk`: semantic post-filter for `DOS_OpenFileWithMode` compare lane.
 - `src/decomp/scripts/semantic_filter_graphics_alloc_raster.awk`: semantic post-filter for `GRAPHICS_AllocRaster` compare lane.
@@ -1356,6 +1362,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh`: promotion gate for Target 078 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh`: promotion gate for Target 707 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh`: promotion gate for Target 708 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh`: promotion gate for Target 709 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh`: promotion gate for Target 710 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh`: promotion gate for Target 711 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh`: promotion gate for Target 079 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh`: promotion gate for Target 080 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh`: promotion gate for Target 081 GCC lane (semantic + build/hash gates).
@@ -2102,6 +2111,9 @@ bash src/decomp/scripts/promote_format_raw_dofmt_with_scratch_buffer_target_gcc.
 bash src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh
 bash src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh
 bash src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh
+bash src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh
+bash src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh
+bash src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh
 bash src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh
 bash src/decomp/scripts/promote_dos_open_file_with_mode_target_gcc.sh
 bash src/decomp/scripts/promote_graphics_alloc_raster_target_gcc.sh

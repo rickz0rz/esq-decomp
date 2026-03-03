@@ -16294,3 +16294,67 @@ Run:
 
 Current notes:
 - Semantic gate checks stable intent only: loads constant `1` into return register and exits via `RTS`.
+
+## Target 709: `modules/groups/a/a/app3.s` (`ESQ_SupervisorColdReboot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final direct export in `app3.s`, keeping momentum on non-jump-table entry points.
+- High-value control-transfer routine: reset-vector math plus ROM write-probe fallback path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_supervisor_cold_reboot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_supervisor_cold_reboot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_supervisor_cold_reboot.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_supervisor_cold_reboot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh`
+
+Current notes:
+- Lane intentionally uses conservative inline-asm for `RESET` and indirect `JMP` while preserving ROM-probe fallback logic in C.
+- Semantic gate anchors on reboot path (`RESET`, indirect jump) and fallback behavior markers (`ESQ_TryRomWriteTest`, ROM probe constant, `RTS`).
+
+## Target 710: `modules/groups/a/a/app.s` (`GET_BIT_3_OF_CIAB_PRA_INTO_D1`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny direct hardware helper with stable booleanized bit-test behavior.
+- Reduces dependence on jump-table-only coverage for CIAB input capture routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/get_bit_3_of_ciab_pra_into_d1_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_get_bit_3_of_ciab_pra_into_d1_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_get_bit_3_of_ciab_pra_into_d1.awk`
+- Promotion gate: `src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_get_bit_3_of_ciab_pra_into_d1_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB register read (`$BFE001`), bit-3 test semantics, and inverted booleanized return shape in `D1` (`0/-1`).
+
+## Target 711: `modules/groups/a/a/app.s` (`GET_BIT_4_OF_CIAB_PRA_INTO_D1`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Adjacent tiny direct helper mirroring Target 710 with bit-4 sampling path.
+- Closes both low-level CIAB bit-read direct exports used by control-line capture routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/get_bit_4_of_ciab_pra_into_d1_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_get_bit_4_of_ciab_pra_into_d1_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_get_bit_4_of_ciab_pra_into_d1.awk`
+- Promotion gate: `src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_get_bit_4_of_ciab_pra_into_d1_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB register read (`$BFE001`), bit-4 test semantics, and inverted booleanized return shape in `D1` (`0/-1`).
