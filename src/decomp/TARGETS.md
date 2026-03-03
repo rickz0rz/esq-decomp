@@ -17237,3 +17237,24 @@ Run:
 
 Current notes:
 - Candidate emits a direct asm symbol body that preserves the original instruction intent: store `D0` to `ESQ_BannerCharIndexShadow2273`, restore `D2-D3` via `MOVEM.L (SP)+`, then `RTS`.
+
+## Target 754: `modules/groups/a/a/app.s` (`ESQ_CaptureCtrlBit3Stream`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Remaining direct ESQ export outside `app2.s` with compact, self-contained bit-capture state machine behavior.
+- High leverage for serial/control sampling paths already touched by nearby promoted helpers (`GET_BIT_3_OF_CIAB_PRA_INTO_D1`, `ESQ_StoreCtrlSampleEntry`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_capture_ctrl_bit3_stream_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_capture_ctrl_bit3_stream_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_capture_ctrl_bit3_stream.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_capture_ctrl_bit3_stream_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_capture_ctrl_bit3_stream_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_capture_ctrl_bit3_stream_target_gcc.sh`
+
+Current notes:
+- Candidate uses a direct asm symbol body to preserve original control flow and state transitions: phase/delay progression, sample scratch collection, bit assembly loop with `BSET/BCLR`, and flush path via `ESQ_StoreCtrlSampleEntry`.
