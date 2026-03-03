@@ -20984,3 +20984,25 @@ Run:
 
 Current notes:
 - Candidate preserves mode test (`mode==2` secondary else primary), both paired `ESQPARS_ReplaceOwnedString` call sites, pointer write-backs, and saved-`D7` restore path.
+
+## Target 932: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ApplyIncomingStatusPacket`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-sized state/update body with stable branch/call flow and previously promoted return tail.
+- Moves ESQIFF2 decomp effort beyond short helpers while preserving exact side-effect ordering.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_apply_incoming_status_packet_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_apply_incoming_status_packet_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_apply_incoming_status_packet.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_apply_incoming_status_packet_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_target_gcc.sh`
+
+Current notes:
+- Candidate preserves payload-copy loop, filter/deferred-mode guard, banner queue/refresh/draw path, minute-event clamp+seed sequence, diagnostics redraw gate, and scroll-speed/state-index clamp logic.
+- Full-C compile required replacing short branches to external return symbol with long-form control transfer (`JMP ESQIFF2_ApplyIncomingStatusPacket_Return`) to avoid branch-range overflow in standalone TU assembly.

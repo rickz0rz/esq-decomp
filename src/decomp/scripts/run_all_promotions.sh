@@ -174,6 +174,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff_service_external_asset_source_state_target_gcc.sh"
+    "src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_clear_line_head_tail_by_mode_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_clear_primary_entry_flags34_to39_target_gcc.sh"
