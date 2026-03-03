@@ -17510,3 +17510,24 @@ Run:
 
 Current notes:
 - Candidate preserves bitmap swap/restore and row clear rectangle (`0,34 -> 695,67`), then calls `CLEANUP_DrawDateBannerSegment`, `CLEANUP_DrawBannerSpacerSegment`, and `CLEANUP_DrawTimeBannerSegment` in the original sequence.
+
+## Target 767: `modules/groups/a/c/cleanup2.s` (`RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core text-render helper for the date banner path, used by `CLEANUP_DrawDateBannerSegment`.
+- Good coverage gain because it contains formatting + centering + final blit sequence in one isolated routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/render_short_month_short_day_of_week_day_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_render_short_month_short_day_of_week_day_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_render_short_month_short_day_of_week_day.awk`
+- Promotion gate: `src/decomp/scripts/promote_render_short_month_short_day_of_week_day_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_render_short_month_short_day_of_week_day_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_render_short_month_short_day_of_week_day_target_gcc.sh`
+
+Current notes:
+- Candidate preserves short day/month lookup indexing, `WDISP_SPrintf` formatting into stack scratch, text-length centering math, `Move`/`Text` draw sequence, and tail `Graphics_BltBitMapRastPort` copy.
