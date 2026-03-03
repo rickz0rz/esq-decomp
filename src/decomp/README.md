@@ -3516,7 +3516,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_parse_group_record_and_refresh_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_parse_group_record_and_refresh.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_parse_group_record_and_refresh_target_gcc.sh`
-- latest full C trial: `compiled 935 / 935`, `export count 946`, `status: ok`
+- Target 938 (`ESQIFF2_ShowVersionMismatchOverlay`):
+- compare: `src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_show_version_mismatch_overlay.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_target_gcc.sh`
+- Target 939 (`ESQIFF2_ShowAttentionOverlay`):
+- compare: `src/decomp/scripts/compare_esqiff2_show_attention_overlay_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_show_attention_overlay.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_show_attention_overlay_target_gcc.sh`
+- latest full C trial: `compiled 937 / 937`, `export count 948`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

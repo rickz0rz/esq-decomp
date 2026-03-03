@@ -21114,3 +21114,45 @@ Run:
 Current notes:
 - Candidate preserves primary/secondary group change detection, group-entry clear paths, parser token dispatch (`0x01/0x11/0x12/0x14` + default), per-field bounds validation calls, entry/title creation, title-padding call, and final source-config/index rebuild calls.
 - Replacement uses `JMP ESQIFF2_ParseGroupRecordAndRefresh_Return` at the short external-return site to keep standalone TU branch range safe.
+
+## Target 938: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ShowVersionMismatchOverlay`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First large ESQIFF2 overlay-render path converted (version mismatch modal).
+- Reduces remaining high-level UI routines to the attention overlay path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_show_version_mismatch_overlay_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_show_version_mismatch_overlay.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_target_gcc.sh`
+
+Current notes:
+- Candidate preserves version-format/match gate, UI-busy/diagnostics bypass logic, Disable/Enable + banner seed sequence, overlay fill/draw text calls, correct-version string assembly/append flow, and final shared return tail handoff.
+
+## Target 939: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ShowAttentionOverlay`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Final large ESQIFF2 overlay/render body (attention/error modal path).
+- Completes ESQIFF2 full-function body conversion pass after parser and mismatch-overlay promotions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_show_attention_overlay_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_show_attention_overlay_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_show_attention_overlay.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_show_attention_overlay_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_show_attention_overlay_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_show_attention_overlay_target_gcc.sh`
+
+Current notes:
+- Candidate preserves UI-busy/diagnostics early gate, error-code jump-table mapping, overlay draw setup (Disable/Enable, APen/RectFill/DrMd), formatted error/file text branches, busy-flag update for width/colors path, and raster state restore before shared return tail.
