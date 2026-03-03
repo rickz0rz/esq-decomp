@@ -18623,3 +18623,24 @@ Run:
 
 Current notes:
 - Candidate preserves conditional `_LVOClose` path on `CTASKS_CloseTaskFileHandle`, `_LVOForbid` before list teardown, `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` call for close-task list, completion-flag set, and A4 restore + return.
+
+## Target 820: `modules/groups/a/f/ctasks.s` (`CTASKS_StartCloseTaskProcess`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Exported non-jmptbl process-launch routine adjacent to `CTASKS_CloseTaskTeardown`, useful for completing the close-task lifecycle pair.
+- Small/moderate body with straightforward create-proc setup and a single stack-macro argument load.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ctasks_start_close_task_process_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ctasks_start_close_task_process_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ctasks_start_close_task_process.awk`
+- Promotion gate: `src/decomp/scripts/promote_ctasks_start_close_task_process_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ctasks_start_close_task_process_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ctasks_start_close_task_process_target_gcc.sh`
+
+Current notes:
+- Candidate preserves completion-flag reset, file-handle staging, list allocation + callback install (`CTASKS_CloseTaskTeardown`), seglist BPTR derivation, `_LVOCreateProc` launch, and final `CTASKS_CloseTaskProcPtr` store. Stack macro read is expanded as `MOVE.L 20(A7),D7`.
