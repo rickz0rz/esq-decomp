@@ -860,6 +860,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esqfunc_update_refresh_mode_state_trial_gcc.sh`: GCC-specific compare lane for `Target 888` (`ESQFUNC_UpdateRefreshModeState`).
 - `src/decomp/scripts/compare_esqfunc_draw_esc_menu_version_trial_gcc.sh`: GCC-specific compare lane for `Target 889` (`ESQFUNC_DrawEscMenuVersion`).
 - `src/decomp/scripts/compare_esqfunc_trim_text_to_pixel_width_word_boundary_trial_gcc.sh`: GCC-specific compare lane for `Target 890` (`ESQFUNC_TrimTextToPixelWidthWordBoundary`).
+- `src/decomp/scripts/compare_esqfunc_rebuild_pw_brush_list_from_tag_table_trial_gcc.sh`: GCC-specific compare lane for `Target 891` (`ESQFUNC_RebuildPwBrushListFromTagTable`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1648,6 +1649,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esqfunc_update_refresh_mode_state.awk`: semantic post-filter for `ESQFUNC_UpdateRefreshModeState` compare lane.
 - `src/decomp/scripts/semantic_filter_esqfunc_draw_esc_menu_version.awk`: semantic post-filter for `ESQFUNC_DrawEscMenuVersion` compare lane.
 - `src/decomp/scripts/semantic_filter_esqfunc_trim_text_to_pixel_width_word_boundary.awk`: semantic post-filter for `ESQFUNC_TrimTextToPixelWidthWordBoundary` compare lane.
+- `src/decomp/scripts/semantic_filter_esqfunc_rebuild_pw_brush_list_from_tag_table.awk`: semantic post-filter for `ESQFUNC_RebuildPwBrushListFromTagTable` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2535,6 +2537,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esqfunc_update_refresh_mode_state_target_gcc.sh`: promotion gate for Target 888 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqfunc_draw_esc_menu_version_target_gcc.sh`: promotion gate for Target 889 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esqfunc_trim_text_to_pixel_width_word_boundary_target_gcc.sh`: promotion gate for Target 890 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esqfunc_rebuild_pw_brush_list_from_tag_table_target_gcc.sh`: promotion gate for Target 891 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

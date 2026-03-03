@@ -20114,3 +20114,24 @@ Run:
 
 Current notes:
 - Candidate preserves `_Return` export, `TextLength` width checks, class-3 boundary scan/rewind loop, and register restore tail.
+
+## Target 891: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_RebuildPwBrushListFromTagTable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium direct ESQFUNC helper with clear list rebuild lifecycle and bounded loop.
+- Prior coverage only existed through jmptbl wrappers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_rebuild_pw_brush_list_from_tag_table_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_rebuild_pw_brush_list_from_tag_table_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_rebuild_pw_brush_list_from_tag_table.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_rebuild_pw_brush_list_from_tag_table_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_rebuild_pw_brush_list_from_tag_table_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_rebuild_pw_brush_list_from_tag_table_target_gcc.sh`
+
+Current notes:
+- Candidate simplifies the original switch-table to equivalent branch logic (`D7==0 => type 0x08`, otherwise `0x09`) while preserving allocation/link/populate flow.
