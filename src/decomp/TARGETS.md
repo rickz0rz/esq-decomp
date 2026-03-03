@@ -17447,3 +17447,24 @@ Run:
 
 Current notes:
 - Candidate preserves rastport bitmap swap/restore around `Global_REF_696_400_BITMAP`, banner clear rectangle (`256,34 -> 447,67`), and bevel frame draw via `BEVEL_DrawBevelFrameWithTopRight`.
+
+## Target 764: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawTimeBannerSegment`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Adjacent compact banner helper with the same temporary rastport-bitmap swap structure as Target 763.
+- Adds explicit time-banner draw coverage including delegation to `CLEANUP_DrawGridTimeBanner`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_time_banner_segment_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_time_banner_segment_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_time_banner_segment.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_time_banner_segment_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_time_banner_segment_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_time_banner_segment_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bitmap swap/restore, fill rectangle (`448,34 -> 663,67`), `CLEANUP_DrawGridTimeBanner` call, and `BEVEL_DrawBevelFrameWithTopRight` frame draw.
