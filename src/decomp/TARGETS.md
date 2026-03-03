@@ -15838,3 +15838,26 @@ Current notes:
 - Original assembly issues dual-pen (`1` then `2`) stroke passes, each with repeated `Move/Draw` operations and draw-flag setup writes.
 - GCC output uses different stack/register scheduling while preserving the dual-pen and repeated stroke behavior under semantic gating.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 689: `modules/groups/a/a/bevel.s` (`BEVEL_DrawHorizontalBevel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Completes direct promotion coverage of the four core bevel primitives in `bevel.s`.
+- Adds horizontal-edge rendering primitive used by previously promoted bevel composition helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/bevel_draw_horizontal_bevel_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_bevel_draw_horizontal_bevel_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_bevel_draw_horizontal_bevel.awk`
+- Promotion gate: `src/decomp/scripts/promote_bevel_draw_horizontal_bevel_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_bevel_draw_horizontal_bevel_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_bevel_draw_horizontal_bevel_target_gcc.sh`
+
+Current notes:
+- Original assembly performs `SetDrMd`, `SetAPen(2)`, five `Move/Draw` strokes (four horizontal offsets plus one pen-6 diagonal accent).
+- GCC output differs in low-level scheduling while preserving pen setup and stroke-count semantics under compare filtering.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

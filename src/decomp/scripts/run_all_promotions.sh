@@ -497,6 +497,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_right_target_gcc.sh"
     "src/decomp/scripts/promote_bevel_draw_vertical_bevel_target_gcc.sh"
     "src/decomp/scripts/promote_bevel_draw_vertical_bevel_pair_target_gcc.sh"
+    "src/decomp/scripts/promote_bevel_draw_horizontal_bevel_target_gcc.sh"
     "src/decomp/scripts/promote_script_check_path_exists_target_gcc.sh"
     "src/decomp/scripts/promote_script_update_banner_char_transition_target_gcc.sh"
     "src/decomp/scripts/promote_script_prime_banner_transition_from_hex_code_target_gcc.sh"

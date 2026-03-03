@@ -530,6 +530,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`: GCC-specific compare lane for `Target 686` (`BEVEL_DrawBevelFrameWithTopRight`).
 - `src/decomp/scripts/compare_bevel_draw_vertical_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 687` (`BEVEL_DrawVerticalBevel`).
 - `src/decomp/scripts/compare_bevel_draw_vertical_bevel_pair_trial_gcc.sh`: GCC-specific compare lane for `Target 688` (`BEVEL_DrawVerticalBevelPair`).
+- `src/decomp/scripts/compare_bevel_draw_horizontal_bevel_trial_gcc.sh`: GCC-specific compare lane for `Target 689` (`BEVEL_DrawHorizontalBevel`).
 - `src/decomp/scripts/compare_script_check_path_exists_trial_gcc.sh`: GCC-specific compare lane for `Target 568` (`SCRIPT_CheckPathExists`).
 - `src/decomp/scripts/compare_script_update_banner_char_transition_trial_gcc.sh`: GCC-specific compare lane for `Target 569` (`SCRIPT_UpdateBannerCharTransition`).
 - `src/decomp/scripts/compare_script_prime_banner_transition_from_hex_code_trial_gcc.sh`: GCC-specific compare lane for `Target 570` (`SCRIPT_PrimeBannerTransitionFromHexCode`).
@@ -1808,6 +1809,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`: promotion gate for Target 686 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_bevel_draw_vertical_bevel_target_gcc.sh`: promotion gate for Target 687 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_bevel_draw_vertical_bevel_pair_target_gcc.sh`: promotion gate for Target 688 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_bevel_draw_horizontal_bevel_target_gcc.sh`: promotion gate for Target 689 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_check_path_exists_target_gcc.sh`: promotion gate for Target 568 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_update_banner_char_transition_target_gcc.sh`: promotion gate for Target 569 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_prime_banner_transition_from_hex_code_target_gcc.sh`: promotion gate for Target 570 GCC lane (semantic + build/hash gates).
@@ -2534,6 +2536,7 @@ bash src/decomp/scripts/promote_bevel_draw_beveled_frame_target_gcc.sh
 bash src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_right_target_gcc.sh
 bash src/decomp/scripts/promote_bevel_draw_vertical_bevel_target_gcc.sh
 bash src/decomp/scripts/promote_bevel_draw_vertical_bevel_pair_target_gcc.sh
+bash src/decomp/scripts/promote_bevel_draw_horizontal_bevel_target_gcc.sh
 bash src/decomp/scripts/promote_script_check_path_exists_target_gcc.sh
 bash src/decomp/scripts/promote_script_update_banner_char_transition_target_gcc.sh
 bash src/decomp/scripts/promote_script_prime_banner_transition_from_hex_code_target_gcc.sh
