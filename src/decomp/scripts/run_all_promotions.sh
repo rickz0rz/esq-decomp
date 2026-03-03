@@ -134,6 +134,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_flib_append_clock_stamped_log_entry_target_gcc.sh"
     "src/decomp/scripts/promote_displib_normalize_value_by_step_target_gcc.sh"
     "src/decomp/scripts/promote_displib_reset_line_tables_target_gcc.sh"
+    "src/decomp/scripts/promote_displib_reset_text_buffer_and_line_tables_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

@@ -19694,3 +19694,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPLIB_ResetLineTables` slice, preserving line-state zeroing (`Target/CurrentLineIndex`, width/lock fields), fixed 20-entry loop over pointer/length/pen tables, pen default write (`1`), and register/return shape.
+
+## Target 871: `modules/groups/a/i/displib.s` (`DISPLIB_ResetTextBufferAndLineTables`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported DISPLIB helper immediately adjacent to Target 870.
+- Directly composes `ReplaceOwnedString` with `DISPLIB_ResetLineTables`, making it a stable bridge for further DISPLIB text-path promotion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_reset_text_buffer_and_line_tables_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_reset_text_buffer_and_line_tables_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_reset_text_buffer_and_line_tables.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_reset_text_buffer_and_line_tables_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_reset_text_buffer_and_line_tables_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_reset_text_buffer_and_line_tables_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPLIB_ResetTextBufferAndLineTables` slice, preserving text-buffer pointer replacement through `GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString`, immediate store-back to `DISPTEXT_TextBufferPtr`, in-function call to `DISPLIB_ResetLineTables`, and stack-fixup/return shape.
