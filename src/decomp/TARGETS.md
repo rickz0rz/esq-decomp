@@ -17300,3 +17300,24 @@ Run:
 
 Current notes:
 - Candidate keeps the original stack frame/register-save protocol, topaz guard rerun branch, engineer warning draw-and-lock loop, bypass path (`_LVOSizeWindow`, delayed remap, `_LVORemakeDisplay`, `_LVOFreeMem`), and rerun-error stream/flush termination path.
+
+## Target 757: `modules/groups/a/b/cleanup.s` (`CLEANUP_ClearVertbInterruptServer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, isolated cleanup export with fixed call shape and no complex control flow.
+- Good non-jmptbl promotion that reduces assembly-only startup/shutdown surface.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_clear_vertb_interrupt_server_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_clear_vertb_interrupt_server_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_clear_vertb_interrupt_server.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_clear_vertb_interrupt_server_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_clear_vertb_interrupt_server_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_clear_vertb_interrupt_server_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `INTB_VERTB` removal via `_LVORemIntServer`, then deallocates `Global_REF_INTERRUPT_STRUCT_INTB_VERTB` through `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` using the original size/tag arguments and stack cleanup.
