@@ -17006,3 +17006,45 @@ Run:
 
 Current notes:
 - Candidate preserves right-to-left fixed-width decimal emission, null terminator at `out_buf + digits`, per-digit signed divide-by-10 extraction path, and looped digit write count semantics.
+
+## Target 743: `modules/groups/a/a/app2.s` (`ESQ_PackBitsDecode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-size direct helper with self-contained decode logic and no external calls.
+- High leverage because brush/image decode paths call it directly from already-promoted modules.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_pack_bits_decode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_pack_bits_decode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_pack_bits_decode.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_pack_bits_decode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_pack_bits_decode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_pack_bits_decode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves signed control-byte split (literal copy vs repeat run), `0xFF` no-op run handling, bounded output count checks against destination length, and return of updated source pointer.
+
+## Target 744: `modules/groups/a/a/app2.s` (`ESQ_SeedMinuteEventThresholds`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small arithmetic helper with no control-flow complexity and no external calls.
+- Good companion to time/calendar helpers already promoted in the same module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_seed_minute_event_thresholds_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_seed_minute_event_thresholds_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_seed_minute_event_thresholds.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_seed_minute_event_thresholds_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_seed_minute_event_thresholds_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_seed_minute_event_thresholds_target_gcc.sh`
+
+Current notes:
+- Candidate preserves threshold writes for `(60-base)`, `(30-base)`, `base_offset`, and `base_offset+30` into the four `CLOCK_MinuteTrigger*` globals.

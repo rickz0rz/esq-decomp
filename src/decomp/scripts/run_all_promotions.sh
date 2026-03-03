@@ -75,6 +75,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_calc_day_of_year_from_month_day_target_gcc.sh"
     "src/decomp/scripts/promote_esq_update_month_day_from_day_of_year_target_gcc.sh"
     "src/decomp/scripts/promote_esq_write_dec_fixed_width_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_pack_bits_decode_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_seed_minute_event_thresholds_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"
