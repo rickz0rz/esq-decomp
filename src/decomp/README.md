@@ -3564,7 +3564,39 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_diskio1_append_blackout_mask_value_header_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_value_header.awk`
 - promote: `src/decomp/scripts/promote_diskio1_append_blackout_mask_value_header_target_gcc.sh`
-- latest full C trial: `compiled 947 / 947`, `export count 958`, `status: ok`
+- Target 950 (`DISKIO1_AccumulateTimeSlotMaskSum`):
+- compare: `src/decomp/scripts/compare_diskio1_accumulate_time_slot_mask_sum_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_accumulate_time_slot_mask_sum.awk`
+- promote: `src/decomp/scripts/promote_diskio1_accumulate_time_slot_mask_sum_target_gcc.sh`
+- Target 951 (`DISKIO1_AccumulateBlackoutMaskSum`):
+- compare: `src/decomp/scripts/compare_diskio1_accumulate_blackout_mask_sum_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_accumulate_blackout_mask_sum.awk`
+- promote: `src/decomp/scripts/promote_diskio1_accumulate_blackout_mask_sum_target_gcc.sh`
+- Target 952 (`DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet`):
+- compare: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_none_if_all_bits_set_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_none_if_all_bits_set.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_none_if_all_bits_set_target_gcc.sh`
+- Target 953 (`DISKIO1_AppendBlackoutMaskNoneIfEmpty`):
+- compare: `src/decomp/scripts/compare_diskio1_append_blackout_mask_none_if_empty_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_none_if_empty.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_blackout_mask_none_if_empty_target_gcc.sh`
+- Target 954 (`DISKIO1_AppendTimeSlotMaskOffAirIfEmpty`):
+- compare: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_off_air_if_empty_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_off_air_if_empty.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_off_air_if_empty_target_gcc.sh`
+- Target 955 (`DISKIO1_AppendBlackoutMaskAllIfAllBitsSet`):
+- compare: `src/decomp/scripts/compare_diskio1_append_blackout_mask_all_if_all_bits_set_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_all_if_all_bits_set.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_blackout_mask_all_if_all_bits_set_target_gcc.sh`
+- Target 956 (`DISKIO1_AppendAttrFlagHiliteSrc`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_hilite_src_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_hilite_src.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_hilite_src_target_gcc.sh`
+- Target 957 (`DISKIO1_AppendAttrFlagSummarySrc`):
+- compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_summary_src_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_summary_src.awk`
+- promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_summary_src_target_gcc.sh`
+- latest full C trial: `compiled 955 / 955`, `export count 966`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

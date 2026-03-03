@@ -1,0 +1,15 @@
+__asm__(
+    ".globl _DISKIO1_AccumulateTimeSlotMaskSum\n"
+    "_DISKIO1_AccumulateTimeSlotMaskSum:\n"
+    "DISKIO1_AccumulateTimeSlotMaskSum:\n"
+    "    MOVEQ   #6,D0\n"
+    "    CMP.L   D0,D6\n"
+    "    BLT.S   1f\n"
+    "    JMP     DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet\n"
+    "1:\n"
+    "    MOVEQ   #0,D0\n"
+    "    MOVE.B  28(A3,D6.L),D0\n"
+    "    ADD.L   D0,D5\n"
+    "    ADDQ.L  #1,D6\n"
+    "    BRA.S   DISKIO1_AccumulateTimeSlotMaskSum\n"
+);

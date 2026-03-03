@@ -21376,3 +21376,179 @@ Run:
 Current notes:
 - Candidate preserves header string push, formatter call, stack unwind, `MOVEQ #1,D4`, and transfer to `DISKIO1_AppendBlackoutMaskSelectedTimes`.
 - Promotion gate and hash checks pass with this replacement active.
+
+## Target 950: `modules/groups/a/g/diskio1.s` (`DISKIO1_AccumulateTimeSlotMaskSum`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next unresolved low-risk loop helper in the active `DISKIO1` formatter lane.
+- Central loop primitive feeding time-slot mask summary/render decisions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_accumulate_time_slot_mask_sum_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_accumulate_time_slot_mask_sum_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_accumulate_time_slot_mask_sum.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_accumulate_time_slot_mask_sum_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_accumulate_time_slot_mask_sum_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_accumulate_time_slot_mask_sum_target_gcc.sh`
+
+Current notes:
+- Candidate preserves threshold compare against `D6`, indexed byte load from `28(A3,D6.L)`, running sum update in `D5`, increment of `D6`, and self-loop.
+- Uses a range-safe branch/jump split for the external exit path to `DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet`.
+
+## Target 951: `modules/groups/a/g/diskio1.s` (`DISKIO1_AccumulateBlackoutMaskSum`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Sister loop helper to Target 950 with matching structure and semantics.
+- Keeps blackout/time-slot accumulation paths promoted in lockstep.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_accumulate_blackout_mask_sum_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_accumulate_blackout_mask_sum_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_accumulate_blackout_mask_sum.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_accumulate_blackout_mask_sum_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_accumulate_blackout_mask_sum_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_accumulate_blackout_mask_sum_target_gcc.sh`
+
+Current notes:
+- Candidate preserves threshold compare against `D6`, indexed byte load from `34(A3,D6.L)`, running sum update in `D5`, increment of `D6`, and self-loop.
+- Uses a range-safe branch/jump split for the external exit path to `DISKIO1_AppendBlackoutMaskNoneIfEmpty`.
+
+## Target 952: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendTimeSlotMaskNoneIfAllBitsSet`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved branch/call helper immediately downstream of the time-slot accumulate loop.
+- Keeps current `DISKIO1` promotion lane tightly contiguous.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_time_slot_mask_none_if_all_bits_set_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_none_if_all_bits_set_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_none_if_all_bits_set.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_none_if_all_bits_set_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_time_slot_mask_none_if_all_bits_set_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_time_slot_mask_none_if_all_bits_set_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `D5` all-bits threshold check (`0x5FA`), branch to off-air path, formatter call for the all-set string path, stack unwind, and transfer to `DISKIO1_FormatBlackoutMaskFlags`.
+- Semantic filter accepts equivalent immediate spellings (`0x5fa` / `$5FA`) and branch-vs-jump transfer forms.
+
+## Target 953: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendBlackoutMaskNoneIfEmpty`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Sister branch/call helper on the blackout path, structurally matching Target 952.
+- Continues reducing unresolved `DISKIO1` helpers before moving into larger routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_blackout_mask_none_if_empty_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_blackout_mask_none_if_empty_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_none_if_empty.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_blackout_mask_none_if_empty_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_blackout_mask_none_if_empty_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_blackout_mask_none_if_empty_target_gcc.sh`
+
+Current notes:
+- Candidate preserves zero-sum test on `D5`, branch to all-bits-set path, formatter call for empty-mask string path, stack unwind, and transfer to `DISKIO1_DumpDefaultCoiInfoBlock`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 954: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendTimeSlotMaskOffAirIfEmpty`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Immediate successor helper in the time-slot path after Target 952.
+- Reduces remaining small condition/format helpers before larger `DISKIO1` bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_time_slot_mask_off_air_if_empty_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_time_slot_mask_off_air_if_empty_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_time_slot_mask_off_air_if_empty.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_time_slot_mask_off_air_if_empty_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_time_slot_mask_off_air_if_empty_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_time_slot_mask_off_air_if_empty_target_gcc.sh`
+
+Current notes:
+- Candidate preserves zero-sum test on `D5`, branch to value-header path, formatter call for `Global_STR_OFF_AIR_2`, stack unwind, and transfer to `DISKIO1_FormatBlackoutMaskFlags`.
+- Promotion gate and hash checks pass with this replacement active.
+
+## Target 955: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendBlackoutMaskAllIfAllBitsSet`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Companion helper to Target 954 in the blackout path with mirrored structure.
+- Continues the current contiguous `DISKIO1` sweep with low regression risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_blackout_mask_all_if_all_bits_set_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_blackout_mask_all_if_all_bits_set_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_blackout_mask_all_if_all_bits_set.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_blackout_mask_all_if_all_bits_set_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_blackout_mask_all_if_all_bits_set_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_blackout_mask_all_if_all_bits_set_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `D5` all-bits threshold check (`0x5FA`), branch to value-header path, formatter call for `DISKIO_STR_BLACKED_OUT`, stack unwind, and transfer to `DISKIO1_DumpDefaultCoiInfoBlock`.
+- Semantic filter accepts equivalent immediate spellings and branch-vs-jump transfer forms.
+
+## Target 956: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagHiliteSrc`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First unresolved helper in the compact attr-flag append chain.
+- Small, stable branch/call pattern suitable for fast low-risk promotion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_hilite_src_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_hilite_src_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_hilite_src.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_hilite_src_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_hilite_src_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_hilite_src_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#1,27(A3)`, optional formatter call for `DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags`, and transfer into `DISKIO1_AppendAttrFlagSummarySrc`.
+- Uses explicit tail `JMP` to model original fallthrough across split replacement TUs.
+
+## Target 957: `modules/groups/a/g/diskio1.s` (`DISKIO1_AppendAttrFlagSummarySrc`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Immediate continuation of the attr-flag chain after Target 956.
+- Keeps this linear helper sequence converted in source order.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_append_attr_flag_summary_src_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_append_attr_flag_summary_src_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_summary_src.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_append_attr_flag_summary_src_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_append_attr_flag_summary_src_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_append_attr_flag_summary_src_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bit-test on `#2,27(A3)`, optional formatter call for `DISKIO_STR_SUM_SRC_CompactSourceAttrFlags`, and transfer into `DISKIO1_AppendAttrFlagVideoTagDisable`.
+- Promotion gate and canonical hash checks pass with this replacement active.

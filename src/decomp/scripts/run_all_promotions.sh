@@ -954,6 +954,14 @@ SCRIPTS=(
     "src/decomp/scripts/promote_diskio1_append_blackout_mask_value_terminator_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_time_slot_mask_value_header_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_blackout_mask_value_header_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_accumulate_time_slot_mask_sum_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_accumulate_blackout_mask_sum_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_time_slot_mask_none_if_all_bits_set_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_blackout_mask_none_if_empty_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_time_slot_mask_off_air_if_empty_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_blackout_mask_all_if_all_bits_set_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_hilite_src_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_append_attr_flag_summary_src_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

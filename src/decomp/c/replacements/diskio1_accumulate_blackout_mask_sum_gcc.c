@@ -1,0 +1,15 @@
+__asm__(
+    ".globl _DISKIO1_AccumulateBlackoutMaskSum\n"
+    "_DISKIO1_AccumulateBlackoutMaskSum:\n"
+    "DISKIO1_AccumulateBlackoutMaskSum:\n"
+    "    MOVEQ   #6,D0\n"
+    "    CMP.L   D0,D6\n"
+    "    BLT.S   1f\n"
+    "    JMP     DISKIO1_AppendBlackoutMaskNoneIfEmpty\n"
+    "1:\n"
+    "    MOVEQ   #0,D0\n"
+    "    MOVE.B  34(A3,D6.L),D0\n"
+    "    ADD.L   D0,D5\n"
+    "    ADDQ.L  #1,D6\n"
+    "    BRA.S   DISKIO1_AccumulateBlackoutMaskSum\n"
+);
