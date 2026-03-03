@@ -17090,3 +17090,24 @@ Run:
 
 Current notes:
 - Candidate preserves null-pointer mismatch path, single-character progression over `str/pattern`, wildcard checks for `'*'` and `'?'`, end-of-string termination behavior, and return convention (`0` match, `1` mismatch).
+
+## Target 747: `modules/groups/a/a/app2.s` (`ESQ_FindSubstringCaseFold`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core direct string-search helper with no external library dependencies.
+- High-value because multiple already-promoted jmptbl exports dispatch to it.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_find_substring_case_fold_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_find_substring_case_fold_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_find_substring_case_fold.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_find_substring_case_fold_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_find_substring_case_fold_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_find_substring_case_fold_target_gcc.sh`
+
+Current notes:
+- Candidate preserves empty-needle early return (`0`), case-fold compare via bit-5 toggle, partial-match backtrack (`scan--` only when pattern had advanced), and return of candidate match pointer on success.
