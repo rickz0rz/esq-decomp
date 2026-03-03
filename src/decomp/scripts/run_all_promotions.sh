@@ -56,6 +56,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_textdisp_format_entry_time_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_update_channel_range_flags_target_gcc.sh"
     "src/decomp/scripts/promote_textdisp_select_group_and_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_textdisp_build_match_index_list_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

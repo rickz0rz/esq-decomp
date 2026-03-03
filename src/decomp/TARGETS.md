@@ -18056,3 +18056,24 @@ Run:
 
 Current notes:
 - Candidate preserves first-match reset/init, group-1 list build + best-match selection, optional group-2 fallback when group-1 misses or returns non-selection, selected-index resolution using banner-selected/fallback indices for mode `2`, primary candidate fallback path otherwise, and final success/failure return semantics.
+
+## Target 793: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_BuildMatchIndexList`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Smallest remaining direct search routine in `textdisp3.s` after Target 792.
+- Builds the candidate index set consumed by higher-level selectors, so it is a high-value non-jmptbl conversion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_build_match_index_list_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_build_match_index_list_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_build_match_index_list.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_build_match_index_list_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_build_match_index_list_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_build_match_index_list_target_gcc.sh`
+
+Current notes:
+- Candidate preserves PPV/SBE/SPORTS wildcard tag checks, find-mode prefix handling, per-group table selection and entry-count limits, filter gates on entry flag bits/editor predicate, wildcard text match fallback, candidate-index byte writes, and final match-count return.
