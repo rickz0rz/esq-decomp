@@ -17111,3 +17111,24 @@ Run:
 
 Current notes:
 - Candidate preserves empty-needle early return (`0`), case-fold compare via bit-5 toggle, partial-match backtrack (`scan--` only when pattern had advanced), and return of candidate match pointer on success.
+
+## Target 748: `modules/groups/a/a/app2.s` (`ESQ_DecCopperListsPrimary`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact direct copper-list helper with fixed-count loops and one local callee (`ESQ_DecColorStep`).
+- High utility because multiple effect/update paths depend on the two status-list ramps it updates.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_dec_copper_lists_primary_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_dec_copper_lists_primary_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_dec_copper_lists_primary.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_dec_copper_lists_primary_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_dec_copper_lists_primary_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_dec_copper_lists_primary_target_gcc.sh`
+
+Current notes:
+- Candidate preserves dual-list update for first 8 entries (`A` and `B` lists), primary-only update for next 24 entries (`A` list), 4-byte stride stepping, and per-entry transform through `ESQ_DecColorStep`.
