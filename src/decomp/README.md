@@ -3856,7 +3856,35 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_locavail_update_filter_state_machine_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_locavail_update_filter_state_machine_return.awk`
 - promote: `src/decomp/scripts/promote_locavail_update_filter_state_machine_return_target_gcc.sh`
-- latest full C trial: `compiled 1020 / 1020`, `export count 1031`, `status: ok`
+- Target 1023 (`FLIB_AppendClockStampedLogEntry_Return`):
+- compare: `src/decomp/scripts/compare_flib_append_clock_stamped_log_entry_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_flib_append_clock_stamped_log_entry_return.awk`
+- promote: `src/decomp/scripts/promote_flib_append_clock_stamped_log_entry_return_target_gcc.sh`
+- Target 1024 (`DISPLIB_FindPreviousValidEntryIndex_Return`):
+- compare: `src/decomp/scripts/compare_displib_find_previous_valid_entry_index_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_displib_find_previous_valid_entry_index_return.awk`
+- promote: `src/decomp/scripts/promote_displib_find_previous_valid_entry_index_return_target_gcc.sh`
+- Target 1025 (`DISPLIB_ApplyInlineAlignmentPadding_Return`):
+- compare: `src/decomp/scripts/compare_displib_apply_inline_alignment_padding_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_displib_apply_inline_alignment_padding_return.awk`
+- promote: `src/decomp/scripts/promote_displib_apply_inline_alignment_padding_return_target_gcc.sh`
+- Target 1026 (`DISKIO_DrawTransferErrorMessageIfDiagnostics`):
+- compare: `src/decomp/scripts/compare_diskio_draw_transfer_error_message_if_diagnostics_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_draw_transfer_error_message_if_diagnostics.awk`
+- promote: `src/decomp/scripts/promote_diskio_draw_transfer_error_message_if_diagnostics_target_gcc.sh`
+- Target 1027 (`DISKIO_WriteBytesToOutputHandleGuarded`):
+- compare: `src/decomp/scripts/compare_diskio_write_bytes_to_output_handle_guarded_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_write_bytes_to_output_handle_guarded.awk`
+- promote: `src/decomp/scripts/promote_diskio_write_bytes_to_output_handle_guarded_target_gcc.sh`
+- Target 1028 (`DISKIO_ForceUiRefreshIfIdle`):
+- compare: `src/decomp/scripts/compare_diskio_force_ui_refresh_if_idle_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_force_ui_refresh_if_idle.awk`
+- promote: `src/decomp/scripts/promote_diskio_force_ui_refresh_if_idle_target_gcc.sh`
+- Target 1029 (`DISKIO_ResetCtrlInputStateIfIdle`):
+- compare: `src/decomp/scripts/compare_diskio_reset_ctrl_input_state_if_idle_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_reset_ctrl_input_state_if_idle.awk`
+- promote: `src/decomp/scripts/promote_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
+- latest full C trial: `compiled 1027 / 1027`, `export count 1035`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

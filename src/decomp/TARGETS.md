@@ -22982,3 +22982,157 @@ Run:
 Current notes:
 - Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D2-D5/A2-A3`, `UNLK A5`, `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1023: `modules/groups/a/r/flib.s` (`FLIB_AppendClockStampedLogEntry_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `flib` log-append flow.
+- Low-risk conversion preserving exact frame restore and return behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/flib_append_clock_stamped_log_entry_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_flib_append_clock_stamped_log_entry_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_flib_append_clock_stamped_log_entry_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_flib_append_clock_stamped_log_entry_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_flib_append_clock_stamped_log_entry_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_flib_append_clock_stamped_log_entry_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L -140(A5),D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1024: `modules/groups/a/i/displib.s` (`DISPLIB_FindPreviousValidEntryIndex_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in display-list previous-entry lookup.
+- Low-risk conversion preserving return-value transfer and exact register unwind.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_find_previous_valid_entry_index_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_find_previous_valid_entry_index_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_find_previous_valid_entry_index_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_find_previous_valid_entry_index_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_find_previous_valid_entry_index_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_find_previous_valid_entry_index_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVE.L D7,D0`, `MOVEM.L (A7)+,D5-D7/A2-A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1025: `modules/groups/a/i/displib.s` (`DISPLIB_ApplyInlineAlignmentPadding_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to Target 1024.
+- Low-risk conversion preserving frame teardown and register restore sequence.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_apply_inline_alignment_padding_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_apply_inline_alignment_padding_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_apply_inline_alignment_padding_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_apply_inline_alignment_padding_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_apply_inline_alignment_padding_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_apply_inline_alignment_padding_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D4-D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1026: `modules/groups/a/g/diskio.s` (`DISKIO_DrawTransferErrorMessageIfDiagnostics`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported diagnostics wrapper with clear guard + draw path.
+- Good first non-return target after return-helper sweeps; preserves behavior while reducing asm-only surface.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_draw_transfer_error_message_if_diagnostics_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_draw_transfer_error_message_if_diagnostics_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_draw_transfer_error_message_if_diagnostics.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_draw_transfer_error_message_if_diagnostics_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_draw_transfer_error_message_if_diagnostics_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_draw_transfer_error_message_if_diagnostics_target_gcc.sh`
+
+Current notes:
+- Candidate preserves diagnostics-active guard, pen color set (`4` then restore `1`), termination-reason pointer table lookup, and `DISPLIB_DisplayTextAtPosition` call sequence.
+- Initial semantic-filter mismatch was tooling-only (`JSR DISPLIB_DisplayTextAtPosition` vs `(PC)` form); filter now accepts both and promotion gate passes.
+
+## Target 1027: `modules/groups/a/g/diskio.s` (`DISKIO_WriteBytesToOutputHandleGuarded`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact non-`JMPTBL` I/O helper with explicit save/restore guard behavior.
+- Good low-risk follow-up in `diskio` lane after Target 1026.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_write_bytes_to_output_handle_guarded_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_write_bytes_to_output_handle_guarded_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_write_bytes_to_output_handle_guarded.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_write_bytes_to_output_handle_guarded_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_write_bytes_to_output_handle_guarded_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_write_bytes_to_output_handle_guarded_target_gcc.sh`
+
+Current notes:
+- Candidate preserves read-mode save/force/restore sequence around `_LVOWrite`, success/failure return code selection (`0`/`-1`), and full register restore.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1028: `modules/groups/a/g/diskio.s` (`DISKIO_ForceUiRefreshIfIdle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` wrapper with straightforward idle-guarded UI refresh behavior.
+- Low-risk conversion in active `diskio` lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_force_ui_refresh_if_idle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_force_ui_refresh_if_idle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_force_ui_refresh_if_idle.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_force_ui_refresh_if_idle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_force_ui_refresh_if_idle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_force_ui_refresh_if_idle_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `Global_UIBusyFlag` guard, read-mode/refresh-tick writes, and refresh dispatcher call.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1029: `modules/groups/a/g/diskio.s` (`DISKIO_ResetCtrlInputStateIfIdle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` wrapper controlling input-reset under idle guard.
+- Low-risk conversion preserving disable/enable critical section semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_reset_ctrl_input_state_if_idle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_reset_ctrl_input_state_if_idle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_reset_ctrl_input_state_if_idle.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_reset_ctrl_input_state_if_idle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
+
+Current notes:
+- Candidate preserves idle guard, `_LVODisable/_LVOEnable` critical section, control-state clears, and final mode/tick reset stores.
+- Promotion gate and canonical hash checks pass with this replacement active.
