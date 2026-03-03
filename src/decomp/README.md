@@ -3452,7 +3452,19 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_parse_group_record_and_refresh_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_parse_group_record_and_refresh_return.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_parse_group_record_and_refresh_return_target_gcc.sh`
-- latest full C trial: `compiled 919 / 919`, `export count 930`, `status: ok`
+- Target 922 (`ESQIFF2_ReadSerialRecordIntoBuffer_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_serial_record_into_buffer_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_record_into_buffer_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_return_target_gcc.sh`
+- Target 923 (`ESQIFF2_ReadSerialSizedTextRecord_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_serial_sized_text_record_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_sized_text_record_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_return_target_gcc.sh`
+- Target 924 (`ESQIFF2_ShowVersionMismatchOverlay_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_show_version_mismatch_overlay_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_return_target_gcc.sh`
+- latest full C trial: `compiled 922 / 922`, `export count 933`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

@@ -20774,3 +20774,66 @@ Run:
 
 Current notes:
 - Candidate preserves exact parser tail restore (`MOVEM.L -44(A5),D2/D4-D7/A3`, `UNLK A5`, `RTS`) used by full-refresh and no-op paths.
+
+## Target 922: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadSerialRecordIntoBuffer_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for serial record reader.
+- Continues ESQIFF2 return-helper promotion while preserving build momentum.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_serial_record_into_buffer_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_serial_record_into_buffer_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_record_into_buffer_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_serial_record_into_buffer_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact serial-record return tail (`MOVEM.L (A7)+,D4-D7/A3`, `UNLK A5`, `RTS`) used by guard, terminator, and length-cap exits.
+
+## Target 923: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadSerialSizedTextRecord_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for sized serial text reader.
+- Keeps ESQIFF2 tail-helper promotion throughput consistent.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_serial_sized_text_record_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_serial_sized_text_record_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_sized_text_record_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_serial_sized_text_record_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact sized-record return tail (`MOVEM.L (A7)+,D4-D7/A3`, `UNLK A5`, `RTS`) for reject/success/validation-failure exits.
+
+## Target 924: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ShowVersionMismatchOverlay_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for version-mismatch overlay helper.
+- Maintains efficient ESQIFF2 tail/helper promotions while larger bodies remain queued.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_show_version_mismatch_overlay_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_show_version_mismatch_overlay_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_show_version_mismatch_overlay_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact mismatch-overlay return tail (`MOVEM.L (A7)+,D2-D3`, `UNLK A5`, `RTS`).
