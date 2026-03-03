@@ -18896,3 +18896,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_FinalizeLineTable` assembly slice, preserving line-table-lock early return, current-index mirroring into target index, line-length-table probe + optional increment path, `DISPTEXT_BuildLinePointerTable` call with `PEA 1.W`, post-call stack fixup, current-index clear, and final `RTS`.
+
+## Target 833: `modules/groups/a/i/disptext.s` (`DISPTEXT_SetLayoutParams`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Mid-size exported non-jmptbl layout setter that clamps two inputs and returns a strict match result.
+- Core native `DISPTEXT` routine feeding downstream layout/line-selection behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_set_layout_params_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_set_layout_params_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_set_layout_params.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_set_layout_params_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_set_layout_params_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_set_layout_params_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_SetLayoutParams` assembly slice, preserving D5-D7 save/restore, reset call ordering, width clamp (`0..624`) and line clamp (`1..20`) semantics, commit call with D5, post-apply match checks against requested width/line values, and `D0` boolean return (`1` match, `0` mismatch).

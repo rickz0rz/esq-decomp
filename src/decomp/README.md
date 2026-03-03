@@ -802,6 +802,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_disptext_init_buffers_trial_gcc.sh`: GCC-specific compare lane for `Target 830` (`DISPTEXT_InitBuffers`).
 - `src/decomp/scripts/compare_disptext_free_buffers_trial_gcc.sh`: GCC-specific compare lane for `Target 831` (`DISPTEXT_FreeBuffers`).
 - `src/decomp/scripts/compare_disptext_finalize_line_table_trial_gcc.sh`: GCC-specific compare lane for `Target 832` (`DISPTEXT_FinalizeLineTable`).
+- `src/decomp/scripts/compare_disptext_set_layout_params_trial_gcc.sh`: GCC-specific compare lane for `Target 833` (`DISPTEXT_SetLayoutParams`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1532,6 +1533,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_disptext_init_buffers.awk`: semantic post-filter for `DISPTEXT_InitBuffers` compare lane.
 - `src/decomp/scripts/semantic_filter_disptext_free_buffers.awk`: semantic post-filter for `DISPTEXT_FreeBuffers` compare lane.
 - `src/decomp/scripts/semantic_filter_disptext_finalize_line_table.awk`: semantic post-filter for `DISPTEXT_FinalizeLineTable` compare lane.
+- `src/decomp/scripts/semantic_filter_disptext_set_layout_params.awk`: semantic post-filter for `DISPTEXT_SetLayoutParams` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2361,6 +2363,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_disptext_init_buffers_target_gcc.sh`: promotion gate for Target 830 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_disptext_free_buffers_target_gcc.sh`: promotion gate for Target 831 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_disptext_finalize_line_table_target_gcc.sh`: promotion gate for Target 832 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_disptext_set_layout_params_target_gcc.sh`: promotion gate for Target 833 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).
