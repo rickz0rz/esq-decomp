@@ -15930,3 +15930,26 @@ Current notes:
 - Original routine scans nodes via next pointer (`+368`) and returns first entry with type byte (`+32`) equal to `3`, otherwise null.
 - GCC output differs in control-flow shape while preserving type-check and traversal semantics under semantic gating.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 693: `modules/groups/a/a/brush.s` (`BRUSH_FindBrushByPredicate`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small list-scan function with one external compare call and simple early-return behavior.
+- Natural continuation of the low-risk `BRUSH_*` helper sequence after Targets 690-692.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_find_brush_by_predicate_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_find_brush_by_predicate_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_find_brush_by_predicate.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_find_brush_by_predicate_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_find_brush_by_predicate_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_find_brush_by_predicate_target_gcc.sh`
+
+Current notes:
+- Original routine traverses via next pointer (`+368`) and returns the first node where `GROUP_AA_JMPTBL_STRING_CompareNoCase(...)` reports match (`D0 == 0`), else null.
+- GCC output differs in stack/register choreography while preserving compare-call, traversal, and null-return behavior under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
