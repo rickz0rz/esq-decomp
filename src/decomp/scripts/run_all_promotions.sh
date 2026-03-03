@@ -66,6 +66,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_coi_test_entry_within_time_window_return_target_gcc.sh"
     "src/decomp/scripts/promote_coi_append_anim_field_with_trailing_space_return_target_gcc.sh"
     "src/decomp/scripts/promote_coi_compute_entry_time_delta_minutes_return_target_gcc.sh"
+    "src/decomp/scripts/promote_coi_format_entry_display_text_return_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
