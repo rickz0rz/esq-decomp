@@ -669,6 +669,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_p_type_consume_primary_type_if_present_target_gcc.sh"
     "src/decomp/scripts/promote_p_type_clone_entry_target_gcc.sh"
     "src/decomp/scripts/promote_p_type_parse_and_store_type_record_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_write_promo_id_data_file_target_gcc.sh"
+    "src/decomp/scripts/promote_p_type_load_promo_id_data_file_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

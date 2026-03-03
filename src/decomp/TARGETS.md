@@ -5877,6 +5877,54 @@ Current notes:
 - Valid slot path preserves free-and-replace behavior with allocation from payload tail pointer and success return (`1`).
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 665: `modules/groups/b/a/p_type.s` (`P_TYPE_WritePromoIdDataFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large non-`JMPTBL` serialization path for PROMOID.DAT; key producer counterpart to parse/load routines.
+- High leverage because it exercises grouped list traversal, format/write helpers, and file open/close lifecycle.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_write_promo_id_data_file_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_write_promo_id_data_file_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_write_promo_id_data_file.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_write_promo_id_data_file_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_write_promo_id_data_file_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_write_promo_id_data_file_target_gcc.sh`
+
+Current notes:
+- Candidate preserves file-open guard (`mode 1006`), two-slot section emission (`CURDAY`/`NXTDAY`), `NO DATA` fallback, and close-on-success path.
+- Entry-present path retains formatted header (`SPrintf` with `%03d%02d`) then payload copy plus newline write.
+- Semantic filter required AWK reserved-name cleanup (`close`/`sprintf` collisions) to run under default awk implementation.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 666: `modules/groups/b/a/p_type.s` (`P_TYPE_LoadPromoIdDataFile`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Largest remaining non-`JMPTBL` parser path in `p_type.s`; rebuilds primary/secondary promo lists from disk-backed work buffer.
+- Completes core P_TYPE read/write lifecycle coverage (allocate/free/store/load) in C form.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/p_type_load_promo_id_data_file_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_p_type_load_promo_id_data_file_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_p_type_load_promo_id_data_file.awk`
+- Promotion gate: `src/decomp/scripts/promote_p_type_load_promo_id_data_file_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_p_type_load_promo_id_data_file_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_p_type_load_promo_id_data_file_target_gcc.sh`
+
+Current notes:
+- Candidate preserves load guard, per-section header scan (`CURDAY`/`NXTDAY`), charclass-table guided cursor movement, group-code mapping, length parse, and optional `TYPES:` payload extraction with temporary NUL insertion.
+- Slot replacement keeps free-then-assign semantics for primary/secondary lists.
+- End-of-routine cleanup deallocates work buffer with site marker constant `406` and `Global_REF_LONG_FILE_SCRATCH + 1` size.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
