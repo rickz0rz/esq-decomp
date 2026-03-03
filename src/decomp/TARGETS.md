@@ -19358,3 +19358,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_ApplyStatusMaskToIndicators` slice, preserving `D7==-1` reset behavior, primary/secondary bit-test decision branches (`bits 0/1/2/4/5/8`), and all forwarded color-slot calls to `ESQDISP_SetStatusIndicatorColorSlot`.
+
+## Target 855: `modules/groups/a/n/esqdisp.s` (`ESQDISP_SetStatusIndicatorColorSlot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl rendering helper that controls indicator-cache state and raster updates.
+- Completes the direct callee chain behind status-mask application for improved behavior coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_set_status_indicator_color_slot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_set_status_indicator_color_slot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_set_status_indicator_color_slot.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_set_status_indicator_color_slot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_set_status_indicator_color_slot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_set_status_indicator_color_slot_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_SetStatusIndicatorColorSlot` slice, preserving deferred-apply/cache behavior, slot-to-Y mapping, optional pixel sampling (`_LVOReadPixel`), paint path (`_LVOSetAPen` + `_LVORectFill`), and RastPort bitmap-pointer restore.
