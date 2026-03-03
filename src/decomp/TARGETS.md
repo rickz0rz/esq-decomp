@@ -19736,3 +19736,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPLIB_CommitCurrentLinePenAndAdvance` slice, preserving current-line length probe, conditional index increment, target-line bound compare, conditional pen-table write for current line, and register save/restore return shape.
+
+## Target 873: `modules/groups/a/i/displib.s` (`DISPLIB_DisplayTextAtPosition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported DISPLIB rendering helper adjacent to recently promoted line-table helpers.
+- Core drawing primitive (`Move` + `Text`) used by higher-level display paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_display_text_at_position_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_display_text_at_position_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_display_text_at_position.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_display_text_at_position_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_display_text_at_position_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_display_text_at_position_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPLIB_DisplayTextAtPosition` slice, preserving null-string guard, `Move` call setup, explicit NUL-scan length loop, length computation by pointer subtraction, final `Text` call, and original frame/register epilogue.
