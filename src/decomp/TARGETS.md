@@ -20240,3 +20240,45 @@ Run:
 
 Current notes:
 - Candidate preserves exact countdown arm (`COPPER_AnimationLane2_Countdown = 15`), immediate pending-animation call, and `RTS` tail.
+
+## Target 897: `modules/groups/a/n/esqiff.s` (`ESQIFF_RunPendingCopperAnimations`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next direct non-`JMPTBL` ESQIFF routine after Targets 895/896 in the same animation cluster.
+- Contains real countdown control-flow and four helper dispatch paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_run_pending_copper_animations_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_run_pending_copper_animations_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_run_pending_copper_animations.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_run_pending_copper_animations_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_run_pending_copper_animations_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_run_pending_copper_animations_target_gcc.sh`
+
+Current notes:
+- Candidate preserves lane-by-lane countdown servicing for all four animation lanes and exact helper-call mapping (`NoOp_006A`, `NoOp_0074`, `DecCopperListsPrimary`, `IncCopperListsTowardsTargets`).
+
+## Target 898: `modules/groups/a/n/esqiff.s` (`ESQIFF_RestoreBasePaletteTriples`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct utility routine adjacent to recent ESQIFF animation targets.
+- Fixed-size byte-copy loop with no external calls; high confidence promotion.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_restore_base_palette_triples_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_restore_base_palette_triples_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_restore_base_palette_triples.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_restore_base_palette_triples_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_restore_base_palette_triples_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_restore_base_palette_triples_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 24-byte copy loop from `ESQFUNC_BasePaletteRgbTriples` into `WDISP_PaletteTriplesRBase` with original `D7` save/restore framing.

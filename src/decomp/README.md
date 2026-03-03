@@ -3352,7 +3352,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_run_copper_drop_transition_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_run_copper_drop_transition.awk`
 - promote: `src/decomp/scripts/promote_esqiff_run_copper_drop_transition_target_gcc.sh`
-- latest full C trial: `compiled 894 / 894`, `export count 904`, `status: ok`
+- Target 897 (`ESQIFF_RunPendingCopperAnimations`):
+- compare: `src/decomp/scripts/compare_esqiff_run_pending_copper_animations_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_run_pending_copper_animations.awk`
+- promote: `src/decomp/scripts/promote_esqiff_run_pending_copper_animations_target_gcc.sh`
+- Target 898 (`ESQIFF_RestoreBasePaletteTriples`):
+- compare: `src/decomp/scripts/compare_esqiff_restore_base_palette_triples_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_restore_base_palette_triples.awk`
+- promote: `src/decomp/scripts/promote_esqiff_restore_base_palette_triples_target_gcc.sh`
+- latest full C trial: `compiled 896 / 896`, `export count 906`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
