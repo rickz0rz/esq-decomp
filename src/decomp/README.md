@@ -3420,7 +3420,35 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_show_external_asset_with_copper_fx_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_show_external_asset_with_copper_fx.awk`
 - promote: `src/decomp/scripts/promote_esqiff_show_external_asset_with_copper_fx_target_gcc.sh`
-- latest full C trial: `compiled 911 / 911`, `export count 922`, `status: ok`
+- Target 914 (`ESQIFF2_ValidateAsciiNumericByte`):
+- compare: `src/decomp/scripts/compare_esqiff2_validate_ascii_numeric_byte_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_validate_ascii_numeric_byte.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_validate_ascii_numeric_byte_target_gcc.sh`
+- Target 915 (`ESQIFF2_ApplyIncomingStatusPacket_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_apply_incoming_status_packet_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_apply_incoming_status_packet_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_return_target_gcc.sh`
+- Target 916 (`ESQIFF2_ReadSerialBytesToBuffer_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_serial_bytes_to_buffer_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_bytes_to_buffer_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_serial_bytes_to_buffer_return_target_gcc.sh`
+- Target 917 (`ESQIFF2_ReadSerialBytesWithXor_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_serial_bytes_with_xor_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_bytes_with_xor_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_serial_bytes_with_xor_return_target_gcc.sh`
+- Target 918 (`ESQIFF2_ValidateFieldIndexAndLength_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_validate_field_index_and_length_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_validate_field_index_and_length_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_return_target_gcc.sh`
+- Target 919 (`ESQIFF2_PadEntriesToMaxTitleWidth_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_pad_entries_to_max_title_width_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_pad_entries_to_max_title_width_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_return_target_gcc.sh`
+- Target 920 (`ESQIFF2_ParseLineHeadTailRecord_Return`):
+- compare: `src/decomp/scripts/compare_esqiff2_parse_line_head_tail_record_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_parse_line_head_tail_record_return.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_return_target_gcc.sh`
+- latest full C trial: `compiled 918 / 918`, `export count 929`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

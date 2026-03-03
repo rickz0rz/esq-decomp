@@ -20606,3 +20606,150 @@ Current notes:
 - Full-C compile compatibility adjustments applied:
   - Replaced unresolved symbol-difference immediates `#((Global_REF_RASTPORT_2-WDISP_DisplayContextBase)+2)` with literal `#-458`.
   - Replaced short external branch to `ESQIFF_ShowExternalAssetWithCopperFx_Return` with `JMP` to avoid out-of-range `.S` assembly in isolated object mode.
+
+## Target 914: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ValidateAsciiNumericByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct ESQIFF2 parser helper with clear byte-range behavior.
+- Good bridge target while pivoting from ESQIFF into ESQIFF2 direct routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_validate_ascii_numeric_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_validate_ascii_numeric_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_validate_ascii_numeric_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_validate_ascii_numeric_byte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_validate_ascii_numeric_byte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_validate_ascii_numeric_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves D7 save/restore, low/high byte bound checks, and D0 return semantics used by serial-record parsing.
+
+## Target 915: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ApplyIncomingStatusPacket_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail symbol for incoming-status packet handler.
+- Fast promotion reducing direct ESQIFF2 tail symbols before larger parser bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_apply_incoming_status_packet_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_apply_incoming_status_packet_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_apply_incoming_status_packet_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_apply_incoming_status_packet_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_apply_incoming_status_packet_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `ESQIFF_StatusPacketReadyFlag` set plus exact register-restore tail (`MOVEM.L (A7)+,D2/D6-D7/A3`, `RTS`).
+
+## Target 916: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadSerialBytesToBuffer_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for serial block reader.
+- Fast promotion to reduce ESQIFF2 tail/helper symbol backlog.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_serial_bytes_to_buffer_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_serial_bytes_to_buffer_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_bytes_to_buffer_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_serial_bytes_to_buffer_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_serial_bytes_to_buffer_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_serial_bytes_to_buffer_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves end-pointer return in D0 (`MOVE.L A3,D0`) plus exact register/frame restore tail (`MOVEM.L`, `UNLK`, `RTS`).
+
+## Target 917: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadSerialBytesWithXor_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for serial+xor block reader.
+- Keeps ESQIFF2 promotion cadence on compact helpers while larger parsers remain queued.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_serial_bytes_with_xor_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_serial_bytes_with_xor_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_bytes_with_xor_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_serial_bytes_with_xor_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_serial_bytes_with_xor_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_serial_bytes_with_xor_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves end-pointer return in D0 and register restore tail (`MOVEM.L (A7)+,D6-D7/A2-A3`, `RTS`).
+
+## Target 918: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ValidateFieldIndexAndLength_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for group-record field bounds validator.
+- Maintains high-throughput promotion cadence across ESQIFF2 helper symbols.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_validate_field_index_and_length_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_validate_field_index_and_length_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_validate_field_index_and_length_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_validate_field_index_and_length_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_validate_field_index_and_length_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact shared tail (`MOVEM.L (A7)+,D6-D7`, `RTS`) used by all field-bounds check branches.
+
+## Target 919: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_PadEntriesToMaxTitleWidth_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for title-padding helper.
+- Continues ESQIFF2 helper/tail burn-down before larger parser/overlay bodies.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_pad_entries_to_max_title_width_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_pad_entries_to_max_title_width_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_pad_entries_to_max_title_width_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_pad_entries_to_max_title_width_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact frame/regs restore tail (`MOVEM.L (A7)+,D4-D7`, `UNLK A5`, `RTS`) for all title-pad exit paths.
+
+## Target 920: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ParseLineHeadTailRecord_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for line head/tail parser.
+- Keeps ESQIFF2 tail-helper throughput high with low regression risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_parse_line_head_tail_record_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_parse_line_head_tail_record_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_parse_line_head_tail_record_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_parse_line_head_tail_record_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact register-restore tail (`MOVEM.L (A7)+,D6-D7/A3`, `RTS`) shared across parser exit branches.
