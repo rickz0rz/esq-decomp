@@ -967,6 +967,10 @@ SCRIPTS=(
     "src/decomp/scripts/promote_diskio1_append_attr_flag_ditto_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_attr_flag_alt_hilite_src_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_dump_default_coi_info_block_return_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_dump_program_source_record_verbose_return_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio1_dump_program_info_attr_table_return_target_gcc.sh"
+    "src/decomp/scripts/promote_diskio_close_buffered_file_and_flush_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_copy_longword_block_dbf_loop_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_reset_banner_color_to_start_target_gcc.sh"
     "src/decomp/scripts/promote_ed1_clear_esc_menu_mode_target_gcc.sh"
@@ -996,6 +1000,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqshared4_copy_interleaved_row_words_from_offset_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_blit_banner_rows_for_active_field_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_setup_banner_plane_pointer_words_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_tick_copper_and_banner_transitions_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_copy_banner_rows_with_byte_offset_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

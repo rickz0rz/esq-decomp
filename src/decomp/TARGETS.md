@@ -22299,3 +22299,136 @@ Run:
 Current notes:
 - Candidate preserves per-plane scratch/snapshot/reset/sweep pointer-word seeding for bases 0/1/2 and final call to `ESQSHARED4_SetBannerColorBaseAndLimit` with threshold seed.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 992: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_TickCopperAndBannerTransitions`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Major runtime state-machine export coordinating copper list select, banner transitions, and highlight ticking.
+- High-impact reduction in remaining asm-only control flow for active display update loop.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_tick_copper_and_banner_transitions_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_tick_copper_and_banner_transitions_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_tick_copper_and_banner_transitions.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_tick_copper_and_banner_transitions_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_tick_copper_and_banner_transitions_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_tick_copper_and_banner_transitions_target_gcc.sh`
+
+Current notes:
+- Candidate preserves active-field selection from `VPOSR`, copper list install (`COP1LCH`), pending-program fast path, banner-transition/holdoff/read-mode branches, and highlight/blit callouts.
+- Portability fix applied for GNU as lane: replaced unresolved `(VPOSR-BLTDDAT)` / `(COP1LCH-BLTDDAT)` forms with direct `VPOSR`/`COP1LCH` accesses while preserving behavior.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 993: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_CopyBannerRowsWithByteOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct row-copy worker used in banner blit/update path, with predictable memory-transfer behavior.
+- Good fit for asm-backed promotion while preserving original register and addressing choreography.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_copy_banner_rows_with_byte_offset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_copy_banner_rows_with_byte_offset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_copy_banner_rows_with_byte_offset.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_copy_banner_rows_with_byte_offset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_copy_banner_rows_with_byte_offset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_copy_banner_rows_with_byte_offset_target_gcc.sh`
+
+Current notes:
+- Candidate preserves source offset seed from `ESQPARS2_BannerCopySourceOffset`, row-to-row stepping via `ESQSHARED_BlitAddressOffset`, and repeated word/longword lane copies across the banner row block.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 994: `modules/groups/a/g/diskio1.s` (`DISKIO1_DumpDefaultCoiInfoBlock_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported epilogue path in the active `diskio1` lane.
+- Low-risk conversion that preserves stack/register unwind behavior exactly.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_dump_default_coi_info_block_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_dump_default_coi_info_block_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_dump_default_coi_info_block_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_dump_default_coi_info_block_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_dump_default_coi_info_block_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_dump_default_coi_info_block_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 995: `modules/groups/a/g/diskio1.s` (`DISKIO1_DumpProgramSourceRecordVerbose_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to current `diskio1` focus.
+- Keeps promotion cadence high while preserving exact unwind/return semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_dump_program_source_record_verbose_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_dump_program_source_record_verbose_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_dump_program_source_record_verbose_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_dump_program_source_record_verbose_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_dump_program_source_record_verbose_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_dump_program_source_record_verbose_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D6-D7/A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 996: `modules/groups/a/g/diskio1.s` (`DISKIO1_DumpProgramInfoAttrTable_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in the same `diskio1` cluster.
+- Completes the adjacent trio of low-risk return epilogues while preserving exact frame/restore behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio1_dump_program_info_attr_table_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio1_dump_program_info_attr_table_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio1_dump_program_info_attr_table_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio1_dump_program_info_attr_table_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio1_dump_program_info_attr_table_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio1_dump_program_info_attr_table_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L -68(A5),D2-D3/D6-D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 997: `modules/groups/a/g/diskio.s` (`DISKIO_CloseBufferedFileAndFlush_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `diskio.s` adjacent to active file-close path.
+- Low-risk progress that preserves exact register restore + return sequence.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/diskio_close_buffered_file_and_flush_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_diskio_close_buffered_file_and_flush_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_diskio_close_buffered_file_and_flush_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_diskio_close_buffered_file_and_flush_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_diskio_close_buffered_file_and_flush_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_diskio_close_buffered_file_and_flush_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D3/D6-D7`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.

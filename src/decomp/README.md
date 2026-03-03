@@ -3732,7 +3732,31 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_setup_banner_plane_pointer_words_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_setup_banner_plane_pointer_words.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_setup_banner_plane_pointer_words_target_gcc.sh`
-- latest full C trial: `compiled 989 / 989`, `export count 1000`, `status: ok`
+- Target 992 (`ESQSHARED4_TickCopperAndBannerTransitions`):
+- compare: `src/decomp/scripts/compare_esqshared4_tick_copper_and_banner_transitions_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_tick_copper_and_banner_transitions.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_tick_copper_and_banner_transitions_target_gcc.sh`
+- Target 993 (`ESQSHARED4_CopyBannerRowsWithByteOffset`):
+- compare: `src/decomp/scripts/compare_esqshared4_copy_banner_rows_with_byte_offset_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_copy_banner_rows_with_byte_offset.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_copy_banner_rows_with_byte_offset_target_gcc.sh`
+- Target 994 (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
+- compare: `src/decomp/scripts/compare_diskio1_dump_default_coi_info_block_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_dump_default_coi_info_block_return.awk`
+- promote: `src/decomp/scripts/promote_diskio1_dump_default_coi_info_block_return_target_gcc.sh`
+- Target 995 (`DISKIO1_DumpProgramSourceRecordVerbose_Return`):
+- compare: `src/decomp/scripts/compare_diskio1_dump_program_source_record_verbose_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_dump_program_source_record_verbose_return.awk`
+- promote: `src/decomp/scripts/promote_diskio1_dump_program_source_record_verbose_return_target_gcc.sh`
+- Target 996 (`DISKIO1_DumpProgramInfoAttrTable_Return`):
+- compare: `src/decomp/scripts/compare_diskio1_dump_program_info_attr_table_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio1_dump_program_info_attr_table_return.awk`
+- promote: `src/decomp/scripts/promote_diskio1_dump_program_info_attr_table_return_target_gcc.sh`
+- Target 997 (`DISKIO_CloseBufferedFileAndFlush_Return`):
+- compare: `src/decomp/scripts/compare_diskio_close_buffered_file_and_flush_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_diskio_close_buffered_file_and_flush_return.awk`
+- promote: `src/decomp/scripts/promote_diskio_close_buffered_file_and_flush_return_target_gcc.sh`
+- latest full C trial: `compiled 995 / 995`, `export count 1006`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
