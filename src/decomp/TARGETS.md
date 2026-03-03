@@ -18791,3 +18791,45 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_SetCurrentLineIndex` assembly slice, preserving D7 save/restore, line-table lock guard, min/max range checks (`1..3`), `DISPLIB_CommitCurrentLinePenAndAdvance` call, stack fixup, and final `RTS`.
+
+## Target 828: `modules/groups/a/i/disptext.s` (`DISPTEXT_MeasureCurrentLineLength`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Moderate exported non-jmptbl helper with straightforward index math and one library call.
+- Good stepping stone before larger native `DISPTEXT` exports like `ComputeVisibleLineCount`/`RenderCurrentLine`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_measure_current_line_length_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_measure_current_line_length_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_measure_current_line_length.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_measure_current_line_length_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_measure_current_line_length_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_measure_current_line_length_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_MeasureCurrentLineLength` assembly slice, preserving A3 save/load/restore, finalize-call ordering, line-pointer/length-table indexing by `DISPTEXT_CurrentLineIndex`, `_LVOTextLength` setup (`A0` text pointer, `A1` rastport, `D0` length), and final `RTS`.
+
+## Target 829: `modules/groups/a/i/disptext.s` (`DISPTEXT_ComputeVisibleLineCount`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Larger exported non-jmptbl layout helper with arithmetic + optional control-marker parsing branch.
+- High-value native `DISPTEXT` function used by rendering/layout decisions and previously covered by jump-table forwarders.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_compute_visible_line_count_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_compute_visible_line_count_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_compute_visible_line_count.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_compute_visible_line_count_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_compute_visible_line_count_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_compute_visible_line_count_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_ComputeVisibleLineCount` assembly slice, preserving prologue/epilogue, `TargetLineIndex` clamp vs requested max, `MATH_Mulu32` row-height scaling, signed adjust + `ASR #2`, optional control-marker checks via two `STR_FindCharPtr` probes (19/20), plus marker bonus add and final return in `D5`.

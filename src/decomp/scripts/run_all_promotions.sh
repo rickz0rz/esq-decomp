@@ -91,6 +91,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_disptext_get_total_line_count_target_gcc.sh"
     "src/decomp/scripts/promote_disptext_is_last_line_selected_target_gcc.sh"
     "src/decomp/scripts/promote_disptext_set_current_line_index_target_gcc.sh"
+    "src/decomp/scripts/promote_disptext_measure_current_line_length_target_gcc.sh"
+    "src/decomp/scripts/promote_disptext_compute_visible_line_count_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
