@@ -16206,3 +16206,26 @@ Current notes:
 - Allocates `372`-byte clone record, copies key header/label blocks, and initializes bitmap/rastport structures.
 - Copies width/height and fallback limit fields; allocates up to five planes from base offset `0x90`.
 - Allocation failure path raises `BRUSH_PendingAlertCode` (if clear) and snapshots header bytes into `BRUSH_SnapshotHeader`.
+
+## Target 705: `modules/groups/a/a/brush.s` (`BRUSH_SelectBrushSlot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- High-use rendering helper with deterministic arithmetic/clip behavior and a single terminal blit call.
+- Promoting the direct symbol reduces reliance on return-label-only coverage around brush blit paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_select_brush_slot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_select_brush_slot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_select_brush_slot.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_select_brush_slot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_select_brush_slot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_select_brush_slot_target_gcc.sh`
+
+Current notes:
+- Computes source/destination offsets using clip limits (`348/352`) and alignment modes (`356/360`), including signed half-with-bias behavior.
+- Applies width/height clipping against brush limits and optional forced destination Y override (`arg7 > 0`).
+- Issues final blit via `GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort` with source bitmap at `brush+136` and minterm `192`.
