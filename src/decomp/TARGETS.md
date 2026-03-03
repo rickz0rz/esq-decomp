@@ -19988,3 +19988,24 @@ Run:
 
 Current notes:
 - Candidate preserves temporary read-mode override/restore, persist-call ordering, and final stack fixup (`LEA 12(A7),A7`) behavior.
+
+## Target 885: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_ProcessUiFrameTick`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous ESQFUNC core routine after Target 884.
+- Main per-frame UI service dispatcher touching alerts, input, persistence, and asset-state updates.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_process_ui_frame_tick_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_process_ui_frame_tick_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_process_ui_frame_tick.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_process_ui_frame_tick_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_process_ui_frame_tick_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_process_ui_frame_tick_target_gcc.sh`
+
+Current notes:
+- Candidate preserves gate ordering and side-effect structure for alert handling, secondary persist commit, IFF task flags, external asset queue/service, and final status-refresh gating.
