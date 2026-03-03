@@ -19295,3 +19295,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_InitHighlightMessagePattern` slice, preserving `D7/A3` save/restore, four-iteration loop bound, `+4` byte pattern generation, and writes into message offsets `55..58`.
+
+## Target 852: `modules/groups/a/n/esqdisp.s` (`ESQDISP_UpdateStatusMaskAndRefresh`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-small exported non-jmptbl state helper with clear bitmask semantics and a conditional refresh call.
+- High reuse value because multiple jmptbl callers already depend on this behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_update_status_mask_and_refresh_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_update_status_mask_and_refresh_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_update_status_mask_and_refresh.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_update_status_mask_and_refresh_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_update_status_mask_and_refresh_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_update_status_mask_and_refresh_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_UpdateStatusMaskAndRefresh` slice, preserving OR/clear mode dispatch, 12-bit mask clamp (`ANDI.L #$fff`), previous-mask compare gate, conditional call to `ESQDISP_ApplyStatusMaskToIndicators`, and shared `D5-D7` return tail.
