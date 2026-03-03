@@ -15723,3 +15723,72 @@ Current notes:
 - Original assembly is a direct `JMP MATH_DivS32`; GCC may emit jump/call-return form, both accepted as equivalent jump-stub dispatch.
 - Semantic gate validates target dispatch reference and terminal jump/return form.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 684: `modules/groups/a/a/bevel.s` (`BEVEL_DrawBevelFrameWithTop`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First direct `BEVEL_*` function promotion (non-`JMPTBL`) after covering `NEWGRID2_JMPTBL_BEVEL_*` wrappers.
+- Small composition routine that sequences two existing bevel helpers without introducing new data-path semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/bevel_draw_bevel_frame_with_top_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_bevel_draw_bevel_frame_with_top_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_bevel_draw_bevel_frame_with_top.awk`
+- Promotion gate: `src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_bevel_draw_bevel_frame_with_top_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_target_gcc.sh`
+
+Current notes:
+- Original assembly composes `BEVEL_DrawVerticalBevelPair` followed by `BEVEL_DrawHorizontalBevel`.
+- GCC emitted stack/call scaffolding differs structurally from source assembly but preserves helper-call sequence and terminal return under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 685: `modules/groups/a/a/bevel.s` (`BEVEL_DrawBeveledFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Continues direct (non-`JMPTBL`) `BEVEL_*` coverage with the next small composition routine.
+- Captures both helper sequencing and the corner accent draw path (`SetAPen` + `Move` + `Draw`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/bevel_draw_beveled_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_bevel_draw_beveled_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_bevel_draw_beveled_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_bevel_draw_beveled_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_bevel_draw_beveled_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_bevel_draw_beveled_frame_target_gcc.sh`
+
+Current notes:
+- Original assembly composes `BEVEL_DrawVerticalBevelPair` + `BEVEL_DrawVerticalBevel`, then renders a short pen-2 corner accent.
+- GCC emitted different register/stack choreography while preserving helper dispatch and draw intent under semantic filtering.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 686: `modules/groups/a/a/bevel.s` (`BEVEL_DrawBevelFrameWithTopRight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Continues direct `BEVEL_*` coverage with the top-right composition variant.
+- Low-risk follow-on from Targets 684/685 because it chains already-promoted bevel helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/bevel_draw_bevel_frame_with_top_right_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_bevel_draw_bevel_frame_with_top_right.awk`
+- Promotion gate: `src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_bevel_draw_bevel_frame_with_top_right_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_bevel_draw_bevel_frame_with_top_right_target_gcc.sh`
+
+Current notes:
+- Original assembly composes `BEVEL_DrawBeveledFrame` then `BEVEL_DrawHorizontalBevel` using shared call-frame argument staging.
+- GCC emits different prologue/epilogue and argument marshaling while preserving helper-call sequence under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
