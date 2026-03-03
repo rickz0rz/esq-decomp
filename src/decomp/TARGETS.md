@@ -17741,3 +17741,24 @@ Run:
 
 Current notes:
 - Candidate preserves empty-input guards, `STR_FindCharPtr` colon split path, default token-pair scratch setup/copy loops, per-token scan/dispatch loop, repeated `ESQPARS_ReplaceOwnedString` rewrites for output pointers, and final empty-template fallback path.
+
+## Target 778: `modules/groups/a/e/cleanup4.s` (`CLEANUP_BuildAlignedStatusLine`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core direct helper that composes aligned status text and inset nibble state from entry fields.
+- Good incremental step after Targets 774–777 because it reuses those helpers and closes the local string/flag rendering chain.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_build_aligned_status_line_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_build_aligned_status_line_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_build_aligned_status_line.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_build_aligned_status_line_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_build_aligned_status_line_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_build_aligned_status_line_target_gcc.sh`
+
+Current notes:
+- Candidate preserves entry lookup via `ESQDISP_GetEntryPointerByMode`, conditional text extraction gates through `CLEANUP_TestEntryFlagYAndBit1`/`COI_GetAnimFieldPointerByMode`, status formatting/appends (`WDISP_SPrintf`, `STRING_AppendAtNull`, `CLEANUP_FormatEntryStringTokens`), and aligned inset nibble/render-gate updates with clear/set branches.

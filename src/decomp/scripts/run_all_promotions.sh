@@ -41,6 +41,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_cleanup_update_entry_flag_bytes_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_draw_inset_rect_frame_target_gcc.sh"
     "src/decomp/scripts/promote_cleanup_format_entry_string_tokens_target_gcc.sh"
+    "src/decomp/scripts/promote_cleanup_build_aligned_status_line_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
