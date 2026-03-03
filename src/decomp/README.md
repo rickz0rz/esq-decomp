@@ -732,6 +732,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_cleanup_shutdown_input_devices_trial_gcc.sh`: GCC-specific compare lane for `Target 760` (`CLEANUP_ShutdownInputDevices`).
 - `src/decomp/scripts/compare_cleanup_shutdown_system_trial_gcc.sh`: GCC-specific compare lane for `Target 761` (`CLEANUP_ShutdownSystem`).
 - `src/decomp/scripts/compare_cleanup_release_display_resources_trial_gcc.sh`: GCC-specific compare lane for `Target 762` (`CLEANUP_ReleaseDisplayResources`).
+- `src/decomp/scripts/compare_cleanup_draw_banner_spacer_segment_trial_gcc.sh`: GCC-specific compare lane for `Target 763` (`CLEANUP_DrawBannerSpacerSegment`).
 - `src/decomp/scripts/compare_math_mulu32_trial_gcc.sh`: GCC-specific compare lane for `Target 040` (`MATH_Mulu32`).
 - `src/decomp/scripts/compare_math_divs32_trial_gcc.sh`: GCC-specific compare lane for `Target 043` (`MATH_DivS32`).
 - `src/decomp/scripts/compare_allocate_alloc_and_initialize_iostdreq_trial_gcc.sh`: GCC-specific compare lane for `Target 042` (`ALLOCATE_AllocAndInitializeIOStdReq`).
@@ -1392,6 +1393,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_cleanup_shutdown_input_devices.awk`: semantic post-filter for `CLEANUP_ShutdownInputDevices` compare lane.
 - `src/decomp/scripts/semantic_filter_cleanup_shutdown_system.awk`: semantic post-filter for `CLEANUP_ShutdownSystem` compare lane.
 - `src/decomp/scripts/semantic_filter_cleanup_release_display_resources.awk`: semantic post-filter for `CLEANUP_ReleaseDisplayResources` compare lane.
+- `src/decomp/scripts/semantic_filter_cleanup_draw_banner_spacer_segment.awk`: semantic post-filter for `CLEANUP_DrawBannerSpacerSegment` compare lane.
 - `src/decomp/scripts/semantic_filter_math_mulu32.awk`: semantic post-filter for `MATH_Mulu32` compare lane.
 - `src/decomp/scripts/semantic_filter_math_divs32.awk`: semantic post-filter for `MATH_DivS32` compare lane.
 - `src/decomp/scripts/semantic_filter_allocate_alloc_and_initialize_iostdreq.awk`: semantic post-filter for `ALLOCATE_AllocAndInitializeIOStdReq` compare lane.
@@ -2151,6 +2153,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_cleanup_shutdown_input_devices_target_gcc.sh`: promotion gate for Target 760 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_cleanup_shutdown_system_target_gcc.sh`: promotion gate for Target 761 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_cleanup_release_display_resources_target_gcc.sh`: promotion gate for Target 762 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_cleanup_draw_banner_spacer_segment_target_gcc.sh`: promotion gate for Target 763 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_mulu32_target_gcc.sh`: promotion gate for Target 040 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divs32_target_gcc.sh`: promotion gate for Target 043 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_allocate_alloc_and_initialize_iostdreq_target_gcc.sh`: promotion gate for Target 042 GCC lane (semantic + build/hash gates).

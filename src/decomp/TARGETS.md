@@ -17426,3 +17426,24 @@ Run:
 
 Current notes:
 - Candidate preserves the top-level memory frees, four raster-table traversal loops with `Graphics_FreeRaster`, conditional font closes, and final utility/diskfont/dos/intuition/graphics library close ordering.
+
+## Target 763: `modules/groups/a/c/cleanup2.s` (`CLEANUP_DrawBannerSpacerSegment`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, self-contained banner draw helper with no deep dependency fanout.
+- Good first direct-export promotion in `cleanup2.s` after finishing the `cleanup.s` cluster.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_draw_banner_spacer_segment_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_draw_banner_spacer_segment_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_draw_banner_spacer_segment.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_draw_banner_spacer_segment_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_draw_banner_spacer_segment_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_draw_banner_spacer_segment_target_gcc.sh`
+
+Current notes:
+- Candidate preserves rastport bitmap swap/restore around `Global_REF_696_400_BITMAP`, banner clear rectangle (`256,34 -> 447,67`), and bevel frame draw via `BEVEL_DrawBevelFrameWithTopRight`.
