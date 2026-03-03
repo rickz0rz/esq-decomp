@@ -18560,3 +18560,24 @@ Run:
 
 Current notes:
 - Candidate preserves parent/null guards, positive-count gating on `36(A0)`, allocation of `count*4` pointer table bytes, store to `38(A0)`, and subsequent `SCRIPT_AllocateBufferArray` initialization using the same count.
+
+## Target 817: `modules/groups/a/e/coi.s` (`COI_LoadOiDataFile` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Largest remaining non-jmptbl COI parser body; central to loading/parsing OI records from disk.
+- High leverage conversion because it drives file ingestion, token parsing, wildcard matching, object/subentry population, and cleanup paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_load_oi_data_file_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_load_oi_data_file_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_load_oi_data_file.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_load_oi_data_file_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_load_oi_data_file_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_load_oi_data_file_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `COI_LoadOiDataFile` assembly slice to preserve instruction flow and label topology, including parse loops, wildcard/header checks, `COI_AllocSubEntryTable` path, and terminal cleanup/deallocation sequence.
