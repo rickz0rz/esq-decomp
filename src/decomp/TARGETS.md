@@ -16922,3 +16922,24 @@ Run:
 
 Current notes:
 - Candidate preserves 5-byte slot stride (`index*5`), null-terminated copy from `CTRL_SampleEntryScratch` into `ED_StateRingTable`, and modulo-20 producer index update in `ED_StateRingWriteIndex`.
+
+## Target 739: `modules/groups/a/a/app2.s` (`ESQ_FormatTimeStamp`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Self-contained formatter with fixed output layout and no external calls in source assembly.
+- Good progression into medium-size direct helpers while staying low risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_format_time_stamp_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_format_time_stamp_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_format_time_stamp.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_format_time_stamp_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_format_time_stamp_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_format_time_stamp_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `"hh:mm:ss AM/PM"` composition semantics, AM/PM selection from sign of offset `18`, decimal digit extraction by divide/modulo 10, and leading-space behavior for single-digit hour.

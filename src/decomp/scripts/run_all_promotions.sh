@@ -71,6 +71,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_get_half_hour_slot_index_target_gcc.sh"
     "src/decomp/scripts/promote_esq_clamp_banner_char_range_target_gcc.sh"
     "src/decomp/scripts/promote_esq_store_ctrl_sample_entry_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_format_time_stamp_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"
