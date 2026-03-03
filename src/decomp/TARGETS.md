@@ -21048,3 +21048,25 @@ Run:
 
 Current notes:
 - Candidate preserves size guard/clamp, initial payload read loop, signed trailer-length parse, trailer-byte read/validate flow, validation-failure clear path, checksum-byte read/write, and final length handoff into shared return tail (`ESQIFF2_ReadSerialSizedTextRecord_Return`).
+
+## Target 935: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadSerialRecordIntoBuffer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core serial-record parser with delimiter/extension handling and checksum capture.
+- Improves ESQIFF2 parser coverage before tackling overlay render functions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_serial_record_into_buffer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_serial_record_into_buffer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_record_into_buffer.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_serial_record_into_buffer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_target_gcc.sh`
+
+Current notes:
+- Candidate preserves main record-read loop, NUL terminator/short-record guard, 0x14 extension copy loop, 0x12 delimiter handling with limit counter, checksum-byte read/write, and final length handoff to shared return tail.
+- Full-C compile required replacing one short external return branch with `JMP ESQIFF2_ReadSerialRecordIntoBuffer_Return` to avoid standalone TU branch-range overflow.
