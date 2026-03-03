@@ -82,6 +82,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_coi_alloc_sub_entry_table_target_gcc.sh"
     "src/decomp/scripts/promote_coi_load_oi_data_file_target_gcc.sh"
     "src/decomp/scripts/promote_coi_write_oi_data_file_target_gcc.sh"
+    "src/decomp/scripts/promote_ctasks_close_task_teardown_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

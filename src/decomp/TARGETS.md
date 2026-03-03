@@ -18602,3 +18602,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `COI_WriteOiDataFile` assembly slice to preserve instruction flow and labels, including header/disk-id validation, filename formatting/open, buffered record writes, wildcard/subentry loops, EOF marker write, and close/return sequence.
+
+## Target 819: `modules/groups/a/f/ctasks.s` (`CTASKS_CloseTaskTeardown`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl teardown routine with straightforward control flow and no stack-macro indirection.
+- Good bridge from COI-heavy promotions into `CTASKS` lifecycle exports while preserving behavior around close/forbid/deallocation ordering.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ctasks_close_task_teardown_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ctasks_close_task_teardown_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ctasks_close_task_teardown.awk`
+- Promotion gate: `src/decomp/scripts/promote_ctasks_close_task_teardown_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ctasks_close_task_teardown_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ctasks_close_task_teardown_target_gcc.sh`
+
+Current notes:
+- Candidate preserves conditional `_LVOClose` path on `CTASKS_CloseTaskFileHandle`, `_LVOForbid` before list teardown, `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` call for close-task list, completion-flag set, and A4 restore + return.
