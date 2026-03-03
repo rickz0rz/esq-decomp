@@ -17867,3 +17867,24 @@ Run:
 
 Current notes:
 - Candidate preserves first/second quote detection via `STR_FindCharPtr`, fallback path using caller end pointer or scanned string end, `WDISP_CharClassTable` bit-3 trimming on both span ends, and returned inclusive length (`end - start + 1`) with out-start/out-has-quotes stores.
+
+## Target 784: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_FormatEntryTimeForIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl formatter helper that feeds user-visible time text.
+- Extends `textdisp3.s` conversion along the match/format path while staying local to one entry and table context.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_format_entry_time_for_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_format_entry_time_for_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_format_entry_time_for_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_format_entry_time_for_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_format_entry_time_for_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_format_entry_time_for_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves entry row pointer lookup, schedule-offset computation, fallback clock-format rendering for non-`(hh:mm)` text, hh:mm parse-and-round path using `CLOCK_FormatVariantCode`, clock-template copy via `Global_REF_STR_CLOCK_FORMAT`, and clear-output guard when source text is missing.
