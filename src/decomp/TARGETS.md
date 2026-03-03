@@ -21793,3 +21793,47 @@ Run:
 Current notes:
 - Candidate preserves A4 save/restore, scratch-base `LEA`, zero return setup in `D0`, and `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 969: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_SetBannerColorBaseAndLimit`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved banner-state helper with straightforward register/global writes.
+- High-confidence promotion in active `esqshared4` lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_set_banner_color_base_and_limit_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_set_banner_color_base_and_limit_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_set_banner_color_base_and_limit.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_set_banner_color_base_and_limit_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_set_banner_color_base_and_limit_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_set_banner_color_base_and_limit_target_gcc.sh`
+
+Current notes:
+- Candidate preserves base color write, clamp wait-row seed (`0xD9`), both clamp value stores, and `RTS`.
+- Semantic filter accepts equivalent immediate spellings (`0xD9`/`$D9`) from normalized output.
+
+## Target 970: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ClearBannerWorkRasterWithOnes`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved raster-clear loop helper with deterministic DBF behavior.
+- Useful reduction of low-level asm loop surface in `esqshared4`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_clear_banner_work_raster_with_ones_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_clear_banner_work_raster_with_ones_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_clear_banner_work_raster_with_ones.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_clear_banner_work_raster_with_ones_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_clear_banner_work_raster_with_ones_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_clear_banner_work_raster_with_ones_target_gcc.sh`
+
+Current notes:
+- Candidate preserves banner-work raster base load, loop count seed (`0x149`), longword fill with `0xFFFFFFFF`, `DBF` loop, and `RTS`.
+- Semantic filter accepts original local-label `DBF` target and replacement numeric local-label form.

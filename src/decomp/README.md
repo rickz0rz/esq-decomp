@@ -3640,7 +3640,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_locavail2_auto_request_no_op_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_locavail2_auto_request_no_op.awk`
 - promote: `src/decomp/scripts/promote_locavail2_auto_request_no_op_target_gcc.sh`
-- latest full C trial: `compiled 966 / 966`, `export count 977`, `status: ok`
+- Target 969 (`ESQSHARED4_SetBannerColorBaseAndLimit`):
+- compare: `src/decomp/scripts/compare_esqshared4_set_banner_color_base_and_limit_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_set_banner_color_base_and_limit.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_set_banner_color_base_and_limit_target_gcc.sh`
+- Target 970 (`ESQSHARED4_ClearBannerWorkRasterWithOnes`):
+- compare: `src/decomp/scripts/compare_esqshared4_clear_banner_work_raster_with_ones_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_clear_banner_work_raster_with_ones.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_clear_banner_work_raster_with_ones_target_gcc.sh`
+- latest full C trial: `compiled 968 / 968`, `export count 979`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
