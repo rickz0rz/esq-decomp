@@ -22586,3 +22586,267 @@ Run:
 Current notes:
 - Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D2-D7/A2-A3/A6`, `UNLK A5`, `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1005: `modules/groups/a/o/esqpars.s` (`ESQPARS_RemoveGroupEntryAndReleaseStrings_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `esqpars.s`.
+- Low-risk promotion preserving exact frame/restore return semantics used by release-loop exits.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_remove_group_entry_and_release_strings_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_remove_group_entry_and_release_strings_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_remove_group_entry_and_release_strings_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_remove_group_entry_and_release_strings_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_remove_group_entry_and_release_strings_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_remove_group_entry_and_release_strings_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D5-D7/A2`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1006: `modules/groups/a/o/esqpars.s` (`ESQPARS_ReplaceOwnedString_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper shared across owned-string replacement branches.
+- Low-risk conversion preserving exact restore/return behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_replace_owned_string_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_replace_owned_string_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_replace_owned_string_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_replace_owned_string_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_replace_owned_string_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_replace_owned_string_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact epilogue sequence: `MOVEM.L (A7)+,D6-D7/A2-A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1007: `modules/groups/a/o/esqpars.s` (`ESQPARS_ReadLengthWordWithChecksumXor_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper for the serial-length XOR byte reader path.
+- Safe high-leverage promotion preserving return-value transfer and saved-register unwind.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqpars_read_length_word_with_checksum_xor_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqpars_read_length_word_with_checksum_xor_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqpars_read_length_word_with_checksum_xor_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqpars_read_length_word_with_checksum_xor_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqpars_read_length_word_with_checksum_xor_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqpars_read_length_word_with_checksum_xor_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVE.L D7,D0`, `MOVEM.L (A7)+,D5-D7`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1008: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_SetPresetEntry_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in current `gcommand3` lane.
+- Low-risk conversion preserving exact register restore behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_set_preset_entry_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_set_preset_entry_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_set_preset_entry_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_set_preset_entry_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_set_preset_entry_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_set_preset_entry_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D6-D7`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1009: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_ExpandPresetBlock_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper shared by preset-block decode bounds checks.
+- Continues low-risk conversion cadence in `gcommand3`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_expand_preset_block_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_expand_preset_block_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_expand_preset_block_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_expand_preset_block_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_expand_preset_block_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_expand_preset_block_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D2/D5-D7/A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1010: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_ValidatePresetTable_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in table-validation path.
+- Keeps promotion velocity high while preserving exact unwind behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_validate_preset_table_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_validate_preset_table_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_validate_preset_table_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_validate_preset_table_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_validate_preset_table_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_validate_preset_table_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D5-D7/A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1011: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_InitPresetTableFromPalette_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper for preset-table init loop bounds.
+- Low-risk promotion with explicit frame teardown preservation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_init_preset_table_from_palette_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_init_preset_table_from_palette_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_init_preset_table_from_palette_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_init_preset_table_from_palette_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_init_preset_table_from_palette_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_init_preset_table_from_palette_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D6-D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1012: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_UpdatePresetEntryCache_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper for cached-preset update flow.
+- Completes the current `gcommand3` return-helper cluster with low-risk promotions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_update_preset_entry_cache_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_update_preset_entry_cache_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_update_preset_entry_cache_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_update_preset_entry_cache_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_update_preset_entry_cache_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_update_preset_entry_cache_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D6-D7/A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1013: `modules/groups/a/x/ladfunc2.s` (`LADFUNC2_EmitEscapedStringWithLimit_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `ladfunc2` escaped-string emission flow.
+- Low-risk conversion preserving exact saved-register unwind.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ladfunc2_emit_escaped_string_with_limit_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ladfunc2_emit_escaped_string_with_limit_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ladfunc2_emit_escaped_string_with_limit_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_ladfunc2_emit_escaped_string_with_limit_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ladfunc2_emit_escaped_string_with_limit_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ladfunc2_emit_escaped_string_with_limit_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D6-D7/A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1014: `modules/groups/a/x/ladfunc2.s` (`LADFUNC2_EmitEscapedStringChunked_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to Target 1013 in the same module.
+- Continues low-risk promotion cadence with exact restore semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ladfunc2_emit_escaped_string_chunked_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ladfunc2_emit_escaped_string_chunked_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ladfunc2_emit_escaped_string_chunked_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_ladfunc2_emit_escaped_string_chunked_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ladfunc2_emit_escaped_string_chunked_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ladfunc2_emit_escaped_string_chunked_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVEM.L (A7)+,D6-D7/A3`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1015: `modules/groups/a/y/locavail.s` (`LOCAVAIL_ParseFilterStateFromBuffer_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper in `locavail` parser flow.
+- Low-risk conversion preserving return-value transfer and exact unwind sequence.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail_parse_filter_state_from_buffer_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail_parse_filter_state_from_buffer_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail_parse_filter_state_from_buffer_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail_parse_filter_state_from_buffer_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail_parse_filter_state_from_buffer_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail_parse_filter_state_from_buffer_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVE.L D5,D0`, `MOVEM.L (A7)+,D5-D7/A2-A3`, `UNLK A5`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 1016: `modules/groups/a/y/locavail.s` (`LOCAVAIL_MapFilterTokenCharToClass_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` exported return helper adjacent to Target 1015 in `locavail`.
+- Low-risk conversion preserving class-index return path and register unwind.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail_map_filter_token_char_to_class_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail_map_filter_token_char_to_class_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail_map_filter_token_char_to_class_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail_map_filter_token_char_to_class_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail_map_filter_token_char_to_class_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail_map_filter_token_char_to_class_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact tail sequence: `MOVE.L D6,D0`, `MOVEM.L (A7)+,D6-D7`, `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.

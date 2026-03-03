@@ -3784,7 +3784,55 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared_update_matching_entries_by_title_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared_update_matching_entries_by_title_return.awk`
 - promote: `src/decomp/scripts/promote_esqshared_update_matching_entries_by_title_return_target_gcc.sh`
-- latest full C trial: `compiled 1002 / 1002`, `export count 1013`, `status: ok`
+- Target 1005 (`ESQPARS_RemoveGroupEntryAndReleaseStrings_Return`):
+- compare: `src/decomp/scripts/compare_esqpars_remove_group_entry_and_release_strings_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqpars_remove_group_entry_and_release_strings_return.awk`
+- promote: `src/decomp/scripts/promote_esqpars_remove_group_entry_and_release_strings_return_target_gcc.sh`
+- Target 1006 (`ESQPARS_ReplaceOwnedString_Return`):
+- compare: `src/decomp/scripts/compare_esqpars_replace_owned_string_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqpars_replace_owned_string_return.awk`
+- promote: `src/decomp/scripts/promote_esqpars_replace_owned_string_return_target_gcc.sh`
+- Target 1007 (`ESQPARS_ReadLengthWordWithChecksumXor_Return`):
+- compare: `src/decomp/scripts/compare_esqpars_read_length_word_with_checksum_xor_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqpars_read_length_word_with_checksum_xor_return.awk`
+- promote: `src/decomp/scripts/promote_esqpars_read_length_word_with_checksum_xor_return_target_gcc.sh`
+- Target 1008 (`GCOMMAND_SetPresetEntry_Return`):
+- compare: `src/decomp/scripts/compare_gcommand_set_preset_entry_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_set_preset_entry_return.awk`
+- promote: `src/decomp/scripts/promote_gcommand_set_preset_entry_return_target_gcc.sh`
+- Target 1009 (`GCOMMAND_ExpandPresetBlock_Return`):
+- compare: `src/decomp/scripts/compare_gcommand_expand_preset_block_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_expand_preset_block_return.awk`
+- promote: `src/decomp/scripts/promote_gcommand_expand_preset_block_return_target_gcc.sh`
+- Target 1010 (`GCOMMAND_ValidatePresetTable_Return`):
+- compare: `src/decomp/scripts/compare_gcommand_validate_preset_table_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_validate_preset_table_return.awk`
+- promote: `src/decomp/scripts/promote_gcommand_validate_preset_table_return_target_gcc.sh`
+- Target 1011 (`GCOMMAND_InitPresetTableFromPalette_Return`):
+- compare: `src/decomp/scripts/compare_gcommand_init_preset_table_from_palette_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_init_preset_table_from_palette_return.awk`
+- promote: `src/decomp/scripts/promote_gcommand_init_preset_table_from_palette_return_target_gcc.sh`
+- Target 1012 (`GCOMMAND_UpdatePresetEntryCache_Return`):
+- compare: `src/decomp/scripts/compare_gcommand_update_preset_entry_cache_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_update_preset_entry_cache_return.awk`
+- promote: `src/decomp/scripts/promote_gcommand_update_preset_entry_cache_return_target_gcc.sh`
+- Target 1013 (`LADFUNC2_EmitEscapedStringWithLimit_Return`):
+- compare: `src/decomp/scripts/compare_ladfunc2_emit_escaped_string_with_limit_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_ladfunc2_emit_escaped_string_with_limit_return.awk`
+- promote: `src/decomp/scripts/promote_ladfunc2_emit_escaped_string_with_limit_return_target_gcc.sh`
+- Target 1014 (`LADFUNC2_EmitEscapedStringChunked_Return`):
+- compare: `src/decomp/scripts/compare_ladfunc2_emit_escaped_string_chunked_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_ladfunc2_emit_escaped_string_chunked_return.awk`
+- promote: `src/decomp/scripts/promote_ladfunc2_emit_escaped_string_chunked_return_target_gcc.sh`
+- Target 1015 (`LOCAVAIL_ParseFilterStateFromBuffer_Return`):
+- compare: `src/decomp/scripts/compare_locavail_parse_filter_state_from_buffer_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail_parse_filter_state_from_buffer_return.awk`
+- promote: `src/decomp/scripts/promote_locavail_parse_filter_state_from_buffer_return_target_gcc.sh`
+- Target 1016 (`LOCAVAIL_MapFilterTokenCharToClass_Return`):
+- compare: `src/decomp/scripts/compare_locavail_map_filter_token_char_to_class_return_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail_map_filter_token_char_to_class_return.awk`
+- promote: `src/decomp/scripts/promote_locavail_map_filter_token_char_to_class_return_target_gcc.sh`
+- latest full C trial: `compiled 1014 / 1014`, `export count 1025`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
