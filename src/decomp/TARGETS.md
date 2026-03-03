@@ -19463,3 +19463,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_NormalizeClockAndRedrawBanner` slice, preserving clock normalization call, banner queue update + conditional buffer refresh, temporary rastport bitmap swap for `DrawClockBanner`, and final `ESQDISP_DrawStatusBanner_Impl` invocation.
+
+## Target 860: `modules/groups/a/n/esqdisp.s` (`ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl data-mirroring helper with a bounded primary-entry loop.
+- Complements prior status/banner conversions by covering secondary list population behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_mirror_primary_entries_to_secondary_if_empty_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_mirror_primary_entries_to_secondary_if_empty.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_mirror_primary_entries_to_secondary_if_empty_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_mirror_primary_entries_to_secondary_if_empty_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` slice, preserving secondary-count empty guard, per-primary-entry clone path via `ESQSHARED_CreateGroupEntryAndTitle`, downstream header copy through `ESQDISP_FillProgramInfoHeaderFields`, and mirror flag set/clear behavior.
