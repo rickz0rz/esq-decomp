@@ -3384,7 +3384,11 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_read_next_external_asset_path_entry_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_read_next_external_asset_path_entry.awk`
 - promote: `src/decomp/scripts/promote_esqiff_read_next_external_asset_path_entry_target_gcc.sh`
-- latest full C trial: `compiled 902 / 902`, `export count 912`, `status: ok`
+- Target 905 (`ESQIFF_ReloadExternalAssetCatalogBuffers`):
+- compare: `src/decomp/scripts/compare_esqiff_reload_external_asset_catalog_buffers_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_reload_external_asset_catalog_buffers.awk`
+- promote: `src/decomp/scripts/promote_esqiff_reload_external_asset_catalog_buffers_target_gcc.sh`
+- latest full C trial: `compiled 903 / 903`, `export count 913`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

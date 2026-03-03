@@ -20408,3 +20408,24 @@ Run:
 
 Current notes:
 - Candidate preserves catalog source selection, line-index update/store behavior, delimiter handling (LF/CR/space/comma), comma-flag write, and output NUL termination flow.
+
+## Target 905: `modules/groups/a/n/esqiff.s` (`ESQIFF_ReloadExternalAssetCatalogBuffers`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core direct ESQIFF loader/cleanup routine with high leverage for asset-state behavior.
+- Covers mixed memory, DOS, and scheduler-forbid/permit orchestration in one target.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_reload_external_asset_catalog_buffers_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_reload_external_asset_catalog_buffers_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_reload_external_asset_catalog_buffers.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_reload_external_asset_catalog_buffers_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_reload_external_asset_catalog_buffers_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_reload_external_asset_catalog_buffers_target_gcc.sh`
+
+Current notes:
+- Candidate preserves GADS/logo free+reload order, availability flag bit updates (`|=1`, `|=2`), and write-protect/caller-mode gated logo reload behavior.
