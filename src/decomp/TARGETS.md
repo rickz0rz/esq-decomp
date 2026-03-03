@@ -18749,3 +18749,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `DISPTEXT_GetTotalLineCount` assembly slice, preserving finalize-call order, `MOVEQ #0,D0` clear, `DISPTEXT_TargetLineIndex` read into D0, and final `RTS`.
+
+## Target 826: `modules/groups/a/i/disptext.s` (`DISPTEXT_IsLastLineSelected`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl predicate routine adjacent to Targets 823/824/825 in `disptext.s`.
+- Preserves the arithmetic + booleanization idiom (`target-1` compare with `SEQ/NEG/EXT`) used by the original compiler.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/disptext_is_last_line_selected_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_disptext_is_last_line_selected_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_disptext_is_last_line_selected.awk`
+- Promotion gate: `src/decomp/scripts/promote_disptext_is_last_line_selected_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_disptext_is_last_line_selected_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_disptext_is_last_line_selected_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `DISPTEXT_IsLastLineSelected` assembly slice, preserving D2 save/restore, finalize-call order, `DISPTEXT_TargetLineIndex - 1` compare against `DISPTEXT_CurrentLineIndex`, `SEQ/NEG/EXT` booleanize sequence, and final `RTS`.
