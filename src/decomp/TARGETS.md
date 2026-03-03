@@ -18308,3 +18308,24 @@ Run:
 
 Current notes:
 - Candidate preserves the byte-scan/count semantics and loop structure: checks maxLen/null, counts `$14` escapes, increments index twice on escape, returns count in `D0`, and restores `D4-D7/A3`.
+
+## Target 805: `modules/groups/a/e/coi.s` (`COI_EnsureAnimObjectAllocated`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct non-jmptbl COI body routine with straightforward guard/allocate/init flow.
+- High-leverage allocator helper used by downstream COI field-selection and formatting paths.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_ensure_anim_object_allocated_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_ensure_anim_object_allocated_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_ensure_anim_object_allocated.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_ensure_anim_object_allocated_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_ensure_anim_object_allocated_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_ensure_anim_object_allocated_target_gcc.sh`
+
+Current notes:
+- Candidate preserves null/already-allocated guard exits, heap allocation via `GROUP_AG_JMPTBL_MEMORY_AllocateMemory`, owned-string replacement initialization, and post-init `-1` sentinel store at offset `32(A0)`.
