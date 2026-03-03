@@ -993,6 +993,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqshared4_decode_rgb_nibble_triplet_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_load_copper_color_words_from_nibble_table_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_apply_banner_color_step_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_copy_interleaved_row_words_from_offset_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_blit_banner_rows_for_active_field_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_setup_banner_plane_pointer_words_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

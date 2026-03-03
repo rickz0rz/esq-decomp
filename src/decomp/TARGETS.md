@@ -22233,3 +22233,69 @@ Run:
 Current notes:
 - Candidate preserves call order: `SetBannerCopperColorAndThreshold`, seed `D1 = 0x58`, then `BindAndClearBannerWorkRaster`, followed by `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 989: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_CopyInterleavedRowWordsFromOffset`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Deterministic row-copy helper heavily used by banner blit path.
+- Safe promotion via exact asm-backed replacement while preserving register/input conventions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_copy_interleaved_row_words_from_offset_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_copy_interleaved_row_words_from_offset_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_copy_interleaved_row_words_from_offset.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_copy_interleaved_row_words_from_offset_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_copy_interleaved_row_words_from_offset_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_copy_interleaved_row_words_from_offset_target_gcc.sh`
+
+Current notes:
+- Candidate preserves base/tail offset usage, repeated interleaved word copies (`+6`, `+10`, `+14` lanes), final tail-copy path, register restore, and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 990: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_BlitBannerRowsForActiveField`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- High-impact coordinator for banner row blits that calls recently promoted row-copy helpers.
+- Promotion reduces one of the last medium control wrappers in the active `esqshared4` lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_blit_banner_rows_for_active_field_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_blit_banner_rows_for_active_field_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_blit_banner_rows_for_active_field.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_blit_banner_rows_for_active_field_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_blit_banner_rows_for_active_field_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_blit_banner_rows_for_active_field_target_gcc.sh`
+
+Current notes:
+- Candidate preserves active-field select branch (`ESQ_CopperListBannerA/B`), source/tail offset derivation, interleaved copy call, and per-plane copy dispatch for scratch raster bases 0/1/2.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 991: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_SetupBannerPlanePointerWords`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- One of the key remaining `esqshared4` setup exports that seeds banner snapshot/sweep pointers.
+- High-value milestone before tackling the larger tick/state machine routine.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_setup_banner_plane_pointer_words_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_setup_banner_plane_pointer_words_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_setup_banner_plane_pointer_words.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_setup_banner_plane_pointer_words_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_setup_banner_plane_pointer_words_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_setup_banner_plane_pointer_words_target_gcc.sh`
+
+Current notes:
+- Candidate preserves per-plane scratch/snapshot/reset/sweep pointer-word seeding for bases 0/1/2 and final call to `ESQSHARED4_SetBannerColorBaseAndLimit` with threshold seed.
+- Promotion gate and canonical hash checks pass with this replacement active.

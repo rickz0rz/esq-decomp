@@ -3720,7 +3720,19 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_apply_banner_color_step_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_apply_banner_color_step.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_apply_banner_color_step_target_gcc.sh`
-- latest full C trial: `compiled 986 / 986`, `export count 997`, `status: ok`
+- Target 989 (`ESQSHARED4_CopyInterleavedRowWordsFromOffset`):
+- compare: `src/decomp/scripts/compare_esqshared4_copy_interleaved_row_words_from_offset_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_copy_interleaved_row_words_from_offset.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_copy_interleaved_row_words_from_offset_target_gcc.sh`
+- Target 990 (`ESQSHARED4_BlitBannerRowsForActiveField`):
+- compare: `src/decomp/scripts/compare_esqshared4_blit_banner_rows_for_active_field_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_blit_banner_rows_for_active_field.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_blit_banner_rows_for_active_field_target_gcc.sh`
+- Target 991 (`ESQSHARED4_SetupBannerPlanePointerWords`):
+- compare: `src/decomp/scripts/compare_esqshared4_setup_banner_plane_pointer_words_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_setup_banner_plane_pointer_words.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_setup_banner_plane_pointer_words_target_gcc.sh`
+- latest full C trial: `compiled 989 / 989`, `export count 1000`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
