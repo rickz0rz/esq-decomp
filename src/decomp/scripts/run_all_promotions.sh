@@ -85,6 +85,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_tick_clock_and_flag_events_target_gcc.sh"
     "src/decomp/scripts/promote_esq_cold_reboot_target_gcc.sh"
     "src/decomp/scripts/promote_esq_tick_global_counters_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_advance_banner_char_index_return_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"

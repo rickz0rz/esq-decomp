@@ -84,6 +84,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_tick_clock_and_flag_events_trial_gcc.sh`: GCC-specific compare lane for `Target 750` (`ESQ_TickClockAndFlagEvents`).
 - `src/decomp/scripts/compare_esq_cold_reboot_trial_gcc.sh`: GCC-specific compare lane for `Target 751` (`ESQ_ColdReboot`, `ESQ_ColdRebootViaSupervisor`).
 - `src/decomp/scripts/compare_esq_tick_global_counters_trial_gcc.sh`: GCC-specific compare lane for `Target 752` (`ESQ_TickGlobalCounters`).
+- `src/decomp/scripts/compare_esq_advance_banner_char_index_return_trial_gcc.sh`: GCC-specific compare lane for `Target 753` (`ESQ_AdvanceBannerCharIndex_Return`).
 - `src/decomp/scripts/compare_esq_noop_trial_gcc.sh`: GCC-specific compare lane for `Target 722` (`ESQ_NoOp`).
 - `src/decomp/scripts/compare_esq_noop_006a_trial_gcc.sh`: GCC-specific compare lane for `Target 723` (`ESQ_NoOp_006A`).
 - `src/decomp/scripts/compare_esq_noop_0074_trial_gcc.sh`: GCC-specific compare lane for `Target 724` (`ESQ_NoOp_0074`).
@@ -834,6 +835,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_tick_clock_and_flag_events.awk`: semantic post-filter for `ESQ_TickClockAndFlagEvents` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_cold_reboot.awk`: semantic post-filter for `ESQ_ColdReboot`/`ESQ_ColdRebootViaSupervisor` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_tick_global_counters.awk`: semantic post-filter for `ESQ_TickGlobalCounters` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_advance_banner_char_index_return.awk`: semantic post-filter for `ESQ_AdvanceBannerCharIndex_Return` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop.awk`: semantic post-filter for `ESQ_NoOp` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_006a.awk`: semantic post-filter for `ESQ_NoOp_006A` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_0074.awk`: semantic post-filter for `ESQ_NoOp_0074` compare lane.
@@ -1483,6 +1485,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_tick_clock_and_flag_events_target_gcc.sh`: promotion gate for Target 750 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_cold_reboot_target_gcc.sh`: promotion gate for Target 751 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_tick_global_counters_target_gcc.sh`: promotion gate for Target 752 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_advance_banner_char_index_return_target_gcc.sh`: promotion gate for Target 753 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_target_gcc.sh`: promotion gate for Target 722 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh`: promotion gate for Target 723 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh`: promotion gate for Target 724 GCC lane (semantic + build/hash gates).

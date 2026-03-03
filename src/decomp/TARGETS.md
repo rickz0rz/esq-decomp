@@ -17216,3 +17216,24 @@ Run:
 
 Current notes:
 - Candidate preserves global tick increment and cold-reboot threshold check (`$5460`), modulo-60 tick rollover work, cooldown/refresh/deferred counters, `CLOCK_*Ptr + 12` increments, accumulator capture saturation at `$4000` across rows `0..3`, and conditional `ESQIFF_ServicePendingCopperPaletteMoves` flush call.
+
+## Target 753: `modules/groups/a/a/app2.s` (`ESQ_AdvanceBannerCharIndex_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny direct export that serves as an explicit return/epilogue entry point from the banner-index update routine.
+- Good cleanup target to remove one more standalone `app2.s` direct symbol with minimal risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_advance_banner_char_index_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_advance_banner_char_index_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_advance_banner_char_index_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_advance_banner_char_index_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_advance_banner_char_index_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_advance_banner_char_index_return_target_gcc.sh`
+
+Current notes:
+- Candidate emits a direct asm symbol body that preserves the original instruction intent: store `D0` to `ESQ_BannerCharIndexShadow2273`, restore `D2-D3` via `MOVEM.L (SP)+`, then `RTS`.
