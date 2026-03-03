@@ -18329,3 +18329,24 @@ Run:
 
 Current notes:
 - Candidate preserves null/already-allocated guard exits, heap allocation via `GROUP_AG_JMPTBL_MEMORY_AllocateMemory`, owned-string replacement initialization, and post-init `-1` sentinel store at offset `32(A0)`.
+
+## Target 806: `modules/groups/a/e/coi.s` (`COI_SelectAnimFieldPointer`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl COI export currently acting as an entry alias into `COI_GetAnimFieldPointerByMode`.
+- Safe low-risk promotion that converts a real callable export while keeping behavior routed to the canonical implementation.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_select_anim_field_pointer_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_select_anim_field_pointer_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_select_anim_field_pointer.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_select_anim_field_pointer_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_select_anim_field_pointer_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_select_anim_field_pointer_target_gcc.sh`
+
+Current notes:
+- Candidate preserves callable export semantics by forwarding the alias entry to `COI_GetAnimFieldPointerByMode`.

@@ -69,6 +69,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_coi_format_entry_display_text_return_target_gcc.sh"
     "src/decomp/scripts/promote_coi_count_escape14_before_null_target_gcc.sh"
     "src/decomp/scripts/promote_coi_ensure_anim_object_allocated_target_gcc.sh"
+    "src/decomp/scripts/promote_coi_select_anim_field_pointer_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
