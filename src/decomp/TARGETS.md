@@ -20753,3 +20753,24 @@ Run:
 
 Current notes:
 - Candidate preserves exact register-restore tail (`MOVEM.L (A7)+,D6-D7/A3`, `RTS`) shared across parser exit branches.
+
+## Target 921: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ParseGroupRecordAndRefresh_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct shared return-tail for group-record parser.
+- Continues ESQIFF2 helper tail promotion while preserving high confidence/low risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_parse_group_record_and_refresh_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_parse_group_record_and_refresh_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_parse_group_record_and_refresh_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_parse_group_record_and_refresh_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_parse_group_record_and_refresh_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_parse_group_record_and_refresh_return_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact parser tail restore (`MOVEM.L -44(A5),D2/D4-D7/A3`, `UNLK A5`, `RTS`) used by full-refresh and no-op paths.
