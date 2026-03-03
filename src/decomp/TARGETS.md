@@ -18518,3 +18518,24 @@ Run:
 
 Current notes:
 - Candidate preserves setup/guard exits, `TEXTDISP_ComputeTimeOffset` fast path, `MATH_Mulu32` fallback path, bit-4 mode branch, optional call to `COI_ComputeEntryTimeDeltaMinutes`, final signed comparison logic, and explicit wide branches to existing `COI_TestEntryWithinTimeWindow_Return` for standalone-trial safety.
+
+## Target 815: `modules/groups/a/e/coi.s` (`COI_FormatEntryDisplayText` entry body)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-jmptbl COI formatter body that orchestrates window checks, field selection, optional wrap formatting, entry-flag updates, and final string assembly.
+- High leverage routine on display output path with multiple cross-module calls (`COI_*`, `CLEANUP_*`, `WDISP_SPrintf`, `STRING_AppendAtNull`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_format_entry_display_text_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_format_entry_display_text_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_format_entry_display_text.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_format_entry_display_text_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_format_entry_display_text_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_format_entry_display_text_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode-dependent time-window defaults, early return when entry is outside window, per-mode field-pointer selection, optional wrap marker formatting path with `CLEANUP_UpdateEntryFlagBytes`, append loop over up to five candidate strings, and branch-outs to existing `COI_FormatEntryDisplayText_Return`.

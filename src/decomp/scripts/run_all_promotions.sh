@@ -78,6 +78,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_coi_free_sub_entry_table_entries_target_gcc.sh"
     "src/decomp/scripts/promote_coi_get_anim_field_pointer_by_mode_target_gcc.sh"
     "src/decomp/scripts/promote_coi_test_entry_within_time_window_target_gcc.sh"
+    "src/decomp/scripts/promote_coi_format_entry_display_text_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
