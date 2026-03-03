@@ -967,6 +967,12 @@ SCRIPTS=(
     "src/decomp/scripts/promote_diskio1_append_attr_flag_ditto_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_attr_flag_alt_hilite_src_target_gcc.sh"
     "src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_copy_longword_block_dbf_loop_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_reset_banner_color_to_start_target_gcc.sh"
+    "src/decomp/scripts/promote_ed1_clear_esc_menu_mode_target_gcc.sh"
+    "src/decomp/scripts/promote_gcommand_enable_highlight_target_gcc.sh"
+    "src/decomp/scripts/promote_gcommand_init_preset_defaults_target_gcc.sh"
+    "src/decomp/scripts/promote_locavail2_auto_request_no_op_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

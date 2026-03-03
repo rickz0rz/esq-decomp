@@ -3616,7 +3616,31 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_diskio1_append_attr_flag_bit7_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio1_append_attr_flag_bit7.awk`
 - promote: `src/decomp/scripts/promote_diskio1_append_attr_flag_bit7_target_gcc.sh`
-- latest full C trial: `compiled 960 / 960`, `export count 971`, `status: ok`
+- Target 963 (`ESQSHARED4_CopyLongwordBlockDbfLoop`):
+- compare: `src/decomp/scripts/compare_esqshared4_copy_longword_block_dbf_loop_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_copy_longword_block_dbf_loop.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_copy_longword_block_dbf_loop_target_gcc.sh`
+- Target 964 (`ESQSHARED4_ResetBannerColorToStart`):
+- compare: `src/decomp/scripts/compare_esqshared4_reset_banner_color_to_start_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_reset_banner_color_to_start.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_reset_banner_color_to_start_target_gcc.sh`
+- Target 965 (`ED1_ClearEscMenuMode`):
+- compare: `src/decomp/scripts/compare_ed1_clear_esc_menu_mode_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_ed1_clear_esc_menu_mode.awk`
+- promote: `src/decomp/scripts/promote_ed1_clear_esc_menu_mode_target_gcc.sh`
+- Target 966 (`GCOMMAND_EnableHighlight`):
+- compare: `src/decomp/scripts/compare_gcommand_enable_highlight_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_enable_highlight.awk`
+- promote: `src/decomp/scripts/promote_gcommand_enable_highlight_target_gcc.sh`
+- Target 967 (`GCOMMAND_InitPresetDefaults`):
+- compare: `src/decomp/scripts/compare_gcommand_init_preset_defaults_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_gcommand_init_preset_defaults.awk`
+- promote: `src/decomp/scripts/promote_gcommand_init_preset_defaults_target_gcc.sh`
+- Target 968 (`LOCAVAIL2_AutoRequestNoOp`):
+- compare: `src/decomp/scripts/compare_locavail2_auto_request_no_op_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_locavail2_auto_request_no_op.awk`
+- promote: `src/decomp/scripts/promote_locavail2_auto_request_no_op_target_gcc.sh`
+- latest full C trial: `compiled 966 / 966`, `export count 977`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

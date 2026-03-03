@@ -21661,3 +21661,135 @@ Run:
 Current notes:
 - Candidate preserves bit-test on `#7,27(A3)`, optional formatter call for `DISKIO_STR_0X80`, and transfer to `DISKIO1_FormatTimeSlotMaskFlags`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 963: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_CopyLongwordBlockDbfLoop`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved tight-loop helper with deterministic memory-copy behavior.
+- High-confidence promotion that removes a tiny asm-only hotspot in `esqshared4`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_copy_longword_block_dbf_loop_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_copy_longword_block_dbf_loop_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_copy_longword_block_dbf_loop.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_copy_longword_block_dbf_loop_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_copy_longword_block_dbf_loop_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_copy_longword_block_dbf_loop_target_gcc.sh`
+
+Current notes:
+- Candidate preserves longword copy step, `DBF` loop backedge, register restore via `MOVEM.L`, and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 964: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ResetBannerColorToStart`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small banner-state helper directly feeding the banner color-step routine.
+- Low-risk promotion that increases `esqshared4` runtime control coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_reset_banner_color_to_start_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_reset_banner_color_to_start_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_reset_banner_color_to_start.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_reset_banner_color_to_start_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_reset_banner_color_to_start_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_reset_banner_color_to_start_target_gcc.sh`
+
+Current notes:
+- Candidate preserves banner copper-list base setup (`LEA ...A4`), reset counter write (`#0x62`), and seed value load (`#0x19`).
+- Uses explicit tail `JMP ESQSHARED4_ApplyBannerColorStep` to model original fallthrough across standalone replacement TUs.
+
+## Target 965: `modules/groups/a/k/ed1.s` (`ED1_ClearEscMenuMode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved state-clear helper with a single direct global write.
+- Fast low-risk promotion while preserving `ed1` control-state coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/ed1_clear_esc_menu_mode_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_ed1_clear_esc_menu_mode_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_ed1_clear_esc_menu_mode.awk`
+- Promotion gate: `src/decomp/scripts/promote_ed1_clear_esc_menu_mode_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_ed1_clear_esc_menu_mode_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_ed1_clear_esc_menu_mode_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `CLR.B ED_MenuStateId` and immediate `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 966: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_EnableHighlight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved `gcommand3` helper with one state write and one call.
+- Good stepping stone into the remaining `gcommand3` low-level helpers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_enable_highlight_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_enable_highlight_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_enable_highlight.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_enable_highlight_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_enable_highlight_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_enable_highlight_target_gcc.sh`
+
+Current notes:
+- Candidate preserves highlight-flag set (`MOVE.W #1,GCOMMAND_HighlightFlag`), call to `GCOMMAND_ApplyHighlightFlag`, and `RTS`.
+- Semantic filter accepts either direct `JSR` or local-branch (`BSR`) call form.
+
+## Target 967: `modules/groups/a/u/gcommand3.s` (`GCOMMAND_InitPresetDefaults`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved wrapper adjacent to recently converted `gcommand3` helpers.
+- Low-risk target with simple call/stack pattern.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/gcommand_init_preset_defaults_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_gcommand_init_preset_defaults_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_gcommand_init_preset_defaults.awk`
+- Promotion gate: `src/decomp/scripts/promote_gcommand_init_preset_defaults_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_gcommand_init_preset_defaults_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_gcommand_init_preset_defaults_target_gcc.sh`
+
+Current notes:
+- Candidate preserves table-pointer push (`PEA GCOMMAND_DefaultPresetTable`), call to `GCOMMAND_InitPresetTableFromPalette`, stack unwind, and `RTS`.
+- Semantic filter accepts either `BSR` (original) or `JSR` (range-safe replacement style) for the call site.
+
+## Target 968: `modules/groups/a/z/locavail2.s` (`LOCAVAIL2_AutoRequestNoOp`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved `locavail2` override helper with deterministic register/save restore sequence.
+- Good bridge into the remaining override path surface in `locavail2.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/locavail2_auto_request_no_op_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_locavail2_auto_request_no_op_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_locavail2_auto_request_no_op.awk`
+- Promotion gate: `src/decomp/scripts/promote_locavail2_auto_request_no_op_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_locavail2_auto_request_no_op_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_locavail2_auto_request_no_op_target_gcc.sh`
+
+Current notes:
+- Candidate preserves A4 save/restore, scratch-base `LEA`, zero return setup in `D0`, and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
