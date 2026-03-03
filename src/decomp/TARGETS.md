@@ -16045,3 +16045,49 @@ Current notes:
 - Routine walks `*head_ptr` through `node->next` at offset `+368`; each node frees raster planes from base `+0x90` with count byte at `+184`.
 - Auxiliary chain at `+364` is released via fixed-size (`12`) deallocs before freeing the main node (`372` bytes).
 - `free_all` gate preserves original behavior: when not `1`, function frees only first node and stores updated head back through `head_ptr`.
+
+## Target 698: `modules/groups/a/a/brush.s` (`BRUSH_NormalizeBrushNames`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Short list-walk helper with a single external string utility call and no memory allocation.
+- Good fit for fast promotion cadence while continuing to clear non-jump-table brush exports.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_normalize_brush_names_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_normalize_brush_names_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_normalize_brush_names.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_normalize_brush_names_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_normalize_brush_names_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_normalize_brush_names_target_gcc.sh`
+
+Current notes:
+- Routine iterates from `*head_ptr` via `+368` next pointers and rewrites node-local name text in-place.
+- Each iteration copies name to stack scratch, calls `GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator`, then copies returned substring back to node base.
+- Semantic gate tracks list-loop structure, `+368` traversal, separator call presence, and copy/return flow.
+
+## Target 699: `modules/groups/a/a/brush.s` (`BRUSH_SelectBrushByLabel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Central brush-selection helper with bounded string/list logic and stable side effects (`BRUSH_SelectedNode`, script selection globals).
+- Good next step after the brush list/normalize conversions; reuses already-promoted helper behavior (`BRUSH_FindBrushByPredicate`).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_select_brush_by_label_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_select_brush_by_label_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_select_brush_by_label.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_select_brush_by_label_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_select_brush_by_label_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_select_brush_by_label_target_gcc.sh`
+
+Current notes:
+- Input label is mirrored to `BRUSH_LabelScratch`, then two-byte alias handling maps `"00"`/`"11"` to `"DT"` before list scan.
+- Candidate matching compares node label fragment at `+0x21`; matching node updates `BRUSH_SelectedNode`.
+- Fallback path uses `BRUSH_FindBrushByPredicate(BRUSH_STR_FALLBACK_DITHER, &ESQIFF_BrushIniListHead)` and mirrors final node into both script selection globals.
