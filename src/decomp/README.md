@@ -68,6 +68,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_brush_pop_brush_head_trial_gcc.sh`: GCC-specific compare lane for `Target 691` (`BRUSH_PopBrushHead`).
 - `src/decomp/scripts/compare_brush_find_type3_brush_trial_gcc.sh`: GCC-specific compare lane for `Target 692` (`BRUSH_FindType3Brush`).
 - `src/decomp/scripts/compare_brush_find_brush_by_predicate_trial_gcc.sh`: GCC-specific compare lane for `Target 693` (`BRUSH_FindBrushByPredicate`).
+- `src/decomp/scripts/compare_brush_free_brush_list_return_trial_gcc.sh`: GCC-specific compare lane for `Target 694` (`BRUSH_FreeBrushList_Return`).
 - `src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`: GCC-specific compare lane for `Target 605` (`DATETIME_IsLeapYear`).
 - `src/decomp/scripts/compare_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 606` (`DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 607` (`DATETIME_NormalizeMonthRange`).
@@ -1351,6 +1352,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_brush_pop_brush_head_target_gcc.sh`: promotion gate for Target 691 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_find_type3_brush_target_gcc.sh`: promotion gate for Target 692 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_find_brush_by_predicate_target_gcc.sh`: promotion gate for Target 693 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_brush_free_brush_list_return_target_gcc.sh`: promotion gate for Target 694 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`: promotion gate for Target 605 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 606 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 607 GCC lane (semantic + build/hash gates).
@@ -2082,6 +2084,7 @@ bash src/decomp/scripts/promote_brush_append_brush_node_target_gcc.sh
 bash src/decomp/scripts/promote_brush_pop_brush_head_target_gcc.sh
 bash src/decomp/scripts/promote_brush_find_type3_brush_target_gcc.sh
 bash src/decomp/scripts/promote_brush_find_brush_by_predicate_target_gcc.sh
+bash src/decomp/scripts/promote_brush_free_brush_list_return_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh

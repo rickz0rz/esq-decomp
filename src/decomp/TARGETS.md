@@ -15953,3 +15953,26 @@ Current notes:
 - Original routine traverses via next pointer (`+368`) and returns the first node where `GROUP_AA_JMPTBL_STRING_CompareNoCase(...)` reports match (`D0 == 0`), else null.
 - GCC output differs in stack/register choreography while preserving compare-call, traversal, and null-return behavior under semantic gating.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 694: `modules/groups/a/a/brush.s` (`BRUSH_FreeBrushList_Return`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny exported return-label companion adjacent to active `BRUSH_FreeBrushList` body.
+- Low-risk cleanup target that removes one more unresolved `BRUSH_*` export while preserving lane momentum.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_free_brush_list_return_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_free_brush_list_return_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_free_brush_list_return.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_free_brush_list_return_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_free_brush_list_return_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_free_brush_list_return_target_gcc.sh`
+
+Current notes:
+- Original symbol is an epilogue entry (`MOVEM/UNLK/RTS`) shared by internal branch flow; GCC emits a direct return-form body for standalone C symbol emission.
+- Semantic gating accepts either explicit epilogue sequence or terminal return behavior for this return-label target.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

@@ -619,6 +619,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_brush_pop_brush_head_target_gcc.sh"
     "src/decomp/scripts/promote_brush_find_type3_brush_target_gcc.sh"
     "src/decomp/scripts/promote_brush_find_brush_by_predicate_target_gcc.sh"
+    "src/decomp/scripts/promote_brush_free_brush_list_return_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh"
     "src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh"
