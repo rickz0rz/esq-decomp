@@ -18287,3 +18287,24 @@ Run:
 
 Current notes:
 - Candidate preserves the exact epilogue behavior for this export (`MOVE.L 20(A5),D0`, `MOVEM.L (A7)+,D2/D5-D7/A2-A3`, `UNLK A5`, `RTS`) with matching callable symbol.
+
+## Target 804: `modules/groups/a/e/coi.s` (`COI_CountEscape14BeforeNull`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct non-jmptbl COI body function with local loop/control flow, suitable first step beyond return-only helpers.
+- High reuse point for aligned-list parsing paths (`CLEANUP_ParseAlignedListingBlock`) while still low risk to match.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_count_escape14_before_null_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_count_escape14_before_null_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_count_escape14_before_null.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_count_escape14_before_null_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_count_escape14_before_null_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_count_escape14_before_null_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the byte-scan/count semantics and loop structure: checks maxLen/null, counts `$14` escapes, increments index twice on escape, returns count in `D0`, and restores `D4-D7/A3`.
