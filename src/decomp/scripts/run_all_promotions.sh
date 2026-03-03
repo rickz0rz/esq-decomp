@@ -117,6 +117,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqdisp_init_highlight_message_pattern_target_gcc.sh"
     "src/decomp/scripts/promote_esqdisp_update_status_mask_and_refresh_target_gcc.sh"
     "src/decomp/scripts/promote_esqdisp_allocate_highlight_bitmaps_target_gcc.sh"
+    "src/decomp/scripts/promote_esqdisp_apply_status_mask_to_indicators_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

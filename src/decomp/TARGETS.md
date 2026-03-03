@@ -19337,3 +19337,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_AllocateHighlightBitmaps` slice, preserving bitmap init (`_LVOInitBitMap`), 3-iteration plane allocation loop via `ESQDISP_JMPTBL_GRAPHICS_AllocRaster`, per-plane clear via `_LVOBltClear`, and shared frame/register return tail.
+
+## Target 854: `modules/groups/a/n/esqdisp.s` (`ESQDISP_ApplyStatusMaskToIndicators`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl decision tree central to indicator rendering behavior.
+- Completes the primary status-indicator path together with Targets 850 and 852.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_apply_status_mask_to_indicators_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_apply_status_mask_to_indicators_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_apply_status_mask_to_indicators.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_apply_status_mask_to_indicators_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_apply_status_mask_to_indicators_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_apply_status_mask_to_indicators_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_ApplyStatusMaskToIndicators` slice, preserving `D7==-1` reset behavior, primary/secondary bit-test decision branches (`bits 0/1/2/4/5/8`), and all forwarded color-slot calls to `ESQDISP_SetStatusIndicatorColorSlot`.
