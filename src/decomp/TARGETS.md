@@ -16733,3 +16733,45 @@ Run:
 
 Current notes:
 - Candidate preserves masked index handling (`&0x1F`, `<<2`), ascending shift-by-4 loop, primary/secondary copper table writes, and guarded reinsertion of the saved entry.
+
+## Target 730: `modules/groups/a/a/app2.s` (`ESQ_UpdateCopperListsFromParams`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Central copper-effect expansion routine used by the already-promoted effect parameter setters.
+- Good leverage point before tackling larger time/calendar routines in this module.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_update_copper_lists_from_params_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_update_copper_lists_from_params_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_update_copper_lists_from_params.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_update_copper_lists_from_params_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_update_copper_lists_from_params_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_update_copper_lists_from_params_target_gcc.sh`
+
+Current notes:
+- Candidate preserves seed/param packed read from `HIGHLIGHT_CopperEffectSeed` longword, template tail read at `+26`, looped dual-list writes with `+6` base and `+136/+140` row offsets, and final terminal writes plus `D0=0` return.
+
+## Target 731: `modules/groups/a/a/app2.s` (`ESQ_GenerateXorChecksumByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct utility with clear control flow and existing jmptbl forwarders in other groups.
+- Useful to stabilize checksum callsites before larger parser/state-machine routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_generate_xor_checksum_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_generate_xor_checksum_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_generate_xor_checksum_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_generate_xor_checksum_byte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_generate_xor_checksum_byte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_generate_xor_checksum_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves cached-checksum fast path via `ESQIFF_UseCachedChecksumFlag`, checksum-byte source `ESQIFF_RecordChecksumByte`, bytewise XOR loop with 16-bit DBF-style count semantics, and low-byte return in `D0`.
