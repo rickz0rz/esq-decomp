@@ -3364,7 +3364,11 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff_service_pending_copper_palette_moves_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff_service_pending_copper_palette_moves.awk`
 - promote: `src/decomp/scripts/promote_esqiff_service_pending_copper_palette_moves_target_gcc.sh`
-- latest full C trial: `compiled 897 / 897`, `export count 907`, `status: ok`
+- Target 900 (`ESQIFF_SetApenToBrightestPaletteIndex`):
+- compare: `src/decomp/scripts/compare_esqiff_set_apen_to_brightest_palette_index_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff_set_apen_to_brightest_palette_index.awk`
+- promote: `src/decomp/scripts/promote_esqiff_set_apen_to_brightest_palette_index_target_gcc.sh`
+- latest full C trial: `compiled 898 / 898`, `export count 908`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

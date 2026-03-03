@@ -20303,3 +20303,24 @@ Run:
 
 Current notes:
 - Candidate preserves all four row countdown gates (`ACCUMULATOR_Row{0..3}_SaturateFlag`) and both direction call paths (`...TowardEnd`/`...TowardStart`) with A4 save/restore framing.
+
+## Target 900: `modules/groups/a/n/esqiff.s` (`ESQIFF_SetApenToBrightestPaletteIndex`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous direct ESQIFF routine after Target 899.
+- Medium looped palette-scoring routine with arithmetic + library-call side effect.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_set_apen_to_brightest_palette_index_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_set_apen_to_brightest_palette_index_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_set_apen_to_brightest_palette_index.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_set_apen_to_brightest_palette_index_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_set_apen_to_brightest_palette_index_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_set_apen_to_brightest_palette_index_target_gcc.sh`
+
+Current notes:
+- Candidate preserves depth-derived palette bound scan, RGB intensity compare/update flow, and final `_LVOSetAPen` call; `Global_REF_RASTPORT_2` setup uses `LEA ...+2,A0` for assembler compatibility.
