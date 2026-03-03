@@ -47,6 +47,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh"
     "src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh"
     "src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_init_audio1_dma_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh"
     "src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh"
     "src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh"
     "src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh"

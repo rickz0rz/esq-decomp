@@ -16358,3 +16358,45 @@ Run:
 
 Current notes:
 - Candidate preserves CIAB register read (`$BFE001`), bit-4 test semantics, and inverted booleanized return shape in `D1` (`0/-1`).
+
+## Target 712: `modules/groups/a/a/app.s` (`ESQ_InitAudio1Dma`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct hardware-init routine with fixed register writes and deterministic state reset.
+- Complements existing jump-table lane by promoting the original direct entry used by control input setup.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_init_audio1_dma_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_init_audio1_dma_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_init_audio1_dma.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_init_audio1_dma_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_init_audio1_dma_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_init_audio1_dma_target_gcc.sh`
+
+Current notes:
+- Candidate preserves AUD1 DMA pointer/length/period setup (`AUD1LCH/LEN/PER`), `DMACON` enable write (`$8202`), and reset of three CTRL state counters to zero.
+
+## Target 713: `modules/groups/a/a/app.s` (`ESQ_ReadSerialRbfByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next direct serial-RBF primitive after bit helpers and DMA init, with bounded ring-buffer arithmetic.
+- High leverage for later control-input routines (`ESQ_PollCtrlInput` / capture paths) while still moderate-risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_read_serial_rbf_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_read_serial_rbf_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_read_serial_rbf_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_read_serial_rbf_byte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves tail read/increment with `0xFA00` wrap, fill recomputation against head, and read-mode latch clear condition (`ESQPARS2_ReadModeFlags == 0x102` and fill below `0xBB80`).

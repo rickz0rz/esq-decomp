@@ -46,6 +46,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_invoke_gcommand_init_trial_gcc.sh`: GCC-specific compare lane for `Target 707` (`ESQ_InvokeGcommandInit`).
 - `src/decomp/scripts/compare_esq_try_rom_write_test_trial_gcc.sh`: GCC-specific compare lane for `Target 708` (`ESQ_TryRomWriteTest`).
 - `src/decomp/scripts/compare_esq_supervisor_cold_reboot_trial_gcc.sh`: GCC-specific compare lane for `Target 709` (`ESQ_SupervisorColdReboot`).
+- `src/decomp/scripts/compare_esq_init_audio1_dma_trial_gcc.sh`: GCC-specific compare lane for `Target 712` (`ESQ_InitAudio1Dma`).
+- `src/decomp/scripts/compare_esq_read_serial_rbf_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 713` (`ESQ_ReadSerialRbfByte`).
 - `src/decomp/scripts/compare_get_bit_3_of_ciab_pra_into_d1_trial_gcc.sh`: GCC-specific compare lane for `Target 710` (`GET_BIT_3_OF_CIAB_PRA_INTO_D1`).
 - `src/decomp/scripts/compare_get_bit_4_of_ciab_pra_into_d1_trial_gcc.sh`: GCC-specific compare lane for `Target 711` (`GET_BIT_4_OF_CIAB_PRA_INTO_D1`).
 - `src/decomp/scripts/compare_esq_main_exit_noop_hook_trial_gcc.sh`: GCC-specific compare lane for `Target 079` (`ESQ_MainExitNoOpHook`).
@@ -755,6 +757,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_invoke_gcommand_init.awk`: semantic post-filter for `ESQ_InvokeGcommandInit` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_try_rom_write_test.awk`: semantic post-filter for `ESQ_TryRomWriteTest` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_supervisor_cold_reboot.awk`: semantic post-filter for `ESQ_SupervisorColdReboot` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_init_audio1_dma.awk`: semantic post-filter for `ESQ_InitAudio1Dma` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_read_serial_rbf_byte.awk`: semantic post-filter for `ESQ_ReadSerialRbfByte` compare lane.
 - `src/decomp/scripts/semantic_filter_get_bit_3_of_ciab_pra_into_d1.awk`: semantic post-filter for `GET_BIT_3_OF_CIAB_PRA_INTO_D1` compare lane.
 - `src/decomp/scripts/semantic_filter_get_bit_4_of_ciab_pra_into_d1.awk`: semantic post-filter for `GET_BIT_4_OF_CIAB_PRA_INTO_D1` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_main_exit_noop_hook.awk`: semantic post-filter for `ESQ_MainExitNoOpHook` compare lane.
@@ -1363,6 +1367,8 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh`: promotion gate for Target 707 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh`: promotion gate for Target 708 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh`: promotion gate for Target 709 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_init_audio1_dma_target_gcc.sh`: promotion gate for Target 712 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh`: promotion gate for Target 713 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh`: promotion gate for Target 710 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh`: promotion gate for Target 711 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh`: promotion gate for Target 079 GCC lane (semantic + build/hash gates).
@@ -2112,6 +2118,8 @@ bash src/decomp/scripts/promote_esq_main_entry_noop_hook_target_gcc.sh
 bash src/decomp/scripts/promote_esq_invoke_gcommand_init_target_gcc.sh
 bash src/decomp/scripts/promote_esq_try_rom_write_test_target_gcc.sh
 bash src/decomp/scripts/promote_esq_supervisor_cold_reboot_target_gcc.sh
+bash src/decomp/scripts/promote_esq_init_audio1_dma_target_gcc.sh
+bash src/decomp/scripts/promote_esq_read_serial_rbf_byte_target_gcc.sh
 bash src/decomp/scripts/promote_get_bit_3_of_ciab_pra_into_d1_target_gcc.sh
 bash src/decomp/scripts/promote_get_bit_4_of_ciab_pra_into_d1_target_gcc.sh
 bash src/decomp/scripts/promote_esq_main_exit_noop_hook_target_gcc.sh
