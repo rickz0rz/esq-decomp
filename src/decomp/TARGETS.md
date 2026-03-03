@@ -15792,3 +15792,49 @@ Current notes:
 - Original assembly composes `BEVEL_DrawBeveledFrame` then `BEVEL_DrawHorizontalBevel` using shared call-frame argument staging.
 - GCC emits different prologue/epilogue and argument marshaling while preserving helper-call sequence under semantic gating.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 687: `modules/groups/a/a/bevel.s` (`BEVEL_DrawVerticalBevel`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Extends direct `BEVEL_*` coverage from composition wrappers into the first primitive drawing routine.
+- Captures repeated `Move/Draw` stroke behavior with explicit rastport setup writes.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/bevel_draw_vertical_bevel_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_bevel_draw_vertical_bevel_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_bevel_draw_vertical_bevel.awk`
+- Promotion gate: `src/decomp/scripts/promote_bevel_draw_vertical_bevel_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_bevel_draw_vertical_bevel_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_bevel_draw_vertical_bevel_target_gcc.sh`
+
+Current notes:
+- Original assembly performs `SetDrMd`, `SetAPen(1)`, then emits four offset `Move/Draw` strokes while restoring draw flags each stroke.
+- GCC codegen differs in register allocation and stack choreography but preserves required graphics call sequence and multi-stroke pattern under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 688: `modules/groups/a/a/bevel.s` (`BEVEL_DrawVerticalBevelPair`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Continues primitive bevel coverage by promoting the paired-edge renderer adjacent to Target 687.
+- Expands direct graphics primitive coverage beyond wrapper/composition-only functions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/bevel_draw_vertical_bevel_pair_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_bevel_draw_vertical_bevel_pair_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_bevel_draw_vertical_bevel_pair.awk`
+- Promotion gate: `src/decomp/scripts/promote_bevel_draw_vertical_bevel_pair_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_bevel_draw_vertical_bevel_pair_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_bevel_draw_vertical_bevel_pair_target_gcc.sh`
+
+Current notes:
+- Original assembly issues dual-pen (`1` then `2`) stroke passes, each with repeated `Move/Draw` operations and draw-flag setup writes.
+- GCC output uses different stack/register scheduling while preserving the dual-pen and repeated stroke behavior under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
