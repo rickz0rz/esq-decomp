@@ -143,6 +143,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqfunc_jmptbl_esq_poll_ctrl_input_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_jmptbl_script_handle_serial_ctrl_cmd_target_gcc.sh"
     "src/decomp/scripts/promote_esqfunc_jmptbl_textdisp_tick_display_state_target_gcc.sh"
+    "src/decomp/scripts/promote_esqfunc_allocate_line_text_buffers_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"

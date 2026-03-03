@@ -19883,3 +19883,24 @@ Run:
 
 Current notes:
 - Candidate preserves exact forwarder behavior: `JMP TEXTDISP_TickDisplayState`.
+
+## Target 880: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_AllocateLineTextBuffers`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- First non-jmptbl ESQFUNC core routine after the 875-879 forwarder cluster.
+- Small bounded allocator loop (20 iterations) with explicit side effects on line-slot indices.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_allocate_line_text_buffers_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_allocate_line_text_buffers_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_allocate_line_text_buffers.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_allocate_line_text_buffers_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_allocate_line_text_buffers_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_allocate_line_text_buffers_target_gcc.sh`
+
+Current notes:
+- Candidate preserves the original allocator loop structure (`D7` index 0..19), callsite tag/line metadata, and post-loop index resets.
