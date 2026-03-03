@@ -21027,3 +21027,24 @@ Run:
 
 Current notes:
 - Candidate preserves group-selection guard, entry-table selection (primary/secondary), title-length scan, space-buffer fill, append-at-null call, and copy-back loop, while branching to shared return tail (`ESQIFF2_PadEntriesToMaxTitleWidth_Return`) for unmatched/loop-complete paths.
+
+## Target 934: `modules/groups/a/o/esqiff2.s` (`ESQIFF2_ReadSerialSizedTextRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium parser-style helper with clear staged flow (initial payload, trailer parse/read, checksum).
+- Advances ESQIFF2 body coverage in serial-record handling before tackling larger record parsers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff2_read_serial_sized_text_record_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff2_read_serial_sized_text_record_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_sized_text_record.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff2_read_serial_sized_text_record_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_target_gcc.sh`
+
+Current notes:
+- Candidate preserves size guard/clamp, initial payload read loop, signed trailer-length parse, trailer-byte read/validate flow, validation-failure clear path, checksum-byte read/write, and final length handoff into shared return tail (`ESQIFF2_ReadSerialSizedTextRecord_Return`).

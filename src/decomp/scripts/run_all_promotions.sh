@@ -187,6 +187,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqiff2_parse_line_head_tail_record_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_read_serial_record_into_buffer_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_return_target_gcc.sh"
+    "src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_show_attention_overlay_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_show_version_mismatch_overlay_return_target_gcc.sh"
     "src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_return_target_gcc.sh"

@@ -3500,7 +3500,11 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqiff2_pad_entries_to_max_title_width_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqiff2_pad_entries_to_max_title_width.awk`
 - promote: `src/decomp/scripts/promote_esqiff2_pad_entries_to_max_title_width_target_gcc.sh`
-- latest full C trial: `compiled 931 / 931`, `export count 942`, `status: ok`
+- Target 934 (`ESQIFF2_ReadSerialSizedTextRecord`):
+- compare: `src/decomp/scripts/compare_esqiff2_read_serial_sized_text_record_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqiff2_read_serial_sized_text_record.awk`
+- promote: `src/decomp/scripts/promote_esqiff2_read_serial_sized_text_record_target_gcc.sh`
+- latest full C trial: `compiled 932 / 932`, `export count 943`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.
