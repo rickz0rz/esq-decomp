@@ -16400,3 +16400,45 @@ Run:
 
 Current notes:
 - Candidate preserves tail read/increment with `0xFA00` wrap, fill recomputation against head, and read-mode latch clear condition (`ESQPARS2_ReadModeFlags == 0x102` and fill below `0xBB80`).
+
+## Target 714: `modules/groups/a/a/app.s` (`ESQ_HandleSerialRbfInterrupt`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core interrupt-side writer for the serial RBF ring buffer and overflow signaling path.
+- Natural follow-on to Target 713 (`ESQ_ReadSerialRbfByte`) to complete the direct read/write pair.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_handle_serial_rbf_interrupt_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_handle_serial_rbf_interrupt_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_handle_serial_rbf_interrupt.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_handle_serial_rbf_interrupt_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_handle_serial_rbf_interrupt_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_handle_serial_rbf_interrupt_target_gcc.sh`
+
+Current notes:
+- Candidate preserves byte-store-at-head, bit-15 error counting, head wrap at `0xFA00`, fill/max tracking, overflow latch set (`ESQPARS2_ReadModeFlags=0x0102`) with overflow counter increment, and final INTREQ write (`0x0800`) at context offset `+156`.
+
+## Target 715: `modules/groups/a/a/app.s` (`ESQ_CaptureCtrlBit4StreamBufferByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct helper with deterministic ring-buffer read and wrap behavior.
+- Low-risk progress that tightens direct coverage around CTRL bit4 sampling infrastructure.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_capture_ctrl_bit4_stream_buffer_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_capture_ctrl_bit4_stream_buffer_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_capture_ctrl_bit4_stream_buffer_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_capture_ctrl_bit4_stream_buffer_byte_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves index load from `CTRL_HPreviousSample`, byte read from `CTRL_BUFFER`, increment + wrap at `0x01F4`, and index storeback.
