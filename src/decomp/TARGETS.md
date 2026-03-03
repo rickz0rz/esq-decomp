@@ -15861,3 +15861,26 @@ Current notes:
 - Original assembly performs `SetDrMd`, `SetAPen(2)`, five `Move/Draw` strokes (four horizontal offsets plus one pen-6 diagonal accent).
 - GCC output differs in low-level scheduling while preserving pen setup and stroke-count semantics under compare filtering.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 690: `modules/groups/a/a/brush.s` (`BRUSH_AppendBrushNode`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small list-utility primitive with no library calls and straightforward control flow.
+- Good low-risk bridge from fully covered `BEVEL_*` primitives into uncovered `BRUSH_*` core routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/brush_append_brush_node_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_brush_append_brush_node_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_brush_append_brush_node.awk`
+- Promotion gate: `src/decomp/scripts/promote_brush_append_brush_node_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_brush_append_brush_node_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_brush_append_brush_node_target_gcc.sh`
+
+Current notes:
+- Original routine appends `node` to the tail using next-pointer offset `+368`, returning original head (or `node` when head is null).
+- GCC output uses a different prologue/loop shape while preserving null-guard, tail traversal, and final link-store semantics under semantic gating.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).

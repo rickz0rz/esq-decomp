@@ -64,6 +64,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_graphics_bltbitmaprastport_trial_gcc.sh`: GCC-specific compare lane for `Target 602` (`GRAPHICS_BltBitMapRastPort`).
 - `src/decomp/scripts/compare_math_divu32_trial_gcc.sh`: GCC-specific compare lane for `Target 603` (`MATH_DivU32`).
 - `src/decomp/scripts/compare_brush_planemaskforindex_trial_gcc.sh`: GCC-specific compare lane for `Target 604` (`BRUSH_PlaneMaskForIndex`).
+- `src/decomp/scripts/compare_brush_append_brush_node_trial_gcc.sh`: GCC-specific compare lane for `Target 690` (`BRUSH_AppendBrushNode`).
 - `src/decomp/scripts/compare_datetime_isleapyear_trial_gcc.sh`: GCC-specific compare lane for `Target 605` (`DATETIME_IsLeapYear`).
 - `src/decomp/scripts/compare_datetime_adjust_month_index_trial_gcc.sh`: GCC-specific compare lane for `Target 606` (`DATETIME_AdjustMonthIndex`).
 - `src/decomp/scripts/compare_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 607` (`DATETIME_NormalizeMonthRange`).
@@ -1343,6 +1344,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh`: promotion gate for Target 602 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_math_divu32_target_gcc.sh`: promotion gate for Target 603 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh`: promotion gate for Target 604 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_brush_append_brush_node_target_gcc.sh`: promotion gate for Target 690 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh`: promotion gate for Target 605 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh`: promotion gate for Target 606 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 607 GCC lane (semantic + build/hash gates).
@@ -2070,6 +2072,7 @@ bash src/decomp/scripts/promote_buffer_flush_all_and_close_with_code_target_gcc.
 bash src/decomp/scripts/promote_graphics_bltbitmaprastport_target_gcc.sh
 bash src/decomp/scripts/promote_math_divu32_target_gcc.sh
 bash src/decomp/scripts/promote_brush_planemaskforindex_target_gcc.sh
+bash src/decomp/scripts/promote_brush_append_brush_node_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_isleapyear_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_adjust_month_index_target_gcc.sh
 bash src/decomp/scripts/promote_datetime_normalize_month_range_target_gcc.sh
