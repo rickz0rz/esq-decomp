@@ -17825,3 +17825,24 @@ Run:
 
 Current notes:
 - Candidate preserves the token scan over high-bit bytes, the exact subtract-chain for accepted control codes (`0x84` base with stepped deltas), pointer return on match, and null return on end-of-string.
+
+## Target 782: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_FindAliasIndexByName`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl helper with bounded local stack usage and straightforward alias-table iteration.
+- Good follow-up in `textdisp3.s` after Target 781, extending coverage into lookup helpers used by higher-level text selection flows.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_find_alias_index_by_name_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_find_alias_index_by_name_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_find_alias_index_by_name.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_find_alias_index_by_name_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_find_alias_index_by_name_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_find_alias_index_by_name_target_gcc.sh`
+
+Current notes:
+- Candidate preserves local name-copy loop from `entry+12`, alias-table walk via `TEXTDISP_AliasPtrTable`, measured alias length call into `STRING_CompareNoCaseN`, first-match return of alias index, and `-1` return when no alias matches.
