@@ -19610,3 +19610,66 @@ Run:
 
 Current notes:
 - `ESQDISP_DrawStatusBanner` is emitted as a label alias at the same address as `ESQDISP_DrawStatusBanner_Impl`, preserving original fallthrough entry behavior while retaining the full promoted impl body and return tail.
+
+## Target 867: `modules/groups/a/n/esqdisp.s` (`ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages` + `ESQDISP_JMPTBL_GRAPHICS_AllocRaster`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Completes remaining ESQDISP exported jmptbl forwarders so all ESQDISP `XDEF` symbols have GCC-side providers.
+- Small deterministic wrappers with no local logic; low-risk promotion with link/completeness value.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_jmptbl_newgrid_and_graphics_alloc_raster_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_jmptbl_newgrid_and_graphics_alloc_raster_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_jmptbl_newgrid_and_graphics_alloc_raster.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_jmptbl_newgrid_and_graphics_alloc_raster_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_jmptbl_newgrid_and_graphics_alloc_raster_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_jmptbl_newgrid_and_graphics_alloc_raster_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact forwarder behavior: `JMP NEWGRID_ProcessGridMessages` and `JMP GRAPHICS_AllocRaster`, with both ESQDISP jmptbl entry labels exported.
+
+## Target 868: `modules/groups/a/r/flib.s` (`FLIB_AppendClockStampedLogEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Exported non-jmptbl logger helper with bounded local behavior and clear call graph.
+- Adds coverage in `groups/a/r` and unlocks future promotion of adjacent FLIB/xjump routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/flib_append_clock_stamped_log_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_flib_append_clock_stamped_log_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_flib_append_clock_stamped_log_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_flib_append_clock_stamped_log_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_flib_append_clock_stamped_log_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_flib_append_clock_stamped_log_entry_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `FLIB_AppendClockStampedLogEntry` slice, preserving append spinlock gate, entry-length clamp/limit guard, timestamp formatting with `WDISP_SPrintf`, append chain via `GROUP_AR_JMPTBL_STRING_AppendAtNull`, replacement allocation/deallocation flow, and shared return tail export.
+
+## Target 869: `modules/groups/a/i/displib.s` (`DISPLIB_NormalizeValueByStep`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported arithmetic helper with deterministic loop structure and no external side effects.
+- Opens follow-on DISPLIB conversions (`ResetLineTables`, `DisplayTextAtPosition`) by grounding a reused utility in GCC lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/displib_normalize_value_by_step_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_displib_normalize_value_by_step_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_displib_normalize_value_by_step.awk`
+- Promotion gate: `src/decomp/scripts/promote_displib_normalize_value_by_step_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_displib_normalize_value_by_step_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_displib_normalize_value_by_step_target_gcc.sh`
+
+Current notes:
+- Candidate preserves original semantics: increment by step until reaching lower bound, then decrement by step until within final range, returning normalized value in `D0` with original register save/restore shape.
