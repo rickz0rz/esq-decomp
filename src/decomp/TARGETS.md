@@ -19316,3 +19316,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_UpdateStatusMaskAndRefresh` slice, preserving OR/clear mode dispatch, 12-bit mask clamp (`ANDI.L #$fff`), previous-mask compare gate, conditional call to `ESQDISP_ApplyStatusMaskToIndicators`, and shared `D5-D7` return tail.
+
+## Target 853: `modules/groups/a/n/esqdisp.s` (`ESQDISP_AllocateHighlightBitmaps`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium exported non-jmptbl allocator with deterministic 3-plane loop and clear library-call structure.
+- High leverage for future conversions that depend on initialized highlight bitmap storage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_allocate_highlight_bitmaps_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_allocate_highlight_bitmaps_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_allocate_highlight_bitmaps.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_allocate_highlight_bitmaps_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_allocate_highlight_bitmaps_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_allocate_highlight_bitmaps_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_AllocateHighlightBitmaps` slice, preserving bitmap init (`_LVOInitBitMap`), 3-iteration plane allocation loop via `ESQDISP_JMPTBL_GRAPHICS_AllocRaster`, per-plane clear via `_LVOBltClear`, and shared frame/register return tail.
