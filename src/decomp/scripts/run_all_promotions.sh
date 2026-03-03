@@ -982,6 +982,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_format_to_buffer2_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_load_default_palette_to_copper_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esqshared4_compute_banner_row_blit_geometry_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_reset_banner_color_sweep_state_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_bind_and_clear_banner_work_raster_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

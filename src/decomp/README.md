@@ -3676,7 +3676,15 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_compute_banner_row_blit_geometry_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_compute_banner_row_blit_geometry.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_compute_banner_row_blit_geometry_target_gcc.sh`
-- latest full C trial: `compiled 975 / 975`, `export count 986`, `status: ok`
+- Target 978 (`ESQSHARED4_ResetBannerColorSweepState`):
+- compare: `src/decomp/scripts/compare_esqshared4_reset_banner_color_sweep_state_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_reset_banner_color_sweep_state.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_reset_banner_color_sweep_state_target_gcc.sh`
+- Target 979 (`ESQSHARED4_BindAndClearBannerWorkRaster`):
+- compare: `src/decomp/scripts/compare_esqshared4_bind_and_clear_banner_work_raster_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_bind_and_clear_banner_work_raster.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_bind_and_clear_banner_work_raster_target_gcc.sh`
+- latest full C trial: `compiled 977 / 977`, `export count 988`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

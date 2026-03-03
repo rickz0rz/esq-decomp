@@ -21991,3 +21991,47 @@ Run:
 Current notes:
 - GCC strength-reduced `* 0x58` and constant-folded `0x22 >> 1 - 1`; semantic filter now accepts equivalent instruction forms.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 978: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ResetBannerColorSweepState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small state-reset helper with deterministic global writes and one callout.
+- Continues the low-risk `esqshared4` cleanup lane with stable GCC codegen.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_reset_banner_color_sweep_state_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_reset_banner_color_sweep_state_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_reset_banner_color_sweep_state.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_reset_banner_color_sweep_state_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_reset_banner_color_sweep_state_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_reset_banner_color_sweep_state_target_gcc.sh`
+
+Current notes:
+- Candidate preserves tail-row seed writes (`0xF6`), bias computation from `CONFIG_BannerCopperHeadByte`, counter resets, and call to `ESQSHARED4_ResetBannerColorToStart`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 979: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_BindAndClearBannerWorkRaster`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact pointer-bind helper with deterministic hi/lo word fanout writes.
+- Natural follow-up in `esqshared4` after recent raster and sweep-state promotions.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_bind_and_clear_banner_work_raster_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_bind_and_clear_banner_work_raster_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_bind_and_clear_banner_work_raster.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_bind_and_clear_banner_work_raster_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_bind_and_clear_banner_work_raster_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_bind_and_clear_banner_work_raster_target_gcc.sh`
+
+Current notes:
+- Candidate preserves low/high word fanout into A/B/mirror/tail/raster list globals from `WDISP_BannerWorkRasterPtr`, then calls `ESQSHARED4_ClearBannerWorkRasterWithOnes`.
+- Promotion gate and canonical hash checks pass with this replacement active.
