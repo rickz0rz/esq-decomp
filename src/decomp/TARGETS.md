@@ -18350,3 +18350,45 @@ Run:
 
 Current notes:
 - Candidate preserves callable export semantics by forwarding the alias entry to `COI_GetAnimFieldPointerByMode`.
+
+## Target 807: `modules/groups/a/e/coi.s` (`COI_RenderClockFormatEntryVariant`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl COI export currently acting as an alias entry into `COI_FormatEntryDisplayText`.
+- Low-risk callable export conversion that keeps entry routing behavior explicit in GCC replacement form.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_render_clock_format_entry_variant_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_render_clock_format_entry_variant_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_render_clock_format_entry_variant.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_render_clock_format_entry_variant_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_render_clock_format_entry_variant_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_render_clock_format_entry_variant_target_gcc.sh`
+
+Current notes:
+- Candidate preserves callable export semantics by forwarding the alias entry to `COI_FormatEntryDisplayText`.
+
+## Target 808: `modules/groups/a/e/coi.s` (`COI_ProcessEntrySelectionState`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl COI export currently acting as an alias entry into `COI_TestEntryWithinTimeWindow`.
+- Low-risk callable export conversion that keeps entry routing behavior explicit while reducing remaining asm-only exports.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/coi_process_entry_selection_state_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_coi_process_entry_selection_state_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_coi_process_entry_selection_state.awk`
+- Promotion gate: `src/decomp/scripts/promote_coi_process_entry_selection_state_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_coi_process_entry_selection_state_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_coi_process_entry_selection_state_target_gcc.sh`
+
+Current notes:
+- Candidate preserves callable export semantics by forwarding the alias entry to `COI_TestEntryWithinTimeWindow`.
