@@ -19400,3 +19400,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_QueueHighlightDrawMessage` slice, preserving header/rastport field setup, `ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode` gate, `ESQDISP_InitHighlightMessagePattern` call, graphics init/font/draw mode calls, and final `PutMsg` enqueue to `ESQ_HighlightMsgPort`.
+
+## Target 857: `modules/groups/a/n/esqdisp.s` (`ESQDISP_FillProgramInfoHeaderFields`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl header-field writer with straightforward argument marshalling and one helper call.
+- Good bridge into larger `ESQDISP_ParseProgramInfoCommandRecord` conversion work.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_fill_program_info_header_fields_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_fill_program_info_header_fields_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_fill_program_info_header_fields.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_fill_program_info_header_fields_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_fill_program_info_header_fields_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_fill_program_info_header_fields_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_FillProgramInfoHeaderFields` slice, preserving null-destination early return, field writes at offsets `40/41/42/46`, 2-byte `CopyPadNul` helper call into offset `43`, and explicit `45(A3)` NUL clear before shared return tail.
