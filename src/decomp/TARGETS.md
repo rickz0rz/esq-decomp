@@ -20135,3 +20135,24 @@ Run:
 
 Current notes:
 - Candidate simplifies the original switch-table to equivalent branch logic (`D7==0 => type 0x08`, otherwise `0x09`) while preserving allocation/link/populate flow.
+
+## Target 892: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_SelectAndApplyBrushForCurrentEntry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium direct ESQFUNC routine with meaningful rendering/state side effects and prior jmptbl-only coverage.
+- Good bridge target before tackling larger diagnostics renderers.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_select_and_apply_brush_for_current_entry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_select_and_apply_brush_for_current_entry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_select_and_apply_brush_for_current_entry.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_select_and_apply_brush_for_current_entry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_select_and_apply_brush_for_current_entry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_select_and_apply_brush_for_current_entry_target_gcc.sh`
+
+Current notes:
+- Candidate was generated from source slice to preserve branch/flow fidelity; semantic gate tracks selection tags, fallback path, label-based brush select, and final blit/palette interactions.
