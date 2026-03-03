@@ -1,0 +1,16 @@
+__asm__(
+    ".globl _ESQSHARED4_DecodeRgbNibbleTriplet\n"
+    "_ESQSHARED4_DecodeRgbNibbleTriplet:\n"
+    "ESQSHARED4_DecodeRgbNibbleTriplet:\n"
+    "    MOVE.B  (A1)+,D2\n"
+    "    MOVE.B  (A1)+,D1\n"
+    "    MOVE.B  (A1)+,D0\n"
+    "    ANDI.W  #15,D2\n"
+    "    ANDI.W  #15,D1\n"
+    "    ANDI.W  #15,D0\n"
+    "    LSL.W   #8,D2\n"
+    "    LSL.W   #4,D1\n"
+    "    ADD.W   D1,D0\n"
+    "    ADD.W   D2,D0\n"
+    "    RTS\n"
+);

@@ -3708,7 +3708,19 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_apply_banner_color_step_return_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_apply_banner_color_step_return.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_apply_banner_color_step_return_target_gcc.sh`
-- latest full C trial: `compiled 983 / 983`, `export count 994`, `status: ok`
+- Target 986 (`ESQSHARED4_DecodeRgbNibbleTriplet`):
+- compare: `src/decomp/scripts/compare_esqshared4_decode_rgb_nibble_triplet_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_decode_rgb_nibble_triplet.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_decode_rgb_nibble_triplet_target_gcc.sh`
+- Target 987 (`ESQSHARED4_LoadCopperColorWordsFromNibbleTable`):
+- compare: `src/decomp/scripts/compare_esqshared4_load_copper_color_words_from_nibble_table_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_load_copper_color_words_from_nibble_table.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_load_copper_color_words_from_nibble_table_target_gcc.sh`
+- Target 988 (`ESQSHARED4_ApplyBannerColorStep`):
+- compare: `src/decomp/scripts/compare_esqshared4_apply_banner_color_step_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_apply_banner_color_step.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_apply_banner_color_step_target_gcc.sh`
+- latest full C trial: `compiled 986 / 986`, `export count 997`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

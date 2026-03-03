@@ -22167,3 +22167,69 @@ Run:
 Current notes:
 - Candidate preserves exact `MOVEM.L (A7)+,D0-D1/A2` restore and `RTS`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 986: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_DecodeRgbNibbleTriplet`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small, frequently-used decode helper in the banner palette programming flow.
+- Minimal-risk promotion that keeps exact register side effects (`A1` post-increment and `D0` return value).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_decode_rgb_nibble_triplet_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_decode_rgb_nibble_triplet_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_decode_rgb_nibble_triplet.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_decode_rgb_nibble_triplet_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_decode_rgb_nibble_triplet_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_decode_rgb_nibble_triplet_target_gcc.sh`
+
+Current notes:
+- Candidate preserves three byte reads from `(A1)+`, nibble masking, nibble shifts (`<<8`, `<<4`), accumulation into `D0`, and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 987: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_LoadCopperColorWordsFromNibbleTable`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core palette-programming helper immediately adjacent to recent `DecodeRgbNibbleTriplet` promotion.
+- Good incremental step that collapses another non-trivial `esqshared4` export.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_load_copper_color_words_from_nibble_table_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_load_copper_color_words_from_nibble_table_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_load_copper_color_words_from_nibble_table.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_load_copper_color_words_from_nibble_table_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_load_copper_color_words_from_nibble_table_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_load_copper_color_words_from_nibble_table_target_gcc.sh`
+
+Current notes:
+- Candidate preserves 8-iteration `DBF` loop, per-entry decode call, special color-slot handling for offsets `0x04` and `0x1C`, default table writes via `0(A2,D3.W)`/`0(A3,D3.W)`, and `D3 += 4` progression.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 988: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ApplyBannerColorStep`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Central exported wrapper in the banner color-step chain, now small after recent helper promotions.
+- High leverage with minimal risk when kept as exact asm-backed replacement.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_apply_banner_color_step_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_apply_banner_color_step_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_apply_banner_color_step.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_apply_banner_color_step_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_apply_banner_color_step_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_apply_banner_color_step_target_gcc.sh`
+
+Current notes:
+- Candidate preserves call order: `SetBannerCopperColorAndThreshold`, seed `D1 = 0x58`, then `BindAndClearBannerWorkRaster`, followed by `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
