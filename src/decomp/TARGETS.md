@@ -17909,3 +17909,24 @@ Run:
 
 Current notes:
 - Candidate preserves schedule offset + broadcast window calls, year/month/day fallback delta selection, baseline minute accumulation, AM/PM-adjusted current time subtraction, day delta scaling by `0x5A0`, and final offset return in `D0`.
+
+## Target 786: `modules/groups/b/a/textdisp3.s` (`TEXTDISP_DrawInsetRectFrame`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Direct non-jmptbl draw helper with compact geometry logic and a single downstream draw primitive call.
+- Fast follow-up in `textdisp3.s` that increases direct rendering coverage without high control-flow complexity.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/textdisp_draw_inset_rect_frame_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_textdisp_draw_inset_rect_frame_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_textdisp_draw_inset_rect_frame.awk`
+- Promotion gate: `src/decomp/scripts/promote_textdisp_draw_inset_rect_frame_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_textdisp_draw_inset_rect_frame_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_textdisp_draw_inset_rect_frame_target_gcc.sh`
+
+Current notes:
+- Candidate preserves mode-2 half-width adjustment, mode-3 path using `Global_REF_RASTPORT_2`, default path using `WDISP_DisplayContextBase+10` rastport, and both `TLIBA1_DrawFormattedTextBlock` call frames with unchanged register restore/epilogue.
