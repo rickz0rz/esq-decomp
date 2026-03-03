@@ -3684,7 +3684,19 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_esqshared4_bind_and_clear_banner_work_raster_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_esqshared4_bind_and_clear_banner_work_raster.awk`
 - promote: `src/decomp/scripts/promote_esqshared4_bind_and_clear_banner_work_raster_target_gcc.sh`
-- latest full C trial: `compiled 977 / 977`, `export count 988`, `status: ok`
+- Target 980 (`ESQSHARED4_CopyLivePlanesToSnapshot`):
+- compare: `src/decomp/scripts/compare_esqshared4_copy_live_planes_to_snapshot_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_copy_live_planes_to_snapshot.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_copy_live_planes_to_snapshot_target_gcc.sh`
+- Target 981 (`ESQSHARED4_ProgramDisplayWindowAndCopper`):
+- compare: `src/decomp/scripts/compare_esqshared4_program_display_window_and_copper_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_program_display_window_and_copper.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_program_display_window_and_copper_target_gcc.sh`
+- Target 982 (`ESQSHARED4_InitializeBannerCopperSystem`):
+- compare: `src/decomp/scripts/compare_esqshared4_initialize_banner_copper_system_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_initialize_banner_copper_system.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_initialize_banner_copper_system_target_gcc.sh`
+- latest full C trial: `compiled 980 / 980`, `export count 991`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

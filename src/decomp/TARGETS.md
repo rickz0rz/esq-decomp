@@ -22035,3 +22035,69 @@ Run:
 Current notes:
 - Candidate preserves low/high word fanout into A/B/mirror/tail/raster list globals from `WDISP_BannerWorkRasterPtr`, then calls `ESQSHARED4_ClearBannerWorkRasterWithOnes`.
 - Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 980: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_CopyLivePlanesToSnapshot`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-small pure copy helper with no input arguments (lower ABI risk).
+- Extends `esqshared4` coverage in the active snapshot/copper lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_copy_live_planes_to_snapshot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_copy_live_planes_to_snapshot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_copy_live_planes_to_snapshot.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_copy_live_planes_to_snapshot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_copy_live_planes_to_snapshot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_copy_live_planes_to_snapshot_target_gcc.sh`
+
+Current notes:
+- Candidate performs three 44-longword copies from live plane bases to snapshot plane destinations.
+- Semantic filter was adjusted to treat explicit plane1/2 destination symbol loads and `MOVEQ #43` loop-count form as equivalent to original `(A2)+`/`#$2B` idiom.
+
+## Target 981: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ProgramDisplayWindowAndCopper`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core no-arg hardware/copper programming helper with deterministic register writes.
+- Significant `esqshared4` coverage step while keeping ABI risk low.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_program_display_window_and_copper_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_program_display_window_and_copper_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_program_display_window_and_copper.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_program_display_window_and_copper_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_program_display_window_and_copper_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_program_display_window_and_copper_target_gcc.sh`
+
+Current notes:
+- Candidate preserves display-window/fetch/modulo writes, copper list pointer/jump-target word updates, interlace-field list select via `VPOSR` sign bit, `COP1LCH` program, and dual `DMACON` writes (`0x20`, `0x8180`).
+- Semantic filter accepts signed immediate encoding of `0x8180` (`-32384`) emitted by GCC.
+
+## Target 982: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_InitializeBannerCopperSystem`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- No-arg coordinator with straightforward global initialization and helper sequencing.
+- Strong follow-up to recent `esqshared4` helper promotions (`Snapshot/Reset/Setup/Program` lane).
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_initialize_banner_copper_system_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_initialize_banner_copper_system_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_initialize_banner_copper_system.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_initialize_banner_copper_system_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_initialize_banner_copper_system_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_initialize_banner_copper_system_target_gcc.sh`
+
+Current notes:
+- Candidate preserves sweep-state seeds, read/state tick defaults, helper call order (`Snapshot` → `Reset` → `Setup`), CIAB PRA bit enables (bits 7 and 6), banner head byte writes, and copper-program pending flag set.
+- Promotion gate and canonical hash checks pass with this replacement active.
