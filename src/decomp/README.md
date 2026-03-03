@@ -3656,7 +3656,27 @@ Recent promoted targets:
 - compare: `src/decomp/scripts/compare_gcommand_add_banner_table_byte_delta_trial_gcc.sh`
 - semantic: `src/decomp/scripts/semantic_filter_gcommand_add_banner_table_byte_delta.awk`
 - promote: `src/decomp/scripts/promote_gcommand_add_banner_table_byte_delta_target_gcc.sh`
-- latest full C trial: `compiled 970 / 970`, `export count 981`, `status: ok`
+- Target 973 (`FORMAT_Buffer2WriteChar`):
+- compare: `src/decomp/scripts/compare_format_buffer2_write_char_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_format_buffer2_write_char.awk`
+- promote: `src/decomp/scripts/promote_format_buffer2_write_char_target_gcc.sh`
+- Target 974 (`ESQSHARED4_SnapshotDisplayBufferBases`):
+- compare: `src/decomp/scripts/compare_esqshared4_snapshot_display_buffer_bases_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_snapshot_display_buffer_bases.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_snapshot_display_buffer_bases_target_gcc.sh`
+- Target 975 (`FORMAT_FormatToBuffer2`):
+- compare: `src/decomp/scripts/compare_format_to_buffer2_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_format_to_buffer2.awk`
+- promote: `src/decomp/scripts/promote_format_to_buffer2_target_gcc.sh`
+- Target 976 (`ESQSHARED4_LoadDefaultPaletteToCopper_NoOp`):
+- compare: `src/decomp/scripts/compare_esqshared4_load_default_palette_to_copper_noop_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_load_default_palette_to_copper_noop.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_load_default_palette_to_copper_noop_target_gcc.sh`
+- Target 977 (`ESQSHARED4_ComputeBannerRowBlitGeometry`):
+- compare: `src/decomp/scripts/compare_esqshared4_compute_banner_row_blit_geometry_trial_gcc.sh`
+- semantic: `src/decomp/scripts/semantic_filter_esqshared4_compute_banner_row_blit_geometry.awk`
+- promote: `src/decomp/scripts/promote_esqshared4_compute_banner_row_blit_geometry_target_gcc.sh`
+- latest full C trial: `compiled 975 / 975`, `export count 986`, `status: ok`
 
 ## Toolchain Notes
 - GCC lanes default to `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc` but honor `CROSS_CC` overrides.

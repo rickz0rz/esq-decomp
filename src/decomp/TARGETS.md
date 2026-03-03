@@ -21881,3 +21881,113 @@ Run:
 Current notes:
 - Candidate preserves `D7/A3` save/restore, argument loads from stack frame, byte add into `(A3)`, and `RTS`.
 - Promotion gate and hash checks pass with this replacement active.
+
+## Target 973: `modules/submodules/unknown27.s` (`FORMAT_Buffer2WriteChar`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved formatter helper with straightforward A4-relative pointer arithmetic.
+- Low-risk promotion that expands `format_buffer2` C surface without control-flow complexity.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/format_buffer2_write_char_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_format_buffer2_write_char_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_format_buffer2_write_char.awk`
+- Promotion gate: `src/decomp/scripts/promote_format_buffer2_write_char_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_format_buffer2_write_char_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_format_buffer2_write_char_target_gcc.sh`
+
+Current notes:
+- Candidate preserves buffer-base load, index-based destination compute, byte write from stack argument, and `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 974: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_SnapshotDisplayBufferBases`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small unresolved state-snapshot helper with three deterministic longword copies.
+- Useful cleanup in active `esqshared4` lane with minimal matching risk.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_snapshot_display_buffer_bases_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_snapshot_display_buffer_bases_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_snapshot_display_buffer_bases.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_snapshot_display_buffer_bases_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_snapshot_display_buffer_bases_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_snapshot_display_buffer_bases_target_gcc.sh`
+
+Current notes:
+- Candidate preserves load/store pairs for lower/main/upper display copper-list pointers and tail `RTS`.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 975: `modules/submodules/unknown27.s` (`FORMAT_FormatToBuffer2`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small formatter wrapper around the existing callback pipeline.
+- High-confidence promotion in `unknown27.s` that leaves only the large parser routine unresolved in that file.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/format_to_buffer2_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_format_to_buffer2_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_format_to_buffer2.awk`
+- Promotion gate: `src/decomp/scripts/promote_format_to_buffer2_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_format_to_buffer2_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_format_to_buffer2_target_gcc.sh`
+
+Current notes:
+- Candidate preserves byte-count reset, output-buffer pointer bind, callback-format invocation via `FORMAT_Buffer2WriteChar`, zero terminator store, and count return.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 976: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_LoadDefaultPaletteToCopper_NoOp`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Trivial no-op helper exported as a standalone routine.
+- Very low-risk promotion that removes another direct asm-export from `esqshared4`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_load_default_palette_to_copper_noop_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_load_default_palette_to_copper_noop_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_load_default_palette_to_copper_noop.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_load_default_palette_to_copper_noop_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_load_default_palette_to_copper_noop_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_load_default_palette_to_copper_noop_target_gcc.sh`
+
+Current notes:
+- Candidate emits empty routine semantics (`RTS`) matching the original no-op export.
+- Promotion gate and canonical hash checks pass with this replacement active.
+
+## Target 977: `modules/groups/a/q/esqshared4.s` (`ESQSHARED4_ComputeBannerRowBlitGeometry`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Compact arithmetic helper with only global reads/writes and no callouts.
+- Good deterministic promotion in the active `esqshared4` lane.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqshared4_compute_banner_row_blit_geometry_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqshared4_compute_banner_row_blit_geometry_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqshared4_compute_banner_row_blit_geometry.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqshared4_compute_banner_row_blit_geometry_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqshared4_compute_banner_row_blit_geometry_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqshared4_compute_banner_row_blit_geometry_target_gcc.sh`
+
+Current notes:
+- GCC strength-reduced `* 0x58` and constant-folded `0x22 >> 1 - 1`; semantic filter now accepts equivalent instruction forms.
+- Promotion gate and canonical hash checks pass with this replacement active.

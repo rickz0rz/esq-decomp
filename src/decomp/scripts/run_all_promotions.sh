@@ -977,6 +977,11 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqshared4_clear_banner_work_raster_with_ones_target_gcc.sh"
     "src/decomp/scripts/promote_gcommand_get_banner_char_target_gcc.sh"
     "src/decomp/scripts/promote_gcommand_add_banner_table_byte_delta_target_gcc.sh"
+    "src/decomp/scripts/promote_format_buffer2_write_char_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_snapshot_display_buffer_bases_target_gcc.sh"
+    "src/decomp/scripts/promote_format_to_buffer2_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_load_default_palette_to_copper_noop_target_gcc.sh"
+    "src/decomp/scripts/promote_esqshared4_compute_banner_row_blit_geometry_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"
