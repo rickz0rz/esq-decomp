@@ -16547,3 +16547,24 @@ Run:
 
 Current notes:
 - Candidate preserves CIAB_PRA read/modify/write (`bit6 clear`, `bit7 set`), zero/zero parameter dispatch to `ESQ_SetCopperEffectParams`, and trailing `GCOMMAND_DisableHighlight` call.
+
+## Target 721: `modules/groups/a/a/app2.s` (`ESQ_SetCopperEffect_OnEnableHighlight`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct wrapper with deterministic CIAB side effect and two-call sequence.
+- Completes the remaining small copper-effect wrapper before deeper effect-generation internals.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_set_copper_effect_on_enable_highlight_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_set_copper_effect_on_enable_highlight_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_set_copper_effect_on_enable_highlight.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_set_copper_effect_on_enable_highlight_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_set_copper_effect_on_enable_highlight_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_set_copper_effect_on_enable_highlight_target_gcc.sh`
+
+Current notes:
+- Candidate preserves CIAB_PRA read/modify/write setting bits 6/7, parameter dispatch `ESQ_SetCopperEffectParams(0x3F, 0)`, and trailing `GCOMMAND_EnableHighlight` call.
