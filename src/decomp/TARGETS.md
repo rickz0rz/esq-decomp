@@ -6213,6 +6213,61 @@ Current notes:
 - Semantic filter relaxed on explicit `20` constant shape to avoid compiler-form false negatives while keeping counter/reset markers gated.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 681: `modules/groups/b/a/script2.s` (`SCRIPT_ReadNextRbfByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny non-`JMPTBL` wrapper over serial-byte reader jump entry.
+- Removes remaining low-risk wrapper from unresolved `script2` surface.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_read_next_rbf_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_read_next_rbf_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_read_next_rbf_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_read_next_rbf_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves direct call-through to `SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte` and function return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 682: `modules/groups/b/a/script2.s` (`SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Tiny non-`JMPTBL` wrapper over stream-buffer capture jump entry.
+- Companion to Target 681; clears another low-risk wrapper from unresolved list.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_esq_capture_ctrl_bit4_stream_buffer_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_esq_capture_ctrl_bit4_stream_buffer_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_esq_capture_ctrl_bit4_stream_buffer_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves direct call-through to `SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte` and function return.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 683: `modules/groups/b/a/script2.s` (`SCRIPT_UpdateSerialShadowFromCtrlByte`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core non-`JMPTBL` serial-control helper that latches control byte and merges low control bits into the serial shadow word.
+- Connects the ctrl-byte ingest path with hardware write path via `SCRIPT_WriteCtrlShadowToSerdat`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_update_serial_shadow_from_ctrl_byte_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_update_serial_shadow_from_ctrl_byte.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`
+
+Current notes:
+- Candidate preserves input latch write, low-2-bit merge into shadow word (preserving other bits), and write-through call.
+- Semantic filter was loosened on exact mask-op sequence (`FC`/`03`) due compiler lowering differences while retaining latch/shadow/call markers.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)

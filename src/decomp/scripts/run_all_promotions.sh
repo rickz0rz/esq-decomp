@@ -685,6 +685,9 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_read_handshake_bit3_flag_target_gcc.sh"
     "src/decomp/scripts/promote_script_read_handshake_bit5_mask_target_gcc.sh"
     "src/decomp/scripts/promote_script_poll_handshake_and_apply_timeout_target_gcc.sh"
+    "src/decomp/scripts/promote_script_read_next_rbf_byte_target_gcc.sh"
+    "src/decomp/scripts/promote_script_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh"
+    "src/decomp/scripts/promote_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

@@ -602,6 +602,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_script_read_handshake_bit3_flag_trial_gcc.sh`: GCC-specific compare lane for `Target 678` (`SCRIPT_ReadHandshakeBit3Flag`).
 - `src/decomp/scripts/compare_script_read_handshake_bit5_mask_trial_gcc.sh`: GCC-specific compare lane for `Target 679` (`SCRIPT_ReadHandshakeBit5Mask`).
 - `src/decomp/scripts/compare_script_poll_handshake_and_apply_timeout_trial_gcc.sh`: GCC-specific compare lane for `Target 680` (`SCRIPT_PollHandshakeAndApplyTimeout`).
+- `src/decomp/scripts/compare_script_read_next_rbf_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 681` (`SCRIPT_ReadNextRbfByte`).
+- `src/decomp/scripts/compare_script_esq_capture_ctrl_bit4_stream_buffer_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 682` (`SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte`).
+- `src/decomp/scripts/compare_script_update_serial_shadow_from_ctrl_byte_trial_gcc.sh`: GCC-specific compare lane for `Target 683` (`SCRIPT_UpdateSerialShadowFromCtrlByte`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1872,6 +1875,9 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_script_read_handshake_bit3_flag_target_gcc.sh`: promotion gate for Target 678 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_read_handshake_bit5_mask_target_gcc.sh`: promotion gate for Target 679 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_poll_handshake_and_apply_timeout_target_gcc.sh`: promotion gate for Target 680 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_read_next_rbf_byte_target_gcc.sh`: promotion gate for Target 681 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_esq_capture_ctrl_bit4_stream_buffer_byte_target_gcc.sh`: promotion gate for Target 682 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_update_serial_shadow_from_ctrl_byte_target_gcc.sh`: promotion gate for Target 683 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).
