@@ -20177,3 +20177,66 @@ Run:
 
 Current notes:
 - Candidate is source-slice generated with inline comment stripping for GCC asm compatibility; semantic gate tracks key rendering/memory-probe call patterns and epilogue bitmap restore.
+
+## Target 894: `modules/groups/a/n/esqfunc.s` (`ESQFUNC_DrawDiagnosticsScreen`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Next contiguous ESQFUNC diagnostics renderer after Target 893.
+- Large direct routine with broad mixed UI/state/telemetry formatting coverage.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqfunc_draw_diagnostics_screen_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqfunc_draw_diagnostics_screen_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqfunc_draw_diagnostics_screen.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqfunc_draw_diagnostics_screen_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqfunc_draw_diagnostics_screen_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqfunc_draw_diagnostics_screen_target_gcc.sh`
+
+Current notes:
+- Candidate is source-slice generated with inline comment stripping for GCC asm compatibility; `Global_REF_RASTPORT_2` setup uses `LEA ...+2,A0` form for assembler compatibility.
+
+## Target 895: `modules/groups/a/n/esqiff.s` (`ESQIFF_RunCopperRiseTransition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct non-`JMPTBL` ESQIFF helper with one state write + one call.
+- Good first anchor in ESQIFF direct-function coverage before larger routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_run_copper_rise_transition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_run_copper_rise_transition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_run_copper_rise_transition.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_run_copper_rise_transition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_run_copper_rise_transition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_run_copper_rise_transition_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact countdown arm (`COPPER_AnimationLane3_Countdown = 15`), immediate pending-animation call, and `RTS` tail.
+
+## Target 896: `modules/groups/a/n/esqiff.s` (`ESQIFF_RunCopperDropTransition`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Paired tiny direct helper with Target 895 and identical control-flow shape.
+- Fast coverage gain with low semantic risk and easy compare/prove path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqiff_run_copper_drop_transition_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqiff_run_copper_drop_transition_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqiff_run_copper_drop_transition.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqiff_run_copper_drop_transition_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqiff_run_copper_drop_transition_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqiff_run_copper_drop_transition_target_gcc.sh`
+
+Current notes:
+- Candidate preserves exact countdown arm (`COPPER_AnimationLane2_Countdown = 15`), immediate pending-animation call, and `RTS` tail.
