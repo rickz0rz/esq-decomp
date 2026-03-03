@@ -17762,3 +17762,24 @@ Run:
 
 Current notes:
 - Candidate preserves entry lookup via `ESQDISP_GetEntryPointerByMode`, conditional text extraction gates through `CLEANUP_TestEntryFlagYAndBit1`/`COI_GetAnimFieldPointerByMode`, status formatting/appends (`WDISP_SPrintf`, `STRING_AppendAtNull`, `CLEANUP_FormatEntryStringTokens`), and aligned inset nibble/render-gate updates with clear/set branches.
+
+## Target 779: `modules/groups/a/e/cleanup4.s` (`CLEANUP_ParseAlignedListingBlock`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Largest remaining direct export in `cleanup4.s`, coordinating aligned listing parse, entry allocation, text normalization, status construction, and merge paths.
+- High-leverage conversion that removes a major non-jmptbl control path and validates helper interplay promoted in Targets 774–778.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/cleanup_parse_aligned_listing_block_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_cleanup_parse_aligned_listing_block_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_cleanup_parse_aligned_listing_block.awk`
+- Promotion gate: `src/decomp/scripts/promote_cleanup_parse_aligned_listing_block_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_cleanup_parse_aligned_listing_block_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_cleanup_parse_aligned_listing_block_target_gcc.sh`
+
+Current notes:
+- Candidate preserves slot-table initialization, service/type dispatch and separator handling, parse/token loops, owned-string replacement paths, aligned status build/draw chain (`CLEANUP_TestEntryFlagYAndBit1`, `CLEANUP_UpdateEntryFlagBytes`, `CLEANUP_BuildAlignedStatusLine`, `CLEANUP_FormatEntryStringTokens`, `CLEANUP_DrawInsetRectFrame`), subentry merge/update flow, and explicit success/error return branches.
