@@ -17174,3 +17174,24 @@ Run:
 
 Current notes:
 - Candidate preserves second/minute/hour rollover order, event-code precedence (`2` for half-hour/hour rollover, `5` then `4` then `3` minute triggers), AM/PM toggle semantics, day/week/year/leap updates, and end-path call to `ESQ_UpdateMonthDayFromDayOfYear`.
+
+## Target 751: `modules/groups/a/a/app2.s` (`ESQ_ColdReboot`, `ESQ_ColdRebootViaSupervisor`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small direct reboot wrapper pair with fixed control flow and no data-structure dependencies.
+- Good high-value follow-up after Target 750 because both exports are isolated and easy to validate semantically.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_cold_reboot_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_cold_reboot_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_cold_reboot.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_cold_reboot_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_cold_reboot_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_cold_reboot_target_gcc.sh`
+
+Current notes:
+- Candidate keeps inline-assembly control flow for both exports: `AbsExecBase` load, Exec version compare (`#$24` at `20(A6)`), branch to supervisor fallback, `JMP _LVOColdReboot(A6)`, and fallback `LEA ESQ_SupervisorColdReboot(PC),A5` + `JSR _LVOSupervisor(A6)`.
