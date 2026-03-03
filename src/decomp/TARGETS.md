@@ -17048,3 +17048,24 @@ Run:
 
 Current notes:
 - Candidate preserves threshold writes for `(60-base)`, `(30-base)`, `base_offset`, and `base_offset+30` into the four `CLOCK_MinuteTrigger*` globals.
+
+## Target 745: `modules/groups/a/a/app2.s` (`ESQ_AdjustBracketedHourInString`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Medium-size direct text helper with self-contained parsing and rewrite logic.
+- High leverage because many display paths route through this hour-string adjustment behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_adjust_bracketed_hour_in_string_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_adjust_bracketed_hour_in_string_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_adjust_bracketed_hour_in_string.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_adjust_bracketed_hour_in_string_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_adjust_bracketed_hour_in_string_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_adjust_bracketed_hour_in_string_target_gcc.sh`
+
+Current notes:
+- Candidate preserves bracket scanning/replacement (`[`→`(` and `]`→`)`), optional hour-offset path when offset byte is nonzero, hour wrap into `1..12`, and two-character hour re-emit with leading space/`'1'`.
