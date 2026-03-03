@@ -1,0 +1,18 @@
+__asm__(
+    ".globl _ESQDISP_ProcessGridMessagesIfIdle\n"
+    "_ESQDISP_ProcessGridMessagesIfIdle:\n"
+    "ESQDISP_ProcessGridMessagesIfIdle:\n"
+    "    TST.W   ESQDISP_GridMessagePumpBlockFlag\n"
+    "    BNE.S   .lab_08C3\n"
+    "\n"
+    "    TST.W   Global_UIBusyFlag\n"
+    "    BNE.S   .lab_08C3\n"
+    "\n"
+    "    TST.L   NEWGRID_MessagePumpSuspendFlag\n"
+    "    BNE.S   .lab_08C3\n"
+    "\n"
+    "    JSR     ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages\n"
+    "\n"
+    ".lab_08C3:\n"
+    "    RTS\n"
+);

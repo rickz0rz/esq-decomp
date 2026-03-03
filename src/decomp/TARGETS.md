@@ -19211,3 +19211,66 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_TestEntryGridEligibility` slice, preserving slot range checks (`1..48`), null-entry guard, bit4 fast-path test, fallback byte-range check at `A3 + 0xFC + slot` (`5..10`), and shared return tail that restores `D6-D7/A3`.
+
+## Target 848: `modules/groups/a/n/esqdisp.s` (`ESQDISP_TestWordIsZeroBooleanize`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very small exported non-jmptbl booleanization helper.
+- Good low-risk anchor for closing the first ESQDISP helper cluster.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_test_word_is_zero_booleanize_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_test_word_is_zero_booleanize_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_test_word_is_zero_booleanize.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_test_word_is_zero_booleanize_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_test_word_is_zero_booleanize_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_test_word_is_zero_booleanize_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_TestWordIsZeroBooleanize` slice, preserving stack-word load, `TST` + `SEQ/NEG/EXT` booleanize idiom, and D7 save/restore return shape.
+
+## Target 849: `modules/groups/a/n/esqdisp.s` (`ESQDISP_ProcessGridMessagesIfIdle`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl gate function with pure control-flow semantics.
+- Reinforces promotion cadence with a low-risk non-wrapper path in `esqdisp.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_process_grid_messages_if_idle_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_process_grid_messages_if_idle_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_process_grid_messages_if_idle.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_process_grid_messages_if_idle_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_process_grid_messages_if_idle_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_process_grid_messages_if_idle_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_ProcessGridMessagesIfIdle` slice, preserving all three gate checks (`ESQDISP_GridMessagePumpBlockFlag`, `Global_UIBusyFlag`, `NEWGRID_MessagePumpSuspendFlag`) before calling `ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages`.
+
+## Target 850: `modules/groups/a/n/esqdisp.s` (`ESQDISP_RefreshStatusIndicatorsFromCurrentMask`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Very small exported non-jmptbl helper with straightforward stack/call shape.
+- Clean continuation through ESQDISP non-jmptbl utility functions before larger stateful routines.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_refresh_status_indicators_from_current_mask_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_refresh_status_indicators_from_current_mask_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_refresh_status_indicators_from_current_mask.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_refresh_status_indicators_from_current_mask_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_refresh_status_indicators_from_current_mask_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_refresh_status_indicators_from_current_mask_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_RefreshStatusIndicatorsFromCurrentMask` slice, preserving sentinel push (`PEA -1.W`), local branch-subroutine call to `ESQDISP_ApplyStatusMaskToIndicators`, stack fixup (`ADDQ.W #4,A7`), and `RTS`.

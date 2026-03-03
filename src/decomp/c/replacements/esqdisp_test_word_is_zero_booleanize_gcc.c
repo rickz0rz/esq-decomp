@@ -1,0 +1,16 @@
+__asm__(
+    ".globl _ESQDISP_TestWordIsZeroBooleanize\n"
+    "_ESQDISP_TestWordIsZeroBooleanize:\n"
+    "ESQDISP_TestWordIsZeroBooleanize:\n"
+    "    MOVE.L  D7,-(A7)\n"
+    "    MOVE.W  10(A7),D7\n"
+    "    TST.W   D7\n"
+    "    SEQ     D0\n"
+    "    NEG.B   D0\n"
+    "    EXT.W   D0\n"
+    "    EXT.L   D0\n"
+    "    MOVE.L  D0,D7\n"
+    "    MOVE.L  D7,D0\n"
+    "    MOVE.L  (A7)+,D7\n"
+    "    RTS\n"
+);
