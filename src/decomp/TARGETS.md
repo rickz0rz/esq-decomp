@@ -19421,3 +19421,24 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_FillProgramInfoHeaderFields` slice, preserving null-destination early return, field writes at offsets `40/41/42/46`, 2-byte `CopyPadNul` helper call into offset `43`, and explicit `45(A3)` NUL clear before shared return tail.
+
+## Target 858: `modules/groups/a/n/esqdisp.s` (`ESQDISP_PollInputModeAndRefreshSelection`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small exported non-jmptbl input/debounce routine with one short conditional dispatch.
+- Good precursor before deeper banner/status redraw flows that depend on stable input mode behavior.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_poll_input_mode_and_refresh_selection_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_poll_input_mode_and_refresh_selection_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_poll_input_mode_and_refresh_selection.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_poll_input_mode_and_refresh_selection_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_poll_input_mode_and_refresh_selection_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_poll_input_mode_and_refresh_selection_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_PollInputModeAndRefreshSelection` slice, preserving CIAB bit poll/debounce updates, latch commit threshold (`>5`), and branch to either `TEXTDISP_SetRastForMode` (mode 0) or `TEXTDISP_ResetSelectionAndRefresh` (non-zero mode).
