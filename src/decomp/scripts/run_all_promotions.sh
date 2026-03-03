@@ -678,6 +678,10 @@ SCRIPTS=(
     "src/decomp/scripts/promote_script_write_ctrl_shadow_to_serdat_target_gcc.sh"
     "src/decomp/scripts/promote_script_assert_ctrl_line_target_gcc.sh"
     "src/decomp/scripts/promote_script_deassert_ctrl_line_target_gcc.sh"
+    "src/decomp/scripts/promote_script_assert_ctrl_line_if_enabled_target_gcc.sh"
+    "src/decomp/scripts/promote_script_clear_ctrl_line_if_enabled_target_gcc.sh"
+    "src/decomp/scripts/promote_script_assert_ctrl_line_now_target_gcc.sh"
+    "src/decomp/scripts/promote_script_deassert_ctrl_line_now_target_gcc.sh"
 )
 
 echo "running all promotion gates (${#SCRIPTS[@]} total)"

@@ -595,6 +595,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_script_write_ctrl_shadow_to_serdat_trial_gcc.sh`: GCC-specific compare lane for `Target 671` (`SCRIPT_WriteCtrlShadowToSerdat`).
 - `src/decomp/scripts/compare_script_assert_ctrl_line_trial_gcc.sh`: GCC-specific compare lane for `Target 672` (`SCRIPT_AssertCtrlLine`).
 - `src/decomp/scripts/compare_script_deassert_ctrl_line_trial_gcc.sh`: GCC-specific compare lane for `Target 673` (`SCRIPT_DeassertCtrlLine`).
+- `src/decomp/scripts/compare_script_assert_ctrl_line_if_enabled_trial_gcc.sh`: GCC-specific compare lane for `Target 674` (`SCRIPT_AssertCtrlLineIfEnabled`).
+- `src/decomp/scripts/compare_script_clear_ctrl_line_if_enabled_trial_gcc.sh`: GCC-specific compare lane for `Target 675` (`SCRIPT_ClearCtrlLineIfEnabled`).
+- `src/decomp/scripts/compare_script_assert_ctrl_line_now_trial_gcc.sh`: GCC-specific compare lane for `Target 676` (`SCRIPT_AssertCtrlLineNow`).
+- `src/decomp/scripts/compare_script_deassert_ctrl_line_now_trial_gcc.sh`: GCC-specific compare lane for `Target 677` (`SCRIPT_DeassertCtrlLineNow`).
 - `src/decomp/scripts/compare_alloc_alloc_from_free_list_trial_gcc.sh`: GCC-specific compare lane for `Target 588` (`ALLOC_AllocFromFreeList`).
 - `src/decomp/scripts/compare_alloc_insert_free_block_trial_gcc.sh`: GCC-specific compare lane for `Target 589` (`ALLOC_InsertFreeBlock`).
 - `src/decomp/scripts/compare_group_ad_jmptbl_datetime_normalize_month_range_trial_gcc.sh`: GCC-specific compare lane for `Target 150` (`GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange`).
@@ -1858,6 +1862,10 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_script_write_ctrl_shadow_to_serdat_target_gcc.sh`: promotion gate for Target 671 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_assert_ctrl_line_target_gcc.sh`: promotion gate for Target 672 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_script_deassert_ctrl_line_target_gcc.sh`: promotion gate for Target 673 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_assert_ctrl_line_if_enabled_target_gcc.sh`: promotion gate for Target 674 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_clear_ctrl_line_if_enabled_target_gcc.sh`: promotion gate for Target 675 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_assert_ctrl_line_now_target_gcc.sh`: promotion gate for Target 676 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_script_deassert_ctrl_line_now_target_gcc.sh`: promotion gate for Target 677 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_alloc_from_free_list_target_gcc.sh`: promotion gate for Target 588 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_alloc_insert_free_block_target_gcc.sh`: promotion gate for Target 589 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_group_ad_jmptbl_datetime_normalize_month_range_target_gcc.sh`: promotion gate for Target 150 GCC lane (semantic + build/hash gates).

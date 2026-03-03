@@ -6085,6 +6085,78 @@ Current notes:
 - Semantic filter relaxed on exact mask-opcode shape to avoid false negatives across equivalent compiler lowering.
 - Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
 
+## Target 674: `modules/groups/b/a/script2.s` (`SCRIPT_AssertCtrlLineIfEnabled`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` gate wrapper for CTRL-line assert behavior.
+- Pairs with Target 672 to isolate enable-check semantics.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_assert_ctrl_line_if_enabled_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_assert_ctrl_line_if_enabled_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_assert_ctrl_line_if_enabled.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_assert_ctrl_line_if_enabled_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `SCRIPT_CtrlInterfaceEnabledFlag` gate before calling `SCRIPT_AssertCtrlLine`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 675: `modules/groups/b/a/script2.s` (`SCRIPT_ClearCtrlLineIfEnabled`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Small non-`JMPTBL` gate wrapper for CTRL-line clear behavior.
+- Pairs with Target 673 to isolate enable-check semantics for deassert path.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_clear_ctrl_line_if_enabled_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_clear_ctrl_line_if_enabled_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_clear_ctrl_line_if_enabled.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_clear_ctrl_line_if_enabled_target_gcc.sh`
+
+Current notes:
+- Candidate preserves `SCRIPT_CtrlInterfaceEnabledFlag` gate before calling `SCRIPT_DeassertCtrlLine`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 676: `modules/groups/b/a/script2.s` (`SCRIPT_AssertCtrlLineNow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal non-`JMPTBL` immediate wrapper over assert primitive.
+- Reduces remaining wrapper-only surface in `script2.s`.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_assert_ctrl_line_now_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_assert_ctrl_line_now_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_assert_ctrl_line_now.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_assert_ctrl_line_now_target_gcc.sh`
+
+Current notes:
+- Candidate preserves direct call-through to `SCRIPT_AssertCtrlLine`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
+## Target 677: `modules/groups/b/a/script2.s` (`SCRIPT_DeassertCtrlLineNow`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Minimal non-`JMPTBL` immediate wrapper over deassert primitive.
+- Complements Target 676 and further shrinks unresolved `script2` wrapper set.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/script_deassert_ctrl_line_now_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_script_deassert_ctrl_line_now_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_script_deassert_ctrl_line_now.awk`
+- Promotion gate: `src/decomp/scripts/promote_script_deassert_ctrl_line_now_target_gcc.sh`
+
+Current notes:
+- Candidate preserves direct call-through to `SCRIPT_DeassertCtrlLine`.
+- Current promotion decision: pass (on GCC profile `-O1 -fomit-frame-pointer` + m68k freestanding flags).
+
 ## Target 090: `modules/groups/_main/b/xjump.s` (`GROUP_MAIN_B_JMPTBL_DOS_Delay`)
 
 Status: promoted (GCC gate)
