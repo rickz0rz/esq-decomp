@@ -56,6 +56,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/compare_esq_set_copper_effect_custom_trial_gcc.sh`: GCC-specific compare lane for `Target 719` (`ESQ_SetCopperEffect_Custom`).
 - `src/decomp/scripts/compare_esq_set_copper_effect_off_disable_highlight_trial_gcc.sh`: GCC-specific compare lane for `Target 720` (`ESQ_SetCopperEffect_OffDisableHighlight`).
 - `src/decomp/scripts/compare_esq_set_copper_effect_on_enable_highlight_trial_gcc.sh`: GCC-specific compare lane for `Target 721` (`ESQ_SetCopperEffect_OnEnableHighlight`).
+- `src/decomp/scripts/compare_esq_set_copper_effect_params_trial_gcc.sh`: GCC-specific compare lane for `Target 725` (`ESQ_SetCopperEffectParams`).
 - `src/decomp/scripts/compare_esq_noop_trial_gcc.sh`: GCC-specific compare lane for `Target 722` (`ESQ_NoOp`).
 - `src/decomp/scripts/compare_esq_noop_006a_trial_gcc.sh`: GCC-specific compare lane for `Target 723` (`ESQ_NoOp_006A`).
 - `src/decomp/scripts/compare_esq_noop_0074_trial_gcc.sh`: GCC-specific compare lane for `Target 724` (`ESQ_NoOp_0074`).
@@ -778,6 +779,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/semantic_filter_esq_set_copper_effect_custom.awk`: semantic post-filter for `ESQ_SetCopperEffect_Custom` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_set_copper_effect_off_disable_highlight.awk`: semantic post-filter for `ESQ_SetCopperEffect_OffDisableHighlight` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_set_copper_effect_on_enable_highlight.awk`: semantic post-filter for `ESQ_SetCopperEffect_OnEnableHighlight` compare lane.
+- `src/decomp/scripts/semantic_filter_esq_set_copper_effect_params.awk`: semantic post-filter for `ESQ_SetCopperEffectParams` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop.awk`: semantic post-filter for `ESQ_NoOp` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_006a.awk`: semantic post-filter for `ESQ_NoOp_006A` compare lane.
 - `src/decomp/scripts/semantic_filter_esq_noop_0074.awk`: semantic post-filter for `ESQ_NoOp_0074` compare lane.
@@ -1399,6 +1401,7 @@ This directory provides an opt-in workflow for replacing assembly modules increm
 - `src/decomp/scripts/promote_esq_set_copper_effect_custom_target_gcc.sh`: promotion gate for Target 719 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_set_copper_effect_off_disable_highlight_target_gcc.sh`: promotion gate for Target 720 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_set_copper_effect_on_enable_highlight_target_gcc.sh`: promotion gate for Target 721 GCC lane (semantic + build/hash gates).
+- `src/decomp/scripts/promote_esq_set_copper_effect_params_target_gcc.sh`: promotion gate for Target 725 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_target_gcc.sh`: promotion gate for Target 722 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh`: promotion gate for Target 723 GCC lane (semantic + build/hash gates).
 - `src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh`: promotion gate for Target 724 GCC lane (semantic + build/hash gates).
@@ -2161,6 +2164,7 @@ bash src/decomp/scripts/promote_esq_set_copper_effect_all_on_target_gcc.sh
 bash src/decomp/scripts/promote_esq_set_copper_effect_custom_target_gcc.sh
 bash src/decomp/scripts/promote_esq_set_copper_effect_off_disable_highlight_target_gcc.sh
 bash src/decomp/scripts/promote_esq_set_copper_effect_on_enable_highlight_target_gcc.sh
+bash src/decomp/scripts/promote_esq_set_copper_effect_params_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh
 bash src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh

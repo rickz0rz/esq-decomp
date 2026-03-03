@@ -57,6 +57,7 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esq_set_copper_effect_custom_target_gcc.sh"
     "src/decomp/scripts/promote_esq_set_copper_effect_off_disable_highlight_target_gcc.sh"
     "src/decomp/scripts/promote_esq_set_copper_effect_on_enable_highlight_target_gcc.sh"
+    "src/decomp/scripts/promote_esq_set_copper_effect_params_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_006a_target_gcc.sh"
     "src/decomp/scripts/promote_esq_noop_0074_target_gcc.sh"

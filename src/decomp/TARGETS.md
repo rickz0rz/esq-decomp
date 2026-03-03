@@ -16589,6 +16589,27 @@ Run:
 Current notes:
 - Semantic gate checks only presence of terminal `RTS`.
 
+## Target 725: `modules/groups/a/a/app2.s` (`ESQ_SetCopperEffectParams`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Core parameter-store helper shared by multiple promoted copper-effect wrappers.
+- Medium-small routine with stable side effects and a single downstream call.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esq_set_copper_effect_params_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esq_set_copper_effect_params_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esq_set_copper_effect_params.awk`
+- Promotion gate: `src/decomp/scripts/promote_esq_set_copper_effect_params_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esq_set_copper_effect_params_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esq_set_copper_effect_params_target_gcc.sh`
+
+Current notes:
+- Candidate preserves writes to `HIGHLIGHT_CopperEffectParamA/B`, seed store (`5`) into `HIGHLIGHT_CopperEffectSeed`, and call to `ESQ_UpdateCopperListsFromParams`.
+
 ## Target 723: `modules/groups/a/a/app2.s` (`ESQ_NoOp_006A`)
 
 Status: promoted (GCC gate)
