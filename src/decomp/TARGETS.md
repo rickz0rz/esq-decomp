@@ -19547,3 +19547,45 @@ Run:
 
 Current notes:
 - Candidate is generated directly from the original `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` slice, preserving primary/secondary entry-count guards, secondary-entry and primary-candidate loop nests, wildcard-match gate, descending selector slot scan, owned-string replacement via `ESQPARS_ReplaceOwnedString`, secondary title/entry flag updates, and shared return tail.
+
+## Target 864: `modules/groups/a/n/esqdisp.s` (`ESQDISP_DrawStatusBanner_Impl`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large exported non-jmptbl status-banner renderer orchestrating clock/group code updates, day-entry rotation, and secondary propagation trigger logic.
+- High leverage anchor in ESQDISP flow that now composes with newly promoted Targets 862/863.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_draw_status_banner_impl_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_draw_status_banner_impl_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_draw_status_banner_impl.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_draw_status_banner_impl_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_draw_status_banner_impl_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_draw_status_banner_impl_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_DrawStatusBanner_Impl` slice, preserving half-hour index update, optional banner clamp path, highlight-state refresh, primary/secondary group code window logic, status-day entry validity/rotation loops, secondary persist arm/request gating, late secondary-propagation trigger (including `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` and downstream sync calls), and shared return tail.
+
+## Target 865: `modules/groups/a/n/esqdisp.s` (`ESQDISP_ParseProgramInfoCommandRecord`)
+
+Status: promoted (GCC gate)
+
+Why this target:
+- Large exported non-jmptbl parser routine with dense but deterministic field-decoding behavior.
+- High leverage because it feeds `ESQDISP_FillProgramInfoHeaderFields` and drives per-entry metadata updates.
+
+Artifacts:
+- GCC C candidate: `src/decomp/c/replacements/esqdisp_parse_program_info_command_record_gcc.c`
+- GCC compile/compare script: `src/decomp/scripts/compare_esqdisp_parse_program_info_command_record_trial_gcc.sh`
+- Semantic filter: `src/decomp/scripts/semantic_filter_esqdisp_parse_program_info_command_record.awk`
+- Promotion gate: `src/decomp/scripts/promote_esqdisp_parse_program_info_command_record_target_gcc.sh`
+
+Run:
+- `CROSS_CC=/opt/amiga/bin/m68k-amigaos-gcc bash src/decomp/scripts/compare_esqdisp_parse_program_info_command_record_trial_gcc.sh`
+- `bash src/decomp/scripts/promote_esqdisp_parse_program_info_command_record_target_gcc.sh`
+
+Current notes:
+- Candidate is generated directly from the original `ESQDISP_ParseProgramInfoCommandRecord` slice, preserving group-table selection, class-table digit parsing, record marker scan, entry-name match loop, flag/hex decode paths, optional `CopyPadNul` vs zero-tag fallback behavior, and final `ESQDISP_FillProgramInfoHeaderFields` call through the shared return tail.

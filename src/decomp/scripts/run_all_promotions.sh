@@ -127,6 +127,8 @@ SCRIPTS=(
     "src/decomp/scripts/promote_esqdisp_promote_secondary_line_head_tail_if_marked_target_gcc.sh"
     "src/decomp/scripts/promote_esqdisp_promote_secondary_group_to_primary_target_gcc.sh"
     "src/decomp/scripts/promote_esqdisp_propagate_primary_title_metadata_to_secondary_target_gcc.sh"
+    "src/decomp/scripts/promote_esqdisp_draw_status_banner_impl_target_gcc.sh"
+    "src/decomp/scripts/promote_esqdisp_parse_program_info_command_record_target_gcc.sh"
     "src/decomp/scripts/promote_math_mulu32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divs32_target_gcc.sh"
     "src/decomp/scripts/promote_math_divu32_target_gcc.sh"
