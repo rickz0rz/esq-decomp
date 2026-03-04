@@ -3913,15 +3913,21 @@ Recent promoted targets:
 - Memory pair SAS/C compare script: `src/decomp/scripts/compare_sasc_memory_pair_trial.sh`
 - String toupper SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_trial.sh`
 - Unknown34 pair SAS/C compare script (`LIST_InitHeader` + `MEM_Move`): `src/decomp/scripts/compare_sasc_unknown34_pair_trial.sh`
+- Unknown34 `DOS_ReadByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_read_by_index_trial.sh`
+- Unknown11 `DOS_SeekByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_seek_by_index_trial.sh`
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
 - `src/decomp/sas_c/unknown34_pair.c`
+- `src/decomp/sas_c/unknown34_dos_read_by_index.c`
+- `src/decomp/sas_c/unknown11_dos_seek_by_index.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_list_init.awk`
 - `src/decomp/scripts/semantic_filter_sasc_mem_move.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_read_by_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_seek_by_index.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
