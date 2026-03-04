@@ -3934,6 +3934,9 @@ Recent promoted targets:
 - Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
 - Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
 - Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
+- Unknown22 `MATH_DivU32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divu32_trial.sh`
+- Unknown22 `SIGNAL_CreateMsgPortWithSignal` SAS/C compare script: `src/decomp/scripts/compare_sasc_signal_create_msgport_with_signal_trial.sh`
+- Unknown22 `ALLOCATE_AllocAndInitializeIOStdReq` SAS/C compare script: `src/decomp/scripts/compare_sasc_allocate_alloc_and_initialize_iostdreq_trial.sh`
 - Unknown40 `DOS_Delay` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_delay_trial.sh`
 - Unknown40 `DOS_SystemTagList` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh`
 - Unknown40 `BATTCLOCK_GetSecondsFromBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_get_seconds_trial.sh`
@@ -3964,6 +3967,9 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown22_dos_close_with_signal_check.c`
 - `src/decomp/sas_c/unknown22_math_mulu32.c`
 - `src/decomp/sas_c/unknown22_math_divs32.c`
+- `src/decomp/sas_c/unknown22_math_divu32.c`
+- `src/decomp/sas_c/unknown22_signal_create_msgport_with_signal.c`
+- `src/decomp/sas_c/unknown22_allocate_alloc_and_initialize_iostdreq.c`
 - `src/decomp/sas_c/unknown40_dos_delay.c`
 - `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
 - `src/decomp/sas_c/unknown40_battclock_get_seconds.c`
@@ -3996,6 +4002,9 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_dos_close_with_signal_check.awk`
 - `src/decomp/scripts/semantic_filter_sasc_math_mulu32.awk`
 - `src/decomp/scripts/semantic_filter_sasc_math_divs32.awk`
+- `src/decomp/scripts/semantic_filter_sasc_math_divu32.awk`
+- `src/decomp/scripts/semantic_filter_sasc_signal_create_msgport_with_signal.awk`
+- `src/decomp/scripts/semantic_filter_sasc_allocate_alloc_and_initialize_iostdreq.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_delay.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_system_tag_list.awk`
 - `src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds.awk`

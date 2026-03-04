@@ -1,0 +1,315 @@
+              SECTION      text,CODE
+__code:
+swap32:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___swap32__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              MOVE.L         D7,D1                    ;2207 
+              CLR.W          D1                       ;4241 
+              SWAP           D1                       ;4841 
+              OR.L           D1,D0                    ;8081 
+___swap32__2:
+___swap32__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+MATH_DivU32:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D2/D3/D4/D5/D6/D7,-(A7)  ;48e7 3f00 
+___MATH_DivU32__1:
+              MOVE.L         $2c(A7),D6               ;2c2f 002c 
+              MOVE.L         $28(A7),D7               ;2e2f 0028 
+              MOVE.L         D7,D5                    ;2a07 
+              MOVE.L         D6,D4                    ;2806 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              BSR.B          swap32                   ;61b8 
+___MATH_DivU32__2:
+              MOVE.L         D0,D4                    ;2800 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D4,D0                    ;2004 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.L         D1,$20(A7)               ;2f41 0020 
+              TST.W          D1                       ;4a41 
+              BNE.W          ___MATH_DivU32__12       ;6600 00e2 
+___MATH_DivU32__3:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.B          swap32                   ;61a0 
+___MATH_DivU32__4:
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D4,(A7)                  ;2e84 
+              BSR.B          swap32                   ;619a 
+___MATH_DivU32__5:
+              MOVE.L         D0,D4                    ;2800 
+              MOVE.L         $24(A7),(A7)             ;2eaf 0024 
+              BSR.B          swap32                   ;6192 
+___MATH_DivU32__6:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              CLR.W          D0                       ;4240 
+              MOVE.L         D5,D1                    ;2205 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              OR.L           D2,D0                    ;8082 
+              MOVEM.L        D0,$20(A7)               ;48ef 0001 0020 
+              TST.W          D1                       ;4a41 
+              BEQ.B          ___MATH_DivU32__8        ;6740 
+___MATH_DivU32__7:
+              MOVE.L         D4,D2                    ;2404 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.L         D3,D1                    ;2203 
+              BSR.W          _CXD22                   ;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D2,D1                    ;3202 
+              MOVE.W         D0,$1a(A7)               ;3f40 001a 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              BSR.W          _CXD22                   ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D1,D0                    ;3001 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         $1a(A7),D3               ;362f 001a 
+              OR.L           D3,D0                    ;8083 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D5,D0                    ;2005 
+              CLR.W          D0                       ;4240 
+              MOVE.W         D1,$18(A7)               ;3f41 0018 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D3,D1                    ;3203 
+              OR.L           D1,D0                    ;8081 
+              MOVE.L         D0,D5                    ;2a00 
+___MATH_DivU32__8:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          swap32                   ;6100 ff34 
+___MATH_DivU32__9:
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              CLR.W          D0                       ;4240 
+              MOVE.L         D5,D1                    ;2205 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              OR.L           D2,D0                    ;8082 
+              MOVE.L         D4,D2                    ;2404 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              MOVE.L         D3,D1                    ;2203 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BSR.W          _CXD22                   ;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D2,D1                    ;3202 
+              MOVE.W         D0,$1e(A7)               ;3f40 001e 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              BSR.W          _CXD22                   ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D1,D0                    ;3001 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         $1e(A7),D3               ;362f 001e 
+              OR.L           D3,D0                    ;8083 
+              MOVE.W         D1,$1c(A7)               ;3f41 001c 
+              MOVE.L         D5,D1                    ;2205 
+              CLR.W          D1                       ;4241 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D3,D2                    ;3403 
+              OR.L           D2,D1                    ;8282 
+              MOVE.L         D1,D5                    ;2a01 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+___MATH_DivU32__10:
+              BSR.W          swap32                   ;6100 feda 
+___MATH_DivU32__11:
+              MOVE.L         D4,D1                    ;2204 
+              CLR.W          D1                       ;4241 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D0,D2                    ;3400 
+              OR.L           D2,D1                    ;8282 
+              MOVE.L         D1,D4                    ;2801 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D5,D0                    ;2005 
+              BRA.W          ___MATH_DivU32__32       ;6000 016a 
+___MATH_DivU32__12:
+              MOVEQ.L        #$10,D0                  ;7010 
+              MOVE.L         D4,D1                    ;2204 
+              MOVEM.L        D0,$1c(A7)               ;48ef 0001 001c 
+              CMPI.W         #$80,D1                  ;0c41 0080 
+              BCC.B          ___MATH_DivU32__14       ;6412 
+___MATH_DivU32__13:
+              MOVE.L         D1,D2                    ;2401 
+              ASL.L          #$8,D2                   ;e182 
+              CLR.W          D1                       ;4241 
+              SWAP           D1                       ;4841 
+              LSR.L          #$8,D1                   ;e089 
+              OR.L           D1,D2                    ;8481 
+              MOVE.L         D2,D4                    ;2802 
+              SUBQ.L         #$8,$1c(A7)              ;51af 001c 
+___MATH_DivU32__14:
+              MOVE.L         D4,D0                    ;2004 
+              CMPI.W         #$800,D0                 ;0c40 0800 
+              BCC.B          ___MATH_DivU32__16       ;6414 
+___MATH_DivU32__15:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$4,D1                   ;e981 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              LSR.L          #$8,D0                   ;e088 
+              LSR.L          #$4,D0                   ;e888 
+              OR.L           D0,D1                    ;8280 
+              MOVE.L         D1,D4                    ;2801 
+              SUBQ.L         #$4,$1c(A7)              ;59af 001c 
+___MATH_DivU32__16:
+              MOVE.L         D4,D0                    ;2004 
+              CMPI.W         #$2000,D0                ;0c40 2000 
+              BCC.B          ___MATH_DivU32__18       ;6414 
+___MATH_DivU32__17:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              LSR.L          #$8,D0                   ;e088 
+              LSR.L          #$6,D0                   ;ec88 
+              OR.L           D0,D1                    ;8280 
+              MOVE.L         D1,D4                    ;2801 
+              SUBQ.L         #$2,$1c(A7)              ;55af 001c 
+___MATH_DivU32__18:
+              MOVE.L         D4,D0                    ;2004 
+              BTST           #$f,D0                   ;0800 000f 
+              BNE.B          ___MATH_DivU32__20       ;6614 
+___MATH_DivU32__19:
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              LSR.L          #$8,D0                   ;e088 
+              LSR.L          #$7,D0                   ;ee88 
+              OR.L           D0,D1                    ;8280 
+              MOVE.L         D1,D4                    ;2801 
+              SUBQ.L         #$1,$1c(A7)              ;53af 001c 
+___MATH_DivU32__20:
+              MOVE.L         D5,D0                    ;2005 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.L         $1c(A7),D2               ;242f 001c 
+              LSR.L          D2,D5                    ;e4ad 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              BSR.W          swap32                   ;6100 fe3a 
+___MATH_DivU32__21:
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              CLR.W          D0                       ;4240 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              LSR.L          D2,D0                    ;e4a8 
+              MOVE.L         D2,(A7)                  ;2e82 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BSR.W          swap32                   ;6100 fe24 
+___MATH_DivU32__22:
+              MOVE.L         D4,D1                    ;2204 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         D2,D1                    ;2202 
+              BSR.W          _CXD22                   ;6100 0000 
+              MOVE.L         D4,D1                    ;2204 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D1,D2                    ;3401 
+              MOVE.W         D0,$1e(A7)               ;3f40 001e 
+              MOVE.L         D5,D0                    ;2005 
+              MOVE.L         D2,D1                    ;2202 
+              BSR.W          _CXD22                   ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D1,D0                    ;3001 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         $1e(A7),D2               ;342f 001e 
+              OR.L           D2,D0                    ;8082 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              CLR.W          D0                       ;4240 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              OR.L           D3,D0                    ;8083 
+              MOVE.L         D5,D2                    ;2405 
+              CLR.W          D2                       ;4242 
+              MOVE.L         $24(A7),D3               ;262f 0024 
+              MOVE.W         D1,$1c(A7)               ;3f41 001c 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D3,D1                    ;3203 
+___MATH_DivU32__23:
+              OR.L           D1,D2                    ;8481 
+              MOVE.L         D2,D5                    ;2a02 
+              CLR.W          D3                       ;4243 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              OR.L           D1,D3                    ;8681 
+              MOVE.L         D4,(A7)                  ;2e84 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              MOVE.L         D3,$24(A7)               ;2f43 0024 
+              BSR.W          swap32                   ;6100 fdb8 
+___MATH_DivU32__24:
+              MOVE.L         D0,D4                    ;2800 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D4,D0                    ;2004 
+              MULU.W         D0,D3                    ;c6c0 
+              SUB.L          D3,D5                    ;9a83 
+              MOVE.L         D3,$20(A7)               ;2f43 0020 
+              BTST           #$1f,D5                  ;0805 001f 
+              BEQ.B          ___MATH_DivU32__28       ;6710 
+___MATH_DivU32__25:
+              SUBQ.L         #$1,$1c(A7)              ;53af 001c 
+              ADD.L          D0,D5                    ;da80 
+___MATH_DivU32__26:
+              BTST           #$1f,D5                  ;0805 001f 
+              BEQ.B          ___MATH_DivU32__28       ;6704 
+___MATH_DivU32__27:
+              ADD.L          D4,D5                    ;da84 
+              BRA.B          ___MATH_DivU32__26       ;60f6 
+___MATH_DivU32__28:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.W         D0,D4                    ;3800 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          swap32                   ;6100 fd86 
+___MATH_DivU32__29:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.L         D5,D2                    ;2405 
+              ASL.L          D1,D2                    ;e3a2 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVEQ.L        #$20,D3                  ;7620 
+              SUB.L          D1,D3                    ;9681 
+              MOVE.L         D5,D1                    ;2205 
+              LSR.L          D3,D1                    ;e6a9 
+              OR.L           D1,D2                    ;8481 
+              MOVE.L         D2,D5                    ;2a02 
+              MOVE.L         D5,(A7)                  ;2e85 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BSR.W          swap32                   ;6100 fd64 
+___MATH_DivU32__30:
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D4,D0                    ;2004 
+___MATH_DivU32__31:
+___MATH_DivU32__32:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7  ;4cdf 00fc 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _CXD22
+              XDEF           MATH_DivU32
+              END

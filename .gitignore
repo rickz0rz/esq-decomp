@@ -9,3 +9,5 @@ build
 .vscode
 bin/
 
+# Build output
+*.o
