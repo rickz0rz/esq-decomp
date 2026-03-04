@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+STRING_AppendN:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___STRING_AppendN__1:
+              MOVE.L         $28(A7),D7               ;2e2f 0028 
+              MOVE.L         $24(A7),A3               ;266f 0024 
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___STRING_AppendN__2:
+              TST.B          $0(A3,D6.L)              ;4a33 6800 
+              BEQ.B          ___STRING_AppendN__4     ;6704 
+___STRING_AppendN__3:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___STRING_AppendN__2     ;60f6 
+___STRING_AppendN__4:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___STRING_AppendN__5:
+              TST.B          $0(A5,D5.L)              ;4a35 5800 
+              BEQ.B          ___STRING_AppendN__7     ;6704 
+___STRING_AppendN__6:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___STRING_AppendN__5     ;60f6 
+___STRING_AppendN__7:
+              MOVE.L         A5,A2                    ;244d 
+              ADD.L          D5,A2                    ;d5c5 
+              MOVE.L         D6,D4                    ;2806 
+              CMP.L          D7,D4                    ;b887 
+              BLS.B          ___STRING_AppendN__9     ;6302 
+___STRING_AppendN__8:
+              MOVE.L         D7,D4                    ;2807 
+___STRING_AppendN__9:
+              TST.L          D4                       ;4a84 
+              BEQ.B          ___STRING_AppendN__11    ;6706 
+___STRING_AppendN__10:
+              MOVE.B         (A3)+,(A2)+              ;14db 
+              SUBQ.L         #$1,D4                   ;5384 
+              BRA.B          ___STRING_AppendN__9     ;60f6 
+___STRING_AppendN__11:
+              CLR.B          (A2)                     ;4212 
+              MOVE.L         A5,D0                    ;200d 
+___STRING_AppendN__12:
+___STRING_AppendN__13:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           STRING_AppendN
+              END
