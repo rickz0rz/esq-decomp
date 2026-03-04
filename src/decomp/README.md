@@ -3925,6 +3925,7 @@ Recent promoted targets:
 - Unknown26 `DOS_WriteByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_write_by_index_trial.sh`
 - Unknown4 `STRING_ToUpperInPlace` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_inplace_trial.sh`
 - Unknown3 `STRING_ToUpperChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_char_trial.sh`
+- Unknown23 `HANDLE_GetEntryByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_get_entry_by_index_trial.sh`
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
@@ -3941,6 +3942,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown26_dos_write_by_index.c`
 - `src/decomp/sas_c/unknown4_string_toupper_inplace.c`
 - `src/decomp/sas_c/unknown3_string_toupper_char.c`
+- `src/decomp/sas_c/unknown23_handle_get_entry_by_index.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
@@ -3959,5 +3961,6 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_dos_write_by_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper_inplace.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper_char.awk`
+- `src/decomp/scripts/semantic_filter_sasc_handle_get_entry_by_index.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

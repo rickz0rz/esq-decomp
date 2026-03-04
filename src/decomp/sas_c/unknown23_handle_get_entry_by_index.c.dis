@@ -1,0 +1,54 @@
+              SECTION      text,CODE
+__code:
+HANDLE_GetEntryByIndex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___HANDLE_GetEntryByIndex__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              CLR.L          Global_DosIoErr(A4)      ;42ac 0000 
+              TST.L          D7                       ;4a87 
+              BPL.B          ___HANDLE_GetEntryByIndex__3;6a0a 
+___HANDLE_GetEntryByIndex__2:
+              MOVEQ.L        #$9,D0                   ;7009 
+              MOVE.L         D0,Global_AppErrorCode(A4);2940 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___HANDLE_GetEntryByIndex__9;6030 
+___HANDLE_GetEntryByIndex__3:
+              CMP.L          Global_HandleTableCount(A4),D7;beac 0000 
+              BLT.B          ___HANDLE_GetEntryByIndex__5;6d0a 
+___HANDLE_GetEntryByIndex__4:
+              MOVEQ.L        #$9,D0                   ;7009 
+              MOVE.L         D0,Global_AppErrorCode(A4);2940 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___HANDLE_GetEntryByIndex__9;6020 
+___HANDLE_GetEntryByIndex__5:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$3,D0                   ;e780 
+              LEA            Global_HandleTableBase(A4),A0;41ec 0000 
+              TST.L          $0(A0,D0.L)              ;4ab0 0800 
+              BNE.B          ___HANDLE_GetEntryByIndex__7;660a 
+___HANDLE_GetEntryByIndex__6:
+              MOVEQ.L        #$9,D0                   ;7009 
+              MOVE.L         D0,Global_AppErrorCode(A4);2940 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___HANDLE_GetEntryByIndex__9;6008 
+___HANDLE_GetEntryByIndex__7:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$3,D0                   ;e780 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,D0                    ;2008 
+___HANDLE_GetEntryByIndex__8:
+___HANDLE_GetEntryByIndex__9:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_DosIoErr
+              XREF           Global_AppErrorCode
+              XREF           Global_HandleTableCount
+              XREF           Global_HandleTableBase
+              XDEF           HANDLE_GetEntryByIndex
+              END
