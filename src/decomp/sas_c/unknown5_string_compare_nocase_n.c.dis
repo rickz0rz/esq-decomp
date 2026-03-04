@@ -1,0 +1,71 @@
+              SECTION      text,CODE
+__code:
+STRING_CompareNoCaseN:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___STRING_CompareNoCaseN__1:
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVE.L         $20(A7),A3               ;266f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+___STRING_CompareNoCaseN__2:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___STRING_CompareNoCaseN__8;6730 
+___STRING_CompareNoCaseN__3:
+              TST.B          (A5)                     ;4a15 
+              BEQ.B          ___STRING_CompareNoCaseN__8;672c 
+___STRING_CompareNoCaseN__4:
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___STRING_CompareNoCaseN__8;6728 
+___STRING_CompareNoCaseN__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          STRING_ToUpperChar       ;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A3)+,D0                 ;101b 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          STRING_ToUpperChar       ;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D5,D6                    ;2c05 
+              SUB.L          D4,D6                    ;9c84 
+              BEQ.B          ___STRING_CompareNoCaseN__7;6704 
+___STRING_CompareNoCaseN__6:
+              MOVE.L         D6,D0                    ;2006 
+              BRA.B          ___STRING_CompareNoCaseN__16;601a 
+___STRING_CompareNoCaseN__7:
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___STRING_CompareNoCaseN__2;60cc 
+___STRING_CompareNoCaseN__8:
+              MOVE.L         D7,D0                    ;2007 
+              BEQ.B          ___STRING_CompareNoCaseN__16;6712 
+___STRING_CompareNoCaseN__9:
+___STRING_CompareNoCaseN__10:
+              TST.B          (A5)                     ;4a15 
+              BEQ.B          ___STRING_CompareNoCaseN__12;6704 
+___STRING_CompareNoCaseN__11:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___STRING_CompareNoCaseN__16;600a 
+___STRING_CompareNoCaseN__12:
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___STRING_CompareNoCaseN__14;6704 
+___STRING_CompareNoCaseN__13:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___STRING_CompareNoCaseN__16;6002 
+___STRING_CompareNoCaseN__14:
+              MOVEQ.L        #$0,D0                   ;7000 
+___STRING_CompareNoCaseN__15:
+___STRING_CompareNoCaseN__16:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STRING_ToUpperChar
+              XDEF           STRING_CompareNoCaseN
+              END

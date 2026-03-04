@@ -3920,6 +3920,7 @@ Recent promoted targets:
 - Unknown5 `STRING_CompareN` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_compare_n_trial.sh`
 - Unknown5 `STRING_CompareNoCase` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_compare_nocase_trial.sh`
 - Unknown5 `STRING_CopyPadNul` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_copy_pad_nul_trial.sh`
+- Unknown5 `STRING_CompareNoCaseN` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_compare_nocase_n_trial.sh`
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
@@ -3931,6 +3932,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown5_string_compare_n.c`
 - `src/decomp/sas_c/unknown5_string_compare_nocase.c`
 - `src/decomp/sas_c/unknown5_string_copy_pad_nul.c`
+- `src/decomp/sas_c/unknown5_string_compare_nocase_n.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
@@ -3944,5 +3946,6 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_string_compare_n.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_compare_nocase.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_copy_pad_nul.awk`
+- `src/decomp/scripts/semantic_filter_sasc_string_compare_nocase_n.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
