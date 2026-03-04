@@ -3927,6 +3927,8 @@ Recent promoted targets:
 - Unknown3 `STRING_ToUpperChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_char_trial.sh`
 - Unknown23 `HANDLE_GetEntryByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_get_entry_by_index_trial.sh`
 - Unknown37 `HANDLE_CloseByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_close_by_index_trial.sh`
+- Unknown19 `DOS_ReadWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_read_with_error_state_trial.sh`
+- Unknown17 `DOS_WriteWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_write_with_error_state_trial.sh`
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
@@ -3945,6 +3947,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown3_string_toupper_char.c`
 - `src/decomp/sas_c/unknown23_handle_get_entry_by_index.c`
 - `src/decomp/sas_c/unknown37_handle_close_by_index.c`
+- `src/decomp/sas_c/unknown19_dos_read_with_error_state.c`
+- `src/decomp/sas_c/unknown17_dos_write_with_error_state.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
@@ -3965,5 +3969,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper_char.awk`
 - `src/decomp/scripts/semantic_filter_sasc_handle_get_entry_by_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_handle_close_by_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_read_with_error_state.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_write_with_error_state.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
