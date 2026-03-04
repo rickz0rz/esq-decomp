@@ -3907,3 +3907,14 @@ Recent promoted targets:
 - GCC compare scripts support per-run `GCC_CFLAGS=...` tuning.
 - vbcc compare scripts are retained for historical/reference work (`compare_memory_*_trial.sh`, `compare_clock_convert_trial.sh`).
 - Current target-by-target status and preferred profiles are tracked in `src/decomp/TARGETS.md`.
+
+## SAS/C Trial Lane
+- `sc-build-with-dis.sh` now passes `--vols-base-dir` (defaults to `build/decomp/vamos_vols`) so `vamos` temp volumes stay inside workspace-writable paths.
+- Memory pair SAS/C compare script: `src/decomp/scripts/compare_sasc_memory_pair_trial.sh`
+- String toupper SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_trial.sh`
+- Semantic checkpoints for SAS/C trials:
+- `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
+- `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
+- `src/decomp/scripts/semantic_filter_sasc_string_toupper.awk`
+- For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
+- Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

@@ -1,0 +1,29 @@
+              SECTION      text,CODE
+__code:
+Test_ToUpperChar:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___Test_ToUpperChar__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVEQ.L        #$61,D0                  ;7061 
+              CMP.B          D0,D7                    ;be00 
+              BCS.B          ___Test_ToUpperChar__4   ;650a 
+___Test_ToUpperChar__2:
+              MOVEQ.L        #$7a,D0                  ;707a 
+              CMP.B          D0,D7                    ;be00 
+              BHI.B          ___Test_ToUpperChar__4   ;6204 
+___Test_ToUpperChar__3:
+              SUBI.B         #$20,D7                  ;0407 0020 
+___Test_ToUpperChar__4:
+              MOVE.B         D7,D0                    ;1007 
+___Test_ToUpperChar__5:
+___Test_ToUpperChar__6:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           Test_ToUpperChar
+              END
