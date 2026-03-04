@@ -3912,9 +3912,16 @@ Recent promoted targets:
 - `sc-build-with-dis.sh` now passes `--vols-base-dir` (defaults to `build/decomp/vamos_vols`) so `vamos` temp volumes stay inside workspace-writable paths.
 - Memory pair SAS/C compare script: `src/decomp/scripts/compare_sasc_memory_pair_trial.sh`
 - String toupper SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_trial.sh`
+- Unknown34 pair SAS/C compare script (`LIST_InitHeader` + `MEM_Move`): `src/decomp/scripts/compare_sasc_unknown34_pair_trial.sh`
+- SAS/C trial sources currently used:
+- `src/decomp/sas_c/test_memory_pair.c`
+- `src/decomp/sas_c/string_to_upper_char.c`
+- `src/decomp/sas_c/unknown34_pair.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_list_init.awk`
+- `src/decomp/scripts/semantic_filter_sasc_mem_move.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

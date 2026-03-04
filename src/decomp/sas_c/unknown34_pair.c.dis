@@ -1,0 +1,68 @@
+              SECTION      text,CODE
+__code:
+LIST_InitHeader:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___LIST_InitHeader__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A5,D0                    ;200d 
+              MOVE.L         D0,(A3)                  ;2680 
+              ADDQ.L         #$4,(A3)                 ;5893 
+              CLR.L          $4(A3)                   ;42ab 0004 
+              MOVE.L         A5,$8(A3)                ;274d 0008 
+___LIST_InitHeader__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+MEM_Move:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___MEM_Move__1:
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              TST.L          D7                       ;4a87 
+              BGT.B          ___MEM_Move__3           ;6e04 
+___MEM_Move__2:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___MEM_Move__12          ;6026 
+___MEM_Move__3:
+              CMP.L          A5,A3                    ;b7cd 
+              BCC.B          ___MEM_Move__7           ;640e 
+___MEM_Move__4:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___MEM_Move__6           ;6706 
+___MEM_Move__5:
+              MOVE.B         (A5)+,(A3)+              ;16dd 
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___MEM_Move__4           ;60f6 
+___MEM_Move__6:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___MEM_Move__12          ;6014 
+___MEM_Move__7:
+              ADD.L          D7,A5                    ;dbc7 
+              ADD.L          D7,A3                    ;d7c7 
+___MEM_Move__8:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___MEM_Move__10          ;670a 
+___MEM_Move__9:
+              SUBQ.L         #$1,A3                   ;538b 
+              SUBQ.L         #$1,A5                   ;538d 
+              MOVE.B         (A5),(A3)                ;1695 
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___MEM_Move__8           ;60f2 
+___MEM_Move__10:
+              MOVE.L         D7,D0                    ;2007 
+___MEM_Move__11:
+___MEM_Move__12:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           LIST_InitHeader
+              XDEF           MEM_Move
+              END
