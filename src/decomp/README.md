@@ -3931,6 +3931,14 @@ Recent promoted targets:
 - Unknown17 `DOS_WriteWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_write_with_error_state_trial.sh`
 - Unknown18 `DOS_SeekWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_seek_with_error_state_trial.sh`
 - Unknown20 `DOS_OpenWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_with_error_state_trial.sh`
+- Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
+- Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
+- Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
+- Unknown40 `DOS_Delay` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_delay_trial.sh`
+- Unknown40 `DOS_SystemTagList` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh`
+- Unknown40 `BATTCLOCK_GetSecondsFromBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_get_seconds_trial.sh`
+- Unknown40 `BATTCLOCK_WriteSecondsToBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_write_seconds_trial.sh`
+- Unknown40 `EXEC_CallVector_48` SAS/C compare script: `src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh`
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
@@ -3953,6 +3961,14 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown17_dos_write_with_error_state.c`
 - `src/decomp/sas_c/unknown18_dos_seek_with_error_state.c`
 - `src/decomp/sas_c/unknown20_dos_open_with_error_state.c`
+- `src/decomp/sas_c/unknown22_dos_close_with_signal_check.c`
+- `src/decomp/sas_c/unknown22_math_mulu32.c`
+- `src/decomp/sas_c/unknown22_math_divs32.c`
+- `src/decomp/sas_c/unknown40_dos_delay.c`
+- `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
+- `src/decomp/sas_c/unknown40_battclock_get_seconds.c`
+- `src/decomp/sas_c/unknown40_battclock_write_seconds.c`
+- `src/decomp/sas_c/unknown40_exec_call_vector_48.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
@@ -3977,5 +3993,13 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_dos_write_with_error_state.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_seek_with_error_state.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_open_with_error_state.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_close_with_signal_check.awk`
+- `src/decomp/scripts/semantic_filter_sasc_math_mulu32.awk`
+- `src/decomp/scripts/semantic_filter_sasc_math_divs32.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_delay.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_system_tag_list.awk`
+- `src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds.awk`
+- `src/decomp/scripts/semantic_filter_sasc_battclock_write_seconds.awk`
+- `src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

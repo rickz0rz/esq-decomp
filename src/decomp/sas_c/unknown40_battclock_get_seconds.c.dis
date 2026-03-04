@@ -1,0 +1,22 @@
+              SECTION      text,CODE
+__code:
+BATTCLOCK_GetSecondsFromBatteryB:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___BATTCLOCK_GetSecondsFromBatteryB__1:
+              MOVE.L         Global_REF_BATTCLOCK_RESOURCE(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOReadBattClock        ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___BATTCLOCK_GetSecondsFromBatteryB__2:
+___BATTCLOCK_GetSecondsFromBatteryB__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_BATTCLOCK_RESOURCE
+              XREF           _LVOReadBattClock
+              XDEF           BATTCLOCK_GetSecondsFromBatteryB
+              END
