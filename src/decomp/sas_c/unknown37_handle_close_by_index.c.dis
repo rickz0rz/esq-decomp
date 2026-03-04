@@ -1,0 +1,51 @@
+              SECTION      text,CODE
+__code:
+HANDLE_CloseByIndex:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___HANDLE_CloseByIndex__1:
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          HANDLE_GetEntryByIndex   ;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$4,A7                   ;584f 
+              BNE.B          ___HANDLE_CloseByIndex__3;6604 
+___HANDLE_CloseByIndex__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___HANDLE_CloseByIndex__9;6026 
+___HANDLE_CloseByIndex__3:
+              BTST           #$4,$3(A5)               ;082d 0004 0003 
+              BEQ.B          ___HANDLE_CloseByIndex__5;6706 
+___HANDLE_CloseByIndex__4:
+              CLR.L          (A5)                     ;4295 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___HANDLE_CloseByIndex__9;6018 
+___HANDLE_CloseByIndex__5:
+              MOVE.L         $4(A5),-(A7)             ;2f2d 0004 
+              BSR.W          DOS_CloseWithSignalCheck ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              CLR.L          (A5)                     ;4295 
+              TST.L          Global_DosIoErr(A4)      ;4aac 0000 
+              BEQ.B          ___HANDLE_CloseByIndex__7;6704 
+___HANDLE_CloseByIndex__6:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___HANDLE_CloseByIndex__9;6002 
+___HANDLE_CloseByIndex__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+___HANDLE_CloseByIndex__8:
+___HANDLE_CloseByIndex__9:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           HANDLE_GetEntryByIndex
+              XREF           DOS_CloseWithSignalCheck
+              XREF           Global_DosIoErr
+              XDEF           HANDLE_CloseByIndex
+              END
