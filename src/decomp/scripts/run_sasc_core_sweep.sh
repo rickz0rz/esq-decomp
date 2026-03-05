@@ -1062,6 +1062,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_with_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_fill_grid_rects_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_map_selection_to_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_frame_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_should_open_editor_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_top_bars_trial.sh"
