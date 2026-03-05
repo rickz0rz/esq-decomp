@@ -4749,6 +4749,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_TestEntryBits0And2` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_test_entry_bits0_and2_trial.sh`
 - ESQDISP `ESQDISP_TestEntryGridEligibility` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_test_entry_grid_eligibility_trial.sh`
 - ESQDISP `ESQDISP_TestWordIsZeroBooleanize` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_test_word_is_zero_booleanize_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_esqdisp_draw_status_banner_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_update_refresh_mode_state_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_textdisp_reset_selection_and_refresh_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_begin_banner_char_transition_trial.sh`
