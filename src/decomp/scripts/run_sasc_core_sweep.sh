@@ -179,6 +179,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqshared4_reset_banner_color_to_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_apply_banner_color_step_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_copy_longword_block_dbf_loop_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_snapshot_display_buffer_bases_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_copy_planes_from_context_to_snapshot_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_update_copper_lists_from_params_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_end_trial.sh"
