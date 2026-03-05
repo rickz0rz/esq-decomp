@@ -6277,6 +6277,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_tliba1_draw_inline_styled_text_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba1_draw_inline_styled_text.awk`
 - `src/decomp/sas_c/tliba1_draw_inline_styled_text.c`
+- `src/decomp/scripts/compare_sasc_tliba1_draw_formatted_text_block_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_tliba1_draw_formatted_text_block.awk`
+- `src/decomp/sas_c/tliba1_draw_formatted_text_block.c`
 - `src/decomp/scripts/compare_sasc_tliba1_build_clock_format_entry_if_visible_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba1_build_clock_format_entry_if_visible.awk`
 - `src/decomp/sas_c/tliba1_build_clock_format_entry_if_visible.c`

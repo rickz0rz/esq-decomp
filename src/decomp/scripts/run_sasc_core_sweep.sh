@@ -851,6 +851,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_skip_control_codes_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_parse_style_code_char_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_draw_inline_styled_text_trial.sh"
+    "src/decomp/scripts/compare_sasc_tliba1_draw_formatted_text_block_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_build_clock_format_entry_if_visible_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_format_clock_format_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_cleanup_formatclockformatentry_trial.sh"
