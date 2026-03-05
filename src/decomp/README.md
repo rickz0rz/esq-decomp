@@ -6310,5 +6310,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_newgrid_should_open_editor_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_newgrid_should_open_editor.awk`
 - `src/decomp/sas_c/newgrid_should_open_editor.c`
+- `src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_newgrid_compute_day_slot_from_clock.awk`
+- `src/decomp/sas_c/newgrid_compute_day_slot_from_clock.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
