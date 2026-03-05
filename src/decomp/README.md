@@ -4737,6 +4737,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_SetStatusIndicatorColorSlot` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_set_status_indicator_color_slot_trial.sh`
 - ESQDISP `ESQDISP_ApplyStatusMaskToIndicators` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_apply_status_mask_to_indicators_trial.sh`
 - ESQDISP `ESQDISP_UpdateStatusMaskAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_update_status_mask_and_refresh_trial.sh`
+- ESQDISP `ESQDISP_ComputeScheduleOffsetForRow` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_compute_schedule_offset_for_row_trial.sh`
 - ESQDISP `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_propagate_primary_title_metadata_to_secondary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryGroupToPrimary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_group_to_primary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryLineHeadTailIfMarked` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_line_head_tail_if_marked_trial.sh`
