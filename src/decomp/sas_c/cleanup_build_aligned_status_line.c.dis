@@ -1,0 +1,149 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_BuildAlignedStatusLine:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D2/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 2f34 
+___CLEANUP_BuildAlignedStatusLine__1:
+              MOVE.L         $44(A7),D4               ;282f 0044 
+              MOVE.W         $42(A7),D5               ;3a2f 0042 
+              MOVE.W         $3e(A7),D6               ;3c2f 003e 
+              MOVE.W         $3a(A7),D7               ;3e2f 003a 
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              TST.W          D7                       ;4a47 
+              SCC            D1,#$700                 ;57c1 
+              MOVEQ.L        #$1,D2                   ;7401 
+              SUB.B          D1,D2                    ;9401 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AE_JMPTBL_ESQDISP_GetEntry;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              MOVE.L         D4,(A7)                  ;2e84 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          CLEANUP_TestEntryFlagYAndBit1;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___CLEANUP_BuildAlignedStatusLine__3;6718 
+___CLEANUP_BuildAlignedStatusLine__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,A2                    ;2440 
+              BRA.B          ___CLEANUP_BuildAlignedStatusLine__4;6002 
+___CLEANUP_BuildAlignedStatusLine__3:
+              SUB.L          A2,A2                    ;95ca 
+___CLEANUP_BuildAlignedStatusLine__4:
+              MOVE.L         A2,D0                    ;200a 
+              BNE.B          ___CLEANUP_BuildAlignedStatusLine__6;6608 
+___CLEANUP_BuildAlignedStatusLine__5:
+              CLR.B          CLOCK_AlignedInsetRenderGateFlag(A4);422c 0000 
+              BRA.W          ___CLEANUP_BuildAlignedStatusLine__18;6000 00c4 
+___CLEANUP_BuildAlignedStatusLine__6:
+              PEA            ($14).w                  ;4878 0014 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($13).w                  ;4878 0013 
+              PEA            CLOCK_FMT_WRAP_CHAR_STRING_CHAR(A4);486c 0000 
+              PEA            $34(A7)                  ;486f 0034 
+              BSR.W          GROUP_AE_JMPTBL_WDISP_SPrintf;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              TST.L          D4                       ;4a84 
+              BEQ.B          ___CLEANUP_BuildAlignedStatusLine__8;670e 
+___CLEANUP_BuildAlignedStatusLine__7:
+              PEA            TEXTDISP_CenterAlignToken(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___CLEANUP_BuildAlignedStatusLine__9;600c 
+___CLEANUP_BuildAlignedStatusLine__8:
+              PEA            CLOCK_STR_DOUBLE_SPACE(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___CLEANUP_BuildAlignedStatusLine__9:
+              PEA            $24(A7)                  ;486f 0024 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BNE.B          ___CLEANUP_BuildAlignedStatusLine__11;6608 
+___CLEANUP_BuildAlignedStatusLine__10:
+              LEA            CLOCK_STR_FALLBACK_ENTRY_FLAGS_S(A4),A0;41ec 0000 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+___CLEANUP_BuildAlignedStatusLine__11:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.B         $6(A0),D0                ;1028 0006 
+              LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
+              BTST           #$7,$0(A1,D0.W)          ;0831 0007 0000 
+              BEQ.B          ___CLEANUP_BuildAlignedStatusLine__13;6712 
+___CLEANUP_BuildAlignedStatusLine__12:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          GROUP_AE_JMPTBL_LADFUNC_ParseHex;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         D0,CLEANUP_AlignedInsetNibblePrimar(A4);1940 0000 
+              BRA.B          ___CLEANUP_BuildAlignedStatusLine__14;6004 
+___CLEANUP_BuildAlignedStatusLine__13:
+              SCC            CLEANUP_AlignedInsetNibblePrimar(A4);50ec 0000 
+___CLEANUP_BuildAlignedStatusLine__14:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.B         $7(A0),D0                ;1028 0007 
+              LEA            WDISP_CharClassTable(A4),A1;43ec 0000 
+              BTST           #$7,$0(A1,D0.W)          ;0831 0007 0000 
+              BEQ.B          ___CLEANUP_BuildAlignedStatusLine__16;6712 
+___CLEANUP_BuildAlignedStatusLine__15:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          GROUP_AE_JMPTBL_LADFUNC_ParseHex;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         D0,CLEANUP_AlignedInsetNibbleSecond(A4);1940 0000 
+              BRA.B          ___CLEANUP_BuildAlignedStatusLine__17;6004 
+___CLEANUP_BuildAlignedStatusLine__16:
+              SCC            CLEANUP_AlignedInsetNibbleSecond(A4);50ec 0000 
+___CLEANUP_BuildAlignedStatusLine__17:
+              MOVE.B         #$1,CLOCK_AlignedInsetRenderGateFlag(A4);197c 0001 0000 
+___CLEANUP_BuildAlignedStatusLine__18:
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A2/A3/A5;4cdf 2cf4 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AE_JMPTBL_ESQDISP_GetEntry
+              XREF           CLEANUP_TestEntryFlagYAndBit1
+              XREF           COI_GetAnimFieldPointerByMode
+              XREF           CLOCK_AlignedInsetRenderGateFlag
+              XREF           CLOCK_FMT_WRAP_CHAR_STRING_CHAR
+              XREF           GROUP_AE_JMPTBL_WDISP_SPrintf
+              XREF           TEXTDISP_CenterAlignToken
+              XREF           GROUP_AI_JMPTBL_STRING_AppendAtN
+              XREF           CLOCK_STR_DOUBLE_SPACE
+              XREF           CLOCK_STR_FALLBACK_ENTRY_FLAGS_S
+              XREF           WDISP_CharClassTable
+              XREF           GROUP_AE_JMPTBL_LADFUNC_ParseHex
+              XREF           CLEANUP_AlignedInsetNibblePrimar
+              XREF           CLEANUP_AlignedInsetNibbleSecond
+              XDEF           CLEANUP_BuildAlignedStatusLine
+              END
