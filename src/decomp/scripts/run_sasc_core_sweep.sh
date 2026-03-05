@@ -787,6 +787,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_jmptbl_newgrid_shouldopeneditor_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_get_group_entry_count_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_handle_script_command_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_filter_and_select_entry_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_build_entry_detail_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_now_showing_status_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_build_entry_pair_status_line_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_apply_source_config_all_entries_trial.sh"
