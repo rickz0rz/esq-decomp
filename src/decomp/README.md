@@ -5103,6 +5103,7 @@ Recent promoted targets:
 - PARSEINI `PARSEINI_LoadWeatherMessageStrings` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_load_weather_message_strings_trial.sh`
 - PARSEINI `PARSEINI_ParseColorTable` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_parse_color_table_trial.sh`
 - PARSEINI `PARSEINI_ParseRangeKeyValue` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_parse_range_key_value_trial.sh`
+- PARSEINI `PARSEINI_ScanLogoDirectory` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_scan_logo_directory_trial.sh`
 - PARSEINI `PARSEINI_TestMemoryAndOpenTopazFont` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_test_memory_and_open_topaz_font_trial.sh`
 - PARSEINI2 `PARSEINI_AdjustHoursTo24HrFormat` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_adjust_hours_to_24hr_format_trial.sh`
 - PARSEINI2 `PARSEINI_NormalizeClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_normalize_clock_data_trial.sh`
@@ -6249,5 +6250,11 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_update_highlight_state_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_update_highlight_state.awk`
 - `src/decomp/sas_c/ladfunc_update_highlight_state.c`
+- `src/decomp/scripts/compare_sasc_parseini_process_weather_blocks_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_parseini_process_weather_blocks.awk`
+- `src/decomp/sas_c/parseini_process_weather_blocks.c`
+- `src/decomp/scripts/compare_sasc_parseini_parse_ini_buffer_and_dispatch_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_parseini_parse_ini_buffer_and_dispatch.awk`
+- `src/decomp/sas_c/parseini_parse_ini_buffer_and_dispatch.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
