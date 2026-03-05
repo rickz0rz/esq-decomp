@@ -5126,6 +5126,7 @@ Recent promoted targets:
 - SCRIPT3 `SCRIPT_SelectPlaybackCursorFromSearchText` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_select_playback_cursor_from_search_text_trial.sh`
 - SCRIPT3 `SCRIPT_UpdateBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_update_banner_char_transition_trial.sh`
 - SCRIPT3 `SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_begin_banner_char_transition_trial.sh`
+- SCRIPT3 `SCRIPT_UpdateCtrlStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_update_ctrl_state_machine_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_updatefilterstatemachine_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_math_divs32_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial.sh`
