@@ -4051,11 +4051,35 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQIFF2_ApplyIncomingStatusPacket_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_apply_incoming_status_packet_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ReadSerialBytesToBuffer_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_read_serial_bytes_to_buffer_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ReadSerialBytesWithXor_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_read_serial_bytes_with_xor_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ValidateFieldIndexAndLength_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_validate_field_index_and_length_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
 - SAS/C-only lane (`ESQIFF2_PadEntriesToMaxTitleWidth_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_pad_entries_to_max_title_width_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ParseLineHeadTailRecord_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_parse_line_head_tail_record_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
 - SAS/C-only lane (`ESQIFF2_ParseGroupRecordAndRefresh_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_parse_group_record_and_refresh_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ReadSerialRecordIntoBuffer_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_read_serial_record_into_buffer_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ReadSerialSizedTextRecord_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_read_serial_sized_text_record_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ShowVersionMismatchOverlay_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_show_version_mismatch_overlay_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQIFF2_ShowAttentionOverlay_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_show_attention_overlay_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
 - SAS/C-only lane (`ESQIFF2_ClearPrimaryEntryFlags34To39_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_clear_primary_entry_flags34_to39_return_trial.sh`
@@ -4169,8 +4193,16 @@ Recent promoted targets:
 - Unknown LADFUNC `LADFUNC_RepackEntryTextAndAttrBuffers_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_ladfunc_repack_entry_text_and_attr_buffers_return_trial.sh`
 - Unknown LADFUNC `LADFUNC_UpdateEntryFromTextAndAttrBuffers_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_ladfunc_update_entry_from_text_and_attr_buffers_return_trial.sh`
 - Unknown ESQIFF2 `ESQIFF2_ApplyIncomingStatusPacket_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_apply_incoming_status_packet_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ReadSerialBytesToBuffer_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_read_serial_bytes_to_buffer_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ReadSerialBytesWithXor_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_read_serial_bytes_with_xor_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ValidateFieldIndexAndLength_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_validate_field_index_and_length_return_trial.sh`
 - Unknown ESQIFF2 `ESQIFF2_PadEntriesToMaxTitleWidth_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_pad_entries_to_max_title_width_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ParseLineHeadTailRecord_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_parse_line_head_tail_record_return_trial.sh`
 - Unknown ESQIFF2 `ESQIFF2_ParseGroupRecordAndRefresh_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_parse_group_record_and_refresh_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ReadSerialRecordIntoBuffer_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_read_serial_record_into_buffer_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ReadSerialSizedTextRecord_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_read_serial_sized_text_record_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ShowVersionMismatchOverlay_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_show_version_mismatch_overlay_return_trial.sh`
+- Unknown ESQIFF2 `ESQIFF2_ShowAttentionOverlay_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_show_attention_overlay_return_trial.sh`
 - Unknown ESQIFF2 `ESQIFF2_ClearPrimaryEntryFlags34To39_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_clear_primary_entry_flags34_to39_return_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`

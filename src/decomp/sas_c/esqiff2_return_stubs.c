@@ -1,4 +1,12 @@
 void ESQIFF2_ApplyIncomingStatusPacket_Return(void) {}
+void ESQIFF2_ReadSerialBytesToBuffer_Return(void) {}
+void ESQIFF2_ReadSerialBytesWithXor_Return(void) {}
+void ESQIFF2_ValidateFieldIndexAndLength_Return(void) {}
 void ESQIFF2_PadEntriesToMaxTitleWidth_Return(void) {}
+void ESQIFF2_ParseLineHeadTailRecord_Return(void) {}
 void ESQIFF2_ParseGroupRecordAndRefresh_Return(void) {}
+void ESQIFF2_ReadSerialRecordIntoBuffer_Return(void) {}
+void ESQIFF2_ReadSerialSizedTextRecord_Return(void) {}
+void ESQIFF2_ShowVersionMismatchOverlay_Return(void) {}
+void ESQIFF2_ShowAttentionOverlay_Return(void) {}
 void ESQIFF2_ClearPrimaryEntryFlags34To39_Return(void) {}
