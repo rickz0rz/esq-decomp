@@ -786,6 +786,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script3_begin_banner_char_transition_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_update_ctrl_state_machine_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_split_and_normalize_search_buffer_trial.sh"
+    "src/decomp/scripts/compare_sasc_script3_dispatch_playback_cursor_command_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_comparen_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_copypadnul_trial.sh"
