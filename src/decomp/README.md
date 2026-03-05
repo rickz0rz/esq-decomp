@@ -4003,6 +4003,9 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO1_DumpProgramSourceRecordVerbose`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_program_source_record_verbose_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_source_record_verbose.awk`
+- SAS/C-only lane (`DISKIO1_DumpProgramInfoVerbose` inferred unlabeled body):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_program_info_verbose_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_verbose.awk`
 - SAS/C-only lane (`DISKIO1_DumpProgramInfoAttrTable_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_program_info_attr_table_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -4953,6 +4956,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_probe_drives_and_assign_paths.c`
 - `src/decomp/sas_c/diskio1_dump_default_coi_info_block.c`
 - `src/decomp/sas_c/diskio1_dump_program_source_record_verbose.c`
+- `src/decomp/sas_c/diskio1_dump_program_info_verbose.c`
 - `src/decomp/sas_c/diskio1_dump_program_info_attr_table.c`
 - `src/decomp/sas_c/esqshared_return_stubs.c`
 - `src/decomp/sas_c/esqpars_return_stubs.c`
@@ -5226,6 +5230,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_probe_drives_and_assign_paths.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_default_coi_info_block.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_source_record_verbose.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_verbose.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_attr_table.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqpars_return_stub.awk`
