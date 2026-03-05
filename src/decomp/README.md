@@ -5098,6 +5098,7 @@ Recent promoted targets:
 - PARSEINI2 `PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial.sh`
 - PARSEINI2 `PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_secondsfromepoch_trial.sh`
 - PARSEINI `PARSEINI_ParseHexValueFromString` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_parse_hex_value_from_string_trial.sh`
+- PARSEINI `PARSEINI_LoadWeatherStrings` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_load_weather_strings_trial.sh`
 - PARSEINI `PARSEINI_LoadWeatherMessageStrings` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_load_weather_message_strings_trial.sh`
 - PARSEINI `PARSEINI_ParseRangeKeyValue` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_parse_range_key_value_trial.sh`
 - PARSEINI `PARSEINI_TestMemoryAndOpenTopazFont` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_test_memory_and_open_topaz_font_trial.sh`
