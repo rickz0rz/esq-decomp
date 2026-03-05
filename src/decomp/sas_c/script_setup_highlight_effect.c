@@ -1,0 +1,129 @@
+typedef signed long LONG;
+typedef short WORD;
+typedef signed char BYTE;
+typedef unsigned char UBYTE;
+
+extern void *WDISP_DisplayContextBase;
+extern WORD WDISP_AccumulatorCaptureActive;
+extern WORD WDISP_AccumulatorFlushPending;
+extern UBYTE CLOCK_AlignedInsetRenderGateFlag;
+extern UBYTE CLEANUP_AlignedInsetNibblePrimary;
+extern UBYTE CLEANUP_AlignedInsetNibbleSecondary;
+
+extern void TLIBA3_ClearViewModeRastPort(LONG mode, LONG unused);
+extern void *TLIBA3_BuildDisplayContextForViewMode(LONG mode, LONG a, LONG b);
+extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
+extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
+extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern LONG MATH_DivS32(LONG a, LONG b);
+extern void SCRIPT_BeginBannerCharTransition(LONG x, LONG y);
+extern void STRING_CopyPadNul(char *dst, const char *src, LONG n);
+extern void SCRIPT_DrawInsetTextWithFrame(void *rastport, BYTE textPenOverride, BYTE framePen, const char *text);
+extern LONG _LVOTextLength(void *rastport, const char *text, LONG len);
+extern void _LVOSetDrMd(void *rastport, LONG mode);
+extern void _LVOSetAPen(void *rastport, LONG pen);
+extern void _LVOMove(void *rastport, LONG x, LONG y);
+extern void _LVOText(void *rastport, const char *text, LONG len);
+
+static LONG len_local(const char *s)
+{
+    LONG n = 0;
+    while (s[n] != '\0') {
+        n++;
+    }
+    return n;
+}
+
+void SCRIPT_SetupHighlightEffect(const char *text)
+{
+    LONG widthSlot;
+    LONG div;
+    char prefix[128];
+    LONG prefixLen = 0;
+    void *rp;
+    const char *cursor;
+    const char *chunkStart;
+    LONG chunkLen;
+
+    TLIBA3_ClearViewModeRastPort(4, 0);
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
+    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+
+    widthSlot = (LONG)(*(unsigned short *)((UBYTE *)WDISP_DisplayContextBase + 4));
+    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
+    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+
+    div = MATH_DivS32(widthSlot, ((*(unsigned short *)WDISP_DisplayContextBase) & (1 << 2)) ? 2 : 1);
+    SCRIPT_BeginBannerCharTransition((WORD)(div + 22), 500);
+
+    if (text == 0 || *text == '\0') {
+        TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+        return;
+    }
+
+    rp = (UBYTE *)WDISP_DisplayContextBase + 2;
+    WDISP_AccumulatorCaptureActive = 1;
+    WDISP_AccumulatorFlushPending = 0;
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
+
+    while (text[prefixLen] != '\0' && prefixLen < 128) {
+        UBYTE c = (UBYTE)text[prefixLen];
+        if (c >= 32) {
+            prefix[prefixLen] = (char)c;
+        }
+        prefixLen++;
+    }
+    if (prefixLen > 0) {
+        prefix[prefixLen] = '\0';
+    } else {
+        prefix[0] = '\0';
+    }
+
+    (void)_LVOTextLength(rp, prefix, len_local(prefix));
+    if (CLOCK_AlignedInsetRenderGateFlag && CLEANUP_AlignedInsetNibblePrimary != (UBYTE)0xFF) {
+        (void)0;
+    }
+    _LVOSetDrMd(rp, 0);
+    _LVOSetAPen(rp, 1);
+    _LVOMove(rp, 0, widthSlot - 26);
+
+    cursor = text;
+    chunkStart = cursor;
+    chunkLen = 0;
+    while (*cursor != '\0') {
+        UBYTE c = (UBYTE)*cursor;
+        if (c == 19 || c == 20 || c == 24 || c == 25) {
+            if (chunkLen > 0) {
+                _LVOText(rp, chunkStart, chunkLen);
+            }
+            if (c == 24 || c == 25) {
+                _LVOSetAPen(rp, (c == 24) ? 1 : 3);
+                cursor++;
+                chunkStart = cursor;
+                chunkLen = 0;
+                continue;
+            }
+            if (c == 20) {
+                STRING_CopyPadNul(prefix, chunkStart, chunkLen);
+                prefix[chunkLen] = '\0';
+                SCRIPT_DrawInsetTextWithFrame(rp, (BYTE)CLEANUP_AlignedInsetNibblePrimary, (BYTE)CLEANUP_AlignedInsetNibbleSecondary, prefix);
+                CLOCK_AlignedInsetRenderGateFlag = 0;
+            }
+            cursor++;
+            chunkStart = cursor;
+            chunkLen = 0;
+            continue;
+        }
+        if (c >= 32) {
+            chunkLen++;
+        }
+        cursor++;
+    }
+    if (chunkLen > 0) {
+        _LVOText(rp, chunkStart, chunkLen);
+    }
+
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4, 0, 3);
+    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+}
