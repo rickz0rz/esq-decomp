@@ -5122,6 +5122,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_battclock_get_seconds_from_battery_backed_clock_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds_from_battery_backed_clock.awk`
 - `src/decomp/sas_c/battclock_get_seconds_from_battery_backed_clock.c`
+- `src/decomp/scripts/compare_sasc_battclock_write_seconds_to_battery_backed_clock_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_battclock_write_seconds_to_battery_backed_clock.awk`
+- `src/decomp/sas_c/battclock_write_seconds_to_battery_backed_clock.c`
 - `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
 - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
