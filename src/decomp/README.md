@@ -5042,6 +5042,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_cleanup_build_aligned_status_line_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_build_aligned_status_line.awk`
 - `src/decomp/sas_c/cleanup_build_aligned_status_line.c`
+- `src/decomp/scripts/compare_sasc_cleanup_build_and_render_aligned_status_banner_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_build_and_render_aligned_status_banner.awk`
+- `src/decomp/sas_c/cleanup_build_and_render_aligned_status_banner.c`
 - `src/decomp/scripts/compare_sasc_coi_free_entry_resources_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_free_entry_resources.awk`
 - `src/decomp/sas_c/coi_free_entry_resources.c`
