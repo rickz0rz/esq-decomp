@@ -4045,6 +4045,18 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPLIB_DisplayTextAtPosition`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_display_text_at_position_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_display_text_at_position.awk`
+- SAS/C-only lane (`DISPLIB_NormalizeValueByStep`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_normalize_value_by_step_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_normalize_value_by_step.awk`
+- SAS/C-only lane (`DISPLIB_ResetLineTables`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_reset_line_tables_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_reset_line_tables.awk`
+- SAS/C-only lane (`DISPLIB_ResetTextBufferAndLineTables`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_reset_text_buffer_and_line_tables_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_reset_text_buffer_and_line_tables.awk`
+- SAS/C-only lane (`DISPLIB_CommitCurrentLinePenAndAdvance`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_commit_current_line_pen_and_advance_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_commit_current_line_pen_and_advance.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5032,6 +5044,10 @@ Recent promoted targets:
 - `src/decomp/sas_c/displib_find_previous_valid_entry_index.c`
 - `src/decomp/sas_c/displib_apply_inline_alignment_padding.c`
 - `src/decomp/sas_c/displib_display_text_at_position.c`
+- `src/decomp/sas_c/displib_normalize_value_by_step.c`
+- `src/decomp/sas_c/displib_reset_line_tables.c`
+- `src/decomp/sas_c/displib_reset_text_buffer_and_line_tables.c`
+- `src/decomp/sas_c/displib_commit_current_line_pen_and_advance.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5324,6 +5340,10 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_displib_find_previous_valid_entry_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_apply_inline_alignment_padding.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_display_text_at_position.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_normalize_value_by_step.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_reset_line_tables.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_reset_text_buffer_and_line_tables.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_commit_current_line_pen_and_advance.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
