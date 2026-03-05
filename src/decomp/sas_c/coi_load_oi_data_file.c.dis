@@ -1,0 +1,132 @@
+              SECTION      text,CODE
+__code:
+COI_LoadOiDataFile:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$43c,D0                 ;90bc 0000 043c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$420,A7                 ;9efc 0420 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___COI_LoadOiDataFile__1:
+              MOVE.B         $43f(A7),D7              ;1e2f 043f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            Global_STR_DF0_OI_PERCENT_2_LX_D(A4);486c 0000 
+              PEA            $212(A7)                 ;486f 0212 
+              BSR.W          GROUP_AE_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            $216(A7)                 ;486f 0216 
+              BSR.W          DISKIO_LoadFileToWorkBuffer;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.B          ___COI_LoadOiDataFile__3 ;6606 
+___COI_LoadOiDataFile__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___COI_LoadOiDataFile__14;6000 00b6 
+___COI_LoadOiDataFile__3:
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D6;2c2c 0000 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$0,D4                   ;7800 
+___COI_LoadOiDataFile__4:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),D0;202c 0000 
+              BEQ.B          ___COI_LoadOiDataFile__10;6760 
+___COI_LoadOiDataFile__5:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___COI_LoadOiDataFile__10;6c5c 
+___COI_LoadOiDataFile__6:
+              MOVE.L         D0,A0                    ;2040 
+              ADD.L          D5,A0                    ;d1c5 
+              MOVE.L         A0,A5                    ;2a48 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         COI_STR_LINEFEED_CR_1(A4),D0;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___COI_LoadOiDataFile__8 ;6610 
+___COI_LoadOiDataFile__7:
+              LEA            $18(A7),A0               ;41ef 0018 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              ADDQ.L         #$1,D4                   ;5284 
+              MOVE.B         (A5),(A1)                ;1295 
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___COI_LoadOiDataFile__4 ;60cc 
+___COI_LoadOiDataFile__8:
+              CLR.B          $18(A7,D4.L)             ;4237 4818 
+              PEA            $18(A7)                  ;486f 0018 
+              BSR.W          GROUP_AG_JMPTBL_PARSE_ReadSigned;6100 0000 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,(A7)                  ;2e81 
+              PEA            ($1a).w                  ;4878 001a 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            COI_STR_LINEFEED_CR_2(A4);486c 0000 
+              PEA            ($b).w                   ;4878 000b 
+              LEA            $2c(A7),A0               ;41ef 002c 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         D0,$450(A7)              ;2f40 0450 
+              BSR.W          GROUP_AE_JMPTBL_SCRIPT_BuildToke;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___COI_LoadOiDataFile__9:
+___COI_LoadOiDataFile__10:
+              TST.L          Global_PTR_WORK_BUFFER(A4);4aac 0000 
+              BEQ.B          ___COI_LoadOiDataFile__12;6724 
+___COI_LoadOiDataFile__11:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A3;266c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          CLEANUP_FormatEntryStringTokens;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          COI_AllocSubEntryTable   ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___COI_LoadOiDataFile__12:
+              MOVE.L         D6,D0                    ;2006 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
+              PEA            ($4ae).w                 ;4878 04ae 
+              PEA            Global_STR_COI_C_6(A4)   ;486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
+___COI_LoadOiDataFile__13:
+___COI_LoadOiDataFile__14:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              ADD.W          #$420,A7                 ;defc 0420 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AG_JMPTBL_MATH_DivS32
+              XREF           Global_STR_DF0_OI_PERCENT_2_LX_D
+              XREF           GROUP_AE_JMPTBL_WDISP_SPrintf
+              XREF           DISKIO_LoadFileToWorkBuffer
+              XREF           Global_REF_LONG_FILE_SCRATCH
+              XREF           Global_PTR_WORK_BUFFER
+              XREF           COI_STR_LINEFEED_CR_1
+              XREF           GROUP_AI_JMPTBL_STR_FindCharPtr
+              XREF           GROUP_AG_JMPTBL_PARSE_ReadSigned
+              XREF           COI_STR_LINEFEED_CR_2
+              XREF           GROUP_AE_JMPTBL_SCRIPT_BuildToke
+              XREF           ESQ_WildcardMatch
+              XREF           GROUP_AE_JMPTBL_ESQPARS_ReplaceO
+              XREF           CLEANUP_FormatEntryStringTokens
+              XREF           COI_AllocSubEntryTable
+              XREF           Global_STR_COI_C_6
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XDEF           COI_LoadOiDataFile
+              END
