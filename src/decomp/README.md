@@ -4733,6 +4733,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial.sh`
 - ESQDISP `ESQDISP_ProcessGridMessagesIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_process_grid_messages_if_idle_trial.sh`
 - ESQDISP `ESQDISP_QueueHighlightDrawMessage` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_queue_highlight_draw_message_trial.sh`
+- ESQDISP `ESQDISP_RefreshStatusIndicatorsFromCurrentMask` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_refresh_status_indicators_from_current_mask_trial.sh`
 - ESQDISP `ESQDISP_SetStatusIndicatorColorSlot` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_set_status_indicator_color_slot_trial.sh`
 - ESQDISP `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_propagate_primary_title_metadata_to_secondary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryGroupToPrimary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_group_to_primary_trial.sh`
