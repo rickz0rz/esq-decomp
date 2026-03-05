@@ -1061,6 +1061,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_clear_highlight_area_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_fill_grid_rects_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_frame_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_should_open_editor_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_top_bars_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_top_border_line_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_is_grid_ready_for_input_trial.sh"
