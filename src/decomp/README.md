@@ -4000,6 +4000,12 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO2_ReceiveTransferBlocksToFile`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_receive_transfer_blocks_to_file_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_receive_transfer_blocks_to_file.awk`
+- SAS/C-only lane (`DISKIO2_HandleInteractiveFileTransfer`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_handle_interactive_file_transfer_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_handle_interactive_file_transfer.awk`
+- SAS/C-only lane (`DISKIO2_LoadCurDayDataFile`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_load_cur_day_data_file_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_load_cur_day_data_file.awk`
 - SAS/C-only lane (`ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqshared_match_selection_code_with_optional_suffix_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
@@ -5001,6 +5007,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio2_load_nxt_day_data_file.c`
 - `src/decomp/sas_c/diskio2_write_qtable_ini_file.c`
 - `src/decomp/sas_c/diskio2_receive_transfer_blocks_to_file.c`
+- `src/decomp/sas_c/diskio2_handle_interactive_file_transfer.c`
+- `src/decomp/sas_c/diskio2_load_cur_day_data_file.c`
 - `src/decomp/sas_c/diskio1_dump_default_coi_info_block.c`
 - `src/decomp/sas_c/diskio1_dump_program_source_record_verbose.c`
 - `src/decomp/sas_c/diskio1_dump_program_info_verbose.c`
@@ -5287,6 +5295,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_load_nxt_day_data_file.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_write_qtable_ini_file.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_receive_transfer_blocks_to_file.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_handle_interactive_file_transfer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_load_cur_day_data_file.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_default_coi_info_block.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_source_record_verbose.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_verbose.awk`
