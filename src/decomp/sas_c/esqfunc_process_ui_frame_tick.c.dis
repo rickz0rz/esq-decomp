@@ -1,0 +1,181 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_ProcessUiFrameTick:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_ProcessUiFrameTick__1:
+              MOVE.W         GCOMMAND_DriveProbeRequestedFlag(A4),D0;302c 0000 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__3;6704 
+___ESQFUNC_ProcessUiFrameTick__2:
+              BSR.W          ESQFUNC_JMPTBL_DISKIO_ProbeDrive;6100 0000 
+___ESQFUNC_ProcessUiFrameTick__3:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          ESQDISP_DisplayActiveFlag(A4),D0;b0ac 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__5;6604 
+___ESQFUNC_ProcessUiFrameTick__4:
+              BSR.W          ESQDISP_PollInputModeAndRefreshS;6100 0000 
+___ESQFUNC_ProcessUiFrameTick__5:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__7;6604 
+___ESQFUNC_ProcessUiFrameTick__6:
+              BSR.W          ESQDISP_ProcessGridMessagesIfIdl;6100 0000 
+___ESQFUNC_ProcessUiFrameTick__7:
+              BSR.W          ED_DispatchEscMenuState  ;6100 0000 
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__9;6604 
+___ESQFUNC_ProcessUiFrameTick__8:
+              BSR.W          ESQFUNC_JMPTBL_SCRIPT_HandleSeri;6100 0000 
+___ESQFUNC_ProcessUiFrameTick__9:
+              MOVE.W         CLEANUP_PendingAlertFlag(A4),D0;302c 0000 
+              BEQ.W          ___ESQFUNC_ProcessUiFrameTick__35;6700 00f2 
+___ESQFUNC_ProcessUiFrameTick__10:
+              BSR.W          ESQFUNC_JMPTBL_CLEANUP_ProcessAl;6100 0000 
+              TST.L          ESQDISP_SecondaryPersistRequestF(A4);4aac 0000 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__12;6708 
+___ESQFUNC_ProcessUiFrameTick__11:
+              CLR.L          ESQDISP_SecondaryPersistRequestF(A4);42ac 0000 
+              BSR.W          ESQFUNC_CommitSecondaryStateAndP;6100 0000 
+___ESQFUNC_ProcessUiFrameTick__12:
+              MOVE.W         CTASKS_IffTaskDoneFlag(A4),D0;302c 0000 
+              BEQ.W          ___ESQFUNC_ProcessUiFrameTick__35;6700 00d8 
+___ESQFUNC_ProcessUiFrameTick__13:
+              MOVE.W         ESQFUNC_IffTaskGateFlags(A4),D0;302c 0000 
+              BTST           #$1,D0                   ;0800 0001 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__16;671a 
+___ESQFUNC_ProcessUiFrameTick__14:
+              MOVE.W         Global_UIBusyFlag(A4),D1 ;322c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__16;6614 
+___ESQFUNC_ProcessUiFrameTick__15:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              ANDI.L         #$fffd,D1                ;0281 0000 fffd 
+              MOVE.W         D1,ESQFUNC_IffTaskGateFlags(A4);3941 0000 
+              BSR.W          ESQFUNC_JMPTBL_TEXTDISP_ResetSel;6100 0000 
+              BRA.B          ___ESQFUNC_ProcessUiFrameTick__19;6024 
+___ESQFUNC_ProcessUiFrameTick__16:
+              BTST           #$0,D0                   ;0800 0000 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__19;671e 
+___ESQFUNC_ProcessUiFrameTick__17:
+              MOVE.W         Global_UIBusyFlag(A4),D1 ;322c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__19;6618 
+___ESQFUNC_ProcessUiFrameTick__18:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              ANDI.L         #$fffe,D1                ;0281 0000 fffe 
+              MOVE.W         D1,ESQFUNC_IffTaskGateFlags(A4);3941 0000 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          ESQIFF_PlayNextExternalAssetFram;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQFUNC_ProcessUiFrameTick__19:
+              TST.L          Global_REF_LONG_DF0_LOGO_LST_DAT(A4);4aac 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__22;6616 
+___ESQFUNC_ProcessUiFrameTick__20:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__22;6610 
+___ESQFUNC_ProcessUiFrameTick__21:
+              MOVE.W         ESQIFF_ExternalAssetFlags(A4),D1;322c 0000 
+              EXT.L          D1                       ;48c1 
+              ANDI.L         #$fffd,D1                ;0281 0000 fffd 
+              MOVE.W         D1,ESQIFF_ExternalAssetFlags(A4);3941 0000 
+___ESQFUNC_ProcessUiFrameTick__22:
+              MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4e,D1                  ;724e 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__26;671c 
+___ESQFUNC_ProcessUiFrameTick__23:
+              TST.L          Global_REF_LONG_GFX_G_ADS_DATA(A4);4aac 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__26;6616 
+___ESQFUNC_ProcessUiFrameTick__24:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__26;6610 
+___ESQFUNC_ProcessUiFrameTick__25:
+              MOVE.W         ESQIFF_ExternalAssetFlags(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              ANDI.L         #$fffe,D0                ;0280 0000 fffe 
+              MOVE.W         D0,ESQIFF_ExternalAssetFlags(A4);3940 0000 
+___ESQFUNC_ProcessUiFrameTick__26:
+              TST.L          WDISP_WeatherStatusBrushListHead(A4);4aac 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__29;660e 
+___ESQFUNC_ProcessUiFrameTick__27:
+              TST.L          PARSEINI_BannerBrushResourceHead(A4);4aac 0000 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__29;6708 
+___ESQFUNC_ProcessUiFrameTick__28:
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQIFF_QueueIffBrushLoad ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQFUNC_ProcessUiFrameTick__29:
+              CMPI.L         #$1,ESQIFF_LogoBrushListCount(A4);0cac 0000 0001 0000 
+              BGE.B          ___ESQFUNC_ProcessUiFrameTick__31;6c0a 
+___ESQFUNC_ProcessUiFrameTick__30:
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQIFF_ServiceExternalAssetSourc;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___ESQFUNC_ProcessUiFrameTick__35;6024 
+___ESQFUNC_ProcessUiFrameTick__31:
+              MOVE.B         ED_DiagGraphModeChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4e,D1                  ;724e 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__35;671a 
+___ESQFUNC_ProcessUiFrameTick__32:
+              CMPI.L         #$2,ESQIFF_GAdsBrushListCount(A4);0cac 0000 0002 0000 
+              BGE.B          ___ESQFUNC_ProcessUiFrameTick__35;6c10 
+___ESQFUNC_ProcessUiFrameTick__33:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__35;660a 
+___ESQFUNC_ProcessUiFrameTick__34:
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          ESQIFF_ServiceExternalAssetSourc;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQFUNC_ProcessUiFrameTick__35:
+              BSR.W          ESQFUNC_JMPTBL_TEXTDISP_TickDisp;6100 0000 
+              MOVE.B         ESQDISP_StatusRefreshPendingFlag(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___ESQFUNC_ProcessUiFrameTick__39;6710 
+___ESQFUNC_ProcessUiFrameTick__36:
+              MOVE.B         GCOMMAND_HighlightHoldoffTickCou(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ESQFUNC_ProcessUiFrameTick__39;6608 
+___ESQFUNC_ProcessUiFrameTick__37:
+              CLR.B          ESQDISP_StatusRefreshPendingFlag(A4);422c 0000 
+              BSR.W          ESQDISP_RefreshStatusIndicatorsF;6100 0000 
+___ESQFUNC_ProcessUiFrameTick__38:
+___ESQFUNC_ProcessUiFrameTick__39:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_DriveProbeRequestedFlag
+              XREF           ESQFUNC_JMPTBL_DISKIO_ProbeDrive
+              XREF           ESQDISP_DisplayActiveFlag
+              XREF           ESQDISP_PollInputModeAndRefreshS
+              XREF           Global_UIBusyFlag
+              XREF           ESQDISP_ProcessGridMessagesIfIdl
+              XREF           ED_DispatchEscMenuState
+              XREF           ESQFUNC_JMPTBL_SCRIPT_HandleSeri
+              XREF           CLEANUP_PendingAlertFlag
+              XREF           ESQFUNC_JMPTBL_CLEANUP_ProcessAl
+              XREF           ESQDISP_SecondaryPersistRequestF
+              XREF           ESQFUNC_CommitSecondaryStateAndP
+              XREF           CTASKS_IffTaskDoneFlag
+              XREF           ESQFUNC_IffTaskGateFlags
+              XREF           ESQFUNC_JMPTBL_TEXTDISP_ResetSel
+              XREF           ESQIFF_PlayNextExternalAssetFram
+              XREF           Global_REF_LONG_DF0_LOGO_LST_DAT
+              XREF           ESQIFF_ExternalAssetFlags
+              XREF           ED_DiagGraphModeChar
+              XREF           Global_REF_LONG_GFX_G_ADS_DATA
+              XREF           WDISP_WeatherStatusBrushListHead
+              XREF           PARSEINI_BannerBrushResourceHead
+              XREF           ESQIFF_QueueIffBrushLoad
+              XREF           ESQIFF_LogoBrushListCount
+              XREF           ESQIFF_ServiceExternalAssetSourc
+              XREF           ESQIFF_GAdsBrushListCount
+              XREF           ESQFUNC_JMPTBL_TEXTDISP_TickDisp
+              XREF           ESQDISP_StatusRefreshPendingFlag
+              XREF           GCOMMAND_HighlightHoldoffTickCou
+              XREF           ESQDISP_RefreshStatusIndicatorsF
+              XDEF           ESQFUNC_ProcessUiFrameTick
+              END
