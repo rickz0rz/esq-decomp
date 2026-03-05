@@ -1,0 +1,36 @@
+typedef signed long LONG;
+typedef unsigned short UWORD;
+typedef unsigned char UBYTE;
+
+extern UWORD WDISP_AccumulatorFlushPending;
+extern LONG WDISP_DisplayContextBase;
+extern UBYTE WDISP_PaletteTriplesRBase;
+extern UBYTE WDISP_PaletteTriplesGBase;
+extern UBYTE WDISP_PaletteTriplesBBase;
+extern void *Global_REF_GRAPHICS_LIBRARY;
+
+extern void WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
+extern LONG TLIBA3_BuildDisplayContextForViewMode(LONG viewMode, LONG a, LONG b);
+extern LONG _LVOSetRast(void *gfxBase, void *rastPort, LONG pen);
+
+void TEXTDISP_SetRastForMode(UWORD modeIndex)
+{
+    LONG idx;
+
+    WDISP_AccumulatorFlushPending = 0;
+    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
+
+    if (modeIndex == 0) {
+        WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);
+        return;
+    }
+
+    WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(7, 0, 4);
+
+    idx = (LONG)modeIndex * 3;
+    WDISP_PaletteTriplesRBase = *(((UBYTE *)&WDISP_PaletteTriplesRBase) + idx);
+    WDISP_PaletteTriplesGBase = *(((UBYTE *)&WDISP_PaletteTriplesGBase) + idx);
+    WDISP_PaletteTriplesBBase = *(((UBYTE *)&WDISP_PaletteTriplesBBase) + idx);
+
+    _LVOSetRast(Global_REF_GRAPHICS_LIBRARY, (void *)((unsigned char *)WDISP_DisplayContextBase + 2), (LONG)modeIndex);
+}
