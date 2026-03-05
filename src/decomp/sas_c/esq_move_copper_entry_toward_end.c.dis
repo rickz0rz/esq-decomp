@@ -1,0 +1,65 @@
+              SECTION      text,CODE
+__code:
+ESQ_MoveCopperEntryTowardEnd:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+___ESQ_MoveCopperEntryTowardEnd__1:
+              MOVE.L         $28(A7),D6               ;2c2f 0028 
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$1f,D1                  ;721f 
+              AND.L          D1,D0                    ;c081 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D6,D0                    ;2006 
+              AND.L          D1,D0                    ;c081 
+              MOVE.W         #$20,$1c(A7)             ;3f7c 0020 001c 
+              LEA            ESQ_CopperStatusDigitsA(A4),A5;4bec 0000 
+              LEA            ESQ_CopperStatusDigitsB(A4),A3;47ec 0000 
+              ASL.W          #$2,D5                   ;e545 
+              MOVE.W         D0,$1e(A7)               ;3f40 001e 
+              ASL.W          #$2,D0                   ;e540 
+              MOVE.W         D5,D1                    ;3205 
+              ADDQ.W         #$4,D1                   ;5841 
+              MOVE.W         $0(A5,D5.W),$18(A7)      ;3f75 5000 0018 
+              MOVE.W         D0,$1e(A7)               ;3f40 001e 
+              MOVE.W         D1,$1a(A7)               ;3f41 001a 
+___ESQ_MoveCopperEntryTowardEnd__2:
+              CMP.W          $1e(A7),D5               ;ba6f 001e 
+              BGE.B          ___ESQ_MoveCopperEntryTowardEnd__6;6c22 
+___ESQ_MoveCopperEntryTowardEnd__3:
+              MOVE.W         $1a(A7),D0               ;302f 001a 
+              MOVE.W         $0(A5,D0.W),D0           ;3035 0000 
+              MOVE.W         D0,$0(A5,D5.W)           ;3b80 5000 
+              MOVE.W         D0,$16(A7)               ;3f40 0016 
+              CMP.W          $1c(A7),D5               ;ba6f 001c 
+              BGE.B          ___ESQ_MoveCopperEntryTowardEnd__5;6c04 
+___ESQ_MoveCopperEntryTowardEnd__4:
+              MOVE.W         D0,$0(A3,D5.W)           ;3780 5000 
+___ESQ_MoveCopperEntryTowardEnd__5:
+              ADDQ.W         #$4,D5                   ;5845 
+              ADDQ.W         #$4,$1a(A7)              ;586f 001a 
+              BRA.B          ___ESQ_MoveCopperEntryTowardEnd__2;60d8 
+___ESQ_MoveCopperEntryTowardEnd__6:
+              MOVE.W         $18(A7),D0               ;302f 0018 
+              MOVE.W         D0,$0(A5,D5.W)           ;3b80 5000 
+              CMP.W          $1c(A7),D5               ;ba6f 001c 
+              BGE.B          ___ESQ_MoveCopperEntryTowardEnd__9;6c04 
+___ESQ_MoveCopperEntryTowardEnd__7:
+              MOVE.W         D0,$0(A3,D5.W)           ;3780 5000 
+___ESQ_MoveCopperEntryTowardEnd__8:
+___ESQ_MoveCopperEntryTowardEnd__9:
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_CopperStatusDigitsA
+              XREF           ESQ_CopperStatusDigitsB
+              XDEF           ESQ_MoveCopperEntryTowardEnd
+              END

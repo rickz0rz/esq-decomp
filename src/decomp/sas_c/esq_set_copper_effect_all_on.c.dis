@@ -1,0 +1,28 @@
+              SECTION      text,CODE
+__code:
+ESQ_SetCopperEffect_AllOn:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___ESQ_SetCopperEffect_AllOn__1:
+              MOVE.L         #$bfe001,A5              ;2a7c 00bf e001 
+              MOVE.B         (A5),D7                  ;1e15 
+              ANDI.B         #$3f,D7                  ;0207 003f 
+              MOVE.B         D7,(A5)                  ;1a87 
+              MOVEQ.L        #$3f,D0                  ;703f 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQ_SetCopperEffectParams;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQ_SetCopperEffect_AllOn__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_SetCopperEffectParams
+              XDEF           ESQ_SetCopperEffect_AllOn
+              END

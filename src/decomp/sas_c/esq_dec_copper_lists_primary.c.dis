@@ -1,0 +1,63 @@
+              SECTION      text,CODE
+__code:
+ESQ_DecCopperListsPrimary:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___ESQ_DecCopperListsPrimary__1:
+              LEA            ESQ_CopperStatusDigitsA(A4),A5;4bec 0000 
+              LEA            ESQ_CopperStatusDigitsB(A4),A3;47ec 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_DecCopperListsPrimary__2:
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.W          D0,D6                    ;bc40 
+              BGT.B          ___ESQ_DecCopperListsPrimary__5;6e20 
+___ESQ_DecCopperListsPrimary__3:
+              MOVE.W         $0(A5,D7.W),D5           ;3a35 7000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQ_DecColorStep         ;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         D5,$0(A5,D7.W)           ;3b85 7000 
+              MOVE.W         D5,$0(A3,D7.W)           ;3785 7000 
+              ADDQ.W         #$4,D7                   ;5847 
+___ESQ_DecCopperListsPrimary__4:
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.B          ___ESQ_DecCopperListsPrimary__2;60da 
+___ESQ_DecCopperListsPrimary__5:
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQ_DecCopperListsPrimary__6:
+              MOVEQ.L        #$17,D0                  ;7017 
+              CMP.W          D0,D6                    ;bc40 
+              BGT.B          ___ESQ_DecCopperListsPrimary__10;6e1c 
+___ESQ_DecCopperListsPrimary__7:
+              MOVE.W         $0(A5,D7.W),D4           ;3835 7000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D4,D0                    ;3004 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQ_DecColorStep         ;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         D4,$0(A5,D7.W)           ;3b84 7000 
+              ADDQ.W         #$4,D7                   ;5847 
+___ESQ_DecCopperListsPrimary__8:
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.B          ___ESQ_DecCopperListsPrimary__6;60de 
+___ESQ_DecCopperListsPrimary__9:
+___ESQ_DecCopperListsPrimary__10:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_CopperStatusDigitsA
+              XREF           ESQ_CopperStatusDigitsB
+              XREF           ESQ_DecColorStep
+              XDEF           ESQ_DecCopperListsPrimary
+              END

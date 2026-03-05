@@ -4489,6 +4489,15 @@ Recent promoted targets:
 - APP2 `ESQ_StoreCtrlSampleEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_store_ctrl_sample_entry_trial.sh`
 - APP2 `ESQ_SetCopperEffectParams` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_params_trial.sh`
 - APP2 `ESQ_SetCopperEffect_Default` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_default_trial.sh`
+- APP2 `ESQ_SetCopperEffect_AllOn` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_all_on_trial.sh`
+- APP2 `ESQ_SetCopperEffect_Custom` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_custom_trial.sh`
+- APP2 `ESQ_SetCopperEffect_OffDisableHighlight` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_off_disable_highlight_trial.sh`
+- APP2 `ESQ_SetCopperEffect_OnEnableHighlight` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_on_enable_highlight_trial.sh`
+- APP2 `ESQ_UpdateCopperListsFromParams` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_update_copper_lists_from_params_trial.sh`
+- APP2 `ESQ_MoveCopperEntryTowardStart` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_start_trial.sh`
+- APP2 `ESQ_MoveCopperEntryTowardEnd` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_end_trial.sh`
+- APP2 `ESQ_DecCopperListsPrimary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_dec_copper_lists_primary_trial.sh`
+- APP2 `ESQ_IncCopperListsTowardsTargets` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_inc_copper_lists_towards_targets_trial.sh`
 - Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
 - Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
 - Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
@@ -4606,6 +4615,15 @@ Recent promoted targets:
 - `src/decomp/sas_c/esq_store_ctrl_sample_entry.c`
 - `src/decomp/sas_c/esq_set_copper_effect_params.c`
 - `src/decomp/sas_c/esq_set_copper_effect_default.c`
+- `src/decomp/sas_c/esq_set_copper_effect_all_on.c`
+- `src/decomp/sas_c/esq_set_copper_effect_custom.c`
+- `src/decomp/sas_c/esq_set_copper_effect_off_disable_highlight.c`
+- `src/decomp/sas_c/esq_set_copper_effect_on_enable_highlight.c`
+- `src/decomp/sas_c/esq_update_copper_lists_from_params.c`
+- `src/decomp/sas_c/esq_move_copper_entry_toward_start.c`
+- `src/decomp/sas_c/esq_move_copper_entry_toward_end.c`
+- `src/decomp/sas_c/esq_dec_copper_lists_primary.c`
+- `src/decomp/sas_c/esq_inc_copper_lists_towards_targets.c`
 - `src/decomp/sas_c/datetime_adjust_month_index.c`
 - `src/decomp/sas_c/datetime_normalize_month_range.c`
 - `src/decomp/sas_c/dst_normalize_day_of_year.c`
@@ -4876,5 +4894,14 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_store_ctrl_sample_entry.awk`
 - `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_params.awk`
 - `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_default.awk`
+- `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_all_on.awk`
+- `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_custom.awk`
+- `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_off_disable_highlight.awk`
+- `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_on_enable_highlight.awk`
+- `src/decomp/scripts/semantic_filter_sasc_update_copper_lists_from_params.awk`
+- `src/decomp/scripts/semantic_filter_sasc_move_copper_entry_toward_start.awk`
+- `src/decomp/scripts/semantic_filter_sasc_move_copper_entry_toward_end.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dec_copper_lists_primary.awk`
+- `src/decomp/scripts/semantic_filter_sasc_inc_copper_lists_towards_targets.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
