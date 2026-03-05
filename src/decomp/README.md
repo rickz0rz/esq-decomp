@@ -4721,6 +4721,7 @@ Recent promoted targets:
 - Group AG `GROUP_AG_JMPTBL_SCRIPT_CheckPathExists` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_check_path_exists_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_service_ui_tick_if_running_trial.sh`
 - ESQFUNC `ESQFUNC_ServiceUiTickIfRunning` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_service_ui_tick_if_running_trial.sh`
+- ESQFUNC `ESQFUNC_FreeExtraTitleTextPointers` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_free_extra_title_text_pointers_trial.sh`
 - ESQFUNC `ESQFUNC_UpdateRefreshModeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_update_refresh_mode_state_trial.sh`
 - ESQFUNC `ESQFUNC_ProcessUiFrameTick` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_process_ui_frame_tick_trial.sh`
 - ESQFUNC `ESQFUNC_WaitForClockChangeAndServiceUi` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_wait_for_clock_change_and_service_ui_trial.sh`
