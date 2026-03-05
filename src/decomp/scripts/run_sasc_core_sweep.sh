@@ -776,6 +776,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script_jmptbl_diskio_writebufferedbytes_trial.sh"
     "src/decomp/scripts/compare_sasc_script_jmptbl_memory_allocatememory_trial.sh"
     "src/decomp/scripts/compare_sasc_script_jmptbl_memory_deallocatememory_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp2_reset_selection_and_refresh_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp2_jmptbl_esqiff_playnextexternalassetframe_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp2_jmptbl_ladfunc_drawentrypreview_trial.sh"

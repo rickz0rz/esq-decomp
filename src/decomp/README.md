@@ -4997,6 +4997,7 @@ Recent promoted targets:
 - TLIBA2 `TLIBA2_JMPTBL_DST_AddTimeOffset` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba2_jmptbl_dst_addtimeoffset_trial.sh`
 - TLIBA2 `TLIBA2_JMPTBL_ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba2_jmptbl_esq_testbit1based_trial.sh`
 - TLIBA3 `TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba3_jmptbl_gcommand_applyhighlightflag_trial.sh`
+- TEXTDISP2 `TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_reset_selection_and_refresh_trial.sh`
 - TEXTDISP2 `TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_trial.sh`
 - TEXTDISP2 `TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_ladfunc_drawentrypreview_trial.sh`
 - TEXTDISP2 `TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial.sh`
