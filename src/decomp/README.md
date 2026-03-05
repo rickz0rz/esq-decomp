@@ -4729,6 +4729,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_NormalizeClockAndRedrawBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_normalize_clock_and_redraw_banner_trial.sh`
 - ESQDISP `ESQDISP_PollInputModeAndRefreshSelection` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_poll_input_mode_and_refresh_selection_trial.sh`
 - ESQDISP `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial.sh`
+- ESQDISP `ESQDISP_PromoteSecondaryLineHeadTailIfMarked` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_line_head_tail_if_marked_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_update_refresh_mode_state_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_textdisp_reset_selection_and_refresh_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_begin_banner_char_transition_trial.sh`
