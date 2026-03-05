@@ -5115,6 +5115,7 @@ Recent promoted targets:
 - SCRIPT3 `SCRIPT_SetCtrlContextMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_set_ctrl_context_mode_trial.sh`
 - SCRIPT3 `SCRIPT_InitCtrlContext` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_init_ctrl_context_trial.sh`
 - SCRIPT3 `SCRIPT_ClearSearchTextsAndChannels` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_clear_search_texts_and_channels_trial.sh`
+- SCRIPT3 `SCRIPT_ResetCtrlContextAndClearStatusLine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_reset_ctrl_context_and_clear_status_line_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_updatefilterstatemachine_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_math_divs32_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial.sh`
