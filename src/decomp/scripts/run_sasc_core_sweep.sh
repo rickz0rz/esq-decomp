@@ -170,6 +170,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_adjust_banner_copper_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_init_preset_defaults_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_reset_banner_fade_state_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_find_path_separator_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_get_banner_char_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_add_banner_table_byte_delta_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_load_default_palette_to_copper_no_op_trial.sh"
