@@ -834,6 +834,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_tick_preset_work_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_update_banner_bounds_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_update_banner_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_trial.sh"
