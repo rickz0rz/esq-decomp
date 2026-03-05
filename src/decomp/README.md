@@ -6112,6 +6112,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_low_nibble_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_get_packed_pen_low_nibble.awk`
 - `src/decomp/sas_c/ladfunc_get_packed_pen_low_nibble.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_parse_hex_digit_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_parse_hex_digit.awk`
+- `src/decomp/sas_c/ladfunc_parse_hex_digit.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_high_nibble_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_set_packed_pen_high_nibble.awk`
 - `src/decomp/sas_c/ladfunc_set_packed_pen_high_nibble.c`
