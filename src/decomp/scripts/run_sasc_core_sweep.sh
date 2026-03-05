@@ -875,6 +875,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ladfunc_alloc_banner_rect_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_clear_banner_rect_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_compose_packed_pen_byte_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc_display_text_packed_pens_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_free_banner_rect_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_high_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_low_nibble_trial.sh"

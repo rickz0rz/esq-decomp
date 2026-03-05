@@ -6112,6 +6112,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_compose_packed_pen_byte_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_compose_packed_pen_byte.awk`
 - `src/decomp/sas_c/ladfunc_compose_packed_pen_byte.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_display_text_packed_pens_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_display_text_packed_pens.awk`
+- `src/decomp/sas_c/ladfunc_display_text_packed_pens.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_free_banner_rect_entries_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_free_banner_rect_entries.awk`
 - `src/decomp/sas_c/ladfunc_free_banner_rect_entries.c`
