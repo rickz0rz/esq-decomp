@@ -1,0 +1,12 @@
+BEGIN { has_entry=0; has_get_entry=0; has_get_anim=0; has_test_window=0; has_format=0; has_return=0 }
+function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
+{
+ line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
+ if (u ~ /^TLIBA1_BUILDCLOCKFORMATENTRYIFVISIBLE:/ || u ~ /^TLIBA1_BUILDCLOCKFORMATENTRYIFVISI[A-Z0-9_]*:/ || u ~ /^TLIBA1_BUILDCLOCKFORMATENTRYIFVI[A-Z0-9_]*:/) has_entry=1
+ if (n ~ /TLIBA1JMPTBLESQDISPGETENTRYPOINTERBYMODE/ || n ~ /TLIBA1JMPTBLESQDISPGETENTRYAUXPOINTERBYMODE/ || n ~ /TLIBA1JMPTBLESQDISPGETENTRYPOINTERBYMOD/ || n ~ /TLIBA1JMPTBLESQDISPGETENTRYPO/ || n ~ /TLIBA1JMPTBLESQDISPGETENTRYAU/) has_get_entry=1
+ if (n ~ /TLIBA1JMPTBLCOIGETANIMFIELDPOINTERBYMODE/ || n ~ /TLIBA1JMPTBLCOIGETANIMFIELDPOINTERBYMOD/ || n ~ /TLIBA1JMPTBLCOIGETANIMFIELDPO/) has_get_anim=1
+ if (n ~ /TLIBA1JMPTBLCOITESTENTRYWITHINTIMEWINDOW/ || n ~ /TLIBA1JMPTBLCOITESTENTRYWITHINTIMEWIND/ || n ~ /TLIBA1JMPTBLCOITESTENTRYWITHI/) has_test_window=1
+ if (n ~ /TLIBA1FORMATCLOCKFORMATENTRY/ || n ~ /TLIBA1FORMATCLOCKFORMATENTR/) has_format=1
+ if (u=="RTS") has_return=1
+}
+END { print "HAS_ENTRY="has_entry; print "HAS_GET_ENTRY="has_get_entry; print "HAS_GET_ANIM="has_get_anim; print "HAS_TEST_WINDOW="has_test_window; print "HAS_FORMAT="has_format; print "HAS_RETURN="has_return }
