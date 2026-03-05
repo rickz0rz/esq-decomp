@@ -1,0 +1,179 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_ShutdownSystem:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___CLEANUP_ShutdownSystem__1:
+              BSR.W          _LVOForbid               ;6100 0000 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              BSR.W          GROUP_AB_JMPTBL_LOCAVAIL_FreeRes;6100 0000 
+              PEA            LOCAVAIL_SecondaryFilterState(A4);486c 0000 
+              BSR.W          GROUP_AB_JMPTBL_LOCAVAIL_FreeRes;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            ESQIFF_BrushIniListHead(A4);486c 0000 
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            ESQIFF_GAdsBrushListHead(A4);486c 0000 
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            ESQIFF_LogoBrushListHead(A4);486c 0000 
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            ESQFUNC_PwBrushListHead(A4);486c 0000 
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+              BSR.W          CLEANUP_ClearVertbInterruptServe;6100 0000 
+              BSR.W          CLEANUP_ClearAud1InterruptVector;6100 0000 
+              BSR.W          CLEANUP_ClearRbfInterruptAndSeri;6100 0000 
+              MOVE.L         ESQIFF_RecordBufferPtr(A4),A0;206c 0000 
+              PEA            ($2328).w                ;4878 2328 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($104).w                 ;4878 0104 
+              PEA            Global_STR_CLEANUP_C_13(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              BSR.W          CLEANUP_ShutdownInputDevices;6100 0000 
+              BSR.W          CLEANUP_ReleaseDisplayResources;6100 0000 
+              BSR.W          GROUP_AB_JMPTBL_LADFUNC_FreeBann;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_ESQPARS_ClearAli;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          GROUP_AB_JMPTBL_ESQIFF2_ClearLin;6100 0000 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          GROUP_AB_JMPTBL_ESQIFF2_ClearLin;6100 0000 
+              BSR.W          GROUP_AB_JMPTBL_ESQIFF_Deallocat;6100 0000 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          GROUP_AB_JMPTBL_ESQPARS_RemoveGr;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          GROUP_AB_JMPTBL_ESQPARS_RemoveGr;6100 0000 
+___CLEANUP_ShutdownSystem__2:
+              BSR.W          GROUP_AB_JMPTBL_ESQFUNC_FreeLine;6100 0000 
+              BSR.W          GROUP_AB_JMPTBL_NEWGRID_Shutdown;6100 0000 
+              MOVE.L         ESQ_HighlightMsgPort(A4),A0;206c 0000 
+              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($13e).w                 ;4878 013e 
+              PEA            Global_STR_CLEANUP_C_14(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $48(A7),A7               ;4fef 0048 
+              MOVE.L         ESQ_HighlightReplyPort(A4),A0;206c 0000 
+              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($13f).w                 ;4878 013f 
+              PEA            Global_STR_CLEANUP_C_15(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___CLEANUP_ShutdownSystem__3:
+              MOVEQ.L        #$5,D0                   ;7005 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___CLEANUP_ShutdownSystem__9;6c4c 
+___CLEANUP_ShutdownSystem__4:
+              MOVEQ.L        #$0,D6                   ;7c00 
+___CLEANUP_ShutdownSystem__5:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          D0,D6                    ;bc80 
+              BGE.B          ___CLEANUP_ShutdownSystem__8;6c40 
+___CLEANUP_ShutdownSystem__6:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D6,D1                    ;2206 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         ESQDISP_HighlightBitmapTable(A4),D0;202c 0000 
+              ADD.L          D5,D0                    ;d085 
+              ADDQ.L         #$8,D0                   ;5080 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         (A0),D4                  ;2810 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         WDISP_HighlightRasterHeightPx(A4),D0;302c 0000 
+              PEA            Global_STR_CLEANUP_C_16(A4);486c 0000 
+              PEA            ($149).w                 ;4878 0149 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($2b8).w                 ;4878 02b8 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              BSR.W          GROUP_AB_JMPTBL_GRAPHICS_FreeRas;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___CLEANUP_ShutdownSystem__7:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___CLEANUP_ShutdownSystem__5;60ba 
+___CLEANUP_ShutdownSystem__8:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___CLEANUP_ShutdownSystem__3;60ae 
+___CLEANUP_ShutdownSystem__9:
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         WDISP_WeatherStatusTextPtr(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,WDISP_WeatherStatusTextPtr(A4);2940 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         WDISP_WeatherStatusOverlayTextPt(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,WDISP_WeatherStatusOverlayTextPt(A4);2940 0000 
+              BSR.W          _LVOSetFunction          ;6100 0000 
+              BSR.W          _LVOSetFunction          ;6100 0000 
+              BSR.W          _LVOVBeamPos             ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         ESQ_ProcessWindowPtrBackup(A4),D0;202c 0000 
+              BEQ.B          ___CLEANUP_ShutdownSystem__11;670c 
+___CLEANUP_ShutdownSystem__10:
+              MOVEQ.L        #$5c,D1                  ;725c 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          WDISP_ExecBaseHookPtr(A4),D1;d2ac 0000 
+              MOVE.L         D1,A0                    ;2041 
+              MOVE.L         D0,(A0)                  ;2080 
+___CLEANUP_ShutdownSystem__11:
+              BSR.W          GROUP_AB_JMPTBL_UNKNOWN2A_Stub0;6100 0000 
+              BSR.W          _LVOPermit               ;6100 0000 
+___CLEANUP_ShutdownSystem__12:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVOForbid
+              XREF           LOCAVAIL_PrimaryFilterState
+              XREF           GROUP_AB_JMPTBL_LOCAVAIL_FreeRes
+              XREF           LOCAVAIL_SecondaryFilterState
+              XREF           ESQIFF_BrushIniListHead
+              XREF           BRUSH_FreeBrushList
+              XREF           ESQIFF_GAdsBrushListHead
+              XREF           ESQIFF_LogoBrushListHead
+              XREF           ESQFUNC_PwBrushListHead
+              XREF           CLEANUP_ClearVertbInterruptServe
+              XREF           CLEANUP_ClearAud1InterruptVector
+              XREF           CLEANUP_ClearRbfInterruptAndSeri
+              XREF           ESQIFF_RecordBufferPtr
+              XREF           Global_STR_CLEANUP_C_13
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XREF           CLEANUP_ShutdownInputDevices
+              XREF           CLEANUP_ReleaseDisplayResources
+              XREF           GROUP_AB_JMPTBL_LADFUNC_FreeBann
+              XREF           GROUP_AH_JMPTBL_ESQPARS_ClearAli
+              XREF           GROUP_AB_JMPTBL_ESQIFF2_ClearLin
+              XREF           GROUP_AB_JMPTBL_ESQIFF_Deallocat
+              XREF           GROUP_AB_JMPTBL_ESQPARS_RemoveGr
+              XREF           GROUP_AB_JMPTBL_ESQFUNC_FreeLine
+              XREF           GROUP_AB_JMPTBL_NEWGRID_Shutdown
+              XREF           ESQ_HighlightMsgPort
+              XREF           Global_STR_CLEANUP_C_14
+              XREF           ESQ_HighlightReplyPort
+              XREF           Global_STR_CLEANUP_C_15
+              XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           ESQDISP_HighlightBitmapTable
+              XREF           WDISP_HighlightRasterHeightPx
+              XREF           Global_STR_CLEANUP_C_16
+              XREF           GROUP_AB_JMPTBL_GRAPHICS_FreeRas
+              XREF           WDISP_WeatherStatusTextPtr
+              XREF           GROUP_AE_JMPTBL_ESQPARS_ReplaceO
+              XREF           WDISP_WeatherStatusOverlayTextPt
+              XREF           _LVOSetFunction
+              XREF           _LVOVBeamPos
+              XREF           ESQ_ProcessWindowPtrBackup
+              XREF           WDISP_ExecBaseHookPtr
+              XREF           GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
+              XREF           _LVOPermit
+              XDEF           CLEANUP_ShutdownSystem
+              END

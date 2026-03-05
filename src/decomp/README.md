@@ -5087,6 +5087,17 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_cleanup_clear_rbf_interrupt_and_serial_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_clear_rbf_interrupt_and_serial.awk`
 - `src/decomp/sas_c/cleanup_clear_rbf_interrupt_and_serial.c`
+- `src/decomp/scripts/compare_sasc_cleanup_shutdown_input_devices_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_shutdown_input_devices.awk`
+- `src/decomp/sas_c/cleanup_shutdown_input_devices.c`
+- `src/decomp/scripts/compare_sasc_cleanup_shutdown_system_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_shutdown_system.awk`
+- `src/decomp/sas_c/cleanup_shutdown_system.c`
+- `src/decomp/scripts/compare_sasc_cleanup_release_display_resources_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_release_display_resources.awk`
+- `src/decomp/sas_c/cleanup_release_display_resources.c`
+- `src/decomp/scripts/compare_sasc_cleanup_render_aligned_status_screen_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_render_aligned_status_screen.awk`
 - `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
 - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
