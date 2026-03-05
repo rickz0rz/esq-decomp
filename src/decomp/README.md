@@ -5112,6 +5112,7 @@ Recent promoted targets:
 - NEWGRID `NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_trial.sh`
 - SCRIPT3 `GENERATE_GRID_DATE_STRING` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_generate_grid_date_string_trial.sh`
 - SCRIPT3 `SCRIPT_CheckPathExists` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_check_path_exists_trial.sh`
+- SCRIPT3 `SCRIPT_SetCtrlContextMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_set_ctrl_context_mode_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_updatefilterstatemachine_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_math_divs32_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial.sh`
