@@ -3894,7 +3894,9 @@ Recent promoted targets:
 - promote: `src/decomp/scripts/promote_diskio_reset_ctrl_input_state_if_idle_target_gcc.sh`
 - Target 1030 (`DISKIO_EnsurePc1MountedAndGfxAssigned`):
 - compare: `src/decomp/scripts/compare_diskio_ensure_pc1_mounted_and_gfx_assigned_trial_gcc.sh`
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned_trial.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio_ensure_pc1_mounted_and_gfx_assigned.awk`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned.awk`
 - promote: `src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_target_gcc.sh`
 - Target 1031 (`DISKIO_GetFilesizeFromHandle`):
 - compare: `src/decomp/scripts/compare_diskio_get_filesize_from_handle_trial_gcc.sh`
@@ -3977,6 +3979,7 @@ Recent promoted targets:
 - Unknown DISKIO `DISKIO_ForceUiRefreshIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_force_ui_refresh_if_idle_trial.sh`
 - Unknown DISKIO `DISKIO_ResetCtrlInputStateIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_reset_ctrl_input_state_if_idle_trial.sh`
 - Unknown DISKIO `DISKIO_DrawTransferErrorMessageIfDiagnostics` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_draw_transfer_error_message_if_diagnostics_trial.sh`
+- Unknown DISKIO `DISKIO_EnsurePc1MountedAndGfxAssigned` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4601,6 +4604,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_force_ui_refresh_if_idle.c`
 - `src/decomp/sas_c/diskio_reset_ctrl_input_state_if_idle.c`
 - `src/decomp/sas_c/diskio_draw_transfer_error_message_if_diagnostics.c`
+- `src/decomp/sas_c/diskio_ensure_pc1_mounted_and_gfx_assigned.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4839,6 +4843,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_force_ui_refresh_if_idle.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_reset_ctrl_input_state_if_idle.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_draw_transfer_error_message_if_diagnostics.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
