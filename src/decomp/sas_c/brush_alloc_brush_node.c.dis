@@ -1,0 +1,73 @@
+              SECTION      text,CODE
+__code:
+BRUSH_AllocBrushNode:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___BRUSH_AllocBrushNode__1:
+              MOVE.L         $1c(A7),A3               ;266f 001c 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($ee).w                  ;4878 00ee 
+              PEA            ($548).w                 ;4878 0548 
+              PEA            Global_STR_BRUSH_C_19(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         A2,A0                    ;204a 
+              MOVE.L         A0,BRUSH_LastAllocatedNode(A4);2948 0000 
+              MOVE.L         A2,D0                    ;200a 
+              BNE.B          ___BRUSH_AllocBrushNode__3;6604 
+___BRUSH_AllocBrushNode__2:
+              MOVE.L         A0,D0                    ;2008 
+              BRA.B          ___BRUSH_AllocBrushNode__10;6052 
+___BRUSH_AllocBrushNode__3:
+              MOVE.L         A5,$10(A7)               ;2f4d 0010 
+              MOVE.L         A2,$c(A7)                ;2f4a 000c 
+___BRUSH_AllocBrushNode__4:
+              MOVE.L         $10(A7),A0               ;206f 0010 
+              MOVE.L         $c(A7),A1                ;226f 000c 
+              MOVE.B         (A0),(A1)+               ;12d0 
+              MOVE.L         A1,$c(A7)                ;2f49 000c 
+___BRUSH_AllocBrushNode__5:
+              MOVE.L         $10(A7),A0               ;206f 0010 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$10(A7)               ;2f48 0010 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___BRUSH_AllocBrushNode__4;66e4 
+___BRUSH_AllocBrushNode__6:
+              LEA            $c2(A2),A0               ;41ea 00c2 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,(A0)                  ;2080 
+              LEA            $be(A2),A0               ;41ea 00be 
+              CLR.B          (A0)                     ;4210 
+              LEA            $de(A2),A0               ;41ea 00de 
+              CLR.L          (A0)                     ;4290 
+              LEA            $e2(A2),A0               ;41ea 00e2 
+              CLR.L          (A0)                     ;4290 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___BRUSH_AllocBrushNode__8;6706 
+___BRUSH_AllocBrushNode__7:
+              LEA            $ea(A3),A0               ;41eb 00ea 
+              MOVE.L         A2,(A0)                  ;208a 
+___BRUSH_AllocBrushNode__8:
+              LEA            $ea(A2),A0               ;41ea 00ea 
+              CLR.L          (A0)                     ;4290 
+              MOVE.L         BRUSH_LastAllocatedNode(A4),D0;202c 0000 
+___BRUSH_AllocBrushNode__9:
+___BRUSH_AllocBrushNode__10:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_BRUSH_C_19
+              XREF           GROUP_AG_JMPTBL_MEMORY_AllocateM
+              XREF           BRUSH_LastAllocatedNode
+              XDEF           BRUSH_AllocBrushNode
+              END

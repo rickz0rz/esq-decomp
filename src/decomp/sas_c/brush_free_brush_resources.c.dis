@@ -1,0 +1,38 @@
+              SECTION      text,CODE
+__code:
+BRUSH_FreeBrushResources:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___BRUSH_FreeBrushResources__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         (A5),A3                  ;2655 
+___BRUSH_FreeBrushResources__2:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___BRUSH_FreeBrushResources__4;6720 
+___BRUSH_FreeBrushResources__3:
+              LEA            $ea(A3),A0               ;41eb 00ea 
+              MOVE.L         (A0),A2                  ;2450 
+              PEA            ($ee).w                  ;4878 00ee 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              PEA            ($377).w                 ;4878 0377 
+              PEA            Global_STR_BRUSH_C_9(A4) ;486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         A2,A3                    ;264a 
+              BRA.B          ___BRUSH_FreeBrushResources__2;60dc 
+___BRUSH_FreeBrushResources__4:
+              CLR.L          (A5)                     ;4295 
+___BRUSH_FreeBrushResources__5:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_BRUSH_C_9
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XDEF           BRUSH_FreeBrushResources
+              END

@@ -1,0 +1,111 @@
+              SECTION      text,CODE
+__code:
+BRUSH_SelectBrushByLabel:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___BRUSH_SelectBrushByLabel__1:
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         A5,A2                    ;244d 
+              LEA            BRUSH_LabelScratch(A4),A0;41ec 0000 
+              MOVE.L         A0,$14(A7)               ;2f48 0014 
+___BRUSH_SelectBrushByLabel__2:
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.B         (A2),(A0)+               ;10d2 
+              MOVE.L         A0,$14(A7)               ;2f48 0014 
+___BRUSH_SelectBrushByLabel__3:
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___BRUSH_SelectBrushByLabel__2;66f0 
+___BRUSH_SelectBrushByLabel__4:
+              MOVE.L         ESQIFF_BrushIniListHead(A4),A3;266c 0000 
+              CLR.L          BRUSH_SelectedNode(A4)   ;42ac 0000 
+              PEA            ($2).w                   ;4878 0002 
+              PEA            BRUSH_STR_ALIAS_CODE_00(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AA_JMPTBL_STRING_CompareN;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___BRUSH_SelectBrushByLabel__6;6716 
+___BRUSH_SelectBrushByLabel__5:
+              PEA            ($2).w                   ;4878 0002 
+              PEA            BRUSH_STR_ALIAS_CODE_11(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AA_JMPTBL_STRING_CompareN;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___BRUSH_SelectBrushByLabel__7;6616 
+___BRUSH_SelectBrushByLabel__6:
+              PEA            ($2).w                   ;4878 0002 
+              PEA            BRUSH_STR_ALIAS_CODE_DT(A4);486c 0000 
+              PEA            $15(A7)                  ;486f 0015 
+              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___BRUSH_SelectBrushByLabel__8;6012 
+___BRUSH_SelectBrushByLabel__7:
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            $15(A7)                  ;486f 0015 
+              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___BRUSH_SelectBrushByLabel__8:
+              CLR.B          $f(A7)                   ;422f 000f 
+___BRUSH_SelectBrushByLabel__9:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___BRUSH_SelectBrushByLabel__13;6730 
+___BRUSH_SelectBrushByLabel__10:
+              MOVE.L         A3,A0                    ;204b 
+              LEA            $21(A0),A1               ;43e8 0021 
+              PEA            ($2).w                   ;4878 0002 
+              PEA            $11(A7)                  ;486f 0011 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
+              BSR.W          GROUP_AA_JMPTBL_STRING_CompareN;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___BRUSH_SelectBrushByLabel__12;6604 
+___BRUSH_SelectBrushByLabel__11:
+              MOVE.L         A3,BRUSH_SelectedNode(A4);294b 0000 
+___BRUSH_SelectBrushByLabel__12:
+              MOVE.L         $10(A7),A0               ;206f 0010 
+              ADD.W          #$170,A0                 ;d0fc 0170 
+              MOVE.L         (A0),A3                  ;2650 
+              BRA.B          ___BRUSH_SelectBrushByLabel__9;60cc 
+___BRUSH_SelectBrushByLabel__13:
+              TST.L          BRUSH_SelectedNode(A4)   ;4aac 0000 
+              BNE.B          ___BRUSH_SelectBrushByLabel__15;6612 
+___BRUSH_SelectBrushByLabel__14:
+              PEA            ESQIFF_BrushIniListHead(A4);486c 0000 
+              PEA            BRUSH_STR_FALLBACK_DITHER(A4);486c 0000 
+              BSR.W          BRUSH_FindBrushByPredicate;6100 0000 
+              MOVE.L         D0,BRUSH_SelectedNode(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___BRUSH_SelectBrushByLabel__15:
+              MOVE.L         BRUSH_SelectedNode(A4),A0;206c 0000 
+              MOVE.L         A0,BRUSH_ScriptPrimarySelection(A4);2948 0000 
+              MOVE.L         A0,BRUSH_ScriptSecondarySelection(A4);2948 0000 
+___BRUSH_SelectBrushByLabel__16:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           BRUSH_LabelScratch
+              XREF           ESQIFF_BrushIniListHead
+              XREF           BRUSH_SelectedNode
+              XREF           BRUSH_STR_ALIAS_CODE_00
+              XREF           GROUP_AA_JMPTBL_STRING_CompareN
+              XREF           BRUSH_STR_ALIAS_CODE_11
+              XREF           BRUSH_STR_ALIAS_CODE_DT
+              XREF           GROUP_AG_JMPTBL_STRING_CopyPadNu
+              XREF           BRUSH_STR_FALLBACK_DITHER
+              XREF           BRUSH_FindBrushByPredicate
+              XREF           BRUSH_ScriptPrimarySelection
+              XREF           BRUSH_ScriptSecondarySelection
+              XDEF           BRUSH_SelectBrushByLabel
+              END

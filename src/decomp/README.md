@@ -4952,5 +4952,20 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_brush_append_brush_node_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_brush_append_brush_node.awk`
 - `src/decomp/sas_c/brush_append_brush_node.c`
+- `src/decomp/scripts/compare_sasc_brush_alloc_brush_node_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_alloc_brush_node.awk`
+- `src/decomp/sas_c/brush_alloc_brush_node.c`
+- `src/decomp/scripts/compare_sasc_brush_select_brush_by_label_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_select_brush_by_label.awk`
+- `src/decomp/sas_c/brush_select_brush_by_label.c`
+- `src/decomp/scripts/compare_sasc_brush_free_brush_resources_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_free_brush_resources.awk`
+- `src/decomp/sas_c/brush_free_brush_resources.c`
+- `src/decomp/scripts/compare_sasc_brush_find_type3_brush_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_find_type3_brush.awk`
+- `src/decomp/sas_c/brush_find_type3_brush.c`
+- `src/decomp/scripts/compare_sasc_brush_normalize_brush_names_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_normalize_brush_names.awk`
+- `src/decomp/sas_c/brush_normalize_brush_names.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
