@@ -6100,5 +6100,14 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ctasks_iff_task_cleanup_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ctasks_iff_task_cleanup.awk`
 - `src/decomp/sas_c/ctasks_iff_task_cleanup.c`
+- `src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_to_scratch_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc2_emit_escaped_string_to_scratch.awk`
+- `src/decomp/sas_c/ladfunc2_emit_escaped_string_to_scratch.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_compose_packed_pen_byte_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_compose_packed_pen_byte.awk`
+- `src/decomp/sas_c/ladfunc_compose_packed_pen_byte.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_high_nibble_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_get_packed_pen_high_nibble.awk`
+- `src/decomp/sas_c/ladfunc_get_packed_pen_high_nibble.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
