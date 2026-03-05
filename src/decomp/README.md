@@ -3916,6 +3916,12 @@ Recent promoted targets:
 - semantic: `src/decomp/scripts/semantic_filter_diskio_query_volume_soft_error_count.awk`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_query_volume_soft_error_count.awk`
 - promote: `src/decomp/scripts/promote_diskio_query_volume_soft_error_count_target_gcc.sh`
+- SAS/C-only lane (`DISKIO_ConsumeCStringFromWorkBuffer`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_consume_cstring_from_work_buffer_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_consume_cstring_from_work_buffer.awk`
+- SAS/C-only lane (`DISKIO_ParseLongFromWorkBuffer`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_parse_long_from_work_buffer_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_parse_long_from_work_buffer.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -3980,6 +3986,8 @@ Recent promoted targets:
 - Unknown DISKIO `DISKIO_ResetCtrlInputStateIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_reset_ctrl_input_state_if_idle_trial.sh`
 - Unknown DISKIO `DISKIO_DrawTransferErrorMessageIfDiagnostics` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_draw_transfer_error_message_if_diagnostics_trial.sh`
 - Unknown DISKIO `DISKIO_EnsurePc1MountedAndGfxAssigned` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned_trial.sh`
+- Unknown DISKIO `DISKIO_ConsumeCStringFromWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_consume_cstring_from_work_buffer_trial.sh`
+- Unknown DISKIO `DISKIO_ParseLongFromWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_parse_long_from_work_buffer_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4605,6 +4613,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_reset_ctrl_input_state_if_idle.c`
 - `src/decomp/sas_c/diskio_draw_transfer_error_message_if_diagnostics.c`
 - `src/decomp/sas_c/diskio_ensure_pc1_mounted_and_gfx_assigned.c`
+- `src/decomp/sas_c/diskio_consume_cstring_from_work_buffer.c`
+- `src/decomp/sas_c/diskio_parse_long_from_work_buffer.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4844,6 +4854,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_reset_ctrl_input_state_if_idle.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_draw_transfer_error_message_if_diagnostics.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_consume_cstring_from_work_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_parse_long_from_work_buffer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
