@@ -880,6 +880,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ladfunc_free_banner_rect_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_high_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_low_nibble_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc_load_text_ads_from_file_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_parse_hex_digit_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_reset_entry_text_buffers_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_save_text_ads_to_file_trial.sh"
