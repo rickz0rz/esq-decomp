@@ -168,6 +168,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_disable_highlight_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_enable_highlight_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_adjust_banner_copper_offset_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_copy_gfx_to_work_if_available_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_init_preset_defaults_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_reset_banner_fade_state_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_find_path_separator_trial.sh"
