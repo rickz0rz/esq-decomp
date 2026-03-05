@@ -1,0 +1,47 @@
+              SECTION      text,CODE
+__code:
+COI_FreeEntryResources:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___COI_FreeEntryResources__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___COI_FreeEntryResources__6;6734 
+___COI_FreeEntryResources__2:
+___COI_FreeEntryResources__3:
+              LEA            $30(A3),A0               ;41eb 0030 
+              MOVE.L         (A0),A2                  ;2450 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          COI_FreeSubEntryTableEntries;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          COI_ClearAnimObjectStrings;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___COI_FreeEntryResources__5;6716 
+___COI_FreeEntryResources__4:
+              PEA            ($2a).w                  ;4878 002a 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($32f).w                 ;4878 032f 
+              PEA            Global_STR_COI_C_3(A4)   ;486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___COI_FreeEntryResources__5:
+              LEA            $30(A3),A0               ;41eb 0030 
+              CLR.L          (A0)                     ;4290 
+___COI_FreeEntryResources__6:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           COI_FreeSubEntryTableEntries
+              XREF           COI_ClearAnimObjectStrings
+              XREF           Global_STR_COI_C_3
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XDEF           COI_FreeEntryResources
+              END

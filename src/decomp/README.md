@@ -5015,5 +5015,11 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_coi_format_entry_display_text_return_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_format_entry_display_text_return.awk`
 - `src/decomp/sas_c/coi_format_entry_display_text_return.c`
+- `src/decomp/scripts/compare_sasc_coi_free_entry_resources_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_free_entry_resources.awk`
+- `src/decomp/sas_c/coi_free_entry_resources.c`
+- `src/decomp/scripts/compare_sasc_coi_ensure_anim_object_allocated_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_ensure_anim_object_allocated.awk`
+- `src/decomp/sas_c/coi_ensure_anim_object_allocated.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
