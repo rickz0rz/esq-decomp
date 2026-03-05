@@ -4114,6 +4114,12 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQDISP_TestWordIsZeroBooleanize`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqdisp_test_word_is_zero_booleanize_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqdisp_test_word_is_zero_booleanize.awk`
+- SAS/C-only lane (`ESQDISP_TestEntryBits0And2`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqdisp_test_entry_bits0_and2_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqdisp_test_entry_bits0_and2.awk`
+- SAS/C-only lane (`ESQDISP_TestEntryGridEligibility`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqdisp_test_entry_grid_eligibility_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqdisp_test_entry_grid_eligibility.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5124,6 +5130,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/get_bit_4_of_ciab_pra_into_d1.c`
 - `src/decomp/sas_c/ed1_clear_esc_menu_mode.c`
 - `src/decomp/sas_c/esqdisp_test_word_is_zero_booleanize.c`
+- `src/decomp/sas_c/esqdisp_test_entry_bits0_and2.c`
+- `src/decomp/sas_c/esqdisp_test_entry_grid_eligibility.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5439,6 +5447,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_get_bit_4_of_ciab_pra_into_d1.awk`
 - `src/decomp/scripts/semantic_filter_sasc_ed1_clear_esc_menu_mode.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqdisp_test_word_is_zero_booleanize.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqdisp_test_entry_bits0_and2.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqdisp_test_entry_grid_eligibility.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
