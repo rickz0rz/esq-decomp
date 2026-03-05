@@ -3985,6 +3985,12 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQPARS_ReadLengthWordWithChecksumXor_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqpars_read_length_word_with_checksum_xor_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqpars_return_stub.awk`
+- SAS/C-only lane (`DISPLIB_FindPreviousValidEntryIndex_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_find_previous_valid_entry_index_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
+- SAS/C-only lane (`DISPLIB_ApplyInlineAlignmentPadding_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -4072,6 +4078,8 @@ Recent promoted targets:
 - Unknown ESQPARS `ESQPARS_RemoveGroupEntryAndReleaseStrings_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_remove_group_entry_and_release_strings_return_trial.sh`
 - Unknown ESQPARS `ESQPARS_ReplaceOwnedString_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_replace_owned_string_return_trial.sh`
 - Unknown ESQPARS `ESQPARS_ReadLengthWordWithChecksumXor_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_read_length_word_with_checksum_xor_return_trial.sh`
+- Unknown DISPLIB `DISPLIB_FindPreviousValidEntryIndex_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_displib_find_previous_valid_entry_index_return_trial.sh`
+- Unknown DISPLIB `DISPLIB_ApplyInlineAlignmentPadding_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4712,6 +4720,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_probe_drives_and_assign_paths.c`
 - `src/decomp/sas_c/esqshared_return_stubs.c`
 - `src/decomp/sas_c/esqpars_return_stubs.c`
+- `src/decomp/sas_c/displib_return_stubs.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4966,6 +4975,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_probe_drives_and_assign_paths.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqpars_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
