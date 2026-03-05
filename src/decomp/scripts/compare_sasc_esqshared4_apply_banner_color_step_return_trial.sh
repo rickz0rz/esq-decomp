@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="return_misc_stubs.c"
+SASC_SRC="esqshared4_apply_banner_color_step_return.c"
 SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/q/esqshared4.s"
 OUT_DIR="build/decomp/sasc_trial"
