@@ -4731,6 +4731,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_GetEntryPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_get_entry_pointer_by_mode_trial.sh`
 - ESQDISP `ESQDISP_GetEntryAuxPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_get_entry_aux_pointer_by_mode_trial.sh`
 - ESQDISP `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial.sh`
+- ESQDISP `ESQDISP_ProcessGridMessagesIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_process_grid_messages_if_idle_trial.sh`
 - ESQDISP `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_propagate_primary_title_metadata_to_secondary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryGroupToPrimary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_group_to_primary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryLineHeadTailIfMarked` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_line_head_tail_if_marked_trial.sh`
