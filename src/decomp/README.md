@@ -5045,5 +5045,11 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ctasks_close_task_teardown_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ctasks_close_task_teardown.awk`
 - `src/decomp/sas_c/ctasks_close_task_teardown.c`
+- `src/decomp/scripts/compare_sasc_ctasks_start_close_task_process_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ctasks_start_close_task_process.awk`
+- `src/decomp/sas_c/ctasks_start_close_task_process.c`
+- `src/decomp/scripts/compare_sasc_ctasks_start_iff_task_process_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ctasks_start_iff_task_process.awk`
+- `src/decomp/sas_c/ctasks_start_iff_task_process.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
