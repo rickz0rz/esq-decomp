@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_DrawDateBannerSegment:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___CLEANUP_DrawDateBannerSegment__1:
+              MOVE.L         Global_REF_RASTPORT_1(A4),D0;202c 0000 
+              ADDQ.L         #$4,D0                   ;5880 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         (A0),D7                  ;2e10 
+              LEA            Global_REF_696_400_BITMAP(A4),A0;41ec 0000 
+              MOVE.L         D0,A1                    ;2240 
+              MOVE.L         A0,(A1)                  ;2288 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVEQ.L        #$20,D0                  ;7020 
+              ADD.L          Global_REF_RASTPORT_1(A4),D0;d0ac 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.W         (A0),D1                  ;3210 
+              ANDI.L         #$fff7,D1                ;0281 0000 fff7 
+              MOVE.W         D1,(A0)                  ;3081 
+              BSR.W          _LVORectFill             ;6100 0000 
+              BSR.W          RENDER_SHORT_MONTH_SHORT_DAY_OF_;6100 0000 
+              MOVE.L         Global_REF_RASTPORT_1(A4),A0;206c 0000 
+              PEA            ($43).w                  ;4878 0043 
+              PEA            ($ff).w                  ;4878 00ff 
+              PEA            ($22).w                  ;4878 0022 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          BEVEL_DrawBevelFrameWithTopRight;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         Global_REF_RASTPORT_1(A4),D0;202c 0000 
+              ADDQ.L         #$4,D0                   ;5880 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         D7,(A0)                  ;2087 
+___CLEANUP_DrawDateBannerSegment__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_696_400_BITMAP
+              XREF           _LVOSetAPen
+              XREF           _LVORectFill
+              XREF           RENDER_SHORT_MONTH_SHORT_DAY_OF_
+              XREF           BEVEL_DrawBevelFrameWithTopRight
+              XDEF           CLEANUP_DrawDateBannerSegment
+              END

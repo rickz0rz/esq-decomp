@@ -1,0 +1,46 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_DrawDateTimeBannerRow:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___CLEANUP_DrawDateTimeBannerRow__1:
+              MOVE.L         Global_REF_RASTPORT_1(A4),D0;202c 0000 
+              ADDQ.L         #$4,D0                   ;5880 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         (A0),D7                  ;2e10 
+              LEA            Global_REF_696_400_BITMAP(A4),A0;41ec 0000 
+              MOVE.L         D0,A1                    ;2240 
+              MOVE.L         A0,(A1)                  ;2288 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVEQ.L        #$20,D0                  ;7020 
+              ADD.L          Global_REF_RASTPORT_1(A4),D0;d0ac 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.W         (A0),D1                  ;3210 
+              ANDI.L         #$fff7,D1                ;0281 0000 fff7 
+              MOVE.W         D1,(A0)                  ;3081 
+              BSR.W          _LVORectFill             ;6100 0000 
+              BSR.W          CLEANUP_DrawDateBannerSegment;6100 0000 
+              BSR.W          CLEANUP_DrawBannerSpacerSegment;6100 0000 
+              BSR.W          CLEANUP_DrawTimeBannerSegment;6100 0000 
+              MOVE.L         Global_REF_RASTPORT_1(A4),D0;202c 0000 
+              ADDQ.L         #$4,D0                   ;5880 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.L         D7,(A0)                  ;2087 
+___CLEANUP_DrawDateTimeBannerRow__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_696_400_BITMAP
+              XREF           _LVOSetAPen
+              XREF           _LVORectFill
+              XREF           CLEANUP_DrawDateBannerSegment
+              XREF           CLEANUP_DrawBannerSpacerSegment
+              XREF           CLEANUP_DrawTimeBannerSegment
+              XDEF           CLEANUP_DrawDateTimeBannerRow
+              END
