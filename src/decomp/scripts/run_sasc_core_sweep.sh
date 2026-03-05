@@ -1077,6 +1077,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_disptext_layout_and_append_to_buffer_trial.sh"
     "src/decomp/scripts/compare_sasc_disptext_render_current_line_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_parse_hex_value_from_string_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini_handle_font_command_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_load_weather_message_strings_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_load_weather_strings_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_parse_color_table_trial.sh"
