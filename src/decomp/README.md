@@ -3991,6 +3991,30 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPLIB_ApplyInlineAlignmentPadding_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
+- SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
+- SAS/C-only lane (`DISKIO1_DumpProgramSourceRecordVerbose_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_program_source_record_verbose_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
+- SAS/C-only lane (`DISKIO1_DumpProgramInfoAttrTable_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_program_info_attr_table_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
+- SAS/C-only lane (`GCOMMAND_SetPresetEntry_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
+- SAS/C-only lane (`GCOMMAND_ExpandPresetBlock_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_expand_preset_block_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
+- SAS/C-only lane (`GCOMMAND_ValidatePresetTable_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
+- SAS/C-only lane (`GCOMMAND_InitPresetTableFromPalette_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_init_preset_table_from_palette_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
+- SAS/C-only lane (`GCOMMAND_UpdatePresetEntryCache_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -4080,6 +4104,14 @@ Recent promoted targets:
 - Unknown ESQPARS `ESQPARS_ReadLengthWordWithChecksumXor_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_read_length_word_with_checksum_xor_return_trial.sh`
 - Unknown DISPLIB `DISPLIB_FindPreviousValidEntryIndex_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_displib_find_previous_valid_entry_index_return_trial.sh`
 - Unknown DISPLIB `DISPLIB_ApplyInlineAlignmentPadding_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh`
+- Unknown DISKIO1 `DISKIO1_DumpDefaultCoiInfoBlock_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
+- Unknown DISKIO1 `DISKIO1_DumpProgramSourceRecordVerbose_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_dump_program_source_record_verbose_return_trial.sh`
+- Unknown DISKIO1 `DISKIO1_DumpProgramInfoAttrTable_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_dump_program_info_attr_table_return_trial.sh`
+- Unknown GCOMMAND `GCOMMAND_SetPresetEntry_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh`
+- Unknown GCOMMAND `GCOMMAND_ExpandPresetBlock_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_expand_preset_block_return_trial.sh`
+- Unknown GCOMMAND `GCOMMAND_ValidatePresetTable_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_return_trial.sh`
+- Unknown GCOMMAND `GCOMMAND_InitPresetTableFromPalette_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_init_preset_table_from_palette_return_trial.sh`
+- Unknown GCOMMAND `GCOMMAND_UpdatePresetEntryCache_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_return_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4721,6 +4753,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/esqshared_return_stubs.c`
 - `src/decomp/sas_c/esqpars_return_stubs.c`
 - `src/decomp/sas_c/displib_return_stubs.c`
+- `src/decomp/sas_c/diskio1_return_stubs.c`
+- `src/decomp/sas_c/gcommand3_return_stubs.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4976,6 +5010,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqpars_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
