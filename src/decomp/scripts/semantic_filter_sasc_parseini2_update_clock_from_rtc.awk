@@ -1,0 +1,14 @@
+BEGIN { has_entry=0; has_guard=0; has_getseconds=0; has_convert=0; has_check=0; has_fallback=0; has_normalize=0; has_return=0 }
+function trim(s,t){t=s; sub(/;.*/,"",t); sub(/^[ \t]+/,"",t); sub(/[ \t]+$/,"",t); return t}
+{
+ line=trim($0); if(line=="") next; gsub(/[ \t]+/," ",line); u=toupper(line); n=u; gsub(/[^A-Z0-9]/,"",n)
+ if (u ~ /^PARSEINI_UPDATECLOCKFROMRTC:/ || u ~ /^PARSEINI_UPDATECLOCKFROMRT[A-Z0-9_]*:/) has_entry=1
+ if (n ~ /GLOBALREFUTILITYLIBRARY/ || n ~ /GLOBALREFBATTCLOCKRESOURCE/) has_guard=1
+ if (n ~ /PARSEINI2JMPTBLBATTCLOCKGETSECONDSFROMBATTERYBACKEDCLOCK/ || n ~ /PARSEINI2JMPTBLBATTCLOCKGETSECONDSFROMBATTERYBACKEDCLOC/ || n ~ /PARSEINI2JMPTBLBATTCLOCKGETSECONDS/ || n ~ /PARSEINI2JMPTBLBATTCLOCKGETSE/) has_getseconds=1
+ if (n ~ /PARSEINI2JMPTBLCLOCKCONVERTAMIGASECONDSTOCLOCKDATA/ || n ~ /PARSEINI2JMPTBLCLOCKCONVERTAMIGASECONDSTOCLOCKDAT/ || n ~ /PARSEINI2JMPTBLCLOCKCONVERTAMIGASECONDS/ || n ~ /PARSEINI2JMPTBLCLOCKCONVERTAM/) has_convert=1
+ if (n ~ /PARSEINI2JMPTBLCLOCKCHECKDATEORSECONDSFROMEPOCH/ || n ~ /PARSEINI2JMPTBLCLOCKCHECKDATEORSECONDSFROMEPOC/ || n ~ /PARSEINI2JMPTBLCLOCKCHECKDATE/) has_check=1
+ if (n ~ /PARSEINIFALLBACKCLOCKDATARECORD/) has_fallback=1
+ if (n ~ /PARSEININORMALIZECLOCKDATA/) has_normalize=1
+ if (u=="RTS") has_return=1
+}
+END { print "HAS_ENTRY="has_entry; print "HAS_GUARD="has_guard; print "HAS_GETSECONDS="has_getseconds; print "HAS_CONVERT="has_convert; print "HAS_CHECK="has_check; print "HAS_FALLBACK="has_fallback; print "HAS_NORMALIZE="has_normalize; print "HAS_RETURN="has_return }
