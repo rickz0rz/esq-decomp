@@ -879,6 +879,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_high_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_low_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_parse_hex_digit_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc_reset_entry_text_buffers_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_high_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_low_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_update_highlight_state_trial.sh"
