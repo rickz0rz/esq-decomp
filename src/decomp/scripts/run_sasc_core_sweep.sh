@@ -182,6 +182,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqshared4_copy_longword_block_dbf_loop_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_copy_interleaved_row_words_from_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_copy_banner_rows_with_byte_offset_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_blit_banner_rows_for_active_field_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_bind_and_clear_banner_work_raster_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_clear_banner_work_raster_with_ones_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_program_display_window_and_copper_trial.sh"
