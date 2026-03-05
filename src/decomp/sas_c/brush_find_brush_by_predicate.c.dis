@@ -1,0 +1,42 @@
+              SECTION      text,CODE
+__code:
+BRUSH_FindBrushByPredicate:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___BRUSH_FindBrushByPredicate__1:
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         (A3),A2                  ;2453 
+___BRUSH_FindBrushByPredicate__2:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___BRUSH_FindBrushByPredicate__6;671a 
+___BRUSH_FindBrushByPredicate__3:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          GROUP_AA_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___BRUSH_FindBrushByPredicate__5;6604 
+___BRUSH_FindBrushByPredicate__4:
+              MOVE.L         A2,D0                    ;200a 
+              BRA.B          ___BRUSH_FindBrushByPredicate__8;600a 
+___BRUSH_FindBrushByPredicate__5:
+              LEA            $170(A2),A0              ;41ea 0170 
+              MOVE.L         (A0),A2                  ;2450 
+              BRA.B          ___BRUSH_FindBrushByPredicate__2;60e2 
+___BRUSH_FindBrushByPredicate__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+___BRUSH_FindBrushByPredicate__7:
+___BRUSH_FindBrushByPredicate__8:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AA_JMPTBL_STRING_CompareNo
+              XDEF           BRUSH_FindBrushByPredicate
+              END

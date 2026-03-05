@@ -1,0 +1,38 @@
+              SECTION      text,CODE
+__code:
+BRUSH_PopBrushHead:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___BRUSH_PopBrushHead__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,D0                    ;200d 
+              BNE.B          ___BRUSH_PopBrushHead__3 ;6604 
+___BRUSH_PopBrushHead__2:
+              SUB.L          A3,A3                    ;97cb 
+              BRA.B          ___BRUSH_PopBrushHead__4 ;6018 
+___BRUSH_PopBrushHead__3:
+              LEA            $170(A5),A0              ;41ed 0170 
+              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         A5,$8(A7)                ;2f4d 0008 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            $c(A7)                   ;486f 000c 
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___BRUSH_PopBrushHead__4:
+              MOVE.L         A3,D0                    ;200b 
+___BRUSH_PopBrushHead__5:
+___BRUSH_PopBrushHead__6:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           BRUSH_FreeBrushList
+              XDEF           BRUSH_PopBrushHead
+              END

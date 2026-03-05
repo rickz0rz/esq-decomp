@@ -4934,5 +4934,23 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_dos_open_file_with_mode.awk`
 - `src/decomp/scripts/semantic_filter_sasc_graphics_alloc_raster.awk`
 - `src/decomp/scripts/semantic_filter_sasc_graphics_free_raster.awk`
+- `src/decomp/scripts/compare_sasc_brush_planemaskforindex_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_planemaskforindex.awk`
+- `src/decomp/sas_c/brush_planemaskforindex.c`
+- `src/decomp/scripts/compare_sasc_brush_free_brush_list_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_free_brush_list_return.awk`
+- `src/decomp/sas_c/brush_free_brush_list_return.c`
+- `src/decomp/scripts/compare_sasc_brush_select_brush_slot_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_select_brush_slot_return.awk`
+- `src/decomp/sas_c/brush_select_brush_slot_return.c`
+- `src/decomp/scripts/compare_sasc_brush_find_brush_by_predicate_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_find_brush_by_predicate.awk`
+- `src/decomp/sas_c/brush_find_brush_by_predicate.c`
+- `src/decomp/scripts/compare_sasc_brush_pop_brush_head_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_pop_brush_head.awk`
+- `src/decomp/sas_c/brush_pop_brush_head.c`
+- `src/decomp/scripts/compare_sasc_brush_append_brush_node_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_append_brush_node.awk`
+- `src/decomp/sas_c/brush_append_brush_node.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
