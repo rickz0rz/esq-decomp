@@ -4504,6 +4504,8 @@ Recent promoted targets:
 - APP2 `ESQ_AdvanceBannerCharIndex_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_advance_banner_char_index_return_trial.sh`
 - APP2 `ESQ_TickClockAndFlagEvents` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_tick_clock_and_flag_events_trial.sh`
 - APP2 `ESQ_ColdReboot` + `ESQ_ColdRebootViaSupervisor` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_cold_reboot_pair_trial.sh`
+- APP2 `ESQ_ColdReboot` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_cold_reboot_trial.sh`
+- APP2 `ESQ_ColdRebootViaSupervisor` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_cold_reboot_via_supervisor_trial.sh`
 - Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
 - Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
 - Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
@@ -4921,5 +4923,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_advance_banner_char_index_return.awk`
 - `src/decomp/scripts/semantic_filter_sasc_tick_clock_and_flag_events.awk`
 - `src/decomp/scripts/semantic_filter_sasc_cold_reboot_pair.awk`
+- `src/decomp/scripts/semantic_filter_sasc_cold_reboot.awk`
+- `src/decomp/scripts/semantic_filter_sasc_cold_reboot_via_supervisor.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
