@@ -3890,7 +3890,9 @@ Recent promoted targets:
 - promote: `src/decomp/scripts/promote_diskio_ensure_pc1_mounted_and_gfx_assigned_target_gcc.sh`
 - Target 1031 (`DISKIO_GetFilesizeFromHandle`):
 - compare: `src/decomp/scripts/compare_diskio_get_filesize_from_handle_trial_gcc.sh`
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_get_filesize_from_handle_trial.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio_get_filesize_from_handle.awk`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_get_filesize_from_handle.awk`
 - promote: `src/decomp/scripts/promote_diskio_get_filesize_from_handle_target_gcc.sh`
 - Target 1032 (`DISKIO_WriteDecimalField`):
 - compare: `src/decomp/scripts/compare_diskio_write_decimal_field_trial_gcc.sh`
@@ -3900,7 +3902,9 @@ Recent promoted targets:
 - promote: `src/decomp/scripts/promote_diskio_write_decimal_field_target_gcc.sh`
 - Target 1033 (`DISKIO_QueryVolumeSoftErrorCount`):
 - compare: `src/decomp/scripts/compare_diskio_query_volume_soft_error_count_trial_gcc.sh`
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_query_volume_soft_error_count_trial.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio_query_volume_soft_error_count.awk`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_query_volume_soft_error_count.awk`
 - promote: `src/decomp/scripts/promote_diskio_query_volume_soft_error_count_target_gcc.sh`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
@@ -3959,6 +3963,8 @@ Recent promoted targets:
 - Unknown36 `UNKNOWN36_ShowAbortRequester` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown36_show_abort_requester_trial.sh`
 - Unknown38 `SIGNAL_PollAndDispatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_signal_poll_and_dispatch_trial.sh`
 - Unknown39 `GRAPHICS_BltBitMapRastPort` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_bltbitmaprastport_trial.sh`
+- Unknown DISKIO `DISKIO_GetFilesizeFromHandle` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_get_filesize_from_handle_trial.sh`
+- Unknown DISKIO `DISKIO_QueryVolumeSoftErrorCount` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_query_volume_soft_error_count_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4577,6 +4583,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown36_finalize_and_abort_requester.c`
 - `src/decomp/sas_c/unknown38_signal_poll_and_dispatch.c`
 - `src/decomp/sas_c/unknown39_graphics_bltbitmaprastport.c`
+- `src/decomp/sas_c/diskio_get_filesize_from_handle.c`
+- `src/decomp/sas_c/diskio_query_volume_soft_error_count.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4809,6 +4817,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_unknown36_show_abort_requester.awk`
 - `src/decomp/scripts/semantic_filter_sasc_signal_poll_and_dispatch.awk`
 - `src/decomp/scripts/semantic_filter_sasc_graphics_bltbitmaprastport.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_get_filesize_from_handle.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_query_volume_soft_error_count.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
