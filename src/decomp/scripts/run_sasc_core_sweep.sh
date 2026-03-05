@@ -1111,6 +1111,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_secondsfromepoch_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_datetime_isleapyear_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_esq_calcdayofyearfrommonthday_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini3_compute_htc_max_values_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini3_update_ctrl_h_delta_max_trial.sh"
 )
 
 OUT_DIR="build/decomp/sasc_trial"
