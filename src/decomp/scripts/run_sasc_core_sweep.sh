@@ -781,6 +781,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script3_load_ctrl_context_snapshot_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_process_ctrl_context_playback_tick_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_update_runtime_mode_for_playback_cursor_trial.sh"
+    "src/decomp/scripts/compare_sasc_script3_select_playback_cursor_from_search_text_trial.sh"
+    "src/decomp/scripts/compare_sasc_script3_update_banner_char_transition_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_comparen_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_copypadnul_trial.sh"
