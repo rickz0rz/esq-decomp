@@ -6301,5 +6301,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_newgrid_clear_highlight_area_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_newgrid_clear_highlight_area.awk`
 - `src/decomp/sas_c/newgrid_clear_highlight_area.c`
+- `src/decomp/scripts/compare_sasc_newgrid_fill_grid_rects_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_newgrid_fill_grid_rects.awk`
+- `src/decomp/sas_c/newgrid_fill_grid_rects.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
