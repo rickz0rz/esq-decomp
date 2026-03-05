@@ -825,6 +825,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_apply_highlight_flag_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_build_banner_block_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_build_banner_row_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_build_banner_tables_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_clear_banner_queue_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_consume_banner_queue_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_compute_preset_increment_trial.sh"
