@@ -4000,6 +4000,18 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO1_DumpProgramInfoAttrTable_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_program_info_attr_table_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
+- SAS/C-only lane (`DISKIO1_AdvanceTimeSlotBitIndex`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_advance_time_slot_bit_index_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
+- SAS/C-only lane (`DISKIO1_AdvanceBlackoutBitIndex`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_advance_blackout_bit_index_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
+- SAS/C-only lane (`DISKIO1_AccumulateTimeSlotMaskSum`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_accumulate_time_slot_mask_sum_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
+- SAS/C-only lane (`DISKIO1_AccumulateBlackoutMaskSum`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_accumulate_blackout_mask_sum_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
 - SAS/C-only lane (`GCOMMAND_SetPresetEntry_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
@@ -4188,6 +4200,10 @@ Recent promoted targets:
 - Unknown DISKIO1 `DISKIO1_DumpDefaultCoiInfoBlock_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - Unknown DISKIO1 `DISKIO1_DumpProgramSourceRecordVerbose_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_dump_program_source_record_verbose_return_trial.sh`
 - Unknown DISKIO1 `DISKIO1_DumpProgramInfoAttrTable_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_dump_program_info_attr_table_return_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AdvanceTimeSlotBitIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_advance_time_slot_bit_index_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AdvanceBlackoutBitIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_advance_blackout_bit_index_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AccumulateTimeSlotMaskSum` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_accumulate_time_slot_mask_sum_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AccumulateBlackoutMaskSum` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_accumulate_blackout_mask_sum_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_SetPresetEntry_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_ExpandPresetBlock_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_expand_preset_block_return_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_ValidatePresetTable_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_return_trial.sh`
@@ -4862,6 +4878,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/esqpars_return_stubs.c`
 - `src/decomp/sas_c/displib_return_stubs.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
+- `src/decomp/sas_c/diskio1_advance_helpers.c`
+- `src/decomp/sas_c/diskio1_accumulate_helpers.c`
 - `src/decomp/sas_c/gcommand3_return_stubs.c`
 - `src/decomp/sas_c/ladfunc2_return_stubs.c`
 - `src/decomp/sas_c/locavail_return_stubs.c`
@@ -5125,6 +5143,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esqpars_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc2_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
