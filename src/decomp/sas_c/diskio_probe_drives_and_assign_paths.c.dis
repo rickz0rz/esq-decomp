@@ -1,0 +1,269 @@
+              SECTION      text,CODE
+__code:
+DISKIO_ProbeDrivesAndAssignPaths:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___DISKIO_ProbeDrivesAndAssignPaths__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_SIGNAL_CreateMsg;6100 0000 
+              MOVE.L         D0,DISKIO_TrackdiskMsgPortPtr(A4);2940 0000 
+              PEA            ($38).w                  ;4878 0038 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_STRUCT_AllocWith;6100 0000 
+              MOVE.L         D0,DISKIO_TrackdiskIoReqPtr(A4);2940 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___DISKIO_ProbeDrivesAndAssignPaths__2:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          D0,D7                    ;be80 
+              BGE.W          ___DISKIO_ProbeDrivesAndAssignPaths__15;6c00 0100 
+___DISKIO_ProbeDrivesAndAssignPaths__3:
+              MOVE.L         D7,D1                    ;2207 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            DISKIO_Drive0WriteProtectedCode(A4),A0;41ec 0000 
+              CLR.L          $0(A0,D1.L)              ;42b0 1800 
+              LEA            DISKIO_DriveMediaStatusCodeTable(A4),A0;41ec 0000 
+              CLR.L          $0(A0,D1.L)              ;42b0 1800 
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),-(A7);2f2c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            DISKIO_STR_TRACKDISK_DEVICE(A4);486c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOOpenDevice           ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $14(A7),A7               ;4fef 0014 
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__5;6720 
+___DISKIO_ProbeDrivesAndAssignPaths__4:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            DISKIO_Drive0WriteProtectedCode(A4),A0;41ec 0000 
+              MOVE.L         #$da,$0(A0,D0.L)         ;21bc 0000 00da 0800 
+              LEA            DISKIO_DriveMediaStatusCodeTable(A4),A0;41ec 0000 
+              MOVE.L         #$df,$0(A0,D0.L)         ;21bc 0000 00df 0800 
+              BRA.W          ___DISKIO_ProbeDrivesAndAssignPaths__14;6000 00a8 
+___DISKIO_ProbeDrivesAndAssignPaths__5:
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),A0;206c 0000 
+              MOVE.W         #$e,$1c(A0)              ;317c 000e 001c 
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVODoIO                 ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),A0;206c 0000 
+              MOVE.B         $1e(A0),D0               ;1028 001e 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__7;6712 
+___DISKIO_ProbeDrivesAndAssignPaths__6:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              MOVEQ.L        #$71,D1                  ;7271 
+              ADD.L          D1,D1                    ;d281 
+              LEA            DISKIO_Drive0WriteProtectedCode(A4),A0;41ec 0000 
+              MOVE.L         D1,$0(A0,D0.L)           ;2181 0800 
+              BRA.B          ___DISKIO_ProbeDrivesAndAssignPaths__9;6016 
+___DISKIO_ProbeDrivesAndAssignPaths__7:
+              TST.L          $20(A0)                  ;4aa8 0020 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__9;6710 
+___DISKIO_ProbeDrivesAndAssignPaths__8:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            DISKIO_Drive0WriteProtectedCode(A4),A0;41ec 0000 
+              MOVE.L         #$e2,$0(A0,D0.L)         ;21bc 0000 00e2 0800 
+___DISKIO_ProbeDrivesAndAssignPaths__9:
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),A0;206c 0000 
+              MOVE.W         #$f,$1c(A0)              ;317c 000f 001c 
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVODoIO                 ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),A0;206c 0000 
+              MOVE.B         $1e(A0),D0               ;1028 001e 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__11;6712 
+___DISKIO_ProbeDrivesAndAssignPaths__10:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              MOVEQ.L        #$20,D1                  ;7220 
+              NOT.B          D1                       ;4601 
+              LEA            DISKIO_DriveMediaStatusCodeTable(A4),A0;41ec 0000 
+              MOVE.L         D1,$0(A0,D0.L)           ;2181 0800 
+              BRA.B          ___DISKIO_ProbeDrivesAndAssignPaths__13;6016 
+___DISKIO_ProbeDrivesAndAssignPaths__11:
+              TST.L          $20(A0)                  ;4aa8 0020 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__13;6710 
+___DISKIO_ProbeDrivesAndAssignPaths__12:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            DISKIO_DriveMediaStatusCodeTable(A4),A0;41ec 0000 
+              MOVE.L         #$df,$0(A0,D0.L)         ;21bc 0000 00df 0800 
+___DISKIO_ProbeDrivesAndAssignPaths__13:
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOCloseDevice          ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___DISKIO_ProbeDrivesAndAssignPaths__14:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.W          ___DISKIO_ProbeDrivesAndAssignPaths__2;6000 fefc 
+___DISKIO_ProbeDrivesAndAssignPaths__15:
+              MOVE.L         DISKIO_TrackdiskIoReqPtr(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AG_JMPTBL_STRUCT_FreeWithS;6100 0000 
+              MOVE.L         DISKIO_TrackdiskMsgPortPtr(A4),(A7);2eac 0000 
+              BSR.W          GROUP_AG_JMPTBL_IOSTDREQ_Cleanup;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         ESQ_MainLoopUiTickEnabledFlag(A4),D0;302c 0000 
+              BEQ.W          ___DISKIO_ProbeDrivesAndAssignPaths__32;6700 0122 
+___DISKIO_ProbeDrivesAndAssignPaths__16:
+___DISKIO_ProbeDrivesAndAssignPaths__17:
+              CLR.W          GCOMMAND_DriveProbeRequestedFlag(A4);426c 0000 
+              MOVE.L         DISKIO_Drive0WriteProtectedCode(A4),D0;202c 0000 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__19;6706 
+___DISKIO_ProbeDrivesAndAssignPaths__18:
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,DISKIO_Drive0Dh2AssignDoneFlag(A4);2941 0000 
+___DISKIO_ProbeDrivesAndAssignPaths__19:
+              TST.L          DISKIO_DriveWriteProtectStatusCo(A4);4aac 0000 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__21;6706 
+___DISKIO_ProbeDrivesAndAssignPaths__20:
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D1,DISKIO_Drive1GfxAssignDoneFlag(A4);2941 0000 
+___DISKIO_ProbeDrivesAndAssignPaths__21:
+              TST.L          DISKIO_Drive0Dh2AssignDoneFlag(A4);4aac 0000 
+              BEQ.W          ___DISKIO_ProbeDrivesAndAssignPaths__25;6700 00b2 
+___DISKIO_ProbeDrivesAndAssignPaths__22:
+              TST.L          D0                       ;4a80 
+              BNE.W          ___DISKIO_ProbeDrivesAndAssignPaths__25;6600 00ac 
+___DISKIO_ProbeDrivesAndAssignPaths__23:
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),D5;3a2c 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_FONTS_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_ENV_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_SYS_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_S_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_C_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_L_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              MOVEQ.L        #$0,D0                   ;7000 
+___DISKIO_ProbeDrivesAndAssignPaths__24:
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_LIBS_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_DEVS_DH2(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              MOVE.W         D5,ESQPARS2_ReadModeFlags(A4);3945 0000 
+              CLR.L          DISKIO_Drive0Dh2AssignDoneFlag(A4);42ac 0000 
+___DISKIO_ProbeDrivesAndAssignPaths__25:
+              TST.L          DISKIO_Drive1GfxAssignDoneFlag(A4);4aac 0000 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__32;6746 
+___DISKIO_ProbeDrivesAndAssignPaths__26:
+              TST.L          DISKIO_DriveWriteProtectStatusCo(A4);4aac 0000 
+              BNE.B          ___DISKIO_ProbeDrivesAndAssignPaths__32;6640 
+___DISKIO_ProbeDrivesAndAssignPaths__27:
+              PEA            DISKIO_PATH_DF1_G_ADS(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_SCRIPT_CheckPath;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___DISKIO_ProbeDrivesAndAssignPaths__29;6718 
+___DISKIO_ProbeDrivesAndAssignPaths__28:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_GFX_DF1(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___DISKIO_ProbeDrivesAndAssignPaths__30;6016 
+___DISKIO_ProbeDrivesAndAssignPaths__29:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            DISKIO_CMD_ASSIGN_GFX_PC1(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___DISKIO_ProbeDrivesAndAssignPaths__30:
+              CLR.L          DISKIO_Drive1GfxAssignDoneFlag(A4);42ac 0000 
+___DISKIO_ProbeDrivesAndAssignPaths__31:
+___DISKIO_ProbeDrivesAndAssignPaths__32:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AG_JMPTBL_SIGNAL_CreateMsg
+              XREF           DISKIO_TrackdiskMsgPortPtr
+              XREF           GROUP_AG_JMPTBL_STRUCT_AllocWith
+              XREF           DISKIO_TrackdiskIoReqPtr
+              XREF           DISKIO_Drive0WriteProtectedCode
+              XREF           DISKIO_DriveMediaStatusCodeTable
+              XREF           DISKIO_STR_TRACKDISK_DEVICE
+              XREF           AbsExecBase
+              XREF           _LVOOpenDevice
+              XREF           _LVODoIO
+              XREF           _LVOCloseDevice
+              XREF           GROUP_AG_JMPTBL_STRUCT_FreeWithS
+              XREF           GROUP_AG_JMPTBL_IOSTDREQ_Cleanup
+              XREF           ESQ_MainLoopUiTickEnabledFlag
+              XREF           GCOMMAND_DriveProbeRequestedFlag
+              XREF           DISKIO_Drive0Dh2AssignDoneFlag
+              XREF           DISKIO_DriveWriteProtectStatusCo
+              XREF           DISKIO_Drive1GfxAssignDoneFlag
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           DISKIO_CMD_ASSIGN_FONTS_DH2
+              XREF           Global_REF_DOS_LIBRARY_2
+              XREF           _LVOExecute
+              XREF           DISKIO_CMD_ASSIGN_ENV_DH2
+              XREF           DISKIO_CMD_ASSIGN_SYS_DH2
+              XREF           DISKIO_CMD_ASSIGN_S_DH2
+              XREF           DISKIO_CMD_ASSIGN_C_DH2
+              XREF           DISKIO_CMD_ASSIGN_L_DH2
+              XREF           DISKIO_CMD_ASSIGN_LIBS_DH2
+              XREF           DISKIO_CMD_ASSIGN_DEVS_DH2
+              XREF           DISKIO_PATH_DF1_G_ADS
+              XREF           GROUP_AG_JMPTBL_SCRIPT_CheckPath
+              XREF           DISKIO_CMD_ASSIGN_GFX_DF1
+              XREF           DISKIO_CMD_ASSIGN_GFX_PC1
+              XDEF           DISKIO_ProbeDrivesAndAssignPaths
+              END

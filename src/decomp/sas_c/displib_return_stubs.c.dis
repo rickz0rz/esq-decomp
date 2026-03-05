@@ -1,0 +1,21 @@
+              SECTION      text,CODE
+__code:
+DISPLIB_FindPreviousValidEntryIn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISPLIB_FindPreviousValidEntryIn__1:
+___DISPLIB_FindPreviousValidEntryIn__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+DISPLIB_ApplyInlineAlignmentPadd:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISPLIB_ApplyInlineAlignmentPadd__1:
+___DISPLIB_ApplyInlineAlignmentPadd__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           DISPLIB_FindPreviousValidEntryIn
+              XDEF           DISPLIB_ApplyInlineAlignmentPadd
+              END

@@ -1,0 +1,77 @@
+              SECTION      text,CODE
+__code:
+ESQ_HandleSerialRbfInterrupt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D5/D6/D7/A3/A5,-(A7)  ;48e7 2714 
+___ESQ_HandleSerialRbfInterrupt__1:
+              MOVE.L         $20(A7),A3               ;266f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.W         Global_WORD_H_VALUE(A4),D7;3e2c 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              MOVE.W         $18(A5),D1               ;322d 0018 
+              MOVE.B         D1,$0(A3,D0.L)           ;1781 0800 
+              MOVE.W         $18(A5),D6               ;3c2d 0018 
+              MOVE.W         D6,D0                    ;3006 
+              BTST           #$f,D0                   ;0800 000f 
+              BEQ.B          ___ESQ_HandleSerialRbfInterrupt__3;670a 
+___ESQ_HandleSerialRbfInterrupt__2:
+              MOVE.W         ESQ_SerialRbfErrorCount(A4),D1;322c 0000 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,ESQ_SerialRbfErrorCount(A4);3941 0000 
+___ESQ_HandleSerialRbfInterrupt__3:
+              ADDQ.W         #$1,D7                   ;5247 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D7,D1                    ;3207 
+              CMPI.L         #$fa00,D1                ;0c81 0000 fa00 
+              BNE.B          ___ESQ_HandleSerialRbfInterrupt__5;6602 
+___ESQ_HandleSerialRbfInterrupt__4:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQ_HandleSerialRbfInterrupt__5:
+              MOVE.W         D7,D1                    ;3207 
+              MOVE.W         D1,Global_WORD_H_VALUE(A4);3941 0000 
+              MOVE.W         Global_WORD_T_VALUE(A4),D2;342c 0000 
+              SUB.W          D2,D1                    ;9242 
+              MOVE.L         D1,D5                    ;2a01 
+              TST.W          D5                       ;4a45 
+              BPL.B          ___ESQ_HandleSerialRbfInterrupt__7;6a04 
+___ESQ_HandleSerialRbfInterrupt__6:
+              SUBI.W         #$600,D5                 ;0445 0600 
+___ESQ_HandleSerialRbfInterrupt__7:
+              MOVE.W         D5,ESQ_SerialRbfFillLevel(A4);3945 0000 
+              MOVE.W         Global_WORD_MAX_VALUE(A4),D1;322c 0000 
+              CMP.W          D1,D5                    ;ba41 
+              BLT.B          ___ESQ_HandleSerialRbfInterrupt__9;6d04 
+___ESQ_HandleSerialRbfInterrupt__8:
+              MOVE.W         D5,Global_WORD_MAX_VALUE(A4);3945 0000 
+___ESQ_HandleSerialRbfInterrupt__9:
+              CMPI.W         #$ffffdac0,D5            ;0c45 dac0 
+              BLT.B          ___ESQ_HandleSerialRbfInterrupt__12;6d14 
+___ESQ_HandleSerialRbfInterrupt__10:
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),D1;322c 0000 
+              CMPI.W         #$102,D1                 ;0c41 0102 
+              BEQ.B          ___ESQ_HandleSerialRbfInterrupt__12;670a 
+___ESQ_HandleSerialRbfInterrupt__11:
+              MOVE.W         #$102,ESQPARS2_ReadModeFlags(A4);397c 0102 0000 
+              ADDQ.L         #$1,SCRIPT_SerialReadModeOverflowCou(A4);52ac 0000 
+___ESQ_HandleSerialRbfInterrupt__12:
+              MOVE.W         #$800,$9c(A5)            ;3b7c 0800 009c 
+              MOVEQ.L        #$0,D0                   ;7000 
+___ESQ_HandleSerialRbfInterrupt__13:
+___ESQ_HandleSerialRbfInterrupt__14:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A3/A5  ;4cdf 28e4 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_WORD_H_VALUE
+              XREF           ESQ_SerialRbfErrorCount
+              XREF           Global_WORD_T_VALUE
+              XREF           ESQ_SerialRbfFillLevel
+              XREF           Global_WORD_MAX_VALUE
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           SCRIPT_SerialReadModeOverflowCou
+              XDEF           ESQ_HandleSerialRbfInterrupt
+              END

@@ -1,0 +1,42 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_SetPresetEntry_Return:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_SetPresetEntry_Return__1:
+___GCOMMAND_SetPresetEntry_Return__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GCOMMAND_ExpandPresetBlock_Retur:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_ExpandPresetBlock_Retur__1:
+___GCOMMAND_ExpandPresetBlock_Retur__2:
+              RTS                                     ;4e75 
+GCOMMAND_ValidatePresetTable_Ret:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_ValidatePresetTable_Ret__1:
+___GCOMMAND_ValidatePresetTable_Ret__2:
+              RTS                                     ;4e75 
+GCOMMAND_InitPresetTableFromPale:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_InitPresetTableFromPale__1:
+___GCOMMAND_InitPresetTableFromPale__2:
+              RTS                                     ;4e75 
+GCOMMAND_UpdatePresetEntryCache_:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_UpdatePresetEntryCache___1:
+___GCOMMAND_UpdatePresetEntryCache___2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           GCOMMAND_SetPresetEntry_Return
+              XDEF           GCOMMAND_ExpandPresetBlock_Retur
+              XDEF           GCOMMAND_ValidatePresetTable_Ret
+              XDEF           GCOMMAND_InitPresetTableFromPale
+              XDEF           GCOMMAND_UpdatePresetEntryCache_
+              END

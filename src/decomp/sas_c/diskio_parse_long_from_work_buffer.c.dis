@@ -1,0 +1,33 @@
+              SECTION      text,CODE
+__code:
+DISKIO_ParseLongFromWorkBuffer:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___DISKIO_ParseLongFromWorkBuffer__1:
+              BSR.W          DISKIO_ConsumeCStringFromWorkBuf;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              MOVE.L         #$ffff,A0                ;207c 0000 ffff 
+              CMP.L          A5,A0                    ;b1cd 
+              BNE.B          ___DISKIO_ParseLongFromWorkBuffer__3;6608 
+___DISKIO_ParseLongFromWorkBuffer__2:
+              MOVE.L         #$ffff,D0                ;203c 0000 ffff 
+              BRA.B          ___DISKIO_ParseLongFromWorkBuffer__5;6008 
+___DISKIO_ParseLongFromWorkBuffer__3:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AG_JMPTBL_PARSE_ReadSigned;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO_ParseLongFromWorkBuffer__4:
+___DISKIO_ParseLongFromWorkBuffer__5:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DISKIO_ConsumeCStringFromWorkBuf
+              XREF           GROUP_AG_JMPTBL_PARSE_ReadSigned
+              XDEF           DISKIO_ParseLongFromWorkBuffer
+              END

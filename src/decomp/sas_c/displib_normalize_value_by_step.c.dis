@@ -1,0 +1,35 @@
+              SECTION      text,CODE
+__code:
+DISPLIB_NormalizeValueByStep:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___DISPLIB_NormalizeValueByStep__1:
+              MOVE.W         $1a(A7),D5               ;3a2f 001a 
+              MOVE.W         $16(A7),D6               ;3c2f 0016 
+              MOVE.W         $12(A7),D7               ;3e2f 0012 
+___DISPLIB_NormalizeValueByStep__2:
+              CMP.W          D6,D7                    ;be46 
+              BGE.B          ___DISPLIB_NormalizeValueByStep__4;6c04 
+___DISPLIB_NormalizeValueByStep__3:
+              ADD.W          D5,D7                    ;de45 
+              BRA.B          ___DISPLIB_NormalizeValueByStep__2;60f8 
+___DISPLIB_NormalizeValueByStep__4:
+              CMP.W          D5,D7                    ;be45 
+              BLE.B          ___DISPLIB_NormalizeValueByStep__6;6f04 
+___DISPLIB_NormalizeValueByStep__5:
+              SUB.W          D5,D7                    ;9e45 
+              BRA.B          ___DISPLIB_NormalizeValueByStep__4;60f8 
+___DISPLIB_NormalizeValueByStep__6:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+___DISPLIB_NormalizeValueByStep__7:
+___DISPLIB_NormalizeValueByStep__8:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           DISPLIB_NormalizeValueByStep
+              END

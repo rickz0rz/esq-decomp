@@ -1,0 +1,39 @@
+              SECTION      text,CODE
+__code:
+DISKIO_ResetCtrlInputStateIfIdle:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO_ResetCtrlInputStateIfIdle__1:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___DISKIO_ResetCtrlInputStateIfIdle__4;6626 
+___DISKIO_ResetCtrlInputStateIfIdle__2:
+___DISKIO_ResetCtrlInputStateIfIdle__3:
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVODisable              ;6100 0000 
+              CLR.W          CTRL_BufferedByteCount(A4);426c 0000 
+              CLR.W          CTRL_HPreviousSample(A4) ;426c 0000 
+              CLR.W          CTRL_H(A4)               ;426c 0000 
+              MOVE.L         AbsExecBase(A4),(A7)     ;2eac 0000 
+              BSR.W          _LVOEnable               ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              CLR.W          Global_RefreshTickCounter(A4);426c 0000 
+              CLR.W          ESQPARS2_ReadModeFlags(A4);426c 0000 
+___DISKIO_ResetCtrlInputStateIfIdle__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_UIBusyFlag
+              XREF           AbsExecBase
+              XREF           _LVODisable
+              XREF           CTRL_BufferedByteCount
+              XREF           CTRL_HPreviousSample
+              XREF           CTRL_H
+              XREF           _LVOEnable
+              XREF           Global_RefreshTickCounter
+              XREF           ESQPARS2_ReadModeFlags
+              XDEF           DISKIO_ResetCtrlInputStateIfIdle
+              END

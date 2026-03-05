@@ -1,0 +1,49 @@
+              SECTION      text,CODE
+__code:
+DISKIO_SaveConfigToFileHandle:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___DISKIO_SaveConfigToFileHandle__1:
+              PEA            ($3ee).w                 ;4878 03ee 
+              PEA            Global_STR_DF0_CONFIG_DAT_1(A4);486c 0000 
+              BSR.W          DISKIO_OpenFileWithBuffer;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D7                       ;4a87 
+              BNE.B          ___DISKIO_SaveConfigToFileHandle__3;6604 
+___DISKIO_SaveConfigToFileHandle__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___DISKIO_SaveConfigToFileHandle__5;6028 
+___DISKIO_SaveConfigToFileHandle__3:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            Global_STR_DEFAULT_CONFIG_FORMAT(A4);486c 0000 
+              PEA            BRUSH_LabelScratch(A4)   ;486c 0000 
+              BSR.W          GROUP_AE_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            ($34).w                  ;4878 0034 
+              PEA            BRUSH_LabelScratch(A4)   ;486c 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
+              MOVE.L         D7,(A7)                  ;2e87 
+              BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              MOVEQ.L        #$0,D0                   ;7000 
+___DISKIO_SaveConfigToFileHandle__4:
+___DISKIO_SaveConfigToFileHandle__5:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_DF0_CONFIG_DAT_1
+              XREF           DISKIO_OpenFileWithBuffer
+              XREF           Global_STR_DEFAULT_CONFIG_FORMAT
+              XREF           BRUSH_LabelScratch
+              XREF           GROUP_AE_JMPTBL_WDISP_SPrintf
+              XREF           DISKIO_WriteBufferedBytes
+              XREF           DISKIO_CloseBufferedFileAndFlush
+              XDEF           DISKIO_SaveConfigToFileHandle
+              END

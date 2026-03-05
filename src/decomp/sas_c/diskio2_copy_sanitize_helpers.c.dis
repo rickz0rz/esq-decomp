@@ -1,0 +1,127 @@
+              SECTION      text,CODE
+__code:
+DISKIO2_CopyAndSanitizeSlotStrin:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___DISKIO2_CopyAndSanitizeSlotStrin__1:
+              MOVE.W         $32(A7),D7               ;3e2f 0032 
+              MOVE.L         $2c(A7),A2               ;246f 002c 
+              MOVE.L         $28(A7),A3               ;266f 0028 
+              MOVE.L         $24(A7),A5               ;2a6f 0024 
+              MOVE.L         A5,$18(A7)               ;2f4d 0018 
+              LEA            $38(A2),A0               ;41ea 0038 
+              SWAP           D7                       ;4847 
+              CLR.W          D7                       ;4247 
+              SWAP           D7                       ;4847 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         (A0),A1                  ;2250 
+              MOVE.L         A1,$1c(A7)               ;2f49 001c 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__5;6710 
+___DISKIO2_CopyAndSanitizeSlotStrin__2:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__5;670c 
+___DISKIO2_CopyAndSanitizeSlotStrin__3:
+              MOVE.W         D7,D0                    ;3007 
+              TST.W          D0                       ;4a40 
+              BLE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__5;6f06 
+___DISKIO2_CopyAndSanitizeSlotStrin__4:
+              MOVEQ.L        #$31,D1                  ;7231 
+              CMP.W          D1,D7                    ;be41 
+              BCS.B          ___DISKIO2_CopyAndSanitizeSlotStrin__6;6506 
+___DISKIO2_CopyAndSanitizeSlotStrin__5:
+              MOVE.L         A1,D0                    ;2009 
+              BRA.W          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6000 009c 
+___DISKIO2_CopyAndSanitizeSlotStrin__6:
+              MOVE.L         A1,D0                    ;2009 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__8;6704 
+___DISKIO2_CopyAndSanitizeSlotStrin__7:
+              TST.B          (A1)                     ;4a11 
+              BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__9;6606 
+___DISKIO2_CopyAndSanitizeSlotStrin__8:
+              MOVE.L         A1,D0                    ;2009 
+              BRA.W          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6000 008e 
+___DISKIO2_CopyAndSanitizeSlotStrin__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              ADDQ.L         #$7,D0                   ;5e80 
+              BTST           #$1,$0(A2,D0.L)          ;0832 0001 0800 
+              BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__12;660c 
+___DISKIO2_CopyAndSanitizeSlotStrin__10:
+              BTST           #$4,$1b(A3)              ;082b 0004 001b 
+              BNE.B          ___DISKIO2_CopyAndSanitizeSlotStrin__12;6604 
+___DISKIO2_CopyAndSanitizeSlotStrin__11:
+              MOVE.L         A1,D0                    ;2009 
+              BRA.B          ___DISKIO2_CopyAndSanitizeSlotStrin__25;6072 
+___DISKIO2_CopyAndSanitizeSlotStrin__12:
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.B         (A0),D0                  ;1010 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__14;6708 
+___DISKIO2_CopyAndSanitizeSlotStrin__13:
+              MOVE.B         D0,(A5)+                 ;1ac0 
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___DISKIO2_CopyAndSanitizeSlotStrin__12;60f0 
+___DISKIO2_CopyAndSanitizeSlotStrin__14:
+              CLR.B          (A5)                     ;4215 
+              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__16;6714 
+___DISKIO2_CopyAndSanitizeSlotStrin__15:
+              MOVE.L         D0,A0                    ;2040 
+              ADDQ.L         #$1,A0                   ;5288 
+              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+___DISKIO2_CopyAndSanitizeSlotStrin__16:
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__23;6730 
+___DISKIO2_CopyAndSanitizeSlotStrin__17:
+              PEA            NEWGRID_EntrySplitDelimiterMask(A4);486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AH_JMPTBL_STR_FindAnyCharP;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__19;6704 
+___DISKIO2_CopyAndSanitizeSlotStrin__18:
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+___DISKIO2_CopyAndSanitizeSlotStrin__19:
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.B         (A0),D0                  ;1010 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__22;670c 
+___DISKIO2_CopyAndSanitizeSlotStrin__20:
+              MOVEQ.L        #$20,D1                  ;7220 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___DISKIO2_CopyAndSanitizeSlotStrin__22;6706 
+___DISKIO2_CopyAndSanitizeSlotStrin__21:
+              ADDQ.L         #$1,$14(A7)              ;52af 0014 
+              BRA.B          ___DISKIO2_CopyAndSanitizeSlotStrin__19;60ec 
+___DISKIO2_CopyAndSanitizeSlotStrin__22:
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              CLR.B          (A0)                     ;4210 
+___DISKIO2_CopyAndSanitizeSlotStrin__23:
+              MOVE.L         $18(A7),D0               ;202f 0018 
+___DISKIO2_CopyAndSanitizeSlotStrin__24:
+___DISKIO2_CopyAndSanitizeSlotStrin__25:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AI_JMPTBL_STR_FindCharPtr
+              XREF           NEWGRID_EntrySplitDelimiterMask
+              XREF           GROUP_AH_JMPTBL_STR_FindAnyCharP
+              XDEF           DISKIO2_CopyAndSanitizeSlotStrin
+              END

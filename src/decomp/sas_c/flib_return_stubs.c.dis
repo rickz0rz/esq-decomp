@@ -1,0 +1,14 @@
+              SECTION      text,CODE
+__code:
+FLIB_AppendClockStampedLogEntry_:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___FLIB_AppendClockStampedLogEntry___1:
+___FLIB_AppendClockStampedLogEntry___2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           FLIB_AppendClockStampedLogEntry_
+              END

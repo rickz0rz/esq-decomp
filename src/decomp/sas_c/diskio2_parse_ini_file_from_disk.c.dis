@@ -1,0 +1,23 @@
+              SECTION      text,CODE
+__code:
+DISKIO2_ParseIniFileFromDisk:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO2_ParseIniFileFromDisk__1:
+              BSR.W          GROUP_AH_JMPTBL_ESQPARS_ClearAli;6100 0000 
+              PEA            CTASKS_PATH_QTABLE_INI(A4);486c 0000 
+              BSR.W          GROUP_AK_JMPTBL_PARSEINI_ParseIn;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO2_ParseIniFileFromDisk__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AH_JMPTBL_ESQPARS_ClearAli
+              XREF           CTASKS_PATH_QTABLE_INI
+              XREF           GROUP_AK_JMPTBL_PARSEINI_ParseIn
+              XDEF           DISKIO2_ParseIniFileFromDisk
+              END

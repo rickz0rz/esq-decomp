@@ -1,0 +1,49 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_ParseFilterStateFromBuf:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_ParseFilterStateFromBuf__1:
+___LOCAVAIL_ParseFilterStateFromBuf__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+LOCAVAIL_MapFilterTokenCharToCla:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_MapFilterTokenCharToCla__1:
+___LOCAVAIL_MapFilterTokenCharToCla__2:
+              RTS                                     ;4e75 
+LOCAVAIL_ComputeFilterOffsetForE:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_ComputeFilterOffsetForE__1:
+___LOCAVAIL_ComputeFilterOffsetForE__2:
+              RTS                                     ;4e75 
+LOCAVAIL_SaveAvailabilityDataFil:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_SaveAvailabilityDataFil__1:
+___LOCAVAIL_SaveAvailabilityDataFil__2:
+              RTS                                     ;4e75 
+LOCAVAIL_LoadAvailabilityDataFil:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_LoadAvailabilityDataFil__1:
+___LOCAVAIL_LoadAvailabilityDataFil__2:
+              RTS                                     ;4e75 
+LOCAVAIL_UpdateFilterStateMachin:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL_UpdateFilterStateMachin__1:
+___LOCAVAIL_UpdateFilterStateMachin__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           LOCAVAIL_ParseFilterStateFromBuf
+              XDEF           LOCAVAIL_MapFilterTokenCharToCla
+              XDEF           LOCAVAIL_ComputeFilterOffsetForE
+              XDEF           LOCAVAIL_SaveAvailabilityDataFil
+              XDEF           LOCAVAIL_LoadAvailabilityDataFil
+              XDEF           LOCAVAIL_UpdateFilterStateMachin
+              END

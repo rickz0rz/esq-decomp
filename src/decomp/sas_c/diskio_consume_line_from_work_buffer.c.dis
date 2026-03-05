@@ -1,0 +1,67 @@
+              SECTION      text,CODE
+__code:
+DISKIO_ConsumeLineFromWorkBuffer:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
+___DISKIO_ConsumeLineFromWorkBuffer__1:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
+___DISKIO_ConsumeLineFromWorkBuffer__2:
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D0;202c 0000 
+              SUBQ.L         #$1,Global_REF_LONG_FILE_SCRATCH(A4);53ac 0000 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___DISKIO_ConsumeLineFromWorkBuffer__7;6f18 
+___DISKIO_ConsumeLineFromWorkBuffer__3:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A0;206c 0000 
+              MOVE.B         (A0),D7                  ;1e10 
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          D0,D7                    ;be00 
+              BEQ.B          ___DISKIO_ConsumeLineFromWorkBuffer__7;670c 
+___DISKIO_ConsumeLineFromWorkBuffer__4:
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.B          D0,D7                    ;be00 
+              BEQ.B          ___DISKIO_ConsumeLineFromWorkBuffer__7;6706 
+___DISKIO_ConsumeLineFromWorkBuffer__5:
+___DISKIO_ConsumeLineFromWorkBuffer__6:
+              ADDQ.L         #$1,Global_PTR_WORK_BUFFER(A4);52ac 0000 
+              BRA.B          ___DISKIO_ConsumeLineFromWorkBuffer__2;60dc 
+___DISKIO_ConsumeLineFromWorkBuffer__7:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A0;206c 0000 
+              ADDQ.L         #$1,Global_PTR_WORK_BUFFER(A4);52ac 0000 
+              CLR.B          (A0)                     ;4210 
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BPL.B          ___DISKIO_ConsumeLineFromWorkBuffer__9;6a0a 
+___DISKIO_ConsumeLineFromWorkBuffer__8:
+              MOVE.L         #$ffff,A0                ;207c 0000 ffff 
+              MOVE.L         A0,D0                    ;2008 
+              BRA.B          ___DISKIO_ConsumeLineFromWorkBuffer__15;601e 
+___DISKIO_ConsumeLineFromWorkBuffer__9:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A0;206c 0000 
+              MOVE.B         (A0),D6                  ;1c10 
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          D0,D6                    ;bc00 
+              BEQ.B          ___DISKIO_ConsumeLineFromWorkBuffer__12;6706 
+___DISKIO_ConsumeLineFromWorkBuffer__10:
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___DISKIO_ConsumeLineFromWorkBuffer__13;660a 
+___DISKIO_ConsumeLineFromWorkBuffer__11:
+___DISKIO_ConsumeLineFromWorkBuffer__12:
+              ADDQ.L         #$1,Global_PTR_WORK_BUFFER(A4);52ac 0000 
+              SUBQ.L         #$1,Global_REF_LONG_FILE_SCRATCH(A4);53ac 0000 
+              BRA.B          ___DISKIO_ConsumeLineFromWorkBuffer__9;60e4 
+___DISKIO_ConsumeLineFromWorkBuffer__13:
+              MOVE.L         A5,D0                    ;200d 
+___DISKIO_ConsumeLineFromWorkBuffer__14:
+___DISKIO_ConsumeLineFromWorkBuffer__15:
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_PTR_WORK_BUFFER
+              XREF           Global_REF_LONG_FILE_SCRATCH
+              XDEF           DISKIO_ConsumeLineFromWorkBuffer
+              END

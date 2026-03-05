@@ -1,0 +1,21 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_RepackEntryTextAndAttrBu:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LADFUNC_RepackEntryTextAndAttrBu__1:
+___LADFUNC_RepackEntryTextAndAttrBu__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+LADFUNC_UpdateEntryFromTextAndAt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LADFUNC_UpdateEntryFromTextAndAt__1:
+___LADFUNC_UpdateEntryFromTextAndAt__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           LADFUNC_RepackEntryTextAndAttrBu
+              XDEF           LADFUNC_UpdateEntryFromTextAndAt
+              END

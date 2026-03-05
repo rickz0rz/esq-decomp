@@ -1,0 +1,73 @@
+              SECTION      text,CODE
+__code:
+ESQDISP_QueueHighlightDrawMessag:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___ESQDISP_QueueHighlightDrawMessag__1:
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.B         #$5,$8(A5)               ;1b7c 0005 0008 
+              LEA            $12(A5),A0               ;41ed 0012 
+              MOVE.W         #$a0,(A0)                ;30bc 00a0 
+              LEA            $e(A5),A0                ;41ed 000e 
+              MOVE.L         ESQ_HighlightReplyPort(A4),(A0);20ac 0000 
+              LEA            $14(A5),A0               ;41ed 0014 
+              MOVE.L         $8(A3),(A0)              ;20ab 0008 
+              LEA            $18(A5),A0               ;41ed 0018 
+              MOVE.L         $c(A3),(A0)              ;20ab 000c 
+              LEA            $1c(A5),A0               ;41ed 001c 
+              MOVE.L         $10(A3),(A0)             ;20ab 0010 
+              LEA            $34(A5),A0               ;41ed 0034 
+              CLR.W          (A0)                     ;4250 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQIFF_JMPTBL_NEWGRID_ValidateSe;6100 0000 
+              LEA            $20(A5),A0               ;41ed 0020 
+              CLR.L          (A0)                     ;4290 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              BSR.W          ESQDISP_InitHighlightMessagePatt;6100 0000 
+              LEA            $3c(A5),A2               ;45ed 003c 
+              MOVE.L         A2,(A7)                  ;2e8a 
+              BSR.W          _LVOInitRastPort         ;6100 0000 
+              LEA            $40(A5),A0               ;41ed 0040 
+              MOVE.L         A3,(A0)                  ;208b 
+              MOVE.L         Global_HANDLE_PREVUEC_FONT(A4),(A7);2eac 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOSetFont              ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              LEA            $70(A5),A0               ;41ed 0070 
+              MOVE.L         (A0),$1c(A7)             ;2f50 001c 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              MOVE.B         D0,$37(A0)               ;1140 0037 
+              BSET           #$0,$35(A0)              ;08e8 0000 0035 
+              MOVE.L         A5,(A7)                  ;2e8d 
+___ESQDISP_QueueHighlightDrawMessag__2:
+              MOVE.L         ESQ_HighlightMsgPort(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOPutMsg               ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___ESQDISP_QueueHighlightDrawMessag__3:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_HighlightReplyPort
+              XREF           ESQIFF_JMPTBL_NEWGRID_ValidateSe
+              XREF           ESQDISP_InitHighlightMessagePatt
+              XREF           _LVOInitRastPort
+              XREF           Global_HANDLE_PREVUEC_FONT
+              XREF           _LVOSetFont
+              XREF           _LVOSetDrMd
+              XREF           ESQ_HighlightMsgPort
+              XREF           _LVOPutMsg
+              XDEF           ESQDISP_QueueHighlightDrawMessag
+              END

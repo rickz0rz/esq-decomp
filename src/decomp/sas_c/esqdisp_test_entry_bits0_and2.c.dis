@@ -1,0 +1,52 @@
+              SECTION      text,CODE
+__code:
+ESQDISP_TestEntryBits0And2_Core:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___ESQDISP_TestEntryBits0And2_Core__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___ESQDISP_TestEntryBits0And2_Core__9;671a 
+___ESQDISP_TestEntryBits0And2_Core__2:
+___ESQDISP_TestEntryBits0And2_Core__3:
+              BTST           #$0,$28(A5)              ;082d 0000 0028 
+              BNE.B          ___ESQDISP_TestEntryBits0And2_Core__5;6604 
+___ESQDISP_TestEntryBits0And2_Core__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___ESQDISP_TestEntryBits0And2_Core__9;600e 
+___ESQDISP_TestEntryBits0And2_Core__5:
+              BTST           #$2,$28(A5)              ;082d 0002 0028 
+              BNE.B          ___ESQDISP_TestEntryBits0And2_Core__7;6604 
+___ESQDISP_TestEntryBits0And2_Core__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___ESQDISP_TestEntryBits0And2_Core__9;6002 
+___ESQDISP_TestEntryBits0And2_Core__7:
+              MOVEQ.L        #$1,D0                   ;7001 
+___ESQDISP_TestEntryBits0And2_Core__8:
+___ESQDISP_TestEntryBits0And2_Core__9:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQDISP_TestEntryBits0And2:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___ESQDISP_TestEntryBits0And2__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.B          ESQDISP_TestEntryBits0And2_Core;61ba 
+___ESQDISP_TestEntryBits0And2__2:
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQDISP_TestEntryBits0And2__3:
+___ESQDISP_TestEntryBits0And2__4:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQDISP_TestEntryBits0And2_Core
+              XDEF           ESQDISP_TestEntryBits0And2
+              END

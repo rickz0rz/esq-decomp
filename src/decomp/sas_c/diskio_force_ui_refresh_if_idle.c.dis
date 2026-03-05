@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+DISKIO_ForceUiRefreshIfIdle:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO_ForceUiRefreshIfIdle__1:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.B          ___DISKIO_ForceUiRefreshIfIdle__4;6610 
+___DISKIO_ForceUiRefreshIfIdle__2:
+___DISKIO_ForceUiRefreshIfIdle__3:
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              MOVE.W         #$ffffffff,Global_RefreshTickCounter(A4);397c ffff 0000 
+              BSR.W          GROUP_AG_JMPTBL_TEXTDISP_ResetSe;6100 0000 
+___DISKIO_ForceUiRefreshIfIdle__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_UIBusyFlag
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           Global_RefreshTickCounter
+              XREF           GROUP_AG_JMPTBL_TEXTDISP_ResetSe
+              XDEF           DISKIO_ForceUiRefreshIfIdle
+              END

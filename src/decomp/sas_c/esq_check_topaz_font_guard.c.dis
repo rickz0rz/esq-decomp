@@ -1,0 +1,152 @@
+              SECTION      text,CODE
+__code:
+ESQ_CheckTopazFontGuard:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___ESQ_CheckTopazFontGuard__1:
+              MOVE.L         Global_REF_INTUITION_LIBRARY(A4),A5;2a6c 0000 
+              LEA            $38(A5),A0               ;41ed 0038 
+              MOVE.L         (A0),A3                  ;2650 
+              LEA            $b8(A3),A0               ;41eb 00b8 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVEQ.L        #$2,D0                   ;7002 
+              CMP.B          $5(A0),D0                ;b028 0005 
+              BEQ.B          ___ESQ_CheckTopazFontGuard__3;6714 
+___ESQ_CheckTopazFontGuard__2:
+              PEA            Global_STR_YOU_CANNOT_RE_RUN_THE(A4);486c 0000 
+              BSR.W          GROUP_MAIN_B_JMPTBL_STREAM_Buffe;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              BSR.W          GROUP_MAIN_B_JMPTBL_BUFFER_Flush;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___ESQ_CheckTopazFontGuard__9;6000 013a 
+___ESQ_CheckTopazFontGuard__3:
+              LEA            $34(A5),A0               ;41ed 0034 
+              MOVE.L         (A0),A2                  ;2450 
+              LEA            $14(A5),A0               ;41ed 0014 
+              CMPI.W         #$21,(A0)                ;0c50 0021 
+              BHI.W          ___ESQ_CheckTopazFontGuard__7;6200 00a8 
+___ESQ_CheckTopazFontGuard__4:
+              PEA            ($fa).w                  ;4878 00fa 
+              BSR.W          GROUP_MAIN_B_JMPTBL_DOS_Delay;6100 0000 
+              LEA            $54(A3),A0               ;41eb 0054 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($ff).w                  ;4878 00ff 
+              PEA            ($27f).w                 ;4878 027f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              BSR.W          _LVORectFill             ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($64).w                  ;4878 0064 
+              PEA            ($14).w                  ;4878 0014 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              BSR.W          _LVOMove                 ;6100 0000 
+              PEA            ($19).w                  ;4878 0019 
+              PEA            Global_STR_PLEASE_STANDBY_1(A4);486c 0000 
+              MOVE.L         $5c(A7),-(A7)            ;2f2f 005c 
+              BSR.W          _LVOText                 ;6100 0000 
+              PEA            ($71).w                  ;4878 0071 
+              PEA            ($14).w                  ;4878 0014 
+              MOVE.L         $68(A7),-(A7)            ;2f2f 0068 
+              BSR.W          _LVOMove                 ;6100 0000 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              PEA            ($1a).w                  ;4878 001a 
+              PEA            Global_STR_ATTENTION_SYSTEM_ENGI(A4);486c 0000 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              BSR.W          _LVOText                 ;6100 0000 
+              PEA            ($7e).w                  ;4878 007e 
+              PEA            ($14).w                  ;4878 0014 
+              MOVE.L         $34(A7),-(A7)            ;2f2f 0034 
+              BSR.W          _LVOMove                 ;6100 0000 
+              PEA            ($2f).w                  ;4878 002f 
+              PEA            Global_STR_REPORT_CODE_ER003(A4);486c 0000 
+___ESQ_CheckTopazFontGuard__5:
+              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              BSR.W          _LVOText                 ;6100 0000 
+              LEA            $24(A7),A7               ;4fef 0024 
+___ESQ_CheckTopazFontGuard__6:
+              BRA.B          ___ESQ_CheckTopazFontGuard__6;60fe 
+___ESQ_CheckTopazFontGuard__7:
+              LEA            $a(A2),A0                ;41ea 000a 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              MOVEQ.L        #$32,D1                  ;7232 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              BSR.W          _LVOSizeWindow           ;6100 0000 
+              PEA            ($64).w                  ;4878 0064 
+              BSR.W          GROUP_MAIN_B_JMPTBL_DOS_Delay;6100 0000 
+              LEA            $e(A3),A0                ;41eb 000e 
+              MOVEQ.L        #$32,D0                  ;7032 
+              MOVE.W         D0,(A0)                  ;3080 
+              MOVE.L         $34(A7),A1               ;226f 0034 
+              ADDQ.L         #$2,A1                   ;5489 
+              MOVE.W         D0,(A1)                  ;3280 
+              MOVE.L         $34(A7),A1               ;226f 0034 
+              MOVE.B         #$1,$5(A1)               ;137c 0001 0005 
+              MOVE.W         (A0),D0                  ;3010 
+              EXT.L          D0                       ;48c0 
+              PEA            ($280).w                 ;4878 0280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_MAIN_B_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              ASR.L          #$3,D7                   ;e687 
+              MOVE.L         $3c(A7),A0               ;206f 003c 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$8,A1                   ;5089 
+              MOVEQ.L        #$7d,D6                  ;7c7d 
+              LSL.L          #$5,D6                   ;eb8e 
+              ADD.L          (A1),D6                  ;dc91 
+              LEA            $c(A0),A1                ;43e8 000c 
+              MOVE.L         (A1),D0                  ;2011 
+              ADD.L          D7,D0                    ;d087 
+              MOVE.L         D0,D5                    ;2a00 
+___ESQ_CheckTopazFontGuard__8:
+              CLR.L          (A1)                     ;4291 
+              BSR.W          _LVORemakeDisplay        ;6100 0000 
+              MOVE.L         D5,D0                    ;2005 
+              SUB.L          D6,D0                    ;9086 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              BSR.W          _LVOFreeMem              ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___ESQ_CheckTopazFontGuard__9:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_INTUITION_LIBRARY
+              XREF           Global_STR_YOU_CANNOT_RE_RUN_THE
+              XREF           GROUP_MAIN_B_JMPTBL_STREAM_Buffe
+              XREF           GROUP_MAIN_B_JMPTBL_BUFFER_Flush
+              XREF           GROUP_MAIN_B_JMPTBL_DOS_Delay
+              XREF           _LVOSetAPen
+              XREF           _LVORectFill
+              XREF           _LVOMove
+              XREF           Global_STR_PLEASE_STANDBY_1
+              XREF           _LVOText
+              XREF           Global_STR_ATTENTION_SYSTEM_ENGI
+              XREF           Global_STR_REPORT_CODE_ER003
+              XREF           _LVOSizeWindow
+              XREF           GROUP_MAIN_B_JMPTBL_MATH_Mulu32
+              XREF           _LVORemakeDisplay
+              XREF           _LVOFreeMem
+              XDEF           ESQ_CheckTopazFontGuard
+              END

@@ -1,0 +1,80 @@
+              SECTION      text,CODE
+__code:
+DISPTEXT_InitBuffers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISPTEXT_InitBuffers__1:
+              TST.L          DISPTEXT_InitBuffersPending(A4);4aac 0000 
+              BEQ.B          ___DISPTEXT_InitBuffers__4;6744 
+___DISPTEXT_InitBuffers__2:
+___DISPTEXT_InitBuffers__3:
+              CLR.L          DISPTEXT_TextBufferPtr(A4);42ac 0000 
+              BSR.W          DISPLIB_ResetLineTables  ;6100 0000 
+              CLR.L          DISPTEXT_InitBuffersPending(A4);42ac 0000 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($3e8).w                 ;4878 03e8 
+              PEA            ($140).w                 ;4878 0140 
+              PEA            Global_STR_DISPTEXT_C_2(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
+              MOVE.L         D0,Global_REF_1000_BYTES_ALLOCATED_(A4);2940 0000 
+              MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
+              PEA            ($3e8).w                 ;4878 03e8 
+              PEA            ($141).w                 ;4878 0141 
+              PEA            Global_STR_DISPTEXT_C_3(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
+              MOVE.L         D0,Global_REF_1000_BYTES_ALLOCATED_(A4);2940 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___DISPTEXT_InitBuffers__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+DISPTEXT_FreeBuffers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISPTEXT_FreeBuffers__1:
+              BSR.W          DISPLIB_ResetTextBufferAndLineTa;6100 0000 
+              MOVE.L         Global_REF_1000_BYTES_ALLOCATED_(A4),D0;202c 0000 
+              BEQ.B          ___DISPTEXT_FreeBuffers__3;671c 
+___DISPTEXT_FreeBuffers__2:
+              PEA            ($3e8).w                 ;4878 03e8 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($152).w                 ;4878 0152 
+              PEA            Global_STR_DISPTEXT_C_4(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              SUB.L          A0,A0                    ;91c8 
+              MOVE.L         A0,Global_REF_1000_BYTES_ALLOCATED_(A4);2948 0000 
+___DISPTEXT_FreeBuffers__3:
+              MOVE.L         Global_REF_1000_BYTES_ALLOCATED_(A4),D0;202c 0000 
+              BEQ.B          ___DISPTEXT_FreeBuffers__6;671a 
+___DISPTEXT_FreeBuffers__4:
+              PEA            ($3e8).w                 ;4878 03e8 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($157).w                 ;4878 0157 
+              PEA            Global_STR_DISPTEXT_C_5(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              CLR.L          Global_REF_1000_BYTES_ALLOCATED_(A4);42ac 0000 
+___DISPTEXT_FreeBuffers__5:
+___DISPTEXT_FreeBuffers__6:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DISPTEXT_InitBuffersPending
+              XREF           DISPTEXT_TextBufferPtr
+              XREF           DISPLIB_ResetLineTables
+              XREF           Global_STR_DISPTEXT_C_2
+              XREF           GROUP_AG_JMPTBL_MEMORY_AllocateM
+              XREF           Global_REF_1000_BYTES_ALLOCATED_
+              XREF           Global_STR_DISPTEXT_C_3
+              XREF           DISPLIB_ResetTextBufferAndLineTa
+              XREF           Global_STR_DISPTEXT_C_4
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XREF           Global_STR_DISPTEXT_C_5
+              XDEF           DISPTEXT_InitBuffers
+              XDEF           DISPTEXT_FreeBuffers
+              END

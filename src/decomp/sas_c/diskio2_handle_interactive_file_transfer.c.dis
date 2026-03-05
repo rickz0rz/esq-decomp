@@ -1,0 +1,517 @@
+              SECTION      text,CODE
+__code:
+DISKIO2_HandleInteractiveFileTra:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$118,D0                 ;90bc 0000 0118 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$108,A7                 ;9efc 0108 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___DISKIO2_HandleInteractiveFileTra__1:
+              MOVE.B         $127(A7),D7              ;1e2f 0127 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CLR.L          $118(A7)                 ;42af 0118 
+              MOVE.L         #$7fffffff,$114(A7)      ;2f7c 7fff ffff 0114 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         D0,$124(A7)              ;2f40 0124 
+              BSR.W          GROUP_AH_JMPTBL_ESQDISP_UpdateSt;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__3;6706 
+___DISKIO2_HandleInteractiveFileTra__2:
+              MOVEQ.L        #$61,D0                  ;7061 
+              ADD.L          D0,D0                    ;d080 
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__4;6004 
+___DISKIO2_HandleInteractiveFileTra__3:
+              MOVEQ.L        #$48,D0                  ;7048 
+              NOT.B          D0                       ;4600 
+___DISKIO2_HandleInteractiveFileTra__4:
+              MOVE.B         D0,DISKIO2_TransferXorChecksumByte(A4);1940 0000 
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+___DISKIO2_HandleInteractiveFileTra__5:
+              MOVEQ.L        #$1f,D0                  ;701f 
+              CMP.B          D0,D6                    ;bc00 
+              BCC.B          ___DISKIO2_HandleInteractiveFileTra__9;642a 
+___DISKIO2_HandleInteractiveFileTra__6:
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              TST.B          D5                       ;4a05 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__9;6720 
+___DISKIO2_HandleInteractiveFileTra__7:
+___DISKIO2_HandleInteractiveFileTra__8:
+              MOVE.L         D6,D0                    ;2006 
+              ADDQ.B         #$1,D6                   ;5206 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              LEA            DISKIO2_TransferFilenameBuffer(A4),A0;41ec 0000 
+              MOVE.B         D5,$0(A0,D1.W)           ;1185 1000 
+              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D0;102c 0000 
+              EOR.B          D5,D0                    ;bb00 
+              MOVE.B         D0,DISKIO2_TransferXorChecksumByte(A4);1940 0000 
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__5;60d0 
+___DISKIO2_HandleInteractiveFileTra__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              LEA            DISKIO2_TransferFilenameBuffer(A4),A0;41ec 0000 
+              CLR.B          $0(A0,D0.W)              ;4230 0000 
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__13;6634 
+___DISKIO2_HandleInteractiveFileTra__10:
+              PEA            DISKIO2_TransferFilenameExtPtr(A4);486c 0000 
+              PEA            CTASKS_EXT_GRF(A4)       ;486c 0000 
+              BSR.W          GROUP_AH_JMPTBL_ESQ_WildcardMatc;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__13;6622 
+___DISKIO2_HandleInteractiveFileTra__11:
+              CLR.L          $11c(A7)                 ;42af 011c 
+              MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__13;6718 
+___DISKIO2_HandleInteractiveFileTra__12:
+              PEA            Global_STR_SPECIAL_NGAD(A4);486c 0000 
+              PEA            ($f0).w                  ;4878 00f0 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___DISKIO2_HandleInteractiveFileTra__13:
+              PEA            ($40).w                  ;4878 0040 
+              PEA            DISKIO2_TransferFilenameBuffer(A4);486c 0000 
+              PEA            $dc(A7)                  ;486f 00dc 
+              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              PEA            ($4).w                   ;4878 0004 
+              PEA            Global_STR_RAM(A4)       ;486c 0000 
+              PEA            $e8(A7)                  ;486f 00e8 
+              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__15;672c 
+___DISKIO2_HandleInteractiveFileTra__14:
+              PEA            Global_STR_FILENAME(A4)  ;486c 0000 
+              PEA            ($b4).w                  ;4878 00b4 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            DISKIO2_TransferFilenameBuffer(A4);486c 0000 
+              PEA            ($b4).w                  ;4878 00b4 
+              PEA            ($cd).w                  ;4878 00cd 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+___DISKIO2_HandleInteractiveFileTra__15:
+              PEA            ($4).w                   ;4878 0004 
+              PEA            DISKIO2_TransferFilenameBuffer(A4);486c 0000 
+              PEA            $cc(A7)                  ;486f 00cc 
+              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              BEQ.W          ___DISKIO2_HandleInteractiveFileTra__32;6700 0110 
+___DISKIO2_HandleInteractiveFileTra__16:
+              CLR.B          $24(A7)                  ;422f 0024 
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+___DISKIO2_HandleInteractiveFileTra__17:
+              CMPI.B         #$8,$24(A7)              ;0c2f 0008 0024 
+              BCC.B          ___DISKIO2_HandleInteractiveFileTra__21;642e 
+___DISKIO2_HandleInteractiveFileTra__18:
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              TST.B          D5                       ;4a05 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__21;6724 
+___DISKIO2_HandleInteractiveFileTra__19:
+___DISKIO2_HandleInteractiveFileTra__20:
+              MOVE.B         $24(A7),D0               ;102f 0024 
+              ADDQ.B         #$1,$24(A7)              ;522f 0024 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              LEA            DISKIO2_TransferSizeTokenBuffer(A4),A0;41ec 0000 
+              MOVE.B         D5,$0(A0,D1.W)           ;1185 1000 
+              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D0;102c 0000 
+              EOR.B          D5,D0                    ;bb00 
+              MOVE.B         D0,DISKIO2_TransferXorChecksumByte(A4);1940 0000 
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__17;60ca 
+___DISKIO2_HandleInteractiveFileTra__21:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $24(A7),D0               ;102f 0024 
+              LEA            DISKIO2_TransferSizeTokenBuffer(A4),A0;41ec 0000 
+              CLR.B          $0(A0,D0.W)              ;4230 0000 
+              PEA            ($fffffffe).w            ;4878 fffe 
+              PEA            $c8(A7)                  ;486f 00c8 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOLock                 ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__27;6772 
+___DISKIO2_HandleInteractiveFileTra__22:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($22).w                  ;4878 0022 
+              PEA            ($520).w                 ;4878 0520 
+              PEA            Global_STR_DISKIO2_C_24(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D0,A5                    ;2a40 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__26;6746 
+___DISKIO2_HandleInteractiveFileTra__23:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOInfo                 ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__25;671a 
+___DISKIO2_HandleInteractiveFileTra__24:
+              LEA            $10(A5),A0               ;41ed 0010 
+              MOVE.L         #$6de,D0                 ;203c 0000 06de 
+              SUB.L          (A0),D0                  ;9090 
+              ASL.L          #$8,D0                   ;e180 
+              ADD.L          D0,D0                    ;d080 
+              SUBI.L         #$1000,D0                ;0480 0000 1000 
+              MOVE.L         D0,$114(A7)              ;2f40 0114 
+___DISKIO2_HandleInteractiveFileTra__25:
+              PEA            ($22).w                  ;4878 0022 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($526).w                 ;4878 0526 
+              PEA            Global_STR_DISKIO2_C_25(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___DISKIO2_HandleInteractiveFileTra__26:
+              MOVE.L         $18(A7),-(A7)            ;2f2f 0018 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOUnLock               ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___DISKIO2_HandleInteractiveFileTra__27:
+              PEA            DISKIO2_TransferSizeTokenBuffer(A4);486c 0000 
+              BSR.W          GROUP_AH_JMPTBL_PARSE_ReadSigned;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              CMP.L          $114(A7),D0              ;b0af 0114 
+              BLE.B          ___DISKIO2_HandleInteractiveFileTra__32;6f26 
+___DISKIO2_HandleInteractiveFileTra__28:
+              LEA            DISKIO2_TransferFilenameBuffer(A4),A3;47ec 0000 
+              LEA            BRUSH_SnapshotHeader(A4),A2;45ec 0000 
+___DISKIO2_HandleInteractiveFileTra__29:
+              MOVE.B         (A3),(A2)+               ;14d3 
+___DISKIO2_HandleInteractiveFileTra__30:
+              MOVE.B         (A3)+,D0                 ;101b 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__29;66f8 
+___DISKIO2_HandleInteractiveFileTra__31:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($4).w                   ;4878 0004 
+              BSR.W          GROUP_AH_JMPTBL_ESQDISP_UpdateSt;6100 0000 
+              CLR.L          DISKIO2_InteractiveTransferArmed(A4);42ac 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$fe,D0                  ;70fe 
+              BRA.W          ___DISKIO2_HandleInteractiveFileTra__71;6000 02aa 
+___DISKIO2_HandleInteractiveFileTra__32:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVE.B         D0,ESQIFF_RecordChecksumByte(A4);1940 0000 
+              MOVE.B         DISKIO2_TransferXorChecksumByte(A4),D1;122c 0000 
+              CMP.B          D1,D0                    ;b001 
+              BNE.W          ___DISKIO2_HandleInteractiveFileTra__67;6600 0236 
+___DISKIO2_HandleInteractiveFileTra__33:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          $11c(A7),D0              ;b0af 011c 
+              BNE.W          ___DISKIO2_HandleInteractiveFileTra__67;6600 022c 
+___DISKIO2_HandleInteractiveFileTra__34:
+___DISKIO2_HandleInteractiveFileTra__35:
+              PEA            ($3ee).w                 ;4878 03ee 
+              PEA            $d8(A7)                  ;486f 00d8 
+              BSR.W          GROUP_AG_JMPTBL_DOS_OpenFileWith;6100 0000 
+              MOVE.L         D0,DISKIO_WriteFileHandle(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__37;661a 
+___DISKIO2_HandleInteractiveFileTra__36:
+              PEA            ($5).w                   ;4878 0005 
+              BSR.W          DISKIO_DrawTransferErrorMessageI;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            ($4).w                   ;4878 0004 
+              BSR.W          GROUP_AH_JMPTBL_ESQDISP_UpdateSt;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___DISKIO2_HandleInteractiveFileTra__71;6000 025c 
+___DISKIO2_HandleInteractiveFileTra__37:
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),DISKIO_SavedReadModeFlags(A4);396c 0000 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              CLR.L          DISKIO2_TransferCrcErrorCount(A4);42ac 0000 
+              CLR.B          DISKIO2_TransferBlockSequence(A4);422c 0000 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($1100).w                ;4878 1100 
+              PEA            ($56d).w                 ;4878 056d 
+              PEA            Global_STR_DISKIO2_C_26(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D0,DISKIO2_TransferBlockBufferPtr(A4);2940 0000 
+              MOVE.W         DISKIO_SavedReadModeFlags(A4),ESQPARS2_ReadModeFlags(A4);396c 0000 0000 
+              CLR.W          DISKIO2_TransferBufferedByteCoun(A4);426c 0000 
+___DISKIO2_HandleInteractiveFileTra__38:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVEQ.L        #$55,D0                  ;7055 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__38;66f0 
+___DISKIO2_HandleInteractiveFileTra__39:
+___DISKIO2_HandleInteractiveFileTra__40:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              CMPI.B         #$aa,D5                  ;0c05 00aa 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__38;66e0 
+___DISKIO2_HandleInteractiveFileTra__41:
+___DISKIO2_HandleInteractiveFileTra__42:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVEQ.L        #$48,D0                  ;7048 
+              CMP.B          D0,D5                    ;ba00 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__44;6706 
+___DISKIO2_HandleInteractiveFileTra__43:
+              MOVEQ.L        #$3d,D0                  ;703d 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__50;663a 
+___DISKIO2_HandleInteractiveFileTra__44:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              MOVEQ.L        #$3d,D1                  ;723d 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__46;6606 
+___DISKIO2_HandleInteractiveFileTra__45:
+              MOVEQ.L        #$61,D0                  ;7061 
+              ADD.L          D0,D0                    ;d080 
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__47;6004 
+___DISKIO2_HandleInteractiveFileTra__46:
+              MOVEQ.L        #$48,D0                  ;7048 
+              NOT.B          D0                       ;4600 
+___DISKIO2_HandleInteractiveFileTra__47:
+              MOVE.B         D0,DISKIO2_TransferXorChecksumByte(A4);1940 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              CMP.L          D1,D0                    ;b081 
+              SCC            D1,#$700                 ;57c1 
+              NEG.B          D1                       ;4401 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D1,D0                    ;1001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          DISKIO2_ReceiveTransferBlocksToF;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$118(A7)              ;2f40 0118 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__38;6792 
+___DISKIO2_HandleInteractiveFileTra__48:
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__59;603c 
+___DISKIO2_HandleInteractiveFileTra__49:
+___DISKIO2_HandleInteractiveFileTra__50:
+              CMPI.B         #$bb,D5                  ;0c05 00bb 
+              BNE.B          ___DISKIO2_HandleInteractiveFileTra__38;668a 
+___DISKIO2_HandleInteractiveFileTra__51:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              CMPI.B         #$bb,D0                  ;0c00 00bb 
+              BNE.W          ___DISKIO2_HandleInteractiveFileTra__38;6600 ff7c 
+___DISKIO2_HandleInteractiveFileTra__52:
+___DISKIO2_HandleInteractiveFileTra__53:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              BNE.W          ___DISKIO2_HandleInteractiveFileTra__38;6600 ff6c 
+___DISKIO2_HandleInteractiveFileTra__54:
+___DISKIO2_HandleInteractiveFileTra__55:
+              BSR.W          GROUP_AH_JMPTBL_ESQFUNC_WaitForC;6100 0000 
+              BSR.W          GROUP_AH_JMPTBL_SCRIPT_ReadSeria;6100 0000 
+              CMPI.B         #$ff,D0                  ;0c00 00ff 
+              BNE.W          ___DISKIO2_HandleInteractiveFileTra__38;6600 ff5c 
+___DISKIO2_HandleInteractiveFileTra__56:
+___DISKIO2_HandleInteractiveFileTra__57:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,$118(A7)              ;2f40 0118 
+___DISKIO2_HandleInteractiveFileTra__58:
+___DISKIO2_HandleInteractiveFileTra__59:
+              MOVE.W         ESQPARS2_ReadModeFlags(A4),DISKIO_SavedReadModeFlags(A4);396c 0000 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              MOVE.L         DISKIO_WriteFileHandle(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOClose                ;6100 0000 
+              PEA            ($1100).w                ;4878 1100 
+              MOVE.L         DISKIO2_TransferBlockBufferPtr(A4),-(A7);2f2c 0000 
+              PEA            ($5db).w                 ;4878 05db 
+              PEA            Global_STR_DISKIO2_C_27(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__61;672c 
+___DISKIO2_HandleInteractiveFileTra__60:
+              PEA            DISKIO2_STR_DiagTransferStatusCl(A4);486c 0000 
+              PEA            ($d2).w                  ;4878 00d2 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            DISKIO2_STR_DiagTransferStatusCl(A4);486c 0000 
+              PEA            ($f0).w                  ;4878 00f0 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+___DISKIO2_HandleInteractiveFileTra__61:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.L          $118(A7),D0              ;b0af 0118 
+              BNE.W          ___DISKIO2_HandleInteractiveFileTra__65;6600 008c 
+___DISKIO2_HandleInteractiveFileTra__62:
+              PEA            DISKIO2_TransferFilenameBuffer(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVODeleteFile           ;6100 0000 
+              BSR.W          DISKIO_ForceUiRefreshIfIdle;6100 0000 
+              PEA            ($c).w                   ;4878 000c 
+              PEA            Global_STR_COPY_NIL(A4)  ;486c 0000 
+              PEA            $38(A7)                  ;486f 0038 
+              BSR.W          GROUP_AG_JMPTBL_STRING_CopyPadNu;6100 0000 
+              PEA            $e8(A7)                  ;486f 00e8 
+              PEA            $40(A7)                  ;486f 0040 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              PEA            DISKIO2_STR_ShellCommandArgSepar(A4);486c 0000 
+              PEA            $48(A7)                  ;486f 0048 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              PEA            DISKIO2_TransferFilenameBuffer(A4);486c 0000 
+              PEA            $50(A7)                  ;486f 0050 
+              BSR.W          GROUP_AI_JMPTBL_STRING_AppendAtN;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            $58(A7)                  ;486f 0058 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              PEA            $10c(A7)                 ;486f 010c 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVODeleteFile           ;6100 0000 
+              BSR.W          DISKIO_ResetCtrlInputStateIfIdle;6100 0000 
+              LEA            $40(A7),A7               ;4fef 0040 
+              MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__66;6732 
+___DISKIO2_HandleInteractiveFileTra__63:
+              PEA            __MERGED(A4)             ;486c 0000 
+              PEA            ($b4).w                  ;4878 00b4 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___DISKIO2_HandleInteractiveFileTra__64:
+              BRA.B          ___DISKIO2_HandleInteractiveFileTra__66;6018 
+___DISKIO2_HandleInteractiveFileTra__65:
+              MOVE.L         $118(A7),-(A7)           ;2f2f 0118 
+              BSR.W          DISKIO_DrawTransferErrorMessageI;6100 0000 
+              PEA            $d8(A7)                  ;486f 00d8 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVODeleteFile           ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___DISKIO2_HandleInteractiveFileTra__66:
+              MOVE.W         DISKIO_SavedReadModeFlags(A4),ESQPARS2_ReadModeFlags(A4);396c 0000 0000 
+___DISKIO2_HandleInteractiveFileTra__67:
+              CLR.L          DISKIO2_InteractiveTransferArmed(A4);42ac 0000 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($4).w                   ;4878 0004 
+              BSR.W          GROUP_AH_JMPTBL_ESQDISP_UpdateSt;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.W         ED_DiagnosticsScreenActive(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              BEQ.B          ___DISKIO2_HandleInteractiveFileTra__69;6742 
+___DISKIO2_HandleInteractiveFileTra__68:
+              PEA            DISKIO2_DiagnosticsDiskUsagePerc(A4);486c 0000 
+              BSR.W          DISKIO_QueryDiskUsagePercentAndS;6100 0000 
+              PEA            DISKIO2_DiagnosticsSoftErrorCoun(A4);486c 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              BSR.W          DISKIO_QueryVolumeSoftErrorCount;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              PEA            Global_STR_DISK_0_IS_FULL_WITH_E(A4);486c 0000 
+              PEA            $e4(A7)                  ;486f 00e4 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            $e8(A7)                  ;486f 00e8 
+              PEA            ($5a).w                  ;4878 005a 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $24(A7),A7               ;4fef 0024 
+___DISKIO2_HandleInteractiveFileTra__69:
+              MOVE.L         $118(A7),D0              ;202f 0118 
+___DISKIO2_HandleInteractiveFileTra__70:
+___DISKIO2_HandleInteractiveFileTra__71:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$108,A7                 ;defc 0108 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AH_JMPTBL_ESQDISP_UpdateSt
+              XREF           DISKIO2_TransferXorChecksumByte
+              XREF           GROUP_AH_JMPTBL_ESQFUNC_WaitForC
+              XREF           GROUP_AH_JMPTBL_SCRIPT_ReadSeria
+              XREF           DISKIO2_TransferFilenameBuffer
+              XREF           DISKIO2_TransferFilenameExtPtr
+              XREF           CTASKS_EXT_GRF
+              XREF           GROUP_AH_JMPTBL_ESQ_WildcardMatc
+              XREF           ED_DiagnosticsScreenActive
+              XREF           Global_STR_SPECIAL_NGAD
+              XREF           Global_REF_RASTPORT_1
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           GROUP_AG_JMPTBL_STRING_CopyPadNu
+              XREF           Global_STR_RAM
+              XREF           Global_STR_FILENAME
+              XREF           DISKIO2_TransferSizeTokenBuffer
+              XREF           Global_REF_DOS_LIBRARY_2
+              XREF           _LVOLock
+              XREF           Global_STR_DISKIO2_C_24
+              XREF           GROUP_AG_JMPTBL_MEMORY_AllocateM
+              XREF           _LVOInfo
+              XREF           Global_STR_DISKIO2_C_25
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XREF           _LVOUnLock
+              XREF           GROUP_AH_JMPTBL_PARSE_ReadSigned
+              XREF           BRUSH_SnapshotHeader
+              XREF           DISKIO2_InteractiveTransferArmed
+              XREF           ESQIFF_RecordChecksumByte
+              XREF           GROUP_AG_JMPTBL_DOS_OpenFileWith
+              XREF           DISKIO_WriteFileHandle
+              XREF           DISKIO_DrawTransferErrorMessageI
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           DISKIO_SavedReadModeFlags
+              XREF           DISKIO2_TransferCrcErrorCount
+              XREF           DISKIO2_TransferBlockSequence
+              XREF           Global_STR_DISKIO2_C_26
+              XREF           DISKIO2_TransferBlockBufferPtr
+              XREF           DISKIO2_TransferBufferedByteCoun
+              XREF           DISKIO2_ReceiveTransferBlocksToF
+              XREF           _LVOClose
+              XREF           Global_STR_DISKIO2_C_27
+              XREF           DISKIO2_STR_DiagTransferStatusCl
+              XREF           _LVODeleteFile
+              XREF           DISKIO_ForceUiRefreshIfIdle
+              XREF           Global_STR_COPY_NIL
+              XREF           GROUP_AI_JMPTBL_STRING_AppendAtN
+              XREF           DISKIO2_STR_ShellCommandArgSepar
+              XREF           _LVOExecute
+              XREF           DISKIO_ResetCtrlInputStateIfIdle
+              XREF           DISKIO2_DiagnosticsDiskUsagePerc
+              XREF           DISKIO_QueryDiskUsagePercentAndS
+              XREF           DISKIO2_DiagnosticsSoftErrorCoun
+              XREF           DISKIO_QueryVolumeSoftErrorCount
+              XREF           Global_STR_DISK_0_IS_FULL_WITH_E
+              XREF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XDEF           DISKIO2_HandleInteractiveFileTra
+
+              SECTION        __MERGED,DATA
+__MERGED
+              DC.B           'STORED'
+              DC.B           $00
+              DC.B           $00
+              END

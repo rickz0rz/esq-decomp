@@ -1,0 +1,88 @@
+              SECTION      text,CODE
+__code:
+DISKIO_QueryDiskUsagePercentAndS:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+___DISKIO_QueryDiskUsagePercentAndS__1:
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              PEA            ($fffffffe).w            ;4878 fffe 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOLock                 ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D6                       ;4a86 
+              BNE.B          ___DISKIO_QueryDiskUsagePercentAndS__3;6606 
+___DISKIO_QueryDiskUsagePercentAndS__2:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.W          ___DISKIO_QueryDiskUsagePercentAndS__9;6000 0084 
+___DISKIO_QueryDiskUsagePercentAndS__3:
+              MOVE.L         #$10000,-(A7)            ;2f3c 0001 0000 
+              PEA            ($20).w                  ;4878 0020 
+              PEA            ($237).w                 ;4878 0237 
+              PEA            Global_STR_DISKIO_C_5(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_AllocateM;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              TST.L          D0                       ;4a80 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BEQ.B          ___DISKIO_QueryDiskUsagePercentAndS__7;6754 
+___DISKIO_QueryDiskUsagePercentAndS__4:
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOInfo                 ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DISKIO_QueryDiskUsagePercentAndS__6;672a 
+___DISKIO_QueryDiskUsagePercentAndS__5:
+              PEA            ($64).w                  ;4878 0064 
+              MOVE.L         $10(A3),-(A7)            ;2f2b 0010 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.L         $c(A3),(A7)              ;2eab 000c 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         $14(A3),D0               ;202b 0014 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.L         D1,DISKIO_BufferState+$4(A4);2941 0004 
+___DISKIO_QueryDiskUsagePercentAndS__6:
+              PEA            ($20).w                  ;4878 0020 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              PEA            ($23e).w                 ;4878 023e 
+              PEA            Global_STR_DISKIO_C_6(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___DISKIO_QueryDiskUsagePercentAndS__7:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOUnLock               ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D7,D0                    ;2007 
+___DISKIO_QueryDiskUsagePercentAndS__8:
+___DISKIO_QueryDiskUsagePercentAndS__9:
+              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_DOS_LIBRARY_2
+              XREF           _LVOLock
+              XREF           Global_STR_DISKIO_C_5
+              XREF           GROUP_AG_JMPTBL_MEMORY_AllocateM
+              XREF           _LVOInfo
+              XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           GROUP_AG_JMPTBL_MATH_DivS32
+              XREF           DISKIO_BufferState
+              XREF           Global_STR_DISKIO_C_6
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XREF           _LVOUnLock
+              XDEF           DISKIO_QueryDiskUsagePercentAndS
+              END

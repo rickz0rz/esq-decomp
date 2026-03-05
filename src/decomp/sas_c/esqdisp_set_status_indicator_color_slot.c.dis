@@ -1,0 +1,118 @@
+              SECTION      text,CODE
+__code:
+ESQDISP_SetStatusIndicatorColorS:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___ESQDISP_SetStatusIndicatorColorS__1:
+              MOVE.L         $20(A7),D6               ;2c2f 0020 
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___ESQDISP_SetStatusIndicatorColorS__4;6708 
+___ESQDISP_SetStatusIndicatorColorS__2:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          D0,D6                    ;bc80 
+              BNE.W          ___ESQDISP_SetStatusIndicatorColorS__19;6600 00c2 
+___ESQDISP_SetStatusIndicatorColorS__3:
+___ESQDISP_SetStatusIndicatorColorS__4:
+              MOVE.B         ESQDISP_StatusIndicatorDeferredA(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___ESQDISP_SetStatusIndicatorColorS__8;6718 
+___ESQDISP_SetStatusIndicatorColorS__5:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.W          ___ESQDISP_SetStatusIndicatorColorS__19;6700 00b2 
+___ESQDISP_SetStatusIndicatorColorS__6:
+___ESQDISP_SetStatusIndicatorColorS__7:
+              MOVE.L         D6,D1                    ;2206 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            ESQDISP_StatusIndicatorColorCach(A4),A0;41ec 0000 
+              MOVE.L         D7,$0(A0,D1.L)           ;2187 1800 
+              BRA.W          ___ESQDISP_SetStatusIndicatorColorS__19;6000 00a2 
+___ESQDISP_SetStatusIndicatorColorS__8:
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.B          ___ESQDISP_SetStatusIndicatorColorS__10;6612 
+___ESQDISP_SetStatusIndicatorColorS__9:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            ESQDISP_StatusIndicatorColorCach(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),D7           ;2e30 0800 
+              MOVEQ.L        #$ff,D1                  ;72ff 
+              MOVE.L         D1,$0(A0,D0.L)           ;2181 0800 
+___ESQDISP_SetStatusIndicatorColorS__10:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            ESQDISP_StatusIndicatorColorCach(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),D1           ;2230 0800 
+              CMP.L          D7,D1                    ;b287 
+              BEQ.B          ___ESQDISP_SetStatusIndicatorColorS__19;6778 
+___ESQDISP_SetStatusIndicatorColorS__11:
+___ESQDISP_SetStatusIndicatorColorS__12:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D7,$0(A0,D0.L)           ;2187 0800 
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.L         #$1,D0                   ;5380 
+              BNE.B          ___ESQDISP_SetStatusIndicatorColorS__14;6604 
+___ESQDISP_SetStatusIndicatorColorS__13:
+              MOVEQ.L        #$28,D5                  ;7a28 
+              BRA.B          ___ESQDISP_SetStatusIndicatorColorS__15;6002 
+___ESQDISP_SetStatusIndicatorColorS__14:
+              MOVEQ.L        #$39,D5                  ;7a39 
+___ESQDISP_SetStatusIndicatorColorS__15:
+              MOVE.L         Global_REF_RASTPORT_1(A4),A5;2a6c 0000 
+              MOVE.B         $19(A5),D4               ;182d 0019 
+              MOVE.L         $4(A5),A3                ;266d 0004 
+              MOVE.L         Global_REF_696_400_BITMAP(A4),$4(A5);2b6c 0000 0004 
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.B          ___ESQDISP_SetStatusIndicatorColorS__17;6706 
+___ESQDISP_SetStatusIndicatorColorS__16:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$6,D0                   ;5d80 
+              BNE.B          ___ESQDISP_SetStatusIndicatorColorS__18;6614 
+___ESQDISP_SetStatusIndicatorColorS__17:
+              PEA            ($37).w                  ;4878 0037 
+              PEA            ($28f).w                 ;4878 028f 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          _LVOReadPixel            ;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              LEA            $c(A7),A7                ;4fef 000c 
+___ESQDISP_SetStatusIndicatorColorS__18:
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$4,D0                   ;5880 
+              MOVE.L         D0,(A7)                  ;2e80 
+              PEA            ($295).w                 ;4878 0295 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            ($28f).w                 ;4878 028f 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          _LVORectFill             ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D4,D0                    ;1004 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVE.L         A3,$4(A5)                ;2b4b 0004 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___ESQDISP_SetStatusIndicatorColorS__19:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQDISP_StatusIndicatorDeferredA
+              XREF           ESQDISP_StatusIndicatorColorCach
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_696_400_BITMAP
+              XREF           _LVOReadPixel
+              XREF           _LVOSetAPen
+              XREF           _LVORectFill
+              XDEF           ESQDISP_SetStatusIndicatorColorS
+              END

@@ -5,9 +5,40 @@ ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
 STRICT=0
-if [ "${1:-}" = "--strict" ]; then
-    STRICT=1
-fi
+FILTERS=()
+
+usage() {
+    echo "Usage: $0 [--strict] [--filter <substring>]..."
+    echo "  --strict              exit non-zero on any mismatch/missing semantic diff"
+    echo "  --filter <substring>  run only lanes whose script path contains substring"
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --strict)
+            STRICT=1
+            shift
+            ;;
+        --filter)
+            if [ $# -lt 2 ]; then
+                echo "error: --filter requires a substring argument" >&2
+                usage
+                exit 2
+            fi
+            FILTERS+=("$2")
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "error: unknown argument: $1" >&2
+            usage
+            exit 2
+            ;;
+    esac
+done
 
 SCRIPTS=(
     "src/decomp/scripts/compare_sasc_mem_move_trial.sh"
@@ -898,12 +929,35 @@ mkdir -p "$OUT_DIR"
 failed=0
 echo "SAS/C core sweep (strict=${STRICT})"
 
+matches_filter() {
+    local path="$1"
+    if [ "${#FILTERS[@]}" -eq 0 ]; then
+        return 0
+    fi
+    local filt
+    for filt in "${FILTERS[@]}"; do
+        case "$path" in
+            *"$filt"*)
+                return 0
+                ;;
+        esac
+    done
+    return 1
+}
+
+ran_count=0
+
 for script in "${SCRIPTS[@]}"; do
+    if ! matches_filter "$script"; then
+        continue
+    fi
+
     if [ ! -f "$script" ]; then
         echo "skip (missing): $script"
         continue
     fi
 
+    ran_count=$((ran_count + 1))
     echo "run: $script"
     bash "$script" >/tmp/run_sasc_core_sweep.log 2>&1 || {
         echo "error: compare script failed: $script"
@@ -929,6 +983,10 @@ for script in "${SCRIPTS[@]}"; do
         failed=1
     fi
 done
+
+if [ "${#FILTERS[@]}" -gt 0 ]; then
+    echo "SAS/C core sweep: selected ${ran_count} lane(s) via --filter"
+fi
 
 if [ "$failed" -ne 0 ]; then
     echo "SAS/C core sweep: semantic mismatches present"

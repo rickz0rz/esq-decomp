@@ -1,0 +1,35 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED_MatchSelectionCodeWith:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_MatchSelectionCodeWith__1:
+___ESQSHARED_MatchSelectionCodeWith__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQSHARED_CreateGroupEntryAndTit:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_CreateGroupEntryAndTit__1:
+___ESQSHARED_CreateGroupEntryAndTit__2:
+              RTS                                     ;4e75 
+ESQSHARED_NormalizeInStereoTag_R:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_NormalizeInStereoTag_R__1:
+___ESQSHARED_NormalizeInStereoTag_R__2:
+              RTS                                     ;4e75 
+ESQSHARED_UpdateMatchingEntriesB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_UpdateMatchingEntriesB__1:
+___ESQSHARED_UpdateMatchingEntriesB__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQSHARED_MatchSelectionCodeWith
+              XDEF           ESQSHARED_CreateGroupEntryAndTit
+              XDEF           ESQSHARED_NormalizeInStereoTag_R
+              XDEF           ESQSHARED_UpdateMatchingEntriesB
+              END

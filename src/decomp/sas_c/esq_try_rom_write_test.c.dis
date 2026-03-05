@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+ESQ_TryRomWriteTest:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_TryRomWriteTest__1:
+              MOVEQ.L        #$1,D0                   ;7001 
+___ESQ_TryRomWriteTest__2:
+___ESQ_TryRomWriteTest__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQ_TryRomWriteTest
+              END
