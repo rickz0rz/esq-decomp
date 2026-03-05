@@ -1,0 +1,92 @@
+              SECTION      text,CODE
+__code:
+CTASKS_IFFTaskCleanup:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___CTASKS_IFFTaskCleanup__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.W         CTASKS_IffTaskState(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              SUBQ.W         #$4,D1                   ;5941 
+              BNE.B          ___CTASKS_IFFTaskCleanup__3;6606 
+___CTASKS_IFFTaskCleanup__2:
+              MOVE.L         CTASKS_PendingLogoBrushDescripto(A4),D7;2e2c 0000 
+              BRA.B          ___CTASKS_IFFTaskCleanup__8;601c 
+___CTASKS_IFFTaskCleanup__3:
+              MOVE.W         D0,D1                    ;3200 
+              SUBQ.W         #$5,D1                   ;5b41 
+              BNE.B          ___CTASKS_IFFTaskCleanup__5;6606 
+___CTASKS_IFFTaskCleanup__4:
+              MOVE.L         CTASKS_PendingGAdsBrushDescripto(A4),D7;2e2c 0000 
+              BRA.B          ___CTASKS_IFFTaskCleanup__8;6010 
+___CTASKS_IFFTaskCleanup__5:
+              MOVE.W         D0,D1                    ;3200 
+              SUBQ.W         #$6,D1                   ;5d41 
+              BEQ.B          ___CTASKS_IFFTaskCleanup__7;6706 
+___CTASKS_IFFTaskCleanup__6:
+              MOVEQ.L        #$b,D1                   ;720b 
+              CMP.W          D1,D0                    ;b041 
+              BNE.B          ___CTASKS_IFFTaskCleanup__8;6604 
+___CTASKS_IFFTaskCleanup__7:
+              MOVE.L         CTASKS_PendingIffBrushDescriptor(A4),D7;2e2c 0000 
+___CTASKS_IFFTaskCleanup__8:
+              TST.L          BRUSH_LoadInProgressFlag(A4);4aac 0000 
+              BNE.B          ___CTASKS_IFFTaskCleanup__8;66fa 
+___CTASKS_IFFTaskCleanup__9:
+___CTASKS_IFFTaskCleanup__10:
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GROUP_AF_JMPTBL_GCOMMAND_SaveBru;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         CTASKS_IffTaskState(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              SUBQ.W         #$4,D1                   ;5941 
+              BNE.B          ___CTASKS_IFFTaskCleanup__12;6606 
+___CTASKS_IFFTaskCleanup__11:
+              CLR.L          CTASKS_PendingLogoBrushDescripto(A4);42ac 0000 
+              BRA.B          ___CTASKS_IFFTaskCleanup__16;6014 
+___CTASKS_IFFTaskCleanup__12:
+              MOVE.W         D0,D1                    ;3200 
+              SUBQ.W         #$5,D1                   ;5b41 
+              BNE.B          ___CTASKS_IFFTaskCleanup__14;6606 
+___CTASKS_IFFTaskCleanup__13:
+              CLR.L          CTASKS_PendingGAdsBrushDescripto(A4);42ac 0000 
+              BRA.B          ___CTASKS_IFFTaskCleanup__16;6008 
+___CTASKS_IFFTaskCleanup__14:
+              SUBQ.W         #$6,D0                   ;5d40 
+              BNE.B          ___CTASKS_IFFTaskCleanup__16;6604 
+___CTASKS_IFFTaskCleanup__15:
+              CLR.L          CTASKS_PendingIffBrushDescriptor(A4);42ac 0000 
+___CTASKS_IFFTaskCleanup__16:
+              BSR.W          _LVOForbid               ;6100 0000 
+              MOVE.W         #$1,CTASKS_IffTaskDoneFlag(A4);397c 0001 0000 
+              CLR.W          CTASKS_IffTaskState(A4)  ;426c 0000 
+              MOVE.L         Global_REF_LIST_IFF_TASK_PROC(A4),A0;206c 0000 
+              PEA            ($e).w                   ;4878 000e 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($7f).w                  ;4878 007f 
+              PEA            Global_STR_CTASKS_C_1(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___CTASKS_IFFTaskCleanup__17:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CTASKS_IffTaskState
+              XREF           CTASKS_PendingLogoBrushDescripto
+              XREF           CTASKS_PendingGAdsBrushDescripto
+              XREF           CTASKS_PendingIffBrushDescriptor
+              XREF           BRUSH_LoadInProgressFlag
+              XREF           GROUP_AF_JMPTBL_GCOMMAND_SaveBru
+              XREF           _LVOForbid
+              XREF           CTASKS_IffTaskDoneFlag
+              XREF           Global_REF_LIST_IFF_TASK_PROC
+              XREF           Global_STR_CTASKS_C_1
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XDEF           CTASKS_IFFTaskCleanup
+              END

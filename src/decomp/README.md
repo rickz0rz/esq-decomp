@@ -5009,6 +5009,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_coi_compute_entry_time_delta_minutes_return_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_compute_entry_time_delta_minutes_return.awk`
 - `src/decomp/sas_c/coi_compute_entry_time_delta_minutes_return.c`
+- `src/decomp/scripts/compare_sasc_coi_compute_entry_time_delta_minutes_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_compute_entry_time_delta_minutes.awk`
+- `src/decomp/sas_c/coi_compute_entry_time_delta_minutes.c`
 - `src/decomp/scripts/compare_sasc_coi_append_anim_field_with_trailing_space_return_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_append_anim_field_with_trailing_space_return.awk`
 - `src/decomp/sas_c/coi_append_anim_field_with_trailing_space_return.c`
@@ -5039,6 +5042,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_coi_test_entry_within_time_window_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_test_entry_within_time_window.awk`
 - `src/decomp/sas_c/coi_test_entry_within_time_window.c`
+- `src/decomp/scripts/compare_sasc_coi_get_anim_field_pointer_by_mode_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_get_anim_field_pointer_by_mode.awk`
+- `src/decomp/sas_c/coi_get_anim_field_pointer_by_mode.c`
 - `src/decomp/scripts/compare_sasc_coi_alloc_sub_entry_table_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_alloc_sub_entry_table.awk`
 - `src/decomp/sas_c/coi_alloc_sub_entry_table.c`
@@ -5051,5 +5057,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ctasks_start_iff_task_process_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ctasks_start_iff_task_process.awk`
 - `src/decomp/sas_c/ctasks_start_iff_task_process.c`
+- `src/decomp/scripts/compare_sasc_ctasks_iff_task_cleanup_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ctasks_iff_task_cleanup.awk`
+- `src/decomp/sas_c/ctasks_iff_task_cleanup.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

@@ -1,0 +1,179 @@
+              SECTION      text,CODE
+__code:
+COI_GetAnimFieldPointerByMode:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___COI_GetAnimFieldPointerByMode__1:
+              MOVE.W         $3a(A7),D6               ;3c2f 003a 
+              MOVE.W         $36(A7),D7               ;3e2f 0036 
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.L         A5,A3                    ;264d 
+              CLR.L          $28(A7)                  ;42af 0028 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__3;6708 
+___COI_GetAnimFieldPointerByMode__2:
+              LEA            $30(A3),A0               ;41eb 0030 
+              TST.L          (A0)                     ;4a90 
+              BNE.B          ___COI_GetAnimFieldPointerByMode__4;6606 
+___COI_GetAnimFieldPointerByMode__3:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___COI_GetAnimFieldPointerByMode__42;6000 012e 
+___COI_GetAnimFieldPointerByMode__4:
+              LEA            $30(A3),A0               ;41eb 0030 
+              MOVE.L         (A0),A2                  ;2450 
+              CLR.W          $24(A7)                  ;426f 0024 
+___COI_GetAnimFieldPointerByMode__5:
+              LEA            $24(A2),A0               ;41ea 0024 
+              MOVE.W         $24(A7),D0               ;302f 0024 
+              CMP.W          (A0),D0                  ;b050 
+              BGE.B          ___COI_GetAnimFieldPointerByMode__9;6c2c 
+___COI_GetAnimFieldPointerByMode__6:
+              LEA            $26(A2),A0               ;41ea 0026 
+              MOVE.L         (A0),A1                  ;2250 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              MOVE.L         $0(A1,D1.L),A0           ;2071 1800 
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
+              MOVE.W         (A0),D1                  ;3210 
+              CMP.W          D7,D1                    ;b247 
+              BNE.B          ___COI_GetAnimFieldPointerByMode__8;6604 
+___COI_GetAnimFieldPointerByMode__7:
+              MOVEQ.L        #$1,D5                   ;7a01 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__9;6006 
+___COI_GetAnimFieldPointerByMode__8:
+              ADDQ.W         #$1,$24(A7)              ;526f 0024 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__5;60c8 
+___COI_GetAnimFieldPointerByMode__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+___COI_GetAnimFieldPointerByMode__10:
+___COI_GetAnimFieldPointerByMode__11:
+              CMPI.L         #$8,D0                   ;0c80 0000 0008 
+              BCC.W          ___COI_GetAnimFieldPointerByMode__39;6400 00d6 
+___COI_GetAnimFieldPointerByMode__12:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_COI_GetAnimFieldPointerByMode_12:
+              DC.W           ___COI_GetAnimFieldPointerByMode__14-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__15-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__19-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__23-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__27-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__13-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__31-__switch_COI_GetAnimFieldPointerByMode_12
+              DC.W           ___COI_GetAnimFieldPointerByMode__35-__switch_COI_GetAnimFieldPointerByMode_12
+___COI_GetAnimFieldPointerByMode__13:
+              MOVE.L         A2,$18(A7)               ;2f4a 0018 
+              BRA.W          ___COI_GetAnimFieldPointerByMode__40;6000 00b8 
+___COI_GetAnimFieldPointerByMode__14:
+              LEA            $4(A2),A0                ;41ea 0004 
+              MOVE.L         (A0),$18(A7)             ;2f50 0018 
+              BRA.W          ___COI_GetAnimFieldPointerByMode__40;6000 00ac 
+___COI_GetAnimFieldPointerByMode__15:
+              TST.W          D5                       ;4a45 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__17;670a 
+___COI_GetAnimFieldPointerByMode__16:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADDQ.L         #$2,A0                   ;5488 
+              MOVE.L         (A0),D0                  ;2010 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__18;6006 
+___COI_GetAnimFieldPointerByMode__17:
+              LEA            $8(A2),A0                ;41ea 0008 
+              MOVE.L         (A0),D0                  ;2010 
+___COI_GetAnimFieldPointerByMode__18:
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BRA.W          ___COI_GetAnimFieldPointerByMode__40;6000 0090 
+___COI_GetAnimFieldPointerByMode__19:
+              TST.W          D5                       ;4a45 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__21;670a 
+___COI_GetAnimFieldPointerByMode__20:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADDQ.L         #$6,A0                   ;5c88 
+              MOVE.L         (A0),D0                  ;2010 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__22;6006 
+___COI_GetAnimFieldPointerByMode__21:
+              LEA            $c(A2),A0                ;41ea 000c 
+              MOVE.L         (A0),D0                  ;2010 
+___COI_GetAnimFieldPointerByMode__22:
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__40;6074 
+___COI_GetAnimFieldPointerByMode__23:
+              TST.W          D5                       ;4a45 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__25;670c 
+___COI_GetAnimFieldPointerByMode__24:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADD.W          #$a,A0                   ;d0fc 000a 
+              MOVE.L         (A0),D0                  ;2010 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__26;6006 
+___COI_GetAnimFieldPointerByMode__25:
+              LEA            $10(A2),A0               ;41ea 0010 
+              MOVE.L         (A0),D0                  ;2010 
+___COI_GetAnimFieldPointerByMode__26:
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__40;6058 
+___COI_GetAnimFieldPointerByMode__27:
+              TST.W          D5                       ;4a45 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__29;670c 
+___COI_GetAnimFieldPointerByMode__28:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADD.W          #$e,A0                   ;d0fc 000e 
+              MOVE.L         (A0),D0                  ;2010 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__30;6006 
+___COI_GetAnimFieldPointerByMode__29:
+              LEA            $14(A2),A0               ;41ea 0014 
+              MOVE.L         (A0),D0                  ;2010 
+___COI_GetAnimFieldPointerByMode__30:
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__40;603c 
+___COI_GetAnimFieldPointerByMode__31:
+              TST.W          D5                       ;4a45 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__33;670c 
+___COI_GetAnimFieldPointerByMode__32:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADD.W          #$12,A0                  ;d0fc 0012 
+              MOVE.L         (A0),D0                  ;2010 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__34;6006 
+___COI_GetAnimFieldPointerByMode__33:
+              LEA            $18(A2),A0               ;41ea 0018 
+              MOVE.L         (A0),D0                  ;2010 
+___COI_GetAnimFieldPointerByMode__34:
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__40;6020 
+___COI_GetAnimFieldPointerByMode__35:
+              TST.W          D5                       ;4a45 
+              BEQ.B          ___COI_GetAnimFieldPointerByMode__37;670c 
+___COI_GetAnimFieldPointerByMode__36:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              ADD.W          #$16,A0                  ;d0fc 0016 
+              MOVE.L         (A0),D0                  ;2010 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__38;6006 
+___COI_GetAnimFieldPointerByMode__37:
+              LEA            $1c(A2),A0               ;41ea 001c 
+              MOVE.L         (A0),D0                  ;2010 
+___COI_GetAnimFieldPointerByMode__38:
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              BRA.B          ___COI_GetAnimFieldPointerByMode__40;6004 
+___COI_GetAnimFieldPointerByMode__39:
+              CLR.L          $18(A7)                  ;42af 0018 
+___COI_GetAnimFieldPointerByMode__40:
+              MOVE.L         $18(A7),D0               ;202f 0018 
+___COI_GetAnimFieldPointerByMode__41:
+___COI_GetAnimFieldPointerByMode__42:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$14,A7                  ;defc 0014 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           COI_GetAnimFieldPointerByMode
+              END
