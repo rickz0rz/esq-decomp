@@ -3894,7 +3894,9 @@ Recent promoted targets:
 - promote: `src/decomp/scripts/promote_diskio_get_filesize_from_handle_target_gcc.sh`
 - Target 1032 (`DISKIO_WriteDecimalField`):
 - compare: `src/decomp/scripts/compare_diskio_write_decimal_field_trial_gcc.sh`
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
 - semantic: `src/decomp/scripts/semantic_filter_diskio_write_decimal_field.awk`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - promote: `src/decomp/scripts/promote_diskio_write_decimal_field_target_gcc.sh`
 - Target 1033 (`DISKIO_QueryVolumeSoftErrorCount`):
 - compare: `src/decomp/scripts/compare_diskio_query_volume_soft_error_count_trial_gcc.sh`
@@ -3958,6 +3960,8 @@ Recent promoted targets:
 - Unknown38 `SIGNAL_PollAndDispatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_signal_poll_and_dispatch_trial.sh`
 - Unknown39 `GRAPHICS_BltBitMapRastPort` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_bltbitmaprastport_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
+- Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
+- Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
 - Unknown7 `STR_CopyUntilAnyDelimN` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_copy_until_any_delim_n_trial.sh`
 - Unknown7 `STR_FindChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_find_char_trial.sh`
 - Unknown7 `STR_FindCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_find_char_ptr_trial.sh`
@@ -4574,6 +4578,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown38_signal_poll_and_dispatch.c`
 - `src/decomp/sas_c/unknown39_graphics_bltbitmaprastport.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
+- `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
 - `src/decomp/sas_c/unknown8_format_u32_to_decimal_string.c`
 - `src/decomp/sas_c/unknown9_format_u32_to_octal_string.c`
@@ -4805,6 +4810,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_signal_poll_and_dispatch.awk`
 - `src/decomp/scripts/semantic_filter_sasc_graphics_bltbitmaprastport.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_find_char.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_find_char_ptr.awk`
