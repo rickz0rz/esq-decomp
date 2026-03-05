@@ -1,0 +1,96 @@
+              SECTION      text,CODE
+__code:
+ESQ_AdjustBracketedHourInString:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D2/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 2f34 
+___ESQ_AdjustBracketedHourInString__1:
+              MOVE.L         $2c(A7),D7               ;2e2f 002c 
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              MOVE.L         D7,D6                    ;2c07 
+              MOVE.L         A5,A3                    ;264d 
+___ESQ_AdjustBracketedHourInString__2:
+              MOVE.B         (A3)+,D5                 ;1a1b 
+              TST.B          D5                       ;4a05 
+              BEQ.W          ___ESQ_AdjustBracketedHourInString__21;6700 0082 
+___ESQ_AdjustBracketedHourInString__3:
+___ESQ_AdjustBracketedHourInString__4:
+              MOVEQ.L        #$5b,D0                  ;705b 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___ESQ_AdjustBracketedHourInString__2;66f2 
+___ESQ_AdjustBracketedHourInString__5:
+              MOVE.B         #$28,$ffffffff(A3)       ;177c 0028 ffff 
+              TST.B          D6                       ;4a06 
+              BEQ.B          ___ESQ_AdjustBracketedHourInString__15;675a 
+___ESQ_AdjustBracketedHourInString__6:
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.B         (A3)+,D0                 ;101b 
+              MOVE.B         (A3)+,D1                 ;121b 
+              MOVE.L         A3,A2                    ;244b 
+              MOVEQ.L        #$20,D2                  ;7420 
+              MOVE.B         D0,$23(A7)               ;1f40 0023 
+              MOVE.B         D1,$22(A7)               ;1f41 0022 
+              MOVE.B         D2,$21(A7)               ;1f42 0021 
+              CMP.B          D2,D0                    ;b002 
+              BEQ.B          ___ESQ_AdjustBracketedHourInString__8;6702 
+___ESQ_AdjustBracketedHourInString__7:
+              MOVEQ.L        #$a,D4                   ;780a 
+___ESQ_AdjustBracketedHourInString__8:
+              MOVEQ.L        #$d0,D0                  ;70d0 
+              ADD.B          D1,D0                    ;d001 
+              ADD.B          D0,D4                    ;d800 
+              ADD.B          D6,D4                    ;d806 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.B          D0,D4                    ;b800 
+              BGE.B          ___ESQ_AdjustBracketedHourInString__10;6c04 
+___ESQ_AdjustBracketedHourInString__9:
+              ADD.B          #$c,D4                   ;0604 000c 
+___ESQ_AdjustBracketedHourInString__10:
+              MOVEQ.L        #$c,D0                   ;700c 
+              CMP.B          D0,D4                    ;b800 
+              BLE.B          ___ESQ_AdjustBracketedHourInString__12;6f06 
+___ESQ_AdjustBracketedHourInString__11:
+              SUBI.B         #$c,D4                   ;0404 000c 
+              BRA.B          ___ESQ_AdjustBracketedHourInString__10;60f4 
+___ESQ_AdjustBracketedHourInString__12:
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.B          D0,D4                    ;b800 
+              BLT.B          ___ESQ_AdjustBracketedHourInString__14;6d0a 
+___ESQ_AdjustBracketedHourInString__13:
+              SUBI.B         #$a,D4                   ;0404 000a 
+              MOVEQ.L        #$31,D0                  ;7031 
+              MOVE.B         D0,$21(A7)               ;1f40 0021 
+___ESQ_AdjustBracketedHourInString__14:
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         D4,D0                    ;1004 
+              ADD.B          #$30,D0                  ;0600 0030 
+              MOVE.B         D0,(A2)                  ;1480 
+              SUBQ.L         #$1,A2                   ;538a 
+              MOVE.B         $21(A7),(A2)             ;14af 0021 
+___ESQ_AdjustBracketedHourInString__15:
+              MOVE.B         (A3)+,D5                 ;1a1b 
+              TST.B          D5                       ;4a05 
+              BEQ.B          ___ESQ_AdjustBracketedHourInString__21;6710 
+___ESQ_AdjustBracketedHourInString__16:
+___ESQ_AdjustBracketedHourInString__17:
+              MOVEQ.L        #$5d,D0                  ;705d 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___ESQ_AdjustBracketedHourInString__15;66f4 
+___ESQ_AdjustBracketedHourInString__18:
+              MOVE.B         #$29,$ffffffff(A3)       ;177c 0029 ffff 
+___ESQ_AdjustBracketedHourInString__19:
+              BRA.W          ___ESQ_AdjustBracketedHourInString__2;6000 ff7a 
+___ESQ_AdjustBracketedHourInString__20:
+___ESQ_AdjustBracketedHourInString__21:
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A2/A3/A5;4cdf 2cf4 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQ_AdjustBracketedHourInString
+              END

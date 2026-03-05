@@ -1,0 +1,21 @@
+              SECTION      text,CODE
+__code:
+ESQ_AdvanceBannerCharIndex_Retur:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQ_AdvanceBannerCharIndex_Retur__1:
+              MOVE.W         $a(A7),D7                ;3e2f 000a 
+              MOVE.W         D7,ESQ_BannerCharIndexShadow2273(A4);3947 0000 
+              MOVE.W         D7,D0                    ;3007 
+___ESQ_AdvanceBannerCharIndex_Retur__2:
+___ESQ_AdvanceBannerCharIndex_Retur__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_BannerCharIndexShadow2273
+              XDEF           ESQ_AdvanceBannerCharIndex_Retur
+              END
