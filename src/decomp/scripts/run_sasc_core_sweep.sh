@@ -878,6 +878,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ladfunc_update_entry_from_text_and_attr_buffers_return_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_compute_filter_offset_for_entry_return_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail2_auto_request_no_op_trial.sh"
+    "src/decomp/scripts/compare_sasc_locavail2_display_alert_delay_and_reboot_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_load_availability_data_file_return_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_map_filter_token_char_to_class_trial.sh"
     "src/decomp/scripts/compare_sasc_locavail_map_filter_token_char_to_class_return_trial.sh"
