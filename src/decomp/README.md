@@ -4072,6 +4072,12 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQ_CheckCompatibleVideoChip`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_check_compatible_video_chip_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_check_compatible_video_chip.awk`
+- SAS/C-only lane (`ESQ_CheckTopazFontGuard`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_check_topaz_font_guard_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_check_topaz_font_guard.awk`
+- SAS/C-only lane (`ESQ_FormatDiskErrorMessage`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_format_disk_error_message_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_format_disk_error_message.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5068,6 +5074,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/esq_supervisor_cold_reboot.c`
 - `src/decomp/sas_c/esq_check_available_fast_memory.c`
 - `src/decomp/sas_c/esq_check_compatible_video_chip.c`
+- `src/decomp/sas_c/esq_check_topaz_font_guard.c`
+- `src/decomp/sas_c/esq_format_disk_error_message.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5369,6 +5377,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esq_supervisor_cold_reboot.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_check_available_fast_memory.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_check_compatible_video_chip.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_check_topaz_font_guard.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_format_disk_error_message.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
