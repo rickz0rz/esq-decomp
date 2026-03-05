@@ -235,6 +235,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_normalize_clock_and_redraw_banner_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_poll_input_mode_and_refresh_selection_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqdisp_propagate_primary_title_metadata_to_secondary_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_group_to_primary_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_line_head_tail_if_marked_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_get_entry_pointer_by_mode_trial.sh"
