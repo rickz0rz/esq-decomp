@@ -859,6 +859,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_esqdisp_getentrypointerbymode_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_ladfunc_extracthighnibble_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_ladfunc_extractlownibble_trial.sh"
+    "src/decomp/scripts/compare_sasc_tliba2_find_last_char_in_string_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba2_jmptbl_dst_addtimeoffset_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba2_jmptbl_esq_testbit1based_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba3_jmptbl_gcommand_applyhighlightflag_trial.sh"
