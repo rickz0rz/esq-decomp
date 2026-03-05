@@ -772,6 +772,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script3_check_path_exists_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_set_ctrl_context_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_init_ctrl_context_trial.sh"
+    "src/decomp/scripts/compare_sasc_script3_clear_search_texts_and_channels_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_comparen_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_copypadnul_trial.sh"
