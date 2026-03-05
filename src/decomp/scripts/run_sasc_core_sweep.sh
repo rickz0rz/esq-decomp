@@ -1104,6 +1104,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_parseini_jmptbl_string_comparenocasen_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_jmptbl_unknown36_finalizerequest_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_jmptbl_wdisp_sprintf_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini2_adjust_hours_to_24hr_format_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_trial.sh"
