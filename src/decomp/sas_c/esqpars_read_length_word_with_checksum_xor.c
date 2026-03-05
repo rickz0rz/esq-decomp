@@ -1,0 +1,28 @@
+typedef unsigned char UBYTE;
+typedef unsigned short UWORD;
+typedef signed long LONG;
+
+extern UWORD ESQIFF_RecordLength;
+
+extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
+extern UBYTE ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+
+UBYTE ESQPARS_ReadLengthWordWithChecksumXor(UBYTE xor_seed)
+{
+    LONG i;
+    UBYTE accum = xor_seed;
+    UWORD length = 0;
+
+    ESQIFF_RecordLength = 0;
+
+    for (i = 0; i < 2; ++i) {
+        UBYTE b;
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        accum ^= b;
+        length = (UWORD)((length << 8) | (UWORD)b);
+        ESQIFF_RecordLength = length;
+    }
+
+    return accum;
+}
