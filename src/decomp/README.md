@@ -5101,6 +5101,7 @@ Recent promoted targets:
 - PARSEINI3 `PARSEINI_ComputeHTCMaxValues` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini3_compute_htc_max_values_trial.sh`
 - PARSEINI3 `PARSEINI_MonitorClockChange` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini3_monitor_clock_change_trial.sh`
 - PARSEINI3 `PARSEINI_UpdateCtrlHDeltaMax` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini3_update_ctrl_h_delta_max_trial.sh`
+- PARSEINI3 `PARSEINI_WriteErrorLogEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini3_write_error_log_entry_trial.sh`
 - NEWGRID `NEWGRID_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_math_divs32_trial.sh`
 - NEWGRID `NEWGRID_JMPTBL_DATETIME_SecondsToStruct` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_datetime_secondstostruct_trial.sh`
 - NEWGRID `NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_generate_grid_date_string_trial.sh`

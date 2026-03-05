@@ -1115,6 +1115,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_parseini3_compute_htc_max_values_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini3_monitor_clock_change_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini3_update_ctrl_h_delta_max_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini3_write_error_log_entry_trial.sh"
 )
 
 OUT_DIR="build/decomp/sasc_trial"
