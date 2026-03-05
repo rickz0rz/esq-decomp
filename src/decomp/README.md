@@ -5129,6 +5129,7 @@ Recent promoted targets:
 - TEXTDISP `TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_cleanup_drawinsetrectframe_trial.sh`
 - TEXTDISP `TEXTDISP_GetGroupEntryCount` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_get_group_entry_count_trial.sh`
 - TEXTDISP `TEXTDISP_ApplySourceConfigAllEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_apply_source_config_all_entries_trial.sh`
+- TEXTDISP `TEXTDISP_AddSourceConfigEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_add_source_config_entry_trial.sh`
 - TEXTDISP `TEXTDISP_ApplySourceConfigToEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_apply_source_config_to_entry_trial.sh`
 - TEXTDISP `TEXTDISP_ClearSourceConfig` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_clear_source_config_trial.sh`
 - TEXTDISP `TEXTDISP_LoadSourceConfig` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_load_source_config_trial.sh`
