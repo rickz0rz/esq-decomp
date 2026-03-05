@@ -4078,6 +4078,18 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQ_FormatDiskErrorMessage`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_format_disk_error_message_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_format_disk_error_message.awk`
+- SAS/C-only lane (`ESQ_HandleSerialRbfInterrupt`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_handle_serial_rbf_interrupt_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_handle_serial_rbf_interrupt.awk`
+- SAS/C-only lane (`ESQ_InitAudio1Dma`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_init_audio1_dma_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_init_audio1_dma.awk`
+- SAS/C-only lane (`ESQ_PollCtrlInput`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_poll_ctrl_input_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_poll_ctrl_input.awk`
+- SAS/C-only lane (`ESQ_ReadSerialRbfByte`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_read_serial_rbf_byte_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_read_serial_rbf_byte.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5076,6 +5088,10 @@ Recent promoted targets:
 - `src/decomp/sas_c/esq_check_compatible_video_chip.c`
 - `src/decomp/sas_c/esq_check_topaz_font_guard.c`
 - `src/decomp/sas_c/esq_format_disk_error_message.c`
+- `src/decomp/sas_c/esq_handle_serial_rbf_interrupt.c`
+- `src/decomp/sas_c/esq_init_audio1_dma.c`
+- `src/decomp/sas_c/esq_poll_ctrl_input.c`
+- `src/decomp/sas_c/esq_read_serial_rbf_byte.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5379,6 +5395,10 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esq_check_compatible_video_chip.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_check_topaz_font_guard.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_format_disk_error_message.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_handle_serial_rbf_interrupt.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_init_audio1_dma.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_poll_ctrl_input.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_read_serial_rbf_byte.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
