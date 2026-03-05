@@ -6271,6 +6271,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_tliba2_resolve_entry_window_and_slot_count_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba2_resolve_entry_window_and_slot_count.awk`
 - `src/decomp/sas_c/tliba2_resolve_entry_window_and_slot_count.c`
+- `src/decomp/scripts/compare_sasc_tliba1_parse_style_code_char_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_tliba1_parse_style_code_char.awk`
+- `src/decomp/sas_c/tliba1_parse_style_code_char.c`
 - `src/decomp/scripts/compare_sasc_tliba_find_first_wildcard_match_index_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba_find_first_wildcard_match_index.awk`
 - `src/decomp/sas_c/tliba_find_first_wildcard_match_index.c`

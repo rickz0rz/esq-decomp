@@ -849,6 +849,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_set_selection_fields_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_should_open_editor_for_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_skip_control_codes_trial.sh"
+    "src/decomp/scripts/compare_sasc_tliba1_parse_style_code_char_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_cleanup_formatclockformatentry_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_coi_getanimfieldpointerbymode_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_coi_testentrywithintimewindow_trial.sh"
