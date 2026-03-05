@@ -5098,6 +5098,12 @@ Recent promoted targets:
 - `src/decomp/sas_c/cleanup_release_display_resources.c`
 - `src/decomp/scripts/compare_sasc_cleanup_render_aligned_status_screen_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_render_aligned_status_screen.awk`
+- `src/decomp/scripts/compare_sasc_group_ab_jmptbl_unknown2a_stub0_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_group_ab_jmptbl_unknown2a_stub0.awk`
+- `src/decomp/sas_c/group_ab_jmptbl_unknown2a_stub0.c`
+- `src/decomp/scripts/compare_sasc_bevel_draw_vertical_bevel_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_bevel_draw_vertical_bevel.awk`
+- `src/decomp/sas_c/bevel_draw_vertical_bevel.c`
 - `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
 - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`

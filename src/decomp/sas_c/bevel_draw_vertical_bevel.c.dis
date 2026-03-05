@@ -1,0 +1,56 @@
+              SECTION      text,CODE
+__code:
+BEVEL_DrawVerticalBevel:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+___BEVEL_DrawVerticalBevel__1:
+              MOVE.L         $20(A7),D6               ;2c2f 0020 
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVEQ.L        #$0,D5                   ;7a00 
+___BEVEL_DrawVerticalBevel__2:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          D0,D5                    ;ba80 
+              BGE.B          ___BEVEL_DrawVerticalBevel__6;6c36 
+___BEVEL_DrawVerticalBevel__3:
+              MOVE.L         A5,D0                    ;200d 
+              MOVEQ.L        #$22,D1                  ;7222 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.W         #$ffffffff,(A0)          ;30bc ffff 
+              MOVE.L         A5,D0                    ;200d 
+              MOVEQ.L        #$21,D1                  ;7221 
+              ADD.L          D1,D0                    ;d081 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.L         D0,A0                    ;2040 
+              OR.B           (A0),D1                  ;8210 
+              MOVE.B         D1,(A0)                  ;1081 
+              MOVE.L         A5,D0                    ;200d 
+              MOVEQ.L        #$1e,D1                  ;721e 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.B         #$f,(A0)                 ;10bc 000f 
+              BSR.W          _LVOMove                 ;6100 0000 
+              BSR.W          _LVODraw                 ;6100 0000 
+              ADDQ.L         #$1,D7                   ;5287 
+              SUBQ.L         #$1,D6                   ;5386 
+___BEVEL_DrawVerticalBevel__4:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___BEVEL_DrawVerticalBevel__2;60c4 
+___BEVEL_DrawVerticalBevel__5:
+___BEVEL_DrawVerticalBevel__6:
+              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVOSetDrMd
+              XREF           _LVOSetAPen
+              XREF           _LVOMove
+              XREF           _LVODraw
+              XDEF           BEVEL_DrawVerticalBevel
+              END
