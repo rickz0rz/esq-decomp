@@ -4084,6 +4084,18 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQIFF2_ClearPrimaryEntryFlags34To39_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff2_clear_primary_entry_flags34_to39_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- SAS/C-only lane (`ESQ_ShutdownAndReturn`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_shutdown_and_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
+- SAS/C-only lane (`ESQIFF_ShowExternalAssetWithCopperFx_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
+- SAS/C-only lane (`ESQIFF_PlayNextExternalAssetFrame_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
+- SAS/C-only lane (`ESQSHARED4_ApplyBannerColorStep_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqshared4_apply_banner_color_step_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -4204,6 +4216,10 @@ Recent promoted targets:
 - Unknown ESQIFF2 `ESQIFF2_ShowVersionMismatchOverlay_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_show_version_mismatch_overlay_return_trial.sh`
 - Unknown ESQIFF2 `ESQIFF2_ShowAttentionOverlay_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_show_attention_overlay_return_trial.sh`
 - Unknown ESQIFF2 `ESQIFF2_ClearPrimaryEntryFlags34To39_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff2_clear_primary_entry_flags34_to39_return_trial.sh`
+- Unknown ESQ `ESQ_ShutdownAndReturn` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_shutdown_and_return_trial.sh`
+- Unknown ESQIFF `ESQIFF_ShowExternalAssetWithCopperFx_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_show_external_asset_with_copper_fx_return_trial.sh`
+- Unknown ESQIFF `ESQIFF_PlayNextExternalAssetFrame_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_play_next_external_asset_frame_return_trial.sh`
+- Unknown ESQSHARED4 `ESQSHARED4_ApplyBannerColorStep_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared4_apply_banner_color_step_return_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4852,6 +4868,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/flib_return_stubs.c`
 - `src/decomp/sas_c/ladfunc_return_stubs.c`
 - `src/decomp/sas_c/esqiff2_return_stubs.c`
+- `src/decomp/sas_c/return_misc_stubs.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -5114,6 +5131,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_flib_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqiff2_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
