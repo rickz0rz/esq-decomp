@@ -5000,6 +5000,7 @@ Recent promoted targets:
 - TEXTDISP2 `TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_reset_selection_and_refresh_trial.sh`
 - TEXTDISP2 `TEXTDISP_DrawNextEntryPreview` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_draw_next_entry_preview_trial.sh`
 - TEXTDISP2 `TEXTDISP_SetRastForMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_set_rast_for_mode_trial.sh`
+- TEXTDISP2 `TEXTDISP_UpdateHighlightOrPreview` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_update_highlight_or_preview_trial.sh`
 - TEXTDISP2 `TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_trial.sh`
 - TEXTDISP2 `TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_ladfunc_drawentrypreview_trial.sh`
 - TEXTDISP2 `TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial.sh`
