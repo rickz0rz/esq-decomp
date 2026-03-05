@@ -5021,5 +5021,20 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_coi_ensure_anim_object_allocated_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_ensure_anim_object_allocated.awk`
 - `src/decomp/sas_c/coi_ensure_anim_object_allocated.c`
+- `src/decomp/scripts/compare_sasc_coi_count_escape14_before_null_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_count_escape14_before_null.awk`
+- `src/decomp/sas_c/coi_count_escape14_before_null.c`
+- `src/decomp/scripts/compare_sasc_coi_clear_anim_object_strings_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_clear_anim_object_strings.awk`
+- `src/decomp/sas_c/coi_clear_anim_object_strings.c`
+- `src/decomp/scripts/compare_sasc_coi_free_sub_entry_table_entries_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_free_sub_entry_table_entries_return.awk`
+- `src/decomp/sas_c/coi_free_sub_entry_table_entries_return.c`
+- `src/decomp/scripts/compare_sasc_coi_test_entry_within_time_window_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_test_entry_within_time_window_return.awk`
+- `src/decomp/sas_c/coi_test_entry_within_time_window_return.c`
+- `src/decomp/scripts/compare_sasc_coi_test_entry_within_time_window_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_test_entry_within_time_window.awk`
+- `src/decomp/sas_c/coi_test_entry_within_time_window.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

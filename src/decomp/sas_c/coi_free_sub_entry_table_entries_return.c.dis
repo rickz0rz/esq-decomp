@@ -1,0 +1,14 @@
+              SECTION      text,CODE
+__code:
+COI_FreeSubEntryTableEntries_Ret:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___COI_FreeSubEntryTableEntries_Ret__1:
+___COI_FreeSubEntryTableEntries_Ret__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           COI_FreeSubEntryTableEntries_Ret
+              END
