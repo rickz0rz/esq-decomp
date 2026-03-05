@@ -6,11 +6,13 @@ cd "$ROOT_DIR"
 
 STRICT=0
 FILTERS=()
+CLEAN_GENERATED_DIS=0
 
 usage() {
-    echo "Usage: $0 [--strict] [--filter <substring>]..."
+    echo "Usage: $0 [--strict] [--filter <substring>] [--clean-generated-dis]"
     echo "  --strict              exit non-zero on any mismatch/missing semantic diff"
     echo "  --filter <substring>  run only lanes whose script path contains substring"
+    echo "  --clean-generated-dis remove untracked src/decomp/sas_c/*.dis files after run"
 }
 
 while [ $# -gt 0 ]; do
@@ -27,6 +29,10 @@ while [ $# -gt 0 ]; do
             fi
             FILTERS+=("$2")
             shift 2
+            ;;
+        --clean-generated-dis)
+            CLEAN_GENERATED_DIS=1
+            shift
             ;;
         -h|--help)
             usage
@@ -986,6 +992,19 @@ done
 
 if [ "${#FILTERS[@]}" -gt 0 ]; then
     echo "SAS/C core sweep: selected ${ran_count} lane(s) via --filter"
+fi
+
+if [ "$CLEAN_GENERATED_DIS" -eq 1 ]; then
+    cleaned=0
+    while IFS= read -r dis_file; do
+        [ -z "$dis_file" ] && continue
+        if git ls-files --error-unmatch "$dis_file" >/dev/null 2>&1; then
+            continue
+        fi
+        rm -f "$dis_file"
+        cleaned=$((cleaned + 1))
+    done < <(find src/decomp/sas_c -maxdepth 1 -type f -name '*.dis' | sort)
+    echo "SAS/C core sweep: cleaned ${cleaned} untracked generated .dis file(s)"
 fi
 
 if [ "$failed" -ne 0 ]; then
