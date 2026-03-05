@@ -4006,6 +4006,9 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO2_LoadCurDayDataFile`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_load_cur_day_data_file_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_load_cur_day_data_file.awk`
+- SAS/C-only lane (`DISKIO2_WriteCurDayDataFile`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_write_cur_day_data_file_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_write_cur_day_data_file.awk`
 - SAS/C-only lane (`ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqshared_match_selection_code_with_optional_suffix_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
@@ -4030,9 +4033,18 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPLIB_FindPreviousValidEntryIndex_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_find_previous_valid_entry_index_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
+- SAS/C-only lane (`DISPLIB_FindPreviousValidEntryIndex`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_find_previous_valid_entry_index_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_find_previous_valid_entry_index.awk`
 - SAS/C-only lane (`DISPLIB_ApplyInlineAlignmentPadding_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
+- SAS/C-only lane (`DISPLIB_ApplyInlineAlignmentPadding`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_apply_inline_alignment_padding_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_apply_inline_alignment_padding.awk`
+- SAS/C-only lane (`DISPLIB_DisplayTextAtPosition`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_display_text_at_position_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_display_text_at_position.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5009,6 +5021,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio2_receive_transfer_blocks_to_file.c`
 - `src/decomp/sas_c/diskio2_handle_interactive_file_transfer.c`
 - `src/decomp/sas_c/diskio2_load_cur_day_data_file.c`
+- `src/decomp/sas_c/diskio2_write_cur_day_data_file.c`
 - `src/decomp/sas_c/diskio1_dump_default_coi_info_block.c`
 - `src/decomp/sas_c/diskio1_dump_program_source_record_verbose.c`
 - `src/decomp/sas_c/diskio1_dump_program_info_verbose.c`
@@ -5016,6 +5029,9 @@ Recent promoted targets:
 - `src/decomp/sas_c/esqshared_return_stubs.c`
 - `src/decomp/sas_c/esqpars_return_stubs.c`
 - `src/decomp/sas_c/displib_return_stubs.c`
+- `src/decomp/sas_c/displib_find_previous_valid_entry_index.c`
+- `src/decomp/sas_c/displib_apply_inline_alignment_padding.c`
+- `src/decomp/sas_c/displib_display_text_at_position.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5297,6 +5313,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_receive_transfer_blocks_to_file.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_handle_interactive_file_transfer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_load_cur_day_data_file.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_write_cur_day_data_file.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_default_coi_info_block.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_source_record_verbose.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_verbose.awk`
@@ -5304,6 +5321,9 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqpars_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_find_previous_valid_entry_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_apply_inline_alignment_padding.awk`
+- `src/decomp/scripts/semantic_filter_sasc_displib_display_text_at_position.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
