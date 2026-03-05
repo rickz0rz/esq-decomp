@@ -4204,6 +4204,12 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPTEXT_RenderCurrentLine`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_render_current_line_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_render_current_line.awk`
+- SAS/C-only lane (`DISPTEXT_LayoutSourceToLines`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_layout_source_to_lines_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_layout_source_to_lines.awk`
+- SAS/C-only lane (`DISPTEXT_LayoutAndAppendToBuffer`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_layout_and_append_to_buffer_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_layout_and_append_to_buffer.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5236,6 +5242,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/disptext_append_helpers.c`
 - `src/decomp/sas_c/disptext_layout_source_helpers.c`
 - `src/decomp/sas_c/disptext_render_helpers.c`
+- `src/decomp/sas_c/disptext_layout_lines_helpers.c`
+- `src/decomp/sas_c/disptext_layout_append_helpers.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5581,6 +5589,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_disptext_append_to_buffer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_disptext_build_layout_for_source.awk`
 - `src/decomp/scripts/semantic_filter_sasc_disptext_render_current_line.awk`
+- `src/decomp/scripts/semantic_filter_sasc_disptext_layout_source_to_lines.awk`
+- `src/decomp/scripts/semantic_filter_sasc_disptext_layout_and_append_to_buffer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
