@@ -4057,6 +4057,21 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPLIB_CommitCurrentLinePenAndAdvance`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_displib_commit_current_line_pen_and_advance_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_displib_commit_current_line_pen_and_advance.awk`
+- SAS/C-only lane (`ESQ_InvokeGcommandInit`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_invoke_gcommand_init_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_invoke_gcommand_init.awk`
+- SAS/C-only lane (`ESQ_TryRomWriteTest`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_try_rom_write_test_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_try_rom_write_test.awk`
+- SAS/C-only lane (`ESQ_SupervisorColdReboot`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_supervisor_cold_reboot_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_supervisor_cold_reboot.awk`
+- SAS/C-only lane (`ESQ_CheckAvailableFastMemory`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_check_available_fast_memory_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_check_available_fast_memory.awk`
+- SAS/C-only lane (`ESQ_CheckCompatibleVideoChip`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_check_compatible_video_chip_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_check_compatible_video_chip.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5048,6 +5063,11 @@ Recent promoted targets:
 - `src/decomp/sas_c/displib_reset_line_tables.c`
 - `src/decomp/sas_c/displib_reset_text_buffer_and_line_tables.c`
 - `src/decomp/sas_c/displib_commit_current_line_pen_and_advance.c`
+- `src/decomp/sas_c/esq_invoke_gcommand_init.c`
+- `src/decomp/sas_c/esq_try_rom_write_test.c`
+- `src/decomp/sas_c/esq_supervisor_cold_reboot.c`
+- `src/decomp/sas_c/esq_check_available_fast_memory.c`
+- `src/decomp/sas_c/esq_check_compatible_video_chip.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5344,6 +5364,11 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_displib_reset_line_tables.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_reset_text_buffer_and_line_tables.awk`
 - `src/decomp/scripts/semantic_filter_sasc_displib_commit_current_line_pen_and_advance.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_invoke_gcommand_init.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_try_rom_write_test.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_supervisor_cold_reboot.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_check_available_fast_memory.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_check_compatible_video_chip.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
