@@ -6319,5 +6319,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_newgrid_map_selection_to_mode_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_newgrid_map_selection_to_mode.awk`
 - `src/decomp/sas_c/newgrid_map_selection_to_mode.c`
+- `src/decomp/scripts/compare_sasc_newgrid_adjust_clock_string_by_slot_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_newgrid_adjust_clock_string_by_slot.awk`
+- `src/decomp/sas_c/newgrid_adjust_clock_string_by_slot.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
