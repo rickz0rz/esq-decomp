@@ -1,9 +1,10 @@
-typedef signed long LONG;
+typedef long LONG;
 
-extern void *INPUTDEVICE_LibraryBaseFromConsoleIo;
-extern LONG _LVOexecPrivate3(void *base, void *arg0, void *arg1, LONG arg2, void *arg3);
+extern LONG INPUTDEVICE_LibraryBaseFromConsoleIo;
 
-LONG EXEC_CallVector_48(void *arg0, void *arg1, LONG arg2, void *arg3)
+LONG _LVOexecPrivate3(LONG a0, LONG a1, LONG d1, LONG a2);
+
+LONG EXEC_CallVector_48(LONG a0, LONG a1, LONG d1, LONG a2)
 {
-    return _LVOexecPrivate3(INPUTDEVICE_LibraryBaseFromConsoleIo, arg0, arg1, arg2, arg3);
+    return _LVOexecPrivate3(a0, a1, d1, a2);
 }

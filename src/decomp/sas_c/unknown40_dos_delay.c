@@ -1,9 +1,8 @@
-typedef signed long LONG;
+typedef long LONG;
 
-extern void *Global_REF_DOS_LIBRARY_2;
-extern LONG _LVODelay(void *dosBase, LONG ticks);
+LONG _LVODelay(LONG ticks);
 
-void DOS_Delay(LONG ticks)
+LONG DOS_Delay(LONG ticks)
 {
-    _LVODelay(Global_REF_DOS_LIBRARY_2, ticks);
+    return _LVODelay(ticks);
 }

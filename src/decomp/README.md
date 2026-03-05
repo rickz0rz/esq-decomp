@@ -5125,6 +5125,15 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_battclock_write_seconds_to_battery_backed_clock_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_battclock_write_seconds_to_battery_backed_clock.awk`
 - `src/decomp/sas_c/battclock_write_seconds_to_battery_backed_clock.c`
+- `src/decomp/scripts/compare_sasc_dos_delay_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_dos_delay.awk`
+- `src/decomp/sas_c/unknown40_dos_delay.c`
+- `src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_dos_system_tag_list.awk`
+- `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
+- `src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk`
+- `src/decomp/sas_c/unknown40_exec_call_vector_48.c`
 - `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
 - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
