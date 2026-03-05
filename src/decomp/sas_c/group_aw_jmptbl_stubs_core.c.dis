@@ -1,0 +1,79 @@
+              SECTION      text,CODE
+__code:
+GROUP_AW_JMPTBL_TLIBA3_BuildDisp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_TLIBA3_BuildDisp__1:
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+___GROUP_AW_JMPTBL_TLIBA3_BuildDisp__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AW_JMPTBL_DISPLIB_ApplyInl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_DISPLIB_ApplyInl__1:
+              BSR.W          DISPLIB_ApplyInlineAlignmentPadd;6100 0000 
+___GROUP_AW_JMPTBL_DISPLIB_ApplyInl__2:
+              RTS                                     ;4e75 
+GROUP_AW_JMPTBL_ESQIFF_RunCopper:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_ESQIFF_RunCopper__1:
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
+___GROUP_AW_JMPTBL_ESQIFF_RunCopper__2:
+              RTS                                     ;4e75 
+GROUP_AW_JMPTBL_DISPLIB_DisplayT:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_DISPLIB_DisplayT__1:
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+___GROUP_AW_JMPTBL_DISPLIB_DisplayT__2:
+              RTS                                     ;4e75 
+GROUP_AW_JMPTBL_MEM_Move:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_MEM_Move__1:
+              BSR.W          MEM_Move                 ;6100 0000 
+___GROUP_AW_JMPTBL_MEM_Move__2:
+              RTS                                     ;4e75 
+GROUP_AW_JMPTBL_WDISP_SPrintf:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_WDISP_SPrintf__1:
+              BSR.W          WDISP_SPrintf            ;6100 0000 
+___GROUP_AW_JMPTBL_WDISP_SPrintf__2:
+              RTS                                     ;4e75 
+GROUP_AW_JMPTBL_ESQ_SetCopperEff:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_ESQ_SetCopperEff__1:
+              BSR.W          ESQ_SetCopperEffect_OffDisableHi;6100 0000 
+___GROUP_AW_JMPTBL_ESQ_SetCopperEff__2:
+              RTS                                     ;4e75 
+GROUP_AW_JMPTBL_STRING_CopyPadNu:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AW_JMPTBL_STRING_CopyPadNu__1:
+              BSR.W          STRING_CopyPadNul        ;6100 0000 
+___GROUP_AW_JMPTBL_STRING_CopyPadNu__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TLIBA3_BuildDisplayContextForVie
+              XREF           DISPLIB_ApplyInlineAlignmentPadd
+              XREF           ESQIFF_RunCopperRiseTransition
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           MEM_Move
+              XREF           WDISP_SPrintf
+              XREF           ESQ_SetCopperEffect_OffDisableHi
+              XREF           STRING_CopyPadNul
+              XDEF           GROUP_AW_JMPTBL_TLIBA3_BuildDisp
+              XDEF           GROUP_AW_JMPTBL_DISPLIB_ApplyInl
+              XDEF           GROUP_AW_JMPTBL_ESQIFF_RunCopper
+              XDEF           GROUP_AW_JMPTBL_DISPLIB_DisplayT
+              XDEF           GROUP_AW_JMPTBL_MEM_Move
+              XDEF           GROUP_AW_JMPTBL_WDISP_SPrintf
+              XDEF           GROUP_AW_JMPTBL_ESQ_SetCopperEff
+              XDEF           GROUP_AW_JMPTBL_STRING_CopyPadNu
+              END

@@ -1,0 +1,58 @@
+              SECTION      text,CODE
+__code:
+WDISP_FormatWithCallback:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___WDISP_FormatWithCallback__1:
+              MOVE.L         $18(A7),A3               ;266f 0018 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+___WDISP_FormatWithCallback__2:
+              MOVE.B         (A3)+,D7                 ;1e1b 
+              TST.B          D7                       ;4a07 
+              BEQ.B          ___WDISP_FormatWithCallback__13;6734 
+___WDISP_FormatWithCallback__3:
+___WDISP_FormatWithCallback__4:
+              MOVEQ.L        #$25,D0                  ;7025 
+              CMP.B          D0,D7                    ;be00 
+              BNE.B          ___WDISP_FormatWithCallback__10;6620 
+___WDISP_FormatWithCallback__5:
+              CMP.B          (A3),D0                  ;b013 
+              BEQ.B          ___WDISP_FormatWithCallback__9;671a 
+___WDISP_FormatWithCallback__6:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            $20(A7)                  ;486f 0020 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          FORMAT_ParseFormatSpec   ;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BEQ.B          ___WDISP_FormatWithCallback__10;6706 
+___WDISP_FormatWithCallback__7:
+              MOVE.L         A2,A3                    ;264a 
+              BRA.B          ___WDISP_FormatWithCallback__2;60d6 
+___WDISP_FormatWithCallback__8:
+___WDISP_FormatWithCallback__9:
+              ADDQ.L         #$1,A3                   ;528b 
+___WDISP_FormatWithCallback__10:
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              JSR            (A5)                     ;4e95 
+              ADDQ.W         #$4,A7                   ;584f 
+___WDISP_FormatWithCallback__11:
+              BRA.B          ___WDISP_FormatWithCallback__2;60c6 
+___WDISP_FormatWithCallback__12:
+___WDISP_FormatWithCallback__13:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           FORMAT_ParseFormatSpec
+              XDEF           WDISP_FormatWithCallback
+              END

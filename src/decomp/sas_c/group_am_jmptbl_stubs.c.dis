@@ -1,0 +1,277 @@
+              SECTION      text,CODE
+__code:
+GROUP_AM_JMPTBL_SIGNAL_CreateMsg:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_SIGNAL_CreateMsg__1:
+              BSR.W          SIGNAL_CreateMsgPortWithSignal;6100 0000 
+___GROUP_AM_JMPTBL_SIGNAL_CreateMsg__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AM_JMPTBL_LADFUNC_ClearBan:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_LADFUNC_ClearBan__1:
+              BSR.W          LADFUNC_ClearBannerRectEntries;6100 0000 
+___GROUP_AM_JMPTBL_LADFUNC_ClearBan__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_PARSEINI_UpdateC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_PARSEINI_UpdateC__1:
+              BSR.W          PARSEINI_UpdateClockFromRtc;6100 0000 
+___GROUP_AM_JMPTBL_PARSEINI_UpdateC__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_SCRIPT_InitCtrlC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_SCRIPT_InitCtrlC__1:
+              BSR.W          SCRIPT_InitCtrlContext   ;6100 0000 
+___GROUP_AM_JMPTBL_SCRIPT_InitCtrlC__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_DISKIO2_ParseIni:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_DISKIO2_ParseIni__1:
+              BSR.W          DISKIO2_ParseIniFileFromDisk;6100 0000 
+___GROUP_AM_JMPTBL_DISKIO2_ParseIni__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_ESQ_CheckTopazFo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_ESQ_CheckTopazFo__1:
+              BSR.W          ESQ_CheckTopazFontGuard  ;6100 0000 
+___GROUP_AM_JMPTBL_ESQ_CheckTopazFo__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_P_TYPE_ResetList:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_P_TYPE_ResetList__1:
+              BSR.W          P_TYPE_ResetListsAndLoadPromoIds;6100 0000 
+___GROUP_AM_JMPTBL_P_TYPE_ResetList__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_LADFUNC_LoadText:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_LADFUNC_LoadText__1:
+              BSR.W          LADFUNC_LoadTextAdsFromFile;6100 0000 
+___GROUP_AM_JMPTBL_LADFUNC_LoadText__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_DISKIO_LoadConfi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_DISKIO_LoadConfi__1:
+              BSR.W          DISKIO_LoadConfigFromDisk;6100 0000 
+___GROUP_AM_JMPTBL_DISKIO_LoadConfi__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_TEXTDISP_LoadSou:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_TEXTDISP_LoadSou__1:
+              BSR.W          TEXTDISP_LoadSourceConfig;6100 0000 
+___GROUP_AM_JMPTBL_TEXTDISP_LoadSou__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_KYBD_InitializeI:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_KYBD_InitializeI__1:
+              BSR.W          KYBD_InitializeInputDevices;6100 0000 
+___GROUP_AM_JMPTBL_KYBD_InitializeI__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_ESQ_CheckCompati:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_ESQ_CheckCompati__1:
+              BSR.W          ESQ_CheckCompatibleVideoChip;6100 0000 
+___GROUP_AM_JMPTBL_ESQ_CheckCompati__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_ESQ_CheckAvailab:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_ESQ_CheckAvailab__1:
+              BSR.W          ESQ_CheckAvailableFastMemory;6100 0000 
+___GROUP_AM_JMPTBL_ESQ_CheckAvailab__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_STRUCT_AllocWith:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_STRUCT_AllocWith__1:
+              BSR.W          STRUCT_AllocWithOwner    ;6100 0000 
+___GROUP_AM_JMPTBL_STRUCT_AllocWith__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_GCOMMAND_ResetBa:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_GCOMMAND_ResetBa__1:
+              BSR.W          GCOMMAND_ResetBannerFadeState;6100 0000 
+___GROUP_AM_JMPTBL_GCOMMAND_ResetBa__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_TLIBA3_InitPatte:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_TLIBA3_InitPatte__1:
+              BSR.W          TLIBA3_InitPatternTable  ;6100 0000 
+___GROUP_AM_JMPTBL_TLIBA3_InitPatte__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_ESQ_FormatDiskEr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_ESQ_FormatDiskEr__1:
+              BSR.W          ESQ_FormatDiskErrorMessage;6100 0000 
+___GROUP_AM_JMPTBL_ESQ_FormatDiskEr__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_SCRIPT_PrimeBann:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_SCRIPT_PrimeBann__1:
+              BSR.W          SCRIPT_PrimeBannerTransitionFrom;6100 0000 
+___GROUP_AM_JMPTBL_SCRIPT_PrimeBann__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_LOCAVAIL_ResetFi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_LOCAVAIL_ResetFi__1:
+              BSR.W          LOCAVAIL_ResetFilterStateStruct;6100 0000 
+___GROUP_AM_JMPTBL_LOCAVAIL_ResetFi__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_ESQ_InitAudio1Dm:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_ESQ_InitAudio1Dm__1:
+              BSR.W          ESQ_InitAudio1Dma        ;6100 0000 
+___GROUP_AM_JMPTBL_ESQ_InitAudio1Dm__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_LIST_InitHeader:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_LIST_InitHeader__1:
+              BSR.W          LIST_InitHeader          ;6100 0000 
+___GROUP_AM_JMPTBL_LIST_InitHeader__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_ESQ_SetCopperEff:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_ESQ_SetCopperEff__1:
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
+___GROUP_AM_JMPTBL_ESQ_SetCopperEff__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_LOCAVAIL_LoadAva:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_LOCAVAIL_LoadAva__1:
+              BSR.W          LOCAVAIL_LoadAvailabilityDataFil;6100 0000 
+___GROUP_AM_JMPTBL_LOCAVAIL_LoadAva__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_GCOMMAND_InitPre:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_GCOMMAND_InitPre__1:
+              BSR.W          GCOMMAND_InitPresetDefaults;6100 0000 
+___GROUP_AM_JMPTBL_GCOMMAND_InitPre__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_OVERRIDE_INTUITI:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_OVERRIDE_INTUITI__1:
+              BSR.W          OVERRIDE_INTUITION_FUNCS ;6100 0000 
+___GROUP_AM_JMPTBL_OVERRIDE_INTUITI__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_BUFFER_FlushAllA:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_BUFFER_FlushAllA__1:
+              BSR.W          BUFFER_FlushAllAndCloseWithCode;6100 0000 
+___GROUP_AM_JMPTBL_BUFFER_FlushAllA__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_FLIB2_ResetAndLo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_FLIB2_ResetAndLo__1:
+              BSR.W          FLIB2_ResetAndLoadListingTemplat;6100 0000 
+___GROUP_AM_JMPTBL_FLIB2_ResetAndLo__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_WDISP_SPrintf:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_WDISP_SPrintf__1:
+              BSR.W          WDISP_SPrintf            ;6100 0000 
+___GROUP_AM_JMPTBL_WDISP_SPrintf__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_CLEANUP_Shutdown:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_CLEANUP_Shutdown__1:
+              BSR.W          CLEANUP_ShutdownSystem   ;6100 0000 
+___GROUP_AM_JMPTBL_CLEANUP_Shutdown__2:
+              RTS                                     ;4e75 
+GROUP_AM_JMPTBL_LADFUNC_AllocBan:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AM_JMPTBL_LADFUNC_AllocBan__1:
+              BSR.W          LADFUNC_AllocBannerRectEntries;6100 0000 
+___GROUP_AM_JMPTBL_LADFUNC_AllocBan__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SIGNAL_CreateMsgPortWithSignal
+              XREF           LADFUNC_ClearBannerRectEntries
+              XREF           PARSEINI_UpdateClockFromRtc
+              XREF           SCRIPT_InitCtrlContext
+              XREF           DISKIO2_ParseIniFileFromDisk
+              XREF           ESQ_CheckTopazFontGuard
+              XREF           P_TYPE_ResetListsAndLoadPromoIds
+              XREF           LADFUNC_LoadTextAdsFromFile
+              XREF           DISKIO_LoadConfigFromDisk
+              XREF           TEXTDISP_LoadSourceConfig
+              XREF           KYBD_InitializeInputDevices
+              XREF           ESQ_CheckCompatibleVideoChip
+              XREF           ESQ_CheckAvailableFastMemory
+              XREF           STRUCT_AllocWithOwner
+              XREF           GCOMMAND_ResetBannerFadeState
+              XREF           TLIBA3_InitPatternTable
+              XREF           ESQ_FormatDiskErrorMessage
+              XREF           SCRIPT_PrimeBannerTransitionFrom
+              XREF           LOCAVAIL_ResetFilterStateStruct
+              XREF           ESQ_InitAudio1Dma
+              XREF           LIST_InitHeader
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
+              XREF           LOCAVAIL_LoadAvailabilityDataFil
+              XREF           GCOMMAND_InitPresetDefaults
+              XREF           OVERRIDE_INTUITION_FUNCS
+              XREF           BUFFER_FlushAllAndCloseWithCode
+              XREF           FLIB2_ResetAndLoadListingTemplat
+              XREF           WDISP_SPrintf
+              XREF           CLEANUP_ShutdownSystem
+              XREF           LADFUNC_AllocBannerRectEntries
+              XDEF           GROUP_AM_JMPTBL_SIGNAL_CreateMsg
+              XDEF           GROUP_AM_JMPTBL_LADFUNC_ClearBan
+              XDEF           GROUP_AM_JMPTBL_PARSEINI_UpdateC
+              XDEF           GROUP_AM_JMPTBL_SCRIPT_InitCtrlC
+              XDEF           GROUP_AM_JMPTBL_DISKIO2_ParseIni
+              XDEF           GROUP_AM_JMPTBL_ESQ_CheckTopazFo
+              XDEF           GROUP_AM_JMPTBL_P_TYPE_ResetList
+              XDEF           GROUP_AM_JMPTBL_LADFUNC_LoadText
+              XDEF           GROUP_AM_JMPTBL_DISKIO_LoadConfi
+              XDEF           GROUP_AM_JMPTBL_TEXTDISP_LoadSou
+              XDEF           GROUP_AM_JMPTBL_KYBD_InitializeI
+              XDEF           GROUP_AM_JMPTBL_ESQ_CheckCompati
+              XDEF           GROUP_AM_JMPTBL_ESQ_CheckAvailab
+              XDEF           GROUP_AM_JMPTBL_STRUCT_AllocWith
+              XDEF           GROUP_AM_JMPTBL_GCOMMAND_ResetBa
+              XDEF           GROUP_AM_JMPTBL_TLIBA3_InitPatte
+              XDEF           GROUP_AM_JMPTBL_ESQ_FormatDiskEr
+              XDEF           GROUP_AM_JMPTBL_SCRIPT_PrimeBann
+              XDEF           GROUP_AM_JMPTBL_LOCAVAIL_ResetFi
+              XDEF           GROUP_AM_JMPTBL_ESQ_InitAudio1Dm
+              XDEF           GROUP_AM_JMPTBL_LIST_InitHeader
+              XDEF           GROUP_AM_JMPTBL_ESQ_SetCopperEff
+              XDEF           GROUP_AM_JMPTBL_LOCAVAIL_LoadAva
+              XDEF           GROUP_AM_JMPTBL_GCOMMAND_InitPre
+              XDEF           GROUP_AM_JMPTBL_OVERRIDE_INTUITI
+              XDEF           GROUP_AM_JMPTBL_BUFFER_FlushAllA
+              XDEF           GROUP_AM_JMPTBL_FLIB2_ResetAndLo
+              XDEF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XDEF           GROUP_AM_JMPTBL_CLEANUP_Shutdown
+              XDEF           GROUP_AM_JMPTBL_LADFUNC_AllocBan
+              END

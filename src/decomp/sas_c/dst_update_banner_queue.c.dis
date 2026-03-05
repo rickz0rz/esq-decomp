@@ -1,0 +1,139 @@
+              SECTION      text,CODE
+__code:
+DST_UpdateBannerQueue:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+___DST_UpdateBannerQueue__1:
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVE.L         A5,A3                    ;264d 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.W          ___DST_UpdateBannerQueue__26;6700 00e8 
+___DST_UpdateBannerQueue__2:
+___DST_UpdateBannerQueue__3:
+              TST.L          (A3)                     ;4a93 
+              BEQ.B          ___DST_UpdateBannerQueue__10;6744 
+___DST_UpdateBannerQueue__4:
+              MOVE.L         (A3),A2                  ;2453 
+              LEA            $10(A2),A0               ;41ea 0010 
+              MOVE.W         DST_PrimaryCountdown(A4),(A0);30ac 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          DATETIME_UpdateSelectionField;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___DST_UpdateBannerQueue__12;674e 
+___DST_UpdateBannerQueue__5:
+              LEA            $10(A2),A0               ;41ea 0010 
+              TST.W          (A0)                     ;4a50 
+              BEQ.B          ___DST_UpdateBannerQueue__7;6704 
+___DST_UpdateBannerQueue__6:
+              MOVEQ.L        #$1,D6                   ;7c01 
+              BRA.B          ___DST_UpdateBannerQueue__8;6002 
+___DST_UpdateBannerQueue__7:
+              MOVEQ.L        #$ff,D6                  ;7cff 
+___DST_UpdateBannerQueue__8:
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
+              BSR.W          DST_AddTimeOffset        ;6100 0000 
+              LEA            $10(A2),A0               ;41ea 0010 
+              MOVE.W         (A0),DST_PrimaryCountdown(A4);3950 0000 
+              BSR.W          DST_WriteRtcFromGlobals  ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVEQ.L        #$1,D7                   ;7e01 
+___DST_UpdateBannerQueue__9:
+              BRA.B          ___DST_UpdateBannerQueue__12;6020 
+___DST_UpdateBannerQueue__10:
+              MOVE.W         DST_PrimaryCountdown(A4),D1;322c 0000 
+              SUBQ.W         #$1,D1                   ;5341 
+              BNE.B          ___DST_UpdateBannerQueue__12;6618 
+___DST_UpdateBannerQueue__11:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($ffffffff).w            ;4878 ffff 
+              PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
+              BSR.W          DST_AddTimeOffset        ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CLR.W          DST_PrimaryCountdown(A4) ;426c 0000 
+              MOVEQ.L        #$1,D7                   ;7e01 
+___DST_UpdateBannerQueue__12:
+              MOVE.B         ESQ_SecondarySlotModeFlagChar(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___DST_UpdateBannerQueue__20;6646 
+___DST_UpdateBannerQueue__13:
+              LEA            $4(A3),A0                ;41eb 0004 
+              TST.L          (A0)                     ;4a90 
+              BEQ.B          ___DST_UpdateBannerQueue__17;672c 
+___DST_UpdateBannerQueue__14:
+              MOVE.L         (A0),A1                  ;2250 
+              LEA            $10(A1),A0               ;41e9 0010 
+              MOVE.W         DST_SecondaryCountdown(A4),(A0);30ac 0000 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A1,$1c(A7)               ;2f49 001c 
+              BSR.W          DATETIME_UpdateSelectionField;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___DST_UpdateBannerQueue__22;6748 
+___DST_UpdateBannerQueue__15:
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              ADD.W          #$10,A0                  ;d0fc 0010 
+              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         D0,DST_SecondaryCountdown(A4);3940 0000 
+              MOVEQ.L        #$1,D7                   ;7e01 
+___DST_UpdateBannerQueue__16:
+              BRA.B          ___DST_UpdateBannerQueue__22;6036 
+___DST_UpdateBannerQueue__17:
+              MOVE.W         DST_SecondaryCountdown(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___DST_UpdateBannerQueue__22;662e 
+___DST_UpdateBannerQueue__18:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D0,DST_SecondaryCountdown(A4);3940 0000 
+              MOVEQ.L        #$1,D7                   ;7e01 
+___DST_UpdateBannerQueue__19:
+              BRA.B          ___DST_UpdateBannerQueue__22;6024 
+___DST_UpdateBannerQueue__20:
+              MOVE.W         DST_SecondaryCountdown(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___DST_UpdateBannerQueue__22;661c 
+___DST_UpdateBannerQueue__21:
+              LEA            $4(A3),A0                ;41eb 0004 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              BSR.W          DST_AllocateBannerStruct ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,(A0)                  ;2080 
+              CLR.W          DST_SecondaryCountdown(A4);426c 0000 
+              MOVEQ.L        #$1,D7                   ;7e01 
+___DST_UpdateBannerQueue__22:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___DST_UpdateBannerQueue__24;6704 
+___DST_UpdateBannerQueue__23:
+              BSR.W          DST_RefreshBannerBuffer  ;6100 0000 
+___DST_UpdateBannerQueue__24:
+              MOVE.L         D7,D0                    ;2007 
+___DST_UpdateBannerQueue__25:
+___DST_UpdateBannerQueue__26:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DST_PrimaryCountdown
+              XREF           DATETIME_UpdateSelectionField
+              XREF           CLOCK_DaySlotIndex
+              XREF           DST_AddTimeOffset
+              XREF           DST_WriteRtcFromGlobals
+              XREF           ESQ_SecondarySlotModeFlagChar
+              XREF           DST_SecondaryCountdown
+              XREF           DST_AllocateBannerStruct
+              XREF           DST_RefreshBannerBuffer
+              XDEF           DST_UpdateBannerQueue
+              END

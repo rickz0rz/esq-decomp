@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+GROUP_AC_JMPTBL_SCRIPT_UpdateCtr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_SCRIPT_UpdateCtr__1:
+              BSR.W          SCRIPT_UpdateCtrlStateMachine;6100 0000 
+___GROUP_AC_JMPTBL_SCRIPT_UpdateCtr__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_UpdateCtrlStateMachine
+              XDEF           GROUP_AC_JMPTBL_SCRIPT_UpdateCtr
+              END

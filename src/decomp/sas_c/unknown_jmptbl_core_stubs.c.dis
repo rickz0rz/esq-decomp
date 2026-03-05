@@ -1,0 +1,61 @@
+              SECTION      text,CODE
+__code:
+UNKNOWN_JMPTBL_ESQIFF2_ReadSeria:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___UNKNOWN_JMPTBL_ESQIFF2_ReadSeria__1:
+              BSR.W          ESQIFF2_ReadSerialRecordIntoBuff;6100 0000 
+___UNKNOWN_JMPTBL_ESQIFF2_ReadSeria__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+UNKNOWN_JMPTBL_DISPLIB_DisplayTe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___UNKNOWN_JMPTBL_DISPLIB_DisplayTe__1:
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+___UNKNOWN_JMPTBL_DISPLIB_DisplayTe__2:
+              RTS                                     ;4e75 
+UNKNOWN_JMPTBL_ESQ_WildcardMatch:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___UNKNOWN_JMPTBL_ESQ_WildcardMatch__1:
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
+___UNKNOWN_JMPTBL_ESQ_WildcardMatch__2:
+              RTS                                     ;4e75 
+UNKNOWN_JMPTBL_DST_NormalizeDayO:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___UNKNOWN_JMPTBL_DST_NormalizeDayO__1:
+              BSR.W          DST_NormalizeDayOfYear   ;6100 0000 
+___UNKNOWN_JMPTBL_DST_NormalizeDayO__2:
+              RTS                                     ;4e75 
+UNKNOWN_JMPTBL_ESQ_GenerateXorCh:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___UNKNOWN_JMPTBL_ESQ_GenerateXorCh__1:
+              BSR.W          ESQ_GenerateXorChecksumByte;6100 0000 
+___UNKNOWN_JMPTBL_ESQ_GenerateXorCh__2:
+              RTS                                     ;4e75 
+ESQPROTO_JMPTBL_ESQPARS_ReplaceO:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPROTO_JMPTBL_ESQPARS_ReplaceO__1:
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+___ESQPROTO_JMPTBL_ESQPARS_ReplaceO__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQIFF2_ReadSerialRecordIntoBuff
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ESQ_WildcardMatch
+              XREF           DST_NormalizeDayOfYear
+              XREF           ESQ_GenerateXorChecksumByte
+              XREF           ESQPARS_ReplaceOwnedString
+              XDEF           UNKNOWN_JMPTBL_ESQIFF2_ReadSeria
+              XDEF           UNKNOWN_JMPTBL_DISPLIB_DisplayTe
+              XDEF           UNKNOWN_JMPTBL_ESQ_WildcardMatch
+              XDEF           UNKNOWN_JMPTBL_DST_NormalizeDayO
+              XDEF           UNKNOWN_JMPTBL_ESQ_GenerateXorCh
+              XDEF           ESQPROTO_JMPTBL_ESQPARS_ReplaceO
+              END

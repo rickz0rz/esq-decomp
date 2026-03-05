@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+GROUP_AS_JMPTBL_STR_FindCharPtr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AS_JMPTBL_STR_FindCharPtr__1:
+              BSR.W          STR_FindCharPtr          ;6100 0000 
+___GROUP_AS_JMPTBL_STR_FindCharPtr__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AS_JMPTBL_ESQ_FindSubstrin:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AS_JMPTBL_ESQ_FindSubstrin__1:
+              BSR.W          ESQ_FindSubstringCaseFold;6100 0000 
+___GROUP_AS_JMPTBL_ESQ_FindSubstrin__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STR_FindCharPtr
+              XREF           ESQ_FindSubstringCaseFold
+              XDEF           GROUP_AS_JMPTBL_STR_FindCharPtr
+              XDEF           GROUP_AS_JMPTBL_ESQ_FindSubstrin
+              END

@@ -1,0 +1,47 @@
+              SECTION      text,CODE
+__code:
+ESQ_GenerateXorChecksumByte:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+___ESQ_GenerateXorChecksumByte__1:
+              MOVE.L         $20(A7),D6               ;2c2f 0020 
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.B         ESQIFF_RecordChecksumByte(A4),D5;1a2c 0000 
+              TST.B          ESQIFF_UseCachedChecksumFlag(A4);4a2c 0000 
+              BEQ.B          ___ESQ_GenerateXorChecksumByte__3;6704 
+___ESQ_GenerateXorChecksumByte__2:
+              MOVE.L         D5,D0                    ;2005 
+              BRA.B          ___ESQ_GenerateXorChecksumByte__8;601e 
+___ESQ_GenerateXorChecksumByte__3:
+              MOVE.L         D7,D5                    ;2a07 
+              MOVE.L         D6,D4                    ;2806 
+              EORI.W         #$ff,D5                  ;0a45 00ff 
+___ESQ_GenerateXorChecksumByte__4:
+              TST.W          D4                       ;4a44 
+              BEQ.B          ___ESQ_GenerateXorChecksumByte__6;670a 
+___ESQ_GenerateXorChecksumByte__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              EOR.L          D0,D5                    ;b185 
+              SUBQ.W         #$1,D4                   ;5344 
+              BRA.B          ___ESQ_GenerateXorChecksumByte__4;60f2 
+___ESQ_GenerateXorChecksumByte__6:
+              MOVE.L         D5,D0                    ;2005 
+              MOVEQ.L        #$0,D1                   ;7200 
+              NOT.B          D1                       ;4601 
+              AND.L          D1,D0                    ;c081 
+___ESQ_GenerateXorChecksumByte__7:
+___ESQ_GenerateXorChecksumByte__8:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQIFF_RecordChecksumByte
+              XREF           ESQIFF_UseCachedChecksumFlag
+              XDEF           ESQ_GenerateXorChecksumByte
+              END

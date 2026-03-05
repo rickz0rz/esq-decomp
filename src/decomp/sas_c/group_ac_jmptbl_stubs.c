@@ -1,0 +1,25 @@
+extern void DST_RefreshBannerBuffer(void);
+extern void DST_UpdateBannerQueue(void);
+extern void ESQDISP_DrawStatusBanner(void);
+extern void ESQFUNC_DrawDiagnosticsScreen(void);
+extern void ESQFUNC_DrawEscMenuVersion(void);
+extern void ESQFUNC_DrawMemoryStatusScreen(void);
+extern void ESQFUNC_FreeExtraTitleTextPointers(void);
+extern void GCOMMAND_UpdateBannerBounds(void);
+extern void PARSEINI_AdjustHoursTo24HrFormat(void);
+extern void PARSEINI_UpdateClockFromRtc(void);
+extern void SCRIPT_ClearCtrlLineIfEnabled(void);
+extern void SCRIPT_PollHandshakeAndApplyTimeout(void);
+
+void GROUP_AC_JMPTBL_DST_RefreshBannerBuffer(void){DST_RefreshBannerBuffer();}
+void GROUP_AC_JMPTBL_DST_UpdateBannerQueue(void){DST_UpdateBannerQueue();}
+void GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner(void){ESQDISP_DrawStatusBanner();}
+void GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen(void){ESQFUNC_DrawDiagnosticsScreen();}
+void GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion(void){ESQFUNC_DrawEscMenuVersion();}
+void GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen(void){ESQFUNC_DrawMemoryStatusScreen();}
+void GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers(void){ESQFUNC_FreeExtraTitleTextPointers();}
+void GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(void){GCOMMAND_UpdateBannerBounds();}
+void GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(void){PARSEINI_AdjustHoursTo24HrFormat();}
+void GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc(void){PARSEINI_UpdateClockFromRtc();}
+void GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled(void){SCRIPT_ClearCtrlLineIfEnabled();}
+void GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout(void){SCRIPT_PollHandshakeAndApplyTimeout();}

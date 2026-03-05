@@ -1,0 +1,62 @@
+              SECTION      text,CODE
+__code:
+PARALLEL_WriteCharHw:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___PARALLEL_WriteCharHw__1:
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              MOVE.L         D7,D6                    ;2c07 
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___PARALLEL_WriteCharHw__5;6614 
+___PARALLEL_WriteCharHw__2:
+              MOVE.B         CIAB_PRA(A4),D5          ;1a2c 0000 
+              BTST           #$0,D5                   ;0805 0000 
+              BNE.B          ___PARALLEL_WriteCharHw__2;66f6 
+___PARALLEL_WriteCharHw__3:
+              SCC            CIAA_DDRB(A4)            ;50ec 0000 
+              MOVE.B         #$d,CIAA_PRB(A4)         ;197c 000d 0000 
+___PARALLEL_WriteCharHw__4:
+___PARALLEL_WriteCharHw__5:
+              MOVE.B         CIAB_PRA(A4),D4          ;182c 0000 
+              BTST           #$0,D4                   ;0804 0000 
+              BNE.B          ___PARALLEL_WriteCharHw__5;66f6 
+___PARALLEL_WriteCharHw__6:
+              SCC            CIAA_DDRB(A4)            ;50ec 0000 
+              MOVE.B         D6,CIAA_PRB(A4)          ;1946 0000 
+___PARALLEL_WriteCharHw__7:
+___PARALLEL_WriteCharHw__8:
+___PARALLEL_WriteCharHw__9:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+PARALLEL_RawDoFmt:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___PARALLEL_RawDoFmt__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              PEA            $ffffff9e(PC)            ;487a ff9e 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVORawDoFmt             ;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___PARALLEL_RawDoFmt__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CIAB_PRA
+              XREF           CIAA_DDRB
+              XREF           CIAA_PRB
+              XREF           AbsExecBase
+              XREF           _LVORawDoFmt
+              XDEF           PARALLEL_WriteCharHw
+              XDEF           PARALLEL_RawDoFmt
+              END

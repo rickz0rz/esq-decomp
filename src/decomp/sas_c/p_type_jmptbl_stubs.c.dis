@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+P_TYPE_JMPTBL_STRING_FindSubstri:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___P_TYPE_JMPTBL_STRING_FindSubstri__1:
+              BSR.W          STRING_FindSubstring     ;6100 0000 
+___P_TYPE_JMPTBL_STRING_FindSubstri__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STRING_FindSubstring
+              XDEF           P_TYPE_JMPTBL_STRING_FindSubstri
+              END

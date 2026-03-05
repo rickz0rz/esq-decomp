@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+GROUP_AU_JMPTBL_BRUSH_AppendBrus:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AU_JMPTBL_BRUSH_AppendBrus__1:
+              BSR.W          BRUSH_AppendBrushNode    ;6100 0000 
+___GROUP_AU_JMPTBL_BRUSH_AppendBrus__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AU_JMPTBL_BRUSH_PopulateBr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AU_JMPTBL_BRUSH_PopulateBr__1:
+              BSR.W          BRUSH_PopulateBrushList  ;6100 0000 
+___GROUP_AU_JMPTBL_BRUSH_PopulateBr__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           BRUSH_AppendBrushNode
+              XREF           BRUSH_PopulateBrushList
+              XDEF           GROUP_AU_JMPTBL_BRUSH_AppendBrus
+              XDEF           GROUP_AU_JMPTBL_BRUSH_PopulateBr
+              END

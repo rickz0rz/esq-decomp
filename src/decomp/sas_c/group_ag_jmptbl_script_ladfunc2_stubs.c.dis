@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+GROUP_AG_JMPTBL_SCRIPT_BeginBann:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AG_JMPTBL_SCRIPT_BeginBann__1:
+              BSR.W          SCRIPT_BeginBannerCharTransition;6100 0000 
+___GROUP_AG_JMPTBL_SCRIPT_BeginBann__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AG_JMPTBL_LADFUNC2_EmitEsc:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AG_JMPTBL_LADFUNC2_EmitEsc__1:
+              BSR.W          LADFUNC2_EmitEscapedStringToScra;6100 0000 
+___GROUP_AG_JMPTBL_LADFUNC2_EmitEsc__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_BeginBannerCharTransition
+              XREF           LADFUNC2_EmitEscapedStringToScra
+              XDEF           GROUP_AG_JMPTBL_SCRIPT_BeginBann
+              XDEF           GROUP_AG_JMPTBL_LADFUNC2_EmitEsc
+              END

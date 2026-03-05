@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_STRING_CompareNoCa:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_STRING_CompareNoCa__1:
+              BSR.W          STRING_CompareNoCase     ;6100 0000 
+___ESQIFF_JMPTBL_STRING_CompareNoCa__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_TLIBA3_BuildDispla:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_TLIBA3_BuildDispla__1:
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+___ESQIFF_JMPTBL_TLIBA3_BuildDispla__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_DISKIO_GetFilesize:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_DISKIO_GetFilesize__1:
+              BSR.W          DISKIO_GetFilesizeFromHandle;6100 0000 
+___ESQIFF_JMPTBL_DISKIO_GetFilesize__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_MATH_DivS32:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_MATH_DivS32__1:
+              BSR.W          MATH_DivS32              ;6100 0000 
+___ESQIFF_JMPTBL_MATH_DivS32__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STRING_CompareNoCase
+              XREF           TLIBA3_BuildDisplayContextForVie
+              XREF           DISKIO_GetFilesizeFromHandle
+              XREF           MATH_DivS32
+              XDEF           ESQIFF_JMPTBL_STRING_CompareNoCa
+              XDEF           ESQIFF_JMPTBL_TLIBA3_BuildDispla
+              XDEF           ESQIFF_JMPTBL_DISKIO_GetFilesize
+              XDEF           ESQIFF_JMPTBL_MATH_DivS32
+              END

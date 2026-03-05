@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+NEWGRID2_JMPTBL_BEVEL_DrawBevelF:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawBevelF__1:
+              BSR.W          BEVEL_DrawBevelFrameWithTop;6100 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawBevelF__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           BEVEL_DrawBevelFrameWithTop
+              XDEF           NEWGRID2_JMPTBL_BEVEL_DrawBevelF
+              END

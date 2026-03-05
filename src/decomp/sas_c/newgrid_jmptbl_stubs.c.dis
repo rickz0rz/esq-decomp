@@ -1,0 +1,106 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_JMPTBL_MATH_DivS32:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_MATH_DivS32__1:
+              BSR.W          MATH_DivS32              ;6100 0000 
+___NEWGRID_JMPTBL_MATH_DivS32__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+NEWGRID_JMPTBL_DATETIME_SecondsT:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_DATETIME_SecondsT__1:
+              BSR.W          DATETIME_SecondsToStruct ;6100 0000 
+___NEWGRID_JMPTBL_DATETIME_SecondsT__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_GENERATE_GRID_DAT:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_GENERATE_GRID_DAT__1:
+              BSR.W          GENERATE_GRID_DATE_STRING;6100 0000 
+___NEWGRID_JMPTBL_GENERATE_GRID_DAT__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_MEMORY_Deallocate:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_MEMORY_Deallocate__1:
+              BSR.W          MEMORY_DeallocateMemory  ;6100 0000 
+___NEWGRID_JMPTBL_MEMORY_Deallocate__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_DISPTEXT_FreeBuff:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_DISPTEXT_FreeBuff__1:
+              BSR.W          DISPTEXT_FreeBuffers     ;6100 0000 
+___NEWGRID_JMPTBL_DISPTEXT_FreeBuff__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_MEMORY_AllocateMe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_MEMORY_AllocateMe__1:
+              BSR.W          MEMORY_AllocateMemory    ;6100 0000 
+___NEWGRID_JMPTBL_MEMORY_AllocateMe__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_DISPTEXT_InitBuff:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_DISPTEXT_InitBuff__1:
+              BSR.W          DISPTEXT_InitBuffers     ;6100 0000 
+___NEWGRID_JMPTBL_DISPTEXT_InitBuff__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_DATETIME_Normaliz:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_DATETIME_Normaliz__1:
+              BSR.W          DATETIME_NormalizeStructToSecond;6100 0000 
+___NEWGRID_JMPTBL_DATETIME_Normaliz__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_STR_CopyUntilAnyD:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_STR_CopyUntilAnyD__1:
+              BSR.W          STR_CopyUntilAnyDelimN   ;6100 0000 
+___NEWGRID_JMPTBL_STR_CopyUntilAnyD__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_WDISP_UpdateSelec:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_WDISP_UpdateSelec__1:
+              BSR.W          WDISP_UpdateSelectionPreviewPane;6100 0000 
+___NEWGRID_JMPTBL_WDISP_UpdateSelec__2:
+              RTS                                     ;4e75 
+NEWGRID_JMPTBL_MATH_Mulu32:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_JMPTBL_MATH_Mulu32__1:
+              BSR.W          MATH_Mulu32              ;6100 0000 
+___NEWGRID_JMPTBL_MATH_Mulu32__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           MATH_DivS32
+              XREF           DATETIME_SecondsToStruct
+              XREF           GENERATE_GRID_DATE_STRING
+              XREF           MEMORY_DeallocateMemory
+              XREF           DISPTEXT_FreeBuffers
+              XREF           MEMORY_AllocateMemory
+              XREF           DISPTEXT_InitBuffers
+              XREF           DATETIME_NormalizeStructToSecond
+              XREF           STR_CopyUntilAnyDelimN
+              XREF           WDISP_UpdateSelectionPreviewPane
+              XREF           MATH_Mulu32
+              XDEF           NEWGRID_JMPTBL_MATH_DivS32
+              XDEF           NEWGRID_JMPTBL_DATETIME_SecondsT
+              XDEF           NEWGRID_JMPTBL_GENERATE_GRID_DAT
+              XDEF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XDEF           NEWGRID_JMPTBL_DISPTEXT_FreeBuff
+              XDEF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XDEF           NEWGRID_JMPTBL_DISPTEXT_InitBuff
+              XDEF           NEWGRID_JMPTBL_DATETIME_Normaliz
+              XDEF           NEWGRID_JMPTBL_STR_CopyUntilAnyD
+              XDEF           NEWGRID_JMPTBL_WDISP_UpdateSelec
+              XDEF           NEWGRID_JMPTBL_MATH_Mulu32
+              END

@@ -1,0 +1,97 @@
+              SECTION      text,CODE
+__code:
+TLIBA1_JMPTBL_COI_GetAnimFieldPo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_COI_GetAnimFieldPo__1:
+              BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+___TLIBA1_JMPTBL_COI_GetAnimFieldPo__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+TLIBA1_JMPTBL_ESQDISP_GetEntryAu:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_ESQDISP_GetEntryAu__1:
+              BSR.W          ESQDISP_GetEntryAuxPointerByMode;6100 0000 
+___TLIBA1_JMPTBL_ESQDISP_GetEntryAu__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_LADFUNC_ExtractLow:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_LADFUNC_ExtractLow__1:
+              BSR.W          LADFUNC_GetPackedPenLowNibble;6100 0000 
+___TLIBA1_JMPTBL_LADFUNC_ExtractLow__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_ESQDISP_GetEntryPo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_ESQDISP_GetEntryPo__1:
+              BSR.W          ESQDISP_GetEntryPointerByMode;6100 0000 
+___TLIBA1_JMPTBL_ESQDISP_GetEntryPo__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_COI_TestEntryWithi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_COI_TestEntryWithi__1:
+              BSR.W          COI_TestEntryWithinTimeWindow;6100 0000 
+___TLIBA1_JMPTBL_COI_TestEntryWithi__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_CLEANUP_FormatCloc:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_CLEANUP_FormatCloc__1:
+              BSR.W          CLEANUP_FormatClockFormatEntry;6100 0000 
+___TLIBA1_JMPTBL_CLEANUP_FormatCloc__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_ESQDISP_ComputeSch:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_ESQDISP_ComputeSch__1:
+              BSR.W          ESQDISP_ComputeScheduleOffsetFor;6100 0000 
+___TLIBA1_JMPTBL_ESQDISP_ComputeSch__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_ESQ_FindSubstringC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_ESQ_FindSubstringC__1:
+              BSR.W          ESQ_FindSubstringCaseFold;6100 0000 
+___TLIBA1_JMPTBL_ESQ_FindSubstringC__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_DISPLIB_FindPrevio:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_DISPLIB_FindPrevio__1:
+              BSR.W          DISPLIB_FindPreviousValidEntryIn;6100 0000 
+___TLIBA1_JMPTBL_DISPLIB_FindPrevio__2:
+              RTS                                     ;4e75 
+TLIBA1_JMPTBL_LADFUNC_ExtractHig:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA1_JMPTBL_LADFUNC_ExtractHig__1:
+              BSR.W          LADFUNC_GetPackedPenHighNibble;6100 0000 
+___TLIBA1_JMPTBL_LADFUNC_ExtractHig__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           COI_GetAnimFieldPointerByMode
+              XREF           ESQDISP_GetEntryAuxPointerByMode
+              XREF           LADFUNC_GetPackedPenLowNibble
+              XREF           ESQDISP_GetEntryPointerByMode
+              XREF           COI_TestEntryWithinTimeWindow
+              XREF           CLEANUP_FormatClockFormatEntry
+              XREF           ESQDISP_ComputeScheduleOffsetFor
+              XREF           ESQ_FindSubstringCaseFold
+              XREF           DISPLIB_FindPreviousValidEntryIn
+              XREF           LADFUNC_GetPackedPenHighNibble
+              XDEF           TLIBA1_JMPTBL_COI_GetAnimFieldPo
+              XDEF           TLIBA1_JMPTBL_ESQDISP_GetEntryAu
+              XDEF           TLIBA1_JMPTBL_LADFUNC_ExtractLow
+              XDEF           TLIBA1_JMPTBL_ESQDISP_GetEntryPo
+              XDEF           TLIBA1_JMPTBL_COI_TestEntryWithi
+              XDEF           TLIBA1_JMPTBL_CLEANUP_FormatCloc
+              XDEF           TLIBA1_JMPTBL_ESQDISP_ComputeSch
+              XDEF           TLIBA1_JMPTBL_ESQ_FindSubstringC
+              XDEF           TLIBA1_JMPTBL_DISPLIB_FindPrevio
+              XDEF           TLIBA1_JMPTBL_LADFUNC_ExtractHig
+              END

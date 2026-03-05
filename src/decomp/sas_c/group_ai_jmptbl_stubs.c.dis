@@ -1,0 +1,70 @@
+              SECTION      text,CODE
+__code:
+GROUP_AI_JMPTBL_NEWGRID_SetSelec:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_NEWGRID_SetSelec__1:
+              BSR.W          NEWGRID_SetSelectionMarkers;6100 0000 
+___GROUP_AI_JMPTBL_NEWGRID_SetSelec__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AI_JMPTBL_STR_FindCharPtr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_STR_FindCharPtr__1:
+              BSR.W          STR_FindCharPtr          ;6100 0000 
+___GROUP_AI_JMPTBL_STR_FindCharPtr__2:
+              RTS                                     ;4e75 
+GROUP_AI_JMPTBL_TLIBA1_DrawTextW:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_TLIBA1_DrawTextW__1:
+              BSR.W          TLIBA1_DrawTextWithInsetSegments;6100 0000 
+___GROUP_AI_JMPTBL_TLIBA1_DrawTextW__2:
+              RTS                                     ;4e75 
+GROUP_AI_JMPTBL_FORMAT_FormatToB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_FORMAT_FormatToB__1:
+              BSR.W          FORMAT_FormatToBuffer2   ;6100 0000 
+___GROUP_AI_JMPTBL_FORMAT_FormatToB__2:
+              RTS                                     ;4e75 
+GROUP_AI_JMPTBL_STR_SkipClass3Ch:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_STR_SkipClass3Ch__1:
+              BSR.W          STR_SkipClass3Chars      ;6100 0000 
+___GROUP_AI_JMPTBL_STR_SkipClass3Ch__2:
+              RTS                                     ;4e75 
+GROUP_AI_JMPTBL_STRING_AppendAtN:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_STRING_AppendAtN__1:
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+___GROUP_AI_JMPTBL_STRING_AppendAtN__2:
+              RTS                                     ;4e75 
+GROUP_AI_JMPTBL_STR_CopyUntilAny:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AI_JMPTBL_STR_CopyUntilAny__1:
+              BSR.W          STR_CopyUntilAnyDelimN   ;6100 0000 
+___GROUP_AI_JMPTBL_STR_CopyUntilAny__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_SetSelectionMarkers
+              XREF           STR_FindCharPtr
+              XREF           TLIBA1_DrawTextWithInsetSegments
+              XREF           FORMAT_FormatToBuffer2
+              XREF           STR_SkipClass3Chars
+              XREF           STRING_AppendAtNull
+              XREF           STR_CopyUntilAnyDelimN
+              XDEF           GROUP_AI_JMPTBL_NEWGRID_SetSelec
+              XDEF           GROUP_AI_JMPTBL_STR_FindCharPtr
+              XDEF           GROUP_AI_JMPTBL_TLIBA1_DrawTextW
+              XDEF           GROUP_AI_JMPTBL_FORMAT_FormatToB
+              XDEF           GROUP_AI_JMPTBL_STR_SkipClass3Ch
+              XDEF           GROUP_AI_JMPTBL_STRING_AppendAtN
+              XDEF           GROUP_AI_JMPTBL_STR_CopyUntilAny
+              END

@@ -1,0 +1,52 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_JMPTBL_MEMORY_DeallocateM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_JMPTBL_MEMORY_DeallocateM__1:
+              BSR.W          MEMORY_DeallocateMemory  ;6100 0000 
+___SCRIPT_JMPTBL_MEMORY_DeallocateM__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+SCRIPT_JMPTBL_DISKIO_WriteBuffer:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_JMPTBL_DISKIO_WriteBuffer__1:
+              BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
+___SCRIPT_JMPTBL_DISKIO_WriteBuffer__2:
+              RTS                                     ;4e75 
+SCRIPT_JMPTBL_DISKIO_CloseBuffer:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_JMPTBL_DISKIO_CloseBuffer__1:
+              BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 
+___SCRIPT_JMPTBL_DISKIO_CloseBuffer__2:
+              RTS                                     ;4e75 
+SCRIPT_JMPTBL_MEMORY_AllocateMem:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_JMPTBL_MEMORY_AllocateMem__1:
+              BSR.W          MEMORY_AllocateMemory    ;6100 0000 
+___SCRIPT_JMPTBL_MEMORY_AllocateMem__2:
+              RTS                                     ;4e75 
+SCRIPT_JMPTBL_DISKIO_OpenFileWit:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_JMPTBL_DISKIO_OpenFileWit__1:
+              BSR.W          DISKIO_OpenFileWithBuffer;6100 0000 
+___SCRIPT_JMPTBL_DISKIO_OpenFileWit__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           MEMORY_DeallocateMemory
+              XREF           DISKIO_WriteBufferedBytes
+              XREF           DISKIO_CloseBufferedFileAndFlush
+              XREF           MEMORY_AllocateMemory
+              XREF           DISKIO_OpenFileWithBuffer
+              XDEF           SCRIPT_JMPTBL_MEMORY_DeallocateM
+              XDEF           SCRIPT_JMPTBL_DISKIO_WriteBuffer
+              XDEF           SCRIPT_JMPTBL_DISKIO_CloseBuffer
+              XDEF           SCRIPT_JMPTBL_MEMORY_AllocateMem
+              XDEF           SCRIPT_JMPTBL_DISKIO_OpenFileWit
+              END

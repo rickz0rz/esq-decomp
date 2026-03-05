@@ -1,0 +1,26 @@
+              SECTION      text,CODE
+__code:
+ESQ_SetCopperEffectParams:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___ESQ_SetCopperEffectParams__1:
+              MOVE.B         $13(A7),D6               ;1c2f 0013 
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVE.B         D7,HIGHLIGHT_CopperEffectParamA(A4);1947 0000 
+              MOVE.B         D6,HIGHLIGHT_CopperEffectParamB(A4);1946 0000 
+              MOVE.W         #$5,HIGHLIGHT_CopperEffectSeed(A4);397c 0005 0000 
+              BSR.W          ESQ_UpdateCopperListsFromParams;6100 0000 
+___ESQ_SetCopperEffectParams__2:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           HIGHLIGHT_CopperEffectParamA
+              XREF           HIGHLIGHT_CopperEffectParamB
+              XREF           HIGHLIGHT_CopperEffectSeed
+              XREF           ESQ_UpdateCopperListsFromParams
+              XDEF           ESQ_SetCopperEffectParams
+              END

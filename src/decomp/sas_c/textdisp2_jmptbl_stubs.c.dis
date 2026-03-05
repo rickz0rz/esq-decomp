@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP2_JMPTBL_LOCAVAIL_GetFil:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP2_JMPTBL_LOCAVAIL_GetFil__1:
+              BSR.W          LOCAVAIL_GetFilterWindowHalfSpan;6100 0000 
+___TEXTDISP2_JMPTBL_LOCAVAIL_GetFil__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+TEXTDISP2_JMPTBL_LADFUNC_DrawEnt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP2_JMPTBL_LADFUNC_DrawEnt__1:
+              BSR.W          LADFUNC_DrawEntryPreview ;6100 0000 
+___TEXTDISP2_JMPTBL_LADFUNC_DrawEnt__2:
+              RTS                                     ;4e75 
+TEXTDISP2_JMPTBL_ESQIFF_RunPendi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP2_JMPTBL_ESQIFF_RunPendi__1:
+              BSR.W          ESQIFF_RunPendingCopperAnimation;6100 0000 
+___TEXTDISP2_JMPTBL_ESQIFF_RunPendi__2:
+              RTS                                     ;4e75 
+TEXTDISP2_JMPTBL_ESQIFF_PlayNext:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP2_JMPTBL_ESQIFF_PlayNext__1:
+              BSR.W          ESQIFF_PlayNextExternalAssetFram;6100 0000 
+___TEXTDISP2_JMPTBL_ESQIFF_PlayNext__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_GetFilterWindowHalfSpan
+              XREF           LADFUNC_DrawEntryPreview
+              XREF           ESQIFF_RunPendingCopperAnimation
+              XREF           ESQIFF_PlayNextExternalAssetFram
+              XDEF           TEXTDISP2_JMPTBL_LOCAVAIL_GetFil
+              XDEF           TEXTDISP2_JMPTBL_LADFUNC_DrawEnt
+              XDEF           TEXTDISP2_JMPTBL_ESQIFF_RunPendi
+              XDEF           TEXTDISP2_JMPTBL_ESQIFF_PlayNext
+              END

@@ -1,0 +1,40 @@
+              SECTION      text,CODE
+__code:
+PARALLEL_CheckReadyStub:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARALLEL_CheckReadyStub__1:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+___PARALLEL_CheckReadyStub__2:
+___PARALLEL_CheckReadyStub__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+PARALLEL_CheckReady:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARALLEL_CheckReady__1:
+              BSR.B          PARALLEL_CheckReadyStub  ;61ea 
+___PARALLEL_CheckReady__2:
+___PARALLEL_CheckReady__3:
+___PARALLEL_CheckReady__4:
+              RTS                                     ;4e75 
+PARALLEL_WaitReady:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARALLEL_WaitReady__1:
+              BSR.B          PARALLEL_CheckReady      ;61ea 
+___PARALLEL_WaitReady__2:
+              TST.L          D0                       ;4a80 
+              BPL.B          ___PARALLEL_WaitReady__5 ;6a02 
+___PARALLEL_WaitReady__3:
+              BRA.B          ___PARALLEL_WaitReady__1 ;60f8 
+___PARALLEL_WaitReady__4:
+___PARALLEL_WaitReady__5:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           PARALLEL_CheckReadyStub
+              XDEF           PARALLEL_CheckReady
+              XDEF           PARALLEL_WaitReady
+              END

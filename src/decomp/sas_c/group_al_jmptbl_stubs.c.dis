@@ -1,0 +1,61 @@
+              SECTION      text,CODE
+__code:
+GROUP_AL_JMPTBL_LADFUNC_PackNibb:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AL_JMPTBL_LADFUNC_PackNibb__1:
+              BSR.W          LADFUNC_ComposePackedPenByte;6100 0000 
+___GROUP_AL_JMPTBL_LADFUNC_PackNibb__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AL_JMPTBL_LADFUNC_ExtractL:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AL_JMPTBL_LADFUNC_ExtractL__1:
+              BSR.W          LADFUNC_GetPackedPenLowNibble;6100 0000 
+___GROUP_AL_JMPTBL_LADFUNC_ExtractL__2:
+              RTS                                     ;4e75 
+GROUP_AL_JMPTBL_LADFUNC_UpdateEn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AL_JMPTBL_LADFUNC_UpdateEn__1:
+              BSR.W          LADFUNC_UpdateEntryFromTextAndAt;6100 0000 
+___GROUP_AL_JMPTBL_LADFUNC_UpdateEn__2:
+              RTS                                     ;4e75 
+GROUP_AL_JMPTBL_ESQ_WriteDecFixe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AL_JMPTBL_ESQ_WriteDecFixe__1:
+              BSR.W          ESQ_WriteDecFixedWidth   ;6100 0000 
+___GROUP_AL_JMPTBL_ESQ_WriteDecFixe__2:
+              RTS                                     ;4e75 
+GROUP_AL_JMPTBL_LADFUNC_BuildEnt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AL_JMPTBL_LADFUNC_BuildEnt__1:
+              BSR.W          LADFUNC_BuildEntryBuffersOrDefau;6100 0000 
+___GROUP_AL_JMPTBL_LADFUNC_BuildEnt__2:
+              RTS                                     ;4e75 
+GROUP_AL_JMPTBL_LADFUNC_ExtractH:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AL_JMPTBL_LADFUNC_ExtractH__1:
+              BSR.W          LADFUNC_GetPackedPenHighNibble;6100 0000 
+___GROUP_AL_JMPTBL_LADFUNC_ExtractH__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_ComposePackedPenByte
+              XREF           LADFUNC_GetPackedPenLowNibble
+              XREF           LADFUNC_UpdateEntryFromTextAndAt
+              XREF           ESQ_WriteDecFixedWidth
+              XREF           LADFUNC_BuildEntryBuffersOrDefau
+              XREF           LADFUNC_GetPackedPenHighNibble
+              XDEF           GROUP_AL_JMPTBL_LADFUNC_PackNibb
+              XDEF           GROUP_AL_JMPTBL_LADFUNC_ExtractL
+              XDEF           GROUP_AL_JMPTBL_LADFUNC_UpdateEn
+              XDEF           GROUP_AL_JMPTBL_ESQ_WriteDecFixe
+              XDEF           GROUP_AL_JMPTBL_LADFUNC_BuildEnt
+              XDEF           GROUP_AL_JMPTBL_LADFUNC_ExtractH
+              END

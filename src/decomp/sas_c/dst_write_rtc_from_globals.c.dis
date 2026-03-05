@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+DST_WriteRtcFromGlobals:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DST_WriteRtcFromGlobals__1:
+              BSR.W          GROUP_AJ_JMPTBL_PARSEINI_WriteRt;6100 0000 
+___DST_WriteRtcFromGlobals__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AJ_JMPTBL_PARSEINI_WriteRt
+              XDEF           DST_WriteRtcFromGlobals
+              END

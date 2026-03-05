@@ -1,0 +1,79 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED_JMPTBL_DST_BuildBanner:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_DST_BuildBanner__1:
+              BSR.W          DST_BuildBannerTimeWord  ;6100 0000 
+___ESQSHARED_JMPTBL_DST_BuildBanner__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQSHARED_JMPTBL_ESQ_ReverseBits:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_ESQ_ReverseBits__1:
+              BSR.W          ESQ_ReverseBitsIn6Bytes  ;6100 0000 
+___ESQSHARED_JMPTBL_ESQ_ReverseBits__2:
+              RTS                                     ;4e75 
+ESQSHARED_JMPTBL_ESQ_SetBit1Base:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_ESQ_SetBit1Base__1:
+              BSR.W          ESQ_SetBit1Based         ;6100 0000 
+___ESQSHARED_JMPTBL_ESQ_SetBit1Base__2:
+              RTS                                     ;4e75 
+ESQSHARED_JMPTBL_ESQ_AdjustBrack:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_ESQ_AdjustBrack__1:
+              BSR.W          ESQ_AdjustBracketedHourInString;6100 0000 
+___ESQSHARED_JMPTBL_ESQ_AdjustBrack__2:
+              RTS                                     ;4e75 
+ESQSHARED_JMPTBL_COI_EnsureAnimO:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_COI_EnsureAnimO__1:
+              BSR.W          COI_EnsureAnimObjectAllocated;6100 0000 
+___ESQSHARED_JMPTBL_COI_EnsureAnimO__2:
+              RTS                                     ;4e75 
+ESQSHARED_JMPTBL_ESQ_WildcardMat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_ESQ_WildcardMat__1:
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
+___ESQSHARED_JMPTBL_ESQ_WildcardMat__2:
+              RTS                                     ;4e75 
+ESQSHARED_JMPTBL_STR_SkipClass3C:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_STR_SkipClass3C__1:
+              BSR.W          STR_SkipClass3Chars      ;6100 0000 
+___ESQSHARED_JMPTBL_STR_SkipClass3C__2:
+              RTS                                     ;4e75 
+ESQSHARED_JMPTBL_ESQ_TestBit1Bas:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQSHARED_JMPTBL_ESQ_TestBit1Bas__1:
+              BSR.W          ESQ_TestBit1Based        ;6100 0000 
+___ESQSHARED_JMPTBL_ESQ_TestBit1Bas__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DST_BuildBannerTimeWord
+              XREF           ESQ_ReverseBitsIn6Bytes
+              XREF           ESQ_SetBit1Based
+              XREF           ESQ_AdjustBracketedHourInString
+              XREF           COI_EnsureAnimObjectAllocated
+              XREF           ESQ_WildcardMatch
+              XREF           STR_SkipClass3Chars
+              XREF           ESQ_TestBit1Based
+              XDEF           ESQSHARED_JMPTBL_DST_BuildBanner
+              XDEF           ESQSHARED_JMPTBL_ESQ_ReverseBits
+              XDEF           ESQSHARED_JMPTBL_ESQ_SetBit1Base
+              XDEF           ESQSHARED_JMPTBL_ESQ_AdjustBrack
+              XDEF           ESQSHARED_JMPTBL_COI_EnsureAnimO
+              XDEF           ESQSHARED_JMPTBL_ESQ_WildcardMat
+              XDEF           ESQSHARED_JMPTBL_STR_SkipClass3C
+              XDEF           ESQSHARED_JMPTBL_ESQ_TestBit1Bas
+              END

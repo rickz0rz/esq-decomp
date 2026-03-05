@@ -1,0 +1,28 @@
+              SECTION      text,CODE
+__code:
+ESQ_NoOp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_NoOp__1:
+___ESQ_NoOp__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQ_NoOp_006A:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_NoOp_006A__1:
+___ESQ_NoOp_006A__2:
+              RTS                                     ;4e75 
+ESQ_NoOp_0074:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_NoOp_0074__1:
+___ESQ_NoOp_0074__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQ_NoOp
+              XDEF           ESQ_NoOp_006A
+              XDEF           ESQ_NoOp_0074
+              END

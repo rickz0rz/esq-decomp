@@ -3915,6 +3915,7 @@ Recent promoted targets:
 - Unknown34 pair SAS/C compare script (`LIST_InitHeader` + `MEM_Move`): `src/decomp/scripts/compare_sasc_unknown34_pair_trial.sh`
 - Unknown34 `DOS_ReadByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_read_by_index_trial.sh`
 - Unknown11 `DOS_SeekByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_seek_by_index_trial.sh`
+- Unknown12 `ALLOC_AllocFromFreeList` SAS/C compare script: `src/decomp/scripts/compare_sasc_alloc_alloc_from_free_list_trial.sh`
 - Unknown6 `STRING_AppendAtNull` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_append_at_null_trial.sh`
 - Unknown5 `STRING_AppendN` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_append_n_trial.sh`
 - Unknown5 `STRING_CompareN` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_compare_n_trial.sh`
@@ -3922,6 +3923,7 @@ Recent promoted targets:
 - Unknown5 `STRING_CopyPadNul` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_copy_pad_nul_trial.sh`
 - Unknown5 `STRING_CompareNoCaseN` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_compare_nocase_n_trial.sh`
 - Unknown33 `STRING_FindSubstring` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_find_substring_trial.sh`
+- Unknown33 `ALLOC_InsertFreeBlock` SAS/C compare script: `src/decomp/scripts/compare_sasc_alloc_insert_free_block_trial.sh`
 - Unknown26 `DOS_WriteByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_write_by_index_trial.sh`
 - Unknown4 `STRING_ToUpperInPlace` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_inplace_trial.sh`
 - Unknown3 `STRING_ToUpperChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_char_trial.sh`
@@ -3931,6 +3933,562 @@ Recent promoted targets:
 - Unknown17 `DOS_WriteWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_write_with_error_state_trial.sh`
 - Unknown18 `DOS_SeekWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_seek_with_error_state_trial.sh`
 - Unknown20 `DOS_OpenWithErrorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_with_error_state_trial.sh`
+- Unknown21 `IOSTDREQ_Free` SAS/C compare script: `src/decomp/scripts/compare_sasc_iostdreq_free_trial.sh`
+- Unknown21 `IOSTDREQ_CleanupSignalAndMsgport` SAS/C compare script: `src/decomp/scripts/compare_sasc_iostdreq_cleanup_signal_and_msgport_trial.sh`
+- Unknown21 `DOS_OpenNewFileIfMissing` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_new_file_if_missing_trial.sh`
+- Unknown21 `DOS_DeleteAndRecreateFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_delete_and_recreate_file_trial.sh`
+- Unknown24 `PARSE_ReadSignedLongSkipClass3` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_skip_class3_trial.sh`
+- Unknown24 `PARSE_ReadSignedLongSkipClass3_Alt` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_skip_class3_alt_trial.sh`
+- Unknown24 `MEMLIST_FreeAll` SAS/C compare script: `src/decomp/scripts/compare_sasc_memlist_free_all_trial.sh`
+- Unknown24 `MEMLIST_AllocTracked` SAS/C compare script: `src/decomp/scripts/compare_sasc_memlist_alloc_tracked_trial.sh`
+- Unknown25 `STRUCT_FreeWithSizeField` SAS/C compare script: `src/decomp/scripts/compare_sasc_struct_free_with_size_field_trial.sh`
+- Unknown25 `STRUCT_AllocWithOwner` SAS/C compare script: `src/decomp/scripts/compare_sasc_struct_alloc_with_owner_trial.sh`
+- Unknown27 `FORMAT_Buffer2WriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_buffer2_write_char_trial.sh`
+- Unknown27 `FORMAT_FormatToBuffer2` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_to_buffer2_trial.sh`
+- Unknown2A `FORMAT_RawDoFmtWithScratchBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_raw_dofmt_with_scratch_buffer_trial.sh`
+- Unknown2A `UNKNOWN2A_Stub0` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown2a_stub0_trial.sh`
+- Unknown28 `WDISP_FormatWithCallback` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_format_with_callback_trial.sh`
+- Unknown30 `EXEC_CallVector_348` SAS/C compare script: `src/decomp/scripts/compare_sasc_exec_call_vector_348_trial.sh`
+- Unknown31 `BUFFER_EnsureAllocated` SAS/C compare script: `src/decomp/scripts/compare_sasc_buffer_ensure_allocated_trial.sh`
+- Unknown32 `HANDLE_CloseAllAndReturnWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_close_all_and_return_with_code_trial.sh`
+- Unknown32 `UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown32_jmptbl_esq_return_with_stack_code_trial.sh`
+- Unknown35 `HANDLE_OpenWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_with_mode_trial.sh`
+- Unknown36 `UNKNOWN36_FinalizeRequest` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown36_finalize_request_trial.sh`
+- Unknown36 `UNKNOWN36_ShowAbortRequester` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown36_show_abort_requester_trial.sh`
+- Unknown38 `SIGNAL_PollAndDispatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_signal_poll_and_dispatch_trial.sh`
+- Unknown39 `GRAPHICS_BltBitMapRastPort` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_bltbitmaprastport_trial.sh`
+- Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
+- Unknown7 `STR_CopyUntilAnyDelimN` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_copy_until_any_delim_n_trial.sh`
+- Unknown7 `STR_FindChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_find_char_trial.sh`
+- Unknown7 `STR_FindCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_find_char_ptr_trial.sh`
+- Unknown7 `STR_FindAnyCharInSet` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_find_any_char_in_set_trial.sh`
+- Unknown7 `STR_FindAnyCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_find_any_char_ptr_trial.sh`
+- Unknown7 `STR_SkipClass3Chars` SAS/C compare script: `src/decomp/scripts/compare_sasc_str_skip_class3_chars_trial.sh`
+- Unknown8 `FORMAT_U32ToDecimalString` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_decimal_string_trial.sh`
+- Unknown9 `FORMAT_U32ToOctalString` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_octal_string_trial.sh`
+- Unknown10 `FORMAT_U32ToHexString` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_u32_to_hex_trial.sh`
+- Unknown10 `UNKNOWN10_PrintfPutcToBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown10_printf_putc_to_buffer_trial.sh`
+- Unknown10 `WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_sprintf_trial.sh`
+- Unknown10 `PARSE_ReadSignedLong` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_trial.sh`
+- Unknown10 `PARSE_ReadSignedLong_NoBranch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parse_read_signed_long_nobranch_trial.sh`
+- Unknown10 `HANDLE_OpenEntryWithFlags` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_entry_with_flags_trial.sh`
+- Unknown13 `FORMAT_CallbackWriteChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_callback_write_char_trial.sh`
+- Unknown13 `FORMAT_FormatToCallbackBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_format_to_callback_buffer_trial.sh`
+- Unknown14 `HANDLE_OpenFromModeString` SAS/C compare script: `src/decomp/scripts/compare_sasc_handle_open_from_mode_string_trial.sh`
+- Unknown15 `STREAM_ReadLineWithLimit` SAS/C compare script: `src/decomp/scripts/compare_sasc_stream_read_line_with_limit_trial.sh`
+- Unknown16 `BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_buffer_flush_all_and_close_with_code_trial.sh`
+- Unknown29 `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown29_jmptbl_esq_main_init_and_run_trial.sh`
+- Unknown29 `ESQ_ParseCommandLineAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_parse_command_line_and_run_trial.sh`
+- Unknown2B `ESQ_MainEntryNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_main_entry_noop_hook_trial.sh`
+- Unknown2B `ESQ_MainExitNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_main_exit_noop_hook_trial.sh`
+- Unknown `ESQPROTO_CopyLabelToGlobal` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_copy_label_to_global_trial.sh`
+- Unknown `ESQPROTO_ParseDigitLabelAndDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_parse_digit_label_and_display_trial.sh`
+- Unknown `UNKNOWN_ParseRecordAndUpdateDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_record_and_update_display_trial.sh`
+- Unknown `UNKNOWN_ParseListAndUpdateEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_list_and_update_entries_trial.sh`
+- Unknown `ESQPROTO_VerifyChecksumAndParseRecord` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_verify_checksum_and_parse_record_trial.sh`
+- Unknown `ESQPROTO_VerifyChecksumAndParseList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_verify_checksum_and_parse_list_trial.sh`
+- DATETIME `DATETIME_IsLeapYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_datetime_isleapyear_trial.sh`
+- DATETIME `DATETIME_AdjustMonthIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_datetime_adjust_month_index_trial.sh`
+- DATETIME `DATETIME_NormalizeMonthRange` SAS/C compare script: `src/decomp/scripts/compare_sasc_datetime_normalize_month_range_trial.sh`
+- DST `DST_NormalizeDayOfYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_normalize_day_of_year_trial.sh`
+- DST `DST_BuildBannerTimeWord` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_build_banner_time_word_trial.sh`
+- DST `DST_FreeBannerStruct` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_free_banner_struct_trial.sh`
+- DST `DST_FreeBannerPair` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_free_banner_pair_trial.sh`
+- DST `DST_AllocateBannerStruct` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_allocate_banner_struct_trial.sh`
+- DST `DST_RebuildBannerPair` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_rebuild_banner_pair_trial.sh`
+- DST `DST_ComputeBannerIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_compute_banner_index_trial.sh`
+- DST `DST_TickBannerCounters` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_tick_banner_counters_trial.sh`
+- DST `DST_AddTimeOffset` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_add_time_offset_trial.sh`
+- DST `DST_WriteRtcFromGlobals` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_write_rtc_from_globals_trial.sh`
+- DST `DST_HandleBannerCommand32_33` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_handle_banner_command32_33_trial.sh`
+- DST `DST_BuildBannerTimeEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_build_banner_time_entry_trial.sh`
+- DST `DST_FormatBannerDateTime` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_format_banner_datetime_trial.sh`
+- DST `DST_UpdateBannerQueue` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_update_banner_queue_trial.sh`
+- DST `DST_RefreshBannerBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_refresh_banner_buffer_trial.sh`
+- DST `DST_LoadBannerPairFromFiles` SAS/C compare script: `src/decomp/scripts/compare_sasc_dst_load_banner_pair_from_files_trial.sh`
+- Unknown `UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_jmptbl_esqiff2_read_serial_record_into_buffer_trial.sh`
+- Unknown `UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_jmptbl_displib_display_text_at_position_trial.sh`
+- Unknown `UNKNOWN_JMPTBL_ESQ_WildcardMatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_jmptbl_esq_wildcard_match_trial.sh`
+- Unknown `UNKNOWN_JMPTBL_DST_NormalizeDayOfYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_jmptbl_dst_normalize_day_of_year_trial.sh`
+- Unknown `UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_jmptbl_esq_generate_xor_checksum_byte_trial.sh`
+- Unknown `ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_jmptbl_esqpars_replace_owned_string_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_MEMORY_DeallocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_memory_deallocate_memory_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_MEMORY_AllocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_memory_allocate_memory_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_math_divs32_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_math_mulu32_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_signal_create_msgport_with_signal_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_struct_free_with_size_field_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_STRUCT_AllocWithOwner` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_struct_alloc_with_owner_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_iostdreq_cleanup_signal_and_msgport_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_STRING_CopyPadNul` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_string_copy_pad_nul_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_parse_read_signed_long_skip_class3_alt_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_DOS_OpenFileWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_dos_open_file_with_mode_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_SCRIPT_CheckPathExists` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_check_path_exists_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_service_ui_tick_if_running_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_update_refresh_mode_state_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_textdisp_reset_selection_and_refresh_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_begin_banner_char_transition_trial.sh`
+- Group AG `GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_ladfunc2_emit_escaped_string_to_scratch_trial.sh`
+- Group MAIN_A `GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_a_jmptbl_esq_main_exit_noop_hook_trial.sh`
+- Group MAIN_A `GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_a_jmptbl_esq_main_entry_noop_hook_trial.sh`
+- Group MAIN_A `GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_a_jmptbl_memlist_free_all_trial.sh`
+- Group MAIN_A `GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_a_jmptbl_esq_parse_command_line_and_run_trial.sh`
+- Group MAIN_B `GROUP_MAIN_B_JMPTBL_DOS_Delay` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_dos_delay_trial.sh`
+- Group MAIN_B `GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_stream_buffered_write_string_trial.sh`
+- Group MAIN_B `GROUP_MAIN_B_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_math_mulu32_trial.sh`
+- Group MAIN_B `GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_b_jmptbl_buffer_flush_all_and_close_with_code_trial.sh`
+- Group AL `GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_pack_nibbles_to_byte_trial.sh`
+- Group AL `GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_extract_low_nibble_trial.sh`
+- Group AL `GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_update_entry_buffers_for_ad_index_trial.sh`
+- Group AL `GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_esq_write_dec_fixed_width_trial.sh`
+- Group AL `GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_build_entry_buffers_or_default_trial.sh`
+- Group AL `GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_al_jmptbl_ladfunc_extract_high_nibble_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_consume_cstring_from_work_buffer_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_parse_long_from_work_buffer_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_write_decimal_field_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_write_buffered_bytes_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_close_buffered_file_and_flush_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_STRING_CompareNoCaseN` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_string_compare_nocase_n_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_math_mulu32_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_load_file_to_work_buffer_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_script_read_ciab_bit5_mask_trial.sh`
+- Group AY `GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ay_jmptbl_diskio_open_file_with_buffer_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_tliba3_build_display_context_for_view_mode_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_displib_apply_inline_alignment_padding_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_esqiff_run_copper_rise_transition_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_esqiff_run_copper_drop_transition_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_displib_display_text_at_position_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_MEM_Move` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_mem_move_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_wdisp_sprintf_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_esq_set_copper_effect_off_disable_highlight_trial.sh`
+- Group AW `GROUP_AW_JMPTBL_STRING_CopyPadNul` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aw_jmptbl_string_copy_pad_nul_trial.sh`
+- Group AS `GROUP_AS_JMPTBL_STR_FindCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_as_jmptbl_str_find_char_ptr_trial.sh`
+- Group AS `GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_as_jmptbl_esq_find_substring_case_fold_trial.sh`
+- Group AT `GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_at_jmptbl_ed1_wait_for_flag_and_clear_bit0_trial.sh`
+- Group AT `GROUP_AT_JMPTBL_DOS_SystemTagList` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_at_jmptbl_dos_system_taglist_trial.sh`
+- Group AT `GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_at_jmptbl_ed1_wait_for_flag_and_clear_bit1_trial.sh`
+- Group AU `GROUP_AU_JMPTBL_BRUSH_AppendBrushNode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_au_jmptbl_brush_append_brush_node_trial.sh`
+- Group AU `GROUP_AU_JMPTBL_BRUSH_PopulateBrushList` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_au_jmptbl_brush_populate_brush_list_trial.sh`
+- Group AX `GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ax_jmptbl_format_raw_dofmt_with_scratch_buffer_trial.sh`
+- Group AZ `GROUP_AZ_JMPTBL_ESQ_ColdReboot` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_az_jmptbl_esq_cold_reboot_trial.sh`
+- Group AA `GROUP_AA_JMPTBL_STRING_CompareNoCase` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aa_jmptbl_string_compare_nocase_trial.sh`
+- Group AA `GROUP_AA_JMPTBL_STRING_CompareN` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aa_jmptbl_string_compare_n_trial.sh`
+- Group AA `GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aa_jmptbl_gcommand_find_path_separator_trial.sh`
+- Group AA `GROUP_AA_JMPTBL_GRAPHICS_AllocRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aa_jmptbl_graphics_alloc_raster_trial.sh`
+- Group AR `GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ar_jmptbl_parseini_write_error_log_entry_trial.sh`
+- Group AR `GROUP_AR_JMPTBL_STRING_AppendAtNull` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ar_jmptbl_string_append_at_null_trial.sh`
+- Group AF `GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_af_jmptbl_gcommand_save_brush_result_trial.sh`
+- Group AV `GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial.sh`
+- Group AV `GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_av_jmptbl_signal_create_msgport_with_signal_trial.sh`
+- Group AV `GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_av_jmptbl_diskio_probe_drives_and_assign_paths_trial.sh`
+- Group AV `GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_av_jmptbl_esq_invoke_gcommand_init_trial.sh`
+- Group AV `GROUP_AV_JMPTBL_EXEC_CallVector_48` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_av_jmptbl_exec_call_vector_48_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqpars_remove_group_entry_and_release_strings_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqfunc_free_line_text_buffers_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqiff_deallocate_ads_and_logo_lst_data_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_ladfunc_free_banner_rect_entries_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_UNKNOWN2A_Stub0` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_unknown2_a_stub0_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_newgrid_shutdown_grid_resources_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_locavail_free_resource_chain_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_GRAPHICS_FreeRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_graphics_free_raster_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_IOSTDREQ_Free` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_iostdreq_free_trial.sh`
+- Group AB `GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ab_jmptbl_esqiff2_clear_line_head_tail_by_mode_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_tliba_find_first_wildcard_match_index_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_script_build_token_index_map_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_esqdisp_get_entry_aux_pointer_by_mode_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_esqdisp_get_entry_pointer_by_mode_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_ladfunc_parse_hex_digit_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_script_deallocate_buffer_array_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_wdisp_s_printf_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_script_allocate_buffer_array_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_textdisp_compute_time_offset_trial.sh`
+- Group AE `GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ae_jmptbl_esqpars_replace_owned_string_trial.sh`
+- Group AJ `GROUP_AJ_JMPTBL_STRING_FindSubstring` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aj_jmptbl_string_find_substring_trial.sh`
+- Group AJ `GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aj_jmptbl_format_raw_dofmt_with_scratch_buffer_trial.sh`
+- Group AJ `GROUP_AJ_JMPTBL_MATH_DivU32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aj_jmptbl_math_div_u32_trial.sh`
+- Group AJ `GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aj_jmptbl_parseini_write_rtc_from_globals_trial.sh`
+- Group AJ `GROUP_AJ_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_aj_jmptbl_math_mulu32_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_newgrid_set_selection_markers_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_STR_FindCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_str_find_char_ptr_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_tliba1_draw_text_with_inset_segments_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_format_format_to_buffer2_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_STR_SkipClass3Chars` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_str_skip_class3_chars_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_STRING_AppendAtNull` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_string_append_at_null_trial.sh`
+- Group AI `GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ai_jmptbl_str_copy_until_any_delim_n_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_cleanup_render_aligned_status_screen_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_esqpars_apply_rtc_bytes_and_persist_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_esq_set_copper_effect_custom_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_esq_set_copper_effect_default_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_gcommand_get_banner_char_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_parseini_parse_ini_buffer_and_dispatch_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_parseini_scan_logo_directory_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_parseini_write_error_log_entry_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_script_deassert_ctrl_line_now_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_textdisp_format_entry_time_for_index_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_tliba3_select_next_view_mode_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_esq_set_copper_effect_all_on_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_gcommand_copy_gfx_to_work_if_available_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_script_assert_ctrl_line_now_trial.sh`
+- Group AK `GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ak_jmptbl_tliba3_draw_view_mode_guides_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_parseini_update_clock_from_rtc_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_esqfunc_draw_diagnostics_screen_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_esqfunc_draw_memory_status_screen_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_script_update_ctrl_state_machine_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_gcommand_update_banner_bounds_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_script_update_ctrl_line_timeout_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_SCRIPT_ClearCtrlLineIfEnabled` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_script_clear_ctrl_line_if_enabled_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_esqfunc_free_extra_title_text_pointers_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_esqdisp_draw_status_banner_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_DST_UpdateBannerQueue` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_dst_update_banner_queue_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_DST_RefreshBannerBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_dst_refresh_banner_buffer_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_ESQFUNC_DrawEscMenuVersion` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_esqfunc_draw_esc_menu_version_trial.sh`
+- Group AC `GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ac_jmptbl_parseini_adjust_hours_to24_hr_format_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_tliba3_build_display_context_for_view_mode_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_script_update_serial_shadow_from_ctrl_byte_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_datetime_normalize_month_range_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_textdisp_draw_channel_banner_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_textdisp_format_entry_time_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_esqiff_run_copper_rise_transition_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_textdisp_build_entry_short_name_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_graphics_blt_bitmap_rast_port_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_esqiff_run_copper_drop_transition_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_tliba1_build_clock_format_entry_if_visible_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_textdisp_build_channel_label_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_textdisp_draw_inset_rect_frame_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_textdisp_trim_text_to_pixel_width_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_tliba3_get_view_mode_rast_port_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_esqfunc_select_and_apply_brush_for_current_entry_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_datetime_adjust_month_index_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_DST_ComputeBannerIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_dst_compute_banner_index_trial.sh`
+- Group AD `GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ad_jmptbl_tliba3_get_view_mode_height_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqiff2_apply_incoming_status_packet_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_newgrid_rebuild_index_cache_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqshared_apply_program_title_text_filters_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqdisp_update_status_mask_and_refresh_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqshared_init_entry_defaults_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_gcommand_load_ppv_template_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_locavail_save_availability_data_file_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_gcommand_load_command_file_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQ_WildcardMatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esq_wildcard_match_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_p_type_write_promo_id_data_file_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqfunc_wait_for_clock_change_and_service_ui_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esq_test_bit1_based_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqiff2_show_attention_overlay_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_STR_FindAnyCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_str_find_any_char_ptr_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_gcommand_load_mplex_file_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_script_read_serial_rbf_byte_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_esqpars_clear_alias_string_pointers_trial.sh`
+- Group AH `GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ah_jmptbl_parse_read_signed_long_skip_class3_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_signal_createmsgportwithsignal_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_ladfunc_clearbannerrectentries_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_parseini_updateclockfromrtc_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_script_initctrlcontext_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_diskio2_parseinifilefromdisk_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_checktopazfontguard_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_p_type_resetlistsandloadpromoids_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_ladfunc_loadtextadsfromfile_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_diskio_loadconfigfromdisk_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_textdisp_loadsourceconfig_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_KYBD_InitializeInputDevices` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_kybd_initializeinputdevices_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_checkcompatiblevideochip_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_checkavailablefastmemory_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_STRUCT_AllocWithOwner` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_struct_allocwithowner_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_gcommand_resetbannerfadestate_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_TLIBA3_InitPatternTable` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_tliba3_initpatterntable_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_formatdiskerrormessage_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_script_primebannertransitionfromhexcode_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_LOCAVAIL_ResetFilterStateStruct` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_locavail_resetfilterstatestruct_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_InitAudio1Dma` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_initaudio1dma_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_LIST_InitHeader` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_list_initheader_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_setcoppereffect_onenablehighlight_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_locavail_loadavailabilitydatafile_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_gcommand_initpresetdefaults_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_override_intuition_funcs_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_buffer_flushallandclosewithcode_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_FLIB2_ResetAndLoadListingTemplates` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_flib2_resetandloadlistingtemplates_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_wdisp_sprintf_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_esq_setcoppereffect_offdisablehighlight_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_cleanup_shutdownsystem_trial.sh`
+- Group AM `GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_am_jmptbl_ladfunc_allocbannerrectentries_trial.sh`
+- ED1 `ED1_JMPTBL_NEWGRID_DrawTopBorderLine` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_newgrid_drawtopborderline_trial.sh`
+- ED1 `ED1_JMPTBL_LOCAVAIL_ResetFilterCursorState` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_locavail_resetfiltercursorstate_trial.sh`
+- ED1 `ED1_JMPTBL_GCOMMAND_ResetHighlightMessages` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_gcommand_resethighlightmessages_trial.sh`
+- ED1 `ED1_JMPTBL_LADFUNC_MergeHighLowNibbles` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_ladfunc_mergehighlownibbles_trial.sh`
+- ED1 `ED1_JMPTBL_LADFUNC_SaveTextAdsToFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_ladfunc_savetextadstofile_trial.sh`
+- ED1 `ED1_JMPTBL_ESQ_ColdReboot` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_esq_coldreboot_trial.sh`
+- ED1 `ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_esqshared4_loaddefaultpalettetocopper_noop_trial.sh`
+- ED1 `ED1_JMPTBL_GCOMMAND_SeedBannerDefaults` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_gcommand_seedbannerdefaults_trial.sh`
+- ED1 `ED1_JMPTBL_MEM_Move` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_mem_move_trial.sh`
+- ED1 `ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_gcommand_seedbannerfromprefs_trial.sh`
+- ED1 `ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_cleanup_drawdatetimebannerrow_trial.sh`
+- ED1 `ED1_JMPTBL_LADFUNC_PackNibblesToByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_ed1_jmptbl_ladfunc_packnibblestobyte_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_textdisp_setrastformode_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_p_type_promotesecondarylist_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_diskio_probedrivesandassignpaths_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_parseini_updatectrlhdeltamax_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_esq_clampbannercharrange_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_script_readciabbit3flag_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_tliba3_drawcenteredwrappedtextlines_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_script_getctrllineflag_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_locavail_syncsecondaryfilterforcurrentgroup_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_textdisp_resetselectionandrefresh_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_parseini_monitorclockchange_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_ladfunc_parsehexdigit_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_cleanup_processalerts_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_esq_gethalfhourslotindex_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_cleanup_drawclockbanner_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_parseini_computehtcmaxvalues_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_ladfunc_updatehighlightstate_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_p_type_ensuresecondarylist_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_script_readciabbit5mask_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_parseini_normalizeclockdata_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_ESQ_TickGlobalCounters` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_esq_tickglobalcounters_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_script_handleserialctrlcmd_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_esq_handleserialrbfinterrupt_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_textdisp_tickdisplaystate_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_ESQ_PollCtrlInput` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_esq_pollctrlinput_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_locavail_rebuildfilterstatefromcurrentgroup_trial.sh`
+- ESQFUNC `ESQFUNC_JMPTBL_STRING_CopyPadNul` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_jmptbl_string_copypadnul_trial.sh`
+- ESQDISP `ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_jmptbl_newgrid_processgridmessages_trial.sh`
+- ESQDISP `ESQDISP_JMPTBL_GRAPHICS_AllocRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_jmptbl_graphics_allocraster_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_DST_BuildBannerTimeWord` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_dst_buildbannertimeword_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_esq_reversebitsin6bytes_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_ESQ_SetBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_esq_setbit1based_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_esq_adjustbracketedhourinstring_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_coi_ensureanimobjectallocated_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_ESQ_WildcardMatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_esq_wildcardmatch_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_STR_SkipClass3Chars` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_str_skipclass3chars_trial.sh`
+- ESQSHARED `ESQSHARED_JMPTBL_ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqshared_jmptbl_esq_testbit1based_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_diskio2_flushdatafilesifneeded_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_newgrid_rebuildindexcache_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DATETIME_SavePairToFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_datetime_savepairtofile_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_esqproto_verifychecksumandparselist_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_p_type_parseandstoretyperecord_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_esqproto_copylabeltoglobal_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DST_HandleBannerCommand32_33` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_dst_handlebannercommand32_33_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_esq_seedminuteeventthresholds_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_PARSEINI_HandleFontCommand` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_parseini_handlefontcommand_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_textdisp_applysourceconfigallentries_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_brush_planemaskforindex_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_script_resetctrlcontextandclearstatusline_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_parseini_writertcfromglobals_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_locavail_saveavailabilitydatafile_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_displib_displaytextatposition_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_ladfunc_savetextadstofile_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_diskio2_handleinteractivefiletransfer_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_p_type_writepromoiddatafile_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_COI_FreeEntryResources` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_coi_freeentryresources_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DST_UpdateBannerQueue` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_dst_updatebannerqueue_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_esqproto_verifychecksumandparserecord_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_esqproto_parsedigitlabelanddisplay_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_diskio_parseconfigbuffer_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_cleanup_parsealignedlistingblock_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_script_readserialrbfbyte_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_esq_generatexorchecksumbyte_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DST_RefreshBannerBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_dst_refreshbannerbuffer_trial.sh`
+- ESQPARS `ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqpars_jmptbl_diskio_saveconfigtofilehandle_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_coi_getanimfieldpointerbymode_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_esqdisp_getentryauxpointerbymode_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_ladfunc_extractlownibble_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_esqdisp_getentrypointerbymode_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_coi_testentrywithintimewindow_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_cleanup_formatclockformatentry_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_esqdisp_computescheduleoffsetforrow_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_esq_findsubstringcasefold_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_displib_findpreviousvalidentryindex_trial.sh`
+- TLIBA1 `TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba1_jmptbl_ladfunc_extracthighnibble_trial.sh`
+- TLIBA2 `TLIBA2_JMPTBL_DST_AddTimeOffset` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba2_jmptbl_dst_addtimeoffset_trial.sh`
+- TLIBA2 `TLIBA2_JMPTBL_ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba2_jmptbl_esq_testbit1based_trial.sh`
+- TLIBA3 `TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag` SAS/C compare script: `src/decomp/scripts/compare_sasc_tliba3_jmptbl_gcommand_applyhighlightflag_trial.sh`
+- TEXTDISP2 `TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_locavail_getfilterwindowhalfspan_trial.sh`
+- TEXTDISP2 `TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_ladfunc_drawentrypreview_trial.sh`
+- TEXTDISP2 `TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_esqiff_runpendingcopperanimations_trial.sh`
+- TEXTDISP2 `TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp2_jmptbl_esqiff_playnextexternalassetframe_trial.sh`
+- SCRIPT2 `SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_script2_jmptbl_esq_capturectrlbit4streambufferbyte_trial.sh`
+- SCRIPT2 `SCRIPT2_JMPTBL_ESQ_ReadSerialRbfByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_script2_jmptbl_esq_readserialrbfbyte_trial.sh`
+- SCRIPT `SCRIPT_JMPTBL_MEMORY_DeallocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_script_jmptbl_memory_deallocatememory_trial.sh`
+- SCRIPT `SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_script_jmptbl_diskio_writebufferedbytes_trial.sh`
+- SCRIPT `SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush` SAS/C compare script: `src/decomp/scripts/compare_sasc_script_jmptbl_diskio_closebufferedfileandflush_trial.sh`
+- SCRIPT `SCRIPT_JMPTBL_MEMORY_AllocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_script_jmptbl_memory_allocatememory_trial.sh`
+- SCRIPT `SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_script_jmptbl_diskio_openfilewithbuffer_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_STRING_CompareNoCase` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_string_comparenocase_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_ed1_waitforflagandclearbit0_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_diskio2_parseinifilefromdisk_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_STR_FindCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_str_findcharptr_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_HANDLE_OpenWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_handle_openwithmode_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_esqiff_queueiffbrushload_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_esqiff_handlebrushinireloadhotkey_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_BRUSH_FreeBrushResources` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_brush_freebrushresources_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_esqfunc_rebuildpwbrushlistfromtagtablefromtagtable_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_gcommand_findpathseparator_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_diskio_consumelinefromworkbuffer_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_ed1_drawdiagnosticsscreen_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_BRUSH_FreeBrushList` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_brush_freebrushlist_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_gcommand_validatepresettable_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_BRUSH_AllocBrushNode` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_brush_allocbrushnode_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_unknown36_finalizerequest_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_gcommand_initpresettablefrompalette_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_STRING_CompareNoCaseN` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_string_comparenocasen_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_STRING_AppendAtNull` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_string_appendatnull_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_diskio_loadfiletoworkbuffer_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_ed1_waitforflagandclearbit1_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_WDISP_SPrintf` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_wdisp_sprintf_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_STREAM_ReadLineWithLimit` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_stream_readlinewithlimit_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_STR_FindAnyCharPtr` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_str_findanycharptr_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ED1_ExitEscMenu` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_ed1_exitescmenu_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_esqpars_replaceownedstring_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ED1_EnterEscMenu` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_ed1_enterescmenu_trial.sh`
+- PARSEINI `PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_jmptbl_esqfunc_drawescmenuversion_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_coi_selectanimfieldpointer_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_setcurrentlineindex_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_layoutandappendtobuffer_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_gettotallinecount_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_tliba_findfirstwildcardmatchindex_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_buildlayoutforsource_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_bevel_drawbevelframewithtopright_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_esqdisp_getentryauxpointerbymode_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_bevel_drawverticalbevel_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_layoutsourcetolines_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_cleanup_updateentryflagbytes_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_coi_renderclockformatentryvariant_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_esqdisp_testentrybits0and2_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_computevisiblelinecount_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_esqdisp_getentrypointerbymode_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_rendercurrentline_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_coi_processentryselectionstate_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_cleanup_formatclockformatentry_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_bevel_drawbevelframewithtop_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_esq_gethalfhourslotindex_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_STR_SkipClass3Chars` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_str_skipclass3chars_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_STRING_AppendN` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_string_appendn_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_esqdisp_computescheduleoffsetforrow_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_cleanup_testentryflagyandbit1_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_iscurrentlinelast_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_islastlineselected_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_bevel_drawbeveledframe_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_displib_findpreviousvalidentryindex_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_computemarkerwidths_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_esq_testbit1based_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_bevel_drawverticalbevelpair_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_measurecurrentlinelength_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_setlayoutparams_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_disptext_hasmultiplelines_trial.sh`
+- NEWGRID2 `NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid2_jmptbl_bevel_drawhorizontalbevel_trial.sh`
+- WDISP `WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_esqiff_restorebasepalettetriples_trial.sh`
+- WDISP `WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_esqfunc_trimtexttopixelwidthwordboundary_trial.sh`
+- WDISP `WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_gcommand_expandpresetblock_trial.sh`
+- WDISP `WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_esqiff_queueiffbrushload_trial.sh`
+- WDISP `WDISP_JMPTBL_ESQIFF_RunCopperDropTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_esqiff_runcopperdroptransition_trial.sh`
+- WDISP `WDISP_JMPTBL_BRUSH_FindBrushByPredicate` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_brush_findbrushbypredicate_trial.sh`
+- WDISP `WDISP_JMPTBL_BRUSH_FreeBrushList` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_brush_freebrushlist_trial.sh`
+- WDISP `WDISP_JMPTBL_BRUSH_PlaneMaskForIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_brush_planemaskforindex_trial.sh`
+- WDISP `WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_esq_setcoppereffect_onenablehighlight_trial.sh`
+- WDISP `WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_esqiff_renderweatherstatusbrushslice_trial.sh`
+- WDISP `WDISP_JMPTBL_BRUSH_SelectBrushSlot` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_brush_selectbrushslot_trial.sh`
+- WDISP `WDISP_JMPTBL_NEWGRID_DrawWrappedText` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_newgrid_drawwrappedtext_trial.sh`
+- WDISP `WDISP_JMPTBL_NEWGRID_ResetRowTable` SAS/C compare script: `src/decomp/scripts/compare_sasc_wdisp_jmptbl_newgrid_resetrowtable_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_convertamigasecondstoclockdata_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_esq_calcdayofyearfrommonthday_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_checkdateorsecondsfromepoch_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_battclock_getsecondsfrombatterybackedclock_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_DATETIME_IsLeapYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_datetime_isleapyear_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial.sh`
+- PARSEINI2 `PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_secondsfromepoch_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_math_divs32_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_DATETIME_SecondsToStruct` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_datetime_secondstostruct_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_generate_grid_date_string_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_MEMORY_DeallocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_memory_deallocatememory_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_cleanup_drawclockformatlist_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_DISPTEXT_FreeBuffers` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_disptext_freebuffers_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_CLEANUP_DrawClockBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_cleanup_drawclockbanner_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_MEMORY_AllocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_memory_allocatememory_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_DISPTEXT_InitBuffers` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_disptext_initbuffers_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_CLEANUP_DrawClockFormatFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_cleanup_drawclockformatframe_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_datetime_normalizestructtoseconds_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_str_copyuntilanydelimn_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_updatefilterstatemachine_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_math_divs32_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_STRING_CompareN` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_string_comparen_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqdisp_updatestatusmaskandrefresh_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_gcommand_getbannerchar_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_ladfunc_parsehexdigit_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqpars_applyrtcbytesandpersist_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_gcommand_adjustbannercopperoffset_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esq_setcoppereffect_custom_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_cleanup_renderalignedstatusscreen_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_computefilteroffsetforentry_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_math_mulu32_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_setfiltermodeandresetstate_trial.sh`
+- SCRIPT3 `SCRIPT3_JMPTBL_STRING_CopyPadNul` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_string_copypadnul_trial.sh`
+- NEWGRID `NEWGRID_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_newgrid_jmptbl_math_mulu32_trial.sh`
+- TEXTDISP `TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_newgrid_shouldopeneditor_trial.sh`
+- TEXTDISP `TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_esqdisp_testentrygrideligibility_trial.sh`
+- TEXTDISP `TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_esqiff_runcopperrisetransition_trial.sh`
+- TEXTDISP `TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_cleanup_buildalignedstatusline_trial.sh`
+- TEXTDISP `TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_cleanup_drawinsetrectframe_trial.sh`
+- P_TYPE `P_TYPE_JMPTBL_STRING_FindSubstring` SAS/C compare script: `src/decomp/scripts/compare_sasc_p_type_jmptbl_string_findsubstring_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_STRING_CompareNoCase` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_string_comparenocase_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_tliba3_builddisplaycontextforviewmode_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_diskio_getfilesizefromhandle_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_math_divs32_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_textdisp_findentryindexbywildcard_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_STRING_CompareN` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_string_comparen_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_NoOp` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_noop_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_textdisp_drawchannelbanner_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_movecopperentrytowardstart_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_MEMORY_DeallocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_memory_deallocatememory_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_diskio_forceuirefreshifidle_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_CloneBrushRecord` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_clonebrushrecord_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_movecopperentrytowardend_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_findbrushbypredicate_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_FreeBrushList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_freebrushlist_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_FindType3Brush` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_findtype3brush_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_PopBrushHead` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_popbrushhead_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_AllocBrushNode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_allocbrushnode_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_NoOp_006A` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_noop_006a_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_newgrid_validateselectioncode_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_PopulateBrushList` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_populatebrushlist_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_NoOp_0074` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_noop_0074_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_STRING_CompareNoCaseN` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_string_comparenocasen_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_script_assertctrllineifenabled_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_script_beginbannerchartransition_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_MEMORY_AllocateMemory` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_memory_allocatememory_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_ctasks_startifftaskprocess_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_DOS_OpenFileWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_dos_openfilewithmode_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_inccopperliststowardstargets_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_esq_deccopperlistsprimary_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_SelectBrushSlot` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_selectbrushslot_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_brush_selectbrushbylabel_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_math_mulu32_trial.sh`
+- ESQIFF `ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqiff_jmptbl_diskio_resetctrlinputstateifidle_trial.sh`
+- APP2 `ESQ_NoOp` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_noop_trial.sh`
+- APP2 `ESQ_NoOp_006A` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_noop_006a_trial.sh`
+- APP2 `ESQ_NoOp_0074` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_noop_0074_trial.sh`
+- APP2 `ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_testbit1based_trial.sh`
+- APP2 `ESQ_SetBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_setbit1based_trial.sh`
+- APP2 `ESQ_TerminateAfterSecondQuote` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_terminate_after_second_quote_trial.sh`
+- APP2 `ESQ_WildcardMatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_wildcard_match_trial.sh`
+- APP2 `ESQ_GenerateXorChecksumByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_generate_xor_checksum_byte_trial.sh`
+- APP2 `ESQ_FindSubstringCaseFold` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_find_substring_case_fold_trial.sh`
+- APP2 `ESQ_WriteDecFixedWidth` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_write_dec_fixed_width_trial.sh`
+- APP2 `ESQ_PackBitsDecode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_packbits_decode_trial.sh`
+- APP2 `ESQ_GetHalfHourSlotIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_get_half_hour_slot_index_trial.sh`
+- APP2 `ESQ_ClampBannerCharRange` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_clamp_banner_char_range_trial.sh`
+- APP2 `ESQ_ReverseBitsIn6Bytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_reverse_bits_in6_bytes_trial.sh`
+- APP2 `ESQ_DecColorStep` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_dec_color_step_trial.sh`
+- APP2 `ESQ_BumpColorTowardTargets` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_bump_color_toward_targets_trial.sh`
+- APP2 `ESQ_CalcDayOfYearFromMonthDay` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_calc_day_of_year_from_month_day_trial.sh`
+- APP2 `ESQ_UpdateMonthDayFromDayOfYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_update_month_day_from_day_of_year_trial.sh`
+- APP2 `ESQ_FormatTimeStamp` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_format_time_stamp_trial.sh`
+- APP2 `ESQ_StoreCtrlSampleEntry` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_store_ctrl_sample_entry_trial.sh`
+- APP2 `ESQ_SetCopperEffectParams` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_params_trial.sh`
+- APP2 `ESQ_SetCopperEffect_Default` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_copper_effect_default_trial.sh`
 - Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
 - Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
 - Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
@@ -3942,12 +4500,24 @@ Recent promoted targets:
 - Unknown40 `BATTCLOCK_GetSecondsFromBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_get_seconds_trial.sh`
 - Unknown40 `BATTCLOCK_WriteSecondsToBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_write_seconds_trial.sh`
 - Unknown40 `EXEC_CallVector_48` SAS/C compare script: `src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh`
+- Unknown42 `CLOCK_CheckDateOrSecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_check_date_or_seconds_from_epoch_trial.sh`
+- Unknown42 `CLOCK_SecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_seconds_from_epoch_trial.sh`
+- Unknown42 `PARALLEL_CheckReadyStub` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_checkready_stub_trial.sh`
+- Unknown42 `PARALLEL_CheckReady` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_checkready_trial.sh`
+- Unknown42 `PARALLEL_WaitReady` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_waitready_trial.sh`
+- Unknown42 `PARALLEL_WriteCharD0` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_writechard0_trial.sh`
+- Unknown42 `PARALLEL_WriteStringLoop` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_writestringloop_trial.sh`
+- Unknown42 `PARALLEL_RawDoFmtStackArgs` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_rawdofmtstackargs_trial.sh`
+- Unknown42 `PARALLEL_RawDoFmtCommon` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_rawdofmtcommon_trial.sh`
+- Unknown42 `PARALLEL_WriteCharHw` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_writecharhw_trial.sh`
+- Unknown42 `PARALLEL_RawDoFmt` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_rawdofmt_trial.sh`
 - SAS/C trial sources currently used:
 - `src/decomp/sas_c/test_memory_pair.c`
 - `src/decomp/sas_c/string_to_upper_char.c`
 - `src/decomp/sas_c/unknown34_pair.c`
 - `src/decomp/sas_c/unknown34_dos_read_by_index.c`
 - `src/decomp/sas_c/unknown11_dos_seek_by_index.c`
+- `src/decomp/sas_c/unknown12_alloc_alloc_from_free_list.c`
 - `src/decomp/sas_c/unknown6_string_append_at_null.c`
 - `src/decomp/sas_c/unknown5_string_append_n.c`
 - `src/decomp/sas_c/unknown5_string_compare_n.c`
@@ -3964,6 +4534,170 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown17_dos_write_with_error_state.c`
 - `src/decomp/sas_c/unknown18_dos_seek_with_error_state.c`
 - `src/decomp/sas_c/unknown20_dos_open_with_error_state.c`
+- `src/decomp/sas_c/unknown21_iostdreq_free.c`
+- `src/decomp/sas_c/unknown21_iostdreq_cleanup_signal_and_msgport.c`
+- `src/decomp/sas_c/unknown21_dos_open_new_file_if_missing.c`
+- `src/decomp/sas_c/unknown21_dos_delete_and_recreate_file.c`
+- `src/decomp/sas_c/unknown24_parse_read_signed_long_skip_class3.c`
+- `src/decomp/sas_c/unknown24_memlist_alloc_free.c`
+- `src/decomp/sas_c/unknown25_struct_alloc_free.c`
+- `src/decomp/sas_c/unknown27_format_buffer2.c`
+- `src/decomp/sas_c/unknown2a_format_raw_dofmt_with_scratch_buffer.c`
+- `src/decomp/sas_c/unknown28_wdisp_format_with_callback.c`
+- `src/decomp/sas_c/unknown30_exec_call_vector_348.c`
+- `src/decomp/sas_c/unknown31_buffer_ensure_allocated.c`
+- `src/decomp/sas_c/unknown32_handle_close_all_and_return_with_code.c`
+- `src/decomp/sas_c/unknown35_handle_open_with_mode.c`
+- `src/decomp/sas_c/unknown36_finalize_and_abort_requester.c`
+- `src/decomp/sas_c/unknown38_signal_poll_and_dispatch.c`
+- `src/decomp/sas_c/unknown39_graphics_bltbitmaprastport.c`
+- `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
+- `src/decomp/sas_c/unknown7_str_core_helpers.c`
+- `src/decomp/sas_c/unknown8_format_u32_to_decimal_string.c`
+- `src/decomp/sas_c/unknown9_format_u32_to_octal_string.c`
+- `src/decomp/sas_c/unknown10_format_u32_to_hex_string.c`
+- `src/decomp/sas_c/unknown10_printf_putc_to_buffer.c`
+- `src/decomp/sas_c/unknown10_wdisp_sprintf.c`
+- `src/decomp/sas_c/unknown10_parse_read_signed_long.c`
+- `src/decomp/sas_c/unknown10_parse_read_signed_long_nobranch.c`
+- `src/decomp/sas_c/unknown10_handle_open_entry_with_flags.c`
+- `src/decomp/sas_c/unknown13_format_callback_buffer.c`
+- `src/decomp/sas_c/unknown14_handle_open_from_mode_string.c`
+- `src/decomp/sas_c/unknown15_stream_read_line_with_limit.c`
+- `src/decomp/sas_c/unknown16_buffer_flush_all_and_close_with_code.c`
+- `src/decomp/sas_c/unknown29_jmptbl_esq_main_init_and_run.c`
+- `src/decomp/sas_c/unknown29_esq_parse_command_line_and_run.c`
+- `src/decomp/sas_c/unknown2b_main_noop_hooks.c`
+- `src/decomp/sas_c/unknown_esqproto_copy_label_to_global.c`
+- `src/decomp/sas_c/unknown_esqproto_parse_digit_label_and_display.c`
+- `src/decomp/sas_c/unknown_parse_record_and_update_display.c`
+- `src/decomp/sas_c/unknown_parse_list_and_update_entries.c`
+- `src/decomp/sas_c/unknown_esqproto_verify_checksum_and_parse_record.c`
+- `src/decomp/sas_c/unknown_esqproto_verify_checksum_and_parse_list.c`
+- `src/decomp/sas_c/datetime_isleapyear.c`
+- `src/decomp/sas_c/script3_jmptbl_stubs.c`
+- `src/decomp/sas_c/textdisp_jmptbl_stubs.c`
+- `src/decomp/sas_c/p_type_jmptbl_stubs.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_a.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_b.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_c.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_d.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_e.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_f.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_g.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_h.c`
+- `src/decomp/sas_c/esqiff_jmptbl_stubs_i.c`
+- `src/decomp/sas_c/esq_noop_triplet.c`
+- `src/decomp/sas_c/esq_bit1_ops.c`
+- `src/decomp/sas_c/esq_terminate_after_second_quote.c`
+- `src/decomp/sas_c/esq_wildcard_match.c`
+- `src/decomp/sas_c/esq_generate_xor_checksum_byte.c`
+- `src/decomp/sas_c/esq_find_substring_case_fold.c`
+- `src/decomp/sas_c/esq_write_dec_fixed_width.c`
+- `src/decomp/sas_c/esq_packbits_decode.c`
+- `src/decomp/sas_c/esq_get_half_hour_slot_index.c`
+- `src/decomp/sas_c/esq_clamp_banner_char_range.c`
+- `src/decomp/sas_c/esq_reverse_bits_in6_bytes.c`
+- `src/decomp/sas_c/esq_dec_color_step.c`
+- `src/decomp/sas_c/esq_bump_color_toward_targets.c`
+- `src/decomp/sas_c/esq_calc_day_of_year_from_month_day.c`
+- `src/decomp/sas_c/esq_update_month_day_from_day_of_year.c`
+- `src/decomp/sas_c/esq_format_time_stamp.c`
+- `src/decomp/sas_c/esq_store_ctrl_sample_entry.c`
+- `src/decomp/sas_c/esq_set_copper_effect_params.c`
+- `src/decomp/sas_c/esq_set_copper_effect_default.c`
+- `src/decomp/sas_c/datetime_adjust_month_index.c`
+- `src/decomp/sas_c/datetime_normalize_month_range.c`
+- `src/decomp/sas_c/dst_normalize_day_of_year.c`
+- `src/decomp/sas_c/dst_build_banner_time_word.c`
+- `src/decomp/sas_c/dst_free_banner_struct.c`
+- `src/decomp/sas_c/dst_free_banner_pair.c`
+- `src/decomp/sas_c/dst_allocate_banner_struct.c`
+- `src/decomp/sas_c/dst_rebuild_banner_pair.c`
+- `src/decomp/sas_c/dst_compute_banner_index.c`
+- `src/decomp/sas_c/dst_tick_banner_counters.c`
+- `src/decomp/sas_c/dst_add_time_offset.c`
+- `src/decomp/sas_c/dst_write_rtc_from_globals.c`
+- `src/decomp/sas_c/newgrid_jmptbl_stubs.c`
+- `src/decomp/sas_c/newgrid_jmptbl_cleanup_draw_clock_format_list.c`
+- `src/decomp/sas_c/newgrid_jmptbl_cleanup_draw_clock_banner.c`
+- `src/decomp/sas_c/newgrid_jmptbl_cleanup_draw_clock_format_frame.c`
+- `src/decomp/sas_c/dst_handle_banner_command32_33.c`
+- `src/decomp/sas_c/dst_build_banner_time_entry.c`
+- `src/decomp/sas_c/dst_format_banner_datetime.c`
+- `src/decomp/sas_c/dst_update_banner_queue.c`
+- `src/decomp/sas_c/dst_refresh_banner_buffer.c`
+- `src/decomp/sas_c/dst_load_banner_pair_from_files.c`
+- `src/decomp/sas_c/unknown_jmptbl_core_stubs.c`
+- `src/decomp/sas_c/group_ag_jmptbl_memory_deallocate_memory.c`
+- `src/decomp/sas_c/group_ag_jmptbl_memory_allocate_memory.c`
+- `src/decomp/sas_c/group_ag_jmptbl_math_stubs.c`
+- `src/decomp/sas_c/group_ag_jmptbl_signal_struct_stubs.c`
+- `src/decomp/sas_c/group_ag_jmptbl_misc_stubs.c`
+- `src/decomp/sas_c/group_ag_jmptbl_parse_dos_script_stubs.c`
+- `src/decomp/sas_c/parseini2_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ag_jmptbl_esqfunc_textdisp_stubs.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_stubs.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_esqdisp_get_entry_pointer_by_mode.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_bevel_draw_bevel_frame_with_top.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_disptext_compute_marker_widths.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_bevel_draw_vertical_bevel_pair.c`
+- `src/decomp/sas_c/wdisp_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ag_jmptbl_script_ladfunc2_stubs.c`
+- `src/decomp/sas_c/group_main_a_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_main_b_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_al_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ay_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_aw_jmptbl_stubs_core.c`
+- `src/decomp/sas_c/group_aw_jmptbl_esqiff_run_copper_drop_transition.c`
+- `src/decomp/sas_c/group_as_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_at_jmptbl_stubs_core.c`
+- `src/decomp/sas_c/group_at_jmptbl_ed1_wait_for_flag_and_clear_bit1.c`
+- `src/decomp/sas_c/group_au_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ax_jmptbl_format_raw_dofmt_with_scratch_buffer.c`
+- `src/decomp/sas_c/group_az_jmptbl_esq_cold_reboot.c`
+- `src/decomp/sas_c/group_aa_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ar_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_af_jmptbl_gcommand_save_brush_result.c`
+- `src/decomp/sas_c/group_av_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ab_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ae_jmptbl_stubs_core.c`
+- `src/decomp/sas_c/group_ae_jmptbl_esqdisp_get_entry_pointer_by_mode.c`
+- `src/decomp/sas_c/group_aj_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ai_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ak_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ak_jmptbl_esq_set_copper_effect_default.c`
+- `src/decomp/sas_c/group_ak_jmptbl_xjump2_stubs.c`
+- `src/decomp/sas_c/group_ac_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ac_jmptbl_script_update_ctrl_state_machine.c`
+- `src/decomp/sas_c/group_ad_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_ad_jmptbl_esqiff_run_copper_rise_transition.c`
+- `src/decomp/sas_c/group_ad_jmptbl_tliba3_get_view_mode_rast_port.c`
+- `src/decomp/sas_c/group_ah_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_am_jmptbl_stubs.c`
+- `src/decomp/sas_c/group_am_jmptbl_esq_set_copper_effect_off_disable_highlight.c`
+- `src/decomp/sas_c/ed1_jmptbl_stubs.c`
+- `src/decomp/sas_c/esqfunc_jmptbl_stubs.c`
+- `src/decomp/sas_c/esqfunc_jmptbl_script_read_ciab_bit5_mask.c`
+- `src/decomp/sas_c/esqdisp_jmptbl_stubs.c`
+- `src/decomp/sas_c/esqshared_jmptbl_stubs.c`
+- `src/decomp/sas_c/esqpars_jmptbl_stubs.c`
+- `src/decomp/sas_c/esqpars_jmptbl_esqproto_verify_checksum_and_parse_record.c`
+- `src/decomp/sas_c/tliba1_jmptbl_stubs.c`
+- `src/decomp/sas_c/tliba2_jmptbl_stubs.c`
+- `src/decomp/sas_c/tliba3_jmptbl_stubs.c`
+- `src/decomp/sas_c/textdisp2_jmptbl_stubs.c`
+- `src/decomp/sas_c/script2_jmptbl_stubs.c`
+- `src/decomp/sas_c/script_jmptbl_stubs.c`
+- `src/decomp/sas_c/parseini_jmptbl_stubs.c`
+- `src/decomp/sas_c/parseini_jmptbl_string_compare_nocase_n.c`
+- `src/decomp/sas_c/parseini_jmptbl_ed1_wait_for_flag_and_clear_bit1.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_stubs.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_esqdisp_get_entry_pointer_by_mode.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_bevel_draw_bevel_frame_with_top.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_disptext_compute_marker_widths.c`
+- `src/decomp/sas_c/newgrid2_jmptbl_bevel_draw_vertical_bevel_pair.c`
+- `src/decomp/sas_c/wdisp_jmptbl_stubs.c`
 - `src/decomp/sas_c/unknown22_dos_close_with_signal_check.c`
 - `src/decomp/sas_c/unknown22_math_mulu32.c`
 - `src/decomp/sas_c/unknown22_math_divs32.c`
@@ -3975,6 +4709,11 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown40_battclock_get_seconds.c`
 - `src/decomp/sas_c/unknown40_battclock_write_seconds.c`
 - `src/decomp/sas_c/unknown40_exec_call_vector_48.c`
+- `src/decomp/sas_c/unknown42_clock_wrappers.c`
+- `src/decomp/sas_c/unknown42_parallel_ready.c`
+- `src/decomp/sas_c/unknown42_parallel_writechar.c`
+- `src/decomp/sas_c/unknown42_parallel_string_and_rawdofmt.c`
+- `src/decomp/sas_c/unknown42_parallel_hw_and_rawdofmt.c`
 - Semantic checkpoints for SAS/C trials:
 - `src/decomp/scripts/semantic_filter_sasc_memory_allocate.awk`
 - `src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk`
@@ -3983,6 +4722,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_mem_move.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_read_by_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_seek_by_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_alloc_alloc_from_free_list.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_append_at_null.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_append_n.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_compare_n.awk`
@@ -3990,6 +4730,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_string_copy_pad_nul.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_compare_nocase_n.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_find_substring.awk`
+- `src/decomp/scripts/semantic_filter_sasc_alloc_insert_free_block.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_write_by_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper_inplace.awk`
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper_char.awk`
@@ -3999,6 +4740,101 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_dos_write_with_error_state.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_seek_with_error_state.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_open_with_error_state.awk`
+- `src/decomp/scripts/semantic_filter_sasc_iostdreq_free.awk`
+- `src/decomp/scripts/semantic_filter_sasc_iostdreq_cleanup_signal_and_msgport.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_open_new_file_if_missing.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_delete_and_recreate_file.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parse_read_signed_long_skip_class3.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parse_read_signed_long_skip_class3_alt.awk`
+- `src/decomp/scripts/semantic_filter_sasc_memlist_free_all.awk`
+- `src/decomp/scripts/semantic_filter_sasc_memlist_alloc_tracked.awk`
+- `src/decomp/scripts/semantic_filter_sasc_struct_free_with_size_field.awk`
+- `src/decomp/scripts/semantic_filter_sasc_struct_alloc_with_owner.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_buffer2_write_char.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_to_buffer2.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_raw_dofmt_with_scratch_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown2a_stub0.awk`
+- `src/decomp/scripts/semantic_filter_sasc_wdisp_format_with_callback.awk`
+- `src/decomp/scripts/semantic_filter_sasc_exec_call_vector_348.awk`
+- `src/decomp/scripts/semantic_filter_sasc_buffer_ensure_allocated.awk`
+- `src/decomp/scripts/semantic_filter_sasc_handle_close_all_and_return_with_code.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown32_jmptbl_esq_return_with_stack_code.awk`
+- `src/decomp/scripts/semantic_filter_sasc_handle_open_with_mode.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown36_finalize_request.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown36_show_abort_requester.awk`
+- `src/decomp/scripts/semantic_filter_sasc_signal_poll_and_dispatch.awk`
+- `src/decomp/scripts/semantic_filter_sasc_graphics_bltbitmaprastport.awk`
+- `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
+- `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
+- `src/decomp/scripts/semantic_filter_sasc_str_find_char.awk`
+- `src/decomp/scripts/semantic_filter_sasc_str_find_char_ptr.awk`
+- `src/decomp/scripts/semantic_filter_sasc_str_find_any_char_in_set.awk`
+- `src/decomp/scripts/semantic_filter_sasc_str_find_any_char_ptr.awk`
+- `src/decomp/scripts/semantic_filter_sasc_str_skip_class3_chars.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_u32_to_decimal_string.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_u32_to_octal_string.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_u32_to_hex.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown10_printf_putc_to_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_wdisp_sprintf.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parse_read_signed_long.awk`
+- `src/decomp/scripts/semantic_filter_sasc_handle_open_entry_with_flags.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_callback_write_char.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_to_callback_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_handle_open_from_mode_string.awk`
+- `src/decomp/scripts/semantic_filter_sasc_stream_read_line_with_limit.awk`
+- `src/decomp/scripts/semantic_filter_sasc_buffer_flush_all_and_close_with_code.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown29_jmptbl_esq_main_init_and_run.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_parse_command_line_and_run.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_main_noop_hook.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqproto_copy_label_to_global.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqproto_parse_digit_label_and_display.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_parse_record_and_update_display.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_parse_list_and_update_entries.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqproto_verify_checksum_and_parse_record.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqproto_verify_checksum_and_parse_list.awk`
+- `src/decomp/scripts/semantic_filter_sasc_datetime_isleapyear.awk`
+- `src/decomp/scripts/semantic_filter_sasc_datetime_adjust_month_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_datetime_normalize_month_range.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_normalize_day_of_year.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_build_banner_time_word.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_free_banner_struct.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_free_banner_pair.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_allocate_banner_struct.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_rebuild_banner_pair.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_compute_banner_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_tick_banner_counters.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_add_time_offset.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_write_rtc_from_globals.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_handle_banner_command32_33.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_build_banner_time_entry.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_format_banner_datetime.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_update_banner_queue.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_refresh_banner_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dst_load_banner_pair_from_files.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_jmptbl_esqiff2_read_serial_record_into_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_jmptbl_displib_display_text_at_position.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_jmptbl_esq_wildcard_match.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_jmptbl_dst_normalize_day_of_year.awk`
+- `src/decomp/scripts/semantic_filter_sasc_unknown_jmptbl_esq_generate_xor_checksum_byte.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqproto_jmptbl_esqpars_replace_owned_string.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_memory_deallocate_memory.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_memory_allocate_memory.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_math_divs32.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_math_mulu32.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_signal_create_msgport_with_signal.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_struct_free_with_size_field.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_struct_alloc_with_owner.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_iostdreq_cleanup_signal_and_msgport.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_string_copy_pad_nul.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_parse_read_signed_long_skip_class3_alt.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_dos_open_file_with_mode.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_script_check_path_exists.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_esqfunc_service_ui_tick_if_running.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_esqfunc_update_refresh_mode_state.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_textdisp_reset_selection_and_refresh.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_script_begin_banner_char_transition.awk`
+- `src/decomp/scripts/semantic_filter_sasc_group_ag_jmptbl_ladfunc2_emit_escaped_string_to_scratch.awk`
+- `src/decomp/scripts/semantic_filter_sasc_jmptbl_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_close_with_signal_check.awk`
 - `src/decomp/scripts/semantic_filter_sasc_math_mulu32.awk`
 - `src/decomp/scripts/semantic_filter_sasc_math_divs32.awk`
@@ -4010,5 +4846,35 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_battclock_get_seconds.awk`
 - `src/decomp/scripts/semantic_filter_sasc_battclock_write_seconds.awk`
 - `src/decomp/scripts/semantic_filter_sasc_exec_call_vector_48.awk`
+- `src/decomp/scripts/semantic_filter_sasc_clock_check_date_or_seconds_from_epoch.awk`
+- `src/decomp/scripts/semantic_filter_sasc_clock_seconds_from_epoch.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_checkready_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_checkready.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_waitready.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_writechard0.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_writestringloop.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_rawdofmtstackargs.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_rawdofmtcommon.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_writecharhw.awk`
+- `src/decomp/scripts/semantic_filter_sasc_parallel_rawdofmt.awk`
+- `src/decomp/scripts/semantic_filter_sasc_noop.awk`
+- `src/decomp/scripts/semantic_filter_sasc_bit1_ops.awk`
+- `src/decomp/scripts/semantic_filter_sasc_terminate_after_second_quote.awk`
+- `src/decomp/scripts/semantic_filter_sasc_wildcard_match.awk`
+- `src/decomp/scripts/semantic_filter_sasc_generate_xor_checksum_byte.awk`
+- `src/decomp/scripts/semantic_filter_sasc_find_substring_case_fold.awk`
+- `src/decomp/scripts/semantic_filter_sasc_write_dec_fixed_width.awk`
+- `src/decomp/scripts/semantic_filter_sasc_packbits_decode.awk`
+- `src/decomp/scripts/semantic_filter_sasc_get_half_hour_slot_index.awk`
+- `src/decomp/scripts/semantic_filter_sasc_clamp_banner_char_range.awk`
+- `src/decomp/scripts/semantic_filter_sasc_reverse_bits_in6_bytes.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dec_color_step.awk`
+- `src/decomp/scripts/semantic_filter_sasc_bump_color_toward_targets.awk`
+- `src/decomp/scripts/semantic_filter_sasc_calc_day_of_year_from_month_day.awk`
+- `src/decomp/scripts/semantic_filter_sasc_update_month_day_from_day_of_year.awk`
+- `src/decomp/scripts/semantic_filter_sasc_format_time_stamp.awk`
+- `src/decomp/scripts/semantic_filter_sasc_store_ctrl_sample_entry.awk`
+- `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_params.awk`
+- `src/decomp/scripts/semantic_filter_sasc_set_copper_effect_default.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

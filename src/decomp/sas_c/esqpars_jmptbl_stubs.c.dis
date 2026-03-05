@@ -1,0 +1,259 @@
+              SECTION      text,CODE
+__code:
+ESQPARS_JMPTBL_DISKIO2_FlushData:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DISKIO2_FlushData__1:
+              BSR.W          DISKIO2_FlushDataFilesIfNeeded;6100 0000 
+___ESQPARS_JMPTBL_DISKIO2_FlushData__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQPARS_JMPTBL_NEWGRID_RebuildIn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_NEWGRID_RebuildIn__1:
+              BSR.W          NEWGRID_RebuildIndexCache;6100 0000 
+___ESQPARS_JMPTBL_NEWGRID_RebuildIn__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DATETIME_SavePair:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DATETIME_SavePair__1:
+              BSR.W          DATETIME_SavePairToFile  ;6100 0000 
+___ESQPARS_JMPTBL_DATETIME_SavePair__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_ESQPROTO_VerifyCh:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__1:
+              BSR.W          ESQPROTO_VerifyChecksumAndParseL;6100 0000 
+___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_P_TYPE_ParseAndSt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_P_TYPE_ParseAndSt__1:
+              BSR.W          P_TYPE_ParseAndStoreTypeRecord;6100 0000 
+___ESQPARS_JMPTBL_P_TYPE_ParseAndSt__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_ESQPROTO_CopyLabe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_ESQPROTO_CopyLabe__1:
+              BSR.W          ESQPROTO_CopyLabelToGlobal;6100 0000 
+___ESQPARS_JMPTBL_ESQPROTO_CopyLabe__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DST_HandleBannerC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DST_HandleBannerC__1:
+              BSR.W          DST_HandleBannerCommand32_33;6100 0000 
+___ESQPARS_JMPTBL_DST_HandleBannerC__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_ESQ_SeedMinuteEve:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_ESQ_SeedMinuteEve__1:
+              BSR.W          ESQ_SeedMinuteEventThresholds;6100 0000 
+___ESQPARS_JMPTBL_ESQ_SeedMinuteEve__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_PARSEINI_HandleFo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_PARSEINI_HandleFo__1:
+              BSR.W          PARSEINI_HandleFontCommand;6100 0000 
+___ESQPARS_JMPTBL_PARSEINI_HandleFo__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_TEXTDISP_ApplySou:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_TEXTDISP_ApplySou__1:
+              BSR.W          TEXTDISP_ApplySourceConfigAllEnt;6100 0000 
+___ESQPARS_JMPTBL_TEXTDISP_ApplySou__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_BRUSH_PlaneMaskFo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_BRUSH_PlaneMaskFo__1:
+              BSR.W          BRUSH_PlaneMaskForIndex  ;6100 0000 
+___ESQPARS_JMPTBL_BRUSH_PlaneMaskFo__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_SCRIPT_ResetCtrlC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_SCRIPT_ResetCtrlC__1:
+              BSR.W          SCRIPT_ResetCtrlContextAndClearS;6100 0000 
+___ESQPARS_JMPTBL_SCRIPT_ResetCtrlC__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_PARSEINI_WriteRtc:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_PARSEINI_WriteRtc__1:
+              BSR.W          PARSEINI_WriteRtcFromGlobals;6100 0000 
+___ESQPARS_JMPTBL_PARSEINI_WriteRtc__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_LOCAVAIL_SaveAvai:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_LOCAVAIL_SaveAvai__1:
+              BSR.W          LOCAVAIL_SaveAvailabilityDataFil;6100 0000 
+___ESQPARS_JMPTBL_LOCAVAIL_SaveAvai__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DISPLIB_DisplayTe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DISPLIB_DisplayTe__1:
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+___ESQPARS_JMPTBL_DISPLIB_DisplayTe__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_LADFUNC_SaveTextA:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_LADFUNC_SaveTextA__1:
+              BSR.W          LADFUNC_SaveTextAdsToFile;6100 0000 
+___ESQPARS_JMPTBL_LADFUNC_SaveTextA__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_PARSE_ReadSignedL:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_PARSE_ReadSignedL__1:
+              BSR.W          PARSE_ReadSignedLongSkipClass3_A;6100 0000 
+___ESQPARS_JMPTBL_PARSE_ReadSignedL__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DISKIO2_HandleInt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DISKIO2_HandleInt__1:
+              BSR.W          DISKIO2_HandleInteractiveFileTra;6100 0000 
+___ESQPARS_JMPTBL_DISKIO2_HandleInt__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_P_TYPE_WritePromo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_P_TYPE_WritePromo__1:
+              BSR.W          P_TYPE_WritePromoIdDataFile;6100 0000 
+___ESQPARS_JMPTBL_P_TYPE_WritePromo__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_COI_FreeEntryReso:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_COI_FreeEntryReso__1:
+              BSR.W          COI_FreeEntryResources   ;6100 0000 
+___ESQPARS_JMPTBL_COI_FreeEntryReso__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DST_UpdateBannerQ:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DST_UpdateBannerQ__1:
+              BSR.W          DST_UpdateBannerQueue    ;6100 0000 
+___ESQPARS_JMPTBL_DST_UpdateBannerQ__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_ESQPROTO_ParseDig:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_ESQPROTO_ParseDig__1:
+              BSR.W          ESQPROTO_ParseDigitLabelAndDispl;6100 0000 
+___ESQPARS_JMPTBL_ESQPROTO_ParseDig__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DISKIO_ParseConfi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DISKIO_ParseConfi__1:
+              BSR.W          DISKIO_ParseConfigBuffer ;6100 0000 
+___ESQPARS_JMPTBL_DISKIO_ParseConfi__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_CLEANUP_ParseAlig:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_CLEANUP_ParseAlig__1:
+              BSR.W          CLEANUP_ParseAlignedListingBlock;6100 0000 
+___ESQPARS_JMPTBL_CLEANUP_ParseAlig__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_SCRIPT_ReadSerial:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_SCRIPT_ReadSerial__1:
+              BSR.W          SCRIPT_ReadNextRbfByte   ;6100 0000 
+___ESQPARS_JMPTBL_SCRIPT_ReadSerial__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_ESQ_GenerateXorCh:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_ESQ_GenerateXorCh__1:
+              BSR.W          ESQ_GenerateXorChecksumByte;6100 0000 
+___ESQPARS_JMPTBL_ESQ_GenerateXorCh__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DST_RefreshBanner:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DST_RefreshBanner__1:
+              BSR.W          DST_RefreshBannerBuffer  ;6100 0000 
+___ESQPARS_JMPTBL_DST_RefreshBanner__2:
+              RTS                                     ;4e75 
+ESQPARS_JMPTBL_DISKIO_SaveConfig:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_DISKIO_SaveConfig__1:
+              BSR.W          DISKIO_SaveConfigToFileHandle;6100 0000 
+___ESQPARS_JMPTBL_DISKIO_SaveConfig__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DISKIO2_FlushDataFilesIfNeeded
+              XREF           NEWGRID_RebuildIndexCache
+              XREF           DATETIME_SavePairToFile
+              XREF           ESQPROTO_VerifyChecksumAndParseL
+              XREF           P_TYPE_ParseAndStoreTypeRecord
+              XREF           ESQPROTO_CopyLabelToGlobal
+              XREF           DST_HandleBannerCommand32_33
+              XREF           ESQ_SeedMinuteEventThresholds
+              XREF           PARSEINI_HandleFontCommand
+              XREF           TEXTDISP_ApplySourceConfigAllEnt
+              XREF           BRUSH_PlaneMaskForIndex
+              XREF           SCRIPT_ResetCtrlContextAndClearS
+              XREF           PARSEINI_WriteRtcFromGlobals
+              XREF           LOCAVAIL_SaveAvailabilityDataFil
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           LADFUNC_SaveTextAdsToFile
+              XREF           PARSE_ReadSignedLongSkipClass3_A
+              XREF           DISKIO2_HandleInteractiveFileTra
+              XREF           P_TYPE_WritePromoIdDataFile
+              XREF           COI_FreeEntryResources
+              XREF           DST_UpdateBannerQueue
+              XREF           ESQPROTO_ParseDigitLabelAndDispl
+              XREF           DISKIO_ParseConfigBuffer
+              XREF           CLEANUP_ParseAlignedListingBlock
+              XREF           SCRIPT_ReadNextRbfByte
+              XREF           ESQ_GenerateXorChecksumByte
+              XREF           DST_RefreshBannerBuffer
+              XREF           DISKIO_SaveConfigToFileHandle
+              XDEF           ESQPARS_JMPTBL_DISKIO2_FlushData
+              XDEF           ESQPARS_JMPTBL_NEWGRID_RebuildIn
+              XDEF           ESQPARS_JMPTBL_DATETIME_SavePair
+              XDEF           ESQPARS_JMPTBL_ESQPROTO_VerifyCh
+              XDEF           ESQPARS_JMPTBL_P_TYPE_ParseAndSt
+              XDEF           ESQPARS_JMPTBL_ESQPROTO_CopyLabe
+              XDEF           ESQPARS_JMPTBL_DST_HandleBannerC
+              XDEF           ESQPARS_JMPTBL_ESQ_SeedMinuteEve
+              XDEF           ESQPARS_JMPTBL_PARSEINI_HandleFo
+              XDEF           ESQPARS_JMPTBL_TEXTDISP_ApplySou
+              XDEF           ESQPARS_JMPTBL_BRUSH_PlaneMaskFo
+              XDEF           ESQPARS_JMPTBL_SCRIPT_ResetCtrlC
+              XDEF           ESQPARS_JMPTBL_PARSEINI_WriteRtc
+              XDEF           ESQPARS_JMPTBL_LOCAVAIL_SaveAvai
+              XDEF           ESQPARS_JMPTBL_DISPLIB_DisplayTe
+              XDEF           ESQPARS_JMPTBL_LADFUNC_SaveTextA
+              XDEF           ESQPARS_JMPTBL_PARSE_ReadSignedL
+              XDEF           ESQPARS_JMPTBL_DISKIO2_HandleInt
+              XDEF           ESQPARS_JMPTBL_P_TYPE_WritePromo
+              XDEF           ESQPARS_JMPTBL_COI_FreeEntryReso
+              XDEF           ESQPARS_JMPTBL_DST_UpdateBannerQ
+              XDEF           ESQPARS_JMPTBL_ESQPROTO_ParseDig
+              XDEF           ESQPARS_JMPTBL_DISKIO_ParseConfi
+              XDEF           ESQPARS_JMPTBL_CLEANUP_ParseAlig
+              XDEF           ESQPARS_JMPTBL_SCRIPT_ReadSerial
+              XDEF           ESQPARS_JMPTBL_ESQ_GenerateXorCh
+              XDEF           ESQPARS_JMPTBL_DST_RefreshBanner
+              XDEF           ESQPARS_JMPTBL_DISKIO_SaveConfig
+              END

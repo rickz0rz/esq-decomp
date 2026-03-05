@@ -1,0 +1,115 @@
+              SECTION      text,CODE
+__code:
+ED1_JMPTBL_NEWGRID_DrawTopBorder:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_NEWGRID_DrawTopBorder__1:
+              BSR.W          NEWGRID_DrawTopBorderLine;6100 0000 
+___ED1_JMPTBL_NEWGRID_DrawTopBorder__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ED1_JMPTBL_LOCAVAIL_ResetFilterC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_LOCAVAIL_ResetFilterC__1:
+              BSR.W          LOCAVAIL_ResetFilterCursorState;6100 0000 
+___ED1_JMPTBL_LOCAVAIL_ResetFilterC__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_GCOMMAND_ResetHighlig:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_GCOMMAND_ResetHighlig__1:
+              BSR.W          GCOMMAND_ResetHighlightMessages;6100 0000 
+___ED1_JMPTBL_GCOMMAND_ResetHighlig__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_LADFUNC_MergeHighLowN:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_LADFUNC_MergeHighLowN__1:
+              BSR.W          LADFUNC_SetPackedPenLowNibble;6100 0000 
+___ED1_JMPTBL_LADFUNC_MergeHighLowN__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_LADFUNC_SaveTextAdsTo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_LADFUNC_SaveTextAdsTo__1:
+              BSR.W          LADFUNC_SaveTextAdsToFile;6100 0000 
+___ED1_JMPTBL_LADFUNC_SaveTextAdsTo__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_ESQ_ColdReboot:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_ESQ_ColdReboot__1:
+              BSR.W          ESQ_ColdReboot           ;6100 0000 
+___ED1_JMPTBL_ESQ_ColdReboot__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_ESQSHARED4_LoadDefaul:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_ESQSHARED4_LoadDefaul__1:
+              BSR.W          ESQSHARED4_LoadDefaultPaletteToC;6100 0000 
+___ED1_JMPTBL_ESQSHARED4_LoadDefaul__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_GCOMMAND_SeedBannerDe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_GCOMMAND_SeedBannerDe__1:
+              BSR.W          GCOMMAND_SeedBannerDefaults;6100 0000 
+___ED1_JMPTBL_GCOMMAND_SeedBannerDe__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_MEM_Move:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_MEM_Move__1:
+              BSR.W          MEM_Move                 ;6100 0000 
+___ED1_JMPTBL_MEM_Move__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_GCOMMAND_SeedBannerFr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_GCOMMAND_SeedBannerFr__1:
+              BSR.W          GCOMMAND_SeedBannerFromPrefs;6100 0000 
+___ED1_JMPTBL_GCOMMAND_SeedBannerFr__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_CLEANUP_DrawDateTimeB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_CLEANUP_DrawDateTimeB__1:
+              BSR.W          CLEANUP_DrawDateTimeBannerRow;6100 0000 
+___ED1_JMPTBL_CLEANUP_DrawDateTimeB__2:
+              RTS                                     ;4e75 
+ED1_JMPTBL_LADFUNC_PackNibblesTo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_JMPTBL_LADFUNC_PackNibblesTo__1:
+              BSR.W          LADFUNC_SetPackedPenHighNibble;6100 0000 
+___ED1_JMPTBL_LADFUNC_PackNibblesTo__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_DrawTopBorderLine
+              XREF           LOCAVAIL_ResetFilterCursorState
+              XREF           GCOMMAND_ResetHighlightMessages
+              XREF           LADFUNC_SetPackedPenLowNibble
+              XREF           LADFUNC_SaveTextAdsToFile
+              XREF           ESQ_ColdReboot
+              XREF           ESQSHARED4_LoadDefaultPaletteToC
+              XREF           GCOMMAND_SeedBannerDefaults
+              XREF           MEM_Move
+              XREF           GCOMMAND_SeedBannerFromPrefs
+              XREF           CLEANUP_DrawDateTimeBannerRow
+              XREF           LADFUNC_SetPackedPenHighNibble
+              XDEF           ED1_JMPTBL_NEWGRID_DrawTopBorder
+              XDEF           ED1_JMPTBL_LOCAVAIL_ResetFilterC
+              XDEF           ED1_JMPTBL_GCOMMAND_ResetHighlig
+              XDEF           ED1_JMPTBL_LADFUNC_MergeHighLowN
+              XDEF           ED1_JMPTBL_LADFUNC_SaveTextAdsTo
+              XDEF           ED1_JMPTBL_ESQ_ColdReboot
+              XDEF           ED1_JMPTBL_ESQSHARED4_LoadDefaul
+              XDEF           ED1_JMPTBL_GCOMMAND_SeedBannerDe
+              XDEF           ED1_JMPTBL_MEM_Move
+              XDEF           ED1_JMPTBL_GCOMMAND_SeedBannerFr
+              XDEF           ED1_JMPTBL_CLEANUP_DrawDateTimeB
+              XDEF           ED1_JMPTBL_LADFUNC_PackNibblesTo
+              END

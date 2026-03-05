@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+DATETIME_IsLeapYear:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___DATETIME_IsLeapYear__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              CMPI.L         #$76c,D7                 ;0c87 0000 076c 
+              BGE.B          ___DATETIME_IsLeapYear__3;6c06 
+___DATETIME_IsLeapYear__2:
+              ADD.L          #$76c,D7                 ;0687 0000 076c 
+___DATETIME_IsLeapYear__3:
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$4,D1                   ;7204 
+              BSR.W          _CXD33                   ;6100 0000 
+              MOVE.L         D1,D0                    ;2001 
+              BEQ.B          ___DATETIME_IsLeapYear__5;6704 
+___DATETIME_IsLeapYear__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___DATETIME_IsLeapYear__11;6024 
+___DATETIME_IsLeapYear__5:
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$64,D1                  ;7264 
+              BSR.W          _CXD33                   ;6100 0000 
+              TST.L          D1                       ;4a81 
+              BEQ.B          ___DATETIME_IsLeapYear__7;6704 
+___DATETIME_IsLeapYear__6:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___DATETIME_IsLeapYear__11;6014 
+___DATETIME_IsLeapYear__7:
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$64,D1                  ;7264 
+              LSL.L          #$2,D1                   ;e589 
+              BSR.W          _CXD33                   ;6100 0000 
+              TST.L          D1                       ;4a81 
+              BNE.B          ___DATETIME_IsLeapYear__9;6604 
+___DATETIME_IsLeapYear__8:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___DATETIME_IsLeapYear__11;6002 
+___DATETIME_IsLeapYear__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+___DATETIME_IsLeapYear__10:
+___DATETIME_IsLeapYear__11:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _CXD33
+              XDEF           DATETIME_IsLeapYear
+              END

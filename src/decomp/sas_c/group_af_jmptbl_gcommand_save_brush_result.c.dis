@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+GROUP_AF_JMPTBL_GCOMMAND_SaveBru:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AF_JMPTBL_GCOMMAND_SaveBru__1:
+              BSR.W          GCOMMAND_SaveBrushResult ;6100 0000 
+___GROUP_AF_JMPTBL_GCOMMAND_SaveBru__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_SaveBrushResult
+              XDEF           GROUP_AF_JMPTBL_GCOMMAND_SaveBru
+              END

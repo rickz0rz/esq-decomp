@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_MATH_Mulu32:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_MATH_Mulu32__1:
+              BSR.W          MATH_Mulu32              ;6100 0000 
+___ESQIFF_JMPTBL_MATH_Mulu32__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_DISKIO_ResetCtrlIn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_DISKIO_ResetCtrlIn__1:
+              BSR.W          DISKIO_ResetCtrlInputStateIfIdle;6100 0000 
+___ESQIFF_JMPTBL_DISKIO_ResetCtrlIn__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           MATH_Mulu32
+              XREF           DISKIO_ResetCtrlInputStateIfIdle
+              XDEF           ESQIFF_JMPTBL_MATH_Mulu32
+              XDEF           ESQIFF_JMPTBL_DISKIO_ResetCtrlIn
+              END

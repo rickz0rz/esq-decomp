@@ -1,0 +1,295 @@
+              SECTION      text,CODE
+__code:
+NEWGRID2_JMPTBL_COI_SelectAnimFi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_COI_SelectAnimFi__1:
+              BSR.W          COI_SelectAnimFieldPointer;6100 0000 
+___NEWGRID2_JMPTBL_COI_SelectAnimFi__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+NEWGRID2_JMPTBL_DISPTEXT_SetCurr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_SetCurr__1:
+              BSR.W          DISPTEXT_SetCurrentLineIndex;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_SetCurr__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_LayoutA:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_LayoutA__1:
+              BSR.W          DISPTEXT_LayoutAndAppendToBuffer;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_LayoutA__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_GetTota:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_GetTota__1:
+              BSR.W          DISPTEXT_GetTotalLineCount;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_GetTota__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_TLIBA_FindFirstW:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_TLIBA_FindFirstW__1:
+              BSR.W          TLIBA_FindFirstWildcardMatchInde;6100 0000 
+___NEWGRID2_JMPTBL_TLIBA_FindFirstW__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_BuildLa:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__1:
+              BSR.W          DISPTEXT_BuildLayoutForSource;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_BuildLa__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_BEVEL_DrawBevelF:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawBevelF__1:
+              BSR.W          BEVEL_DrawBevelFrameWithTopRight;6100 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawBevelF__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_ESQDISP_GetEntry:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_ESQDISP_GetEntry__1:
+              BSR.W          ESQDISP_GetEntryAuxPointerByMode;6100 0000 
+___NEWGRID2_JMPTBL_ESQDISP_GetEntry__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_BEVEL_DrawVertic:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawVertic__1:
+              BSR.W          BEVEL_DrawVerticalBevel  ;6100 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawVertic__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_LayoutS:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_LayoutS__1:
+              BSR.W          DISPTEXT_LayoutSourceToLines;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_LayoutS__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_CLEANUP_UpdateEn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_CLEANUP_UpdateEn__1:
+              BSR.W          CLEANUP_UpdateEntryFlagBytes;6100 0000 
+___NEWGRID2_JMPTBL_CLEANUP_UpdateEn__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_COI_RenderClockF:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_COI_RenderClockF__1:
+              BSR.W          COI_RenderClockFormatEntryVarian;6100 0000 
+___NEWGRID2_JMPTBL_COI_RenderClockF__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_ESQDISP_TestEntr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_ESQDISP_TestEntr__1:
+              BSR.W          ESQDISP_TestEntryBits0And2;6100 0000 
+___NEWGRID2_JMPTBL_ESQDISP_TestEntr__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_Compute:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_Compute__1:
+              BSR.W          DISPTEXT_ComputeVisibleLineCount;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_Compute__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_RenderC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_RenderC__1:
+              BSR.W          DISPTEXT_RenderCurrentLine;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_RenderC__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_COI_ProcessEntry:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_COI_ProcessEntry__1:
+              BSR.W          COI_ProcessEntrySelectionState;6100 0000 
+___NEWGRID2_JMPTBL_COI_ProcessEntry__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_CLEANUP_FormatCl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_CLEANUP_FormatCl__1:
+              BSR.W          CLEANUP_FormatClockFormatEntry;6100 0000 
+___NEWGRID2_JMPTBL_CLEANUP_FormatCl__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_ESQ_GetHalfHourS:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_ESQ_GetHalfHourS__1:
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
+___NEWGRID2_JMPTBL_ESQ_GetHalfHourS__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_STR_SkipClass3Ch:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_STR_SkipClass3Ch__1:
+              BSR.W          STR_SkipClass3Chars      ;6100 0000 
+___NEWGRID2_JMPTBL_STR_SkipClass3Ch__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_STRING_AppendN:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_STRING_AppendN__1:
+              BSR.W          STRING_AppendN           ;6100 0000 
+___NEWGRID2_JMPTBL_STRING_AppendN__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_ESQDISP_ComputeS:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_ESQDISP_ComputeS__1:
+              BSR.W          ESQDISP_ComputeScheduleOffsetFor;6100 0000 
+___NEWGRID2_JMPTBL_ESQDISP_ComputeS__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_PARSE_ReadSigned:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_PARSE_ReadSigned__1:
+              BSR.W          PARSE_ReadSignedLongSkipClass3_A;6100 0000 
+___NEWGRID2_JMPTBL_PARSE_ReadSigned__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_CLEANUP_TestEntr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_CLEANUP_TestEntr__1:
+              BSR.W          CLEANUP_TestEntryFlagYAndBit1;6100 0000 
+___NEWGRID2_JMPTBL_CLEANUP_TestEntr__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_IsCurre:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_IsCurre__1:
+              BSR.W          DISPTEXT_IsCurrentLineLast;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_IsCurre__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_IsLastL:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_IsLastL__1:
+              BSR.W          DISPTEXT_IsLastLineSelected;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_IsLastL__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_BEVEL_DrawBevele:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawBevele__1:
+              BSR.W          BEVEL_DrawBeveledFrame   ;6100 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawBevele__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPLIB_FindPrev:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPLIB_FindPrev__1:
+              BSR.W          DISPLIB_FindPreviousValidEntryIn;6100 0000 
+___NEWGRID2_JMPTBL_DISPLIB_FindPrev__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_ESQ_TestBit1Base:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_ESQ_TestBit1Base__1:
+              BSR.W          ESQ_TestBit1Based        ;6100 0000 
+___NEWGRID2_JMPTBL_ESQ_TestBit1Base__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_Measure:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_Measure__1:
+              BSR.W          DISPTEXT_MeasureCurrentLineLengt;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_Measure__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_SetLayo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_SetLayo__1:
+              BSR.W          DISPTEXT_SetLayoutParams ;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_SetLayo__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_DISPTEXT_HasMult:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_HasMult__1:
+              BSR.W          DISPTEXT_HasMultipleLines;6100 0000 
+___NEWGRID2_JMPTBL_DISPTEXT_HasMult__2:
+              RTS                                     ;4e75 
+NEWGRID2_JMPTBL_BEVEL_DrawHorizo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawHorizo__1:
+              BSR.W          BEVEL_DrawHorizontalBevel;6100 0000 
+___NEWGRID2_JMPTBL_BEVEL_DrawHorizo__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           COI_SelectAnimFieldPointer
+              XREF           DISPTEXT_SetCurrentLineIndex
+              XREF           DISPTEXT_LayoutAndAppendToBuffer
+              XREF           DISPTEXT_GetTotalLineCount
+              XREF           TLIBA_FindFirstWildcardMatchInde
+              XREF           DISPTEXT_BuildLayoutForSource
+              XREF           BEVEL_DrawBevelFrameWithTopRight
+              XREF           ESQDISP_GetEntryAuxPointerByMode
+              XREF           BEVEL_DrawVerticalBevel
+              XREF           DISPTEXT_LayoutSourceToLines
+              XREF           CLEANUP_UpdateEntryFlagBytes
+              XREF           COI_RenderClockFormatEntryVarian
+              XREF           ESQDISP_TestEntryBits0And2
+              XREF           DISPTEXT_ComputeVisibleLineCount
+              XREF           DISPTEXT_RenderCurrentLine
+              XREF           COI_ProcessEntrySelectionState
+              XREF           CLEANUP_FormatClockFormatEntry
+              XREF           ESQ_GetHalfHourSlotIndex
+              XREF           STR_SkipClass3Chars
+              XREF           STRING_AppendN
+              XREF           ESQDISP_ComputeScheduleOffsetFor
+              XREF           PARSE_ReadSignedLongSkipClass3_A
+              XREF           CLEANUP_TestEntryFlagYAndBit1
+              XREF           DISPTEXT_IsCurrentLineLast
+              XREF           DISPTEXT_IsLastLineSelected
+              XREF           BEVEL_DrawBeveledFrame
+              XREF           DISPLIB_FindPreviousValidEntryIn
+              XREF           ESQ_TestBit1Based
+              XREF           DISPTEXT_MeasureCurrentLineLengt
+              XREF           DISPTEXT_SetLayoutParams
+              XREF           DISPTEXT_HasMultipleLines
+              XREF           BEVEL_DrawHorizontalBevel
+              XDEF           NEWGRID2_JMPTBL_COI_SelectAnimFi
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_SetCurr
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_LayoutA
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_GetTota
+              XDEF           NEWGRID2_JMPTBL_TLIBA_FindFirstW
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_BuildLa
+              XDEF           NEWGRID2_JMPTBL_BEVEL_DrawBevelF
+              XDEF           NEWGRID2_JMPTBL_ESQDISP_GetEntry
+              XDEF           NEWGRID2_JMPTBL_BEVEL_DrawVertic
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_LayoutS
+              XDEF           NEWGRID2_JMPTBL_CLEANUP_UpdateEn
+              XDEF           NEWGRID2_JMPTBL_COI_RenderClockF
+              XDEF           NEWGRID2_JMPTBL_ESQDISP_TestEntr
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_Compute
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_RenderC
+              XDEF           NEWGRID2_JMPTBL_COI_ProcessEntry
+              XDEF           NEWGRID2_JMPTBL_CLEANUP_FormatCl
+              XDEF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XDEF           NEWGRID2_JMPTBL_STR_SkipClass3Ch
+              XDEF           NEWGRID2_JMPTBL_STRING_AppendN
+              XDEF           NEWGRID2_JMPTBL_ESQDISP_ComputeS
+              XDEF           NEWGRID2_JMPTBL_PARSE_ReadSigned
+              XDEF           NEWGRID2_JMPTBL_CLEANUP_TestEntr
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_IsCurre
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_IsLastL
+              XDEF           NEWGRID2_JMPTBL_BEVEL_DrawBevele
+              XDEF           NEWGRID2_JMPTBL_DISPLIB_FindPrev
+              XDEF           NEWGRID2_JMPTBL_ESQ_TestBit1Base
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_Measure
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_SetLayo
+              XDEF           NEWGRID2_JMPTBL_DISPTEXT_HasMult
+              XDEF           NEWGRID2_JMPTBL_BEVEL_DrawHorizo
+              END

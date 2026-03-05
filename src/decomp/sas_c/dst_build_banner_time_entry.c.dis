@@ -1,0 +1,189 @@
+              SECTION      text,CODE
+__code:
+DST_BuildBannerTimeEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$40,D0                  ;90bc 0000 0040 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$30,A7                  ;9efc 0030 
+              MOVEM.L        D2/D3/D5/D6/D7/A3/A5,-(A7);48e7 3714 
+___DST_BuildBannerTimeEntry__1:
+              MOVE.B         $57(A7),D6               ;1c2f 0057 
+              MOVE.W         $52(A7),D7               ;3e2f 0052 
+              MOVE.L         $5c(A7),A3               ;266f 005c 
+              MOVE.L         $58(A7),A5               ;2a6f 0058 
+              LEA            CLOCK_DaySlotIndex(A4),A0;41ec 0000 
+              LEA            $26(A7),A1               ;43ef 0026 
+              MOVEQ.L        #$4,D0                   ;7004 
+___DST_BuildBannerTimeEntry__2:
+              MOVE.L         (A0)+,(A1)+              ;22d8 
+              DBR.B          D0,___DST_BuildBannerTimeEntry__2;51c8 fffc 
+___DST_BuildBannerTimeEntry__3:
+              MOVE.W         (A0)+,(A1)+              ;32d8 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.B         D6,D5                    ;1a06 
+              CLR.W          $40(A7)                  ;426f 0040 
+              MOVE.W         WDISP_BannerSlotCursor(A4),D0;302c 0000 
+              CMPI.W         #$ff,D0                  ;0c40 00ff 
+              BLT.B          ___DST_BuildBannerTimeEntry__6;6d0c 
+___DST_BuildBannerTimeEntry__4:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D6,D1                    ;1206 
+              CMP.W          D0,D1                    ;b240 
+              BEQ.B          ___DST_BuildBannerTimeEntry__6;6704 
+___DST_BuildBannerTimeEntry__5:
+              BSET           #$0,D5                   ;08c5 0000 
+___DST_BuildBannerTimeEntry__6:
+              MOVEQ.L        #$27,D0                  ;7027 
+              CMP.W          D0,D7                    ;be40 
+              BLT.B          ___DST_BuildBannerTimeEntry__8;6d02 
+___DST_BuildBannerTimeEntry__7:
+              ADDQ.L         #$1,D5                   ;5285 
+___DST_BuildBannerTimeEntry__8:
+              MOVE.W         CLOCK_CacheYear(A4),D0   ;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___DST_BuildBannerTimeEntry__10;6708 
+___DST_BuildBannerTimeEntry__9:
+              MOVE.L         #$16e,D0                 ;203c 0000 016e 
+              BRA.B          ___DST_BuildBannerTimeEntry__11;6006 
+___DST_BuildBannerTimeEntry__10:
+              MOVE.L         #$16d,D0                 ;203c 0000 016d 
+___DST_BuildBannerTimeEntry__11:
+              MOVE.L         D0,$48(A7)               ;2f40 0048 
+              CMP.L          D0,D5                    ;ba80 
+              BLE.B          ___DST_BuildBannerTimeEntry__13;6f02 
+___DST_BuildBannerTimeEntry__12:
+              SUB.L          D0,D5                    ;9a80 
+___DST_BuildBannerTimeEntry__13:
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              SUBQ.L         #$1,D0                   ;5380 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,(A7)                  ;2e80 
+              PEA            ($1e).w                  ;4878 001e 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              SUBQ.L         #$1,D0                   ;5380 
+              ASR.L          #$1,D0                   ;e280 
+              ADDQ.L         #$5,D0                   ;5a80 
+              PEA            ($c).w                   ;4878 000c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.W         D7,D0                    ;3007 
+              EXT.L          D0                       ;48c0 
+              SUBQ.L         #$1,D0                   ;5380 
+              ASR.L          #$1,D0                   ;e280 
+              ADDQ.L         #$5,D0                   ;5a80 
+              PEA            ($18).w                  ;4878 0018 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AG_JMPTBL_MATH_DivS32;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $56(A7),D0               ;302f 0056 
+___DST_BuildBannerTimeEntry__14:
+              MOVE.L         D0,(A7)                  ;2e80 
+              PEA            ($36).w                  ;4878 0036 
+              LEA            $46(A7),A0               ;41ef 0046 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          DATETIME_BuildFromBaseDay;6100 0000 
+              LEA            $28(A7),A7               ;4fef 0028 
+              MOVE.B         ESQ_SecondarySlotModeFlagChar(A4),D1;122c 0000 
+              MOVE.L         D0,$44(A7)               ;2f40 0044 
+              MOVEQ.L        #$59,D0                  ;7059 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___DST_BuildBannerTimeEntry__16;6612 
+___DST_BuildBannerTimeEntry__15:
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         DST_BannerWindowSecondary(A4),-(A7);2f2c 0000 
+              BSR.W          DATETIME_ClassifyValueInRange;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.W         D0,$40(A7)               ;3f40 0040 
+___DST_BuildBannerTimeEntry__16:
+              MOVE.L         $44(A7),-(A7)            ;2f2f 0044 
+              MOVE.L         DST_BannerWindowPrimary(A4),-(A7);2f2c 0000 
+              BSR.W          DATETIME_ClassifyValueInRange;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         ESQ_STR_6(A4),D1         ;122c 0000 
+              MOVEQ.L        #$36,D2                  ;7436 
+              SUB.L          D2,D1                    ;9282 
+              MOVE.W         D0,$24(A7)               ;3f40 0024 
+              MOVEM.W        D1,$22(A7)               ;48af 0002 0022 
+              MOVEQ.L        #$1,D2                   ;7401 
+              CMP.W          D2,D0                    ;b042 
+              BNE.B          ___DST_BuildBannerTimeEntry__18;6604 
+___DST_BuildBannerTimeEntry__17:
+              SUBQ.W         #$1,$22(A7)              ;536f 0022 
+___DST_BuildBannerTimeEntry__18:
+              CMP.W          $40(A7),D2               ;b46f 0040 
+              BNE.B          ___DST_BuildBannerTimeEntry__20;6604 
+___DST_BuildBannerTimeEntry__19:
+              ADDQ.W         #$1,$22(A7)              ;526f 0022 
+___DST_BuildBannerTimeEntry__20:
+              MOVE.W         $22(A7),D1               ;322f 0022 
+              MOVE.W         D1,(A5)                  ;3a81 
+              MOVE.L         A3,D3                    ;260b 
+              BEQ.B          ___DST_BuildBannerTimeEntry__22;674e 
+___DST_BuildBannerTimeEntry__21:
+              SUBQ.W         #$1,D0                   ;5340 
+              SCC            D0,#$700                 ;57c0 
+              MOVEQ.L        #$0,D2                   ;7400 
+              SUB.B          D0,D2                    ;9400 
+              EXT.L          D1                       ;48c1 
+              ADD.L          D2,D1                    ;d282 
+              PEA            ($e10).w                 ;4878 0e10 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D2,$26(A7)               ;2f42 0026 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         $4c(A7),D1               ;222f 004c 
+              ADD.L          D0,D1                    ;d280 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         CLOCK_FormatVariantCode(A4),D0;102c 0000 
+              PEA            ($3c).w                  ;4878 003c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,$4c(A7)               ;2f41 004c 
+              BSR.W          GROUP_AG_JMPTBL_MATH_Mulu32;6100 0000 
+              ADD.L          D0,$4c(A7)               ;d1af 004c 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          DATETIME_SecondsToStruct ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.W         $40(A7),D0               ;302f 0040 
+              MOVE.W         D0,$e(A3)                ;3740 000e 
+___DST_BuildBannerTimeEntry__22:
+              MOVE.W         $22(A7),D0               ;302f 0022 
+              EXT.L          D0                       ;48c0 
+___DST_BuildBannerTimeEntry__23:
+___DST_BuildBannerTimeEntry__24:
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A3/A5;4cdf 28ec 
+              ADD.W          #$30,A7                  ;defc 0030 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CLOCK_DaySlotIndex
+              XREF           WDISP_BannerSlotCursor
+              XREF           CLOCK_CacheYear
+              XREF           DATETIME_IsLeapYear
+              XREF           GROUP_AG_JMPTBL_MATH_DivS32
+              XREF           GROUP_AG_JMPTBL_MATH_Mulu32
+              XREF           DATETIME_BuildFromBaseDay
+              XREF           ESQ_SecondarySlotModeFlagChar
+              XREF           DST_BannerWindowSecondary
+              XREF           DATETIME_ClassifyValueInRange
+              XREF           DST_BannerWindowPrimary
+              XREF           ESQ_STR_6
+              XREF           CLOCK_FormatVariantCode
+              XREF           DATETIME_SecondsToStruct
+              XDEF           DST_BuildBannerTimeEntry
+              END

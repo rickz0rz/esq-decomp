@@ -1,0 +1,88 @@
+              SECTION      text,CODE
+__code:
+GROUP_AE_JMPTBL_TLIBA_FindFirstW:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_TLIBA_FindFirstW__1:
+              BSR.W          TLIBA_FindFirstWildcardMatchInde;6100 0000 
+___GROUP_AE_JMPTBL_TLIBA_FindFirstW__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AE_JMPTBL_SCRIPT_BuildToke:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_SCRIPT_BuildToke__1:
+              BSR.W          SCRIPT_BuildTokenIndexMap;6100 0000 
+___GROUP_AE_JMPTBL_SCRIPT_BuildToke__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_ESQDISP_GetEntry:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_ESQDISP_GetEntry__1:
+              BSR.W          ESQDISP_GetEntryAuxPointerByMode;6100 0000 
+___GROUP_AE_JMPTBL_ESQDISP_GetEntry__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_LADFUNC_ParseHex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_LADFUNC_ParseHex__1:
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+___GROUP_AE_JMPTBL_LADFUNC_ParseHex__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_SCRIPT_Deallocat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_SCRIPT_Deallocat__1:
+              BSR.W          SCRIPT_DeallocateBufferArray;6100 0000 
+___GROUP_AE_JMPTBL_SCRIPT_Deallocat__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_WDISP_SPrintf:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_WDISP_SPrintf__1:
+              BSR.W          WDISP_SPrintf            ;6100 0000 
+___GROUP_AE_JMPTBL_WDISP_SPrintf__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_SCRIPT_AllocateB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_SCRIPT_AllocateB__1:
+              BSR.W          SCRIPT_AllocateBufferArray;6100 0000 
+___GROUP_AE_JMPTBL_SCRIPT_AllocateB__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_TEXTDISP_Compute:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_TEXTDISP_Compute__1:
+              BSR.W          TEXTDISP_ComputeTimeOffset;6100 0000 
+___GROUP_AE_JMPTBL_TEXTDISP_Compute__2:
+              RTS                                     ;4e75 
+GROUP_AE_JMPTBL_ESQPARS_ReplaceO:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AE_JMPTBL_ESQPARS_ReplaceO__1:
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+___GROUP_AE_JMPTBL_ESQPARS_ReplaceO__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TLIBA_FindFirstWildcardMatchInde
+              XREF           SCRIPT_BuildTokenIndexMap
+              XREF           ESQDISP_GetEntryAuxPointerByMode
+              XREF           LADFUNC_ParseHexDigit
+              XREF           SCRIPT_DeallocateBufferArray
+              XREF           WDISP_SPrintf
+              XREF           SCRIPT_AllocateBufferArray
+              XREF           TEXTDISP_ComputeTimeOffset
+              XREF           ESQPARS_ReplaceOwnedString
+              XDEF           GROUP_AE_JMPTBL_TLIBA_FindFirstW
+              XDEF           GROUP_AE_JMPTBL_SCRIPT_BuildToke
+              XDEF           GROUP_AE_JMPTBL_ESQDISP_GetEntry
+              XDEF           GROUP_AE_JMPTBL_LADFUNC_ParseHex
+              XDEF           GROUP_AE_JMPTBL_SCRIPT_Deallocat
+              XDEF           GROUP_AE_JMPTBL_WDISP_SPrintf
+              XDEF           GROUP_AE_JMPTBL_SCRIPT_AllocateB
+              XDEF           GROUP_AE_JMPTBL_TEXTDISP_Compute
+              XDEF           GROUP_AE_JMPTBL_ESQPARS_ReplaceO
+              END

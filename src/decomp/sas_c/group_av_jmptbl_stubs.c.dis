@@ -1,0 +1,52 @@
+              SECTION      text,CODE
+__code:
+GROUP_AV_JMPTBL_ALLOCATE_AllocAn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AV_JMPTBL_ALLOCATE_AllocAn__1:
+              BSR.W          ALLOCATE_AllocAndInitializeIOStd;6100 0000 
+___GROUP_AV_JMPTBL_ALLOCATE_AllocAn__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AV_JMPTBL_SIGNAL_CreateMsg:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AV_JMPTBL_SIGNAL_CreateMsg__1:
+              BSR.W          SIGNAL_CreateMsgPortWithSignal;6100 0000 
+___GROUP_AV_JMPTBL_SIGNAL_CreateMsg__2:
+              RTS                                     ;4e75 
+GROUP_AV_JMPTBL_DISKIO_ProbeDriv:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AV_JMPTBL_DISKIO_ProbeDriv__1:
+              BSR.W          DISKIO_ProbeDrivesAndAssignPaths;6100 0000 
+___GROUP_AV_JMPTBL_DISKIO_ProbeDriv__2:
+              RTS                                     ;4e75 
+GROUP_AV_JMPTBL_ESQ_InvokeGcomma:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AV_JMPTBL_ESQ_InvokeGcomma__1:
+              BSR.W          ESQ_InvokeGcommandInit   ;6100 0000 
+___GROUP_AV_JMPTBL_ESQ_InvokeGcomma__2:
+              RTS                                     ;4e75 
+GROUP_AV_JMPTBL_EXEC_CallVector_:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AV_JMPTBL_EXEC_CallVector___1:
+              BSR.W          EXEC_CallVector_48       ;6100 0000 
+___GROUP_AV_JMPTBL_EXEC_CallVector___2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ALLOCATE_AllocAndInitializeIOStd
+              XREF           SIGNAL_CreateMsgPortWithSignal
+              XREF           DISKIO_ProbeDrivesAndAssignPaths
+              XREF           ESQ_InvokeGcommandInit
+              XREF           EXEC_CallVector_48
+              XDEF           GROUP_AV_JMPTBL_ALLOCATE_AllocAn
+              XDEF           GROUP_AV_JMPTBL_SIGNAL_CreateMsg
+              XDEF           GROUP_AV_JMPTBL_DISKIO_ProbeDriv
+              XDEF           GROUP_AV_JMPTBL_ESQ_InvokeGcomma
+              XDEF           GROUP_AV_JMPTBL_EXEC_CallVector_
+              END

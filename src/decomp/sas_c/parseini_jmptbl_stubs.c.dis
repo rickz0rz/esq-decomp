@@ -1,0 +1,241 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_JMPTBL_STRING_CompareNo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_STRING_CompareNo__1:
+              BSR.W          STRING_CompareNoCase     ;6100 0000 
+___PARSEINI_JMPTBL_STRING_CompareNo__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+PARSEINI_JMPTBL_ED1_WaitForFlagA:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ED1_WaitForFlagA__1:
+              BSR.W          ED1_WaitForFlagAndClearBit0;6100 0000 
+___PARSEINI_JMPTBL_ED1_WaitForFlagA__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_DISKIO2_ParseIni:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_DISKIO2_ParseIni__1:
+              BSR.W          DISKIO2_ParseIniFileFromDisk;6100 0000 
+___PARSEINI_JMPTBL_DISKIO2_ParseIni__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_STR_FindCharPtr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_STR_FindCharPtr__1:
+              BSR.W          STR_FindCharPtr          ;6100 0000 
+___PARSEINI_JMPTBL_STR_FindCharPtr__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_HANDLE_OpenWithM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_HANDLE_OpenWithM__1:
+              BSR.W          HANDLE_OpenWithMode      ;6100 0000 
+___PARSEINI_JMPTBL_HANDLE_OpenWithM__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ESQIFF_QueueIffB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ESQIFF_QueueIffB__1:
+              BSR.W          ESQIFF_QueueIffBrushLoad ;6100 0000 
+___PARSEINI_JMPTBL_ESQIFF_QueueIffB__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ESQIFF_HandleBru:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ESQIFF_HandleBru__1:
+              BSR.W          ESQIFF_HandleBrushIniReloadHotke;6100 0000 
+___PARSEINI_JMPTBL_ESQIFF_HandleBru__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_BRUSH_FreeBrushR:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_BRUSH_FreeBrushR__1:
+              BSR.W          BRUSH_FreeBrushResources ;6100 0000 
+___PARSEINI_JMPTBL_BRUSH_FreeBrushR__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ESQFUNC_RebuildP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ESQFUNC_RebuildP__1:
+              BSR.W          ESQFUNC_RebuildPwBrushListFromTa;6100 0000 
+___PARSEINI_JMPTBL_ESQFUNC_RebuildP__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_GCOMMAND_FindPat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_GCOMMAND_FindPat__1:
+              BSR.W          GCOMMAND_FindPathSeparator;6100 0000 
+___PARSEINI_JMPTBL_GCOMMAND_FindPat__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_DISKIO_ConsumeLi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_DISKIO_ConsumeLi__1:
+              BSR.W          DISKIO_ConsumeLineFromWorkBuffer;6100 0000 
+___PARSEINI_JMPTBL_DISKIO_ConsumeLi__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ED1_DrawDiagnost:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ED1_DrawDiagnost__1:
+              BSR.W          ED1_DrawDiagnosticsScreen;6100 0000 
+___PARSEINI_JMPTBL_ED1_DrawDiagnost__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_BRUSH_FreeBrushL:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_BRUSH_FreeBrushL__1:
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+___PARSEINI_JMPTBL_BRUSH_FreeBrushL__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_GCOMMAND_Validat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_GCOMMAND_Validat__1:
+              BSR.W          GCOMMAND_ValidatePresetTable;6100 0000 
+___PARSEINI_JMPTBL_GCOMMAND_Validat__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_BRUSH_AllocBrush:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_BRUSH_AllocBrush__1:
+              BSR.W          BRUSH_AllocBrushNode     ;6100 0000 
+___PARSEINI_JMPTBL_BRUSH_AllocBrush__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_UNKNOWN36_Finali:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_UNKNOWN36_Finali__1:
+              BSR.W          UNKNOWN36_FinalizeRequest;6100 0000 
+___PARSEINI_JMPTBL_UNKNOWN36_Finali__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_GCOMMAND_InitPre:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_GCOMMAND_InitPre__1:
+              BSR.W          GCOMMAND_InitPresetTableFromPale;6100 0000 
+___PARSEINI_JMPTBL_GCOMMAND_InitPre__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_STRING_AppendAtN:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_STRING_AppendAtN__1:
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+___PARSEINI_JMPTBL_STRING_AppendAtN__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_DISKIO_LoadFileT:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_DISKIO_LoadFileT__1:
+              BSR.W          DISKIO_LoadFileToWorkBuffer;6100 0000 
+___PARSEINI_JMPTBL_DISKIO_LoadFileT__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_WDISP_SPrintf:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_WDISP_SPrintf__1:
+              BSR.W          WDISP_SPrintf            ;6100 0000 
+___PARSEINI_JMPTBL_WDISP_SPrintf__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_STREAM_ReadLineW:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_STREAM_ReadLineW__1:
+              BSR.W          STREAM_ReadLineWithLimit ;6100 0000 
+___PARSEINI_JMPTBL_STREAM_ReadLineW__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_STR_FindAnyCharP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_STR_FindAnyCharP__1:
+              BSR.W          STR_FindAnyCharPtr       ;6100 0000 
+___PARSEINI_JMPTBL_STR_FindAnyCharP__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ED1_ExitEscMenu:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ED1_ExitEscMenu__1:
+              BSR.W          ED1_ExitEscMenu          ;6100 0000 
+___PARSEINI_JMPTBL_ED1_ExitEscMenu__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ESQPARS_ReplaceO:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ESQPARS_ReplaceO__1:
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+___PARSEINI_JMPTBL_ESQPARS_ReplaceO__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ED1_EnterEscMenu:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ED1_EnterEscMenu__1:
+              BSR.W          ED1_EnterEscMenu         ;6100 0000 
+___PARSEINI_JMPTBL_ED1_EnterEscMenu__2:
+              RTS                                     ;4e75 
+PARSEINI_JMPTBL_ESQFUNC_DrawEscM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARSEINI_JMPTBL_ESQFUNC_DrawEscM__1:
+              BSR.W          ESQFUNC_DrawEscMenuVersion;6100 0000 
+___PARSEINI_JMPTBL_ESQFUNC_DrawEscM__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STRING_CompareNoCase
+              XREF           ED1_WaitForFlagAndClearBit0
+              XREF           DISKIO2_ParseIniFileFromDisk
+              XREF           STR_FindCharPtr
+              XREF           HANDLE_OpenWithMode
+              XREF           ESQIFF_QueueIffBrushLoad
+              XREF           ESQIFF_HandleBrushIniReloadHotke
+              XREF           BRUSH_FreeBrushResources
+              XREF           ESQFUNC_RebuildPwBrushListFromTa
+              XREF           GCOMMAND_FindPathSeparator
+              XREF           DISKIO_ConsumeLineFromWorkBuffer
+              XREF           ED1_DrawDiagnosticsScreen
+              XREF           BRUSH_FreeBrushList
+              XREF           GCOMMAND_ValidatePresetTable
+              XREF           BRUSH_AllocBrushNode
+              XREF           UNKNOWN36_FinalizeRequest
+              XREF           GCOMMAND_InitPresetTableFromPale
+              XREF           STRING_AppendAtNull
+              XREF           DISKIO_LoadFileToWorkBuffer
+              XREF           WDISP_SPrintf
+              XREF           STREAM_ReadLineWithLimit
+              XREF           STR_FindAnyCharPtr
+              XREF           ED1_ExitEscMenu
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           ED1_EnterEscMenu
+              XREF           ESQFUNC_DrawEscMenuVersion
+              XDEF           PARSEINI_JMPTBL_STRING_CompareNo
+              XDEF           PARSEINI_JMPTBL_ED1_WaitForFlagA
+              XDEF           PARSEINI_JMPTBL_DISKIO2_ParseIni
+              XDEF           PARSEINI_JMPTBL_STR_FindCharPtr
+              XDEF           PARSEINI_JMPTBL_HANDLE_OpenWithM
+              XDEF           PARSEINI_JMPTBL_ESQIFF_QueueIffB
+              XDEF           PARSEINI_JMPTBL_ESQIFF_HandleBru
+              XDEF           PARSEINI_JMPTBL_BRUSH_FreeBrushR
+              XDEF           PARSEINI_JMPTBL_ESQFUNC_RebuildP
+              XDEF           PARSEINI_JMPTBL_GCOMMAND_FindPat
+              XDEF           PARSEINI_JMPTBL_DISKIO_ConsumeLi
+              XDEF           PARSEINI_JMPTBL_ED1_DrawDiagnost
+              XDEF           PARSEINI_JMPTBL_BRUSH_FreeBrushL
+              XDEF           PARSEINI_JMPTBL_GCOMMAND_Validat
+              XDEF           PARSEINI_JMPTBL_BRUSH_AllocBrush
+              XDEF           PARSEINI_JMPTBL_UNKNOWN36_Finali
+              XDEF           PARSEINI_JMPTBL_GCOMMAND_InitPre
+              XDEF           PARSEINI_JMPTBL_STRING_AppendAtN
+              XDEF           PARSEINI_JMPTBL_DISKIO_LoadFileT
+              XDEF           PARSEINI_JMPTBL_WDISP_SPrintf
+              XDEF           PARSEINI_JMPTBL_STREAM_ReadLineW
+              XDEF           PARSEINI_JMPTBL_STR_FindAnyCharP
+              XDEF           PARSEINI_JMPTBL_ED1_ExitEscMenu
+              XDEF           PARSEINI_JMPTBL_ESQPARS_ReplaceO
+              XDEF           PARSEINI_JMPTBL_ED1_EnterEscMenu
+              XDEF           PARSEINI_JMPTBL_ESQFUNC_DrawEscM
+              END

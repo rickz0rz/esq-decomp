@@ -1,0 +1,97 @@
+              SECTION      text,CODE
+__code:
+GROUP_AB_JMPTBL_ESQPARS_RemoveGr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_ESQPARS_RemoveGr__1:
+              BSR.W          ESQPARS_RemoveGroupEntryAndRelea;6100 0000 
+___GROUP_AB_JMPTBL_ESQPARS_RemoveGr__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AB_JMPTBL_ESQFUNC_FreeLine:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_ESQFUNC_FreeLine__1:
+              BSR.W          ESQFUNC_FreeLineTextBuffers;6100 0000 
+___GROUP_AB_JMPTBL_ESQFUNC_FreeLine__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_ESQIFF_Deallocat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_ESQIFF_Deallocat__1:
+              BSR.W          ESQIFF_DeallocateAdsAndLogoLstDa;6100 0000 
+___GROUP_AB_JMPTBL_ESQIFF_Deallocat__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_LADFUNC_FreeBann:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_LADFUNC_FreeBann__1:
+              BSR.W          LADFUNC_FreeBannerRectEntries;6100 0000 
+___GROUP_AB_JMPTBL_LADFUNC_FreeBann__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_UNKNOWN2A_Stub0__1:
+              BSR.W          UNKNOWN2A_Stub0          ;6100 0000 
+___GROUP_AB_JMPTBL_UNKNOWN2A_Stub0__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_NEWGRID_Shutdown:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_NEWGRID_Shutdown__1:
+              BSR.W          NEWGRID_ShutdownGridResources;6100 0000 
+___GROUP_AB_JMPTBL_NEWGRID_Shutdown__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_LOCAVAIL_FreeRes:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_LOCAVAIL_FreeRes__1:
+              BSR.W          LOCAVAIL_FreeResourceChain;6100 0000 
+___GROUP_AB_JMPTBL_LOCAVAIL_FreeRes__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_GRAPHICS_FreeRas:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_GRAPHICS_FreeRas__1:
+              BSR.W          GRAPHICS_FreeRaster      ;6100 0000 
+___GROUP_AB_JMPTBL_GRAPHICS_FreeRas__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_IOSTDREQ_Free:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_IOSTDREQ_Free__1:
+              BSR.W          IOSTDREQ_Free            ;6100 0000 
+___GROUP_AB_JMPTBL_IOSTDREQ_Free__2:
+              RTS                                     ;4e75 
+GROUP_AB_JMPTBL_ESQIFF2_ClearLin:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AB_JMPTBL_ESQIFF2_ClearLin__1:
+              BSR.W          ESQIFF2_ClearLineHeadTailByMode;6100 0000 
+___GROUP_AB_JMPTBL_ESQIFF2_ClearLin__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS_RemoveGroupEntryAndRelea
+              XREF           ESQFUNC_FreeLineTextBuffers
+              XREF           ESQIFF_DeallocateAdsAndLogoLstDa
+              XREF           LADFUNC_FreeBannerRectEntries
+              XREF           UNKNOWN2A_Stub0
+              XREF           NEWGRID_ShutdownGridResources
+              XREF           LOCAVAIL_FreeResourceChain
+              XREF           GRAPHICS_FreeRaster
+              XREF           IOSTDREQ_Free
+              XREF           ESQIFF2_ClearLineHeadTailByMode
+              XDEF           GROUP_AB_JMPTBL_ESQPARS_RemoveGr
+              XDEF           GROUP_AB_JMPTBL_ESQFUNC_FreeLine
+              XDEF           GROUP_AB_JMPTBL_ESQIFF_Deallocat
+              XDEF           GROUP_AB_JMPTBL_LADFUNC_FreeBann
+              XDEF           GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
+              XDEF           GROUP_AB_JMPTBL_NEWGRID_Shutdown
+              XDEF           GROUP_AB_JMPTBL_LOCAVAIL_FreeRes
+              XDEF           GROUP_AB_JMPTBL_GRAPHICS_FreeRas
+              XDEF           GROUP_AB_JMPTBL_IOSTDREQ_Free
+              XDEF           GROUP_AB_JMPTBL_ESQIFF2_ClearLin
+              END

@@ -1,0 +1,104 @@
+              SECTION      text,CODE
+__code:
+DST_FormatBannerDateTime:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D2/D3/D4/D5/A2/A3/A5/A6,-(A7);48e7 3c36 
+___DST_FormatBannerDateTime__1:
+              MOVE.L         $38(A7),A3               ;266f 0038 
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
+              MOVE.W         (A3),D0                  ;3013 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            Global_JMPTBL_SHORT_DAYS_OF_WEEK(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A2           ;2470 1800 
+              MOVE.W         $2(A3),D0                ;302b 0002 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            Global_JMPTBL_SHORT_MONTHS(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              TST.W          $12(A3)                  ;4a6b 0012 
+              BEQ.B          ___DST_FormatBannerDateTime__3;6706 
+___DST_FormatBannerDateTime__2:
+              LEA            DST_TAG_PM(A4),A1        ;43ec 0000 
+              BRA.B          ___DST_FormatBannerDateTime__4;6004 
+___DST_FormatBannerDateTime__3:
+              LEA            DST_TAG_AM(A4),A1        ;43ec 0000 
+___DST_FormatBannerDateTime__4:
+              MOVE.L         A1,$28(A7)               ;2f49 0028 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.W          $e(A3),D0                ;b06b 000e 
+              BNE.B          ___DST_FormatBannerDateTime__6;6606 
+___DST_FormatBannerDateTime__5:
+              LEA            DST_TAG_DST(A4),A6       ;4dec 0000 
+              BRA.B          ___DST_FormatBannerDateTime__7;6004 
+___DST_FormatBannerDateTime__6:
+              LEA            DST_TAG_STD(A4),A6       ;4dec 0000 
+___DST_FormatBannerDateTime__7:
+              MOVE.L         A6,$24(A7)               ;2f4e 0024 
+              TST.W          $14(A3)                  ;4a6b 0014 
+              BEQ.B          ___DST_FormatBannerDateTime__9;6706 
+___DST_FormatBannerDateTime__8:
+              LEA            DST_STR_LEAP_YEAR(A4),A6 ;4dec 0000 
+              BRA.B          ___DST_FormatBannerDateTime__10;6004 
+___DST_FormatBannerDateTime__9:
+              LEA            DST_STR_NORM_YEAR(A4),A6 ;4dec 0000 
+___DST_FormatBannerDateTime__10:
+              MOVE.W         $4(A3),D0                ;302b 0004 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         $6(A3),D1                ;322b 0006 
+              EXT.L          D1                       ;48c1 
+              MOVE.W         $10(A3),D2               ;342b 0010 
+              EXT.L          D2                       ;48c2 
+              MOVE.W         $8(A3),D3                ;362b 0008 
+              EXT.L          D3                       ;48c3 
+              MOVE.W         $a(A3),D4                ;382b 000a 
+              EXT.L          D4                       ;48c4 
+              MOVE.W         $c(A3),D5                ;3a2b 000c 
+              EXT.L          D5                       ;48c5 
+              MOVE.L         A6,-(A7)                 ;2f0e 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            DST_FMT_PCT_S_COLON_PCT_S_PCT_S_(A4);486c 0000 
+              MOVE.L         A6,$54(A7)               ;2f4e 0054 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              LEA            $34(A7),A7               ;4fef 0034 
+___DST_FormatBannerDateTime__11:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/A2/A3/A5/A6;4cdf 6c3c 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_JMPTBL_SHORT_DAYS_OF_WEEK
+              XREF           Global_JMPTBL_SHORT_MONTHS
+              XREF           DST_TAG_PM
+              XREF           DST_TAG_AM
+              XREF           DST_TAG_DST
+              XREF           DST_TAG_STD
+              XREF           DST_STR_LEAP_YEAR
+              XREF           DST_STR_NORM_YEAR
+              XREF           DST_FMT_PCT_S_COLON_PCT_S_PCT_S_
+              XREF           GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW
+              XDEF           DST_FormatBannerDateTime
+              END

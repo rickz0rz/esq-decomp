@@ -1,0 +1,52 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_JMPTBL_NEWGRID_ShouldOp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP_JMPTBL_NEWGRID_ShouldOp__1:
+              BSR.W          NEWGRID_ShouldOpenEditor ;6100 0000 
+___TEXTDISP_JMPTBL_NEWGRID_ShouldOp__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+TEXTDISP_JMPTBL_ESQDISP_TestEntr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP_JMPTBL_ESQDISP_TestEntr__1:
+              BSR.W          ESQDISP_TestEntryGridEligibility;6100 0000 
+___TEXTDISP_JMPTBL_ESQDISP_TestEntr__2:
+              RTS                                     ;4e75 
+TEXTDISP_JMPTBL_ESQIFF_RunCopper:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP_JMPTBL_ESQIFF_RunCopper__1:
+              BSR.W          ESQIFF_RunCopperRiseTransition;6100 0000 
+___TEXTDISP_JMPTBL_ESQIFF_RunCopper__2:
+              RTS                                     ;4e75 
+TEXTDISP_JMPTBL_CLEANUP_BuildAli:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP_JMPTBL_CLEANUP_BuildAli__1:
+              BSR.W          CLEANUP_BuildAlignedStatusLine;6100 0000 
+___TEXTDISP_JMPTBL_CLEANUP_BuildAli__2:
+              RTS                                     ;4e75 
+TEXTDISP_JMPTBL_CLEANUP_DrawInse:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TEXTDISP_JMPTBL_CLEANUP_DrawInse__1:
+              BSR.W          CLEANUP_DrawInsetRectFrame;6100 0000 
+___TEXTDISP_JMPTBL_CLEANUP_DrawInse__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_ShouldOpenEditor
+              XREF           ESQDISP_TestEntryGridEligibility
+              XREF           ESQIFF_RunCopperRiseTransition
+              XREF           CLEANUP_BuildAlignedStatusLine
+              XREF           CLEANUP_DrawInsetRectFrame
+              XDEF           TEXTDISP_JMPTBL_NEWGRID_ShouldOp
+              XDEF           TEXTDISP_JMPTBL_ESQDISP_TestEntr
+              XDEF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XDEF           TEXTDISP_JMPTBL_CLEANUP_BuildAli
+              XDEF           TEXTDISP_JMPTBL_CLEANUP_DrawInse
+              END

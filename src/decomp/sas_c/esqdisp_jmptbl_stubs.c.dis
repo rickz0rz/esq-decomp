@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+ESQDISP_JMPTBL_NEWGRID_ProcessGr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQDISP_JMPTBL_NEWGRID_ProcessGr__1:
+              BSR.W          NEWGRID_ProcessGridMessages;6100 0000 
+___ESQDISP_JMPTBL_NEWGRID_ProcessGr__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQDISP_JMPTBL_GRAPHICS_AllocRas:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQDISP_JMPTBL_GRAPHICS_AllocRas__1:
+              BSR.W          GRAPHICS_AllocRaster     ;6100 0000 
+___ESQDISP_JMPTBL_GRAPHICS_AllocRas__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_ProcessGridMessages
+              XREF           GRAPHICS_AllocRaster
+              XDEF           ESQDISP_JMPTBL_NEWGRID_ProcessGr
+              XDEF           ESQDISP_JMPTBL_GRAPHICS_AllocRas
+              END

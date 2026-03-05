@@ -1,0 +1,21 @@
+              SECTION      text,CODE
+__code:
+ESQ_SetCopperEffect_Default:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_SetCopperEffect_Default__1:
+              PEA            ($3f).w                  ;4878 003f 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQ_SetCopperEffectParams;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQ_SetCopperEffect_Default__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_SetCopperEffectParams
+              XDEF           ESQ_SetCopperEffect_Default
+              END

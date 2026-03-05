@@ -1,0 +1,151 @@
+              SECTION      text,CODE
+__code:
+GROUP_AD_JMPTBL_DATETIME_AdjustM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_DATETIME_AdjustM__1:
+              BSR.W          DATETIME_AdjustMonthIndex;6100 0000 
+___GROUP_AD_JMPTBL_DATETIME_AdjustM__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AD_JMPTBL_DATETIME_Normali:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_DATETIME_Normali__1:
+              BSR.W          DATETIME_NormalizeMonthRange;6100 0000 
+___GROUP_AD_JMPTBL_DATETIME_Normali__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_DST_ComputeBanne:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_DST_ComputeBanne__1:
+              BSR.W          DST_ComputeBannerIndex   ;6100 0000 
+___GROUP_AD_JMPTBL_DST_ComputeBanne__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_ESQFUNC_SelectAn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_ESQFUNC_SelectAn__1:
+              BSR.W          ESQFUNC_SelectAndApplyBrushForCu;6100 0000 
+___GROUP_AD_JMPTBL_ESQFUNC_SelectAn__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_ESQIFF_RunCopper:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_ESQIFF_RunCopper__1:
+              BSR.W          ESQIFF_RunCopperDropTransition;6100 0000 
+___GROUP_AD_JMPTBL_ESQIFF_RunCopper__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_GRAPHICS_BltBitM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_GRAPHICS_BltBitM__1:
+              BSR.W          GRAPHICS_BltBitMapRastPort;6100 0000 
+___GROUP_AD_JMPTBL_GRAPHICS_BltBitM__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_SCRIPT_UpdateSer:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_SCRIPT_UpdateSer__1:
+              BSR.W          SCRIPT_UpdateSerialShadowFromCtr;6100 0000 
+___GROUP_AD_JMPTBL_SCRIPT_UpdateSer__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TEXTDISP_BuildCh:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_BuildCh__1:
+              BSR.W          TEXTDISP_BuildChannelLabel;6100 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_BuildCh__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TEXTDISP_BuildEn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_BuildEn__1:
+              BSR.W          TEXTDISP_BuildEntryShortName;6100 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_BuildEn__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TEXTDISP_DrawCha:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_DrawCha__1:
+              BSR.W          TEXTDISP_DrawChannelBanner;6100 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_DrawCha__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TEXTDISP_DrawIns:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_DrawIns__1:
+              BSR.W          TEXTDISP_DrawInsetRectFrame;6100 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_DrawIns__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TEXTDISP_FormatE:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_FormatE__1:
+              BSR.W          TEXTDISP_FormatEntryTime ;6100 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_FormatE__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TEXTDISP_TrimTex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_TrimTex__1:
+              BSR.W          TEXTDISP_TrimTextToPixelWidth;6100 0000 
+___GROUP_AD_JMPTBL_TEXTDISP_TrimTex__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TLIBA1_BuildCloc:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TLIBA1_BuildCloc__1:
+              BSR.W          TLIBA1_BuildClockFormatEntryIfVi;6100 0000 
+___GROUP_AD_JMPTBL_TLIBA1_BuildCloc__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TLIBA3_BuildDisp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TLIBA3_BuildDisp__1:
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+___GROUP_AD_JMPTBL_TLIBA3_BuildDisp__2:
+              RTS                                     ;4e75 
+GROUP_AD_JMPTBL_TLIBA3_GetViewMo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AD_JMPTBL_TLIBA3_GetViewMo__1:
+              BSR.W          TLIBA3_GetViewModeHeight ;6100 0000 
+___GROUP_AD_JMPTBL_TLIBA3_GetViewMo__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DATETIME_AdjustMonthIndex
+              XREF           DATETIME_NormalizeMonthRange
+              XREF           DST_ComputeBannerIndex
+              XREF           ESQFUNC_SelectAndApplyBrushForCu
+              XREF           ESQIFF_RunCopperDropTransition
+              XREF           GRAPHICS_BltBitMapRastPort
+              XREF           SCRIPT_UpdateSerialShadowFromCtr
+              XREF           TEXTDISP_BuildChannelLabel
+              XREF           TEXTDISP_BuildEntryShortName
+              XREF           TEXTDISP_DrawChannelBanner
+              XREF           TEXTDISP_DrawInsetRectFrame
+              XREF           TEXTDISP_FormatEntryTime
+              XREF           TEXTDISP_TrimTextToPixelWidth
+              XREF           TLIBA1_BuildClockFormatEntryIfVi
+              XREF           TLIBA3_BuildDisplayContextForVie
+              XREF           TLIBA3_GetViewModeHeight
+              XDEF           GROUP_AD_JMPTBL_DATETIME_AdjustM
+              XDEF           GROUP_AD_JMPTBL_DATETIME_Normali
+              XDEF           GROUP_AD_JMPTBL_DST_ComputeBanne
+              XDEF           GROUP_AD_JMPTBL_ESQFUNC_SelectAn
+              XDEF           GROUP_AD_JMPTBL_ESQIFF_RunCopper
+              XDEF           GROUP_AD_JMPTBL_GRAPHICS_BltBitM
+              XDEF           GROUP_AD_JMPTBL_SCRIPT_UpdateSer
+              XDEF           GROUP_AD_JMPTBL_TEXTDISP_BuildCh
+              XDEF           GROUP_AD_JMPTBL_TEXTDISP_BuildEn
+              XDEF           GROUP_AD_JMPTBL_TEXTDISP_DrawCha
+              XDEF           GROUP_AD_JMPTBL_TEXTDISP_DrawIns
+              XDEF           GROUP_AD_JMPTBL_TEXTDISP_FormatE
+              XDEF           GROUP_AD_JMPTBL_TEXTDISP_TrimTex
+              XDEF           GROUP_AD_JMPTBL_TLIBA1_BuildCloc
+              XDEF           GROUP_AD_JMPTBL_TLIBA3_BuildDisp
+              XDEF           GROUP_AD_JMPTBL_TLIBA3_GetViewMo
+              END

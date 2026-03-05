@@ -7,7 +7,7 @@ function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t
   if(l~/^(JSR|BSR(\.W)?) _LVOREMPORT(\(A[0-7]\))?$/) rem=1
   if(l~/^MOVE\.B #\$?FF,[0-9A-F\$]+\(A[0-7]\)$/ || l~/^MOVE\.B #-1,[0-9A-F\$]+\(A[0-7]\)$/ || l~/^S(CC|T|F|NE|EQ) \$8\(A[0-7]\)$/) f8=1
   if(l~/^MOVE\.L #\$?FFFFFFFF,(20|\$14)\(A[0-7]\)$/ || l~/^MOVE\.L #-1,(20|\$14)\(A[0-7]\)$/ || l~/^MOVE\.L D[0-7],(20|\$14)\(A[0-7]\)$/) f20=1
-  if(l~/^MOVE\.B (15|\$F)\(A[0-7]\),D0$/ || l~/^AND\.L #255,D0$/) sig=1
+  if(l~/^MOVE\.B [0-9A-F\$]+\(A[0-7]\),D0$/ || l~/^MOVE\.B [0-9A-F\$]+\(A[0-7]\),D1$/ || l~/^AND\.L #255,D0$/) sig=1
   if(l~/^(JSR|BSR(\.W)?) _LVOFREESIGNAL(\(A[0-7]\))?$/) fsig=1
   if(l~/^MOVEQ(\.L)? #34,D0$/ || l~/^PEA \(\$22\)\.W$/ || l~/^MOVE\.L #34,D0$/) sz=1
   if(l~/^(JSR|BSR(\.W)?) _LVOFREEMEM(\(A[0-7]\))?$/) fmem=1

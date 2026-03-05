@@ -1,0 +1,34 @@
+              SECTION      text,CODE
+__code:
+WDISP_SPrintf:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___WDISP_SPrintf__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              CLR.L          Global_PrintfByteCount(A4);42ac 0000 
+              MOVE.L         A5,Global_PrintfBufferPtr(A4);294d 0000 
+              PEA            $10(A7)                  ;486f 0010 
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              PEA            UNKNOWN10_PrintfPutcToBuffer(PC);487a 0000 
+              BSR.W          WDISP_FormatWithCallback ;6100 0000 
+              MOVE.L         Global_PrintfBufferPtr(A4),A0;206c 0000 
+              CLR.B          (A0)                     ;4210 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         Global_PrintfByteCount(A4),D0;202c 0000 
+___WDISP_SPrintf__2:
+___WDISP_SPrintf__3:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_PrintfByteCount
+              XREF           Global_PrintfBufferPtr
+              XREF           UNKNOWN10_PrintfPutcToBuffer
+              XREF           WDISP_FormatWithCallback
+              XDEF           WDISP_SPrintf
+              END

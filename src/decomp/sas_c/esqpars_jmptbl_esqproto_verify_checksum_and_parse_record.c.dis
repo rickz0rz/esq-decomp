@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+ESQPARS_JMPTBL_ESQPROTO_VerifyCh:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__1:
+              BSR.W          ESQPROTO_VerifyChecksumAndParseR;6100 0000 
+___ESQPARS_JMPTBL_ESQPROTO_VerifyCh__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPROTO_VerifyChecksumAndParseR
+              XDEF           ESQPARS_JMPTBL_ESQPROTO_VerifyCh
+              END

@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_SCRIPT_BeginBanner:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_SCRIPT_BeginBanner__1:
+              BSR.W          SCRIPT_BeginBannerCharTransition;6100 0000 
+___ESQIFF_JMPTBL_SCRIPT_BeginBanner__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_MEMORY_AllocateMem:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_MEMORY_AllocateMem__1:
+              BSR.W          MEMORY_AllocateMemory    ;6100 0000 
+___ESQIFF_JMPTBL_MEMORY_AllocateMem__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_CTASKS_StartIffTas:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_CTASKS_StartIffTas__1:
+              BSR.W          CTASKS_StartIffTaskProcess;6100 0000 
+___ESQIFF_JMPTBL_CTASKS_StartIffTas__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_DOS_OpenFileWithMo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_DOS_OpenFileWithMo__1:
+              BSR.W          DOS_OpenFileWithMode     ;6100 0000 
+___ESQIFF_JMPTBL_DOS_OpenFileWithMo__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_BeginBannerCharTransition
+              XREF           MEMORY_AllocateMemory
+              XREF           CTASKS_StartIffTaskProcess
+              XREF           DOS_OpenFileWithMode
+              XDEF           ESQIFF_JMPTBL_SCRIPT_BeginBanner
+              XDEF           ESQIFF_JMPTBL_MEMORY_AllocateMem
+              XDEF           ESQIFF_JMPTBL_CTASKS_StartIffTas
+              XDEF           ESQIFF_JMPTBL_DOS_OpenFileWithMo
+              END

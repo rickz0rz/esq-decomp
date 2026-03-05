@@ -1,0 +1,124 @@
+              SECTION      text,CODE
+__code:
+WDISP_JMPTBL_ESQIFF_RestoreBaseP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_ESQIFF_RestoreBaseP__1:
+              BSR.W          ESQIFF_RestoreBasePaletteTriples;6100 0000 
+___WDISP_JMPTBL_ESQIFF_RestoreBaseP__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+WDISP_JMPTBL_ESQFUNC_TrimTextToP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_ESQFUNC_TrimTextToP__1:
+              BSR.W          ESQFUNC_TrimTextToPixelWidthWord;6100 0000 
+___WDISP_JMPTBL_ESQFUNC_TrimTextToP__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_GCOMMAND_ExpandPres:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_GCOMMAND_ExpandPres__1:
+              BSR.W          GCOMMAND_ExpandPresetBlock;6100 0000 
+___WDISP_JMPTBL_GCOMMAND_ExpandPres__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_ESQIFF_QueueIffBrus:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_ESQIFF_QueueIffBrus__1:
+              BSR.W          ESQIFF_QueueIffBrushLoad ;6100 0000 
+___WDISP_JMPTBL_ESQIFF_QueueIffBrus__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_ESQIFF_RunCopperDro:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_ESQIFF_RunCopperDro__1:
+              BSR.W          ESQIFF_RunCopperDropTransition;6100 0000 
+___WDISP_JMPTBL_ESQIFF_RunCopperDro__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_BRUSH_FindBrushByPr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_BRUSH_FindBrushByPr__1:
+              BSR.W          BRUSH_FindBrushByPredicate;6100 0000 
+___WDISP_JMPTBL_BRUSH_FindBrushByPr__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_BRUSH_FreeBrushList:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_BRUSH_FreeBrushList__1:
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+___WDISP_JMPTBL_BRUSH_FreeBrushList__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_BRUSH_PlaneMaskForI:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_BRUSH_PlaneMaskForI__1:
+              BSR.W          BRUSH_PlaneMaskForIndex  ;6100 0000 
+___WDISP_JMPTBL_BRUSH_PlaneMaskForI__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_ESQ_SetCopperEffect:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_ESQ_SetCopperEffect__1:
+              BSR.W          ESQ_SetCopperEffect_OnEnableHigh;6100 0000 
+___WDISP_JMPTBL_ESQ_SetCopperEffect__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_ESQIFF_RenderWeathe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_ESQIFF_RenderWeathe__1:
+              BSR.W          ESQIFF_RenderWeatherStatusBrushS;6100 0000 
+___WDISP_JMPTBL_ESQIFF_RenderWeathe__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_BRUSH_SelectBrushSl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_BRUSH_SelectBrushSl__1:
+              BSR.W          BRUSH_SelectBrushSlot    ;6100 0000 
+___WDISP_JMPTBL_BRUSH_SelectBrushSl__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_NEWGRID_DrawWrapped:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_NEWGRID_DrawWrapped__1:
+              BSR.W          NEWGRID_DrawWrappedText  ;6100 0000 
+___WDISP_JMPTBL_NEWGRID_DrawWrapped__2:
+              RTS                                     ;4e75 
+WDISP_JMPTBL_NEWGRID_ResetRowTab:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___WDISP_JMPTBL_NEWGRID_ResetRowTab__1:
+              BSR.W          NEWGRID_ResetRowTable    ;6100 0000 
+___WDISP_JMPTBL_NEWGRID_ResetRowTab__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQIFF_RestoreBasePaletteTriples
+              XREF           ESQFUNC_TrimTextToPixelWidthWord
+              XREF           GCOMMAND_ExpandPresetBlock
+              XREF           ESQIFF_QueueIffBrushLoad
+              XREF           ESQIFF_RunCopperDropTransition
+              XREF           BRUSH_FindBrushByPredicate
+              XREF           BRUSH_FreeBrushList
+              XREF           BRUSH_PlaneMaskForIndex
+              XREF           ESQ_SetCopperEffect_OnEnableHigh
+              XREF           ESQIFF_RenderWeatherStatusBrushS
+              XREF           BRUSH_SelectBrushSlot
+              XREF           NEWGRID_DrawWrappedText
+              XREF           NEWGRID_ResetRowTable
+              XDEF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
+              XDEF           WDISP_JMPTBL_ESQFUNC_TrimTextToP
+              XDEF           WDISP_JMPTBL_GCOMMAND_ExpandPres
+              XDEF           WDISP_JMPTBL_ESQIFF_QueueIffBrus
+              XDEF           WDISP_JMPTBL_ESQIFF_RunCopperDro
+              XDEF           WDISP_JMPTBL_BRUSH_FindBrushByPr
+              XDEF           WDISP_JMPTBL_BRUSH_FreeBrushList
+              XDEF           WDISP_JMPTBL_BRUSH_PlaneMaskForI
+              XDEF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XDEF           WDISP_JMPTBL_ESQIFF_RenderWeathe
+              XDEF           WDISP_JMPTBL_BRUSH_SelectBrushSl
+              XDEF           WDISP_JMPTBL_NEWGRID_DrawWrapped
+              XDEF           WDISP_JMPTBL_NEWGRID_ResetRowTab
+              END

@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_ESQ_IncCopperLists:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_ESQ_IncCopperLists__1:
+              BSR.W          ESQ_IncCopperListsTowardsTargets;6100 0000 
+___ESQIFF_JMPTBL_ESQ_IncCopperLists__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_ESQ_DecCopperLists:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_ESQ_DecCopperLists__1:
+              BSR.W          ESQ_DecCopperListsPrimary;6100 0000 
+___ESQIFF_JMPTBL_ESQ_DecCopperLists__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_BRUSH_SelectBrushS:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_SelectBrushS__1:
+              BSR.W          BRUSH_SelectBrushSlot    ;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_SelectBrushS__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_BRUSH_SelectBrushB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_SelectBrushB__1:
+              BSR.W          BRUSH_SelectBrushByLabel ;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_SelectBrushB__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_IncCopperListsTowardsTargets
+              XREF           ESQ_DecCopperListsPrimary
+              XREF           BRUSH_SelectBrushSlot
+              XREF           BRUSH_SelectBrushByLabel
+              XDEF           ESQIFF_JMPTBL_ESQ_IncCopperLists
+              XDEF           ESQIFF_JMPTBL_ESQ_DecCopperLists
+              XDEF           ESQIFF_JMPTBL_BRUSH_SelectBrushS
+              XDEF           ESQIFF_JMPTBL_BRUSH_SelectBrushB
+              END

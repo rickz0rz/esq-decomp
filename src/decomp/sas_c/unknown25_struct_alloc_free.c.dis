@@ -1,0 +1,70 @@
+              SECTION      text,CODE
+__code:
+STRUCT_FreeWithSizeField:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___STRUCT_FreeWithSizeField__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              SCC            $8(A5)                   ;50ed 0008 
+              MOVE.W         #$ffffffff,A0            ;307c ffff 
+              MOVE.L         A0,$e(A5)                ;2b48 000e 
+              LEA            $18(A5),A1               ;43ed 0018 
+              MOVE.L         A0,(A1)                  ;2288 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $12(A5),D0               ;302d 0012 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOFreeMem              ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___STRUCT_FreeWithSizeField__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+STRUCT_AllocWithOwner:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___STRUCT_AllocWithOwner__1:
+              MOVE.L         $14(A7),D7               ;2e2f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,D0                    ;200d 
+              BNE.B          ___STRUCT_AllocWithOwner__3;6604 
+___STRUCT_AllocWithOwner__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___STRUCT_AllocWithOwner__7;6030 
+___STRUCT_AllocWithOwner__3:
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOAllocMem             ;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___STRUCT_AllocWithOwner__5;6714 
+___STRUCT_AllocWithOwner__4:
+              MOVE.B         #$5,$8(A3)               ;177c 0005 0008 
+              CLR.B          $9(A3)                   ;422b 0009 
+              MOVE.L         A5,$e(A3)                ;274d 000e 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         D0,$12(A3)               ;3740 0012 
+___STRUCT_AllocWithOwner__5:
+              MOVE.L         A3,D0                    ;200b 
+___STRUCT_AllocWithOwner__6:
+___STRUCT_AllocWithOwner__7:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           AbsExecBase
+              XREF           _LVOFreeMem
+              XREF           _LVOAllocMem
+              XDEF           STRUCT_FreeWithSizeField
+              XDEF           STRUCT_AllocWithOwner
+              END

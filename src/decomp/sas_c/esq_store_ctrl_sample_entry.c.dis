@@ -1,0 +1,44 @@
+              SECTION      text,CODE
+__code:
+ESQ_StoreCtrlSampleEntry:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___ESQ_StoreCtrlSampleEntry__1:
+              MOVE.L         ED_StateRingWriteIndex(A4),D7;2e2c 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              ADD.L          D7,D0                    ;d087 
+              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              ADD.L          D1,A0                    ;d1c1 
+              MOVE.L         A0,A5                    ;2a48 
+              LEA            CTRL_SampleEntryScratch(A4),A3;47ec 0000 
+___ESQ_StoreCtrlSampleEntry__2:
+              MOVE.B         (A3),(A5)+               ;1ad3 
+___ESQ_StoreCtrlSampleEntry__3:
+              MOVE.B         (A3)+,D0                 ;101b 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ESQ_StoreCtrlSampleEntry__2;66f8 
+___ESQ_StoreCtrlSampleEntry__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              MOVEQ.L        #$14,D0                  ;7014 
+              CMP.L          D0,D7                    ;be80 
+              BCS.B          ___ESQ_StoreCtrlSampleEntry__6;6502 
+___ESQ_StoreCtrlSampleEntry__5:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQ_StoreCtrlSampleEntry__6:
+              MOVE.L         D7,ED_StateRingWriteIndex(A4);2947 0000 
+___ESQ_StoreCtrlSampleEntry__7:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_StateRingWriteIndex
+              XREF           ED_StateRingTable
+              XREF           CTRL_SampleEntryScratch
+              XDEF           ESQ_StoreCtrlSampleEntry
+              END

@@ -1,0 +1,34 @@
+              SECTION      text,CODE
+__code:
+GROUP_AG_JMPTBL_ESQFUNC_ServiceU:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AG_JMPTBL_ESQFUNC_ServiceU__1:
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
+___GROUP_AG_JMPTBL_ESQFUNC_ServiceU__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AG_JMPTBL_ESQFUNC_UpdateRe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AG_JMPTBL_ESQFUNC_UpdateRe__1:
+              BSR.W          ESQFUNC_UpdateRefreshModeState;6100 0000 
+___GROUP_AG_JMPTBL_ESQFUNC_UpdateRe__2:
+              RTS                                     ;4e75 
+GROUP_AG_JMPTBL_TEXTDISP_ResetSe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AG_JMPTBL_TEXTDISP_ResetSe__1:
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
+___GROUP_AG_JMPTBL_TEXTDISP_ResetSe__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQFUNC_ServiceUiTickIfRunning
+              XREF           ESQFUNC_UpdateRefreshModeState
+              XREF           TEXTDISP_ResetSelectionAndRefres
+              XDEF           GROUP_AG_JMPTBL_ESQFUNC_ServiceU
+              XDEF           GROUP_AG_JMPTBL_ESQFUNC_UpdateRe
+              XDEF           GROUP_AG_JMPTBL_TEXTDISP_ResetSe
+              END

@@ -1,0 +1,45 @@
+              SECTION      text,CODE
+__code:
+DST_AddTimeOffset:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+___DST_AddTimeOffset__1:
+              MOVE.W         $1e(A7),D6               ;3c2f 001e 
+              MOVE.W         $1a(A7),D7               ;3e2f 001a 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          DATETIME_NormalizeStructToSecond;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$4,D0                   ;e980 
+              SUB.L          D7,D0                    ;9087 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$4,D1                   ;e981 
+              SUB.L          D0,D1                    ;9280 
+              ASL.L          #$4,D1                   ;e981 
+              ADD.L          D1,D5                    ;da81 
+              EXT.L          D6                       ;48c6 
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$4,D0                   ;e980 
+              SUB.L          D6,D0                    ;9086 
+              ASL.L          #$2,D0                   ;e580 
+              ADD.L          D0,D5                    ;da80 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          DATETIME_SecondsToStruct ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___DST_AddTimeOffset__2:
+              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DATETIME_NormalizeStructToSecond
+              XREF           DATETIME_SecondsToStruct
+              XDEF           DST_AddTimeOffset
+              END

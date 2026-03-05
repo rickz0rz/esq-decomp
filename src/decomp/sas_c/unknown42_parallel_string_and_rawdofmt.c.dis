@@ -1,0 +1,67 @@
+              SECTION      text,CODE
+__code:
+PARALLEL_WriteStringLoop:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___PARALLEL_WriteStringLoop__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+___PARALLEL_WriteStringLoop__2:
+              MOVE.B         (A5)+,D7                 ;1e1d 
+              TST.B          D7                       ;4a07 
+              BEQ.B          ___PARALLEL_WriteStringLoop__7;670e 
+___PARALLEL_WriteStringLoop__3:
+___PARALLEL_WriteStringLoop__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          PARALLEL_WriteCharD0     ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___PARALLEL_WriteStringLoop__5:
+              BRA.B          ___PARALLEL_WriteStringLoop__2;60ec 
+___PARALLEL_WriteStringLoop__6:
+___PARALLEL_WriteStringLoop__7:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+PARALLEL_RawDoFmtCommon:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___PARALLEL_RawDoFmtCommon__1:
+              MOVE.L         $10(A7),A3               ;266f 0010 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              PEA            PARALLEL_WriteCharD0(PC) ;487a 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARALLEL_RawDoFmt        ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___PARALLEL_RawDoFmtCommon__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+PARALLEL_RawDoFmtStackArgs:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___PARALLEL_RawDoFmtStackArgs__1:
+              PEA            $8(A7)                   ;486f 0008 
+              MOVE.L         $8(A7),-(A7)             ;2f2f 0008 
+              BSR.B          PARALLEL_RawDoFmtCommon  ;61b8 
+___PARALLEL_RawDoFmtStackArgs__2:
+              ADDQ.W         #$8,A7                   ;504f 
+___PARALLEL_RawDoFmtStackArgs__3:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           PARALLEL_WriteCharD0
+              XREF           PARALLEL_RawDoFmt
+              XDEF           PARALLEL_WriteStringLoop
+              XDEF           PARALLEL_RawDoFmtCommon
+              XDEF           PARALLEL_RawDoFmtStackArgs
+              END

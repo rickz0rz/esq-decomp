@@ -1,0 +1,169 @@
+              SECTION      text,CODE
+__code:
+GROUP_AH_JMPTBL_ESQDISP_UpdateSt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQDISP_UpdateSt__1:
+              BSR.W          ESQDISP_UpdateStatusMaskAndRefre;6100 0000 
+___GROUP_AH_JMPTBL_ESQDISP_UpdateSt__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AH_JMPTBL_ESQFUNC_WaitForC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQFUNC_WaitForC__1:
+              BSR.W          ESQFUNC_WaitForClockChangeAndSer;6100 0000 
+___GROUP_AH_JMPTBL_ESQFUNC_WaitForC__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQIFF2_ApplyInc:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQIFF2_ApplyInc__1:
+              BSR.W          ESQIFF2_ApplyIncomingStatusPacke;6100 0000 
+___GROUP_AH_JMPTBL_ESQIFF2_ApplyInc__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQIFF2_ShowAtte:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQIFF2_ShowAtte__1:
+              BSR.W          ESQIFF2_ShowAttentionOverlay;6100 0000 
+___GROUP_AH_JMPTBL_ESQIFF2_ShowAtte__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQPARS_ClearAli:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQPARS_ClearAli__1:
+              BSR.W          ESQPARS_ClearAliasStringPointers;6100 0000 
+___GROUP_AH_JMPTBL_ESQPARS_ClearAli__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQSHARED_ApplyP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQSHARED_ApplyP__1:
+              BSR.W          ESQSHARED_ApplyProgramTitleTextF;6100 0000 
+___GROUP_AH_JMPTBL_ESQSHARED_ApplyP__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQSHARED_InitEn:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQSHARED_InitEn__1:
+              BSR.W          ESQSHARED_InitEntryDefaults;6100 0000 
+___GROUP_AH_JMPTBL_ESQSHARED_InitEn__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQ_TestBit1Base:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQ_TestBit1Base__1:
+              BSR.W          ESQ_TestBit1Based        ;6100 0000 
+___GROUP_AH_JMPTBL_ESQ_TestBit1Base__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_ESQ_WildcardMatc:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_ESQ_WildcardMatc__1:
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
+___GROUP_AH_JMPTBL_ESQ_WildcardMatc__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_GCOMMAND_LoadCom:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_GCOMMAND_LoadCom__1:
+              BSR.W          GCOMMAND_LoadCommandFile ;6100 0000 
+___GROUP_AH_JMPTBL_GCOMMAND_LoadCom__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_GCOMMAND_LoadMpl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_GCOMMAND_LoadMpl__1:
+              BSR.W          GCOMMAND_LoadMplexFile   ;6100 0000 
+___GROUP_AH_JMPTBL_GCOMMAND_LoadMpl__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_GCOMMAND_LoadPPV:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_GCOMMAND_LoadPPV__1:
+              BSR.W          GCOMMAND_LoadPPVTemplate ;6100 0000 
+___GROUP_AH_JMPTBL_GCOMMAND_LoadPPV__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_LOCAVAIL_SaveAva:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_LOCAVAIL_SaveAva__1:
+              BSR.W          LOCAVAIL_SaveAvailabilityDataFil;6100 0000 
+___GROUP_AH_JMPTBL_LOCAVAIL_SaveAva__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_NEWGRID_RebuildI:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_NEWGRID_RebuildI__1:
+              BSR.W          NEWGRID_RebuildIndexCache;6100 0000 
+___GROUP_AH_JMPTBL_NEWGRID_RebuildI__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_PARSE_ReadSigned:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_PARSE_ReadSigned__1:
+              BSR.W          PARSE_ReadSignedLongSkipClass3;6100 0000 
+___GROUP_AH_JMPTBL_PARSE_ReadSigned__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_P_TYPE_WriteProm:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_P_TYPE_WriteProm__1:
+              BSR.W          P_TYPE_WritePromoIdDataFile;6100 0000 
+___GROUP_AH_JMPTBL_P_TYPE_WriteProm__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_SCRIPT_ReadSeria:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_SCRIPT_ReadSeria__1:
+              BSR.W          SCRIPT_ReadNextRbfByte   ;6100 0000 
+___GROUP_AH_JMPTBL_SCRIPT_ReadSeria__2:
+              RTS                                     ;4e75 
+GROUP_AH_JMPTBL_STR_FindAnyCharP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AH_JMPTBL_STR_FindAnyCharP__1:
+              BSR.W          STR_FindAnyCharPtr       ;6100 0000 
+___GROUP_AH_JMPTBL_STR_FindAnyCharP__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQDISP_UpdateStatusMaskAndRefre
+              XREF           ESQFUNC_WaitForClockChangeAndSer
+              XREF           ESQIFF2_ApplyIncomingStatusPacke
+              XREF           ESQIFF2_ShowAttentionOverlay
+              XREF           ESQPARS_ClearAliasStringPointers
+              XREF           ESQSHARED_ApplyProgramTitleTextF
+              XREF           ESQSHARED_InitEntryDefaults
+              XREF           ESQ_TestBit1Based
+              XREF           ESQ_WildcardMatch
+              XREF           GCOMMAND_LoadCommandFile
+              XREF           GCOMMAND_LoadMplexFile
+              XREF           GCOMMAND_LoadPPVTemplate
+              XREF           LOCAVAIL_SaveAvailabilityDataFil
+              XREF           NEWGRID_RebuildIndexCache
+              XREF           PARSE_ReadSignedLongSkipClass3
+              XREF           P_TYPE_WritePromoIdDataFile
+              XREF           SCRIPT_ReadNextRbfByte
+              XREF           STR_FindAnyCharPtr
+              XDEF           GROUP_AH_JMPTBL_ESQDISP_UpdateSt
+              XDEF           GROUP_AH_JMPTBL_ESQFUNC_WaitForC
+              XDEF           GROUP_AH_JMPTBL_ESQIFF2_ApplyInc
+              XDEF           GROUP_AH_JMPTBL_ESQIFF2_ShowAtte
+              XDEF           GROUP_AH_JMPTBL_ESQPARS_ClearAli
+              XDEF           GROUP_AH_JMPTBL_ESQSHARED_ApplyP
+              XDEF           GROUP_AH_JMPTBL_ESQSHARED_InitEn
+              XDEF           GROUP_AH_JMPTBL_ESQ_TestBit1Base
+              XDEF           GROUP_AH_JMPTBL_ESQ_WildcardMatc
+              XDEF           GROUP_AH_JMPTBL_GCOMMAND_LoadCom
+              XDEF           GROUP_AH_JMPTBL_GCOMMAND_LoadMpl
+              XDEF           GROUP_AH_JMPTBL_GCOMMAND_LoadPPV
+              XDEF           GROUP_AH_JMPTBL_LOCAVAIL_SaveAva
+              XDEF           GROUP_AH_JMPTBL_NEWGRID_RebuildI
+              XDEF           GROUP_AH_JMPTBL_PARSE_ReadSigned
+              XDEF           GROUP_AH_JMPTBL_P_TYPE_WriteProm
+              XDEF           GROUP_AH_JMPTBL_SCRIPT_ReadSeria
+              XDEF           GROUP_AH_JMPTBL_STR_FindAnyCharP
+              END

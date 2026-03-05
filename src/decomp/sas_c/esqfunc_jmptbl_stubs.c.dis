@@ -1,0 +1,241 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_JMPTBL_TEXTDISP_SetRastF:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_TEXTDISP_SetRastF__1:
+              BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
+___ESQFUNC_JMPTBL_TEXTDISP_SetRastF__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQFUNC_JMPTBL_P_TYPE_PromoteSec:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_P_TYPE_PromoteSec__1:
+              BSR.W          P_TYPE_PromoteSecondaryList;6100 0000 
+___ESQFUNC_JMPTBL_P_TYPE_PromoteSec__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_DISKIO_ProbeDrive:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_DISKIO_ProbeDrive__1:
+              BSR.W          DISKIO_ProbeDrivesAndAssignPaths;6100 0000 
+___ESQFUNC_JMPTBL_DISKIO_ProbeDrive__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_PARSEINI_UpdateCt:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_PARSEINI_UpdateCt__1:
+              BSR.W          PARSEINI_UpdateCtrlHDeltaMax;6100 0000 
+___ESQFUNC_JMPTBL_PARSEINI_UpdateCt__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_ESQ_ClampBannerCh:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_ESQ_ClampBannerCh__1:
+              BSR.W          ESQ_ClampBannerCharRange ;6100 0000 
+___ESQFUNC_JMPTBL_ESQ_ClampBannerCh__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__1:
+              BSR.W          SCRIPT_ReadHandshakeBit3Flag;6100 0000 
+___ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_TLIBA3_DrawCenter:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_TLIBA3_DrawCenter__1:
+              BSR.W          TLIBA3_DrawCenteredWrappedTextLi;6100 0000 
+___ESQFUNC_JMPTBL_TLIBA3_DrawCenter__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin__1:
+              BSR.W          SCRIPT_GetCtrlLineFlag   ;6100 0000 
+___ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_LOCAVAIL_SyncSeco:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_LOCAVAIL_SyncSeco__1:
+              BSR.W          LOCAVAIL_SyncSecondaryFilterForC;6100 0000 
+___ESQFUNC_JMPTBL_LOCAVAIL_SyncSeco__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_TEXTDISP_ResetSel:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_TEXTDISP_ResetSel__1:
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
+___ESQFUNC_JMPTBL_TEXTDISP_ResetSel__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_PARSEINI_MonitorC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_PARSEINI_MonitorC__1:
+              BSR.W          PARSEINI_MonitorClockChange;6100 0000 
+___ESQFUNC_JMPTBL_PARSEINI_MonitorC__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_LADFUNC_ParseHexD:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_LADFUNC_ParseHexD__1:
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+___ESQFUNC_JMPTBL_LADFUNC_ParseHexD__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_CLEANUP_ProcessAl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_CLEANUP_ProcessAl__1:
+              BSR.W          CLEANUP_ProcessAlerts    ;6100 0000 
+___ESQFUNC_JMPTBL_CLEANUP_ProcessAl__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_ESQ_GetHalfHourSl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_ESQ_GetHalfHourSl__1:
+              BSR.W          ESQ_GetHalfHourSlotIndex ;6100 0000 
+___ESQFUNC_JMPTBL_ESQ_GetHalfHourSl__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_CLEANUP_DrawClock:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_CLEANUP_DrawClock__1:
+              BSR.W          CLEANUP_DrawClockBanner  ;6100 0000 
+___ESQFUNC_JMPTBL_CLEANUP_DrawClock__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_PARSEINI_ComputeH:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_PARSEINI_ComputeH__1:
+              BSR.W          PARSEINI_ComputeHTCMaxValues;6100 0000 
+___ESQFUNC_JMPTBL_PARSEINI_ComputeH__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_LADFUNC_UpdateHig:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_LADFUNC_UpdateHig__1:
+              BSR.W          LADFUNC_UpdateHighlightState;6100 0000 
+___ESQFUNC_JMPTBL_LADFUNC_UpdateHig__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_P_TYPE_EnsureSeco:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_P_TYPE_EnsureSeco__1:
+              BSR.W          P_TYPE_EnsureSecondaryList;6100 0000 
+___ESQFUNC_JMPTBL_P_TYPE_EnsureSeco__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_PARSEINI_Normaliz:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_PARSEINI_Normaliz__1:
+              BSR.W          PARSEINI_NormalizeClockData;6100 0000 
+___ESQFUNC_JMPTBL_PARSEINI_Normaliz__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_ESQ_TickGlobalCou:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_ESQ_TickGlobalCou__1:
+              BSR.W          ESQ_TickGlobalCounters   ;6100 0000 
+___ESQFUNC_JMPTBL_ESQ_TickGlobalCou__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_SCRIPT_HandleSeri:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_SCRIPT_HandleSeri__1:
+              BSR.W          SCRIPT_HandleSerialCtrlCmd;6100 0000 
+___ESQFUNC_JMPTBL_SCRIPT_HandleSeri__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_ESQ_HandleSerialR:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_ESQ_HandleSerialR__1:
+              BSR.W          ESQ_HandleSerialRbfInterrupt;6100 0000 
+___ESQFUNC_JMPTBL_ESQ_HandleSerialR__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_TEXTDISP_TickDisp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_TEXTDISP_TickDisp__1:
+              BSR.W          TEXTDISP_TickDisplayState;6100 0000 
+___ESQFUNC_JMPTBL_TEXTDISP_TickDisp__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_ESQ_PollCtrlInput__1:
+              BSR.W          ESQ_PollCtrlInput        ;6100 0000 
+___ESQFUNC_JMPTBL_ESQ_PollCtrlInput__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_LOCAVAIL_RebuildF:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_LOCAVAIL_RebuildF__1:
+              BSR.W          LOCAVAIL_RebuildFilterStateFromC;6100 0000 
+___ESQFUNC_JMPTBL_LOCAVAIL_RebuildF__2:
+              RTS                                     ;4e75 
+ESQFUNC_JMPTBL_STRING_CopyPadNul:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_JMPTBL_STRING_CopyPadNul__1:
+              BSR.W          STRING_CopyPadNul        ;6100 0000 
+___ESQFUNC_JMPTBL_STRING_CopyPadNul__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_SetRastForMode
+              XREF           P_TYPE_PromoteSecondaryList
+              XREF           DISKIO_ProbeDrivesAndAssignPaths
+              XREF           PARSEINI_UpdateCtrlHDeltaMax
+              XREF           ESQ_ClampBannerCharRange
+              XREF           SCRIPT_ReadHandshakeBit3Flag
+              XREF           TLIBA3_DrawCenteredWrappedTextLi
+              XREF           SCRIPT_GetCtrlLineFlag
+              XREF           LOCAVAIL_SyncSecondaryFilterForC
+              XREF           TEXTDISP_ResetSelectionAndRefres
+              XREF           PARSEINI_MonitorClockChange
+              XREF           LADFUNC_ParseHexDigit
+              XREF           CLEANUP_ProcessAlerts
+              XREF           ESQ_GetHalfHourSlotIndex
+              XREF           CLEANUP_DrawClockBanner
+              XREF           PARSEINI_ComputeHTCMaxValues
+              XREF           LADFUNC_UpdateHighlightState
+              XREF           P_TYPE_EnsureSecondaryList
+              XREF           PARSEINI_NormalizeClockData
+              XREF           ESQ_TickGlobalCounters
+              XREF           SCRIPT_HandleSerialCtrlCmd
+              XREF           ESQ_HandleSerialRbfInterrupt
+              XREF           TEXTDISP_TickDisplayState
+              XREF           ESQ_PollCtrlInput
+              XREF           LOCAVAIL_RebuildFilterStateFromC
+              XREF           STRING_CopyPadNul
+              XDEF           ESQFUNC_JMPTBL_TEXTDISP_SetRastF
+              XDEF           ESQFUNC_JMPTBL_P_TYPE_PromoteSec
+              XDEF           ESQFUNC_JMPTBL_DISKIO_ProbeDrive
+              XDEF           ESQFUNC_JMPTBL_PARSEINI_UpdateCt
+              XDEF           ESQFUNC_JMPTBL_ESQ_ClampBannerCh
+              XDEF           ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBi
+              XDEF           ESQFUNC_JMPTBL_TLIBA3_DrawCenter
+              XDEF           ESQFUNC_JMPTBL_SCRIPT_GetCtrlLin
+              XDEF           ESQFUNC_JMPTBL_LOCAVAIL_SyncSeco
+              XDEF           ESQFUNC_JMPTBL_TEXTDISP_ResetSel
+              XDEF           ESQFUNC_JMPTBL_PARSEINI_MonitorC
+              XDEF           ESQFUNC_JMPTBL_LADFUNC_ParseHexD
+              XDEF           ESQFUNC_JMPTBL_CLEANUP_ProcessAl
+              XDEF           ESQFUNC_JMPTBL_ESQ_GetHalfHourSl
+              XDEF           ESQFUNC_JMPTBL_CLEANUP_DrawClock
+              XDEF           ESQFUNC_JMPTBL_PARSEINI_ComputeH
+              XDEF           ESQFUNC_JMPTBL_LADFUNC_UpdateHig
+              XDEF           ESQFUNC_JMPTBL_P_TYPE_EnsureSeco
+              XDEF           ESQFUNC_JMPTBL_PARSEINI_Normaliz
+              XDEF           ESQFUNC_JMPTBL_ESQ_TickGlobalCou
+              XDEF           ESQFUNC_JMPTBL_SCRIPT_HandleSeri
+              XDEF           ESQFUNC_JMPTBL_ESQ_HandleSerialR
+              XDEF           ESQFUNC_JMPTBL_TEXTDISP_TickDisp
+              XDEF           ESQFUNC_JMPTBL_ESQ_PollCtrlInput
+              XDEF           ESQFUNC_JMPTBL_LOCAVAIL_RebuildF
+              XDEF           ESQFUNC_JMPTBL_STRING_CopyPadNul
+              END

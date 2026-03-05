@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_ESQ_MoveCopperEntr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_ESQ_MoveCopperEntr__1:
+              BSR.W          ESQ_MoveCopperEntryTowardStart;6100 0000 
+___ESQIFF_JMPTBL_ESQ_MoveCopperEntr__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_MEMORY_DeallocateM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_MEMORY_DeallocateM__1:
+              BSR.W          MEMORY_DeallocateMemory  ;6100 0000 
+___ESQIFF_JMPTBL_MEMORY_DeallocateM__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_DISKIO_ForceUiRefr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_DISKIO_ForceUiRefr__1:
+              BSR.W          DISKIO_ForceUiRefreshIfIdle;6100 0000 
+___ESQIFF_JMPTBL_DISKIO_ForceUiRefr__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_BRUSH_CloneBrushRe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_CloneBrushRe__1:
+              BSR.W          BRUSH_CloneBrushRecord   ;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_CloneBrushRe__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_MoveCopperEntryTowardStart
+              XREF           MEMORY_DeallocateMemory
+              XREF           DISKIO_ForceUiRefreshIfIdle
+              XREF           BRUSH_CloneBrushRecord
+              XDEF           ESQIFF_JMPTBL_ESQ_MoveCopperEntr
+              XDEF           ESQIFF_JMPTBL_MEMORY_DeallocateM
+              XDEF           ESQIFF_JMPTBL_DISKIO_ForceUiRefr
+              XDEF           ESQIFF_JMPTBL_BRUSH_CloneBrushRe
+              END

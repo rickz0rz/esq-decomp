@@ -1,0 +1,115 @@
+              SECTION      text,CODE
+__code:
+GROUP_AC_JMPTBL_DST_RefreshBanne:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_DST_RefreshBanne__1:
+              BSR.W          DST_RefreshBannerBuffer  ;6100 0000 
+___GROUP_AC_JMPTBL_DST_RefreshBanne__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AC_JMPTBL_DST_UpdateBanner:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_DST_UpdateBanner__1:
+              BSR.W          DST_UpdateBannerQueue    ;6100 0000 
+___GROUP_AC_JMPTBL_DST_UpdateBanner__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_ESQDISP_DrawStat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_ESQDISP_DrawStat__1:
+              BSR.W          ESQDISP_DrawStatusBanner ;6100 0000 
+___GROUP_AC_JMPTBL_ESQDISP_DrawStat__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_ESQFUNC_DrawDiag:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_DrawDiag__1:
+              BSR.W          ESQFUNC_DrawDiagnosticsScreen;6100 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_DrawDiag__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_ESQFUNC_DrawEscM:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_DrawEscM__1:
+              BSR.W          ESQFUNC_DrawEscMenuVersion;6100 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_DrawEscM__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_ESQFUNC_DrawMemo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_DrawMemo__1:
+              BSR.W          ESQFUNC_DrawMemoryStatusScreen;6100 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_DrawMemo__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_ESQFUNC_FreeExtr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_FreeExtr__1:
+              BSR.W          ESQFUNC_FreeExtraTitleTextPointe;6100 0000 
+___GROUP_AC_JMPTBL_ESQFUNC_FreeExtr__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_GCOMMAND_UpdateB:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_GCOMMAND_UpdateB__1:
+              BSR.W          GCOMMAND_UpdateBannerBounds;6100 0000 
+___GROUP_AC_JMPTBL_GCOMMAND_UpdateB__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_PARSEINI_AdjustH:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_PARSEINI_AdjustH__1:
+              BSR.W          PARSEINI_AdjustHoursTo24HrFormat;6100 0000 
+___GROUP_AC_JMPTBL_PARSEINI_AdjustH__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_PARSEINI_UpdateC:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_PARSEINI_UpdateC__1:
+              BSR.W          PARSEINI_UpdateClockFromRtc;6100 0000 
+___GROUP_AC_JMPTBL_PARSEINI_UpdateC__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_SCRIPT_ClearCtrl:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_SCRIPT_ClearCtrl__1:
+              BSR.W          SCRIPT_ClearCtrlLineIfEnabled;6100 0000 
+___GROUP_AC_JMPTBL_SCRIPT_ClearCtrl__2:
+              RTS                                     ;4e75 
+GROUP_AC_JMPTBL_SCRIPT_UpdateCtr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AC_JMPTBL_SCRIPT_UpdateCtr__1:
+              BSR.W          SCRIPT_PollHandshakeAndApplyTime;6100 0000 
+___GROUP_AC_JMPTBL_SCRIPT_UpdateCtr__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DST_RefreshBannerBuffer
+              XREF           DST_UpdateBannerQueue
+              XREF           ESQDISP_DrawStatusBanner
+              XREF           ESQFUNC_DrawDiagnosticsScreen
+              XREF           ESQFUNC_DrawEscMenuVersion
+              XREF           ESQFUNC_DrawMemoryStatusScreen
+              XREF           ESQFUNC_FreeExtraTitleTextPointe
+              XREF           GCOMMAND_UpdateBannerBounds
+              XREF           PARSEINI_AdjustHoursTo24HrFormat
+              XREF           PARSEINI_UpdateClockFromRtc
+              XREF           SCRIPT_ClearCtrlLineIfEnabled
+              XREF           SCRIPT_PollHandshakeAndApplyTime
+              XDEF           GROUP_AC_JMPTBL_DST_RefreshBanne
+              XDEF           GROUP_AC_JMPTBL_DST_UpdateBanner
+              XDEF           GROUP_AC_JMPTBL_ESQDISP_DrawStat
+              XDEF           GROUP_AC_JMPTBL_ESQFUNC_DrawDiag
+              XDEF           GROUP_AC_JMPTBL_ESQFUNC_DrawEscM
+              XDEF           GROUP_AC_JMPTBL_ESQFUNC_DrawMemo
+              XDEF           GROUP_AC_JMPTBL_ESQFUNC_FreeExtr
+              XDEF           GROUP_AC_JMPTBL_GCOMMAND_UpdateB
+              XDEF           GROUP_AC_JMPTBL_PARSEINI_AdjustH
+              XDEF           GROUP_AC_JMPTBL_PARSEINI_UpdateC
+              XDEF           GROUP_AC_JMPTBL_SCRIPT_ClearCtrl
+              XDEF           GROUP_AC_JMPTBL_SCRIPT_UpdateCtr
+              END

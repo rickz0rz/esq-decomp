@@ -1,0 +1,28 @@
+              SECTION      text,CODE
+__code:
+CLOCK_ConvertAmigaSecondsToClock:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___CLOCK_ConvertAmigaSecondsToClock__1:
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         Global_REF_UTILITY_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOAmiga2Date           ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___CLOCK_ConvertAmigaSecondsToClock__2:
+___CLOCK_ConvertAmigaSecondsToClock__3:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_UTILITY_LIBRARY
+              XREF           _LVOAmiga2Date
+              XDEF           CLOCK_ConvertAmigaSecondsToClock
+              END

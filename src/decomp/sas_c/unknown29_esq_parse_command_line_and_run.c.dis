@@ -1,0 +1,277 @@
+              SECTION      text,CODE
+__code:
+ESQ_ParseCommandLineAndRun:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$14,A7                  ;9efc 0014 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5/A6,-(A7);48e7 2736 
+___ESQ_ParseCommandLineAndRun__1:
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.L         A5,A3                    ;264d 
+___ESQ_ParseCommandLineAndRun__2:
+              CMPI.L         #$20,Global_ArgCount(A4) ;0cac 0000 0020 0000 
+              BCC.W          ___ESQ_ParseCommandLineAndRun__26;6400 0090 
+___ESQ_ParseCommandLineAndRun__3:
+              MOVE.B         (A3),D0                  ;1013 
+              MOVEQ.L        #$20,D1                  ;7220 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__6;670c 
+___ESQ_ParseCommandLineAndRun__4:
+              MOVEQ.L        #$9,D1                   ;7209 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__6;6706 
+___ESQ_ParseCommandLineAndRun__5:
+              MOVEQ.L        #$a,D1                   ;720a 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__7;6604 
+___ESQ_ParseCommandLineAndRun__6:
+              ADDQ.L         #$1,A3                   ;528b 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__3;60e8 
+___ESQ_ParseCommandLineAndRun__7:
+              MOVE.B         (A3),D0                  ;1013 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__26;6772 
+___ESQ_ParseCommandLineAndRun__8:
+___ESQ_ParseCommandLineAndRun__9:
+              MOVE.L         Global_ArgCount(A4),D7   ;2e2c 0000 
+              MOVE.L         D7,D1                    ;2207 
+              ADDQ.L         #$1,D1                   ;5281 
+              MOVE.L         D1,Global_ArgCount(A4)   ;2941 0000 
+              MOVEQ.L        #$22,D0                  ;7022 
+              CMP.B          (A3),D0                  ;b013 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__17;6630 
+___ESQ_ParseCommandLineAndRun__10:
+              ADDQ.L         #$1,A3                   ;528b 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            Global_ArgvStorage(A4),A0;41ec 0000 
+              MOVE.L         A3,$0(A0,D0.L)           ;218b 0800 
+___ESQ_ParseCommandLineAndRun__11:
+              MOVE.B         (A3),D0                  ;1013 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__14;670a 
+___ESQ_ParseCommandLineAndRun__12:
+              MOVEQ.L        #$22,D1                  ;7222 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__14;6704 
+___ESQ_ParseCommandLineAndRun__13:
+              ADDQ.L         #$1,A3                   ;528b 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__11;60f2 
+___ESQ_ParseCommandLineAndRun__14:
+              TST.B          (A3)                     ;4a13 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__16;660c 
+___ESQ_ParseCommandLineAndRun__15:
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          HANDLE_CloseAllAndReturnWithCode;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__2;609a 
+___ESQ_ParseCommandLineAndRun__16:
+              CLR.B          (A3)+                    ;421b 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__2;6096 
+___ESQ_ParseCommandLineAndRun__17:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            Global_ArgvStorage(A4),A0;41ec 0000 
+              MOVE.L         A3,$0(A0,D0.L)           ;218b 0800 
+___ESQ_ParseCommandLineAndRun__18:
+              MOVE.B         (A3),D0                  ;1013 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__23;6716 
+___ESQ_ParseCommandLineAndRun__19:
+              MOVEQ.L        #$20,D1                  ;7220 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__23;6710 
+___ESQ_ParseCommandLineAndRun__20:
+              MOVEQ.L        #$9,D1                   ;7209 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__23;670a 
+___ESQ_ParseCommandLineAndRun__21:
+              MOVEQ.L        #$a,D1                   ;720a 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__23;6704 
+___ESQ_ParseCommandLineAndRun__22:
+              ADDQ.L         #$1,A3                   ;528b 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__18;60e6 
+___ESQ_ParseCommandLineAndRun__23:
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___ESQ_ParseCommandLineAndRun__26;6706 
+___ESQ_ParseCommandLineAndRun__24:
+___ESQ_ParseCommandLineAndRun__25:
+              CLR.B          (A3)+                    ;421b 
+              BRA.W          ___ESQ_ParseCommandLineAndRun__2;6000 ff68 
+___ESQ_ParseCommandLineAndRun__26:
+              MOVE.L         Global_ArgCount(A4),D0   ;202c 0000 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__28;6608 
+___ESQ_ParseCommandLineAndRun__27:
+              MOVE.L         Global_SavedMsg(A4),Global_ArgvPtr(A4);296c 0000 0000 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__29;6008 
+___ESQ_ParseCommandLineAndRun__28:
+              LEA            Global_ArgvStorage(A4),A0;41ec 0000 
+              MOVE.L         A0,Global_ArgvPtr(A4)    ;2948 0000 
+___ESQ_ParseCommandLineAndRun__29:
+              TST.L          D0                       ;4a80 
+              BNE.W          ___ESQ_ParseCommandLineAndRun__34;6600 008c 
+___ESQ_ParseCommandLineAndRun__30:
+              MOVE.L         Global_SavedMsg(A4),A2   ;246c 0000 
+              LEA            $24(A2),A0               ;41ea 0024 
+              MOVE.L         (A0),A1                  ;2250 
+              LEA            $4(A1),A0                ;41e9 0004 
+              MOVE.L         (A0),$2c(A7)             ;2f50 002c 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         A1,$30(A7)               ;2f49 0030 
+___ESQ_ParseCommandLineAndRun__31:
+              LEA            __MERGED(A4),A0          ;41ec 0000 
+              LEA            Global_ConsoleNameBuffer(A4),A1;43ec 0000 
+              MOVE.B         $0(A0,D5.L),$0(A1,D5.L)  ;13b0 5800 5800 
+___ESQ_ParseCommandLineAndRun__32:
+              LEA            __MERGED(A4),A0          ;41ec 0000 
+              ADD.L          D5,A0                    ;d1c5 
+              ADDQ.L         #$1,D5                   ;5285 
+              TST.B          (A0)                     ;4a10 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__31;66e6 
+___ESQ_ParseCommandLineAndRun__33:
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              PEA            Global_ConsoleNameBuffer(A4);486c 0000 
+              BSR.W          STRING_AppendN           ;6100 0000 
+              PEA            ($3ee).w                 ;4878 03ee 
+              PEA            Global_ConsoleNameBuffer(A4);486c 0000 
+              BSR.W          DOS_LVO_OPEN             ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         D6,Global_HandleEntry0_Ptr(A4);2946 0000 
+              MOVE.L         D6,Global_HandleEntry1_Ptr(A4);2946 0000 
+              MOVEQ.L        #$10,D0                  ;7010 
+              MOVE.L         D0,Global_HandleEntry1_Flags(A4);2940 0000 
+              MOVE.L         D6,Global_HandleEntry2_Ptr(A4);2946 0000 
+              MOVE.L         D0,Global_HandleEntry2_Flags(A4);2940 0000 
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+              BSR.W          EXEC_FIND_TASK_NULL      ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         D0,A0                    ;2040 
+              LEA            $a4(A0),A1               ;43e8 00a4 
+              MOVE.L         $24(A7),A6               ;2c6f 0024 
+              ADDQ.L         #$8,A6                   ;508e 
+              MOVE.L         (A6),(A1)                ;2296 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__35;6022 
+___ESQ_ParseCommandLineAndRun__34:
+              BSR.W          DOS_LVO_INPUT            ;6100 0000 
+              MOVE.L         D0,Global_HandleEntry0_Ptr(A4);2940 0000 
+              BSR.W          DOS_LVO_OUTPUT           ;6100 0000 
+              MOVE.L         D0,Global_HandleEntry1_Ptr(A4);2940 0000 
+              PEA            ($3ed).w                 ;4878 03ed 
+              PEA            __MERGED+$12(A4)         ;486c 0012 
+              BSR.W          DOS_LVO_OPEN             ;6100 0000 
+              MOVE.L         D0,Global_HandleEntry2_Ptr(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQ_ParseCommandLineAndRun__35:
+              MOVE.L         Global_ArgCount(A4),D0   ;202c 0000 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__37;6604 
+___ESQ_ParseCommandLineAndRun__36:
+              MOVEQ.L        #$0,D1                   ;7200 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__38;6002 
+___ESQ_ParseCommandLineAndRun__37:
+              MOVEQ.L        #$10,D1                  ;7210 
+___ESQ_ParseCommandLineAndRun__38:
+              MOVE.L         D1,D2                    ;2401 
+              ORI.W          #$8001,D2                ;0042 8001 
+              OR.L           D2,Global_HandleEntry0_Flags(A4);85ac 0000 
+              MOVE.L         D1,$20(A7)               ;2f41 0020 
+              ORI.W          #$8002,D1                ;0041 8002 
+              OR.L           D1,Global_HandleEntry1_Flags(A4);83ac 0000 
+              ORI.L          #$8003,Global_HandleEntry2_Flags(A4);00ac 0000 8003 0000 
+              TST.L          Global_DefaultHandleFlags(A4);4aac 0000 
+              BNE.B          ___ESQ_ParseCommandLineAndRun__40;660a 
+___ESQ_ParseCommandLineAndRun__39:
+              MOVE.L         #$8000,$30(A7)           ;2f7c 0000 8000 0030 
+              BRA.B          ___ESQ_ParseCommandLineAndRun__41;6006 
+___ESQ_ParseCommandLineAndRun__40:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D1,$30(A7)               ;2f41 0030 
+___ESQ_ParseCommandLineAndRun__41:
+              CLR.L          Global_PreallocHandleNode0_Handl(A4);42ac 0000 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.L         D1,D2                    ;2401 
+              ORI.W          #$1,D2                   ;0042 0001 
+              MOVE.L         D2,Global_PreallocHandleNode0_OpenF(A4);2942 0000 
+              MOVEQ.L        #$1,D2                   ;7401 
+              MOVE.L         D2,Global_PreallocHandleNode1_Handl(A4);2942 0000 
+              MOVE.L         D1,D2                    ;2401 
+              ORI.W          #$2,D2                   ;0042 0002 
+              MOVE.L         D2,Global_PreallocHandleNode1_OpenF(A4);2942 0000 
+              MOVEQ.L        #$2,D2                   ;7402 
+              MOVE.L         D2,Global_PreallocHandleNode2_Handl(A4);2942 0000 
+              ORI.W          #$80,D1                  ;0041 0080 
+              MOVE.L         D1,Global_PreallocHandleNode2_OpenF(A4);2941 0000 
+              LEA            UNKNOWN36_ShowAbortRequester(PC),A0;41fa 0000 
+              MOVE.L         A0,Global_SignalCallbackPtr(A4);2948 0000 
+              MOVE.L         Global_ArgvPtr(A4),-(A7) ;2f2c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          UNKNOWN29_JMPTBL_ESQ_MainInitAnd;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              BSR.W          BUFFER_FlushAllAndCloseWithCode;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQ_ParseCommandLineAndRun__42:
+___ESQ_ParseCommandLineAndRun__43:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5/A6;4cdf 6ce4 
+              ADD.W          #$14,A7                  ;defc 0014 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_ArgCount
+              XREF           Global_ArgvStorage
+              XREF           HANDLE_CloseAllAndReturnWithCode
+              XREF           Global_SavedMsg
+              XREF           Global_ArgvPtr
+              XREF           Global_ConsoleNameBuffer
+              XREF           STRING_AppendN
+              XREF           DOS_LVO_OPEN
+              XREF           Global_HandleEntry0_Ptr
+              XREF           Global_HandleEntry1_Ptr
+              XREF           Global_HandleEntry1_Flags
+              XREF           Global_HandleEntry2_Ptr
+              XREF           Global_HandleEntry2_Flags
+              XREF           EXEC_FIND_TASK_NULL
+              XREF           DOS_LVO_INPUT
+              XREF           DOS_LVO_OUTPUT
+              XREF           Global_HandleEntry0_Flags
+              XREF           Global_DefaultHandleFlags
+              XREF           Global_PreallocHandleNode0_Handl
+              XREF           Global_PreallocHandleNode0_OpenF
+              XREF           Global_PreallocHandleNode1_Handl
+              XREF           Global_PreallocHandleNode1_OpenF
+              XREF           Global_PreallocHandleNode2_Handl
+              XREF           Global_PreallocHandleNode2_OpenF
+              XREF           UNKNOWN36_ShowAbortRequester
+              XREF           Global_SignalCallbackPtr
+              XREF           UNKNOWN29_JMPTBL_ESQ_MainInitAnd
+              XREF           BUFFER_FlushAllAndCloseWithCode
+              XDEF           ESQ_ParseCommandLineAndRun
+
+              SECTION        __MERGED,DATA
+__MERGED
+kConsolePrefix:
+              DC.B           $63
+              DC.B           $6F
+              DC.B           $6E
+              DC.B           $2E
+              DC.B           $31
+              DC.B           $30
+              DC.B           $2F
+              DC.B           $31
+              DC.B           $30
+              DC.B           $2F
+              DC.B           $33
+              DC.B           $32
+              DC.B           $30
+              DC.B           $2F
+              DC.B           $38
+              DC.B           $30
+              DC.B           $2F
+              DC.B           $00
+              DC.B           '*'
+              DC.B           $00
+              END

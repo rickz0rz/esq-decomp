@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+GROUP_AA_JMPTBL_STRING_CompareNo:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AA_JMPTBL_STRING_CompareNo__1:
+              BSR.W          STRING_CompareNoCase     ;6100 0000 
+___GROUP_AA_JMPTBL_STRING_CompareNo__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_AA_JMPTBL_STRING_CompareN:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AA_JMPTBL_STRING_CompareN__1:
+              BSR.W          STRING_CompareN          ;6100 0000 
+___GROUP_AA_JMPTBL_STRING_CompareN__2:
+              RTS                                     ;4e75 
+GROUP_AA_JMPTBL_GCOMMAND_FindPat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AA_JMPTBL_GCOMMAND_FindPat__1:
+              BSR.W          GCOMMAND_FindPathSeparator;6100 0000 
+___GROUP_AA_JMPTBL_GCOMMAND_FindPat__2:
+              RTS                                     ;4e75 
+GROUP_AA_JMPTBL_GRAPHICS_AllocRa:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GROUP_AA_JMPTBL_GRAPHICS_AllocRa__1:
+              BSR.W          GRAPHICS_AllocRaster     ;6100 0000 
+___GROUP_AA_JMPTBL_GRAPHICS_AllocRa__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           STRING_CompareNoCase
+              XREF           STRING_CompareN
+              XREF           GCOMMAND_FindPathSeparator
+              XREF           GRAPHICS_AllocRaster
+              XDEF           GROUP_AA_JMPTBL_STRING_CompareNo
+              XDEF           GROUP_AA_JMPTBL_STRING_CompareN
+              XDEF           GROUP_AA_JMPTBL_GCOMMAND_FindPat
+              XDEF           GROUP_AA_JMPTBL_GRAPHICS_AllocRa
+              END

@@ -1,0 +1,62 @@
+              SECTION      text,CODE
+__code:
+DST_NormalizeDayOfYear:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___DST_NormalizeDayOfYear__1:
+              MOVE.W         $1e(A7),D6               ;3c2f 001e 
+              MOVE.W         $1a(A7),D7               ;3e2f 001a 
+              MOVE.W         D6,D5                    ;3a06 
+              EXT.L          D5                       ;48c5 
+              MOVE.W         D7,D4                    ;3807 
+              EXT.L          D4                       ;48c4 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DST_NormalizeDayOfYear__3;6708 
+___DST_NormalizeDayOfYear__2:
+              MOVE.L         #$16e,D0                 ;203c 0000 016e 
+              BRA.B          ___DST_NormalizeDayOfYear__4;6006 
+___DST_NormalizeDayOfYear__3:
+              MOVE.L         #$16d,D0                 ;203c 0000 016d 
+___DST_NormalizeDayOfYear__4:
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
+___DST_NormalizeDayOfYear__5:
+              MOVE.L         $10(A7),D0               ;202f 0010 
+              CMP.L          D0,D4                    ;b880 
+              BLE.B          ___DST_NormalizeDayOfYear__10;6f24 
+___DST_NormalizeDayOfYear__6:
+              SUB.L          D0,D4                    ;9880 
+              ADDQ.L         #$1,D5                   ;5285 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          DATETIME_IsLeapYear      ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___DST_NormalizeDayOfYear__8;6708 
+___DST_NormalizeDayOfYear__7:
+              MOVE.L         #$16e,D0                 ;203c 0000 016e 
+              BRA.B          ___DST_NormalizeDayOfYear__9;6006 
+___DST_NormalizeDayOfYear__8:
+              MOVE.L         #$16d,D0                 ;203c 0000 016d 
+___DST_NormalizeDayOfYear__9:
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
+              BRA.B          ___DST_NormalizeDayOfYear__5;60d4 
+___DST_NormalizeDayOfYear__10:
+              MOVE.L         D4,D0                    ;2004 
+___DST_NormalizeDayOfYear__11:
+___DST_NormalizeDayOfYear__12:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DATETIME_IsLeapYear
+              XDEF           DST_NormalizeDayOfYear
+              END

@@ -1,0 +1,72 @@
+              SECTION      text,CODE
+__code:
+ESQ_TestBit1Based:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D4/D5/D6/D7/A5,-(A7)  ;48e7 2f04 
+___ESQ_TestBit1Based__1:
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         D7,D6                    ;2c07 
+              SUBQ.L         #$1,D6                   ;5386 
+              MOVE.L         D6,D0                    ;2006 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              LSR.L          #$3,D0                   ;e688 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D6,D4                    ;2806 
+              MOVEQ.L        #$7,D0                   ;7007 
+              AND.L          D0,D4                    ;c880 
+              MOVE.L         D4,D0                    ;2004 
+              MOVEQ.L        #$0,D1                   ;7200 
+              BSET           D0,D1                    ;01c1 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         $0(A5,D5.L),D2           ;1435 5800 
+              AND.L          D1,D2                    ;c481 
+              BEQ.B          ___ESQ_TestBit1Based__3  ;6704 
+___ESQ_TestBit1Based__2:
+              MOVEQ.L        #$ff,D1                  ;72ff 
+              BRA.B          ___ESQ_TestBit1Based__4  ;6002 
+___ESQ_TestBit1Based__3:
+              MOVEQ.L        #$0,D1                   ;7200 
+___ESQ_TestBit1Based__4:
+              MOVE.L         D1,D0                    ;2001 
+___ESQ_TestBit1Based__5:
+___ESQ_TestBit1Based__6:
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A5  ;4cdf 20f4 
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQ_SetBit1Based:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D4/D5/D6/D7/A5,-(A7)  ;48e7 2f04 
+___ESQ_SetBit1Based__1:
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         D7,D6                    ;2c07 
+              SUBQ.L         #$1,D6                   ;5386 
+              MOVE.L         D6,D0                    ;2006 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              LSR.L          #$3,D0                   ;e688 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         D6,D4                    ;2806 
+              MOVEQ.L        #$7,D0                   ;7007 
+              AND.L          D0,D4                    ;c880 
+              MOVE.L         D4,D0                    ;2004 
+              MOVEQ.L        #$0,D1                   ;7200 
+              BSET           D0,D1                    ;01c1 
+              MOVE.B         $0(A5,D5.L),D2           ;1435 5800 
+              OR.B           D1,D2                    ;8401 
+              MOVE.B         D2,$0(A5,D5.L)           ;1b82 5800 
+___ESQ_SetBit1Based__2:
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A5  ;4cdf 20f4 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQ_TestBit1Based
+              XDEF           ESQ_SetBit1Based
+              END

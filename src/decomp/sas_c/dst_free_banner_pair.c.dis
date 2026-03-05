@@ -1,0 +1,30 @@
+              SECTION      text,CODE
+__code:
+DST_FreeBannerPair:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___DST_FreeBannerPair__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         (A3),-(A7)               ;2f13 
+              BSR.W          DST_FreeBannerStruct     ;6100 0000 
+              CLR.L          (A3)                     ;4293 
+              LEA            $4(A3),A0                ;41eb 0004 
+              MOVE.L         (A0),(A7)                ;2e90 
+              BSR.W          DST_FreeBannerStruct     ;6100 0000 
+              LEA            $4(A3),A0                ;41eb 0004 
+              CLR.L          (A0)                     ;4290 
+              ADDQ.W         #$4,A7                   ;584f 
+___DST_FreeBannerPair__2:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DST_FreeBannerStruct
+              XDEF           DST_FreeBannerPair
+              END

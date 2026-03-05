@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_ESQ_MoveCopperEntr:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_ESQ_MoveCopperEntr__1:
+              BSR.W          ESQ_MoveCopperEntryTowardEnd;6100 0000 
+___ESQIFF_JMPTBL_ESQ_MoveCopperEntr__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_BRUSH_FindBrushByP:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_FindBrushByP__1:
+              BSR.W          BRUSH_FindBrushByPredicate;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_FindBrushByP__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_BRUSH_FreeBrushLis:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_FreeBrushLis__1:
+              BSR.W          BRUSH_FreeBrushList      ;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_FreeBrushLis__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_BRUSH_FindType3Bru:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_FindType3Bru__1:
+              BSR.W          BRUSH_FindType3Brush     ;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_FindType3Bru__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_MoveCopperEntryTowardEnd
+              XREF           BRUSH_FindBrushByPredicate
+              XREF           BRUSH_FreeBrushList
+              XREF           BRUSH_FindType3Brush
+              XDEF           ESQIFF_JMPTBL_ESQ_MoveCopperEntr
+              XDEF           ESQIFF_JMPTBL_BRUSH_FindBrushByP
+              XDEF           ESQIFF_JMPTBL_BRUSH_FreeBrushLis
+              XDEF           ESQIFF_JMPTBL_BRUSH_FindType3Bru
+              END

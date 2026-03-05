@@ -1,0 +1,70 @@
+              SECTION      text,CODE
+__code:
+ESQ_ReverseBitsIn6Bytes:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___ESQ_ReverseBitsIn6Bytes__1:
+              MOVE.L         $20(A7),A3               ;266f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQ_ReverseBitsIn6Bytes__2:
+              MOVEQ.L        #$6,D0                   ;7006 
+              CMP.W          D0,D7                    ;be40 
+              BCC.B          ___ESQ_ReverseBitsIn6Bytes__14;6448 
+___ESQ_ReverseBitsIn6Bytes__3:
+              MOVE.B         (A3)+,D6                 ;1c1b 
+              TST.B          D6                       ;4a06 
+              BEQ.B          ___ESQ_ReverseBitsIn6Bytes__5;670c 
+___ESQ_ReverseBitsIn6Bytes__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$0,D1                   ;7200 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___ESQ_ReverseBitsIn6Bytes__6;6604 
+___ESQ_ReverseBitsIn6Bytes__5:
+              MOVE.B         D6,(A5)+                 ;1ac6 
+              BRA.B          ___ESQ_ReverseBitsIn6Bytes__12;602e 
+___ESQ_ReverseBitsIn6Bytes__6:
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$0,D4                   ;7800 
+___ESQ_ReverseBitsIn6Bytes__7:
+              MOVEQ.L        #$8,D0                   ;7008 
+              CMP.B          D0,D4                    ;b800 
+              BCC.B          ___ESQ_ReverseBitsIn6Bytes__11;6422 
+___ESQ_ReverseBitsIn6Bytes__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D4,D0                    ;1004 
+              MOVEQ.L        #$0,D1                   ;7200 
+              BSET           D0,D1                    ;01c1 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              AND.L          D1,D0                    ;c081 
+              BEQ.B          ___ESQ_ReverseBitsIn6Bytes__10;670e 
+___ESQ_ReverseBitsIn6Bytes__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D4,D0                    ;1004 
+              MOVEQ.L        #$7,D1                   ;7207 
+              SUB.L          D0,D1                    ;9280 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BSET           D1,D0                    ;03c0 
+              OR.B           D0,D5                    ;8a00 
+___ESQ_ReverseBitsIn6Bytes__10:
+              ADDQ.B         #$1,D4                   ;5204 
+              BRA.B          ___ESQ_ReverseBitsIn6Bytes__7;60d8 
+___ESQ_ReverseBitsIn6Bytes__11:
+              MOVE.B         D5,(A5)+                 ;1ac5 
+___ESQ_ReverseBitsIn6Bytes__12:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQ_ReverseBitsIn6Bytes__2;60b2 
+___ESQ_ReverseBitsIn6Bytes__13:
+___ESQ_ReverseBitsIn6Bytes__14:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQ_ReverseBitsIn6Bytes
+              END

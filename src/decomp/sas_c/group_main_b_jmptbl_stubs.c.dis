@@ -1,0 +1,75 @@
+              SECTION      text,CODE
+__code:
+GROUP_MAIN_B_JMPTBL_DOS_Delay:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___GROUP_MAIN_B_JMPTBL_DOS_Delay__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          DOS_Delay                ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___GROUP_MAIN_B_JMPTBL_DOS_Delay__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+GROUP_MAIN_B_JMPTBL_STREAM_Buffe:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___GROUP_MAIN_B_JMPTBL_STREAM_Buffe__1:
+              MOVE.L         $8(A7),A5                ;2a6f 0008 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          STREAM_BufferedWriteString;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___GROUP_MAIN_B_JMPTBL_STREAM_Buffe__2:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___GROUP_MAIN_B_JMPTBL_MATH_Mulu32__1:
+              MOVE.L         $10(A7),D6               ;2c2f 0010 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___GROUP_MAIN_B_JMPTBL_MATH_Mulu32__2:
+___GROUP_MAIN_B_JMPTBL_MATH_Mulu32__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+GROUP_MAIN_B_JMPTBL_BUFFER_Flush:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___GROUP_MAIN_B_JMPTBL_BUFFER_Flush__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          BUFFER_FlushAllAndCloseWithCode;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___GROUP_MAIN_B_JMPTBL_BUFFER_Flush__2:
+___GROUP_MAIN_B_JMPTBL_BUFFER_Flush__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DOS_Delay
+              XREF           STREAM_BufferedWriteString
+              XREF           MATH_Mulu32
+              XREF           BUFFER_FlushAllAndCloseWithCode
+              XDEF           GROUP_MAIN_B_JMPTBL_DOS_Delay
+              XDEF           GROUP_MAIN_B_JMPTBL_STREAM_Buffe
+              XDEF           GROUP_MAIN_B_JMPTBL_MATH_Mulu32
+              XDEF           GROUP_MAIN_B_JMPTBL_BUFFER_Flush
+              END

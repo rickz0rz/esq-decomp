@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+TLIBA2_JMPTBL_DST_AddTimeOffset:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA2_JMPTBL_DST_AddTimeOffset__1:
+              BSR.W          DST_AddTimeOffset        ;6100 0000 
+___TLIBA2_JMPTBL_DST_AddTimeOffset__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+TLIBA2_JMPTBL_ESQ_TestBit1Based:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___TLIBA2_JMPTBL_ESQ_TestBit1Based__1:
+              BSR.W          ESQ_TestBit1Based        ;6100 0000 
+___TLIBA2_JMPTBL_ESQ_TestBit1Based__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DST_AddTimeOffset
+              XREF           ESQ_TestBit1Based
+              XDEF           TLIBA2_JMPTBL_DST_AddTimeOffset
+              XDEF           TLIBA2_JMPTBL_ESQ_TestBit1Based
+              END

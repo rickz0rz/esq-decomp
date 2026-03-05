@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ESQIFF_JMPTBL_BRUSH_PopulateBrus:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_BRUSH_PopulateBrus__1:
+              BSR.W          BRUSH_PopulateBrushList  ;6100 0000 
+___ESQIFF_JMPTBL_BRUSH_PopulateBrus__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQIFF_JMPTBL_ESQ_NoOp_0074:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_ESQ_NoOp_0074__1:
+              BSR.W          ESQ_NoOp_0074            ;6100 0000 
+___ESQIFF_JMPTBL_ESQ_NoOp_0074__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_STRING_CompareNoCa:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_STRING_CompareNoCa__1:
+              BSR.W          STRING_CompareNoCaseN    ;6100 0000 
+___ESQIFF_JMPTBL_STRING_CompareNoCa__2:
+              RTS                                     ;4e75 
+ESQIFF_JMPTBL_SCRIPT_AssertCtrlL:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQIFF_JMPTBL_SCRIPT_AssertCtrlL__1:
+              BSR.W          SCRIPT_AssertCtrlLineIfEnabled;6100 0000 
+___ESQIFF_JMPTBL_SCRIPT_AssertCtrlL__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           BRUSH_PopulateBrushList
+              XREF           ESQ_NoOp_0074
+              XREF           STRING_CompareNoCaseN
+              XREF           SCRIPT_AssertCtrlLineIfEnabled
+              XDEF           ESQIFF_JMPTBL_BRUSH_PopulateBrus
+              XDEF           ESQIFF_JMPTBL_ESQ_NoOp_0074
+              XDEF           ESQIFF_JMPTBL_STRING_CompareNoCa
+              XDEF           ESQIFF_JMPTBL_SCRIPT_AssertCtrlL
+              END
