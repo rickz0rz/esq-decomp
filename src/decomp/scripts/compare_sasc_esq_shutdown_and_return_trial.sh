@@ -4,15 +4,13 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
-SASC_SRC="return_misc_stubs.c"
+SASC_SRC="esq_shutdown_and_return.c"
 SASC_DIS="src/decomp/sas_c/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/_main/a/a.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="esq_shutdown_and_return"
 ENTRY="ESQ_ShutdownAndReturn"
 ENTRY_SASC_REGEX="^ESQ_ShutdownAndReturn[A-Za-z0-9_]*:$"
-ENTRY_SEM="ESQ_SHUTDOWNANDRETURN:"
-ENTRY_ALT_SEM="ESQ_SHUTDOWNANDRETURN:"
 
 mkdir -p "$OUT_DIR"
 
@@ -53,8 +51,8 @@ normalize <"${OUT_DIR}/${BASE}.sasc.dis.s" >"${OUT_DIR}/${BASE}.sasc.norm.s"
 
 diff -u "${OUT_DIR}/${BASE}.original.norm.s" "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.diff" || true
 
-awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -f src/decomp/scripts/semantic_filter_sasc_return_stub.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
-awk -v ENTRY_PREFIX="$ENTRY_SEM" -v ENTRY_ALT_PREFIX="$ENTRY_ALT_SEM" -f src/decomp/scripts/semantic_filter_sasc_return_stub.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_esq_shutdown_and_return.awk "${OUT_DIR}/${BASE}.original.norm.s" >"${OUT_DIR}/${BASE}.original.semantic.txt"
+awk -f src/decomp/scripts/semantic_filter_sasc_esq_shutdown_and_return.awk "${OUT_DIR}/${BASE}.sasc.norm.s" >"${OUT_DIR}/${BASE}.sasc.semantic.txt"
 diff -u "${OUT_DIR}/${BASE}.original.semantic.txt" "${OUT_DIR}/${BASE}.sasc.semantic.txt" >"${OUT_DIR}/${BASE}.semantic.diff" || true
 
 echo "wrote: ${OUT_DIR}/${BASE}.diff"

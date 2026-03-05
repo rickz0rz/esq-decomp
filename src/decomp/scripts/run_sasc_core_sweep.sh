@@ -819,6 +819,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqshared_normalize_in_stereo_tag_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared_update_matching_entries_by_title_return_trial.sh"
     "src/decomp/scripts/compare_sasc_exec_call_vector_348_trial.sh"
+    "src/decomp/scripts/compare_sasc_flib_append_clock_stamped_log_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_flib_append_clock_stamped_log_entry_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_expand_preset_block_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_init_preset_table_from_palette_return_trial.sh"
