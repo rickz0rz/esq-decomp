@@ -6343,5 +6343,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_newgrid_draw_wrapped_text_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_newgrid_draw_wrapped_text.awk`
 - `src/decomp/sas_c/newgrid_draw_wrapped_text.c`
+- `src/decomp/scripts/compare_sasc_newgrid_draw_clock_format_header_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_newgrid_draw_clock_format_header.awk`
+- `src/decomp/sas_c/newgrid_draw_clock_format_header.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
