@@ -4720,6 +4720,7 @@ Recent promoted targets:
 - Group AG `GROUP_AG_JMPTBL_DOS_OpenFileWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_dos_open_file_with_mode_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_SCRIPT_CheckPathExists` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_check_path_exists_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_service_ui_tick_if_running_trial.sh`
+- ESQFUNC `ESQFUNC_ServiceUiTickIfRunning` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_service_ui_tick_if_running_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_esqfunc_update_refresh_mode_state_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_textdisp_reset_selection_and_refresh_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_begin_banner_char_transition_trial.sh`
