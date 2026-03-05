@@ -5060,8 +5060,8 @@ Recent promoted targets:
 - APP2 `ESQ_NoOp` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_noop_trial.sh`
 - APP2 `ESQ_NoOp_006A` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_noop_006a_trial.sh`
 - APP2 `ESQ_NoOp_0074` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_noop_0074_trial.sh`
-- APP2 `ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_testbit1based_trial.sh`
-- APP2 `ESQ_SetBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_setbit1based_trial.sh`
+- APP2 `ESQ_TestBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_test_bit1_based_trial.sh` (legacy alias: `compare_sasc_esq_testbit1based_trial.sh`)
+- APP2 `ESQ_SetBit1Based` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_set_bit1_based_trial.sh` (legacy alias: `compare_sasc_esq_setbit1based_trial.sh`)
 - APP2 `ESQ_TerminateAfterSecondQuote` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_terminate_after_second_quote_trial.sh`
 - APP2 `ESQ_WildcardMatch` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_wildcard_match_trial.sh`
 - APP2 `ESQ_GenerateXorChecksumByte` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_generate_xor_checksum_byte_trial.sh`
