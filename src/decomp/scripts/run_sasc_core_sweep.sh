@@ -232,6 +232,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esq_capture_ctrl_bit3_stream_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_capture_ctrl_bit4_stream_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_capture_ctrl_bit4_stream_buffer_byte_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_normalize_clock_and_redraw_banner_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_poll_input_mode_and_refresh_selection_trial.sh"
     "src/decomp/scripts/compare_sasc_esqdisp_get_entry_pointer_by_mode_trial.sh"
