@@ -5122,6 +5122,7 @@ Recent promoted targets:
 - SCRIPT3 `SCRIPT_SaveCtrlContextSnapshot` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_save_ctrl_context_snapshot_trial.sh`
 - SCRIPT3 `SCRIPT_LoadCtrlContextSnapshot` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_load_ctrl_context_snapshot_trial.sh`
 - SCRIPT3 `SCRIPT_ProcessCtrlContextPlaybackTick` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_process_ctrl_context_playback_tick_trial.sh`
+- SCRIPT3 `SCRIPT_UpdateRuntimeModeForPlaybackCursor` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_update_runtime_mode_for_playback_cursor_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_locavail_updatefilterstatemachine_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_math_divs32_trial.sh`
 - SCRIPT3 `SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters` SAS/C compare script: `src/decomp/scripts/compare_sasc_script3_jmptbl_esqshared_applyprogramtitletextfilters_trial.sh`
