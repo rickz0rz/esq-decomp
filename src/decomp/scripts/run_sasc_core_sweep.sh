@@ -1079,6 +1079,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_parseini_parse_hex_value_from_string_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_load_weather_message_strings_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_load_weather_strings_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini_parse_color_table_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_parse_range_key_value_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_test_memory_and_open_topaz_font_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini_jmptbl_brush_allocbrushnode_trial.sh"
