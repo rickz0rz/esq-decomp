@@ -4502,6 +4502,7 @@ Recent promoted targets:
 - APP2 `ESQ_TickGlobalCounters` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_tick_global_counters_trial.sh`
 - APP2 `ESQ_AdjustBracketedHourInString` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_adjust_bracketed_hour_in_string_trial.sh`
 - APP2 `ESQ_AdvanceBannerCharIndex_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_advance_banner_char_index_return_trial.sh`
+- APP2 `ESQ_TickClockAndFlagEvents` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_tick_clock_and_flag_events_trial.sh`
 - Unknown22 `DOS_CloseWithSignalCheck` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_close_with_signal_check_trial.sh`
 - Unknown22 `MATH_Mulu32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_mulu32_trial.sh`
 - Unknown22 `MATH_DivS32` SAS/C compare script: `src/decomp/scripts/compare_sasc_math_divs32_trial.sh`
@@ -4632,6 +4633,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/esq_tick_global_counters.c`
 - `src/decomp/sas_c/esq_adjust_bracketed_hour_in_string.c`
 - `src/decomp/sas_c/esq_advance_banner_char_index_return.c`
+- `src/decomp/sas_c/esq_tick_clock_and_flag_events.c`
 - `src/decomp/sas_c/datetime_adjust_month_index.c`
 - `src/decomp/sas_c/datetime_normalize_month_range.c`
 - `src/decomp/sas_c/dst_normalize_day_of_year.c`
@@ -4915,5 +4917,6 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_tick_global_counters.awk`
 - `src/decomp/scripts/semantic_filter_sasc_adjust_bracketed_hour_in_string.awk`
 - `src/decomp/scripts/semantic_filter_sasc_advance_banner_char_index_return.awk`
+- `src/decomp/scripts/semantic_filter_sasc_tick_clock_and_flag_events.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
