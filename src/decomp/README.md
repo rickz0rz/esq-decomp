@@ -4724,6 +4724,7 @@ Recent promoted targets:
 - ESQFUNC `ESQFUNC_FreeExtraTitleTextPointers` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_free_extra_title_text_pointers_trial.sh`
 - ESQFUNC `ESQFUNC_UpdateRefreshModeState` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_update_refresh_mode_state_trial.sh`
 - ESQFUNC `ESQFUNC_ProcessUiFrameTick` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_process_ui_frame_tick_trial.sh`
+- ESQFUNC `ESQFUNC_TrimTextToPixelWidthWordBoundary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_trim_text_to_pixel_width_word_boundary_trial.sh`
 - ESQFUNC `ESQFUNC_WaitForClockChangeAndServiceUi` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqfunc_wait_for_clock_change_and_service_ui_trial.sh`
 - ESQDISP `ESQDISP_NormalizeClockAndRedrawBanner` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_normalize_clock_and_redraw_banner_trial.sh`
 - ESQDISP `ESQDISP_PollInputModeAndRefreshSelection` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_poll_input_mode_and_refresh_selection_trial.sh`
