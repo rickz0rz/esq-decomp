@@ -3964,6 +3964,15 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO_ProbeDrivesAndAssignPaths`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_probe_drives_and_assign_paths_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_probe_drives_and_assign_paths.awk`
+- SAS/C-only lane (`DISKIO2_FlushDataFilesIfNeeded`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_flush_data_files_if_needed_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_flush_helper.awk`
+- SAS/C-only lane (`DISKIO2_ReloadDataFilesAndRebuildIndex`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_reload_data_files_and_rebuild_index_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_reload_helper.awk`
+- SAS/C-only lane (`DISKIO2_CopyAndSanitizeSlotString`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_copy_and_sanitize_slot_string_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_copy_sanitize_helper.awk`
 - SAS/C-only lane (`ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqshared_match_selection_code_with_optional_suffix_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
@@ -4954,6 +4963,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_parse_config_buffer.c`
 - `src/decomp/sas_c/diskio_return_stubs.c`
 - `src/decomp/sas_c/diskio_probe_drives_and_assign_paths.c`
+- `src/decomp/sas_c/diskio2_flush_reload_helpers.c`
+- `src/decomp/sas_c/diskio2_copy_sanitize_helpers.c`
 - `src/decomp/sas_c/diskio1_dump_default_coi_info_block.c`
 - `src/decomp/sas_c/diskio1_dump_program_source_record_verbose.c`
 - `src/decomp/sas_c/diskio1_dump_program_info_verbose.c`
@@ -5228,6 +5239,9 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_parse_config_buffer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_probe_drives_and_assign_paths.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_flush_helper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_reload_helper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_copy_sanitize_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_default_coi_info_block.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_source_record_verbose.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_verbose.awk`
