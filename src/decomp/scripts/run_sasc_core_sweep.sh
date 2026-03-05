@@ -787,6 +787,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_jmptbl_newgrid_shouldopeneditor_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_get_group_entry_count_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_reset_selection_state_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_set_selection_fields_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_skip_control_codes_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_cleanup_formatclockformatentry_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_coi_getanimfieldpointerbymode_trial.sh"
