@@ -1,0 +1,16 @@
+typedef unsigned char UBYTE;
+typedef short WORD;
+
+WORD GET_BIT_4_OF_CIAB_PRA_INTO_D1(void)
+{
+    volatile UBYTE *ciabPra;
+    UBYTE v;
+
+    ciabPra = (volatile UBYTE *)0x00BFE001UL;
+    v = *ciabPra;
+
+    if ((v & 16) == 0) {
+        return (WORD)-1;
+    }
+    return 0;
+}
