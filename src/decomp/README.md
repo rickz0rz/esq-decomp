@@ -4415,6 +4415,7 @@ Recent promoted targets:
 - Cleanup helper: pass `--clean-generated-dis` to remove untracked `src/decomp/sas_c/*.dis` artifacts after a sweep run.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_locavail2_auto_request_no_op_trial.sh` (`LOCAVAIL2_AutoRequestNoOp`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_locavail2_auto_request_no_op.awk`.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_locavail2_display_alert_delay_and_reboot_trial.sh` (`LOCAVAIL2_DisplayAlertDelayAndReboot`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_locavail2_display_alert_delay_and_reboot.awk`.
+- Newly added direct lane: `src/decomp/scripts/compare_sasc_override_intuition_funcs_trial.sh` (`OVERRIDE_INTUITION_FUNCS`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_override_intuition_funcs.awk`.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_gcommand_enable_highlight_trial.sh` (`GCOMMAND_EnableHighlight`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_gcommand_enable_highlight.awk`.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_gcommand_disable_highlight_trial.sh` (`GCOMMAND_DisableHighlight`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_gcommand_disable_highlight.awk`.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_gcommand_init_preset_defaults_trial.sh` (`GCOMMAND_InitPresetDefaults`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_gcommand_init_preset_defaults.awk`.
