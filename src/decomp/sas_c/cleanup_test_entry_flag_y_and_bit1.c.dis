@@ -1,0 +1,60 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_TestEntryFlagYAndBit1:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+___CLEANUP_TestEntryFlagYAndBit1__1:
+              MOVE.L         $1c(A7),D6               ;2c2f 001c 
+              MOVE.W         $1a(A7),D7               ;3e2f 001a 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          COI_GetAnimFieldPointerByMode;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,A3                    ;2640 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___CLEANUP_TestEntryFlagYAndBit1__12;672a 
+___CLEANUP_TestEntryFlagYAndBit1__2:
+___CLEANUP_TestEntryFlagYAndBit1__3:
+              TST.L          D6                       ;4a86 
+              BMI.B          ___CLEANUP_TestEntryFlagYAndBit1__5;6b06 
+___CLEANUP_TestEntryFlagYAndBit1__4:
+              MOVEQ.L        #$5,D1                   ;7205 
+              CMP.L          D1,D6                    ;bc81 
+              BLE.B          ___CLEANUP_TestEntryFlagYAndBit1__6;6f04 
+___CLEANUP_TestEntryFlagYAndBit1__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___CLEANUP_TestEntryFlagYAndBit1__12;601c 
+___CLEANUP_TestEntryFlagYAndBit1__6:
+              MOVEQ.L        #$59,D0                  ;7059 
+              CMP.B          $0(A3,D6.L),D0           ;b033 6800 
+              BEQ.B          ___CLEANUP_TestEntryFlagYAndBit1__8;6704 
+___CLEANUP_TestEntryFlagYAndBit1__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___CLEANUP_TestEntryFlagYAndBit1__12;6010 
+___CLEANUP_TestEntryFlagYAndBit1__8:
+              LEA            $28(A5),A0               ;41ed 0028 
+              BTST           #$1,(A0)                 ;0810 0001 
+              BNE.B          ___CLEANUP_TestEntryFlagYAndBit1__10;6604 
+___CLEANUP_TestEntryFlagYAndBit1__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___CLEANUP_TestEntryFlagYAndBit1__12;6002 
+___CLEANUP_TestEntryFlagYAndBit1__10:
+              MOVEQ.L        #$1,D0                   ;7001 
+___CLEANUP_TestEntryFlagYAndBit1__11:
+___CLEANUP_TestEntryFlagYAndBit1__12:
+              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           COI_GetAnimFieldPointerByMode
+              XDEF           CLEANUP_TestEntryFlagYAndBit1
+              END
