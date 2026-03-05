@@ -4015,6 +4015,30 @@ Recent promoted targets:
 - SAS/C-only lane (`GCOMMAND_UpdatePresetEntryCache_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
+- SAS/C-only lane (`LADFUNC2_EmitEscapedStringWithLimit_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_with_limit_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_ladfunc2_return_stub.awk`
+- SAS/C-only lane (`LADFUNC2_EmitEscapedStringChunked_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_chunked_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_ladfunc2_return_stub.awk`
+- SAS/C-only lane (`LOCAVAIL_ParseFilterStateFromBuffer_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_locavail_parse_filter_state_from_buffer_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
+- SAS/C-only lane (`LOCAVAIL_MapFilterTokenCharToClass_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_locavail_map_filter_token_char_to_class_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
+- SAS/C-only lane (`LOCAVAIL_ComputeFilterOffsetForEntry_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_locavail_compute_filter_offset_for_entry_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
+- SAS/C-only lane (`LOCAVAIL_SaveAvailabilityDataFile_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_locavail_save_availability_data_file_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
+- SAS/C-only lane (`LOCAVAIL_LoadAvailabilityDataFile_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_locavail_load_availability_data_file_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
+- SAS/C-only lane (`LOCAVAIL_UpdateFilterStateMachine_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_locavail_update_filter_state_machine_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -4112,6 +4136,14 @@ Recent promoted targets:
 - Unknown GCOMMAND `GCOMMAND_ValidatePresetTable_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_return_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_InitPresetTableFromPalette_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_init_preset_table_from_palette_return_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_UpdatePresetEntryCache_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_return_trial.sh`
+- Unknown LADFUNC2 `LADFUNC2_EmitEscapedStringWithLimit_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_with_limit_return_trial.sh`
+- Unknown LADFUNC2 `LADFUNC2_EmitEscapedStringChunked_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_chunked_return_trial.sh`
+- Unknown LOCAVAIL `LOCAVAIL_ParseFilterStateFromBuffer_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_locavail_parse_filter_state_from_buffer_return_trial.sh`
+- Unknown LOCAVAIL `LOCAVAIL_MapFilterTokenCharToClass_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_locavail_map_filter_token_char_to_class_return_trial.sh`
+- Unknown LOCAVAIL `LOCAVAIL_ComputeFilterOffsetForEntry_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_locavail_compute_filter_offset_for_entry_return_trial.sh`
+- Unknown LOCAVAIL `LOCAVAIL_SaveAvailabilityDataFile_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_locavail_save_availability_data_file_return_trial.sh`
+- Unknown LOCAVAIL `LOCAVAIL_LoadAvailabilityDataFile_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_locavail_load_availability_data_file_return_trial.sh`
+- Unknown LOCAVAIL `LOCAVAIL_UpdateFilterStateMachine_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_locavail_update_filter_state_machine_return_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4755,6 +4787,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/displib_return_stubs.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/gcommand3_return_stubs.c`
+- `src/decomp/sas_c/ladfunc2_return_stubs.c`
+- `src/decomp/sas_c/locavail_return_stubs.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -5012,6 +5046,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_displib_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc2_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
