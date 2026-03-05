@@ -4754,6 +4754,7 @@ Recent promoted targets:
 - Group AG `GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_textdisp_reset_selection_and_refresh_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_script_begin_banner_char_transition_trial.sh`
 - Group AG `GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_ag_jmptbl_ladfunc2_emit_escaped_string_to_scratch_trial.sh`
+- Utility `STRING_ToUpperChar` alias lane SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_char_trial.sh`
 - Utility `STRING_ToUpperChar` SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_trial.sh`
 - Group MAIN_A `GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_a_jmptbl_esq_main_exit_noop_hook_trial.sh`
 - Group MAIN_A `GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_group_main_a_jmptbl_esq_main_entry_noop_hook_trial.sh`
