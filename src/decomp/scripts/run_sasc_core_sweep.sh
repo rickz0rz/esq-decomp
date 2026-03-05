@@ -832,6 +832,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_init_preset_work_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_load_preset_work_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_map_keycode_to_preset_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_rebuild_banner_tables_from_bounds_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_refresh_banner_tables_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh"
