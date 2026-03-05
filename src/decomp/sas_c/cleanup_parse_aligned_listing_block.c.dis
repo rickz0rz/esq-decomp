@@ -1,0 +1,226 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_ParseAlignedListingBlock:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$44,D0                  ;90bc 0000 0044 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$28,A7                  ;9efc 0028 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___CLEANUP_ParseAlignedListingBlock__1:
+              MOVE.L         $4c(A7),A3               ;266f 004c 
+              MOVE.L         $48(A7),A5               ;2a6f 0048 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___CLEANUP_ParseAlignedListingBlock__3;6704 
+___CLEANUP_ParseAlignedListingBlock__2:
+              MOVE.L         A3,D0                    ;200b 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__4;6606 
+___CLEANUP_ParseAlignedListingBlock__3:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 01a2 
+___CLEANUP_ParseAlignedListingBlock__4:
+              CLR.L          $2c(A7)                  ;42af 002c 
+___CLEANUP_ParseAlignedListingBlock__5:
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              MOVEQ.L        #$a,D1                   ;720a 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___CLEANUP_ParseAlignedListingBlock__8;6c10 
+___CLEANUP_ParseAlignedListingBlock__6:
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.W         #$ffffffff,$30(A7,D1.L)  ;3fbc ffff 1830 
+___CLEANUP_ParseAlignedListingBlock__7:
+              ADDQ.L         #$1,$2c(A7)              ;52af 002c 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__5;60e6 
+___CLEANUP_ParseAlignedListingBlock__8:
+              MOVE.B         (A5),D0                  ;1015 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D1;122c 0000 
+              MOVE.B         D0,$1f(A7)               ;1f40 001f 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__11;6620 
+___CLEANUP_ParseAlignedListingBlock__9:
+              MOVE.B         TEXTDISP_SecondaryGroupPresentFl(A4),D1;122c 0000 
+              SUBQ.B         #$1,D1                   ;5301 
+              TST.B          D1                       ;4a01 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__11;6616 
+___CLEANUP_ParseAlignedListingBlock__10:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         TEXTDISP_SecondaryGroupEntryCoun(A4),D1;322c 0000 
+              MOVE.B         D0,CTASKS_PendingSecondaryOiDiskId(A4);1940 0000 
+              MOVEQ.L        #$1,D2                   ;7401 
+              MOVE.B         D2,CTASKS_SecondaryOiWritePendingFl(A4);1942 0000 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__14;6024 
+___CLEANUP_ParseAlignedListingBlock__11:
+              MOVE.B         TEXTDISP_PrimaryGroupCode(A4),D1;122c 0000 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__13;6616 
+___CLEANUP_ParseAlignedListingBlock__12:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D1;322c 0000 
+              MOVE.B         D0,CTASKS_PendingPrimaryOiDiskId(A4);1940 0000 
+              MOVE.B         #$1,CTASKS_PrimaryOiWritePendingFlag(A4);197c 0001 0000 
+              MOVE.L         D1,$28(A7)               ;2f41 0028 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__14;6006 
+___CLEANUP_ParseAlignedListingBlock__13:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.W          ___CLEANUP_ParseAlignedListingBlock__34;6000 0130 
+___CLEANUP_ParseAlignedListingBlock__14:
+              MOVEQ.L        #$31,D0                  ;7031 
+              CMP.B          $0(A5,D7.L),D0           ;b035 7800 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__16;6602 
+___CLEANUP_ParseAlignedListingBlock__15:
+              ADDQ.L         #$1,D7                   ;5287 
+___CLEANUP_ParseAlignedListingBlock__16:
+              MOVE.L         A5,A0                    ;204d 
+              ADD.L          D7,A0                    ;d1c7 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         ESQIFF_RecordLength(A4),D0;302c 0000 
+              SUB.L          D7,D0                    ;9087 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          COI_CountEscape14BeforeNull;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         A5,A0                    ;204d 
+              ADD.L          D7,A0                    ;d1c7 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         ESQIFF_RecordLength(A4),D0;302c 0000 
+              SUB.L          D7,D0                    ;9087 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($9).w                   ;4878 0009 
+              PEA            $48(A7)                  ;486f 0048 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          GROUP_AE_JMPTBL_SCRIPT_BuildToke;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              LEA            $20(A7),A7               ;4fef 0020 
+              CLR.L          $2c(A7)                  ;42af 002c 
+___CLEANUP_ParseAlignedListingBlock__17:
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              CMP.L          $28(A7),D0               ;b0af 0028 
+              BGE.B          ___CLEANUP_ParseAlignedListingBlock__26;6c5e 
+___CLEANUP_ParseAlignedListingBlock__18:
+              MOVEQ.L        #$a,D1                   ;720a 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___CLEANUP_ParseAlignedListingBlock__26;6c58 
+___CLEANUP_ParseAlignedListingBlock__19:
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D1;122c 0000 
+              MOVE.B         $1f(A7),D2               ;142f 001f 
+              CMP.B          D1,D2                    ;b401 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__22;661a 
+___CLEANUP_ParseAlignedListingBlock__20:
+              MOVE.B         TEXTDISP_SecondaryGroupPresentFl(A4),D1;122c 0000 
+              SUBQ.B         #$1,D1                   ;5301 
+              TST.B          D1                       ;4a01 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__22;6610 
+___CLEANUP_ParseAlignedListingBlock__21:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            TEXTDISP_SecondaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),$24(A7)      ;2f70 1800 0024 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__23;6010 
+___CLEANUP_ParseAlignedListingBlock__22:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A0           ;2070 1800 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+___CLEANUP_ParseAlignedListingBlock__23:
+              TST.L          $24(A7)                  ;4aaf 0024 
+              BEQ.B          ___CLEANUP_ParseAlignedListingBlock__25;6716 
+___CLEANUP_ParseAlignedListingBlock__24:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              ADD.W          #$c,A0                   ;d0fc 000c 
+              MOVE.L         A5,A1                    ;224d 
+              ADD.L          D7,A1                    ;d3c7 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          ESQ_WildcardMatch        ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___CLEANUP_ParseAlignedListingBlock__25:
+              ADDQ.L         #$1,$2c(A7)              ;52af 002c 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__17;6098 
+___CLEANUP_ParseAlignedListingBlock__26:
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D0;102c 0000 
+              MOVE.B         $1f(A7),D1               ;122f 001f 
+              CMP.B          D0,D1                    ;b200 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__29;6610 
+___CLEANUP_ParseAlignedListingBlock__27:
+              MOVE.B         TEXTDISP_SecondaryGroupPresentFl(A4),D0;102c 0000 
+              SUBQ.B         #$1,D0                   ;5300 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__29;6606 
+___CLEANUP_ParseAlignedListingBlock__28:
+              MOVE.L         TEXTDISP_SecondaryEntryPtrTable(A4),A2;246c 0000 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__30;6004 
+___CLEANUP_ParseAlignedListingBlock__29:
+              MOVE.L         TEXTDISP_PrimaryEntryPtrTable(A4),A2;246c 0000 
+___CLEANUP_ParseAlignedListingBlock__30:
+              MOVE.L         A2,D0                    ;200a 
+              BNE.B          ___CLEANUP_ParseAlignedListingBlock__32;6604 
+___CLEANUP_ParseAlignedListingBlock__31:
+              MOVEQ.L        #$2,D0                   ;7002 
+              BRA.B          ___CLEANUP_ParseAlignedListingBlock__34;6050 
+___CLEANUP_ParseAlignedListingBlock__32:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          COI_ClearAnimObjectStrings;6100 0000 
+              MOVE.L         A2,(A7)                  ;2e8a 
+              BSR.W          COI_FreeSubEntryTableEntries;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              PEA            CLOCK_STR_MISSING_TITLE_TEMPLATE(A4);486c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              CLR.L          $34(A7)                  ;42af 0034 
+              CLR.L          $30(A7)                  ;42af 0030 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              PEA            $30(A7)                  ;486f 0030 
+              PEA            $38(A7)                  ;486f 0038 
+              BSR.W          CLEANUP_FormatEntryStringTokens;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          GROUP_AG_JMPTBL_PARSE_ReadSigned;6100 0000 
+              MOVE.L         A2,(A7)                  ;2e8a 
+              BSR.W          COI_AllocSubEntryTable   ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $37(A7),D0               ;102f 0037 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          COI_WriteOiDataFile      ;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+___CLEANUP_ParseAlignedListingBlock__33:
+___CLEANUP_ParseAlignedListingBlock__34:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$28,A7                  ;defc 0028 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_SecondaryGroupCode
+              XREF           TEXTDISP_SecondaryGroupPresentFl
+              XREF           TEXTDISP_SecondaryGroupEntryCoun
+              XREF           CTASKS_PendingSecondaryOiDiskId
+              XREF           CTASKS_SecondaryOiWritePendingFl
+              XREF           TEXTDISP_PrimaryGroupCode
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           CTASKS_PendingPrimaryOiDiskId
+              XREF           CTASKS_PrimaryOiWritePendingFlag
+              XREF           ESQIFF_RecordLength
+              XREF           COI_CountEscape14BeforeNull
+              XREF           GROUP_AE_JMPTBL_SCRIPT_BuildToke
+              XREF           TEXTDISP_SecondaryEntryPtrTable
+              XREF           TEXTDISP_PrimaryEntryPtrTable
+              XREF           ESQ_WildcardMatch
+              XREF           COI_ClearAnimObjectStrings
+              XREF           COI_FreeSubEntryTableEntries
+              XREF           GROUP_AE_JMPTBL_ESQPARS_ReplaceO
+              XREF           CLOCK_STR_MISSING_TITLE_TEMPLATE
+              XREF           CLEANUP_FormatEntryStringTokens
+              XREF           GROUP_AG_JMPTBL_PARSE_ReadSigned
+              XREF           COI_AllocSubEntryTable
+              XREF           COI_WriteOiDataFile
+              XDEF           CLEANUP_ParseAlignedListingBlock
+              END
