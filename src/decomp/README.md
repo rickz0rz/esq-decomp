@@ -5104,6 +5104,15 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_bevel_draw_vertical_bevel_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_bevel_draw_vertical_bevel.awk`
 - `src/decomp/sas_c/bevel_draw_vertical_bevel.c`
+- `src/decomp/scripts/compare_sasc_bevel_draw_horizontal_bevel_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_bevel_draw_horizontal_bevel.awk`
+- `src/decomp/sas_c/bevel_draw_horizontal_bevel.c`
+- `src/decomp/scripts/compare_sasc_bevel_draw_vertical_bevel_pair_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_bevel_draw_vertical_bevel_pair.awk`
+- `src/decomp/sas_c/bevel_draw_vertical_bevel_pair.c`
+- `src/decomp/scripts/compare_sasc_bevel_draw_beveled_frame_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_bevel_draw_beveled_frame.awk`
+- `src/decomp/sas_c/bevel_draw_beveled_frame.c`
 - `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
 - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
