@@ -5,9 +5,13 @@ typedef signed long LONG;
 extern WORD DISPTEXT_LineTableLockFlag;
 extern WORD DISPTEXT_CurrentLineIndex;
 extern WORD DISPTEXT_TargetLineIndex;
+extern void *DISPTEXT_LinePtrTable[];
+extern WORD DISPTEXT_LineLengthTable[];
+extern void *Global_REF_GRAPHICS_LIBRARY;
 
 extern void DISPTEXT_FinalizeLineTable(void);
 extern void DISPLIB_CommitCurrentLinePenAndAdvance(void);
+extern LONG _LVOTextLength(void);
 
 void DISPTEXT_SetCurrentLineIndex(LONG lineIndex)
 {
@@ -78,4 +82,19 @@ LONG DISPTEXT_IsCurrentLineLast(void)
         return -1;
     }
     return 0;
+}
+
+LONG DISPTEXT_MeasureCurrentLineLength(void *rp)
+{
+    LONG lineIndex;
+    void *linePtr;
+    LONG charCount;
+
+    DISPTEXT_FinalizeLineTable();
+
+    lineIndex = (LONG)(UWORD)DISPTEXT_CurrentLineIndex;
+    linePtr = DISPTEXT_LinePtrTable[lineIndex];
+    charCount = (LONG)(UWORD)DISPTEXT_LineLengthTable[lineIndex];
+
+    return _LVOTextLength(rp, linePtr, charCount);
 }
