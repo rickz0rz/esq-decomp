@@ -1,0 +1,49 @@
+              SECTION      text,CODE
+__code:
+ESQ_ColdRebootViaSupervisor:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQ_ColdRebootViaSupervisor__1:
+              PEA            ESQ_SupervisorColdReboot(PC);487a 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOSupervisor           ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQ_ColdRebootViaSupervisor__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQ_ColdReboot:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQ_ColdReboot__1:
+              MOVE.L         AbsExecBase(A4),A0       ;206c 0000 
+              ADD.W          #$14,A0                  ;d0fc 0014 
+              MOVE.W         (A0),D7                  ;3e10 
+              MOVEQ.L        #$24,D0                  ;7024 
+              CMP.W          D0,D7                    ;be40 
+              BCC.B          ___ESQ_ColdReboot__4     ;6404 
+___ESQ_ColdReboot__2:
+              BSR.B          ESQ_ColdRebootViaSupervisor;61c4 
+___ESQ_ColdReboot__3:
+              BRA.B          ___ESQ_ColdReboot__5     ;600a 
+___ESQ_ColdReboot__4:
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOColdReboot           ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQ_ColdReboot__5:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_SupervisorColdReboot
+              XREF           AbsExecBase
+              XREF           _LVOSupervisor
+              XREF           _LVOColdReboot
+              XDEF           ESQ_ColdRebootViaSupervisor
+              XDEF           ESQ_ColdReboot
+              END
