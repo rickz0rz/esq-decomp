@@ -4012,6 +4012,39 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO1_AccumulateBlackoutMaskSum`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_accumulate_blackout_mask_sum_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagHiliteSrc`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_hilite_src_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagSummarySrc`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_summary_src_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagVideoTagDisable`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_video_tag_disable_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagPpvSrc`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_ppv_src_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagDitto`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_ditto_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagAltHiliteSrc`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_alt_hilite_src_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendAttrFlagBit7`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_bit7_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendTimeSlotMaskValueHeader`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_time_slot_mask_value_header_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_mask_value_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendTimeSlotMaskValueTerminator`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_time_slot_mask_value_terminator_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_mask_value_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendBlackoutMaskValueHeader`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_blackout_mask_value_header_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_mask_value_helper.awk`
+- SAS/C-only lane (`DISKIO1_AppendBlackoutMaskValueTerminator`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_append_blackout_mask_value_terminator_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_mask_value_helper.awk`
 - SAS/C-only lane (`GCOMMAND_SetPresetEntry_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
@@ -4204,6 +4237,17 @@ Recent promoted targets:
 - Unknown DISKIO1 `DISKIO1_AdvanceBlackoutBitIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_advance_blackout_bit_index_trial.sh`
 - Unknown DISKIO1 `DISKIO1_AccumulateTimeSlotMaskSum` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_accumulate_time_slot_mask_sum_trial.sh`
 - Unknown DISKIO1 `DISKIO1_AccumulateBlackoutMaskSum` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_accumulate_blackout_mask_sum_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagHiliteSrc` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_hilite_src_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagSummarySrc` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_summary_src_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagVideoTagDisable` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_video_tag_disable_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagPpvSrc` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_ppv_src_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagDitto` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_ditto_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagAltHiliteSrc` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_alt_hilite_src_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendAttrFlagBit7` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_attr_flag_bit7_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendTimeSlotMaskValueHeader` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_time_slot_mask_value_header_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendTimeSlotMaskValueTerminator` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_time_slot_mask_value_terminator_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendBlackoutMaskValueHeader` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_blackout_mask_value_header_trial.sh`
+- Unknown DISKIO1 `DISKIO1_AppendBlackoutMaskValueTerminator` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio1_append_blackout_mask_value_terminator_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_SetPresetEntry_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_ExpandPresetBlock_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_expand_preset_block_return_trial.sh`
 - Unknown GCOMMAND `GCOMMAND_ValidatePresetTable_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_return_trial.sh`
@@ -4880,6 +4924,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
+- `src/decomp/sas_c/diskio1_append_attr_helpers.c`
+- `src/decomp/sas_c/diskio1_mask_value_helpers.c`
 - `src/decomp/sas_c/gcommand3_return_stubs.c`
 - `src/decomp/sas_c/ladfunc2_return_stubs.c`
 - `src/decomp/sas_c/locavail_return_stubs.c`
@@ -5145,6 +5191,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio1_append_attr_helper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio1_mask_value_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_gcommand3_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc2_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_locavail_return_stub.awk`
