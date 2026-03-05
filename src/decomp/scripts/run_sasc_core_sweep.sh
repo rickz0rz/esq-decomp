@@ -779,6 +779,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script3_apply_pending_banner_target_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_save_ctrl_context_snapshot_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_load_ctrl_context_snapshot_trial.sh"
+    "src/decomp/scripts/compare_sasc_script3_process_ctrl_context_playback_tick_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_comparen_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_copypadnul_trial.sh"
