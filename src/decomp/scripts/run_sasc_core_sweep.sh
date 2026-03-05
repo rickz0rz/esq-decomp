@@ -792,6 +792,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_script3_jmptbl_parse_readsignedlongskipclass3_alt_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_comparen_trial.sh"
     "src/decomp/scripts/compare_sasc_script3_jmptbl_string_copypadnul_trial.sh"
+    "src/decomp/scripts/compare_sasc_script_reset_banner_char_defaults_trial.sh"
+    "src/decomp/scripts/compare_sasc_script_get_banner_char_or_fallback_trial.sh"
     "src/decomp/scripts/compare_sasc_script_draw_inset_text_with_frame_trial.sh"
     "src/decomp/scripts/compare_sasc_script_setup_highlight_effect_trial.sh"
     "src/decomp/scripts/compare_sasc_script_jmptbl_diskio_closebufferedfileandflush_trial.sh"
