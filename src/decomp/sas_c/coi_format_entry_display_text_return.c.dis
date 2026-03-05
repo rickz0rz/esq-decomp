@@ -1,0 +1,19 @@
+              SECTION      text,CODE
+__code:
+COI_FormatEntryDisplayText_Retur:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___COI_FormatEntryDisplayText_Retur__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+___COI_FormatEntryDisplayText_Retur__2:
+___COI_FormatEntryDisplayText_Retur__3:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           COI_FormatEntryDisplayText_Retur
+              END

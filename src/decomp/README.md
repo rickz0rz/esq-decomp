@@ -4988,5 +4988,32 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_brush_select_brush_slot_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_brush_select_brush_slot.awk`
 - `src/decomp/sas_c/brush_select_brush_slot.c`
+- `src/decomp/scripts/compare_sasc_coi_process_entry_selection_state_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_process_entry_selection_state.awk`
+- `src/decomp/sas_c/coi_process_entry_selection_state.c`
+- `src/decomp/scripts/compare_sasc_coi_render_clock_format_entry_variant_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_render_clock_format_entry_variant.awk`
+- `src/decomp/sas_c/coi_render_clock_format_entry_variant.c`
+- `src/decomp/scripts/compare_sasc_coi_select_anim_field_pointer_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_select_anim_field_pointer.awk`
+- `src/decomp/sas_c/coi_select_anim_field_pointer.c`
+- `src/decomp/scripts/compare_sasc_coi_clear_anim_object_strings_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_clear_anim_object_strings_return.awk`
+- `src/decomp/sas_c/coi_clear_anim_object_strings_return.c`
+- `src/decomp/scripts/compare_sasc_coi_free_entry_resources_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_free_entry_resources_return.awk`
+- `src/decomp/sas_c/coi_free_entry_resources_return.c`
+- `src/decomp/scripts/compare_sasc_coi_get_anim_field_pointer_by_mode_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_get_anim_field_pointer_by_mode_return.awk`
+- `src/decomp/sas_c/coi_get_anim_field_pointer_by_mode_return.c`
+- `src/decomp/scripts/compare_sasc_coi_compute_entry_time_delta_minutes_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_compute_entry_time_delta_minutes_return.awk`
+- `src/decomp/sas_c/coi_compute_entry_time_delta_minutes_return.c`
+- `src/decomp/scripts/compare_sasc_coi_append_anim_field_with_trailing_space_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_append_anim_field_with_trailing_space_return.awk`
+- `src/decomp/sas_c/coi_append_anim_field_with_trailing_space_return.c`
+- `src/decomp/scripts/compare_sasc_coi_format_entry_display_text_return_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_format_entry_display_text_return.awk`
+- `src/decomp/sas_c/coi_format_entry_display_text_return.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
