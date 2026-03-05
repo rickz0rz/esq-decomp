@@ -174,6 +174,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_load_default_table_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_load_mplex_file_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_load_mplex_template_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_load_ppv3_template_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_load_ppv_template_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_reset_banner_fade_state_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_find_path_separator_trial.sh"
