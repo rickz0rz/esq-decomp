@@ -872,6 +872,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_get_bit_4_of_ciab_pra_into_d1_trial.sh"
     "src/decomp/scripts/compare_sasc_graphics_bltbitmaprastport_trial.sh"
     "src/decomp/scripts/compare_sasc_kybd_initialize_input_devices_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc_alloc_banner_rect_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_compose_packed_pen_byte_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_high_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_get_packed_pen_low_nibble_trial.sh"
