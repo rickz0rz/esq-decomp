@@ -1,0 +1,76 @@
+              SECTION      text,CODE
+__code:
+DISKIO1_AppendTimeSlotMaskValueH:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendTimeSlotMaskValueH__1:
+              PEA            DISKIO_STR_TimeSlotListOpenParen(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              MOVE.B         #$1,__MERGEDBSS(A4)      ;197c 0001 0000 
+              BSR.W          DISKIO1_AppendTimeSlotMaskSelect;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendTimeSlotMaskValueH__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+DISKIO1_AppendTimeSlotMaskValueT:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendTimeSlotMaskValueT__1:
+              PEA            DISKIO_STR_TimeSlotListClosePare(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              BSR.W          DISKIO1_FormatBlackoutMaskFlags;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendTimeSlotMaskValueT__2:
+              RTS                                     ;4e75 
+DISKIO1_AppendBlackoutMaskValueH:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendBlackoutMaskValueH__1:
+              PEA            DISKIO_STR_BlackoutListOpenParen(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              MOVE.B         #$1,__MERGEDBSS(A4)      ;197c 0001 0000 
+              BSR.W          DISKIO1_AppendBlackoutMaskSelect;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendBlackoutMaskValueH__2:
+              RTS                                     ;4e75 
+DISKIO1_AppendBlackoutMaskValueT:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendBlackoutMaskValueT__1:
+              PEA            DISKIO_STR_BlackoutListClosePare(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              BSR.W          DISKIO1_DumpDefaultCoiInfoBlock;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendBlackoutMaskValueT__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DISKIO_STR_TimeSlotListOpenParen
+              XREF           GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW
+              XREF           DISKIO1_AppendTimeSlotMaskSelect
+              XREF           DISKIO_STR_TimeSlotListClosePare
+              XREF           DISKIO1_FormatBlackoutMaskFlags
+              XREF           DISKIO_STR_BlackoutListOpenParen
+              XREF           DISKIO1_AppendBlackoutMaskSelect
+              XREF           DISKIO_STR_BlackoutListClosePare
+              XREF           DISKIO1_DumpDefaultCoiInfoBlock
+              XDEF           DISKIO1_AppendTimeSlotMaskValueH
+              XDEF           DISKIO1_AppendTimeSlotMaskValueT
+              XDEF           DISKIO1_AppendBlackoutMaskValueH
+              XDEF           DISKIO1_AppendBlackoutMaskValueT
+
+              SECTION        __MERGED,BSS
+__MERGEDBSS
+gDiskio1MaskValueBitIndex:
+              DS.B           1
+              XDEF           gDiskio1MaskValueBitIndex
+              END

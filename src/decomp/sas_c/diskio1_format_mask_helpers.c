@@ -1,0 +1,47 @@
+typedef unsigned char UBYTE;
+typedef unsigned long ULONG;
+
+extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(const char *fmt, ...);
+extern void DISKIO1_AccumulateTimeSlotMaskSum(void);
+extern void DISKIO1_AccumulateBlackoutMaskSum(void);
+
+extern const char DISKIO_STR_AttrFlagsCloseParenNewline_A[];
+extern const char DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX[];
+extern const char DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02[];
+
+volatile UBYTE gDiskio1TimeSlotMaskBytes[6];
+volatile UBYTE gDiskio1BlackoutMaskBytes[6];
+volatile ULONG gDiskio1MaskDecisionSum;
+volatile ULONG gDiskio1MaskArrayIndex;
+
+void DISKIO1_FormatTimeSlotMaskFlags(void)
+{
+    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        DISKIO_STR_AttrFlagsCloseParenNewline_A);
+    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX,
+        (ULONG)gDiskio1TimeSlotMaskBytes[0],
+        (ULONG)gDiskio1TimeSlotMaskBytes[1],
+        (ULONG)gDiskio1TimeSlotMaskBytes[2],
+        (ULONG)gDiskio1TimeSlotMaskBytes[3],
+        (ULONG)gDiskio1TimeSlotMaskBytes[4],
+        (ULONG)gDiskio1TimeSlotMaskBytes[5]);
+    gDiskio1MaskDecisionSum = 0;
+    gDiskio1MaskArrayIndex = 0;
+    DISKIO1_AccumulateTimeSlotMaskSum();
+}
+
+void DISKIO1_FormatBlackoutMaskFlags(void)
+{
+    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02,
+        (ULONG)gDiskio1BlackoutMaskBytes[0],
+        (ULONG)gDiskio1BlackoutMaskBytes[1],
+        (ULONG)gDiskio1BlackoutMaskBytes[2],
+        (ULONG)gDiskio1BlackoutMaskBytes[3],
+        (ULONG)gDiskio1BlackoutMaskBytes[4],
+        (ULONG)gDiskio1BlackoutMaskBytes[5]);
+    gDiskio1MaskDecisionSum = 0;
+    gDiskio1MaskArrayIndex = 0;
+    DISKIO1_AccumulateBlackoutMaskSum();
+}

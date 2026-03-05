@@ -1,0 +1,154 @@
+              SECTION      text,CODE
+__code:
+DISKIO1_AppendAttrFlagHiliteSrc:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagHiliteSrc__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$1,D0                   ;0800 0001 
+              BEQ.B          ___DISKIO1_AppendAttrFlagHiliteSrc__3;670a 
+___DISKIO1_AppendAttrFlagHiliteSrc__2:
+              PEA            DISKIO_STR_HILITE_SRC_CompactSou(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagHiliteSrc__3:
+              BSR.W          DISKIO1_AppendAttrFlagSummarySrc;6100 0000 
+___DISKIO1_AppendAttrFlagHiliteSrc__4:
+___DISKIO1_AppendAttrFlagHiliteSrc__5:
+              RTS                                     ;4e75 
+__const:
+__strings:
+DISKIO1_AppendAttrFlagSummarySrc:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagSummarySrc__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$2,D0                   ;0800 0002 
+              BEQ.B          ___DISKIO1_AppendAttrFlagSummarySrc__3;670a 
+___DISKIO1_AppendAttrFlagSummarySrc__2:
+              PEA            DISKIO_STR_SUM_SRC_CompactSource(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagSummarySrc__3:
+              BSR.W          DISKIO1_AppendAttrFlagVideoTagDi;6100 0000 
+___DISKIO1_AppendAttrFlagSummarySrc__4:
+___DISKIO1_AppendAttrFlagSummarySrc__5:
+              RTS                                     ;4e75 
+DISKIO1_AppendAttrFlagVideoTagDi:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagVideoTagDi__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$3,D0                   ;0800 0003 
+              BEQ.B          ___DISKIO1_AppendAttrFlagVideoTagDi__3;670a 
+___DISKIO1_AppendAttrFlagVideoTagDi__2:
+              PEA            DISKIO_STR_VIDEO_TAG_DISABLE_Com(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagVideoTagDi__3:
+              BSR.W          DISKIO1_AppendAttrFlagPpvSrc;6100 0000 
+___DISKIO1_AppendAttrFlagVideoTagDi__4:
+___DISKIO1_AppendAttrFlagVideoTagDi__5:
+              RTS                                     ;4e75 
+DISKIO1_AppendAttrFlagPpvSrc:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagPpvSrc__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$4,D0                   ;0800 0004 
+              BEQ.B          ___DISKIO1_AppendAttrFlagPpvSrc__3;670a 
+___DISKIO1_AppendAttrFlagPpvSrc__2:
+              PEA            DISKIO_STR_PPV_SRC_CompactSource(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagPpvSrc__3:
+              BSR.W          DISKIO1_AppendAttrFlagDitto;6100 0000 
+___DISKIO1_AppendAttrFlagPpvSrc__4:
+___DISKIO1_AppendAttrFlagPpvSrc__5:
+              RTS                                     ;4e75 
+DISKIO1_AppendAttrFlagDitto:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagDitto__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$5,D0                   ;0800 0005 
+              BEQ.B          ___DISKIO1_AppendAttrFlagDitto__3;670a 
+___DISKIO1_AppendAttrFlagDitto__2:
+              PEA            DISKIO_STR_DITTO_CompactSourceAt(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagDitto__3:
+              BSR.W          DISKIO1_AppendAttrFlagAltHiliteS;6100 0000 
+___DISKIO1_AppendAttrFlagDitto__4:
+___DISKIO1_AppendAttrFlagDitto__5:
+              RTS                                     ;4e75 
+DISKIO1_AppendAttrFlagAltHiliteS:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagAltHiliteS__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$6,D0                   ;0800 0006 
+              BEQ.B          ___DISKIO1_AppendAttrFlagAltHiliteS__3;670a 
+___DISKIO1_AppendAttrFlagAltHiliteS__2:
+              PEA            DISKIO_STR_ALTHILITESRC_CompactS(A4);486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagAltHiliteS__3:
+              BSR.W          DISKIO1_AppendAttrFlagBit7;6100 0000 
+___DISKIO1_AppendAttrFlagAltHiliteS__4:
+___DISKIO1_AppendAttrFlagAltHiliteS__5:
+              RTS                                     ;4e75 
+DISKIO1_AppendAttrFlagBit7:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AppendAttrFlagBit7__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              BTST           #$7,D0                   ;0800 0007 
+              BEQ.B          ___DISKIO1_AppendAttrFlagBit7__3;670a 
+___DISKIO1_AppendAttrFlagBit7__2:
+              PEA            DISKIO_STR_0X80(A4)      ;486c 0000 
+              BSR.W          GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___DISKIO1_AppendAttrFlagBit7__3:
+              BSR.W          DISKIO1_FormatTimeSlotMaskFlags;6100 0000 
+___DISKIO1_AppendAttrFlagBit7__4:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DISKIO_STR_HILITE_SRC_CompactSou
+              XREF           GROUP_AJ_JMPTBL_FORMAT_RawDoFmtW
+              XREF           DISKIO_STR_SUM_SRC_CompactSource
+              XREF           DISKIO_STR_VIDEO_TAG_DISABLE_Com
+              XREF           DISKIO_STR_PPV_SRC_CompactSource
+              XREF           DISKIO_STR_DITTO_CompactSourceAt
+              XREF           DISKIO_STR_ALTHILITESRC_CompactS
+              XREF           DISKIO_STR_0X80
+              XREF           DISKIO1_FormatTimeSlotMaskFlags
+              XDEF           DISKIO1_AppendAttrFlagHiliteSrc
+              XDEF           DISKIO1_AppendAttrFlagSummarySrc
+              XDEF           DISKIO1_AppendAttrFlagVideoTagDi
+              XDEF           DISKIO1_AppendAttrFlagPpvSrc
+              XDEF           DISKIO1_AppendAttrFlagDitto
+              XDEF           DISKIO1_AppendAttrFlagAltHiliteS
+              XDEF           DISKIO1_AppendAttrFlagBit7
+
+              SECTION        __MERGED,BSS
+__MERGEDBSS
+gDiskio1AttrFlags:
+              DS.B           1
+              XDEF           gDiskio1AttrFlags
+              END

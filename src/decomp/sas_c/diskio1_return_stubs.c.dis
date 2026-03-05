@@ -1,0 +1,28 @@
+              SECTION      text,CODE
+__code:
+DISKIO1_DumpDefaultCoiInfoBlock_:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_DumpDefaultCoiInfoBlock___1:
+___DISKIO1_DumpDefaultCoiInfoBlock___2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+DISKIO1_DumpProgramSourceRecordV:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_DumpProgramSourceRecordV__1:
+___DISKIO1_DumpProgramSourceRecordV__2:
+              RTS                                     ;4e75 
+DISKIO1_DumpProgramInfoAttrTable:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_DumpProgramInfoAttrTable__1:
+___DISKIO1_DumpProgramInfoAttrTable__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           DISKIO1_DumpDefaultCoiInfoBlock_
+              XDEF           DISKIO1_DumpProgramSourceRecordV
+              XDEF           DISKIO1_DumpProgramInfoAttrTable
+              END

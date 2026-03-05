@@ -1,0 +1,37 @@
+              SECTION      text,CODE
+__code:
+DISKIO1_AdvanceTimeSlotBitIndex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AdvanceTimeSlotBitIndex__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              ADDQ.B         #$1,D0                   ;5200 
+              MOVE.B         D0,__MERGEDBSS(A4)       ;1940 0000 
+              BSR.W          DISKIO1_AppendTimeSlotMaskSelect;6100 0000 
+___DISKIO1_AdvanceTimeSlotBitIndex__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+DISKIO1_AdvanceBlackoutBitIndex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___DISKIO1_AdvanceBlackoutBitIndex__1:
+              MOVE.B         __MERGEDBSS(A4),D0       ;102c 0000 
+              ADDQ.B         #$1,D0                   ;5200 
+              MOVE.B         D0,__MERGEDBSS(A4)       ;1940 0000 
+              BSR.W          DISKIO1_AppendBlackoutMaskSelect;6100 0000 
+___DISKIO1_AdvanceBlackoutBitIndex__2:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DISKIO1_AppendTimeSlotMaskSelect
+              XREF           DISKIO1_AppendBlackoutMaskSelect
+              XDEF           DISKIO1_AdvanceTimeSlotBitIndex
+              XDEF           DISKIO1_AdvanceBlackoutBitIndex
+
+              SECTION        __MERGED,BSS
+__MERGEDBSS
+gDiskio1AdvanceHelperBitIndex:
+              DS.B           1
+              XDEF           gDiskio1AdvanceHelperBitIndex
+              END
