@@ -872,6 +872,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_get_bit_4_of_ciab_pra_into_d1_trial.sh"
     "src/decomp/scripts/compare_sasc_graphics_bltbitmaprastport_trial.sh"
     "src/decomp/scripts/compare_sasc_kybd_initialize_input_devices_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_char_to_scratch_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_chunked_return_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_with_limit_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_with_limit_return_trial.sh"
