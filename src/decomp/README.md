@@ -5097,6 +5097,7 @@ Recent promoted targets:
 - PARSEINI2 `PARSEINI2_JMPTBL_DATETIME_IsLeapYear` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_datetime_isleapyear_trial.sh`
 - PARSEINI2 `PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_battclock_writesecondstobatterybackedclock_trial.sh`
 - PARSEINI2 `PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_secondsfromepoch_trial.sh`
+- PARSEINI `PARSEINI_ParseHexValueFromString` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini_parse_hex_value_from_string_trial.sh`
 - PARSEINI2 `PARSEINI_AdjustHoursTo24HrFormat` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_adjust_hours_to_24hr_format_trial.sh`
 - PARSEINI2 `PARSEINI_NormalizeClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_normalize_clock_data_trial.sh`
 - PARSEINI2 `PARSEINI_UpdateClockFromRtc` SAS/C compare script: `src/decomp/scripts/compare_sasc_parseini2_update_clock_from_rtc_trial.sh`
