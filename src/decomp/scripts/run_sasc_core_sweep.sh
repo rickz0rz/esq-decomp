@@ -132,6 +132,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_group_main_b_jmptbl_dos_delay_trial.sh"
     "src/decomp/scripts/compare_sasc_group_at_jmptbl_dos_system_taglist_trial.sh"
     "src/decomp/scripts/compare_sasc_group_av_jmptbl_exec_call_vector_48_trial.sh"
+    "src/decomp/scripts/compare_sasc_group_av_jmptbl_allocate_alloc_and_initialize_iostdreq_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ag_jmptbl_dos_open_file_with_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ag_jmptbl_iostdreq_cleanup_signal_and_msgport_trial.sh"
     "src/decomp/scripts/compare_sasc_group_ag_jmptbl_parse_read_signed_long_skip_class3_alt_trial.sh"
