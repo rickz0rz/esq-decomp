@@ -3973,6 +3973,12 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO2_CopyAndSanitizeSlotString`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_copy_and_sanitize_slot_string_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_copy_sanitize_helper.awk`
+- SAS/C-only lane (`DISKIO2_DisplayStatusLine`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_display_status_line_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_display_status_line.awk`
+- SAS/C-only lane (`DISKIO2_RunDiskSyncWorkflow`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio2_run_disk_sync_workflow_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio2_run_disk_sync_workflow.awk`
 - SAS/C-only lane (`ESQSHARED_MatchSelectionCodeWithOptionalSuffix_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqshared_match_selection_code_with_optional_suffix_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqshared_return_stub.awk`
@@ -4965,6 +4971,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_probe_drives_and_assign_paths.c`
 - `src/decomp/sas_c/diskio2_flush_reload_helpers.c`
 - `src/decomp/sas_c/diskio2_copy_sanitize_helpers.c`
+- `src/decomp/sas_c/diskio2_display_status_line.c`
+- `src/decomp/sas_c/diskio2_run_disk_sync_workflow.c`
 - `src/decomp/sas_c/diskio1_dump_default_coi_info_block.c`
 - `src/decomp/sas_c/diskio1_dump_program_source_record_verbose.c`
 - `src/decomp/sas_c/diskio1_dump_program_info_verbose.c`
@@ -5242,6 +5250,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_flush_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_reload_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio2_copy_sanitize_helper.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_display_status_line.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio2_run_disk_sync_workflow.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_default_coi_info_block.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_source_record_verbose.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_dump_program_info_verbose.awk`
