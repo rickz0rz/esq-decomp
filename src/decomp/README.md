@@ -6109,6 +6109,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_build_entry_buffers_or_default_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_build_entry_buffers_or_default.awk`
 - `src/decomp/sas_c/ladfunc_build_entry_buffers_or_default.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_build_highlight_lines_from_text_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_build_highlight_lines_from_text.awk`
+- `src/decomp/sas_c/ladfunc_build_highlight_lines_from_text.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_clear_banner_rect_entries_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_clear_banner_rect_entries.awk`
 - `src/decomp/sas_c/ladfunc_clear_banner_rect_entries.c`
@@ -6118,6 +6121,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_draw_entry_preview_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_draw_entry_preview.awk`
 - `src/decomp/sas_c/ladfunc_draw_entry_preview.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_draw_entry_line_with_attrs_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_draw_entry_line_with_attrs.awk`
+- `src/decomp/sas_c/ladfunc_draw_entry_line_with_attrs.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_display_text_packed_pens_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_display_text_packed_pens.awk`
 - `src/decomp/sas_c/ladfunc_display_text_packed_pens.c`
@@ -6133,6 +6139,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_load_text_ads_from_file_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_load_text_ads_from_file.awk`
 - `src/decomp/sas_c/ladfunc_load_text_ads_from_file.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_parse_banner_entry_data_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_parse_banner_entry_data.awk`
+- `src/decomp/sas_c/ladfunc_parse_banner_entry_data.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_parse_hex_digit_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_parse_hex_digit.awk`
 - `src/decomp/sas_c/ladfunc_parse_hex_digit.c`
@@ -6142,6 +6151,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_reset_entry_text_buffers_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_reset_entry_text_buffers.awk`
 - `src/decomp/sas_c/ladfunc_reset_entry_text_buffers.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_repack_entry_text_and_attr_buffers_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_repack_entry_text_and_attr_buffers.awk`
+- `src/decomp/sas_c/ladfunc_repack_entry_text_and_attr_buffers.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_save_text_ads_to_file_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_save_text_ads_to_file.awk`
 - `src/decomp/sas_c/ladfunc_save_text_ads_to_file.c`
@@ -6151,6 +6163,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_low_nibble_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_set_packed_pen_low_nibble.awk`
 - `src/decomp/sas_c/ladfunc_set_packed_pen_low_nibble.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_update_entry_from_text_and_attr_buffers_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_update_entry_from_text_and_attr_buffers.awk`
+- `src/decomp/sas_c/ladfunc_update_entry_from_text_and_attr_buffers.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_update_highlight_state_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_update_highlight_state.awk`
 - `src/decomp/sas_c/ladfunc_update_highlight_state.c`

@@ -1,0 +1,99 @@
+typedef signed long LONG;
+typedef unsigned short UWORD;
+typedef unsigned char UBYTE;
+
+#define MEMF_PUBLIC 0x00000001L
+#define MEMF_CLEAR  0x00010000L
+
+typedef struct LADFUNC_EntryRecord {
+    UWORD reserved0;
+    UWORD reserved1;
+    UBYTE reserved2[2];
+    UBYTE *textPtr;
+    UBYTE *attrPtr;
+} LADFUNC_EntryRecord;
+
+extern LADFUNC_EntryRecord *LADFUNC_EntryPtrTable[];
+
+extern void LADFUNC_RepackEntryTextAndAttrBuffers(UBYTE *textBuf, UBYTE *attrBuf);
+extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(const char *file, LONG line, LONG size, LONG flags);
+extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(const char *file, LONG line, void *ptr, LONG size);
+extern UBYTE *ESQPARS_ReplaceOwnedString(UBYTE *newText, UBYTE *oldText);
+
+extern const char Global_STR_LADFUNC_C_28[];
+extern const char Global_STR_LADFUNC_C_29[];
+extern const char Global_STR_LADFUNC_C_30[];
+
+void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, UBYTE *attrBuf)
+{
+    LADFUNC_EntryRecord *entry;
+    LONG oldTextLen;
+    LONG newTextLen;
+
+    LADFUNC_RepackEntryTextAndAttrBuffers(textBuf, attrBuf);
+
+    entry = LADFUNC_EntryPtrTable[entryIndex];
+    if (entry == (LADFUNC_EntryRecord *)0) {
+        entry = (LADFUNC_EntryRecord *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+            Global_STR_LADFUNC_C_28,
+            1362,
+            14,
+            (MEMF_PUBLIC + MEMF_CLEAR)
+        );
+        LADFUNC_EntryPtrTable[entryIndex] = entry;
+        if (entry != (LADFUNC_EntryRecord *)0) {
+            entry->reserved0 = 0;
+            entry->reserved1 = 0;
+        }
+    }
+
+    if (entry == (LADFUNC_EntryRecord *)0) {
+        return;
+    }
+
+    oldTextLen = 0;
+    if (entry->textPtr != (UBYTE *)0) {
+        UBYTE *p = entry->textPtr;
+        while (*p != 0) {
+            ++p;
+        }
+        oldTextLen = (LONG)(p - entry->textPtr);
+    }
+
+    entry->textPtr = ESQPARS_ReplaceOwnedString(textBuf, entry->textPtr);
+
+    if (oldTextLen != 0 && entry->attrPtr != (UBYTE *)0) {
+        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
+            Global_STR_LADFUNC_C_29,
+            1386,
+            entry->attrPtr,
+            oldTextLen
+        );
+    }
+
+    newTextLen = 0;
+    if (entry->textPtr != (UBYTE *)0) {
+        UBYTE *p = entry->textPtr;
+        while (*p != 0) {
+            ++p;
+        }
+        newTextLen = (LONG)(p - entry->textPtr);
+    }
+
+    entry->attrPtr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+        Global_STR_LADFUNC_C_30,
+        1389,
+        newTextLen,
+        (MEMF_PUBLIC + MEMF_CLEAR)
+    );
+    if (entry->attrPtr == (UBYTE *)0) {
+        return;
+    }
+
+    {
+        LONG i;
+        for (i = 0; i < newTextLen; ++i) {
+            entry->attrPtr[i] = attrBuf[i];
+        }
+    }
+}
