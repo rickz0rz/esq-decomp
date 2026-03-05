@@ -4147,6 +4147,12 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQDISP_InitHighlightMessagePattern`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esqdisp_init_highlight_message_pattern_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqdisp_init_highlight_message_pattern.awk`
+- SAS/C-only lane (`ESQDISP_GetEntryPointerByMode`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqdisp_get_entry_pointer_by_mode_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqdisp_get_entry_pointer_by_mode.awk`
+- SAS/C-only lane (`ESQDISP_GetEntryAuxPointerByMode`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esqdisp_get_entry_aux_pointer_by_mode_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esqdisp_get_entry_aux_pointer_by_mode.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5168,6 +5174,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/esqdisp_refresh_status_indicators_from_current_mask.c`
 - `src/decomp/sas_c/esqdisp_allocate_highlight_bitmaps.c`
 - `src/decomp/sas_c/esqdisp_init_highlight_message_pattern.c`
+- `src/decomp/sas_c/esqdisp_get_entry_pointers_by_mode.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5494,6 +5501,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esqdisp_refresh_status_indicators_from_current_mask.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqdisp_allocate_highlight_bitmaps.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esqdisp_init_highlight_message_pattern.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqdisp_get_entry_pointer_by_mode.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esqdisp_get_entry_aux_pointer_by_mode.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
