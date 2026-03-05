@@ -30,6 +30,14 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_str_skip_class3_chars_trial.sh"
     "src/decomp/scripts/compare_sasc_str_copy_until_any_delim_n_trial.sh"
     "src/decomp/scripts/compare_sasc_format_u32_to_decimal_string_trial.sh"
+    "src/decomp/scripts/compare_sasc_battclock_get_seconds_from_battery_backed_clock_trial.sh"
+    "src/decomp/scripts/compare_sasc_battclock_write_seconds_to_battery_backed_clock_trial.sh"
+    "src/decomp/scripts/compare_sasc_dos_delay_trial.sh"
+    "src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh"
+    "src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh"
+    "src/decomp/scripts/compare_sasc_group_main_b_jmptbl_dos_delay_trial.sh"
+    "src/decomp/scripts/compare_sasc_group_at_jmptbl_dos_system_taglist_trial.sh"
+    "src/decomp/scripts/compare_sasc_group_av_jmptbl_exec_call_vector_48_trial.sh"
     "src/decomp/scripts/compare_sasc_disptext_build_line_with_width_trial.sh"
     "src/decomp/scripts/compare_sasc_disptext_layout_source_to_lines_trial.sh"
     "src/decomp/scripts/compare_sasc_disptext_layout_and_append_to_buffer_trial.sh"
@@ -43,8 +51,8 @@ failed=0
 echo "SAS/C core sweep (strict=${STRICT})"
 
 for script in "${SCRIPTS[@]}"; do
-    if [ ! -x "$script" ]; then
-        echo "skip (missing/not executable): $script"
+    if [ ! -f "$script" ]; then
+        echo "skip (missing): $script"
         continue
     fi
 
