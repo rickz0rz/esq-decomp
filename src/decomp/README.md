@@ -3949,6 +3949,21 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO_ParseConfigBuffer`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_parse_config_buffer_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_parse_config_buffer.awk`
+- SAS/C-only lane (`DISKIO_CloseBufferedFileAndFlush_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_close_buffered_file_and_flush_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_return_stub.awk`
+- SAS/C-only lane (`DISKIO_WriteBufferedBytes_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_write_buffered_bytes_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_return_stub.awk`
+- SAS/C-only lane (`DISKIO_EnsurePc1MountedAndGfxAssigned_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_return_stub.awk`
+- SAS/C-only lane (`DISKIO_SaveConfigToFileHandle_Return`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_save_config_to_file_handle_return_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_return_stub.awk`
+- SAS/C-only lane (`DISKIO_ProbeDrivesAndAssignPaths`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_probe_drives_and_assign_paths_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_probe_drives_and_assign_paths.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -4024,6 +4039,11 @@ Recent promoted targets:
 - Unknown DISKIO `DISKIO_LoadConfigFromDisk` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_load_config_from_disk_trial.sh`
 - Unknown DISKIO `DISKIO_SaveConfigToFileHandle` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_save_config_to_file_handle_trial.sh`
 - Unknown DISKIO `DISKIO_ParseConfigBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_parse_config_buffer_trial.sh`
+- Unknown DISKIO `DISKIO_CloseBufferedFileAndFlush_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_close_buffered_file_and_flush_return_trial.sh`
+- Unknown DISKIO `DISKIO_WriteBufferedBytes_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_buffered_bytes_return_trial.sh`
+- Unknown DISKIO `DISKIO_EnsurePc1MountedAndGfxAssigned_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_ensure_pc1_mounted_and_gfx_assigned_return_trial.sh`
+- Unknown DISKIO `DISKIO_SaveConfigToFileHandle_Return` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_save_config_to_file_handle_return_trial.sh`
+- Unknown DISKIO `DISKIO_ProbeDrivesAndAssignPaths` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_probe_drives_and_assign_paths_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4660,6 +4680,8 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_load_config_from_disk.c`
 - `src/decomp/sas_c/diskio_save_config_to_file_handle.c`
 - `src/decomp/sas_c/diskio_parse_config_buffer.c`
+- `src/decomp/sas_c/diskio_return_stubs.c`
+- `src/decomp/sas_c/diskio_probe_drives_and_assign_paths.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4910,6 +4932,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_load_config_from_disk.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_save_config_to_file_handle.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_parse_config_buffer.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_return_stub.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_probe_drives_and_assign_paths.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
