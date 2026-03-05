@@ -6262,5 +6262,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_tliba2_resolve_entry_window_with_default_range_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba2_resolve_entry_window_with_default_range.awk`
 - `src/decomp/sas_c/tliba2_resolve_entry_window_with_default_range.c`
+- `src/decomp/scripts/compare_sasc_tliba_find_first_wildcard_match_index_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_tliba_find_first_wildcard_match_index.awk`
+- `src/decomp/sas_c/tliba_find_first_wildcard_match_index.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
