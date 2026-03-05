@@ -4409,6 +4409,7 @@ Recent promoted targets:
 
 ## SAS/C Trial Lane
 - `sc-build-with-dis.sh` now passes `--vols-base-dir` (defaults to `build/decomp/vamos_vols`) so `vamos` temp volumes stay inside workspace-writable paths.
+- Fast cadence helper: `src/decomp/scripts/run_sasc_core_sweep.sh` (use `--strict` to fail on any non-zero semantic diff).
 - Memory pair SAS/C compare script: `src/decomp/scripts/compare_sasc_memory_pair_trial.sh`
 - String toupper SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_trial.sh`
 - Unknown34 pair SAS/C compare script (`LIST_InitHeader` + `MEM_Move`): `src/decomp/scripts/compare_sasc_unknown34_pair_trial.sh`
