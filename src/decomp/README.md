@@ -6133,6 +6133,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_parse_hex_digit_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_parse_hex_digit.awk`
 - `src/decomp/sas_c/ladfunc_parse_hex_digit.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_reflow_entry_buffers_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_reflow_entry_buffers.awk`
+- `src/decomp/sas_c/ladfunc_reflow_entry_buffers.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_reset_entry_text_buffers_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_reset_entry_text_buffers.awk`
 - `src/decomp/sas_c/ladfunc_reset_entry_text_buffers.c`
