@@ -1,0 +1,30 @@
+              SECTION      text,CODE
+__code:
+CLEANUP_ClearAud1InterruptVector:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___CLEANUP_ClearAud1InterruptVector__1:
+              MOVE.L         #$dff09a,A0              ;207c 00df f09a 
+              MOVE.W         #$100,(A0)               ;30bc 0100 
+              BSR.W          _LVOSetIntVector         ;6100 0000 
+              MOVE.L         Global_REF_INTERRUPT_STRUCT_INTB(A4),A0;206c 0000 
+              PEA            ($16).w                  ;4878 0016 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($4a).w                  ;4878 004a 
+              PEA            Global_STR_CLEANUP_C_2(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___CLEANUP_ClearAud1InterruptVector__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVOSetIntVector
+              XREF           Global_REF_INTERRUPT_STRUCT_INTB
+              XREF           Global_STR_CLEANUP_C_2
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XDEF           CLEANUP_ClearAud1InterruptVector
+              END

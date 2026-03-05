@@ -5078,6 +5078,15 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_cleanup_process_alerts_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_process_alerts.awk`
 - `src/decomp/sas_c/cleanup_process_alerts.c`
+- `src/decomp/scripts/compare_sasc_cleanup_clear_aud1_interrupt_vector_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_clear_aud1_interrupt_vector.awk`
+- `src/decomp/sas_c/cleanup_clear_aud1_interrupt_vector.c`
+- `src/decomp/scripts/compare_sasc_cleanup_clear_vertb_interrupt_server_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_clear_vertb_interrupt_server.awk`
+- `src/decomp/sas_c/cleanup_clear_vertb_interrupt_server.c`
+- `src/decomp/scripts/compare_sasc_cleanup_clear_rbf_interrupt_and_serial_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_clear_rbf_interrupt_and_serial.awk`
+- `src/decomp/sas_c/cleanup_clear_rbf_interrupt_and_serial.c`
 - `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
 - `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
