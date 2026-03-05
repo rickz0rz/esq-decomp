@@ -175,6 +175,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqshared4_reset_banner_color_sweep_state_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_decode_rgb_nibble_triplet_trial.sh"
     "src/decomp/scripts/compare_sasc_esqshared4_load_copper_color_words_from_nibble_table_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_set_banner_copper_color_and_threshold_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_reset_banner_color_to_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_update_copper_lists_from_params_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_end_trial.sh"
