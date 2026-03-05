@@ -3981,6 +3981,9 @@ Recent promoted targets:
 - Unknown29 `ESQ_ParseCommandLineAndRun` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_parse_command_line_and_run_trial.sh`
 - Unknown2B `ESQ_MainEntryNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_main_entry_noop_hook_trial.sh`
 - Unknown2B `ESQ_MainExitNoOpHook` SAS/C compare script: `src/decomp/scripts/compare_sasc_esq_main_exit_noop_hook_trial.sh`
+- Unknown2B `DOS_OpenFileWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_file_with_mode_trial.sh`
+- Unknown2B `GRAPHICS_AllocRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_alloc_raster_trial.sh`
+- Unknown2B `GRAPHICS_FreeRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_free_raster_trial.sh`
 - Unknown `ESQPROTO_CopyLabelToGlobal` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_copy_label_to_global_trial.sh`
 - Unknown `ESQPROTO_ParseDigitLabelAndDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_parse_digit_label_and_display_trial.sh`
 - Unknown `UNKNOWN_ParseRecordAndUpdateDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_record_and_update_display_trial.sh`
@@ -4585,6 +4588,9 @@ Recent promoted targets:
 - `src/decomp/sas_c/unknown29_jmptbl_esq_main_init_and_run.c`
 - `src/decomp/sas_c/unknown29_esq_parse_command_line_and_run.c`
 - `src/decomp/sas_c/unknown2b_main_noop_hooks.c`
+- `src/decomp/sas_c/dos_open_file_with_mode.c`
+- `src/decomp/sas_c/graphics_alloc_raster.c`
+- `src/decomp/sas_c/graphics_free_raster.c`
 - `src/decomp/sas_c/unknown_esqproto_copy_label_to_global.c`
 - `src/decomp/sas_c/unknown_esqproto_parse_digit_label_and_display.c`
 - `src/decomp/sas_c/unknown_parse_record_and_update_display.c`
@@ -4925,5 +4931,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_cold_reboot_pair.awk`
 - `src/decomp/scripts/semantic_filter_sasc_cold_reboot.awk`
 - `src/decomp/scripts/semantic_filter_sasc_cold_reboot_via_supervisor.awk`
+- `src/decomp/scripts/semantic_filter_sasc_dos_open_file_with_mode.awk`
+- `src/decomp/scripts/semantic_filter_sasc_graphics_alloc_raster.awk`
+- `src/decomp/scripts/semantic_filter_sasc_graphics_free_raster.awk`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
