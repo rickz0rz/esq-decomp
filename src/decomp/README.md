@@ -4189,6 +4189,9 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPTEXT_FreeBuffers`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_free_buffers_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_free_buffers.awk`
+- SAS/C-only lane (`DISPTEXT_ComputeMarkerWidths`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_compute_marker_widths_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_compute_marker_widths.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5216,6 +5219,7 @@ Recent promoted targets:
 - `src/decomp/sas_c/disptext_compute_visible_line_count.c`
 - `src/decomp/sas_c/disptext_layout_helpers.c`
 - `src/decomp/sas_c/disptext_buffer_helpers.c`
+- `src/decomp/sas_c/disptext_marker_helpers.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5556,6 +5560,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_disptext_set_layout_params.awk`
 - `src/decomp/scripts/semantic_filter_sasc_disptext_init_buffers.awk`
 - `src/decomp/scripts/semantic_filter_sasc_disptext_free_buffers.awk`
+- `src/decomp/scripts/semantic_filter_sasc_disptext_compute_marker_widths.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
