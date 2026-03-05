@@ -1060,6 +1060,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_newgrid_jmptbl_wdisp_updateselectionpreviewpanel_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_clear_highlight_area_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_trial.sh"
+    "src/decomp/scripts/compare_sasc_newgrid_compute_day_slot_from_clock_with_offset_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_fill_grid_rects_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_draw_grid_frame_trial.sh"
     "src/decomp/scripts/compare_sasc_newgrid_should_open_editor_trial.sh"
