@@ -4090,6 +4090,9 @@ Recent promoted targets:
 - SAS/C-only lane (`ESQ_ReadSerialRbfByte`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_read_serial_rbf_byte_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_read_serial_rbf_byte.awk`
+- SAS/C-only lane (`ESQ_ReturnWithStackCode`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_return_with_stack_code_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_return_with_stack_code.awk`
 - SAS/C-only lane (`ESQ_CaptureCtrlBit4StreamBufferByte`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_esq_capture_ctrl_bit4_stream_buffer_byte_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_esq_capture_ctrl_bit4_stream_buffer_byte.awk`
@@ -4105,6 +4108,9 @@ Recent promoted targets:
 - SAS/C-only lane (`GET_BIT_4_OF_CIAB_PRA_INTO_D1`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_get_bit_4_of_ciab_pra_into_d1_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_get_bit_4_of_ciab_pra_into_d1.awk`
+- SAS/C-only lane (`ED1_ClearEscMenuMode`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_ed1_clear_esc_menu_mode_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_ed1_clear_esc_menu_mode.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5107,11 +5113,13 @@ Recent promoted targets:
 - `src/decomp/sas_c/esq_init_audio1_dma.c`
 - `src/decomp/sas_c/esq_poll_ctrl_input.c`
 - `src/decomp/sas_c/esq_read_serial_rbf_byte.c`
+- `src/decomp/sas_c/esq_return_with_stack_code.c`
 - `src/decomp/sas_c/esq_capture_ctrl_bit4_stream_buffer_byte.c`
 - `src/decomp/sas_c/esq_capture_ctrl_bit4_stream.c`
 - `src/decomp/sas_c/esq_capture_ctrl_bit3_stream.c`
 - `src/decomp/sas_c/get_bit_3_of_ciab_pra_into_d1.c`
 - `src/decomp/sas_c/get_bit_4_of_ciab_pra_into_d1.c`
+- `src/decomp/sas_c/ed1_clear_esc_menu_mode.c`
 - `src/decomp/sas_c/diskio1_return_stubs.c`
 - `src/decomp/sas_c/diskio1_advance_helpers.c`
 - `src/decomp/sas_c/diskio1_accumulate_helpers.c`
@@ -5419,11 +5427,13 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_esq_init_audio1_dma.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_poll_ctrl_input.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_read_serial_rbf_byte.awk`
+- `src/decomp/scripts/semantic_filter_sasc_esq_return_with_stack_code.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_capture_ctrl_bit4_stream_buffer_byte.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_capture_ctrl_bit4_stream.awk`
 - `src/decomp/scripts/semantic_filter_sasc_esq_capture_ctrl_bit3_stream.awk`
 - `src/decomp/scripts/semantic_filter_sasc_get_bit_3_of_ciab_pra_into_d1.awk`
 - `src/decomp/scripts/semantic_filter_sasc_get_bit_4_of_ciab_pra_into_d1.awk`
+- `src/decomp/scripts/semantic_filter_sasc_ed1_clear_esc_menu_mode.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
