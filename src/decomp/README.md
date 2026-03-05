@@ -3934,6 +3934,15 @@ Recent promoted targets:
 - SAS/C-only lane (`DISKIO_QueryDiskUsagePercentAndSetBufferSize`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_query_disk_usage_percent_and_set_buffer_size_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_query_disk_usage_percent_and_set_buffer_size.awk`
+- SAS/C-only lane (`DISKIO_WriteBufferedBytes`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_write_buffered_bytes_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_write_buffered_bytes.awk`
+- SAS/C-only lane (`DISKIO_CloseBufferedFileAndFlush`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_close_buffered_file_and_flush_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_close_buffered_file_and_flush.awk`
+- SAS/C-only lane (`DISKIO_LoadConfigFromDisk`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio_load_config_from_disk_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio_load_config_from_disk.awk`
 - latest full C trial: `compiled 1031 / 1031`, `export count 1039`, `status: ok`
 
 ## Toolchain Notes
@@ -4004,6 +4013,9 @@ Recent promoted targets:
 - Unknown DISKIO `DISKIO_LoadFileToWorkBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_load_file_to_work_buffer_trial.sh`
 - Unknown DISKIO `DISKIO_OpenFileWithBuffer` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_open_file_with_buffer_trial.sh`
 - Unknown DISKIO `DISKIO_QueryDiskUsagePercentAndSetBufferSize` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_query_disk_usage_percent_and_set_buffer_size_trial.sh`
+- Unknown DISKIO `DISKIO_WriteBufferedBytes` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_buffered_bytes_trial.sh`
+- Unknown DISKIO `DISKIO_CloseBufferedFileAndFlush` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_close_buffered_file_and_flush_trial.sh`
+- Unknown DISKIO `DISKIO_LoadConfigFromDisk` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_load_config_from_disk_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_convert_amiga_seconds_to_clock_data_trial.sh`
 - Unknown41 `CLOCK_ConvertAmigaSecondsToClockData` SAS/C compare alias script (`clock_convert` naming): `src/decomp/scripts/compare_sasc_clock_convert_trial.sh`
 - Unknown DISKIO `DISKIO_WriteDecimalField` SAS/C compare script: `src/decomp/scripts/compare_sasc_diskio_write_decimal_field_trial.sh`
@@ -4635,6 +4647,9 @@ Recent promoted targets:
 - `src/decomp/sas_c/diskio_load_file_to_work_buffer.c`
 - `src/decomp/sas_c/diskio_open_file_with_buffer.c`
 - `src/decomp/sas_c/diskio_query_disk_usage_percent_and_set_buffer_size.c`
+- `src/decomp/sas_c/diskio_write_buffered_bytes.c`
+- `src/decomp/sas_c/diskio_close_buffered_file_and_flush.c`
+- `src/decomp/sas_c/diskio_load_config_from_disk.c`
 - `src/decomp/sas_c/unknown41_clock_convert_amiga_seconds_to_clock_data.c`
 - `src/decomp/sas_c/diskio_write_decimal_field.c`
 - `src/decomp/sas_c/unknown7_str_core_helpers.c`
@@ -4880,6 +4895,9 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_diskio_load_file_to_work_buffer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_open_file_with_buffer.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_query_disk_usage_percent_and_set_buffer_size.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_write_buffered_bytes.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_close_buffered_file_and_flush.awk`
+- `src/decomp/scripts/semantic_filter_sasc_diskio_load_config_from_disk.awk`
 - `src/decomp/scripts/semantic_filter_sasc_clock_convert_amiga_seconds_to_clock_data.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio_write_decimal_field.awk`
 - `src/decomp/scripts/semantic_filter_sasc_str_copy_until_any_delim_n.awk`
