@@ -46,3 +46,36 @@ LONG DISPTEXT_HasMultipleLines(void)
 
     return 1;
 }
+
+LONG DISPTEXT_IsLastLineSelected(void)
+{
+    LONG lastIndex;
+    LONG current;
+
+    DISPTEXT_FinalizeLineTable();
+
+    lastIndex = (LONG)(UWORD)DISPTEXT_TargetLineIndex;
+    lastIndex -= 1;
+    current = (LONG)(UWORD)DISPTEXT_CurrentLineIndex;
+
+    if (current == lastIndex) {
+        return -1;
+    }
+    return 0;
+}
+
+LONG DISPTEXT_IsCurrentLineLast(void)
+{
+    LONG current;
+    LONG target;
+
+    DISPTEXT_FinalizeLineTable();
+
+    current = (LONG)(UWORD)DISPTEXT_CurrentLineIndex;
+    target = (LONG)(UWORD)DISPTEXT_TargetLineIndex;
+
+    if (current == target) {
+        return -1;
+    }
+    return 0;
+}

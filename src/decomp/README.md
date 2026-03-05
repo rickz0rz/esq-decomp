@@ -4165,6 +4165,12 @@ Recent promoted targets:
 - SAS/C-only lane (`DISPTEXT_HasMultipleLines`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_has_multiple_lines_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_has_multiple_lines.awk`
+- SAS/C-only lane (`DISPTEXT_IsLastLineSelected`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_is_last_line_selected_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_is_last_line_selected.awk`
+- SAS/C-only lane (`DISPTEXT_IsCurrentLineLast`):
+- compare (SAS/C): `src/decomp/scripts/compare_sasc_disptext_is_current_line_last_trial.sh`
+- semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_disptext_is_current_line_last.awk`
 - SAS/C-only lane (`DISKIO1_DumpDefaultCoiInfoBlock_Return`):
 - compare (SAS/C): `src/decomp/scripts/compare_sasc_diskio1_dump_default_coi_info_block_return_trial.sh`
 - semantic (SAS/C): `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
@@ -5521,6 +5527,8 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_disptext_set_current_line_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_disptext_get_total_line_count.awk`
 - `src/decomp/scripts/semantic_filter_sasc_disptext_has_multiple_lines.awk`
+- `src/decomp/scripts/semantic_filter_sasc_disptext_is_last_line_selected.awk`
+- `src/decomp/scripts/semantic_filter_sasc_disptext_is_current_line_last.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_return_stub.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_advance_helper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_diskio1_accumulate_helper.awk`
