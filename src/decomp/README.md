@@ -6121,5 +6121,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_low_nibble_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_set_packed_pen_low_nibble.awk`
 - `src/decomp/sas_c/ladfunc_set_packed_pen_low_nibble.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_update_highlight_state_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_update_highlight_state.awk`
+- `src/decomp/sas_c/ladfunc_update_highlight_state.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

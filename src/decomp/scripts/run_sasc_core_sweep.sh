@@ -878,6 +878,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ladfunc_parse_hex_digit_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_high_nibble_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_low_nibble_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc_update_highlight_state_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_char_to_scratch_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_to_scratch_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc2_emit_escaped_string_chunked_return_trial.sh"
