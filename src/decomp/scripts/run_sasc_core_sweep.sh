@@ -786,6 +786,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_textdisp_jmptbl_esqiff_runcopperrisetransition_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_jmptbl_newgrid_shouldopeneditor_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_get_group_entry_count_trial.sh"
+    "src/decomp/scripts/compare_sasc_textdisp_apply_source_config_to_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_clear_source_config_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_load_source_config_trial.sh"
     "src/decomp/scripts/compare_sasc_textdisp_set_entry_text_fields_trial.sh"
