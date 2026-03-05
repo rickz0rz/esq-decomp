@@ -5036,6 +5036,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_cleanup_format_entry_string_tokens_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_format_entry_string_tokens.awk`
 - `src/decomp/sas_c/cleanup_format_entry_string_tokens.c`
+- `src/decomp/scripts/compare_sasc_cleanup_format_clock_format_entry_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_format_clock_format_entry.awk`
+- `src/decomp/sas_c/cleanup_format_clock_format_entry.c`
 - `src/decomp/scripts/compare_sasc_coi_free_entry_resources_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_free_entry_resources.awk`
 - `src/decomp/sas_c/coi_free_entry_resources.c`
