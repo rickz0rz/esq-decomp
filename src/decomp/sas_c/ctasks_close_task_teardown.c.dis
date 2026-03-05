@@ -1,0 +1,38 @@
+              SECTION      text,CODE
+__code:
+CTASKS_CloseTaskTeardown:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___CTASKS_CloseTaskTeardown__1:
+              TST.L          CTASKS_CloseTaskFileHandle(A4);4aac 0000 
+              BEQ.B          ___CTASKS_CloseTaskTeardown__3;6708 
+___CTASKS_CloseTaskTeardown__2:
+              BSR.W          _LVOClose                ;6100 0000 
+              CLR.L          CTASKS_CloseTaskFileHandle(A4);42ac 0000 
+___CTASKS_CloseTaskTeardown__3:
+              BSR.W          _LVOForbid               ;6100 0000 
+              MOVE.L         Global_REF_LIST_CLOSE_TASK_PROC(A4),A0;206c 0000 
+              PEA            ($e).w                   ;4878 000e 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              PEA            ($c2).w                  ;4878 00c2 
+              PEA            Global_STR_CTASKS_C_3(A4);486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.W         #$1,CTASKS_CloseTaskCompletionFlag(A4);397c 0001 0000 
+___CTASKS_CloseTaskTeardown__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CTASKS_CloseTaskFileHandle
+              XREF           _LVOClose
+              XREF           _LVOForbid
+              XREF           Global_REF_LIST_CLOSE_TASK_PROC
+              XREF           Global_STR_CTASKS_C_3
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XREF           CTASKS_CloseTaskCompletionFlag
+              XDEF           CTASKS_CloseTaskTeardown
+              END

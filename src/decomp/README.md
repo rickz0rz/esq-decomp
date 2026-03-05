@@ -5027,6 +5027,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_coi_clear_anim_object_strings_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_clear_anim_object_strings.awk`
 - `src/decomp/sas_c/coi_clear_anim_object_strings.c`
+- `src/decomp/scripts/compare_sasc_coi_free_sub_entry_table_entries_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_free_sub_entry_table_entries.awk`
+- `src/decomp/sas_c/coi_free_sub_entry_table_entries.c`
 - `src/decomp/scripts/compare_sasc_coi_free_sub_entry_table_entries_return_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_free_sub_entry_table_entries_return.awk`
 - `src/decomp/sas_c/coi_free_sub_entry_table_entries_return.c`
@@ -5036,5 +5039,11 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_coi_test_entry_within_time_window_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_test_entry_within_time_window.awk`
 - `src/decomp/sas_c/coi_test_entry_within_time_window.c`
+- `src/decomp/scripts/compare_sasc_coi_alloc_sub_entry_table_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_coi_alloc_sub_entry_table.awk`
+- `src/decomp/sas_c/coi_alloc_sub_entry_table.c`
+- `src/decomp/scripts/compare_sasc_ctasks_close_task_teardown_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ctasks_close_task_teardown.awk`
+- `src/decomp/sas_c/ctasks_close_task_teardown.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.

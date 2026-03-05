@@ -1,0 +1,136 @@
+              SECTION      text,CODE
+__code:
+COI_FreeSubEntryTableEntries:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___COI_FreeSubEntryTableEntries__1:
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.W          ___COI_FreeSubEntryTableEntries__12;6700 0120 
+___COI_FreeSubEntryTableEntries__2:
+___COI_FreeSubEntryTableEntries__3:
+              LEA            $30(A5),A0               ;41ed 0030 
+              MOVE.L         (A0),A3                  ;2650 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.W          ___COI_FreeSubEntryTableEntries__12;6700 0114 
+___COI_FreeSubEntryTableEntries__4:
+___COI_FreeSubEntryTableEntries__5:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___COI_FreeSubEntryTableEntries__6:
+              LEA            $24(A3),A0               ;41eb 0024 
+              CMP.W          (A0),D7                  ;be50 
+              BGE.W          ___COI_FreeSubEntryTableEntries__9;6c00 00c0 
+___COI_FreeSubEntryTableEntries__7:
+              LEA            $26(A3),A0               ;41eb 0026 
+              MOVE.L         (A0),A2                  ;2450 
+              EXT.L          D7                       ;48c7 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $0(A2,D0.L),A0           ;2072 0800 
+              CLR.W          (A0)                     ;4250 
+              LEA            $2(A0),A1                ;43e8 0002 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$2,A1                   ;5489 
+              MOVE.L         D6,(A1)                  ;2286 
+              LEA            $6(A0),A1                ;43e8 0006 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         $2c(A7),A0               ;206f 002c 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$6,A1                   ;5c89 
+              MOVE.L         D6,(A1)                  ;2286 
+              LEA            $a(A0),A1                ;43e8 000a 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         $30(A7),A0               ;206f 0030 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$a,A1                   ;d2fc 000a 
+              MOVE.L         D6,(A1)                  ;2286 
+              LEA            $e(A0),A1                ;43e8 000e 
+              CLR.L          (A7)                     ;4297 
+___COI_FreeSubEntryTableEntries__8:
+              MOVE.L         (A1),-(A7)               ;2f11 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         $34(A7),A0               ;206f 0034 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$e,A1                   ;d2fc 000e 
+              MOVE.L         D6,(A1)                  ;2286 
+              LEA            $12(A0),A1               ;43e8 0012 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         $38(A7),A0               ;206f 0038 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$12,A1                  ;d2fc 0012 
+              MOVE.L         D6,(A1)                  ;2286 
+              LEA            $16(A0),A1               ;43e8 0016 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         (A1),-(A7)               ;2f11 
+              BSR.W          GROUP_AE_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.W          #$16,A1                  ;d2fc 0016 
+              MOVE.L         D6,(A1)                  ;2286 
+              LEA            $1a(A0),A1               ;43e8 001a 
+              CLR.L          (A1)                     ;4291 
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.W          ___COI_FreeSubEntryTableEntries__6;6000 ff3a 
+___COI_FreeSubEntryTableEntries__9:
+              LEA            $24(A3),A0               ;41eb 0024 
+              MOVE.W         (A0),D0                  ;3010 
+              BEQ.B          ___COI_FreeSubEntryTableEntries__11;6734 
+___COI_FreeSubEntryTableEntries__10:
+              MOVE.W         D0,D5                    ;3a00 
+              EXT.L          D5                       ;48c5 
+              LEA            $26(A3),A0               ;41eb 0026 
+              MOVE.L         (A0),A1                  ;2250 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            ($1e).w                  ;4878 001e 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A1,$28(A7)               ;2f49 0028 
+              BSR.W          GROUP_AE_JMPTBL_SCRIPT_Deallocat;6100 0000 
+              MOVE.L         D5,D4                    ;2805 
+              ASL.L          #$2,D4                   ;e584 
+              MOVE.L         D4,(A7)                  ;2e84 
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              PEA            ($36c).w                 ;4878 036c 
+              PEA            Global_STR_COI_C_4(A4)   ;486c 0000 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+___COI_FreeSubEntryTableEntries__11:
+              LEA            $24(A3),A0               ;41eb 0024 
+              CLR.W          (A0)                     ;4250 
+              LEA            $26(A3),A0               ;41eb 0026 
+              CLR.L          (A0)                     ;4290 
+___COI_FreeSubEntryTableEntries__12:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AE_JMPTBL_ESQPARS_ReplaceO
+              XREF           GROUP_AE_JMPTBL_SCRIPT_Deallocat
+              XREF           Global_STR_COI_C_4
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XDEF           COI_FreeSubEntryTableEntries
+              END
