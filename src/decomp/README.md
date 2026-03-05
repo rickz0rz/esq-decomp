@@ -6295,5 +6295,8 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_newgrid_draw_top_border_line_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_newgrid_draw_top_border_line.awk`
 - `src/decomp/sas_c/newgrid_draw_top_border_line.c`
+- `src/decomp/scripts/compare_sasc_newgrid_draw_grid_top_bars_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_newgrid_draw_grid_top_bars.awk`
+- `src/decomp/sas_c/newgrid_draw_grid_top_bars.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
