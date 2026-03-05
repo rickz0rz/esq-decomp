@@ -169,6 +169,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_reset_banner_fade_state_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_get_banner_char_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_add_banner_table_byte_delta_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_load_default_palette_to_copper_no_op_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqshared4_set_banner_color_base_and_limit_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_update_copper_lists_from_params_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_end_trial.sh"
