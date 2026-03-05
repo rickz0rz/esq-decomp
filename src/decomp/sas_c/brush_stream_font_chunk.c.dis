@@ -1,0 +1,65 @@
+              SECTION      text,CODE
+__code:
+BRUSH_StreamFontChunk:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___BRUSH_StreamFontChunk__1:
+              MOVE.L         $24(A7),D5               ;2a2f 0024 
+              MOVE.L         $20(A7),D6               ;2c2f 0020 
+              MOVE.L         $1c(A7),D7               ;2e2f 001c 
+              MOVE.L         $2c(A7),A3               ;266f 002c 
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              CMP.L          D5,D6                    ;bc85 
+              BLE.B          ___BRUSH_StreamFontChunk__3;6f04 
+___BRUSH_StreamFontChunk__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___BRUSH_StreamFontChunk__12;6050 
+___BRUSH_StreamFontChunk__3:
+              LEA            $ba(A3),A0               ;41eb 00ba 
+              MOVE.L         D6,(A0)                  ;2086 
+              MOVE.L         D6,D4                    ;2806 
+___BRUSH_StreamFontChunk__4:
+              CMPI.L         #$800,D4                 ;0c84 0000 0800 
+              BLE.B          ___BRUSH_StreamFontChunk__8;6f28 
+___BRUSH_StreamFontChunk__5:
+              PEA            ($800).w                 ;4878 0800 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          _LVORead                 ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CMPI.L         #$800,D0                 ;0c80 0000 0800 
+              BEQ.B          ___BRUSH_StreamFontChunk__7;6704 
+___BRUSH_StreamFontChunk__6:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___BRUSH_StreamFontChunk__12;6024 
+___BRUSH_StreamFontChunk__7:
+              ADD.W          #$800,A5                 ;dafc 0800 
+              SUBI.L         #$800,D4                 ;0484 0000 0800 
+              BRA.B          ___BRUSH_StreamFontChunk__4;60d0 
+___BRUSH_StreamFontChunk__8:
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          _LVORead                 ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CMP.L          D4,D0                    ;b084 
+              BEQ.B          ___BRUSH_StreamFontChunk__10;6704 
+___BRUSH_StreamFontChunk__9:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___BRUSH_StreamFontChunk__12;6002 
+___BRUSH_StreamFontChunk__10:
+              MOVEQ.L        #$1,D0                   ;7001 
+___BRUSH_StreamFontChunk__11:
+___BRUSH_StreamFontChunk__12:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVORead
+              XDEF           BRUSH_StreamFontChunk
+              END

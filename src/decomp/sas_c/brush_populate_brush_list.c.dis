@@ -1,0 +1,77 @@
+              SECTION      text,CODE
+__code:
+BRUSH_PopulateBrushList:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___BRUSH_PopulateBrushList__1:
+              MOVE.L         $20(A7),A3               ;266f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              BSR.W          _LVOForbid               ;6100 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,BRUSH_LoadInProgressFlag(A4);2940 0000 
+              BSR.W          _LVOPermit               ;6100 0000 
+              CLR.L          (A3)                     ;4293 
+              CLR.L          $14(A7)                  ;42af 0014 
+              MOVE.L         A5,A2                    ;244d 
+___BRUSH_PopulateBrushList__2:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___BRUSH_PopulateBrushList__9;674a 
+___BRUSH_PopulateBrushList__3:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          BRUSH_LoadBrushAsset     ;6100 0000 
+              LEA            $ea(A2),A0               ;41ea 00ea 
+              MOVE.L         (A0),$14(A7)             ;2f50 0014 
+              PEA            ($ee).w                  ;4878 00ee 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($34d).w                 ;4878 034d 
+              PEA            Global_STR_BRUSH_C_8(A4) ;486c 0000 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BSR.W          GROUP_AG_JMPTBL_MEMORY_Deallocat;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         $10(A7),A2               ;246f 0010 
+              MOVE.L         $c(A7),D0                ;202f 000c 
+              BEQ.B          ___BRUSH_PopulateBrushList__2;67ca 
+___BRUSH_PopulateBrushList__4:
+___BRUSH_PopulateBrushList__5:
+              TST.L          (A3)                     ;4a93 
+              BNE.B          ___BRUSH_PopulateBrushList__7;6604 
+___BRUSH_PopulateBrushList__6:
+              MOVE.L         D0,(A3)                  ;2680 
+              BRA.B          ___BRUSH_PopulateBrushList__8;600a 
+___BRUSH_PopulateBrushList__7:
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              ADD.W          #$170,A0                 ;d0fc 0170 
+              MOVE.L         D0,(A0)                  ;2080 
+___BRUSH_PopulateBrushList__8:
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              BRA.B          ___BRUSH_PopulateBrushList__2;60b2 
+___BRUSH_PopulateBrushList__9:
+              CLR.L          PARSEINI_ParsedDescriptorListHea(A4);42ac 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          BRUSH_NormalizeBrushNames;6100 0000 
+              BSR.W          _LVOForbid               ;6100 0000 
+              CLR.L          BRUSH_LoadInProgressFlag(A4);42ac 0000 
+              BSR.W          _LVOPermit               ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___BRUSH_PopulateBrushList__10:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVOForbid
+              XREF           BRUSH_LoadInProgressFlag
+              XREF           _LVOPermit
+              XREF           BRUSH_LoadBrushAsset
+              XREF           Global_STR_BRUSH_C_8
+              XREF           GROUP_AG_JMPTBL_MEMORY_Deallocat
+              XREF           PARSEINI_ParsedDescriptorListHea
+              XREF           BRUSH_NormalizeBrushNames
+              XDEF           BRUSH_PopulateBrushList
+              END

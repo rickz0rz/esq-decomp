@@ -4967,5 +4967,14 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_brush_normalize_brush_names_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_brush_normalize_brush_names.awk`
 - `src/decomp/sas_c/brush_normalize_brush_names.c`
+- `src/decomp/scripts/compare_sasc_brush_stream_font_chunk_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_stream_font_chunk.awk`
+- `src/decomp/sas_c/brush_stream_font_chunk.c`
+- `src/decomp/scripts/compare_sasc_brush_populate_brush_list_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_populate_brush_list.awk`
+- `src/decomp/sas_c/brush_populate_brush_list.c`
+- `src/decomp/scripts/compare_sasc_brush_free_brush_list_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_brush_free_brush_list.awk`
+- `src/decomp/sas_c/brush_free_brush_list.c`
 - For `FreeMem` with SAS/C `#pragma libcall`, use `#pragma libcall AbsExecBase FreeMem d2 902` (emits `A1` + `D0` argument setup before `_LVOFreeMem`).
 - Run SAS/C compare scripts serially; parallel invocations can contend on `vamos` temp setup.
