@@ -5063,6 +5063,12 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_cleanup_draw_date_time_banner_row_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_draw_date_time_banner_row.awk`
 - `src/decomp/sas_c/cleanup_draw_date_time_banner_row.c`
+- `src/decomp/scripts/compare_sasc_cleanup_draw_grid_time_banner_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_cleanup_draw_grid_time_banner.awk`
+- `src/decomp/sas_c/cleanup_draw_grid_time_banner.c`
+- `src/decomp/scripts/compare_sasc_render_short_month_short_day_of_week_day_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_render_short_month_short_day_of_week_day.awk`
+- `src/decomp/sas_c/render_short_month_short_day_of_week_day.c`
 - `src/decomp/scripts/compare_sasc_coi_free_entry_resources_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_coi_free_entry_resources.awk`
 - `src/decomp/sas_c/coi_free_entry_resources.c`

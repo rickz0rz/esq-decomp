@@ -1,0 +1,85 @@
+typedef unsigned char UBYTE;
+typedef unsigned short UWORD;
+typedef short WORD;
+typedef long LONG;
+
+extern LONG Global_REF_RASTPORT_1;
+extern UBYTE Global_REF_STR_USE_24_HR_CLOCK;
+extern WORD Global_WORD_CURRENT_HOUR;
+extern WORD CLOCK_CurrentAmPmFlag;
+extern WORD Global_WORD_CURRENT_MINUTE;
+extern WORD Global_WORD_CURRENT_SECOND;
+extern WORD CLOCK_CurrentDayOfWeekIndex;
+extern char Global_STR_GRID_TIME_FORMAT_DUPLICATE[];
+extern char Global_STR_12_44_44_SINGLE_SPACE[];
+extern char Global_STR_12_44_44_PM[];
+
+void _LVOSetAPen(void);
+void _LVOSetDrMd(void);
+void _LVORectFill(void);
+void _LVOTextLength(void);
+void _LVOMove(void);
+void _LVOText(void);
+void ESQ_FormatTimeStamp(char *dst, void *clock_ref);
+LONG GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(LONG hour, LONG ampm);
+void GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, const char *fmt, LONG a, LONG b, LONG c);
+void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void);
+
+void CLEANUP_DrawGridTimeBanner(void)
+{
+    char time_buf[32];
+    char ampm_suffix;
+    LONG sample_width;
+    LONG text_width;
+    LONG x;
+
+    ESQ_FormatTimeStamp(time_buf, &CLOCK_CurrentDayOfWeekIndex);
+    _LVOSetAPen();
+    *(UWORD *)(Global_REF_RASTPORT_1 + 32) = (UWORD)(*(UWORD *)(Global_REF_RASTPORT_1 + 32) & 0xFFF7);
+    _LVOSetDrMd();
+    _LVORectFill();
+    _LVOSetAPen();
+
+    ampm_suffix = time_buf[9];
+    time_buf[9] = 0;
+
+    if (Global_REF_STR_USE_24_HR_CLOCK == 'Y') {
+        LONG hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat((LONG)Global_WORD_CURRENT_HOUR, (LONG)CLOCK_CurrentAmPmFlag);
+        GROUP_AE_JMPTBL_WDISP_SPrintf(
+            time_buf,
+            Global_STR_GRID_TIME_FORMAT_DUPLICATE,
+            hour,
+            (LONG)Global_WORD_CURRENT_MINUTE,
+            (LONG)Global_WORD_CURRENT_SECOND
+        );
+    }
+
+    _LVOTextLength();
+    sample_width = *(LONG *)(Global_REF_RASTPORT_1);
+
+    if (Global_REF_STR_USE_24_HR_CLOCK == 'N') {
+        _LVOTextLength();
+        text_width = *(LONG *)(Global_REF_RASTPORT_1);
+    } else {
+        text_width = sample_width;
+    }
+
+    x = (216 - text_width);
+    if (x < 0) {
+        x++;
+    }
+    x >>= 1;
+
+    _LVOMove();
+    _LVOText();
+
+    if (Global_REF_STR_USE_24_HR_CLOCK == 'N') {
+        char sfx[2];
+        sfx[0] = ampm_suffix;
+        sfx[1] = 0;
+        _LVOMove();
+        _LVOText();
+    }
+
+    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort();
+}
