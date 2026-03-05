@@ -1112,6 +1112,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_clock_secondsfromepoch_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_datetime_isleapyear_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini2_jmptbl_esq_calcdayofyearfrommonthday_trial.sh"
+    "src/decomp/scripts/compare_sasc_parseini2_write_rtc_from_globals_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini3_check_ctrl_h_change_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini3_compute_htc_max_values_trial.sh"
     "src/decomp/scripts/compare_sasc_parseini3_monitor_clock_change_trial.sh"
