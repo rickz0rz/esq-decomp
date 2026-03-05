@@ -4732,6 +4732,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_GetEntryAuxPointerByMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_get_entry_aux_pointer_by_mode_trial.sh`
 - ESQDISP `ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_mirror_primary_entries_to_secondary_if_empty_trial.sh`
 - ESQDISP `ESQDISP_ProcessGridMessagesIfIdle` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_process_grid_messages_if_idle_trial.sh`
+- ESQDISP `ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_jmptbl_newgrid_processgridmessages_trial.sh`
 - ESQDISP `ESQDISP_QueueHighlightDrawMessage` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_queue_highlight_draw_message_trial.sh`
 - ESQDISP `ESQDISP_RefreshStatusIndicatorsFromCurrentMask` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_refresh_status_indicators_from_current_mask_trial.sh`
 - ESQDISP `ESQDISP_SetStatusIndicatorColorSlot` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_set_status_indicator_color_slot_trial.sh`
