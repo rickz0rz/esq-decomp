@@ -5128,6 +5128,7 @@ Recent promoted targets:
 - TEXTDISP `TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_cleanup_buildalignedstatusline_trial.sh`
 - TEXTDISP `TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_jmptbl_cleanup_drawinsetrectframe_trial.sh`
 - TEXTDISP `TEXTDISP_GetGroupEntryCount` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_get_group_entry_count_trial.sh`
+- TEXTDISP `TEXTDISP_SetEntryTextFields` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_set_entry_text_fields_trial.sh`
 - TEXTDISP `TEXTDISP_ResetSelectionState` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_reset_selection_state_trial.sh`
 - TEXTDISP `TEXTDISP_SetSelectionFields` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_set_selection_fields_trial.sh`
 - TEXTDISP `TEXTDISP_SkipControlCodes` SAS/C compare script: `src/decomp/scripts/compare_sasc_textdisp_skip_control_codes_trial.sh`
