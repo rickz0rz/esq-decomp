@@ -6133,6 +6133,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_ladfunc_reset_entry_text_buffers_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_reset_entry_text_buffers.awk`
 - `src/decomp/sas_c/ladfunc_reset_entry_text_buffers.c`
+- `src/decomp/scripts/compare_sasc_ladfunc_save_text_ads_to_file_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_ladfunc_save_text_ads_to_file.awk`
+- `src/decomp/sas_c/ladfunc_save_text_ads_to_file.c`
 - `src/decomp/scripts/compare_sasc_ladfunc_set_packed_pen_high_nibble_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_ladfunc_set_packed_pen_high_nibble.awk`
 - `src/decomp/sas_c/ladfunc_set_packed_pen_high_nibble.c`
