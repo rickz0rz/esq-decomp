@@ -52,11 +52,13 @@ awk -f src/decomp/scripts/semantic_filter_sasc_memory_deallocate.awk "${OUT_DIR}
 
 diff -u "${OUT_DIR}/memory_allocate.original.semantic.txt" "${OUT_DIR}/memory_allocate.sasc.semantic.txt" >"${OUT_DIR}/memory_allocate.semantic.diff" || true
 diff -u "${OUT_DIR}/memory_deallocate.original.semantic.txt" "${OUT_DIR}/memory_deallocate.sasc.semantic.txt" >"${OUT_DIR}/memory_deallocate.semantic.diff" || true
+cat "${OUT_DIR}/memory_allocate.semantic.diff" "${OUT_DIR}/memory_deallocate.semantic.diff" >"${OUT_DIR}/memory_pair.semantic.diff"
 
 echo "wrote: ${OUT_DIR}/memory_allocate.diff"
 echo "wrote: ${OUT_DIR}/memory_deallocate.diff"
 echo "wrote: ${OUT_DIR}/memory_allocate.semantic.diff"
 echo "wrote: ${OUT_DIR}/memory_deallocate.semantic.diff"
+echo "wrote: ${OUT_DIR}/memory_pair.semantic.diff"
 
 # Quick behavioral checkpoints.
 rg -n "_LVOALLOCMEM\(A6\)|ADD\.L D7,Global_MEM_BYTES_ALLOCATED|ADDQ\.L #1,Global_MEM_ALLOC_COUNT" "${OUT_DIR}/memory_allocate.sasc.norm.s" || true

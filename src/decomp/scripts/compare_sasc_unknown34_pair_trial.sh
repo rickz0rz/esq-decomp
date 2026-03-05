@@ -50,8 +50,10 @@ awk -f src/decomp/scripts/semantic_filter_sasc_mem_move.awk "${OUT_DIR}/mem_move
 
 diff -u "${OUT_DIR}/list_init.original.semantic.txt" "${OUT_DIR}/list_init.sasc.semantic.txt" >"${OUT_DIR}/list_init.semantic.diff" || true
 diff -u "${OUT_DIR}/mem_move.original.semantic.txt" "${OUT_DIR}/mem_move.sasc.semantic.txt" >"${OUT_DIR}/mem_move.semantic.diff" || true
+cat "${OUT_DIR}/list_init.semantic.diff" "${OUT_DIR}/mem_move.semantic.diff" >"${OUT_DIR}/unknown34_pair.semantic.diff"
 
 echo "wrote: ${OUT_DIR}/list_init.diff"
 echo "wrote: ${OUT_DIR}/mem_move.diff"
 echo "wrote: ${OUT_DIR}/list_init.semantic.diff"
 echo "wrote: ${OUT_DIR}/mem_move.semantic.diff"
+echo "wrote: ${OUT_DIR}/unknown34_pair.semantic.diff"
