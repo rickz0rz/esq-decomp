@@ -4412,6 +4412,8 @@ Recent promoted targets:
 - Memory pair SAS/C compare script: `src/decomp/scripts/compare_sasc_memory_pair_trial.sh`
 - String toupper SAS/C compare script: `src/decomp/scripts/compare_sasc_string_toupper_trial.sh`
 - Unknown34 pair SAS/C compare script (`LIST_InitHeader` + `MEM_Move`): `src/decomp/scripts/compare_sasc_unknown34_pair_trial.sh`
+- Unknown34 `LIST_InitHeader` SAS/C compare script: `src/decomp/scripts/compare_sasc_list_init_header_trial.sh`
+- Unknown34 `MEM_Move` SAS/C compare script: `src/decomp/scripts/compare_sasc_mem_move_trial.sh`
 - Unknown34 `DOS_ReadByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_read_by_index_trial.sh`
 - Unknown11 `DOS_SeekByIndex` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_seek_by_index_trial.sh`
 - Unknown12 `ALLOC_AllocFromFreeList` SAS/C compare script: `src/decomp/scripts/compare_sasc_alloc_alloc_from_free_list_trial.sh`
@@ -5451,6 +5453,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_string_toupper.awk`
 - `src/decomp/scripts/semantic_filter_sasc_list_init.awk`
 - `src/decomp/scripts/semantic_filter_sasc_mem_move.awk`
+- `src/decomp/scripts/semantic_filter_sasc_list_init_header.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_read_by_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_dos_seek_by_index.awk`
 - `src/decomp/scripts/semantic_filter_sasc_alloc_alloc_from_free_list.awk`

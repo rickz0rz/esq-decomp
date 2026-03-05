@@ -1,22 +1,44 @@
-BEGIN {h_entry=0; h_len=0; h_cmp=0; h_fwd=0; h_bwd=0; h_dec=0; h_rts=0}
-function t(s){sub(/;.*/,"",s);sub(/^[ \t]+/,"",s);sub(/[ \t]+$/,"",s);gsub(/[ \t]+/," ",s);return toupper(s)}
-{
-  l=t($0)
-  if(l=="") next
-  if(l~/^MEM_MOVE:/) h_entry=1
-  if(l~/^MOVE\.L .*D[07]$/ || l~/^TST\.L D[07]$/ || l~/^B(LE|GT)\./) h_len=1
-  if(l~/^CMPA?\.L A[035],A[0135]$/ || l~/^CMP\.L .*A[035].*A[0135]/ || l~/^BCC\./ || l~/^BCS\./) h_cmp=1
-  if(l~/^MOVE\.B \(A[035]\)\+,\(A[0135]\)\+$/) h_fwd=1
-  if(l~/^MOVE\.B -\(A[035]\),-\(A[0135]\)$/ || l~/^MOVE\.B \(A[035]\),\(A[0135]\)$/) h_bwd=1
-  if(l~/^SUBQ\.L #\$?1,D[07]$/) h_dec=1
-  if(l~/^RTS$/) h_rts=1
+BEGIN {
+    has_entry = 0
+    has_arg_loads = 0
+    has_len_guard = 0
+    has_overlap_cmp = 0
+    has_fwd_copy = 0
+    has_bwd_copy = 0
+    has_counter_dec = 0
+    has_return = 0
 }
+
+function t(s, x) {
+    x = s
+    sub(/;.*/, "", x)
+    sub(/^[ \t]+/, "", x)
+    sub(/[ \t]+$/, "", x)
+    gsub(/[ \t]+/, " ", x)
+    return toupper(x)
+}
+
+{
+    l = t($0)
+    if (l == "") next
+
+    if (l ~ /^MEM_MOVE:/) has_entry = 1
+    if (l ~ /MOVEA\.L .*A0/ || l ~ /MOVEA\.L .*A1/ || l ~ /MOVE\.L .*D0/) has_arg_loads = 1
+    if (l ~ /BLE\./ || l ~ /BGT\./ || l ~ /TST\.L D0/ || l ~ /TST\.L D7/) has_len_guard = 1
+    if (l ~ /CMPA\.L A0,A1/ || l ~ /CMP\.L A0,A1/ || l ~ /BCS\./ || l ~ /BHI\./) has_overlap_cmp = 1
+    if (l ~ /MOVE\.B \(A0\)\+,\(A1\)\+/ || l ~ /MOVE\.B \(A[0-6]\)\+,\(A[0-6]\)\+/) has_fwd_copy = 1
+    if (l ~ /MOVE\.B -\(A0\),-\(A1\)/ || l ~ /MOVE\.B \(A[0-6]\),\(A[0-6]\)/) has_bwd_copy = 1
+    if (l ~ /SUBQ\.L #\$?1,D0/ || l ~ /SUBQ\.L #\$?1,D7/ || l ~ /DBF D0/ || l ~ /DBF D7/) has_counter_dec = 1
+    if (l ~ /^RTS$/) has_return = 1
+}
+
 END {
-  print "HAS_ENTRY=" h_entry
-  print "HAS_LEN_GUARD=" h_len
-  print "HAS_OVERLAP_BRANCH=" h_cmp
-  print "HAS_FWD_COPY=" h_fwd
-  print "HAS_BWD_COPY=" h_bwd
-  print "HAS_DEC_LOOP=" h_dec
-  print "HAS_RTS=" h_rts
+    print "HAS_ENTRY=" has_entry
+    print "HAS_ARG_LOADS=" has_arg_loads
+    print "HAS_LEN_GUARD=" has_len_guard
+    print "HAS_OVERLAP_CMP=" has_overlap_cmp
+    print "HAS_FWD_COPY=" has_fwd_copy
+    print "HAS_BWD_COPY=" has_bwd_copy
+    print "HAS_COUNTER_DEC=" has_counter_dec
+    print "HAS_RTS=" has_return
 }
