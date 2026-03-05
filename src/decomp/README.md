@@ -3984,6 +3984,7 @@ Recent promoted targets:
 - Unknown2B `DOS_OpenFileWithMode` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_open_file_with_mode_trial.sh`
 - Unknown2B `GRAPHICS_AllocRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_alloc_raster_trial.sh`
 - Unknown2B `GRAPHICS_FreeRaster` SAS/C compare script: `src/decomp/scripts/compare_sasc_graphics_free_raster_trial.sh`
+- Unknown2B `DOS_MovepWordReadCallback` remains GCC-only for now (`compare_dos_movep_word_read_callback_trial_gcc.sh`): SAS/C here does not accept inline-assembly/register-binding forms needed to force the `MOVEP.W 0(A2),D6` callback shape.
 - Unknown `ESQPROTO_CopyLabelToGlobal` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_copy_label_to_global_trial.sh`
 - Unknown `ESQPROTO_ParseDigitLabelAndDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqproto_parse_digit_label_and_display_trial.sh`
 - Unknown `UNKNOWN_ParseRecordAndUpdateDisplay` SAS/C compare script: `src/decomp/scripts/compare_sasc_unknown_parse_record_and_update_display_trial.sh`
@@ -4517,6 +4518,7 @@ Recent promoted targets:
 - Unknown22 `ALLOCATE_AllocAndInitializeIOStdReq` SAS/C compare script: `src/decomp/scripts/compare_sasc_allocate_alloc_and_initialize_iostdreq_trial.sh`
 - Unknown40 `DOS_Delay` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_delay_trial.sh`
 - Unknown40 `DOS_SystemTagList` SAS/C compare script: `src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh`
+- Unknown40 `DOS_SystemTagList` SAS/C compare alias script (`taglist` naming): `src/decomp/scripts/compare_sasc_dos_system_taglist_trial.sh`
 - Unknown40 `BATTCLOCK_GetSecondsFromBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_get_seconds_trial.sh`
 - Unknown40 `BATTCLOCK_WriteSecondsToBatteryBackedClock` SAS/C compare script: `src/decomp/scripts/compare_sasc_battclock_write_seconds_trial.sh`
 - Unknown40 `EXEC_CallVector_48` SAS/C compare script: `src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh`
@@ -5061,6 +5063,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_draw_time_banner_segment.awk`
 - `src/decomp/sas_c/cleanup_draw_time_banner_segment.c`
 - `src/decomp/scripts/compare_sasc_cleanup_draw_date_time_banner_row_trial.sh`
+- `src/decomp/scripts/compare_sasc_cleanup_draw_datetime_banner_row_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_cleanup_draw_date_time_banner_row.awk`
 - `src/decomp/sas_c/cleanup_draw_date_time_banner_row.c`
 - `src/decomp/scripts/compare_sasc_cleanup_draw_grid_time_banner_trial.sh`
@@ -5129,6 +5132,7 @@ Recent promoted targets:
 - `src/decomp/scripts/semantic_filter_sasc_dos_delay.awk`
 - `src/decomp/sas_c/unknown40_dos_delay.c`
 - `src/decomp/scripts/compare_sasc_dos_system_tag_list_trial.sh`
+- `src/decomp/scripts/compare_sasc_dos_system_taglist_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_dos_system_tag_list.awk`
 - `src/decomp/sas_c/unknown40_dos_system_tag_list.c`
 - `src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh`
