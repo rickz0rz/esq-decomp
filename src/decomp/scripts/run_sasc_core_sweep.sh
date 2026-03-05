@@ -823,6 +823,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_flib_append_clock_stamped_log_entry_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_expand_preset_block_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_init_preset_table_from_palette_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_set_preset_entry_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_update_preset_entry_cache_return_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_validate_preset_table_return_trial.sh"
