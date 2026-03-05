@@ -211,6 +211,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_start_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_move_copper_entry_toward_end_trial.sh"
     "src/decomp/scripts/compare_sasc_esqfunc_service_ui_tick_if_running_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqfunc_update_refresh_mode_state_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_dec_copper_lists_primary_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_inc_copper_lists_towards_targets_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_seed_minute_event_thresholds_trial.sh"
