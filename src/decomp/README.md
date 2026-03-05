@@ -4740,6 +4740,7 @@ Recent promoted targets:
 - ESQDISP `ESQDISP_ComputeScheduleOffsetForRow` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_compute_schedule_offset_for_row_trial.sh`
 - ESQDISP `ESQDISP_FillProgramInfoHeaderFields` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_fill_program_info_header_fields_trial.sh`
 - ESQDISP `ESQDISP_InitHighlightMessagePattern` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_init_highlight_message_pattern_trial.sh`
+- ESQDISP `ESQDISP_AllocateHighlightBitmaps` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_allocate_highlight_bitmaps_trial.sh`
 - ESQDISP `ESQDISP_PropagatePrimaryTitleMetadataToSecondary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_propagate_primary_title_metadata_to_secondary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryGroupToPrimary` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_group_to_primary_trial.sh`
 - ESQDISP `ESQDISP_PromoteSecondaryLineHeadTailIfMarked` SAS/C compare script: `src/decomp/scripts/compare_sasc_esqdisp_promote_secondary_line_head_tail_if_marked_trial.sh`
