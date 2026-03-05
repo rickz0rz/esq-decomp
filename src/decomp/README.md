@@ -5110,10 +5110,10 @@ Recent promoted targets:
 - Unknown40 `EXEC_CallVector_48` SAS/C compare script: `src/decomp/scripts/compare_sasc_exec_call_vector_48_trial.sh`
 - Unknown42 `CLOCK_CheckDateOrSecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_check_date_or_seconds_from_epoch_trial.sh`
 - Unknown42 `CLOCK_SecondsFromEpoch` SAS/C compare script: `src/decomp/scripts/compare_sasc_clock_seconds_from_epoch_trial.sh`
-- Unknown42 `PARALLEL_CheckReadyStub` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_checkready_stub_trial.sh`
-- Unknown42 `PARALLEL_CheckReady` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_checkready_trial.sh`
-- Unknown42 `PARALLEL_WaitReady` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_waitready_trial.sh`
-- Unknown42 `PARALLEL_WriteCharD0` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_writechard0_trial.sh`
+- Unknown42 `PARALLEL_CheckReadyStub` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_check_ready_stub_trial.sh` (legacy alias: `compare_sasc_parallel_checkready_stub_trial.sh`)
+- Unknown42 `PARALLEL_CheckReady` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_check_ready_trial.sh` (legacy alias: `compare_sasc_parallel_checkready_trial.sh`)
+- Unknown42 `PARALLEL_WaitReady` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_wait_ready_trial.sh` (legacy alias: `compare_sasc_parallel_waitready_trial.sh`)
+- Unknown42 `PARALLEL_WriteCharD0` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_write_char_d0_trial.sh` (legacy alias: `compare_sasc_parallel_writechard0_trial.sh`)
 - Unknown42 `PARALLEL_WriteStringLoop` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_writestringloop_trial.sh`
 - Unknown42 `PARALLEL_RawDoFmtStackArgs` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_rawdofmtstackargs_trial.sh`
 - Unknown42 `PARALLEL_RawDoFmtCommon` SAS/C compare script: `src/decomp/scripts/compare_sasc_parallel_rawdofmtcommon_trial.sh`
