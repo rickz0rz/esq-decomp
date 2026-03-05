@@ -839,6 +839,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_gcommand_map_keycode_to_preset_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_rebuild_banner_tables_from_bounds_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_refresh_banner_tables_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_service_highlight_messages_trial.sh"
+    "src/decomp/scripts/compare_sasc_gcommand_reset_preset_work_tables_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_seed_banner_defaults_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_reset_highlight_messages_trial.sh"
     "src/decomp/scripts/compare_sasc_gcommand_seed_banner_from_prefs_trial.sh"
