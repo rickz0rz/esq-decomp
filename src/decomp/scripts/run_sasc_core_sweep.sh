@@ -873,6 +873,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_graphics_bltbitmaprastport_trial.sh"
     "src/decomp/scripts/compare_sasc_kybd_initialize_input_devices_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_alloc_banner_rect_entries_trial.sh"
+    "src/decomp/scripts/compare_sasc_ladfunc_build_entry_buffers_or_default_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_clear_banner_rect_entries_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_compose_packed_pen_byte_trial.sh"
     "src/decomp/scripts/compare_sasc_ladfunc_display_text_packed_pens_trial.sh"
