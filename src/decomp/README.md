@@ -6265,6 +6265,9 @@ Recent promoted targets:
 - `src/decomp/scripts/compare_sasc_tliba2_parse_entry_time_window_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba2_parse_entry_time_window.awk`
 - `src/decomp/sas_c/tliba2_parse_entry_time_window.c`
+- `src/decomp/scripts/compare_sasc_tliba2_compute_broadcast_time_window_trial.sh`
+- `src/decomp/scripts/semantic_filter_sasc_tliba2_compute_broadcast_time_window.awk`
+- `src/decomp/sas_c/tliba2_compute_broadcast_time_window.c`
 - `src/decomp/scripts/compare_sasc_tliba_find_first_wildcard_match_index_trial.sh`
 - `src/decomp/scripts/semantic_filter_sasc_tliba_find_first_wildcard_match_index.awk`
 - `src/decomp/sas_c/tliba_find_first_wildcard_match_index.c`

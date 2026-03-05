@@ -860,6 +860,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_ladfunc_extracthighnibble_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba1_jmptbl_ladfunc_extractlownibble_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba2_find_last_char_in_string_trial.sh"
+    "src/decomp/scripts/compare_sasc_tliba2_compute_broadcast_time_window_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba2_parse_entry_time_window_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba2_resolve_entry_window_with_default_range_trial.sh"
     "src/decomp/scripts/compare_sasc_tliba_find_first_wildcard_match_index_trial.sh"
