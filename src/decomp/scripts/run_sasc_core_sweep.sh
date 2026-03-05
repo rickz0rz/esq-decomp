@@ -294,6 +294,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqiff2_read_serial_sized_text_record_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff2_show_attention_overlay_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff2_show_version_mismatch_overlay_return_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff2_validate_ascii_numeric_byte_trial.sh"
+    "src/decomp/scripts/compare_sasc_esqiff2_validate_field_index_and_length_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff2_validate_field_index_and_length_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_advance_banner_char_index_return_trial.sh"
     "src/decomp/scripts/compare_sasc_esq_terminate_after_second_quote_trial.sh"
