@@ -1,0 +1,94 @@
+              SECTION      text,CODE
+__code:
+ED1_DrawDiagnosticsScreen:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___ED1_DrawDiagnosticsScreen__1:
+              MOVE.B         #$7,ED_MenuStateId(A4)   ;197c 0007 0000 
+              MOVE.W         #$1,ED_DiagnosticsScreenActive(A4);397c 0001 0000 
+              BSR.W          ED_DrawBottomHelpBarBackground;6100 0000 
+              PEA            ESQ_SelectCodeBuffer(A4) ;486c 0000 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            WDISP_WeatherStatusLabelBuffer(A4);486c 0000 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($d2).w                  ;4878 00d2 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              MOVE.L         Global_REF_BAUD_RATE(A4),(A7);2eac 0000 
+              PEA            Global_STR_BAUD_RATE_DIAGNOSTIC_(A4);486c 0000 
+              PEA            $2f(A7)                  ;486f 002f 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            $33(A7)                  ;486f 0033 
+              PEA            ($168).w                 ;4878 0168 
+              PEA            ($19a).w                 ;4878 019a 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ED2_DiagnosticDiskUsagePercent(A4);486c 0000 
+              BSR.W          DISKIO_QueryDiskUsagePercentAndS;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              PEA            ED2_DiagnosticDiskSoftErrorCount(A4);486c 0000 
+              BSR.W          DISKIO_QueryVolumeSoftErrorCount;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         D6,(A7)                  ;2e86 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            Global_STR_DISK_0_IS_VAR_FULL_WI(A4);486c 0000 
+              PEA            $53(A7)                  ;486f 0053 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              LEA            $4c(A7),A7               ;4fef 004c 
+              PEA            $b(A7)                   ;486f 000b 
+              PEA            ($58).w                  ;4878 0058 
+              PEA            ($28).w                  ;4878 0028 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          ED_DrawDiagnosticModeText;6100 0000 
+___ED1_DrawDiagnosticsScreen__2:
+              PEA            ($6).w                   ;4878 0006 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            Global_STR_PUSH_ANY_KEY_TO_CONTI(A4);486c 0000 
+              PEA            ($186).w                 ;4878 0186 
+              PEA            ($af).w                  ;4878 00af 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              LEA            $38(A7),A7               ;4fef 0038 
+___ED1_DrawDiagnosticsScreen__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              ADD.W          #$2c,A7                  ;defc 002c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_MenuStateId
+              XREF           ED_DiagnosticsScreenActive
+              XREF           ED_DrawBottomHelpBarBackground
+              XREF           ESQ_SelectCodeBuffer
+              XREF           Global_REF_RASTPORT_1
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           WDISP_WeatherStatusLabelBuffer
+              XREF           Global_REF_BAUD_RATE
+              XREF           Global_STR_BAUD_RATE_DIAGNOSTIC_
+              XREF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XREF           ED2_DiagnosticDiskUsagePercent
+              XREF           DISKIO_QueryDiskUsagePercentAndS
+              XREF           ED2_DiagnosticDiskSoftErrorCount
+              XREF           DISKIO_QueryVolumeSoftErrorCount
+              XREF           Global_STR_DISK_0_IS_VAR_FULL_WI
+              XREF           ED_DrawDiagnosticModeText
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           Global_STR_PUSH_ANY_KEY_TO_CONTI
+              XDEF           ED1_DrawDiagnosticsScreen
+              END
