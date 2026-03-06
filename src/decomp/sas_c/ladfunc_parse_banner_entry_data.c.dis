@@ -1,0 +1,279 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_ParseBannerEntryData:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$1b4,D0                 ;90bc 0000 01b4 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$1a4,A7                 ;9efc 01a4 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___LADFUNC_ParseBannerEntryData__1:
+              MOVE.B         $1c3(A7),D7              ;1e2f 01c3 
+              MOVE.L         $1c4(A7),A5              ;2a6f 01c4 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          LADFUNC_ComposePackedPenByte;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.B         (A5)+,D6                 ;1c1d 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$49,D1                  ;7249 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__8;6634 
+___LADFUNC_ParseBannerEntryData__2:
+              MOVEQ.L        #$4c,D0                  ;704c 
+              CMP.B          D0,D7                    ;be00 
+              BEQ.B          ___LADFUNC_ParseBannerEntryData__4;6706 
+___LADFUNC_ParseBannerEntryData__3:
+              MOVEQ.L        #$74,D0                  ;7074 
+              CMP.B          D0,D7                    ;be00 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__7;6622 
+___LADFUNC_ParseBannerEntryData__4:
+              MOVE.W         ESQIFF_StatusPacketReadyFlag(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__7;661a 
+___LADFUNC_ParseBannerEntryData__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagTextModeChar(A4),D0;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            LADFUNC_TAG_RS_ResetTriggerSet(A4);486c 0000 
+              BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___LADFUNC_ParseBannerEntryData__7;6704 
+___LADFUNC_ParseBannerEntryData__6:
+              BSR.W          LADFUNC_ResetEntryTextBuffers;6100 0000 
+___LADFUNC_ParseBannerEntryData__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01ea 
+___LADFUNC_ParseBannerEntryData__8:
+              MOVEQ.L        #$4c,D0                  ;704c 
+              CMP.B          D0,D7                    ;be00 
+              BEQ.B          ___LADFUNC_ParseBannerEntryData__10;6706 
+___LADFUNC_ParseBannerEntryData__9:
+              MOVEQ.L        #$74,D0                  ;7074 
+              CMP.B          D0,D7                    ;be00 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__12;661c 
+___LADFUNC_ParseBannerEntryData__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagTextModeChar(A4),D0;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            LADFUNC_TAG_RS_ParseAllowedSet(A4);486c 0000 
+              BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___LADFUNC_ParseBannerEntryData__12;6706 
+___LADFUNC_ParseBannerEntryData__11:
+              MOVEQ.L        #$2e,D0                  ;702e 
+              CMP.B          D0,D6                    ;bc00 
+              BCS.B          ___LADFUNC_ParseBannerEntryData__13;6506 
+___LADFUNC_ParseBannerEntryData__12:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01bc 
+___LADFUNC_ParseBannerEntryData__13:
+              MOVE.W         LADFUNC_ParsedEntryCount(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,LADFUNC_ParsedEntryCount(A4);3941 0000 
+              MOVEQ.L        #$2e,D0                  ;702e 
+              CMP.W          D0,D1                    ;b240 
+              BCS.B          ___LADFUNC_ParseBannerEntryData__15;6506 
+___LADFUNC_ParseBannerEntryData__14:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 01a4 
+___LADFUNC_ParseBannerEntryData__15:
+              SUBQ.B         #$1,D6                   ;5306 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A2           ;2470 1800 
+              MOVE.W         #$1,(A2)                 ;34bc 0001 
+              MOVE.W         #$30,$2(A2)              ;357c 0030 0002 
+              CLR.W          $1c(A7)                  ;426f 001c 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($130).w                 ;4878 0130 
+              PEA            ($16f).w                 ;4878 016f 
+              PEA            Global_STR_LADFUNC_C_5(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              TST.L          D0                       ;4a80 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__17;6606 
+___LADFUNC_ParseBannerEntryData__16:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__39;6000 015e 
+___LADFUNC_ParseBannerEntryData__17:
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.B         D0,$1b8(A7)              ;1f40 01b8 
+              BEQ.W          ___LADFUNC_ParseBannerEntryData__30;6700 00ba 
+___LADFUNC_ParseBannerEntryData__18:
+              CMPI.W         #$190,$1c(A7)            ;0c6f 0190 001c 
+              BCC.W          ___LADFUNC_ParseBannerEntryData__30;6400 00b0 
+___LADFUNC_ParseBannerEntryData__19:
+___LADFUNC_ParseBannerEntryData__20:
+              SUBQ.B         #$3,D0                   ;5700 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__26;664e 
+___LADFUNC_ParseBannerEntryData__21:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              MOVEQ.L        #$7,D1                   ;7207 
+              CMP.B          D1,D0                    ;b001 
+              BHI.B          ___LADFUNC_ParseBannerEntryData__23;6210 
+___LADFUNC_ParseBannerEntryData__22:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D5,D1                    ;1205 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          LADFUNC_SetPackedPenHighNibble;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$8,A7                   ;504f 
+___LADFUNC_ParseBannerEntryData__23:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$1b0(A7)              ;2f40 01b0 
+              MOVEQ.L        #$7,D1                   ;7207 
+              CMP.B          D1,D0                    ;b001 
+              BHI.B          ___LADFUNC_ParseBannerEntryData__17;62ac 
+___LADFUNC_ParseBannerEntryData__24:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D5,D1                    ;1205 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          LADFUNC_SetPackedPenLowNibble;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$8,A7                   ;504f 
+___LADFUNC_ParseBannerEntryData__25:
+              BRA.B          ___LADFUNC_ParseBannerEntryData__17;609a 
+___LADFUNC_ParseBannerEntryData__26:
+              MOVEQ.L        #$14,D0                  ;7014 
+              CMP.B          $1b8(A7),D0              ;b02f 01b8 
+              BNE.B          ___LADFUNC_ParseBannerEntryData__28;6638 
+___LADFUNC_ParseBannerEntryData__27:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVE.W         D0,(A2)                  ;3480 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         (A5)+,D1                 ;121d 
+              MOVE.W         D1,$2(A2)                ;3541 0002 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         (A2),D0                  ;3012 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF2_ValidateAsciiNumericByte;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.W         D1,(A2)                  ;3481 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $2(A2),D0                ;302a 0002 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          ESQIFF2_ValidateAsciiNumericByte;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.W         D1,$2(A2)                ;3541 0002 
+              BRA.W          ___LADFUNC_ParseBannerEntryData__17;6000 ff5c 
+___LADFUNC_ParseBannerEntryData__28:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $1c(A7),D0               ;302f 001c 
+              MOVE.B         D5,$0(A3,D0.L)           ;1785 0800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              MOVE.B         $1b8(A7),$1e(A7,D1.L)    ;1faf 01b8 181e 
+              ADDQ.W         #$1,$1c(A7)              ;526f 001c 
+___LADFUNC_ParseBannerEntryData__29:
+              BRA.W          ___LADFUNC_ParseBannerEntryData__17;6000 ff40 
+___LADFUNC_ParseBannerEntryData__30:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $1c(A7),D0               ;302f 001c 
+              CLR.B          $1e(A7,D0.L)             ;4237 081e 
+              MOVE.L         $6(A2),-(A7)             ;2f2a 0006 
+              PEA            $22(A7)                  ;486f 0022 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,$6(A2)                ;2540 0006 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         $a(A2),D0                ;202a 000a 
+              BEQ.B          ___LADFUNC_ParseBannerEntryData__32;6716 
+___LADFUNC_ParseBannerEntryData__31:
+              PEA            ($130).w                 ;4878 0130 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($19c).w                 ;4878 019c 
+              PEA            Global_STR_LADFUNC_C_6(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LADFUNC_ParseBannerEntryData__32:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $1c(A7),D0               ;302f 001c 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($19d).w                 ;4878 019d 
+              PEA            Global_STR_LADFUNC_C_7(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,$a(A2)                ;2540 000a 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BEQ.B          ___LADFUNC_ParseBannerEntryData__37;6722 
+___LADFUNC_ParseBannerEntryData__33:
+              CLR.L          $1b4(A7)                 ;42af 01b4 
+___LADFUNC_ParseBannerEntryData__34:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $1c(A7),D0               ;302f 001c 
+              MOVE.L         $1b4(A7),D1              ;222f 01b4 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___LADFUNC_ParseBannerEntryData__37;6c10 
+___LADFUNC_ParseBannerEntryData__35:
+              MOVE.L         $a(A2),A0                ;206a 000a 
+              ADD.L          D1,A0                    ;d1c1 
+              MOVE.B         $0(A3,D1.L),(A0)         ;10b3 1800 
+___LADFUNC_ParseBannerEntryData__36:
+              ADDQ.L         #$1,$1b4(A7)             ;52af 01b4 
+              BRA.B          ___LADFUNC_ParseBannerEntryData__34;60e2 
+___LADFUNC_ParseBannerEntryData__37:
+              PEA            ($130).w                 ;4878 0130 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              PEA            ($1a0).w                 ;4878 01a0 
+              PEA            Global_STR_LADFUNC_C_8(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              BSR.W          LADFUNC_UpdateHighlightState;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$1,D0                   ;7001 
+___LADFUNC_ParseBannerEntryData__38:
+___LADFUNC_ParseBannerEntryData__39:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$1a4,A7                 ;defc 01a4 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_ComposePackedPenByte
+              XREF           ESQIFF_StatusPacketReadyFlag
+              XREF           ED_DiagTextModeChar
+              XREF           LADFUNC_TAG_RS_ResetTriggerSet
+              XREF           GROUP_AS_JMPTBL_STR_FindCharPtr
+              XREF           LADFUNC_ResetEntryTextBuffers
+              XREF           LADFUNC_TAG_RS_ParseAllowedSet
+              XREF           LADFUNC_ParsedEntryCount
+              XREF           LADFUNC_EntryPtrTable
+              XREF           Global_STR_LADFUNC_C_5
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           LADFUNC_ParseHexDigit
+              XREF           LADFUNC_SetPackedPenHighNibble
+              XREF           LADFUNC_SetPackedPenLowNibble
+              XREF           ESQIFF2_ValidateAsciiNumericByte
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           Global_STR_LADFUNC_C_6
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XREF           Global_STR_LADFUNC_C_7
+              XREF           Global_STR_LADFUNC_C_8
+              XREF           LADFUNC_UpdateHighlightState
+              XDEF           LADFUNC_ParseBannerEntryData
+              END

@@ -1,0 +1,27 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_SetCtrlContextMode:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___SCRIPT_SetCtrlContextMode__1:
+              MOVE.W         $12(A7),D7               ;3e2f 0012 
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.W         D7,(A5)                  ;3a87 
+              LEA            $2(A5),A0                ;41ed 0002 
+              MOVE.W         #$1,(A0)                 ;30bc 0001 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          SCRIPT_ResetCtrlContext  ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___SCRIPT_SetCtrlContextMode__2:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_ResetCtrlContext
+              XDEF           SCRIPT_SetCtrlContextMode
+              END

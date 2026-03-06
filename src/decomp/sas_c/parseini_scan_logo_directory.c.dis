@@ -1,0 +1,277 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_StrLen:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___PARSEINI_StrLen__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___PARSEINI_StrLen__2:
+              TST.B          $0(A5,D7.L)              ;4a35 7800 
+              BEQ.B          ___PARSEINI_StrLen__4    ;6704 
+___PARSEINI_StrLen__3:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___PARSEINI_StrLen__2    ;60f6 
+___PARSEINI_StrLen__4:
+              MOVE.L         D7,D0                    ;2007 
+___PARSEINI_StrLen__5:
+___PARSEINI_StrLen__6:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+PARSEINI_ScanLogoDirectory:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$39c,D0                 ;90bc 0000 039c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$38c,A7                 ;9efc 038c 
+              MOVEM.L        D4/D5/D6/D7/A5,-(A7)     ;48e7 0f04 
+___PARSEINI_ScanLogoDirectory__1:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___PARSEINI_ScanLogoDirectory__2:
+              MOVEQ.L        #$64,D0                  ;7064 
+              CMP.L          D0,D5                    ;ba80 
+              BGE.B          ___PARSEINI_ScanLogoDirectory__5;6c14 
+___PARSEINI_ScanLogoDirectory__3:
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            $1ac(A7),A0              ;41ef 01ac 
+              ADD.L          D0,A0                    ;d1c0 
+              CLR.L          (A0)                     ;4290 
+              CLR.L          $1c(A7,D0.L)             ;42b7 081c 
+___PARSEINI_ScanLogoDirectory__4:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___PARSEINI_ScanLogoDirectory__2;60e6 
+___PARSEINI_ScanLogoDirectory__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            Global_STR_LIST_RAM_LOGODIR_TXT_(A4);486c 0000 
+              BSR.W          _LVOExecute              ;6100 0000 
+              PEA            PARSEINI_STR_RB_LogoListPrimary(A4);486c 0000 
+              PEA            PARSEINI_PATH_DF0_COLON_LOGO_DOT(A4);486c 0000 
+              BSR.W          PARSEINI_JMPTBL_HANDLE_OpenWithM;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              PEA            PARSEINI_STR_RB_LogoListSecondar(A4);486c 0000 
+              PEA            PARSEINI_PATH_RAM_COLON_LOGODIR_(A4);486c 0000 
+              BSR.W          PARSEINI_JMPTBL_HANDLE_OpenWithM;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              MOVEQ.L        #$0,D5                   ;7a00 
+___PARSEINI_ScanLogoDirectory__6:
+              TST.L          D7                       ;4a87 
+              BEQ.W          ___PARSEINI_ScanLogoDirectory__24;6700 00ca 
+___PARSEINI_ScanLogoDirectory__7:
+              MOVEQ.L        #$64,D0                  ;7064 
+              CMP.L          D0,D5                    ;ba80 
+              BGE.W          ___PARSEINI_ScanLogoDirectory__24;6c00 00c2 
+___PARSEINI_ScanLogoDirectory__8:
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($63).w                  ;4878 0063 
+              PEA            $344(A7)                 ;486f 0344 
+              BSR.W          PARSEINI_JMPTBL_STREAM_ReadLineW;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___PARSEINI_ScanLogoDirectory__24;6700 00aa 
+___PARSEINI_ScanLogoDirectory__9:
+___PARSEINI_ScanLogoDirectory__10:
+              MOVEQ.L        #$0,D4                   ;7800 
+___PARSEINI_ScanLogoDirectory__11:
+              LEA            $33c(A7),A0              ;41ef 033c 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              TST.B          (A1)                     ;4a11 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__17;6726 
+___PARSEINI_ScanLogoDirectory__12:
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.B          (A1),D0                  ;b011 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__15;6714 
+___PARSEINI_ScanLogoDirectory__13:
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          (A1),D0                  ;b011 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__15;670a 
+___PARSEINI_ScanLogoDirectory__14:
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVEQ.L        #$2c,D0                  ;702c 
+              CMP.B          (A1),D0                  ;b011 
+              BNE.B          ___PARSEINI_ScanLogoDirectory__16;6604 
+___PARSEINI_ScanLogoDirectory__15:
+              ADD.L          D4,A0                    ;d1c4 
+              CLR.B          (A0)                     ;4210 
+___PARSEINI_ScanLogoDirectory__16:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___PARSEINI_ScanLogoDirectory__11;60ce 
+___PARSEINI_ScanLogoDirectory__17:
+              PEA            $33c(A7)                 ;486f 033c 
+              BSR.W          PARSEINI_JMPTBL_GCOMMAND_FindPat;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              BSR.W          PARSEINI_StrLen          ;6100 ff10 
+___PARSEINI_ScanLogoDirectory__18:
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D5,D1                    ;2205 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            $1b0(A7),A0              ;41ef 01b0 
+              ADD.L          D1,A0                    ;d1c1 
+              MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($4ef).w                 ;4878 04ef 
+              PEA            Global_STR_PARSEINI_C_4(A4);486c 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            $1ac(A7),A0              ;41ef 01ac 
+              ADD.L          D0,A0                    ;d1c0 
+              TST.L          (A0)                     ;4a90 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__23;671e 
+___PARSEINI_ScanLogoDirectory__19:
+              MOVEQ.L        #$0,D4                   ;7800 
+___PARSEINI_ScanLogoDirectory__20:
+              CMP.L          $18(A7),D4               ;b8af 0018 
+              BGE.B          ___PARSEINI_ScanLogoDirectory__23;6c16 
+___PARSEINI_ScanLogoDirectory__21:
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            $1ac(A7),A0              ;41ef 01ac 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         (A0),A1                  ;2250 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVE.B         $0(A5,D4.L),(A1)         ;12b5 4800 
+___PARSEINI_ScanLogoDirectory__22:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___PARSEINI_ScanLogoDirectory__20;60e4 
+___PARSEINI_ScanLogoDirectory__23:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.W          ___PARSEINI_ScanLogoDirectory__6;6000 ff34 
+___PARSEINI_ScanLogoDirectory__24:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___PARSEINI_ScanLogoDirectory__25:
+              TST.L          D6                       ;4a86 
+              BEQ.W          ___PARSEINI_ScanLogoDirectory__42;6700 00b0 
+___PARSEINI_ScanLogoDirectory__26:
+              MOVEQ.L        #$64,D0                  ;7064 
+              CMP.L          D0,D5                    ;ba80 
+              BGE.W          ___PARSEINI_ScanLogoDirectory__42;6c00 00a8 
+___PARSEINI_ScanLogoDirectory__27:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($63).w                  ;4878 0063 
+              PEA            $344(A7)                 ;486f 0344 
+              BSR.W          PARSEINI_JMPTBL_STREAM_ReadLineW;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___PARSEINI_ScanLogoDirectory__42;6700 0090 
+___PARSEINI_ScanLogoDirectory__28:
+___PARSEINI_ScanLogoDirectory__29:
+              MOVEQ.L        #$0,D4                   ;7800 
+___PARSEINI_ScanLogoDirectory__30:
+              LEA            $33c(A7),A0              ;41ef 033c 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              TST.B          (A1)                     ;4a11 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__35;671c 
+___PARSEINI_ScanLogoDirectory__31:
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.B          (A1),D0                  ;b011 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__33;670a 
+___PARSEINI_ScanLogoDirectory__32:
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          (A1),D0                  ;b011 
+              BNE.B          ___PARSEINI_ScanLogoDirectory__34;6604 
+___PARSEINI_ScanLogoDirectory__33:
+              ADD.L          D4,A0                    ;d1c4 
+              CLR.B          (A0)                     ;4210 
+___PARSEINI_ScanLogoDirectory__34:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___PARSEINI_ScanLogoDirectory__30;60d8 
+___PARSEINI_ScanLogoDirectory__35:
+              PEA            $33c(A7)                 ;486f 033c 
+              BSR.W          PARSEINI_StrLen          ;6100 fe52 
+___PARSEINI_ScanLogoDirectory__36:
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D5,D1                    ;2205 
+              ASL.L          #$2,D1                   ;e581 
+              MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($507).w                 ;4878 0507 
+              PEA            Global_STR_PARSEINI_C_5(A4);486c 0000 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         D1,$24(A7)               ;2f41 0024 
+              BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $14(A7),D1               ;222f 0014 
+              MOVE.L         D0,$1c(A7,D1.L)          ;2f80 181c 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              TST.L          $1c(A7,D0.L)             ;4ab7 081c 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__41;671e 
+___PARSEINI_ScanLogoDirectory__37:
+              MOVEQ.L        #$0,D4                   ;7800 
+___PARSEINI_ScanLogoDirectory__38:
+              CMP.L          $18(A7),D4               ;b8af 0018 
+              BGE.B          ___PARSEINI_ScanLogoDirectory__41;6c16 
+___PARSEINI_ScanLogoDirectory__39:
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $1c(A7,D0.L),A0          ;2077 081c 
+              ADD.L          D4,A0                    ;d1c4 
+              LEA            $33c(A7),A1              ;43ef 033c 
+              ADD.L          D4,A1                    ;d3c4 
+              MOVE.B         (A1),(A0)                ;1091 
+___PARSEINI_ScanLogoDirectory__40:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___PARSEINI_ScanLogoDirectory__38;60e4 
+___PARSEINI_ScanLogoDirectory__41:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.W          ___PARSEINI_ScanLogoDirectory__25;6000 ff4e 
+___PARSEINI_ScanLogoDirectory__42:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__44;6708 
+___PARSEINI_ScanLogoDirectory__43:
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          PARSEINI_JMPTBL_UNKNOWN36_Finali;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___PARSEINI_ScanLogoDirectory__44:
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___PARSEINI_ScanLogoDirectory__47;6708 
+___PARSEINI_ScanLogoDirectory__45:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              BSR.W          PARSEINI_JMPTBL_UNKNOWN36_Finali;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___PARSEINI_ScanLogoDirectory__46:
+___PARSEINI_ScanLogoDirectory__47:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A5     ;4cdf 20f0 
+              ADD.W          #$38c,A7                 ;defc 038c 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_LIST_RAM_LOGODIR_TXT_
+              XREF           _LVOExecute
+              XREF           PARSEINI_STR_RB_LogoListPrimary
+              XREF           PARSEINI_PATH_DF0_COLON_LOGO_DOT
+              XREF           PARSEINI_JMPTBL_HANDLE_OpenWithM
+              XREF           PARSEINI_STR_RB_LogoListSecondar
+              XREF           PARSEINI_PATH_RAM_COLON_LOGODIR_
+              XREF           PARSEINI_JMPTBL_STREAM_ReadLineW
+              XREF           PARSEINI_JMPTBL_GCOMMAND_FindPat
+              XREF           Global_STR_PARSEINI_C_4
+              XREF           SCRIPT_JMPTBL_MEMORY_AllocateMem
+              XREF           Global_STR_PARSEINI_C_5
+              XREF           PARSEINI_JMPTBL_UNKNOWN36_Finali
+              XDEF           PARSEINI_ScanLogoDirectory
+              END

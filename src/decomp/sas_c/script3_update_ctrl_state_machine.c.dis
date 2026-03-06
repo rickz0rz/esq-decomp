@@ -1,0 +1,96 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_RefreshCtrlState:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_RefreshCtrlState__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagVinModeChar(A4),D0;102c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            SCRIPT_Tag_YL(A4)        ;486c 0000 
+              BSR.W          STR_FindCharPtr          ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___SCRIPT_RefreshCtrlState__6;6718 
+___SCRIPT_RefreshCtrlState__2:
+              BSR.W          SCRIPT_ReadHandshakeBit3Flag;6100 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___SCRIPT_RefreshCtrlState__4;6708 
+___SCRIPT_RefreshCtrlState__3:
+              MOVE.W         #$2,SCRIPT_CtrlHandshakeStage(A4);397c 0002 0000 
+              BRA.B          ___SCRIPT_RefreshCtrlState__8;600c 
+___SCRIPT_RefreshCtrlState__4:
+              MOVE.W         #$1,SCRIPT_CtrlHandshakeStage(A4);397c 0001 0000 
+___SCRIPT_RefreshCtrlState__5:
+              BRA.B          ___SCRIPT_RefreshCtrlState__8;6004 
+___SCRIPT_RefreshCtrlState__6:
+              CLR.W          SCRIPT_CtrlHandshakeStage(A4);426c 0000 
+___SCRIPT_RefreshCtrlState__7:
+___SCRIPT_RefreshCtrlState__8:
+              RTS                                     ;4e75 
+__const:
+__strings:
+SCRIPT_UpdateCtrlStateMachine:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_UpdateCtrlStateMachine__1:
+              BSR.B          SCRIPT_RefreshCtrlState  ;61b4 
+___SCRIPT_UpdateCtrlStateMachine__2:
+              MOVE.W         SCRIPT_RuntimeMode(A4),D0;302c 0000 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.B          ___SCRIPT_UpdateCtrlStateMachine__12;6648 
+___SCRIPT_UpdateCtrlStateMachine__3:
+              MOVE.W         SCRIPT_CtrlHandshakeStage(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___SCRIPT_UpdateCtrlStateMachine__7;6624 
+___SCRIPT_UpdateCtrlStateMachine__4:
+              MOVE.W         SCRIPT_CtrlHandshakeRetryCount(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,SCRIPT_CtrlHandshakeRetryCount(A4);3941 0000 
+              MOVEQ.L        #$3,D0                   ;7003 
+              CMP.W          D0,D1                    ;b240 
+              BLT.B          ___SCRIPT_UpdateCtrlStateMachine__14;6d32 
+___SCRIPT_UpdateCtrlStateMachine__5:
+              CLR.W          SCRIPT_CtrlHandshakeRetryCount(A4);426c 0000 
+              MOVE.W         D0,SCRIPT_RuntimeMode(A4);3940 0000 
+              BSR.W          SCRIPT_DeassertCtrlLineNow;6100 0000 
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
+___SCRIPT_UpdateCtrlStateMachine__6:
+              BRA.B          ___SCRIPT_UpdateCtrlStateMachine__14;6020 
+___SCRIPT_UpdateCtrlStateMachine__7:
+              MOVE.W         SCRIPT_CtrlHandshakeStage(A4),D0;302c 0000 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.B          ___SCRIPT_UpdateCtrlStateMachine__9;6606 
+___SCRIPT_UpdateCtrlStateMachine__8:
+              CLR.W          SCRIPT_CtrlHandshakeRetryCount(A4);426c 0000 
+              BRA.B          ___SCRIPT_UpdateCtrlStateMachine__14;6012 
+___SCRIPT_UpdateCtrlStateMachine__9:
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BEQ.B          ___SCRIPT_UpdateCtrlStateMachine__14;670c 
+___SCRIPT_UpdateCtrlStateMachine__10:
+              MOVE.W         #$3,SCRIPT_RuntimeMode(A4);397c 0003 0000 
+___SCRIPT_UpdateCtrlStateMachine__11:
+              BRA.B          ___SCRIPT_UpdateCtrlStateMachine__14;6004 
+___SCRIPT_UpdateCtrlStateMachine__12:
+              CLR.W          SCRIPT_CtrlHandshakeRetryCount(A4);426c 0000 
+___SCRIPT_UpdateCtrlStateMachine__13:
+___SCRIPT_UpdateCtrlStateMachine__14:
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_DiagVinModeChar
+              XREF           SCRIPT_Tag_YL
+              XREF           STR_FindCharPtr
+              XREF           SCRIPT_ReadHandshakeBit3Flag
+              XREF           SCRIPT_CtrlHandshakeStage
+              XREF           SCRIPT_RuntimeMode
+              XREF           SCRIPT_CtrlHandshakeRetryCount
+              XREF           SCRIPT_DeassertCtrlLineNow
+              XREF           TEXTDISP_ResetSelectionAndRefres
+              XREF           Global_UIBusyFlag
+              XDEF           SCRIPT_UpdateCtrlStateMachine
+              END

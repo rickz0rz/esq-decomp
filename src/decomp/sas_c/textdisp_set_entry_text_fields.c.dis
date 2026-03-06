@@ -1,0 +1,71 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_SetEntryTextFields:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___TEXTDISP_SetEntryTextFields__1:
+              MOVE.L         $18(A7),A2               ;246f 0018 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.B         CONFIG_LRBN_FlagChar(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___TEXTDISP_SetEntryTextFields__3;660c 
+___TEXTDISP_SetEntryTextFields__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_LrbnEntryWidthPx(A4),D0;302c 0000 
+              MOVE.L         D0,TEXTDISP_EntryTextBaseWidthPx(A4);2940 0000 
+              BRA.B          ___TEXTDISP_SetEntryTextFields__4;600a 
+___TEXTDISP_SetEntryTextFields__3:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D0;302c 0000 
+              MOVE.L         D0,TEXTDISP_EntryTextBaseWidthPx(A4);2940 0000 
+___TEXTDISP_SetEntryTextFields__4:
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___TEXTDISP_SetEntryTextFields__13;673e 
+___TEXTDISP_SetEntryTextFields__5:
+___TEXTDISP_SetEntryTextFields__6:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___TEXTDISP_SetEntryTextFields__8;6716 
+___TEXTDISP_SetEntryTextFields__7:
+              PEA            ($9).w                   ;4878 0009 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          STRING_CopyPadNul        ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CLR.B          $9(A5)                   ;422d 0009 
+              BRA.B          ___TEXTDISP_SetEntryTextFields__9;6002 
+___TEXTDISP_SetEntryTextFields__8:
+              CLR.B          (A5)                     ;4215 
+___TEXTDISP_SetEntryTextFields__9:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___TEXTDISP_SetEntryTextFields__11;671a 
+___TEXTDISP_SetEntryTextFields__10:
+              LEA            $a(A5),A0                ;41ed 000a 
+              PEA            ($c7).w                  ;4878 00c7 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          STRING_CopyPadNul        ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              CLR.B          $d1(A5)                  ;422d 00d1 
+              BRA.B          ___TEXTDISP_SetEntryTextFields__13;6004 
+___TEXTDISP_SetEntryTextFields__11:
+              CLR.B          $a(A5)                   ;422d 000a 
+___TEXTDISP_SetEntryTextFields__12:
+___TEXTDISP_SetEntryTextFields__13:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CONFIG_LRBN_FlagChar
+              XREF           TEXTDISP_LrbnEntryWidthPx
+              XREF           TEXTDISP_EntryTextBaseWidthPx
+              XREF           CONFIG_BannerCopperHeadByte
+              XREF           STRING_CopyPadNul
+              XDEF           TEXTDISP_SetEntryTextFields
+              END

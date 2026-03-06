@@ -1,0 +1,48 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_AllocateBufferArray:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+___SCRIPT_AllocateBufferArray__1:
+              MOVE.W         $22(A7),D6               ;3c2f 0022 
+              MOVE.W         $1e(A7),D7               ;3e2f 001e 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVEQ.L        #$0,D5                   ;7a00 
+___SCRIPT_AllocateBufferArray__2:
+              CMP.W          D6,D5                    ;ba46 
+              BGE.B          ___SCRIPT_AllocateBufferArray__6;6c32 
+___SCRIPT_AllocateBufferArray__3:
+              EXT.L          D5                       ;48c5 
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.W         D7,D1                    ;3207 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            ($18a).w                 ;4878 018a 
+              PEA            Global_STR_SCRIPT_C_1(A4);486c 0000 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+              BSR.W          SCRIPT_JMPTBL_MEMORY_AllocateMem;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         $10(A7),D1               ;222f 0010 
+              MOVE.L         D0,$0(A5,D1.L)           ;2b80 1800 
+___SCRIPT_AllocateBufferArray__4:
+              ADDQ.W         #$1,D5                   ;5245 
+              BRA.B          ___SCRIPT_AllocateBufferArray__2;60ca 
+___SCRIPT_AllocateBufferArray__5:
+___SCRIPT_AllocateBufferArray__6:
+              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_SCRIPT_C_1
+              XREF           SCRIPT_JMPTBL_MEMORY_AllocateMem
+              XDEF           SCRIPT_AllocateBufferArray
+              END

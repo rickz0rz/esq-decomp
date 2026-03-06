@@ -1,0 +1,46 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_ParseHexDigit:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___LADFUNC_ParseHexDigit__1:
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVE.B         D7,D6                    ;1c07 
+              EXT.W          D6                       ;4886 
+              EXT.L          D6                       ;48c6 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$2,$0(A0,D6.L)          ;0830 0002 6800 
+              BEQ.B          ___LADFUNC_ParseHexDigit__3;6708 
+___LADFUNC_ParseHexDigit__2:
+              MOVE.L         D6,D0                    ;2006 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___LADFUNC_ParseHexDigit__9;601e 
+___LADFUNC_ParseHexDigit__3:
+              BTST           #$7,$0(A0,D6.L)          ;0830 0007 6800 
+              BEQ.B          ___LADFUNC_ParseHexDigit__7;6714 
+___LADFUNC_ParseHexDigit__4:
+              BTST           #$1,$0(A0,D6.L)          ;0830 0001 6800 
+              BEQ.B          ___LADFUNC_ParseHexDigit__6;6704 
+___LADFUNC_ParseHexDigit__5:
+              MOVEQ.L        #$20,D0                  ;7020 
+              SUB.L          D0,D6                    ;9c80 
+___LADFUNC_ParseHexDigit__6:
+              MOVE.L         D6,D0                    ;2006 
+              MOVEQ.L        #$37,D1                  ;7237 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___LADFUNC_ParseHexDigit__9;6002 
+___LADFUNC_ParseHexDigit__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+___LADFUNC_ParseHexDigit__8:
+___LADFUNC_ParseHexDigit__9:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           WDISP_CharClassTable
+              XDEF           LADFUNC_ParseHexDigit
+              END

@@ -1,0 +1,104 @@
+              SECTION      text,CODE
+__code:
+KYBD_InitializeInputDevices:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___KYBD_InitializeInputDevices__1:
+              BSR.W          GROUP_AV_JMPTBL_DISKIO_ProbeDriv;6100 0000 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            Global_STR_INPUTDEVICE(A4);486c 0000 
+              BSR.W          GROUP_AV_JMPTBL_SIGNAL_CreateMsg;6100 0000 
+              MOVE.L         D0,Global_REF_INPUTDEVICE_MSGPORT(A4);2940 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          GROUP_AV_JMPTBL_ALLOCATE_AllocAn;6100 0000 
+              MOVE.L         D0,Global_REF_IOSTDREQ_STRUCT_INPUT(A4);2940 0000 
+              CLR.L          (A7)                     ;4297 
+              PEA            Global_STR_CONSOLEDEVICE(A4);486c 0000 
+              BSR.W          GROUP_AV_JMPTBL_SIGNAL_CreateMsg;6100 0000 
+              MOVE.L         D0,Global_REF_CONSOLEDEVICE_MSGPORT(A4);2940 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          GROUP_AV_JMPTBL_ALLOCATE_AllocAn;6100 0000 
+              MOVE.L         D0,Global_REF_IOSTDREQ_STRUCT_CONSO(A4);2940 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),-(A7);2f2c 0000 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            Global_STR_INPUT_DEVICE(A4);486c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOOpenDevice           ;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_CONSO(A4),-(A7);2f2c 0000 
+              PEA            ($ffffffff).w            ;4878 ffff 
+              PEA            Global_STR_CONSOLE_DEVICE(A4);486c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOOpenDevice           ;6100 0000 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_CONSO(A4),A3;266c 0000 
+              LEA            $14(A3),A0               ;41eb 0014 
+              MOVE.L         (A0),INPUTDEVICE_LibraryBaseFromConso(A4);2950 0000 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($16).w                  ;4878 0016 
+              PEA            ($79).w                  ;4878 0079 
+              PEA            Global_STR_KYBD_C(A4)    ;486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              MOVE.L         A5,A0                    ;204d 
+              MOVE.L         A0,Global_REF_DATA_INPUT_BUFFER(A4);2948 0000 
+              LEA            $e(A5),A1                ;43ed 000e 
+___KYBD_InitializeInputDevices__2:
+              MOVE.L         INPUTDEVICE_HandlerUserDataLong(A4),(A1);22ac 0000 
+              LEA            $12(A5),A0               ;41ed 0012 
+              LEA            GROUP_AV_JMPTBL_ESQ_InvokeGcomma(PC),A1;43fa 0000 
+              MOVE.L         A1,(A0)                  ;2089 
+              LEA            $9(A5),A0                ;41ed 0009 
+              MOVE.B         #$33,(A0)                ;10bc 0033 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),A0;206c 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          Struct_IOStdReq__io_Command(A4),A1;d3ec 0000 
+              MOVE.W         #$9,(A1)                 ;32bc 0009 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),A0;206c 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          Struct_IOStdReq__io_Data(A4),A1;d3ec 0000 
+              MOVE.L         Global_REF_DATA_INPUT_BUFFER(A4),D0;202c 0000 
+              MOVE.L         D0,(A1)                  ;2280 
+              MOVE.L         Global_REF_IOSTDREQ_STRUCT_INPUT(A4),(A7);2eac 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVODoIO                 ;6100 0000 
+              LEA            $40(A7),A7               ;4fef 0040 
+              CLR.L          ED_StateRingWriteIndex(A4);42ac 0000 
+              CLR.L          ED_StateRingIndex(A4)    ;42ac 0000 
+___KYBD_InitializeInputDevices__3:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AV_JMPTBL_DISKIO_ProbeDriv
+              XREF           Global_STR_INPUTDEVICE
+              XREF           GROUP_AV_JMPTBL_SIGNAL_CreateMsg
+              XREF           Global_REF_INPUTDEVICE_MSGPORT
+              XREF           GROUP_AV_JMPTBL_ALLOCATE_AllocAn
+              XREF           Global_REF_IOSTDREQ_STRUCT_INPUT
+              XREF           Global_STR_CONSOLEDEVICE
+              XREF           Global_REF_CONSOLEDEVICE_MSGPORT
+              XREF           Global_REF_IOSTDREQ_STRUCT_CONSO
+              XREF           Global_STR_INPUT_DEVICE
+              XREF           AbsExecBase
+              XREF           _LVOOpenDevice
+              XREF           Global_STR_CONSOLE_DEVICE
+              XREF           INPUTDEVICE_LibraryBaseFromConso
+              XREF           Global_STR_KYBD_C
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           Global_REF_DATA_INPUT_BUFFER
+              XREF           INPUTDEVICE_HandlerUserDataLong
+              XREF           GROUP_AV_JMPTBL_ESQ_InvokeGcomma
+              XREF           Struct_IOStdReq__io_Command
+              XREF           Struct_IOStdReq__io_Data
+              XREF           _LVODoIO
+              XREF           ED_StateRingWriteIndex
+              XREF           ED_StateRingIndex
+              XDEF           KYBD_InitializeInputDevices
+              END

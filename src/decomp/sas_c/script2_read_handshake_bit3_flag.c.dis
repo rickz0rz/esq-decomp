@@ -1,0 +1,22 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_ReadHandshakeBit3Flag:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_ReadHandshakeBit3Flag__1:
+              MOVE.B         CIAB_PRA(A4),D0          ;102c 0000 
+              BTST           #$3,D0                   ;0800 0003 
+              SCC            D0,#$600                 ;56c0 
+              MOVEQ.L        #$0,D1                   ;7200 
+              SUB.B          D0,D1                    ;9200 
+              MOVE.L         D1,D0                    ;2001 
+___SCRIPT_ReadHandshakeBit3Flag__2:
+___SCRIPT_ReadHandshakeBit3Flag__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CIAB_PRA
+              XDEF           SCRIPT_ReadHandshakeBit3Flag
+              END

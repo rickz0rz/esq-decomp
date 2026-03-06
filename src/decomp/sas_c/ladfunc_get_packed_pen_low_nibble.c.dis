@@ -1,0 +1,23 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_GetPackedPenLowNibble:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___LADFUNC_GetPackedPenLowNibble__1:
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.B         D7,D6                    ;1c07 
+              MOVEQ.L        #$f,D0                   ;700f 
+              AND.L          D0,D6                    ;cc80 
+              MOVE.L         D6,D0                    ;2006 
+___LADFUNC_GetPackedPenLowNibble__2:
+___LADFUNC_GetPackedPenLowNibble__3:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           LADFUNC_GetPackedPenLowNibble
+              END

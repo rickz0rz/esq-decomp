@@ -1,0 +1,40 @@
+              SECTION      text,CODE
+__code:
+TLIBA1_ParseStyleCodeChar:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___TLIBA1_ParseStyleCodeChar__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVEQ.L        #$58,D0                  ;7058 
+              CMP.B          D0,D7                    ;be00 
+              BNE.B          ___TLIBA1_ParseStyleCodeChar__3;6604 
+___TLIBA1_ParseStyleCodeChar__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___TLIBA1_ParseStyleCodeChar__8;6018 
+___TLIBA1_ParseStyleCodeChar__3:
+              MOVEQ.L        #$31,D0                  ;7031 
+              CMP.B          D0,D7                    ;be00 
+              BCS.B          ___TLIBA1_ParseStyleCodeChar__5;6506 
+___TLIBA1_ParseStyleCodeChar__4:
+              MOVEQ.L        #$37,D0                  ;7037 
+              CMP.B          D0,D7                    ;be00 
+              BLS.B          ___TLIBA1_ParseStyleCodeChar__6;6304 
+___TLIBA1_ParseStyleCodeChar__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___TLIBA1_ParseStyleCodeChar__8;6008 
+___TLIBA1_ParseStyleCodeChar__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+___TLIBA1_ParseStyleCodeChar__7:
+___TLIBA1_ParseStyleCodeChar__8:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           TLIBA1_ParseStyleCodeChar
+              END

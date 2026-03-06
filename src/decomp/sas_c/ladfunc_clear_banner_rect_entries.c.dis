@@ -1,0 +1,56 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_ClearBannerRectEntries:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___LADFUNC_ClearBannerRectEntries__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LADFUNC_ClearBannerRectEntries__2:
+              MOVEQ.L        #$2e,D0                  ;702e 
+              CMP.W          D0,D7                    ;be40 
+              BHI.B          ___LADFUNC_ClearBannerRectEntries__5;6228 
+___LADFUNC_ClearBannerRectEntries__3:
+              SWAP           D7                       ;4847 
+              CLR.W          D7                       ;4247 
+              SWAP           D7                       ;4847 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              CLR.W          (A5)                     ;4255 
+              CLR.W          $2(A5)                   ;426d 0002 
+              CLR.W          $4(A5)                   ;426d 0004 
+              CLR.L          $6(A5)                   ;42ad 0006 
+              CLR.L          $a(A5)                   ;42ad 000a 
+___LADFUNC_ClearBannerRectEntries__4:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___LADFUNC_ClearBannerRectEntries__2;60d2 
+___LADFUNC_ClearBannerRectEntries__5:
+              CLR.W          LADFUNC_HighlightCycleCountdown(A4);426c 0000 
+              CLR.W          LADFUNC_EntryCount(A4)   ;426c 0000 
+              CLR.W          LADFUNC_ParsedEntryCount(A4);426c 0000 
+              CLR.W          WDISP_HighlightActive(A4);426c 0000 
+              CLR.W          WDISP_HighlightIndex(A4) ;426c 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ED_DiagScrollSpeedChar(A4),D0;102c 0000 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D0,ED_TextLimit(A4)      ;2940 0000 
+___LADFUNC_ClearBannerRectEntries__6:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_EntryPtrTable
+              XREF           LADFUNC_HighlightCycleCountdown
+              XREF           LADFUNC_EntryCount
+              XREF           LADFUNC_ParsedEntryCount
+              XREF           WDISP_HighlightActive
+              XREF           WDISP_HighlightIndex
+              XREF           ED_DiagScrollSpeedChar
+              XREF           ED_TextLimit
+              XDEF           LADFUNC_ClearBannerRectEntries
+              END

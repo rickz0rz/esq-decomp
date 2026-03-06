@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_DisplayTextPackedPens:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___LADFUNC_DisplayTextPackedPens__1:
+              MOVE.B         $2b(A7),D5               ;1a2f 002b 
+              MOVE.L         $24(A7),D6               ;2c2f 0024 
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $2c(A7),A3               ;266f 002c 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          LADFUNC_GetPackedPenLowNibble;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              MOVE.L         D4,(A7)                  ;2e84 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          LADFUNC_GetPackedPenHighNibble;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              MOVE.L         D4,(A7)                  ;2e84 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetBPen              ;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AW_JMPTBL_DISPLIB_DisplayT;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+___LADFUNC_DisplayTextPackedPens__2:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_GetPackedPenLowNibble
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetAPen
+              XREF           LADFUNC_GetPackedPenHighNibble
+              XREF           _LVOSetBPen
+              XREF           GROUP_AW_JMPTBL_DISPLIB_DisplayT
+              XDEF           LADFUNC_DisplayTextPackedPens
+              END

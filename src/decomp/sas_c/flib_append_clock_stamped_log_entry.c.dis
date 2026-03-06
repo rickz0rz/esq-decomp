@@ -1,0 +1,185 @@
+              SECTION      text,CODE
+__code:
+FLIB_AppendClockStampedLogEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$a0,D0                  ;90bc 0000 00a0 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$88,A7                  ;9efc 0088 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___FLIB_AppendClockStampedLogEntry__1:
+              MOVE.L         $a8(A7),A5               ;2a6f 00a8 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___FLIB_AppendClockStampedLogEntry__2:
+              TST.L          ESQPARS2_LogAppendSpinlock(A4);4aac 0000 
+              BNE.B          ___FLIB_AppendClockStampedLogEntry__2;66fa 
+___FLIB_AppendClockStampedLogEntry__3:
+___FLIB_AppendClockStampedLogEntry__4:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,ESQPARS2_LogAppendSpinlock(A4);2940 0000 
+              MOVE.W         FLIB_LogEntryByteCount(A4),D0;302c 0000 
+              CMPI.W         #$2710,D0                ;0c40 2710 
+              BLS.B          ___FLIB_AppendClockStampedLogEntry__6;630a 
+___FLIB_AppendClockStampedLogEntry__5:
+              CLR.L          ESQPARS2_LogAppendSpinlock(A4);42ac 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___FLIB_AppendClockStampedLogEntry__24;6000 014e 
+___FLIB_AppendClockStampedLogEntry__6:
+              TST.B          $0(A5,D7.L)              ;4a35 7800 
+              BEQ.B          ___FLIB_AppendClockStampedLogEntry__8;6704 
+___FLIB_AppendClockStampedLogEntry__7:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___FLIB_AppendClockStampedLogEntry__6;60f6 
+___FLIB_AppendClockStampedLogEntry__8:
+              MOVEQ.L        #$64,D0                  ;7064 
+              CMP.L          D0,D7                    ;be80 
+              BLE.B          ___FLIB_AppendClockStampedLogEntry__10;6f06 
+___FLIB_AppendClockStampedLogEntry__9:
+              MOVE.L         D0,D7                    ;2e00 
+              CLR.B          $63(A5)                  ;422d 0063 
+___FLIB_AppendClockStampedLogEntry__10:
+              MOVE.W         CLOCK_CacheHour(A4),D1   ;322c 0000 
+              EXT.L          D1                       ;48c1 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          NEWGRID_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.W         CLOCK_CacheMinuteOrSecond(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              PEA            ($64).w                  ;4878 0064 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          NEWGRID_JMPTBL_MATH_DivS32;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              PEA            ($64).w                  ;4878 0064 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          NEWGRID_JMPTBL_MATH_DivS32;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              MOVE.W         CLOCK_CacheAmPmFlag(A4),D1;322c 0000 
+              MOVE.L         D0,$a0(A7)               ;2f40 00a0 
+              TST.W          D1                       ;4a41 
+              BEQ.B          ___FLIB_AppendClockStampedLogEntry__12;6706 
+___FLIB_AppendClockStampedLogEntry__11:
+              LEA            ESQPARS2_LogTagPm(A4),A3 ;47ec 0000 
+              BRA.B          ___FLIB_AppendClockStampedLogEntry__13;6004 
+___FLIB_AppendClockStampedLogEntry__12:
+              LEA            ESQPARS2_LogTagAm(A4),A3 ;47ec 0000 
+___FLIB_AppendClockStampedLogEntry__13:
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ESQPARS2_LogTimestampFmt(A4);486c 0000 
+              PEA            $3c(A7)                  ;486f 003c 
+              BSR.W          GROUP_AW_JMPTBL_WDISP_SPrintf;6100 0000 
+              MOVEQ.L        #$e,D0                   ;700e 
+              ADD.L          D0,D7                    ;de80 
+              PEA            ESQPARS2_LogFieldTab(A4) ;486c 0000 
+              PEA            $44(A7)                  ;486f 0044 
+              BSR.W          GROUP_AR_JMPTBL_STRING_AppendAtN;6100 0000 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              PEA            $48(A7)                  ;486f 0048 
+              BSR.W          GROUP_AR_JMPTBL_STRING_AppendAtN;6100 0000 
+              PEA            ESQPARS2_LogLineTerminator(A4);486c 0000 
+              PEA            $50(A7)                  ;486f 0050 
+              BSR.W          GROUP_AR_JMPTBL_STRING_AppendAtN;6100 0000 
+              MOVE.W         FLIB_LogEntryByteCount(A4),D0;302c 0000 
+              MOVE.L         D7,D1                    ;2207 
+              MOVE.W         D0,$4a(A7)               ;3f40 004a 
+              ADD.W          D1,D0                    ;d041 
+              MOVE.W         D0,FLIB_LogEntryByteCount(A4);3940 0000 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D0,D2                    ;3400 
+              ADDQ.L         #$1,D2                   ;5282 
+              MOVE.L         D2,(A7)                  ;2e82 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($ad).w                  ;4878 00ad 
+              PEA            Global_STR_FLIB_C_1(A4)  ;486c 0000 
+              MOVE.W         D0,$54(A7)               ;3f40 0054 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $38(A7),A7               ;4fef 0038 
+              MOVE.L         D7,D0                    ;2007 
+___FLIB_AppendClockStampedLogEntry__14:
+              MOVE.W         $1e(A7),D1               ;322f 001e 
+              CMP.W          D0,D1                    ;b240 
+              BEQ.B          ___FLIB_AppendClockStampedLogEntry__20;6734 
+___FLIB_AppendClockStampedLogEntry__15:
+              MOVE.L         NEWGRID2_ErrorLogEntryPtr(A4),A0;206c 0000 
+              MOVE.L         A2,A1                    ;224a 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
+              MOVE.L         A0,D1                    ;2208 
+              BEQ.B          ___FLIB_AppendClockStampedLogEntry__22;6728 
+___FLIB_AppendClockStampedLogEntry__16:
+              MOVE.L         A1,D1                    ;2209 
+              BEQ.B          ___FLIB_AppendClockStampedLogEntry__22;6724 
+___FLIB_AppendClockStampedLogEntry__17:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.L         $20(A7),A1               ;226f 0020 
+              MOVE.B         (A0),(A1)+               ;12d0 
+              MOVE.L         A1,$20(A7)               ;2f49 0020 
+___FLIB_AppendClockStampedLogEntry__18:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___FLIB_AppendClockStampedLogEntry__17;66e4 
+___FLIB_AppendClockStampedLogEntry__19:
+              BRA.B          ___FLIB_AppendClockStampedLogEntry__22;6006 
+___FLIB_AppendClockStampedLogEntry__20:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___FLIB_AppendClockStampedLogEntry__22;6702 
+___FLIB_AppendClockStampedLogEntry__21:
+              CLR.B          (A2)                     ;4212 
+___FLIB_AppendClockStampedLogEntry__22:
+              PEA            $28(A7)                  ;486f 0028 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          GROUP_AR_JMPTBL_STRING_AppendAtN;6100 0000 
+              MOVE.L         NEWGRID2_ErrorLogEntryPtr(A4),(A7);2eac 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,NEWGRID2_ErrorLogEntryPtr(A4);2940 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         FLIB_LogEntryByteCount(A4),D0;302c 0000 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($c6).w                  ;4878 00c6 
+              PEA            Global_STR_FLIB_C_2(A4)  ;486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              CLR.L          ESQPARS2_LogAppendSpinlock(A4);42ac 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              MOVEQ.L        #$0,D0                   ;7000 
+___FLIB_AppendClockStampedLogEntry__23:
+___FLIB_AppendClockStampedLogEntry__24:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$88,A7                  ;defc 0088 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS2_LogAppendSpinlock
+              XREF           FLIB_LogEntryByteCount
+              XREF           CLOCK_CacheHour
+              XREF           NEWGRID_JMPTBL_MATH_DivS32
+              XREF           CLOCK_CacheMinuteOrSecond
+              XREF           Global_REF_CLOCKDATA_STRUCT
+              XREF           CLOCK_CacheAmPmFlag
+              XREF           ESQPARS2_LogTagPm
+              XREF           ESQPARS2_LogTagAm
+              XREF           ESQPARS2_LogTimestampFmt
+              XREF           GROUP_AW_JMPTBL_WDISP_SPrintf
+              XREF           ESQPARS2_LogFieldTab
+              XREF           GROUP_AR_JMPTBL_STRING_AppendAtN
+              XREF           ESQPARS2_LogLineTerminator
+              XREF           Global_STR_FLIB_C_1
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           NEWGRID2_ErrorLogEntryPtr
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           Global_STR_FLIB_C_2
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XDEF           FLIB_AppendClockStampedLogEntry
+              END

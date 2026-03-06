@@ -1,0 +1,42 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_PollHandshakeAndApplyTime:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___SCRIPT_PollHandshakeAndApplyTime__1:
+              MOVE.W         SCRIPT_CtrlInterfaceEnabledFlag(A4),D0;302c 0000 
+              BEQ.B          ___SCRIPT_PollHandshakeAndApplyTime__8;672a 
+___SCRIPT_PollHandshakeAndApplyTime__2:
+___SCRIPT_PollHandshakeAndApplyTime__3:
+              BSR.W          SCRIPT_ReadHandshakeBit5Mask;6100 0000 
+              BTST           #$5,D0                   ;0800 0005 
+              BEQ.B          ___SCRIPT_PollHandshakeAndApplyTime__8;6720 
+___SCRIPT_PollHandshakeAndApplyTime__4:
+___SCRIPT_PollHandshakeAndApplyTime__5:
+              MOVE.W         SCRIPT_CtrlLineAssertedTicks(A4),D0;302c 0000 
+              MOVE.W         D0,D7                    ;3e00 
+              ADDQ.W         #$1,D7                   ;5247 
+              MOVE.W         D7,SCRIPT_CtrlLineAssertedTicks(A4);3947 0000 
+              MOVEQ.L        #$14,D0                  ;7014 
+              CMP.W          D0,D7                    ;be40 
+              BLT.B          ___SCRIPT_PollHandshakeAndApplyTime__8;6d0e 
+___SCRIPT_PollHandshakeAndApplyTime__6:
+              CLR.W          ESQIFF_ExternalAssetFlags(A4);426c 0000 
+              MOVE.W         #$24,LADFUNC_EntryCount(A4);397c 0024 0000 
+              CLR.W          SCRIPT_CtrlLineAssertedTicks(A4);426c 0000 
+___SCRIPT_PollHandshakeAndApplyTime__7:
+___SCRIPT_PollHandshakeAndApplyTime__8:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_CtrlInterfaceEnabledFlag
+              XREF           SCRIPT_ReadHandshakeBit5Mask
+              XREF           SCRIPT_CtrlLineAssertedTicks
+              XREF           ESQIFF_ExternalAssetFlags
+              XREF           LADFUNC_EntryCount
+              XDEF           SCRIPT_PollHandshakeAndApplyTime
+              END

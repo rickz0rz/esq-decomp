@@ -1,0 +1,210 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_DispatchPlaybackCursorCom:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___SCRIPT_DispatchPlaybackCursorCom__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         (A5),D7                  ;2e15 
+              SUBQ.L         #$1,D7                   ;5387 
+              BLT.B          ___SCRIPT_DispatchPlaybackCursorCom__3;6d06 
+___SCRIPT_DispatchPlaybackCursorCom__2:
+              MOVEQ.L        #$f,D0                   ;700f 
+              CMP.L          D0,D7                    ;be80 
+              BLT.B          ___SCRIPT_DispatchPlaybackCursorCom__4;6d1a 
+___SCRIPT_DispatchPlaybackCursorCom__3:
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+              MOVE.W         SCRIPT_PlaybackFallbackCounter(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_PlaybackFallbackCounter(A4);3940 0000 
+              BSR.W          SCRIPT_ClearSearchTextsAndChanne;6100 0000 
+              CLR.L          (A5)                     ;4295 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__30;6000 019e 
+___SCRIPT_DispatchPlaybackCursorCom__4:
+              MOVE.L         D7,D0                    ;2007 
+___SCRIPT_DispatchPlaybackCursorCom__5:
+___SCRIPT_DispatchPlaybackCursorCom__6:
+              CMPI.L         #$f,D0                   ;0c80 0000 000f 
+              BCC.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6400 018c 
+___SCRIPT_DispatchPlaybackCursorCom__7:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_SCRIPT_DispatchPlaybackCursorCom_7:
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__8-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__9-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__13-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__14-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__17-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__18-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__19-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__20-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__21-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__22-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__23-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__24-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__25-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__26-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+              DC.W           ___SCRIPT_DispatchPlaybackCursorCom__27-__switch_SCRIPT_DispatchPlaybackCursorCom_7
+___SCRIPT_DispatchPlaybackCursorCom__8:
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 015c 
+___SCRIPT_DispatchPlaybackCursorCom__9:
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         CONFIG_MSN_FlagChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4d,D1                  ;724d 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___SCRIPT_DispatchPlaybackCursorCom__11;660e 
+___SCRIPT_DispatchPlaybackCursorCom__10:
+              PEA            ($3).w                   ;4878 0003 
+              BSR.W          SCRIPT_UpdateSerialShadowFromCtr;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 0132 
+___SCRIPT_DispatchPlaybackCursorCom__11:
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          SCRIPT_UpdateSerialShadowFromCtr;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___SCRIPT_DispatchPlaybackCursorCom__12:
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 0124 
+___SCRIPT_DispatchPlaybackCursorCom__13:
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          SCRIPT_UpdateSerialShadowFromCtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 0106 
+___SCRIPT_DispatchPlaybackCursorCom__14:
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+              MOVE.W         TEXTDISP_DeferredActionCountdown(A4),D0;302c 0000 
+              BNE.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6600 00f8 
+___SCRIPT_DispatchPlaybackCursorCom__15:
+              PEA            ($3).w                   ;4878 0003 
+              BSR.W          SCRIPT_UpdateSerialShadowFromCtr;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         #$3,TEXTDISP_DeferredActionCountdown(A4);397c 0003 0000 
+              MOVE.W         #$1,TEXTDISP_DeferredActionArmed(A4);397c 0001 0000 
+___SCRIPT_DispatchPlaybackCursorCom__16:
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 00de 
+___SCRIPT_DispatchPlaybackCursorCom__17:
+              MOVE.W         TEXTDISP_ChannelSourceMode(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.W         SCRIPT_ChannelRangeDigitChar(A4),D1;322c 0000 
+              EXT.L          D1                       ;48c1 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          SCRIPT3_JMPTBL_CLEANUP_RenderAli;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 00c0 
+___SCRIPT_DispatchPlaybackCursorCom__18:
+              MOVE.L         SCRIPT_SearchMatchCountOrIndex(A4),-(A7);2f2c 0000 
+              PEA            ($35).w                  ;4878 0035 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          SCRIPT3_JMPTBL_CLEANUP_RenderAli;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 00a8 
+___SCRIPT_DispatchPlaybackCursorCom__19:
+              MOVE.L         SCRIPT_SearchMatchCountOrIndex(A4),-(A7);2f2c 0000 
+              PEA            ($35).w                  ;4878 0035 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          SCRIPT3_JMPTBL_CLEANUP_RenderAli;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.W          ___SCRIPT_DispatchPlaybackCursorCom__29;6000 0092 
+___SCRIPT_DispatchPlaybackCursorCom__20:
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         SCRIPT_PendingWeatherCommandChar(A4),D0;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          WDISP_HandleWeatherStatusCommand;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;607a 
+___SCRIPT_DispatchPlaybackCursorCom__21:
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         SCRIPT_PendingTextdispCmdChar(A4),D0;102c 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         SCRIPT_PendingTextdispCmdArg(A4),D1;122c 0000 
+              MOVE.L         SCRIPT_CommandTextPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          TEXTDISP_HandleScriptCommand;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;6056 
+___SCRIPT_DispatchPlaybackCursorCom__22:
+              BSR.W          SCRIPT_AssertCtrlLineNow ;6100 0000 
+              MOVE.W         #$1,SCRIPT_RuntimeMode(A4);397c 0001 0000 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;604a 
+___SCRIPT_DispatchPlaybackCursorCom__23:
+              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D0;302c 0000 
+              ADD.W          #$1c,D0                  ;0640 001c 
+              MOVE.W         D0,SCRIPT_PendingBannerTargetChar(A4);3940 0000 
+              MOVE.W         #$3e8,SCRIPT_PendingBannerSpeedMs(A4);397c 03e8 0000 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;602a 
+___SCRIPT_DispatchPlaybackCursorCom__24:
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),SCRIPT_PendingBannerTargetChar(A4);396c 0000 0000 
+              MOVE.W         #$3e8,SCRIPT_PendingBannerSpeedMs(A4);397c 03e8 0000 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;601c 
+___SCRIPT_DispatchPlaybackCursorCom__25:
+              BSR.W          SCRIPT3_JMPTBL_ESQ_SetCopperEffe;6100 0000 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;6016 
+___SCRIPT_DispatchPlaybackCursorCom__26:
+              MOVE.W         #$1,SCRIPT_ReadModeActiveLatch(A4);397c 0001 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              BRA.B          ___SCRIPT_DispatchPlaybackCursorCom__29;6008 
+___SCRIPT_DispatchPlaybackCursorCom__27:
+              CLR.W          SCRIPT_ReadModeActiveLatch(A4);426c 0000 
+              CLR.W          ESQPARS2_ReadModeFlags(A4);426c 0000 
+___SCRIPT_DispatchPlaybackCursorCom__28:
+___SCRIPT_DispatchPlaybackCursorCom__29:
+              BSR.W          SCRIPT_ClearSearchTextsAndChanne;6100 0000 
+              CLR.L          (A5)                     ;4295 
+___SCRIPT_DispatchPlaybackCursorCom__30:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_CurrentMatchIndex
+              XREF           SCRIPT_PlaybackFallbackCounter
+              XREF           SCRIPT_ClearSearchTextsAndChanne
+              XREF           TEXTDISP_ResetSelectionAndRefres
+              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XREF           TEXTDISP_SetRastForMode
+              XREF           CONFIG_MSN_FlagChar
+              XREF           SCRIPT_UpdateSerialShadowFromCtr
+              XREF           TEXTDISP_DeferredActionCountdown
+              XREF           TEXTDISP_DeferredActionArmed
+              XREF           TEXTDISP_ChannelSourceMode
+              XREF           SCRIPT_ChannelRangeDigitChar
+              XREF           SCRIPT3_JMPTBL_CLEANUP_RenderAli
+              XREF           SCRIPT_SearchMatchCountOrIndex
+              XREF           SCRIPT_PendingWeatherCommandChar
+              XREF           WDISP_HandleWeatherStatusCommand
+              XREF           SCRIPT_PendingTextdispCmdChar
+              XREF           SCRIPT_PendingTextdispCmdArg
+              XREF           SCRIPT_CommandTextPtr
+              XREF           TEXTDISP_HandleScriptCommand
+              XREF           SCRIPT_AssertCtrlLineNow
+              XREF           SCRIPT_RuntimeMode
+              XREF           CONFIG_BannerCopperHeadByte
+              XREF           SCRIPT_PendingBannerTargetChar
+              XREF           SCRIPT_PendingBannerSpeedMs
+              XREF           SCRIPT3_JMPTBL_ESQ_SetCopperEffe
+              XREF           SCRIPT_ReadModeActiveLatch
+              XREF           ESQPARS2_ReadModeFlags
+              XDEF           SCRIPT_DispatchPlaybackCursorCom
+              END

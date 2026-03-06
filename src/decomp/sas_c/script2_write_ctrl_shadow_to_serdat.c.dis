@@ -1,0 +1,27 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_WriteCtrlShadowToSerdat:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___SCRIPT_WriteCtrlShadowToSerdat__1:
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              MOVE.L         D7,D6                    ;2c07 
+              ANDI.W         #$ff,D6                  ;0246 00ff 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              ORI.W          #$100,D0                 ;0040 0100 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.W         D6,SERDAT(A4)            ;3946 0000 
+              MOVE.W         D6,SCRIPT_SerialShadowWord(A4);3946 0000 
+___SCRIPT_WriteCtrlShadowToSerdat__2:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SERDAT
+              XREF           SCRIPT_SerialShadowWord
+              XDEF           SCRIPT_WriteCtrlShadowToSerdat
+              END

@@ -1,0 +1,258 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_ParseRangeKeyValue:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D2/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 2f34 
+___PARSEINI_ParseRangeKeyValue__1:
+              MOVE.L         $34(A7),A3               ;266f 0034 
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.L         A5,A2                    ;244d 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__3;6710 
+___PARSEINI_ParseRangeKeyValue__2:
+              PEA            ($3d).w                  ;4878 003d 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STR_FindCharPtr;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,A0                    ;2040 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__4;6002 
+___PARSEINI_ParseRangeKeyValue__3:
+              SUB.L          A0,A0                    ;91c8 
+___PARSEINI_ParseRangeKeyValue__4:
+              MOVE.L         A0,$28(A7)               ;2f48 0028 
+              MOVEM.L        A0,$24(A7)               ;48ef 0100 0024 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__10;674e 
+___PARSEINI_ParseRangeKeyValue__5:
+              MOVE.L         A0,D0                    ;2008 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__10;674a 
+___PARSEINI_ParseRangeKeyValue__6:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              PEA            PARSEINI_DelimSpaceTab_RangeKey(A4);486c 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          PARSEINI_JMPTBL_STR_FindAnyCharP;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__8;6702 
+___PARSEINI_ParseRangeKeyValue__7:
+              CLR.B          (A2)                     ;4212 
+___PARSEINI_ParseRangeKeyValue__8:
+              MOVE.L         $28(A7),A0               ;206f 0028 
+              CLR.B          (A0)+                    ;4218 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              PEA            PARSEINI_DelimSpaceSemicolonTab_(A4);486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,$34(A7)               ;2f40 0034 
+              BSR.W          PARSEINI_JMPTBL_STR_FindAnyCharP;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__10;6704 
+___PARSEINI_ParseRangeKeyValue__9:
+              MOVE.L         D0,A0                    ;2040 
+              CLR.B          (A0)                     ;4210 
+___PARSEINI_ParseRangeKeyValue__10:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__12;6706 
+___PARSEINI_ParseRangeKeyValue__11:
+              TST.L          $28(A7)                  ;4aaf 0028 
+              BNE.B          ___PARSEINI_ParseRangeKeyValue__13;6606 
+___PARSEINI_ParseRangeKeyValue__12:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___PARSEINI_ParseRangeKeyValue__46;6000 015e 
+___PARSEINI_ParseRangeKeyValue__13:
+              PEA            ($5).w                   ;4878 0005 
+              PEA            PARSEINI_TAG_TABLE(A4)   ;486c 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseRangeKeyValue__16;662c 
+___PARSEINI_ParseRangeKeyValue__14:
+              PEA            ($4).w                   ;4878 0004 
+              PEA            PARSEINI_TAG_DONE(A4)    ;486c 0000 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseRangeKeyValue__16;6614 
+___PARSEINI_ParseRangeKeyValue__15:
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_GCOMMAND_Validat;6100 0000 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,PARSEINI_CurrentRangeTableIndex(A4);2940 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___PARSEINI_ParseRangeKeyValue__46;6000 011c 
+___PARSEINI_ParseRangeKeyValue__16:
+              PEA            ($5).w                   ;4878 0005 
+              PEA            PARSEINI_TAG_COLOR(A4)   ;486c 0000 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.W          ___PARSEINI_ParseRangeKeyValue__32;6600 0082 
+___PARSEINI_ParseRangeKeyValue__17:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              LEA            $5(A2),A0                ;41ea 0005 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__20;670e 
+___PARSEINI_ParseRangeKeyValue__18:
+              TST.B          (A0)                     ;4a10 
+              BEQ.B          ___PARSEINI_ParseRangeKeyValue__20;670a 
+___PARSEINI_ParseRangeKeyValue__19:
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              ADDQ.W         #$4,A7                   ;584f 
+___PARSEINI_ParseRangeKeyValue__20:
+              TST.L          D7                       ;4a87 
+              BMI.B          ___PARSEINI_ParseRangeKeyValue__22;6b06 
+___PARSEINI_ParseRangeKeyValue__21:
+              MOVEQ.L        #$10,D0                  ;7010 
+              CMP.L          D0,D7                    ;be80 
+              BLT.B          ___PARSEINI_ParseRangeKeyValue__23;6d08 
+___PARSEINI_ParseRangeKeyValue__22:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,PARSEINI_CurrentRangeTableIndex(A4);2940 0000 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__24;600e 
+___PARSEINI_ParseRangeKeyValue__23:
+              MOVE.L         D7,D1                    ;2207 
+              MOVE.L         D1,PARSEINI_CurrentRangeTableIndex(A4);2941 0000 
+              MOVE.L         D7,D2                    ;2407 
+              ADD.L          D2,D2                    ;d482 
+              CLR.W          $0(A3,D2.L)              ;4273 2800 
+___PARSEINI_ParseRangeKeyValue__24:
+              MOVE.L         PARSEINI_CurrentRangeTableIndex(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BMI.B          ___PARSEINI_ParseRangeKeyValue__26;6b06 
+___PARSEINI_ParseRangeKeyValue__25:
+              MOVEQ.L        #$10,D1                  ;7210 
+              CMP.L          D1,D0                    ;b081 
+              BLT.B          ___PARSEINI_ParseRangeKeyValue__27;6d06 
+___PARSEINI_ParseRangeKeyValue__26:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___PARSEINI_ParseRangeKeyValue__46;6000 00b6 
+___PARSEINI_ParseRangeKeyValue__27:
+              MOVE.L         $28(A7),-(A7)            ;2f2f 0028 
+              BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          D0,D6                    ;bc80 
+              BLT.B          ___PARSEINI_ParseRangeKeyValue__29;6d06 
+___PARSEINI_ParseRangeKeyValue__28:
+              MOVEQ.L        #$3f,D1                  ;723f 
+              CMP.L          D1,D6                    ;bc81 
+              BLE.B          ___PARSEINI_ParseRangeKeyValue__30;6f04 
+___PARSEINI_ParseRangeKeyValue__29:
+              MOVEQ.L        #$ff,D6                  ;7cff 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__31;6002 
+___PARSEINI_ParseRangeKeyValue__30:
+              ADDQ.L         #$1,D6                   ;5286 
+___PARSEINI_ParseRangeKeyValue__31:
+              MOVE.L         PARSEINI_CurrentRangeTableIndex(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.L         D6,D2                    ;2406 
+              MOVE.W         D2,$0(A3,D1.L)           ;3782 1800 
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.W          ___PARSEINI_ParseRangeKeyValue__46;6000 0084 
+___PARSEINI_ParseRangeKeyValue__32:
+              MOVE.L         PARSEINI_CurrentRangeTableIndex(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BMI.B          ___PARSEINI_ParseRangeKeyValue__34;6b06 
+___PARSEINI_ParseRangeKeyValue__33:
+              MOVEQ.L        #$10,D1                  ;7210 
+              CMP.L          D1,D0                    ;b081 
+              BLT.B          ___PARSEINI_ParseRangeKeyValue__35;6d04 
+___PARSEINI_ParseRangeKeyValue__34:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__46;6070 
+___PARSEINI_ParseRangeKeyValue__35:
+              MOVE.L         PARSEINI_CurrentRangeTableIndex(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.W         $0(A3,D1.L),D0           ;3033 1800 
+              TST.W          D0                       ;4a40 
+              BGT.B          ___PARSEINI_ParseRangeKeyValue__37;6e04 
+___PARSEINI_ParseRangeKeyValue__36:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__46;605c 
+___PARSEINI_ParseRangeKeyValue__37:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          SCRIPT3_JMPTBL_PARSE_ReadSignedL;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
+              BSR.W          PARSEINI_ParseHexValueFromString;6100 0000 
+              MOVE.L         D0,D4                    ;2800 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D5                       ;4a85 
+              BGT.B          ___PARSEINI_ParseRangeKeyValue__39;6e04 
+___PARSEINI_ParseRangeKeyValue__38:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__46;6040 
+___PARSEINI_ParseRangeKeyValue__39:
+              MOVE.L         PARSEINI_CurrentRangeTableIndex(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              MOVE.W         $0(A3,D1.L),D2           ;3433 1800 
+              EXT.L          D2                       ;48c2 
+              CMP.L          D2,D5                    ;ba82 
+              BLT.B          ___PARSEINI_ParseRangeKeyValue__41;6d04 
+___PARSEINI_ParseRangeKeyValue__40:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__46;602a 
+___PARSEINI_ParseRangeKeyValue__41:
+              TST.L          D4                       ;4a84 
+              BMI.B          ___PARSEINI_ParseRangeKeyValue__43;6b08 
+___PARSEINI_ParseRangeKeyValue__42:
+              CMPI.L         #$1000,D4                ;0c84 0000 1000 
+              BLT.B          ___PARSEINI_ParseRangeKeyValue__44;6d04 
+___PARSEINI_ParseRangeKeyValue__43:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___PARSEINI_ParseRangeKeyValue__46;601a 
+___PARSEINI_ParseRangeKeyValue__44:
+              MOVE.L         PARSEINI_CurrentRangeTableIndex(A4),D0;202c 0000 
+              ASL.L          #$7,D0                   ;ef80 
+              MOVE.L         A3,A0                    ;204b 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         D5,D0                    ;2005 
+              ADD.L          D0,D0                    ;d080 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $20(A0),A1               ;43e8 0020 
+              MOVE.L         D4,D0                    ;2004 
+              MOVE.W         D0,(A1)                  ;3280 
+              MOVEQ.L        #$0,D0                   ;7000 
+___PARSEINI_ParseRangeKeyValue__45:
+___PARSEINI_ParseRangeKeyValue__46:
+              MOVEM.L        (A7)+,D2/D4/D5/D6/D7/A2/A3/A5;4cdf 2cf4 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           PARSEINI_JMPTBL_STR_FindCharPtr
+              XREF           NEWGRID2_JMPTBL_STR_SkipClass3Ch
+              XREF           PARSEINI_DelimSpaceTab_RangeKey
+              XREF           PARSEINI_JMPTBL_STR_FindAnyCharP
+              XREF           PARSEINI_DelimSpaceSemicolonTab_
+              XREF           PARSEINI_TAG_TABLE
+              XREF           PARSEINI_JMPTBL_STRING_CompareNo
+              XREF           PARSEINI_TAG_DONE
+              XREF           PARSEINI_JMPTBL_GCOMMAND_Validat
+              XREF           PARSEINI_CurrentRangeTableIndex
+              XREF           PARSEINI_TAG_COLOR
+              XREF           SCRIPT3_JMPTBL_PARSE_ReadSignedL
+              XREF           PARSEINI_ParseHexValueFromString
+              XDEF           PARSEINI_ParseRangeKeyValue
+              END

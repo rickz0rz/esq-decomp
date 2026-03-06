@@ -1,0 +1,55 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_DrawNextEntryPreview:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+___TEXTDISP_DrawNextEntryPreview__1:
+              MOVE.W         LADFUNC_EntryCount(A4),D0;302c 0000 
+              SWAP           D0                       ;4840 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),A5           ;2a70 1800 
+              LEA            $4(A5),A0                ;41ed 0004 
+              MOVEQ.L        #$1,D1                   ;7201 
+              CMP.W          (A0),D1                  ;b250 
+              BEQ.B          ___TEXTDISP_DrawNextEntryPreview__5;6718 
+___TEXTDISP_DrawNextEntryPreview__2:
+___TEXTDISP_DrawNextEntryPreview__3:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              ADDQ.L         #$1,D1                   ;5281 
+              PEA            ($2e).w                  ;4878 002e 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          MATH_DivS32              ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.W         D0,LADFUNC_EntryCount(A4);3940 0000 
+___TEXTDISP_DrawNextEntryPreview__4:
+              BRA.B          ___TEXTDISP_DrawNextEntryPreview__1;60c8 
+___TEXTDISP_DrawNextEntryPreview__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         LADFUNC_EntryCount(A4),D0;302c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          TEXTDISP2_JMPTBL_LADFUNC_DrawEnt;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.W         LADFUNC_EntryCount(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,LADFUNC_EntryCount(A4);3940 0000 
+___TEXTDISP_DrawNextEntryPreview__6:
+              MOVE.L         (A7)+,A5                 ;2a5f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_EntryCount
+              XREF           LADFUNC_EntryPtrTable
+              XREF           MATH_DivS32
+              XREF           TEXTDISP2_JMPTBL_LADFUNC_DrawEnt
+              XDEF           TEXTDISP_DrawNextEntryPreview
+              END

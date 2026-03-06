@@ -1,0 +1,22 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_InitCtrlContext:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_InitCtrlContext__1:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
+              BSR.W          SCRIPT_SetCtrlContextMode;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___SCRIPT_InitCtrlContext__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_CTRL_CONTEXT
+              XREF           SCRIPT_SetCtrlContextMode
+              XDEF           SCRIPT_InitCtrlContext
+              END

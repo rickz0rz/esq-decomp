@@ -1,0 +1,26 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_GetBannerCharOrFallback:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_GetBannerCharOrFallback__1:
+              MOVE.B         TEXTDISP_BannerCharSelected(A4),D0;102c 0000 
+              MOVEQ.L        #$64,D1                  ;7264 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___SCRIPT_GetBannerCharOrFallback__3;6606 
+___SCRIPT_GetBannerCharOrFallback__2:
+              MOVE.B         TEXTDISP_BannerCharFallback(A4),D0;102c 0000 
+              BRA.B          ___SCRIPT_GetBannerCharOrFallback__5;6004 
+___SCRIPT_GetBannerCharOrFallback__3:
+              MOVE.B         TEXTDISP_BannerCharSelected(A4),D0;102c 0000 
+___SCRIPT_GetBannerCharOrFallback__4:
+___SCRIPT_GetBannerCharOrFallback__5:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_BannerCharSelected
+              XREF           TEXTDISP_BannerCharFallback
+              XDEF           SCRIPT_GetBannerCharOrFallback
+              END

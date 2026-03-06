@@ -1,0 +1,70 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_AddSourceConfigEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___TEXTDISP_AddSourceConfigEntry__1:
+              MOVE.L         $1c(A7),A3               ;266f 001c 
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         TEXTDISP_SourceConfigEntryCount(A4),D7;2e2c 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_SourceConfigEntryTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A2                    ;2448 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($6).w                   ;4878 0006 
+              PEA            ($4cd).w                 ;4878 04cd 
+              PEA            Global_STR_TEXTDISP_C_4(A4);486c 0000 
+              BSR.W          MEMORY_AllocateMemory    ;6100 0000 
+              MOVE.L         D0,(A2)                  ;2480 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BEQ.B          ___TEXTDISP_AddSourceConfigEntry__6;6744 
+___TEXTDISP_AddSourceConfigEntry__2:
+___TEXTDISP_AddSourceConfigEntry__3:
+              MOVE.L         D7,D1                    ;2207 
+              ADDQ.L         #$1,D1                   ;5281 
+              MOVE.L         D1,TEXTDISP_SourceConfigEntryCount(A4);2941 0000 
+              MOVE.L         (A2),A0                  ;2052 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         $18(A7),A0               ;206f 0018 
+              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         TEXTDISP_PtrPrevueSportsTag(A4),(A7);2eac 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          STRING_CompareNoCase     ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___TEXTDISP_AddSourceConfigEntry__5;6608 
+___TEXTDISP_AddSourceConfigEntry__4:
+              MOVE.L         (A2),A0                  ;2052 
+              MOVE.B         #$8,$7(A0)               ;117c 0008 0007 
+___TEXTDISP_AddSourceConfigEntry__5:
+              MOVE.L         (A2),A0                  ;2052 
+              MOVE.B         TEXTDISP_SourceConfigFlagMask(A4),D0;102c 0000 
+              OR.B           $7(A0),D0                ;8028 0007 
+              MOVE.B         D0,TEXTDISP_SourceConfigFlagMask(A4);1940 0000 
+___TEXTDISP_AddSourceConfigEntry__6:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_SourceConfigEntryCount
+              XREF           TEXTDISP_SourceConfigEntryTable
+              XREF           Global_STR_TEXTDISP_C_4
+              XREF           MEMORY_AllocateMemory
+              XREF           ESQPROTO_JMPTBL_ESQPARS_ReplaceO
+              XREF           TEXTDISP_PtrPrevueSportsTag
+              XREF           STRING_CompareNoCase
+              XREF           TEXTDISP_SourceConfigFlagMask
+              XDEF           TEXTDISP_AddSourceConfigEntry
+              END

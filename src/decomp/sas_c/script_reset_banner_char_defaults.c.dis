@@ -1,0 +1,20 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_ResetBannerCharDefaults:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_ResetBannerCharDefaults__1:
+              MOVE.B         #$64,TEXTDISP_BannerCharSelected(A4);197c 0064 0000 
+              MOVE.B         #$31,TEXTDISP_BannerCharFallback(A4);197c 0031 0000 
+              MOVE.W         #$ffffffff,TEXTDISP_CurrentMatchIndex(A4);397c ffff 0000 
+___SCRIPT_ResetBannerCharDefaults__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_BannerCharSelected
+              XREF           TEXTDISP_BannerCharFallback
+              XREF           TEXTDISP_CurrentMatchIndex
+              XDEF           SCRIPT_ResetBannerCharDefaults
+              END

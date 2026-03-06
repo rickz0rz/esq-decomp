@@ -1,0 +1,96 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_ParseColorTable:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$84,D0                  ;90bc 0000 0084 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$78,A7                  ;9efc 0078 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___PARSEINI_ParseColorTable__1:
+              MOVE.L         $a0(A7),D7               ;2e2f 00a0 
+              MOVE.L         $9c(A7),A3               ;266f 009c 
+              MOVE.L         $98(A7),A5               ;2a6f 0098 
+              SUB.L          A2,A2                    ;95ca 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          D0,D7                    ;be80 
+              BNE.B          ___PARSEINI_ParseColorTable__3;6608 
+___PARSEINI_ParseColorTable__2:
+              LEA            KYBD_CustomPaletteTriplesRBase(A4),A2;45ec 0000 
+              MOVEQ.L        #$8,D6                   ;7c08 
+              BRA.B          ___PARSEINI_ParseColorTable__5;600c 
+___PARSEINI_ParseColorTable__3:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$5,D0                   ;5b80 
+              BNE.B          ___PARSEINI_ParseColorTable__5;6606 
+___PARSEINI_ParseColorTable__4:
+              LEA            ESQFUNC_BasePaletteRgbTriples(A4),A2;45ec 0000 
+              MOVEQ.L        #$8,D6                   ;7c08 
+___PARSEINI_ParseColorTable__5:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___PARSEINI_ParseColorTable__6:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___PARSEINI_ParseColorTable__14;6c58 
+___PARSEINI_ParseColorTable__7:
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            Global_STR_COLOR_PERCENT_D(A4);486c 0000 
+              PEA            $24(A7)                  ;486f 0024 
+              BSR.W          PARSEINI_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            $28(A7)                  ;486f 0028 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseColorTable__13;6634 
+___PARSEINI_ParseColorTable__8:
+___PARSEINI_ParseColorTable__9:
+              CLR.L          $90(A7)                  ;42af 0090 
+___PARSEINI_ParseColorTable__10:
+              MOVE.L         $90(A7),D0               ;202f 0090 
+              MOVEQ.L        #$3,D1                   ;7203 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___PARSEINI_ParseColorTable__13;6c26 
+___PARSEINI_ParseColorTable__11:
+              MOVE.L         D5,D2                    ;2405 
+              ADD.L          D2,D2                    ;d482 
+              ADD.L          D5,D2                    ;d485 
+              ADD.L          D0,D2                    ;d480 
+              MOVE.B         $0(A3,D0.L),D0           ;1033 0800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D2,$90(A7)               ;2f42 0090 
+              BSR.W          SCRIPT3_JMPTBL_LADFUNC_ParseHexD;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         D0,$0(A2,D2.L)           ;1580 2800 
+___PARSEINI_ParseColorTable__12:
+              ADDQ.L         #$1,$90(A7)              ;52af 0090 
+              BRA.B          ___PARSEINI_ParseColorTable__10;60d0 
+___PARSEINI_ParseColorTable__13:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___PARSEINI_ParseColorTable__6;60a4 
+___PARSEINI_ParseColorTable__14:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$4,D0                   ;5980 
+              BNE.B          ___PARSEINI_ParseColorTable__17;6604 
+___PARSEINI_ParseColorTable__15:
+              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+___PARSEINI_ParseColorTable__16:
+___PARSEINI_ParseColorTable__17:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$78,A7                  ;defc 0078 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           KYBD_CustomPaletteTriplesRBase
+              XREF           ESQFUNC_BasePaletteRgbTriples
+              XREF           Global_STR_COLOR_PERCENT_D
+              XREF           PARSEINI_JMPTBL_WDISP_SPrintf
+              XREF           PARSEINI_JMPTBL_STRING_CompareNo
+              XREF           SCRIPT3_JMPTBL_LADFUNC_ParseHexD
+              XREF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XDEF           PARSEINI_ParseColorTable
+              END

@@ -1,0 +1,264 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_ParseIniBufferAndDispat:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___PARSEINI_ParseIniBufferAndDispat__1:
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          PARSEINI_JMPTBL_DISKIO_LoadFileT;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__3;6606 
+___PARSEINI_ParseIniBufferAndDispat__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__41;6000 01e2 
+___PARSEINI_ParseIniBufferAndDispat__3:
+              BSR.W          PARSEINI_JMPTBL_DISKIO_ConsumeLi;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              MOVE.L         A3,A0                    ;204b 
+              CMP.W          #$ffffffff,A0            ;b0fc ffff 
+              BEQ.W          ___PARSEINI_ParseIniBufferAndDispat__39;6700 01d0 
+___PARSEINI_ParseIniBufferAndDispat__4:
+___PARSEINI_ParseIniBufferAndDispat__5:
+              MOVE.B         (A3),D0                  ;1013 
+              BEQ.B          ___PARSEINI_ParseIniBufferAndDispat__3;67ec 
+___PARSEINI_ParseIniBufferAndDispat__6:
+___PARSEINI_ParseIniBufferAndDispat__7:
+              MOVEQ.L        #$5b,D1                  ;725b 
+              CMP.B          D1,D0                    ;b001 
+              BNE.W          ___PARSEINI_ParseIniBufferAndDispat__21;6600 00ce 
+___PARSEINI_ParseIniBufferAndDispat__8:
+              LEA            $1(A3),A0                ;41eb 0001 
+              PEA            ($5d).w                  ;4878 005d 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          PARSEINI_JMPTBL_STR_FindCharPtr;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___PARSEINI_ParseIniBufferAndDispat__3;67ce 
+___PARSEINI_ParseIniBufferAndDispat__9:
+___PARSEINI_ParseIniBufferAndDispat__10:
+              CLR.B          (A2)                     ;4212 
+              ADDQ.L         #$1,A3                   ;528b 
+              PEA            P_TYPE_STR_QTABLE(A4)    ;486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__12;6604 
+___PARSEINI_ParseIniBufferAndDispat__11:
+              MOVEQ.L        #$1,D7                   ;7e01 
+              BRA.B          ___PARSEINI_ParseIniBufferAndDispat__3;60b6 
+___PARSEINI_ParseIniBufferAndDispat__12:
+              PEA            P_TYPE_TAG_GRADIENT(A4)  ;486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__14;660e 
+___PARSEINI_ParseIniBufferAndDispat__13:
+              MOVEQ.L        #$3,D7                   ;7e03 
+              PEA            GCOMMAND_GradientPresetTable(A4);486c 0000 
+              BSR.W          PARSEINI_JMPTBL_GCOMMAND_InitPre;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              BRA.B          ___PARSEINI_ParseIniBufferAndDispat__3;6098 
+___PARSEINI_ParseIniBufferAndDispat__14:
+              PEA            P_TYPE_TAG_DEFAULT_TEXT(A4);486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__16;663a 
+___PARSEINI_ParseIniBufferAndDispat__15:
+              MOVEQ.L        #$7,D7                   ;7e07 
+              PEA            Global_STR_PTR_NO_CURRENT_WEATHE(A4);486c 0000 
+              MOVE.L         P_TYPE_WeatherCurrentMsgPtr(A4),-(A7);2f2c 0000 
+              BSR.W          PARSEINI_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,P_TYPE_WeatherCurrentMsgPtr(A4);2940 0000 
+              PEA            SCRIPT_PtrNoForecastWeatherData(A4);486c 0000 
+              MOVE.L         P_TYPE_WeatherForecastMsgPtr(A4),-(A7);2f2c 0000 
+              BSR.W          PARSEINI_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,P_TYPE_WeatherForecastMsgPtr(A4);2940 0000 
+              PEA            SCRIPT_PtrWeatherDataAvailabilit(A4);486c 0000 
+              MOVE.L         P_TYPE_WeatherBottomLineMsgPtr(A4),-(A7);2f2c 0000 
+              BSR.W          PARSEINI_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              MOVE.L         D0,P_TYPE_WeatherBottomLineMsgPtr(A4);2940 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 ff50 
+___PARSEINI_ParseIniBufferAndDispat__16:
+              PEA            P_TYPE_STR_SOURCE_CONFIG(A4);486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__18;660a 
+___PARSEINI_ParseIniBufferAndDispat__17:
+              MOVEQ.L        #$8,D7                   ;7e08 
+              BSR.W          TEXTDISP_ClearSourceConfig;6100 0000 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 ff36 
+___PARSEINI_ParseIniBufferAndDispat__18:
+              PEA            P_TYPE_TAG_BRUSH(A4)     ;486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__20;6606 
+___PARSEINI_ParseIniBufferAndDispat__19:
+              MOVEQ.L        #$5,D7                   ;7e05 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 ff20 
+___PARSEINI_ParseIniBufferAndDispat__20:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 ff1a 
+___PARSEINI_ParseIniBufferAndDispat__21:
+              PEA            ($3d).w                  ;4878 003d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STR_FindCharPtr;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.W          ___PARSEINI_ParseIniBufferAndDispat__3;6700 ff06 
+___PARSEINI_ParseIniBufferAndDispat__22:
+___PARSEINI_ParseIniBufferAndDispat__23:
+              CLR.B          (A2)                     ;4212 
+              LEA            $1(A2),A0                ;41ea 0001 
+              MOVE.L         A0,$10(A7)               ;2f48 0010 
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$5,D0                   ;5b80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__29;6654 
+___PARSEINI_ParseIniBufferAndDispat__24:
+              PEA            PARSEINI_TAG_FILENAME(A4);486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___PARSEINI_ParseIniBufferAndDispat__26;6712 
+___PARSEINI_ParseIniBufferAndDispat__25:
+              PEA            PARSEINI_TAG_BRUSH(A4)   ;486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.W          ___PARSEINI_ParseIniBufferAndDispat__3;6600 fed4 
+___PARSEINI_ParseIniBufferAndDispat__26:
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              BSR.W          PARSEINI_JMPTBL_GCOMMAND_FindPat;6100 0000 
+              PEA            PARSEINI_MODE_RB(A4)     ;486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+              BSR.W          PARSEINI_JMPTBL_HANDLE_OpenWithM;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___PARSEINI_ParseIniBufferAndDispat__3;6700 feb4 
+___PARSEINI_ParseIniBufferAndDispat__27:
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              BSR.W          PARSEINI_JMPTBL_ESQIFF_QueueIffB;6100 0000 
+              BSR.W          PARSEINI_JMPTBL_ESQIFF_HandleBru;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___PARSEINI_ParseIniBufferAndDispat__28:
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 fea2 
+___PARSEINI_ParseIniBufferAndDispat__29:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$6,D0                   ;5d80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__31;660e 
+___PARSEINI_ParseIniBufferAndDispat__30:
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_ProcessWeatherBlocks;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 fe8e 
+___PARSEINI_ParseIniBufferAndDispat__31:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.L         #$7,D0                   ;5f80 
+              BNE.W          ___PARSEINI_ParseIniBufferAndDispat__3;6600 fe86 
+___PARSEINI_ParseIniBufferAndDispat__32:
+              PEA            PARSEINI_STR_LOADWEATHER(A4);486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__34;6610 
+___PARSEINI_ParseIniBufferAndDispat__33:
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_LoadWeatherStrings;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 fe66 
+___PARSEINI_ParseIniBufferAndDispat__34:
+              PEA            PARSEINI_STR_LOADWEATHERMESSAGE(A4);486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___PARSEINI_ParseIniBufferAndDispat__36;6610 
+___PARSEINI_ParseIniBufferAndDispat__35:
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_LoadWeatherMessageStrin;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 fe46 
+___PARSEINI_ParseIniBufferAndDispat__36:
+              PEA            PARSEINI_STR_LOADCOLORTABLE(A4);486c 0000 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_JMPTBL_STRING_CompareNo;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BNE.W          ___PARSEINI_ParseIniBufferAndDispat__3;6600 fe34 
+___PARSEINI_ParseIniBufferAndDispat__37:
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          PARSEINI_ParseColorTable ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___PARSEINI_ParseIniBufferAndDispat__38:
+              BRA.W          ___PARSEINI_ParseIniBufferAndDispat__3;6000 fe24 
+___PARSEINI_ParseIniBufferAndDispat__39:
+              MOVEQ.L        #$0,D0                   ;7000 
+___PARSEINI_ParseIniBufferAndDispat__40:
+___PARSEINI_ParseIniBufferAndDispat__41:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           PARSEINI_JMPTBL_DISKIO_LoadFileT
+              XREF           PARSEINI_JMPTBL_DISKIO_ConsumeLi
+              XREF           PARSEINI_JMPTBL_STR_FindCharPtr
+              XREF           P_TYPE_STR_QTABLE
+              XREF           PARSEINI_JMPTBL_STRING_CompareNo
+              XREF           P_TYPE_TAG_GRADIENT
+              XREF           GCOMMAND_GradientPresetTable
+              XREF           PARSEINI_JMPTBL_GCOMMAND_InitPre
+              XREF           P_TYPE_TAG_DEFAULT_TEXT
+              XREF           Global_STR_PTR_NO_CURRENT_WEATHE
+              XREF           P_TYPE_WeatherCurrentMsgPtr
+              XREF           PARSEINI_JMPTBL_ESQPARS_ReplaceO
+              XREF           SCRIPT_PtrNoForecastWeatherData
+              XREF           P_TYPE_WeatherForecastMsgPtr
+              XREF           SCRIPT_PtrWeatherDataAvailabilit
+              XREF           P_TYPE_WeatherBottomLineMsgPtr
+              XREF           P_TYPE_STR_SOURCE_CONFIG
+              XREF           TEXTDISP_ClearSourceConfig
+              XREF           P_TYPE_TAG_BRUSH
+              XREF           PARSEINI_TAG_FILENAME
+              XREF           PARSEINI_TAG_BRUSH
+              XREF           PARSEINI_JMPTBL_GCOMMAND_FindPat
+              XREF           PARSEINI_MODE_RB
+              XREF           PARSEINI_JMPTBL_HANDLE_OpenWithM
+              XREF           PARSEINI_JMPTBL_ESQIFF_QueueIffB
+              XREF           PARSEINI_JMPTBL_ESQIFF_HandleBru
+              XREF           PARSEINI_ProcessWeatherBlocks
+              XREF           PARSEINI_STR_LOADWEATHER
+              XREF           PARSEINI_LoadWeatherStrings
+              XREF           PARSEINI_STR_LOADWEATHERMESSAGE
+              XREF           PARSEINI_LoadWeatherMessageStrin
+              XREF           PARSEINI_STR_LOADCOLORTABLE
+              XREF           PARSEINI_ParseColorTable
+              XDEF           PARSEINI_ParseIniBufferAndDispat
+              END

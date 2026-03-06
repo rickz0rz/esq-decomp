@@ -1,0 +1,30 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL2_DisplayAlertDelayAndRe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___LOCAVAIL2_DisplayAlertDelayAndRe__1:
+              LEA            Global_REF_LONG_FILE_SCRATCH(A4),A5;4bec 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LOCAVAIL2_DisplayAlertDelayAndRe__2:
+              CMPI.L         #$f4240,D7               ;0c87 000f 4240 
+              BGE.B          ___LOCAVAIL2_DisplayAlertDelayAndRe__4;6c04 
+___LOCAVAIL2_DisplayAlertDelayAndRe__3:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___LOCAVAIL2_DisplayAlertDelayAndRe__2;60f4 
+___LOCAVAIL2_DisplayAlertDelayAndRe__4:
+              BSR.W          GROUP_AZ_JMPTBL_ESQ_ColdReboot;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+___LOCAVAIL2_DisplayAlertDelayAndRe__5:
+___LOCAVAIL2_DisplayAlertDelayAndRe__6:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_LONG_FILE_SCRATCH
+              XREF           GROUP_AZ_JMPTBL_ESQ_ColdReboot
+              XDEF           LOCAVAIL2_DisplayAlertDelayAndRe
+              END

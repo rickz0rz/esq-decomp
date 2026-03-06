@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL_MapFilterTokenCharToCla:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___LOCAVAIL_MapFilterTokenCharToCla__1:
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              MOVE.B         $0(A0,D0.W),D6           ;1c30 0000 
+              BTST           #$2,D6                   ;0806 0002 
+              BEQ.B          ___LOCAVAIL_MapFilterTokenCharToCla__3;670a 
+___LOCAVAIL_MapFilterTokenCharToCla__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___LOCAVAIL_MapFilterTokenCharToCla__9;6026 
+___LOCAVAIL_MapFilterTokenCharToCla__3:
+              MOVE.B         D6,D0                    ;1006 
+              ANDI.B         #$3,D0                   ;0200 0003 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___LOCAVAIL_MapFilterTokenCharToCla__5;6604 
+___LOCAVAIL_MapFilterTokenCharToCla__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___LOCAVAIL_MapFilterTokenCharToCla__9;6018 
+___LOCAVAIL_MapFilterTokenCharToCla__5:
+              BTST           #$1,D6                   ;0806 0001 
+              BEQ.B          ___LOCAVAIL_MapFilterTokenCharToCla__7;670a 
+___LOCAVAIL_MapFilterTokenCharToCla__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$57,D1                  ;7257 
+              SUB.L          D1,D0                    ;9081 
+              BRA.B          ___LOCAVAIL_MapFilterTokenCharToCla__9;6008 
+___LOCAVAIL_MapFilterTokenCharToCla__7:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVEQ.L        #$37,D1                  ;7237 
+              SUB.L          D1,D0                    ;9081 
+___LOCAVAIL_MapFilterTokenCharToCla__8:
+___LOCAVAIL_MapFilterTokenCharToCla__9:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           WDISP_CharClassTable
+              XDEF           LOCAVAIL_MapFilterTokenCharToCla
+              END

@@ -1,0 +1,168 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_SaveTextAdsToFile:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$3c,D0                  ;90bc 0000 003c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$2c,A7                  ;9efc 002c 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___LADFUNC_SaveTextAdsToFile__1:
+              CLR.B          $3c(A7)                  ;422f 003c 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          LADFUNC_ComposePackedPenByte;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         DISKIO_SaveOperationReadyFlag(A4),D0;202c 0000 
+              BEQ.W          ___LADFUNC_SaveTextAdsToFile__27;6700 0138 
+___LADFUNC_SaveTextAdsToFile__2:
+___LADFUNC_SaveTextAdsToFile__3:
+              CLR.L          DISKIO_SaveOperationReadyFlag(A4);42ac 0000 
+              PEA            ($3ee).w                 ;4878 03ee 
+              PEA            KYBD_PATH_DF0_LOCAL_ADS(A4);486c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_OpenFileW;6100 0000 
+              MOVE.L         D0,LADFUNC_SaveAdsFileHandle(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BNE.B          ___LADFUNC_SaveTextAdsToFile__5;660c 
+___LADFUNC_SaveTextAdsToFile__4:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,DISKIO_SaveOperationReadyFlag(A4);2940 0000 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___LADFUNC_SaveTextAdsToFile__27;6000 0114 
+___LADFUNC_SaveTextAdsToFile__5:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LADFUNC_SaveTextAdsToFile__6:
+              MOVEQ.L        #$2e,D0                  ;702e 
+              CMP.L          D0,D7                    ;be80 
+              BGT.W          ___LADFUNC_SaveTextAdsToFile__25;6e00 00f8 
+___LADFUNC_SaveTextAdsToFile__7:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              LEA            $3c(A7),A3               ;47ef 003c 
+              MOVE.L         $6(A5),D0                ;202d 0006 
+              BEQ.B          ___LADFUNC_SaveTextAdsToFile__9;6702 
+___LADFUNC_SaveTextAdsToFile__8:
+              MOVE.L         D0,A3                    ;2640 
+___LADFUNC_SaveTextAdsToFile__9:
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$0,D4                   ;7800 
+              CLR.L          $40(A7)                  ;42af 0040 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         (A5),D0                  ;3015 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         LADFUNC_SaveAdsFileHandle(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         $2(A5),D0                ;302d 0002 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         LADFUNC_SaveAdsFileHandle(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteDeci;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___LADFUNC_SaveTextAdsToFile__10:
+              TST.B          $0(A3,D5.L)              ;4a33 5800 
+              BEQ.B          ___LADFUNC_SaveTextAdsToFile__12;6704 
+___LADFUNC_SaveTextAdsToFile__11:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___LADFUNC_SaveTextAdsToFile__10;60f6 
+___LADFUNC_SaveTextAdsToFile__12:
+              CMP.L          D5,D4                    ;b885 
+              BGT.W          ___LADFUNC_SaveTextAdsToFile__23;6e00 008c 
+___LADFUNC_SaveTextAdsToFile__13:
+              CMP.L          D4,D5                    ;ba84 
+              BEQ.B          ___LADFUNC_SaveTextAdsToFile__15;670c 
+___LADFUNC_SaveTextAdsToFile__14:
+              MOVE.L         $a(A5),A0                ;206d 000a 
+              ADD.L          D4,A0                    ;d1c4 
+              MOVE.B         (A0),D0                  ;1010 
+              CMP.B          D6,D0                    ;b006 
+              BEQ.B          ___LADFUNC_SaveTextAdsToFile__22;6774 
+___LADFUNC_SaveTextAdsToFile__15:
+              TST.L          D4                       ;4a84 
+              BLE.B          ___LADFUNC_SaveTextAdsToFile__20;6f60 
+___LADFUNC_SaveTextAdsToFile__16:
+              CLR.L          $38(A7)                  ;42af 0038 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($3).w                   ;4878 0003 
+              PEA            LADFUNC_FMT_AttrEscapePrefixChar(A4);486c 0000 
+              PEA            $24(A7)                  ;486f 0024 
+              BSR.W          GROUP_AW_JMPTBL_WDISP_SPrintf;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LADFUNC_SaveTextAdsToFile__17:
+              MOVE.L         $38(A7),D0               ;202f 0038 
+              TST.B          $18(A7,D0.L)             ;4a37 0818 
+              BEQ.B          ___LADFUNC_SaveTextAdsToFile__19;6706 
+___LADFUNC_SaveTextAdsToFile__18:
+              ADDQ.L         #$1,$38(A7)              ;52af 0038 
+              BRA.B          ___LADFUNC_SaveTextAdsToFile__17;60f0 
+___LADFUNC_SaveTextAdsToFile__19:
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              PEA            $1c(A7)                  ;486f 001c 
+              MOVE.L         LADFUNC_SaveAdsFileHandle(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
+              MOVE.L         A3,A0                    ;204b 
+              MOVE.L         $4c(A7),D0               ;202f 004c 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         D4,D1                    ;2204 
+              SUB.L          D0,D1                    ;9280 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         LADFUNC_SaveAdsFileHandle(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         D4,D0                    ;2004 
+              MOVE.L         D0,$40(A7)               ;2f40 0040 
+___LADFUNC_SaveTextAdsToFile__20:
+              MOVE.L         $40(A7),D0               ;202f 0040 
+              CMP.L          D5,D0                    ;b085 
+              BGE.B          ___LADFUNC_SaveTextAdsToFile__22;6c08 
+___LADFUNC_SaveTextAdsToFile__21:
+              MOVE.L         $a(A5),A0                ;206d 000a 
+              ADD.L          D4,A0                    ;d1c4 
+              MOVE.B         (A0),D6                  ;1c10 
+___LADFUNC_SaveTextAdsToFile__22:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.W          ___LADFUNC_SaveTextAdsToFile__12;6000 ff72 
+___LADFUNC_SaveTextAdsToFile__23:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            LADFUNC_TextAdLineBreakBuffer(A4);486c 0000 
+              MOVE.L         LADFUNC_SaveAdsFileHandle(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_WriteBuff;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___LADFUNC_SaveTextAdsToFile__24:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.W          ___LADFUNC_SaveTextAdsToFile__6;6000 ff04 
+___LADFUNC_SaveTextAdsToFile__25:
+              MOVE.L         LADFUNC_SaveAdsFileHandle(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_CloseBuff;6100 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,DISKIO_SaveOperationReadyFlag(A4);2940 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$0,D0                   ;7000 
+___LADFUNC_SaveTextAdsToFile__26:
+___LADFUNC_SaveTextAdsToFile__27:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              ADD.W          #$2c,A7                  ;defc 002c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_ComposePackedPenByte
+              XREF           DISKIO_SaveOperationReadyFlag
+              XREF           KYBD_PATH_DF0_LOCAL_ADS
+              XREF           GROUP_AY_JMPTBL_DISKIO_OpenFileW
+              XREF           LADFUNC_SaveAdsFileHandle
+              XREF           LADFUNC_EntryPtrTable
+              XREF           GROUP_AY_JMPTBL_DISKIO_WriteDeci
+              XREF           LADFUNC_FMT_AttrEscapePrefixChar
+              XREF           GROUP_AW_JMPTBL_WDISP_SPrintf
+              XREF           GROUP_AY_JMPTBL_DISKIO_WriteBuff
+              XREF           LADFUNC_TextAdLineBreakBuffer
+              XREF           GROUP_AY_JMPTBL_DISKIO_CloseBuff
+              XDEF           LADFUNC_SaveTextAdsToFile
+              END

@@ -1,0 +1,20 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_ReadHandshakeBit5Mask:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___SCRIPT_ReadHandshakeBit5Mask__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         CIAB_PRA(A4),D0          ;102c 0000 
+              MOVEQ.L        #$20,D1                  ;7220 
+              AND.L          D1,D0                    ;c081 
+___SCRIPT_ReadHandshakeBit5Mask__2:
+___SCRIPT_ReadHandshakeBit5Mask__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CIAB_PRA
+              XDEF           SCRIPT_ReadHandshakeBit5Mask
+              END

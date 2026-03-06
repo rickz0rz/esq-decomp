@@ -1,0 +1,16 @@
+              SECTION      text,CODE
+__code:
+LOCAVAIL2_AutoRequestNoOp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___LOCAVAIL2_AutoRequestNoOp__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+___LOCAVAIL2_AutoRequestNoOp__2:
+___LOCAVAIL2_AutoRequestNoOp__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           LOCAVAIL2_AutoRequestNoOp
+              END

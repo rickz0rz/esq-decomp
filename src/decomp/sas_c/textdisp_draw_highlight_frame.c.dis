@@ -1,0 +1,150 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_DrawHighlightFrame:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$30,D0                  ;90bc 0000 0030 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$18,A7                  ;9efc 0018 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___TEXTDISP_DrawHighlightFrame__1:
+              MOVE.L         $34(A7),A5               ;2a6f 0034 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__11;6700 0144 
+___TEXTDISP_DrawHighlightFrame__2:
+              TST.B          $dc(A3)                  ;4a2b 00dc 
+              BEQ.W          ___TEXTDISP_DrawHighlightFrame__11;6700 013c 
+___TEXTDISP_DrawHighlightFrame__3:
+___TEXTDISP_DrawHighlightFrame__4:
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($8).w                   ;4878 0008 
+              BSR.W          TLIBA3_ClearViewModeRastPort;6100 0000 
+              PEA            ($3).w                   ;4878 0003 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($8).w                   ;4878 0008 
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+              MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
+              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              MOVE.L         WDISP_DisplayContextBase(A4),A2;246c 0000 
+              LEA            $4(A2),A0                ;41ea 0004 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.W         (A0),D7                  ;3e10 
+              MOVEQ.L        #$ea,D6                  ;7cea 
+              ADD.L          TEXTDISP_EntryTextBaseWidthPx(A4),D6;dcac 0000 
+              BTST           #$2,$1(A2)               ;082a 0002 0001 
+              SCC            D0,#$600                 ;56c0 
+              MOVEQ.L        #$1,D5                   ;7a01 
+              SUB.B          D0,D5                    ;9a00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              BSR.W          MATH_Mulu32              ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              ADDQ.W         #$8,A7                   ;504f 
+              CMP.L          D6,D7                    ;be86 
+              BLE.B          ___TEXTDISP_DrawHighlightFrame__6;6f02 
+___TEXTDISP_DrawHighlightFrame__5:
+              MOVE.L         D6,D7                    ;2e06 
+___TEXTDISP_DrawHighlightFrame__6:
+              LEA            $2(A2),A0                ;41ea 0002 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         (A0),D0                  ;3010 
+              MOVE.W         #$1,WDISP_AccumulatorCaptureActive(A4);397c 0001 0000 
+              CLR.W          WDISP_AccumulatorFlushPending(A4);426c 0000 
+              LEA            $2(A2),A0                ;41ea 0002 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+              MOVE.L         A0,$2c(A7)               ;2f48 002c 
+              BSR.W          WDISP_JMPTBL_ESQIFF_RunCopperDro;6100 0000 
+              BSR.W          WDISP_JMPTBL_ESQIFF_RestoreBaseP;6100 0000 
+              MOVE.B         CONFIG_LRBN_FlagChar(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___TEXTDISP_DrawHighlightFrame__8;6626 
+___TEXTDISP_DrawHighlightFrame__7:
+              BTST           #$2,$1(A2)               ;082a 0002 0001 
+              SCC            D0,#$600                 ;56c0 
+              MOVEQ.L        #$1,D5                   ;7a01 
+              SUB.B          D0,D5                    ;9a00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          MATH_DivS32              ;6100 0000 
+              MOVEQ.L        #$16,D1                  ;7216 
+              ADD.L          D1,D0                    ;d081 
+              PEA            ($1f4).w                 ;4878 01f4 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          SCRIPT_BeginBannerCharTransition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___TEXTDISP_DrawHighlightFrame__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($3).w                   ;4878 0003 
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+              MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
+              MOVE.L         #$fffffee4,D0            ;203c ffff fee4 
+              ADD.L          $34(A7),D0               ;d0af 0034 
+              TST.L          D0                       ;4a80 
+              BPL.B          ___TEXTDISP_DrawHighlightFrame__10;6a02 
+___TEXTDISP_DrawHighlightFrame__9:
+              ADDQ.L         #$1,D0                   ;5280 
+___TEXTDISP_DrawHighlightFrame__10:
+              ASR.L          #$1,D0                   ;e280 
+              CLR.L          $2c(A7)                  ;42af 002c 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              ADD.L          #$11b,D0                 ;0680 0000 011b 
+              MOVE.L         D7,D1                    ;2207 
+              SUBQ.L         #$1,D1                   ;5381 
+              CLR.L          (A7)                     ;4297 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              MOVE.L         D0,$30(A7)               ;2f40 0030 
+              MOVE.L         D1,$2c(A7)               ;2f41 002c 
+              BSR.W          _LVOSetDrMd              ;6100 0000 
+              MOVE.W         #$1,TEXTDISP_LinePenOverrideEnabledF(A4);397c 0001 0000 
+              LEA            $dc(A3),A0               ;41eb 00dc 
+              MOVE.L         $2c(A7),(A7)             ;2eaf 002c 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              BSR.W          TLIBA1_DrawFormattedTextBlock;6100 0000 
+              PEA            ($3).w                   ;4878 0003 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($8).w                   ;4878 0008 
+              BSR.W          TLIBA3_BuildDisplayContextForVie;6100 0000 
+              MOVE.L         D0,WDISP_DisplayContextBase(A4);2940 0000 
+              BSR.W          TEXTDISP_JMPTBL_ESQIFF_RunCopper;6100 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              BSR.W          TEXTDISP_ResetSelectionState;6100 0000 
+              LEA            $34(A7),A7               ;4fef 0034 
+___TEXTDISP_DrawHighlightFrame__11:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              ADD.W          #$18,A7                  ;defc 0018 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TLIBA3_ClearViewModeRastPort
+              XREF           TLIBA3_BuildDisplayContextForVie
+              XREF           WDISP_DisplayContextBase
+              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XREF           TEXTDISP_EntryTextBaseWidthPx
+              XREF           MATH_Mulu32
+              XREF           WDISP_AccumulatorCaptureActive
+              XREF           WDISP_AccumulatorFlushPending
+              XREF           WDISP_JMPTBL_ESQIFF_RunCopperDro
+              XREF           WDISP_JMPTBL_ESQIFF_RestoreBaseP
+              XREF           CONFIG_LRBN_FlagChar
+              XREF           MATH_DivS32
+              XREF           SCRIPT_BeginBannerCharTransition
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetDrMd
+              XREF           TEXTDISP_LinePenOverrideEnabledF
+              XREF           TLIBA1_DrawFormattedTextBlock
+              XREF           TEXTDISP_JMPTBL_ESQIFF_RunCopper
+              XREF           TEXTDISP_ResetSelectionState
+              XDEF           TEXTDISP_DrawHighlightFrame
+              END

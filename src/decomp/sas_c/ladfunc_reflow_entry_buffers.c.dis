@@ -1,0 +1,269 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_ReflowEntryBuffers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$88,D0                  ;90bc 0000 0088 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$78,A7                  ;9efc 0078 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
+___LADFUNC_ReflowEntryBuffers__1:
+              MOVE.L         $a4(A7),A3               ;266f 00a4 
+              MOVE.L         $a0(A7),A5               ;2a6f 00a0 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              SUB.L          A2,A2                    ;95ca 
+              CLR.L          $98(A7)                  ;42af 0098 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___LADFUNC_ReflowEntryBuffers__2:
+              TST.B          $0(A5,D7.L)              ;4a35 7800 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__4;6704 
+___LADFUNC_ReflowEntryBuffers__3:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__2;60f6 
+___LADFUNC_ReflowEntryBuffers__4:
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($401).w                 ;4878 0401 
+              PEA            Global_STR_LADFUNC_C_20(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              MOVE.L         #$10001,(A7)             ;2ebc 0001 0001 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($402).w                 ;4878 0402 
+              PEA            Global_STR_LADFUNC_C_21(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              MOVE.L         D0,$98(A7)               ;2f40 0098 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.W          ___LADFUNC_ReflowEntryBuffers__53;6700 01c0 
+___LADFUNC_ReflowEntryBuffers__5:
+              TST.L          $98(A7)                  ;4aaf 0098 
+              BEQ.W          ___LADFUNC_ReflowEntryBuffers__53;6700 01b8 
+___LADFUNC_ReflowEntryBuffers__6:
+___LADFUNC_ReflowEntryBuffers__7:
+              CLR.L          $94(A7)                  ;42af 0094 
+___LADFUNC_ReflowEntryBuffers__8:
+              MOVE.L         $94(A7),D0               ;202f 0094 
+              CMP.L          D7,D0                    ;b087 
+              BGT.B          ___LADFUNC_ReflowEntryBuffers__12;6e1a 
+___LADFUNC_ReflowEntryBuffers__9:
+              MOVE.B         $0(A5,D0.L),$0(A2,D0.L)  ;15b5 0800 0800 
+              CMP.L          D7,D0                    ;b087 
+              BGE.B          ___LADFUNC_ReflowEntryBuffers__11;6c0a 
+___LADFUNC_ReflowEntryBuffers__10:
+              MOVE.L         $98(A7),A0               ;206f 0098 
+              MOVE.B         $0(A3,D0.L),$0(A0,D0.L)  ;11b3 0800 0800 
+___LADFUNC_ReflowEntryBuffers__11:
+              ADDQ.L         #$1,$94(A7)              ;52af 0094 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__8;60de 
+___LADFUNC_ReflowEntryBuffers__12:
+              CLR.L          $94(A7)                  ;42af 0094 
+              CLR.B          $7b(A7)                  ;422f 007b 
+              CLR.B          $7a(A7)                  ;422f 007a 
+              MOVEQ.L        #$0,D5                   ;7a00 
+___LADFUNC_ReflowEntryBuffers__13:
+              CMP.L          ED_TextLimit(A4),D5      ;baac 0000 
+              BGE.W          ___LADFUNC_ReflowEntryBuffers__52;6c00 0178 
+___LADFUNC_ReflowEntryBuffers__14:
+              CLR.L          $90(A7)                  ;42af 0090 
+              CLR.L          $88(A7)                  ;42af 0088 
+___LADFUNC_ReflowEntryBuffers__15:
+              MOVE.L         $94(A7),D0               ;202f 0094 
+              TST.B          $0(A2,D0.L)              ;4a32 0800 
+              BEQ.W          ___LADFUNC_ReflowEntryBuffers__31;6700 008e 
+___LADFUNC_ReflowEntryBuffers__16:
+              MOVE.L         $90(A7),D1               ;222f 0090 
+              MOVEQ.L        #$28,D2                  ;7428 
+              CMP.L          D2,D1                    ;b282 
+              BGE.W          ___LADFUNC_ReflowEntryBuffers__31;6c00 0082 
+___LADFUNC_ReflowEntryBuffers__17:
+              MOVE.B         $0(A2,D0.L),D2           ;1432 0800 
+              MOVE.B         D2,$84(A7)               ;1f42 0084 
+              MOVEQ.L        #$a,D3                   ;760a 
+              CMP.B          D3,D2                    ;b403 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__19;6706 
+___LADFUNC_ReflowEntryBuffers__18:
+              MOVEQ.L        #$d,D3                   ;760d 
+              CMP.B          D3,D2                    ;b403 
+              BNE.B          ___LADFUNC_ReflowEntryBuffers__20;6606 
+___LADFUNC_ReflowEntryBuffers__19:
+              ADDQ.L         #$1,$94(A7)              ;52af 0094 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__15;60ce 
+___LADFUNC_ReflowEntryBuffers__20:
+              TST.B          $7b(A7)                  ;4a2f 007b 
+              BNE.B          ___LADFUNC_ReflowEntryBuffers__25;662a 
+___LADFUNC_ReflowEntryBuffers__21:
+              MOVEQ.L        #$18,D0                  ;7018 
+              CMP.B          D0,D2                    ;b400 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__24;670c 
+___LADFUNC_ReflowEntryBuffers__22:
+              MOVEQ.L        #$19,D3                  ;7619 
+              CMP.B          D3,D2                    ;b403 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__24;6706 
+___LADFUNC_ReflowEntryBuffers__23:
+              MOVEQ.L        #$1a,D4                  ;781a 
+              CMP.B          D4,D2                    ;b404 
+              BNE.B          ___LADFUNC_ReflowEntryBuffers__25;6618 
+___LADFUNC_ReflowEntryBuffers__24:
+              MOVE.L         $98(A7),A0               ;206f 0098 
+              MOVE.L         $94(A7),D3               ;262f 0094 
+              MOVE.B         $0(A0,D3.L),$7a(A7)      ;1f70 3800 007a 
+              ADDQ.L         #$1,$94(A7)              ;52af 0094 
+              MOVE.B         D2,$7b(A7)               ;1f42 007b 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__15;609e 
+___LADFUNC_ReflowEntryBuffers__25:
+              TST.B          $7b(A7)                  ;4a2f 007b 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__30;6712 
+___LADFUNC_ReflowEntryBuffers__26:
+              MOVEQ.L        #$18,D0                  ;7018 
+              CMP.B          D0,D2                    ;b400 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__31;672a 
+___LADFUNC_ReflowEntryBuffers__27:
+              MOVEQ.L        #$19,D0                  ;7019 
+              CMP.B          D0,D2                    ;b400 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__31;6724 
+___LADFUNC_ReflowEntryBuffers__28:
+              MOVEQ.L        #$1a,D0                  ;701a 
+              CMP.B          D0,D2                    ;b400 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__31;671e 
+___LADFUNC_ReflowEntryBuffers__29:
+___LADFUNC_ReflowEntryBuffers__30:
+              MOVE.B         D2,$51(A7,D1.L)          ;1f82 1851 
+              MOVE.L         $98(A7),A0               ;206f 0098 
+              MOVE.L         $94(A7),D0               ;202f 0094 
+              MOVE.B         $0(A0,D0.L),$27(A7,D1.L) ;1fb0 0800 1827 
+              ADDQ.L         #$1,$90(A7)              ;52af 0090 
+              ADDQ.L         #$1,$94(A7)              ;52af 0094 
+              BRA.W          ___LADFUNC_ReflowEntryBuffers__15;6000 ff6a 
+___LADFUNC_ReflowEntryBuffers__31:
+              MOVE.L         $90(A7),D0               ;202f 0090 
+              CLR.B          $51(A7,D0.L)             ;4237 0851 
+              MOVEQ.L        #$28,D1                  ;7228 
+              SUB.L          D0,D1                    ;9280 
+              MOVEM.L        D1,$8c(A7)               ;48ef 0002 008c 
+              MOVE.B         $7b(A7),D0               ;102f 007b 
+              MOVEQ.L        #$18,D1                  ;7218 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___LADFUNC_ReflowEntryBuffers__33;6608 
+___LADFUNC_ReflowEntryBuffers__32:
+              MOVEQ.L        #$2,D1                   ;7202 
+              MOVE.L         D1,$88(A7)               ;2f41 0088 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__36;6012 
+___LADFUNC_ReflowEntryBuffers__33:
+              MOVEQ.L        #$1a,D1                  ;721a 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___LADFUNC_ReflowEntryBuffers__35;6608 
+___LADFUNC_ReflowEntryBuffers__34:
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,$88(A7)               ;2f40 0088 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__36;6004 
+___LADFUNC_ReflowEntryBuffers__35:
+              CLR.L          $88(A7)                  ;42af 0088 
+___LADFUNC_ReflowEntryBuffers__36:
+              MOVE.L         $88(A7),D0               ;202f 0088 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___LADFUNC_ReflowEntryBuffers__43;6f46 
+___LADFUNC_ReflowEntryBuffers__37:
+              MOVE.L         $8c(A7),D1               ;222f 008c 
+              TST.L          D1                       ;4a81 
+              BLE.B          ___LADFUNC_ReflowEntryBuffers__43;6f3e 
+___LADFUNC_ReflowEntryBuffers__38:
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          NEWGRID_JMPTBL_MATH_DivS32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              CLR.L          $7c(A7)                  ;42af 007c 
+              MOVE.L         D0,$80(A7)               ;2f40 0080 
+___LADFUNC_ReflowEntryBuffers__39:
+              MOVE.L         $7c(A7),D0               ;202f 007c 
+              CMP.L          $80(A7),D0               ;b0af 0080 
+              BGE.B          ___LADFUNC_ReflowEntryBuffers__42;6c14 
+___LADFUNC_ReflowEntryBuffers__40:
+              MOVE.B         #$20,$0(A5,D6.L)         ;1bbc 0020 6800 
+              MOVE.B         $7a(A7),$0(A3,D6.L)      ;17af 007a 6800 
+              ADDQ.L         #$1,D6                   ;5286 
+___LADFUNC_ReflowEntryBuffers__41:
+              ADDQ.L         #$1,$7c(A7)              ;52af 007c 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__39;60e2 
+___LADFUNC_ReflowEntryBuffers__42:
+              MOVE.L         $80(A7),D0               ;202f 0080 
+              SUB.L          D0,$8c(A7)               ;91af 008c 
+              SUBQ.L         #$1,$88(A7)              ;53af 0088 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__36;60b2 
+___LADFUNC_ReflowEntryBuffers__43:
+              CLR.L          $80(A7)                  ;42af 0080 
+___LADFUNC_ReflowEntryBuffers__44:
+              MOVE.L         $80(A7),D0               ;202f 0080 
+              CMP.L          $90(A7),D0               ;b0af 0090 
+              BGE.B          ___LADFUNC_ReflowEntryBuffers__47;6c14 
+___LADFUNC_ReflowEntryBuffers__45:
+              MOVE.B         $51(A7,D0.L),$0(A5,D6.L) ;1bb7 0851 6800 
+              MOVE.B         $27(A7,D0.L),$0(A3,D6.L) ;17b7 0827 6800 
+              ADDQ.L         #$1,D6                   ;5286 
+___LADFUNC_ReflowEntryBuffers__46:
+              ADDQ.L         #$1,$80(A7)              ;52af 0080 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__44;60e2 
+___LADFUNC_ReflowEntryBuffers__47:
+              MOVE.L         $8c(A7),D0               ;202f 008c 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___LADFUNC_ReflowEntryBuffers__49;6f14 
+___LADFUNC_ReflowEntryBuffers__48:
+              MOVE.B         #$20,$0(A5,D6.L)         ;1bbc 0020 6800 
+              MOVE.B         $7a(A7),$0(A3,D6.L)      ;17af 007a 6800 
+              ADDQ.L         #$1,D6                   ;5286 
+              SUBQ.L         #$1,$8c(A7)              ;53af 008c 
+              BRA.B          ___LADFUNC_ReflowEntryBuffers__47;60e4 
+___LADFUNC_ReflowEntryBuffers__49:
+              CLR.B          $7b(A7)                  ;422f 007b 
+              MOVE.L         $94(A7),D0               ;202f 0094 
+              TST.B          $0(A2,D0.L)              ;4a32 0800 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__52;6706 
+___LADFUNC_ReflowEntryBuffers__50:
+___LADFUNC_ReflowEntryBuffers__51:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.W          ___LADFUNC_ReflowEntryBuffers__13;6000 fe84 
+___LADFUNC_ReflowEntryBuffers__52:
+              CLR.B          $0(A5,D6.L)              ;4235 6800 
+___LADFUNC_ReflowEntryBuffers__53:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__55;6718 
+___LADFUNC_ReflowEntryBuffers__54:
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              PEA            ($47a).w                 ;4878 047a 
+              PEA            Global_STR_LADFUNC_C_22(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LADFUNC_ReflowEntryBuffers__55:
+              MOVE.L         $98(A7),D0               ;202f 0098 
+              BEQ.B          ___LADFUNC_ReflowEntryBuffers__58;6714 
+___LADFUNC_ReflowEntryBuffers__56:
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($47c).w                 ;4878 047c 
+              PEA            Global_STR_LADFUNC_C_23(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LADFUNC_ReflowEntryBuffers__57:
+___LADFUNC_ReflowEntryBuffers__58:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
+              ADD.W          #$78,A7                  ;defc 0078 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_LADFUNC_C_20
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           Global_STR_LADFUNC_C_21
+              XREF           ED_TextLimit
+              XREF           NEWGRID_JMPTBL_MATH_DivS32
+              XREF           Global_STR_LADFUNC_C_22
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XREF           Global_STR_LADFUNC_C_23
+              XDEF           LADFUNC_ReflowEntryBuffers
+              END

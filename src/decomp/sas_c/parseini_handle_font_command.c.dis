@@ -1,0 +1,170 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_HandleFontCommand:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$5c,D0                  ;90bc 0000 005c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$50,A7                  ;9efc 0050 
+              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+___PARSEINI_HandleFontCommand__1:
+              MOVE.L         $64(A7),A5               ;2a6f 0064 
+              MOVE.B         (A5)+,D7                 ;1e1d 
+              MOVEQ.L        #$33,D0                  ;7033 
+              CMP.B          D0,D7                    ;be00 
+              BNE.W          ___PARSEINI_HandleFontCommand__34;6600 00fe 
+___PARSEINI_HandleFontCommand__2:
+___PARSEINI_HandleFontCommand__3:
+              MOVE.B         (A5)+,D6                 ;1c1d 
+              MOVEQ.L        #$32,D0                  ;7032 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___PARSEINI_HandleFontCommand__5;6624 
+___PARSEINI_HandleFontCommand__4:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            Global_STR_PERCENT_S_2(A4);486c 0000 
+              PEA            $18(A7)                  ;486f 0018 
+              BSR.W          PARSEINI_JMPTBL_WDISP_SPrintf;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            $20(A7)                  ;486f 0020 
+              BSR.W          _LVOExecute              ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              BRA.W          ___PARSEINI_HandleFontCommand__34;6000 00d2 
+___PARSEINI_HandleFontCommand__5:
+              MOVEQ.L        #$33,D0                  ;7033 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.W          ___PARSEINI_HandleFontCommand__26;6600 0094 
+___PARSEINI_HandleFontCommand__6:
+              MOVE.B         (A5)+,D5                 ;1a1d 
+              MOVEQ.L        #$34,D0                  ;7034 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__8;6608 
+___PARSEINI_HandleFontCommand__7:
+              BSR.W          PARSEINI_JMPTBL_ED1_WaitForFlagA;6100 0000 
+              BRA.W          ___PARSEINI_HandleFontCommand__34;6000 00ba 
+___PARSEINI_HandleFontCommand__8:
+              MOVEQ.L        #$35,D0                  ;7035 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__12;6616 
+___PARSEINI_HandleFontCommand__9:
+              MOVE.B         CONFIG_ParseiniLogoScanEnabledFl(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___PARSEINI_HandleFontCommand__11;6604 
+___PARSEINI_HandleFontCommand__10:
+              BSR.W          PARSEINI_ScanLogoDirectory;6100 0000 
+___PARSEINI_HandleFontCommand__11:
+              BSR.W          PARSEINI_JMPTBL_ED1_WaitForFlagA;6100 0000 
+              BRA.W          ___PARSEINI_HandleFontCommand__34;6000 009e 
+___PARSEINI_HandleFontCommand__12:
+              MOVEQ.L        #$36,D0                  ;7036 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__14;6608 
+___PARSEINI_HandleFontCommand__13:
+              BSR.W          PARSEINI_JMPTBL_ESQFUNC_RebuildP;6100 0000 
+              BRA.W          ___PARSEINI_HandleFontCommand__34;6000 0090 
+___PARSEINI_HandleFontCommand__14:
+              MOVEQ.L        #$37,D0                  ;7037 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__19;661a 
+___PARSEINI_HandleFontCommand__15:
+              MOVE.L         Global_STRUCT_TEXTATTR_H26F_FONT(A4),-(A7);2f2c 0000 
+              PEA            Global_HANDLE_H26F_FONT(A4);486c 0000 
+              BSR.W          PARSEINI_TestMemoryAndOpenTopazF;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___PARSEINI_HandleFontCommand__34;6776 
+___PARSEINI_HandleFontCommand__16:
+              TST.L          Global_UIBusyFlag(A4)    ;4aac 0000 
+              BEQ.B          ___PARSEINI_HandleFontCommand__34;6770 
+___PARSEINI_HandleFontCommand__17:
+              BRA.B          ___PARSEINI_HandleFontCommand__34;606e 
+___PARSEINI_HandleFontCommand__18:
+___PARSEINI_HandleFontCommand__19:
+              MOVEQ.L        #$38,D0                  ;7038 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__21;6610 
+___PARSEINI_HandleFontCommand__20:
+              MOVE.L         Global_STRUCT_TEXTATTR_PREVUEC_F(A4),-(A7);2f2c 0000 
+              PEA            Global_HANDLE_PREVUEC_FONT(A4);486c 0000 
+              BSR.W          PARSEINI_TestMemoryAndOpenTopazF;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___PARSEINI_HandleFontCommand__34;6058 
+___PARSEINI_HandleFontCommand__21:
+              MOVEQ.L        #$39,D0                  ;7039 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__23;6610 
+___PARSEINI_HandleFontCommand__22:
+              MOVE.L         Global_STRUCT_TEXTATTR_PREVUE_FO(A4),-(A7);2f2c 0000 
+              PEA            Global_HANDLE_PREVUE_FONT(A4);486c 0000 
+              BSR.W          PARSEINI_TestMemoryAndOpenTopazF;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              BRA.B          ___PARSEINI_HandleFontCommand__34;6042 
+___PARSEINI_HandleFontCommand__23:
+              MOVEQ.L        #$52,D0                  ;7052 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__34;663c 
+___PARSEINI_HandleFontCommand__24:
+              BSR.W          PARSEINI_JMPTBL_DISKIO2_ParseIni;6100 0000 
+              BRA.B          ___PARSEINI_HandleFontCommand__34;6036 
+___PARSEINI_HandleFontCommand__25:
+___PARSEINI_HandleFontCommand__26:
+              MOVEQ.L        #$34,D0                  ;7034 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___PARSEINI_HandleFontCommand__34;6630 
+___PARSEINI_HandleFontCommand__27:
+              MOVE.B         (A5)+,D5                 ;1a1d 
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__29;660a 
+___PARSEINI_HandleFontCommand__28:
+              BSR.W          PARSEINI_JMPTBL_ED1_EnterEscMenu;6100 0000 
+              BSR.W          PARSEINI_JMPTBL_ED1_ExitEscMenu;6100 0000 
+              BRA.B          ___PARSEINI_HandleFontCommand__34;601e 
+___PARSEINI_HandleFontCommand__29:
+              MOVEQ.L        #$31,D0                  ;7031 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__31;660a 
+___PARSEINI_HandleFontCommand__30:
+              BSR.W          PARSEINI_JMPTBL_ED1_EnterEscMenu;6100 0000 
+              BSR.W          PARSEINI_JMPTBL_ED1_DrawDiagnost;6100 0000 
+              BRA.B          ___PARSEINI_HandleFontCommand__34;600e 
+___PARSEINI_HandleFontCommand__31:
+              MOVEQ.L        #$32,D0                  ;7032 
+              CMP.B          D0,D5                    ;ba00 
+              BNE.B          ___PARSEINI_HandleFontCommand__34;6608 
+___PARSEINI_HandleFontCommand__32:
+              BSR.W          PARSEINI_JMPTBL_ED1_EnterEscMenu;6100 0000 
+              BSR.W          PARSEINI_JMPTBL_ESQFUNC_DrawEscM;6100 0000 
+___PARSEINI_HandleFontCommand__33:
+___PARSEINI_HandleFontCommand__34:
+              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              ADD.W          #$50,A7                  ;defc 0050 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_PERCENT_S_2
+              XREF           PARSEINI_JMPTBL_WDISP_SPrintf
+              XREF           _LVOExecute
+              XREF           PARSEINI_JMPTBL_ED1_WaitForFlagA
+              XREF           CONFIG_ParseiniLogoScanEnabledFl
+              XREF           PARSEINI_ScanLogoDirectory
+              XREF           PARSEINI_JMPTBL_ESQFUNC_RebuildP
+              XREF           Global_STRUCT_TEXTATTR_H26F_FONT
+              XREF           Global_HANDLE_H26F_FONT
+              XREF           PARSEINI_TestMemoryAndOpenTopazF
+              XREF           Global_UIBusyFlag
+              XREF           Global_STRUCT_TEXTATTR_PREVUEC_F
+              XREF           Global_HANDLE_PREVUEC_FONT
+              XREF           Global_STRUCT_TEXTATTR_PREVUE_FO
+              XREF           Global_HANDLE_PREVUE_FONT
+              XREF           PARSEINI_JMPTBL_DISKIO2_ParseIni
+              XREF           PARSEINI_JMPTBL_ED1_EnterEscMenu
+              XREF           PARSEINI_JMPTBL_ED1_ExitEscMenu
+              XREF           PARSEINI_JMPTBL_ED1_DrawDiagnost
+              XREF           PARSEINI_JMPTBL_ESQFUNC_DrawEscM
+              XDEF           PARSEINI_HandleFontCommand
+              END

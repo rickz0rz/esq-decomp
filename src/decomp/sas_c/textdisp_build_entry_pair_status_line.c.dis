@@ -1,0 +1,154 @@
+              SECTION      text,CODE
+__code:
+TEXTDISP_BuildEntryPairStatusLin:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$a8,D0                  ;90bc 0000 00a8 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$90,A7                  ;9efc 0090 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 3f34 
+___TEXTDISP_BuildEntryPairStatusLin__1:
+              MOVE.W         $c2(A7),D5               ;3a2f 00c2 
+              MOVE.W         $be(A7),D6               ;3c2f 00be 
+              MOVE.W         $ba(A7),D7               ;3e2f 00ba 
+              MOVEQ.L        #$0,D4                   ;7800 
+              MOVE.W         D6,D4                    ;3806 
+              TST.W          D7                       ;4a47 
+              SCC            D0,#$700                 ;57c0 
+              MOVEQ.L        #$1,D1                   ;7201 
+              SUB.B          D0,D1                    ;9200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryAu;6100 0000 
+              MOVE.L         D0,A5                    ;2a40 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.W          D7                       ;4a47 
+              SCC            D0,#$700                 ;57c0 
+              MOVEQ.L        #$1,D1                   ;7201 
+              SUB.B          D0,D1                    ;9200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              BSR.W          TLIBA1_JMPTBL_ESQDISP_GetEntryPo;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.W          ___TEXTDISP_BuildEntryPairStatusLin__18;6700 00f2 
+___TEXTDISP_BuildEntryPairStatusLin__2:
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.W          ___TEXTDISP_BuildEntryPairStatusLin__18;6700 00ec 
+___TEXTDISP_BuildEntryPairStatusLin__3:
+___TEXTDISP_BuildEntryPairStatusLin__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              MOVE.L         CONFIG_TimeWindowMinutes(A4),-(A7);2f2c 0000 
+              PEA            ($1e).w                  ;4878 001e 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          TLIBA1_JMPTBL_COI_TestEntryWithi;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+              TST.L          D0                       ;4a80 
+              BEQ.W          ___TEXTDISP_BuildEntryPairStatusLin__18;6700 00cc 
+___TEXTDISP_BuildEntryPairStatusLin__5:
+___TEXTDISP_BuildEntryPairStatusLin__6:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.W          D0,D5                    ;ba40 
+              BCS.B          ___TEXTDISP_BuildEntryPairStatusLin__8;6506 
+___TEXTDISP_BuildEntryPairStatusLin__7:
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.W          D0,D5                    ;ba40 
+              BLS.B          ___TEXTDISP_BuildEntryPairStatusLin__9;6304 
+___TEXTDISP_BuildEntryPairStatusLin__8:
+              MOVE.W         #$ffff,D5                ;3a3c ffff 
+___TEXTDISP_BuildEntryPairStatusLin__9:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D5,D0                    ;3005 
+              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          TLIBA1_JMPTBL_COI_GetAnimFieldPo;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              CLR.B          $27(A7)                  ;422f 0027 
+              MOVE.L         D0,$b0(A7)               ;2f40 00b0 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___TEXTDISP_BuildEntryPairStatusLin__11;671a 
+___TEXTDISP_BuildEntryPairStatusLin__10:
+              PEA            SCRIPT_AlignedPrefixEmptyD(A4);486c 0000 
+              PEA            $2b(A7)                  ;486f 002b 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+              MOVE.L         A2,(A7)                  ;2e8a 
+              PEA            $2f(A7)                  ;486f 002f 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___TEXTDISP_BuildEntryPairStatusLin__11:
+              TST.L          $b0(A7)                  ;4aaf 00b0 
+              BEQ.B          ___TEXTDISP_BuildEntryPairStatusLin__15;6732 
+___TEXTDISP_BuildEntryPairStatusLin__12:
+              MOVE.B         $27(A7),D0               ;102f 0027 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___TEXTDISP_BuildEntryPairStatusLin__14;670e 
+___TEXTDISP_BuildEntryPairStatusLin__13:
+              PEA            SCRIPT_SpacerTripleC(A4) ;486c 0000 
+              PEA            $2b(A7)                  ;486f 002b 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___TEXTDISP_BuildEntryPairStatusLin__14:
+              PEA            SCRIPT_AlignedPrefixEmptyE(A4);486c 0000 
+              PEA            $2b(A7)                  ;486f 002b 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+              MOVE.L         $b8(A7),(A7)             ;2eaf 00b8 
+              PEA            $2f(A7)                  ;486f 002f 
+              BSR.W          STRING_AppendAtNull      ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___TEXTDISP_BuildEntryPairStatusLin__15:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D6,D1                    ;3206 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         D5,D2                    ;3405 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            $3b(A7)                  ;486f 003b 
+              BSR.W          TEXTDISP_JMPTBL_CLEANUP_BuildAli;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              MOVE.B         $27(A7),D0               ;102f 0027 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___TEXTDISP_BuildEntryPairStatusLin__18;670a 
+___TEXTDISP_BuildEntryPairStatusLin__16:
+              PEA            $27(A7)                  ;486f 0027 
+              BSR.W          SCRIPT_SetupHighlightEffect;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___TEXTDISP_BuildEntryPairStatusLin__17:
+___TEXTDISP_BuildEntryPairStatusLin__18:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5;4cdf 2cfc 
+              ADD.W          #$90,A7                  ;defc 0090 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TLIBA1_JMPTBL_ESQDISP_GetEntryAu
+              XREF           TLIBA1_JMPTBL_ESQDISP_GetEntryPo
+              XREF           CONFIG_TimeWindowMinutes
+              XREF           TLIBA1_JMPTBL_COI_TestEntryWithi
+              XREF           TLIBA1_JMPTBL_COI_GetAnimFieldPo
+              XREF           SCRIPT_AlignedPrefixEmptyD
+              XREF           STRING_AppendAtNull
+              XREF           SCRIPT_SpacerTripleC
+              XREF           SCRIPT_AlignedPrefixEmptyE
+              XREF           TEXTDISP_JMPTBL_CLEANUP_BuildAli
+              XREF           SCRIPT_SetupHighlightEffect
+              XDEF           TEXTDISP_BuildEntryPairStatusLin
+              END

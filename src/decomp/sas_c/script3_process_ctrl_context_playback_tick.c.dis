@@ -1,0 +1,104 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_ProcessCtrlContextPlaybac:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/A5,-(A7)              ;48e7 2004 
+___SCRIPT_ProcessCtrlContextPlaybac__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              PEA            LOCAVAIL_PrimaryFilterState(A4);486c 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          SCRIPT3_JMPTBL_LOCAVAIL_UpdateFi;6100 0000 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              BSR.W          SCRIPT_LoadCtrlContextSnapshot;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          SCRIPT_RuntimeModeDeferredFlag(A4);4aac 0000 
+              BEQ.B          ___SCRIPT_ProcessCtrlContextPlaybac__3;670a 
+___SCRIPT_ProcessCtrlContextPlaybac__2:
+              MOVEQ.L        #$3,D0                   ;7003 
+              MOVE.W         D0,SCRIPT_RuntimeMode(A4);3940 0000 
+              CLR.L          SCRIPT_RuntimeModeDeferredFlag(A4);42ac 0000 
+___SCRIPT_ProcessCtrlContextPlaybac__3:
+              MOVE.B         CONFIG_MSN_FlagChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4d,D1                  ;724d 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6614 
+___SCRIPT_ProcessCtrlContextPlaybac__4:
+              MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6f0c 
+___SCRIPT_ProcessCtrlContextPlaybac__5:
+              MOVEQ.L        #$a,D1                   ;720a 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___SCRIPT_ProcessCtrlContextPlaybac__7;6c06 
+___SCRIPT_ProcessCtrlContextPlaybac__6:
+              MOVEQ.L        #$2,D2                   ;7402 
+              MOVE.L         D2,SCRIPT_PlaybackCursor(A4);2942 0000 
+___SCRIPT_ProcessCtrlContextPlaybac__7:
+              MOVE.W         SCRIPT_RuntimeMode(A4),D0;302c 0000 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__10;6610 
+___SCRIPT_ProcessCtrlContextPlaybac__8:
+              MOVE.W         SCRIPT_RuntimeModeDispatchLatch(A4),D0;302c 0000 
+              BEQ.B          ___SCRIPT_ProcessCtrlContextPlaybac__10;670a 
+___SCRIPT_ProcessCtrlContextPlaybac__9:
+              MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
+              MOVEQ.L        #$a,D1                   ;720a 
+              CMP.L          D1,D0                    ;b081 
+              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__17;6f2e 
+___SCRIPT_ProcessCtrlContextPlaybac__10:
+              MOVE.L         SCRIPT_PlaybackCursor(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BLE.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6f2a 
+___SCRIPT_ProcessCtrlContextPlaybac__11:
+              MOVEQ.L        #$f,D1                   ;720f 
+              CMP.L          D1,D0                    ;b081 
+              BGT.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6e24 
+___SCRIPT_ProcessCtrlContextPlaybac__12:
+              BSR.W          SCRIPT_UpdateRuntimeModeForPlayb;6100 0000 
+              TST.W          D0                       ;4a40 
+              BNE.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;661c 
+___SCRIPT_ProcessCtrlContextPlaybac__13:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          SCRIPT_PlaybackCursor(A4),D0;b0ac 0000 
+              BEQ.B          ___SCRIPT_ProcessCtrlContextPlaybac__15;6704 
+___SCRIPT_ProcessCtrlContextPlaybac__14:
+              BSR.W          SCRIPT_ApplyPendingBannerTarget;6100 0000 
+___SCRIPT_ProcessCtrlContextPlaybac__15:
+              PEA            SCRIPT_PlaybackCursor(A4);486c 0000 
+              BSR.W          SCRIPT_DispatchPlaybackCursorCom;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___SCRIPT_ProcessCtrlContextPlaybac__16:
+              BRA.B          ___SCRIPT_ProcessCtrlContextPlaybac__18;6004 
+___SCRIPT_ProcessCtrlContextPlaybac__17:
+              CLR.W          SCRIPT_RuntimeModeDispatchLatch(A4);426c 0000 
+___SCRIPT_ProcessCtrlContextPlaybac__18:
+              MOVE.W         TEXTDISP_CurrentMatchIndex(A4),TEXTDISP_CurrentMatchIndexSaved(A4);396c 0000 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          SCRIPT_SaveCtrlContextSnapshot;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___SCRIPT_ProcessCtrlContextPlaybac__19:
+              MOVEM.L        (A7)+,D2/A5              ;4cdf 2004 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LOCAVAIL_PrimaryFilterState
+              XREF           SCRIPT3_JMPTBL_LOCAVAIL_UpdateFi
+              XREF           SCRIPT_LoadCtrlContextSnapshot
+              XREF           SCRIPT_RuntimeModeDeferredFlag
+              XREF           SCRIPT_RuntimeMode
+              XREF           CONFIG_MSN_FlagChar
+              XREF           SCRIPT_PlaybackCursor
+              XREF           SCRIPT_RuntimeModeDispatchLatch
+              XREF           SCRIPT_UpdateRuntimeModeForPlayb
+              XREF           SCRIPT_ApplyPendingBannerTarget
+              XREF           SCRIPT_DispatchPlaybackCursorCom
+              XREF           TEXTDISP_CurrentMatchIndex
+              XREF           TEXTDISP_CurrentMatchIndexSaved
+              XREF           SCRIPT_SaveCtrlContextSnapshot
+              XDEF           SCRIPT_ProcessCtrlContextPlaybac
+              END

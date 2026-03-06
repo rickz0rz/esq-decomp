@@ -1,0 +1,88 @@
+              SECTION      text,CODE
+__code:
+PARSEINI_MonitorClockChange:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___PARSEINI_MonitorClockChange__1:
+              MOVE.W         Global_WORD_H_VALUE(A4),D0;302c 0000 
+              MOVE.W         Global_WORD_T_VALUE(A4),D1;322c 0000 
+              CMP.W          D1,D0                    ;b041 
+              BEQ.B          ___PARSEINI_MonitorClockChange__3;6704 
+___PARSEINI_MonitorClockChange__2:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___PARSEINI_MonitorClockChange__4;6002 
+___PARSEINI_MonitorClockChange__3:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___PARSEINI_MonitorClockChange__4:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___PARSEINI_MonitorClockChange__8;6728 
+___PARSEINI_MonitorClockChange__5:
+              MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),PARSEINI_ClockSecondsSnapshot(A4);396c 0000 0000 
+              MOVE.W         PARSEINI_ClockChangeActiveFlag(A4),D0;302c 0000 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___PARSEINI_MonitorClockChange__7;6604 
+___PARSEINI_MonitorClockChange__6:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___PARSEINI_MonitorClockChange__16;605c 
+___PARSEINI_MonitorClockChange__7:
+              MOVE.W         #$1,PARSEINI_ClockChangeActiveFlag(A4);397c 0001 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          SCRIPT3_JMPTBL_ESQDISP_UpdateSta;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___PARSEINI_MonitorClockChange__16;6046 
+___PARSEINI_MonitorClockChange__8:
+              MOVE.W         PARSEINI_ClockChangeActiveFlag(A4),D0;302c 0000 
+              BNE.B          ___PARSEINI_MonitorClockChange__10;6604 
+___PARSEINI_MonitorClockChange__9:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___PARSEINI_MonitorClockChange__16;603c 
+___PARSEINI_MonitorClockChange__10:
+              MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),D6;3c2c 0000 
+              MOVE.W         PARSEINI_ClockSecondsSnapshot(A4),D0;302c 0000 
+              CMP.W          D6,D0                    ;b046 
+              BNE.B          ___PARSEINI_MonitorClockChange__12;6604 
+___PARSEINI_MonitorClockChange__11:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___PARSEINI_MonitorClockChange__16;602c 
+___PARSEINI_MonitorClockChange__12:
+              MOVE.W         PARSEINI_ClockChangeSampleCounte(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,PARSEINI_ClockChangeSampleCounte(A4);3941 0000 
+              MOVE.W         D6,PARSEINI_ClockSecondsSnapshot(A4);3946 0000 
+              MOVEQ.L        #$3,D0                   ;7003 
+              CMP.W          D0,D1                    ;b240 
+              BGE.B          ___PARSEINI_MonitorClockChange__14;6c04 
+___PARSEINI_MonitorClockChange__13:
+              MOVE.L         D7,D0                    ;2007 
+              BRA.B          ___PARSEINI_MonitorClockChange__16;6012 
+___PARSEINI_MonitorClockChange__14:
+              CLR.W          PARSEINI_ClockChangeActiveFlag(A4);426c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          SCRIPT3_JMPTBL_ESQDISP_UpdateSta;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D7,D0                    ;2007 
+___PARSEINI_MonitorClockChange__15:
+___PARSEINI_MonitorClockChange__16:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_WORD_H_VALUE
+              XREF           Global_WORD_T_VALUE
+              XREF           Global_REF_CLOCKDATA_STRUCT
+              XREF           PARSEINI_ClockSecondsSnapshot
+              XREF           PARSEINI_ClockChangeActiveFlag
+              XREF           SCRIPT3_JMPTBL_ESQDISP_UpdateSta
+              XREF           PARSEINI_ClockChangeSampleCounte
+              XDEF           PARSEINI_MonitorClockChange
+              END

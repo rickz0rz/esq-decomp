@@ -1,0 +1,119 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_SaveCtrlContextSnapshot:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___SCRIPT_SaveCtrlContextSnapshot__1:
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.B         SCRIPT_Type20SubtypeCache(A4),$1b4(A3);176c 0000 01b4 
+              MOVE.B         SCRIPT_PendingWeatherCommandChar(A4),$1b5(A3);176c 0000 01b5 
+              MOVE.B         SCRIPT_PendingTextdispCmdChar(A4),$1b6(A3);176c 0000 01b6 
+              MOVE.B         SCRIPT_PendingTextdispCmdArg(A4),$1b7(A3);176c 0000 01b7 
+              LEA            $1b8(A3),A0              ;41eb 01b8 
+              MOVE.L         SCRIPT_CommandTextPtr(A4),-(A7);2f2c 0000 
+              MOVE.L         (A0),-(A7)               ;2f10 
+              MOVE.L         A0,$18(A7)               ;2f48 0018 
+              BSR.W          ESQPROTO_JMPTBL_ESQPARS_ReplaceO;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         $10(A7),A0               ;206f 0010 
+              MOVE.L         D0,(A0)                  ;2080 
+              LEA            $2(A3),A0                ;41eb 0002 
+              MOVE.W         SCRIPT_PrimarySearchFirstFlag(A4),(A0);30ac 0000 
+              LEA            $4(A3),A0                ;41eb 0004 
+              MOVE.W         TEXTDISP_PrimaryChannelCode(A4),(A0);30ac 0000 
+              LEA            $6(A3),A0                ;41eb 0006 
+              MOVE.W         TEXTDISP_SecondaryChannelCode(A4),(A0);30ac 0000 
+              LEA            $1a(A3),A0               ;41eb 001a 
+              LEA            TEXTDISP_PrimarySearchText(A4),A2;45ec 0000 
+              MOVE.L         A0,$14(A7)               ;2f48 0014 
+___SCRIPT_SaveCtrlContextSnapshot__2:
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.B         (A2),(A0)+               ;10d2 
+              MOVE.L         A0,$14(A7)               ;2f48 0014 
+___SCRIPT_SaveCtrlContextSnapshot__3:
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___SCRIPT_SaveCtrlContextSnapshot__2;66f0 
+___SCRIPT_SaveCtrlContextSnapshot__4:
+              LEA            $e2(A3),A0               ;41eb 00e2 
+              LEA            TEXTDISP_SecondarySearchText(A4),A2;45ec 0000 
+              MOVE.L         A0,$14(A7)               ;2f48 0014 
+___SCRIPT_SaveCtrlContextSnapshot__5:
+              MOVE.L         $14(A7),A0               ;206f 0014 
+              MOVE.B         (A2),(A0)+               ;10d2 
+              MOVE.L         A0,$14(A7)               ;2f48 0014 
+___SCRIPT_SaveCtrlContextSnapshot__6:
+              MOVE.B         (A2)+,D0                 ;101a 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___SCRIPT_SaveCtrlContextSnapshot__5;66f0 
+___SCRIPT_SaveCtrlContextSnapshot__7:
+              LEA            $8(A3),A0                ;41eb 0008 
+              MOVE.W         TEXTDISP_CurrentMatchIndex(A4),(A0);30ac 0000 
+              LEA            $a(A3),A0                ;41eb 000a 
+              MOVE.W         SCRIPT_ChannelRangeArmedFlag(A4),(A0);30ac 0000 
+              LEA            $c(A3),A0                ;41eb 000c 
+              MOVE.W         TEXTDISP_ChannelSourceMode(A4),(A0);30ac 0000 
+              LEA            $e(A3),A0                ;41eb 000e 
+              MOVE.W         SCRIPT_ChannelRangeDigitChar(A4),(A0);30ac 0000 
+              LEA            $10(A3),A0               ;41eb 0010 
+              MOVE.L         SCRIPT_SearchMatchCountOrIndex(A4),(A0);20ac 0000 
+              LEA            $14(A3),A0               ;41eb 0014 
+              MOVE.L         SCRIPT_PlaybackCursor(A4),(A0);20ac 0000 
+              LEA            $18(A3),A0               ;41eb 0018 
+              MOVE.W         SCRIPT_RuntimeMode(A4),(A0);30ac 0000 
+              LEA            $1aa(A3),A0              ;41eb 01aa 
+              MOVE.W         TEXTDISP_ActiveGroupId(A4),(A0);30ac 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___SCRIPT_SaveCtrlContextSnapshot__8:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___SCRIPT_SaveCtrlContextSnapshot__12;6c28 
+___SCRIPT_SaveCtrlContextSnapshot__9:
+              LEA            TEXTDISP_BannerFallbackEntryInde(A4),A0;41ec 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$1ac,D0                 ;0680 0000 01ac 
+              MOVE.B         $0(A0,D7.L),$0(A3,D0.L)  ;17b0 7800 0800 
+              LEA            TEXTDISP_BannerSelectedEntryInde(A4),A0;41ec 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          #$1b0,D0                 ;0680 0000 01b0 
+              MOVE.B         $0(A0,D7.L),$0(A3,D0.L)  ;17b0 7800 0800 
+___SCRIPT_SaveCtrlContextSnapshot__10:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___SCRIPT_SaveCtrlContextSnapshot__8;60d2 
+___SCRIPT_SaveCtrlContextSnapshot__11:
+___SCRIPT_SaveCtrlContextSnapshot__12:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           SCRIPT_Type20SubtypeCache
+              XREF           SCRIPT_PendingWeatherCommandChar
+              XREF           SCRIPT_PendingTextdispCmdChar
+              XREF           SCRIPT_PendingTextdispCmdArg
+              XREF           SCRIPT_CommandTextPtr
+              XREF           ESQPROTO_JMPTBL_ESQPARS_ReplaceO
+              XREF           SCRIPT_PrimarySearchFirstFlag
+              XREF           TEXTDISP_PrimaryChannelCode
+              XREF           TEXTDISP_SecondaryChannelCode
+              XREF           TEXTDISP_PrimarySearchText
+              XREF           TEXTDISP_SecondarySearchText
+              XREF           TEXTDISP_CurrentMatchIndex
+              XREF           SCRIPT_ChannelRangeArmedFlag
+              XREF           TEXTDISP_ChannelSourceMode
+              XREF           SCRIPT_ChannelRangeDigitChar
+              XREF           SCRIPT_SearchMatchCountOrIndex
+              XREF           SCRIPT_PlaybackCursor
+              XREF           SCRIPT_RuntimeMode
+              XREF           TEXTDISP_ActiveGroupId
+              XREF           TEXTDISP_BannerFallbackEntryInde
+              XREF           TEXTDISP_BannerSelectedEntryInde
+              XDEF           SCRIPT_SaveCtrlContextSnapshot
+              END

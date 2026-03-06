@@ -1,0 +1,137 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_UpdateEntryFromTextAndAt:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___LADFUNC_UpdateEntryFromTextAndAt__1:
+              MOVE.L         $24(A7),D7               ;2e2f 0024 
+              MOVE.L         $2c(A7),A3               ;266f 002c 
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          LADFUNC_RepackEntryTextAndAttrBu;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A2           ;2470 0800 
+              MOVE.L         A2,D0                    ;200a 
+              BNE.B          ___LADFUNC_UpdateEntryFromTextAndAt__4;6632 
+___LADFUNC_UpdateEntryFromTextAndAt__2:
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($e).w                   ;4878 000e 
+              PEA            ($552).w                 ;4878 0552 
+              PEA            Global_STR_LADFUNC_C_28(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         A2,$0(A0,D0.L)           ;218a 0800 
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__4;6706 
+___LADFUNC_UpdateEntryFromTextAndAt__3:
+              CLR.W          (A2)                     ;4252 
+              CLR.W          $2(A2)                   ;426a 0002 
+___LADFUNC_UpdateEntryFromTextAndAt__4:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.W          ___LADFUNC_UpdateEntryFromTextAndAt__26;6700 00aa 
+___LADFUNC_UpdateEntryFromTextAndAt__5:
+___LADFUNC_UpdateEntryFromTextAndAt__6:
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.L         $6(A2),D0                ;202a 0006 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__11;671c 
+___LADFUNC_UpdateEntryFromTextAndAt__7:
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+___LADFUNC_UpdateEntryFromTextAndAt__8:
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              TST.B          (A0)                     ;4a10 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__10;6706 
+___LADFUNC_UpdateEntryFromTextAndAt__9:
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___LADFUNC_UpdateEntryFromTextAndAt__8;60f2 
+___LADFUNC_UpdateEntryFromTextAndAt__10:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              SUB.L          $6(A2),D0                ;90aa 0006 
+              MOVE.L         D0,D6                    ;2c00 
+___LADFUNC_UpdateEntryFromTextAndAt__11:
+              MOVE.L         $6(A2),-(A7)             ;2f2a 0006 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,$6(A2)                ;2540 0006 
+              ADDQ.W         #$8,A7                   ;504f 
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__14;671a 
+___LADFUNC_UpdateEntryFromTextAndAt__12:
+              MOVE.L         $a(A2),D0                ;202a 000a 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__14;6714 
+___LADFUNC_UpdateEntryFromTextAndAt__13:
+              MOVE.L         D6,-(A7)                 ;2f06 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($56a).w                 ;4878 056a 
+              PEA            Global_STR_LADFUNC_C_29(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___LADFUNC_UpdateEntryFromTextAndAt__14:
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.L         $6(A2),D0                ;202a 0006 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__19;671c 
+___LADFUNC_UpdateEntryFromTextAndAt__15:
+              MOVE.L         D0,$1c(A7)               ;2f40 001c 
+___LADFUNC_UpdateEntryFromTextAndAt__16:
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              TST.B          (A0)                     ;4a10 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__18;6706 
+___LADFUNC_UpdateEntryFromTextAndAt__17:
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___LADFUNC_UpdateEntryFromTextAndAt__16;60f2 
+___LADFUNC_UpdateEntryFromTextAndAt__18:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              SUB.L          $6(A2),D0                ;90aa 0006 
+              MOVE.L         D0,D5                    ;2a00 
+___LADFUNC_UpdateEntryFromTextAndAt__19:
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              PEA            ($56d).w                 ;4878 056d 
+              PEA            Global_STR_LADFUNC_C_30(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,$a(A2)                ;2540 000a 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BEQ.B          ___LADFUNC_UpdateEntryFromTextAndAt__26;6714 
+___LADFUNC_UpdateEntryFromTextAndAt__20:
+___LADFUNC_UpdateEntryFromTextAndAt__21:
+              MOVEQ.L        #$0,D4                   ;7800 
+___LADFUNC_UpdateEntryFromTextAndAt__22:
+              CMP.L          D5,D4                    ;b885 
+              BGE.B          ___LADFUNC_UpdateEntryFromTextAndAt__26;6c0e 
+___LADFUNC_UpdateEntryFromTextAndAt__23:
+              MOVE.L         $a(A2),A0                ;206a 000a 
+              ADD.L          D4,A0                    ;d1c4 
+              MOVE.B         $0(A3,D4.L),(A0)         ;10b3 4800 
+___LADFUNC_UpdateEntryFromTextAndAt__24:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___LADFUNC_UpdateEntryFromTextAndAt__22;60ee 
+___LADFUNC_UpdateEntryFromTextAndAt__25:
+___LADFUNC_UpdateEntryFromTextAndAt__26:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_RepackEntryTextAndAttrBu
+              XREF           LADFUNC_EntryPtrTable
+              XREF           Global_STR_LADFUNC_C_28
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           Global_STR_LADFUNC_C_29
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XREF           Global_STR_LADFUNC_C_30
+              XDEF           LADFUNC_UpdateEntryFromTextAndAt
+              END

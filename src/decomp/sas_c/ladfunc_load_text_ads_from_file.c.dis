@@ -1,0 +1,251 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_LoadTextAdsFromFile:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$18,A7                  ;9efc 0018 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___LADFUNC_LoadTextAdsFromFile__1:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($2).w                   ;4878 0002 
+              BSR.W          LADFUNC_ComposePackedPenByte;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              PEA            KYBD_PATH_DF0_LOCAL_ADS(A4);486c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_LoadFileT;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.B          ___LADFUNC_LoadTextAdsFromFile__3;6606 
+___LADFUNC_LoadTextAdsFromFile__2:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 020c 
+___LADFUNC_LoadTextAdsFromFile__3:
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D5;2a2c 0000 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
+              BSR.W          LADFUNC_ResetEntryTextBuffers;6100 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___LADFUNC_LoadTextAdsFromFile__4:
+              MOVEQ.L        #$2e,D0                  ;702e 
+              CMP.L          D0,D6                    ;bc80 
+              BGT.W          ___LADFUNC_LoadTextAdsFromFile__35;6e00 01dc 
+___LADFUNC_LoadTextAdsFromFile__5:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
+              CLR.L          $30(A7)                  ;42af 0030 
+              CLR.L          $2c(A7)                  ;42af 002c 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_ParseLong;6100 0000 
+              MOVE.W         D0,(A3)                  ;3680 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_ParseLong;6100 0000 
+              MOVE.W         D0,$2(A3)                ;3740 0002 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_ConsumeCS;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+___LADFUNC_LoadTextAdsFromFile__6:
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              TST.B          $0(A2,D0.L)              ;4a32 0800 
+              BEQ.B          ___LADFUNC_LoadTextAdsFromFile__8;6706 
+___LADFUNC_LoadTextAdsFromFile__7:
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__6;60f0 
+___LADFUNC_LoadTextAdsFromFile__8:
+              CLR.L          $28(A7)                  ;42af 0028 
+___LADFUNC_LoadTextAdsFromFile__9:
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              CMP.L          D0,D1                    ;b280 
+              BGE.B          ___LADFUNC_LoadTextAdsFromFile__15;6c20 
+___LADFUNC_LoadTextAdsFromFile__10:
+              MOVEQ.L        #$3,D2                   ;7403 
+              CMP.B          $0(A2,D1.L),D2           ;b432 1800 
+              BNE.B          ___LADFUNC_LoadTextAdsFromFile__13;660e 
+___LADFUNC_LoadTextAdsFromFile__11:
+              MOVE.L         D1,D2                    ;2401 
+              ADDQ.L         #$2,D2                   ;5482 
+              CMP.L          D0,D2                    ;b480 
+              BGE.B          ___LADFUNC_LoadTextAdsFromFile__13;6c06 
+___LADFUNC_LoadTextAdsFromFile__12:
+              ADDQ.L         #$2,$28(A7)              ;54af 0028 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__14;6004 
+___LADFUNC_LoadTextAdsFromFile__13:
+              ADDQ.L         #$1,$2c(A7)              ;52af 002c 
+___LADFUNC_LoadTextAdsFromFile__14:
+              ADDQ.L         #$1,$28(A7)              ;52af 0028 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__9;60d4 
+___LADFUNC_LoadTextAdsFromFile__15:
+              MOVE.L         $2c(A7),D0               ;202f 002c 
+              TST.L          D0                       ;4a80 
+              BLE.W          ___LADFUNC_LoadTextAdsFromFile__28;6f00 0102 
+___LADFUNC_LoadTextAdsFromFile__16:
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($24f).w                 ;4878 024f 
+              PEA            Global_STR_LADFUNC_C_9(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,$6(A3)                ;2740 0006 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BNE.B          ___LADFUNC_LoadTextAdsFromFile__18;6606 
+___LADFUNC_LoadTextAdsFromFile__17:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 015e 
+___LADFUNC_LoadTextAdsFromFile__18:
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              PEA            ($258).w                 ;4878 0258 
+              PEA            Global_STR_LADFUNC_C_10(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              MOVE.L         D0,$a(A3)                ;2740 000a 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BNE.B          ___LADFUNC_LoadTextAdsFromFile__20;6606 
+___LADFUNC_LoadTextAdsFromFile__19:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__37;6000 0138 
+___LADFUNC_LoadTextAdsFromFile__20:
+              CLR.L          $24(A7)                  ;42af 0024 
+              CLR.L          $28(A7)                  ;42af 0028 
+___LADFUNC_LoadTextAdsFromFile__21:
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              CMP.L          D0,D1                    ;b280 
+              BGE.W          ___LADFUNC_LoadTextAdsFromFile__27;6c00 0092 
+___LADFUNC_LoadTextAdsFromFile__22:
+              MOVE.B         $0(A2,D1.L),D2           ;1432 1800 
+              MOVE.B         D2,$20(A7)               ;1f42 0020 
+              SUBQ.B         #$3,D2                   ;5702 
+              BNE.B          ___LADFUNC_LoadTextAdsFromFile__25;6662 
+___LADFUNC_LoadTextAdsFromFile__23:
+              MOVE.L         D1,D2                    ;2401 
+              ADDQ.L         #$2,D2                   ;5482 
+              CMP.L          D0,D2                    ;b480 
+              BGE.B          ___LADFUNC_LoadTextAdsFromFile__25;6c5a 
+___LADFUNC_LoadTextAdsFromFile__24:
+              ADDQ.L         #$1,$28(A7)              ;52af 0028 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              MOVE.B         $0(A2,D1.L),D0           ;1032 1800 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D7,D1                    ;1207 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D0,D2                    ;1400 
+              MOVE.L         D2,(A7)                  ;2e82 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.B         D0,$26(A7)               ;1f40 0026 
+              BSR.W          LADFUNC_SetPackedPenHighNibble;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              ADDQ.L         #$1,$30(A7)              ;52af 0030 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $30(A7),D1               ;222f 0030 
+              MOVE.B         $0(A2,D1.L),D0           ;1032 1800 
+              MOVE.L         D0,(A7)                  ;2e80 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D7,D1                    ;1207 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D0,D2                    ;1400 
+              MOVE.L         D2,(A7)                  ;2e82 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.B         D0,$29(A7)               ;1f40 0029 
+              BSR.W          LADFUNC_SetPackedPenLowNibble;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         D0,D7                    ;2e00 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__26;601a 
+___LADFUNC_LoadTextAdsFromFile__25:
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              MOVE.L         $6(A3),A0                ;206b 0006 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.B         $20(A7),(A0)             ;10af 0020 
+              MOVE.L         $a(A3),A0                ;206b 000a 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.B         D7,(A0)                  ;1087 
+              ADDQ.L         #$1,$24(A7)              ;52af 0024 
+___LADFUNC_LoadTextAdsFromFile__26:
+              ADDQ.L         #$1,$28(A7)              ;52af 0028 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__21;6000 ff64 
+___LADFUNC_LoadTextAdsFromFile__27:
+              MOVE.L         $6(A3),A0                ;206b 0006 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          $24(A7),A1               ;d3ef 0024 
+              CLR.B          (A1)                     ;4211 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__34;6062 
+___LADFUNC_LoadTextAdsFromFile__28:
+              MOVE.L         $6(A3),D0                ;202b 0006 
+              BEQ.B          ___LADFUNC_LoadTextAdsFromFile__34;675c 
+___LADFUNC_LoadTextAdsFromFile__29:
+              CLR.L          $1c(A7)                  ;42af 001c 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+___LADFUNC_LoadTextAdsFromFile__30:
+              MOVE.L         $24(A7),A0               ;206f 0024 
+              MOVE.B         (A0)+,D0                 ;1018 
+              MOVE.L         A0,$24(A7)               ;2f48 0024 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___LADFUNC_LoadTextAdsFromFile__32;6706 
+___LADFUNC_LoadTextAdsFromFile__31:
+              ADDQ.L         #$1,$1c(A7)              ;52af 001c 
+              BRA.B          ___LADFUNC_LoadTextAdsFromFile__30;60ec 
+___LADFUNC_LoadTextAdsFromFile__32:
+              MOVE.L         $1c(A7),D0               ;202f 001c 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $6(A3),-(A7)             ;2f2b 0006 
+              PEA            ($27e).w                 ;4878 027e 
+              PEA            Global_STR_LADFUNC_C_11(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              CLR.L          $6(A3)                   ;42ab 0006 
+              MOVE.L         $a(A3),D0                ;202b 000a 
+              BEQ.B          ___LADFUNC_LoadTextAdsFromFile__34;671a 
+___LADFUNC_LoadTextAdsFromFile__33:
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($282).w                 ;4878 0282 
+              PEA            Global_STR_LADFUNC_C_12(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              CLR.L          $a(A3)                   ;42ab 000a 
+___LADFUNC_LoadTextAdsFromFile__34:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.W          ___LADFUNC_LoadTextAdsFromFile__4;6000 fe20 
+___LADFUNC_LoadTextAdsFromFile__35:
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($28d).w                 ;4878 028d 
+              PEA            Global_STR_LADFUNC_C_13(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D0                   ;7000 
+___LADFUNC_LoadTextAdsFromFile__36:
+___LADFUNC_LoadTextAdsFromFile__37:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$18,A7                  ;defc 0018 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           LADFUNC_ComposePackedPenByte
+              XREF           KYBD_PATH_DF0_LOCAL_ADS
+              XREF           GROUP_AY_JMPTBL_DISKIO_LoadFileT
+              XREF           Global_REF_LONG_FILE_SCRATCH
+              XREF           Global_PTR_WORK_BUFFER
+              XREF           LADFUNC_ResetEntryTextBuffers
+              XREF           LADFUNC_EntryPtrTable
+              XREF           GROUP_AY_JMPTBL_DISKIO_ParseLong
+              XREF           GROUP_AY_JMPTBL_DISKIO_ConsumeCS
+              XREF           Global_STR_LADFUNC_C_9
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           Global_STR_LADFUNC_C_10
+              XREF           LADFUNC_ParseHexDigit
+              XREF           LADFUNC_SetPackedPenHighNibble
+              XREF           LADFUNC_SetPackedPenLowNibble
+              XREF           Global_STR_LADFUNC_C_11
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XREF           Global_STR_LADFUNC_C_12
+              XREF           Global_STR_LADFUNC_C_13
+              XDEF           LADFUNC_LoadTextAdsFromFile
+              END

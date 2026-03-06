@@ -1,0 +1,324 @@
+              SECTION      text,CODE
+__code:
+SCRIPT_HandleSerialCtrlCmd:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
+___SCRIPT_HandleSerialCtrlCmd__1:
+              MOVE.W         Global_WORD_SELECT_CODE_IS_RAVES(A4),D0;302c 0000 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__3;660a 
+___SCRIPT_HandleSerialCtrlCmd__2:
+              MOVE.B         CONFIG_MSN_FlagChar(A4),D0;102c 0000 
+              MOVEQ.L        #$4d,D1                  ;724d 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__4;6608 
+___SCRIPT_HandleSerialCtrlCmd__3:
+              MOVE.W         #$ffffffff,Global_RefreshTickCounter(A4);397c ffff 0000 
+              BRA.B          ___SCRIPT_HandleSerialCtrlCmd__9;6018 
+___SCRIPT_HandleSerialCtrlCmd__4:
+              MOVE.W         SCRIPT_StatusRefreshHoldFlag(A4),D0;302c 0000 
+              BEQ.B          ___SCRIPT_HandleSerialCtrlCmd__7;6708 
+___SCRIPT_HandleSerialCtrlCmd__5:
+              CLR.W          Global_RefreshTickCounter(A4);426c 0000 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__56;6000 0288 
+___SCRIPT_HandleSerialCtrlCmd__6:
+___SCRIPT_HandleSerialCtrlCmd__7:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          ESQDISP_DisplayActiveFlag(A4),D0;b0ac 0000 
+              BEQ.W          ___SCRIPT_HandleSerialCtrlCmd__56;6700 027e 
+___SCRIPT_HandleSerialCtrlCmd__8:
+___SCRIPT_HandleSerialCtrlCmd__9:
+              MOVE.W         SCRIPT_StatusMaskRefreshPending(A4),D0;302c 0000 
+              BEQ.B          ___SCRIPT_HandleSerialCtrlCmd__13;672a 
+___SCRIPT_HandleSerialCtrlCmd__10:
+              MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),D0;302c 0000 
+              MOVE.W         Global_WORD_CLOCK_SECONDS(A4),D1;322c 0000 
+              CMP.W          D1,D0                    ;b041 
+              BEQ.B          ___SCRIPT_HandleSerialCtrlCmd__13;671e 
+___SCRIPT_HandleSerialCtrlCmd__11:
+              MOVE.W         D1,D0                    ;3001 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,Global_WORD_CLOCK_SECONDS(A4);3940 0000 
+              MOVEQ.L        #$3,D1                   ;7203 
+              CMP.W          D1,D0                    ;b041 
+              BLT.B          ___SCRIPT_HandleSerialCtrlCmd__13;6d10 
+___SCRIPT_HandleSerialCtrlCmd__12:
+              CLR.W          SCRIPT_StatusMaskRefreshPending(A4);426c 0000 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($20).w                  ;4878 0020 
+              BSR.W          SCRIPT3_JMPTBL_ESQDISP_UpdateSta;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___SCRIPT_HandleSerialCtrlCmd__13:
+              BSR.W          PARSEINI_CheckCtrlHChange;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__56;6600 0240 
+___SCRIPT_HandleSerialCtrlCmd__14:
+              TST.L          D7                       ;4a87 
+              BEQ.W          ___SCRIPT_HandleSerialCtrlCmd__56;6700 023a 
+___SCRIPT_HandleSerialCtrlCmd__15:
+___SCRIPT_HandleSerialCtrlCmd__16:
+              MOVE.W         Global_RefreshTickCounter(A4),D0;302c 0000 
+              MOVE.W         D0,D1                    ;3200 
+              ADDQ.W         #$1,D1                   ;5241 
+              MOVE.W         D1,Global_RefreshTickCounter(A4);3941 0000 
+              BEQ.B          ___SCRIPT_HandleSerialCtrlCmd__18;6704 
+___SCRIPT_HandleSerialCtrlCmd__17:
+              CLR.W          Global_RefreshTickCounter(A4);426c 0000 
+___SCRIPT_HandleSerialCtrlCmd__18:
+              BSR.W          SCRIPT_ESQ_CaptureCtrlBit4Stream;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.W         SCRIPT_CTRL_STATE(A4),D5 ;3a2c 0000 
+              TST.W          D5                       ;4a45 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__33;6600 00c2 
+___SCRIPT_HandleSerialCtrlCmd__19:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              SUBQ.W         #$1,D0                   ;5340 
+              MOVEM.W        D0,$12(A7)               ;48af 0001 0012 
+              BLT.W          ___SCRIPT_HandleSerialCtrlCmd__52;6d00 01dc 
+___SCRIPT_HandleSerialCtrlCmd__20:
+              MOVEQ.L        #$16,D1                  ;7216 
+              CMP.W          D1,D0                    ;b041 
+              BGE.W          ___SCRIPT_HandleSerialCtrlCmd__52;6c00 01d4 
+___SCRIPT_HandleSerialCtrlCmd__21:
+___SCRIPT_HandleSerialCtrlCmd__22:
+              EXT.L          D0                       ;48c0 
+___SCRIPT_HandleSerialCtrlCmd__23:
+___SCRIPT_HandleSerialCtrlCmd__24:
+              CMPI.L         #$16,D0                  ;0c80 0000 0016 
+              BCC.W          ___SCRIPT_HandleSerialCtrlCmd__52;6400 01c8 
+___SCRIPT_HandleSerialCtrlCmd__25:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_SCRIPT_HandleSerialCtrlCmd_25:
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__26-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__26-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__27-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__26-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__52-__switch_SCRIPT_HandleSerialCtrlCmd_25
+              DC.W           ___SCRIPT_HandleSerialCtrlCmd__28-__switch_SCRIPT_HandleSerialCtrlCmd_25
+___SCRIPT_HandleSerialCtrlCmd__26:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),A0;306c 0000 
+              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         D6,$0(A1,D0.W)           ;1386 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.W         D0,SCRIPT_CTRL_CHECKSUM(A4);3940 0000 
+              MOVE.W         SCRIPT_CtrlCmdCount(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_CtrlCmdCount(A4);3940 0000 
+              MOVE.W         #$1,SCRIPT_CTRL_STATE(A4);397c 0001 0000 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 0168 
+___SCRIPT_HandleSerialCtrlCmd__27:
+              MOVE.W         #$3,SCRIPT_CTRL_STATE(A4);397c 0003 0000 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 015e 
+___SCRIPT_HandleSerialCtrlCmd__28:
+              MOVE.W         Global_WORD_SELECT_CODE_IS_RAVES(A4),D0;302c 0000 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__56;6600 0182 
+___SCRIPT_HandleSerialCtrlCmd__29:
+___SCRIPT_HandleSerialCtrlCmd__30:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),A0;306c 0000 
+              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A1;43ec 0000 
+              MOVE.L         A0,D0                    ;2008 
+              MOVE.B         D6,$0(A1,D0.W)           ;1386 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.W         D0,SCRIPT_CTRL_CHECKSUM(A4);3940 0000 
+              MOVE.W         SCRIPT_CtrlCmdCount(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_CtrlCmdCount(A4);3940 0000 
+              MOVE.W         #$1,SCRIPT_CTRL_STATE(A4);397c 0001 0000 
+___SCRIPT_HandleSerialCtrlCmd__31:
+___SCRIPT_HandleSerialCtrlCmd__32:
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 012c 
+___SCRIPT_HandleSerialCtrlCmd__33:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.W          D0,D5                    ;ba40 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__37;6634 
+___SCRIPT_HandleSerialCtrlCmd__34:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),D1;322c 0000 
+              MOVE.W         D1,D0                    ;3001 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_CTRL_READ_INDEX(A4);3940 0000 
+              LEA            SCRIPT_CTRL_CMD_BUFFER(A4),A0;41ec 0000 
+              MOVE.B         D6,$0(A0,D0.W)           ;1186 0000 
+              MOVEQ.L        #$d,D0                   ;700d 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__36;6606 
+___SCRIPT_HandleSerialCtrlCmd__35:
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.W         D0,SCRIPT_CTRL_STATE(A4) ;3940 0000 
+___SCRIPT_HandleSerialCtrlCmd__36:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.W         SCRIPT_CTRL_CHECKSUM(A4),D1;322c 0000 
+              MOVE.W         D1,D2                    ;3401 
+              EOR.W          D0,D2                    ;b142 
+              MOVE.W         D2,SCRIPT_CTRL_CHECKSUM(A4);3942 0000 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__52;6000 00f2 
+___SCRIPT_HandleSerialCtrlCmd__37:
+              MOVE.L         D5,D0                    ;2005 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__49;6600 00d2 
+___SCRIPT_HandleSerialCtrlCmd__38:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.W         SCRIPT_CTRL_CHECKSUM(A4),D1;322c 0000 
+              CMP.W          D1,D0                    ;b041 
+              BNE.W          ___SCRIPT_HandleSerialCtrlCmd__47;6600 0092 
+___SCRIPT_HandleSerialCtrlCmd__39:
+              MOVE.W         Global_WORD_SELECT_CODE_IS_RAVES(A4),D0;302c 0000 
+              BEQ.B          ___SCRIPT_HandleSerialCtrlCmd__41;672a 
+___SCRIPT_HandleSerialCtrlCmd__40:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            SCRIPT_CTRL_CMD_BUFFER(A4);486c 0000 
+              PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
+              BSR.W          SCRIPT_HandleBrushCommand;6100 0000 
+              BSR.W          SCRIPT_ApplyPendingBannerTarget;6100 0000 
+              BSR.W          WDISP_JMPTBL_ESQ_SetCopperEffect;6100 0000 
+              CLR.L          (A7)                     ;4297 
+              BSR.W          TEXTDISP_SetRastForMode  ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              BRA.W          ___SCRIPT_HandleSerialCtrlCmd__48;6000 0086 
+___SCRIPT_HandleSerialCtrlCmd__41:
+              MOVE.W         TEXTDISP_DeferredActionCountdown(A4),D0;302c 0000 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__43;6622 
+___SCRIPT_HandleSerialCtrlCmd__42:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            SCRIPT_CTRL_CMD_BUFFER(A4);486c 0000 
+              PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
+              BSR.W          SCRIPT_HandleBrushCommand;6100 0000 
+              PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
+              BSR.W          SCRIPT_ProcessCtrlContextPlaybac;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___SCRIPT_HandleSerialCtrlCmd__48;605c 
+___SCRIPT_HandleSerialCtrlCmd__43:
+              MOVE.W         D0,D1                    ;3200 
+              SUBQ.W         #$1,D1                   ;5341 
+              MOVE.W         D1,TEXTDISP_DeferredActionCountdown(A4);3941 0000 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__45;6622 
+___SCRIPT_HandleSerialCtrlCmd__44:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            SCRIPT_CTRL_CMD_BUFFER(A4);486c 0000 
+              PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
+              BSR.W          SCRIPT_HandleBrushCommand;6100 0000 
+              PEA            SCRIPT_CTRL_CONTEXT(A4)  ;486c 0000 
+              BSR.W          SCRIPT_ProcessCtrlContextPlaybac;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BRA.B          ___SCRIPT_HandleSerialCtrlCmd__48;6030 
+___SCRIPT_HandleSerialCtrlCmd__45:
+              MOVE.W         SCRIPT_CtrlCmdDeferCounter(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_CtrlCmdDeferCounter(A4);3940 0000 
+___SCRIPT_HandleSerialCtrlCmd__46:
+              BRA.B          ___SCRIPT_HandleSerialCtrlCmd__48;6024 
+___SCRIPT_HandleSerialCtrlCmd__47:
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($20).w                  ;4878 0020 
+              BSR.W          SCRIPT3_JMPTBL_ESQDISP_UpdateSta;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.W         Global_REF_CLOCKDATA_STRUCT(A4),Global_WORD_CLOCK_SECONDS(A4);396c 0000 0000 
+              MOVE.W         SCRIPT_CtrlCmdChecksumErrorCount(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_CtrlCmdChecksumErrorCount(A4);3940 0000 
+              MOVE.W         #$1,SCRIPT_StatusMaskRefreshPending(A4);397c 0001 0000 
+___SCRIPT_HandleSerialCtrlCmd__48:
+              CLR.W          SCRIPT_CTRL_CHECKSUM(A4) ;426c 0000 
+              CLR.W          SCRIPT_CTRL_READ_INDEX(A4);426c 0000 
+              CLR.W          SCRIPT_CTRL_STATE(A4)    ;426c 0000 
+              BRA.B          ___SCRIPT_HandleSerialCtrlCmd__52;6018 
+___SCRIPT_HandleSerialCtrlCmd__49:
+              MOVE.L         D5,D0                    ;2005 
+              SUBQ.W         #$3,D0                   ;5740 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__51;6606 
+___SCRIPT_HandleSerialCtrlCmd__50:
+              CLR.W          SCRIPT_CTRL_STATE(A4)    ;426c 0000 
+              BRA.B          ___SCRIPT_HandleSerialCtrlCmd__52;600c 
+___SCRIPT_HandleSerialCtrlCmd__51:
+              CLR.W          SCRIPT_CTRL_CHECKSUM(A4) ;426c 0000 
+              CLR.W          SCRIPT_CTRL_READ_INDEX(A4);426c 0000 
+              CLR.W          SCRIPT_CTRL_STATE(A4)    ;426c 0000 
+___SCRIPT_HandleSerialCtrlCmd__52:
+              MOVE.W         SCRIPT_CTRL_READ_INDEX(A4),D0;302c 0000 
+              CMPI.W         #$c6,D0                  ;0c40 00c6 
+              BLE.B          ___SCRIPT_HandleSerialCtrlCmd__56;6f22 
+___SCRIPT_HandleSerialCtrlCmd__53:
+              MOVE.W         SCRIPT_CtrlCmdLengthErrorCount(A4),D0;302c 0000 
+              ADDQ.W         #$1,D0                   ;5240 
+              MOVE.W         D0,SCRIPT_CtrlCmdLengthErrorCount(A4);3940 0000 
+              CLR.W          SCRIPT_CTRL_CHECKSUM(A4) ;426c 0000 
+              CLR.W          SCRIPT_CTRL_READ_INDEX(A4);426c 0000 
+              MOVE.W         SCRIPT_RuntimeMode(A4),D5;3a2c 0000 
+              CLR.W          SCRIPT_CTRL_STATE(A4)    ;426c 0000 
+              TST.W          D5                       ;4a45 
+              BNE.B          ___SCRIPT_HandleSerialCtrlCmd__56;6604 
+___SCRIPT_HandleSerialCtrlCmd__54:
+              BSR.W          TEXTDISP_ResetSelectionAndRefres;6100 0000 
+___SCRIPT_HandleSerialCtrlCmd__55:
+___SCRIPT_HandleSerialCtrlCmd__56:
+              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_WORD_SELECT_CODE_IS_RAVES
+              XREF           CONFIG_MSN_FlagChar
+              XREF           Global_RefreshTickCounter
+              XREF           SCRIPT_StatusRefreshHoldFlag
+              XREF           ESQDISP_DisplayActiveFlag
+              XREF           SCRIPT_StatusMaskRefreshPending
+              XREF           Global_REF_CLOCKDATA_STRUCT
+              XREF           Global_WORD_CLOCK_SECONDS
+              XREF           SCRIPT3_JMPTBL_ESQDISP_UpdateSta
+              XREF           PARSEINI_CheckCtrlHChange
+              XREF           Global_UIBusyFlag
+              XREF           SCRIPT_ESQ_CaptureCtrlBit4Stream
+              XREF           SCRIPT_CTRL_STATE
+              XREF           SCRIPT_CTRL_READ_INDEX
+              XREF           SCRIPT_CTRL_CMD_BUFFER
+              XREF           SCRIPT_CTRL_CHECKSUM
+              XREF           SCRIPT_CtrlCmdCount
+              XREF           SCRIPT_CTRL_CONTEXT
+              XREF           SCRIPT_HandleBrushCommand
+              XREF           SCRIPT_ApplyPendingBannerTarget
+              XREF           WDISP_JMPTBL_ESQ_SetCopperEffect
+              XREF           TEXTDISP_SetRastForMode
+              XREF           TEXTDISP_DeferredActionCountdown
+              XREF           SCRIPT_ProcessCtrlContextPlaybac
+              XREF           SCRIPT_CtrlCmdDeferCounter
+              XREF           SCRIPT_CtrlCmdChecksumErrorCount
+              XREF           SCRIPT_CtrlCmdLengthErrorCount
+              XREF           SCRIPT_RuntimeMode
+              XREF           TEXTDISP_ResetSelectionAndRefres
+              XDEF           SCRIPT_HandleSerialCtrlCmd
+              END
