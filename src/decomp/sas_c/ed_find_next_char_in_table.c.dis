@@ -1,0 +1,43 @@
+              SECTION      text,CODE
+__code:
+ED_FindNextCharInTable:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___ED_FindNextCharInTable__1:
+              MOVE.B         $13(A7),D7               ;1e2f 0013 
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AI_JMPTBL_STR_FindCharPtr;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___ED_FindNextCharInTable__3;6704 
+___ED_FindNextCharInTable__2:
+              ADDQ.L         #$1,A3                   ;528b 
+              BRA.B          ___ED_FindNextCharInTable__4;6002 
+___ED_FindNextCharInTable__3:
+              MOVE.L         A5,A3                    ;264d 
+___ED_FindNextCharInTable__4:
+              MOVE.B         (A3),D0                  ;1013 
+              BNE.B          ___ED_FindNextCharInTable__6;6602 
+___ED_FindNextCharInTable__5:
+              MOVE.L         A5,A3                    ;264d 
+___ED_FindNextCharInTable__6:
+              MOVE.B         (A3),D0                  ;1013 
+___ED_FindNextCharInTable__7:
+___ED_FindNextCharInTable__8:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GROUP_AI_JMPTBL_STR_FindCharPtr
+              XDEF           ED_FindNextCharInTable
+              END
