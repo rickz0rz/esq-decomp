@@ -1,0 +1,26 @@
+              SECTION      text,CODE
+__code:
+ED_IncrementAdNumber:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_IncrementAdNumber__1:
+              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),D0;202c 0000 
+              CMP.L          ED_MaxAdNumber(A4),D0    ;b0ac 0000 
+              BGE.B          ___ED_IncrementAdNumber__4;6c0c 
+___ED_IncrementAdNumber__2:
+___ED_IncrementAdNumber__3:
+              BSR.W          ED_ApplyActiveFlagToAdData;6100 0000 
+              ADDQ.L         #$1,Global_REF_LONG_CURRENT_EDITING_(A4);52ac 0000 
+              BSR.W          ED_UpdateAdNumberDisplay ;6100 0000 
+___ED_IncrementAdNumber__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_LONG_CURRENT_EDITING_
+              XREF           ED_MaxAdNumber
+              XREF           ED_ApplyActiveFlagToAdData
+              XREF           ED_UpdateAdNumberDisplay
+              XDEF           ED_IncrementAdNumber
+              END

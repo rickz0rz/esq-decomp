@@ -1,0 +1,24 @@
+              SECTION      text,CODE
+__code:
+ED_DecrementAdNumber:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_DecrementAdNumber__1:
+              CMPI.L         #$1,Global_REF_LONG_CURRENT_EDITING_(A4);0cac 0000 0001 0000 
+              BLE.B          ___ED_DecrementAdNumber__4;6f0c 
+___ED_DecrementAdNumber__2:
+___ED_DecrementAdNumber__3:
+              BSR.W          ED_ApplyActiveFlagToAdData;6100 0000 
+              SUBQ.L         #$1,Global_REF_LONG_CURRENT_EDITING_(A4);53ac 0000 
+              BSR.W          ED_UpdateAdNumberDisplay ;6100 0000 
+___ED_DecrementAdNumber__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_LONG_CURRENT_EDITING_
+              XREF           ED_ApplyActiveFlagToAdData
+              XREF           ED_UpdateAdNumberDisplay
+              XDEF           ED_DecrementAdNumber
+              END
