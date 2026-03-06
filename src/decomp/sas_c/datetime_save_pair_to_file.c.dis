@@ -1,0 +1,69 @@
+              SECTION      text,CODE
+__code:
+DATETIME_SavePairToFile:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___DATETIME_SavePairToFile__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___DATETIME_SavePairToFile__11;675c 
+___DATETIME_SavePairToFile__2:
+___DATETIME_SavePairToFile__3:
+              TST.L          (A5)                     ;4a95 
+              BNE.B          ___DATETIME_SavePairToFile__5;6604 
+___DATETIME_SavePairToFile__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___DATETIME_SavePairToFile__11;6054 
+___DATETIME_SavePairToFile__5:
+              MOVE.L         $4(A5),D0                ;202d 0004 
+              BEQ.B          ___DATETIME_SavePairToFile__11;674e 
+___DATETIME_SavePairToFile__6:
+___DATETIME_SavePairToFile__7:
+              MOVE.L         MODE_NEWFILE(A4),-(A7)   ;2f2c 0000 
+              MOVE.L         DST_DefaultDatPathPtr(A4),-(A7);2f2c 0000 
+              BSR.W          DISKIO_OpenFileWithBuffer;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D7,D0                    ;2007 
+              BEQ.B          ___DATETIME_SavePairToFile__11;673a 
+___DATETIME_SavePairToFile__8:
+___DATETIME_SavePairToFile__9:
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         DST_STR_G2_COLON(A4),-(A7);2f2c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
+              MOVE.L         $4(A5),(A7)              ;2ead 0004 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          DATETIME_FormatPairToStream;6100 0000 
+              PEA            ($4).w                   ;4878 0004 
+              MOVE.L         DST_STR_G3_COLON(A4),-(A7);2f2c 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          DISKIO_WriteBufferedBytes;6100 0000 
+              MOVE.L         (A5),(A7)                ;2e95 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          DATETIME_FormatPairToStream;6100 0000 
+              MOVE.L         D7,(A7)                  ;2e87 
+              BSR.W          DISKIO_CloseBufferedFileAndFlush;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+              MOVEQ.L        #$1,D0                   ;7001 
+___DATETIME_SavePairToFile__10:
+___DATETIME_SavePairToFile__11:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           MODE_NEWFILE
+              XREF           DST_DefaultDatPathPtr
+              XREF           DISKIO_OpenFileWithBuffer
+              XREF           DST_STR_G2_COLON
+              XREF           DISKIO_WriteBufferedBytes
+              XREF           DATETIME_FormatPairToStream
+              XREF           DST_STR_G3_COLON
+              XREF           DISKIO_CloseBufferedFileAndFlush
+              XDEF           DATETIME_SavePairToFile
+              END

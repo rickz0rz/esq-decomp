@@ -1,0 +1,39 @@
+              SECTION      text,CODE
+__code:
+ED_LoadTextAdsFromDh2:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED_LoadTextAdsFromDh2__1:
+              BSR.W          ED_IsConfirmKey          ;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.L         D7,D0                    ;2007 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ED_LoadTextAdsFromDh2__3;661c 
+___ED_LoadTextAdsFromDh2__2:
+              PEA            Global_STR_LOADING_TEXT_ADS_FROM(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($78).w                  ;4878 0078 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              BSR.W          GROUP_AM_JMPTBL_LADFUNC_LoadText;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___ED_LoadTextAdsFromDh2__3:
+              BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
+___ED_LoadTextAdsFromDh2__4:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_IsConfirmKey
+              XREF           Global_STR_LOADING_TEXT_ADS_FROM
+              XREF           Global_REF_RASTPORT_1
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           GROUP_AM_JMPTBL_LADFUNC_LoadText
+              XREF           ED_DrawESCMenuBottomHelp
+              XDEF           ED_LoadTextAdsFromDh2
+              END
