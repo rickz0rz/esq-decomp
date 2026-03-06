@@ -9,13 +9,29 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown42.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="CLOCK_SecondsFromEpoch"
+ENTRY_SASC_REGEX="^CLOCK_SecondsFromEpoch[A-Za-z0-9_]*:$"
+NEXT_ENTRY_SASC="PARALLEL_WriteCharD0"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_clock_seconds_from_epoch.log" 2>&1
 
-awk '$0 ~ /^CLOCK_SecondsFromEpoch:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/clock_seconds_from_epoch.original.s"
-awk '$0 ~ /^CLOCK_SecondsFromEpoch:$/ {in_func=1} in_func { if ($0 ~ /^PARALLEL_WriteCharD0:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/clock_seconds_from_epoch.sasc.dis.s"
+awk -v e="^${ENTRY_ORIG}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^;!======/) exit
+    print
+  }
+' "$ORIG_ASM" >"${OUT_DIR}/clock_seconds_from_epoch.original.s"
+
+awk -v e="^${ENTRY_ORIG}:$" -v e2="$ENTRY_SASC_REGEX" -v n="^${NEXT_ENTRY_SASC}:$" '
+  $0 ~ e || $0 ~ e2 {in_func=1}
+  in_func {
+    if ($0 ~ n) exit
+    print
+  }
+' "$SASC_DIS" >"${OUT_DIR}/clock_seconds_from_epoch.sasc.dis.s"
 
 normalize() {
   sed -E \
