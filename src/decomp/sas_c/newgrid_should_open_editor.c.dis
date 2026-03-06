@@ -1,0 +1,59 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_ShouldOpenEditor:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A2/A3/A5,-(A7)           ;48e7 0034 
+___NEWGRID_ShouldOpenEditor__1:
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__13;6740 
+___NEWGRID_ShouldOpenEditor__2:
+___NEWGRID_ShouldOpenEditor__3:
+              LEA            $13(A5),A0               ;41ed 0013 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              LEA            $1(A5),A0                ;41ed 0001 
+              MOVE.L         A0,(A7)                  ;2e88 
+              BSR.W          NEWGRID2_JMPTBL_STR_SkipClass3Ch;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__6;6708 
+___NEWGRID_ShouldOpenEditor__4:
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__6;6704 
+___NEWGRID_ShouldOpenEditor__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___NEWGRID_ShouldOpenEditor__13;601a 
+___NEWGRID_ShouldOpenEditor__6:
+              MOVE.L         A2,D0                    ;200a 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__9;6708 
+___NEWGRID_ShouldOpenEditor__7:
+              TST.B          (A2)                     ;4a12 
+              BEQ.B          ___NEWGRID_ShouldOpenEditor__9;6704 
+___NEWGRID_ShouldOpenEditor__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___NEWGRID_ShouldOpenEditor__13;600e 
+___NEWGRID_ShouldOpenEditor__9:
+              BTST           #$5,$1b(A5)              ;082d 0005 001b 
+              BNE.B          ___NEWGRID_ShouldOpenEditor__11;6604 
+___NEWGRID_ShouldOpenEditor__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___NEWGRID_ShouldOpenEditor__13;6002 
+___NEWGRID_ShouldOpenEditor__11:
+              MOVEQ.L        #$1,D0                   ;7001 
+___NEWGRID_ShouldOpenEditor__12:
+___NEWGRID_ShouldOpenEditor__13:
+              MOVEM.L        (A7)+,A2/A3/A5           ;4cdf 2c00 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID2_JMPTBL_STR_SkipClass3Ch
+              XDEF           NEWGRID_ShouldOpenEditor
+              END

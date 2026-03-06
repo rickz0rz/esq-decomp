@@ -4409,9 +4409,18 @@ Recent promoted targets:
 
 ## SAS/C Trial Lane
 - `sc-build-with-dis.sh` now passes `--vols-base-dir` (defaults to `build/decomp/vamos_vols`) so `vamos` temp volumes stay inside workspace-writable paths.
-- Fast cadence helper: `src/decomp/scripts/run_sasc_core_sweep.sh` (use `--strict` to fail on any non-zero semantic diff).
-- Targeted cadence helper: `run_sasc_core_sweep.sh` now supports repeated `--filter <substring>` args to run only matching lanes while iterating on a specific module cluster.
+- Full baseline helper: `src/decomp/scripts/run_sasc_core_sweep.sh` (use `--strict` to fail on any non-zero semantic diff).
+- Active cluster helper: `src/decomp/scripts/run_sasc_active_cluster_sweep.sh`
+  - Runs a bounded filtered subset for the current UI/grid/text/parallel cluster:
+    - `newgrid`
+    - `displib`
+    - `disptext`
+    - `parallel`
+  - This is the default fast cadence helper while iterating on active SAS/C lanes.
+- Targeted cadence helper: `run_sasc_core_sweep.sh` supports repeated `--filter <substring>` args to run only matching lanes while iterating on a specific module cluster.
   - Example: `bash src/decomp/scripts/run_sasc_core_sweep.sh --strict --filter script3_jmptbl --filter script2_jmptbl`
+- Scope measurement helper: `src/decomp/scripts/measure_sasc_sweep_scope.sh`
+  - Prints the current lane count of the full strict sweep and the active cluster subset so long runtimes are explainable before launching a full replay.
 - Cleanup helper: pass `--clean-generated-dis` to remove untracked `src/decomp/sas_c/*.dis` artifacts after a sweep run.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_locavail2_auto_request_no_op_trial.sh` (`LOCAVAIL2_AutoRequestNoOp`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_locavail2_auto_request_no_op.awk`.
 - Newly added direct lane: `src/decomp/scripts/compare_sasc_locavail2_display_alert_delay_and_reboot_trial.sh` (`LOCAVAIL2_DisplayAlertDelayAndReboot`) with semantic gate `src/decomp/scripts/semantic_filter_sasc_locavail2_display_alert_delay_and_reboot.awk`.

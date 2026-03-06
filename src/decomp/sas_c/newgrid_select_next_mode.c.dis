@@ -1,0 +1,368 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_SelectNextMode:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$28,D0                  ;90bc 0000 0028 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$28,A7                  ;9efc 0028 
+              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
+___NEWGRID_SelectNextMode__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              CLR.L          $18(A7)                  ;42af 0018 
+___NEWGRID_SelectNextMode__2:
+              MOVE.L         $18(A7),D0               ;202f 0018 
+              MOVEQ.L        #$7,D1                   ;7207 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___NEWGRID_SelectNextMode__5;6c14 
+___NEWGRID_SelectNextMode__3:
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              LEA            NEWGRID_ModeSelectionTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D1.L),$1c(A7,D1.L) ;2fb0 1800 181c 
+___NEWGRID_SelectNextMode__4:
+              ADDQ.L         #$1,$18(A7)              ;52af 0018 
+              BRA.B          ___NEWGRID_SelectNextMode__2;60e2 
+___NEWGRID_SelectNextMode__5:
+              MOVE.B         CONFIG_ModeCycleEnabledFlag(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___NEWGRID_SelectNextMode__11;662c 
+___NEWGRID_SelectNextMode__6:
+              MOVE.L         CONFIG_ModeCycleGateDuration(A4),D0;202c 0000 
+              MOVEM.L        D0,$14(A7)               ;48ef 0001 0014 
+              BGT.B          ___NEWGRID_SelectNextMode__8;6e06 
+___NEWGRID_SelectNextMode__7:
+              MOVEQ.L        #$c,D6                   ;7c0c 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              BRA.B          ___NEWGRID_SelectNextMode__11;601a 
+___NEWGRID_SelectNextMode__8:
+              MOVE.L         NEWGRID_ModeCycleCountdown(A4),D1;222c 0000 
+              TST.L          D1                       ;4a81 
+              BLE.B          ___NEWGRID_SelectNextMode__10;6f0a 
+___NEWGRID_SelectNextMode__9:
+              SUBQ.L         #$1,NEWGRID_ModeCycleCountdown(A4);53ac 0000 
+              MOVEQ.L        #$c,D6                   ;7c0c 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              BRA.B          ___NEWGRID_SelectNextMode__11;6008 
+___NEWGRID_SelectNextMode__10:
+              MOVE.L         NEWGRID_ModeCandidateIndex(A4),D5;2a2c 0000 
+              MOVE.L         D0,NEWGRID_ModeCycleCountdown(A4);2940 0000 
+___NEWGRID_SelectNextMode__11:
+              MOVE.L         D7,D0                    ;2007 
+              TST.W          D0                       ;4a40 
+              BEQ.B          ___NEWGRID_SelectNextMode__13;6706 
+___NEWGRID_SelectNextMode__12:
+              MOVE.L         D6,D0                    ;2006 
+              BRA.W          ___NEWGRID_SelectNextMode__98;6000 0220 
+___NEWGRID_SelectNextMode__13:
+              MOVE.L         NEWGRID_ModeCandidateIndex(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              MOVE.L         $1c(A7,D1.L),D6          ;2c37 181c 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              MOVEQ.L        #$c,D1                   ;720c 
+              CMP.L          D1,D6                    ;bc81 
+              BNE.B          ___NEWGRID_SelectNextMode__15;6606 
+___NEWGRID_SelectNextMode__14:
+              CLR.L          NEWGRID_ModeCandidateIndex(A4);42ac 0000 
+              BRA.B          ___NEWGRID_SelectNextMode__16;6006 
+___NEWGRID_SelectNextMode__15:
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,NEWGRID_ModeCandidateIndex(A4);2940 0000 
+___NEWGRID_SelectNextMode__16:
+              MOVE.B         CONFIG_ModeCycleEnabledFlag(A4),D0;102c 0000 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BNE.W          ___NEWGRID_SelectNextMode__52;6600 00a4 
+___NEWGRID_SelectNextMode__17:
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.L         #$5,D0                   ;5b80 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              BLT.B          ___NEWGRID_SelectNextMode__47;6d7c 
+___NEWGRID_SelectNextMode__18:
+              MOVEQ.L        #$8,D1                   ;7208 
+              CMP.L          D1,D0                    ;b081 
+              BGE.B          ___NEWGRID_SelectNextMode__47;6c76 
+___NEWGRID_SelectNextMode__19:
+___NEWGRID_SelectNextMode__20:
+              CMPI.L         #$6,D0                   ;0c80 0000 0006 
+              BCC.B          ___NEWGRID_SelectNextMode__47;646e 
+___NEWGRID_SelectNextMode__21:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_NEWGRID_SelectNextMode_21:
+              DC.W           ___NEWGRID_SelectNextMode__22-__switch_NEWGRID_SelectNextMode_21
+              DC.W           ___NEWGRID_SelectNextMode__26-__switch_NEWGRID_SelectNextMode_21
+              DC.W           ___NEWGRID_SelectNextMode__30-__switch_NEWGRID_SelectNextMode_21
+              DC.W           ___NEWGRID_SelectNextMode__34-__switch_NEWGRID_SelectNextMode_21
+              DC.W           ___NEWGRID_SelectNextMode__38-__switch_NEWGRID_SelectNextMode_21
+              DC.W           ___NEWGRID_SelectNextMode__42-__switch_NEWGRID_SelectNextMode_21
+___NEWGRID_SelectNextMode__22:
+              TST.L          GCOMMAND_NicheModeCycleCount(A4);4aac 0000 
+              BEQ.B          ___NEWGRID_SelectNextMode__24;6704 
+___NEWGRID_SelectNextMode__23:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___NEWGRID_SelectNextMode__47;604e 
+___NEWGRID_SelectNextMode__24:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_SelectNextMode__25:
+              BRA.B          ___NEWGRID_SelectNextMode__47;604a 
+___NEWGRID_SelectNextMode__26:
+              MOVE.B         CONFIG_NicheModeCycleBudget_Y(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_SelectNextMode__28;6704 
+___NEWGRID_SelectNextMode__27:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___NEWGRID_SelectNextMode__47;603e 
+___NEWGRID_SelectNextMode__28:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_SelectNextMode__29:
+              BRA.B          ___NEWGRID_SelectNextMode__47;603a 
+___NEWGRID_SelectNextMode__30:
+              MOVE.B         CONFIG_NicheModeCycleBudget_Stat(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_SelectNextMode__32;6704 
+___NEWGRID_SelectNextMode__31:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___NEWGRID_SelectNextMode__47;602e 
+___NEWGRID_SelectNextMode__32:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_SelectNextMode__33:
+              BRA.B          ___NEWGRID_SelectNextMode__47;602a 
+___NEWGRID_SelectNextMode__34:
+              MOVE.B         CONFIG_NicheModeCycleBudget_Cust(A4),D0;102c 0000 
+              TST.B          D0                       ;4a00 
+              BEQ.B          ___NEWGRID_SelectNextMode__36;6704 
+___NEWGRID_SelectNextMode__35:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___NEWGRID_SelectNextMode__47;601e 
+___NEWGRID_SelectNextMode__36:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_SelectNextMode__37:
+              BRA.B          ___NEWGRID_SelectNextMode__47;601a 
+___NEWGRID_SelectNextMode__38:
+              TST.L          GCOMMAND_MplexModeCycleCount(A4);4aac 0000 
+              BEQ.B          ___NEWGRID_SelectNextMode__40;6704 
+___NEWGRID_SelectNextMode__39:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___NEWGRID_SelectNextMode__47;6010 
+___NEWGRID_SelectNextMode__40:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_SelectNextMode__41:
+              BRA.B          ___NEWGRID_SelectNextMode__47;600c 
+___NEWGRID_SelectNextMode__42:
+              TST.L          GCOMMAND_PpvModeCycleCount(A4);4aac 0000 
+              BEQ.B          ___NEWGRID_SelectNextMode__44;6704 
+___NEWGRID_SelectNextMode__43:
+              MOVEQ.L        #$ff,D7                  ;7eff 
+              BRA.B          ___NEWGRID_SelectNextMode__47;6002 
+___NEWGRID_SelectNextMode__44:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___NEWGRID_SelectNextMode__45:
+___NEWGRID_SelectNextMode__46:
+___NEWGRID_SelectNextMode__47:
+              MOVE.L         D7,D0                    ;2007 
+              TST.W          D0                       ;4a40 
+              BNE.W          ___NEWGRID_SelectNextMode__11;6600 ff38 
+___NEWGRID_SelectNextMode__48:
+___NEWGRID_SelectNextMode__49:
+              MOVE.L         NEWGRID_ModeCandidateIndex(A4),D1;222c 0000 
+              CMP.L          D5,D1                    ;b285 
+              BNE.W          ___NEWGRID_SelectNextMode__11;6600 ff2e 
+___NEWGRID_SelectNextMode__50:
+___NEWGRID_SelectNextMode__51:
+              MOVEQ.L        #$c,D6                   ;7c0c 
+              MOVEQ.L        #$1,D7                   ;7e01 
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 ff26 
+___NEWGRID_SelectNextMode__52:
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.L         #$5,D0                   ;5b80 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              BLT.W          ___NEWGRID_SelectNextMode__11;6d00 ff18 
+___NEWGRID_SelectNextMode__53:
+              MOVEQ.L        #$8,D1                   ;7208 
+              CMP.L          D1,D0                    ;b081 
+              BGE.W          ___NEWGRID_SelectNextMode__11;6c00 ff10 
+___NEWGRID_SelectNextMode__54:
+___NEWGRID_SelectNextMode__55:
+___NEWGRID_SelectNextMode__56:
+              CMPI.L         #$8,D0                   ;0c80 0000 0008 
+              BCC.W          ___NEWGRID_SelectNextMode__11;6400 ff06 
+___NEWGRID_SelectNextMode__57:
+              ADD.W          D0,D0                    ;d040 
+              MOVE.W         $6(PC,D0.W),D0           ;303b 0006 
+              JMP            $4(PC,D0.W)              ;4efb 0004 
+__switch_NEWGRID_SelectNextMode_57:
+              DC.W           ___NEWGRID_SelectNextMode__58-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__64-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__70-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__76-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__82-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__88-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__11-__switch_NEWGRID_SelectNextMode_57
+              DC.W           ___NEWGRID_SelectNextMode__94-__switch_NEWGRID_SelectNextMode_57
+___NEWGRID_SelectNextMode__58:
+              MOVE.L         GCOMMAND_NicheModeCycleCount(A4),D0;202c 0000 
+              MOVEM.L        D0,$10(A7)               ;48ef 0001 0010 
+              BLE.B          ___NEWGRID_SelectNextMode__61;6f12 
+___NEWGRID_SelectNextMode__59:
+              MOVE.B         NEWGRID_NicheModeCycleBudget_Glo(A4),D1;122c 0000 
+              MOVE.B         D1,D2                    ;1401 
+              SUBQ.B         #$1,D2                   ;5302 
+              MOVE.B         D2,NEWGRID_NicheModeCycleBudget_Glo(A4);1942 0000 
+              TST.B          D2                       ;4a02 
+              BGT.B          ___NEWGRID_SelectNextMode__61;6e02 
+___NEWGRID_SelectNextMode__60:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__61:
+              MOVE.L         D7,D1                    ;2207 
+              TST.W          D1                       ;4a41 
+              BEQ.W          ___NEWGRID_SelectNextMode__11;6700 fec6 
+___NEWGRID_SelectNextMode__62:
+              MOVE.B         D0,NEWGRID_NicheModeCycleBudget_Glo(A4);1940 0000 
+___NEWGRID_SelectNextMode__63:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 febe 
+___NEWGRID_SelectNextMode__64:
+              MOVE.B         CONFIG_NicheModeCycleBudget_Y(A4),D0;102c 0000 
+              MOVE.B         D0,$13(A7)               ;1f40 0013 
+              BLE.B          ___NEWGRID_SelectNextMode__67;6f12 
+___NEWGRID_SelectNextMode__65:
+              MOVE.B         NEWGRID_NicheModeCycleBudget_Y(A4),D1;122c 0000 
+              MOVE.B         D1,D2                    ;1401 
+              SUBQ.B         #$1,D2                   ;5302 
+              MOVE.B         D2,NEWGRID_NicheModeCycleBudget_Y(A4);1942 0000 
+              TST.B          D2                       ;4a02 
+              BGT.B          ___NEWGRID_SelectNextMode__67;6e02 
+___NEWGRID_SelectNextMode__66:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__67:
+              MOVE.L         D7,D1                    ;2207 
+              TST.W          D1                       ;4a41 
+              BEQ.W          ___NEWGRID_SelectNextMode__11;6700 fe9a 
+___NEWGRID_SelectNextMode__68:
+              MOVE.B         D0,NEWGRID_NicheModeCycleBudget_Y(A4);1940 0000 
+___NEWGRID_SelectNextMode__69:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 fe92 
+___NEWGRID_SelectNextMode__70:
+              MOVE.B         CONFIG_NicheModeCycleBudget_Stat(A4),D0;102c 0000 
+              MOVE.B         D0,$13(A7)               ;1f40 0013 
+              BLE.B          ___NEWGRID_SelectNextMode__73;6f12 
+___NEWGRID_SelectNextMode__71:
+              MOVE.B         NEWGRID_NicheModeCycleBudget_Sta(A4),D1;122c 0000 
+              MOVE.B         D1,D2                    ;1401 
+              SUBQ.B         #$1,D2                   ;5302 
+              MOVE.B         D2,NEWGRID_NicheModeCycleBudget_Sta(A4);1942 0000 
+              TST.B          D2                       ;4a02 
+              BGT.B          ___NEWGRID_SelectNextMode__73;6e02 
+___NEWGRID_SelectNextMode__72:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__73:
+              MOVE.L         D7,D1                    ;2207 
+              TST.W          D1                       ;4a41 
+              BEQ.W          ___NEWGRID_SelectNextMode__11;6700 fe6e 
+___NEWGRID_SelectNextMode__74:
+              MOVE.B         D0,NEWGRID_NicheModeCycleBudget_Sta(A4);1940 0000 
+___NEWGRID_SelectNextMode__75:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 fe66 
+___NEWGRID_SelectNextMode__76:
+              MOVE.B         CONFIG_NicheModeCycleBudget_Cust(A4),D0;102c 0000 
+              MOVE.B         D0,$13(A7)               ;1f40 0013 
+              BLE.B          ___NEWGRID_SelectNextMode__79;6f12 
+___NEWGRID_SelectNextMode__77:
+              MOVE.B         NEWGRID_NicheModeCycleBudget_Cus(A4),D1;122c 0000 
+              MOVE.B         D1,D2                    ;1401 
+              SUBQ.B         #$1,D2                   ;5302 
+              MOVE.B         D2,NEWGRID_NicheModeCycleBudget_Cus(A4);1942 0000 
+              TST.B          D2                       ;4a02 
+              BGT.B          ___NEWGRID_SelectNextMode__79;6e02 
+___NEWGRID_SelectNextMode__78:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__79:
+              MOVE.L         D7,D1                    ;2207 
+              TST.W          D1                       ;4a41 
+              BEQ.W          ___NEWGRID_SelectNextMode__11;6700 fe42 
+___NEWGRID_SelectNextMode__80:
+              MOVE.B         D0,NEWGRID_NicheModeCycleBudget_Cus(A4);1940 0000 
+___NEWGRID_SelectNextMode__81:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 fe3a 
+___NEWGRID_SelectNextMode__82:
+              MOVE.L         GCOMMAND_MplexModeCycleCount(A4),D0;202c 0000 
+              MOVEM.L        D0,$10(A7)               ;48ef 0001 0010 
+              BLE.B          ___NEWGRID_SelectNextMode__85;6f12 
+___NEWGRID_SelectNextMode__83:
+              MOVE.B         NEWGRID_MplexModeCycleBudget(A4),D1;122c 0000 
+              MOVE.B         D1,D2                    ;1401 
+              SUBQ.B         #$1,D2                   ;5302 
+              MOVE.B         D2,NEWGRID_MplexModeCycleBudget(A4);1942 0000 
+              TST.B          D2                       ;4a02 
+              BGT.B          ___NEWGRID_SelectNextMode__85;6e02 
+___NEWGRID_SelectNextMode__84:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__85:
+              MOVE.L         D7,D1                    ;2207 
+              TST.W          D1                       ;4a41 
+              BEQ.W          ___NEWGRID_SelectNextMode__11;6700 fe14 
+___NEWGRID_SelectNextMode__86:
+              MOVE.B         D0,NEWGRID_MplexModeCycleBudget(A4);1940 0000 
+___NEWGRID_SelectNextMode__87:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 fe0c 
+___NEWGRID_SelectNextMode__88:
+              MOVE.L         GCOMMAND_PpvModeCycleCount(A4),D0;202c 0000 
+              MOVEM.L        D0,$10(A7)               ;48ef 0001 0010 
+              BLE.B          ___NEWGRID_SelectNextMode__91;6f12 
+___NEWGRID_SelectNextMode__89:
+              MOVE.B         NEWGRID_PpvModeCycleBudget(A4),D1;122c 0000 
+              MOVE.B         D1,D2                    ;1401 
+              SUBQ.B         #$1,D2                   ;5302 
+              MOVE.B         D2,NEWGRID_PpvModeCycleBudget(A4);1942 0000 
+              TST.B          D2                       ;4a02 
+              BGT.B          ___NEWGRID_SelectNextMode__91;6e02 
+___NEWGRID_SelectNextMode__90:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__91:
+              MOVE.L         D7,D1                    ;2207 
+              TST.W          D1                       ;4a41 
+              BEQ.W          ___NEWGRID_SelectNextMode__11;6700 fde6 
+___NEWGRID_SelectNextMode__92:
+              MOVE.B         D0,NEWGRID_PpvModeCycleBudget(A4);1940 0000 
+___NEWGRID_SelectNextMode__93:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 fdde 
+___NEWGRID_SelectNextMode__94:
+              MOVEQ.L        #$1,D7                   ;7e01 
+___NEWGRID_SelectNextMode__95:
+___NEWGRID_SelectNextMode__96:
+              BRA.W          ___NEWGRID_SelectNextMode__11;6000 fdd8 
+___NEWGRID_SelectNextMode__97:
+___NEWGRID_SelectNextMode__98:
+              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
+              ADD.W          #$28,A7                  ;defc 0028 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_ModeSelectionTable
+              XREF           CONFIG_ModeCycleEnabledFlag
+              XREF           CONFIG_ModeCycleGateDuration
+              XREF           NEWGRID_ModeCycleCountdown
+              XREF           NEWGRID_ModeCandidateIndex
+              XREF           GCOMMAND_NicheModeCycleCount
+              XREF           CONFIG_NicheModeCycleBudget_Y
+              XREF           CONFIG_NicheModeCycleBudget_Stat
+              XREF           CONFIG_NicheModeCycleBudget_Cust
+              XREF           GCOMMAND_MplexModeCycleCount
+              XREF           GCOMMAND_PpvModeCycleCount
+              XREF           NEWGRID_NicheModeCycleBudget_Glo
+              XREF           NEWGRID_NicheModeCycleBudget_Y
+              XREF           NEWGRID_NicheModeCycleBudget_Sta
+              XREF           NEWGRID_NicheModeCycleBudget_Cus
+              XREF           NEWGRID_MplexModeCycleBudget
+              XREF           NEWGRID_PpvModeCycleBudget
+              XDEF           NEWGRID_SelectNextMode
+              END

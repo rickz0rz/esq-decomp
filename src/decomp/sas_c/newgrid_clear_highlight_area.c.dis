@@ -1,0 +1,40 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_ClearHighlightArea:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___NEWGRID_ClearHighlightArea__1:
+              BSR.W          _LVODisable              ;6100 0000 
+              BSR.W          GCOMMAND_ResetHighlightMessages;6100 0000 
+              BSR.W          _LVOEnable               ;6100 0000 
+              TST.L          NEWGRID_RefreshStateFlag(A4);4aac 0000 
+              BNE.B          ___NEWGRID_ClearHighlightArea__4;6626 
+___NEWGRID_ClearHighlightArea__2:
+___NEWGRID_ClearHighlightArea__3:
+              PEA            ($7).w                   ;4878 0007 
+              MOVE.L         NEWGRID_MainRastPortPtr(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetAPen              ;6100 0000 
+              PEA            ($10b).w                 ;4878 010b 
+              PEA            ($2b7).w                 ;4878 02b7 
+              PEA            ($44).w                  ;4878 0044 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         NEWGRID_MainRastPortPtr(A4),-(A7);2f2c 0000 
+              BSR.W          _LVORectFill             ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___NEWGRID_ClearHighlightArea__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _LVODisable
+              XREF           GCOMMAND_ResetHighlightMessages
+              XREF           _LVOEnable
+              XREF           NEWGRID_RefreshStateFlag
+              XREF           NEWGRID_MainRastPortPtr
+              XREF           _LVOSetAPen
+              XREF           _LVORectFill
+              XDEF           NEWGRID_ClearHighlightArea
+              END
