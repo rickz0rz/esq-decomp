@@ -1,0 +1,113 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_ApplyHighlightWord:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D3/D5/D6/D7/A5,-(A7)  ;48e7 3704 
+___GCOMMAND_ApplyHighlightWord__1:
+              MOVE.L         $24(A7),D6               ;2c2f 0024 
+              MOVE.L         $20(A7),D7               ;2e2f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          D0,D0                    ;d080 
+              MOVE.W         $0(A5,D0.L),D5           ;3a35 0800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D5,D1                    ;3205 
+              ANDI.L         #$fffc,D1                ;0281 0000 fffc 
+              MOVE.L         D6,D2                    ;2406 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.W         D2,D3                    ;3602 
+              OR.L           D3,D1                    ;8283 
+              MOVE.L         D1,D5                    ;2a01 
+              MOVE.W         D5,$0(A5,D0.L)           ;3b85 0800 
+___GCOMMAND_ApplyHighlightWord__2:
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A5  ;4cdf 20ec 
+              RTS                                     ;4e75 
+__const:
+__strings:
+GCOMMAND_ApplyHighlightFlag:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___GCOMMAND_ApplyHighlightFlag__1:
+              MOVE.W         GCOMMAND_HighlightFlag(A4),D0;302c 0000 
+              SCC            D0,#$600                 ;56c0 
+              MOVEQ.L        #$0,D7                   ;7e00 
+              SUB.B          D0,D7                    ;9e00 
+              SUB.B          D0,D7                    ;9e00 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($d).w                   ;4878 000d 
+              PEA            ESQ_CopperEffectTemplateRowsSet0(A4);486c 0000 
+              BSR.B          GCOMMAND_ApplyHighlightWord;6198 
+___GCOMMAND_ApplyHighlightFlag__2:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($d).w                   ;4878 000d 
+              PEA            ESQ_CopperEffectTemplateRowsSet1(A4);486c 0000 
+              BSR.B          GCOMMAND_ApplyHighlightWord;618c 
+___GCOMMAND_ApplyHighlightFlag__3:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($f).w                   ;4878 000f 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              BSR.B          GCOMMAND_ApplyHighlightWord;6180 
+___GCOMMAND_ApplyHighlightFlag__4:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($39).w                  ;4878 0039 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff74 
+___GCOMMAND_ApplyHighlightFlag__5:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($153).w                 ;4878 0153 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff66 
+___GCOMMAND_ApplyHighlightFlag__6:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($16b).w                 ;4878 016b 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff58 
+___GCOMMAND_ApplyHighlightFlag__7:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($7a9).w                 ;4878 07a9 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff4a 
+___GCOMMAND_ApplyHighlightFlag__8:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($f).w                   ;4878 000f 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff3c 
+___GCOMMAND_ApplyHighlightFlag__9:
+              LEA            $44(A7),A7               ;4fef 0044 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ($39).w                  ;4878 0039 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff2a 
+___GCOMMAND_ApplyHighlightFlag__10:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($153).w                 ;4878 0153 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff1c 
+___GCOMMAND_ApplyHighlightFlag__11:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($16b).w                 ;4878 016b 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff0e 
+___GCOMMAND_ApplyHighlightFlag__12:
+              MOVE.L         D7,(A7)                  ;2e87 
+              PEA            ($7a9).w                 ;4878 07a9 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              BSR.W          GCOMMAND_ApplyHighlightWord;6100 ff00 
+___GCOMMAND_ApplyHighlightFlag__13:
+              LEA            $24(A7),A7               ;4fef 0024 
+___GCOMMAND_ApplyHighlightFlag__14:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_HighlightFlag
+              XREF           ESQ_CopperEffectTemplateRowsSet0
+              XREF           ESQ_CopperEffectTemplateRowsSet1
+              XREF           ESQ_CopperListBannerA
+              XREF           ESQ_CopperListBannerB
+              XDEF           GCOMMAND_ApplyHighlightFlag
+              END

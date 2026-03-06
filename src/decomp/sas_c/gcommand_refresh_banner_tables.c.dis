@@ -1,0 +1,57 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_RefreshBannerTables:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___GCOMMAND_RefreshBannerTables__1:
+              MOVE.L         GCOMMAND_BannerRowByteOffsetCurr(A4),D7;2e2c 0000 
+              MOVE.L         GCOMMAND_BannerPhaseIndexCurrent(A4),D6;2c2c 0000 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              PEA            ($62).w                  ;4878 0062 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              PEA            Global_REF_696_400_BITMAP(A4);486c 0000 
+              BSR.W          GCOMMAND_BuildBannerRow  ;6100 0000 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$58,D1                  ;7258 
+              ADD.L          D1,D0                    ;d081 
+              MOVE.L         D6,(A7)                  ;2e86 
+              PEA            ($62).w                  ;4878 0062 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              PEA            Global_REF_696_400_BITMAP(A4);486c 0000 
+              BSR.W          GCOMMAND_BuildBannerRow  ;6100 0000 
+              LEA            $24(A7),A7               ;4fef 0024 
+              MOVE.L         GCOMMAND_BannerRowByteOffsetPrev(A4),D5;2a2c 0000 
+              MOVE.L         WDISP_BannerRowScratchRasterTabl(A4),A0;206c 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D5,A1                    ;d3c5 
+              MOVE.L         A1,ESQPARS2_BannerSnapshotPlane0Dst(A4);2949 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADD.L          D5,A1                    ;d3c5 
+              MOVE.L         A1,ESQPARS2_BannerSnapshotPlane1Dst(A4);2949 0000 
+              ADD.L          D5,A0                    ;d1c5 
+              MOVE.L         A0,ESQPARS2_BannerSnapshotPlane2Dst(A4);2948 0000 
+___GCOMMAND_RefreshBannerTables__2:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_BannerRowByteOffsetCurr
+              XREF           GCOMMAND_BannerPhaseIndexCurrent
+              XREF           ESQ_CopperListBannerA
+              XREF           Global_REF_696_400_BITMAP
+              XREF           GCOMMAND_BuildBannerRow
+              XREF           ESQ_CopperListBannerB
+              XREF           GCOMMAND_BannerRowByteOffsetPrev
+              XREF           WDISP_BannerRowScratchRasterTabl
+              XREF           ESQPARS2_BannerSnapshotPlane0Dst
+              XREF           ESQPARS2_BannerSnapshotPlane1Dst
+              XREF           ESQPARS2_BannerSnapshotPlane2Dst
+              XDEF           GCOMMAND_RefreshBannerTables
+              END

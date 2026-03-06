@@ -1,0 +1,54 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_LoadPresetWorkEntries:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7/A3/A5,-(A7)  ;48e7 0f14 
+___GCOMMAND_LoadPresetWorkEntries__1:
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___GCOMMAND_LoadPresetWorkEntries__2:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___GCOMMAND_LoadPresetWorkEntries__6;6c3e 
+___GCOMMAND_LoadPresetWorkEntries__3:
+              PEA            ($18).w                  ;4878 0018 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              LEA            GCOMMAND_PresetWorkEntryTable(A4),A0;41ec 0000 
+              ADD.L          D6,A0                    ;d1c6 
+              MOVE.L         A0,A3                    ;2648 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVE.B         $37(A5,D7.L),D5          ;1a35 7837 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         $24(A5,D0.L),D4          ;2835 0824 
+              MOVE.L         $20(A5),D0               ;202d 0020 
+              MOVE.L         D4,(A7)                  ;2e84 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              BSR.W          GCOMMAND_InitPresetWorkEntry;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___GCOMMAND_LoadPresetWorkEntries__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___GCOMMAND_LoadPresetWorkEntries__2;60bc 
+___GCOMMAND_LoadPresetWorkEntries__5:
+___GCOMMAND_LoadPresetWorkEntries__6:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A3/A5  ;4cdf 28f0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_JMPTBL_MATH_Mulu32
+              XREF           GCOMMAND_PresetWorkEntryTable
+              XREF           GCOMMAND_InitPresetWorkEntry
+              XDEF           GCOMMAND_LoadPresetWorkEntries
+              END

@@ -1,0 +1,90 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_BuildBannerTables:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$20,D0                  ;90bc 0000 0020 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D2/D5/D6/D7,-(A7)        ;48e7 2700 
+___GCOMMAND_BuildBannerTables__1:
+              MOVE.B         $23(A7),D5               ;1a2f 0023 
+              MOVE.W         $1e(A7),D6               ;3c2f 001e 
+              MOVE.B         $1b(A7),D7               ;1e2f 001b 
+              MOVE.B         D7,$13(A7)               ;1f47 0013 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVODisable              ;6100 0000 
+              BSR.W          GCOMMAND_ResetPresetWorkTables;6100 0000 
+              CLR.L          GCOMMAND_BannerPhaseIndexCurrent(A4);42ac 0000 
+              CLR.L          GCOMMAND_BannerRowByteOffsetPrev(A4);42ac 0000 
+              MOVE.L         GCOMMAND_BannerRowByteOffsetRese(A4),D0;202c 0000 
+              MOVE.L         D0,GCOMMAND_BannerRowByteOffsetCurr(A4);2940 0000 
+              MOVE.W         #$61,GCOMMAND_BannerQueueSlotPrevious(A4);397c 0061 0000 
+              MOVE.W         #$60,GCOMMAND_BannerQueueSlotCurrent(A4);397c 0060 0000 
+              MOVEQ.L        #$54,D1                  ;7254 
+              MOVE.L         D1,GCOMMAND_BannerRowIndexPrevious(A4);2941 0000 
+              MOVEQ.L        #$55,D1                  ;7255 
+              MOVE.L         D1,GCOMMAND_BannerRowIndexCurrent(A4);2941 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D6,D1                    ;3206 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D5,D2                    ;1405 
+              MOVE.L         D2,(A7)                  ;2e82 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              PEA            $1b(A7)                  ;486f 001b 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($bb0).w                 ;4878 0bb0 
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              PEA            Global_REF_696_400_BITMAP(A4);486c 0000 
+              BSR.W          GCOMMAND_CopyImageDataToBitmap;6100 0000 
+              MOVE.B         D7,$2f(A7)               ;1f47 002f 
+              MOVEQ.L        #$58,D0                  ;7058 
+              ADD.L          GCOMMAND_BannerRowByteOffsetCurr(A4),D0;d0ac 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D6,D1                    ;3206 
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.B         D5,D2                    ;1405 
+              MOVE.L         D2,(A7)                  ;2e82 
+              MOVE.L         D1,-(A7)                 ;2f01 
+___GCOMMAND_BuildBannerTables__2:
+              PEA            $33(A7)                  ;486f 0033 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ($c08).w                 ;4878 0c08 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              PEA            Global_REF_696_400_BITMAP(A4);486c 0000 
+              BSR.W          GCOMMAND_CopyImageDataToBitmap;6100 0000 
+              BSR.W          GCOMMAND_ClearBannerQueue;6100 0000 
+              MOVE.W         #$1,ED2_HighlightTickEnabledFlag(A4);397c 0001 0000 
+              MOVE.W         #$100,ESQPARS2_ReadModeFlags(A4);397c 0100 0000 
+              MOVE.L         AbsExecBase(A4),(A7)     ;2eac 0000 
+              BSR.W          _LVOEnable               ;6100 0000 
+              LEA            $34(A7),A7               ;4fef 0034 
+___GCOMMAND_BuildBannerTables__3:
+              MOVEM.L        (A7)+,D2/D5/D6/D7        ;4cdf 00e4 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           AbsExecBase
+              XREF           _LVODisable
+              XREF           GCOMMAND_ResetPresetWorkTables
+              XREF           GCOMMAND_BannerPhaseIndexCurrent
+              XREF           GCOMMAND_BannerRowByteOffsetPrev
+              XREF           GCOMMAND_BannerRowByteOffsetRese
+              XREF           GCOMMAND_BannerRowByteOffsetCurr
+              XREF           GCOMMAND_BannerQueueSlotPrevious
+              XREF           GCOMMAND_BannerQueueSlotCurrent
+              XREF           GCOMMAND_BannerRowIndexPrevious
+              XREF           GCOMMAND_BannerRowIndexCurrent
+              XREF           ESQ_CopperListBannerA
+              XREF           Global_REF_696_400_BITMAP
+              XREF           GCOMMAND_CopyImageDataToBitmap
+              XREF           ESQ_CopperListBannerB
+              XREF           GCOMMAND_ClearBannerQueue
+              XREF           ED2_HighlightTickEnabledFlag
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           _LVOEnable
+              XDEF           GCOMMAND_BuildBannerTables
+              END

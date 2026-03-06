@@ -1,0 +1,45 @@
+              SECTION      text,CODE
+__code:
+LADFUNC_AllocBannerRectEntries:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___LADFUNC_AllocBannerRectEntries__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___LADFUNC_AllocBannerRectEntries__2:
+              MOVEQ.L        #$2e,D0                  ;702e 
+              CMP.L          D0,D7                    ;be80 
+              BGT.B          ___LADFUNC_AllocBannerRectEntries__6;6e32 
+___LADFUNC_AllocBannerRectEntries__3:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         #$10001,-(A7)            ;2f3c 0001 0001 
+              PEA            ($e).w                   ;4878 000e 
+              PEA            ($74).w                  ;4878 0074 
+              PEA            Global_STR_LADFUNC_C_1(A4);486c 0000 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_AllocateMe;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              LEA            LADFUNC_EntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $4(A7),D1                ;222f 0004 
+              MOVE.L         D0,$0(A0,D1.L)           ;2180 1800 
+___LADFUNC_AllocBannerRectEntries__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___LADFUNC_AllocBannerRectEntries__2;60c8 
+___LADFUNC_AllocBannerRectEntries__5:
+___LADFUNC_AllocBannerRectEntries__6:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_STR_LADFUNC_C_1
+              XREF           NEWGRID_JMPTBL_MEMORY_AllocateMe
+              XREF           LADFUNC_EntryPtrTable
+              XDEF           LADFUNC_AllocBannerRectEntries
+              END

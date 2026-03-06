@@ -1,0 +1,93 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_UpdateBannerRowPointers:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D2/D3/D4/D5/D6/D7/A2/A3/A5/A6,-(A7);48e7 3f36 
+___GCOMMAND_UpdateBannerRowPointers__1:
+              MOVE.L         $38(A7),A5               ;2a6f 0038 
+              MOVE.L         GCOMMAND_BannerRowIndexPrevious(A4),D7;2e2c 0000 
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D6;2c2c 0000 
+              MOVE.L         A5,A3                    ;264d 
+              CMP.L          D7,D6                    ;bc87 
+              BEQ.W          ___GCOMMAND_UpdateBannerRowPointers__7;6700 009a 
+___GCOMMAND_UpdateBannerRowPointers__2:
+___GCOMMAND_UpdateBannerRowPointers__3:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$5,D0                   ;eb80 
+              MOVE.L         A3,A0                    ;204b 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $304(A0),A2              ;45e8 0304 
+              MOVE.L         A2,D1                    ;220a 
+              CLR.W          D1                       ;4241 
+              SWAP           D1                       ;4841 
+              MOVE.L         #$ffff,D2                ;243c 0000 ffff 
+              AND.L          D2,D1                    ;c282 
+              MOVE.L         D1,D5                    ;2a01 
+              MOVE.L         A2,D1                    ;220a 
+              AND.L          D2,D1                    ;c282 
+              LEA            $f4c(A3),A0              ;41eb 0f4c 
+              MOVE.L         D6,D3                    ;2606 
+              ASL.L          #$5,D3                   ;eb83 
+              MOVE.L         A3,A1                    ;224b 
+              ADD.L          D3,A1                    ;d3c3 
+              LEA            $2fa(A1),A6              ;4de9 02fa 
+              MOVE.L         A0,D4                    ;2808 
+              CLR.W          D4                       ;4244 
+              SWAP           D4                       ;4844 
+              AND.L          D2,D4                    ;c882 
+              MOVE.W         D4,(A6)                  ;3c84 
+              LEA            $2fe(A1),A6              ;4de9 02fe 
+              MOVE.L         A0,D4                    ;2808 
+              MOVE.L         D4,$28(A7)               ;2f44 0028 
+              AND.L          D2,D4                    ;c882 
+              MOVE.W         D4,(A6)                  ;3c84 
+              MOVE.W         D1,$30(A7)               ;3f41 0030 
+              MOVEQ.L        #$61,D4                  ;7861 
+              CMP.L          D4,D7                    ;be84 
+              BNE.B          ___GCOMMAND_UpdateBannerRowPointers__5;662e 
+___GCOMMAND_UpdateBannerRowPointers__4:
+              LEA            $f24(A3),A0              ;41eb 0f24 
+              MOVE.L         A3,A1                    ;224b 
+              ADD.L          D0,A1                    ;d3c0 
+              LEA            $2fa(A1),A6              ;4de9 02fa 
+              MOVE.L         A0,D4                    ;2808 
+              CLR.W          D4                       ;4244 
+              SWAP           D4                       ;4844 
+              AND.L          D2,D4                    ;c882 
+              MOVE.W         D4,(A6)                  ;3c84 
+              LEA            $2fe(A1),A6              ;4de9 02fe 
+              MOVE.L         A0,D2                    ;2408 
+              MOVE.L         D2,$28(A7)               ;2f42 0028 
+              SWAP           D2                       ;4842 
+              CLR.W          D2                       ;4242 
+              SWAP           D2                       ;4842 
+              MOVE.W         D2,(A6)                  ;3c82 
+              MOVE.L         D0,$2c(A7)               ;2f40 002c 
+              BRA.B          ___GCOMMAND_UpdateBannerRowPointers__7;6018 
+___GCOMMAND_UpdateBannerRowPointers__5:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$5,D0                   ;eb80 
+              MOVE.L         A3,A0                    ;204b 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $2fa(A0),A1              ;43e8 02fa 
+              MOVE.W         D5,(A1)                  ;3285 
+              LEA            $2fe(A0),A1              ;43e8 02fe 
+              MOVE.W         D1,(A1)                  ;3281 
+              MOVE.L         D0,$28(A7)               ;2f40 0028 
+___GCOMMAND_UpdateBannerRowPointers__6:
+___GCOMMAND_UpdateBannerRowPointers__7:
+              MOVEM.L        (A7)+,D2/D3/D4/D5/D6/D7/A2/A3/A5/A6;4cdf 6cfc 
+              ADD.W          #$c,A7                   ;defc 000c 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_BannerRowIndexPrevious
+              XREF           GCOMMAND_BannerRowIndexCurrent
+              XDEF           GCOMMAND_UpdateBannerRowPointers
+              END

@@ -1,0 +1,41 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_SetPresetEntry:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___GCOMMAND_SetPresetEntry__1:
+              MOVE.L         $10(A7),D6               ;2c2f 0010 
+              MOVE.L         $c(A7),D7                ;2e2f 000c 
+              TST.L          D7                       ;4a87 
+              BLE.B          ___GCOMMAND_SetPresetEntry__10;6f20 
+___GCOMMAND_SetPresetEntry__2:
+___GCOMMAND_SetPresetEntry__3:
+              MOVEQ.L        #$10,D0                  ;7010 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___GCOMMAND_SetPresetEntry__10;6c1a 
+___GCOMMAND_SetPresetEntry__4:
+___GCOMMAND_SetPresetEntry__5:
+              TST.L          D6                       ;4a86 
+              BMI.B          ___GCOMMAND_SetPresetEntry__10;6b16 
+___GCOMMAND_SetPresetEntry__6:
+___GCOMMAND_SetPresetEntry__7:
+              CMPI.L         #$1000,D6                ;0c86 0000 1000 
+              BGE.B          ___GCOMMAND_SetPresetEntry__10;6c0e 
+___GCOMMAND_SetPresetEntry__8:
+___GCOMMAND_SetPresetEntry__9:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$7,D0                   ;ef80 
+              MOVE.L         D6,D1                    ;2206 
+              LEA            GCOMMAND_PresetValueTable(A4),A0;41ec 0000 
+              MOVE.W         D1,$0(A0,D0.L)           ;3181 0800 
+___GCOMMAND_SetPresetEntry__10:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_PresetValueTable
+              XDEF           GCOMMAND_SetPresetEntry
+              END

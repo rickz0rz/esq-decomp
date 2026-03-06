@@ -1,0 +1,73 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_UpdateBannerBounds:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
+___GCOMMAND_UpdateBannerBounds__1:
+              MOVE.L         $24(A7),D4               ;282f 0024 
+              MOVE.L         $20(A7),D5               ;2a2f 0020 
+              MOVE.L         $1c(A7),D6               ;2c2f 001c 
+              MOVE.L         $18(A7),D7               ;2e2f 0018 
+              MOVE.L         D7,GCOMMAND_BannerBoundLeft(A4);2947 0000 
+              MOVE.L         D6,GCOMMAND_BannerBoundTop(A4);2946 0000 
+              MOVE.L         D5,GCOMMAND_BannerBoundRight(A4);2945 0000 
+              MOVE.L         D4,GCOMMAND_BannerBoundBottom(A4);2944 0000 
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BEQ.B          ___GCOMMAND_UpdateBannerBounds__3;6706 
+___GCOMMAND_UpdateBannerBounds__2:
+              CLR.L          $10(A7)                  ;42af 0010 
+              BRA.B          ___GCOMMAND_UpdateBannerBounds__4;6006 
+___GCOMMAND_UpdateBannerBounds__3:
+              MOVEQ.L        #$11,D0                  ;7011 
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
+___GCOMMAND_UpdateBannerBounds__4:
+              MOVE.L         $10(A7),-(A7)            ;2f2f 0010 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,GCOMMAND_BannerStepLeft(A4);2940 0000 
+              MOVE.L         $18(A7),(A7)             ;2eaf 0018 
+              MOVE.L         D6,-(A7)                 ;2f06 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,GCOMMAND_BannerStepTop(A4);2940 0000 
+              MOVE.L         $1c(A7),(A7)             ;2eaf 001c 
+              MOVE.L         D5,-(A7)                 ;2f05 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,GCOMMAND_BannerStepRight(A4);2940 0000 
+              MOVE.L         $20(A7),(A7)             ;2eaf 0020 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,GCOMMAND_BannerStepBottom(A4);2940 0000 
+              MOVE.L         AbsExecBase(A4),(A7)     ;2eac 0000 
+              BSR.W          _LVODisable              ;6100 0000 
+              MOVE.W         #$1,GCOMMAND_BannerRebuildPendingFla(A4);397c 0001 0000 
+              MOVE.L         AbsExecBase(A4),(A7)     ;2eac 0000 
+              BSR.W          _LVOEnable               ;6100 0000 
+              LEA            $14(A7),A7               ;4fef 0014 
+___GCOMMAND_UpdateBannerBounds__5:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_BannerBoundLeft
+              XREF           GCOMMAND_BannerBoundTop
+              XREF           GCOMMAND_BannerBoundRight
+              XREF           GCOMMAND_BannerBoundBottom
+              XREF           Global_UIBusyFlag
+              XREF           GCOMMAND_ComputePresetIncrement
+              XREF           GCOMMAND_BannerStepLeft
+              XREF           GCOMMAND_BannerStepTop
+              XREF           GCOMMAND_BannerStepRight
+              XREF           GCOMMAND_BannerStepBottom
+              XREF           AbsExecBase
+              XREF           _LVODisable
+              XREF           GCOMMAND_BannerRebuildPendingFla
+              XREF           _LVOEnable
+              XDEF           GCOMMAND_UpdateBannerBounds
+              END

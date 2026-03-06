@@ -1,0 +1,71 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_TickHighlightState:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D7/A5,-(A7)           ;48e7 2104 
+___GCOMMAND_TickHighlightState__1:
+              LEA            ESQSHARED4_InterleaveCopyBaseOff(A4),A5;4bec 0000 
+              MOVE.W         GCOMMAND_BannerRebuildPendingFla(A4),D0;302c 0000 
+              BEQ.B          ___GCOMMAND_TickHighlightState__3;6704 
+___GCOMMAND_TickHighlightState__2:
+              BSR.W          GCOMMAND_RebuildBannerTablesFrom;6100 0000 
+___GCOMMAND_TickHighlightState__3:
+              ADDQ.L         #$1,GCOMMAND_BannerPhaseIndexCurrent(A4);52ac 0000 
+              MOVE.L         GCOMMAND_BannerRowByteOffsetCurr(A4),GCOMMAND_BannerRowByteOffsetPrev(A4);296c 0000 0000 
+              MOVEQ.L        #$62,D0                  ;7062 
+              CMP.L          GCOMMAND_BannerPhaseIndexCurrent(A4),D0;b0ac 0000 
+              BNE.B          ___GCOMMAND_TickHighlightState__5;6616 
+___GCOMMAND_TickHighlightState__4:
+              CLR.L          GCOMMAND_BannerPhaseIndexCurrent(A4);42ac 0000 
+              MOVE.L         GCOMMAND_BannerRowByteOffsetRese(A4),D1;222c 0000 
+              MOVE.L         D1,GCOMMAND_BannerRowByteOffsetCurr(A4);2941 0000 
+              MOVE.L         $8(A5),D2                ;242d 0008 
+              MOVE.L         D2,$4(A5)                ;2b42 0004 
+              BRA.B          ___GCOMMAND_TickHighlightState__6;600e 
+___GCOMMAND_TickHighlightState__5:
+              MOVEQ.L        #$58,D1                  ;7258 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D1,GCOMMAND_BannerRowByteOffsetCurr(A4);d3ac 0000 
+              MOVEQ.L        #$20,D1                  ;7220 
+              ADD.L          D1,$4(A5)                ;d3ad 0004 
+___GCOMMAND_TickHighlightState__6:
+              MOVE.W         GCOMMAND_BannerQueueSlotCurrent(A4),D7;3e2c 0000 
+              MOVE.W         D7,GCOMMAND_BannerQueueSlotPrevious(A4);3947 0000 
+              SUBQ.W         #$1,D7                   ;5347 
+              MOVE.W         D7,GCOMMAND_BannerQueueSlotCurrent(A4);3947 0000 
+              TST.W          D7                       ;4a47 
+              BPL.B          ___GCOMMAND_TickHighlightState__8;6a06 
+___GCOMMAND_TickHighlightState__7:
+              MOVE.W         #$61,GCOMMAND_BannerQueueSlotCurrent(A4);397c 0061 0000 
+___GCOMMAND_TickHighlightState__8:
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D1;222c 0000 
+              MOVE.L         D1,GCOMMAND_BannerRowIndexPrevious(A4);2941 0000 
+              ADDQ.L         #$1,GCOMMAND_BannerRowIndexCurrent(A4);52ac 0000 
+              CMP.L          GCOMMAND_BannerRowIndexCurrent(A4),D0;b0ac 0000 
+              BNE.B          ___GCOMMAND_TickHighlightState__10;6604 
+___GCOMMAND_TickHighlightState__9:
+              CLR.L          GCOMMAND_BannerRowIndexCurrent(A4);42ac 0000 
+___GCOMMAND_TickHighlightState__10:
+              BSR.W          GCOMMAND_ServiceHighlightMessage;6100 0000 
+___GCOMMAND_TickHighlightState__11:
+              MOVEM.L        (A7)+,D2/D7/A5           ;4cdf 2084 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQSHARED4_InterleaveCopyBaseOff
+              XREF           GCOMMAND_BannerRebuildPendingFla
+              XREF           GCOMMAND_RebuildBannerTablesFrom
+              XREF           GCOMMAND_BannerPhaseIndexCurrent
+              XREF           GCOMMAND_BannerRowByteOffsetCurr
+              XREF           GCOMMAND_BannerRowByteOffsetPrev
+              XREF           GCOMMAND_BannerRowByteOffsetRese
+              XREF           GCOMMAND_BannerQueueSlotCurrent
+              XREF           GCOMMAND_BannerQueueSlotPrevious
+              XREF           GCOMMAND_BannerRowIndexCurrent
+              XREF           GCOMMAND_BannerRowIndexPrevious
+              XREF           GCOMMAND_ServiceHighlightMessage
+              XDEF           GCOMMAND_TickHighlightState
+              END

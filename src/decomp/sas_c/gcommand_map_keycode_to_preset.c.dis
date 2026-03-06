@@ -1,0 +1,60 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_MapKeycodeToPreset:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___GCOMMAND_MapKeycodeToPreset__1:
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.B         D7,D0                    ;1007 
+              ANDI.B         #$30,D0                  ;0200 0030 
+              MOVEQ.L        #$30,D1                  ;7230 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_MapKeycodeToPreset__3;6606 
+___GCOMMAND_MapKeycodeToPreset__2:
+              MOVE.L         CONFIG_RefreshIntervalSeconds(A4),D6;2c2c 0000 
+              BRA.B          ___GCOMMAND_MapKeycodeToPreset__9;602c 
+___GCOMMAND_MapKeycodeToPreset__3:
+              MOVE.B         D7,D0                    ;1007 
+              ANDI.B         #$20,D0                  ;0200 0020 
+              MOVEQ.L        #$20,D1                  ;7220 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_MapKeycodeToPreset__7;6612 
+___GCOMMAND_MapKeycodeToPreset__4:
+              BSR.W          GCOMMAND_GetBannerChar   ;6100 0000 
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D1;322c 0000 
+              CMP.W          D1,D0                    ;b041 
+              BNE.B          ___GCOMMAND_MapKeycodeToPreset__9;6614 
+___GCOMMAND_MapKeycodeToPreset__5:
+              MOVE.L         CONFIG_RefreshIntervalSeconds(A4),D6;2c2c 0000 
+___GCOMMAND_MapKeycodeToPreset__6:
+              BRA.B          ___GCOMMAND_MapKeycodeToPreset__9;600e 
+___GCOMMAND_MapKeycodeToPreset__7:
+              MOVE.B         D7,D0                    ;1007 
+              ANDI.B         #$40,D0                  ;0200 0040 
+              MOVEQ.L        #$40,D1                  ;7240 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_MapKeycodeToPreset__9;6602 
+___GCOMMAND_MapKeycodeToPreset__8:
+              MOVEQ.L        #$ff,D6                  ;7cff 
+___GCOMMAND_MapKeycodeToPreset__9:
+              MOVE.W         GCOMMAND_BannerQueueSlotPrevious(A4),A0;306c 0000 
+              MOVE.L         D6,D0                    ;2006 
+              LEA            ESQPARS2_BannerQueueBuffer(A4),A1;43ec 0000 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.B         D0,$0(A1,D1.W)           ;1380 1000 
+___GCOMMAND_MapKeycodeToPreset__10:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CONFIG_RefreshIntervalSeconds
+              XREF           GCOMMAND_GetBannerChar
+              XREF           CONFIG_BannerCopperHeadByte
+              XREF           GCOMMAND_BannerQueueSlotPrevious
+              XREF           ESQPARS2_BannerQueueBuffer
+              XDEF           GCOMMAND_MapKeycodeToPreset
+              END

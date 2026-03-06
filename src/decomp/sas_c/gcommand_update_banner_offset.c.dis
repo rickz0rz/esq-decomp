@@ -1,0 +1,57 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_UpdateBannerOffset:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___GCOMMAND_UpdateBannerOffset__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              TST.B          D7                       ;4a07 
+              BEQ.B          ___GCOMMAND_UpdateBannerOffset__9;6746 
+___GCOMMAND_UpdateBannerOffset__2:
+___GCOMMAND_UpdateBannerOffset__3:
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D0;202c 0000 
+              MOVE.L         D0,GCOMMAND_BannerRowIndexPrevious(A4);2940 0000 
+              MOVE.B         D7,D1                    ;1207 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              SUB.L          D1,GCOMMAND_BannerRowIndexCurrent(A4);93ac 0000 
+___GCOMMAND_UpdateBannerOffset__4:
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D0;202c 0000 
+              MOVEQ.L        #$62,D1                  ;7262 
+              CMP.L          D1,D0                    ;b081 
+              BLT.B          ___GCOMMAND_UpdateBannerOffset__6;6d08 
+___GCOMMAND_UpdateBannerOffset__5:
+              MOVEQ.L        #$62,D1                  ;7262 
+              SUB.L          D1,GCOMMAND_BannerRowIndexCurrent(A4);93ac 0000 
+              BRA.B          ___GCOMMAND_UpdateBannerOffset__4;60ee 
+___GCOMMAND_UpdateBannerOffset__6:
+              MOVE.L         GCOMMAND_BannerRowIndexCurrent(A4),D0;202c 0000 
+              TST.L          D0                       ;4a80 
+              BPL.B          ___GCOMMAND_UpdateBannerOffset__8;6a08 
+___GCOMMAND_UpdateBannerOffset__7:
+              MOVEQ.L        #$62,D1                  ;7262 
+              ADD.L          D1,GCOMMAND_BannerRowIndexCurrent(A4);d3ac 0000 
+              BRA.B          ___GCOMMAND_UpdateBannerOffset__6;60f0 
+___GCOMMAND_UpdateBannerOffset__8:
+              PEA            ESQ_CopperListBannerA(A4);486c 0000 
+              BSR.W          GCOMMAND_UpdateBannerRowPointers;6100 0000 
+              PEA            ESQ_CopperListBannerB(A4);486c 0000 
+              BSR.W          GCOMMAND_UpdateBannerRowPointers;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___GCOMMAND_UpdateBannerOffset__9:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_BannerRowIndexCurrent
+              XREF           GCOMMAND_BannerRowIndexPrevious
+              XREF           ESQ_CopperListBannerA
+              XREF           GCOMMAND_UpdateBannerRowPointers
+              XREF           ESQ_CopperListBannerB
+              XDEF           GCOMMAND_UpdateBannerOffset
+              END

@@ -1,0 +1,31 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_ClearBannerQueue:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___GCOMMAND_ClearBannerQueue__1:
+              MOVE.W         #$ffffffff,ESQPARS2_BannerQueueAttentionCou(A4);397c ffff 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___GCOMMAND_ClearBannerQueue__2:
+              MOVEQ.L        #$62,D0                  ;7062 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___GCOMMAND_ClearBannerQueue__6;6c0c 
+___GCOMMAND_ClearBannerQueue__3:
+              LEA            ESQPARS2_BannerQueueBuffer(A4),A0;41ec 0000 
+              CLR.B          $0(A0,D7.L)              ;4230 7800 
+___GCOMMAND_ClearBannerQueue__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___GCOMMAND_ClearBannerQueue__2;60ee 
+___GCOMMAND_ClearBannerQueue__5:
+___GCOMMAND_ClearBannerQueue__6:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS2_BannerQueueAttentionCou
+              XREF           ESQPARS2_BannerQueueBuffer
+              XDEF           GCOMMAND_ClearBannerQueue
+              END

@@ -1,0 +1,207 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_LoadColorOrFallback:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___GCOMMAND_LoadColorOrFallback__1:
+              MOVE.B         $1b(A7),D5               ;1a2f 001b 
+              MOVE.L         $14(A7),D6               ;2c2f 0014 
+              MOVE.L         $10(A7),D7               ;2e2f 0010 
+              TST.L          D6                       ;4a86 
+              BPL.B          ___GCOMMAND_LoadColorOrFallback__3;6a06 
+___GCOMMAND_LoadColorOrFallback__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D5,D0                    ;1005 
+              BRA.B          ___GCOMMAND_LoadColorOrFallback__5;6012 
+___GCOMMAND_LoadColorOrFallback__3:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$7,D0                   ;ef80 
+              LEA            GCOMMAND_PresetValueTable(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         D6,D0                    ;2006 
+              ADD.L          D0,D0                    ;d080 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.W         (A0),D0                  ;3010 
+___GCOMMAND_LoadColorOrFallback__4:
+___GCOMMAND_LoadColorOrFallback__5:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+GCOMMAND_BuildBannerBlock:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$2c,D0                  ;90bc 0000 002c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$1c,A7                  ;9efc 001c 
+              MOVEM.L        D2/D3/D5/D6/D7/A2/A3/A5,-(A7);48e7 3734 
+___GCOMMAND_BuildBannerBlock__1:
+              MOVE.W         $52(A7),D5               ;3a2f 0052 
+              MOVE.B         $4f(A7),D6               ;1c2f 004f 
+              MOVE.L         $44(A7),D7               ;2e2f 0044 
+              MOVE.L         $48(A7),A3               ;266f 0048 
+              MOVE.L         $40(A7),A5               ;2a6f 0040 
+              MOVE.L         A5,A2                    ;244d 
+              MOVE.W         Global_UIBusyFlag(A4),D0 ;302c 0000 
+              BEQ.B          ___GCOMMAND_BuildBannerBlock__3;6706 
+___GCOMMAND_BuildBannerBlock__2:
+              CLR.L          $38(A7)                  ;42af 0038 
+              BRA.B          ___GCOMMAND_BuildBannerBlock__4;6006 
+___GCOMMAND_BuildBannerBlock__3:
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.L         D0,$38(A7)               ;2f40 0038 
+___GCOMMAND_BuildBannerBlock__4:
+              MOVE.L         $38(A7),-(A7)            ;2f2f 0038 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            GCOMMAND_PresetWorkEntryTable(A4);486c 0000 
+              BSR.W          GCOMMAND_InitPresetWorkEntry;6100 0000 
+              MOVE.L         $4c(A7),(A7)             ;2eaf 004c 
+              PEA            ($5).w                   ;4878 0005 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              PEA            ($5).w                   ;4878 0005 
+              PEA            GCOMMAND_PresetWorkEntry1(A4);486c 0000 
+              BSR.W          GCOMMAND_InitPresetWorkEntry;6100 0000 
+              MOVE.L         $5c(A7),(A7)             ;2eaf 005c 
+              PEA            ($6).w                   ;4878 0006 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $60(A7),-(A7)            ;2f2f 0060 
+              PEA            ($6).w                   ;4878 0006 
+              PEA            GCOMMAND_PresetWorkEntry2(A4);486c 0000 
+              BSR.W          GCOMMAND_InitPresetWorkEntry;6100 0000 
+              MOVE.L         $6c(A7),(A7)             ;2eaf 006c 
+              PEA            ($7).w                   ;4878 0007 
+              BSR.W          GCOMMAND_ComputePresetIncrement;6100 0000 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         $70(A7),-(A7)            ;2f2f 0070 
+              PEA            ($7).w                   ;4878 0007 
+              PEA            GCOMMAND_PresetWorkEntry3(A4);486c 0000 
+              BSR.W          GCOMMAND_InitPresetWorkEntry;6100 0000 
+              LEA            $44(A7),A7               ;4fef 0044 
+              CLR.L          $34(A7)                  ;42af 0034 
+___GCOMMAND_BuildBannerBlock__5:
+              MOVE.L         $34(A7),D0               ;202f 0034 
+              CMP.L          D7,D0                    ;b087 
+              BGE.W          ___GCOMMAND_BuildBannerBlock__13;6c00 0114 
+___GCOMMAND_BuildBannerBlock__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         GCOMMAND_PresetFallbackValue0(A4),D0;102c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         GCOMMAND_PresetWorkEntry0_ValueI(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_PresetWorkEntryTable(A4),-(A7);2f2c 0000 
+              BSR.W          GCOMMAND_LoadColorOrFallback;6100 feee 
+___GCOMMAND_BuildBannerBlock__7:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         GCOMMAND_PresetFallbackValue1(A4),D1;122c 0000 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         GCOMMAND_PresetWorkEntry1_ValueI(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_PresetWorkEntry1(A4),-(A7);2f2c 0000 
+              MOVE.W         D0,$44(A7)               ;3f40 0044 
+              BSR.W          GCOMMAND_LoadColorOrFallback;6100 fed6 
+___GCOMMAND_BuildBannerBlock__8:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         GCOMMAND_PresetFallbackValue2(A4),D1;122c 0000 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         GCOMMAND_PresetWorkEntry2_ValueI(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_PresetWorkEntry2(A4),-(A7);2f2c 0000 
+              MOVE.W         D0,$46(A7)               ;3f40 0046 
+              BSR.W          GCOMMAND_LoadColorOrFallback;6100 febe 
+___GCOMMAND_BuildBannerBlock__9:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         GCOMMAND_PresetFallbackValue3(A4),D1;122c 0000 
+              MOVE.L         D1,(A7)                  ;2e81 
+              MOVE.L         GCOMMAND_PresetWorkEntry3_ValueI(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_PresetWorkEntry3(A4),-(A7);2f2c 0000 
+              MOVE.W         D0,$4c(A7)               ;3f40 004c 
+              BSR.W          GCOMMAND_LoadColorOrFallback;6100 fea6 
+___GCOMMAND_BuildBannerBlock__10:
+              LEA            $20(A2),A0               ;41ea 0020 
+              MOVE.B         (A3),D1                  ;1213 
+              MOVE.B         D1,(A2)                  ;1481 
+              MOVE.B         $7b(A7),D1               ;122f 007b 
+              ADD.B          D1,(A3)                  ;d313 
+              MOVE.B         D6,$1(A2)                ;1546 0001 
+              LEA            $2(A2),A1                ;43ea 0002 
+              MOVE.W         D5,(A1)                  ;3285 
+              LEA            $4(A2),A1                ;43ea 0004 
+              MOVE.W         #$188,(A1)               ;32bc 0188 
+              LEA            $6(A2),A1                ;43ea 0006 
+              MOVE.W         $54(A7),(A1)             ;32af 0054 
+              LEA            $8(A2),A1                ;43ea 0008 
+              MOVE.W         #$18a,(A1)               ;32bc 018a 
+              LEA            $a(A2),A1                ;43ea 000a 
+              MOVE.W         $4e(A7),(A1)             ;32af 004e 
+              LEA            $c(A2),A1                ;43ea 000c 
+              MOVE.W         #$18c,(A1)               ;32bc 018c 
+              LEA            $e(A2),A1                ;43ea 000e 
+              MOVE.W         $4c(A7),(A1)             ;32af 004c 
+              LEA            $10(A2),A1               ;43ea 0010 
+              MOVE.W         #$18e,(A1)               ;32bc 018e 
+              LEA            $12(A2),A1               ;43ea 0012 
+              MOVE.W         D0,(A1)                  ;3280 
+              LEA            $14(A2),A1               ;43ea 0014 
+              MOVE.W         #$84,(A1)                ;32bc 0084 
+              LEA            $16(A2),A1               ;43ea 0016 
+              MOVE.L         A0,D1                    ;2208 
+              MOVE.L         D1,D2                    ;2401 
+              CLR.W          D2                       ;4242 
+              SWAP           D2                       ;4842 
+              MOVE.L         #$ffff,D3                ;263c 0000 ffff 
+              AND.L          D3,D2                    ;c483 
+              MOVE.W         D2,(A1)                  ;3282 
+              LEA            $18(A2),A1               ;43ea 0018 
+              MOVE.W         #$86,(A1)                ;32bc 0086 
+              LEA            $1a(A2),A1               ;43ea 001a 
+              MOVE.L         D1,$46(A7)               ;2f41 0046 
+              MOVE.L         D1,$50(A7)               ;2f41 0050 
+___GCOMMAND_BuildBannerBlock__11:
+              SWAP           D1                       ;4841 
+              CLR.W          D1                       ;4241 
+              SWAP           D1                       ;4841 
+              MOVE.W         D1,(A1)                  ;3281 
+              LEA            $1c(A2),A0               ;41ea 001c 
+              MOVE.W         #$8a,(A0)                ;30bc 008a 
+              LEA            $1e(A2),A0               ;41ea 001e 
+              CLR.W          (A0)                     ;4250 
+              MOVE.W         D0,$4a(A7)               ;3f40 004a 
+              BSR.W          GCOMMAND_TickPresetWorkEntries;6100 0000 
+              LEA            $24(A7),A7               ;4fef 0024 
+              ADD.W          #$20,A2                  ;d4fc 0020 
+___GCOMMAND_BuildBannerBlock__12:
+              ADDQ.L         #$1,$34(A7)              ;52af 0034 
+              BRA.W          ___GCOMMAND_BuildBannerBlock__5;6000 fee6 
+___GCOMMAND_BuildBannerBlock__13:
+              MOVE.L         A2,D0                    ;200a 
+___GCOMMAND_BuildBannerBlock__14:
+___GCOMMAND_BuildBannerBlock__15:
+              MOVEM.L        (A7)+,D2/D3/D5/D6/D7/A2/A3/A5;4cdf 2cec 
+              ADD.W          #$1c,A7                  ;defc 001c 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_PresetValueTable
+              XREF           Global_UIBusyFlag
+              XREF           GCOMMAND_ComputePresetIncrement
+              XREF           GCOMMAND_PresetWorkEntryTable
+              XREF           GCOMMAND_InitPresetWorkEntry
+              XREF           GCOMMAND_PresetWorkEntry1
+              XREF           GCOMMAND_PresetWorkEntry2
+              XREF           GCOMMAND_PresetWorkEntry3
+              XREF           GCOMMAND_PresetFallbackValue0
+              XREF           GCOMMAND_PresetWorkEntry0_ValueI
+              XREF           GCOMMAND_PresetFallbackValue1
+              XREF           GCOMMAND_PresetWorkEntry1_ValueI
+              XREF           GCOMMAND_PresetFallbackValue2
+              XREF           GCOMMAND_PresetWorkEntry2_ValueI
+              XREF           GCOMMAND_PresetFallbackValue3
+              XREF           GCOMMAND_PresetWorkEntry3_ValueI
+              XREF           GCOMMAND_TickPresetWorkEntries
+              XDEF           GCOMMAND_BuildBannerBlock
+              END

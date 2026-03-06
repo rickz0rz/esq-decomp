@@ -1,0 +1,67 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_InitPresetTableFromPale:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+___GCOMMAND_InitPresetTableFromPale__1:
+              MOVE.L         $20(A7),A5               ;2a6f 0020 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___GCOMMAND_InitPresetTableFromPale__2:
+              MOVEQ.L        #$10,D0                  ;7010 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___GCOMMAND_InitPresetTableFromPale__9;6c50 
+___GCOMMAND_InitPresetTableFromPale__3:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$7,D0                   ;ef80 
+              MOVE.L         A5,A3                    ;264d 
+              ADD.L          D0,A3                    ;d7c0 
+              PEA            ($3e).w                  ;4878 003e 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          NEWGRID_JMPTBL_MATH_Mulu32;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              LEA            GCOMMAND_PresetSeedPackedWordTab(A4),A0;41ec 0000 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.L         A0,A2                    ;2448 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          D0,D0                    ;d080 
+              MOVE.W         #$10,$0(A5,D0.L)         ;3bbc 0010 0800 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___GCOMMAND_InitPresetTableFromPale__4:
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          D0,D0                    ;d080 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         $0(A5,D0.L),D1           ;3235 0800 
+              CMP.L          D1,D6                    ;bc81 
+              BGE.B          ___GCOMMAND_InitPresetTableFromPale__7;6c16 
+___GCOMMAND_InitPresetTableFromPale__5:
+              MOVE.L         D6,D0                    ;2006 
+              ADD.L          D0,D0                    ;d080 
+              MOVE.L         A3,A0                    ;204b 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $20(A0),A1               ;43e8 0020 
+              MOVE.L         A2,A0                    ;204a 
+              ADD.L          D0,A0                    ;d1c0 
+              MOVE.W         (A0),(A1)                ;3290 
+___GCOMMAND_InitPresetTableFromPale__6:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___GCOMMAND_InitPresetTableFromPale__4;60dc 
+___GCOMMAND_InitPresetTableFromPale__7:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___GCOMMAND_InitPresetTableFromPale__2;60aa 
+___GCOMMAND_InitPresetTableFromPale__8:
+___GCOMMAND_InitPresetTableFromPale__9:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_JMPTBL_MATH_Mulu32
+              XREF           GCOMMAND_PresetSeedPackedWordTab
+              XDEF           GCOMMAND_InitPresetTableFromPale
+              END

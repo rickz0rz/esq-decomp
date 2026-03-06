@@ -1,0 +1,77 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_ConsumeBannerQueueEntry:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___GCOMMAND_ConsumeBannerQueueEntry__1:
+              MOVE.W         GCOMMAND_BannerQueueSlotCurrent(A4),D7;3e2c 0000 
+              LEA            ESQPARS2_BannerQueueBuffer(A4),A0;41ec 0000 
+              MOVE.B         $0(A0,D7.W),D6           ;1c30 7000 
+              TST.B          D6                       ;4a06 
+              BEQ.B          ___GCOMMAND_ConsumeBannerQueueEntry__7;673c 
+___GCOMMAND_ConsumeBannerQueueEntry__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$0,D1                   ;7200 
+              NOT.B          D1                       ;4601 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___GCOMMAND_ConsumeBannerQueueEntry__4;6614 
+___GCOMMAND_ConsumeBannerQueueEntry__3:
+              MOVE.W         ESQPARS2_BannerQueueAttentionDel(A4),D5;3a2c 0000 
+              SUBQ.W         #$1,D5                   ;5345 
+              MOVE.L         D5,D0                    ;2005 
+              MOVE.W         D0,ESQPARS2_BannerQueueAttentionCou(A4);3940 0000 
+              MOVEQ.L        #$1,D1                   ;7201 
+              MOVE.B         D1,ESQDISP_StatusIndicatorDeferredA(A4);1941 0000 
+              BRA.B          ___GCOMMAND_ConsumeBannerQueueEntry__7;601c 
+___GCOMMAND_ConsumeBannerQueueEntry__4:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVEQ.L        #$7f,D1                  ;727f 
+              ADD.L          D1,D1                    ;d281 
+              CMP.L          D1,D0                    ;b081 
+              BNE.B          ___GCOMMAND_ConsumeBannerQueueEntry__6;6608 
+___GCOMMAND_ConsumeBannerQueueEntry__5:
+              MOVE.W         #$101,ESQPARS2_ReadModeFlags(A4);397c 0101 0000 
+              BRA.B          ___GCOMMAND_ConsumeBannerQueueEntry__7;6008 
+___GCOMMAND_ConsumeBannerQueueEntry__6:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              MOVE.W         D0,ESQPARS2_ReadModeFlags(A4);3940 0000 
+___GCOMMAND_ConsumeBannerQueueEntry__7:
+              CLR.B          $0(A0,D7.W)              ;4230 7000 
+              MOVE.W         ESQPARS2_BannerQueueAttentionCou(A4),D0;302c 0000 
+              BLT.B          ___GCOMMAND_ConsumeBannerQueueEntry__11;6d20 
+___GCOMMAND_ConsumeBannerQueueEntry__8:
+              MOVE.W         D0,$e(A7)                ;3f40 000e 
+              SUBQ.W         #$1,D0                   ;5340 
+              MOVE.W         D0,ESQPARS2_BannerQueueAttentionCou(A4);3940 0000 
+              MOVE.B         #$2,GCOMMAND_HighlightHoldoffTickCou(A4);197c 0002 0000 
+              MOVE.W         D0,$e(A7)                ;3f40 000e 
+              BGE.B          ___GCOMMAND_ConsumeBannerQueueEntry__11;6c0a 
+___GCOMMAND_ConsumeBannerQueueEntry__9:
+              CLR.B          ESQDISP_StatusIndicatorDeferredA(A4);422c 0000 
+              MOVE.B         #$1,ESQDISP_StatusRefreshPendingFlag(A4);197c 0001 0000 
+___GCOMMAND_ConsumeBannerQueueEntry__10:
+___GCOMMAND_ConsumeBannerQueueEntry__11:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_BannerQueueSlotCurrent
+              XREF           ESQPARS2_BannerQueueBuffer
+              XREF           ESQPARS2_BannerQueueAttentionDel
+              XREF           ESQPARS2_BannerQueueAttentionCou
+              XREF           ESQDISP_StatusIndicatorDeferredA
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           GCOMMAND_HighlightHoldoffTickCou
+              XREF           ESQDISP_StatusRefreshPendingFlag
+              XDEF           GCOMMAND_ConsumeBannerQueueEntry
+              END
