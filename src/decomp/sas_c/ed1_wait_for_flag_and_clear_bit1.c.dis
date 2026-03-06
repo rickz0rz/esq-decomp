@@ -1,0 +1,32 @@
+              SECTION      text,CODE
+__code:
+ED1_WaitForFlagAndClearBit1:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED1_WaitForFlagAndClearBit1__1:
+              MOVE.W         CTASKS_IffTaskDoneFlag(A4),D0;302c 0000 
+              BEQ.B          ___ED1_WaitForFlagAndClearBit1__1;67fa 
+___ED1_WaitForFlagAndClearBit1__2:
+___ED1_WaitForFlagAndClearBit1__3:
+              MOVE.W         #$2e,LADFUNC_EntryCount(A4);397c 002e 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         ESQIFF_ExternalAssetFlags(A4),D0;302c 0000 
+              ANDI.L         #$fffd,D0                ;0280 0000 fffd 
+              MOVE.W         D0,ESQIFF_ExternalAssetFlags(A4);3940 0000 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQIFF_ReloadExternalAssetCatalo;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ED1_WaitForFlagAndClearBit1__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CTASKS_IffTaskDoneFlag
+              XREF           LADFUNC_EntryCount
+              XREF           ESQIFF_ExternalAssetFlags
+              XREF           ESQIFF_ReloadExternalAssetCatalo
+              XDEF           ED1_WaitForFlagAndClearBit1
+              END
