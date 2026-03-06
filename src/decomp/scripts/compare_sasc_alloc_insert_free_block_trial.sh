@@ -9,13 +9,27 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown33.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="ALLOC_InsertFreeBlock"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_alloc_insert_free_block.log" 2>&1
 
-awk '$0 ~ /^ALLOC_InsertFreeBlock:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/alloc_insert_free_block.original.s"
-awk '$0 ~ /^ALLOC_InsertFreeBlock:$/ {in_func=1} in_func { if ($0 ~ /^__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/alloc_insert_free_block.sasc.dis.s"
+awk -v e="^${ENTRY_ORIG}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^;!======/) exit
+    print
+  }
+' "$ORIG_ASM" >"${OUT_DIR}/alloc_insert_free_block.original.s"
+
+awk -v e="^${ENTRY_ORIG}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^__const:$/) exit
+    print
+  }
+' "$SASC_DIS" >"${OUT_DIR}/alloc_insert_free_block.sasc.dis.s"
 
 normalize() {
   sed -E \
