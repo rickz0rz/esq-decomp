@@ -74,6 +74,8 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_datetime_isleapyear_trial.sh"
     "src/decomp/scripts/compare_sasc_datetime_adjust_month_index_trial.sh"
     "src/decomp/scripts/compare_sasc_datetime_normalize_month_range_trial.sh"
+    "src/decomp/scripts/compare_sasc_datetime_copy_pair_and_recalc_trial.sh"
+    "src/decomp/scripts/compare_sasc_datetime_build_from_base_day_trial.sh"
     "src/decomp/scripts/compare_sasc_datetime_build_from_globals_trial.sh"
     "src/decomp/scripts/compare_sasc_datetime_classify_value_in_range_trial.sh"
     "src/decomp/scripts/compare_sasc_clock_convert_trial.sh"
