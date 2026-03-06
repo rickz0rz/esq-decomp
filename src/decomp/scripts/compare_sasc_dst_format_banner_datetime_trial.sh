@@ -9,13 +9,27 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/groups/a/j/dst2.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="DST_FormatBannerDateTime"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_dst_format_banner_datetime.log" 2>&1
 
-awk '$0 ~ /^DST_FormatBannerDateTime:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/dst_format_banner_datetime.original.s"
-awk '$0 ~ /^[[:space:]]*DST_FormatBannerDateTime:/ {in_func=1} in_func { if ($0 ~ /^[[:space:]]*__const:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/dst_format_banner_datetime.sasc.dis.s"
+awk -v e="^${ENTRY_ORIG}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^;!======/) exit
+    print
+  }
+' "$ORIG_ASM" >"${OUT_DIR}/dst_format_banner_datetime.original.s"
+
+awk -v e="^[[:space:]]*${ENTRY_ORIG}:" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^[[:space:]]*__const:$/) exit
+    print
+  }
+' "$SASC_DIS" >"${OUT_DIR}/dst_format_banner_datetime.sasc.dis.s"
 
 normalize() {
   sed -E \
