@@ -1,0 +1,87 @@
+              SECTION      text,CODE
+__code:
+ED1_DrawStatusLine2:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$48,D0                  ;90bc 0000 0048 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$34,A7                  ;9efc 0034 
+              MOVEM.L        D2/A5,-(A7)              ;48e7 2004 
+___ED1_DrawStatusLine2__1:
+              MOVE.L         WDISP_DisplayContextBase(A4),A0;206c 0000 
+              LEA            $2(A0),A5                ;4be8 0002 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
+              BSR.W          _LVOSetRast              ;6100 0000 
+              MOVE.B         CONFIG_NicheModeCycleBudget_Y(A4),D0;102c 0000 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.B         CONFIG_NicheModeCycleBudget_Stat(A4),D1;122c 0000 
+              EXT.W          D1                       ;4881 
+              EXT.L          D1                       ;48c1 
+              MOVE.B         CONFIG_NicheModeCycleBudget_Cust(A4),D2;142c 0000 
+              EXT.W          D2                       ;4882 
+              EXT.L          D2                       ;48c2 
+              MOVE.L         D2,(A7)                  ;2e82 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT(A4);486c 0000 
+              PEA            $21(A7)                  ;486f 0021 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            ($78).w                  ;4878 0078 
+              PEA            $29(A7)                  ;486f 0029 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              MOVE.B         CONFIG_ModeCycleEnabledFlag(A4),D0;102c 0000 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         CONFIG_TimeWindowMinutes(A4),(A7);2eac 0000 
+              MOVE.L         CONFIG_ModeCycleGateDuration(A4),-(A7);2f2c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PC(A4);486c 0000 
+              PEA            $3d(A7)                  ;486f 003d 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            ($96).w                  ;4878 0096 
+              PEA            $45(A7)                  ;486f 0045 
+___ED1_DrawStatusLine2__2:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $44(A7),A7               ;4fef 0044 
+              MOVE.B         CTASKS_STR_1(A4),D0      ;102c 0000 
+              EXT.W          D0                       ;4880 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              PEA            Global_STR_CLOCKCMD_EQUALS_PCT_C(A4);486c 0000 
+              PEA            $11(A7)                  ;486f 0011 
+              BSR.W          GROUP_AM_JMPTBL_WDISP_SPrintf;6100 0000 
+              PEA            ($b4).w                  ;4878 00b4 
+              PEA            $19(A7)                  ;486f 0019 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQFUNC_JMPTBL_TLIBA3_DrawCenter;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+___ED1_DrawStatusLine2__3:
+              MOVEM.L        (A7)+,D2/A5              ;4cdf 2004 
+              ADD.W          #$34,A7                  ;defc 0034 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           WDISP_DisplayContextBase
+              XREF           Global_REF_GRAPHICS_LIBRARY
+              XREF           _LVOSetRast
+              XREF           CONFIG_NicheModeCycleBudget_Y
+              XREF           CONFIG_NicheModeCycleBudget_Stat
+              XREF           CONFIG_NicheModeCycleBudget_Cust
+              XREF           ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT
+              XREF           GROUP_AM_JMPTBL_WDISP_SPrintf
+              XREF           ESQFUNC_JMPTBL_TLIBA3_DrawCenter
+              XREF           CONFIG_ModeCycleEnabledFlag
+              XREF           CONFIG_TimeWindowMinutes
+              XREF           CONFIG_ModeCycleGateDuration
+              XREF           ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PC
+              XREF           CTASKS_STR_1
+              XREF           Global_STR_CLOCKCMD_EQUALS_PCT_C
+              XDEF           ED1_DrawStatusLine2
+              END
