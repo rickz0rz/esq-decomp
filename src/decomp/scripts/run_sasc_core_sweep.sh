@@ -579,6 +579,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqiff_jmptbl_textdisp_findentryindexbywildcard_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_jmptbl_tliba3_builddisplaycontextforviewmode_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_bottom_help_bar_background_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_apply_active_flag_to_ad_data_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_commit_current_ad_edits_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_decrement_ad_number_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_menu_bottom_help_trial.sh"

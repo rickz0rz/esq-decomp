@@ -1,0 +1,4 @@
+BEGIN{h_active=0;h_table=0;h_clear0=0;h_set1=0;h_set30=0;h_rts=0}
+function t(s, x){x=s;sub(/;.*/,"",x);sub(/^[ \t]+/,"",x);sub(/[ \t]+$/,"",x);gsub(/[ \t]+/," ",x);return toupper(x)}
+{l=t($0);if(l=="")next;if(l~/ED_ADACTIVEFLAG/)h_active=1;if(l~/ED_ADRECORDPTRTABLE/||l~/GLOBAL_REF_LONG_CURRENT_EDITING_AD_NUMBER/||l~/GLOBAL_REF_LONG_CURRENT_EDITING_/||l~/ASL\.L #\$?2,D[01]/)h_table=1;if(l~/MOVE\.W D[0-7],\(A[0-7]\)/||l~/MOVE\.W #\$?0,\(A[0-7]\)/||l~/CLR\.W \(A[0-7]\)/)h_clear0=1;if(l~/MOVE\.W #\$?1,\(A[0-7]\)/)h_set1=1;if(l~/MOVE\.W #\$?30,2\(A[0-7]\)/||l~/MOVE\.W #\$?0030,2\(A[0-7]\)/||l~/MOVE\.W #\$?30,\$2\(A[0-7]\)/)h_set30=1;if(l=="RTS")h_rts=1}
+END{print"HAS_ACTIVE="h_active;print"HAS_TABLE="h_table;print"HAS_CLEAR0="h_clear0;print"HAS_SET1="h_set1;print"HAS_SET30="h_set30;print"HAS_RTS="h_rts}
