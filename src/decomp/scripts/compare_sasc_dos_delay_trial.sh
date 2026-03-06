@@ -9,13 +9,28 @@ SASC_DIR="src/decomp/sas_c"
 SASC_DIS="${SASC_DIR}/${SASC_SRC}.dis"
 ORIG_ASM="src/modules/submodules/unknown40.s"
 OUT_DIR="build/decomp/sasc_trial"
+ENTRY_ORIG="DOS_Delay"
+NEXT_ENTRY_SASC="DOS_SystemTagList"
 
 mkdir -p "$OUT_DIR"
 
 ./sc-build-with-dis.sh "$SASC_SRC" >"${OUT_DIR}/sc_build_dos_delay.log" 2>&1
 
-awk '$0 ~ /^DOS_Delay:$/ {in_func=1} in_func { if ($0 ~ /^;!======/) exit; print }' "$ORIG_ASM" >"${OUT_DIR}/dos_delay.original.s"
-awk '$0 ~ /^DOS_Delay:$/ {in_func=1} in_func { if ($0 ~ /^DOS_SystemTagList:$/) exit; print }' "$SASC_DIS" >"${OUT_DIR}/dos_delay.sasc.dis.s"
+awk -v e="^${ENTRY_ORIG}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ /^;!======/) exit
+    print
+  }
+' "$ORIG_ASM" >"${OUT_DIR}/dos_delay.original.s"
+
+awk -v e="^${ENTRY_ORIG}:$" -v n="^${NEXT_ENTRY_SASC}:$" '
+  $0 ~ e {in_func=1}
+  in_func {
+    if ($0 ~ n) exit
+    print
+  }
+' "$SASC_DIS" >"${OUT_DIR}/dos_delay.sasc.dis.s"
 
 normalize() {
   sed -E \
