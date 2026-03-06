@@ -578,6 +578,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_esqiff_jmptbl_textdisp_drawchannelbanner_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_jmptbl_textdisp_findentryindexbywildcard_trial.sh"
     "src/decomp/scripts/compare_sasc_esqiff_jmptbl_tliba3_builddisplaycontextforviewmode_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_draw_bottom_help_bar_background_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_clear_esc_menu_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_draw_diagnostics_screen_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_draw_status_line1_trial.sh"
