@@ -1,0 +1,20 @@
+              SECTION      text,CODE
+__code:
+ED_DrawESCMenuBottomHelp:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ED_DrawESCMenuBottomHelp__1:
+              MOVE.B         #$1,ED_MenuStateId(A4)   ;197c 0001 0000 
+              BSR.W          ED_DrawBottomHelpBarBackground;6100 0000 
+              BSR.W          ED_DrawESCMenuHelpText   ;6100 0000 
+___ED_DrawESCMenuBottomHelp__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_MenuStateId
+              XREF           ED_DrawBottomHelpBarBackground
+              XREF           ED_DrawESCMenuHelpText
+              XDEF           ED_DrawESCMenuBottomHelp
+              END
