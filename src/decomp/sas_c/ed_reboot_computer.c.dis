@@ -1,0 +1,47 @@
+              SECTION      text,CODE
+__code:
+ED_RebootComputer:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___ED_RebootComputer__1:
+              BSR.W          ED_IsConfirmKey          ;6100 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         D6,D0                    ;2006 
+              TST.B          D0                       ;4a00 
+              BNE.B          ___ED_RebootComputer__6  ;662a 
+___ED_RebootComputer__2:
+              PEA            Global_STR_REBOOTING_COMPUTER(A4);486c 0000 
+              PEA            ($28).w                  ;4878 0028 
+              PEA            ($78).w                  ;4878 0078 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ED_RebootComputer__3:
+              CMPI.L         #$aae60,D7               ;0c87 000a ae60 
+              BGE.B          ___ED_RebootComputer__5  ;6c04 
+___ED_RebootComputer__4:
+              ADDQ.L         #$2,D7                   ;5487 
+              BRA.B          ___ED_RebootComputer__3  ;60f4 
+___ED_RebootComputer__5:
+              BSR.W          ED1_JMPTBL_ESQ_ColdReboot;6100 0000 
+___ED_RebootComputer__6:
+              BSR.W          ED_DrawESCMenuBottomHelp ;6100 0000 
+___ED_RebootComputer__7:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_IsConfirmKey
+              XREF           Global_STR_REBOOTING_COMPUTER
+              XREF           Global_REF_RASTPORT_1
+              XREF           DISPLIB_DisplayTextAtPosition
+              XREF           ED1_JMPTBL_ESQ_ColdReboot
+              XREF           ED_DrawESCMenuBottomHelp
+              XDEF           ED_RebootComputer
+              END

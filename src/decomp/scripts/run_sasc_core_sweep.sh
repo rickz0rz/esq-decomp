@@ -592,6 +592,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_next_ad_number_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_prev_ad_number_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_redraw_cursor_char_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_reboot_computer_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_clear_esc_menu_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_draw_diagnostics_screen_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_draw_status_line1_trial.sh"
