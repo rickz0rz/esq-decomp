@@ -1,0 +1,70 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_LoadCopperColorWordsF:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A2/A3/A5,-(A7)  ;48e7 0734 
+___ESQSHARED4_LoadCopperColorWordsF__1:
+              MOVE.W         $2a(A7),D7               ;3e2f 002a 
+              MOVE.L         $24(A7),A2               ;246f 0024 
+              MOVE.L         $20(A7),A3               ;266f 0020 
+              MOVE.L         $1c(A7),A5               ;2a6f 001c 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQSHARED4_LoadCopperColorWordsF__2:
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.W          D0,D6                    ;bc40 
+              BHI.B          ___ESQSHARED4_LoadCopperColorWordsF__11;624a 
+___ESQSHARED4_LoadCopperColorWordsF__3:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQSHARED4_DecodeRgbNibbleTriple;6100 0000 
+              MOVE.L         D0,D5                    ;2a00 
+              ADDQ.W         #$4,A7                   ;584f 
+              ADDQ.L         #$3,A5                   ;568d 
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.W          D0,D7                    ;be40 
+              BNE.B          ___ESQSHARED4_LoadCopperColorWordsF__5;6612 
+___ESQSHARED4_LoadCopperColorWordsF__4:
+              MOVE.W         D5,ESQ_BannerColorSweepProgramA(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerColorSweepProgramB(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerColorSweepProgramA_Anc(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerColorSweepProgramB_Anc(A4);3945 0000 
+              BRA.B          ___ESQSHARED4_LoadCopperColorWordsF__8;6020 
+___ESQSHARED4_LoadCopperColorWordsF__5:
+              MOVEQ.L        #$1c,D1                  ;721c 
+              CMP.W          D1,D7                    ;be41 
+              BNE.B          ___ESQSHARED4_LoadCopperColorWordsF__7;660a 
+___ESQSHARED4_LoadCopperColorWordsF__6:
+              MOVE.W         D5,ESQ_BannerColorSweepProgramA_Tai(A4);3945 0000 
+              MOVE.W         D5,ESQ_BannerColorSweepProgramB_Tai(A4);3945 0000 
+              BRA.B          ___ESQSHARED4_LoadCopperColorWordsF__8;6010 
+___ESQSHARED4_LoadCopperColorWordsF__7:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D7,D1                    ;3207 
+              MOVE.W         D5,$0(A3,D1.L)           ;3785 1800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D7,D1                    ;3207 
+              MOVE.W         D5,$0(A2,D1.L)           ;3585 1800 
+___ESQSHARED4_LoadCopperColorWordsF__8:
+              ADDQ.W         #$4,D7                   ;5847 
+___ESQSHARED4_LoadCopperColorWordsF__9:
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.B          ___ESQSHARED4_LoadCopperColorWordsF__2;60b0 
+___ESQSHARED4_LoadCopperColorWordsF__10:
+___ESQSHARED4_LoadCopperColorWordsF__11:
+              MOVEM.L        (A7)+,D5/D6/D7/A2/A3/A5  ;4cdf 2ce0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQSHARED4_DecodeRgbNibbleTriple
+              XREF           ESQ_BannerColorSweepProgramA
+              XREF           ESQ_BannerColorSweepProgramB
+              XREF           ESQ_BannerColorSweepProgramA_Anc
+              XREF           ESQ_BannerColorSweepProgramB_Anc
+              XREF           ESQ_BannerColorSweepProgramA_Tai
+              XREF           ESQ_BannerColorSweepProgramB_Tai
+              XDEF           ESQSHARED4_LoadCopperColorWordsF
+              END

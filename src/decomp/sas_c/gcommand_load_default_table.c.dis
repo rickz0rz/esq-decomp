@@ -1,0 +1,62 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_LoadDefaultTable:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___GCOMMAND_LoadDefaultTable__1:
+              PEA            GCOMMAND_PATH_DF0_COLON_DIGITAL_(A4);486c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_LoadFileT;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BNE.B          ___GCOMMAND_LoadDefaultTable__3;6604 
+___GCOMMAND_LoadDefaultTable__2:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.B          ___GCOMMAND_LoadDefaultTable__5;604c 
+___GCOMMAND_LoadDefaultTable__3:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D7;2e2c 0000 
+              PEA            ($20).w                  ;4878 0020 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            GCOMMAND_DigitalNicheEnabledFlag(A4);486c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOCopyMem              ;6100 0000 
+              MOVEQ.L        #$20,D0                  ;7020 
+              ADD.L          D0,Global_PTR_WORK_BUFFER(A4);d1ac 0000 
+              CLR.L          GCOMMAND_DigitalNicheListingsTem(A4);42ac 0000 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),(A7);2eac 0000 
+              CLR.L          -(A7)                    ;42a7 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_DigitalNicheListingsTem(A4);2940 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($14f).w                 ;4878 014f 
+              PEA            Global_STR_GCOMMAND_C_1(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $20(A7),A7               ;4fef 0020 
+              MOVEQ.L        #$1,D0                   ;7001 
+___GCOMMAND_LoadDefaultTable__4:
+___GCOMMAND_LoadDefaultTable__5:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_PATH_DF0_COLON_DIGITAL_
+              XREF           GROUP_AY_JMPTBL_DISKIO_LoadFileT
+              XREF           Global_PTR_WORK_BUFFER
+              XREF           Global_REF_LONG_FILE_SCRATCH
+              XREF           GCOMMAND_DigitalNicheEnabledFlag
+              XREF           AbsExecBase
+              XREF           _LVOCopyMem
+              XREF           GCOMMAND_DigitalNicheListingsTem
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           Global_STR_GCOMMAND_C_1
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XDEF           GCOMMAND_LoadDefaultTable
+              END

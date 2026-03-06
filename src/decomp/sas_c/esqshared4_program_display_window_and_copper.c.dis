@@ -1,0 +1,87 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_ProgramDisplayWindowA:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A2,-(A7)              ;48e7 0120 
+___ESQSHARED4_ProgramDisplayWindowA__1:
+              MOVE.W         #$1761,DIWSTRT(A4)       ;397c 1761 0000 
+              MOVE.W         #$ffc5,DIWSTOP(A4)       ;397c ffc5 0000 
+              MOVE.W         #$38,DDFSTRT(A4)         ;397c 0038 0000 
+              MOVE.W         #$d0,DDFSTOP(A4)         ;397c 00d0 0000 
+              MOVEQ.L        #$58,D0                  ;7058 
+              MOVE.W         D0,BPL1MOD(A4)           ;3940 0000 
+              MOVE.W         D0,BPL2MOD(A4)           ;3940 0000 
+              BSR.W          ESQSHARED4_LoadDefaultPaletteToC;6100 0000 
+              LEA            ESQ_CopperEffectListB(A4),A0;41ec 0000 
+              MOVE.L         A0,D7                    ;2e08 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         D0,ESQ_CopperEffectListB_PtrLoWord(A4);3940 0000 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.W         D0,ESQ_CopperEffectListB_PtrHiWord(A4);3940 0000 
+              LEA            ESQ_CopperEffectListA(A4),A1;43ec 0000 
+              MOVE.L         A1,D7                    ;2e09 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         D0,ESQ_CopperEffectListA_PtrLoWord(A4);3940 0000 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.W         D0,ESQ_CopperEffectListA_PtrHiWord(A4);3940 0000 
+              LEA            ESQ_CopperEffectSwitchWaitWordA(A4),A2;45ec 0000 
+              MOVE.L         A2,D7                    ;2e0a 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         D0,ESQ_CopperEffectJumpTargetA_LoWo(A4);3940 0000 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.W         D0,ESQ_CopperEffectJumpTargetA_HiWo(A4);3940 0000 
+              LEA            ESQ_CopperEffectSwitchWaitWordB(A4),A2;45ec 0000 
+              MOVE.L         A2,D7                    ;2e0a 
+              MOVE.L         D7,D0                    ;2007 
+              MOVE.W         D0,ESQ_CopperEffectJumpTargetB_LoWo(A4);3940 0000 
+              CLR.W          D0                       ;4240 
+              SWAP           D0                       ;4840 
+              MOVE.W         D0,ESQ_CopperEffectJumpTargetB_HiWo(A4);3940 0000 
+              LEA            ESQ_CopperEffectListB(A4),A0;41ec 0000 
+              MOVE.L         A0,D7                    ;2e08 
+              MOVE.W         VPOSR(A4),D0             ;302c 0000 
+___ESQSHARED4_ProgramDisplayWindowA__2:
+              TST.W          D0                       ;4a40 
+              BPL.B          ___ESQSHARED4_ProgramDisplayWindowA__4;6a04 
+___ESQSHARED4_ProgramDisplayWindowA__3:
+              MOVE.L         A1,A0                    ;2049 
+              MOVE.L         A0,D7                    ;2e08 
+___ESQSHARED4_ProgramDisplayWindowA__4:
+              MOVE.L         D7,COP1LCH(A4)           ;2947 0000 
+              MOVE.W         #$20,DMACON(A4)          ;397c 0020 0000 
+              MOVE.W         #$8180,DMACON(A4)        ;397c 8180 0000 
+___ESQSHARED4_ProgramDisplayWindowA__5:
+              MOVEM.L        (A7)+,D7/A2              ;4cdf 0480 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           DIWSTRT
+              XREF           DIWSTOP
+              XREF           DDFSTRT
+              XREF           DDFSTOP
+              XREF           BPL1MOD
+              XREF           BPL2MOD
+              XREF           ESQSHARED4_LoadDefaultPaletteToC
+              XREF           ESQ_CopperEffectListB
+              XREF           ESQ_CopperEffectListB_PtrLoWord
+              XREF           ESQ_CopperEffectListB_PtrHiWord
+              XREF           ESQ_CopperEffectListA
+              XREF           ESQ_CopperEffectListA_PtrLoWord
+              XREF           ESQ_CopperEffectListA_PtrHiWord
+              XREF           ESQ_CopperEffectSwitchWaitWordA
+              XREF           ESQ_CopperEffectJumpTargetA_LoWo
+              XREF           ESQ_CopperEffectJumpTargetA_HiWo
+              XREF           ESQ_CopperEffectSwitchWaitWordB
+              XREF           ESQ_CopperEffectJumpTargetB_LoWo
+              XREF           ESQ_CopperEffectJumpTargetB_HiWo
+              XREF           VPOSR
+              XREF           COP1LCH
+              XREF           DMACON
+              XDEF           ESQSHARED4_ProgramDisplayWindowA
+              END

@@ -1,0 +1,25 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_WaitForClockChangeAndSer:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___ESQFUNC_WaitForClockChangeAndSer__1:
+              BSR.W          ESQFUNC_JMPTBL_PARSEINI_MonitorC;6100 0000 
+              TST.W          D0                       ;4a40 
+              BNE.B          ___ESQFUNC_WaitForClockChangeAndSer__6;6606 
+___ESQFUNC_WaitForClockChangeAndSer__2:
+___ESQFUNC_WaitForClockChangeAndSer__3:
+              BSR.W          ESQFUNC_ServiceUiTickIfRunning;6100 0000 
+___ESQFUNC_WaitForClockChangeAndSer__4:
+              BRA.B          ___ESQFUNC_WaitForClockChangeAndSer__1;60f2 
+___ESQFUNC_WaitForClockChangeAndSer__5:
+___ESQFUNC_WaitForClockChangeAndSer__6:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQFUNC_JMPTBL_PARSEINI_MonitorC
+              XREF           ESQFUNC_ServiceUiTickIfRunning
+              XDEF           ESQFUNC_WaitForClockChangeAndSer
+              END

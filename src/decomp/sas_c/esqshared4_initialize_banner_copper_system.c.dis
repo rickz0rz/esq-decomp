@@ -1,0 +1,54 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_InitializeBannerCoppe:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___ESQSHARED4_InitializeBannerCoppe__1:
+              MOVEQ.L        #$62,D7                  ;7e62 
+              MOVE.W         D7,ESQPARS2_BannerSweepBaseColor(A4);3947 0000 
+              SUBQ.W         #$2,D7                   ;5547 
+              MOVE.W         D7,ESQPARS2_BannerSweepOffsetColor(A4);3947 0000 
+              MOVE.W         #$5,ESQPARS2_ReadModeFlags(A4);397c 0005 0000 
+              MOVE.W         #$2,ESQPARS2_StateIndex(A4);397c 0002 0000 
+              MOVE.W         #$a,ESQPARS2_HighlightTickCountdown(A4);397c 000a 0000 
+              BSR.W          ESQSHARED4_SnapshotDisplayBuffer;6100 0000 
+              BSR.W          ESQSHARED4_ResetBannerColorSweep;6100 0000 
+              BSR.W          ESQSHARED4_SetupBannerPlanePoint;6100 0000 
+              MOVE.B         CIAB_PRA(A4),D6          ;1c2c 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D6,D0                    ;1006 
+              ORI.W          #$80,D0                  ;0040 0080 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVE.L         D6,D0                    ;2006 
+              MOVE.B         D0,CIAB_PRA(A4)          ;1940 0000 
+              MOVE.B         CIAB_PRA(A4),D6          ;1c2c 0000 
+              BSET           #$6,D6                   ;08c6 0006 
+              MOVE.B         D6,CIAB_PRA(A4)          ;1946 0000 
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D7;3e2c 0000 
+              MOVE.W         D7,D0                    ;3007 
+              MOVE.B         D0,ESQ_CopperListBannerA(A4);1940 0000 
+              MOVE.B         D0,ESQ_CopperListBannerB(A4);1940 0000 
+              MOVE.W         #$1,ESQPARS2_CopperProgramPendingFla(A4);397c 0001 0000 
+___ESQSHARED4_InitializeBannerCoppe__2:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS2_BannerSweepBaseColor
+              XREF           ESQPARS2_BannerSweepOffsetColor
+              XREF           ESQPARS2_ReadModeFlags
+              XREF           ESQPARS2_StateIndex
+              XREF           ESQPARS2_HighlightTickCountdown
+              XREF           ESQSHARED4_SnapshotDisplayBuffer
+              XREF           ESQSHARED4_ResetBannerColorSweep
+              XREF           ESQSHARED4_SetupBannerPlanePoint
+              XREF           CIAB_PRA
+              XREF           CONFIG_BannerCopperHeadByte
+              XREF           ESQ_CopperListBannerA
+              XREF           ESQ_CopperListBannerB
+              XREF           ESQPARS2_CopperProgramPendingFla
+              XDEF           ESQSHARED4_InitializeBannerCoppe
+              END

@@ -1,0 +1,29 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_ClearBannerWorkRaster:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A5,-(A7)              ;48e7 0104 
+___ESQSHARED4_ClearBannerWorkRaster__1:
+              MOVE.L         WDISP_BannerWorkRasterPtr(A4),A5;2a6c 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQSHARED4_ClearBannerWorkRaster__2:
+              CMPI.W         #$149,D7                 ;0c47 0149 
+              BHI.B          ___ESQSHARED4_ClearBannerWorkRaster__6;6208 
+___ESQSHARED4_ClearBannerWorkRaster__3:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,(A5)+                 ;2ac0 
+___ESQSHARED4_ClearBannerWorkRaster__4:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQSHARED4_ClearBannerWorkRaster__2;60f2 
+___ESQSHARED4_ClearBannerWorkRaster__5:
+___ESQSHARED4_ClearBannerWorkRaster__6:
+              MOVEM.L        (A7)+,D7/A5              ;4cdf 2080 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           WDISP_BannerWorkRasterPtr
+              XDEF           ESQSHARED4_ClearBannerWorkRaster
+              END

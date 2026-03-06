@@ -1,0 +1,80 @@
+              SECTION      text,CODE
+__code:
+copy_row_chunk:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___copy_row_chunk__1:
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+              MOVE.W         (A3),(A5)                ;3a93 
+              ADDQ.L         #$2,A5                   ;548d 
+              ADDQ.L         #$2,A3                   ;548b 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___copy_row_chunk__2:
+              MOVEQ.L        #$12,D0                  ;7012 
+              CMP.L          D0,D7                    ;be80 
+              BGE.B          ___copy_row_chunk__6     ;6c0a 
+___copy_row_chunk__3:
+              MOVE.L         (A3),(A5)                ;2a93 
+              ADDQ.L         #$4,A5                   ;588d 
+              ADDQ.L         #$4,A3                   ;588b 
+___copy_row_chunk__4:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.B          ___copy_row_chunk__2     ;60f0 
+___copy_row_chunk__5:
+___copy_row_chunk__6:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+__const:
+__strings:
+ESQSHARED4_CopyBannerRowsWithByt:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A2/A3/A5,-(A7)     ;48e7 0334 
+___ESQSHARED4_CopyBannerRowsWithByt__1:
+              MOVE.L         $18(A7),A5               ;2a6f 0018 
+              MOVE.L         A5,A3                    ;264d 
+              ADD.L          ESQPARS2_BannerCopySourceOffset(A4),A3;d7ec 0000 
+              LEA            $b0(A3),A2               ;45eb 00b0 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQSHARED4_CopyBannerRowsWithByt__2:
+              MOVEQ.L        #$10,D0                  ;7010 
+              CMP.L          D0,D6                    ;bc80 
+              BGE.B          ___ESQSHARED4_CopyBannerRowsWithByt__6;6c14 
+___ESQSHARED4_CopyBannerRowsWithByt__3:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.B          copy_row_chunk           ;61a2 
+___ESQSHARED4_CopyBannerRowsWithByt__4:
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         ESQSHARED_BlitAddressOffset(A4),D0;202c 0000 
+              ADD.L          D0,A3                    ;d7c0 
+              ADD.L          D0,A2                    ;d5c0 
+___ESQSHARED4_CopyBannerRowsWithByt__5:
+              ADDQ.L         #$1,D6                   ;5286 
+              BRA.B          ___ESQSHARED4_CopyBannerRowsWithByt__2;60e6 
+___ESQSHARED4_CopyBannerRowsWithByt__6:
+              MOVE.L         GCOMMAND_BannerRowByteOffsetCurr(A4),D0;202c 0000 
+              ADD.L          ESQPARS2_BannerCopyTailOffset(A4),D0;d0ac 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVE.L         A5,A2                    ;244d 
+              ADD.L          D7,A2                    ;d5c7 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.B          copy_row_chunk           ;6180 
+___ESQSHARED4_CopyBannerRowsWithByt__7:
+              ADDQ.W         #$8,A7                   ;504f 
+___ESQSHARED4_CopyBannerRowsWithByt__8:
+              MOVEM.L        (A7)+,D6/D7/A2/A3/A5     ;4cdf 2cc0 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS2_BannerCopySourceOffset
+              XREF           ESQSHARED_BlitAddressOffset
+              XREF           GCOMMAND_BannerRowByteOffsetCurr
+              XREF           ESQPARS2_BannerCopyTailOffset
+              XDEF           ESQSHARED4_CopyBannerRowsWithByt
+              END

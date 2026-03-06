@@ -1,0 +1,68 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_FindPathSeparator:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A2/A3/A5,-(A7)        ;48e7 0134 
+___GCOMMAND_FindPathSeparator__1:
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.L         A5,A3                    ;264d 
+              MOVE.L         A5,A2                    ;244d 
+___GCOMMAND_FindPathSeparator__2:
+              TST.B          (A2)                     ;4a12 
+              BEQ.B          ___GCOMMAND_FindPathSeparator__4;6704 
+___GCOMMAND_FindPathSeparator__3:
+              ADDQ.L         #$1,A2                   ;528a 
+              BRA.B          ___GCOMMAND_FindPathSeparator__2;60f8 
+___GCOMMAND_FindPathSeparator__4:
+              MOVE.L         A2,D0                    ;200a 
+              MOVE.L         A3,D1                    ;220b 
+              SUB.L          D1,D0                    ;9081 
+              MOVE.L         D0,D7                    ;2e00 
+              TST.L          D7                       ;4a87 
+              BNE.B          ___GCOMMAND_FindPathSeparator__6;6604 
+___GCOMMAND_FindPathSeparator__5:
+              MOVE.L         D1,D0                    ;2001 
+              BRA.B          ___GCOMMAND_FindPathSeparator__16;602e 
+___GCOMMAND_FindPathSeparator__6:
+              MOVE.L         D1,A0                    ;2041 
+              ADD.L          D7,A0                    ;d1c7 
+              MOVE.L         A0,A2                    ;2448 
+              SUBQ.L         #$1,A2                   ;538a 
+___GCOMMAND_FindPathSeparator__7:
+              TST.L          D7                       ;4a87 
+              BEQ.B          ___GCOMMAND_FindPathSeparator__14;6720 
+___GCOMMAND_FindPathSeparator__8:
+              MOVE.B         (A2),D0                  ;1012 
+              MOVEQ.L        #$3a,D1                  ;723a 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___GCOMMAND_FindPathSeparator__10;6706 
+___GCOMMAND_FindPathSeparator__9:
+              MOVEQ.L        #$2f,D1                  ;722f 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_FindPathSeparator__11;6606 
+___GCOMMAND_FindPathSeparator__10:
+              ADDQ.L         #$1,A2                   ;528a 
+              MOVE.L         A2,D0                    ;200a 
+              BRA.B          ___GCOMMAND_FindPathSeparator__16;600e 
+___GCOMMAND_FindPathSeparator__11:
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          D0,D7                    ;be80 
+              BEQ.B          ___GCOMMAND_FindPathSeparator__13;6702 
+___GCOMMAND_FindPathSeparator__12:
+              SUBQ.L         #$1,A2                   ;538a 
+___GCOMMAND_FindPathSeparator__13:
+              SUBQ.L         #$1,D7                   ;5387 
+              BRA.B          ___GCOMMAND_FindPathSeparator__7;60dc 
+___GCOMMAND_FindPathSeparator__14:
+              MOVE.L         A2,D0                    ;200a 
+___GCOMMAND_FindPathSeparator__15:
+___GCOMMAND_FindPathSeparator__16:
+              MOVEM.L        (A7)+,D7/A2/A3/A5        ;4cdf 2c80 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           GCOMMAND_FindPathSeparator
+              END

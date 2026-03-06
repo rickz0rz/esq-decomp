@@ -1,0 +1,33 @@
+              SECTION      text,CODE
+__code:
+ESQIFF2_ValidateAsciiNumericByte:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7,-(A7)           ;48e7 0700 
+___ESQIFF2_ValidateAsciiNumericByte__1:
+              MOVE.B         $13(A7),D7               ;1e2f 0013 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVE.B         D7,D5                    ;1a07 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.B          D0,D5                    ;ba00 
+              BLT.B          ___ESQIFF2_ValidateAsciiNumericByte__4;6d0c 
+___ESQIFF2_ValidateAsciiNumericByte__2:
+              MOVEQ.L        #$30,D0                  ;7030 
+              CMP.B          D0,D5                    ;ba00 
+              BGT.B          ___ESQIFF2_ValidateAsciiNumericByte__4;6e06 
+___ESQIFF2_ValidateAsciiNumericByte__3:
+              MOVE.B         D5,D6                    ;1c05 
+              EXT.W          D6                       ;4886 
+              EXT.L          D6                       ;48c6 
+___ESQIFF2_ValidateAsciiNumericByte__4:
+              MOVE.L         D6,D0                    ;2006 
+___ESQIFF2_ValidateAsciiNumericByte__5:
+___ESQIFF2_ValidateAsciiNumericByte__6:
+              MOVEM.L        (A7)+,D5/D6/D7           ;4cdf 00e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQIFF2_ValidateAsciiNumericByte
+              END

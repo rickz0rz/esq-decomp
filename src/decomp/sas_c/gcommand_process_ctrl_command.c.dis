@@ -1,0 +1,69 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_ProcessCtrlCommand:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A3/A5,-(A7)        ;48e7 0314 
+___GCOMMAND_ProcessCtrlCommand__1:
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVE.B         $4(A5),D6                ;1c2d 0004 
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.B         #$1,D0                   ;5300 
+              BNE.B          ___GCOMMAND_ProcessCtrlCommand__7;6644 
+___GCOMMAND_ProcessCtrlCommand__2:
+              MOVE.L         ED_StateRingWriteIndex(A4),D0;202c 0000 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              LEA            ED_StateRingTable(A4),A0 ;41ec 0000 
+              ADD.L          D1,A0                    ;d1c1 
+              MOVE.L         A0,A3                    ;2648 
+              CLR.L          -(A7)                    ;42a7 
+              PEA            ($5).w                   ;4878 0005 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          GROUP_AV_JMPTBL_EXEC_CallVector_;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              LEA            $10(A7),A7               ;4fef 0010 
+              TST.L          D7                       ;4a87 
+              BLE.B          ___GCOMMAND_ProcessCtrlCommand__10;6f2c 
+___GCOMMAND_ProcessCtrlCommand__3:
+              MOVE.L         D7,D0                    ;2007 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.B          ___GCOMMAND_ProcessCtrlCommand__10;6726 
+___GCOMMAND_ProcessCtrlCommand__4:
+              ADDQ.L         #$1,ED_StateRingWriteIndex(A4);52ac 0000 
+              CMPI.L         #$14,ED_StateRingWriteIndex(A4);0cac 0000 0014 0000 
+              BLT.B          ___GCOMMAND_ProcessCtrlCommand__10;6d18 
+___GCOMMAND_ProcessCtrlCommand__5:
+              CLR.L          ED_StateRingWriteIndex(A4);42ac 0000 
+___GCOMMAND_ProcessCtrlCommand__6:
+              BRA.B          ___GCOMMAND_ProcessCtrlCommand__10;6012 
+___GCOMMAND_ProcessCtrlCommand__7:
+              MOVEQ.L        #$10,D0                  ;7010 
+              CMP.B          D0,D6                    ;bc00 
+              BEQ.B          ___GCOMMAND_ProcessCtrlCommand__9;6706 
+___GCOMMAND_ProcessCtrlCommand__8:
+              MOVEQ.L        #$f,D0                   ;700f 
+              CMP.B          D0,D6                    ;bc00 
+              BNE.B          ___GCOMMAND_ProcessCtrlCommand__10;6606 
+___GCOMMAND_ProcessCtrlCommand__9:
+              MOVE.W         #$1,GCOMMAND_DriveProbeRequestedFlag(A4);397c 0001 0000 
+___GCOMMAND_ProcessCtrlCommand__10:
+              MOVEQ.L        #$0,D0                   ;7000 
+___GCOMMAND_ProcessCtrlCommand__11:
+___GCOMMAND_ProcessCtrlCommand__12:
+              MOVEM.L        (A7)+,D6/D7/A3/A5        ;4cdf 28c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ED_StateRingWriteIndex
+              XREF           ED_StateRingTable
+              XREF           GROUP_AV_JMPTBL_EXEC_CallVector_
+              XREF           GCOMMAND_DriveProbeRequestedFlag
+              XDEF           GCOMMAND_ProcessCtrlCommand
+              END

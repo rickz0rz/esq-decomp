@@ -1,0 +1,18 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_GetBannerChar:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_GetBannerChar__1:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         ESQ_CopperListBannerA(A4),D0;102c 0000 
+___GCOMMAND_GetBannerChar__2:
+___GCOMMAND_GetBannerChar__3:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_CopperListBannerA
+              XDEF           GCOMMAND_GetBannerChar
+              END

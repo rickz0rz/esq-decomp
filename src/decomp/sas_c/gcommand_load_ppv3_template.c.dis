@@ -1,0 +1,110 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_LoadPPV3Template:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A3/A5,-(A7)     ;48e7 0714 
+___GCOMMAND_LoadPPV3Template__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              PEA            GCOMMAND_PATH_DF0_COLON_DIGITAL_(A4);486c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_LoadFileT;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.B          ___GCOMMAND_LoadPPV3Template__3;6704 
+___GCOMMAND_LoadPPV3Template__2:
+              MOVEQ.L        #$38,D7                  ;7e38 
+              BRA.B          ___GCOMMAND_LoadPPV3Template__5;6020 
+___GCOMMAND_LoadPPV3Template__3:
+              PEA            GCOMMAND_PATH_DF0_COLON_DIGITAL_(A4);486c 0000 
+              BSR.W          GROUP_AY_JMPTBL_DISKIO_LoadFileT;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              ADDQ.L         #$1,D0                   ;5280 
+              BEQ.B          ___GCOMMAND_LoadPPV3Template__5;6712 
+___GCOMMAND_LoadPPV3Template__4:
+              MOVEQ.L        #$34,D7                  ;7e34 
+              PEA            GCOMMAND_PATH_DF0_COLON_DIGITAL_(A4);486c 0000 
+              MOVE.L         Global_REF_DOS_LIBRARY_2(A4),-(A7);2f2c 0000 
+              BSR.W          _LVODeleteFile           ;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVEQ.L        #$1,D6                   ;7c01 
+___GCOMMAND_LoadPPV3Template__5:
+              TST.L          D7                       ;4a87 
+              BNE.B          ___GCOMMAND_LoadPPV3Template__7;6606 
+___GCOMMAND_LoadPPV3Template__6:
+              MOVEQ.L        #$1,D0                   ;7001 
+              BRA.W          ___GCOMMAND_LoadPPV3Template__14;6000 0082 
+___GCOMMAND_LoadPPV3Template__7:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),A5;2a6c 0000 
+              MOVE.L         Global_REF_LONG_FILE_SCRATCH(A4),D5;2a2c 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            GCOMMAND_DigitalPpvEnabledFlag(A4);486c 0000 
+              MOVE.L         AbsExecBase(A4),-(A7)    ;2f2c 0000 
+              BSR.W          _LVOCopyMem              ;6100 0000 
+              CLR.L          GCOMMAND_PPVPeriodTemplatePtr(A4);42ac 0000 
+              CLR.L          GCOMMAND_PPVListingsTemplatePtr(A4);42ac 0000 
+              ADD.L          D7,Global_PTR_WORK_BUFFER(A4);dfac 0000 
+              PEA            ($12).w                  ;4878 0012 
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
+              BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              TST.L          D0                       ;4a80 
+              LEA            $18(A7),A7               ;4fef 0018 
+              BEQ.B          ___GCOMMAND_LoadPPV3Template__10;6706 
+___GCOMMAND_LoadPPV3Template__8:
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___GCOMMAND_LoadPPV3Template__10;6702 
+___GCOMMAND_LoadPPV3Template__9:
+              CLR.B          (A3)+                    ;421b 
+___GCOMMAND_LoadPPV3Template__10:
+              MOVE.L         Global_PTR_WORK_BUFFER(A4),-(A7);2f2c 0000 
+              MOVE.L         GCOMMAND_PPVPeriodTemplatePtr(A4),-(A7);2f2c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_PPVPeriodTemplatePtr(A4);2940 0000 
+              MOVE.L         A3,(A7)                  ;2e8b 
+              MOVE.L         GCOMMAND_PPVListingsTemplatePtr(A4),-(A7);2f2c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_PPVListingsTemplatePtr(A4);2940 0000 
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,(A7)                  ;2e80 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($3e1).w                 ;4878 03e1 
+              PEA            Global_STR_GCOMMAND_C_3(A4);486c 0000 
+              BSR.W          NEWGRID_JMPTBL_MEMORY_Deallocate;6100 0000 
+              LEA            $18(A7),A7               ;4fef 0018 
+              TST.L          D6                       ;4a86 
+              BEQ.B          ___GCOMMAND_LoadPPV3Template__12;6704 
+___GCOMMAND_LoadPPV3Template__11:
+              BSR.W          GCOMMAND_LoadPPVTemplate ;6100 0000 
+___GCOMMAND_LoadPPV3Template__12:
+              MOVEQ.L        #$1,D0                   ;7001 
+___GCOMMAND_LoadPPV3Template__13:
+___GCOMMAND_LoadPPV3Template__14:
+              MOVEM.L        (A7)+,D5/D6/D7/A3/A5     ;4cdf 28e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_PATH_DF0_COLON_DIGITAL_
+              XREF           GROUP_AY_JMPTBL_DISKIO_LoadFileT
+              XREF           Global_REF_DOS_LIBRARY_2
+              XREF           _LVODeleteFile
+              XREF           Global_PTR_WORK_BUFFER
+              XREF           Global_REF_LONG_FILE_SCRATCH
+              XREF           GCOMMAND_DigitalPpvEnabledFlag
+              XREF           AbsExecBase
+              XREF           _LVOCopyMem
+              XREF           GCOMMAND_PPVPeriodTemplatePtr
+              XREF           GCOMMAND_PPVListingsTemplatePtr
+              XREF           GROUP_AS_JMPTBL_STR_FindCharPtr
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           Global_STR_GCOMMAND_C_3
+              XREF           NEWGRID_JMPTBL_MEMORY_Deallocate
+              XREF           GCOMMAND_LoadPPVTemplate
+              XDEF           GCOMMAND_LoadPPV3Template
+              END

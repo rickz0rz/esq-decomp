@@ -1,0 +1,61 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_CopyLivePlanesToSnaps:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___ESQSHARED4_CopyLivePlanesToSnaps__1:
+              MOVE.L         ESQSHARED_LivePlaneBase0(A4),A5;2a6c 0000 
+              MOVE.L         ESQPARS2_BannerSnapshotPlane0Dst(A4),A3;266c 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQSHARED4_CopyLivePlanesToSnaps__2:
+              MOVEQ.L        #$2b,D0                  ;702b 
+              CMP.W          D0,D7                    ;be40 
+              BHI.B          ___ESQSHARED4_CopyLivePlanesToSnaps__5;6206 
+___ESQSHARED4_CopyLivePlanesToSnaps__3:
+              MOVE.L         (A5)+,(A3)+              ;26dd 
+___ESQSHARED4_CopyLivePlanesToSnaps__4:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQSHARED4_CopyLivePlanesToSnaps__2;60f4 
+___ESQSHARED4_CopyLivePlanesToSnaps__5:
+              MOVE.L         ESQSHARED_LivePlaneBase1(A4),A5;2a6c 0000 
+              MOVE.L         ESQPARS2_BannerSnapshotPlane1Dst(A4),A3;266c 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQSHARED4_CopyLivePlanesToSnaps__6:
+              MOVEQ.L        #$2b,D0                  ;702b 
+              CMP.W          D0,D7                    ;be40 
+              BHI.B          ___ESQSHARED4_CopyLivePlanesToSnaps__9;6206 
+___ESQSHARED4_CopyLivePlanesToSnaps__7:
+              MOVE.L         (A5)+,(A3)+              ;26dd 
+___ESQSHARED4_CopyLivePlanesToSnaps__8:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQSHARED4_CopyLivePlanesToSnaps__6;60f4 
+___ESQSHARED4_CopyLivePlanesToSnaps__9:
+              MOVE.L         ESQSHARED_LivePlaneBase2(A4),A5;2a6c 0000 
+              MOVE.L         ESQPARS2_BannerSnapshotPlane2Dst(A4),A3;266c 0000 
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQSHARED4_CopyLivePlanesToSnaps__10:
+              MOVEQ.L        #$2b,D0                  ;702b 
+              CMP.W          D0,D7                    ;be40 
+              BHI.B          ___ESQSHARED4_CopyLivePlanesToSnaps__14;6206 
+___ESQSHARED4_CopyLivePlanesToSnaps__11:
+              MOVE.L         (A5)+,(A3)+              ;26dd 
+___ESQSHARED4_CopyLivePlanesToSnaps__12:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQSHARED4_CopyLivePlanesToSnaps__10;60f4 
+___ESQSHARED4_CopyLivePlanesToSnaps__13:
+___ESQSHARED4_CopyLivePlanesToSnaps__14:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQSHARED_LivePlaneBase0
+              XREF           ESQPARS2_BannerSnapshotPlane0Dst
+              XREF           ESQSHARED_LivePlaneBase1
+              XREF           ESQPARS2_BannerSnapshotPlane1Dst
+              XREF           ESQSHARED_LivePlaneBase2
+              XREF           ESQPARS2_BannerSnapshotPlane2Dst
+              XDEF           ESQSHARED4_CopyLivePlanesToSnaps
+              END

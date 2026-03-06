@@ -1,0 +1,92 @@
+              SECTION      text,CODE
+__code:
+ESQDISP_MirrorPrimaryEntriesToSe:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$18,D0                  ;90bc 0000 0018 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D2/D3/D6/D7/A2/A3/A5/A6,-(A7);48e7 3336 
+___ESQDISP_MirrorPrimaryEntriesToSe__1:
+              MOVE.W         TEXTDISP_SecondaryGroupEntryCoun(A4),D0;302c 0000 
+              BEQ.B          ___ESQDISP_MirrorPrimaryEntriesToSe__3;6708 
+___ESQDISP_MirrorPrimaryEntriesToSe__2:
+              CLR.W          ESQDISP_PrimarySecondaryMirrorFl(A4);426c 0000 
+              BRA.W          ___ESQDISP_MirrorPrimaryEntriesToSe__9;6000 00a0 
+___ESQDISP_MirrorPrimaryEntriesToSe__3:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQDISP_MirrorPrimaryEntriesToSe__4:
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.W         D0,D1                    ;3200 
+              CMP.L          D1,D7                    ;be81 
+              BGE.W          ___ESQDISP_MirrorPrimaryEntriesToSe__8;6c00 008a 
+___ESQDISP_MirrorPrimaryEntriesToSe__5:
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         TEXTDISP_SecondaryGroupCode(A4),D0;102c 0000 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $1b(A5),D1               ;122d 001b 
+              LEA            $c(A5),A0                ;41ed 000c 
+              LEA            $1(A5),A1                ;43ed 0001 
+              LEA            $1c(A5),A2               ;45ed 001c 
+              LEA            $13(A5),A6               ;4ded 0013 
+              MOVE.L         A6,-(A7)                 ;2f0e 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A1,-(A7)                 ;2f09 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQSHARED_CreateGroupEntryAndTit;6100 0000 
+              MOVE.W         TEXTDISP_SecondaryGroupEntryCoun(A4),D0;302c 0000 
+              MOVEQ.L        #$0,D6                   ;7c00 
+              MOVE.W         D0,D6                    ;3c00 
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_SecondaryEntryPtrTableP(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         $28(A5),D0               ;102d 0028 
+              MOVEQ.L        #$7f,D1                  ;727f 
+              AND.L          D1,D0                    ;c081 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         $29(A5),D1               ;122d 0029 
+              LEA            $2e(A5),A0               ;41ed 002e 
+___ESQDISP_MirrorPrimaryEntriesToSe__6:
+              MOVEQ.L        #$0,D2                   ;7400 
+              MOVE.W         (A0),D2                  ;3410 
+              MOVEQ.L        #$0,D3                   ;7600 
+              MOVE.B         $2a(A5),D3               ;162d 002a 
+              LEA            $2b(A5),A0               ;41ed 002b 
+              MOVE.L         A0,(A7)                  ;2e88 
+              MOVE.L         D3,-(A7)                 ;2f03 
+              MOVE.L         D2,-(A7)                 ;2f02 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          ESQDISP_FillProgramInfoHeaderFie;6100 0000 
+              LEA            $2c(A7),A7               ;4fef 002c 
+___ESQDISP_MirrorPrimaryEntriesToSe__7:
+              ADDQ.L         #$1,D7                   ;5287 
+              BRA.W          ___ESQDISP_MirrorPrimaryEntriesToSe__4;6000 ff6c 
+___ESQDISP_MirrorPrimaryEntriesToSe__8:
+              MOVE.W         #$1,ESQDISP_PrimarySecondaryMirrorFl(A4);397c 0001 0000 
+___ESQDISP_MirrorPrimaryEntriesToSe__9:
+              MOVEM.L        (A7)+,D2/D3/D6/D7/A2/A3/A5/A6;4cdf 6ccc 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_SecondaryGroupEntryCoun
+              XREF           ESQDISP_PrimarySecondaryMirrorFl
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           TEXTDISP_PrimaryEntryPtrTable
+              XREF           TEXTDISP_SecondaryGroupCode
+              XREF           ESQSHARED_CreateGroupEntryAndTit
+              XREF           TEXTDISP_SecondaryEntryPtrTableP
+              XREF           ESQDISP_FillProgramInfoHeaderFie
+              XDEF           ESQDISP_MirrorPrimaryEntriesToSe
+              END

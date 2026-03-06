@@ -1,0 +1,57 @@
+              SECTION      text,CODE
+__code:
+ESQ_ShutdownAndReturn:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQ_ShutdownAndReturn__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              TST.L          Global_ExitHookPtr(A4)   ;4aac 0000 
+              BEQ.B          ___ESQ_ShutdownAndReturn__3;6706 
+___ESQ_ShutdownAndReturn__2:
+              MOVE.L         Global_ExitHookPtr(A4),A0;206c 0000 
+              JSR            (A0)                     ;4e90 
+___ESQ_ShutdownAndReturn__3:
+              BSR.W          GROUP_MAIN_A_JMPTBL_MEMLIST_Free;6100 0000 
+              MOVE.L         Global_DosLibrary(A4),-(A7);2f2c 0000 
+              BSR.W          CloseLibrary             ;6100 0000 
+              BSR.W          GROUP_MAIN_A_JMPTBL_ESQ_MainExit;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          Global_SavedMsg(A4)      ;4aac 0000 
+              BEQ.B          ___ESQ_ShutdownAndReturn__7;671c 
+___ESQ_ShutdownAndReturn__4:
+              MOVE.L         Global_WBStartupWindowPtr(A4),D0;202c 0000 
+              BEQ.B          ___ESQ_ShutdownAndReturn__6;6708 
+___ESQ_ShutdownAndReturn__5:
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          execPrivate1             ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQ_ShutdownAndReturn__6:
+              BSR.W          Forbid                   ;6100 0000 
+              MOVE.L         Global_SavedMsg(A4),-(A7);2f2c 0000 
+              BSR.W          ReplyMsg                 ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQ_ShutdownAndReturn__7:
+              MOVE.L         D7,D0                    ;2007 
+___ESQ_ShutdownAndReturn__8:
+___ESQ_ShutdownAndReturn__9:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_ExitHookPtr
+              XREF           GROUP_MAIN_A_JMPTBL_MEMLIST_Free
+              XREF           Global_DosLibrary
+              XREF           CloseLibrary
+              XREF           GROUP_MAIN_A_JMPTBL_ESQ_MainExit
+              XREF           Global_SavedMsg
+              XREF           Global_WBStartupWindowPtr
+              XREF           execPrivate1
+              XREF           Forbid
+              XREF           ReplyMsg
+              XDEF           ESQ_ShutdownAndReturn
+              END

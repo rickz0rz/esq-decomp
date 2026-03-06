@@ -1,0 +1,28 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_CopyLongwordBlockDbfL:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D7/A3/A5,-(A7)           ;48e7 0114 
+___ESQSHARED4_CopyLongwordBlockDbfL__1:
+              MOVE.W         $1a(A7),D7               ;3e2f 001a 
+              MOVE.L         $14(A7),A3               ;266f 0014 
+              MOVE.L         $10(A7),A5               ;2a6f 0010 
+___ESQSHARED4_CopyLongwordBlockDbfL__2:
+              MOVE.L         (A5)+,(A3)+              ;26dd 
+              SUBQ.W         #$1,D7                   ;5347 
+___ESQSHARED4_CopyLongwordBlockDbfL__3:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              CMPI.L         #$ffff,D0                ;0c80 0000 ffff 
+              BNE.B          ___ESQSHARED4_CopyLongwordBlockDbfL__2;66f0 
+___ESQSHARED4_CopyLongwordBlockDbfL__4:
+___ESQSHARED4_CopyLongwordBlockDbfL__5:
+              MOVEM.L        (A7)+,D7/A3/A5           ;4cdf 2880 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQSHARED4_CopyLongwordBlockDbfL
+              END

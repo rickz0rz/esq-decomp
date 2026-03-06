@@ -1,0 +1,46 @@
+              SECTION      text,CODE
+__code:
+ESQIFF2_ValidateFieldIndexAndLen:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___ESQIFF2_ValidateFieldIndexAndLen__1:
+              MOVE.W         $12(A7),D6               ;3c2f 0012 
+              MOVE.W         $e(A7),D7                ;3e2f 000e 
+              MOVEQ.L        #$3,D0                   ;7003 
+              CMP.W          D0,D7                    ;be40 
+              BLE.B          ___ESQIFF2_ValidateFieldIndexAndLen__3;6f04 
+___ESQIFF2_ValidateFieldIndexAndLen__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___ESQIFF2_ValidateFieldIndexAndLen__11;601c 
+___ESQIFF2_ValidateFieldIndexAndLen__3:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___ESQIFF2_ValidateFieldIndexAndLen__7;660a 
+___ESQIFF2_ValidateFieldIndexAndLen__4:
+              MOVEQ.L        #$a,D0                   ;700a 
+              CMP.W          D0,D6                    ;bc40 
+              BLE.B          ___ESQIFF2_ValidateFieldIndexAndLen__9;6f0e 
+___ESQIFF2_ValidateFieldIndexAndLen__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___ESQIFF2_ValidateFieldIndexAndLen__11;600c 
+___ESQIFF2_ValidateFieldIndexAndLen__6:
+___ESQIFF2_ValidateFieldIndexAndLen__7:
+              MOVEQ.L        #$7,D0                   ;7007 
+              CMP.W          D0,D6                    ;bc40 
+              BLE.B          ___ESQIFF2_ValidateFieldIndexAndLen__9;6f04 
+___ESQIFF2_ValidateFieldIndexAndLen__8:
+              MOVEQ.L        #$0,D0                   ;7000 
+              BRA.B          ___ESQIFF2_ValidateFieldIndexAndLen__11;6002 
+___ESQIFF2_ValidateFieldIndexAndLen__9:
+              MOVEQ.L        #$1,D0                   ;7001 
+___ESQIFF2_ValidateFieldIndexAndLen__10:
+___ESQIFF2_ValidateFieldIndexAndLen__11:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQIFF2_ValidateFieldIndexAndLen
+              END

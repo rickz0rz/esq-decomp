@@ -1,0 +1,21 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_InitPresetDefaults:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_InitPresetDefaults__1:
+              PEA            GCOMMAND_DefaultPresetTable(A4);486c 0000 
+              BSR.W          GCOMMAND_InitPresetTableFromPale;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___GCOMMAND_InitPresetDefaults__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_DefaultPresetTable
+              XREF           GCOMMAND_InitPresetTableFromPale
+              XDEF           GCOMMAND_InitPresetDefaults
+              END

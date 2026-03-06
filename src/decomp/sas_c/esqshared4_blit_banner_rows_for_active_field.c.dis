@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_BlitBannerRowsForActi:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$4,D0                   ;5980 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
+___ESQSHARED4_BlitBannerRowsForActi__1:
+              MOVE.L         ESQPARS2_BannerRowCopySpanBytes(A4),D7;2e2c 0000 
+              MOVE.L         ESQPARS2_BannerRowCopyStrideByte(A4),D6;2c2c 0000 
+              TST.L          ESQPARS2_ActiveCopperListSelectF(A4);4aac 0000 
+              BNE.B          ___ESQSHARED4_BlitBannerRowsForActi__3;660a 
+___ESQSHARED4_BlitBannerRowsForActi__2:
+              MOVEQ.L        #$58,D0                  ;7058 
+              ADD.L          D0,D6                    ;dc80 
+              LEA            ESQ_CopperListBannerA(A4),A5;4bec 0000 
+              BRA.B          ___ESQSHARED4_BlitBannerRowsForActi__4;6004 
+___ESQSHARED4_BlitBannerRowsForActi__3:
+              LEA            ESQ_CopperListBannerB(A4),A5;4bec 0000 
+___ESQSHARED4_BlitBannerRowsForActi__4:
+              MOVE.L         D6,ESQPARS2_BannerCopyTailOffset(A4);2946 0000 
+              MOVE.L         D7,D0                    ;2007 
+              ADD.L          D6,D0                    ;d086 
+              MOVE.L         D0,ESQPARS2_BannerCopySourceOffset(A4);2940 0000 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQSHARED4_CopyInterleavedRowWor;6100 0000 
+              MOVE.L         ESQSHARED_BannerRowScratchRaster(A4),(A7);2eac 0000 
+              BSR.W          ESQSHARED4_CopyBannerRowsWithByt;6100 0000 
+              MOVE.L         ESQSHARED_BannerRowScratchRaster(A4),(A7);2eac 0000 
+              BSR.W          ESQSHARED4_CopyBannerRowsWithByt;6100 0000 
+              MOVE.L         ESQSHARED_BannerRowScratchRaster(A4),(A7);2eac 0000 
+              BSR.W          ESQSHARED4_CopyBannerRowsWithByt;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQSHARED4_BlitBannerRowsForActi__5:
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS2_BannerRowCopySpanBytes
+              XREF           ESQPARS2_BannerRowCopyStrideByte
+              XREF           ESQPARS2_ActiveCopperListSelectF
+              XREF           ESQ_CopperListBannerA
+              XREF           ESQ_CopperListBannerB
+              XREF           ESQPARS2_BannerCopyTailOffset
+              XREF           ESQPARS2_BannerCopySourceOffset
+              XREF           ESQSHARED4_CopyInterleavedRowWor
+              XREF           ESQSHARED_BannerRowScratchRaster
+              XREF           ESQSHARED4_CopyBannerRowsWithByt
+              XDEF           ESQSHARED4_BlitBannerRowsForActi
+              END

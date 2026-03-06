@@ -1,0 +1,18 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_EnableHighlight:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_EnableHighlight__1:
+              MOVE.W         #$1,GCOMMAND_HighlightFlag(A4);397c 0001 0000 
+              BSR.W          GCOMMAND_ApplyHighlightFlag;6100 0000 
+___GCOMMAND_EnableHighlight__2:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_HighlightFlag
+              XREF           GCOMMAND_ApplyHighlightFlag
+              XDEF           GCOMMAND_EnableHighlight
+              END

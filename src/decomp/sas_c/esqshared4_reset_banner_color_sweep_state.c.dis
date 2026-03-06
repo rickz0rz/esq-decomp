@@ -1,0 +1,34 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_ResetBannerColorSweep:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQSHARED4_ResetBannerColorSweep__1:
+              MOVEQ.L        #$f6,D0                  ;70f6 
+              MOVE.B         D0,ESQ_CopperBannerTailListA(A4);1940 0000 
+              MOVE.B         D0,ESQ_CopperBannerTailListB(A4);1940 0000 
+              MOVE.W         #$f5,D7                  ;3e3c 00f5 
+              MOVE.W         CONFIG_BannerCopperHeadByte(A4),D0;302c 0000 
+              ADD.W          D0,D7                    ;de40 
+              SUBI.W         #$80,D7                  ;0447 0080 
+              MOVE.W         D7,ESQPARS2_BannerTailBiasValue(A4);3947 0000 
+              MOVE.W         #$62,ESQPARS2_BannerColorStepCounter(A4);397c 0062 0000 
+              MOVE.W         #$1,ESQPARS2_BannerSweepEntryGuardCo(A4);397c 0001 0000 
+              BSR.W          ESQSHARED4_ResetBannerColorToSta;6100 0000 
+___ESQSHARED4_ResetBannerColorSweep__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQ_CopperBannerTailListA
+              XREF           ESQ_CopperBannerTailListB
+              XREF           CONFIG_BannerCopperHeadByte
+              XREF           ESQPARS2_BannerTailBiasValue
+              XREF           ESQPARS2_BannerColorStepCounter
+              XREF           ESQPARS2_BannerSweepEntryGuardCo
+              XREF           ESQSHARED4_ResetBannerColorToSta
+              XDEF           ESQSHARED4_ResetBannerColorSweep
+              END

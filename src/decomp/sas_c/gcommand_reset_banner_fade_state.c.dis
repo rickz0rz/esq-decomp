@@ -1,0 +1,33 @@
+              SECTION      text,CODE
+__code:
+GCOMMAND_ResetBannerFadeState:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+___GCOMMAND_ResetBannerFadeState__1:
+              MOVE.W         GCOMMAND_BannerFadeResetPendingF(A4),D0;302c 0000 
+              BEQ.B          ___GCOMMAND_ResetBannerFadeState__4;672a 
+___GCOMMAND_ResetBannerFadeState__2:
+___GCOMMAND_ResetBannerFadeState__3:
+              CLR.W          GCOMMAND_BannerFadeResetPendingF(A4);426c 0000 
+              MOVE.W         #$80,A0                  ;307c 0080 
+              CLR.L          -(A7)                    ;42a7 
+              MOVE.L         #$80fe,-(A7)             ;2f3c 0000 80fe 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          GCOMMAND_BuildBannerTables;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         #$80,ESQSHARED4_InterleaveCopyBaseOff(A4);297c 0000 0080 0000 
+              MOVE.L         #$2e4,ESQSHARED4_InterleaveCopyTailOff(A4);297c 0000 02e4 0000 
+___GCOMMAND_ResetBannerFadeState__4:
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           GCOMMAND_BannerFadeResetPendingF
+              XREF           GCOMMAND_BuildBannerTables
+              XREF           ESQSHARED4_InterleaveCopyBaseOff
+              XREF           ESQSHARED4_InterleaveCopyTailOff
+              XDEF           GCOMMAND_ResetBannerFadeState
+              END

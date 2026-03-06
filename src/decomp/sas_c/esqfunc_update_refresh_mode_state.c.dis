@@ -1,0 +1,49 @@
+              SECTION      text,CODE
+__code:
+ESQFUNC_UpdateRefreshModeState:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ESQFUNC_UpdateRefreshModeState__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.W         #$1,ESQFUNC_WeatherSliceWidthInitGat(A4);397c 0001 0000 
+              TST.L          NEWGRID_MessagePumpSuspendFlag(A4);4aac 0000 
+              BEQ.B          ___ESQFUNC_UpdateRefreshModeState__3;6718 
+___ESQFUNC_UpdateRefreshModeState__2:
+              CLR.L          NEWGRID_RefreshStateFlag(A4);42ac 0000 
+              CLR.L          NEWGRID_MessagePumpSuspendFlag(A4);42ac 0000 
+              MOVE.W         #$90,ESQPARS2_BannerRowWidthBytes(A4);397c 0090 0000 
+              MOVE.W         #$230,ESQPARS2_BannerCopyBlockSpanByte(A4);397c 0230 0000 
+              BSR.W          ESQSHARED4_ComputeBannerRowBlitG;6100 0000 
+___ESQFUNC_UpdateRefreshModeState__3:
+              TST.L          D7                       ;4a87 
+              BNE.B          ___ESQFUNC_UpdateRefreshModeState__5;6606 
+___ESQFUNC_UpdateRefreshModeState__4:
+              CLR.L          NEWGRID_ModeSelectorState(A4);42ac 0000 
+              BRA.B          ___ESQFUNC_UpdateRefreshModeState__7;6010 
+___ESQFUNC_UpdateRefreshModeState__5:
+              MOVEQ.L        #$2,D0                   ;7002 
+              MOVE.L         D0,NEWGRID_ModeSelectorState(A4);2940 0000 
+              TST.L          NEWGRID_LastRefreshRequest(A4);4aac 0000 
+              BNE.B          ___ESQFUNC_UpdateRefreshModeState__7;6604 
+___ESQFUNC_UpdateRefreshModeState__6:
+              CLR.L          NEWGRID_RefreshStateFlag(A4);42ac 0000 
+___ESQFUNC_UpdateRefreshModeState__7:
+              MOVE.L         D7,NEWGRID_LastRefreshRequest(A4);2947 0000 
+___ESQFUNC_UpdateRefreshModeState__8:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQFUNC_WeatherSliceWidthInitGat
+              XREF           NEWGRID_MessagePumpSuspendFlag
+              XREF           NEWGRID_RefreshStateFlag
+              XREF           ESQPARS2_BannerRowWidthBytes
+              XREF           ESQPARS2_BannerCopyBlockSpanByte
+              XREF           ESQSHARED4_ComputeBannerRowBlitG
+              XREF           NEWGRID_ModeSelectorState
+              XREF           NEWGRID_LastRefreshRequest
+              XDEF           ESQFUNC_UpdateRefreshModeState
+              END

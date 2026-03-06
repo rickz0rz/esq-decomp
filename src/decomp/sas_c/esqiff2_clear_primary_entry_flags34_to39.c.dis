@@ -1,0 +1,46 @@
+              SECTION      text,CODE
+__code:
+ESQIFF2_ClearPrimaryEntryFlags34:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7/A5,-(A7)           ;48e7 0304 
+___ESQIFF2_ClearPrimaryEntryFlags34__1:
+              MOVEQ.L        #$0,D7                   ;7e00 
+___ESQIFF2_ClearPrimaryEntryFlags34__2:
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              CMP.W          D0,D7                    ;be40 
+              BCC.B          ___ESQIFF2_ClearPrimaryEntryFlags34__8;642a 
+___ESQIFF2_ClearPrimaryEntryFlags34__3:
+              SWAP           D7                       ;4847 
+              CLR.W          D7                       ;4247 
+              SWAP           D7                       ;4847 
+              MOVE.L         D7,D0                    ;2007 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              MOVEQ.L        #$0,D6                   ;7c00 
+___ESQIFF2_ClearPrimaryEntryFlags34__4:
+              MOVEQ.L        #$6,D0                   ;7006 
+              CMP.W          D0,D6                    ;bc40 
+              BCC.B          ___ESQIFF2_ClearPrimaryEntryFlags34__6;640c 
+___ESQIFF2_ClearPrimaryEntryFlags34__5:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D6,D0                    ;3006 
+              CLR.B          $22(A5,D0.L)             ;4235 0822 
+              ADDQ.W         #$1,D6                   ;5246 
+              BRA.B          ___ESQIFF2_ClearPrimaryEntryFlags34__4;60ee 
+___ESQIFF2_ClearPrimaryEntryFlags34__6:
+              ADDQ.W         #$1,D7                   ;5247 
+              BRA.B          ___ESQIFF2_ClearPrimaryEntryFlags34__2;60ce 
+___ESQIFF2_ClearPrimaryEntryFlags34__7:
+___ESQIFF2_ClearPrimaryEntryFlags34__8:
+              MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           TEXTDISP_PrimaryEntryPtrTable
+              XDEF           ESQIFF2_ClearPrimaryEntryFlags34
+              END

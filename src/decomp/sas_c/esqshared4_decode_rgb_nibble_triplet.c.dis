@@ -1,0 +1,37 @@
+              SECTION      text,CODE
+__code:
+ESQSHARED4_DecodeRgbNibbleTriple:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D5/D6/D7/A5,-(A7)        ;48e7 0704 
+___ESQSHARED4_DecodeRgbNibbleTriple__1:
+              MOVE.L         $14(A7),A5               ;2a6f 0014 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              MOVEQ.L        #$f,D1                   ;720f 
+              AND.L          D1,D0                    ;c081 
+              MOVE.L         D0,D7                    ;2e00 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              AND.L          D1,D0                    ;c081 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         (A5)+,D0                 ;101d 
+              AND.L          D1,D0                    ;c081 
+              MOVE.L         D0,D5                    ;2a00 
+              MOVE.W         D7,D0                    ;3007 
+              ASL.W          #$8,D0                   ;e140 
+              MOVE.W         D6,D1                    ;3206 
+              ASL.W          #$4,D1                   ;e941 
+              ADD.W          D1,D0                    ;d041 
+              ADD.W          D5,D0                    ;d045 
+___ESQSHARED4_DecodeRgbNibbleTriple__2:
+___ESQSHARED4_DecodeRgbNibbleTriple__3:
+              MOVEM.L        (A7)+,D5/D6/D7/A5        ;4cdf 20e0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XDEF           ESQSHARED4_DecodeRgbNibbleTriple
+              END

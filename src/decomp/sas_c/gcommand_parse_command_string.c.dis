@@ -1,0 +1,482 @@
+              SECTION      text,CODE
+__code:
+parse_pen_1_to_3:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        D6/D7,-(A7)              ;48e7 0300 
+___parse_pen_1_to_3__1:
+              MOVE.B         $f(A7),D7                ;1e2f 000f 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              MOVE.L         D0,D6                    ;2c00 
+              MOVEQ.L        #$30,D1                  ;7230 
+              SUB.L          D1,D6                    ;9c81 
+              MOVEQ.L        #$1,D0                   ;7001 
+              CMP.L          D0,D6                    ;bc80 
+              BLT.B          ___parse_pen_1_to_3__3   ;6d06 
+___parse_pen_1_to_3__2:
+              MOVEQ.L        #$3,D0                   ;7003 
+              CMP.L          D0,D6                    ;bc80 
+              BLE.B          ___parse_pen_1_to_3__4   ;6f04 
+___parse_pen_1_to_3__3:
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              BRA.B          ___parse_pen_1_to_3__6   ;6002 
+___parse_pen_1_to_3__4:
+              MOVE.L         D6,D0                    ;2006 
+___parse_pen_1_to_3__5:
+___parse_pen_1_to_3__6:
+              MOVEM.L        (A7)+,D6/D7              ;4cdf 00c0 
+              RTS                                     ;4e75 
+__const:
+__strings:
+fold_upper_if_alpha:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___fold_upper_if_alpha__1:
+              MOVE.B         $b(A7),D7                ;1e2f 000b 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.B         D7,D0                    ;1007 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$1,$0(A0,D0.W)          ;0830 0001 0000 
+              BEQ.B          ___fold_upper_if_alpha__3;6708 
+___fold_upper_if_alpha__2:
+              MOVE.B         D7,D0                    ;1007 
+              SUBI.B         #$20,D0                  ;0400 0020 
+              BRA.B          ___fold_upper_if_alpha__5;6002 
+___fold_upper_if_alpha__3:
+              MOVE.B         D7,D0                    ;1007 
+___fold_upper_if_alpha__4:
+___fold_upper_if_alpha__5:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+GCOMMAND_ParseCommandString:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$10,A7                  ;9efc 0010 
+              MOVEM.L        D2/D5/D6/D7/A2/A3/A5,-(A7);48e7 2734 
+___GCOMMAND_ParseCommandString__1:
+              MOVE.L         $30(A7),A5               ;2a6f 0030 
+              MOVE.B         GCOMMAND_MplexParseScratchSeedWo(A4),D0;102c 0000 
+              MOVE.B         D0,$28(A7)               ;1f40 0028 
+              MOVE.B         GCOMMAND_MplexParseScratchSeedWo+$1(A4),D0;102c 0001 
+              MOVE.B         D0,$29(A7)               ;1f40 0029 
+              MOVE.B         GCOMMAND_MplexParseScratchSeedWo+$2(A4),D0;102c 0002 
+              MOVE.B         D0,$2a(A7)               ;1f40 002a 
+              MOVE.B         GCOMMAND_MplexParseScratchSeedWo+$3(A4),D0;102c 0003 
+              MOVE.B         D0,$2b(A7)               ;1f40 002b 
+              BSR.W          FLIB2_LoadDigitalMplexDefaults;6100 0000 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___GCOMMAND_ParseCommandString__3;6704 
+___GCOMMAND_ParseCommandString__2:
+              TST.B          (A5)                     ;4a15 
+              BNE.B          ___GCOMMAND_ParseCommandString__4;6608 
+___GCOMMAND_ParseCommandString__3:
+              BSR.W          GCOMMAND_LoadMplexFile   ;6100 0000 
+              BRA.W          ___GCOMMAND_ParseCommandString__92;6000 02fe 
+___GCOMMAND_ParseCommandString__4:
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            $30(A7)                  ;486f 0030 
+              BSR.W          GROUP_AW_JMPTBL_STRING_CopyPadNu;6100 0000 
+              CLR.B          $36(A7)                  ;422f 0036 
+              PEA            $34(A7)                  ;486f 0034 
+              BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              LEA            $10(A7),A7               ;4fef 0010 
+              MOVE.L         D7,D6                    ;2c07 
+              ADDQ.L         #$2,D6                   ;5486 
+              MOVEQ.L        #$2,D5                   ;7a02 
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__10;6c26 
+___GCOMMAND_ParseCommandString__5:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          fold_upper_if_alpha      ;6100 ff4e 
+___GCOMMAND_ParseCommandString__6:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         D0,$1e(A7)               ;1f40 001e 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___GCOMMAND_ParseCommandString__8;6706 
+___GCOMMAND_ParseCommandString__7:
+              MOVEQ.L        #$4e,D1                  ;724e 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_ParseCommandString__9;6604 
+___GCOMMAND_ParseCommandString__8:
+              MOVE.B         D0,GCOMMAND_DigitalMplexEnabledFlag(A4);1940 0000 
+___GCOMMAND_ParseCommandString__9:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__10:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__15;6c20 
+___GCOMMAND_ParseCommandString__11:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVEQ.L        #$30,D0                  ;7030 
+              SUB.L          D0,D1                    ;9280 
+              MOVEM.L        D1,$24(A7)               ;48ef 0002 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__14;6d0a 
+___GCOMMAND_ParseCommandString__12:
+              MOVEQ.L        #$9,D0                   ;7009 
+              CMP.L          D0,D1                    ;b280 
+              BGT.B          ___GCOMMAND_ParseCommandString__14;6e04 
+___GCOMMAND_ParseCommandString__13:
+              MOVE.L         D1,GCOMMAND_MplexModeCycleCount(A4);2941 0000 
+___GCOMMAND_ParseCommandString__14:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__15:
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$1,D0                   ;5280 
+              CMP.L          D6,D0                    ;b086 
+              BGE.B          ___GCOMMAND_ParseCommandString__20;6c2c 
+___GCOMMAND_ParseCommandString__16:
+              MOVE.B         $0(A5,D5.L),$28(A7)      ;1f75 5800 0028 
+              MOVE.B         $1(A5,D5.L),$29(A7)      ;1f75 5801 0029 
+              CLR.B          $2a(A7)                  ;422f 002a 
+              PEA            $28(A7)                  ;486f 0028 
+              BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__19;6d0a 
+___GCOMMAND_ParseCommandString__17:
+              MOVEQ.L        #$63,D1                  ;7263 
+              CMP.L          D1,D0                    ;b081 
+              BGT.B          ___GCOMMAND_ParseCommandString__19;6e04 
+___GCOMMAND_ParseCommandString__18:
+              MOVE.L         D0,GCOMMAND_MplexSearchRowLimit(A4);2940 0000 
+___GCOMMAND_ParseCommandString__19:
+              ADDQ.L         #$2,D5                   ;5485 
+___GCOMMAND_ParseCommandString__20:
+              MOVE.L         D5,D0                    ;2005 
+              ADDQ.L         #$1,D0                   ;5280 
+              CMP.L          D6,D0                    ;b086 
+              BGE.B          ___GCOMMAND_ParseCommandString__25;6c2c 
+___GCOMMAND_ParseCommandString__21:
+              MOVE.B         $0(A5,D5.L),$28(A7)      ;1f75 5800 0028 
+              MOVE.B         $1(A5,D5.L),$29(A7)      ;1f75 5801 0029 
+              CLR.B          $2a(A7)                  ;422f 002a 
+              PEA            $28(A7)                  ;486f 0028 
+              BSR.W          ESQPARS_JMPTBL_PARSE_ReadSignedL;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__24;6d0a 
+___GCOMMAND_ParseCommandString__22:
+              MOVEQ.L        #$1d,D1                  ;721d 
+              CMP.L          D1,D0                    ;b081 
+              BGT.B          ___GCOMMAND_ParseCommandString__24;6e04 
+___GCOMMAND_ParseCommandString__23:
+              MOVE.L         D0,GCOMMAND_MplexClockOffsetMinutes(A4);2940 0000 
+___GCOMMAND_ParseCommandString__24:
+              ADDQ.L         #$2,D5                   ;5485 
+___GCOMMAND_ParseCommandString__25:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__30;6c1c 
+___GCOMMAND_ParseCommandString__26:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          parse_pen_1_to_3         ;6100 fe66 
+___GCOMMAND_ParseCommandString__27:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__29;6d04 
+___GCOMMAND_ParseCommandString__28:
+              MOVE.L         D0,GCOMMAND_MplexMessageTextPen(A4);2940 0000 
+___GCOMMAND_ParseCommandString__29:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__30:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__34;6c2e 
+___GCOMMAND_ParseCommandString__31:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.B         D0,$1f(A7)               ;1f40 001f 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$7,$0(A0,D1.W)          ;0830 0007 1000 
+              BEQ.B          ___GCOMMAND_ParseCommandString__33;6714 
+___GCOMMAND_ParseCommandString__32:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,GCOMMAND_MplexMessageFramePen(A4);2941 0000 
+___GCOMMAND_ParseCommandString__33:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__34:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__39;6c1c 
+___GCOMMAND_ParseCommandString__35:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          parse_pen_1_to_3         ;6100 fe14 
+___GCOMMAND_ParseCommandString__36:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__38;6d04 
+___GCOMMAND_ParseCommandString__37:
+              MOVE.L         D0,GCOMMAND_MplexEditorLayoutPen(A4);2940 0000 
+___GCOMMAND_ParseCommandString__38:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__39:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__43;6c2e 
+___GCOMMAND_ParseCommandString__40:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.B         D0,$1f(A7)               ;1f40 001f 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$7,$0(A0,D1.W)          ;0830 0007 1000 
+              BEQ.B          ___GCOMMAND_ParseCommandString__42;6714 
+___GCOMMAND_ParseCommandString__41:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,GCOMMAND_MplexEditorRowPen(A4);2941 0000 
+___GCOMMAND_ParseCommandString__42:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__43:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__48;6c1c 
+___GCOMMAND_ParseCommandString__44:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          parse_pen_1_to_3         ;6100 fdc2 
+___GCOMMAND_ParseCommandString__45:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__47;6d04 
+___GCOMMAND_ParseCommandString__46:
+              MOVE.L         D0,GCOMMAND_MplexDetailLayoutPen(A4);2940 0000 
+___GCOMMAND_ParseCommandString__47:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__48:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__53;6c1c 
+___GCOMMAND_ParseCommandString__49:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          parse_pen_1_to_3         ;6100 fda2 
+___GCOMMAND_ParseCommandString__50:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D0,$24(A7)               ;2f40 0024 
+              BLT.B          ___GCOMMAND_ParseCommandString__52;6d04 
+___GCOMMAND_ParseCommandString__51:
+              MOVE.L         D0,GCOMMAND_MplexDetailInitialLineI(A4);2940 0000 
+___GCOMMAND_ParseCommandString__52:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__53:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__57;6c2e 
+___GCOMMAND_ParseCommandString__54:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.B         D0,$1f(A7)               ;1f40 001f 
+              LEA            WDISP_CharClassTable(A4),A0;41ec 0000 
+              BTST           #$7,$0(A0,D1.W)          ;0830 0007 1000 
+              BEQ.B          ___GCOMMAND_ParseCommandString__56;6714 
+___GCOMMAND_ParseCommandString__55:
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          LADFUNC_ParseHexDigit    ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,GCOMMAND_MplexDetailRowPen(A4);2941 0000 
+___GCOMMAND_ParseCommandString__56:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__57:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__65;6c32 
+___GCOMMAND_ParseCommandString__58:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          fold_upper_if_alpha      ;6100 fd82 
+___GCOMMAND_ParseCommandString__59:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         D0,$1e(A7)               ;1f40 001e 
+              MOVEQ.L        #$46,D1                  ;7246 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___GCOMMAND_ParseCommandString__63;6712 
+___GCOMMAND_ParseCommandString__60:
+              MOVEQ.L        #$42,D1                  ;7242 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___GCOMMAND_ParseCommandString__63;670c 
+___GCOMMAND_ParseCommandString__61:
+              MOVEQ.L        #$4c,D1                  ;724c 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___GCOMMAND_ParseCommandString__63;6706 
+___GCOMMAND_ParseCommandString__62:
+              MOVEQ.L        #$4e,D1                  ;724e 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_ParseCommandString__64;6604 
+___GCOMMAND_ParseCommandString__63:
+              MOVE.B         D0,GCOMMAND_MplexWorkflowMode(A4);1940 0000 
+___GCOMMAND_ParseCommandString__64:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__65:
+              CMP.L          D6,D5                    ;ba86 
+              BGE.B          ___GCOMMAND_ParseCommandString__71;6c26 
+___GCOMMAND_ParseCommandString__66:
+              MOVE.B         $0(A5,D5.L),D0           ;1035 5800 
+              MOVEQ.L        #$0,D1                   ;7200 
+              MOVE.B         D0,D1                    ;1200 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          fold_upper_if_alpha      ;6100 fd4c 
+___GCOMMAND_ParseCommandString__67:
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.B         D0,$1e(A7)               ;1f40 001e 
+              MOVEQ.L        #$59,D1                  ;7259 
+              CMP.B          D1,D0                    ;b001 
+              BEQ.B          ___GCOMMAND_ParseCommandString__69;6706 
+___GCOMMAND_ParseCommandString__68:
+              MOVEQ.L        #$4e,D1                  ;724e 
+              CMP.B          D1,D0                    ;b001 
+              BNE.B          ___GCOMMAND_ParseCommandString__70;6604 
+___GCOMMAND_ParseCommandString__69:
+              MOVE.B         D0,GCOMMAND_MplexDetailLayoutFlag(A4);1940 0000 
+___GCOMMAND_ParseCommandString__70:
+              ADDQ.L         #$1,D5                   ;5285 
+___GCOMMAND_ParseCommandString__71:
+              CMP.L          D6,D5                    ;ba86 
+              BLE.B          ___GCOMMAND_ParseCommandString__73;6f02 
+___GCOMMAND_ParseCommandString__72:
+              MOVE.L         D5,D6                    ;2c05 
+___GCOMMAND_ParseCommandString__73:
+              MOVE.L         A5,A3                    ;264d 
+              ADD.L          D6,A3                    ;d7c6 
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___GCOMMAND_ParseCommandString__84;6762 
+___GCOMMAND_ParseCommandString__74:
+              PEA            ($12).w                  ;4878 0012 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              BSR.W          GROUP_AS_JMPTBL_STR_FindCharPtr;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              ADDQ.W         #$8,A7                   ;504f 
+              BEQ.B          ___GCOMMAND_ParseCommandString__83;6740 
+___GCOMMAND_ParseCommandString__75:
+              TST.B          (A2)                     ;4a12 
+              BEQ.B          ___GCOMMAND_ParseCommandString__83;673c 
+___GCOMMAND_ParseCommandString__76:
+              CLR.B          (A2)+                    ;421a 
+              MOVE.L         A2,D0                    ;200a 
+              MOVE.L         A3,D1                    ;220b 
+              SUB.L          D1,D0                    ;9081 
+              MOVEQ.L        #$7f,D2                  ;747f 
+              CMP.L          D2,D0                    ;b082 
+              BLE.B          ___GCOMMAND_ParseCommandString__78;6f04 
+___GCOMMAND_ParseCommandString__77:
+              CLR.B          $7f(A3)                  ;422b 007f 
+___GCOMMAND_ParseCommandString__78:
+              TST.B          (A3)                     ;4a13 
+              BEQ.B          ___GCOMMAND_ParseCommandString__80;6710 
+___GCOMMAND_ParseCommandString__79:
+              MOVE.L         D1,-(A7)                 ;2f01 
+              MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),-(A7);2f2c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_MplexAtTemplatePtr(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___GCOMMAND_ParseCommandString__80:
+              TST.B          (A2)                     ;4a12 
+              BEQ.B          ___GCOMMAND_ParseCommandString__84;6722 
+___GCOMMAND_ParseCommandString__81:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         GCOMMAND_MplexListingsTemplatePt(A4),-(A7);2f2c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_MplexListingsTemplatePt(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___GCOMMAND_ParseCommandString__82:
+              BRA.B          ___GCOMMAND_ParseCommandString__84;6010 
+___GCOMMAND_ParseCommandString__83:
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),-(A7);2f2c 0000 
+              BSR.W          ESQPARS_ReplaceOwnedString;6100 0000 
+              MOVE.L         D0,GCOMMAND_MplexAtTemplatePtr(A4);2940 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+___GCOMMAND_ParseCommandString__84:
+              CLR.L          $20(A7)                  ;42af 0020 
+              MOVE.L         GCOMMAND_MplexAtTemplatePtr(A4),D0;202c 0000 
+              BEQ.B          ___GCOMMAND_ParseCommandString__87;6718 
+___GCOMMAND_ParseCommandString__85:
+              MOVE.L         D0,A0                    ;2040 
+              MOVE.B         (A0),D1                  ;1210 
+              TST.B          D1                       ;4a01 
+              BEQ.B          ___GCOMMAND_ParseCommandString__87;6710 
+___GCOMMAND_ParseCommandString__86:
+              PEA            GCOMMAND_FMT_PCT_T_MplexTemplate(A4);486c 0000 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          GROUP_AS_JMPTBL_ESQ_FindSubstrin;6100 0000 
+              ADDQ.W         #$8,A7                   ;504f 
+              MOVE.L         D0,$20(A7)               ;2f40 0020 
+___GCOMMAND_ParseCommandString__87:
+              TST.L          $20(A7)                  ;4aaf 0020 
+              BEQ.B          ___GCOMMAND_ParseCommandString__90;670e 
+___GCOMMAND_ParseCommandString__88:
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              TST.B          (A0)                     ;4a10 
+              BEQ.B          ___GCOMMAND_ParseCommandString__90;6706 
+___GCOMMAND_ParseCommandString__89:
+              MOVE.B         #$73,$1(A0)              ;117c 0073 0001 
+___GCOMMAND_ParseCommandString__90:
+              BSR.W          GCOMMAND_LoadMplexFile   ;6100 0000 
+___GCOMMAND_ParseCommandString__91:
+___GCOMMAND_ParseCommandString__92:
+              MOVEM.L        (A7)+,D2/D5/D6/D7/A2/A3/A5;4cdf 2ce4 
+              ADD.W          #$10,A7                  ;defc 0010 
+              RTS                                     ;4e75 
+              XREF           __base
+              XREF           _XCOVF
+              XREF           WDISP_CharClassTable
+              XREF           GCOMMAND_MplexParseScratchSeedWo
+              XREF           FLIB2_LoadDigitalMplexDefaults
+              XREF           GCOMMAND_LoadMplexFile
+              XREF           GROUP_AW_JMPTBL_STRING_CopyPadNu
+              XREF           ESQPARS_JMPTBL_PARSE_ReadSignedL
+              XREF           GCOMMAND_DigitalMplexEnabledFlag
+              XREF           GCOMMAND_MplexModeCycleCount
+              XREF           GCOMMAND_MplexSearchRowLimit
+              XREF           GCOMMAND_MplexClockOffsetMinutes
+              XREF           GCOMMAND_MplexMessageTextPen
+              XREF           LADFUNC_ParseHexDigit
+              XREF           GCOMMAND_MplexMessageFramePen
+              XREF           GCOMMAND_MplexEditorLayoutPen
+              XREF           GCOMMAND_MplexEditorRowPen
+              XREF           GCOMMAND_MplexDetailLayoutPen
+              XREF           GCOMMAND_MplexDetailInitialLineI
+              XREF           GCOMMAND_MplexDetailRowPen
+              XREF           GCOMMAND_MplexWorkflowMode
+              XREF           GCOMMAND_MplexDetailLayoutFlag
+              XREF           GROUP_AS_JMPTBL_STR_FindCharPtr
+              XREF           GCOMMAND_MplexAtTemplatePtr
+              XREF           ESQPARS_ReplaceOwnedString
+              XREF           GCOMMAND_MplexListingsTemplatePt
+              XREF           GCOMMAND_FMT_PCT_T_MplexTemplate
+              XREF           GROUP_AS_JMPTBL_ESQ_FindSubstrin
+              XDEF           GCOMMAND_ParseCommandString
+              END

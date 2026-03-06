@@ -1,0 +1,53 @@
+              SECTION      text,CODE
+__code:
+ESQDISP_NormalizeClockAndRedrawB:
+              MOVE.L         A7,D0                    ;200f 
+              SUBQ.L         #$8,D0                   ;5180 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVEM.L        A3/A5,-(A7)              ;48e7 0014 
+___ESQDISP_NormalizeClockAndRedrawB__1:
+              MOVE.L         $c(A7),A5                ;2a6f 000c 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
+              BSR.W          ESQFUNC_JMPTBL_PARSEINI_Normaliz;6100 0000 
+              PEA            DST_BannerWindowPrimary(A4);486c 0000 
+              BSR.W          DST_UpdateBannerQueue    ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              TST.L          D0                       ;4a80 
+              BNE.B          ___ESQDISP_NormalizeClockAndRedrawB__3;6604 
+___ESQDISP_NormalizeClockAndRedrawB__2:
+              BSR.W          DST_RefreshBannerBuffer  ;6100 0000 
+___ESQDISP_NormalizeClockAndRedrawB__3:
+              MOVE.L         Global_REF_RASTPORT_1(A4),A0;206c 0000 
+              MOVE.L         A0,A1                    ;2248 
+              ADDQ.L         #$4,A1                   ;5889 
+              MOVE.L         (A1),A3                  ;2651 
+              LEA            $4(A0),A1                ;43e8 0004 
+              LEA            Global_REF_696_400_BITMAP(A4),A0;41ec 0000 
+              MOVE.L         A0,(A1)                  ;2288 
+              BSR.W          ESQFUNC_JMPTBL_CLEANUP_DrawClock;6100 0000 
+              MOVE.L         Global_REF_RASTPORT_1(A4),A0;206c 0000 
+              ADDQ.L         #$4,A0                   ;5888 
+              MOVE.L         A3,(A0)                  ;208b 
+              PEA            ($1).w                   ;4878 0001 
+              BSR.W          ESQDISP_DrawStatusBanner_Impl;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+___ESQDISP_NormalizeClockAndRedrawB__4:
+              MOVEM.L        (A7)+,A3/A5              ;4cdf 2800 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           CLOCK_DaySlotIndex
+              XREF           ESQFUNC_JMPTBL_PARSEINI_Normaliz
+              XREF           DST_BannerWindowPrimary
+              XREF           DST_UpdateBannerQueue
+              XREF           DST_RefreshBannerBuffer
+              XREF           Global_REF_RASTPORT_1
+              XREF           Global_REF_696_400_BITMAP
+              XREF           ESQFUNC_JMPTBL_CLEANUP_DrawClock
+              XREF           ESQDISP_DrawStatusBanner_Impl
+              XDEF           ESQDISP_NormalizeClockAndRedrawB
+              END

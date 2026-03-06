@@ -1,0 +1,153 @@
+              SECTION      text,CODE
+__code:
+ESQPARS_RemoveGroupEntryAndRelea:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$14,D0                  ;90bc 0000 0014 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$4,A7                   ;594f 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___ESQPARS_RemoveGroupEntryAndRelea__1:
+              MOVE.W         $26(A7),D7               ;3e2f 0026 
+              BSR.W          ESQPARS_JMPTBL_SCRIPT_ResetCtrlC;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         D7,D0                    ;3007 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              BSR.W          ESQIFF2_ClearLineHeadTailByMode;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.B          ___ESQPARS_RemoveGroupEntryAndRelea__3;6614 
+___ESQPARS_RemoveGroupEntryAndRelea__2:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_SecondaryGroupEntryCoun(A4),D0;302c 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              SUBQ.L         #$1,D6                   ;5386 
+              CLR.W          TEXTDISP_SecondaryGroupEntryCoun(A4);426c 0000 
+              CLR.B          TEXTDISP_SecondaryGroupPresentFl(A4);422c 0000 
+              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__4;6012 
+___ESQPARS_RemoveGroupEntryAndRelea__3:
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.W         TEXTDISP_PrimaryGroupEntryCount(A4),D0;302c 0000 
+              MOVE.L         D0,D6                    ;2c00 
+              SUBQ.L         #$1,D6                   ;5386 
+              CLR.W          TEXTDISP_PrimaryGroupEntryCount(A4);426c 0000 
+              CLR.B          TEXTDISP_PrimaryGroupPresentFlag(A4);422c 0000 
+___ESQPARS_RemoveGroupEntryAndRelea__4:
+              TST.L          D6                       ;4a86 
+              BMI.W          ___ESQPARS_RemoveGroupEntryAndRelea__23;6b00 00d4 
+___ESQPARS_RemoveGroupEntryAndRelea__5:
+              MOVE.L         D7,D0                    ;2007 
+              SUBQ.W         #$2,D0                   ;5540 
+              BNE.B          ___ESQPARS_RemoveGroupEntryAndRelea__7;661e 
+___ESQPARS_RemoveGroupEntryAndRelea__6:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_SecondaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+              LEA            TEXTDISP_SecondaryTitlePtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__8;601c 
+___ESQPARS_RemoveGroupEntryAndRelea__7:
+              MOVE.L         D6,D0                    ;2006 
+              ASL.L          #$2,D0                   ;e580 
+              LEA            TEXTDISP_PrimaryEntryPtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+              LEA            TEXTDISP_PrimaryTitlePtrTable(A4),A0;41ec 0000 
+              MOVE.L         $0(A0,D0.L),A3           ;2670 0800 
+              CLR.L          $0(A0,D0.L)              ;42b0 0800 
+___ESQPARS_RemoveGroupEntryAndRelea__8:
+              MOVEQ.L        #$0,D5                   ;7a00 
+___ESQPARS_RemoveGroupEntryAndRelea__9:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__17;674a 
+___ESQPARS_RemoveGroupEntryAndRelea__10:
+              MOVEQ.L        #$31,D0                  ;7031 
+              CMP.L          D0,D5                    ;ba80 
+              BGE.B          ___ESQPARS_RemoveGroupEntryAndRelea__17;6c44 
+___ESQPARS_RemoveGroupEntryAndRelea__11:
+              MOVE.L         D5,D0                    ;2005 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         A3,A0                    ;204b 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $38(A0),A2               ;45e8 0038 
+              MOVE.L         (A2),A0                  ;2052 
+              MOVE.L         A0,$1c(A7)               ;2f48 001c 
+              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__16;672c 
+___ESQPARS_RemoveGroupEntryAndRelea__12:
+              MOVEQ.L        #$0,D4                   ;7800 
+___ESQPARS_RemoveGroupEntryAndRelea__13:
+              MOVE.L         $1c(A7),A0               ;206f 001c 
+              TST.B          $0(A0,D4.L)              ;4a30 4800 
+              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__15;6704 
+___ESQPARS_RemoveGroupEntryAndRelea__14:
+              ADDQ.L         #$1,D4                   ;5284 
+              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__13;60f2 
+___ESQPARS_RemoveGroupEntryAndRelea__15:
+              MOVE.L         D4,D0                    ;2004 
+              ADDQ.L         #$1,D0                   ;5280 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         $20(A7),-(A7)            ;2f2f 0020 
+              PEA            ($401).w                 ;4878 0401 
+              PEA            Global_STR_ESQPARS_C_2(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+              CLR.L          (A2)                     ;4292 
+___ESQPARS_RemoveGroupEntryAndRelea__16:
+              ADDQ.L         #$1,D5                   ;5285 
+              BRA.B          ___ESQPARS_RemoveGroupEntryAndRelea__9;60b2 
+___ESQPARS_RemoveGroupEntryAndRelea__17:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__19;6716 
+___ESQPARS_RemoveGroupEntryAndRelea__18:
+              PEA            ($1f4).w                 ;4878 01f4 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              PEA            ($407).w                 ;4878 0407 
+              PEA            Global_STR_ESQPARS_C_3(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___ESQPARS_RemoveGroupEntryAndRelea__19:
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          ESQPARS_JMPTBL_COI_FreeEntryReso;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              MOVE.L         A5,D0                    ;200d 
+              BEQ.B          ___ESQPARS_RemoveGroupEntryAndRelea__21;6716 
+___ESQPARS_RemoveGroupEntryAndRelea__20:
+              PEA            ($34).w                  ;4878 0034 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              PEA            ($410).w                 ;4878 0410 
+              PEA            Global_STR_ESQPARS_C_4(A4);486c 0000 
+              BSR.W          ESQIFF_JMPTBL_MEMORY_DeallocateM;6100 0000 
+              LEA            $10(A7),A7               ;4fef 0010 
+___ESQPARS_RemoveGroupEntryAndRelea__21:
+              SUBQ.L         #$1,D6                   ;5386 
+              BRA.W          ___ESQPARS_RemoveGroupEntryAndRelea__4;6000 ff2a 
+___ESQPARS_RemoveGroupEntryAndRelea__22:
+___ESQPARS_RemoveGroupEntryAndRelea__23:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADDQ.W         #$4,A7                   ;584f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           ESQPARS_JMPTBL_SCRIPT_ResetCtrlC
+              XREF           ESQIFF2_ClearLineHeadTailByMode
+              XREF           TEXTDISP_SecondaryGroupEntryCoun
+              XREF           TEXTDISP_SecondaryGroupPresentFl
+              XREF           TEXTDISP_PrimaryGroupEntryCount
+              XREF           TEXTDISP_PrimaryGroupPresentFlag
+              XREF           TEXTDISP_SecondaryEntryPtrTable
+              XREF           TEXTDISP_SecondaryTitlePtrTable
+              XREF           TEXTDISP_PrimaryEntryPtrTable
+              XREF           TEXTDISP_PrimaryTitlePtrTable
+              XREF           Global_STR_ESQPARS_C_2
+              XREF           ESQIFF_JMPTBL_MEMORY_DeallocateM
+              XREF           Global_STR_ESQPARS_C_3
+              XREF           ESQPARS_JMPTBL_COI_FreeEntryReso
+              XREF           Global_STR_ESQPARS_C_4
+              XDEF           ESQPARS_RemoveGroupEntryAndRelea
+              END
