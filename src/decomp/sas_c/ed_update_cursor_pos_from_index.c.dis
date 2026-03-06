@@ -1,0 +1,40 @@
+              SECTION      text,CODE
+__code:
+ED_UpdateCursorPosFromIndex:
+              CMP.L          __base(A4),A7            ;bfec 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED_UpdateCursorPosFromIndex__1:
+              MOVE.L         $8(A7),D7                ;2e2f 0008 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$28,D1                  ;7228 
+              BSR.W          _CXD33                   ;6100 0000 
+              MOVE.L         D1,ED_CursorColumnIndex(A4);2941 0000 
+              MOVE.L         D7,D0                    ;2007 
+              MOVEQ.L        #$28,D1                  ;7228 
+              BSR.W          _CXD33                   ;6100 0000 
+              MOVE.L         D0,ED_ViewportOffset(A4) ;2940 0000 
+___ED_UpdateCursorPosFromIndex__2:
+              MOVE.L         ED_ViewportOffset(A4),D0 ;202c 0000 
+              CMP.L          ED_TextLimit(A4),D0      ;b0ac 0000 
+              BLT.B          ___ED_UpdateCursorPosFromIndex__5;6d0c 
+___ED_UpdateCursorPosFromIndex__3:
+              SUBQ.L         #$1,ED_ViewportOffset(A4);53ac 0000 
+              MOVEQ.L        #$28,D0                  ;7028 
+              SUB.L          D0,ED_EditCursorOffset(A4);91ac 0000 
+              BRA.B          ___ED_UpdateCursorPosFromIndex__2;60ea 
+___ED_UpdateCursorPosFromIndex__4:
+___ED_UpdateCursorPosFromIndex__5:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           _CXD33
+              XREF           ED_CursorColumnIndex
+              XREF           ED_ViewportOffset
+              XREF           ED_TextLimit
+              XREF           ED_EditCursorOffset
+              XDEF           ED_UpdateCursorPosFromIndex
+              END

@@ -594,6 +594,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_redraw_cursor_char_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_reboot_computer_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_update_active_inactive_indicator_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_update_cursor_pos_from_index_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_save_everything_to_disk_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_save_prevue_data_to_disk_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_load_text_ads_from_dh2_trial.sh"
