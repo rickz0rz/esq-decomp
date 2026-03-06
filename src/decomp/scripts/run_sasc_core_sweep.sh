@@ -581,6 +581,7 @@ SCRIPTS=(
     "src/decomp/scripts/compare_sasc_ed_draw_bottom_help_bar_background_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_menu_bottom_help_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_draw_esc_menu_help_text_trial.sh"
+    "src/decomp/scripts/compare_sasc_ed_draw_help_panels_trial.sh"
     "src/decomp/scripts/compare_sasc_ed_init_rastport2_pens_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_clear_esc_menu_mode_trial.sh"
     "src/decomp/scripts/compare_sasc_ed1_draw_diagnostics_screen_trial.sh"
