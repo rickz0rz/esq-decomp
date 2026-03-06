@@ -1,0 +1,29 @@
+              SECTION      text,CODE
+__code:
+ED_CommitCurrentAdEdits:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$c,D0                   ;90bc 0000 000c 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+___ED_CommitCurrentAdEdits__1:
+              MOVE.L         Global_REF_LONG_CURRENT_EDITING_(A4),D7;2e2c 0000 
+              SUBQ.L         #$1,D7                   ;5387 
+              PEA            ED_EditBufferLive(A4)    ;486c 0000 
+              PEA            ED_EditBufferScratch(A4) ;486c 0000 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          GROUP_AL_JMPTBL_LADFUNC_UpdateEn;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+___ED_CommitCurrentAdEdits__2:
+              MOVE.L         (A7)+,D7                 ;2e1f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           Global_REF_LONG_CURRENT_EDITING_
+              XREF           ED_EditBufferLive
+              XREF           ED_EditBufferScratch
+              XREF           GROUP_AL_JMPTBL_LADFUNC_UpdateEn
+              XDEF           ED_CommitCurrentAdEdits
+              END
