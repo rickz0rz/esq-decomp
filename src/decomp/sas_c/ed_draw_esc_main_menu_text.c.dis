@@ -2,58 +2,101 @@
 __code:
 ED_DrawEscMainMenuText:
               MOVE.L         A7,D0                    ;200f 
-              SUB.L          #$10,D0                  ;90bc 0000 0010 
+              SUB.L          #$1c,D0                  ;90bc 0000 001c 
               CMP.L          __base(A4),D0            ;b0ac 0000 
               BCS.W          _XCOVF                   ;6500 0000 
+              SUB.W          #$c,A7                   ;9efc 000c 
+              MOVEM.L        D4/D5/D6/D7,-(A7)        ;48e7 0f00 
 ___ED_DrawEscMainMenuText__1:
-              PEA            ($6).w                   ;4878 0006 
+              MOVEQ.L        #$6,D7                   ;7e06 
+              MOVEQ.L        #$1,D6                   ;7c01 
+              MOVEQ.L        #$0,D5                   ;7a00 
+              MOVEQ.L        #$1,D4                   ;7801 
+              MOVEQ.L        #$28,D0                  ;7028 
+              MOVE.L         D0,$18(A7)               ;2f40 0018 
+              MOVEQ.L        #$5a,D0                  ;705a 
+              MOVE.L         D0,$14(A7)               ;2f40 0014 
+              MOVEQ.L        #$1e,D0                  ;701e 
+              MOVE.L         D0,$10(A7)               ;2f40 0010 
+              MOVE.L         D7,-(A7)                 ;2f07 
               BSR.W          ED_DrawMenuSelectionHighlight;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D6,(A7)                  ;2e86 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetAPen              ;6100 0000 
-              CLR.L          (A7)                     ;4297 
+              MOVE.L         D5,(A7)                  ;2e85 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
+              MOVEQ.L        #$0,D0                   ;7000 
+              MOVE.L         $28(A7),D1               ;222f 0028 
+              ADD.L          D0,D1                    ;d280 
               PEA            Global_STR_EDIT_ADS(A4)  ;486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($5a).w                  ;4878 005a 
+              MOVE.L         $30(A7),-(A7)            ;2f2f 0030 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              MOVE.L         $34(A7),D0               ;202f 0034 
+              MOVE.L         $38(A7),D1               ;222f 0038 
+              ADD.L          D0,D1                    ;d280 
               PEA            Global_STR_EDIT_ATTRIBUTES(A4);486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($78).w                  ;4878 0078 
+              MOVE.L         $40(A7),-(A7)            ;2f2f 0040 
+              MOVE.L         D1,-(A7)                 ;2f01 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            Global_STR_CHANGE_SCROLL_SPEED(A4);486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($96).w                  ;4878 0096 
-              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
-              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              LEA            $48(A7),A7               ;4fef 0048 
-              PEA            Global_STR_DIAGNOSTIC_MODE(A4);486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($b4).w                  ;4878 00b4 
-              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
-              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            Global_STR_SPECIAL_FUNCTIONS(A4);486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($d2).w                  ;4878 00d2 
-              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
-              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            Global_STR_VERSIONS_SCREEN(A4);486c 0000 
-              PEA            ($28).w                  ;4878 0028 
-              PEA            ($f0).w                  ;4878 00f0 
-              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              MOVE.L         $44(A7),D0               ;202f 0044 
+              MOVE.L         D0,D1                    ;2200 
 ___ED_DrawEscMainMenuText__2:
+              ADD.L          D1,D1                    ;d281 
+              MOVE.L         $48(A7),D0               ;202f 0048 
+              ADD.L          D1,D0                    ;d081 
+              PEA            Global_STR_CHANGE_SCROLL_SPEED(A4);486c 0000 
+              MOVE.L         $50(A7),-(A7)            ;2f2f 0050 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
-              PEA            ($1).w                   ;4878 0001 
+              LEA            $44(A7),A7               ;4fef 0044 
+              MOVE.L         $10(A7),D0               ;202f 0010 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         $14(A7),D0               ;202f 0014 
+              ADD.L          D1,D0                    ;d081 
+              PEA            Global_STR_DIAGNOSTIC_MODE(A4);486c 0000 
+              MOVE.L         $1c(A7),-(A7)            ;2f2f 001c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              MOVE.L         $20(A7),D0               ;202f 0020 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              MOVE.L         $24(A7),D0               ;202f 0024 
+              ADD.L          D1,D0                    ;d081 
+              PEA            Global_STR_SPECIAL_FUNCTIONS(A4);486c 0000 
+              MOVE.L         $2c(A7),-(A7)            ;2f2f 002c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              MOVE.L         $30(A7),D0               ;202f 0030 
+              MOVE.L         D0,D1                    ;2200 
+              ASL.L          #$2,D1                   ;e581 
+              ADD.L          D0,D1                    ;d280 
+              MOVE.L         $34(A7),D0               ;202f 0034 
+              ADD.L          D1,D0                    ;d081 
+              PEA            Global_STR_VERSIONS_SCREEN(A4);486c 0000 
+___ED_DrawEscMainMenuText__3:
+              MOVE.L         $3c(A7),-(A7)            ;2f2f 003c 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
+              BSR.W          DISPLIB_DisplayTextAtPosition;6100 0000 
+              MOVE.L         D4,(A7)                  ;2e84 
               MOVE.L         Global_REF_RASTPORT_1(A4),-(A7);2f2c 0000 
               MOVE.L         Global_REF_GRAPHICS_LIBRARY(A4),-(A7);2f2c 0000 
               BSR.W          _LVOSetDrMd              ;6100 0000 
-              LEA            $3c(A7),A7               ;4fef 003c 
-___ED_DrawEscMainMenuText__3:
+              LEA            $38(A7),A7               ;4fef 0038 
+___ED_DrawEscMainMenuText__4:
+              MOVEM.L        (A7)+,D4/D5/D6/D7        ;4cdf 00f0 
+              ADD.W          #$c,A7                   ;defc 000c 
               RTS                                     ;4e75 
 __const:
 __strings:

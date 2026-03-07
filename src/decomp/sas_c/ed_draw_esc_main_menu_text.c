@@ -17,17 +17,25 @@ extern LONG DISPLIB_DisplayTextAtPosition(void *rastPort, LONG y, LONG x, const 
 
 void ED_DrawEscMainMenuText(void)
 {
-    ED_DrawMenuSelectionHighlight(6);
+    const LONG MENU_ITEM_COUNT = 6;
+    const LONG PEN_PRIMARY = 1;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG DRAWMODE_JAM2 = 1;
+    const LONG TEXT_X = 40;
+    const LONG ROW0_Y = 90;
+    const LONG ROW_STEP_Y = 30;
 
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
+    ED_DrawMenuSelectionHighlight(MENU_ITEM_COUNT);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 90, 40, Global_STR_EDIT_ADS);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 120, 40, Global_STR_EDIT_ATTRIBUTES);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 150, 40, Global_STR_CHANGE_SCROLL_SPEED);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 180, 40, Global_STR_DIAGNOSTIC_MODE);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 210, 40, Global_STR_SPECIAL_FUNCTIONS);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 240, 40, Global_STR_VERSIONS_SCREEN);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_PRIMARY);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 0), TEXT_X, Global_STR_EDIT_ADS);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 1), TEXT_X, Global_STR_EDIT_ATTRIBUTES);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 2), TEXT_X, Global_STR_CHANGE_SCROLL_SPEED);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 3), TEXT_X, Global_STR_DIAGNOSTIC_MODE);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 4), TEXT_X, Global_STR_SPECIAL_FUNCTIONS);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 5), TEXT_X, Global_STR_VERSIONS_SCREEN);
+
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM2);
 }

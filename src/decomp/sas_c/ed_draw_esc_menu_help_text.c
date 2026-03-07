@@ -16,16 +16,24 @@ extern void ED_DrawEscMainMenuText(void);
 
 void ED_DrawESCMenuHelpText(void)
 {
-    ED_DrawHelpPanels(6);
+    const LONG HELP_PANEL_MODE_ESC = 6;
+    const LONG DRAWMODE_JAM1 = 0;
+    const LONG DRAWMODE_JAM2 = 1;
+    const LONG PEN_PRIMARY = 1;
+    const LONG TEXT_X = 40;
+    const LONG ROW0_Y = 330;
+    const LONG ROW_STEP_Y = 30;
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 0);
-    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    ED_DrawHelpPanels(HELP_PANEL_MODE_ESC);
 
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 330, 40, Global_STR_PUSH_ESC_TO_RESUME);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 360, 40, Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1);
-    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 390, 40, Global_STR_PUSH_ANY_KEY_TO_SELECT_1);
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM1);
+    _LVOSetAPen(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, PEN_PRIMARY);
 
-    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, 1);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 0), TEXT_X, Global_STR_PUSH_ESC_TO_RESUME);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 1), TEXT_X, Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, ROW0_Y + (ROW_STEP_Y * 2), TEXT_X, Global_STR_PUSH_ANY_KEY_TO_SELECT_1);
+
+    _LVOSetDrMd(Global_REF_GRAPHICS_LIBRARY, Global_REF_RASTPORT_1, DRAWMODE_JAM2);
     ED_EditCursorOffset = 0;
     ED_DrawEscMainMenuText();
 }
