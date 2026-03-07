@@ -4,6 +4,8 @@ typedef unsigned long ULONG;
 typedef long LONG;
 
 enum {
+    BRUSH_SRC_MODE_FLAGS_OFFSET = 150,
+    BRUSH_SRC_TYPE_OFFSET = 190,
     BRUSH_SRC_WIDTH_OFFSET = 128,
     BRUSH_SRC_HEIGHT_OFFSET = 130,
     BRUSH_SRC_DEPTH_OFFSET = 136,
@@ -116,7 +118,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
         _LVOClose(fh);
     }
 
-    if ((src[150] & BRUSH_ALT_MODE_FLAG_MASK) != 0) {
+    if ((src[BRUSH_SRC_MODE_FLAGS_OFFSET] & BRUSH_ALT_MODE_FLAG_MASK) != 0) {
         max_depth = BRUSH_MAX_DEPTH_ALT;
         max_width = BRUSH_MAX_WIDTH_ALT;
     }
@@ -199,7 +201,7 @@ void *BRUSH_LoadBrushAsset(UBYTE *src)
         }
     }
 
-    if ((UBYTE)src[190] == BRUSH_ALT_NODE_TYPE) {
+    if ((UBYTE)src[BRUSH_SRC_TYPE_OFFSET] == BRUSH_ALT_NODE_TYPE) {
         UBYTE *alt = (UBYTE *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
             Global_STR_BRUSH_C_15,
             1220,
