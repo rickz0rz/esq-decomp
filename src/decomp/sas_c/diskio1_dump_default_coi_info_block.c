@@ -4,6 +4,7 @@ typedef unsigned long ULONG;
 typedef signed short WORD;
 
 enum {
+    DISKIO_NULL = 0,
     DEFAULT_COI_TRAILING_RESERVED_BYTES = 12,
     SOURCE_HEADER_RESERVED_BYTES = 40,
     BACKGROUND_TEXT_BYTES = 3
@@ -63,7 +64,7 @@ void DISKIO1_DumpDefaultCoiInfoBlock(void)
         DISKIO_FMT_COI_DASH_PTR_PCT_08LX,
         coi);
 
-    if (coi == 0) {
+    if (coi == (const struct DiskioDefaultCoiInfo *)DISKIO_NULL) {
         return;
     }
 
