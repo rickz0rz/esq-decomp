@@ -4,6 +4,8 @@ typedef short WORD;
 typedef long LONG;
 
 enum {
+    ALIGNED_STATUS_MODE_PRIMARY = 1,
+    ALIGNED_STATUS_MODE_SECONDARY = 2,
     ALIGNED_STATUS_WRAP_PREFIX_WIDTH = 19,
     ALIGNED_STATUS_WRAP_SUFFIX_WIDTH = 20,
     ALIGNED_STATUS_FIELD_TEXT6 = 6,
@@ -35,7 +37,10 @@ void CLEANUP_BuildAlignedStatusLine(UBYTE *out, UWORD isPrimary, UWORD modeSel, 
     UBYTE *text6;
     UBYTE *text7;
 
-    entry = (void *)GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode((LONG)modeSel, isPrimary ? 1 : 2);
+    entry = (void *)GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        (LONG)modeSel,
+        isPrimary ? ALIGNED_STATUS_MODE_PRIMARY : ALIGNED_STATUS_MODE_SECONDARY
+    );
     if (CLEANUP_TestEntryFlagYAndBit1(entry, (LONG)slot, alignToken) != 0) {
         text6 = (UBYTE *)COI_GetAnimFieldPointerByMode(entry, (LONG)slot, ALIGNED_STATUS_FIELD_TEXT6);
     } else {

@@ -4,7 +4,9 @@ typedef long LONG;
 enum {
     RASTPORT_BITMAP_OFFSET = 4,
     RASTPORT_FLAGS_OFFSET = 32,
-    RASTPORT_FLAGMASK_CLEAR_BIT3 = 0xFFF7
+    RASTPORT_FLAGMASK_CLEAR_BIT3 = 0xFFF7,
+    DATE_BEVEL_Y = 34,
+    DATE_BEVEL_HEIGHT = 67
 };
 
 extern LONG Global_REF_RASTPORT_1;
@@ -31,7 +33,7 @@ void CLEANUP_DrawDateBannerSegment(void)
 
     RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY();
 
-    BEVEL_DrawBevelFrameWithTopRight((void *)Global_REF_RASTPORT_1, 0, 34, 255, 67);
+    BEVEL_DrawBevelFrameWithTopRight((void *)Global_REF_RASTPORT_1, 0, DATE_BEVEL_Y, 255, DATE_BEVEL_HEIGHT);
 
     *(LONG *)(Global_REF_RASTPORT_1 + RASTPORT_BITMAP_OFFSET) = previousBitmap;
 }

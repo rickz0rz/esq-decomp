@@ -3,6 +3,14 @@ typedef unsigned short UWORD;
 typedef short WORD;
 typedef long LONG;
 
+enum {
+    SLOT_MAP_COUNT = 10,
+    SLOT_MAP_MAX_TOKENS = 9,
+    RECORD_PREFIX_MARKER_1 = 49,
+    RECORD_HEADER_DISK_ID_SIZE = 1,
+    DELIMITER_COUNT_ONE = 1
+};
+
 extern UBYTE TEXTDISP_SecondaryGroupCode;
 extern UBYTE TEXTDISP_SecondaryGroupPresentFlag;
 extern UBYTE TEXTDISP_PrimaryGroupCode;
@@ -30,7 +38,7 @@ LONG COI_WriteOiDataFile(UBYTE disk_id);
 
 LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
 {
-    WORD slot_map[10];
+    WORD slot_map[SLOT_MAP_COUNT];
     LONG record_offs;
     LONG count_escape;
     LONG token_count;
@@ -43,12 +51,12 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
         return 1;
     }
 
-    for (i = 0; i < 10; i += 1) {
+    for (i = 0; i < SLOT_MAP_COUNT; i += 1) {
         slot_map[i] = -1;
     }
 
     disk_id = record[0];
-    record_offs = 1;
+    record_offs = RECORD_HEADER_DISK_ID_SIZE;
 
     if (disk_id == TEXTDISP_SecondaryGroupCode && (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - 1) == 0) {
         entry_count = (LONG)TEXTDISP_SecondaryGroupEntryCount;
@@ -62,14 +70,20 @@ LONG CLEANUP_ParseAlignedListingBlock(UBYTE *record, UBYTE *listing)
         return 1;
     }
 
-    if (record[record_offs] == 49) {
+    if (record[record_offs] == RECORD_PREFIX_MARKER_1) {
         record_offs += 1;
     }
 
     count_escape = COI_CountEscape14BeforeNull(record + record_offs, (LONG)ESQIFF_RecordLength - record_offs);
-    token_count = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(record + record_offs, slot_map, 9, record + record_offs, 1, (LONG)ESQIFF_RecordLength - record_offs, 0);
+    token_count = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(record + record_offs,
+                                                            slot_map,
+                                                            SLOT_MAP_MAX_TOKENS,
+                                                            record + record_offs,
+                                                            DELIMITER_COUNT_ONE,
+                                                            (LONG)ESQIFF_RecordLength - record_offs,
+                                                            0);
 
-    for (i = 0; i < entry_count && i < 10; i += 1) {
+    for (i = 0; i < entry_count && i < SLOT_MAP_COUNT; i += 1) {
         void *candidate;
 
         if (disk_id == TEXTDISP_SecondaryGroupCode && (UBYTE)(TEXTDISP_SecondaryGroupPresentFlag - 1) == 0) {
