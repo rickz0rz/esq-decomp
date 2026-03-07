@@ -16,7 +16,7 @@ extern const char NEWGRID_ShowtimeListSeparator[];
 extern LONG NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *coi, LONG row, LONG field);
 extern LONG TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void *entries, LONG row);
 extern void TEXTDISP_FormatEntryTimeForIndex(char *out, LONG row, void *entries);
-extern void NEWGRID_UpdatePresetEntry(NewgridCtx **ctxPtr, void **entriesPtr, LONG row, LONG preset);
+extern void NEWGRID_UpdatePresetEntry(void **entryPtr, void **auxPtr, LONG row, LONG preset);
 extern LONG NEWGRID2_JMPTBL_ESQ_TestBit1Based(void *bitsetBase, LONG bitIndex);
 extern const char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(const char *s);
 extern char *PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, const char *src);
@@ -57,12 +57,16 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
     const char *f3_n;
     UBYTE mode0;
     UBYTE modeN;
+    void *entryCur;
+    void *auxCur;
 
     out[0] = 0;
 
     if (!ctx || !ctx->coi || !ctx->entries) {
         return;
     }
+    entryCur = ctx->coi;
+    auxCur = ctx->entries;
 
     row = ctx->row;
     if (row <= 0 || row >= 97) {
@@ -73,20 +77,20 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
         row = (UWORD)(row - 48);
     }
 
-    title0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, (LONG)row, 1);
-    f1_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, (LONG)row, 2);
-    f2_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, (LONG)row, 6);
-    f3_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, (LONG)row, 7);
+    title0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 1);
+    f1_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 2);
+    f2_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 6);
+    f3_0 = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, (LONG)row, 7);
     if (!title0 || title0[0] == 0) {
         return;
     }
 
     mode0 = 0;
-    if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(ctx->entries, (LONG)row) != 0) {
+    if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(auxCur, (LONG)row) != 0) {
         mode0 = 1;
     }
 
-    TEXTDISP_FormatEntryTimeForIndex(scratchTime, (LONG)row, ctx->entries);
+    TEXTDISP_FormatEntryTimeForIndex(scratchTime, (LONG)row, auxCur);
 
     rowEnd = (UWORD)(ctx->row + 33);
     if (rowEnd > 96) {
@@ -96,29 +100,29 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
 
     for (row = (UWORD)(ctx->row + 1); row < rowEnd; row++) {
         if (row == 49) {
-            NEWGRID_UpdatePresetEntry(&ctx, &ctx->entries, (LONG)row, ctx->preset);
+            NEWGRID_UpdatePresetEntry(&entryCur, &auxCur, (LONG)row, ctx->preset);
         }
 
         srcIdx = (row > 48) ? (LONG)(row - 48) : (LONG)row;
-        if (!ctx->coi || !ctx->entries) {
+        if (!entryCur || !auxCur) {
             continue;
         }
 
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)ctx->coi + 0x1c, srcIdx) != -1) {
+        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based((UBYTE *)entryCur + 0x1c, srcIdx) != -1) {
             continue;
         }
 
-        if (((UBYTE *)ctx->entries)[7 + srcIdx] & 0x20) {
+        if (((UBYTE *)auxCur)[7 + srcIdx] & 0x20) {
             continue;
         }
 
-        titleN = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, srcIdx, 1);
-        f1_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, srcIdx, 2);
-        f2_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, srcIdx, 6);
-        f3_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(ctx->coi, srcIdx, 7);
+        titleN = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 1);
+        f1_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 2);
+        f2_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 6);
+        f3_n = (const char *)NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entryCur, srcIdx, 7);
 
         modeN = 0;
-        if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(ctx->entries, srcIdx) != 0) {
+        if (modeFlag == 1 && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(auxCur, srcIdx) != 0) {
             modeN = 1;
         }
 
@@ -139,11 +143,11 @@ void NEWGRID_AppendShowtimesForRow(NewgridCtx *ctx, char *out, LONG modeFlag)
             PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID2_JMPTBL_STR_SkipClass3Chars(scratchTime));
         }
 
-        TEXTDISP_FormatEntryTimeForIndex(scratchTime, srcIdx, ctx->entries);
+        TEXTDISP_FormatEntryTimeForIndex(scratchTime, srcIdx, auxCur);
         PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID_ShowtimeListSeparator);
         PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID2_JMPTBL_STR_SkipClass3Chars(scratchTime));
 
-        ((UBYTE *)ctx->entries)[7 + srcIdx] |= 0x20;
+        ((UBYTE *)auxCur)[7 + srcIdx] |= 0x20;
     }
 
     if (out[0] == 0) {
