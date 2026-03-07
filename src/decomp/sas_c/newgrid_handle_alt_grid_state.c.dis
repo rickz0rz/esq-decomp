@@ -1,0 +1,205 @@
+              SECTION      text,CODE
+__code:
+NEWGRID_HandleAltGridState:
+              MOVE.L         A7,D0                    ;200f 
+              SUB.L          #$24,D0                  ;90bc 0000 0024 
+              CMP.L          __base(A4),D0            ;b0ac 0000 
+              BCS.W          _XCOVF                   ;6500 0000 
+              SUBQ.W         #$8,A7                   ;514f 
+              MOVEM.L        D4/D5/D6/D7/A2/A3/A5,-(A7);48e7 0f34 
+___NEWGRID_HandleAltGridState__1:
+              MOVE.W         $32(A7),D6               ;3c2f 0032 
+              MOVE.L         $2c(A7),D7               ;2e2f 002c 
+              MOVE.L         $28(A7),A5               ;2a6f 0028 
+              MOVE.L         A5,D0                    ;200d 
+              BNE.B          ___NEWGRID_HandleAltGridState__3;660a 
+___NEWGRID_HandleAltGridState__2:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,NEWGRID_AltGridStateLatch(A4);2940 0000 
+              BRA.W          ___NEWGRID_HandleAltGridState__28;6000 0188 
+___NEWGRID_HandleAltGridState__3:
+              MOVEQ.L        #$4,D0                   ;7004 
+              CMP.L          NEWGRID_AltGridStateLatch(A4),D0;b0ac 0000 
+              BNE.W          ___NEWGRID_HandleAltGridState__21;6600 014c 
+___NEWGRID_HandleAltGridState__4:
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              PEA            ($1).w                   ;4878 0001 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              TST.L          D0                       ;4a80 
+              LEA            $10(A7),A7               ;4fef 0010 
+              BEQ.B          ___NEWGRID_HandleAltGridState__8;6738 
+___NEWGRID_HandleAltGridState__5:
+              MOVE.L         D6,D0                    ;2006 
+              SUBQ.W         #$1,D0                   ;5340 
+              BEQ.B          ___NEWGRID_HandleAltGridState__7;670e 
+___NEWGRID_HandleAltGridState__6:
+              PEA            CLOCK_DaySlotIndex(A4)   ;486c 0000 
+              BSR.W          NEWGRID2_JMPTBL_ESQ_GetHalfHourS;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              SUBQ.W         #$1,D0                   ;5340 
+              BNE.B          ___NEWGRID_HandleAltGridState__8;6624 
+___NEWGRID_HandleAltGridState__7:
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              BSR.W          NEWGRID2_JMPTBL_TLIBA_FindFirstW;6100 0000 
+              MOVE.L         D0,D7                    ;2e00 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
+              MOVE.L         D0,A3                    ;2640 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D7,-(A7)                 ;2f07 
+              BSR.W          NEWGRID2_JMPTBL_ESQDISP_GetEntry;6100 0000 
+              MOVE.L         D0,A2                    ;2440 
+              LEA            $14(A7),A7               ;4fef 0014 
+___NEWGRID_HandleAltGridState__8:
+              MOVE.L         A3,D0                    ;200b 
+              BEQ.B          ___NEWGRID_HandleAltGridState__10;6704 
+___NEWGRID_HandleAltGridState__9:
+              MOVE.L         A2,D0                    ;200a 
+              BNE.B          ___NEWGRID_HandleAltGridState__11;6608 
+___NEWGRID_HandleAltGridState__10:
+              MOVE.L         NEWGRID_AltGridStateLatch(A4),D0;202c 0000 
+              BRA.W          ___NEWGRID_HandleAltGridState__28;6000 0116 
+___NEWGRID_HandleAltGridState__11:
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              ASL.L          #$2,D0                   ;e580 
+              MOVE.L         A2,A0                    ;204a 
+              ADD.L          D0,A0                    ;d1c0 
+              LEA            $38(A0),A1               ;43e8 0038 
+              MOVE.L         (A1),A0                  ;2051 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              BEQ.B          ___NEWGRID_HandleAltGridState__13;6704 
+___NEWGRID_HandleAltGridState__12:
+              TST.B          (A0)                     ;4a10 
+              BNE.B          ___NEWGRID_HandleAltGridState__14;6608 
+___NEWGRID_HandleAltGridState__13:
+              MOVE.L         NEWGRID_AltGridStateLatch(A4),D0;202c 0000 
+              BRA.W          ___NEWGRID_HandleAltGridState__28;6000 00f4 
+___NEWGRID_HandleAltGridState__14:
+              MOVE.W         NEWGRID_ColumnWidthPx(A4),D0;302c 0000 
+              EXT.L          D0                       ;48c0 
+              MOVE.L         D0,D1                    ;2200 
+              ADD.L          D1,D1                    ;d281 
+              ADD.L          D0,D1                    ;d280 
+              MOVEQ.L        #$c,D0                   ;700c 
+              SUB.L          D0,D1                    ;9280 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($14).w                  ;4878 0014 
+              MOVE.L         D1,-(A7)                 ;2f01 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_SetLayo;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.W         NEWGRID_ShowtimeEntryVariantFlag(A4),D0;302c 0000 
+              BEQ.B          ___NEWGRID_HandleAltGridState__16;6726 
+___NEWGRID_HandleAltGridState__15:
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              PEA            ($4).w                   ;4878 0004 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID_DrawGridEntry    ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+              BRA.B          ___NEWGRID_HandleAltGridState__17;6024 
+___NEWGRID_HandleAltGridState__16:
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.W         D6,D0                    ;3006 
+              EXT.L          D0                       ;48c0 
+              PEA            ($4).w                   ;4878 0004 
+              PEA            ($1).w                   ;4878 0001 
+              PEA            ($3).w                   ;4878 0003 
+              MOVE.L         D0,-(A7)                 ;2f00 
+              MOVE.L         A2,-(A7)                 ;2f0a 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID_DrawGridEntry    ;6100 0000 
+              LEA            $1c(A7),A7               ;4fef 001c 
+___NEWGRID_HandleAltGridState__17:
+              LEA            $20(A5),A0               ;41ed 0020 
+              PEA            ($2).w                   ;4878 0002 
+              MOVE.L         A0,$20(A7)               ;2f48 0020 
+              BSR.W          NEWGRID2_JMPTBL_DISPTEXT_Compute;6100 0000 
+              MOVE.L         $20(A7),A0               ;206f 0020 
+              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         A5,(A7)                  ;2e8d 
+              BSR.W          NEWGRID_DrawGridFrameAlt ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_HandleAltGridState__19;6704 
+___NEWGRID_HandleAltGridState__18:
+              MOVEQ.L        #$4,D5                   ;7a04 
+              BRA.B          ___NEWGRID_HandleAltGridState__20;6002 
+___NEWGRID_HandleAltGridState__19:
+              MOVEQ.L        #$5,D5                   ;7a05 
+___NEWGRID_HandleAltGridState__20:
+              MOVE.L         D5,NEWGRID_AltGridStateLatch(A4);2945 0000 
+              MOVE.L         D5,D0                    ;2005 
+              SUBQ.L         #$4,D0                   ;5980 
+              SCC            D0,#$700                 ;57c0 
+              MOVEQ.L        #$0,D4                   ;7800 
+              SUB.B          D0,D4                    ;9800 
+              LEA            $3c(A5),A0               ;41ed 003c 
+              MOVE.L         D4,-(A7)                 ;2f04 
+              MOVE.L         A3,-(A7)                 ;2f0b 
+              MOVE.L         A0,-(A7)                 ;2f08 
+              BSR.W          NEWGRID_DrawGridCell     ;6100 0000 
+              LEA            $c(A7),A7                ;4fef 000c 
+              MOVE.L         NEWGRID_AltGridStateLatch(A4),D0;202c 0000 
+              BRA.B          ___NEWGRID_HandleAltGridState__28;6032 
+___NEWGRID_HandleAltGridState__21:
+              MOVEQ.L        #$5,D0                   ;7005 
+              CMP.L          NEWGRID_AltGridStateLatch(A4),D0;b0ac 0000 
+              BNE.B          ___NEWGRID_HandleAltGridState__26;6624 
+___NEWGRID_HandleAltGridState__22:
+              LEA            $20(A5),A0               ;41ed 0020 
+              MOVEQ.L        #$ff,D0                  ;70ff 
+              MOVE.L         D0,(A0)                  ;2080 
+              MOVE.L         A5,-(A7)                 ;2f0d 
+              BSR.W          NEWGRID_DrawGridFrameAlt ;6100 0000 
+              ADDQ.W         #$4,A7                   ;584f 
+              TST.L          D0                       ;4a80 
+              BEQ.B          ___NEWGRID_HandleAltGridState__24;6708 
+___NEWGRID_HandleAltGridState__23:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,NEWGRID_AltGridStateLatch(A4);2940 0000 
+              BRA.B          ___NEWGRID_HandleAltGridState__28;600e 
+___NEWGRID_HandleAltGridState__24:
+              MOVEQ.L        #$5,D0                   ;7005 
+              MOVE.L         D0,NEWGRID_AltGridStateLatch(A4);2940 0000 
+___NEWGRID_HandleAltGridState__25:
+              BRA.B          ___NEWGRID_HandleAltGridState__28;6006 
+___NEWGRID_HandleAltGridState__26:
+              MOVEQ.L        #$4,D0                   ;7004 
+              MOVE.L         D0,NEWGRID_AltGridStateLatch(A4);2940 0000 
+___NEWGRID_HandleAltGridState__27:
+___NEWGRID_HandleAltGridState__28:
+              MOVEM.L        (A7)+,D4/D5/D6/D7/A2/A3/A5;4cdf 2cf0 
+              ADDQ.W         #$8,A7                   ;504f 
+              RTS                                     ;4e75 
+__const:
+__strings:
+              XREF           __base
+              XREF           _XCOVF
+              XREF           NEWGRID_AltGridStateLatch
+              XREF           NEWGRID2_JMPTBL_ESQDISP_GetEntry
+              XREF           CLOCK_DaySlotIndex
+              XREF           NEWGRID2_JMPTBL_ESQ_GetHalfHourS
+              XREF           NEWGRID2_JMPTBL_TLIBA_FindFirstW
+              XREF           NEWGRID_ColumnWidthPx
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_SetLayo
+              XREF           NEWGRID_ShowtimeEntryVariantFlag
+              XREF           NEWGRID_DrawGridEntry
+              XREF           NEWGRID2_JMPTBL_DISPTEXT_Compute
+              XREF           NEWGRID_DrawGridFrameAlt
+              XREF           NEWGRID_DrawGridCell
+              XDEF           NEWGRID_HandleAltGridState
+              END
