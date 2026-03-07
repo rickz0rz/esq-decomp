@@ -1,6 +1,17 @@
 typedef unsigned char UBYTE;
 typedef unsigned long ULONG;
 
+enum {
+    ATTR_FLAG_NONE = 0x01,
+    ATTR_FLAG_HILITE_SRC = 0x02,
+    ATTR_FLAG_SUM_SRC = 0x04,
+    ATTR_FLAG_VIDEO_TAG_DISABLE = 0x08,
+    ATTR_FLAG_PPV_SRC = 0x10,
+    ATTR_FLAG_DITTO = 0x20,
+    ATTR_FLAG_ALT_HILITE_SRC = 0x40,
+    ATTR_FLAG_STEREO = 0x80
+};
+
 struct DiskioProgramSourceRecord {
     UBYTE etid;
     char channelNumber[11];
@@ -50,35 +61,35 @@ void DISKIO1_DumpProgramSourceRecordVerbose(
         rec->callLetters);
     GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_ATTR);
 
-    if (rec->attrFlags == 1) {
+    if (rec->attrFlags == ATTR_FLAG_NONE) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_NONE_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x02) {
+    if (rec->attrFlags & ATTR_FLAG_HILITE_SRC) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x04) {
+    if (rec->attrFlags & ATTR_FLAG_SUM_SRC) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x08) {
+    if (rec->attrFlags & ATTR_FLAG_VIDEO_TAG_DISABLE) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x10) {
+    if (rec->attrFlags & ATTR_FLAG_PPV_SRC) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x20) {
+    if (rec->attrFlags & ATTR_FLAG_DITTO) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_DITTO_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x40) {
+    if (rec->attrFlags & ATTR_FLAG_ALT_HILITE_SRC) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags);
     }
-    if (rec->attrFlags & 0x80) {
+    if (rec->attrFlags & ATTR_FLAG_STEREO) {
         GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_STEREO);
     }
