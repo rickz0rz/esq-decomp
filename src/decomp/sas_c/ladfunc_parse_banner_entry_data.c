@@ -6,8 +6,8 @@ typedef unsigned char UBYTE;
 #define MEMF_CLEAR  0x00010000L
 
 typedef struct LADFUNC_EntryRecord {
-    UWORD value0;
-    UWORD value1;
+    UWORD startSlot;
+    UWORD endSlot;
     UBYTE reserved[2];
     UBYTE *textPtr;
     UBYTE *attrPtr;
@@ -71,8 +71,8 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
 
     entryByte = (UBYTE)(entryByte - 1);
     entry = LADFUNC_EntryPtrTable[(LONG)entryByte];
-    entry->value0 = 1;
-    entry->value1 = 0x30;
+    entry->startSlot = 1;
+    entry->endSlot = 0x30;
 
     textLen = 0;
     tempAttr = (UBYTE *)NEWGRID_JMPTBL_MEMORY_AllocateMemory(
@@ -108,10 +108,10 @@ LONG LADFUNC_ParseBannerEntryData(UBYTE mode, const UBYTE *in)
         }
 
         if (c == 20) {
-            entry->value0 = (UWORD)(*in++);
-            entry->value1 = (UWORD)(*in++);
-            entry->value0 = (UWORD)(UBYTE)ESQIFF2_ValidateAsciiNumericByte((LONG)entry->value0);
-            entry->value1 = (UWORD)(UBYTE)ESQIFF2_ValidateAsciiNumericByte((LONG)entry->value1);
+            entry->startSlot = (UWORD)(*in++);
+            entry->endSlot = (UWORD)(*in++);
+            entry->startSlot = (UWORD)(UBYTE)ESQIFF2_ValidateAsciiNumericByte((LONG)entry->startSlot);
+            entry->endSlot = (UWORD)(UBYTE)ESQIFF2_ValidateAsciiNumericByte((LONG)entry->endSlot);
             continue;
         }
 

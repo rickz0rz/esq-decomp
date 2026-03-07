@@ -10,14 +10,14 @@ ___LADFUNC_UpdateHighlightState__1:
               MOVE.B         ED_DiagTextModeChar(A4),D0;102c 0000 
               MOVEQ.L        #$4e,D1                  ;724e 
               CMP.B          D1,D0                    ;b001 
-              BEQ.B          ___LADFUNC_UpdateHighlightState__14;6740 
+              BEQ.B          ___LADFUNC_UpdateHighlightState__14;673e 
 ___LADFUNC_UpdateHighlightState__2:
 ___LADFUNC_UpdateHighlightState__3:
               MOVEQ.L        #$0,D7                   ;7e00 
 ___LADFUNC_UpdateHighlightState__4:
               MOVEQ.L        #$2f,D0                  ;702f 
               CMP.L          D0,D7                    ;be80 
-              BGE.B          ___LADFUNC_UpdateHighlightState__14;6c38 
+              BGE.B          ___LADFUNC_UpdateHighlightState__14;6c36 
 ___LADFUNC_UpdateHighlightState__5:
               MOVE.L         D7,D0                    ;2007 
               ASL.L          #$2,D0                   ;e580 
@@ -25,27 +25,26 @@ ___LADFUNC_UpdateHighlightState__5:
               MOVE.L         $0(A0,D0.L),A5           ;2a70 0800 
               MOVE.W         CLOCK_HalfHourSlotIndex(A4),D6;3c2c 0000 
               CLR.W          $4(A5)                   ;426d 0004 
-              MOVE.W         D6,D0                    ;3006 
-              MOVE.W         (A5),D1                  ;3215 
-              CMP.W          D0,D1                    ;b240 
-              BGT.B          ___LADFUNC_UpdateHighlightState__12;6e18 
+              MOVE.W         (A5),D0                  ;3015 
+              CMP.W          D6,D0                    ;b046 
+              BHI.B          ___LADFUNC_UpdateHighlightState__12;6218 
 ___LADFUNC_UpdateHighlightState__6:
 ___LADFUNC_UpdateHighlightState__7:
-              MOVE.W         $2(A5),D1                ;322d 0002 
-              CMP.W          D0,D1                    ;b240 
-              BLT.B          ___LADFUNC_UpdateHighlightState__12;6d10 
+              MOVE.W         $2(A5),D0                ;302d 0002 
+              CMP.W          D6,D0                    ;b046 
+              BCS.B          ___LADFUNC_UpdateHighlightState__12;6510 
 ___LADFUNC_UpdateHighlightState__8:
 ___LADFUNC_UpdateHighlightState__9:
               TST.L          $6(A5)                   ;4aad 0006 
               BEQ.B          ___LADFUNC_UpdateHighlightState__12;670a 
 ___LADFUNC_UpdateHighlightState__10:
 ___LADFUNC_UpdateHighlightState__11:
-              MOVEQ.L        #$1,D1                   ;7201 
-              MOVE.W         D1,$4(A5)                ;3b41 0004 
-              MOVE.W         D1,WDISP_HighlightActive(A4);3941 0000 
+              MOVEQ.L        #$1,D0                   ;7001 
+              MOVE.W         D0,$4(A5)                ;3b40 0004 
+              MOVE.W         D0,WDISP_HighlightActive(A4);3940 0000 
 ___LADFUNC_UpdateHighlightState__12:
               ADDQ.L         #$1,D7                   ;5287 
-              BRA.B          ___LADFUNC_UpdateHighlightState__4;60c2 
+              BRA.B          ___LADFUNC_UpdateHighlightState__4;60c4 
 ___LADFUNC_UpdateHighlightState__13:
 ___LADFUNC_UpdateHighlightState__14:
               MOVEM.L        (A7)+,D6/D7/A5           ;4cdf 20c0 

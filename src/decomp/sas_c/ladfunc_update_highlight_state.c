@@ -1,12 +1,11 @@
 typedef unsigned short UWORD;
-typedef signed short WORD;
 typedef signed long LONG;
 typedef unsigned char UBYTE;
 
 typedef struct LadfuncEntry {
-    WORD startSlot;
-    WORD endSlot;
-    WORD isHighlighted;
+    UWORD startSlot;
+    UWORD endSlot;
+    UWORD isHighlighted;
     UBYTE *textPtr;
 } LadfuncEntry;
 
@@ -32,10 +31,10 @@ void LADFUNC_UpdateHighlightState(void)
         UWORD slot = CLOCK_HalfHourSlotIndex;
 
         entry->isHighlighted = 0;
-        if (entry->startSlot > (WORD)slot) {
+        if (entry->startSlot > slot) {
             continue;
         }
-        if (entry->endSlot < (WORD)slot) {
+        if (entry->endSlot < slot) {
             continue;
         }
         if (entry->textPtr == 0) {

@@ -6,8 +6,8 @@ typedef unsigned char UBYTE;
 #define MEMF_CLEAR  0x00010000L
 
 typedef struct LADFUNC_EntryRecord {
-    UWORD reserved0;
-    UWORD reserved1;
+    UWORD startSlot;
+    UWORD endSlot;
     UBYTE reserved2[2];
     UBYTE *textPtr;
     UBYTE *attrPtr;
@@ -42,8 +42,8 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(LONG entryIndex, UBYTE *textBuf, 
         );
         LADFUNC_EntryPtrTable[entryIndex] = entry;
         if (entry != (LADFUNC_EntryRecord *)0) {
-            entry->reserved0 = 0;
-            entry->reserved1 = 0;
+            entry->startSlot = 0;
+            entry->endSlot = 0;
         }
     }
 
