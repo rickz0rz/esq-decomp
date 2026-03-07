@@ -2,6 +2,10 @@ typedef signed long LONG;
 typedef unsigned char UBYTE;
 typedef unsigned short UWORD;
 
+enum {
+    SERIAL_READ_DEFAULT_ARG = 0
+};
+
 extern UBYTE *ESQIFF_RecordBufferPtr;
 extern UBYTE ESQIFF_RecordChecksumByte;
 extern UWORD ESQIFF_ParseAttemptCount;
@@ -18,7 +22,11 @@ LONG ESQPROTO_VerifyChecksumAndParseList(UBYTE seed)
 
     ESQIFF_ParseAttemptCount = (UWORD)(ESQIFF_ParseAttemptCount + 1u);
     ESQIFF_RecordLength =
-        (UWORD)UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
+        (UWORD)UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer(
+            ESQIFF_RecordBufferPtr,
+            SERIAL_READ_DEFAULT_ARG,
+            SERIAL_READ_DEFAULT_ARG
+        );
 
     checksum = UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte(
         seed, ESQIFF_RecordBufferPtr, (LONG)ESQIFF_RecordLength);
