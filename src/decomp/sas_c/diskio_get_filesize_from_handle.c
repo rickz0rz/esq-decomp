@@ -12,11 +12,11 @@ extern LONG _LVOSeek(void *dosBase, LONG fh, LONG offset, LONG mode);
 
 LONG DISKIO_GetFilesizeFromHandle(LONG fileHandle)
 {
-    LONG endPos;
+    LONG fileSize;
 
     _LVOSeek(Global_REF_DOS_LIBRARY_2, fileHandle, DISKIO_SEEK_OFFSET_ZERO, DISKIO_SEEK_MODE_CURRENT);
     _LVOSeek(Global_REF_DOS_LIBRARY_2, fileHandle, DISKIO_SEEK_OFFSET_ZERO, DISKIO_SEEK_MODE_BEGIN);
-    endPos = _LVOSeek(Global_REF_DOS_LIBRARY_2, fileHandle, DISKIO_SEEK_OFFSET_ZERO, DISKIO_SEEK_MODE_END);
+    fileSize = _LVOSeek(Global_REF_DOS_LIBRARY_2, fileHandle, DISKIO_SEEK_OFFSET_ZERO, DISKIO_SEEK_MODE_END);
 
-    return endPos;
+    return fileSize;
 }
