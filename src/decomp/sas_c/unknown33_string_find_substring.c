@@ -44,8 +44,8 @@ UBYTE *STRING_FindSubstring(UBYTE *haystack, const UBYTE *needle)
 
 LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
 {
-    AllocNode **prev;
-    AllocNode *node;
+    AllocNode **prevLink;
+    AllocNode *freeNode;
     UBYTE *block_end;
 
     if (size <= 0) {
@@ -60,23 +60,23 @@ LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
     block_end = (UBYTE *)block + size;
     Global_AllocBytesTotal += size;
 
-    prev = &Global_AllocListHead;
-    node = Global_AllocListHead;
+    prevLink = &Global_AllocListHead;
+    freeNode = Global_AllocListHead;
 
-    while (node != (AllocNode *)0) {
-        UBYTE *node_end = (UBYTE *)node + node->size;
+    while (freeNode != (AllocNode *)0) {
+        UBYTE *node_end = (UBYTE *)freeNode + freeNode->size;
 
-        if ((UBYTE *)node > block_end) {
-            block->next = node;
+        if ((UBYTE *)freeNode > block_end) {
+            block->next = freeNode;
             block->size = size;
-            *prev = block;
+            *prevLink = block;
             return 0;
         }
 
-        if ((UBYTE *)node == block_end) {
-            block->next = node->next;
-            block->size = size + node->size;
-            *prev = block;
+        if ((UBYTE *)freeNode == block_end) {
+            block->next = freeNode->next;
+            block->size = size + freeNode->size;
+            *prevLink = block;
             return 0;
         }
 
@@ -86,24 +86,24 @@ LONG ALLOC_InsertFreeBlock(AllocNode *block, LONG size)
         }
 
         if ((UBYTE *)block == node_end) {
-            if (node->next != (AllocNode *)0 && (UBYTE *)node->next > block_end) {
+            if (freeNode->next != (AllocNode *)0 && (UBYTE *)freeNode->next > block_end) {
                 Global_AllocBytesTotal -= size;
                 return -1;
             }
 
-            node->size += size;
-            if (node->next != (AllocNode *)0 && (UBYTE *)node->next == block_end) {
-                node->size += node->next->size;
-                node->next = node->next->next;
+            freeNode->size += size;
+            if (freeNode->next != (AllocNode *)0 && (UBYTE *)freeNode->next == block_end) {
+                freeNode->size += freeNode->next->size;
+                freeNode->next = freeNode->next->next;
             }
             return 0;
         }
 
-        prev = &node->next;
-        node = node->next;
+        prevLink = &freeNode->next;
+        freeNode = freeNode->next;
     }
 
-    *prev = block;
+    *prevLink = block;
     block->next = (AllocNode *)0;
     block->size = size;
     return 0;
