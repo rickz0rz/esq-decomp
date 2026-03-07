@@ -10,6 +10,7 @@ ORIG_ASM="src/modules/groups/a/k/ed1.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="ed1_enter_esc_menu_after_version_text"
 ENTRY_ORIG="ED1_EnterEscMenu_AfterVersionText"
+ENTRY_CANONICAL="ED1_EnterEscMenu"
 ENTRY_SASC_REGEX="^ED1_EnterEscMenu_AfterVersionTex[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"

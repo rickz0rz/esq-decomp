@@ -10,6 +10,7 @@ ORIG_ASM="src/modules/groups/a/n/esqdisp.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="esqdisp_draw_status_banner_impl_return"
 ENTRY_ORIG="ESQDISP_DrawStatusBanner_Impl_Return"
+ENTRY_CANONICAL="ESQDISP_DrawStatusBanner_Impl"
 ENTRY_SASC_REGEX="^ESQDISP_DrawStatusBanner_Impl[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"

@@ -10,6 +10,7 @@ ORIG_ASM="src/modules/groups/a/n/esqdisp.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="esqdisp_parse_program_info_command_record_return"
 ENTRY_ORIG="ESQDISP_ParseProgramInfoCommandRecord_Return"
+ENTRY_CANONICAL="ESQDISP_ParseProgramInfoCommandRecord"
 ENTRY_SASC_REGEX="^ESQDISP_ParseProgramInfoCommandR[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"

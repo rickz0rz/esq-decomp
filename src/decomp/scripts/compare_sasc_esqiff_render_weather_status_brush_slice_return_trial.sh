@@ -10,6 +10,7 @@ ORIG_ASM="src/modules/groups/a/n/esqiff.s"
 OUT_DIR="build/decomp/sasc_trial"
 BASE="esqiff_render_weather_status_brush_slice_return"
 ENTRY_ORIG="ESQIFF_RenderWeatherStatusBrushSlice_Return"
+ENTRY_CANONICAL="ESQIFF_RenderWeatherStatusBrushSlice"
 ENTRY_SASC_REGEX="^ESQIFF_RenderWeatherStatusBrush[A-Za-z0-9_]*:$"
 
 mkdir -p "$OUT_DIR"
