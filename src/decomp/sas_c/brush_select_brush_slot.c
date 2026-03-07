@@ -37,7 +37,7 @@ LONG BRUSH_SelectBrushSlot(
     LONG src_x1,
     LONG src_y1,
     void *dst_rp,
-    LONG forced_dst_y)
+    LONG forcedDstY)
 {
     LONG src_x = src_x0;
     LONG src_y = src_y0;
@@ -122,8 +122,8 @@ LONG BRUSH_SelectBrushSlot(
         clip_h = *(LONG *)(brush + BRUSH_CLIP_H_OFFSET);
     }
 
-    if (forced_dst_y > BRUSH_FORCED_DST_Y_MIN) {
-        dst_y = forced_dst_y;
+    if (forcedDstY > BRUSH_FORCED_DST_Y_MIN) {
+        dst_y = forcedDstY;
     }
 
     return GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
